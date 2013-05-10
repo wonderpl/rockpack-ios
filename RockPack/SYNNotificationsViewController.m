@@ -6,12 +6,12 @@
 //  Copyright (c) 2013 Nick Banks. All rights reserved.
 //
 
-#import "SYNNotificationsViewController.h"
-#import "SYNNotificationsTableViewCell.h"
-#import "SYNRockpackNotification.h"
-#import "UIImageView+ImageProcessing.h"
 #import "SYNAppDelegate.h"
+#import "SYNNotificationsTableViewCell.h"
+#import "SYNNotificationsViewController.h"
 #import "SYNOAuthNetworkEngine.h"
+#import "SYNRockpackNotification.h"
+#import "UIImageView+WebCache.h"
 
 #define kNotificationsCellIdent @"kNotificationsCellIdent"
 
@@ -110,8 +110,10 @@
     notificationCell.messageTitle = [NSString stringWithString:constructedMessage];
     
     NSURL* userThumbnailUrl = [NSURL URLWithString:notification.userThumbnailUrl];
-    [notificationCell.imageView setAsynchronousImageFromURL:userThumbnailUrl
-                                           placeHolderImage:[UIImage imageNamed:@"AvatarProfile"]];
+    
+    [notificationCell.imageView setImageWithURL: userThumbnailUrl
+                     placeholderImage: [UIImage imageNamed:@"AvatarProfile"]
+                              options: SDWebImageRetryFailed];
     NSURL* thumbnaillUrl;
     if([notification.messageType isEqualToString:@"starred"])
     {
@@ -124,10 +126,9 @@
         
     }
     
-     
-    
-    [notificationCell.thumbnailImageView setAsynchronousImageFromURL: thumbnaillUrl
-                                                    placeHolderImage: [UIImage imageNamed:@""]];
+    [notificationCell.imageView setImageWithURL: thumbnaillUrl
+                               placeholderImage: nil
+                                        options: SDWebImageRetryFailed];
     
     notificationCell.detailTextLabel.text = @"8 Mins";
     
