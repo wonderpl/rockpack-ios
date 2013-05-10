@@ -503,7 +503,8 @@ typedef void(^AnimationCompletionBlock)(BOOL finished);
                          self.overlayView.userInteractionEnabled = YES;
                      }];
     
-    //iPhone video overlay bug - keyboard needs to be dismissed if a video is played;
+    //video overlay bug - keyboard needs to be dismissed if a video is played;
+    [self.searchBoxController.searchBoxView.searchTextField resignFirstResponder];
     [self.sideNavigationViewController.searchViewController.searchBoxView.searchTextField resignFirstResponder];
 }
 
