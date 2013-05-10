@@ -153,6 +153,7 @@
 
 // Observers
 #define kCollectionViewContentOffsetKey @"contentOffset"
+#define kTextViewContentSizeKey @"contentSize"
 #define kChannelUpdatedKey @"eCommerceURL"
 #define kSubscribedByUserKey @"subscribedByUser"
 

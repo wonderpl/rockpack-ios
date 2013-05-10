@@ -24,7 +24,6 @@
 #import "SYNVideoThumbnailRegularCell.h"
 #import "SubGenre.h"
 #import "UIFont+SYNFont.h"
-#import "UIImageView+ImageProcessing.h"
 #import "UIImageView+WebCache.h"
 #import "Video.h"
 #import "VideoInstance.h"
@@ -57,26 +56,26 @@
 @property (nonatomic, strong) IBOutlet UIPopoverController *cameraMenuPopoverController;
 @property (nonatomic, strong) IBOutlet UIPopoverController *cameraPopoverController;
 @property (nonatomic, strong) IBOutlet UIView *avatarBackgroundView;
+@property (nonatomic, strong) IBOutlet UIView *channelTitleTextBackgroundView;
 @property (nonatomic, strong) IBOutlet UIView *coverChooserMasterView;
 @property (nonatomic, strong) IBOutlet UIView *displayControlsView;
 @property (nonatomic, strong) IBOutlet UIView *editControlsView;
 @property (nonatomic, strong) IBOutlet UIView *masterControlsView;
-@property (nonatomic, strong) IBOutlet UIView *channelTitleTextBackgroundView;
 @property (nonatomic, strong) NSFetchedResultsController *channelCoverFetchedResultsController;
 @property (nonatomic, strong) NSFetchedResultsController *userChannelCoverFetchedResultsController;
 @property (nonatomic, strong) SYNCategoriesTabViewController *categoriesTabViewController;
 @property (nonatomic, weak) Channel *channel;
-@property (weak, nonatomic) IBOutlet UILabel *byLabel;
 @property (nonatomic,strong) NSString* selectedCategoryId;
 @property (nonatomic,strong) NSString* selectedCoverId;
+@property (weak, nonatomic) IBOutlet UILabel *byLabel;
 
 //iPhone specific
-@property (weak, nonatomic) IBOutlet UIImageView *textBackgroundImageView;
-@property (weak, nonatomic) IBOutlet UIButton *cancelTextInputButton;
+@property (nonatomic,strong) AVURLAsset* selectedAsset;
+@property (nonatomic,strong) SYNChannelCoverImageSelectorViewController* coverImageSelector;
 @property (strong,nonatomic) SYNChannelCategoryTableViewController *categoryTableViewController;
 @property (weak, nonatomic) IBOutlet UIActivityIndicatorView *activityIndicator;
-@property (nonatomic,strong) SYNChannelCoverImageSelectorViewController* coverImageSelector;
-@property (nonatomic,strong) AVURLAsset* selectedAsset;
+@property (weak, nonatomic) IBOutlet UIButton *cancelTextInputButton;
+@property (weak, nonatomic) IBOutlet UIImageView *textBackgroundImageView;
 
 @end
 
@@ -124,13 +123,15 @@
 
     
     // Add Rockpack font and shadow to UITextView
+//    [self.channelTitleTextView setContentInset: UIEdgeInsetsMake(70, 0, 5,0)];
+    
     self.channelTitleTextView.font = [UIFont rockpackFontOfSize: self.channelTitleTextView.font.pointSize];
     [self addShadowToLayer: self.channelTitleTextView.layer];
     
     // Needed for shadows to work
     self.channelTitleTextView.backgroundColor = [UIColor clearColor];
 
-    self.channelTitleTextView.placeholder = @"ENTER CHANNEL NAME";
+    self.channelTitleTextView.placeholder = @"CHANNEL NAME";
     
     self.channelTitleTextView.placeholderTextColor = [UIColor colorWithRed: 0.909
                                                                      green: 0.909
@@ -139,12 +140,20 @@
     // Set delegate so that we can respond to events
     self.channelTitleTextView.delegate = self;
     
+    
+//    [self.channelTitleTextView addObserver: self
+//                                forKeyPath: kTextViewContentSizeKey
+//                                   options: NSKeyValueObservingOptionNew
+//                                   context: NULL];
+    
+
+    
     // Shadow for avatar background
     [self addShadowToLayer: self.avatarBackgroundView.layer];
     
     // Add a custom flow layout to our thumbail collection view (with the right size and spacing)
     LXReorderableCollectionViewFlowLayout *layout = [[LXReorderableCollectionViewFlowLayout alloc] init];
-    layout.itemSize = isIPhone?CGSizeMake(310.0f , 174.0f):CGSizeMake(249.0f , 141.0f);
+    layout.itemSize = isIPhone?CGSizeMake(310.0f , 175.0f):CGSizeMake(249.0f , 141.0f);
     layout.minimumInteritemSpacing = isIPhone ? 0.0f : 6.0f;
     layout.minimumLineSpacing = isIPhone ? 4.0f : 6.0f;
     
@@ -176,13 +185,15 @@
     [self.coverThumbnailCollectionView registerNib: coverThumbnailCellNib
                         forCellWithReuseIdentifier: @"SYNCoverThumbnailCell"];
     
-    // Set wallpaper
-    [self.channelCoverImageView setAsynchronousImageFromURL: [NSURL URLWithString: self.channel.wallpaperURL]
-                                           placeHolderImage: nil];
+    // Set wallpaper    
+    [self.channelCoverImageView setImageWithURL: [NSURL URLWithString: self.channel.wallpaperURL]
+                               placeholderImage: nil
+                                        options: SDWebImageRetryFailed];
     
-    // Set wallpaper
-    [self.avatarImageView setAsynchronousImageFromURL: [NSURL URLWithString: self.channel.channelOwner.thumbnailURL]
-                                     placeHolderImage: [UIImage imageNamed:@"AvatarChannel.png"]];
+    // Set avatar
+    [self.avatarImageView setImageWithURL: [NSURL URLWithString: self.channel.channelOwner.thumbnailURL]
+                         placeholderImage: [UIImage imageNamed: @"AvatarChannel.png"]
+                                  options: SDWebImageRetryFailed];
     
 
     if(!isIPhone)
@@ -266,6 +277,7 @@
     self.selectedCategoryId = @"";
     self.selectedCoverId = @"";
 }
+
 
 - (void) updateCategoryButtonText: (NSString *) buttonText
 {    
@@ -627,8 +639,9 @@
         }
         else
         {
-            [self.channelCoverImageView setAsynchronousImageFromURL: [NSURL URLWithString: imageURLString]
-                                                   placeHolderImage: nil];
+            [self.channelCoverImageView setImageWithURL: [NSURL URLWithString: imageURLString]
+                                       placeholderImage: nil
+                                                options: SDWebImageRetryFailed];
         }
     }
     else
@@ -783,7 +796,7 @@
                          change: (NSDictionary *) change
                         context: (void *) context
 {
-    if ([keyPath isEqualToString: kCollectionViewContentOffsetKey])
+if ([keyPath isEqualToString: kCollectionViewContentOffsetKey])
     {
         CGPoint newContentOffset = [[change valueForKey: NSKeyValueChangeNewKey] CGPointValue];
 

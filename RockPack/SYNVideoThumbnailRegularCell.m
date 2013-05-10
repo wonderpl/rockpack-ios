@@ -8,8 +8,6 @@
 
 #import "SYNVideoThumbnailRegularCell.h"
 #import "UIFont+SYNFont.h"
-#import "UIImageView+ImageProcessing.h"
-#import "UIImageView+MKNetworkKitAdditions.h"
 
 @interface SYNVideoThumbnailRegularCell ()
 
