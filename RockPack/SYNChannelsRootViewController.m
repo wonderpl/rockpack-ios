@@ -760,7 +760,6 @@
         [self.categoryNameLabel sizeToFit];
         self.subCategoryNameLabel.hidden = YES;
         self.arrowImage.hidden = YES;
-        [self handleNewTabSelectionWithId:category.uniqueId];
         [self handleNewTabSelectionWithGenre:category];
     }
     else
@@ -769,7 +768,6 @@
         [self.categoryNameLabel sizeToFit];
         self.subCategoryNameLabel.hidden = YES;
         self.arrowImage.hidden = YES;
-        [self handleNewTabSelectionWithId:@"all"];
         [self handleNewTabSelectionWithGenre:nil];
     }
 }
