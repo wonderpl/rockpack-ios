@@ -827,16 +827,17 @@ typedef void(^AnimationCompletionBlock)(BOOL finished);
     SYNAccountSettingsMainTableViewController* accountsTableController = [[SYNAccountSettingsMainTableViewController alloc] init];
     accountsTableController.view.backgroundColor = [UIColor clearColor];
     
-    UINavigationController* navigationController = [[UINavigationController alloc] initWithRootViewController: accountsTableController];
-    navigationController.view.backgroundColor = [UIColor clearColor];
-    
     
     
     
     if([[SYNDeviceManager sharedInstance] isIPad])
     {
+        
+        
         [[UINavigationBar appearance] setTitleTextAttributes:
          @{UITextAttributeTextColor:[UIColor darkGrayColor], UITextAttributeFont:[UIFont rockpackFontOfSize:22.0]}];
+        UINavigationController* navigationController = [[UINavigationController alloc] initWithRootViewController: accountsTableController];
+        navigationController.view.backgroundColor = [UIColor clearColor];
         
         self.accountSettingsPopover = [[UIPopoverController alloc] initWithContentViewController: navigationController];
         self.accountSettingsPopover.popoverContentSize = CGSizeMake(380, 576);
@@ -854,37 +855,18 @@ typedef void(^AnimationCompletionBlock)(BOOL finished);
     }
     else
     {
-        [[UINavigationBar appearance] setBackgroundImage:[UIImage imageNamed:@"ButtonProfileChannels"]
-                                           forBarMetrics:UIBarMetricsDefault];
-        
-        [[UINavigationBar appearance] setShadowImage:[[UIImage alloc] init]];
-        
-        [[UINavigationBar appearance] setFrame:CGRectMake(0.0, 0.0, 320.0, 300.0)];
+        UINavigationController* navigationController = [[UINavigationController alloc] initWithRootViewController: accountsTableController];
+        navigationController.view.backgroundColor = [UIColor clearColor];
+        navigationController.navigationBarHidden = YES;
         
         
-        [[UINavigationBar appearance] setTitleTextAttributes:
-         @{UITextAttributeTextColor:[UIColor darkGrayColor], UITextAttributeFont:[UIFont rockpackFontOfSize:22.0]}];
-        
-        
-        
-        UIButton* doneButton = [UIButton buttonWithType:UIButtonTypeCustom];
-        UIImage* doneImage = [UIImage imageNamed:@"ButtonSettingsDone"];
-        doneButton.frame = CGRectMake(0.0, 0.0, doneImage.size.width, doneImage.size.height);
-        [doneButton addTarget:self action:@selector(modalAccountContainerDismiss) forControlEvents:UIControlEventTouchUpInside];
-        [doneButton setImage:doneImage forState:UIControlStateNormal];
-        
-        UIBarButtonItem* buttonItem = [[UIBarButtonItem alloc] initWithCustomView:doneButton];
-        
-        
-        accountsTableController.navigationItem.rightBarButtonItem = buttonItem;
-        
-        
-        
-        self.modalAccountContainer = [[SYNAccountSettingsModalContainer alloc] initWithNavigationController:navigationController];
+        self.modalAccountContainer = [[SYNAccountSettingsModalContainer alloc] initWithNavigationController:navigationController andCompletionBlock:^{
+            [self modalAccountContainerDismiss];
+        }];
         
         CGRect modalFrame = self.modalAccountContainer.view.frame;
-        modalFrame.size.height = 520.0;
-        self.modalAccountContainer.view.frame = modalFrame;
+        modalFrame.size.height = self.view.frame.size.height - 60.0f;
+        [self.modalAccountContainer setModalViewFrame:modalFrame];
         
         modalFrame.origin.y = [[SYNDeviceManager sharedInstance] currentScreenHeight];
         self.modalAccountContainer.view.frame = modalFrame;
@@ -924,6 +906,7 @@ typedef void(^AnimationCompletionBlock)(BOOL finished);
         self.accountSettingsCoverView.hidden = YES;
         
         [self.modalAccountContainer.view removeFromSuperview];
+        self.modalAccountContainer = nil;
         
         
     }];

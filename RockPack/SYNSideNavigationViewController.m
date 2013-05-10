@@ -20,6 +20,7 @@
 #import "SYNRockpackNotification.h"
 #import "SYNNotificationsViewController.h"
 #import "SYNSoundPlayer.h"
+#import "SYNAccountSettingsMainTableViewController.h"
 
 #define kSideNavTitle @"kSideNavTitle"
 #define kSideNavType @"kSideNavType"
@@ -59,6 +60,8 @@ typedef enum {
 @property (weak, nonatomic) IBOutlet UIView *mainContentView;
 @property (weak, nonatomic) IBOutlet UIView *navigationContainerView;
 @property (weak, nonatomic) IBOutlet UIImageView *navigationContainerBackgroundImage;
+@property (weak, nonatomic) IBOutlet UILabel *navigationContainerTitleLabel;
+@property (nonatomic,strong) SYNAccountSettingsMainTableViewController* accountSettingsViewController;
 
 @end
 
@@ -132,6 +135,8 @@ typedef enum {
         [self.view insertSubview:self.searchViewController.view belowSubview:self.navigationContainerView];
         self.searchViewController.searchBoxView.searchTextField.delegate = self;
         [self.searchViewController.searchBoxView.integratedCloseButton addTarget:self action:@selector(closeSearch:) forControlEvents:UIControlEventTouchUpInside];
+        
+        self.navigationContainerTitleLabel.font = [UIFont rockpackFontOfSize:self.navigationContainerTitleLabel.font.pointSize];
         
         self.navigationContainerBackgroundImage.image = [[UIImage imageNamed:@"PanelMenuSecondLevel"] resizableImageWithCapInsets:UIEdgeInsetsMake(65, 0, 1, 0)];
         
@@ -248,8 +253,8 @@ typedef enum {
 
 - (IBAction) settingsButtonPressed: (id) sender
 {
-    [[NSNotificationCenter defaultCenter] postNotificationName:kAccountSettingsPressed
-                                                        object:self];
+        [[NSNotificationCenter defaultCenter] postNotificationName:kAccountSettingsPressed
+                                                            object:self];
 }
 
 
@@ -286,7 +291,10 @@ typedef enum {
             }
             else
             {
-                cell = [[SYNSideNavigationIphoneCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:CellIdentifier];
+                SYNSideNavigationIphoneCell* iPhoneCell = [[SYNSideNavigationIphoneCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:CellIdentifier];
+                iPhoneCell.accessoryNumberLabel.hidden = YES;
+                iPhoneCell.accessoryNumberBackground.hidden = YES;
+                cell = iPhoneCell; 
             }
         }
         
@@ -311,7 +319,17 @@ typedef enum {
         {
             if(indexPath.row == kNotificationsRowIndex)
             {
-                cellTitle = [NSString stringWithFormat:@"%@       %i", cellTitle, self.unreadNotifications];
+                if(isIPad)
+                {
+                    cellTitle = [NSString stringWithFormat:@"%@       %i", cellTitle, self.unreadNotifications];
+                }
+                else
+                {
+                    SYNSideNavigationIphoneCell* iPhoneCell = (SYNSideNavigationIphoneCell*)cell;
+                    [iPhoneCell setAccessoryNumber:[NSString stringWithFormat:@"%i",self.unreadNotifications]];
+                    iPhoneCell.accessoryNumberLabel.hidden = NO;
+                    iPhoneCell.accessoryNumberBackground.hidden = NO;
+                }
                 if(self.unreadNotifications == 0)
                     cell.accessoryType = UITableViewCellAccessoryNone;
                 else
@@ -400,7 +418,7 @@ typedef enum {
             ((SYNNotificationsViewController*)self.currentlyLoadedViewController).notifications = self.notifications;
         }
         
-        
+        self.navigationContainerTitleLabel.text = NSLocalizedString(@"NOTIFICATIONS",nil);
         self.state = SideNavigationStateFull;
         self.currentlySelectedIndexPath = nil;
         
@@ -721,17 +739,18 @@ typedef enum {
 
 #pragma mark - iPhone navigate back from notifications
 - (IBAction)navigateBackTapped:(id)sender {
-    [UIView animateWithDuration: 0.5f
+    
+    [UIView animateWithDuration: 0.3f
                           delay: 0.0f
                         options: UIViewAnimationOptionCurveEaseInOut
                      animations: ^{
-                         
+                         self.state = SideNavigationStateHalf;
                          CGRect startFrame = self.navigationContainerView.frame;
                          startFrame.origin.x = self.view.frame.size.width;
                          self.navigationContainerView.frame = startFrame;
                          
                      } completion: ^(BOOL finished) {
-                         
+                         self.currentlyLoadedViewController = nil;
                          
                      }];
 }
