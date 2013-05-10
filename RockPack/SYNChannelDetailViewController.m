@@ -368,8 +368,8 @@
     [super viewWillDisappear: animated];
 }
 
-#pragma mark - Orientation Methods
 
+#pragma mark - Orientation Methods
 
 - (void) willRotateToInterfaceOrientation: (UIInterfaceOrientation) toInterfaceOrientation
                                  duration: (NSTimeInterval) duration
@@ -379,15 +379,19 @@
 
     [self.self.videoThumbnailCollectionView.collectionViewLayout invalidateLayout];
 }
--(void)willAnimateRotationToInterfaceOrientation:(UIInterfaceOrientation)toInterfaceOrientation duration:(NSTimeInterval)duration
+
+
+- (void) willAnimateRotationToInterfaceOrientation: (UIInterfaceOrientation) toInterfaceOrientation
+                                          duration: (NSTimeInterval) duration
 {
-    [super willAnimateRotationToInterfaceOrientation:toInterfaceOrientation duration:duration];
+    [super willAnimateRotationToInterfaceOrientation: toInterfaceOrientation
+                                            duration: duration];
     
-    UIImage* croppedImage = [self croppedImageForOrientation:toInterfaceOrientation];
+    UIImage* croppedImage = [self croppedImageForOrientation: toInterfaceOrientation];
     
     self.channelCoverImageView.image = croppedImage;
-    
 }
+
 
 - (void) mainContextDataChanged: (NSNotification*) notification
 {
@@ -439,6 +443,7 @@
     layer.shadowOpacity = 0.3f;
     layer.shadowRadius = 2.0f;
 }
+
 
 - (void) displayChannelDetails
 {
@@ -830,7 +835,9 @@
             CGFloat topCorrect = ([tv bounds].size.height - [tv contentSize].height);
 //            topCorrect = (topCorrect <0.0 ? 0.0 : topCorrect);
                     NSLog (@"offset %f, bounds.height %f, content.height %f, content.height2 %f", tv.contentOffset.y, [tv bounds].size.height, [tv contentSize].height, -topCorrect);
-        tv.contentOffset = (CGPoint){.x = 0, .y = -topCorrect};
+        
+        [tv setContentOffset: (CGPoint){.x = 0, .y = -topCorrect}
+                    animated: NO];
     }
     else if ([keyPath isEqualToString: kCollectionViewContentOffsetKey])
     {
@@ -1275,10 +1282,10 @@
         return NO;
     }
     
-    if (textView.text.length >= 25)
-    {
-        return NO;
-    }
+//    if (textView.text.length >= 25 && ![text isEqualToString: @""])
+//    {
+//        return NO;
+//    }
     
     NSRange lowercaseCharRange = [text rangeOfCharacterFromSet: [NSCharacterSet lowercaseLetterCharacterSet]];
     
@@ -1327,7 +1334,8 @@
     CGFloat topCorrect = ([self.channelTitleTextView bounds].size.height - [self.channelTitleTextView contentSize].height);
     topCorrect = (topCorrect <0.0 ? 0.0 : topCorrect);
     
-    self.channelTitleTextView.contentOffset = (CGPoint){.x = 0, .y = -topCorrect};
+    [self.channelTitleTextView setContentOffset: (CGPoint){.x = 0, .y = -topCorrect}
+                                       animated: NO];
 }
 
 
