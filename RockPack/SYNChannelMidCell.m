@@ -9,7 +9,6 @@
 #import "SYNChannelMidCell.h"
 #import "SYNDeletionWobbleLayoutAttributes.h"
 #import "UIFont+SYNFont.h"
-#import "UIImageView+ImageProcessing.h"
 #import <QuartzCore/QuartzCore.h>
 
 @implementation SYNChannelMidCell
