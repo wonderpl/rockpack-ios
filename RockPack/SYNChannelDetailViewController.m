@@ -130,8 +130,6 @@
 
     
     // Add Rockpack font and shadow to UITextView
-//    [self.channelTitleTextView setContentInset: UIEdgeInsetsMake(70, 0, 5,0)];
-    
     self.channelTitleTextView.font = [UIFont rockpackFontOfSize: self.channelTitleTextView.font.pointSize];
     [self addShadowToLayer: self.channelTitleTextView.layer];
     
@@ -148,11 +146,10 @@
     self.channelTitleTextView.delegate = self;
     
     
-//    [self.channelTitleTextView addObserver: self
-//                                forKeyPath: kTextViewContentSizeKey
-//                                   options: NSKeyValueObservingOptionNew
-//                                   context: NULL];
-    
+    [self.channelTitleTextView addObserver: self
+                                forKeyPath: kTextViewContentSizeKey
+                                   options: NSKeyValueObservingOptionNew
+                                   context: NULL];
 
     
     // Shadow for avatar background
@@ -358,6 +355,10 @@
 
     [self.channel removeObserver: self
                       forKeyPath: kSubscribedByUserKey];
+    
+    [self.channelTitleTextView removeObserver: self
+                                   forKeyPath: kTextViewContentSizeKey];
+
 
     [[NSNotificationCenter defaultCenter] removeObserver: self
                                                     name: NSManagedObjectContextDidSaveNotification
@@ -451,6 +452,8 @@
     }
     
     self.channelTitleTextView.text = self.channel.title;
+    
+    [self adjustTextView];
 }
 
 
@@ -818,7 +821,16 @@
                          change: (NSDictionary *) change
                         context: (void *) context
 {
-if ([keyPath isEqualToString: kCollectionViewContentOffsetKey])
+    if ([keyPath isEqualToString: kTextViewContentSizeKey])
+    {
+        UITextView *tv = object;
+            //Bottom vertical alignment
+            CGFloat topCorrect = ([tv bounds].size.height - [tv contentSize].height);
+//            topCorrect = (topCorrect <0.0 ? 0.0 : topCorrect);
+                    NSLog (@"offset %f, bounds.height %f, content.height %f, content.height2 %f", tv.contentOffset.y, [tv bounds].size.height, [tv contentSize].height, -topCorrect);
+        tv.contentOffset = (CGPoint){.x = 0, .y = -topCorrect};
+    }
+    else if ([keyPath isEqualToString: kCollectionViewContentOffsetKey])
     {
         CGPoint newContentOffset = [[change valueForKey: NSKeyValueChangeNewKey] CGPointValue];
 
@@ -1257,7 +1269,7 @@ if ([keyPath isEqualToString: kCollectionViewContentOffsetKey])
     // Stop editing when the return key is pressed
     if ([text isEqualToString: @"\n"])
     {
-        [textView resignFirstResponder];
+        [self resignTextView];
         return NO;
     }
     
@@ -1272,6 +1284,7 @@ if ([keyPath isEqualToString: kCollectionViewContentOffsetKey])
     
     return YES;
 }
+
 
 - (void) textViewDidBeginEditing: (UITextView *) textView
 {
@@ -1290,7 +1303,24 @@ if ([keyPath isEqualToString: kCollectionViewContentOffsetKey])
 // Big invisible buttong to cancel title entry
 - (IBAction) cancelTitleEntry
 {
+    [self resignTextView];
+}
+
+
+- (void) resignTextView
+{
+    [self adjustTextView];
+    
     [self.channelTitleTextView resignFirstResponder];
+}
+
+
+- (void) adjustTextView
+{
+    CGFloat topCorrect = ([self.channelTitleTextView bounds].size.height - [self.channelTitleTextView contentSize].height);
+    topCorrect = (topCorrect <0.0 ? 0.0 : topCorrect);
+    
+    self.channelTitleTextView.contentOffset = (CGPoint){.x = 0, .y = -topCorrect};
 }
 
 

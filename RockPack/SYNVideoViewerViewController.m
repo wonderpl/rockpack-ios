@@ -189,6 +189,12 @@
     [self.videoPlaybackViewController setPlaylist: self.videoInstanceArray
                                     selectedIndex: self.currentSelectedIndex
                                          autoPlay: TRUE];
+    if([[SYNDeviceManager sharedInstance] isIPhone])
+    {
+        CGRect videoFrame = self.videoPlaybackViewController.view.frame;
+        videoFrame.origin = self.swipeView.frame.origin;
+        self.videoPlaybackViewController.view.frame = videoFrame;
+    }
     
     // Update all the labels corresponding to the selected videos
     [self updateVideoDetailsForIndex: self.currentSelectedIndex];
