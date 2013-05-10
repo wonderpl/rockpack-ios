@@ -69,6 +69,7 @@
 @property (nonatomic,strong) NSString* selectedCategoryId;
 @property (nonatomic,strong) NSString* selectedCoverId;
 @property (weak, nonatomic) IBOutlet UILabel *byLabel;
+@property (nonatomic, strong) IBOutlet UIButton* profileImageButton;
 
 @property (nonatomic, strong) id<SDWebImageOperation> currentWebImageOperation;
 
@@ -129,8 +130,6 @@
 
     
     // Add Rockpack font and shadow to UITextView
-//    [self.channelTitleTextView setContentInset: UIEdgeInsetsMake(70, 0, 5,0)];
-    
     self.channelTitleTextView.font = [UIFont rockpackFontOfSize: self.channelTitleTextView.font.pointSize];
     [self addShadowToLayer: self.channelTitleTextView.layer];
     
@@ -147,10 +146,6 @@
     self.channelTitleTextView.delegate = self;
     
     
-//    [self.channelTitleTextView addObserver: self
-//                                forKeyPath: kTextViewContentSizeKey
-//                                   options: NSKeyValueObservingOptionNew
-//                                   context: NULL];
     
 
     
@@ -203,6 +198,8 @@
     [self.avatarImageView setImageWithURL: [NSURL URLWithString: self.channel.channelOwner.thumbnailURL]
                          placeholderImage: [UIImage imageNamed: @"AvatarChannel.png"]
                                   options: SDWebImageRetryFailed];
+    
+    
     
 
     if(!isIPhone)
@@ -315,6 +312,11 @@
                                            options: NSKeyValueObservingOptionNew
                                            context: nil];
     
+    [self.channelTitleTextView addObserver: self
+                                forKeyPath: kTextViewContentSizeKey
+                                   options: NSKeyValueObservingOptionNew
+                                   context: NULL];
+    
     if ([self.channel.subscribedByUser boolValue])
     {
         self.subscribeButton.selected = YES;
@@ -355,6 +357,10 @@
 
     [self.channel removeObserver: self
                       forKeyPath: kSubscribedByUserKey];
+    
+    [self.channelTitleTextView removeObserver: self
+                                   forKeyPath: kTextViewContentSizeKey];
+
 
     [[NSNotificationCenter defaultCenter] removeObserver: self
                                                     name: NSManagedObjectContextDidSaveNotification
@@ -362,8 +368,8 @@
     [super viewWillDisappear: animated];
 }
 
-#pragma mark - Orientation Methods
 
+#pragma mark - Orientation Methods
 
 - (void) willRotateToInterfaceOrientation: (UIInterfaceOrientation) toInterfaceOrientation
                                  duration: (NSTimeInterval) duration
@@ -373,15 +379,19 @@
 
     [self.self.videoThumbnailCollectionView.collectionViewLayout invalidateLayout];
 }
--(void)willAnimateRotationToInterfaceOrientation:(UIInterfaceOrientation)toInterfaceOrientation duration:(NSTimeInterval)duration
+
+
+- (void) willAnimateRotationToInterfaceOrientation: (UIInterfaceOrientation) toInterfaceOrientation
+                                          duration: (NSTimeInterval) duration
 {
-    [super willAnimateRotationToInterfaceOrientation:toInterfaceOrientation duration:duration];
+    [super willAnimateRotationToInterfaceOrientation: toInterfaceOrientation
+                                            duration: duration];
     
-    UIImage* croppedImage = [self croppedImageForOrientation:toInterfaceOrientation];
+    UIImage* croppedImage = [self croppedImageForOrientation: toInterfaceOrientation];
     
     self.channelCoverImageView.image = croppedImage;
-    
 }
+
 
 - (void) mainContextDataChanged: (NSNotification*) notification
 {
@@ -434,6 +444,7 @@
     layer.shadowRadius = 2.0f;
 }
 
+
 - (void) displayChannelDetails
 {
     self.channelOwnerLabel.text = self.channel.channelOwner.displayName;
@@ -448,6 +459,8 @@
     }
     
     self.channelTitleTextView.text = self.channel.title;
+    
+    [self adjustTextView];
 }
 
 
@@ -815,7 +828,18 @@
                          change: (NSDictionary *) change
                         context: (void *) context
 {
-if ([keyPath isEqualToString: kCollectionViewContentOffsetKey])
+    if ([keyPath isEqualToString: kTextViewContentSizeKey])
+    {
+        UITextView *tv = object;
+            //Bottom vertical alignment
+            CGFloat topCorrect = ([tv bounds].size.height - [tv contentSize].height);
+//            topCorrect = (topCorrect <0.0 ? 0.0 : topCorrect);
+                    NSLog (@"offset %f, bounds.height %f, content.height %f, content.height2 %f", tv.contentOffset.y, [tv bounds].size.height, [tv contentSize].height, -topCorrect);
+        
+        [tv setContentOffset: (CGPoint){.x = 0, .y = -topCorrect}
+                    animated: NO];
+    }
+    else if ([keyPath isEqualToString: kCollectionViewContentOffsetKey])
     {
         CGPoint newContentOffset = [[change valueForKey: NSKeyValueChangeNewKey] CGPointValue];
 
@@ -887,6 +911,10 @@ if ([keyPath isEqualToString: kCollectionViewContentOffsetKey])
                                                       userInfo: @{ kChannel : self.channel }];
 }
 
+-(IBAction)profileImagePressed:(UIButton*)sender
+{
+    [self viewProfileDetails:self.channel.channelOwner];
+}
 
 - (void) videoAddButtonTapped: (UIButton *) addButton
 {
@@ -1250,9 +1278,14 @@ if ([keyPath isEqualToString: kCollectionViewContentOffsetKey])
     // Stop editing when the return key is pressed
     if ([text isEqualToString: @"\n"])
     {
-        [textView resignFirstResponder];
+        [self resignTextView];
         return NO;
     }
+    
+//    if (textView.text.length >= 25 && ![text isEqualToString: @""])
+//    {
+//        return NO;
+//    }
     
     NSRange lowercaseCharRange = [text rangeOfCharacterFromSet: [NSCharacterSet lowercaseLetterCharacterSet]];
     
@@ -1265,6 +1298,7 @@ if ([keyPath isEqualToString: kCollectionViewContentOffsetKey])
     
     return YES;
 }
+
 
 - (void) textViewDidBeginEditing: (UITextView *) textView
 {
@@ -1283,7 +1317,25 @@ if ([keyPath isEqualToString: kCollectionViewContentOffsetKey])
 // Big invisible buttong to cancel title entry
 - (IBAction) cancelTitleEntry
 {
+    [self resignTextView];
+}
+
+
+- (void) resignTextView
+{
+    [self adjustTextView];
+    
     [self.channelTitleTextView resignFirstResponder];
+}
+
+
+- (void) adjustTextView
+{
+    CGFloat topCorrect = ([self.channelTitleTextView bounds].size.height - [self.channelTitleTextView contentSize].height);
+    topCorrect = (topCorrect <0.0 ? 0.0 : topCorrect);
+    
+    [self.channelTitleTextView setContentOffset: (CGPoint){.x = 0, .y = -topCorrect}
+                                       animated: NO];
 }
 
 

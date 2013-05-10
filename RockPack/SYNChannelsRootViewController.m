@@ -370,9 +370,7 @@
     
     Channel *channel = (Channel*)self.channels[indexPath.row];
     
-    [[NSNotificationCenter defaultCenter] postNotificationName: kShowUserChannels
-                                                        object: self
-                                                      userInfo: @{@"ChannelOwner" : channel.channelOwner}];
+    [self viewProfileDetails:channel.channelOwner];
     
 }
 

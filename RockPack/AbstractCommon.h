@@ -11,7 +11,8 @@ typedef enum {
     kIgnoreVideoObjects = 8,
     kIgnoreStoredObjects = 16,
     kIgnoreViewId = 32,
-    kIgnoreChannelCover = 64
+    kIgnoreChannelCover = 64,
+    kIgnoreAll = INT32_MAX
 } IgnoringObjects;
 
 @end

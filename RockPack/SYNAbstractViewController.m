@@ -22,6 +22,7 @@
 #import "SYNDeviceManager.h"
 #import "SYNMasterViewController.h"
 #import "SYNOAuthNetworkEngine.h"
+#import "SYNProfileRootViewController.h"
 #import "SYNPopoverBackgroundView.h"
 #import "SYNVideoThumbnailWideCell.h"
 #import "UIFont+SYNFont.h"
@@ -156,8 +157,13 @@
 
 - (void) animatedPopViewController
 {
-    UIViewController *parentVC = self.navigationController.viewControllers[self.navigationController.viewControllers.count - 2];
+    if(self.navigationController.viewControllers.count < 2) // we must have at least two to pop one
+        return;
+    
+    NSInteger vcCount = self.navigationController.viewControllers.count;
+    UIViewController *parentVC = self.navigationController.viewControllers[vcCount - 2];
     parentVC.view.alpha = 0.0f;
+    
     
     
     [UIView animateWithDuration: 0.5f
@@ -174,8 +180,12 @@
     
     [self.navigationController popViewControllerAnimated:NO];
     
-    // Hide back button
-    [[NSNotificationCenter defaultCenter] postNotificationName:kNoteBackButtonHide object:self];
+    
+    if(vcCount == 2)
+    {
+        [[NSNotificationCenter defaultCenter] postNotificationName:kNoteBackButtonHide object:self];
+    }
+    
 }
 
 
@@ -341,9 +351,11 @@
 
 - (void) viewProfileDetails: (ChannelOwner *) channelOwner
 {
-    [[NSNotificationCenter defaultCenter] postNotificationName: kShowUserChannels
-                                                        object: self
-                                                      userInfo :@{@"ChannelOwner" : channelOwner}];
+    SYNProfileRootViewController *profileVC = [[SYNProfileRootViewController alloc] initWithViewId:@""];
+    
+    profileVC.user = channelOwner;
+    
+    [self animatedPushViewController: profileVC];
 }
 
 

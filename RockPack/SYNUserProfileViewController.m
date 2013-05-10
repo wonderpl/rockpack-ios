@@ -26,15 +26,6 @@
     self.fullNameLabel.font = [UIFont boldRockpackFontOfSize:30];
     self.userNameLabel.font = [UIFont rockpackFontOfSize:12.0];
     
-    // pack
-    
-    UITapGestureRecognizer* tapGesture;
-    
-    tapGesture = [[UITapGestureRecognizer alloc] initWithTarget: self
-                                                         action: @selector(userSpaceTapped:)];
-    
-    
-    [self.view addGestureRecognizer:tapGesture];
     
     [[NSNotificationCenter defaultCenter] addObserver: self
                                              selector: @selector(userDataChanged:)
@@ -101,15 +92,7 @@
 }
 
 
-- (void) userSpaceTapped: (UITapGestureRecognizer*) recognizer
-{
-    if (!self.channelOwner)
-        return;
-    
-    [[NSNotificationCenter defaultCenter] postNotificationName: kShowUserChannels
-                                                        object: self
-                                                      userInfo: @{@"ChannelOwner":self.channelOwner}];
-}
+
 
 
 @end
