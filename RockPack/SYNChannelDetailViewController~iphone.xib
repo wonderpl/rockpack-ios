@@ -2,10 +2,10 @@
 <archive type="com.apple.InterfaceBuilder3.CocoaTouch.iPad.XIB" version="8.00">
 	<data>
 		<int key="IBDocument.SystemTarget">1552</int>
-		<string key="IBDocument.SystemVersion">12C3006</string>
+		<string key="IBDocument.SystemVersion">12D78</string>
 		<string key="IBDocument.InterfaceBuilderVersion">3084</string>
-		<string key="IBDocument.AppKitVersion">1187.34</string>
-		<string key="IBDocument.HIToolboxVersion">625.00</string>
+		<string key="IBDocument.AppKitVersion">1187.37</string>
+		<string key="IBDocument.HIToolboxVersion">626.00</string>
 		<object class="NSMutableDictionary" key="IBDocument.PluginVersions">
 			<string key="NS.key.0">com.apple.InterfaceBuilder.IBCocoaTouchPlugin</string>
 			<string key="NS.object.0">2083</string>
@@ -444,6 +444,7 @@
 												<string key="NSFrame">{{98, 22}, {222, 56}}</string>
 												<reference key="NSSuperview" ref="260102133"/>
 												<reference key="NSWindow"/>
+												<reference key="NSNextKeyView" ref="605119646"/>
 												<string key="NSReuseIdentifierKey">_NS:9</string>
 												<reference key="IBUIBackgroundColor" ref="905238541"/>
 												<bool key="IBUIClipsSubviews">YES</bool>
@@ -546,7 +547,7 @@
 										<string key="NSFrame">{{267, 5}, {48, 49}}</string>
 										<reference key="NSSuperview" ref="574818441"/>
 										<reference key="NSWindow"/>
-										<reference key="NSNextKeyView" ref="605119646"/>
+										<reference key="NSNextKeyView" ref="999796781"/>
 										<string key="NSReuseIdentifierKey">_NS:9</string>
 										<bool key="IBUIOpaque">NO</bool>
 										<string key="targetRuntimeIdentifier">IBIPadFramework</string>
@@ -623,20 +624,24 @@
 							</object>
 							<object class="IBUIView" id="605119646">
 								<reference key="NSNextResponder" ref="793593682"/>
-								<int key="NSvFlags">268</int>
+								<int key="NSvFlags">292</int>
 								<array class="NSMutableArray" key="NSSubviews">
 									<object class="IBUITextView" id="469580733">
 										<reference key="NSNextResponder" ref="605119646"/>
 										<int key="NSvFlags">268</int>
-										<string key="NSFrameSize">{280, 102}</string>
+										<string key="NSFrameSize">{280, 119}</string>
 										<reference key="NSSuperview" ref="605119646"/>
 										<reference key="NSWindow"/>
-										<reference key="NSNextKeyView" ref="999796781"/>
+										<reference key="NSNextKeyView"/>
 										<string key="NSReuseIdentifierKey">_NS:9</string>
 										<reference key="IBUIBackgroundColor" ref="905238541"/>
 										<bool key="IBUIClipsSubviews">YES</bool>
 										<bool key="IBUIMultipleTouchEnabled">YES</bool>
 										<string key="targetRuntimeIdentifier">IBIPadFramework</string>
+										<double key="IBUIContentInset.top">70</double>
+										<double key="IBUIContentInset.bottom">0.0</double>
+										<double key="IBUIContentInset.left">0.0</double>
+										<double key="IBUIContentInset.right">0.0</double>
 										<bool key="IBUIShowsHorizontalScrollIndicator">NO</bool>
 										<string key="IBUIText">THIS IS THE MASTER PLAYLIST</string>
 										<reference key="IBUITextColor" ref="266444258"/>
@@ -655,10 +660,10 @@
 										</object>
 									</object>
 								</array>
-								<string key="NSFrame">{{10, 223}, {300, 102}}</string>
+								<string key="NSFrame">{{10, 130}, {300, 119}}</string>
 								<reference key="NSSuperview" ref="793593682"/>
 								<reference key="NSWindow"/>
-								<reference key="NSNextKeyView"/>
+								<reference key="NSNextKeyView" ref="469580733"/>
 								<string key="NSReuseIdentifierKey">_NS:9</string>
 								<reference key="IBUIBackgroundColor" ref="266444258"/>
 								<string key="targetRuntimeIdentifier">IBIPadFramework</string>
