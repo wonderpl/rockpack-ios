@@ -22,6 +22,7 @@
 #import "SYNDeviceManager.h"
 #import "SYNMasterViewController.h"
 #import "SYNOAuthNetworkEngine.h"
+#import "SYNProfileRootViewController.h"
 #import "SYNPopoverBackgroundView.h"
 #import "SYNVideoThumbnailWideCell.h"
 #import "UIFont+SYNFont.h"
@@ -341,9 +342,11 @@
 
 - (void) viewProfileDetails: (ChannelOwner *) channelOwner
 {
-    [[NSNotificationCenter defaultCenter] postNotificationName: kShowUserChannels
-                                                        object: self
-                                                      userInfo :@{@"ChannelOwner" : channelOwner}];
+    SYNProfileRootViewController *profileVC = [[SYNProfileRootViewController alloc] initWithViewId:@""];
+    
+    profileVC.user = channelOwner;
+    
+    [self animatedPushViewController: profileVC];
 }
 
 

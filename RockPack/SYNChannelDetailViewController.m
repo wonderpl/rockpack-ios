@@ -69,6 +69,7 @@
 @property (nonatomic,strong) NSString* selectedCategoryId;
 @property (nonatomic,strong) NSString* selectedCoverId;
 @property (weak, nonatomic) IBOutlet UILabel *byLabel;
+@property (nonatomic, strong) IBOutlet UIButton* profileImageButton;
 
 @property (nonatomic, strong) id<SDWebImageOperation> currentWebImageOperation;
 
@@ -203,6 +204,8 @@
     [self.avatarImageView setImageWithURL: [NSURL URLWithString: self.channel.channelOwner.thumbnailURL]
                          placeholderImage: [UIImage imageNamed: @"AvatarChannel.png"]
                                   options: SDWebImageRetryFailed];
+    
+    
     
 
     if(!isIPhone)
@@ -887,6 +890,10 @@ if ([keyPath isEqualToString: kCollectionViewContentOffsetKey])
                                                       userInfo: @{ kChannel : self.channel }];
 }
 
+-(IBAction)profileImagePressed:(UIButton*)sender
+{
+    [self viewProfileDetails:self.channel.channelOwner];
+}
 
 - (void) videoAddButtonTapped: (UIButton *) addButton
 {

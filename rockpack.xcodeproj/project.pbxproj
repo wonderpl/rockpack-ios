@@ -4009,8 +4009,8 @@
 				38BACDFE1732CCFB00406597 /* SYNLoginViewControllerIphone.m */,
 				38BACDFF1732CCFB00406597 /* SYNLoginViewControllerIphone.xib */,
 				BE270B7C16EDE0E800CDDA6D /* SYNLoginViewController.h */,
-				BE270B7D16EDE0E800CDDA6D /* SYNLoginViewController.m */,
 				BE270B7E16EDE0E800CDDA6D /* SYNLoginViewController.xib */,
+				BE270B7D16EDE0E800CDDA6D /* SYNLoginViewController.m */,
 				BED4311516F0EBBB0051465B /* SYNLoginErrorArrow.h */,
 				BED4311616F0EBBB0051465B /* SYNLoginErrorArrow.m */,
 			);

@@ -736,18 +736,6 @@
 }
 
 
-- (void) displayNameButtonPressed: (UIButton*) button
-{
-    SYNChannelThumbnailCell* parent = (SYNChannelThumbnailCell*)[[button superview] superview];
-    
-    NSIndexPath* indexPath = [self.channelThumbnailCollectionView indexPathForCell: parent];
-    
-    Channel *channel = self.user.channels[indexPath.row];
-    
-    [[NSNotificationCenter defaultCenter] postNotificationName: kShowUserChannels
-                                                        object: self
-                                                      userInfo: @{@"ChannelOwner" : channel.channelOwner}];
-}
 
 
 #ifdef ALLOWS_PINCH_GESTURES

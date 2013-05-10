@@ -145,7 +145,6 @@
     
     // == Register Notifications == //
     
-    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(showUserChannels:) name:kShowUserChannels object:nil];
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(backButtonShow:) name:kNoteBackButtonShow object:nil];
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(backButtonHide:) name:kNoteBackButtonHide object:nil];
 }
@@ -224,14 +223,6 @@
     
     self.scrollView.scrollEnabled = YES;
 }
-
-- (void) showUserChannels: (NSNotification*) notification
-{
-    // FIXME: Need to put in something for this
-    DebugLog (@"Nothing to see here, move along please");
-}
-
-
 
 
 #pragma mark - Navigation Methods

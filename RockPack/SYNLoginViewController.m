@@ -668,24 +668,29 @@
                                                [appDelegate.oAuthNetworkEngine userInformationFromCredentials: credential
                                                                                             completionHandler: ^(NSDictionary* dictionary) {
                                                                                                 
+                                                                                                // the dictionary contains a User dictionary //
+                                                                                                
                                                                                                 NSString* username = [dictionary objectForKey: @"username"];
                                                                                                 DebugLog(@"User Registerd: %@", username);
+                                                                                                
+                                                                                                // by this time the currentUser is set in the DB //
                                                                                                 
                                                                                                 [self checkAndSaveRegisteredUser: credential];
                                                                                                 
                                                                                                 [activityIndicator stopAnimating];
                                                                                                 
                                                                                                 [self completeLoginProcess: credential];
-                                                                                            }
-                                                                                                 errorHandler:^(NSDictionary* errorDictionary) {
+                                                                                                
+                                                                                            } errorHandler:^(NSDictionary* errorDictionary) {
                                                                                                      
                                                                                                      [activityIndicator stopAnimating];
                                                                                                      
                                                                                                      self.finalLoginButton.alpha = 1.0;
                                                                                                      
-                                                                                                 }];
-                                           }
-                                                errorHandler: ^(NSDictionary* errorDictionary) {
+                                                                                            }];
+                                               
+                                           } errorHandler: ^(NSDictionary* errorDictionary) {
+                                               
                                                     NSDictionary* errors = errorDictionary [@"error"];
                                                     
                                                     if (errors)
@@ -703,9 +708,8 @@
                                                     
                                                     [UIView animateWithDuration: 0.3
                                                                      animations: ^{
-                                                        finalLoginButton.alpha = 1.0;
-                                                    }
-                                                                     completion: ^(BOOL finished) {
+                                                                         finalLoginButton.alpha = 1.0;
+                                                                   } completion: ^(BOOL finished) {
                                                                          [userNameInputField becomeFirstResponder];
                                                                      }];
                                                 }];
