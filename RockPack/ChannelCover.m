@@ -20,7 +20,7 @@
     
     ChannelCover* instance = [ChannelCover insertInManagedObjectContext:managedObjectContext];
     
-    instance.imageUrl = @"";
+    instance.imageUrl = [dictionary objectForKey:@"thumbnail_url"];
     
     NSArray* aoiArray = [dictionary objectForKey:@"aoi"];
     if(aoiArray) // can be nil

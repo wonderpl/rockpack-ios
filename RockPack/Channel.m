@@ -1,5 +1,6 @@
 #import "Channel.h"
 #import "ChannelOwner.h"
+#import "ChannelCover.h"
 #import "NSDictionary+Validation.h"
 #import "VideoInstance.h"
 
@@ -117,12 +118,20 @@ static NSEntityDescription *channelEntity = nil;
     
     [self setBasicAttributesFromDictionary:dictionary];
     
-    
-    if(!(ignoringObjects & kIgnoreChannelOwnerObject))
+    NSDictionary* ownerDictionary = [dictionary objectForKey: @"owner"];
+    if(!(ignoringObjects & kIgnoreChannelOwnerObject) && ownerDictionary)
     {
-        self.channelOwner = [ChannelOwner instanceFromDictionary: [dictionary objectForKey: @"owner"]
+        self.channelOwner = [ChannelOwner instanceFromDictionary: ownerDictionary
                                        usingManagedObjectContext: managedObjectContext
                                              ignoringObjectTypes: kIgnoreChannelObjects];
+    }
+    
+    
+    NSDictionary* channelCoverDictionary = [dictionary objectForKey:@"cover"];
+    if(!(ignoringObjects & kIgnoreChannelCover) && channelCoverDictionary)
+    {
+        self.channelCover = [ChannelCover instanceFromDictionary:channelCoverDictionary
+                                       usingManagedObjectContext:managedObjectContext];
     }
     
     
@@ -156,9 +165,6 @@ static NSEntityDescription *channelEntity = nil;
     
     self.coverThumbnailLargeURL = [dictionary objectForKey: @"cover_thumbnail_large_url"
                                                withDefault: @"http://localhost"];
-    
-    self.wallpaperURL = [dictionary objectForKey: @"cover_background_url"
-                                     withDefault: @"http://localhost"];
     
     self.resourceURL = [dictionary objectForKey: @"resource_url"
                                     withDefault: @"http://localhost"];

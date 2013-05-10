@@ -17,7 +17,6 @@ const struct ChannelAttributes ChannelAttributes = {
 	.subscribersCount = @"subscribersCount",
 	.title = @"title",
 	.viewId = @"viewId",
-	.wallpaperURL = @"wallpaperURL",
 };
 
 const struct ChannelRelationships ChannelRelationships = {
@@ -244,13 +243,6 @@ const struct ChannelFetchedProperties ChannelFetchedProperties = {
 
 
 @dynamic viewId;
-
-
-
-
-
-
-@dynamic wallpaperURL;
 
 
 

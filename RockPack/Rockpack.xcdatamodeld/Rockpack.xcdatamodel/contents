@@ -23,7 +23,6 @@
         <attribute name="subscribersCount" optional="YES" attributeType="Integer 64" defaultValueString="0" syncable="YES"/>
         <attribute name="title" optional="YES" attributeType="String" syncable="YES"/>
         <attribute name="viewId" optional="YES" attributeType="String" indexed="YES" syncable="YES"/>
-        <attribute name="wallpaperURL" optional="YES" attributeType="String" defaultValueString="http://" syncable="YES"/>
         <relationship name="channelCover" optional="YES" minCount="1" maxCount="1" deletionRule="Nullify" destinationEntity="ChannelCover" inverseName="channel" inverseEntity="ChannelCover" syncable="YES"/>
         <relationship name="channelOwner" optional="YES" minCount="1" maxCount="1" deletionRule="Nullify" destinationEntity="ChannelOwner" inverseName="channels" inverseEntity="ChannelOwner" syncable="YES"/>
         <relationship name="subscribers" optional="YES" toMany="YES" deletionRule="Nullify" destinationEntity="ChannelOwner" inverseName="subscriptions" inverseEntity="ChannelOwner" syncable="YES"/>
@@ -95,7 +94,7 @@
     </entity>
     <elements>
         <element name="AbstractCommon" positionX="-74" positionY="-333" width="128" height="75"/>
-        <element name="Channel" positionX="-2" positionY="72" width="128" height="313"/>
+        <element name="Channel" positionX="-2" positionY="72" width="128" height="298"/>
         <element name="ChannelOwner" positionX="-353" positionY="189" width="128" height="105"/>
         <element name="CoverArt" positionX="189" positionY="-243" width="128" height="133"/>
         <element name="Genre" positionX="-270" positionY="-204" width="128" height="90"/>

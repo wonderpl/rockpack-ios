@@ -4,7 +4,7 @@
 
 
 + (ChannelCover *) instanceFromDictionary: (NSDictionary *) dictionary
-            usingManagedObjectContext: (NSManagedObjectContext *) managedObjectContext;
+                usingManagedObjectContext: (NSManagedObjectContext *) managedObjectContext;
 
 
 @end

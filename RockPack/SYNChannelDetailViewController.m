@@ -176,9 +176,11 @@
     [self.coverThumbnailCollectionView registerNib: coverThumbnailCellNib
                         forCellWithReuseIdentifier: @"SYNCoverThumbnailCell"];
     
+    
+#warning Fix Loading
     // Set wallpaper
-    [self.channelCoverImageView setAsynchronousImageFromURL: [NSURL URLWithString: self.channel.wallpaperURL]
-                                           placeHolderImage: nil];
+//    [self.channelCoverImageView setAsynchronousImageFromURL: [NSURL URLWithString: self.channel.wallpaperURL]
+//                                           placeHolderImage: nil];
     
     // Set wallpaper
     [self.avatarImageView setAsynchronousImageFromURL: [NSURL URLWithString: self.channel.channelOwner.thumbnailURL]
@@ -1387,10 +1389,10 @@
                                                       image: imageToUpload
                                           completionHandler: ^(NSDictionary *dictionary){
                                               NSString *wallpaperURL = dictionary [@"background_url"];
-                                              
+#warning Fix Uploading
                                               if (wallpaperURL)
                                               {
-                                                  self.channel.wallpaperURL = wallpaperURL;
+                                                  //self.channel.wallpaperURL = wallpaperURL;
                                                   DebugLog(@"Success");
                                               }
                                               else
