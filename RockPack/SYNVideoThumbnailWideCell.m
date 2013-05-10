@@ -8,19 +8,18 @@
 
 #import "AppConstants.h"
 #import "SYNAppDelegate.h"
+#import "SYNDeviceManager.h"
 #import "SYNNetworkEngine.h"
 #import "SYNVideoThumbnailWideCell.h"
 #import "UIFont+SYNFont.h"
-#import "AppConstants.h"
 #import <QuartzCore/QuartzCore.h>
-#import "SYNDeviceManager.h"
 
 @interface SYNVideoThumbnailWideCell ()
 
-@property (nonatomic, strong) IBOutlet UIImageView *highlightedBackgroundView;
 @property (nonatomic, strong) IBOutlet UIButton *channelButton;
 @property (nonatomic, strong) IBOutlet UIButton *profileButton;
 @property (nonatomic, strong) IBOutlet UIButton *videoButton;
+@property (nonatomic, strong) IBOutlet UIImageView *highlightedBackgroundView;
 @property (nonatomic, strong) IBOutlet UILabel* byLabel;
 @property (nonatomic, strong) IBOutlet UILabel* fromLabel;
 

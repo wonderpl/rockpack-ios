@@ -8,7 +8,6 @@
 
 #import "SYNChannelThumbnailCell.h"
 #import "UIFont+SYNFont.h"
-#import "UIImageView+ImageProcessing.h"
 
 @interface SYNChannelThumbnailCell ()
 

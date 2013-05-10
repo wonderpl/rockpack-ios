@@ -6,23 +6,20 @@
 //  Copyright (c) 2013 Nick Banks. All rights reserved.
 //
 
-#import "SYNUserProfileViewController.h"
-#import "User.h"
-#import "UIFont+SYNFont.h"
-#import "UIImageView+ImageProcessing.h"
 #import "AppConstants.h"
+#import "SYNUserProfileViewController.h"
+#import "UIFont+SYNFont.h"
+#import "UIImageView+WebCache.h"
+#import "User.h"
 
 @interface SYNUserProfileViewController ()
 
 @end
 
+
 @implementation SYNUserProfileViewController
 
-
-
-
-
-- (void)viewDidLoad
+- (void) viewDidLoad
 {
     [super viewDidLoad];
     
@@ -33,32 +30,33 @@
     
     UITapGestureRecognizer* tapGesture;
     
-    tapGesture = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(userSpaceTapped:)];
+    tapGesture = [[UITapGestureRecognizer alloc] initWithTarget: self
+                                                         action: @selector(userSpaceTapped:)];
     
     
     [self.view addGestureRecognizer:tapGesture];
     
-    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(userDataChanged:) name:kUserDataChanged object:nil];
-    
-    
-    
+    [[NSNotificationCenter defaultCenter] addObserver: self
+                                             selector: @selector(userDataChanged:)
+                                                 name: kUserDataChanged
+                                               object: nil];
+
     [self pack];
-  
 }
 
 
--(void)userDataChanged:(NSNotification*)notification
+- (void) userDataChanged: (NSNotification*) notification
 {
-    User* currentUser = (User*)[[notification userInfo] objectForKey:@"user"];
+    User* currentUser = (User*)[[notification userInfo] objectForKey: @"user"];
     if(!currentUser)
         return;
     
     [self setChannelOwner:currentUser];
 }
 
--(void)pack
+
+- (void) pack
 {
-    
     CGRect textRect = CGRectZero;
     textRect.size = [self.fullNameLabel.text sizeWithFont:self.fullNameLabel.font];
     CGRect referenceRect = self.profileImageView.frame;
@@ -71,49 +69,46 @@
     textRect.size = [self.userNameLabel.text sizeWithFont:self.userNameLabel.font];
     
     self.userNameLabel.frame = textRect;
-    
-    
 }
 
 
-
--(void)setChannelOwner:(ChannelOwner*)channelOwner
+- (void) setChannelOwner: (ChannelOwner*) channelOwner
 {
-    
     _channelOwner = channelOwner;
     
-    if([channelOwner isKindOfClass:[User class]])
+    if ([channelOwner isKindOfClass:[User class]])
     {
         
         self.fullNameLabel.text = [((User*)channelOwner).fullName uppercaseString];
         
         CGSize maxSize = [self.fullNameLabel.text sizeWithFont:self.fullNameLabel.font];
         CGRect selfFrame = self.view.frame;
-        if (maxSize.width + self.fullNameLabel.frame.origin.x > selfFrame.size.width) {
+        if (maxSize.width + self.fullNameLabel.frame.origin.x > selfFrame.size.width)
+        {
             selfFrame.size.width = maxSize.width + self.fullNameLabel.frame.origin.x + 30.0;
             self.view.frame = selfFrame;
         }
-        
     }
-    
-    
-    
+
     self.userNameLabel.text = channelOwner.displayName;
-    
-    [self.profileImageView setAsynchronousImageFromURL: [NSURL URLWithString: channelOwner.thumbnailURL]
-                                      placeHolderImage: [UIImage imageNamed:@"AvatarProfile.png"]];
+
+    [self.profileImageView setImageWithURL: [NSURL URLWithString: channelOwner.thumbnailURL]
+                          placeholderImage: [UIImage imageNamed: @"AvatarProfile.png"]
+                                   options: SDWebImageRetryFailed];
     
     
     [self pack];
 }
 
 
--(void)userSpaceTapped:(UITapGestureRecognizer*)recognizer
+- (void) userSpaceTapped: (UITapGestureRecognizer*) recognizer
 {
-    if(!self.channelOwner)
+    if (!self.channelOwner)
         return;
     
-    [[NSNotificationCenter defaultCenter] postNotificationName:kShowUserChannels object:self userInfo:@{@"ChannelOwner":self.channelOwner}];
+    [[NSNotificationCenter defaultCenter] postNotificationName: kShowUserChannels
+                                                        object: self
+                                                      userInfo: @{@"ChannelOwner":self.channelOwner}];
 }
 
 

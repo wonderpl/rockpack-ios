@@ -11,7 +11,9 @@
 #import "LXReorderableCollectionViewFlowLayout.h"
 #import "NSIndexPath+Arithmetic.h"
 #import "SYNAbstractViewController.h"
+#import "SYNDeviceManager.h"
 #import "SYNMasterViewController.h"
+#import "SYNOAuthNetworkEngine.h"
 #import "SYNPassthroughView.h"
 #import "SYNVideoPlaybackViewController.h"
 #import "SYNVideoThumbnailSmallCell.h"
@@ -19,18 +21,17 @@
 #import "SYNVideoViewerThumbnailLayoutAttributes.h"
 #import "SYNVideoViewerViewController.h"
 #import "UIFont+SYNFont.h"
-#import "UIImageView+ImageProcessing.h"
+#import "UIImageView+WebCache.h"
 #import "Video.h"
-#import "SYNOAuthNetworkEngine.h"
 #import "VideoInstance.h"
 #import <MediaPlayer/MediaPlayer.h>
-#import "SYNDeviceManager.h"
 
 @interface SYNVideoViewerViewController () <UIGestureRecognizerDelegate>
 
 @property (nonatomic, assign) CGRect originalFrame;
 @property (nonatomic, assign) int currentSelectedIndex;
 @property (nonatomic, getter = isVideoExpanded) BOOL videoExpanded;
+@property (nonatomic, strong) IBOutlet SYNPassthroughView *blackPanelView;
 @property (nonatomic, strong) IBOutlet SYNPassthroughView *chromeView;
 @property (nonatomic, strong) IBOutlet SYNPassthroughView *passthroughView;
 @property (nonatomic, strong) IBOutlet SYNVideoPlaybackViewController *videoPlaybackViewController;
@@ -43,7 +44,6 @@
 @property (nonatomic, strong) IBOutlet UILabel *channelCreatorLabel;
 @property (nonatomic, strong) IBOutlet UILabel *channelTitleLabel;
 @property (nonatomic, strong) IBOutlet UILabel *videoTitleLabel;
-@property (nonatomic, strong) IBOutlet SYNPassthroughView *blackPanelView;
 @property (nonatomic, strong) IBOutlet UIView *swipeView;
 @property (nonatomic, strong) NSArray *videoInstanceArray;
 @property (nonatomic, strong) SYNVideoViewerThumbnailLayout *layout;
@@ -173,8 +173,9 @@
     
     VideoInstance *videoInstance = self.videoInstanceArray [self.currentSelectedIndex];
     
-    [self.channelThumbnailImageView setAsynchronousImageFromURL: [NSURL URLWithString: videoInstance.channel.coverThumbnailSmallURL]
-                                               placeHolderImage: nil];
+    [self.channelThumbnailImageView setImageWithURL: [NSURL URLWithString: videoInstance.channel.coverThumbnailSmallURL]
+                                   placeholderImage: nil
+                                            options: SDWebImageRetryFailed];
 }
 
 
@@ -284,8 +285,9 @@
     // Now set the channel thumbail for the new
     VideoInstance *videoInstance = self.videoInstanceArray [currentSelectedIndex];
     
-    [self.channelThumbnailImageView setAsynchronousImageFromURL: [NSURL URLWithString: videoInstance.channel.coverThumbnailSmallURL]
-                                               placeHolderImage: nil];
+    [self.channelThumbnailImageView setImageWithURL: [NSURL URLWithString: videoInstance.channel.coverThumbnailSmallURL]
+                                   placeholderImage: nil
+                                            options: SDWebImageRetryFailed];
 }
 
 

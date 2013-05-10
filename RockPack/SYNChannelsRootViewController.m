@@ -22,7 +22,6 @@
 #import "SYNNetworkEngine.h"
 #import "SubGenre.h"
 #import "UIFont+SYNFont.h"
-#import "UIImageView+ImageProcessing.h"
 #import "UIImageView+WebCache.h"
 #import "Video.h"
 #import "VideoInstance.h"
@@ -486,8 +485,10 @@
         
         self.pinchedView = [[UIImageView alloc] initWithFrame: imageViewFrame];
         self.pinchedView.alpha = 0.7f;
-        [self.pinchedView setAsynchronousImageFromURL: [NSURL URLWithString: channel.coverThumbnailLargeURL]
-                                     placeHolderImage: nil];
+        
+        [self.pinchedView setImageWithURL: [NSURL URLWithString: channel.coverThumbnailLargeURL]
+                         placeholderImage: nil
+                                  options: SDWebImageRetryFailed];
         
         // now add the item to the view
         [self.view addSubview: self.pinchedView];
