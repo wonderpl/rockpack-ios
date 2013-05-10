@@ -610,7 +610,7 @@
 - (void) handleNewTabSelectionWithId: (NSString *) selectionId
 {
 
-    NSLog(@"uniqueId: %@", selectionId);
+     
 }
 
 - (void) handleNewTabSelectionWithGenre: (Genre *) genre
