@@ -129,6 +129,8 @@
 
     
     // Add Rockpack font and shadow to UITextView
+//    [self.channelTitleTextView setContentInset: UIEdgeInsetsMake(70, 0, 5,0)];
+    
     self.channelTitleTextView.font = [UIFont rockpackFontOfSize: self.channelTitleTextView.font.pointSize];
     [self addShadowToLayer: self.channelTitleTextView.layer];
     
@@ -145,10 +147,12 @@
     self.channelTitleTextView.delegate = self;
     
     
-    [self.channelTitleTextView addObserver: self
-                                forKeyPath: kTextViewContentSizeKey
-                                   options: NSKeyValueObservingOptionNew
-                                   context: NULL];
+//    [self.channelTitleTextView addObserver: self
+//                                forKeyPath: kTextViewContentSizeKey
+//                                   options: NSKeyValueObservingOptionNew
+//                                   context: NULL];
+    
+
     
     // Shadow for avatar background
     [self addShadowToLayer: self.avatarBackgroundView.layer];
@@ -811,20 +815,7 @@
                          change: (NSDictionary *) change
                         context: (void *) context
 {
-    if ([keyPath isEqualToString: kTextViewContentSizeKey])
-    {
-        UITextView *tv = object;
-        //Center vertical alignment
-        //CGFloat topCorrect = ([tv bounds].size.height - [tv contentSize].height * [tv zoomScale])/2.0;
-        //topCorrect = ( topCorrect < 0.0 ? 0.0 : topCorrect );
-        //tv.contentOffset = (CGPoint){.x = 0, .y = -topCorrect};
-        
-        //Bottom vertical alignment
-        CGFloat topCorrect = ([tv bounds].size.height - [tv contentSize].height);
-        topCorrect = (topCorrect <0.0 ? 0.0 : topCorrect);
-        tv.contentOffset = (CGPoint){.x = 0, .y = -topCorrect};
-    }
-    else if ([keyPath isEqualToString: kCollectionViewContentOffsetKey])
+if ([keyPath isEqualToString: kCollectionViewContentOffsetKey])
     {
         CGPoint newContentOffset = [[change valueForKey: NSKeyValueChangeNewKey] CGPointValue];
 

@@ -41,6 +41,13 @@
         UIImageView* imageView = [[UIImageView alloc] initWithFrame:self.frame];
         self.backgroundView = imageView;
         self.backgroundImageView = imageView;
+        self.accessoryNumberLabel = [[UILabel alloc] initWithFrame:CGRectZero];
+        self.accessoryNumberLabel.backgroundColor = [UIColor clearColor];
+        self.accessoryNumberLabel.hidden = YES;
+        self.accessoryNumberBackground = [[UIImageView alloc] initWithImage:[[UIImage imageNamed:@"NotificationBubble"] resizableImageWithCapInsets:UIEdgeInsetsMake(0,16,0,16)]];
+        [self.contentView addSubview:self.accessoryNumberBackground];
+        [self.contentView addSubview:self.accessoryNumberLabel];
+        
     }
     return self;
 }
@@ -91,6 +98,18 @@
     {
         self.backgroundImageView.image = [UIImage imageNamed:@"NavDefault"];
     }
+}
+
+-(void)setAccessoryNumber:(NSString *)accessoryNumberString
+{
+    self.accessoryNumberLabel.text = accessoryNumberString;
+    [self.accessoryNumberLabel sizeToFit];
+    self.accessoryNumberLabel.center = CGPointMake(230.0f - self.accessoryNumberLabel.frame.size.width/2 , 25.0f );
+    CGRect newFrame = self.accessoryNumberBackground.frame;
+    newFrame.size.width = MAX(33.0,self.accessoryNumberLabel.frame.size.width - 10.0f);
+    self.accessoryNumberBackground.frame = newFrame;
+    self.accessoryNumberBackground.center = self.accessoryNumberLabel.center;
+    
 }
 
 @end

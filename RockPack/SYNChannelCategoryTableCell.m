@@ -33,12 +33,14 @@
     if(selected)
     {
         self.titleLabel.textColor = [UIColor colorWithWhite:1.0f alpha:1.0f];
-        self.backgroundImage.backgroundColor = [UIColor colorWithPatternImage:[UIImage imageNamed:@"SubCategorySlideSelected"]];
+        //self.backgroundImage.backgroundColor = [UIColor colorWithPatternImage:[UIImage imageNamed:@"SubCategorySlideSelected"]];
+        self.backgroundImage.image = [UIImage imageNamed:@"SubCategorySlideSelected"];
     }
     else
     {
         self.titleLabel.textColor = [UIColor colorWithRed:14.0f/255.0f green:67.0f/255.0f blue:86.0f/255.0f alpha:1.0f];
-        self.backgroundImage.backgroundColor = [UIColor colorWithPatternImage:[UIImage imageNamed:@"SubCategorySlide"]];
+        //self.backgroundImage.backgroundColor = [UIColor colorWithPatternImage:[UIImage imageNamed:@"SubCategorySlide"]];
+        self.backgroundImage.image = [UIImage imageNamed:@"SubCategorySlide"];
     }
     
 }
@@ -49,12 +51,14 @@
     if(highlighted)
     {
         self.titleLabel.textColor = [UIColor colorWithRed:14.0f/255.0f green:67.0f/255.0f blue:86.0f/255.0f alpha:1.0f];
-        self.backgroundImage.backgroundColor = [UIColor colorWithPatternImage:[UIImage imageNamed:@"SubCategorySlideHighlighted"]];
+        //self.backgroundImage.backgroundColor = [UIColor colorWithPatternImage:[UIImage imageNamed:@"SubCategorySlideHighlighted"]];
+        self.backgroundImage.image = [UIImage imageNamed:@"SubCategorySlideHighlighted"];
     }
     else
     {
         self.titleLabel.textColor = [UIColor colorWithRed:14.0f/255.0f green:67.0f/255.0f blue:86.0f/255.0f alpha:1.0f];
-        self.backgroundImage.backgroundColor = [UIColor colorWithPatternImage:[UIImage imageNamed:@"SubCategorySlide"]];
+        //self.backgroundImage.backgroundColor = [UIColor colorWithPatternImage:[UIImage imageNamed:@"SubCategorySlide"]];
+        self.backgroundImage.image = [UIImage imageNamed:@"SubCategorySlide"];
     }
 }
 

@@ -8,10 +8,15 @@
 
 #import <UIKit/UIKit.h>
 
+typedef void(^DoneButtonBlock)(void);
+
 @interface SYNAccountSettingsModalContainer : UIViewController <UINavigationControllerDelegate> {
     UINavigationController* childNavigationController;
 }
+@property (weak, nonatomic) IBOutlet UIView *contentView;
 
--(id)initWithNavigationController:(UINavigationController*)navigationController;
+-(id)initWithNavigationController:(UINavigationController*)navigationController andCompletionBlock:(DoneButtonBlock)block;
+
+-(void)setModalViewFrame:(CGRect)newFrame;
 
 @end
