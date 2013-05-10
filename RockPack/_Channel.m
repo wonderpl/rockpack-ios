@@ -6,8 +6,6 @@
 const struct ChannelAttributes ChannelAttributes = {
 	.categoryId = @"categoryId",
 	.channelDescription = @"channelDescription",
-	.coverThumbnailLargeURL = @"coverThumbnailLargeURL",
-	.coverThumbnailSmallURL = @"coverThumbnailSmallURL",
 	.eCommerceURL = @"eCommerceURL",
 	.lastUpdated = @"lastUpdated",
 	.popular = @"popular",
@@ -90,20 +88,6 @@ const struct ChannelFetchedProperties ChannelFetchedProperties = {
 
 
 @dynamic channelDescription;
-
-
-
-
-
-
-@dynamic coverThumbnailLargeURL;
-
-
-
-
-
-
-@dynamic coverThumbnailSmallURL;
 
 
 

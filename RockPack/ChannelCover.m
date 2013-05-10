@@ -1,5 +1,5 @@
 #import "ChannelCover.h"
-
+#import "NSDictionary+Validation.h"
 
 @interface ChannelCover ()
 
@@ -9,6 +9,8 @@
 
 
 @implementation ChannelCover
+
+@synthesize imageLargeUrl, imageMidiumUrl, imageSmallUrl;
 
 + (ChannelCover *) instanceFromDictionary: (NSDictionary *) dictionary
                 usingManagedObjectContext: (NSManagedObjectContext *) managedObjectContext
@@ -20,7 +22,7 @@
     
     ChannelCover* instance = [ChannelCover insertInManagedObjectContext:managedObjectContext];
     
-    instance.imageUrl = [dictionary objectForKey:@"thumbnail_url"];
+    instance.imageUrl = [dictionary objectForKey:@"thumbnail_url" withDefault:@"http://localhost/no_thumb.jpg"];
     
     NSArray* aoiArray = [dictionary objectForKey:@"aoi"];
     if(aoiArray) // can be nil
@@ -34,5 +36,16 @@
     return instance;
     
 }
-
+-(NSString*)imageSmallUrl
+{
+    return nil;
+}
+-(NSString*)imageMidiumUrl
+{
+    return nil;
+}
+-(NSString*)imageLargeUrl
+{
+    return nil;
+}
 @end

@@ -11,6 +11,7 @@
 #import "Genre.h"
 #import "ChannelOwner.h"
 #import "SYNAppDelegate.h"
+#import "ChannelCover.h"
 #import "SYNChannelCategoryTableViewController.h"
 #import "SYNChannelDetailViewController.h"
 #import "SYNChannelFooterMoreView.h"
@@ -346,8 +347,8 @@
     
     SYNChannelThumbnailCell *channelThumbnailCell = [collectionView dequeueReusableCellWithReuseIdentifier: @"SYNChannelThumbnailCell"
                                                                                               forIndexPath: indexPath];
-    
-    [channelThumbnailCell.imageView setImageWithURL: [NSURL URLWithString: channel.coverThumbnailLargeURL]
+
+    [channelThumbnailCell.imageView setImageWithURL: [NSURL URLWithString: channel.channelCover.imageLargeUrl]
                                    placeholderImage: [UIImage imageNamed: @"PlaceholderChannelThumbnail.png"]
                                             options: SDWebImageRetryFailed];
     

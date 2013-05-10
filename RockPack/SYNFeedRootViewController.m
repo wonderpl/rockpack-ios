@@ -9,6 +9,7 @@
 #import "AppConstants.h"
 #import "Channel.h"
 #import "ChannelOwner.h"
+#import "ChannelCover.h"
 #import "NSDate-Utilities.h"
 #import "SYNAppDelegate.h"
 #import "SYNFeedRootViewController.h"
@@ -316,8 +317,8 @@
     [videoThumbnailCell.videoImageView setImageWithURL: [NSURL URLWithString: videoInstance.video.thumbnailURL]
                                       placeholderImage: [UIImage imageNamed: @"PlaceholderVideoThumbnailWide.png"]
                                                options: SDWebImageRetryFailed];
-    
-    [videoThumbnailCell.channelImageView setImageWithURL: [NSURL URLWithString: videoInstance.channel.coverThumbnailSmallURL]
+
+    [videoThumbnailCell.channelImageView setImageWithURL: [NSURL URLWithString: videoInstance.channel.channelCover.imageSmallUrl]
                                         placeholderImage: [UIImage imageNamed: @"PlaceholderChannelThumbnail.png"]
                                                  options: SDWebImageRetryFailed];
     

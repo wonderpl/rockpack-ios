@@ -16,6 +16,7 @@
 #import "SYNIntegralCollectionViewFlowLayout.h"
 #import "UIFont+SYNFont.h"
 #import "UIImageView+WebCache.h"
+#import "ChannelCover.h"
 #import <QuartzCore/QuartzCore.h>
 
 @interface SYNExistingChannelsViewController ()
@@ -157,8 +158,8 @@
         
         SYNChannelMidCell *channelThumbnailCell = [collectionView dequeueReusableCellWithReuseIdentifier: @"SYNChannelMidCell"
                                                                                             forIndexPath: indexPath];
-        
-        [channelThumbnailCell.imageView setImageWithURL: [NSURL URLWithString: channel.coverThumbnailLargeURL]
+
+        [channelThumbnailCell.imageView setImageWithURL: [NSURL URLWithString: channel.channelCover.imageLargeUrl]
                                        placeholderImage: [UIImage imageNamed: @"PlaceholderChannelThumbnailMid.png"]
                                                 options: SDWebImageRetryFailed];
 

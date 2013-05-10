@@ -160,11 +160,6 @@ static NSEntityDescription *channelEntity = nil;
     
     self.subscribedByUserValue = NO;
     
-    self.coverThumbnailSmallURL = [dictionary objectForKey: @"cover_thumbnail_small_url"
-                                               withDefault: @"http://localhost"];
-    
-    self.coverThumbnailLargeURL = [dictionary objectForKey: @"cover_thumbnail_large_url"
-                                               withDefault: @"http://localhost"];
     
     self.resourceURL = [dictionary objectForKey: @"resource_url"
                                     withDefault: @"http://localhost"];

@@ -172,9 +172,9 @@
     [self.swipeView addGestureRecognizer: tapRecogniser];
     
     VideoInstance *videoInstance = self.videoInstanceArray [self.currentSelectedIndex];
-    
-    [self.channelThumbnailImageView setAsynchronousImageFromURL: [NSURL URLWithString: videoInstance.channel.coverThumbnailSmallURL]
-                                               placeHolderImage: nil];
+#warning Fix Image
+//    [self.channelThumbnailImageView setAsynchronousImageFromURL: [NSURL URLWithString: videoInstance.channel.coverThumbnailSmallURL]
+//                                               placeHolderImage: nil];
 }
 
 
@@ -283,9 +283,9 @@
     
     // Now set the channel thumbail for the new
     VideoInstance *videoInstance = self.videoInstanceArray [currentSelectedIndex];
-    
-    [self.channelThumbnailImageView setAsynchronousImageFromURL: [NSURL URLWithString: videoInstance.channel.coverThumbnailSmallURL]
-                                               placeHolderImage: nil];
+#warning Fix Image
+//    [self.channelThumbnailImageView setAsynchronousImageFromURL: [NSURL URLWithString: videoInstance.channel.coverThumbnailSmallURL]
+//                                               placeHolderImage: nil];
 }
 
 
