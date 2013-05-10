@@ -7,7 +7,7 @@
 //
 
 #import "Channel.h"
-#import "ChannelCover.h"
+#import "CoverArt.h"
 #import "ChannelOwner.h"
 #import "GKImagePicker.h"
 #import "Genre.h"
@@ -20,6 +20,7 @@
 #import "SYNCoverThumbnailCell.h"
 #import "SYNDeviceManager.h"
 #import "SYNOAuthNetworkEngine.h"
+#import "ChannelCover.h"
 #import "SYNPopoverBackgroundView.h"
 #import "SYNVideoThumbnailRegularCell.h"
 #import "SubGenre.h"
@@ -69,6 +70,10 @@
 @property (nonatomic,strong) NSString* selectedCoverId;
 @property (weak, nonatomic) IBOutlet UILabel *byLabel;
 
+@property (nonatomic, strong) id<SDWebImageOperation> currentWebImageOperation;
+
+@property (nonatomic, strong) UIImage* originalBackgroundImage;
+
 //iPhone specific
 @property (nonatomic,strong) AVURLAsset* selectedAsset;
 @property (nonatomic,strong) SYNChannelCoverImageSelectorViewController* coverImageSelector;
@@ -84,6 +89,7 @@
 
 @synthesize channelCoverFetchedResultsController = _channelCoverFetchedResultsController;
 @synthesize userChannelCoverFetchedResultsController = _userChannelCoverFetchedResultsController;
+@synthesize originalBackgroundImage;
 
 - (id) initWithChannel: (Channel *) channel
              usingMode: (kChannelDetailsMode) mode
@@ -182,10 +188,13 @@
     [self.coverThumbnailCollectionView registerNib: coverThumbnailCellNib
                         forCellWithReuseIdentifier: @"SYNCoverThumbnailCell"];
     
-    // Set wallpaper    
-    [self.channelCoverImageView setImageWithURL: [NSURL URLWithString: self.channel.wallpaperURL]
-                               placeholderImage: nil
-                                        options: SDWebImageRetryFailed];
+    // == Cover Image == //
+  
+    self.currentWebImageOperation = [self loadBackgroundImage];
+    
+    
+    
+
     
     // Set avatar
     [self.avatarImageView setImageWithURL: [NSURL URLWithString: self.channel.channelOwner.thumbnailURL]
@@ -354,6 +363,8 @@
     [super viewWillDisappear: animated];
 }
 
+#pragma mark - Orientation Methods
+
 
 - (void) willRotateToInterfaceOrientation: (UIInterfaceOrientation) toInterfaceOrientation
                                  duration: (NSTimeInterval) duration
@@ -363,7 +374,15 @@
 
     [self.self.videoThumbnailCollectionView.collectionViewLayout invalidateLayout];
 }
-
+-(void)willAnimateRotationToInterfaceOrientation:(UIInterfaceOrientation)toInterfaceOrientation duration:(NSTimeInterval)duration
+{
+    [super willAnimateRotationToInterfaceOrientation:toInterfaceOrientation duration:duration];
+    
+    UIImage* croppedImage = [self croppedImageForOrientation:toInterfaceOrientation];
+    
+    self.channelCoverImageView.image = croppedImage;
+    
+}
 
 - (void) mainContextDataChanged: (NSNotification*) notification
 {
@@ -534,10 +553,10 @@
             case 1:
             {
                 // User channel covers
-                ChannelCover *channelCover = [self.userChannelCoverFetchedResultsController objectAtIndexPath: [NSIndexPath indexPathForRow: indexPath.row
+                CoverArt *coverArt = [self.userChannelCoverFetchedResultsController objectAtIndexPath: [NSIndexPath indexPathForRow: indexPath.row
                                                                                                         inSection: 0]];
                 
-                [coverThumbnailCell.coverImageView setImageWithURL: [NSURL URLWithString: channelCover.carouselURL]
+                [coverThumbnailCell.coverImageView setImageWithURL: [NSURL URLWithString: coverArt.thumbnailURL]
                                                   placeholderImage: [UIImage imageNamed: @"PlaceholderChannelCoverThumbnail.png"]
                                                            options: SDWebImageRetryFailed];
                 return coverThumbnailCell;
@@ -547,10 +566,10 @@
             case 2:
             {
                 // Rockpack channel covers
-                ChannelCover *channelCover = [self.channelCoverFetchedResultsController objectAtIndexPath: [NSIndexPath indexPathForRow: indexPath.row
+                CoverArt *coverArt = [self.channelCoverFetchedResultsController objectAtIndexPath: [NSIndexPath indexPathForRow: indexPath.row
                                                                                                                   inSection: 0]];
                 
-                [coverThumbnailCell.coverImageView setImageWithURL: [NSURL URLWithString: channelCover.carouselURL]
+                [coverThumbnailCell.coverImageView setImageWithURL: [NSURL URLWithString: coverArt.thumbnailURL]
                                                   placeholderImage: [UIImage imageNamed: @"PlaceholderChannelCoverThumbnail.png"]
                                                            options: SDWebImageRetryFailed];
                 return coverThumbnailCell;
@@ -614,18 +633,18 @@
             case 1:
             {
                 // User channel covers
-                ChannelCover *channelCover = [self.userChannelCoverFetchedResultsController objectAtIndexPath: [NSIndexPath indexPathForRow: indexPath.row
+                CoverArt *coverArt = [self.userChannelCoverFetchedResultsController objectAtIndexPath: [NSIndexPath indexPathForRow: indexPath.row
                                                                                                                                   inSection: 0]];
-                imageURLString = channelCover.backgroundURL;
+                imageURLString = coverArt.thumbnailURL;
             }
             break;
                 
             case 2:
             {
                 // Rockpack channel covers
-                ChannelCover *channelCover = [self.channelCoverFetchedResultsController objectAtIndexPath: [NSIndexPath indexPathForRow: indexPath.row
+                CoverArt *coverArt = [self.channelCoverFetchedResultsController objectAtIndexPath: [NSIndexPath indexPathForRow: indexPath.row
                                                                                                                               inSection: 0]];
-                imageURLString = channelCover.backgroundURL;
+                imageURLString = coverArt.thumbnailURL;
             }
             break;
                 
@@ -665,7 +684,7 @@
     NSFetchRequest *fetchRequest = [[NSFetchRequest alloc] init];
     
     
-    fetchRequest.entity = [NSEntityDescription entityForName: @"ChannelCover"
+    fetchRequest.entity = [NSEntityDescription entityForName: @"CoverArt"
                                       inManagedObjectContext: appDelegate.mainManagedObjectContext];
     
     
@@ -694,7 +713,7 @@
     
     NSFetchRequest *fetchRequest = [[NSFetchRequest alloc] init];
     
-    NSEntityDescription* entityDescription = [NSEntityDescription entityForName: @"ChannelCover"
+    NSEntityDescription* entityDescription = [NSEntityDescription entityForName: @"CoverArt"
                                                          inManagedObjectContext: appDelegate.mainManagedObjectContext];
     
     fetchRequest.entity = entityDescription;
@@ -1429,11 +1448,11 @@
     [appDelegate.oAuthNetworkEngine uploadCoverArtForUserId: appDelegate.currentOAuth2Credentials.userId
                                                       image: imageToUpload
                                           completionHandler: ^(NSDictionary *dictionary){
-                                              NSString *wallpaperURL = dictionary [@"background_url"];
-                                              
-                                              if (wallpaperURL)
+                                              NSString *imageUrl = dictionary [@"thumbnail_url"];
+
+                                              if (imageUrl && [imageUrl isKindOfClass:[NSString class]])
                                               {
-                                                  self.channel.wallpaperURL = wallpaperURL;
+                                                  self.channel.channelCover.imageUrl = imageUrl;
                                                   DebugLog(@"Success");
                                               }
                                               else
@@ -1564,5 +1583,52 @@
 }
 
 #pragma mark - Image render
+
+-(UIImage*)croppedImageForOrientation:(UIInterfaceOrientation)orientation
+{
+    
+    
+    CGRect croppingRect = UIInterfaceOrientationIsLandscape(orientation) ?
+    CGRectMake(0.0, 138.0, 1024.0, 886.0) : CGRectMake(138.0, 0.0, 886.0, 1024.0);
+    
+    
+    CGImageRef croppedImageRef = CGImageCreateWithImageInRect([originalBackgroundImage CGImage], croppingRect);
+    
+    UIImage* croppedImage = [UIImage imageWithCGImage:croppedImageRef];
+    
+    CGImageRelease(croppedImageRef);
+    
+    return croppedImage;
+   
+}
+
+-(id<SDWebImageOperation>)loadBackgroundImage
+{
+    __weak SDWebImageManager* shareImageManager = SDWebImageManager.sharedManager;
+    __weak SYNChannelDetailViewController *wself = self;
+     return [shareImageManager downloadWithURL:[NSURL URLWithString:self.channel.channelCover.imageBackgroundUrl]
+                                       options:SDWebImageRetryFailed
+                                      progress:nil
+                                     completed:^(UIImage *image, NSError *error, SDImageCacheType cacheType, BOOL finished) {
+                                   
+                                         if (!wself || !image)
+                                             return;
+                                         
+                                         
+                                         wself.originalBackgroundImage = image;
+                                         
+                                         UIImage* croppedImage = [wself croppedImageForOrientation:[[SYNDeviceManager sharedInstance] orientation]];
+                                         
+                                         [UIView transitionWithView: wself.view
+                                                           duration: 0.35f
+                                                            options: UIViewAnimationOptionTransitionCrossDissolve
+                                                         animations: ^{
+                                                             wself.channelCoverImageView.image = croppedImage;
+                                                         } completion: nil];
+                                        
+                                                    [wself.channelCoverImageView setNeedsLayout];
+                                         
+                                         }];
+}
 
 @end

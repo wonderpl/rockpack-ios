@@ -34,8 +34,6 @@
 #import <QuartzCore/QuartzCore.h>
 
 #define kMovableViewOffX -58
-#define kMovableViewReloadButtonX 70
-#define kMovableViewReloadButtonXIPhone 63
 
 #define kSearchBoxShrinkFactor 136.0
 
@@ -61,7 +59,6 @@ typedef void(^AnimationCompletionBlock)(BOOL finished);
 @property (nonatomic, strong) SYNBackButtonControl* backButtonControl;
 @property (nonatomic, strong) SYNExistingChannelsViewController* existingChannelsController;
 @property (nonatomic, strong) SYNNetworkErrorView* networkErrorView;
-@property (nonatomic, strong) SYNRefreshButton* refreshButton;
 @property (nonatomic, strong) SYNSearchBoxViewController* searchBoxController;
 @property (nonatomic, strong) SYNSearchRootViewController* searchViewController;
 @property (nonatomic, strong) SYNSideNavigationViewController* sideNavigationViewController;
@@ -143,18 +140,7 @@ typedef void(^AnimationCompletionBlock)(BOOL finished);
 {
     [super viewDidLoad];
     
-    // == Refresh button == //
     
-    CGRect movableViewFrame = self.movableButtonsContainer.frame;
-    movableViewFrame.origin.x = kMovableViewOffX;
-    self.movableButtonsContainer.frame = movableViewFrame;
-    
-    self.refreshButton = [SYNRefreshButton refreshButton];
-    [self.refreshButton addTarget:self action:@selector(refreshButtonPressed) forControlEvents:UIControlEventTouchUpInside];
-    CGRect refreshButtonFrame = self.refreshButton.frame;
-    refreshButtonFrame.origin.x = [[SYNDeviceManager sharedInstance] isIPad]?kMovableViewReloadButtonX:kMovableViewReloadButtonXIPhone;
-    self.refreshButton.frame = refreshButtonFrame;
-    [self.movableButtonsContainer addSubview:self.refreshButton];
     
     
     // == Fade in from splash screen (not in AppDelegate so that the Orientation is known) == //
@@ -320,17 +306,7 @@ typedef void(^AnimationCompletionBlock)(BOOL finished);
     
 }
 
--(void)refreshButtonPressed
-{
-    [self.refreshButton startRefreshCycle];
-    
-    [self.containerViewController.showingViewController refresh];
-}
 
-- (void) refreshCycleComplete
-{
-    [self.refreshButton endRefreshCycle];
-}
 
 #pragma mark - Scroller Changes
 
@@ -502,6 +478,10 @@ typedef void(^AnimationCompletionBlock)(BOOL finished);
                      completion: ^(BOOL finished) {
                          self.overlayView.userInteractionEnabled = YES;
                      }];
+    
+    //video overlay bug - keyboard needs to be dismissed if a video is played;
+    [self.searchBoxController.searchBoxView.searchTextField resignFirstResponder];
+    [self.sideNavigationViewController.searchViewController.searchBoxView.searchTextField resignFirstResponder];
 }
 
 
@@ -780,7 +760,6 @@ typedef void(^AnimationCompletionBlock)(BOOL finished);
                          self.backButtonControl.alpha = targetAlpha;
                          self.pageTitleLabel.alpha = !targetAlpha;
                          self.dotsView.alpha = !targetAlpha;
-                         self.refreshButton.alpha = !targetAlpha;
                      }
                      completion: nil];
 
@@ -827,16 +806,17 @@ typedef void(^AnimationCompletionBlock)(BOOL finished);
     SYNAccountSettingsMainTableViewController* accountsTableController = [[SYNAccountSettingsMainTableViewController alloc] init];
     accountsTableController.view.backgroundColor = [UIColor clearColor];
     
-    UINavigationController* navigationController = [[UINavigationController alloc] initWithRootViewController: accountsTableController];
-    navigationController.view.backgroundColor = [UIColor clearColor];
-    
     
     
     
     if([[SYNDeviceManager sharedInstance] isIPad])
     {
+        
+        
         [[UINavigationBar appearance] setTitleTextAttributes:
          @{UITextAttributeTextColor:[UIColor darkGrayColor], UITextAttributeFont:[UIFont rockpackFontOfSize:22.0]}];
+        UINavigationController* navigationController = [[UINavigationController alloc] initWithRootViewController: accountsTableController];
+        navigationController.view.backgroundColor = [UIColor clearColor];
         
         self.accountSettingsPopover = [[UIPopoverController alloc] initWithContentViewController: navigationController];
         self.accountSettingsPopover.popoverContentSize = CGSizeMake(380, 576);
@@ -854,37 +834,18 @@ typedef void(^AnimationCompletionBlock)(BOOL finished);
     }
     else
     {
-        [[UINavigationBar appearance] setBackgroundImage:[UIImage imageNamed:@"ButtonProfileChannels"]
-                                           forBarMetrics:UIBarMetricsDefault];
-        
-        [[UINavigationBar appearance] setShadowImage:[[UIImage alloc] init]];
-        
-        [[UINavigationBar appearance] setFrame:CGRectMake(0.0, 0.0, 320.0, 300.0)];
+        UINavigationController* navigationController = [[UINavigationController alloc] initWithRootViewController: accountsTableController];
+        navigationController.view.backgroundColor = [UIColor clearColor];
+        navigationController.navigationBarHidden = YES;
         
         
-        [[UINavigationBar appearance] setTitleTextAttributes:
-         @{UITextAttributeTextColor:[UIColor darkGrayColor], UITextAttributeFont:[UIFont rockpackFontOfSize:22.0]}];
-        
-        
-        
-        UIButton* doneButton = [UIButton buttonWithType:UIButtonTypeCustom];
-        UIImage* doneImage = [UIImage imageNamed:@"ButtonSettingsDone"];
-        doneButton.frame = CGRectMake(0.0, 0.0, doneImage.size.width, doneImage.size.height);
-        [doneButton addTarget:self action:@selector(modalAccountContainerDismiss) forControlEvents:UIControlEventTouchUpInside];
-        [doneButton setImage:doneImage forState:UIControlStateNormal];
-        
-        UIBarButtonItem* buttonItem = [[UIBarButtonItem alloc] initWithCustomView:doneButton];
-        
-        
-        accountsTableController.navigationItem.rightBarButtonItem = buttonItem;
-        
-        
-        
-        self.modalAccountContainer = [[SYNAccountSettingsModalContainer alloc] initWithNavigationController:navigationController];
+        self.modalAccountContainer = [[SYNAccountSettingsModalContainer alloc] initWithNavigationController:navigationController andCompletionBlock:^{
+            [self modalAccountContainerDismiss];
+        }];
         
         CGRect modalFrame = self.modalAccountContainer.view.frame;
-        modalFrame.size.height = 520.0;
-        self.modalAccountContainer.view.frame = modalFrame;
+        modalFrame.size.height = self.view.frame.size.height - 60.0f;
+        [self.modalAccountContainer setModalViewFrame:modalFrame];
         
         modalFrame.origin.y = [[SYNDeviceManager sharedInstance] currentScreenHeight];
         self.modalAccountContainer.view.frame = modalFrame;
@@ -924,6 +885,7 @@ typedef void(^AnimationCompletionBlock)(BOOL finished);
         self.accountSettingsCoverView.hidden = YES;
         
         [self.modalAccountContainer.view removeFromSuperview];
+        self.modalAccountContainer = nil;
         
         
     }];

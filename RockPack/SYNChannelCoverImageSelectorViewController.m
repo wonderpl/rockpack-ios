@@ -6,6 +6,15 @@
 //  Copyright (c) 2013 Nick Banks. All rights reserved.
 //
 
+
+#import "SYNChannelCoverImageSelectorViewController.h"
+#import "SYNChannelCoverImageCell.h"
+#import "CoverArt.h"
+#import "UIImageView+ImageProcessing.h"
+#import <QuartzCore/QuartzCore.h>
+#import <AssetsLibrary/AssetsLibrary.h>
+#import <AVFoundation/AVFoundation.h>
+#import "UIFont+SYNFont.h"
 #import "ChannelCover.h"
 #import "GKImageCropViewController.h"
 #import "GKImagePicker.h"
@@ -144,24 +153,28 @@ enum ChannelCoverSelectorState {
         else if (indexPath.row - 1 < [channelSectionInfo numberOfObjects])
         {
             indexPath = [NSIndexPath indexPathForRow:indexPath.row - 1 inSection:0];
-            ChannelCover *channelCover = [self.channelCoverFetchedResultsController objectAtIndexPath: [NSIndexPath indexPathForRow: indexPath.row
+            CoverArt *coverArt = [self.channelCoverFetchedResultsController objectAtIndexPath: [NSIndexPath indexPathForRow: indexPath.row
                                                                                                                           inSection: 0]];
 
-            [cell.channelCoverImageView setImageWithURL: [NSURL URLWithString: channelCover.carouselURL]
+
+            [cell.channelCoverImageView setImageWithURL: [NSURL URLWithString: coverArt.thumbnailURL]
                                        placeholderImage: [UIImage imageNamed: @"PlaceholderChannelCover.png"]
                                                 options: SDWebImageRetryFailed];
+
             cell.glossImage.hidden = NO;
         }
         else
         {
             indexPath = [NSIndexPath indexPathForRow:indexPath.row - 1 - [channelSectionInfo numberOfObjects] inSection:0];
-            ChannelCover *channelCover = [self.userChannelCoverFetchedResultsController objectAtIndexPath: [NSIndexPath indexPathForRow: indexPath.row
+            CoverArt *coverArt = [self.userChannelCoverFetchedResultsController objectAtIndexPath: [NSIndexPath indexPathForRow: indexPath.row
                                                                                                                               inSection: 0]];
             
-            [cell.channelCoverImageView setImageWithURL: [NSURL URLWithString: channelCover.carouselURL]
+
+            [cell.channelCoverImageView setImageWithURL: [NSURL URLWithString: coverArt.thumbnailURL]
                                        placeholderImage: [UIImage imageNamed: @"PlaceholderChannelCover.png"]
                                                 options: SDWebImageRetryFailed];
             
+
             cell.glossImage.hidden = NO;
         }
     }
@@ -251,18 +264,18 @@ enum ChannelCoverSelectorState {
                 if (indexPath.row - 1 < [channelSectionInfo numberOfObjects])
                 {
                     indexPath = [NSIndexPath indexPathForRow:indexPath.row - 1 inSection:0];
-                    ChannelCover *channelCover = [self.channelCoverFetchedResultsController objectAtIndexPath: [NSIndexPath indexPathForRow: indexPath.row
+                    CoverArt *coverArt = [self.channelCoverFetchedResultsController objectAtIndexPath: [NSIndexPath indexPathForRow: indexPath.row
                                                                                                                                   inSection: 0]];
-                    returnStringURL = channelCover.backgroundURL;
-                    returnCoverId = channelCover.coverRef;
+                    returnStringURL = coverArt.thumbnailURL;
+                    returnCoverId = coverArt.coverRef;
                 }
                 else
                 {
                     indexPath = [NSIndexPath indexPathForRow:indexPath.row - 1 - [channelSectionInfo numberOfObjects] inSection:0];
-                    ChannelCover *channelCover = [self.userChannelCoverFetchedResultsController objectAtIndexPath: [NSIndexPath indexPathForRow: indexPath.row
+                    CoverArt *coverArt = [self.userChannelCoverFetchedResultsController objectAtIndexPath: [NSIndexPath indexPathForRow: indexPath.row
                                                                                                                                       inSection: 0]];
-                    returnStringURL = channelCover.backgroundURL;
-                    returnCoverId = channelCover.coverRef;
+                    returnStringURL = coverArt.thumbnailURL;
+                    returnCoverId = coverArt.coverRef;
                 }
                 
             }

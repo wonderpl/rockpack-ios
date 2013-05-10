@@ -10,4 +10,8 @@
 
 @interface SYNSideNavigationIphoneCell : UITableViewCell
 
+@property (nonatomic, strong) UILabel* accessoryNumberLabel;
+@property (nonatomic, strong) UIImageView* accessoryNumberBackground;
+
+-(void)setAccessoryNumber:(NSString*)accessoryNumberString;
 @end

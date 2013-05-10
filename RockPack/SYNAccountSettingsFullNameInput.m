@@ -10,7 +10,7 @@
 #import "UIFont+SYNFont.h"
 #import "SYNOAuthNetworkEngine.h"
 
-@interface SYNAccountSettingsFullNameInput ()
+@interface SYNAccountSettingsFullNameInput () <UITextFieldDelegate>
 
 @property (nonatomic, strong) UITableView* tableView;
 
@@ -26,12 +26,16 @@
 - (void)viewDidLoad
 {
     [super viewDidLoad];
+    self.inputField.tag =1 ;
+    self.inputField.delegate = self;
     
     self.lastNameInputField = [self createInputField];
     
     self.lastNameInputField.text = self.appDelegate.currentUser.lastName;
     self.lastNameInputField.leftViewMode = UITextFieldViewModeAlways;
     self.lastNameInputField.leftView = [[UIImageView alloc] initWithImage: [UIImage imageNamed: @"IconFullname.png"]];
+    self.lastNameInputField.tag = 2;
+    self.lastNameInputField.delegate = self;
     
     [self.view addSubview:self.lastNameInputField];
     
@@ -145,7 +149,19 @@
     }];
 }
 
-
+-(BOOL)textFieldShouldReturn:(UITextField *)textField
+{
+    UIView* view = [self.view viewWithTag:textField.tag +1];
+    if(view)
+    {
+        [view becomeFirstResponder];
+    }
+    else
+    {
+        [textField resignFirstResponder];
+    }
+    return YES;
+}
 
 
 
@@ -153,7 +169,8 @@
 
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath
 {
-    
+    [self.inputField resignFirstResponder];
+    [self.lastNameInputField resignFirstResponder];
     [self.tableView reloadData];
     
     UITableViewCell* cell = [self.tableView cellForRowAtIndexPath:indexPath];
