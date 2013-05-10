@@ -1,8 +1,8 @@
-#import "_ChannelCover.h"
+#import "_CoverArt.h"
 
-@interface ChannelCover : _ChannelCover
+@interface CoverArt : _CoverArt
 
-+ (ChannelCover *) instanceFromDictionary: (NSDictionary *) dictionary
++ (CoverArt *) instanceFromDictionary: (NSDictionary *) dictionary
                 usingManagedObjectContext: (NSManagedObjectContext *) managedObjectContext
                                 andViewId: (NSString *) viewId;
 

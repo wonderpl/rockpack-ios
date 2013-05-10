@@ -8,7 +8,7 @@
 
 #import "SYNChannelCoverImageSelectorViewController.h"
 #import "SYNChannelCoverImageCell.h"
-#import "ChannelCover.h"
+#import "CoverArt.h"
 #import "UIImageView+ImageProcessing.h"
 #import <QuartzCore/QuartzCore.h>
 #import <AssetsLibrary/AssetsLibrary.h>
@@ -144,19 +144,19 @@ enum ChannelCoverSelectorState {
         else if (indexPath.row - 1 < [channelSectionInfo numberOfObjects])
         {
             indexPath = [NSIndexPath indexPathForRow:indexPath.row - 1 inSection:0];
-            ChannelCover *channelCover = [self.channelCoverFetchedResultsController objectAtIndexPath: [NSIndexPath indexPathForRow: indexPath.row
+            CoverArt *coverArt = [self.channelCoverFetchedResultsController objectAtIndexPath: [NSIndexPath indexPathForRow: indexPath.row
                                                                                                                           inSection: 0]];
             
-            [cell.channelCoverImageView setAsynchronousImageFromURL:[NSURL URLWithString:channelCover.carouselURL] placeHolderImage:nil];
+            [cell.channelCoverImageView setAsynchronousImageFromURL:[NSURL URLWithString:coverArt.carouselURL] placeHolderImage:nil];
             cell.glossImage.hidden = NO;
         }
         else
         {
             indexPath = [NSIndexPath indexPathForRow:indexPath.row - 1 - [channelSectionInfo numberOfObjects] inSection:0];
-            ChannelCover *channelCover = [self.userChannelCoverFetchedResultsController objectAtIndexPath: [NSIndexPath indexPathForRow: indexPath.row
+            CoverArt *coverArt = [self.userChannelCoverFetchedResultsController objectAtIndexPath: [NSIndexPath indexPathForRow: indexPath.row
                                                                                                                               inSection: 0]];
             
-            [cell.channelCoverImageView setAsynchronousImageFromURL:[NSURL URLWithString:channelCover.carouselURL] placeHolderImage:nil];
+            [cell.channelCoverImageView setAsynchronousImageFromURL:[NSURL URLWithString:coverArt.carouselURL] placeHolderImage:nil];
             cell.glossImage.hidden = NO;
         }
     }
@@ -246,18 +246,18 @@ enum ChannelCoverSelectorState {
                 if (indexPath.row - 1 < [channelSectionInfo numberOfObjects])
                 {
                     indexPath = [NSIndexPath indexPathForRow:indexPath.row - 1 inSection:0];
-                    ChannelCover *channelCover = [self.channelCoverFetchedResultsController objectAtIndexPath: [NSIndexPath indexPathForRow: indexPath.row
+                    CoverArt *coverArt = [self.channelCoverFetchedResultsController objectAtIndexPath: [NSIndexPath indexPathForRow: indexPath.row
                                                                                                                                   inSection: 0]];
-                    returnStringURL = channelCover.backgroundURL;
-                    returnCoverId = channelCover.coverRef;
+                    returnStringURL = coverArt.backgroundURL;
+                    returnCoverId = coverArt.coverRef;
                 }
                 else
                 {
                     indexPath = [NSIndexPath indexPathForRow:indexPath.row - 1 - [channelSectionInfo numberOfObjects] inSection:0];
-                    ChannelCover *channelCover = [self.userChannelCoverFetchedResultsController objectAtIndexPath: [NSIndexPath indexPathForRow: indexPath.row
+                    CoverArt *coverArt = [self.userChannelCoverFetchedResultsController objectAtIndexPath: [NSIndexPath indexPathForRow: indexPath.row
                                                                                                                                       inSection: 0]];
-                    returnStringURL = channelCover.backgroundURL;
-                    returnCoverId = channelCover.coverRef;
+                    returnStringURL = coverArt.backgroundURL;
+                    returnCoverId = coverArt.coverRef;
                 }
                 
             }

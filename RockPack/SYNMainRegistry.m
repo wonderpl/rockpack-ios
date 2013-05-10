@@ -7,7 +7,7 @@
 //
 
 #import "Channel.h"
-#import "ChannelCover.h"
+#import "CoverArt.h"
 #import "NSDictionary+Validation.h"
 #import "SYNAppDelegate.h"
 #import "SYNMainRegistry.h"
@@ -162,7 +162,7 @@
     
     // We need to mark all of our existing Category objects corresponding to this viewId, just in case they are no longer required
     // and should be removed in a post-import cleanup
-    NSArray *existingObjectsInViewId = [self markManagedObjectForPossibleDeletionWithEntityName: @"ChannelCover"
+    NSArray *existingObjectsInViewId = [self markManagedObjectForPossibleDeletionWithEntityName: @"CoverArt"
                                                                                       andViewId: viewId
                                                                          inManagedObjectContext: importManagedObjectContext];
     
@@ -170,7 +170,7 @@
     {
         if ([individualChannelCoverDictionary isKindOfClass: [NSDictionary class]])
         {
-            [ChannelCover instanceFromDictionary: individualChannelCoverDictionary
+            [CoverArt instanceFromDictionary: individualChannelCoverDictionary
                        usingManagedObjectContext: importManagedObjectContext
                                        andViewId: viewId];
         }

@@ -7,7 +7,7 @@
 //
 
 #import "Channel.h"
-#import "ChannelCover.h"
+#import "CoverArt.h"
 #import "ChannelOwner.h"
 #import "GKImagePicker.h"
 #import "Genre.h"
@@ -519,10 +519,10 @@
             case 1:
             {
                 // User channel covers
-                ChannelCover *channelCover = [self.userChannelCoverFetchedResultsController objectAtIndexPath: [NSIndexPath indexPathForRow: indexPath.row
+                CoverArt *coverArt = [self.userChannelCoverFetchedResultsController objectAtIndexPath: [NSIndexPath indexPathForRow: indexPath.row
                                                                                                         inSection: 0]];
                 
-                [coverThumbnailCell.coverImageView setImageWithURL: [NSURL URLWithString: channelCover.carouselURL]
+                [coverThumbnailCell.coverImageView setImageWithURL: [NSURL URLWithString: coverArt.carouselURL]
                                                   placeholderImage: [UIImage imageNamed: @"PlaceholderChannelCoverThumbnail.png"]
                                                            options: SDWebImageRetryFailed];
                 return coverThumbnailCell;
@@ -532,10 +532,10 @@
             case 2:
             {
                 // Rockpack channel covers
-                ChannelCover *channelCover = [self.channelCoverFetchedResultsController objectAtIndexPath: [NSIndexPath indexPathForRow: indexPath.row
+                CoverArt *coverArt = [self.channelCoverFetchedResultsController objectAtIndexPath: [NSIndexPath indexPathForRow: indexPath.row
                                                                                                                   inSection: 0]];
                 
-                [coverThumbnailCell.coverImageView setImageWithURL: [NSURL URLWithString: channelCover.carouselURL]
+                [coverThumbnailCell.coverImageView setImageWithURL: [NSURL URLWithString: coverArt.carouselURL]
                                                   placeholderImage: [UIImage imageNamed: @"PlaceholderChannelCoverThumbnail.png"]
                                                            options: SDWebImageRetryFailed];
                 return coverThumbnailCell;
@@ -599,18 +599,18 @@
             case 1:
             {
                 // User channel covers
-                ChannelCover *channelCover = [self.userChannelCoverFetchedResultsController objectAtIndexPath: [NSIndexPath indexPathForRow: indexPath.row
+                CoverArt *coverArt = [self.userChannelCoverFetchedResultsController objectAtIndexPath: [NSIndexPath indexPathForRow: indexPath.row
                                                                                                                                   inSection: 0]];
-                imageURLString = channelCover.backgroundURL;
+                imageURLString = coverArt.backgroundURL;
             }
             break;
                 
             case 2:
             {
                 // Rockpack channel covers
-                ChannelCover *channelCover = [self.channelCoverFetchedResultsController objectAtIndexPath: [NSIndexPath indexPathForRow: indexPath.row
+                CoverArt *coverArt = [self.channelCoverFetchedResultsController objectAtIndexPath: [NSIndexPath indexPathForRow: indexPath.row
                                                                                                                               inSection: 0]];
-                imageURLString = channelCover.backgroundURL;
+                imageURLString = coverArt.backgroundURL;
             }
             break;
                 
@@ -649,7 +649,7 @@
     NSFetchRequest *fetchRequest = [[NSFetchRequest alloc] init];
     
     
-    fetchRequest.entity = [NSEntityDescription entityForName: @"ChannelCover"
+    fetchRequest.entity = [NSEntityDescription entityForName: @"CoverArt"
                                       inManagedObjectContext: appDelegate.mainManagedObjectContext];
     
     
@@ -678,7 +678,7 @@
     
     NSFetchRequest *fetchRequest = [[NSFetchRequest alloc] init];
     
-    NSEntityDescription* entityDescription = [NSEntityDescription entityForName: @"ChannelCover"
+    NSEntityDescription* entityDescription = [NSEntityDescription entityForName: @"CoverArt"
                                                          inManagedObjectContext: appDelegate.mainManagedObjectContext];
     
     fetchRequest.entity = entityDescription;

@@ -1,18 +1,18 @@
-#import "ChannelCover.h"
+#import "CoverArt.h"
 #import "NSDictionary+Validation.h"
 
 static NSEntityDescription *channelCoverEntity = nil;
 
-@interface ChannelCover ()
+@interface CoverArt ()
 
 // Private interface goes here.
 
 @end
 
 
-@implementation ChannelCover
+@implementation CoverArt
 
-+ (ChannelCover *) instanceFromDictionary: (NSDictionary *) dictionary
++ (CoverArt *) instanceFromDictionary: (NSDictionary *) dictionary
                 usingManagedObjectContext: (NSManagedObjectContext *) managedObjectContext
                                 andViewId: (NSString *) viewId
 {
@@ -28,7 +28,7 @@ static NSEntityDescription *channelCoverEntity = nil;
         // Do once, and only once
         static dispatch_once_t oncePredicate;
         dispatch_once(&oncePredicate, ^{
-            channelCoverEntity = [NSEntityDescription entityForName: @"ChannelCover"
+            channelCoverEntity = [NSEntityDescription entityForName: @"CoverArt"
                                          inManagedObjectContext: managedObjectContext];
         });
     }
@@ -43,7 +43,7 @@ static NSEntityDescription *channelCoverEntity = nil;
     
     NSArray *matchingChannelCoverInstanceEntries = [managedObjectContext executeFetchRequest: channelCoverFetchRequest
                                                                                        error: &error];
-    ChannelCover *instance;
+    CoverArt *instance;
     
     if (matchingChannelCoverInstanceEntries.count > 0)
     {
@@ -56,7 +56,7 @@ static NSEntityDescription *channelCoverEntity = nil;
     }
     else
     {
-        instance = [ChannelCover insertInManagedObjectContext: managedObjectContext];
+        instance = [CoverArt insertInManagedObjectContext: managedObjectContext];
 
         [instance setAttributesFromDictionary: dictionary
                                        withId: uniqueId
