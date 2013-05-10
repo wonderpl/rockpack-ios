@@ -253,8 +253,12 @@
                 [dobController.datePicker addTarget:self
                                              action:@selector(datePickerValueChanged:)
                                    forControlEvents:UIControlEventValueChanged];
-                
-                [dobController.datePicker setDate:appDelegate.currentUser.dateOfBirth];
+                NSDate* date = [NSDate date];
+                if(appDelegate.currentUser.dateOfBirth)
+                {
+                    date = appDelegate.currentUser.dateOfBirth;
+                }
+                [dobController.datePicker setDate:date];
                 
                 if([[SYNDeviceManager sharedInstance] isIPad])
                 {
