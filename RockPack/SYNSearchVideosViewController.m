@@ -85,7 +85,8 @@
 -(void)performSearchWithTerm:(NSString*)term
 {
     
-    appDelegate = (SYNAppDelegate*)[[UIApplication sharedApplication] delegate];
+    if(!appDelegate)
+        appDelegate = (SYNAppDelegate*)[[UIApplication sharedApplication] delegate];
 
     [appDelegate.networkEngine searchVideosForTerm:term];
     

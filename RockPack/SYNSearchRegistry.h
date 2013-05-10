@@ -12,6 +12,6 @@
 @interface SYNSearchRegistry : SYNRegistry
 
 -(BOOL)registerVideosFromDictionary:(NSDictionary *)dictionary;
--(BOOL)registerChannelsFromDictionary:(NSDictionary *)dictionary andOwner:(ChannelOwner*)owner;
+-(BOOL)registerChannelsFromDictionary:(NSDictionary *)dictionary;
 
 @end
