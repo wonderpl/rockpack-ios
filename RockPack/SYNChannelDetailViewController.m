@@ -20,11 +20,11 @@
 #import "SYNCoverThumbnailCell.h"
 #import "SYNDeviceManager.h"
 #import "SYNOAuthNetworkEngine.h"
+#import "ChannelCover.h"
 #import "SYNPopoverBackgroundView.h"
 #import "SYNVideoThumbnailRegularCell.h"
 #import "SubGenre.h"
 #import "UIFont+SYNFont.h"
-#import "UIImageView+ImageProcessing.h"
 #import "UIImageView+WebCache.h"
 #import "Video.h"
 #import "VideoInstance.h"
@@ -57,26 +57,26 @@
 @property (nonatomic, strong) IBOutlet UIPopoverController *cameraMenuPopoverController;
 @property (nonatomic, strong) IBOutlet UIPopoverController *cameraPopoverController;
 @property (nonatomic, strong) IBOutlet UIView *avatarBackgroundView;
+@property (nonatomic, strong) IBOutlet UIView *channelTitleTextBackgroundView;
 @property (nonatomic, strong) IBOutlet UIView *coverChooserMasterView;
 @property (nonatomic, strong) IBOutlet UIView *displayControlsView;
 @property (nonatomic, strong) IBOutlet UIView *editControlsView;
 @property (nonatomic, strong) IBOutlet UIView *masterControlsView;
-@property (nonatomic, strong) IBOutlet UIView *channelTitleTextBackgroundView;
 @property (nonatomic, strong) NSFetchedResultsController *channelCoverFetchedResultsController;
 @property (nonatomic, strong) NSFetchedResultsController *userChannelCoverFetchedResultsController;
 @property (nonatomic, strong) SYNCategoriesTabViewController *categoriesTabViewController;
 @property (nonatomic, weak) Channel *channel;
-@property (weak, nonatomic) IBOutlet UILabel *byLabel;
 @property (nonatomic,strong) NSString* selectedCategoryId;
 @property (nonatomic,strong) NSString* selectedCoverId;
+@property (weak, nonatomic) IBOutlet UILabel *byLabel;
 
 //iPhone specific
-@property (weak, nonatomic) IBOutlet UIImageView *textBackgroundImageView;
-@property (weak, nonatomic) IBOutlet UIButton *cancelTextInputButton;
+@property (nonatomic,strong) AVURLAsset* selectedAsset;
+@property (nonatomic,strong) SYNChannelCoverImageSelectorViewController* coverImageSelector;
 @property (strong,nonatomic) SYNChannelCategoryTableViewController *categoryTableViewController;
 @property (weak, nonatomic) IBOutlet UIActivityIndicatorView *activityIndicator;
-@property (nonatomic,strong) SYNChannelCoverImageSelectorViewController* coverImageSelector;
-@property (nonatomic,strong) AVURLAsset* selectedAsset;
+@property (weak, nonatomic) IBOutlet UIButton *cancelTextInputButton;
+@property (weak, nonatomic) IBOutlet UIImageView *textBackgroundImageView;
 
 @end
 
@@ -144,7 +144,7 @@
     
     // Add a custom flow layout to our thumbail collection view (with the right size and spacing)
     LXReorderableCollectionViewFlowLayout *layout = [[LXReorderableCollectionViewFlowLayout alloc] init];
-    layout.itemSize = isIPhone?CGSizeMake(310.0f , 174.0f):CGSizeMake(249.0f , 141.0f);
+    layout.itemSize = isIPhone?CGSizeMake(310.0f , 175.0f):CGSizeMake(249.0f , 141.0f);
     layout.minimumInteritemSpacing = isIPhone ? 0.0f : 6.0f;
     layout.minimumLineSpacing = isIPhone ? 4.0f : 6.0f;
     
@@ -176,15 +176,16 @@
     [self.coverThumbnailCollectionView registerNib: coverThumbnailCellNib
                         forCellWithReuseIdentifier: @"SYNCoverThumbnailCell"];
     
+  
+    [self.channelCoverImageView setImageWithURL: [NSURL URLWithString: self.channel.channelCover.imageBackgroundUrl]
+                               placeholderImage: nil
+                                        options: SDWebImageRetryFailed];
+
     
-#warning Fix Loading
-    // Set wallpaper
-//    [self.channelCoverImageView setAsynchronousImageFromURL: [NSURL URLWithString: self.channel.wallpaperURL]
-//                                           placeHolderImage: nil];
-    
-    // Set wallpaper
-    [self.avatarImageView setAsynchronousImageFromURL: [NSURL URLWithString: self.channel.channelOwner.thumbnailURL]
-                                     placeHolderImage: [UIImage imageNamed:@"AvatarChannel.png"]];
+    // Set avatar
+    [self.avatarImageView setImageWithURL: [NSURL URLWithString: self.channel.channelOwner.thumbnailURL]
+                         placeholderImage: [UIImage imageNamed: @"AvatarChannel.png"]
+                                  options: SDWebImageRetryFailed];
     
 
     if(!isIPhone)
@@ -629,8 +630,9 @@
         }
         else
         {
-            [self.channelCoverImageView setAsynchronousImageFromURL: [NSURL URLWithString: imageURLString]
-                                                   placeHolderImage: nil];
+            [self.channelCoverImageView setImageWithURL: [NSURL URLWithString: imageURLString]
+                                       placeholderImage: nil
+                                                options: SDWebImageRetryFailed];
         }
     }
     else

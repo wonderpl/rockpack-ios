@@ -75,6 +75,10 @@
     
     __block BOOL cancelled = NO;
     
+//    [self.profileImageView setImageWithURL: [NSURL URLWithString: channelOwner.thumbnailURL]
+//                          placeholderImage: [UIImage imageNamed: @"AvatarProfile.png"]
+//                                   options: SDWebImageRetryFailed];
+    
     [self.imageView setAsynchronousImageFromURL: [NSURL URLWithString: imageURLString]
      completionHandler: ^(UIImage *fetchedImage, NSURL *url, BOOL isInCache)
      {         

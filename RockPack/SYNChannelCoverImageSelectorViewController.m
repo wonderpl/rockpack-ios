@@ -6,6 +6,7 @@
 //  Copyright (c) 2013 Nick Banks. All rights reserved.
 //
 
+
 #import "SYNChannelCoverImageSelectorViewController.h"
 #import "SYNChannelCoverImageCell.h"
 #import "CoverArt.h"
@@ -14,8 +15,16 @@
 #import <AssetsLibrary/AssetsLibrary.h>
 #import <AVFoundation/AVFoundation.h>
 #import "UIFont+SYNFont.h"
+#import "ChannelCover.h"
 #import "GKImageCropViewController.h"
 #import "GKImagePicker.h"
+#import "SYNChannelCoverImageCell.h"
+#import "SYNChannelCoverImageSelectorViewController.h"
+#import "UIFont+SYNFont.h"
+#import "UIImageView+WebCache.h"
+#import <AVFoundation/AVFoundation.h>
+#import <AssetsLibrary/AssetsLibrary.h>
+#import <QuartzCore/QuartzCore.h>
 
 enum ChannelCoverSelectorState {
     kChannelCoverDefault = 0,
@@ -146,8 +155,12 @@ enum ChannelCoverSelectorState {
             indexPath = [NSIndexPath indexPathForRow:indexPath.row - 1 inSection:0];
             CoverArt *coverArt = [self.channelCoverFetchedResultsController objectAtIndexPath: [NSIndexPath indexPathForRow: indexPath.row
                                                                                                                           inSection: 0]];
-            
-            [cell.channelCoverImageView setAsynchronousImageFromURL:[NSURL URLWithString:coverArt.thumbnailURL] placeHolderImage:nil];
+
+
+            [cell.channelCoverImageView setImageWithURL: [NSURL URLWithString: coverArt.thumbnailURL]
+                                       placeholderImage: [UIImage imageNamed: @"PlaceholderChannelCover.png"]
+                                                options: SDWebImageRetryFailed];
+
             cell.glossImage.hidden = NO;
         }
         else
@@ -156,7 +169,12 @@ enum ChannelCoverSelectorState {
             CoverArt *coverArt = [self.userChannelCoverFetchedResultsController objectAtIndexPath: [NSIndexPath indexPathForRow: indexPath.row
                                                                                                                               inSection: 0]];
             
-            [cell.channelCoverImageView setAsynchronousImageFromURL:[NSURL URLWithString:coverArt.thumbnailURL] placeHolderImage:nil];
+
+            [cell.channelCoverImageView setImageWithURL: [NSURL URLWithString: coverArt.thumbnailURL]
+                                       placeholderImage: [UIImage imageNamed: @"PlaceholderChannelCover.png"]
+                                                options: SDWebImageRetryFailed];
+            
+
             cell.glossImage.hidden = NO;
         }
     }

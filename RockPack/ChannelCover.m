@@ -67,7 +67,15 @@
 }
 -(NSString*)imageLargeUrl
 {
-    return [self.imageUrl stringByReplacingOccurrencesOfString:kImageSizeStringReplace withString:@"thumbnail_large"];;
+    return [self.imageUrl stringByReplacingOccurrencesOfString:kImageSizeStringReplace withString:@"thumbnail_large"];
+}
+-(NSString*)imageBackgroundUrl
+{
+    return [self.imageUrl stringByReplacingOccurrencesOfString:kImageSizeStringReplace withString:@"background"];
+}
+-(NSString*)imageBackgroundPortraitUrl
+{
+    return [self.imageUrl stringByReplacingOccurrencesOfString:kImageSizeStringReplace withString:@"background_portrait"];
 }
 -(CGPoint)imageRatioCenter
 {
