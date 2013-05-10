@@ -1,7 +1,10 @@
 #import "ChannelCover.h"
 #import "NSDictionary+Validation.h"
 
-static NSEntityDescription *channelCoverEntity = nil;
+#define kImageSizeStringReplace @"thumbnail_medium"
+
+#define kImageSizeStringReplace @"thumbnail_medium"
+#define kImageSizeStringReplace @"thumbnail_medium"
 
 @interface ChannelCover ()
 
@@ -12,95 +15,79 @@ static NSEntityDescription *channelCoverEntity = nil;
 
 @implementation ChannelCover
 
+@synthesize imageLargeUrl, imageMidiumUrl, imageSmallUrl;
+@synthesize imageRatioCenter;
+@synthesize cropFrameLandscape, cropFramePortrait;
+
 + (ChannelCover *) instanceFromDictionary: (NSDictionary *) dictionary
                 usingManagedObjectContext: (NSManagedObjectContext *) managedObjectContext
-                                andViewId: (NSString *) viewId
 {
-    NSError *error = nil;
+    if (![dictionary isKindOfClass: [NSDictionary class]])
+        return nil;
     
-    // Get the unique id of this object from the dictionary that has been passed in
-    NSString *uniqueId = [dictionary objectForKey: @"id"
-                                      withDefault: @"Uninitialized Id"];
     
-    // Only create an entity description once, should increase performance
-    if (channelCoverEntity == nil)
+    ChannelCover* instance = [ChannelCover insertInManagedObjectContext:managedObjectContext];
+    
+    // example: protocol:http url:media.dev.rockpack.com/images/channel/thumbnail_medium/0f56V2vz5QpNotonBaRX2Q.jpg
+    instance.imageUrl = [dictionary objectForKey:@"thumbnail_url" withDefault:@"http://localhost/no_thumb.jpg"];
+    
+    
+    
+    NSArray* aoiArray = [dictionary objectForKey:@"aoi"];
+    if(aoiArray && [aoiArray isKindOfClass:[NSArray class]]) // can be nil
     {
-        // Do once, and only once
-        static dispatch_once_t oncePredicate;
-        dispatch_once(&oncePredicate, ^{
-            channelCoverEntity = [NSEntityDescription entityForName: @"ChannelCover"
-                                         inManagedObjectContext: managedObjectContext];
-        });
-    }
-    
-    // Now we need to see if this object already exists, and if so return it and if not create it
-    NSFetchRequest *channelCoverFetchRequest = [[NSFetchRequest alloc] init];
-    channelCoverFetchRequest.entity = channelCoverEntity;
-    
-    // Search on the unique Id
-    NSPredicate *predicate = [NSPredicate predicateWithFormat: @"uniqueId == %@ AND viewId == %@", uniqueId, viewId];
-    channelCoverFetchRequest.predicate = predicate;
-    
-    NSArray *matchingChannelCoverInstanceEntries = [managedObjectContext executeFetchRequest: channelCoverFetchRequest
-                                                                                       error: &error];
-    ChannelCover *instance;
-    
-    if (matchingChannelCoverInstanceEntries.count > 0)
-    {
-        instance = matchingChannelCoverInstanceEntries [0];
-        
-        // Mark this object so that it is not deleted in the post-import step
-        instance.markedForDeletionValue = FALSE;
-        NSLog (@"CoverArt reused");
-        return instance;
+        NSLog(@"* AOI: %@", aoiArray);
+        instance.startU = (NSNumber*)aoiArray[0];
+        instance.startV = (NSNumber*)aoiArray[1];
+        instance.endU = (NSNumber*)aoiArray[2];
+        instance.endV = (NSNumber*)aoiArray[3];
     }
     else
     {
-        instance = [ChannelCover insertInManagedObjectContext: managedObjectContext];
-
-        [instance setAttributesFromDictionary: dictionary
-                                       withId: uniqueId
-                    usingManagedObjectContext: managedObjectContext
-                                    andViewId: viewId];
-        NSLog (@"CoverArt created");
-        return instance;
-    }
-}
-
-
-- (void) setAttributesFromDictionary: (NSDictionary *) dictionary
-                              withId: (NSString *) uniqueId
-           usingManagedObjectContext: (NSManagedObjectContext *) managedObjectContext
-                           andViewId: (NSString *) viewId
-{
-    // Is we are not actually a dictionary, then bail
-    if (![dictionary isKindOfClass: [NSDictionary class]])
-    {
-        AssertOrLog (@"setAttributesFromDictionary: not a dictionary, unable to construct object");
-        return;
+        // map to the whole image
+        instance.startU = [NSNumber numberWithFloat:0.0];
+        instance.startV = [NSNumber numberWithFloat:0.0];
+        instance.endU = [NSNumber numberWithFloat:1.0];
+        instance.endV = [NSNumber numberWithFloat:1.0];
     }
     
-    // Simple objects
-    self.uniqueId = uniqueId;
-    self.viewId = viewId;
-    self.backgroundURL = [dictionary objectForKey: @"background_url"
-                                      withDefault: @"http://localhost"];
+    return instance;
     
-	self.carouselURL = [dictionary objectForKey: @"carousel_url"
-                                    withDefault: @"http://localhost"];
-    
-	self.coverRef = [dictionary objectForKey: @"cover_ref"
-                                 withDefault: @"Uninitialized coverRef"];
-    
-    self.position = [dictionary objectForKey: @"position"
-                                 withDefault: [NSNumber numberWithInt: 0]];
 }
 
 
-- (NSString *) description
+
+-(NSString*)imageSmallUrl
 {
-    return [NSString stringWithFormat: @"ChannelCover: uniqueId(%@), viewId (%@), backgroundURL(%@), carouselURL (%@), coverRef(%@),  position(%@)", self.uniqueId, self.viewId, self.backgroundURL, self.carouselURL, self.coverRef, self.position];
+    return [self.imageUrl stringByReplacingOccurrencesOfString:kImageSizeStringReplace withString:@"thumbnail_small"];
 }
-
+-(NSString*)imageMidiumUrl
+{
+    return self.imageUrl; // by default it is set for medium
+}
+-(NSString*)imageLargeUrl
+{
+    return [self.imageUrl stringByReplacingOccurrencesOfString:kImageSizeStringReplace withString:@"thumbnail_large"];
+}
+-(NSString*)imageBackgroundUrl
+{
+    return [self.imageUrl stringByReplacingOccurrencesOfString:kImageSizeStringReplace withString:@"background"];
+}
+-(NSString*)imageBackgroundPortraitUrl
+{
+    return [self.imageUrl stringByReplacingOccurrencesOfString:kImageSizeStringReplace withString:@"background_portrait"];
+}
+-(CGPoint)imageRatioCenter
+{
+    return CGPointMake((self.startUValue + self.endUValue) / 2, (self.startVValue + self.endVValue) / 2);
+}
+-(CGRect)cropFrameLandscape
+{
+    return CGRectZero;
+}
+-(CGRect)cropFramePortrait
+{
+    return CGRectZero;
+}
 
 @end

@@ -30,7 +30,7 @@ static char operationKey;
 
 - (void)setImageWithURL:(NSURL *)url completed:(SDWebImageCompletedBlock)completedBlock
 {
-    [self setImageWithURL:url placeholderImage:nil options:0 progress:nil completed:completedBlock];
+    [self setImageWithURL:url placeholderImage:nil options:SDWebImageRetryFailed progress:nil completed:completedBlock];
 }
 
 - (void)setImageWithURL:(NSURL *)url placeholderImage:(UIImage *)placeholder completed:(SDWebImageCompletedBlock)completedBlock

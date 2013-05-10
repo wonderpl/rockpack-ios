@@ -2,26 +2,24 @@
 // Make changes to ChannelCover.h instead.
 
 #import <CoreData/CoreData.h>
-#import "AbstractCommon.h"
+
 
 extern const struct ChannelCoverAttributes {
-	__unsafe_unretained NSString *backgroundURL;
-	__unsafe_unretained NSString *carouselURL;
-	__unsafe_unretained NSString *coverRef;
-	__unsafe_unretained NSString *offsetX;
-	__unsafe_unretained NSString *offsetY;
-	__unsafe_unretained NSString *position;
-	__unsafe_unretained NSString *viewId;
+	__unsafe_unretained NSString *endU;
+	__unsafe_unretained NSString *endV;
+	__unsafe_unretained NSString *imageUrl;
+	__unsafe_unretained NSString *startU;
+	__unsafe_unretained NSString *startV;
 } ChannelCoverAttributes;
 
 extern const struct ChannelCoverRelationships {
+	__unsafe_unretained NSString *channel;
 } ChannelCoverRelationships;
 
 extern const struct ChannelCoverFetchedProperties {
 } ChannelCoverFetchedProperties;
 
-
-
+@class Channel;
 
 
 
@@ -32,7 +30,7 @@ extern const struct ChannelCoverFetchedProperties {
 @interface ChannelCoverID : NSManagedObjectID {}
 @end
 
-@interface _ChannelCover : AbstractCommon {}
+@interface _ChannelCover : NSManagedObject {}
 + (id)insertInManagedObjectContext:(NSManagedObjectContext*)moc_;
 + (NSString*)entityName;
 + (NSEntityDescription*)entityInManagedObjectContext:(NSManagedObjectContext*)moc_;
@@ -42,84 +40,75 @@ extern const struct ChannelCoverFetchedProperties {
 
 
 
-@property (nonatomic, strong) NSString* backgroundURL;
+@property (nonatomic, strong) NSNumber* endU;
 
 
 
-//- (BOOL)validateBackgroundURL:(id*)value_ error:(NSError**)error_;
+@property float endUValue;
+- (float)endUValue;
+- (void)setEndUValue:(float)value_;
 
-
-
-
-
-@property (nonatomic, strong) NSString* carouselURL;
-
-
-
-//- (BOOL)validateCarouselURL:(id*)value_ error:(NSError**)error_;
+//- (BOOL)validateEndU:(id*)value_ error:(NSError**)error_;
 
 
 
 
 
-@property (nonatomic, strong) NSString* coverRef;
+@property (nonatomic, strong) NSNumber* endV;
 
 
 
-//- (BOOL)validateCoverRef:(id*)value_ error:(NSError**)error_;
+@property float endVValue;
+- (float)endVValue;
+- (void)setEndVValue:(float)value_;
 
-
-
-
-
-@property (nonatomic, strong) NSNumber* offsetX;
-
-
-
-@property float offsetXValue;
-- (float)offsetXValue;
-- (void)setOffsetXValue:(float)value_;
-
-//- (BOOL)validateOffsetX:(id*)value_ error:(NSError**)error_;
+//- (BOOL)validateEndV:(id*)value_ error:(NSError**)error_;
 
 
 
 
 
-@property (nonatomic, strong) NSNumber* offsetY;
+@property (nonatomic, strong) NSString* imageUrl;
 
 
 
-@property float offsetYValue;
-- (float)offsetYValue;
-- (void)setOffsetYValue:(float)value_;
-
-//- (BOOL)validateOffsetY:(id*)value_ error:(NSError**)error_;
+//- (BOOL)validateImageUrl:(id*)value_ error:(NSError**)error_;
 
 
 
 
 
-@property (nonatomic, strong) NSNumber* position;
+@property (nonatomic, strong) NSNumber* startU;
 
 
 
-@property int64_t positionValue;
-- (int64_t)positionValue;
-- (void)setPositionValue:(int64_t)value_;
+@property float startUValue;
+- (float)startUValue;
+- (void)setStartUValue:(float)value_;
 
-//- (BOOL)validatePosition:(id*)value_ error:(NSError**)error_;
-
-
+//- (BOOL)validateStartU:(id*)value_ error:(NSError**)error_;
 
 
 
-@property (nonatomic, strong) NSString* viewId;
+
+
+@property (nonatomic, strong) NSNumber* startV;
 
 
 
-//- (BOOL)validateViewId:(id*)value_ error:(NSError**)error_;
+@property float startVValue;
+- (float)startVValue;
+- (void)setStartVValue:(float)value_;
 
+//- (BOOL)validateStartV:(id*)value_ error:(NSError**)error_;
+
+
+
+
+
+@property (nonatomic, strong) Channel *channel;
+
+//- (BOOL)validateChannel:(id*)value_ error:(NSError**)error_;
 
 
 
@@ -134,55 +123,51 @@ extern const struct ChannelCoverFetchedProperties {
 @interface _ChannelCover (CoreDataGeneratedPrimitiveAccessors)
 
 
-- (NSString*)primitiveBackgroundURL;
-- (void)setPrimitiveBackgroundURL:(NSString*)value;
+- (NSNumber*)primitiveEndU;
+- (void)setPrimitiveEndU:(NSNumber*)value;
+
+- (float)primitiveEndUValue;
+- (void)setPrimitiveEndUValue:(float)value_;
 
 
 
 
-- (NSString*)primitiveCarouselURL;
-- (void)setPrimitiveCarouselURL:(NSString*)value;
+- (NSNumber*)primitiveEndV;
+- (void)setPrimitiveEndV:(NSNumber*)value;
+
+- (float)primitiveEndVValue;
+- (void)setPrimitiveEndVValue:(float)value_;
 
 
 
 
-- (NSString*)primitiveCoverRef;
-- (void)setPrimitiveCoverRef:(NSString*)value;
+- (NSString*)primitiveImageUrl;
+- (void)setPrimitiveImageUrl:(NSString*)value;
 
 
 
 
-- (NSNumber*)primitiveOffsetX;
-- (void)setPrimitiveOffsetX:(NSNumber*)value;
+- (NSNumber*)primitiveStartU;
+- (void)setPrimitiveStartU:(NSNumber*)value;
 
-- (float)primitiveOffsetXValue;
-- (void)setPrimitiveOffsetXValue:(float)value_;
-
-
-
-
-- (NSNumber*)primitiveOffsetY;
-- (void)setPrimitiveOffsetY:(NSNumber*)value;
-
-- (float)primitiveOffsetYValue;
-- (void)setPrimitiveOffsetYValue:(float)value_;
+- (float)primitiveStartUValue;
+- (void)setPrimitiveStartUValue:(float)value_;
 
 
 
 
-- (NSNumber*)primitivePosition;
-- (void)setPrimitivePosition:(NSNumber*)value;
+- (NSNumber*)primitiveStartV;
+- (void)setPrimitiveStartV:(NSNumber*)value;
 
-- (int64_t)primitivePositionValue;
-- (void)setPrimitivePositionValue:(int64_t)value_;
-
-
+- (float)primitiveStartVValue;
+- (void)setPrimitiveStartVValue:(float)value_;
 
 
-- (NSString*)primitiveViewId;
-- (void)setPrimitiveViewId:(NSString*)value;
 
 
+
+- (Channel*)primitiveChannel;
+- (void)setPrimitiveChannel:(Channel*)value;
 
 
 @end

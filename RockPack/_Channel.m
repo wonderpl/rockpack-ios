@@ -6,8 +6,6 @@
 const struct ChannelAttributes ChannelAttributes = {
 	.categoryId = @"categoryId",
 	.channelDescription = @"channelDescription",
-	.coverThumbnailLargeURL = @"coverThumbnailLargeURL",
-	.coverThumbnailSmallURL = @"coverThumbnailSmallURL",
 	.eCommerceURL = @"eCommerceURL",
 	.lastUpdated = @"lastUpdated",
 	.popular = @"popular",
@@ -17,10 +15,10 @@ const struct ChannelAttributes ChannelAttributes = {
 	.subscribersCount = @"subscribersCount",
 	.title = @"title",
 	.viewId = @"viewId",
-	.wallpaperURL = @"wallpaperURL",
 };
 
 const struct ChannelRelationships ChannelRelationships = {
+	.channelCover = @"channelCover",
 	.channelOwner = @"channelOwner",
 	.subscribers = @"subscribers",
 	.videoInstances = @"videoInstances",
@@ -90,20 +88,6 @@ const struct ChannelFetchedProperties ChannelFetchedProperties = {
 
 
 @dynamic channelDescription;
-
-
-
-
-
-
-@dynamic coverThumbnailLargeURL;
-
-
-
-
-
-
-@dynamic coverThumbnailSmallURL;
 
 
 
@@ -249,12 +233,9 @@ const struct ChannelFetchedProperties ChannelFetchedProperties = {
 
 
 
-@dynamic wallpaperURL;
+@dynamic channelCover;
 
-
-
-
-
+	
 
 @dynamic channelOwner;
 

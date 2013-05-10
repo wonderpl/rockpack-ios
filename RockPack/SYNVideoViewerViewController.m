@@ -14,6 +14,7 @@
 #import "SYNDeviceManager.h"
 #import "SYNMasterViewController.h"
 #import "SYNOAuthNetworkEngine.h"
+#import "ChannelCover.h"
 #import "SYNPassthroughView.h"
 #import "SYNVideoPlaybackViewController.h"
 #import "SYNVideoThumbnailSmallCell.h"
@@ -172,10 +173,12 @@
     [self.swipeView addGestureRecognizer: tapRecogniser];
     
     VideoInstance *videoInstance = self.videoInstanceArray [self.currentSelectedIndex];
+
     
-    [self.channelThumbnailImageView setImageWithURL: [NSURL URLWithString: videoInstance.channel.coverThumbnailSmallURL]
+    [self.channelThumbnailImageView setImageWithURL: [NSURL URLWithString: videoInstance.channel.channelCover.imageSmallUrl]
                                    placeholderImage: nil
                                             options: SDWebImageRetryFailed];
+
 }
 
 
@@ -290,10 +293,12 @@
     
     // Now set the channel thumbail for the new
     VideoInstance *videoInstance = self.videoInstanceArray [currentSelectedIndex];
+
     
-    [self.channelThumbnailImageView setImageWithURL: [NSURL URLWithString: videoInstance.channel.coverThumbnailSmallURL]
+    [self.channelThumbnailImageView setImageWithURL: [NSURL URLWithString: videoInstance.channel.channelCover.imageSmallUrl]
                                    placeholderImage: nil
                                             options: SDWebImageRetryFailed];
+
 }
 
 

@@ -8,6 +8,7 @@
 
 #import <Foundation/Foundation.h>
 #import "SYNRegistry.h"
+#import "Genre.h"
 
 @interface SYNMainRegistry : SYNRegistry
 
@@ -20,6 +21,7 @@
 - (BOOL) registerChannelFromDictionary: (NSDictionary*) dictionary;
 
 - (BOOL) registerNewChannelScreensFromDictionary: (NSDictionary *) dictionary
+                                        forGenre: (Genre *) genre
                                      byAppending: (BOOL) append;
 
 - (BOOL) registerUserFromDictionary: (NSDictionary*) dictionary;

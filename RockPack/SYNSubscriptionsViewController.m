@@ -8,6 +8,7 @@
 
 #import "AppConstants.h"
 #import "Channel.h"
+#import "ChannelCover.h"
 #import "SYNChannelMidCell.h"
 #import "SYNIntegralCollectionViewFlowLayout.h"
 #import "SYNSubscriptionsViewController.h"
@@ -90,8 +91,8 @@
     
     SYNChannelMidCell *channelThumbnailCell = [cv dequeueReusableCellWithReuseIdentifier: @"SYNChannelMidCell"
                                                                             forIndexPath: indexPath];
-    
-    [channelThumbnailCell.imageView setImageWithURL: [NSURL URLWithString: channel.coverThumbnailLargeURL]
+
+    [channelThumbnailCell.imageView setImageWithURL: [NSURL URLWithString: channel.channelCover.imageLargeUrl]
                                    placeholderImage: [UIImage imageNamed: @"PlaceholderChannelThumbnailMid.png"]
                                             options: SDWebImageRetryFailed];
     

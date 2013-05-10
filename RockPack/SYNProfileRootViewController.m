@@ -9,6 +9,7 @@
 #import "Channel.h"
 #import "SYNChannelDetailViewController.h"
 #import "SYNChannelMidCell.h"
+#import "ChannelCover.h"
 #import "SYNChannelThumbnailCell.h"
 #import "SYNDeletionWobbleLayout.h"
 #import "SYNDeviceManager.h"
@@ -658,8 +659,8 @@
     SYNChannelMidCell *channelThumbnailCell = [collectionView dequeueReusableCellWithReuseIdentifier: @"SYNChannelMidCell"
                                                                                         forIndexPath: indexPath];
     
-    
-    [channelThumbnailCell.imageView setImageWithURL: [NSURL URLWithString: channel.coverThumbnailLargeURL]
+
+    [channelThumbnailCell.imageView setImageWithURL: [NSURL URLWithString: channel.channelCover.imageLargeUrl]
                                    placeholderImage: [UIImage imageNamed: @"PlaceholderChannelThumbnailMid.png"]
                                             options: SDWebImageRetryFailed];
     

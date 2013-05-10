@@ -7,8 +7,6 @@
 extern const struct ChannelAttributes {
 	__unsafe_unretained NSString *categoryId;
 	__unsafe_unretained NSString *channelDescription;
-	__unsafe_unretained NSString *coverThumbnailLargeURL;
-	__unsafe_unretained NSString *coverThumbnailSmallURL;
 	__unsafe_unretained NSString *eCommerceURL;
 	__unsafe_unretained NSString *lastUpdated;
 	__unsafe_unretained NSString *popular;
@@ -18,10 +16,10 @@ extern const struct ChannelAttributes {
 	__unsafe_unretained NSString *subscribersCount;
 	__unsafe_unretained NSString *title;
 	__unsafe_unretained NSString *viewId;
-	__unsafe_unretained NSString *wallpaperURL;
 } ChannelAttributes;
 
 extern const struct ChannelRelationships {
+	__unsafe_unretained NSString *channelCover;
 	__unsafe_unretained NSString *channelOwner;
 	__unsafe_unretained NSString *subscribers;
 	__unsafe_unretained NSString *videoInstances;
@@ -30,12 +28,10 @@ extern const struct ChannelRelationships {
 extern const struct ChannelFetchedProperties {
 } ChannelFetchedProperties;
 
+@class ChannelCover;
 @class ChannelOwner;
 @class ChannelOwner;
 @class VideoInstance;
-
-
-
 
 
 
@@ -77,26 +73,6 @@ extern const struct ChannelFetchedProperties {
 
 
 //- (BOOL)validateChannelDescription:(id*)value_ error:(NSError**)error_;
-
-
-
-
-
-@property (nonatomic, strong) NSString* coverThumbnailLargeURL;
-
-
-
-//- (BOOL)validateCoverThumbnailLargeURL:(id*)value_ error:(NSError**)error_;
-
-
-
-
-
-@property (nonatomic, strong) NSString* coverThumbnailSmallURL;
-
-
-
-//- (BOOL)validateCoverThumbnailSmallURL:(id*)value_ error:(NSError**)error_;
 
 
 
@@ -208,12 +184,9 @@ extern const struct ChannelFetchedProperties {
 
 
 
-@property (nonatomic, strong) NSString* wallpaperURL;
+@property (nonatomic, strong) ChannelCover *channelCover;
 
-
-
-//- (BOOL)validateWallpaperURL:(id*)value_ error:(NSError**)error_;
-
+//- (BOOL)validateChannelCover:(id*)value_ error:(NSError**)error_;
 
 
 
@@ -267,18 +240,6 @@ extern const struct ChannelFetchedProperties {
 
 - (NSString*)primitiveChannelDescription;
 - (void)setPrimitiveChannelDescription:(NSString*)value;
-
-
-
-
-- (NSString*)primitiveCoverThumbnailLargeURL;
-- (void)setPrimitiveCoverThumbnailLargeURL:(NSString*)value;
-
-
-
-
-- (NSString*)primitiveCoverThumbnailSmallURL;
-- (void)setPrimitiveCoverThumbnailSmallURL:(NSString*)value;
 
 
 
@@ -349,10 +310,9 @@ extern const struct ChannelFetchedProperties {
 
 
 
-- (NSString*)primitiveWallpaperURL;
-- (void)setPrimitiveWallpaperURL:(NSString*)value;
 
-
+- (ChannelCover*)primitiveChannelCover;
+- (void)setPrimitiveChannelCover:(ChannelCover*)value;
 
 
 

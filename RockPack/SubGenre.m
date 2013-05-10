@@ -93,7 +93,7 @@ static NSEntityDescription *subcategoryEntity = nil;
 
 - (NSString *) description
 {
-    return [NSString stringWithFormat: @"Category(%@) name: %@", self.uniqueId, self.name];
+    return [NSString stringWithFormat: @"SubGenre(categoryId:'%@', name:'%@')", self.uniqueId, self.name];
 }
 
 @end

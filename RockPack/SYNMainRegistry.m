@@ -6,13 +6,13 @@
 //  Copyright (c) 2013 Nick Banks. All rights reserved.
 //
 
-#import "Genre.h"
 #import "Channel.h"
-#import "ChannelCover.h"
+#import "CoverArt.h"
 #import "NSDictionary+Validation.h"
 #import "SYNAppDelegate.h"
 #import "SYNMainRegistry.h"
 #import "VideoInstance.h"
+#import "Genre.h"
 #import "AppConstants.h"
 #import <CoreData/CoreData.h>
 
@@ -162,7 +162,7 @@
     
     // We need to mark all of our existing Category objects corresponding to this viewId, just in case they are no longer required
     // and should be removed in a post-import cleanup
-    NSArray *existingObjectsInViewId = [self markManagedObjectForPossibleDeletionWithEntityName: @"ChannelCover"
+    NSArray *existingObjectsInViewId = [self markManagedObjectForPossibleDeletionWithEntityName: @"CoverArt"
                                                                                       andViewId: viewId
                                                                          inManagedObjectContext: importManagedObjectContext];
     
@@ -170,7 +170,7 @@
     {
         if ([individualChannelCoverDictionary isKindOfClass: [NSDictionary class]])
         {
-            [ChannelCover instanceFromDictionary: individualChannelCoverDictionary
+            [CoverArt instanceFromDictionary: individualChannelCoverDictionary
                        usingManagedObjectContext: importManagedObjectContext
                                        andViewId: viewId];
         }
@@ -267,6 +267,7 @@
 
 
 - (BOOL) registerNewChannelScreensFromDictionary: (NSDictionary *) dictionary
+                                        forGenre: (Genre*) genre
                                      byAppending: (BOOL) append {
     
     
@@ -292,13 +293,31 @@
                                                 inManagedObjectContext: importManagedObjectContext]];
     
     
-    NSDictionary *firstItem = [itemArray objectAtIndex:0];
+    NSPredicate* notOwnedByUserPredicate = [NSPredicate predicateWithFormat:@"channelOwner.uniqueId != %@", appDelegate.currentUser.uniqueId];
+    NSPredicate* genrePredicate;
+    NSPredicate* finalPredicate;
     
-    NSString* heuristicCategoryId = [firstItem objectForKey:@"category"];
+    if(!genre)
+    {
+        finalPredicate = notOwnedByUserPredicate; // if the all genre is selected then get all channels
+    }
+    else
+    {
+        if([genre isMemberOfClass:[Genre class]])
+        {
+            genrePredicate = [NSPredicate predicateWithFormat:@"categoryId IN %@", [genre getSubGenreIdArray]];
+        }
+        else
+        {
+            genrePredicate = [NSPredicate predicateWithFormat:@"categoryId == %@", genre.uniqueId];
+        }
+        
+        finalPredicate = [NSCompoundPredicate andPredicateWithSubpredicates:@[genrePredicate, notOwnedByUserPredicate]];
     
-    NSPredicate* predicate = [NSPredicate predicateWithFormat: @"(viewId == %@)", kChannelsViewId, heuristicCategoryId];
-    
-    [channelFetchRequest setPredicate: predicate];
+        
+    }
+
+    [channelFetchRequest setPredicate: finalPredicate];
     
     
     NSError* error;
@@ -311,12 +330,16 @@
     for (Channel* existingChannel in matchingChannelEntries)
     {
         
-        NSLog(@" - Channel: %@ (%@)", existingChannel.title, existingChannel.categoryId);
+        // NSLog(@" - Channel: %@ (%@)", existingChannel.title, existingChannel.categoryId);
         [existingChannelsByIndex setObject:existingChannel forKey:existingChannel.uniqueId];
-        ((AbstractCommon *)existingChannel).markedForDeletionValue = YES;
+        
+        if(genre && !append)
+            existingChannel.markedForDeletionValue = YES; // if a real genre is passed - delete the old objects
+        else
+            existingChannel.popularValue = NO; // if the 'all' genre is selected don't delete because this view is composed from all other genres
     }
     
-    Channel* existingChannelMatch;
+    BOOL createdAnew = NO;
     for (NSDictionary *itemDictionary in itemArray)
     {
         
@@ -324,35 +347,36 @@
         if(!uniqueId)
             continue;
         
-        if((existingChannelMatch = [existingChannelsByIndex objectForKey:uniqueId]))
-        {
-            //NSLog(@"Found (title:%@)", existingChannelMatch.title);
-            ((AbstractCommon *)existingChannelMatch).markedForDeletionValue = NO;
-            continue;
-        }
-            
+        Channel* channel;
         
-        if ([itemDictionary isKindOfClass: [NSDictionary class]])
+        channel = [existingChannelsByIndex objectForKey:uniqueId];
+        
+        if(!channel)
         {
-            
-            [Channel instanceFromDictionary: itemDictionary
-                  usingManagedObjectContext: importManagedObjectContext
-                        ignoringObjectTypes: kIgnoreStoredObjects
-                                  andViewId: kChannelsViewId];
+            channel = [Channel instanceFromDictionary: itemDictionary
+                            usingManagedObjectContext: importManagedObjectContext
+                                  ignoringObjectTypes: kIgnoreStoredObjects
+                                            andViewId: kChannelsViewId];
+            createdAnew = YES;
         }
-            
+       
+        
+        channel.markedForDeletionValue = NO;
+        
+        channel.position = [itemDictionary objectForKey: @"position"
+                                            withDefault: [NSNumber numberWithInt: 0]];
+        
+        if(!genre)
+            channel.popularValue = YES;
+        
+        NSLog(@"* Created%@ channel %@ categoryId: %@", (createdAnew ? @" (NEW)" : @""),channel.title, channel.categoryId);
+        
+        createdAnew = NO;
     }
-        
     
 
-
-    if(!append)
-    {
-        
-        [self removeUnusedManagedObjects: matchingChannelEntries
-                  inManagedObjectContext: importManagedObjectContext];
-        
-    }
+    [self removeUnusedManagedObjects: matchingChannelEntries
+              inManagedObjectContext: importManagedObjectContext];
     
     
     BOOL saveResult = [self saveImportContext];
@@ -410,11 +434,11 @@
     if(!managedObjects)
         return;
     
-    [managedObjects enumerateObjectsUsingBlock: ^(id managedObject, NSUInteger idx, BOOL *stop)
-     {
-         if (((AbstractCommon *)managedObject).markedForDeletionValue == TRUE)
+    [managedObjects enumerateObjectsUsingBlock: ^(AbstractCommon* managedObject, NSUInteger idx, BOOL *stop)
+    {
+         if (managedObject.markedForDeletionValue)
          {
-             [managedObjectContext deleteObject: (NSManagedObject *)managedObject];
+             [managedObjectContext deleteObject:managedObject];
              // DebugLog (@"Deleted NSManagedObject that is no longer used after import");
          }
      }];
