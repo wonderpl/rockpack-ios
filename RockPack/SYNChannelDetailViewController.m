@@ -69,6 +69,7 @@
 @property (nonatomic,strong) NSString* selectedCategoryId;
 @property (nonatomic,strong) NSString* selectedCoverId;
 @property (weak, nonatomic) IBOutlet UILabel *byLabel;
+@property (nonatomic, strong) IBOutlet UIButton* profileImageButton;
 
 @property (nonatomic, strong) id<SDWebImageOperation> currentWebImageOperation;
 
@@ -145,10 +146,7 @@
     self.channelTitleTextView.delegate = self;
     
     
-    [self.channelTitleTextView addObserver: self
-                                forKeyPath: kTextViewContentSizeKey
-                                   options: NSKeyValueObservingOptionNew
-                                   context: NULL];
+    
 
     
     // Shadow for avatar background
@@ -200,6 +198,8 @@
     [self.avatarImageView setImageWithURL: [NSURL URLWithString: self.channel.channelOwner.thumbnailURL]
                          placeholderImage: [UIImage imageNamed: @"AvatarChannel.png"]
                                   options: SDWebImageRetryFailed];
+    
+    
     
 
     if(!isIPhone)
@@ -311,6 +311,11 @@
                                         forKeyPath: kCollectionViewContentOffsetKey
                                            options: NSKeyValueObservingOptionNew
                                            context: nil];
+    
+    [self.channelTitleTextView addObserver: self
+                                forKeyPath: kTextViewContentSizeKey
+                                   options: NSKeyValueObservingOptionNew
+                                   context: NULL];
     
     if ([self.channel.subscribedByUser boolValue])
     {
@@ -906,6 +911,10 @@
                                                       userInfo: @{ kChannel : self.channel }];
 }
 
+-(IBAction)profileImagePressed:(UIButton*)sender
+{
+    [self viewProfileDetails:self.channel.channelOwner];
+}
 
 - (void) videoAddButtonTapped: (UIButton *) addButton
 {
