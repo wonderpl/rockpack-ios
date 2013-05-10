@@ -27,11 +27,11 @@
         <relationship name="videoInstances" optional="YES" toMany="YES" deletionRule="Nullify" ordered="YES" destinationEntity="VideoInstance" inverseName="channel" inverseEntity="VideoInstance" syncable="YES"/>
     </entity>
     <entity name="ChannelCover" representedClassName="ChannelCover" syncable="YES">
-        <attribute name="bottomRightX" optional="YES" attributeType="Float" defaultValueString="0.0" syncable="YES"/>
-        <attribute name="bottomRightY" optional="YES" attributeType="Float" defaultValueString="0.0" syncable="YES"/>
+        <attribute name="endU" optional="YES" attributeType="Float" defaultValueString="0.0" syncable="YES"/>
+        <attribute name="endV" optional="YES" attributeType="Float" defaultValueString="0.0" syncable="YES"/>
         <attribute name="imageUrl" optional="YES" attributeType="String" syncable="YES"/>
-        <attribute name="topLeftX" optional="YES" attributeType="Float" defaultValueString="0.0" syncable="YES"/>
-        <attribute name="topLeftY" optional="YES" attributeType="Float" defaultValueString="0.0" syncable="YES"/>
+        <attribute name="startU" optional="YES" attributeType="Float" defaultValueString="0.0" syncable="YES"/>
+        <attribute name="startV" optional="YES" attributeType="Float" defaultValueString="0.0" syncable="YES"/>
         <relationship name="channel" optional="YES" minCount="1" maxCount="1" deletionRule="Nullify" destinationEntity="Channel" inverseName="channelCover" inverseEntity="Channel" syncable="YES"/>
     </entity>
     <entity name="ChannelOwner" representedClassName="ChannelOwner" parentEntity="AbstractCommon" syncable="YES">
@@ -42,8 +42,6 @@
     </entity>
     <entity name="CoverArt" representedClassName="CoverArt" parentEntity="AbstractCommon" syncable="YES">
         <attribute name="coverRef" optional="YES" attributeType="String" syncable="YES"/>
-        <attribute name="offsetX" optional="YES" attributeType="Float" defaultValueString="0.0" syncable="YES"/>
-        <attribute name="offsetY" optional="YES" attributeType="Float" defaultValueString="0.0" syncable="YES"/>
         <attribute name="position" optional="YES" attributeType="Integer 64" defaultValueString="0" syncable="YES"/>
         <attribute name="thumbnailURL" optional="YES" attributeType="String" defaultValueString="http://localhost" syncable="YES"/>
         <attribute name="viewId" optional="YES" attributeType="String" syncable="YES"/>
@@ -94,7 +92,7 @@
         <element name="AbstractCommon" positionX="-74" positionY="-333" width="128" height="75"/>
         <element name="Channel" positionX="-2" positionY="72" width="128" height="268"/>
         <element name="ChannelOwner" positionX="-353" positionY="189" width="128" height="105"/>
-        <element name="CoverArt" positionX="189" positionY="-243" width="128" height="133"/>
+        <element name="CoverArt" positionX="189" positionY="-243" width="128" height="103"/>
         <element name="Genre" positionX="-270" positionY="-204" width="128" height="90"/>
         <element name="SubGenre" positionX="-468" positionY="-189" width="128" height="60"/>
         <element name="User" positionX="-351" positionY="-45" width="128" height="210"/>

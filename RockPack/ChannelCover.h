@@ -10,4 +10,8 @@
 @property (nonatomic, readonly) NSString* imageMidiumUrl;
 @property (nonatomic, readonly) NSString* imageLargeUrl;
 
+@property (nonatomic, readonly) CGPoint imageRatioCenter;
+@property (nonatomic, readonly) CGRect cropFrameLandscape;
+@property (nonatomic, readonly) CGRect cropFramePortrait;
+
 @end

@@ -3,6 +3,9 @@
 
 #define kImageSizeStringReplace @"thumbnail_medium"
 
+#define kImageSizeStringReplace @"thumbnail_medium"
+#define kImageSizeStringReplace @"thumbnail_medium"
+
 @interface ChannelCover ()
 
 // Private interface goes here.
@@ -13,6 +16,8 @@
 @implementation ChannelCover
 
 @synthesize imageLargeUrl, imageMidiumUrl, imageSmallUrl;
+@synthesize imageRatioCenter;
+@synthesize cropFrameLandscape, cropFramePortrait;
 
 + (ChannelCover *) instanceFromDictionary: (NSDictionary *) dictionary
                 usingManagedObjectContext: (NSManagedObjectContext *) managedObjectContext
@@ -26,15 +31,24 @@
     // example: protocol:http url:media.dev.rockpack.com/images/channel/thumbnail_medium/0f56V2vz5QpNotonBaRX2Q.jpg
     instance.imageUrl = [dictionary objectForKey:@"thumbnail_url" withDefault:@"http://localhost/no_thumb.jpg"];
     
-    NSLog(@"* Image URL: %@", instance.imageLargeUrl);
+    
     
     NSArray* aoiArray = [dictionary objectForKey:@"aoi"];
     if(aoiArray && [aoiArray isKindOfClass:[NSArray class]]) // can be nil
     {
-        instance.topLeftX = (NSNumber*)aoiArray[0];
-        instance.topLeftY = (NSNumber*)aoiArray[1];
-        instance.bottomRightX = (NSNumber*)aoiArray[2];
-        instance.bottomRightY = (NSNumber*)aoiArray[3];
+        NSLog(@"* AOI: %@", aoiArray);
+        instance.startU = (NSNumber*)aoiArray[0];
+        instance.startV = (NSNumber*)aoiArray[1];
+        instance.endU = (NSNumber*)aoiArray[2];
+        instance.endV = (NSNumber*)aoiArray[3];
+    }
+    else
+    {
+        // map to the whole image
+        instance.startU = [NSNumber numberWithFloat:0.0];
+        instance.startV = [NSNumber numberWithFloat:0.0];
+        instance.endU = [NSNumber numberWithFloat:1.0];
+        instance.endV = [NSNumber numberWithFloat:1.0];
     }
     
     return instance;
@@ -55,4 +69,17 @@
 {
     return [self.imageUrl stringByReplacingOccurrencesOfString:kImageSizeStringReplace withString:@"thumbnail_large"];;
 }
+-(CGPoint)imageRatioCenter
+{
+    return CGPointMake((self.startUValue + self.endUValue) / 2, (self.startVValue + self.endVValue) / 2);
+}
+-(CGRect)cropFrameLandscape
+{
+    return CGRectZero;
+}
+-(CGRect)cropFramePortrait
+{
+    return CGRectZero;
+}
+
 @end

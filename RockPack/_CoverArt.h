@@ -6,8 +6,6 @@
 
 extern const struct CoverArtAttributes {
 	__unsafe_unretained NSString *coverRef;
-	__unsafe_unretained NSString *offsetX;
-	__unsafe_unretained NSString *offsetY;
 	__unsafe_unretained NSString *position;
 	__unsafe_unretained NSString *thumbnailURL;
 	__unsafe_unretained NSString *viewId;
@@ -18,8 +16,6 @@ extern const struct CoverArtRelationships {
 
 extern const struct CoverArtFetchedProperties {
 } CoverArtFetchedProperties;
-
-
 
 
 
@@ -45,34 +41,6 @@ extern const struct CoverArtFetchedProperties {
 
 
 //- (BOOL)validateCoverRef:(id*)value_ error:(NSError**)error_;
-
-
-
-
-
-@property (nonatomic, strong) NSNumber* offsetX;
-
-
-
-@property float offsetXValue;
-- (float)offsetXValue;
-- (void)setOffsetXValue:(float)value_;
-
-//- (BOOL)validateOffsetX:(id*)value_ error:(NSError**)error_;
-
-
-
-
-
-@property (nonatomic, strong) NSNumber* offsetY;
-
-
-
-@property float offsetYValue;
-- (float)offsetYValue;
-- (void)setOffsetYValue:(float)value_;
-
-//- (BOOL)validateOffsetY:(id*)value_ error:(NSError**)error_;
 
 
 
@@ -124,24 +92,6 @@ extern const struct CoverArtFetchedProperties {
 
 - (NSString*)primitiveCoverRef;
 - (void)setPrimitiveCoverRef:(NSString*)value;
-
-
-
-
-- (NSNumber*)primitiveOffsetX;
-- (void)setPrimitiveOffsetX:(NSNumber*)value;
-
-- (float)primitiveOffsetXValue;
-- (void)setPrimitiveOffsetXValue:(float)value_;
-
-
-
-
-- (NSNumber*)primitiveOffsetY;
-- (void)setPrimitiveOffsetY:(NSNumber*)value;
-
-- (float)primitiveOffsetYValue;
-- (void)setPrimitiveOffsetYValue:(float)value_;
 
 
 

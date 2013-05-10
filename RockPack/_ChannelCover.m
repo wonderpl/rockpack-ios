@@ -4,11 +4,11 @@
 #import "_ChannelCover.h"
 
 const struct ChannelCoverAttributes ChannelCoverAttributes = {
-	.bottomRightX = @"bottomRightX",
-	.bottomRightY = @"bottomRightY",
+	.endU = @"endU",
+	.endV = @"endV",
 	.imageUrl = @"imageUrl",
-	.topLeftX = @"topLeftX",
-	.topLeftY = @"topLeftY",
+	.startU = @"startU",
+	.startV = @"startV",
 };
 
 const struct ChannelCoverRelationships ChannelCoverRelationships = {
@@ -44,23 +44,23 @@ const struct ChannelCoverFetchedProperties ChannelCoverFetchedProperties = {
 + (NSSet*)keyPathsForValuesAffectingValueForKey:(NSString*)key {
 	NSSet *keyPaths = [super keyPathsForValuesAffectingValueForKey:key];
 	
-	if ([key isEqualToString:@"bottomRightXValue"]) {
-		NSSet *affectingKey = [NSSet setWithObject:@"bottomRightX"];
+	if ([key isEqualToString:@"endUValue"]) {
+		NSSet *affectingKey = [NSSet setWithObject:@"endU"];
 		keyPaths = [keyPaths setByAddingObjectsFromSet:affectingKey];
 		return keyPaths;
 	}
-	if ([key isEqualToString:@"bottomRightYValue"]) {
-		NSSet *affectingKey = [NSSet setWithObject:@"bottomRightY"];
+	if ([key isEqualToString:@"endVValue"]) {
+		NSSet *affectingKey = [NSSet setWithObject:@"endV"];
 		keyPaths = [keyPaths setByAddingObjectsFromSet:affectingKey];
 		return keyPaths;
 	}
-	if ([key isEqualToString:@"topLeftXValue"]) {
-		NSSet *affectingKey = [NSSet setWithObject:@"topLeftX"];
+	if ([key isEqualToString:@"startUValue"]) {
+		NSSet *affectingKey = [NSSet setWithObject:@"startU"];
 		keyPaths = [keyPaths setByAddingObjectsFromSet:affectingKey];
 		return keyPaths;
 	}
-	if ([key isEqualToString:@"topLeftYValue"]) {
-		NSSet *affectingKey = [NSSet setWithObject:@"topLeftY"];
+	if ([key isEqualToString:@"startVValue"]) {
+		NSSet *affectingKey = [NSSet setWithObject:@"startV"];
 		keyPaths = [keyPaths setByAddingObjectsFromSet:affectingKey];
 		return keyPaths;
 	}
@@ -71,52 +71,52 @@ const struct ChannelCoverFetchedProperties ChannelCoverFetchedProperties = {
 
 
 
-@dynamic bottomRightX;
+@dynamic endU;
 
 
 
-- (float)bottomRightXValue {
-	NSNumber *result = [self bottomRightX];
+- (float)endUValue {
+	NSNumber *result = [self endU];
 	return [result floatValue];
 }
 
-- (void)setBottomRightXValue:(float)value_ {
-	[self setBottomRightX:[NSNumber numberWithFloat:value_]];
+- (void)setEndUValue:(float)value_ {
+	[self setEndU:[NSNumber numberWithFloat:value_]];
 }
 
-- (float)primitiveBottomRightXValue {
-	NSNumber *result = [self primitiveBottomRightX];
+- (float)primitiveEndUValue {
+	NSNumber *result = [self primitiveEndU];
 	return [result floatValue];
 }
 
-- (void)setPrimitiveBottomRightXValue:(float)value_ {
-	[self setPrimitiveBottomRightX:[NSNumber numberWithFloat:value_]];
+- (void)setPrimitiveEndUValue:(float)value_ {
+	[self setPrimitiveEndU:[NSNumber numberWithFloat:value_]];
 }
 
 
 
 
 
-@dynamic bottomRightY;
+@dynamic endV;
 
 
 
-- (float)bottomRightYValue {
-	NSNumber *result = [self bottomRightY];
+- (float)endVValue {
+	NSNumber *result = [self endV];
 	return [result floatValue];
 }
 
-- (void)setBottomRightYValue:(float)value_ {
-	[self setBottomRightY:[NSNumber numberWithFloat:value_]];
+- (void)setEndVValue:(float)value_ {
+	[self setEndV:[NSNumber numberWithFloat:value_]];
 }
 
-- (float)primitiveBottomRightYValue {
-	NSNumber *result = [self primitiveBottomRightY];
+- (float)primitiveEndVValue {
+	NSNumber *result = [self primitiveEndV];
 	return [result floatValue];
 }
 
-- (void)setPrimitiveBottomRightYValue:(float)value_ {
-	[self setPrimitiveBottomRightY:[NSNumber numberWithFloat:value_]];
+- (void)setPrimitiveEndVValue:(float)value_ {
+	[self setPrimitiveEndV:[NSNumber numberWithFloat:value_]];
 }
 
 
@@ -130,52 +130,52 @@ const struct ChannelCoverFetchedProperties ChannelCoverFetchedProperties = {
 
 
 
-@dynamic topLeftX;
+@dynamic startU;
 
 
 
-- (float)topLeftXValue {
-	NSNumber *result = [self topLeftX];
+- (float)startUValue {
+	NSNumber *result = [self startU];
 	return [result floatValue];
 }
 
-- (void)setTopLeftXValue:(float)value_ {
-	[self setTopLeftX:[NSNumber numberWithFloat:value_]];
+- (void)setStartUValue:(float)value_ {
+	[self setStartU:[NSNumber numberWithFloat:value_]];
 }
 
-- (float)primitiveTopLeftXValue {
-	NSNumber *result = [self primitiveTopLeftX];
+- (float)primitiveStartUValue {
+	NSNumber *result = [self primitiveStartU];
 	return [result floatValue];
 }
 
-- (void)setPrimitiveTopLeftXValue:(float)value_ {
-	[self setPrimitiveTopLeftX:[NSNumber numberWithFloat:value_]];
+- (void)setPrimitiveStartUValue:(float)value_ {
+	[self setPrimitiveStartU:[NSNumber numberWithFloat:value_]];
 }
 
 
 
 
 
-@dynamic topLeftY;
+@dynamic startV;
 
 
 
-- (float)topLeftYValue {
-	NSNumber *result = [self topLeftY];
+- (float)startVValue {
+	NSNumber *result = [self startV];
 	return [result floatValue];
 }
 
-- (void)setTopLeftYValue:(float)value_ {
-	[self setTopLeftY:[NSNumber numberWithFloat:value_]];
+- (void)setStartVValue:(float)value_ {
+	[self setStartV:[NSNumber numberWithFloat:value_]];
 }
 
-- (float)primitiveTopLeftYValue {
-	NSNumber *result = [self primitiveTopLeftY];
+- (float)primitiveStartVValue {
+	NSNumber *result = [self primitiveStartV];
 	return [result floatValue];
 }
 
-- (void)setPrimitiveTopLeftYValue:(float)value_ {
-	[self setPrimitiveTopLeftY:[NSNumber numberWithFloat:value_]];
+- (void)setPrimitiveStartVValue:(float)value_ {
+	[self setPrimitiveStartV:[NSNumber numberWithFloat:value_]];
 }
 
 

@@ -5,11 +5,11 @@
 
 
 extern const struct ChannelCoverAttributes {
-	__unsafe_unretained NSString *bottomRightX;
-	__unsafe_unretained NSString *bottomRightY;
+	__unsafe_unretained NSString *endU;
+	__unsafe_unretained NSString *endV;
 	__unsafe_unretained NSString *imageUrl;
-	__unsafe_unretained NSString *topLeftX;
-	__unsafe_unretained NSString *topLeftY;
+	__unsafe_unretained NSString *startU;
+	__unsafe_unretained NSString *startV;
 } ChannelCoverAttributes;
 
 extern const struct ChannelCoverRelationships {
@@ -40,29 +40,29 @@ extern const struct ChannelCoverFetchedProperties {
 
 
 
-@property (nonatomic, strong) NSNumber* bottomRightX;
+@property (nonatomic, strong) NSNumber* endU;
 
 
 
-@property float bottomRightXValue;
-- (float)bottomRightXValue;
-- (void)setBottomRightXValue:(float)value_;
+@property float endUValue;
+- (float)endUValue;
+- (void)setEndUValue:(float)value_;
 
-//- (BOOL)validateBottomRightX:(id*)value_ error:(NSError**)error_;
-
-
+//- (BOOL)validateEndU:(id*)value_ error:(NSError**)error_;
 
 
 
-@property (nonatomic, strong) NSNumber* bottomRightY;
+
+
+@property (nonatomic, strong) NSNumber* endV;
 
 
 
-@property float bottomRightYValue;
-- (float)bottomRightYValue;
-- (void)setBottomRightYValue:(float)value_;
+@property float endVValue;
+- (float)endVValue;
+- (void)setEndVValue:(float)value_;
 
-//- (BOOL)validateBottomRightY:(id*)value_ error:(NSError**)error_;
+//- (BOOL)validateEndV:(id*)value_ error:(NSError**)error_;
 
 
 
@@ -78,29 +78,29 @@ extern const struct ChannelCoverFetchedProperties {
 
 
 
-@property (nonatomic, strong) NSNumber* topLeftX;
+@property (nonatomic, strong) NSNumber* startU;
 
 
 
-@property float topLeftXValue;
-- (float)topLeftXValue;
-- (void)setTopLeftXValue:(float)value_;
+@property float startUValue;
+- (float)startUValue;
+- (void)setStartUValue:(float)value_;
 
-//- (BOOL)validateTopLeftX:(id*)value_ error:(NSError**)error_;
-
-
+//- (BOOL)validateStartU:(id*)value_ error:(NSError**)error_;
 
 
 
-@property (nonatomic, strong) NSNumber* topLeftY;
+
+
+@property (nonatomic, strong) NSNumber* startV;
 
 
 
-@property float topLeftYValue;
-- (float)topLeftYValue;
-- (void)setTopLeftYValue:(float)value_;
+@property float startVValue;
+- (float)startVValue;
+- (void)setStartVValue:(float)value_;
 
-//- (BOOL)validateTopLeftY:(id*)value_ error:(NSError**)error_;
+//- (BOOL)validateStartV:(id*)value_ error:(NSError**)error_;
 
 
 
@@ -123,20 +123,20 @@ extern const struct ChannelCoverFetchedProperties {
 @interface _ChannelCover (CoreDataGeneratedPrimitiveAccessors)
 
 
-- (NSNumber*)primitiveBottomRightX;
-- (void)setPrimitiveBottomRightX:(NSNumber*)value;
+- (NSNumber*)primitiveEndU;
+- (void)setPrimitiveEndU:(NSNumber*)value;
 
-- (float)primitiveBottomRightXValue;
-- (void)setPrimitiveBottomRightXValue:(float)value_;
-
-
+- (float)primitiveEndUValue;
+- (void)setPrimitiveEndUValue:(float)value_;
 
 
-- (NSNumber*)primitiveBottomRightY;
-- (void)setPrimitiveBottomRightY:(NSNumber*)value;
 
-- (float)primitiveBottomRightYValue;
-- (void)setPrimitiveBottomRightYValue:(float)value_;
+
+- (NSNumber*)primitiveEndV;
+- (void)setPrimitiveEndV:(NSNumber*)value;
+
+- (float)primitiveEndVValue;
+- (void)setPrimitiveEndVValue:(float)value_;
 
 
 
@@ -147,20 +147,20 @@ extern const struct ChannelCoverFetchedProperties {
 
 
 
-- (NSNumber*)primitiveTopLeftX;
-- (void)setPrimitiveTopLeftX:(NSNumber*)value;
+- (NSNumber*)primitiveStartU;
+- (void)setPrimitiveStartU:(NSNumber*)value;
 
-- (float)primitiveTopLeftXValue;
-- (void)setPrimitiveTopLeftXValue:(float)value_;
-
-
+- (float)primitiveStartUValue;
+- (void)setPrimitiveStartUValue:(float)value_;
 
 
-- (NSNumber*)primitiveTopLeftY;
-- (void)setPrimitiveTopLeftY:(NSNumber*)value;
 
-- (float)primitiveTopLeftYValue;
-- (void)setPrimitiveTopLeftYValue:(float)value_;
+
+- (NSNumber*)primitiveStartV;
+- (void)setPrimitiveStartV:(NSNumber*)value;
+
+- (float)primitiveStartVValue;
+- (void)setPrimitiveStartVValue:(float)value_;
 
 
 
