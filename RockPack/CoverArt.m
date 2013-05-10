@@ -1,7 +1,7 @@
 #import "CoverArt.h"
 #import "NSDictionary+Validation.h"
 
-static NSEntityDescription *channelCoverEntity = nil;
+static NSEntityDescription *coverArtEntity = nil;
 
 @interface CoverArt ()
 
@@ -23,25 +23,25 @@ static NSEntityDescription *channelCoverEntity = nil;
                                       withDefault: @"Uninitialized Id"];
     
     // Only create an entity description once, should increase performance
-    if (channelCoverEntity == nil)
+    if (coverArtEntity == nil)
     {
         // Do once, and only once
         static dispatch_once_t oncePredicate;
         dispatch_once(&oncePredicate, ^{
-            channelCoverEntity = [NSEntityDescription entityForName: @"CoverArt"
+            coverArtEntity = [NSEntityDescription entityForName: @"CoverArt"
                                          inManagedObjectContext: managedObjectContext];
         });
     }
     
     // Now we need to see if this object already exists, and if so return it and if not create it
-    NSFetchRequest *channelCoverFetchRequest = [[NSFetchRequest alloc] init];
-    channelCoverFetchRequest.entity = channelCoverEntity;
+    NSFetchRequest *coverArtFetchRequest = [[NSFetchRequest alloc] init];
+    coverArtFetchRequest.entity = coverArtEntity;
     
     // Search on the unique Id
     NSPredicate *predicate = [NSPredicate predicateWithFormat: @"uniqueId == %@ AND viewId == %@", uniqueId, viewId];
-    channelCoverFetchRequest.predicate = predicate;
+    coverArtFetchRequest.predicate = predicate;
     
-    NSArray *matchingChannelCoverInstanceEntries = [managedObjectContext executeFetchRequest: channelCoverFetchRequest
+    NSArray *matchingChannelCoverInstanceEntries = [managedObjectContext executeFetchRequest: coverArtFetchRequest
                                                                                        error: &error];
     CoverArt *instance;
     

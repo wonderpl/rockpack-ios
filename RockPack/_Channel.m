@@ -21,6 +21,7 @@ const struct ChannelAttributes ChannelAttributes = {
 };
 
 const struct ChannelRelationships ChannelRelationships = {
+	.channelCover = @"channelCover",
 	.channelOwner = @"channelOwner",
 	.subscribers = @"subscribers",
 	.videoInstances = @"videoInstances",
@@ -255,6 +256,10 @@ const struct ChannelFetchedProperties ChannelFetchedProperties = {
 
 
 
+
+@dynamic channelCover;
+
+	
 
 @dynamic channelOwner;
 
