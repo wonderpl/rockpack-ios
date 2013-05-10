@@ -46,6 +46,8 @@
 								<reference key="NSSuperview" ref="71694163"/>
 								<reference key="NSNextKeyView" ref="695049025"/>
 								<string key="NSReuseIdentifierKey">_NS:9</string>
+								<bool key="IBUIAutoresizesSubviews">NO</bool>
+								<bool key="IBUIClearsContextBeforeDrawing">NO</bool>
 								<bool key="IBUIUserInteractionEnabled">NO</bool>
 								<string key="targetRuntimeIdentifier">IBIPadFramework</string>
 								<object class="NSCustomResource" key="IBUIImage">
@@ -58,12 +60,13 @@
 								<int key="NSvFlags">274</int>
 								<string key="NSFrame">{{1, 1}, {119, 119}}</string>
 								<reference key="NSSuperview" ref="71694163"/>
-								<reference key="NSNextKeyView"/>
 								<string key="NSReuseIdentifierKey">_NS:9</string>
 								<object class="NSColor" key="IBUIBackgroundColor" id="966857338">
 									<int key="NSColorSpace">3</int>
 									<bytes key="NSWhite">MCAwAA</bytes>
 								</object>
+								<bool key="IBUIClipsSubviews">YES</bool>
+								<bool key="IBUIClearsContextBeforeDrawing">NO</bool>
 								<int key="IBUIContentMode">2</int>
 								<bool key="IBUIUserInteractionEnabled">NO</bool>
 								<string key="targetRuntimeIdentifier">IBIPadFramework</string>
@@ -76,6 +79,8 @@
 								<reference key="NSNextKeyView" ref="235752899"/>
 								<string key="NSReuseIdentifierKey">_NS:9</string>
 								<reference key="IBUIBackgroundColor" ref="966857338"/>
+								<bool key="IBUIClipsSubviews">YES</bool>
+								<bool key="IBUIClearsContextBeforeDrawing">NO</bool>
 								<float key="IBUIAlpha">0.0</float>
 								<bool key="IBUIUserInteractionEnabled">NO</bool>
 								<string key="targetRuntimeIdentifier">IBIPadFramework</string>
@@ -101,8 +106,8 @@
 				<reference key="NSNextKeyView" ref="71694163"/>
 				<string key="NSReuseIdentifierKey">_NS:9</string>
 				<reference key="IBUIBackgroundColor" ref="966857338"/>
-				<bool key="IBUIOpaque">NO</bool>
 				<bool key="IBUIClipsSubviews">YES</bool>
+				<bool key="IBUIClearsContextBeforeDrawing">NO</bool>
 				<int key="IBUIContentMode">4</int>
 				<bool key="IBUIMultipleTouchEnabled">YES</bool>
 				<string key="targetRuntimeIdentifier">IBIPadFramework</string>

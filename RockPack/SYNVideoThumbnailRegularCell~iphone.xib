@@ -48,6 +48,8 @@
 								<reference key="NSSuperview" ref="301134111"/>
 								<reference key="NSNextKeyView" ref="486650470"/>
 								<string key="NSReuseIdentifierKey">_NS:9</string>
+								<bool key="IBUIAutoresizesSubviews">NO</bool>
+								<bool key="IBUIClearsContextBeforeDrawing">NO</bool>
 								<bool key="IBUIUserInteractionEnabled">NO</bool>
 								<string key="targetRuntimeIdentifier">IBIPadFramework</string>
 								<object class="NSCustomResource" key="IBUIImage">
@@ -62,7 +64,8 @@
 								<reference key="NSSuperview" ref="301134111"/>
 								<reference key="NSNextKeyView" ref="508424044"/>
 								<string key="NSReuseIdentifierKey">_NS:9</string>
-								<int key="IBUIContentMode">2</int>
+								<bool key="IBUIClipsSubviews">YES</bool>
+								<bool key="IBUIClearsContextBeforeDrawing">NO</bool>
 								<bool key="IBUIUserInteractionEnabled">NO</bool>
 								<string key="targetRuntimeIdentifier">IBIPadFramework</string>
 							</object>
@@ -73,6 +76,8 @@
 								<reference key="NSSuperview" ref="301134111"/>
 								<reference key="NSNextKeyView" ref="865164628"/>
 								<string key="NSReuseIdentifierKey">_NS:9</string>
+								<bool key="IBUIAutoresizesSubviews">NO</bool>
+								<bool key="IBUIClearsContextBeforeDrawing">NO</bool>
 								<bool key="IBUIUserInteractionEnabled">NO</bool>
 								<string key="targetRuntimeIdentifier">IBIPadFramework</string>
 								<object class="NSCustomResource" key="IBUIImage">
@@ -86,7 +91,8 @@
 								<string key="NSFrame">{{7, 145}, {297, 26}}</string>
 								<reference key="NSSuperview" ref="301134111"/>
 								<string key="NSReuseIdentifierKey">_NS:9</string>
-								<bool key="IBUIClipsSubviews">YES</bool>
+								<bool key="IBUIAutoresizesSubviews">NO</bool>
+								<bool key="IBUIClearsContextBeforeDrawing">NO</bool>
 								<int key="IBUIContentMode">7</int>
 								<bool key="IBUIUserInteractionEnabled">NO</bool>
 								<string key="targetRuntimeIdentifier">IBIPadFramework</string>
@@ -127,7 +133,8 @@
 									<int key="NSColorSpace">3</int>
 									<bytes key="NSWhite">MCAwAA</bytes>
 								</object>
-								<bool key="IBUIOpaque">NO</bool>
+								<bool key="IBUIAutoresizesSubviews">NO</bool>
+								<bool key="IBUIClearsContextBeforeDrawing">NO</bool>
 								<string key="targetRuntimeIdentifier">IBIPadFramework</string>
 								<int key="IBUIContentHorizontalAlignment">0</int>
 								<int key="IBUIContentVerticalAlignment">0</int>
@@ -157,7 +164,8 @@
 								<reference key="NSSuperview" ref="301134111"/>
 								<reference key="NSNextKeyView" ref="429279700"/>
 								<string key="NSReuseIdentifierKey">_NS:9</string>
-								<bool key="IBUIOpaque">NO</bool>
+								<bool key="IBUIAutoresizesSubviews">NO</bool>
+								<bool key="IBUIClearsContextBeforeDrawing">NO</bool>
 								<int key="IBUIContentMode">4</int>
 								<string key="targetRuntimeIdentifier">IBIPadFramework</string>
 								<bool key="IBUIHighlighted">YES</bool>
@@ -187,7 +195,8 @@
 								<reference key="NSSuperview" ref="301134111"/>
 								<reference key="NSNextKeyView" ref="847382299"/>
 								<string key="NSReuseIdentifierKey">_NS:9</string>
-								<bool key="IBUIOpaque">NO</bool>
+								<bool key="IBUIAutoresizesSubviews">NO</bool>
+								<bool key="IBUIClearsContextBeforeDrawing">NO</bool>
 								<int key="IBUIContentMode">4</int>
 								<string key="targetRuntimeIdentifier">IBIPadFramework</string>
 								<bool key="IBUIHighlighted">YES</bool>
@@ -232,6 +241,7 @@
 				<string key="NSReuseIdentifierKey">_NS:9</string>
 				<reference key="IBUIBackgroundColor" ref="456240611"/>
 				<bool key="IBUIClipsSubviews">YES</bool>
+				<bool key="IBUIClearsContextBeforeDrawing">NO</bool>
 				<int key="IBUIContentMode">4</int>
 				<bool key="IBUIMultipleTouchEnabled">YES</bool>
 				<string key="targetRuntimeIdentifier">IBIPadFramework</string>

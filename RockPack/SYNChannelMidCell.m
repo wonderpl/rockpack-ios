@@ -132,10 +132,10 @@
 }
 
 
-//- (void) prepareForReuse
-//{
-//    [self stopWobbling];
-//    self.imageView.image = nil;
-//}
+- (void) prepareForReuse
+{
+    [self stopWobbling];
+    self.imageView.image = nil;
+}
 
 @end
