@@ -1,5 +1,10 @@
 #import "_ChannelCover.h"
 
 @interface ChannelCover : _ChannelCover {}
-// Custom logic goes here.
+
+
++ (ChannelCover *) instanceFromDictionary: (NSDictionary *) dictionary
+            usingManagedObjectContext: (NSManagedObjectContext *) managedObjectContext;
+
+
 @end

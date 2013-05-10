@@ -147,7 +147,7 @@ enum ChannelCoverSelectorState {
             CoverArt *coverArt = [self.channelCoverFetchedResultsController objectAtIndexPath: [NSIndexPath indexPathForRow: indexPath.row
                                                                                                                           inSection: 0]];
             
-            [cell.channelCoverImageView setAsynchronousImageFromURL:[NSURL URLWithString:coverArt.carouselURL] placeHolderImage:nil];
+            [cell.channelCoverImageView setAsynchronousImageFromURL:[NSURL URLWithString:coverArt.thumbnailURL] placeHolderImage:nil];
             cell.glossImage.hidden = NO;
         }
         else
@@ -156,7 +156,7 @@ enum ChannelCoverSelectorState {
             CoverArt *coverArt = [self.userChannelCoverFetchedResultsController objectAtIndexPath: [NSIndexPath indexPathForRow: indexPath.row
                                                                                                                               inSection: 0]];
             
-            [cell.channelCoverImageView setAsynchronousImageFromURL:[NSURL URLWithString:coverArt.carouselURL] placeHolderImage:nil];
+            [cell.channelCoverImageView setAsynchronousImageFromURL:[NSURL URLWithString:coverArt.thumbnailURL] placeHolderImage:nil];
             cell.glossImage.hidden = NO;
         }
     }
@@ -248,7 +248,7 @@ enum ChannelCoverSelectorState {
                     indexPath = [NSIndexPath indexPathForRow:indexPath.row - 1 inSection:0];
                     CoverArt *coverArt = [self.channelCoverFetchedResultsController objectAtIndexPath: [NSIndexPath indexPathForRow: indexPath.row
                                                                                                                                   inSection: 0]];
-                    returnStringURL = coverArt.backgroundURL;
+                    returnStringURL = coverArt.thumbnailURL;
                     returnCoverId = coverArt.coverRef;
                 }
                 else
@@ -256,7 +256,7 @@ enum ChannelCoverSelectorState {
                     indexPath = [NSIndexPath indexPathForRow:indexPath.row - 1 - [channelSectionInfo numberOfObjects] inSection:0];
                     CoverArt *coverArt = [self.userChannelCoverFetchedResultsController objectAtIndexPath: [NSIndexPath indexPathForRow: indexPath.row
                                                                                                                                       inSection: 0]];
-                    returnStringURL = coverArt.backgroundURL;
+                    returnStringURL = coverArt.thumbnailURL;
                     returnCoverId = coverArt.coverRef;
                 }
                 

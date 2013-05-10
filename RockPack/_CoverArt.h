@@ -5,12 +5,11 @@
 #import "AbstractCommon.h"
 
 extern const struct CoverArtAttributes {
-	__unsafe_unretained NSString *backgroundURL;
-	__unsafe_unretained NSString *carouselURL;
 	__unsafe_unretained NSString *coverRef;
 	__unsafe_unretained NSString *offsetX;
 	__unsafe_unretained NSString *offsetY;
 	__unsafe_unretained NSString *position;
+	__unsafe_unretained NSString *thumbnailURL;
 	__unsafe_unretained NSString *viewId;
 } CoverArtAttributes;
 
@@ -28,7 +27,6 @@ extern const struct CoverArtFetchedProperties {
 
 
 
-
 @interface CoverArtID : NSManagedObjectID {}
 @end
 
@@ -37,26 +35,6 @@ extern const struct CoverArtFetchedProperties {
 + (NSString*)entityName;
 + (NSEntityDescription*)entityInManagedObjectContext:(NSManagedObjectContext*)moc_;
 - (CoverArtID*)objectID;
-
-
-
-
-
-@property (nonatomic, strong) NSString* backgroundURL;
-
-
-
-//- (BOOL)validateBackgroundURL:(id*)value_ error:(NSError**)error_;
-
-
-
-
-
-@property (nonatomic, strong) NSString* carouselURL;
-
-
-
-//- (BOOL)validateCarouselURL:(id*)value_ error:(NSError**)error_;
 
 
 
@@ -114,6 +92,16 @@ extern const struct CoverArtFetchedProperties {
 
 
 
+@property (nonatomic, strong) NSString* thumbnailURL;
+
+
+
+//- (BOOL)validateThumbnailURL:(id*)value_ error:(NSError**)error_;
+
+
+
+
+
 @property (nonatomic, strong) NSString* viewId;
 
 
@@ -132,18 +120,6 @@ extern const struct CoverArtFetchedProperties {
 @end
 
 @interface _CoverArt (CoreDataGeneratedPrimitiveAccessors)
-
-
-- (NSString*)primitiveBackgroundURL;
-- (void)setPrimitiveBackgroundURL:(NSString*)value;
-
-
-
-
-- (NSString*)primitiveCarouselURL;
-- (void)setPrimitiveCarouselURL:(NSString*)value;
-
-
 
 
 - (NSString*)primitiveCoverRef;
@@ -175,6 +151,12 @@ extern const struct CoverArtFetchedProperties {
 
 - (int64_t)primitivePositionValue;
 - (void)setPrimitivePositionValue:(int64_t)value_;
+
+
+
+
+- (NSString*)primitiveThumbnailURL;
+- (void)setPrimitiveThumbnailURL:(NSString*)value;
 
 
 

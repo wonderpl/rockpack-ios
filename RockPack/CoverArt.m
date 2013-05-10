@@ -83,11 +83,9 @@ static NSEntityDescription *coverArtEntity = nil;
     // Simple objects
     self.uniqueId = uniqueId;
     self.viewId = viewId;
-    self.backgroundURL = [dictionary objectForKey: @"background_url"
-                                      withDefault: @"http://localhost"];
+    self.thumbnailURL = [dictionary objectForKey: @"thumbnail_url"
+                                     withDefault: @"http://localhost"];
     
-	self.carouselURL = [dictionary objectForKey: @"carousel_url"
-                                    withDefault: @"http://localhost"];
     
 	self.coverRef = [dictionary objectForKey: @"cover_ref"
                                  withDefault: @"Uninitialized coverRef"];
@@ -99,7 +97,7 @@ static NSEntityDescription *coverArtEntity = nil;
 
 - (NSString *) description
 {
-    return [NSString stringWithFormat: @"ChannelCover: uniqueId(%@), viewId (%@), backgroundURL(%@), carouselURL (%@), coverRef(%@),  position(%@)", self.uniqueId, self.viewId, self.backgroundURL, self.carouselURL, self.coverRef, self.position];
+    return [NSString stringWithFormat: @"ChannelCover: uniqueId(%@), viewId (%@), backgroundURL(%@), coverRef(%@),  position(%@)", self.uniqueId, self.viewId, self.thumbnailURL, self.coverRef, self.position];
 }
 
 

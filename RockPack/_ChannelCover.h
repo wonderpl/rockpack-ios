@@ -2,7 +2,7 @@
 // Make changes to ChannelCover.h instead.
 
 #import <CoreData/CoreData.h>
-#import "AbstractCommon.h"
+
 
 extern const struct ChannelCoverAttributes {
 	__unsafe_unretained NSString *bottomRightX;
@@ -30,7 +30,7 @@ extern const struct ChannelCoverFetchedProperties {
 @interface ChannelCoverID : NSManagedObjectID {}
 @end
 
-@interface _ChannelCover : AbstractCommon {}
+@interface _ChannelCover : NSManagedObject {}
 + (id)insertInManagedObjectContext:(NSManagedObjectContext*)moc_;
 + (NSString*)entityName;
 + (NSEntityDescription*)entityInManagedObjectContext:(NSManagedObjectContext*)moc_;

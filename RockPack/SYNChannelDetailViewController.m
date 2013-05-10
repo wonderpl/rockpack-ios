@@ -522,7 +522,7 @@
                 CoverArt *coverArt = [self.userChannelCoverFetchedResultsController objectAtIndexPath: [NSIndexPath indexPathForRow: indexPath.row
                                                                                                         inSection: 0]];
                 
-                [coverThumbnailCell.coverImageView setImageWithURL: [NSURL URLWithString: coverArt.carouselURL]
+                [coverThumbnailCell.coverImageView setImageWithURL: [NSURL URLWithString: coverArt.thumbnailURL]
                                                   placeholderImage: [UIImage imageNamed: @"PlaceholderChannelCoverThumbnail.png"]
                                                            options: SDWebImageRetryFailed];
                 return coverThumbnailCell;
@@ -535,7 +535,7 @@
                 CoverArt *coverArt = [self.channelCoverFetchedResultsController objectAtIndexPath: [NSIndexPath indexPathForRow: indexPath.row
                                                                                                                   inSection: 0]];
                 
-                [coverThumbnailCell.coverImageView setImageWithURL: [NSURL URLWithString: coverArt.carouselURL]
+                [coverThumbnailCell.coverImageView setImageWithURL: [NSURL URLWithString: coverArt.thumbnailURL]
                                                   placeholderImage: [UIImage imageNamed: @"PlaceholderChannelCoverThumbnail.png"]
                                                            options: SDWebImageRetryFailed];
                 return coverThumbnailCell;
@@ -601,7 +601,7 @@
                 // User channel covers
                 CoverArt *coverArt = [self.userChannelCoverFetchedResultsController objectAtIndexPath: [NSIndexPath indexPathForRow: indexPath.row
                                                                                                                                   inSection: 0]];
-                imageURLString = coverArt.backgroundURL;
+                imageURLString = coverArt.thumbnailURL;
             }
             break;
                 
@@ -610,7 +610,7 @@
                 // Rockpack channel covers
                 CoverArt *coverArt = [self.channelCoverFetchedResultsController objectAtIndexPath: [NSIndexPath indexPathForRow: indexPath.row
                                                                                                                               inSection: 0]];
-                imageURLString = coverArt.backgroundURL;
+                imageURLString = coverArt.thumbnailURL;
             }
             break;
                 

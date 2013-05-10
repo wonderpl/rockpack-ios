@@ -4,12 +4,11 @@
 #import "_CoverArt.h"
 
 const struct CoverArtAttributes CoverArtAttributes = {
-	.backgroundURL = @"backgroundURL",
-	.carouselURL = @"carouselURL",
 	.coverRef = @"coverRef",
 	.offsetX = @"offsetX",
 	.offsetY = @"offsetY",
 	.position = @"position",
+	.thumbnailURL = @"thumbnailURL",
 	.viewId = @"viewId",
 };
 
@@ -63,20 +62,6 @@ const struct CoverArtFetchedProperties CoverArtFetchedProperties = {
 
 	return keyPaths;
 }
-
-
-
-
-@dynamic backgroundURL;
-
-
-
-
-
-
-@dynamic carouselURL;
-
-
 
 
 
@@ -161,6 +146,13 @@ const struct CoverArtFetchedProperties CoverArtFetchedProperties = {
 - (void)setPrimitivePositionValue:(int64_t)value_ {
 	[self setPrimitivePosition:[NSNumber numberWithLongLong:value_]];
 }
+
+
+
+
+
+@dynamic thumbnailURL;
+
 
 
 
