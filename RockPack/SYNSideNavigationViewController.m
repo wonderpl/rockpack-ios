@@ -57,6 +57,8 @@ typedef enum {
 @property (nonatomic) NSInteger unreadNotifications;
 //iPhone specific
 @property (weak, nonatomic) IBOutlet UIView *mainContentView;
+@property (weak, nonatomic) IBOutlet UIView *navigationContainerView;
+@property (weak, nonatomic) IBOutlet UIImageView *navigationContainerBackgroundImage;
 
 @end
 
@@ -127,10 +129,11 @@ typedef enum {
         
         self.searchViewController = [[SYNSearchBoxViewController alloc] init];
         [self addChildViewController:self.searchViewController];
-        [self.view addSubview:self.searchViewController.view];
+        [self.view insertSubview:self.searchViewController.view belowSubview:self.navigationContainerView];
         self.searchViewController.searchBoxView.searchTextField.delegate = self;
         [self.searchViewController.searchBoxView.integratedCloseButton addTarget:self action:@selector(closeSearch:) forControlEvents:UIControlEventTouchUpInside];
         
+        self.navigationContainerBackgroundImage.image = [[UIImage imageNamed:@"PanelMenuSecondLevel"] resizableImageWithCapInsets:UIEdgeInsetsMake(65, 0, 1, 0)];
         
     }
     else // isIPad == TRUE
@@ -358,7 +361,7 @@ typedef enum {
     }
     
     // if we are re-clicking a cell, return without deselecting
-    if([indexPath compare:self.currentlySelectedIndexPath] == NSOrderedSame)
+    if(indexPath.row < kNotificationsRowIndex && [indexPath compare:self.currentlySelectedIndexPath] == NSOrderedSame)
     {
         
         return;
@@ -399,6 +402,7 @@ typedef enum {
         
         
         self.state = SideNavigationStateFull;
+        self.currentlySelectedIndexPath = nil;
         
     }
     else
@@ -671,18 +675,19 @@ typedef enum {
     
     else
     {
-        CGRect startFrame = self.containerView.frame;
+        CGRect startFrame = self.navigationContainerView.frame;
         startFrame.origin.x = self.view.frame.size.width;
-        self.containerView.frame = startFrame;
-        self.containerView.hidden = NO;
+        self.navigationContainerView.frame = startFrame;
+        self.navigationContainerView.hidden = NO;
+        [self.view insertSubview:self.navigationContainerView aboveSubview:self.searchViewController.view];
         [UIView animateWithDuration: 0.5f
                               delay: 0.0f
                             options: UIViewAnimationOptionCurveEaseInOut
                          animations: ^{
                              
                              CGRect selfBounds = self.view.bounds;
-                             selfBounds.origin.y = self.containerView.frame.origin.y;
-                             self.containerView.frame = selfBounds;
+                             selfBounds.origin.y = self.navigationContainerView.frame.origin.y;
+                             self.navigationContainerView.frame = selfBounds;
                              
                          } completion: ^(BOOL finished) {
                              
@@ -714,5 +719,21 @@ typedef enum {
                      }];
 }
 
+#pragma mark - iPhone navigate back from notifications
+- (IBAction)navigateBackTapped:(id)sender {
+    [UIView animateWithDuration: 0.5f
+                          delay: 0.0f
+                        options: UIViewAnimationOptionCurveEaseInOut
+                     animations: ^{
+                         
+                         CGRect startFrame = self.navigationContainerView.frame;
+                         startFrame.origin.x = self.view.frame.size.width;
+                         self.navigationContainerView.frame = startFrame;
+                         
+                     } completion: ^(BOOL finished) {
+                         
+                         
+                     }];
+}
 
 @end

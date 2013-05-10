@@ -100,16 +100,16 @@
         termsAndConditionsLabel.font = [UIFont rockpackFontOfSize: 14.0];
         termsAndConditionsLabelSide.font = termsAndConditionsLabel.font;
         
-        NSMutableAttributedString* termsString = [[NSMutableAttributedString alloc] initWithString: @"BY USING ROCKPACK, YOU AGREE TO OUR TERMS & SERVICES AND PRIVACY POLICY"];
+        NSMutableAttributedString* termsString = [[NSMutableAttributedString alloc] initWithString: @"BY USING ROCKPACK, YOU AGREE TO OUR\nTERMS & SERVICES AND PRIVACY POLICY"];
         
-        [termsString addAttribute: NSForegroundColorAttributeName value: [UIColor colorWithRed: (32.0/255.0)
-                                                                                         green: (195.0/255.0)
-                                                                                          blue: (226.0/255.0)
-                                                                                         alpha:(1.0)] range: NSMakeRange(32, 20)];
+        [termsString addAttribute: NSForegroundColorAttributeName value: [UIColor colorWithRed: (70.0/255.0)
+                                                                                         green: (206.0/255.0)
+                                                                                          blue: (210.0/255.0)
+                                                                                         alpha:(1.0)] range: NSMakeRange(36, 16)];
         
-        [termsString addAttribute: NSForegroundColorAttributeName value: [UIColor colorWithRed: (32.0/255.0)
-                                                                                         green: (195.0/255.0)
-                                                                                          blue: (226.0/255.0)
+        [termsString addAttribute: NSForegroundColorAttributeName value: [UIColor colorWithRed: (70.0/255.0)
+                                                                                         green: (206.0/255.0)
+                                                                                          blue: (210.0/255.0)
                                                                                          alpha: (1.0)] range: NSMakeRange(57, 14)];
         // add terms buttons
         termsAndConditionsLabel.attributedText = termsString;

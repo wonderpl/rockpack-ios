@@ -114,7 +114,7 @@
     
     NSArray *itemArray = [categoriesDictionary objectForKey: @"items"];
     
-    if (![itemArray isKindOfClass: [NSArray class]])
+    if (![itemArray isKindOfClass: [NSArray class]] || [itemArray count] == 0)
         return NO;
     
     // We need to mark all of our existing Category objects corresponding to this viewId, just in case they are no longer required

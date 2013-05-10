@@ -16,6 +16,9 @@
 #import <QuartzCore/QuartzCore.h>
 
 @interface SYNChannelCategoryTableViewController ()
+{
+    BOOL hasRetried;
+}
 
 @property (nonatomic, strong) NSArray* categoriesDatasource;
 @property NSMutableArray* transientDatasource;
@@ -114,7 +117,7 @@
     self.categoriesDatasource = [appDelegate.mainManagedObjectContext executeFetchRequest: categoriesFetchRequest
                                                                                     error: &error];
     
-    if (self.categoriesDatasource.count <= 0)
+    if (self.categoriesDatasource.count <= 0 && ! hasRetried)
     {
         
         [appDelegate.networkEngine updateCategoriesOnCompletion:^{
