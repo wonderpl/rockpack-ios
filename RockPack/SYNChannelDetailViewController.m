@@ -1390,11 +1390,11 @@
     [appDelegate.oAuthNetworkEngine uploadCoverArtForUserId: appDelegate.currentOAuth2Credentials.userId
                                                       image: imageToUpload
                                           completionHandler: ^(NSDictionary *dictionary){
-                                              NSString *wallpaperURL = dictionary [@"background_url"];
-#warning Fix Uploading
-                                              if (wallpaperURL)
+                                              NSString *imageUrl = dictionary [@"thumbnail_url"];
+
+                                              if (imageUrl && [imageUrl isKindOfClass:[NSString class]])
                                               {
-                                                  //self.channel.wallpaperURL = wallpaperURL;
+                                                  self.channel.channelCover.imageUrl = imageUrl;
                                                   DebugLog(@"Success");
                                               }
                                               else
