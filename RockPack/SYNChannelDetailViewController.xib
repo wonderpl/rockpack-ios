@@ -608,13 +608,12 @@
 						<reference key="IBUIFontDescription" ref="842263965"/>
 						<reference key="IBUIFont" ref="713840540"/>
 					</object>
-					<object class="IBUIButton" id="531600326">
+					<object class="IBUIButton" id="640957261">
 						<reference key="NSNextResponder" ref="453930770"/>
 						<int key="NSvFlags">292</int>
 						<string key="NSFrame">{{60, 390}, {120, 120}}</string>
 						<reference key="NSSuperview" ref="453930770"/>
 						<reference key="NSWindow"/>
-						<reference key="NSNextKeyView"/>
 						<string key="NSReuseIdentifierKey">_NS:9</string>
 						<bool key="IBUIOpaque">NO</bool>
 						<string key="targetRuntimeIdentifier">IBIPadFramework</string>
@@ -635,7 +634,7 @@
 						<string key="NSFrame">{{884, 80}, {130, 45}}</string>
 						<reference key="NSSuperview" ref="453930770"/>
 						<reference key="NSWindow"/>
-						<reference key="NSNextKeyView" ref="531600326"/>
+						<reference key="NSNextKeyView" ref="640957261"/>
 						<string key="NSReuseIdentifierKey">_NS:9</string>
 						<bool key="IBUIOpaque">NO</bool>
 						<string key="targetRuntimeIdentifier">IBIPadFramework</string>
@@ -854,7 +853,7 @@
 					<object class="IBCocoaTouchOutletConnection" key="connection">
 						<string key="label">profileImageButton</string>
 						<reference key="source" ref="841351856"/>
-						<reference key="destination" ref="531600326"/>
+						<reference key="destination" ref="640957261"/>
 					</object>
 					<int key="connectionID">119</int>
 				</object>
@@ -973,17 +972,8 @@
 				</object>
 				<object class="IBConnectionRecord">
 					<object class="IBCocoaTouchEventConnection" key="connection">
-						<string key="label">addItToChannelPresssed:</string>
-						<reference key="source" ref="531600326"/>
-						<reference key="destination" ref="841351856"/>
-						<int key="IBEventType">7</int>
-					</object>
-					<int key="connectionID">118</int>
-				</object>
-				<object class="IBConnectionRecord">
-					<object class="IBCocoaTouchEventConnection" key="connection">
 						<string key="label">profileImagePressed:</string>
-						<reference key="source" ref="531600326"/>
+						<reference key="source" ref="640957261"/>
 						<reference key="destination" ref="841351856"/>
 						<int key="IBEventType">7</int>
 					</object>
@@ -1019,7 +1009,7 @@
 							<reference ref="1063460983"/>
 							<reference ref="657402384"/>
 							<reference ref="1042878543"/>
-							<reference ref="531600326"/>
+							<reference ref="640957261"/>
 						</array>
 						<reference key="parent" ref="0"/>
 					</object>
@@ -1212,7 +1202,7 @@
 					</object>
 					<object class="IBObjectRecord">
 						<int key="objectID">117</int>
-						<reference key="object" ref="531600326"/>
+						<reference key="object" ref="640957261"/>
 						<reference key="parent" ref="453930770"/>
 						<string key="objectName">Button - Profile User</string>
 					</object>
@@ -1346,6 +1336,7 @@
 					<string key="superclassName">SYNAbstractViewController</string>
 					<dictionary class="NSMutableDictionary" key="actions">
 						<string key="addButtonTapped:">id</string>
+						<string key="addCoverButtonTapped:">UIButton</string>
 						<string key="addItToChannelPresssed:">id</string>
 						<string key="backButtonTapped:">id</string>
 						<string key="buyButtonTapped:">id</string>
@@ -1360,6 +1351,10 @@
 						<object class="IBActionInfo" key="addButtonTapped:">
 							<string key="name">addButtonTapped:</string>
 							<string key="candidateClassName">id</string>
+						</object>
+						<object class="IBActionInfo" key="addCoverButtonTapped:">
+							<string key="name">addCoverButtonTapped:</string>
+							<string key="candidateClassName">UIButton</string>
 						</object>
 						<object class="IBActionInfo" key="addItToChannelPresssed:">
 							<string key="name">addItToChannelPresssed:</string>

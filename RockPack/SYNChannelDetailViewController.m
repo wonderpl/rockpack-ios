@@ -146,10 +146,7 @@
     self.channelTitleTextView.delegate = self;
     
     
-    [self.channelTitleTextView addObserver: self
-                                forKeyPath: kTextViewContentSizeKey
-                                   options: NSKeyValueObservingOptionNew
-                                   context: NULL];
+    
 
     
     // Shadow for avatar background
@@ -314,6 +311,11 @@
                                         forKeyPath: kCollectionViewContentOffsetKey
                                            options: NSKeyValueObservingOptionNew
                                            context: nil];
+    
+    [self.channelTitleTextView addObserver: self
+                                forKeyPath: kTextViewContentSizeKey
+                                   options: NSKeyValueObservingOptionNew
+                                   context: NULL];
     
     if ([self.channel.subscribedByUser boolValue])
     {

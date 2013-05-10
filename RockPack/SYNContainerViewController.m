@@ -235,8 +235,6 @@
     
     [abstractVC animatedPopViewController];
     
-    self.scrollView.scrollEnabled = YES;
-    
     
 }
 
