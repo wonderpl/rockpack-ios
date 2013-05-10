@@ -70,6 +70,10 @@
 @property (nonatomic,strong) NSString* selectedCoverId;
 @property (weak, nonatomic) IBOutlet UILabel *byLabel;
 
+@property (nonatomic, strong) id<SDWebImageOperation> currentWebImageOperation;
+
+@property (nonatomic, strong) UIImage* originalBackgroundImage;
+
 //iPhone specific
 @property (nonatomic,strong) AVURLAsset* selectedAsset;
 @property (nonatomic,strong) SYNChannelCoverImageSelectorViewController* coverImageSelector;
@@ -85,6 +89,7 @@
 
 @synthesize channelCoverFetchedResultsController = _channelCoverFetchedResultsController;
 @synthesize userChannelCoverFetchedResultsController = _userChannelCoverFetchedResultsController;
+@synthesize originalBackgroundImage;
 
 - (id) initWithChannel: (Channel *) channel
              usingMode: (kChannelDetailsMode) mode
@@ -182,10 +187,12 @@
     [self.coverThumbnailCollectionView registerNib: coverThumbnailCellNib
                         forCellWithReuseIdentifier: @"SYNCoverThumbnailCell"];
     
+    // == Cover Image == //
   
-    [self.channelCoverImageView setImageWithURL: [NSURL URLWithString: self.channel.channelCover.imageBackgroundUrl]
-                               placeholderImage: nil
-                                        options: SDWebImageRetryFailed];
+    self.currentWebImageOperation = [self loadBackgroundImage];
+    
+    
+    
 
     
     // Set avatar
@@ -351,6 +358,8 @@
     [super viewWillDisappear: animated];
 }
 
+#pragma mark - Orientation Methods
+
 
 - (void) willRotateToInterfaceOrientation: (UIInterfaceOrientation) toInterfaceOrientation
                                  duration: (NSTimeInterval) duration
@@ -360,7 +369,15 @@
 
     [self.self.videoThumbnailCollectionView.collectionViewLayout invalidateLayout];
 }
-
+-(void)willAnimateRotationToInterfaceOrientation:(UIInterfaceOrientation)toInterfaceOrientation duration:(NSTimeInterval)duration
+{
+    [super willAnimateRotationToInterfaceOrientation:toInterfaceOrientation duration:duration];
+    
+    UIImage* croppedImage = [self croppedImageForOrientation:toInterfaceOrientation];
+    
+    self.channelCoverImageView.image = croppedImage;
+    
+}
 
 - (void) mainContextDataChanged: (NSNotification*) notification
 {
@@ -1545,5 +1562,52 @@
 }
 
 #pragma mark - Image render
+
+-(UIImage*)croppedImageForOrientation:(UIInterfaceOrientation)orientation
+{
+    
+    
+    CGRect croppingRect = UIInterfaceOrientationIsLandscape(orientation) ?
+    CGRectMake(0.0, 138.0, 1024.0, 886.0) : CGRectMake(138.0, 0.0, 886.0, 1024.0);
+    
+    
+    CGImageRef croppedImageRef = CGImageCreateWithImageInRect([originalBackgroundImage CGImage], croppingRect);
+    
+    UIImage* croppedImage = [UIImage imageWithCGImage:croppedImageRef];
+    
+    CGImageRelease(croppedImageRef);
+    
+    return croppedImage;
+   
+}
+
+-(id<SDWebImageOperation>)loadBackgroundImage
+{
+    __weak SDWebImageManager* shareImageManager = SDWebImageManager.sharedManager;
+    __weak SYNChannelDetailViewController *wself = self;
+     return [shareImageManager downloadWithURL:[NSURL URLWithString:self.channel.channelCover.imageBackgroundUrl]
+                                       options:SDWebImageRetryFailed
+                                      progress:nil
+                                     completed:^(UIImage *image, NSError *error, SDImageCacheType cacheType, BOOL finished) {
+                                   
+                                         if (!wself || !image)
+                                             return;
+                                         
+                                         
+                                         wself.originalBackgroundImage = image;
+                                         
+                                         UIImage* croppedImage = [wself croppedImageForOrientation:[[SYNDeviceManager sharedInstance] orientation]];
+                                         
+                                         [UIView transitionWithView: wself.view
+                                                           duration: 0.35f
+                                                            options: UIViewAnimationOptionTransitionCrossDissolve
+                                                         animations: ^{
+                                                             wself.channelCoverImageView.image = croppedImage;
+                                                         } completion: nil];
+                                        
+                                                    [wself.channelCoverImageView setNeedsLayout];
+                                         
+                                         }];
+}
 
 @end
