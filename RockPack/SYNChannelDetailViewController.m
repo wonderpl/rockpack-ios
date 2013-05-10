@@ -1266,6 +1266,11 @@
         return NO;
     }
     
+    if (textView.text.length >= 25)
+    {
+        return NO;
+    }
+    
     NSRange lowercaseCharRange = [text rangeOfCharacterFromSet: [NSCharacterSet lowercaseLetterCharacterSet]];
     
     if (lowercaseCharRange.location != NSNotFound)
