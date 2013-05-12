@@ -13,7 +13,6 @@
 #import "SYNActivityPopoverViewController.h"
 #import "SYNContainerViewController.h"
 #import "SYNChannelsRootViewController.h"
-#import "SYNChannelsUserViewController.h"
 #import "SYNFeedRootViewController.h"
 #import "SYNOAuthNetworkEngine.h"
 #import "SYNProfileRootViewController.h"

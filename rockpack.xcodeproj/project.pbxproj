@@ -902,7 +902,6 @@
 		BED4312216F1F12E0051465B /* LoginError.png in Resources */ = {isa = PBXBuildFile; fileRef = BED4312016F1F12D0051465B /* LoginError.png */; };
 		BED4312316F1F12E0051465B /* LoginError@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = BED4312116F1F12D0051465B /* LoginError@2x.png */; };
 		BED4312B16F20CD70051465B /* RegexKitLite.m in Sources */ = {isa = PBXBuildFile; fileRef = BED4312A16F20CD70051465B /* RegexKitLite.m */; settings = {COMPILER_FLAGS = "-fno-objc-arc"; }; };
-		BEE4A69F17021DB4008F9D05 /* SYNChannelsUserViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = BEE4A69E17021DB4008F9D05 /* SYNChannelsUserViewController.m */; };
 		BEE4A6C2170B5640008F9D05 /* SYNAccountSettingsEmail.m in Sources */ = {isa = PBXBuildFile; fileRef = BEE4A6C1170B563E008F9D05 /* SYNAccountSettingsEmail.m */; };
 		BEE4A6C5170B56B5008F9D05 /* SYNAccountSettingsUsername.m in Sources */ = {isa = PBXBuildFile; fileRef = BEE4A6C4170B56B4008F9D05 /* SYNAccountSettingsUsername.m */; };
 		BEE732B71727D81A0083E1B9 /* SYNObjectFactory.m in Sources */ = {isa = PBXBuildFile; fileRef = BEE732B61727D81A0083E1B9 /* SYNObjectFactory.m */; };
@@ -1996,8 +1995,6 @@
 		BED4312116F1F12D0051465B /* LoginError@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = "LoginError@2x.png"; path = "Assets/Images/LoginError@2x.png"; sourceTree = "<group>"; };
 		BED4312916F20CD70051465B /* RegexKitLite.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = RegexKitLite.h; sourceTree = "<group>"; };
 		BED4312A16F20CD70051465B /* RegexKitLite.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = RegexKitLite.m; sourceTree = "<group>"; };
-		BEE4A69D17021DB4008F9D05 /* SYNChannelsUserViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SYNChannelsUserViewController.h; sourceTree = "<group>"; };
-		BEE4A69E17021DB4008F9D05 /* SYNChannelsUserViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SYNChannelsUserViewController.m; sourceTree = "<group>"; };
 		BEE4A6BD170B0FD6008F9D05 /* rockpack-Release-Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; name = "rockpack-Release-Info.plist"; path = "RockPack/rockpack-Release-Info.plist"; sourceTree = "<group>"; };
 		BEE4A6BF170B273F008F9D05 /* SYNAccountSettingTableViewCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SYNAccountSettingTableViewCell.h; sourceTree = "<group>"; };
 		BEE4A6C0170B563D008F9D05 /* SYNAccountSettingsEmail.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SYNAccountSettingsEmail.h; sourceTree = "<group>"; };
@@ -3001,8 +2998,6 @@
 			children = (
 				014A456D166A39E60091E4E5 /* SYNChannelsRootViewController.h */,
 				014A456E166A39E60091E4E5 /* SYNChannelsRootViewController.m */,
-				BEE4A69D17021DB4008F9D05 /* SYNChannelsUserViewController.h */,
-				BEE4A69E17021DB4008F9D05 /* SYNChannelsUserViewController.m */,
 				BE285D981725726300D995AB /* SYNExistingChannelsViewController.h */,
 				BE285D991725726300D995AB /* SYNExistingChannelsViewController.m */,
 				BE285D9A1725726300D995AB /* SYNExistingChannelsViewController.xib */,
@@ -4220,16 +4215,6 @@
 				01677E0D16554AB500B1B1D8 /* ButtonBack@2x.png in Resources */,
 				01677E0E16554AB500B1B1D8 /* ButtonBackHighlighted.png in Resources */,
 				01677E0F16554AB500B1B1D8 /* ButtonBackHighlighted@2x.png in Resources */,
-				01677E2416554AF300B1B1D8 /* ButtonCancelSearch.png in Resources */,
-				01677E2516554AF300B1B1D8 /* ButtonCancelSearch@2x.png in Resources */,
-				01677E3216554B2600B1B1D8 /* ButtonThumbnailAdd.png in Resources */,
-				01677E3316554B2600B1B1D8 /* ButtonThumbnailAdd@2x.png in Resources */,
-				01677E3416554B2600B1B1D8 /* ButtonThumbnailAddHighlighted.png in Resources */,
-				01677E3516554B2600B1B1D8 /* ButtonThumbnailAddHighlighted@2x.png in Resources */,
-				01677E3616554B2600B1B1D8 /* ButtonThumbnailPack.png in Resources */,
-				01677E3716554B2600B1B1D8 /* ButtonThumbnailPack@2x.png in Resources */,
-				01677E3816554B2600B1B1D8 /* ButtonThumbnailPackHighlighted.png in Resources */,
-				01677E3916554B2600B1B1D8 /* ButtonThumbnailPackHighlighted@2x.png in Resources */,
 				01677F0616554CC700B1B1D8 /* Icon-72.png in Resources */,
 				01677F0716554CC700B1B1D8 /* Icon-72@2x.png in Resources */,
 				01677F0816554CC700B1B1D8 /* Icon-Small-50.png in Resources */,
@@ -4242,12 +4227,6 @@
 				01677F1316554CFD00B1B1D8 /* iTunesArtwork in Resources */,
 				01677F1616554D2700B1B1D8 /* DINNextLTPro-Bold.otf in Resources */,
 				01677F1716554D2700B1B1D8 /* DINNextLTPro-Regular.otf in Resources */,
-				01E98D8C165C146B0079FD7A /* SliderBackground.png in Resources */,
-				01E98D8D165C146B0079FD7A /* SliderBackground@2x.png in Resources */,
-				01E98D8E165C146B0079FD7A /* SliderThumb.png in Resources */,
-				01E98D8F165C146B0079FD7A /* SliderThumb@2x.png in Resources */,
-				01E427FF16664EB3009B941F /* ButtonThumbnailShareHighlighted.png in Resources */,
-				01E4280016664EB3009B941F /* ButtonThumbnailShareHighlighted@2x.png in Resources */,
 				01B0A968166CE22300CAA235 /* SYNVideoThumbnailRegularCell.xib in Resources */,
 				01B0A96C166CEC4D00CAA235 /* BackgroundVideoThumbnailRegular@2x.png in Resources */,
 				01B0A96D166CEC4D00CAA235 /* BackgroundVideoThumbnailRegular.png in Resources */,
@@ -4264,18 +4243,10 @@
 				01946B561683209600354601 /* GlossChannelSmall@2x.png in Resources */,
 				01946B571683209600354601 /* GlossVideo.png in Resources */,
 				01946B581683209600354601 /* GlossVideo@2x.png in Resources */,
-				01946B591683209600354601 /* PanelVideo.png in Resources */,
-				01946B5A1683209600354601 /* PanelVideo@2x.png in Resources */,
 				01946B5B1683209600354601 /* PanelVideoGlow.png in Resources */,
 				01946B5C1683209600354601 /* PanelVideoGlow@2x.png in Resources */,
 				01B34C9816A99D6A002AD8FB /* GlossChannelThumbnail.png in Resources */,
 				01B34C9916A99D6A002AD8FB /* GlossChannelThumbnail@2x.png in Resources */,
-				01A3EC1D16AEC1BD008DCE08 /* ButtonActivityDefault.png in Resources */,
-				01A3EC1E16AEC1BD008DCE08 /* ButtonActivityDefault@2x.png in Resources */,
-				01A3EC1F16AEC1BD008DCE08 /* ButtonActivityHighlighted.png in Resources */,
-				01A3EC2016AEC1BD008DCE08 /* ButtonActivityHighlighted@2x.png in Resources */,
-				01A3EC2116AEC1BD008DCE08 /* ButtonActivitySelected.png in Resources */,
-				01A3EC2216AEC1BD008DCE08 /* ButtonActivitySelected@2x.png in Resources */,
 				01A3EC2F16AECE4B008DCE08 /* SYNActivityPopoverViewController.xib in Resources */,
 				01A3EC3716AED804008DCE08 /* NotificationContent.png in Resources */,
 				01A3EC3816AED804008DCE08 /* NotificationContent@2x.png in Resources */,
@@ -4297,12 +4268,6 @@
 				0173F6FC16E028E4005B3ECA /* BackgroundVideoThumbnailSmall@2x.png in Resources */,
 				0173F6FD16E028E4005B3ECA /* GlossVideoThumbnailSmall.png in Resources */,
 				0173F6FE16E028E4005B3ECA /* GlossVideoThumbnailSmall@2x.png in Resources */,
-				01F90E1116E7508B00F1D924 /* VideoChannelStackGloss.png in Resources */,
-				01F90E1216E7508B00F1D924 /* VideoChannelStackGloss@2x.png in Resources */,
-				01F90E1316E7508B00F1D924 /* VideoChannelStack.png in Resources */,
-				01F90E1416E7508B00F1D924 /* VideoChannelStack@2x.png in Resources */,
-				01F90E1716E7568F00F1D924 /* VideoDurationBackground.png in Resources */,
-				01F90E1816E7568F00F1D924 /* VideoDurationBackground@2x.png in Resources */,
 				019E6A8F16E9081D00647002 /* GlossVideoThumbnailSmallPlaying.png in Resources */,
 				019E6A9016E9081D00647002 /* GlossVideoThumbnailSmallPlaying@2x.png in Resources */,
 				011A15E116EE2F46008CF25E /* popover-black-right-arrow-image@2x.png in Resources */,
@@ -4333,8 +4298,6 @@
 				BE270BC116EE493800CDDA6D /* ButtonSignupDefault@2x.png in Resources */,
 				BE270BC216EE493800CDDA6D /* ButtonSignupHighlighted.png in Resources */,
 				BE270BC316EE493800CDDA6D /* ButtonSignupHighlighted@2x.png in Resources */,
-				BE270BC416EE493800CDDA6D /* GlossBackgroundSignup.png in Resources */,
-				BE270BC516EE493800CDDA6D /* GlossBackgroundSignup@2x.png in Resources */,
 				BE270BC616EE493800CDDA6D /* LogoSignup.png in Resources */,
 				BE270BC716EE493800CDDA6D /* LogoSignup@2x.png in Resources */,
 				BE270BD016EF386300CDDA6D /* DividerLogin.png in Resources */,
@@ -4349,10 +4312,6 @@
 				BE270BE116EF3A2100CDDA6D /* ButtonRegister@2x.png in Resources */,
 				BE270BE216EF3A2100CDDA6D /* ButtonRegisterHighlighted.png in Resources */,
 				BE270BE316EF3A2100CDDA6D /* ButtonRegisterHighlighted@2x.png in Resources */,
-				BE270BE816EF3A7400CDDA6D /* ButtonForgotDefault.png in Resources */,
-				BE270BE916EF3A7400CDDA6D /* ButtonForgotDefault@2x.png in Resources */,
-				BE270BEA16EF3A7400CDDA6D /* ButtonForgotHighlighted.png in Resources */,
-				BE270BEB16EF3A7400CDDA6D /* ButtonForgotHighlighted@2x.png in Resources */,
 				BED4310316EF8D830051465B /* FieldDayMonth.png in Resources */,
 				BED4310416EF8D830051465B /* FieldDayMonth@2x.png in Resources */,
 				BED4310516EF8D830051465B /* FieldYear.png in Resources */,
@@ -4381,12 +4340,6 @@
 				01A79B9D16F32C3400B05084 /* ButtonShuttleBarPause@2x.png in Resources */,
 				01A79B9E16F32C3400B05084 /* ButtonShuttleBarPlay.png in Resources */,
 				01A79B9F16F32C3400B05084 /* ButtonShuttleBarPlay@2x.png in Resources */,
-				BE03A6C616F7697900245314 /* ButtonFlagDefault.png in Resources */,
-				BE03A6C716F7697900245314 /* ButtonFlagDefault@2x.png in Resources */,
-				BE03A6C816F7697900245314 /* ButtonFlagHighlighted.png in Resources */,
-				BE03A6C916F7697900245314 /* ButtonFlagHighlighted@2x.png in Resources */,
-				BE03A6CA16F7697900245314 /* ButtonSettingsDefault.png in Resources */,
-				BE03A6CB16F7697900245314 /* ButtonSettingsDefault@2x.png in Resources */,
 				BE03A6CC16F7697900245314 /* ButtonSettingsHighlighted.png in Resources */,
 				BE03A6CD16F7697900245314 /* ButtonSettingsHighlighted@2x.png in Resources */,
 				BE21EE9516FA28680067223B /* IconBirthday.png in Resources */,
@@ -4409,36 +4362,20 @@
 				BE21EEC016FB584C0067223B /* ButtonAccountSaveDefault@2x.png in Resources */,
 				BE21EEC116FB584C0067223B /* ButtonAccountSaveHighlighted.png in Resources */,
 				BE21EEC216FB584C0067223B /* ButtonAccountSaveHighlighted@2x.png in Resources */,
-				011D42D116FFA8E600A49D50 /* BarHeaderYou.png in Resources */,
-				011D42D216FFA8E600A49D50 /* BarHeaderYou@2x.png in Resources */,
-				011D42D316FFA8E600A49D50 /* BarHeaderYouSelected.png in Resources */,
-				011D42D416FFA8E600A49D50 /* BarHeaderYouSelected@2x.png in Resources */,
 				011D42D516FFA8E600A49D50 /* DividerYou.png in Resources */,
 				011D42D616FFA8E600A49D50 /* DividerYou@2x.png in Resources */,
-				011D42D716FFA8E600A49D50 /* GlossAvatarProfile.png in Resources */,
-				011D42D816FFA8E600A49D50 /* GlossAvatarProfile@2x.png in Resources */,
-				1F6D17AC1700A23100B66F09 /* BarHeaderSearchSelected.png in Resources */,
-				1F6D17AD1700A23100B66F09 /* BarHeaderSearchSelected@2x.png in Resources */,
 				01AEFBD01701AC870060467A /* AccountSettingsView.png in Resources */,
 				01AEFBD11701AC870060467A /* AccountSettingsView@2x.png in Resources */,
 				01AEFBD81701ACD60060467A /* DividerSearch.png in Resources */,
 				01AEFBD91701ACD60060467A /* DividerSearch@2x.png in Resources */,
-				01AEFBDC1701ACE20060467A /* ArrowSearch.png in Resources */,
-				01AEFBDD1701ACE20060467A /* ArrowSearch@2x.png in Resources */,
 				01AEFBE21701ACFD0060467A /* popover-black-bcg-image.png in Resources */,
 				01AEFBE31701ACFE0060467A /* popover-black-bcg-image@2x.png in Resources */,
 				01AEFBE41701ACFE0060467A /* popover-black-top-arrow-image.png in Resources */,
 				01AEFBE51701ACFE0060467A /* popover-black-top-arrow-image@2x.png in Resources */,
-				01AEFBE81701AD150060467A /* GlowSearch.png in Resources */,
-				01AEFBE91701AD150060467A /* GlowSearch@2x.png in Resources */,
 				01AEFBF21701AD2E0060467A /* SearchTabDividerHeader.png in Resources */,
 				01AEFBF31701AD2E0060467A /* SearchTabDividerHeader@2x.png in Resources */,
-				01AEFBF41701AD2E0060467A /* SearchTabHeaderGlow.png in Resources */,
-				01AEFBF51701AD2E0060467A /* SearchTabHeaderGlow@2x.png in Resources */,
 				01AEFBF61701AD2E0060467A /* SearchTabHeaderSelected.png in Resources */,
 				01AEFBF71701AD2E0060467A /* SearchTabHeaderSelected@2x.png in Resources */,
-				01AEFBF81701AD2E0060467A /* SearchTabPanelHeader.png in Resources */,
-				01AEFBF91701AD2E0060467A /* SearchTabPanelHeader@2x.png in Resources */,
 				BE7D342E170DD8C90085AB81 /* SYNChannelFooterMoreView.xib in Resources */,
 				BE7D34DC1715A9560085AB81 /* ButtonSettings.png in Resources */,
 				BE7D34DD1715A9560085AB81 /* ButtonSettings@2x.png in Resources */,
@@ -4491,8 +4428,6 @@
 				BE7D354D1718667F0085AB81 /* SYNUserProfileViewController.xib in Resources */,
 				BE2D213F171C527B00B4B755 /* ButtonBackLabel.png in Resources */,
 				BE2D2140171C527B00B4B755 /* ButtonBackLabel@2x.png in Resources */,
-				BE2D2141171C527B00B4B755 /* ButtonBackLabelHighlighted.png in Resources */,
-				BE2D2142171C527B00B4B755 /* ButtonBackLabelHighlighted@2x.png in Resources */,
 				BE2D214C171D5B9500B4B755 /* IconSearch.png in Resources */,
 				BE2D214D171D5B9500B4B755 /* IconSearch@2x.png in Resources */,
 				BE2D2152171D5BD500B4B755 /* ButtonCancel.png in Resources */,
@@ -5119,7 +5054,6 @@
 				BE13E38916FB85220098F23C /* SYNAccountSettingsLocation.m in Sources */,
 				BE13E38C16FC85E60098F23C /* SYNAccountSettingsAbout.m in Sources */,
 				01AEFBCD1701AC460060467A /* SYNActivityManager.m in Sources */,
-				BEE4A69F17021DB4008F9D05 /* SYNChannelsUserViewController.m in Sources */,
 				BEE4A6C2170B5640008F9D05 /* SYNAccountSettingsEmail.m in Sources */,
 				BEE4A6C5170B56B5008F9D05 /* SYNAccountSettingsUsername.m in Sources */,
 				BE7D3431170DDB310085AB81 /* SYNChannelFooterMoreView.m in Sources */,
@@ -5480,18 +5414,3 @@
 	};
 	rootObject = 010DEFC71629BDC40080F26B /* Project object */;
 }
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-

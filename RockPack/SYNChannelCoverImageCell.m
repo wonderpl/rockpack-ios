@@ -15,6 +15,7 @@
 @interface SYNChannelCoverImageCell ()
 @property (nonatomic, retain)NSURL* latestAssetUrl;
 @property (weak, nonatomic) IBOutlet UILabel *titleLabel;
+@property (nonatomic, strong) UIImage* placeholderImage;
 @end
 
 @implementation SYNChannelCoverImageCell
@@ -23,24 +24,7 @@
 {
     [super layoutSubviews];
     self.titleLabel.font = [UIFont boldRockpackFontOfSize:self.titleLabel.font.pointSize];
-}
-
--(void)configureWithUrlAsset:(AVURLAsset*)asset fromLibrary:(ALAssetsLibrary*)library
-{
-    self.latestAssetUrl = [asset URL];
-    [library assetForURL:[asset URL] resultBlock:^(ALAsset *resultAsset) {
-        dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0), ^{
-            __block UIImage* newImage = [UIImage imageWithCGImage:resultAsset.thumbnail];
-            dispatch_async(dispatch_get_main_queue(), ^{
-                if ([[asset URL] isEqual:self.latestAssetUrl])
-                {
-                    self.channelCoverImageView.image = newImage;
-                }
-            });
-        });
-    } failureBlock:^(NSError *error) {
-        self.channelCoverImageView.image = nil;
-    }];
+    self.placeholderImage = [UIImage imageNamed:@"PlaceholderChannelCover.png"];
 }
 
 -(void)setTitleText:(NSString*)titleText
@@ -52,6 +36,23 @@
     newFrame.size.width = oldFrame.size.width;
     newFrame.origin.y = oldFrame.origin.y + oldFrame.size.height - newFrame.size.height;
     self.titleLabel.frame = newFrame;
+}
+
+-(void)setimageFromAsset:(ALAsset*)asset;
+{
+    self.latestAssetUrl = [asset valueForProperty:ALAssetPropertyAssetURL];
+    self.channelCoverImageView.image = self.placeholderImage;
+    dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0), ^{
+        __block NSURL* url = [asset valueForProperty:ALAssetPropertyAssetURL];
+        __block UIImage* resultImage = [UIImage imageWithCGImage:asset.thumbnail];
+        dispatch_async(dispatch_get_main_queue(), ^{
+            if([url isEqual:self.latestAssetUrl])
+            {
+                self.channelCoverImageView.image = resultImage;
+            }
+        });
+    });
+    
 }
 
 @end

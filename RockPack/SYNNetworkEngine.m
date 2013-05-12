@@ -253,7 +253,7 @@
     
     [networkOperation addJSONCompletionHandler:^(NSDictionary *dictionary) {
         
-        BOOL registryResultOk = [self.searchRegistry registerChannelsFromDictionary:dictionary andOwner:nil];
+        BOOL registryResultOk = [self.searchRegistry registerChannelsFromDictionary:dictionary];
         if (!registryResultOk)
             return;
         
@@ -305,42 +305,12 @@
     
     [self enqueueOperation: networkOperation];
     
-    
-    
     // Go back to the original operation class
     
     [self registerOperationSubclass:[SYNNetworkOperationJsonObject class]];
     
 }
 
--(void)userPublicChannelsByOwner:(ChannelOwner*)channelOwner {
-    
-    NSDictionary *apiSubstitutionDictionary = @{@"USERID" : channelOwner.uniqueId};
-    
-    NSString *apiString = [kAPIGetUserDetails stringByReplacingOccurrencesOfStrings: apiSubstitutionDictionary];
-    
-    SYNNetworkOperationJsonObject *networkOperation = (SYNNetworkOperationJsonObject*)[self operationWithPath: apiString
-                                                                                                       params: @{@"locale" : self.localeString}
-                                                                                                   httpMethod: @"GET"];
-    
-    [networkOperation addJSONCompletionHandler:^(NSDictionary *responseDictionary) {
-         
-        
-        
-         BOOL registryResultOk = [self.searchRegistry registerChannelsFromDictionary:responseDictionary andOwner:channelOwner];
-         if (!registryResultOk)
-             return;
-         
-         
-     } errorHandler: ^(NSError* error) {
-         
-         DebugLog(@"API Call failed");
-         
-     }];
-    
-    
-    [self enqueueOperation: networkOperation];
-    
-}
+
 
 @end

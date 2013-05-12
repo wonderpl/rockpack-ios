@@ -62,7 +62,6 @@
                                       inManagedObjectContext: appDelegate.searchManagedObjectContext];
     
     
-    fetchRequest.predicate = [NSPredicate predicateWithFormat:[NSString stringWithFormat:@"viewId == \"%@\"", viewId]];
     fetchRequest.sortDescriptors = @[[[NSSortDescriptor alloc] initWithKey: @"position" ascending: YES]];
     
     
@@ -86,7 +85,8 @@
 -(void)performSearchWithTerm:(NSString*)term
 {
     
-    appDelegate = (SYNAppDelegate*)[[UIApplication sharedApplication] delegate];
+    if(!appDelegate)
+        appDelegate = (SYNAppDelegate*)[[UIApplication sharedApplication] delegate];
 
     [appDelegate.networkEngine searchVideosForTerm:term];
     
