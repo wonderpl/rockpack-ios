@@ -72,22 +72,10 @@
 }
 
 -(BOOL)registerChannelsFromDictionary:(NSDictionary *)dictionary
-                             andOwner:(ChannelOwner*)owner
 {
     NSDictionary *channelsDictionary = [dictionary objectForKey: @"channels"];
     if (!channelsDictionary || ![channelsDictionary isKindOfClass: [NSDictionary class]])
         return NO;
-    
-    if(!owner)
-        return NO;
-    ChannelOwner* copiedChannelOwner;
-    if(owner)
-    {
-        copiedChannelOwner = [ChannelOwner instanceFromChannelOwner:owner // importManagedContext == searchManagedContext
-                                          usingManagedObjectContext:importManagedObjectContext];
-        if(!copiedChannelOwner)
-            return NO;
-    }
     
     
     
@@ -101,16 +89,13 @@
         if (![itemDictionary isKindOfClass: [NSDictionary class]])
             continue;
         
-        Channel* channel = [Channel instanceFromDictionary:itemDictionary
-                                 usingManagedObjectContext:importManagedObjectContext
-                                       ignoringObjectTypes:kIgnoreNothing
-                                                 andViewId:kSearchViewId];
-        if(copiedChannelOwner)
-            channel.channelOwner = copiedChannelOwner;
+        [Channel instanceFromDictionary:itemDictionary
+              usingManagedObjectContext:importManagedObjectContext
+                    ignoringObjectTypes:kIgnoreNothing
+                              andViewId:kSearchViewId];
     }
     
             
-    
     
     BOOL saveResult = [self saveImportContext];
     if(!saveResult)

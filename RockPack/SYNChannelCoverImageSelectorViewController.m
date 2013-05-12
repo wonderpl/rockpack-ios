@@ -81,21 +81,13 @@ enum ChannelCoverSelectorState {
                 });
             }
             [group setAssetsFilter:[ALAssetsFilter allPhotos]];
-            NSMutableArray* groupArray = [NSMutableArray array];
-            [group enumerateAssetsUsingBlock:^(ALAsset *result, NSUInteger index, BOOL *innerStop) {
-                if(result)
-                {
-                    ALAssetRepresentation *representation = [result defaultRepresentation];
-                    NSURL *url = [representation url];
-                    AVAsset *avAsset = [AVURLAsset URLAssetWithURL:url options:nil];
-                    [groupArray addObject:avAsset];
-                }
-            }];
             NSString* groupName = [group valueForProperty:ALAssetsGroupPropertyName];
-            if([groupArray count] > 0 && groupName)
+            [group enumerateAssetsAtIndexes:[NSIndexSet indexSetWithIndex:0] options:0 usingBlock:^(ALAsset *result, NSUInteger index, BOOL *stop) {
+            if(result)
             {
-                [self.userAssetGroups setObject:groupArray forKey:groupName];
+              [self.userAssetGroups setObject:@{@"group":group, @"coverAsset":result} forKey:groupName];
             }
+            }];
         } failureBlock:^(NSError *error) {
         }];
         
@@ -131,7 +123,11 @@ enum ChannelCoverSelectorState {
         case kChannelCoverCameraOptions:
             return [self.sortedKeys count] + 1 ;
         case kChannelCoverLocalAlbum:
-            return [[self.userAssetGroups objectForKey:self.selectedAlbumKey] count];
+        {
+            ;
+            ALAssetsGroup* group = [[self.userAssetGroups objectForKey:self.selectedAlbumKey] objectForKey:@"group"];
+            return [group numberOfAssets];
+        }
         default:
             return 0;
             break;
@@ -140,7 +136,7 @@ enum ChannelCoverSelectorState {
 
 -(UICollectionViewCell*)collectionView:(UICollectionView *)collectionView cellForItemAtIndexPath:(NSIndexPath *)indexPath
 {
-    SYNChannelCoverImageCell* cell =(SYNChannelCoverImageCell*) [self.collectionView dequeueReusableCellWithReuseIdentifier:@"SYNChannelCoverImageCell" forIndexPath:indexPath];
+    __block SYNChannelCoverImageCell* cell =(SYNChannelCoverImageCell*) [self.collectionView dequeueReusableCellWithReuseIdentifier:@"SYNChannelCoverImageCell" forIndexPath:indexPath];
     NSString* title = @"";
     if(currentState == kChannelCoverDefault)
     {
@@ -189,16 +185,21 @@ enum ChannelCoverSelectorState {
         {
             indexPath = [NSIndexPath indexPathForRow:indexPath.row - 1 inSection:0];
             title = [self.sortedKeys objectAtIndex:indexPath.row];
-            AVURLAsset* imageAsset = [[self.userAssetGroups objectForKey:title] objectAtIndex:0];
-            [cell configureWithUrlAsset:imageAsset fromLibrary:self.library];
+            ALAsset* imageAsset = [[self.userAssetGroups objectForKey:title] objectForKey:@"coverAsset"];
+            [cell setimageFromAsset:imageAsset];
             cell.glossImage.hidden = NO;
         }
         
     }
     else
     {
-        AVURLAsset* imageAsset = [[self.userAssetGroups objectForKey:self.selectedAlbumKey] objectAtIndex:indexPath.row];
-        [cell configureWithUrlAsset:imageAsset fromLibrary:self.library];
+        ALAssetsGroup* group = [[self.userAssetGroups objectForKey:self.selectedAlbumKey] objectForKey:@"group"];
+        [group enumerateAssetsAtIndexes:[NSIndexSet indexSetWithIndex:indexPath.row]  options:0 usingBlock:^(ALAsset *result, NSUInteger index, BOOL *stop) {
+            if(result)
+            {
+                [cell setimageFromAsset:result];
+            }
+        }];
         cell.glossImage.hidden = NO;
     }
     [cell setTitleText:title];

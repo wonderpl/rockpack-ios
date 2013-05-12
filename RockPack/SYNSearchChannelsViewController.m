@@ -30,6 +30,7 @@
     self.trackedViewName = @"Search - Channels";
     
     
+    
     CGRect collectionFrame = self.channelThumbnailCollectionView.frame;
     collectionFrame.origin.y += 60.0;
     collectionFrame.size.height -= 60.0;
@@ -55,7 +56,6 @@
                                       inManagedObjectContext: appDelegate.searchManagedObjectContext];
     
     
-    fetchRequest.predicate = [NSPredicate predicateWithFormat:[NSString stringWithFormat:@"viewId == \"%@\"", viewId]];
     fetchRequest.sortDescriptors = @[[[NSSortDescriptor alloc] initWithKey: @"position" ascending: YES]];
     
     
@@ -78,6 +78,9 @@
 {
 //    if(self.itemToUpdate)
 //        [self.itemToUpdate hideItem];
+    
+    if(!appDelegate)
+        appDelegate = (SYNAppDelegate*)[[UIApplication sharedApplication] delegate];
     
     [appDelegate.networkEngine searchChannelsForTerm:term];
 }

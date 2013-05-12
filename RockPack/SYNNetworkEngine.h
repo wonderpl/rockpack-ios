@@ -37,8 +37,6 @@
                    withComplete: (MKNKAutocompleteProcessBlock) completionBlock
                        andError: (MKNKErrorBlock) errorBlock;
 
--(void) userPublicChannelsByOwner: (ChannelOwner*) channelOwner;
-
 - (void) coverArtWithWithStart: (unsigned int) start
                           size: (unsigned int) size
              completionHandler: (MKNKUserSuccessBlock) completionBlock
