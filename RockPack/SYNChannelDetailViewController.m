@@ -1282,10 +1282,10 @@
         return NO;
     }
     
-//    if (textView.text.length >= 25 && ![text isEqualToString: @""])
-//    {
-//        return NO;
-//    }
+    if (textView.text.length >= 25 && ![text isEqualToString: @""])
+    {
+        return NO;
+    }
     
     NSRange lowercaseCharRange = [text rangeOfCharacterFromSet: [NSCharacterSet lowercaseLetterCharacterSet]];
     
