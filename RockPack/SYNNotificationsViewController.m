@@ -12,6 +12,7 @@
 #import "SYNOAuthNetworkEngine.h"
 #import "SYNRockpackNotification.h"
 #import "UIImageView+WebCache.h"
+#import "Video.h"
 
 #define kNotificationsCellIdent @"kNotificationsCellIdent"
 
@@ -205,7 +206,14 @@
     
     if(notification.objectType == kNotificationObjectTypeVideo)
     {
+        Video* video = [self videoFromVideoId:notification.videoId];
         
+        if(!video)
+            return;
+        
+        [[NSNotificationCenter defaultCenter] postNotificationName:kVideoOverlayRequested
+                                                            object:self
+                                                          userInfo:@{kVideo:video}];
     }
     else
     {
@@ -259,5 +267,38 @@
     }
     
     return channel;
+}
+-(Video*)videoFromVideoId:(NSString*)videoId
+{
+    Video* video;
+    
+    NSEntityDescription* channelEntity = [NSEntityDescription entityForName:@"Video"
+                                                     inManagedObjectContext:appDelegate.mainManagedObjectContext];
+    
+    NSFetchRequest *channelFetchRequest = [[NSFetchRequest alloc] init];
+    [channelFetchRequest setEntity: channelEntity];
+    
+    
+    NSPredicate *predicate = [NSPredicate predicateWithFormat: @"uniqueId == %@", videoId];
+    
+    [channelFetchRequest setPredicate: predicate];
+    
+    NSError* error;
+    
+    NSArray *matchingChannelEntries = [appDelegate.mainManagedObjectContext executeFetchRequest: channelFetchRequest
+                                                                                          error: &error];
+    
+    
+    if (matchingChannelEntries.count > 0)
+    {
+        video = matchingChannelEntries[0];
+        
+    }
+    else
+    {
+        
+    }
+    
+    return video;
 }
 @end

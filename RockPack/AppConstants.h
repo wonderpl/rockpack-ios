@@ -123,6 +123,7 @@
 #define kChannelDeleteRequest       @"kChannelDeleteRequest"
 #define kProfileRequested           @"kProfileRequested"
 #define kChannelDetailsRequested    @"kChannelDetailsRequested"
+#define kVideoOverlayRequested      @"kChannelDetailsRequested"
 
 #define kRefreshComplete           @"kRefreshComplete"
 

@@ -128,6 +128,15 @@
     
     self.byLabel.font = [UIFont rockpackFontOfSize: self.byLabel.font.pointSize];
     [self addShadowToLayer: self.byLabel.layer];
+    
+    if(self.mode == kChannelDetailsModeDisplay)
+    {
+        self.profileImageButton.enabled = YES;
+    }
+    else
+    {
+        self.profileImageButton.enabled = NO;
+    }
 
     
     // Add Rockpack font and shadow to UITextView

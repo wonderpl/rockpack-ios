@@ -19,7 +19,7 @@
 
 
 
-@class VideoInstance, Channel, ChannelOwner, Genre, SubGenre;
+@class VideoInstance, Channel, ChannelOwner, Genre, SubGenre, Video;
 
 @interface SYNAbstractViewController : GAITrackedViewController <NSFetchedResultsControllerDelegate,
                                                                  UICollectionViewDataSource,
@@ -63,6 +63,8 @@
 
 - (void) displayVideoViewerWithVideoInstanceArray: (NSArray *) videoInstanceArray
                                  andSelectedIndex: (int) selectedIndex;
+
+-(void)displayVideoViewerWithVideo:(Video*)video;
 
 - (void) viewChannelDetails: (Channel *) channel;
 - (void) viewProfileDetails: (ChannelOwner *) channelOwner;

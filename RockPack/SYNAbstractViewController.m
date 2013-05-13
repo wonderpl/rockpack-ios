@@ -263,6 +263,18 @@
                                   andSelectedIndex: [videoArray indexOfObject:selectedVideo]];
 }
 
+-(void)displayVideoViewerWithVideo:(Video*)video
+{
+    SYNMasterViewController *masterViewController = (SYNMasterViewController*)appDelegate.masterViewController;
+    
+    [masterViewController addVideoOverlayToViewController: self
+                                   withVideoInstanceArray: @[video]
+                                         andSelectedIndex: 0
+                                                onDismiss: ^{
+                                                    
+                                                }];
+}
+
 
 - (void) displayVideoViewerWithVideoInstanceArray: (NSArray *) videoInstanceArray
                                  andSelectedIndex: (int) selectedIndex
