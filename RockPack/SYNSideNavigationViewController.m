@@ -174,6 +174,11 @@ typedef enum {
                                                  name: kNotificationMarkedRead
                                                object: nil];
     
+    [[NSNotificationCenter defaultCenter] addObserver: self
+                                             selector: @selector(profileRequested:)
+                                                 name: kProfileRequested
+                                               object: nil];
+    
     [self getNotifications];
 }
 
@@ -747,6 +752,13 @@ typedef enum {
                          [self reset];
                          [self deselectAllCells];
                      }];
+}
+
+#pragma mark - Notification Handlers
+
+-(void)profileRequested:(NSNotification*)notification
+{
+    self.state = SideNavigationStateHidden;
 }
 
 

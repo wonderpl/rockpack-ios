@@ -41,7 +41,7 @@ static NSEntityDescription *channelOwnerEntity = nil;
 {
     NSError *error = nil;
     
-    // Get the unique id of this object from the dictionary that has been passed in
+    
     NSString *uniqueId = [dictionary objectForKey: @"id"
                                       withDefault: @"Uninitialized Id"];
     
@@ -152,7 +152,22 @@ static NSEntityDescription *channelOwnerEntity = nil;
 
 - (NSString *) description
 {
-    return [NSString stringWithFormat: @"uniqueId(%@), userName: %@, thumbnailURL: %@", self.uniqueId, self.displayName, self.thumbnailURL];
+    
+    
+    NSMutableString* ownerDescription = [NSMutableString stringWithFormat:@"User (%i) - username: '%@'", [self.uniqueId intValue], self.displayName];
+    
+    [ownerDescription appendFormat:@"\nUser Channels (%i)", self.channels.count];
+    
+    if(self.channels.count == 0) {
+        [ownerDescription appendString:@"."];
+    } else {
+        [ownerDescription appendString:@":"];
+        for (Channel* channel in self.channels)
+            [ownerDescription appendFormat:@"\n - %@ (%@)", channel.title, [channel.subscribedByUser boolValue] ? @"Subscribed" : @"-"];
+        
+    }
+    
+    return ownerDescription;
 }
 
 

@@ -221,7 +221,7 @@
                                                       
                                                       currentTotal = [totalNumber integerValue];
                                                       
-                                                      BOOL registryResultOk = [appDelegate.mainRegistry registerNewChannelScreensFromDictionary:response
+                                                      BOOL registryResultOk = [appDelegate.mainRegistry registerChannelsFromDictionary:response
                                                                                                                                        forGenre:genre
                                                                                                                                     byAppending:append];
                                                       if (!registryResultOk)
@@ -418,15 +418,8 @@
         
         Channel *channel = (Channel*)self.channels[indexPath.row];
         
-        NSLog(@"channel.videoInstances: %@", channel.videoInstances);
         
-        //BOOL hasFault = [channel hasFaultForRelationshipNamed:@"videoInstances"];
-        
-        
-        SYNChannelDetailViewController *channelVC = [[SYNChannelDetailViewController alloc] initWithChannel: channel
-                                                                                                  usingMode: kChannelDetailsModeDisplay];
-        
-        [self animatedPushViewController: channelVC];
+        [self viewChannelDetails:channel];
     }
 }
 

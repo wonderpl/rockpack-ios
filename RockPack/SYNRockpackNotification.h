@@ -28,9 +28,12 @@
 // User Data
 
 @property (nonatomic, strong) NSString* userId;
-@property (nonatomic, strong) NSString* userResourceUrl;
 @property (nonatomic, strong) NSString* userDisplayName;
 @property (nonatomic, strong) NSString* userThumbnailUrl;
+
+@property (nonatomic, strong) ChannelOwner* channelOwner;
+
+@property (nonatomic, strong) Channel* channel;
 
 
 

@@ -127,8 +127,10 @@
     }
     
     [notificationCell.imageView setImageWithURL: thumbnaillUrl
-                               placeholderImage: nil
+                               placeholderImage: [UIImage imageNamed:@"AvatarProfile"]
                                         options: SDWebImageRetryFailed];
+    
+    notificationCell.delegate = self;
     
     notificationCell.detailTextLabel.text = @"8 Mins";
     
@@ -173,6 +175,26 @@
         self.logoImageView.frame = logoImageViewFrame;
         
     }
+}
+
+#pragma mark - Delegate Handler
+
+-(void)mainImageTableCellPressed:(UIButton*)button
+{
+    SYNNotificationsTableViewCell* cellPressed = (SYNNotificationsTableViewCell*)button.superview;
+    
+    NSIndexPath* indexPathForCellPressed = [self.tableView indexPathForCell:cellPressed];
+    
+    SYNRockpackNotification* notification = self.notifications[indexPathForCellPressed.row];
+    
+    [[NSNotificationCenter defaultCenter] postNotificationName:kProfileRequested
+                                                        object:self
+                                                      userInfo:@{kChannelOwner:notification.channelOwner}];
+    
+}
+-(void)itemImageTableCellPressed:(UIButton*)button
+{
+    NSLog(@"Click!");
 }
 
 #pragma mark - Accessors

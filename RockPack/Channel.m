@@ -67,7 +67,6 @@ static NSEntityDescription *channelEntity = nil;
             instance.markedForDeletionValue = NO;
             
             
-            
         }
         
     }
@@ -149,8 +148,12 @@ static NSEntityDescription *channelEntity = nil;
     self.position = [dictionary objectForKey: @"position"
                                  withDefault: [NSNumber numberWithInt: 0]];
     
+    
+    
     self.title = [dictionary upperCaseStringForKey: @"title"
                                        withDefault: @""];
+    
+    
     
     self.lastUpdated = [dictionary dateFromISO6801StringForKey: @"last_updated"
                                                    withDefault: [NSDate date]];
@@ -205,16 +208,47 @@ static NSEntityDescription *channelEntity = nil;
     if(!itemArray || ![itemArray isKindOfClass: [NSArray class]])
         return;
     
+    NSEntityDescription* videoInstanceEntity = [NSEntityDescription entityForName: @"VideoInstance"
+                                                           inManagedObjectContext: managedObjectContext];
+    NSFetchRequest *videoInstanceFetchRequest = [[NSFetchRequest alloc] init];
+    [videoInstanceFetchRequest setEntity: videoInstanceEntity];
+    NSPredicate *predicate = [NSPredicate predicateWithFormat: @"viewId == %@", viewId];
+    [videoInstanceFetchRequest setPredicate: predicate];
+    NSError* error = nil;
+    NSArray *matchingVideoInstanceEntries = [managedObjectContext executeFetchRequest: videoInstanceFetchRequest
+                                                                                      error: &error];
+    NSMutableDictionary* existingVideosByIndex = [NSMutableDictionary dictionaryWithCapacity:matchingVideoInstanceEntries.count];
+    
+    // Organise videos by Id
+    for (VideoInstance* existingVideo in matchingVideoInstanceEntries)
+    {
+        [existingVideosByIndex setObject:existingVideo forKey:existingVideo.uniqueId];
+    }
+    
+
+    
     for (NSDictionary *itemDictionary in itemArray)
     {
         if (![itemDictionary isKindOfClass: [NSDictionary class]])
             continue;
         
-        [self.videoInstancesSet addObject: [VideoInstance instanceFromDictionary: itemDictionary
-                                                       usingManagedObjectContext: managedObjectContext
-                                                             ignoringObjectTypes: kIgnoreChannelObjects
-                                                                       andViewId: viewId]];
+        NSString *uniqueId = [itemDictionary objectForKey: @"id"];
+        if(!uniqueId)
+            continue;
         
+        VideoInstance* video = [existingVideosByIndex objectForKey:uniqueId];
+        
+        if(!video)
+        {
+            // The video is not in the dictionary of existing videos
+            // Create a new video object. kIgnoreStoredObjects makes sure no attempt is made to query first
+            video = [VideoInstance instanceFromDictionary: itemDictionary
+                                usingManagedObjectContext: managedObjectContext
+                                      ignoringObjectTypes: kIgnoreStoredObjects | kIgnoreChannelObjects
+                                                andViewId: viewId];
+            
+        }
+        [self.videoInstancesSet addObject: video];
     }
 }
 
@@ -248,7 +282,7 @@ static NSEntityDescription *channelEntity = nil;
 - (NSString *) description
 {
     
-    NSMutableString* initialDescription = [NSMutableString stringWithFormat: @"Channel: id:'%@', viewId:'%@', category:'%@', lastUpdated: %@, subscribersCount: %@, subscribedByUser: %@, title: %@, eCommerceURL: %@", self.uniqueId, self.viewId, self.categoryId, self.lastUpdated, self.subscribersCount, self.subscribedByUser, self.title, self.eCommerceURL];
+    NSMutableString* initialDescription = [NSMutableString stringWithFormat: @"- Channel (cat#:'%@', title:'%@'), VI(%i):", self.categoryId, self.title, self.videoInstances.count];
     
     for (VideoInstance* childrenVideoInstance in self.videoInstances)
     {

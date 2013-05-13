@@ -9,21 +9,33 @@
 #import "SYNNotificationsTableViewCell.h"
 #import "UIFont+SYNFont.h"
 #import "SYNDeviceManager.h"
+#import "SYNNotificationsViewController.h"
 
 
 @implementation SYNNotificationsTableViewCell
 
 @synthesize thumbnailImageView;
 @synthesize messageTitle = _messageTitle;
+@synthesize delegate = _delegate;
 
 - (id)initWithStyle:(UITableViewCellStyle)style reuseIdentifier:(NSString *)reuseIdentifier
 {
     self = [super initWithStyle:UITableViewCellStyleSubtitle reuseIdentifier:reuseIdentifier];
     if (self) {
         
+        
+        // == frames == //
+        
+        imageViewRect = CGRectMake(8.0, 6.0, 60.0, 60.0);
+        
+        
+        
+        
         // == Profile Image View == //
         
-        self.imageView.frame = CGRectMake(4.0, 4.0, 60.0, 60.0);
+        self.imageView.frame = imageViewRect;
+        
+        
         
         // == Main Text == //
         
@@ -63,7 +75,15 @@
         
         [self addSubview:dividerImageView];
         
+        // == Buttons == //
         
+        mainImageButton = [UIButton buttonWithType:UIButtonTypeCustom];
+        mainImageButton.frame = imageViewRect;
+        [self addSubview:mainImageButton];
+        
+        secondaryImageButton = [UIButton buttonWithType:UIButtonTypeCustom];
+        secondaryImageButton.frame = imageViewRect;
+        [self addSubview:secondaryImageButton];
         
     }
     return self;
@@ -83,8 +103,10 @@
     
     [super layoutSubviews];
     
+    // image view //
     
-    self.imageView.frame = CGRectMake(8.0, 6.0, 60.0, 60.0);
+    self.imageView.frame = mainImageButton.frame = imageViewRect;
+    
     
     self.textLabel.frame = CGRectMake(76.0, 14.0, mainTextSize.width, mainTextSize.height);
     
@@ -95,7 +117,7 @@
     thumbnailImageViewFrame.origin.x = self.frame.size.width - 68.0;
     thumbnailImageViewFrame.origin.y = self.imageView.frame.origin.y;
     
-    self.thumbnailImageView.frame = thumbnailImageViewFrame;
+    self.thumbnailImageView.frame = secondaryImageButton.frame = thumbnailImageViewFrame;
     
     // details
     
@@ -106,7 +128,41 @@
     dividerImageView.center = CGPointMake(self.center.x, self.frame.size.height - 4.0);
 }
 
-#pragma mark - Accessors
+
+
+
+#pragma mark - Accesssors
+
+-(void)setDelegate:(SYNNotificationsViewController *)newDelegate
+{
+    
+    
+    if(delegate && newDelegate && delegate == newDelegate) // assign once
+        return;
+    
+    
+    [mainImageButton removeTarget:delegate action:@selector(mainImageTableCellPressed:) forControlEvents:UIControlEventTouchUpInside];
+    [secondaryImageButton removeTarget:delegate action:@selector(itemImageTableCellPressed:) forControlEvents:UIControlEventTouchUpInside];
+    
+    delegate = newDelegate;
+    
+    if(!delegate)
+        return;
+    
+    [mainImageButton addTarget:delegate action:@selector(mainImageTableCellPressed:) forControlEvents:UIControlEventTouchUpInside];
+    [secondaryImageButton addTarget:delegate action:@selector(itemImageTableCellPressed:) forControlEvents:UIControlEventTouchUpInside];
+    
+    
+    
+    
+}
+
+
+-(SYNNotificationsViewController*)delegate
+{
+    return _delegate;
+}
+
 
 -(void)setMessageTitle:(NSString *)messageTitle
 {
@@ -127,10 +183,8 @@
     
     self.textLabel.text = messageTitle;
     
-    
-    
-    
 }
+
 -(NSString*)messageTitle
 {
     return self.textLabel.text;

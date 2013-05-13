@@ -74,6 +74,8 @@
 }
 
 
+
+
 - (void) loadView
 {
     BOOL isIPhone =  [[SYNDeviceManager sharedInstance] isIPhone];
@@ -330,7 +332,7 @@
     [[NSNotificationCenter defaultCenter] addObserver: self
                                              selector: @selector(handleDataModelChange:)
                                                  name: NSManagedObjectContextObjectsDidChangeNotification
-                                               object: appDelegate.mainManagedObjectContext];
+                                               object: self.user.managedObjectContext];
     
     
 }
@@ -342,6 +344,8 @@
     
     [updatedObjects enumerateObjectsUsingBlock: ^(id obj, NSUInteger idx, BOOL *stop) {
         if ([obj isKindOfClass:[User class]]) {
+            [self reloadCollectionViews];
+        } else if([obj isKindOfClass:[ChannelOwner class]]) {
             [self reloadCollectionViews];
         }
     }];
@@ -986,6 +990,13 @@
     
     if(self.subscriptionsViewController)
         self.subscriptionsViewController.user = user;
+    
+    if([user isMemberOfClass:[ChannelOwner class]])
+    {
+        [[NSNotificationCenter defaultCenter] postNotificationName:kChannelOwnerUpdateRequest
+                                                            object:self
+                                                          userInfo:@{kChannelOwner:user}];
+    }
 }
 -(ChannelOwner*)user
 {

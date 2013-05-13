@@ -9,6 +9,7 @@
 #import <Foundation/Foundation.h>
 #import "SYNRegistry.h"
 #import "Genre.h"
+#import "ChannelOwner.h"
 
 @interface SYNMainRegistry : SYNRegistry
 
@@ -20,11 +21,16 @@
 
 - (BOOL) registerChannelFromDictionary: (NSDictionary*) dictionary;
 
-- (BOOL) registerNewChannelScreensFromDictionary: (NSDictionary *) dictionary
+- (BOOL) registerChannelsFromDictionary: (NSDictionary *) dictionary
                                         forGenre: (Genre *) genre
                                      byAppending: (BOOL) append;
 
+- (BOOL) registerChannelsFromDictionary: (NSDictionary *) dictionary
+                        forChannelOwner: (ChannelOwner*) genre
+                            byAppending: (BOOL) append;
+
 - (BOOL) registerUserFromDictionary: (NSDictionary*) dictionary;
+- (BOOL) registerChannelOwnerFromDictionary: (NSDictionary*) dictionary;
 - (BOOL) registerSubscriptionsForCurrentUserFromDictionary: (NSDictionary*) dictionary;
 
 - (BOOL) registerCoverArtFromDictionary: (NSDictionary*) dictionary
