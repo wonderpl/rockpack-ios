@@ -42,6 +42,11 @@
                                                    object:nil];
         
         [[NSNotificationCenter defaultCenter] addObserver:self
+                                                 selector:@selector(channelOwnerUpdateRequest:)
+                                                     name:kChannelOwnerUpdateRequest
+                                                   object:nil];
+        
+        [[NSNotificationCenter defaultCenter] addObserver:self
                                                  selector:@selector(channelDeleteRequest:)
                                                      name:kChannelDeleteRequest
                                                    object:nil];
@@ -67,6 +72,16 @@
         return;
     
     [self toggleSubscriptionToChannel:channelToSubscribe];
+}
+
+
+-(void)channelOwnerUpdateRequest:(NSNotification*)notification
+{
+    ChannelOwner* channelOwner = (ChannelOwner*)[[notification userInfo] objectForKey:kChannelOwner];
+    if(!channelOwner)
+        return;
+    
+    [self updateChannelsForChannelOwner:channelOwner];
 }
 
 -(void)channelUpdateRequest:(NSNotification*)notification
@@ -253,7 +268,20 @@
     }
 }
 
-
+-(void)updateChannelsForChannelOwner:(ChannelOwner*)channelOwner
+{
+    [appDelegate.networkEngine channelOwnerDataForChannelOwner:channelOwner onComplete:^(id dictionary) {
+        
+        
+        
+        [appDelegate.mainRegistry registerChannelsFromDictionary:dictionary
+                                                 forChannelOwner:channelOwner
+                                                     byAppending:NO];
+        
+    } onError:^(id error) {
+        
+    }];
+}
 
 
 

@@ -221,7 +221,7 @@
                                                       
                                                       currentTotal = [totalNumber integerValue];
                                                       
-                                                      BOOL registryResultOk = [appDelegate.mainRegistry registerNewChannelScreensFromDictionary:response
+                                                      BOOL registryResultOk = [appDelegate.mainRegistry registerChannelsFromDictionary:response
                                                                                                                                        forGenre:genre
                                                                                                                                     byAppending:append];
                                                       if (!registryResultOk)
