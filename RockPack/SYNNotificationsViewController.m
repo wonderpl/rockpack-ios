@@ -12,6 +12,7 @@
 #import "SYNOAuthNetworkEngine.h"
 #import "SYNRockpackNotification.h"
 #import "UIImageView+WebCache.h"
+#import "Video.h"
 
 #define kNotificationsCellIdent @"kNotificationsCellIdent"
 
@@ -185,7 +186,41 @@
 }
 -(void)itemImageTableCellPressed:(UIGestureRecognizer*)recogniser
 {
+<<<<<<< HEAD
     NSLog(@"Click!");
+=======
+    SYNNotificationsTableViewCell* cellPressed = (SYNNotificationsTableViewCell*)button.superview;
+    
+    NSIndexPath* indexPathForCellPressed = [self.tableView indexPathForCell:cellPressed];
+    
+    SYNRockpackNotification* notification = self.notifications[indexPathForCellPressed.row];
+    
+    if(notification.objectType == kNotificationObjectTypeVideo)
+    {
+        Video* video = [self videoFromVideoId:notification.videoId];
+        
+        if(!video)
+            return;
+        
+        [[NSNotificationCenter defaultCenter] postNotificationName:kVideoOverlayRequested
+                                                            object:self
+                                                          userInfo:@{kVideo:video}];
+    }
+    else
+    {
+        Channel* channel = [self channelFromChannelId:notification.channelId];
+        
+        if(!channel)
+            return;
+        
+        [[NSNotificationCenter defaultCenter] postNotificationName:kChannelDetailsRequested
+                                                            object:self
+                                                          userInfo:@{kChannel:channel}];
+    }
+    
+    
+    
+>>>>>>> 560996d26d48b6fe6c2b5664420c84a046d85d83
 }
 
 #pragma mark - Accessors
@@ -196,4 +231,69 @@
     [self.tableView reloadData];
 }
 
+<<<<<<< HEAD
+=======
+-(Channel*)channelFromChannelId:(NSString*)channelId
+{
+    Channel* channel;
+    
+    NSEntityDescription* channelEntity = [NSEntityDescription entityForName:@"Channel"
+                                                         inManagedObjectContext:appDelegate.mainManagedObjectContext];
+    
+    NSFetchRequest *channelFetchRequest = [[NSFetchRequest alloc] init];
+    [channelFetchRequest setEntity: channelEntity];
+    
+    
+    NSPredicate *predicate = [NSPredicate predicateWithFormat: @"uniqueId == %@", channelId];
+    
+    [channelFetchRequest setPredicate: predicate];
+    
+    NSError* error;
+    
+    NSArray *matchingChannelEntries = [appDelegate.mainManagedObjectContext executeFetchRequest: channelFetchRequest
+                                                                                          error: &error];
+    
+    
+    if (matchingChannelEntries.count > 0)
+    {
+        channel = matchingChannelEntries[0];
+                
+    }
+    
+    return channel;
+}
+-(Video*)videoFromVideoId:(NSString*)videoId
+{
+    Video* video;
+    
+    NSEntityDescription* channelEntity = [NSEntityDescription entityForName:@"Video"
+                                                     inManagedObjectContext:appDelegate.mainManagedObjectContext];
+    
+    NSFetchRequest *channelFetchRequest = [[NSFetchRequest alloc] init];
+    [channelFetchRequest setEntity: channelEntity];
+    
+    
+    NSPredicate *predicate = [NSPredicate predicateWithFormat: @"uniqueId == %@", videoId];
+    
+    [channelFetchRequest setPredicate: predicate];
+    
+    NSError* error;
+    
+    NSArray *matchingChannelEntries = [appDelegate.mainManagedObjectContext executeFetchRequest: channelFetchRequest
+                                                                                          error: &error];
+    
+    
+    if (matchingChannelEntries.count > 0)
+    {
+        video = matchingChannelEntries[0];
+        
+    }
+    else
+    {
+        
+    }
+    
+    return video;
+}
+>>>>>>> 560996d26d48b6fe6c2b5664420c84a046d85d83
 @end

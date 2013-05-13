@@ -142,10 +142,18 @@
     
     
     
-    // == Register Notifications == //
+    // == Register Notifications == //kVideoOverlayRequested
     
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(backButtonShow:) name:kNoteBackButtonShow object:nil];
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(backButtonHide:) name:kNoteBackButtonHide object:nil];
+<<<<<<< HEAD
+=======
+    
+    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(profileRequested:) name:kProfileRequested object:nil];
+    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(channelDetailsRequested:) name:kChannelDetailsRequested object:nil];
+    
+    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(videoOverlayRequested:) name:kVideoOverlayRequested object:nil];
+>>>>>>> 560996d26d48b6fe6c2b5664420c84a046d85d83
 }
 
 -(void) viewWillAppear:(BOOL)animated
@@ -211,6 +219,15 @@
     [childController didMoveToParentViewController:self];
 }
 
+
+-(void)videoOverlayRequested:(NSNotification*)notification
+{
+    Video* video = (Video*)[[notification userInfo] objectForKey:kVideo];
+    if(!video)
+        return;
+    
+    [self.showingViewController displayVideoViewerWithVideo:video];
+}
 
 -(void)backButtonShow:(NSNotification*)notification
 {
