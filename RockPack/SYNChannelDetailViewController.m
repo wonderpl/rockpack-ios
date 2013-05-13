@@ -1342,6 +1342,13 @@
                                        animated: NO];
 }
 
+#pragma mark - Cover selection and upload support
+
+- (IBAction) userTouchedReportConcernButton: (UIButton*) button
+{
+    button.selected = !button.selected;
+}
+
 
 #pragma mark - Cover selection and upload support
 
