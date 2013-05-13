@@ -231,8 +231,12 @@
 
 - (NSIndexPath *) indexPathFromVideoInstanceButton: (UIButton *) button
 {
-    UIView *v = button.superview.superview.superview;
-    NSIndexPath *indexPath = [self.videoThumbnailCollectionView indexPathForItemAtPoint: v.center];
+    UIView* target = button;
+    while (target && ![target isKindOfClass:[UICollectionViewCell class]])
+    {
+        target = [target superview];
+    }
+    NSIndexPath *indexPath = [self.videoThumbnailCollectionView indexPathForItemAtPoint: target.center];
     
     return indexPath;
 }
@@ -252,9 +256,11 @@
 - (void) displayVideoViewerFromView: (UIButton *) videoViewButton
 {
     NSIndexPath *indexPath = [self indexPathFromVideoInstanceButton: videoViewButton];
-
-    [self displayVideoViewerWithVideoInstanceArray: self.fetchedResultsController.fetchedObjects
-                                  andSelectedIndex: indexPath.item];
+    
+    id selectedVideo = [self.fetchedResultsController objectAtIndexPath:indexPath];
+    NSArray* videoArray =  self.fetchedResultsController.fetchedObjects;
+    [self displayVideoViewerWithVideoInstanceArray: videoArray
+                                  andSelectedIndex: [videoArray indexOfObject:selectedVideo]];
 }
 
 
