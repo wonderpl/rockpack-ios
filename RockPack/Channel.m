@@ -153,7 +153,7 @@ static NSEntityDescription *channelEntity = nil;
     self.title = [dictionary upperCaseStringForKey: @"title"
                                        withDefault: @""];
     
-    NSLog(@"title: %@, position: %@", self.title, self.position);
+    
     
     self.lastUpdated = [dictionary dateFromISO6801StringForKey: @"last_updated"
                                                    withDefault: [NSDate date]];
@@ -251,7 +251,7 @@ static NSEntityDescription *channelEntity = nil;
 - (NSString *) description
 {
     
-    NSMutableString* initialDescription = [NSMutableString stringWithFormat: @"Channel: id:'%@', viewId:'%@', category:'%@', lastUpdated: %@, subscribersCount: %@, subscribedByUser: %@, title: %@, eCommerceURL: %@", self.uniqueId, self.viewId, self.categoryId, self.lastUpdated, self.subscribersCount, self.subscribedByUser, self.title, self.eCommerceURL];
+    NSMutableString* initialDescription = [NSMutableString stringWithFormat: @"- Channel (cat#:'%@', title:'%@'), VI(%i):", self.categoryId, self.title, self.videoInstances.count];
     
     for (VideoInstance* childrenVideoInstance in self.videoInstances)
     {
