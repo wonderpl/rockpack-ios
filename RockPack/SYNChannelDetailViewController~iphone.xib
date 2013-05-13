@@ -427,7 +427,7 @@
 								<reference key="NSNextResponder" ref="793593682"/>
 								<int key="NSvFlags">274</int>
 								<array class="NSMutableArray" key="NSSubviews">
-									<object class="IBUIButton" id="641423214">
+									<object class="IBUIButton" id="775958497">
 										<reference key="NSNextResponder" ref="574818441"/>
 										<int key="NSvFlags">268</int>
 										<string key="NSFrame">{{0, 5}, {315, 320}}</string>
@@ -622,7 +622,7 @@
 								<string key="NSFrameSize">{320, 548}</string>
 								<reference key="NSSuperview" ref="793593682"/>
 								<reference key="NSWindow"/>
-								<reference key="NSNextKeyView" ref="641423214"/>
+								<reference key="NSNextKeyView" ref="775958497"/>
 								<string key="NSReuseIdentifierKey">_NS:9</string>
 								<reference key="IBUIBackgroundColor" ref="905238541"/>
 								<string key="targetRuntimeIdentifier">IBIPadFramework</string>
@@ -634,7 +634,7 @@
 									<object class="IBUITextView" id="469580733">
 										<reference key="NSNextResponder" ref="605119646"/>
 										<int key="NSvFlags">274</int>
-										<string key="NSFrameSize">{280, 102}</string>
+										<string key="NSFrame">{{0, -10}, {280, 122}}</string>
 										<reference key="NSSuperview" ref="605119646"/>
 										<reference key="NSWindow"/>
 										<string key="NSReuseIdentifierKey">_NS:9</string>
@@ -660,7 +660,7 @@
 										</object>
 									</object>
 								</array>
-								<string key="NSFrame">{{10, 147}, {300, 102}}</string>
+								<string key="NSFrame">{{10, 147}, {300, 112}}</string>
 								<reference key="NSSuperview" ref="793593682"/>
 								<reference key="NSWindow"/>
 								<reference key="NSNextKeyView" ref="469580733"/>
@@ -978,7 +978,7 @@
 				<object class="IBConnectionRecord">
 					<object class="IBCocoaTouchEventConnection" key="connection">
 						<string key="label">cancelTitleEntry</string>
-						<reference key="source" ref="641423214"/>
+						<reference key="source" ref="775958497"/>
 						<reference key="destination" ref="841351856"/>
 						<int key="IBEventType">7</int>
 					</object>
@@ -1109,7 +1109,7 @@
 							<reference ref="289460601"/>
 							<reference ref="57477992"/>
 							<reference ref="304262108"/>
-							<reference ref="641423214"/>
+							<reference ref="775958497"/>
 						</array>
 						<reference key="parent" ref="793593682"/>
 						<string key="objectName">Passthrough View - Edit Controls</string>
@@ -1198,7 +1198,7 @@
 					</object>
 					<object class="IBObjectRecord">
 						<int key="objectID">125</int>
-						<reference key="object" ref="641423214"/>
+						<reference key="object" ref="775958497"/>
 						<reference key="parent" ref="574818441"/>
 						<string key="objectName">Button - dismiss text entry</string>
 					</object>

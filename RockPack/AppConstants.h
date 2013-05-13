@@ -121,6 +121,8 @@
 #define kChannelUpdateRequest       @"kChannelUpdateRequest"
 #define kChannelOwnerUpdateRequest  @"kChannelOwnerUpdateRequest"
 #define kChannelDeleteRequest       @"kChannelDeleteRequest"
+#define kProfileRequested           @"kProfileRequested"
+#define kChannelDetailsRequested    @"kChannelDetailsRequested"
 
 #define kRefreshComplete           @"kRefreshComplete"
 
