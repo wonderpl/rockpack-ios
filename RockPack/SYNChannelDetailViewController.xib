@@ -239,7 +239,7 @@
 										<string key="NSFrame">{{190, 409}, {486, 21}}</string>
 										<reference key="NSSuperview" ref="421928150"/>
 										<reference key="NSWindow"/>
-										<reference key="NSNextKeyView" ref="635658748"/>
+										<reference key="NSNextKeyView" ref="754175296"/>
 										<string key="NSReuseIdentifierKey">_NS:9</string>
 										<bool key="IBUIOpaque">NO</bool>
 										<bool key="IBUIClipsSubviews">YES</bool>
@@ -330,6 +330,40 @@
 										<reference key="IBUIBackgroundColor" ref="905238541"/>
 										<bool key="IBUIUserInteractionEnabled">NO</bool>
 										<string key="targetRuntimeIdentifier">IBIPadFramework</string>
+									</object>
+									<object class="IBUIButton" id="754175296">
+										<reference key="NSNextResponder" ref="421928150"/>
+										<int key="NSvFlags">292</int>
+										<string key="NSFrame">{{187, 480}, {83, 44}}</string>
+										<reference key="NSSuperview" ref="421928150"/>
+										<reference key="NSWindow"/>
+										<reference key="NSNextKeyView" ref="635658748"/>
+										<string key="NSReuseIdentifierKey">_NS:9</string>
+										<bool key="IBUIOpaque">NO</bool>
+										<int key="IBUIContentMode">4</int>
+										<string key="targetRuntimeIdentifier">IBIPadFramework</string>
+										<int key="IBUIContentHorizontalAlignment">0</int>
+										<int key="IBUIContentVerticalAlignment">0</int>
+										<reference key="IBUIHighlightedTitleColor" ref="266444258"/>
+										<object class="NSColor" key="IBUINormalTitleColor">
+											<int key="NSColorSpace">1</int>
+											<bytes key="NSRGB">MC4xOTYwNzg0MzQ2IDAuMzA5ODAzOTMyOSAwLjUyMTU2ODY1NgA</bytes>
+										</object>
+										<reference key="IBUINormalTitleShadowColor" ref="271166090"/>
+										<object class="NSCustomResource" key="IBUIHighlightedImage">
+											<string key="NSClassName">NSImage</string>
+											<string key="NSResourceName">ButtonReportHighlighted.png</string>
+										</object>
+										<object class="NSCustomResource" key="IBUISelectedImage">
+											<string key="NSClassName">NSImage</string>
+											<string key="NSResourceName">ButtonReportSelected.png</string>
+										</object>
+										<object class="NSCustomResource" key="IBUINormalImage">
+											<string key="NSClassName">NSImage</string>
+											<string key="NSResourceName">ButtonReport.png</string>
+										</object>
+										<reference key="IBUIFontDescription" ref="842263965"/>
+										<reference key="IBUIFont" ref="713840540"/>
 									</object>
 								</array>
 								<string key="NSFrameSize">{1024, 748}</string>
@@ -436,7 +470,7 @@
 												<string key="NSFrame">{{98, 22}, {926, 121}}</string>
 												<reference key="NSSuperview" ref="260102133"/>
 												<reference key="NSWindow"/>
-												<reference key="NSNextKeyView" ref="759704940"/>
+												<reference key="NSNextKeyView" ref="624001696"/>
 												<string key="NSReuseIdentifierKey">_NS:9</string>
 												<reference key="IBUIBackgroundColor" ref="905238541"/>
 												<bool key="IBUIClipsSubviews">YES</bool>
@@ -487,39 +521,6 @@
 												<object class="NSCustomResource" key="IBUINormalImage">
 													<string key="NSClassName">NSImage</string>
 													<string key="NSResourceName">ButtonCameraPad.png</string>
-												</object>
-												<reference key="IBUIFontDescription" ref="842263965"/>
-												<reference key="IBUIFont" ref="713840540"/>
-											</object>
-											<object class="IBUIButton" id="759704940">
-												<reference key="NSNextResponder" ref="260102133"/>
-												<int key="NSvFlags">292</int>
-												<string key="NSFrame">{{187, 74}, {83, 44}}</string>
-												<reference key="NSSuperview" ref="260102133"/>
-												<reference key="NSWindow"/>
-												<reference key="NSNextKeyView" ref="624001696"/>
-												<string key="NSReuseIdentifierKey">_NS:9</string>
-												<bool key="IBUIOpaque">NO</bool>
-												<string key="targetRuntimeIdentifier">IBIPadFramework</string>
-												<int key="IBUIContentHorizontalAlignment">0</int>
-												<int key="IBUIContentVerticalAlignment">0</int>
-												<reference key="IBUIHighlightedTitleColor" ref="266444258"/>
-												<object class="NSColor" key="IBUINormalTitleColor">
-													<int key="NSColorSpace">1</int>
-													<bytes key="NSRGB">MC4xOTYwNzg0MzQ2IDAuMzA5ODAzOTMyOSAwLjUyMTU2ODY1NgA</bytes>
-												</object>
-												<reference key="IBUINormalTitleShadowColor" ref="271166090"/>
-												<object class="NSCustomResource" key="IBUIHighlightedImage">
-													<string key="NSClassName">NSImage</string>
-													<string key="NSResourceName">ButtonReportHighlighted.png</string>
-												</object>
-												<object class="NSCustomResource" key="IBUISelectedImage">
-													<string key="NSClassName">NSImage</string>
-													<string key="NSResourceName">ButtonReportSelected.png</string>
-												</object>
-												<object class="NSCustomResource" key="IBUINormalImage">
-													<string key="NSClassName">NSImage</string>
-													<string key="NSResourceName">ButtonReport.png</string>
 												</object>
 												<reference key="IBUIFontDescription" ref="842263965"/>
 												<reference key="IBUIFont" ref="713840540"/>
@@ -643,6 +644,7 @@
 						<string key="NSFrame">{{60, 390}, {120, 120}}</string>
 						<reference key="NSSuperview" ref="453930770"/>
 						<reference key="NSWindow"/>
+						<reference key="NSNextKeyView"/>
 						<string key="NSReuseIdentifierKey">_NS:9</string>
 						<bool key="IBUIOpaque">NO</bool>
 						<string key="targetRuntimeIdentifier">IBIPadFramework</string>
@@ -1011,7 +1013,7 @@
 				<object class="IBConnectionRecord">
 					<object class="IBCocoaTouchEventConnection" key="connection">
 						<string key="label">userTouchedReportConcernButton:</string>
-						<reference key="source" ref="759704940"/>
+						<reference key="source" ref="754175296"/>
 						<reference key="destination" ref="841351856"/>
 						<int key="IBEventType">7</int>
 					</object>
@@ -1092,6 +1094,7 @@
 							<reference ref="220016949"/>
 							<reference ref="474614300"/>
 							<reference ref="509232074"/>
+							<reference ref="754175296"/>
 						</array>
 						<reference key="parent" ref="793593682"/>
 						<string key="objectName">Passthrough View - Display Controls</string>
@@ -1194,7 +1197,6 @@
 						<array class="NSMutableArray" key="children">
 							<reference ref="186307923"/>
 							<reference ref="335485472"/>
-							<reference ref="759704940"/>
 						</array>
 						<reference key="parent" ref="574818441"/>
 						<string key="objectName">View - Cover chooser master view</string>
@@ -1247,8 +1249,9 @@
 					</object>
 					<object class="IBObjectRecord">
 						<int key="objectID">121</int>
-						<reference key="object" ref="759704940"/>
-						<reference key="parent" ref="260102133"/>
+						<reference key="object" ref="754175296"/>
+						<reference key="parent" ref="421928150"/>
+						<string key="objectName">Button - Report Concern</string>
 					</object>
 				</array>
 			</object>
@@ -1367,70 +1370,6 @@
 				<object class="IBPartialClassDescription">
 					<string key="className">SYNChannelDetailViewController</string>
 					<string key="superclassName">SYNAbstractViewController</string>
-					<dictionary class="NSMutableDictionary" key="actions">
-						<string key="addButtonTapped:">id</string>
-						<string key="addCoverButtonTapped:">UIButton</string>
-						<string key="addItToChannelPresssed:">id</string>
-						<string key="backButtonTapped:">id</string>
-						<string key="buyButtonTapped:">id</string>
-						<string key="createChannelPressed:">id</string>
-						<string key="profileImagePressed:">UIButton</string>
-						<string key="selectCategoryButtonTapped:">UIButton</string>
-						<string key="shareChannelButtonTapped:">id</string>
-						<string key="subscribeButtonTapped:">id</string>
-						<string key="userTouchedCameraButton:">UIButton</string>
-						<string key="userTouchedReportConcernButton:">UIButton</string>
-					</dictionary>
-					<dictionary class="NSMutableDictionary" key="actionInfosByName">
-						<object class="IBActionInfo" key="addButtonTapped:">
-							<string key="name">addButtonTapped:</string>
-							<string key="candidateClassName">id</string>
-						</object>
-						<object class="IBActionInfo" key="addCoverButtonTapped:">
-							<string key="name">addCoverButtonTapped:</string>
-							<string key="candidateClassName">UIButton</string>
-						</object>
-						<object class="IBActionInfo" key="addItToChannelPresssed:">
-							<string key="name">addItToChannelPresssed:</string>
-							<string key="candidateClassName">id</string>
-						</object>
-						<object class="IBActionInfo" key="backButtonTapped:">
-							<string key="name">backButtonTapped:</string>
-							<string key="candidateClassName">id</string>
-						</object>
-						<object class="IBActionInfo" key="buyButtonTapped:">
-							<string key="name">buyButtonTapped:</string>
-							<string key="candidateClassName">id</string>
-						</object>
-						<object class="IBActionInfo" key="createChannelPressed:">
-							<string key="name">createChannelPressed:</string>
-							<string key="candidateClassName">id</string>
-						</object>
-						<object class="IBActionInfo" key="profileImagePressed:">
-							<string key="name">profileImagePressed:</string>
-							<string key="candidateClassName">UIButton</string>
-						</object>
-						<object class="IBActionInfo" key="selectCategoryButtonTapped:">
-							<string key="name">selectCategoryButtonTapped:</string>
-							<string key="candidateClassName">UIButton</string>
-						</object>
-						<object class="IBActionInfo" key="shareChannelButtonTapped:">
-							<string key="name">shareChannelButtonTapped:</string>
-							<string key="candidateClassName">id</string>
-						</object>
-						<object class="IBActionInfo" key="subscribeButtonTapped:">
-							<string key="name">subscribeButtonTapped:</string>
-							<string key="candidateClassName">id</string>
-						</object>
-						<object class="IBActionInfo" key="userTouchedCameraButton:">
-							<string key="name">userTouchedCameraButton:</string>
-							<string key="candidateClassName">UIButton</string>
-						</object>
-						<object class="IBActionInfo" key="userTouchedReportConcernButton:">
-							<string key="name">userTouchedReportConcernButton:</string>
-							<string key="candidateClassName">UIButton</string>
-						</object>
-					</dictionary>
 					<dictionary class="NSMutableDictionary" key="outlets">
 						<string key="activityIndicator">UIActivityIndicatorView</string>
 						<string key="addCoverButton">UIButton</string>
