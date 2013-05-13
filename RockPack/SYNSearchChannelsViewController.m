@@ -54,14 +54,11 @@
 
 -(void)handleDataModelChange:(NSNotification*)dataNotification
 {
-    NSArray* updatedObjects = (NSArray*)[[dataNotification userInfo] objectForKey: NSUpdatedObjectsKey];
+    NSArray* updatedObjects = (NSArray*)[[dataNotification userInfo] objectForKey: NSInsertedObjectsKey];
     
-    [updatedObjects enumerateObjectsUsingBlock: ^(id obj, NSUInteger idx, BOOL *stop) {
-        if ([obj isKindOfClass:[Channel class]]) {
-            [self reloadCollectionViews]; // as soon as a single object is updated, refresh and exit
-            return;
-        } 
-    }];
+    [self reloadCollectionViews];
+    
+    
 }
 
 -(void)reloadCollectionViews
@@ -91,6 +88,9 @@
     channels = [NSMutableArray arrayWithArray:resultsArray];
     
     [self.channelThumbnailCollectionView reloadData];
+    
+    if(self.itemToUpdate)
+        [self.itemToUpdate setNumberOfItems:resultsArray.count animated:YES];
 }
 
 - (void) viewWillAppear: (BOOL) animated

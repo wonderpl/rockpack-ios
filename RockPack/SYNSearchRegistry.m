@@ -89,10 +89,12 @@
         if (![itemDictionary isKindOfClass: [NSDictionary class]])
             continue;
         
-        [Channel instanceFromDictionary:itemDictionary
-              usingManagedObjectContext:importManagedObjectContext
-                    ignoringObjectTypes:kIgnoreNothing
-                              andViewId:kSearchViewId];
+        Channel* c = [Channel instanceFromDictionary:itemDictionary
+                           usingManagedObjectContext:importManagedObjectContext
+                                 ignoringObjectTypes:kIgnoreNothing
+                                           andViewId:kSearchViewId];
+        if(!c)
+            NSLog(@"Could not inset channel");
     }
     
             
