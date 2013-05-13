@@ -49,63 +49,63 @@ static NSEntityDescription *videoInstanceEntity = nil;
 {
     NSError *error = nil;
     
-    // Get the unique id of this object from the dictionary that has been passed in
     NSString *uniqueId = [dictionary objectForKey: @"id"
                                       withDefault: @"Uninitialized Id"];
     
-    // Only create an entity description once, should increase performance
+    
     if (videoInstanceEntity == nil)
     {
-        // Do once, and only once
+        
         static dispatch_once_t oncePredicate;
-        dispatch_once(&oncePredicate, ^
-        {
-            // Not entirely sure I shouldn't 'copy' this object before assigning it to the static variable
+        dispatch_once(&oncePredicate, ^{
+            
             videoInstanceEntity = [NSEntityDescription entityForName: @"VideoInstance"
                                               inManagedObjectContext: managedObjectContext];
           
         });
     }
     
-    // Now we need to see if this object already exists, and if so return it and if not create it
-    NSFetchRequest *videoInstanceFetchRequest = [[NSFetchRequest alloc] init];
-    [videoInstanceFetchRequest setEntity: videoInstanceEntity];
-    
-    // Search on the unique Id
-    NSPredicate *predicate = [NSPredicate predicateWithFormat: @"uniqueId == %@ AND viewId == %@", uniqueId, viewId];
-    [videoInstanceFetchRequest setPredicate: predicate];
-    
-    NSArray *matchingVideoInstanceEntries = [managedObjectContext executeFetchRequest: videoInstanceFetchRequest
-                                                                                error: &error];
-    
     VideoInstance *instance;
     
-    if (matchingVideoInstanceEntries.count > 0)
+    if(!(ignoringObjects & kIgnoreStoredObjects))
     {
-        instance = matchingVideoInstanceEntries[0];
-        // NSLog(@"Using existing VideoInstance instance with id %@ in view %@", instance.uniqueId, instance.viewId);
+        NSFetchRequest *videoInstanceFetchRequest = [[NSFetchRequest alloc] init];
+        [videoInstanceFetchRequest setEntity: videoInstanceEntity];
         
-        // Mark this object so that it is not deleted in the post-import step
-        instance.markedForDeletionValue = FALSE;
+        // Search on the unique Id
+        NSPredicate *predicate = [NSPredicate predicateWithFormat: @"uniqueId == %@ AND viewId == %@", uniqueId, viewId];
+        [videoInstanceFetchRequest setPredicate: predicate];
         
-        return instance;
+        NSArray *matchingVideoInstanceEntries = [managedObjectContext executeFetchRequest: videoInstanceFetchRequest
+                                                                                    error: &error];
+        
+        if (matchingVideoInstanceEntries.count > 0)
+        {
+            instance = matchingVideoInstanceEntries[0];
+            
+            instance.markedForDeletionValue = NO;
+            
+            
+        }
+        
     }
-    else
+    
+    
+    
+    if(!instance)
     {
         instance = [VideoInstance insertInManagedObjectContext: managedObjectContext];
-        
-        // As we have a new object, we need to set all the attributes (from the dictionary passed in)
-        // We have already obtained the uniqueId, so pass it in as an optimisation
-        [instance setAttributesFromDictionary: dictionary
-                                       withId: uniqueId
-                    usingManagedObjectContext: managedObjectContext
-                          ignoringObjectTypes: (ignoringObjects == kIgnoreChannelObjects) ? kIgnoreChannelObjects : kIgnoreVideoInstanceObjects
-                                    andViewId: viewId];
-        
-        // NSLog(@"Created VideoInstance instance with id %@ in view %@", instance.uniqueId, instance.viewId);
-        
-        return instance;
     }
+    
+    
+    
+    [instance setAttributesFromDictionary: dictionary
+                                   withId: uniqueId
+                usingManagedObjectContext: managedObjectContext
+                      ignoringObjectTypes: (ignoringObjects == kIgnoreChannelObjects) ? kIgnoreChannelObjects : kIgnoreVideoInstanceObjects
+                                andViewId: viewId];
+    
+    return instance;
 }
 
 

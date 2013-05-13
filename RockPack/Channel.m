@@ -67,7 +67,6 @@ static NSEntityDescription *channelEntity = nil;
             instance.markedForDeletionValue = NO;
             
             
-            
         }
         
     }

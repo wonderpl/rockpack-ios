@@ -365,6 +365,7 @@
         
         NSString* userId = [responseDictionary objectForKey:@"id"];
         
+        
         [self channelSubscriptionsForUserId:userId
                                  credential:credentials
                                       start:0
@@ -973,6 +974,7 @@
     NSDictionary *params = [self paramsForStart: start
                                            size: size];
     
+    // we are not using the subscriptions_url returned from user info data but using a std one.
     NSString *apiString = [kAPIGetUserSubscriptions stringByReplacingOccurrencesOfStrings: apiSubstitutionDictionary];
     
     SYNNetworkOperationJsonObject *networkOperation = (SYNNetworkOperationJsonObject*)[self operationWithPath: apiString

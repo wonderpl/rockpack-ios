@@ -74,6 +74,8 @@
 }
 
 
+
+
 - (void) loadView
 {
     BOOL isIPhone =  [[SYNDeviceManager sharedInstance] isIPhone];

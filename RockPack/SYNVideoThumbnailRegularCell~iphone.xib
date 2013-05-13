@@ -2,10 +2,10 @@
 <archive type="com.apple.InterfaceBuilder3.CocoaTouch.iPad.XIB" version="8.00">
 	<data>
 		<int key="IBDocument.SystemTarget">1552</int>
-		<string key="IBDocument.SystemVersion">12C3006</string>
+		<string key="IBDocument.SystemVersion">12D78</string>
 		<string key="IBDocument.InterfaceBuilderVersion">3084</string>
-		<string key="IBDocument.AppKitVersion">1187.34</string>
-		<string key="IBDocument.HIToolboxVersion">625.00</string>
+		<string key="IBDocument.AppKitVersion">1187.37</string>
+		<string key="IBDocument.HIToolboxVersion">626.00</string>
 		<object class="NSMutableDictionary" key="IBDocument.PluginVersions">
 			<string key="NS.key.0">com.apple.InterfaceBuilder.IBCocoaTouchPlugin</string>
 			<string key="NS.object.0">2083</string>
@@ -46,7 +46,6 @@
 								<int key="NSvFlags">292</int>
 								<string key="NSFrameSize">{310, 175}</string>
 								<reference key="NSSuperview" ref="301134111"/>
-								<reference key="NSWindow"/>
 								<reference key="NSNextKeyView" ref="486650470"/>
 								<string key="NSReuseIdentifierKey">_NS:9</string>
 								<bool key="IBUIAutoresizesSubviews">NO</bool>
@@ -63,7 +62,6 @@
 								<int key="NSvFlags">292</int>
 								<string key="NSFrameSize">{310, 174}</string>
 								<reference key="NSSuperview" ref="301134111"/>
-								<reference key="NSWindow"/>
 								<reference key="NSNextKeyView" ref="508424044"/>
 								<string key="NSReuseIdentifierKey">_NS:9</string>
 								<bool key="IBUIClipsSubviews">YES</bool>
@@ -76,7 +74,6 @@
 								<int key="NSvFlags">289</int>
 								<string key="NSFrameSize">{310, 175}</string>
 								<reference key="NSSuperview" ref="301134111"/>
-								<reference key="NSWindow"/>
 								<reference key="NSNextKeyView" ref="865164628"/>
 								<string key="NSReuseIdentifierKey">_NS:9</string>
 								<bool key="IBUIAutoresizesSubviews">NO</bool>
@@ -93,7 +90,6 @@
 								<int key="NSvFlags">292</int>
 								<string key="NSFrame">{{9, 149}, {297, 26}}</string>
 								<reference key="NSSuperview" ref="301134111"/>
-								<reference key="NSWindow"/>
 								<string key="NSReuseIdentifierKey">_NS:9</string>
 								<bool key="IBUIOpaque">NO</bool>
 								<bool key="IBUIAutoresizesSubviews">NO</bool>
@@ -132,7 +128,6 @@
 								<int key="NSvFlags">-2147483356</int>
 								<string key="NSFrameSize">{310, 174}</string>
 								<reference key="NSSuperview" ref="301134111"/>
-								<reference key="NSWindow"/>
 								<reference key="NSNextKeyView" ref="716427388"/>
 								<string key="NSReuseIdentifierKey">_NS:9</string>
 								<object class="NSColor" key="IBUIBackgroundColor" id="456240611">
@@ -168,7 +163,6 @@
 								<int key="NSvFlags">292</int>
 								<string key="NSFrame">{{253, 0}, {57, 57}}</string>
 								<reference key="NSSuperview" ref="301134111"/>
-								<reference key="NSWindow"/>
 								<reference key="NSNextKeyView" ref="429279700"/>
 								<string key="NSReuseIdentifierKey">_NS:9</string>
 								<bool key="IBUIAutoresizesSubviews">NO</bool>
@@ -200,7 +194,6 @@
 								<int key="NSvFlags">-2147483356</int>
 								<string key="NSFrameSize">{64, 65}</string>
 								<reference key="NSSuperview" ref="301134111"/>
-								<reference key="NSWindow"/>
 								<reference key="NSNextKeyView" ref="847382299"/>
 								<string key="NSReuseIdentifierKey">_NS:9</string>
 								<bool key="IBUIAutoresizesSubviews">NO</bool>
@@ -234,7 +227,6 @@
 						</array>
 						<string key="NSFrameSize">{310, 175}</string>
 						<reference key="NSSuperview" ref="274337159"/>
-						<reference key="NSWindow"/>
 						<reference key="NSNextKeyView" ref="108227339"/>
 						<reference key="IBUIBackgroundColor" ref="456240611"/>
 						<bool key="IBUIOpaque">NO</bool>
@@ -246,7 +238,6 @@
 				</array>
 				<string key="NSFrameSize">{310, 175}</string>
 				<reference key="NSSuperview"/>
-				<reference key="NSWindow"/>
 				<reference key="NSNextKeyView" ref="301134111"/>
 				<string key="NSReuseIdentifierKey">_NS:9</string>
 				<reference key="IBUIBackgroundColor" ref="456240611"/>

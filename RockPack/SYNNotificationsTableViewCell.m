@@ -85,8 +85,6 @@
         secondaryImageButton.frame = imageViewRect;
         [self addSubview:secondaryImageButton];
         
-        
-        
     }
     return self;
 }
