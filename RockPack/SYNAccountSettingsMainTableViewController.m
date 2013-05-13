@@ -117,13 +117,17 @@
 
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath
 {
-    static NSString *CellIdentifier = @"Cell";
     UITableViewCell *cell;
     
     
     if(indexPath.section == 0) {
         
-        cell = [[SYNAccountSettingTableViewCell alloc] initWithStyle:UITableViewCellStyleSubtitle reuseIdentifier:CellIdentifier];
+        static NSString *CellIdentifier = @"Section0Cell";
+        cell = [tableView dequeueReusableCellWithIdentifier:CellIdentifier];
+        if(!cell)
+        {
+            cell = [[SYNAccountSettingTableViewCell alloc] initWithStyle:UITableViewCellStyleSubtitle reuseIdentifier:CellIdentifier];
+        }
         
         switch (indexPath.row) {
                 
@@ -196,7 +200,12 @@
         
     } else {
         
-        cell = [[UITableViewCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:CellIdentifier];
+        static NSString *CellIdentifier = @"OtherSectionCell";
+        cell = [tableView dequeueReusableCellWithIdentifier:CellIdentifier];
+        if(!cell)
+        {
+            cell = [[UITableViewCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:CellIdentifier];
+        }
         
         
         cell.textLabel.text = (NSString*)dataItems2ndSection[indexPath.row];
