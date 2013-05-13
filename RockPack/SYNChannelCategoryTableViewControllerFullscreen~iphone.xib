@@ -76,6 +76,7 @@
 						<string key="NSReuseIdentifierKey">_NS:9</string>
 						<bool key="IBUIOpaque">NO</bool>
 						<string key="targetRuntimeIdentifier">IBCocoaTouchFramework</string>
+						<bool key="IBUIEnabled">NO</bool>
 						<int key="IBUIContentHorizontalAlignment">0</int>
 						<int key="IBUIContentVerticalAlignment">0</int>
 						<string key="IBUINormalTitle">CONFIRM</string>
@@ -93,11 +94,15 @@
 						</object>
 						<object class="NSCustomResource" key="IBUIHighlightedImage">
 							<string key="NSClassName">NSImage</string>
+							<string key="NSResourceName">ButtonConfirmYellowHighlighted~iphone.png</string>
+						</object>
+						<object class="NSCustomResource" key="IBUIDisabledImage">
+							<string key="NSClassName">NSImage</string>
 							<string key="NSResourceName">ButtonConfirmWhiteHighlighted~iphone.png</string>
 						</object>
 						<object class="NSCustomResource" key="IBUINormalImage">
 							<string key="NSClassName">NSImage</string>
-							<string key="NSResourceName">ButtonConfirmWhite~iphone.png</string>
+							<string key="NSResourceName">ButtonConfirmYellow~iphone.png</string>
 						</object>
 						<object class="IBUIFontDescription" key="IBUIFontDescription" id="411140610">
 							<int key="type">2</int>
@@ -318,7 +323,7 @@
 				<string key="-2.IBPluginDependency">com.apple.InterfaceBuilder.IBCocoaTouchPlugin</string>
 				<string key="11.IBPluginDependency">com.apple.InterfaceBuilder.IBCocoaTouchPlugin</string>
 				<string key="14.IBPluginDependency">com.apple.InterfaceBuilder.IBCocoaTouchPlugin</string>
-				<real value="0.0" key="14.IBUIButtonInspectorSelectedStateConfigurationMetadataKey"/>
+				<real value="3" key="14.IBUIButtonInspectorSelectedStateConfigurationMetadataKey"/>
 				<string key="15.IBPluginDependency">com.apple.InterfaceBuilder.IBCocoaTouchPlugin</string>
 				<real value="0.0" key="15.IBUIButtonInspectorSelectedStateConfigurationMetadataKey"/>
 				<string key="16.IBPluginDependency">com.apple.InterfaceBuilder.IBCocoaTouchPlugin</string>
@@ -335,6 +340,20 @@
 				<object class="IBPartialClassDescription">
 					<string key="className">SYNChannelCategoryTableViewController</string>
 					<string key="superclassName">UIViewController</string>
+					<dictionary class="NSMutableDictionary" key="actions">
+						<string key="closeButtonTapped:">id</string>
+						<string key="confirmButtonTapped:">id</string>
+					</dictionary>
+					<dictionary class="NSMutableDictionary" key="actionInfosByName">
+						<object class="IBActionInfo" key="closeButtonTapped:">
+							<string key="name">closeButtonTapped:</string>
+							<string key="candidateClassName">id</string>
+						</object>
+						<object class="IBActionInfo" key="confirmButtonTapped:">
+							<string key="name">confirmButtonTapped:</string>
+							<string key="candidateClassName">id</string>
+						</object>
+					</dictionary>
 					<dictionary class="NSMutableDictionary" key="outlets">
 						<string key="closeButton">UIButton</string>
 						<string key="confirmButton">UIButton</string>
@@ -369,7 +388,8 @@
 			<string key="ButtonCancel.png">{60, 61}</string>
 			<string key="ButtonCancelHighlighted.png">{60, 61}</string>
 			<string key="ButtonConfirmWhiteHighlighted~iphone.png">{48, 49}</string>
-			<string key="ButtonConfirmWhite~iphone.png">{48, 49}</string>
+			<string key="ButtonConfirmYellowHighlighted~iphone.png">{48, 49}</string>
+			<string key="ButtonConfirmYellow~iphone.png">{48, 49}</string>
 		</dictionary>
 		<string key="IBCocoaTouchPluginVersion">2083</string>
 	</data>

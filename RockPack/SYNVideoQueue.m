@@ -128,6 +128,14 @@
         return;
     }
     
+    BOOL isIPhone = [[SYNDeviceManager sharedInstance] isIPhone];
+    
+    if(isIPhone)
+    {
+        // Only one video isever added at a time on iPhone. Clear out any previously started queue.
+        [self clearVideoQueue];
+    }
+    
     if(!self.currentlyCreatingChannel) // create channel if there is none
     {
         self.currentlyCreatingChannel = [Channel insertInManagedObjectContext: self.appDelegate.channelsManagedObjectContext];
@@ -160,7 +168,7 @@
     
     [self.currentlyCreatingChannel.videoInstancesSet addObject: copyOfVideoInstance];
     
-    if([[SYNDeviceManager sharedInstance] isIPhone])
+    if(isIPhone)
     {
         [[NSNotificationCenter defaultCenter] postNotificationName:kNoteAddToChannelRequest object:self];
     }
