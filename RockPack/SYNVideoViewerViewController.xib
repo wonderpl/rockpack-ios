@@ -1094,19 +1094,6 @@
 				<object class="IBPartialClassDescription">
 					<string key="className">SYNAbstractViewController</string>
 					<string key="superclassName">GAITrackedViewController</string>
-<<<<<<< HEAD
-					<object class="NSMutableDictionary" key="actions">
-						<string key="NS.key.0">animatedPopViewController</string>
-						<string key="NS.object.0">id</string>
-					</object>
-					<object class="NSMutableDictionary" key="actionInfosByName">
-						<string key="NS.key.0">animatedPopViewController</string>
-						<object class="IBActionInfo" key="NS.object.0">
-							<string key="name">animatedPopViewController</string>
-							<string key="candidateClassName">id</string>
-						</object>
-					</object>
-=======
 					<dictionary class="NSMutableDictionary" key="actions">
 						<string key="animatedPopViewController">id</string>
 						<string key="channelButtonTapped:">UIButton</string>
@@ -1126,7 +1113,6 @@
 							<string key="candidateClassName">UIButton</string>
 						</object>
 					</dictionary>
->>>>>>> 54d968b1f1c4cd34ea1c83d337dab2527fb22915
 					<dictionary class="NSMutableDictionary" key="outlets">
 						<string key="channelNameTextField">UITextField</string>
 						<string key="channelOverlayView">UIImageView</string>
