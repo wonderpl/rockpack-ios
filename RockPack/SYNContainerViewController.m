@@ -142,15 +142,10 @@
     
     
     
-    // == Register Notifications == //kVideoOverlayRequested
+    // == Register Notifications == //
     
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(backButtonShow:) name:kNoteBackButtonShow object:nil];
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(backButtonHide:) name:kNoteBackButtonHide object:nil];
-    
-    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(profileRequested:) name:kProfileRequested object:nil];
-    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(channelDetailsRequested:) name:kChannelDetailsRequested object:nil];
-    
-    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(videoOverlayRequested:) name:kVideoOverlayRequested object:nil];
 }
 
 -(void) viewWillAppear:(BOOL)animated
@@ -216,33 +211,6 @@
     [childController didMoveToParentViewController:self];
 }
 
-#pragma mark - Notification Methods
-
--(void)profileRequested:(NSNotification*)notification
-{
-    ChannelOwner* channelOwner = (ChannelOwner*)[[notification userInfo] objectForKey:kChannelOwner];
-    if(!channelOwner)
-        return;
-    
-    [self.showingViewController viewProfileDetails:channelOwner];
-}
--(void)channelDetailsRequested:(NSNotification*)notification
-{
-    Channel* channel = (Channel*)[[notification userInfo] objectForKey:kChannel];
-    if(!channel)
-        return;
-    
-    [self.showingViewController viewChannelDetails:channel];
-}
-
--(void)videoOverlayRequested:(NSNotification*)notification
-{
-    Video* video = (Video*)[[notification userInfo] objectForKey:kVideo];
-    if(!video)
-        return;
-    
-    [self.showingViewController displayVideoViewerWithVideo:video];
-}
 
 -(void)backButtonShow:(NSNotification*)notification
 {

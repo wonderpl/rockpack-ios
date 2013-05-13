@@ -12,7 +12,6 @@
 #import "SYNOAuthNetworkEngine.h"
 #import "SYNRockpackNotification.h"
 #import "UIImageView+WebCache.h"
-#import "Video.h"
 
 #define kNotificationsCellIdent @"kNotificationsCellIdent"
 
@@ -98,7 +97,7 @@
     SYNRockpackNotification* notification = (SYNRockpackNotification*)[_notifications objectAtIndex:indexPath.row];
     
     NSMutableString* constructedMessage = [[NSMutableString alloc] init];
-    [constructedMessage appendFormat:@"%@", [notification.channelOwner.displayName uppercaseString]];
+    [constructedMessage appendFormat:@"%@", [notification.userDisplayName uppercaseString]];
     [constructedMessage appendString:@" has "];
     [constructedMessage appendFormat:@"%@", notification.messageType];
     if([notification.messageType isEqualToString:@"subscribed"])
@@ -110,15 +109,13 @@
     
     notificationCell.messageTitle = [NSString stringWithString:constructedMessage];
     
-    NSURL* userThumbnailUrl = [NSURL URLWithString:notification.channelOwner.thumbnailURL];
+    NSURL* userThumbnailUrl = [NSURL URLWithString:notification.userThumbnailUrl];
     
     [notificationCell.imageView setImageWithURL: userThumbnailUrl
                      placeholderImage: [UIImage imageNamed:@"AvatarProfile"]
                               options: SDWebImageRetryFailed];
-    
-    
     NSURL* thumbnaillUrl;
-    if(notification.objectType == kNotificationObjectTypeVideo)
+    if([notification.messageType isEqualToString:@"starred"])
     {
         thumbnaillUrl = [NSURL URLWithString:notification.videoThumbnailUrl];
         
@@ -129,9 +126,9 @@
         
     }
     
-    [notificationCell.thumbnailImageView setImageWithURL: thumbnaillUrl
-                                        placeholderImage: [UIImage imageNamed:@"AvatarProfile"]
-                                                 options: SDWebImageRetryFailed];
+    [notificationCell.imageView setImageWithURL: thumbnaillUrl
+                               placeholderImage: [UIImage imageNamed:@"AvatarProfile"]
+                                        options: SDWebImageRetryFailed];
     
     notificationCell.delegate = self;
     
@@ -182,53 +179,13 @@
 
 #pragma mark - Delegate Handler
 
--(void)mainImageTableCellPressed:(UIButton*)button
+-(void)mainImageTableCellPressed:(UIGestureRecognizer*)recogniser
 {
-    SYNNotificationsTableViewCell* cellPressed = (SYNNotificationsTableViewCell*)button.superview;
-    
-    NSIndexPath* indexPathForCellPressed = [self.tableView indexPathForCell:cellPressed];
-    
-    SYNRockpackNotification* notification = self.notifications[indexPathForCellPressed.row];
-    
-    
-    [[NSNotificationCenter defaultCenter] postNotificationName:kProfileRequested
-                                                        object:self
-                                                      userInfo:@{kChannelOwner:notification.channelOwner}];
-    
+    NSLog(@"Click!");
 }
--(void)itemImageTableCellPressed:(UIButton*)button
+-(void)itemImageTableCellPressed:(UIGestureRecognizer*)recogniser
 {
-    SYNNotificationsTableViewCell* cellPressed = (SYNNotificationsTableViewCell*)button.superview;
-    
-    NSIndexPath* indexPathForCellPressed = [self.tableView indexPathForCell:cellPressed];
-    
-    SYNRockpackNotification* notification = self.notifications[indexPathForCellPressed.row];
-    
-    if(notification.objectType == kNotificationObjectTypeVideo)
-    {
-        Video* video = [self videoFromVideoId:notification.videoId];
-        
-        if(!video)
-            return;
-        
-        [[NSNotificationCenter defaultCenter] postNotificationName:kVideoOverlayRequested
-                                                            object:self
-                                                          userInfo:@{kVideo:video}];
-    }
-    else
-    {
-        Channel* channel = [self channelFromChannelId:notification.channelId];
-        
-        if(!channel)
-            return;
-        
-        [[NSNotificationCenter defaultCenter] postNotificationName:kChannelDetailsRequested
-                                                            object:self
-                                                          userInfo:@{kChannel:channel}];
-    }
-    
-    
-    
+    NSLog(@"Click!");
 }
 
 #pragma mark - Accessors
@@ -239,66 +196,4 @@
     [self.tableView reloadData];
 }
 
--(Channel*)channelFromChannelId:(NSString*)channelId
-{
-    Channel* channel;
-    
-    NSEntityDescription* channelEntity = [NSEntityDescription entityForName:@"Channel"
-                                                         inManagedObjectContext:appDelegate.mainManagedObjectContext];
-    
-    NSFetchRequest *channelFetchRequest = [[NSFetchRequest alloc] init];
-    [channelFetchRequest setEntity: channelEntity];
-    
-    
-    NSPredicate *predicate = [NSPredicate predicateWithFormat: @"uniqueId == %@", channelId];
-    
-    [channelFetchRequest setPredicate: predicate];
-    
-    NSError* error;
-    
-    NSArray *matchingChannelEntries = [appDelegate.mainManagedObjectContext executeFetchRequest: channelFetchRequest
-                                                                                          error: &error];
-    
-    
-    if (matchingChannelEntries.count > 0)
-    {
-        channel = matchingChannelEntries[0];
-                
-    }
-    
-    return channel;
-}
--(Video*)videoFromVideoId:(NSString*)videoId
-{
-    Video* video;
-    
-    NSEntityDescription* channelEntity = [NSEntityDescription entityForName:@"Video"
-                                                     inManagedObjectContext:appDelegate.mainManagedObjectContext];
-    
-    NSFetchRequest *channelFetchRequest = [[NSFetchRequest alloc] init];
-    [channelFetchRequest setEntity: channelEntity];
-    
-    
-    NSPredicate *predicate = [NSPredicate predicateWithFormat: @"uniqueId == %@", videoId];
-    
-    [channelFetchRequest setPredicate: predicate];
-    
-    NSError* error;
-    
-    NSArray *matchingChannelEntries = [appDelegate.mainManagedObjectContext executeFetchRequest: channelFetchRequest
-                                                                                          error: &error];
-    
-    
-    if (matchingChannelEntries.count > 0)
-    {
-        video = matchingChannelEntries[0];
-        
-    }
-    else
-    {
-        
-    }
-    
-    return video;
-}
 @end

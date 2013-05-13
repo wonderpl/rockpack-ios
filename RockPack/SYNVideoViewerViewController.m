@@ -75,8 +75,6 @@
 {
     [super viewDidLoad];
     
-//    self.currentSelectedIndex = -1;
-    
     // Google Analytics support
     self.trackedViewName = @"Video Viewer";
     
@@ -273,7 +271,7 @@
 - (void) setCurrentSelectedIndex: (int) currentSelectedIndex
 {
     // Deselect the old thumbnail (if there is one, and it is not the same as the new one)
-    if ((_currentSelectedIndex != -1) && (_currentSelectedIndex != currentSelectedIndex))
+    if (_currentSelectedIndex && (_currentSelectedIndex != currentSelectedIndex))
     {
         SYNVideoThumbnailSmallCell *oldCell = (SYNVideoThumbnailSmallCell *)[self.videoThumbnailCollectionView cellForItemAtIndexPath: [NSIndexPath indexPathForItem: _currentSelectedIndex
                                                                                                                                                            inSection: 0]];
