@@ -239,9 +239,12 @@ enum ChannelCoverSelectorState {
             break;
         case kChannelCoverLocalAlbum:
         {
-                AVURLAsset* imageAsset = [[self.userAssetGroups objectForKey:self.selectedAlbumKey] objectAtIndex:indexPath.row];
-                [self.library assetForURL:imageAsset.URL resultBlock:^(ALAsset *asset) {
-                    ALAssetRepresentation* representation = [asset defaultRepresentation];
+            ;
+            ALAssetsGroup* group = [[self.userAssetGroups objectForKey:self.selectedAlbumKey] objectForKey:@"group"];
+            [group enumerateAssetsAtIndexes:[NSIndexSet indexSetWithIndex:indexPath.row]  options:0 usingBlock:^(ALAsset *result, NSUInteger index, BOOL *stop) {
+                if(result)
+                {
+                    ALAssetRepresentation* representation = [result defaultRepresentation];
                     GKImageCropViewController* cropViewController = [[GKImageCropViewController alloc]init];
                     UIImage* selectedImage = [UIImage imageWithCGImage:[representation fullResolutionImage]];
                     cropViewController.sourceImage = selectedImage;
@@ -249,9 +252,8 @@ enum ChannelCoverSelectorState {
                     cropViewController.delegate = self;
                     cropViewController.view.clipsToBounds = YES;
                     [self presentViewController:cropViewController animated:YES completion:nil];
-                } failureBlock:^(NSError *error) {
-                    
-                }];
+                }
+            }];
             break;
         }
         case kChannelCoverDefault:

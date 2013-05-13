@@ -207,10 +207,9 @@
 {
     NSString* noteName;
     
-    if (!addButton.selected)
+    if (!addButton.selected || [[SYNDeviceManager sharedInstance] isIPhone]) // There is only ever one video in the queue on iPhone. Always fire the add action.
     {
         noteName = kVideoQueueAdd;
-        
     }
     else
     {
@@ -226,6 +225,7 @@
                                                       userInfo: @{@"VideoInstance" : videoInstance}];
     
     addButton.selected = !addButton.selected;
+
 }
 
 

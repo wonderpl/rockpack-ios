@@ -82,6 +82,7 @@
 @property (weak, nonatomic) IBOutlet UIActivityIndicatorView *activityIndicator;
 @property (weak, nonatomic) IBOutlet UIButton *cancelTextInputButton;
 @property (weak, nonatomic) IBOutlet UIImageView *textBackgroundImageView;
+@property (weak, nonatomic) IBOutlet UIButton *backButton;
 
 @end
 
@@ -242,19 +243,22 @@
                                        forState: UIControlStateNormal];
         
         // Now do fancy attributed string
-        NSString *categoryString = @"SELECT A CATEGORY (Optional)";
+        //NSString *categoryString = @"SELECT A CATEGORY (Optional)";
+        NSString *categoryString = @"SELECT A CATEGORY";
+
         
         NSMutableAttributedString* attributedCategoryString = [[NSMutableAttributedString alloc] initWithString: categoryString
                                                                                                      attributes: @{NSForegroundColorAttributeName : [UIColor colorWithRed: 40.0f/255.0f green: 45.0f/255.0f blue: 51.0f/255.0f alpha: 1.0f],
                                                                                            NSFontAttributeName : [UIFont boldRockpackFontOfSize: 18.0f]}];
-        
-        NSRange leftParentheseRange = [categoryString rangeOfString: @"("];
-        NSRange rightParentheseRange = [categoryString rangeOfString: @")"];
-        
-        NSRange numberRange = NSMakeRange(leftParentheseRange.location, rightParentheseRange.location - (leftParentheseRange.location) + 1);
-        
-        [attributedCategoryString addAttributes: @{NSForegroundColorAttributeName : [UIColor colorWithRed: 187.0f/255.0f green: 187.0f/255.0f blue: 187.0f/255.0f alpha: 1.0f], NSFontAttributeName : [UIFont rockpackFontOfSize: 18.0f]}
-                                          range: numberRange];
+
+        //Gregory told me to do this, remove (optional) from select category
+//        NSRange leftParentheseRange = [categoryString rangeOfString: @"("];
+//        NSRange rightParentheseRange = [categoryString rangeOfString: @")"];
+//        
+//        NSRange numberRange = NSMakeRange(leftParentheseRange.location, rightParentheseRange.location - (leftParentheseRange.location) + 1);
+//        
+//        [attributedCategoryString addAttributes: @{NSForegroundColorAttributeName : [UIColor colorWithRed: 187.0f/255.0f green: 187.0f/255.0f blue: 187.0f/255.0f alpha: 1.0f], NSFontAttributeName : [UIFont rockpackFontOfSize: 18.0f]}
+//                                          range: numberRange];
         
         
         // Set text on add cover and select category buttons
@@ -920,7 +924,7 @@
 {
     NSString* noteName;
     
-    if (!addButton.selected)
+    if (!addButton.selected || [[SYNDeviceManager sharedInstance] isIPhone]) // There is only ever one video in the queue on iPhone. Always fire the add action.
     {
         noteName = kVideoQueueAdd;
         
@@ -1063,30 +1067,30 @@
 
 - (void) showCategoryChooser
 {
-    if([[SYNDeviceManager sharedInstance] isIPad])
+    if ([[SYNDeviceManager sharedInstance] isIPad])
     {
-    if (self.categoriesTabViewController.view.alpha == 0.0f)
-    {
-        [UIView animateWithDuration: kChannelEditModeAnimationDuration
-                         animations: ^{
-                             // Fade up the category tab controller
-                             self.categoriesTabViewController.view.alpha = 1.0f;
-                             
-                             // slide down the video collection view a bit
-                             self.videoThumbnailCollectionView.contentInset = UIEdgeInsetsMake(kChannelCreationCollectionViewOffsetY +
-                                                                                               kChannelCreationCategoryAdditionalOffsetY, 0, 0, 0);
-                             
-                             self.videoThumbnailCollectionView.contentOffset = CGPointMake (0, -(kChannelCreationCollectionViewOffsetY +
-                                                                                                 kChannelCreationCategoryAdditionalOffsetY));
-                         }
-                         completion: nil];
-    }
+        if (self.categoriesTabViewController.view.alpha == 0.0f)
+        {
+            [UIView animateWithDuration: kChannelEditModeAnimationDuration
+                             animations: ^{
+                                 // Fade up the category tab controller
+                                 self.categoriesTabViewController.view.alpha = 1.0f;
+                                 
+                                 // slide down the video collection view a bit
+                                 self.videoThumbnailCollectionView.contentInset = UIEdgeInsetsMake(kChannelCreationCollectionViewOffsetY +
+                                                                                                   kChannelCreationCategoryAdditionalOffsetY, 0, 0, 0);
+                                 
+                                 self.videoThumbnailCollectionView.contentOffset = CGPointMake (0, -(kChannelCreationCollectionViewOffsetY +
+                                                                                                     kChannelCreationCategoryAdditionalOffsetY));
+                             }
+                             completion: nil];
+        }
     }
     else
     {
-        if(!self.categoryTableViewController)
+        if (!self.categoryTableViewController)
         {
-            self.categoryTableViewController = [[SYNChannelCategoryTableViewController alloc] initWithNibName:@"SYNChannelCategoryTableViewControllerFullscreen~iphone" bundle:[NSBundle mainBundle]];
+            self.categoryTableViewController = [[SYNChannelCategoryTableViewController alloc] initWithNibName:@"SYNChannelCategoryTableViewControllerFullscreen~iphone" bundle: [NSBundle mainBundle]];
             self.categoryTableViewController.categoryTableControllerDelegate = self;
             self.categoryTableViewController.showAllCategoriesHeader = NO;
         }
@@ -1094,13 +1098,18 @@
         startFrame.origin.y = self.view.frame.size.height;
         self.categoryTableViewController.view.frame = startFrame;
         [self.view addSubview:self.categoryTableViewController.view];
-        [UIView animateWithDuration:0.3f delay:0.0f options:UIViewAnimationOptionCurveEaseOut animations:^{
-            CGRect endFrame = self.categoryTableViewController.view.frame;
-            endFrame.origin.y = 0.0f;
-            self.categoryTableViewController.view.frame = endFrame;
-        } completion:nil];
+        
+        [UIView animateWithDuration: 0.3f
+                              delay: 0.0f
+                            options: UIViewAnimationOptionCurveEaseOut
+                         animations: ^{
+                             CGRect endFrame = self.categoryTableViewController.view.frame;
+                             endFrame.origin.y = 0.0f;
+                             self.categoryTableViewController.view.frame = endFrame;
+                         }
+                         completion: nil];
     }
-
+    
 }
 
 
@@ -1133,10 +1142,10 @@
                      completion: nil];
 }
 
--(IBAction)addItToChannelPresssed:(id)sender
+- (IBAction) addItToChannelPresssed: (id) sender
 {
-    
-    [[NSNotificationCenter defaultCenter] postNotificationName:kNoteAddToChannelRequest object:self];
+    [[NSNotificationCenter defaultCenter] postNotificationName: kNoteAddToChannelRequest
+                                                        object: self];
     
 }
 
@@ -1176,12 +1185,13 @@
 
 - (IBAction) createChannelPressed: (id) sender
 {
-    if([[SYNDeviceManager sharedInstance] isIPhone])
+    if ([[SYNDeviceManager sharedInstance] isIPhone])
     {
         self.createChannelButton.hidden = YES;
         self.activityIndicator.hidden = NO;
         [self.activityIndicator startAnimating];
     }
+    
     self.channel.title = self.channelTitleTextView.text;
     self.channel.channelDescription = @"Test Description";
     
@@ -1192,19 +1202,17 @@
                                                      cover: self.selectedCoverId
                                                   isPublic: YES
                                          completionHandler: ^(NSDictionary* resourceCreated) {
-                                             NSString* channelId = [resourceCreated objectForKey:@"id"];
+                                             NSString* channelId = [resourceCreated objectForKey: @"id"];
                                              
                                              [self addVideosToNewChannelForId:channelId];
-                                             
-                                             
                                          }
                                               errorHandler: ^(id error) {
                                              
                                              DebugLog(@"Error @ createChannelPressed:");
                                              NSString* errorMessage = @"Could not create channel. Please try again later.";
-                                             if([[error objectForKey:@"form_errors"] objectForKey:@"title"])
+                                             if ([[error objectForKey: @"form_errors"] objectForKey :@"title"])
                                              {
-                                                 errorMessage = NSLocalizedString(@"This channel name is already taken",nil);
+                                                 errorMessage = NSLocalizedString(@"You already created a channel with this title. Please choose a different title.",nil);
                                              };
 
                                              [self showError:errorMessage];
@@ -1282,10 +1290,10 @@
         return NO;
     }
     
-//    if (textView.text.length >= 25 && ![text isEqualToString: @""])
-//    {
-//        return NO;
-//    }
+    if (textView.text.length >= 25 && ![text isEqualToString: @""])
+    {
+        return NO;
+    }
     
     NSRange lowercaseCharRange = [text rangeOfCharacterFromSet: [NSCharacterSet lowercaseLetterCharacterSet]];
     
@@ -1336,6 +1344,13 @@
     
     [self.channelTitleTextView setContentOffset: (CGPoint){.x = 0, .y = -topCorrect}
                                        animated: NO];
+}
+
+#pragma mark - Cover selection and upload support
+
+- (IBAction) userTouchedReportConcernButton: (UIButton*) button
+{
+    button.selected = !button.selected;
 }
 
 
@@ -1530,7 +1545,8 @@
     // On iPhone we want to be able to go back which means the existing channels view remains onscreen. Here we remove it as channel creation was complete.
     UIViewController *master = self.presentingViewController;
     [[[[master childViewControllers] lastObject] view] removeFromSuperview];
-    [self dismissViewControllerAnimated:NO completion:nil];
+    [self setDisplayControlsVisibility:YES];
+    [self.view addSubview:self.backButton];
 }
 
 
