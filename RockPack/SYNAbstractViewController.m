@@ -196,13 +196,6 @@
 }
 
 
-// This is intended to be subclassed where other video assets (i.e. a Large video view) have information that is dependent on Video attributes
-- (void) updateOtherOnscreenVideoAssetsForIndexPath: (NSIndexPath *) indexPath
-{
-    // By default, do nothing
-}
-
-
 - (void) videoAddButtonTapped: (UIButton *) addButton
 {
     NSString* noteName;
@@ -229,29 +222,22 @@
 }
 
 
-- (NSIndexPath *) indexPathFromVideoInstanceButton: (UIButton *) button
+//- (IBAction) userTouchedVideoShareButton: (UIButton *) button
+//{
+//    NSIndexPath *indexPath = [self indexPathFromVideoInstanceButton: button];
+//    VideoInstance *videoInstance = [self.fetchedResultsController objectAtIndexPath: indexPath];
+//    
+//    [self shareVideoInstance: videoInstance
+//                      inView: self.view
+//                    fromRect: videoShareButton.frame
+//             arrowDirections: UIPopoverArrowDirectionDown];
+//}
+
+
+- (void) displayVideoViewerFromView: (UIButton *) button
 {
-    UIView *v = button.superview.superview.superview;
+    UIView *v = button.superview.superview;
     NSIndexPath *indexPath = [self.videoThumbnailCollectionView indexPathForItemAtPoint: v.center];
-    
-    return indexPath;
-}
-
-- (IBAction) userTouchedVideoShareButton: (UIButton *) videoShareButton
-{
-    NSIndexPath *indexPath = [self indexPathFromVideoInstanceButton: videoShareButton];
-    VideoInstance *videoInstance = [self.fetchedResultsController objectAtIndexPath: indexPath];
-    
-    [self shareVideoInstance: videoInstance
-                      inView: self.view
-                    fromRect: videoShareButton.frame
-             arrowDirections: UIPopoverArrowDirectionDown];
-}
-
-
-- (void) displayVideoViewerFromView: (UIButton *) videoViewButton
-{
-    NSIndexPath *indexPath = [self indexPathFromVideoInstanceButton: videoViewButton];
 
     [self displayVideoViewerWithVideoInstanceArray: self.fetchedResultsController.fetchedObjects
                                   andSelectedIndex: indexPath.item];
@@ -312,9 +298,10 @@
 
 
 // User touched the channel thumbnail in a video cell
-- (IBAction) channelButtonTapped: (UIButton *) channelButton
+- (IBAction) channelButtonTapped: (UIButton *) button
 {
-    NSIndexPath *indexPath = [self indexPathFromVideoInstanceButton: channelButton];
+    UIView *v = button.superview.superview.superview;
+    NSIndexPath *indexPath = [self.videoThumbnailCollectionView indexPathForItemAtPoint: v.center];
     
     // Bail if we don't have an index path
     if (indexPath)
@@ -335,9 +322,10 @@
 }
 
 
-- (IBAction) profileButtonTapped: (UIButton *) profileButton
+- (IBAction) profileButtonTapped: (UIButton *) button
 {
-    NSIndexPath *indexPath = [self indexPathFromVideoInstanceButton: profileButton];
+    UIView *v = button.superview.superview.superview;
+    NSIndexPath *indexPath = [self.videoThumbnailCollectionView indexPathForItemAtPoint: v.center];
     
     // Bail if we don't have an index path
     if (indexPath)
