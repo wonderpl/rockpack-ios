@@ -9,12 +9,15 @@
 #import "AppConstants.h"
 #import "NSString+Timecode.h"
 #import "SYNAppDelegate.h"
+#import "SYNDeviceManager.h"
+#import "SYNMasterViewController.h"
 #import "SYNOAuthNetworkEngine.h"
 #import "SYNVideoPlaybackViewController.h"
 #import "UIFont+SYNFont.h"
 #import <CoreData/CoreData.h>
 #import <MediaPlayer/MediaPlayer.h>
 #import <QuartzCore/CoreAnimation.h>
+
 
 @interface SYNVideoPlaybackViewController () <UIWebViewDelegate>
 
@@ -634,21 +637,22 @@
           withSource: (NSString *) source
             sourceId: (NSString *) sourceId
 {
-    if ([source isEqualToString: @"youtube"])
+    // FIXME: Source was nil for all but videoinstances from the feed screen
+//    if ([source isEqualToString: @"youtube"])
     {
         [self loadWebViewWithIFramePlayer: webView
                            usingYouTubeId: sourceId];
     }
-    else if ([source isEqualToString: @"vimeo"])
-    {
-        [self loadWebViewWithIFrame: webView
-                       usingVimeoId: sourceId];
-    }
-    else
-    {
-        // AssertOrLog(@"Unknown video source type");
-        DebugLog(@"WARNING: No Source! ");
-    }
+//    else if ([source isEqualToString: @"vimeo"])
+//    {
+//        [self loadWebViewWithIFrame: webView
+//                       usingVimeoId: sourceId];
+//    }
+//    else
+//    {
+//        // AssertOrLog(@"Unknown video source type");
+//        DebugLog(@"WARNING: No Source! ");
+//    }
 }
 
 
@@ -667,7 +671,48 @@
     CGAffineTransform savedTransform = self.view.transform;
     self.view.transform = CGAffineTransformMakeScale(1.0, 1.0);
     
-    NSString *iFrameHTML = [NSString stringWithFormat: templateHTMLString, (int) self.view.frame.size.width, (int) self.view.frame.size.height, sourceId];
+    // Based on empirical evidence (Youtube app), determine the appropriate quality level based on device and connectivity
+    BOOL isIpad = [[SYNDeviceManager sharedInstance] isIPad];
+    SYNAppDelegate* appDelegate = UIApplication.sharedApplication.delegate;
+    SYNMasterViewController *masterViewController = (SYNMasterViewController*)appDelegate.masterViewController;
+    NSString *suggestedQuality;
+    
+    if ([masterViewController.reachability currentReachabilityStatus] == ReachableViaWiFi)
+    {
+        if (isIpad)
+        {
+            suggestedQuality = @"hd720";
+        }
+        else
+        {
+            suggestedQuality = @"medium";
+        }
+    }
+    else if ([masterViewController.reachability currentReachabilityStatus] == ReachableViaWWAN)
+    {
+        // Connected via cellular network
+        if (isIpad)
+        {
+            suggestedQuality = @"medium";
+        }
+        else
+        {
+            suggestedQuality = @"small";
+        }
+    }
+    else if ([masterViewController.reachability currentReachabilityStatus] == NotReachable)
+    {
+        // Not currently connected
+        suggestedQuality = @"default";
+    }
+    else
+    {
+        suggestedQuality = @"default";
+    }
+
+    DebugLog(@"Selected quality: %@", suggestedQuality);
+    
+    NSString *iFrameHTML = [NSString stringWithFormat: templateHTMLString, suggestedQuality, (int) self.view.frame.size.width, (int) self.view.frame.size.height, sourceId];
     
     self.view.transform = savedTransform;
     
