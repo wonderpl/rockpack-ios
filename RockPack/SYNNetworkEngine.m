@@ -312,5 +312,48 @@
 }
 
 
+#pragma User Data
+
+-(void)updateChannelOwnerDataForChannelOwner:(ChannelOwner*)channelOwner
+{
+    [self channelOwnerDataForChannelOwner:channelOwner onComplete:^(id dictionary) {
+        
+        BOOL registryResultOk = [self.registry registerChannelOwnerFromDictionary: dictionary];
+        if (!registryResultOk)
+            return;
+        
+    } onError:^(id error) {
+        DebugLog(@"Could not update channels for channel owner %@", channelOwner.uniqueId);
+    }];
+}
+
+-(void)channelOwnerDataForChannelOwner:(ChannelOwner*)channelOwner
+                            onComplete:(MKNKUserSuccessBlock)completeBlock
+                               onError:(MKNKUserErrorBlock)errorBlock
+{
+    
+    NSDictionary *apiSubstitutionDictionary = @{@"USERID" : channelOwner.uniqueId};
+    
+    NSString *apiString = [kAPIGetUserDetails stringByReplacingOccurrencesOfStrings: apiSubstitutionDictionary];
+    
+    SYNNetworkOperationJsonObject *networkOperation = (SYNNetworkOperationJsonObject*)[self operationWithPath: apiString
+                                                                                                       params: [self getLocalParam]];
+    
+    
+    [networkOperation addJSONCompletionHandler: ^(NSDictionary *dictionary) {
+        
+        if(!dictionary)
+            return;
+        
+        completeBlock(dictionary);
+        
+     } errorHandler: ^(NSError* error) {
+         errorBlock(error);
+     }];
+    
+    [self enqueueOperation: networkOperation];
+    
+    
+}
 
 @end

@@ -7,6 +7,7 @@
 //
 
 #import "SYNRockpackNotification.h"
+#import "SYNAppDelegate.h"
 
 @implementation SYNRockpackNotification
 
@@ -14,6 +15,7 @@
 {
     if(self = [super init])
     {
+        SYNAppDelegate* appDelegate = (SYNAppDelegate*)[[UIApplication sharedApplication] delegate];
         self.identifier = [data objectForKey:@"id"];
         if(!self.identifier)
             return nil;
@@ -62,10 +64,10 @@
             NSDictionary* userDictionary = [messageDictionary objectForKey:@"user"];
             if(userDictionary && [userDictionary isKindOfClass:[NSDictionary class]])
             {
-                self.userId = [userDictionary objectForKey:@"id"];
-                self.userResourceUrl = [userDictionary objectForKey:@"resource_url"];
-                self.userThumbnailUrl = [userDictionary objectForKey:@"avatar_thumbnail_url"];
-                self.userDisplayName = [userDictionary objectForKey:@"display_name"];
+                
+                self.channelOwner = [ChannelOwner instanceFromDictionary:userDictionary
+                                               usingManagedObjectContext:appDelegate.mainManagedObjectContext
+                                                     ignoringObjectTypes:kIgnoreChannelObjects];
             }
         }
     }
@@ -77,4 +79,12 @@
     return [[self alloc] initWithNotificationData:data];
 }
 
+-(NSString*)description
+{
+    NSMutableString* descriptionToReturn = [[NSMutableString alloc] init];
+    [descriptionToReturn appendFormat:@"<SYNRockpackNotification: %p", self];
+    [descriptionToReturn appendFormat:@" channelOwner: %@", self.channelOwner.uniqueId];
+    [descriptionToReturn appendString:@">"];
+    return descriptionToReturn;
+}
 @end

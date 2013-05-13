@@ -57,6 +57,32 @@
     return YES;
 }
 
+- (BOOL) registerChannelOwnerFromDictionary: (NSDictionary*) dictionary
+{
+    // == Check for Validity == //
+    if (!dictionary || ![dictionary isKindOfClass: [NSDictionary class]])
+        return NO;
+    
+    // dictionary also contains the set of user channels
+    
+    ChannelOwner* channelOwner = [ChannelOwner instanceFromDictionary: dictionary
+                                            usingManagedObjectContext: importManagedObjectContext
+                                                  ignoringObjectTypes: kIgnoreNothing];
+    
+    if(!channelOwner)
+        return NO;
+    
+    
+    BOOL saveResult = [self saveImportContext];
+    if(!saveResult)
+        return NO;
+    
+    [appDelegate saveContext: TRUE];
+    
+    
+    return YES;
+}
+
 
 - (BOOL) registerSubscriptionsForCurrentUserFromDictionary: (NSDictionary*) dictionary
 {
@@ -213,13 +239,17 @@
     //Get all current videos for the viewId
     NSEntityDescription* videoInstanceEntity = [NSEntityDescription entityForName: @"VideoInstance"
                                                            inManagedObjectContext: importManagedObjectContext];
+    
     NSFetchRequest *videoInstanceFetchRequest = [[NSFetchRequest alloc] init];
     [videoInstanceFetchRequest setEntity: videoInstanceEntity];
+    
     NSPredicate *predicate = [NSPredicate predicateWithFormat: @"viewId == %@", viewId];
     [videoInstanceFetchRequest setPredicate: predicate];
+    
     NSError* error = nil;
     NSArray *matchingVideoInstanceEntries = [importManagedObjectContext executeFetchRequest: videoInstanceFetchRequest
                                                                                 error: &error];
+    
     NSMutableDictionary* existingVideosByIndex = [NSMutableDictionary dictionaryWithCapacity:matchingVideoInstanceEntries.count];
     
     // Organise videos by Id
@@ -301,10 +331,110 @@
 }
 
 
+- (BOOL) registerChannelsFromDictionary: (NSDictionary *) dictionary
+                        forChannelOwner: (ChannelOwner*) channelOwner
+                            byAppending: (BOOL) append {
+    
+    
+    // == Check for Validity == //
+    
+    if(!channelOwner)
+        return NO;
+    
+    NSDictionary *channelsDictionary = [dictionary objectForKey: @"channels"];
+    if (!channelsDictionary || ![channelsDictionary isKindOfClass: [NSDictionary class]])
+        return NO;
+    
+    NSArray *itemArray = [channelsDictionary objectForKey: @"items"];
+    if (![itemArray isKindOfClass: [NSArray class]])
+        return NO;
+    
+    if(itemArray.count == 0)
+        return YES;
+    
+    // Query for existing objects
+    
+    NSFetchRequest *channelFetchRequest = [[NSFetchRequest alloc] init];
+    [channelFetchRequest setEntity: [NSEntityDescription entityForName: @"Channel"
+                                                inManagedObjectContext: channelOwner.managedObjectContext]];
+    
+    
+    NSPredicate* ownedByUserPredicate = [NSPredicate predicateWithFormat:@"channelOwner.uniqueId == %@", channelOwner.uniqueId];
+    
+    [channelFetchRequest setPredicate: ownedByUserPredicate];
+    
+    
+    NSError* error;
+    NSArray *matchingChannelEntries = [channelOwner.managedObjectContext executeFetchRequest: channelFetchRequest
+                                                                                       error: &error];
+    
+    
+    NSMutableDictionary* existingChannelsByIndex = [NSMutableDictionary dictionaryWithCapacity:matchingChannelEntries.count];
+    
+    for (Channel* existingChannel in matchingChannelEntries)
+    {
+        
+        // NSLog(@" - Channel: %@ (%@)", existingChannel.title, existingChannel.categoryId);
+        [existingChannelsByIndex setObject:existingChannel forKey:existingChannel.uniqueId];
+        
+        if(!append)
+            existingChannel.markedForDeletionValue = YES; // if a real genre is passed - delete the old objects
+    }
+    
+    BOOL createdAnew = NO;
+    for (NSDictionary *itemDictionary in itemArray)
+    {
+        
+        NSString *uniqueId = [itemDictionary objectForKey: @"id"];
+        if(!uniqueId)
+            continue;
+        
+        Channel* channel;
+        
+        channel = [existingChannelsByIndex objectForKey:uniqueId];
+        
+        if(!channel)
+        {
+            channel = [Channel instanceFromDictionary: itemDictionary
+                            usingManagedObjectContext: channelOwner.managedObjectContext
+                                  ignoringObjectTypes: (kIgnoreStoredObjects | kIgnoreChannelOwnerObject)
+                                            andViewId: kChannelsViewId];
+            createdAnew = YES;
+        }
+        
+        
+        channel.markedForDeletionValue = NO;
+        
+        channel.position = [itemDictionary objectForKey: @"position"
+                                            withDefault: [NSNumber numberWithInt: 0]];
+        
+        
+        // NSLog(@"* Created%@ channel %@ categoryId: %@", (createdAnew ? @" (NEW)" : @""),channel.title, channel.categoryId);
+        
+        createdAnew = NO;
+        
+        [channelOwner.channelsSet addObject:channel];
+    }
+    
+    
+    [self removeUnusedManagedObjects: matchingChannelEntries
+              inManagedObjectContext: channelOwner.managedObjectContext];
+    
+    
+    BOOL saveResult = [self saveImportContext];
+    if(!saveResult)
+        return NO;
+    
+    [appDelegate saveContext: TRUE];
+    
+    return YES;
+}
 
-- (BOOL) registerNewChannelScreensFromDictionary: (NSDictionary *) dictionary
-                                        forGenre: (Genre*) genre
-                                     byAppending: (BOOL) append {
+
+
+- (BOOL) registerChannelsFromDictionary: (NSDictionary *) dictionary
+                                  forGenre: (Genre*) genre
+                               byAppending: (BOOL) append {
     
     
     // == Check for Validity == //
