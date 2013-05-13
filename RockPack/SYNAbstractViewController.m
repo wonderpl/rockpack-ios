@@ -256,9 +256,11 @@
 - (void) displayVideoViewerFromView: (UIButton *) videoViewButton
 {
     NSIndexPath *indexPath = [self indexPathFromVideoInstanceButton: videoViewButton];
-
-    [self displayVideoViewerWithVideoInstanceArray: self.fetchedResultsController.fetchedObjects
-                                  andSelectedIndex: indexPath.item];
+    
+    id selectedVideo = [self.fetchedResultsController objectAtIndexPath:indexPath];
+    NSArray* videoArray =  self.fetchedResultsController.fetchedObjects;
+    [self displayVideoViewerWithVideoInstanceArray: videoArray
+                                  andSelectedIndex: [videoArray indexOfObject:selectedVideo]];
 }
 
 
