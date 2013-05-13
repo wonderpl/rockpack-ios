@@ -361,8 +361,8 @@
     
     
     NSError* error;
-    NSArray *matchingChannelEntries = [importManagedObjectContext executeFetchRequest: channelFetchRequest
-                                                                                error: &error];
+    NSArray *matchingChannelEntries = [channelOwner.managedObjectContext executeFetchRequest: channelFetchRequest
+                                                                                       error: &error];
     
     
     NSMutableDictionary* existingChannelsByIndex = [NSMutableDictionary dictionaryWithCapacity:matchingChannelEntries.count];
@@ -392,7 +392,7 @@
         if(!channel)
         {
             channel = [Channel instanceFromDictionary: itemDictionary
-                            usingManagedObjectContext: importManagedObjectContext
+                            usingManagedObjectContext: channelOwner.managedObjectContext
                                   ignoringObjectTypes: (kIgnoreStoredObjects | kIgnoreChannelOwnerObject)
                                             andViewId: kChannelsViewId];
             createdAnew = YES;
@@ -409,12 +409,12 @@
         
         createdAnew = NO;
         
-        //[channelOwner.channelsSet addObject:channel];
+        [channelOwner.channelsSet addObject:channel];
     }
     
     
     [self removeUnusedManagedObjects: matchingChannelEntries
-              inManagedObjectContext: importManagedObjectContext];
+              inManagedObjectContext: channelOwner.managedObjectContext];
     
     
     BOOL saveResult = [self saveImportContext];
