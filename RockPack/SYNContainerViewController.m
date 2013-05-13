@@ -146,9 +146,6 @@
     
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(backButtonShow:) name:kNoteBackButtonShow object:nil];
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(backButtonHide:) name:kNoteBackButtonHide object:nil];
-    
-    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(profileRequested:) name:kProfileRequested object:nil];
-    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(channelDetailsRequested:) name:kChannelDetailsRequested object:nil];
 }
 
 -(void) viewWillAppear:(BOOL)animated
@@ -214,24 +211,6 @@
     [childController didMoveToParentViewController:self];
 }
 
-#pragma mark - Notification Methods
-
--(void)profileRequested:(NSNotification*)notification
-{
-    ChannelOwner* channelOwner = (ChannelOwner*)[[notification userInfo] objectForKey:kChannelOwner];
-    if(!channelOwner)
-        return;
-    
-    [self.showingViewController viewProfileDetails:channelOwner];
-}
--(void)channelDetailsRequested:(NSNotification*)notification
-{
-    Channel* channel = (Channel*)[[notification userInfo] objectForKey:kChannel];
-    if(!channel)
-        return;
-    
-    [self.showingViewController viewChannelDetails:channel];
-}
 
 -(void)backButtonShow:(NSNotification*)notification
 {

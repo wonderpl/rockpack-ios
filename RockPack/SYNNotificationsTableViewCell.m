@@ -36,6 +36,7 @@
         self.imageView.frame = imageViewRect;
         
         
+        
         // == Main Text == //
         
         
@@ -63,6 +64,7 @@
         // == Channel image view == //
         
         self.thumbnailImageView = [[UIImageView alloc] initWithFrame:CGRectMake(0.0, 0.0, 60, 60.0)]; // x, y will be set below
+        self.thumbnailImageView.image = [UIImage imageNamed:@"AvatarProfile"];
         [self addSubview:self.thumbnailImageView];
         
         
