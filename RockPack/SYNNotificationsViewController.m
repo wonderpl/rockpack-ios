@@ -179,11 +179,20 @@
 
 #pragma mark - Delegate Handler
 
--(void)mainImageTableCellPressed:(UIGestureRecognizer*)recogniser
+-(void)mainImageTableCellPressed:(UIButton*)button
 {
-    NSLog(@"Click!");
+    SYNNotificationsTableViewCell* cellPressed = (SYNNotificationsTableViewCell*)button.superview;
+    
+    NSIndexPath* indexPathForCellPressed = [self.tableView indexPathForCell:cellPressed];
+    
+    SYNRockpackNotification* notification = self.notifications[indexPathForCellPressed.row];
+    
+    [[NSNotificationCenter defaultCenter] postNotificationName:kProfileRequested
+                                                        object:self
+                                                      userInfo:@{kChannelOwner:notification.channelOwner}];
+    
 }
--(void)itemImageTableCellPressed:(UIGestureRecognizer*)recogniser
+-(void)itemImageTableCellPressed:(UIButton*)button
 {
     NSLog(@"Click!");
 }
