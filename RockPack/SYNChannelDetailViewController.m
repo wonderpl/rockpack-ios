@@ -128,15 +128,6 @@
     
     self.byLabel.font = [UIFont rockpackFontOfSize: self.byLabel.font.pointSize];
     [self addShadowToLayer: self.byLabel.layer];
-    
-    if(self.mode == kChannelDetailsModeDisplay)
-    {
-        self.profileImageButton.enabled = YES;
-    }
-    else
-    {
-        self.profileImageButton.enabled = NO;
-    }
 
     
     // Add Rockpack font and shadow to UITextView
@@ -1484,8 +1475,7 @@
     // Upload the image for this user
     [appDelegate.oAuthNetworkEngine uploadCoverArtForUserId: appDelegate.currentOAuth2Credentials.userId
                                                       image: imageToUpload
-                                          completionHandler: ^(NSDictionary *dictionary) {
-                                              
+                                          completionHandler: ^(NSDictionary *dictionary){
                                               NSString *imageUrl = dictionary [@"thumbnail_url"];
 
                                               if (imageUrl && [imageUrl isKindOfClass:[NSString class]])
