@@ -369,7 +369,7 @@
         if(!genre)
             channel.popularValue = YES;
         
-        NSLog(@"* Created%@ channel %@ categoryId: %@", (createdAnew ? @" (NEW)" : @""),channel.title, channel.categoryId);
+        // NSLog(@"* Created%@ channel %@ categoryId: %@", (createdAnew ? @" (NEW)" : @""),channel.title, channel.categoryId);
         
         createdAnew = NO;
     }

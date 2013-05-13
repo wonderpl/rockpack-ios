@@ -149,8 +149,12 @@ static NSEntityDescription *channelEntity = nil;
     self.position = [dictionary objectForKey: @"position"
                                  withDefault: [NSNumber numberWithInt: 0]];
     
+    
+    
     self.title = [dictionary upperCaseStringForKey: @"title"
                                        withDefault: @""];
+    
+    NSLog(@"title: %@, position: %@", self.title, self.position);
     
     self.lastUpdated = [dictionary dateFromISO6801StringForKey: @"last_updated"
                                                    withDefault: [NSDate date]];

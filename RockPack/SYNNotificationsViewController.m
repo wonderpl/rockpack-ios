@@ -127,8 +127,10 @@
     }
     
     [notificationCell.imageView setImageWithURL: thumbnaillUrl
-                               placeholderImage: nil
+                               placeholderImage: [UIImage imageNamed:@"AvatarProfile"]
                                         options: SDWebImageRetryFailed];
+    
+    notificationCell.delegate = self;
     
     notificationCell.detailTextLabel.text = @"8 Mins";
     
@@ -173,6 +175,17 @@
         self.logoImageView.frame = logoImageViewFrame;
         
     }
+}
+
+#pragma mark - Delegate Handler
+
+-(void)mainImageTableCellPressed:(UIGestureRecognizer*)recogniser
+{
+    NSLog(@"Click!");
+}
+-(void)itemImageTableCellPressed:(UIGestureRecognizer*)recogniser
+{
+    NSLog(@"Click!");
 }
 
 #pragma mark - Accessors
