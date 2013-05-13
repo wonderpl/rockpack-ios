@@ -1063,30 +1063,30 @@
 
 - (void) showCategoryChooser
 {
-    if([[SYNDeviceManager sharedInstance] isIPad])
+    if ([[SYNDeviceManager sharedInstance] isIPad])
     {
-    if (self.categoriesTabViewController.view.alpha == 0.0f)
-    {
-        [UIView animateWithDuration: kChannelEditModeAnimationDuration
-                         animations: ^{
-                             // Fade up the category tab controller
-                             self.categoriesTabViewController.view.alpha = 1.0f;
-                             
-                             // slide down the video collection view a bit
-                             self.videoThumbnailCollectionView.contentInset = UIEdgeInsetsMake(kChannelCreationCollectionViewOffsetY +
-                                                                                               kChannelCreationCategoryAdditionalOffsetY, 0, 0, 0);
-                             
-                             self.videoThumbnailCollectionView.contentOffset = CGPointMake (0, -(kChannelCreationCollectionViewOffsetY +
-                                                                                                 kChannelCreationCategoryAdditionalOffsetY));
-                         }
-                         completion: nil];
-    }
+        if (self.categoriesTabViewController.view.alpha == 0.0f)
+        {
+            [UIView animateWithDuration: kChannelEditModeAnimationDuration
+                             animations: ^{
+                                 // Fade up the category tab controller
+                                 self.categoriesTabViewController.view.alpha = 1.0f;
+                                 
+                                 // slide down the video collection view a bit
+                                 self.videoThumbnailCollectionView.contentInset = UIEdgeInsetsMake(kChannelCreationCollectionViewOffsetY +
+                                                                                                   kChannelCreationCategoryAdditionalOffsetY, 0, 0, 0);
+                                 
+                                 self.videoThumbnailCollectionView.contentOffset = CGPointMake (0, -(kChannelCreationCollectionViewOffsetY +
+                                                                                                     kChannelCreationCategoryAdditionalOffsetY));
+                             }
+                             completion: nil];
+        }
     }
     else
     {
-        if(!self.categoryTableViewController)
+        if (!self.categoryTableViewController)
         {
-            self.categoryTableViewController = [[SYNChannelCategoryTableViewController alloc] initWithNibName:@"SYNChannelCategoryTableViewControllerFullscreen~iphone" bundle:[NSBundle mainBundle]];
+            self.categoryTableViewController = [[SYNChannelCategoryTableViewController alloc] initWithNibName:@"SYNChannelCategoryTableViewControllerFullscreen~iphone" bundle: [NSBundle mainBundle]];
             self.categoryTableViewController.categoryTableControllerDelegate = self;
             self.categoryTableViewController.showAllCategoriesHeader = NO;
         }
@@ -1094,13 +1094,18 @@
         startFrame.origin.y = self.view.frame.size.height;
         self.categoryTableViewController.view.frame = startFrame;
         [self.view addSubview:self.categoryTableViewController.view];
-        [UIView animateWithDuration:0.3f delay:0.0f options:UIViewAnimationOptionCurveEaseOut animations:^{
-            CGRect endFrame = self.categoryTableViewController.view.frame;
-            endFrame.origin.y = 0.0f;
-            self.categoryTableViewController.view.frame = endFrame;
-        } completion:nil];
+        
+        [UIView animateWithDuration: 0.3f
+                              delay: 0.0f
+                            options: UIViewAnimationOptionCurveEaseOut
+                         animations: ^{
+                             CGRect endFrame = self.categoryTableViewController.view.frame;
+                             endFrame.origin.y = 0.0f;
+                             self.categoryTableViewController.view.frame = endFrame;
+                         }
+                         completion: nil];
     }
-
+    
 }
 
 
@@ -1133,10 +1138,10 @@
                      completion: nil];
 }
 
--(IBAction)addItToChannelPresssed:(id)sender
+- (IBAction) addItToChannelPresssed: (id) sender
 {
-    
-    [[NSNotificationCenter defaultCenter] postNotificationName:kNoteAddToChannelRequest object:self];
+    [[NSNotificationCenter defaultCenter] postNotificationName: kNoteAddToChannelRequest
+                                                        object: self];
     
 }
 
@@ -1176,12 +1181,13 @@
 
 - (IBAction) createChannelPressed: (id) sender
 {
-    if([[SYNDeviceManager sharedInstance] isIPhone])
+    if ([[SYNDeviceManager sharedInstance] isIPhone])
     {
         self.createChannelButton.hidden = YES;
         self.activityIndicator.hidden = NO;
         [self.activityIndicator startAnimating];
     }
+    
     self.channel.title = self.channelTitleTextView.text;
     self.channel.channelDescription = @"Test Description";
     
@@ -1192,17 +1198,15 @@
                                                      cover: self.selectedCoverId
                                                   isPublic: YES
                                          completionHandler: ^(NSDictionary* resourceCreated) {
-                                             NSString* channelId = [resourceCreated objectForKey:@"id"];
+                                             NSString* channelId = [resourceCreated objectForKey: @"id"];
                                              
                                              [self addVideosToNewChannelForId:channelId];
-                                             
-                                             
                                          }
                                               errorHandler: ^(id error) {
                                              
                                              DebugLog(@"Error @ createChannelPressed:");
                                              NSString* errorMessage = @"Could not create channel. Please try again later.";
-                                             if([[error objectForKey:@"form_errors"] objectForKey:@"title"])
+                                             if ([[error objectForKey: @"form_errors"] objectForKey :@"title"])
                                              {
                                                  errorMessage = NSLocalizedString(@"This channel name is already taken",nil);
                                              };
