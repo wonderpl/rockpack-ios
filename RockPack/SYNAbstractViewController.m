@@ -231,8 +231,12 @@
 
 - (NSIndexPath *) indexPathFromVideoInstanceButton: (UIButton *) button
 {
-    UIView *v = button.superview.superview.superview;
-    NSIndexPath *indexPath = [self.videoThumbnailCollectionView indexPathForItemAtPoint: v.center];
+    UIView* target = button;
+    while (target && ![target isKindOfClass:[UICollectionViewCell class]])
+    {
+        target = [target superview];
+    }
+    NSIndexPath *indexPath = [self.videoThumbnailCollectionView indexPathForItemAtPoint: target.center];
     
     return indexPath;
 }
