@@ -82,6 +82,7 @@
 @property (weak, nonatomic) IBOutlet UIActivityIndicatorView *activityIndicator;
 @property (weak, nonatomic) IBOutlet UIButton *cancelTextInputButton;
 @property (weak, nonatomic) IBOutlet UIImageView *textBackgroundImageView;
+@property (weak, nonatomic) IBOutlet UIButton *backButton;
 
 @end
 
@@ -920,7 +921,7 @@
 {
     NSString* noteName;
     
-    if (!addButton.selected)
+    if (!addButton.selected || [[SYNDeviceManager sharedInstance] isIPhone]) // There is only ever one video in the queue on iPhone. Always fire the add action.
     {
         noteName = kVideoQueueAdd;
         
@@ -1208,7 +1209,7 @@
                                              NSString* errorMessage = @"Could not create channel. Please try again later.";
                                              if ([[error objectForKey: @"form_errors"] objectForKey :@"title"])
                                              {
-                                                 errorMessage = NSLocalizedString(@"This channel name is already taken",nil);
+                                                 errorMessage = NSLocalizedString(@"You already created a channel with this title. Please choose a different title.",nil);
                                              };
 
                                              [self showError:errorMessage];
@@ -1534,7 +1535,8 @@
     // On iPhone we want to be able to go back which means the existing channels view remains onscreen. Here we remove it as channel creation was complete.
     UIViewController *master = self.presentingViewController;
     [[[[master childViewControllers] lastObject] view] removeFromSuperview];
-    [self dismissViewControllerAnimated:NO completion:nil];
+    [self setDisplayControlsVisibility:YES];
+    [self.view addSubview:self.backButton];
 }
 
 

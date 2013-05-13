@@ -183,13 +183,6 @@
                      completion: ^(BOOL finished) {
         [self.view removeFromSuperview];
     }];
-    
-    if ([[SYNDeviceManager sharedInstance] isIPhone])
-    {
-        //Ensure only one video is ever queud on iPhone
-        [[NSNotificationCenter defaultCenter] postNotificationName: kVideoQueueClear
-                                                            object: self];
-    }
 }
 
 

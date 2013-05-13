@@ -384,6 +384,7 @@
     {
         [self.categoryTableControllerDelegate categoryTableController:self didSelectCategory:category];
     }
+    self.confirmButton.enabled = NO;
     self.lastSelectedIndexpath = [NSIndexPath indexPathForRow:-1 inSection:section];
 }
 
