@@ -19,12 +19,6 @@
         appDelegate = UIApplication.sharedApplication.delegate;
         importManagedObjectContext = [[NSManagedObjectContext alloc] initWithConcurrencyType: NSConfinementConcurrencyType];
         importManagedObjectContext.parentContext = appDelegate.mainManagedObjectContext;
-        
-        // Changes are only propagated from child to parent. Therefore we need to listen for changes to the parent to ensure the import context is up to date.
-        // Most of the time the context save should be a result of the import managed object context saving, so impact will be minimal.
-        // However, logging out changes the main context directly and we need to sync then.
-        
-        [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(refreshImportContext:) name:NSManagedObjectContextDidSaveNotification object:appDelegate.mainManagedObjectContext];
     }
     return self;
 }
@@ -99,15 +93,6 @@
     return YES;
     
     
-}
-
--(void)refreshImportContext:(NSNotification*)notification
-{
-    NSManagedObjectContext* savedContext = [notification object];
-    if(savedContext == appDelegate.mainManagedObjectContext && [NSThread isMainThread])
-    {
-        [importManagedObjectContext mergeChangesFromContextDidSaveNotification:notification];
-    }
 }
 
 @end
