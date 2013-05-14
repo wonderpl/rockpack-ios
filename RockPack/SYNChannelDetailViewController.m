@@ -360,25 +360,24 @@
                                          forState: UIControlStateNormal];
 }
 
-//// TODO; Remove this method once happy with mode switching functionality
-//- (IBAction) testMode
-//{
-//    self.mode = (self.mode == kChannelDetailsModeDisplay) ? kChannelDetailsModeEdit: kChannelDetailsModeDisplay;
-//}
+
 
 
 - (void) setMode: (kChannelDetailsMode) mode
 {
-    if (self.mode != mode)
-    {
-        _mode = mode;
+    if (self.mode == mode)
+        return;
+    
+    _mode = mode;
+    
+    self.profileImageButton.enabled = (self.mode == kChannelDetailsModeDisplay) ? YES : NO;
         
-        [UIView animateWithDuration: kChannelEditModeAnimationDuration
-                         animations: ^{
-                             [self setDisplayControlsVisibility: (self.mode == kChannelDetailsModeDisplay) ? TRUE: FALSE];
+    [UIView animateWithDuration: kChannelEditModeAnimationDuration
+                     animations: ^{
+                             [self setDisplayControlsVisibility: (self.mode == kChannelDetailsModeDisplay) ? YES : NO];
                          }
                          completion: nil];
-    }
+    
 }
 
 
