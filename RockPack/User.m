@@ -27,12 +27,13 @@
     if(!uniqueId)
         return nil;
     
-    NSEntityDescription* userEntity = [NSEntityDescription entityForName:@"User" inManagedObjectContext: managedObjectContext];
+    NSEntityDescription* userEntity = [NSEntityDescription entityForName: @"User"
+                                                  inManagedObjectContext: managedObjectContext];
     
     NSFetchRequest *userFetchRequest = [[NSFetchRequest alloc] init];
     [userFetchRequest setEntity:userEntity];
     
-    NSPredicate *predicate = [NSPredicate predicateWithFormat: @"uniqueId == '%@'", uniqueId];
+    NSPredicate *predicate = [NSPredicate predicateWithFormat: @"uniqueId == %@", uniqueId];
     [userFetchRequest setPredicate: predicate];
     
     

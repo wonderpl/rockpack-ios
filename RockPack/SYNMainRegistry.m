@@ -39,7 +39,7 @@
     // dictionary also contains the set of user channels
     
     User* newUser = [User instanceFromDictionary: dictionary
-                       usingManagedObjectContext: importManagedObjectContext
+                       usingManagedObjectContext: appDelegate.mainManagedObjectContext
                              ignoringObjectTypes: kIgnoreNothing];
     
     if(!newUser)
