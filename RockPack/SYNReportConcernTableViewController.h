@@ -13,4 +13,7 @@ typedef void (^SYNSendReportBlock)(NSString *reportString);
 
 @interface SYNReportConcernTableViewController : UITableViewController
 
+- (id) initWithSendReportBlock: (SYNSendReportBlock) sendReportBlock
+             cancelReportBlock: (SYNCancelReportBlock) cancelReportBlock;
+
 @end
