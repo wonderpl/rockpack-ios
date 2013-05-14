@@ -14,20 +14,28 @@
 @interface SYNReportConcernTableViewController ()
 
 @property (nonatomic, strong) NSArray *concernsArray;
+@property (nonatomic, strong) NSIndexPath *selectedIndexPath;
+@property (nonatomic, strong) SYNCancelReportBlock cancelReportBlock;
+@property (nonatomic, strong) SYNSendReportBlock sendReportBlock;
 
 @end
 
 @implementation SYNReportConcernTableViewController
 
-- (id) initWithStyle: (UITableViewStyle) style
+- (id) initWithSendReportBlock: (SYNSendReportBlock) sendReportBlock
+             cancelReportBlock: (SYNCancelReportBlock) cancelReportBlock
+
 {
-    if ((self = [super initWithStyle: style]))
+    if ((self = [super init]))
     {
-        // Custom initialization
+        // Store completion blocks
+        self.sendReportBlock = sendReportBlock;
+        self.cancelReportBlock = cancelReportBlock;
     }
     
     return self;
 }
+
 
 - (void) viewDidLoad
 {
@@ -36,13 +44,13 @@
     [self.tableView registerClass: [UITableViewCell class]
            forCellReuseIdentifier: kConcernsCellId];
 
-    self.concernsArray = @[@"Nudity or pornography",
-                           @"Attacks a group or individual",
-                           @"Graphic violence",
-                           @"Hateful speech or symbols",
-                           @"Actively promotes self-harm",
-                           @"Spam",
-                           @"Other"];
+    self.concernsArray = @[NSLocalizedString (@"Nudity or pornography", nil),
+                           NSLocalizedString (@"Attacks a group or individual", nil),
+                           NSLocalizedString (@"Graphic violence", nil),
+                           NSLocalizedString (@"Hateful speech or symbols", nil),
+                           NSLocalizedString (@"Actively promotes self-harm", nil),
+                           NSLocalizedString (@"Spam", nil),
+                           NSLocalizedString (@"Other", nil)];
     
     UIButton *customCancelButton = [UIButton buttonWithType: UIButtonTypeCustom];
     UIImage* customCancelButtonImage = [UIImage imageNamed: @"ButtonMoveAndScaleCancel.png"];
@@ -55,7 +63,7 @@
                         forState: UIControlStateHighlighted];
     
     [customCancelButton addTarget: self
-                           action: @selector(_actionCancel)
+                           action: @selector(actionCancel)
                  forControlEvents: UIControlEventTouchUpInside];
     
     customCancelButton.frame = CGRectMake(0.0, 0.0, customCancelButtonImage.size.width, customCancelButtonImage.size.height);
@@ -105,7 +113,7 @@
     UITableViewCell *cell = [tableView dequeueReusableCellWithIdentifier: kConcernsCellId
                                                             forIndexPath: indexPath];
 
-    cell.textLabel.font = [UIFont rockpackFontOfSize:18.0];
+    cell.textLabel.font = [UIFont rockpackFontOfSize:16.0];
     cell.textLabel.text = self.concernsArray[indexPath.row];
     cell.accessoryType = UITableViewCellAccessoryNone;
     
@@ -129,6 +137,20 @@
 - (void) tableView: (UITableView *) tableView
          didSelectRowAtIndexPath: (NSIndexPath *) indexPath
 {
+    self.selectedIndexPath = indexPath;
+}
+
+
+- (void) actionCancel
+{
+    self.cancelReportBlock();
+}
+
+
+- (void) actionUse
+{
+    NSString *reportString = self.concernsArray[self.selectedIndexPath.row];
+    self.sendReportBlock(reportString);
 }
 
 @end

@@ -35,17 +35,17 @@
 {
     [super viewDidLoad];
     self.inputField.text = @"";
-    self.inputField.placeholder = @"Old Password";
+    self.inputField.placeholder = NSLocalizedString (@"Old Password", nil);
     self.inputField.secureTextEntry = YES;
     
     passwordField = [self createInputField];
-    passwordField.placeholder = @"New Password";
+    passwordField.placeholder = NSLocalizedString (@"New Password", nil);
     passwordField.secureTextEntry = YES;
     [self.view addSubview:passwordField];
     
     passwordConfirmField = [self createInputField];
     passwordConfirmField.secureTextEntry = YES;
-    passwordConfirmField.placeholder = @"Confirm Password";
+    passwordConfirmField.placeholder = NSLocalizedString (@"Confirm Password", nil);
     [self.view addSubview:passwordConfirmField];
     
     UIButton *backButton = [UIButton buttonWithType:UIButtonTypeCustom];
@@ -73,17 +73,17 @@
     
     
     if(![self formIsValid]) {
-        self.errorLabel.text = @"You Have Entered Invalid Characters";
+        self.errorLabel.text = NSLocalizedString (@"You Have Entered Invalid Characters", nil);
         return;
     }
     
     if(![passwordField.text isEqualToString:passwordConfirmField.text]) {
-        self.errorLabel.text = @"Passwords do not match";
+        self.errorLabel.text = NSLocalizedString (@"Passwords do not match", nil);
         return;
     }
     
     if([self.inputField.text isEqualToString:passwordField.text]) {
-        self.errorLabel.text = @"The new password typed is the same with old";
+        self.errorLabel.text = NSLocalizedString (@"The new password typed is the same with old", nil);
         return;
     }
     
@@ -129,12 +129,12 @@
                                 }
                                 else
                                 {
-                                    self.errorLabel.text = @"Could not change password";
+                                    self.errorLabel.text = NSLocalizedString (@"Could not change password", nil);
                                 }
                             }
                             else
                             {
-                                self.errorLabel.text = @"Could not change password";
+                                self.errorLabel.text = NSLocalizedString (@"Could not change password", nil);
                             }
                             
                             self.saveButton.hidden = NO;

@@ -45,9 +45,9 @@
     self = [super initWithStyle:UITableViewStyleGrouped];
     if (self) {
         
-        dataItems2ndSection = @[@"Change Password",
-                                @"About",
-                                @"Logout"];
+        dataItems2ndSection = @[NSLocalizedString (@"Change Password", nil),
+                                NSLocalizedString (@"About", nil),
+                                NSLocalizedString (@"Logout", nil)];
         
         appDelegate = (SYNAppDelegate*)[[UIApplication sharedApplication] delegate];
         
@@ -130,7 +130,7 @@
             case 0:
                 cell.imageView.image = [UIImage imageNamed:@"IconFullname.png"];
                 cell.textLabel.text = user.firstName;
-                cell.detailTextLabel.text = @"Public";
+                cell.detailTextLabel.text = NSLocalizedString (@"Public" , nil);
                 cell.accessoryType = UITableViewCellAccessoryDisclosureIndicator;
                 break;
                 
@@ -138,7 +138,7 @@
             case 1:
                 cell.imageView.image = [UIImage imageNamed:@"IconUsername.png"];
                 cell.textLabel.text = user.username;
-                cell.detailTextLabel.text = @"Public";
+                cell.detailTextLabel.text = NSLocalizedString (@"Public", nil);
                 cell.accessoryType = UITableViewCellAccessoryDisclosureIndicator;
                 break;
                 
@@ -149,15 +149,15 @@
                     cell.textLabel.text = user.emailAddress;
                 }
                 cell.imageView.image = [UIImage imageNamed:@"IconEmail.png"];
-                cell.detailTextLabel.text = @"Email - Private";
+                cell.detailTextLabel.text = NSLocalizedString (@"Email - Private", nil);
                 cell.accessoryType = UITableViewCellAccessoryDisclosureIndicator;
                 break;
                 
             case 3:
                 if([user.locale isEqualToString:@"en-gb"]) {
-                    cell.textLabel.text = @"United Kingdom";
+                    cell.textLabel.text = NSLocalizedString (@"United Kingdom", nil);
                 } else {
-                    cell.textLabel.text = @"United States";
+                    cell.textLabel.text = NSLocalizedString (@"United States", nil);
                 }
                 
                 cell.detailTextLabel.text = @"Location";
@@ -167,23 +167,23 @@
                 
             case 4:
                 if([user.gender isEqual:@(GenderUndecided)]) {
-                    cell.textLabel.text = @"Gender";
+                    cell.textLabel.text = NSLocalizedString (@"Gender", nil);
                 } else {
                     cell.textLabel.text = [user.gender isEqual:@(GenderMale)] ? @"Male" : @"Female";
                 }
                 
-                cell.detailTextLabel.text = @"Gender - Private";
+                cell.detailTextLabel.text = NSLocalizedString (@"Gender - Private", nil);
                 cell.imageView.image = [UIImage imageNamed:@"IconGender.png"];
                 cell.accessoryType = UITableViewCellAccessoryDisclosureIndicator;
                 break;
                 
             case 5:
                 if(!user.dateOfBirth)
-                    cell.textLabel.text = @"Date of Birth";
+                    cell.textLabel.text = NSLocalizedString (@"Date of Birth", nil);
                 else
                     cell.textLabel.text = [self getDOBPlainString:user.dateOfBirth];
                 
-                cell.detailTextLabel.text = @"D.O.B Private";
+                cell.detailTextLabel.text = NSLocalizedString (@"D.O.B Private", nil);
                 cell.imageView.image = [UIImage imageNamed:@"IconBirthday.png"];
                 break;
                 
@@ -322,29 +322,29 @@
 }
 -(void)showLogoutAlert
 {
-    UIAlertView *alert = [[UIAlertView alloc]
-                            initWithTitle: @"Logout"
-                            message: @"Are you sure you want to log out?"
-                            delegate: self
-                            cancelButtonTitle:@"Cancel"
-                            otherButtonTitles:@"Logout", nil];
+    UIAlertView *alert = [[UIAlertView alloc] initWithTitle: NSLocalizedString (@"Logout", nil)
+                                                    message: NSLocalizedString (@"Are you sure you want to log out?", nil)
+                                                   delegate: self
+                                          cancelButtonTitle: NSLocalizedString (@"Cancel", nil)
+                                          otherButtonTitles: NSLocalizedString (@"Logout", nil), nil];
     [alert show];
 }
 
-- (void)alertView:(UIAlertView *)alertView clickedButtonAtIndex:(NSInteger)buttonIndex {
-    
+- (void) alertView: (UIAlertView *) alertView
+         clickedButtonAtIndex: (NSInteger) buttonIndex
+{
 	if (buttonIndex == 0) { // cancel
 		
 	}
-	else { // logout
-        [[NSNotificationCenter defaultCenter] postNotificationName:kAccountSettingsLogout
-                                                            object:self];
-		
+	else
+    { // logout
+        [[NSNotificationCenter defaultCenter] postNotificationName: kAccountSettingsLogout
+                                                            object: self];
 	}
 }
 
 
--(UITableViewCell*)getDOBTableViewCell
+-(UITableViewCell*) getDOBTableViewCell
 {
     
     UITableViewCell* cellClicked = [self.tableView cellForRowAtIndexPath:[NSIndexPath indexPathForItem:6 inSection:0]];

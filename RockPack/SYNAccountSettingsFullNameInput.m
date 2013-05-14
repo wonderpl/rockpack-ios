@@ -99,12 +99,14 @@
     
     cell = [[UITableViewCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:CellIdentifier];
     
-    if(indexPath.row == 0) {
-        cell.textLabel.text = @"Public";
-    } else {
-        cell.textLabel.text = @"Private";
+    if (indexPath.row == 0)
+    {
+        cell.textLabel.text = NSLocalizedString (@"Public", nil);
     }
-    
+    else
+    {
+        cell.textLabel.text = NSLocalizedString (@"Private", nil);
+    }
     
     cell.textLabel.font = [UIFont rockpackFontOfSize:18.0];
     cell.accessoryType = UITableViewCellAccessoryNone;
@@ -116,14 +118,14 @@
 {
     
     
-    if([self.inputField.text isEqualToString:self.appDelegate.currentUser.firstName] && // user did not change anything
+    if ([self.inputField.text isEqualToString:self.appDelegate.currentUser.firstName] && // user did not change anything
        [self.lastNameInputField.text isEqualToString:self.appDelegate.currentUser.lastName]) {
         
         return;
     }
     
-    if(![self inputIsValid:self.inputField.text] || ![self inputIsValid:self.lastNameInputField.text]) {
-        self.errorLabel.text = @"You Have Entered Invalid Characters";
+    if (![self inputIsValid:self.inputField.text] || ![self inputIsValid:self.lastNameInputField.text]) {
+        self.errorLabel.text = NSLocalizedString (@"You Have Entered Invalid Characters", nil);
         [self.spinner stopAnimating];
         self.saveButton.hidden = NO;
         return;
