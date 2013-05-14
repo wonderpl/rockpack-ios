@@ -154,10 +154,9 @@ static NSEntityDescription *channelEntity = nil;
     self.lastUpdated = [dictionary dateFromISO6801StringForKey: @"last_updated"
                                                    withDefault: [NSDate date]];
     
-    self.subscribersCount = [dictionary objectForKey: @"subscribe_count"
-                                         withDefault: [NSNumber numberWithBool: FALSE]];
+    self.subscribersCount = [dictionary objectForKey: @"subscriber_count"
+                                         withDefault: [NSNumber numberWithInt:0]];
     
-    self.subscribedByUserValue = NO;
     
     
     self.resourceURL = [dictionary objectForKey: @"resource_url"

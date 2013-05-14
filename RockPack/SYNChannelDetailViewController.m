@@ -73,6 +73,7 @@
 @property (nonatomic,strong) NSString* selectedCoverId;
 @property (weak, nonatomic) IBOutlet UILabel *byLabel;
 
+@property (nonatomic, strong) UIActivityIndicatorView* subscribingIndicator;
 //iPhone specific
 @property (nonatomic,strong) AVURLAsset* selectedAsset;
 @property (nonatomic,strong) SYNChannelCoverImageSelectorViewController* coverImageSelector;
@@ -98,6 +99,7 @@
     if ((self = [super initWithViewId: kChannelDetailsViewId]))
     {
 		self.channel = channel; // channel does not have the VideoInstances at this point, it will update with the kChannelUpdateRequest
+        
         _mode = mode;
 	}
 
@@ -310,14 +312,18 @@
                                    options: NSKeyValueObservingOptionNew
                                    context: NULL];
     
-    if ([self.channel.subscribedByUser boolValue])
-    {
-        self.subscribeButton.selected = YES;
-    }
-    else
-    {
-        self.subscribeButton.selected = NO;
-    }
+    __weak SYNChannelDetailViewController* weakSelf = self;
+    [appDelegate.currentUser.subscriptions enumerateObjectsUsingBlock:^(id obj, NSUInteger idx, BOOL *stop) {
+        if( [((Channel*)obj).uniqueId isEqualToString:weakSelf.channel.uniqueId] ) {
+            weakSelf.channel.subscribedByUserValue = YES;
+            weakSelf.channel.subscribersCountValue += 1;
+            *stop = YES;
+        }
+    }];
+    
+    // NSLog(@"self.channel.subscribedByUserValue = %i", self.channel.subscribedByUserValue);
+    self.subscribeButton.enabled = YES;
+    self.subscribeButton.selected = self.channel.subscribedByUserValue;
     
     [self.channel addObserver: self
                    forKeyPath: kSubscribedByUserKey
@@ -353,6 +359,12 @@
     
     [self.channelTitleTextView removeObserver: self
                                    forKeyPath: kTextViewContentSizeKey];
+    
+    if(self.subscribingIndicator) {
+        [self.subscribingIndicator removeFromSuperview];
+        self.subscribingIndicator = nil;
+    }
+        
 
 
     [[NSNotificationCenter defaultCenter] removeObserver: self
@@ -423,7 +435,7 @@
 {
     if (controller == self.fetchedResultsController)
     {
-        startAnimationDelay = 0.0;
+       
         [self reloadCollectionViews];
     }
     else if ((controller == self.channelCoverFetchedResultsController) || (controller == self.userChannelCoverFetchedResultsController))
@@ -463,7 +475,7 @@
 {
     self.channelOwnerLabel.text = self.channel.channelOwner.displayName;
     
-    NSString *detailsString = [NSString stringWithFormat: @"%d SUBSCRIBERS", 0];
+    NSString *detailsString = [NSString stringWithFormat: @"%lld SUBSCRIBERS", self.channel.subscribersCountValue];
     self.channelDetailsLabel.text = detailsString;
     
     // If we have a valid ecommerce URL, then display the button
@@ -879,14 +891,14 @@
     {
         NSNumber* newSubscribedByUserValue = (NSNumber*)[change valueForKey: NSKeyValueChangeNewKey];
         BOOL finalValue = [newSubscribedByUserValue boolValue];
-        if (finalValue)
-        {
-            self.subscribeButton.selected = YES;
+        self.subscribeButton.selected = finalValue;
+        self.subscribeButton.enabled = YES;
+        
+        if(self.subscribingIndicator) {
+            [self.subscribingIndicator removeFromSuperview];
+            self.subscribingIndicator = nil;
         }
-        else
-        {
-            self.subscribeButton.selected = NO;
-        }
+        
     }
 }
 
@@ -912,6 +924,10 @@
 
 - (IBAction) subscribeButtonTapped: (id) sender
 {
+    self.subscribeButton.enabled = NO;
+    
+    [self addSubscribeIndicator];
+    
     [[NSNotificationCenter defaultCenter] postNotificationName: kChannelSubscribeRequest
                                                         object: self
                                                       userInfo: @{ kChannel : self.channel }];
@@ -1557,6 +1573,17 @@
     [[[[master childViewControllers] lastObject] view] removeFromSuperview];
     [self setDisplayControlsVisibility:YES];
     [self.view addSubview:self.backButton];
+}
+
+-(void)addSubscribeIndicator
+{
+    self.subscribingIndicator = [[UIActivityIndicatorView alloc] initWithActivityIndicatorStyle:UIActivityIndicatorViewStyleWhite];
+    CGRect indicatorRect = self.subscribingIndicator.frame;
+    indicatorRect.origin.x = self.subscribeButton.frame.origin.x - 32.0;
+    indicatorRect.origin.y = self.subscribeButton.frame.origin.y + 10.0;
+    self.subscribingIndicator.frame = indicatorRect;
+    [self.subscribingIndicator startAnimating];
+    [self.view addSubview:self.subscribingIndicator];
 }
 
 

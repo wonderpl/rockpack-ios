@@ -1006,7 +1006,7 @@
     SYNNetworkOperationJsonObject *networkOperation = (SYNNetworkOperationJsonObject*)[self operationWithPath: apiString
                                                                                                        params: nil
                                                                                                    httpMethod: @"POST"
-                                                                                                          ssl: TRUE];
+                                                                                                          ssl: YES];
     
     
     [networkOperation setCustomPostDataEncodingHandler: ^NSString * (NSDictionary *postDataDict)
@@ -1039,7 +1039,8 @@
     
     SYNNetworkOperationJsonObject *networkOperation = (SYNNetworkOperationJsonObject*)[self operationWithPath: apiString
                                                                                                        params: nil
-                                                                                                   httpMethod: @"DELETE"];
+                                                                                                   httpMethod: @"DELETE"
+                                                                                                          ssl: YES];
     [self addCommonHandlerToNetworkOperation: networkOperation
                            completionHandler: completionBlock
                                 errorHandler: errorBlock];

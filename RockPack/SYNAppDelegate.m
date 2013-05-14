@@ -384,9 +384,6 @@ extern void instrumentObjcMessageSends(BOOL);
 // Save the main context first (propagating the changes to the private) and then the private
 - (void) saveContext: (BOOL) wait
 {
-    // If we don't have a valid MOC, then bail
-    if (!self.mainManagedObjectContext)
-        return;
     
     if ([self.mainManagedObjectContext hasChanges])
     {
@@ -420,8 +417,6 @@ extern void instrumentObjcMessageSends(BOOL);
 
 -(void) saveSearchContext
 {
-    if(!self.searchManagedObjectContext)
-        return;
     
     if([self.searchManagedObjectContext hasChanges])
     {
