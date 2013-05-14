@@ -131,19 +131,29 @@
                                             completionHandler: ^(NSDictionary *responseDictionary) {
                                                 
                                                 
-                                                DebugLog(@"Subscribe action successful");
                                                 
-                                                channel.subscribedByUserValue = TRUE;
+                                                channel.subscribedByUserValue = YES;
                                                 channel.subscribersCountValue += 1;
                                                 
                                                 [channel addSubscribersObject:appDelegate.currentUser];
                                                 
-                                                [appDelegate saveContext:YES];
+                                                if(channel.managedObjectContext == appDelegate.mainManagedObjectContext)
+                                                {
+                                                    [appDelegate saveContext:YES];
+                                                }
+                                                else if (channel.managedObjectContext == appDelegate.searchManagedObjectContext)
+                                                {
+                                                    [appDelegate saveSearchContext];
+                                                }
+                                                
                                                 
                                             } errorHandler: ^(NSDictionary* errorDictionary) {
                                                 
+                                                // so that the observer will pick up the change and stop the activity indicator
+                                                channel.subscribedByUserValue = channel.subscribedByUserValue;
+                                            
                                                 
-                                                DebugLog(@"Subscribe action failed");
+                                                
                                             }];
     
     
@@ -158,18 +168,25 @@
                                                       channelId: channel.uniqueId
                                               completionHandler: ^(NSDictionary *responseDictionary) {
                                                   
-                                                  DebugLog(@"Unsubscribe action successful");
                                                   
                                                   channel.subscribedByUserValue = NO;
                                                   channel.subscribersCountValue -= 1;
                                                   
                                                   [channel removeSubscribersObject:appDelegate.currentUser];
                                                   
-                                                  [appDelegate saveContext:YES];
+                                                  if(channel.managedObjectContext == appDelegate.mainManagedObjectContext)
+                                                  {
+                                                      [appDelegate saveContext:YES];
+                                                  }
+                                                  else if (channel.managedObjectContext == appDelegate.searchManagedObjectContext)
+                                                  {
+                                                      [appDelegate saveSearchContext];
+                                                  }
                                                   
                                                 } errorHandler: ^(NSDictionary* errorDictionary) {
                                                     
-                                                       DebugLog(@"Unsubscribe action failed");
+                                                    // so that the observer will pick up the change and stop the activity indicator
+                                                    channel.subscribedByUserValue = channel.subscribedByUserValue;
                                                     
                                                     
                                                 }];
@@ -209,7 +226,8 @@
         {
             [appDelegate.oAuthNetworkEngine updateChannel: channel.resourceURL
                                         completionHandler: ^(NSDictionary *responseDictionary) {
-                                            // Save the position for back-patching in later
+                                            
+                                            
                                             NSNumber *savedPosition = channel.position;
                                             
                                             [channel setAttributesFromDictionary: responseDictionary
@@ -219,14 +237,15 @@
                                             
                                            
                                             channel.position = savedPosition;
-                                            channel.viewId = kChannelsViewId;
                                             
                                             
-                                            if([channel.managedObjectContext hasChanges])
+                                            if(channel.managedObjectContext == appDelegate.mainManagedObjectContext)
                                             {
-                                                NSError* error;
-                                                [channel.managedObjectContext save:&error];
-                                                
+                                                [appDelegate saveContext:YES];
+                                            }
+                                            else if (channel.managedObjectContext == appDelegate.searchManagedObjectContext)
+                                            {
+                                                [appDelegate saveSearchContext];
                                             }
                                             
                                             
@@ -240,7 +259,8 @@
         {
             [appDelegate.networkEngine updateChannel: channel.resourceURL
                                    completionHandler: ^(NSDictionary *responseDictionary) {
-                                       // Save the position for back-patching in later
+                                       
+                                       
                                        NSNumber *savedPosition = channel.position;
                                        
                                        [channel setAttributesFromDictionary: responseDictionary
@@ -250,13 +270,14 @@
                                        
              
                                        channel.position = savedPosition;
-                                       channel.viewId = kChannelsViewId;
                                        
-                                       if([channel.managedObjectContext hasChanges])
+                                       if(channel.managedObjectContext == appDelegate.mainManagedObjectContext)
                                        {
-                                           NSError* error;
-                                           [channel.managedObjectContext save:&error];
-                                           
+                                           [appDelegate saveContext:YES];
+                                       }
+                                       else if (channel.managedObjectContext == appDelegate.searchManagedObjectContext)
+                                       {
+                                           [appDelegate saveSearchContext];
                                        }
                                        
                                         } errorHandler: ^(NSDictionary* errorDictionary) {
@@ -281,6 +302,17 @@
     }];
 }
 
+-(BOOL)isSubscribedByCurrentUser:(Channel*)channel
+{
+    BOOL* isSubscribed = NULL;
+    [appDelegate.currentUser.subscriptions enumerateObjectsUsingBlock:^(id obj, NSUInteger idx, BOOL *stop) {
+        if( [((Channel*)obj).uniqueId isEqualToString:channel.uniqueId] ) {
+            *isSubscribed = YES;
+            *stop = YES;
+        }
+    }];
+    return isSubscribed;
+}
 
 
 @end
