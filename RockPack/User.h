@@ -7,6 +7,9 @@
        usingManagedObjectContext: (NSManagedObjectContext *) managedObjectContext
              ignoringObjectTypes: (IgnoringObjects) ignoringObjects;
 
++ (User*) instanceFromUser:(User*)oldUser
+ usingManagedObjectContext:(NSManagedObjectContext*)managedObjectContext;
+
 
 @property (nonatomic, readonly) NSString* fullName;
 
