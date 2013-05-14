@@ -1399,7 +1399,7 @@
         
         // Need show the popover controller
         self.reportConcernPopoverController = [[UIPopoverController alloc] initWithContentViewController: navController];
-        self.reportConcernPopoverController.popoverContentSize = CGSizeMake(275, 344);
+        self.reportConcernPopoverController.popoverContentSize = CGSizeMake(245, 344);
         self.reportConcernPopoverController.delegate = self;
         self.reportConcernPopoverController.popoverBackgroundViewClass = [SYNPopoverBackgroundView class];
         
