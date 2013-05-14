@@ -1,5 +1,5 @@
 //
-//  SYNSubscriptionsManager.h
+//  SYNChannelManager.h
 //  rockpack
 //
 //  Created by Michael Michailidis on 23/04/2013.
