@@ -1374,9 +1374,21 @@
         UINavigationController *navController = [[UINavigationController alloc]
                                                  initWithRootViewController: reportConcernTableViewController];
         
+        // Hard way of adding a title (need to due to custom font offsets)
+        UIView *containerView = [[UIView alloc] initWithFrame: CGRectMake (0, 0, 140, 28)];
+        containerView.backgroundColor = [UIColor clearColor];
+        UILabel *label = [[UILabel alloc] initWithFrame: CGRectMake (0, 4, 140, 28)];
+        label.backgroundColor = [UIColor clearColor];
+        label.font = [UIFont rockpackFontOfSize: 20.0];
+        label.textAlignment = NSTextAlignmentCenter;
+        label.textColor = [UIColor blackColor];
+        label.text = NSLocalizedString(@"Report Concern", nil);
+        [containerView addSubview: label];
+        reportConcernTableViewController.navigationItem.titleView = containerView;
+        
         // Need show the popover controller
         self.reportConcernPopoverController = [[UIPopoverController alloc] initWithContentViewController: navController];
-        self.reportConcernPopoverController.popoverContentSize = CGSizeMake(350, 344);
+        self.reportConcernPopoverController.popoverContentSize = CGSizeMake(275, 344);
         self.reportConcernPopoverController.delegate = self;
         self.reportConcernPopoverController.popoverBackgroundViewClass = [SYNPopoverBackgroundView class];
         

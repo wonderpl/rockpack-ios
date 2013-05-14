@@ -7,6 +7,7 @@
 //
 
 #import "SYNReportConcernTableViewController.h"
+#import "UIFont+SYNFont.h"
 
 #define kConcernsCellId @"ConcernsCell"
 
@@ -42,6 +43,44 @@
                            @"Actively promotes self-harm",
                            @"Spam",
                            @"Other"];
+    
+    UIButton *customCancelButton = [UIButton buttonWithType: UIButtonTypeCustom];
+    UIImage* customCancelButtonImage = [UIImage imageNamed: @"ButtonMoveAndScaleCancel.png"];
+    UIImage* customCancelButtonHighlightedImage = [UIImage imageNamed: @"ButtonMoveAndScaleCancel.png"];
+    
+    [customCancelButton setImage: customCancelButtonImage
+                        forState: UIControlStateNormal];
+    
+    [customCancelButton setImage: customCancelButtonHighlightedImage
+                        forState: UIControlStateHighlighted];
+    
+    [customCancelButton addTarget: self
+                           action: @selector(_actionCancel)
+                 forControlEvents: UIControlEventTouchUpInside];
+    
+    customCancelButton.frame = CGRectMake(0.0, 0.0, customCancelButtonImage.size.width, customCancelButtonImage.size.height);
+    UIBarButtonItem *customCancelButtonItem = [[UIBarButtonItem alloc] initWithCustomView: customCancelButton];
+    
+    self.navigationItem.leftBarButtonItem = customCancelButtonItem;
+    
+    UIButton *customUseButton = [UIButton buttonWithType: UIButtonTypeCustom];
+    UIImage* customUseButtonImage = [UIImage imageNamed: @"ButtonMoveAndScaleUse.png"];
+    UIImage* customUseButtonHighlightedImage = [UIImage imageNamed: @"ButtonMoveAndScaleUse.png"];
+    
+    [customUseButton setImage: customUseButtonImage
+                     forState: UIControlStateNormal];
+    
+    [customUseButton setImage: customUseButtonHighlightedImage
+                     forState: UIControlStateHighlighted];
+    
+    [customUseButton addTarget: self
+                        action: @selector(_actionUse)
+              forControlEvents: UIControlEventTouchUpInside];
+    
+    customUseButton.frame = CGRectMake(0.0, 0.0, customUseButtonImage.size.width, customUseButtonImage.size.height);
+    UIBarButtonItem *customUseButtonItem = [[UIBarButtonItem alloc] initWithCustomView: customUseButton];
+    
+    self.navigationItem.rightBarButtonItem = customUseButtonItem;
 }
 
 
@@ -66,6 +105,7 @@
     UITableViewCell *cell = [tableView dequeueReusableCellWithIdentifier: kConcernsCellId
                                                             forIndexPath: indexPath];
 
+    cell.textLabel.font = [UIFont rockpackFontOfSize:18.0];
     cell.textLabel.text = self.concernsArray[indexPath.row];
     cell.accessoryType = UITableViewCellAccessoryNone;
     
@@ -84,6 +124,7 @@
     
     return indexPath;
 }
+
 
 - (void) tableView: (UITableView *) tableView
          didSelectRowAtIndexPath: (NSIndexPath *) indexPath
