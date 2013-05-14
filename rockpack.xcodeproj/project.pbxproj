@@ -310,6 +310,14 @@
 		01C6FD15169E11B000E01AA3 /* AbstractCommon.m in Sources */ = {isa = PBXBuildFile; fileRef = 01C6FD13169E11B000E01AA3 /* AbstractCommon.m */; };
 		01C74BAD169F239800B1CA02 /* SYNNetworkEngine.m in Sources */ = {isa = PBXBuildFile; fileRef = 01C74BAC169F239800B1CA02 /* SYNNetworkEngine.m */; };
 		01C9CFA61697496400C42479 /* NSDate-Utilities.m in Sources */ = {isa = PBXBuildFile; fileRef = 01C9CFA51697496400C42479 /* NSDate-Utilities.m */; };
+		01D0996617429F4E00351C82 /* ButtonPopoverCancel.png in Resources */ = {isa = PBXBuildFile; fileRef = 01D0995E17429F4E00351C82 /* ButtonPopoverCancel.png */; };
+		01D0996717429F4E00351C82 /* ButtonPopoverCancel@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 01D0995F17429F4E00351C82 /* ButtonPopoverCancel@2x.png */; };
+		01D0996817429F4E00351C82 /* ButtonPopoverCancelHighlighted.png in Resources */ = {isa = PBXBuildFile; fileRef = 01D0996017429F4E00351C82 /* ButtonPopoverCancelHighlighted.png */; };
+		01D0996917429F4E00351C82 /* ButtonPopoverCancelHighlighted@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 01D0996117429F4E00351C82 /* ButtonPopoverCancelHighlighted@2x.png */; };
+		01D0996A17429F4E00351C82 /* ButtonPopoverReport.png in Resources */ = {isa = PBXBuildFile; fileRef = 01D0996217429F4E00351C82 /* ButtonPopoverReport.png */; };
+		01D0996B17429F4E00351C82 /* ButtonPopoverReport@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 01D0996317429F4E00351C82 /* ButtonPopoverReport@2x.png */; };
+		01D0996C17429F4E00351C82 /* ButtonPopoverReportHighlighted.png in Resources */ = {isa = PBXBuildFile; fileRef = 01D0996417429F4E00351C82 /* ButtonPopoverReportHighlighted.png */; };
+		01D0996D17429F4E00351C82 /* ButtonPopoverReportHighlighted@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 01D0996517429F4E00351C82 /* ButtonPopoverReportHighlighted@2x.png */; };
 		01E2E7E116E11E67009999D2 /* UIImageView+ImageProcessing.m in Sources */ = {isa = PBXBuildFile; fileRef = 01E2E7E016E11E67009999D2 /* UIImageView+ImageProcessing.m */; };
 		01E427BC1664C5F1009B941F /* CoreData.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 01E427BB1664C5F1009B941F /* CoreData.framework */; };
 		01E427D31664C726009B941F /* Rockpack.xcdatamodeld in Sources */ = {isa = PBXBuildFile; fileRef = 01E427D11664C726009B941F /* Rockpack.xcdatamodeld */; };
@@ -1338,6 +1346,14 @@
 		01C74BAC169F239800B1CA02 /* SYNNetworkEngine.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SYNNetworkEngine.m; sourceTree = "<group>"; };
 		01C9CFA41697496400C42479 /* NSDate-Utilities.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "NSDate-Utilities.h"; sourceTree = "<group>"; };
 		01C9CFA51697496400C42479 /* NSDate-Utilities.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "NSDate-Utilities.m"; sourceTree = "<group>"; };
+		01D0995E17429F4E00351C82 /* ButtonPopoverCancel.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = ButtonPopoverCancel.png; path = Assets/Images/ButtonPopoverCancel.png; sourceTree = "<group>"; };
+		01D0995F17429F4E00351C82 /* ButtonPopoverCancel@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = "ButtonPopoverCancel@2x.png"; path = "Assets/Images/ButtonPopoverCancel@2x.png"; sourceTree = "<group>"; };
+		01D0996017429F4E00351C82 /* ButtonPopoverCancelHighlighted.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = ButtonPopoverCancelHighlighted.png; path = Assets/Images/ButtonPopoverCancelHighlighted.png; sourceTree = "<group>"; };
+		01D0996117429F4E00351C82 /* ButtonPopoverCancelHighlighted@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = "ButtonPopoverCancelHighlighted@2x.png"; path = "Assets/Images/ButtonPopoverCancelHighlighted@2x.png"; sourceTree = "<group>"; };
+		01D0996217429F4E00351C82 /* ButtonPopoverReport.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = ButtonPopoverReport.png; path = Assets/Images/ButtonPopoverReport.png; sourceTree = "<group>"; };
+		01D0996317429F4E00351C82 /* ButtonPopoverReport@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = "ButtonPopoverReport@2x.png"; path = "Assets/Images/ButtonPopoverReport@2x.png"; sourceTree = "<group>"; };
+		01D0996417429F4E00351C82 /* ButtonPopoverReportHighlighted.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = ButtonPopoverReportHighlighted.png; path = Assets/Images/ButtonPopoverReportHighlighted.png; sourceTree = "<group>"; };
+		01D0996517429F4E00351C82 /* ButtonPopoverReportHighlighted@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = "ButtonPopoverReportHighlighted@2x.png"; path = "Assets/Images/ButtonPopoverReportHighlighted@2x.png"; sourceTree = "<group>"; };
 		01E2E7DF16E11E67009999D2 /* UIImageView+ImageProcessing.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "UIImageView+ImageProcessing.h"; sourceTree = "<group>"; };
 		01E2E7E016E11E67009999D2 /* UIImageView+ImageProcessing.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "UIImageView+ImageProcessing.m"; sourceTree = "<group>"; };
 		01E427BB1664C5F1009B941F /* CoreData.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreData.framework; path = System/Library/Frameworks/CoreData.framework; sourceTree = SDKROOT; };
@@ -2622,6 +2638,7 @@
 		019824DE1629CA5900216900 /* Images */ = {
 			isa = PBXGroup;
 			children = (
+				01D0995D17429F2300351C82 /* Report Concern */,
 				38A2FF1C1731607F00FB9F57 /* iPhone */,
 				1F1B4BD317427E2F009DEB0C /* Placeholders */,
 				BE285DBD172698C000D995AB /* Error Messages */,
@@ -3068,6 +3085,21 @@
 				BE285DA517258A0A00D995AB /* ButtonConfirmHighlighted@2x.png */,
 			);
 			name = Channels;
+			sourceTree = "<group>";
+		};
+		01D0995D17429F2300351C82 /* Report Concern */ = {
+			isa = PBXGroup;
+			children = (
+				01D0995E17429F4E00351C82 /* ButtonPopoverCancel.png */,
+				01D0995F17429F4E00351C82 /* ButtonPopoverCancel@2x.png */,
+				01D0996017429F4E00351C82 /* ButtonPopoverCancelHighlighted.png */,
+				01D0996117429F4E00351C82 /* ButtonPopoverCancelHighlighted@2x.png */,
+				01D0996217429F4E00351C82 /* ButtonPopoverReport.png */,
+				01D0996317429F4E00351C82 /* ButtonPopoverReport@2x.png */,
+				01D0996417429F4E00351C82 /* ButtonPopoverReportHighlighted.png */,
+				01D0996517429F4E00351C82 /* ButtonPopoverReportHighlighted@2x.png */,
+			);
+			name = "Report Concern";
 			sourceTree = "<group>";
 		};
 		01D8C6AC16820AB1000059D1 /* VideoThumbnailWide */ = {
@@ -5008,6 +5040,14 @@
 				1F1B4BEA174290CB009DEB0C /* PlaceholderNotificationChannel~iphone.png in Resources */,
 				1F1B4BEB174290CB009DEB0C /* PlaceholderNotificationVideo@2x~iphone.png in Resources */,
 				1F1B4BEC174290CB009DEB0C /* PlaceholderNotificationVideo~iphone.png in Resources */,
+				01D0996617429F4E00351C82 /* ButtonPopoverCancel.png in Resources */,
+				01D0996717429F4E00351C82 /* ButtonPopoverCancel@2x.png in Resources */,
+				01D0996817429F4E00351C82 /* ButtonPopoverCancelHighlighted.png in Resources */,
+				01D0996917429F4E00351C82 /* ButtonPopoverCancelHighlighted@2x.png in Resources */,
+				01D0996A17429F4E00351C82 /* ButtonPopoverReport.png in Resources */,
+				01D0996B17429F4E00351C82 /* ButtonPopoverReport@2x.png in Resources */,
+				01D0996C17429F4E00351C82 /* ButtonPopoverReportHighlighted.png in Resources */,
+				01D0996D17429F4E00351C82 /* ButtonPopoverReportHighlighted@2x.png in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
