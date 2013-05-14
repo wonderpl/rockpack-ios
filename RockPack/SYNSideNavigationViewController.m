@@ -117,6 +117,7 @@ typedef enum {
                                          blue: (51.0/255.0)
                                         alpha: (1.0)];
     
+    
     self.cellByPageName = [NSMutableDictionary dictionaryWithCapacity:3];
     
     CGRect newFrame = self.view.frame;
@@ -539,9 +540,21 @@ typedef enum {
 - (void) willRotateToInterfaceOrientation: (UIInterfaceOrientation) toInterfaceOrientation
                                  duration: (NSTimeInterval) duration
 {
+    
+    
+    CGFloat correctHeight = UIInterfaceOrientationIsPortrait(toInterfaceOrientation) ?
+    [[SYNDeviceManager sharedInstance] currentScreenHeight] : [[SYNDeviceManager sharedInstance] currentScreenWidth];
+    
     CGRect newFrame = self.view.frame;
-    newFrame.size.height = [[SYNDeviceManager sharedInstance] currentScreenHeight];
+    newFrame.size.height = correctHeight;
     self.view.frame = newFrame;
+    
+    
+    CGRect bottomExtraFrame = self.bottomExtraView.frame;
+    bottomExtraFrame.size.height = correctHeight - bottomExtraFrame.origin.y;
+    
+    self.bottomExtraView.frame = bottomExtraFrame;
+
 }
 
 
@@ -554,12 +567,6 @@ typedef enum {
     CGRect settingsButtonFrame = self.settingsButton.frame;
     settingsButtonFrame.origin.y = [[SYNDeviceManager sharedInstance] currentScreenHeight] - 30.0 - settingsButtonFrame.size.height;
     self.settingsButton.frame = settingsButtonFrame;
-
-    CGFloat bgHeight = (self.backgroundImageView.frame.origin.y + self.backgroundImageView.frame.size.height);
-    self.bottomExtraView = [[UIView alloc] initWithFrame:CGRectMake(0.0,
-                                                                    bgHeight,
-                                                                    self.backgroundImageView.frame.size.width,
-                                                                    [[SYNDeviceManager sharedInstance] currentScreenHeight] - bgHeight)];
     
     // FIXME:???
     if (UIInterfaceOrientationIsPortrait(toInterfaceOrientation))
