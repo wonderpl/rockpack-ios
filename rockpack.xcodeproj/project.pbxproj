@@ -420,6 +420,10 @@
 		1F51A6B91742A959009907CA /* PlaceholderChannelMid~iphone.png in Resources */ = {isa = PBXBuildFile; fileRef = 1F51A6AD1742A959009907CA /* PlaceholderChannelMid~iphone.png */; };
 		1F51A6BA1742A959009907CA /* PlaceholderChannelSmall@2x~iphone.png in Resources */ = {isa = PBXBuildFile; fileRef = 1F51A6AE1742A959009907CA /* PlaceholderChannelSmall@2x~iphone.png */; };
 		1F51A6BB1742A959009907CA /* PlaceholderChannelSmall~iphone.png in Resources */ = {isa = PBXBuildFile; fileRef = 1F51A6AF1742A959009907CA /* PlaceholderChannelSmall~iphone.png */; };
+		1F51A6BE1742AB71009907CA /* PlaceholderChannelCreation@2x~iphone.png in Resources */ = {isa = PBXBuildFile; fileRef = 1F51A6BC1742AB71009907CA /* PlaceholderChannelCreation@2x~iphone.png */; };
+		1F51A6BF1742AB71009907CA /* PlaceholderChannelCreation~iphone.png in Resources */ = {isa = PBXBuildFile; fileRef = 1F51A6BD1742AB71009907CA /* PlaceholderChannelCreation~iphone.png */; };
+		1F51A6C21742AB86009907CA /* PlaceholderChannelCreation.png in Resources */ = {isa = PBXBuildFile; fileRef = 1F51A6C01742AB86009907CA /* PlaceholderChannelCreation.png */; };
+		1F51A6C31742AB86009907CA /* PlaceholderChannelCreation@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 1F51A6C11742AB86009907CA /* PlaceholderChannelCreation@2x.png */; };
 		1F563B911741499B0013AC64 /* PlaceholderVideoMiddle@2x~iphone.png in Resources */ = {isa = PBXBuildFile; fileRef = 1F563B8D1741499B0013AC64 /* PlaceholderVideoMiddle@2x~iphone.png */; };
 		1F563B921741499B0013AC64 /* PlaceholderVideoMiddle~iphone.png in Resources */ = {isa = PBXBuildFile; fileRef = 1F563B8E1741499B0013AC64 /* PlaceholderVideoMiddle~iphone.png */; };
 		1F563B931741499B0013AC64 /* PlaceholderVideoTop@2x~iphone.png in Resources */ = {isa = PBXBuildFile; fileRef = 1F563B8F1741499B0013AC64 /* PlaceholderVideoTop@2x~iphone.png */; };
@@ -1499,6 +1503,10 @@
 		1F51A6AD1742A959009907CA /* PlaceholderChannelMid~iphone.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = "PlaceholderChannelMid~iphone.png"; path = "placeholders/PlaceholderChannelMid~iphone.png"; sourceTree = "<group>"; };
 		1F51A6AE1742A959009907CA /* PlaceholderChannelSmall@2x~iphone.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = "PlaceholderChannelSmall@2x~iphone.png"; path = "placeholders/PlaceholderChannelSmall@2x~iphone.png"; sourceTree = "<group>"; };
 		1F51A6AF1742A959009907CA /* PlaceholderChannelSmall~iphone.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = "PlaceholderChannelSmall~iphone.png"; path = "placeholders/PlaceholderChannelSmall~iphone.png"; sourceTree = "<group>"; };
+		1F51A6BC1742AB71009907CA /* PlaceholderChannelCreation@2x~iphone.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = "PlaceholderChannelCreation@2x~iphone.png"; path = "placeholders/PlaceholderChannelCreation@2x~iphone.png"; sourceTree = "<group>"; };
+		1F51A6BD1742AB71009907CA /* PlaceholderChannelCreation~iphone.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = "PlaceholderChannelCreation~iphone.png"; path = "placeholders/PlaceholderChannelCreation~iphone.png"; sourceTree = "<group>"; };
+		1F51A6C01742AB86009907CA /* PlaceholderChannelCreation.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = PlaceholderChannelCreation.png; path = Assets/Images/PlaceholderChannelCreation.png; sourceTree = "<group>"; };
+		1F51A6C11742AB86009907CA /* PlaceholderChannelCreation@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = "PlaceholderChannelCreation@2x.png"; path = "Assets/Images/PlaceholderChannelCreation@2x.png"; sourceTree = "<group>"; };
 		1F563B8D1741499B0013AC64 /* PlaceholderVideoMiddle@2x~iphone.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = "PlaceholderVideoMiddle@2x~iphone.png"; path = "Assets/Images/iPhone/videoPlayer/PlaceholderVideoMiddle@2x~iphone.png"; sourceTree = "<group>"; };
 		1F563B8E1741499B0013AC64 /* PlaceholderVideoMiddle~iphone.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = "PlaceholderVideoMiddle~iphone.png"; path = "Assets/Images/iPhone/videoPlayer/PlaceholderVideoMiddle~iphone.png"; sourceTree = "<group>"; };
 		1F563B8F1741499B0013AC64 /* PlaceholderVideoTop@2x~iphone.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = "PlaceholderVideoTop@2x~iphone.png"; path = "Assets/Images/iPhone/videoPlayer/PlaceholderVideoTop@2x~iphone.png"; sourceTree = "<group>"; };
@@ -3355,6 +3363,8 @@
 				1F51A6891742A93B009907CA /* PlaceholderChannelMid@2x.png */,
 				1F51A68A1742A93B009907CA /* PlaceholderChannelSmall.png */,
 				1F51A68B1742A93B009907CA /* PlaceholderChannelSmall@2x.png */,
+				1F51A6C01742AB86009907CA /* PlaceholderChannelCreation.png */,
+				1F51A6C11742AB86009907CA /* PlaceholderChannelCreation@2x.png */,
 				1F51A68C1742A93B009907CA /* PlaceholderNotificationAvatar.png */,
 				1F51A68D1742A93B009907CA /* PlaceholderNotificationAvatar@2x.png */,
 				1F51A68E1742A93B009907CA /* PlaceholderNotificationChannel.png */,
@@ -3384,6 +3394,8 @@
 				1F51A6AD1742A959009907CA /* PlaceholderChannelMid~iphone.png */,
 				1F51A6AE1742A959009907CA /* PlaceholderChannelSmall@2x~iphone.png */,
 				1F51A6AF1742A959009907CA /* PlaceholderChannelSmall~iphone.png */,
+				1F51A6BC1742AB71009907CA /* PlaceholderChannelCreation@2x~iphone.png */,
+				1F51A6BD1742AB71009907CA /* PlaceholderChannelCreation~iphone.png */,
 				1F1B4BE5174290CB009DEB0C /* PlaceholderNotificationChannel@2x~iphone.png */,
 				1F1B4BE6174290CB009DEB0C /* PlaceholderNotificationChannel~iphone.png */,
 				1F1B4BE7174290CB009DEB0C /* PlaceholderNotificationVideo@2x~iphone.png */,
@@ -5173,6 +5185,10 @@
 				1F51A6B91742A959009907CA /* PlaceholderChannelMid~iphone.png in Resources */,
 				1F51A6BA1742A959009907CA /* PlaceholderChannelSmall@2x~iphone.png in Resources */,
 				1F51A6BB1742A959009907CA /* PlaceholderChannelSmall~iphone.png in Resources */,
+				1F51A6BE1742AB71009907CA /* PlaceholderChannelCreation@2x~iphone.png in Resources */,
+				1F51A6BF1742AB71009907CA /* PlaceholderChannelCreation~iphone.png in Resources */,
+				1F51A6C21742AB86009907CA /* PlaceholderChannelCreation.png in Resources */,
+				1F51A6C31742AB86009907CA /* PlaceholderChannelCreation@2x.png in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
