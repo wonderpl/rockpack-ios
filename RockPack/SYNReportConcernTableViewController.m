@@ -23,6 +23,21 @@
 
 @implementation SYNReportConcernTableViewController
 
+- (id) initWithNibName: (NSString *) nibNameOrNil
+                bundle: (NSBundle *) nibBundleOrNil
+       sendReportBlock: (SYNSendReportBlock) sendReportBlock
+     cancelReportBlock: (SYNCancelReportBlock) cancelReportBlock
+{
+    if ((self = [super initWithNibName: nibNameOrNil
+                                bundle: nibBundleOrNil]))
+    {
+        self.sendReportBlock = sendReportBlock;
+        self.cancelReportBlock = cancelReportBlock;
+    }
+    
+    return self;
+}
+
 - (id) initWithSendReportBlock: (SYNSendReportBlock) sendReportBlock
              cancelReportBlock: (SYNCancelReportBlock) cancelReportBlock
 
@@ -32,6 +47,7 @@
         // Store completion blocks
         self.sendReportBlock = sendReportBlock;
         self.cancelReportBlock = cancelReportBlock;
+
     }
     
     return self;

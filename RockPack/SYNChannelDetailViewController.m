@@ -1377,36 +1377,36 @@
     
     if (button.selected)
     {
-        __block UINavigationController *navController;
-        
-        // Create out concerns table view controller
-        SYNReportConcernTableViewController *reportConcernTableViewController = [[SYNReportConcernTableViewController alloc]
-                                                                                 initWithSendReportBlock: ^ (NSString *reportString){
-                                                                                     [self dismissReportConcernViewController: navController];
-                                                                                     [self reportConcern: reportString];
-                                                                                 }
-                                                                                 cancelReportBlock: ^{
-                                                                                     [self dismissReportConcernViewController: navController];
-                                                                                 }];
-        // Wrap it in a navigation controller
-        navController = [[UINavigationController alloc] initWithRootViewController: reportConcernTableViewController];
-        
-        // Hard way of adding a title (need to due to custom font offsets)
-        UIView *containerView = [[UIView alloc] initWithFrame: CGRectMake (0, 0, 140, 28)];
-        containerView.backgroundColor = [UIColor clearColor];
-        UILabel *label = [[UILabel alloc] initWithFrame: CGRectMake (0, 4, 140, 28)];
-        label.backgroundColor = [UIColor clearColor];
-        label.font = [UIFont boldRockpackFontOfSize: 20.0];
-        label.textAlignment = NSTextAlignmentCenter;
-        label.textColor = [UIColor blackColor];
-        label.shadowColor = [UIColor whiteColor];
-        label.shadowOffset = CGSizeMake(0.0, 1.0);
-        label.text = NSLocalizedString(@"REPORT", nil);
-        [containerView addSubview: label];
-        reportConcernTableViewController.navigationItem.titleView = containerView;
+        SYNReportConcernTableViewController *reportConcernTableViewController;
         
         if (UI_USER_INTERFACE_IDIOM() == UIUserInterfaceIdiomPad)
         {
+            // Create out concerns table view controller
+            reportConcernTableViewController = [[SYNReportConcernTableViewController alloc]
+                                                initWithSendReportBlock: ^ (NSString *reportString){
+                                                    [self.reportConcernPopoverController dismissPopoverAnimated: YES];
+                                                    [self reportConcern: reportString];
+                                                }
+                                                cancelReportBlock: ^{
+                                                    [self.reportConcernPopoverController dismissPopoverAnimated: YES];
+                                                }];
+            // Wrap it in a navigation controller
+            UINavigationController *navController = [[UINavigationController alloc] initWithRootViewController: reportConcernTableViewController];
+            
+            // Hard way of adding a title (need to due to custom font offsets)
+            UIView *containerView = [[UIView alloc] initWithFrame: CGRectMake (0, 0, 140, 28)];
+            containerView.backgroundColor = [UIColor clearColor];
+            UILabel *label = [[UILabel alloc] initWithFrame: CGRectMake (0, 4, 140, 28)];
+            label.backgroundColor = [UIColor clearColor];
+            label.font = [UIFont boldRockpackFontOfSize: 20.0];
+            label.textAlignment = NSTextAlignmentCenter;
+            label.textColor = [UIColor blackColor];
+            label.shadowColor = [UIColor whiteColor];
+            label.shadowOffset = CGSizeMake(0.0, 1.0);
+            label.text = NSLocalizedString(@"REPORT", nil);
+            [containerView addSubview: label];
+            reportConcernTableViewController.navigationItem.titleView = containerView;
+            
             // Need show the popover controller
             self.reportConcernPopoverController = [[UIPopoverController alloc] initWithContentViewController: navController];
             self.reportConcernPopoverController.popoverContentSize = CGSizeMake(245, 344);
@@ -1421,8 +1421,28 @@
         }
         else
         {
-            [self presentViewController: navController
-                               animated: YES
+//            [self presentViewController: navController
+//                               animated: YES
+//                             completion: nil];
+            
+            reportConcernTableViewController = [[SYNReportConcernTableViewController alloc] initWithNibName: @"SYNReportConcernTableViewControllerFullScreen~iphone"
+                                                                                                           bundle: [NSBundle mainBundle]];
+            // Move off the bottom of the screen
+            CGRect startFrame = self.categoryTableViewController.view.frame;
+            startFrame.origin.y = self.view.frame.size.height;
+            self.categoryTableViewController.view.frame = startFrame;
+            
+            [self.view addSubview: self.categoryTableViewController.view];
+            
+            // Slide up onto the screen
+            [UIView animateWithDuration: 0.3f
+                                  delay: 0.0f
+                                options: UIViewAnimationOptionCurveEaseOut
+                             animations: ^{
+                                 CGRect endFrame = self.categoryTableViewController.view.frame;
+                                 endFrame.origin.y = 0.0f;
+                                 self.categoryTableViewController.view.frame = endFrame;
+                             }
                              completion: nil];
         }
     }  
@@ -1434,7 +1454,7 @@
     
     if (UI_USER_INTERFACE_IDIOM() == UIUserInterfaceIdiomPad)
     {
-        [self.reportConcernPopoverController dismissPopoverAnimated: YES];
+
     }
     else
     {
