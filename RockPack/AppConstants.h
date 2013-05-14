@@ -384,8 +384,8 @@ typedef void (^JSONResponseBlock)(id jsonObject);
 
 // Sharing messages
 
-#define kChannelShareMessage @"Take a look at this great channel I found on Rockpack"
-#define kVideoShareMessage @"Take a look at this great video I found on Rockpack"
+#define kChannelShareMessage NSLocalizedString (@"Take a look at this great channel I found on Rockpack", nil)
+#define kVideoShareMessage NSLocalizedString (@"Take a look at this great video I found on Rockpack", nil)
 
 // Gestures
 

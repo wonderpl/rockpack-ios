@@ -138,7 +138,7 @@
     // Needed for shadows to work
     self.channelTitleTextView.backgroundColor = [UIColor clearColor];
 
-    self.channelTitleTextView.placeholder = @"CHANNEL NAME";
+    self.channelTitleTextView.placeholder = NSLocalizedString (@"CHANNEL NAME", nil);
     
     self.channelTitleTextView.placeholderTextColor = [UIColor colorWithRed: 0.909
                                                                      green: 0.909
@@ -234,7 +234,7 @@
     if(!isIPhone)
     {
         // Set text on add cover and select category buttons
-        NSString *coverString = @"ADD A COVER";
+        NSString *coverString = NSLocalizedString (@"ADD A COVER", nil);
         
         NSMutableAttributedString* attributedCoverString = [[NSMutableAttributedString alloc] initWithString: coverString
                                                                                                   attributes: @{NSForegroundColorAttributeName : [UIColor colorWithRed: 40.0f/255.0f green: 45.0f/255.0f blue: 51.0f/255.0f alpha: 1.0f],
@@ -245,7 +245,7 @@
         
         // Now do fancy attributed string
         //NSString *categoryString = @"SELECT A CATEGORY (Optional)";
-        NSString *categoryString = @"SELECT A CATEGORY";
+        NSString *categoryString = NSLocalizedString (@"SELECT A CATEGORY", nil);
 
         
         NSMutableAttributedString* attributedCategoryString = [[NSMutableAttributedString alloc] initWithString: categoryString
@@ -466,7 +466,7 @@
 {
     self.channelOwnerLabel.text = self.channel.channelOwner.displayName;
     
-    NSString *detailsString = [NSString stringWithFormat: @"%d SUBSCRIBERS", 0];
+    NSString *detailsString = [NSString stringWithFormat: @"%d %@", 0, NSLocalizedString (@"SUBSCRIBERS", nil)];
     self.channelDetailsLabel.text = detailsString;
     
     // If we have a valid ecommerce URL, then display the button
@@ -1222,7 +1222,7 @@
                                               errorHandler: ^(id error) {
                                              
                                              DebugLog(@"Error @ createChannelPressed:");
-                                             NSString* errorMessage = @"Could not create channel. Please try again later.";
+                                             NSString* errorMessage = NSLocalizedString(@"Could not create channel. Please try again later.", nil);
                                              if ([[error objectForKey: @"form_errors"] objectForKey :@"title"])
                                              {
                                                  errorMessage = NSLocalizedString(@"You already created a channel with this title. Please choose a different title.",nil);
@@ -1248,7 +1248,7 @@
                                                        errorHandler: ^(id err) {
                                                            
                                                            DebugLog(@"Error @ addVideosToNewChannelForId:");
-                                                           [self showError:@"Could not create channel. Please try again later."];
+                                                           [self showError:NSLocalizedString(@"Could not create channel. Please try again later.", nil)];
                                                        }];
 }
 
@@ -1273,18 +1273,18 @@
                                           } errorHandler:^(id err) {
                                               
                                               DebugLog(@"Error @ getNewlyCreatedChannelForId:");
-                                              [self showError:@"Could not create channel. Please try again later."];
+                                              [self showError: NSLocalizedString(@"Could not create channel. Please try again later.", nil)];
                                           }];
 }
 
--(void)showError:(NSString*)errorMessage
+-(void) showError: (NSString*) errorMessage
 {
     self.createChannelButton.hidden = NO;
     [self.activityIndicator stopAnimating];
-    [[[UIAlertView alloc] initWithTitle: @"Error"
+    [[[UIAlertView alloc] initWithTitle: NSLocalizedString(@"Error", nil)
                                 message: errorMessage
                                delegate: nil
-                      cancelButtonTitle: @"OK"
+                      cancelButtonTitle: NSLocalizedString(@"OK", nil)
                       otherButtonTitles: nil] show];
 }
 
@@ -1616,7 +1616,7 @@
 
 - (void) categoryTableControllerDeselectedAll: (SYNChannelCategoryTableViewController *) tableController
 {
-    [self.selectCategoryButton setTitle: @"SELECT A\nCATEGORY"
+    [self.selectCategoryButton setTitle: NSLocalizedString(@"SELECT A\nCATEGORY", nil)
                                forState: UIControlStateNormal];
     
     [self hideCategoriesTable];

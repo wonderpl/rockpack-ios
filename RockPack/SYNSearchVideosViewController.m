@@ -146,23 +146,25 @@
         NSDateComponents* differenceDateComponents = [currentCalendar components:(NSYearCalendarUnit| NSMonthCalendarUnit | NSDayCalendarUnit) fromDate:video.dateUploaded toDate:[NSDate date] options:0];
         
         NSMutableString* format = [[NSMutableString alloc] init];
+        
+        // FIXME: Needs more intelligent localisation
         if(differenceDateComponents.year > 0)
             [format appendFormat:@"%i Year%@ Ago", differenceDateComponents.year, (differenceDateComponents.year > 1 ? @"s" : @"")];
         else if(differenceDateComponents.month > 0)
             [format appendFormat:@"%i Month%@ Ago", differenceDateComponents.month, (differenceDateComponents.month > 1 ? @"s" : @"")];
         else if(differenceDateComponents.day > 1)
-            [format appendFormat:@"%i Days Ago", differenceDateComponents.day];
+            [format appendFormat:@"%i %@", differenceDateComponents.day, NSLocalizedString(@"Days Ago", nil)];
         else if(differenceDateComponents.day > 0)
-            [format appendString:@"Yesterday"];
+            [format appendString: NSLocalizedString(@"Yesterday", nil)];
         else
-            [format appendString:@"Today"];
+            [format appendString: NSLocalizedString(@"Today", nil)];
         
 
         videoThumbnailCell.dateAddedLabel.text = [format uppercaseString];
         
         NSUInteger minutes = ([video.duration integerValue] / 60) % 60;
         NSUInteger seconds = [video.duration integerValue] % 60;
-        videoThumbnailCell.usernameText = [NSString stringWithFormat:@"%i:%i", minutes, seconds];
+        videoThumbnailCell.usernameText = [NSString stringWithFormat: @"%i:%i", minutes, seconds];
         
 
         videoThumbnailCell.viewControllerDelegate = self;

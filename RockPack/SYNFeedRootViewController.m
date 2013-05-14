@@ -400,11 +400,11 @@
         // Unavoidably long if-then-else
         if ([date isToday])
         {
-            sectionText = @"TODAY";
+            sectionText = NSLocalizedString(@"TODAY", nil);
         }
         else if ([date isYesterday])
         {
-            sectionText = @"YESTERDAY";
+            sectionText = NSLocalizedString(@"YESTERDAY", nil);
         }
         else if ([date isLast7Days])
         {

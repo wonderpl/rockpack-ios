@@ -190,10 +190,10 @@
                                                          
                                                          if (formErrors)
                                                          {
-                                                             [[[UIAlertView alloc] initWithTitle: @"Facebook Login"
+                                                             [[[UIAlertView alloc] initWithTitle: NSLocalizedString(@"Facebook Login", nil)
                                                                                          message: NSLocalizedString(@"Could not log in through facebook", nil)
                                                                                         delegate: nil
-                                                                               cancelButtonTitle: @"OK"
+                                                                               cancelButtonTitle: NSLocalizedString(@"OK", nil)
                                                                                otherButtonTitles: nil] show];
                                                              [self doFacebookFailedAnimation];
                                                          }
@@ -205,10 +205,10 @@
          
          
          // TODO: Use custom alert box here
-         [[[UIAlertView alloc] initWithTitle: @"Facebook Login"
+         [[[UIAlertView alloc] initWithTitle: NSLocalizedString(@"Facebook Login", nil)
                                      message: errorString
                                     delegate: nil
-                           cancelButtonTitle: @"OK"
+                           cancelButtonTitle: NSLocalizedString(@"OK", nil)
                            otherButtonTitles: nil] show];
          [self doFacebookFailedAnimation];
          DebugLog(@"Log in failed!");
@@ -281,7 +281,12 @@
 {
     if([UIImagePickerController isSourceTypeAvailable: UIImagePickerControllerSourceTypeCamera])
     {
-        UIActionSheet* sourceSelector = [[UIActionSheet alloc] initWithTitle:@"Select source" delegate:self cancelButtonTitle:@"Cancel" destructiveButtonTitle:nil otherButtonTitles:@"Camera",@"Choose existing", nil];
+        UIActionSheet* sourceSelector = [[UIActionSheet alloc] initWithTitle: NSLocalizedString(@"Select source", nil)
+                                                                    delegate: self
+                                                           cancelButtonTitle: NSLocalizedString(@"Cancel", nil)
+                                                      destructiveButtonTitle: nil
+                                                           otherButtonTitles: NSLocalizedString(@"Camera", nil),
+                                                                              NSLocalizedString(@"Choose existing", nil), nil];
         [sourceSelector showInView:self.view];
     }
     else

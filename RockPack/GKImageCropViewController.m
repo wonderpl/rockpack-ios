@@ -52,6 +52,7 @@
 
 - (void)_setupNavigationBar
 {
+    // Add title (offset due to custom font)
     UIView *containerView = [[UIView alloc] initWithFrame: CGRectMake (0, 0, 200, 28)];
     containerView.backgroundColor = [UIColor clearColor];
     UILabel *label = [[UILabel alloc] initWithFrame: CGRectMake (0, 4, 200, 28)];

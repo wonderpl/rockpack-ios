@@ -38,10 +38,10 @@
     
     // populate fields
     
-    NSArray* fields = @[@"Someone adds me as a friend",
-                        @"Someone follows me channel",
-                        @"Someone Starts a video object",
-                        @"Someone shares a video/channel with me"];
+    NSArray* fields = @[NSLocalizedString (@"Someone adds me as a friend", nil),
+                        NSLocalizedString (@"Someone follows me channel", nil),
+                        NSLocalizedString (@"Someone Starts a video object", nil),
+                        NSLocalizedString (@"Someone shares a video/channel with me", nil)];
     
     CGFloat offsetY = 20.0;
     

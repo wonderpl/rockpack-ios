@@ -100,7 +100,7 @@
         termsAndConditionsLabel.font = [UIFont rockpackFontOfSize: 14.0];
         termsAndConditionsLabelSide.font = termsAndConditionsLabel.font;
         
-        NSMutableAttributedString* termsString = [[NSMutableAttributedString alloc] initWithString: @"BY USING ROCKPACK, YOU AGREE TO OUR\nTERMS & SERVICES AND PRIVACY POLICY"];
+        NSMutableAttributedString* termsString = [[NSMutableAttributedString alloc] initWithString: NSLocalizedString(@"BY USING ROCKPACK, YOU AGREE TO OUR\nTERMS & SERVICES AND PRIVACY POLICY", nil)];
         
         [termsString addAttribute: NSForegroundColorAttributeName value: [UIColor colorWithRed: (70.0/255.0)
                                                                                          green: (206.0/255.0)
@@ -229,7 +229,7 @@
     memberLabel.center = CGPointMake(loginButton.center.x,
                                      registerButton.center.y - 57.0);
     
-    userNameInputField.placeholder = @"USERNAME OR PASSWORD";
+    userNameInputField.placeholder = NSLocalizedString(@"USERNAME OR PASSWORD", nil);
     
     memberLabel.frame = CGRectIntegral(memberLabel.frame);
     
@@ -270,7 +270,7 @@
     [self clearAllErrorArrows];
     
     isAnimating = YES;
-    userNameInputField.placeholder = @"USERNAME";
+    userNameInputField.placeholder = NSLocalizedString(@"USERNAME", nil);
     
     if (previousState == kLoginScreenStateInitial)
     {
@@ -453,7 +453,7 @@
     
     [self clearAllErrorArrows];
     isAnimating = YES;
-    userNameInputField.placeholder = @"USERNAME";
+    userNameInputField.placeholder = NSLocalizedString(@"USERNAME", nil);
     if(previousState == kLoginScreenStateInitial)
     {
         emailInputField.center = CGPointMake(userNameInputField.center.x,
@@ -599,7 +599,7 @@
     // email
     if (userNameInputField.text.length < 1)
     {
-        [self placeErrorLabel: @"Please enter a user name"
+        [self placeErrorLabel: NSLocalizedString(@"Please enter a user name", nil)
                    nextToView: userNameInputField];
         
         [userNameInputField becomeFirstResponder];
@@ -609,7 +609,7 @@
 
     if (passwordInputField.text.length < 1)
     {
-        [self placeErrorLabel: @"Please enter a password"
+        [self placeErrorLabel: NSLocalizedString(@"Please enter a password", nil)
                    nextToView: passwordInputField];
         
         [passwordInputField becomeFirstResponder];
@@ -731,25 +731,25 @@
                                                          completionHandler: ^(NSDictionary * completionInfo) {
                                                              if ([completionInfo valueForKey: @"error"])
                                                              {
-                                                                 [self placeErrorLabel: @"User unknown"
+                                                                 [self placeErrorLabel: NSLocalizedString(@"User unknown", nil)
                                                                             nextToView: self.userNameInputField];
                                                                  
                                                              }
                                                              else
                                                              {
-                                                                 [[[UIAlertView alloc] initWithTitle: @"Password Reset"
-                                                                                             message: @"Check your email for instructions"
+                                                                 [[[UIAlertView alloc] initWithTitle: NSLocalizedString(@"Password Reset", nil)
+                                                                                             message: NSLocalizedString(@"Check your email for instructions", nil)
                                                                                             delegate: nil
-                                                                                   cancelButtonTitle: @"OK"
+                                                                                   cancelButtonTitle: NSLocalizedString(@"OK", nil)
                                                                                    otherButtonTitles: nil] show];
                                                                  
                                                              }
                                                          }
                                                               errorHandler:^(NSError *error) {
-                                                                  [[[UIAlertView alloc] initWithTitle: @"Password Reset"
-                                                                                              message: @"Error, request failed..."
+                                                                  [[[UIAlertView alloc] initWithTitle: NSLocalizedString(@"Password Reset", nil)
+                                                                                              message: NSLocalizedString(@"Error, request failed...", nil)
                                                                                              delegate: nil
-                                                                                    cancelButtonTitle: @"OK"
+                                                                                    cancelButtonTitle: NSLocalizedString(@"OK", nil)
                                                                                     otherButtonTitles: nil] show];
                                                               }];
 }
@@ -837,7 +837,7 @@
                                                               if (formErrors)
                                                               {
                                                                   facebookSignInButton.enabled = YES;
-                                                                  secondaryFacebookMessage.text = @"Could not log in through facebook";
+                                                                  secondaryFacebookMessage.text = NSLocalizedString(@"Could not log in through facebook", nil);
                                                                   secondaryFacebookMessage.alpha = 1.0;
                                                               }
                                                           }];
@@ -848,10 +848,10 @@
          facebookSignInButton.enabled = YES;
          
          // TODO: Use custom alert box here
-         [[[UIAlertView alloc] initWithTitle: @"Facebook Login"
+         [[[UIAlertView alloc] initWithTitle: NSLocalizedString(@"Facebook Login", nil)
                                      message: errorString
                                     delegate: nil
-                           cancelButtonTitle: @"OK"
+                           cancelButtonTitle: NSLocalizedString(@"OK", nil)
                            otherButtonTitles: nil] show];
          
          DebugLog(@"Log in failed!");
@@ -894,7 +894,7 @@
     
     if (![emailInputField.text isMatchedByRegex: @"^([a-zA-Z0-9%_.+\\-]+)@([a-zA-Z0-9.\\-]+?\\.[a-zA-Z]{2,6})$"])
     {
-        [self placeErrorLabel: @"Email Address Not Valid"
+        [self placeErrorLabel: NSLocalizedString(@"Email Address Not Valid", nil)
                    nextToView: emailInputField];
         
         [emailInputField becomeFirstResponder];
@@ -904,7 +904,7 @@
     
     if (userNameInputField.text.length < 1)
     {
-        [self placeErrorLabel: @"Please enter a user name"
+        [self placeErrorLabel: NSLocalizedString(@"Please enter a user name", nil)
                    nextToView: userNameInputField];
         
         [userNameInputField becomeFirstResponder];
@@ -915,7 +915,7 @@
     // == Username must be
     if (![userNameInputField.text isMatchedByRegex:@"^[a-zA-Z0-9\\._]+$"])
     {
-        [self placeErrorLabel: @"Username has invalid characters"
+        [self placeErrorLabel: NSLocalizedString(@"Username has invalid characters", nil)
                    nextToView: userNameInputField];
         
         [userNameInputField becomeFirstResponder];
@@ -926,7 +926,7 @@
     
     if (passwordInputField.text.length < 1)
     {
-        [self placeErrorLabel: @"Please enter a password"
+        [self placeErrorLabel: NSLocalizedString(@"Please enter a password", nil)
                    nextToView: passwordInputField];
         
         [passwordInputField becomeFirstResponder];
@@ -936,7 +936,7 @@
     
     if (ddInputField.text.length != 2 || mmInputField.text.length != 2 || yyyyInputField.text.length != 4)
     {
-        [self placeErrorLabel: @"Date Invalid"
+        [self placeErrorLabel: NSLocalizedString(@"Date Invalid", nil)
                    nextToView:dobView];
         
         [ddInputField becomeFirstResponder];
@@ -951,7 +951,7 @@
     {
         if(![numberFormatter numberFromString: dobField.text])
         {
-            [self placeErrorLabel: @"Only enter numbers"
+            [self placeErrorLabel: NSLocalizedString(@"Only enter numbers", nil)
                        nextToView: dobView];
             
             [dobField becomeFirstResponder];
@@ -967,7 +967,7 @@
     // not a real date
     if(!potentialDate)
     {
-        [self placeErrorLabel: @"The Date is not Valid"
+        [self placeErrorLabel: NSLocalizedString(@"The Date is not Valid", nil)
                    nextToView: dobView];
         
         return NO;

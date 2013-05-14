@@ -110,19 +110,22 @@
     
     cell.accessoryType = UITableViewCellAccessoryNone;
     
-    if(indexPath.row == 0) {
-        cell.textLabel.text = @"United States";
-        if([self.user.locale isEqualToString:@"en-us"]) {
-            cell.accessoryType = UITableViewCellAccessoryCheckmark;
-        }
-    } else if(indexPath.row == 1) {
-        cell.textLabel.text = @"United Kingdom";
-        if([self.user.locale isEqualToString:@"en-gb"]) {
+    if (indexPath.row == 0)
+    {
+        cell.textLabel.text = NSLocalizedString (@"United States", nil);
+        if([self.user.locale isEqualToString: @"en-us"])
+        {
             cell.accessoryType = UITableViewCellAccessoryCheckmark;
         }
     }
-    
-    
+    else if(indexPath.row == 1)
+    {
+        cell.textLabel.text = NSLocalizedString (@"United Kingdom", nil);
+        if ([self.user.locale isEqualToString: @"en-gb"])
+        {
+            cell.accessoryType = UITableViewCellAccessoryCheckmark;
+        }
+    }
     
     return cell;
 }

@@ -126,7 +126,7 @@
         else
             cell.accessoryType = UITableViewCellAccessoryNone;
         
-        cell.textLabel.text = @"Male";
+        cell.textLabel.text = NSLocalizedString (@"Male", nil);
     }
     else if (indexPath.row == 1)
     {
@@ -135,10 +135,8 @@
         else
             cell.accessoryType = UITableViewCellAccessoryNone;
         
-        cell.textLabel.text = @"Female";
+        cell.textLabel.text = NSLocalizedString (@"Female", nil);
     }
-    
-    
     
     return cell;
 }
