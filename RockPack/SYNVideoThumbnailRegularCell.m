@@ -12,7 +12,6 @@
 @interface SYNVideoThumbnailRegularCell ()
 
 @property (nonatomic, strong) IBOutlet UIButton *videoButton;
-@property (nonatomic, strong) IBOutlet UIButton *addButton;
 @property (nonatomic, strong) IBOutlet UIButton *deleteButton;
 
 @end
@@ -39,12 +38,12 @@
     
     if (displayMode == kChannelThumbnailDisplayModeStandard)
     {
-        self.addButton.hidden = NO;
+        self.addItButton.hidden = NO;
         self.deleteButton.hidden = YES;
     }
     else if (displayMode == kChannelThumbnailDisplayModeEdit)
     {
-        self.addButton.hidden = YES;
+        self.addItButton.hidden = YES;
         self.deleteButton.hidden = NO;
     }
     else
@@ -64,7 +63,7 @@
                          action: @selector(displayVideoViewerFromView:)
                forControlEvents: UIControlEventTouchUpInside];
     
-    [self.addButton addTarget: self.viewControllerDelegate
+    [self.addItButton addTarget: self.viewControllerDelegate
                          action: @selector(videoAddButtonTapped:)
                forControlEvents: UIControlEventTouchUpInside];
     

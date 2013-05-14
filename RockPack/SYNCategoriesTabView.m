@@ -219,8 +219,8 @@
 
 - (void) homeButtonPressed
 {
-//    for (SYNCategoryItemView* itemView in self.mainTabsView.subviews)
-//        [itemView makeFaded];
+    for (SYNCategoryItemView* itemView in self.mainTabsView.subviews)
+        [itemView makeFaded];
     
     [self hideSecondaryTabs];
     

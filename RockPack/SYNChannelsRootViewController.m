@@ -357,7 +357,6 @@
     channelThumbnailCell.viewControllerDelegate = self;
     
 
-
     return channelThumbnailCell;
 }
 
@@ -635,8 +634,12 @@
         currentCategoryId = genre.uniqueId;
         currentGenre = genre;
         
-            
+        
     }
+    
+    CGPoint currentOffset = self.channelThumbnailCollectionView.contentOffset;
+    currentOffset.y = 0;
+    [self.channelThumbnailCollectionView setContentOffset:currentOffset animated:YES];
     
     
     [self loadChannelsForGenre:genre];

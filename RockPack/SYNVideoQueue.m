@@ -140,7 +140,10 @@
     {
         self.currentlyCreatingChannel = [Channel insertInManagedObjectContext: self.appDelegate.channelsManagedObjectContext];
         
-        self.currentlyCreatingChannel.channelOwner = (ChannelOwner*)self.appDelegate.currentUser;
+        User* meOnAnotherContext = [User instanceFromUser:self.appDelegate.currentUser
+                                        usingManagedObjectContext:self.currentlyCreatingChannel.managedObjectContext];
+        
+        self.currentlyCreatingChannel.channelOwner = (ChannelOwner*)meOnAnotherContext;
         self.currentlyCreatingChannel.viewId = @"ChannelCreation";
         self.currentlyCreatingChannel.categoryId = @"";
         

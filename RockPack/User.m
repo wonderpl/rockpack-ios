@@ -16,6 +16,39 @@
 
 #pragma mark - Object factory
 
+
++ (User*) instanceFromUser:(User*)oldUser
+ usingManagedObjectContext:(NSManagedObjectContext*)managedObjectContext
+{
+    
+    User* instance = [User insertInManagedObjectContext: managedObjectContext];
+    
+    instance.username = oldUser.username;
+    
+    instance.emailAddress = oldUser.emailAddress;
+    
+    instance.firstName = oldUser.firstName;
+    
+    instance.lastName = oldUser.lastName;
+    
+    instance.activityUrl = oldUser.activityUrl;
+    
+    instance.coverartUrl = oldUser.coverartUrl;
+    
+    instance.subscriptionsUrl = oldUser.subscriptionsUrl;
+    
+    instance.genderValue = oldUser.genderValue;
+    
+    instance.dateOfBirth = oldUser.dateOfBirth;
+    
+    instance.locale = oldUser.locale;
+    
+    
+    return instance;
+    
+    
+}
+
 + (User*) instanceFromDictionary: (NSDictionary *) dictionary
        usingManagedObjectContext: (NSManagedObjectContext *) managedObjectContext
              ignoringObjectTypes: (IgnoringObjects) ignoringObjects
@@ -164,13 +197,16 @@
     
     [userDescription appendFormat:@"\nUser Channels (%i)", self.channels.count];
     
-    if(self.channels.count == 0) {
-        [userDescription appendString:@"."];
-    } else {
-        [userDescription appendString:@":"];
-        for (Channel* channel in self.channels) {
-            [userDescription appendFormat:@"\n - %@ (%@)", channel.title, [channel.subscribedByUser boolValue] ? @"Subscribed" : @"-"];
-        }
+    [userDescription appendString:@":"];
+    for (Channel* channel in self.channels) {
+        [userDescription appendFormat:@"\n - %@ (%@)", channel.title, [channel.subscribedByUser boolValue] ? @"Subscribed" : @"-"];
+    }
+    
+    [userDescription appendFormat:@"\nUser Subscriptions (%i)", self.subscriptions.count];
+    
+    [userDescription appendString:@":"];
+    for (Channel* channel in self.subscriptions) {
+        [userDescription appendFormat:@"\n - %@ (%@)", channel.title, [channel.subscribedByUser boolValue] ? @"Subscribed" : @"-"];
     }
     
     

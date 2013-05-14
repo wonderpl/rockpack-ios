@@ -100,6 +100,7 @@
     {
 		self.channel = channel;
         _mode = mode;
+        
 	}
 
 	return self;
@@ -265,6 +266,8 @@
     }
     self.selectedCategoryId = @"";
     self.selectedCoverId = @"";
+    
+    NSLog(@"User: %@", self.channel.uniqueId);
 }
 
 
@@ -360,25 +363,24 @@
                                          forState: UIControlStateNormal];
 }
 
-//// TODO; Remove this method once happy with mode switching functionality
-//- (IBAction) testMode
-//{
-//    self.mode = (self.mode == kChannelDetailsModeDisplay) ? kChannelDetailsModeEdit: kChannelDetailsModeDisplay;
-//}
+
 
 
 - (void) setMode: (kChannelDetailsMode) mode
 {
-    if (self.mode != mode)
-    {
-        _mode = mode;
+    if (self.mode == mode)
+        return;
+    
+    _mode = mode;
+    
+    
         
-        [UIView animateWithDuration: kChannelEditModeAnimationDuration
-                         animations: ^{
-                             [self setDisplayControlsVisibility: (self.mode == kChannelDetailsModeDisplay) ? TRUE: FALSE];
+    [UIView animateWithDuration: kChannelEditModeAnimationDuration
+                     animations: ^{
+                             [self setDisplayControlsVisibility: (self.mode == kChannelDetailsModeDisplay) ? YES : NO];
                          }
                          completion: nil];
-    }
+    
 }
 
 
@@ -625,6 +627,9 @@
         videoThumbnailCell.titleLabel.text = videoInstance.title;
         videoThumbnailCell.viewControllerDelegate = self;
         
+        videoThumbnailCell.addItButton.highlighted = NO;
+        videoThumbnailCell.addItButton.selected = [appDelegate.videoQueue videoInstanceIsAddedToChannel:videoInstance];
+        
         cell = videoThumbnailCell;
         
         return cell;
@@ -802,6 +807,8 @@
     self.displayControlsView.alpha = (visible) ? 1.0f : 0.0f;
     self.editControlsView.alpha = (visible) ? 0.0f : 1.0f;
     self.coverChooserMasterView.hidden = (visible) ? TRUE : FALSE;
+    
+    self.profileImageButton.enabled = visible;
 }
 
 
@@ -964,6 +971,7 @@
 - (void) videoDeleteButtonTapped: (UIButton *) deleteButton
 {
     UIView *v = deleteButton.superview.superview;
+    
     NSIndexPath *indexPath = [self.videoThumbnailCollectionView indexPathForItemAtPoint: v.center];
     
     VideoInstance* instanceToDelete = (VideoInstance*)[self.channel.videoInstances objectAtIndex: indexPath.item];
@@ -1374,6 +1382,7 @@
                                                                                  initWithSendReportBlock: ^ (NSString *reportString){
                                                                                      self.reportConcernButton.selected = NO;
                                                                                      [self.reportConcernPopoverController dismissPopoverAnimated: YES];
+                                                                                     [self reportConcern: reportString];
                                                                                  }
                                                                                  cancelReportBlock: ^{
                                                                                      self.reportConcernButton.selected = NO;
@@ -1399,7 +1408,7 @@
         
         // Need show the popover controller
         self.reportConcernPopoverController = [[UIPopoverController alloc] initWithContentViewController: navController];
-        self.reportConcernPopoverController.popoverContentSize = CGSizeMake(275, 344);
+        self.reportConcernPopoverController.popoverContentSize = CGSizeMake(245, 344);
         self.reportConcernPopoverController.delegate = self;
         self.reportConcernPopoverController.popoverBackgroundViewClass = [SYNPopoverBackgroundView class];
         
@@ -1409,6 +1418,22 @@
                                            permittedArrowDirections: UIPopoverArrowDirectionLeft
                                                            animated: YES];
     }  
+}
+
+
+- (void) reportConcern: (NSString *) reportString
+{
+    [appDelegate.oAuthNetworkEngine reportConcernForUserId: appDelegate.currentOAuth2Credentials.userId
+                                                objectType: @"channel"
+                                                  objectId: self.channel.uniqueId
+                                                    reason: reportString
+                                          completionHandler: ^(NSDictionary *dictionary){
+                                              DebugLog(@"Concern successfully reported");
+                                          }
+                                               errorHandler: ^(NSError* error) {
+                                                   DebugLog(@"Report concern failed");
+                                                   DebugLog(@"%@", [error debugDescription]);
+                                               }];
 }
 
 
