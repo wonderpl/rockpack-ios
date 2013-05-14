@@ -18,9 +18,7 @@
 #define kLoginAnimationTransitionDuration 0.3f
 
 @interface SYNLoginViewControllerIphone () <UITextFieldDelegate, UIActionSheetDelegate, GKImagePickerDelegate>
-{
-    BOOL facebookLoginIsInProgress;
-}
+
 @property (weak, nonatomic) IBOutlet UIView *initialView;
 @property (weak, nonatomic) IBOutlet UIView *loginView;
 @property (weak, nonatomic) IBOutlet UIView *passwordView;
@@ -173,73 +171,47 @@
 
 - (IBAction)facebookTapped:(id)sender {
     
-    facebookLoginIsInProgress = NO;
-    FBSession* facebookSession = [FBSession activeSession];
+    [self doFacebookLoginAnimation];
     
-    if(facebookSession.state == FBSessionStateCreatedTokenLoaded) {
-        facebookLoginIsInProgress = YES;
-        [self doFacebookLoginAnimation];
-    }
-    
-    
-    
-    SYNFacebookManager* facebookManager = [SYNFacebookManager sharedFBManager];
-    
-    [facebookManager loginOnSuccess:^(NSDictionary<FBGraphUser> *dictionary) {
-        
-        if(!facebookLoginIsInProgress) {
+    [self loginThroughFacebookWithCompletionHandler:^(NSDictionary * dictionary) {
+        [self completeLoginProcess];
+    } errorHandler:^(id error) {
+        [self doFacebookFailedAnimation];
+        if([error isKindOfClass:[NSDictionary class]])
+        {
+
             
-            [self doFacebookLoginAnimation];
+            
+            NSDictionary* formErrors = error[@"form_errors"];
+
+            
+            if (formErrors)
+            {
+                [[[UIAlertView alloc] initWithTitle: NSLocalizedString(@"Facebook Login", nil)
+                                            message: NSLocalizedString(@"Could not log in through facebook", nil)
+                                           delegate: nil
+                                  cancelButtonTitle: NSLocalizedString(@"OK", nil)
+                                  otherButtonTitles: nil] show];
+            }
+            
         }
-        
-        
-        FBAccessTokenData* accessTokenData = [[FBSession activeSession] accessTokenData];
-        
-        [self.appDelegate.oAuthNetworkEngine doFacebookLoginWithAccessToken:accessTokenData.accessToken
-                                                     completionHandler: ^(SYNOAuth2Credential* credential) {
-                                                         
-                                                         [self.appDelegate.oAuthNetworkEngine userInformationFromCredentials: credential
-                                                                                                      completionHandler: ^(NSDictionary* dictionary) {
-                                                                                                          
-                                                                                                          [self checkAndSaveRegisteredUser:credential];
-                                                                                                          
-                                                                                                          [self completeLoginProcess];
-                                                                                                          
-                                                                                                      } errorHandler: ^(NSDictionary* errorDictionary) {
-                                                                                                    
-                                                                                                      }];
-                                                         
-                                                         
-                                                     } errorHandler: ^(NSDictionary* errorDictionary) {
-                                                         
-                                                         
-                                                         NSDictionary* formErrors = errorDictionary [@"form_errors"];
-                                                         
-                                                         if (formErrors)
-                                                         {
-                                                             [[[UIAlertView alloc] initWithTitle: NSLocalizedString(@"Facebook Login", nil)
-                                                                                         message: NSLocalizedString(@"Could not log in through facebook", nil)
-                                                                                        delegate: nil
-                                                                               cancelButtonTitle: NSLocalizedString(@"OK", nil)
-                                                                               otherButtonTitles: nil] show];
-                                                             [self doFacebookFailedAnimation];
-                                                         }
-                                                     }];
-    }
-                          onFailure: ^(NSString* errorString)
-     {
-         facebookLoginIsInProgress= NO;
-         
-         
-         // TODO: Use custom alert box here
-         [[[UIAlertView alloc] initWithTitle: NSLocalizedString(@"Facebook Login", nil)
-                                     message: errorString
-                                    delegate: nil
-                           cancelButtonTitle: NSLocalizedString(@"OK", nil)
-                           otherButtonTitles: nil] show];
-         [self doFacebookFailedAnimation];
-         DebugLog(@"Log in failed!");
-     }];
+        else if([error isKindOfClass:[NSString class]])
+        {
+            // TODO: Use custom alert box here
+            [[[UIAlertView alloc] initWithTitle: NSLocalizedString(@"Facebook Login", nil)
+                                        message: error
+                                       delegate: nil
+                              cancelButtonTitle: NSLocalizedString(@"OK", nil)
+                              otherButtonTitles: nil] show];
+            
+            DebugLog(@"Log in failed!");
+        }
+        else
+        {
+            //Should not happen!
+        }
+
+    }];
 }
 
 - (IBAction)signupTapped:(id)sender {
@@ -639,8 +611,16 @@
 
     [self.activityIndicator stopAnimating];
     
-    UIImageView *splashView = [[UIImageView alloc] initWithFrame:self.view.bounds];
-    splashView.image = [UIImage imageNamed:@"Default.png"];
+    UIImageView *splashView = nil;
+    if([[SYNDeviceManager sharedInstance] currentScreenHeight]>480.0f)
+    {
+        splashView = [[UIImageView alloc] initWithImage:[UIImage imageNamed: @"Default-568h"]];
+    }
+    else
+    {
+        splashView = [[UIImageView alloc] initWithImage:[UIImage imageNamed: @"Default"]];
+    }
+    splashView.center = CGPointMake(splashView.center.x, splashView.center.y-20.0f);
     splashView.alpha = 0.0;
 	[self.view addSubview: splashView];
     

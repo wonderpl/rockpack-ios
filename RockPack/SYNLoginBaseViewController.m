@@ -10,6 +10,8 @@
 #import "User.h"
 #import "SYNActivityManager.h"
 #import "SYNOAuthNetworkEngine.h"
+#import "SYNFacebookManager.h"
+#import <FacebookSDK/FacebookSDK.h>
 
 @interface SYNLoginBaseViewController ()
 
@@ -140,6 +142,30 @@
                errorHandler: (MKNKUserErrorBlock) errorBlock
 {
     [self.appDelegate.oAuthNetworkEngine updateAvatarForUserId: self.appDelegate.currentOAuth2Credentials.userId image:image completionHandler:completionBlock errorHandler:errorBlock];
+}
+
+#pragma mark - login facebook
+
+-(void) loginThroughFacebookWithCompletionHandler:(MKNKJSONCompleteBlock) completionBlock
+                                     errorHandler: (MKNKUserErrorBlock) errorBlock
+{
+    SYNFacebookManager* facebookManager = [SYNFacebookManager sharedFBManager];
+    
+    [facebookManager loginOnSuccess:^(NSDictionary<FBGraphUser> *dictionary) {
+        
+        FBAccessTokenData* accessTokenData = [[FBSession activeSession] accessTokenData];
+        
+        [self.appDelegate.oAuthNetworkEngine doFacebookLoginWithAccessToken:accessTokenData.accessToken completionHandler: ^(SYNOAuth2Credential* credential) {
+            [self.appDelegate.oAuthNetworkEngine userInformationFromCredentials: credential completionHandler: ^(NSDictionary* dictionary) {
+                [self checkAndSaveRegisteredUser:credential];
+                completionBlock(dictionary);
+            } errorHandler:errorBlock];
+        } errorHandler: errorBlock];
+    }
+    onFailure: ^(NSString* errorString)
+     {
+         errorBlock(errorString);
+     }];
 }
 
 @end

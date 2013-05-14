@@ -11,7 +11,6 @@
 #import "SYNActivityManager.h"
 #import "SYNCameraPopoverViewController.h"
 #import "SYNDeviceManager.h"
-#import "SYNFacebookManager.h"
 #import "SYNLoginErrorArrow.h"
 #import "SYNLoginViewController.h"
 #import "SYNNetworkEngine.h"
@@ -20,7 +19,6 @@
 #import "SYNPopoverBackgroundView.h"
 #import "UIFont+SYNFont.h"
 #import "User.h"
-#import <FacebookSDK/FacebookSDK.h>
 
 @interface SYNLoginViewController ()  <UITextFieldDelegate, SYNCameraPopoverViewControllerDelegate>
 
@@ -769,78 +767,68 @@
     
     [self clearAllErrorArrows];
     facebookSignInButton.enabled = NO;
+    [self doFacebookLoginAnimation];
     
-    FBSession* facebookSession = [FBSession activeSession];
-    
-    if(facebookSession.state == FBSessionStateCreatedTokenLoaded) {
-        _facebookLoginIsInProcess = YES;
-        [self doFacebookLoginAnimation];
-    }
-    
-    SYNFacebookManager* facebookManager = [SYNFacebookManager sharedFBManager];
-    
-    [facebookManager loginOnSuccess:^(NSDictionary<FBGraphUser> *dictionary) {
+    [self loginThroughFacebookWithCompletionHandler:^(NSDictionary * dictionary) {
+        [activityIndicator stopAnimating];
+        [self completeLoginProcess];
         
-        if(!_facebookLoginIsInProcess)
+    } errorHandler:^(id error) {
+        if([error isKindOfClass:[NSDictionary class]])
         {
-            [self doFacebookLoginAnimation];
+            signUpButton.alpha = 1.0;
+            
+            signUpButton.center = CGPointMake(signUpButton.center.x - 10.0, signUpButton.center.y);
+            [activityIndicator stopAnimating];
+            
+            
+            NSDictionary* formErrors = error[@"form_errors"];
+            
+            userNameInputField.enabled = YES;
+            passwordForgottenButton.enabled = YES;
+            finalLoginButton.enabled = YES;
+            loginButton.enabled = YES;
+            
+            passwordForgottenButton.enabled = YES;
+            
+            if (formErrors)
+            {
+                facebookSignInButton.enabled = YES;
+                secondaryFacebookMessage.text = NSLocalizedString(@"Could not log in through facebook", nil);
+                secondaryFacebookMessage.alpha = 1.0;
+            }
+
+        }
+        else if([error isKindOfClass:[NSString class]])
+        {_facebookLoginIsInProcess = NO;
+            facebookSignInButton.enabled = YES;
+            signUpButton.alpha = 1.0;
+            
+            signUpButton.center = CGPointMake(signUpButton.center.x - 10.0, signUpButton.center.y);
+            [activityIndicator stopAnimating];
+            
+            userNameInputField.enabled = YES;
+            passwordForgottenButton.enabled = YES;
+            finalLoginButton.enabled = YES;
+            loginButton.enabled = YES;
+            
+            passwordForgottenButton.enabled = YES;
+            
+            // TODO: Use custom alert box here
+            [[[UIAlertView alloc] initWithTitle: NSLocalizedString(@"Facebook Login", nil)
+                                        message: error
+                                       delegate: nil
+                              cancelButtonTitle: NSLocalizedString(@"OK", nil)
+                              otherButtonTitles: nil] show];
+            
+            DebugLog(@"Log in failed!");
+        }
+        else
+        {
+            //Should not happen!
         }
         
-        FBAccessTokenData* accessTokenData = [[FBSession activeSession] accessTokenData];
-        
-        [self.appDelegate.oAuthNetworkEngine doFacebookLoginWithAccessToken: accessTokenData.accessToken
-                                                     completionHandler: ^(SYNOAuth2Credential* credential) {
-                                                         
-                                                         [self.appDelegate.oAuthNetworkEngine userInformationFromCredentials: credential
-                                                                                                      completionHandler: ^(NSDictionary* dictionary) {
-                                                                                                          
-                                                                                                          [self checkAndSaveRegisteredUser: credential];
-                                                                                                          [activityIndicator stopAnimating];
-                                                                                                          [self completeLoginProcess];
-                                                                                                          
-                                                                                                      }
-                                                                                                           errorHandler: ^(NSDictionary* errorDictionary) {
-                                                                                                           }];
-                                                         
-                                                         
-                                                     }
-                                                          errorHandler: ^(NSDictionary* errorDictionary) {
-                                                              signUpButton.alpha = 1.0;
-                                                              
-                                                              signUpButton.center = CGPointMake(signUpButton.center.x + 20.0, signUpButton.center.y);
-                                                              [activityIndicator stopAnimating];
-                                                              
-                                                              NSDictionary* formErrors = errorDictionary [@"form_errors"];
-                                                              
-                                                              userNameInputField.enabled = YES;
-                                                              passwordForgottenButton.enabled = YES;
-                                                              finalLoginButton.enabled = YES;
-                                                              loginButton.enabled = YES;
-                                                              
-                                                              passwordForgottenButton.enabled = YES;
-                                                              
-                                                              if (formErrors)
-                                                              {
-                                                                  facebookSignInButton.enabled = YES;
-                                                                  secondaryFacebookMessage.text = NSLocalizedString(@"Could not log in through facebook", nil);
-                                                                  secondaryFacebookMessage.alpha = 1.0;
-                                                              }
-                                                          }];
-    }
-                          onFailure: ^(NSString* errorString)
-     {
-         _facebookLoginIsInProcess = NO;
-         facebookSignInButton.enabled = YES;
-         
-         // TODO: Use custom alert box here
-         [[[UIAlertView alloc] initWithTitle: NSLocalizedString(@"Facebook Login", nil)
-                                     message: errorString
-                                    delegate: nil
-                           cancelButtonTitle: NSLocalizedString(@"OK", nil)
-                           otherButtonTitles: nil] show];
-         
-         DebugLog(@"Log in failed!");
-     }];
+    }];
 }
 
 - (IBAction) forgottenPasswordPressed: (id) sender

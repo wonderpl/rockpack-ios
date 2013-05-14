@@ -48,5 +48,9 @@ typedef enum {
              completionHandler: (MKNKUserSuccessBlock) completionBlock
                   errorHandler: (MKNKUserErrorBlock) errorBlock;
 
+-(void) loginThroughFacebookWithCompletionHandler:(MKNKJSONCompleteBlock) completionBlock
+                                     errorHandler: (MKNKUserErrorBlock) errorBlock;
+
+
 - (void) setUpInitialState;
 @end
