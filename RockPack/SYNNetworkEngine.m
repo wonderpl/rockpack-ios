@@ -156,7 +156,6 @@
      completionHandler: (MKNKUserSuccessBlock) completionBlock
           errorHandler: (MKNKUserErrorBlock) errorBlock
 {
-    
     SYNNetworkOperationJsonObject *networkOperation = (SYNNetworkOperationJsonObject*)[self operationWithURLString: resourceURL
                                                                                                            params: nil];
     

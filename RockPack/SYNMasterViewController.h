@@ -27,9 +27,9 @@ typedef void (^VideoOverlayDismissBlock)(void);
 
 
 @property (nonatomic, strong) IBOutlet UIView* containerView;
-
-@property (nonatomic, strong) UIViewController* originViewController;
 @property (nonatomic, strong) SYNContainerViewController* containerViewController;
+@property (nonatomic, strong) UIViewController* originViewController;
+@property (strong, nonatomic) Reachability *reachability;
 
 - (id) initWithContainerViewController: (UIViewController*) root;
 
