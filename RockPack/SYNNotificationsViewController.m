@@ -124,8 +124,14 @@
         
     }
     
+    UIImage* placeholder;
+    if(notification.objectType == kNotificationObjectTypeVideo)
+        placeholder = [UIImage imageNamed:@"PlaceholderNotificationVideo"];
+    else
+        placeholder = [UIImage imageNamed:@"PlaceholderNotificationChannel"];
+    
     [notificationCell.thumbnailImageView setImageWithURL: thumbnaillUrl
-                                        placeholderImage: [UIImage imageNamed:@"AvatarProfile"]
+                                        placeholderImage: placeholder
                                                  options: SDWebImageRetryFailed];
     
     notificationCell.delegate = self;
