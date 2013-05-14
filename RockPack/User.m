@@ -16,6 +16,39 @@
 
 #pragma mark - Object factory
 
+
++ (User*) instanceFromUser:(User*)oldUser
+ usingManagedObjectContext:(NSManagedObjectContext*)managedObjectContext
+{
+    
+    User* instance = [User insertInManagedObjectContext: managedObjectContext];
+    
+    instance.username = oldUser.username;
+    
+    instance.emailAddress = oldUser.emailAddress;
+    
+    instance.firstName = oldUser.firstName;
+    
+    instance.lastName = oldUser.lastName;
+    
+    instance.activityUrl = oldUser.activityUrl;
+    
+    instance.coverartUrl = oldUser.coverartUrl;
+    
+    instance.subscriptionsUrl = oldUser.subscriptionsUrl;
+    
+    instance.genderValue = oldUser.genderValue;
+    
+    instance.dateOfBirth = oldUser.dateOfBirth;
+    
+    instance.locale = oldUser.locale;
+    
+    
+    return instance;
+    
+    
+}
+
 + (User*) instanceFromDictionary: (NSDictionary *) dictionary
        usingManagedObjectContext: (NSManagedObjectContext *) managedObjectContext
              ignoringObjectTypes: (IgnoringObjects) ignoringObjects
@@ -27,12 +60,13 @@
     if(!uniqueId)
         return nil;
     
-    NSEntityDescription* userEntity = [NSEntityDescription entityForName:@"User" inManagedObjectContext: managedObjectContext];
+    NSEntityDescription* userEntity = [NSEntityDescription entityForName: @"User"
+                                                  inManagedObjectContext: managedObjectContext];
     
     NSFetchRequest *userFetchRequest = [[NSFetchRequest alloc] init];
     [userFetchRequest setEntity:userEntity];
     
-    NSPredicate *predicate = [NSPredicate predicateWithFormat: @"uniqueId == '%@'", uniqueId];
+    NSPredicate *predicate = [NSPredicate predicateWithFormat: @"uniqueId == %@", uniqueId];
     [userFetchRequest setPredicate: predicate];
     
     
