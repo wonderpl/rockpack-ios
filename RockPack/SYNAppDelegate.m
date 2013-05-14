@@ -99,8 +99,6 @@ extern void instrumentObjcMessageSends(BOOL);
     // Se up CoreData // 
     [self initializeCoreDataStack];
 
-    // Create default user
-    [self createDefaultUser];
     
     
     // Video Queue View Controller //
@@ -502,38 +500,7 @@ extern void instrumentObjcMessageSends(BOOL);
 {
     [self.mainManagedObjectContext deleteObject:managedObject];
 }
-- (void) createDefaultUser
-{
-    // See if we have already created a default user object, and if not create one
-    NSError *error = nil;
-    NSEntityDescription *channelOwnerEntity = [NSEntityDescription entityForName: @"ChannelOwner"
-                                                          inManagedObjectContext: self.mainManagedObjectContext];
-    
-    // Find out how many Video objects we have in the database
-    NSFetchRequest *channelOwnerFetchRequest = [[NSFetchRequest alloc] init];
-    [channelOwnerFetchRequest setEntity: channelOwnerEntity];
-    
-    NSPredicate *predicate = [NSPredicate predicateWithFormat: @"uniqueId == 666"];
-    [channelOwnerFetchRequest setPredicate: predicate];
-    
-    NSArray *channelOwnerEntries = [self.mainManagedObjectContext executeFetchRequest: channelOwnerFetchRequest
-                                                                                error: &error];
-    
-    if (channelOwnerEntries.count > 0)
-    {
-        self.channelOwnerMe = (ChannelOwner *)channelOwnerEntries[0];
-    }
-    else
-    {
-        ChannelOwner *channelOwnerMe = [ChannelOwner insertInManagedObjectContext: self.mainManagedObjectContext];
-        
-        channelOwnerMe.displayName = @"PAUL CACKETT";
-        channelOwnerMe.uniqueId = @"666";
-        channelOwnerMe.thumbnailURL = @"http://demo.dev.rockpack.com.s3.amazonaws.com/images/Paul.png";
-        
-        self.channelOwnerMe = channelOwnerMe;
-    }
-}
+
 
 #pragma mark - User and Credentials
 
