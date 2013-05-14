@@ -1390,6 +1390,7 @@
                                                 cancelReportBlock: ^{
                                                     [self.reportConcernPopoverController dismissPopoverAnimated: YES];
                                                 }];
+            
             // Wrap it in a navigation controller
             UINavigationController *navController = [[UINavigationController alloc] initWithRootViewController: reportConcernTableViewController];
             
@@ -1426,42 +1427,45 @@
 //                             completion: nil];
             
             reportConcernTableViewController = [[SYNReportConcernTableViewController alloc] initWithNibName: @"SYNReportConcernTableViewControllerFullScreen~iphone"
-                                                                                                           bundle: [NSBundle mainBundle]];
+                                                                                                     bundle: [NSBundle mainBundle]
+                                                                                            sendReportBlock: ^ (NSString *reportString){
+                                                                                                [UIView animateWithDuration: kChannelEditModeAnimationDuration
+                                                                                                                 animations: ^{
+                                                                                                                     // Fade out the category tab controller
+                                                                                                                     reportConcernTableViewController.view.alpha = 0.0f;
+                                                                                                                 }
+                                                                                                                 completion: nil];
+                                                                                                [self reportConcern: reportString];
+                                                                                            }
+                                                                                          cancelReportBlock: ^{
+                                                                                              [UIView animateWithDuration: kChannelEditModeAnimationDuration
+                                                                                                               animations: ^{
+                                                                                                                   // Fade out the category tab controller
+                                                                                                                   reportConcernTableViewController.view.alpha = 0.0f;
+                                                                                                               }
+                                                                                                               completion: nil];
+                                                                                          }];
             // Move off the bottom of the screen
-            CGRect startFrame = self.categoryTableViewController.view.frame;
+            CGRect startFrame = reportConcernTableViewController.view.frame;
             startFrame.origin.y = self.view.frame.size.height;
-            self.categoryTableViewController.view.frame = startFrame;
+            reportConcernTableViewController.view.frame = startFrame;
             
-            [self.view addSubview: self.categoryTableViewController.view];
+            [self.view addSubview: reportConcernTableViewController.view];
             
             // Slide up onto the screen
             [UIView animateWithDuration: 0.3f
                                   delay: 0.0f
                                 options: UIViewAnimationOptionCurveEaseOut
                              animations: ^{
-                                 CGRect endFrame = self.categoryTableViewController.view.frame;
+                                 CGRect endFrame = reportConcernTableViewController.view.frame;
                                  endFrame.origin.y = 0.0f;
-                                 self.categoryTableViewController.view.frame = endFrame;
+                                 reportConcernTableViewController.view.frame = endFrame;
                              }
                              completion: nil];
         }
     }  
 }
 
-- (void) dismissReportConcernViewController: (UINavigationController *) navController
-{
-    self.reportConcernButton.selected = NO;
-    
-    if (UI_USER_INTERFACE_IDIOM() == UIUserInterfaceIdiomPad)
-    {
-
-    }
-    else
-    {
-        [navController dismissViewControllerAnimated: YES
-                                          completion: nil];
-    }
-}
 
 
 - (void) reportConcern: (NSString *) reportString
