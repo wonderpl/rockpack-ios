@@ -82,7 +82,7 @@
                      forState: UIControlStateHighlighted];
     
     [customUseButton addTarget: self
-                        action: @selector(_actionUse)
+                        action: @selector(actionSendReport)
               forControlEvents: UIControlEventTouchUpInside];
     
     customUseButton.frame = CGRectMake(0.0, 0.0, customUseButtonImage.size.width, customUseButtonImage.size.height);
@@ -147,7 +147,7 @@
 }
 
 
-- (void) actionUse
+- (void) actionSendReport
 {
     NSString *reportString = self.concernsArray[self.selectedIndexPath.row];
     self.sendReportBlock(reportString);

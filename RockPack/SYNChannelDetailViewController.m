@@ -32,12 +32,10 @@
 #import <AVFoundation/AVFoundation.h>
 #import <QuartzCore/QuartzCore.h>
 
-
 @interface SYNChannelDetailViewController () <UITextViewDelegate,
                                               GKImagePickerDelegate,
                                               UIPopoverControllerDelegate,
                                               SYNCameraPopoverViewControllerDelegate, SYNChannelCategoryTableViewDelegate, SYNChannelCoverImageSelectorDelegate>
-
 
 @property (nonatomic, assign)  CGPoint originalContentOffset;
 @property (nonatomic, strong) GKImagePicker *imagePicker;
@@ -69,6 +67,7 @@
 @property (nonatomic, strong) NSFetchedResultsController *channelCoverFetchedResultsController;
 @property (nonatomic, strong) NSFetchedResultsController *userChannelCoverFetchedResultsController;
 @property (nonatomic, strong) SYNCategoriesTabViewController *categoriesTabViewController;
+@property (nonatomic, strong) UIActivityIndicatorView* subscribingIndicator;
 @property (nonatomic, strong) UIImage* originalBackgroundImage;
 @property (nonatomic, strong) id<SDWebImageOperation> currentWebImageOperation;
 @property (nonatomic, weak) Channel *channel;
@@ -76,7 +75,6 @@
 @property (nonatomic,strong) NSString* selectedCoverId;
 @property (weak, nonatomic) IBOutlet UILabel *byLabel;
 
-@property (nonatomic, strong) UIActivityIndicatorView* subscribingIndicator;
 //iPhone specific
 @property (nonatomic,strong) AVURLAsset* selectedAsset;
 @property (nonatomic,strong) SYNChannelCoverImageSelectorViewController* coverImageSelector;
@@ -93,7 +91,6 @@
 
 @synthesize channelCoverFetchedResultsController = _channelCoverFetchedResultsController;
 @synthesize userChannelCoverFetchedResultsController = _userChannelCoverFetchedResultsController;
-@synthesize originalBackgroundImage;
 
 - (id) initWithChannel: (Channel *) channel
              usingMode: (kChannelDetailsMode) mode
@@ -101,8 +98,7 @@
 
     if ((self = [super initWithViewId: kChannelDetailsViewId]))
     {
-		self.channel = channel; // channel does not have the VideoInstances at this point, it will update with the kChannelUpdateRequest
-        
+		self.channel = channel;
         _mode = mode;
 	}
 
@@ -148,11 +144,7 @@
                                                                      alpha: 1.0f];
     // Set delegate so that we can respond to events
     self.channelTitleTextView.delegate = self;
-    
-    
-    
 
-    
     // Shadow for avatar background
     [self addShadowToLayer: self.avatarBackgroundView.layer];
     
@@ -194,19 +186,12 @@
   
     self.currentWebImageOperation = [self loadBackgroundImage];
     
-    
-    
-
-    
     // Set avatar
     [self.avatarImageView setImageWithURL: [NSURL URLWithString: self.channel.channelOwner.thumbnailURL]
                          placeholderImage: [UIImage imageNamed: @"AvatarChannel.png"]
                                   options: SDWebImageRetryFailed];
-    
-    
-    
 
-    if(!isIPhone)
+    if (!isIPhone)
     {
         // Create categories tab, but make invisible (alpha = 0) for now
         self.categoriesTabViewController = [[SYNCategoriesTabViewController alloc] initWithHomeButton: FALSE];
@@ -233,7 +218,7 @@
         self.createChannelButton.hidden = NO;
     }
     
-    if(!isIPhone)
+    if (!isIPhone)
     {
         // Set text on add cover and select category buttons
         NSString *coverString = NSLocalizedString (@"ADD A COVER", nil);
@@ -281,18 +266,6 @@
     self.selectedCategoryId = @"";
     self.selectedCoverId = @"";
 }
-
-
-- (void) updateCategoryButtonText: (NSString *) buttonText
-{    
-    NSMutableAttributedString* attributedCategoryString = [[NSMutableAttributedString alloc] initWithString: buttonText
-                                                                                                 attributes: @{NSForegroundColorAttributeName : [UIColor colorWithRed: 40.0f/255.0f green: 45.0f/255.0f blue: 51.0f/255.0f alpha: 1.0f],
-                                                                                       NSFontAttributeName : [UIFont boldRockpackFontOfSize: 18.0f]}];
-    // Set text on add cover and select category buttons
-    [self.selectCategoryButton setAttributedTitle: attributedCategoryString
-                                         forState: UIControlStateNormal];
-}
-
 
 
 - (void) viewWillAppear: (BOOL) animated
@@ -376,11 +349,22 @@
     [super viewWillDisappear: animated];
 }
 
-// TODO; Remove this method once happy with mode switching functionality
-- (IBAction) testMode
+
+- (void) updateCategoryButtonText: (NSString *) buttonText
 {
-    self.mode = (self.mode == kChannelDetailsModeDisplay) ? kChannelDetailsModeEdit: kChannelDetailsModeDisplay;
+    NSMutableAttributedString* attributedCategoryString = [[NSMutableAttributedString alloc] initWithString: buttonText
+                                                                                                 attributes: @{NSForegroundColorAttributeName : [UIColor colorWithRed: 40.0f/255.0f green: 45.0f/255.0f blue: 51.0f/255.0f alpha: 1.0f],
+                                                                                       NSFontAttributeName : [UIFont boldRockpackFontOfSize: 18.0f]}];
+    // Set text on add cover and select category buttons
+    [self.selectCategoryButton setAttributedTitle: attributedCategoryString
+                                         forState: UIControlStateNormal];
 }
+
+//// TODO; Remove this method once happy with mode switching functionality
+//- (IBAction) testMode
+//{
+//    self.mode = (self.mode == kChannelDetailsModeDisplay) ? kChannelDetailsModeEdit: kChannelDetailsModeDisplay;
+//}
 
 
 - (void) setMode: (kChannelDetailsMode) mode
@@ -944,10 +928,12 @@
                                                       userInfo: @{ kChannel : self.channel }];
 }
 
--(IBAction)profileImagePressed:(UIButton*)sender
+
+- (IBAction) profileImagePressed: (UIButton*) sender
 {
-    [self viewProfileDetails:self.channel.channelOwner];
+    [self viewProfileDetails: self.channel.channelOwner];
 }
+
 
 - (void) videoAddButtonTapped: (UIButton *) addButton
 {
@@ -1384,8 +1370,15 @@
     if (button.selected)
     {
         // Create out concerns table view controller
-        SYNReportConcernTableViewController *reportConcernTableViewController = [[SYNReportConcernTableViewController alloc] init];
-        
+        SYNReportConcernTableViewController *reportConcernTableViewController = [[SYNReportConcernTableViewController alloc]
+                                                                                 initWithSendReportBlock: ^ (NSString *reportString){
+                                                                                     self.reportConcernButton.selected = NO;
+                                                                                     [self.reportConcernPopoverController dismissPopoverAnimated: YES];
+                                                                                 }
+                                                                                 cancelReportBlock: ^{
+                                                                                     self.reportConcernButton.selected = NO;
+                                                                                     [self.reportConcernPopoverController dismissPopoverAnimated: YES];
+                                                                                 }];
         // Wrap it in a navigation controller
         UINavigationController *navController = [[UINavigationController alloc]
                                                  initWithRootViewController: reportConcernTableViewController];
@@ -1459,7 +1452,7 @@
     else if (popoverController == self.reportConcernPopoverController)
     {
         self.reportConcernButton.selected = NO;
-        self.cameraPopoverController = nil;
+        self.reportConcernPopoverController = nil;
     }
     else
     {
@@ -1711,7 +1704,7 @@
     CGRectMake(0.0, 138.0, 1024.0, 886.0) : CGRectMake(138.0, 0.0, 886.0, 1024.0);
     
     
-    CGImageRef croppedImageRef = CGImageCreateWithImageInRect([originalBackgroundImage CGImage], croppingRect);
+    CGImageRef croppedImageRef = CGImageCreateWithImageInRect([self.originalBackgroundImage CGImage], croppingRect);
     
     UIImage* croppedImage = [UIImage imageWithCGImage:croppedImageRef];
     
