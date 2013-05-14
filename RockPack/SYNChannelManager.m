@@ -214,7 +214,6 @@
                                             
                                             [channel setAttributesFromDictionary: responseDictionary
                                                                           withId: channel.uniqueId
-                                                       usingManagedObjectContext: appDelegate.mainManagedObjectContext
                                                              ignoringObjectTypes: kIgnoreNothing
                                                                        andViewId: kChannelDetailsViewId];
                                             
@@ -246,7 +245,6 @@
                                        
                                        [channel setAttributesFromDictionary: responseDictionary
                                                                      withId: channel.uniqueId
-                                                  usingManagedObjectContext: appDelegate.mainManagedObjectContext
                                                         ignoringObjectTypes: kIgnoreNothing
                                                                   andViewId: kChannelDetailsViewId];
                                        

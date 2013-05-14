@@ -78,11 +78,8 @@ static NSEntityDescription *channelEntity = nil;
     }
     
     
-    
-    
     [instance setAttributesFromDictionary: dictionary
                                    withId: uniqueId
-                usingManagedObjectContext: managedObjectContext
                       ignoringObjectTypes: ignoringObjects
                                 andViewId: viewId];
     
@@ -93,7 +90,6 @@ static NSEntityDescription *channelEntity = nil;
 
 - (void) setAttributesFromDictionary: (NSDictionary *) dictionary
                               withId: (NSString *) uniqueId
-           usingManagedObjectContext: (NSManagedObjectContext *) managedObjectContext
                  ignoringObjectTypes: (IgnoringObjects) ignoringObjects
                            andViewId: (NSString *) viewId {
     
@@ -110,7 +106,7 @@ static NSEntityDescription *channelEntity = nil;
     {
         
         [self addVideoInstancesFromDictionary:dictionary
-                    usingManagedObjectContext:managedObjectContext
+                    usingManagedObjectContext:self.managedObjectContext
                                     andViewId:viewId];
         
     }
@@ -121,7 +117,7 @@ static NSEntityDescription *channelEntity = nil;
     if(!(ignoringObjects & kIgnoreChannelOwnerObject) && ownerDictionary)
     {
         self.channelOwner = [ChannelOwner instanceFromDictionary: ownerDictionary
-                                       usingManagedObjectContext: managedObjectContext
+                                       usingManagedObjectContext: self.managedObjectContext
                                              ignoringObjectTypes: kIgnoreChannelObjects];
     }
     
@@ -130,7 +126,7 @@ static NSEntityDescription *channelEntity = nil;
     if(!(ignoringObjects & kIgnoreChannelCover) && channelCoverDictionary)
     {
         self.channelCover = [ChannelCover instanceFromDictionary:channelCoverDictionary
-                                       usingManagedObjectContext:managedObjectContext];
+                                       usingManagedObjectContext:self.managedObjectContext];
     }
     
     
@@ -214,7 +210,7 @@ static NSEntityDescription *channelEntity = nil;
             continue;
         
         [self.videoInstancesSet addObject: [VideoInstance instanceFromDictionary: itemDictionary
-                                                       usingManagedObjectContext: managedObjectContext
+                                                       usingManagedObjectContext: self.managedObjectContext
                                                              ignoringObjectTypes: kIgnoreChannelObjects
                                                                        andViewId: viewId]];
         

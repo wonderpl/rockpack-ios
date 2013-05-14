@@ -28,6 +28,8 @@
     if (self = [super initWithViewId:vid])
     {
         
+        appDelegate = (SYNAppDelegate*)[[UIApplication sharedApplication] delegate];
+        
         [[NSNotificationCenter defaultCenter] addObserver: self
                                                  selector: @selector(handleDataModelChange:)
                                                      name: NSManagedObjectContextObjectsDidChangeNotification
@@ -54,7 +56,7 @@
 
 -(void)handleDataModelChange:(NSNotification*)dataNotification
 {
-    NSArray* updatedObjects = (NSArray*)[[dataNotification userInfo] objectForKey: NSInsertedObjectsKey];
+    // NSArray* updatedObjects = (NSArray*)[[dataNotification userInfo] objectForKey: NSInsertedObjectsKey];
     
     [self reloadCollectionViews];
     
