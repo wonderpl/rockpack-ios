@@ -351,6 +351,7 @@ typedef enum {
 
 #define kProfileRequested           @"kProfileRequested"
 #define kChannelDetailsRequested    @"kChannelDetailsRequested"
+#define kVideoOverlayRequested      @"kVideoOverlayRequested"
 //
 // Tracking
 //

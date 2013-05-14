@@ -74,7 +74,8 @@
                 {
                     self.channelId = [channelDictionary objectForKey:@"id"];
                     self.channelResourceUrl = [channelDictionary objectForKey:@"resource_url"];
-                    self.channelThumbnailUrl = [channelDictionary objectForKey:@"thumbnail_url"];
+                    // no thumbnail url in case of a channel object within a video object
+                    
                 }
             }
             

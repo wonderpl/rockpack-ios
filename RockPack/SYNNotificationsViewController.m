@@ -12,6 +12,7 @@
 #import "SYNOAuthNetworkEngine.h"
 #import "SYNRockpackNotification.h"
 #import "UIImageView+WebCache.h"
+#import "Video.h"
 
 #define kNotificationsCellIdent @"kNotificationsCellIdent"
 
@@ -68,11 +69,6 @@
 }
 
 
-- (void)didReceiveMemoryWarning
-{
-    [super didReceiveMemoryWarning];
-    // Dispose of any resources that can be recreated.
-}
 
 #pragma mark - Table view data source
 
@@ -205,7 +201,14 @@
     
     if(notification.objectType == kNotificationObjectTypeVideo)
     {
+        Channel* channel = [self channelFromChannelId:notification.channelId];
         
+        if(!channel)
+            return;
+        
+        [[NSNotificationCenter defaultCenter] postNotificationName:kChannelDetailsRequested
+                                                            object:self
+                                                          userInfo:@{kChannel:channel}];
     }
     else
     {
@@ -229,6 +232,40 @@
 {
     _notifications = notifications;
     [self.tableView reloadData];
+}
+
+-(Video*)videoFromVideoId:(NSString*)videoId
+{
+    Video* video;
+    
+    NSEntityDescription* channelEntity = [NSEntityDescription entityForName:@"Video"
+                                                     inManagedObjectContext:appDelegate.mainManagedObjectContext];
+    
+    NSFetchRequest *channelFetchRequest = [[NSFetchRequest alloc] init];
+    [channelFetchRequest setEntity: channelEntity];
+    
+    
+    NSPredicate *predicate = [NSPredicate predicateWithFormat: @"uniqueId == %@", videoId];
+    
+    [channelFetchRequest setPredicate: predicate];
+    
+    NSError* error;
+    
+    NSArray *matchingChannelEntries = [appDelegate.mainManagedObjectContext executeFetchRequest: channelFetchRequest
+                                                                                          error: &error];
+    
+    
+    if (matchingChannelEntries.count > 0)
+    {
+        video = matchingChannelEntries[0];
+        
+    }
+    else
+    {
+        
+    }
+    
+    return video;
 }
 
 -(Channel*)channelFromChannelId:(NSString*)channelId
