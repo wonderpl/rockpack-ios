@@ -12,6 +12,7 @@
 #import "SYNOAuthNetworkEngine.h"
 #import "SYNRockpackNotification.h"
 #import "UIImageView+WebCache.h"
+#import "Video.h"
 
 #define kNotificationsCellIdent @"kNotificationsCellIdent"
 
@@ -68,11 +69,6 @@
 }
 
 
-- (void)didReceiveMemoryWarning
-{
-    [super didReceiveMemoryWarning];
-    // Dispose of any resources that can be recreated.
-}
 
 #pragma mark - Table view data source
 
@@ -97,7 +93,7 @@
     SYNRockpackNotification* notification = (SYNRockpackNotification*)[_notifications objectAtIndex:indexPath.row];
     
     NSMutableString* constructedMessage = [[NSMutableString alloc] init];
-    [constructedMessage appendFormat:@"%@", [notification.userDisplayName uppercaseString]];
+    [constructedMessage appendFormat:@"%@", [notification.channelOwner.displayName uppercaseString]];
     [constructedMessage appendString:@" has "];
     [constructedMessage appendFormat:@"%@", notification.messageType];
     if([notification.messageType isEqualToString:@"subscribed"])
@@ -109,13 +105,15 @@
     
     notificationCell.messageTitle = [NSString stringWithString:constructedMessage];
     
-    NSURL* userThumbnailUrl = [NSURL URLWithString:notification.userThumbnailUrl];
+    NSURL* userThumbnailUrl = [NSURL URLWithString:notification.channelOwner.thumbnailURL];
     
     [notificationCell.imageView setImageWithURL: userThumbnailUrl
                      placeholderImage: [UIImage imageNamed:@"AvatarProfile"]
                               options: SDWebImageRetryFailed];
+    
+    
     NSURL* thumbnaillUrl;
-    if([notification.messageType isEqualToString:@"starred"])
+    if(notification.objectType == kNotificationObjectTypeVideo)
     {
         thumbnaillUrl = [NSURL URLWithString:notification.videoThumbnailUrl];
         
@@ -126,9 +124,15 @@
         
     }
     
-    [notificationCell.imageView setImageWithURL: thumbnaillUrl
-                               placeholderImage: [UIImage imageNamed:@"AvatarProfile"]
-                                        options: SDWebImageRetryFailed];
+    UIImage* placeholder;
+    if(notification.objectType == kNotificationObjectTypeVideo)
+        placeholder = [UIImage imageNamed:@"PlaceholderNotificationVideo"];
+    else
+        placeholder = [UIImage imageNamed:@"PlaceholderNotificationChannel"];
+    
+    [notificationCell.thumbnailImageView setImageWithURL: thumbnaillUrl
+                                        placeholderImage: placeholder
+                                                 options: SDWebImageRetryFailed];
     
     notificationCell.delegate = self;
     
@@ -179,13 +183,53 @@
 
 #pragma mark - Delegate Handler
 
--(void)mainImageTableCellPressed:(UIGestureRecognizer*)recogniser
+-(void)mainImageTableCellPressed:(UIButton*)button
 {
-    NSLog(@"Click!");
+    SYNNotificationsTableViewCell* cellPressed = (SYNNotificationsTableViewCell*)button.superview;
+    
+    NSIndexPath* indexPathForCellPressed = [self.tableView indexPathForCell:cellPressed];
+    
+    SYNRockpackNotification* notification = self.notifications[indexPathForCellPressed.row];
+    
+    
+    [[NSNotificationCenter defaultCenter] postNotificationName:kProfileRequested
+                                                        object:self
+                                                      userInfo:@{kChannelOwner:notification.channelOwner}];
+    
 }
--(void)itemImageTableCellPressed:(UIGestureRecognizer*)recogniser
+-(void)itemImageTableCellPressed:(UIButton*)button
 {
-    NSLog(@"Click!");
+    SYNNotificationsTableViewCell* cellPressed = (SYNNotificationsTableViewCell*)button.superview;
+    
+    NSIndexPath* indexPathForCellPressed = [self.tableView indexPathForCell:cellPressed];
+    
+    SYNRockpackNotification* notification = self.notifications[indexPathForCellPressed.row];
+    
+    if(notification.objectType == kNotificationObjectTypeVideo)
+    {
+        Channel* channel = [self channelFromChannelId:notification.channelId];
+        
+        if(!channel)
+            return;
+        
+        [[NSNotificationCenter defaultCenter] postNotificationName:kChannelDetailsRequested
+                                                            object:self
+                                                          userInfo:@{kChannel:channel}];
+    }
+    else
+    {
+        Channel* channel = [self channelFromChannelId:notification.channelId];
+        
+        if(!channel)
+            return;
+        
+        [[NSNotificationCenter defaultCenter] postNotificationName:kChannelDetailsRequested
+                                                            object:self
+                                                          userInfo:@{kChannel:channel}];
+    }
+    
+    
+    
 }
 
 #pragma mark - Accessors
@@ -196,4 +240,67 @@
     [self.tableView reloadData];
 }
 
+-(Video*)videoFromVideoId:(NSString*)videoId
+{
+    Video* video;
+    
+    NSEntityDescription* channelEntity = [NSEntityDescription entityForName:@"Video"
+                                                     inManagedObjectContext:appDelegate.mainManagedObjectContext];
+    
+    NSFetchRequest *channelFetchRequest = [[NSFetchRequest alloc] init];
+    [channelFetchRequest setEntity: channelEntity];
+    
+    
+    NSPredicate *predicate = [NSPredicate predicateWithFormat: @"uniqueId == %@", videoId];
+    
+    [channelFetchRequest setPredicate: predicate];
+    
+    NSError* error;
+    
+    NSArray *matchingChannelEntries = [appDelegate.mainManagedObjectContext executeFetchRequest: channelFetchRequest
+                                                                                          error: &error];
+    
+    
+    if (matchingChannelEntries.count > 0)
+    {
+        video = matchingChannelEntries[0];
+        
+    }
+    else
+    {
+        
+    }
+    
+    return video;
+}
+
+-(Channel*)channelFromChannelId:(NSString*)channelId
+{
+    Channel* channel;
+    
+    NSEntityDescription* channelEntity = [NSEntityDescription entityForName:@"Channel"
+                                                         inManagedObjectContext:appDelegate.mainManagedObjectContext];
+    
+    NSFetchRequest *channelFetchRequest = [[NSFetchRequest alloc] init];
+    [channelFetchRequest setEntity: channelEntity];
+    
+    
+    NSPredicate *predicate = [NSPredicate predicateWithFormat: @"uniqueId == %@", channelId];
+    
+    [channelFetchRequest setPredicate: predicate];
+    
+    NSError* error;
+    
+    NSArray *matchingChannelEntries = [appDelegate.mainManagedObjectContext executeFetchRequest: channelFetchRequest
+                                                                                          error: &error];
+    
+    
+    if (matchingChannelEntries.count > 0)
+    {
+        channel = matchingChannelEntries[0];
+                
+    }
+    
+    return channel;
+}
 @end

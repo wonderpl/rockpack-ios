@@ -48,6 +48,13 @@
     self.view.frame = CGRectMake(0.0, kStandardCollectionViewOffsetY, self.view.frame.size.width, self.view.frame.size.height);
     self.view.autoresizingMask = UIViewAutoresizingFlexibleWidth;
     
+    
+}
+
+-(void) viewDidLoad
+{
+    [super viewDidLoad];
+    
     [self loadCategories];
 }
 
@@ -71,11 +78,13 @@
                                                                    ascending: NO];
     
     [categoriesFetchRequest setSortDescriptors: @[sortDescriptor]];
+    
+    categoriesFetchRequest.includesSubentities = NO;
 
     NSArray *matchingCategoryInstanceEntries = [appDelegate.mainManagedObjectContext executeFetchRequest: categoriesFetchRequest
                                                                                                    error: &error];
     
-    if (matchingCategoryInstanceEntries.count <= 0)
+    if (matchingCategoryInstanceEntries.count == 0)
     {
         
         [appDelegate.networkEngine updateCategoriesOnCompletion: ^{

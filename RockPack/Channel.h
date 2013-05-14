@@ -13,7 +13,6 @@
 
 - (void) setAttributesFromDictionary: (NSDictionary *) dictionary
                               withId: (NSString *) uniqueId
-           usingManagedObjectContext: (NSManagedObjectContext *) managedObjectContext
                  ignoringObjectTypes: (IgnoringObjects) ignoringObjects
                            andViewId: (NSString *) viewId;
 

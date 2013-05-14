@@ -9,12 +9,20 @@
 #import <Foundation/Foundation.h>
 #import "User.h"
 
+typedef enum {
+    kNotificationObjectTypeVideo = 0,
+    kNotificationObjectTypeChannel = 1
+
+} kNotificationObjectType;
+
 @interface SYNRockpackNotification : NSObject
 
 @property (nonatomic) NSInteger identifier;
 @property (nonatomic, strong) NSString* messageType;
 @property (nonatomic, strong) NSDate* dateCreated;
 @property (nonatomic) BOOL read;
+
+@property (nonatomic, readonly) kNotificationObjectType objectType;
 
 // Video Message
 
@@ -27,10 +35,9 @@
 
 // User Data
 
-@property (nonatomic, strong) NSString* userId;
-@property (nonatomic, strong) NSString* userResourceUrl;
-@property (nonatomic, strong) NSString* userDisplayName;
-@property (nonatomic, strong) NSString* userThumbnailUrl;
+@property (nonatomic, strong) ChannelOwner* channelOwner;
+
+@property (nonatomic, strong) Channel* channel;
 
 
 

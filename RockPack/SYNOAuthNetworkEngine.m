@@ -980,7 +980,7 @@
     SYNNetworkOperationJsonObject *networkOperation = (SYNNetworkOperationJsonObject*)[self operationWithPath: apiString
                                                                                                        params: params
                                                                                                    httpMethod: @"GET"
-                                                                                                          ssl: TRUE];
+                                                                                                          ssl: YES];
     [self addCommonHandlerToNetworkOperation: networkOperation
                            completionHandler: completionBlock
                                 errorHandler: errorBlock];
@@ -1066,7 +1066,8 @@
     
     SYNNetworkOperationJsonObject *networkOperation = (SYNNetworkOperationJsonObject*)[self operationWithPath: apiString
                                                                                                        params: params
-                                                                                                   httpMethod: @"GET"];
+                                                                                                   httpMethod: @"GET"
+                                                                                                          ssl: YES];
     
     __weak SYNOAuthNetworkEngine *weakSelf = self;
     

@@ -1,5 +1,5 @@
 //
-//  SYNSubscriptionsManager.m
+//  SYNChannelManager.m
 //  rockpack
 //
 //  Created by Michael Michailidis on 23/04/2013.
@@ -214,7 +214,6 @@
                                             
                                             [channel setAttributesFromDictionary: responseDictionary
                                                                           withId: channel.uniqueId
-                                                       usingManagedObjectContext: appDelegate.mainManagedObjectContext
                                                              ignoringObjectTypes: kIgnoreNothing
                                                                        andViewId: kChannelDetailsViewId];
                                             
@@ -246,7 +245,6 @@
                                        
                                        [channel setAttributesFromDictionary: responseDictionary
                                                                      withId: channel.uniqueId
-                                                  usingManagedObjectContext: appDelegate.mainManagedObjectContext
                                                         ignoringObjectTypes: kIgnoreNothing
                                                                   andViewId: kChannelDetailsViewId];
                                        

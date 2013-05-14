@@ -349,7 +349,9 @@ typedef enum {
 
 #define kNotificationMarkedRead     @"kNoteAddedToChannel"
 
-
+#define kProfileRequested           @"kProfileRequested"
+#define kChannelDetailsRequested    @"kChannelDetailsRequested"
+#define kVideoOverlayRequested      @"kVideoOverlayRequested"
 //
 // Tracking
 //

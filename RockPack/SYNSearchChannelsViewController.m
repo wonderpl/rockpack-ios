@@ -28,6 +28,8 @@
     if (self = [super initWithViewId:vid])
     {
         
+        appDelegate = (SYNAppDelegate*)[[UIApplication sharedApplication] delegate];
+        
         [[NSNotificationCenter defaultCenter] addObserver: self
                                                  selector: @selector(handleDataModelChange:)
                                                      name: NSManagedObjectContextObjectsDidChangeNotification
@@ -43,7 +45,6 @@
     self.trackedViewName = @"Search - Channels";
     
     
-    
     CGRect collectionFrame = self.channelThumbnailCollectionView.frame;
     collectionFrame.origin.y += 60.0;
     collectionFrame.size.height -= 60.0;
@@ -54,8 +55,10 @@
 
 -(void)handleDataModelChange:(NSNotification*)dataNotification
 {
-    NSArray* updatedObjects = (NSArray*)[[dataNotification userInfo] objectForKey: NSInsertedObjectsKey];
+    // channels are inserted so they are caught in the NSInsertedObjectsKey array
+    // NSArray* updatedObjects = (NSArray*)[[dataNotification userInfo] objectForKey: NSInsertedObjectsKey];
     
+    // this is mainly for the number refresh at the tabs
     [self reloadCollectionViews];
     
     
@@ -66,8 +69,6 @@
     NSFetchRequest *request = [[NSFetchRequest alloc] init];
     [request setEntity:[NSEntityDescription entityForName:@"Channel"
                                    inManagedObjectContext:appDelegate.searchManagedObjectContext]];
-    
-    
     
     
     NSPredicate* notOwnedByUserPredicate = [NSPredicate predicateWithFormat:@"channelOwner.uniqueId != %@", appDelegate.currentUser.uniqueId];
@@ -96,6 +97,7 @@
 - (void) viewWillAppear: (BOOL) animated
 {
     // override the data loading
+    [self reloadCollectionViews];
     
 }
 
