@@ -40,6 +40,7 @@
 @property (nonatomic, strong) IBOutlet UITextField *channelNameTextField;
 @property (nonatomic, strong) UIPopoverController *activityPopoverController;
 @property (nonatomic, strong) UIView *dropZoneView;
+@property (nonatomic, strong) UIButton* addToChannelButton;
 
 @end
 
@@ -51,6 +52,7 @@
 @synthesize selectedIndex = _selectedIndex;
 
 @synthesize tabViewController;
+@synthesize addToChannelButton;
 
 #pragma mark - Custom accessor methods
 
@@ -82,18 +84,19 @@
     
     if(self.needsAddButton)
     {
-        UIButton* addToChannelButton = [UIButton buttonWithType:UIButtonTypeCustom];
+        self.addToChannelButton = [UIButton buttonWithType:UIButtonTypeCustom];
         
         UIImage* buttonImageInactive = [UIImage imageNamed:@"ButtonAddToChannelInactive"];
-        UIImage* buttonImageActive = [UIImage imageNamed:@"ButtonAddToChannelActive"];
-        UIImage* buttonImageHighlighted = [UIImage imageNamed:@"ButtonAddToChannelInactiveHighlighted"];
+        
+        UIImage* buttonImageInactiveHighlighted = [UIImage imageNamed:@"ButtonAddToChannelInactiveHighlighted"];
+        
         
         
         addToChannelButton.frame = CGRectMake(884.0, 80.0, buttonImageInactive.size.width, buttonImageInactive.size.height);
         [addToChannelButton setImage:buttonImageInactive forState:UIControlStateNormal];
         
-        [addToChannelButton setImage:buttonImageActive forState:UIControlStateSelected];
-        [addToChannelButton setImage:buttonImageHighlighted forState:UIControlStateHighlighted];
+        [addToChannelButton setImage:buttonImageInactiveHighlighted forState:UIControlStateHighlighted];
+        
         
         addToChannelButton.autoresizingMask = UIViewAutoresizingFlexibleLeftMargin | UIViewAutoresizingFlexibleBottomMargin;
         
@@ -104,9 +107,61 @@
     }
 }
 
+-(void)viewWillAppear:(BOOL)animated
+{
+    [super viewWillAppear:animated];
+    
+    if(self.needsAddButton)
+    {
+        [appDelegate.videoQueue addObserver:self forKeyPath:@"isEmpty" options:NSKeyValueObservingOptionNew context:nil];
+    }
+}
+
+- (void) observeValueForKeyPath: (NSString *) keyPath
+                       ofObject: (id) object
+                         change: (NSDictionary *) change
+                        context: (void *) context
+{
+    
+    if(object == appDelegate.videoQueue)
+    {
+        if(appDelegate.videoQueue.isEmpty)
+        {
+            
+            
+            [addToChannelButton setImage:[UIImage imageNamed:@"ButtonAddToChannelInactive"] forState:UIControlStateNormal];
+            [addToChannelButton setImage:[UIImage imageNamed:@"ButtonAddToChannelInactiveHighlighted"] forState:UIControlStateHighlighted];
+        }
+        else
+        {
+            
+            
+            [addToChannelButton setImage:[UIImage imageNamed:@"ButtonAddToChannelActive"] forState:UIControlStateNormal];
+            [addToChannelButton setImage:[UIImage imageNamed:@"ButtonAddToChannelActiveHighlighted"] forState:UIControlStateHighlighted];
+        }
+    }
+    
+    
+}
+
+-(void)viewWillDisappear:(BOOL)animated
+{
+    [super viewWillDisappear:animated];
+    
+    if(self.needsAddButton)
+    {
+        [appDelegate.videoQueue removeObserver:self forKeyPath:@"isEmpty" context:nil];
+    }
+}
+
 -(void)addToChannelButtonPressed:(UIButton*)button
 {
-    [[NSNotificationCenter defaultCenter] postNotificationName:kNoteAddToChannelRequest object:self];
+    if(appDelegate.videoQueue.isEmpty)
+    {
+        return;
+    }
+    [[NSNotificationCenter defaultCenter] postNotificationName:kNoteAddToChannelRequest
+                                                        object:self];
 }
 
 - (void) viewCameToScrollFront
