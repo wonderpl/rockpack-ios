@@ -32,7 +32,7 @@
     NSFetchRequest *userFetchRequest = [[NSFetchRequest alloc] init];
     [userFetchRequest setEntity:userEntity];
     
-    NSPredicate *predicate = [NSPredicate predicateWithFormat: @"uniqueId == '%@'", uniqueId];
+    NSPredicate *predicate = [NSPredicate predicateWithFormat: @"uniqueId == %@", uniqueId];
     [userFetchRequest setPredicate: predicate];
     
     
@@ -42,16 +42,12 @@
     if (matchingCategoryInstanceEntries.count > 0)
     {
         instance = matchingCategoryInstanceEntries[0];
-        
-        
     }
     else
     {
         instance = [User insertInManagedObjectContext: managedObjectContext];
         
-        instance.uniqueId = uniqueId;
-        
-        
+        instance.uniqueId = uniqueId;        
     }
     
     [instance setAttributesFromDictionary: dictionary
