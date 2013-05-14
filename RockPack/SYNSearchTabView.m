@@ -30,11 +30,11 @@
         
         switch (itsType) {
             case SearchTabTypeVideos:
-                typeTitle = @"VIDEOS";
+                typeTitle = NSLocalizedString(@"VIDEOS", nil);
                 break;
                 
             case SearchTabTypeChannels:
-                typeTitle = @"CHANNELS";
+                typeTitle = NSLocalizedString(@"CHANNELS", nil);
                 break;
         }
         

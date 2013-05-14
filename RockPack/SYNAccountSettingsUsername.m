@@ -55,7 +55,7 @@
         return;
     
     if(![self formIsValid]) {
-        self.errorLabel.text = @"You Have Entered Invalid Characters";
+        self.errorLabel.text = NSLocalizedString (@"You Have Entered Invalid Characters", nil);
         return;
     }
     

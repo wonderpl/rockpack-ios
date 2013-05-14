@@ -149,7 +149,7 @@
     }
     else
     {
-        [self.headerChannelsView setTitle: @"YOUR CHANNELS"
+        [self.headerChannelsView setTitle: NSLocalizedString(@"YOUR CHANNELS", nil)
                                 andNumber: 2];
         
         [self.headerChannelsView setBackgroundImage: ([[SYNDeviceManager sharedInstance] isLandscape] ? [UIImage imageNamed: @"HeaderProfileChannelsLandscape"] : [UIImage imageNamed: @"HeaderProfilePortraitBoth"])];
@@ -199,7 +199,7 @@
     }
     else
     {
-        [self.headerSubscriptionsView setTitle: @"YOUR SUBSCRIPTIONS"
+        [self.headerSubscriptionsView setTitle: NSLocalizedString(@"YOUR SUBSCRIPTIONS", nil)
                                      andNumber: 2];
         
         [self.headerSubscriptionsView setBackgroundImage: ([[SYNDeviceManager sharedInstance] isLandscape] ? [UIImage imageNamed: @"HeaderProfileSubscriptionsLandscape"] : [UIImage imageNamed: @"HeaderProfilePortraitBoth"])];
@@ -922,13 +922,13 @@
     NSIndexPath *indexPath = [self.channelThumbnailCollectionView indexPathForItemAtPoint: v.center];
     self.channelDeleteCandidate = (Channel*)self.user.channels[indexPath.row];
     
-    NSString* message = [NSString stringWithFormat: @"You are about to delete %@", _channelDeleteCandidate.title];
+    NSString* message = [NSString stringWithFormat: NSLocalizedString(@"You are about to delete %@", nil), _channelDeleteCandidate.title];
     
-    [[[UIAlertView alloc] initWithTitle: @"Delete?"
+    [[[UIAlertView alloc] initWithTitle: NSLocalizedString(@"Delete?", nil)
                                 message: message
                                delegate: self
-                      cancelButtonTitle: @"Cancel"
-                      otherButtonTitles: @"OK", nil] show];
+                      cancelButtonTitle: NSLocalizedString(@"Cancel", nil)
+                      otherButtonTitles: NSLocalizedString(@"OK", nil), nil] show];
 }
 
 
