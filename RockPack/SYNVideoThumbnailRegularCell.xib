@@ -34,7 +34,7 @@
 				<string key="targetRuntimeIdentifier">IBIPadFramework</string>
 			</object>
 			<object class="IBUICollectionViewCell" id="274337159">
-				<nil key="NSNextResponder"/>
+				<reference key="NSNextResponder"/>
 				<int key="NSvFlags">268</int>
 				<array class="NSMutableArray" key="NSSubviews">
 					<object class="IBUIView" id="301134111">
@@ -100,6 +100,7 @@
 								<int key="NSvFlags">292</int>
 								<string key="NSFrame">{{9, 114}, {230, 26}}</string>
 								<reference key="NSSuperview" ref="301134111"/>
+								<reference key="NSNextKeyView"/>
 								<string key="NSReuseIdentifierKey">_NS:9</string>
 								<reference key="IBUIBackgroundColor" ref="456240611"/>
 								<bool key="IBUIAutoresizesSubviews">NO</bool>
@@ -247,6 +248,7 @@
 					</object>
 				</array>
 				<string key="NSFrameSize">{249, 141}</string>
+				<reference key="NSSuperview"/>
 				<reference key="NSNextKeyView" ref="301134111"/>
 				<string key="NSReuseIdentifierKey">_NS:9</string>
 				<reference key="IBUIBackgroundColor" ref="456240611"/>
