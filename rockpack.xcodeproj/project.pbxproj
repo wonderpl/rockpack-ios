@@ -360,6 +360,10 @@
 		01F8E78016B03A7C000D44B9 /* SYNVideoViewerViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 01F8E77E16B03A7C000D44B9 /* SYNVideoViewerViewController.xib */; };
 		01F8E78316B0554B000D44B9 /* ButtonClose.png in Resources */ = {isa = PBXBuildFile; fileRef = 01F8E78116B0554B000D44B9 /* ButtonClose.png */; };
 		01F8E78416B0554B000D44B9 /* ButtonClose@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 01F8E78216B0554B000D44B9 /* ButtonClose@2x.png */; };
+		1F1B4BD6174280F0009DEB0C /* PlaceholderVideoWide.png in Resources */ = {isa = PBXBuildFile; fileRef = 1F1B4BD4174280F0009DEB0C /* PlaceholderVideoWide.png */; };
+		1F1B4BD7174280F0009DEB0C /* PlaceholderVideoWide@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 1F1B4BD5174280F0009DEB0C /* PlaceholderVideoWide@2x.png */; };
+		1F1B4BDA1742852A009DEB0C /* PlaceholderVideoWide@2x~iphone.png in Resources */ = {isa = PBXBuildFile; fileRef = 1F1B4BD81742852A009DEB0C /* PlaceholderVideoWide@2x~iphone.png */; };
+		1F1B4BDB1742852A009DEB0C /* PlaceholderVideoWide~iphone.png in Resources */ = {isa = PBXBuildFile; fileRef = 1F1B4BD91742852A009DEB0C /* PlaceholderVideoWide~iphone.png */; };
 		1F2ACA5B173BEED900F2FE4F /* PanelTakePhoto@2x~iphone.png in Resources */ = {isa = PBXBuildFile; fileRef = 1F2ACA59173BEED900F2FE4F /* PanelTakePhoto@2x~iphone.png */; };
 		1F2ACA5C173BEED900F2FE4F /* PanelTakePhoto~iphone.png in Resources */ = {isa = PBXBuildFile; fileRef = 1F2ACA5A173BEED900F2FE4F /* PanelTakePhoto~iphone.png */; };
 		1F2ACA5F173C1CFA00F2FE4F /* ButtonShareHighlighted@2x~iphone.png in Resources */ = {isa = PBXBuildFile; fileRef = 1F2ACA5D173C1CFA00F2FE4F /* ButtonShareHighlighted@2x~iphone.png */; };
@@ -1388,6 +1392,10 @@
 		01F8E77E16B03A7C000D44B9 /* SYNVideoViewerViewController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = SYNVideoViewerViewController.xib; sourceTree = "<group>"; };
 		01F8E78116B0554B000D44B9 /* ButtonClose.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = ButtonClose.png; path = Assets/Images/ButtonClose.png; sourceTree = "<group>"; };
 		01F8E78216B0554B000D44B9 /* ButtonClose@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = "ButtonClose@2x.png"; path = "Assets/Images/ButtonClose@2x.png"; sourceTree = "<group>"; };
+		1F1B4BD4174280F0009DEB0C /* PlaceholderVideoWide.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = PlaceholderVideoWide.png; path = Assets/Images/PlaceholderVideoWide.png; sourceTree = "<group>"; };
+		1F1B4BD5174280F0009DEB0C /* PlaceholderVideoWide@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = "PlaceholderVideoWide@2x.png"; path = "Assets/Images/PlaceholderVideoWide@2x.png"; sourceTree = "<group>"; };
+		1F1B4BD81742852A009DEB0C /* PlaceholderVideoWide@2x~iphone.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = "PlaceholderVideoWide@2x~iphone.png"; path = "placeholders/PlaceholderVideoWide@2x~iphone.png"; sourceTree = "<group>"; };
+		1F1B4BD91742852A009DEB0C /* PlaceholderVideoWide~iphone.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = "PlaceholderVideoWide~iphone.png"; path = "placeholders/PlaceholderVideoWide~iphone.png"; sourceTree = "<group>"; };
 		1F2ACA59173BEED900F2FE4F /* PanelTakePhoto@2x~iphone.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "PanelTakePhoto@2x~iphone.png"; sourceTree = "<group>"; };
 		1F2ACA5A173BEED900F2FE4F /* PanelTakePhoto~iphone.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "PanelTakePhoto~iphone.png"; sourceTree = "<group>"; };
 		1F2ACA5D173C1CFA00F2FE4F /* ButtonShareHighlighted@2x~iphone.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "ButtonShareHighlighted@2x~iphone.png"; sourceTree = "<group>"; };
@@ -2599,6 +2607,7 @@
 			isa = PBXGroup;
 			children = (
 				38A2FF1C1731607F00FB9F57 /* iPhone */,
+				1F1B4BD317427E2F009DEB0C /* Placeholders */,
 				BE285DBD172698C000D995AB /* Error Messages */,
 				BE7D35271716FFD30085AB81 /* Master Panel */,
 				BE7D34D71715A8E30085AB81 /* Navigation Panel */,
@@ -3220,6 +3229,24 @@
 			name = "Video viewer";
 			sourceTree = "<group>";
 		};
+		1F1B4BD317427E2F009DEB0C /* Placeholders */ = {
+			isa = PBXGroup;
+			children = (
+				1F1B4BD4174280F0009DEB0C /* PlaceholderVideoWide.png */,
+				1F1B4BD5174280F0009DEB0C /* PlaceholderVideoWide@2x.png */,
+			);
+			name = Placeholders;
+			sourceTree = "<group>";
+		};
+		1F1B4BDC17428536009DEB0C /* placeholders */ = {
+			isa = PBXGroup;
+			children = (
+				1F1B4BD81742852A009DEB0C /* PlaceholderVideoWide@2x~iphone.png */,
+				1F1B4BD91742852A009DEB0C /* PlaceholderVideoWide~iphone.png */,
+			);
+			name = placeholders;
+			sourceTree = "<group>";
+		};
 		388CAF64172EBD8E00721372 /* iPhoneCell */ = {
 			isa = PBXGroup;
 			children = (
@@ -3246,6 +3273,7 @@
 				38A2FF361731607F00FB9F57 /* channels */,
 				38A2FF4F1731607F00FB9F57 /* feed */,
 				38A2FF641731607F00FB9F57 /* login */,
+				1F1B4BDC17428536009DEB0C /* placeholders */,
 				38A2FF8B1731607F00FB9F57 /* search */,
 				38A2FF9C1731607F00FB9F57 /* settings */,
 				38A2FFC31731607F00FB9F57 /* sideMenu */,
@@ -4944,6 +4972,10 @@
 				BE81A3D7174252AD00FCAC1A /* PlaceholderNotificationChannel@2x.png in Resources */,
 				BE81A3DA174255EB00FCAC1A /* PlaceholderNotificationVideo.png in Resources */,
 				BE81A3DB174255EB00FCAC1A /* PlaceholderNotificationVideo@2x.png in Resources */,
+				1F1B4BD6174280F0009DEB0C /* PlaceholderVideoWide.png in Resources */,
+				1F1B4BD7174280F0009DEB0C /* PlaceholderVideoWide@2x.png in Resources */,
+				1F1B4BDA1742852A009DEB0C /* PlaceholderVideoWide@2x~iphone.png in Resources */,
+				1F1B4BDB1742852A009DEB0C /* PlaceholderVideoWide~iphone.png in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
