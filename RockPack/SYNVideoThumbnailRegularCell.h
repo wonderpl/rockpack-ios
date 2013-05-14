@@ -19,6 +19,9 @@ typedef enum {
 @property (nonatomic, strong) IBOutlet UILabel *titleLabel;
 @property (nonatomic, weak) UIViewController *viewControllerDelegate;
 
+
+@property (nonatomic, strong) IBOutlet UIButton *addItButton;
+
 @property (nonatomic) kChannelThumbnailDisplayMode displayMode;
 
 @end

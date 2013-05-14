@@ -100,6 +100,7 @@
     {
 		self.channel = channel;
         _mode = mode;
+        
 	}
 
 	return self;
@@ -265,6 +266,8 @@
     }
     self.selectedCategoryId = @"";
     self.selectedCoverId = @"";
+    
+    NSLog(@"User: %@", self.channel.uniqueId);
 }
 
 
@@ -623,6 +626,9 @@
 
         videoThumbnailCell.titleLabel.text = videoInstance.title;
         videoThumbnailCell.viewControllerDelegate = self;
+        
+        videoThumbnailCell.addItButton.highlighted = NO;
+        videoThumbnailCell.addItButton.selected = [appDelegate.videoQueue videoInstanceIsAddedToChannel:videoInstance];
         
         cell = videoThumbnailCell;
         

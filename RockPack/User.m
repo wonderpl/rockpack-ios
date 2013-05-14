@@ -197,13 +197,16 @@
     
     [userDescription appendFormat:@"\nUser Channels (%i)", self.channels.count];
     
-    if(self.channels.count == 0) {
-        [userDescription appendString:@"."];
-    } else {
-        [userDescription appendString:@":"];
-        for (Channel* channel in self.channels) {
-            [userDescription appendFormat:@"\n - %@ (%@)", channel.title, [channel.subscribedByUser boolValue] ? @"Subscribed" : @"-"];
-        }
+    [userDescription appendString:@":"];
+    for (Channel* channel in self.channels) {
+        [userDescription appendFormat:@"\n - %@ (%@)", channel.title, [channel.subscribedByUser boolValue] ? @"Subscribed" : @"-"];
+    }
+    
+    [userDescription appendFormat:@"\nUser Subscriptions (%i)", self.subscriptions.count];
+    
+    [userDescription appendString:@":"];
+    for (Channel* channel in self.subscriptions) {
+        [userDescription appendFormat:@"\n - %@ (%@)", channel.title, [channel.subscribedByUser boolValue] ? @"Subscribed" : @"-"];
     }
     
     
