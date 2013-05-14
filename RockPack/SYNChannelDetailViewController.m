@@ -37,8 +37,8 @@
                                               UIPopoverControllerDelegate,
                                               SYNCameraPopoverViewControllerDelegate, SYNChannelCategoryTableViewDelegate, SYNChannelCoverImageSelectorDelegate>
 
+
 @property (nonatomic, assign)  CGPoint originalContentOffset;
-@property (nonatomic, assign)  kChannelDetailsMode mode;
 @property (nonatomic, strong) GKImagePicker *imagePicker;
 @property (nonatomic, strong) IBOutlet SSTextView *channelTitleTextView;
 @property (nonatomic, strong) IBOutlet UIButton *addToChannelButton;
@@ -47,6 +47,7 @@
 @property (nonatomic, strong) IBOutlet UIButton *createChannelButton;
 @property (nonatomic, strong) IBOutlet UIButton *shareButton;
 @property (nonatomic, strong) IBOutlet UIButton* addCoverButton;
+@property (nonatomic, strong) IBOutlet UIButton* profileImageButton;
 @property (nonatomic, strong) IBOutlet UIButton* selectCategoryButton;
 @property (nonatomic, strong) IBOutlet UIButton* subscribeButton;
 @property (nonatomic, strong) IBOutlet UICollectionView *coverThumbnailCollectionView;
@@ -65,24 +66,21 @@
 @property (nonatomic, strong) NSFetchedResultsController *channelCoverFetchedResultsController;
 @property (nonatomic, strong) NSFetchedResultsController *userChannelCoverFetchedResultsController;
 @property (nonatomic, strong) SYNCategoriesTabViewController *categoriesTabViewController;
+@property (nonatomic, strong) UIImage* originalBackgroundImage;
+@property (nonatomic, strong) id<SDWebImageOperation> currentWebImageOperation;
 @property (nonatomic, weak) Channel *channel;
 @property (nonatomic,strong) NSString* selectedCategoryId;
 @property (nonatomic,strong) NSString* selectedCoverId;
 @property (weak, nonatomic) IBOutlet UILabel *byLabel;
-@property (nonatomic, strong) IBOutlet UIButton* profileImageButton;
-
-@property (nonatomic, strong) id<SDWebImageOperation> currentWebImageOperation;
-
-@property (nonatomic, strong) UIImage* originalBackgroundImage;
 
 //iPhone specific
 @property (nonatomic,strong) AVURLAsset* selectedAsset;
 @property (nonatomic,strong) SYNChannelCoverImageSelectorViewController* coverImageSelector;
 @property (strong,nonatomic) SYNChannelCategoryTableViewController *categoryTableViewController;
 @property (weak, nonatomic) IBOutlet UIActivityIndicatorView *activityIndicator;
+@property (weak, nonatomic) IBOutlet UIButton *backButton;
 @property (weak, nonatomic) IBOutlet UIButton *cancelTextInputButton;
 @property (weak, nonatomic) IBOutlet UIImageView *textBackgroundImageView;
-@property (weak, nonatomic) IBOutlet UIButton *backButton;
 
 @end
 
@@ -100,7 +98,7 @@
     if ((self = [super initWithViewId: kChannelDetailsViewId]))
     {
 		self.channel = channel; // channel does not have the VideoInstances at this point, it will update with the kChannelUpdateRequest
-        self.mode = mode;
+        _mode = mode;
 	}
 
 	return self;
@@ -361,6 +359,27 @@
                                                     name: NSManagedObjectContextDidSaveNotification
                                                   object: self.channel.managedObjectContext];
     [super viewWillDisappear: animated];
+}
+
+// TODO; Remove this method once happy with mode switching functionality
+- (IBAction) testMode
+{
+    self.mode = (self.mode == kChannelDetailsModeDisplay) ? kChannelDetailsModeEdit: kChannelDetailsModeDisplay;
+}
+
+
+- (void) setMode: (kChannelDetailsMode) mode
+{
+    if (self.mode != mode)
+    {
+        _mode = mode;
+        
+        [UIView animateWithDuration: kChannelEditModeAnimationDuration
+                         animations: ^{
+                             [self setDisplayControlsVisibility: (self.mode == kChannelDetailsModeDisplay) ? TRUE: FALSE];
+                         }
+                         completion: nil];
+    }
 }
 
 
