@@ -370,7 +370,7 @@
     
     _mode = mode;
     
-    self.profileImageButton.enabled = (self.mode == kChannelDetailsModeDisplay) ? YES : NO;
+    
         
     [UIView animateWithDuration: kChannelEditModeAnimationDuration
                      animations: ^{
@@ -801,6 +801,8 @@
     self.displayControlsView.alpha = (visible) ? 1.0f : 0.0f;
     self.editControlsView.alpha = (visible) ? 0.0f : 1.0f;
     self.coverChooserMasterView.hidden = (visible) ? TRUE : FALSE;
+    
+    self.profileImageButton.enabled = visible;
 }
 
 
@@ -963,6 +965,7 @@
 - (void) videoDeleteButtonTapped: (UIButton *) deleteButton
 {
     UIView *v = deleteButton.superview.superview;
+    
     NSIndexPath *indexPath = [self.videoThumbnailCollectionView indexPathForItemAtPoint: v.center];
     
     VideoInstance* instanceToDelete = (VideoInstance*)[self.channel.videoInstances objectAtIndex: indexPath.item];
