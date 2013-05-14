@@ -637,22 +637,21 @@
           withSource: (NSString *) source
             sourceId: (NSString *) sourceId
 {
-    // FIXME: Source was nil for all but videoinstances from the feed screen
-//    if ([source isEqualToString: @"youtube"])
+    if ([source isEqualToString: @"youtube"])
     {
         [self loadWebViewWithIFramePlayer: webView
                            usingYouTubeId: sourceId];
     }
-//    else if ([source isEqualToString: @"vimeo"])
-//    {
-//        [self loadWebViewWithIFrame: webView
-//                       usingVimeoId: sourceId];
-//    }
-//    else
-//    {
-//        // AssertOrLog(@"Unknown video source type");
-//        DebugLog(@"WARNING: No Source! ");
-//    }
+    else if ([source isEqualToString: @"vimeo"])
+    {
+        [self loadWebViewWithIFrame: webView
+                       usingVimeoId: sourceId];
+    }
+    else
+    {
+        // AssertOrLog(@"Unknown video source type");
+        DebugLog(@"WARNING: No Source! ");
+    }
 }
 
 
