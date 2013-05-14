@@ -36,7 +36,7 @@ extern void instrumentObjcMessageSends(BOOL);
 @property (nonatomic, strong) NSManagedObjectContext *searchManagedObjectContext;
 @property (nonatomic, strong) NSManagedObjectContext *channelsManagedObjectContext;
 
-@property (nonatomic, strong) SYNLoginViewController* loginViewController;
+@property (nonatomic, strong) SYNLoginBaseViewController* loginViewController;
 @property (nonatomic, strong) SYNNetworkEngine *networkEngine;
 @property (nonatomic, strong) SYNOAuthNetworkEngine *oAuthNetworkEngine;
 @property (nonatomic, strong) NSString *userAgentString;

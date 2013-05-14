@@ -621,23 +621,23 @@
 }
 
 
-- (BOOL) checkAndSaveRegisteredUser: (SYNOAuth2Credential*) credential
-{
-    User* newUser = appDelegate.currentUser;
-    
-    if (!newUser)
-    {
-        // problem
-        DebugLog(@"The user was not registered correctly...");
-        return NO;
-    }
-    
-    appDelegate.currentOAuth2Credentials = credential;
-    
-    [SYNActivityManager.sharedInstance updateActivityForCurrentUser];
-    
-    return YES;
-}
+//- (BOOL) checkAndSaveRegisteredUser: (SYNOAuth2Credential*) credential
+//{
+//    User* newUser = appDelegate.currentUser;
+//    
+//    if (!newUser)
+//    {
+//        // problem
+//        DebugLog(@"The user was not registered correctly...");
+//        return NO;
+//    }
+//    
+//    appDelegate.currentOAuth2Credentials = credential;
+//    
+//    [SYNActivityManager.sharedInstance updateActivityForCurrentUser];
+//    
+//    return YES;
+//}
 
 
 - (IBAction) doLogin: (id) sender
@@ -659,60 +659,39 @@
     activityIndicator.center = CGPointMake(finalLoginButton.center.x, finalLoginButton.center.y);
     [activityIndicator startAnimating];
     
-    [appDelegate.oAuthNetworkEngine doSimpleLoginForUsername: userNameInputField.text
-                                                 forPassword: passwordInputField.text
-                                           completionHandler: ^(SYNOAuth2Credential* credential) {
-                                               
-                                               // Case where the user is a member of Rockpack but has not signing in this device
-                                               
-                                               [appDelegate.oAuthNetworkEngine userInformationFromCredentials: credential
-                                                                                            completionHandler: ^(NSDictionary* dictionary) {
-                                                                                                
-                                                                                                // the dictionary contains a User dictionary //
-                                                                                                
-                                                                                                NSString* username = [dictionary objectForKey: @"username"];
-                                                                                                DebugLog(@"User Registerd: %@", username);
-                                                                                                
-                                                                                                // by this time the currentUser is set in the DB //
-                                                                                                
-                                                                                                [self checkAndSaveRegisteredUser: credential];
-                                                                                                
-                                                                                                [activityIndicator stopAnimating];
-                                                                                                
-                                                                                                [self completeLoginProcess: credential];
-                                                                                                
-                                                                                            } errorHandler:^(NSDictionary* errorDictionary) {
-                                                                                                     
-                                                                                                     [activityIndicator stopAnimating];
-                                                                                                     
-                                                                                                     self.finalLoginButton.alpha = 1.0;
-                                                                                                     
-                                                                                            }];
-                                               
-                                           } errorHandler: ^(NSDictionary* errorDictionary) {
-                                               
-                                                    NSDictionary* errors = errorDictionary [@"error"];
-                                                    
-                                                    if (errors)
-                                                    {
-                                                        [self placeErrorLabel: @"Username could be incorrect"
-                                                                   nextToView: userNameInputField];
-                                                        
-                                                        [self placeErrorLabel: @"Password could be incorrect"
-                                                                   nextToView: passwordInputField];
-                                                    }
-                                                    
-                                                    finalLoginButton.enabled = YES;
-                                                    
-                                                    [activityIndicator stopAnimating];
-                                                    
-                                                    [UIView animateWithDuration: 0.3
-                                                                     animations: ^{
-                                                                         finalLoginButton.alpha = 1.0;
-                                                                   } completion: ^(BOOL finished) {
-                                                                         [userNameInputField becomeFirstResponder];
-                                                                     }];
-                                                }];
+    [self loginForUsername:userNameInputField.text forPassword:passwordInputField.text completionHandler:^(NSDictionary* dictionary) {
+        NSString* username = [dictionary objectForKey: @"username"];
+        DebugLog(@"User Registerd: %@", username);
+        
+        // by this time the currentUser is set in the DB //
+        
+        [activityIndicator stopAnimating];
+        
+        [self completeLoginProcess];
+        
+    } errorHandler:^(NSDictionary* errorDictionary) {
+        NSDictionary* errors = errorDictionary [@"error"];
+        
+        if (errors)
+        {
+            [self placeErrorLabel: @"Username could be incorrect"
+                       nextToView: userNameInputField];
+            
+            [self placeErrorLabel: @"Password could be incorrect"
+                       nextToView: passwordInputField];
+        }
+        
+        finalLoginButton.enabled = YES;
+        
+        [activityIndicator stopAnimating];
+        
+        [UIView animateWithDuration: 0.3
+                         animations: ^{
+                             finalLoginButton.alpha = 1.0;
+                         } completion: ^(BOOL finished) {
+                             [userNameInputField becomeFirstResponder];
+                         }];
+    }];
 }
 
 
@@ -727,31 +706,31 @@
 
 - (IBAction) sendEmailButtonPressed: (id) sender
 {
-    [self.appDelegate.oAuthNetworkEngine doRequestPasswordResetForUsername: self.userNameInputField.text
-                                                         completionHandler: ^(NSDictionary * completionInfo) {
-                                                             if ([completionInfo valueForKey: @"error"])
-                                                             {
-                                                                 [self placeErrorLabel: NSLocalizedString(@"User unknown", nil)
-                                                                            nextToView: self.userNameInputField];
-                                                                 
-                                                             }
-                                                             else
-                                                             {
-                                                                 [[[UIAlertView alloc] initWithTitle: NSLocalizedString(@"Password Reset", nil)
-                                                                                             message: NSLocalizedString(@"Check your email for instructions", nil)
-                                                                                            delegate: nil
-                                                                                   cancelButtonTitle: NSLocalizedString(@"OK", nil)
-                                                                                   otherButtonTitles: nil] show];
-                                                                 
-                                                             }
-                                                         }
-                                                              errorHandler:^(NSError *error) {
-                                                                  [[[UIAlertView alloc] initWithTitle: NSLocalizedString(@"Password Reset", nil)
-                                                                                              message: NSLocalizedString(@"Error, request failed...", nil)
-                                                                                             delegate: nil
-                                                                                    cancelButtonTitle: NSLocalizedString(@"OK", nil)
-                                                                                    otherButtonTitles: nil] show];
-                                                              }];
+    [self doRequestPasswordResetForUsername:self.userNameInputField.text completionHandler:^(NSDictionary * completionInfo) {
+        if ([completionInfo valueForKey: @"error"])
+        {
+            [self placeErrorLabel: @"User unknown"
+                       nextToView: self.userNameInputField];
+            
+        }
+        else
+        {
+            [[[UIAlertView alloc] initWithTitle: @"Password Reset"
+                                        message: @"Check your email for instructions"
+                                       delegate: nil
+                              cancelButtonTitle: @"OK"
+                              otherButtonTitles: nil] show];
+            
+        }
+
+    } errorHandler:^(NSError *error) {
+        [[[UIAlertView alloc] initWithTitle: @"Password Reset"
+                                    message: @"Error, request failed..."
+                                   delegate: nil
+                          cancelButtonTitle: @"OK"
+                          otherButtonTitles: nil] show];
+        
+    }];
 }
 
 - (void) doFacebookLoginAnimation
@@ -811,7 +790,7 @@
                                                                                                           
                                                                                                           [self checkAndSaveRegisteredUser: credential];
                                                                                                           [activityIndicator stopAnimating];
-                                                                                                          [self completeLoginProcess: credential];
+                                                                                                          [self completeLoginProcess];
                                                                                                           
                                                                                                       }
                                                                                                            errorHandler: ^(NSDictionary* errorDictionary) {
@@ -1031,62 +1010,44 @@
     activityIndicator.center = CGPointMake(registerNewUserButton.center.x, registerNewUserButton.center.y);
     [activityIndicator startAnimating];
     
-    [appDelegate.oAuthNetworkEngine registerUserWithData:userData
-                                       completionHandler: ^(SYNOAuth2Credential* credential) {
-                                           
-                                           // Case where the user registers
-                                           [appDelegate.oAuthNetworkEngine userInformationFromCredentials: credential
-                                                                                        completionHandler: ^(NSDictionary* dictionary) {
-                                                                                            [self checkAndSaveRegisteredUser: credential];
-                                                                                            
-                                                                                            [activityIndicator stopAnimating];
-                                                                                            
-                                                                                            [self completeLoginProcess: credential];
-                                                                                            
-                                                                                            // TODO: Hack for testing, remove ASAP
-                                                                                            self.avatarImage = [UIImage imageNamed: @"Icon@2x.png"];
-                                                                                            
-                                                                                            if (self.avatarImage)
-                                                                                            {
-                                                                                                [self uploadAvatar: self.avatarImage];
-                                                                                            }
-                                                                                            
-                                                                                        }
-                                                                                             errorHandler: ^(NSDictionary* errorDictionary) {
-                                                                                             }];
-                                           
-                                           registerNewUserButton.enabled = YES;
-                                           
-                                       }
-                                            errorHandler: ^(NSDictionary* errorDictionary) {
-                                                NSDictionary* formErrors = [errorDictionary objectForKey:@"form_errors"];
-                                                
-                                                if (formErrors)
-                                                {
-                                                    [self showRegistrationError:formErrors];
-                                                }
-                                                
-                                                registerNewUserButton.enabled = YES;
-                                                
-                                                [activityIndicator stopAnimating];
-                                                registerNewUserButton.alpha = 1.0;
-                                            }];
-    
-    return;
+    [self registerUserWithData:userData completionHandler:^(NSDictionary* dictionary)
+    {
+        
+        [activityIndicator stopAnimating];
+        
+        [self completeLoginProcess];
+        
+        if (self.avatarImage)
+        {
+            [self uploadAvatar: self.avatarImage];
+        }
+
+        
+    }
+    errorHandler:^(NSDictionary* errorDictionary)
+    {
+        NSDictionary* formErrors = [errorDictionary objectForKey:@"form_errors"];
+        
+        if (formErrors)
+        {
+            [self showRegistrationError:formErrors];
+        }
+        
+        registerNewUserButton.enabled = YES;
+        
+        [activityIndicator stopAnimating];
+        registerNewUserButton.alpha = 1.0;
+    }];
 }
 
 - (void) uploadAvatar: (UIImage *) avatarImage;
 {
-    [appDelegate.oAuthNetworkEngine updateAvatarForUserId: appDelegate.currentOAuth2Credentials.userId
-                                                    image: avatarImage
-                                        completionHandler: ^(NSDictionary* errorDictionary) {
-                                            DebugLog(@"Avatar uploaded successfully");
-                                        }
-                                             errorHandler: ^(NSDictionary* errorDictionary) {
-                                                 DebugLog(@"Avatar upload failed");
-                                             }];
+    [self uploadAvatarImage:avatarImage completionHandler:^(NSDictionary* dictionary) {
+        DebugLog(@"Avatar uploaded successfully");
+    } errorHandler:^(NSDictionary* errorDictionary) {
+         DebugLog(@"Avatar upload failed");
+    }];
 }
-
 
 - (void) showRegistrationError: (NSDictionary*) errorDictionary
 {
@@ -1179,7 +1140,7 @@
 }
 
 
-- (void) completeLoginProcess: (SYNOAuth2Credential *) credential
+- (void) completeLoginProcess
 {
     [activityIndicator stopAnimating];
     
@@ -1278,6 +1239,7 @@
 
 
 #pragma mark - Avatar image selection
+
 
 - (IBAction) faceButtonImagePressed: (UIButton*) button
 {
@@ -1399,6 +1361,7 @@
                                                                    completion: nil];
     }
 }
+
 
 
 #pragma mark - Rotation support

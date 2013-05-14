@@ -7,26 +7,15 @@
 //
 
 
-#import "GAITrackedViewController.h"
 #import "GKImagePicker.h"
 #import <UIKit/UIKit.h>
 #import "SYNOAuth2Credential.h"
 #import "SYNAppDelegate.h"
-
-typedef enum {
-    kLoginScreenStateNull = 0,
-    kLoginScreenStateInitial,
-    kLoginScreenStateLogin,
-    kLoginScreenStateRegister,
-    kLoginScreenStatePasswordRetrieve,
-    kLoginScreenStateRegisterStepTwo
-} kLoginScreenState;
+#import "SYNLoginBaseViewController.h"
 
 
+@interface SYNLoginViewController : SYNLoginBaseViewController <UIPopoverControllerDelegate, GKImagePickerDelegate>
 
-@interface SYNLoginViewController : GAITrackedViewController <UIPopoverControllerDelegate, GKImagePickerDelegate>
-
-@property (nonatomic) kLoginScreenState state;
 @property (nonatomic) BOOL facebookLoginIsInProcess;
 @property (nonatomic, weak) SYNAppDelegate* appDelegate;
 
@@ -68,7 +57,7 @@ typedef enum {
 -(BOOL)checkAndSaveRegisteredUser:(SYNOAuth2Credential*)credential;
 
 - (void) showImagePicker: (UIImagePickerControllerSourceType) sourceType;
-- (void) uploadAvatar: (UIImage *) avatarImage;
+
 
 
 @end

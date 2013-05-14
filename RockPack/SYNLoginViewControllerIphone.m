@@ -7,6 +7,7 @@
 //
 
 #import "SYNLoginViewControllerIphone.h"
+#import "SYNLoginViewController.h"
 #import "SYNDeviceManager.h"
 #import "UIFont+SYNFont.h"
 #import "SYNOAuthNetworkEngine.h"
@@ -40,6 +41,26 @@
 @property (weak, nonatomic) IBOutlet UILabel *passwordResetErrorLabel;
 @property (weak, nonatomic) IBOutlet UILabel *signupErrorLabel;
 @property (strong, nonatomic) NSDateFormatter * dateFormatter;
+
+@property (nonatomic, strong) IBOutlet UITextField* userNameInputField;
+@property (nonatomic, strong) IBOutlet UITextField* passwordInputField;
+@property (nonatomic, strong) IBOutlet UITextField* registeringUserNameInputField;
+@property (nonatomic, strong) IBOutlet UITextField* registeringUserEmailInputField;
+@property (nonatomic, strong) IBOutlet UITextField* registeringUserPasswordInputField;
+@property (nonatomic, strong) IBOutlet UITextField* emailInputField;
+@property (nonatomic, strong) IBOutlet UIView* dobView;
+@property (nonatomic, strong) IBOutlet UITextField* ddInputField;
+@property (nonatomic, strong) IBOutlet UITextField* mmInputField;
+@property (nonatomic, strong) IBOutlet UITextField* yyyyInputField;
+@property (nonatomic, strong) IBOutlet UILabel* wellSendYouLabel;
+@property (nonatomic, strong) IBOutlet UILabel* termsAndConditionsLabel;
+
+@property (nonatomic, strong) IBOutlet UIActivityIndicatorView* activityIndicator;
+
+@property (nonatomic, strong) IBOutlet UIButton* passwordForgottenButton;
+
+@property (nonatomic, strong) IBOutlet UIImage* avatarImage;
+
 @end
 
 @implementation SYNLoginViewControllerIphone 
@@ -56,6 +77,8 @@
 - (void)viewDidLoad
 {
     [super viewDidLoad];
+    
+    self.trackedViewName = @"Login";
     
     BOOL isPreIPhone5 = [[SYNDeviceManager sharedInstance] currentScreenHeight] < 500;
     
@@ -176,7 +199,7 @@
                                                                                                           
                                                                                                           [self checkAndSaveRegisteredUser:credential];
                                                                                                           
-                                                                                                          [self completeLoginProcess:credential];
+                                                                                                          [self completeLoginProcess];
                                                                                                           
                                                                                                       } errorHandler: ^(NSDictionary* errorDictionary) {
                                                                                                     
@@ -410,53 +433,20 @@
             self.activityIndicator.hidden = NO;
             self.activityIndicator.center = self.confirmButton.center;
             [self.activityIndicator startAnimating];
-            
-            [self.appDelegate.oAuthNetworkEngine doSimpleLoginForUsername: self.userNameInputField.text
-                                                         forPassword: self.passwordInputField.text
-                                                   completionHandler: ^(SYNOAuth2Credential* credential) {
-                                                       
-                                                       // Case where the user is a member of Rockpack but has not signing in this device
-                                                       
-                                                       [self.appDelegate.oAuthNetworkEngine userInformationFromCredentials:credential
-                                                                                                    completionHandler:^(NSDictionary* dictionary) {
-                                                                                                        
-                                                                                                        NSString* username = [dictionary objectForKey:@"username"];
-                                                                                                        DebugLog(@"User Registerd: %@", username);
-                                                                                                        
-                                                                                                        [self checkAndSaveRegisteredUser:credential];
-                                                                                                        
-                                                                                                        //[self.activityIndicator stopAnimating];
-                                                                                                        
-                                                                                                        [self completeLoginProcess:credential];
-                                                                                                        
-                                                                                                    } errorHandler:^(NSDictionary* errorDictionary) {
-                                                                                                        
-                                                                                                        [self.activityIndicator stopAnimating];
-                                                                                                        [self turnOnButton:self.backButton];
-                                                                                                        [self turnOnButton:self.confirmButton];
-                                                                                                        
-                                                                                                        self.loginErrorLabel.text = NSLocalizedString(@"CHECK USERNAME AND PASSWORD", nil);
-                                                                                                        
-                                                                                                    }];
-                                                       
-                                                       
-                                                       
-                                                       
-                                                   } errorHandler: ^(NSDictionary* errorDictionary) {
-                                                       
-                                                       NSDictionary* errors = errorDictionary [@"error"];
-                                                       
-                                                       if (errors)
-                                                       {
-                                                          self.loginErrorLabel.text = NSLocalizedString(@"CHECK USERNAME AND PASSWORD", nil);
-                                                       }
-                                                       [self.activityIndicator stopAnimating];
-                                                       [self turnOnButton:self.backButton];
-                                                       [self turnOnButton:self.confirmButton];
-                                                       
-                                                       
-                                                   }];
-
+            [self loginForUsername:self.userNameInputField.text forPassword:self.passwordInputField.text completionHandler:^(NSDictionary* dictionary) {
+                NSString* username = [dictionary objectForKey:@"username"];
+                DebugLog(@"User Registerd: %@", username);
+                
+                //[self.activityIndicator stopAnimating];
+                
+                [self completeLoginProcess];
+            } errorHandler:^(NSDictionary* errorDictionary) {
+                [self.activityIndicator stopAnimating];
+                [self turnOnButton:self.backButton];
+                [self turnOnButton:self.confirmButton];
+                
+                self.loginErrorLabel.text = NSLocalizedString(@"CHECK USERNAME AND PASSWORD", nil);
+            }];
             break;
         }
         case kLoginScreenStateRegisterStepTwo:
@@ -471,119 +461,98 @@
                                        @"date_of_birth": [NSString stringWithFormat:@"%@-%@-%@", self.yyyyInputField.text, self.mmInputField.text, self.ddInputField.text],
                                        @"locale":@"en-US",
                                        @"email": self.registeringUserEmailInputField.text};
-            
-            [self.appDelegate.oAuthNetworkEngine registerUserWithData:userData
-                                               completionHandler: ^(SYNOAuth2Credential* credential) {
-                                                   
-                                                   // Case where the user registers
-                                                   
-                                                   [self.appDelegate.oAuthNetworkEngine userInformationFromCredentials: credential
-                                                                                                completionHandler: ^(NSDictionary* dictionary) {
-                                                                                                    
-                                                                                                    
-                                                                                                    [self checkAndSaveRegisteredUser:credential];
-                                                                                                    
-                                                                                                    [self.activityIndicator stopAnimating];
-                                                                                                    
-                                                                                                    if(self.avatarImage)
-                                                                                                    {
-                                                                                                        [self uploadAvatar:self.avatarImage];
-                                                                                                    }
-                                                                                                    
-                                                                                                    [self completeLoginProcess: credential];
-                                                                                                    
-                                                                                                } errorHandler:^(NSDictionary* errorDictionary) {
-                                                                                                    [self.activityIndicator stopAnimating];
-                                                                                                    [self turnOnButton:self.backButton];
-                                                                                                    [self turnOnButton:self.confirmButton];
-                                                                                                }];
-                                                   
-                                                   
-                                                   
-                                               } errorHandler: ^(NSDictionary* errorDictionary) {
-                                                   
-                                                   NSDictionary* formErrors = [errorDictionary objectForKey:@"form_errors"];
-                                                   NSString* errorString;
-                                                   BOOL append = NO;
-                                                   if (formErrors)
-                                                   {
-                                                       NSArray* usernameError = [formErrors objectForKey:@"username"];
-                                                       if(usernameError)
-                                                       {
-                                                           errorString = [NSString stringWithFormat:NSLocalizedString(@"Username: %@", nil), [usernameError objectAtIndex:0]];
-                                                           append = YES;
-                                                       }
-                                                       
-                                                       NSArray* emailError = [formErrors objectForKey:@"email"];
-                                                       if (emailError)
-                                                       {
-                                                           NSString* emailErrorString = [NSString stringWithFormat:NSLocalizedString(@"Email: %@", nil), [emailError objectAtIndex:0]];
-                                                           if(append)
-                                                           {
-                                                               errorString = [NSString stringWithFormat:@"%@\n%@",errorString, emailErrorString];
-                                                           }
-                                                           else
-                                                           {
-                                                               errorString = emailErrorString;
-                                                           }
-                                                       }
-                                                       
-                                                       NSArray* passwordError = [formErrors objectForKey:@"password"];
-                                                       if (passwordError)
-                                                       {
-                                                           NSString* passwordErrorString = [NSString stringWithFormat:NSLocalizedString(@"Password: %@", nil), [passwordError objectAtIndex:0]];
-                                                           if(append)
-                                                           {
-                                                               errorString = [NSString stringWithFormat:@"%@\n%@",errorString, passwordErrorString];
-                                                           }
-                                                           else
-                                                           {
-                                                               errorString = passwordErrorString;
-                                                           }
-                                                       }
-                                                                                            
-                                                       if(errorString)
-                                                       {
-                                                           self.signupErrorLabel.text = errorString;
-                                                           CGFloat width = self.signupErrorLabel.frame.size.width;
-                                                           [self.signupErrorLabel sizeToFit];
-                                                           CGRect newFrame = self.signupErrorLabel.frame;
-                                                           newFrame.size.width = width;
-                                                           self.signupErrorLabel.frame = newFrame;
-                                                       }
-                                                   }
-                                                   
-                                                   [self.activityIndicator stopAnimating];
-                                                   [self turnOnButton:self.backButton];
-                                                   [self turnOnButton:self.confirmButton];
-                                                   
-                                               }];
+            [self registerUserWithData:userData completionHandler:^(NSDictionary*dictionary) {
+                [self.activityIndicator stopAnimating];
+                
+                if(self.avatarImage)
+                {
+                    [self uploadAvatarImage:self.avatarImage completionHandler:nil errorHandler:nil];
+                }
+                [self completeLoginProcess];
+                
+            } errorHandler:^(NSDictionary* errorDictionary) {
+                
+                [self.activityIndicator stopAnimating];
+                [self turnOnButton:self.backButton];
+                [self turnOnButton:self.confirmButton];
+                
+                NSDictionary* formErrors = [errorDictionary objectForKey:@"form_errors"];
+                NSString* errorString;
+                BOOL append = NO;
+                if (formErrors)
+                {
+                    NSArray* usernameError = [formErrors objectForKey:@"username"];
+                    if(usernameError)
+                    {
+                        errorString = [NSString stringWithFormat:NSLocalizedString(@"Username: %@", nil), [usernameError objectAtIndex:0]];
+                        append = YES;
+                    }
+                    
+                    NSArray* emailError = [formErrors objectForKey:@"email"];
+                    if (emailError)
+                    {
+                        NSString* emailErrorString = [NSString stringWithFormat:NSLocalizedString(@"Email: %@", nil), [emailError objectAtIndex:0]];
+                        if(append)
+                        {
+                            errorString = [NSString stringWithFormat:@"%@\n%@",errorString, emailErrorString];
+                        }
+                        else
+                        {
+                            errorString = emailErrorString;
+                        }
+                    }
+                    
+                    NSArray* passwordError = [formErrors objectForKey:@"password"];
+                    if (passwordError)
+                    {
+                        NSString* passwordErrorString = [NSString stringWithFormat:NSLocalizedString(@"Password: %@", nil), [passwordError objectAtIndex:0]];
+                        if(append)
+                        {
+                            errorString = [NSString stringWithFormat:@"%@\n%@",errorString, passwordErrorString];
+                        }
+                        else
+                        {
+                            errorString = passwordErrorString;
+                        }
+                    }
+                    
+                    if(errorString)
+                    {
+                        self.signupErrorLabel.text = errorString;
+                        CGFloat width = self.signupErrorLabel.frame.size.width;
+                        [self.signupErrorLabel sizeToFit];
+                        CGRect newFrame = self.signupErrorLabel.frame;
+                        newFrame.size.width = width;
+                        self.signupErrorLabel.frame = newFrame;
+                    }
+                }
 
+            }];
             break;
         }
         case kLoginScreenStatePasswordRetrieve:
         {
             [self turnOffButton:self.backButton];
             [self turnOffButton:self.confirmButton];
-            [self.appDelegate.oAuthNetworkEngine doRequestPasswordResetForUsername:self.emailInputField.text completionHandler:^(NSDictionary * completionInfo) {
+            [self doRequestPasswordResetForUsername:self.emailInputField.text completionHandler:^(NSDictionary *completionInfo) {
                 if ([completionInfo valueForKey:@"error"])
                 {
                     self.passwordResetErrorLabel.text = NSLocalizedString(@"USER UNKNOWN", nil);
                     [self turnOnButton:self.backButton];
                     [self turnOnButton:self.confirmButton];
-
+                    
                 }
                 else
                 {
                     self.passwordResetErrorLabel.text = NSLocalizedString(@"CHECK YOUR EMAIL FOR INSTRUCTIONS", nil);
                     [self turnOnButton:self.backButton];
-
+                    
                 }
+
             } errorHandler:^(NSError *error) {
                 self.passwordResetErrorLabel.text = NSLocalizedString(@"REQUEST FAILED", nil);
                 [self turnOnButton:self.backButton];
                 [self turnOnButton:self.confirmButton];
-
             }];
             break;
         }
@@ -661,15 +630,13 @@
 }
 
 #pragma mark - login completion
--(void) completeLoginProcess: (SYNOAuth2Credential *) credential
+-(void) completeLoginProcess
 {
-    
-    
-    
+
     [self.activityIndicator stopAnimating];
     
-    UIImageView *splashView = [[UIImageView alloc] initWithFrame: CGRectMake(0, 0, 1024, 748)];
-    splashView.image = [UIImage imageNamed:  @"Default-Landscape.png"];
+    UIImageView *splashView = [[UIImageView alloc] initWithFrame:self.view.bounds];
+    splashView.image = [UIImage imageNamed:@"Default.png"];
     splashView.alpha = 0.0;
 	[self.view addSubview: splashView];
     

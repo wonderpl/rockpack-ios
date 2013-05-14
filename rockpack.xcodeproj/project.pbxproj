@@ -381,6 +381,7 @@
 		1FC8FEA817340708000FF0B2 /* ShadowCategorySlide@2x~iphone.png in Resources */ = {isa = PBXBuildFile; fileRef = 1FC8FEA617340708000FF0B2 /* ShadowCategorySlide@2x~iphone.png */; };
 		1FC8FEA917340708000FF0B2 /* ShadowCategorySlide~iphone.png in Resources */ = {isa = PBXBuildFile; fileRef = 1FC8FEA717340708000FF0B2 /* ShadowCategorySlide~iphone.png */; };
 		38061BC1173D15BE00A7E349 /* SYNAccountSettingsModalContainer.xib in Resources */ = {isa = PBXBuildFile; fileRef = 38061BC0173D15BE00A7E349 /* SYNAccountSettingsModalContainer.xib */; };
+		38281F1A1742791F0024DC18 /* SYNLoginBaseViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 38281F191742791F0024DC18 /* SYNLoginBaseViewController.m */; };
 		3862E89F172978D10066E8E7 /* Default~iphone.png in Resources */ = {isa = PBXBuildFile; fileRef = 3862E89C172978D10066E8E7 /* Default~iphone.png */; };
 		3862E8A0172978D10066E8E7 /* Default-568h@2x~iphone.png in Resources */ = {isa = PBXBuildFile; fileRef = 3862E89D172978D10066E8E7 /* Default-568h@2x~iphone.png */; };
 		3862E8A1172978D10066E8E7 /* Default@2x~iphone.png in Resources */ = {isa = PBXBuildFile; fileRef = 3862E89E172978D10066E8E7 /* Default@2x~iphone.png */; };
@@ -1411,6 +1412,8 @@
 		276F95C3CF7F47FE9BF50F40 /* Pods.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = Pods.xcconfig; path = Pods/Pods.xcconfig; sourceTree = SOURCE_ROOT; };
 		3685246F69AA4C9B93DDEDAC /* libPods.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = libPods.a; sourceTree = BUILT_PRODUCTS_DIR; };
 		38061BC0173D15BE00A7E349 /* SYNAccountSettingsModalContainer.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = SYNAccountSettingsModalContainer.xib; sourceTree = "<group>"; };
+		38281F181742791F0024DC18 /* SYNLoginBaseViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SYNLoginBaseViewController.h; sourceTree = "<group>"; };
+		38281F191742791F0024DC18 /* SYNLoginBaseViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SYNLoginBaseViewController.m; sourceTree = "<group>"; };
 		3862E89C172978D10066E8E7 /* Default~iphone.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = "Default~iphone.png"; path = "Assets/Images/Default~iphone.png"; sourceTree = "<group>"; };
 		3862E89D172978D10066E8E7 /* Default-568h@2x~iphone.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = "Default-568h@2x~iphone.png"; path = "Assets/Images/Default-568h@2x~iphone.png"; sourceTree = "<group>"; };
 		3862E89E172978D10066E8E7 /* Default@2x~iphone.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = "Default@2x~iphone.png"; path = "Assets/Images/Default@2x~iphone.png"; sourceTree = "<group>"; };
@@ -3836,6 +3839,8 @@
 				BE270B7E16EDE0E800CDDA6D /* SYNLoginViewController.xib */,
 				BED4311516F0EBBB0051465B /* SYNLoginErrorArrow.h */,
 				BED4311616F0EBBB0051465B /* SYNLoginErrorArrow.m */,
+				38281F181742791F0024DC18 /* SYNLoginBaseViewController.h */,
+				38281F191742791F0024DC18 /* SYNLoginBaseViewController.m */,
 			);
 			name = Login;
 			sourceTree = "<group>";
@@ -5155,6 +5160,7 @@
 				BEB1578B173D016B00DAFA2F /* _CoverArt.m in Sources */,
 				BEB1578E173D060700DAFA2F /* _ChannelCover.m in Sources */,
 				BEB15791173D061700DAFA2F /* ChannelCover.m in Sources */,
+				38281F1A1742791F0024DC18 /* SYNLoginBaseViewController.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
