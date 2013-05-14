@@ -1373,6 +1373,7 @@
                                                                                  initWithSendReportBlock: ^ (NSString *reportString){
                                                                                      self.reportConcernButton.selected = NO;
                                                                                      [self.reportConcernPopoverController dismissPopoverAnimated: YES];
+                                                                                     [self reportConcern: reportString];
                                                                                  }
                                                                                  cancelReportBlock: ^{
                                                                                      self.reportConcernButton.selected = NO;
@@ -1408,6 +1409,22 @@
                                            permittedArrowDirections: UIPopoverArrowDirectionLeft
                                                            animated: YES];
     }  
+}
+
+
+- (void) reportConcern: (NSString *) reportString
+{
+    [appDelegate.oAuthNetworkEngine reportConcernForUserId: appDelegate.currentOAuth2Credentials.userId
+                                                objectType: @"channel"
+                                                  objectId: self.channel.uniqueId
+                                                    reason: reportString
+                                          completionHandler: ^(NSDictionary *dictionary){
+                                              DebugLog(@"Concern successfully reported");
+                                          }
+                                               errorHandler: ^(NSError* error) {
+                                                   DebugLog(@"Report concern failed");
+                                                   DebugLog(@"%@", [error debugDescription]);
+                                               }];
 }
 
 
