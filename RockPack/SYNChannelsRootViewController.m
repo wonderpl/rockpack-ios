@@ -66,6 +66,7 @@
 @synthesize currentRange;
 @synthesize currentTotal;
 @synthesize mainRegistry;
+@synthesize channels;
 
 #pragma mark - View lifecycle
 

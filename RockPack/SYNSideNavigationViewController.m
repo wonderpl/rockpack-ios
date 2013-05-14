@@ -175,8 +175,14 @@ typedef enum {
                                                object: nil];
     
     [[NSNotificationCenter defaultCenter] addObserver: self
-                                             selector: @selector(profileRequested:)
+                                             selector: @selector(changeOfViewRequested:)
                                                  name: kProfileRequested
+                                               object: nil];
+    
+    
+    [[NSNotificationCenter defaultCenter] addObserver: self
+                                             selector: @selector(changeOfViewRequested:)
+                                                 name: kChannelDetailsRequested
                                                object: nil];
     
     [self getNotifications];
@@ -756,7 +762,7 @@ typedef enum {
 
 #pragma mark - Notification Handlers
 
--(void)profileRequested:(NSNotification*)notification
+-(void)changeOfViewRequested:(NSNotification*)notification
 {
     self.state = SideNavigationStateHidden;
 }

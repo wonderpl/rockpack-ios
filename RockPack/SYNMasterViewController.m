@@ -6,31 +6,27 @@
 //  Copyright (c) 2013 Nick Banks. All rights reserved.
 //
 
-#import "SYNMasterViewController.h"
+
 #import "AppConstants.h"
-#import "SYNActivityPopoverViewController.h"
-#import "SYNSideNavigationViewController.h"
-#import "SYNContainerViewController.h"
-#import "UIFont+SYNFont.h"
-#import "SYNSoundPlayer.h"
-#import "SYNContainerViewController.h"
-#import "SYNBackButtonControl.h"
-#import "SYNVideoViewerViewController.h"
 #import "SYNAccountSettingsMainTableViewController.h"
-#import "SYNRefreshButton.h"
-#import "SYNSearchBoxViewController.h"
+#import "SYNAccountSettingsModalContainer.h"
+#import "SYNActivityPopoverViewController.h"
+#import "SYNBackButtonControl.h"
+#import "SYNChannelDetailViewController.h"
+#import "SYNContainerViewController.h"
 #import "SYNDeviceManager.h"
 #import "SYNExistingChannelsViewController.h"
-#import "SYNDeviceManager.h"
-#import "SYNChannelDetailViewController.h"
-#import "SYNObjectFactory.h"
 #import "SYNFacebookManager.h"
-#import "SYNDeviceManager.h"
-
-#import "SYNSearchRootViewController.h"
-#import "SYNAccountSettingsModalContainer.h"
+#import "SYNMasterViewController.h"
 #import "SYNNetworkErrorView.h"
-
+#import "SYNObjectFactory.h"
+#import "SYNRefreshButton.h"
+#import "SYNSearchBoxViewController.h"
+#import "SYNSearchRootViewController.h"
+#import "SYNSideNavigationViewController.h"
+#import "SYNSoundPlayer.h"
+#import "SYNVideoViewerViewController.h"
+#import "UIFont+SYNFont.h"
 #import <QuartzCore/QuartzCore.h>
 
 #define kMovableViewOffX -58
@@ -41,7 +37,6 @@
 typedef void(^AnimationCompletionBlock)(BOOL finished);
 
 @interface SYNMasterViewController ()
-
 
 @property (nonatomic) BOOL buttonLocked;
 @property (nonatomic) BOOL isDragging;
@@ -56,6 +51,7 @@ typedef void(^AnimationCompletionBlock)(BOOL finished);
 @property (nonatomic, strong) IBOutlet UIView* movableButtonsContainer;
 @property (nonatomic, strong) IBOutlet UIView* navigationContainerView;
 @property (nonatomic, strong) IBOutlet UIView* overlayView;
+@property (nonatomic, strong) SYNAccountSettingsModalContainer* modalAccountContainer;
 @property (nonatomic, strong) SYNBackButtonControl* backButtonControl;
 @property (nonatomic, strong) SYNExistingChannelsViewController* existingChannelsController;
 @property (nonatomic, strong) SYNNetworkErrorView* networkErrorView;
@@ -65,14 +61,9 @@ typedef void(^AnimationCompletionBlock)(BOOL finished);
 @property (nonatomic, strong) SYNVideoViewerViewController *videoViewerViewController;
 @property (nonatomic, strong) UINavigationController* overlayNavigationController;
 @property (nonatomic, strong) UIPopoverController* accountSettingsPopover;
+@property (nonatomic, strong) UIView* accountSettingsCoverView;
 @property (nonatomic, strong) VideoOverlayDismissBlock videoOverlayDismissBlock;
 @property (strong, nonatomic) IBOutlet UIView *overlayContainerView;
-@property (strong, nonatomic) Reachability *reachability;
-
-@property (nonatomic, strong) UIView* accountSettingsCoverView;
-
-@property (nonatomic, strong) SYNAccountSettingsModalContainer* modalAccountContainer;
-
 
 @end
 

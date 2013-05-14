@@ -8,7 +8,10 @@
 
 #import "SYNAbstractViewController.h"
 
-@interface SYNChannelsRootViewController : SYNAbstractViewController
+@interface SYNChannelsRootViewController : SYNAbstractViewController {
+    @protected
+    NSMutableArray* channels;
+}
 
 @property (nonatomic, strong) UICollectionView *channelThumbnailCollectionView;
 @property (nonatomic, assign) BOOL enableCategoryTable;

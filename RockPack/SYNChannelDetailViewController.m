@@ -7,8 +7,9 @@
 //
 
 #import "Channel.h"
-#import "CoverArt.h"
+#import "ChannelCover.h"
 #import "ChannelOwner.h"
+#import "CoverArt.h"
 #import "GKImagePicker.h"
 #import "Genre.h"
 #import "SSTextView.h"
@@ -20,8 +21,8 @@
 #import "SYNCoverThumbnailCell.h"
 #import "SYNDeviceManager.h"
 #import "SYNOAuthNetworkEngine.h"
-#import "ChannelCover.h"
 #import "SYNPopoverBackgroundView.h"
+#import "SYNReportConcernTableViewController.h"
 #import "SYNVideoThumbnailRegularCell.h"
 #import "SubGenre.h"
 #import "UIFont+SYNFont.h"
@@ -37,8 +38,8 @@
                                               UIPopoverControllerDelegate,
                                               SYNCameraPopoverViewControllerDelegate, SYNChannelCategoryTableViewDelegate, SYNChannelCoverImageSelectorDelegate>
 
+
 @property (nonatomic, assign)  CGPoint originalContentOffset;
-@property (nonatomic, assign)  kChannelDetailsMode mode;
 @property (nonatomic, strong) GKImagePicker *imagePicker;
 @property (nonatomic, strong) IBOutlet SSTextView *channelTitleTextView;
 @property (nonatomic, strong) IBOutlet UIButton *addToChannelButton;
@@ -47,6 +48,8 @@
 @property (nonatomic, strong) IBOutlet UIButton *createChannelButton;
 @property (nonatomic, strong) IBOutlet UIButton *shareButton;
 @property (nonatomic, strong) IBOutlet UIButton* addCoverButton;
+@property (nonatomic, strong) IBOutlet UIButton* profileImageButton;
+@property (nonatomic, strong) IBOutlet UIButton* reportConcernButton;
 @property (nonatomic, strong) IBOutlet UIButton* selectCategoryButton;
 @property (nonatomic, strong) IBOutlet UIButton* subscribeButton;
 @property (nonatomic, strong) IBOutlet UICollectionView *coverThumbnailCollectionView;
@@ -56,6 +59,7 @@
 @property (nonatomic, strong) IBOutlet UILabel *channelOwnerLabel;
 @property (nonatomic, strong) IBOutlet UIPopoverController *cameraMenuPopoverController;
 @property (nonatomic, strong) IBOutlet UIPopoverController *cameraPopoverController;
+@property (nonatomic, strong) IBOutlet UIPopoverController *reportConcernPopoverController;
 @property (nonatomic, strong) IBOutlet UIView *avatarBackgroundView;
 @property (nonatomic, strong) IBOutlet UIView *channelTitleTextBackgroundView;
 @property (nonatomic, strong) IBOutlet UIView *coverChooserMasterView;
@@ -65,24 +69,22 @@
 @property (nonatomic, strong) NSFetchedResultsController *channelCoverFetchedResultsController;
 @property (nonatomic, strong) NSFetchedResultsController *userChannelCoverFetchedResultsController;
 @property (nonatomic, strong) SYNCategoriesTabViewController *categoriesTabViewController;
+@property (nonatomic, strong) UIImage* originalBackgroundImage;
+@property (nonatomic, strong) id<SDWebImageOperation> currentWebImageOperation;
 @property (nonatomic, weak) Channel *channel;
 @property (nonatomic,strong) NSString* selectedCategoryId;
 @property (nonatomic,strong) NSString* selectedCoverId;
 @property (weak, nonatomic) IBOutlet UILabel *byLabel;
-@property (nonatomic, strong) IBOutlet UIButton* profileImageButton;
 
-@property (nonatomic, strong) id<SDWebImageOperation> currentWebImageOperation;
-
-@property (nonatomic, strong) UIImage* originalBackgroundImage;
-
+@property (nonatomic, strong) UIActivityIndicatorView* subscribingIndicator;
 //iPhone specific
 @property (nonatomic,strong) AVURLAsset* selectedAsset;
 @property (nonatomic,strong) SYNChannelCoverImageSelectorViewController* coverImageSelector;
 @property (strong,nonatomic) SYNChannelCategoryTableViewController *categoryTableViewController;
 @property (weak, nonatomic) IBOutlet UIActivityIndicatorView *activityIndicator;
+@property (weak, nonatomic) IBOutlet UIButton *backButton;
 @property (weak, nonatomic) IBOutlet UIButton *cancelTextInputButton;
 @property (weak, nonatomic) IBOutlet UIImageView *textBackgroundImageView;
-@property (weak, nonatomic) IBOutlet UIButton *backButton;
 
 @end
 
@@ -100,7 +102,8 @@
     if ((self = [super initWithViewId: kChannelDetailsViewId]))
     {
 		self.channel = channel; // channel does not have the VideoInstances at this point, it will update with the kChannelUpdateRequest
-        self.mode = mode;
+        
+        _mode = mode;
 	}
 
 	return self;
@@ -312,14 +315,18 @@
                                    options: NSKeyValueObservingOptionNew
                                    context: NULL];
     
-    if ([self.channel.subscribedByUser boolValue])
-    {
-        self.subscribeButton.selected = YES;
-    }
-    else
-    {
-        self.subscribeButton.selected = NO;
-    }
+    __weak SYNChannelDetailViewController* weakSelf = self;
+    [appDelegate.currentUser.subscriptions enumerateObjectsUsingBlock:^(id obj, NSUInteger idx, BOOL *stop) {
+        if( [((Channel*)obj).uniqueId isEqualToString:weakSelf.channel.uniqueId] ) {
+            weakSelf.channel.subscribedByUserValue = YES;
+            weakSelf.channel.subscribersCountValue += 1;
+            *stop = YES;
+        }
+    }];
+    
+    // NSLog(@"self.channel.subscribedByUserValue = %i", self.channel.subscribedByUserValue);
+    self.subscribeButton.enabled = YES;
+    self.subscribeButton.selected = self.channel.subscribedByUserValue;
     
     [self.channel addObserver: self
                    forKeyPath: kSubscribedByUserKey
@@ -355,12 +362,39 @@
     
     [self.channelTitleTextView removeObserver: self
                                    forKeyPath: kTextViewContentSizeKey];
+    
+    if(self.subscribingIndicator) {
+        [self.subscribingIndicator removeFromSuperview];
+        self.subscribingIndicator = nil;
+    }
+        
 
 
     [[NSNotificationCenter defaultCenter] removeObserver: self
                                                     name: NSManagedObjectContextDidSaveNotification
                                                   object: self.channel.managedObjectContext];
     [super viewWillDisappear: animated];
+}
+
+// TODO; Remove this method once happy with mode switching functionality
+- (IBAction) testMode
+{
+    self.mode = (self.mode == kChannelDetailsModeDisplay) ? kChannelDetailsModeEdit: kChannelDetailsModeDisplay;
+}
+
+
+- (void) setMode: (kChannelDetailsMode) mode
+{
+    if (self.mode != mode)
+    {
+        _mode = mode;
+        
+        [UIView animateWithDuration: kChannelEditModeAnimationDuration
+                         animations: ^{
+                             [self setDisplayControlsVisibility: (self.mode == kChannelDetailsModeDisplay) ? TRUE: FALSE];
+                         }
+                         completion: nil];
+    }
 }
 
 
@@ -404,7 +438,7 @@
 {
     if (controller == self.fetchedResultsController)
     {
-        startAnimationDelay = 0.0;
+       
         [self reloadCollectionViews];
     }
     else if ((controller == self.channelCoverFetchedResultsController) || (controller == self.userChannelCoverFetchedResultsController))
@@ -444,7 +478,7 @@
 {
     self.channelOwnerLabel.text = self.channel.channelOwner.displayName;
     
-    NSString *detailsString = [NSString stringWithFormat: @"%d SUBSCRIBERS", 0];
+    NSString *detailsString = [NSString stringWithFormat: @"%lld SUBSCRIBERS", self.channel.subscribersCountValue];
     self.channelDetailsLabel.text = detailsString;
     
     // If we have a valid ecommerce URL, then display the button
@@ -860,14 +894,14 @@
     {
         NSNumber* newSubscribedByUserValue = (NSNumber*)[change valueForKey: NSKeyValueChangeNewKey];
         BOOL finalValue = [newSubscribedByUserValue boolValue];
-        if (finalValue)
-        {
-            self.subscribeButton.selected = YES;
+        self.subscribeButton.selected = finalValue;
+        self.subscribeButton.enabled = YES;
+        
+        if(self.subscribingIndicator) {
+            [self.subscribingIndicator removeFromSuperview];
+            self.subscribingIndicator = nil;
         }
-        else
-        {
-            self.subscribeButton.selected = NO;
-        }
+        
     }
 }
 
@@ -893,6 +927,10 @@
 
 - (IBAction) subscribeButtonTapped: (id) sender
 {
+    self.subscribeButton.enabled = NO;
+    
+    [self addSubscribeIndicator];
+    
     [[NSNotificationCenter defaultCenter] postNotificationName: kChannelSubscribeRequest
                                                         object: self
                                                       userInfo: @{ kChannel : self.channel }];
@@ -1337,11 +1375,47 @@
                                        animated: NO];
 }
 
-#pragma mark - Cover selection and upload support
+#pragma mark - Report a concern
 
 - (IBAction) userTouchedReportConcernButton: (UIButton*) button
 {
     button.selected = !button.selected;
+    
+    if (button.selected)
+    {
+        // Create out concerns table view controller
+        SYNReportConcernTableViewController *reportConcernTableViewController = [[SYNReportConcernTableViewController alloc] init];
+        
+        // Wrap it in a navigation controller
+        UINavigationController *navController = [[UINavigationController alloc]
+                                                 initWithRootViewController: reportConcernTableViewController];
+        
+        // Hard way of adding a title (need to due to custom font offsets)
+        UIView *containerView = [[UIView alloc] initWithFrame: CGRectMake (0, 0, 140, 28)];
+        containerView.backgroundColor = [UIColor clearColor];
+        UILabel *label = [[UILabel alloc] initWithFrame: CGRectMake (0, 4, 140, 28)];
+        label.backgroundColor = [UIColor clearColor];
+        label.font = [UIFont boldRockpackFontOfSize: 20.0];
+        label.textAlignment = NSTextAlignmentCenter;
+        label.textColor = [UIColor blackColor];
+        label.shadowColor = [UIColor whiteColor];
+        label.shadowOffset = CGSizeMake(0.0, 1.0);
+        label.text = NSLocalizedString(@"REPORT", nil);
+        [containerView addSubview: label];
+        reportConcernTableViewController.navigationItem.titleView = containerView;
+        
+        // Need show the popover controller
+        self.reportConcernPopoverController = [[UIPopoverController alloc] initWithContentViewController: navController];
+        self.reportConcernPopoverController.popoverContentSize = CGSizeMake(275, 344);
+        self.reportConcernPopoverController.delegate = self;
+        self.reportConcernPopoverController.popoverBackgroundViewClass = [SYNPopoverBackgroundView class];
+        
+        // Now present appropriately
+        [self.reportConcernPopoverController presentPopoverFromRect: button.frame
+                                                             inView: self.displayControlsView
+                                           permittedArrowDirections: UIPopoverArrowDirectionLeft
+                                                           animated: YES];
+    }  
 }
 
 
@@ -1380,6 +1454,11 @@
     else if (popoverController == self.cameraPopoverController)
     {
         self.cameraButton.selected = NO;
+        self.cameraPopoverController = nil;
+    }
+    else if (popoverController == self.reportConcernPopoverController)
+    {
+        self.reportConcernButton.selected = NO;
         self.cameraPopoverController = nil;
     }
     else
@@ -1538,6 +1617,17 @@
     [[[[master childViewControllers] lastObject] view] removeFromSuperview];
     [self setDisplayControlsVisibility:YES];
     [self.view addSubview:self.backButton];
+}
+
+-(void)addSubscribeIndicator
+{
+    self.subscribingIndicator = [[UIActivityIndicatorView alloc] initWithActivityIndicatorStyle:UIActivityIndicatorViewStyleWhite];
+    CGRect indicatorRect = self.subscribingIndicator.frame;
+    indicatorRect.origin.x = self.subscribeButton.frame.origin.x - 32.0;
+    indicatorRect.origin.y = self.subscribeButton.frame.origin.y + 10.0;
+    self.subscribingIndicator.frame = indicatorRect;
+    [self.subscribingIndicator startAnimating];
+    [self.view addSubview:self.subscribingIndicator];
 }
 
 

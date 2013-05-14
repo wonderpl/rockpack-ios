@@ -412,7 +412,7 @@
 				<string key="NSReuseIdentifierKey">_NS:9</string>
 				<object class="NSColor" key="IBUIBackgroundColor">
 					<int key="NSColorSpace">1</int>
-					<bytes key="NSRGB">MC4xMjE1Njg2Mjc1IDAuMTQ5MDE5NjA3OCAwLjE2MDc4NDMxMzcgMC45AA</bytes>
+					<bytes key="NSRGB">MC4xMDk4MDM5MjE2IDAuMTIxNTY4NjI3NSAwLjEyOTQxMTc2NDcgMC45NQA</bytes>
 				</object>
 				<reference key="IBUIGestureRecognizers" ref="0"/>
 				<object class="IBUISimulatedSizeMetrics" key="IBUISimulatedDestinationMetrics">

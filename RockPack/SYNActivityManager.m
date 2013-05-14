@@ -16,7 +16,6 @@
 
 @property (nonatomic, strong) NSMutableSet *recentlyStarred;
 @property (nonatomic, strong) NSMutableSet *recentlyViewed;
-@property (nonatomic, strong) NSMutableSet *subscribed;
 @property (nonatomic, weak) SYNAppDelegate *appDelegate;
 
 @end
@@ -33,7 +32,6 @@
         activityManager = [[self alloc] init];
         activityManager.recentlyStarred = [[NSMutableSet alloc] initWithCapacity: 100];
         activityManager.recentlyViewed = [[NSMutableSet alloc] initWithCapacity: 100];
-        activityManager.subscribed = [[NSMutableSet alloc] initWithCapacity: 100];
         activityManager.appDelegate = (SYNAppDelegate *)[[UIApplication sharedApplication] delegate];
 
     });
@@ -44,14 +42,11 @@
 - (void) updateActivityForCurrentUser
 {
     [self.appDelegate.oAuthNetworkEngine activityForUserId: self.appDelegate.currentOAuth2Credentials.userId
-     completionHandler: ^(NSDictionary *responseDictionary)
-     {
-         DebugLog(@"Activity updates successful");
-     }
-     errorHandler: ^(NSDictionary* error)
-     {
-         DebugLog(@"Activity updates failed");
-     }];
+                                         completionHandler: ^(NSDictionary *responseDictionary) {
+                                             DebugLog(@"Activity updates successful");
+                                         } errorHandler: ^(NSDictionary* error) {
+                                             DebugLog(@"Activity updates failed");
+                                         }];
 }
 
 
@@ -81,21 +76,7 @@
      }];
 }
 
-- (void) updateSubscriptionForChannel: (Channel *) channel
-{
-    // Cache the uniqueId (slight optimisation)
-    NSString *uniqueId = channel.uniqueId;
-    
-    [self.subscribed enumerateObjectsWithOptions: NSEnumerationConcurrent
-                                      usingBlock: ^(id obj, BOOL *stop)
-     {
-         if ([uniqueId isEqualToString: obj])
-         {
-             channel.subscribedByUserValue = TRUE;
-             *stop = YES;
-         }
-     }];
-}
+
 
 
 @end

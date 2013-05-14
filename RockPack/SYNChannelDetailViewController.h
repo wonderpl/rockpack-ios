@@ -21,4 +21,6 @@ typedef enum {
 - (id) initWithChannel: (Channel *) channel
              usingMode: (kChannelDetailsMode) mode;
 
+@property (nonatomic, assign)  kChannelDetailsMode mode;
+
 @end

@@ -239,17 +239,13 @@
     //Get all current videos for the viewId
     NSEntityDescription* videoInstanceEntity = [NSEntityDescription entityForName: @"VideoInstance"
                                                            inManagedObjectContext: importManagedObjectContext];
-    
     NSFetchRequest *videoInstanceFetchRequest = [[NSFetchRequest alloc] init];
     [videoInstanceFetchRequest setEntity: videoInstanceEntity];
-    
     NSPredicate *predicate = [NSPredicate predicateWithFormat: @"viewId == %@", viewId];
     [videoInstanceFetchRequest setPredicate: predicate];
-    
     NSError* error = nil;
     NSArray *matchingVideoInstanceEntries = [importManagedObjectContext executeFetchRequest: videoInstanceFetchRequest
                                                                                 error: &error];
-    
     NSMutableDictionary* existingVideosByIndex = [NSMutableDictionary dictionaryWithCapacity:matchingVideoInstanceEntries.count];
     
     // Organise videos by Id

@@ -121,7 +121,6 @@
 #define kChannelUpdateRequest       @"kChannelUpdateRequest"
 #define kChannelOwnerUpdateRequest  @"kChannelOwnerUpdateRequest"
 #define kChannelDeleteRequest       @"kChannelDeleteRequest"
-#define kProfileRequested           @"kProfileRequested"
 
 #define kRefreshComplete           @"kRefreshComplete"
 
@@ -350,7 +349,9 @@ typedef enum {
 
 #define kNotificationMarkedRead     @"kNoteAddedToChannel"
 
-
+#define kProfileRequested           @"kProfileRequested"
+#define kChannelDetailsRequested    @"kChannelDetailsRequested"
+#define kVideoOverlayRequested      @"kVideoOverlayRequested"
 //
 // Tracking
 //

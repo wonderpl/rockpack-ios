@@ -85,8 +85,16 @@
         return NO;
     
     for (id basket in result)
+    {
         [importManagedObjectContext deleteObject:basket];
+    }
+        
     
+    BOOL saveResult = [self saveImportContext];
+    if(!saveResult)
+        return NO;
+    
+    [appDelegate saveSearchContext];
     
     return YES;
     

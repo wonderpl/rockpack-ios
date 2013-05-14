@@ -221,10 +221,20 @@
     
 }
 
+// == Main Method == //
+
 -(void)performSearchForCurrentSearchTerm
 {
     
-    [self clearOldSearchData];
+    if(![appDelegate.searchRegistry clearImportContextFromEntityName:@"VideoInstance"])
+    {
+        DebugLog(@"Could not clean VideoInstances from search context");
+    }
+    
+    if(![appDelegate.searchRegistry clearImportContextFromEntityName:@"Channel"])
+    {
+        DebugLog(@"Could not clean Channel from search context");
+    }
     
     if(!self.currentController)
         [self videoTabPressed:nil];
@@ -234,14 +244,8 @@
     [self.searchChannelsController performSearchWithTerm:searchTerm];
 }
 
--(void)clearOldSearchData
-{
-    
-    [appDelegate.searchRegistry clearImportContextFromEntityName:@"VideoInstance"];
-    
-    [appDelegate.searchRegistry clearImportContextFromEntityName:@"Channel"];
-    
-}
+
+
 -(void)viewWillDisappear:(BOOL)animated
 {
     [super viewWillDisappear:animated];
