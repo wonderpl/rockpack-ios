@@ -6,8 +6,8 @@
 //  Copyright (c) 2013 Nick Banks. All rights reserved.
 //
 
-#import "SYNLoginViewController.h"
+#import "SYNLoginBaseViewController.h"
 
-@interface SYNLoginViewControllerIphone : SYNLoginViewController
+@interface SYNLoginViewControllerIphone : SYNLoginBaseViewController
 
 @end

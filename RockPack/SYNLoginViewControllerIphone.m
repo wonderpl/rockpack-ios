@@ -17,7 +17,7 @@
 
 #define kLoginAnimationTransitionDuration 0.3f
 
-@interface SYNLoginViewControllerIphone () <UITextFieldDelegate, UIActionSheetDelegate>
+@interface SYNLoginViewControllerIphone () <UITextFieldDelegate, UIActionSheetDelegate, GKImagePickerDelegate>
 {
     BOOL facebookLoginIsInProgress;
 }
@@ -61,6 +61,9 @@
 
 @property (nonatomic, strong) IBOutlet UIImage* avatarImage;
 
+@property (nonatomic, strong) GKImagePicker* imagePicker;
+@property (nonatomic, strong) IBOutlet UIImageView* avatarImageView;
+
 @end
 
 @implementation SYNLoginViewControllerIphone 
@@ -78,6 +81,7 @@
 {
     [super viewDidLoad];
     
+    // Google Analytics support
     self.trackedViewName = @"Login";
     
     BOOL isPreIPhone5 = [[SYNDeviceManager sharedInstance] currentScreenHeight] < 500;
@@ -762,5 +766,51 @@
         [self showImagePicker:UIImagePickerControllerSourceTypePhotoLibrary];
     }
 }
+
+#pragma mark - Avatar image selection
+
+- (void) showImagePicker: (UIImagePickerControllerSourceType) sourceType
+{
+    self.imagePicker = [[GKImagePicker alloc] init];
+    self.imagePicker.cropSize = CGSizeMake(280, 280);
+    self.imagePicker.delegate = self;
+    self.imagePicker.imagePickerController.sourceType = sourceType;
+    
+    if ((sourceType == UIImagePickerControllerSourceTypeCamera) && [UIImagePickerController respondsToSelector: @selector(isCameraDeviceAvailable:)])
+    {
+        if ([UIImagePickerController isCameraDeviceAvailable: UIImagePickerControllerCameraDeviceFront])
+        {
+            self.imagePicker.imagePickerController.cameraDevice = UIImagePickerControllerCameraDeviceFront;
+        }
+    }
+    
+    [self presentViewController: self.imagePicker.imagePickerController
+                           animated: YES
+                         completion: nil];
+}
+
+
+# pragma mark - GKImagePicker Delegate Methods
+
+- (void) imagePicker: (GKImagePicker *) imagePicker
+         pickedImage: (UIImage *) image
+{
+    DebugLog(@"width %f, height %f", image.size.width, image.size.height);
+    
+    // Save our avatar
+    self.avatarImage = image;
+    
+    // And update on-screen avatar
+    self.avatarImageView.image = image;
+    
+    [self hideImagePicker];
+}
+
+- (void) hideImagePicker
+{
+        [self.imagePicker.imagePickerController dismissViewControllerAnimated: YES
+                                                                   completion: nil];
+}
+
 
 @end

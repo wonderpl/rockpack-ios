@@ -50,6 +50,18 @@
 @property (nonatomic, strong) NSMutableDictionary* labelsToErrorArrows;
 @property (nonatomic, strong) UIPopoverController* cameraMenuPopoverController;
 @property (nonatomic, strong) UIPopoverController* cameraPopoverController;
+@property (nonatomic, strong) IBOutlet UITextField* userNameInputField;
+@property (nonatomic, strong) IBOutlet UITextField* passwordInputField;
+@property (nonatomic, strong) IBOutlet UITextField* registeringUserNameInputField;
+@property (nonatomic, strong) IBOutlet UITextField* registeringUserEmailInputField;
+@property (nonatomic, strong) IBOutlet UITextField* registeringUserPasswordInputField;
+@property (nonatomic, strong) IBOutlet UITextField* emailInputField;
+@property (nonatomic, strong) IBOutlet UIView* dobView;
+@property (nonatomic, strong) IBOutlet UITextField* ddInputField;
+@property (nonatomic, strong) IBOutlet UITextField* mmInputField;
+@property (nonatomic, strong) IBOutlet UITextField* yyyyInputField;
+@property (nonatomic, strong) IBOutlet UILabel* wellSendYouLabel;
+@property (nonatomic, strong) IBOutlet UILabel* termsAndConditionsLabel;
 
 @end
 
@@ -59,7 +71,6 @@
 @implementation SYNLoginViewController
 
 @synthesize state;
-@synthesize appDelegate;
 @synthesize signUpButton, facebookSignInButton;
 @synthesize loginButton, finalLoginButton, passwordInputField, registerButton, userNameInputField;
 @synthesize passwordForgottenButton, passwordForgottenLabel, areYouNewLabel, memberLabel, termsAndConditionsLabel;
@@ -80,15 +91,10 @@
     
     // Google Analytics support
     self.trackedViewName = @"Login";
-    
-    // set up controls
-    
-    appDelegate = (SYNAppDelegate*)[[UIApplication sharedApplication] delegate];
+
     
     activityIndicator.hidesWhenStopped = YES;
     
-    if([[SYNDeviceManager sharedInstance] isIPad])
-    {
         // == Setup Fonts for labels (except Input Fields)
         UIFont* rockpackBigLabelFont = [UIFont rockpackFontOfSize: 20];
         
@@ -145,7 +151,7 @@
         }
     
         self.state = kLoginScreenStateInitial;
-    } 
+
 }
 
 
@@ -782,10 +788,10 @@
         
         FBAccessTokenData* accessTokenData = [[FBSession activeSession] accessTokenData];
         
-        [appDelegate.oAuthNetworkEngine doFacebookLoginWithAccessToken: accessTokenData.accessToken
+        [self.appDelegate.oAuthNetworkEngine doFacebookLoginWithAccessToken: accessTokenData.accessToken
                                                      completionHandler: ^(SYNOAuth2Credential* credential) {
                                                          
-                                                         [appDelegate.oAuthNetworkEngine userInformationFromCredentials: credential
+                                                         [self.appDelegate.oAuthNetworkEngine userInformationFromCredentials: credential
                                                                                                       completionHandler: ^(NSDictionary* dictionary) {
                                                                                                           
                                                                                                           [self checkAndSaveRegisteredUser: credential];
@@ -1309,26 +1315,17 @@
             self.imagePicker.imagePickerController.cameraDevice = UIImagePickerControllerCameraDeviceFront;
         }
     }
+    self.cameraPopoverController = [[UIPopoverController alloc] initWithContentViewController: self.imagePicker.imagePickerController];
     
-    if (UI_USER_INTERFACE_IDIOM() == UIUserInterfaceIdiomPad)
-    {
-        self.cameraPopoverController = [[UIPopoverController alloc] initWithContentViewController: self.imagePicker.imagePickerController];
+    self.cameraPopoverController.popoverBackgroundViewClass = [SYNPopoverBackgroundView class];
         
-        self.cameraPopoverController.popoverBackgroundViewClass = [SYNPopoverBackgroundView class];
-        
-        [self.cameraPopoverController presentPopoverFromRect: self.faceImageButton.frame
-                                                      inView: self.view
+    [self.cameraPopoverController presentPopoverFromRect: self.faceImageButton.frame
+                                                        inView: self.view
                                     permittedArrowDirections: UIPopoverArrowDirectionLeft
                                                     animated: YES];
         
-        self.cameraPopoverController.delegate = self;
-    }
-    else
-    {
-        [self presentViewController: self.imagePicker.imagePickerController
-                           animated: YES
-                         completion: nil];
-    }
+    self.cameraPopoverController.delegate = self;
+    
 }
 
 
@@ -1350,16 +1347,7 @@
 
 - (void) hideImagePicker
 {
-    if (UIUserInterfaceIdiomPad == UI_USER_INTERFACE_IDIOM())
-    {
-        
-        [self.cameraPopoverController dismissPopoverAnimated: YES];
-        
-    } else {
-        
-        [self.imagePicker.imagePickerController dismissViewControllerAnimated: YES
-                                                                   completion: nil];
-    }
+    [self.cameraPopoverController dismissPopoverAnimated: YES];
 }
 
 
@@ -1417,18 +1405,10 @@
 
 - (CGFloat) elementsOffsetY
 {
-    if ([[SYNDeviceManager sharedInstance] isIPad])
-    {
         if ([[SYNDeviceManager sharedInstance] isLandscape])
             return 284.0;
         else
-            return 284.0;
-    }
-    else
-    {
-        return 320.0;
-    }
-    
+            return 284.0;    
 }
 
 
