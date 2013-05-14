@@ -7,8 +7,9 @@
 //
 
 #import "Channel.h"
-#import "CoverArt.h"
+#import "ChannelCover.h"
 #import "ChannelOwner.h"
+#import "CoverArt.h"
 #import "GKImagePicker.h"
 #import "Genre.h"
 #import "SSTextView.h"
@@ -20,8 +21,8 @@
 #import "SYNCoverThumbnailCell.h"
 #import "SYNDeviceManager.h"
 #import "SYNOAuthNetworkEngine.h"
-#import "ChannelCover.h"
 #import "SYNPopoverBackgroundView.h"
+#import "SYNReportConcernTableViewController.h"
 #import "SYNVideoThumbnailRegularCell.h"
 #import "SubGenre.h"
 #import "UIFont+SYNFont.h"
@@ -48,6 +49,7 @@
 @property (nonatomic, strong) IBOutlet UIButton *shareButton;
 @property (nonatomic, strong) IBOutlet UIButton* addCoverButton;
 @property (nonatomic, strong) IBOutlet UIButton* profileImageButton;
+@property (nonatomic, strong) IBOutlet UIButton* reportConcernButton;
 @property (nonatomic, strong) IBOutlet UIButton* selectCategoryButton;
 @property (nonatomic, strong) IBOutlet UIButton* subscribeButton;
 @property (nonatomic, strong) IBOutlet UICollectionView *coverThumbnailCollectionView;
@@ -57,6 +59,7 @@
 @property (nonatomic, strong) IBOutlet UILabel *channelOwnerLabel;
 @property (nonatomic, strong) IBOutlet UIPopoverController *cameraMenuPopoverController;
 @property (nonatomic, strong) IBOutlet UIPopoverController *cameraPopoverController;
+@property (nonatomic, strong) IBOutlet UIPopoverController *reportConcernPopoverController;
 @property (nonatomic, strong) IBOutlet UIView *avatarBackgroundView;
 @property (nonatomic, strong) IBOutlet UIView *channelTitleTextBackgroundView;
 @property (nonatomic, strong) IBOutlet UIView *coverChooserMasterView;
@@ -1356,11 +1359,33 @@
                                        animated: NO];
 }
 
-#pragma mark - Cover selection and upload support
+#pragma mark - Report a concern
 
 - (IBAction) userTouchedReportConcernButton: (UIButton*) button
 {
     button.selected = !button.selected;
+    
+    if (button.selected)
+    {
+        // Create out concerns table view controller
+        SYNReportConcernTableViewController *reportConcernTableViewController = [[SYNReportConcernTableViewController alloc] init];
+        
+        // Wrap it in a navigation controller
+        UINavigationController *navController = [[UINavigationController alloc]
+                                                 initWithRootViewController: reportConcernTableViewController];
+        
+        // Need show the popover controller
+        self.reportConcernPopoverController = [[UIPopoverController alloc] initWithContentViewController: navController];
+        self.reportConcernPopoverController.popoverContentSize = CGSizeMake(206, 96);
+        self.reportConcernPopoverController.delegate = self;
+        self.reportConcernPopoverController.popoverBackgroundViewClass = [SYNPopoverBackgroundView class];
+        
+        // Now present appropriately
+        [self.reportConcernPopoverController presentPopoverFromRect: button.frame
+                                                             inView: self.coverChooserMasterView
+                                           permittedArrowDirections: UIPopoverArrowDirectionLeft
+                                                           animated: YES];
+    }  
 }
 
 
@@ -1399,6 +1424,11 @@
     else if (popoverController == self.cameraPopoverController)
     {
         self.cameraButton.selected = NO;
+        self.cameraPopoverController = nil;
+    }
+    else if (popoverController == self.reportConcernPopoverController)
+    {
+        self.reportConcernButton.selected = NO;
         self.cameraPopoverController = nil;
     }
     else
