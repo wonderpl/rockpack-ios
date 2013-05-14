@@ -1379,10 +1379,12 @@
         containerView.backgroundColor = [UIColor clearColor];
         UILabel *label = [[UILabel alloc] initWithFrame: CGRectMake (0, 4, 140, 28)];
         label.backgroundColor = [UIColor clearColor];
-        label.font = [UIFont rockpackFontOfSize: 20.0];
+        label.font = [UIFont boldRockpackFontOfSize: 20.0];
         label.textAlignment = NSTextAlignmentCenter;
         label.textColor = [UIColor blackColor];
-        label.text = NSLocalizedString(@"Report Concern", nil);
+        label.shadowColor = [UIColor whiteColor];
+        label.shadowOffset = CGSizeMake(0.0, 1.0);
+        label.text = NSLocalizedString(@"REPORT", nil);
         [containerView addSubview: label];
         reportConcernTableViewController.navigationItem.titleView = containerView;
         

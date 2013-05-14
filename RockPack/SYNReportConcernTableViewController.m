@@ -105,7 +105,7 @@
     UITableViewCell *cell = [tableView dequeueReusableCellWithIdentifier: kConcernsCellId
                                                             forIndexPath: indexPath];
 
-    cell.textLabel.font = [UIFont rockpackFontOfSize:18.0];
+    cell.textLabel.font = [UIFont rockpackFontOfSize:16.0];
     cell.textLabel.text = self.concernsArray[indexPath.row];
     cell.accessoryType = UITableViewCellAccessoryNone;
     
