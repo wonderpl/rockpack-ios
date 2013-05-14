@@ -53,8 +53,8 @@
                            NSLocalizedString (@"Other", nil)];
     
     UIButton *customCancelButton = [UIButton buttonWithType: UIButtonTypeCustom];
-    UIImage* customCancelButtonImage = [UIImage imageNamed: @"ButtonMoveAndScaleCancel.png"];
-    UIImage* customCancelButtonHighlightedImage = [UIImage imageNamed: @"ButtonMoveAndScaleCancel.png"];
+    UIImage* customCancelButtonImage = [UIImage imageNamed: @"ButtonPopoverCancel"];
+    UIImage* customCancelButtonHighlightedImage = [UIImage imageNamed: @"ButtonPopoverCancelHighlighted.png"];
     
     [customCancelButton setImage: customCancelButtonImage
                         forState: UIControlStateNormal];
@@ -72,8 +72,8 @@
     self.navigationItem.leftBarButtonItem = customCancelButtonItem;
     
     UIButton *customUseButton = [UIButton buttonWithType: UIButtonTypeCustom];
-    UIImage* customUseButtonImage = [UIImage imageNamed: @"ButtonMoveAndScaleUse.png"];
-    UIImage* customUseButtonHighlightedImage = [UIImage imageNamed: @"ButtonMoveAndScaleUse.png"];
+    UIImage* customUseButtonImage = [UIImage imageNamed: @"ButtonPopoverReport"];
+    UIImage* customUseButtonHighlightedImage = [UIImage imageNamed: @"ButtonPopoverReportHighlighted.png"];
     
     [customUseButton setImage: customUseButtonImage
                      forState: UIControlStateNormal];
