@@ -301,6 +301,7 @@
         [UIView animateWithDuration: 0.3
                          animations: ^{
                              signUpButton.alpha = 0.0; // right of facebook button
+                             signUpButton.hidden = YES;
                              
                              memberLabel.alpha = 0.0;
                              loginButton.alpha = 0.0;
@@ -494,6 +495,7 @@
                              loginButton.alpha = 0.0;
                              
                              signUpButton.alpha = 0.0;
+                             signUpButton.hidden = YES;
                          }
                          completion: ^(BOOL finished) {
                              finalLoginButton.center = CGPointMake(finalLoginButton.center.x, finalLoginButton.center.y - self.elementsOffsetY);
@@ -741,8 +743,11 @@
 {
     [UIView animateWithDuration: 0.3
                      animations: ^{
-                         signUpButton.alpha = 0.0;
-                         signUpButton.center = CGPointMake(signUpButton.center.x + 10.0, signUpButton.center.y);
+                         if(!signUpButton.hidden)
+                         {
+                             signUpButton.alpha = 0.0;
+                             signUpButton.center = CGPointMake(signUpButton.center.x + 10.0, signUpButton.center.y);
+                         }
                      }
                      completion: ^(BOOL finished) {
                          [activityIndicator startAnimating];
@@ -760,6 +765,28 @@
                                            facebookSignInButton.center.y);
 }
 
+- (void) doFacebookFailAnimation
+{
+    [UIView animateWithDuration: 0.3
+                     animations: ^{
+                         if(!signUpButton.hidden)
+                         {
+                             signUpButton.alpha = 1.0;
+                             signUpButton.center = CGPointMake(signUpButton.center.x - 10.0, signUpButton.center.y);
+                         }
+                     }
+                     completion: ^(BOOL finished) {
+                     }];
+    
+    userNameInputField.enabled = YES;
+    passwordForgottenButton.enabled = YES;
+    finalLoginButton.enabled = YES;
+    loginButton.enabled = YES;
+    passwordForgottenButton.enabled = YES;
+    
+    [activityIndicator stopAnimating];
+}
+
 
 - (IBAction) signInWithFacebook: (id) sender
 {
@@ -774,22 +801,12 @@
         [self completeLoginProcess];
         
     } errorHandler:^(id error) {
+        
+        [self doFacebookFailAnimation];
+        
         if([error isKindOfClass:[NSDictionary class]])
         {
-            signUpButton.alpha = 1.0;
-            
-            signUpButton.center = CGPointMake(signUpButton.center.x - 10.0, signUpButton.center.y);
-            [activityIndicator stopAnimating];
-            
-            
             NSDictionary* formErrors = error[@"form_errors"];
-            
-            userNameInputField.enabled = YES;
-            passwordForgottenButton.enabled = YES;
-            finalLoginButton.enabled = YES;
-            loginButton.enabled = YES;
-            
-            passwordForgottenButton.enabled = YES;
             
             if (formErrors)
             {
@@ -801,18 +818,6 @@
         }
         else if([error isKindOfClass:[NSString class]])
         {_facebookLoginIsInProcess = NO;
-            facebookSignInButton.enabled = YES;
-            signUpButton.alpha = 1.0;
-            
-            signUpButton.center = CGPointMake(signUpButton.center.x - 10.0, signUpButton.center.y);
-            [activityIndicator stopAnimating];
-            
-            userNameInputField.enabled = YES;
-            passwordForgottenButton.enabled = YES;
-            finalLoginButton.enabled = YES;
-            loginButton.enabled = YES;
-            
-            passwordForgottenButton.enabled = YES;
             
             // TODO: Use custom alert box here
             [[[UIAlertView alloc] initWithTitle: NSLocalizedString(@"Facebook Login", nil)
