@@ -10,6 +10,7 @@
 #import "SYNOAuth2Credential.h"
 #import "SYNAppDelegate.h"
 #import "SYNNetworkOperationJsonObject.h"
+#import "SYNImagePickerController.h"
 
 
 typedef enum {
@@ -28,6 +29,7 @@ typedef enum {
 @property (nonatomic,assign) SYNAppDelegate* appDelegate;
 
 @property (nonatomic, assign) kLoginScreenState state;
+@property (nonatomic, strong) SYNImagePickerController* imagePicker;
 
 - (BOOL) checkAndSaveRegisteredUser: (SYNOAuth2Credential*) credential;
 

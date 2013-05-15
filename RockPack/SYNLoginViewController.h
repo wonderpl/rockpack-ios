@@ -14,7 +14,7 @@
 #import "SYNLoginBaseViewController.h"
 
 
-@interface SYNLoginViewController : SYNLoginBaseViewController <UIPopoverControllerDelegate, GKImagePickerDelegate>
+@interface SYNLoginViewController : SYNLoginBaseViewController
 
 @property (nonatomic) BOOL facebookLoginIsInProcess;
 
