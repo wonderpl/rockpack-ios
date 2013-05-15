@@ -40,19 +40,21 @@
 
 -(void)setimageFromAsset:(ALAsset*)asset;
 {
-    self.latestAssetUrl = [asset valueForProperty:ALAssetPropertyAssetURL];
     self.channelCoverImageView.image = self.placeholderImage;
-    dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0), ^{
-        __block NSURL* url = [asset valueForProperty:ALAssetPropertyAssetURL];
-        __block UIImage* resultImage = [UIImage imageWithCGImage:asset.thumbnail];
-        dispatch_async(dispatch_get_main_queue(), ^{
-            if([url isEqual:self.latestAssetUrl])
-            {
-                self.channelCoverImageView.image = resultImage;
-            }
+    if(asset)
+    {
+        self.latestAssetUrl = [asset valueForProperty:ALAssetPropertyAssetURL];
+        dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0), ^{
+            __block NSURL* url = [asset valueForProperty:ALAssetPropertyAssetURL];
+            __block UIImage* resultImage = [UIImage imageWithCGImage:asset.thumbnail];
+            dispatch_async(dispatch_get_main_queue(), ^{
+                if([url isEqual:self.latestAssetUrl])
+                {
+                    self.channelCoverImageView.image = resultImage;
+                }
+            });
         });
-    });
-    
+    }
 }
 
 @end
