@@ -923,12 +923,12 @@
                                                                                                    httpMethod: @"POST"
                                                                                                           ssl: TRUE];
     // We have to perform the image upload with an input stream
-    NSData *imageData = UIImagePNGRepresentation(image);
+    NSData *imageData = UIImageJPEGRepresentation(image, 0.70);
     NSString *lengthString = [NSString stringWithFormat: @"%@", [NSNumber numberWithUnsignedLong: imageData.length]];
     NSInputStream *inputStream = [NSInputStream inputStreamWithData: imageData];
     networkOperation.uploadStream = inputStream;
     
-    [networkOperation addHeaders: @{@"Content-Type" : @"image/png", @"Content-Length" : lengthString}];
+    [networkOperation addHeaders: @{@"Content-Type" : @"image/jpeg", @"Content-Length" : lengthString}];
     
     [self addCommonHandlerToNetworkOperation: networkOperation
                            completionHandler: completionBlock
