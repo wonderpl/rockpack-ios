@@ -20,6 +20,7 @@
 #import "SYNChannelDetailViewController.h"
 #import "SYNCoverThumbnailCell.h"
 #import "SYNDeviceManager.h"
+#import "SYNMasterViewController.h"
 #import "SYNOAuthNetworkEngine.h"
 #import "SYNPopoverBackgroundView.h"
 #import "SYNReportConcernTableViewController.h"
@@ -1425,6 +1426,7 @@
 //            [self presentViewController: navController
 //                               animated: YES
 //                             completion: nil];
+            SYNMasterViewController *masterViewController = (SYNMasterViewController*)appDelegate.masterViewController;
             
             reportConcernTableViewController = [[SYNReportConcernTableViewController alloc] initWithNibName: @"SYNReportConcernTableViewControllerFullScreen~iphone"
                                                                                                      bundle: [NSBundle mainBundle]
@@ -1443,14 +1445,16 @@
                                                                                                                    // Fade out the category tab controller
                                                                                                                    reportConcernTableViewController.view.alpha = 0.0f;
                                                                                                                }
-                                                                                                               completion: nil];
+                                                                                                               completion: ^(BOOL success){
+                                                                                                                   [reportConcernTableViewController.view removeFromSuperview];
+                                                                                                               }];
                                                                                           }];
             // Move off the bottom of the screen
             CGRect startFrame = reportConcernTableViewController.view.frame;
             startFrame.origin.y = self.view.frame.size.height;
             reportConcernTableViewController.view.frame = startFrame;
             
-            [self.view addSubview: reportConcernTableViewController.view];
+            [masterViewController.view addSubview: reportConcernTableViewController.view];
             
             // Slide up onto the screen
             [UIView animateWithDuration: 0.3f
