@@ -326,6 +326,10 @@
 		01D0997C1742F18200351C82 /* IconReportConcernWhiteCheck@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 01D099781742F18200351C82 /* IconReportConcernWhiteCheck@2x.png */; };
 		01D0997E1742F9F700351C82 /* SYNReportConcernTableViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 01D0997D1742F9F700351C82 /* SYNReportConcernTableViewController.xib */; };
 		01D099801742FA0D00351C82 /* SYNReportConcernTableViewControllerFullScreen~iphone.xib in Resources */ = {isa = PBXBuildFile; fileRef = 01D0997F1742FA0D00351C82 /* SYNReportConcernTableViewControllerFullScreen~iphone.xib */; };
+		01D0998517439A3A00351C82 /* CategorySlide@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 01D0998117439A3500351C82 /* CategorySlide@2x.png */; };
+		01D0998617439A3A00351C82 /* CategorySlide.png in Resources */ = {isa = PBXBuildFile; fileRef = 01D0998217439A3600351C82 /* CategorySlide.png */; };
+		01D0998717439A3A00351C82 /* CategorySlideSelected.png in Resources */ = {isa = PBXBuildFile; fileRef = 01D0998317439A3700351C82 /* CategorySlideSelected.png */; };
+		01D0998817439A3A00351C82 /* CategorySlideSelected@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 01D0998417439A3900351C82 /* CategorySlideSelected@2x.png */; };
 		01E2E7E116E11E67009999D2 /* UIImageView+ImageProcessing.m in Sources */ = {isa = PBXBuildFile; fileRef = 01E2E7E016E11E67009999D2 /* UIImageView+ImageProcessing.m */; };
 		01E427BC1664C5F1009B941F /* CoreData.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 01E427BB1664C5F1009B941F /* CoreData.framework */; };
 		01E427D31664C726009B941F /* Rockpack.xcdatamodeld in Sources */ = {isa = PBXBuildFile; fileRef = 01E427D11664C726009B941F /* Rockpack.xcdatamodeld */; };
@@ -1406,6 +1410,10 @@
 		01D099781742F18200351C82 /* IconReportConcernWhiteCheck@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "IconReportConcernWhiteCheck@2x.png"; sourceTree = "<group>"; };
 		01D0997D1742F9F700351C82 /* SYNReportConcernTableViewController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = SYNReportConcernTableViewController.xib; sourceTree = "<group>"; };
 		01D0997F1742FA0D00351C82 /* SYNReportConcernTableViewControllerFullScreen~iphone.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = "SYNReportConcernTableViewControllerFullScreen~iphone.xib"; sourceTree = "<group>"; };
+		01D0998117439A3500351C82 /* CategorySlide@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "CategorySlide@2x.png"; sourceTree = "<group>"; };
+		01D0998217439A3600351C82 /* CategorySlide.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = CategorySlide.png; sourceTree = "<group>"; };
+		01D0998317439A3700351C82 /* CategorySlideSelected.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = CategorySlideSelected.png; sourceTree = "<group>"; };
+		01D0998417439A3900351C82 /* CategorySlideSelected@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "CategorySlideSelected@2x.png"; sourceTree = "<group>"; };
 		01E2E7DF16E11E67009999D2 /* UIImageView+ImageProcessing.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "UIImageView+ImageProcessing.h"; sourceTree = "<group>"; };
 		01E2E7E016E11E67009999D2 /* UIImageView+ImageProcessing.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "UIImageView+ImageProcessing.m"; sourceTree = "<group>"; };
 		01E427BB1664C5F1009B941F /* CoreData.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreData.framework; path = System/Library/Frameworks/CoreData.framework; sourceTree = SDKROOT; };
@@ -3529,6 +3537,10 @@
 		38A2FF361731607F00FB9F57 /* channels */ = {
 			isa = PBXGroup;
 			children = (
+				01D0998117439A3500351C82 /* CategorySlide@2x.png */,
+				01D0998217439A3600351C82 /* CategorySlide.png */,
+				01D0998317439A3700351C82 /* CategorySlideSelected.png */,
+				01D0998417439A3900351C82 /* CategorySlideSelected@2x.png */,
 				38A2FF371731607F00FB9F57 /* CategoryBar@2x~iphone.png */,
 				38A2FF381731607F00FB9F57 /* CategoryBarHighlighted@2x~iphone.png */,
 				38A2FF391731607F00FB9F57 /* CategoryBarHighlighted~iphone.png */,
@@ -5238,6 +5250,10 @@
 				01D0997C1742F18200351C82 /* IconReportConcernWhiteCheck@2x.png in Resources */,
 				01D0997E1742F9F700351C82 /* SYNReportConcernTableViewController.xib in Resources */,
 				01D099801742FA0D00351C82 /* SYNReportConcernTableViewControllerFullScreen~iphone.xib in Resources */,
+				01D0998517439A3A00351C82 /* CategorySlide@2x.png in Resources */,
+				01D0998617439A3A00351C82 /* CategorySlide.png in Resources */,
+				01D0998717439A3A00351C82 /* CategorySlideSelected.png in Resources */,
+				01D0998817439A3A00351C82 /* CategorySlideSelected@2x.png in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
