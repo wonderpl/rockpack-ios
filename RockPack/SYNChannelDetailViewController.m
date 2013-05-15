@@ -1409,9 +1409,11 @@
                                                 initWithSendReportBlock: ^ (NSString *reportString){
                                                     [self.reportConcernPopoverController dismissPopoverAnimated: YES];
                                                     [self reportConcern: reportString];
+                                                    self.reportConcernButton.selected = FALSE;
                                                 }
                                                 cancelReportBlock: ^{
                                                     [self.reportConcernPopoverController dismissPopoverAnimated: YES];
+                                                    self.reportConcernButton.selected = FALSE;
                                                 }];
             
             // Wrap it in a navigation controller
@@ -1448,26 +1450,28 @@
             SYNMasterViewController *masterViewController = (SYNMasterViewController*)appDelegate.masterViewController;
             
             self.reportConcernTableViewController = [[SYNReportConcernTableViewController alloc] initWithNibName: @"SYNReportConcernTableViewControllerFullScreen~iphone"
-                                                                                                     bundle: [NSBundle mainBundle]
-                                                                                            sendReportBlock: ^ (NSString *reportString){
-                                                                                                [UIView animateWithDuration: kChannelEditModeAnimationDuration
-                                                                                                                 animations: ^{
-                                                                                                                     // Fade out the category tab controller
-                                                                                                                     self.reportConcernTableViewController.view.alpha = 0.0f;
-                                                                                                                 }
-                                                                                                                 completion: nil];
-                                                                                                [self reportConcern: reportString];
-                                                                                            }
-                                                                                          cancelReportBlock: ^{
-                                                                                              [UIView animateWithDuration: kChannelEditModeAnimationDuration
-                                                                                                               animations: ^{
-                                                                                                                   // Fade out the category tab controller
-                                                                                                                   self.reportConcernTableViewController.view.alpha = 0.0f;
-                                                                                                               }
-                                                                                                               completion: ^(BOOL success){
-                                                                                                                   [self.reportConcernTableViewController.view removeFromSuperview];
-                                                                                                               }];
-                                                                                          }];
+                                                                                                          bundle: [NSBundle mainBundle]
+                                                                                                 sendReportBlock: ^ (NSString *reportString){
+                                                                                                     [UIView animateWithDuration: kChannelEditModeAnimationDuration
+                                                                                                                      animations: ^{
+                                                                                                                          // Fade out the category tab controller
+                                                                                                                          self.reportConcernTableViewController.view.alpha = 0.0f;
+                                                                                                                      }
+                                                                                                                      completion: nil];
+                                                                                                     self.reportConcernButton.selected = FALSE;
+                                                                                                     [self reportConcern: reportString];
+                                                                                                 }
+                                                                                               cancelReportBlock: ^{
+                                                                                                   [UIView animateWithDuration: kChannelEditModeAnimationDuration
+                                                                                                                    animations: ^{
+                                                                                                                        // Fade out the category tab controller
+                                                                                                                        self.reportConcernTableViewController.view.alpha = 0.0f;
+                                                                                                                    }
+                                                                                                                    completion: ^(BOOL success){
+                                                                                                                        [self.reportConcernTableViewController.view removeFromSuperview];
+                                                                                                                    }];
+                                                                                                   self.reportConcernButton.selected = FALSE;
+                                                                                               }];
             
             
             // Move off the bottom of the screen

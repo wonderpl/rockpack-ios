@@ -9,6 +9,7 @@
 #import "SYNReportConcernTableCell.h"
 #import "SYNReportConcernTableViewController.h"
 #import "UIFont+SYNFont.h"
+#import "SYNDeviceManager.h"
 
 #define kConcernsCellId @"SYNReportConcernTableCell"
 
@@ -173,17 +174,22 @@
 - (void) tableView: (UITableView *) tableView
          didSelectRowAtIndexPath: (NSIndexPath *) indexPath
 {
+    if ([[SYNDeviceManager sharedInstance] isIPhone])
+    {
+        self.reportButton.enabled = TRUE;
+    }
+    
     self.selectedIndexPath = indexPath;
 }
 
 
-- (void) actionCancel
+- (IBAction) actionCancel
 {
     self.cancelReportBlock();
 }
 
 
-- (void) actionSendReport
+- (IBAction) actionSendReport
 {
     NSString *reportString = self.concernsArray[self.selectedIndexPath.row];
     self.sendReportBlock(reportString);
