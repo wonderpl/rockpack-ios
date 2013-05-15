@@ -10,6 +10,7 @@
 
 typedef void (^SYNCancelReportBlock)(void);
 typedef void (^SYNSendReportBlock)(NSString *reportString);
+typedef void (^SYNSelectedReportBlock)(void);
 
 @interface SYNReportConcernTableViewController :  UIViewController <UITableViewDataSource, UITableViewDelegate>
 
