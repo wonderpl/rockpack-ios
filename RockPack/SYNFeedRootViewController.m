@@ -95,7 +95,7 @@
     }
     else
     {
-        videoCollectionViewFrame = CGRectMake(0.0, kStandardCollectionViewOffsetY, kFullScreenWidthLandscape, kFullScreenHeightLandscapeMinusStatusBar - kStandardCollectionViewOffsetY);
+        videoCollectionViewFrame = CGRectMake(0.0, kStandardCollectionViewOffsetY + 50.0, kFullScreenWidthLandscape, kFullScreenHeightLandscapeMinusStatusBar - kStandardCollectionViewOffsetY);
         selfFrame = CGRectMake(0.0, 0.0, kFullScreenWidthLandscape, kFullScreenHeightLandscapeMinusStatusBar);
     }
     self.videoThumbnailCollectionView = [[UICollectionView alloc] initWithFrame:videoCollectionViewFrame collectionViewLayout:standardFlowLayout];
@@ -132,7 +132,7 @@
     
     CGRect refreshButtonFrame = self.refreshButton.frame;
     refreshButtonFrame.origin.x = [[SYNDeviceManager sharedInstance] isIPad]? 10.0  : 63.0;
-    refreshButtonFrame.origin.y = [[SYNDeviceManager sharedInstance] isIPad]? 40.0 : 10.0;
+    refreshButtonFrame.origin.y = [[SYNDeviceManager sharedInstance] isIPad]? 64.0 : 10.0;
     self.refreshButton.frame = refreshButtonFrame;
     
     [self.view addSubview:self.refreshButton];
