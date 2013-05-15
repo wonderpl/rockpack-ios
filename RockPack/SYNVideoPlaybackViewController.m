@@ -26,7 +26,6 @@
 @property (nonatomic, assign) BOOL playFlag;
 @property (nonatomic, assign) CGRect requestedFrame;
 @property (nonatomic, assign) NSTimeInterval currentDuration;
-@property (nonatomic, assign, getter = isNextVideoWebViewReadyToPlay) BOOL nextVideoWebViewReadyToPlay;
 @property (nonatomic, strong) CABasicAnimation *placeholderBottomLayerAnimation;
 @property (nonatomic, strong) CABasicAnimation *placeholderMiddleLayerAnimation;
 @property (nonatomic, strong) NSArray *videoInstanceArray;
@@ -46,7 +45,6 @@
 @property (nonatomic, strong) UISlider *shuttleSlider;
 @property (nonatomic, strong) UIView *videoPlaceholderView;
 @property (nonatomic, strong) UIWebView *currentVideoWebView;
-@property (nonatomic, strong) UIWebView *nextVideoWebView;
 
 @end
 
@@ -103,7 +101,6 @@
     
     [self stopVideoInWebView: self.currentVideoWebView];
     self.currentVideoWebView = nil;
-    self.nextVideoWebView = nil;
     
     [super viewDidDisappear: animated];
 }
@@ -574,7 +571,7 @@
 // Can use this to display a video loading progress indicator
 - (float) videoLoadedFraction
 {
-        return [[self.currentVideoWebView stringByEvaluatingJavaScriptFromString: @"player.getVideoLoadedFraction();"] floatValue];
+    return [[self.currentVideoWebView stringByEvaluatingJavaScriptFromString: @"player.getVideoLoadedFraction();"] floatValue];
 }
 
 
@@ -618,18 +615,6 @@
     [self loadWebView: self.currentVideoWebView
            withSource: currentSource
              sourceId: currentSourceId];
-}
-
-- (void) loadNextVideoWebView
-{
-    VideoInstance *videoInstance = self.videoInstanceArray [self.nextVideoIndex];
-    
-    NSString *nextSource = videoInstance.video.source;
-    NSString *nextSourceId = videoInstance.video.sourceId;
-    
-    [self loadWebView: self.nextVideoWebView
-           withSource: nextSource
-             sourceId: nextSourceId];
 }
 
 
@@ -774,29 +759,13 @@
             // Call our handler functions
             if ([scheme isEqualToString: @"ytplayer"])
             {
-                if (webView == self.currentVideoWebView)
-                {
                     [self handleCurrentYouTubePlayerEventNamed: actionName
                                                      eventData: actionData];
-                }
-                else
-                {
-                    [self handleNextYouTubePlayerEventNamed: actionName
-                                                  eventData: actionData];
-                }
             }
             else
             {
-                if (webView == self.currentVideoWebView)
-                {
                     [self handleCurrentVimeoPlayerEventNamed: actionName
                                                    eventData: actionData];
-                }
-                else
-                {
-                    [self handleNextVimeoPlayerEventNamed: actionName
-                                                eventData: actionData];
-                }
             }
         }
         
@@ -824,8 +793,6 @@
 - (void) handleCurrentYouTubePlayerEventNamed: (NSString *) actionName
                                     eventData: (NSString *) actionData
 {
-//    DebugLog (@"*** Current YTPlayer: %@ : %@", actionName, actionData);
-    
     if ([actionName isEqualToString: @"ready"])
     {
         // We don't actually get any events until we 'play' the video
@@ -911,70 +878,6 @@
 }
 
 
-// Handle all the events for the fore
-- (void) handleNextYouTubePlayerEventNamed: (NSString *) actionName
-                                    eventData: (NSString *) actionData
-{
-//    DebugLog (@"++++ Next YTPlayer: %@ : %@", actionName, actionData);
-    
-    if ([actionName isEqualToString: @"ready"])
-    {
-        // We don't actually get any events until we 'play' the video
-        // The next stage is unstarted, so if not autoplay then pause the video
-        [self playVideoInWebView: self.nextVideoWebView];
-    }
-    else if ([actionName isEqualToString: @"stateChange"])
-    {
-        // Now handle the different state changes
-        if ([actionData isEqualToString: @"unstarted"])
-        {
-            DebugLog (@"--- Next video ready to play");
-            self.nextVideoWebViewReadyToPlay = TRUE;
-        }
-        else if ([actionData isEqualToString: @"ended"])
-        {
-        }
-        else if ([actionData isEqualToString: @"playing"])
-        {
-        }
-        else if ([actionData isEqualToString: @"paused"])
-        {
-        }
-        else if ([actionData isEqualToString: @"buffering"])
-        {
-            [self pauseVideoInWebView: self.nextVideoWebView];
-        }
-        else if ([actionData isEqualToString: @"cued"])
-        {
-            
-        }
-        else
-        {
-            AssertOrLog(@"Unexpected YTPlayer state change");
-        }
-    }
-    else if ([actionName isEqualToString: @"playbackQuality"])
-    {
-        
-    }
-    else if ([actionName isEqualToString: @"playbackRateChange"])
-    {
-        
-    }
-    else if ([actionName isEqualToString: @"error"])
-    {
-        
-    }
-    else if ([actionName isEqualToString: @"apiChange"])
-    {
-        
-    }
-    else
-    {
-        AssertOrLog(@"Unexpected next YTPlayer event");
-    }
-}
-
 
 - (void) handleCurrentVimeoPlayerEventNamed: (NSString *) actionName
                            eventData: (NSString *) actionData
@@ -982,11 +885,6 @@
     
 }
 
-- (void) handleNextVimeoPlayerEventNamed: (NSString *) actionName
-                                  eventData: (NSString *) actionData
-{
-    
-}
 
 - (void) startShuttleBarUpdateTimer
 {
@@ -1007,6 +905,7 @@
 {
     [self.shuttleBarUpdateTimer invalidate], self.shuttleBarUpdateTimer = nil;
 }
+
 
 - (void) startBufferMonitoringTimer
 {
@@ -1030,19 +929,15 @@
 {
     float bufferLevel = [self videoLoadedFraction];
     NSLog (@"Buffer level %f", bufferLevel);
+    
+    // Update the progress bar under our slider
+    self.bufferingProgressView.progress = bufferLevel;
+    
     // If we have a full buffer for the current video and are not already trying to buffer the next video
     // then start to preload the next video
     if (bufferLevel == 1.0f)
     {
-        if (self.nextVideoWebView == nil)
-        {
-            DebugLog (@"*** Buffer full");
-            [self precacheNextVideo];
-        }
-        else
-        {
-           [self stopBufferMonitoringTimer]; 
-        }
+        [self stopBufferMonitoringTimer];
     }
 }
 
@@ -1110,18 +1005,6 @@
 }
 
 
-- (void) precacheNextVideo
-{
-    [self stopBufferMonitoringTimer];
-    
-    // This flag is set to true when we get the unstarted event from the next video player
-    // indicating that it has buffered and ready to play
-    self.nextVideoWebViewReadyToPlay = FALSE;
-    self.nextVideoWebView = [self createNewVideoWebView];
-    
-    [self loadNextVideoWebView];
-}
-
 
 #pragma mark - View animations
 
@@ -1129,25 +1012,9 @@
 {
     self.currentVideoViewedFlag = FALSE;
     
-    if (self.nextVideoWebViewReadyToPlay == FALSE)
-    {
-        // TODO: Need to handle this case
-//        DebugLog(@"*** Next video not ready");
-    }
-    else
-    {
-//        DebugLog(@"*** Next video ready");
-        UIWebView *oldVideoWebView = self.currentVideoWebView;
-        self.currentVideoWebView = self.nextVideoWebView;
-        self.nextVideoWebView = nil;
-        
-        // Start our new view playing
-        [self playVideoInWebView: self.currentVideoWebView];
-        
-        // Now fade out our old video view
-        [self fadeOutVideoPlayerInWebView: oldVideoWebView];
-        [oldVideoWebView removeFromSuperview];
-    }
+    // Start our new view playing
+    [self playVideoInWebView: self.currentVideoWebView];
+
 }
 
 - (IBAction) userTouchedPlay: (id) sender
