@@ -8,7 +8,7 @@ extern const struct CoverArtAttributes {
 	__unsafe_unretained NSString *coverRef;
 	__unsafe_unretained NSString *position;
 	__unsafe_unretained NSString *thumbnailURL;
-	__unsafe_unretained NSString *viewId;
+	__unsafe_unretained NSString *userUpload;
 } CoverArtAttributes;
 
 extern const struct CoverArtRelationships {
@@ -70,11 +70,15 @@ extern const struct CoverArtFetchedProperties {
 
 
 
-@property (nonatomic, strong) NSString* viewId;
+@property (nonatomic, strong) NSNumber* userUpload;
 
 
 
-//- (BOOL)validateViewId:(id*)value_ error:(NSError**)error_;
+@property BOOL userUploadValue;
+- (BOOL)userUploadValue;
+- (void)setUserUploadValue:(BOOL)value_;
+
+//- (BOOL)validateUserUpload:(id*)value_ error:(NSError**)error_;
 
 
 
@@ -111,8 +115,11 @@ extern const struct CoverArtFetchedProperties {
 
 
 
-- (NSString*)primitiveViewId;
-- (void)setPrimitiveViewId:(NSString*)value;
+- (NSNumber*)primitiveUserUpload;
+- (void)setPrimitiveUserUpload:(NSNumber*)value;
+
+- (BOOL)primitiveUserUploadValue;
+- (void)setPrimitiveUserUploadValue:(BOOL)value_;
 
 
 

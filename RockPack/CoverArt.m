@@ -13,8 +13,8 @@ static NSEntityDescription *coverArtEntity = nil;
 @implementation CoverArt
 
 + (CoverArt *) instanceFromDictionary: (NSDictionary *) dictionary
-                usingManagedObjectContext: (NSManagedObjectContext *) managedObjectContext
-                                andViewId: (NSString *) viewId
+            usingManagedObjectContext: (NSManagedObjectContext *) managedObjectContext
+                        forUserUpload: (BOOL) userUpload
 {
     NSError *error = nil;
     
@@ -38,7 +38,7 @@ static NSEntityDescription *coverArtEntity = nil;
     coverArtFetchRequest.entity = coverArtEntity;
     
     // Search on the unique Id
-    NSPredicate *predicate = [NSPredicate predicateWithFormat: @"uniqueId == %@ AND viewId == %@", uniqueId, viewId];
+    NSPredicate *predicate = [NSPredicate predicateWithFormat: @"uniqueId == %@", uniqueId];
     coverArtFetchRequest.predicate = predicate;
     
     NSArray *matchingChannelCoverInstanceEntries = [managedObjectContext executeFetchRequest: coverArtFetchRequest
@@ -49,9 +49,9 @@ static NSEntityDescription *coverArtEntity = nil;
     {
         instance = matchingChannelCoverInstanceEntries [0];
         
-        // Mark this object so that it is not deleted in the post-import step
-        instance.markedForDeletionValue = FALSE;
-        NSLog (@"CoverArt reused");
+        
+        instance.markedForDeletionValue = NO;
+        
         return instance;
     }
     else
@@ -60,9 +60,11 @@ static NSEntityDescription *coverArtEntity = nil;
 
         [instance setAttributesFromDictionary: dictionary
                                        withId: uniqueId
-                    usingManagedObjectContext: managedObjectContext
-                                    andViewId: viewId];
-        NSLog (@"CoverArt created");
+                    usingManagedObjectContext: managedObjectContext];
+        
+        instance.userUploadValue = userUpload;
+        
+        
         return instance;
     }
 }
@@ -71,18 +73,18 @@ static NSEntityDescription *coverArtEntity = nil;
 - (void) setAttributesFromDictionary: (NSDictionary *) dictionary
                               withId: (NSString *) uniqueId
            usingManagedObjectContext: (NSManagedObjectContext *) managedObjectContext
-                           andViewId: (NSString *) viewId
 {
-    // Is we are not actually a dictionary, then bail
+    
+    
     if (![dictionary isKindOfClass: [NSDictionary class]])
     {
         AssertOrLog (@"setAttributesFromDictionary: not a dictionary, unable to construct object");
         return;
     }
     
-    // Simple objects
+    
     self.uniqueId = uniqueId;
-    self.viewId = viewId;
+    
     self.thumbnailURL = [dictionary objectForKey: @"thumbnail_url"
                                      withDefault: @"http://localhost"];
     
@@ -97,7 +99,7 @@ static NSEntityDescription *coverArtEntity = nil;
 
 - (NSString *) description
 {
-    return [NSString stringWithFormat: @"ChannelCover: uniqueId(%@), viewId (%@), backgroundURL(%@), coverRef(%@),  position(%@)", self.uniqueId, self.viewId, self.thumbnailURL, self.coverRef, self.position];
+    return [NSString stringWithFormat: @"ChannelCover: uniqueId(%@), backgroundURL(%@), coverRef(%@),  position(%@)", self.uniqueId, self.thumbnailURL, self.coverRef, self.position];
 }
 
 

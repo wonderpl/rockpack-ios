@@ -27,7 +27,7 @@
 
 
 @property (nonatomic, strong) NSFetchedResultsController *channelCoverFetchedResultsController;
-@property (nonatomic, strong) NSFetchedResultsController *userChannelCoverFetchedResultsController;
+
 @property (nonatomic, strong) IBOutlet UICollectionView *collectionView;
 
 
@@ -72,7 +72,10 @@
       numberOfItemsInSection: (NSInteger) section
 {
     
-    // Video thumbnails
+    id <NSFetchedResultsSectionInfo> sectionInfo;
+    
+    
+   
     switch (section)
     {
             
@@ -82,15 +85,24 @@
         }
         case 1:
         {
-            id <NSFetchedResultsSectionInfo> sectionInfo = self.userChannelCoverFetchedResultsController.sections [0];
-            return sectionInfo.numberOfObjects;
+            if(self.channelCoverFetchedResultsController.sections.count > 0)
+            {
+                sectionInfo = self.channelCoverFetchedResultsController.sections [0];
+                return sectionInfo.numberOfObjects;
+            }
+            return 0;
+            
         }
         break;
             
         case 2:
         {
-            id <NSFetchedResultsSectionInfo> sectionInfo = self.channelCoverFetchedResultsController.sections [0];
-            return sectionInfo.numberOfObjects;
+            if(self.channelCoverFetchedResultsController.sections.count > 1)
+            {
+                sectionInfo = self.channelCoverFetchedResultsController.sections [1];
+                return sectionInfo.numberOfObjects;
+            }
+            return 0;
         }
         break;
             
@@ -129,7 +141,7 @@
         case 1:
         {
             // User channel covers
-            CoverArt *coverArt = [self.userChannelCoverFetchedResultsController objectAtIndexPath: [NSIndexPath indexPathForRow: indexPath.row
+            CoverArt *coverArt = [self.channelCoverFetchedResultsController objectAtIndexPath: [NSIndexPath indexPathForRow: indexPath.row
                                                                                                                       inSection: 0]];
             
             [coverThumbnailCell.coverImageView setImageWithURL: [NSURL URLWithString: coverArt.thumbnailURL]
@@ -143,7 +155,7 @@
         {
             // Rockpack channel covers
             CoverArt *coverArt = [self.channelCoverFetchedResultsController objectAtIndexPath: [NSIndexPath indexPathForRow: indexPath.row
-                                                                                                                  inSection: 0]];
+                                                                                                                  inSection: 1]];
             
             [coverThumbnailCell.coverImageView setImageWithURL: [NSURL URLWithString: coverArt.thumbnailURL]
                                               placeholderImage: [UIImage imageNamed: @"PlaceholderChannelCoverThumbnail.png"]
@@ -184,8 +196,8 @@ didSelectItemAtIndexPath: (NSIndexPath *) indexPath
         case 1:
         {
             // User channel covers
-            CoverArt *coverArt = [self.userChannelCoverFetchedResultsController objectAtIndexPath: [NSIndexPath indexPathForRow: indexPath.row
-                                                                                                                      inSection: 0]];
+            CoverArt *coverArt = [self.channelCoverFetchedResultsController objectAtIndexPath: [NSIndexPath indexPathForRow: indexPath.row
+                                                                                                                  inSection: 0]];
             imageURLString = coverArt.thumbnailURL;
         }
         break;
@@ -194,7 +206,7 @@ didSelectItemAtIndexPath: (NSIndexPath *) indexPath
         {
             // Rockpack channel covers
             CoverArt *coverArt = [self.channelCoverFetchedResultsController objectAtIndexPath: [NSIndexPath indexPathForRow: indexPath.row
-                                                                                                                  inSection: 0]];
+                                                                                                                  inSection: 1]];
             imageURLString = coverArt.thumbnailURL;
         }
         break;
@@ -224,12 +236,11 @@ didSelectItemAtIndexPath: (NSIndexPath *) indexPath
                                       inManagedObjectContext: appDelegate.mainManagedObjectContext];
     
     
-    fetchRequest.predicate = [NSPredicate predicateWithFormat: [NSString stringWithFormat: @"viewId == \"%@\"", kCoverArtViewId]];
     fetchRequest.sortDescriptors = @[[[NSSortDescriptor alloc] initWithKey: @"position" ascending: YES]];
     
     self.channelCoverFetchedResultsController = [[NSFetchedResultsController alloc] initWithFetchRequest: fetchRequest
                                                                                     managedObjectContext: appDelegate.mainManagedObjectContext
-                                                                                      sectionNameKeyPath: nil
+                                                                                      sectionNameKeyPath: @"userUpload"
                                                                                                cacheName: nil];
     
     
@@ -244,35 +255,7 @@ didSelectItemAtIndexPath: (NSIndexPath *) indexPath
 }
 
 
-- (NSFetchedResultsController *) userChannelCoverFetchedResultsController
-{
-    if (_userChannelCoverFetchedResultsController)
-        return _userChannelCoverFetchedResultsController;
-    
-    NSFetchRequest *fetchRequest = [[NSFetchRequest alloc] init];
-    
-    NSEntityDescription* entityDescription = [NSEntityDescription entityForName: @"CoverArt"
-                                                         inManagedObjectContext: appDelegate.mainManagedObjectContext];
-    
-    fetchRequest.entity = entityDescription;
-    
-    
-    fetchRequest.predicate = [NSPredicate predicateWithFormat: [NSString stringWithFormat: @"viewId == \"%@\"", kUserCoverArtViewId]];
-    fetchRequest.sortDescriptors = @[[[NSSortDescriptor alloc] initWithKey: @"position" ascending: YES]];
-    
-    self.userChannelCoverFetchedResultsController = [[NSFetchedResultsController alloc] initWithFetchRequest: fetchRequest
-                                                                                        managedObjectContext: appDelegate.mainManagedObjectContext
-                                                                                          sectionNameKeyPath: nil
-                                                                                                   cacheName: nil];
-    self.userChannelCoverFetchedResultsController.delegate = self;
-    
-    
-    NSError *error = nil;
-    
-    ZAssert([_userChannelCoverFetchedResultsController performFetch: &error], @"Channels Details Failed: %@\n%@", [error localizedDescription], [error userInfo]);
-    
-    return _userChannelCoverFetchedResultsController;
-}
+
 
 
 - (void) controllerDidChangeContent: (NSFetchedResultsController *) controller
