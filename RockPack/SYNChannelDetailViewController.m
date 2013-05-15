@@ -310,6 +310,11 @@
                                    options: NSKeyValueObservingOptionNew
                                    context: NULL];
     
+    [[NSNotificationCenter defaultCenter] addObserver: self
+                                             selector: @selector(coverImageChangedHandler:)
+                                                 name: kCoverArtChanged
+                                               object: nil];
+    
     __weak SYNChannelDetailViewController* weakSelf = self;
     [appDelegate.currentUser.subscriptions enumerateObjectsUsingBlock:^(id obj, NSUInteger idx, BOOL *stop) {
         if( [((Channel*)obj).uniqueId isEqualToString:weakSelf.channel.uniqueId] ) {
@@ -358,6 +363,10 @@
     [self.channelTitleTextView removeObserver: self
                                    forKeyPath: kTextViewContentSizeKey];
     
+    [[NSNotificationCenter defaultCenter] removeObserver: self
+                                                    name: kCoverArtChanged
+                                                  object: nil];
+    
     if(self.subscribingIndicator) {
         [self.subscribingIndicator removeFromSuperview];
         self.subscribingIndicator = nil;
@@ -382,7 +391,26 @@
                                          forState: UIControlStateNormal];
 }
 
-
+-(void)coverImageChangedHandler:(NSNotification*)notification
+{
+    NSString* coverArtUrl = (NSString*)[[notification userInfo] objectForKey:kCoverArt];
+    if(!coverArtUrl)
+        return;
+    
+    if ([coverArtUrl isEqualToString: @""])
+    {
+        self.channelCoverImageView.image = nil;
+    }
+    else
+    {
+        [self.channelCoverImageView setImageWithURL: [NSURL URLWithString: coverArtUrl]
+                                   placeholderImage: nil
+                                            options: SDWebImageRetryFailed];
+    }
+    
+    
+    
+}
 
 
 - (void) setMode: (kChannelDetailsMode) mode
