@@ -148,7 +148,7 @@
     
     // Deselect old cell
     SYNReportConcernTableCell *oldCell = (SYNReportConcernTableCell *)[self.tableView cellForRowAtIndexPath: oldIndex];
-    oldCell.backgroundImage.hidden = TRUE;
+    oldCell.backgroundImage.image = [UIImage imageNamed: @"CategorySlide"];
     oldCell.checkmarkImage.hidden = TRUE;
     
     oldCell.titleLabel.textColor = [UIColor colorWithRed: 106.0f/255.0f
@@ -161,7 +161,7 @@
     
     // Highlight new cell
     SYNReportConcernTableCell *newCell = (SYNReportConcernTableCell *)[self.tableView cellForRowAtIndexPath: indexPath];
-    newCell.backgroundImage.hidden = FALSE;
+    oldCell.backgroundImage.image = [UIImage imageNamed: @"CategorySlideSelected"];
     newCell.checkmarkImage.hidden = FALSE;
     newCell.titleLabel.textColor = [UIColor whiteColor];
     newCell.titleLabel.shadowColor = [UIColor colorWithWhite: 1.0f

@@ -43,6 +43,7 @@ typedef enum {
 @property (nonatomic, strong) IBOutlet UIButton* settingsButton;
 @property (nonatomic, strong) IBOutlet UIImageView* profilePictureImageView;
 @property (nonatomic, strong) IBOutlet UILabel* userNameLabel;
+@property (nonatomic, strong) IBOutlet UILabel* versionNumberLabel;
 @property (nonatomic, strong) IBOutlet UITableView* tableView;
 @property (nonatomic, strong) IBOutlet UIView* containerView;
 @property (nonatomic, strong) NSArray* navigationData;
@@ -106,6 +107,12 @@ typedef enum {
 {
     [super viewDidLoad];
     
+    // Version number display
+//    NSString * appVersion = [[NSBundle mainBundle] objectForInfoDictionaryKey: @"CFBundleShortVersionString"];
+    NSString * appBuild = [[NSBundle mainBundle] objectForInfoDictionaryKey: (NSString *)kCFBundleVersionKey];
+    
+    self.versionNumberLabel.text = appBuild;
+    
     // Google Analytics support
     self.trackedViewName = @"Navigation";
     
@@ -163,6 +170,13 @@ typedef enum {
         settingsButtonFrame.origin.y = [[SYNDeviceManager sharedInstance] currentScreenHeight] - 30.0 - settingsButtonFrame.size.height;
         self.settingsButton.frame = settingsButtonFrame;
         self.settingsButton.autoresizingMask = UIViewAutoresizingFlexibleTopMargin;
+        
+        // == Verion number label == //
+        
+        CGRect versionNumberLabelFrame = self.versionNumberLabel.frame;
+        versionNumberLabelFrame.origin.y = [[SYNDeviceManager sharedInstance] currentScreenHeight] - 55.0 - settingsButtonFrame.size.height;
+        self.versionNumberLabel.frame = versionNumberLabelFrame;
+        self.versionNumberLabel.autoresizingMask = UIViewAutoresizingFlexibleTopMargin;
         
         
         // == User Name Label == //
@@ -567,6 +581,12 @@ typedef enum {
     CGRect settingsButtonFrame = self.settingsButton.frame;
     settingsButtonFrame.origin.y = [[SYNDeviceManager sharedInstance] currentScreenHeight] - 30.0 - settingsButtonFrame.size.height;
     self.settingsButton.frame = settingsButtonFrame;
+    
+    // == Verion number label == //
+    
+    CGRect versionNumberLabelFrame = self.versionNumberLabel.frame;
+    versionNumberLabelFrame.origin.y = [[SYNDeviceManager sharedInstance] currentScreenHeight] - 55.0 - settingsButtonFrame.size.height;
+    self.versionNumberLabel.frame = versionNumberLabelFrame;
     
     // FIXME:???
     if (UIInterfaceOrientationIsPortrait(toInterfaceOrientation))
