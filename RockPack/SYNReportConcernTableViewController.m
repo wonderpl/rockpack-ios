@@ -95,12 +95,16 @@
     UIButton *customUseButton = [UIButton buttonWithType: UIButtonTypeCustom];
     UIImage* customUseButtonImage = [UIImage imageNamed: @"ButtonPopoverReport"];
     UIImage* customUseButtonHighlightedImage = [UIImage imageNamed: @"ButtonPopoverReportHighlighted.png"];
+    UIImage* customUseButtonDisabledImage = [UIImage imageNamed: @""];
     
     [customUseButton setImage: customUseButtonImage
                      forState: UIControlStateNormal];
     
     [customUseButton setImage: customUseButtonHighlightedImage
                      forState: UIControlStateHighlighted];
+    
+    [customUseButton setImage: customUseButtonDisabledImage
+                     forState: UIControlStateDisabled];
     
     [customUseButton addTarget: self
                         action: @selector(actionSendReport)
@@ -110,6 +114,8 @@
     UIBarButtonItem *customUseButtonItem = [[UIBarButtonItem alloc] initWithCustomView: customUseButton];
     
     self.navigationItem.rightBarButtonItem = customUseButtonItem;
+    self.navigationItem.rightBarButtonItem.enabled = FALSE;
+
 }
 
 
@@ -177,6 +183,10 @@
     if ([[SYNDeviceManager sharedInstance] isIPhone])
     {
         self.reportButton.enabled = TRUE;
+    }
+    else
+    {
+        self.navigationItem.rightBarButtonItem.enabled = TRUE;
     }
     
     self.selectedIndexPath = indexPath;

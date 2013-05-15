@@ -1420,9 +1420,9 @@
             UINavigationController *navController = [[UINavigationController alloc] initWithRootViewController: self.reportConcernTableViewController];
             
             // Hard way of adding a title (need to due to custom font offsets)
-            UIView *containerView = [[UIView alloc] initWithFrame: CGRectMake (0, 0, 140, 28)];
+            UIView *containerView = [[UIView alloc] initWithFrame: CGRectMake (0, 0, 80, 28)];
             containerView.backgroundColor = [UIColor clearColor];
-            UILabel *label = [[UILabel alloc] initWithFrame: CGRectMake (0, 4, 140, 28)];
+            UILabel *label = [[UILabel alloc] initWithFrame: CGRectMake (0, 4, 80, 28)];
             label.backgroundColor = [UIColor clearColor];
             label.font = [UIFont boldRockpackFontOfSize: 20.0];
             label.textAlignment = NSTextAlignmentCenter;
