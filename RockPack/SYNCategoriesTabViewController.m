@@ -19,17 +19,17 @@
 @interface SYNCategoriesTabViewController ()
 
 @property (nonatomic, strong) NSString *currentTopLevelCategoryName;
-@property (nonatomic, assign) BOOL useHomeButton;
+@property (nonatomic, assign) NSString* homeButtomString;
 @end
 
 
 @implementation SYNCategoriesTabViewController
 
-- (id) initWithHomeButton: (BOOL) useHomeButton
+- (id) initWithHomeButton: (NSString*) homeButtomString
 {
     if ((self = [super init]))
     {
-        self.useHomeButton = useHomeButton;
+        self.homeButtomString = homeButtomString;
     }
     
     return self;
@@ -39,7 +39,7 @@
 - (void) loadView
 {
     SYNCategoriesTabView* categoriesTabView = [[SYNCategoriesTabView alloc] initWithSize: [[SYNDeviceManager sharedInstance] currentScreenWidth]
-                                                                           andHomeButton: self.useHomeButton];
+                                                                           andHomeButton: self.homeButtomString];
     categoriesTabView.tapDelegate = self;
     
     self.view = categoriesTabView;
