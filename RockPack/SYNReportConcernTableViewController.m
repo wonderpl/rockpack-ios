@@ -18,6 +18,9 @@
 @property (nonatomic, strong) NSIndexPath *selectedIndexPath;
 @property (nonatomic, strong) SYNCancelReportBlock cancelReportBlock;
 @property (nonatomic, strong) SYNSendReportBlock sendReportBlock;
+@property (nonatomic, strong) IBOutlet UIButton *cancelButton;
+@property (nonatomic, strong) IBOutlet UIButton *reportButton;
+@property (nonatomic, strong) IBOutlet UITableView* tableView;
 
 @end
 
@@ -60,9 +63,6 @@
     
     [self.tableView registerNib: [UINib nibWithNibName: @"SYNReportConcernTableCell" bundle: [NSBundle mainBundle]]
          forCellReuseIdentifier: kConcernsCellId];
-    
-//    [self.tableView registerClass: [UITableViewCell class]
-//           forCellReuseIdentifier: kConcernsCellId];
 
     self.concernsArray = @[NSLocalizedString (@"Nudity or pornography", nil),
                            NSLocalizedString (@"Attacks a group or individual", nil),

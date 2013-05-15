@@ -1446,9 +1446,6 @@
         }
         else
         {
-//            [self presentViewController: navController
-//                               animated: YES
-//                             completion: nil];
             SYNMasterViewController *masterViewController = (SYNMasterViewController*)appDelegate.masterViewController;
             
             reportConcernTableViewController = [[SYNReportConcernTableViewController alloc] initWithNibName: @"SYNReportConcernTableViewControllerFullScreen~iphone"
@@ -1472,6 +1469,8 @@
                                                                                                                    [reportConcernTableViewController.view removeFromSuperview];
                                                                                                                }];
                                                                                           }];
+            
+            
             // Move off the bottom of the screen
             CGRect startFrame = reportConcernTableViewController.view.frame;
             startFrame.origin.y = self.view.frame.size.height;

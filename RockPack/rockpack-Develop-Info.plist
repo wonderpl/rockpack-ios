@@ -46,6 +46,8 @@
 	<string>1.0.0.110.1</string>
 	<key>FacebookAppID</key>
 	<string>131721883664256</string>
+	<key>FullVersion</key>
+	<string>unknown</string>
 	<key>LSApplicationCategoryType</key>
 	<string></string>
 	<key>LSRequiresIPhoneOS</key>
