@@ -282,8 +282,6 @@ typedef void(^AnimationCompletionBlock)(BOOL finished);
 {
     [super viewWillAppear:animated];
     
-    
-    
 }
 
 -(void)viewDidAppear:(BOOL)animated
