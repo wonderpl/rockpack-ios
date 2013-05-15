@@ -74,6 +74,7 @@
 @property (nonatomic, weak) Channel *channel;
 @property (nonatomic,strong) NSString* selectedCategoryId;
 @property (nonatomic,strong) NSString* selectedCoverId;
+@property (nonatomic, strong) UIView* noVideosMessageView;
 @property (weak, nonatomic) IBOutlet UILabel *byLabel;
 
 //iPhone specific
@@ -417,27 +418,49 @@
     if (notification.object == self.channel.managedObjectContext)
     {
         [self reloadCollectionViews];
+        
+        if(self.channel.videoInstances.count == 0)
+        {
+            [self showNoVideosMessage];
+        }
+        else if (self.noVideosMessageView != nil)
+        {
+            [self.noVideosMessageView removeFromSuperview];
+            self.noVideosMessageView = nil;
+        }
     }
+}
+
+-(void)showNoVideosMessage
+{
+    CGRect viewFrame = CGRectMake(0.0, 600.0, 600.0, 100.0);
+    self.noVideosMessageView = [[UIView alloc] initWithFrame:viewFrame];
+    self.noVideosMessageView.center = CGPointMake(self.view.frame.size.width * 0.5, self.noVideosMessageView.center.y);
+    self.noVideosMessageView.frame = CGRectIntegral(self.noVideosMessageView.frame);
+    self.noVideosMessageView.autoresizingMask = UIViewAutoresizingFlexibleBottomMargin | UIViewAutoresizingFlexibleLeftMargin | UIViewAutoresizingFlexibleRightMargin;
+    
+    
+    UILabel* noVideosLabel = [[UILabel alloc] initWithFrame:viewFrame];
+    noVideosLabel.text = @"THIS CHANNEL HAS NO VIDEOS";
+    noVideosLabel.textAlignment = NSTextAlignmentCenter;
+    noVideosLabel.font = [UIFont rockpackFontOfSize:28.0];
+    noVideosLabel.textColor = [UIColor grayColor];
+    [noVideosLabel sizeToFit];
+    noVideosLabel.center = CGPointMake(viewFrame.size.width * 0.5, viewFrame.size.height * 0.5);
+    noVideosLabel.frame = CGRectIntegral(noVideosLabel.frame);
+    noVideosLabel.backgroundColor = [UIColor clearColor];
+    
+    [self.noVideosMessageView addSubview:noVideosLabel];
+    
+    [self.view addSubview:self.noVideosMessageView];
 }
 
 
 - (void) controllerDidChangeContent: (NSFetchedResultsController *) controller
 {
-    if (controller == self.fetchedResultsController)
-    {
-       
-        [self reloadCollectionViews];
-    }
-    else if ((controller == self.channelCoverFetchedResultsController) || (controller == self.userChannelCoverFetchedResultsController))
-    {
-         [self.coverThumbnailCollectionView reloadData];
-        [self.coverImageSelector refreshChannelCoverData];
-        
-    }
-    else
-    {
-        AssertOrLog(@"Received update from unexpected fetched results controller");
-    }
+    
+    [self.coverThumbnailCollectionView reloadData];
+    [self.coverImageSelector refreshChannelCoverData];
     
 }
 
