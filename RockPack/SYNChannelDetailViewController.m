@@ -566,7 +566,7 @@
 
 - (NSInteger) numberOfSectionsInCollectionView: (UICollectionView *) collectionView
 {
-    return 3;
+    return 1;
 }
 
 
