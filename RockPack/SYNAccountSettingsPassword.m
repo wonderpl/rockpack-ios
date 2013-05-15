@@ -71,6 +71,11 @@
 -(void)saveButtonPressed:(UIButton*)button
 {
     
+    if([self.inputField.text isEqualToString:@""] || [self.passwordField isEqual:@""] || [self.passwordConfirmField isEqual:@""]) {
+        self.errorLabel.text = NSLocalizedString (@"Please Fill All Fields", nil);
+        return;
+        
+    }
     
     if(![self formIsValid]) {
         self.errorLabel.text = NSLocalizedString (@"You Have Entered Invalid Characters", nil);
