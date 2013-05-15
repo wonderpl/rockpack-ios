@@ -7,6 +7,7 @@
 //
 
 #import "Channel.h"
+#import "ChannelCover.h"
 #import "ChannelOwner.h"
 #import "LXReorderableCollectionViewFlowLayout.h"
 #import "NSIndexPath+Arithmetic.h"
@@ -14,8 +15,9 @@
 #import "SYNDeviceManager.h"
 #import "SYNMasterViewController.h"
 #import "SYNOAuthNetworkEngine.h"
-#import "ChannelCover.h"
 #import "SYNPassthroughView.h"
+#import "SYNPopoverBackgroundView.h"
+#import "SYNReportConcernTableViewController.h"
 #import "SYNVideoPlaybackViewController.h"
 #import "SYNVideoThumbnailSmallCell.h"
 #import "SYNVideoViewerThumbnailLayout.h"
@@ -27,7 +29,8 @@
 #import "VideoInstance.h"
 #import <MediaPlayer/MediaPlayer.h>
 
-@interface SYNVideoViewerViewController () <UIGestureRecognizerDelegate>
+@interface SYNVideoViewerViewController () <UIGestureRecognizerDelegate,
+                                            UIPopoverControllerDelegate>
 
 @property (nonatomic, assign) CGRect originalFrame;
 @property (nonatomic, assign) int currentSelectedIndex;
@@ -47,7 +50,10 @@
 @property (nonatomic, strong) IBOutlet UILabel *videoTitleLabel;
 @property (nonatomic, strong) IBOutlet UIView *swipeView;
 @property (nonatomic, strong) NSArray *videoInstanceArray;
+@property (nonatomic, strong) SYNReportConcernTableViewController *reportConcernTableViewController;
 @property (nonatomic, strong) SYNVideoViewerThumbnailLayout *layout;
+@property (nonatomic, strong) IBOutlet UIPopoverController *reportConcernPopoverController;
+@property (nonatomic, strong) IBOutlet UIButton* reportConcernButton;
 
 @end
 
@@ -642,5 +648,123 @@
                     fromRect: videoShareButton.frame
              arrowDirections: UIPopoverArrowDirectionDown];
 }
+
+- (IBAction) userTouchedReportConcernButton: (UIButton*) button
+{
+    button.selected = !button.selected;
+    
+    if (button.selected)
+    {
+        if (UI_USER_INTERFACE_IDIOM() == UIUserInterfaceIdiomPad)
+        {
+            // Create out concerns table view controller
+            self.reportConcernTableViewController = [[SYNReportConcernTableViewController alloc]
+                                                     initWithSendReportBlock: ^ (NSString *reportString){
+                                                         [self.reportConcernPopoverController dismissPopoverAnimated: YES];
+                                                         [self reportConcern: reportString];
+                                                         self.reportConcernButton.selected = FALSE;
+                                                     }
+                                                     cancelReportBlock: ^{
+                                                         [self.reportConcernPopoverController dismissPopoverAnimated: YES];
+                                                         self.reportConcernButton.selected = FALSE;
+                                                     }];
+            
+            // Wrap it in a navigation controller
+            UINavigationController *navController = [[UINavigationController alloc] initWithRootViewController: self.reportConcernTableViewController];
+            
+            // Hard way of adding a title (need to due to custom font offsets)
+            UIView *containerView = [[UIView alloc] initWithFrame: CGRectMake (0, 0, 80, 28)];
+            containerView.backgroundColor = [UIColor clearColor];
+            UILabel *label = [[UILabel alloc] initWithFrame: CGRectMake (0, 4, 80, 28)];
+            label.backgroundColor = [UIColor clearColor];
+            label.font = [UIFont boldRockpackFontOfSize: 20.0];
+            label.textAlignment = NSTextAlignmentCenter;
+            label.textColor = [UIColor blackColor];
+            label.shadowColor = [UIColor whiteColor];
+            label.shadowOffset = CGSizeMake(0.0, 1.0);
+            label.text = NSLocalizedString(@"REPORT", nil);
+            [containerView addSubview: label];
+            self.reportConcernTableViewController.navigationItem.titleView = containerView;
+            
+            // Need show the popover controller
+            self.reportConcernPopoverController = [[UIPopoverController alloc] initWithContentViewController: navController];
+            self.reportConcernPopoverController.popoverContentSize = CGSizeMake(245, 344);
+            self.reportConcernPopoverController.delegate = self;
+            self.reportConcernPopoverController.popoverBackgroundViewClass = [SYNPopoverBackgroundView class];
+            
+            // Now present appropriately
+            [self.reportConcernPopoverController presentPopoverFromRect: button.frame
+                                                                 inView: self.chromeView
+                                               permittedArrowDirections: UIPopoverArrowDirectionDown
+                                                               animated: YES];
+        }
+        else
+        {
+            SYNMasterViewController *masterViewController = (SYNMasterViewController*)appDelegate.masterViewController;
+            
+            self.reportConcernTableViewController = [[SYNReportConcernTableViewController alloc] initWithNibName: @"SYNReportConcernTableViewControllerFullScreen~iphone"
+                                                                                                          bundle: [NSBundle mainBundle]
+                                                                                                 sendReportBlock: ^ (NSString *reportString){
+                                                                                                     [UIView animateWithDuration: kChannelEditModeAnimationDuration
+                                                                                                                      animations: ^{
+                                                                                                                          // Fade out the category tab controller
+                                                                                                                          self.reportConcernTableViewController.view.alpha = 0.0f;
+                                                                                                                      }
+                                                                                                                      completion: nil];
+                                                                                                     self.reportConcernButton.selected = FALSE;
+                                                                                                     [self reportConcern: reportString];
+                                                                                                 }
+                                                                                               cancelReportBlock: ^{
+                                                                                                   [UIView animateWithDuration: kChannelEditModeAnimationDuration
+                                                                                                                    animations: ^{
+                                                                                                                        // Fade out the category tab controller
+                                                                                                                        self.reportConcernTableViewController.view.alpha = 0.0f;
+                                                                                                                    }
+                                                                                                                    completion: ^(BOOL success){
+                                                                                                                        [self.reportConcernTableViewController.view removeFromSuperview];
+                                                                                                                    }];
+                                                                                                   self.reportConcernButton.selected = FALSE;
+                                                                                               }];
+            
+            
+            // Move off the bottom of the screen
+            CGRect startFrame = self.reportConcernTableViewController.view.frame;
+            startFrame.origin.y = self.view.frame.size.height;
+            self.reportConcernTableViewController.view.frame = startFrame;
+            
+            [masterViewController.view addSubview: self.reportConcernTableViewController.view];
+            
+            // Slide up onto the screen
+            [UIView animateWithDuration: 0.3f
+                                  delay: 0.0f
+                                options: UIViewAnimationOptionCurveEaseOut
+                             animations: ^{
+                                 CGRect endFrame = self.reportConcernTableViewController.view.frame;
+                                 endFrame.origin.y = 0.0f;
+                                 self.reportConcernTableViewController.view.frame = endFrame;
+                             }
+                             completion: nil];
+        }
+    }
+}
+
+
+- (void) reportConcern: (NSString *) reportString
+{
+    VideoInstance *videoInstance = self.videoInstanceArray [self.currentSelectedIndex];
+    
+    [appDelegate.oAuthNetworkEngine reportConcernForUserId: appDelegate.currentOAuth2Credentials.userId
+                                                objectType: @"video"
+                                                  objectId: videoInstance.video.uniqueId
+                                                    reason: reportString
+                                         completionHandler: ^(NSDictionary *dictionary){
+                                             DebugLog(@"Concern successfully reported");
+                                         }
+                                              errorHandler: ^(NSError* error) {
+                                                  DebugLog(@"Report concern failed");
+                                                  DebugLog(@"%@", [error debugDescription]);
+                                              }];
+}
+
 
 @end

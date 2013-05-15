@@ -36,7 +36,9 @@
 @interface SYNChannelDetailViewController () <UITextViewDelegate,
                                               GKImagePickerDelegate,
                                               UIPopoverControllerDelegate,
-                                              SYNCameraPopoverViewControllerDelegate, SYNChannelCategoryTableViewDelegate, SYNChannelCoverImageSelectorDelegate>
+                                              SYNCameraPopoverViewControllerDelegate,
+                                              SYNChannelCategoryTableViewDelegate,
+                                              SYNChannelCoverImageSelectorDelegate>
 
 @property (nonatomic, assign)  CGPoint originalContentOffset;
 @property (nonatomic, strong) GKImagePicker *imagePicker;
@@ -68,15 +70,15 @@
 @property (nonatomic, strong) NSFetchedResultsController *channelCoverFetchedResultsController;
 @property (nonatomic, strong) NSFetchedResultsController *userChannelCoverFetchedResultsController;
 @property (nonatomic, strong) SYNCategoriesTabViewController *categoriesTabViewController;
+@property (nonatomic, strong) SYNReportConcernTableViewController *reportConcernTableViewController;
 @property (nonatomic, strong) UIActivityIndicatorView* subscribingIndicator;
 @property (nonatomic, strong) UIImage* originalBackgroundImage;
+@property (nonatomic, strong) UIView* noVideosMessageView;
 @property (nonatomic, strong) id<SDWebImageOperation> currentWebImageOperation;
 @property (nonatomic, weak) Channel *channel;
 @property (nonatomic,strong) NSString* selectedCategoryId;
 @property (nonatomic,strong) NSString* selectedCoverId;
-@property (nonatomic, strong) UIView* noVideosMessageView;
 @property (weak, nonatomic) IBOutlet UILabel *byLabel;
-@property (nonatomic, strong) SYNReportConcernTableViewController *reportConcernTableViewController;
 
 //iPhone specific
 @property (nonatomic,strong) AVURLAsset* selectedAsset;
