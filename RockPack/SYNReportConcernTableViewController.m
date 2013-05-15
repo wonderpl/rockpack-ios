@@ -9,6 +9,7 @@
 #import "SYNReportConcernTableCell.h"
 #import "SYNReportConcernTableViewController.h"
 #import "UIFont+SYNFont.h"
+#import "SYNDeviceManager.h"
 
 #define kConcernsCellId @"SYNReportConcernTableCell"
 
@@ -94,12 +95,16 @@
     UIButton *customUseButton = [UIButton buttonWithType: UIButtonTypeCustom];
     UIImage* customUseButtonImage = [UIImage imageNamed: @"ButtonPopoverReport"];
     UIImage* customUseButtonHighlightedImage = [UIImage imageNamed: @"ButtonPopoverReportHighlighted.png"];
+    UIImage* customUseButtonDisabledImage = [UIImage imageNamed: @""];
     
     [customUseButton setImage: customUseButtonImage
                      forState: UIControlStateNormal];
     
     [customUseButton setImage: customUseButtonHighlightedImage
                      forState: UIControlStateHighlighted];
+    
+    [customUseButton setImage: customUseButtonDisabledImage
+                     forState: UIControlStateDisabled];
     
     [customUseButton addTarget: self
                         action: @selector(actionSendReport)
@@ -109,6 +114,8 @@
     UIBarButtonItem *customUseButtonItem = [[UIBarButtonItem alloc] initWithCustomView: customUseButton];
     
     self.navigationItem.rightBarButtonItem = customUseButtonItem;
+    self.navigationItem.rightBarButtonItem.enabled = FALSE;
+
 }
 
 
@@ -173,17 +180,26 @@
 - (void) tableView: (UITableView *) tableView
          didSelectRowAtIndexPath: (NSIndexPath *) indexPath
 {
+    if ([[SYNDeviceManager sharedInstance] isIPhone])
+    {
+        self.reportButton.enabled = TRUE;
+    }
+    else
+    {
+        self.navigationItem.rightBarButtonItem.enabled = TRUE;
+    }
+    
     self.selectedIndexPath = indexPath;
 }
 
 
-- (void) actionCancel
+- (IBAction) actionCancel
 {
     self.cancelReportBlock();
 }
 
 
-- (void) actionSendReport
+- (IBAction) actionSendReport
 {
     NSString *reportString = self.concernsArray[self.selectedIndexPath.row];
     self.sendReportBlock(reportString);
