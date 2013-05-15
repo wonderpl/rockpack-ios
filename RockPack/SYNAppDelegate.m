@@ -196,7 +196,7 @@ extern void instrumentObjcMessageSends(BOOL);
     
     self.currentUser.currentValue = NO;
     
-    [self clearUserBoundData];
+    [self clearCoreDataMainEntities:YES];
     
     
     self.currentOAuth2Credentials = nil;
@@ -459,13 +459,15 @@ extern void instrumentObjcMessageSends(BOOL);
 
 #pragma mark - Clearing Data
 
--(void)clearUserBoundData
+-(void)clearCoreDataMainEntities:(BOOL)userBound
 {
     
     NSError *error;
     NSArray *itemsToDelete;
     
     NSFetchRequest *fetchRequest = [[NSFetchRequest alloc] init];
+    
+    // == Clear VideoInstances == //
     
     [fetchRequest setEntity:[NSEntityDescription entityForName:@"VideoInstance"
                                         inManagedObjectContext:self.mainManagedObjectContext]];
@@ -480,6 +482,14 @@ extern void instrumentObjcMessageSends(BOOL);
     }
     
     
+    // == Clear Channels == //
+    
+    if(!userBound)
+    {
+        NSPredicate* notUserChannels = [NSPredicate predicateWithFormat:@"channelOwner.uniqueId != %@ AND subscribedByUser != YES", self.currentUser.uniqueId];
+        [fetchRequest setPredicate:notUserChannels];
+    }
+    
     [fetchRequest setEntity:[NSEntityDescription entityForName:@"Channel"
                                         inManagedObjectContext:self.mainManagedObjectContext]];
     
@@ -492,7 +502,15 @@ extern void instrumentObjcMessageSends(BOOL);
     
     
     [self saveContext:YES];
+    
+    if(!userBound)
+    {
+        
+        [[NSNotificationCenter defaultCenter] postNotificationName:kClearedLocationBoundData
+                                                            object:self];
+    }
 }
+
 
 
 

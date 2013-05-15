@@ -359,10 +359,8 @@ typedef enum {
                     iPhoneCell.accessoryNumberLabel.hidden = NO;
                     iPhoneCell.accessoryNumberBackground.hidden = NO;
                 }
-                if(self.unreadNotifications == 0)
-                    cell.accessoryType = UITableViewCellAccessoryNone;
-                else
-                    cell.accessoryView = [[UIImageView alloc] initWithImage: [UIImage imageNamed: @"NavArrow"]]; 
+                cell.accessoryView = [[UIImageView alloc] initWithImage: [UIImage imageNamed: @"NavArrow"]]; 
+                    
             }
             else
             {
@@ -394,13 +392,7 @@ typedef enum {
 - (void) tableView: (UITableView *) tableView
         didSelectRowAtIndexPath: (NSIndexPath *) indexPath
 {
-    // if notifications cell is clicked and there are no notifications, deselect it.
-    if(indexPath.row == kNotificationsRowIndex && self.notifications.count == 0) 
-    {
-        [self.tableView deselectRowAtIndexPath: indexPath
-                                      animated: YES];
-        return;
-    }
+    
     
     // if we are re-clicking a cell, return without deselecting
     if(indexPath.row < kNotificationsRowIndex && [indexPath compare: self.currentlySelectedIndexPath] == NSOrderedSame)

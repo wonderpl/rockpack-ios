@@ -46,6 +46,8 @@
     self.videoThumbnailCollectionView.backgroundColor = [UIColor clearColor];
     
     self.view.autoresizingMask = UIViewAutoresizingFlexibleWidth | UIViewAutoresizingFlexibleHeight;
+    
+    self.refreshButton.hidden = YES;
 }
 
 

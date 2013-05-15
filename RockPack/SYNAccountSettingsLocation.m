@@ -153,7 +153,6 @@
         return;
     
     
-    [appDelegate clearUserBoundData];
     
     [[self.tableView visibleCells] enumerateObjectsUsingBlock:^(id obj, NSUInteger idx, BOOL *stop) {
         ((UITableViewCell*)obj).accessoryType = UITableViewCellAccessoryNone;
@@ -164,7 +163,7 @@
     
     cell.accessoryType = UITableViewCellAccessoryCheckmark;
     
-    [self.tableView deselectRowAtIndexPath:indexPath animated:YES];
+    [self.tableView deselectRowAtIndexPath:indexPath animated:NO];
     
     [self.spinner startAnimating];
 }
@@ -176,8 +175,11 @@
                                             withNewValue:newLocale
                                        completionHandler:^ {
                                            
-                                           self.user.locale = newLocale; ;
+                                           self.user.locale = newLocale;
+                                           
                                            [self.spinner stopAnimating];
+                                           
+                                           [appDelegate clearCoreDataMainEntities:NO];
                                            
                                            [self.appDelegate saveContext:YES];
                                            
