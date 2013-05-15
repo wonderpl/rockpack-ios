@@ -40,7 +40,6 @@
 @property (nonatomic, strong) IBOutlet UITextField *channelNameTextField;
 @property (nonatomic, strong) UIPopoverController *activityPopoverController;
 @property (nonatomic, strong) UIView *dropZoneView;
-@property (nonatomic, strong) UIButton* addToChannelButton;
 
 @end
 
@@ -129,15 +128,16 @@
         {
             
             
-            [addToChannelButton setImage:[UIImage imageNamed:@"ButtonAddToChannelInactive"] forState:UIControlStateNormal];
-            [addToChannelButton setImage:[UIImage imageNamed:@"ButtonAddToChannelInactiveHighlighted"] forState:UIControlStateHighlighted];
+            [self.addToChannelButton setImage:[UIImage imageNamed:@"ButtonAddToChannelInactive"] forState:UIControlStateNormal];
+            [self.addToChannelButton setImage:[UIImage imageNamed:@"ButtonAddToChannelInactiveHighlighted"] forState:UIControlStateHighlighted];
         }
         else
         {
             
             
-            [addToChannelButton setImage:[UIImage imageNamed:@"ButtonAddToChannelActive"] forState:UIControlStateNormal];
-            [addToChannelButton setImage:[UIImage imageNamed:@"ButtonAddToChannelActiveHighlighted"] forState:UIControlStateHighlighted];
+            [self.addToChannelButton setImage:[UIImage imageNamed:@"ButtonAddToChannelActive"] forState:UIControlStateNormal];
+            [self.addToChannelButton setImage:[UIImage imageNamed:@"ButtonAddToChannelActiveHighlighted"] forState:UIControlStateHighlighted];
+            [self.addToChannelButton setNeedsDisplay];
         }
     }
     

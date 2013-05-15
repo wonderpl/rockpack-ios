@@ -114,6 +114,8 @@
         tab = [[SYNCategoryItemView alloc] initWithLabel: @"ALL"
                                                   andTag: 0];
         
+        [tab makeHighlighted];
+        
         [self.mainTabsView addSubview: tab];
         
         [tab addGestureRecognizer: [[UITapGestureRecognizer alloc] initWithTarget: self

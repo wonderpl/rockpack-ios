@@ -73,12 +73,9 @@
 {
     
     id <NSFetchedResultsSectionInfo> sectionInfo;
-    
-    
-   
+
     switch (section)
-    {
-            
+    {     
         case 0:
         {
             return 1;
@@ -116,20 +113,15 @@
 - (NSInteger) numberOfSectionsInCollectionView: (UICollectionView *) collectionView
 {
     return 3;
-   
 }
 
 
 - (UICollectionViewCell *) collectionView: (UICollectionView *) collectionView
                    cellForItemAtIndexPath: (NSIndexPath *) indexPath
 {
-    
-    
     SYNCoverThumbnailCell *coverThumbnailCell = [collectionView dequeueReusableCellWithReuseIdentifier: @"SYNCoverThumbnailCell"
                                                                                           forIndexPath: indexPath];
-    
-    
-    switch (indexPath.section)
+        switch (indexPath.section)
     {
         case 0:
         {
@@ -172,10 +164,8 @@
 
 
 - (void) collectionView: (UICollectionView *) collectionView
-didSelectItemAtIndexPath: (NSIndexPath *) indexPath
+         didSelectItemAtIndexPath: (NSIndexPath *) indexPath
 {
-    
-    
     [self.collectionView scrollToItemAtIndexPath: indexPath
                                 atScrollPosition: UICollectionViewScrollPositionNone
                                         animated: YES];
@@ -185,8 +175,6 @@ didSelectItemAtIndexPath: (NSIndexPath *) indexPath
     // There are two sections for cover thumbnails, the first represents 'no cover' the second contains all images
     switch (indexPath.section)
     {
-           
-            
         case 0:
         {
             imageURLString = @"";
@@ -236,14 +224,14 @@ didSelectItemAtIndexPath: (NSIndexPath *) indexPath
                                       inManagedObjectContext: appDelegate.mainManagedObjectContext];
     
     
-    fetchRequest.sortDescriptors = @[[[NSSortDescriptor alloc] initWithKey: @"position" ascending: YES]];
+    fetchRequest.sortDescriptors = @[[[NSSortDescriptor alloc] initWithKey: @"position" ascending: YES],
+                                     [[NSSortDescriptor alloc] initWithKey: @"position" ascending: YES]];
     
     self.channelCoverFetchedResultsController = [[NSFetchedResultsController alloc] initWithFetchRequest: fetchRequest
                                                                                     managedObjectContext: appDelegate.mainManagedObjectContext
-                                                                                      sectionNameKeyPath: @"userUpload"
+                                                                                      sectionNameKeyPath: @"ordering"
                                                                                                cacheName: nil];
-    
-    
+
     self.channelCoverFetchedResultsController.delegate = self;
     
     
@@ -255,23 +243,16 @@ didSelectItemAtIndexPath: (NSIndexPath *) indexPath
 }
 
 
-
-
-
 - (void) controllerDidChangeContent: (NSFetchedResultsController *) controller
 {
-    
-    
     [self.collectionView reloadData];
-    
-    
+
     //[self.coverImageSelector refreshChannelCoverData];
-    
+
 }
 
 
-
--(void)updateCoverArt
+- (void) updateCoverArt
 {
     // Update the list of cover art
     [appDelegate.networkEngine updateCoverArtOnCompletion: ^{
