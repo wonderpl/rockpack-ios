@@ -27,7 +27,6 @@
 @property (weak, nonatomic) IBOutlet UIButton *backButton;
 @property (weak, nonatomic) IBOutlet UIView *termsAndConditionsView;
 
-@property (assign, nonatomic) kLoginScreenState loginScreenState;
 @property (weak, nonatomic) IBOutlet UIButton *cancelButton;
 @property (weak, nonatomic) IBOutlet UIButton *confirmButton;
 @property (weak, nonatomic) IBOutlet UIButton *nextButton;
@@ -156,7 +155,7 @@
     
     self.passwordForgottenButton.titleLabel.font = [UIFont rockpackFontOfSize:self.passwordForgottenButton.titleLabel.font.pointSize];
     
-    self.loginScreenState = kLoginScreenStateInitial;
+    self.state = kLoginScreenStateInitial;
     
     
 }
@@ -215,7 +214,7 @@
 }
 
 - (IBAction)signupTapped:(id)sender {
-    self.loginScreenState = kLoginScreenStateRegister;
+    self.state = kLoginScreenStateRegister;
     
     [self turnOnButton:self.cancelButton];
     [self turnOnButton:self.nextButton];
@@ -238,7 +237,7 @@
     
 }
 - (IBAction)loginTapped:(id)sender {
-    self.loginScreenState = kLoginScreenStateLogin;
+    self.state = kLoginScreenStateLogin;
     
     [self turnOnButton:self.backButton];
     [self turnOnButton:self.confirmButton];
@@ -260,7 +259,7 @@
 
 - (IBAction)forgotPasswordTapped:(id)sender {
     
-    self.loginScreenState = kLoginScreenStatePasswordRetrieve;
+    self.state = kLoginScreenStatePasswordRetrieve;
     self.confirmButton.enabled = YES;
     [UIView animateWithDuration:kLoginAnimationTransitionDuration delay:0.0f options:UIViewAnimationOptionCurveEaseInOut animations:^{
         CGPoint newCenter = self.passwordView.center;
@@ -297,14 +296,14 @@
 - (IBAction)backbuttonTapped:(id)sender
 {
     
-    switch (self.loginScreenState) {
+    switch (self.state) {
         case kLoginScreenStateRegisterStepTwo:
         {
             [self turnOnButton:self.backButton];
             [self turnOffButton:self.confirmButton];
             [self turnOnButton:self.nextButton];
             [self turnOnButton:self.cancelButton];
-            self.loginScreenState = kLoginScreenStateRegister;
+            self.state = kLoginScreenStateRegister;
             [UIView animateWithDuration:kLoginAnimationTransitionDuration delay:0.0f options:UIViewAnimationOptionCurveEaseInOut animations:^{
                 CGPoint newCenter = self.secondSignupView.center;
                 newCenter.x = 480.0f;
@@ -328,7 +327,7 @@
 
         case kLoginScreenStatePasswordRetrieve:
         {
-            self.loginScreenState = kLoginScreenStateLogin;
+            self.state = kLoginScreenStateLogin;
             [UIView animateWithDuration:kLoginAnimationTransitionDuration delay:0.0f options:UIViewAnimationOptionCurveEaseInOut animations:^{
                 CGPoint newCenter = self.passwordView.center;
                 newCenter.x = 480.0f;
@@ -346,7 +345,7 @@
         case kLoginScreenStateLogin:
         default:
         {
-            self.loginScreenState = kLoginScreenStateInitial;
+            self.state = kLoginScreenStateInitial;
             [UIView animateWithDuration:kLoginAnimationTransitionDuration delay:0.0f options:UIViewAnimationOptionCurveEaseInOut animations:^{
                 CGPoint newCenter = self.loginView.center;
                 newCenter.x = 480.0f;
@@ -363,10 +362,10 @@
     }
 }
 - (IBAction)cancelTapped:(id)sender {
-    switch (self.loginScreenState) {
+    switch (self.state) {
         case kLoginScreenStateRegister:
         {
-            self.loginScreenState = kLoginScreenStateInitial;
+            self.state = kLoginScreenStateInitial;
             [UIView animateWithDuration:kLoginAnimationTransitionDuration delay:0.0f options:UIViewAnimationOptionCurveEaseInOut animations:^{
                 CGPoint newCenter = self.firstSignupView.center;
                 newCenter.x = 480.0f;
@@ -401,7 +400,7 @@
     [self.passwordInputField resignFirstResponder];
     [self.emailInputField resignFirstResponder];
     
-    switch (self.loginScreenState) {
+    switch (self.state) {
         case kLoginScreenStateLogin:
         {
             [self turnOffButton:self.backButton];
@@ -540,7 +539,7 @@
 }
 
 - (IBAction)nextTapped:(id)sender {
-    self.loginScreenState = kLoginScreenStateRegisterStepTwo;
+    self.state = kLoginScreenStateRegisterStepTwo;
     [self turnOnButton:self.backButton];
     [self turnOnButton:self.confirmButton];
     [self turnOffButton:self.nextButton];
@@ -662,7 +661,7 @@
     self.signupErrorLabel.text = @"";
     self.loginErrorLabel.text = @"";
     self.passwordResetErrorLabel.text = @"";
-    switch (self.loginScreenState) {
+    switch (self.state) {
         case kLoginScreenStateLogin:
             self.confirmButton.enabled = [self validateLogin];
             break;
@@ -695,7 +694,10 @@
                 break;
             case 6:
                 //First page of Sign Up. Go next!
-                [self nextTapped:nil];
+                if([self validateRegistrationFirstScreen])
+                {
+                    [self nextTapped:nil];
+                }
                 break;
             default:
                 [textField resignFirstResponder];

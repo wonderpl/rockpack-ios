@@ -50,9 +50,6 @@
 @property (nonatomic, strong) UIPopoverController* cameraPopoverController;
 @property (nonatomic, strong) IBOutlet UITextField* userNameInputField;
 @property (nonatomic, strong) IBOutlet UITextField* passwordInputField;
-@property (nonatomic, strong) IBOutlet UITextField* registeringUserNameInputField;
-@property (nonatomic, strong) IBOutlet UITextField* registeringUserEmailInputField;
-@property (nonatomic, strong) IBOutlet UITextField* registeringUserPasswordInputField;
 @property (nonatomic, strong) IBOutlet UITextField* emailInputField;
 @property (nonatomic, strong) IBOutlet UIView* dobView;
 @property (nonatomic, strong) IBOutlet UITextField* ddInputField;
