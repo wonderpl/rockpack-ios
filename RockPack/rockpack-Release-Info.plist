@@ -2,6 +2,8 @@
 <!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
 <plist version="1.0">
 <dict>
+	<key>APIHostName</key>
+	<string>api.rockpack.com</string>
 	<key>CFBundleDevelopmentRegion</key>
 	<string>en</string>
 	<key>CFBundleDisplayName</key>
@@ -31,12 +33,27 @@
 	<string>1.0</string>
 	<key>CFBundleSignature</key>
 	<string>????</string>
+	<key>CFBundleURLTypes</key>
+	<array>
+		<dict>
+			<key>CFBundleURLSchemes</key>
+			<array>
+				<string>fb217008995103822</string>
+			</array>
+		</dict>
+	</array>
 	<key>CFBundleVersion</key>
 	<string>1.0.0.110.1</string>
+	<key>FacebookAppID</key>
+	<string>217008995103822</string>
+	<key>FullVersion</key>
+	<string>unknown</string>
 	<key>LSApplicationCategoryType</key>
 	<string></string>
 	<key>LSRequiresIPhoneOS</key>
 	<true/>
+	<key>SecureAPIHostName</key>
+	<string>secure.rockpack.com</string>
 	<key>UIAppFonts</key>
 	<array>
 		<string>DINNextLTPro-Regular.otf</string>
@@ -48,25 +65,10 @@
 	<array>
 		<string>armv7</string>
 	</array>
-	<key>FacebookAppID</key>
-	<string>217008995103822</string>
-	<key>CFBundleURLTypes</key>
-	<array>
-		<dict>
-			<key>CFBundleURLSchemes</key>
-			<array>
-				<string>fb217008995103822</string>
-			</array>
-		</dict>
-	</array>
 	<key>UISupportedInterfaceOrientations~ipad</key>
 	<array>
 		<string>UIInterfaceOrientationLandscapeLeft</string>
 		<string>UIInterfaceOrientationLandscapeRight</string>
 	</array>
-	<key>APIHostName</key>
-	<string>api.rockpack.com</string>
-	<key>SecureAPIHostName</key>
-	<string>secure.rockpack.com</string>
 </dict>
 </plist>
