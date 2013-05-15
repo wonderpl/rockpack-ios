@@ -596,6 +596,9 @@
     // Reset shuttle slider
     self.shuttleSlider.value = 0.0f;
     
+    // Reset progress view
+    self.bufferingProgressView.progress = 0.0f;
+    
     // And time value
     self.currentTimeLabel.text = [NSString timecodeStringFromSeconds: 0.0f];
 }
@@ -792,8 +795,7 @@
 
 - (void) handleCurrentYouTubePlayerEventNamed: (NSString *) actionName
                                     eventData: (NSString *) actionData
-{
-    if ([actionName isEqualToString: @"ready"])
+{    if ([actionName isEqualToString: @"ready"])
     {
         // We don't actually get any events until we 'play' the video
         // The next stage is unstarted, so if not autoplay then pause the video
@@ -815,7 +817,7 @@
         {
             [self resetPlayerAttributes];
             [self stopVideoInWebView: self.currentVideoWebView];
-            [self swapVideoWebViews];
+            [self loadNextVideo];
         }
         else if ([actionData isEqualToString: @"playing"])
         {
@@ -1007,15 +1009,6 @@
 
 
 #pragma mark - View animations
-
-- (void) swapVideoWebViews
-{
-    self.currentVideoViewedFlag = FALSE;
-    
-    // Start our new view playing
-    [self playVideoInWebView: self.currentVideoWebView];
-
-}
 
 - (IBAction) userTouchedPlay: (id) sender
 {
