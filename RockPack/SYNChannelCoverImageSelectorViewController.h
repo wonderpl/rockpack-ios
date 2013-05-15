@@ -15,18 +15,25 @@
 @protocol SYNChannelCoverImageSelectorDelegate <NSObject>
 
 @optional
--(void)imageSelector:(SYNChannelCoverImageSelectorViewController*)imageSelector didSelectImage:(NSString*)imageUrlString withRemoteId:(NSString*)remoteId;
--(void)imageSelector:(SYNChannelCoverImageSelectorViewController *)imageSelector didSelectUIImage:(UIImage*)image;
--(void)closeImageSelector:(SYNChannelCoverImageSelectorViewController*)imageSelector;
+
+- (void) imageSelector: (SYNChannelCoverImageSelectorViewController*) imageSelector
+        didSelectImage: (NSString*)imageUrlString
+          withRemoteId: (NSString*) remoteId;
+
+- (void) imageSelector: (SYNChannelCoverImageSelectorViewController *) imageSelector
+      didSelectUIImage: (UIImage*) image;
+
+- (void) closeImageSelector: (SYNChannelCoverImageSelectorViewController*) imageSelector;
 
 @end
+
 
 @interface SYNChannelCoverImageSelectorViewController : UIViewController
 
 @property (nonatomic, strong) NSFetchedResultsController *channelCoverFetchedResultsController;
 @property (nonatomic, strong) NSFetchedResultsController *userChannelCoverFetchedResultsController;
-
 @property (nonatomic, weak) id<SYNChannelCoverImageSelectorDelegate> imageSelectorDelegate;
--(void)refreshChannelCoverData;
+
+- (void) refreshChannelCoverData;
 
 @end

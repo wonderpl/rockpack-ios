@@ -523,10 +523,7 @@
 
 - (void) controllerDidChangeContent: (NSFetchedResultsController *) controller
 {
-    
-    
     [self.coverImageSelector refreshChannelCoverData];
-    
 }
 
 
@@ -1578,20 +1575,27 @@ kChannelThumbnailDisplayModeStandard: kChannelThumbnailDisplayModeEdit;
                      }];
 }
 
+
 #pragma mark - iPhone Cover Chooser delegate
--(void)closeImageSelector:(SYNChannelCoverImageSelectorViewController *)imageSelector
+
+- (void) closeImageSelector: (SYNChannelCoverImageSelectorViewController *) imageSelector
 {
-    [UIView animateWithDuration:0.3f delay:0.0f options:UIViewAnimationOptionCurveEaseIn animations:^{
-        CGRect endFrame = self.coverImageSelector.view.frame;
-        endFrame.origin.y = self.view.frame.size.height;
-        self.coverImageSelector.view.frame = endFrame;
-    } completion:^(BOOL finished) {
-        [self.coverImageSelector.view removeFromSuperview];
-        self.coverImageSelector = nil;
-    }];
+    [UIView animateWithDuration: 0.3f
+                          delay: 0.0f
+                        options: UIViewAnimationOptionCurveEaseIn
+                     animations: ^{
+                         CGRect endFrame = self.coverImageSelector.view.frame;
+                         endFrame.origin.y = self.view.frame.size.height;
+                         self.coverImageSelector.view.frame = endFrame;
+                     }
+                     completion: ^(BOOL finished) {
+                         [self.coverImageSelector.view removeFromSuperview];
+                         self.coverImageSelector = nil;
+                     }];
 }
 
--(void)imageSelector:(SYNChannelCoverImageSelectorViewController *)imageSelector didSelectAVURLAsset:(AVURLAsset *)asset
+- (void) imageSelector: (SYNChannelCoverImageSelectorViewController *) imageSelector
+   didSelectAVURLAsset:(AVURLAsset *)asset
 {
     self.selectedAsset = asset;
     [self closeImageSelector:imageSelector];
