@@ -866,21 +866,7 @@ kChannelThumbnailDisplayModeStandard: kChannelThumbnailDisplayModeEdit;
     if (self.coverChooserMasterView.alpha == 0.0f)
     {
         
-        // Update the list of cover art
-        [appDelegate.networkEngine updateCoverArtOnCompletion: ^{
-            DebugLog(@"Success");
-        }
-                                                      onError: ^(NSError* error) {
-                                                          DebugLog(@"%@", [error debugDescription]);
-                                                      }];
-        
-        [appDelegate.oAuthNetworkEngine updateCoverArtForUserId: appDelegate.currentOAuth2Credentials.userId
-                                                   onCompletion: ^{
-                                                       DebugLog(@"Success");
-                                                   }
-                                                        onError: ^(NSError* error) {
-                                                            DebugLog(@"%@", [error debugDescription]);
-                                                        }];
+        [self.coverChooserController updateCoverArt];
 
         self.originalContentOffset = CGPointMake (0, kChannelCreationCollectionViewOffsetY +
                                                      kChannelCreationCategoryAdditionalOffsetY);

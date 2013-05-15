@@ -18,9 +18,9 @@
 #import "SYNAppDelegate.h"
 #import "SYNPopoverBackgroundView.h"
 #import "SYNCameraPopoverViewController.h"
-#import "SYNAppDelegate.h"
 #import "GKImagePicker.h"
 #import "SYNOAuthNetworkEngine.h"
+#import "SYNNetworkEngine.h"
 #import "SYNChannelCoverImageSelectorViewController.h"
 
 @interface SYNCoverChooserController () 
@@ -288,7 +288,23 @@ didSelectItemAtIndexPath: (NSIndexPath *) indexPath
 
 
 
-
+-(void)updateCoverArt
+{
+    // Update the list of cover art
+    [appDelegate.networkEngine updateCoverArtOnCompletion: ^{
+        DebugLog(@"Success");
+    } onError: ^(NSError* error) {
+        DebugLog(@"%@", [error debugDescription]);
+    }];
+    
+    [appDelegate.oAuthNetworkEngine updateCoverArtForUserId: appDelegate.currentOAuth2Credentials.userId
+                                               onCompletion: ^{
+                                                   DebugLog(@"Success");
+                                               }
+                                                    onError: ^(NSError* error) {
+                                                        DebugLog(@"%@", [error debugDescription]);
+                                                    }];
+}
 
 
 

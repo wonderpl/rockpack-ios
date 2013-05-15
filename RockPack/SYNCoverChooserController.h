@@ -15,4 +15,6 @@
 
 @property (nonatomic, strong) IBOutlet UIButton *cameraButton;
 
+-(void)updateCoverArt;
+
 @end
