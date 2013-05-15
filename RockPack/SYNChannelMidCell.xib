@@ -105,6 +105,7 @@
 								<string key="NSFrame">{{8, 130}, {168, 47}}</string>
 								<reference key="NSSuperview" ref="582525683"/>
 								<reference key="NSWindow"/>
+								<reference key="NSNextKeyView"/>
 								<string key="NSReuseIdentifierKey">_NS:9</string>
 								<reference key="IBUIBackgroundColor" ref="427251072"/>
 								<bool key="IBUIAutoresizesSubviews">NO</bool>
@@ -392,7 +393,7 @@
 		<dictionary class="NSMutableDictionary" key="IBDocument.LastKnownImageSizes">
 			<string key="ButtonVideoDelete.png">{44, 45}</string>
 			<string key="ButtonVideoDeleteHighlighted.png">{44, 45}</string>
-			<string key="ButtonVideoDeleteSelected.png">{16, 16}</string>
+			<string key="ButtonVideoDeleteSelected.png">{44, 45}</string>
 			<string key="GlossChannelMid.png">{184, 184}</string>
 			<string key="NoCover184.png">{184, 184}</string>
 			<string key="PanelChannelCreationCoverSelected.png">{184, 184}</string>

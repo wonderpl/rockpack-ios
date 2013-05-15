@@ -13,7 +13,7 @@
 @interface SYNCategoriesTabView : SYNTabView
 
 - (id) initWithSize: (CGFloat) totalWidth
-      andHomeButton: (BOOL) useHomeButton;
+      andHomeButton: (NSString*) homeButtonString;
 
 - (void) hideSecondaryTabs;
 
