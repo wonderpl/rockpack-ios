@@ -106,6 +106,17 @@
     self.videoThumbnailCollectionView.delegate = self;
     self.videoThumbnailCollectionView.dataSource = self;
     self.videoThumbnailCollectionView.backgroundColor = [UIColor clearColor];
+    
+    if (isIPhone)
+    {
+        self.videoThumbnailCollectionView.contentInset = UIEdgeInsetsMake(4, 0, 0, 0);
+    }
+    
+    else
+    {
+        self.videoThumbnailCollectionView.contentInset = UIEdgeInsetsMake(0, 0, 0, 0);
+    }
+    
 
     self.view = [[UIView alloc] initWithFrame:selfFrame];
     
