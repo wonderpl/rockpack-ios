@@ -282,8 +282,6 @@ typedef void(^AnimationCompletionBlock)(BOOL finished);
 {
     [super viewWillAppear:animated];
     
-    
-    
 }
 
 -(void)viewDidAppear:(BOOL)animated
@@ -585,7 +583,7 @@ typedef void(^AnimationCompletionBlock)(BOOL finished);
     else if([self.reachability currentReachabilityStatus] == NotReachable) 
         reachabilityString = @"None";
     
-    DebugLog(@"Reachability == %@", reachabilityString);
+//    DebugLog(@"Reachability == %@", reachabilityString);
     if ([self.reachability currentReachabilityStatus] == ReachableViaWiFi)
     {
         if (self.networkErrorView)

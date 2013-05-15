@@ -155,6 +155,10 @@
 {
     [self packViewControllersForInterfaceOrientation:[[SYNDeviceManager sharedInstance] orientation]];
     
+    [[NSNotificationCenter defaultCenter] postNotificationName:kScrollerPageChanged
+                                                        object:self
+                                                      userInfo:@{kCurrentPage:@(self.scrollView.page)}];
+
     
 }
 

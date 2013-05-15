@@ -57,7 +57,7 @@
 
 - (id) init
 {
-    DebugLog (@"WARNING: init called on Abstract View Controller, call initWithViewId instead");
+//    DebugLog (@"WARNING: init called on Abstract View Controller, call initWithViewId instead");
     return [self initWithViewId: @"UnintializedViewId"];
 }
 

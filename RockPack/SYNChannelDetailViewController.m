@@ -1125,6 +1125,7 @@ kChannelThumbnailDisplayModeStandard: kChannelThumbnailDisplayModeEdit;
                                               
                                               createdChannel.channelOwner = appDelegate.currentUser;
                                               
+                                              self.channel = createdChannel;
                                               DebugLog(@"Channel: %@", createdChannel);
                                               
                                               [appDelegate saveContext:YES];
@@ -1530,12 +1531,27 @@ kChannelThumbnailDisplayModeStandard: kChannelThumbnailDisplayModeEdit;
     [self.view.window.layer addAnimation: animation
                                   forKey: nil];
     
-    // On iPad the existing channels viewcontroller's view is removed from the master view controller when a new channel is created.
-    // On iPhone we want to be able to go back which means the existing channels view remains onscreen. Here we remove it as channel creation was complete.
-    UIViewController *master = self.presentingViewController;
-    [[[[master childViewControllers] lastObject] view] removeFromSuperview];
+    [self displayChannelDetails];
     [self setDisplayControlsVisibility:YES];
-    [self.view addSubview:self.backButton];
+    
+    if([[SYNDeviceManager sharedInstance] isIPad])
+    {
+        self.addToChannelButton.hidden = YES;
+        self.createChannelButton.hidden = YES;
+        
+    }
+    else
+    {
+        // On iPad the existing channels viewcontroller's view is removed from the master view controller when a new channel is created.
+        // On iPhone we want to be able to go back which means the existing channels view remains onscreen. Here we remove it as channel creation was complete.
+        UIViewController *master = self.presentingViewController;
+        [[[[master childViewControllers] lastObject] view] removeFromSuperview];
+        [self setDisplayControlsVisibility:YES];
+        
+        //Move the back button from the edit view to allow closing this view
+        [self.backButton removeFromSuperview];
+        [self.view addSubview:self.backButton];
+    }
 }
 
 -(void)addSubscribeIndicator

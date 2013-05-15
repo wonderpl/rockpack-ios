@@ -252,7 +252,7 @@ typedef enum _Gender {
 #define kStandardCollectionViewOffsetY 80.0f
 #define kStandardCollectionViewOffsetYiPhone 60.0f
 #define kYouCollectionViewOffsetY 160.0f
-#define kChannelDetailsCollectionViewOffsetY 540.0f
+#define kChannelDetailsCollectionViewOffsetY 580.0f
 #define kChannelDetailsFadeSpan 15.0f
 
 #define kImageUploadWidth 1024
@@ -338,7 +338,7 @@ typedef enum {
 
 // Channel creation
 
-#define kChannelCreationCollectionViewOffsetY           540.0f
+#define kChannelCreationCollectionViewOffsetY           580.0f
 #define kChannelCreationCategoryTabOffsetY              444.0f
 #define kChannelCreationCategoryAdditionalOffsetY       51.0f
 
