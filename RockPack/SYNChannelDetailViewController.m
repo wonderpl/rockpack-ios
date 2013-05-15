@@ -52,7 +52,7 @@
 @property (nonatomic, strong) IBOutlet UIButton* reportConcernButton;
 @property (nonatomic, strong) IBOutlet UIButton* selectCategoryButton;
 @property (nonatomic, strong) IBOutlet UIButton* subscribeButton;
-@property (nonatomic, strong) IBOutlet UICollectionView *coverThumbnailCollectionView;
+
 @property (nonatomic, strong) IBOutlet UIImageView *avatarImageView;
 @property (nonatomic, strong) IBOutlet UIImageView *channelCoverImageView;
 @property (nonatomic, strong) IBOutlet UILabel *channelDetailsLabel;
@@ -62,7 +62,9 @@
 @property (nonatomic, strong) IBOutlet UIPopoverController *reportConcernPopoverController;
 @property (nonatomic, strong) IBOutlet UIView *avatarBackgroundView;
 @property (nonatomic, strong) IBOutlet UIView *channelTitleTextBackgroundView;
-@property (nonatomic, strong) IBOutlet UIView *coverChooserMasterView;
+
+@property (nonatomic, strong) UIView *coverChooserMasterView;
+
 @property (nonatomic, strong) IBOutlet UIView *displayControlsView;
 @property (nonatomic, strong) IBOutlet UIView *editControlsView;
 @property (nonatomic, strong) IBOutlet UIView *masterControlsView;
@@ -72,6 +74,9 @@
 @property (nonatomic, strong) UIActivityIndicatorView* subscribingIndicator;
 @property (nonatomic, strong) UIImage* originalBackgroundImage;
 @property (nonatomic, strong) id<SDWebImageOperation> currentWebImageOperation;
+
+@property (nonatomic, strong) SYNCoverChooserController* coverChooserController;
+
 @property (nonatomic, weak) Channel *channel;
 @property (nonatomic,strong) NSString* selectedCategoryId;
 @property (nonatomic,strong) NSString* selectedCoverId;
@@ -177,14 +182,7 @@
     [self.videoThumbnailCollectionView registerNib: videoThumbnailCellNib
                         forCellWithReuseIdentifier: @"SYNVideoThumbnailRegularCell"];
     
-    // Register cover thumbnail cell
     
-    // Regster video thumbnail cell
-    UINib *coverThumbnailCellNib = [UINib nibWithNibName: @"SYNCoverThumbnailCell"
-                                                  bundle: nil];
-    
-    [self.coverThumbnailCollectionView registerNib: coverThumbnailCellNib
-                        forCellWithReuseIdentifier: @"SYNCoverThumbnailCell"];
     
     // == Cover Image == //
   
@@ -273,7 +271,22 @@
     self.selectedCategoryId = @"";
     self.selectedCoverId = @"";
     
-    NSLog(@"User: %@", self.channel.uniqueId);
+    
+    // Cover Image Selector //
+    
+    self.coverChooserController = [[SYNCoverChooserController alloc] init];
+    self.coverChooserMasterView = self.coverChooserController.view;
+    
+    CGRect correctRect = self.coverChooserMasterView.frame;
+    correctRect.origin.y = 404.0;
+    self.coverChooserMasterView.frame = correctRect;
+    [self.editControlsView addSubview:self.coverChooserMasterView];
+    
+    self.cameraButton = self.coverChooserController.cameraButton;
+    
+    [self.cameraButton addTarget:self action:@selector(userTouchedCameraButton:) forControlEvents:UIControlEventTouchUpInside];
+    
+    
 }
 
 
@@ -463,7 +476,7 @@
 - (void) controllerDidChangeContent: (NSFetchedResultsController *) controller
 {
     
-    [self.coverThumbnailCollectionView reloadData];
+    
     [self.coverImageSelector refreshChannelCoverData];
     
 }
@@ -509,288 +522,56 @@
 
 #pragma mark - Collection view support
 
-- (NSInteger) collectionView: (UICollectionView *) collectionView
-      numberOfItemsInSection: (NSInteger) section
+- (NSInteger) collectionView: (UICollectionView *) collectionView numberOfItemsInSection: (NSInteger) section
 {
-    // Check to see what collection this concerns
-    if (collectionView == self.coverThumbnailCollectionView)
-    {
-        // Video thumbnails
-        switch (section)
-        {
-            case 0:
-            {
-                return 1;
-            }
-            break;
-                
-            case 1:
-            {
-                id <NSFetchedResultsSectionInfo> sectionInfo = self.userChannelCoverFetchedResultsController.sections [0];
-                return sectionInfo.numberOfObjects;
-            }
-            break;
-                
-            case 2:
-            {
-                id <NSFetchedResultsSectionInfo> sectionInfo = self.channelCoverFetchedResultsController.sections [0];
-                return sectionInfo.numberOfObjects;
-            }
-                break;
-                
-            default:
-            {
-                AssertOrLog(@"Shouldn't have more than two sections");
-                return 0;
-            }
-            break;
-        }
-    }
-    else
-    {
-        // Video thumbnails
-        switch (section)
-        {
-            case 0:
-            {
-                return self.channel.videoInstances.count;
-            }
-            break;
-                
-            default:
-            {
-                AssertOrLog(@"Shouldn't have more than one section");
-                return 0;
-            }
-            break;
-        }
-    }
+    
+    return self.channel.videoInstances.count;
 }
 
 
 - (NSInteger) numberOfSectionsInCollectionView: (UICollectionView *) collectionView
 {
-    // Check to see what collection this concerns
-    if (collectionView == self.coverThumbnailCollectionView)
-    {
-        // There are two sections for cover thumbnails, the first represents 'no cover' the second contains all images
-        return 3;
-    }
-    else
-    {
-        // Only one sectino for video thumbnails
-        return 1;
-    }
+    return 3;
 }
 
 
 - (UICollectionViewCell *) collectionView: (UICollectionView *) collectionView
                    cellForItemAtIndexPath: (NSIndexPath *) indexPath
 {
-    // Check to see what collection this concerns
-    if (collectionView == self.coverThumbnailCollectionView)
-    {
-        SYNCoverThumbnailCell *coverThumbnailCell = [collectionView dequeueReusableCellWithReuseIdentifier: @"SYNCoverThumbnailCell"
-                                                                                              forIndexPath: indexPath];
-        
-        // There are two sections for cover thumbnails, the first represents 'no cover' the second contains all images
-        switch (indexPath.section)
-        {
-            case 0:
-            {               
-                coverThumbnailCell.coverImageView.image = [UIImage imageNamed: @"ChannelCreationCoverNone.png"];
-                return coverThumbnailCell;
-            }
-            break;
-                
-            case 1:
-            {
-                // User channel covers
-                CoverArt *coverArt = [self.userChannelCoverFetchedResultsController objectAtIndexPath: [NSIndexPath indexPathForRow: indexPath.row
-                                                                                                        inSection: 0]];
-                
-                [coverThumbnailCell.coverImageView setImageWithURL: [NSURL URLWithString: coverArt.thumbnailURL]
-                                                  placeholderImage: [UIImage imageNamed: @"PlaceholderChannelCoverThumbnail.png"]
-                                                           options: SDWebImageRetryFailed];
-                return coverThumbnailCell;
-            }
-            break;
-                
-            case 2:
-            {
-                // Rockpack channel covers
-                CoverArt *coverArt = [self.channelCoverFetchedResultsController objectAtIndexPath: [NSIndexPath indexPathForRow: indexPath.row
-                                                                                                                  inSection: 0]];
-                
-                [coverThumbnailCell.coverImageView setImageWithURL: [NSURL URLWithString: coverArt.thumbnailURL]
-                                                  placeholderImage: [UIImage imageNamed: @"PlaceholderChannelCoverThumbnail.png"]
-                                                           options: SDWebImageRetryFailed];
-                return coverThumbnailCell;
-            }
-            break;
-                
-            default:
-            {
-                AssertOrLog(@"Shouldn't have more than two sections");
-                return 0;
-            }
-            break;
-        }
-    }
-    else
-    {
-        UICollectionViewCell *cell = nil;
-        
-        SYNVideoThumbnailRegularCell *videoThumbnailCell = [collectionView dequeueReusableCellWithReuseIdentifier: @"SYNVideoThumbnailRegularCell"
-                                                                                                     forIndexPath: indexPath];
-        videoThumbnailCell.displayMode = (self.mode == kChannelDetailsModeDisplay) ?
-                                                        kChannelThumbnailDisplayModeStandard: kChannelThumbnailDisplayModeEdit;
-        
-        VideoInstance *videoInstance = self.channel.videoInstances [indexPath.item];
-        
-        [videoThumbnailCell.imageView setImageWithURL: [NSURL URLWithString: videoInstance.video.thumbnailURL]
-                                     placeholderImage: [UIImage imageNamed: @"PlaceholderVideoThumbnailRegular.png"]
-                                              options: SDWebImageRetryFailed];
-
-        videoThumbnailCell.titleLabel.text = videoInstance.title;
-        videoThumbnailCell.viewControllerDelegate = self;
-        
-        videoThumbnailCell.addItButton.highlighted = NO;
-        videoThumbnailCell.addItButton.selected = [appDelegate.videoQueue videoInstanceIsAddedToChannel:videoInstance];
-        
-        cell = videoThumbnailCell;
-        
-        return cell;
-    }
+    UICollectionViewCell *cell = nil;
+    
+    SYNVideoThumbnailRegularCell *videoThumbnailCell = [collectionView dequeueReusableCellWithReuseIdentifier: @"SYNVideoThumbnailRegularCell"
+                                                                                                 forIndexPath: indexPath];
+    videoThumbnailCell.displayMode = (self.mode == kChannelDetailsModeDisplay) ?
+kChannelThumbnailDisplayModeStandard: kChannelThumbnailDisplayModeEdit;
+    
+    VideoInstance *videoInstance = self.channel.videoInstances [indexPath.item];
+    
+    [videoThumbnailCell.imageView setImageWithURL: [NSURL URLWithString: videoInstance.video.thumbnailURL]
+                                 placeholderImage: [UIImage imageNamed: @"PlaceholderVideoThumbnailRegular.png"]
+                                          options: SDWebImageRetryFailed];
+    
+    videoThumbnailCell.titleLabel.text = videoInstance.title;
+    videoThumbnailCell.viewControllerDelegate = self;
+    
+    videoThumbnailCell.addItButton.highlighted = NO;
+    videoThumbnailCell.addItButton.selected = [appDelegate.videoQueue videoInstanceIsAddedToChannel:videoInstance];
+    
+    cell = videoThumbnailCell;
+    
+    return cell;
 }
 
 
 - (void) collectionView: (UICollectionView *) collectionView
          didSelectItemAtIndexPath: (NSIndexPath *) indexPath
 {
-    if (collectionView == self.coverThumbnailCollectionView)
-    {
-        // Ensure that the cell we have selected is fully on-screen
-        [self.coverThumbnailCollectionView scrollToItemAtIndexPath: indexPath
-                                                  atScrollPosition: UICollectionViewScrollPositionNone
-                                                          animated: YES];
-        
-        NSString *imageURLString = @"";
-        
-        // There are two sections for cover thumbnails, the first represents 'no cover' the second contains all images
-        switch (indexPath.section)
-        {
-            case 0:
-            {
-
-            }
-            break;
-                
-            case 1:
-            {
-                // User channel covers
-                CoverArt *coverArt = [self.userChannelCoverFetchedResultsController objectAtIndexPath: [NSIndexPath indexPathForRow: indexPath.row
-                                                                                                                                  inSection: 0]];
-                imageURLString = coverArt.thumbnailURL;
-            }
-            break;
-                
-            case 2:
-            {
-                // Rockpack channel covers
-                CoverArt *coverArt = [self.channelCoverFetchedResultsController objectAtIndexPath: [NSIndexPath indexPathForRow: indexPath.row
-                                                                                                                              inSection: 0]];
-                imageURLString = coverArt.thumbnailURL;
-            }
-            break;
-                
-            default:
-            {
-                AssertOrLog(@"Shouldn't have more than three sections");
-            }
-            break;
-        }
-        
-        if ([imageURLString isEqualToString: @""])
-        {
-            self.channelCoverImageView.image = nil;
-        }
-        else
-        {
-            [self.channelCoverImageView setImageWithURL: [NSURL URLWithString: imageURLString]
-                                       placeholderImage: nil
-                                                options: SDWebImageRetryFailed];
-        }
-    }
-    else
-    {
-        [self displayVideoViewerWithVideoInstanceArray: self.channel.videoInstances.array
-                                      andSelectedIndex: indexPath.item];
-    }
+    [self displayVideoViewerWithVideoInstanceArray: self.channel.videoInstances.array
+                                  andSelectedIndex: indexPath.item];
 }
 
 
-#pragma mark - Fetched results controller
 
-- (NSFetchedResultsController *) channelCoverFetchedResultsController
-{
-    if (_channelCoverFetchedResultsController)
-        return _channelCoverFetchedResultsController;
-    
-    NSFetchRequest *fetchRequest = [[NSFetchRequest alloc] init];
-    
-    
-    fetchRequest.entity = [NSEntityDescription entityForName: @"CoverArt"
-                                      inManagedObjectContext: appDelegate.mainManagedObjectContext];
-    
-    
-    fetchRequest.predicate = [NSPredicate predicateWithFormat: [NSString stringWithFormat: @"viewId == \"%@\"", kCoverArtViewId]];
-    fetchRequest.sortDescriptors = @[[[NSSortDescriptor alloc] initWithKey: @"position" ascending: YES]];
-    
-    self.channelCoverFetchedResultsController = [[NSFetchedResultsController alloc] initWithFetchRequest: fetchRequest
-                                                                        managedObjectContext: appDelegate.mainManagedObjectContext
-                                                                          sectionNameKeyPath: nil
-                                                                                   cacheName: nil];
-    self.channelCoverFetchedResultsController.delegate = self;
-    
-    
-    NSError *error = nil;
-    
-    ZAssert([_channelCoverFetchedResultsController performFetch: &error], @"Channels Details Failed: %@\n%@", [error localizedDescription], [error userInfo]);
-    
-    return _channelCoverFetchedResultsController;
-}
-
-
-- (NSFetchedResultsController *) userChannelCoverFetchedResultsController
-{
-    if (_userChannelCoverFetchedResultsController)
-        return _userChannelCoverFetchedResultsController;
-    
-    NSFetchRequest *fetchRequest = [[NSFetchRequest alloc] init];
-    
-    NSEntityDescription* entityDescription = [NSEntityDescription entityForName: @"CoverArt"
-                                                         inManagedObjectContext: appDelegate.mainManagedObjectContext];
-    
-    fetchRequest.entity = entityDescription;
-    
-    
-    fetchRequest.predicate = [NSPredicate predicateWithFormat: [NSString stringWithFormat: @"viewId == \"%@\"", kUserCoverArtViewId]];
-    fetchRequest.sortDescriptors = @[[[NSSortDescriptor alloc] initWithKey: @"position" ascending: YES]];
-    
-    self.userChannelCoverFetchedResultsController = [[NSFetchedResultsController alloc] initWithFetchRequest: fetchRequest
-                                                                                    managedObjectContext: appDelegate.mainManagedObjectContext
-                                                                                      sectionNameKeyPath: nil
-                                                                                               cacheName: nil];
-    self.userChannelCoverFetchedResultsController.delegate = self;
-    
-    
-    NSError *error = nil;
-    
-    ZAssert([_userChannelCoverFetchedResultsController performFetch: &error], @"Channels Details Failed: %@\n%@", [error localizedDescription], [error userInfo]);
-    
-    return _userChannelCoverFetchedResultsController;
-}
 
 
 #pragma mark - Helper methods
@@ -1516,7 +1297,7 @@
 
 #pragma mark - Cover selection and upload support
 
-- (IBAction) userTouchedCameraButton: (UIButton*) button
+- (void) userTouchedCameraButton: (UIButton*) button
 {
     button.selected = !button.selected;
     

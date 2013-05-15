@@ -188,7 +188,7 @@ didSelectItemAtIndexPath: (NSIndexPath *) indexPath
                                                                                                                       inSection: 0]];
             imageURLString = coverArt.thumbnailURL;
         }
-            break;
+        break;
             
         case 2:
         {
@@ -197,18 +197,14 @@ didSelectItemAtIndexPath: (NSIndexPath *) indexPath
                                                                                                                   inSection: 0]];
             imageURLString = coverArt.thumbnailURL;
         }
-            break;
+        break;
             
-        default:
-        {
-            AssertOrLog(@"Shouldn't have more than three sections");
-        }
-            break;
+        
     }
     
     [[NSNotificationCenter defaultCenter] postNotificationName:kCoverArtChanged
                                                         object:self
-                                                      userInfo:@{kCoverArt:[UIImage imageNamed:kCoverArtChanged]}];
+                                                      userInfo:@{kCoverArt:imageURLString}];
     
  
 }
