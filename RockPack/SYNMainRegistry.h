@@ -34,6 +34,6 @@
 - (BOOL) registerSubscriptionsForCurrentUserFromDictionary: (NSDictionary*) dictionary;
 
 - (BOOL) registerCoverArtFromDictionary: (NSDictionary*) dictionary
-                             forViewId: (NSString *) viewId;
+                          forUserUpload: (BOOL) userUpload;
 
 @end

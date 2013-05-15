@@ -24,6 +24,7 @@
 #import "SubGenre.h"
 #import "UIFont+SYNFont.h"
 #import "UIImageView+WebCache.h"
+#import "SYNCategoryItemView.h"
 #import "Video.h"
 #import "VideoInstance.h"
 
@@ -563,9 +564,11 @@
 {
     [super handleMainTap:recogniser];
     
-    if (!recogniser)
+    SYNCategoryItemView *tab = (SYNCategoryItemView*)recogniser.view;
+    
+    if (recogniser == 0 || tab.tag == 0)
     {
-        // then home button was pressed
+        // then home button was pressed in either its icon or "all" mode respectively
         if (tabExpanded)
         {
             [UIView animateWithDuration: 0.3

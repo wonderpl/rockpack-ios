@@ -30,13 +30,16 @@
 #import "UIImageView+WebCache.h"
 #import "Video.h"
 #import "VideoInstance.h"
+#import "SYNCoverChooserController.h"
 #import <AVFoundation/AVFoundation.h>
 #import <QuartzCore/QuartzCore.h>
 
 @interface SYNChannelDetailViewController () <UITextViewDelegate,
                                               GKImagePickerDelegate,
                                               UIPopoverControllerDelegate,
-                                              SYNCameraPopoverViewControllerDelegate, SYNChannelCategoryTableViewDelegate, SYNChannelCoverImageSelectorDelegate>
+                                              SYNCameraPopoverViewControllerDelegate,
+                                              SYNChannelCategoryTableViewDelegate,
+                                              SYNChannelCoverImageSelectorDelegate>
 
 @property (nonatomic, assign)  CGPoint originalContentOffset;
 @property (nonatomic, strong) GKImagePicker *imagePicker;
@@ -51,7 +54,7 @@
 @property (nonatomic, strong) IBOutlet UIButton* reportConcernButton;
 @property (nonatomic, strong) IBOutlet UIButton* selectCategoryButton;
 @property (nonatomic, strong) IBOutlet UIButton* subscribeButton;
-@property (nonatomic, strong) IBOutlet UICollectionView *coverThumbnailCollectionView;
+
 @property (nonatomic, strong) IBOutlet UIImageView *avatarImageView;
 @property (nonatomic, strong) IBOutlet UIImageView *channelCoverImageView;
 @property (nonatomic, strong) IBOutlet UILabel *channelDetailsLabel;
@@ -61,20 +64,26 @@
 @property (nonatomic, strong) IBOutlet UIPopoverController *reportConcernPopoverController;
 @property (nonatomic, strong) IBOutlet UIView *avatarBackgroundView;
 @property (nonatomic, strong) IBOutlet UIView *channelTitleTextBackgroundView;
-@property (nonatomic, strong) IBOutlet UIView *coverChooserMasterView;
+
+@property (nonatomic, strong) UIView *coverChooserMasterView;
+
 @property (nonatomic, strong) IBOutlet UIView *displayControlsView;
 @property (nonatomic, strong) IBOutlet UIView *editControlsView;
 @property (nonatomic, strong) IBOutlet UIView *masterControlsView;
 @property (nonatomic, strong) NSFetchedResultsController *channelCoverFetchedResultsController;
 @property (nonatomic, strong) NSFetchedResultsController *userChannelCoverFetchedResultsController;
 @property (nonatomic, strong) SYNCategoriesTabViewController *categoriesTabViewController;
+@property (nonatomic, strong) SYNReportConcernTableViewController *reportConcernTableViewController;
 @property (nonatomic, strong) UIActivityIndicatorView* subscribingIndicator;
 @property (nonatomic, strong) UIImage* originalBackgroundImage;
+@property (nonatomic, strong) UIView* noVideosMessageView;
 @property (nonatomic, strong) id<SDWebImageOperation> currentWebImageOperation;
+
+@property (nonatomic, strong) SYNCoverChooserController* coverChooserController;
+
 @property (nonatomic, weak) Channel *channel;
 @property (nonatomic,strong) NSString* selectedCategoryId;
 @property (nonatomic,strong) NSString* selectedCoverId;
-@property (nonatomic, strong) UIView* noVideosMessageView;
 @property (weak, nonatomic) IBOutlet UILabel *byLabel;
 
 //iPhone specific
@@ -169,30 +178,33 @@
         layout.sectionInset = UIEdgeInsetsMake(0.0f, 5.0f, 0.0f, 5.0f);
     }
     
-    // Regster video thumbnail cell
+    
+    // == Video Cells == //
+    
     UINib *videoThumbnailCellNib = [UINib nibWithNibName: @"SYNVideoThumbnailRegularCell"
                                                   bundle: nil];
     
     [self.videoThumbnailCollectionView registerNib: videoThumbnailCellNib
                         forCellWithReuseIdentifier: @"SYNVideoThumbnailRegularCell"];
     
-    // Register cover thumbnail cell
     
-    // Regster video thumbnail cell
-    UINib *coverThumbnailCellNib = [UINib nibWithNibName: @"SYNCoverThumbnailCell"
-                                                  bundle: nil];
-    
-    [self.coverThumbnailCollectionView registerNib: coverThumbnailCellNib
-                        forCellWithReuseIdentifier: @"SYNCoverThumbnailCell"];
     
     // == Cover Image == //
   
-    self.currentWebImageOperation = [self loadBackgroundImage];
+    if(self.mode == kChannelDetailsModeDisplay) // only load bg on display
+    {
+        self.currentWebImageOperation = [self loadBackgroundImage];
+    }
     
-    // Set avatar
+    
+    // == Avatar Image == //
+    
     [self.avatarImageView setImageWithURL: [NSURL URLWithString: self.channel.channelOwner.thumbnailURL]
                          placeholderImage: [UIImage imageNamed: @"AvatarChannel.png"]
                                   options: SDWebImageRetryFailed];
+    
+    
+    
 
     if (!isIPhone)
     {
@@ -269,7 +281,22 @@
     self.selectedCategoryId = @"";
     self.selectedCoverId = @"";
     
-    NSLog(@"User: %@", self.channel.uniqueId);
+    
+    // Cover Image Selector //
+    
+    self.coverChooserController = [[SYNCoverChooserController alloc] init];
+    self.coverChooserMasterView = self.coverChooserController.view;
+    
+    CGRect correctRect = self.coverChooserMasterView.frame;
+    correctRect.origin.y = 404.0;
+    self.coverChooserMasterView.frame = correctRect;
+    [self.editControlsView addSubview:self.coverChooserMasterView];
+    
+    self.cameraButton = self.coverChooserController.cameraButton;
+    
+    [self.cameraButton addTarget:self action:@selector(userTouchedCameraButton:) forControlEvents:UIControlEventTouchUpInside];
+    
+    
 }
 
 
@@ -292,6 +319,11 @@
                                 forKeyPath: kTextViewContentSizeKey
                                    options: NSKeyValueObservingOptionNew
                                    context: NULL];
+    
+    [[NSNotificationCenter defaultCenter] addObserver: self
+                                             selector: @selector(coverImageChangedHandler:)
+                                                 name: kCoverArtChanged
+                                               object: nil];
     
     __weak SYNChannelDetailViewController* weakSelf = self;
     [appDelegate.currentUser.subscriptions enumerateObjectsUsingBlock:^(id obj, NSUInteger idx, BOOL *stop) {
@@ -341,6 +373,10 @@
     [self.channelTitleTextView removeObserver: self
                                    forKeyPath: kTextViewContentSizeKey];
     
+    [[NSNotificationCenter defaultCenter] removeObserver: self
+                                                    name: kCoverArtChanged
+                                                  object: nil];
+    
     if(self.subscribingIndicator) {
         [self.subscribingIndicator removeFromSuperview];
         self.subscribingIndicator = nil;
@@ -365,7 +401,30 @@
                                          forState: UIControlStateNormal];
 }
 
-
+-(void)coverImageChangedHandler:(NSNotification*)notification
+{
+    NSString* coverArtUrl = (NSString*)[[notification userInfo] objectForKey:kCoverArt];
+    if(!coverArtUrl)
+        return;
+    
+    if ([coverArtUrl isEqualToString: @""])
+    {
+        self.channelCoverImageView.image = nil;
+        
+    }
+    else
+    {
+        NSString* largeImageUrlString = [coverArtUrl stringByReplacingOccurrencesOfString:@"thumbnail_medium" withString:@"background"];
+        [self.channelCoverImageView setImageWithURL: [NSURL URLWithString: largeImageUrlString]
+                                   placeholderImage: nil
+                                            options: SDWebImageRetryFailed];
+    }
+    
+    self.originalBackgroundImage = nil;
+    
+    
+    
+}
 
 
 - (void) setMode: (kChannelDetailsMode) mode
@@ -433,20 +492,26 @@
 
 -(void)showNoVideosMessage
 {
-    CGRect viewFrame = CGRectMake(0.0, 600.0, 600.0, 100.0);
-    self.noVideosMessageView = [[UIView alloc] initWithFrame:viewFrame];
+    CGSize viewFrameSize = CGSizeMake(360.0, 50.0);
+    self.noVideosMessageView = [[UIView alloc] initWithFrame:CGRectMake(0.0, 640.0, viewFrameSize.width, viewFrameSize.height)];
     self.noVideosMessageView.center = CGPointMake(self.view.frame.size.width * 0.5, self.noVideosMessageView.center.y);
     self.noVideosMessageView.frame = CGRectIntegral(self.noVideosMessageView.frame);
     self.noVideosMessageView.autoresizingMask = UIViewAutoresizingFlexibleBottomMargin | UIViewAutoresizingFlexibleLeftMargin | UIViewAutoresizingFlexibleRightMargin;
     
+    UIView* noVideosBGView = [[UIView alloc] initWithFrame:CGRectMake(0.0, 0.0, viewFrameSize.width, viewFrameSize.height)];
+    noVideosBGView.backgroundColor = [UIColor blackColor];
+    noVideosBGView.alpha = 0.3;
     
-    UILabel* noVideosLabel = [[UILabel alloc] initWithFrame:viewFrame];
-    noVideosLabel.text = @"THIS CHANNEL HAS NO VIDEOS";
+    [self.noVideosMessageView addSubview:noVideosBGView];
+    
+    
+    UILabel* noVideosLabel = [[UILabel alloc] initWithFrame:CGRectZero];
+    noVideosLabel.text = @"THERE ARE NO VIDEOS IN THIS CHANNEL YET";
     noVideosLabel.textAlignment = NSTextAlignmentCenter;
-    noVideosLabel.font = [UIFont rockpackFontOfSize:28.0];
-    noVideosLabel.textColor = [UIColor grayColor];
+    noVideosLabel.font = [UIFont rockpackFontOfSize:16.0];
+    noVideosLabel.textColor = [UIColor whiteColor];
     [noVideosLabel sizeToFit];
-    noVideosLabel.center = CGPointMake(viewFrame.size.width * 0.5, viewFrame.size.height * 0.5);
+    noVideosLabel.center = CGPointMake(viewFrameSize.width * 0.5, viewFrameSize.height * 0.5 + 4.0);
     noVideosLabel.frame = CGRectIntegral(noVideosLabel.frame);
     noVideosLabel.backgroundColor = [UIColor clearColor];
     
@@ -458,10 +523,7 @@
 
 - (void) controllerDidChangeContent: (NSFetchedResultsController *) controller
 {
-    
-    [self.coverThumbnailCollectionView reloadData];
     [self.coverImageSelector refreshChannelCoverData];
-    
 }
 
 
@@ -505,288 +567,56 @@
 
 #pragma mark - Collection view support
 
-- (NSInteger) collectionView: (UICollectionView *) collectionView
-      numberOfItemsInSection: (NSInteger) section
+- (NSInteger) collectionView: (UICollectionView *) collectionView numberOfItemsInSection: (NSInteger) section
 {
-    // Check to see what collection this concerns
-    if (collectionView == self.coverThumbnailCollectionView)
-    {
-        // Video thumbnails
-        switch (section)
-        {
-            case 0:
-            {
-                return 1;
-            }
-            break;
-                
-            case 1:
-            {
-                id <NSFetchedResultsSectionInfo> sectionInfo = self.userChannelCoverFetchedResultsController.sections [0];
-                return sectionInfo.numberOfObjects;
-            }
-            break;
-                
-            case 2:
-            {
-                id <NSFetchedResultsSectionInfo> sectionInfo = self.channelCoverFetchedResultsController.sections [0];
-                return sectionInfo.numberOfObjects;
-            }
-                break;
-                
-            default:
-            {
-                AssertOrLog(@"Shouldn't have more than two sections");
-                return 0;
-            }
-            break;
-        }
-    }
-    else
-    {
-        // Video thumbnails
-        switch (section)
-        {
-            case 0:
-            {
-                return self.channel.videoInstances.count;
-            }
-            break;
-                
-            default:
-            {
-                AssertOrLog(@"Shouldn't have more than one section");
-                return 0;
-            }
-            break;
-        }
-    }
+    
+    return self.channel.videoInstances.count;
 }
 
 
 - (NSInteger) numberOfSectionsInCollectionView: (UICollectionView *) collectionView
 {
-    // Check to see what collection this concerns
-    if (collectionView == self.coverThumbnailCollectionView)
-    {
-        // There are two sections for cover thumbnails, the first represents 'no cover' the second contains all images
-        return 3;
-    }
-    else
-    {
-        // Only one sectino for video thumbnails
-        return 1;
-    }
+    return 1;
 }
 
 
 - (UICollectionViewCell *) collectionView: (UICollectionView *) collectionView
                    cellForItemAtIndexPath: (NSIndexPath *) indexPath
 {
-    // Check to see what collection this concerns
-    if (collectionView == self.coverThumbnailCollectionView)
-    {
-        SYNCoverThumbnailCell *coverThumbnailCell = [collectionView dequeueReusableCellWithReuseIdentifier: @"SYNCoverThumbnailCell"
-                                                                                              forIndexPath: indexPath];
-        
-        // There are two sections for cover thumbnails, the first represents 'no cover' the second contains all images
-        switch (indexPath.section)
-        {
-            case 0:
-            {               
-                coverThumbnailCell.coverImageView.image = [UIImage imageNamed: @"ChannelCreationCoverNone.png"];
-                return coverThumbnailCell;
-            }
-            break;
-                
-            case 1:
-            {
-                // User channel covers
-                CoverArt *coverArt = [self.userChannelCoverFetchedResultsController objectAtIndexPath: [NSIndexPath indexPathForRow: indexPath.row
-                                                                                                        inSection: 0]];
-                
-                [coverThumbnailCell.coverImageView setImageWithURL: [NSURL URLWithString: coverArt.thumbnailURL]
-                                                  placeholderImage: [UIImage imageNamed: @"PlaceholderChannelCoverThumbnail.png"]
-                                                           options: SDWebImageRetryFailed];
-                return coverThumbnailCell;
-            }
-            break;
-                
-            case 2:
-            {
-                // Rockpack channel covers
-                CoverArt *coverArt = [self.channelCoverFetchedResultsController objectAtIndexPath: [NSIndexPath indexPathForRow: indexPath.row
-                                                                                                                  inSection: 0]];
-                
-                [coverThumbnailCell.coverImageView setImageWithURL: [NSURL URLWithString: coverArt.thumbnailURL]
-                                                  placeholderImage: [UIImage imageNamed: @"PlaceholderChannelCoverThumbnail.png"]
-                                                           options: SDWebImageRetryFailed];
-                return coverThumbnailCell;
-            }
-            break;
-                
-            default:
-            {
-                AssertOrLog(@"Shouldn't have more than two sections");
-                return 0;
-            }
-            break;
-        }
-    }
-    else
-    {
-        UICollectionViewCell *cell = nil;
-        
-        SYNVideoThumbnailRegularCell *videoThumbnailCell = [collectionView dequeueReusableCellWithReuseIdentifier: @"SYNVideoThumbnailRegularCell"
-                                                                                                     forIndexPath: indexPath];
-        videoThumbnailCell.displayMode = (self.mode == kChannelDetailsModeDisplay) ?
-                                                        kChannelThumbnailDisplayModeStandard: kChannelThumbnailDisplayModeEdit;
-        
-        VideoInstance *videoInstance = self.channel.videoInstances [indexPath.item];
-        
-        [videoThumbnailCell.imageView setImageWithURL: [NSURL URLWithString: videoInstance.video.thumbnailURL]
-                                     placeholderImage: [UIImage imageNamed: @"PlaceholderVideoThumbnailRegular.png"]
-                                              options: SDWebImageRetryFailed];
-
-        videoThumbnailCell.titleLabel.text = videoInstance.title;
-        videoThumbnailCell.viewControllerDelegate = self;
-        
-        videoThumbnailCell.addItButton.highlighted = NO;
-        videoThumbnailCell.addItButton.selected = [appDelegate.videoQueue videoInstanceIsAddedToChannel:videoInstance];
-        
-        cell = videoThumbnailCell;
-        
-        return cell;
-    }
+    UICollectionViewCell *cell = nil;
+    
+    SYNVideoThumbnailRegularCell *videoThumbnailCell = [collectionView dequeueReusableCellWithReuseIdentifier: @"SYNVideoThumbnailRegularCell"
+                                                                                                 forIndexPath: indexPath];
+    videoThumbnailCell.displayMode = (self.mode == kChannelDetailsModeDisplay) ?
+kChannelThumbnailDisplayModeStandard: kChannelThumbnailDisplayModeEdit;
+    
+    VideoInstance *videoInstance = self.channel.videoInstances [indexPath.item];
+    
+    [videoThumbnailCell.imageView setImageWithURL: [NSURL URLWithString: videoInstance.video.thumbnailURL]
+                                 placeholderImage: [UIImage imageNamed: @"PlaceholderVideoThumbnailRegular.png"]
+                                          options: SDWebImageRetryFailed];
+    
+    videoThumbnailCell.titleLabel.text = videoInstance.title;
+    videoThumbnailCell.viewControllerDelegate = self;
+    
+    videoThumbnailCell.addItButton.highlighted = NO;
+    videoThumbnailCell.addItButton.selected = [appDelegate.videoQueue videoInstanceIsAddedToChannel:videoInstance];
+    
+    cell = videoThumbnailCell;
+    
+    return cell;
 }
 
 
 - (void) collectionView: (UICollectionView *) collectionView
          didSelectItemAtIndexPath: (NSIndexPath *) indexPath
 {
-    if (collectionView == self.coverThumbnailCollectionView)
-    {
-        // Ensure that the cell we have selected is fully on-screen
-        [self.coverThumbnailCollectionView scrollToItemAtIndexPath: indexPath
-                                                  atScrollPosition: UICollectionViewScrollPositionNone
-                                                          animated: YES];
-        
-        NSString *imageURLString = @"";
-        
-        // There are two sections for cover thumbnails, the first represents 'no cover' the second contains all images
-        switch (indexPath.section)
-        {
-            case 0:
-            {
-
-            }
-            break;
-                
-            case 1:
-            {
-                // User channel covers
-                CoverArt *coverArt = [self.userChannelCoverFetchedResultsController objectAtIndexPath: [NSIndexPath indexPathForRow: indexPath.row
-                                                                                                                                  inSection: 0]];
-                imageURLString = coverArt.thumbnailURL;
-            }
-            break;
-                
-            case 2:
-            {
-                // Rockpack channel covers
-                CoverArt *coverArt = [self.channelCoverFetchedResultsController objectAtIndexPath: [NSIndexPath indexPathForRow: indexPath.row
-                                                                                                                              inSection: 0]];
-                imageURLString = coverArt.thumbnailURL;
-            }
-            break;
-                
-            default:
-            {
-                AssertOrLog(@"Shouldn't have more than three sections");
-            }
-            break;
-        }
-        
-        if ([imageURLString isEqualToString: @""])
-        {
-            self.channelCoverImageView.image = nil;
-        }
-        else
-        {
-            [self.channelCoverImageView setImageWithURL: [NSURL URLWithString: imageURLString]
-                                       placeholderImage: nil
-                                                options: SDWebImageRetryFailed];
-        }
-    }
-    else
-    {
-        [self displayVideoViewerWithVideoInstanceArray: self.channel.videoInstances.array
-                                      andSelectedIndex: indexPath.item];
-    }
+    [self displayVideoViewerWithVideoInstanceArray: self.channel.videoInstances.array
+                                  andSelectedIndex: indexPath.item];
 }
 
 
-#pragma mark - Fetched results controller
 
-- (NSFetchedResultsController *) channelCoverFetchedResultsController
-{
-    if (_channelCoverFetchedResultsController)
-        return _channelCoverFetchedResultsController;
-    
-    NSFetchRequest *fetchRequest = [[NSFetchRequest alloc] init];
-    
-    
-    fetchRequest.entity = [NSEntityDescription entityForName: @"CoverArt"
-                                      inManagedObjectContext: appDelegate.mainManagedObjectContext];
-    
-    
-    fetchRequest.predicate = [NSPredicate predicateWithFormat: [NSString stringWithFormat: @"viewId == \"%@\"", kCoverArtViewId]];
-    fetchRequest.sortDescriptors = @[[[NSSortDescriptor alloc] initWithKey: @"position" ascending: YES]];
-    
-    self.channelCoverFetchedResultsController = [[NSFetchedResultsController alloc] initWithFetchRequest: fetchRequest
-                                                                        managedObjectContext: appDelegate.mainManagedObjectContext
-                                                                          sectionNameKeyPath: nil
-                                                                                   cacheName: nil];
-    self.channelCoverFetchedResultsController.delegate = self;
-    
-    
-    NSError *error = nil;
-    
-    ZAssert([_channelCoverFetchedResultsController performFetch: &error], @"Channels Details Failed: %@\n%@", [error localizedDescription], [error userInfo]);
-    
-    return _channelCoverFetchedResultsController;
-}
-
-
-- (NSFetchedResultsController *) userChannelCoverFetchedResultsController
-{
-    if (_userChannelCoverFetchedResultsController)
-        return _userChannelCoverFetchedResultsController;
-    
-    NSFetchRequest *fetchRequest = [[NSFetchRequest alloc] init];
-    
-    NSEntityDescription* entityDescription = [NSEntityDescription entityForName: @"CoverArt"
-                                                         inManagedObjectContext: appDelegate.mainManagedObjectContext];
-    
-    fetchRequest.entity = entityDescription;
-    
-    
-    fetchRequest.predicate = [NSPredicate predicateWithFormat: [NSString stringWithFormat: @"viewId == \"%@\"", kUserCoverArtViewId]];
-    fetchRequest.sortDescriptors = @[[[NSSortDescriptor alloc] initWithKey: @"position" ascending: YES]];
-    
-    self.userChannelCoverFetchedResultsController = [[NSFetchedResultsController alloc] initWithFetchRequest: fetchRequest
-                                                                                    managedObjectContext: appDelegate.mainManagedObjectContext
-                                                                                      sectionNameKeyPath: nil
-                                                                                               cacheName: nil];
-    self.userChannelCoverFetchedResultsController.delegate = self;
-    
-    
-    NSError *error = nil;
-    
-    ZAssert([_userChannelCoverFetchedResultsController performFetch: &error], @"Channels Details Failed: %@\n%@", [error localizedDescription], [error userInfo]);
-    
-    return _userChannelCoverFetchedResultsController;
-}
 
 
 #pragma mark - Helper methods
@@ -1035,21 +865,7 @@
     if (self.coverChooserMasterView.alpha == 0.0f)
     {
         
-        // Update the list of cover art
-        [appDelegate.networkEngine updateCoverArtOnCompletion: ^{
-            DebugLog(@"Success");
-        }
-                                                      onError: ^(NSError* error) {
-                                                          DebugLog(@"%@", [error debugDescription]);
-                                                      }];
-        
-        [appDelegate.oAuthNetworkEngine updateCoverArtForUserId: appDelegate.currentOAuth2Credentials.userId
-                                                   onCompletion: ^{
-                                                       DebugLog(@"Success");
-                                                   }
-                                                        onError: ^(NSError* error) {
-                                                            DebugLog(@"%@", [error debugDescription]);
-                                                        }];
+        [self.coverChooserController updateCoverArt];
 
         self.originalContentOffset = CGPointMake (0, kChannelCreationCollectionViewOffsetY +
                                                      kChannelCreationCategoryAdditionalOffsetY);
@@ -1400,28 +1216,28 @@
     button.selected = !button.selected;
     
     if (button.selected)
-    {
-        SYNReportConcernTableViewController *reportConcernTableViewController;
-        
+    {        
         if (UI_USER_INTERFACE_IDIOM() == UIUserInterfaceIdiomPad)
         {
             // Create out concerns table view controller
-            reportConcernTableViewController = [[SYNReportConcernTableViewController alloc]
+            self.reportConcernTableViewController = [[SYNReportConcernTableViewController alloc]
                                                 initWithSendReportBlock: ^ (NSString *reportString){
                                                     [self.reportConcernPopoverController dismissPopoverAnimated: YES];
                                                     [self reportConcern: reportString];
+                                                    self.reportConcernButton.selected = FALSE;
                                                 }
                                                 cancelReportBlock: ^{
                                                     [self.reportConcernPopoverController dismissPopoverAnimated: YES];
+                                                    self.reportConcernButton.selected = FALSE;
                                                 }];
             
             // Wrap it in a navigation controller
-            UINavigationController *navController = [[UINavigationController alloc] initWithRootViewController: reportConcernTableViewController];
+            UINavigationController *navController = [[UINavigationController alloc] initWithRootViewController: self.reportConcernTableViewController];
             
             // Hard way of adding a title (need to due to custom font offsets)
-            UIView *containerView = [[UIView alloc] initWithFrame: CGRectMake (0, 0, 140, 28)];
+            UIView *containerView = [[UIView alloc] initWithFrame: CGRectMake (0, 0, 80, 28)];
             containerView.backgroundColor = [UIColor clearColor];
-            UILabel *label = [[UILabel alloc] initWithFrame: CGRectMake (0, 4, 140, 28)];
+            UILabel *label = [[UILabel alloc] initWithFrame: CGRectMake (0, 4, 80, 28)];
             label.backgroundColor = [UIColor clearColor];
             label.font = [UIFont boldRockpackFontOfSize: 20.0];
             label.textAlignment = NSTextAlignmentCenter;
@@ -1430,7 +1246,7 @@
             label.shadowOffset = CGSizeMake(0.0, 1.0);
             label.text = NSLocalizedString(@"REPORT", nil);
             [containerView addSubview: label];
-            reportConcernTableViewController.navigationItem.titleView = containerView;
+            self.reportConcernTableViewController.navigationItem.titleView = containerView;
             
             // Need show the popover controller
             self.reportConcernPopoverController = [[UIPopoverController alloc] initWithContentViewController: navController];
@@ -1448,50 +1264,51 @@
         {
             SYNMasterViewController *masterViewController = (SYNMasterViewController*)appDelegate.masterViewController;
             
-            reportConcernTableViewController = [[SYNReportConcernTableViewController alloc] initWithNibName: @"SYNReportConcernTableViewControllerFullScreen~iphone"
-                                                                                                     bundle: [NSBundle mainBundle]
-                                                                                            sendReportBlock: ^ (NSString *reportString){
-                                                                                                [UIView animateWithDuration: kChannelEditModeAnimationDuration
-                                                                                                                 animations: ^{
-                                                                                                                     // Fade out the category tab controller
-                                                                                                                     reportConcernTableViewController.view.alpha = 0.0f;
-                                                                                                                 }
-                                                                                                                 completion: nil];
-                                                                                                [self reportConcern: reportString];
-                                                                                            }
-                                                                                          cancelReportBlock: ^{
-                                                                                              [UIView animateWithDuration: kChannelEditModeAnimationDuration
-                                                                                                               animations: ^{
-                                                                                                                   // Fade out the category tab controller
-                                                                                                                   reportConcernTableViewController.view.alpha = 0.0f;
-                                                                                                               }
-                                                                                                               completion: ^(BOOL success){
-                                                                                                                   [reportConcernTableViewController.view removeFromSuperview];
-                                                                                                               }];
-                                                                                          }];
+            self.reportConcernTableViewController = [[SYNReportConcernTableViewController alloc] initWithNibName: @"SYNReportConcernTableViewControllerFullScreen~iphone"
+                                                                                                          bundle: [NSBundle mainBundle]
+                                                                                                 sendReportBlock: ^ (NSString *reportString){
+                                                                                                     [UIView animateWithDuration: kChannelEditModeAnimationDuration
+                                                                                                                      animations: ^{
+                                                                                                                          // Fade out the category tab controller
+                                                                                                                          self.reportConcernTableViewController.view.alpha = 0.0f;
+                                                                                                                      }
+                                                                                                                      completion: nil];
+                                                                                                     self.reportConcernButton.selected = FALSE;
+                                                                                                     [self reportConcern: reportString];
+                                                                                                 }
+                                                                                               cancelReportBlock: ^{
+                                                                                                   [UIView animateWithDuration: kChannelEditModeAnimationDuration
+                                                                                                                    animations: ^{
+                                                                                                                        // Fade out the category tab controller
+                                                                                                                        self.reportConcernTableViewController.view.alpha = 0.0f;
+                                                                                                                    }
+                                                                                                                    completion: ^(BOOL success){
+                                                                                                                        [self.reportConcernTableViewController.view removeFromSuperview];
+                                                                                                                    }];
+                                                                                                   self.reportConcernButton.selected = FALSE;
+                                                                                               }];
             
             
             // Move off the bottom of the screen
-            CGRect startFrame = reportConcernTableViewController.view.frame;
+            CGRect startFrame = self.reportConcernTableViewController.view.frame;
             startFrame.origin.y = self.view.frame.size.height;
-            reportConcernTableViewController.view.frame = startFrame;
+            self.reportConcernTableViewController.view.frame = startFrame;
             
-            [masterViewController.view addSubview: reportConcernTableViewController.view];
+            [masterViewController.view addSubview: self.reportConcernTableViewController.view];
             
             // Slide up onto the screen
             [UIView animateWithDuration: 0.3f
                                   delay: 0.0f
                                 options: UIViewAnimationOptionCurveEaseOut
                              animations: ^{
-                                 CGRect endFrame = reportConcernTableViewController.view.frame;
+                                 CGRect endFrame = self.reportConcernTableViewController.view.frame;
                                  endFrame.origin.y = 0.0f;
-                                 reportConcernTableViewController.view.frame = endFrame;
+                                 self.reportConcernTableViewController.view.frame = endFrame;
                              }
                              completion: nil];
         }
     }  
 }
-
 
 
 - (void) reportConcern: (NSString *) reportString
@@ -1512,7 +1329,7 @@
 
 #pragma mark - Cover selection and upload support
 
-- (IBAction) userTouchedCameraButton: (UIButton*) button
+- (void) userTouchedCameraButton: (UIButton*) button
 {
     button.selected = !button.selected;
     
@@ -1758,20 +1575,27 @@
                      }];
 }
 
+
 #pragma mark - iPhone Cover Chooser delegate
--(void)closeImageSelector:(SYNChannelCoverImageSelectorViewController *)imageSelector
+
+- (void) closeImageSelector: (SYNChannelCoverImageSelectorViewController *) imageSelector
 {
-    [UIView animateWithDuration:0.3f delay:0.0f options:UIViewAnimationOptionCurveEaseIn animations:^{
-        CGRect endFrame = self.coverImageSelector.view.frame;
-        endFrame.origin.y = self.view.frame.size.height;
-        self.coverImageSelector.view.frame = endFrame;
-    } completion:^(BOOL finished) {
-        [self.coverImageSelector.view removeFromSuperview];
-        self.coverImageSelector = nil;
-    }];
+    [UIView animateWithDuration: 0.3f
+                          delay: 0.0f
+                        options: UIViewAnimationOptionCurveEaseIn
+                     animations: ^{
+                         CGRect endFrame = self.coverImageSelector.view.frame;
+                         endFrame.origin.y = self.view.frame.size.height;
+                         self.coverImageSelector.view.frame = endFrame;
+                     }
+                     completion: ^(BOOL finished) {
+                         [self.coverImageSelector.view removeFromSuperview];
+                         self.coverImageSelector = nil;
+                     }];
 }
 
--(void)imageSelector:(SYNChannelCoverImageSelectorViewController *)imageSelector didSelectAVURLAsset:(AVURLAsset *)asset
+- (void) imageSelector: (SYNChannelCoverImageSelectorViewController *) imageSelector
+   didSelectAVURLAsset:(AVURLAsset *)asset
 {
     self.selectedAsset = asset;
     [self closeImageSelector:imageSelector];
@@ -1801,6 +1625,10 @@
     CGRect croppingRect = UIInterfaceOrientationIsLandscape(orientation) ?
     CGRectMake(0.0, 138.0, 1024.0, 886.0) : CGRectMake(138.0, 0.0, 886.0, 1024.0);
     
+    if(self.mode == kChannelDetailsModeEdit && !self.originalBackgroundImage) // set the bg var once
+    {
+        self.originalBackgroundImage = self.channelCoverImageView.image;
+    }
     
     CGImageRef croppedImageRef = CGImageCreateWithImageInRect([self.originalBackgroundImage CGImage], croppingRect);
     

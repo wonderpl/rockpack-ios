@@ -148,7 +148,7 @@
                                         usingManagedObjectContext:self.currentlyCreatingChannel.managedObjectContext];
         
         self.currentlyCreatingChannel.channelOwner = (ChannelOwner*)meOnAnotherContext;
-        self.currentlyCreatingChannel.viewId = @"ChannelCreation";
+        
         self.currentlyCreatingChannel.categoryId = @"";
         
         // Set the channel's unique Id to something temporary so that we can perform queries for the videoinstances it contains

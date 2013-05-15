@@ -106,15 +106,18 @@
     [networkOperation addJSONCompletionHandler: ^(NSDictionary *dictionary)
     {
         BOOL registryResultOk = [self.registry registerCoverArtFromDictionary: dictionary
-                                                                    forViewId: kCoverArtViewId];
+                                                                forUserUpload: NO];
+        
         if (!registryResultOk)
             return;
         
         completionBlock();
-    }
-                                  errorHandler: ^(NSError* error) {
-                                      DebugLog(@"API request failed");
-                                  }];
+        
+    } errorHandler: ^(NSError* error) {
+        
+        DebugLog(@"API request failed");
+        
+    }];
     
     [self enqueueOperation: networkOperation];
 }

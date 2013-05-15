@@ -25,6 +25,7 @@
 #define kVideoInstance              @"VideoInstance"
 #define kChannelOwner               @"ChannelOwner"
 #define kUser                       @"User"
+#define kCoverArt                   @"CoverArt"
 
 // OAuth2
 
@@ -52,6 +53,9 @@
 #define kAPISecureExternalLogin     @"/ws/login/external/"
 #define kAPISecureRegister          @"/ws/register/"
 #define kAPIPasswordReset           @"/ws/reset-password/"                      /* POST */
+
+
+#define kCoverArtChanged            @"kCoverArtChanged"
 
 
 // Search according to term, currently a wrapper around YouTube

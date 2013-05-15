@@ -56,7 +56,8 @@
 {
     BOOL isIPhone = [[SYNDeviceManager sharedInstance] isIPhone];
     UIEdgeInsets insets;
-    if(isIPhone)
+    
+    if (isIPhone)
     {
         insets = UIEdgeInsetsMake(10.0f, 10.0f, 15.0f, 10.0f);
     }
@@ -67,7 +68,7 @@
     
     
     SYNIntegralCollectionViewFlowLayout *standardFlowLayout;
-    if(isIPhone)
+    if (isIPhone)
     {
         standardFlowLayout = [SYNIntegralCollectionViewFlowLayout
                               layoutWithItemSize:CGSizeMake(497.0f , 141.0f)
@@ -87,7 +88,8 @@
     }
     
     CGRect videoCollectionViewFrame, selfFrame;
-    if(isIPhone)
+    
+    if (isIPhone)
     {
         CGSize screenSize= CGSizeMake([[SYNDeviceManager sharedInstance]currentScreenWidth],[[SYNDeviceManager sharedInstance]currentScreenHeight]);
         videoCollectionViewFrame = CGRectMake(0.0, kStandardCollectionViewOffsetYiPhone, screenSize.width, screenSize.height - 20.0f - kStandardCollectionViewOffsetYiPhone);
@@ -95,13 +97,26 @@
     }
     else
     {
-        videoCollectionViewFrame = CGRectMake(0.0, kStandardCollectionViewOffsetY, kFullScreenWidthLandscape, kFullScreenHeightLandscapeMinusStatusBar - kStandardCollectionViewOffsetY);
+        videoCollectionViewFrame = CGRectMake(0.0, kStandardCollectionViewOffsetY + 50.0, kFullScreenWidthLandscape, kFullScreenHeightLandscapeMinusStatusBar - kStandardCollectionViewOffsetY);
         selfFrame = CGRectMake(0.0, 0.0, kFullScreenWidthLandscape, kFullScreenHeightLandscapeMinusStatusBar);
     }
-    self.videoThumbnailCollectionView = [[UICollectionView alloc] initWithFrame:videoCollectionViewFrame collectionViewLayout:standardFlowLayout];
+    
+    self.videoThumbnailCollectionView = [[UICollectionView alloc] initWithFrame: videoCollectionViewFrame
+                                                           collectionViewLayout:standardFlowLayout];
     self.videoThumbnailCollectionView.delegate = self;
     self.videoThumbnailCollectionView.dataSource = self;
     self.videoThumbnailCollectionView.backgroundColor = [UIColor clearColor];
+    
+    if (isIPhone)
+    {
+        self.videoThumbnailCollectionView.contentInset = UIEdgeInsetsMake(4, 0, 0, 0);
+    }
+    
+    else
+    {
+        self.videoThumbnailCollectionView.contentInset = UIEdgeInsetsMake(0, 0, 0, 0);
+    }
+    
 
     self.view = [[UIView alloc] initWithFrame:selfFrame];
     
@@ -132,7 +147,7 @@
     
     CGRect refreshButtonFrame = self.refreshButton.frame;
     refreshButtonFrame.origin.x = [[SYNDeviceManager sharedInstance] isIPad]? 10.0  : 63.0;
-    refreshButtonFrame.origin.y = [[SYNDeviceManager sharedInstance] isIPad]? 40.0 : 10.0;
+    refreshButtonFrame.origin.y = [[SYNDeviceManager sharedInstance] isIPad]? 64.0 : 10.0;
     self.refreshButton.frame = refreshButtonFrame;
     
     [self.view addSubview:self.refreshButton];

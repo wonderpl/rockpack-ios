@@ -870,7 +870,7 @@
     [networkOperation addJSONCompletionHandler: ^(NSDictionary *dictionary)
      {
          BOOL registryResultOk = [self.registry registerCoverArtFromDictionary: dictionary
-                                                                     forViewId: kUserCoverArtViewId];
+                                                                 forUserUpload: YES];
          if (!registryResultOk)
              return;
          

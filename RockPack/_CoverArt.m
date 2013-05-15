@@ -7,7 +7,7 @@ const struct CoverArtAttributes CoverArtAttributes = {
 	.coverRef = @"coverRef",
 	.position = @"position",
 	.thumbnailURL = @"thumbnailURL",
-	.viewId = @"viewId",
+	.userUpload = @"userUpload",
 };
 
 const struct CoverArtRelationships CoverArtRelationships = {
@@ -44,6 +44,11 @@ const struct CoverArtFetchedProperties CoverArtFetchedProperties = {
 	
 	if ([key isEqualToString:@"positionValue"]) {
 		NSSet *affectingKey = [NSSet setWithObject:@"position"];
+		keyPaths = [keyPaths setByAddingObjectsFromSet:affectingKey];
+		return keyPaths;
+	}
+	if ([key isEqualToString:@"userUploadValue"]) {
+		NSSet *affectingKey = [NSSet setWithObject:@"userUpload"];
 		keyPaths = [keyPaths setByAddingObjectsFromSet:affectingKey];
 		return keyPaths;
 	}
@@ -94,8 +99,27 @@ const struct CoverArtFetchedProperties CoverArtFetchedProperties = {
 
 
 
-@dynamic viewId;
+@dynamic userUpload;
 
+
+
+- (BOOL)userUploadValue {
+	NSNumber *result = [self userUpload];
+	return [result boolValue];
+}
+
+- (void)setUserUploadValue:(BOOL)value_ {
+	[self setUserUpload:[NSNumber numberWithBool:value_]];
+}
+
+- (BOOL)primitiveUserUploadValue {
+	NSNumber *result = [self primitiveUserUpload];
+	return [result boolValue];
+}
+
+- (void)setPrimitiveUserUploadValue:(BOOL)value_ {
+	[self setPrimitiveUserUpload:[NSNumber numberWithBool:value_]];
+}
 
 
 

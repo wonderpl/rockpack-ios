@@ -20,7 +20,6 @@
         <attribute name="subscribedByUser" optional="YES" attributeType="Boolean" defaultValueString="NO" syncable="YES"/>
         <attribute name="subscribersCount" optional="YES" attributeType="Integer 64" defaultValueString="0" syncable="YES"/>
         <attribute name="title" optional="YES" attributeType="String" syncable="YES"/>
-        <attribute name="viewId" optional="YES" attributeType="String" indexed="YES" syncable="YES"/>
         <relationship name="channelCover" optional="YES" minCount="1" maxCount="1" deletionRule="Nullify" destinationEntity="ChannelCover" inverseName="channel" inverseEntity="ChannelCover" syncable="YES"/>
         <relationship name="channelOwner" optional="YES" minCount="1" maxCount="1" deletionRule="Nullify" destinationEntity="ChannelOwner" inverseName="channels" inverseEntity="ChannelOwner" syncable="YES"/>
         <relationship name="subscribers" optional="YES" toMany="YES" deletionRule="Nullify" destinationEntity="ChannelOwner" inverseName="subscriptions" inverseEntity="ChannelOwner" syncable="YES"/>
@@ -44,7 +43,7 @@
         <attribute name="coverRef" optional="YES" attributeType="String" syncable="YES"/>
         <attribute name="position" optional="YES" attributeType="Integer 64" defaultValueString="0" syncable="YES"/>
         <attribute name="thumbnailURL" optional="YES" attributeType="String" defaultValueString="http://localhost" syncable="YES"/>
-        <attribute name="viewId" optional="YES" attributeType="String" syncable="YES"/>
+        <attribute name="userUpload" optional="YES" attributeType="Boolean" syncable="YES"/>
     </entity>
     <entity name="Genre" representedClassName="Genre" parentEntity="AbstractCommon" syncable="YES">
         <attribute name="name" optional="YES" attributeType="String" syncable="YES"/>
@@ -90,7 +89,8 @@
     </entity>
     <elements>
         <element name="AbstractCommon" positionX="-74" positionY="-333" width="128" height="75"/>
-        <element name="Channel" positionX="-2" positionY="72" width="128" height="268"/>
+        <element name="Channel" positionX="-2" positionY="72" width="128" height="253"/>
+        <element name="ChannelCover" positionX="-162" positionY="90" width="128" height="133"/>
         <element name="ChannelOwner" positionX="-353" positionY="189" width="128" height="105"/>
         <element name="CoverArt" positionX="189" positionY="-243" width="128" height="103"/>
         <element name="Genre" positionX="-270" positionY="-204" width="128" height="90"/>
@@ -98,6 +98,5 @@
         <element name="User" positionX="-351" positionY="-45" width="128" height="210"/>
         <element name="Video" positionX="153" positionY="72" width="128" height="210"/>
         <element name="VideoInstance" positionX="351" positionY="207" width="128" height="135"/>
-        <element name="ChannelCover" positionX="-162" positionY="90" width="128" height="133"/>
     </elements>
 </model>

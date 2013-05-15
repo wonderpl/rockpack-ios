@@ -175,7 +175,7 @@
 
 
 - (BOOL) registerCoverArtFromDictionary: (NSDictionary*) dictionary
-                             forViewId: (NSString *) viewId
+                          forUserUpload: (BOOL) userUpload
 {
     // == Check for Validity == //
     NSDictionary *channelCoverDictionary = [dictionary objectForKey: @"cover_art"];
@@ -187,25 +187,21 @@
     if (![itemArray isKindOfClass: [NSArray class]])
         return NO;
     
-    // We need to mark all of our existing Category objects corresponding to this viewId, just in case they are no longer required
-    // and should be removed in a post-import cleanup
-    NSArray *existingObjectsInViewId = [self markManagedObjectForPossibleDeletionWithEntityName: @"CoverArt"
-                                                                                      andViewId: viewId
-                                                                         inManagedObjectContext: importManagedObjectContext];
+    
     
     for (NSDictionary *individualChannelCoverDictionary in itemArray)
     {
-        if ([individualChannelCoverDictionary isKindOfClass: [NSDictionary class]])
-        {
-            [CoverArt instanceFromDictionary: individualChannelCoverDictionary
-                       usingManagedObjectContext: importManagedObjectContext
-                                       andViewId: viewId];
-        }
+        if (![individualChannelCoverDictionary isKindOfClass: [NSDictionary class]])
+            continue;
+        
+        [CoverArt instanceFromDictionary: individualChannelCoverDictionary
+               usingManagedObjectContext: importManagedObjectContext
+                           forUserUpload: userUpload];
+        
+        
+        
     }
     
-    // Now remove any Category objects that are no longer referenced in the import
-    [self removeUnusedManagedObjects: existingObjectsInViewId
-              inManagedObjectContext: importManagedObjectContext];
 
     BOOL saveResult = [self saveImportContext];
     
