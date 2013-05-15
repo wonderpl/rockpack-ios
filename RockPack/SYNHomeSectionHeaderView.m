@@ -9,6 +9,8 @@
 #import "SYNHomeSectionHeaderView.h"
 #import "UIFont+SYNFont.h"
 #import <QuartzCore/CoreAnimation.h>
+#import "SYNDeviceManager.h"
+
 
 @interface SYNHomeSectionHeaderView ()
 
@@ -24,7 +26,15 @@
 {
     [super awakeFromNib];
     
-    self.sectionTitleLabel.font = [UIFont rockpackFontOfSize: 20.0f];
+    
+    if([[SYNDeviceManager sharedInstance] isIPad]){
+        self.sectionTitleLabel.font = [UIFont rockpackFontOfSize: 20.0f];
+    }
+    
+    else{
+        self.sectionTitleLabel.font = [UIFont rockpackFontOfSize: 14.0f];
+    }
+    
     self.highlightedSectionView.hidden = TRUE;
     self.sectionView.hidden = FALSE;
 }
