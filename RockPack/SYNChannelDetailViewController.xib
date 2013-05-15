@@ -457,7 +457,6 @@
 										<string key="NSFrame">{{330, 332}, {295, 45}}</string>
 										<reference key="NSSuperview" ref="574818441"/>
 										<reference key="NSWindow"/>
-										<reference key="NSNextKeyView"/>
 										<string key="NSReuseIdentifierKey">_NS:9</string>
 										<bool key="IBUIOpaque">NO</bool>
 										<string key="targetRuntimeIdentifier">IBIPadFramework</string>
@@ -499,7 +498,7 @@
 										<string key="NSFrame">{{24, 14}, {540, 143}}</string>
 										<reference key="NSSuperview" ref="605119646"/>
 										<reference key="NSWindow"/>
-										<reference key="NSNextKeyView" ref="1063460983"/>
+										<reference key="NSNextKeyView"/>
 										<string key="NSReuseIdentifierKey">_NS:9</string>
 										<reference key="IBUIBackgroundColor" ref="905238541"/>
 										<bool key="IBUIClipsSubviews">YES</bool>
@@ -550,35 +549,6 @@
 						<string key="NSReuseIdentifierKey">_NS:9</string>
 						<reference key="IBUIBackgroundColor" ref="905238541"/>
 						<string key="targetRuntimeIdentifier">IBIPadFramework</string>
-					</object>
-					<object class="IBUIButton" id="1063460983">
-						<reference key="NSNextResponder" ref="453930770"/>
-						<int key="NSvFlags">289</int>
-						<string key="NSFrame">{{884, 80}, {130, 45}}</string>
-						<reference key="NSSuperview" ref="453930770"/>
-						<reference key="NSWindow"/>
-						<reference key="NSNextKeyView" ref="657402384"/>
-						<string key="NSReuseIdentifierKey">_NS:9</string>
-						<bool key="IBUIOpaque">NO</bool>
-						<string key="targetRuntimeIdentifier">IBIPadFramework</string>
-						<int key="IBUIContentHorizontalAlignment">0</int>
-						<int key="IBUIContentVerticalAlignment">0</int>
-						<reference key="IBUIHighlightedTitleColor" ref="266444258"/>
-						<object class="NSColor" key="IBUINormalTitleColor">
-							<int key="NSColorSpace">1</int>
-							<bytes key="NSRGB">MC4xOTYwNzg0MzQ2IDAuMzA5ODAzOTMyOSAwLjUyMTU2ODY1NgA</bytes>
-						</object>
-						<reference key="IBUINormalTitleShadowColor" ref="271166090"/>
-						<object class="NSCustomResource" key="IBUIHighlightedImage">
-							<string key="NSClassName">NSImage</string>
-							<string key="NSResourceName">ButtonAddToChannelInactiveHighlighted.png</string>
-						</object>
-						<object class="NSCustomResource" key="IBUINormalImage">
-							<string key="NSClassName">NSImage</string>
-							<string key="NSResourceName">ButtonAddToChannelInactive.png</string>
-						</object>
-						<reference key="IBUIFontDescription" ref="842263965"/>
-						<reference key="IBUIFont" ref="713840540"/>
 					</object>
 					<object class="IBUIButton" id="657402384">
 						<reference key="NSNextResponder" ref="453930770"/>
@@ -711,14 +681,6 @@
 						<reference key="destination" ref="240192690"/>
 					</object>
 					<int key="connectionID">85</int>
-				</object>
-				<object class="IBConnectionRecord">
-					<object class="IBCocoaTouchOutletConnection" key="connection">
-						<string key="label">addToChannelButton</string>
-						<reference key="source" ref="841351856"/>
-						<reference key="destination" ref="1063460983"/>
-					</object>
-					<int key="connectionID">101</int>
 				</object>
 				<object class="IBConnectionRecord">
 					<object class="IBCocoaTouchOutletConnection" key="connection">
@@ -855,15 +817,6 @@
 				</object>
 				<object class="IBConnectionRecord">
 					<object class="IBCocoaTouchEventConnection" key="connection">
-						<string key="label">addItToChannelPresssed:</string>
-						<reference key="source" ref="1063460983"/>
-						<reference key="destination" ref="841351856"/>
-						<int key="IBEventType">7</int>
-					</object>
-					<int key="connectionID">115</int>
-				</object>
-				<object class="IBConnectionRecord">
-					<object class="IBCocoaTouchEventConnection" key="connection">
 						<string key="label">createChannelPressed:</string>
 						<reference key="source" ref="657402384"/>
 						<reference key="destination" ref="841351856"/>
@@ -925,7 +878,6 @@
 							<reference ref="793593682"/>
 							<reference ref="164681596"/>
 							<reference ref="1013209184"/>
-							<reference ref="1063460983"/>
 							<reference ref="657402384"/>
 							<reference ref="1042878543"/>
 						</array>
@@ -1021,12 +973,6 @@
 						<string key="objectName">Label - By</string>
 					</object>
 					<object class="IBObjectRecord">
-						<int key="objectID">99</int>
-						<reference key="object" ref="1063460983"/>
-						<reference key="parent" ref="453930770"/>
-						<string key="objectName">Button - Add to channel</string>
-					</object>
-					<object class="IBObjectRecord">
 						<int key="objectID">3</int>
 						<reference key="object" ref="1042878543"/>
 						<array class="NSMutableArray" key="children">
@@ -1039,12 +985,6 @@
 						<int key="objectID">13</int>
 						<reference key="object" ref="220942766"/>
 						<reference key="parent" ref="1042878543"/>
-					</object>
-					<object class="IBObjectRecord">
-						<int key="objectID">100</int>
-						<reference key="object" ref="657402384"/>
-						<reference key="parent" ref="453930770"/>
-						<string key="objectName">Button - Create channel</string>
 					</object>
 					<object class="IBObjectRecord">
 						<int key="objectID">59</int>
@@ -1102,6 +1042,12 @@
 						<reference key="parent" ref="421928150"/>
 						<string key="objectName">Button - Profile User</string>
 					</object>
+					<object class="IBObjectRecord">
+						<int key="objectID">100</int>
+						<reference key="object" ref="657402384"/>
+						<reference key="parent" ref="453930770"/>
+						<string key="objectName">Button - Create channel</string>
+					</object>
 				</array>
 			</object>
 			<dictionary class="NSMutableDictionary" key="flattenedProperties">
@@ -1145,8 +1091,6 @@
 				<string key="9.IBPluginDependency">com.apple.InterfaceBuilder.IBCocoaTouchPlugin</string>
 				<real value="0.0" key="9.IBUIButtonInspectorSelectedStateConfigurationMetadataKey"/>
 				<string key="98.IBPluginDependency">com.apple.InterfaceBuilder.IBCocoaTouchPlugin</string>
-				<string key="99.IBPluginDependency">com.apple.InterfaceBuilder.IBCocoaTouchPlugin</string>
-				<real value="0.0" key="99.IBUIButtonInspectorSelectedStateConfigurationMetadataKey"/>
 			</dictionary>
 			<dictionary class="NSMutableDictionary" key="unlocalizedProperties"/>
 			<nil key="activeLocalization"/>
@@ -1224,7 +1168,6 @@
 						<string key="selectCategoryButtonTapped:">UIButton</string>
 						<string key="shareChannelButtonTapped:">id</string>
 						<string key="subscribeButtonTapped:">id</string>
-						<string key="userTouchedCameraButton:">UIButton</string>
 						<string key="userTouchedReportConcernButton:">UIButton</string>
 					</dictionary>
 					<dictionary class="NSMutableDictionary" key="actionInfosByName">
@@ -1268,10 +1211,6 @@
 							<string key="name">subscribeButtonTapped:</string>
 							<string key="candidateClassName">id</string>
 						</object>
-						<object class="IBActionInfo" key="userTouchedCameraButton:">
-							<string key="name">userTouchedCameraButton:</string>
-							<string key="candidateClassName">UIButton</string>
-						</object>
 						<object class="IBActionInfo" key="userTouchedReportConcernButton:">
 							<string key="name">userTouchedReportConcernButton:</string>
 							<string key="candidateClassName">UIButton</string>
@@ -1280,7 +1219,6 @@
 					<dictionary class="NSMutableDictionary" key="outlets">
 						<string key="activityIndicator">UIActivityIndicatorView</string>
 						<string key="addCoverButton">UIButton</string>
-						<string key="addToChannelButton">UIButton</string>
 						<string key="avatarBackgroundView">UIView</string>
 						<string key="avatarImageView">UIImageView</string>
 						<string key="backButton">UIButton</string>
@@ -1295,7 +1233,6 @@
 						<string key="channelOwnerLabel">UILabel</string>
 						<string key="channelTitleTextBackgroundView">UIView</string>
 						<string key="channelTitleTextView">SSTextView</string>
-						<string key="coverChooserMasterView">UIView</string>
 						<string key="createChannelButton">UIButton</string>
 						<string key="displayControlsView">UIView</string>
 						<string key="editControlsView">UIView</string>
@@ -1315,10 +1252,6 @@
 						</object>
 						<object class="IBToOneOutletInfo" key="addCoverButton">
 							<string key="name">addCoverButton</string>
-							<string key="candidateClassName">UIButton</string>
-						</object>
-						<object class="IBToOneOutletInfo" key="addToChannelButton">
-							<string key="name">addToChannelButton</string>
 							<string key="candidateClassName">UIButton</string>
 						</object>
 						<object class="IBToOneOutletInfo" key="avatarBackgroundView">
@@ -1376,10 +1309,6 @@
 						<object class="IBToOneOutletInfo" key="channelTitleTextView">
 							<string key="name">channelTitleTextView</string>
 							<string key="candidateClassName">SSTextView</string>
-						</object>
-						<object class="IBToOneOutletInfo" key="coverChooserMasterView">
-							<string key="name">coverChooserMasterView</string>
-							<string key="candidateClassName">UIView</string>
 						</object>
 						<object class="IBToOneOutletInfo" key="createChannelButton">
 							<string key="name">createChannelButton</string>
@@ -1462,8 +1391,6 @@
 		<bool key="IBDocument.PluginDeclaredDependenciesTrackSystemTargetVersion">YES</bool>
 		<int key="IBDocument.defaultPropertyAccessControl">3</int>
 		<dictionary class="NSMutableDictionary" key="IBDocument.LastKnownImageSizes">
-			<string key="ButtonAddToChannelInactive.png">{130, 45}</string>
-			<string key="ButtonAddToChannelInactiveHighlighted.png">{130, 45}</string>
 			<string key="ButtonBuy.png">{61, 61}</string>
 			<string key="ButtonBuyHighlighted.png">{61, 61}</string>
 			<string key="ButtonCategory.png">{295, 45}</string>
