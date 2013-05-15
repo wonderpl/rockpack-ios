@@ -225,7 +225,7 @@
                                                              size: 0
                                                 completionHandler: ^(NSDictionary *responseDictionary) {
                                                     [self handleRefreshComplete];
-                                                    DebugLog(@"Refresh subscription updates successful");
+//                                                    DebugLog(@"Refresh subscription updates successful");
                                                 } errorHandler: ^(NSDictionary* errorDictionary) {
                                                     [self handleRefreshComplete];
                                                     DebugLog(@"Refresh subscription updates failed");
