@@ -2,10 +2,10 @@
 <archive type="com.apple.InterfaceBuilder3.CocoaTouch.iPad.XIB" version="8.00">
 	<data>
 		<int key="IBDocument.SystemTarget">1552</int>
-		<string key="IBDocument.SystemVersion">12D78</string>
+		<string key="IBDocument.SystemVersion">12C3006</string>
 		<string key="IBDocument.InterfaceBuilderVersion">3084</string>
-		<string key="IBDocument.AppKitVersion">1187.37</string>
-		<string key="IBDocument.HIToolboxVersion">626.00</string>
+		<string key="IBDocument.AppKitVersion">1187.34</string>
+		<string key="IBDocument.HIToolboxVersion">625.00</string>
 		<object class="NSMutableDictionary" key="IBDocument.PluginVersions">
 			<string key="NS.key.0">com.apple.InterfaceBuilder.IBCocoaTouchPlugin</string>
 			<string key="NS.object.0">2083</string>
@@ -399,7 +399,7 @@
 							<object class="IBUIButton" id="451920462">
 								<reference key="NSNextResponder" ref="1041950190"/>
 								<int key="NSvFlags">292</int>
-								<string key="NSFrame">{{260, 368}, {44, 44}}</string>
+								<string key="NSFrame">{{276, 380}, {44, 44}}</string>
 								<reference key="NSSuperview" ref="1041950190"/>
 								<reference key="NSWindow"/>
 								<reference key="NSNextKeyView" ref="509096549"/>
@@ -416,15 +416,15 @@
 								<reference key="IBUINormalTitleShadowColor" ref="602473140"/>
 								<object class="NSCustomResource" key="IBUIHighlightedImage">
 									<string key="NSClassName">NSImage</string>
-									<string key="NSResourceName">ButtonReportHighlighted.png</string>
+									<string key="NSResourceName">ButtonReportHighlighted~iphone.png</string>
 								</object>
 								<object class="NSCustomResource" key="IBUISelectedImage">
 									<string key="NSClassName">NSImage</string>
-									<string key="NSResourceName">ButtonReportSelected.png</string>
+									<string key="NSResourceName">ButtonReportSelected~iphone.png</string>
 								</object>
 								<object class="NSCustomResource" key="IBUINormalImage">
 									<string key="NSClassName">NSImage</string>
-									<string key="NSResourceName">ButtonReport.png</string>
+									<string key="NSResourceName">ButtonReport~iphone.png</string>
 								</object>
 								<reference key="IBUIFontDescription" ref="647382764"/>
 								<reference key="IBUIFont" ref="26539377"/>
@@ -813,7 +813,7 @@
 				<real value="2" key="13.IBUIButtonInspectorSelectedStateConfigurationMetadataKey"/>
 				<string key="137.IBPluginDependency">com.apple.InterfaceBuilder.IBCocoaTouchPlugin</string>
 				<string key="139.IBPluginDependency">com.apple.InterfaceBuilder.IBCocoaTouchPlugin</string>
-				<real value="2" key="139.IBUIButtonInspectorSelectedStateConfigurationMetadataKey"/>
+				<real value="0.0" key="139.IBUIButtonInspectorSelectedStateConfigurationMetadataKey"/>
 				<string key="14.IBPluginDependency">com.apple.InterfaceBuilder.IBCocoaTouchPlugin</string>
 				<real value="0.0" key="14.IBUIButtonInspectorSelectedStateConfigurationMetadataKey"/>
 				<string key="15.IBPluginDependency">com.apple.InterfaceBuilder.IBCocoaTouchPlugin</string>
@@ -1009,9 +1009,9 @@
 		<int key="IBDocument.defaultPropertyAccessControl">3</int>
 		<dictionary class="NSMutableDictionary" key="IBDocument.LastKnownImageSizes">
 			<string key="ButtonClose.png">{44, 45}</string>
-			<string key="ButtonReport.png">{83, 29}</string>
-			<string key="ButtonReportHighlighted.png">{83, 29}</string>
-			<string key="ButtonReportSelected.png">{83, 29}</string>
+			<string key="ButtonReportHighlighted~iphone.png">{44, 44}</string>
+			<string key="ButtonReportSelected~iphone.png">{44, 44}</string>
+			<string key="ButtonReport~iphone.png">{44, 44}</string>
 			<string key="ButtonVideoOverlayAddHighlighted~iphone.png">{53, 52}</string>
 			<string key="ButtonVideoOverlayAdd~iphone.png">{53, 52}</string>
 			<string key="ButtonVideoOverlayLikeHighlighted~iphone.png">{53, 52}</string>
