@@ -36,7 +36,7 @@ typedef enum
 - (id) initWithUserFieldType: (UserFieldType) userFieldType;
 
 - (void) updateField: (NSString *) field
-            forValue: (NSString *) newValue
+            forValue: (id) newValue
             withCompletionHandler: (MKNKBasicSuccessBlock) successBlock;
 
 - (SYNPaddedUITextField *) createInputField;
