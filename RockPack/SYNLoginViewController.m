@@ -20,14 +20,13 @@
 #import "UIFont+SYNFont.h"
 #import "User.h"
 
-@interface SYNLoginViewController ()  <UITextFieldDelegate, SYNCameraPopoverViewControllerDelegate>
+@interface SYNLoginViewController ()  <UITextFieldDelegate, SYNImagePickerControllerDelegate>
 
 @property (nonatomic) BOOL isAnimating;
 @property (nonatomic) CGRect facebookButtonInitialFrame;
 @property (nonatomic) CGRect initialUsernameFrame;
 @property (nonatomic) CGRect signUpButtonInitialFrame;
 @property (nonatomic, readonly) CGFloat elementsOffsetY;
-@property (nonatomic, strong) GKImagePicker* imagePicker;
 @property (nonatomic, strong) IBOutlet UIButton* faceImageButton;
 @property (nonatomic, strong) IBOutlet UIButton* facebookSignInButton;
 @property (nonatomic, strong) IBOutlet UIButton* finalLoginButton;
@@ -1239,108 +1238,20 @@
 
 - (IBAction) faceButtonImagePressed: (UIButton*) button
 {
-    button.selected = !button.selected;
-    
-    if (button.selected)
-    {
-        SYNCameraPopoverViewController *actionPopoverController = [[SYNCameraPopoverViewController alloc] init];
-        actionPopoverController.delegate = self;
-        
-        // Need show the popover controller
-        self.cameraMenuPopoverController = [[UIPopoverController alloc] initWithContentViewController: actionPopoverController];
-        self.cameraMenuPopoverController.popoverContentSize = CGSizeMake(206, 96);
-        self.cameraMenuPopoverController.delegate = self;
-        self.cameraMenuPopoverController.popoverBackgroundViewClass = [SYNPopoverBackgroundView class];
-        
-        [self.cameraMenuPopoverController presentPopoverFromRect: button.frame
-                                                          inView: self.view
-                                        permittedArrowDirections: UIPopoverArrowDirectionLeft
-                                                        animated: YES];
-    }
-}
-
-
-- (void) popoverControllerDidDismissPopover: (UIPopoverController *) popoverController
-{
-    if (popoverController == self.cameraMenuPopoverController)
-    {
-        self.cameraPopoverController = nil;
-    }
-    else if (popoverController == self.cameraPopoverController)
-    {
-        self.cameraPopoverController = nil;
-    }
-    else
-    {
-        AssertOrLog(@"Unknown popup dismissed");
-    }
-}
-
-
-- (void) userTouchedTakePhotoButton
-{
-    [self.cameraMenuPopoverController dismissPopoverAnimated: NO];
-    [self showImagePicker: UIImagePickerControllerSourceTypeCamera];
-}
-
-
-- (void) userTouchedChooseExistingPhotoButton
-{
-    [self.cameraMenuPopoverController dismissPopoverAnimated: NO];
-    [self showImagePicker: UIImagePickerControllerSourceTypePhotoLibrary];
-}
-
-
-- (void) showImagePicker: (UIImagePickerControllerSourceType) sourceType
-{
-    self.imagePicker = [[GKImagePicker alloc] init];
-    self.imagePicker.cropSize = CGSizeMake(280, 280);
+    self.imagePicker = [[SYNImagePickerController alloc] initWithHostViewController:self];
     self.imagePicker.delegate = self;
-    self.imagePicker.imagePickerController.sourceType = sourceType;
-    
-    if ((sourceType == UIImagePickerControllerSourceTypeCamera) && [UIImagePickerController respondsToSelector: @selector(isCameraDeviceAvailable:)])
-    {
-        if ([UIImagePickerController isCameraDeviceAvailable: UIImagePickerControllerCameraDeviceFront])
-        {
-            self.imagePicker.imagePickerController.cameraDevice = UIImagePickerControllerCameraDeviceFront;
-        }
-    }
-    self.cameraPopoverController = [[UIPopoverController alloc] initWithContentViewController: self.imagePicker.imagePickerController];
-    
-    self.cameraPopoverController.popoverBackgroundViewClass = [SYNPopoverBackgroundView class];
-        
-    [self.cameraPopoverController presentPopoverFromRect: self.faceImageButton.frame
-                                                        inView: self.view
-                                    permittedArrowDirections: UIPopoverArrowDirectionLeft
-                                                    animated: YES];
-        
-    self.cameraPopoverController.delegate = self;
-    
+    [self.imagePicker presentImagePickerAsPopupFromView:button arrowDirection:UIPopoverArrowDirectionLeft];
 }
 
-
-# pragma mark - GKImagePicker Delegate Methods
-
-- (void) imagePicker: (GKImagePicker *) imagePicker
-         pickedImage: (UIImage *) image
+-(void)picker:(SYNImagePickerController *)picker finishedWithImage:(UIImage *)image
 {
-    DebugLog(@"width %f, height %f", image.size.width, image.size.height);
-    
+    self.imagePicker = nil;
     // Save our avatar
     self.avatarImage = image;
     
     // And update on-screen avatar
     self.avatarImageView.image = image;
-    
-    [self hideImagePicker];
 }
-
-- (void) hideImagePicker
-{
-    [self.cameraPopoverController dismissPopoverAnimated: YES];
-}
-
-
 
 #pragma mark - Rotation support
 

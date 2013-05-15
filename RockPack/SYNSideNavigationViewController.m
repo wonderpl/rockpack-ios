@@ -22,6 +22,7 @@
 #import "UIImageView+ImageProcessing.h"
 #import "UIImageView+WebCache.h"
 #import <QuartzCore/QuartzCore.h>
+#import "SYNImagePickerController.h"
 
 
 #define kSideNavTitle @"kSideNavTitle"
@@ -36,7 +37,7 @@ typedef enum {
 
 } kSideNavigationType;
 
-@interface SYNSideNavigationViewController ()<UITextFieldDelegate>
+@interface SYNSideNavigationViewController ()<UITextFieldDelegate, SYNImagePickerControllerDelegate>
 
 
 @property (nonatomic) NSInteger unreadNotifications;
@@ -56,6 +57,9 @@ typedef enum {
 @property (nonatomic, weak) SYNAppDelegate* appDelegate;
 @property (weak, nonatomic) IBOutlet UIImageView *backgroundImageView;
 @property (weak, nonatomic) IBOutlet UILabel *nicknameLabel;
+@property (strong, nonatomic) SYNImagePickerController* imagePickerController;
+@property (weak, nonatomic) IBOutlet UIActivityIndicatorView *activityIndicator;
+@property (weak, nonatomic) IBOutlet UIButton *avatarButton;
 
 //iPhone specific
 @property (weak, nonatomic) IBOutlet UIImageView *navigationContainerBackgroundImage;
@@ -277,6 +281,11 @@ typedef enum {
         [[NSNotificationCenter defaultCenter] postNotificationName:kAccountSettingsPressed
                                                             object:self];
 }
+- (IBAction)changeAvatarTapped:(id)sender {
+    self.imagePickerController = [[SYNImagePickerController alloc] initWithHostViewController:self];
+    self.imagePickerController.delegate = self;
+    [self.imagePickerController presentImagePickerAsPopupFromView:sender arrowDirection:UIPopoverArrowDirectionRight];
+}
 
 
 #pragma mark - UITableView Deleagate
@@ -475,7 +484,7 @@ typedef enum {
     self.nicknameLabel.text = self.user.username;
     
     [self.profilePictureImageView setImageWithURL: [NSURL URLWithString: self.user.thumbnailURL]
-                                 placeholderImage: [UIImage imageNamed: @"NotFoundAvatarYou"]
+                                 placeholderImage: [UIImage imageNamed: @"PlaceholderNotificationAvatar"]
                                           options: SDWebImageRetryFailed];
 }
 
@@ -809,6 +818,25 @@ typedef enum {
                          
                      } completion: ^(BOOL finished) {
                          self.currentlyLoadedViewController = nil;}];
+}
+
+#pragma mark - image picker delegate
+
+-(void)picker:(SYNImagePickerController *)picker finishedWithImage:(UIImage *)image
+{
+    self.avatarButton.enabled = NO;
+    [self.activityIndicator startAnimating];
+    [self.appDelegate.oAuthNetworkEngine updateAvatarForUserId: self.appDelegate.currentOAuth2Credentials.userId image:image completionHandler:^(id result) {
+        self.profilePictureImageView.image = image;
+        [self.activityIndicator stopAnimating];
+        self.avatarButton.enabled = NO;
+    } errorHandler:^(id error) {
+        [self.activityIndicator stopAnimating];
+        self.avatarButton.enabled = NO;
+    }];
+    
+    self.imagePickerController = nil;
+
 }
 
 @end
