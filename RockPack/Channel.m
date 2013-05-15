@@ -52,7 +52,7 @@ static NSEntityDescription *channelEntity = nil;
         [channelFetchRequest setEntity: channelEntity];
         
         
-        NSPredicate *predicate = [NSPredicate predicateWithFormat: @"uniqueId == %@ AND viewId == %@", uniqueId, viewId];
+        NSPredicate *predicate = [NSPredicate predicateWithFormat: @"uniqueId == %@", uniqueId];
         
         [channelFetchRequest setPredicate: predicate];
         
@@ -96,10 +96,6 @@ static NSEntityDescription *channelEntity = nil;
     
     self.uniqueId = uniqueId;
     
-    if(!(ignoringObjects & kIgnoreViewId))
-    {
-        self.viewId = viewId;
-    }
     
     
     if (!(ignoringObjects & kIgnoreVideoInstanceObjects))
@@ -182,7 +178,7 @@ static NSEntityDescription *channelEntity = nil;
         VideoInstance* copyOfVideoInstance = [VideoInstance instanceFromVideoInstance:videoInstance
                                                             usingManagedObjectContext:self.managedObjectContext];
         
-        copyOfVideoInstance.viewId = channel.viewId;
+        
         copyOfVideoInstance.channel = self;
         [self.videoInstancesSet addObject: copyOfVideoInstance];
         
