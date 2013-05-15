@@ -12,6 +12,12 @@ static NSEntityDescription *coverArtEntity = nil;
 
 @implementation CoverArt
 
+- (int) ordering
+{
+    return (self.userUploadValue == 1) ? 0 : 1;
+}
+
+
 + (CoverArt *) instanceFromDictionary: (NSDictionary *) dictionary
             usingManagedObjectContext: (NSManagedObjectContext *) managedObjectContext
                         forUserUpload: (BOOL) userUpload

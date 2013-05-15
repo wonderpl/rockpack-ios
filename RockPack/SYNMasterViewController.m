@@ -724,8 +724,17 @@ typedef void(^AnimationCompletionBlock)(BOOL finished);
         
         showingBackButton = YES;
         targetFrame = self.movableButtonsContainer.frame;
-        targetFrame.origin.x = 8.0;
         targetAlpha = 1.0;
+        
+        if ([[SYNDeviceManager sharedInstance] isIPad])
+        {
+            targetFrame.origin.x = 10.0;
+        }
+        
+        else
+        {
+            targetFrame.origin.x = 5.0;
+        }
     }
     else
     {

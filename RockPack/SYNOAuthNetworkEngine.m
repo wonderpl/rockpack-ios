@@ -884,7 +884,9 @@
     NSString *apiString = [kAPIGetUserCoverArt stringByReplacingOccurrencesOfStrings: apiSubstitutionDictionary];
     
     SYNNetworkOperationJsonObject *networkOperation = (SYNNetworkOperationJsonObject*)[self operationWithPath: apiString
-                                                                                                       params: [self getLocalParam]];
+                                                                                                       params: [self getLocalParam]
+                                                                                                   httpMethod: @"GET"
+                                                                                                          ssl: TRUE];
     
     
     [networkOperation addJSONCompletionHandler: ^(NSDictionary *dictionary)
