@@ -67,21 +67,41 @@
 {
     _channelOwner = channelOwner;
     
+    NSString* userName;
     if ([channelOwner isKindOfClass:[User class]])
     {
+        User* ownerAsUser = (User*)channelOwner;
+        userName = [ownerAsUser.fullName uppercaseString];
         
-        self.fullNameLabel.text = [((User*)channelOwner).fullName uppercaseString];
-        
-        CGSize maxSize = [self.fullNameLabel.text sizeWithFont:self.fullNameLabel.font];
-        CGRect selfFrame = self.view.frame;
-        if (maxSize.width + self.fullNameLabel.frame.origin.x > selfFrame.size.width)
+        if([userName isEqualToString:@""])
         {
-            selfFrame.size.width = maxSize.width + self.fullNameLabel.frame.origin.x + 30.0;
-            self.view.frame = selfFrame;
+            userName = ownerAsUser.username;
         }
+        else
+        {
+            self.userNameLabel.text = ownerAsUser.username;
+            self.userNameLabel.text = @"";
+        }
+        
+        
+    }
+    else
+    {
+        userName = channelOwner.displayName;
+        self.userNameLabel.text = @"";
+    }
+    
+    self.fullNameLabel.text = userName;
+    
+    CGSize maxSize = [self.fullNameLabel.text sizeWithFont:self.fullNameLabel.font];
+    CGRect selfFrame = self.view.frame;
+    if (maxSize.width + self.fullNameLabel.frame.origin.x > selfFrame.size.width)
+    {
+        selfFrame.size.width = maxSize.width + self.fullNameLabel.frame.origin.x + 30.0;
+        self.view.frame = selfFrame;
     }
 
-    self.userNameLabel.text = channelOwner.displayName;
+    
 
     [self.profileImageView setImageWithURL: [NSURL URLWithString: channelOwner.thumbnailURL]
                           placeholderImage: [UIImage imageNamed: @"AvatarProfile.png"]

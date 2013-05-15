@@ -11,8 +11,19 @@
 typedef void (^SYNCancelReportBlock)(void);
 typedef void (^SYNSendReportBlock)(NSString *reportString);
 
-@interface SYNReportConcernTableViewController : UITableViewController
+@interface SYNReportConcernTableViewController :  UIViewController <UITableViewDataSource, UITableViewDelegate>
 
+@property (nonatomic, weak) IBOutlet UITableView* tableView;
+@property (nonatomic, weak) IBOutlet UIButton *reportButton;
+@property (nonatomic, weak) IBOutlet UIButton *cancelButton;
+
+// Initialiser for iPhone version
+- (id) initWithNibName: (NSString *) nibNameOrNil
+                bundle: (NSBundle *) nibBundleOrNil
+       sendReportBlock: (SYNSendReportBlock) sendReportBlock
+     cancelReportBlock: (SYNCancelReportBlock) cancelReportBlock;
+
+// Initialiser for iPad version
 - (id) initWithSendReportBlock: (SYNSendReportBlock) sendReportBlock
              cancelReportBlock: (SYNCancelReportBlock) cancelReportBlock;
 

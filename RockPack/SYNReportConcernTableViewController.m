@@ -6,10 +6,11 @@
 //  Copyright (c) 2013 Nick Banks. All rights reserved.
 //
 
+#import "SYNReportConcernTableCell.h"
 #import "SYNReportConcernTableViewController.h"
 #import "UIFont+SYNFont.h"
 
-#define kConcernsCellId @"ConcernsCell"
+#define kConcernsCellId @"SYNReportConcernTableCell"
 
 @interface SYNReportConcernTableViewController ()
 
@@ -22,6 +23,21 @@
 
 @implementation SYNReportConcernTableViewController
 
+- (id) initWithNibName: (NSString *) nibNameOrNil
+                bundle: (NSBundle *) nibBundleOrNil
+       sendReportBlock: (SYNSendReportBlock) sendReportBlock
+     cancelReportBlock: (SYNCancelReportBlock) cancelReportBlock
+{
+    if ((self = [super initWithNibName: nibNameOrNil
+                                bundle: nibBundleOrNil]))
+    {
+        self.sendReportBlock = sendReportBlock;
+        self.cancelReportBlock = cancelReportBlock;
+    }
+    
+    return self;
+}
+
 - (id) initWithSendReportBlock: (SYNSendReportBlock) sendReportBlock
              cancelReportBlock: (SYNCancelReportBlock) cancelReportBlock
 
@@ -31,6 +47,7 @@
         // Store completion blocks
         self.sendReportBlock = sendReportBlock;
         self.cancelReportBlock = cancelReportBlock;
+
     }
     
     return self;
@@ -41,8 +58,11 @@
 {
     [super viewDidLoad];
     
-    [self.tableView registerClass: [UITableViewCell class]
-           forCellReuseIdentifier: kConcernsCellId];
+    [self.tableView registerNib: [UINib nibWithNibName: @"SYNReportConcernTableCell" bundle: [NSBundle mainBundle]]
+         forCellReuseIdentifier: kConcernsCellId];
+    
+//    [self.tableView registerClass: [UITableViewCell class]
+//           forCellReuseIdentifier: kConcernsCellId];
 
     self.concernsArray = @[NSLocalizedString (@"Nudity or pornography", nil),
                            NSLocalizedString (@"Attacks a group or individual", nil),
@@ -110,12 +130,10 @@
 - (UITableViewCell *) tableView: (UITableView *) tableView
           cellForRowAtIndexPath: (NSIndexPath *) indexPath
 {
-    UITableViewCell *cell = [tableView dequeueReusableCellWithIdentifier: kConcernsCellId
-                                                            forIndexPath: indexPath];
+    SYNReportConcernTableCell *cell = [tableView dequeueReusableCellWithIdentifier: kConcernsCellId
+                                                                        forIndexPath: indexPath];
 
-    cell.textLabel.font = [UIFont rockpackFontOfSize:16.0];
-    cell.textLabel.text = self.concernsArray[indexPath.row];
-    cell.accessoryType = UITableViewCellAccessoryNone;
+    cell.titleLabel.text = self.concernsArray[indexPath.row];
     
     return cell;
 }
@@ -127,9 +145,27 @@
    willSelectRowAtIndexPath: (NSIndexPath *) indexPath
 {
     NSIndexPath *oldIndex = [self.tableView indexPathForSelectedRow];
-    [self.tableView cellForRowAtIndexPath: oldIndex].accessoryType = UITableViewCellAccessoryNone;
-    [self.tableView cellForRowAtIndexPath: indexPath].accessoryType = UITableViewCellAccessoryCheckmark;
     
+    // Deselect old cell
+    SYNReportConcernTableCell *oldCell = (SYNReportConcernTableCell *)[self.tableView cellForRowAtIndexPath: oldIndex];
+    oldCell.backgroundImage.hidden = TRUE;
+    oldCell.checkmarkImage.hidden = TRUE;
+    
+    oldCell.titleLabel.textColor = [UIColor colorWithRed: 106.0f/255.0f
+                                                   green: 114.0f/255.0f
+                                                    blue: 122.0f/255.0f
+                                                   alpha: 1.0f];
+    
+    oldCell.titleLabel.shadowColor = [UIColor colorWithWhite: 1.0f
+                                                       alpha: 0.75f];
+    
+    // Highlight new cell
+    SYNReportConcernTableCell *newCell = (SYNReportConcernTableCell *)[self.tableView cellForRowAtIndexPath: indexPath];
+    newCell.backgroundImage.hidden = FALSE;
+    newCell.checkmarkImage.hidden = FALSE;
+    newCell.titleLabel.textColor = [UIColor whiteColor];
+    newCell.titleLabel.shadowColor = [UIColor colorWithWhite: 1.0f
+                                                       alpha:  0.15f];
     return indexPath;
 }
 

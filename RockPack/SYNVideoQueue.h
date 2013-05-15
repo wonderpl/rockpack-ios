@@ -13,9 +13,11 @@
 @interface SYNVideoQueue : NSObject
 
 @property (nonatomic, strong) Channel* currentlyCreatingChannel;
+@property (nonatomic, readonly) BOOL isEmpty;
 
 +(id)queue;
 
 -(BOOL)videoInstanceIsAddedToChannel:(VideoInstance*)videoInstance;
+
 
 @end

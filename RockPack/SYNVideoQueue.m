@@ -21,9 +21,13 @@
 
 @property (nonatomic, weak) SYNAppDelegate* appDelegate;
 
+@property (nonatomic, assign) BOOL isEmpty;
+
 @end
 
 @implementation SYNVideoQueue
+
+@synthesize isEmpty;
 
 -(id)init
 {
@@ -31,7 +35,7 @@
     {
         
         self.appDelegate = (SYNAppDelegate*)UIApplication.sharedApplication.delegate;
-        
+        self.isEmpty = YES;
         [self setup];
     }
     return self;
@@ -152,6 +156,8 @@
         
         [self.appDelegate saveChannelsContext];
         
+        
+        
     }
     else // if there is a channel check of the video is a duplicate
     {
@@ -170,6 +176,8 @@
     copyOfVideoInstance.channel = self.currentlyCreatingChannel;
     
     [self.currentlyCreatingChannel.videoInstancesSet addObject: copyOfVideoInstance];
+    
+    self.isEmpty = NO;
     
     if(isIPhone)
     {
@@ -198,6 +206,8 @@
         }
     }
     
+    if(self.currentlyCreatingChannel.videoInstances.count == 0)
+        self.isEmpty = YES;
     
 }
 
@@ -205,15 +215,17 @@
 - (void) clearVideoQueue
 {
     
-    
     if(!self.currentlyCreatingChannel) // no channel no queue
         return;
+    
     
     for (VideoInstance* currentVideoInstance in self.currentlyCreatingChannel.videoInstances) {
         [self.appDelegate.channelsManagedObjectContext deleteObject:currentVideoInstance];
     }
     
+    
     [self.appDelegate.channelsManagedObjectContext deleteObject:self.currentlyCreatingChannel];
+    
     
     self.currentlyCreatingChannel = nil;
     
@@ -221,8 +233,12 @@
     [self.appDelegate saveChannelsContext];
     
     
+    self.isEmpty = NO;
+    
+    
     
 }
+
 
 
 

@@ -1251,26 +1251,26 @@
 		<bool key="IBDocument.PluginDeclaredDependenciesTrackSystemTargetVersion">YES</bool>
 		<int key="IBDocument.defaultPropertyAccessControl">3</int>
 		<dictionary class="NSMutableDictionary" key="IBDocument.LastKnownImageSizes">
-			<string key="ButtonBackHighlighted~iphone.png">{16, 16}</string>
-			<string key="ButtonBack~iphone.png">{16, 16}</string>
-			<string key="ButtonBuy.png">{16, 16}</string>
-			<string key="ButtonBuyHighlighted.png">{16, 16}</string>
-			<string key="ButtonConfirmYellowHighlighted~iphone.png">{16, 16}</string>
-			<string key="ButtonConfirmYellow~iphone.png">{16, 16}</string>
-			<string key="ButtonCoverCategoryHighlighted~iphone.png">{16, 16}</string>
-			<string key="ButtonCoverCategory~iphone.png">{16, 16}</string>
-			<string key="ButtonCreateHighlighted~iphone.png">{16, 16}</string>
-			<string key="ButtonCreate~iphone.png">{16, 16}</string>
-			<string key="ButtonReport.png">{16, 16}</string>
-			<string key="ButtonReportHighlighted.png">{16, 16}</string>
-			<string key="ButtonReportSelected.png">{16, 16}</string>
-			<string key="ButtonShare.png">{16, 16}</string>
-			<string key="ButtonShareHighlighted.png">{16, 16}</string>
-			<string key="ButtonSubscribe.png">{16, 16}</string>
-			<string key="ButtonSubscribeHighlighted.png">{16, 16}</string>
-			<string key="ButtonSubscribeSelected.png">{16, 16}</string>
-			<string key="ChannelDetailOverlayBackground.png">{16, 16}</string>
-			<string key="LogoRockpack.png">{16, 16}</string>
+			<string key="ButtonBackHighlighted~iphone.png">{48, 49}</string>
+			<string key="ButtonBack~iphone.png">{48, 49}</string>
+			<string key="ButtonBuy.png">{61, 61}</string>
+			<string key="ButtonBuyHighlighted.png">{61, 61}</string>
+			<string key="ButtonConfirmYellowHighlighted~iphone.png">{48, 49}</string>
+			<string key="ButtonConfirmYellow~iphone.png">{48, 49}</string>
+			<string key="ButtonCoverCategoryHighlighted~iphone.png">{155, 65}</string>
+			<string key="ButtonCoverCategory~iphone.png">{155, 65}</string>
+			<string key="ButtonCreateHighlighted~iphone.png">{106, 58}</string>
+			<string key="ButtonCreate~iphone.png">{106, 58}</string>
+			<string key="ButtonReport.png">{83, 29}</string>
+			<string key="ButtonReportHighlighted.png">{83, 29}</string>
+			<string key="ButtonReportSelected.png">{83, 29}</string>
+			<string key="ButtonShare.png">{61, 61}</string>
+			<string key="ButtonShareHighlighted.png">{61, 61}</string>
+			<string key="ButtonSubscribe.png">{120, 45}</string>
+			<string key="ButtonSubscribeHighlighted.png">{120, 45}</string>
+			<string key="ButtonSubscribeSelected.png">{120, 45}</string>
+			<string key="ChannelDetailOverlayBackground.png">{1024, 748}</string>
+			<string key="LogoRockpack.png">{148, 27}</string>
 		</dictionary>
 		<string key="IBCocoaTouchPluginVersion">2083</string>
 	</data>
