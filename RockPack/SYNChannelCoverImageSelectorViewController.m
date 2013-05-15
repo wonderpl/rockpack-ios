@@ -35,6 +35,7 @@ enum ChannelCoverSelectorState {
 @interface SYNChannelCoverImageSelectorViewController () <UICollectionViewDataSource, UICollectionViewDelegate, GKImageCropControllerDelegate, GKImagePickerDelegate>
 {
     enum ChannelCoverSelectorState currentState;
+    BOOL supportsCamera;
 }
 @property (weak, nonatomic) IBOutlet UIButton *cameraButton;
 @property (weak, nonatomic) IBOutlet UIButton *closeButton;
@@ -64,6 +65,8 @@ enum ChannelCoverSelectorState {
 {
     [super viewDidLoad];
     
+    supportsCamera = [UIImagePickerController isSourceTypeAvailable: UIImagePickerControllerSourceTypeCamera];
+    
     self.titleLabel.font = [UIFont boldRockpackFontOfSize:self.titleLabel.font.pointSize];
     
     self.userAssetGroups = [NSMutableDictionary dictionary];
@@ -79,15 +82,23 @@ enum ChannelCoverSelectorState {
                 dispatch_async(dispatch_get_main_queue(), ^{
                     [self refreshLocalImageData];
                 });
+                return;
             }
             [group setAssetsFilter:[ALAssetsFilter allPhotos]];
             NSString* groupName = [group valueForProperty:ALAssetsGroupPropertyName];
-            [group enumerateAssetsAtIndexes:[NSIndexSet indexSetWithIndex:0] options:0 usingBlock:^(ALAsset *result, NSUInteger index, BOOL *stop) {
-            if(result)
+            if( [group numberOfAssets] > 0)
             {
-              [self.userAssetGroups setObject:@{@"group":group, @"coverAsset":result} forKey:groupName];
+                [group enumerateAssetsAtIndexes:[NSIndexSet indexSetWithIndex:0] options:0 usingBlock:^(ALAsset *result, NSUInteger index, BOOL *stop) {
+                    if(result)
+                    {
+                        [self.userAssetGroups setObject:@{@"group":group, @"coverAsset":result} forKey:groupName];
+                    }
+                }];
             }
-            }];
+            else
+            {
+                [self.userAssetGroups setObject:@{@"group":group} forKey:groupName];
+            }
         } failureBlock:^(NSError *error) {
         }];
         
@@ -121,7 +132,7 @@ enum ChannelCoverSelectorState {
             break;
         }
         case kChannelCoverCameraOptions:
-            return [self.sortedKeys count] + 1 ;
+            return supportsCamera? [self.sortedKeys count] + 1 : [self.sortedKeys count] ;
         case kChannelCoverLocalAlbum:
         {
             ;
@@ -176,14 +187,17 @@ enum ChannelCoverSelectorState {
     }
     else if (currentState == kChannelCoverCameraOptions)
     {
-        if(indexPath.row == 0)
+        if(indexPath.row == 0 && supportsCamera)
         {
             cell.channelCoverImageView.image = [UIImage imageNamed:@"PanelTakePhoto"];
             cell.glossImage.hidden = YES;
         }
         else
         {
-            indexPath = [NSIndexPath indexPathForRow:indexPath.row - 1 inSection:0];
+            if(supportsCamera)
+            {
+                indexPath = [NSIndexPath indexPathForRow:indexPath.row - 1 inSection:0];
+            }
             title = [self.sortedKeys objectAtIndex:indexPath.row];
             ALAsset* imageAsset = [[self.userAssetGroups objectForKey:title] objectForKey:@"coverAsset"];
             [cell setimageFromAsset:imageAsset];
@@ -210,7 +224,7 @@ enum ChannelCoverSelectorState {
 {
     switch (currentState) {
         case kChannelCoverCameraOptions:
-            if(indexPath.row == 0)
+            if(indexPath.row == 0 && supportsCamera)
             {
                 GKImagePicker* picker = [[GKImagePicker alloc] init];
                 picker = [[GKImagePicker alloc] init];
@@ -222,7 +236,8 @@ enum ChannelCoverSelectorState {
             }
             else
             {
-                self.selectedAlbumKey = [self.sortedKeys objectAtIndex:indexPath.row-1];
+                int row = (supportsCamera ? indexPath.row-1 : indexPath.row);
+                self.selectedAlbumKey = [self.sortedKeys objectAtIndex:row];
                 CATransition *animation = [CATransition animation];
                 [animation setType:kCATransitionPush];
                 [animation setSubtype:kCATransitionFromRight];
