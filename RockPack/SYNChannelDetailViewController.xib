@@ -457,7 +457,6 @@
 										<string key="NSFrame">{{330, 332}, {295, 45}}</string>
 										<reference key="NSSuperview" ref="574818441"/>
 										<reference key="NSWindow"/>
-										<reference key="NSNextKeyView"/>
 										<string key="NSReuseIdentifierKey">_NS:9</string>
 										<bool key="IBUIOpaque">NO</bool>
 										<string key="targetRuntimeIdentifier">IBIPadFramework</string>
@@ -1224,7 +1223,6 @@
 						<string key="selectCategoryButtonTapped:">UIButton</string>
 						<string key="shareChannelButtonTapped:">id</string>
 						<string key="subscribeButtonTapped:">id</string>
-						<string key="userTouchedCameraButton:">UIButton</string>
 						<string key="userTouchedReportConcernButton:">UIButton</string>
 					</dictionary>
 					<dictionary class="NSMutableDictionary" key="actionInfosByName">
@@ -1268,10 +1266,6 @@
 							<string key="name">subscribeButtonTapped:</string>
 							<string key="candidateClassName">id</string>
 						</object>
-						<object class="IBActionInfo" key="userTouchedCameraButton:">
-							<string key="name">userTouchedCameraButton:</string>
-							<string key="candidateClassName">UIButton</string>
-						</object>
 						<object class="IBActionInfo" key="userTouchedReportConcernButton:">
 							<string key="name">userTouchedReportConcernButton:</string>
 							<string key="candidateClassName">UIButton</string>
@@ -1295,7 +1289,6 @@
 						<string key="channelOwnerLabel">UILabel</string>
 						<string key="channelTitleTextBackgroundView">UIView</string>
 						<string key="channelTitleTextView">SSTextView</string>
-						<string key="coverChooserMasterView">UIView</string>
 						<string key="createChannelButton">UIButton</string>
 						<string key="displayControlsView">UIView</string>
 						<string key="editControlsView">UIView</string>
@@ -1376,10 +1369,6 @@
 						<object class="IBToOneOutletInfo" key="channelTitleTextView">
 							<string key="name">channelTitleTextView</string>
 							<string key="candidateClassName">SSTextView</string>
-						</object>
-						<object class="IBToOneOutletInfo" key="coverChooserMasterView">
-							<string key="name">coverChooserMasterView</string>
-							<string key="candidateClassName">UIView</string>
 						</object>
 						<object class="IBToOneOutletInfo" key="createChannelButton">
 							<string key="name">createChannelButton</string>
