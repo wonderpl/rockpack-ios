@@ -161,7 +161,7 @@
     
     // Highlight new cell
     SYNReportConcernTableCell *newCell = (SYNReportConcernTableCell *)[self.tableView cellForRowAtIndexPath: indexPath];
-    oldCell.backgroundImage.image = [UIImage imageNamed: @"CategorySlideSelected"];
+    newCell.backgroundImage.image = [UIImage imageNamed: @"CategorySlideSelected"];
     newCell.checkmarkImage.hidden = FALSE;
     newCell.titleLabel.textColor = [UIColor whiteColor];
     newCell.titleLabel.shadowColor = [UIColor colorWithWhite: 1.0f
