@@ -26,7 +26,6 @@
 
 -(void)showAutologinWithCredentials:(SYNOAuth2Credential*)credentials;
 
-- (void) showImagePicker: (UIImagePickerControllerSourceType) sourceType;
 
 
 
