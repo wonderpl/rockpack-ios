@@ -100,7 +100,6 @@
 								<int key="NSvFlags">292</int>
 								<string key="NSFrame">{{9, 114}, {230, 26}}</string>
 								<reference key="NSSuperview" ref="301134111"/>
-								<reference key="NSNextKeyView"/>
 								<string key="NSReuseIdentifierKey">_NS:9</string>
 								<reference key="IBUIBackgroundColor" ref="456240611"/>
 								<bool key="IBUIAutoresizesSubviews">NO</bool>
@@ -414,7 +413,7 @@
 			<string key="ButtonAddSelected.png">{57, 57}</string>
 			<string key="ButtonVideoDelete.png">{44, 45}</string>
 			<string key="ButtonVideoDeleteHighlighted.png">{44, 45}</string>
-			<string key="ButtonVideoDeleteSelected.png">{16, 16}</string>
+			<string key="ButtonVideoDeleteSelected.png">{44, 45}</string>
 			<string key="GlossVideo.png">{249, 140}</string>
 		</dictionary>
 		<string key="IBCocoaTouchPluginVersion">2083</string>

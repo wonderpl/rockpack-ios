@@ -31,8 +31,8 @@
 		0111CDE817284DD700612186 /* ButtonVideoDelete@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 0111CDE217284DD700612186 /* ButtonVideoDelete@2x.png */; };
 		0111CDE917284DD700612186 /* ButtonVideoDeleteHighlighted.png in Resources */ = {isa = PBXBuildFile; fileRef = 0111CDE317284DD700612186 /* ButtonVideoDeleteHighlighted.png */; };
 		0111CDEA17284DD700612186 /* ButtonVideoDeleteHighlighted@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 0111CDE417284DD700612186 /* ButtonVideoDeleteHighlighted@2x.png */; };
-		0111CDEB17284DD700612186 /* ButtonVideoDeleteSelectedted.png in Resources */ = {isa = PBXBuildFile; fileRef = 0111CDE517284DD700612186 /* ButtonVideoDeleteSelectedted.png */; };
-		0111CDEC17284DD700612186 /* ButtonVideoDeleteSelectedted@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 0111CDE617284DD700612186 /* ButtonVideoDeleteSelectedted@2x.png */; };
+		0111CDEB17284DD700612186 /* ButtonVideoDeleteSelected.png in Resources */ = {isa = PBXBuildFile; fileRef = 0111CDE517284DD700612186 /* ButtonVideoDeleteSelected.png */; };
+		0111CDEC17284DD700612186 /* ButtonVideoDeleteSelected@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 0111CDE617284DD700612186 /* ButtonVideoDeleteSelected@2x.png */; };
 		0111CDF317292F3B00612186 /* ButtonCameraPadHighlighted.png in Resources */ = {isa = PBXBuildFile; fileRef = 0111CDED17292F3B00612186 /* ButtonCameraPadHighlighted.png */; };
 		0111CDF417292F3B00612186 /* ButtonCameraPadHighlighted@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 0111CDEE17292F3B00612186 /* ButtonCameraPadHighlighted@2x.png */; };
 		0111CDF517292F3B00612186 /* ButtonCameraPadSelected.png in Resources */ = {isa = PBXBuildFile; fileRef = 0111CDEF17292F3B00612186 /* ButtonCameraPadSelected.png */; };
@@ -1023,8 +1023,8 @@
 		0111CDE217284DD700612186 /* ButtonVideoDelete@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = "ButtonVideoDelete@2x.png"; path = "Assets/Images/ButtonVideoDelete@2x.png"; sourceTree = "<group>"; };
 		0111CDE317284DD700612186 /* ButtonVideoDeleteHighlighted.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = ButtonVideoDeleteHighlighted.png; path = Assets/Images/ButtonVideoDeleteHighlighted.png; sourceTree = "<group>"; };
 		0111CDE417284DD700612186 /* ButtonVideoDeleteHighlighted@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = "ButtonVideoDeleteHighlighted@2x.png"; path = "Assets/Images/ButtonVideoDeleteHighlighted@2x.png"; sourceTree = "<group>"; };
-		0111CDE517284DD700612186 /* ButtonVideoDeleteSelectedted.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = ButtonVideoDeleteSelectedted.png; path = Assets/Images/ButtonVideoDeleteSelectedted.png; sourceTree = "<group>"; };
-		0111CDE617284DD700612186 /* ButtonVideoDeleteSelectedted@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = "ButtonVideoDeleteSelectedted@2x.png"; path = "Assets/Images/ButtonVideoDeleteSelectedted@2x.png"; sourceTree = "<group>"; };
+		0111CDE517284DD700612186 /* ButtonVideoDeleteSelected.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = ButtonVideoDeleteSelected.png; path = Assets/Images/ButtonVideoDeleteSelected.png; sourceTree = "<group>"; };
+		0111CDE617284DD700612186 /* ButtonVideoDeleteSelected@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = "ButtonVideoDeleteSelected@2x.png"; path = "Assets/Images/ButtonVideoDeleteSelected@2x.png"; sourceTree = "<group>"; };
 		0111CDED17292F3B00612186 /* ButtonCameraPadHighlighted.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = ButtonCameraPadHighlighted.png; path = Assets/Images/ButtonCameraPadHighlighted.png; sourceTree = "<group>"; };
 		0111CDEE17292F3B00612186 /* ButtonCameraPadHighlighted@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = "ButtonCameraPadHighlighted@2x.png"; path = "Assets/Images/ButtonCameraPadHighlighted@2x.png"; sourceTree = "<group>"; };
 		0111CDEF17292F3B00612186 /* ButtonCameraPadSelected.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = ButtonCameraPadSelected.png; path = Assets/Images/ButtonCameraPadSelected.png; sourceTree = "<group>"; };
@@ -2553,8 +2553,8 @@
 				0111CDE217284DD700612186 /* ButtonVideoDelete@2x.png */,
 				0111CDE317284DD700612186 /* ButtonVideoDeleteHighlighted.png */,
 				0111CDE417284DD700612186 /* ButtonVideoDeleteHighlighted@2x.png */,
-				0111CDE517284DD700612186 /* ButtonVideoDeleteSelectedted.png */,
-				0111CDE617284DD700612186 /* ButtonVideoDeleteSelectedted@2x.png */,
+				0111CDE517284DD700612186 /* ButtonVideoDeleteSelected.png */,
+				0111CDE617284DD700612186 /* ButtonVideoDeleteSelected@2x.png */,
 				01450AF3171DB4B5009F54CD /* ButtonAddSelected.png */,
 				01450AF4171DB4B5009F54CD /* ButtonAddSelected@2x.png */,
 				01A0768E1676295B00E1CDAD /* ButtonAdd.png */,
@@ -4827,8 +4827,8 @@
 				0111CDE817284DD700612186 /* ButtonVideoDelete@2x.png in Resources */,
 				0111CDE917284DD700612186 /* ButtonVideoDeleteHighlighted.png in Resources */,
 				0111CDEA17284DD700612186 /* ButtonVideoDeleteHighlighted@2x.png in Resources */,
-				0111CDEB17284DD700612186 /* ButtonVideoDeleteSelectedted.png in Resources */,
-				0111CDEC17284DD700612186 /* ButtonVideoDeleteSelectedted@2x.png in Resources */,
+				0111CDEB17284DD700612186 /* ButtonVideoDeleteSelected.png in Resources */,
+				0111CDEC17284DD700612186 /* ButtonVideoDeleteSelected@2x.png in Resources */,
 				0111CDF317292F3B00612186 /* ButtonCameraPadHighlighted.png in Resources */,
 				0111CDF417292F3B00612186 /* ButtonCameraPadHighlighted@2x.png in Resources */,
 				0111CDF517292F3B00612186 /* ButtonCameraPadSelected.png in Resources */,

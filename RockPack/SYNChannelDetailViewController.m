@@ -208,7 +208,7 @@
     if (!isIPhone)
     {
         // Create categories tab, but make invisible (alpha = 0) for now
-        self.categoriesTabViewController = [[SYNCategoriesTabViewController alloc] initWithHomeButton: FALSE];
+        self.categoriesTabViewController = [[SYNCategoriesTabViewController alloc] initWithHomeButton: @"OTHER"];
         self.categoriesTabViewController.delegate = self;
         CGRect tabFrame = self.categoriesTabViewController.view.frame;
         tabFrame.origin.y = kChannelCreationCategoryTabOffsetY;
@@ -1032,7 +1032,13 @@ kChannelThumbnailDisplayModeStandard: kChannelThumbnailDisplayModeEdit;
 
 - (void) handleNewTabSelectionWithGenre: (Genre*) genre
 {
-    [self updateCategoryButtonText: genre.name];
+    NSString* genreName;
+    if(!genre)
+        genreName = @"OTHER";
+    else
+        genreName = genre.name;
+    
+    [self updateCategoryButtonText: genreName];
 }
 
 
