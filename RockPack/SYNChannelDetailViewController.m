@@ -479,20 +479,26 @@
 
 -(void)showNoVideosMessage
 {
-    CGRect viewFrame = CGRectMake(0.0, 600.0, 600.0, 100.0);
-    self.noVideosMessageView = [[UIView alloc] initWithFrame:viewFrame];
+    CGSize viewFrameSize = CGSizeMake(360.0, 50.0);
+    self.noVideosMessageView = [[UIView alloc] initWithFrame:CGRectMake(0.0, 640.0, viewFrameSize.width, viewFrameSize.height)];
     self.noVideosMessageView.center = CGPointMake(self.view.frame.size.width * 0.5, self.noVideosMessageView.center.y);
     self.noVideosMessageView.frame = CGRectIntegral(self.noVideosMessageView.frame);
     self.noVideosMessageView.autoresizingMask = UIViewAutoresizingFlexibleBottomMargin | UIViewAutoresizingFlexibleLeftMargin | UIViewAutoresizingFlexibleRightMargin;
     
+    UIView* noVideosBGView = [[UIView alloc] initWithFrame:CGRectMake(0.0, 0.0, viewFrameSize.width, viewFrameSize.height)];
+    noVideosBGView.backgroundColor = [UIColor blackColor];
+    noVideosBGView.alpha = 0.3;
     
-    UILabel* noVideosLabel = [[UILabel alloc] initWithFrame:viewFrame];
-    noVideosLabel.text = @"THIS CHANNEL HAS NO VIDEOS";
+    [self.noVideosMessageView addSubview:noVideosBGView];
+    
+    
+    UILabel* noVideosLabel = [[UILabel alloc] initWithFrame:CGRectZero];
+    noVideosLabel.text = @"THERE ARE NO VIDEOS IN THIS CHANNEL YET";
     noVideosLabel.textAlignment = NSTextAlignmentCenter;
-    noVideosLabel.font = [UIFont rockpackFontOfSize:28.0];
-    noVideosLabel.textColor = [UIColor grayColor];
+    noVideosLabel.font = [UIFont rockpackFontOfSize:16.0];
+    noVideosLabel.textColor = [UIColor whiteColor];
     [noVideosLabel sizeToFit];
-    noVideosLabel.center = CGPointMake(viewFrame.size.width * 0.5, viewFrame.size.height * 0.5);
+    noVideosLabel.center = CGPointMake(viewFrameSize.width * 0.5, viewFrameSize.height * 0.5 + 4.0);
     noVideosLabel.frame = CGRectIntegral(noVideosLabel.frame);
     noVideosLabel.backgroundColor = [UIColor clearColor];
     
