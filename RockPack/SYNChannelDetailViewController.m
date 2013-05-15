@@ -44,7 +44,6 @@
 @property (nonatomic, assign)  CGPoint originalContentOffset;
 @property (nonatomic, strong) GKImagePicker *imagePicker;
 @property (nonatomic, strong) IBOutlet SSTextView *channelTitleTextView;
-@property (nonatomic, strong) IBOutlet UIButton *addToChannelButton;
 @property (nonatomic, strong) IBOutlet UIButton *buyButton;
 @property (nonatomic, strong) IBOutlet UIButton *cameraButton;
 @property (nonatomic, strong) IBOutlet UIButton *createChannelButton;
@@ -702,6 +701,11 @@ kChannelThumbnailDisplayModeStandard: kChannelThumbnailDisplayModeEdit;
                          change: (NSDictionary *) change
                         context: (void *) context
 {
+    [super observeValueForKeyPath:keyPath
+                         ofObject:object
+                           change:change
+                          context:context];
+    
     if ([keyPath isEqualToString: kTextViewContentSizeKey])
     {
         UITextView *tv = object;
@@ -1669,6 +1673,11 @@ kChannelThumbnailDisplayModeStandard: kChannelThumbnailDisplayModeEdit;
                                         
                                         [wself.channelCoverImageView setNeedsLayout];
                                     }];
+}
+
+- (BOOL) needsAddButton
+{
+    return YES;
 }
 
 @end

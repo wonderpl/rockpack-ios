@@ -95,7 +95,7 @@
     
     CGFloat nextOrigin = 0.0;
     
-    if (self.useHomeButton == TRUE)
+    if (self.useHomeButton == YES)
     {
         self.homeButton = [UIButton buttonWithType: UIButtonTypeCustom];
         UIImage* homeButtonImage = [UIImage imageNamed: @"IconCategoryAll"];
@@ -111,8 +111,10 @@
     else
     {
         // Create a special Other tab with tag id 0
-        tab = [[SYNCategoryItemView alloc] initWithLabel: @"OTHER"
+        tab = [[SYNCategoryItemView alloc] initWithLabel: @"ALL"
                                                   andTag: 0];
+        
+        [tab makeHighlighted];
         
         [self.mainTabsView addSubview: tab];
         
@@ -266,7 +268,7 @@
     [[self.dividerOverlayView subviews] makeObjectsPerformSelector: @selector(removeFromSuperview)];
     CGFloat nextOrigin = 0;
     
-    if (self.useHomeButton == TRUE)
+    if (self.useHomeButton == YES)
     {
         nextOrigin += self.homeButton.frame.size.width;
         [self.dividerOverlayView addSubview: [self createDividerAtOffset: nextOrigin]];

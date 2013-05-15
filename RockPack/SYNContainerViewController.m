@@ -101,7 +101,7 @@
     SYNChannelsRootViewController *channelsRootViewController = [[SYNChannelsRootViewController alloc] initWithViewId: kChannelsViewId];
     if([[SYNDeviceManager sharedInstance] isIPad])
     {
-        channelsRootViewController.tabViewController = [[SYNCategoriesTabViewController alloc] initWithHomeButton: TRUE];
+        channelsRootViewController.tabViewController = [[SYNCategoriesTabViewController alloc] initWithHomeButton: NO];
         [channelsRootViewController addChildViewController:channelsRootViewController.tabViewController];
     }
     else

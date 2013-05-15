@@ -138,7 +138,7 @@
     {
         CGRect newFrame = self.headerChannelsView.frame;
         newFrame.origin.y = 59.0f;
-        newFrame.size.height = 44.0f;
+        newFrame.size.height = 43.0f;
         self.headerChannelsView.frame = newFrame;
         [self.headerChannelsView setFontSize: 12.0f];
         

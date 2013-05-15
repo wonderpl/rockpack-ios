@@ -521,7 +521,7 @@ typedef void(^AnimationCompletionBlock)(BOOL finished);
     sboxFrame.origin.y = 10.0;
     self.searchBoxController.view.frame = sboxFrame;
     
-    [self.navigationContainerView addSubview:self.searchBoxController.view];
+    [self.view insertSubview:self.searchBoxController.view aboveSubview:self.overlayContainerView];
     
 }
 
@@ -724,8 +724,17 @@ typedef void(^AnimationCompletionBlock)(BOOL finished);
         
         showingBackButton = YES;
         targetFrame = self.movableButtonsContainer.frame;
-        targetFrame.origin.x = 8.0;
         targetAlpha = 1.0;
+        
+        if ([[SYNDeviceManager sharedInstance] isIPad])
+        {
+            targetFrame.origin.x = 10.0;
+        }
+        
+        else
+        {
+            targetFrame.origin.x = 5.0;
+        }
     }
     else
     {
@@ -805,8 +814,8 @@ typedef void(^AnimationCompletionBlock)(BOOL finished);
     {
         
         
-        [[UINavigationBar appearance] setTitleTextAttributes:
-         @{UITextAttributeTextColor:[UIColor darkGrayColor], UITextAttributeFont:[UIFont rockpackFontOfSize:22.0]}];
+        
+        
         UINavigationController* navigationController = [[UINavigationController alloc] initWithRootViewController: accountsTableController];
         navigationController.view.backgroundColor = [UIColor clearColor];
         

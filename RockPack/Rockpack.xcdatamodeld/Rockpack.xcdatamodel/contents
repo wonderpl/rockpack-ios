@@ -60,6 +60,7 @@
         <attribute name="dateOfBirth" optional="YES" attributeType="Date" syncable="YES"/>
         <attribute name="emailAddress" optional="YES" attributeType="String" syncable="YES"/>
         <attribute name="firstName" optional="YES" attributeType="String" syncable="YES"/>
+        <attribute name="fullNameIsPublic" optional="YES" attributeType="Boolean" syncable="YES"/>
         <attribute name="gender" optional="YES" attributeType="Boolean" syncable="YES"/>
         <attribute name="lastName" optional="YES" attributeType="String" syncable="YES"/>
         <attribute name="locale" optional="YES" attributeType="String" syncable="YES"/>
@@ -90,12 +91,12 @@
     <elements>
         <element name="AbstractCommon" positionX="-74" positionY="-333" width="128" height="75"/>
         <element name="Channel" positionX="-2" positionY="72" width="128" height="253"/>
-        <element name="ChannelCover" positionX="-162" positionY="90" width="128" height="133"/>
-        <element name="ChannelOwner" positionX="-353" positionY="189" width="128" height="105"/>
+        <element name="ChannelCover" positionX="-164" positionY="-27" width="128" height="133"/>
+        <element name="ChannelOwner" positionX="-344" positionY="48" width="128" height="105"/>
         <element name="CoverArt" positionX="189" positionY="-243" width="128" height="103"/>
         <element name="Genre" positionX="-270" positionY="-204" width="128" height="90"/>
         <element name="SubGenre" positionX="-468" positionY="-189" width="128" height="60"/>
-        <element name="User" positionX="-351" positionY="-45" width="128" height="210"/>
+        <element name="User" positionX="-342" positionY="186" width="128" height="223"/>
         <element name="Video" positionX="153" positionY="72" width="128" height="210"/>
         <element name="VideoInstance" positionX="351" positionY="207" width="128" height="135"/>
     </elements>
