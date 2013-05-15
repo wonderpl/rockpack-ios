@@ -484,7 +484,7 @@ typedef enum {
     self.nicknameLabel.text = self.user.username;
     
     [self.profilePictureImageView setImageWithURL: [NSURL URLWithString: self.user.thumbnailURL]
-                                 placeholderImage: [UIImage imageNamed: @"NotFoundAvatarYou"]
+                                 placeholderImage: [UIImage imageNamed: @"PlaceholderNotificationAvatar"]
                                           options: SDWebImageRetryFailed];
 }
 
