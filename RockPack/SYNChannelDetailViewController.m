@@ -76,6 +76,7 @@
 @property (nonatomic,strong) NSString* selectedCoverId;
 @property (nonatomic, strong) UIView* noVideosMessageView;
 @property (weak, nonatomic) IBOutlet UILabel *byLabel;
+@property (nonatomic, strong) SYNReportConcernTableViewController *reportConcernTableViewController;
 
 //iPhone specific
 @property (nonatomic,strong) AVURLAsset* selectedAsset;
@@ -1400,13 +1401,11 @@
     button.selected = !button.selected;
     
     if (button.selected)
-    {
-        SYNReportConcernTableViewController *reportConcernTableViewController;
-        
+    {        
         if (UI_USER_INTERFACE_IDIOM() == UIUserInterfaceIdiomPad)
         {
             // Create out concerns table view controller
-            reportConcernTableViewController = [[SYNReportConcernTableViewController alloc]
+            self.reportConcernTableViewController = [[SYNReportConcernTableViewController alloc]
                                                 initWithSendReportBlock: ^ (NSString *reportString){
                                                     [self.reportConcernPopoverController dismissPopoverAnimated: YES];
                                                     [self reportConcern: reportString];
@@ -1416,7 +1415,7 @@
                                                 }];
             
             // Wrap it in a navigation controller
-            UINavigationController *navController = [[UINavigationController alloc] initWithRootViewController: reportConcernTableViewController];
+            UINavigationController *navController = [[UINavigationController alloc] initWithRootViewController: self.reportConcernTableViewController];
             
             // Hard way of adding a title (need to due to custom font offsets)
             UIView *containerView = [[UIView alloc] initWithFrame: CGRectMake (0, 0, 140, 28)];
@@ -1430,7 +1429,7 @@
             label.shadowOffset = CGSizeMake(0.0, 1.0);
             label.text = NSLocalizedString(@"REPORT", nil);
             [containerView addSubview: label];
-            reportConcernTableViewController.navigationItem.titleView = containerView;
+            self.reportConcernTableViewController.navigationItem.titleView = containerView;
             
             // Need show the popover controller
             self.reportConcernPopoverController = [[UIPopoverController alloc] initWithContentViewController: navController];
@@ -1448,13 +1447,13 @@
         {
             SYNMasterViewController *masterViewController = (SYNMasterViewController*)appDelegate.masterViewController;
             
-            reportConcernTableViewController = [[SYNReportConcernTableViewController alloc] initWithNibName: @"SYNReportConcernTableViewControllerFullScreen~iphone"
+            self.reportConcernTableViewController = [[SYNReportConcernTableViewController alloc] initWithNibName: @"SYNReportConcernTableViewControllerFullScreen~iphone"
                                                                                                      bundle: [NSBundle mainBundle]
                                                                                             sendReportBlock: ^ (NSString *reportString){
                                                                                                 [UIView animateWithDuration: kChannelEditModeAnimationDuration
                                                                                                                  animations: ^{
                                                                                                                      // Fade out the category tab controller
-                                                                                                                     reportConcernTableViewController.view.alpha = 0.0f;
+                                                                                                                     self.reportConcernTableViewController.view.alpha = 0.0f;
                                                                                                                  }
                                                                                                                  completion: nil];
                                                                                                 [self reportConcern: reportString];
@@ -1463,35 +1462,34 @@
                                                                                               [UIView animateWithDuration: kChannelEditModeAnimationDuration
                                                                                                                animations: ^{
                                                                                                                    // Fade out the category tab controller
-                                                                                                                   reportConcernTableViewController.view.alpha = 0.0f;
+                                                                                                                   self.reportConcernTableViewController.view.alpha = 0.0f;
                                                                                                                }
                                                                                                                completion: ^(BOOL success){
-                                                                                                                   [reportConcernTableViewController.view removeFromSuperview];
+                                                                                                                   [self.reportConcernTableViewController.view removeFromSuperview];
                                                                                                                }];
                                                                                           }];
             
             
             // Move off the bottom of the screen
-            CGRect startFrame = reportConcernTableViewController.view.frame;
+            CGRect startFrame = self.reportConcernTableViewController.view.frame;
             startFrame.origin.y = self.view.frame.size.height;
-            reportConcernTableViewController.view.frame = startFrame;
+            self.reportConcernTableViewController.view.frame = startFrame;
             
-            [masterViewController.view addSubview: reportConcernTableViewController.view];
+            [masterViewController.view addSubview: self.reportConcernTableViewController.view];
             
             // Slide up onto the screen
             [UIView animateWithDuration: 0.3f
                                   delay: 0.0f
                                 options: UIViewAnimationOptionCurveEaseOut
                              animations: ^{
-                                 CGRect endFrame = reportConcernTableViewController.view.frame;
+                                 CGRect endFrame = self.reportConcernTableViewController.view.frame;
                                  endFrame.origin.y = 0.0f;
-                                 reportConcernTableViewController.view.frame = endFrame;
+                                 self.reportConcernTableViewController.view.frame = endFrame;
                              }
                              completion: nil];
         }
     }  
 }
-
 
 
 - (void) reportConcern: (NSString *) reportString
