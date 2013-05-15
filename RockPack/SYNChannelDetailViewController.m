@@ -176,7 +176,9 @@
         layout.sectionInset = UIEdgeInsetsMake(0.0f, 5.0f, 0.0f, 5.0f);
     }
     
-    // Regster video thumbnail cell
+    
+    // == Video Cells == //
+    
     UINib *videoThumbnailCellNib = [UINib nibWithNibName: @"SYNVideoThumbnailRegularCell"
                                                   bundle: nil];
     
@@ -187,9 +189,14 @@
     
     // == Cover Image == //
   
-    self.currentWebImageOperation = [self loadBackgroundImage];
+    if(self.mode == kChannelDetailsModeDisplay) // only load bg on display
+    {
+        self.currentWebImageOperation = [self loadBackgroundImage];
+    }
     
-    // Set avatar
+    
+    // == Avatar Image == //
+    
     [self.avatarImageView setImageWithURL: [NSURL URLWithString: self.channel.channelOwner.thumbnailURL]
                          placeholderImage: [UIImage imageNamed: @"AvatarChannel.png"]
                                   options: SDWebImageRetryFailed];
@@ -401,13 +408,17 @@
     if ([coverArtUrl isEqualToString: @""])
     {
         self.channelCoverImageView.image = nil;
+        
     }
     else
     {
-        [self.channelCoverImageView setImageWithURL: [NSURL URLWithString: coverArtUrl]
+        NSString* largeImageUrlString = [coverArtUrl stringByReplacingOccurrencesOfString:@"thumbnail_medium" withString:@"background"];
+        [self.channelCoverImageView setImageWithURL: [NSURL URLWithString: largeImageUrlString]
                                    placeholderImage: nil
                                             options: SDWebImageRetryFailed];
     }
+    
+    self.originalBackgroundImage = nil;
     
     
     
@@ -1622,6 +1633,10 @@ kChannelThumbnailDisplayModeStandard: kChannelThumbnailDisplayModeEdit;
     CGRect croppingRect = UIInterfaceOrientationIsLandscape(orientation) ?
     CGRectMake(0.0, 138.0, 1024.0, 886.0) : CGRectMake(138.0, 0.0, 886.0, 1024.0);
     
+    if(self.mode == kChannelDetailsModeEdit && !self.originalBackgroundImage) // set the bg var once
+    {
+        self.originalBackgroundImage = self.channelCoverImageView.image;
+    }
     
     CGImageRef croppedImageRef = CGImageCreateWithImageInRect([self.originalBackgroundImage CGImage], croppingRect);
     
