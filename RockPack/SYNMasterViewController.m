@@ -805,8 +805,8 @@ typedef void(^AnimationCompletionBlock)(BOOL finished);
     {
         
         
-        [[UINavigationBar appearance] setTitleTextAttributes:
-         @{UITextAttributeTextColor:[UIColor darkGrayColor], UITextAttributeFont:[UIFont rockpackFontOfSize:22.0]}];
+        
+        
         UINavigationController* navigationController = [[UINavigationController alloc] initWithRootViewController: accountsTableController];
         navigationController.view.backgroundColor = [UIColor clearColor];
         

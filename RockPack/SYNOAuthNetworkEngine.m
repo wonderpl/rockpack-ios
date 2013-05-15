@@ -421,7 +421,7 @@
 
 - (void) changeUserField: (NSString*) userField
                  forUser: (User *) user
-            withNewValue: (NSString*)newValue
+            withNewValue: (id)newValue
        completionHandler: (MKNKBasicSuccessBlock) successBlock
             errorHandler: (MKNKUserErrorBlock) errorBlock {
     
@@ -432,13 +432,33 @@
     SYNNetworkOperationJsonObject *networkOperation = (SYNNetworkOperationJsonObject*)[self operationWithPath: apiString
                                                                                                        params: nil
                                                                                                    httpMethod: @"PUT"
-                                                                                                          ssl: TRUE];
-    [networkOperation setCustomPostDataEncodingHandler: ^NSString * (NSDictionary *postDataDict)
-     {
-         // Wrap it in quotes to make it valid JSON
-         NSString *JSONFormattedPassword = [NSString stringWithFormat: @"\"%@\"", newValue];
-         return JSONFormattedPassword;
-     } forType: @"application/json"];
+                                                                                                          ssl: YES];
+    
+    
+    if([newValue isKindOfClass:[NSString class]])
+    {
+        [networkOperation setCustomPostDataEncodingHandler: ^ NSString * (NSDictionary *postDataDict) {
+            
+                                                    // Wrap it in quotes to make it valid JSON
+                                                    NSString *JSONFormattedFieldValue = [NSString stringWithFormat: @"\"%@\"", (NSString*)newValue];
+                                                    return JSONFormattedFieldValue;
+            
+                                                 } forType: @"application/json"];
+    }
+    
+    // in reality the only case of passing a number is for a BOOL
+    else if([newValue isKindOfClass:[NSNumber class]])
+    {
+        [networkOperation setCustomPostDataEncodingHandler: ^ NSString * (NSDictionary *postDataDict) {
+            
+                                                    // Wrap it in quotes to make it valid JSON
+                                                    NSString *JSONFormattedBoolValue = ((NSNumber*)newValue).boolValue ? @"true" : @"false";
+                                                    return JSONFormattedBoolValue;
+            
+                                                 } forType: @"application/json"];
+    }
+    
+    
     
     [networkOperation addCompletionHandler:^(MKNetworkOperation* operation) {
         
@@ -923,12 +943,12 @@
                                                                                                    httpMethod: @"POST"
                                                                                                           ssl: TRUE];
     // We have to perform the image upload with an input stream
-    NSData *imageData = UIImagePNGRepresentation(image);
+    NSData *imageData = UIImageJPEGRepresentation(image, 0.70);
     NSString *lengthString = [NSString stringWithFormat: @"%@", [NSNumber numberWithUnsignedLong: imageData.length]];
     NSInputStream *inputStream = [NSInputStream inputStreamWithData: imageData];
     networkOperation.uploadStream = inputStream;
     
-    [networkOperation addHeaders: @{@"Content-Type" : @"image/png", @"Content-Length" : lengthString}];
+    [networkOperation addHeaders: @{@"Content-Type" : @"image/jpeg", @"Content-Length" : lengthString}];
     
     [self addCommonHandlerToNetworkOperation: networkOperation
                            completionHandler: completionBlock

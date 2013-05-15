@@ -226,7 +226,7 @@
 
 
 - (void) updateField: (NSString *) field
-            forValue: (NSString *) newValue
+            forValue: (id) newValue
             withCompletionHandler: (MKNKBasicSuccessBlock) successBlock
 {
     self.saveButton.hidden = YES;

@@ -39,12 +39,14 @@
 
 
 - (void)_actionCancel{
+    [[UIApplication sharedApplication] setStatusBarHidden:NO withAnimation:UIStatusBarAnimationSlide];
     [self.navigationController popViewControllerAnimated:YES];
     [self dismissViewControllerAnimated:YES completion:nil];
 }
 
 
 - (void)_actionUse{
+    [[UIApplication sharedApplication] setStatusBarHidden:NO withAnimation:UIStatusBarAnimationSlide];
     _croppedImage = [self.imageCropView croppedImage];
     [self.delegate imageCropController:self didFinishWithCroppedImage:_croppedImage];
 }

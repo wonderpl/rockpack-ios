@@ -17,7 +17,7 @@
 
 #define kLoginAnimationTransitionDuration 0.3f
 
-@interface SYNLoginViewControllerIphone () <UITextFieldDelegate, UIActionSheetDelegate, GKImagePickerDelegate>
+@interface SYNLoginViewControllerIphone () <UITextFieldDelegate, SYNImagePickerControllerDelegate>
 
 @property (weak, nonatomic) IBOutlet UIView *initialView;
 @property (weak, nonatomic) IBOutlet UIView *loginView;
@@ -58,7 +58,6 @@
 
 @property (nonatomic, strong) IBOutlet UIImage* avatarImage;
 
-@property (nonatomic, strong) GKImagePicker* imagePicker;
 @property (nonatomic, strong) IBOutlet UIImageView* avatarImageView;
 
 @end
@@ -277,20 +276,9 @@
 }
 - (IBAction)photoButtonTapped:(id)sender
 {
-    if([UIImagePickerController isSourceTypeAvailable: UIImagePickerControllerSourceTypeCamera])
-    {
-        UIActionSheet* sourceSelector = [[UIActionSheet alloc] initWithTitle: NSLocalizedString(@"Select source", nil)
-                                                                    delegate: self
-                                                           cancelButtonTitle: NSLocalizedString(@"Cancel", nil)
-                                                      destructiveButtonTitle: nil
-                                                           otherButtonTitles: NSLocalizedString(@"Camera", nil),
-                                                                              NSLocalizedString(@"Choose existing", nil), nil];
-        [sourceSelector showInView:self.view];
-    }
-    else
-    {
-        [self showImagePicker:UIImagePickerControllerSourceTypePhotoLibrary];
-    }
+            self.imagePicker = [[SYNImagePickerController alloc] initWithHostViewController:self];
+            self.imagePicker.delegate = self;
+            [self.imagePicker presentImagePickerAsPopupFromView:nil arrowDirection:UIPopoverArrowDirectionLeft];
 }
 
 - (IBAction)backbuttonTapped:(id)sender
@@ -733,65 +721,14 @@
     }];
 }
 
-#pragma mark - UIActionsheet delegate
-
--(void)actionSheet:(UIActionSheet *)actionSheet didDismissWithButtonIndex:(NSInteger)buttonIndex
+-(void)picker:(SYNImagePickerController *)picker finishedWithImage:(UIImage *)image
 {
-    if (buttonIndex == 0)
-    {
-        //Camera
-        [self showImagePicker:UIImagePickerControllerSourceTypeCamera];
-    }
-    else if (buttonIndex ==1)
-    {
-        //Choose existing
-        [self showImagePicker:UIImagePickerControllerSourceTypePhotoLibrary];
-    }
-}
-
-#pragma mark - Avatar image selection
-
-- (void) showImagePicker: (UIImagePickerControllerSourceType) sourceType
-{
-    self.imagePicker = [[GKImagePicker alloc] init];
-    self.imagePicker.cropSize = CGSizeMake(280, 280);
-    self.imagePicker.delegate = self;
-    self.imagePicker.imagePickerController.sourceType = sourceType;
-    
-    if ((sourceType == UIImagePickerControllerSourceTypeCamera) && [UIImagePickerController respondsToSelector: @selector(isCameraDeviceAvailable:)])
-    {
-        if ([UIImagePickerController isCameraDeviceAvailable: UIImagePickerControllerCameraDeviceFront])
-        {
-            self.imagePicker.imagePickerController.cameraDevice = UIImagePickerControllerCameraDeviceFront;
-        }
-    }
-    
-    [self presentViewController: self.imagePicker.imagePickerController
-                           animated: YES
-                         completion: nil];
-}
-
-
-# pragma mark - GKImagePicker Delegate Methods
-
-- (void) imagePicker: (GKImagePicker *) imagePicker
-         pickedImage: (UIImage *) image
-{
-    DebugLog(@"width %f, height %f", image.size.width, image.size.height);
-    
+    self.imagePicker = nil;
     // Save our avatar
     self.avatarImage = image;
     
     // And update on-screen avatar
     self.avatarImageView.image = image;
-    
-    [self hideImagePicker];
-}
-
-- (void) hideImagePicker
-{
-        [self.imagePicker.imagePickerController dismissViewControllerAnimated: YES
-                                                                   completion: nil];
 }
 
 
