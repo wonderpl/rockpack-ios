@@ -1031,14 +1031,14 @@
 {
     // Tweaked this as the QuickTime logo seems to appear otherwise
     [UIView animateWithDuration: 0.5f
-                          delay: 0.1f
+                          delay: 1.0f
                         options: UIViewAnimationOptionCurveEaseInOut
                      animations: ^ {
                          self.currentVideoWebView.alpha = 1.0f;
                          self.videoPlaceholderView.alpha = 0.0f;
                      }
                      completion: ^(BOOL completed) {
-                         [self animateVideoPlaceholder: NO];
+//                         [self animateVideoPlaceholder: NO];
                      }];
 }
 
@@ -1046,7 +1046,7 @@
 // Fades out the video player, fading in any placeholder
 - (void) fadeOutVideoPlayer
 {
-    [self animateVideoPlaceholder: YES];
+//    [self animateVideoPlaceholder: YES];
     
     [UIView animateWithDuration: 0.5f
                           delay: 0.0f
