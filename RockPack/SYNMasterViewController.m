@@ -239,6 +239,10 @@ typedef void(^AnimationCompletionBlock)(BOOL finished);
     
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(backButtonRequested:) name:kNoteBackButtonHide object:nil];
     
+    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(topRightControlsRequested:) name:kNoteTopRightControlsShow object:nil];
+    
+    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(topRightControlsRequested:) name:kNoteTopRightControlsHide object:nil];
+    
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(addToChannelRequested:) name:kNoteAddToChannelRequest object:nil];
     
     
@@ -652,6 +656,8 @@ typedef void(^AnimationCompletionBlock)(BOOL finished);
 - (void) backButtonRequested: (NSNotification*) notification
 {
     NSString* notificationName = [notification name];
+    if(!notificationName)
+        return;
     
     if([notificationName isEqualToString:kNoteBackButtonShow])
     {
@@ -661,6 +667,24 @@ typedef void(^AnimationCompletionBlock)(BOOL finished);
     {
         [self showBackButton:NO];
     }
+}
+
+-(void)topRightControlsRequested:(NSNotification*) notification
+{
+    NSString* notificationName = [notification name];
+    if(!notificationName)
+        return;
+    if([notificationName isEqualToString:kNoteTopRightControlsShow])
+    {
+        self.searchButton.hidden = YES;
+        self.sideNavigationButton.hidden = YES;
+    }
+    else
+    {
+        self.searchButton.hidden = NO;
+        self.sideNavigationButton.hidden = NO;
+    }
+    
 }
 
 

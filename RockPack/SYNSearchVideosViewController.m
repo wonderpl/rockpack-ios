@@ -47,6 +47,8 @@
     
     self.view.autoresizingMask = UIViewAutoresizingFlexibleWidth | UIViewAutoresizingFlexibleHeight;
     
+    
+    
     self.refreshButton.hidden = YES;
 }
 
@@ -73,6 +75,8 @@
                                                                                    cacheName: nil];
     fetchedResultsController.delegate = self;
     
+    
+    
     NSError *error = nil;
     
     ZAssert([fetchedResultsController performFetch: &error],
@@ -89,8 +93,11 @@
     
     if(!appDelegate)
         appDelegate = (SYNAppDelegate*)[[UIApplication sharedApplication] delegate];
+    
+    self.currentRange = NSMakeRange(0, 50);
 
-    [appDelegate.networkEngine searchVideosForTerm:term];
+    [appDelegate.networkEngine searchVideosForTerm:term
+                                          andRange:self.currentRange];
     
     
 }
