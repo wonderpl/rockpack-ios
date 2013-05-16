@@ -144,7 +144,7 @@
     if ([self.inputField.text isEqualToString:self.appDelegate.currentUser.firstName] && // user did not change anything
        [self.lastNameInputField.text isEqualToString:self.appDelegate.currentUser.lastName] &&
         self.nameIsPublic == self.appDelegate.currentUser.fullNameIsPublicValue) {
-        
+        self.errorLabel.text = NSLocalizedString (@"You Have Made no Changes", nil);
         return;
     }
     
@@ -167,15 +167,29 @@
             
             self.appDelegate.currentUser.lastName = self.lastNameInputField.text;
             
-            [self updateField:@"display_fullname" forValue:[NSNumber numberWithBool:self.nameIsPublic] withCompletionHandler:^{
+            // in most cases this field won't change so its worth a quick check to avoid the API call if possible
+            
+            if(self.nameIsPublic != self.appDelegate.currentUser.fullNameIsPublicValue)
+            {
                 
-                self.appDelegate.currentUser.fullNameIsPublicValue = self.nameIsPublic;
-                
+                [self updateField:@"display_fullname" forValue:[NSNumber numberWithBool:self.nameIsPublic] withCompletionHandler:^{
+                    
+                    self.appDelegate.currentUser.fullNameIsPublicValue = self.nameIsPublic;
+                    
+                    [self.appDelegate saveContext:YES];
+                    
+                    [self.navigationController popViewControllerAnimated:YES];
+                    
+                }];
+            }
+            else
+            {
                 [self.appDelegate saveContext:YES];
                 
                 [self.navigationController popViewControllerAnimated:YES];
-                
-            }];
+            }
+            
+            
             
         }];
         

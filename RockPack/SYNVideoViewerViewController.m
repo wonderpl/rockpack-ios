@@ -346,7 +346,7 @@
 - (NSInteger) collectionView: (UICollectionView *) collectionView
       numberOfItemsInSection: (NSInteger) section
 {
-    DebugLog (@"Items in section %d", self.videoInstanceArray.count);
+//    DebugLog (@"Items in section %d", self.videoInstanceArray.count);
     return self.videoInstanceArray.count;
 }
 
