@@ -340,6 +340,7 @@ typedef enum {
 #define kShuttleBarSliderOffset         10.0f
 
 #define kSYNBundleFullVersion           @"FullVersion"
+#define kSYNBundleBuildTarget           @"BuildTarget"
 
 // Channel creation
 
