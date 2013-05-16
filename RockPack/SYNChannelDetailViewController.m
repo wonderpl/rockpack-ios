@@ -223,12 +223,12 @@
     
     if (self.mode == kChannelDetailsModeDisplay)
     {
-        self.addToChannelButton.hidden = NO;
+        self.addButton.hidden = NO;
         self.createChannelButton.hidden = YES;
     }
     else
     {
-        self.addToChannelButton.hidden = YES;
+        self.addButton.hidden = YES;
         self.createChannelButton.hidden = NO;
     }
     
@@ -702,10 +702,7 @@ kChannelThumbnailDisplayModeStandard: kChannelThumbnailDisplayModeEdit;
                          change: (NSDictionary *) change
                         context: (void *) context
 {
-    [super observeValueForKeyPath:keyPath
-                         ofObject:object
-                           change:change
-                          context:context];
+
     
     if ([keyPath isEqualToString: kTextViewContentSizeKey])
     {
@@ -1532,7 +1529,7 @@ kChannelThumbnailDisplayModeStandard: kChannelThumbnailDisplayModeEdit;
     
     if([[SYNDeviceManager sharedInstance] isIPad])
     {
-        self.addToChannelButton.hidden = YES;
+        self.addButton.hidden = YES;
         self.createChannelButton.hidden = YES;
         
     }

@@ -43,7 +43,7 @@
 
 @property (getter = hasTouchedChannelButton) BOOL touchedChannelButton;
 @property (nonatomic) NSInteger currentTotal;
-@property (nonatomic) NSRange currentRange;
+
 @property (nonatomic, assign) BOOL ignoreRefresh;
 @property (nonatomic, strong) NSString* currentCategoryId;
 @property (nonatomic, weak) Genre* currentGenre;
@@ -127,7 +127,7 @@
     CGRect newFrame;
     if(isIPhone)
     {
-        newFrame = CGRectMake(0.0f, 59.0f, [[SYNDeviceManager sharedInstance] currentScreenWidth],[[SYNDeviceManager sharedInstance] currentScreenHeight] - 20.0f);
+        newFrame = CGRectMake(0.0f, 59.0f, [[SYNDeviceManager sharedInstance] currentScreenWidth], [[SYNDeviceManager sharedInstance] currentScreenHeight] - 20.0f);
     }
     else
     {
@@ -144,9 +144,6 @@
     [self.view addSubview:self.channelThumbnailCollectionView];
     
     startAnimationDelay = 0.0;
-    
-    
-    
     
     currentRange = NSMakeRange(0, 50);
     
@@ -188,8 +185,6 @@
     [self.view addGestureRecognizer: pinchOnChannelView];
 #endif
     
-
-    
     currentGenre = nil;
     
     [self loadChannelsForGenre:nil];
@@ -206,7 +201,6 @@
 
 -(void)loadChannelsForGenre:(Genre*)genre byAppending:(BOOL)append
 {
-    
     
     [appDelegate.networkEngine updateChannelsScreenForCategory: (genre ? genre.uniqueId : @"all")
                                                       forRange: currentRange
@@ -248,13 +242,11 @@
                                    inManagedObjectContext:appDelegate.mainManagedObjectContext]];
     
     
-    
-    
     NSPredicate* genrePredicate;
     
     if(!genre) // all category
     {
-        genrePredicate = [NSPredicate predicateWithFormat:@"popular == TRUE"];
+        genrePredicate = [NSPredicate predicateWithFormat:@"popular == YES"];
     }
     else
     {
@@ -297,7 +289,6 @@
 - (void) viewWillAppear: (BOOL) animated
 {
     [super viewWillAppear: animated];
-    
     
     self.touchedChannelButton = NO;
 }

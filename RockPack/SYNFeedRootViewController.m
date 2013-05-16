@@ -197,6 +197,7 @@
 {
     [super viewWillAppear:animated];
     
+    
     [self.videoThumbnailCollectionView reloadData];
 }
 
