@@ -144,6 +144,9 @@
     self.channelTitleTextView.font = [UIFont rockpackFontOfSize: self.channelTitleTextView.font.pointSize];
     [self addShadowToLayer: self.channelTitleTextView.layer];
     
+    // Display 'Done' instead of 'Return' on Keyboard
+    self.channelTitleTextView.returnKeyType = UIReturnKeyDone;
+    
     // Needed for shadows to work
     self.channelTitleTextView.backgroundColor = [UIColor clearColor];
 
