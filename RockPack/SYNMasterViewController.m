@@ -972,6 +972,9 @@ typedef void(^AnimationCompletionBlock)(BOOL finished);
     if(overlayNavigationController) // if we did not pass nil
     {
         [self.overlayContainerView addSubview:overlayNavigationController.view];
+        
+        
+        
 
         if([[SYNDeviceManager sharedInstance] isIPhone])
         {
