@@ -53,6 +53,7 @@
 @property (nonatomic, strong) IBOutlet UIButton* reportConcernButton;
 @property (nonatomic, strong) IBOutlet UIButton* selectCategoryButton;
 @property (nonatomic, strong) IBOutlet UIButton* subscribeButton;
+@property (weak, nonatomic) IBOutlet UIButton *editButton;
 
 @property (nonatomic, strong) IBOutlet UIImageView *avatarImageView;
 @property (nonatomic, strong) IBOutlet UIImageView *channelCoverImageView;
@@ -662,6 +663,7 @@ kChannelThumbnailDisplayModeStandard: kChannelThumbnailDisplayModeEdit;
     self.coverChooserMasterView.hidden = (visible) ? TRUE : FALSE;
     self.profileImageButton.enabled = visible;
     self.subscribeButton.hidden = (visible && [self.channel.channelOwner.uniqueId isEqualToString: appDelegate.currentUser.uniqueId]);
+    self.editButton.hidden = (visible && ! [self.channel.channelOwner.uniqueId isEqualToString: appDelegate.currentUser.uniqueId]);
 }
 
 
@@ -785,6 +787,9 @@ kChannelThumbnailDisplayModeStandard: kChannelThumbnailDisplayModeEdit;
                                                       userInfo: @{ kChannel : self.channel }];
 }
 
+- (IBAction)editButtonTapped:(id)sender {
+    [self setEditControlsVisibility:YES];
+}
 
 - (IBAction) addButtonTapped: (id) sender
 {
