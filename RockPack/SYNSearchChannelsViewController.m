@@ -51,6 +51,8 @@
     self.channelThumbnailCollectionView.frame = collectionFrame;
     
     
+    
+    
 }
 
 -(void)handleDataModelChange:(NSNotification*)dataNotification
@@ -114,7 +116,10 @@
     if(!appDelegate)
         appDelegate = (SYNAppDelegate*)[[UIApplication sharedApplication] delegate];
     
-    [appDelegate.networkEngine searchChannelsForTerm:term];
+    self.currentRange = NSMakeRange(0, 50);
+    
+    [appDelegate.networkEngine searchChannelsForTerm:term
+                                            andRange:self.currentRange];
 }
 
 

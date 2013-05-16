@@ -239,6 +239,10 @@ typedef void(^AnimationCompletionBlock)(BOOL finished);
     
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(backButtonRequested:) name:kNoteBackButtonHide object:nil];
     
+    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(topRightControlsRequested:) name:kNoteTopRightControlsShow object:nil];
+    
+    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(topRightControlsRequested:) name:kNoteTopRightControlsHide object:nil];
+    
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(addToChannelRequested:) name:kNoteAddToChannelRequest object:nil];
     
     
@@ -281,8 +285,6 @@ typedef void(^AnimationCompletionBlock)(BOOL finished);
 -(void)viewWillAppear:(BOOL)animated
 {
     [super viewWillAppear:animated];
-    
-    
     
 }
 
@@ -521,7 +523,7 @@ typedef void(^AnimationCompletionBlock)(BOOL finished);
     sboxFrame.origin.y = 10.0;
     self.searchBoxController.view.frame = sboxFrame;
     
-    [self.navigationContainerView addSubview:self.searchBoxController.view];
+    [self.view insertSubview:self.searchBoxController.view aboveSubview:self.overlayContainerView];
     
 }
 
@@ -585,7 +587,7 @@ typedef void(^AnimationCompletionBlock)(BOOL finished);
     else if([self.reachability currentReachabilityStatus] == NotReachable) 
         reachabilityString = @"None";
     
-    DebugLog(@"Reachability == %@", reachabilityString);
+//    DebugLog(@"Reachability == %@", reachabilityString);
     if ([self.reachability currentReachabilityStatus] == ReachableViaWiFi)
     {
         if (self.networkErrorView)
@@ -654,6 +656,8 @@ typedef void(^AnimationCompletionBlock)(BOOL finished);
 - (void) backButtonRequested: (NSNotification*) notification
 {
     NSString* notificationName = [notification name];
+    if(!notificationName)
+        return;
     
     if([notificationName isEqualToString:kNoteBackButtonShow])
     {
@@ -663,6 +667,24 @@ typedef void(^AnimationCompletionBlock)(BOOL finished);
     {
         [self showBackButton:NO];
     }
+}
+
+-(void)topRightControlsRequested:(NSNotification*) notification
+{
+    NSString* notificationName = [notification name];
+    if(!notificationName)
+        return;
+    if([notificationName isEqualToString:kNoteTopRightControlsShow])
+    {
+        self.searchButton.hidden = YES;
+        self.sideNavigationButton.hidden = YES;
+    }
+    else
+    {
+        self.searchButton.hidden = NO;
+        self.sideNavigationButton.hidden = NO;
+    }
+    
 }
 
 
@@ -724,8 +746,17 @@ typedef void(^AnimationCompletionBlock)(BOOL finished);
         
         showingBackButton = YES;
         targetFrame = self.movableButtonsContainer.frame;
-        targetFrame.origin.x = 8.0;
         targetAlpha = 1.0;
+        
+        if ([[SYNDeviceManager sharedInstance] isIPad])
+        {
+            targetFrame.origin.x = 10.0;
+        }
+        
+        else
+        {
+            targetFrame.origin.x = 5.0;
+        }
     }
     else
     {
@@ -805,8 +836,8 @@ typedef void(^AnimationCompletionBlock)(BOOL finished);
     {
         
         
-        [[UINavigationBar appearance] setTitleTextAttributes:
-         @{UITextAttributeTextColor:[UIColor darkGrayColor], UITextAttributeFont:[UIFont rockpackFontOfSize:22.0]}];
+        
+        
         UINavigationController* navigationController = [[UINavigationController alloc] initWithRootViewController: accountsTableController];
         navigationController.view.backgroundColor = [UIColor clearColor];
         
@@ -947,6 +978,9 @@ typedef void(^AnimationCompletionBlock)(BOOL finished);
     if(overlayNavigationController) // if we did not pass nil
     {
         [self.overlayContainerView addSubview:overlayNavigationController.view];
+        
+        
+        
 
         if([[SYNDeviceManager sharedInstance] isIPhone])
         {

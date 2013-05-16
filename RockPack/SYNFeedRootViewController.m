@@ -22,7 +22,6 @@
 #import "VideoInstance.h"
 #import "SYNDeviceManager.h"
 #import "UIImageView+WebCache.h"
-#import "SYNRefreshButton.h"
 
 @interface SYNFeedRootViewController ()
 
@@ -31,7 +30,6 @@
 @property (nonatomic, strong) NSTimer *timer;
 @property (nonatomic, strong) SYNHomeSectionHeaderView *supplementaryViewWithRefreshButton;
 @property (nonatomic, strong) UIRefreshControl *refreshControl;
-@property (nonatomic, strong) SYNRefreshButton* refreshButton;
 
 @end
 
@@ -106,6 +104,17 @@
     self.videoThumbnailCollectionView.delegate = self;
     self.videoThumbnailCollectionView.dataSource = self;
     self.videoThumbnailCollectionView.backgroundColor = [UIColor clearColor];
+    
+    if (isIPhone)
+    {
+        self.videoThumbnailCollectionView.contentInset = UIEdgeInsetsMake(4, 0, 0, 0);
+    }
+    
+    else
+    {
+        self.videoThumbnailCollectionView.contentInset = UIEdgeInsetsMake(0, 0, 0, 0);
+    }
+    
 
     self.view = [[UIView alloc] initWithFrame:selfFrame];
     
@@ -188,6 +197,7 @@
 {
     [super viewWillAppear:animated];
     
+    
     [self.videoThumbnailCollectionView reloadData];
 }
 
@@ -214,7 +224,7 @@
                                                              size: 0
                                                 completionHandler: ^(NSDictionary *responseDictionary) {
                                                     [self handleRefreshComplete];
-                                                    DebugLog(@"Refresh subscription updates successful");
+//                                                    DebugLog(@"Refresh subscription updates successful");
                                                 } errorHandler: ^(NSDictionary* errorDictionary) {
                                                     [self handleRefreshComplete];
                                                     DebugLog(@"Refresh subscription updates failed");
@@ -229,6 +239,11 @@
                                                         object: self];
 }
 
+-(void)clearedLocationBoundData
+{
+    [self refreshVideoThumbnails];
+    
+}
 
 #pragma mark - Fetched results
 

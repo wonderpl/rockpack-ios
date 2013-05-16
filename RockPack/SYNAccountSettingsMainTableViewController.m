@@ -32,6 +32,7 @@
 @property (nonatomic, strong) NSArray* dataItems2ndSection;
 @property (nonatomic, strong) UIPopoverController* dobPopover;
 @property (nonatomic, weak) SYNAppDelegate* appDelegate;
+@property (nonatomic, weak) UITableViewCell* dobTableViewCell;
 @property (nonatomic, weak) User* user;
 
 @end
@@ -68,7 +69,14 @@
     self.tableView.scrollEnabled = [[SYNDeviceManager sharedInstance] isIPhone];
     
     
+    UILabel* titleLabel = [[UILabel alloc] initWithFrame:CGRectMake(0.0, 10.0, 100.0, 20.0)];
+    titleLabel.backgroundColor = [UIColor clearColor];
+    titleLabel.textColor = [UIColor colorWithRed:(28.0/255.0) green:(31.0/255.0) blue:(33.0/255.0) alpha:(1.0)];
+    titleLabel.text = @"Account Settings";
+    titleLabel.font = [UIFont rockpackFontOfSize:16.0];
     
+    
+    self.navigationItem.titleView = titleLabel;
     
 }
 
@@ -134,7 +142,7 @@
             case 0:
                 cell.imageView.image = [UIImage imageNamed:@"IconFullname.png"];
                 cell.textLabel.text = user.firstName;
-                cell.detailTextLabel.text = NSLocalizedString (@"Public" , nil);
+                cell.detailTextLabel.text = user.fullNameIsPublicValue ? NSLocalizedString (@"Public" , nil) : NSLocalizedString (@"Private" , nil);
                 cell.accessoryType = UITableViewCellAccessoryDisclosureIndicator;
                 break;
                 
@@ -187,6 +195,7 @@
                 else
                     cell.textLabel.text = [self getDOBPlainString:user.dateOfBirth];
                 
+                self.dobTableViewCell = cell;
                 cell.detailTextLabel.text = NSLocalizedString (@"D.O.B Private", nil);
                 cell.imageView.image = [UIImage imageNamed:@"IconBirthday.png"];
                 break;
@@ -284,9 +293,9 @@
                     self.dobPopover.delegate = self;
                     
                     
-                    [self.dobPopover presentPopoverFromRect: [self getDOBTableViewCell].frame
+                    [self.dobPopover presentPopoverFromRect: self.dobTableViewCell.frame
                                                      inView: self.view
-                                   permittedArrowDirections: UIPopoverArrowDirectionAny
+                                   permittedArrowDirections: UIPopoverArrowDirectionDown
                                                    animated: YES];
                 }
                 else
@@ -353,12 +362,7 @@
 }
 
 
--(UITableViewCell*) getDOBTableViewCell
-{
-    
-    UITableViewCell* cellClicked = [self.tableView cellForRowAtIndexPath:[NSIndexPath indexPathForItem:6 inSection:0]];
-    return cellClicked;
-}
+
 
 -(void)datePickerValueChanged:(UIDatePicker*)datePicker
 {
@@ -366,7 +370,11 @@
     
     NSString* dateString = [self getDOBFormattedString:datePicker.date];
     
+    UIActivityIndicatorView* dobLoader = [[UIActivityIndicatorView alloc] initWithActivityIndicatorStyle:UIActivityIndicatorViewStyleGray];
     
+    self.dobTableViewCell.accessoryView = dobLoader;
+    
+    [dobLoader startAnimating];
     
     [self.appDelegate.oAuthNetworkEngine changeUserField:@"date_of_birth"
                                                  forUser:self.appDelegate.currentUser
@@ -375,7 +383,11 @@
                                            
                                            user.dateOfBirth = datePicker.date;
                                            
-                                           [self getDOBTableViewCell].textLabel.text = [self getDOBPlainString:user.dateOfBirth];
+                                           self.dobTableViewCell.textLabel.text = [self getDOBPlainString:user.dateOfBirth];
+                                           
+                                           [dobLoader stopAnimating];
+                                           
+                                           [dobLoader removeFromSuperview];
                                            
                                        } errorHandler:^(id errorInfo) {
                                            

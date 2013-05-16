@@ -14,6 +14,7 @@
 #import "SYNAppDelegate.h"
 #import "GAITrackedViewController.h"
 
+#import "SYNAddButtonControl.h"
 
 #import "SYNNetworkEngine.h"
 
@@ -45,6 +46,8 @@
 @property (nonatomic, strong) UIImageView *draggedView;
 @property (readonly) NSManagedObjectContext *mainManagedObjectContext;
 @property (readonly, getter = isVideoQueueVisible) BOOL videoQueueVisible;
+
+@property (nonatomic, strong) SYNAddButtonControl* addButton;
 
 - (void) handleNewTabSelectionWithId: (NSString*) selectionId;
 - (void) handleNewTabSelectionWithGenre: (Genre*) name;

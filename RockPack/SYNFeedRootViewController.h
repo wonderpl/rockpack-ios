@@ -8,6 +8,13 @@
 
 #import "SYNAbstractViewController.h"
 
+#import "SYNRefreshButton.h"
+
 @interface SYNFeedRootViewController : SYNAbstractViewController
+
+
+@property (nonatomic, strong) SYNRefreshButton* refreshButton;
+
+@property (nonatomic) NSRange currentRange;
 
 @end

@@ -52,8 +52,6 @@
 @property (strong, nonatomic) UIViewController *masterViewController;
 
 
-
-
 @property (readonly, nonatomic, strong) SYNMainRegistry* mainRegistry;
 @property (readonly, nonatomic, strong) SYNSearchRegistry* searchRegistry;
 
@@ -61,7 +59,7 @@
 - (void) saveContext: (BOOL) wait;
 - (void) saveSearchContext;
 - (void) saveChannelsContext;
-- (void) clearUserBoundData;
+- (void) clearCoreDataMainEntities:(BOOL)userBound;
 - (void) logout;
 - (void) resetCurrentOAuth2Credentials;
 

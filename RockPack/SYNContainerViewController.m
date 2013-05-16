@@ -101,7 +101,7 @@
     SYNChannelsRootViewController *channelsRootViewController = [[SYNChannelsRootViewController alloc] initWithViewId: kChannelsViewId];
     if([[SYNDeviceManager sharedInstance] isIPad])
     {
-        channelsRootViewController.tabViewController = [[SYNCategoriesTabViewController alloc] initWithHomeButton: TRUE];
+        channelsRootViewController.tabViewController = [[SYNCategoriesTabViewController alloc] initWithHomeButton: @"ALL"];
         [channelsRootViewController addChildViewController:channelsRootViewController.tabViewController];
     }
     else
@@ -155,6 +155,10 @@
 {
     [self packViewControllersForInterfaceOrientation:[[SYNDeviceManager sharedInstance] orientation]];
     
+    [[NSNotificationCenter defaultCenter] postNotificationName:kScrollerPageChanged
+                                                        object:self
+                                                      userInfo:@{kCurrentPage:@(self.scrollView.page)}];
+
     
 }
 

@@ -32,8 +32,5 @@
 // Player control
 - (void) playVideoAtIndex: (int) index;
 - (void) loadNextVideo;
-- (void) loadPreviousVideo;
-
-
 
 @end

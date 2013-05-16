@@ -44,7 +44,6 @@
 @property (nonatomic, assign)  CGPoint originalContentOffset;
 @property (nonatomic, strong) GKImagePicker *imagePicker;
 @property (nonatomic, strong) IBOutlet SSTextView *channelTitleTextView;
-@property (nonatomic, strong) IBOutlet UIButton *addToChannelButton;
 @property (nonatomic, strong) IBOutlet UIButton *buyButton;
 @property (nonatomic, strong) IBOutlet UIButton *cameraButton;
 @property (nonatomic, strong) IBOutlet UIButton *createChannelButton;
@@ -209,7 +208,7 @@
     if (!isIPhone)
     {
         // Create categories tab, but make invisible (alpha = 0) for now
-        self.categoriesTabViewController = [[SYNCategoriesTabViewController alloc] initWithHomeButton: FALSE];
+        self.categoriesTabViewController = [[SYNCategoriesTabViewController alloc] initWithHomeButton: @"OTHER"];
         self.categoriesTabViewController.delegate = self;
         CGRect tabFrame = self.categoriesTabViewController.view.frame;
         tabFrame.origin.y = kChannelCreationCategoryTabOffsetY;
@@ -224,12 +223,12 @@
     
     if (self.mode == kChannelDetailsModeDisplay)
     {
-        self.addToChannelButton.hidden = NO;
+        self.addButton.hidden = NO;
         self.createChannelButton.hidden = YES;
     }
     else
     {
-        self.addToChannelButton.hidden = YES;
+        self.addButton.hidden = YES;
         self.createChannelButton.hidden = NO;
     }
     
@@ -344,7 +343,7 @@
                       context :nil];
     
     // We set up assets depending on whether we are in display or edit mode
-    [self setDisplayControlsVisibility: (self.mode == kChannelDetailsModeDisplay) ? TRUE: FALSE];
+    [self setDisplayControlsVisibility: self.mode == kChannelDetailsModeDisplay];
     
     // Refresh our view
     [self.videoThumbnailCollectionView reloadData];
@@ -661,8 +660,8 @@ kChannelThumbnailDisplayModeStandard: kChannelThumbnailDisplayModeEdit;
     self.displayControlsView.alpha = (visible) ? 1.0f : 0.0f;
     self.editControlsView.alpha = (visible) ? 0.0f : 1.0f;
     self.coverChooserMasterView.hidden = (visible) ? TRUE : FALSE;
-    
     self.profileImageButton.enabled = visible;
+    self.subscribeButton.hidden = (visible && [self.channel.channelOwner.uniqueId isEqualToString: appDelegate.currentUser.uniqueId]);
 }
 
 
@@ -702,6 +701,8 @@ kChannelThumbnailDisplayModeStandard: kChannelThumbnailDisplayModeEdit;
                          change: (NSDictionary *) change
                         context: (void *) context
 {
+
+    
     if ([keyPath isEqualToString: kTextViewContentSizeKey])
     {
         UITextView *tv = object;
@@ -1028,7 +1029,13 @@ kChannelThumbnailDisplayModeStandard: kChannelThumbnailDisplayModeEdit;
 
 - (void) handleNewTabSelectionWithGenre: (Genre*) genre
 {
-    [self updateCategoryButtonText: genre.name];
+    NSString* genreName;
+    if(!genre)
+        genreName = @"OTHER";
+    else
+        genreName = genre.name;
+    
+    [self updateCategoryButtonText: genreName];
 }
 
 
@@ -1114,7 +1121,13 @@ kChannelThumbnailDisplayModeStandard: kChannelThumbnailDisplayModeEdit;
                                                                                               andViewId:kProfileViewId];
                                               
                                               createdChannel.channelOwner = appDelegate.currentUser;
-                                              
+                                              [self.channel removeObserver: self
+                                                                forKeyPath: kSubscribedByUserKey];
+                                              self.channel = createdChannel;
+                                              [self.channel addObserver: self
+                                                             forKeyPath: kSubscribedByUserKey
+                                                                options: NSKeyValueObservingOptionNew
+                                                               context :nil];
                                               DebugLog(@"Channel: %@", createdChannel);
                                               
                                               [appDelegate saveContext:YES];
@@ -1468,11 +1481,12 @@ kChannelThumbnailDisplayModeStandard: kChannelThumbnailDisplayModeEdit;
                                               if (imageUrl && [imageUrl isKindOfClass:[NSString class]])
                                               {
                                                   self.channel.channelCover.imageUrl = imageUrl;
+                                                  [self.coverChooserController updateCoverArt];
                                                   DebugLog(@"Success");
                                               }
                                               else
                                               {
-                                                  DebugLog(@"Failed to get wallpaper URL");
+                                                  DebugLog(@"Failed to uploa wallpaper URL");
                                               }
                                               
                                               self.selectedCoverId = [dictionary objectForKey:@"cover_ref"];
@@ -1505,26 +1519,31 @@ kChannelThumbnailDisplayModeStandard: kChannelThumbnailDisplayModeEdit;
 
 
 - (void) channelCreationComplete
-{
-    CATransition *animation = [CATransition animation];
+{    
+    self.channelOwnerLabel.text = appDelegate.currentUser.displayName;
     
-    [animation setType: kCATransitionReveal];
-    [animation setSubtype: kCATransitionFromLeft];
-    
-    [animation setDuration: 0.30];
-    [animation setTimingFunction:
-     [CAMediaTimingFunction functionWithName:
-      kCAMediaTimingFunctionEaseInEaseOut]];
-    
-    [self.view.window.layer addAnimation: animation
-                                  forKey: nil];
-    
-    // On iPad the existing channels viewcontroller's view is removed from the master view controller when a new channel is created.
-    // On iPhone we want to be able to go back which means the existing channels view remains onscreen. Here we remove it as channel creation was complete.
-    UIViewController *master = self.presentingViewController;
-    [[[[master childViewControllers] lastObject] view] removeFromSuperview];
+    [self displayChannelDetails];
+
     [self setDisplayControlsVisibility:YES];
-    [self.view addSubview:self.backButton];
+    
+    if([[SYNDeviceManager sharedInstance] isIPad])
+    {
+        self.addButton.hidden = YES;
+        self.createChannelButton.hidden = YES;
+        
+    }
+    else
+    {
+        // On iPad the existing channels viewcontroller's view is removed from the master view controller when a new channel is created.
+        // On iPhone we want to be able to go back which means the existing channels view remains onscreen. Here we remove it as channel creation was complete.
+        UIViewController *master = self.presentingViewController;
+        [[[[master childViewControllers] lastObject] view] removeFromSuperview];
+        [self setDisplayControlsVisibility:YES];
+        
+        //Move the back button from the edit view to allow closing this view
+        [self.backButton removeFromSuperview];
+        [self.view addSubview:self.backButton];
+    }
 }
 
 -(void)addSubscribeIndicator
@@ -1594,34 +1613,39 @@ kChannelThumbnailDisplayModeStandard: kChannelThumbnailDisplayModeEdit;
                      }];
 }
 
+
 - (void) imageSelector: (SYNChannelCoverImageSelectorViewController *) imageSelector
    didSelectAVURLAsset:(AVURLAsset *)asset
 {
     self.selectedAsset = asset;
-    [self closeImageSelector:imageSelector];
+    [self closeImageSelector: imageSelector];
     
 }
 
--(void)imageSelector:(SYNChannelCoverImageSelectorViewController *)imageSelector didSelectUIImage:(UIImage *)image
+
+- (void) imageSelector: (SYNChannelCoverImageSelectorViewController *) imageSelector
+      didSelectUIImage: (UIImage *) image
 {
-    [self.channelCoverImageView setImage:image];
-    [self uploadChannelImage:image];
-    [self closeImageSelector:imageSelector];
+    [self.channelCoverImageView setImage: image];
+    [self uploadChannelImage: image];
+    [self closeImageSelector: imageSelector];
 }
 
--(void)imageSelector:(SYNChannelCoverImageSelectorViewController *)imageSelector didSelectImage:(NSString *)imageUrlString withRemoteId:(NSString *)remoteId
+
+- (void) imageSelector: (SYNChannelCoverImageSelectorViewController *) imageSelector
+        didSelectImage: (NSString *) imageUrlString
+          withRemoteId: (NSString *) remoteId
 {
     self.selectedCoverId = remoteId;
-    [self.channelCoverImageView setImageFromURL:[NSURL URLWithString:imageUrlString]];
-    [self closeImageSelector:imageSelector];
+    [self.channelCoverImageView setImageFromURL:[NSURL URLWithString: imageUrlString]];
+    [self closeImageSelector: imageSelector];
 }
+
 
 #pragma mark - Image render
 
--(UIImage*)croppedImageForOrientation:(UIInterfaceOrientation)orientation
+- (UIImage*) croppedImageForOrientation: (UIInterfaceOrientation) orientation
 {
-    
-    
     CGRect croppingRect = UIInterfaceOrientationIsLandscape(orientation) ?
     CGRectMake(0.0, 138.0, 1024.0, 886.0) : CGRectMake(138.0, 0.0, 886.0, 1024.0);
     
@@ -1632,41 +1656,42 @@ kChannelThumbnailDisplayModeStandard: kChannelThumbnailDisplayModeEdit;
     
     CGImageRef croppedImageRef = CGImageCreateWithImageInRect([self.originalBackgroundImage CGImage], croppingRect);
     
-    UIImage* croppedImage = [UIImage imageWithCGImage:croppedImageRef];
+    UIImage* croppedImage = [UIImage imageWithCGImage: croppedImageRef];
     
     CGImageRelease(croppedImageRef);
     
     return croppedImage;
-   
 }
 
--(id<SDWebImageOperation>)loadBackgroundImage
+- (id<SDWebImageOperation>) loadBackgroundImage
 {
     __weak SDWebImageManager* shareImageManager = SDWebImageManager.sharedManager;
     __weak SYNChannelDetailViewController *wself = self;
-     return [shareImageManager downloadWithURL:[NSURL URLWithString:self.channel.channelCover.imageBackgroundUrl]
-                                       options:SDWebImageRetryFailed
-                                      progress:nil
-                                     completed:^(UIImage *image, NSError *error, SDImageCacheType cacheType, BOOL finished) {
-                                   
-                                         if (!wself || !image)
-                                             return;
-                                         
-                                         
-                                         wself.originalBackgroundImage = image;
-                                         
-                                         UIImage* croppedImage = [wself croppedImageForOrientation:[[SYNDeviceManager sharedInstance] orientation]];
-                                         
-                                         [UIView transitionWithView: wself.view
-                                                           duration: 0.35f
-                                                            options: UIViewAnimationOptionTransitionCrossDissolve
-                                                         animations: ^{
-                                                             wself.channelCoverImageView.image = croppedImage;
-                                                         } completion: nil];
+    return [shareImageManager downloadWithURL: [NSURL URLWithString:self.channel.channelCover.imageBackgroundUrl]
+                                      options: SDWebImageRetryFailed
+                                     progress: nil
+                                    completed: ^(UIImage *image, NSError *error, SDImageCacheType cacheType, BOOL finished) {
+                                        if (!wself || !image)
+                                            return;
                                         
-                                                    [wself.channelCoverImageView setNeedsLayout];
-                                         
-                                         }];
+                                        wself.originalBackgroundImage = image;
+                                        
+                                        UIImage* croppedImage = [wself croppedImageForOrientation:[[SYNDeviceManager sharedInstance] orientation]];
+                                        
+                                        [UIView transitionWithView: wself.view
+                                                          duration: 0.35f
+                                                           options: UIViewAnimationOptionTransitionCrossDissolve
+                                                        animations: ^{
+                                                            wself.channelCoverImageView.image = croppedImage;
+                                                        } completion: nil];
+                                        
+                                        [wself.channelCoverImageView setNeedsLayout];
+                                    }];
+}
+
+- (BOOL) needsAddButton
+{
+    return YES;
 }
 
 @end

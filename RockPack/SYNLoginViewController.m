@@ -20,14 +20,13 @@
 #import "UIFont+SYNFont.h"
 #import "User.h"
 
-@interface SYNLoginViewController ()  <UITextFieldDelegate, SYNCameraPopoverViewControllerDelegate>
+@interface SYNLoginViewController ()  <UITextFieldDelegate, SYNImagePickerControllerDelegate>
 
 @property (nonatomic) BOOL isAnimating;
 @property (nonatomic) CGRect facebookButtonInitialFrame;
 @property (nonatomic) CGRect initialUsernameFrame;
 @property (nonatomic) CGRect signUpButtonInitialFrame;
 @property (nonatomic, readonly) CGFloat elementsOffsetY;
-@property (nonatomic, strong) GKImagePicker* imagePicker;
 @property (nonatomic, strong) IBOutlet UIButton* faceImageButton;
 @property (nonatomic, strong) IBOutlet UIButton* facebookSignInButton;
 @property (nonatomic, strong) IBOutlet UIButton* finalLoginButton;
@@ -624,23 +623,6 @@
 }
 
 
-//- (BOOL) checkAndSaveRegisteredUser: (SYNOAuth2Credential*) credential
-//{
-//    User* newUser = appDelegate.currentUser;
-//    
-//    if (!newUser)
-//    {
-//        // problem
-//        DebugLog(@"The user was not registered correctly...");
-//        return NO;
-//    }
-//    
-//    appDelegate.currentOAuth2Credentials = credential;
-//    
-//    [SYNActivityManager.sharedInstance updateActivityForCurrentUser];
-//    
-//    return YES;
-//}
 
 
 - (IBAction) doLogin: (id) sender
@@ -909,6 +891,8 @@
         return NO;
     }
     
+    // == Check for date == // 
+    
     if (ddInputField.text.length != 2 || mmInputField.text.length != 2 || yyyyInputField.text.length != 4)
     {
         [self placeErrorLabel: NSLocalizedString(@"Date Invalid", nil)
@@ -919,7 +903,8 @@
         return NO;
     }
     
-    // == Check wether the fields contain numbers == //
+    // == Check wether the DOB fields contain numbers == //
+    
     NSNumberFormatter* numberFormatter = [[NSNumberFormatter alloc] init];
     NSArray* dobTextFields = @[mmInputField, ddInputField, yyyyInputField];
     for (UITextField* dobField in dobTextFields)
@@ -939,7 +924,8 @@
     [dateFormatter setDateFormat: @"yyyy-MM-dd"];
     NSDate* potentialDate = [dateFormatter dateFromString: [self dateStringFromCurrentInput]];
     
-    // not a real date
+    // == Not a real date == //
+    
     if(!potentialDate)
     {
         [self placeErrorLabel: NSLocalizedString(@"The Date is not Valid", nil)
@@ -947,6 +933,35 @@
         
         return NO;
     }
+    
+    NSDate* nowDate = [NSDate date];
+    
+    // == In the future == //
+    
+    if ([nowDate compare:potentialDate] == NSOrderedAscending) {
+        [self placeErrorLabel: NSLocalizedString(@"The Date is in the future", nil)
+                   nextToView: dobView];
+        
+        return NO;
+    }
+    
+    // == Yonger than 13 == //
+    
+    
+    NSCalendar* gregorian = [[NSCalendar alloc] initWithCalendarIdentifier:NSGregorianCalendar];
+    NSDateComponents* nowDateComponents = [gregorian components:(NSYearCalendarUnit) fromDate:nowDate];
+    nowDateComponents.year -= 13;
+    
+    NSDate* tooYoungDate = [gregorian dateFromComponents:nowDateComponents];
+    
+    if([tooYoungDate compare:potentialDate] == NSOrderedAscending) {
+        
+        [self placeErrorLabel: NSLocalizedString(@"Cannot create an account for under 13", nil)
+                   nextToView: dobView];
+        
+        return NO;
+    }
+    
 
     return YES;
 }
@@ -1239,108 +1254,20 @@
 
 - (IBAction) faceButtonImagePressed: (UIButton*) button
 {
-    button.selected = !button.selected;
-    
-    if (button.selected)
-    {
-        SYNCameraPopoverViewController *actionPopoverController = [[SYNCameraPopoverViewController alloc] init];
-        actionPopoverController.delegate = self;
-        
-        // Need show the popover controller
-        self.cameraMenuPopoverController = [[UIPopoverController alloc] initWithContentViewController: actionPopoverController];
-        self.cameraMenuPopoverController.popoverContentSize = CGSizeMake(206, 96);
-        self.cameraMenuPopoverController.delegate = self;
-        self.cameraMenuPopoverController.popoverBackgroundViewClass = [SYNPopoverBackgroundView class];
-        
-        [self.cameraMenuPopoverController presentPopoverFromRect: button.frame
-                                                          inView: self.view
-                                        permittedArrowDirections: UIPopoverArrowDirectionLeft
-                                                        animated: YES];
-    }
-}
-
-
-- (void) popoverControllerDidDismissPopover: (UIPopoverController *) popoverController
-{
-    if (popoverController == self.cameraMenuPopoverController)
-    {
-        self.cameraPopoverController = nil;
-    }
-    else if (popoverController == self.cameraPopoverController)
-    {
-        self.cameraPopoverController = nil;
-    }
-    else
-    {
-        AssertOrLog(@"Unknown popup dismissed");
-    }
-}
-
-
-- (void) userTouchedTakePhotoButton
-{
-    [self.cameraMenuPopoverController dismissPopoverAnimated: NO];
-    [self showImagePicker: UIImagePickerControllerSourceTypeCamera];
-}
-
-
-- (void) userTouchedChooseExistingPhotoButton
-{
-    [self.cameraMenuPopoverController dismissPopoverAnimated: NO];
-    [self showImagePicker: UIImagePickerControllerSourceTypePhotoLibrary];
-}
-
-
-- (void) showImagePicker: (UIImagePickerControllerSourceType) sourceType
-{
-    self.imagePicker = [[GKImagePicker alloc] init];
-    self.imagePicker.cropSize = CGSizeMake(280, 280);
+    self.imagePicker = [[SYNImagePickerController alloc] initWithHostViewController:self];
     self.imagePicker.delegate = self;
-    self.imagePicker.imagePickerController.sourceType = sourceType;
-    
-    if ((sourceType == UIImagePickerControllerSourceTypeCamera) && [UIImagePickerController respondsToSelector: @selector(isCameraDeviceAvailable:)])
-    {
-        if ([UIImagePickerController isCameraDeviceAvailable: UIImagePickerControllerCameraDeviceFront])
-        {
-            self.imagePicker.imagePickerController.cameraDevice = UIImagePickerControllerCameraDeviceFront;
-        }
-    }
-    self.cameraPopoverController = [[UIPopoverController alloc] initWithContentViewController: self.imagePicker.imagePickerController];
-    
-    self.cameraPopoverController.popoverBackgroundViewClass = [SYNPopoverBackgroundView class];
-        
-    [self.cameraPopoverController presentPopoverFromRect: self.faceImageButton.frame
-                                                        inView: self.view
-                                    permittedArrowDirections: UIPopoverArrowDirectionLeft
-                                                    animated: YES];
-        
-    self.cameraPopoverController.delegate = self;
-    
+    [self.imagePicker presentImagePickerAsPopupFromView:button arrowDirection:UIPopoverArrowDirectionLeft];
 }
 
-
-# pragma mark - GKImagePicker Delegate Methods
-
-- (void) imagePicker: (GKImagePicker *) imagePicker
-         pickedImage: (UIImage *) image
+-(void)picker:(SYNImagePickerController *)picker finishedWithImage:(UIImage *)image
 {
-    DebugLog(@"width %f, height %f", image.size.width, image.size.height);
-    
+    self.imagePicker = nil;
     // Save our avatar
     self.avatarImage = image;
     
     // And update on-screen avatar
     self.avatarImageView.image = image;
-    
-    [self hideImagePicker];
 }
-
-- (void) hideImagePicker
-{
-    [self.cameraPopoverController dismissPopoverAnimated: YES];
-}
-
-
 
 #pragma mark - Rotation support
 

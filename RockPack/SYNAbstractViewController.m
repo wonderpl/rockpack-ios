@@ -40,7 +40,6 @@
 @property (nonatomic, strong) IBOutlet UITextField *channelNameTextField;
 @property (nonatomic, strong) UIPopoverController *activityPopoverController;
 @property (nonatomic, strong) UIView *dropZoneView;
-@property (nonatomic, strong) UIButton* addToChannelButton;
 
 @end
 
@@ -52,13 +51,13 @@
 @synthesize selectedIndex = _selectedIndex;
 
 @synthesize tabViewController;
-@synthesize addToChannelButton;
+@synthesize addButton;
 
 #pragma mark - Custom accessor methods
 
 - (id) init
 {
-    DebugLog (@"WARNING: init called on Abstract View Controller, call initWithViewId instead");
+//    DebugLog (@"WARNING: init called on Abstract View Controller, call initWithViewId instead");
     return [self initWithViewId: @"UnintializedViewId"];
 }
 
@@ -81,88 +80,36 @@
     
     appDelegate = (SYNAppDelegate *)[[UIApplication sharedApplication] delegate];
     
+    [[NSNotificationCenter defaultCenter] addObserver:self
+                                             selector:@selector(clearedLocationBoundData)
+                                                 name:kClearedLocationBoundData
+                                               object:nil];
+    
     
     if(self.needsAddButton)
     {
-        self.addToChannelButton = [UIButton buttonWithType:UIButtonTypeCustom];
-        
-        UIImage* buttonImageInactive = [UIImage imageNamed:@"ButtonAddToChannelInactive"];
-        
-        UIImage* buttonImageInactiveHighlighted = [UIImage imageNamed:@"ButtonAddToChannelInactiveHighlighted"];
-        
-        
-        
-        addToChannelButton.frame = CGRectMake(884.0, 80.0, buttonImageInactive.size.width, buttonImageInactive.size.height);
-        [addToChannelButton setImage:buttonImageInactive forState:UIControlStateNormal];
-        
-        [addToChannelButton setImage:buttonImageInactiveHighlighted forState:UIControlStateHighlighted];
-        
-        
-        addToChannelButton.autoresizingMask = UIViewAutoresizingFlexibleLeftMargin | UIViewAutoresizingFlexibleBottomMargin;
-        
-        [addToChannelButton addTarget:self action:@selector(addToChannelButtonPressed:) forControlEvents:UIControlEventTouchUpInside];
-        
-        [self.view addSubview:addToChannelButton];
-        
+        self.addButton = [SYNAddButtonControl button];
+        CGRect addButtonFrame = self.addButton.frame;
+        addButtonFrame.origin.x = 884.0f;
+        addButtonFrame.origin.y = 80.0f;
+        self.addButton.frame = addButtonFrame;
+        [self.view addSubview:addButton];
     }
 }
 
 -(void)viewWillAppear:(BOOL)animated
 {
     [super viewWillAppear:animated];
-    
-    if(self.needsAddButton)
-    {
-        [appDelegate.videoQueue addObserver:self forKeyPath:@"isEmpty" options:NSKeyValueObservingOptionNew context:nil];
-    }
 }
 
-- (void) observeValueForKeyPath: (NSString *) keyPath
-                       ofObject: (id) object
-                         change: (NSDictionary *) change
-                        context: (void *) context
-{
-    
-    if(object == appDelegate.videoQueue)
-    {
-        if(appDelegate.videoQueue.isEmpty)
-        {
-            
-            
-            [addToChannelButton setImage:[UIImage imageNamed:@"ButtonAddToChannelInactive"] forState:UIControlStateNormal];
-            [addToChannelButton setImage:[UIImage imageNamed:@"ButtonAddToChannelInactiveHighlighted"] forState:UIControlStateHighlighted];
-        }
-        else
-        {
-            
-            
-            [addToChannelButton setImage:[UIImage imageNamed:@"ButtonAddToChannelActive"] forState:UIControlStateNormal];
-            [addToChannelButton setImage:[UIImage imageNamed:@"ButtonAddToChannelActiveHighlighted"] forState:UIControlStateHighlighted];
-        }
-    }
-    
-    
-}
+
 
 -(void)viewWillDisappear:(BOOL)animated
 {
     [super viewWillDisappear:animated];
-    
-    if(self.needsAddButton)
-    {
-        [appDelegate.videoQueue removeObserver:self forKeyPath:@"isEmpty" context:nil];
-    }
 }
 
--(void)addToChannelButtonPressed:(UIButton*)button
-{
-    if(appDelegate.videoQueue.isEmpty)
-    {
-        return;
-    }
-    [[NSNotificationCenter defaultCenter] postNotificationName:kNoteAddToChannelRequest
-                                                        object:self];
-}
+
 
 - (void) viewCameToScrollFront
 {
@@ -258,11 +205,11 @@
 }
 
 
-- (void) videoAddButtonTapped: (UIButton *) addButton
+- (void) videoAddButtonTapped: (UIButton *) _addButton
 {
     NSString* noteName;
     
-    if (!addButton.selected || [[SYNDeviceManager sharedInstance] isIPhone]) // There is only ever one video in the queue on iPhone. Always fire the add action.
+    if (!_addButton.selected || [[SYNDeviceManager sharedInstance] isIPhone]) // There is only ever one video in the queue on iPhone. Always fire the add action.
     {
         noteName = kVideoQueueAdd;
     }
@@ -271,7 +218,7 @@
         noteName = kVideoQueueRemove;
     }
     
-    UIView *v = addButton.superview.superview;
+    UIView *v = _addButton.superview.superview;
     NSIndexPath *indexPath = [self.videoThumbnailCollectionView indexPathForItemAtPoint: v.center];
     VideoInstance *videoInstance = [self.fetchedResultsController objectAtIndexPath: indexPath];
     
@@ -279,7 +226,7 @@
                                                         object: self
                                                       userInfo: @{@"VideoInstance" : videoInstance}];
     
-    addButton.selected = !addButton.selected;
+    _addButton.selected = !_addButton.selected;
 
 }
 
@@ -467,6 +414,10 @@
     DebugLog(@"WARNING: Abstract method called");
 }
 
+-(void)clearedLocationBoundData
+{
+    // to be implemented by child
+}
 - (BOOL) showSubcategories
 {
     return YES;

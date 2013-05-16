@@ -10,6 +10,7 @@ const struct UserAttributes UserAttributes = {
 	.dateOfBirth = @"dateOfBirth",
 	.emailAddress = @"emailAddress",
 	.firstName = @"firstName",
+	.fullNameIsPublic = @"fullNameIsPublic",
 	.gender = @"gender",
 	.lastName = @"lastName",
 	.locale = @"locale",
@@ -51,6 +52,11 @@ const struct UserFetchedProperties UserFetchedProperties = {
 	
 	if ([key isEqualToString:@"currentValue"]) {
 		NSSet *affectingKey = [NSSet setWithObject:@"current"];
+		keyPaths = [keyPaths setByAddingObjectsFromSet:affectingKey];
+		return keyPaths;
+	}
+	if ([key isEqualToString:@"fullNameIsPublicValue"]) {
+		NSSet *affectingKey = [NSSet setWithObject:@"fullNameIsPublic"];
 		keyPaths = [keyPaths setByAddingObjectsFromSet:affectingKey];
 		return keyPaths;
 	}
@@ -122,6 +128,32 @@ const struct UserFetchedProperties UserFetchedProperties = {
 
 @dynamic firstName;
 
+
+
+
+
+
+@dynamic fullNameIsPublic;
+
+
+
+- (BOOL)fullNameIsPublicValue {
+	NSNumber *result = [self fullNameIsPublic];
+	return [result boolValue];
+}
+
+- (void)setFullNameIsPublicValue:(BOOL)value_ {
+	[self setFullNameIsPublic:[NSNumber numberWithBool:value_]];
+}
+
+- (BOOL)primitiveFullNameIsPublicValue {
+	NSNumber *result = [self primitiveFullNameIsPublic];
+	return [result boolValue];
+}
+
+- (void)setPrimitiveFullNameIsPublicValue:(BOOL)value_ {
+	[self setPrimitiveFullNameIsPublic:[NSNumber numberWithBool:value_]];
+}
 
 
 

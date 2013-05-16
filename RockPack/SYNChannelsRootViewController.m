@@ -24,10 +24,11 @@
 #import "SubGenre.h"
 #import "UIFont+SYNFont.h"
 #import "UIImageView+WebCache.h"
+#import "SYNCategoryItemView.h"
 #import "Video.h"
 #import "VideoInstance.h"
 
-#define STANDARD_LENGTH 50
+#define STANDARD_LENGTH 48
 #define kChannelsCache @"ChannelsCache"
 
 @interface SYNChannelsRootViewController () <UIScrollViewDelegate, SYNChannelCategoryTableViewDelegate>
@@ -42,7 +43,7 @@
 
 @property (getter = hasTouchedChannelButton) BOOL touchedChannelButton;
 @property (nonatomic) NSInteger currentTotal;
-@property (nonatomic) NSRange currentRange;
+
 @property (nonatomic, assign) BOOL ignoreRefresh;
 @property (nonatomic, strong) NSString* currentCategoryId;
 @property (nonatomic, weak) Genre* currentGenre;
@@ -126,7 +127,7 @@
     CGRect newFrame;
     if(isIPhone)
     {
-        newFrame = CGRectMake(0.0f, 59.0f, [[SYNDeviceManager sharedInstance] currentScreenWidth],[[SYNDeviceManager sharedInstance] currentScreenHeight] - 20.0f);
+        newFrame = CGRectMake(0.0f, 59.0f, [[SYNDeviceManager sharedInstance] currentScreenWidth], [[SYNDeviceManager sharedInstance] currentScreenHeight] - 20.0f);
     }
     else
     {
@@ -144,10 +145,7 @@
     
     startAnimationDelay = 0.0;
     
-    
-    
-    
-    currentRange = NSMakeRange(0, 50);
+    currentRange = NSMakeRange(0, STANDARD_LENGTH);
     
     if(self.enableCategoryTable)
     {
@@ -187,8 +185,6 @@
     [self.view addGestureRecognizer: pinchOnChannelView];
 #endif
     
-
-    
     currentGenre = nil;
     
     [self loadChannelsForGenre:nil];
@@ -196,7 +192,7 @@
     
 }
 
-#pragma mark - Load Channels
+#pragma mark - Loading of Channels
 
 -(void)loadChannelsForGenre:(Genre*)genre
 {
@@ -205,7 +201,6 @@
 
 -(void)loadChannelsForGenre:(Genre*)genre byAppending:(BOOL)append
 {
-    
     
     [appDelegate.networkEngine updateChannelsScreenForCategory: (genre ? genre.uniqueId : @"all")
                                                       forRange: currentRange
@@ -223,8 +218,8 @@
                                                       currentTotal = [totalNumber integerValue];
                                                       
                                                       BOOL registryResultOk = [appDelegate.mainRegistry registerChannelsFromDictionary:response
-                                                                                                                                       forGenre:genre
-                                                                                                                                    byAppending:append];
+                                                                                                                              forGenre:genre
+                                                                                                                           byAppending:append];
                                                       if (!registryResultOk)
                                                       {
                                                           DebugLog(@"Registration of Channel Failed for: %@", currentCategoryId);
@@ -238,6 +233,17 @@
                                                   }];
 }
 
+- (void) loadMoreChannels: (UIButton*) sender
+{
+    NSInteger nextStart = currentRange.location + currentRange.length;
+    NSInteger nextSize = (nextStart + STANDARD_LENGTH) > currentTotal ? (currentTotal - nextStart) : STANDARD_LENGTH;
+    
+    currentRange = NSMakeRange(nextStart, nextSize);
+    
+    
+    [self loadChannelsForGenre:currentGenre byAppending:YES];
+}
+
 -(void)displayChannelsForGenre:(Genre*)genre
 {
     
@@ -247,13 +253,11 @@
                                    inManagedObjectContext:appDelegate.mainManagedObjectContext]];
     
     
-    
-    
     NSPredicate* genrePredicate;
     
     if(!genre) // all category
     {
-        genrePredicate = [NSPredicate predicateWithFormat:@"popular == TRUE"];
+        genrePredicate = [NSPredicate predicateWithFormat:@"popular == YES"];
     }
     else
     {
@@ -296,7 +300,6 @@
 - (void) viewWillAppear: (BOOL) animated
 {
     [super viewWillAppear: animated];
-    
     
     self.touchedChannelButton = NO;
 }
@@ -424,18 +427,7 @@
 }
 
 
-#pragma mark - Button Actions
 
-- (void) loadMoreChannels: (UIButton*) sender
-{
-    NSInteger nextStart = currentRange.location + currentRange.length;
-    NSInteger nextSize = (nextStart + STANDARD_LENGTH) > currentTotal ? (currentTotal - nextStart) : STANDARD_LENGTH;
-    
-    currentRange = NSMakeRange(nextStart, nextSize);
-    
-    
-    [self loadChannelsForGenre:currentGenre byAppending:YES];
-}
 
 
 #ifdef ALLOWS_PINCH_GESTURES
@@ -563,9 +555,11 @@
 {
     [super handleMainTap:recogniser];
     
-    if (!recogniser)
+    SYNCategoryItemView *tab = (SYNCategoryItemView*)recogniser.view;
+    
+    if (recogniser == 0 || tab.tag == 0)
     {
-        // then home button was pressed
+        // then home button was pressed in either its icon or "all" mode respectively
         if (tabExpanded)
         {
             [UIView animateWithDuration: 0.3
@@ -645,6 +639,11 @@
     [self loadChannelsForGenre:genre];
     
 
+}
+
+-(void)clearedLocationBoundData
+{
+    [self loadChannelsForGenre:nil];
 }
 
 

@@ -12,6 +12,6 @@
 
 @interface SYNCategoriesTabViewController : SYNTabViewController 
 
-- (id) initWithHomeButton: (BOOL) useHomeButton;
+- (id) initWithHomeButton: (NSString*) homeButtomString;
 
 @end

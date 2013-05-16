@@ -23,7 +23,7 @@
 @property (nonatomic, strong) UIView* secondaryTabsBGView;
 @property (nonatomic, strong) UIView* secondaryTabsView;
 @property (nonatomic, weak) UIButton* homeButton;
-@property (nonatomic, assign) BOOL useHomeButton;
+@property (nonatomic, assign) NSString* homeButtonString;
 
 @end
 
@@ -32,11 +32,11 @@
 
 
 - (id) initWithSize: (CGFloat) totalWidth
-      andHomeButton: (BOOL) useHomeButton;
+      andHomeButton: (NSString*) homeButtonString;
 {
     if ((self = [super init]))
     {
-        self.useHomeButton = useHomeButton;
+        self.homeButtonString = homeButtonString;
         
         // == Tob Bar == //
         UIImage* mainTabsBGImage = [UIImage imageNamed: @"CategoryBar"];
@@ -95,7 +95,7 @@
     
     CGFloat nextOrigin = 0.0;
     
-    if (self.useHomeButton == TRUE)
+    if ([self.homeButtonString isEqualToString:@"icon"]) // special case where we put the 'home' icon instead of text
     {
         self.homeButton = [UIButton buttonWithType: UIButtonTypeCustom];
         UIImage* homeButtonImage = [UIImage imageNamed: @"IconCategoryAll"];
@@ -111,8 +111,10 @@
     else
     {
         // Create a special Other tab with tag id 0
-        tab = [[SYNCategoryItemView alloc] initWithLabel: @"OTHER"
+        tab = [[SYNCategoryItemView alloc] initWithLabel: [self.homeButtonString uppercaseString]
                                                   andTag: 0];
+        
+        [tab makeHighlighted];
         
         [self.mainTabsView addSubview: tab];
         
@@ -266,7 +268,7 @@
     [[self.dividerOverlayView subviews] makeObjectsPerformSelector: @selector(removeFromSuperview)];
     CGFloat nextOrigin = 0;
     
-    if (self.useHomeButton == TRUE)
+    if ([self.homeButtonString isEqualToString:@"icon"]) // special case where we have the 'home' icon
     {
         nextOrigin += self.homeButton.frame.size.width;
         [self.dividerOverlayView addSubview: [self createDividerAtOffset: nextOrigin]];
