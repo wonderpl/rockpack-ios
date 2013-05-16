@@ -88,19 +88,41 @@
     BOOL isIPhone = [[SYNDeviceManager sharedInstance] isIPhone];
         BOOL isLandscape = [[SYNDeviceManager sharedInstance] isLandscape];
     
-    // Set custom fonts
-    self.channelTitleLabel.font = [UIFont rockpackFontOfSize: self.channelTitleLabel.font.pointSize];
-    self.channelCreatorLabel.font = [UIFont rockpackFontOfSize: self.channelCreatorLabel.font.pointSize];
-    self.videoTitleLabel.font = [UIFont boldRockpackFontOfSize: self.videoTitleLabel.font.pointSize];
-    
-    // Cross-face transitions
-    self.channelTitleLabel.transitionDuration = kTextCrossfadeDuration;
-    self.channelCreatorLabel.transitionDuration = kTextCrossfadeDuration;
-    self.videoTitleLabel.transitionDuration = kTextCrossfadeDuration;
-    
-    self.channelTitleLabel.textColor = [UIColor whiteColor];
-    self.channelCreatorLabel.textColor  = [UIColor whiteColor];
-    self.videoTitleLabel.textColor = [UIColor whiteColor];
+    if (isIPhone)
+    {
+        // Set custom fonts
+        self.channelTitleLabel.font = [UIFont rockpackFontOfSize: 12.0f];
+        self.channelCreatorLabel.font = [UIFont rockpackFontOfSize: 10.0f];
+        self.videoTitleLabel.font = [UIFont boldRockpackFontOfSize: 16.0f];
+        
+        // Cross-face transitions
+        self.channelTitleLabel.transitionDuration = kTextCrossfadeDuration;
+        self.channelCreatorLabel.transitionDuration = kTextCrossfadeDuration;
+        self.videoTitleLabel.transitionDuration = kTextCrossfadeDuration;
+        
+        self.channelTitleLabel.textColor = [UIColor colorWithRed: 234.0f/ 255.0f green: 234.0f/ 255.0f blue: 234.0f/ 255.0f alpha: 1.0f];
+        self.channelCreatorLabel.textColor  = [UIColor colorWithRed: 234.0f/ 255.0f green: 234.0f/ 255.0f blue: 234.0f/ 255.0f alpha: 1.0f];
+        self.videoTitleLabel.textColor = [UIColor whiteColor];
+    }
+    else
+    {
+        // Set custom fonts
+        self.channelTitleLabel.font = [UIFont rockpackFontOfSize: 15.0f];
+        self.channelCreatorLabel.font = [UIFont rockpackFontOfSize: 12.0f];
+        self.videoTitleLabel.font = [UIFont boldRockpackFontOfSize: 25.0f];
+        
+        // Cross-face transitions
+        self.channelTitleLabel.transitionDuration = kTextCrossfadeDuration;
+        self.channelCreatorLabel.transitionDuration = kTextCrossfadeDuration;
+        self.videoTitleLabel.transitionDuration = kTextCrossfadeDuration;
+        
+        self.channelTitleLabel.textColor = [UIColor colorWithRed: 185.0f/ 255.0f green: 207.0f/ 255.0f blue: 216.0f/ 255.0f alpha: 1.0f];
+        self.channelCreatorLabel.textColor = [UIColor colorWithRed: 108.0f/ 255.0f green: 117.0f/ 255.0f blue: 121.0f/ 255.0f alpha: 1.0f];
+        self.channelCreatorLabel.textColor = [UIColor whiteColor];
+        self.channelCreatorLabel.text = @"xxxx";
+        self.videoTitleLabel.textColor = [UIColor whiteColor];
+    }
+
 
     // Regster video thumbnail cell
     UINib *videoThumbnailCellNib = [UINib nibWithNibName: @"SYNVideoThumbnailSmallCell"
