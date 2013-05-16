@@ -43,7 +43,7 @@
 
 @property (getter = hasTouchedChannelButton) BOOL touchedChannelButton;
 @property (nonatomic) NSInteger currentTotal;
-@property (nonatomic) NSRange currentRange;
+
 @property (nonatomic, assign) BOOL ignoreRefresh;
 @property (nonatomic, strong) NSString* currentCategoryId;
 @property (nonatomic, weak) Genre* currentGenre;

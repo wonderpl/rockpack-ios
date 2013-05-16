@@ -211,13 +211,23 @@
 #pragma mark - Search
 
 - (void) searchVideosForTerm:(NSString*)searchTerm
+                    andRange:(NSRange)range
 {
-    NSDictionary* parameters;
+    
     
     if(searchTerm == nil || [searchTerm isEqualToString:@""])
         return;
     
-    parameters = [self getLocalParamWithParams:[NSDictionary dictionaryWithObject:searchTerm forKey:@"q"]];
+    NSMutableDictionary* tempParameters = [NSMutableDictionary dictionary];
+    
+    [tempParameters setObject:searchTerm forKey:@"q"];
+    
+    [tempParameters setObject:[NSString stringWithFormat:@"%i", range.location] forKey:@"start"];
+    [tempParameters setObject:[NSString stringWithFormat:@"%i", range.length] forKey:@"size"];
+    
+    [tempParameters addEntriesFromDictionary:[self getLocalParam]];
+    
+    NSDictionary* parameters = [NSDictionary dictionaryWithDictionary:tempParameters];
     
     SYNNetworkOperationJsonObject *networkOperation =
     (SYNNetworkOperationJsonObject*)[self operationWithPath:kAPISearchVideos params:parameters];
@@ -239,16 +249,25 @@
 
 
 - (void) searchChannelsForTerm:(NSString*)searchTerm
+                      andRange:(NSRange)range
 {
     
     
-    if(!searchTerm) return;
+    if(searchTerm == nil || [searchTerm isEqualToString:@""])
+        return;
     
     
-    NSDictionary* parameters;
+    NSMutableDictionary* tempParameters = [NSMutableDictionary dictionary];
+    
+    [tempParameters setObject:searchTerm forKey:@"q"];
+    
+    [tempParameters setObject:[NSString stringWithFormat:@"%i", range.location] forKey:@"start"];
+    [tempParameters setObject:[NSString stringWithFormat:@"%i", range.length] forKey:@"size"];
+    
+    [tempParameters addEntriesFromDictionary:[self getLocalParam]];
     
     
-    parameters = [self getLocalParamWithParams:[NSDictionary dictionaryWithObject:searchTerm forKey:@"q"]];
+    NSDictionary* parameters = [NSDictionary dictionaryWithDictionary:tempParameters];
     
     SYNNetworkOperationJsonObject *networkOperation =
     (SYNNetworkOperationJsonObject*)[self operationWithPath:kAPISearchChannels params:parameters];

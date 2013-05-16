@@ -31,8 +31,11 @@
                             onCompletion:(MKNKJSONCompleteBlock)completeBlock
                                  onError:(MKNKJSONErrorBlock)errorBlock;
 
-- (void) searchVideosForTerm: (NSString*) searchTerm;
-- (void) searchChannelsForTerm: (NSString*) searchTerm;
+- (void) searchVideosForTerm:(NSString*)searchTerm
+                    andRange:(NSRange)range;
+
+- (void) searchChannelsForTerm:(NSString*)searchTerm
+                      andRange:(NSRange)range;
 
 - (void) getAutocompleteForHint: (NSString*) hint
                     forResource: (EntityType) entityType
