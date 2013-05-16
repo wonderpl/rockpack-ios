@@ -1209,7 +1209,7 @@ kChannelThumbnailDisplayModeStandard: kChannelThumbnailDisplayModeEdit;
                                                   channelId: channelId
                                           completionHandler: ^(id dictionary) {
                                               IgnoringObjects ignore = kIgnoreChannelOwnerObject;
-                                              if(isUpdate)
+                                              if(!isUpdate)
                                               {
                                                   ignore = ignore | kIgnoreStoredObjects
                                                   ;                                              }
