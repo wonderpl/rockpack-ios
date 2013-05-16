@@ -788,9 +788,6 @@ kChannelThumbnailDisplayModeStandard: kChannelThumbnailDisplayModeEdit;
 - (IBAction)editButtonTapped:(id)sender {
     if([[SYNDeviceManager sharedInstance] isIPad])
     {
-        [[NSNotificationCenter defaultCenter] postNotificationName: kNoteUpdateChannel
-                                                            object: self
-                                                          userInfo: @{kChannel:self.channel}];
         
     }
     else

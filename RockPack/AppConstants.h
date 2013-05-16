@@ -351,7 +351,6 @@ typedef enum {
 
 #define kNoteAddedToChannel         @"kNoteAddedToChannel"
 #define kNoteCreateNewChannel       @"kNoteCreateNewChannel"
-#define kNoteUpdateChannel       @"kNoteUpdateChannel"
 
 #define kNotificationMarkedRead     @"kNoteAddedToChannel"
 

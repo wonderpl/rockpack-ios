@@ -251,9 +251,7 @@ typedef void(^AnimationCompletionBlock)(BOOL finished);
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(addedToChannelAction:) name:kNoteAddedToChannel object:nil];
     
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(createNewChannelAction:) name:kNoteCreateNewChannel object:nil];
-
-    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(updateChannelAction:) name:kNoteUpdateChannel object:nil];
-
+    
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(showAccountSettingsPopover) name:kAccountSettingsPressed object:nil];
     
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(accountSettingsLogout) name:kAccountSettingsLogout object:nil];
@@ -393,22 +391,6 @@ typedef void(^AnimationCompletionBlock)(BOOL finished);
         return;
     
     // - note: channel.managedObjectContext == appDelegate.chanelsContext 
-    
-    SYNChannelDetailViewController *channelCreationVC =
-    [[SYNChannelDetailViewController alloc] initWithChannel: channel
-                                                  usingMode: kChannelDetailsModeEdit] ;
-    
-    SYNAbstractViewController* showingController = self.containerViewController.showingViewController;
-    [showingController animatedPushViewController: channelCreationVC];
-}
-
--(void)updateChannelAction:(NSNotification*)notification
-{
-    Channel* channel = (Channel*)[[notification userInfo] objectForKey: kChannel];
-    if(!channel)
-        return;
-    
-    // - note: channel.managedObjectContext == appDelegate.chanelsContext
     
     SYNChannelDetailViewController *channelCreationVC =
     [[SYNChannelDetailViewController alloc] initWithChannel: channel
