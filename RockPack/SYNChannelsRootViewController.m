@@ -28,7 +28,7 @@
 #import "Video.h"
 #import "VideoInstance.h"
 
-#define STANDARD_LENGTH 50
+#define STANDARD_LENGTH 48
 #define kChannelsCache @"ChannelsCache"
 
 @interface SYNChannelsRootViewController () <UIScrollViewDelegate, SYNChannelCategoryTableViewDelegate>
@@ -145,7 +145,7 @@
     
     startAnimationDelay = 0.0;
     
-    currentRange = NSMakeRange(0, 50);
+    currentRange = NSMakeRange(0, STANDARD_LENGTH);
     
     if(self.enableCategoryTable)
     {
