@@ -19,13 +19,12 @@
 #import <QuartzCore/CoreAnimation.h>
 #import "NSObject+Blocks.h"
 
-
 @interface SYNVideoPlaybackViewController () <UIWebViewDelegate>
-
 
 @property (nonatomic, assign) BOOL autoPlay;
 @property (nonatomic, assign) BOOL currentVideoViewedFlag;
 @property (nonatomic, assign) BOOL disableTimeUpdating;
+@property (nonatomic, assign) BOOL fadeOutScheduled;
 @property (nonatomic, assign) BOOL playFlag;
 @property (nonatomic, assign) BOOL shuttledByUser;
 @property (nonatomic, assign) CGRect requestedFrame;
@@ -36,10 +35,8 @@
 @property (nonatomic, strong) NSArray *videoInstanceArray;
 @property (nonatomic, strong) NSString *source;
 @property (nonatomic, strong) NSString *sourceId;
-@property (nonatomic, strong) NSTimer *bufferMonitoringTimer;
 @property (nonatomic, strong) NSTimer *shuttleBarUpdateTimer;
 @property (nonatomic, strong) UIButton *shuttleBarPlayPauseButton;
-@property (nonatomic, strong) UIButton *videoPlayButton;
 @property (nonatomic, strong) UIImageView *videoPlaceholderBottomImageView;
 @property (nonatomic, strong) UIImageView *videoPlaceholderMiddleImageView;
 @property (nonatomic, strong) UIImageView *videoPlaceholderTopImageView;
@@ -99,9 +96,7 @@
 
 - (void) viewDidDisappear: (BOOL) animated
 {
-    [self stopBufferMonitoringTimer];
     [self stopShuttleBarUpdateTimer];
-    
     [self stopVideo];
     self.currentVideoWebView = nil;
     
@@ -291,25 +286,6 @@
 }
 
 
-- (UIButton *) createVideoPlayButton
-{
-    UIButton *newVideoPlayButton;
-      
-    newVideoPlayButton = [UIButton buttonWithType: UIButtonTypeCustom];
-    newVideoPlayButton.frame = self.view.bounds;
-    newVideoPlayButton.backgroundColor = [UIColor clearColor];
-    
-    [newVideoPlayButton setImage: [UIImage imageNamed: @"ButtonLargeVideoPanelPlay.png"]
-                        forState: UIControlStateNormal];
-    
-    newVideoPlayButton.alpha = 1.0f;
-
-    
-    [self.view addSubview: newVideoPlayButton];
-    return newVideoPlayButton;
-}
-
-
 #pragma mark - Placeholder Animation
 
 - (void) animateVideoPlaceholder: (BOOL) animate
@@ -424,6 +400,12 @@
 
 
 #pragma mark - Source / Playlist management
+
+- (VideoInstance*) currentVideoInstance
+{
+    return (VideoInstance*)self.videoInstanceArray [self.currentSelectedIndex];
+}
+
 
 - (void) incrementVideoIndex
 {
@@ -588,7 +570,6 @@
     
     // Make sure we don't receive any shuttle bar or buffer update timer events until we have loaded the new video
     [self stopShuttleBarUpdateTimer];
-    [self stopBufferMonitoringTimer];
     
     // Reset shuttle slider
     self.shuttleSlider.value = 0.0f;
@@ -808,7 +789,6 @@
             {
                 DebugLog (@"*** Unstarted: Autoplay false - attempting to pause");
                 [self pauseVideo];
-                [self fadeUpPlayButton];
             }
             else
             {
@@ -818,9 +798,9 @@
         else if ([actionData isEqualToString: @"ended"])
         {
             DebugLog (@"*** Ended: Stopping - Fading out player & Loading next video");
-            [self fadeUpVideoPlayer];
-            [self resetPlayerAttributes];
+            [self stopShuttleBarUpdateTimer];
             [self stopVideo];
+            [self resetPlayerAttributes];
             [self loadNextVideo];
         }
         else if ([actionData isEqualToString: @"playing"])
@@ -830,16 +810,13 @@
             // If we are playing then out shuttle / pause / play cycle is over
             self.shuttledByUser = TRUE;
             
-            [self fadeOutPlayButton];
             [self fadeUpVideoPlayer];
-            [self startBufferMonitoringTimer];
             
             // Now cache the duration of this video for use in the progress updates
             self.currentDuration = self.duration;
             
             if (self.currentDuration > 0.0f)
             {
-
                 // Only start if we have a valid duration
                 [self startShuttleBarUpdateTimer];
                 self.durationLabel.text = [NSString timecodeStringFromSeconds: self.currentDuration];
@@ -855,11 +832,7 @@
             else
             {
                 DebugLog (@"*** Paused: Paused by user");
-                [self stopShuttleBarUpdateTimer];
-                [self stopBufferMonitoringTimer];
-                [self fadeUpPlayButton];
             }
-
         }
         else if ([actionData isEqualToString: @"buffering"])
         {
@@ -879,26 +852,25 @@
     }
     else if ([actionName isEqualToString: @"playbackRateChange"])
     {
-        
+        DebugLog (@"!!!!!!!!!! Playback Rate change");
     }
     else if ([actionName isEqualToString: @"error"])
     {
-        
+        DebugLog (@"!!!!!!!!!! Error");
     }
     else if ([actionName isEqualToString: @"apiChange"])
     {
-        
+        DebugLog (@"!!!!!!!!!! API change");
     }
     else if ([actionName isEqualToString: @"sizeChange"])
     {
-        NSLog (@"!!!!!!!!!! Size change: %@", actionData);
+        DebugLog (@"!!!!!!!!!! Size change");
     }
     else
     {
         AssertOrLog(@"Unexpected YTPlayer event");
     }
 }
-
 
 
 - (void) handleCurrentVimeoPlayerEventNamed: (NSString *) actionName
@@ -929,43 +901,14 @@
 }
 
 
-- (void) startBufferMonitoringTimer
-{
-    [self.bufferMonitoringTimer invalidate];
-    
-    self.bufferMonitoringTimer = [NSTimer scheduledTimerWithTimeInterval: kBufferMonitoringTimerInterval
-                                                                  target: self
-                                                                selector: @selector(monitorBufferLevel)
-                                                                userInfo: nil
-                                                                 repeats: YES];
-}
-
-
-- (void) stopBufferMonitoringTimer
-{
-    [self.bufferMonitoringTimer invalidate], self.bufferMonitoringTimer = nil;
-}
-
-
-- (void) monitorBufferLevel
+- (void) updateShuttleBarProgress
 {
     float bufferLevel = [self videoLoadedFraction];
-    NSLog (@"Buffer level %f", bufferLevel);
+//    NSLog (@"Buffer level %f", bufferLevel);
     
     // Update the progress bar under our slider
     self.bufferingProgressView.progress = bufferLevel;
     
-    // If we have a full buffer for the current video and are not already trying to buffer the next video
-    // then start to preload the next video
-    if (bufferLevel == 1.0f)
-    {
-        [self stopBufferMonitoringTimer];
-    }
-}
-
-
-- (void) updateShuttleBarProgress
-{
     // Only update the shuttle if we are playing (this should stop the shuttle bar jumping to zero
     // just after a user shuttle event)
     
@@ -981,6 +924,30 @@
     if (self.disableTimeUpdating == FALSE)
     {
         self.shuttleSlider.value = viewedPercentage;
+        
+        // We should also check to see if we are in the last 0.5 seconds of a video, and if so, trigger a fadeout
+        if (((self.currentDuration - self.currentTime) < 0.5f) && (self.fadeOutScheduled == FALSE))
+        {
+            self.fadeOutScheduled = TRUE;
+            
+            __weak typeof(self) weakSelf = self;
+            
+            [self performBlock: ^{
+                if (weakSelf.fadeOutScheduled == TRUE)
+                {
+                    weakSelf.fadeOutScheduled = FALSE;
+                    
+                    [weakSelf fadeOutVideoPlayer];
+                    DebugLog(@"***** Fadeout");
+                }
+                else
+                {
+                    DebugLog(@"***** Failed to re-trigger fadeout");
+                }
+            }
+                    afterDelay: 1.0f
+         cancelPreviousRequest: YES];
+        }
     }
     
     // Now, if we have viewed more than kPercentageThresholdForView%, then mark as viewed
@@ -1007,25 +974,7 @@
 }
 
 
-- (void) updateTimeFromSlider: (UISlider *) slider
-{
-    // Indicate that a pause event may be caused by the user shuttling
-    self.shuttledByUser = TRUE;
-    self.disableTimeUpdating = TRUE;
-    
-    // Only re-enable our upating after a certain period (to stop slider jumping)
-    [self performBlock: ^{
-        self.disableTimeUpdating = FALSE;
-    }
-            afterDelay: 1.0f
- cancelPreviousRequest: YES];
-
-    float newTime = slider.value * self.currentDuration;
-    
-    [self setCurrentTime: newTime];
-    self.currentTimeLabel.text = [NSString timecodeStringFromSeconds: newTime];
-}
-
+#pragma mark - User interaction
 
 - (void) togglePlayPause
 {
@@ -1049,75 +998,58 @@
 }
 
 
-#pragma mark - View animations
-
-- (IBAction) userTouchedPlay: (id) sender
+- (void) updateTimeFromSlider: (UISlider *) slider
 {
-    [self playVideo];
+    // Indicate that a pause event may be caused by the user shuttling
+    self.shuttledByUser = TRUE;
+    self.disableTimeUpdating = TRUE;
+    
+    // Only re-enable our upating after a certain period (to stop slider jumping)
+    [self performBlock: ^{
+        self.disableTimeUpdating = FALSE;
+    }
+            afterDelay: 1.0f
+ cancelPreviousRequest: YES];
+
+    float newTime = slider.value * self.currentDuration;
+    
+    [self setCurrentTime: newTime];
+    self.currentTimeLabel.text = [NSString timecodeStringFromSeconds: newTime];
 }
 
+
+#pragma mark - View animations
 
 // Fades up the video player, fading out any placeholder
 - (void) fadeUpVideoPlayer
 {
-    [self fadeOutPlayButton];
-    [self animateVideoPlaceholder: NO];
-    
     // Tweaked this as the QuickTime logo seems to appear otherwise
-    [UIView animateWithDuration: 0.0f
+    [UIView animateWithDuration: 0.5f
                           delay: 0.1f
                         options: UIViewAnimationOptionCurveEaseInOut
                      animations: ^ {
-                         self.currentVideoWebView.alpha = 1.0;
+                         self.currentVideoWebView.alpha = 1.0f;
+                         self.videoPlaceholderView.alpha = 0.0f;
                      }
-                     completion: nil];
+                     completion: ^(BOOL completed) {
+                         [self animateVideoPlaceholder: NO];
+                     }];
 }
 
 
 // Fades out the video player, fading in any placeholder
 - (void) fadeOutVideoPlayer
 {
-//    [self fadeOutPlayButton];
     [self animateVideoPlaceholder: YES];
     
-    // We need to remove immediately, as returns to start immediately
-    self.currentVideoWebView.alpha = 0.0f;
-}
-
-
-// Fades up the play button (enabling it when fully opaque)
-- (void) fadeUpPlayButton
-{
-    [UIView animateWithDuration: 0.25f
+    [UIView animateWithDuration: 0.5f
                           delay: 0.0f
                         options: UIViewAnimationOptionCurveEaseInOut
                      animations: ^ {
-                         self.videoPlayButton.alpha = 1.0f;
-                     }
-                     completion: ^(BOOL finished) {
-                         self.videoPlayButton.enabled = TRUE;
-                     }];
-}
-
-
-// Fades out the play button (disabling it immediately)
-- (void) fadeOutPlayButton
-{
-    self.videoPlayButton.enabled = FALSE;
-    
-    [UIView animateWithDuration: 0.25f
-                          delay: 0.0f
-                        options: UIViewAnimationOptionCurveEaseInOut
-                     animations: ^ {
-                         self.videoPlayButton.alpha = 0.0f;
+                         self.currentVideoWebView.alpha = 0.0f;
+                         self.videoPlaceholderView.alpha = 1.0f;
                      }
                      completion: nil];
-}
-
- 
-- (VideoInstance*) currentVideoInstance
-{
-    return (VideoInstance*)self.videoInstanceArray [self.currentSelectedIndex];
 }
 
 @end
