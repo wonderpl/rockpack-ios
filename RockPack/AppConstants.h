@@ -336,6 +336,8 @@ typedef enum {
 #define kShuttleBarButtonWidth          77.0f
 #define kShuttleBarSliderOffset         10.0f
 
+#define kSYNBundleFullVersion           @"FullVersion"
+
 // Channel creation
 
 #define kChannelCreationCollectionViewOffsetY           580.0f

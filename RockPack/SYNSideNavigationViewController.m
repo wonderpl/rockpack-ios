@@ -113,7 +113,7 @@ typedef enum {
     
     // Version number display
 //    NSString * appVersion = [[NSBundle mainBundle] objectForInfoDictionaryKey: @"CFBundleShortVersionString"];
-    NSString * appBuild = [[NSBundle mainBundle] objectForInfoDictionaryKey: (NSString *)kCFBundleVersionKey];
+    NSString * appBuild = [[NSBundle mainBundle] objectForInfoDictionaryKey: (NSString *)kSYNBundleFullVersion];
     
     self.versionNumberLabel.text = appBuild;
     
