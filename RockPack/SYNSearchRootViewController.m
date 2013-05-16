@@ -49,11 +49,10 @@
 -(void)loadView
 {
     
-    CGRect frame = CGRectMake(0.0, 0.0,[[SYNDeviceManager sharedInstance] currentScreenWidth],
+    CGRect frame = CGRectMake(0.0, -20.0,[[SYNDeviceManager sharedInstance] currentScreenWidth],
                                [[SYNDeviceManager sharedInstance] currentScreenHeight]);
     
     self.view = [[UIView alloc] initWithFrame:frame];
-    self.view.backgroundColor = [UIColor clearColor];
     self.view.autoresizingMask = UIViewAutoresizingFlexibleWidth| UIViewAutoresizingFlexibleHeight;
     
 }
@@ -62,7 +61,6 @@
 - (void) viewDidLoad
 {
     [super viewDidLoad];
-    
     
     
     self.videoSearchTabView = [SYNSearchTabView tabViewWithSearchType:SearchTabTypeVideos];
@@ -84,8 +82,8 @@
     [self.videoSearchTabView addTarget:self action:@selector(videoTabPressed:) forControlEvents:UIControlEventTouchUpInside];
     [self.channelsSearchTabView addTarget:self action:@selector(channelTabPressed:) forControlEvents:UIControlEventTouchUpInside];
     
-    CGFloat correctY = [[SYNDeviceManager sharedInstance] isIPad] ? 100.0 : self.channelsSearchTabView.frame.size.height/2 + 65.0f;
-    tabsContainer.center = CGPointMake(self.view.center.x, correctY);
+    CGFloat correctTabsY = [[SYNDeviceManager sharedInstance] isIPad] ? 120.0 : self.channelsSearchTabView.frame.size.height/2 + 85.0f;
+    tabsContainer.center = CGPointMake(self.view.center.x, correctTabsY);
     tabsContainer.frame = CGRectIntegral(tabsContainer.frame);
     
     
@@ -212,6 +210,9 @@
     
     // TODO: Check why we have to invert
     
+    [super viewWillAppear:animated];
+    
+    
     self.searchVideosController = [[SYNSearchVideosViewController alloc] initWithViewId:viewId];
     self.searchVideosController.itemToUpdate = self.videoSearchTabView;
     self.searchVideosController.parent = self;
@@ -233,7 +234,7 @@
     
 }
 
-// == Main Method == //
+#pragma mark - Main Search Call
 
 -(void)performSearchForCurrentSearchTerm
 {
@@ -255,7 +256,7 @@
     [self.searchChannelsController performSearchWithTerm:searchTerm];
 }
 
-
+#pragma mark - Leaving the View
 
 -(void)viewWillDisappear:(BOOL)animated
 {
@@ -288,7 +289,7 @@
 }
 
 
-
+#pragma mark - Autorotation
 
 -(void)willAnimateRotationToInterfaceOrientation:(UIInterfaceOrientation)toInterfaceOrientation duration:(NSTimeInterval)duration
 {
@@ -312,5 +313,15 @@
     [self.searchVideosController didRotateFromInterfaceOrientation:fromInterfaceOrientation];
     [self.searchChannelsController didRotateFromInterfaceOrientation:fromInterfaceOrientation];
 }
+
+
+#pragma mark - Accessor
+
+- (BOOL) needsAddButton
+{
+    return NO;
+}
+
+
 
 @end
