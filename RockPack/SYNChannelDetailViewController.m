@@ -86,6 +86,7 @@
 @property (nonatomic,strong) NSString* selectedCategoryId;
 @property (nonatomic,strong) NSString* selectedCoverId;
 @property (weak, nonatomic) IBOutlet UILabel *byLabel;
+@property (weak, nonatomic) IBOutlet UIButton *cancelEditButton;
 
 //iPhone specific
 @property (nonatomic,strong) AVURLAsset* selectedAsset;
@@ -784,18 +785,6 @@ kChannelThumbnailDisplayModeStandard: kChannelThumbnailDisplayModeEdit;
                                                         object: self
                                                       userInfo: @{ kChannel : self.channel }];
 }
-
-- (IBAction)editButtonTapped:(id)sender {
-    if([[SYNDeviceManager sharedInstance] isIPad])
-    {
-        
-    }
-    else
-    {
-        
-    }
-}
-
 - (IBAction) addButtonTapped: (id) sender
 {
     [[NSNotificationCenter defaultCenter] postNotificationName: kChannelSubscribeRequest
@@ -869,6 +858,35 @@ kChannelThumbnailDisplayModeStandard: kChannelThumbnailDisplayModeEdit;
     [self hideCoverChooser];
 }
 
+- (IBAction)editButtonTapped:(id)sender {
+    
+    [[NSNotificationCenter defaultCenter] postNotificationName: kNoteAllNavControlsHide
+                                                        object: self
+                                                      userInfo: nil];
+    
+    [self setEditControlsVisibility:YES];
+    [self.createChannelButton removeFromSuperview];
+    self.saveChannelButton.hidden = NO;
+    self.cancelEditButton.hidden = NO;
+    self.addButton.hidden = YES;
+    
+}
+
+
+- (IBAction)cancelEditTapped:(id)sender {
+    
+    [[NSNotificationCenter defaultCenter] postNotificationName: kNoteAllNavControlsShow
+                                                        object: self
+                                                      userInfo: nil];
+    
+    [self setEditControlsVisibility:NO];
+    [self displayChannelDetails];
+    self.saveChannelButton.hidden = YES;
+    self.cancelEditButton.hidden = YES;
+    self.addButton.hidden = NO;
+    
+}
+
 - (IBAction)saveChannelTapped:(id)sender {
     
     if ([[SYNDeviceManager sharedInstance] isIPhone])
@@ -881,20 +899,47 @@ kChannelThumbnailDisplayModeStandard: kChannelThumbnailDisplayModeEdit;
     self.channel.title = self.channelTitleTextView.text;
     self.channel.channelDescription = @"Test Description";
     
+    NSString* category = self.selectedCategoryId;
+    if([category length]==0)
+    {
+        category = self.channel.categoryId;
+        if(!category)
+        {
+            category = @"";
+        }
+    }
+    
+    NSString* cover = self.selectedCoverId;
+    if([cover length]==0)
+    {
+        cover = @""; //TODO: Replace with "KEEP" identifier once established by backend.
+    }
+    
     [appDelegate.oAuthNetworkEngine updateChannelForUserId:appDelegate.currentOAuth2Credentials.userId channelId:self.channel.uniqueId title: self.channel.title
                                                description: (self.channel.channelDescription)
-                                                  category: self.selectedCategoryId
-                                                     cover: self.selectedCoverId
+                                                  category: category
+                                                     cover: cover
                                                   isPublic: YES
                                          completionHandler: ^(NSDictionary* resourceCreated) {
                                              NSString* channelId = [resourceCreated objectForKey: @"id"];
+                                             [[NSNotificationCenter defaultCenter] postNotificationName: kNoteAllNavControlsShow
+                                                                                                 object: self
+                                                                                               userInfo: nil];
+                                             [self setEditControlsVisibility:NO];
+                                             self.saveChannelButton.hidden = YES;
+                                             self.cancelEditButton.hidden = YES;
                                              
-                                             [self getNewlyCreatedChannelForId:channelId];
+                                             [self getChannelForId:channelId isUpdate:YES];
                                          }
-                                              errorHandler: ^(id error) {
-                                                  
+                                              errorHandler: ^(NSDictionary* error) {
+                                                  NSDictionary* specificErrors = [error objectForKey:@"form_errors"];
+                                                  NSString* errorText = [specificErrors objectForKey:@"title"];
+                                                  if(!errorText)
+                                                  {
+                                                      errorText = @"Could not save channel. Please try again later.";
+                                                  }
                                                   DebugLog(@"Error @ saveChannelPressed:");
-                                                  NSString* errorMessage = NSLocalizedString(@"Could not save channel. Please try again later.", nil);                                                  
+                                                  NSString* errorMessage = NSLocalizedString(errorText, nil);
                                                   [self showError:errorMessage];
                                                   
                                                   
@@ -1147,7 +1192,7 @@ kChannelThumbnailDisplayModeStandard: kChannelThumbnailDisplayModeEdit;
                                                   completionHandler: ^(id response) {
                                                       // a 204 returned
                                                       
-                                                      [self getNewlyCreatedChannelForId:channelId];
+                                                      [self getChannelForId:channelId isUpdate:NO];
                                                   }
                                                        errorHandler: ^(id err) {
                                                            
@@ -1157,11 +1202,16 @@ kChannelThumbnailDisplayModeStandard: kChannelThumbnailDisplayModeEdit;
 }
 
 
-- (void) getNewlyCreatedChannelForId: (NSString*) channelId
+- (void) getChannelForId: (NSString*) channelId isUpdate:(BOOL)isUpdate
 {
     [appDelegate.oAuthNetworkEngine channelCreatedForUserId: appDelegate.currentOAuth2Credentials.userId
                                                   channelId: channelId
                                           completionHandler: ^(id dictionary) {
+                                              IgnoringObjects ignore = kIgnoreChannelOwnerObject;
+                                              if(isUpdate)
+                                              {
+                                                  ignore = ignore | kIgnoreStoredObjects
+                                                  ;                                              }
                                               Channel* createdChannel = [Channel instanceFromDictionary:dictionary
                                                                               usingManagedObjectContext:appDelegate.mainManagedObjectContext
                                                                                     ignoringObjectTypes:(kIgnoreStoredObjects | kIgnoreChannelOwnerObject)

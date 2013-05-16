@@ -235,7 +235,7 @@
 										<string key="NSFrame">{{20, 272}, {110, 44}}</string>
 										<reference key="NSSuperview" ref="421928150"/>
 										<reference key="NSWindow"/>
-										<reference key="NSNextKeyView" ref="909796301"/>
+										<reference key="NSNextKeyView" ref="682383005"/>
 										<string key="NSReuseIdentifierKey">_NS:9</string>
 										<bool key="IBUIOpaque">NO</bool>
 										<string key="targetRuntimeIdentifier">IBIPadFramework</string>
@@ -262,7 +262,7 @@
 										<reference key="IBUIFontDescription" ref="842263965"/>
 										<reference key="IBUIFont" ref="421131696"/>
 									</object>
-									<object class="IBUIButton" id="909796301">
+									<object class="IBUIButton" id="682383005">
 										<reference key="NSNextResponder" ref="421928150"/>
 										<int key="NSvFlags">268</int>
 										<string key="NSFrame">{{20, 272}, {110, 44}}</string>
@@ -666,7 +666,7 @@
 										<string key="NSFrameSize">{280, 102}</string>
 										<reference key="NSSuperview" ref="605119646"/>
 										<reference key="NSWindow"/>
-										<reference key="NSNextKeyView"/>
+										<reference key="NSNextKeyView" ref="84853107"/>
 										<string key="NSReuseIdentifierKey">_NS:9</string>
 										<reference key="IBUIBackgroundColor" ref="905238541"/>
 										<bool key="IBUIClipsSubviews">YES</bool>
@@ -706,6 +706,64 @@
 						<string key="NSReuseIdentifierKey">_NS:9</string>
 						<reference key="IBUIBackgroundColor" ref="905238541"/>
 						<string key="targetRuntimeIdentifier">IBIPadFramework</string>
+					</object>
+					<object class="IBUIButton" id="218804938">
+						<reference key="NSNextResponder" ref="453930770"/>
+						<int key="NSvFlags">-2147483359</int>
+						<string key="NSFrame">{{209, 1}, {106, 58}}</string>
+						<reference key="NSSuperview" ref="453930770"/>
+						<reference key="NSWindow"/>
+						<reference key="NSNextKeyView"/>
+						<string key="NSReuseIdentifierKey">_NS:9</string>
+						<bool key="IBUIOpaque">NO</bool>
+						<string key="targetRuntimeIdentifier">IBIPadFramework</string>
+						<int key="IBUIContentHorizontalAlignment">0</int>
+						<int key="IBUIContentVerticalAlignment">0</int>
+						<reference key="IBUIHighlightedTitleColor" ref="266444258"/>
+						<object class="NSColor" key="IBUINormalTitleColor">
+							<int key="NSColorSpace">1</int>
+							<bytes key="NSRGB">MC4xOTYwNzg0MzQ2IDAuMzA5ODAzOTMyOSAwLjUyMTU2ODY1NgA</bytes>
+						</object>
+						<reference key="IBUINormalTitleShadowColor" ref="271166090"/>
+						<object class="NSCustomResource" key="IBUIHighlightedImage">
+							<string key="NSClassName">NSImage</string>
+							<string key="NSResourceName">ButtonSaveHighlighted.png</string>
+						</object>
+						<object class="NSCustomResource" key="IBUINormalImage">
+							<string key="NSClassName">NSImage</string>
+							<string key="NSResourceName">ButtonSave.png</string>
+						</object>
+						<reference key="IBUIFontDescription" ref="842263965"/>
+						<reference key="IBUIFont" ref="421131696"/>
+					</object>
+					<object class="IBUIButton" id="84853107">
+						<reference key="NSNextResponder" ref="453930770"/>
+						<int key="NSvFlags">-2147483356</int>
+						<string key="NSFrame">{{5, 5}, {48, 49}}</string>
+						<reference key="NSSuperview" ref="453930770"/>
+						<reference key="NSWindow"/>
+						<reference key="NSNextKeyView" ref="218804938"/>
+						<string key="NSReuseIdentifierKey">_NS:9</string>
+						<bool key="IBUIOpaque">NO</bool>
+						<string key="targetRuntimeIdentifier">IBIPadFramework</string>
+						<int key="IBUIContentHorizontalAlignment">0</int>
+						<int key="IBUIContentVerticalAlignment">0</int>
+						<reference key="IBUIHighlightedTitleColor" ref="266444258"/>
+						<object class="NSColor" key="IBUINormalTitleColor">
+							<int key="NSColorSpace">1</int>
+							<bytes key="NSRGB">MC4xOTYwNzg0MzQ2IDAuMzA5ODAzOTMyOSAwLjUyMTU2ODY1NgA</bytes>
+						</object>
+						<reference key="IBUINormalTitleShadowColor" ref="271166090"/>
+						<object class="NSCustomResource" key="IBUIHighlightedImage">
+							<string key="NSClassName">NSImage</string>
+							<string key="NSResourceName">ButtonCancelHighlighted.png</string>
+						</object>
+						<object class="NSCustomResource" key="IBUINormalImage">
+							<string key="NSClassName">NSImage</string>
+							<string key="NSResourceName">ButtonCancel.png</string>
+						</object>
+						<reference key="IBUIFontDescription" ref="842263965"/>
+						<reference key="IBUIFont" ref="421131696"/>
 					</object>
 				</array>
 				<string key="NSFrameSize">{320, 548}</string>
@@ -919,9 +977,25 @@
 					<object class="IBCocoaTouchOutletConnection" key="connection">
 						<string key="label">editButton</string>
 						<reference key="source" ref="841351856"/>
-						<reference key="destination" ref="909796301"/>
+						<reference key="destination" ref="682383005"/>
 					</object>
 					<int key="connectionID">132</int>
+				</object>
+				<object class="IBConnectionRecord">
+					<object class="IBCocoaTouchOutletConnection" key="connection">
+						<string key="label">cancelEditButton</string>
+						<reference key="source" ref="841351856"/>
+						<reference key="destination" ref="84853107"/>
+					</object>
+					<int key="connectionID">135</int>
+				</object>
+				<object class="IBConnectionRecord">
+					<object class="IBCocoaTouchOutletConnection" key="connection">
+						<string key="label">saveChannelButton</string>
+						<reference key="source" ref="841351856"/>
+						<reference key="destination" ref="218804938"/>
+					</object>
+					<int key="connectionID">136</int>
 				</object>
 				<object class="IBConnectionRecord">
 					<object class="IBCocoaTouchOutletConnection" key="connection">
@@ -1041,11 +1115,29 @@
 				<object class="IBConnectionRecord">
 					<object class="IBCocoaTouchEventConnection" key="connection">
 						<string key="label">editButtonTapped:</string>
-						<reference key="source" ref="909796301"/>
+						<reference key="source" ref="682383005"/>
 						<reference key="destination" ref="841351856"/>
 						<int key="IBEventType">7</int>
 					</object>
 					<int key="connectionID">131</int>
+				</object>
+				<object class="IBConnectionRecord">
+					<object class="IBCocoaTouchEventConnection" key="connection">
+						<string key="label">saveChannelTapped:</string>
+						<reference key="source" ref="218804938"/>
+						<reference key="destination" ref="841351856"/>
+						<int key="IBEventType">7</int>
+					</object>
+					<int key="connectionID">138</int>
+				</object>
+				<object class="IBConnectionRecord">
+					<object class="IBCocoaTouchEventConnection" key="connection">
+						<string key="label">cancelEditTapped:</string>
+						<reference key="source" ref="84853107"/>
+						<reference key="destination" ref="841351856"/>
+						<int key="IBEventType">7</int>
+					</object>
+					<int key="connectionID">137</int>
 				</object>
 			</array>
 			<object class="IBMutableOrderedSet" key="objectRecords">
@@ -1075,6 +1167,8 @@
 							<reference ref="164681596"/>
 							<reference ref="1042878543"/>
 							<reference ref="1013209184"/>
+							<reference ref="84853107"/>
+							<reference ref="218804938"/>
 						</array>
 						<reference key="parent" ref="0"/>
 					</object>
@@ -1116,7 +1210,7 @@
 							<reference ref="624001696"/>
 							<reference ref="512270700"/>
 							<reference ref="226591683"/>
-							<reference ref="909796301"/>
+							<reference ref="682383005"/>
 						</array>
 						<reference key="parent" ref="793593682"/>
 						<string key="objectName">Passthrough View - Display Controls</string>
@@ -1274,9 +1368,21 @@
 					</object>
 					<object class="IBObjectRecord">
 						<int key="objectID">129</int>
-						<reference key="object" ref="909796301"/>
+						<reference key="object" ref="682383005"/>
 						<reference key="parent" ref="421928150"/>
 						<string key="objectName">Button - Edit</string>
+					</object>
+					<object class="IBObjectRecord">
+						<int key="objectID">134</int>
+						<reference key="object" ref="84853107"/>
+						<reference key="parent" ref="453930770"/>
+						<string key="objectName">Cancel Edit Button</string>
+					</object>
+					<object class="IBObjectRecord">
+						<int key="objectID">133</int>
+						<reference key="object" ref="218804938"/>
+						<reference key="parent" ref="453930770"/>
+						<string key="objectName">Button - Save channel</string>
 					</object>
 				</array>
 			</object>
@@ -1302,6 +1408,10 @@
 				<string key="129.IBPluginDependency">com.apple.InterfaceBuilder.IBCocoaTouchPlugin</string>
 				<real value="0.0" key="129.IBUIButtonInspectorSelectedStateConfigurationMetadataKey"/>
 				<string key="13.IBPluginDependency">com.apple.InterfaceBuilder.IBCocoaTouchPlugin</string>
+				<string key="133.IBPluginDependency">com.apple.InterfaceBuilder.IBCocoaTouchPlugin</string>
+				<real value="1" key="133.IBUIButtonInspectorSelectedStateConfigurationMetadataKey"/>
+				<string key="134.IBPluginDependency">com.apple.InterfaceBuilder.IBCocoaTouchPlugin</string>
+				<real value="0.0" key="134.IBUIButtonInspectorSelectedStateConfigurationMetadataKey"/>
 				<string key="2.IBPluginDependency">com.apple.InterfaceBuilder.IBCocoaTouchPlugin</string>
 				<string key="3.IBPluginDependency">com.apple.InterfaceBuilder.IBCocoaTouchPlugin</string>
 				<string key="4.CustomClassName">SYNPassthroughView</string>
@@ -1334,7 +1444,7 @@
 			<nil key="activeLocalization"/>
 			<dictionary class="NSMutableDictionary" key="localizations"/>
 			<nil key="sourceID"/>
-			<int key="maxID">132</int>
+			<int key="maxID">138</int>
 		</object>
 		<object class="IBClassDescriber" key="IBDocument.Classes">
 			<array class="NSMutableArray" key="referencedPartialClassDescriptions">
@@ -1395,70 +1505,6 @@
 				<object class="IBPartialClassDescription">
 					<string key="className">SYNChannelDetailViewController</string>
 					<string key="superclassName">SYNAbstractViewController</string>
-					<dictionary class="NSMutableDictionary" key="actions">
-						<string key="addButtonTapped:">id</string>
-						<string key="addCoverButtonTapped:">UIButton</string>
-						<string key="addItToChannelPresssed:">id</string>
-						<string key="backButtonTapped:">id</string>
-						<string key="buyButtonTapped:">id</string>
-						<string key="createChannelPressed:">id</string>
-						<string key="editButtonTapped:">id</string>
-						<string key="profileImagePressed:">UIButton</string>
-						<string key="selectCategoryButtonTapped:">UIButton</string>
-						<string key="shareChannelButtonTapped:">id</string>
-						<string key="subscribeButtonTapped:">id</string>
-						<string key="userTouchedReportConcernButton:">UIButton</string>
-					</dictionary>
-					<dictionary class="NSMutableDictionary" key="actionInfosByName">
-						<object class="IBActionInfo" key="addButtonTapped:">
-							<string key="name">addButtonTapped:</string>
-							<string key="candidateClassName">id</string>
-						</object>
-						<object class="IBActionInfo" key="addCoverButtonTapped:">
-							<string key="name">addCoverButtonTapped:</string>
-							<string key="candidateClassName">UIButton</string>
-						</object>
-						<object class="IBActionInfo" key="addItToChannelPresssed:">
-							<string key="name">addItToChannelPresssed:</string>
-							<string key="candidateClassName">id</string>
-						</object>
-						<object class="IBActionInfo" key="backButtonTapped:">
-							<string key="name">backButtonTapped:</string>
-							<string key="candidateClassName">id</string>
-						</object>
-						<object class="IBActionInfo" key="buyButtonTapped:">
-							<string key="name">buyButtonTapped:</string>
-							<string key="candidateClassName">id</string>
-						</object>
-						<object class="IBActionInfo" key="createChannelPressed:">
-							<string key="name">createChannelPressed:</string>
-							<string key="candidateClassName">id</string>
-						</object>
-						<object class="IBActionInfo" key="editButtonTapped:">
-							<string key="name">editButtonTapped:</string>
-							<string key="candidateClassName">id</string>
-						</object>
-						<object class="IBActionInfo" key="profileImagePressed:">
-							<string key="name">profileImagePressed:</string>
-							<string key="candidateClassName">UIButton</string>
-						</object>
-						<object class="IBActionInfo" key="selectCategoryButtonTapped:">
-							<string key="name">selectCategoryButtonTapped:</string>
-							<string key="candidateClassName">UIButton</string>
-						</object>
-						<object class="IBActionInfo" key="shareChannelButtonTapped:">
-							<string key="name">shareChannelButtonTapped:</string>
-							<string key="candidateClassName">id</string>
-						</object>
-						<object class="IBActionInfo" key="subscribeButtonTapped:">
-							<string key="name">subscribeButtonTapped:</string>
-							<string key="candidateClassName">id</string>
-						</object>
-						<object class="IBActionInfo" key="userTouchedReportConcernButton:">
-							<string key="name">userTouchedReportConcernButton:</string>
-							<string key="candidateClassName">UIButton</string>
-						</object>
-					</dictionary>
 					<dictionary class="NSMutableDictionary" key="outlets">
 						<string key="activityIndicator">UIActivityIndicatorView</string>
 						<string key="addCoverButton">UIButton</string>
@@ -1470,6 +1516,7 @@
 						<string key="cameraButton">UIButton</string>
 						<string key="cameraMenuPopoverController">UIPopoverController</string>
 						<string key="cameraPopoverController">UIPopoverController</string>
+						<string key="cancelEditButton">UIButton</string>
 						<string key="cancelTextInputButton">UIButton</string>
 						<string key="channelCoverImageView">UIImageView</string>
 						<string key="channelDetailsLabel">UILabel</string>
@@ -1484,6 +1531,7 @@
 						<string key="profileImageButton">UIButton</string>
 						<string key="reportConcernButton">UIButton</string>
 						<string key="reportConcernPopoverController">UIPopoverController</string>
+						<string key="saveChannelButton">UIButton</string>
 						<string key="selectCategoryButton">UIButton</string>
 						<string key="shareButton">UIButton</string>
 						<string key="subscribeButton">UIButton</string>
@@ -1529,6 +1577,10 @@
 						<object class="IBToOneOutletInfo" key="cameraPopoverController">
 							<string key="name">cameraPopoverController</string>
 							<string key="candidateClassName">UIPopoverController</string>
+						</object>
+						<object class="IBToOneOutletInfo" key="cancelEditButton">
+							<string key="name">cancelEditButton</string>
+							<string key="candidateClassName">UIButton</string>
 						</object>
 						<object class="IBToOneOutletInfo" key="cancelTextInputButton">
 							<string key="name">cancelTextInputButton</string>
@@ -1585,6 +1637,10 @@
 						<object class="IBToOneOutletInfo" key="reportConcernPopoverController">
 							<string key="name">reportConcernPopoverController</string>
 							<string key="candidateClassName">UIPopoverController</string>
+						</object>
+						<object class="IBToOneOutletInfo" key="saveChannelButton">
+							<string key="name">saveChannelButton</string>
+							<string key="candidateClassName">UIButton</string>
 						</object>
 						<object class="IBToOneOutletInfo" key="selectCategoryButton">
 							<string key="name">selectCategoryButton</string>
@@ -1643,6 +1699,8 @@
 			<string key="ButtonBack~iphone.png">{48, 49}</string>
 			<string key="ButtonBuy.png">{61, 61}</string>
 			<string key="ButtonBuyHighlighted.png">{61, 61}</string>
+			<string key="ButtonCancel.png">{60, 61}</string>
+			<string key="ButtonCancelHighlighted.png">{60, 61}</string>
 			<string key="ButtonConfirmYellowHighlighted~iphone.png">{48, 49}</string>
 			<string key="ButtonConfirmYellow~iphone.png">{48, 49}</string>
 			<string key="ButtonCoverCategoryHighlighted~iphone.png">{155, 65}</string>
@@ -1654,6 +1712,8 @@
 			<string key="ButtonReport@2x~iphone.png">{88, 88}</string>
 			<string key="ButtonReportHighlighted~iphone.png">{44, 44}</string>
 			<string key="ButtonReportSelected~iphone.png">{44, 44}</string>
+			<string key="ButtonSave.png">{130, 45}</string>
+			<string key="ButtonSaveHighlighted.png">{130, 45}</string>
 			<string key="ButtonShare.png">{61, 61}</string>
 			<string key="ButtonShareHighlighted.png">{61, 61}</string>
 			<string key="ButtonSubscribe.png">{120, 45}</string>

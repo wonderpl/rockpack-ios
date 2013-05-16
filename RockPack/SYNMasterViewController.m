@@ -243,6 +243,10 @@ typedef void(^AnimationCompletionBlock)(BOOL finished);
     
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(topRightControlsRequested:) name:kNoteTopRightControlsHide object:nil];
     
+    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(allNavControlsRequested:) name:kNoteAllNavControlsShow object:nil];
+    
+    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(allNavControlsRequested:) name:kNoteAllNavControlsHide object:nil];
+    
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(addToChannelRequested:) name:kNoteAddToChannelRequest object:nil];
     
     
@@ -676,13 +680,43 @@ typedef void(^AnimationCompletionBlock)(BOOL finished);
         return;
     if([notificationName isEqualToString:kNoteTopRightControlsShow])
     {
-        self.searchButton.hidden = YES;
-        self.sideNavigationButton.hidden = YES;
+        self.searchButton.hidden = NO;
+        self.sideNavigationButton.hidden = NO;
+        self.closeSearchButton.hidden = NO;
     }
     else
     {
+        self.searchButton.hidden = YES;
+        self.sideNavigationButton.hidden = YES;
+        self.closeSearchButton.hidden = YES;
+    }
+    
+}
+
+-(void)allNavControlsRequested:(NSNotification*) notification
+{
+    NSString* notificationName = [notification name];
+    if(!notificationName)
+        return;
+    if([notificationName isEqualToString:kNoteAllNavControlsShow])
+    {
         self.searchButton.hidden = NO;
         self.sideNavigationButton.hidden = NO;
+        self.closeSearchButton.hidden = NO;
+        self.pageTitleLabel.hidden = NO;
+        self.dotsView.hidden = NO;
+        self.movableButtonsContainer.hidden = NO;
+        self.containerViewController.scrollView .scrollEnabled = YES;
+    }
+    else
+    {
+        self.searchButton.hidden = YES;
+        self.sideNavigationButton.hidden = YES;
+        self.closeSearchButton.hidden = YES;
+        self.pageTitleLabel.hidden = YES;
+        self.dotsView.hidden = YES;
+        self.movableButtonsContainer.hidden = YES;
+        self.containerViewController.scrollView .scrollEnabled = NO;
     }
     
 }
