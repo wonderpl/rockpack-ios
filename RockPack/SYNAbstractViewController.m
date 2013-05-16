@@ -80,6 +80,11 @@
     
     appDelegate = (SYNAppDelegate *)[[UIApplication sharedApplication] delegate];
     
+    [[NSNotificationCenter defaultCenter] addObserver:self
+                                             selector:@selector(clearedLocationBoundData)
+                                                 name:kClearedLocationBoundData
+                                               object:nil];
+    
     
     if(self.needsAddButton)
     {
@@ -467,6 +472,10 @@
     DebugLog(@"WARNING: Abstract method called");
 }
 
+-(void)clearedLocationBoundData
+{
+    // to be implemented by child
+}
 - (BOOL) showSubcategories
 {
     return YES;

@@ -84,7 +84,8 @@
     [self.videoSearchTabView addTarget:self action:@selector(videoTabPressed:) forControlEvents:UIControlEventTouchUpInside];
     [self.channelsSearchTabView addTarget:self action:@selector(channelTabPressed:) forControlEvents:UIControlEventTouchUpInside];
     
-    tabsContainer.center = CGPointMake(self.view.center.x, self.channelsSearchTabView.frame.size.height/2 + 65.0f);
+    CGFloat correctY = [[SYNDeviceManager sharedInstance] isIPad] ? 100.0 : self.channelsSearchTabView.frame.size.height/2 + 65.0f;
+    tabsContainer.center = CGPointMake(self.view.center.x, correctY);
     tabsContainer.frame = CGRectIntegral(tabsContainer.frame);
     
     
@@ -124,6 +125,10 @@
 
 -(void)showVideoSearchResults
 {
+    
+    if(self.currentController == self.searchVideosController)
+        return;
+    
     SYNAbstractViewController* newController;
     BOOL hasLaidOut = self.searchVideosController.videoThumbnailCollectionView != nil;
     [self.view insertSubview:self.searchVideosController.view belowSubview:tabsContainer];
@@ -149,6 +154,9 @@
 }
 -(void)showChannelsSearchResult
 {
+    if(self.currentController == self.searchChannelsController)
+        return;
+    
     SYNAbstractViewController* newController;
     BOOL hasLaidOut = self.searchChannelsController.channelThumbnailCollectionView != nil;
     [self.view insertSubview:self.searchChannelsController.view belowSubview:tabsContainer];
@@ -156,6 +164,7 @@
     
     if(self.currentController)
         [self.currentController.view removeFromSuperview];
+    
     self.currentController = newController;
     
     if(!hasLaidOut && [[SYNDeviceManager sharedInstance] isIPhone])
@@ -218,6 +227,9 @@
     if(searchTerm)
         [self performSearchForCurrentSearchTerm];
     
+    if(!self.currentController)
+        [self videoTabPressed:nil];
+    
     
 }
 
@@ -236,8 +248,7 @@
         DebugLog(@"Could not clean Channel from search context");
     }
     
-    if(!self.currentController)
-        [self videoTabPressed:nil];
+    
     
     
     [self.searchVideosController performSearchWithTerm:searchTerm];

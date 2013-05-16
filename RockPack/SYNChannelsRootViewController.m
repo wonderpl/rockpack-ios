@@ -650,6 +650,11 @@
 
 }
 
+-(void)clearedLocationBoundData
+{
+    [self loadChannelsForGenre:nil];
+}
+
 
 #pragma mark - categories tableview
 

@@ -22,7 +22,6 @@
 #import "VideoInstance.h"
 #import "SYNDeviceManager.h"
 #import "UIImageView+WebCache.h"
-#import "SYNRefreshButton.h"
 
 @interface SYNFeedRootViewController ()
 
@@ -31,7 +30,6 @@
 @property (nonatomic, strong) NSTimer *timer;
 @property (nonatomic, strong) SYNHomeSectionHeaderView *supplementaryViewWithRefreshButton;
 @property (nonatomic, strong) UIRefreshControl *refreshControl;
-@property (nonatomic, strong) SYNRefreshButton* refreshButton;
 
 @end
 
@@ -240,6 +238,11 @@
                                                         object: self];
 }
 
+-(void)clearedLocationBoundData
+{
+    [self refreshVideoThumbnails];
+    
+}
 
 #pragma mark - Fetched results
 
