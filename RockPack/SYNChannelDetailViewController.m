@@ -343,7 +343,7 @@
                       context :nil];
     
     // We set up assets depending on whether we are in display or edit mode
-    [self setDisplayControlsVisibility: (self.mode == kChannelDetailsModeDisplay) ? TRUE: FALSE];
+    [self setDisplayControlsVisibility: self.mode == kChannelDetailsModeDisplay];
     
     // Refresh our view
     [self.videoThumbnailCollectionView reloadData];
@@ -660,8 +660,8 @@ kChannelThumbnailDisplayModeStandard: kChannelThumbnailDisplayModeEdit;
     self.displayControlsView.alpha = (visible) ? 1.0f : 0.0f;
     self.editControlsView.alpha = (visible) ? 0.0f : 1.0f;
     self.coverChooserMasterView.hidden = (visible) ? TRUE : FALSE;
-    
     self.profileImageButton.enabled = visible;
+    self.subscribeButton.hidden = (visible && [self.channel.channelOwner.uniqueId isEqualToString: appDelegate.currentUser.uniqueId]);
 }
 
 
@@ -1124,8 +1124,13 @@ kChannelThumbnailDisplayModeStandard: kChannelThumbnailDisplayModeEdit;
                                                                                               andViewId:kProfileViewId];
                                               
                                               createdChannel.channelOwner = appDelegate.currentUser;
-                                              
+                                              [self.channel removeObserver: self
+                                                                forKeyPath: kSubscribedByUserKey];
                                               self.channel = createdChannel;
+                                              [self.channel addObserver: self
+                                                             forKeyPath: kSubscribedByUserKey
+                                                                options: NSKeyValueObservingOptionNew
+                                                               context :nil];
                                               DebugLog(@"Channel: %@", createdChannel);
                                               
                                               [appDelegate saveContext:YES];
@@ -1517,21 +1522,11 @@ kChannelThumbnailDisplayModeStandard: kChannelThumbnailDisplayModeEdit;
 
 
 - (void) channelCreationComplete
-{
-    CATransition *animation = [CATransition animation];
-    
-    [animation setType: kCATransitionReveal];
-    [animation setSubtype: kCATransitionFromLeft];
-    
-    [animation setDuration: 0.30];
-    [animation setTimingFunction:
-     [CAMediaTimingFunction functionWithName:
-      kCAMediaTimingFunctionEaseInEaseOut]];
-    
-    [self.view.window.layer addAnimation: animation
-                                  forKey: nil];
+{    
+    self.channelOwnerLabel.text = appDelegate.currentUser.displayName;
     
     [self displayChannelDetails];
+
     [self setDisplayControlsVisibility:YES];
     
     if([[SYNDeviceManager sharedInstance] isIPad])
