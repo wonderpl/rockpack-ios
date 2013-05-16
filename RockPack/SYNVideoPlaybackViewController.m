@@ -304,6 +304,7 @@
     }
 }
 
+
 - (void) spinMiddlePlaceholderImageView
 {
     self.placeholderMiddleLayerAnimation = [self spinView: self.videoPlaceholderMiddleImageView
@@ -322,11 +323,11 @@
 }
 
 
+// Setup the placeholder spinning animation
 - (CABasicAnimation *) spinView: (UIView *) placeholderView
                        duration: (float) cycleTime
                       clockwise: (BOOL) clockwise
                            name: (NSString *) name
- 
 {
     CABasicAnimation *animation;
     
@@ -926,27 +927,32 @@
         self.shuttleSlider.value = viewedPercentage;
         
         // We should also check to see if we are in the last 0.5 seconds of a video, and if so, trigger a fadeout
-        if (((self.currentDuration - self.currentTime) < 0.5f) && (self.fadeOutScheduled == FALSE))
+        if ((self.currentDuration - self.currentTime) < 0.5f)
         {
-            self.fadeOutScheduled = TRUE;
+            DebugLog(@"*** In end zone");
             
-            __weak typeof(self) weakSelf = self;
-            
-            [self performBlock: ^{
-                if (weakSelf.fadeOutScheduled == TRUE)
-                {
-                    weakSelf.fadeOutScheduled = FALSE;
-                    
-                    [weakSelf fadeOutVideoPlayer];
-                    DebugLog(@"***** Fadeout");
+            if (self.fadeOutScheduled == FALSE)
+            {
+                self.fadeOutScheduled = TRUE;
+                
+                __weak typeof(self) weakSelf = self;
+                
+                [self performBlock: ^{
+                    if (weakSelf.fadeOutScheduled == TRUE)
+                    {
+                        weakSelf.fadeOutScheduled = FALSE;
+                        
+                        [weakSelf fadeOutVideoPlayer];
+                        DebugLog(@"***** Fadeout");
+                    }
+                    else
+                    {
+                        DebugLog(@"***** Failed to re-trigger fadeout");
+                    }
                 }
-                else
-                {
-                    DebugLog(@"***** Failed to re-trigger fadeout");
-                }
+                        afterDelay: 0.0f
+             cancelPreviousRequest: YES];
             }
-                    afterDelay: 1.0f
-         cancelPreviousRequest: YES];
         }
     }
     
