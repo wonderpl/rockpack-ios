@@ -77,12 +77,12 @@
     // Set the callback logic for our standard network operation 
     [networkOperation addJSONCompletionHandler: ^(id response)
      {
-         // Check to see if our response is a NSDictionary and if it has an error hash
+         // == Check to see if our response is a NSDictionary and if it has an error hash == // 
          if ([response isKindOfClass: [NSDictionary class]] && ((NSDictionary *)response[@"error"] != nil))
          {
              DebugLog(@"API Call failed: %@", response);
              
-             // Now check to see if we need to refresh the token
+             // == Now check to see if we need to refresh the token == //
              NSDictionary *responseDictionary = (NSDictionary *) response;
              NSString *reason = responseDictionary[@"error"];
              if ([reason isEqualToString: @"expired_token"] == FALSE)
@@ -195,7 +195,7 @@
     NSLog (@"Called abstract function - unexpected");
 }
 
-- (IBAction) refreshOAuthTokenWithCompletionHandler: (MKNKUserErrorBlock) completionBlock
+- (void) refreshOAuthTokenWithCompletionHandler: (MKNKUserErrorBlock) completionBlock
                                        errorHandler: (MKNKUserSuccessBlock) errorBlock
 {
     NSLog (@"Called abstract function - unexpected");

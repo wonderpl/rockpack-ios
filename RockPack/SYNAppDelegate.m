@@ -56,9 +56,9 @@ extern void instrumentObjcMessageSends(BOOL);
 {
     
     // Install our exception handler (must happen on the next turn through the event loop - as opposed to right now)
-//    [self performSelector: @selector(installUncaughtExceptionHandler)
-//               withObject: nil
-//               afterDelay: 0];
+    [self performSelector: @selector(installUncaughtExceptionHandler)
+               withObject: nil
+               afterDelay: 0];
     
     // Interesting trick to get the user agent string (so that we can send (rough) details about what platform and version of the OS
     // will be similar to... "Mozilla/5.0 (iPad; CPU OS 6_1 like Mac OS X) AppleWebKit/536.26 (KHTML, like Gecko) Mobile/10B141"
@@ -135,26 +135,43 @@ extern void instrumentObjcMessageSends(BOOL);
     
     [self.window makeKeyAndVisible];
     
-    // TODO: remove last condition and handle it in the if inside
+   
     
-    if(self.currentUser && self.currentOAuth2Credentials && ![self.currentOAuth2Credentials hasExpired]) {
+    if(self.currentUser && self.currentOAuth2Credentials) {
         
+        // If we have a user and a refresh token... // 
         if([self.currentOAuth2Credentials hasExpired]) {
             
-            // renew
+            [self.oAuthNetworkEngine refreshOAuthTokenWithCompletionHandler:^(id response) {
             
+                self.window.rootViewController = [self createAndReturnRootViewController];
+                
+            } errorHandler:^(id response) {
+                
+                self.window.rootViewController = [self createAndReturnLoginViewController];
+                
+                
+            }];
+            
+            return YES;
+            
+        // else if we have an access token // 
+        } else {
+            
+            self.window.rootViewController = [self createAndReturnRootViewController];
+            return YES;
             
         }
         
-        self.window.rootViewController = [self createAndReturnRootViewController];
-        return YES;
+        
     }
     else
     {
         self.window.rootViewController = [self createAndReturnLoginViewController];
+        return YES;
     }
     
-//    instrumentObjcMessageSends(YES); //to start
+    
     
     
     

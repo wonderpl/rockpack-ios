@@ -33,6 +33,10 @@
                           completionHandler: (MKNKUserSuccessBlock) completionBlock
                                errorHandler: (MKNKUserErrorBlock) errorBlock;
 
+- (IBAction) refreshOAuthTokenWithCompletionHandler: (MKNKUserErrorBlock) completionBlock
+                                       errorHandler: (MKNKUserSuccessBlock) errorBlock;
+
+
 - (NSDictionary *) paramsForStart: (int) start
                              size: (int) size;
 
