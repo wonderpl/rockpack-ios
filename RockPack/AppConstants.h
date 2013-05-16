@@ -200,6 +200,9 @@ typedef enum _Gender {
 // Animations
 //
 
+// Text cross-fade
+#define kTextCrossfadeDuration 0.3f
+
 // Switch label
 #define kSwitchLabelAnimation 0.25f
 
@@ -351,6 +354,9 @@ typedef enum {
 
 #define kNoteTopRightControlsShow   @"kNoteTopRightControlsShow"
 #define kNoteTopRightControlsHide   @"kNoteTopRightControlsHide"
+
+#define kNoteAllNavControlsShow     @"kNoteAllNavControlsShow"
+#define kNoteAllNavControlsHide     @"kNoteAllNavControlsHide"
 
 #define kNoteStarButtonPressed      @"kNoteStarButtonPressed"
 #define kNoteAddToChannelRequest    @"kNoteAddToChannelRequest"

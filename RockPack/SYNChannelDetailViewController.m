@@ -47,12 +47,14 @@
 @property (nonatomic, strong) IBOutlet UIButton *buyButton;
 @property (nonatomic, strong) IBOutlet UIButton *cameraButton;
 @property (nonatomic, strong) IBOutlet UIButton *createChannelButton;
+@property (weak, nonatomic) IBOutlet UIButton *saveChannelButton;
 @property (nonatomic, strong) IBOutlet UIButton *shareButton;
 @property (nonatomic, strong) IBOutlet UIButton* addCoverButton;
 @property (nonatomic, strong) IBOutlet UIButton* profileImageButton;
 @property (nonatomic, strong) IBOutlet UIButton* reportConcernButton;
 @property (nonatomic, strong) IBOutlet UIButton* selectCategoryButton;
 @property (nonatomic, strong) IBOutlet UIButton* subscribeButton;
+@property (weak, nonatomic) IBOutlet UIButton *editButton;
 
 @property (nonatomic, strong) IBOutlet UIImageView *avatarImageView;
 @property (nonatomic, strong) IBOutlet UIImageView *channelCoverImageView;
@@ -84,6 +86,7 @@
 @property (nonatomic,strong) NSString* selectedCategoryId;
 @property (nonatomic,strong) NSString* selectedCoverId;
 @property (weak, nonatomic) IBOutlet UILabel *byLabel;
+@property (weak, nonatomic) IBOutlet UIButton *cancelEditButton;
 
 //iPhone specific
 @property (nonatomic,strong) AVURLAsset* selectedAsset;
@@ -143,6 +146,9 @@
     // Add Rockpack font and shadow to UITextView
     self.channelTitleTextView.font = [UIFont rockpackFontOfSize: self.channelTitleTextView.font.pointSize];
     [self addShadowToLayer: self.channelTitleTextView.layer];
+    
+    // Display 'Done' instead of 'Return' on Keyboard
+    self.channelTitleTextView.returnKeyType = UIReturnKeyDone;
     
     // Needed for shadows to work
     self.channelTitleTextView.backgroundColor = [UIColor clearColor];
@@ -663,6 +669,7 @@ kChannelThumbnailDisplayModeStandard: kChannelThumbnailDisplayModeEdit;
     self.coverChooserMasterView.hidden = (visible) ? TRUE : FALSE;
     self.profileImageButton.enabled = visible;
     self.subscribeButton.hidden = (visible && [self.channel.channelOwner.uniqueId isEqualToString: appDelegate.currentUser.uniqueId]);
+    self.editButton.hidden = (visible && ! [self.channel.channelOwner.uniqueId isEqualToString: appDelegate.currentUser.uniqueId]);
 }
 
 
@@ -782,8 +789,6 @@ kChannelThumbnailDisplayModeStandard: kChannelThumbnailDisplayModeEdit;
                                                         object: self
                                                       userInfo: @{ kChannel : self.channel }];
 }
-
-
 - (IBAction) addButtonTapped: (id) sender
 {
     [[NSNotificationCenter defaultCenter] postNotificationName: kChannelSubscribeRequest
@@ -857,6 +862,96 @@ kChannelThumbnailDisplayModeStandard: kChannelThumbnailDisplayModeEdit;
     [self hideCoverChooser];
 }
 
+- (IBAction)editButtonTapped:(id)sender {
+    
+    [[NSNotificationCenter defaultCenter] postNotificationName: kNoteAllNavControlsHide
+                                                        object: self
+                                                      userInfo: nil];
+    
+    [self setEditControlsVisibility:YES];
+    [self.createChannelButton removeFromSuperview];
+    self.saveChannelButton.hidden = NO;
+    self.cancelEditButton.hidden = NO;
+    self.addButton.hidden = YES;
+    
+}
+
+
+- (IBAction)cancelEditTapped:(id)sender {
+    
+    [[NSNotificationCenter defaultCenter] postNotificationName: kNoteAllNavControlsShow
+                                                        object: self
+                                                      userInfo: nil];
+    
+    [self setEditControlsVisibility:NO];
+    [self displayChannelDetails];
+    self.saveChannelButton.hidden = YES;
+    self.cancelEditButton.hidden = YES;
+    self.addButton.hidden = NO;
+    
+}
+
+- (IBAction)saveChannelTapped:(id)sender {
+    
+    if ([[SYNDeviceManager sharedInstance] isIPhone])
+    {
+        self.saveChannelButton.hidden = YES;
+        self.activityIndicator.hidden = NO;
+        [self.activityIndicator startAnimating];
+    }
+    
+    self.channel.title = self.channelTitleTextView.text;
+    self.channel.channelDescription = @"Test Description";
+    
+    NSString* category = self.selectedCategoryId;
+    if([category length]==0)
+    {
+        category = self.channel.categoryId;
+        if(!category)
+        {
+            category = @"";
+        }
+    }
+    
+    NSString* cover = self.selectedCoverId;
+    if([cover length]==0)
+    {
+        cover = @""; //TODO: Replace with "KEEP" identifier once established by backend.
+    }
+    
+    [appDelegate.oAuthNetworkEngine updateChannelForUserId:appDelegate.currentOAuth2Credentials.userId channelId:self.channel.uniqueId title: self.channel.title
+                                               description: (self.channel.channelDescription)
+                                                  category: category
+                                                     cover: cover
+                                                  isPublic: YES
+                                         completionHandler: ^(NSDictionary* resourceCreated) {
+                                             NSString* channelId = [resourceCreated objectForKey: @"id"];
+                                             [[NSNotificationCenter defaultCenter] postNotificationName: kNoteAllNavControlsShow
+                                                                                                 object: self
+                                                                                               userInfo: nil];
+                                             [self setEditControlsVisibility:NO];
+                                             self.saveChannelButton.hidden = YES;
+                                             self.cancelEditButton.hidden = YES;
+                                             
+                                             [self getChannelForId:channelId isUpdate:YES];
+                                         }
+                                              errorHandler: ^(NSDictionary* error) {
+                                                  NSDictionary* specificErrors = [error objectForKey:@"form_errors"];
+                                                  NSString* errorText = [specificErrors objectForKey:@"title"];
+                                                  if(!errorText)
+                                                  {
+                                                      errorText = @"Could not save channel. Please try again later.";
+                                                  }
+                                                  DebugLog(@"Error @ saveChannelPressed:");
+                                                  NSString* errorMessage = NSLocalizedString(errorText, nil);
+                                                  [self showError:errorMessage];
+                                                  
+                                                  
+                                              }];
+
+    
+    
+}
 
 #pragma mark - Cover choice
 
@@ -1101,7 +1196,7 @@ kChannelThumbnailDisplayModeStandard: kChannelThumbnailDisplayModeEdit;
                                                   completionHandler: ^(id response) {
                                                       // a 204 returned
                                                       
-                                                      [self getNewlyCreatedChannelForId:channelId];
+                                                      [self getChannelForId:channelId isUpdate:NO];
                                                   }
                                                        errorHandler: ^(id err) {
                                                            
@@ -1111,11 +1206,16 @@ kChannelThumbnailDisplayModeStandard: kChannelThumbnailDisplayModeEdit;
 }
 
 
-- (void) getNewlyCreatedChannelForId: (NSString*) channelId
+- (void) getChannelForId: (NSString*) channelId isUpdate:(BOOL)isUpdate
 {
     [appDelegate.oAuthNetworkEngine channelCreatedForUserId: appDelegate.currentOAuth2Credentials.userId
                                                   channelId: channelId
                                           completionHandler: ^(id dictionary) {
+                                              IgnoringObjects ignore = kIgnoreChannelOwnerObject;
+                                              if(!isUpdate)
+                                              {
+                                                  ignore = ignore | kIgnoreStoredObjects
+                                                  ;                                              }
                                               Channel* createdChannel = [Channel instanceFromDictionary:dictionary
                                                                               usingManagedObjectContext:appDelegate.mainManagedObjectContext
                                                                                     ignoringObjectTypes:(kIgnoreStoredObjects | kIgnoreChannelOwnerObject)

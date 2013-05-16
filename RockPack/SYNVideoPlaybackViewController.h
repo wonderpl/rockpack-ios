@@ -11,9 +11,10 @@
 #import "VideoInstance.h"
 #import <UIKit/UIKit.h>
 
-// Forward declaration for
+typedef void (^SYNVideoIndexUpdater)(int);
+
+// Forward declarations
 @class SYNVideoPlaybackViewController;
-@class NSFetchedResultsController;
 
 @interface SYNVideoPlaybackViewController : GAITrackedViewController
 
@@ -23,7 +24,8 @@
 @property (nonatomic, strong) VideoInstance* currentVideoInstance;
 
 // Initialisation
-- (id) initWithFrame: (CGRect) frame;
+- (id) initWithFrame: (CGRect) frame
+        indexUpdater: (SYNVideoIndexUpdater) indexUpdater;
 
 - (void) setPlaylist: (NSArray *) playlistArray
        selectedIndex: (int) selectedIndex

@@ -36,6 +36,7 @@
 @property (nonatomic, strong) NSString *source;
 @property (nonatomic, strong) NSString *sourceId;
 @property (nonatomic, strong) NSTimer *shuttleBarUpdateTimer;
+@property (nonatomic, strong) SYNVideoIndexUpdater indexUpdater;
 @property (nonatomic, strong) UIButton *shuttleBarPlayPauseButton;
 @property (nonatomic, strong) UIImageView *videoPlaceholderBottomImageView;
 @property (nonatomic, strong) UIImageView *videoPlaceholderMiddleImageView;
@@ -46,6 +47,7 @@
 @property (nonatomic, strong) UISlider *shuttleSlider;
 @property (nonatomic, strong) UIView *videoPlaceholderView;
 @property (nonatomic, strong) UIWebView *currentVideoWebView;
+
 @end
 
 
@@ -56,10 +58,12 @@
 #pragma mark - Initialization
 
 - (id) initWithFrame: (CGRect) frame
+        indexUpdater: (SYNVideoIndexUpdater) indexUpdater;
 {
     if ((self = [super init]))
     {
         self.requestedFrame = frame;
+        self.indexUpdater = indexUpdater;
     }
     
     return self;
@@ -304,6 +308,7 @@
     }
 }
 
+
 - (void) spinMiddlePlaceholderImageView
 {
     self.placeholderMiddleLayerAnimation = [self spinView: self.videoPlaceholderMiddleImageView
@@ -322,11 +327,11 @@
 }
 
 
+// Setup the placeholder spinning animation
 - (CABasicAnimation *) spinView: (UIView *) placeholderView
                        duration: (float) cycleTime
                       clockwise: (BOOL) clockwise
                            name: (NSString *) name
- 
 {
     CABasicAnimation *animation;
     
@@ -517,6 +522,9 @@
 {
     [self incrementVideoIndex];
     [self loadCurrentVideoWebView];
+    
+    // Call index updater block
+    self.indexUpdater(self.currentSelectedIndex);
 }
 
 
@@ -926,27 +934,32 @@
         self.shuttleSlider.value = viewedPercentage;
         
         // We should also check to see if we are in the last 0.5 seconds of a video, and if so, trigger a fadeout
-        if (((self.currentDuration - self.currentTime) < 0.5f) && (self.fadeOutScheduled == FALSE))
+        if ((self.currentDuration - self.currentTime) < 0.5f)
         {
-            self.fadeOutScheduled = TRUE;
+            DebugLog(@"*** In end zone");
             
-            __weak typeof(self) weakSelf = self;
-            
-            [self performBlock: ^{
-                if (weakSelf.fadeOutScheduled == TRUE)
-                {
-                    weakSelf.fadeOutScheduled = FALSE;
-                    
-                    [weakSelf fadeOutVideoPlayer];
-                    DebugLog(@"***** Fadeout");
+            if (self.fadeOutScheduled == FALSE)
+            {
+                self.fadeOutScheduled = TRUE;
+                
+                __weak typeof(self) weakSelf = self;
+                
+                [self performBlock: ^{
+                    if (weakSelf.fadeOutScheduled == TRUE)
+                    {
+                        weakSelf.fadeOutScheduled = FALSE;
+                        
+                        [weakSelf fadeOutVideoPlayer];
+                        DebugLog(@"***** Fadeout");
+                    }
+                    else
+                    {
+                        DebugLog(@"***** Failed to re-trigger fadeout");
+                    }
                 }
-                else
-                {
-                    DebugLog(@"***** Failed to re-trigger fadeout");
-                }
+                        afterDelay: 0.0f
+             cancelPreviousRequest: YES];
             }
-                    afterDelay: 1.0f
-         cancelPreviousRequest: YES];
         }
     }
     
@@ -1025,23 +1038,20 @@
 {
     // Tweaked this as the QuickTime logo seems to appear otherwise
     [UIView animateWithDuration: 0.5f
-                          delay: 0.1f
+                          delay: 1.0f
                         options: UIViewAnimationOptionCurveEaseInOut
                      animations: ^ {
                          self.currentVideoWebView.alpha = 1.0f;
                          self.videoPlaceholderView.alpha = 0.0f;
                      }
                      completion: ^(BOOL completed) {
-                         [self animateVideoPlaceholder: NO];
                      }];
 }
 
 
 // Fades out the video player, fading in any placeholder
 - (void) fadeOutVideoPlayer
-{
-    [self animateVideoPlaceholder: YES];
-    
+{    
     [UIView animateWithDuration: 0.5f
                           delay: 0.0f
                         options: UIViewAnimationOptionCurveEaseInOut

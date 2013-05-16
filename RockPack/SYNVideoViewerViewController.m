@@ -6,6 +6,7 @@
 //  Copyright (c) 2013 Nick Banks. All rights reserved.
 //
 
+#import "BBCyclingLabel.h"
 #import "Channel.h"
 #import "ChannelCover.h"
 #import "ChannelOwner.h"
@@ -45,9 +46,9 @@
 @property (nonatomic, strong) IBOutlet UICollectionView *videoThumbnailCollectionView;
 @property (nonatomic, strong) IBOutlet UIImageView *channelThumbnailImageView;
 @property (nonatomic, strong) IBOutlet UIImageView *panelImageView;
-@property (nonatomic, strong) IBOutlet UILabel *channelCreatorLabel;
-@property (nonatomic, strong) IBOutlet UILabel *channelTitleLabel;
-@property (nonatomic, strong) IBOutlet UILabel *videoTitleLabel;
+@property (nonatomic, strong) IBOutlet BBCyclingLabel *channelCreatorLabel;
+@property (nonatomic, strong) IBOutlet BBCyclingLabel *channelTitleLabel;
+@property (nonatomic, strong) IBOutlet BBCyclingLabel *videoTitleLabel;
 @property (nonatomic, strong) IBOutlet UIView *swipeView;
 @property (nonatomic, strong) NSArray *videoInstanceArray;
 @property (nonatomic, strong) SYNReportConcernTableViewController *reportConcernTableViewController;
@@ -87,10 +88,41 @@
     BOOL isIPhone = [[SYNDeviceManager sharedInstance] isIPhone];
         BOOL isLandscape = [[SYNDeviceManager sharedInstance] isLandscape];
     
-    // Set custom fonts
-    self.channelTitleLabel.font = [UIFont rockpackFontOfSize: self.channelTitleLabel.font.pointSize];
-    self.channelCreatorLabel.font = [UIFont rockpackFontOfSize: self.channelCreatorLabel.font.pointSize];
-    self.videoTitleLabel.font = [UIFont boldRockpackFontOfSize: self.videoTitleLabel.font.pointSize];
+    if (isIPhone)
+    {
+        // Set custom fonts
+        self.channelTitleLabel.font = [UIFont rockpackFontOfSize: 12.0f];
+        self.channelCreatorLabel.font = [UIFont rockpackFontOfSize: 10.0f];
+        self.videoTitleLabel.font = [UIFont boldRockpackFontOfSize: 16.0f];
+        
+        // Cross-face transitions
+        self.channelTitleLabel.transitionDuration = kTextCrossfadeDuration;
+        self.channelCreatorLabel.transitionDuration = kTextCrossfadeDuration;
+        self.videoTitleLabel.transitionDuration = kTextCrossfadeDuration;
+        
+        self.channelTitleLabel.textColor = [UIColor colorWithRed: 234.0f/ 255.0f green: 234.0f/ 255.0f blue: 234.0f/ 255.0f alpha: 1.0f];
+        self.channelCreatorLabel.textColor  = [UIColor colorWithRed: 234.0f/ 255.0f green: 234.0f/ 255.0f blue: 234.0f/ 255.0f alpha: 1.0f];
+        self.videoTitleLabel.textColor = [UIColor whiteColor];
+    }
+    else
+    {
+        // Set custom fonts
+        self.channelTitleLabel.font = [UIFont rockpackFontOfSize: 15.0f];
+        self.channelCreatorLabel.font = [UIFont rockpackFontOfSize: 12.0f];
+        self.videoTitleLabel.font = [UIFont boldRockpackFontOfSize: 25.0f];
+        
+        // Cross-face transitions
+        self.channelTitleLabel.transitionDuration = kTextCrossfadeDuration;
+        self.channelCreatorLabel.transitionDuration = kTextCrossfadeDuration;
+        self.videoTitleLabel.transitionDuration = kTextCrossfadeDuration;
+        
+        self.channelTitleLabel.textColor = [UIColor colorWithRed: 185.0f/ 255.0f green: 207.0f/ 255.0f blue: 216.0f/ 255.0f alpha: 1.0f];
+        self.channelCreatorLabel.textColor = [UIColor colorWithRed: 108.0f/ 255.0f green: 117.0f/ 255.0f blue: 121.0f/ 255.0f alpha: 1.0f];
+        self.channelCreatorLabel.textColor = [UIColor whiteColor];
+        self.channelCreatorLabel.text = @"xxxx";
+        self.videoTitleLabel.textColor = [UIColor whiteColor];
+    }
+
 
     // Regster video thumbnail cell
     UINib *videoThumbnailCellNib = [UINib nibWithNibName: @"SYNVideoThumbnailSmallCell"
@@ -152,7 +184,16 @@
     [videoView insertSubview: self.blackPanelView
                 aboveSubview: self.panelImageView];
     
-    self.videoPlaybackViewController = [[SYNVideoPlaybackViewController alloc] initWithFrame: videoFrame];
+    self.videoPlaybackViewController = [[SYNVideoPlaybackViewController alloc] initWithFrame: videoFrame
+                                                                                indexUpdater: ^(int newIndex){
+                                                                                    self.currentSelectedIndex = newIndex;
+                                                                                    [self updateVideoDetailsForIndex: self.currentSelectedIndex];
+                                                                                    
+                                                                                    // We need to scroll the current thumbnail before the view appears (with no animation)
+                                                                                    [self scrollToCellAtIndex: self.currentSelectedIndex
+                                                                                                     animated: YES];
+                                                                                }];
+    
     self.videoPlaybackViewController.view.autoresizingMask = UIViewAutoresizingNone;
 
     [videoView insertSubview: self.videoPlaybackViewController.view
