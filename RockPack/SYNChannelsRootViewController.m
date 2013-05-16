@@ -235,6 +235,9 @@
 
 - (void) loadMoreChannels: (UIButton*) sender
 {
+    
+    // (UIButton*) sender can be nil when called directly //
+    
     NSInteger nextStart = currentRange.location + currentRange.length;
     NSInteger nextSize = (nextStart + STANDARD_LENGTH) > currentTotal ? (currentTotal - nextStart) : STANDARD_LENGTH;
     
@@ -350,6 +353,15 @@
     
     SYNChannelThumbnailCell *channelThumbnailCell = [collectionView dequeueReusableCellWithReuseIdentifier: @"SYNChannelThumbnailCell"
                                                                                               forIndexPath: indexPath];
+    
+    // == Infinite Scrolling Support == //
+    
+    if(indexPath.row == self.channels.count)
+    {
+        [self loadMoreChannels:nil];
+    }
+    
+    
 
     [channelThumbnailCell.imageView setImageWithURL: [NSURL URLWithString: channel.channelCover.imageLargeUrl]
                                    placeholderImage: [UIImage imageNamed: @"PlaceholderChannelThumbnail.png"]
