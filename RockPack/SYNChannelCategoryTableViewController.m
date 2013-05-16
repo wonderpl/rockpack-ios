@@ -111,6 +111,8 @@
     NSSortDescriptor *sortDescriptor = [[NSSortDescriptor alloc] initWithKey: @"priority" ascending:NO];
     [categoriesFetchRequest setSortDescriptors:@[sortDescriptor]];
     
+    categoriesFetchRequest.includesSubentities = NO;
+    
     
     NSError* error;
     
