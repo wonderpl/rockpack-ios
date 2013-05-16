@@ -623,23 +623,6 @@
 }
 
 
-//- (BOOL) checkAndSaveRegisteredUser: (SYNOAuth2Credential*) credential
-//{
-//    User* newUser = appDelegate.currentUser;
-//    
-//    if (!newUser)
-//    {
-//        // problem
-//        DebugLog(@"The user was not registered correctly...");
-//        return NO;
-//    }
-//    
-//    appDelegate.currentOAuth2Credentials = credential;
-//    
-//    [SYNActivityManager.sharedInstance updateActivityForCurrentUser];
-//    
-//    return YES;
-//}
 
 
 - (IBAction) doLogin: (id) sender
@@ -908,6 +891,8 @@
         return NO;
     }
     
+    // == Check for date == // 
+    
     if (ddInputField.text.length != 2 || mmInputField.text.length != 2 || yyyyInputField.text.length != 4)
     {
         [self placeErrorLabel: NSLocalizedString(@"Date Invalid", nil)
@@ -918,7 +903,8 @@
         return NO;
     }
     
-    // == Check wether the fields contain numbers == //
+    // == Check wether the DOB fields contain numbers == //
+    
     NSNumberFormatter* numberFormatter = [[NSNumberFormatter alloc] init];
     NSArray* dobTextFields = @[mmInputField, ddInputField, yyyyInputField];
     for (UITextField* dobField in dobTextFields)
@@ -938,7 +924,8 @@
     [dateFormatter setDateFormat: @"yyyy-MM-dd"];
     NSDate* potentialDate = [dateFormatter dateFromString: [self dateStringFromCurrentInput]];
     
-    // not a real date
+    // == Not a real date == //
+    
     if(!potentialDate)
     {
         [self placeErrorLabel: NSLocalizedString(@"The Date is not Valid", nil)
@@ -946,6 +933,35 @@
         
         return NO;
     }
+    
+    NSDate* nowDate = [NSDate date];
+    
+    // == In the future == //
+    
+    if ([nowDate compare:potentialDate] == NSOrderedAscending) {
+        [self placeErrorLabel: NSLocalizedString(@"The Date is in the future", nil)
+                   nextToView: dobView];
+        
+        return NO;
+    }
+    
+    // == Yonger than 13 == //
+    
+    
+    NSCalendar* gregorian = [[NSCalendar alloc] initWithCalendarIdentifier:NSGregorianCalendar];
+    NSDateComponents* nowDateComponents = [gregorian components:(NSYearCalendarUnit) fromDate:nowDate];
+    nowDateComponents.year -= 13;
+    
+    NSDate* tooYoungDate = [gregorian dateFromComponents:nowDateComponents];
+    
+    if([tooYoungDate compare:potentialDate] == NSOrderedAscending) {
+        
+        [self placeErrorLabel: NSLocalizedString(@"Cannot create an account for under 13", nil)
+                   nextToView: dobView];
+        
+        return NO;
+    }
+    
 
     return YES;
 }
