@@ -135,26 +135,43 @@ extern void instrumentObjcMessageSends(BOOL);
     
     [self.window makeKeyAndVisible];
     
-    // TODO: remove last condition and handle it in the if inside
+   
     
-    if(self.currentUser && self.currentOAuth2Credentials && ![self.currentOAuth2Credentials hasExpired]) {
+    if(self.currentUser && self.currentOAuth2Credentials) {
         
+        // If we have a user and a refresh token... // 
         if([self.currentOAuth2Credentials hasExpired]) {
             
-            // renew
+            [self.oAuthNetworkEngine refreshOAuthTokenWithCompletionHandler:^(id response) {
             
+                self.window.rootViewController = [self createAndReturnRootViewController];
+                
+            } errorHandler:^(id response) {
+                
+                self.window.rootViewController = [self createAndReturnLoginViewController];
+                
+                
+            }];
+            
+            return YES;
+            
+        // else if we have an access token // 
+        } else {
+            
+            self.window.rootViewController = [self createAndReturnRootViewController];
+            return YES;
             
         }
         
-        self.window.rootViewController = [self createAndReturnRootViewController];
-        return YES;
+        
     }
     else
     {
         self.window.rootViewController = [self createAndReturnLoginViewController];
+        return YES;
     }
     
-//    instrumentObjcMessageSends(YES); //to start
+    
     
     
     
