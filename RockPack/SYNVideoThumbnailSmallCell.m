@@ -71,8 +71,7 @@
 
 - (void) setVideoImageViewImage: (NSString*) imageURLString
 {
-    __weak SYNVideoThumbnailSmallCell *weakSelf = self;
-    
+    __weak typeof(self) weakSelf = self;
     __block BOOL cancelled = NO;
     
 //    [self.profileImageView setImageWithURL: [NSURL URLWithString: channelOwner.thumbnailURL]
