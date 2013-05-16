@@ -192,7 +192,7 @@
     
 }
 
-#pragma mark - Load Channels
+#pragma mark - Loading of Channels
 
 -(void)loadChannelsForGenre:(Genre*)genre
 {
@@ -218,8 +218,8 @@
                                                       currentTotal = [totalNumber integerValue];
                                                       
                                                       BOOL registryResultOk = [appDelegate.mainRegistry registerChannelsFromDictionary:response
-                                                                                                                                       forGenre:genre
-                                                                                                                                    byAppending:append];
+                                                                                                                              forGenre:genre
+                                                                                                                           byAppending:append];
                                                       if (!registryResultOk)
                                                       {
                                                           DebugLog(@"Registration of Channel Failed for: %@", currentCategoryId);
@@ -231,6 +231,17 @@
                                                   } onError: ^(NSDictionary* errorInfo) {
                                                       DebugLog(@"Could not load channels: %@", errorInfo);
                                                   }];
+}
+
+- (void) loadMoreChannels: (UIButton*) sender
+{
+    NSInteger nextStart = currentRange.location + currentRange.length;
+    NSInteger nextSize = (nextStart + STANDARD_LENGTH) > currentTotal ? (currentTotal - nextStart) : STANDARD_LENGTH;
+    
+    currentRange = NSMakeRange(nextStart, nextSize);
+    
+    
+    [self loadChannelsForGenre:currentGenre byAppending:YES];
 }
 
 -(void)displayChannelsForGenre:(Genre*)genre
@@ -416,18 +427,7 @@
 }
 
 
-#pragma mark - Button Actions
 
-- (void) loadMoreChannels: (UIButton*) sender
-{
-    NSInteger nextStart = currentRange.location + currentRange.length;
-    NSInteger nextSize = (nextStart + STANDARD_LENGTH) > currentTotal ? (currentTotal - nextStart) : STANDARD_LENGTH;
-    
-    currentRange = NSMakeRange(nextStart, nextSize);
-    
-    
-    [self loadChannelsForGenre:currentGenre byAppending:YES];
-}
 
 
 #ifdef ALLOWS_PINCH_GESTURES
