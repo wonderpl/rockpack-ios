@@ -80,7 +80,19 @@
         {
             return 1;
         }
+            
         case 1:
+        {
+            if(self.channelCoverFetchedResultsController.sections.count > 1)
+            {
+                sectionInfo = self.channelCoverFetchedResultsController.sections [1];
+                return sectionInfo.numberOfObjects;
+            }
+            return 0;
+        }
+            break;
+            
+        case 2:
         {
             if(self.channelCoverFetchedResultsController.sections.count > 0)
             {
@@ -90,19 +102,7 @@
             return 0;
             
         }
-        break;
-            
-        case 2:
-        {
-            if(self.channelCoverFetchedResultsController.sections.count > 1)
-            {
-                sectionInfo = self.channelCoverFetchedResultsController.sections [1];
-                return sectionInfo.numberOfObjects;
-            }
-            return 0;
-        }
-        break;
-            
+        break;       
     }
     
     return 0;
@@ -132,19 +132,6 @@
             
         case 1:
         {
-            // User channel covers
-            CoverArt *coverArt = [self.channelCoverFetchedResultsController objectAtIndexPath: [NSIndexPath indexPathForRow: indexPath.row
-                                                                                                                      inSection: 0]];
-            
-            [coverThumbnailCell.coverImageView setImageWithURL: [NSURL URLWithString: coverArt.thumbnailURL]
-                                              placeholderImage: [UIImage imageNamed: @"PlaceholderChannelCoverThumbnail.png"]
-                                                       options: SDWebImageRetryFailed];
-            return coverThumbnailCell;
-        }
-        break;
-            
-        case 2:
-        {
             // Rockpack channel covers
             CoverArt *coverArt = [self.channelCoverFetchedResultsController objectAtIndexPath: [NSIndexPath indexPathForRow: indexPath.row
                                                                                                                   inSection: 1]];
@@ -154,8 +141,20 @@
                                                        options: SDWebImageRetryFailed];
             return coverThumbnailCell;
         }
-        break;
+            break;
             
+        case 2:
+        {
+            // User channel covers
+            CoverArt *coverArt = [self.channelCoverFetchedResultsController objectAtIndexPath: [NSIndexPath indexPathForRow: indexPath.row
+                                                                                                                      inSection: 0]];
+            
+            [coverThumbnailCell.coverImageView setImageWithURL: [NSURL URLWithString: coverArt.thumbnailURL]
+                                              placeholderImage: [UIImage imageNamed: @"PlaceholderChannelCoverThumbnail.png"]
+                                                       options: SDWebImageRetryFailed];
+            return coverThumbnailCell;
+        }
+        break;      
     }
     
     return nil;
@@ -183,30 +182,26 @@
             
         case 1:
         {
-            // User channel covers
-            CoverArt *coverArt = [self.channelCoverFetchedResultsController objectAtIndexPath: [NSIndexPath indexPathForRow: indexPath.row
-                                                                                                                  inSection: 0]];
-            imageURLString = coverArt.thumbnailURL;
-        }
-        break;
-            
-        case 2:
-        {
             // Rockpack channel covers
             CoverArt *coverArt = [self.channelCoverFetchedResultsController objectAtIndexPath: [NSIndexPath indexPathForRow: indexPath.row
                                                                                                                   inSection: 1]];
             imageURLString = coverArt.thumbnailURL;
         }
-        break;
+            break;
             
-        
+        case 2:
+        {
+            // User channel covers
+            CoverArt *coverArt = [self.channelCoverFetchedResultsController objectAtIndexPath: [NSIndexPath indexPathForRow: indexPath.row
+                                                                                                                  inSection: 0]];
+            imageURLString = coverArt.thumbnailURL;
+        }
+        break;  
     }
     
     [[NSNotificationCenter defaultCenter] postNotificationName:kCoverArtChanged
                                                         object:self
                                                       userInfo:@{kCoverArt:imageURLString}];
-    
- 
 }
 
 
@@ -224,12 +219,11 @@
                                       inManagedObjectContext: appDelegate.mainManagedObjectContext];
     
     
-    fetchRequest.sortDescriptors = @[[[NSSortDescriptor alloc] initWithKey: @"position" ascending: YES],
-                                     [[NSSortDescriptor alloc] initWithKey: @"ordering" ascending: YES]];
+    fetchRequest.sortDescriptors = @[[[NSSortDescriptor alloc] initWithKey: @"position" ascending: YES]];
     
     self.channelCoverFetchedResultsController = [[NSFetchedResultsController alloc] initWithFetchRequest: fetchRequest
                                                                                     managedObjectContext: appDelegate.mainManagedObjectContext
-                                                                                      sectionNameKeyPath: @"ordering"
+                                                                                      sectionNameKeyPath: @"userUpload"
                                                                                                cacheName: nil];
 
     self.channelCoverFetchedResultsController.delegate = self;
