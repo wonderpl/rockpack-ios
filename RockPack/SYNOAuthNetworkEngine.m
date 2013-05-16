@@ -1092,7 +1092,7 @@
                                                                                                    httpMethod: @"GET"
                                                                                                           ssl: YES];
     
-    __weak SYNOAuthNetworkEngine *weakSelf = self;
+    __weak typeof(self) weakSelf = self;
     
     [self addCommonHandlerToNetworkOperation: networkOperation
                            completionHandler: ^(id response) {

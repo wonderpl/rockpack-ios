@@ -327,7 +327,8 @@
                                                  name: kCoverArtChanged
                                                object: nil];
     
-    __weak SYNChannelDetailViewController* weakSelf = self;
+    __weak typeof(self) weakSelf = self;
+    
     [appDelegate.currentUser.subscriptions enumerateObjectsUsingBlock:^(id obj, NSUInteger idx, BOOL *stop) {
         if( [((Channel*)obj).uniqueId isEqualToString:weakSelf.channel.uniqueId] ) {
             weakSelf.channel.subscribedByUserValue = YES;

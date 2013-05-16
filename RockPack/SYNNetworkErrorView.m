@@ -10,6 +10,7 @@
 #import "SYNDeviceManager.h"
 #import "UIFont+SYNFont.h"
 #import "SYNDeviceManager.h"
+#import <QuartzCore/QuartzCore.h>
 
 @implementation SYNNetworkErrorView
 
@@ -35,7 +36,11 @@
         
         errorLabel = [[UILabel alloc] initWithFrame:self.frame];
         errorLabel.textColor = [UIColor colorWithRed:(223.0/255.0) green:(244.0/255.0) blue:(1.0) alpha:(1.0)];
-        errorLabel.font = [UIFont rockpackFontOfSize:20.0];
+        errorLabel.font = [UIFont rockpackFontOfSize:17.0];
+        errorLabel.layer.shadowColor = [[UIColor colorWithRed:(128.0/255.0) green:(32.0/255.0) blue:(39.0/255.0) alpha:(1.0)] CGColor];
+        errorLabel.layer.shadowOffset = CGSizeMake(0.0, 1.0);
+        errorLabel.layer.shadowRadius = 1.0;
+        errorLabel.layer.shadowOpacity = 1.0;
         errorLabel.backgroundColor = [UIColor clearColor];
         errorLabel.autoresizingMask = UIViewAutoresizingFlexibleLeftMargin | UIViewAutoresizingFlexibleRightMargin;
         

@@ -28,7 +28,7 @@
 #import "Video.h"
 #import "VideoInstance.h"
 
-#define STANDARD_LENGTH 50
+#define STANDARD_LENGTH 48
 #define kChannelsCache @"ChannelsCache"
 
 @interface SYNChannelsRootViewController () <UIScrollViewDelegate, SYNChannelCategoryTableViewDelegate>
@@ -145,7 +145,7 @@
     
     startAnimationDelay = 0.0;
     
-    currentRange = NSMakeRange(0, 50);
+    currentRange = NSMakeRange(0, STANDARD_LENGTH);
     
     if(self.enableCategoryTable)
     {
@@ -192,7 +192,7 @@
     
 }
 
-#pragma mark - Load Channels
+#pragma mark - Loading of Channels
 
 -(void)loadChannelsForGenre:(Genre*)genre
 {
@@ -218,8 +218,8 @@
                                                       currentTotal = [totalNumber integerValue];
                                                       
                                                       BOOL registryResultOk = [appDelegate.mainRegistry registerChannelsFromDictionary:response
-                                                                                                                                       forGenre:genre
-                                                                                                                                    byAppending:append];
+                                                                                                                              forGenre:genre
+                                                                                                                           byAppending:append];
                                                       if (!registryResultOk)
                                                       {
                                                           DebugLog(@"Registration of Channel Failed for: %@", currentCategoryId);
@@ -231,6 +231,20 @@
                                                   } onError: ^(NSDictionary* errorInfo) {
                                                       DebugLog(@"Could not load channels: %@", errorInfo);
                                                   }];
+}
+
+- (void) loadMoreChannels: (UIButton*) sender
+{
+    
+    // (UIButton*) sender can be nil when called directly //
+    
+    NSInteger nextStart = currentRange.location + currentRange.length;
+    NSInteger nextSize = (nextStart + STANDARD_LENGTH) > currentTotal ? (currentTotal - nextStart) : STANDARD_LENGTH;
+    
+    currentRange = NSMakeRange(nextStart, nextSize);
+    
+    
+    [self loadChannelsForGenre:currentGenre byAppending:YES];
 }
 
 -(void)displayChannelsForGenre:(Genre*)genre
@@ -339,6 +353,15 @@
     
     SYNChannelThumbnailCell *channelThumbnailCell = [collectionView dequeueReusableCellWithReuseIdentifier: @"SYNChannelThumbnailCell"
                                                                                               forIndexPath: indexPath];
+    
+    // == Infinite Scrolling Support == //
+    
+    if(indexPath.row == self.channels.count)
+    {
+        [self loadMoreChannels:nil];
+    }
+    
+    
 
     [channelThumbnailCell.imageView setImageWithURL: [NSURL URLWithString: channel.channelCover.imageLargeUrl]
                                    placeholderImage: [UIImage imageNamed: @"PlaceholderChannelThumbnail.png"]
@@ -416,18 +439,7 @@
 }
 
 
-#pragma mark - Button Actions
 
-- (void) loadMoreChannels: (UIButton*) sender
-{
-    NSInteger nextStart = currentRange.location + currentRange.length;
-    NSInteger nextSize = (nextStart + STANDARD_LENGTH) > currentTotal ? (currentTotal - nextStart) : STANDARD_LENGTH;
-    
-    currentRange = NSMakeRange(nextStart, nextSize);
-    
-    
-    [self loadChannelsForGenre:currentGenre byAppending:YES];
-}
 
 
 #ifdef ALLOWS_PINCH_GESTURES

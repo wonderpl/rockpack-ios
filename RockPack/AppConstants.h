@@ -200,6 +200,9 @@ typedef enum _Gender {
 // Animations
 //
 
+// Text cross-fade
+#define kTextCrossfadeDuration 0.3f
+
 // Switch label
 #define kSwitchLabelAnimation 0.25f
 
@@ -325,7 +328,7 @@ typedef enum {
 
 #define kVideoBackgroundColour          [UIColor blackColor]
 #define kBufferMonitoringTimerInterval  1.0f
-#define kShuttleBarUpdateTimerInterval  0.5f
+#define kShuttleBarUpdateTimerInterval  0.1f
 #define kMiddlePlaceholderCycleTime     2.0f
 #define kMiddlePlaceholderIdentifier    @"MiddlePlaceholder"
 #define kBottomPlaceholderCycleTime     4.0f
@@ -335,6 +338,8 @@ typedef enum {
 #define kShuttleBarTimeLabelOffset      100.0f
 #define kShuttleBarButtonWidth          77.0f
 #define kShuttleBarSliderOffset         10.0f
+
+#define kSYNBundleFullVersion           @"FullVersion"
 
 // Channel creation
 

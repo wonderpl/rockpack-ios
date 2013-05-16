@@ -63,22 +63,13 @@
                                        });
                 
                 // Add in a resize event listener
-                window.addEventListener("resize", function(e)
+                player.addEventListener("resize", function(e)
                                         {
-                                            sizeToFit(document.getElementById("player"));
+                                        sizeToFit(document.getElementById("player"));
                                         });
             }
-            
-            // This is required to resize the YTPlayer when the size of the UIWebView changes
-            function sizeToFit(element)
-            {
-//                alert ('resize');
-//                var body = document.getElementsByTagName("body")[0];
-//                element.setAttribute("width", body.clientWidth);
-//                element.setAttribute("height", body.clientWidth / 1.77777);
-//                alert ('New size' + body.clientWidth + (height));
 
-            }
+            
 
             // All possible event functions
             
@@ -87,7 +78,8 @@
             // such as playing the video or displaying information about the video, as soon as the player is ready.
             function onPlayerReady(event)
             {
-                onEvent('ready', null);        
+                onEvent('ready', null);
+
             }
             
             // This event fires whenever the player's state changes. The data property of the event object that the API
@@ -95,6 +87,13 @@
             function onPlayerStateChange(event)
             {
                 onEvent('stateChange', playerStateToString(event.data));
+            }
+            
+            // This event fires whenever the player's state changes. The data property of the event object that the API
+            // passes to your event listener function will specify an integer that corresponds to the new player state
+            function onPlayerNearEnd(event)
+            {
+                onEvent('stateChange', 'ending');
             }
             
             // This event fires whenever the video playback quality changes. For example, if the setPlaybackQuality(suggestedQuality)
