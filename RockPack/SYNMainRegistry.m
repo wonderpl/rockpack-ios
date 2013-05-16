@@ -491,10 +491,12 @@
         // NSLog(@" - Channel: %@ (%@)", existingChannel.title, existingChannel.categoryId);
         [existingChannelsByIndex setObject:existingChannel forKey:existingChannel.uniqueId];
         
-        if(genre && !append)
+        existingChannel.popularValue = NO; // set all to NO
+            
+        if(!append)
             existingChannel.markedForDeletionValue = YES; // if a real genre is passed - delete the old objects
-        else
-            existingChannel.popularValue = NO; // if the 'all' genre is selected don't delete because this view is composed from all other genres
+           
+        
     }
     
     BOOL createdAnew = NO;
