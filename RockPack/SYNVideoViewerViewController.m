@@ -152,7 +152,16 @@
     [videoView insertSubview: self.blackPanelView
                 aboveSubview: self.panelImageView];
     
-    self.videoPlaybackViewController = [[SYNVideoPlaybackViewController alloc] initWithFrame: videoFrame];
+    self.videoPlaybackViewController = [[SYNVideoPlaybackViewController alloc] initWithFrame: videoFrame
+                                                                                indexUpdater: ^(int newIndex){
+                                                                                    self.currentSelectedIndex = newIndex;
+                                                                                    [self updateVideoDetailsForIndex: self.currentSelectedIndex];
+                                                                                    
+                                                                                    // We need to scroll the current thumbnail before the view appears (with no animation)
+                                                                                    [self scrollToCellAtIndex: self.currentSelectedIndex
+                                                                                                     animated: YES];
+                                                                                }];
+    
     self.videoPlaybackViewController.view.autoresizingMask = UIViewAutoresizingNone;
 
     [videoView insertSubview: self.videoPlaybackViewController.view

@@ -36,6 +36,7 @@
 @property (nonatomic, strong) NSString *source;
 @property (nonatomic, strong) NSString *sourceId;
 @property (nonatomic, strong) NSTimer *shuttleBarUpdateTimer;
+@property (nonatomic, strong) SYNVideoIndexUpdater indexUpdater;
 @property (nonatomic, strong) UIButton *shuttleBarPlayPauseButton;
 @property (nonatomic, strong) UIImageView *videoPlaceholderBottomImageView;
 @property (nonatomic, strong) UIImageView *videoPlaceholderMiddleImageView;
@@ -46,6 +47,7 @@
 @property (nonatomic, strong) UISlider *shuttleSlider;
 @property (nonatomic, strong) UIView *videoPlaceholderView;
 @property (nonatomic, strong) UIWebView *currentVideoWebView;
+
 @end
 
 
@@ -56,10 +58,12 @@
 #pragma mark - Initialization
 
 - (id) initWithFrame: (CGRect) frame
+        indexUpdater: (SYNVideoIndexUpdater) indexUpdater;
 {
     if ((self = [super init]))
     {
         self.requestedFrame = frame;
+        self.indexUpdater = indexUpdater;
     }
     
     return self;
@@ -518,6 +522,9 @@
 {
     [self incrementVideoIndex];
     [self loadCurrentVideoWebView];
+    
+    // Call index updater block
+    self.indexUpdater(self.currentSelectedIndex);
 }
 
 
@@ -1038,16 +1045,13 @@
                          self.videoPlaceholderView.alpha = 0.0f;
                      }
                      completion: ^(BOOL completed) {
-//                         [self animateVideoPlaceholder: NO];
                      }];
 }
 
 
 // Fades out the video player, fading in any placeholder
 - (void) fadeOutVideoPlayer
-{
-//    [self animateVideoPlaceholder: YES];
-    
+{    
     [UIView animateWithDuration: 0.5f
                           delay: 0.0f
                         options: UIViewAnimationOptionCurveEaseInOut
