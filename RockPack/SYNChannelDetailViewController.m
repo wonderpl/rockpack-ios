@@ -47,6 +47,7 @@
 @property (nonatomic, strong) IBOutlet UIButton *buyButton;
 @property (nonatomic, strong) IBOutlet UIButton *cameraButton;
 @property (nonatomic, strong) IBOutlet UIButton *createChannelButton;
+@property (weak, nonatomic) IBOutlet UIButton *saveChannelButton;
 @property (nonatomic, strong) IBOutlet UIButton *shareButton;
 @property (nonatomic, strong) IBOutlet UIButton* addCoverButton;
 @property (nonatomic, strong) IBOutlet UIButton* profileImageButton;
@@ -788,7 +789,17 @@ kChannelThumbnailDisplayModeStandard: kChannelThumbnailDisplayModeEdit;
 }
 
 - (IBAction)editButtonTapped:(id)sender {
-    [self setEditControlsVisibility:YES];
+    if([[SYNDeviceManager sharedInstance] isIPad])
+    {
+        [[NSNotificationCenter defaultCenter] postNotificationName: kNoteUpdateChannel
+                                                            object: self
+                                                          userInfo: @{kChannel:self.channel}];
+        
+    }
+    else
+    {
+        
+    }
 }
 
 - (IBAction) addButtonTapped: (id) sender
@@ -864,6 +875,40 @@ kChannelThumbnailDisplayModeStandard: kChannelThumbnailDisplayModeEdit;
     [self hideCoverChooser];
 }
 
+- (IBAction)saveChannelTapped:(id)sender {
+    
+    if ([[SYNDeviceManager sharedInstance] isIPhone])
+    {
+        self.saveChannelButton.hidden = YES;
+        self.activityIndicator.hidden = NO;
+        [self.activityIndicator startAnimating];
+    }
+    
+    self.channel.title = self.channelTitleTextView.text;
+    self.channel.channelDescription = @"Test Description";
+    
+    [appDelegate.oAuthNetworkEngine updateChannelForUserId:appDelegate.currentOAuth2Credentials.userId channelId:self.channel.uniqueId title: self.channel.title
+                                               description: (self.channel.channelDescription)
+                                                  category: self.selectedCategoryId
+                                                     cover: self.selectedCoverId
+                                                  isPublic: YES
+                                         completionHandler: ^(NSDictionary* resourceCreated) {
+                                             NSString* channelId = [resourceCreated objectForKey: @"id"];
+                                             
+                                             [self getNewlyCreatedChannelForId:channelId];
+                                         }
+                                              errorHandler: ^(id error) {
+                                                  
+                                                  DebugLog(@"Error @ saveChannelPressed:");
+                                                  NSString* errorMessage = NSLocalizedString(@"Could not save channel. Please try again later.", nil);                                                  
+                                                  [self showError:errorMessage];
+                                                  
+                                                  
+                                              }];
+
+    
+    
+}
 
 #pragma mark - Cover choice
 
