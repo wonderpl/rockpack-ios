@@ -330,6 +330,7 @@
 		01D0998617439A3A00351C82 /* CategorySlide.png in Resources */ = {isa = PBXBuildFile; fileRef = 01D0998217439A3600351C82 /* CategorySlide.png */; };
 		01D0998717439A3A00351C82 /* CategorySlideSelected.png in Resources */ = {isa = PBXBuildFile; fileRef = 01D0998317439A3700351C82 /* CategorySlideSelected.png */; };
 		01D0998817439A3A00351C82 /* CategorySlideSelected@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 01D0998417439A3900351C82 /* CategorySlideSelected@2x.png */; };
+		01D0998B17452A4000351C82 /* BBCyclingLabel.m in Sources */ = {isa = PBXBuildFile; fileRef = 01D0998A17452A4000351C82 /* BBCyclingLabel.m */; };
 		01E2E7E116E11E67009999D2 /* UIImageView+ImageProcessing.m in Sources */ = {isa = PBXBuildFile; fileRef = 01E2E7E016E11E67009999D2 /* UIImageView+ImageProcessing.m */; };
 		01E427BC1664C5F1009B941F /* CoreData.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 01E427BB1664C5F1009B941F /* CoreData.framework */; };
 		01E427D31664C726009B941F /* Rockpack.xcdatamodeld in Sources */ = {isa = PBXBuildFile; fileRef = 01E427D11664C726009B941F /* Rockpack.xcdatamodeld */; };
@@ -1430,6 +1431,8 @@
 		01D0998217439A3600351C82 /* CategorySlide.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = CategorySlide.png; sourceTree = "<group>"; };
 		01D0998317439A3700351C82 /* CategorySlideSelected.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = CategorySlideSelected.png; sourceTree = "<group>"; };
 		01D0998417439A3900351C82 /* CategorySlideSelected@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "CategorySlideSelected@2x.png"; sourceTree = "<group>"; };
+		01D0998917452A4000351C82 /* BBCyclingLabel.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = BBCyclingLabel.h; sourceTree = "<group>"; };
+		01D0998A17452A4000351C82 /* BBCyclingLabel.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = BBCyclingLabel.m; sourceTree = "<group>"; };
 		01E2E7DF16E11E67009999D2 /* UIImageView+ImageProcessing.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "UIImageView+ImageProcessing.h"; sourceTree = "<group>"; };
 		01E2E7E016E11E67009999D2 /* UIImageView+ImageProcessing.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "UIImageView+ImageProcessing.m"; sourceTree = "<group>"; };
 		01E427BB1664C5F1009B941F /* CoreData.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreData.framework; path = System/Library/Frameworks/CoreData.framework; sourceTree = SDKROOT; };
@@ -3018,6 +3021,8 @@
 		0199F127166F94C400E479C6 /* Controls */ = {
 			isa = PBXGroup;
 			children = (
+				01D0998917452A4000351C82 /* BBCyclingLabel.h */,
+				01D0998A17452A4000351C82 /* BBCyclingLabel.m */,
 				01982587162B605A00216900 /* SYNTabImageView.h */,
 				01982588162B605A00216900 /* SYNTabImageView.m */,
 			);
@@ -5577,6 +5582,7 @@
 				BEBD097C1743A18A0092F527 /* SYNCoverChooserController.m in Sources */,
 				3864D2DC1743DB3000A90ED3 /* SYNImagePickerController.m in Sources */,
 				BEBD09811744ECD50092F527 /* SYNAddButtonControl.m in Sources */,
+				01D0998B17452A4000351C82 /* BBCyclingLabel.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

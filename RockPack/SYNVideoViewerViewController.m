@@ -6,6 +6,7 @@
 //  Copyright (c) 2013 Nick Banks. All rights reserved.
 //
 
+#import "BBCyclingLabel.h"
 #import "Channel.h"
 #import "ChannelCover.h"
 #import "ChannelOwner.h"
@@ -45,9 +46,9 @@
 @property (nonatomic, strong) IBOutlet UICollectionView *videoThumbnailCollectionView;
 @property (nonatomic, strong) IBOutlet UIImageView *channelThumbnailImageView;
 @property (nonatomic, strong) IBOutlet UIImageView *panelImageView;
-@property (nonatomic, strong) IBOutlet UILabel *channelCreatorLabel;
-@property (nonatomic, strong) IBOutlet UILabel *channelTitleLabel;
-@property (nonatomic, strong) IBOutlet UILabel *videoTitleLabel;
+@property (nonatomic, strong) IBOutlet BBCyclingLabel *channelCreatorLabel;
+@property (nonatomic, strong) IBOutlet BBCyclingLabel *channelTitleLabel;
+@property (nonatomic, strong) IBOutlet BBCyclingLabel *videoTitleLabel;
 @property (nonatomic, strong) IBOutlet UIView *swipeView;
 @property (nonatomic, strong) NSArray *videoInstanceArray;
 @property (nonatomic, strong) SYNReportConcernTableViewController *reportConcernTableViewController;
@@ -91,6 +92,15 @@
     self.channelTitleLabel.font = [UIFont rockpackFontOfSize: self.channelTitleLabel.font.pointSize];
     self.channelCreatorLabel.font = [UIFont rockpackFontOfSize: self.channelCreatorLabel.font.pointSize];
     self.videoTitleLabel.font = [UIFont boldRockpackFontOfSize: self.videoTitleLabel.font.pointSize];
+    
+    // Cross-face transitions
+    self.channelTitleLabel.transitionDuration = kTextCrossfadeDuration;
+    self.channelCreatorLabel.transitionDuration = kTextCrossfadeDuration;
+    self.videoTitleLabel.transitionDuration = kTextCrossfadeDuration;
+    
+    self.channelTitleLabel.textColor = [UIColor whiteColor];
+    self.channelCreatorLabel.textColor  = [UIColor whiteColor];
+    self.videoTitleLabel.textColor = [UIColor whiteColor];
 
     // Regster video thumbnail cell
     UINib *videoThumbnailCellNib = [UINib nibWithNibName: @"SYNVideoThumbnailSmallCell"

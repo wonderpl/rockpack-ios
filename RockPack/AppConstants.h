@@ -200,6 +200,9 @@ typedef enum _Gender {
 // Animations
 //
 
+// Text cross-fade
+#define kTextCrossfadeDuration 0.3f
+
 // Switch label
 #define kSwitchLabelAnimation 0.25f
 
