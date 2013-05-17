@@ -766,8 +766,9 @@ typedef void(^AnimationCompletionBlock)(BOOL finished);
                          forControlEvents:UIControlEventTouchUpInside];
         
         //No More Back Title (For Now)
-        [self.backButtonControl setBackTitle: self.pageTitleLabel.text];
+        // [self.backButtonControl setBackTitle: self.pageTitleLabel.text];
         
+        // Shrink the Search Box when the back arrow comes on screen //
         if(self.searchBoxController.isOnScreen)
         {
             [UIView animateWithDuration:0.5 animations:^{
@@ -798,11 +799,7 @@ typedef void(^AnimationCompletionBlock)(BOOL finished);
                                       action: @selector(popCurrentViewController:)
                             forControlEvents: UIControlEventTouchUpInside];
         
-        if(self.searchBoxController.isOnScreen)
-        {
-            [self cancelButtonPressed:nil];
-            
-        }
+        
         showingBackButton = NO;
         targetFrame = self.movableButtonsContainer.frame;
         targetFrame.origin.x = kMovableViewOffX;
@@ -824,24 +821,48 @@ typedef void(^AnimationCompletionBlock)(BOOL finished);
 
 - (void) popCurrentViewController: (id) sender
 {
+    SYNAbstractViewController *abstractVC;
+    
     if(_overlayNavigationController)
     {
         if(_overlayNavigationController.viewControllers.count > 1)
         {
-            SYNAbstractViewController *abstractVC = (SYNAbstractViewController *)_overlayNavigationController.topViewController;
+            abstractVC = (SYNAbstractViewController *)_overlayNavigationController.topViewController;
+            
             
             [abstractVC animatedPopViewController];
+            
+//            if(self.searchBoxController.isOnScreen)
+//            {
+//                
+//                [self cancelButtonPressed:nil];
+//                
+//            }
         }
         else
         {
             self.overlayNavigationController = nil;
             [self showBackButton:NO];
         }
+        
+        
     }
     else
     {
-        [self.containerViewController popCurrentViewController:sender];
+        abstractVC = (SYNAbstractViewController *)self.containerViewController.showingViewController;
+        
+        
+        if(abstractVC.navigationController.viewControllers.count <= 2) {
+            self.containerViewController.scrollView.scrollEnabled = YES;
+            [self showBackButton:NO];
+        }
+            
+        
+        [abstractVC animatedPopViewController];
+       
     }
+    
+    
 }
 
 

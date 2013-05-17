@@ -49,7 +49,7 @@
 -(void)loadView
 {
     
-    CGRect frame = CGRectMake(0.0, -20.0,[[SYNDeviceManager sharedInstance] currentScreenWidth],
+    CGRect frame = CGRectMake(0.0, 0.0,[[SYNDeviceManager sharedInstance] currentScreenWidth],
                                [[SYNDeviceManager sharedInstance] currentScreenHeight]);
     
     self.view = [[UIView alloc] initWithFrame:frame];
