@@ -28,7 +28,7 @@
 #import "Video.h"
 #import "VideoInstance.h"
 
-#define STANDARD_LENGTH 48
+#define STANDARD_REQUEST_LENGTH 48
 #define kChannelsCache @"ChannelsCache"
 
 @interface SYNChannelsRootViewController () <UIScrollViewDelegate, SYNChannelCategoryTableViewDelegate>
@@ -64,7 +64,7 @@
 
 @synthesize currentCategoryId;
 @synthesize currentGenre;
-@synthesize currentRange;
+@synthesize dataRequestRange;
 @synthesize currentTotal;
 @synthesize mainRegistry;
 @synthesize channels;
@@ -145,7 +145,7 @@
     
     startAnimationDelay = 0.0;
     
-    currentRange = NSMakeRange(1, STANDARD_LENGTH);
+    dataRequestRange = NSMakeRange(1, STANDARD_REQUEST_LENGTH);
     
     if(self.enableCategoryTable)
     {
@@ -203,13 +203,19 @@
 {
     
     [appDelegate.networkEngine updateChannelsScreenForCategory: (genre ? genre.uniqueId : @"all")
-                                                      forRange: currentRange
+                                                      forRange: dataRequestRange
                                                  ignoringCache: NO
                                                   onCompletion: ^(NSDictionary* response) {
                                                       
                                                       NSDictionary *channelsDictionary = [response objectForKey: @"channels"];
                                                       if (!channelsDictionary || ![channelsDictionary isKindOfClass: [NSDictionary class]])
                                                           return;
+                                                      
+                                                      NSArray *itemArray = [channelsDictionary objectForKey: @"items"];
+                                                      if (![itemArray isKindOfClass: [NSArray class]])
+                                                          return;
+                                                      
+                                                      dataRequestRange.length = itemArray.count;
                                                       
                                                       NSNumber *totalNumber = [channelsDictionary objectForKey: @"total"];
                                                       if (![totalNumber isKindOfClass: [NSNumber class]])
@@ -238,18 +244,18 @@
     
     // (UIButton*) sender can be nil when called directly //
     
-    NSInteger nextStart = currentRange.location + STANDARD_LENGTH; // one is subtracted when the call happens for 0 indexing
+    NSInteger nextStart = dataRequestRange.location + dataRequestRange.length; // one is subtracted when the call happens for 0 indexing
     
-    NSInteger nextSize = (nextStart + STANDARD_LENGTH) > currentTotal ? (currentTotal - nextStart) : STANDARD_LENGTH;
+    NSInteger nextSize = (nextStart + STANDARD_REQUEST_LENGTH) > currentTotal ? (currentTotal - nextStart) : STANDARD_REQUEST_LENGTH;
     
     if(nextSize == 0)
         return;
     
     
     
-    currentRange = NSMakeRange(nextStart, nextSize);
+    dataRequestRange = NSMakeRange(nextStart, nextSize);
     
-    NSLog(@"Loading More Channels: %i - %i from %i", currentRange.location, currentRange.location + currentRange.length, currentTotal);
+    NSLog(@"Loading More Channels: %i - %i from %i", dataRequestRange.location, dataRequestRange.location + dataRequestRange.length, currentTotal);
     
     [self loadChannelsForGenre:currentGenre byAppending:YES];
 }
@@ -625,7 +631,7 @@
     
     currentCategoryId = genre.uniqueId;
 
-    currentRange = NSMakeRange(0, 50);
+    dataRequestRange = NSMakeRange(1, STANDARD_REQUEST_LENGTH);
     
     
     
@@ -655,6 +661,8 @@
 
 -(void)clearedLocationBoundData
 {
+    dataRequestRange = NSMakeRange(1, STANDARD_REQUEST_LENGTH);
+    
     [self loadChannelsForGenre:nil];
 }
 
