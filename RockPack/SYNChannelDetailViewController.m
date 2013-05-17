@@ -1187,7 +1187,7 @@
                                                            
                                                            DebugLog(@"Error @ addVideosToNewChannelForId:");
                                                            [self showError:NSLocalizedString(@"Could not create channel. Please try again later.", nil)];
-                                                       }];
+                                                }];
 }
 
 
@@ -1207,13 +1207,17 @@
                                                                                               andViewId:kProfileViewId];
                                               
                                               createdChannel.channelOwner = appDelegate.currentUser;
+                                              
                                               [self.channel removeObserver: self
                                                                 forKeyPath: kSubscribedByUserKey];
+                                              
                                               self.channel = createdChannel;
+                                              
                                               [self.channel addObserver: self
                                                              forKeyPath: kSubscribedByUserKey
                                                                 options: NSKeyValueObservingOptionNew
                                                                context :nil];
+                                              
                                               DebugLog(@"Channel: %@", createdChannel);
                                               
                                               [appDelegate saveContext:YES];
