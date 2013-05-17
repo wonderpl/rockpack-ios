@@ -282,15 +282,15 @@
         {
             self.view.backgroundColor = [UIColor colorWithWhite:0.92f alpha:1.0f];
         }
+        
+        // Cover Image Selector //
+        
+        self.coverChooserController = [[SYNCoverChooserController alloc] init];
+        self.coverChooserMasterView = self.coverChooserController.view;
     }
     self.selectedCategoryId = @"";
     self.selectedCoverId = @"";
     
-    
-    // Cover Image Selector //
-    
-    self.coverChooserController = [[SYNCoverChooserController alloc] init];
-    self.coverChooserMasterView = self.coverChooserController.view;
     
     CGRect correctRect = self.coverChooserMasterView.frame;
     correctRect.origin.y = 404.0;
@@ -527,10 +527,6 @@
 }
 
 
-- (void) controllerDidChangeContent: (NSFetchedResultsController *) controller
-{
-    [self.coverImageSelector refreshChannelCoverData];
-}
 
 
 - (void) reloadCollectionViews
@@ -992,8 +988,6 @@ kChannelThumbnailDisplayModeStandard: kChannelThumbnailDisplayModeEdit;
         }];
         
         self.coverImageSelector = [[SYNChannelCoverImageSelectorViewController alloc] init];
-        self.coverImageSelector.userChannelCoverFetchedResultsController = self.userChannelCoverFetchedResultsController;
-        self.coverImageSelector.channelCoverFetchedResultsController = self.channelCoverFetchedResultsController;
         self.coverImageSelector.imageSelectorDelegate = self;
         CGRect startFrame = self.coverImageSelector.view.frame;
         startFrame.origin.y = self.view.frame.size.height;
@@ -1218,7 +1212,7 @@ kChannelThumbnailDisplayModeStandard: kChannelThumbnailDisplayModeEdit;
                                                   ;                                              }
                                               Channel* createdChannel = [Channel instanceFromDictionary:dictionary
                                                                               usingManagedObjectContext:appDelegate.mainManagedObjectContext
-                                                                                    ignoringObjectTypes:(kIgnoreStoredObjects | kIgnoreChannelOwnerObject)
+                                                                                    ignoringObjectTypes:ignore
                                                                                               andViewId:kProfileViewId];
                                               
                                               createdChannel.channelOwner = appDelegate.currentUser;
