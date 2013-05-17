@@ -119,10 +119,10 @@
     if(!appDelegate)
         appDelegate = (SYNAppDelegate*)[[UIApplication sharedApplication] delegate];
     
-    self.currentRange = NSMakeRange(0, 50);
+    self.dataRequestRange = NSMakeRange(0, 50);
     
     [appDelegate.networkEngine searchChannelsForTerm:term
-                                            andRange:self.currentRange];
+                                            andRange:self.dataRequestRange];
 }
 
 

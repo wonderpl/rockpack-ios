@@ -9,7 +9,7 @@
 #import <UIKit/UIKit.h>
 
 typedef enum {
-    kChannelThumbnailDisplayModeStandard = 0,
+    kChannelThumbnailDisplayModeDisplay = 0,
     kChannelThumbnailDisplayModeEdit = 1
 } kChannelThumbnailDisplayMode;
 

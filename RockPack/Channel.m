@@ -66,8 +66,11 @@ static NSEntityDescription *channelEntity = nil;
             
             instance.markedForDeletionValue = NO;
             
-            
         }
+        
+        
+        
+        
         
     }
     
@@ -100,6 +103,7 @@ static NSEntityDescription *channelEntity = nil;
     
     if (!(ignoringObjects & kIgnoreVideoInstanceObjects))
     {
+        [self.videoInstancesSet removeAllObjects];
         
         [self addVideoInstancesFromDictionary:dictionary
                     usingManagedObjectContext:self.managedObjectContext
