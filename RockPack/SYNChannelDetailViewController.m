@@ -905,7 +905,7 @@
     NSString* cover = self.selectedCoverId;
     if([cover length]==0)
     {
-        cover = @""; //TODO: Replace with "KEEP" identifier once established by backend.
+        cover = @"KEEP"; 
     }
     
     [appDelegate.oAuthNetworkEngine updateChannelForUserId: appDelegate.currentOAuth2Credentials.userId
