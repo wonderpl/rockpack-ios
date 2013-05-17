@@ -136,11 +136,13 @@
     self.passwordInputField.font = [UIFont rockpackFontOfSize:self.passwordInputField.font.pointSize];
     self.passwordInputField.delegate = self;
     self.ddInputField.font = [UIFont rockpackFontOfSize:self.ddInputField.font.pointSize];
-    self.passwordInputField.delegate = self;
+    self.ddInputField.delegate = self;
     self.mmInputField.font = [UIFont rockpackFontOfSize:self.mmInputField.font.pointSize];
     self.mmInputField.delegate = self;
     self.yyyyInputField.font = [UIFont rockpackFontOfSize:self.yyyyInputField.font.pointSize];
     self.yyyyInputField.delegate = self;
+    self.emailInputField.font = [UIFont rockpackFontOfSize:self.emailInputField.font.pointSize];
+    self.emailInputField.delegate = self;
     
     self.loginErrorLabel.font = [UIFont rockpackFontOfSize:self.loginErrorLabel.font.pointSize];
     self.passwordResetErrorLabel.font = [UIFont rockpackFontOfSize:self.passwordResetErrorLabel.font.pointSize];
@@ -153,6 +155,14 @@
     self.termsAndConditionsLabel.font = [UIFont rockpackFontOfSize:self.termsAndConditionsLabel.font.pointSize];
     
     self.passwordForgottenButton.titleLabel.font = [UIFont rockpackFontOfSize:self.passwordForgottenButton.titleLabel.font.pointSize];
+    
+    //Setup Keyboard Return Button
+    self.userNameInputField.returnKeyType = UIReturnKeyNext;
+    self.passwordInputField.returnKeyType = UIReturnKeyGo;
+    self.registeringUserEmailInputField.returnKeyType = UIReturnKeyNext;
+    self.registeringUserNameInputField.returnKeyType = UIReturnKeyNext;
+    self.registeringUserPasswordInputField.returnKeyType = UIReturnKeyNext;
+    self.emailInputField.returnKeyType = UIReturnKeySend;
     
     self.state = kLoginScreenStateInitial;
     
