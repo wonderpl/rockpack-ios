@@ -882,6 +882,7 @@ typedef void(^AnimationCompletionBlock)(BOOL finished);
        
     }
     
+    [self.containerViewController viewWillAppear:NO];
     
 }
 
