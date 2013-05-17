@@ -505,6 +505,7 @@ typedef void(^AnimationCompletionBlock)(BOOL finished);
                          [self.videoViewerViewController removeFromParentViewController];
                          self.videoViewerViewController = nil;
                      }];
+    //FIXME: Nick to rework
     [self.containerViewController viewWillAppear:NO];
 }
 
@@ -880,7 +881,7 @@ typedef void(^AnimationCompletionBlock)(BOOL finished);
         [abstractVC animatedPopViewController];
        
     }
-    
+    //FIXME: Nick to rework
     [self.containerViewController viewWillAppear:NO];
     
 }
