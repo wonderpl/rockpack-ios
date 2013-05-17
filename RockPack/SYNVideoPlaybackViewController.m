@@ -18,10 +18,12 @@
 #import <MediaPlayer/MediaPlayer.h>
 #import <QuartzCore/CoreAnimation.h>
 #import "NSObject+Blocks.h"
+#import "SYNDeviceManager.h"
 
 @interface SYNVideoPlaybackViewController () <UIWebViewDelegate>
 
 @property (nonatomic, assign) BOOL autoPlay;
+@property (nonatomic, assign) BOOL firstTimePlay;
 @property (nonatomic, assign) BOOL currentVideoViewedFlag;
 @property (nonatomic, assign) BOOL disableTimeUpdating;
 @property (nonatomic, assign) BOOL fadeOutScheduled;
@@ -33,8 +35,6 @@
 @property (nonatomic, strong) CABasicAnimation *placeholderBottomLayerAnimation;
 @property (nonatomic, strong) CABasicAnimation *placeholderMiddleLayerAnimation;
 @property (nonatomic, strong) NSArray *videoInstanceArray;
-@property (nonatomic, strong) NSString *source;
-@property (nonatomic, strong) NSString *sourceId;
 @property (nonatomic, strong) NSTimer *shuttleBarUpdateTimer;
 @property (nonatomic, strong) SYNVideoIndexUpdater indexUpdater;
 @property (nonatomic, strong) UIButton *shuttleBarPlayPauseButton;
@@ -56,6 +56,174 @@
 @synthesize currentVideoInstance;
 
 #pragma mark - Initialization
+
+static UIWebView* youTubeVideoWebViewInstance;
+static UIWebView* vimeoideoWebViewInstance;
+
+// Create the static instances of our webviews
++ (void) initialize
+{
+    youTubeVideoWebViewInstance = [SYNVideoPlaybackViewController createNewYouTubeWebView];
+    
+#ifdef ENABLE_VIMEO_PLAYER
+    vimeoideoWebViewInstance = [SYNVideoPlaybackViewController createNewVimeoWebView];
+#endif
+}
+
+
+// Common setup for all video web views
++ (UIWebView *) createNewVideoWebView
+{
+    UIWebView *newWebViewInstance = [[UIWebView alloc] initWithFrame: CGRectMake (0,
+                                                                                  0,
+                                                                                  [SYNVideoPlaybackViewController videoWidth],
+                                                                                  [SYNVideoPlaybackViewController videoHeight])];
+    
+    newWebViewInstance.opaque = NO;
+    newWebViewInstance.alpha = 0.0f;
+    newWebViewInstance.autoresizingMask = UIViewAutoresizingNone;
+    
+    // Stop the user from scrolling the webview
+    newWebViewInstance.scrollView.scrollEnabled = false;
+    newWebViewInstance.scrollView.bounces = false;
+    
+    // Enable airplay button on webview player
+    newWebViewInstance.mediaPlaybackAllowsAirPlay = YES;
+    
+    // Required for autoplay
+    newWebViewInstance.allowsInlineMediaPlayback = YES;
+    
+    // Required to work correctly
+    newWebViewInstance.mediaPlaybackRequiresUserAction = FALSE;
+    
+    return newWebViewInstance;
+}
+
+
+// Create YouTube specific webview, based on common setup
++ (UIWebView *) createNewYouTubeWebView
+{
+    UIWebView *newYouTubeWebView = [SYNVideoPlaybackViewController createNewVideoWebView];
+    
+    NSError *error = nil;
+    NSString *fullPath = [[NSBundle mainBundle] pathForResource: @"YouTubeIFramePlayer"
+                                                         ofType: @"html"];
+    
+    NSString *templateHTMLString = [NSString stringWithContentsOfFile: fullPath
+                                                             encoding: NSUTF8StringEncoding
+                                                                error: &error];
+    
+    NSString *iFrameHTML = [NSString stringWithFormat: templateHTMLString,
+                                                       (int) [SYNVideoPlaybackViewController videoWidth],
+                                                       (int) [SYNVideoPlaybackViewController videoHeight]];
+    
+    [newYouTubeWebView loadHTMLString: iFrameHTML
+                              baseURL: [NSURL URLWithString: @"http://www.youtube.com"]];
+
+    return newYouTubeWebView;
+}
+
+
+// Support for Vimeo player
+// TODO: We need to support http://player.vimeo.com/video/VIDEO_ID?api=1&player_id=vimeoplayer
+// See http://developer.vimeo.com/player/js-api
+// Create YouTube specific webview, based on common setup
++ (UIWebView *) createNewVimeoWebView
+{
+    UIWebView *newVimeoVideoWebView = [SYNVideoPlaybackViewController createNewVideoWebView];
+    
+    NSString *parameterString = @"";
+    
+    NSError *error = nil;
+    NSString *fullPath = [[NSBundle mainBundle] pathForResource: @"VimeoIFramePlayer"
+                                                         ofType: @"html"];
+    
+    NSString *templateHTMLString = [NSString stringWithContentsOfFile: fullPath
+                                                             encoding: NSUTF8StringEncoding
+                                                                error: &error];
+    
+    NSString *iFrameHTML = [NSString stringWithFormat: templateHTMLString,
+                                                       parameterString,
+                                                       (int) [SYNVideoPlaybackViewController videoWidth],
+                                                       (int) [SYNVideoPlaybackViewController videoHeight]];
+    
+    [newVimeoVideoWebView loadHTMLString: iFrameHTML
+                                 baseURL: nil];
+    
+    return newVimeoVideoWebView;
+}
+
+
++ (CGFloat) videoWidth
+{
+    CGFloat width = 320.0f;
+    
+    if ([SYNDeviceManager.sharedInstance isIPad])
+    {
+        width = 739.0f;
+    }
+    return width;
+}
+
+
++ (CGFloat) videoHeight
+{
+    CGFloat height = 180.0f;
+    
+    if ([SYNDeviceManager.sharedInstance isIPad])
+    {
+        height = 416.0f;
+    }
+    
+    return height;
+}
+
+
+- (NSString *) videoQuality
+{
+    // Based on empirical evidence (Youtube app), determine the appropriate quality level based on device and connectivity
+    BOOL isIpad = [[SYNDeviceManager sharedInstance] isIPad];
+    SYNAppDelegate* appDelegate = UIApplication.sharedApplication.delegate;
+    SYNMasterViewController *masterViewController = (SYNMasterViewController*)appDelegate.masterViewController;
+    NSString *suggestedQuality;
+    
+    if ([masterViewController.reachability currentReachabilityStatus] == ReachableViaWiFi)
+    {
+        if (isIpad)
+        {
+            suggestedQuality = @"hd720";
+        }
+        else
+        {
+            suggestedQuality = @"medium";
+        }
+    }
+    else if ([masterViewController.reachability currentReachabilityStatus] == ReachableViaWWAN)
+    {
+        // Connected via cellular network
+        if (isIpad)
+        {
+            suggestedQuality = @"medium";
+        }
+        else
+        {
+            suggestedQuality = @"small";
+        }
+    }
+    else if ([masterViewController.reachability currentReachabilityStatus] == NotReachable)
+    {
+        // Not currently connected
+        suggestedQuality = @"default";
+    }
+    else
+    {
+        suggestedQuality = @"default";
+    }
+    
+    return suggestedQuality;
+}
+
+
 
 - (id) initWithFrame: (CGRect) frame
         indexUpdater: (SYNVideoIndexUpdater) indexUpdater;
@@ -80,6 +248,7 @@
 
     // Make sure we set the desired frame at this point
     self.view.frame = self.requestedFrame;
+    
     self.view.clipsToBounds = YES;
 
     // Start off by making our view transparent
@@ -93,8 +262,27 @@
     
     self.shuttleBarView = [self createShuttleBarView];
     
-    // Create an UIWebView with exactly the same dimensions and background colour as our view
-    self.currentVideoWebView = [self createNewVideoWebView];
+    // Setup our web views
+    youTubeVideoWebViewInstance.frame = self.view.bounds;
+    youTubeVideoWebViewInstance.backgroundColor = self.view.backgroundColor;
+    
+    // Set the webview delegate so that we can received events from the JavaScript
+    youTubeVideoWebViewInstance.delegate = self;
+    
+#ifdef ENABLE_VIMEO_PLAYER
+    // Now we know our frame size, update the pre-created webview with size and colour
+    vimeoVideoWebViewInstance.frame = self.view.bounds;
+    vimeoVideoWebViewInstance.backgroundColor = self.view.backgroundColor;
+    
+    // Set the webview delegate so that we can received events from the JavaScript
+    vimeoVideoWebViewInstance.delegate = self;
+#endif
+    
+    // Default to using YouTube player for now
+    self.currentVideoWebView = youTubeVideoWebViewInstance;
+    
+    [self.view insertSubview: self.currentVideoWebView
+                belowSubview: self.shuttleBarView];
 }
 
 
@@ -230,33 +418,6 @@
     timeLabel.backgroundColor = [UIColor clearColor];
     
     return timeLabel;
-}
-
-
-- (UIWebView *) createNewVideoWebView
-{
-    UIWebView *newVideoWebView = [[UIWebView alloc] initWithFrame: self.view.bounds];
-
-    newVideoWebView.backgroundColor = self.view.backgroundColor;
-	newVideoWebView.opaque = NO;
-    newVideoWebView.alpha = 0.0f;
-    newVideoWebView.autoresizingMask = UIViewAutoresizingNone;
-    
-    // Stop the user from scrolling the webview
-    newVideoWebView.scrollView.scrollEnabled = false;
-    newVideoWebView.scrollView.bounces = false;
-    
-    // Set the webview delegate so that we can received events from the JavaScript
-    newVideoWebView.delegate = self;
-    
-    // Enable airplay button on webview player
-    newVideoWebView.mediaPlaybackAllowsAirPlay = YES;
-    newVideoWebView.allowsInlineMediaPlayback = YES;
-    
-    [self.view insertSubview: newVideoWebView
-                belowSubview: self.shuttleBarView];
-
-    return newVideoWebView;
 }
 
 
@@ -456,9 +617,6 @@
        selectedIndex: (int) selectedIndex
             autoPlay: (BOOL) autoPlay;
 {
-    // Init our ivars
-    self.source = nil;
-    self.sourceId = nil;
     self.videoInstanceArray = playlistArray;
     self.currentSelectedIndex = selectedIndex;
     self.autoPlay = autoPlay;
@@ -467,10 +625,19 @@
 }
 
 
+#pragma mark - YouTube player support
+
+- (void) playYouTubeVideoWithSourceId: (NSString *) sourceId
+{
+    NSString *loadString = [NSString stringWithFormat: @"player.stopVideo(); player.clearVideo(); player.setPlaybackQuality('%@'); player.loadVideoById('%@'); ", self.videoQuality, sourceId];
+    [self.currentVideoWebView stringByEvaluatingJavaScriptFromString: loadString];
+    self.playFlag = TRUE;
+}
+
+
 - (void) playVideo
 {
     [self.currentVideoWebView stringByEvaluatingJavaScriptFromString: @"player.playVideo();"];
-    
     self.playFlag = TRUE;
 }
 
@@ -601,122 +768,19 @@
     NSString *currentSource = videoInstance.video.source;
     NSString *currentSourceId = videoInstance.video.sourceId;
     
-    [self loadWebView: self.currentVideoWebView
-           withSource: currentSource
-             sourceId: currentSourceId];
-}
-
-
-- (void) loadWebView: (UIWebView *) webView
-          withSource: (NSString *) source
-            sourceId: (NSString *) sourceId
-{
-    if ([source isEqualToString: @"youtube"])
+    if ([currentSource isEqualToString: @"youtube"])
     {
-        [self loadWebViewWithIFramePlayer: webView
-                           usingYouTubeId: sourceId];
+        [self playYouTubeVideoWithSourceId: currentSourceId];
     }
-    else if ([source isEqualToString: @"vimeo"])
+    else if ([currentSource isEqualToString: @"vimeo"])
     {
-        [self loadWebViewWithIFrame: webView
-                       usingVimeoId: sourceId];
+        // TODO: Add Vimeo support here
     }
     else
     {
         // AssertOrLog(@"Unknown video source type");
         DebugLog(@"WARNING: No Source! ");
     }
-}
-
-
-- (void) loadWebViewWithIFramePlayer: (UIWebView *) webView
-                      usingYouTubeId: (NSString *) sourceId
-{
-    NSError *error = nil;
-    NSString *fullPath = [[NSBundle mainBundle] pathForResource: @"YouTubeIFramePlayer"
-                                                         ofType: @"html"];
-    
-    NSString *templateHTMLString = [NSString stringWithContentsOfFile: fullPath
-                                                             encoding: NSUTF8StringEncoding
-                                                                error: &error];
-    
-    
-    CGAffineTransform savedTransform = self.view.transform;
-    self.view.transform = CGAffineTransformMakeScale(1.0, 1.0);
-    
-    // Based on empirical evidence (Youtube app), determine the appropriate quality level based on device and connectivity
-    BOOL isIpad = [[SYNDeviceManager sharedInstance] isIPad];
-    SYNAppDelegate* appDelegate = UIApplication.sharedApplication.delegate;
-    SYNMasterViewController *masterViewController = (SYNMasterViewController*)appDelegate.masterViewController;
-    NSString *suggestedQuality;
-    
-    if ([masterViewController.reachability currentReachabilityStatus] == ReachableViaWiFi)
-    {
-        if (isIpad)
-        {
-            suggestedQuality = @"hd720";
-        }
-        else
-        {
-            suggestedQuality = @"medium";
-        }
-    }
-    else if ([masterViewController.reachability currentReachabilityStatus] == ReachableViaWWAN)
-    {
-        // Connected via cellular network
-        if (isIpad)
-        {
-            suggestedQuality = @"medium";
-        }
-        else
-        {
-            suggestedQuality = @"small";
-        }
-    }
-    else if ([masterViewController.reachability currentReachabilityStatus] == NotReachable)
-    {
-        // Not currently connected
-        suggestedQuality = @"default";
-    }
-    else
-    {
-        suggestedQuality = @"default";
-    }
-
-    DebugLog(@"Selected quality: %@", suggestedQuality);
-    
-    NSString *iFrameHTML = [NSString stringWithFormat: templateHTMLString, suggestedQuality, (int) self.view.frame.size.width, (int) self.view.frame.size.height, sourceId];
-    
-    self.view.transform = savedTransform;
-    
-    [webView loadHTMLString: iFrameHTML
-                    baseURL: [NSURL URLWithString: @"http://www.youtube.com"]];
-    
-    // Required to work correctly
-    webView.mediaPlaybackRequiresUserAction = FALSE;
-}
-
-
-// Support for Vimeo player
-// TODO: We need to support http://player.vimeo.com/video/VIDEO_ID?api=1&player_id=vimeoplayer
-// See http://developer.vimeo.com/player/js-api
-- (void) loadWebViewWithIFrame: (UIWebView *) webView
-                  usingVimeoId: (NSString *) sourceId
-{
-    NSString *parameterString = @"";
-    
-    NSError *error = nil;
-    NSString *fullPath = [[NSBundle mainBundle] pathForResource: @"VimeoIFramePlayer"
-                                                         ofType: @"html"];
-    
-    NSString *templateHTMLString = [NSString stringWithContentsOfFile: fullPath
-                                                             encoding: NSUTF8StringEncoding
-                                                                error: &error];
-    
-    NSString *iFrameHTML = [NSString stringWithFormat: templateHTMLString, sourceId, parameterString, self.view.frame.size.width, self.view.frame.size.height];
-    
-    [webView loadHTMLString: iFrameHTML
-                         baseURL: nil];
 }
 
 
@@ -783,9 +847,10 @@
                                     eventData: (NSString *) actionData
 {    if ([actionName isEqualToString: @"ready"])
     {
+        DebugLog (@"++++++++++ Player ready - player ready");
         // We don't actually get any events until we 'play' the video
         // The next stage is unstarted, so if not autoplay then pause the video
-        [self playVideo];
+        [self loadCurrentVideoWebView];
     }
     else if ([actionName isEqualToString: @"stateChange"])
     {
@@ -813,10 +878,11 @@
         }
         else if ([actionData isEqualToString: @"playing"])
         {
-            DebugLog (@"*** Playing: Starting - Fading up player");
+            DebugLog (@"++++++++++ Playing: Starting - Fading up player");
             
             // If we are playing then out shuttle / pause / play cycle is over
             self.shuttledByUser = TRUE;
+            self.firstTimePlay = TRUE;
             
             [self fadeUpVideoPlayer];
             
@@ -844,7 +910,18 @@
         }
         else if ([actionData isEqualToString: @"buffering"])
         {
-            DebugLog (@"*** Buffering: No action taken");
+            if (self.firstTimePlay == TRUE)
+            {
+                DebugLog (@"*** Buffering: Normal buffering - No action taken");
+                self.firstTimePlay = FALSE;
+            }
+            else
+            {
+                // Should already be playing so try to restart
+                DebugLog (@"*** Buffering: Buffering after play - Retrying play");
+                [self playVideo];
+            }
+
         }
         else if ([actionData isEqualToString: @"cued"])
         {
@@ -912,7 +989,7 @@
 - (void) updateShuttleBarProgress
 {
     float bufferLevel = [self videoLoadedFraction];
-//    NSLog (@"Buffer level %f", bufferLevel);
+    NSLog (@"Buffer level %f", bufferLevel);
     
     // Update the progress bar under our slider
     self.bufferingProgressView.progress = bufferLevel;
