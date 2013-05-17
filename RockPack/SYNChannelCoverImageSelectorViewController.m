@@ -20,6 +20,8 @@
 #import <AssetsLibrary/AssetsLibrary.h>
 #import <QuartzCore/QuartzCore.h>
 #import "SYNAppDelegate.h"
+#import "SYNNetworkEngine.h"
+#import "SYNOAuthNetworkEngine.h"
 
 enum ChannelCoverSelectorState {
     kChannelCoverDefault = 0,
@@ -61,6 +63,9 @@ enum ChannelCoverSelectorState {
     [super viewDidLoad];
     
     self.appDelegate = (SYNAppDelegate*)[[UIApplication sharedApplication] delegate];
+    
+    [self updateCoverArt];
+    
     NSFetchRequest *fetchRequest = [[NSFetchRequest alloc] init];
     
     
@@ -462,6 +467,26 @@ enum ChannelCoverSelectorState {
                                  }
                              }];
 }
+
+- (void) updateCoverArt
+{
+    // Update the list of cover art
+    [self.appDelegate.networkEngine updateCoverArtOnCompletion: ^{
+        DebugLog(@"Success");
+    } onError: ^(NSError* error) {
+        DebugLog(@"%@", [error debugDescription]);
+    }];
+    
+    [self.appDelegate.oAuthNetworkEngine updateCoverArtForUserId: self.appDelegate.currentOAuth2Credentials.userId
+                                               onCompletion: ^{
+                                                   DebugLog(@"Success");
+                                               }
+                                                    onError: ^(NSError* error) {
+                                                        DebugLog(@"%@", [error debugDescription]);
+                                                    }];
+}
+
+
 
 #pragma mark - fetched result controller delegate
 - (void) controllerDidChangeContent: (NSFetchedResultsController *) controller

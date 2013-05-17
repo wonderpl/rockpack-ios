@@ -979,14 +979,7 @@ kChannelThumbnailDisplayModeStandard: kChannelThumbnailDisplayModeEdit;
     }
     }
     else
-    {
-        [appDelegate.networkEngine updateCoverArtOnCompletion: ^{
-            DebugLog(@"Success");
-        }
-        onError: ^(NSError* error) {
-            DebugLog(@"%@", [error debugDescription]);
-        }];
-        
+    {        
         self.coverImageSelector = [[SYNChannelCoverImageSelectorViewController alloc] init];
         self.coverImageSelector.imageSelectorDelegate = self;
         CGRect startFrame = self.coverImageSelector.view.frame;
