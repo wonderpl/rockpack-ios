@@ -145,7 +145,7 @@
     
     startAnimationDelay = 0.0;
     
-    currentRange = NSMakeRange(0, STANDARD_LENGTH);
+    currentRange = NSMakeRange(1, STANDARD_LENGTH);
     
     if(self.enableCategoryTable)
     {
@@ -189,7 +189,6 @@
     currentGenre = nil;
     
     [self loadChannelsForGenre:nil];
-    
     
 }
 
@@ -239,11 +238,14 @@
     
     // (UIButton*) sender can be nil when called directly //
     
-    NSInteger nextStart = currentRange.location + currentRange.length;
+    NSInteger nextStart = currentRange.location + STANDARD_LENGTH; // one is subtracted when the call happens for 0 indexing
+    
     NSInteger nextSize = (nextStart + STANDARD_LENGTH) > currentTotal ? (currentTotal - nextStart) : STANDARD_LENGTH;
     
     if(nextSize == 0)
         return;
+    
+    
     
     currentRange = NSMakeRange(nextStart, nextSize);
     
@@ -358,13 +360,6 @@
     
     SYNChannelThumbnailCell *channelThumbnailCell = [collectionView dequeueReusableCellWithReuseIdentifier: @"SYNChannelThumbnailCell"
                                                                                               forIndexPath: indexPath];
-    
-    // == Infinite Scrolling Support == //
-    
-    if(indexPath.row == self.channels.count)
-    {
-        [self loadMoreChannels:nil];
-    }
     
     
 

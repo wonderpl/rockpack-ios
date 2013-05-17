@@ -178,7 +178,7 @@
     
     
     NSMutableDictionary* tempParameters = [NSMutableDictionary dictionary];
-    [tempParameters setObject:[NSString stringWithFormat:@"%i", range.location] forKey:@"start"];
+    [tempParameters setObject:[NSString stringWithFormat:@"%i", range.location - 1] forKey:@"start"]; // compensate for 0 indexed
     [tempParameters setObject:[NSString stringWithFormat:@"%i", range.length] forKey:@"size"];
     
     if(![categoryId isEqualToString:@"all"]) {
