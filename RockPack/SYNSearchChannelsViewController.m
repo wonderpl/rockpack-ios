@@ -72,7 +72,6 @@
     [request setEntity:[NSEntityDescription entityForName:@"Channel"
                                    inManagedObjectContext:appDelegate.searchManagedObjectContext]];
     
-    
     NSPredicate* notOwnedByUserPredicate = [NSPredicate predicateWithFormat:@"channelOwner.uniqueId != %@", appDelegate.currentUser.uniqueId];
     
     [request setPredicate:notOwnedByUserPredicate];
@@ -100,6 +99,10 @@
 {
     // override the data loading
     [self reloadCollectionViews];
+    
+    
+    [[NSNotificationCenter defaultCenter] postNotificationName:kNoteSearchBarRequestShow
+                                                        object:self];
     
 }
 
@@ -149,6 +152,15 @@
 {
     // override with emtpy function
 }
+
+-(void)animatedPushViewController:(UIViewController *)vc
+{
+    [super animatedPushViewController:vc];
+    
+    [[NSNotificationCenter defaultCenter] postNotificationName:kNoteSearchBarRequestHide
+                                                        object:self];
+}
+
 
 
 #pragma mark - Delegate

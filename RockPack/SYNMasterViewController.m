@@ -236,18 +236,18 @@ typedef void(^AnimationCompletionBlock)(BOOL finished);
     // == Set Up Notifications == //
     
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(backButtonRequested:) name:kNoteBackButtonShow object:nil];
-    
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(backButtonRequested:) name:kNoteBackButtonHide object:nil];
     
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(topRightControlsRequested:) name:kNoteTopRightControlsShow object:nil];
-    
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(topRightControlsRequested:) name:kNoteTopRightControlsHide object:nil];
     
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(allNavControlsRequested:) name:kNoteAllNavControlsShow object:nil];
-    
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(allNavControlsRequested:) name:kNoteAllNavControlsHide object:nil];
     
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(addToChannelRequested:) name:kNoteAddToChannelRequest object:nil];
+    
+    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(searchBarRequested:) name:kNoteSearchBarRequestHide object:nil];
+    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(searchBarRequested:) name:kNoteSearchBarRequestShow object:nil];
     
     
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(scrollerPageChanged:) name:kScrollerPageChanged object:nil];
@@ -513,6 +513,7 @@ typedef void(^AnimationCompletionBlock)(BOOL finished);
     
     CGRect sboxFrame;
     
+    // place according to the position of the back button //
     if(showingBackButton)
     {
         sboxFrame = self.searchBoxController.view.frame;
@@ -528,6 +529,11 @@ typedef void(^AnimationCompletionBlock)(BOOL finished);
     self.searchBoxController.view.frame = sboxFrame;
     
     [self.view insertSubview:self.searchBoxController.view aboveSubview:self.overlayContainerView];
+    
+    if([[SYNDeviceManager sharedInstance] isIPad] && sender != nil)
+    {
+        [self.searchBoxController.searchTextField becomeFirstResponder];
+    }
     
 }
 
@@ -580,6 +586,15 @@ typedef void(^AnimationCompletionBlock)(BOOL finished);
     [appDelegate logout];
 }
 
+-(void) searchBarRequested:(NSNotification*)notification
+{
+    NSString* notifcationName = [notification name];
+    if([notifcationName isEqualToString:kNoteSearchBarRequestHide])
+        [self cancelButtonPressed:nil];
+    else
+        [self showSearchBoxField:nil];
+        
+}
 
 - (void) reachabilityChanged: (NSNotification*) notification
 {

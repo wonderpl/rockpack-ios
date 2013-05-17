@@ -20,7 +20,7 @@
 
 @interface SYNSearchBoxViewController ()
 
-@property (nonatomic, weak) UITextField* searchTextField;
+
 
 @property (nonatomic, strong) SYNAutocompleteSuggestionsController* autoSuggestionController;
 @property (nonatomic, weak) SYNAppDelegate* appDelegate;
@@ -59,8 +59,8 @@
     
     self.appDelegate = (SYNAppDelegate*)[[UIApplication sharedApplication] delegate];
     
-    self.searchTextField = self.searchBoxView.searchTextField;
-    self.searchTextField.delegate = self;
+    searchTextField = self.searchBoxView.searchTextField;
+    searchTextField.delegate = self;
 	
     self.autoSuggestionController = [[SYNAutocompleteSuggestionsController alloc] init];
     self.autoSuggestionController.tableView.delegate = self;
@@ -88,10 +88,7 @@
     
     isOnScreen = YES;
     
-    if([[ SYNDeviceManager sharedInstance] isIPad])
-    {
-        [self.searchTextField becomeFirstResponder];
-    }
+    
 }
 
 - (void)viewDidDisappear:(BOOL)animated

@@ -264,7 +264,11 @@
     
     [self clearController];
     
+    [[NSNotificationCenter defaultCenter] postNotificationName:kNoteSearchBarRequestHide object:self];
+    
 }
+
+
 
 -(void)clearController
 {
