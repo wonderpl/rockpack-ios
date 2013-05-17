@@ -10,6 +10,9 @@
 
 @implementation SYNChannelFooterMoreView
 
-
+-(void)awakeFromNib
+{
+    self.backgroundColor = [UIColor colorWithPatternImage:[UIImage imageNamed:@"BackgroundLoadMore"]];
+}
 
 @end

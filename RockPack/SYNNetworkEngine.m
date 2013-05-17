@@ -199,8 +199,8 @@
         completeBlock(dictionary);
         
     } errorHandler:^(NSError* error) {
-        DebugLog(@"Update Channel Screens Request Failed");
-        errorBlock(@{@"network_error":@"engine failed to load channels"});
+        
+        errorBlock(@{@"network_error":@"Engine Failed to Load Channels"});
     }];
     
     [self enqueueOperation: networkOperation];
