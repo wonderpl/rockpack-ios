@@ -46,7 +46,7 @@
 
 @property (nonatomic, assign) BOOL ignoreRefresh;
 @property (nonatomic, strong) NSString* currentCategoryId;
-@property (nonatomic, weak) Genre* currentGenre;
+@property (nonatomic, strong) Genre* currentGenre;
 @property (nonatomic, weak) SYNMainRegistry* mainRegistry;
 
 @property (nonatomic, strong) SYNChannelCategoryTableViewController* categoryTableViewController;
