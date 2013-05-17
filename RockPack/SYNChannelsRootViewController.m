@@ -42,7 +42,7 @@
 #endif
 
 @property (getter = hasTouchedChannelButton) BOOL touchedChannelButton;
-@property (nonatomic) NSInteger currentTotal;
+@property (nonatomic) NSInteger dataItemsAvailable;
 
 @property (nonatomic, assign) BOOL ignoreRefresh;
 @property (nonatomic, strong) NSString* currentCategoryId;
@@ -66,7 +66,7 @@
 @synthesize currentCategoryId;
 @synthesize currentGenre;
 @synthesize dataRequestRange;
-@synthesize currentTotal;
+@synthesize dataItemsAvailable;
 @synthesize mainRegistry;
 @synthesize channels;
 
@@ -203,6 +203,8 @@
 -(void)loadChannelsForGenre:(Genre*)genre byAppending:(BOOL)append
 {
     
+    NSLog(@"Loading Channels %i to %i from %i total", (dataRequestRange.location - 1), (dataRequestRange.location - 1) + (dataRequestRange.length - 1), dataItemsAvailable);
+    
     [appDelegate.networkEngine updateChannelsScreenForCategory: (genre ? genre.uniqueId : @"all")
                                                       forRange: dataRequestRange
                                                  ignoringCache: NO
@@ -218,11 +220,13 @@
                                                       
                                                       dataRequestRange.length = itemArray.count;
                                                       
+                                                      NSLog(@"%i Items Fetched for %@ request", dataRequestRange.length, currentGenre.name);
+                                                      
                                                       NSNumber *totalNumber = [channelsDictionary objectForKey: @"total"];
                                                       if (![totalNumber isKindOfClass: [NSNumber class]])
                                                           return;
                                                       
-                                                      currentTotal = [totalNumber integerValue];
+                                                      dataItemsAvailable = [totalNumber integerValue];
                                                       
                                                       BOOL registryResultOk = [appDelegate.mainRegistry registerChannelsFromDictionary:response
                                                                                                                               forGenre:genre
@@ -254,16 +258,17 @@
     
     NSInteger nextStart = dataRequestRange.location + dataRequestRange.length; // one is subtracted when the call happens for 0 indexing
     
-    NSInteger nextSize = (nextStart + STANDARD_REQUEST_LENGTH) > currentTotal ? (currentTotal - nextStart) : STANDARD_REQUEST_LENGTH;
-    
-    if(nextSize == 0)
+    if(nextStart >= dataItemsAvailable)
         return;
+    
+    NSInteger nextSize = (nextStart + STANDARD_REQUEST_LENGTH) >= dataItemsAvailable ? (dataItemsAvailable - nextStart) : STANDARD_REQUEST_LENGTH;
+    
     
     
     
     dataRequestRange = NSMakeRange(nextStart, nextSize);
     
-    NSLog(@"Loading More Channels: %i - %i from %i", dataRequestRange.location, dataRequestRange.location + dataRequestRange.length, currentTotal);
+    
     
     [self loadChannelsForGenre:currentGenre byAppending:YES];
 }
@@ -423,6 +428,11 @@
     
     if (kind == UICollectionElementKindSectionFooter)
     {
+        if(self.channels.count == 0 || (self.dataRequestRange.location + self.dataRequestRange.length) >= dataItemsAvailable)
+        {
+            return supplementaryView;
+        }
+        
         self.footerView = [self.channelThumbnailCollectionView dequeueReusableSupplementaryViewOfKind: kind
                                                                                     withReuseIdentifier: @"SYNChannelFooterMoreView"
                                                                                            forIndexPath: indexPath];
@@ -594,8 +604,13 @@
                                   delay: 0.0
                                 options: UIViewAnimationCurveEaseInOut
                              animations: ^{
-                                 CGPoint currentCenter = self.channelThumbnailCollectionView.center;
-                                 [self.channelThumbnailCollectionView setCenter: CGPointMake(currentCenter.x, currentCenter.y - kCategorySecondRowHeight)];
+                                 
+                                 CGRect currentCollectionViewFrame = self.channelThumbnailCollectionView.frame;
+                                 currentCollectionViewFrame.origin.y -= kCategorySecondRowHeight;
+                                 currentCollectionViewFrame.size.height += kCategorySecondRowHeight;
+                                 self.channelThumbnailCollectionView.frame = currentCollectionViewFrame;
+                                 
+                                 
                              }  completion: ^(BOOL result) {
                                  tabExpanded = NO;
                              }];
@@ -613,8 +628,10 @@
                           delay: 0.0
                         options: UIViewAnimationCurveEaseInOut
                      animations: ^{
-                         CGPoint currentCenter = self.channelThumbnailCollectionView.center;
-                         [self.channelThumbnailCollectionView setCenter: CGPointMake(currentCenter.x, currentCenter.y + kCategorySecondRowHeight)];
+                         CGRect currentCollectionViewFrame = self.channelThumbnailCollectionView.frame;
+                         currentCollectionViewFrame.origin.y += kCategorySecondRowHeight;
+                         currentCollectionViewFrame.size.height -= kCategorySecondRowHeight;
+                         self.channelThumbnailCollectionView.frame = currentCollectionViewFrame;
                      }
                      completion: ^(BOOL result) {
                          tabExpanded = YES;
