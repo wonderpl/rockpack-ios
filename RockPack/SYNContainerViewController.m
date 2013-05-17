@@ -250,18 +250,7 @@
 }
 
 
-#pragma mark - Navigation Methods
 
-- (void) popCurrentViewController: (id) sender
-{
-    
-    
-    SYNAbstractViewController *abstractVC = (SYNAbstractViewController *)self.selectedNavigationController.topViewController;
-    
-    [abstractVC animatedPopViewController];
-    
-    
-}
 
 -(void) navigateToPageByName:(NSString*)pageName
 {

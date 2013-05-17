@@ -236,18 +236,18 @@ typedef void(^AnimationCompletionBlock)(BOOL finished);
     // == Set Up Notifications == //
     
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(backButtonRequested:) name:kNoteBackButtonShow object:nil];
-    
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(backButtonRequested:) name:kNoteBackButtonHide object:nil];
     
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(topRightControlsRequested:) name:kNoteTopRightControlsShow object:nil];
-    
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(topRightControlsRequested:) name:kNoteTopRightControlsHide object:nil];
     
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(allNavControlsRequested:) name:kNoteAllNavControlsShow object:nil];
-    
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(allNavControlsRequested:) name:kNoteAllNavControlsHide object:nil];
     
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(addToChannelRequested:) name:kNoteAddToChannelRequest object:nil];
+    
+    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(searchBarRequested:) name:kNoteSearchBarRequestHide object:nil];
+    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(searchBarRequested:) name:kNoteSearchBarRequestShow object:nil];
     
     
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(scrollerPageChanged:) name:kScrollerPageChanged object:nil];
@@ -518,6 +518,7 @@ typedef void(^AnimationCompletionBlock)(BOOL finished);
     
     CGRect sboxFrame;
     
+    // place according to the position of the back button //
     if(showingBackButton)
     {
         sboxFrame = self.searchBoxController.view.frame;
@@ -533,6 +534,11 @@ typedef void(^AnimationCompletionBlock)(BOOL finished);
     self.searchBoxController.view.frame = sboxFrame;
     
     [self.view insertSubview:self.searchBoxController.view aboveSubview:self.overlayContainerView];
+    
+    if([[SYNDeviceManager sharedInstance] isIPad] && sender != nil)
+    {
+        [self.searchBoxController.searchTextField becomeFirstResponder];
+    }
     
 }
 
@@ -585,6 +591,15 @@ typedef void(^AnimationCompletionBlock)(BOOL finished);
     [appDelegate logout];
 }
 
+-(void) searchBarRequested:(NSNotification*)notification
+{
+    NSString* notifcationName = [notification name];
+    if([notifcationName isEqualToString:kNoteSearchBarRequestHide])
+        [self cancelButtonPressed:nil];
+    else
+        [self showSearchBoxField:nil];
+        
+}
 
 - (void) reachabilityChanged: (NSNotification*) notification
 {
@@ -771,8 +786,9 @@ typedef void(^AnimationCompletionBlock)(BOOL finished);
                          forControlEvents:UIControlEventTouchUpInside];
         
         //No More Back Title (For Now)
-        [self.backButtonControl setBackTitle: self.pageTitleLabel.text];
+        // [self.backButtonControl setBackTitle: self.pageTitleLabel.text];
         
+        // Shrink the Search Box when the back arrow comes on screen //
         if(self.searchBoxController.isOnScreen)
         {
             [UIView animateWithDuration:0.5 animations:^{
@@ -803,11 +819,7 @@ typedef void(^AnimationCompletionBlock)(BOOL finished);
                                       action: @selector(popCurrentViewController:)
                             forControlEvents: UIControlEventTouchUpInside];
         
-        if(self.searchBoxController.isOnScreen)
-        {
-            [self cancelButtonPressed:nil];
-            
-        }
+        
         showingBackButton = NO;
         targetFrame = self.movableButtonsContainer.frame;
         targetFrame.origin.x = kMovableViewOffX;
@@ -829,24 +841,48 @@ typedef void(^AnimationCompletionBlock)(BOOL finished);
 
 - (void) popCurrentViewController: (id) sender
 {
+    SYNAbstractViewController *abstractVC;
+    
     if(_overlayNavigationController)
     {
         if(_overlayNavigationController.viewControllers.count > 1)
         {
-            SYNAbstractViewController *abstractVC = (SYNAbstractViewController *)_overlayNavigationController.topViewController;
+            abstractVC = (SYNAbstractViewController *)_overlayNavigationController.topViewController;
+            
             
             [abstractVC animatedPopViewController];
+            
+//            if(self.searchBoxController.isOnScreen)
+//            {
+//                
+//                [self cancelButtonPressed:nil];
+//                
+//            }
         }
         else
         {
             self.overlayNavigationController = nil;
             [self showBackButton:NO];
         }
+        
+        
     }
     else
     {
-        [self.containerViewController popCurrentViewController:sender];
+        abstractVC = (SYNAbstractViewController *)self.containerViewController.showingViewController;
+        
+        
+        if(abstractVC.navigationController.viewControllers.count <= 2) {
+            self.containerViewController.scrollView.scrollEnabled = YES;
+            [self showBackButton:NO];
+        }
+            
+        
+        [abstractVC animatedPopViewController];
+       
     }
+    
+    
 }
 
 

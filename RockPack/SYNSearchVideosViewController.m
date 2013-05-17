@@ -52,6 +52,13 @@
     self.refreshButton.hidden = YES;
 }
 
+-(void)viewWillAppear:(BOOL)animated
+{
+    [super viewWillAppear:animated];
+    
+    [[NSNotificationCenter defaultCenter] postNotificationName:kNoteSearchBarRequestShow
+                                                        object:self];
+}
 
 - (NSFetchedResultsController *)fetchedResultsController
 {

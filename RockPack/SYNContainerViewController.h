@@ -30,7 +30,6 @@ typedef enum {
 @property (nonatomic) ScrollingDirection scrollingDirection;
 -(SYNAbstractViewController*)nextShowingViewController;
 
-- (void) popCurrentViewController: (id) sender;
 -(void) navigateToPageByName:(NSString*)pageName;
 
 

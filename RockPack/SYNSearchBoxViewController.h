@@ -14,6 +14,8 @@
 
 @property (nonatomic, readonly) BOOL isOnScreen;
 
+@property (nonatomic, weak, readonly) UITextField* searchTextField;
+
 @property (nonatomic, readonly) SYNSearchBoxView* searchBoxView;
 
 
