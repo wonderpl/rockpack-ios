@@ -256,7 +256,7 @@
     [self scrollToCellAtIndex: self.currentSelectedIndex
                      animated: YES];
     
-    self.addButton.hidden = !self.addButton.active;
+    self.addButton.hidden = !self.addVideoButton.selected;
     
 }
 
@@ -374,6 +374,7 @@
     self.videoTitleLabel.text = videoInstance.title;
     self.starButton.selected = videoInstance.video.starredByUserValue;
     self.addVideoButton.selected = [appDelegate.videoQueue videoInstanceIsAddedToChannel:videoInstance];
+    self.addButton.hidden = !self.addVideoButton.selected;
 }
 
 
@@ -501,7 +502,7 @@
                                                           userInfo: @{@"VideoInstance" : videoInstance}];
         addItButton.selected = YES;
     }
-    self.addButton.hidden = !self.addButton.active;
+    self.addButton.hidden = !addItButton.selected;
 }
 
 
