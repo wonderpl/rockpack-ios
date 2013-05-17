@@ -23,9 +23,11 @@ typedef void (^SYNVideoIndexUpdater)(int);
 @property (nonatomic, strong) UIView *shuttleBarView;
 @property (nonatomic, strong) VideoInstance* currentVideoInstance;
 
++ (SYNVideoPlaybackViewController*) sharedInstance;
+
 // Initialisation
-- (id) initWithFrame: (CGRect) frame
-        indexUpdater: (SYNVideoIndexUpdater) indexUpdater;
+- (void) updateWithFrame: (CGRect) frame
+            indexUpdater: (SYNVideoIndexUpdater) indexUpdater;
 
 - (void) setPlaylist: (NSArray *) playlistArray
        selectedIndex: (int) selectedIndex

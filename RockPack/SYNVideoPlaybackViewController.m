@@ -22,15 +22,17 @@
 
 @interface SYNVideoPlaybackViewController () <UIWebViewDelegate>
 
+
 @property (nonatomic, assign) BOOL autoPlay;
-@property (nonatomic, assign) BOOL firstTimePlay;
 @property (nonatomic, assign) BOOL currentVideoViewedFlag;
 @property (nonatomic, assign) BOOL disableTimeUpdating;
 @property (nonatomic, assign) BOOL fadeOutScheduled;
+@property (nonatomic, assign) BOOL notYetPlaying;
 @property (nonatomic, assign) BOOL playFlag;
 @property (nonatomic, assign) BOOL shuttledByUser;
 @property (nonatomic, assign) CGRect requestedFrame;
 @property (nonatomic, assign) NSTimeInterval currentDuration;
+@property (nonatomic, assign) NSTimeInterval loadTime;
 @property (nonatomic, assign) int currentSelectedIndex;
 @property (nonatomic, strong) CABasicAnimation *placeholderBottomLayerAnimation;
 @property (nonatomic, strong) CABasicAnimation *placeholderMiddleLayerAnimation;
@@ -47,7 +49,6 @@
 @property (nonatomic, strong) UISlider *shuttleSlider;
 @property (nonatomic, strong) UIView *videoPlaceholderView;
 @property (nonatomic, strong) UIWebView *currentVideoWebView;
-
 @end
 
 
@@ -58,17 +59,37 @@
 #pragma mark - Initialization
 
 static UIWebView* youTubeVideoWebViewInstance;
-static UIWebView* vimeoideoWebViewInstance;
 
-// Create the static instances of our webviews
-+ (void) initialize
-{
-    youTubeVideoWebViewInstance = [SYNVideoPlaybackViewController createNewYouTubeWebView];
-    
 #ifdef ENABLE_VIMEO_PLAYER
-    vimeoideoWebViewInstance = [SYNVideoPlaybackViewController createNewVimeoWebView];
+static UIWebView* vimeoideoWebViewInstance;
 #endif
+
++ (SYNVideoPlaybackViewController*) sharedInstance
+{
+    static SYNVideoPlaybackViewController *_sharedInstance = nil;
+    
+    if (!_sharedInstance)
+    {
+        static dispatch_once_t oncePredicate;
+        dispatch_once(&oncePredicate, ^{
+            // Create our shared intance
+            _sharedInstance = [[super allocWithZone: nil] init];
+            
+            DebugLog(@"............................................ Webview - Starting to create");
+            // Create the static instances of our webviews
+            youTubeVideoWebViewInstance = [SYNVideoPlaybackViewController createNewYouTubeWebView];
+            
+#ifdef ENABLE_VIMEO_PLAYER
+            vimeoideoWebViewInstance = [SYNVideoPlaybackViewController createNewVimeoWebView];
+#endif
+
+            DebugLog(@"00000000000000000000000000000000000000000000 Webview - finished creating");
+        });
+    }
+    
+    return _sharedInstance;
 }
+
 
 
 // Common setup for all video web views
@@ -185,7 +206,7 @@ static UIWebView* vimeoideoWebViewInstance;
     BOOL isIpad = [[SYNDeviceManager sharedInstance] isIPad];
     SYNAppDelegate* appDelegate = UIApplication.sharedApplication.delegate;
     SYNMasterViewController *masterViewController = (SYNMasterViewController*)appDelegate.masterViewController;
-    NSString *suggestedQuality;
+    NSString *suggestedQuality = @"default";
     
     if ([masterViewController.reachability currentReachabilityStatus] == ReachableViaWiFi)
     {
@@ -198,7 +219,7 @@ static UIWebView* vimeoideoWebViewInstance;
             suggestedQuality = @"medium";
         }
     }
-    else if ([masterViewController.reachability currentReachabilityStatus] == ReachableViaWWAN)
+    else 
     {
         // Connected via cellular network
         if (isIpad)
@@ -210,31 +231,17 @@ static UIWebView* vimeoideoWebViewInstance;
             suggestedQuality = @"small";
         }
     }
-    else if ([masterViewController.reachability currentReachabilityStatus] == NotReachable)
-    {
-        // Not currently connected
-        suggestedQuality = @"default";
-    }
-    else
-    {
-        suggestedQuality = @"default";
-    }
     
     return suggestedQuality;
 }
 
 
 
-- (id) initWithFrame: (CGRect) frame
-        indexUpdater: (SYNVideoIndexUpdater) indexUpdater;
+- (void) updateWithFrame: (CGRect) frame
+            indexUpdater: (SYNVideoIndexUpdater) indexUpdater;
 {
-    if ((self = [super init]))
-    {
-        self.requestedFrame = frame;
-        self.indexUpdater = indexUpdater;
-    }
-    
-    return self;
+    self.requestedFrame = frame;
+    self.indexUpdater = indexUpdater;
 }
 
 
@@ -629,7 +636,10 @@ static UIWebView* vimeoideoWebViewInstance;
 
 - (void) playYouTubeVideoWithSourceId: (NSString *) sourceId
 {
-    NSString *loadString = [NSString stringWithFormat: @"player.stopVideo(); player.clearVideo(); player.setPlaybackQuality('%@'); player.loadVideoById('%@'); ", self.videoQuality, sourceId];
+    DebugLog(@"11111111111111111111111111111111111111111111 Playing: Load video command sent");
+
+    self.notYetPlaying = TRUE;
+    NSString *loadString = [NSString stringWithFormat: @"player.loadVideoById('%@', '0', '%@');", sourceId, self.videoQuality];
     [self.currentVideoWebView stringByEvaluatingJavaScriptFromString: loadString];
     self.playFlag = TRUE;
 }
@@ -731,7 +741,6 @@ static UIWebView* vimeoideoWebViewInstance;
 {
     int playingValue = [[self.currentVideoWebView stringByEvaluatingJavaScriptFromString: @"player.getPlayerState();"] intValue];
     
-    NSLog (@"playstate: %d" , playingValue);
     return (playingValue == 1) ? TRUE : FALSE;
 }
 
@@ -847,10 +856,8 @@ static UIWebView* vimeoideoWebViewInstance;
                                     eventData: (NSString *) actionData
 {    if ([actionName isEqualToString: @"ready"])
     {
+        // We probably don't get this event any more as the player is already set up (asynchronously)
         DebugLog (@"++++++++++ Player ready - player ready");
-        // We don't actually get any events until we 'play' the video
-        // The next stage is unstarted, so if not autoplay then pause the video
-        [self loadCurrentVideoWebView];
     }
     else if ([actionName isEqualToString: @"stateChange"])
     {
@@ -878,11 +885,10 @@ static UIWebView* vimeoideoWebViewInstance;
         }
         else if ([actionData isEqualToString: @"playing"])
         {
-            DebugLog (@"++++++++++ Playing: Starting - Fading up player");
-            
+            DebugLog(@"22222222222222222222222222222222222222222222 Playing: Starting - Fading up player");
             // If we are playing then out shuttle / pause / play cycle is over
             self.shuttledByUser = TRUE;
-            self.firstTimePlay = TRUE;
+            self.notYetPlaying = FALSE;
             
             [self fadeUpVideoPlayer];
             
@@ -910,10 +916,9 @@ static UIWebView* vimeoideoWebViewInstance;
         }
         else if ([actionData isEqualToString: @"buffering"])
         {
-            if (self.firstTimePlay == TRUE)
+            if (self.notYetPlaying  == TRUE)
             {
                 DebugLog (@"*** Buffering: Normal buffering - No action taken");
-                self.firstTimePlay = FALSE;
             }
             else
             {
@@ -921,7 +926,6 @@ static UIWebView* vimeoideoWebViewInstance;
                 DebugLog (@"*** Buffering: Buffering after play - Retrying play");
                 [self playVideo];
             }
-
         }
         else if ([actionData isEqualToString: @"cued"])
         {
@@ -967,16 +971,16 @@ static UIWebView* vimeoideoWebViewInstance;
 
 - (void) startShuttleBarUpdateTimer
 {
-    [self.shuttleBarUpdateTimer invalidate];
-    
-    // Schedule the timer on a different runloop so that we continue to get updates even when scrolling collection views etc.
-    self.shuttleBarUpdateTimer = [NSTimer timerWithTimeInterval: kShuttleBarUpdateTimerInterval
-                                                       target: self
-                                                     selector: @selector(updateShuttleBarProgress)
-                                                     userInfo: nil
-                                                      repeats: YES];
-    
-    [[NSRunLoop mainRunLoop] addTimer: self.shuttleBarUpdateTimer forMode: NSRunLoopCommonModes];
+//    [self.shuttleBarUpdateTimer invalidate];
+//    
+//    // Schedule the timer on a different runloop so that we continue to get updates even when scrolling collection views etc.
+//    self.shuttleBarUpdateTimer = [NSTimer timerWithTimeInterval: kShuttleBarUpdateTimerInterval
+//                                                       target: self
+//                                                     selector: @selector(updateShuttleBarProgress)
+//                                                     userInfo: nil
+//                                                      repeats: YES];
+//    
+//    [[NSRunLoop mainRunLoop] addTimer: self.shuttleBarUpdateTimer forMode: NSRunLoopCommonModes];
 }
 
 
