@@ -242,8 +242,6 @@
 {
     [self.collectionView reloadData];
 
-    //[self.coverImageSelector refreshChannelCoverData];
-
 }
 
 
