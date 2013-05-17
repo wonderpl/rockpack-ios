@@ -1226,11 +1226,12 @@
     {
         
         if(self.userNameInputField.text.length < 1) {
+            self.userNameInputField.returnKeyType = UIReturnKeyNext;
             [self.userNameInputField becomeFirstResponder];
             return YES;
         }
         if (self.passwordInputField.text.length < 1) {
-            self.passwordInputField.returnKeyType = UIReturnKeyDefault;
+            self.passwordInputField.returnKeyType = UIReturnKeyGo;
             [self.passwordInputField becomeFirstResponder];
             return YES;
         }
@@ -1243,29 +1244,34 @@
     {
         
         if(self.emailInputField.text.length < 1) {
+            self.emailInputField.returnKeyType = UIReturnKeyNext;
             [self.emailInputField becomeFirstResponder];
             return YES;
         }
         
         if(self.userNameInputField.text.length < 1) {
+            self.userNameInputField.returnKeyType = UIReturnKeyNext;
             [self.userNameInputField becomeFirstResponder];
             return YES;
         }
         
         if(self.passwordInputField.text.length < 1) {
+            self.passwordInputField.returnKeyType = UIReturnKeyNext;
             [self.passwordInputField becomeFirstResponder];
             return YES;
         }
         if(self.ddInputField.text.length < 1) {
+            self.ddInputField.returnKeyType = UIReturnKeyNext;
             [self.ddInputField becomeFirstResponder];
             return YES;
         }
         if(self.mmInputField.text.length < 1) {
+            self.mmInputField.returnKeyType = UIReturnKeyNext;
             [self.mmInputField becomeFirstResponder];
             return YES;
         }
         if(self.yyyyInputField.text.length < 1) {
-            self.passwordInputField.returnKeyType = UIReturnKeyDefault;
+            self.yyyyInputField.returnKeyType = UIReturnKeyDone;
             [self.yyyyInputField becomeFirstResponder];
             return YES;
         }
@@ -1277,7 +1283,7 @@
     else if(self.state == kLoginScreenStatePasswordRetrieve)
     {
         if(self.userNameInputField.text.length < 1) {
-            self.passwordInputField.returnKeyType = UIReturnKeyDefault;
+            self.passwordInputField.returnKeyType = UIReturnKeySend;
             [self.userNameInputField becomeFirstResponder];
             return YES;
         }
