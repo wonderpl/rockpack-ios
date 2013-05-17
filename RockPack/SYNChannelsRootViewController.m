@@ -56,6 +56,7 @@
 @property (nonatomic, strong) UILabel* subCategoryNameLabel;
 @property (nonatomic, strong) UIImageView* arrowImage;
 @property (nonatomic, strong) NSMutableArray* channels;
+@property (nonatomic, strong) SYNChannelFooterMoreView* footerView;
 
 @property (nonatomic, strong) Genre* allGenre;
 @end
@@ -226,6 +227,9 @@
                                                       BOOL registryResultOk = [appDelegate.mainRegistry registerChannelsFromDictionary:response
                                                                                                                               forGenre:genre
                                                                                                                            byAppending:append];
+                                                      
+                                                      self.footerView.showsLoading = NO;
+                                                      
                                                       if (!registryResultOk)
                                                       {
                                                           DebugLog(@"Registration of Channel Failed for: %@", currentCategoryId);
@@ -236,6 +240,7 @@
                                                       
                                                   } onError: ^(NSDictionary* errorInfo) {
                                                       DebugLog(@"Could not load channels: %@", errorInfo);
+                                                      self.footerView.showsLoading = NO;
                                                   }];
 }
 
@@ -243,6 +248,9 @@
 {
     
     // (UIButton*) sender can be nil when called directly //
+    
+    
+    self.footerView.showsLoading = YES;
     
     NSInteger nextStart = dataRequestRange.location + dataRequestRange.length; // one is subtracted when the call happens for 0 indexing
     
@@ -404,7 +412,7 @@
     if (collectionView != self.channelThumbnailCollectionView)
         return nil;
     
-    SYNChannelFooterMoreView *channelMoreFooter;
+    
     
     UICollectionReusableView* supplementaryView;
     
@@ -415,15 +423,17 @@
     
     if (kind == UICollectionElementKindSectionFooter)
     {
-        channelMoreFooter = [self.channelThumbnailCollectionView dequeueReusableSupplementaryViewOfKind: kind
+        self.footerView = [self.channelThumbnailCollectionView dequeueReusableSupplementaryViewOfKind: kind
                                                                                     withReuseIdentifier: @"SYNChannelFooterMoreView"
                                                                                            forIndexPath: indexPath];
         
-        [channelMoreFooter.loadMoreButton addTarget: self
-                                             action: @selector(loadMoreChannels:)
-                                   forControlEvents: UIControlEventTouchUpInside];
+        [self.footerView.loadMoreButton addTarget: self
+                                           action: @selector(loadMoreChannels:)
+                                 forControlEvents: UIControlEventTouchUpInside];
         
-        supplementaryView = channelMoreFooter;
+        //[self loadMoreChannels:self.footerView.loadMoreButton];
+        
+        supplementaryView = self.footerView;
     }
     
     return supplementaryView;
