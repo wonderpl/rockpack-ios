@@ -668,6 +668,8 @@
                                    placeholderImage: [UIImage imageNamed: @"PlaceholderChannelThumbnailMid.png"]
                                             options: SDWebImageRetryFailed];
     
+    
+    
     [channelThumbnailCell setChannelTitle:channel.title];
     [channelThumbnailCell setViewControllerDelegate: self];
     

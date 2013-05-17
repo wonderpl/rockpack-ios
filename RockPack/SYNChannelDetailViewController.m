@@ -352,7 +352,7 @@
                       context :nil];
     
     // We set up assets depending on whether we are in display or edit mode
-    [self setDisplayControlsVisibility: self.mode == kChannelDetailsModeDisplay];
+    [self setDisplayControlsVisibility: (self.mode == kChannelDetailsModeDisplay)];
     
     // Refresh our view
     [self.videoThumbnailCollectionView reloadData];
@@ -435,22 +435,7 @@
 }
 
 
-- (void) setMode: (kChannelDetailsMode) mode
-{
-    if (self.mode == mode)
-        return;
-    
-    _mode = mode;
-    
-    
-        
-    [UIView animateWithDuration: kChannelEditModeAnimationDuration
-                     animations: ^{
-                             [self setDisplayControlsVisibility: (self.mode == kChannelDetailsModeDisplay) ? YES : NO];
-                         }
-                         completion: nil];
-    
-}
+
 
 
 #pragma mark - Orientation Methods
@@ -569,7 +554,7 @@
 }
 
 
-#pragma mark - Collection view support
+#pragma mark - UICollectionView DataSource/Delegate Methods
 
 - (NSInteger) collectionView: (UICollectionView *) collectionView numberOfItemsInSection: (NSInteger) section
 {
@@ -591,8 +576,8 @@
     
     SYNVideoThumbnailRegularCell *videoThumbnailCell = [collectionView dequeueReusableCellWithReuseIdentifier: @"SYNVideoThumbnailRegularCell"
                                                                                                  forIndexPath: indexPath];
-    videoThumbnailCell.displayMode = (self.mode == kChannelDetailsModeDisplay) ?
-kChannelThumbnailDisplayModeStandard: kChannelThumbnailDisplayModeEdit;
+    
+    videoThumbnailCell.displayMode = self.mode;
     
     VideoInstance *videoInstance = self.channel.videoInstances [indexPath.item];
     
@@ -674,7 +659,12 @@ kChannelThumbnailDisplayModeStandard: kChannelThumbnailDisplayModeEdit;
 // For edit controls just do the inverse of details control
 - (void) setEditControlsVisibility: (BOOL) visible
 {
+    
+    _mode = visible;
+    
     [self setDisplayControlsVisibility: !visible];
+    
+    [self.videoThumbnailCollectionView reloadData];
 }
 
 
@@ -872,6 +862,7 @@ kChannelThumbnailDisplayModeStandard: kChannelThumbnailDisplayModeEdit;
     self.cancelEditButton.hidden = NO;
     self.addButton.hidden = YES;
     
+    
 }
 
 
@@ -902,12 +893,12 @@ kChannelThumbnailDisplayModeStandard: kChannelThumbnailDisplayModeEdit;
     self.channel.channelDescription = @"Test Description";
     
     NSString* category = self.selectedCategoryId;
-    if([category length]==0)
+    if([category length] == 0)
     {
         category = self.channel.categoryId;
         if(!category)
         {
-            category = @"";
+            category = @"all";
         }
     }
     
@@ -917,7 +908,9 @@ kChannelThumbnailDisplayModeStandard: kChannelThumbnailDisplayModeEdit;
         cover = @""; //TODO: Replace with "KEEP" identifier once established by backend.
     }
     
-    [appDelegate.oAuthNetworkEngine updateChannelForUserId:appDelegate.currentOAuth2Credentials.userId channelId:self.channel.uniqueId title: self.channel.title
+    [appDelegate.oAuthNetworkEngine updateChannelForUserId: appDelegate.currentOAuth2Credentials.userId
+                                                 channelId: self.channel.uniqueId
+                                                     title: self.channel.title
                                                description: (self.channel.channelDescription)
                                                   category: category
                                                      cover: cover
@@ -931,9 +924,12 @@ kChannelThumbnailDisplayModeStandard: kChannelThumbnailDisplayModeEdit;
                                              self.saveChannelButton.hidden = YES;
                                              self.cancelEditButton.hidden = YES;
                                              
-                                             [self getChannelForId:channelId isUpdate:YES];
-                                         }
-                                              errorHandler: ^(NSDictionary* error) {
+                                             [self setVideosForChannelById:channelId isUpdated:YES];
+                                             
+                                             // the method above will call the [self getChanelById:channelId isUpdated:YES]
+                                        
+                                         } errorHandler: ^(NSDictionary* error) {
+                                             
                                                   NSDictionary* specificErrors = [error objectForKey:@"form_errors"];
                                                   NSString* errorText = [specificErrors objectForKey:@"title"];
                                                   if(!errorText)
@@ -1159,7 +1155,7 @@ kChannelThumbnailDisplayModeStandard: kChannelThumbnailDisplayModeEdit;
                                          completionHandler: ^(NSDictionary* resourceCreated) {
                                              NSString* channelId = [resourceCreated objectForKey: @"id"];
                                              
-                                             [self addVideosToNewChannelForId:channelId];
+                                             [self setVideosForChannelById:channelId isUpdated:NO];
                                          }
                                               errorHandler: ^(id error) {
                                              
@@ -1177,7 +1173,7 @@ kChannelThumbnailDisplayModeStandard: kChannelThumbnailDisplayModeEdit;
 }
 
 
-- (void) addVideosToNewChannelForId: (NSString*) channelId
+- (void) setVideosForChannelById: (NSString*) channelId isUpdated:(BOOL) isUpdated
 {
     [appDelegate.oAuthNetworkEngine updateVideosForChannelForUserId: appDelegate.currentOAuth2Credentials.userId
                                                           channelId: channelId
@@ -1185,7 +1181,7 @@ kChannelThumbnailDisplayModeStandard: kChannelThumbnailDisplayModeEdit;
                                                   completionHandler: ^(id response) {
                                                       // a 204 returned
                                                       
-                                                      [self getChannelForId:channelId isUpdate:NO];
+                                                      [self getChannelForId:channelId isUpdate:isUpdated];
                                                   }
                                                        errorHandler: ^(id err) {
                                                            
@@ -1203,8 +1199,8 @@ kChannelThumbnailDisplayModeStandard: kChannelThumbnailDisplayModeEdit;
                                               IgnoringObjects ignore = kIgnoreChannelOwnerObject;
                                               if(!isUpdate)
                                               {
-                                                  ignore = ignore | kIgnoreStoredObjects
-                                                  ;                                              }
+                                                  ignore = ignore | kIgnoreStoredObjects;
+                                              }
                                               Channel* createdChannel = [Channel instanceFromDictionary:dictionary
                                                                               usingManagedObjectContext:appDelegate.mainManagedObjectContext
                                                                                     ignoringObjectTypes:ignore
@@ -1223,6 +1219,7 @@ kChannelThumbnailDisplayModeStandard: kChannelThumbnailDisplayModeEdit;
                                               [appDelegate saveContext:YES];
                                               
                                               [self channelCreationComplete];
+                                              
                                           } errorHandler:^(id err) {
                                               
                                               DebugLog(@"Error @ getNewlyCreatedChannelForId:");
