@@ -30,10 +30,7 @@
 
 @interface SYNChannelCoverImageSelectorViewController : UIViewController
 
-@property (nonatomic, strong) NSFetchedResultsController *channelCoverFetchedResultsController;
-@property (nonatomic, strong) NSFetchedResultsController *userChannelCoverFetchedResultsController;
 @property (nonatomic, weak) id<SYNChannelCoverImageSelectorDelegate> imageSelectorDelegate;
 
-- (void) refreshChannelCoverData;
 
 @end
