@@ -439,10 +439,6 @@
     if (![itemArray isKindOfClass: [NSArray class]])
         return NO;
     
-    if(itemArray.count == 0)
-        return YES;
-    
-    
     
     // Query for existing objects
     

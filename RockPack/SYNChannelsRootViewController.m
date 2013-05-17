@@ -152,6 +152,7 @@
         [self layoutChannelsCategoryTable];
     }
     
+    self.channelThumbnailCollectionView.showsVerticalScrollIndicator = YES;
 }
 
 
@@ -241,8 +242,12 @@
     NSInteger nextStart = currentRange.location + currentRange.length;
     NSInteger nextSize = (nextStart + STANDARD_LENGTH) > currentTotal ? (currentTotal - nextStart) : STANDARD_LENGTH;
     
+    if(nextSize == 0)
+        return;
+    
     currentRange = NSMakeRange(nextStart, nextSize);
     
+    NSLog(@"Loading More Channels: %i - %i from %i", currentRange.location, currentRange.location + currentRange.length, currentTotal);
     
     [self loadChannelsForGenre:currentGenre byAppending:YES];
 }
