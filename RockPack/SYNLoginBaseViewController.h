@@ -11,6 +11,8 @@
 #import "SYNAppDelegate.h"
 #import "SYNNetworkOperationJsonObject.h"
 #import "SYNImagePickerController.h"
+#import "SYNNetworkErrorView.h"
+#import "Reachability.h"
 
 
 typedef enum {
@@ -30,6 +32,9 @@ typedef enum {
 
 @property (nonatomic, assign) kLoginScreenState state;
 @property (nonatomic, strong) SYNImagePickerController* imagePicker;
+@property (nonatomic, strong) Reachability *reachability;
+
+@property (nonatomic, strong) SYNNetworkErrorView* networkErrorView;
 
 - (BOOL) checkAndSaveRegisteredUser: (SYNOAuth2Credential*) credential;
 

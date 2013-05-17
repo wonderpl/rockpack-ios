@@ -643,7 +643,6 @@ typedef void(^AnimationCompletionBlock)(BOOL finished);
     [self.networkErrorView setText:message];
     [self.errorContainerView addSubview:self.networkErrorView];
     
-    [self alignErrorMessage];
     
     [UIView animateWithDuration:0.3 animations:^{
         CGRect erroViewFrame = self.networkErrorView.frame;
@@ -1011,10 +1010,7 @@ typedef void(^AnimationCompletionBlock)(BOOL finished);
 -(void)willAnimateRotationToInterfaceOrientation:(UIInterfaceOrientation)toInterfaceOrientation duration:(NSTimeInterval)duration
 {
     [super willAnimateRotationToInterfaceOrientation:toInterfaceOrientation duration:duration];
-    if(self.networkErrorView)
-    {
-        [self alignErrorMessage];
-    }
+
     if(self.accountSettingsPopover)
     {
         CGRect rect = CGRectMake([[SYNDeviceManager sharedInstance] currentScreenWidth] * 0.5,
@@ -1030,12 +1026,7 @@ typedef void(^AnimationCompletionBlock)(BOOL finished);
 
 
 
--(void)alignErrorMessage
-{
-    
-    self.networkErrorView.center = CGPointMake([[SYNDeviceManager sharedInstance] currentScreenWidth] * 0.5, self.networkErrorView.center.y);
-    self.networkErrorView.frame = CGRectIntegral(self.networkErrorView.frame);
-}
+
 
 #pragma mark - Overlay Accessor Methods
 

@@ -11,6 +11,9 @@
 #import "SYNActivityManager.h"
 #import "SYNOAuthNetworkEngine.h"
 #import "SYNFacebookManager.h"
+#import "SYNAppDelegate.h"
+#import "SYNNetworkEngine.h"
+#import "SYNDeviceManager.h"
 #import <FacebookSDK/FacebookSDK.h>
 
 @interface SYNLoginBaseViewController ()
@@ -52,6 +55,26 @@
 -(void)commonInit
 {
     _appDelegate = (SYNAppDelegate*)[[UIApplication sharedApplication] delegate];
+    
+    self.reachability = [Reachability reachabilityWithHostname:_appDelegate.networkEngine.hostName];
+    
+    
+}
+
+-(void)viewWillAppear:(BOOL)animated
+{
+    [super viewWillAppear:animated];
+    
+    
+    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(reachabilityChanged:) name:kReachabilityChangedNotification object:nil];
+}
+
+-(void)viewWillDisappear:(BOOL)animated
+{
+    [super viewWillDisappear:animated];
+    
+    
+    [[NSNotificationCenter defaultCenter] removeObserver:self name:kReachabilityChangedNotification object:nil];
 }
 
 - (void) setUpInitialState;
@@ -166,6 +189,85 @@
      {
          errorBlock(errorString);
      }];
+}
+
+
+#pragma mark - Reachability change
+
+- (void) reachabilityChanged: (NSNotification*) notification
+{
+    NSString* reachabilityString;
+    if ([self.reachability currentReachabilityStatus] == ReachableViaWiFi)
+        reachabilityString = @"WiFi";
+    else if([self.reachability currentReachabilityStatus] == ReachableViaWWAN)
+        reachabilityString = @"WWAN";
+    else if([self.reachability currentReachabilityStatus] == NotReachable)
+        reachabilityString = @"None";
+    
+    //    DebugLog(@"Reachability == %@", reachabilityString);
+    if ([self.reachability currentReachabilityStatus] == ReachableViaWiFi)
+    {
+        if (self.networkErrorView)
+        {
+            [self hideNetworkErrorView];
+        }
+    }
+    else if([self.reachability currentReachabilityStatus] == ReachableViaWWAN)
+    {
+        if (self.networkErrorView)
+        {
+            [self hideNetworkErrorView];
+        }
+    }
+    else if ([self.reachability currentReachabilityStatus] == NotReachable)
+    {
+        NSString* message = [[SYNDeviceManager sharedInstance] isIPad] ? NSLocalizedString(@"NO NETWORK CONNECTION", nil)
+        : NSLocalizedString(@"NO NETWORK", nil);
+        [self presentNetworkErrorViewWithMesssage: message];
+    }
+}
+
+- (void) presentNetworkErrorViewWithMesssage: (NSString*) message
+{
+    if(self.networkErrorView)
+    {
+        [self.networkErrorView setText:message];
+        return;
+    }
+    
+    self.networkErrorView = [SYNNetworkErrorView errorView];
+    [self.networkErrorView setText:message];
+    
+    CGRect errorViewFrame = self.networkErrorView.frame;
+    errorViewFrame.origin.y = -(self.networkErrorView.height);
+    self.networkErrorView.frame = errorViewFrame;
+    
+    [self.view addSubview:self.networkErrorView];
+    
+    errorViewFrame.origin.y = -10.0;
+    
+    [UIView animateWithDuration:0.3 animations:^{
+        
+        
+        
+        self.networkErrorView.frame = errorViewFrame;
+    }];
+}
+
+
+
+-(void)hideNetworkErrorView
+{
+    [UIView animateWithDuration:0.3
+                          delay:0.0 options:UIViewAnimationCurveEaseInOut | UIViewAnimationOptionBeginFromCurrentState
+                     animations:^{
+        CGRect errorViewFrame = self.networkErrorView.frame;
+        errorViewFrame.origin.y = -(self.networkErrorView.height);
+        self.networkErrorView.frame = errorViewFrame;
+    } completion:^(BOOL finished) {
+        [self.networkErrorView removeFromSuperview];
+        self.networkErrorView = nil;
+    }];
 }
 
 @end
