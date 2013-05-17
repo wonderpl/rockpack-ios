@@ -362,8 +362,10 @@
 {
     NSMutableDictionary* sectionDictionary = [self.transientDatasource objectAtIndex:section];
     Genre * category = [self.categoriesDatasource objectAtIndex:section];
-    NSSortDescriptor* sortDescriptor = [NSSortDescriptor sortDescriptorWithKey:@"name" ascending:YES];
+    NSSortDescriptor* sortDescriptor = [NSSortDescriptor sortDescriptorWithKey:@"priority" ascending:NO];
     NSArray* newSubCategories = [category.subgenres sortedArrayUsingDescriptors:[NSArray arrayWithObject:sortDescriptor]];
+    NSPredicate* predicate = [NSPredicate predicateWithFormat:@"priority >0"];
+    newSubCategories = [newSubCategories filteredArrayUsingPredicate:predicate];
     [sectionDictionary setObject:newSubCategories forKey:kSubCategoriesKey];
     [self.transientDatasource replaceObjectAtIndex:section withObject:sectionDictionary];
     NSMutableArray* indexPaths = [NSMutableArray arrayWithCapacity:[newSubCategories count]];

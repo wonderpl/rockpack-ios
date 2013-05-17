@@ -22,7 +22,7 @@
 		<string>Icon-Small-50@2x.png</string>
 	</array>
 	<key>CFBundleIdentifier</key>
-	<string>com.rockpack.${PRODUCT_NAME:rfc1034identifier}</string>
+	<string>com.rockpack.dev.${PRODUCT_NAME:rfc1034identifier}</string>
 	<key>CFBundleInfoDictionaryVersion</key>
 	<string>6.0</string>
 	<key>CFBundleName</key>
@@ -48,6 +48,8 @@
 	<string>131721883664256</string>
 	<key>FullVersion</key>
 	<string>unknown</string>
+	<key>BuildTarget</key>
+	<string>Develop</string>
 	<key>LSApplicationCategoryType</key>
 	<string></string>
 	<key>LSRequiresIPhoneOS</key>

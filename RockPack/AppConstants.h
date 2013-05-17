@@ -340,6 +340,7 @@ typedef enum {
 #define kShuttleBarSliderOffset         10.0f
 
 #define kSYNBundleFullVersion           @"FullVersion"
+#define kSYNBundleBuildTarget           @"BuildTarget"
 
 // Channel creation
 
@@ -354,6 +355,9 @@ typedef enum {
 
 #define kNoteTopRightControlsShow   @"kNoteTopRightControlsShow"
 #define kNoteTopRightControlsHide   @"kNoteTopRightControlsHide"
+
+#define kNoteAllNavControlsShow     @"kNoteAllNavControlsShow"
+#define kNoteAllNavControlsHide     @"kNoteAllNavControlsHide"
 
 #define kNoteStarButtonPressed      @"kNoteStarButtonPressed"
 #define kNoteAddToChannelRequest    @"kNoteAddToChannelRequest"
