@@ -398,7 +398,7 @@ typedef void(^AnimationCompletionBlock)(BOOL finished);
     //Upload the data
     [appDelegate.oAuthNetworkEngine updateVideosForChannelForUserId:appDelegate.currentUser.uniqueId channelId:channel.uniqueId videoInstanceSet:channel.videoInstancesSet completionHandler:^(NSDictionary* result) {
         NSString* message = [[SYNDeviceManager sharedInstance] isIPhone]?
-        NSLocalizedString(@"VIDEOS SUCCESSFULLY ADDED",nil):
+        NSLocalizedString(@"VIDEO SUCCESSFULLY ADDED",nil):
         NSLocalizedString(@"YOUR VIDEOS HAVE BEEN SUCCESSFULLY ADDED INTO YOUR CHANNEL",nil);
         [self presentSuccessNotificationWithMessage:message];
     } errorHandler:^(NSDictionary* errorDictionary) {
@@ -762,7 +762,7 @@ typedef void(^AnimationCompletionBlock)(BOOL finished);
 -(void)channelSuccessfullySaved:(NSNotification*)note
 {
     NSString* message = [[SYNDeviceManager sharedInstance] isIPhone]?
-    NSLocalizedString(@"CHANNEL SUCCESSFULLY CREATED",nil):
+    NSLocalizedString(@"CHANNEL SAVED",nil):
     NSLocalizedString(@"YOUR CHANNEL HAS BEEN SAVED SUCCESSFULLY",nil);
     [self presentSuccessNotificationWithMessage:message];
 }
