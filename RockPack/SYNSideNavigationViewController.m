@@ -177,7 +177,7 @@ typedef enum {
         // == Settings Button == //
         
         CGRect settingsButtonFrame = self.settingsButton.frame;
-        settingsButtonFrame.origin.y = [[SYNDeviceManager sharedInstance] currentScreenHeight] - 30.0 - settingsButtonFrame.size.height;
+        settingsButtonFrame.origin.y = [[SYNDeviceManager sharedInstance] currentScreenHeight] - 26.0 - settingsButtonFrame.size.height;
         self.settingsButton.frame = settingsButtonFrame;
         self.settingsButton.autoresizingMask = UIViewAutoresizingFlexibleTopMargin;
         
