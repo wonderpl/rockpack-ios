@@ -158,6 +158,7 @@
     [[NSNotificationCenter defaultCenter] postNotificationName:kScrollerPageChanged
                                                         object:self
                                                       userInfo:@{kCurrentPage:@(self.scrollView.page)}];
+    [self.childViewControllers makeObjectsPerformSelector:@selector(viewWillAppear:) withObject:nil];
 
     
 }

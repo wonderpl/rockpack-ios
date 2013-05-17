@@ -263,6 +263,8 @@
         // Set text on add cover and select category buttons
         [self.selectCategoryButton setAttributedTitle: attributedCategoryString
                                              forState: UIControlStateNormal];
+        self.coverChooserController = [[SYNCoverChooserController alloc] init];
+        self.coverChooserMasterView = self.coverChooserController.view;
     }
     else
     {
@@ -285,8 +287,6 @@
         
         // Cover Image Selector //
         
-        self.coverChooserController = [[SYNCoverChooserController alloc] init];
-        self.coverChooserMasterView = self.coverChooserController.view;
     }
     self.selectedCategoryId = @"";
     self.selectedCoverId = @"";

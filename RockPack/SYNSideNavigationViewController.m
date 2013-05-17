@@ -827,10 +827,10 @@ typedef enum {
     [self.appDelegate.oAuthNetworkEngine updateAvatarForUserId: self.appDelegate.currentOAuth2Credentials.userId image:image completionHandler:^(id result) {
         self.profilePictureImageView.image = image;
         [self.activityIndicator stopAnimating];
-        self.avatarButton.enabled = NO;
+        self.avatarButton.enabled = YES;
     } errorHandler:^(id error) {
         [self.activityIndicator stopAnimating];
-        self.avatarButton.enabled = NO;
+        self.avatarButton.enabled = YES;
     }];
     
     self.imagePickerController = nil;

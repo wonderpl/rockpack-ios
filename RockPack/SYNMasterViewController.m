@@ -373,6 +373,10 @@ typedef void(^AnimationCompletionBlock)(BOOL finished);
                      } completion:^(BOOL finished) {
                          if(self.overlayNavigationController)
                              self.overlayNavigationController = nil;
+                         if(self.videoViewerViewController)
+                         {
+                             [self removeVideoOverlayController];
+                         }
                      }];
     
 }
@@ -494,13 +498,14 @@ typedef void(^AnimationCompletionBlock)(BOOL finished);
                      }
                      completion: ^(BOOL finished) {
                          self.overlayView.userInteractionEnabled = NO;
-                         self.videoViewerViewController = nil;
                          [child removeFromSuperview];
                          
                          self.videoOverlayDismissBlock();
                          
                          [self.videoViewerViewController removeFromParentViewController];
+                         self.videoViewerViewController = nil;
                      }];
+    [self.containerViewController viewWillAppear:NO];
 }
 
 
@@ -876,6 +881,7 @@ typedef void(^AnimationCompletionBlock)(BOOL finished);
        
     }
     
+    [self.containerViewController viewWillAppear:NO];
     
 }
 
