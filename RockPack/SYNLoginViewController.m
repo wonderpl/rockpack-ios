@@ -1220,33 +1220,81 @@
 
 - (BOOL) textFieldShouldReturn: (UITextField *) textField
 {
-    [textField resignFirstResponder];
     
-    // if both text fields have stuff then consider the return as a Login command
     
-    if(self.userNameInputField.text.length > 1 && self.passwordInputField.text.length > 1)
+    if(self.state == kLoginScreenStateLogin)
     {
-        // perform login
+        
+        if(self.userNameInputField.text.length < 1) {
+            [self.userNameInputField becomeFirstResponder];
+            return YES;
+        }
+        if (self.passwordInputField.text.length < 1) {
+            self.passwordInputField.returnKeyType = UIReturnKeyDefault;
+            [self.passwordInputField becomeFirstResponder];
+            return YES;
+        }
+        
+        [self doLogin:self.finalLoginButton];
+            
+    
+    }
+    else if(self.state == kLoginScreenStateRegister)
+    {
+        
+        if(self.emailInputField.text.length < 1) {
+            [self.emailInputField becomeFirstResponder];
+            return YES;
+        }
+        
+        if(self.userNameInputField.text.length < 1) {
+            [self.userNameInputField becomeFirstResponder];
+            return YES;
+        }
+        
+        if(self.passwordInputField.text.length < 1) {
+            [self.passwordInputField becomeFirstResponder];
+            return YES;
+        }
+        if(self.ddInputField.text.length < 1) {
+            [self.ddInputField becomeFirstResponder];
+            return YES;
+        }
+        if(self.mmInputField.text.length < 1) {
+            [self.mmInputField becomeFirstResponder];
+            return YES;
+        }
+        if(self.yyyyInputField.text.length < 1) {
+            self.passwordInputField.returnKeyType = UIReturnKeyDefault;
+            [self.yyyyInputField becomeFirstResponder];
+            return YES;
+        }
+        
+        [self registerNewUser:self.registerNewUserButton];
         return YES;
+    
     }
-    
-    // if not and the user is at the top field take them to the second
-    
-    if(textField == self.userNameInputField)
+    else if(self.state == kLoginScreenStatePasswordRetrieve)
     {
-        [self.passwordInputField becomeFirstResponder];
+        if(self.userNameInputField.text.length < 1) {
+            self.passwordInputField.returnKeyType = UIReturnKeyDefault;
+            [self.userNameInputField becomeFirstResponder];
+            return YES;
+        }
+        
+        [self sendEmailButtonPressed:self.sendEmailButton];
+        return YES;
+    
     }
+
+    // default case just go to the next text field (from 6 text fields)
+    
+    [((UITextField*)[self.view viewWithTag:(textField.tag+1)%6]) becomeFirstResponder];
     
     return YES;
 }
 
-//
-//- (BOOL) textFieldShouldReturn: (UITextField *) textField
-//{
-//    [[self.view viewWithTag: textField.tag + 1] becomeFirstResponder];
-//    
-//    return YES;
-//}
+
 
 
 #pragma mark - Avatar image selection
