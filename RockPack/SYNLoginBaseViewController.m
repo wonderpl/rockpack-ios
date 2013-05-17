@@ -221,7 +221,7 @@
     }
     else if ([self.reachability currentReachabilityStatus] == NotReachable)
     {
-        NSString* message = [[SYNDeviceManager sharedInstance] isIPad] ? NSLocalizedString(@"NO NETWORK CONNECTION", nil)
+        NSString* message = [[SYNDeviceManager sharedInstance] isIPad] ? NSLocalizedString(@"NO NETWORK, PLEASE CHECK YOUR INTERNET CONNECTION.", nil)
         : NSLocalizedString(@"NO NETWORK", nil);
         [self presentNetworkErrorViewWithMesssage: message];
     }
@@ -236,6 +236,9 @@
     }
     
     self.networkErrorView = [SYNNetworkErrorView errorView];
+    [self.networkErrorView setCenterVerticalOffset:23.0f];
+    self.networkErrorView.backgroundColor = [UIColor colorWithPatternImage:[UIImage imageNamed:@"BarNetworkLogin"]];
+    self.networkErrorView.autoresizingMask = UIViewAutoresizingFlexibleBottomMargin| UIViewAutoresizingFlexibleWidth;
     [self.networkErrorView setText:message];
     
     CGRect errorViewFrame = self.networkErrorView.frame;

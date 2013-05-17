@@ -28,6 +28,7 @@
 #import "SYNVideoViewerViewController.h"
 #import "UIFont+SYNFont.h"
 #import <QuartzCore/QuartzCore.h>
+#import "SYNOAuthNetworkEngine.h"
 
 #define kMovableViewOffX -58
 
@@ -268,6 +269,8 @@ typedef void(^AnimationCompletionBlock)(BOOL finished);
     
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(searchCancelledIPhone:) name:kSideNavigationSearchCloseNotification object:nil];
     
+    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(channelSuccessfullySaved:) name:kNoteChannelSaved object:nil];
+    
     
     [self.navigationContainerView addSubview:self.sideNavigationViewController.view];
     
@@ -384,6 +387,7 @@ typedef void(^AnimationCompletionBlock)(BOOL finished);
 
 -(void)addedToChannelAction:(NSNotification*)notification
 {
+    //Videos have been added to a channel
     Channel* channel = (Channel*)[[notification userInfo] objectForKey:kChannel];
     if(!channel)
         return;
@@ -391,8 +395,15 @@ typedef void(^AnimationCompletionBlock)(BOOL finished);
     [[NSNotificationCenter defaultCenter] postNotificationName: kClearAllAddedCells
                                                         object:self];
     
-    
-    // TODO : Show confirm message
+    //Upload the data
+    [appDelegate.oAuthNetworkEngine updateVideosForChannelForUserId:appDelegate.currentUser.uniqueId channelId:channel.uniqueId videoInstanceSet:channel.videoInstancesSet completionHandler:^(NSDictionary* result) {
+        NSString* message = [[SYNDeviceManager sharedInstance] isIPhone]?
+        NSLocalizedString(@"VIDEOS SUCCESSFULLY ADDED",nil):
+        NSLocalizedString(@"YOUR VIDEOS HAVE BEEN SUCCESSFULLY ADDED INTO YOUR CHANNEL",nil);
+        [self presentSuccessNotificationWithMessage:message];
+    } errorHandler:^(NSDictionary* errorDictionary) {
+        // Show error message?
+    }];
     
 }
 
@@ -629,7 +640,7 @@ typedef void(^AnimationCompletionBlock)(BOOL finished);
     }
     else if ([self.reachability currentReachabilityStatus] == NotReachable)
     {
-        NSString* message = [[SYNDeviceManager sharedInstance] isIPad] ? NSLocalizedString(@"NO NETWORK CONNECTION", nil)
+        NSString* message = [[SYNDeviceManager sharedInstance] isIPad] ? NSLocalizedString(@"NO NETWORK, PLEASE CHECK YOUR INTERNET CONNECTION.", nil)
                                                                        : NSLocalizedString(@"NO NETWORK", nil);
         [self presentNetworkErrorViewWithMesssage: message];
     }
@@ -637,26 +648,6 @@ typedef void(^AnimationCompletionBlock)(BOOL finished);
 
 
 
-- (void) presentNetworkErrorViewWithMesssage: (NSString*) message
-{
-    if(self.networkErrorView)
-    {
-        [self.networkErrorView setText:message];
-        return;
-    }
-    
-    self.networkErrorView = [SYNNetworkErrorView errorView];
-    [self.networkErrorView setText:message];
-    [self.errorContainerView addSubview:self.networkErrorView];
-    
-    
-    [UIView animateWithDuration:0.3 animations:^{
-        CGRect erroViewFrame = self.networkErrorView.frame;
-        erroViewFrame.origin.y = [[SYNDeviceManager sharedInstance] currentScreenHeight] - ([[SYNDeviceManager sharedInstance] isIPad] ? 70.0 : 60.0);
-        
-        self.networkErrorView.frame = erroViewFrame;
-    }];
-}
 
 -(void)hideNetworkErrorView
 {
@@ -767,6 +758,58 @@ typedef void(^AnimationCompletionBlock)(BOOL finished);
     self.sideNavigationViewController.state = SideNavigationStateHidden;
         
 }
+
+-(void)channelSuccessfullySaved:(NSNotification*)note
+{
+    NSString* message = [[SYNDeviceManager sharedInstance] isIPhone]?
+    NSLocalizedString(@"CHANNEL SUCCESSFULLY CREATED",nil):
+    NSLocalizedString(@"YOUR CHANNEL HAS BEEN SAVED SUCCESSFULLY",nil);
+    [self presentSuccessNotificationWithMessage:message];
+}
+
+#pragma mark - show message bars
+
+- (void) presentNetworkErrorViewWithMesssage: (NSString*) message
+{
+    if(self.networkErrorView)
+    {
+        [self.networkErrorView setText:message];
+        return;
+    }
+    
+    self.networkErrorView = [SYNNetworkErrorView errorView];
+    [self.networkErrorView setText:message];
+    [self.errorContainerView addSubview:self.networkErrorView];
+    
+    
+    [UIView animateWithDuration:0.3 animations:^{
+        CGRect erroViewFrame = self.networkErrorView.frame;
+        erroViewFrame.origin.y = [[SYNDeviceManager sharedInstance] currentScreenHeight] - ([[SYNDeviceManager sharedInstance] isIPad] ? 70.0 : 60.0);
+        
+        self.networkErrorView.frame = erroViewFrame;
+    }];
+}
+
+-(void) presentSuccessNotificationWithMessage:(NSString*)message
+{
+    __block SYNNetworkErrorView* successNotification = [[SYNNetworkErrorView alloc] init];
+    successNotification.backgroundColor = [UIColor colorWithPatternImage:[UIImage imageNamed:@"BarSucess"]];
+    [successNotification setText:message];
+    [self.errorContainerView addSubview:successNotification];
+    [UIView animateWithDuration:0.3f delay:0.0f options:UIViewAnimationOptionCurveEaseOut animations:^{
+        CGRect newFrame = successNotification.frame;
+        newFrame.origin.y = [[SYNDeviceManager sharedInstance] currentScreenHeight] - ([[SYNDeviceManager sharedInstance] isIPad] ? 70.0 : 60.0);
+        successNotification.frame = newFrame;
+    } completion:^(BOOL finished) {
+        [UIView animateWithDuration:0.3f delay:10.0f options:UIViewAnimationOptionCurveEaseInOut animations:^{
+            successNotification.alpha = 0.0f;
+        } completion:^(BOOL finished) {
+            [successNotification removeFromSuperview];
+        }];
+    }];
+}
+
+
 
 #pragma mark - Navigation Methods
 

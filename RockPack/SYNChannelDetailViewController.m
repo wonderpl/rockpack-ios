@@ -1634,6 +1634,8 @@ kChannelThumbnailDisplayModeStandard: kChannelThumbnailDisplayModeEdit;
         [self.backButton removeFromSuperview];
         [self.view addSubview:self.backButton];
     }
+    
+    [[NSNotificationCenter defaultCenter] postNotificationName:kNoteChannelSaved object:self];
 }
 
 -(void)addSubscribeIndicator
