@@ -55,6 +55,7 @@
 @property (nonatomic, strong) SYNVideoViewerThumbnailLayout *layout;
 @property (nonatomic, strong) IBOutlet UIPopoverController *reportConcernPopoverController;
 @property (nonatomic, strong) IBOutlet UIButton* reportConcernButton;
+@property (weak, nonatomic) IBOutlet UIButton *addVideoButton;
 
 @end
 
@@ -184,6 +185,7 @@
     [videoView insertSubview: self.blackPanelView
                 aboveSubview: self.panelImageView];
     
+    
     self.videoPlaybackViewController = [[SYNVideoPlaybackViewController alloc] initWithFrame: videoFrame
                                                                                 indexUpdater: ^(int newIndex){
                                                                                     self.currentSelectedIndex = newIndex;
@@ -198,6 +200,9 @@
 
     [videoView insertSubview: self.videoPlaybackViewController.view
                      aboveSubview: self.blackPanelView];
+    
+    self.addButton.center = CGPointMake(self.videoPlaybackViewController.view.frame.origin.x + self.videoPlaybackViewController.view.frame.size.width - self.addButton.frame.size.width/2.0f, self.videoPlaybackViewController.view.frame.origin.y - self.addButton.frame.size.height/2.0f - 10.f);
+    [videoView addSubview:self.addButton];
     
     UISwipeGestureRecognizer* rightSwipeRecogniser = [[UISwipeGestureRecognizer alloc] initWithTarget: self
                                                                                                action: @selector(userTouchedPreviousVideoButton:)];
@@ -250,6 +255,8 @@
     // We need to scroll the current thumbnail before the view appears (with no animation)
     [self scrollToCellAtIndex: self.currentSelectedIndex
                      animated: YES];
+    
+    self.addButton.hidden = !self.addButton.active;
     
 }
 
@@ -366,6 +373,7 @@
     self.channelTitleLabel.text = videoInstance.channel.title;
     self.videoTitleLabel.text = videoInstance.title;
     self.starButton.selected = videoInstance.video.starredByUserValue;
+    self.addVideoButton.selected = [appDelegate.videoQueue videoInstanceIsAddedToChannel:videoInstance];
 }
 
 
@@ -479,9 +487,21 @@
     
     VideoInstance *videoInstance = self.videoInstanceArray [self.currentSelectedIndex];
     
-    [[NSNotificationCenter defaultCenter] postNotificationName: kVideoQueueAdd
+    if([appDelegate.videoQueue videoInstanceIsAddedToChannel:videoInstance])
+    {
+        [[NSNotificationCenter defaultCenter] postNotificationName: kVideoQueueRemove
                                                         object: self
                                                       userInfo: @{@"VideoInstance" : videoInstance}];
+        addItButton.selected = NO;
+    }
+    else
+    {
+        [[NSNotificationCenter defaultCenter] postNotificationName: kVideoQueueAdd
+                                                            object: self
+                                                          userInfo: @{@"VideoInstance" : videoInstance}];
+        addItButton.selected = YES;
+    }
+    self.addButton.hidden = !self.addButton.active;
 }
 
 
@@ -807,5 +827,9 @@
                                               }];
 }
 
+- (BOOL) needsAddButton
+{
+    return YES;
+}
 
 @end

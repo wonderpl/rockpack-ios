@@ -65,12 +65,14 @@
             [button setImage:buttonImageInactive forState:UIControlStateDisabled];
             [button setImage:buttonImageInactiveHighlighted forState:UIControlStateHighlighted];
             button.enabled = NO;
+            _active = NO;
         }
         else
         {
             [button setImage:buttonImageActive forState:UIControlStateNormal];
             [button setImage:buttonImageActiveHighlighted forState:UIControlStateHighlighted];
             button.enabled = YES;
+            _active = YES;
         }
         
         
