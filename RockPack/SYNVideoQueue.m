@@ -81,10 +81,6 @@
                                                  name: kVideoQueueClear
                                                object: nil];
     
-    [[NSNotificationCenter defaultCenter] addObserver: self
-                                             selector: @selector(handleVideoQueueClearRequest:)
-                                                 name: kClearAllAddedCells
-                                               object: nil];
 }
 
 
@@ -120,6 +116,10 @@
     [self.appDelegate.channelsManagedObjectContext deleteObject:self.currentlyCreatingChannel];
     
     [self.appDelegate saveChannelsContext];
+    
+    self.currentlyCreatingChannel = nil;
+    
+    self.isEmpty = YES;
 }
 
 #pragma mark - 

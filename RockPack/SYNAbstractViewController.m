@@ -159,11 +159,13 @@
 
 - (void) animatedPopViewController
 {
-    if(self.navigationController.viewControllers.count < 2) // we must have at least two to pop one
+    NSInteger viewControllersCount = self.navigationController.viewControllers.count;
+    
+    if(viewControllersCount < 2) // we must have at least two to pop one
         return;
     
-    NSInteger vcCount = self.navigationController.viewControllers.count;
-    UIViewController *parentVC = self.navigationController.viewControllers[vcCount - 2];
+    
+    UIViewController *parentVC = self.navigationController.viewControllers[viewControllersCount - 2];
     parentVC.view.alpha = 0.0f;
     
     
@@ -182,11 +184,6 @@
     
     [self.navigationController popViewControllerAnimated:NO];
     
-    
-    if(vcCount == 2)
-    {
-        [[NSNotificationCenter defaultCenter] postNotificationName:kNoteBackButtonHide object:self];
-    }
     
 }
 

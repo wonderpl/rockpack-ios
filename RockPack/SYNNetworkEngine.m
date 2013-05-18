@@ -178,7 +178,7 @@
     
     
     NSMutableDictionary* tempParameters = [NSMutableDictionary dictionary];
-    [tempParameters setObject:[NSString stringWithFormat:@"%i", range.location] forKey:@"start"];
+    [tempParameters setObject:[NSString stringWithFormat:@"%i", range.location - 1] forKey:@"start"]; // compensate for 0 indexed
     [tempParameters setObject:[NSString stringWithFormat:@"%i", range.length] forKey:@"size"];
     
     if(![categoryId isEqualToString:@"all"]) {
@@ -199,8 +199,8 @@
         completeBlock(dictionary);
         
     } errorHandler:^(NSError* error) {
-        DebugLog(@"Update Channel Screens Request Failed");
-        errorBlock(@{@"network_error":@"engine failed to load channels"});
+        
+        errorBlock(@{@"network_error":@"Engine Failed to Load Channels"});
     }];
     
     [self enqueueOperation: networkOperation];
@@ -211,7 +211,8 @@
 #pragma mark - Search
 
 - (void) searchVideosForTerm:(NSString*)searchTerm
-                    andRange:(NSRange)range
+                     inRange:(NSRange)range
+                  onComplete:(MKNKSearchSuccessBlock)completeBlock
 {
     
     
@@ -234,9 +235,22 @@
     
     [networkOperation addJSONCompletionHandler:^(NSDictionary *dictionary) {
         
+        int itemsCount = 0;
+        
+        if(!dictionary)
+            return;
+        
+        NSArray *itemArray = (NSArray*)[[dictionary objectForKey: @"videos"] objectForKey:@"items"];
+        if (!itemArray || ![itemArray isKindOfClass: [NSArray class]])
+            return;
+        
+        itemsCount = itemArray.count;
+        
         BOOL registryResultOk = [self.searchRegistry registerVideosFromDictionary:dictionary];
         if (!registryResultOk)
             return;
+        
+        completeBlock(itemsCount);
         
         
     } errorHandler:^(NSError* error) {
@@ -250,6 +264,7 @@
 
 - (void) searchChannelsForTerm:(NSString*)searchTerm
                       andRange:(NSRange)range
+                    onComplete:(MKNKSearchSuccessBlock)completeBlock
 {
     
     
@@ -274,9 +289,23 @@
     
     [networkOperation addJSONCompletionHandler:^(NSDictionary *dictionary) {
         
+        
+        int itemsCount = 0;
+        
+        if(!dictionary)
+            return;
+        
+        NSArray *itemArray = (NSArray*)[[dictionary objectForKey: @"channels"] objectForKey:@"items"];
+        if (!itemArray || ![itemArray isKindOfClass: [NSArray class]])
+            return;
+        
+        itemsCount = itemArray.count;
+        
         BOOL registryResultOk = [self.searchRegistry registerChannelsFromDictionary:dictionary];
         if (!registryResultOk)
             return;
+        
+        completeBlock(itemsCount);
         
         
     } errorHandler:^(NSError* error) {

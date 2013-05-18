@@ -18,8 +18,13 @@
 #import "UIImageView+WebCache.h"
 #import "Video.h"
 #import "VideoInstance.h"
+#import "SYNChannelFooterMoreView.h"
+#import "SYNIntegralCollectionViewFlowLayout.h"
 
 @interface SYNSearchVideosViewController ()
+
+
+@property (nonatomic, strong) SYNChannelFooterMoreView* footerView;
 
 @end
 
@@ -29,10 +34,29 @@
 
 - (void) viewDidLoad
 {
-    [super viewDidLoad];
+    
     
     
     self.trackedViewName = @"Search - Videos";
+    
+    // Init collection view
+    UINib *videoThumbnailCellNib = [UINib nibWithNibName: @"SYNVideoThumbnailWideCell"
+                                                  bundle: nil];
+    
+    [self.videoThumbnailCollectionView registerNib: videoThumbnailCellNib
+                        forCellWithReuseIdentifier: @"SYNVideoThumbnailWideCell"];
+    
+    // Register Footer
+    UINib *footerViewNib = [UINib nibWithNibName: @"SYNChannelFooterMoreView"
+                                          bundle: nil];
+    
+    [self.videoThumbnailCollectionView registerNib: footerViewNib
+                          forSupplementaryViewOfKind: UICollectionElementKindSectionFooter
+                                 withReuseIdentifier: @"SYNChannelFooterMoreView"];
+    
+    SYNIntegralCollectionViewFlowLayout* flotLayout = (SYNIntegralCollectionViewFlowLayout*)self.videoThumbnailCollectionView.collectionViewLayout;
+    
+    flotLayout.footerReferenceSize = [self footerSize];
     
     // override the data loading
     
@@ -47,11 +71,20 @@
     
     self.view.autoresizingMask = UIViewAutoresizingFlexibleWidth | UIViewAutoresizingFlexibleHeight;
     
+    self.dataRequestRange = NSMakeRange(0, 48);
+    
+    self.dataItemsAvailable = 0;
     
     
-    self.refreshButton.hidden = YES;
 }
 
+-(void)viewWillAppear:(BOOL)animated
+{
+    [super viewWillAppear:animated];
+    
+    [[NSNotificationCenter defaultCenter] postNotificationName:kNoteSearchBarRequestShow
+                                                        object:self];
+}
 
 - (NSFetchedResultsController *)fetchedResultsController
 {
@@ -90,14 +123,22 @@
 
 -(void)performSearchWithTerm:(NSString*)term
 {
-    
+    // for initialization before the view is loaded // 
     if(!appDelegate)
         appDelegate = (SYNAppDelegate*)[[UIApplication sharedApplication] delegate];
     
-    self.currentRange = NSMakeRange(0, 50);
+    if(self.dataRequestRange.length == 0)
+        self.dataRequestRange = NSMakeRange(0, 48);
+    // -------------------------------------------- //
+    
 
     [appDelegate.networkEngine searchVideosForTerm:term
-                                          andRange:self.currentRange];
+                                           inRange:self.dataRequestRange
+                                        onComplete:^(int itemsCount) {
+                                            
+                                            self.dataItemsAvailable = itemsCount;
+        
+                                        }];
     
     
 }
@@ -194,7 +235,9 @@
 }
 
 
-- (CGSize)collectionView:(UICollectionView *)collectionView layout:(UICollectionViewLayout*)collectionViewLayout sizeForItemAtIndexPath:(NSIndexPath *)indexPath {
+- (CGSize)collectionView:(UICollectionView *)collectionView
+                  layout:(UICollectionViewLayout*)collectionViewLayout
+  sizeForItemAtIndexPath:(NSIndexPath *)indexPath {
     
     if([[SYNDeviceManager sharedInstance]isIPad])
     {
@@ -214,13 +257,7 @@
 }
 
 
-// Used for the collection view header
-- (UICollectionReusableView *) collectionView: (UICollectionView *) collectionView
-            viewForSupplementaryElementOfKind: (NSString *) kind
-                                  atIndexPath: (NSIndexPath *) indexPath {
-    return nil;
-    
-}
+
 
 -(void)willAnimateRotationToInterfaceOrientation:(UIInterfaceOrientation)toInterfaceOrientation duration:(NSTimeInterval)duration
 {
@@ -238,6 +275,52 @@
 {
     [super willRotateToInterfaceOrientation:toInterfaceOrientation duration:duration];
     [self reloadCollectionViews];
+}
+
+#pragma mark - Load More Footer
+
+
+- (UICollectionReusableView *) collectionView: (UICollectionView *) collectionView
+            viewForSupplementaryElementOfKind: (NSString *) kind
+                                  atIndexPath: (NSIndexPath *) indexPath
+{
+    
+    
+    UICollectionReusableView* supplementaryView;
+    
+    if (kind == UICollectionElementKindSectionHeader)
+    {
+        // nothing yet
+    }
+    
+    if (kind == UICollectionElementKindSectionFooter)
+    {
+        
+        if(self.fetchedResultsController.fetchedObjects.count == 0 ||
+           (self.dataRequestRange.location + self.dataRequestRange.length) >= self.dataItemsAvailable)
+        {
+            return supplementaryView;
+        }
+        
+        self.footerView = [self.videoThumbnailCollectionView dequeueReusableSupplementaryViewOfKind: kind
+                                                                                withReuseIdentifier: @"SYNChannelFooterMoreView"
+                                                                                       forIndexPath: indexPath];
+        
+        [self.footerView.loadMoreButton addTarget: self
+                                           action: @selector(loadMoreChannels:)
+                                 forControlEvents: UIControlEventTouchUpInside];
+        
+        //[self loadMoreChannels:self.footerView.loadMoreButton];
+        
+        supplementaryView = self.footerView;
+    }
+    
+    return supplementaryView;
+}
+
+-(CGSize)footerSize
+{
+    return [[SYNDeviceManager sharedInstance] isIPhone]? CGSizeMake(320.0f, 64.0f) : CGSizeMake(1024.0, 64.0);
 }
 
 

@@ -47,6 +47,11 @@
 @property (readonly) NSManagedObjectContext *mainManagedObjectContext;
 @property (readonly, getter = isVideoQueueVisible) BOOL videoQueueVisible;
 
+// date related ivars
+
+@property (nonatomic) NSRange dataRequestRange;
+@property (nonatomic) NSInteger dataItemsAvailable;
+
 @property (nonatomic, strong) SYNAddButtonControl* addButton;
 
 - (void) handleNewTabSelectionWithId: (NSString*) selectionId;

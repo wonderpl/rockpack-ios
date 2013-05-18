@@ -36,7 +36,7 @@
 {
     _displayMode = displayMode;
     
-    if (displayMode == kChannelThumbnailDisplayModeStandard)
+    if (displayMode == kChannelThumbnailDisplayModeDisplay)
     {
         self.addItButton.hidden = NO;
         self.deleteButton.hidden = YES;

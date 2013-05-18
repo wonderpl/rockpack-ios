@@ -28,6 +28,7 @@
 #import "SYNVideoViewerViewController.h"
 #import "UIFont+SYNFont.h"
 #import <QuartzCore/QuartzCore.h>
+#import "SYNOAuthNetworkEngine.h"
 
 #define kMovableViewOffX -58
 
@@ -236,18 +237,18 @@ typedef void(^AnimationCompletionBlock)(BOOL finished);
     // == Set Up Notifications == //
     
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(backButtonRequested:) name:kNoteBackButtonShow object:nil];
-    
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(backButtonRequested:) name:kNoteBackButtonHide object:nil];
     
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(topRightControlsRequested:) name:kNoteTopRightControlsShow object:nil];
-    
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(topRightControlsRequested:) name:kNoteTopRightControlsHide object:nil];
     
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(allNavControlsRequested:) name:kNoteAllNavControlsShow object:nil];
-    
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(allNavControlsRequested:) name:kNoteAllNavControlsHide object:nil];
     
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(addToChannelRequested:) name:kNoteAddToChannelRequest object:nil];
+    
+    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(searchBarRequested:) name:kNoteSearchBarRequestHide object:nil];
+    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(searchBarRequested:) name:kNoteSearchBarRequestShow object:nil];
     
     
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(scrollerPageChanged:) name:kScrollerPageChanged object:nil];
@@ -256,7 +257,7 @@ typedef void(^AnimationCompletionBlock)(BOOL finished);
     
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(searchTyped:) name:kSearchTyped object:nil];
     
-    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(addedToChannelAction:) name:kNoteAddedToChannel object:nil];
+    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(addedToChannelAction:) name:kNoteVideoAddedToExistingChannel object:nil];
     
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(createNewChannelAction:) name:kNoteCreateNewChannel object:nil];
     
@@ -267,6 +268,8 @@ typedef void(^AnimationCompletionBlock)(BOOL finished);
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(reachabilityChanged:) name:kReachabilityChangedNotification object:nil];
     
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(searchCancelledIPhone:) name:kSideNavigationSearchCloseNotification object:nil];
+    
+    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(channelSuccessfullySaved:) name:kNoteChannelSaved object:nil];
     
     
     [self.navigationContainerView addSubview:self.sideNavigationViewController.view];
@@ -373,6 +376,10 @@ typedef void(^AnimationCompletionBlock)(BOOL finished);
                      } completion:^(BOOL finished) {
                          if(self.overlayNavigationController)
                              self.overlayNavigationController = nil;
+                         if(self.videoViewerViewController)
+                         {
+                             [self removeVideoOverlayController];
+                         }
                      }];
     
 }
@@ -380,15 +387,23 @@ typedef void(^AnimationCompletionBlock)(BOOL finished);
 
 -(void)addedToChannelAction:(NSNotification*)notification
 {
+    //Videos have been added to a channel
     Channel* channel = (Channel*)[[notification userInfo] objectForKey:kChannel];
     if(!channel)
         return;
     
-    [[NSNotificationCenter defaultCenter] postNotificationName: kClearAllAddedCells
-                                                        object:self];
     
-    
-    // TODO : Show confirm message
+
+    //Upload the data
+    [appDelegate.oAuthNetworkEngine updateVideosForChannelForUserId:appDelegate.currentUser.uniqueId channelId:channel.uniqueId videoInstanceSet:channel.videoInstancesSet completionHandler:^(NSDictionary* result) {
+        NSString* message = [[SYNDeviceManager sharedInstance] isIPhone]?
+        NSLocalizedString(@"VIDEO SUCCESSFULLY ADDED",nil):
+        NSLocalizedString(@"YOUR VIDEOS HAVE BEEN SUCCESSFULLY ADDED INTO YOUR CHANNEL",nil);
+        [self presentSuccessNotificationWithMessage:message];
+    } errorHandler:^(NSDictionary* errorDictionary) {
+        // Show error message?
+    }];
+
     
 }
 
@@ -494,13 +509,15 @@ typedef void(^AnimationCompletionBlock)(BOOL finished);
                      }
                      completion: ^(BOOL finished) {
                          self.overlayView.userInteractionEnabled = NO;
-                         self.videoViewerViewController = nil;
                          [child removeFromSuperview];
                          
                          self.videoOverlayDismissBlock();
                          
                          [self.videoViewerViewController removeFromParentViewController];
+                         self.videoViewerViewController = nil;
                      }];
+    //FIXME: Nick to rework
+    [self.containerViewController viewWillAppear:NO];
 }
 
 
@@ -513,6 +530,7 @@ typedef void(^AnimationCompletionBlock)(BOOL finished);
     
     CGRect sboxFrame;
     
+    // place according to the position of the back button //
     if(showingBackButton)
     {
         sboxFrame = self.searchBoxController.view.frame;
@@ -528,6 +546,11 @@ typedef void(^AnimationCompletionBlock)(BOOL finished);
     self.searchBoxController.view.frame = sboxFrame;
     
     [self.view insertSubview:self.searchBoxController.view aboveSubview:self.overlayContainerView];
+    
+    if([[SYNDeviceManager sharedInstance] isIPad] && sender != nil)
+    {
+        [self.searchBoxController.searchTextField becomeFirstResponder];
+    }
     
 }
 
@@ -580,6 +603,15 @@ typedef void(^AnimationCompletionBlock)(BOOL finished);
     [appDelegate logout];
 }
 
+-(void) searchBarRequested:(NSNotification*)notification
+{
+    NSString* notifcationName = [notification name];
+    if([notifcationName isEqualToString:kNoteSearchBarRequestHide])
+        [self cancelButtonPressed:nil];
+    else
+        [self showSearchBoxField:nil];
+        
+}
 
 - (void) reachabilityChanged: (NSNotification*) notification
 {
@@ -608,7 +640,7 @@ typedef void(^AnimationCompletionBlock)(BOOL finished);
     }
     else if ([self.reachability currentReachabilityStatus] == NotReachable)
     {
-        NSString* message = [[SYNDeviceManager sharedInstance] isIPad] ? NSLocalizedString(@"NO NETWORK CONNECTION", nil)
+        NSString* message = [[SYNDeviceManager sharedInstance] isIPad] ? NSLocalizedString(@"NO NETWORK, PLEASE CHECK YOUR INTERNET CONNECTION.", nil)
                                                                        : NSLocalizedString(@"NO NETWORK", nil);
         [self presentNetworkErrorViewWithMesssage: message];
     }
@@ -616,27 +648,6 @@ typedef void(^AnimationCompletionBlock)(BOOL finished);
 
 
 
-- (void) presentNetworkErrorViewWithMesssage: (NSString*) message
-{
-    if(self.networkErrorView)
-    {
-        [self.networkErrorView setText:message];
-        return;
-    }
-    
-    self.networkErrorView = [SYNNetworkErrorView errorView];
-    [self.networkErrorView setText:message];
-    [self.errorContainerView addSubview:self.networkErrorView];
-    
-    [self alignErrorMessage];
-    
-    [UIView animateWithDuration:0.3 animations:^{
-        CGRect erroViewFrame = self.networkErrorView.frame;
-        erroViewFrame.origin.y = [[SYNDeviceManager sharedInstance] currentScreenHeight] - ([[SYNDeviceManager sharedInstance] isIPad] ? 70.0 : 60.0);
-        
-        self.networkErrorView.frame = erroViewFrame;
-    }];
-}
 
 -(void)hideNetworkErrorView
 {
@@ -748,6 +759,58 @@ typedef void(^AnimationCompletionBlock)(BOOL finished);
         
 }
 
+-(void)channelSuccessfullySaved:(NSNotification*)note
+{
+    NSString* message = [[SYNDeviceManager sharedInstance] isIPhone]?
+    NSLocalizedString(@"CHANNEL SAVED",nil):
+    NSLocalizedString(@"YOUR CHANNEL HAS BEEN SAVED SUCCESSFULLY",nil);
+    [self presentSuccessNotificationWithMessage:message];
+}
+
+#pragma mark - show message bars
+
+- (void) presentNetworkErrorViewWithMesssage: (NSString*) message
+{
+    if(self.networkErrorView)
+    {
+        [self.networkErrorView setText:message];
+        return;
+    }
+    
+    self.networkErrorView = [SYNNetworkErrorView errorView];
+    [self.networkErrorView setText:message];
+    [self.errorContainerView addSubview:self.networkErrorView];
+    
+    
+    [UIView animateWithDuration:0.3 animations:^{
+        CGRect erroViewFrame = self.networkErrorView.frame;
+        erroViewFrame.origin.y = [[SYNDeviceManager sharedInstance] currentScreenHeight] - ([[SYNDeviceManager sharedInstance] isIPad] ? 70.0 : 60.0);
+        
+        self.networkErrorView.frame = erroViewFrame;
+    }];
+}
+
+-(void) presentSuccessNotificationWithMessage:(NSString*)message
+{
+    __block SYNNetworkErrorView* successNotification = [[SYNNetworkErrorView alloc] init];
+    successNotification.backgroundColor = [UIColor colorWithPatternImage:[UIImage imageNamed:@"BarSucess"]];
+    [successNotification setText:message];
+    [self.errorContainerView addSubview:successNotification];
+    [UIView animateWithDuration:0.3f delay:0.0f options:UIViewAnimationOptionCurveEaseOut animations:^{
+        CGRect newFrame = successNotification.frame;
+        newFrame.origin.y = [[SYNDeviceManager sharedInstance] currentScreenHeight] - ([[SYNDeviceManager sharedInstance] isIPad] ? 70.0 : 60.0);
+        successNotification.frame = newFrame;
+    } completion:^(BOOL finished) {
+        [UIView animateWithDuration:0.3f delay:10.0f options:UIViewAnimationOptionCurveEaseInOut animations:^{
+            successNotification.alpha = 0.0f;
+        } completion:^(BOOL finished) {
+            [successNotification removeFromSuperview];
+        }];
+    }];
+}
+
+
+
 #pragma mark - Navigation Methods
 
 - (void) showBackButton: (BOOL) show
@@ -766,8 +829,9 @@ typedef void(^AnimationCompletionBlock)(BOOL finished);
                          forControlEvents:UIControlEventTouchUpInside];
         
         //No More Back Title (For Now)
-        [self.backButtonControl setBackTitle: self.pageTitleLabel.text];
+        // [self.backButtonControl setBackTitle: self.pageTitleLabel.text];
         
+        // Shrink the Search Box when the back arrow comes on screen //
         if(self.searchBoxController.isOnScreen)
         {
             [UIView animateWithDuration:0.5 animations:^{
@@ -798,11 +862,7 @@ typedef void(^AnimationCompletionBlock)(BOOL finished);
                                       action: @selector(popCurrentViewController:)
                             forControlEvents: UIControlEventTouchUpInside];
         
-        if(self.searchBoxController.isOnScreen)
-        {
-            [self cancelButtonPressed:nil];
-            
-        }
+        
         showingBackButton = NO;
         targetFrame = self.movableButtonsContainer.frame;
         targetFrame.origin.x = kMovableViewOffX;
@@ -824,24 +884,49 @@ typedef void(^AnimationCompletionBlock)(BOOL finished);
 
 - (void) popCurrentViewController: (id) sender
 {
+    SYNAbstractViewController *abstractVC;
+    
     if(_overlayNavigationController)
     {
         if(_overlayNavigationController.viewControllers.count > 1)
         {
-            SYNAbstractViewController *abstractVC = (SYNAbstractViewController *)_overlayNavigationController.topViewController;
+            abstractVC = (SYNAbstractViewController *)_overlayNavigationController.topViewController;
+            
             
             [abstractVC animatedPopViewController];
+            
+//            if(self.searchBoxController.isOnScreen)
+//            {
+//                
+//                [self cancelButtonPressed:nil];
+//                
+//            }
         }
         else
         {
             self.overlayNavigationController = nil;
             [self showBackButton:NO];
         }
+        
+        
     }
     else
     {
-        [self.containerViewController popCurrentViewController:sender];
+        abstractVC = (SYNAbstractViewController *)self.containerViewController.showingViewController;
+        
+        
+        if(abstractVC.navigationController.viewControllers.count <= 2) {
+            self.containerViewController.scrollView.scrollEnabled = YES;
+            [self showBackButton:NO];
+        }
+            
+        
+        [abstractVC animatedPopViewController];
+       
     }
+    //FIXME: Nick to rework
+    [self.containerViewController viewWillAppear:NO];
+    
 }
 
 
@@ -975,10 +1060,7 @@ typedef void(^AnimationCompletionBlock)(BOOL finished);
 -(void)willAnimateRotationToInterfaceOrientation:(UIInterfaceOrientation)toInterfaceOrientation duration:(NSTimeInterval)duration
 {
     [super willAnimateRotationToInterfaceOrientation:toInterfaceOrientation duration:duration];
-    if(self.networkErrorView)
-    {
-        [self alignErrorMessage];
-    }
+
     if(self.accountSettingsPopover)
     {
         CGRect rect = CGRectMake([[SYNDeviceManager sharedInstance] currentScreenWidth] * 0.5,
@@ -994,12 +1076,7 @@ typedef void(^AnimationCompletionBlock)(BOOL finished);
 
 
 
--(void)alignErrorMessage
-{
-    
-    self.networkErrorView.center = CGPointMake([[SYNDeviceManager sharedInstance] currentScreenWidth] * 0.5, self.networkErrorView.center.y);
-    self.networkErrorView.frame = CGRectIntegral(self.networkErrorView.frame);
-}
+
 
 #pragma mark - Overlay Accessor Methods
 

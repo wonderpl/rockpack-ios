@@ -9,14 +9,15 @@
 #import <UIKit/UIKit.h>
 
 @interface SYNNetworkErrorView : UIView {
-    UILabel* errorLabel;
-    UIImageView* wifiImageView;
+
 }
 
 
 +(id)errorView;
 
 -(void)setText:(NSString*)text;
+-(void)setIconImage:(UIImage*)image;
+-(void)setCenterVerticalOffset:(CGFloat)centerYOffset;
 -(CGFloat)height;
 
 @end

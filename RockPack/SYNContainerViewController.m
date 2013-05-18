@@ -158,6 +158,8 @@
     [[NSNotificationCenter defaultCenter] postNotificationName:kScrollerPageChanged
                                                         object:self
                                                       userInfo:@{kCurrentPage:@(self.scrollView.page)}];
+    //FIXME: Nick to rework
+    [self.childViewControllers makeObjectsPerformSelector:@selector(viewWillAppear:) withObject:nil];
 
     
 }
@@ -249,18 +251,7 @@
 }
 
 
-#pragma mark - Navigation Methods
 
-- (void) popCurrentViewController: (id) sender
-{
-    
-    
-    SYNAbstractViewController *abstractVC = (SYNAbstractViewController *)self.selectedNavigationController.topViewController;
-    
-    [abstractVC animatedPopViewController];
-    
-    
-}
 
 -(void) navigateToPageByName:(NSString*)pageName
 {

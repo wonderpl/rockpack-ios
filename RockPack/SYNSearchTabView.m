@@ -52,7 +52,7 @@
         CGRect labelFrame = self.frame;
         if(isIPad)
         {
-            labelFrame.origin.y += 4.0f;
+            labelFrame.origin.y += 1.0f;
         }
         titleLabel = [[UILabel alloc] initWithFrame:labelFrame];
         titleLabel.font = [UIFont rockpackFontOfSize:isIPad?16.0f:12.0f];

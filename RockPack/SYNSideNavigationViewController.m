@@ -177,7 +177,7 @@ typedef enum {
         // == Settings Button == //
         
         CGRect settingsButtonFrame = self.settingsButton.frame;
-        settingsButtonFrame.origin.y = [[SYNDeviceManager sharedInstance] currentScreenHeight] - 30.0 - settingsButtonFrame.size.height;
+        settingsButtonFrame.origin.y = [[SYNDeviceManager sharedInstance] currentScreenHeight] - 26.0 - settingsButtonFrame.size.height;
         self.settingsButton.frame = settingsButtonFrame;
         self.settingsButton.autoresizingMask = UIViewAutoresizingFlexibleTopMargin;
         
@@ -827,10 +827,10 @@ typedef enum {
     [self.appDelegate.oAuthNetworkEngine updateAvatarForUserId: self.appDelegate.currentOAuth2Credentials.userId image:image completionHandler:^(id result) {
         self.profilePictureImageView.image = image;
         [self.activityIndicator stopAnimating];
-        self.avatarButton.enabled = NO;
+        self.avatarButton.enabled = YES;
     } errorHandler:^(id error) {
         [self.activityIndicator stopAnimating];
-        self.avatarButton.enabled = NO;
+        self.avatarButton.enabled = YES;
     }];
     
     self.imagePickerController = nil;

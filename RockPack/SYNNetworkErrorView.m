@@ -12,8 +12,18 @@
 #import "SYNDeviceManager.h"
 #import <QuartzCore/QuartzCore.h>
 
-@implementation SYNNetworkErrorView
+@interface SYNNetworkErrorView ()
+{
+    CGFloat labelYOffset;
+}
 
+@property (nonatomic, retain)UILabel* errorLabel;
+@property (nonatomic, retain)UIImageView* iconImageView;
+@property (nonatomic, retain)UIView* containerView;
+
+@end
+
+@implementation SYNNetworkErrorView
 
 - (id)init
 {
@@ -32,32 +42,32 @@
         
         self.backgroundColor = [UIColor colorWithPatternImage:bgImage];
         
+        _containerView = [[UIView alloc] initWithFrame:self.frame];
+        _containerView.autoresizingMask = UIViewAutoresizingFlexibleLeftMargin | UIViewAutoresizingFlexibleRightMargin;
+        [self addSubview:self.containerView];
         // Error Label
         
-        errorLabel = [[UILabel alloc] initWithFrame:self.frame];
-        errorLabel.textColor = [UIColor colorWithRed:(223.0/255.0) green:(244.0/255.0) blue:(1.0) alpha:(1.0)];
-        errorLabel.font = [UIFont rockpackFontOfSize:17.0];
-        errorLabel.layer.shadowColor = [[UIColor colorWithRed:(128.0/255.0) green:(32.0/255.0) blue:(39.0/255.0) alpha:(1.0)] CGColor];
-        errorLabel.layer.shadowOffset = CGSizeMake(0.0, 1.0);
-        errorLabel.layer.shadowRadius = 1.0;
-        errorLabel.layer.shadowOpacity = 1.0;
-        errorLabel.backgroundColor = [UIColor clearColor];
-        errorLabel.autoresizingMask = UIViewAutoresizingFlexibleLeftMargin | UIViewAutoresizingFlexibleRightMargin;
+        _errorLabel = [[UILabel alloc] initWithFrame:self.frame];
+        _errorLabel.textColor = [UIColor colorWithRed:(223.0/255.0) green:(244.0/255.0) blue:(1.0) alpha:(1.0)];
+        _errorLabel.font = [UIFont rockpackFontOfSize:17.0];
+        _errorLabel.layer.shadowColor = [[UIColor colorWithRed:(128.0/255.0) green:(32.0/255.0) blue:(39.0/255.0) alpha:(1.0)] CGColor];
+        _errorLabel.layer.shadowOffset = CGSizeMake(0.0, 1.0);
+        _errorLabel.layer.shadowRadius = 1.0;
+        _errorLabel.layer.shadowOpacity = 1.0;
+        _errorLabel.backgroundColor = [UIColor clearColor];
         
-        [self addSubview:errorLabel];
+        [_containerView addSubview:_errorLabel];
         
         
         // Wifi Icon
         
-        wifiImageView = [[UIImageView alloc] initWithImage:[UIImage imageNamed:@"IconNetwork"]];
-        wifiImageView.autoresizingMask = UIViewAutoresizingFlexibleLeftMargin | UIViewAutoresizingFlexibleRightMargin;
-        [self addSubview:wifiImageView];
-        
-        [self setText:@"Network Error"];
+        _iconImageView = [[UIImageView alloc] initWithFrame:CGRectZero];
+        [_containerView addSubview:_iconImageView];
         
         
         self.autoresizingMask = UIViewAutoresizingFlexibleWidth | UIViewAutoresizingFlexibleTopMargin;
         
+        labelYOffset = 25.0f;
         
     }
     return self;
@@ -65,31 +75,45 @@
 
 +(id)errorView
 {
-    return [[self alloc] init];
+    SYNNetworkErrorView* errorView =[[self alloc] init];
+    [errorView setIconImage:[UIImage imageNamed:@"IconNetwork"]];
+    [errorView setText:NSLocalizedString(@"Network Error",nil)];
+    return errorView;
 }
 
 
 -(void)setText:(NSString *)text
 {
     NSString* capsText = [text uppercaseString];
-    CGSize textSize = [capsText sizeWithFont:errorLabel.font];
+    CGSize textSize = [capsText sizeWithFont:self.errorLabel.font];
     
-    CGRect labelFrame = errorLabel.frame;
+    CGRect labelFrame = self.errorLabel.frame;
     labelFrame.size = textSize;
-    errorLabel.frame = labelFrame;
+    self.errorLabel.frame = labelFrame;
     
-    errorLabel.center = CGPointMake(self.frame.size.width * 0.5, 32.0);
-    errorLabel.frame = CGRectIntegral(errorLabel.frame);
+    self.errorLabel.text = capsText;
     
-    errorLabel.text = capsText;
-    
-    CGRect wifiFrame = wifiImageView.frame;
-    wifiFrame.origin.x = errorLabel.frame.origin.x - wifiFrame.size.width - 10.0;
-    wifiImageView.frame = wifiFrame;
-    wifiImageView.center = CGPointMake(wifiImageView.center.x, self.frame.size.height * 0.5);
-    wifiImageView.frame = CGRectIntegral(wifiImageView.frame);
-    
-    
+    CGRect newFrame = self.containerView.frame;
+    newFrame.size.width = self.errorLabel.frame.size.width + 2.0* (self.iconImageView.frame.size.width + 10.0);
+    self.containerView.frame = newFrame;
+    self.containerView.center = CGPointMake(roundf(self.frame.size.width/2.0f), roundf(self.frame.size.height/2.0f));
+    self.errorLabel.center = CGPointMake(roundf(self.containerView.frame.size.width/2.0f), labelYOffset + 7.0f);
+    self.iconImageView.center = CGPointMake(roundf(self.iconImageView.frame.size.width/2.0f),labelYOffset);
+}
+
+-(void)setIconImage:(UIImage *)image
+{
+    self.iconImageView.image=image;
+    CGPoint center = self.iconImageView.center;
+    CGRect newFrame = self.iconImageView.frame;
+    newFrame.size = image.size;
+    self.iconImageView.frame = newFrame;
+    self.iconImageView.center = center;
+}
+
+-(void)setCenterVerticalOffset:(CGFloat)centerYOffset
+{
+    labelYOffset = centerYOffset;
 }
 
 -(CGFloat)height

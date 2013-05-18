@@ -128,7 +128,6 @@
 
 #define kRefreshComplete           @"kRefreshComplete"
 
-#define kClearAllAddedCells         @"kClearAllAddedCells"
 
 
 
@@ -362,14 +361,20 @@ typedef enum {
 #define kNoteStarButtonPressed      @"kNoteStarButtonPressed"
 #define kNoteAddToChannelRequest    @"kNoteAddToChannelRequest"
 
-#define kNoteAddedToChannel         @"kNoteAddedToChannel"
-#define kNoteCreateNewChannel       @"kNoteCreateNewChannel"
+#define kNoteSearchBarRequestHide   @"kNoteSearchBarRequestHide"
+#define kNoteSearchBarRequestShow   @"kNoteSearchBarRequestShow"
 
-#define kNotificationMarkedRead     @"kNoteAddedToChannel"
+#define kNoteVideoAddedToExistingChannel         @"kNoteAddedToChannel"
+#define kNoteCreateNewChannel                    @"kNoteCreateNewChannel"
+
+#define kNotificationMarkedRead     @"kNotificationMarkedRead"
 
 #define kProfileRequested           @"kProfileRequested"
 #define kChannelDetailsRequested    @"kChannelDetailsRequested"
 #define kVideoOverlayRequested      @"kVideoOverlayRequested"
+
+#define kNoteChannelSaved           @"kNoteChannelSaved"
+
 //
 // Tracking
 //

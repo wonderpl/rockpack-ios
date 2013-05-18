@@ -28,7 +28,7 @@
 #import "Video.h"
 #import "VideoInstance.h"
 
-#define STANDARD_LENGTH 48
+#define STANDARD_REQUEST_LENGTH 48
 #define kChannelsCache @"ChannelsCache"
 
 @interface SYNChannelsRootViewController () <UIScrollViewDelegate, SYNChannelCategoryTableViewDelegate>
@@ -42,11 +42,10 @@
 #endif
 
 @property (getter = hasTouchedChannelButton) BOOL touchedChannelButton;
-@property (nonatomic) NSInteger currentTotal;
 
 @property (nonatomic, assign) BOOL ignoreRefresh;
 @property (nonatomic, strong) NSString* currentCategoryId;
-@property (nonatomic, weak) Genre* currentGenre;
+@property (nonatomic, strong) Genre* currentGenre;
 @property (nonatomic, weak) SYNMainRegistry* mainRegistry;
 
 @property (nonatomic, strong) SYNChannelCategoryTableViewController* categoryTableViewController;
@@ -56,6 +55,7 @@
 @property (nonatomic, strong) UILabel* subCategoryNameLabel;
 @property (nonatomic, strong) UIImageView* arrowImage;
 @property (nonatomic, strong) NSMutableArray* channels;
+@property (nonatomic, strong) SYNChannelFooterMoreView* footerView;
 
 @property (nonatomic, strong) Genre* allGenre;
 @end
@@ -64,8 +64,8 @@
 
 @synthesize currentCategoryId;
 @synthesize currentGenre;
-@synthesize currentRange;
-@synthesize currentTotal;
+@synthesize dataRequestRange;
+@synthesize dataItemsAvailable;
 @synthesize mainRegistry;
 @synthesize channels;
 
@@ -145,13 +145,14 @@
     
     startAnimationDelay = 0.0;
     
-    currentRange = NSMakeRange(0, STANDARD_LENGTH);
+    dataRequestRange = NSMakeRange(1, STANDARD_REQUEST_LENGTH);
     
     if(self.enableCategoryTable)
     {
         [self layoutChannelsCategoryTable];
     }
     
+    self.channelThumbnailCollectionView.showsVerticalScrollIndicator = YES;
 }
 
 
@@ -189,7 +190,6 @@
     
     [self loadChannelsForGenre:nil];
     
-    
 }
 
 #pragma mark - Loading of Channels
@@ -202,8 +202,10 @@
 -(void)loadChannelsForGenre:(Genre*)genre byAppending:(BOOL)append
 {
     
+    NSLog(@"Loading Channels %i to %i from %i total", (dataRequestRange.location - 1), (dataRequestRange.location - 1) + (dataRequestRange.length - 1), dataItemsAvailable);
+    
     [appDelegate.networkEngine updateChannelsScreenForCategory: (genre ? genre.uniqueId : @"all")
-                                                      forRange: currentRange
+                                                      forRange: dataRequestRange
                                                  ignoringCache: NO
                                                   onCompletion: ^(NSDictionary* response) {
                                                       
@@ -211,15 +213,26 @@
                                                       if (!channelsDictionary || ![channelsDictionary isKindOfClass: [NSDictionary class]])
                                                           return;
                                                       
+                                                      NSArray *itemArray = [channelsDictionary objectForKey: @"items"];
+                                                      if (![itemArray isKindOfClass: [NSArray class]])
+                                                          return;
+                                                      
+                                                      dataRequestRange.length = itemArray.count;
+                                                      
+                                                      NSLog(@"%i Items Fetched for %@ request", dataRequestRange.length, currentGenre.name ? currentGenre.name : @"popular");
+                                                      
                                                       NSNumber *totalNumber = [channelsDictionary objectForKey: @"total"];
                                                       if (![totalNumber isKindOfClass: [NSNumber class]])
                                                           return;
                                                       
-                                                      currentTotal = [totalNumber integerValue];
+                                                      dataItemsAvailable = [totalNumber integerValue];
                                                       
                                                       BOOL registryResultOk = [appDelegate.mainRegistry registerChannelsFromDictionary:response
                                                                                                                               forGenre:genre
                                                                                                                            byAppending:append];
+                                                      
+                                                      self.footerView.showsLoading = NO;
+                                                      
                                                       if (!registryResultOk)
                                                       {
                                                           DebugLog(@"Registration of Channel Failed for: %@", currentCategoryId);
@@ -230,6 +243,7 @@
                                                       
                                                   } onError: ^(NSDictionary* errorInfo) {
                                                       DebugLog(@"Could not load channels: %@", errorInfo);
+                                                      self.footerView.showsLoading = NO;
                                                   }];
 }
 
@@ -238,10 +252,18 @@
     
     // (UIButton*) sender can be nil when called directly //
     
-    NSInteger nextStart = currentRange.location + currentRange.length;
-    NSInteger nextSize = (nextStart + STANDARD_LENGTH) > currentTotal ? (currentTotal - nextStart) : STANDARD_LENGTH;
+    self.footerView.showsLoading = YES;
     
-    currentRange = NSMakeRange(nextStart, nextSize);
+    NSInteger nextStart = dataRequestRange.location + dataRequestRange.length; // one is subtracted when the call happens for 0 indexing
+    
+    if(nextStart >= dataItemsAvailable)
+        return;
+    
+    NSInteger nextSize = (nextStart + STANDARD_REQUEST_LENGTH) >= dataItemsAvailable ? (dataItemsAvailable - nextStart) : STANDARD_REQUEST_LENGTH;
+    
+    
+    dataRequestRange = NSMakeRange(nextStart, nextSize);
+    
     
     
     [self loadChannelsForGenre:currentGenre byAppending:YES];
@@ -354,13 +376,6 @@
     SYNChannelThumbnailCell *channelThumbnailCell = [collectionView dequeueReusableCellWithReuseIdentifier: @"SYNChannelThumbnailCell"
                                                                                               forIndexPath: indexPath];
     
-    // == Infinite Scrolling Support == //
-    
-    if(indexPath.row == self.channels.count)
-    {
-        [self loadMoreChannels:nil];
-    }
-    
     
 
     [channelThumbnailCell.imageView setImageWithURL: [NSURL URLWithString: channel.channelCover.imageLargeUrl]
@@ -398,7 +413,7 @@
     if (collectionView != self.channelThumbnailCollectionView)
         return nil;
     
-    SYNChannelFooterMoreView *channelMoreFooter;
+    
     
     UICollectionReusableView* supplementaryView;
     
@@ -409,15 +424,22 @@
     
     if (kind == UICollectionElementKindSectionFooter)
     {
-        channelMoreFooter = [self.channelThumbnailCollectionView dequeueReusableSupplementaryViewOfKind: kind
+        if(self.channels.count == 0 || (self.dataRequestRange.location + self.dataRequestRange.length) >= dataItemsAvailable)
+        {
+            return supplementaryView;
+        }
+        
+        self.footerView = [self.channelThumbnailCollectionView dequeueReusableSupplementaryViewOfKind: kind
                                                                                     withReuseIdentifier: @"SYNChannelFooterMoreView"
                                                                                            forIndexPath: indexPath];
         
-        [channelMoreFooter.loadMoreButton addTarget: self
-                                             action: @selector(loadMoreChannels:)
-                                   forControlEvents: UIControlEventTouchUpInside];
+        [self.footerView.loadMoreButton addTarget: self
+                                           action: @selector(loadMoreChannels:)
+                                 forControlEvents: UIControlEventTouchUpInside];
         
-        supplementaryView = channelMoreFooter;
+        //[self loadMoreChannels:self.footerView.loadMoreButton];
+        
+        supplementaryView = self.footerView;
     }
     
     return supplementaryView;
@@ -578,8 +600,13 @@
                                   delay: 0.0
                                 options: UIViewAnimationCurveEaseInOut
                              animations: ^{
-                                 CGPoint currentCenter = self.channelThumbnailCollectionView.center;
-                                 [self.channelThumbnailCollectionView setCenter: CGPointMake(currentCenter.x, currentCenter.y - kCategorySecondRowHeight)];
+                                 
+                                 CGRect currentCollectionViewFrame = self.channelThumbnailCollectionView.frame;
+                                 currentCollectionViewFrame.origin.y -= kCategorySecondRowHeight;
+                                 currentCollectionViewFrame.size.height += kCategorySecondRowHeight;
+                                 self.channelThumbnailCollectionView.frame = currentCollectionViewFrame;
+                                 
+                                 
                              }  completion: ^(BOOL result) {
                                  tabExpanded = NO;
                              }];
@@ -597,8 +624,10 @@
                           delay: 0.0
                         options: UIViewAnimationCurveEaseInOut
                      animations: ^{
-                         CGPoint currentCenter = self.channelThumbnailCollectionView.center;
-                         [self.channelThumbnailCollectionView setCenter: CGPointMake(currentCenter.x, currentCenter.y + kCategorySecondRowHeight)];
+                         CGRect currentCollectionViewFrame = self.channelThumbnailCollectionView.frame;
+                         currentCollectionViewFrame.origin.y += kCategorySecondRowHeight;
+                         currentCollectionViewFrame.size.height -= kCategorySecondRowHeight;
+                         self.channelThumbnailCollectionView.frame = currentCollectionViewFrame;
                      }
                      completion: ^(BOOL result) {
                          tabExpanded = YES;
@@ -625,7 +654,7 @@
     
     currentCategoryId = genre.uniqueId;
 
-    currentRange = NSMakeRange(0, 50);
+    dataRequestRange = NSMakeRange(1, STANDARD_REQUEST_LENGTH);
     
     
     
@@ -655,6 +684,8 @@
 
 -(void)clearedLocationBoundData
 {
+    dataRequestRange = NSMakeRange(1, STANDARD_REQUEST_LENGTH);
+    
     [self loadChannelsForGenre:nil];
 }
 

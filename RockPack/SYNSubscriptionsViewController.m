@@ -75,7 +75,7 @@
 
 - (NSInteger) collectionView: (UICollectionView *) view numberOfItemsInSection: (NSInteger) section
 {
-    return self.user.subscriptions.count;
+    return self.user.subscriptions.count - 1;
 }
 
 

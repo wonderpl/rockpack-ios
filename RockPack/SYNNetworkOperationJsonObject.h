@@ -25,6 +25,9 @@ typedef void (^MKNKBasicFailureBlock)(void);
 typedef void (^MKNKResourceSuccessBlock) (NSString*);
 typedef void (^MKNKResourceErrorBlock) (NSError*);
 
+typedef void (^MKNKSearchSuccessBlock) (int);
+typedef void (^MKNKSearchFailureBlock) (int);
+
 #import "AppConstants.h"
 
 @interface SYNNetworkOperationJsonObject : MKNetworkOperation

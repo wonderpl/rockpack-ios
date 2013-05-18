@@ -72,7 +72,6 @@
     [request setEntity:[NSEntityDescription entityForName:@"Channel"
                                    inManagedObjectContext:appDelegate.searchManagedObjectContext]];
     
-    
     NSPredicate* notOwnedByUserPredicate = [NSPredicate predicateWithFormat:@"channelOwner.uniqueId != %@", appDelegate.currentUser.uniqueId];
     
     [request setPredicate:notOwnedByUserPredicate];
@@ -101,6 +100,10 @@
     // override the data loading
     [self reloadCollectionViews];
     
+    
+    [[NSNotificationCenter defaultCenter] postNotificationName:kNoteSearchBarRequestShow
+                                                        object:self];
+    
 }
 
 
@@ -116,11 +119,17 @@
     if(!appDelegate)
         appDelegate = (SYNAppDelegate*)[[UIApplication sharedApplication] delegate];
     
-    self.currentRange = NSMakeRange(0, 50);
+    if(self.dataRequestRange.length == 0)
+        self.dataRequestRange = NSMakeRange(0, 48);
     
     [appDelegate.networkEngine searchChannelsForTerm:term
-                                            andRange:self.currentRange];
-}
+                                            andRange:self.dataRequestRange
+                                          onComplete:^(int itemsCount) {
+                                              
+                                              self.dataItemsAvailable = itemsCount;
+                                              
+                                          }];
+}   
 
 
 -(void)dealloc
@@ -149,6 +158,15 @@
 {
     // override with emtpy function
 }
+
+-(void)animatedPushViewController:(UIViewController *)vc
+{
+    [super animatedPushViewController:vc];
+    
+    [[NSNotificationCenter defaultCenter] postNotificationName:kNoteSearchBarRequestHide
+                                                        object:self];
+}
+
 
 
 #pragma mark - Delegate

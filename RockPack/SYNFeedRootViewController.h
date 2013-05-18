@@ -15,6 +15,5 @@
 
 @property (nonatomic, strong) SYNRefreshButton* refreshButton;
 
-@property (nonatomic) NSRange currentRange;
 
 @end

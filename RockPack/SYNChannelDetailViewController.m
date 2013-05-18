@@ -263,6 +263,8 @@
         // Set text on add cover and select category buttons
         [self.selectCategoryButton setAttributedTitle: attributedCategoryString
                                              forState: UIControlStateNormal];
+        self.coverChooserController = [[SYNCoverChooserController alloc] init];
+        self.coverChooserMasterView = self.coverChooserController.view;
     }
     else
     {
@@ -282,15 +284,13 @@
         {
             self.view.backgroundColor = [UIColor colorWithWhite:0.92f alpha:1.0f];
         }
+        
+        // Cover Image Selector //
+        
     }
     self.selectedCategoryId = @"";
     self.selectedCoverId = @"";
     
-    
-    // Cover Image Selector //
-    
-    self.coverChooserController = [[SYNCoverChooserController alloc] init];
-    self.coverChooserMasterView = self.coverChooserController.view;
     
     CGRect correctRect = self.coverChooserMasterView.frame;
     correctRect.origin.y = 404.0;
@@ -308,6 +308,8 @@
 - (void) viewWillAppear: (BOOL) animated
 {
     [super viewWillAppear: animated];
+    
+    
     
     [[NSNotificationCenter defaultCenter] addObserver: self
                                              selector: @selector(mainContextDataChanged:)
@@ -350,7 +352,7 @@
                       context :nil];
     
     // We set up assets depending on whether we are in display or edit mode
-    [self setDisplayControlsVisibility: self.mode == kChannelDetailsModeDisplay];
+    [self setDisplayControlsVisibility: (self.mode == kChannelDetailsModeDisplay)];
     
     // Refresh our view
     [self.videoThumbnailCollectionView reloadData];
@@ -433,22 +435,7 @@
 }
 
 
-- (void) setMode: (kChannelDetailsMode) mode
-{
-    if (self.mode == mode)
-        return;
-    
-    _mode = mode;
-    
-    
-        
-    [UIView animateWithDuration: kChannelEditModeAnimationDuration
-                     animations: ^{
-                             [self setDisplayControlsVisibility: (self.mode == kChannelDetailsModeDisplay) ? YES : NO];
-                         }
-                         completion: nil];
-    
-}
+
 
 
 #pragma mark - Orientation Methods
@@ -527,10 +514,6 @@
 }
 
 
-- (void) controllerDidChangeContent: (NSFetchedResultsController *) controller
-{
-    [self.coverImageSelector refreshChannelCoverData];
-}
 
 
 - (void) reloadCollectionViews
@@ -571,7 +554,7 @@
 }
 
 
-#pragma mark - Collection view support
+#pragma mark - UICollectionView DataSource/Delegate Methods
 
 - (NSInteger) collectionView: (UICollectionView *) collectionView numberOfItemsInSection: (NSInteger) section
 {
@@ -593,8 +576,8 @@
     
     SYNVideoThumbnailRegularCell *videoThumbnailCell = [collectionView dequeueReusableCellWithReuseIdentifier: @"SYNVideoThumbnailRegularCell"
                                                                                                  forIndexPath: indexPath];
-    videoThumbnailCell.displayMode = (self.mode == kChannelDetailsModeDisplay) ?
-kChannelThumbnailDisplayModeStandard: kChannelThumbnailDisplayModeEdit;
+    
+    videoThumbnailCell.displayMode = self.mode;
     
     VideoInstance *videoInstance = self.channel.videoInstances [indexPath.item];
     
@@ -676,7 +659,12 @@ kChannelThumbnailDisplayModeStandard: kChannelThumbnailDisplayModeEdit;
 // For edit controls just do the inverse of details control
 - (void) setEditControlsVisibility: (BOOL) visible
 {
+    
+    _mode = visible;
+    
     [self setDisplayControlsVisibility: !visible];
+    
+    [self.videoThumbnailCollectionView reloadData];
 }
 
 
@@ -874,6 +862,7 @@ kChannelThumbnailDisplayModeStandard: kChannelThumbnailDisplayModeEdit;
     self.cancelEditButton.hidden = NO;
     self.addButton.hidden = YES;
     
+    
 }
 
 
@@ -904,22 +893,24 @@ kChannelThumbnailDisplayModeStandard: kChannelThumbnailDisplayModeEdit;
     self.channel.channelDescription = @"Test Description";
     
     NSString* category = self.selectedCategoryId;
-    if([category length]==0)
+    if([category length] == 0)
     {
         category = self.channel.categoryId;
         if(!category)
         {
-            category = @"";
+            category = @"all";
         }
     }
     
     NSString* cover = self.selectedCoverId;
     if([cover length]==0)
     {
-        cover = @""; //TODO: Replace with "KEEP" identifier once established by backend.
+        cover = @"KEEP"; 
     }
     
-    [appDelegate.oAuthNetworkEngine updateChannelForUserId:appDelegate.currentOAuth2Credentials.userId channelId:self.channel.uniqueId title: self.channel.title
+    [appDelegate.oAuthNetworkEngine updateChannelForUserId: appDelegate.currentOAuth2Credentials.userId
+                                                 channelId: self.channel.uniqueId
+                                                     title: self.channel.title
                                                description: (self.channel.channelDescription)
                                                   category: category
                                                      cover: cover
@@ -933,9 +924,12 @@ kChannelThumbnailDisplayModeStandard: kChannelThumbnailDisplayModeEdit;
                                              self.saveChannelButton.hidden = YES;
                                              self.cancelEditButton.hidden = YES;
                                              
-                                             [self getChannelForId:channelId isUpdate:YES];
-                                         }
-                                              errorHandler: ^(NSDictionary* error) {
+                                             [self setVideosForChannelById:channelId isUpdated:YES];
+                                             
+                                             // the method above will call the [self getChanelById:channelId isUpdated:YES]
+                                        
+                                         } errorHandler: ^(NSDictionary* error) {
+                                             
                                                   NSDictionary* specificErrors = [error objectForKey:@"form_errors"];
                                                   NSString* errorText = [specificErrors objectForKey:@"title"];
                                                   if(!errorText)
@@ -983,17 +977,8 @@ kChannelThumbnailDisplayModeStandard: kChannelThumbnailDisplayModeEdit;
     }
     }
     else
-    {
-        [appDelegate.networkEngine updateCoverArtOnCompletion: ^{
-            DebugLog(@"Success");
-        }
-        onError: ^(NSError* error) {
-            DebugLog(@"%@", [error debugDescription]);
-        }];
-        
+    {        
         self.coverImageSelector = [[SYNChannelCoverImageSelectorViewController alloc] init];
-        self.coverImageSelector.userChannelCoverFetchedResultsController = self.userChannelCoverFetchedResultsController;
-        self.coverImageSelector.channelCoverFetchedResultsController = self.channelCoverFetchedResultsController;
         self.coverImageSelector.imageSelectorDelegate = self;
         CGRect startFrame = self.coverImageSelector.view.frame;
         startFrame.origin.y = self.view.frame.size.height;
@@ -1170,7 +1155,7 @@ kChannelThumbnailDisplayModeStandard: kChannelThumbnailDisplayModeEdit;
                                          completionHandler: ^(NSDictionary* resourceCreated) {
                                              NSString* channelId = [resourceCreated objectForKey: @"id"];
                                              
-                                             [self addVideosToNewChannelForId:channelId];
+                                             [self setVideosForChannelById:channelId isUpdated:NO];
                                          }
                                               errorHandler: ^(id error) {
                                              
@@ -1188,7 +1173,7 @@ kChannelThumbnailDisplayModeStandard: kChannelThumbnailDisplayModeEdit;
 }
 
 
-- (void) addVideosToNewChannelForId: (NSString*) channelId
+- (void) setVideosForChannelById: (NSString*) channelId isUpdated:(BOOL) isUpdated
 {
     [appDelegate.oAuthNetworkEngine updateVideosForChannelForUserId: appDelegate.currentOAuth2Credentials.userId
                                                           channelId: channelId
@@ -1196,17 +1181,18 @@ kChannelThumbnailDisplayModeStandard: kChannelThumbnailDisplayModeEdit;
                                                   completionHandler: ^(id response) {
                                                       // a 204 returned
                                                       
-                                                      [self getChannelForId:channelId isUpdate:NO];
-                                                  }
-                                                       errorHandler: ^(id err) {
+                                                      [self fetchAndStoreUpdatedChannelForId:channelId isUpdate:isUpdated];
+                                                      
+                                                  } errorHandler: ^(id err) {
+                                                      
                                                            
                                                            DebugLog(@"Error @ addVideosToNewChannelForId:");
                                                            [self showError:NSLocalizedString(@"Could not create channel. Please try again later.", nil)];
-                                                       }];
+                                                }];
 }
 
 
-- (void) getChannelForId: (NSString*) channelId isUpdate:(BOOL)isUpdate
+- (void) fetchAndStoreUpdatedChannelForId: (NSString*) channelId isUpdate:(BOOL)isUpdate
 {
     [appDelegate.oAuthNetworkEngine channelCreatedForUserId: appDelegate.currentOAuth2Credentials.userId
                                                   channelId: channelId
@@ -1214,26 +1200,60 @@ kChannelThumbnailDisplayModeStandard: kChannelThumbnailDisplayModeEdit;
                                               IgnoringObjects ignore = kIgnoreChannelOwnerObject;
                                               if(!isUpdate)
                                               {
-                                                  ignore = ignore | kIgnoreStoredObjects
-                                                  ;                                              }
+                                                  ignore = ignore | kIgnoreStoredObjects;
+                                              }
                                               Channel* createdChannel = [Channel instanceFromDictionary:dictionary
                                                                               usingManagedObjectContext:appDelegate.mainManagedObjectContext
-                                                                                    ignoringObjectTypes:(kIgnoreStoredObjects | kIgnoreChannelOwnerObject)
+                                                                                    ignoringObjectTypes:ignore
                                                                                               andViewId:kProfileViewId];
                                               
                                               createdChannel.channelOwner = appDelegate.currentUser;
+                                              
                                               [self.channel removeObserver: self
                                                                 forKeyPath: kSubscribedByUserKey];
+                                              
                                               self.channel = createdChannel;
+                                              
                                               [self.channel addObserver: self
                                                              forKeyPath: kSubscribedByUserKey
                                                                 options: NSKeyValueObservingOptionNew
                                                                context :nil];
+                                              
                                               DebugLog(@"Channel: %@", createdChannel);
                                               
                                               [appDelegate saveContext:YES];
                                               
-                                              [self channelCreationComplete];
+                                              
+                                              // Complete Channel Creation //
+                                              
+                                              self.channelOwnerLabel.text = appDelegate.currentUser.displayName;
+                                              
+                                              [self displayChannelDetails];
+                                              
+                                              [self setDisplayControlsVisibility:YES];
+                                              
+                                              if([[SYNDeviceManager sharedInstance] isIPad])
+                                              {
+                                                  self.addButton.hidden = YES;
+                                                  self.createChannelButton.hidden = YES;
+                                                  
+                                              }
+                                              else
+                                              {
+                                                  // On iPad the existing channels viewcontroller's view is removed from the master view controller when a new channel is created.
+                                                  // On iPhone we want to be able to go back which means the existing channels view remains onscreen. Here we remove it as channel creation was complete.
+                                                  UIViewController *master = self.presentingViewController;
+                                                  [[[[master childViewControllers] lastObject] view] removeFromSuperview];
+                                                  [self setDisplayControlsVisibility:YES];
+                                                  
+                                                  //Move the back button from the edit view to allow closing this view
+                                                  [self.backButton removeFromSuperview];
+                                                  [self.view addSubview:self.backButton];
+                                              }
+                                              
+                                              [[NSNotificationCenter defaultCenter] postNotificationName: kVideoQueueClear
+                                                                                                  object: nil];
+                                              
                                           } errorHandler:^(id err) {
                                               
                                               DebugLog(@"Error @ getNewlyCreatedChannelForId:");
@@ -1616,14 +1636,7 @@ kChannelThumbnailDisplayModeStandard: kChannelThumbnailDisplayModeEdit;
     
     [self dismissViewControllerAnimated: NO
                              completion: nil];
-}
 
-
-- (void) channelCreationComplete
-{    
-    self.channelOwnerLabel.text = appDelegate.currentUser.displayName;
-    
-    [self displayChannelDetails];
 
     [self setDisplayControlsVisibility:YES];
     
@@ -1645,7 +1658,10 @@ kChannelThumbnailDisplayModeStandard: kChannelThumbnailDisplayModeEdit;
         [self.backButton removeFromSuperview];
         [self.view addSubview:self.backButton];
     }
+    
+    [[NSNotificationCenter defaultCenter] postNotificationName:kNoteChannelSaved object:self];
 }
+
 
 -(void)addSubscribeIndicator
 {

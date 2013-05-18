@@ -19,6 +19,9 @@
 #import <AVFoundation/AVFoundation.h>
 #import <AssetsLibrary/AssetsLibrary.h>
 #import <QuartzCore/QuartzCore.h>
+#import "SYNAppDelegate.h"
+#import "SYNNetworkEngine.h"
+#import "SYNOAuthNetworkEngine.h"
 
 enum ChannelCoverSelectorState {
     kChannelCoverDefault = 0,
@@ -29,7 +32,7 @@ enum ChannelCoverSelectorState {
 @interface SYNChannelCoverImageSelectorViewController () <UICollectionViewDataSource,
                                                           UICollectionViewDelegate,
                                                           GKImageCropControllerDelegate,
-                                                          GKImagePickerDelegate>
+                                                          GKImagePickerDelegate, NSFetchedResultsControllerDelegate>
 
 @property (nonatomic, assign) BOOL supportsCamera;
 @property (nonatomic, assign) enum ChannelCoverSelectorState currentState;
@@ -45,15 +48,45 @@ enum ChannelCoverSelectorState {
 @property (weak, nonatomic) IBOutlet UILabel *titleLabel;
 @property (weak, nonatomic) IBOutlet UIView *contentContainerView;
 
+@property (strong,nonatomic) NSFetchedResultsController* fetchedResultsController;
+@property (weak, nonatomic) SYNAppDelegate* appDelegate;
+
 @end
 
 
 @implementation SYNChannelCoverImageSelectorViewController
 
 
+
 - (void) viewDidLoad
 {
     [super viewDidLoad];
+    
+    self.appDelegate = (SYNAppDelegate*)[[UIApplication sharedApplication] delegate];
+    
+    [self updateCoverArt];
+    
+    NSFetchRequest *fetchRequest = [[NSFetchRequest alloc] init];
+    
+    
+    fetchRequest.entity = [NSEntityDescription entityForName: @"CoverArt"
+                                      inManagedObjectContext: self.appDelegate.mainManagedObjectContext];
+    
+    
+    fetchRequest.sortDescriptors = @[[[NSSortDescriptor alloc] initWithKey: @"userUpload" ascending: YES],
+                                     [[NSSortDescriptor alloc] initWithKey: @"position" ascending: YES]];
+    
+    self.fetchedResultsController = [[NSFetchedResultsController alloc] initWithFetchRequest: fetchRequest
+                                                                                    managedObjectContext: self.appDelegate.mainManagedObjectContext
+                                                                                      sectionNameKeyPath: @"userUpload"
+                                                                                               cacheName: nil];
+    
+    self.fetchedResultsController.delegate = self;
+    
+    
+    NSError *error = nil;
+    
+    ZAssert([self.fetchedResultsController performFetch: &error], @"Channels Details Failed: %@\n%@", [error localizedDescription], [error userInfo]);
     
     self.supportsCamera = [UIImagePickerController isSourceTypeAvailable: UIImagePickerControllerSourceTypeCamera];
     
@@ -126,9 +159,7 @@ enum ChannelCoverSelectorState {
     {
         case kChannelCoverDefault:
         {
-            id <NSFetchedResultsSectionInfo> userSectionInfo = self.userChannelCoverFetchedResultsController.sections [0];
-            id <NSFetchedResultsSectionInfo> channelSectionInfo = self.channelCoverFetchedResultsController.sections [0];
-            return [userSectionInfo numberOfObjects] + [channelSectionInfo numberOfObjects] + 1;
+            return [[self.fetchedResultsController fetchedObjects] count] + 1;
             break;
         }
             
@@ -156,36 +187,20 @@ enum ChannelCoverSelectorState {
     
     if (self.currentState == kChannelCoverDefault)
     {
-        id <NSFetchedResultsSectionInfo> channelSectionInfo = self.channelCoverFetchedResultsController.sections [0];
         if (indexPath.row == 0)
         {
             cell.channelCoverImageView.image = [UIImage imageNamed:@"ChannelCreationCoverNone.png"];
             cell.glossImage.hidden = YES;
         }
-        else if (indexPath.row - 1 < [channelSectionInfo numberOfObjects])
-        {
-            indexPath = [NSIndexPath indexPathForRow:indexPath.row - 1 inSection:0];
-            CoverArt *coverArt = [self.channelCoverFetchedResultsController objectAtIndexPath: [NSIndexPath indexPathForRow: indexPath.row
-                                                                                                                          inSection: 0]];
-
-
-            [cell.channelCoverImageView setImageWithURL: [NSURL URLWithString: coverArt.thumbnailURL]
-                                       placeholderImage: [UIImage imageNamed: @"PlaceholderChannelCover.png"]
-                                                options: SDWebImageRetryFailed];
-
-            cell.glossImage.hidden = NO;
-        }
         else
         {
-            indexPath = [NSIndexPath indexPathForRow:indexPath.row - 1 - [channelSectionInfo numberOfObjects] inSection:0];
-            CoverArt *coverArt = [self.userChannelCoverFetchedResultsController objectAtIndexPath: [NSIndexPath indexPathForRow: indexPath.row
-                                                                                                                              inSection: 0]];
-            
+            indexPath = [NSIndexPath indexPathForRow:indexPath.row - 1 inSection:0];
+            CoverArt *coverArt = [[self.fetchedResultsController fetchedObjects] objectAtIndex:indexPath.row];
+
 
             [cell.channelCoverImageView setImageWithURL: [NSURL URLWithString: coverArt.thumbnailURL]
                                        placeholderImage: [UIImage imageNamed: @"PlaceholderChannelCover.png"]
                                                 options: SDWebImageRetryFailed];
-            
 
             cell.glossImage.hidden = NO;
         }
@@ -301,23 +316,11 @@ enum ChannelCoverSelectorState {
             NSString* returnCoverId = @"";
             if(indexPath.row != 0)
             {
-                id <NSFetchedResultsSectionInfo> channelSectionInfo = self.channelCoverFetchedResultsController.sections [0];
-                if (indexPath.row - 1 < [channelSectionInfo numberOfObjects])
-                {
-                    indexPath = [NSIndexPath indexPathForRow:indexPath.row - 1 inSection:0];
-                    CoverArt *coverArt = [self.channelCoverFetchedResultsController objectAtIndexPath: [NSIndexPath indexPathForRow: indexPath.row
-                                                                                                                                  inSection: 0]];
+                indexPath = [NSIndexPath indexPathForRow:indexPath.row - 1 inSection:0];
+                CoverArt *coverArt = [[self.fetchedResultsController fetchedObjects] objectAtIndex:indexPath.row];
                     returnStringURL = coverArt.thumbnailURL;
                     returnCoverId = coverArt.coverRef;
-                }
-                else
-                {
-                    indexPath = [NSIndexPath indexPathForRow:indexPath.row - 1 - [channelSectionInfo numberOfObjects] inSection:0];
-                    CoverArt *coverArt = [self.userChannelCoverFetchedResultsController objectAtIndexPath: [NSIndexPath indexPathForRow: indexPath.row
-                                                                                                                                      inSection: 0]];
-                    returnStringURL = coverArt.thumbnailURL;
-                    returnCoverId = coverArt.coverRef;
-                }
+                
                 
             }
             if ([self.imageSelectorDelegate respondsToSelector: @selector(imageSelector:didSelectImage:withRemoteId:)])
@@ -463,6 +466,33 @@ enum ChannelCoverSelectorState {
                                      }
                                  }
                              }];
+}
+
+- (void) updateCoverArt
+{
+    // Update the list of cover art
+    [self.appDelegate.networkEngine updateCoverArtOnCompletion: ^{
+        DebugLog(@"Success");
+    } onError: ^(NSError* error) {
+        DebugLog(@"%@", [error debugDescription]);
+    }];
+    
+    [self.appDelegate.oAuthNetworkEngine updateCoverArtForUserId: self.appDelegate.currentOAuth2Credentials.userId
+                                               onCompletion: ^{
+                                                   DebugLog(@"Success");
+                                               }
+                                                    onError: ^(NSError* error) {
+                                                        DebugLog(@"%@", [error debugDescription]);
+                                                    }];
+}
+
+
+
+#pragma mark - fetched result controller delegate
+- (void) controllerDidChangeContent: (NSFetchedResultsController *) controller
+{
+    [self refreshChannelCoverData];
+    
 }
 
 @end

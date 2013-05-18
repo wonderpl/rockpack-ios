@@ -196,20 +196,29 @@
     
     [UIView animateWithDuration: 0.2
                      animations: ^{
-        self.view.alpha = 0.0;
-    }
-                     completion: ^(BOOL finished) {
-        [self.view removeFromSuperview];
+                         
+                         self.view.alpha = 0.0;
+                         
+                   } completion: ^(BOOL finished) {
+                       
+                       [self.view removeFromSuperview];
         
-        Channel* currentlyCreating = appDelegate.videoQueue.currentlyCreatingChannel;
-        [self.selectedChannel addVideoInstancesFromChannel: currentlyCreating];
-        [appDelegate saveContext:YES];
+                       Channel* currentlyCreating = appDelegate.videoQueue.currentlyCreatingChannel;
+                       [self.selectedChannel addVideoInstancesFromChannel: currentlyCreating];
+                       [appDelegate saveContext:YES];
         
-        [self removeFromParentViewController];
+                       [self removeFromParentViewController];
+                       
+                       // send to master controller
         
-        [[NSNotificationCenter defaultCenter] postNotificationName: kNoteAddedToChannel
-                                                            object: self
-                                                          userInfo: @{kChannel:self.selectedChannel}];
+                       [[NSNotificationCenter defaultCenter] postNotificationName: kNoteVideoAddedToExistingChannel
+                                                                           object: self
+                                                                         userInfo: @{kChannel:self.selectedChannel}];
+                       
+                       // clear the video queue after this action //
+                       
+                       [[NSNotificationCenter defaultCenter] postNotificationName: kVideoQueueClear
+                                                                           object: self];
     }];
 }
 
@@ -220,32 +229,33 @@
     {
         if([[SYNDeviceManager sharedInstance] isIPad])
         {
-        if (!appDelegate.videoQueue.currentlyCreatingChannel)
-            return;
+            if (!appDelegate.videoQueue.currentlyCreatingChannel)
+                return;
         
-        self.selectedChannel = nil;
-        self.selectedCell = nil;
+            self.selectedChannel = nil;
+            self.selectedCell = nil;
         
-        [UIView animateWithDuration: 0.3
-                              delay: 0.0
-                            options: UIViewAnimationCurveLinear
-                         animations: ^{
+            [UIView animateWithDuration: 0.3
+                                  delay: 0.0
+                                options: UIViewAnimationCurveLinear
+                             animations: ^{
                              
-                             self.view.alpha = 0.0;
+                                 self.view.alpha = 0.0;
                             
             
-                         }
-                         completion: ^(BOOL finished) {
-                             [self.view removeFromSuperview];
+                           } completion: ^(BOOL finished) {
+                               [self.view removeFromSuperview];
                            
-                             [[NSNotificationCenter defaultCenter] postNotificationName: kNoteCreateNewChannel
-                                                                                 object: self
-                                                                               userInfo: @{kChannel:appDelegate.videoQueue.currentlyCreatingChannel}];
+                               [[NSNotificationCenter defaultCenter] postNotificationName: kNoteCreateNewChannel
+                                                                                   object: self
+                                                                                 userInfo: @{kChannel:appDelegate.videoQueue.currentlyCreatingChannel}];
                          }];
         }
         else
         {
+            
             //On iPhone we want a different navigation structure. Slide the view in.
+            
             SYNChannelDetailViewController *channelCreationVC =
             [[SYNChannelDetailViewController alloc] initWithChannel: appDelegate.videoQueue.currentlyCreatingChannel
                                                           usingMode: kChannelDetailsModeEdit] ;
