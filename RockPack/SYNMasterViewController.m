@@ -526,6 +526,9 @@ typedef void(^AnimationCompletionBlock)(BOOL finished);
 - (IBAction) showSearchBoxField: (id) sender
 {
     
+    if(self.searchBoxController.view.superview) // if it is on stage already
+        return;
+    
     self.sideNavigationButton.hidden = YES;
     
     CGRect sboxFrame;
@@ -561,6 +564,7 @@ typedef void(^AnimationCompletionBlock)(BOOL finished);
     
     if(!termString)
         return;
+    
     BOOL isIPad =[[SYNDeviceManager sharedInstance] isIPad];
     if(isIPad)
     {
@@ -573,6 +577,7 @@ typedef void(^AnimationCompletionBlock)(BOOL finished);
     {        
         self.searchViewController = [[SYNSearchRootViewController alloc] initWithViewId: kSearchViewId];
         self.overlayNavigationController = [SYNObjectFactory wrapInNavigationController: self.searchViewController];
+        
         
     }
     

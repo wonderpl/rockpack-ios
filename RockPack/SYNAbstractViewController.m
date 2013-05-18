@@ -97,7 +97,6 @@
     }
     
     
-    self.wantsFullScreenLayout = YES;
 }
 
 -(void)viewWillAppear:(BOOL)animated

@@ -65,13 +65,11 @@
 {
     [super viewDidLoad];
     
-    
-    
     self.videoSearchTabView = [SYNSearchTabView tabViewWithSearchType:SearchTabTypeVideos];
     self.channelsSearchTabView = [SYNSearchTabView tabViewWithSearchType:SearchTabTypeChannels];
     
     CGRect channelTabRect = self.channelsSearchTabView.frame;
-    channelTabRect.origin.x = self.videoSearchTabView.frame.size.width;
+    channelTabRect.origin.x = self.videoSearchTabView.frame.size.width; // place at the middle of the 2 tabs (where the first ends)
     self.channelsSearchTabView.frame = channelTabRect;
     
     tabsContainer = [[UIView alloc] initWithFrame:CGRectMake(0.0, 0.0,
@@ -86,7 +84,7 @@
     [self.videoSearchTabView addTarget:self action:@selector(videoTabPressed:) forControlEvents:UIControlEventTouchUpInside];
     [self.channelsSearchTabView addTarget:self action:@selector(channelTabPressed:) forControlEvents:UIControlEventTouchUpInside];
     
-    CGFloat correctTabsY = [[SYNDeviceManager sharedInstance] isIPad] ? 120.0 : self.channelsSearchTabView.frame.size.height/2 + 85.0f;
+    CGFloat correctTabsY = [[SYNDeviceManager sharedInstance] isIPad] ? 104.0 : self.channelsSearchTabView.frame.size.height/2 + 85.0f;
     tabsContainer.center = CGPointMake(self.view.center.x, correctTabsY);
     tabsContainer.frame = CGRectIntegral(tabsContainer.frame);
     
@@ -95,6 +93,7 @@
     
     // Google Analytics support
     self.trackedViewName = @"Search - Root";
+    
     
     
 }
@@ -342,7 +341,7 @@
 
 - (BOOL) needsAddButton
 {
-    return NO;
+    return YES;
 }
 
 
