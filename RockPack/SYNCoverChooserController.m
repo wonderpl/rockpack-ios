@@ -137,7 +137,7 @@
                                                                                                                   inSection: 1]];
             
             [coverThumbnailCell.coverImageView setImageWithURL: [NSURL URLWithString: coverArt.thumbnailURL]
-                                              placeholderImage: [UIImage imageNamed: @"PlaceholderChannelCoverThumbnail.png"]
+                                              placeholderImage: [UIImage imageNamed: @"PlaceholderChannelCreation.png"]
                                                        options: SDWebImageRetryFailed];
             return coverThumbnailCell;
         }
@@ -150,7 +150,7 @@
                                                                                                                       inSection: 0]];
             
             [coverThumbnailCell.coverImageView setImageWithURL: [NSURL URLWithString: coverArt.thumbnailURL]
-                                              placeholderImage: [UIImage imageNamed: @"PlaceholderChannelCoverThumbnail.png"]
+                                              placeholderImage: [UIImage imageNamed: @"PlaceholderChannelCreation.png"]
                                                        options: SDWebImageRetryFailed];
             return coverThumbnailCell;
         }

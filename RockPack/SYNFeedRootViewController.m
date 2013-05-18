@@ -334,11 +334,11 @@
                                                                                   forIndexPath: indexPath];
 
     [videoThumbnailCell.videoImageView setImageWithURL: [NSURL URLWithString: videoInstance.video.thumbnailURL]
-                                      placeholderImage: [UIImage imageNamed: @"PlaceholderVideoThumbnailWide.png"]
+                                      placeholderImage: [UIImage imageNamed: @"PlaceholderVideoWide.png"]
                                                options: SDWebImageRetryFailed];
 
     [videoThumbnailCell.channelImageView setImageWithURL: [NSURL URLWithString: videoInstance.channel.channelCover.imageSmallUrl]
-                                        placeholderImage: [UIImage imageNamed: @"PlaceholderChannelThumbnail.png"]
+                                        placeholderImage: [UIImage imageNamed: @"PlaceholderChannelSmall.png"]
                                                  options: SDWebImageRetryFailed];
     
     videoThumbnailCell.channelImageView.hidden = [[SYNDeviceManager sharedInstance] isPortrait]

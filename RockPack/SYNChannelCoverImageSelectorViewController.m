@@ -199,7 +199,7 @@ enum ChannelCoverSelectorState {
 
 
             [cell.channelCoverImageView setImageWithURL: [NSURL URLWithString: coverArt.thumbnailURL]
-                                       placeholderImage: [UIImage imageNamed: @"PlaceholderChannelCover.png"]
+                                       placeholderImage: [UIImage imageNamed: @"PlaceholderChannelCreation.png"]
                                                 options: SDWebImageRetryFailed];
 
             cell.glossImage.hidden = NO;

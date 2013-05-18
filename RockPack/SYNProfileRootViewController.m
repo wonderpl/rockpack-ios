@@ -665,7 +665,7 @@
     
 
     [channelThumbnailCell.imageView setImageWithURL: [NSURL URLWithString: channel.channelCover.imageLargeUrl]
-                                   placeholderImage: [UIImage imageNamed: @"PlaceholderChannelThumbnailMid.png"]
+                                   placeholderImage: [UIImage imageNamed: @"PlaceholderChannelMid.png"]
                                             options: SDWebImageRetryFailed];
     
     

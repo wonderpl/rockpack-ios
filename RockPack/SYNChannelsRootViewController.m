@@ -379,7 +379,7 @@
     
 
     [channelThumbnailCell.imageView setImageWithURL: [NSURL URLWithString: channel.channelCover.imageLargeUrl]
-                                   placeholderImage: [UIImage imageNamed: @"PlaceholderChannelThumbnail.png"]
+                                   placeholderImage: [UIImage imageNamed: @"PlaceholderChannel.png"]
                                             options: SDWebImageRetryFailed];
     
     [channelThumbnailCell setChannelTitle: channel.title];

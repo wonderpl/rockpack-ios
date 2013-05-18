@@ -104,7 +104,7 @@
     
 
     [self.profileImageView setImageWithURL: [NSURL URLWithString: channelOwner.thumbnailURL]
-                          placeholderImage: [UIImage imageNamed: @"AvatarProfile.png"]
+                          placeholderImage: [UIImage imageNamed: @"PlaceholderAvatarProfile.png"]
                                    options: SDWebImageRetryFailed];
     
     
