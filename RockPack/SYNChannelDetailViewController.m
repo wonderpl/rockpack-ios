@@ -1181,9 +1181,10 @@
                                                   completionHandler: ^(id response) {
                                                       // a 204 returned
                                                       
-                                                      [self getChannelForId:channelId isUpdate:isUpdated];
-                                                  }
-                                                       errorHandler: ^(id err) {
+                                                      [self fetchAndStoreUpdatedChannelForId:channelId isUpdate:isUpdated];
+                                                      
+                                                  } errorHandler: ^(id err) {
+                                                      
                                                            
                                                            DebugLog(@"Error @ addVideosToNewChannelForId:");
                                                            [self showError:NSLocalizedString(@"Could not create channel. Please try again later.", nil)];
@@ -1191,7 +1192,7 @@
 }
 
 
-- (void) getChannelForId: (NSString*) channelId isUpdate:(BOOL)isUpdate
+- (void) fetchAndStoreUpdatedChannelForId: (NSString*) channelId isUpdate:(BOOL)isUpdate
 {
     [appDelegate.oAuthNetworkEngine channelCreatedForUserId: appDelegate.currentOAuth2Credentials.userId
                                                   channelId: channelId
@@ -1222,7 +1223,36 @@
                                               
                                               [appDelegate saveContext:YES];
                                               
-                                              [self channelCreationComplete];
+                                              
+                                              // Complete Channel Creation //
+                                              
+                                              self.channelOwnerLabel.text = appDelegate.currentUser.displayName;
+                                              
+                                              [self displayChannelDetails];
+                                              
+                                              [self setDisplayControlsVisibility:YES];
+                                              
+                                              if([[SYNDeviceManager sharedInstance] isIPad])
+                                              {
+                                                  self.addButton.hidden = YES;
+                                                  self.createChannelButton.hidden = YES;
+                                                  
+                                              }
+                                              else
+                                              {
+                                                  // On iPad the existing channels viewcontroller's view is removed from the master view controller when a new channel is created.
+                                                  // On iPhone we want to be able to go back which means the existing channels view remains onscreen. Here we remove it as channel creation was complete.
+                                                  UIViewController *master = self.presentingViewController;
+                                                  [[[[master childViewControllers] lastObject] view] removeFromSuperview];
+                                                  [self setDisplayControlsVisibility:YES];
+                                                  
+                                                  //Move the back button from the edit view to allow closing this view
+                                                  [self.backButton removeFromSuperview];
+                                                  [self.view addSubview:self.backButton];
+                                              }
+                                              
+                                              [[NSNotificationCenter defaultCenter] postNotificationName: kVideoQueueClear
+                                                                                                  object: nil];
                                               
                                           } errorHandler:^(id err) {
                                               
@@ -1609,33 +1639,7 @@
 }
 
 
-- (void) channelCreationComplete
-{    
-    self.channelOwnerLabel.text = appDelegate.currentUser.displayName;
-    
-    [self displayChannelDetails];
 
-    [self setDisplayControlsVisibility:YES];
-    
-    if([[SYNDeviceManager sharedInstance] isIPad])
-    {
-        self.addButton.hidden = YES;
-        self.createChannelButton.hidden = YES;
-        
-    }
-    else
-    {
-        // On iPad the existing channels viewcontroller's view is removed from the master view controller when a new channel is created.
-        // On iPhone we want to be able to go back which means the existing channels view remains onscreen. Here we remove it as channel creation was complete.
-        UIViewController *master = self.presentingViewController;
-        [[[[master childViewControllers] lastObject] view] removeFromSuperview];
-        [self setDisplayControlsVisibility:YES];
-        
-        //Move the back button from the edit view to allow closing this view
-        [self.backButton removeFromSuperview];
-        [self.view addSubview:self.backButton];
-    }
-}
 
 -(void)addSubscribeIndicator
 {

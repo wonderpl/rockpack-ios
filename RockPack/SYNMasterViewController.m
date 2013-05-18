@@ -256,7 +256,7 @@ typedef void(^AnimationCompletionBlock)(BOOL finished);
     
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(searchTyped:) name:kSearchTyped object:nil];
     
-    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(addedToChannelAction:) name:kNoteAddedToChannel object:nil];
+    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(addedToChannelAction:) name:kNoteVideoAddedToExistingChannel object:nil];
     
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(createNewChannelAction:) name:kNoteCreateNewChannel object:nil];
     
@@ -388,11 +388,9 @@ typedef void(^AnimationCompletionBlock)(BOOL finished);
     if(!channel)
         return;
     
-    [[NSNotificationCenter defaultCenter] postNotificationName: kClearAllAddedCells
-                                                        object:self];
     
     
-    // TODO : Show confirm message
+    
     
 }
 

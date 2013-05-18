@@ -128,7 +128,6 @@
 
 #define kRefreshComplete           @"kRefreshComplete"
 
-#define kClearAllAddedCells         @"kClearAllAddedCells"
 
 
 
@@ -365,10 +364,10 @@ typedef enum {
 #define kNoteSearchBarRequestHide   @"kNoteSearchBarRequestHide"
 #define kNoteSearchBarRequestShow   @"kNoteSearchBarRequestShow"
 
-#define kNoteAddedToChannel         @"kNoteAddedToChannel"
-#define kNoteCreateNewChannel       @"kNoteCreateNewChannel"
+#define kNoteVideoAddedToExistingChannel         @"kNoteAddedToChannel"
+#define kNoteCreateNewChannel                    @"kNoteCreateNewChannel"
 
-#define kNotificationMarkedRead     @"kNoteAddedToChannel"
+#define kNotificationMarkedRead     @"kNotificationMarkedRead"
 
 #define kProfileRequested           @"kProfileRequested"
 #define kChannelDetailsRequested    @"kChannelDetailsRequested"

@@ -50,16 +50,10 @@
     
     self.displayMode = kVideoThumbnailDisplayModeChannel; // default is channel
     
-    [[NSNotificationCenter defaultCenter] addObserver:self
-                                             selector:@selector(deselectCell:)
-                                                 name:kClearAllAddedCells
-                                               object:nil];
+    
 }
 
--(void)deselectCell:(NSNotification*)notification
-{
-    self.addItButton.selected = NO;
-}
+
 
 #pragma mark - Switch Between Modes
 

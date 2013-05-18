@@ -16,6 +16,5 @@
 @property (nonatomic, strong) UICollectionView *channelThumbnailCollectionView;
 @property (nonatomic, assign) BOOL enableCategoryTable;
 
-@property (nonatomic) NSRange dataRequestRange;
 
 @end
