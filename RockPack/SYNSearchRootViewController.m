@@ -32,6 +32,7 @@
 @property (nonatomic, strong) UIView* tabsContainer;
 
 
+
 @end
 
 @implementation SYNSearchRootViewController
@@ -262,19 +263,14 @@
 {
     [super viewWillDisappear:animated];
     
-    [self clearController];
+    
     
     [[NSNotificationCenter defaultCenter] postNotificationName:kNoteSearchBarRequestHide object:self];
     
 }
 
-
-
--(void)clearController
+-(void)dealloc
 {
-    
-    //searchTerm = nil;
-    
     viewIsOnScreen = NO;
     
     searchTerm = nil;
@@ -291,6 +287,13 @@
     self.searchVideosController = nil;
     self.searchChannelsController = nil;
 }
+
+-(void)animatedPushViewController:(UIViewController *)vc
+{
+    [super animatedPushViewController:vc];
+}
+
+
 
 
 #pragma mark - Autorotation

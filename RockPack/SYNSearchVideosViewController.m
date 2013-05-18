@@ -25,12 +25,15 @@
 
 
 @property (nonatomic, strong) SYNChannelFooterMoreView* footerView;
+@property (nonatomic, weak) NSString* searchTerm;
 
 @end
 
 @implementation SYNSearchVideosViewController
 
 @synthesize itemToUpdate;
+@synthesize dataRequestRange;
+@synthesize dataItemsAvailable;
 
 - (void) viewDidLoad
 {
@@ -71,9 +74,7 @@
     
     self.view.autoresizingMask = UIViewAutoresizingFlexibleWidth | UIViewAutoresizingFlexibleHeight;
     
-    self.dataRequestRange = NSMakeRange(0, 48);
     
-    self.dataItemsAvailable = 0;
     
     
 }
@@ -96,7 +97,7 @@
     
     
     fetchRequest.entity = [NSEntityDescription entityForName: @"VideoInstance"
-                                      inManagedObjectContext: appDelegate.searchManagedObjectContext];
+                                      inManagedObjectContext: self.appDelegate.searchManagedObjectContext];
     
     
     fetchRequest.sortDescriptors = @[[[NSSortDescriptor alloc] initWithKey: @"position" ascending: YES]];
@@ -123,22 +124,18 @@
 
 -(void)performSearchWithTerm:(NSString*)term
 {
-    // for initialization before the view is loaded // 
-    if(!appDelegate)
-        appDelegate = (SYNAppDelegate*)[[UIApplication sharedApplication] delegate];
     
-    if(self.dataRequestRange.length == 0)
-        self.dataRequestRange = NSMakeRange(0, 48);
-    // -------------------------------------------- //
     
 
-    [appDelegate.networkEngine searchVideosForTerm:term
-                                           inRange:self.dataRequestRange
-                                        onComplete:^(int itemsCount) {
+    self.searchTerm = term;
+
+    [self.appDelegate.networkEngine searchVideosForTerm:self.searchTerm
+                                                inRange:self.dataRequestRange
+                                             onComplete:^(int itemsCount) {
                                             
-                                            self.dataItemsAvailable = itemsCount;
+                                                 self.dataItemsAvailable = itemsCount;
         
-                                        }];
+                                             }];
     
     
 }
@@ -318,11 +315,55 @@
     return supplementaryView;
 }
 
+- (void) loadMoreChannels: (UIButton*) sender
+{
+    
+    // (UIButton*) sender can be nil when called directly //
+    
+    self.footerView.showsLoading = YES;
+    
+    NSInteger nextStart = self.dataRequestRange.location + self.dataRequestRange.length; // one is subtracted when the call happens for 0 indexing
+    
+    if(nextStart >= self.dataItemsAvailable)
+        return;
+    
+    NSInteger nextSize = (nextStart + 48) >= self.dataItemsAvailable ? (self.dataItemsAvailable - nextStart) : 48;
+    
+    
+    self.dataRequestRange = NSMakeRange(nextStart, nextSize);
+    
+    [appDelegate.networkEngine searchVideosForTerm:self.searchTerm
+                                           inRange:self.dataRequestRange
+                                        onComplete:^(int itemsCount) {
+                                            
+                                            self.dataItemsAvailable = itemsCount;
+                                            
+                                        }];
+}
+
 -(CGSize)footerSize
 {
     return [[SYNDeviceManager sharedInstance] isIPhone]? CGSizeMake(320.0f, 64.0f) : CGSizeMake(1024.0, 64.0);
 }
 
+-(SYNAppDelegate*)appDelegate
+{
+    
+    if(!appDelegate)
+        appDelegate = (SYNAppDelegate*)[[UIApplication sharedApplication] delegate];
+    
+    return appDelegate;
+}
 
+-(NSRange)dataRequestRange
+{
+    if(dataRequestRange.length == 0) {
+        dataRequestRange = NSMakeRange(0, 48);
+        
+    }
+        
+    return dataRequestRange;
+    
+}
 
 @end

@@ -13,6 +13,7 @@
 @interface SYNSearchChannelsViewController ()
 
 
+
 @end
 
 
@@ -62,7 +63,6 @@
     
     // this is mainly for the number refresh at the tabs
     [self reloadCollectionViews];
-    
     
 }
 
@@ -161,7 +161,9 @@
 
 -(void)animatedPushViewController:(UIViewController *)vc
 {
-    [super animatedPushViewController:vc];
+    //[super animatedPushViewController:vc];
+    
+    [((SYNSearchRootViewController*)self.parentViewController) animatedPushViewController:vc];
     
     [[NSNotificationCenter defaultCenter] postNotificationName:kNoteSearchBarRequestHide
                                                         object:self];
