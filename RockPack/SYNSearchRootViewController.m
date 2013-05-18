@@ -32,7 +32,6 @@
 @property (nonatomic, strong) UIView* tabsContainer;
 
 
-
 @end
 
 @implementation SYNSearchRootViewController
@@ -53,8 +52,11 @@
     CGRect frame = CGRectMake(0.0, 0.0,[[SYNDeviceManager sharedInstance] currentScreenWidth],
                                [[SYNDeviceManager sharedInstance] currentScreenHeight]);
     
+    
     self.view = [[UIView alloc] initWithFrame:frame];
     self.view.autoresizingMask = UIViewAutoresizingFlexibleWidth| UIViewAutoresizingFlexibleHeight;
+    
+    
     
 }
 
@@ -62,6 +64,7 @@
 - (void) viewDidLoad
 {
     [super viewDidLoad];
+    
     
     
     self.videoSearchTabView = [SYNSearchTabView tabViewWithSearchType:SearchTabTypeVideos];
@@ -92,6 +95,8 @@
     
     // Google Analytics support
     self.trackedViewName = @"Search - Root";
+    
+    
 }
 
 -(void)videoTabPressed:(UIControl*)control
@@ -150,6 +155,7 @@
         layout.sectionInset = insets;
     }
     
+    
 }
 -(void)showChannelsSearchResult
 {
@@ -177,6 +183,9 @@
         insets.bottom = 10.0f;
         layout.sectionInset = insets;
     }
+    
+    
+    
 }
 
 
@@ -199,6 +208,7 @@
     
     
     [self performSearchForCurrentSearchTerm];
+    
     
     
 }
@@ -240,6 +250,9 @@
 -(void)performSearchForCurrentSearchTerm
 {
     
+    
+    
+    
     if(![appDelegate.searchRegistry clearImportContextFromEntityName:@"VideoInstance"])
     {
         DebugLog(@"Could not clean VideoInstances from search context");
@@ -255,6 +268,8 @@
     
     [self.searchVideosController performSearchWithTerm:searchTerm];
     [self.searchChannelsController performSearchWithTerm:searchTerm];
+    
+    
 }
 
 #pragma mark - Leaving the View
@@ -262,6 +277,7 @@
 -(void)viewWillDisappear:(BOOL)animated
 {
     [super viewWillDisappear:animated];
+    
     
     
     

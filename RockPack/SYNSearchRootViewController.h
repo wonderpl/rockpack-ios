@@ -15,6 +15,6 @@
 }
 
 -(void)showSearchResultsForTerm:(NSString*)newSearchTerm;
--(void)clearController;
+
 
 @end

@@ -95,6 +95,9 @@
         self.addButton.frame = addButtonFrame;
         [self.view addSubview:addButton];
     }
+    
+    
+    self.wantsFullScreenLayout = YES;
 }
 
 -(void)viewWillAppear:(BOOL)animated
