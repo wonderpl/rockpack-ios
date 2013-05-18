@@ -12,19 +12,20 @@
 #import "SYNActivityManager.h"
 #import "SYNAppDelegate.h"
 #import "SYNContainerViewController.h"
+#import "SYNDeviceManager.h"
 #import "SYNLoginViewController.h"
+#import "SYNLoginViewControllerIphone.h"
 #import "SYNMasterViewController.h"
 #import "SYNNetworkEngine.h"
 #import "SYNOAuthNetworkEngine.h"
+#import "SYNVideoPlaybackViewController.h"
 #import "TestFlight.h"
 #import "UIImageView+ImageProcessing.h"
 #import "UIImageView+MKNetworkKitAdditions.h"
 #import "UncaughtExceptionHandler.h"
 #import <FacebookSDK/FacebookSDK.h>
-#import <XRay/XRay.h>
+//#import <XRay/XRay.h>
 #import <objc/runtime.h>
-#import "SYNDeviceManager.h"
-#import "SYNLoginViewControllerIphone.h"
 
 extern void instrumentObjcMessageSends(BOOL);
 
@@ -128,19 +129,17 @@ extern void instrumentObjcMessageSends(BOOL);
 
     
     self.window = [[UIWindow alloc] initWithFrame: [[UIScreen mainScreen] bounds]];
-
-    
-    
-    
-    
     [self.window makeKeyAndVisible];
     
-   
+    /// Initialise our video players
+    dispatch_async(dispatch_get_main_queue(), ^{
+        [SYNVideoPlaybackViewController sharedInstance];
+    });
     
-    if(self.currentUser && self.currentOAuth2Credentials) {
+    if (self.currentUser && self.currentOAuth2Credentials) {
         
         // If we have a user and a refresh token... // 
-        if([self.currentOAuth2Credentials hasExpired]) {
+        if ([self.currentOAuth2Credentials hasExpired]) {
             
             [self.oAuthNetworkEngine refreshOAuthTokenWithCompletionHandler:^(id response) {
             
@@ -162,20 +161,12 @@ extern void instrumentObjcMessageSends(BOOL);
             return YES;
             
         }
-        
-        
     }
     else
     {
         self.window.rootViewController = [self createAndReturnLoginViewController];
         return YES;
     }
-    
-    
-    
-    
-    
-    
     
     return YES;
 }

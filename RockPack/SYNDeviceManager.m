@@ -64,6 +64,8 @@
 {
     return UIDeviceIsRetina;
 }
+
+
 -(UIDeviceOrientation)orientation
 {
     UIDeviceOrientation result = [[UIDevice currentDevice] orientation];
