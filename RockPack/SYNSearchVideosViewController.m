@@ -97,7 +97,7 @@
     
     
     fetchRequest.entity = [NSEntityDescription entityForName: @"VideoInstance"
-                                      inManagedObjectContext: appDelegate.searchManagedObjectContext];
+                                      inManagedObjectContext: self.appDelegate.searchManagedObjectContext];
     
     
     fetchRequest.sortDescriptors = @[[[NSSortDescriptor alloc] initWithKey: @"position" ascending: YES]];
@@ -124,23 +124,21 @@
 
 -(void)performSearchWithTerm:(NSString*)term
 {
-    // for initialization before the view is loaded // 
-    if(!appDelegate)
-        appDelegate = (SYNAppDelegate*)[[UIApplication sharedApplication] delegate];
+    
     
     if(self.dataRequestRange.length == 0)
         self.dataRequestRange = NSMakeRange(0, 48);
-    // -------------------------------------------- //
+    
 
     self.searchTerm = term;
 
-    [appDelegate.networkEngine searchVideosForTerm:self.searchTerm
-                                           inRange:self.dataRequestRange
-                                        onComplete:^(int itemsCount) {
+    [self.appDelegate.networkEngine searchVideosForTerm:self.searchTerm
+                                                inRange:self.dataRequestRange
+                                             onComplete:^(int itemsCount) {
                                             
-                                            self.dataItemsAvailable = itemsCount;
+                                                 self.dataItemsAvailable = itemsCount;
         
-                                        }];
+                                             }];
     
     
 }
@@ -351,6 +349,13 @@
     return [[SYNDeviceManager sharedInstance] isIPhone]? CGSizeMake(320.0f, 64.0f) : CGSizeMake(1024.0, 64.0);
 }
 
-
+-(SYNAppDelegate*)appDelegate
+{
+    
+    if(!appDelegate)
+        appDelegate = (SYNAppDelegate*)[[UIApplication sharedApplication] delegate];
+    
+    return appDelegate;
+}
 
 @end
