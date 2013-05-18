@@ -264,9 +264,6 @@ static UIWebView* vimeoideoWebViewInstance;
     // Create view containing animated subviews for the animated placeholder (displayed whilst video is loading)
     self.videoPlaceholderView = [self createNewVideoPlaceholderView];
     
-    // Start animation
-    [self animateVideoPlaceholder: YES];
-    
     self.shuttleBarView = [self createShuttleBarView];
     
     // Setup our web views
@@ -293,11 +290,26 @@ static UIWebView* vimeoideoWebViewInstance;
 }
 
 
+- (void) viewWillAppear: (BOOL) animated
+{
+    [super viewWillAppear: animated];
+    
+    // Make sure we are displaying the spinner and not the video at this stage
+    self.currentVideoWebView.alpha = 0.0f;
+    self.videoPlaceholderView.alpha = 1.0f;
+    
+    // Start animation
+    [self animateVideoPlaceholder: YES];
+}
+
+
 - (void) viewDidDisappear: (BOOL) animated
 {
+    // Start animation
+    [self animateVideoPlaceholder: NO];
+    
     [self stopShuttleBarUpdateTimer];
     [self stopVideo];
-    self.currentVideoWebView = nil;
     
     [super viewDidDisappear: animated];
 }
@@ -971,16 +983,16 @@ static UIWebView* vimeoideoWebViewInstance;
 
 - (void) startShuttleBarUpdateTimer
 {
-//    [self.shuttleBarUpdateTimer invalidate];
-//    
-//    // Schedule the timer on a different runloop so that we continue to get updates even when scrolling collection views etc.
-//    self.shuttleBarUpdateTimer = [NSTimer timerWithTimeInterval: kShuttleBarUpdateTimerInterval
-//                                                       target: self
-//                                                     selector: @selector(updateShuttleBarProgress)
-//                                                     userInfo: nil
-//                                                      repeats: YES];
-//    
-//    [[NSRunLoop mainRunLoop] addTimer: self.shuttleBarUpdateTimer forMode: NSRunLoopCommonModes];
+    [self.shuttleBarUpdateTimer invalidate];
+    
+    // Schedule the timer on a different runloop so that we continue to get updates even when scrolling collection views etc.
+    self.shuttleBarUpdateTimer = [NSTimer timerWithTimeInterval: kShuttleBarUpdateTimerInterval
+                                                       target: self
+                                                     selector: @selector(updateShuttleBarProgress)
+                                                     userInfo: nil
+                                                      repeats: YES];
+    
+    [[NSRunLoop mainRunLoop] addTimer: self.shuttleBarUpdateTimer forMode: NSRunLoopCommonModes];
 }
 
 

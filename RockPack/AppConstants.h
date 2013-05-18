@@ -328,7 +328,7 @@ typedef enum {
 
 #define kVideoBackgroundColour          [UIColor blackColor]
 #define kBufferMonitoringTimerInterval  1.0f
-#define kShuttleBarUpdateTimerInterval  0.5f
+#define kShuttleBarUpdateTimerInterval  0.1f
 #define kMiddlePlaceholderCycleTime     2.0f
 #define kMiddlePlaceholderIdentifier    @"MiddlePlaceholder"
 #define kBottomPlaceholderCycleTime     4.0f
