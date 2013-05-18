@@ -32,10 +32,12 @@
                                  onError:(MKNKJSONErrorBlock)errorBlock;
 
 - (void) searchVideosForTerm:(NSString*)searchTerm
-                    andRange:(NSRange)range;
+                     inRange:(NSRange)range
+                  onComplete:(MKNKSearchSuccessBlock)completeBlock;
 
 - (void) searchChannelsForTerm:(NSString*)searchTerm
-                      andRange:(NSRange)range;
+                      andRange:(NSRange)range
+                    onComplete:(MKNKSearchSuccessBlock)completeBlock;
 
 - (void) getAutocompleteForHint: (NSString*) hint
                     forResource: (EntityType) entityType

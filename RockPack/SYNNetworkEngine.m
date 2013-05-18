@@ -211,7 +211,8 @@
 #pragma mark - Search
 
 - (void) searchVideosForTerm:(NSString*)searchTerm
-                    andRange:(NSRange)range
+                     inRange:(NSRange)range
+                  onComplete:(MKNKSearchSuccessBlock)completeBlock
 {
     
     
@@ -234,9 +235,22 @@
     
     [networkOperation addJSONCompletionHandler:^(NSDictionary *dictionary) {
         
+        int itemsCount = 0;
+        
+        if(!dictionary)
+            return;
+        
+        NSArray *itemArray = (NSArray*)[[dictionary objectForKey: @"videos"] objectForKey:@"items"];
+        if (!itemArray || ![itemArray isKindOfClass: [NSArray class]])
+            return;
+        
+        itemsCount = itemArray.count;
+        
         BOOL registryResultOk = [self.searchRegistry registerVideosFromDictionary:dictionary];
         if (!registryResultOk)
             return;
+        
+        completeBlock(itemsCount);
         
         
     } errorHandler:^(NSError* error) {
@@ -250,6 +264,7 @@
 
 - (void) searchChannelsForTerm:(NSString*)searchTerm
                       andRange:(NSRange)range
+                    onComplete:(MKNKSearchSuccessBlock)completeBlock
 {
     
     
@@ -274,9 +289,23 @@
     
     [networkOperation addJSONCompletionHandler:^(NSDictionary *dictionary) {
         
+        
+        int itemsCount = 0;
+        
+        if(!dictionary)
+            return;
+        
+        NSArray *itemArray = (NSArray*)[[dictionary objectForKey: @"channels"] objectForKey:@"items"];
+        if (!itemArray || ![itemArray isKindOfClass: [NSArray class]])
+            return;
+        
+        itemsCount = itemArray.count;
+        
         BOOL registryResultOk = [self.searchRegistry registerChannelsFromDictionary:dictionary];
         if (!registryResultOk)
             return;
+        
+        completeBlock(itemsCount);
         
         
     } errorHandler:^(NSError* error) {

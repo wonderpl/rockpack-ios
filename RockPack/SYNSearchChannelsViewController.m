@@ -119,11 +119,17 @@
     if(!appDelegate)
         appDelegate = (SYNAppDelegate*)[[UIApplication sharedApplication] delegate];
     
-    self.dataRequestRange = NSMakeRange(0, 50);
+    if(self.dataRequestRange.length == 0)
+        self.dataRequestRange = NSMakeRange(0, 48);
     
     [appDelegate.networkEngine searchChannelsForTerm:term
-                                            andRange:self.dataRequestRange];
-}
+                                            andRange:self.dataRequestRange
+                                          onComplete:^(int itemsCount) {
+                                              
+                                              self.dataItemsAvailable = itemsCount;
+                                              
+                                          }];
+}   
 
 
 -(void)dealloc
