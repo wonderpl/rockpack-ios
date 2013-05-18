@@ -40,7 +40,7 @@
         
         
         
-        self.textLabel.frame = CGRectMake(74.0, 8.0, 0.0, 0.0); // width, height will be set below
+        self.textLabel.frame = CGRectMake(74.0, 10.0, 0.0, 0.0); // width, height will be set below
         self.textLabel.font = [UIFont rockpackFontOfSize:14.0];
         self.textLabel.textAlignment = NSTextAlignmentLeft;
         self.textLabel.numberOfLines = 2;
@@ -52,7 +52,7 @@
         
         // == Subtitle == //
         
-        self.detailTextLabel.backgroundColor = [UIColor clearColor]; 
+        self.detailTextLabel.backgroundColor = [UIColor clearColor];
         self.detailTextLabel.font = [UIFont rockpackFontOfSize:12.0];
         self.detailTextLabel.textAlignment = NSTextAlignmentLeft;
         self.detailTextLabel.textColor = [UIColor colorWithRed:(187.0/255.0)
@@ -106,7 +106,7 @@
     self.imageView.frame = mainImageButton.frame = imageViewRect;
     
     
-    self.textLabel.frame = CGRectMake(76.0, 14.0, mainTextSize.width, mainTextSize.height);
+    self.textLabel.frame = CGRectMake(76.0, 12.0, mainTextSize.width, mainTextSize.height);
     
     
     // place at the end
@@ -119,7 +119,7 @@
     
     // details
     
-    CGRect detailsFrame = self.detailTextLabel.frame;
+    CGRect detailsFrame = CGRectMake(76.0, 12.0, mainTextSize.width, 20.0f);
     detailsFrame.origin.y = self.textLabel.frame.origin.y + self.textLabel.frame.size.height;
     self.detailTextLabel.frame = detailsFrame;
     
