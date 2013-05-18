@@ -161,7 +161,9 @@
 
 -(void)animatedPushViewController:(UIViewController *)vc
 {
-    [super animatedPushViewController:vc];
+    //[super animatedPushViewController:vc];
+    
+    [((SYNSearchRootViewController*)self.parentViewController) animatedPushViewController:vc];
     
     [[NSNotificationCenter defaultCenter] postNotificationName:kNoteSearchBarRequestHide
                                                         object:self];

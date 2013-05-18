@@ -32,6 +32,8 @@
 @implementation SYNSearchVideosViewController
 
 @synthesize itemToUpdate;
+@synthesize dataRequestRange;
+@synthesize dataItemsAvailable;
 
 - (void) viewDidLoad
 {
@@ -72,9 +74,7 @@
     
     self.view.autoresizingMask = UIViewAutoresizingFlexibleWidth | UIViewAutoresizingFlexibleHeight;
     
-    self.dataRequestRange = NSMakeRange(0, 48);
     
-    self.dataItemsAvailable = 0;
     
     
 }
@@ -125,9 +125,6 @@
 -(void)performSearchWithTerm:(NSString*)term
 {
     
-    
-    if(self.dataRequestRange.length == 0)
-        self.dataRequestRange = NSMakeRange(0, 48);
     
 
     self.searchTerm = term;
@@ -356,6 +353,17 @@
         appDelegate = (SYNAppDelegate*)[[UIApplication sharedApplication] delegate];
     
     return appDelegate;
+}
+
+-(NSRange)dataRequestRange
+{
+    if(dataRequestRange.length == 0) {
+        dataRequestRange = NSMakeRange(0, 48);
+        
+    }
+        
+    return dataRequestRange;
+    
 }
 
 @end
