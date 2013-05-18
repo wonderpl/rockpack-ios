@@ -240,11 +240,11 @@
         if(!dictionary)
             return;
         
-        NSArray *itemArray = (NSArray*)[[dictionary objectForKey: @"videos"] objectForKey:@"items"];
-        if (!itemArray || ![itemArray isKindOfClass: [NSArray class]])
-            return;
+        NSNumber *totalNumber = (NSNumber*)[[dictionary objectForKey: @"videos"] objectForKey:@"total"];
+        if (totalNumber && [totalNumber isKindOfClass: [NSNumber class]])
+            itemsCount = totalNumber.intValue;
         
-        itemsCount = itemArray.count;
+        
         
         BOOL registryResultOk = [self.searchRegistry registerVideosFromDictionary:dictionary];
         if (!registryResultOk)
@@ -295,11 +295,10 @@
         if(!dictionary)
             return;
         
-        NSArray *itemArray = (NSArray*)[[dictionary objectForKey: @"channels"] objectForKey:@"items"];
-        if (!itemArray || ![itemArray isKindOfClass: [NSArray class]])
-            return;
+        NSNumber *totalNumber = (NSNumber*)[[dictionary objectForKey: @"channels"] objectForKey:@"total"];
+        if (totalNumber && [totalNumber isKindOfClass: [NSNumber class]])
+            itemsCount = totalNumber.intValue;
         
-        itemsCount = itemArray.count;
         
         BOOL registryResultOk = [self.searchRegistry registerChannelsFromDictionary:dictionary];
         if (!registryResultOk)

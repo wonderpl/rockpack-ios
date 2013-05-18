@@ -25,6 +25,7 @@
 
 
 @property (nonatomic, strong) SYNChannelFooterMoreView* footerView;
+@property (nonatomic, weak) NSString* searchTerm;
 
 @end
 
@@ -130,9 +131,10 @@
     if(self.dataRequestRange.length == 0)
         self.dataRequestRange = NSMakeRange(0, 48);
     // -------------------------------------------- //
-    
 
-    [appDelegate.networkEngine searchVideosForTerm:term
+    self.searchTerm = term;
+
+    [appDelegate.networkEngine searchVideosForTerm:self.searchTerm
                                            inRange:self.dataRequestRange
                                         onComplete:^(int itemsCount) {
                                             
@@ -316,6 +318,32 @@
     }
     
     return supplementaryView;
+}
+
+- (void) loadMoreChannels: (UIButton*) sender
+{
+    
+    // (UIButton*) sender can be nil when called directly //
+    
+    self.footerView.showsLoading = YES;
+    
+    NSInteger nextStart = self.dataRequestRange.location + self.dataRequestRange.length; // one is subtracted when the call happens for 0 indexing
+    
+    if(nextStart >= self.dataItemsAvailable)
+        return;
+    
+    NSInteger nextSize = (nextStart + 48) >= self.dataItemsAvailable ? (self.dataItemsAvailable - nextStart) : 48;
+    
+    
+    self.dataRequestRange = NSMakeRange(nextStart, nextSize);
+    
+    [appDelegate.networkEngine searchVideosForTerm:self.searchTerm
+                                           inRange:self.dataRequestRange
+                                        onComplete:^(int itemsCount) {
+                                            
+                                            self.dataItemsAvailable = itemsCount;
+                                            
+                                        }];
 }
 
 -(CGSize)footerSize

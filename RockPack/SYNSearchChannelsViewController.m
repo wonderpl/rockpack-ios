@@ -13,6 +13,7 @@
 @interface SYNSearchChannelsViewController ()
 
 
+
 @end
 
 
@@ -62,7 +63,6 @@
     
     // this is mainly for the number refresh at the tabs
     [self reloadCollectionViews];
-    
     
 }
 
