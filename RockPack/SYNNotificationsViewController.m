@@ -108,7 +108,7 @@
     NSURL* userThumbnailUrl = [NSURL URLWithString:notification.channelOwner.thumbnailURL];
     
     [notificationCell.imageView setImageWithURL: userThumbnailUrl
-                     placeholderImage: [UIImage imageNamed:@"AvatarProfile"]
+                     placeholderImage: [UIImage imageNamed:@"PlaceholderNotificationAvatar.png"]
                               options: SDWebImageRetryFailed];
     
     

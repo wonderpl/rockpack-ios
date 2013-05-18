@@ -205,7 +205,7 @@
     // == Avatar Image == //
     
     [self.avatarImageView setImageWithURL: [NSURL URLWithString: self.channel.channelOwner.thumbnailURL]
-                         placeholderImage: [UIImage imageNamed: @"AvatarChannel.png"]
+                         placeholderImage: [UIImage imageNamed: @"PlaceholderAvatarChannel.png"]
                                   options: SDWebImageRetryFailed];
     
     
@@ -424,7 +424,7 @@
     {
         NSString* largeImageUrlString = [coverArtUrl stringByReplacingOccurrencesOfString:@"thumbnail_medium" withString:@"background"];
         [self.channelCoverImageView setImageWithURL: [NSURL URLWithString: largeImageUrlString]
-                                   placeholderImage: nil
+                                   placeholderImage: [UIImage imageNamed: @"PlaceholderChannelCreation.png"]
                                             options: SDWebImageRetryFailed];
     }
     
@@ -582,7 +582,7 @@
     VideoInstance *videoInstance = self.channel.videoInstances [indexPath.item];
     
     [videoThumbnailCell.imageView setImageWithURL: [NSURL URLWithString: videoInstance.video.thumbnailURL]
-                                 placeholderImage: [UIImage imageNamed: @"PlaceholderVideoThumbnailRegular.png"]
+                                 placeholderImage: [UIImage imageNamed: @"PlaceholderVideoWide.png"]
                                           options: SDWebImageRetryFailed];
     
     videoThumbnailCell.titleLabel.text = videoInstance.title;

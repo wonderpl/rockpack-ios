@@ -229,7 +229,7 @@
 
     
     [self.channelThumbnailImageView setImageWithURL: [NSURL URLWithString: videoInstance.channel.channelCover.imageSmallUrl]
-                                   placeholderImage: nil
+                                   placeholderImage: [UIImage imageNamed: @"PlaceholderChannelSmall.png"]
                                             options: SDWebImageRetryFailed];
 
 }
@@ -352,7 +352,7 @@
 
     
     [self.channelThumbnailImageView setImageWithURL: [NSURL URLWithString: videoInstance.channel.channelCover.imageSmallUrl]
-                                   placeholderImage: nil
+                                   placeholderImage: [UIImage imageNamed: @"PlaceholderChannelSmall.png"]
                                             options: SDWebImageRetryFailed];
 
 }
