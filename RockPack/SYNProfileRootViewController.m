@@ -193,14 +193,14 @@
         [self.headerSubscriptionsView setFontSize: 12.0f];
         
         [self.headerSubscriptionsView setTitle: NSLocalizedString(@"SUBSCRIPTIONS",nil)
-                                     andNumber: 2];
+                                     andNumber: 0];
         
         self.headerSubscriptionsView.userInteractionEnabled = NO;
     }
     else
     {
         [self.headerSubscriptionsView setTitle: NSLocalizedString(@"YOUR SUBSCRIPTIONS", nil)
-                                     andNumber: 2];
+                                     andNumber: 0];
         
         [self.headerSubscriptionsView setBackgroundImage: ([[SYNDeviceManager sharedInstance] isLandscape] ? [UIImage imageNamed: @"HeaderProfileSubscriptionsLandscape"] : [UIImage imageNamed: @"HeaderProfilePortraitBoth"])];
     }

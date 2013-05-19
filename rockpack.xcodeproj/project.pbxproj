@@ -2983,8 +2983,8 @@
 			isa = PBXGroup;
 			children = (
 				0142ED8716B19FBE008694DA /* SYNProfileRootViewController.h */,
-				BE86BF15171F001E0006DC8A /* SYNSubscriptionsViewController.h */,
 				0142ED8816B19FBE008694DA /* SYNProfileRootViewController.m */,
+				BE86BF15171F001E0006DC8A /* SYNSubscriptionsViewController.h */,
 				BE86BF16171F001E0006DC8A /* SYNSubscriptionsViewController.m */,
 				BE86BF1D171FFB980006DC8A /* SYNYouHeaderView.h */,
 				BE86BF1E171FFB980006DC8A /* SYNYouHeaderView.m */,
