@@ -521,10 +521,13 @@ typedef void(^AnimationCompletionBlock)(BOOL finished);
 }
 
 
-#pragma mark - Search Delegate Methods
+#pragma mark - Search (Text Delegate) Methods
 
 - (IBAction) showSearchBoxField: (id) sender
 {
+    
+    if(self.searchBoxController.view.superview) // if it is on stage already
+        return;
     
     self.sideNavigationButton.hidden = YES;
     
@@ -561,6 +564,7 @@ typedef void(^AnimationCompletionBlock)(BOOL finished);
     
     if(!termString)
         return;
+    
     BOOL isIPad =[[SYNDeviceManager sharedInstance] isIPad];
     if(isIPad)
     {
@@ -573,9 +577,14 @@ typedef void(^AnimationCompletionBlock)(BOOL finished);
     {        
         self.searchViewController = [[SYNSearchRootViewController alloc] initWithViewId: kSearchViewId];
         self.overlayNavigationController = [SYNObjectFactory wrapInNavigationController: self.searchViewController];
+        
+        
     }
     
+    
+    
     [self.searchViewController showSearchResultsForTerm: termString];
+    
 }
 
 
@@ -895,12 +904,7 @@ typedef void(^AnimationCompletionBlock)(BOOL finished);
             
             [abstractVC animatedPopViewController];
             
-//            if(self.searchBoxController.isOnScreen)
-//            {
-//                
-//                [self cancelButtonPressed:nil];
-//                
-//            }
+
         }
         else
         {
@@ -1075,9 +1079,6 @@ typedef void(^AnimationCompletionBlock)(BOOL finished);
 }
 
 
-
-
-
 #pragma mark - Overlay Accessor Methods
 
 -(void)setOverlayNavigationController:(UINavigationController *)overlayNavigationController
@@ -1088,6 +1089,8 @@ typedef void(^AnimationCompletionBlock)(BOOL finished);
     
     if(overlayNavigationController) // if we did not pass nil
     {
+        
+        
         [self.overlayContainerView addSubview:overlayNavigationController.view];
         
         
@@ -1099,6 +1102,9 @@ typedef void(^AnimationCompletionBlock)(BOOL finished);
         }
         self.overlayContainerView.userInteractionEnabled = YES;
         self.overlayContainerView.alpha = 0.0;
+        
+        
+        
         [UIView animateWithDuration: 0.5f
                               delay: 0.0f
                             options: UIViewAnimationOptionCurveEaseIn
@@ -1106,9 +1112,15 @@ typedef void(^AnimationCompletionBlock)(BOOL finished);
                              self.containerView.alpha = 0.0;
                          }
                          completion: ^(BOOL finished) {
+                             
                              self.containerView.hidden = YES;
-                             [self addChildViewController:overlayNavigationController];
+                             
+                             
+                             
+                             [_overlayNavigationController removeFromParentViewController];
                              _overlayNavigationController = overlayNavigationController;
+                             [self addChildViewController: _overlayNavigationController];
+                             
                              [UIView animateWithDuration: 0.7f
                                                    delay: 0.2f
                                                  options: UIViewAnimationOptionCurveEaseOut
@@ -1116,6 +1128,9 @@ typedef void(^AnimationCompletionBlock)(BOOL finished);
                                                   self.overlayContainerView.alpha = 1.0;
                                               }
                                               completion:^(BOOL finished) {
+                                                  
+                                                  
+                                                  
                                                   if([[SYNDeviceManager sharedInstance] isIPhone])
                                                   {
                                                    
@@ -1142,8 +1157,10 @@ typedef void(^AnimationCompletionBlock)(BOOL finished);
                                  self.overlayContainerView.alpha = 0.0;
                              }
                              completion: ^(BOOL finished) {
+                                 
                                  [_overlayNavigationController.view removeFromSuperview];
                                  [_overlayNavigationController removeFromParentViewController];
+                                 
                                  _overlayNavigationController = nil;
                                  self.containerView.hidden = NO;
                                  self.overlayContainerView.userInteractionEnabled = YES;

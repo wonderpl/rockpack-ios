@@ -19,6 +19,7 @@
     navigationController.navigationBarHidden = YES;
     navigationController.view.autoresizesSubviews = YES;
     navigationController.view.autoresizingMask = UIViewAutoresizingFlexibleWidth|UIViewAutoresizingFlexibleHeight;
+    abstractViewController.wantsFullScreenLayout = YES;
     return navigationController;
 }
 

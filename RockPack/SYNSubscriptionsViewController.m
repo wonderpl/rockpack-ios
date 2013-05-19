@@ -68,6 +68,12 @@
     
     [self.channelThumbnailCollectionView registerNib: thumbnailCellNib
                           forCellWithReuseIdentifier: @"SYNChannelMidCell"];
+    
+    self.channelThumbnailCollectionView.backgroundColor = [UIColor greenColor];
+    
+    CGRect correntFrame = self.channelThumbnailCollectionView.frame;
+    correntFrame.size.width = 20.0;
+    self.channelThumbnailCollectionView.frame = correntFrame;
 }
 
 
@@ -75,7 +81,7 @@
 
 - (NSInteger) collectionView: (UICollectionView *) view numberOfItemsInSection: (NSInteger) section
 {
-    return self.user.subscriptions.count - 1;
+    return self.user.subscriptions.count;
 }
 
 
@@ -86,6 +92,10 @@
 
 
 - (UICollectionViewCell *) collectionView: (UICollectionView *) cv cellForItemAtIndexPath: (NSIndexPath *) indexPath {
+    
+    
+    
+        
     
     Channel *channel = self.user.subscriptions[indexPath.row];
     
@@ -118,6 +128,7 @@
 
 - (void) setViewFrame: (CGRect) frame
 {
+    NSLog(@"Width: %f", frame.size.width);
     self.view.frame = frame;
     self.channelThumbnailCollectionView.frame = CGRectMake(0.0, 0.0, frame.size.width, frame.size.height);
 }

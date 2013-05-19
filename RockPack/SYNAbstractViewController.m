@@ -95,6 +95,8 @@
         self.addButton.frame = addButtonFrame;
         [self.view addSubview:addButton];
     }
+    
+    
 }
 
 -(void)viewWillAppear:(BOOL)animated

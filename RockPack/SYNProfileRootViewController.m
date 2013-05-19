@@ -610,9 +610,10 @@
     
     //Setup subscription feed collection view
     newFrame = self.subscriptionsViewController.view.frame;
-    newFrame.size.width = isIPhone ? 320.0f : self.headerChannelsView.frame.size.width;
+    newFrame.size.width = isIPhone ? 320.0f : self.headerSubscriptionsView.frame.size.width;
     newFrame.size.height = viewHeight - newFrame.origin.y;
     newFrame.origin.x = isIPhone ? 0.0f : self.headerSubscriptionsView.frame.origin.x;
+    NSLog(@"Going to input with %f", newFrame.size.width);
     self.subscriptionsViewController.view.frame = newFrame;
     self.subscriptionsViewController.channelThumbnailCollectionView.collectionViewLayout = subscriptionsLayout;
     [subscriptionsLayout invalidateLayout];

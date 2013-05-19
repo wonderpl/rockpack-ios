@@ -64,7 +64,7 @@
     // override the data loading
     
     CGRect collectionFrame = self.videoThumbnailCollectionView.frame;
-    collectionFrame.origin.y += 60.0;
+    collectionFrame.origin.y += 40.0;
     collectionFrame.size.width = [[SYNDeviceManager sharedInstance] currentScreenWidth];
     collectionFrame.size.height = [[SYNDeviceManager sharedInstance] currentScreenHeight] - 190.0;
     self.videoThumbnailCollectionView.frame = collectionFrame;
@@ -73,7 +73,6 @@
     self.videoThumbnailCollectionView.backgroundColor = [UIColor clearColor];
     
     self.view.autoresizingMask = UIViewAutoresizingFlexibleWidth | UIViewAutoresizingFlexibleHeight;
-    
     
     
     
@@ -337,6 +336,7 @@
                                         onComplete:^(int itemsCount) {
                                             
                                             self.dataItemsAvailable = itemsCount;
+                                            self.footerView.showsLoading = NO;
                                             
                                         }];
 }

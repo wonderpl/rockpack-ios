@@ -32,7 +32,6 @@
 @property (nonatomic, strong) UIView* tabsContainer;
 
 
-
 @end
 
 @implementation SYNSearchRootViewController
@@ -53,8 +52,11 @@
     CGRect frame = CGRectMake(0.0, 0.0,[[SYNDeviceManager sharedInstance] currentScreenWidth],
                                [[SYNDeviceManager sharedInstance] currentScreenHeight]);
     
+    
     self.view = [[UIView alloc] initWithFrame:frame];
     self.view.autoresizingMask = UIViewAutoresizingFlexibleWidth| UIViewAutoresizingFlexibleHeight;
+    
+    
     
 }
 
@@ -63,12 +65,11 @@
 {
     [super viewDidLoad];
     
-    
     self.videoSearchTabView = [SYNSearchTabView tabViewWithSearchType:SearchTabTypeVideos];
     self.channelsSearchTabView = [SYNSearchTabView tabViewWithSearchType:SearchTabTypeChannels];
     
     CGRect channelTabRect = self.channelsSearchTabView.frame;
-    channelTabRect.origin.x = self.videoSearchTabView.frame.size.width;
+    channelTabRect.origin.x = self.videoSearchTabView.frame.size.width; // place at the middle of the 2 tabs (where the first ends)
     self.channelsSearchTabView.frame = channelTabRect;
     
     tabsContainer = [[UIView alloc] initWithFrame:CGRectMake(0.0, 0.0,
@@ -83,7 +84,7 @@
     [self.videoSearchTabView addTarget:self action:@selector(videoTabPressed:) forControlEvents:UIControlEventTouchUpInside];
     [self.channelsSearchTabView addTarget:self action:@selector(channelTabPressed:) forControlEvents:UIControlEventTouchUpInside];
     
-    CGFloat correctTabsY = [[SYNDeviceManager sharedInstance] isIPad] ? 120.0 : self.channelsSearchTabView.frame.size.height/2 + 85.0f;
+    CGFloat correctTabsY = [[SYNDeviceManager sharedInstance] isIPad] ? 104.0 : self.channelsSearchTabView.frame.size.height/2 + 85.0f;
     tabsContainer.center = CGPointMake(self.view.center.x, correctTabsY);
     tabsContainer.frame = CGRectIntegral(tabsContainer.frame);
     
@@ -92,6 +93,9 @@
     
     // Google Analytics support
     self.trackedViewName = @"Search - Root";
+    
+    
+    
 }
 
 -(void)videoTabPressed:(UIControl*)control
@@ -150,6 +154,7 @@
         layout.sectionInset = insets;
     }
     
+    
 }
 -(void)showChannelsSearchResult
 {
@@ -177,6 +182,9 @@
         insets.bottom = 10.0f;
         layout.sectionInset = insets;
     }
+    
+    
+    
 }
 
 
@@ -199,6 +207,7 @@
     
     
     [self performSearchForCurrentSearchTerm];
+    
     
     
 }
@@ -240,6 +249,9 @@
 -(void)performSearchForCurrentSearchTerm
 {
     
+    
+    
+    
     if(![appDelegate.searchRegistry clearImportContextFromEntityName:@"VideoInstance"])
     {
         DebugLog(@"Could not clean VideoInstances from search context");
@@ -255,6 +267,8 @@
     
     [self.searchVideosController performSearchWithTerm:searchTerm];
     [self.searchChannelsController performSearchWithTerm:searchTerm];
+    
+    
 }
 
 #pragma mark - Leaving the View
@@ -262,6 +276,7 @@
 -(void)viewWillDisappear:(BOOL)animated
 {
     [super viewWillDisappear:animated];
+    
     
     
     
@@ -326,7 +341,7 @@
 
 - (BOOL) needsAddButton
 {
-    return NO;
+    return YES;
 }
 
 
