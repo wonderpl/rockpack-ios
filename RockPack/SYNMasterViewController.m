@@ -526,17 +526,16 @@ typedef void(^AnimationCompletionBlock)(BOOL finished);
 - (IBAction) showSearchBoxField: (id) sender
 {
     
-    if(self.searchBoxController.view.superview) // if it is on stage already
+    if (self.searchBoxController.view.superview) // if it is on stage already
         return;
     
     self.sideNavigationButton.hidden = YES;
     
-    CGRect sboxFrame;
+    CGRect sboxFrame = self.searchBoxController.view.frame;
     
     // place according to the position of the back button //
-    if(showingBackButton)
+    if (showingBackButton)
     {
-        sboxFrame = self.searchBoxController.view.frame;
         sboxFrame.origin.x = self.backButtonControl.frame.origin.x + self.backButtonControl.frame.size.width + 16.0;
     }
     else
@@ -550,7 +549,7 @@ typedef void(^AnimationCompletionBlock)(BOOL finished);
     
     [self.view insertSubview:self.searchBoxController.view aboveSubview:self.overlayContainerView];
     
-    if([[SYNDeviceManager sharedInstance] isIPad] && sender != nil)
+    if ([[SYNDeviceManager sharedInstance] isIPad] && sender != nil)
     {
         [self.searchBoxController.searchTextField becomeFirstResponder];
     }
@@ -624,6 +623,7 @@ typedef void(^AnimationCompletionBlock)(BOOL finished);
 
 - (void) reachabilityChanged: (NSNotification*) notification
 {
+#ifdef PRINT_REACHABILITY
     NSString* reachabilityString;
     if ([self.reachability currentReachabilityStatus] == ReachableViaWiFi)
         reachabilityString = @"WiFi";
@@ -632,7 +632,9 @@ typedef void(^AnimationCompletionBlock)(BOOL finished);
     else if([self.reachability currentReachabilityStatus] == NotReachable) 
         reachabilityString = @"None";
     
-//    DebugLog(@"Reachability == %@", reachabilityString);
+    DebugLog(@"Reachability == %@", reachabilityString);
+#endif
+    
     if ([self.reachability currentReachabilityStatus] == ReachableViaWiFi)
     {
         if (self.networkErrorView)

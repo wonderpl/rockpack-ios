@@ -196,6 +196,7 @@
 
 - (void) reachabilityChanged: (NSNotification*) notification
 {
+    #ifdef PRINT_REACHABILITY
     NSString* reachabilityString;
     if ([self.reachability currentReachabilityStatus] == ReachableViaWiFi)
         reachabilityString = @"WiFi";
@@ -205,6 +206,8 @@
         reachabilityString = @"None";
     
     //    DebugLog(@"Reachability == %@", reachabilityString);
+#endif
+    
     if ([self.reachability currentReachabilityStatus] == ReachableViaWiFi)
     {
         if (self.networkErrorView)

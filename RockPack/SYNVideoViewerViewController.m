@@ -279,7 +279,7 @@
     [super willAnimateRotationToInterfaceOrientation: toInterfaceOrientation
                                             duration: duration];
     
-    CGRect blackPanelFrame = self.blackPanelView.frame;
+    CGRect blackPanelFrame;
     
     if (UIInterfaceOrientationIsLandscape(toInterfaceOrientation))
     {

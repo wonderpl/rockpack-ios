@@ -253,7 +253,6 @@ enum ChannelCoverSelectorState {
             if (indexPath.row == 0 && self.supportsCamera)
             {
                 GKImagePicker* picker = [[GKImagePicker alloc] init];
-                picker = [[GKImagePicker alloc] init];
                 picker.cropSize = CGSizeMake(280, 280);
                 picker.delegate = self;
                 picker.imagePickerController.sourceType = UIImagePickerControllerSourceTypeCamera;
