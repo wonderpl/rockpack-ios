@@ -61,18 +61,11 @@
         
         if(appDelegate.videoQueue.isEmpty)
         {
-            [button setImage:buttonImageInactive forState:UIControlStateNormal];
-            [button setImage:buttonImageInactive forState:UIControlStateDisabled];
-            [button setImage:buttonImageInactiveHighlighted forState:UIControlStateHighlighted];
-            button.enabled = NO;
-            _active = NO;
+            self.active = NO;
         }
         else
         {
-            [button setImage:buttonImageActive forState:UIControlStateNormal];
-            [button setImage:buttonImageActiveHighlighted forState:UIControlStateHighlighted];
-            button.enabled = YES;
-            _active = YES;
+            self.active = YES;
         }
         
         
@@ -85,20 +78,20 @@
 
 -(void)setActive:(BOOL)active
 {
-    if(_active == active)
-        return;
     
     _active = active;
     
-    if(!active)
+    if(!_active)
     {
         [button setImage:buttonImageInactive forState:UIControlStateNormal];
+        [button setImage:buttonImageInactive forState:UIControlStateDisabled];
         [button setImage:buttonImageInactiveHighlighted forState:UIControlStateHighlighted];
         button.enabled = NO;
     }
     else
     {
         [button setImage:buttonImageActive forState:UIControlStateNormal];
+        [button setImage:buttonImageActive forState:UIControlStateDisabled];
         [button setImage:buttonImageActiveHighlighted forState:UIControlStateHighlighted];
         button.enabled = YES;
     }

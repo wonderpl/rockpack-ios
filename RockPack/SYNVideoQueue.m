@@ -89,7 +89,7 @@
 - (void) handleVideoQueueAddRequest:(NSNotification*)notification
 {
     
-    VideoInstance* videoInstanceToAdd = (VideoInstance*) notification.userInfo[@"VideoInstance"];
+    VideoInstance* videoInstanceToAdd = (VideoInstance*) notification.userInfo[kVideoInstance];
     [self addVideoToQueue: videoInstanceToAdd];
 }
 
@@ -97,7 +97,7 @@
 - (void) handleVideoQueueRemoveRequest:(NSNotification*)notification
 {
     
-    VideoInstance* videoInstanceToAdd = (VideoInstance*) notification.userInfo[@"VideoInstance"];
+    VideoInstance* videoInstanceToAdd = (VideoInstance*) notification.userInfo[kVideoInstance];
     [self removeFromVideoQueue: videoInstanceToAdd];
 }
 

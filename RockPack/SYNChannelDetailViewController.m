@@ -332,17 +332,9 @@
                                                  name: kCoverArtChanged
                                                object: nil];
     
-    __weak typeof(self) weakSelf = self;
+
     
-    [appDelegate.currentUser.subscriptions enumerateObjectsUsingBlock:^(id obj, NSUInteger idx, BOOL *stop) {
-        if( [((Channel*)obj).uniqueId isEqualToString:weakSelf.channel.uniqueId] ) {
-            weakSelf.channel.subscribedByUserValue = YES;
-            weakSelf.channel.subscribersCountValue += 1;
-            *stop = YES;
-        }
-    }];
     
-    // NSLog(@"self.channel.subscribedByUserValue = %i", self.channel.subscribedByUserValue);
     self.subscribeButton.enabled = YES;
     self.subscribeButton.selected = self.channel.subscribedByUserValue;
     
@@ -361,7 +353,9 @@
     
     if(self.mode == kChannelDetailsModeDisplay)
     {
-        [[NSNotificationCenter defaultCenter] postNotificationName:kChannelUpdateRequest object:self userInfo:@{kChannel:self.channel}];
+        [[NSNotificationCenter defaultCenter] postNotificationName:kChannelUpdateRequest
+                                                            object:self
+                                                          userInfo:@{kChannel:self.channel}];
     }
     
     
@@ -539,6 +533,9 @@
 {
     self.channelOwnerLabel.text = self.channel.channelOwner.displayName;
     
+    
+    NSLog(@"current channel s count : %lld", self.channel.subscribersCountValue);
+    
     NSString *detailsString = [NSString stringWithFormat: @"%lld %@", self.channel.subscribersCountValue, NSLocalizedString(@"SUBSCRIBERS", nil)];
     self.channelDetailsLabel.text = detailsString;
     
@@ -554,7 +551,7 @@
 }
 
 
-#pragma mark - UICollectionView DataSource/Delegate Methods
+#pragma mark - Collection Delegate Methods
 
 - (NSInteger) collectionView: (UICollectionView *) collectionView numberOfItemsInSection: (NSInteger) section
 {
@@ -771,18 +768,13 @@
 {
     self.subscribeButton.enabled = NO;
     
-    [self addSubscribeIndicator];
+    [self addSubscribeActivityIndicator];
     
     [[NSNotificationCenter defaultCenter] postNotificationName: kChannelSubscribeRequest
                                                         object: self
                                                       userInfo: @{ kChannel : self.channel }];
 }
-- (IBAction) addButtonTapped: (id) sender
-{
-    [[NSNotificationCenter defaultCenter] postNotificationName: kChannelSubscribeRequest
-                                                        object: self
-                                                      userInfo: @{ kChannel : self.channel }];
-}
+
 
 
 - (IBAction) profileImagePressed: (UIButton*) sender
@@ -825,11 +817,22 @@
     
     VideoInstance* instanceToDelete = (VideoInstance*)[self.channel.videoInstances objectAtIndex: indexPath.item];
     
-    NSMutableOrderedSet *channelsSet = [NSMutableOrderedSet orderedSetWithOrderedSet: self.channel.videoInstances];
+    if(self.channel.managedObjectContext == appDelegate.channelsManagedObjectContext) // the channel is the under creation channel
+    {
+        [[NSNotificationCenter defaultCenter] postNotificationName:kVideoQueueRemove
+                                                            object:self
+                                                          userInfo:@{kVideoInstance:instanceToDelete}];
+    }
+    else
+    {
+        NSMutableOrderedSet *channelsSet = [NSMutableOrderedSet orderedSetWithOrderedSet: self.channel.videoInstances];
+        
+        [channelsSet removeObject: instanceToDelete];
+        
+        [self.channel setVideoInstances: channelsSet];
+    }
     
-    [channelsSet removeObject: instanceToDelete];
     
-    [self.channel setVideoInstances: channelsSet];
     
     [self reloadCollectionViews];
 }
@@ -1663,7 +1666,7 @@
 }
 
 
--(void)addSubscribeIndicator
+-(void)addSubscribeActivityIndicator
 {
     self.subscribingIndicator = [[UIActivityIndicatorView alloc] initWithActivityIndicatorStyle:UIActivityIndicatorViewStyleWhite];
     CGRect indicatorRect = self.subscribingIndicator.frame;
