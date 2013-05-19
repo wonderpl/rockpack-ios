@@ -44,12 +44,9 @@ typedef enum
     {
         // Read and publish permissions must be requested separately in iOS 6,
         // so set appropriate permissions here
-        self.readPermissions = [NSArray arrayWithObjects: @"email",
-                                nil];
+        self.readPermissions = [NSArray arrayWithObjects: @"email", nil];
         
-        self.publishPermissions = [NSArray arrayWithObjects: @"publish_actions",
-                                   @"publish_checkins",
-                                   nil];
+        self.publishPermissions = [NSArray arrayWithObjects: @"publish_actions", nil];
     }
     
     return self;
@@ -69,32 +66,31 @@ typedef enum
     [self openSessionWithPermissionType: kFacebookPermissionTypeRead
                               onSuccess: ^{
                                   
-         [FBRequestConnection startForMeWithCompletionHandler: ^(FBRequestConnection *connection,
-                                                                 NSDictionary < FBGraphUser > *userInfo,
-                                                                 NSError *error) {
-              if (error) {
-                  
-                  // Graph query failed, so parse NSError userInfo to get description
-                  NSString *errorMessage = [self parsedErrorMessage: error];
-                  dispatch_async(dispatch_get_main_queue(), ^{
-                                     failureBlock(errorMessage);
-                                 });
-              } else {
-                  
-                  
-                  dispatch_async(dispatch_get_main_queue(), ^{
-                                     successBlock(userInfo);
-                                 });
-              }
-          }];
+                                  [FBRequestConnection startForMeWithCompletionHandler: ^(FBRequestConnection *connection,
+                                                                                          NSDictionary < FBGraphUser > *userInfo,
+                                                                                          NSError *error) {
+                                      if (error) {
+                                          // Graph query failed, so parse NSError userInfo to get description
+                                          NSString *errorMessage = [self parsedErrorMessage: error];
+                                          dispatch_async(dispatch_get_main_queue(), ^{
+                                              failureBlock(errorMessage);
+                                          });
+                                      } else {
+                                          
+                                          
+                                          dispatch_async(dispatch_get_main_queue(), ^{
+                                              successBlock(userInfo);
+                                          });
+                                      }
+                                  }];
                                   
-     } onFailure: ^(NSString *errorMessage) {
-         
-         dispatch_async(dispatch_get_main_queue(), ^{
-                           
-                            failureBlock(errorMessage);
-                        });
-     }];
+                              }
+                              onFailure: ^(NSString *errorMessage) {
+                                  
+                                  dispatch_async(dispatch_get_main_queue(), ^{
+                                      failureBlock(errorMessage);
+                                  });
+                              }];
 }
 
 // Logout
@@ -105,18 +101,16 @@ typedef enum
     if (FBSession.activeSession.isOpen)
     {
         [FBSession.activeSession closeAndClearTokenInformation];
-        dispatch_async(dispatch_get_main_queue(), ^
-                       {
-                           successBlock();
-                       });
+        dispatch_async(dispatch_get_main_queue(), ^{
+            successBlock();
+        });
     }
     else
     {
         // If we get here, then some sort of error has occurred
-        dispatch_async(dispatch_get_main_queue(), ^
-                       {
-                           failureBlock(@"Session already open");
-                       });
+        dispatch_async(dispatch_get_main_queue(), ^{
+            failureBlock(@"Session already open");
+        });
     }
 }
 
@@ -150,19 +144,17 @@ typedef enum
                          
                          DebugLog(@"** Reauthorize: Permission denied");
                          // Something went wrong or the user refused permission to access email address
-                         dispatch_async(dispatch_get_main_queue(), ^
-                                        {
-                                            failureBlock(errorMessage);
-                                        });
+                         dispatch_async(dispatch_get_main_queue(), ^{
+                             failureBlock(errorMessage);
+                         });
                      }
                      else
                      {
                          DebugLog(@"** Reauthorize: Suceeded");
                          // OK, the user has now granted required extended permissions
-                         dispatch_async(dispatch_get_main_queue(), ^
-                                        {
-                                            successBlock();
-                                        });
+                         dispatch_async(dispatch_get_main_queue(), ^{
+                             successBlock();
+                         });
                      }
                  }];
             }
@@ -170,20 +162,18 @@ typedef enum
             {
                 DebugLog(@"** openSession: Permissions already granted");
                 // We have already been granted the required extended permissions
-                dispatch_async(dispatch_get_main_queue(), ^
-                               {
-                                   successBlock();
-                               });
+                dispatch_async(dispatch_get_main_queue(), ^{
+                    successBlock();
+                });
             }
         }
         else
         {
             DebugLog(@"** openSession: Only read permissions requested");
             // Only read permissions were requested (which will already have been granted on openActiveSessionWithReadPermissions)
-            dispatch_async(dispatch_get_main_queue(), ^
-                           {
-                               successBlock();
-                           });
+            dispatch_async(dispatch_get_main_queue(), ^{
+                successBlock();
+            });
         }
     }
     else
@@ -197,61 +187,59 @@ typedef enum
                                       completionHandler: ^(FBSession *session,
                                                            FBSessionState status,
                                                            NSError *error) {
-             NSString *errorMessage = nil;
-             
-             // Check to see if the user cancelled the log in
-             if (status == FBSessionStateClosedLoginFailed)
-             {
-                 DebugLog(@"++ openSession: Login cancelled");
-                 dispatch_async(dispatch_get_main_queue(), ^
-                                {
-                                    failureBlock(kFacebookLoginCancelled);
-                                });
-             }
-             else
-             {
-                 if (error)
-                 {
-                     // Something went wrong, so parse NSError userInfo to get description
-                     errorMessage = [self parsedErrorMessage: error];
-                     DebugLog(@"++ openSession: Error:%@", errorMessage);
-                     dispatch_async(dispatch_get_main_queue(), ^
-                                    {
-                                        failureBlock(errorMessage);
-                                    });
-                 }
-                 else
-                 {
-                     if (session.isOpen)
-                     {
-                         if (status == FBSessionStateOpen)
-                         {
-                             DebugLog(@"++ openSession: Calling recursive");
-                             // Now here's the clever bit,
-                             // Now we have an open session, call ourselves recursively
-                             [self openSessionWithPermissionType: permissionType
-                                                       onSuccess: successBlock
-                                                       onFailure: failureBlock];
-                         }
-                         else
-                         {
-                             DebugLog(@"++ openSession: Other session state, not calling recursive");
-                         }
-                     }
-                     else
-                     {
-                         DebugLog(@"++ openSession: Unknown error");
-                         // For some reason, the session is not open
-                         dispatch_async(dispatch_get_main_queue(), ^
-                                        {
-                                            failureBlock(kFacebookUnknownError);
-                                        });
-                     }
-                 }
-             }
-         }];
+                                          NSString *errorMessage = nil;
+                                          
+                                          // Check to see if the user cancelled the log in
+                                          if (status == FBSessionStateClosedLoginFailed)
+                                          {
+                                              DebugLog(@"++ openSession: Login cancelled");
+                                              dispatch_async(dispatch_get_main_queue(), ^{
+                                                  failureBlock(kFacebookLoginCancelled);
+                                              });
+                                          }
+                                          else
+                                          {
+                                              if (error)
+                                              {
+                                                  // Something went wrong, so parse NSError userInfo to get description
+                                                  errorMessage = [self parsedErrorMessage: error];
+                                                  DebugLog(@"++ openSession: Error:%@", errorMessage);
+                                                  dispatch_async(dispatch_get_main_queue(), ^{
+                                                      failureBlock(errorMessage);
+                                                  });
+                                              }
+                                              else
+                                              {
+                                                  if (session.isOpen)
+                                                  {
+                                                      if (status == FBSessionStateOpen)
+                                                      {
+                                                          DebugLog(@"++ openSession: Calling recursive");
+                                                          // Now here's the clever bit,
+                                                          // Now we have an open session, call ourselves recursively
+                                                          [self openSessionWithPermissionType: permissionType
+                                                                                    onSuccess: successBlock
+                                                                                    onFailure: failureBlock];
+                                                      }
+                                                      else
+                                                      {
+                                                          DebugLog(@"++ openSession: Other session state, not calling recursive");
+                                                      }
+                                                  }
+                                                  else
+                                                  {
+                                                      DebugLog(@"++ openSession: Unknown error");
+                                                      // For some reason, the session is not open
+                                                      dispatch_async(dispatch_get_main_queue(), ^ {
+                                                          failureBlock(kFacebookUnknownError);
+                                                      });
+                                                  }
+                                              }
+                                          }
+                                      }];
     }
 }
+
 
 #pragma mark - Posting to Wall
 
@@ -266,41 +254,33 @@ typedef enum
         
         [self openSessionWithPermissionType: kFacebookPermissionTypeRead | kFacebookPermissionTypePublish
                                   onSuccess: ^{
-                                      
-                                      [self postMessageToWall:message
-                                                    onSuccess:successBlock
-                                                    onFailure:failureBlock];
-                                     
+                                      [self postMessageToWall: message
+                                                    onSuccess: successBlock
+                                                    onFailure: failureBlock];
                                   }
                                   onFailure: ^(NSString* errorMessage) {
-                                     
-                                 }];
+                                      
+                                  }];
         
         return;
         
     }
     
-    
-    
     NSDictionary* postParams = @{@"caption" : @"First Post",
                                  @"message" : message,
                                  @"description" : message};
     
-    [FBRequestConnection startWithGraphPath:@"me/feed"
-                                 parameters:postParams
-                                 HTTPMethod:@"POST"
-                          completionHandler:^(FBRequestConnection *connection, id result, NSError *error) {
-                              
-                            
-                              if (error) {
-                                  
+    [FBRequestConnection startWithGraphPath: @"me/feed"
+                                 parameters: postParams
+                                 HTTPMethod: @"POST"
+                          completionHandler: ^(FBRequestConnection *connection, id result, NSError *error) {
+                              if (error)
+                              {
                                   failureBlock(error);
                                   return;
                               }
                               
                               successBlock();
-                              
-
                           }];
 }
 
