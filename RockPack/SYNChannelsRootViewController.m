@@ -113,7 +113,7 @@
     CGFloat topTabBarHeight = [UIImage imageNamed: @"CategoryBar"].size.height;
     
     CGRect channelCollectionViewFrame;
-    if(isIPhone)
+    if (isIPhone)
     {
         channelCollectionViewFrame = CGRectMake(0.0f, 103.0f, [[SYNDeviceManager sharedInstance] currentScreenWidth],[[SYNDeviceManager sharedInstance] currentScreenHeight] - 123.0f);
     }
