@@ -139,9 +139,10 @@
     
     
     self.refreshButton = [SYNRefreshButton refreshButton];
-    [self.refreshButton addTarget:self
-                           action:@selector(refreshButtonPressed)
-                 forControlEvents:UIControlEventTouchUpInside];
+    
+    [self.refreshButton addTarget: self
+                           action: @selector(refreshButtonPressed)
+                 forControlEvents: UIControlEventTouchUpInside];
     
     CGRect refreshButtonFrame = self.refreshButton.frame;
     refreshButtonFrame.origin.x = [[SYNDeviceManager sharedInstance] isIPad]? 10.0  : 63.0;
@@ -177,7 +178,7 @@
     [self refreshVideoThumbnails];
 }
 
--(void)refreshButtonPressed
+- (void) refreshButtonPressed
 {
     [self.refreshButton startRefreshCycle];
     [self refreshVideoThumbnails];
