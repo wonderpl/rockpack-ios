@@ -24,13 +24,21 @@
 
 #pragma mark - Accessors
 
--(void)setPage:(NSInteger)page
+-(void)setPage:(NSInteger)page animated:(BOOL)animated
 {
     if(!self.scrollEnabled)
         return;
     
     CGPoint newPoint = CGPointMake(page * [[SYNDeviceManager sharedInstance] currentScreenWidth], 0.0);
     [self setContentOffset:newPoint animated:YES];
+    
+    // we do not hold the page as an ivar because it is calculated in the getter
+}
+
+-(void)setPage:(NSInteger)page
+{
+    
+    [self setPage:page animated:NO];
     
 }
 
