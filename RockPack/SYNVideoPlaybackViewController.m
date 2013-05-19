@@ -648,7 +648,7 @@ static UIWebView* vimeoideoWebViewInstance;
 
 - (void) playYouTubeVideoWithSourceId: (NSString *) sourceId
 {
-    DebugLog(@"11111111111111111111111111111111111111111111 Playing: Load video command sent");
+    DebugLog(@"*** Playing: Load video command sent");
 
     self.notYetPlaying = TRUE;
     NSString *loadString = [NSString stringWithFormat: @"player.loadVideoById('%@', '0', '%@');", sourceId, self.videoQuality];
@@ -897,7 +897,7 @@ static UIWebView* vimeoideoWebViewInstance;
         }
         else if ([actionData isEqualToString: @"playing"])
         {
-            DebugLog(@"22222222222222222222222222222222222222222222 Playing: Starting - Fading up player");
+            DebugLog(@"*** Playing: Starting - Fading up player");
             // If we are playing then out shuttle / pause / play cycle is over
             self.shuttledByUser = TRUE;
             self.notYetPlaying = FALSE;

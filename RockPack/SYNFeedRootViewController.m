@@ -1,4 +1,4 @@
-//
+    //
 //  SYNHomeTopTabViewController.m
 //  rockpack
 //
@@ -145,7 +145,7 @@
                  forControlEvents: UIControlEventTouchUpInside];
     
     CGRect refreshButtonFrame = self.refreshButton.frame;
-    refreshButtonFrame.origin.x = [[SYNDeviceManager sharedInstance] isIPad]? 10.0  : 63.0;
+    refreshButtonFrame.origin.x = [[SYNDeviceManager sharedInstance] isIPad]? 0  : 0;
     refreshButtonFrame.origin.y = [[SYNDeviceManager sharedInstance] isIPad]? 64.0 : 10.0;
     self.refreshButton.frame = refreshButtonFrame;
     
