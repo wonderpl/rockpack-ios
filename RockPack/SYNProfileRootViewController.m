@@ -293,6 +293,8 @@
     [super viewDidLoad];
     
     
+    
+    
     self.trackedViewName = @"You - Root";
     
     // Init collection view
@@ -334,6 +336,8 @@
                                                  name: NSManagedObjectContextObjectsDidChangeNotification
                                                object: self.user.managedObjectContext];
     
+    [self.userProfileController setChannelOwner:self.user];
+    
     
 }
 
@@ -351,78 +355,7 @@
     }];
 }
 
-//-(void)longPressPerformed:(UILongPressGestureRecognizer*)recogniser
-//{
-//    if(self.deleteCellModeOn)
-//        return;
-//    
-//    switch (recogniser.state)
-//    {
-//        case UIGestureRecognizerStateBegan:
-//        {
-//            self.deleteCellModeOn = YES;
-//            
-//            
-//            
-//            //
-//            
-//            CGPoint pointClicked = [recogniser locationInView:self.channelThumbnailCollectionView];
-//            NSIndexPath *currentIndexPath = [self.channelThumbnailCollectionView indexPathForItemAtPoint:pointClicked];
-//            
-//            if(currentIndexPath.row == 0) // favourites pressed (cannot delete)
-//                return;
-//            
-//            
-//            
-//            self.cellDeleteCandidate = (SYNChannelMidCell*)[self.channelThumbnailCollectionView cellForItemAtIndexPath: currentIndexPath];
-//            
-//            self.cellDeleteCandidate.deleteButton.hidden = NO;
-//            
-//            self.tapOnScreenRecogniser = [[UITapGestureRecognizer alloc] initWithTarget:self
-//                                                                                 action:@selector(tappedOnScreen:)];
-//            
-//            [self.view addGestureRecognizer:self.tapOnScreenRecogniser];
-//            
-//            [UIView animateWithDuration: 0.2
-//                                  delay: 0.0
-//                                options: UIViewAnimationOptionBeginFromCurrentState | UIViewAnimationOptionCurveEaseOut
-//                             animations: ^{
-//                 
-//                                 self.cellDeleteCandidate.transform = CGAffineTransformMakeScale(1.05f, 1.05f);
-//                 
-//                           } completion: ^(BOOL finished) {
-//                 
-//                               [UIView animateWithDuration: 0.2
-//                                                     delay: 0.0
-//                                                   options: UIViewAnimationOptionBeginFromCurrentState | UIViewAnimationOptionCurveEaseIn
-//                                                animations: ^{
-//                                                    
-//                                                    
-//                                                    self.cellDeleteCandidate.transform = CGAffineTransformMakeScale(1.0f, 1.0f);
-//                                                    
-//                                                } completion: ^(BOOL finished) {
-//                                                    
-//                                                }];
-//                               
-//                           }];
-//            
-//            
-//        }
-//        break;
-//            
-//        default:
-//            break;
-//            
-//            
-//    }
-//}
 
-//- (void) tappedOnScreen: (UIGestureRecognizer*) recogniser
-//{
-//    self.cellDeleteCandidate.deleteButton.hidden = YES;
-//    self.deleteCellModeOn = NO;
-//    [self.view removeGestureRecognizer: self.tapOnScreenRecogniser];
-//}
 
 #pragma mark - gesture-recognition action methods
 
@@ -487,7 +420,6 @@
 {
     [super viewWillAppear: animated];
     
-    [self.userProfileController setChannelOwner:self.user];
     
     self.subscriptionsViewController.collectionView.delegate = self;
     

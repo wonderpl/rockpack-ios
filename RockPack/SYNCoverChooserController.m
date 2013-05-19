@@ -30,7 +30,7 @@
 
 @property (nonatomic, strong) IBOutlet UICollectionView *collectionView;
 
-
+@property (nonatomic, strong) NSIndexPath* indexPathSelected;
 
 @property (nonatomic, weak) SYNAppDelegate* appDelegate;
 
@@ -165,6 +165,8 @@
 - (void) collectionView: (UICollectionView *) collectionView
          didSelectItemAtIndexPath: (NSIndexPath *) indexPath
 {
+    self.indexPathSelected = indexPath;
+    
     [self.collectionView scrollToItemAtIndexPath: indexPath
                                 atScrollPosition: UICollectionViewScrollPositionNone
                                         animated: YES];
@@ -265,7 +267,16 @@
 
 
 
+#pragma mark - Autorotate Support
 
+-(void)willAnimateRotationToInterfaceOrientation:(UIInterfaceOrientation)toInterfaceOrientation duration:(NSTimeInterval)duration
+{
+    [super willAnimateRotationToInterfaceOrientation:toInterfaceOrientation duration:duration];
+    
+    [self.collectionView scrollToItemAtIndexPath: self.indexPathSelected
+                                atScrollPosition: UICollectionViewScrollPositionNone
+                                        animated: YES];
+}
 
 
 @end

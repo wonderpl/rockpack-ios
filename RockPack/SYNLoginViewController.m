@@ -145,6 +145,9 @@
         }
     
         self.state = kLoginScreenStateInitial;
+    
+        UITapGestureRecognizer* tapGesture = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(outerViewTapped:)];
+        [self.view addGestureRecognizer:tapGesture];
 
 }
 
@@ -1099,8 +1102,7 @@
     
     errorArrow.alpha = 0.0;
     
-    UITapGestureRecognizer* tapGesture = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(errorArrowTapped:)];
-    [errorArrow addGestureRecognizer:tapGesture];
+    
     
     [UIView animateWithDuration: 0.2
                      animations: ^{
@@ -1112,26 +1114,21 @@
 }
 
 
-- (void) errorArrowTapped: (UITapGestureRecognizer*) recogniser
+- (void) outerViewTapped: (UITapGestureRecognizer*) recogniser
 {
-    SYNLoginErrorArrow* arrowTapped = (SYNLoginErrorArrow*)recogniser.view;
+    
     
     [labelsToErrorArrows enumerateKeysAndObjectsUsingBlock:^(id key, id value, BOOL* stop){
         
         SYNLoginErrorArrow* arrow = (SYNLoginErrorArrow*)value;
-        if (arrow == arrowTapped)
-        {
-            [UIView animateWithDuration:0.2
-                             animations: ^{
-                                 arrow.alpha = 0.0;
-                             }
-                             completion: ^(BOOL finished) {
-                                 [labelsToErrorArrows removeObjectForKey:key];
-                                 [arrow removeFromSuperview];
-                             }];
-
-            return;
-        }
+        [UIView animateWithDuration:0.2
+                         animations: ^{
+                             arrow.alpha = 0.0;
+                         }
+                         completion: ^(BOOL finished) {
+                             [labelsToErrorArrows removeObjectForKey:key];
+                             [arrow removeFromSuperview];
+                         }];
     }];
 }
 

@@ -99,6 +99,10 @@
         addButtonFrame.origin.x = 884.0f;
         addButtonFrame.origin.y = 80.0f;
         self.addButton.frame = addButtonFrame;
+        
+        
+        self.addButton.autoresizingMask = UIViewAutoresizingFlexibleLeftMargin | UIViewAutoresizingFlexibleBottomMargin;
+        
         [self.view addSubview:addButton];
     }
     
@@ -343,6 +347,7 @@
 {
     SYNChannelDetailViewController *channelVC = [[SYNChannelDetailViewController alloc] initWithChannel: channel
                                                                                               usingMode: kChannelDetailsModeDisplay];
+    
     
     [self animatedPushViewController: channelVC];
 }

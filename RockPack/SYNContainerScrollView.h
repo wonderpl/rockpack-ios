@@ -12,4 +12,6 @@
 
 @property (nonatomic) NSInteger page;
 
+-(void)setPage:(NSInteger)page animated:(BOOL)animated;
+
 @end

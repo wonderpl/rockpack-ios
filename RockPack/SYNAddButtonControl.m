@@ -42,7 +42,6 @@
         
         
         
-        button.autoresizingMask = UIViewAutoresizingFlexibleLeftMargin | UIViewAutoresizingFlexibleBottomMargin;
         
         [button addTarget:self
                    action:@selector(buttonPressed:)

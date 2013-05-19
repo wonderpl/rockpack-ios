@@ -138,7 +138,7 @@
     
     [self packViewControllersForInterfaceOrientation:UIDeviceOrientationLandscapeLeft];
     
-    self.selectedNavigationController = self.childViewControllers[0];
+    
     
     
     
@@ -149,6 +149,22 @@
     
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(profileRequested:) name:kProfileRequested object:nil];
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(channelDetailsRequested:) name:kChannelDetailsRequested object:nil];
+    
+    
+    // == Set Firts Page == //
+    
+    
+    
+    if(appDelegate.currentUser.subscriptions.count > 3)
+    {
+        self.selectedNavigationController = self.childViewControllers[0];
+        // page is set automatically because it is the first one
+    }
+    else
+    {
+        self.selectedNavigationController = self.childViewControllers[1];
+        self.scrollView.page = 1;
+    }
 }
 
 -(void) viewWillAppear:(BOOL)animated
@@ -259,24 +275,14 @@
     for (UINavigationController* nvc in self.childViewControllers)
     {
         if([pageName isEqualToString:nvc.title]) {
-            self.scrollView.page = page;
+            [self.scrollView setPage:page animated:YES];
             break;
         }
         page++;
     }
 }
 
--(void)navigateToPageByName:(NSString *)pageName byPoppingNagivationController:(BOOL)pop
-{
-    if(!pop) {
-        [self navigateToPageByName:pageName];
-    } else {
-        [self.showingViewController animatedPopViewController];
-        [self navigateToPageByName:pageName];
-    }
-    
-    
-}
+
 
 #pragma mark - UIScrollViewDelegate
 
