@@ -100,12 +100,28 @@
         selfFrame.size.width = maxSize.width + self.fullNameLabel.frame.origin.x + 30.0;
         self.view.frame = selfFrame;
     }
-
     
-
-    [self.profileImageView setImageWithURL: [NSURL URLWithString: channelOwner.thumbnailURL]
-                          placeholderImage: [UIImage imageNamed: @"PlaceholderAvatarProfile.png"]
-                                   options: SDWebImageRetryFailed];
+    UIImage* placeholderImage = [UIImage imageNamed: @"PlaceholderAvatarProfile.png"];
+    
+    if(![channelOwner.thumbnailURL isEqualToString:@""]) // there is a url string
+    {
+        NSArray *thumbnailURLItems = [channelOwner.thumbnailURL componentsSeparatedByString:@"/"];
+        
+        // whatever is set to be the default size by the server (ex. 'thumbnail_small') //
+        NSString* thumbnailSizeString = thumbnailURLItems[5];
+        
+        
+        NSString* thumbnailUrlString = [channelOwner.thumbnailURL stringByReplacingOccurrencesOfString:thumbnailSizeString withString:@"thumbnail_medium"];
+        
+        [self.profileImageView setImageWithURL: [NSURL URLWithString: thumbnailUrlString]
+                              placeholderImage: placeholderImage
+                                       options: SDWebImageRetryFailed];
+    }
+    else
+    {
+        self.profileImageView.image = placeholderImage;
+    }
+    
     
     
     [self pack];

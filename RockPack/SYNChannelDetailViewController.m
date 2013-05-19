@@ -204,9 +204,28 @@
     
     // == Avatar Image == //
     
-    [self.avatarImageView setImageWithURL: [NSURL URLWithString: self.channel.channelOwner.thumbnailURL]
-                         placeholderImage: [UIImage imageNamed: @"PlaceholderAvatarChannel.png"]
-                                  options: SDWebImageRetryFailed];
+    UIImage* placeholderImage = [UIImage imageNamed: @"PlaceholderAvatarProfile.png"];
+    
+    if(![self.channel.channelOwner.thumbnailURL isEqualToString:@""]) // there is a url string
+    {
+        NSArray *thumbnailURLItems = [self.channel.channelOwner.thumbnailURL componentsSeparatedByString:@"/"];
+        
+        // whatever is set to be the default size by the server (ex. 'thumbnail_small') //
+        NSString* thumbnailSizeString = thumbnailURLItems[5];
+        
+        
+        NSString* thumbnailUrlString = [self.channel.channelOwner.thumbnailURL stringByReplacingOccurrencesOfString:thumbnailSizeString withString:@"thumbnail_large"];
+        
+        [self.avatarImageView setImageWithURL: [NSURL URLWithString: thumbnailUrlString]
+                             placeholderImage: placeholderImage
+                                      options: SDWebImageRetryFailed];
+    }
+    else
+    {
+        self.avatarImageView.image = placeholderImage;
+    }
+    
+    
     
     
     

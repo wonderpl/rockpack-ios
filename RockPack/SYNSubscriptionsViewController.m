@@ -94,8 +94,6 @@
     
     
     
-        
-    
     Channel *channel = self.user.subscriptions[indexPath.item];
     
     SYNChannelMidCell *channelThumbnailCell = [cv dequeueReusableCellWithReuseIdentifier: @"SYNChannelMidCell"

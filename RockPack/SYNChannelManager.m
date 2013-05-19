@@ -256,7 +256,7 @@
                                        
                                        [channel setAttributesFromDictionary: responseDictionary
                                                                      withId: channel.uniqueId
-                                                        ignoringObjectTypes: kIgnoreNothing
+                                                        ignoringObjectTypes: kIgnoreChannelOwnerObject
                                                                   andViewId: kChannelDetailsViewId];
                                        
              

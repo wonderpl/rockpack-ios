@@ -338,6 +338,7 @@
     SYNChannelDetailViewController *channelVC = [[SYNChannelDetailViewController alloc] initWithChannel: channel
                                                                                               usingMode: kChannelDetailsModeDisplay];
     
+    
     [self animatedPushViewController: channelVC];
 }
 
