@@ -284,7 +284,9 @@
         [self.selectCategoryButton setAttributedTitle: attributedCategoryString
                                              forState: UIControlStateNormal];
         self.coverChooserController = [[SYNCoverChooserController alloc] init];
+        [self addChildViewController:self.coverChooserController];
         self.coverChooserMasterView = self.coverChooserController.view;
+        
     }
     else
     {
