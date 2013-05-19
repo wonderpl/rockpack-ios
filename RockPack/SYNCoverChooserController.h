@@ -9,10 +9,11 @@
 #import <UIKit/UIKit.h>
 #import <CoreData/CoreData.h>
 
-@interface SYNCoverChooserController : UIViewController <UICollectionViewDataSource, UICollectionViewDelegate , NSFetchedResultsControllerDelegate>
+@interface SYNCoverChooserController : UIViewController <UICollectionViewDataSource,
+                                                         UICollectionViewDelegate ,
+                                                         NSFetchedResultsControllerDelegate>
 
 @property (nonatomic, readonly) UICollectionView* collectionView;
-
 @property (nonatomic, strong) IBOutlet UIButton *cameraButton;
 
 -(void)updateCoverArt;

@@ -41,6 +41,7 @@
                                               SYNChannelCategoryTableViewDelegate,
                                               SYNChannelCoverImageSelectorDelegate>
 
+@property (nonatomic, assign, getter = isImageSelectorOpen) BOOL imageSelectorOpen;
 @property (nonatomic, assign)  CGPoint originalContentOffset;
 @property (nonatomic, strong) GKImagePicker *imagePicker;
 @property (nonatomic, strong) IBOutlet SSTextView *channelTitleTextView;
@@ -869,6 +870,17 @@
 
 - (IBAction) addCoverButtonTapped: (UIButton *) button
 {
+    // Prevent multiple clicks of the add cover button on iPhoen
+    if ([[SYNDeviceManager sharedInstance] isIPhone])
+    {
+        if (self.isImageSelectorOpen == TRUE)
+        {
+            return;
+        }
+        
+        self.imageSelectorOpen = TRUE;
+    }
+    
     [self.channelTitleTextView resignFirstResponder];
     [self showCoverChooser];
     [self hideCategoryChooser];
@@ -985,31 +997,32 @@
 {
     if ([[SYNDeviceManager sharedInstance] isIPad])
     {
-    if (self.coverChooserMasterView.alpha == 0.0f)
-    {
-        
-        [self.coverChooserController updateCoverArt];
-
-        self.originalContentOffset = CGPointMake (0, kChannelCreationCollectionViewOffsetY +
-                                                     kChannelCreationCategoryAdditionalOffsetY);
-        
-        [UIView animateWithDuration: kChannelEditModeAnimationDuration
-                         animations: ^{
-                             // Fade up the category tab controller
-                             self.coverChooserMasterView.alpha = 1.0f;
-                             
-                             // slide down the video collection view a bit
-                             self.videoThumbnailCollectionView.contentInset = UIEdgeInsetsMake(kChannelCreationCollectionViewOffsetY +
-                                                                                               kChannelCreationCategoryAdditionalOffsetY, 0, 0, 0);
-                             
-                             self.videoThumbnailCollectionView.contentOffset = CGPointMake (0, -(kChannelCreationCollectionViewOffsetY +
-                                                                                                 kChannelCreationCategoryAdditionalOffsetY));
-                         }
-                         completion: nil];
-    }
+        // Check to see if we are already display the cover chooser
+        if (self.coverChooserMasterView.alpha == 0.0f)
+        {
+            
+            [self.coverChooserController updateCoverArt];
+            
+            self.originalContentOffset = CGPointMake (0, kChannelCreationCollectionViewOffsetY +
+                                                      kChannelCreationCategoryAdditionalOffsetY);
+            
+            [UIView animateWithDuration: kChannelEditModeAnimationDuration
+                             animations: ^{
+                                 // Fade up the category tab controller
+                                 self.coverChooserMasterView.alpha = 1.0f;
+                                 
+                                 // slide down the video collection view a bit
+                                 self.videoThumbnailCollectionView.contentInset = UIEdgeInsetsMake(kChannelCreationCollectionViewOffsetY +
+                                                                                                   kChannelCreationCategoryAdditionalOffsetY, 0, 0, 0);
+                                 
+                                 self.videoThumbnailCollectionView.contentOffset = CGPointMake (0, -(kChannelCreationCollectionViewOffsetY +
+                                                                                                     kChannelCreationCategoryAdditionalOffsetY));
+                             }
+                             completion: nil];
+        }
     }
     else
-    {        
+    {
         self.coverImageSelector = [[SYNChannelCoverImageSelectorViewController alloc] init];
         self.coverImageSelector.imageSelectorDelegate = self;
         CGRect startFrame = self.coverImageSelector.view.frame;
@@ -1070,6 +1083,14 @@
             self.categoryTableViewController = [[SYNChannelCategoryTableViewController alloc] initWithNibName:@"SYNChannelCategoryTableViewControllerFullscreen~iphone" bundle: [NSBundle mainBundle]];
             self.categoryTableViewController.categoryTableControllerDelegate = self;
             self.categoryTableViewController.showAllCategoriesHeader = NO;
+        }
+        else
+        {
+            // Check to see if the panel is already displayed (prevent multiple taps on choose category button)
+            if (self.categoryTableViewController.view.frame.origin.y == 0.0f)
+            {
+                return;
+            }
         }
         CGRect startFrame = self.categoryTableViewController.view.frame;
         startFrame.origin.y = self.view.frame.size.height;
@@ -1760,6 +1781,8 @@
                          [self.coverImageSelector.view removeFromSuperview];
                          self.coverImageSelector = nil;
                      }];
+    
+    self.imageSelectorOpen = FALSE;
 }
 
 

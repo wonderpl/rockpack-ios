@@ -86,18 +86,26 @@
 {
     // Google Analytics support
     self.trackedViewName = @"Channels - Root";
-    
     BOOL isIPhone = [[SYNDeviceManager sharedInstance] isIPhone];
     
     SYNIntegralCollectionViewFlowLayout* flowLayout;
-    if(isIPhone)
+    
+    if (isIPhone)
     {
-        flowLayout = [SYNIntegralCollectionViewFlowLayout layoutWithItemSize:CGSizeMake(152.0f, 167.0f) minimumInterItemSpacing:0.0 minimumLineSpacing:6.0 scrollDirection:UICollectionViewScrollDirectionVertical sectionInset:UIEdgeInsetsMake(5.0, 5.0, 5.0, 5.0)];
+        flowLayout = [SYNIntegralCollectionViewFlowLayout layoutWithItemSize: CGSizeMake(152.0f, 167.0f)
+                                                     minimumInterItemSpacing: 0.0
+                                                          minimumLineSpacing: 6.0
+                                                             scrollDirection: UICollectionViewScrollDirectionVertical
+                                                                sectionInset: UIEdgeInsetsMake(5.0, 5.0, 5.0, 5.0)];
         flowLayout.footerReferenceSize = [self footerSize];
     }
     else
     {
-        flowLayout = [SYNIntegralCollectionViewFlowLayout layoutWithItemSize:[self itemSize] minimumInterItemSpacing:0.0 minimumLineSpacing:0.0 scrollDirection:UICollectionViewScrollDirectionVertical sectionInset:UIEdgeInsetsMake(6.0, 6.0, 5.0, 6.0)];
+        flowLayout = [SYNIntegralCollectionViewFlowLayout layoutWithItemSize: [self itemSize]
+                                                     minimumInterItemSpacing: 0.0
+                                                          minimumLineSpacing: 0.0
+                                                             scrollDirection: UICollectionViewScrollDirectionVertical
+                                                                sectionInset: UIEdgeInsetsMake(6.0, 6.0, 5.0, 6.0)];
         flowLayout.footerReferenceSize = [self footerSize];
     }
     
@@ -189,17 +197,20 @@
     currentGenre = nil;
     
     [self loadChannelsForGenre:nil];
-    
 }
+
 
 #pragma mark - Loading of Channels
 
--(void)loadChannelsForGenre:(Genre*)genre
+- (void) loadChannelsForGenre: (Genre*) genre
 {
-    [self loadChannelsForGenre:genre byAppending:NO];
+    [self loadChannelsForGenre: genre
+                   byAppending: NO];
 }
 
--(void)loadChannelsForGenre:(Genre*)genre byAppending:(BOOL)append
+
+- (void) loadChannelsForGenre: (Genre*) genre
+                  byAppending: (BOOL) append
 {
     
     NSLog(@"Loading Channels %i to %i from %i total", (dataRequestRange.location - 1), (dataRequestRange.location - 1) + (dataRequestRange.length - 1), dataItemsAvailable);
@@ -247,11 +258,10 @@
                                                   }];
 }
 
+
 - (void) loadMoreChannels: (UIButton*) sender
 {
-    
     // (UIButton*) sender can be nil when called directly //
-    
     self.footerView.showsLoading = YES;
     
     NSInteger nextStart = dataRequestRange.location + dataRequestRange.length; // one is subtracted when the call happens for 0 indexing
@@ -261,47 +271,41 @@
     
     NSInteger nextSize = (nextStart + STANDARD_REQUEST_LENGTH) >= dataItemsAvailable ? (dataItemsAvailable - nextStart) : STANDARD_REQUEST_LENGTH;
     
-    
     dataRequestRange = NSMakeRange(nextStart, nextSize);
-    
-    
-    
-    [self loadChannelsForGenre:currentGenre byAppending:YES];
+
+    [self loadChannelsForGenre: currentGenre
+                   byAppending: YES];
 }
 
--(void)displayChannelsForGenre:(Genre*)genre
+
+- (void) displayChannelsForGenre: (Genre*) genre
 {
-    
-    
     NSFetchRequest *request = [[NSFetchRequest alloc] init];
-    [request setEntity:[NSEntityDescription entityForName:@"Channel"
-                                   inManagedObjectContext:appDelegate.mainManagedObjectContext]];
-    
+    [request setEntity:[NSEntityDescription entityForName: @"Channel"
+                                   inManagedObjectContext: appDelegate.mainManagedObjectContext]];
     
     NSPredicate* genrePredicate;
     
-    if(!genre) // all category
+    if (!genre) // all category
     {
-        genrePredicate = [NSPredicate predicateWithFormat:@"popular == YES"];
+        genrePredicate = [NSPredicate predicateWithFormat: @"popular == YES"];
     }
     else
     {
         if([genre isMemberOfClass:[Genre class]]) // no isKindOfClass: which will always return true in this case
         {
-            genrePredicate = [NSPredicate predicateWithFormat:@"categoryId IN %@", [genre getSubGenreIdArray]];
+            genrePredicate = [NSPredicate predicateWithFormat: @"categoryId IN %@", [genre getSubGenreIdArray]];
         }
         else
         {
-            genrePredicate = [NSPredicate predicateWithFormat:@"categoryId == %@", genre.uniqueId];
+            genrePredicate = [NSPredicate predicateWithFormat: @"categoryId == %@", genre.uniqueId];
         }
     }
     
-    NSPredicate* notOwnedByUserPredicate = [NSPredicate predicateWithFormat:@"channelOwner.uniqueId != %@", appDelegate.currentUser.uniqueId];
+    NSPredicate* notOwnedByUserPredicate = [NSPredicate predicateWithFormat: @"channelOwner.uniqueId != %@", appDelegate.currentUser.uniqueId];
     
-    NSPredicate* finalPredicate = [NSCompoundPredicate andPredicateWithSubpredicates:@[genrePredicate, notOwnedByUserPredicate]];
-    
-    
-    
+    NSPredicate* finalPredicate = [NSCompoundPredicate andPredicateWithSubpredicates: @[genrePredicate, notOwnedByUserPredicate]];
+
     [request setPredicate:finalPredicate];
     
     NSSortDescriptor *positionDescriptor = [[NSSortDescriptor alloc] initWithKey:@"position"
@@ -310,7 +314,8 @@
     [request setSortDescriptors:@[positionDescriptor]];
     
     NSError *error = nil;
-    NSArray *resultsArray = [appDelegate.mainManagedObjectContext executeFetchRequest:request error:&error];
+    NSArray *resultsArray = [appDelegate.mainManagedObjectContext executeFetchRequest: request
+                                                                                error: &error];
     if (!resultsArray)
         return;
     
@@ -329,6 +334,7 @@
     self.touchedChannelButton = NO;
 }
 
+
 -(void)viewCameToScrollFront
 {
     //NSLog(@"Current Genre: %@", currentGenre);
@@ -339,19 +345,15 @@
 #pragma mark - Helper methods
 
 
--(CGSize)itemSize
+- (CGSize) itemSize
 {
-    return [[SYNDeviceManager sharedInstance] isIPhone]? CGSizeMake(152.0f, 152.0f) : CGSizeMake(251.0, 274.0);
+    return [[SYNDeviceManager sharedInstance] isIPhone] ? CGSizeMake(152.0f, 152.0f) : CGSizeMake(251.0, 274.0);
 }
 
--(CGSize)footerSize
+- (CGSize) footerSize
 {
-    return [[SYNDeviceManager sharedInstance] isIPhone]? CGSizeMake(320.0f, 64.0f) : CGSizeMake(1024.0, 64.0);
+    return [[SYNDeviceManager sharedInstance] isIPhone] ? CGSizeMake(320.0f, 64.0f) : CGSizeMake(1024.0, 64.0);
 }
-
-
-
-
 
 
 #pragma mark - CollectionView Delegate
@@ -361,7 +363,8 @@
     return 1;
 }
 
-- (NSInteger) collectionView: (UICollectionView *) view numberOfItemsInSection: (NSInteger) section
+- (NSInteger) collectionView: (UICollectionView *) view
+      numberOfItemsInSection: (NSInteger) section
 {
     return self.channels.count;
 
@@ -369,15 +372,14 @@
 
 
 
-- (UICollectionViewCell *) collectionView: (UICollectionView *) collectionView cellForItemAtIndexPath: (NSIndexPath *) indexPath
+- (UICollectionViewCell *) collectionView: (UICollectionView *) collectionView
+                   cellForItemAtIndexPath: (NSIndexPath *) indexPath
 {
     Channel *channel = self.channels[indexPath.row];
     
     SYNChannelThumbnailCell *channelThumbnailCell = [collectionView dequeueReusableCellWithReuseIdentifier: @"SYNChannelThumbnailCell"
                                                                                               forIndexPath: indexPath];
     
-    
-
     [channelThumbnailCell.imageView setImageWithURL: [NSURL URLWithString: channel.channelCover.imageLargeUrl]
                                    placeholderImage: [UIImage imageNamed: @"PlaceholderChannel.png"]
                                             options: SDWebImageRetryFailed];
@@ -385,12 +387,12 @@
     [channelThumbnailCell setChannelTitle: channel.title];
     channelThumbnailCell.displayNameLabel.text = [NSString stringWithFormat: @"%@", channel.channelOwner.displayName];
     channelThumbnailCell.viewControllerDelegate = self;
-    
 
     return channelThumbnailCell;
 }
 
-- (void)displayNameButtonPressed: (UIButton*) button
+
+- (void) displayNameButtonPressed: (UIButton*) button
 {
     
     
@@ -459,9 +461,6 @@
         [self viewChannelDetails:channel];
     }
 }
-
-
-
 
 
 #ifdef ALLOWS_PINCH_GESTURES
@@ -643,22 +642,16 @@
 
 - (void) handleNewTabSelectionWithGenre: (Genre *) genre
 {
-    
-
-    if([currentGenre.uniqueId isEqualToString:genre.uniqueId])
+    if ([currentGenre.uniqueId isEqualToString: genre.uniqueId])
     {
         return;
     }
-    
-    
-    
+
     currentCategoryId = genre.uniqueId;
 
     dataRequestRange = NSMakeRange(1, STANDARD_REQUEST_LENGTH);
-    
-    
-    
-    if(genre == nil)
+
+    if (genre == nil)
     {
         // all category chosen
         currentCategoryId = @"all";
@@ -667,36 +660,38 @@
     else
     {
         currentCategoryId = genre.uniqueId;
-        currentGenre = genre;
-        
-        
+        currentGenre = genre; 
     }
     
     CGPoint currentOffset = self.channelThumbnailCollectionView.contentOffset;
     currentOffset.y = 0;
-    [self.channelThumbnailCollectionView setContentOffset:currentOffset animated:YES];
     
+    // Need to do this immediately, as opposed to animated or we may get strange offsets
+    [self.channelThumbnailCollectionView setContentOffset: currentOffset
+                                                 animated: NO];
     
-    [self loadChannelsForGenre:genre];
-    
-
+    [self loadChannelsForGenre: genre];
 }
 
--(void)clearedLocationBoundData
+- (void) clearedLocationBoundData
 {
     dataRequestRange = NSMakeRange(1, STANDARD_REQUEST_LENGTH);
     
-    [self loadChannelsForGenre:nil];
+    [self loadChannelsForGenre: nil];
 }
 
 
 #pragma mark - categories tableview
 
--(void)layoutChannelsCategoryTable
+- (void) layoutChannelsCategoryTable
 {
-    self.categorySelectDismissControl = [[UIControl alloc] initWithFrame:self.view.bounds];
-    [self.view addSubview:self.categorySelectDismissControl];
-    [self.categorySelectDismissControl addTarget:self action:@selector(toggleChannelsCategoryTable:) forControlEvents:UIControlEventTouchDown];
+    self.categorySelectDismissControl = [[UIControl alloc] initWithFrame: self.view.bounds];
+    [self.view addSubview: self.categorySelectDismissControl];
+    
+    [self.categorySelectDismissControl addTarget: self
+                                          action: @selector(toggleChannelsCategoryTable:)
+                                forControlEvents: UIControlEventTouchDown];
+    
     self.categorySelectDismissControl.hidden = YES;
     
     
@@ -712,11 +707,19 @@
     newFrame.origin.y -= 44.0f;
     newFrame.size.height = 44.0f;
     newFrame.size.width = 320.0f;
-    self.categorySelectButton = [[UIButton alloc] initWithFrame:newFrame];
-    [self.categorySelectButton setBackgroundImage:[UIImage imageNamed:@"CategoryBar"] forState:UIControlStateNormal];
-    [self.categorySelectButton setBackgroundImage:[UIImage imageNamed:@"CategoryBarHighlighted"] forState:UIControlStateHighlighted];
-    [self.categorySelectButton addTarget:self action:@selector(toggleChannelsCategoryTable:) forControlEvents:UIControlEventTouchUpInside];
-    [self.view addSubview:self.categorySelectButton];
+    self.categorySelectButton = [[UIButton alloc] initWithFrame: newFrame];
+    
+    [self.categorySelectButton setBackgroundImage: [UIImage imageNamed: @"CategoryBar"]
+                                         forState: UIControlStateNormal];
+    
+    [self.categorySelectButton setBackgroundImage: [UIImage imageNamed: @"CategoryBarHighlighted"]
+                                         forState: UIControlStateHighlighted];
+    
+    [self.categorySelectButton addTarget: self
+                                  action: @selector(toggleChannelsCategoryTable:)
+                        forControlEvents: UIControlEventTouchUpInside];
+    
+    [self.view addSubview: self.categorySelectButton];
     
     newFrame.origin.x = 40.0f;
     newFrame.origin.y += 3.0f;
@@ -724,8 +727,8 @@
     
     UILabel* newLabel = [[UILabel alloc] initWithFrame:newFrame];
     newLabel.font = [UIFont boldRockpackFontOfSize:18.0f];
-    newLabel.textColor = [UIColor colorWithRed:106.0f/255.0f green:114.0f/255.0f blue:122.0f/255.0f alpha:1.0f];
-    newLabel.shadowColor = [UIColor colorWithWhite:1.0f alpha:0.75f];
+    newLabel.textColor = [UIColor colorWithRed: 106.0f/255.0f green: 114.0f/255.0f blue: 122.0f/255.0f alpha: 1.0f];
+    newLabel.shadowColor = [UIColor colorWithWhite: 1.0f alpha: 0.75f];
     newLabel.shadowOffset = CGSizeMake(0.0f, 1.0f);
     newLabel.text = NSLocalizedString(@"ALL CATEGORIES",nil);
     newLabel.backgroundColor = [UIColor clearColor];
@@ -734,10 +737,10 @@
     center.x = newLabel.center.x;
     newLabel.center = center;
     self.categoryNameLabel = newLabel;
-    [self.view addSubview:self.categoryNameLabel];
+    [self.view addSubview: self.categoryNameLabel];
     
     
-    newLabel = [[UILabel alloc] initWithFrame:self.categoryNameLabel.frame];
+    newLabel = [[UILabel alloc] initWithFrame: self.categoryNameLabel.frame];
     newLabel.font = self.categoryNameLabel.font;
     newLabel.textColor = self.categoryNameLabel.textColor;
     newLabel.shadowColor = self.categoryNameLabel.shadowColor;
@@ -749,20 +752,20 @@
     self.subCategoryNameLabel = newLabel;
     [self.view addSubview:self.subCategoryNameLabel];
     
-    self.arrowImage =[[UIImageView alloc] initWithImage:[UIImage imageNamed:@"IconCategoryBarChevron~iphone"]];
+    self.arrowImage =[[UIImageView alloc] initWithImage: [UIImage imageNamed: @"IconCategoryBarChevron~iphone"]];
     center.y -= 4.0f;
     self.arrowImage.center = center;
     self.arrowImage.hidden = YES;
-    [self.view addSubview:self.arrowImage];
+    [self.view addSubview: self.arrowImage];
     
     
     
     
 }
 
--(void)toggleChannelsCategoryTable:(id)sender
+- (void) toggleChannelsCategoryTable: (id) sender
 {
-    if(self.categoryTableViewController.view.hidden)
+    if (self.categoryTableViewController.view.hidden)
     {
         CGRect startFrame = self.categoryTableViewController.view.frame;
         startFrame.origin.x = -startFrame.size.width;
@@ -770,36 +773,45 @@
         self.categoryTableViewController.view.hidden = NO;
         self.categorySelectDismissControl.hidden = NO;
         
-        [UIView animateWithDuration:0.2f delay:0.0f options:UIViewAnimationOptionCurveEaseOut animations:^{
-            CGRect endFrame = self.categoryTableViewController.view.frame;
-            endFrame.origin.x = 0;
-            self.categoryTableViewController.view.frame = endFrame;
-        } completion:nil];
-     }
+        [UIView animateWithDuration: 0.2f
+                              delay: 0.0f
+                            options: UIViewAnimationOptionCurveEaseOut
+                         animations: ^{
+                             CGRect endFrame = self.categoryTableViewController.view.frame;
+                             endFrame.origin.x = 0;
+                             self.categoryTableViewController.view.frame = endFrame;
+                         }
+                         completion: nil];
+    }
     else
     {
         self.categorySelectDismissControl.hidden = YES;
-        [UIView animateWithDuration:0.2f delay:0.0f options:UIViewAnimationOptionCurveEaseIn animations:^{
-            CGRect endFrame = self.categoryTableViewController.view.frame;
-            endFrame.origin.x = -endFrame.size.width;
-            self.categoryTableViewController.view.frame = endFrame;
-        } completion:^(BOOL finished) {
-            self.categoryTableViewController.view.hidden = YES;
-        }];
+        [UIView animateWithDuration: 0.2f
+                              delay: 0.0f
+                            options: UIViewAnimationOptionCurveEaseIn
+                         animations: ^{
+                             CGRect endFrame = self.categoryTableViewController.view.frame;
+                             endFrame.origin.x = -endFrame.size.width;
+                             self.categoryTableViewController.view.frame = endFrame;
+                         }
+                         completion: ^(BOOL finished) {
+                             self.categoryTableViewController.view.hidden = YES;
+                         }];
     }
 }
 
 
 
--(void)categoryTableController:(SYNChannelCategoryTableViewController *)tableController didSelectCategory:(Genre *)category
+- (void) categoryTableController: (SYNChannelCategoryTableViewController *) tableController
+               didSelectCategory: (Genre *) category
 {
-    if(category)
+    if (category)
     {
         self.categoryNameLabel.text = category.name;
         [self.categoryNameLabel sizeToFit];
         self.subCategoryNameLabel.hidden = YES;
         self.arrowImage.hidden = YES;
-        [self handleNewTabSelectionWithGenre:category];
+        [self handleNewTabSelectionWithGenre: category];
     }
     else
     {
@@ -807,11 +819,13 @@
         [self.categoryNameLabel sizeToFit];
         self.subCategoryNameLabel.hidden = YES;
         self.arrowImage.hidden = YES;
-        [self handleNewTabSelectionWithGenre:nil];
+        [self handleNewTabSelectionWithGenre: nil];
     }
 }
 
--(void)categoryTableController:(SYNChannelCategoryTableViewController *)tableController didSelectSubCategory:(SubGenre *)subCategory
+
+- (void) categoryTableController: (SYNChannelCategoryTableViewController *) tableController
+            didSelectSubCategory: (SubGenre *) subCategory
 {
     self.categoryNameLabel.text = subCategory.genre.name;
     [self.categoryNameLabel sizeToFit];
@@ -829,13 +843,14 @@
     self.subCategoryNameLabel.frame = newFrame;
     
 
-    [self handleNewTabSelectionWithId:subCategory.uniqueId];
+    [self handleNewTabSelectionWithId: subCategory.uniqueId];
     [self handleNewTabSelectionWithGenre: subCategory];
 
     [self toggleChannelsCategoryTable:nil];
 }
 
--(void)categoryTableControllerDeselectedAll:(SYNChannelCategoryTableViewController *)tableController
+
+- (void) categoryTableControllerDeselectedAll: (SYNChannelCategoryTableViewController *) tableController
 {
     self.categoryNameLabel.text = NSLocalizedString(@"ALL CATEGORIES",nil);
     [self.categoryNameLabel sizeToFit];
@@ -845,9 +860,7 @@
     [self handleNewTabSelectionWithId: @"all"];
     [self handleNewTabSelectionWithGenre: nil];
     
-    [self toggleChannelsCategoryTable:nil];
+    [self toggleChannelsCategoryTable: nil];
 }
-
-
 
 @end

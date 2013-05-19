@@ -6,58 +6,55 @@
 //  Copyright (c) 2013 Nick Banks. All rights reserved.
 //
 
-#import "SYNCoverChooserController.h"
-#import "SYNChannelCoverImageCell.h"
-#import "SYNCoverThumbnailCell.h"
-#import "CoverArt.h"
 #import "AppConstants.h"
 #import "Channel.h"
 #import "ChannelCover.h"
-#import "SDWebImageManager.h"
-#import "UIImageView+WebCache.h"
-#import "SYNAppDelegate.h"
-#import "SYNPopoverBackgroundView.h"
-#import "SYNCameraPopoverViewController.h"
+#import "CoverArt.h"
 #import "GKImagePicker.h"
-#import "SYNOAuthNetworkEngine.h"
-#import "SYNNetworkEngine.h"
+#import "SDWebImageManager.h"
+#import "SYNAppDelegate.h"
+#import "SYNCameraPopoverViewController.h"
+#import "SYNChannelCoverImageCell.h"
 #import "SYNChannelCoverImageSelectorViewController.h"
+#import "SYNCoverChooserController.h"
+#import "SYNCoverThumbnailCell.h"
+#import "SYNNetworkEngine.h"
+#import "SYNOAuthNetworkEngine.h"
+#import "SYNPopoverBackgroundView.h"
+#import "UIImageView+WebCache.h"
+
 
 @interface SYNCoverChooserController () 
 
-
-@property (nonatomic, strong) NSFetchedResultsController *channelCoverFetchedResultsController;
-
 @property (nonatomic, strong) IBOutlet UICollectionView *collectionView;
-
+@property (nonatomic, strong) NSFetchedResultsController *channelCoverFetchedResultsController;
 @property (nonatomic, strong) NSIndexPath* indexPathSelected;
-
 @property (nonatomic, weak) SYNAppDelegate* appDelegate;
-
 
 @end
 
+
 @implementation SYNCoverChooserController
 
-@synthesize appDelegate;
 
-
-- (id)initWithNibName:(NSString *)nibNameOrNil bundle:(NSBundle *)nibBundleOrNil
+- (id) initWithNibName: (NSString *) nibNameOrNil
+                bundle: (NSBundle *) nibBundleOrNil
 {
-    self = [super initWithNibName:nibNameOrNil bundle:nibBundleOrNil];
-    if (self) {
-        appDelegate = (SYNAppDelegate*)[[UIApplication sharedApplication] delegate];
+    if ((self = [super initWithNibName: nibNameOrNil
+                                bundle: nibBundleOrNil]))
+    {
+        self.appDelegate = (SYNAppDelegate*)[[UIApplication sharedApplication] delegate];
     }
+    
     return self;
 }
 
-- (void)viewDidLoad
+
+- (void) viewDidLoad
 {
     [super viewDidLoad];
     
-    
     // Regster video thumbnail cell
-    
     UINib *coverThumbnailCellNib = [UINib nibWithNibName: @"SYNCoverThumbnailCell"
                                                   bundle: nil];
     
@@ -90,7 +87,7 @@
             }
             return 0;
         }
-            break;
+        break;
             
         case 2:
         {
@@ -106,7 +103,6 @@
     }
     
     return 0;
-    
 }
 
 
@@ -201,9 +197,9 @@
         break;  
     }
     
-    [[NSNotificationCenter defaultCenter] postNotificationName:kCoverArtChanged
-                                                        object:self
-                                                      userInfo:@{kCoverArt:imageURLString}];
+    [[NSNotificationCenter defaultCenter] postNotificationName: kCoverArtChanged
+                                                        object: self
+                                                      userInfo: @{kCoverArt:imageURLString}];
 }
 
 
@@ -218,14 +214,14 @@
     
     
     fetchRequest.entity = [NSEntityDescription entityForName: @"CoverArt"
-                                      inManagedObjectContext: appDelegate.mainManagedObjectContext];
+                                      inManagedObjectContext: self.appDelegate.mainManagedObjectContext];
     
     
     fetchRequest.sortDescriptors = @[[[NSSortDescriptor alloc] initWithKey: @"userUpload" ascending: YES],
                                      [[NSSortDescriptor alloc] initWithKey: @"position" ascending: YES]];
     
     self.channelCoverFetchedResultsController = [[NSFetchedResultsController alloc] initWithFetchRequest: fetchRequest
-                                                                                    managedObjectContext: appDelegate.mainManagedObjectContext
+                                                                                    managedObjectContext: self.appDelegate.mainManagedObjectContext
                                                                                       sectionNameKeyPath: @"userUpload"
                                                                                                cacheName: nil];
 
@@ -250,13 +246,13 @@
 - (void) updateCoverArt
 {
     // Update the list of cover art
-    [appDelegate.networkEngine updateCoverArtOnCompletion: ^{
+    [self.appDelegate.networkEngine updateCoverArtOnCompletion: ^{
         DebugLog(@"Success");
     } onError: ^(NSError* error) {
         DebugLog(@"%@", [error debugDescription]);
     }];
     
-    [appDelegate.oAuthNetworkEngine updateCoverArtForUserId: appDelegate.currentOAuth2Credentials.userId
+    [self.appDelegate.oAuthNetworkEngine updateCoverArtForUserId: self.appDelegate.currentOAuth2Credentials.userId
                                                onCompletion: ^{
                                                    DebugLog(@"Success");
                                                }
@@ -266,12 +262,13 @@
 }
 
 
-
 #pragma mark - Autorotate Support
 
--(void)willAnimateRotationToInterfaceOrientation:(UIInterfaceOrientation)toInterfaceOrientation duration:(NSTimeInterval)duration
+- (void) willAnimateRotationToInterfaceOrientation: (UIInterfaceOrientation) toInterfaceOrientation
+                                          duration: (NSTimeInterval) duration
 {
-    [super willAnimateRotationToInterfaceOrientation:toInterfaceOrientation duration:duration];
+    [super willAnimateRotationToInterfaceOrientation: toInterfaceOrientation
+                                            duration: duration];
     
     [self.collectionView scrollToItemAtIndexPath: self.indexPathSelected
                                 atScrollPosition: UICollectionViewScrollPositionNone
