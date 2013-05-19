@@ -706,10 +706,15 @@
 {
     VideoInstance *videoInstance = self.videoInstanceArray [self.currentSelectedIndex];
     
+    videoShareButton.enabled = FALSE;
+    
     [self shareVideoInstance: videoInstance
                      inView: self.chromeView
                     fromRect: videoShareButton.frame
-             arrowDirections: UIPopoverArrowDirectionDown];
+             arrowDirections: UIPopoverArrowDirectionDown
+                  onComplete: ^{
+                     videoShareButton.enabled = TRUE;
+             }];
 }
 
 - (IBAction) userTouchedReportConcernButton: (UIButton*) button

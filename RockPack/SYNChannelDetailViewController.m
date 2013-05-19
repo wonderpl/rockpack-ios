@@ -769,12 +769,19 @@
 
 #pragma mark - Control Delegate
 
-- (IBAction) shareChannelButtonTapped: (id) sender
+- (IBAction) shareChannelButtonTapped: (UIButton *) shareButton
 {
+    // Prevent multiple clicks
+    shareButton.enabled = FALSE;
+    
     [self shareChannel: self.channel
                 inView: self.view
               fromRect: self.shareButton.frame
-       arrowDirections: UIPopoverArrowDirectionDown];
+       arrowDirections: UIPopoverArrowDirectionDown
+            onComplete: ^{
+                // Re-enable button
+                    shareButton.enabled = TRUE;
+            }];
 }
 
 

@@ -7,18 +7,17 @@
 //
 //  Abstract view controller to provide functionality common to all Rockpack view controllers
 
+
+#import "GAITrackedViewController.h"
+#import "SYNAddButtonControl.h"
+#import "SYNAppDelegate.h"
+#import "SYNNetworkEngine.h"
+#import "SYNTabViewController.h"
+#import "SYNTabViewDelegate.h"
 #import <CoreData/CoreData.h>
 #import <UIKit/UIKit.h>
-#import "SYNTabViewDelegate.h"
-#import "SYNTabViewController.h"
-#import "SYNAppDelegate.h"
-#import "GAITrackedViewController.h"
 
-#import "SYNAddButtonControl.h"
-
-#import "SYNNetworkEngine.h"
-
-
+typedef void (^SYNShareCompletionBlock)(void);
 
 @class VideoInstance, Channel, ChannelOwner, Genre, SubGenre;
 
@@ -85,12 +84,14 @@
 - (void) shareVideoInstance: (VideoInstance *) videoInstance
                      inView: (UIView *) inView
                    fromRect: (CGRect) rect
-            arrowDirections: (UIPopoverArrowDirection) arrowDirections;
+            arrowDirections: (UIPopoverArrowDirection) arrowDirections
+                 onComplete: (SYNShareCompletionBlock) completionBlock;
 
 - (void) shareChannel: (Channel *) channel
                inView: (UIView *) inView
              fromRect: (CGRect) rect
-      arrowDirections: (UIPopoverArrowDirection) arrowDirections;
+      arrowDirections: (UIPopoverArrowDirection) arrowDirections
+           onComplete: (SYNShareCompletionBlock) completionBlock;
 
 // Purchase
 
