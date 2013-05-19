@@ -41,6 +41,12 @@
 @property (nonatomic, strong) UIPopoverController *activityPopoverController;
 @property (nonatomic, strong) UIView *dropZoneView;
 
+@property (strong, readonly, nonatomic) NSArray *activities;
+@property (strong, nonatomic) NSDictionary *userInfo;
+@property (strong, nonatomic) OWActivityView *activityView;
+@property (weak, nonatomic) UIPopoverController *presentingPopoverController;
+@property (weak, nonatomic) UIViewController *presentingController;
+
 @end
 
 
@@ -557,9 +563,11 @@
                                               }
                                               else
                                               {
-                                                  [self presentViewController: activityViewController
-                                                                     animated: YES
-                                                                   completion: nil];
+//                                                  [self presentViewController: activityViewController
+//                                                                     animated: YES
+//                                                                   completion: nil];
+                                                  
+                                                  [activityViewController presentFromRootViewController];
                                               }
                                           }
                                                errorHandler: ^(NSDictionary* errorDictionary) {
@@ -567,6 +575,7 @@
                                                }];
 
 }
+
 
 
 #pragma mark - Purchase
