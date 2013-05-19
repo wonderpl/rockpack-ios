@@ -206,9 +206,10 @@
     
     UIImage* placeholderImage = [UIImage imageNamed: @"PlaceholderAvatarProfile.png"];
     
-    if(![self.channel.channelOwner.thumbnailURL isEqualToString:@""]) // there is a url string
+    NSArray *thumbnailURLItems = [self.channel.channelOwner.thumbnailURL componentsSeparatedByString:@"/"];
+    
+    if(thumbnailURLItems.count >= 6) // there is a url string with the proper format
     {
-        NSArray *thumbnailURLItems = [self.channel.channelOwner.thumbnailURL componentsSeparatedByString:@"/"];
         
         // whatever is set to be the default size by the server (ex. 'thumbnail_small') //
         NSString* thumbnailSizeString = thumbnailURLItems[5];
