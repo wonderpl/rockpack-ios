@@ -13,9 +13,6 @@
 @interface SYNChannelManager : NSObject
 
 
--(void)subscribeToChannel:(Channel*)channel;
--(void)unsubscribeFromChannel:(Channel*)channel;
--(void)toggleSubscriptionToChannel:(Channel*)channel;
 
 +(id)manager;
 

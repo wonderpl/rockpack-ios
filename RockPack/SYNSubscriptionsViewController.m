@@ -69,7 +69,6 @@
     [self.channelThumbnailCollectionView registerNib: thumbnailCellNib
                           forCellWithReuseIdentifier: @"SYNChannelMidCell"];
     
-    self.channelThumbnailCollectionView.backgroundColor = [UIColor greenColor];
     
     CGRect correntFrame = self.channelThumbnailCollectionView.frame;
     correntFrame.size.width = 20.0;
@@ -97,7 +96,7 @@
     
         
     
-    Channel *channel = self.user.subscriptions[indexPath.row];
+    Channel *channel = self.user.subscriptions[indexPath.item];
     
     SYNChannelMidCell *channelThumbnailCell = [cv dequeueReusableCellWithReuseIdentifier: @"SYNChannelMidCell"
                                                                             forIndexPath: indexPath];
@@ -114,7 +113,7 @@
 
 - (void) reloadCollectionViews
 {
-    [super reloadCollectionViews];
+    
     
     if (self.headerView)
     {
@@ -123,6 +122,8 @@
         [self.headerView setTitle: @"SUBSCRIPTIONS"
                         andNumber: totalChannels];
     }
+    
+    [self.channelThumbnailCollectionView reloadData];
 }
 
 

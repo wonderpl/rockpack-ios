@@ -71,7 +71,15 @@
     if(!channelToSubscribe)
         return;
     
-    [self toggleSubscriptionToChannel:channelToSubscribe];
+    // toggle subscription from/to channel //
+    if (channelToSubscribe.subscribedByUserValue == YES)
+    {
+        [self unsubscribeFromChannel:channelToSubscribe];
+    }
+    else
+    {
+        [self subscribeToChannel:channelToSubscribe];
+    }
 }
 
 
@@ -105,23 +113,6 @@
 
 #pragma mark - Implementation Methods
 
--(void)toggleSubscriptionToChannel:(Channel*)channel
-{
-    
-    if (channel.subscribedByUserValue == YES)
-    {
-        [self unsubscribeFromChannel:channel];
-    }
-    else
-    {
-        [self subscribeToChannel:channel];
-    }
-    
-    
-    
-    
-    
-}
 -(void)subscribeToChannel:(Channel*)channel
 {
     
