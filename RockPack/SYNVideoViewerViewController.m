@@ -231,9 +231,18 @@
     VideoInstance *videoInstance = self.videoInstanceArray [self.currentSelectedIndex];
 
     
-    [self.channelThumbnailImageView setImageWithURL: [NSURL URLWithString: videoInstance.channel.channelCover.imageSmallUrl]
-                                   placeholderImage: [UIImage imageNamed: @"PlaceholderChannelSmall.png"]
-                                            options: SDWebImageRetryFailed];
+    if ([videoInstance.channel.channelOwner.displayName length] == 0)
+    {
+        [self.channelThumbnailImageView setImageWithURL: nil
+                                       placeholderImage:nil];
+    }
+    
+    else if ([videoInstance.channel.channelOwner.displayName length] > 0)
+    {
+        [self.channelThumbnailImageView setImageWithURL: [NSURL URLWithString: videoInstance.channel.channelCover.imageSmallUrl]
+                                       placeholderImage: [UIImage imageNamed: @"PlaceholderChannelSmall.png"]
+                                                options: SDWebImageRetryFailed];
+    }
 
 }
 
@@ -367,12 +376,19 @@
     
     // Now set the channel thumbail for the new
     VideoInstance *videoInstance = self.videoInstanceArray [currentSelectedIndex];
-
     
-    [self.channelThumbnailImageView setImageWithURL: [NSURL URLWithString: videoInstance.channel.channelCover.imageSmallUrl]
-                                   placeholderImage: [UIImage imageNamed: @"PlaceholderChannelSmall.png"]
-                                            options: SDWebImageRetryFailed];
-
+    if ([videoInstance.channel.channelOwner.displayName length] == 0)
+    {
+        [self.channelThumbnailImageView setImageWithURL: nil
+                                       placeholderImage:nil];
+    }
+    
+    else if ([videoInstance.channel.channelOwner.displayName length] > 0)
+    {
+        [self.channelThumbnailImageView setImageWithURL: [NSURL URLWithString: videoInstance.channel.channelCover.imageSmallUrl]
+                                       placeholderImage: [UIImage imageNamed: @"PlaceholderChannelSmall.png"]
+                                                options: SDWebImageRetryFailed];
+    }
 }
 
 
@@ -382,11 +398,11 @@
     
     // In video overlay feed display BY followed by username, in video overlay search if no user name display nothing -Kish
     if ([videoInstance.channel.channelOwner.displayName length] == 0) {
-        self.channelCreatorLabel.text = videoInstance.channel.channelOwner.displayName;
+        self.channelCreatorLabel.text = [NSString stringWithFormat:@""];
     }
     else
     {
-        self.channelCreatorLabel.text = [NSString stringWithFormat:@"BY %@", videoInstance.channel.channelOwner.displayName];
+        self.channelCreatorLabel.text = [NSString stringWithFormat:@"%@", videoInstance.channel.channelOwner.displayName];
     }
     
     self.channelTitleLabel.text = videoInstance.channel.title;
