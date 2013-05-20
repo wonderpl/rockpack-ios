@@ -60,4 +60,6 @@ typedef enum {
 
 
 - (void) setUpInitialState;
+
+-(BOOL)isNetworkAccessibleOtherwiseShowErrorAlert;
 @end

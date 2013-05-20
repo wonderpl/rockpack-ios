@@ -181,6 +181,8 @@
          
      } completion: ^(BOOL finished) {
          
+         
+         DebugLog(@"");
      }];
     
     [self.navigationController popViewControllerAnimated:NO];
