@@ -9,7 +9,7 @@
                            andViewId: (NSString *) viewId;
 
 
-
+@property (nonatomic) BOOL hasChangedSubscribeValue;
 
 - (void) setAttributesFromDictionary: (NSDictionary *) dictionary
                               withId: (NSString *) uniqueId

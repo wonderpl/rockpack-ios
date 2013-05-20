@@ -123,7 +123,7 @@
 
 
 
-- (void) viewCameToScrollFront
+- (void) viewDidScrollToFront
 {
     DebugLog (@"came to front");
 }

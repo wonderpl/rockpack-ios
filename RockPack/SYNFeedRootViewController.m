@@ -189,7 +189,7 @@
     [self.refreshButton endRefreshCycle];
 }
 
--(void)viewCameToScrollFront
+-(void)viewDidScrollToFront
 {
     [self refreshButtonPressed];
 }

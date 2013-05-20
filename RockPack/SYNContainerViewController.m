@@ -318,7 +318,7 @@
     
     self.currentPageOffset = self.scrollView.contentOffset;
     
-    [self.showingViewController viewCameToScrollFront];
+    [self.showingViewController viewDidScrollToFront];
 }
 
 #pragma mark - Rotation Callbacks
