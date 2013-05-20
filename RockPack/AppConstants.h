@@ -351,6 +351,8 @@ typedef enum {
 
 // Notifications
 
+#define kNotePushingController      @"kNotePushingController"
+
 #define kNoteBackButtonShow         @"kNoteBackButtonShow"
 #define kNoteBackButtonHide         @"kNoteBackButtonHide"
 

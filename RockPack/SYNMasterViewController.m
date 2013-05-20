@@ -236,6 +236,7 @@ typedef void(^AnimationCompletionBlock)(BOOL finished);
     
     // == Set Up Notifications == //
     
+    
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(backButtonRequested:) name:kNoteBackButtonShow object:nil];
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(backButtonRequested:) name:kNoteBackButtonHide object:nil];
     
@@ -654,11 +655,19 @@ typedef void(^AnimationCompletionBlock)(BOOL finished);
     // TODO: Need to implement this
 }
 
+
+
 - (void) backButtonRequested: (NSNotification*) notification
 {
     NSString* notificationName = [notification name];
     if(!notificationName)
         return;
+    
+    SYNAbstractViewController* sender = (SYNAbstractViewController*)[notification object];
+    if(!sender)
+        return;
+    
+    // BOOL toleratesSearchBar = sender.toleratesSearchBar;
     
     if([notificationName isEqualToString:kNoteBackButtonShow])
     {
@@ -878,6 +887,16 @@ typedef void(^AnimationCompletionBlock)(BOOL finished);
        
     }
     //FIXME: Nick to rework
+    
+    if(!abstractVC.toleratesSearchBar && self.searchBoxController.isOnScreen)
+    {
+        [UIView animateWithDuration:0.5 animations:^{
+            CGRect sboxFrame = self.searchBoxController.view.frame;
+            sboxFrame.origin.x = 10.0;
+            sboxFrame.size.width = self.closeSearchButton.frame.origin.x - sboxFrame.origin.x - 8.0;
+            self.searchBoxController.view.frame = sboxFrame;
+        }];
+    }
     [self.containerViewController viewWillAppear:NO];
     
 }
