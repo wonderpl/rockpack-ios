@@ -543,9 +543,9 @@ typedef void(^AnimationCompletionBlock)(BOOL finished);
     BOOL isIPad =[[SYNDeviceManager sharedInstance] isIPad];
     if(isIPad)
     {
-        self.closeSearchButton.hidden = YES;
+        //self.closeSearchButton.hidden = YES;
         self.sideNavigationButton.hidden = NO;
-        [self showBackButton: YES];
+        
     }
     
     if(!self.overlayNavigationController)
@@ -719,15 +719,13 @@ typedef void(^AnimationCompletionBlock)(BOOL finished);
         return;
     
     
-    
     if(self.overlayNavigationController)
     {
-        [self showBackButton:NO];
         self.overlayNavigationController = nil;
     }
     else if(showingBackButton)
     {
-        [self.containerViewController.showingViewController animatedPopViewController];
+        [self popCurrentViewController:self.backButtonControl];
     }
     
     [self.containerViewController navigateToPageByName:pageName];
@@ -773,7 +771,7 @@ typedef void(^AnimationCompletionBlock)(BOOL finished);
 
 #pragma mark - Navigation Methods
 
-- (void) showBackButton: (BOOL) show
+- (void) showBackButton: (BOOL) show // popping
 {
     CGRect targetFrame;
     CGFloat targetAlpha;
@@ -870,12 +868,7 @@ typedef void(^AnimationCompletionBlock)(BOOL finished);
         {
             self.overlayNavigationController = nil; // animate the overlay out
             
-            abstractVC = self.containerViewController.showingViewController;
             
-            if(abstractVC.navigationController.viewControllers.count == 1) // if the controller underneath has not popped controllers to its stack, hide back button
-            {
-                [self showBackButton:NO];
-            }
             
         }
         
@@ -1120,13 +1113,16 @@ typedef void(^AnimationCompletionBlock)(BOOL finished);
         
         [self.overlayContainerView addSubview:overlayNavigationController.view];
         
-        
-        
 
         if([[SYNDeviceManager sharedInstance] isIPhone])
         {
             overlayNavigationController.view.frame = self.overlayContainerView.bounds;
         }
+        else
+        {
+            [self showBackButton: YES];
+        }
+        
         self.overlayContainerView.userInteractionEnabled = YES;
         self.overlayContainerView.alpha = 0.0;
         
@@ -1176,6 +1172,15 @@ typedef void(^AnimationCompletionBlock)(BOOL finished);
             {
                 animationDuration = 0.1f;
             }
+            
+            
+            // if the controller underneath has not popped controllers to its stack, hide back button //
+
+            if(self.containerViewController.showingViewController.navigationController.viewControllers.count == 1)
+            {
+                [self showBackButton:NO];
+            }
+            
              self.overlayContainerView.userInteractionEnabled = NO;
             [UIView animateWithDuration: animationDuration
                                   delay: 0.0f
