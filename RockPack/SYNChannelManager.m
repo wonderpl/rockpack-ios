@@ -95,10 +95,11 @@
 -(void)channelUpdateRequest:(NSNotification*)notification
 {
     Channel* channelToUpdate = (Channel*)[[notification userInfo] objectForKey:kChannel];
+    
     if(!channelToUpdate)
         return;
     
-    [self updateChannel:channelToUpdate withForceRefresh:YES];
+    [self updateChannel:channelToUpdate withForceRefresh:channelToUpdate.hasChangedSubscribeValue];
 }
 
 -(void)channelDeleteRequest:(NSNotification*)notification
@@ -125,6 +126,8 @@
                                                 
                                                 channel.subscribedByUserValue = YES;
                                                 channel.subscribersCountValue += 1;
+                                                
+                                                channel.hasChangedSubscribeValue = YES;
                                                 
                                                 [channel addSubscribersObject:appDelegate.currentUser];
                                                 
@@ -162,6 +165,8 @@
                                                   
                                                   channel.subscribedByUserValue = NO;
                                                   channel.subscribersCountValue -= 1;
+                                                  
+                                                  channel.hasChangedSubscribeValue = YES;
                                                   
                                                   [channel removeSubscribersObject:appDelegate.currentUser];
                                                   

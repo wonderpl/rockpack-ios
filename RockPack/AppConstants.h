@@ -27,6 +27,8 @@
 #define kUser                       @"User"
 #define kCoverArt                   @"CoverArt"
 
+#define kForceRefreshValue          @"kForceRefreshValue"
+
 // OAuth2
 
 #define kFeedViewId                 @"Home"
