@@ -272,6 +272,7 @@
     
     self.addButton.hidden = !self.addVideoButton.selected;
     
+    
 }
 
 
@@ -279,8 +280,12 @@
 {
     // Let's make sure that we stop playing the current video
     self.videoPlaybackViewController = nil;
+    if ([[SYNDeviceManager sharedInstance] isIPhone])
+    {
+        [[NSNotificationCenter defaultCenter] removeObserver:self name:UIDeviceOrientationDidChangeNotification object:nil];
+    }
     
-    [[NSNotificationCenter defaultCenter] removeObserver:self name:UIDeviceOrientationDidChangeNotification object:nil];
+    [[NSNotificationCenter defaultCenter] postNotificationName:kNoteShowNetworkMessages object:nil];
     
     [super viewWillDisappear: animated];
 }
@@ -853,12 +858,18 @@
                             self.videoPlaybackViewController.view.frame = videoFrame;
                             self.videoPlaybackViewController.shuttleBarView.alpha = 1.0f;
                         }
-                        completion: nil];
+                        completion:^(BOOL finished) {
+                            if(finished)
+                            {
+                                [[NSNotificationCenter defaultCenter] postNotificationName:kNoteShowNetworkMessages object:nil];
+                            }
+                        }];
     }
     else if(UIDeviceOrientationIsLandscape(newOrientation))
     {
         self.currentOrientaiton = newOrientation;
         [[UIApplication sharedApplication] setStatusBarHidden:YES withAnimation:UIStatusBarAnimationSlide];
+        [[NSNotificationCenter defaultCenter] postNotificationName:kNoteHideNetworkMessages object:nil];
         [UIView transitionWithView: self.view
                           duration: 0.5f
                            options: UIViewAnimationOptionCurveEaseInOut
