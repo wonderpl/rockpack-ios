@@ -782,6 +782,9 @@ typedef void(^AnimationCompletionBlock)(BOOL finished);
     if(!(show ^ showingBackButton))
         return;
     
+    CGFloat newSearchBoxOrigin;
+    
+    
     if (show)
     {
         [self.backButtonControl addTarget: self
@@ -791,16 +794,8 @@ typedef void(^AnimationCompletionBlock)(BOOL finished);
         //No More Back Title (For Now)
         // [self.backButtonControl setBackTitle: self.pageTitleLabel.text];
         
-        // Shrink the Search Box when the back arrow comes on screen //
-        if(self.searchBoxController.isOnScreen)
-        {
-            [UIView animateWithDuration:0.5 animations:^{
-                CGRect sboxFrame = self.searchBoxController.view.frame;
-                sboxFrame.origin.x = self.backButtonControl.frame.origin.x + self.backButtonControl.frame.size.width + 16.0;
-                sboxFrame.size.width = self.closeSearchButton.frame.origin.x - sboxFrame.origin.x - 8.0;
-                self.searchBoxController.view.frame = sboxFrame;
-            }];
-        }
+        
+        newSearchBoxOrigin = self.backButtonControl.frame.origin.x + self.backButtonControl.frame.size.width + 16.0;
         
         showingBackButton = YES;
         targetFrame = self.movableButtonsContainer.frame;
@@ -822,6 +817,8 @@ typedef void(^AnimationCompletionBlock)(BOOL finished);
                                       action: @selector(popCurrentViewController:)
                             forControlEvents: UIControlEventTouchUpInside];
         
+        newSearchBoxOrigin = 10.0;
+        
         
         showingBackButton = NO;
         targetFrame = self.movableButtonsContainer.frame;
@@ -837,8 +834,20 @@ typedef void(^AnimationCompletionBlock)(BOOL finished);
                          self.backButtonControl.alpha = targetAlpha;
                          self.pageTitleLabel.alpha = !targetAlpha;
                          self.dotsView.alpha = !targetAlpha;
+                         
+                         // Re-Asjust the Search Box when the back arrow comes on/off screen //
+                         
+                         if(self.searchBoxController.isOnScreen)
+                         {
+                             CGRect sboxFrame = self.searchBoxController.view.frame;
+                             sboxFrame.origin.x = newSearchBoxOrigin;
+                             sboxFrame.size.width = self.closeSearchButton.frame.origin.x - sboxFrame.origin.x - 8.0;
+                             self.searchBoxController.view.frame = sboxFrame;
+                         }
                      }
                      completion: nil];
+    
+    
 
 }
 
@@ -884,19 +893,15 @@ typedef void(^AnimationCompletionBlock)(BOOL finished);
             
         
         [abstractVC animatedPopViewController];
+        
+        // animate the search
+        
        
     }
-    //FIXME: Nick to rework
     
-    if(!abstractVC.toleratesSearchBar && self.searchBoxController.isOnScreen)
-    {
-        [UIView animateWithDuration:0.5 animations:^{
-            CGRect sboxFrame = self.searchBoxController.view.frame;
-            sboxFrame.origin.x = 10.0;
-            sboxFrame.size.width = self.closeSearchButton.frame.origin.x - sboxFrame.origin.x - 8.0;
-            self.searchBoxController.view.frame = sboxFrame;
-        }];
-    }
+    
+    
+    //FIXME: Nick to rework
     [self.containerViewController viewWillAppear:NO];
     
 }
