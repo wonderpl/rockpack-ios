@@ -57,6 +57,9 @@
 @property (nonatomic, strong) IBOutlet UIButton* reportConcernButton;
 @property (weak, nonatomic) IBOutlet UIButton *addVideoButton;
 
+//iPhone specific
+@property (nonatomic, assign) UIDeviceOrientation currentOrientaiton;
+
 @end
 
 
@@ -248,6 +251,16 @@
         CGRect videoFrame = self.videoPlaybackViewController.view.frame;
         videoFrame.origin = self.swipeView.frame.origin;
         self.videoPlaybackViewController.view.frame = videoFrame;
+        
+        [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(deviceOrientationChange:) name:UIDeviceOrientationDidChangeNotification object:nil];
+        self.currentOrientaiton = [[UIDevice currentDevice] orientation];
+        [[UIDevice currentDevice] beginGeneratingDeviceOrientationNotifications];
+        self.originalFrame = self.swipeView.frame;
+        if(self.currentOrientaiton == UIDeviceOrientationLandscapeLeft)
+        {
+            [self userTappedVideo];
+        }
+
     }
     
     // Update all the labels corresponding to the selected videos
@@ -259,6 +272,7 @@
     
     self.addButton.hidden = !self.addVideoButton.selected;
     
+    
 }
 
 
@@ -266,8 +280,12 @@
 {
     // Let's make sure that we stop playing the current video
     self.videoPlaybackViewController = nil;
+    if ([[SYNDeviceManager sharedInstance] isIPhone])
+    {
+        [[NSNotificationCenter defaultCenter] removeObserver:self name:UIDeviceOrientationDidChangeNotification object:nil];
+    }
     
-    [[NSNotificationCenter defaultCenter] removeObserver: self];
+    [[NSNotificationCenter defaultCenter] postNotificationName:kNoteShowNetworkMessages object:nil];
     
     [super viewWillDisappear: animated];
 }
@@ -651,51 +669,22 @@
     }
     else
     {
-        // iPhone
-        if (self.isVideoExpanded)
+        if(self.currentOrientaiton == UIDeviceOrientationPortrait)
         {
-            [UIView transitionWithView: self.view
-                              duration: 0.5f
-                               options: UIViewAnimationOptionCurveEaseInOut
-                            animations: ^ {
-                                self.blackPanelView.alpha = 0.0f;
-                                self.chromeView.alpha = 1.0f;
-                                self.swipeView.transform = CGAffineTransformIdentity;
-                                self.videoPlaybackViewController.view.transform = self.swipeView.transform;
-                                self.swipeView.frame = self.originalFrame;
-                                CGRect videoFrame = self.videoPlaybackViewController.view.frame;
-                                videoFrame.origin = self.originalFrame.origin;
-                                self.videoPlaybackViewController.view.frame = videoFrame;
-                                self.videoPlaybackViewController.shuttleBarView.alpha = 1.0f;
-                            }
-                            completion: nil];
+            UIDeviceOrientation deviceOrientation = [[UIDevice currentDevice] orientation];
+            if(UIDeviceOrientationIsLandscape(deviceOrientation))
+            {
+                [self changePlayerOrientation:deviceOrientation];
+            }
+            else
+            {
+                [self changePlayerOrientation:UIDeviceOrientationLandscapeLeft];
+            }
         }
         else
         {
-            self.originalFrame = self.swipeView.frame;
-            [UIView transitionWithView: self.view
-                              duration: 0.5f
-                               options: UIViewAnimationOptionCurveEaseInOut
-                            animations: ^ {
-                                CGRect fullScreenFrame = CGRectMake(0,0,[[SYNDeviceManager sharedInstance] currentScreenHeight]-20.0f, [[SYNDeviceManager sharedInstance] currentScreenWidth]);
-                                if(fullScreenFrame.size.width < fullScreenFrame.size.height)
-                                {
-                                    //Device orientation may confuse screen dimensions. Ensure the width is always the larger dimension.
-                                    fullScreenFrame = CGRectMake(0,0,[[SYNDeviceManager sharedInstance] currentScreenWidth]-20.0f, [[SYNDeviceManager sharedInstance] currentScreenHeight]);
-                                }
-                                self.blackPanelView.alpha = 1.0f;
-                                self.chromeView.alpha = 0.0f;
-                                self.swipeView.frame =  fullScreenFrame;
-                                self.swipeView.center = CGPointMake(fullScreenFrame.size.height/2.0f,fullScreenFrame.size.width/2.0f);
-                                self.videoPlaybackViewController.view.center =self.swipeView.center;
-                                self.swipeView.transform = CGAffineTransformMakeRotation(M_PI_2);
-                                CGFloat scaleFactor = fullScreenFrame.size.width/self.videoPlaybackViewController.view.frame.size.width;
-                                self.videoPlaybackViewController.view.transform = CGAffineTransformScale(self.swipeView.transform,scaleFactor,scaleFactor);
-                                self.videoPlaybackViewController.shuttleBarView.alpha = 0.0f;
-                            }
-                            completion: nil];
+            [self changePlayerOrientation:UIDeviceOrientationPortrait];
         }
-        
     }
     
     self.videoExpanded = !self.videoExpanded;
@@ -837,6 +826,73 @@
 - (BOOL) needsAddButton
 {
     return YES;
+}
+
+#pragma mark - orientation change iPhone
+-(void)deviceOrientationChange:(NSNotification*)note
+{
+    UIDeviceOrientation newOrientation = [[UIDevice currentDevice] orientation];
+    if (self.currentOrientaiton != newOrientation && (newOrientation ==  UIDeviceOrientationPortrait || UIDeviceOrientationIsLandscape(newOrientation)))
+    {
+        [self changePlayerOrientation:newOrientation];
+    }
+}
+
+-(void)changePlayerOrientation:(UIDeviceOrientation)newOrientation
+{
+    if (newOrientation == UIDeviceOrientationPortrait)
+    {
+        self.currentOrientaiton = UIDeviceOrientationPortrait;
+        [[UIApplication sharedApplication] setStatusBarHidden:NO withAnimation:UIStatusBarAnimationSlide];
+        [UIView transitionWithView: self.view
+                          duration: 0.5f
+                           options: UIViewAnimationOptionCurveEaseInOut
+                        animations: ^ {
+                            self.blackPanelView.alpha = 0.0f;
+                            self.chromeView.alpha = 1.0f;
+                            self.swipeView.transform = CGAffineTransformIdentity;
+                            self.videoPlaybackViewController.view.transform = self.swipeView.transform;
+                            self.swipeView.frame = self.originalFrame;
+                            CGRect videoFrame = self.videoPlaybackViewController.view.frame;
+                            videoFrame.origin = self.originalFrame.origin;
+                            self.videoPlaybackViewController.view.frame = videoFrame;
+                            self.videoPlaybackViewController.shuttleBarView.alpha = 1.0f;
+                        }
+                        completion:^(BOOL finished) {
+                            if(finished)
+                            {
+                                [[NSNotificationCenter defaultCenter] postNotificationName:kNoteShowNetworkMessages object:nil];
+                            }
+                        }];
+    }
+    else if(UIDeviceOrientationIsLandscape(newOrientation))
+    {
+        self.currentOrientaiton = newOrientation;
+        [[UIApplication sharedApplication] setStatusBarHidden:YES withAnimation:UIStatusBarAnimationSlide];
+        [[NSNotificationCenter defaultCenter] postNotificationName:kNoteHideNetworkMessages object:nil];
+        [UIView transitionWithView: self.view
+                          duration: 0.5f
+                           options: UIViewAnimationOptionCurveEaseInOut
+                        animations: ^ {
+                            CGRect fullScreenFrame = CGRectMake(0,0,[[SYNDeviceManager sharedInstance] currentScreenHeight], [[SYNDeviceManager sharedInstance] currentScreenWidth]);
+                            if(fullScreenFrame.size.width < fullScreenFrame.size.height)
+                            {
+                                //Device orientation may confuse screen dimensions. Ensure the width is always the larger dimension.
+                                fullScreenFrame = CGRectMake(0,0,[[SYNDeviceManager sharedInstance] currentScreenWidth], [[SYNDeviceManager sharedInstance] currentScreenHeight]);
+                            }
+                            self.blackPanelView.alpha = 1.0f;
+                            self.chromeView.alpha = 0.0f;
+                            self.swipeView.frame =  fullScreenFrame;
+                            self.swipeView.center = CGPointMake(fullScreenFrame.size.height/2.0f,fullScreenFrame.size.width/2.0f - 20.0f);
+                            self.videoPlaybackViewController.view.center =self.swipeView.center;
+                            self.swipeView.transform = CGAffineTransformMakeRotation((newOrientation==UIDeviceOrientationLandscapeLeft) ? M_PI_2 : -M_PI_2 );
+                            CGFloat scaleFactor = fullScreenFrame.size.width/self.videoPlaybackViewController.view.frame.size.width;
+                            self.videoPlaybackViewController.view.transform = CGAffineTransformScale(self.swipeView.transform,scaleFactor,scaleFactor);
+                            self.videoPlaybackViewController.shuttleBarView.alpha = 0.0f;
+                        }
+                        completion: nil];
+    }
+
 }
 
 @end

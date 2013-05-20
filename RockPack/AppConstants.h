@@ -377,6 +377,9 @@ typedef enum {
 
 #define kNoteChannelSaved           @"kNoteChannelSaved"
 
+#define kNoteHideNetworkMessages    @"kNoteHideNetworkMessages"
+#define kNoteShowNetworkMessages    @"kNoteShowNetworkMessages"
+
 //
 // Tracking
 //

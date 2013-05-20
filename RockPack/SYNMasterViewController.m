@@ -239,8 +239,6 @@ typedef void(^AnimationCompletionBlock)(BOOL finished);
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(backButtonRequested:) name:kNoteBackButtonShow object:nil];
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(backButtonRequested:) name:kNoteBackButtonHide object:nil];
     
-    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(topRightControlsRequested:) name:kNoteTopRightControlsShow object:nil];
-    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(topRightControlsRequested:) name:kNoteTopRightControlsHide object:nil];
     
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(allNavControlsRequested:) name:kNoteAllNavControlsShow object:nil];
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(allNavControlsRequested:) name:kNoteAllNavControlsHide object:nil];
@@ -271,6 +269,9 @@ typedef void(^AnimationCompletionBlock)(BOOL finished);
     
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(channelSuccessfullySaved:) name:kNoteChannelSaved object:nil];
     
+    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(hideOrShowNetworkMessages:) name:kNoteHideNetworkMessages object:nil];
+    
+    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(hideOrShowNetworkMessages:) name:kNoteShowNetworkMessages object:nil];
     
     [self.navigationContainerView addSubview:self.sideNavigationViewController.view];
     
@@ -669,25 +670,7 @@ typedef void(^AnimationCompletionBlock)(BOOL finished);
     }
 }
 
--(void)topRightControlsRequested:(NSNotification*) notification
-{
-    NSString* notificationName = [notification name];
-    if(!notificationName)
-        return;
-    if([notificationName isEqualToString:kNoteTopRightControlsShow])
-    {
-        self.searchButton.hidden = NO;
-        self.sideNavigationButton.hidden = NO;
-        self.closeSearchButton.hidden = NO;
-    }
-    else
-    {
-        self.searchButton.hidden = YES;
-        self.sideNavigationButton.hidden = YES;
-        self.closeSearchButton.hidden = YES;
-    }
-    
-}
+
 
 -(void)allNavControlsRequested:(NSNotification*) notification
 {
@@ -750,6 +733,32 @@ typedef void(^AnimationCompletionBlock)(BOOL finished);
     NSLocalizedString(@"CHANNEL SAVED",nil):
     NSLocalizedString(@"YOUR CHANNEL HAS BEEN SAVED SUCCESSFULLY",nil);
     [self presentSuccessNotificationWithMessage:message];
+}
+
+-(void)hideOrShowNetworkMessages:(NSNotification*)note
+{
+    if([note.name isEqualToString:kNoteShowNetworkMessages])
+    {
+        self.errorContainerView.hidden = NO;
+        [UIView animateWithDuration:0.3f delay:0.0f options:UIViewAnimationCurveEaseOut animations:^{
+            CGRect newFrame = self.errorContainerView.frame;
+            newFrame.origin.y = 0.0f;
+            self.errorContainerView.frame = newFrame;
+        } completion:nil];
+    }
+    else
+    {
+        [UIView animateWithDuration:0.3f delay:0.0f options:UIViewAnimationCurveEaseIn animations:^{
+            CGRect newFrame = self.errorContainerView.frame;
+            newFrame.origin.y = 60.0f;
+            self.errorContainerView.frame = newFrame;
+        } completion:^(BOOL finished) {
+            if(finished)
+            {
+                self.errorContainerView.hidden = YES;
+            }
+        }];
+    }
 }
 
 
@@ -1008,7 +1017,7 @@ typedef void(^AnimationCompletionBlock)(BOOL finished);
     
     [UIView animateWithDuration:0.3 animations:^{
         CGRect erroViewFrame = self.networkErrorView.frame;
-        erroViewFrame.origin.y = [[SYNDeviceManager sharedInstance] currentScreenHeight] - ([[SYNDeviceManager sharedInstance] isIPad] ? 70.0 : 60.0);
+        erroViewFrame.origin.y = [[SYNDeviceManager sharedInstance] currentScreenHeightWithStatusBar] - erroViewFrame.size.height;
         
         self.networkErrorView.frame = erroViewFrame;
     }];
@@ -1022,7 +1031,7 @@ typedef void(^AnimationCompletionBlock)(BOOL finished);
     [self.errorContainerView addSubview:successNotification];
     [UIView animateWithDuration:0.3f delay:0.0f options:UIViewAnimationOptionCurveEaseOut animations:^{
         CGRect newFrame = successNotification.frame;
-        newFrame.origin.y = [[SYNDeviceManager sharedInstance] currentScreenHeight] - ([[SYNDeviceManager sharedInstance] isIPad] ? 70.0 : 60.0);
+        newFrame.origin.y = [[SYNDeviceManager sharedInstance] currentScreenHeightWithStatusBar] - newFrame.size.height;
         successNotification.frame = newFrame;
     } completion:^(BOOL finished) {
         [UIView animateWithDuration:0.3f delay:10.0f options:UIViewAnimationOptionCurveEaseInOut animations:^{

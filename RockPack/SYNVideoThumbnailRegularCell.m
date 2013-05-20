@@ -46,6 +46,11 @@
         self.addItButton.hidden = YES;
         self.deleteButton.hidden = NO;
     }
+    else if(displayMode == kChannelThumbnailDisplayModeDisplayFavourite)
+    {
+        self.addItButton.hidden = YES;
+        self.deleteButton.hidden = YES;
+    }
     else
     {
         AssertOrLog(@"Unexpected option");
