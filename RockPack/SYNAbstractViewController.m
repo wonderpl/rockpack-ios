@@ -257,10 +257,16 @@
     NSIndexPath *indexPath = [self indexPathFromVideoInstanceButton: videoShareButton];
     VideoInstance *videoInstance = [self.fetchedResultsController objectAtIndexPath: indexPath];
     
+    // Stop multiple clicks by disabling button 
+    videoShareButton.enabled = FALSE;
+    
     [self shareVideoInstance: videoInstance
                       inView: self.view
                     fromRect: videoShareButton.frame
-             arrowDirections: UIPopoverArrowDirectionDown];
+             arrowDirections: UIPopoverArrowDirectionDown onComplete: ^{
+                 // Re-enable button
+                 videoShareButton.enabled = TRUE;
+             }];
 }
 
 
@@ -444,12 +450,14 @@
                      inView: (UIView *) inView
                    fromRect: (CGRect) rect
             arrowDirections: (UIPopoverArrowDirection) arrowDirections
+                 onComplete: (SYNShareCompletionBlock) completionBlock
 {
     [self shareObjectType: @"video_instance"
                  objectId: videoInstance.uniqueId
                    inView: inView
                  fromRect: rect
-          arrowDirections: arrowDirections];
+          arrowDirections: arrowDirections
+               onComplete: completionBlock];
 }
 
 
@@ -457,12 +465,14 @@
                inView: (UIView *) inView
              fromRect: (CGRect) rect
       arrowDirections: (UIPopoverArrowDirection) arrowDirections
+           onComplete: (SYNShareCompletionBlock) completionBlock 
 {
     [self shareObjectType: @"channel"
                  objectId: channel.uniqueId
                    inView: inView
                  fromRect: rect
-          arrowDirections: arrowDirections];
+          arrowDirections: arrowDirections
+               onComplete: completionBlock];
 }
 
 
@@ -471,6 +481,7 @@
                   inView: (UIView *) inView
                 fromRect: (CGRect) rect
          arrowDirections: (UIPopoverArrowDirection) arrowDirections
+              onComplete: (SYNShareCompletionBlock) completionBlock
 {
     // Update the star/unstar status on the server
     [appDelegate.oAuthNetworkEngine shareLinkWithObjectType: objectType
@@ -505,7 +516,7 @@
                                                   case UIDeviceOrientationLandscapeRight:
                                                       orientation = UIImageOrientationRight;
                                                       break;
-
+                                                      
                                                   default:
                                                       orientation = UIImageOrientationRight;
                                                       DebugLog(@"Unknown orientation");
@@ -567,15 +578,15 @@
                                               }
                                               else
                                               {
-//                                                  [self presentViewController: activityViewController
-//                                                                     animated: YES
-//                                                                   completion: nil];
-                                                  
                                                   [activityViewController presentFromRootViewController];
                                               }
+                                              
+            
+                                              completionBlock();
                                           }
                                                errorHandler: ^(NSDictionary* errorDictionary) {
                                                    DebugLog(@"Share link failed");
+                                                   completionBlock();
                                                }];
 
 }

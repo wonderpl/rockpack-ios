@@ -17,7 +17,7 @@
 {
     for (UIView *view in self.subviews)
     {
-        if (!view.hidden && view.userInteractionEnabled && [view pointInside: [self convertPoint: point toView: view] withEvent: event])
+        if (!view.hidden && view.alpha != 0.0f && view.userInteractionEnabled && [view pointInside: [self convertPoint: point toView: view] withEvent: event])
         {
             return YES;
         }

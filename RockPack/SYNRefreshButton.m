@@ -115,7 +115,7 @@
         animation.fromValue = [NSNumber numberWithFloat: 0.0];
         animation.toValue = [NSNumber numberWithFloat: 2 * M_PI];
         animation.timingFunction = [CAMediaTimingFunction functionWithName: kCAMediaTimingFunctionLinear];
-        animation.speed = 4.0f;
+        animation.speed = 1.0f;
         animation.delegate = self;
         
         [image.layer addAnimation: animation

@@ -132,9 +132,10 @@ extern void instrumentObjcMessageSends(BOOL);
     [self.window makeKeyAndVisible];
     
     /// Initialise our video players
-    dispatch_async(dispatch_get_main_queue(), ^{
+    // Perhaps asynchronous is a bad idea, as someone could play the video before it has been fully constructed
+//    dispatch_async(dispatch_get_main_queue(), ^{
         [SYNVideoPlaybackViewController sharedInstance];
-    });
+//    });
     
     if (self.currentUser && self.currentOAuth2Credentials) {
         

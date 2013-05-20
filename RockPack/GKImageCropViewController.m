@@ -165,6 +165,7 @@
     UIImage *viewImage = UIGraphicsGetImageFromCurrentImageContext();
 	
 	CGGradientRelease(gradient);
+    CGColorSpaceRelease(colorSpace);
     UIGraphicsEndImageContext();
     
     return viewImage;
