@@ -91,6 +91,8 @@
     
     [self.view addSubview:tabsContainer];
     
+    [self.view bringSubviewToFront:self.addButton];
+    
     // Google Analytics support
     self.trackedViewName = @"Search - Root";
     
@@ -343,6 +345,8 @@
 {
     return YES;
 }
+
+
 
 
 

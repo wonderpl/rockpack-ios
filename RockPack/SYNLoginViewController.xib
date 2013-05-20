@@ -2,10 +2,10 @@
 <archive type="com.apple.InterfaceBuilder3.CocoaTouch.iPad.XIB" version="8.00">
 	<data>
 		<int key="IBDocument.SystemTarget">1552</int>
-		<string key="IBDocument.SystemVersion">12D78</string>
+		<string key="IBDocument.SystemVersion">12C3006</string>
 		<string key="IBDocument.InterfaceBuilderVersion">3084</string>
-		<string key="IBDocument.AppKitVersion">1187.37</string>
-		<string key="IBDocument.HIToolboxVersion">626.00</string>
+		<string key="IBDocument.AppKitVersion">1187.34</string>
+		<string key="IBDocument.HIToolboxVersion">625.00</string>
 		<object class="NSMutableDictionary" key="IBDocument.PluginVersions">
 			<string key="NS.key.0">com.apple.InterfaceBuilder.IBCocoaTouchPlugin</string>
 			<string key="NS.object.0">2083</string>
@@ -599,6 +599,10 @@
 							<int key="NSColorSpace">1</int>
 							<bytes key="NSRGB">MC41MDk4MDM5NTA4IDAuNTUyOTQxMjAzMSAwLjU2ODYyNzQ3NjcgMAA</bytes>
 						</object>
+						<object class="NSCustomResource" key="IBUIHighlightedImage">
+							<string key="NSClassName">NSImage</string>
+							<string key="NSResourceName">ButtonResetPasswordHighlighted.png</string>
+						</object>
 						<object class="NSCustomResource" key="IBUINormalImage">
 							<string key="NSClassName">NSImage</string>
 							<string key="NSResourceName">ButtonResetPasswordDefault.png</string>
@@ -693,6 +697,7 @@
 						<string key="NSFrame">{{851, 638}, {113, 54}}</string>
 						<reference key="NSSuperview" ref="766721923"/>
 						<reference key="NSWindow"/>
+						<reference key="NSNextKeyView"/>
 						<string key="NSReuseIdentifierKey">_NS:9</string>
 						<bool key="IBUIOpaque">NO</bool>
 						<string key="targetRuntimeIdentifier">IBIPadFramework</string>
@@ -1373,7 +1378,7 @@
 				<real value="0.0" key="72.IBUIButtonInspectorSelectedStateConfigurationMetadataKey"/>
 				<string key="82.IBPluginDependency">com.apple.InterfaceBuilder.IBCocoaTouchPlugin</string>
 				<string key="84.IBPluginDependency">com.apple.InterfaceBuilder.IBCocoaTouchPlugin</string>
-				<real value="0.0" key="84.IBUIButtonInspectorSelectedStateConfigurationMetadataKey"/>
+				<real value="1" key="84.IBUIButtonInspectorSelectedStateConfigurationMetadataKey"/>
 				<string key="88.IBPluginDependency">com.apple.InterfaceBuilder.IBCocoaTouchPlugin</string>
 				<string key="9.IBPluginDependency">com.apple.InterfaceBuilder.IBCocoaTouchPlugin</string>
 				<string key="93.IBPluginDependency">com.apple.InterfaceBuilder.IBCocoaTouchPlugin</string>
@@ -1406,55 +1411,6 @@
 				<object class="IBPartialClassDescription">
 					<string key="className">SYNLoginViewController</string>
 					<string key="superclassName">SYNLoginBaseViewController</string>
-					<dictionary class="NSMutableDictionary" key="actions">
-						<string key="doLogin:">id</string>
-						<string key="faceButtonImagePressed:">UIButton</string>
-						<string key="forgottenPasswordPressed:">id</string>
-						<string key="goToLoginForm:">id</string>
-						<string key="registerNewUser:">id</string>
-						<string key="registerPressed:">id</string>
-						<string key="sendEmailButtonPressed:">id</string>
-						<string key="signInWithFacebook:">id</string>
-						<string key="signUp:">id</string>
-					</dictionary>
-					<dictionary class="NSMutableDictionary" key="actionInfosByName">
-						<object class="IBActionInfo" key="doLogin:">
-							<string key="name">doLogin:</string>
-							<string key="candidateClassName">id</string>
-						</object>
-						<object class="IBActionInfo" key="faceButtonImagePressed:">
-							<string key="name">faceButtonImagePressed:</string>
-							<string key="candidateClassName">UIButton</string>
-						</object>
-						<object class="IBActionInfo" key="forgottenPasswordPressed:">
-							<string key="name">forgottenPasswordPressed:</string>
-							<string key="candidateClassName">id</string>
-						</object>
-						<object class="IBActionInfo" key="goToLoginForm:">
-							<string key="name">goToLoginForm:</string>
-							<string key="candidateClassName">id</string>
-						</object>
-						<object class="IBActionInfo" key="registerNewUser:">
-							<string key="name">registerNewUser:</string>
-							<string key="candidateClassName">id</string>
-						</object>
-						<object class="IBActionInfo" key="registerPressed:">
-							<string key="name">registerPressed:</string>
-							<string key="candidateClassName">id</string>
-						</object>
-						<object class="IBActionInfo" key="sendEmailButtonPressed:">
-							<string key="name">sendEmailButtonPressed:</string>
-							<string key="candidateClassName">id</string>
-						</object>
-						<object class="IBActionInfo" key="signInWithFacebook:">
-							<string key="name">signInWithFacebook:</string>
-							<string key="candidateClassName">id</string>
-						</object>
-						<object class="IBActionInfo" key="signUp:">
-							<string key="name">signUp:</string>
-							<string key="candidateClassName">id</string>
-						</object>
-					</dictionary>
 					<dictionary class="NSMutableDictionary" key="outlets">
 						<string key="activityIndicator">UIActivityIndicatorView</string>
 						<string key="areYouNewLabel">UILabel</string>
@@ -1620,6 +1576,7 @@
 			<string key="ButtonRegisterBigDefault.png">{315, 62}</string>
 			<string key="ButtonRegisterHighlighted.png">{113, 54}</string>
 			<string key="ButtonResetPasswordDefault.png">{315, 62}</string>
+			<string key="ButtonResetPasswordHighlighted.png">{315, 62}</string>
 			<string key="ButtonSignupDefault.png">{123, 62}</string>
 			<string key="ButtonSignupHighlighted.png">{123, 62}</string>
 			<string key="DividerLogin.png">{306, 3}</string>

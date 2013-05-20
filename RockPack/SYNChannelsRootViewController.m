@@ -196,7 +196,6 @@
     
     currentGenre = nil;
     
-    [self loadChannelsForGenre:nil];
 }
 
 

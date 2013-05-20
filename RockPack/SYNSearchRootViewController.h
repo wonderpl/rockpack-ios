@@ -14,6 +14,7 @@
     BOOL viewIsOnScreen;
 }
 
+
 -(void)showSearchResultsForTerm:(NSString*)newSearchTerm;
 
 

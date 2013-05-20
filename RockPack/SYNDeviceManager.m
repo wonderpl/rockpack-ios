@@ -81,6 +81,14 @@
     return [[UIScreen mainScreen] bounds];
 }
 
+-(CGSize)currentScreenSize
+{
+    CGSize currentSize;
+    currentSize.width = self.currentScreenWidth;
+    currentSize.height = self.currentScreenHeight;
+    return currentSize;
+}
+
 -(CGFloat)currentScreenWidth
 {
     if(UIDeviceOrientationIsPortrait([self orientation]))

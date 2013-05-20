@@ -8,6 +8,7 @@ extern const struct ChannelAttributes {
 	__unsafe_unretained NSString *categoryId;
 	__unsafe_unretained NSString *channelDescription;
 	__unsafe_unretained NSString *eCommerceURL;
+	__unsafe_unretained NSString *favorite;
 	__unsafe_unretained NSString *lastUpdated;
 	__unsafe_unretained NSString *popular;
 	__unsafe_unretained NSString *position;
@@ -31,6 +32,7 @@ extern const struct ChannelFetchedProperties {
 @class ChannelOwner;
 @class ChannelOwner;
 @class VideoInstance;
+
 
 
 
@@ -81,6 +83,20 @@ extern const struct ChannelFetchedProperties {
 
 
 //- (BOOL)validateECommerceURL:(id*)value_ error:(NSError**)error_;
+
+
+
+
+
+@property (nonatomic, strong) NSNumber* favorite;
+
+
+
+@property BOOL favoriteValue;
+- (BOOL)favoriteValue;
+- (void)setFavoriteValue:(BOOL)value_;
+
+//- (BOOL)validateFavorite:(id*)value_ error:(NSError**)error_;
 
 
 
@@ -234,6 +250,15 @@ extern const struct ChannelFetchedProperties {
 
 - (NSString*)primitiveECommerceURL;
 - (void)setPrimitiveECommerceURL:(NSString*)value;
+
+
+
+
+- (NSNumber*)primitiveFavorite;
+- (void)setPrimitiveFavorite:(NSNumber*)value;
+
+- (BOOL)primitiveFavoriteValue;
+- (void)setPrimitiveFavoriteValue:(BOOL)value_;
 
 
 
