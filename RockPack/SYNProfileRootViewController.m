@@ -15,6 +15,7 @@
 #import "SYNDeviceManager.h"
 #import "SYNIntegralCollectionViewFlowLayout.h"
 #import "SYNOAuthNetworkEngine.h"
+#import "SYNPassthroughView.h"
 #import "SYNProfileRootViewController.h"
 #import "SYNSubscriptionsViewController.h"
 #import "SYNUserProfileViewController.h"
@@ -45,12 +46,12 @@
 @property (nonatomic, strong) SYNDeletionWobbleLayout* channelsPortraitLayout;
 @property (nonatomic, strong) SYNDeletionWobbleLayout* subscriptionsLandscapeLayout;
 @property (nonatomic, strong) SYNDeletionWobbleLayout* subscriptionsPortraitLayout;
+@property (nonatomic, strong) UIView* deletionCancelView;
 @property (nonatomic, strong) SYNSubscriptionsViewController* subscriptionsViewController;
 @property (nonatomic, strong) SYNUserProfileViewController* userProfileController;
 @property (nonatomic, strong) SYNYouHeaderView* headerChannelsView;
 @property (nonatomic, strong) SYNYouHeaderView* headerSubscriptionsView;
-@property (nonatomic, strong) UIGestureRecognizer* tapOnScreenRecogniser;
-@property (nonatomic, strong) UILongPressGestureRecognizer* longPressGestureRecogniser;
+@property (nonatomic, strong) UITapGestureRecognizer* tapGestureRecognizer;
 @property (nonatomic, weak) Channel* channelDeleteCandidate;
 @property (nonatomic, weak) SYNChannelMidCell* cellDeleteCandidate;
 @property (nonatomic, weak) UIButton* channelsTabButton;
@@ -74,14 +75,12 @@
 }
 
 
-
-
 - (void) loadView
 {
     BOOL isIPhone =  [[SYNDeviceManager sharedInstance] isIPhone];
     
     // User Profile
-    if(!isIPhone)
+    if (!isIPhone)
     {
         self.userProfileController = [[SYNUserProfileViewController alloc] init];
     }
@@ -179,7 +178,7 @@
     subColViewFrame.size.width = [[SYNDeviceManager sharedInstance] currentScreenWidth] - subColViewFrame.origin.x - 10.0;
     [self.subscriptionsViewController setViewFrame: subColViewFrame];
     
-    if(self.user)
+    if (self.user)
         self.subscriptionsViewController.user = self.user;
     
     self.headerSubscriptionsView = [SYNYouHeaderView headerViewForWidth: 384];
@@ -209,18 +208,32 @@
     headerSubFrame.origin.x = subColViewFrame.origin.x;
     self.headerSubscriptionsView.frame = headerSubFrame;
     
-    self.view = [[UIView alloc] initWithFrame: CGRectMake(0.0,
-                                                          0.0,
+    self.view = [[UIView alloc] initWithFrame: CGRectMake(0.0f,
+                                                          0.0f,
                                                           [[SYNDeviceManager sharedInstance] currentScreenWidth],
                                                           [[SYNDeviceManager sharedInstance] currentScreenHeightWithStatusBar])];
+    
+    self.deletionCancelView = [[UIView alloc] initWithFrame: CGRectMake(0.0f,
+                                                                                    0.0f,
+                                                                                    [[SYNDeviceManager sharedInstance] currentScreenWidth],
+                                                                                    [[SYNDeviceManager sharedInstance] currentScreenHeightWithStatusBar])];
+    
+    self.deletionCancelView.backgroundColor = [UIColor clearColor];
+//    self.deletionCancelView.hidden = TRUE;
+    
+    self.tapGestureRecognizer = [[UITapGestureRecognizer alloc] initWithTarget: self
+                                                                        action: @selector(userTappedDeletionCancelView)];
+    
+    self.tapGestureRecognizer.delegate = self;
+    [self.deletionCancelView addGestureRecognizer: self.tapGestureRecognizer];
+
     
     self.subscriptionsViewController.headerView = self.headerSubscriptionsView;
     
     [self.view addSubview: self.headerChannelsView];
     [self.view addSubview: self.headerSubscriptionsView];
     [self.view addSubview: self.userProfileController.view];
-    [self.view addSubview: self.channelThumbnailCollectionView];
-    [self.view addSubview: self.subscriptionsViewController.view];
+
     
     CGRect userProfileFrame = self.userProfileController.view.frame;
     userProfileFrame.origin.y = 80.0;
@@ -228,6 +241,10 @@
     self.userProfileController.view.frame = userProfileFrame;
     
     [self.view addSubview: self.userProfileController.view];
+    
+    [self.view addSubview: self.deletionCancelView];
+    [self.view addSubview: self.channelThumbnailCollectionView];
+    [self.view addSubview: self.subscriptionsViewController.view];
     
     if (isIPhone)
     {
@@ -287,13 +304,9 @@
 
 #pragma mark - View Lifecycle
 
-
 - (void) viewDidLoad
 {
     [super viewDidLoad];
-    
-    
-    
     
     self.trackedViewName = @"You - Root";
     
@@ -330,8 +343,31 @@
                                                object: self.user.managedObjectContext];
     
     [self.userProfileController setChannelOwner:self.user];
+}
+
+
+- (void) viewWillAppear: (BOOL) animated
+{
+    [super viewWillAppear: animated];
     
+    self.deletionModeActive = NO;
     
+    self.subscriptionsViewController.collectionView.delegate = self;
+    
+    [self updateLayoutForOrientation: [[SYNDeviceManager sharedInstance] orientation]];
+    
+    if (self.user)
+    {
+        [self reloadCollectionViews];
+    }
+}
+
+
+- (void) viewWillDisappear: (BOOL) animated
+{
+    [super viewWillDisappear: animated];
+    
+    self.deletionModeActive = NO;
 }
 
 
@@ -342,7 +378,9 @@
     [updatedObjects enumerateObjectsUsingBlock: ^(id obj, NSUInteger idx, BOOL *stop) {
         if ([obj isKindOfClass:[User class]]) {
             [self reloadCollectionViews];
-        } else if([obj isKindOfClass:[ChannelOwner class]]) {
+        }
+        else if ([obj isKindOfClass:[ChannelOwner class]])
+        {
             [self reloadCollectionViews];
         }
     }];
@@ -393,10 +431,23 @@
 //        if (!indexPath)
         {
             self.deletionModeActive = NO;
-            SYNDeletionWobbleLayout *layout = (SYNDeletionWobbleLayout *)self.channelThumbnailCollectionView.collectionViewLayout;
-            [layout invalidateLayout];
         }
     }
+}
+
+- (void) setDeletionModeActive: (BOOL) deletionModeActive
+{
+    _deletionModeActive = deletionModeActive;
+    SYNDeletionWobbleLayout *layout = (SYNDeletionWobbleLayout *)self.channelThumbnailCollectionView.collectionViewLayout;
+    [layout invalidateLayout];
+    
+    self.deletionCancelView.hidden = _deletionModeActive ? FALSE : TRUE;
+}
+
+
+- (void) userTappedDeletionCancelView
+{
+    self.deletionModeActive = FALSE;
 }
 
 
@@ -416,20 +467,6 @@
 }
 
 
-- (void) viewWillAppear: (BOOL) animated
-{
-    [super viewWillAppear: animated];
-    
-    
-    self.subscriptionsViewController.collectionView.delegate = self;
-    
-    [self updateLayoutForOrientation:[[SYNDeviceManager sharedInstance] orientation]];
-    
-    if(self.user)
-        [self reloadCollectionViews];
-}
-
-
 - (void) willAnimateRotationToInterfaceOrientation: (UIInterfaceOrientation) toInterfaceOrientation
                                           duration: (NSTimeInterval) duration
 {
@@ -446,7 +483,7 @@
     BOOL isIPhone = [[SYNDeviceManager sharedInstance] isIPhone];
     //Setup the headers
     
-    if( isIPhone)
+    if (isIPhone)
     {
         newFrame = self.headerChannelsView.frame;
         newFrame.size.width = 160.0f;
@@ -530,7 +567,7 @@
     if (!indexPath)
     {
         UICollectionViewCell* visibleCell = ([[self.subscriptionsViewController.channelThumbnailCollectionView visibleCells] count] > 0) ? [[self.subscriptionsViewController.channelThumbnailCollectionView visibleCells] objectAtIndex: 0] : nil;
-        if(visibleCell != nil)
+        if (visibleCell != nil)
         {
             indexPath = [self.subscriptionsViewController.channelThumbnailCollectionView indexPathForCell: visibleCell];
         }
@@ -602,9 +639,19 @@
                                             options: SDWebImageRetryFailed];
     
     
+    // Make sure we can't delete the favourites channel
+    if (channel.favouritesValue == TRUE)
+    {
+        channelThumbnailCell.deleteButton.enabled = FALSE;
+    }
+    else
+    {
+        channelThumbnailCell.deleteButton.enabled = TRUE;
+    }
     
     [channelThumbnailCell setChannelTitle:channel.title];
     [channelThumbnailCell setViewControllerDelegate: self];
+
     
     return channelThumbnailCell;
 }
@@ -797,7 +844,7 @@
     CGSize channelViewSize = self.channelThumbnailCollectionView.contentSize;
     CGSize subscriptionsViewSize = self.subscriptionsViewController.collectionView.contentSize;
     
-    if(channelViewSize.height == subscriptionsViewSize.height)
+    if (channelViewSize.height == subscriptionsViewSize.height)
         return;
     
     CGRect paddingRect = CGRectZero;
@@ -907,26 +954,26 @@
 
 #pragma mark - Accessors
 
--(void)setUser:(ChannelOwner*)user
+- (void) setUser: (ChannelOwner*) user
 {
-    if(user == _user)
+    if (user == _user)
         return;
     
-    if([user.uniqueId isEqual:_user.uniqueId])
+    if ([user.uniqueId isEqual:_user.uniqueId])
         return;
     
     _user = user;
     
-    if(self.userProfileController)
+    if (self.userProfileController)
         [self.userProfileController setChannelOwner:self.user];
     
     
     [self.channelThumbnailCollectionView reloadData];
     
-    if(self.subscriptionsViewController)
+    if (self.subscriptionsViewController)
         self.subscriptionsViewController.user = user;
     
-    if([user isMemberOfClass:[ChannelOwner class]])
+    if ([user isMemberOfClass:[ChannelOwner class]])
     {
         [[NSNotificationCenter defaultCenter] postNotificationName:kChannelOwnerUpdateRequest
                                                             object:self
