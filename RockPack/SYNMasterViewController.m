@@ -357,6 +357,21 @@ typedef void(^AnimationCompletionBlock)(BOOL finished);
     
 }
 
+-(void)createNewChannelAction:(NSNotification*)notification
+{
+    Channel* channel = (Channel*)[[notification userInfo] objectForKey: kChannel];
+    if(!channel)
+        return;
+    
+    // - note: channel.managedObjectContext == appDelegate.chanelsContext
+    
+    SYNChannelDetailViewController *channelCreationVC =
+    [[SYNChannelDetailViewController alloc] initWithChannel: channel
+                                                  usingMode: kChannelDetailsModeEdit] ;
+    
+    SYNAbstractViewController* showingController = self.showingViewController;
+    [showingController animatedPushViewController: channelCreationVC];
+}
 
 -(void)addedToChannelAction:(NSNotification*)notification
 {
@@ -380,21 +395,7 @@ typedef void(^AnimationCompletionBlock)(BOOL finished);
     
 }
 
--(void)createNewChannelAction:(NSNotification*)notification
-{
-    Channel* channel = (Channel*)[[notification userInfo] objectForKey: kChannel];
-    if(!channel)
-        return;
-    
-    // - note: channel.managedObjectContext == appDelegate.chanelsContext 
-    
-    SYNChannelDetailViewController *channelCreationVC =
-    [[SYNChannelDetailViewController alloc] initWithChannel: channel
-                                                  usingMode: kChannelDetailsModeEdit] ;
-    
-    SYNAbstractViewController* showingController = self.containerViewController.showingViewController;
-    [showingController animatedPushViewController: channelCreationVC];
-}
+
 
 
 #pragma mark - Navigation Panel Methods
@@ -1173,6 +1174,20 @@ typedef void(^AnimationCompletionBlock)(BOOL finished);
 -(UINavigationController*)overlayNavigationController
 {
     return _overlayNavigationController;
+}
+
+-(SYNAbstractViewController*)showingViewController
+{
+    SYNAbstractViewController* absctractVc;
+    if(self.overlayNavigationController) {
+        absctractVc = (SYNAbstractViewController*)self.overlayNavigationController.topViewController;
+    }
+         
+    else {
+        absctractVc = self.containerViewController.showingViewController;
+    }
+    
+    return absctractVc;
 }
 
 
