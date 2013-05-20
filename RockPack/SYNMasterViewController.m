@@ -277,34 +277,9 @@ typedef void(^AnimationCompletionBlock)(BOOL finished);
     
 }
 
--(NSUInteger)supportedInterfaceOrientations
-{
-    if([[SYNDeviceManager sharedInstance]isIPhone])
-    {
-        return UIInterfaceOrientationMaskPortrait;
-    }
-    else
-    {
-        return UIInterfaceOrientationMaskAll;
-    }
-}
 
--(void)viewWillAppear:(BOOL)animated
-{
-    [super viewWillAppear:animated];
-    
-}
 
--(void)viewDidAppear:(BOOL)animated
-{
-    [super viewDidAppear:animated];
-}
 
--(void)viewWillDisappear:(BOOL)animated
-{
-    [super viewWillDisappear:animated];
-    
-}
 
 
 
@@ -362,11 +337,10 @@ typedef void(^AnimationCompletionBlock)(BOOL finished);
 {
     
     [self addChildViewController:self.existingChannelsController];
-    if([[SYNDeviceManager sharedInstance] isIPhone])
-    {
-        self.existingChannelsController.view.frame = self.view.bounds;
-    }
+
     [self.view addSubview:self.existingChannelsController.view];
+    
+    // fade in //
     
     self.existingChannelsController.view.alpha = 0.0;
     
@@ -374,8 +348,7 @@ typedef void(^AnimationCompletionBlock)(BOOL finished);
                      animations:^{
                          self.existingChannelsController.view.alpha = 1.0;
                      } completion:^(BOOL finished) {
-                         if(self.overlayNavigationController)
-                             self.overlayNavigationController = nil;
+                         
                          if(self.videoViewerViewController)
                          {
                              [self removeVideoOverlayController];
@@ -384,6 +357,21 @@ typedef void(^AnimationCompletionBlock)(BOOL finished);
     
 }
 
+-(void)createNewChannelAction:(NSNotification*)notification
+{
+    Channel* channel = (Channel*)[[notification userInfo] objectForKey: kChannel];
+    if(!channel)
+        return;
+    
+    // - note: channel.managedObjectContext == appDelegate.chanelsContext
+    
+    SYNChannelDetailViewController *channelCreationVC =
+    [[SYNChannelDetailViewController alloc] initWithChannel: channel
+                                                  usingMode: kChannelDetailsModeEdit] ;
+    
+    SYNAbstractViewController* showingController = self.showingViewController;
+    [showingController animatedPushViewController: channelCreationVC];
+}
 
 -(void)addedToChannelAction:(NSNotification*)notification
 {
@@ -407,21 +395,7 @@ typedef void(^AnimationCompletionBlock)(BOOL finished);
     
 }
 
--(void)createNewChannelAction:(NSNotification*)notification
-{
-    Channel* channel = (Channel*)[[notification userInfo] objectForKey: kChannel];
-    if(!channel)
-        return;
-    
-    // - note: channel.managedObjectContext == appDelegate.chanelsContext 
-    
-    SYNChannelDetailViewController *channelCreationVC =
-    [[SYNChannelDetailViewController alloc] initWithChannel: channel
-                                                  usingMode: kChannelDetailsModeEdit] ;
-    
-    SYNAbstractViewController* showingController = self.containerViewController.showingViewController;
-    [showingController animatedPushViewController: channelCreationVC];
-}
+
 
 
 #pragma mark - Navigation Panel Methods
@@ -778,49 +752,6 @@ typedef void(^AnimationCompletionBlock)(BOOL finished);
     [self presentSuccessNotificationWithMessage:message];
 }
 
-#pragma mark - show message bars
-
-- (void) presentNetworkErrorViewWithMesssage: (NSString*) message
-{
-    if(self.networkErrorView)
-    {
-        [self.networkErrorView setText:message];
-        return;
-    }
-    
-    self.networkErrorView = [SYNNetworkErrorView errorView];
-    [self.networkErrorView setText:message];
-    [self.errorContainerView addSubview:self.networkErrorView];
-    
-    
-    [UIView animateWithDuration:0.3 animations:^{
-        CGRect erroViewFrame = self.networkErrorView.frame;
-        erroViewFrame.origin.y = [[SYNDeviceManager sharedInstance] currentScreenHeight] - ([[SYNDeviceManager sharedInstance] isIPad] ? 70.0 : 60.0);
-        
-        self.networkErrorView.frame = erroViewFrame;
-    }];
-}
-
--(void) presentSuccessNotificationWithMessage:(NSString*)message
-{
-    __block SYNNetworkErrorView* successNotification = [[SYNNetworkErrorView alloc] init];
-    successNotification.backgroundColor = [UIColor colorWithPatternImage:[UIImage imageNamed:@"BarSucess"]];
-    [successNotification setText:message];
-    [self.errorContainerView addSubview:successNotification];
-    [UIView animateWithDuration:0.3f delay:0.0f options:UIViewAnimationOptionCurveEaseOut animations:^{
-        CGRect newFrame = successNotification.frame;
-        newFrame.origin.y = [[SYNDeviceManager sharedInstance] currentScreenHeight] - ([[SYNDeviceManager sharedInstance] isIPad] ? 70.0 : 60.0);
-        successNotification.frame = newFrame;
-    } completion:^(BOOL finished) {
-        [UIView animateWithDuration:0.3f delay:10.0f options:UIViewAnimationOptionCurveEaseInOut animations:^{
-            successNotification.alpha = 0.0f;
-        } completion:^(BOOL finished) {
-            [successNotification removeFromSuperview];
-        }];
-    }];
-}
-
-
 
 #pragma mark - Navigation Methods
 
@@ -938,14 +869,6 @@ typedef void(^AnimationCompletionBlock)(BOOL finished);
 
 #pragma mark - Account Settings
 
-- (void) accountSettingsLogout: (NSNotification*) notification
-{
-    [self.accountSettingsPopover dismissPopoverAnimated: NO];
-    self.accountSettingsPopover = nil;
-    [appDelegate logout];
-}
-
-
 - (void) showAccountSettingsPopover
 {
     if(self.accountSettingsPopover)
@@ -1040,6 +963,14 @@ typedef void(^AnimationCompletionBlock)(BOOL finished);
     
 }
 
+- (void) accountSettingsLogout: (NSNotification*) notification
+{
+    [self.accountSettingsPopover dismissPopoverAnimated: NO];
+    self.accountSettingsPopover = nil;
+    [appDelegate logout];
+}
+
+#pragma mark - Popover Methods
 
 - (void) hideAutocompletePopover
 {
@@ -1060,8 +991,62 @@ typedef void(^AnimationCompletionBlock)(BOOL finished);
     
 }
 
+#pragma mark - Message Bars
 
-#pragma mark - Autorotation Methods
+- (void) presentNetworkErrorViewWithMesssage: (NSString*) message
+{
+    if(self.networkErrorView)
+    {
+        [self.networkErrorView setText:message];
+        return;
+    }
+    
+    self.networkErrorView = [SYNNetworkErrorView errorView];
+    [self.networkErrorView setText:message];
+    [self.errorContainerView addSubview:self.networkErrorView];
+    
+    
+    [UIView animateWithDuration:0.3 animations:^{
+        CGRect erroViewFrame = self.networkErrorView.frame;
+        erroViewFrame.origin.y = [[SYNDeviceManager sharedInstance] currentScreenHeight] - ([[SYNDeviceManager sharedInstance] isIPad] ? 70.0 : 60.0);
+        
+        self.networkErrorView.frame = erroViewFrame;
+    }];
+}
+
+-(void) presentSuccessNotificationWithMessage:(NSString*)message
+{
+    __block SYNNetworkErrorView* successNotification = [[SYNNetworkErrorView alloc] init];
+    successNotification.backgroundColor = [UIColor colorWithPatternImage:[UIImage imageNamed:@"BarSucess"]];
+    [successNotification setText:message];
+    [self.errorContainerView addSubview:successNotification];
+    [UIView animateWithDuration:0.3f delay:0.0f options:UIViewAnimationOptionCurveEaseOut animations:^{
+        CGRect newFrame = successNotification.frame;
+        newFrame.origin.y = [[SYNDeviceManager sharedInstance] currentScreenHeight] - ([[SYNDeviceManager sharedInstance] isIPad] ? 70.0 : 60.0);
+        successNotification.frame = newFrame;
+    } completion:^(BOOL finished) {
+        [UIView animateWithDuration:0.3f delay:10.0f options:UIViewAnimationOptionCurveEaseInOut animations:^{
+            successNotification.alpha = 0.0f;
+        } completion:^(BOOL finished) {
+            [successNotification removeFromSuperview];
+        }];
+    }];
+}
+
+
+#pragma mark - Interface Orientation Methods
+
+-(NSUInteger)supportedInterfaceOrientations
+{
+    if([[SYNDeviceManager sharedInstance]isIPhone])
+    {
+        return UIInterfaceOrientationMaskPortrait;
+    }
+    else
+    {
+        return UIInterfaceOrientationMaskAll;
+    }
+}
 
 -(void)willAnimateRotationToInterfaceOrientation:(UIInterfaceOrientation)toInterfaceOrientation duration:(NSTimeInterval)duration
 {
@@ -1189,6 +1174,20 @@ typedef void(^AnimationCompletionBlock)(BOOL finished);
 -(UINavigationController*)overlayNavigationController
 {
     return _overlayNavigationController;
+}
+
+-(SYNAbstractViewController*)showingViewController
+{
+    SYNAbstractViewController* absctractVc;
+    if(self.overlayNavigationController) {
+        absctractVc = (SYNAbstractViewController*)self.overlayNavigationController.topViewController;
+    }
+         
+    else {
+        absctractVc = self.containerViewController.showingViewController;
+    }
+    
+    return absctractVc;
 }
 
 

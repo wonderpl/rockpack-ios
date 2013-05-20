@@ -31,6 +31,9 @@ typedef void (^VideoOverlayDismissBlock)(void);
 @property (nonatomic, strong) UIViewController* originViewController;
 @property (strong, nonatomic) Reachability *reachability;
 
+
+@property (nonatomic, weak, readonly) SYNAbstractViewController* showingViewController;
+
 - (id) initWithContainerViewController: (UIViewController*) root;
 
 - (void) addVideoOverlayToViewController: (UIViewController *) originViewController
@@ -39,5 +42,7 @@ typedef void (^VideoOverlayDismissBlock)(void);
                                onDismiss: (VideoOverlayDismissBlock) dismissBlock;
 
 - (void) removeVideoOverlayController;
+
+
 
 @end
