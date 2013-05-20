@@ -988,16 +988,7 @@
 }
 
 
-- (void) clearAllErrorArrows
-{
-    [labelsToErrorArrows enumerateKeysAndObjectsUsingBlock:^(id key, id value, BOOL* stop)
-    {
-        SYNLoginErrorArrow* arrow = (SYNLoginErrorArrow*)value;
-        [arrow removeFromSuperview];
-    }];
-    
-    [labelsToErrorArrows removeAllObjects];
-}
+
 
 
 - (void) resignAllFirstResponders
@@ -1110,11 +1101,21 @@
     
 }
 
+#pragma mark - Error Arrows
 
 - (void) placeErrorLabel: (NSString*) errorText
               nextToView: (UIView*) view
 {
-    SYNLoginErrorArrow* errorArrow = [SYNLoginErrorArrow withMessage:errorText];
+    
+    
+    SYNLoginErrorArrow* errorArrow = [labelsToErrorArrows objectForKey:[NSValue valueWithPointer:(__bridge const void *)(view)]];
+    if(errorArrow)
+    {
+        [errorArrow setMessage:errorText];
+        return;
+    }
+    
+    errorArrow = [SYNLoginErrorArrow withMessage:errorText];
     
     CGFloat xPos = view.frame.origin.x + view.frame.size.width - 20.0;
     CGRect errorArrowFrame = errorArrow.frame;
@@ -1126,7 +1127,6 @@
     errorArrow.alpha = 0.0;
     
     
-    
     [UIView animateWithDuration: 0.2
                      animations: ^{
                          errorArrow.alpha = 1.0;
@@ -1136,6 +1136,16 @@
     [self.view addSubview:errorArrow];
 }
 
+- (void) clearAllErrorArrows
+{
+    [labelsToErrorArrows enumerateKeysAndObjectsUsingBlock:^(id key, id value, BOOL* stop)
+     {
+         SYNLoginErrorArrow* arrow = (SYNLoginErrorArrow*)value;
+         [arrow removeFromSuperview];
+     }];
+    
+    [labelsToErrorArrows removeAllObjects];
+}
 
 - (void) outerViewTapped: (UITapGestureRecognizer*) recogniser
 {
