@@ -839,7 +839,7 @@ typedef void(^AnimationCompletionBlock)(BOOL finished);
     
     if(_overlayNavigationController)
     {
-        if(_overlayNavigationController.viewControllers.count > 1)
+        if(_overlayNavigationController.viewControllers.count > 1) // if the overlayController has itself pushed views, pop one of them
         {
             abstractVC = (SYNAbstractViewController *)_overlayNavigationController.topViewController;
             
@@ -848,10 +848,17 @@ typedef void(^AnimationCompletionBlock)(BOOL finished);
             
 
         }
-        else
+        else // go back to containerView
         {
-            self.overlayNavigationController = nil;
-            [self showBackButton:NO];
+            self.overlayNavigationController = nil; // animate the overlay out
+            
+            abstractVC = self.containerViewController.showingViewController;
+            
+            if(abstractVC.navigationController.viewControllers.count == 1) // if the controller underneath has not popped controllers to its stack, hide back button
+            {
+                [self showBackButton:NO];
+            }
+            
         }
         
         
