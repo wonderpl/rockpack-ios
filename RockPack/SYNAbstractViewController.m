@@ -435,6 +435,11 @@
     return NO;
 }
 
+- (BOOL) toleratesSearchBar
+{
+    return NO;
+}
+
 #pragma mark - Social network sharing
 
 - (void) shareVideoInstance: (VideoInstance *) videoInstance
