@@ -1306,6 +1306,7 @@
                                               
                                               [[NSNotificationCenter defaultCenter] postNotificationName: kVideoQueueClear
                                                                                                   object: nil];
+                                              [[NSNotificationCenter defaultCenter] postNotificationName:kNoteChannelSaved object:self];
                                               
                                           } errorHandler:^(id err) {
                                               
@@ -1711,8 +1712,6 @@
         [self.backButton removeFromSuperview];
         [self.view addSubview:self.backButton];
     }
-    
-    [[NSNotificationCenter defaultCenter] postNotificationName:kNoteChannelSaved object:self];
 }
 
 
