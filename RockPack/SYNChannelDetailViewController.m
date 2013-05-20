@@ -49,10 +49,7 @@
 @property (nonatomic, strong) IBOutlet UIButton *buyButton;
 @property (nonatomic, strong) IBOutlet UIButton *cameraButton;
 @property (nonatomic, strong) IBOutlet UIButton *createChannelButton;
-<<<<<<< HEAD
 @property (strong, nonatomic) IBOutlet UIButton *saveChannelButton;
-=======
->>>>>>> 3fb58c937fee5fdd684626a2779d13677f8dc3eb
 @property (nonatomic, strong) IBOutlet UIButton *shareButton;
 @property (nonatomic, strong) IBOutlet UIButton* addCoverButton;
 @property (nonatomic, strong) IBOutlet UIButton* profileImageButton;
@@ -87,7 +84,6 @@
 @property (nonatomic,strong) VideoInstance* instanceToDelete;
 @property (weak, nonatomic) IBOutlet UIButton *cancelEditButton;
 @property (weak, nonatomic) IBOutlet UIButton *editButton;
-@property (weak, nonatomic) IBOutlet UIButton *saveChannelButton;
 @property (weak, nonatomic) IBOutlet UILabel *byLabel;
 
 //iPhone specific
