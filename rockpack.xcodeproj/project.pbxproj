@@ -387,6 +387,7 @@
 		1F003B43174A782100BBAE2F /* ButtonSettingsSave~iphone.png in Resources */ = {isa = PBXBuildFile; fileRef = 1F003B3F174A782100BBAE2F /* ButtonSettingsSave~iphone.png */; };
 		1F003B44174A782100BBAE2F /* ButtonSettingsSaveHighlighted@2x~iphone.png in Resources */ = {isa = PBXBuildFile; fileRef = 1F003B40174A782100BBAE2F /* ButtonSettingsSaveHighlighted@2x~iphone.png */; };
 		1F003B45174A782100BBAE2F /* ButtonSettingsSaveHighlighted~iphone.png in Resources */ = {isa = PBXBuildFile; fileRef = 1F003B41174A782100BBAE2F /* ButtonSettingsSaveHighlighted~iphone.png */; };
+		1F003B47174A9CA800BBAE2F /* Default-Portrait~ipad.png in Resources */ = {isa = PBXBuildFile; fileRef = 1F003B46174A9CA700BBAE2F /* Default-Portrait~ipad.png */; };
 		1F1B4BD6174280F0009DEB0C /* PlaceholderVideoWide.png in Resources */ = {isa = PBXBuildFile; fileRef = 1F1B4BD4174280F0009DEB0C /* PlaceholderVideoWide.png */; };
 		1F1B4BD7174280F0009DEB0C /* PlaceholderVideoWide@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 1F1B4BD5174280F0009DEB0C /* PlaceholderVideoWide@2x.png */; };
 		1F1B4BDA1742852A009DEB0C /* PlaceholderVideoWide@2x~iphone.png in Resources */ = {isa = PBXBuildFile; fileRef = 1F1B4BD81742852A009DEB0C /* PlaceholderVideoWide@2x~iphone.png */; };
@@ -1517,6 +1518,7 @@
 		1F003B3F174A782100BBAE2F /* ButtonSettingsSave~iphone.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "ButtonSettingsSave~iphone.png"; sourceTree = "<group>"; };
 		1F003B40174A782100BBAE2F /* ButtonSettingsSaveHighlighted@2x~iphone.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "ButtonSettingsSaveHighlighted@2x~iphone.png"; sourceTree = "<group>"; };
 		1F003B41174A782100BBAE2F /* ButtonSettingsSaveHighlighted~iphone.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "ButtonSettingsSaveHighlighted~iphone.png"; sourceTree = "<group>"; };
+		1F003B46174A9CA700BBAE2F /* Default-Portrait~ipad.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "Default-Portrait~ipad.png"; sourceTree = "<group>"; };
 		1F1B4BD4174280F0009DEB0C /* PlaceholderVideoWide.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = PlaceholderVideoWide.png; path = Assets/Images/PlaceholderVideoWide.png; sourceTree = "<group>"; };
 		1F1B4BD5174280F0009DEB0C /* PlaceholderVideoWide@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = "PlaceholderVideoWide@2x.png"; path = "Assets/Images/PlaceholderVideoWide@2x.png"; sourceTree = "<group>"; };
 		1F1B4BD81742852A009DEB0C /* PlaceholderVideoWide@2x~iphone.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = "PlaceholderVideoWide@2x~iphone.png"; path = "placeholders/PlaceholderVideoWide@2x~iphone.png"; sourceTree = "<group>"; };
@@ -2292,6 +2294,7 @@
 		010DEFC51629BDC40080F26B = {
 			isa = PBXGroup;
 			children = (
+				1F003B46174A9CA700BBAE2F /* Default-Portrait~ipad.png */,
 				010DEFDA1629BDC40080F26B /* Source */,
 				019824DD1629CA3700216900 /* Resources */,
 				010DEFD31629BDC40080F26B /* Frameworks */,
@@ -5430,6 +5433,7 @@
 				1F003B43174A782100BBAE2F /* ButtonSettingsSave~iphone.png in Resources */,
 				1F003B44174A782100BBAE2F /* ButtonSettingsSaveHighlighted@2x~iphone.png in Resources */,
 				1F003B45174A782100BBAE2F /* ButtonSettingsSaveHighlighted~iphone.png in Resources */,
+				1F003B47174A9CA800BBAE2F /* Default-Portrait~ipad.png in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
