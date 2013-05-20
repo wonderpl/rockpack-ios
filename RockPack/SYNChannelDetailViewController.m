@@ -1324,6 +1324,7 @@
                                               
                                               [[NSNotificationCenter defaultCenter] postNotificationName: kVideoQueueClear
                                                                                                   object: nil];
+                                              [[NSNotificationCenter defaultCenter] postNotificationName:kNoteChannelSaved object:self];
                                               
                                           } errorHandler:^(id err) {
                                               
@@ -1707,30 +1708,6 @@
     
     [self dismissViewControllerAnimated: NO
                              completion: nil];
-
-
-    [self setDisplayControlsVisibility:YES];
-    
-    if ([[SYNDeviceManager sharedInstance] isIPad])
-    {
-        self.addButton.hidden = YES;
-        self.createChannelButton.hidden = YES;
-        
-    }
-    else
-    {
-        // On iPad the existing channels viewcontroller's view is removed from the master view controller when a new channel is created.
-        // On iPhone we want to be able to go back which means the existing channels view remains onscreen. Here we remove it as channel creation was complete.
-        UIViewController *master = self.presentingViewController;
-        [[[[master childViewControllers] lastObject] view] removeFromSuperview];
-        [self setDisplayControlsVisibility:YES];
-        
-        //Move the back button from the edit view to allow closing this view
-        [self.backButton removeFromSuperview];
-        [self.view addSubview:self.backButton];
-    }
-    
-    [[NSNotificationCenter defaultCenter] postNotificationName:kNoteChannelSaved object:self];
 }
 
 

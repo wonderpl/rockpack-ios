@@ -95,10 +95,11 @@
 -(void)channelUpdateRequest:(NSNotification*)notification
 {
     Channel* channelToUpdate = (Channel*)[[notification userInfo] objectForKey:kChannel];
+    
     if(!channelToUpdate)
         return;
     
-    [self updateChannel:channelToUpdate];
+    [self updateChannel:channelToUpdate withForceRefresh:channelToUpdate.hasChangedSubscribeValue];
 }
 
 -(void)channelDeleteRequest:(NSNotification*)notification
@@ -125,6 +126,8 @@
                                                 
                                                 channel.subscribedByUserValue = YES;
                                                 channel.subscribersCountValue += 1;
+                                                
+                                                channel.hasChangedSubscribeValue = YES;
                                                 
                                                 [channel addSubscribersObject:appDelegate.currentUser];
                                                 
@@ -162,6 +165,8 @@
                                                   
                                                   channel.subscribedByUserValue = NO;
                                                   channel.subscribersCountValue -= 1;
+                                                  
+                                                  channel.hasChangedSubscribeValue = YES;
                                                   
                                                   [channel removeSubscribersObject:appDelegate.currentUser];
                                                   
@@ -209,72 +214,57 @@
                                          }];
 }
 
--(void)updateChannel:(Channel*)channel
+-(void)updateChannel:(Channel*)channel withForceRefresh:(BOOL)refresh
 {
-    if (channel.resourceURL != nil && ![channel.resourceURL isEqualToString: @""])
+    if (!channel.resourceURL || [channel.resourceURL isEqualToString: @""])
+        return;
+    
+    // define success block //
+    
+    MKNKUserSuccessBlock successBlock = ^(NSDictionary *responseDictionary) {
+        
+        
+        NSNumber *savedPosition = channel.position;
+        
+        [channel setAttributesFromDictionary: responseDictionary
+                                      withId: channel.uniqueId
+                         ignoringObjectTypes: kIgnoreChannelOwnerObject
+                                   andViewId: kChannelDetailsViewId];
+        
+        
+        channel.position = savedPosition;
+        
+        
+        if(channel.managedObjectContext == appDelegate.mainManagedObjectContext)
+        {
+            [appDelegate saveContext:YES];
+        }
+        else if (channel.managedObjectContext == appDelegate.searchManagedObjectContext)
+        {
+            [appDelegate saveSearchContext];
+        };
+        
+    };
+    
+    // define success block //
+    
+    MKNKUserErrorBlock errorBlock = ^(NSDictionary* errorDictionary) {
+        DebugLog(@"Update action failed");
+        
+    };
+    
+    if (refresh == YES || [channel.resourceURL hasPrefix: @"https"]) // https does not cache so it is fresh
     {
-        if ([channel.resourceURL hasPrefix: @"https"])
-        {
-            [appDelegate.oAuthNetworkEngine updateChannel: channel.resourceURL
-                                        completionHandler: ^(NSDictionary *responseDictionary) {
-                                            
-                                            
-                                            NSNumber *savedPosition = channel.position;
-                                            
-                                            [channel setAttributesFromDictionary: responseDictionary
-                                                                          withId: channel.uniqueId
-                                                             ignoringObjectTypes: kIgnoreNothing
-                                                                       andViewId: kChannelDetailsViewId];
-                                            
-                                           
-                                            channel.position = savedPosition;
-                                            
-                                            
-                                            if(channel.managedObjectContext == appDelegate.mainManagedObjectContext)
-                                            {
-                                                [appDelegate saveContext:YES];
-                                            }
-                                            else if (channel.managedObjectContext == appDelegate.searchManagedObjectContext)
-                                            {
-                                                [appDelegate saveSearchContext];
-                                            }
-                                            
-                                            
-                                            
-                                        } errorHandler: ^(NSDictionary* errorDictionary) {
-                                                 DebugLog(@"Update action failed");
-                                             }];
-            
-        }
-        else
-        {
-            [appDelegate.networkEngine updateChannel: channel.resourceURL
-                                   completionHandler: ^(NSDictionary *responseDictionary) {
-                                       
-                                       
-                                       NSNumber *savedPosition = channel.position;
-                                       
-                                       [channel setAttributesFromDictionary: responseDictionary
-                                                                     withId: channel.uniqueId
-                                                        ignoringObjectTypes: kIgnoreChannelOwnerObject
-                                                                  andViewId: kChannelDetailsViewId];
-                                       
-             
-                                       channel.position = savedPosition;
-                                       
-                                       if(channel.managedObjectContext == appDelegate.mainManagedObjectContext)
-                                       {
-                                           [appDelegate saveContext:YES];
-                                       }
-                                       else if (channel.managedObjectContext == appDelegate.searchManagedObjectContext)
-                                       {
-                                           [appDelegate saveSearchContext];
-                                       }
-                                       
-                                        } errorHandler: ^(NSDictionary* errorDictionary) {
-                                            DebugLog(@"Update action failed");
-                                        }];
-        }
+        [appDelegate.oAuthNetworkEngine updateChannel: channel.resourceURL
+                                    completionHandler: successBlock
+                                         errorHandler: errorBlock];
+        
+    }
+    else
+    {
+        [appDelegate.networkEngine updateChannel: channel.resourceURL
+                               completionHandler: successBlock
+                                    errorHandler: errorBlock];
     }
 }
 

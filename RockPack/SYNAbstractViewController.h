@@ -77,7 +77,7 @@ typedef void (^SYNShareCompletionBlock)(void);
 
 
 - (id) initWithViewId: (NSString*) vid;
-- (void) viewCameToScrollFront;
+- (void) viewDidScrollToFront;
 - (BOOL) needsAddButton;
 
 // Share

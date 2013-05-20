@@ -15,6 +15,8 @@ static NSEntityDescription *channelEntity = nil;
 
 @implementation Channel
 
+@synthesize hasChangedSubscribeValue;
+
 #pragma mark - Object factory
 
 

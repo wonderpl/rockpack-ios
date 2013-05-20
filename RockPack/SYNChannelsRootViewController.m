@@ -200,6 +200,9 @@
 }
 
 
+
+
+
 #pragma mark - Loading of Channels
 
 - (void) loadChannelsForGenre: (Genre*) genre
@@ -335,10 +338,10 @@
 }
 
 
--(void)viewCameToScrollFront
+-(void)viewDidScrollToFront
 {
-    //NSLog(@"Current Genre: %@", currentGenre);
-    //[self loadChannelsForGenre:currentGenre];
+    self.dataRequestRange;
+    [self loadChannelsForGenre:currentGenre];
 }
 
 
