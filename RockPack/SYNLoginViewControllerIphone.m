@@ -179,6 +179,11 @@
 
 - (IBAction)facebookTapped:(id)sender {
     
+    if(![self isNetworkAccessibleOtherwiseShowErrorAlert])
+    {
+        return;
+    }
+    
     [self doFacebookLoginAnimation];
     
     [self loginThroughFacebookWithCompletionHandler:^(NSDictionary * dictionary) {
@@ -223,6 +228,7 @@
 }
 
 - (IBAction)signupTapped:(id)sender {
+    
     self.state = kLoginScreenStateRegister;
     
     [self turnOnButton:self.cancelButton];
@@ -246,6 +252,7 @@
     
 }
 - (IBAction)loginTapped:(id)sender {
+    
     self.state = kLoginScreenStateLogin;
     
     [self turnOnButton:self.backButton];
@@ -397,6 +404,12 @@
     [self.userNameInputField resignFirstResponder];
     [self.passwordInputField resignFirstResponder];
     [self.emailInputField resignFirstResponder];
+    
+    if(![self isNetworkAccessibleOtherwiseShowErrorAlert])
+    {
+        return;
+    }
+    
     
     switch (self.state) {
         case kLoginScreenStateLogin:

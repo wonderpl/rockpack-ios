@@ -67,6 +67,13 @@
     
     
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(reachabilityChanged:) name:kReachabilityChangedNotification object:nil];
+
+}
+
+-(void)viewDidAppear:(BOOL)animated
+{
+    [super viewDidAppear:animated];
+    [self performSelector:@selector(reachabilityChanged:) withObject:nil];
 }
 
 -(void)viewWillDisappear:(BOOL)animated
@@ -250,15 +257,12 @@
     
     [self.view addSubview:self.networkErrorView];
     
-    errorViewFrame.origin.y = 0.0;
-    
     [UIView animateWithDuration:0.3 animations:^{
-        
-        self.networkErrorView.frame = errorViewFrame;
+        CGRect endFrame = self.networkErrorView.frame;
+        endFrame.origin.y = 0.0f;
+        self.networkErrorView.frame = endFrame;
     }];
 }
-
-
 
 -(void)hideNetworkErrorView
 {
@@ -272,6 +276,18 @@
         [self.networkErrorView removeFromSuperview];
         self.networkErrorView = nil;
     }];
+}
+
+#pragma mark - check network before sending request
+-(BOOL)isNetworkAccessibleOtherwiseShowErrorAlert
+{
+    BOOL isReachable = ![self.reachability currentReachabilityStatus] == NotReachable;
+    if(! isReachable)
+    {
+        UIAlertView* alert = [[UIAlertView alloc] initWithTitle:NSLocalizedString(@"No Internet connection",nil) message:NSLocalizedString(@"You need an Internet connection to log in, register or request your password.",nil) delegate:nil cancelButtonTitle:nil otherButtonTitles:NSLocalizedString(@"OK",nil), nil];
+        [alert show];
+    }
+    return isReachable;
 }
 
 @end
