@@ -41,22 +41,24 @@
                                               SYNChannelCategoryTableViewDelegate,
                                               SYNChannelCoverImageSelectorDelegate>
 
-@property (nonatomic, assign, getter = isImageSelectorOpen) BOOL imageSelectorOpen;
+
 @property (nonatomic, assign)  CGPoint originalContentOffset;
+@property (nonatomic, assign, getter = isImageSelectorOpen) BOOL imageSelectorOpen;
 @property (nonatomic, strong) GKImagePicker *imagePicker;
 @property (nonatomic, strong) IBOutlet SSTextView *channelTitleTextView;
 @property (nonatomic, strong) IBOutlet UIButton *buyButton;
 @property (nonatomic, strong) IBOutlet UIButton *cameraButton;
 @property (nonatomic, strong) IBOutlet UIButton *createChannelButton;
-@property (weak, nonatomic) IBOutlet UIButton *saveChannelButton;
+<<<<<<< HEAD
+@property (strong, nonatomic) IBOutlet UIButton *saveChannelButton;
+=======
+>>>>>>> 3fb58c937fee5fdd684626a2779d13677f8dc3eb
 @property (nonatomic, strong) IBOutlet UIButton *shareButton;
 @property (nonatomic, strong) IBOutlet UIButton* addCoverButton;
 @property (nonatomic, strong) IBOutlet UIButton* profileImageButton;
 @property (nonatomic, strong) IBOutlet UIButton* reportConcernButton;
 @property (nonatomic, strong) IBOutlet UIButton* selectCategoryButton;
 @property (nonatomic, strong) IBOutlet UIButton* subscribeButton;
-@property (weak, nonatomic) IBOutlet UIButton *editButton;
-
 @property (nonatomic, strong) IBOutlet UIImageView *avatarImageView;
 @property (nonatomic, strong) IBOutlet UIImageView *channelCoverImageView;
 @property (nonatomic, strong) IBOutlet UILabel *channelDetailsLabel;
@@ -66,28 +68,27 @@
 @property (nonatomic, strong) IBOutlet UIPopoverController *reportConcernPopoverController;
 @property (nonatomic, strong) IBOutlet UIView *avatarBackgroundView;
 @property (nonatomic, strong) IBOutlet UIView *channelTitleTextBackgroundView;
-
-@property (nonatomic, strong) UIView *coverChooserMasterView;
-
 @property (nonatomic, strong) IBOutlet UIView *displayControlsView;
 @property (nonatomic, strong) IBOutlet UIView *editControlsView;
 @property (nonatomic, strong) IBOutlet UIView *masterControlsView;
 @property (nonatomic, strong) NSFetchedResultsController *channelCoverFetchedResultsController;
 @property (nonatomic, strong) NSFetchedResultsController *userChannelCoverFetchedResultsController;
 @property (nonatomic, strong) SYNCategoriesTabViewController *categoriesTabViewController;
+@property (nonatomic, strong) SYNCoverChooserController* coverChooserController;
 @property (nonatomic, strong) SYNReportConcernTableViewController *reportConcernTableViewController;
 @property (nonatomic, strong) UIActivityIndicatorView* subscribingIndicator;
 @property (nonatomic, strong) UIImage* originalBackgroundImage;
+@property (nonatomic, strong) UIView *coverChooserMasterView;
 @property (nonatomic, strong) UIView* noVideosMessageView;
 @property (nonatomic, strong) id<SDWebImageOperation> currentWebImageOperation;
-
-@property (nonatomic, strong) SYNCoverChooserController* coverChooserController;
-
 @property (nonatomic, weak) Channel *channel;
 @property (nonatomic,strong) NSString* selectedCategoryId;
 @property (nonatomic,strong) NSString* selectedCoverId;
-@property (weak, nonatomic) IBOutlet UILabel *byLabel;
+@property (nonatomic,strong) VideoInstance* instanceToDelete;
 @property (weak, nonatomic) IBOutlet UIButton *cancelEditButton;
+@property (weak, nonatomic) IBOutlet UIButton *editButton;
+@property (weak, nonatomic) IBOutlet UIButton *saveChannelButton;
+@property (weak, nonatomic) IBOutlet UILabel *byLabel;
 
 //iPhone specific
 @property (nonatomic,strong) AVURLAsset* selectedAsset;
@@ -258,6 +259,9 @@
         self.addButton.hidden = YES;
         self.createChannelButton.hidden = NO;
     }
+    
+    //Remove the save button. It is added back again if the edit button is tapped.
+    [self.saveChannelButton removeFromSuperview];
     
     if (!isIPhone)
     {
@@ -447,13 +451,7 @@
     }
     
     self.originalBackgroundImage = nil;
-    
-    
-    
 }
-
-
-
 
 
 #pragma mark - Orientation Methods
@@ -501,7 +499,7 @@
     }
 }
 
--(void)showNoVideosMessage
+- (void) showNoVideosMessage
 {
     CGSize viewFrameSize = CGSizeMake(360.0, 50.0);
     self.noVideosMessageView = [[UIView alloc] initWithFrame:CGRectMake(0.0, 640.0, viewFrameSize.width, viewFrameSize.height)];
@@ -530,8 +528,6 @@
     
     [self.view addSubview:self.noVideosMessageView];
 }
-
-
 
 
 - (void) reloadCollectionViews
@@ -621,12 +617,12 @@
 - (void) collectionView: (UICollectionView *) collectionView
          didSelectItemAtIndexPath: (NSIndexPath *) indexPath
 {
-    [self displayVideoViewerWithVideoInstanceArray: self.channel.videoInstances.array
-                                  andSelectedIndex: indexPath.item];
+    if (self.mode != kChannelDetailsModeEdit)
+    {
+        [self displayVideoViewerWithVideoInstanceArray: self.channel.videoInstances.array
+                                      andSelectedIndex: indexPath.item];
+    }
 }
-
-
-
 
 
 #pragma mark - Helper methods
@@ -674,13 +670,13 @@
     self.profileImageButton.enabled = visible;
     self.subscribeButton.hidden = (visible && [self.channel.channelOwner.uniqueId isEqualToString: appDelegate.currentUser.uniqueId]);
     self.editButton.hidden = (visible && ! [self.channel.channelOwner.uniqueId isEqualToString: appDelegate.currentUser.uniqueId]);
+    [(LXReorderableCollectionViewFlowLayout *)self.videoThumbnailCollectionView.collectionViewLayout longPressGestureRecognizer].enabled = (visible) ? FALSE : TRUE;
 }
 
 
 // For edit controls just do the inverse of details control
 - (void) setEditControlsVisibility: (BOOL) visible
 {
-    
     _mode = visible;
     
     [self setDisplayControlsVisibility: !visible];
@@ -855,26 +851,47 @@
     
     NSIndexPath *indexPath = [self.videoThumbnailCollectionView indexPathForItemAtPoint: v.center];
     
-    VideoInstance* instanceToDelete = (VideoInstance*)[self.channel.videoInstances objectAtIndex: indexPath.item];
+    self.instanceToDelete = (VideoInstance*)[self.channel.videoInstances objectAtIndex: indexPath.item];
     
-    if (self.channel.managedObjectContext == appDelegate.channelsManagedObjectContext && instanceToDelete != nil) // the channel is the under creation channel
+    if (self.instanceToDelete != nil)
     {
-        [[NSNotificationCenter defaultCenter] postNotificationName: kVideoQueueRemove
-                                                            object: self
-                                                          userInfo: @{kVideoInstance: instanceToDelete}];
+        [[[UIAlertView alloc] initWithTitle: NSLocalizedString (@"Delete Video", nil)
+                                                        message: NSLocalizedString (@"Are you sure you want to delete this video?", nil)
+                                                       delegate: self
+                                              cancelButtonTitle: NSLocalizedString (@"No", nil)
+                                              otherButtonTitles: NSLocalizedString (@"Yes", nil), nil] show];
+    }
+}
+
+
+// Alert view delegarte for 
+- (void) alertView: (UIAlertView *) alertView
+         clickedButtonAtIndex: (NSInteger) buttonIndex
+{
+    if (buttonIndex == 0)
+    {
+        // cancel, do nothing
+        DebugLog(@"Delete cancelled");
     }
     else
-    {
-        NSMutableOrderedSet *channelsSet = [NSMutableOrderedSet orderedSetWithOrderedSet: self.channel.videoInstances];
+    { 
+        if (self.channel.managedObjectContext == appDelegate.channelsManagedObjectContext) // the channel is the under creation channel
+        {
+            [[NSNotificationCenter defaultCenter] postNotificationName: kVideoQueueRemove
+                                                                object: self
+                                                              userInfo: @{kVideoInstance: self.instanceToDelete}];
+        }
+        else
+        {
+            NSMutableOrderedSet *channelsSet = [NSMutableOrderedSet orderedSetWithOrderedSet: self.channel.videoInstances];
+            
+            [channelsSet removeObject: self.instanceToDelete];
+            
+            [self.channel setVideoInstances: channelsSet];
+        }
         
-        [channelsSet removeObject: instanceToDelete];
-        
-        [self.channel setVideoInstances: channelsSet];
+        [self reloadCollectionViews];
     }
-    
-    
-    
-    [self reloadCollectionViews];
 }
 
 
@@ -904,38 +921,41 @@
     [self hideCoverChooser];
 }
 
-- (IBAction)editButtonTapped:(id)sender {
-    
+
+- (IBAction) editButtonTapped: (id) sender
+{
     [[NSNotificationCenter defaultCenter] postNotificationName: kNoteAllNavControlsHide
                                                         object: self
                                                       userInfo: nil];
     
-    [self setEditControlsVisibility:YES];
+    [self setEditControlsVisibility: YES];
     [self.createChannelButton removeFromSuperview];
+    [self.view addSubview:self.saveChannelButton];
     self.saveChannelButton.hidden = NO;
     self.cancelEditButton.hidden = NO;
+    self.backButton.hidden = YES;
     self.addButton.hidden = YES;
-    
-    
 }
 
 
-- (IBAction)cancelEditTapped:(id)sender {
-    
+- (IBAction) cancelEditTapped: (id) sender
+{
     [[NSNotificationCenter defaultCenter] postNotificationName: kNoteAllNavControlsShow
                                                         object: self
                                                       userInfo: nil];
     
-    [self setEditControlsVisibility:NO];
+    [self setEditControlsVisibility: NO];
     [self displayChannelDetails];
     self.saveChannelButton.hidden = YES;
     self.cancelEditButton.hidden = YES;
     self.addButton.hidden = NO;
-    
+    self.backButton.hidden= NO;
+
 }
 
-- (IBAction)saveChannelTapped:(id)sender {
-    
+
+- (IBAction) saveChannelTapped: (id) sender
+{ 
     if ([[SYNDeviceManager sharedInstance] isIPhone])
     {
         self.saveChannelButton.hidden = YES;
@@ -1371,6 +1391,7 @@
 - (void) textViewDidBeginEditing: (UITextView *) textView
 {
     self.createChannelButton.hidden = YES;
+    self.saveChannelButton.hidden = YES;
     self.cancelTextInputButton.hidden = NO;
     
 }
@@ -1378,6 +1399,7 @@
 - (void) textViewDidEndEditing: (UITextView *) textView
 {
     self.createChannelButton.hidden = NO;
+    self.saveChannelButton.hidden = NO;
     self.cancelTextInputButton.hidden = YES;
 }
 

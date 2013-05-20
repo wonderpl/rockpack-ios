@@ -76,6 +76,9 @@ static NSString *const kLXCollectionViewKeyPath = @"collectionView";
                                                                                 action: @selector(handleLongPressGesture:)];
     _longPressGestureRecognizer.delegate = self;
     
+    // Make long press faster than normal
+    _longPressGestureRecognizer.minimumPressDuration = 0.3f;
+    
     // Links the default long press gesture recognizer to the custom long press gesture recognizer we are creating now
     // by enforcing failure dependency so that they doesn't clash.
     for (UIGestureRecognizer *gestureRecognizer in self.collectionView.gestureRecognizers)
