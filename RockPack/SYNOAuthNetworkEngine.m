@@ -804,10 +804,16 @@
      completionHandler: (MKNKUserSuccessBlock) completionBlock
           errorHandler: (MKNKUserErrorBlock) errorBlock
 {
+    // get the path stripping the "http://" because we might want to force a refresh by using "https://"
     
-    SYNNetworkOperationJsonObject *networkOperation =
-    (SYNNetworkOperationJsonObject*)[self operationWithURLString: resourceURL
-                                                          params: nil];
+    NSRange rangeOfWS = [resourceURL rangeOfString:@"/ws"];
+    NSString* onlyThePathPart = [resourceURL substringFromIndex:rangeOfWS.location];
+    
+    
+    SYNNetworkOperationJsonObject *networkOperation = (SYNNetworkOperationJsonObject*)[self operationWithPath:onlyThePathPart
+                                                                                                       params:nil
+                                                                                                   httpMethod:@"GET"
+                                                                                                          ssl:YES];
     
     [self addCommonHandlerToNetworkOperation: networkOperation
                            completionHandler: completionBlock
