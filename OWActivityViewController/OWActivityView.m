@@ -120,7 +120,14 @@
     UILabel *label = [[UILabel alloc] initWithFrame:CGRectMake(0, 59, 80, 30)];
     label.textAlignment = NSTextAlignmentCenter;
     label.backgroundColor = [UIColor clearColor];
-    label.textColor = [UIColor blackColor];
+    if (UI_USER_INTERFACE_IDIOM() == UIUserInterfaceIdiomPhone)
+    {
+        label.textColor = [UIColor whiteColor];
+    }
+    else
+    {
+        label.textColor = [UIColor blackColor];
+    }
 //    label.shadowColor = [UIColor colorWithRed:0 green:0 blue:0 alpha:0.75];
 //    label.shadowOffset = CGSizeMake(0, 1);
     label.text = activity.title;
