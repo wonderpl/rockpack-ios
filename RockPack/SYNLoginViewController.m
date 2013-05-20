@@ -631,9 +631,15 @@
 
 - (IBAction) doLogin: (id) sender
 {
+    
     [self clearAllErrorArrows];
     
     [self resignAllFirstResponders];
+    
+    if(![self isNetworkAccessibleOtherwiseShowErrorAlert])
+    {
+        return;
+    }
     
     if(![self loginFormIsValid])
         return;
@@ -695,6 +701,11 @@
 
 - (IBAction) sendEmailButtonPressed: (id) sender
 {
+    if(![self isNetworkAccessibleOtherwiseShowErrorAlert])
+    {
+        return;
+    }
+    
     [self doRequestPasswordResetForUsername:self.userNameInputField.text completionHandler:^(NSDictionary * completionInfo) {
         if ([completionInfo valueForKey: @"error"])
         {
@@ -776,6 +787,12 @@
     _facebookLoginIsInProcess = NO;
     
     [self clearAllErrorArrows];
+    
+    if(![self isNetworkAccessibleOtherwiseShowErrorAlert])
+    {
+        return;
+    }
+    
     facebookSignInButton.enabled = NO;
     [self doFacebookLoginAnimation];
     
@@ -1000,6 +1017,11 @@
         return;
     
     [self resignAllFirstResponders];
+    
+    if(![self isNetworkAccessibleOtherwiseShowErrorAlert])
+    {
+        return;
+    }
 
     
     [UIView animateWithDuration: 0.2
