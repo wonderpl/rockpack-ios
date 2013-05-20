@@ -719,15 +719,13 @@ typedef void(^AnimationCompletionBlock)(BOOL finished);
         return;
     
     
-    
     if(self.overlayNavigationController)
     {
-        [self showBackButton:NO];
         self.overlayNavigationController = nil;
     }
     else if(showingBackButton)
     {
-        [self.containerViewController.showingViewController animatedPopViewController];
+        [self popCurrentViewController:self.backButtonControl];
     }
     
     [self.containerViewController navigateToPageByName:pageName];
