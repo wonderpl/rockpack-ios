@@ -592,7 +592,7 @@
     
     
     // special mode for the favorite channel so we cannot delete the videos (un-heart them only)
-    if(self.channel.favorite)
+    if(self.channel.favouritesValue)
     {
         videoThumbnailCell.displayMode = kChannelThumbnailDisplayModeDisplayFavourite;
     }

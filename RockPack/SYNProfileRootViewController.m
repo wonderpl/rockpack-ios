@@ -312,13 +312,6 @@
     [self.view addGestureRecognizer: pinchOnChannelView];
 #endif
     
-    
-//    _longPressGestureRecogniser = [[UILongPressGestureRecognizer alloc] initWithTarget: self
-//                                                                                action: @selector(longPressPerformed:)];
-//    
-//    [self.channelThumbnailCollectionView addGestureRecognizer:_longPressGestureRecogniser];
-//    //_longPressGestureRecogniser.delegate = self;
-    
     // Long press for entering delete mode
     UILongPressGestureRecognizer *longPress = [[UILongPressGestureRecognizer alloc] initWithTarget: self
                                                                                             action: @selector(activateDeletionMode:)];
@@ -412,7 +405,14 @@
 - (BOOL) isDeletionModeActiveForCollectionView: (UICollectionView *) collectionView
                                         layout: (UICollectionViewLayout*) collectionViewLayout
 {
-    return self.isDeletionModeActive;
+    if (collectionView == self.channelThumbnailCollectionView)
+    {
+        return self.isDeletionModeActive;
+    }
+    else
+    {
+        return NO;
+    }
 }
 
 
