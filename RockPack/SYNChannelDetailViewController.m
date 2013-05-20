@@ -374,7 +374,7 @@
     
     // Only do this is we have a resource URL (i.e. we haven't just created the channel)
     
-    if(self.mode == kChannelDetailsModeDisplay)
+    if(self.mode == kChannelDetailsModeDisplay && self.channel != nil)
     {
         [[NSNotificationCenter defaultCenter] postNotificationName:kChannelUpdateRequest
                                                             object:self
