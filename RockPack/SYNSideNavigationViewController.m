@@ -823,14 +823,20 @@ typedef enum {
 -(void)picker:(SYNImagePickerController *)picker finishedWithImage:(UIImage *)image
 {
     self.avatarButton.enabled = NO;
+    self.profilePictureImageView.image = image;
     [self.activityIndicator startAnimating];
-    [self.appDelegate.oAuthNetworkEngine updateAvatarForUserId: self.appDelegate.currentOAuth2Credentials.userId image:image completionHandler:^(id result) {
+    [self.appDelegate.oAuthNetworkEngine updateAvatarForUserId: self.appDelegate.currentOAuth2Credentials.userId image:image completionHandler:^(NSDictionary* result) {
         self.profilePictureImageView.image = image;
         [self.activityIndicator stopAnimating];
         self.avatarButton.enabled = YES;
     } errorHandler:^(id error) {
+        [self.profilePictureImageView setImageWithURL: [NSURL URLWithString: self.user.thumbnailURL]
+                                     placeholderImage: [UIImage imageNamed: @"PlaceholderNotificationAvatar"]
+                                              options: SDWebImageRetryFailed];
         [self.activityIndicator stopAnimating];
         self.avatarButton.enabled = YES;
+        UIAlertView* alert = [[UIAlertView alloc] initWithTitle:NSLocalizedString(@"Oops",nil) message:NSLocalizedString(@"We were not able to upload the photo at the moment. Try again later.",nil) delegate:nil cancelButtonTitle:nil otherButtonTitles:NSLocalizedString(@"OK",nil), nil];
+        [alert show];
     }];
     
     self.imagePickerController = nil;
