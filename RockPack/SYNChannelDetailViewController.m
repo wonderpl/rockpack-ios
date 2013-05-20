@@ -48,7 +48,7 @@
 @property (nonatomic, strong) IBOutlet UIButton *buyButton;
 @property (nonatomic, strong) IBOutlet UIButton *cameraButton;
 @property (nonatomic, strong) IBOutlet UIButton *createChannelButton;
-@property (weak, nonatomic) IBOutlet UIButton *saveChannelButton;
+@property (strong, nonatomic) IBOutlet UIButton *saveChannelButton;
 @property (nonatomic, strong) IBOutlet UIButton *shareButton;
 @property (nonatomic, strong) IBOutlet UIButton* addCoverButton;
 @property (nonatomic, strong) IBOutlet UIButton* profileImageButton;
@@ -258,6 +258,9 @@
         self.addButton.hidden = YES;
         self.createChannelButton.hidden = NO;
     }
+    
+    //Remove the save button. It is added back again if the edit button is tapped.
+    [self.saveChannelButton removeFromSuperview];
     
     if (!isIPhone)
     {
@@ -912,8 +915,10 @@
     
     [self setEditControlsVisibility:YES];
     [self.createChannelButton removeFromSuperview];
+    [self.view addSubview:self.saveChannelButton];
     self.saveChannelButton.hidden = NO;
     self.cancelEditButton.hidden = NO;
+    self.backButton.hidden = YES;
     self.addButton.hidden = YES;
     
     
@@ -931,6 +936,7 @@
     self.saveChannelButton.hidden = YES;
     self.cancelEditButton.hidden = YES;
     self.addButton.hidden = NO;
+    self.backButton.hidden= NO;
     
 }
 
@@ -1371,6 +1377,7 @@
 - (void) textViewDidBeginEditing: (UITextView *) textView
 {
     self.createChannelButton.hidden = YES;
+    self.saveChannelButton.hidden = YES;
     self.cancelTextInputButton.hidden = NO;
     
 }
@@ -1378,6 +1385,7 @@
 - (void) textViewDidEndEditing: (UITextView *) textView
 {
     self.createChannelButton.hidden = NO;
+    self.saveChannelButton.hidden = NO;
     self.cancelTextInputButton.hidden = YES;
 }
 
