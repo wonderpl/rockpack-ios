@@ -83,7 +83,7 @@
 
 - (void) applyLayoutAttributes: (SYNDeletionWobbleLayoutAttributes *) layoutAttributes
 {
-    if (layoutAttributes.isDeleteButtonHidden)
+    if (layoutAttributes.isDeleteButtonHidden || self.deleteButton.enabled == FALSE)
     {
         self.deleteButton.layer.opacity = 0.0;
         [self stopWobbling];
