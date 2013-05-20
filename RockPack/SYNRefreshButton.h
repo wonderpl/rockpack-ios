@@ -9,17 +9,11 @@
 #import <UIKit/UIKit.h>
 
 
-@interface SYNRefreshButton : UIControl {
-    UIImageView* image;
-    UIButton* button;
-    BOOL refreshing;
-}
-
-@property (nonatomic) BOOL refreshing;
+@interface SYNRefreshButton : UIControl
 
 - (void) startRefreshCycle;
 - (void) endRefreshCycle;
 
-+(id)refreshButton;
++ (id) refreshButton;
 
 @end

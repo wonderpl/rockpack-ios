@@ -114,7 +114,6 @@
     {
         self.videoThumbnailCollectionView.contentInset = UIEdgeInsetsMake(0, 0, 0, 0);
     }
-    
 
     self.view = [[UIView alloc] initWithFrame:selfFrame];
     
@@ -134,20 +133,6 @@
     
     // Google Analytics support
     self.trackedViewName = @"Feed";
-    
-    // == Refresh button == //
-    self.refreshButton = [SYNRefreshButton refreshButton];
-    
-    [self.refreshButton addTarget: self
-                           action: @selector(refreshButtonPressed)
-                 forControlEvents: UIControlEventTouchUpInside];
-    
-    CGRect refreshButtonFrame = self.refreshButton.frame;
-    refreshButtonFrame.origin.x = [[SYNDeviceManager sharedInstance] isIPad]? 5.0f  : 5.0f;
-    refreshButtonFrame.origin.y = [[SYNDeviceManager sharedInstance] isIPad]? 7.0f : 5.0f;
-    self.refreshButton.frame = refreshButtonFrame;
-    
-    [self.view addSubview: self.refreshButton];
     
     self.refreshControl = [[UIRefreshControl alloc] initWithFrame: CGRectMake(0, -44, 320, 44)];
     
@@ -174,6 +159,19 @@
                                withReuseIdentifier: @"SYNHomeSectionHeaderView"];
     
     [self refreshVideoThumbnails];
+    
+    // == Refresh button == //
+    self.refreshButton = [SYNRefreshButton refreshButton];
+    
+    [self.refreshButton addTarget: self
+                           action: @selector(refreshButtonPressed)
+                 forControlEvents: UIControlEventTouchUpInside];
+    
+    CGRect refreshButtonFrame = self.refreshButton.frame;
+    refreshButtonFrame.origin.x = [[SYNDeviceManager sharedInstance] isIPad]? 5.0f  : 5.0f;
+    refreshButtonFrame.origin.y = [[SYNDeviceManager sharedInstance] isIPad]? 7.0f : 5.0f;
+    self.refreshButton.frame = refreshButtonFrame;
+    [self.view addSubview: self.refreshButton];
 }
 
 - (void) refreshButtonPressed
@@ -182,10 +180,6 @@
     [self refreshVideoThumbnails];
 }
 
-- (void) refreshCycleComplete
-{
-    [self.refreshButton endRefreshCycle];
-}
 
 - (void) viewDidScrollToFront
 {
@@ -218,6 +212,8 @@
 
 - (void) refreshVideoThumbnails
 {
+    [self.refreshButton startRefreshCycle];
+    
     [appDelegate.oAuthNetworkEngine subscriptionsUpdatesForUserId:  appDelegate.currentOAuth2Credentials.userId
                                                             start: 0
                                                              size: 0
@@ -236,8 +232,7 @@
 {
     self.refreshing = FALSE;
     [self.refreshControl endRefreshing];
-    [[NSNotificationCenter defaultCenter] postNotificationName: kRefreshComplete
-                                                        object: self];
+    [self.refreshButton endRefreshCycle];
 }
 
 
