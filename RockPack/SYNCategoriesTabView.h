@@ -16,5 +16,6 @@
       andHomeButton: (NSString*) homeButtonString;
 
 - (void) hideSecondaryTabs;
+- (void) showSecondaryTabs;
 
 @end
