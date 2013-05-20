@@ -239,7 +239,7 @@
     }
     
     self.networkErrorView = [SYNNetworkErrorView errorView];
-    [self.networkErrorView setCenterVerticalOffset:23.0f];
+    [self.networkErrorView setCenterVerticalOffset:18.0f];
     self.networkErrorView.backgroundColor = [UIColor colorWithPatternImage:[UIImage imageNamed:@"BarNetworkLogin"]];
     self.networkErrorView.autoresizingMask = UIViewAutoresizingFlexibleBottomMargin| UIViewAutoresizingFlexibleWidth;
     [self.networkErrorView setText:message];
@@ -250,7 +250,7 @@
     
     [self.view addSubview:self.networkErrorView];
     
-    errorViewFrame.origin.y = -10.0;
+    errorViewFrame.origin.y = 0.0;
     
     [UIView animateWithDuration:0.3 animations:^{
         
