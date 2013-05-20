@@ -147,7 +147,7 @@ static NSEntityDescription *channelEntity = nil;
     self.title = [dictionary upperCaseStringForKey: @"title"
                                        withDefault: @""];
     
-    
+    DebugLog(@"*** Title: %@", self.title);
     
     self.lastUpdated = [dictionary dateFromISO6801StringForKey: @"last_updated"
                                                    withDefault: [NSDate date]];
@@ -156,10 +156,14 @@ static NSEntityDescription *channelEntity = nil;
                                          withDefault: [NSNumber numberWithInt:0]];
     
     // this field only comes back for the favourites channel
-    NSNumber* favourites = [dictionary objectForKey:@"favourites"
-                                        withDefault:[NSNumber numberWithInt:0]];
+    NSNumber* favourites = [dictionary objectForKey:@"favourites"];
     
-    self.favoriteValue = [favourites boolValue];
+    self.favouritesValue = ![favourites isKindOfClass:[NSNull class]] ? [favourites boolValue] : NO;
+    
+    if([self.title isEqualToString:@"FAVOURITES"])
+    {
+        DebugLog(@"Favourites Value: %@", favourites);
+    }
     
     self.resourceURL = [dictionary objectForKey: @"resource_url"
                                     withDefault: @"http://localhost"];

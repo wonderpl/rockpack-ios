@@ -8,7 +8,7 @@ extern const struct ChannelAttributes {
 	__unsafe_unretained NSString *categoryId;
 	__unsafe_unretained NSString *channelDescription;
 	__unsafe_unretained NSString *eCommerceURL;
-	__unsafe_unretained NSString *favorite;
+	__unsafe_unretained NSString *favourites;
 	__unsafe_unretained NSString *lastUpdated;
 	__unsafe_unretained NSString *popular;
 	__unsafe_unretained NSString *position;
@@ -88,15 +88,15 @@ extern const struct ChannelFetchedProperties {
 
 
 
-@property (nonatomic, strong) NSNumber* favorite;
+@property (nonatomic, strong) NSNumber* favourites;
 
 
 
-@property BOOL favoriteValue;
-- (BOOL)favoriteValue;
-- (void)setFavoriteValue:(BOOL)value_;
+@property BOOL favouritesValue;
+- (BOOL)favouritesValue;
+- (void)setFavouritesValue:(BOOL)value_;
 
-//- (BOOL)validateFavorite:(id*)value_ error:(NSError**)error_;
+//- (BOOL)validateFavourites:(id*)value_ error:(NSError**)error_;
 
 
 
@@ -254,11 +254,11 @@ extern const struct ChannelFetchedProperties {
 
 
 
-- (NSNumber*)primitiveFavorite;
-- (void)setPrimitiveFavorite:(NSNumber*)value;
+- (NSNumber*)primitiveFavourites;
+- (void)setPrimitiveFavourites:(NSNumber*)value;
 
-- (BOOL)primitiveFavoriteValue;
-- (void)setPrimitiveFavoriteValue:(BOOL)value_;
+- (BOOL)primitiveFavouritesValue;
+- (void)setPrimitiveFavouritesValue:(BOOL)value_;
 
 
 

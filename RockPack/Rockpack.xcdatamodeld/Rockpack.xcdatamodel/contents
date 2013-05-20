@@ -13,7 +13,7 @@
         <attribute name="categoryId" optional="YES" attributeType="String" syncable="YES"/>
         <attribute name="channelDescription" optional="YES" attributeType="String" syncable="YES"/>
         <attribute name="eCommerceURL" optional="YES" attributeType="String" syncable="YES"/>
-        <attribute name="favorite" optional="YES" attributeType="Boolean" syncable="YES"/>
+        <attribute name="favourites" optional="YES" attributeType="Boolean" syncable="YES"/>
         <attribute name="lastUpdated" optional="YES" attributeType="Date" syncable="YES"/>
         <attribute name="popular" optional="YES" attributeType="Boolean" syncable="YES"/>
         <attribute name="position" optional="YES" attributeType="Integer 64" defaultValueString="0" syncable="YES"/>
