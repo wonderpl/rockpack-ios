@@ -10,7 +10,8 @@
 
 typedef enum {
     kChannelThumbnailDisplayModeDisplay = 0,
-    kChannelThumbnailDisplayModeEdit = 1
+    kChannelThumbnailDisplayModeEdit = 1,
+    kChannelThumbnailDisplayModeDisplayFavourite = 2
 } kChannelThumbnailDisplayMode;
 
 @interface SYNVideoThumbnailRegularCell : UICollectionViewCell

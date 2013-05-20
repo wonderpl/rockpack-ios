@@ -13,6 +13,7 @@
         <attribute name="categoryId" optional="YES" attributeType="String" syncable="YES"/>
         <attribute name="channelDescription" optional="YES" attributeType="String" syncable="YES"/>
         <attribute name="eCommerceURL" optional="YES" attributeType="String" syncable="YES"/>
+        <attribute name="favorite" optional="YES" attributeType="Boolean" syncable="YES"/>
         <attribute name="lastUpdated" optional="YES" attributeType="Date" syncable="YES"/>
         <attribute name="popular" optional="YES" attributeType="Boolean" syncable="YES"/>
         <attribute name="position" optional="YES" attributeType="Integer 64" defaultValueString="0" syncable="YES"/>
@@ -90,7 +91,7 @@
     </entity>
     <elements>
         <element name="AbstractCommon" positionX="-74" positionY="-333" width="128" height="75"/>
-        <element name="Channel" positionX="-2" positionY="72" width="128" height="253"/>
+        <element name="Channel" positionX="-2" positionY="72" width="128" height="268"/>
         <element name="ChannelCover" positionX="-164" positionY="-27" width="128" height="133"/>
         <element name="ChannelOwner" positionX="-344" positionY="48" width="128" height="105"/>
         <element name="CoverArt" positionX="189" positionY="-243" width="128" height="103"/>

@@ -7,6 +7,7 @@ const struct ChannelAttributes ChannelAttributes = {
 	.categoryId = @"categoryId",
 	.channelDescription = @"channelDescription",
 	.eCommerceURL = @"eCommerceURL",
+	.favorite = @"favorite",
 	.lastUpdated = @"lastUpdated",
 	.popular = @"popular",
 	.position = @"position",
@@ -52,6 +53,11 @@ const struct ChannelFetchedProperties ChannelFetchedProperties = {
 + (NSSet*)keyPathsForValuesAffectingValueForKey:(NSString*)key {
 	NSSet *keyPaths = [super keyPathsForValuesAffectingValueForKey:key];
 	
+	if ([key isEqualToString:@"favoriteValue"]) {
+		NSSet *affectingKey = [NSSet setWithObject:@"favorite"];
+		keyPaths = [keyPaths setByAddingObjectsFromSet:affectingKey];
+		return keyPaths;
+	}
 	if ([key isEqualToString:@"popularValue"]) {
 		NSSet *affectingKey = [NSSet setWithObject:@"popular"];
 		keyPaths = [keyPaths setByAddingObjectsFromSet:affectingKey];
@@ -95,6 +101,32 @@ const struct ChannelFetchedProperties ChannelFetchedProperties = {
 
 @dynamic eCommerceURL;
 
+
+
+
+
+
+@dynamic favorite;
+
+
+
+- (BOOL)favoriteValue {
+	NSNumber *result = [self favorite];
+	return [result boolValue];
+}
+
+- (void)setFavoriteValue:(BOOL)value_ {
+	[self setFavorite:[NSNumber numberWithBool:value_]];
+}
+
+- (BOOL)primitiveFavoriteValue {
+	NSNumber *result = [self primitiveFavorite];
+	return [result boolValue];
+}
+
+- (void)setPrimitiveFavoriteValue:(BOOL)value_ {
+	[self setPrimitiveFavorite:[NSNumber numberWithBool:value_]];
+}
 
 
 

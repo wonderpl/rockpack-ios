@@ -70,10 +70,6 @@ static NSEntityDescription *channelEntity = nil;
             
         }
         
-        
-        
-        
-        
     }
     
     
@@ -159,7 +155,11 @@ static NSEntityDescription *channelEntity = nil;
     self.subscribersCount = [dictionary objectForKey: @"subscriber_count"
                                          withDefault: [NSNumber numberWithInt:0]];
     
+    // this field only comes back for the favourites channel
+    NSNumber* favourites = [dictionary objectForKey:@"favourites"
+                                        withDefault:[NSNumber numberWithInt:0]];
     
+    self.favoriteValue = [favourites boolValue];
     
     self.resourceURL = [dictionary objectForKey: @"resource_url"
                                     withDefault: @"http://localhost"];
