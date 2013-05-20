@@ -99,7 +99,8 @@
         secondaryFacebookMessage.font = [UIFont rockpackFontOfSize: 20];
         termsAndConditionsLabel.font = [UIFont rockpackFontOfSize: 14.0];
         termsAndConditionsLabelSide.font = termsAndConditionsLabel.font;
-        
+        wellSendYouLabel.font = [UIFont rockpackFontOfSize: 16.0];
+    
         NSMutableAttributedString* termsString = [[NSMutableAttributedString alloc] initWithString: NSLocalizedString(@"BY USING ROCKPACK, YOU AGREE TO OUR\nTERMS & SERVICES AND PRIVACY POLICY", nil)];
         
         [termsString addAttribute: NSForegroundColorAttributeName value: [UIColor colorWithRed: (70.0/255.0)
