@@ -543,7 +543,7 @@ typedef void(^AnimationCompletionBlock)(BOOL finished);
     BOOL isIPad =[[SYNDeviceManager sharedInstance] isIPad];
     if(isIPad)
     {
-        self.closeSearchButton.hidden = YES;
+        //self.closeSearchButton.hidden = YES;
         self.sideNavigationButton.hidden = NO;
         [self showBackButton: YES];
     }
