@@ -29,6 +29,7 @@
 -(CGFloat)currentScreenHeight;
 -(CGFloat)currentScreenHeightWithStatusBar;
 -(CGRect)currentScreenRect;
+-(CGSize)currentScreenSize;
 
 -(UIInterfaceOrientation)currentOrientation;
 

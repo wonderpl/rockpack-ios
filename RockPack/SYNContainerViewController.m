@@ -20,7 +20,6 @@
 #import "SYNCategoriesTabViewController.h"
 #import <QuartzCore/QuartzCore.h>
 #import "SYNDeviceManager.h"
-#import "SYNExistingChannelsViewController.h"
 #import "SYNObjectFactory.h"
 
 @interface SYNContainerViewController () <UIPopoverControllerDelegate,

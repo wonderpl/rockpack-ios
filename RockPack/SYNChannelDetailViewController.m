@@ -590,7 +590,16 @@
     SYNVideoThumbnailRegularCell *videoThumbnailCell = [collectionView dequeueReusableCellWithReuseIdentifier: @"SYNVideoThumbnailRegularCell"
                                                                                                  forIndexPath: indexPath];
     
-    videoThumbnailCell.displayMode = self.mode;
+    
+    // special mode for the favorite channel so we cannot delete the videos (un-heart them only)
+    if(self.channel.favouritesValue)
+    {
+        videoThumbnailCell.displayMode = kChannelThumbnailDisplayModeDisplayFavourite;
+    }
+    else
+    {
+        videoThumbnailCell.displayMode = self.mode;
+    }
     
     VideoInstance *videoInstance = self.channel.videoInstances [indexPath.item];
     
@@ -986,18 +995,24 @@
                                                      cover: cover
                                                   isPublic: YES
                                          completionHandler: ^(NSDictionary* resourceCreated) {
+                                             
                                              NSString* channelId = [resourceCreated objectForKey: @"id"];
-                                             [[NSNotificationCenter defaultCenter] postNotificationName: kNoteAllNavControlsShow
-                                                                                                 object: self
-                                                                                               userInfo: nil];
+                                             
+                                             
                                              [self setEditControlsVisibility: NO];
                                              self.saveChannelButton.hidden = YES;
                                              self.cancelEditButton.hidden = YES;
                                              
+                                             
+                                             
                                              [self setVideosForChannelById: channelId
                                                                  isUpdated: YES];
                                              
-                                             // the method above will call the [self getChanelById:channelId isUpdated:YES]
+                                             [[NSNotificationCenter defaultCenter] postNotificationName: kNoteAllNavControlsShow
+                                                                                                 object: self
+                                                                                               userInfo: nil];
+                                             
+                                             // this block will also call the [self getChanelById:channelId isUpdated:YES] //
                                              
                                          }
                                               errorHandler: ^(NSDictionary* error) {

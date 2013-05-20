@@ -82,7 +82,8 @@
     self.closeButton.enabled = YES;
     self.confirmButtom.enabled = YES;
     
-    [self willAnimateRotationToInterfaceOrientation:[[SYNDeviceManager sharedInstance] orientation] duration:0.0f];
+    
+    [self packViewForInterfaceOrientation:[[SYNDeviceManager sharedInstance] orientation]];
     
     [self.channelThumbnailCollectionView reloadData];
 }
@@ -290,11 +291,16 @@
     [super willAnimateRotationToInterfaceOrientation: toInterfaceOrientation
                                             duration: duration];
     
+    [self packViewForInterfaceOrientation:toInterfaceOrientation];
+}
+
+-(void)packViewForInterfaceOrientation:(UIInterfaceOrientation) interfaceOrientation
+{
     CGRect collectionFrame = self.channelThumbnailCollectionView.frame;
     
     if ([[SYNDeviceManager sharedInstance] isIPad])
     {
-        if(UIInterfaceOrientationIsPortrait(toInterfaceOrientation))
+        if(UIInterfaceOrientationIsPortrait(interfaceOrientation))
         {
             collectionFrame.size.width = 572.0;
         }
@@ -310,8 +316,13 @@
     
     collectionFrame.origin.x = (self.view.frame.size.width * 0.5) - (collectionFrame.size.width * 0.5);
     self.channelThumbnailCollectionView.frame = CGRectIntegral(collectionFrame);
+    
+    CGRect selfFrame = self.view.frame;
+    selfFrame.size = [[SYNDeviceManager sharedInstance] currentScreenSize];
+    self.view.frame = selfFrame;
+    
+    
 }
-
 
 - (void) setSelectedCell: (SYNChannelMidCell *) selectedCell
 {
