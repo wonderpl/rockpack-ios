@@ -20,7 +20,6 @@
 #import "SYNMasterViewController.h"
 #import "SYNNetworkErrorView.h"
 #import "SYNObjectFactory.h"
-#import "SYNRefreshButton.h"
 #import "SYNSearchBoxViewController.h"
 #import "SYNSearchRootViewController.h"
 #import "SYNSideNavigationViewController.h"

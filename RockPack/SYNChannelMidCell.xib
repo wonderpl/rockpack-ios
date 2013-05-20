@@ -105,7 +105,6 @@
 								<string key="NSFrame">{{8, 130}, {168, 47}}</string>
 								<reference key="NSSuperview" ref="582525683"/>
 								<reference key="NSWindow"/>
-								<reference key="NSNextKeyView"/>
 								<string key="NSReuseIdentifierKey">_NS:9</string>
 								<reference key="IBUIBackgroundColor" ref="427251072"/>
 								<bool key="IBUIAutoresizesSubviews">NO</bool>

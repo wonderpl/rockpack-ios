@@ -187,7 +187,7 @@
     [self.refreshButton endRefreshCycle];
 }
 
--(void)viewDidScrollToFront
+- (void) viewDidScrollToFront
 {
     [self refreshButtonPressed];
 }
@@ -222,16 +222,15 @@
                                                             start: 0
                                                              size: 0
                                                 completionHandler: ^(NSDictionary *responseDictionary) {
-                                                    
                                                     [self handleRefreshComplete];
-                                                    
                                                     // DebugLog(@"Refresh subscription updates successful");
-                                                    
-                                                } errorHandler: ^(NSDictionary* errorDictionary) {
-                                                    [self handleRefreshComplete];
-                                                    DebugLog(@"Refresh subscription updates failed");
-                                                }];
+                                                }
+                                                     errorHandler: ^(NSDictionary* errorDictionary) {
+                                                         [self handleRefreshComplete];
+                                                         DebugLog(@"Refresh subscription updates failed");
+                                                     }];
 }
+
 
 - (void) handleRefreshComplete
 {
@@ -241,11 +240,13 @@
                                                         object: self];
 }
 
--(void)clearedLocationBoundData
+
+- (void) clearedLocationBoundData
 {
     [self refreshVideoThumbnails];
     
 }
+
 
 #pragma mark - Fetched results
 
