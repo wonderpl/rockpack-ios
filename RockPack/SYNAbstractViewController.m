@@ -96,7 +96,7 @@
     {
         self.addButton = [SYNAddButtonControl button];
         CGRect addButtonFrame = self.addButton.frame;
-        addButtonFrame.origin.x = 884.0f;
+        addButtonFrame.origin.x = 884.0f; // 884.0f
         addButtonFrame.origin.y = 80.0f;
         self.addButton.frame = addButtonFrame;
         
@@ -109,17 +109,6 @@
     
 }
 
--(void)viewWillAppear:(BOOL)animated
-{
-    [super viewWillAppear:animated];
-}
-
-
-
--(void)viewWillDisappear:(BOOL)animated
-{
-    [super viewWillDisappear:animated];
-}
 
 
 

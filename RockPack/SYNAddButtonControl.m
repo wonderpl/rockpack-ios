@@ -41,8 +41,6 @@
         button.frame = CGRectMake(0.0, 0.0, buttonImageInactive.size.width, buttonImageInactive.size.height);
         
         
-        
-        
         [button addTarget:self
                    action:@selector(buttonPressed:)
          forControlEvents:UIControlEventTouchUpInside];
