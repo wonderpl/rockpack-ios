@@ -136,8 +136,6 @@
     self.trackedViewName = @"Feed";
     
     // == Refresh button == //
-    
-    
     self.refreshButton = [SYNRefreshButton refreshButton];
     
     [self.refreshButton addTarget: self
@@ -145,11 +143,11 @@
                  forControlEvents: UIControlEventTouchUpInside];
     
     CGRect refreshButtonFrame = self.refreshButton.frame;
-    refreshButtonFrame.origin.x = [[SYNDeviceManager sharedInstance] isIPad]? 0  : 0;
-    refreshButtonFrame.origin.y = [[SYNDeviceManager sharedInstance] isIPad]? 0.0 : 0.0;
+    refreshButtonFrame.origin.x = [[SYNDeviceManager sharedInstance] isIPad]? 5.0f  : 5.0f;
+    refreshButtonFrame.origin.y = [[SYNDeviceManager sharedInstance] isIPad]? 7.0f : 5.0f;
     self.refreshButton.frame = refreshButtonFrame;
     
-    [self.view addSubview:self.refreshButton];
+    [self.view addSubview: self.refreshButton];
     
     self.refreshControl = [[UIRefreshControl alloc] initWithFrame: CGRectMake(0, -44, 320, 44)];
     
