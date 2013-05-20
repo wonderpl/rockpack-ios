@@ -216,7 +216,7 @@
                   byAppending: (BOOL) append
 {
     
-    NSLog(@"Loading Channels %i to %i from %i total", (dataRequestRange.location - 1), (dataRequestRange.location - 1) + (dataRequestRange.length - 1), dataItemsAvailable);
+//    NSLog(@"Loading Channels %i to %i from %i total", (dataRequestRange.location - 1), (dataRequestRange.location - 1) + (dataRequestRange.length - 1), dataItemsAvailable);
     
     [appDelegate.networkEngine updateChannelsScreenForCategory: (genre ? genre.uniqueId : @"all")
                                                       forRange: dataRequestRange
@@ -340,8 +340,19 @@
 
 -(void)viewDidScrollToFront
 {
-    self.dataRequestRange;
+    // no NSRangeZero existst so we must zero it explicitely
+    
+    dataRequestRange = NSMakeRange(1, STANDARD_REQUEST_LENGTH);
+    
+    if([currentGenre isMemberOfClass:[SubGenre class]])
+    {
+        currentGenre = ((SubGenre*)currentGenre).genre;
+    }
+    
+    [self collapseToParentCategory];
+    
     [self loadChannelsForGenre:currentGenre];
+    
 }
 
 
@@ -597,22 +608,7 @@
     {
         // then home button was pressed in either its icon or "all" mode respectively
         if (tabExpanded)
-        {
-            [UIView animateWithDuration: 0.3
-                                  delay: 0.0
-                                options: UIViewAnimationCurveEaseInOut
-                             animations: ^{
-                                 
-                                 CGRect currentCollectionViewFrame = self.channelThumbnailCollectionView.frame;
-                                 currentCollectionViewFrame.origin.y -= kCategorySecondRowHeight;
-                                 currentCollectionViewFrame.size.height += kCategorySecondRowHeight;
-                                 self.channelThumbnailCollectionView.frame = currentCollectionViewFrame;
-                                 
-                                 
-                             }  completion: ^(BOOL result) {
-                                 tabExpanded = NO;
-                             }];
-        }
+            [self animateCollectionViewDown:NO];
         
         return;
     }
@@ -620,20 +616,63 @@
     if (tabExpanded)
         return;
     
-    tabExpanded = YES;
+    [self animateCollectionViewDown:YES];
     
-    [UIView animateWithDuration: 0.3
-                          delay: 0.0
-                        options: UIViewAnimationCurveEaseInOut
-                     animations: ^{
-                         CGRect currentCollectionViewFrame = self.channelThumbnailCollectionView.frame;
-                         currentCollectionViewFrame.origin.y += kCategorySecondRowHeight;
-                         currentCollectionViewFrame.size.height -= kCategorySecondRowHeight;
-                         self.channelThumbnailCollectionView.frame = currentCollectionViewFrame;
-                     }
-                     completion: ^(BOOL result) {
-                         tabExpanded = YES;
-                     }];
+    
+}
+
+#pragma mark - Pushing UICollectionView up and down
+
+-(void)animateCollectionViewDown:(BOOL)down
+{
+    
+    
+    
+    
+    if(down && !tabExpanded)
+    {
+        
+        
+        
+        
+        [UIView animateWithDuration: 0.4
+                              delay: 0.1
+                            options: UIViewAnimationCurveEaseInOut
+                         animations: ^{
+                             CGRect currentCollectionViewFrame = self.channelThumbnailCollectionView.frame;
+                             currentCollectionViewFrame.origin.y += kCategorySecondRowHeight;
+                             currentCollectionViewFrame.size.height -= kCategorySecondRowHeight;
+                             self.channelThumbnailCollectionView.frame = currentCollectionViewFrame;
+                         }
+                         completion: ^(BOOL result) {
+                             
+                             tabExpanded = YES;
+                         }];
+    }
+    else if(tabExpanded)
+    {
+        [UIView animateWithDuration: 0.4
+                              delay: 0.1
+                            options: UIViewAnimationCurveEaseInOut
+                         animations: ^{
+                             
+                             CGRect currentCollectionViewFrame = self.channelThumbnailCollectionView.frame;
+                             currentCollectionViewFrame.origin.y -= kCategorySecondRowHeight;
+                             currentCollectionViewFrame.size.height += kCategorySecondRowHeight;
+                             self.channelThumbnailCollectionView.frame = currentCollectionViewFrame;
+                             
+                             
+                         }  completion: ^(BOOL result) {
+                             
+                             tabExpanded = NO;
+                         }];
+    }
+}
+
+-(void)collapseToParentCategory
+{
+    [((SYNCategoriesTabView*)self.tabViewController.tabView) hideSecondaryTabs];
+    [self animateCollectionViewDown:NO];
 }
 
 
