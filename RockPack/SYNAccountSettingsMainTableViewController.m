@@ -402,11 +402,11 @@
                                             withNewValue: dateString
                                        completionHandler: ^ {
                                            user.dateOfBirth = datePicker.date;
-                                           self.dobTableViewCell.textLabel.text = [self getDOBPlainString:user.dateOfBirth];
+                                           self.dobTableViewCell.textLabel.text = [self getDOBPlainString: user.dateOfBirth];
                                            [dobLoader stopAnimating];
                                            [dobLoader removeFromSuperview];
                                        }
-                                            errorHandler:^(id errorInfo) {
+                                            errorHandler: ^(id errorInfo) {
                                             }];
 
     // Calculate age, taking account of leap-years etc. (probably too accurate!)
@@ -425,6 +425,7 @@
     [tracker setCustom: kGADimensionAge
              dimension: ageString];
 }
+
 
 -(NSString*)getDOBPlainString:(NSDate*)date
 {
