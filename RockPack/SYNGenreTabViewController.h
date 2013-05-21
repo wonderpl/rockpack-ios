@@ -18,7 +18,7 @@
 - (id) initWithHomeButton: (NSString*) homeButtomString;
 
 -(void) deselectAll;
--(void)highlightTabWithId:(NSInteger)identifier andSubcategories:(BOOL)showSubcategories;
+-(Genre*)selectAndReturnGenreForId:(NSInteger)identifier andSubcategories:(BOOL)showSubcategories;
 
 
 @end

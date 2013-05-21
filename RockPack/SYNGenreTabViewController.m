@@ -98,6 +98,9 @@
         return;
     }
     
+    
+    
+    
     [self.tabView createCategoriesTab:self.genresFetched];
 }
 
@@ -117,9 +120,6 @@
 {
     
     SYNGenreItemView* genreTab = (SYNGenreItemView*)tab;
-    for (SubGenre* sg in genreTab.model.subgenres) {
-        NSLog(@" === SubGenre found: %@ (p %i)", sg.name, [sg.priority intValue]);
-    }
     
     if (!tab || tab.tag == 0)
     {
@@ -137,8 +137,16 @@
         return;   
     }
     
-    
     Genre* genreSelected = (Genre*)genreTab.model;
+
+    [self handleMainGenreSelection:genreSelected];
+
+    [self.delegate handleMainTap: tab];
+}
+
+-(void)handleMainGenreSelection:(Genre*)genreSelected
+{
+   
     
     NSMutableSet* filteredSet = [[NSMutableSet alloc] init];
     
@@ -150,6 +158,7 @@
         {
             if([[subgenre.name uppercaseString] isEqualToString:@"OTHER"])
                 otherSubGenre = subgenre;
+            
             continue;
         }
         
@@ -164,8 +173,8 @@
     if (self.delegate && [self.delegate showSubcategories])
         [self.tabView createSubcategoriesTab: filteredSet];
     
-    [self.delegate handleMainTap: tab];
-    [self.delegate handleNewTabSelectionWithId: genreSelected.uniqueId];
+    
+    
     [self.delegate handleNewTabSelectionWithGenre: genreSelected];
     self.currentTopLevelCategoryName = genreSelected.name;
     
@@ -247,15 +256,27 @@
     [self.categoriesTabView deselectAll];
 }
 
--(void)highlightTabWithId:(NSInteger)identifier andSubcategories:(BOOL)showSubcategories
+-(Genre*)selectAndReturnGenreForId:(NSInteger)identifier andSubcategories:(BOOL)subcats
 {
     if(!self.genresFetched || (self.genresFetched.count - 1) < identifier)
-        return;
-    Genre* genreToHighlight = self.genresFetched[identifier];
-    if(!showSubcategories)
-        [self.categoriesTabView highlightTabWithGenre:genreToHighlight];
+        return nil;
+    
+    
+    Genre* genreToSelect;
+    
+    if(!subcats)
+        genreToSelect = (Genre*)[self.genresFetched objectAtIndex:0];
+        
     else
-        [self.categoriesTabView highlightTabWithGenre:genreToHighlight];
+        genreToSelect = (genreToSelect.subgenres.count > 0) ?
+        (SubGenre*)[genreToSelect.subgenres objectAtIndex:0] : (Genre*)[self.genresFetched objectAtIndex:identifier];
+    
+    
+        
+    [self.categoriesTabView highlightTabWithGenre:genreToSelect];
+    
+    return genreToSelect;
+        
 }
 
 @end
