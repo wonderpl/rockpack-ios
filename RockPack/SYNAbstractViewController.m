@@ -67,6 +67,7 @@
     return [self initWithViewId: @"UnintializedViewId"];
 }
 
+
 - (id) initWithViewId: (NSString*) vid
 {
     if ((self = [super init]))
@@ -86,30 +87,24 @@
     
     appDelegate = (SYNAppDelegate *)[[UIApplication sharedApplication] delegate];
     
-    [[NSNotificationCenter defaultCenter] addObserver:self
-                                             selector:@selector(clearedLocationBoundData)
-                                                 name:kClearedLocationBoundData
-                                               object:nil];
-    
-    
-    if(self.needsAddButton)
+    [[NSNotificationCenter defaultCenter] addObserver: self
+                                             selector: @selector(clearedLocationBoundData)
+                                                 name: kClearedLocationBoundData
+                                               object: nil];
+
+    if (self.needsAddButton)
     {
         self.addButton = [SYNAddButtonControl button];
         CGRect addButtonFrame = self.addButton.frame;
         addButtonFrame.origin.x = 884.0f; // 884.0f
         addButtonFrame.origin.y = 80.0f;
         self.addButton.frame = addButtonFrame;
-        
-        
+
         self.addButton.autoresizingMask = UIViewAutoresizingFlexibleLeftMargin | UIViewAutoresizingFlexibleBottomMargin;
         
-        [self.view addSubview:addButton];
+        [self.view addSubview: addButton];
     }
-    
-    
 }
-
-
 
 
 - (void) viewDidScrollToFront
@@ -122,7 +117,6 @@
 {
     startAnimationDelay = 0.0;
     [self reloadCollectionViews];
-    
 }
 
 
@@ -162,15 +156,12 @@
 {
     NSInteger viewControllersCount = self.navigationController.viewControllers.count;
     
-    if(viewControllersCount < 2) // we must have at least two to pop one
+    if (viewControllersCount < 2) // we must have at least two to pop one
         return;
-    
-    
+
     UIViewController *parentVC = self.navigationController.viewControllers[viewControllersCount - 2];
     parentVC.view.alpha = 0.0f;
-    
-    
-    
+
     [UIView animateWithDuration: 0.5f
                           delay: 0.0f
                         options: UIViewAnimationOptionCurveEaseInOut
@@ -180,14 +171,10 @@
          parentVC.view.alpha = 1.0f;
          
      } completion: ^(BOOL finished) {
-         
-         
          DebugLog(@"");
      }];
     
     [self.navigationController popViewControllerAnimated:NO];
-    
-    
 }
 
 
@@ -226,7 +213,6 @@
                                                    errorHandler: ^(id error) {
                                                        DebugLog (@"Acivity not recorded: Select");
                                                    }];
-
     }
     else
     {
@@ -299,8 +285,6 @@
                                                     self.videoThumbnailCollectionView.userInteractionEnabled = YES;
                                                 }];
 }
-
-
 
 
 #pragma mark - UICollectionView Data Source Stubs

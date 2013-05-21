@@ -198,6 +198,7 @@
     
     currentGenre = nil;
     
+    
 }
 
 
@@ -346,12 +347,6 @@
     
     dataRequestRange = NSMakeRange(1, STANDARD_REQUEST_LENGTH);
     
-    if([currentGenre isMemberOfClass:[SubGenre class]])
-    {
-        currentGenre = ((SubGenre*)currentGenre).genre;
-    }
-    
-    [self collapseToParentCategory];
     
     [self loadChannelsForGenre:currentGenre];
     
@@ -608,13 +603,13 @@
     if (!tab || tab.tag == 0)
     {
         // then home button was pressed in either its icon or "all" mode respectively
-        if (tabExpanded)
+        if (tabExpanded && !isAnimating)
             [self animateCollectionViewDown:NO];
         
         return;
     }
     
-    if (tabExpanded)
+    if (tabExpanded || isAnimating)
         return;
     
     [self animateCollectionViewDown:YES];
@@ -626,9 +621,6 @@
 
 -(void)animateCollectionViewDown:(BOOL)down
 {
-    
-    
-    
     
     if(down && !tabExpanded)
     {

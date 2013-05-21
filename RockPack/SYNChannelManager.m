@@ -82,6 +82,7 @@
     }
 }
 
+// update another user's profuile channels //
 
 -(void)channelOwnerUpdateRequest:(NSNotification*)notification
 {
@@ -124,12 +125,9 @@
                                                 
                                                 
                                                 
-                                                channel.subscribedByUserValue = YES;
-                                                channel.subscribersCountValue += 1;
-                                                
                                                 channel.hasChangedSubscribeValue = YES;
                                                 
-                                                [channel addSubscribersObject:appDelegate.currentUser];
+                                                [appDelegate.currentUser addSubscriptionsObject:channel];
                                                 
                                                 if(channel.managedObjectContext == appDelegate.mainManagedObjectContext)
                                                 {
@@ -163,12 +161,10 @@
                                               completionHandler: ^(NSDictionary *responseDictionary) {
                                                   
                                                   
-                                                  channel.subscribedByUserValue = NO;
-                                                  channel.subscribersCountValue -= 1;
-                                                  
                                                   channel.hasChangedSubscribeValue = YES;
                                                   
-                                                  [channel removeSubscribersObject:appDelegate.currentUser];
+                                                  [appDelegate.currentUser removeSubscriptionsObject:channel];
+                                                  
                                                   
                                                   if(channel.managedObjectContext == appDelegate.mainManagedObjectContext)
                                                   {
@@ -270,17 +266,18 @@
 
 -(void)updateChannelsForChannelOwner:(ChannelOwner*)channelOwner
 {
-    [appDelegate.networkEngine channelOwnerDataForChannelOwner:channelOwner onComplete:^(id dictionary) {
+    [appDelegate.networkEngine channelOwnerDataForChannelOwner:channelOwner
+                                                    onComplete:^(id dictionary) {
         
         
         
-        [appDelegate.mainRegistry registerChannelsFromDictionary:dictionary
-                                                 forChannelOwner:channelOwner
-                                                     byAppending:NO];
+                                                        [appDelegate.mainRegistry registerChannelsFromDictionary:dictionary
+                                                                                                 forChannelOwner:channelOwner
+                                                                                                     byAppending:NO];
         
-    } onError:^(id error) {
+                                                    } onError:^(id error) {
         
-    }];
+                                                    }];
 }
 
 -(BOOL)isSubscribedByCurrentUser:(Channel*)channel
