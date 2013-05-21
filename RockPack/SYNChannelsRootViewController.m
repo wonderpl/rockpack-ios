@@ -608,13 +608,13 @@
     if (!tab || tab.tag == 0)
     {
         // then home button was pressed in either its icon or "all" mode respectively
-        if (tabExpanded)
+        if (tabExpanded && !isAnimating)
             [self animateCollectionViewDown:NO];
         
         return;
     }
     
-    if (tabExpanded)
+    if (tabExpanded || isAnimating)
         return;
     
     [self animateCollectionViewDown:YES];
