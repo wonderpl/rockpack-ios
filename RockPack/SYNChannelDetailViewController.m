@@ -940,7 +940,7 @@
 
 - (IBAction) editButtonTapped: (id) sender
 {
-    [[NSNotificationCenter defaultCenter] postNotificationName: kChannelsNavControlsHide
+    [[NSNotificationCenter defaultCenter] postNotificationName: ([[SYNDeviceManager sharedInstance] isIPad])? kChannelsNavControlsHide : kNoteAllNavControlsHide
                                                         object: self
                                                       userInfo: nil];
     
@@ -948,7 +948,7 @@
     [self.createChannelButton removeFromSuperview];
     [self.view addSubview:self.saveChannelButton];
     CGRect newFrame = self.saveChannelButton.frame;
-    newFrame.origin.x = self.view.frame.size.width - self.cancelEditButton.frame.origin.x - newFrame.size.width;
+    newFrame.origin.x = self.view.frame.size.width  - newFrame.size.width;
     self.saveChannelButton.frame = newFrame;
     self.saveChannelButton.hidden = NO;
     self.cancelEditButton.hidden = NO;
@@ -1819,6 +1819,9 @@
 #pragma mark - iPhone viewcontroller dismissal
 - (IBAction) backButtonTapped: (id) sender
 {
+    [[NSNotificationCenter defaultCenter] postNotificationName: kNoteAllNavControlsShow
+                                                        object: self
+                                                      userInfo: nil];
     CATransition *animation = [CATransition animation];
     
     [animation setType:kCATransitionReveal];
