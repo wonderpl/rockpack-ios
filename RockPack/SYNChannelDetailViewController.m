@@ -676,6 +676,14 @@
     self.subscribeButton.hidden = (visible && [self.channel.channelOwner.uniqueId isEqualToString: appDelegate.currentUser.uniqueId]);
     self.editButton.hidden = (visible && ! [self.channel.channelOwner.uniqueId isEqualToString: appDelegate.currentUser.uniqueId]);
     [(LXReorderableCollectionViewFlowLayout *)self.videoThumbnailCollectionView.collectionViewLayout longPressGestureRecognizer].enabled = (visible) ? FALSE : TRUE;
+    
+    if (visible == FALSE)
+    {
+        // If we are in edit mode, then hide navigation controls
+        [[NSNotificationCenter defaultCenter] postNotificationName: kChannelsNavControlsHide
+                                                            object: self
+                                                          userInfo: nil];
+    }
 }
 
 
@@ -929,7 +937,7 @@
 
 - (IBAction) editButtonTapped: (id) sender
 {
-    [[NSNotificationCenter defaultCenter] postNotificationName: kNoteAllNavControlsHide
+    [[NSNotificationCenter defaultCenter] postNotificationName: kChannelsNavControlsHide
                                                         object: self
                                                       userInfo: nil];
     
@@ -1429,17 +1437,23 @@
 
 - (void) textViewDidBeginEditing: (UITextView *) textView
 {
-    self.createChannelButton.hidden = YES;
-    self.saveChannelButton.hidden = YES;
-    self.cancelTextInputButton.hidden = NO;
+    if ([[SYNDeviceManager sharedInstance] isIPhone])
+    {
+        self.createChannelButton.hidden = YES;
+        self.saveChannelButton.hidden = YES;
+        self.cancelTextInputButton.hidden = NO;
+    }
     
 }
 
 - (void) textViewDidEndEditing: (UITextView *) textView
 {
-    self.createChannelButton.hidden = NO;
-    self.saveChannelButton.hidden = NO;
-    self.cancelTextInputButton.hidden = YES;
+    if ([[SYNDeviceManager sharedInstance] isIPhone])
+    {
+        self.createChannelButton.hidden = NO;
+        self.saveChannelButton.hidden = NO;
+        self.cancelTextInputButton.hidden = YES;
+    }
 }
 
 
