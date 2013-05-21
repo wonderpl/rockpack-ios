@@ -1131,7 +1131,17 @@
                                  
                                  if([self.channel.categoryId isEqualToString:@""])
                                  {
-                                     //[self.categoriesTabViewController];
+                                     Genre* firstSelection = [self.categoriesTabViewController selectAndReturnGenreForId:0
+                                                                                                        andSubcategories:YES];
+                                     
+                                     if(firstSelection)
+                                     {
+                                         [self handleNewTabSelectionWithGenre:firstSelection];
+                                     }
+                                     else
+                                     {
+                                         [self.categoriesTabViewController deselectAll];
+                                     }
                                  }
                                  
                                  
