@@ -1038,7 +1038,7 @@
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
-		010DEFD01629BDC40080F26B /* rockpack.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = rockpack.app; sourceTree = BUILT_PRODUCTS_DIR; };
+		010DEFD01629BDC40080F26B /* Rockpack.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = Rockpack.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		010DEFD41629BDC40080F26B /* UIKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = UIKit.framework; path = System/Library/Frameworks/UIKit.framework; sourceTree = SDKROOT; };
 		010DEFD61629BDC40080F26B /* Foundation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Foundation.framework; path = System/Library/Frameworks/Foundation.framework; sourceTree = SDKROOT; };
 		010DEFD81629BDC40080F26B /* CoreGraphics.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreGraphics.framework; path = System/Library/Frameworks/CoreGraphics.framework; sourceTree = SDKROOT; };
@@ -2306,7 +2306,7 @@
 		010DEFD11629BDC40080F26B /* Products */ = {
 			isa = PBXGroup;
 			children = (
-				010DEFD01629BDC40080F26B /* rockpack.app */,
+				010DEFD01629BDC40080F26B /* Rockpack.app */,
 			);
 			name = Products;
 			sourceTree = "<group>";
@@ -4582,7 +4582,7 @@
 			);
 			name = rockpack;
 			productName = RockPack;
-			productReference = 010DEFD01629BDC40080F26B /* rockpack.app */;
+			productReference = 010DEFD01629BDC40080F26B /* Rockpack.app */;
 			productType = "com.apple.product-type.application";
 		};
 /* End PBXNativeTarget section */
@@ -5774,7 +5774,7 @@
 					"-lsqlite3.0",
 					"-licucore",
 				);
-				PRODUCT_NAME = rockpack;
+				PRODUCT_NAME = Rockpack;
 				PROVISIONING_PROFILE = "";
 				"PROVISIONING_PROFILE[sdk=iphoneos*]" = "";
 				TARGETED_DEVICE_FAMILY = "1,2";
@@ -5806,7 +5806,7 @@
 					"-lsqlite3.0",
 					"-licucore",
 				);
-				PRODUCT_NAME = rockpack;
+				PRODUCT_NAME = Rockpack;
 				TARGETED_DEVICE_FAMILY = "1,2";
 				WRAPPER_EXTENSION = app;
 			};
@@ -5863,7 +5863,7 @@
 					"-lsqlite3.0",
 					"-licucore",
 				);
-				PRODUCT_NAME = rockpack;
+				PRODUCT_NAME = Rockpack;
 				PROVISIONING_PROFILE = "";
 				"PROVISIONING_PROFILE[sdk=iphoneos*]" = "";
 				TARGETED_DEVICE_FAMILY = "1,2";
