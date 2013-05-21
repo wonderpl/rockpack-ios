@@ -18,7 +18,7 @@
 
 @interface SYNGenreTabViewController ()
 
-@property (nonatomic, strong) NSString *currentTopLevelCategoryName;
+
 @property (nonatomic, assign) NSString* homeButtomString;
 @property (nonatomic, readonly) SYNGenreTabView* categoriesTabView;
 @property (nonatomic, strong) NSArray* genresFetched;
@@ -26,6 +26,7 @@
 
 
 @implementation SYNGenreTabViewController
+
 
 - (id) initWithHomeButton: (NSString*) homeButtomString
 {
@@ -142,6 +143,21 @@
     [self handleMainGenreSelection:genreSelected];
 
     [self.delegate handleMainTap: tab];
+    
+    
+    [self.delegate handleNewTabSelectionWithGenre: genreSelected];
+    
+    // == Log Category in Google Analytics == //
+    
+    id<GAITracker> tracker = [GAI sharedInstance].defaultTracker;
+    
+    [tracker sendEventWithCategory: @"uiAction"
+                        withAction: @"categoryItemClick"
+                         withLabel: genreSelected.name
+                         withValue: nil];
+    
+    [tracker setCustom: kGADimensionCategory
+             dimension: genreSelected.name];
 }
 
 -(void)handleMainGenreSelection:(Genre*)genreSelected
@@ -165,29 +181,21 @@
         [filteredSet addObject: subgenre];
     }
     
-    if (otherSubGenre)
+    if (self.showOtherInSubcategories)
     {
         [filteredSet addObject: otherSubGenre];
     }
     
-    if (self.delegate && [self.delegate showSubcategories])
+    
+    // Finally Show SubGenres if needed
+    
+    if (self.delegate && [self.delegate showSubGenres])
+    {
         [self.tabView createSubcategoriesTab: filteredSet];
+    }
+        
     
     
-    
-    [self.delegate handleNewTabSelectionWithGenre: genreSelected];
-    self.currentTopLevelCategoryName = genreSelected.name;
-    
-    // Log Category in Google Analytics
-    id<GAITracker> tracker = [GAI sharedInstance].defaultTracker;
-    
-    [tracker sendEventWithCategory: @"uiAction"
-                        withAction: @"categoryItemClick"
-                         withLabel: genreSelected.name
-                         withValue: nil];
-    
-    [tracker setCustom: kGADimensionCategory
-             dimension: genreSelected.name];
 }
 
 
@@ -230,10 +238,14 @@
     SubGenre* subGenreSelected = (SubGenre*)matchingCategoryInstanceEntries[0];
     
     [self.delegate handleSecondaryTap: tab];
-    [self.delegate handleNewTabSelectionWithId: subGenreSelected.uniqueId];
+    
     [self.delegate handleNewTabSelectionWithGenre: subGenreSelected];
     
-    // Log subcategory in Google Analytics
+    
+    
+    // == Log subcategory in Google Analytics == //
+    
+    
     id<GAITracker> tracker = [GAI sharedInstance].defaultTracker;
     
     // TODO: Not sure if we need both of these
@@ -262,18 +274,19 @@
         return nil;
     
     
-    Genre* genreToSelect;
+    Genre* genreToSelect = (Genre*)[self.genresFetched objectAtIndex:identifier];
     
-    if(!subcats)
-        genreToSelect = (Genre*)[self.genresFetched objectAtIndex:0];
-        
-    else
-        genreToSelect = (genreToSelect.subgenres.count > 0) ?
-        (SubGenre*)[genreToSelect.subgenres objectAtIndex:0] : (Genre*)[self.genresFetched objectAtIndex:identifier];
+    if(subcats)
+    {
+        genreToSelect = (SubGenre*)[genreToSelect.subgenres firstObject];
+        [self handleMainGenreSelection:((SubGenre*)genreToSelect).genre];
+    }
     
     
-        
     [self.categoriesTabView highlightTabWithGenre:genreToSelect];
+    
+    
+    
     
     return genreToSelect;
         

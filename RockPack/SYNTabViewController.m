@@ -56,7 +56,7 @@
 }
 
 
-- (BOOL) showSubcategories
+- (BOOL) showSubGenres
 {
     return YES;
 }

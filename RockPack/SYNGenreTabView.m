@@ -322,16 +322,16 @@
 
 
 
--(void)highlightTabWithGenre:(Genre*)genreSelected
+-(void)highlightTabWithGenre:(Genre*)genreToHighlight
 {
-    if(!genreSelected)
+    if(!genreToHighlight)
         return;
     
-    if([genreSelected isMemberOfClass:[Genre class]])
+    if(![genreToHighlight isMemberOfClass:[SubGenre class]])
     {
         for(SYNGenreItemView* itemView in self.mainTabsView.subviews)
         {
-            if([genreSelected.uniqueId intValue] == itemView.tag)
+            if([genreToHighlight.uniqueId intValue] == itemView.tag)
             {
                 [itemView makeHighlighted];
             }
@@ -347,7 +347,7 @@
     {
         for(SYNGenreItemView* itemView in self.secondaryTabsView.subviews)
         {
-            if([genreSelected.uniqueId intValue] == itemView.tag)
+            if([genreToHighlight.uniqueId intValue] == itemView.tag)
             {
                 [itemView makeHighlighted];
             }
@@ -356,7 +356,7 @@
                 [itemView makeStandard];
             }
         }
-        [self highlightTabWithGenre:((Genre*)((SubGenre*)genreSelected).genre)]; // recurse once for Genre as well.
+        [self highlightTabWithGenre:((Genre*)((SubGenre*)genreToHighlight).genre)]; // recurse once for Genre as well.
     }
     
     
