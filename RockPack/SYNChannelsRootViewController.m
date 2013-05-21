@@ -198,6 +198,7 @@
     
     currentGenre = nil;
     
+    
 }
 
 
@@ -346,12 +347,6 @@
     
     dataRequestRange = NSMakeRange(1, STANDARD_REQUEST_LENGTH);
     
-    if([currentGenre isMemberOfClass:[SubGenre class]])
-    {
-        currentGenre = ((SubGenre*)currentGenre).genre;
-    }
-    
-    [self collapseToParentCategory];
     
     [self loadChannelsForGenre:currentGenre];
     
@@ -626,9 +621,6 @@
 
 -(void)animateCollectionViewDown:(BOOL)down
 {
-    
-    
-    
     
     if(down && !tabExpanded)
     {

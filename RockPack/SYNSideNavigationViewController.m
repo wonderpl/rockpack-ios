@@ -446,6 +446,8 @@ typedef enum {
                                                                              userInfo: @{@"pageName":navigationAction}];
         
         [[NSNotificationCenter defaultCenter] postNotification: navigationNotification];
+        
+        
     }
     
     // Google analytics
