@@ -141,23 +141,6 @@
 }
 
 
-#pragma mark - Override
-
-- (void) handleMainTap: (UITapGestureRecognizer *) recogniser
-{
-    // override with empty functiokn
-}
-
-
-- (void) handleNewTabSelectionWithId: (NSString *) selectionId
-{
-    // override with emtpy function
-}
-
-- (void) handleNewTabSelectionWithGenre: (Genre*) name
-{
-    // override with emtpy function
-}
 
 -(void)animatedPushViewController:(UIViewController *)vc
 {

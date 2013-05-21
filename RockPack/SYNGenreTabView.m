@@ -6,16 +6,16 @@
 //  Copyright (c) 2013 Nick Banks. All rights reserved.
 //
 
-#import "SYNCategoriesTabView.h"
+#import "SYNGenreTabView.h"
 #import "Genre.h"
 #import "SubGenre.h"
-#import "SYNCategoryItemView.h"
+#import "SYNGenreItemView.h"
 #import "UIFont+SYNFont.h"
 #import <QuartzCore/QuartzCore.h>
 
 #define kSecondaryTabsOffset 30.0
 
-@interface SYNCategoriesTabView ()
+@interface SYNGenreTabView ()
 
 @property (nonatomic, strong) UIView* dividerOverlayView;
 @property (nonatomic, strong) UIView* mainTabsView;
@@ -28,7 +28,7 @@
 @end
 
 
-@implementation SYNCategoriesTabView
+@implementation SYNGenreTabView
 
 
 - (id) initWithSize: (CGFloat) totalWidth
@@ -48,11 +48,7 @@
         bgMainTabsView.backgroundColor = [UIColor colorWithPatternImage: mainTabsBGImage];
         bgMainTabsView.autoresizingMask = UIViewAutoresizingFlexibleWidth;
 
-        //No Shadow - but it may come back
-        //bgMainTabsView.layer.shadowColor = [[UIColor darkGrayColor] CGColor];
-        //bgMainTabsView.layer.shadowOffset = CGSizeMake(0.0, 1.0);
-        //bgMainTabsView.layer.shadowOpacity = 0.2;
-        //bgMainTabsView.layer.shadowRadius = 1.0;
+       
         
         // == Bottom Bar == //
         UIImage* secondaryTabsBGImage = [UIImage imageNamed: @"SubCategoryBar"];
@@ -87,7 +83,7 @@
 
 - (void) createCategoriesTab: (NSArray*) categories
 {
-    SYNCategoryItemView* tab = nil;
+    SYNGenreItemView* tab = nil;
     
     self.dividerOverlayView = [[UIView alloc] initWithFrame: self.mainTabsView.frame];
     self.dividerOverlayView.userInteractionEnabled = NO;
@@ -108,10 +104,14 @@
         
         [self addSubview: self.homeButton];
     }
+    else if ([self.homeButtonString isEqualToString:@"hiden"]) // special case where we dont display anything
+    {
+        
+    }
     else
     {
         // Create a special Other tab with tag id 0
-        tab = [[SYNCategoryItemView alloc] initWithLabel: [self.homeButtonString uppercaseString]
+        tab = [[SYNGenreItemView alloc] initWithLabel: [self.homeButtonString uppercaseString]
                                                   andTag: 0];
         
         [tab makeHighlighted];
@@ -119,18 +119,18 @@
         [self.mainTabsView addSubview: tab];
         
         [tab addGestureRecognizer: [[UITapGestureRecognizer alloc] initWithTarget: self
-                                                                           action: @selector(handleMainTap:)]];
+                                                                           action: @selector(mainTapPressed:)]];
     }
 
 
     for (Genre* category in categories)
     {
-        tab = [[SYNCategoryItemView alloc] initWithTabItemModel: category];
+        tab = [[SYNGenreItemView alloc] initWithTabItemModel: category];
         
         [self.mainTabsView addSubview: tab];
         
         [tab addGestureRecognizer: [[UITapGestureRecognizer alloc] initWithTarget: self
-                                                                           action: @selector(handleMainTap:)]];
+                                                                           action: @selector(mainTapPressed:)]];
     }
     
     [self addSubview: self.dividerOverlayView];
@@ -156,10 +156,10 @@
     for (UIView* sview in self.secondaryTabsView.subviews)
         [sview removeFromSuperview];
     
-    for(SYNCategoryItemView* divider in self.secondaryDividerOverlay.subviews)
+    for(SYNGenreItemView* divider in self.secondaryDividerOverlay.subviews)
         [divider removeFromSuperview];
     
-    SYNCategoryItemView* tab = nil;
+    SYNGenreItemView* tab = nil;
  
     NSSortDescriptor* idSortDescriptor = [[NSSortDescriptor alloc] initWithKey: @"priority"
                                                                      ascending: NO];
@@ -168,11 +168,11 @@
         
     for (SubGenre* subcategory in sortedSubcategories)
     {
-        tab = [[SYNCategoryItemView alloc] initWithTabItemModel: subcategory];
+        tab = [[SYNGenreItemView alloc] initWithTabItemModel: subcategory];
         [self.secondaryTabsView addSubview: tab];
         
         [tab addGestureRecognizer: [[UITapGestureRecognizer alloc] initWithTarget: self
-                                                                           action: @selector(handleSecondaryTap:)]];
+                                                                           action: @selector(secondaryTapPressed:)]];
     }
     [self showSecondaryTabs];
     
@@ -221,8 +221,8 @@
 
 - (void) homeButtonPressed
 {
-    for (SYNCategoryItemView* itemView in self.mainTabsView.subviews)
-        [itemView makeFaded];
+    for (SYNGenreItemView* itemView in self.mainTabsView.subviews)
+        [itemView makeStandard];
     
     [self hideSecondaryTabs];
     
@@ -230,40 +230,49 @@
 }
 
 
-- (void) handleMainTap: (UITapGestureRecognizer*) recogniser
+- (void) mainTapPressed: (UITapGestureRecognizer*) recogniser
 {
     // Set as pressed
-    SYNCategoryItemView* itemView;
+    SYNGenreItemView* itemView;
     
-    for(SYNCategoryItemView* itemView in self.mainTabsView.subviews)
-        [itemView makeFaded];
+    for(SYNGenreItemView* itemView in self.mainTabsView.subviews)
+        [itemView makeStandard];
     
-    itemView = (SYNCategoryItemView*)recogniser.view;
+    itemView = (SYNGenreItemView*)recogniser.view;
     [itemView makeHighlighted];
     
     
     // tapDelegate is the SYNCategoryViewController
-    [self.tapDelegate handleMainTap: recogniser];
+    [self.tapDelegate handleMainTap: itemView];
 }
 
 
-- (void) handleSecondaryTap: (UITapGestureRecognizer*) recogniser
+- (void) secondaryTapPressed: (UITapGestureRecognizer*) recogniser
 {
-    SYNCategoryItemView* itemView;
+    SYNGenreItemView* itemView;
     
-    for(SYNCategoryItemView* itemView in self.secondaryTabsView.subviews)
+    for(SYNGenreItemView* itemView in self.secondaryTabsView.subviews)
         [itemView makeStandard];
     
-    itemView = (SYNCategoryItemView*)recogniser.view;
+    itemView = (SYNGenreItemView*)recogniser.view;
     [itemView makeHighlighted];
     
-    [self.tapDelegate handleSecondaryTap: recogniser];
+    [self.tapDelegate handleSecondaryTap: itemView];
 }
 
+- (void) deselectAll
+{
+    for(SYNGenreItemView* itemView in self.mainTabsView.subviews)
+        [itemView makeStandard];
+    
+    for(SYNGenreItemView* itemView in self.secondaryTabsView.subviews)
+        [itemView makeStandard];
+}
 
 - (void) refreshViewForOrientation: (UIInterfaceOrientation) orientation
 {
-    //Layout Main tabs
+    
+    // Layout Main tabs //
     
     [[self.dividerOverlayView subviews] makeObjectsPerformSelector: @selector(removeFromSuperview)];
     CGFloat nextOrigin = 0;
@@ -274,7 +283,7 @@
         [self.dividerOverlayView addSubview: [self createDividerAtOffset: nextOrigin]];
     }
     
-    for (SYNCategoryItemView* tab in [self.mainTabsView subviews])
+    for (SYNGenreItemView* tab in [self.mainTabsView subviews])
     {
         [tab resizeForOrientation: orientation
                        withHeight: self.mainTabsView.frame.size.height];
@@ -295,7 +304,7 @@
     nextOrigin = 0.0f;
     CGFloat midSecondaryFrame = self.secondaryTabsView.frame.size.height * 0.5;
     
-    for (SYNCategoryItemView* tab in [self.secondaryTabsView subviews])
+    for (SYNGenreItemView* tab in [self.secondaryTabsView subviews])
     {
         [tab resizeForOrientation: orientation
                        withHeight: self.secondaryTabsView.frame.size.height -1.0f];
@@ -309,6 +318,15 @@
         
         [self.secondaryDividerOverlay addSubview: dividerImageView];        
     }
+}
+
+-(void)autoSelectFirstTab
+{
+    SYNGenreItemView* firstTab = (SYNGenreItemView*)self.mainTabsView.subviews[0];
+    
+    [firstTab makeHighlighted];
+    
+    [self.tapDelegate handleMainTap: firstTab];
 }
 
 @end

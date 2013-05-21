@@ -10,12 +10,15 @@
 #import "SYNTabViewDelegate.h"
 #import "SYNTabView.h"
 
-@interface SYNCategoriesTabView : SYNTabView
+@interface SYNGenreTabView : SYNTabView
 
 - (id) initWithSize: (CGFloat) totalWidth
       andHomeButton: (NSString*) homeButtonString;
 
 - (void) hideSecondaryTabs;
 - (void) showSecondaryTabs;
+
+-(void) deselectAll;
+-(void) autoSelectFirstTab;
 
 @end

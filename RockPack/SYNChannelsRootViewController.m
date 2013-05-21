@@ -24,7 +24,7 @@
 #import "SubGenre.h"
 #import "UIFont+SYNFont.h"
 #import "UIImageView+WebCache.h"
-#import "SYNCategoryItemView.h"
+#import "SYNGenreItemView.h"
 #import "Video.h"
 #import "VideoInstance.h"
 
@@ -600,13 +600,12 @@
 #endif
 
 
-- (void) handleMainTap: (UITapGestureRecognizer *) recogniser
+- (void) handleMainTap: (UIView *) tab
 {
-    [super handleMainTap:recogniser];
+    [super handleMainTap:tab];
     
-    SYNCategoryItemView *tab = (SYNCategoryItemView*)recogniser.view;
     
-    if (recogniser == 0 || tab.tag == 0)
+    if (!tab || tab.tag == 0)
     {
         // then home button was pressed in either its icon or "all" mode respectively
         if (tabExpanded)
@@ -688,7 +687,7 @@
 
 -(void)collapseToParentCategory
 {
-    [((SYNCategoriesTabView*)self.tabViewController.tabView) hideSecondaryTabs];
+    [((SYNGenreTabView*)self.tabViewController.tabView) hideSecondaryTabs];
     [self animateCollectionViewDown:NO];
 }
 
