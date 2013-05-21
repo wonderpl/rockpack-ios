@@ -267,14 +267,17 @@
 -(void)hideNetworkErrorView
 {
     [UIView animateWithDuration:0.3
-                          delay:0.0 options:UIViewAnimationCurveEaseInOut | UIViewAnimationOptionBeginFromCurrentState
+                          delay:0.1 options:UIViewAnimationCurveEaseInOut
                      animations:^{
         CGRect errorViewFrame = self.networkErrorView.frame;
         errorViewFrame.origin.y = -(self.networkErrorView.height);
         self.networkErrorView.frame = errorViewFrame;
     } completion:^(BOOL finished) {
-        [self.networkErrorView removeFromSuperview];
-        self.networkErrorView = nil;
+        if(finished)
+        {
+            [self.networkErrorView removeFromSuperview];
+            self.networkErrorView = nil;
+        }
     }];
 }
 
