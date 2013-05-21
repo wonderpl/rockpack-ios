@@ -954,6 +954,41 @@
     self.cancelEditButton.hidden = NO;
     self.backButton.hidden = YES;
     self.addButton.hidden = YES;
+    
+    
+    if(self.channel.categoryId)
+    {
+        //If a category is already selected on the channel, we should display it when entering edit mode
+        
+        NSEntityDescription* categoryEntity = [NSEntityDescription entityForName: @"Genre"
+                                                      inManagedObjectContext: appDelegate.mainManagedObjectContext];
+    
+        NSFetchRequest *categoriesFetchRequest = [[NSFetchRequest alloc] init];
+        [categoriesFetchRequest setEntity:categoryEntity];
+    
+        NSPredicate* excludePredicate = [NSPredicate predicateWithFormat:@"uniqueId== %@", self.channel.categoryId];
+        [categoriesFetchRequest setPredicate:excludePredicate];
+    
+        NSError* error;
+    
+        NSArray* selectedCategoryResult = [appDelegate.mainManagedObjectContext executeFetchRequest: categoriesFetchRequest
+                                                                                error: &error];
+        if([selectedCategoryResult count]>0)
+        {
+            Genre* genre = [selectedCategoryResult objectAtIndex:0];
+            if([[SYNDeviceManager sharedInstance] isIPhone] && [genre isKindOfClass:[SubGenre class]])
+            {
+                SubGenre* subCategory = (SubGenre*) genre;
+                [self.selectCategoryButton setTitle: [NSString stringWithFormat:@"%@/\n%@", subCategory.genre.name, subCategory.name]
+                                               forState: UIControlStateNormal];
+            }
+            else
+            {
+                [self.selectCategoryButton setTitle: [NSString stringWithFormat:@"%@",genre.name] forState: UIControlStateNormal];
+            }
+        }
+    }
+    
 }
 
 
@@ -1892,7 +1927,11 @@
           withRemoteId: (NSString *) remoteId
 {
     self.selectedCoverId = remoteId;
-    [self.channelCoverImageView setImageFromURL:[NSURL URLWithString: imageUrlString]];
+    
+    NSString* largeImageUrlString = [imageUrlString stringByReplacingOccurrencesOfString:@"thumbnail_medium" withString:@"background"];
+    [self.channelCoverImageView setImageWithURL: [NSURL URLWithString: largeImageUrlString]
+                               placeholderImage: [UIImage imageNamed: @"PlaceholderChannelCreation.png"]
+                                        options: SDWebImageRetryFailed];
     [self closeImageSelector: imageSelector];
 }
 
