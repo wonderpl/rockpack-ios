@@ -149,8 +149,6 @@ typedef void(^AnimationCompletionBlock)(BOOL finished);
         {
             splashView = [[UIImageView alloc] initWithImage:[UIImage imageNamed: @"Default"]];
         }
-        splashView.center = CGPointMake(splashView.center.x, splashView.center.y-20.0f);
-
     }
     else
     {
