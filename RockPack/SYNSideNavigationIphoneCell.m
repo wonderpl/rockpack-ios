@@ -140,13 +140,13 @@
     if (isIPad)
     {
         self.accessoryNumberLabel.center = CGPointMake(144.0f - self.accessoryNumberLabel.frame.size.width/2 , 25.0f );
-        self.accessoryNumberBackground.center = CGPointMake(144.0f - self.accessoryNumberLabel.frame.size.width/2 , 23.0f );
+        self.accessoryNumberBackground.center = CGPointMake(144.0f - self.accessoryNumberLabel.frame.size.width/2 , 22.0f );
     }
     
     else
     {
-        self.accessoryNumberLabel.center = CGPointMake(230.0f - self.accessoryNumberLabel.frame.size.width/2 , 27.0f );
-        self.accessoryNumberBackground.center = CGPointMake(230.0f - self.accessoryNumberLabel.frame.size.width/2 , 25.0f );
+        self.accessoryNumberLabel.center = CGPointMake(230.0f - self.accessoryNumberLabel.frame.size.width/2 , 30.0f );
+        self.accessoryNumberBackground.center = CGPointMake(230.0f - self.accessoryNumberLabel.frame.size.width/2 , 27.0f );
     }
     
     CGRect newFrame = self.accessoryNumberBackground.frame;
