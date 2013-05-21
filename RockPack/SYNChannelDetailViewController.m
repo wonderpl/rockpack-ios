@@ -1928,6 +1928,14 @@
                                     }];
 }
 
+#pragma mark - Tab View Methods
+
+- (void) setTabViewController: (SYNTabViewController *) newTabViewController
+{
+    [super setTabViewController:newTabViewController];
+    ((SYNGenreTabViewController*)newTabViewController).showOtherInSubcategories = YES;
+}
+
 - (BOOL) needsAddButton
 {
     return YES;

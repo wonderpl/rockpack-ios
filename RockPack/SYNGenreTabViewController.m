@@ -141,14 +141,23 @@
     
     NSMutableSet* filteredSet = [[NSMutableSet alloc] init];
     
+    SubGenre* otherSubGenre; // if we need to show it at the end
+    
     for (SubGenre* subgenre in genreSelected.subgenres)
     {
         if ([subgenre.priority integerValue] < 0)
         {
+            if([[subgenre.name uppercaseString] isEqualToString:@"OTHER"])
+                otherSubGenre = subgenre;
             continue;
         }
         
         [filteredSet addObject: subgenre];
+    }
+    
+    if (otherSubGenre)
+    {
+        [filteredSet addObject: otherSubGenre];
     }
     
     if (self.delegate && [self.delegate showSubcategories])
