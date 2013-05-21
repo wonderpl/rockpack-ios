@@ -78,36 +78,29 @@ typedef void(^AnimationCompletionBlock)(BOOL finished);
 
 #pragma mark - Initialise
 
--(id)initWithContainerViewController:(SYNContainerViewController*)root
+- (id) initWithContainerViewController: (SYNContainerViewController*) root
 {
     if ((self = [super initWithNibName: @"SYNMasterViewController" bundle: nil]))
     {
         appDelegate = (SYNAppDelegate*)[[UIApplication sharedApplication] delegate];
-        
-        
-        
+
         self.containerViewController = root;
         [self addChildViewController:root];
 
-        
         // == Side Navigation == //
-        
         self.sideNavigationViewController = [[SYNSideNavigationViewController alloc] init];
         
         self.sideNavigationViewController.view.frame = CGRectMake(1024.0,
                                                                   ([[SYNDeviceManager sharedInstance] isIPad] ? 0.0 : 58.0f),
                                                                   self.sideNavigationViewController.view.frame.size.width,
                                                                   self.sideNavigationViewController.view.frame.size.height);
-        
-        
+
         self.sideNavigationViewController.view.autoresizingMask = UIViewAutoresizingFlexibleRightMargin;
         
         self.sideNavigationViewController.user = appDelegate.currentUser;
         
         [self addChildViewController:self.sideNavigationViewController];
-        
-        
-        
+
         // == Search Box == //
     
         if([[SYNDeviceManager sharedInstance] isIPad])
@@ -118,8 +111,8 @@ typedef void(^AnimationCompletionBlock)(BOOL finished);
             autocompleteControllerFrame.origin.y = 10.0;
             self.searchBoxController.view.frame = autocompleteControllerFrame;
         }
-        
     }
+    
     return self;
 }
 
@@ -129,19 +122,21 @@ typedef void(^AnimationCompletionBlock)(BOOL finished);
 #pragma mark - Life Cycle
 
 
-- (void)viewDidLoad
+- (void) viewDidLoad
 {
     [super viewDidLoad];
     
-    
-    
+    // Setup the dependency between nav controller and button
+    // Not super-elegant, but as the nav controller is controlled from multiple places
+    // it is the only way to guarantee it will work nicely
+    self.sideNavigationViewController.captiveButton = self.sideNavigationButton;
     
     // == Fade in from splash screen (not in AppDelegate so that the Orientation is known) == //
     
     UIImageView *splashView;
-    if([[SYNDeviceManager sharedInstance] isIPhone])
+    if ([[SYNDeviceManager sharedInstance] isIPhone])
     {
-        if([[SYNDeviceManager sharedInstance] currentScreenHeight]>480.0f)
+        if ([[SYNDeviceManager sharedInstance] currentScreenHeight]>480.0f)
         {
             splashView = [[UIImageView alloc] initWithImage:[UIImage imageNamed: @"Default-568h"]];
         }
@@ -169,19 +164,13 @@ typedef void(^AnimationCompletionBlock)(BOOL finished);
     
     self.navigationContainerView.userInteractionEnabled = YES;
     
-    
-    
-    
-    
     // == Add the Root Controller which will contain all others (Tabs in our case) == //
 
     [self.containerView addSubview:containerViewController.view];
     //self.containerViewController.view.autoresizingMask = UIViewAutoresizingFlexibleWidth | UIViewAutoresizingFlexibleHeight;
-    
-    
+
     self.existingChannelsController = [[SYNExistingChannelsViewController alloc] initWithViewId:kExistingChannelsViewId];
-    
-    
+
     // == Back Button == //
     
     self.backButtonControl = [SYNBackButtonControl backButton];
@@ -403,7 +392,7 @@ typedef void(^AnimationCompletionBlock)(BOOL finished);
 
 #pragma mark - Navigation Panel Methods
 
--(IBAction)showAndHideSideNavigation:(UIButton*)sender
+- (IBAction) showAndHideSideNavigation: (UIButton*) sender
 {
     if (buttonLocked)
         return;
@@ -412,12 +401,12 @@ typedef void(^AnimationCompletionBlock)(BOOL finished);
        || self.sideNavigationViewController.state == SideNavigationStateHalf)
     {
         self.sideNavigationViewController.state = SideNavigationStateHidden;
-        sender.highlighted = NO;
+//        sender.selected = NO;
     }
     else
     {
         [self showSideNavigation];
-        sender.highlighted = YES;
+//        sender.selected = YES;
     }
 }
 
@@ -426,14 +415,12 @@ typedef void(^AnimationCompletionBlock)(BOOL finished);
 {
     NSString* controllerTitle = self.containerViewController.showingViewController.title;
     
-    [self.sideNavigationViewController setSelectedCellByPageName:controllerTitle];
+    [self.sideNavigationViewController setSelectedCellByPageName: controllerTitle];
     
     
     self.sideNavigationViewController.state = SideNavigationStateHalf;
     
 }
-
-
 
 
 #pragma mark - Video Overlay View

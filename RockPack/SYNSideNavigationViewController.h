@@ -28,6 +28,7 @@ typedef enum {
 @property (nonatomic) SideNavigationState state;
 @property (nonatomic, weak) User* user;
 @property (nonatomic, strong) NSString* keyForSelectedPage;
+@property (nonatomic, strong) UIButton* captiveButton;
 
 //iPhone specific
 @property (nonatomic, strong) SYNSearchBoxViewController* searchViewController;
