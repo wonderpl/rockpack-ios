@@ -376,6 +376,7 @@ typedef enum {
 #define kProfileRequested           @"kProfileRequested"
 #define kChannelDetailsRequested    @"kChannelDetailsRequested"
 #define kVideoOverlayRequested      @"kVideoOverlayRequested"
+#define kHideSideNavigationView     @"kHideSideNavigationView"
 
 #define kNoteChannelSaved           @"kNoteChannelSaved"
 
