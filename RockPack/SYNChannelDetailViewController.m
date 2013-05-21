@@ -1188,7 +1188,7 @@
 }
 
 
-#pragma mark - Tab delegates
+#pragma mark - iPad Category Tab Delegate
 
 - (BOOL) showSubcategories
 {
@@ -1203,13 +1203,25 @@
 
 - (void) handleNewTabSelectionWithGenre: (Genre*) genre
 {
-    NSString* genreName;
-    if (!genre)
-        genreName = @"OTHER";
-    else
-        genreName = genre.name;
+    // in the case of @"OTHER" the actual cid for the backend call is @"all" //
     
-    [self updateCategoryButtonText: genreName];
+    
+    if (!genre) {
+        
+        self.channel.categoryId = @"all";
+        [self updateCategoryButtonText: @"OTHER"];
+        return;
+    }
+        
+    self.channel.categoryId = genre.uniqueId;
+
+    // update the text field with the format "GENRE/SUBGENRE"
+
+    if ([genre isMemberOfClass:[SubGenre class]])
+        [self updateCategoryButtonText: [NSString stringWithFormat:@"%@/%@", ((SubGenre*)genre).genre.name, genre.name]];
+    else
+        [self updateCategoryButtonText: genre.name];
+
 }
 
 
@@ -1237,11 +1249,13 @@
     }
     
     self.channel.title = self.channelTitleTextView.text;
-    self.channel.channelDescription = @"Test Description";
+    
+    DebugLog(@"Cid: %@", self.channel.categoryId);
+    
     
     [appDelegate.oAuthNetworkEngine createChannelForUserId: appDelegate.currentOAuth2Credentials.userId
                                                      title: self.channel.title
-                                               description: (self.channel.channelDescription)
+                                               description: self.channel.channelDescription
                                                   category: self.selectedCategoryId
                                                      cover: self.selectedCoverId
                                                   isPublic: YES
