@@ -27,6 +27,7 @@
 
 @implementation SYNGenreTabViewController
 
+
 - (id) initWithHomeButton: (NSString*) homeButtomString
 {
     if ((self = [super init]))
@@ -180,7 +181,7 @@
         [filteredSet addObject: subgenre];
     }
     
-    if (otherSubGenre)
+    if (self.showOtherInSubcategories)
     {
         [filteredSet addObject: otherSubGenre];
     }
