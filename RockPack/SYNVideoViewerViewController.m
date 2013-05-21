@@ -535,9 +535,21 @@
     {
         [[NSNotificationCenter defaultCenter] postNotificationName: kVideoQueueAdd
                                                             object: self
+         
                                                           userInfo: @{@"VideoInstance" : videoInstance}];
         addItButton.selected = YES;
+        [appDelegate.oAuthNetworkEngine recordActivityForUserId: appDelegate.currentUser.uniqueId
+                                                         action: @"select"
+                                                videoInstanceId: videoInstance.uniqueId
+                                              completionHandler: ^(id response) {
+                                                  DebugLog (@"Acivity recorded: Select");
+                                              }
+                                                   errorHandler: ^(id error) {
+                                                       DebugLog (@"Acivity not recorded: Select");
+                                                   }];
+        
     }
+    
     self.addButton.hidden = !addItButton.selected;
 }
 
