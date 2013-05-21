@@ -10,8 +10,12 @@
 
 #import "SYNTabViewController.h"
 
-@interface SYNCategoriesTabViewController : SYNTabViewController 
+@interface SYNGenreTabViewController : SYNTabViewController 
 
 - (id) initWithHomeButton: (NSString*) homeButtomString;
+
+-(void) deselectAll;
+-(void)autoSelectFirstTab;
+
 
 @end

@@ -6,15 +6,18 @@
 //  Copyright (c) 2013 Nick Banks. All rights reserved.
 //
 
-#import "SYNLoginBaseViewController.h"
-#import "User.h"
+#import "GAI.h"
+#import "NSString+Utils.h"
 #import "SYNActivityManager.h"
-#import "SYNOAuthNetworkEngine.h"
-#import "SYNFacebookManager.h"
 #import "SYNAppDelegate.h"
-#import "SYNNetworkEngine.h"
 #import "SYNDeviceManager.h"
+#import "SYNFacebookManager.h"
+#import "SYNLoginBaseViewController.h"
+#import "SYNNetworkEngine.h"
+#import "SYNOAuthNetworkEngine.h"
+#import "User.h"
 #import <FacebookSDK/FacebookSDK.h>
+
 
 @interface SYNLoginBaseViewController ()
 
@@ -22,46 +25,55 @@
 
 @implementation SYNLoginBaseViewController
 
--(id)init
+- (id) init
 {
-    self = [super init];
-    if(self)
+    if ((self = [super init]))
     {
         [self commonInit];
     }
+        
     return self;
 }
 
--(id)initWithCoder:(NSCoder *)aDecoder
+        
+- (id) initWithCoder: (NSCoder *) aDecoder
 {
-    self = [super initWithCoder:aDecoder];
-    if(self)
+    self = [super initWithCoder: aDecoder];
+    
+    if (self)
     {
         [self commonInit];
     }
+    
     return self;
 }
 
--(id)initWithNibName:(NSString *)nibNameOrNil bundle:(NSBundle *)nibBundleOrNil
+        
+- (id) initWithNibName: (NSString *) nibNameOrNil
+                bundle: (NSBundle *) nibBundleOrNil
 {
-    self = [super initWithNibName:nibNameOrNil bundle:nibBundleOrNil];
-    if(self)
+    self = [super initWithNibName: nibNameOrNil
+                           bundle: nibBundleOrNil];
+    if (self)
     {
         [self commonInit];
     }
+    
     return self;
 }
 
--(void)commonInit
+
+- (void) commonInit
 {
     _appDelegate = (SYNAppDelegate*)[[UIApplication sharedApplication] delegate];
     
-    self.reachability = [Reachability reachabilityWithHostname:_appDelegate.networkEngine.hostName];
+    self.reachability = [Reachability reachabilityWithHostname: _appDelegate.networkEngine.hostName];
     
     
 }
 
--(void)viewWillAppear:(BOOL)animated
+
+- (void) viewWillAppear: (BOOL) animated
 {
     [super viewWillAppear:animated];
     
@@ -70,18 +82,21 @@
 
 }
 
--(void)viewDidAppear:(BOOL)animated
+- (void) viewDidAppear: (BOOL) animated
 {
-    [super viewDidAppear:animated];
-    [self performSelector:@selector(reachabilityChanged:) withObject:nil];
+    [super viewDidAppear: animated];
+    
+    [self performSelector: @selector(reachabilityChanged:)
+               withObject: nil];
 }
 
--(void)viewWillDisappear:(BOOL)animated
+- (void) viewWillDisappear: (BOOL) animated
 {
-    [super viewWillDisappear:animated];
+    [super viewWillDisappear: animated];
     
-    
-    [[NSNotificationCenter defaultCenter] removeObserver:self name:kReachabilityChangedNotification object:nil];
+    [[NSNotificationCenter defaultCenter] removeObserver: self
+                                                    name: kReachabilityChangedNotification
+                                                  object: nil];
 }
 
 - (void) setUpInitialState;
@@ -107,21 +122,20 @@
     return YES;
 }
 
+
 #pragma mark - login
 
--(void) loginForUsername: (NSString*) username
-             forPassword: (NSString*) password
-       completionHandler: (MKNKUserSuccessBlock) completionBlock
-            errorHandler: (MKNKUserErrorBlock) errorBlock
+- (void) loginForUsername: (NSString*) username
+              forPassword: (NSString*) password
+        completionHandler: (MKNKUserSuccessBlock) completionBlock
+             errorHandler: (MKNKUserErrorBlock) errorBlock
 {
     [self.appDelegate.oAuthNetworkEngine doSimpleLoginForUsername: username forPassword: password completionHandler: ^(SYNOAuth2Credential* credential) {
-        
-        
+
         // Case where the user is a member of Rockpack but has not signing in this device
         
         [self.appDelegate.oAuthNetworkEngine userInformationFromCredentials: credential completionHandler: ^(NSDictionary* dictionary) {
-            
-            
+
             // the dictionary contains a User dictionary //
             
             NSString* username = [dictionary objectForKey: @"username"];
@@ -132,12 +146,12 @@
             [self checkAndSaveRegisteredUser: credential];
             completionBlock(dictionary);
             
-            
         } errorHandler:errorBlock];
         
     } errorHandler:errorBlock];
     
 }
+
 
 #pragma mark - reset password
 
@@ -146,8 +160,10 @@
                               errorHandler: (MKNKErrorBlock) errorBlock
 {
     [self.appDelegate.oAuthNetworkEngine doRequestPasswordResetForUsername: username
-                                                         completionHandler: completionBlock errorHandler:errorBlock];
+                                                         completionHandler: completionBlock
+                                                              errorHandler:errorBlock];
 }
+
 
 #pragma mark - register user
 
@@ -158,21 +174,28 @@
     [self.appDelegate.oAuthNetworkEngine registerUserWithData:userData completionHandler: ^(SYNOAuth2Credential* credential) {
         
         // Case where the user registers
-        [self.appDelegate.oAuthNetworkEngine userInformationFromCredentials: credential completionHandler: ^(NSDictionary* dictionary) {
-            [self checkAndSaveRegisteredUser: credential];
-            completionBlock(dictionary);
-        } errorHandler:errorBlock];
+        [self.appDelegate.oAuthNetworkEngine userInformationFromCredentials: credential
+                                                          completionHandler: ^(NSDictionary* dictionary) {
+                                                              [self checkAndSaveRegisteredUser: credential];
+                                                              completionBlock(dictionary);
+                                                          }
+                                                               errorHandler: errorBlock];
     } errorHandler: errorBlock];
 }
+
 
 #pragma mark - upload Avatar
 
 - (void) uploadAvatarImage: (UIImage *) image
-          completionHandler: (MKNKUserSuccessBlock) completionBlock
-               errorHandler: (MKNKUserErrorBlock) errorBlock
+         completionHandler: (MKNKUserSuccessBlock) completionBlock
+              errorHandler: (MKNKUserErrorBlock) errorBlock
 {
-    [self.appDelegate.oAuthNetworkEngine updateAvatarForUserId: self.appDelegate.currentOAuth2Credentials.userId image:image completionHandler:completionBlock errorHandler:errorBlock];
+    [self.appDelegate.oAuthNetworkEngine updateAvatarForUserId: self.appDelegate.currentOAuth2Credentials.userId
+                                                         image: image
+                                             completionHandler: completionBlock
+                                                  errorHandler: errorBlock];
 }
+
 
 #pragma mark - login facebook
 
@@ -181,13 +204,41 @@
 {
     SYNFacebookManager* facebookManager = [SYNFacebookManager sharedFBManager];
     
-    [facebookManager loginOnSuccess:^(NSDictionary<FBGraphUser> *dictionary) {
+    [facebookManager loginOnSuccess: ^(NSDictionary<FBGraphUser> *dictionary) {
         
         FBAccessTokenData* accessTokenData = [[FBSession activeSession] accessTokenData];
         
-        [self.appDelegate.oAuthNetworkEngine doFacebookLoginWithAccessToken:accessTokenData.accessToken completionHandler: ^(SYNOAuth2Credential* credential) {
-            [self.appDelegate.oAuthNetworkEngine userInformationFromCredentials: credential completionHandler: ^(NSDictionary* dictionary) {
-                [self checkAndSaveRegisteredUser:credential];
+        // Log our user's age in Google Analytics
+        NSString *birthday = dictionary[@"birthday"];
+        
+        if (birthday)
+        {
+            NSDateFormatter* dateFormatter = [[NSDateFormatter alloc] init];
+            [dateFormatter setDateFormat: @"MM/dd/yyyy"];
+            NSDate* birthdayDate = [dateFormatter dateFromString: birthday];
+            
+            // Calculate age, taking account of leap-years etc. (probably too accurate!)
+            NSDateComponents* ageComponents = [[NSCalendar currentCalendar] components: NSYearCalendarUnit
+                                                                              fromDate: birthdayDate
+                                                                                toDate: NSDate.date
+                                                                               options: 0];
+            
+            NSInteger age = [ageComponents year];
+            
+            NSString *ageString = [NSString ageCategoryStringFromInt: age];
+            
+            // Now set the age
+            id<GAITracker> tracker = [GAI sharedInstance].defaultTracker;
+            
+            [tracker setCustom: kGADimensionAge
+                     dimension: ageString];
+        }
+        
+        [self.appDelegate.oAuthNetworkEngine doFacebookLoginWithAccessToken: accessTokenData.accessToken
+                                                          completionHandler: ^(SYNOAuth2Credential* credential) {
+            [self.appDelegate.oAuthNetworkEngine userInformationFromCredentials: credential
+                                                              completionHandler: ^(NSDictionary* dictionary) {
+                [self checkAndSaveRegisteredUser: credential];
                 completionBlock(dictionary);
             } errorHandler:errorBlock];
         } errorHandler: errorBlock];

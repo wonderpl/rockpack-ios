@@ -7,7 +7,7 @@
 //
 
 #import "GAITrackedViewController.h"
-#import "SYNCategoriesTabView.h"
+#import "SYNGenreTabView.h"
 #import "SYNTabView.h"
 #import "SYNTabViewDelegate.h"
 #import <UIKit/UIKit.h>
