@@ -273,20 +273,15 @@
         return nil;
     
     
-    Genre* genreToSelect;
+    Genre* genreToSelect = (Genre*)[self.genresFetched objectAtIndex:0];
     
-    if(!subcats)
+    if(subcats)
     {
-        genreToSelect = (Genre*)[self.genresFetched objectAtIndex:0];
-    }
-    else
-    {
-        genreToSelect = (genreToSelect.subgenres.count > 0) ?
-        (SubGenre*)[genreToSelect.subgenres objectAtIndex:0] : (Genre*)[self.genresFetched objectAtIndex:identifier];
-        
+        genreToSelect = (SubGenre*)[genreToSelect.subgenres firstObject];
     }
     
-        
+    
+    
     [self.categoriesTabView highlightTabWithGenre:genreToSelect];
     
     if(subcats)
