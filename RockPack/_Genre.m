@@ -89,10 +89,10 @@ const struct GenreFetchedProperties GenreFetchedProperties = {
 @dynamic subgenres;
 
 	
-- (NSMutableSet*)subgenresSet {
+- (NSMutableOrderedSet*)subgenresSet {
 	[self willAccessValueForKey:@"subgenres"];
   
-	NSMutableSet *result = (NSMutableSet*)[self mutableSetValueForKey:@"subgenres"];
+	NSMutableOrderedSet *result = (NSMutableOrderedSet*)[self mutableOrderedSetValueForKey:@"subgenres"];
   
 	[self didAccessValueForKey:@"subgenres"];
 	return result;

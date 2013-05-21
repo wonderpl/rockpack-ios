@@ -1131,7 +1131,7 @@
                                  
                                  if([self.channel.categoryId isEqualToString:@""])
                                  {
-                                     [self.categoriesTabViewController];
+                                     //[self.categoriesTabViewController];
                                  }
                                  
                                  
