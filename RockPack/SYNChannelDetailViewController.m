@@ -429,7 +429,8 @@
 
 -(void)coverImageChangedHandler:(NSNotification*)notification
 {
-    NSString* coverArtUrl = (NSString*)[[notification userInfo] objectForKey:kCoverArt];
+    NSDictionary * detailDictionary = [notification userInfo];
+    NSString* coverArtUrl = (NSString*)[detailDictionary objectForKey:kCoverArt];
     if (!coverArtUrl)
         return;
     
@@ -445,6 +446,8 @@
                                    placeholderImage: [UIImage imageNamed: @"PlaceholderChannelCreation.png"]
                                             options: SDWebImageRetryFailed];
     }
+    
+    self.selectedCoverId = [detailDictionary objectForKey:kCoverImageReference];
     
     self.originalBackgroundImage = nil;
 }
@@ -936,6 +939,9 @@
     [self setEditControlsVisibility: YES];
     [self.createChannelButton removeFromSuperview];
     [self.view addSubview:self.saveChannelButton];
+    CGRect newFrame = self.saveChannelButton.frame;
+    newFrame.origin.x = self.view.frame.size.width - self.cancelEditButton.frame.origin.x - newFrame.size.width;
+    self.saveChannelButton.frame = newFrame;
     self.saveChannelButton.hidden = NO;
     self.cancelEditButton.hidden = NO;
     self.backButton.hidden = YES;

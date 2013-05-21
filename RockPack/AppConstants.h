@@ -26,6 +26,7 @@
 #define kChannelOwner               @"ChannelOwner"
 #define kUser                       @"User"
 #define kCoverArt                   @"CoverArt"
+#define kCoverImageReference        @"CoverImageReference"
 
 #define kForceRefreshValue          @"kForceRefreshValue"
 
