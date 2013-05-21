@@ -276,6 +276,9 @@
     isAnimating = YES;
     userNameInputField.placeholder = NSLocalizedString(@"USERNAME", nil);
     
+    self.userNameInputField.returnKeyType = UIReturnKeyNext;
+    self.passwordInputField.returnKeyType = UIReturnKeyGo;
+    
     if (previousState == kLoginScreenStateInitial)
     {
         NSArray* loginForControls = @[facebookSignInButton, userNameInputField, passwordInputField, finalLoginButton];
@@ -459,6 +462,11 @@
     [self clearAllErrorArrows];
     isAnimating = YES;
     userNameInputField.placeholder = NSLocalizedString(@"USERNAME", nil);
+    
+    
+    self.userNameInputField.returnKeyType = UIReturnKeyNext;
+    self.passwordInputField.returnKeyType = UIReturnKeyNext;
+    
     if(previousState == kLoginScreenStateInitial)
     {
         emailInputField.center = CGPointMake(userNameInputField.center.x,

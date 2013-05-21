@@ -7,6 +7,7 @@
 //
 
 #import "SYNAccountSettingsModalContainer.h"
+#import "SYNAccountSettingsTextInputController.h"
 #import "UIFont+SYNFont.h"
 
 
@@ -57,7 +58,20 @@
     [childNavigationController popViewControllerAnimated:YES];
 }
 - (IBAction)doneButtonTapped:(id)sender {
-    self.doneBlock();
+    UIViewController* viewController = [childNavigationController topViewController];
+    if(viewController ==[ childNavigationController.viewControllers objectAtIndex:0] )
+    {
+        self.doneBlock();
+    }
+    else
+    {
+        if([viewController isKindOfClass:[SYNAccountSettingsTextInputController class]])
+        {
+            SYNAccountSettingsTextInputController* controller = (SYNAccountSettingsTextInputController*)viewController;
+            [controller saveButtonPressed:nil];
+        }
+
+    }
 }
 
 -(void)setModalViewFrame:(CGRect)newFrame
@@ -73,6 +87,10 @@
    {
        self.doneButton.hidden = NO;
        self.backButton.hidden = NO;
+       
+       [self.doneButton setImage:[UIImage imageNamed:@"ButtonSettingsDone"] forState:UIControlStateNormal];
+       [self.doneButton setImage:[UIImage imageNamed:@"ButtonSettingsDoneHighlighted"] forState:UIControlStateHighlighted];
+       
        [UIView animateWithDuration:0.3f delay:0.0f options:UIViewAnimationOptionCurveEaseInOut animations:^{
            self.doneButton.alpha = 1.0f;
            self.backButton.alpha = 0.0f;
@@ -84,13 +102,30 @@
    }
     else
     {
+        BOOL hideDoneButton = YES;
+        if([viewController isKindOfClass:[SYNAccountSettingsTextInputController class]])
+        {
+            hideDoneButton = NO;
+            SYNAccountSettingsTextInputController* controller = (SYNAccountSettingsTextInputController*)viewController;
+            //On iPhone we want to use our donebutton
+            [controller.saveButton removeFromSuperview];
+            //Reassign the save button to our done button
+            controller.saveButton = self.doneButton;
+            
+            [self.view addSubview:controller.spinner];
+            controller.spinner.center = self.doneButton.center;
+            
+            [self.doneButton setImage:[UIImage imageNamed:@"ButtonSettingsSave"] forState:UIControlStateNormal];
+            [self.doneButton setImage:[UIImage imageNamed:@"ButtonSettingsSaveHighlighted"] forState:UIControlStateHighlighted];
+        }
+        
         self.doneButton.hidden = NO;
         self.backButton.hidden = NO;
         [UIView animateWithDuration:0.3f delay:0.0f options:UIViewAnimationOptionCurveEaseInOut animations:^{
-            self.doneButton.alpha = 0.0f;
+            self.doneButton.alpha = hideDoneButton? 0.0f : 1.0f;
             self.backButton.alpha = 1.0f;
         } completion:^(BOOL finished) {
-            self.doneButton.hidden = YES;
+            self.doneButton.hidden = hideDoneButton;
             self.backButton.hidden = NO;
             
         }];

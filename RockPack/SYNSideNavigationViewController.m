@@ -832,6 +832,16 @@ typedef enum {
     [self.activityIndicator startAnimating];
     [self.appDelegate.oAuthNetworkEngine updateAvatarForUserId: self.appDelegate.currentOAuth2Credentials.userId image:image completionHandler:^(NSDictionary* result) {
         self.profilePictureImageView.image = image;
+        NSString* newURL = [result objectForKey:@"Location"];
+        if(newURL)
+        {
+            self.appDelegate.currentUser.thumbnailURL = newURL;
+            [self.appDelegate saveContext:YES];
+            self.user = self.appDelegate.currentUser;
+            [self.profilePictureImageView setImageWithURL: [NSURL URLWithString: self.user.thumbnailURL]
+                                         placeholderImage: image
+                                                  options: SDWebImageRetryFailed];
+        }
         [self.activityIndicator stopAnimating];
         self.avatarButton.enabled = YES;
     } errorHandler:^(id error) {

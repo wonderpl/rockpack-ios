@@ -169,7 +169,7 @@ static NSEntityDescription *channelEntity = nil;
                                     withDefault: @"http://localhost"];
     
     self.channelDescription = [dictionary objectForKey: @"description"
-                                           withDefault: @"Description of channel goes here"];
+                                           withDefault: @""];
     
     self.eCommerceURL = [dictionary objectForKey: @"ecommerce_url"
                                      withDefault: @""];

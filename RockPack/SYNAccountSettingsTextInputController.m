@@ -52,11 +52,11 @@
 {
     [super viewDidLoad];
     
-    self.contentSizeForViewInPopover = CGSizeMake(380, 476);
+    self.contentSizeForViewInPopover = CGSizeMake([[SYNDeviceManager sharedInstance] isIPad]? 380 : [[SYNDeviceManager sharedInstance] currentScreenWidth], 476);
     
     self.view.backgroundColor = [[SYNDeviceManager sharedInstance] isIPad] ? [UIColor clearColor] : [UIColor whiteColor];
     
-    self.sizeInContainer = [[SYNDeviceManager sharedInstance] isIPad] ? self.contentSizeForViewInPopover.width - 20.0 : [[SYNDeviceManager sharedInstance] currentScreenWidth] - 20.0 ;
+    self.sizeInContainer = self.contentSizeForViewInPopover.width - 20.0;
     
     lastTextFieldY = 10.0;
     
@@ -130,11 +130,12 @@
     
     errorLabel = [[UILabel alloc] initWithFrame: CGRectMake(10.0,
                                                                 saveButton.frame.origin.y + saveButton.frame.size.height + 10.0,
-                                                                self.contentSizeForViewInPopover.width - 10.0,
-                                                                30)];
+                                                                self.contentSizeForViewInPopover.width - 20.0,
+                                                                50)];
     
     errorLabel.textColor = [UIColor colorWithRed:(46.0/255.0) green:(192.0/255.0) blue:(197.0/255.0) alpha:(1.0)];
     errorLabel.font = [UIFont rockpackFontOfSize: 18];
+    errorLabel.numberOfLines = 0;
     errorLabel.textAlignment = NSTextAlignmentCenter;
     
     
@@ -164,6 +165,7 @@
     newInputField.backgroundColor = [UIColor colorWithRed:(239.0/255.0) green:(239.0/255.0) blue:(239.0/255.0) alpha:(1.0)];
     newInputField.layer.cornerRadius = 5.0f;
     newInputField.textColor = [UIColor darkGrayColor];
+    newInputField.delegate = self;
     
     CGRect saveButtonFrame = saveButton.frame;
     saveButtonFrame.origin.y = newInputField.frame.origin.y + newInputField.frame.size.height + 10.0;
@@ -254,6 +256,7 @@
                                            
                                        } errorHandler: ^(id errorInfo) {
                                            
+                                           [self.spinner stopAnimating];
                                            
                                                 self.saveButton.hidden = NO;
                                                 self.saveButton.enabled = YES;
@@ -277,6 +280,14 @@
                                                     }
                                                 }
                                             }];
+}
+
+#pragma mark - UITextFieldDelegate
+
+-(BOOL)textField:(UITextField *)textField shouldChangeCharactersInRange:(NSRange)range replacementString:(NSString *)string
+{
+    self.errorLabel.text = @"";
+    return YES;
 }
 
 @end
