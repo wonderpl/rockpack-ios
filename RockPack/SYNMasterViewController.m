@@ -245,6 +245,8 @@ typedef void(^AnimationCompletionBlock)(BOOL finished);
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(allNavControlsRequested:) name:kNoteAllNavControlsShow object:nil];
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(allNavControlsRequested:) name:kNoteAllNavControlsHide object:nil];
     
+    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(hideSomeNavControlsRequested:) name:kChannelsNavControlsHide object:nil];
+    
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(addToChannelRequested:) name:kNoteAddToChannelRequest object:nil];
     
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(searchBarRequested:) name:kNoteSearchBarRequestHide object:nil];
@@ -685,9 +687,9 @@ typedef void(^AnimationCompletionBlock)(BOOL finished);
 - (void) allNavControlsRequested: (NSNotification*) notification
 {
     NSString* notificationName = [notification name];
-    if(!notificationName)
+    if (!notificationName)
         return;
-    if([notificationName isEqualToString:kNoteAllNavControlsShow])
+    if( [notificationName isEqualToString:kNoteAllNavControlsShow])
     {
         self.searchButton.hidden = NO;
         self.sideNavigationButton.hidden = NO;
@@ -708,7 +710,14 @@ typedef void(^AnimationCompletionBlock)(BOOL finished);
         self.containerViewController.scrollView .scrollEnabled = NO;
         self.sideNavigationViewController.state = SideNavigationStateHidden;
     }
-    
+}
+
+- (void) hideSomeNavControlsRequested: (NSNotification*) notification
+{
+    self.searchButton.hidden = YES;
+    self.closeSearchButton.hidden = YES;
+    self.sideNavigationButton.hidden = YES;
+    self.sideNavigationViewController.state = SideNavigationStateHidden;
 }
 
 

@@ -362,6 +362,8 @@ typedef enum {
 #define kNoteAllNavControlsShow     @"kNoteAllNavControlsShow"
 #define kNoteAllNavControlsHide     @"kNoteAllNavControlsHide"
 
+#define kChannelsNavControlsHide    @"kChannelsNavControlsHide"
+
 #define kNoteStarButtonPressed      @"kNoteStarButtonPressed"
 #define kNoteAddToChannelRequest    @"kNoteAddToChannelRequest"
 

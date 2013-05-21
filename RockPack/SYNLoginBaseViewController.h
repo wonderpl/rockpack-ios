@@ -7,12 +7,12 @@
 //
 
 #import "GAITrackedViewController.h"
-#import "SYNOAuth2Credential.h"
+#import "Reachability.h"
 #import "SYNAppDelegate.h"
-#import "SYNNetworkOperationJsonObject.h"
 #import "SYNImagePickerController.h"
 #import "SYNNetworkErrorView.h"
-#import "Reachability.h"
+#import "SYNNetworkOperationJsonObject.h"
+#import "SYNOAuth2Credential.h"
 
 
 typedef enum {
@@ -25,23 +25,21 @@ typedef enum {
 } kLoginScreenState;
 
 
-
 @interface SYNLoginBaseViewController : GAITrackedViewController
 
+@property (nonatomic, assign) kLoginScreenState state;
+@property (nonatomic, strong) Reachability *reachability;
+@property (nonatomic, strong) SYNImagePickerController* imagePicker;
+@property (nonatomic, strong) SYNNetworkErrorView* networkErrorView;
 @property (nonatomic,assign) SYNAppDelegate* appDelegate;
 
-@property (nonatomic, assign) kLoginScreenState state;
-@property (nonatomic, strong) SYNImagePickerController* imagePicker;
-@property (nonatomic, strong) Reachability *reachability;
-
-@property (nonatomic, strong) SYNNetworkErrorView* networkErrorView;
 
 - (BOOL) checkAndSaveRegisteredUser: (SYNOAuth2Credential*) credential;
 
--(void) loginForUsername: (NSString*) username
-                     forPassword: (NSString*) password
-               completionHandler: (MKNKUserSuccessBlock) completionBlock
-                errorHandler: (MKNKUserErrorBlock) errorBlock;
+- (void) loginForUsername: (NSString*) username
+              forPassword: (NSString*) password
+        completionHandler: (MKNKUserSuccessBlock) completionBlock
+             errorHandler: (MKNKUserErrorBlock) errorBlock;
 
 - (void) doRequestPasswordResetForUsername: (NSString*) username
                          completionHandler: (MKNKJSONCompleteBlock) completionBlock
@@ -52,8 +50,8 @@ typedef enum {
                  errorHandler: (MKNKUserErrorBlock) errorBlock;
 
 - (void) uploadAvatarImage: (UIImage *) image
-             completionHandler: (MKNKUserSuccessBlock) completionBlock
-                  errorHandler: (MKNKUserErrorBlock) errorBlock;
+         completionHandler: (MKNKUserSuccessBlock) completionBlock
+              errorHandler: (MKNKUserErrorBlock) errorBlock;
 
 -(void) loginThroughFacebookWithCompletionHandler:(MKNKJSONCompleteBlock) completionBlock
                                      errorHandler: (MKNKUserErrorBlock) errorBlock;
@@ -61,5 +59,6 @@ typedef enum {
 
 - (void) setUpInitialState;
 
--(BOOL)isNetworkAccessibleOtherwiseShowErrorAlert;
+- (BOOL) isNetworkAccessibleOtherwiseShowErrorAlert;
+
 @end
