@@ -10,50 +10,41 @@
 #import "AppConstants.h"
 #import <QuartzCore/QuartzCore.h>
 
+@interface SYNRefreshButton ()
+
+@property (nonatomic, strong) UIImageView* image;
+@property (nonatomic, strong) UIButton* button;
+
+@end
+
 @implementation SYNRefreshButton
-@synthesize refreshing;
 
 + (id) refreshButton
 {
     return [[self alloc] init];
 }
 
+
 - (id) init
 {
-    if (self = [super initWithFrame:CGRectZero])
+    if (self = [super initWithFrame: CGRectZero])
     {
-        UIImageView* bg = [[UIImageView alloc] initWithImage:[UIImage imageNamed: @"ButtonRefresh"]];
-        [self addSubview:bg];
+        UIImageView* bg = [[UIImageView alloc] initWithImage: [UIImage imageNamed: @"ButtonRefresh"]];
+        [self addSubview: bg];
         
         self.frame = bg.frame;
         
-        image = [[UIImageView alloc] initWithImage:[UIImage imageNamed: @"ButtonRefreshArrow"]];
-        image.center = bg.center;
-        image.frame = CGRectIntegral(image.frame);
-        [self addSubview:image];
+        self.image = [[UIImageView alloc] initWithImage: [UIImage imageNamed: @"ButtonRefreshArrow"]];
+        self.image.center = bg.center;
+        self.image.frame = CGRectIntegral(self.image.frame);
+        [self addSubview: self.image];
         
-        button = [UIButton buttonWithType:UIButtonTypeCustom];
-        button.frame = bg.frame;
-        [self addSubview: button];
-        
-        [[NSNotificationCenter defaultCenter] addObserver: self
-                                                 selector: @selector(refreshComplete)
-                                                     name: kRefreshComplete
-                                                   object: nil];
+        self.self.button = [UIButton buttonWithType:UIButtonTypeCustom];
+        self.button.frame = bg.frame;
+        [self addSubview: self.button];
     }
     
     return self;
-}
-
--(void)dealloc
-{
-    [[NSNotificationCenter defaultCenter] removeObserver:self];
-}
-
-
-- (void) refreshComplete
-{
-    [self endRefreshCycle];
 }
 
 
@@ -63,7 +54,7 @@
             action: (SEL) action
   forControlEvents: (UIControlEvents) controlEvents
 {
-    [button addTarget: target
+    [self.button addTarget: target
                action: action
      forControlEvents: controlEvents];
 }
@@ -73,7 +64,7 @@
                action: (SEL) action
      forControlEvents: (UIControlEvents) controlEvents
 {
-    [button removeTarget: target
+    [self.button removeTarget: target
                   action: action
         forControlEvents: controlEvents];
 }
@@ -81,7 +72,7 @@
 - (NSArray *) actionsForTarget: (id) target
                forControlEvent: (UIControlEvents) controlEvent
 {
-    return [button actionsForTarget: target
+    return [self.button actionsForTarget: target
                     forControlEvent: controlEvent];
 }
 
@@ -97,9 +88,9 @@
         [CATransaction setValue: (id) kCFBooleanTrue
                          forKey: kCATransactionDisableActions];
         
-        CGRect frame = image.frame;
-        image.layer.anchorPoint = CGPointMake(0.5, 0.5);
-        image.layer.position = CGPointMake(frame.origin.x + 0.5 * frame.size.width, frame.origin.y + 0.5 * frame.size.height);
+        CGRect frame = self.image.frame;
+        self.image.layer.anchorPoint = CGPointMake(0.5, 0.5);
+        self.image.layer.position = CGPointMake(frame.origin.x + 0.5 * frame.size.width, frame.origin.y + 0.5 * frame.size.height);
         [CATransaction commit];
         
         [CATransaction begin];
@@ -118,17 +109,17 @@
         animation.speed = 1.0f;
         animation.delegate = self;
         
-        [image.layer addAnimation: animation
+        [self.image.layer addAnimation: animation
                            forKey: @"rotationAnimation"];
         
         [CATransaction commit];
     }
     else
     {
-        [image.layer removeAllAnimations];
+        [self.image.layer removeAllAnimations];
     }
-    
 }
+
 
 - (void) animationDidStop: (CAAnimation *) theAnimation
                  finished: (BOOL) finished
@@ -144,14 +135,12 @@
 
 - (void) startRefreshCycle
 {
-    self.refreshing = TRUE;
     [self spinRefreshButton: TRUE];
 }
 
 
 - (void) endRefreshCycle
 {
-    self.refreshing = FALSE;
     [self spinRefreshButton: FALSE];
 }
 

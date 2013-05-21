@@ -79,6 +79,7 @@ typedef void (^SYNShareCompletionBlock)(void);
 - (id) initWithViewId: (NSString*) vid;
 - (void) viewDidScrollToFront;
 - (BOOL) needsAddButton;
+- (BOOL) toleratesSearchBar;
 
 // Share
 - (void) shareVideoInstance: (VideoInstance *) videoInstance

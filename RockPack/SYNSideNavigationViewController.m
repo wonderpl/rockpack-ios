@@ -210,6 +210,11 @@ typedef enum {
                                                  name: kChannelDetailsRequested
                                                object: nil];
     
+    [[NSNotificationCenter defaultCenter] addObserver: self
+                                             selector: @selector(changeOfViewRequested:)
+                                                 name: kHideSideNavigationView
+                                               object: nil];
+    
     [self getNotifications];
 }
 

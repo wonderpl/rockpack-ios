@@ -111,30 +111,30 @@
 {
     if ([[SYNDeviceManager sharedInstance] isIPad])
     {
-        CGRect byFrame = self.byLabel.frame;
+        //CGRect byFrame = self.byLabel.frame;
         CGRect usernameFrame = self.usernameLabel.frame;
         
         if ([[SYNDeviceManager sharedInstance] isLandscape])
         {
             // Landscape
-            byFrame.origin.x = 78.0f;
+            //byFrame.origin.x = 78.0f;
             usernameFrame.origin.x = 78.0f;
-            byFrame.origin.y = 66.0f;
-            usernameFrame.origin.y = 77.0f;
+            //byFrame.origin.y = 66.0f;
+            usernameFrame.origin.y = 66.0f;
             usernameFrame.size.width = 160.0f;
         }
         else
         {
             // Portrait
-            byFrame.origin.x = 10.0f;
+            //byFrame.origin.x = 10.0f;
             usernameFrame.origin.x = 10.0f;
-            byFrame.origin.y = 86.0f;
-            usernameFrame.origin.y = 97.0f;
+            //byFrame.origin.y = 86.0f;
+            usernameFrame.origin.y = 86.0f;
             usernameFrame.size.width = 108.0f;
         }
         
         // Update label positions
-        self.byLabel.frame = byFrame;
+        //self.byLabel.frame = byFrame;
         self.usernameLabel.frame = usernameFrame;
         
         self.usernameLabel.text = [NSString stringWithFormat: @"%@\n\n", text]; 
