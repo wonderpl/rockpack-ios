@@ -9,21 +9,22 @@
 #import "Genre.h"
 #import "GAI.h"
 #import "SYNAppDelegate.h"
-#import "SYNCategoriesTabViewController.h"
-#import "SYNCategoryItemView.h"
+#import "SYNGenreTabViewController.h"
+#import "SYNGenreItemView.h"
 #import "SYNNetworkEngine.h"
 #import "SubGenre.h"
 #import <CoreData/CoreData.h>
 #import "SYNDeviceManager.h"
 
-@interface SYNCategoriesTabViewController ()
+@interface SYNGenreTabViewController ()
 
 @property (nonatomic, strong) NSString *currentTopLevelCategoryName;
 @property (nonatomic, assign) NSString* homeButtomString;
+@property (nonatomic, readonly) SYNGenreTabView* categoriesTabView;
 @end
 
 
-@implementation SYNCategoriesTabViewController
+@implementation SYNGenreTabViewController
 
 - (id) initWithHomeButton: (NSString*) homeButtomString
 {
@@ -38,7 +39,7 @@
 
 - (void) loadView
 {
-    SYNCategoriesTabView* categoriesTabView = [[SYNCategoriesTabView alloc] initWithSize: [[SYNDeviceManager sharedInstance] currentScreenWidth]
+    SYNGenreTabView* categoriesTabView = [[SYNGenreTabView alloc] initWithSize: [[SYNDeviceManager sharedInstance] currentScreenWidth]
                                                                            andHomeButton: self.homeButtomString];
     categoriesTabView.tapDelegate = self;
     
@@ -111,21 +112,21 @@
 
 #pragma mark - TabView Delagate methods
 
-- (void) handleMainTap: (UITapGestureRecognizer *) recogniser
+- (void) handleMainTap: (UIView *) tab
 {
-    SYNCategoryItemView *tab = (SYNCategoryItemView*)recogniser.view;
     
-    if (recogniser == nil || tab.tag == 0)
+    
+    if (!tab || tab.tag == 0)
     {
         // home button pressed
-        [self.delegate handleMainTap: recogniser];
+        [self.delegate handleMainTap: tab];
         
         [self.delegate handleNewTabSelectionWithId: @"all"];
         [self.delegate handleNewTabSelectionWithGenre: nil];
         
         if (tab.tag == 0)
         {
-            [(SYNCategoriesTabView *)self.view hideSecondaryTabs];
+            [self.categoriesTabView hideSecondaryTabs];
         }
         
         return;   
@@ -175,7 +176,7 @@
     if (self.delegate && [self.delegate showSubcategories])
         [self.tabView createSubcategoriesTab: filteredSet];
     
-    [self.delegate handleMainTap: recogniser];
+    [self.delegate handleMainTap: tab];
     [self.delegate handleNewTabSelectionWithId: genreSelected.uniqueId];
     [self.delegate handleNewTabSelectionWithGenre: genreSelected];
     self.currentTopLevelCategoryName = genreSelected.name;
@@ -193,12 +194,11 @@
 }
 
 
-- (void) handleSecondaryTap: (UITapGestureRecognizer *) recogniser
+- (void) handleSecondaryTap: (UIView *) tab
 {
     
     SYNAppDelegate* appDelegate = (SYNAppDelegate *)[[UIApplication sharedApplication] delegate];
     
-    SYNCategoryItemView *tab = (SYNCategoryItemView*)recogniser.view;
     
     NSEntityDescription* categoryEntity = [NSEntityDescription entityForName: @"SubGenre"
                                                       inManagedObjectContext: appDelegate.mainManagedObjectContext];
@@ -230,7 +230,7 @@
     
     SubGenre* subGenreSelected = (SubGenre*)matchingCategoryInstanceEntries[0];
     
-    [self.delegate handleSecondaryTap: recogniser];
+    [self.delegate handleSecondaryTap: tab];
     [self.delegate handleNewTabSelectionWithId: subGenreSelected.uniqueId];
     [self.delegate handleNewTabSelectionWithGenre: subGenreSelected];
     
@@ -247,5 +247,18 @@
              dimension: subGenreSelected.name];
 }
 
+-(SYNGenreTabView*)categoriesTabView
+{
+    return (SYNGenreTabView *)self.view;
+}
+
+-(void) deselectAll
+{
+    [self.categoriesTabView deselectAll];
+}
+-(void)autoSelectFirstTab
+{
+    [self.categoriesTabView autoSelectFirstTab];
+}
 
 @end

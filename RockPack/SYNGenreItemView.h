@@ -15,7 +15,7 @@ typedef enum {
     TabItemTypeSub
 } TabItemType;
 
-@interface SYNCategoryItemView : UIView
+@interface SYNGenreItemView : UIView
 {
     @private TabItemType type;
     @private UIColor* grayColor; 
@@ -30,7 +30,6 @@ typedef enum {
               andTag: (int) tag;
 
 - (void) makeHighlighted;
-- (void) makeFaded;
 - (void) makeStandard;
 
 /**

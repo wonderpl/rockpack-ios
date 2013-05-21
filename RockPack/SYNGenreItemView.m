@@ -7,7 +7,7 @@
 //
 
 #import "Genre.h"
-#import "SYNCategoryItemView.h"
+#import "SYNGenreItemView.h"
 #import "SYNDeviceManager.h"
 #import "SubGenre.h"
 #import "UIColor+SYNColor.h"
@@ -29,7 +29,7 @@
 #define kCategoriesSubTabFontSizePortrait 12.0f
 
 
-@implementation SYNCategoryItemView
+@implementation SYNGenreItemView
 
 - (id) initWithTabItemModel: (Genre *) tabItemModel
 {
@@ -113,11 +113,7 @@
 }
 
 
-- (void) makeFaded
-{
-    self.backgroundColor = [UIColor clearColor];
-    self.label.textColor = grayColor;
-}
+
 
 
 - (void) makeStandard

@@ -14,7 +14,7 @@
 #import "Genre.h"
 #import "SSTextView.h"
 #import "SYNCameraPopoverViewController.h"
-#import "SYNCategoriesTabViewController.h"
+#import "SYNGenreTabViewController.h"
 #import "SYNChannelCategoryTableViewController.h"
 #import "SYNChannelCoverImageSelectorViewController.h"
 #import "SYNChannelDetailViewController.h"
@@ -70,7 +70,7 @@
 @property (nonatomic, strong) IBOutlet UIView *masterControlsView;
 @property (nonatomic, strong) NSFetchedResultsController *channelCoverFetchedResultsController;
 @property (nonatomic, strong) NSFetchedResultsController *userChannelCoverFetchedResultsController;
-@property (nonatomic, strong) SYNCategoriesTabViewController *categoriesTabViewController;
+@property (nonatomic, strong) SYNGenreTabViewController *categoriesTabViewController;
 @property (nonatomic, strong) SYNCoverChooserController* coverChooserController;
 @property (nonatomic, strong) SYNReportConcernTableViewController *reportConcernTableViewController;
 @property (nonatomic, strong) UIActivityIndicatorView* subscribingIndicator;
@@ -232,7 +232,7 @@
     if (!isIPhone)
     {
         // Create categories tab, but make invisible (alpha = 0) for now
-        self.categoriesTabViewController = [[SYNCategoriesTabViewController alloc] initWithHomeButton: @"OTHER"];
+        self.categoriesTabViewController = [[SYNGenreTabViewController alloc] initWithHomeButton: @"hiden"];
         self.categoriesTabViewController.delegate = self;
         CGRect tabFrame = self.categoriesTabViewController.view.frame;
         tabFrame.origin.y = kChannelCreationCategoryTabOffsetY;
@@ -1093,7 +1093,7 @@
 }
 
 
-#pragma mark - Category choice
+#pragma mark - Genre Choose Bar
 
 - (void) showCategoryChooser
 {
@@ -1101,22 +1101,44 @@
     {
         if (self.categoriesTabViewController.view.alpha == 0.0f)
         {
+            [self.categoriesTabViewController deselectAll];
+            
             [UIView animateWithDuration: kChannelEditModeAnimationDuration
                              animations: ^{
-                                 // Fade up the category tab controller
+                                 
+                                 // Fade up the category tab controller // 
                                  self.categoriesTabViewController.view.alpha = 1.0f;
                                  
-                                 // slide down the video collection view a bit
-                                 self.videoThumbnailCollectionView.contentInset = UIEdgeInsetsMake(kChannelCreationCollectionViewOffsetY +
-                                                                                                   kChannelCreationCategoryAdditionalOffsetY, 0, 0, 0);
                                  
-                                 self.videoThumbnailCollectionView.contentOffset = CGPointMake (0, -(kChannelCreationCollectionViewOffsetY +
-                                                                                                     kChannelCreationCategoryAdditionalOffsetY));
                              }
-                             completion: nil];
+                             completion:^(BOOL finished) {
+                                 
+                                 [self.categoriesTabViewController autoSelectFirstTab];
+                                 
+                                 [UIView animateWithDuration:0.4f
+                                                       delay:0.1f
+                                                     options:UIViewAnimationOptionBeginFromCurrentState | UIViewAnimationOptionCurveEaseInOut
+                                                  animations:^{
+                                                      
+                                                      
+                                                      // slide down the video collection view a bit //
+                                                      
+                                                      CGFloat totalY =
+                                                      kChannelCreationCollectionViewOffsetY + kChannelCreationCategoryAdditionalOffsetY;
+                                                      self.videoThumbnailCollectionView.contentInset = UIEdgeInsetsMake(totalY, 0, 0, 0);
+                                                      
+                                                      CGFloat totalX =
+                                                      kChannelCreationCollectionViewOffsetY + kChannelCreationCategoryAdditionalOffsetY;
+                                                      self.videoThumbnailCollectionView.contentOffset = CGPointMake (0, -(totalX));
+                                     
+                                                  } completion:^(BOOL finished) {
+                                     
+                                                  }];
+                                 
+                             }];
         }
     }
-    else
+    else // isIPhone
     {
         if (!self.categoryTableViewController)
         {
@@ -1196,11 +1218,6 @@
 }
 
 
-- (void) handleNewTabSelectionWithId: (NSString*) itemId
-{
-    self.selectedCategoryId = itemId;
-}
-
 - (void) handleNewTabSelectionWithGenre: (Genre*) genre
 {
     // in the case of @"OTHER" the actual cid for the backend call is @"all" //
@@ -1218,23 +1235,20 @@
     // update the text field with the format "GENRE/SUBGENRE"
 
     if ([genre isMemberOfClass:[SubGenre class]])
+    {
+        [self hideCategoryChooser];
         [self updateCategoryButtonText: [NSString stringWithFormat:@"%@/%@", ((SubGenre*)genre).genre.name, genre.name]];
+    }
     else
+    {
         [self updateCategoryButtonText: genre.name];
+    }
+        
 
 }
 
 
-- (void) handleMainTap: (UITapGestureRecognizer*) recogniser
-{
-    self.selectedCategoryId = @"";
-}
 
-
-- (void) handleSecondaryTap: (UITapGestureRecognizer*) recogniser
-{
-    [self hideCategoryChooser];
-}
 
 
 #pragma mark - Channel Creation (3 steps)

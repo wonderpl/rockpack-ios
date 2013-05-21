@@ -17,7 +17,7 @@
 #import "SYNOAuthNetworkEngine.h"
 #import "SYNProfileRootViewController.h"
 #import "UIFont+SYNFont.h"
-#import "SYNCategoriesTabViewController.h"
+#import "SYNGenreTabViewController.h"
 #import <QuartzCore/QuartzCore.h>
 #import "SYNDeviceManager.h"
 #import "SYNObjectFactory.h"
@@ -100,7 +100,7 @@
     SYNChannelsRootViewController *channelsRootViewController = [[SYNChannelsRootViewController alloc] initWithViewId: kChannelsViewId];
     if([[SYNDeviceManager sharedInstance] isIPad])
     {
-        channelsRootViewController.tabViewController = [[SYNCategoriesTabViewController alloc] initWithHomeButton: @"ALL"];
+        channelsRootViewController.tabViewController = [[SYNGenreTabViewController alloc] initWithHomeButton: @"ALL"];
         [channelsRootViewController addChildViewController:channelsRootViewController.tabViewController];
     }
     else
