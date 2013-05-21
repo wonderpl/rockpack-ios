@@ -142,6 +142,19 @@ static NSEntityDescription *channelOwnerEntity = nil;
     newChannel.channelOwner = self;
 }
 
+-(void)addSubscriptionsObject:(Channel *)newSubscription
+{
+    [self.subscriptionsSet addObject:newSubscription];
+    [newSubscription.subscribersSet addObject:self];
+    newSubscription.subscribersCountValue += 1;
+}
+-(void)removeSubscriptionsObject:(Channel *)oldSubscription
+{
+    [self.subscriptionsSet removeObject:oldSubscription];
+    [oldSubscription.subscribersSet removeObject:self];
+    oldSubscription.subscribersCountValue -= 1;
+}
+
 #pragma mark - Helper methods
 
 -(NSDictionary*) channelsDictionary

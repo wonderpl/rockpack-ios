@@ -125,12 +125,9 @@
                                                 
                                                 
                                                 
-                                                channel.subscribedByUserValue = YES;
-                                                channel.subscribersCountValue += 1;
-                                                
                                                 channel.hasChangedSubscribeValue = YES;
                                                 
-                                                [channel addSubscribersObject:appDelegate.currentUser];
+                                                [appDelegate.currentUser addSubscriptionsObject:channel];
                                                 
                                                 if(channel.managedObjectContext == appDelegate.mainManagedObjectContext)
                                                 {
@@ -164,12 +161,10 @@
                                               completionHandler: ^(NSDictionary *responseDictionary) {
                                                   
                                                   
-                                                  channel.subscribedByUserValue = NO;
-                                                  channel.subscribersCountValue -= 1;
-                                                  
                                                   channel.hasChangedSubscribeValue = YES;
                                                   
-                                                  [channel removeSubscribersObject:appDelegate.currentUser];
+                                                  [appDelegate.currentUser removeSubscriptionsObject:channel];
+                                                  
                                                   
                                                   if(channel.managedObjectContext == appDelegate.mainManagedObjectContext)
                                                   {

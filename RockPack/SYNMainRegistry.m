@@ -116,9 +116,8 @@
         if (!channel)
             continue;
         
-        channel.subscribedByUserValue = YES;
         
-        [currentUser.subscriptionsSet addObject:channel];
+        [currentUser addSubscriptionsObject:channel];
         
     }
     
