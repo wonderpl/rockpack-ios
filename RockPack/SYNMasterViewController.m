@@ -675,7 +675,8 @@ typedef void(^AnimationCompletionBlock)(BOOL finished);
     NSString* notificationName = [notification name];
     if (!notificationName)
         return;
-    if( [notificationName isEqualToString:kNoteAllNavControlsShow])
+    
+    if ([notificationName isEqualToString: kNoteAllNavControlsShow])
     {
         self.searchButton.hidden = NO;
         self.sideNavigationButton.hidden = NO;
