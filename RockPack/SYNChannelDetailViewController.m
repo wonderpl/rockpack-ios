@@ -940,7 +940,7 @@
 
 - (IBAction) editButtonTapped: (id) sender
 {
-    [[NSNotificationCenter defaultCenter] postNotificationName: kChannelsNavControlsHide
+    [[NSNotificationCenter defaultCenter] postNotificationName: ([[SYNDeviceManager sharedInstance] isIPad])? kChannelsNavControlsHide : kNoteAllNavControlsHide
                                                         object: self
                                                       userInfo: nil];
     
@@ -948,7 +948,7 @@
     [self.createChannelButton removeFromSuperview];
     [self.view addSubview:self.saveChannelButton];
     CGRect newFrame = self.saveChannelButton.frame;
-    newFrame.origin.x = self.view.frame.size.width - self.cancelEditButton.frame.origin.x - newFrame.size.width;
+    newFrame.origin.x = self.view.frame.size.width  - newFrame.size.width;
     self.saveChannelButton.frame = newFrame;
     self.saveChannelButton.hidden = NO;
     self.cancelEditButton.hidden = NO;
@@ -1166,12 +1166,14 @@
                                  
                                  if([self.channel.categoryId isEqualToString:@""])
                                  {
-                                     Genre* firstSelection = [self.categoriesTabViewController selectAndReturnGenreForId:0
-                                                                                                        andSubcategories:YES];
+                                     SubGenre* firstSelection = (SubGenre*)[self.categoriesTabViewController selectAndReturnGenreForId:0
+                                                                                                                      andSubcategories:YES];
                                      
                                      if(firstSelection)
                                      {
-                                         [self handleNewTabSelectionWithGenre:firstSelection];
+                                         self.channel.categoryId = firstSelection.uniqueId;
+                                         [self updateCategoryButtonText: [NSString stringWithFormat:@"%@/%@",
+                                                                          firstSelection.genre.name, firstSelection.name]];
                                      }
                                      else
                                      {
@@ -1277,7 +1279,7 @@
 
 #pragma mark - iPad Category Tab Delegate
 
-- (BOOL) showSubcategories
+- (BOOL) showSubGenres
 {
     return YES;
 }
@@ -1288,7 +1290,8 @@
     // in the case of @"OTHER" the actual cid for the backend call is @"all" //
     
     
-    if (!genre) {
+    if (!genre)
+    {
         
         self.channel.categoryId = @"all";
         [self updateCategoryButtonText: @"OTHER"];
@@ -1816,6 +1819,9 @@
 #pragma mark - iPhone viewcontroller dismissal
 - (IBAction) backButtonTapped: (id) sender
 {
+    [[NSNotificationCenter defaultCenter] postNotificationName: kNoteAllNavControlsShow
+                                                        object: self
+                                                      userInfo: nil];
     CATransition *animation = [CATransition animation];
     
     [animation setType:kCATransitionReveal];

@@ -20,6 +20,6 @@
 - (void) handleNewTabSelectionWithId: (NSString*) itemId;
 - (void) handleNewTabSelectionWithGenre: (Genre*) name;
 
-- (BOOL) showSubcategories;
+- (BOOL) showSubGenres;
 
 @end

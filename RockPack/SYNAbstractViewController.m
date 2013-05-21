@@ -436,7 +436,7 @@
 {
     // to be implemented by child
 }
-- (BOOL) showSubcategories
+- (BOOL) showSubGenres
 {
     return YES;
 }
