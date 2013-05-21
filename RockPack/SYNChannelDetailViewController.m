@@ -1242,7 +1242,7 @@
 
 #pragma mark - iPad Category Tab Delegate
 
-- (BOOL) showSubcategories
+- (BOOL) showSubGenres
 {
     return YES;
 }
