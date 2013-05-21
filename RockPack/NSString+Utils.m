@@ -23,4 +23,37 @@
     return newString;
 }
 
+
++ (NSString *) ageCategoryStringFromInt: (int) age
+{
+    NSString *ageString = @"55+";
+    
+    if (age < 13)
+    {
+        ageString = @"-13";
+    }
+    else if (age >= 13 && age <= 17)
+    {
+        ageString = @"13-17";
+    }
+    else if (age >= 18 && age <= 24)
+    {
+        ageString = @"18-24";
+    }
+    else if (age >= 25 && age <= 34)
+    {
+        ageString = @"25-34";
+    }
+    else if (age >= 35 && age <= 44)
+    {
+        ageString = @"35-44";
+    }
+    else if (age >= 45 && age <= 54)
+    {
+        ageString = @"45-54";
+    }
+    
+    return ageString;
+}
+
 @end

@@ -56,6 +56,7 @@
 @property (nonatomic, strong) UIImageView* arrowImage;
 @property (nonatomic, strong) NSMutableArray* channels;
 @property (nonatomic, strong) SYNChannelFooterMoreView* footerView;
+@property (nonatomic) BOOL isAnimating;
 
 @property (nonatomic, strong) Genre* allGenre;
 @end
@@ -67,6 +68,7 @@
 @synthesize dataRequestRange;
 @synthesize dataItemsAvailable;
 @synthesize mainRegistry;
+@synthesize isAnimating;
 @synthesize channels;
 
 #pragma mark - View lifecycle
@@ -323,7 +325,8 @@
     
     self.channels = [NSMutableArray arrayWithArray:resultsArray];
     
-    [self.channelThumbnailCollectionView reloadData];
+    if(!isAnimating)
+        [self.channelThumbnailCollectionView reloadData];
     
     
 }
@@ -632,24 +635,32 @@
     {
         
         
-        
+        isAnimating = YES;
         
         [UIView animateWithDuration: 0.4
-                              delay: 0.1
+                              delay: 0.0
                             options: UIViewAnimationCurveEaseInOut
                          animations: ^{
                              CGRect currentCollectionViewFrame = self.channelThumbnailCollectionView.frame;
                              currentCollectionViewFrame.origin.y += kCategorySecondRowHeight;
-                             currentCollectionViewFrame.size.height -= kCategorySecondRowHeight;
+                             //
                              self.channelThumbnailCollectionView.frame = currentCollectionViewFrame;
                          }
                          completion: ^(BOOL result) {
                              
                              tabExpanded = YES;
+                             isAnimating = NO;
+                             [self.channelThumbnailCollectionView reloadData];
+                             CGRect currentCollectionViewFrame = self.channelThumbnailCollectionView.frame;
+                             currentCollectionViewFrame.size.height -= kCategorySecondRowHeight;
+                             self.channelThumbnailCollectionView.frame = currentCollectionViewFrame;
                          }];
     }
     else if(tabExpanded)
     {
+        
+        isAnimating = YES;
+        
         [UIView animateWithDuration: 0.4
                               delay: 0.1
                             options: UIViewAnimationCurveEaseInOut
@@ -657,13 +668,20 @@
                              
                              CGRect currentCollectionViewFrame = self.channelThumbnailCollectionView.frame;
                              currentCollectionViewFrame.origin.y -= kCategorySecondRowHeight;
-                             currentCollectionViewFrame.size.height += kCategorySecondRowHeight;
+                             //
                              self.channelThumbnailCollectionView.frame = currentCollectionViewFrame;
                              
                              
                          }  completion: ^(BOOL result) {
                              
                              tabExpanded = NO;
+                             isAnimating = NO;
+                             
+                             [self.channelThumbnailCollectionView reloadData];
+                             
+                             CGRect currentCollectionViewFrame = self.channelThumbnailCollectionView.frame;
+                             currentCollectionViewFrame.size.height += kCategorySecondRowHeight;
+                             self.channelThumbnailCollectionView.frame = currentCollectionViewFrame;
                          }];
     }
 }

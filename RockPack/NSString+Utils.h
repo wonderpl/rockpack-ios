@@ -12,4 +12,6 @@
 
 - (NSString *) stringByReplacingOccurrencesOfStrings: (NSDictionary *) dictionary;
 
++ (NSString *) ageCategoryStringFromInt: (int) age;
+
 @end
