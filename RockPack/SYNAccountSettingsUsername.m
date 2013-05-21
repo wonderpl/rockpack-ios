@@ -49,7 +49,7 @@
 }
 -(void)saveButtonPressed:(UIButton*)button
 {
-    
+    [self.inputField resignFirstResponder];
     
     if([self.inputField.text isEqualToString:self.appDelegate.currentUser.username])
         return;

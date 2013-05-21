@@ -20,7 +20,7 @@ typedef enum
     UserFieldPassword
 } UserFieldType;
 
-@interface SYNAccountSettingsTextInputController : GAITrackedViewController
+@interface SYNAccountSettingsTextInputController : GAITrackedViewController <UITextFieldDelegate>
 {
     UserFieldType currentFieldType;
 }
