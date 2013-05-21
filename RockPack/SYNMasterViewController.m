@@ -110,12 +110,14 @@ typedef void(^AnimationCompletionBlock)(BOOL finished);
         
         // == Search Box == //
     
-        
-        self.searchBoxController = [[SYNSearchBoxViewController alloc] init];
-        CGRect autocompleteControllerFrame = self.searchBoxController.view.frame;
-        autocompleteControllerFrame.origin.x = 10.0;
-        autocompleteControllerFrame.origin.y = 10.0;
-        self.searchBoxController.view.frame = autocompleteControllerFrame;
+        if([[SYNDeviceManager sharedInstance] isIPad])
+        {
+            self.searchBoxController = [[SYNSearchBoxViewController alloc] init];
+            CGRect autocompleteControllerFrame = self.searchBoxController.view.frame;
+            autocompleteControllerFrame.origin.x = 10.0;
+            autocompleteControllerFrame.origin.y = 10.0;
+            self.searchBoxController.view.frame = autocompleteControllerFrame;
+        }
         
     }
     return self;
@@ -1066,8 +1068,10 @@ typedef void(^AnimationCompletionBlock)(BOOL finished);
         newFrame.origin.y = [[SYNDeviceManager sharedInstance] currentScreenHeightWithStatusBar] - newFrame.size.height;
         successNotification.frame = newFrame;
     } completion:^(BOOL finished) {
-        [UIView animateWithDuration:0.3f delay:10.0f options:UIViewAnimationOptionCurveEaseInOut animations:^{
-            successNotification.alpha = 0.0f;
+        [UIView animateWithDuration:0.3f delay:4.0f options:UIViewAnimationOptionCurveEaseIn animations:^{
+            CGRect newFrame = successNotification.frame;
+            newFrame.origin.y = [[SYNDeviceManager sharedInstance] currentScreenHeightWithStatusBar] + newFrame.size.height;
+            successNotification.frame = newFrame;
         } completion:^(BOOL finished) {
             [successNotification removeFromSuperview];
         }];
