@@ -110,12 +110,14 @@ typedef void(^AnimationCompletionBlock)(BOOL finished);
         
         // == Search Box == //
     
-        
-        self.searchBoxController = [[SYNSearchBoxViewController alloc] init];
-        CGRect autocompleteControllerFrame = self.searchBoxController.view.frame;
-        autocompleteControllerFrame.origin.x = 10.0;
-        autocompleteControllerFrame.origin.y = 10.0;
-        self.searchBoxController.view.frame = autocompleteControllerFrame;
+        if([[SYNDeviceManager sharedInstance] isIPad])
+        {
+            self.searchBoxController = [[SYNSearchBoxViewController alloc] init];
+            CGRect autocompleteControllerFrame = self.searchBoxController.view.frame;
+            autocompleteControllerFrame.origin.x = 10.0;
+            autocompleteControllerFrame.origin.y = 10.0;
+            self.searchBoxController.view.frame = autocompleteControllerFrame;
+        }
         
     }
     return self;

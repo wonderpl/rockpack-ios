@@ -84,7 +84,7 @@
     [self.videoSearchTabView addTarget:self action:@selector(videoTabPressed:) forControlEvents:UIControlEventTouchUpInside];
     [self.channelsSearchTabView addTarget:self action:@selector(channelTabPressed:) forControlEvents:UIControlEventTouchUpInside];
     
-    CGFloat correctTabsY = [[SYNDeviceManager sharedInstance] isIPad] ? 104.0 : self.channelsSearchTabView.frame.size.height/2 + 85.0f;
+    CGFloat correctTabsY = [[SYNDeviceManager sharedInstance] isIPad] ? 104.0 : self.channelsSearchTabView.frame.size.height/2 + 65.0f;
     tabsContainer.center = CGPointMake(self.view.center.x, correctTabsY);
     tabsContainer.frame = CGRectIntegral(tabsContainer.frame);
     
