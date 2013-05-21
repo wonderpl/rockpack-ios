@@ -274,7 +274,7 @@
         return nil;
     
     
-    Genre* genreToSelect = (Genre*)[self.genresFetched objectAtIndex:0];
+    Genre* genreToSelect = (Genre*)[self.genresFetched objectAtIndex:identifier];
     
     if(subcats)
     {

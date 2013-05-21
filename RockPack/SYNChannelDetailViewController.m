@@ -1166,12 +1166,14 @@
                                  
                                  if([self.channel.categoryId isEqualToString:@""])
                                  {
-                                     Genre* firstSelection = [self.categoriesTabViewController selectAndReturnGenreForId:0
-                                                                                                        andSubcategories:YES];
+                                     SubGenre* firstSelection = (SubGenre*)[self.categoriesTabViewController selectAndReturnGenreForId:0
+                                                                                                                      andSubcategories:YES];
                                      
                                      if(firstSelection)
                                      {
-                                         [self handleNewTabSelectionWithGenre:firstSelection];
+                                         self.channel.categoryId = firstSelection.uniqueId;
+                                         [self updateCategoryButtonText: [NSString stringWithFormat:@"%@/%@",
+                                                                          firstSelection.genre.name, firstSelection.name]];
                                      }
                                      else
                                      {
@@ -1288,7 +1290,8 @@
     // in the case of @"OTHER" the actual cid for the backend call is @"all" //
     
     
-    if (!genre) {
+    if (!genre)
+    {
         
         self.channel.categoryId = @"all";
         [self updateCategoryButtonText: @"OTHER"];
