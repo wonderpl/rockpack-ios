@@ -1332,8 +1332,7 @@
     
     self.channel.title = self.channelTitleTextView.text;
     
-    DebugLog(@"Cid: %@", self.channel.categoryId);
-    
+    self.channel.channelDescription = self.channel.channelDescription ? self.channel.channelDescription : @"";
     
     [appDelegate.oAuthNetworkEngine createChannelForUserId: appDelegate.currentOAuth2Credentials.userId
                                                      title: self.channel.title
