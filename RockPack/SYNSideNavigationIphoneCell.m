@@ -8,6 +8,7 @@
 
 #import "SYNSideNavigationIphoneCell.h"
 #import "UIFont+SYNFont.h"
+#import "SYNDeviceManager.h"
 
 @interface SYNSideNavigationIphoneCell ()
 
@@ -22,6 +23,8 @@
 
 -(id)initWithStyle:(UITableViewCellStyle)style reuseIdentifier:(NSString *)reuseIdentifier
 {
+    BOOL isIPad = [[SYNDeviceManager sharedInstance] isIPad];
+    
     self = [super initWithStyle:style reuseIdentifier:reuseIdentifier];
     if(self)
     {
@@ -33,7 +36,17 @@
         self.selectedColor = [UIColor colorWithWhite:1.0 alpha:1.0f];
         self.selectedShadowColor = [UIColor colorWithWhite:1.0 alpha:0.2];
         self.selectionStyle = UITableViewCellSelectionStyleNone;
+        
+        if (isIPad)
+        {
+            self.textLabel.font = [UIFont rockpackFontOfSize:15];
+        }
+        
+        else
+        {
         self.textLabel.font = [UIFont rockpackFontOfSize:18];
+        }
+        
         self.textLabel.textColor = self.defaultColor;
         self.textLabel.shadowColor = self.defaultShadowColor;
         self.textLabel.shadowOffset = CGSizeMake(0.0f,1.0f);
@@ -41,10 +54,15 @@
         UIImageView* imageView = [[UIImageView alloc] initWithFrame:self.frame];
         self.backgroundView = imageView;
         self.backgroundImageView = imageView;
+        
         self.accessoryNumberLabel = [[UILabel alloc] initWithFrame:CGRectZero];
         self.accessoryNumberLabel.backgroundColor = [UIColor clearColor];
         self.accessoryNumberLabel.hidden = YES;
         self.accessoryNumberBackground = [[UIImageView alloc] initWithImage:[[UIImage imageNamed:@"NotificationBubble"] resizableImageWithCapInsets:UIEdgeInsetsMake(0,16,0,16)]];
+        self.accessoryNumberLabel.font = [UIFont rockpackFontOfSize:14];
+        self.accessoryNumberLabel.textColor = self.selectedColor;
+        self.accessoryNumberLabel.shadowColor = self.selectedShadowColor;
+        self.accessoryNumberLabel.shadowOffset = CGSizeMake(0.0f,1.0f);
         [self.contentView addSubview:self.accessoryNumberBackground];
         [self.contentView addSubview:self.accessoryNumberLabel];
         
@@ -56,8 +74,20 @@
 {
     [super layoutSubviews];
     
+    BOOL isIPad = [[SYNDeviceManager sharedInstance] isIPad];
+
     CGPoint center = self.textLabel.center;
-    center.y += 4.0f;
+
+    if (isIPad)
+    {
+        center.y += 3.0f;
+    }
+    
+    else
+    {
+        center.y += 4.0f;
+    }
+    
     self.textLabel.center = center;
 }
 
@@ -102,14 +132,26 @@
 
 -(void)setAccessoryNumber:(NSString *)accessoryNumberString
 {
+    BOOL isIPad = [[SYNDeviceManager sharedInstance] isIPad];
+    
     self.accessoryNumberLabel.text = accessoryNumberString;
     [self.accessoryNumberLabel sizeToFit];
-    self.accessoryNumberLabel.center = CGPointMake(230.0f - self.accessoryNumberLabel.frame.size.width/2 , 25.0f );
+    
+    if (isIPad)
+    {
+        self.accessoryNumberLabel.center = CGPointMake(144.0f - self.accessoryNumberLabel.frame.size.width/2 , 25.0f );
+        self.accessoryNumberBackground.center = CGPointMake(144.0f - self.accessoryNumberLabel.frame.size.width/2 , 23.0f );
+    }
+    
+    else
+    {
+        self.accessoryNumberLabel.center = CGPointMake(230.0f - self.accessoryNumberLabel.frame.size.width/2 , 27.0f );
+        self.accessoryNumberBackground.center = CGPointMake(230.0f - self.accessoryNumberLabel.frame.size.width/2 , 25.0f );
+    }
+    
     CGRect newFrame = self.accessoryNumberBackground.frame;
     newFrame.size.width = MAX(33.0,self.accessoryNumberLabel.frame.size.width - 10.0f);
-    self.accessoryNumberBackground.frame = newFrame;
-    self.accessoryNumberBackground.center = self.accessoryNumberLabel.center;
-    
+    self.accessoryNumberBackground.frame = newFrame;    
 }
 
 @end
