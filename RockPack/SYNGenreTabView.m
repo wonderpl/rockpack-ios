@@ -320,38 +320,40 @@
     }
 }
 
--(void)autoSelectFirstTab
-{
-    SYNGenreItemView* firstTab = (SYNGenreItemView*)self.mainTabsView.subviews[0];
-    
-    [firstTab makeHighlighted];
-    
-    [self.tapDelegate handleMainTap: firstTab];
-    
-//    SYNGenreItemView* firstSubTab = (SYNGenreItemView*)self.secondaryTabsView.subviews[0];
-//    
-//    [firstSubTab makeHighlighted];
-//    
-//    [self.tapDelegate handleSecondaryTap:firstSubTab];
-}
 
--(void)highlightTabWithId:(NSString*)tabId
+
+-(void)highlightTabWithGenre:(Genre*)genreSelected
 {
-    for(SYNGenreItemView* itemView in self.mainTabsView.subviews) {
-        if(itemView.tag == [tabId intValue]) {
-            [itemView makeHighlighted];
-            continue;
-        }
-        [itemView makeStandard];
-    }
-        
     
-    for(SYNGenreItemView* itemView in self.secondaryTabsView.subviews) {
-        if(itemView.tag == [tabId intValue]) {
-            [itemView makeHighlighted];
-            continue;
+    if([genreSelected isMemberOfClass:[Genre class]])
+    {
+        for(SYNGenreItemView* itemView in self.mainTabsView.subviews)
+        {
+            if([genreSelected.uniqueId intValue] == itemView.tag)
+            {
+                [itemView makeHighlighted];
+            }
+            else
+            {
+                [itemView makeStandard];
+            }
         }
-        [itemView makeStandard];
+           
+    }
+    else
+    {
+        for(SYNGenreItemView* itemView in self.secondaryTabsView.subviews)
+        {
+            if([genreSelected.uniqueId intValue] == itemView.tag)
+            {
+                [itemView makeHighlighted];
+            }
+            else
+            {
+                [itemView makeStandard];
+            }
+        }
+        [self highlightTabWithGenre:((SubGenre*)genreSelected).genre];
     }
     
     

@@ -11,6 +11,7 @@
 #import "SYNTabView.h"
 
 
+@class Genre;
 
 @interface SYNGenreTabView : SYNTabView
 
@@ -22,6 +23,6 @@
 - (void) showSecondaryTabs;
 
 -(void) deselectAll;
--(void) autoSelectFirstTab;
+-(void)highlightTabWithGenre:(Genre*)genreSelected;
 
 @end

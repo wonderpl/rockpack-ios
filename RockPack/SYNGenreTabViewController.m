@@ -21,6 +21,7 @@
 @property (nonatomic, strong) NSString *currentTopLevelCategoryName;
 @property (nonatomic, assign) NSString* homeButtomString;
 @property (nonatomic, readonly) SYNGenreTabView* categoriesTabView;
+@property (nonatomic, strong) NSArray* genresFetched;
 @end
 
 
@@ -82,10 +83,10 @@
     
     categoriesFetchRequest.includesSubentities = NO;
 
-    NSArray *matchingCategoryInstanceEntries = [appDelegate.mainManagedObjectContext executeFetchRequest: categoriesFetchRequest
+    self.genresFetched = [appDelegate.mainManagedObjectContext executeFetchRequest: categoriesFetchRequest
                                                                                                    error: &error];
     
-    if (matchingCategoryInstanceEntries.count == 0)
+    if (self.genresFetched.count == 0)
     {
         
         [appDelegate.networkEngine updateCategoriesOnCompletion: ^{
@@ -97,7 +98,7 @@
         return;
     }
     
-    [self.tabView createCategoriesTab:matchingCategoryInstanceEntries];
+    [self.tabView createCategoriesTab:self.genresFetched];
 }
 
 
@@ -245,13 +246,16 @@
 {
     [self.categoriesTabView deselectAll];
 }
--(void)autoSelectFirstTab
+
+-(void)highlightTabWithId:(NSInteger)identifier andSubcategories:(BOOL)showSubcategories
 {
-    [self.categoriesTabView autoSelectFirstTab];
-}
--(void)highlightTabWithId:(NSString*)tabId
-{
-    
+    if(!self.genresFetched || (self.genresFetched.count - 1) < identifier)
+        return;
+    Genre* genreToHighlight = self.genresFetched[identifier];
+    if(!showSubcategories)
+        [self.categoriesTabView highlightTabWithGenre:genreToHighlight];
+    else
+        [self.categoriesTabView highlightTabWithGenre:genreToHighlight];
 }
 
 @end
