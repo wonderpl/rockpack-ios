@@ -654,6 +654,9 @@ static UIWebView* vimeoideoWebViewInstance;
     NSString *loadString = [NSString stringWithFormat: @"player.loadVideoById('%@', '0', '%@');", sourceId, self.videoQuality];
     [self.currentVideoWebView stringByEvaluatingJavaScriptFromString: loadString];
     self.playFlag = TRUE;
+    
+    [self.shuttleBarPlayPauseButton setImage: [UIImage imageNamed: @"ButtonShuttleBarPause.png"]
+                                    forState: UIControlStateNormal];
 }
 
 
