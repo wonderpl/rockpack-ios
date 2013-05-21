@@ -680,7 +680,7 @@
     self.editButton.hidden = (visible && ! [self.channel.channelOwner.uniqueId isEqualToString: appDelegate.currentUser.uniqueId]);
     [(LXReorderableCollectionViewFlowLayout *)self.videoThumbnailCollectionView.collectionViewLayout longPressGestureRecognizer].enabled = (visible) ? FALSE : TRUE;
     
-    if (visible == FALSE)
+    if (visible == NO)
     {
         // If we are in edit mode, then hide navigation controls
         [[NSNotificationCenter defaultCenter] postNotificationName: kChannelsNavControlsHide
@@ -1441,7 +1441,9 @@
                                               
                                               [[NSNotificationCenter defaultCenter] postNotificationName: kVideoQueueClear
                                                                                                   object: nil];
-                                              [[NSNotificationCenter defaultCenter] postNotificationName:kNoteChannelSaved object:self];
+                                              
+                                              [[NSNotificationCenter defaultCenter] postNotificationName:kNoteChannelSaved
+                                                                                                  object:self];
                                               
                                           } errorHandler:^(id err) {
                                               

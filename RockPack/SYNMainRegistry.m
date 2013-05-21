@@ -381,7 +381,7 @@
         channel.position = [itemDictionary objectForKey: @"position"
                                             withDefault: [NSNumber numberWithInt: 0]];
         
-        [channelOwner.channelsSet addObject: channel];
+        [channelOwner addChannelsObject:channel];
     }
     
     
@@ -416,17 +416,11 @@
     // Query for existing objects
     NSFetchRequest *channelFetchRequest = [[NSFetchRequest alloc] init];
     [channelFetchRequest setEntity: [NSEntityDescription entityForName: @"Channel"
-                                                inManagedObjectContext: importManagedObjectContext]];
+                                                inManagedObjectContext: appDelegate.mainManagedObjectContext]];
     
-    NSPredicate* notOwnedByUserPredicate = [NSPredicate predicateWithFormat :@"channelOwner.uniqueId != %@", appDelegate.currentUser.uniqueId];
     NSPredicate* genrePredicate;
-    NSPredicate* finalPredicate;
     
-    if(!genre)
-    {
-        finalPredicate = notOwnedByUserPredicate; // if the all genre is selected then get all channels
-    }
-    else
+    if(genre)
     {
         if ([genre isMemberOfClass: [Genre class]])
         {
@@ -436,18 +430,14 @@
         {
             genrePredicate = [NSPredicate predicateWithFormat: @"categoryId == %@", genre.uniqueId];
         }
-        
-        finalPredicate = [NSCompoundPredicate andPredicateWithSubpredicates: @[genrePredicate, notOwnedByUserPredicate]];
-    
-        
     }
 
-    [channelFetchRequest setPredicate: finalPredicate];
+    [channelFetchRequest setPredicate: genrePredicate];
     
     
     NSError* error;
-    NSArray *matchingChannelEntries = [importManagedObjectContext executeFetchRequest: channelFetchRequest
-                                                                                error: &error];
+    NSArray *matchingChannelEntries = [appDelegate.mainManagedObjectContext executeFetchRequest: channelFetchRequest
+                                                                                          error: &error];
     
     
     NSMutableDictionary* existingChannelsByIndex = [NSMutableDictionary dictionaryWithCapacity: matchingChannelEntries.count];
@@ -455,13 +445,14 @@
     for (Channel* existingChannel in matchingChannelEntries)
     {
         
-        // NSLog(@" - Channel: %@ (%@)", existingChannel.title, existingChannel.categoryId);
+   
         [existingChannelsByIndex setObject:existingChannel forKey:existingChannel.uniqueId];
         
         existingChannel.popularValue = NO; // set all to NO
-            
-        if(!append)
-            existingChannel.markedForDeletionValue = YES; // if a real genre is passed - delete the old objects
+        
+        // if we do not append and the channel is not owned by the user then delete
+        if(!append && existingChannel.channelOwner != appDelegate.currentUser)
+            existingChannel.markedForDeletionValue = YES; 
            
         
     }
@@ -479,7 +470,7 @@
         if (!channel)
         {
             channel = [Channel instanceFromDictionary: itemDictionary
-                            usingManagedObjectContext: importManagedObjectContext
+                            usingManagedObjectContext: appDelegate.mainManagedObjectContext
                                   ignoringObjectTypes: kIgnoreStoredObjects
                                             andViewId: kChannelsViewId];
         }
@@ -494,7 +485,7 @@
     }
     
     [self removeUnusedManagedObjects: matchingChannelEntries
-              inManagedObjectContext: importManagedObjectContext];
+              inManagedObjectContext: appDelegate.mainManagedObjectContext];
     
     BOOL saveResult = [self saveImportContext];
     if(!saveResult)

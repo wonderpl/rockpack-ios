@@ -82,6 +82,7 @@
     }
 }
 
+// update another user's profuile channels //
 
 -(void)channelOwnerUpdateRequest:(NSNotification*)notification
 {
@@ -270,17 +271,18 @@
 
 -(void)updateChannelsForChannelOwner:(ChannelOwner*)channelOwner
 {
-    [appDelegate.networkEngine channelOwnerDataForChannelOwner:channelOwner onComplete:^(id dictionary) {
+    [appDelegate.networkEngine channelOwnerDataForChannelOwner:channelOwner
+                                                    onComplete:^(id dictionary) {
         
         
         
-        [appDelegate.mainRegistry registerChannelsFromDictionary:dictionary
-                                                 forChannelOwner:channelOwner
-                                                     byAppending:NO];
+                                                        [appDelegate.mainRegistry registerChannelsFromDictionary:dictionary
+                                                                                                 forChannelOwner:channelOwner
+                                                                                                     byAppending:NO];
         
-    } onError:^(id error) {
+                                                    } onError:^(id error) {
         
-    }];
+                                                    }];
 }
 
 -(BOOL)isSubscribedByCurrentUser:(Channel*)channel

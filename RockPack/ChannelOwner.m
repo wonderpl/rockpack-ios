@@ -122,10 +122,9 @@ static NSEntityDescription *channelOwnerEntity = nil;
                                          usingManagedObjectContext:managedObjectContex
                                                ignoringObjectTypes:kIgnoreChannelOwnerObject
                                                          andViewId:kProfileViewId];
-                channel.channelOwner = self;
                 
                 
-                [self.channelsSet addObject:channel];
+                [self addChannelsObject:channel];
                 
             }
         }
@@ -137,7 +136,11 @@ static NSEntityDescription *channelOwnerEntity = nil;
 
 #pragma mark - Channels
 
-
+-(void)addChannelsObject:(Channel *)newChannel
+{
+    [self.channelsSet addObject:newChannel];
+    newChannel.channelOwner = self;
+}
 
 #pragma mark - Helper methods
 

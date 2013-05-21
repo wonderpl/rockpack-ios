@@ -376,17 +376,17 @@
     NSArray* updatedObjects = [[notification userInfo] objectForKey: NSUpdatedObjectsKey];
     
     [updatedObjects enumerateObjectsUsingBlock: ^(id obj, NSUInteger idx, BOOL *stop) {
-        if ([obj isKindOfClass:[User class]]) {
-            [self reloadCollectionViews];
-        }
-        else if ([obj isKindOfClass:[ChannelOwner class]])
-        {
+        // only caches channel objects
+        if ([obj isMemberOfClass:[ChannelOwner class]]) {
             [self reloadCollectionViews];
         }
     }];
 }
 
-
+-(void)viewDidScrollToFront
+{
+    [self reloadCollectionViews];
+}
 
 #pragma mark - gesture-recognition action methods
 
@@ -465,6 +465,8 @@
         return NO;
     }
 }
+
+#pragma mark - Orientation
 
 
 - (void) willAnimateRotationToInterfaceOrientation: (UIInterfaceOrientation) toInterfaceOrientation
@@ -972,6 +974,9 @@
     
     if (self.subscriptionsViewController)
         self.subscriptionsViewController.user = user;
+    
+    
+    // update the channels on another user's profile //
     
     if ([user isMemberOfClass:[ChannelOwner class]])
     {
