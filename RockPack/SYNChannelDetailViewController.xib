@@ -60,7 +60,7 @@
 						<int key="NSvFlags">274</int>
 						<string key="NSFrameSize">{1024, 748}</string>
 						<reference key="NSSuperview" ref="453930770"/>
-						<reference key="NSNextKeyView" ref="1042878543"/>
+						<reference key="NSNextKeyView" ref="793593682"/>
 						<string key="NSReuseIdentifierKey">_NS:9</string>
 						<reference key="IBUIBackgroundColor" ref="905238541"/>
 						<bool key="IBUIUserInteractionEnabled">NO</bool>
@@ -76,7 +76,7 @@
 						<array class="NSMutableArray" key="NSSubviews"/>
 						<string key="NSFrame">{{0, 80}, {1024, 668}}</string>
 						<reference key="NSSuperview" ref="453930770"/>
-						<reference key="NSNextKeyView" ref="793593682"/>
+						<reference key="NSNextKeyView" ref="657402384"/>
 						<string key="NSReuseIdentifierKey">_NS:9</string>
 						<reference key="IBUIBackgroundColor" ref="905238541"/>
 						<bool key="IBUIClipsSubviews">YES</bool>
@@ -332,6 +332,7 @@
 										<int key="NSvFlags">292</int>
 										<string key="NSFrame">{{60, 390}, {331, 120}}</string>
 										<reference key="NSSuperview" ref="421928150"/>
+										<reference key="NSNextKeyView" ref="220016949"/>
 										<string key="NSReuseIdentifierKey">_NS:9</string>
 										<bool key="IBUIOpaque">NO</bool>
 										<string key="targetRuntimeIdentifier">IBIPadFramework</string>
@@ -566,9 +567,9 @@
 					<object class="IBUIButton" id="316499697">
 						<reference key="NSNextResponder" ref="453930770"/>
 						<int key="NSvFlags">-2147483359</int>
-						<string key="NSFrame">{{884, 15}, {130, 45}}</string>
+						<string key="NSFrame">{{884, 15}, {140, 45}}</string>
 						<reference key="NSSuperview" ref="453930770"/>
-						<reference key="NSNextKeyView" ref="657402384"/>
+						<reference key="NSNextKeyView" ref="1042878543"/>
 						<string key="NSReuseIdentifierKey">_NS:9</string>
 						<bool key="IBUIOpaque">NO</bool>
 						<string key="targetRuntimeIdentifier">IBIPadFramework</string>
@@ -1200,319 +1201,7 @@
 			<nil key="sourceID"/>
 			<int key="maxID">140</int>
 		</object>
-		<object class="IBClassDescriber" key="IBDocument.Classes">
-			<array class="NSMutableArray" key="referencedPartialClassDescriptions">
-				<object class="IBPartialClassDescription">
-					<string key="className">GAITrackedViewController</string>
-					<string key="superclassName">UIViewController</string>
-					<object class="IBClassDescriptionSource" key="sourceIdentifier">
-						<string key="majorKey">IBProjectSource</string>
-						<string key="minorKey">./Classes/GAITrackedViewController.h</string>
-					</object>
-				</object>
-				<object class="IBPartialClassDescription">
-					<string key="className">SSTextView</string>
-					<string key="superclassName">UITextView</string>
-					<object class="IBClassDescriptionSource" key="sourceIdentifier">
-						<string key="majorKey">IBProjectSource</string>
-						<string key="minorKey">./Classes/SSTextView.h</string>
-					</object>
-				</object>
-				<object class="IBPartialClassDescription">
-					<string key="className">SYNAbstractViewController</string>
-					<string key="superclassName">GAITrackedViewController</string>
-					<object class="NSMutableDictionary" key="actions">
-						<string key="NS.key.0">animatedPopViewController</string>
-						<string key="NS.object.0">id</string>
-					</object>
-					<object class="NSMutableDictionary" key="actionInfosByName">
-						<string key="NS.key.0">animatedPopViewController</string>
-						<object class="IBActionInfo" key="NS.object.0">
-							<string key="name">animatedPopViewController</string>
-							<string key="candidateClassName">id</string>
-						</object>
-					</object>
-					<dictionary class="NSMutableDictionary" key="outlets">
-						<string key="channelNameTextField">UITextField</string>
-						<string key="channelOverlayView">UIImageView</string>
-						<string key="videoThumbnailCollectionView">UICollectionView</string>
-					</dictionary>
-					<dictionary class="NSMutableDictionary" key="toOneOutletInfosByName">
-						<object class="IBToOneOutletInfo" key="channelNameTextField">
-							<string key="name">channelNameTextField</string>
-							<string key="candidateClassName">UITextField</string>
-						</object>
-						<object class="IBToOneOutletInfo" key="channelOverlayView">
-							<string key="name">channelOverlayView</string>
-							<string key="candidateClassName">UIImageView</string>
-						</object>
-						<object class="IBToOneOutletInfo" key="videoThumbnailCollectionView">
-							<string key="name">videoThumbnailCollectionView</string>
-							<string key="candidateClassName">UICollectionView</string>
-						</object>
-					</dictionary>
-					<object class="IBClassDescriptionSource" key="sourceIdentifier">
-						<string key="majorKey">IBProjectSource</string>
-						<string key="minorKey">./Classes/SYNAbstractViewController.h</string>
-					</object>
-				</object>
-				<object class="IBPartialClassDescription">
-					<string key="className">SYNChannelDetailViewController</string>
-					<string key="superclassName">SYNAbstractViewController</string>
-					<dictionary class="NSMutableDictionary" key="actions">
-						<string key="addCoverButtonTapped:">UIButton</string>
-						<string key="addItToChannelPresssed:">id</string>
-						<string key="backButtonTapped:">id</string>
-						<string key="buyButtonTapped:">id</string>
-						<string key="cancelEditTapped:">id</string>
-						<string key="createChannelPressed:">id</string>
-						<string key="editButtonTapped:">id</string>
-						<string key="profileImagePressed:">UIButton</string>
-						<string key="saveChannelTapped:">id</string>
-						<string key="selectCategoryButtonTapped:">UIButton</string>
-						<string key="shareChannelButtonTapped:">UIButton</string>
-						<string key="subscribeButtonTapped:">id</string>
-						<string key="userTouchedReportConcernButton:">UIButton</string>
-					</dictionary>
-					<dictionary class="NSMutableDictionary" key="actionInfosByName">
-						<object class="IBActionInfo" key="addCoverButtonTapped:">
-							<string key="name">addCoverButtonTapped:</string>
-							<string key="candidateClassName">UIButton</string>
-						</object>
-						<object class="IBActionInfo" key="addItToChannelPresssed:">
-							<string key="name">addItToChannelPresssed:</string>
-							<string key="candidateClassName">id</string>
-						</object>
-						<object class="IBActionInfo" key="backButtonTapped:">
-							<string key="name">backButtonTapped:</string>
-							<string key="candidateClassName">id</string>
-						</object>
-						<object class="IBActionInfo" key="buyButtonTapped:">
-							<string key="name">buyButtonTapped:</string>
-							<string key="candidateClassName">id</string>
-						</object>
-						<object class="IBActionInfo" key="cancelEditTapped:">
-							<string key="name">cancelEditTapped:</string>
-							<string key="candidateClassName">id</string>
-						</object>
-						<object class="IBActionInfo" key="createChannelPressed:">
-							<string key="name">createChannelPressed:</string>
-							<string key="candidateClassName">id</string>
-						</object>
-						<object class="IBActionInfo" key="editButtonTapped:">
-							<string key="name">editButtonTapped:</string>
-							<string key="candidateClassName">id</string>
-						</object>
-						<object class="IBActionInfo" key="profileImagePressed:">
-							<string key="name">profileImagePressed:</string>
-							<string key="candidateClassName">UIButton</string>
-						</object>
-						<object class="IBActionInfo" key="saveChannelTapped:">
-							<string key="name">saveChannelTapped:</string>
-							<string key="candidateClassName">id</string>
-						</object>
-						<object class="IBActionInfo" key="selectCategoryButtonTapped:">
-							<string key="name">selectCategoryButtonTapped:</string>
-							<string key="candidateClassName">UIButton</string>
-						</object>
-						<object class="IBActionInfo" key="shareChannelButtonTapped:">
-							<string key="name">shareChannelButtonTapped:</string>
-							<string key="candidateClassName">UIButton</string>
-						</object>
-						<object class="IBActionInfo" key="subscribeButtonTapped:">
-							<string key="name">subscribeButtonTapped:</string>
-							<string key="candidateClassName">id</string>
-						</object>
-						<object class="IBActionInfo" key="userTouchedReportConcernButton:">
-							<string key="name">userTouchedReportConcernButton:</string>
-							<string key="candidateClassName">UIButton</string>
-						</object>
-					</dictionary>
-					<dictionary class="NSMutableDictionary" key="outlets">
-						<string key="activityIndicator">UIActivityIndicatorView</string>
-						<string key="addCoverButton">UIButton</string>
-						<string key="avatarBackgroundView">UIView</string>
-						<string key="avatarImageView">UIImageView</string>
-						<string key="backButton">UIButton</string>
-						<string key="buyButton">UIButton</string>
-						<string key="byLabel">UILabel</string>
-						<string key="cameraButton">UIButton</string>
-						<string key="cameraMenuPopoverController">UIPopoverController</string>
-						<string key="cameraPopoverController">UIPopoverController</string>
-						<string key="cancelEditButton">UIButton</string>
-						<string key="cancelTextInputButton">UIButton</string>
-						<string key="channelCoverImageView">UIImageView</string>
-						<string key="channelDetailsLabel">UILabel</string>
-						<string key="channelOwnerLabel">UILabel</string>
-						<string key="channelTitleTextBackgroundView">UIView</string>
-						<string key="channelTitleTextView">SSTextView</string>
-						<string key="createChannelButton">UIButton</string>
-						<string key="displayControlsView">UIView</string>
-						<string key="editButton">UIButton</string>
-						<string key="editControlsView">UIView</string>
-						<string key="masterControlsView">UIView</string>
-						<string key="profileImageButton">UIButton</string>
-						<string key="reportConcernButton">UIButton</string>
-						<string key="reportConcernPopoverController">UIPopoverController</string>
-						<string key="saveChannelButton">UIButton</string>
-						<string key="selectCategoryButton">UIButton</string>
-						<string key="shareButton">UIButton</string>
-						<string key="subscribeButton">UIButton</string>
-						<string key="textBackgroundImageView">UIImageView</string>
-					</dictionary>
-					<dictionary class="NSMutableDictionary" key="toOneOutletInfosByName">
-						<object class="IBToOneOutletInfo" key="activityIndicator">
-							<string key="name">activityIndicator</string>
-							<string key="candidateClassName">UIActivityIndicatorView</string>
-						</object>
-						<object class="IBToOneOutletInfo" key="addCoverButton">
-							<string key="name">addCoverButton</string>
-							<string key="candidateClassName">UIButton</string>
-						</object>
-						<object class="IBToOneOutletInfo" key="avatarBackgroundView">
-							<string key="name">avatarBackgroundView</string>
-							<string key="candidateClassName">UIView</string>
-						</object>
-						<object class="IBToOneOutletInfo" key="avatarImageView">
-							<string key="name">avatarImageView</string>
-							<string key="candidateClassName">UIImageView</string>
-						</object>
-						<object class="IBToOneOutletInfo" key="backButton">
-							<string key="name">backButton</string>
-							<string key="candidateClassName">UIButton</string>
-						</object>
-						<object class="IBToOneOutletInfo" key="buyButton">
-							<string key="name">buyButton</string>
-							<string key="candidateClassName">UIButton</string>
-						</object>
-						<object class="IBToOneOutletInfo" key="byLabel">
-							<string key="name">byLabel</string>
-							<string key="candidateClassName">UILabel</string>
-						</object>
-						<object class="IBToOneOutletInfo" key="cameraButton">
-							<string key="name">cameraButton</string>
-							<string key="candidateClassName">UIButton</string>
-						</object>
-						<object class="IBToOneOutletInfo" key="cameraMenuPopoverController">
-							<string key="name">cameraMenuPopoverController</string>
-							<string key="candidateClassName">UIPopoverController</string>
-						</object>
-						<object class="IBToOneOutletInfo" key="cameraPopoverController">
-							<string key="name">cameraPopoverController</string>
-							<string key="candidateClassName">UIPopoverController</string>
-						</object>
-						<object class="IBToOneOutletInfo" key="cancelEditButton">
-							<string key="name">cancelEditButton</string>
-							<string key="candidateClassName">UIButton</string>
-						</object>
-						<object class="IBToOneOutletInfo" key="cancelTextInputButton">
-							<string key="name">cancelTextInputButton</string>
-							<string key="candidateClassName">UIButton</string>
-						</object>
-						<object class="IBToOneOutletInfo" key="channelCoverImageView">
-							<string key="name">channelCoverImageView</string>
-							<string key="candidateClassName">UIImageView</string>
-						</object>
-						<object class="IBToOneOutletInfo" key="channelDetailsLabel">
-							<string key="name">channelDetailsLabel</string>
-							<string key="candidateClassName">UILabel</string>
-						</object>
-						<object class="IBToOneOutletInfo" key="channelOwnerLabel">
-							<string key="name">channelOwnerLabel</string>
-							<string key="candidateClassName">UILabel</string>
-						</object>
-						<object class="IBToOneOutletInfo" key="channelTitleTextBackgroundView">
-							<string key="name">channelTitleTextBackgroundView</string>
-							<string key="candidateClassName">UIView</string>
-						</object>
-						<object class="IBToOneOutletInfo" key="channelTitleTextView">
-							<string key="name">channelTitleTextView</string>
-							<string key="candidateClassName">SSTextView</string>
-						</object>
-						<object class="IBToOneOutletInfo" key="createChannelButton">
-							<string key="name">createChannelButton</string>
-							<string key="candidateClassName">UIButton</string>
-						</object>
-						<object class="IBToOneOutletInfo" key="displayControlsView">
-							<string key="name">displayControlsView</string>
-							<string key="candidateClassName">UIView</string>
-						</object>
-						<object class="IBToOneOutletInfo" key="editButton">
-							<string key="name">editButton</string>
-							<string key="candidateClassName">UIButton</string>
-						</object>
-						<object class="IBToOneOutletInfo" key="editControlsView">
-							<string key="name">editControlsView</string>
-							<string key="candidateClassName">UIView</string>
-						</object>
-						<object class="IBToOneOutletInfo" key="masterControlsView">
-							<string key="name">masterControlsView</string>
-							<string key="candidateClassName">UIView</string>
-						</object>
-						<object class="IBToOneOutletInfo" key="profileImageButton">
-							<string key="name">profileImageButton</string>
-							<string key="candidateClassName">UIButton</string>
-						</object>
-						<object class="IBToOneOutletInfo" key="reportConcernButton">
-							<string key="name">reportConcernButton</string>
-							<string key="candidateClassName">UIButton</string>
-						</object>
-						<object class="IBToOneOutletInfo" key="reportConcernPopoverController">
-							<string key="name">reportConcernPopoverController</string>
-							<string key="candidateClassName">UIPopoverController</string>
-						</object>
-						<object class="IBToOneOutletInfo" key="saveChannelButton">
-							<string key="name">saveChannelButton</string>
-							<string key="candidateClassName">UIButton</string>
-						</object>
-						<object class="IBToOneOutletInfo" key="selectCategoryButton">
-							<string key="name">selectCategoryButton</string>
-							<string key="candidateClassName">UIButton</string>
-						</object>
-						<object class="IBToOneOutletInfo" key="shareButton">
-							<string key="name">shareButton</string>
-							<string key="candidateClassName">UIButton</string>
-						</object>
-						<object class="IBToOneOutletInfo" key="subscribeButton">
-							<string key="name">subscribeButton</string>
-							<string key="candidateClassName">UIButton</string>
-						</object>
-						<object class="IBToOneOutletInfo" key="textBackgroundImageView">
-							<string key="name">textBackgroundImageView</string>
-							<string key="candidateClassName">UIImageView</string>
-						</object>
-					</dictionary>
-					<object class="IBClassDescriptionSource" key="sourceIdentifier">
-						<string key="majorKey">IBProjectSource</string>
-						<string key="minorKey">./Classes/SYNChannelDetailViewController.h</string>
-					</object>
-				</object>
-				<object class="IBPartialClassDescription">
-					<string key="className">SYNPassthroughView</string>
-					<string key="superclassName">UIView</string>
-					<object class="IBClassDescriptionSource" key="sourceIdentifier">
-						<string key="majorKey">IBProjectSource</string>
-						<string key="minorKey">./Classes/SYNPassthroughView.h</string>
-					</object>
-				</object>
-				<object class="IBPartialClassDescription">
-					<string key="className">UICollectionViewFlowLayout</string>
-					<string key="superclassName">UICollectionViewLayout</string>
-					<object class="IBClassDescriptionSource" key="sourceIdentifier">
-						<string key="majorKey">IBProjectSource</string>
-						<string key="minorKey">./Classes/UICollectionViewFlowLayout.h</string>
-					</object>
-				</object>
-				<object class="IBPartialClassDescription">
-					<string key="className">UICollectionViewLayout</string>
-					<string key="superclassName">NSObject</string>
-					<object class="IBClassDescriptionSource" key="sourceIdentifier">
-						<string key="majorKey">IBProjectSource</string>
-						<string key="minorKey">./Classes/UICollectionViewLayout.h</string>
-					</object>
-				</object>
-			</array>
-		</object>
+		<object class="IBClassDescriber" key="IBDocument.Classes"/>
 		<int key="IBDocument.localizationMode">0</int>
 		<string key="IBDocument.TargetRuntimeIdentifier">IBIPadFramework</string>
 		<bool key="IBDocument.PluginDeclaredDependenciesTrackSystemTargetVersion">YES</bool>
@@ -1533,8 +1222,8 @@
 			<string key="ButtonReport.png">{83, 29}</string>
 			<string key="ButtonReportHighlighted.png">{83, 29}</string>
 			<string key="ButtonReportSelected.png">{83, 29}</string>
-			<string key="ButtonSave.png">{130, 45}</string>
-			<string key="ButtonSaveHighlighted.png">{130, 45}</string>
+			<string key="ButtonSave.png">{140, 45}</string>
+			<string key="ButtonSaveHighlighted.png">{140, 45}</string>
 			<string key="ButtonShare.png">{61, 61}</string>
 			<string key="ButtonShareHighlighted.png">{61, 61}</string>
 			<string key="ButtonSubscribe.png">{120, 45}</string>

@@ -46,7 +46,6 @@
 								<int key="NSvFlags">292</int>
 								<string key="NSFrameSize">{152, 152}</string>
 								<reference key="NSSuperview" ref="582525683"/>
-								<reference key="NSWindow"/>
 								<reference key="NSNextKeyView" ref="308581837"/>
 								<string key="NSReuseIdentifierKey">_NS:9</string>
 								<object class="NSColor" key="IBUIBackgroundColor" id="427251072">
@@ -67,7 +66,6 @@
 								<int key="NSvFlags">292</int>
 								<string key="NSFrameSize">{152, 152}</string>
 								<reference key="NSSuperview" ref="582525683"/>
-								<reference key="NSWindow"/>
 								<reference key="NSNextKeyView" ref="1069176426"/>
 								<string key="NSReuseIdentifierKey">_NS:9</string>
 								<reference key="IBUIBackgroundColor" ref="427251072"/>
@@ -85,7 +83,6 @@
 								<int key="NSvFlags">292</int>
 								<string key="NSFrameSize">{152, 152}</string>
 								<reference key="NSSuperview" ref="582525683"/>
-								<reference key="NSWindow"/>
 								<reference key="NSNextKeyView" ref="793628013"/>
 								<string key="NSReuseIdentifierKey">_NS:9</string>
 								<reference key="IBUIBackgroundColor" ref="427251072"/>
@@ -103,7 +100,6 @@
 								<int key="NSvFlags">292</int>
 								<string key="NSFrameSize">{152, 152}</string>
 								<reference key="NSSuperview" ref="582525683"/>
-								<reference key="NSWindow"/>
 								<reference key="NSNextKeyView" ref="933051206"/>
 								<string key="NSReuseIdentifierKey">_NS:9</string>
 								<reference key="IBUIBackgroundColor" ref="427251072"/>
@@ -121,8 +117,7 @@
 								<int key="NSvFlags">292</int>
 								<string key="NSFrame">{{10, 84}, {132, 47}}</string>
 								<reference key="NSSuperview" ref="582525683"/>
-								<reference key="NSWindow"/>
-								<reference key="NSNextKeyView" ref="165957708"/>
+								<reference key="NSNextKeyView"/>
 								<string key="NSReuseIdentifierKey">_NS:9</string>
 								<reference key="IBUIBackgroundColor" ref="427251072"/>
 								<bool key="IBUIAutoresizesSubviews">NO</bool>
@@ -162,8 +157,7 @@
 								<int key="NSvFlags">292</int>
 								<string key="NSFrame">{{-1, -1}, {64, 65}}</string>
 								<reference key="NSSuperview" ref="582525683"/>
-								<reference key="NSWindow"/>
-								<reference key="NSNextKeyView"/>
+								<reference key="NSNextKeyView" ref="497168566"/>
 								<string key="NSReuseIdentifierKey">_NS:9</string>
 								<reference key="IBUIBackgroundColor" ref="427251072"/>
 								<bool key="IBUIAutoresizesSubviews">NO</bool>
@@ -209,8 +203,7 @@
 						</array>
 						<string key="NSFrameSize">{152, 152}</string>
 						<reference key="NSSuperview" ref="411706856"/>
-						<reference key="NSWindow"/>
-						<reference key="NSNextKeyView" ref="497168566"/>
+						<reference key="NSNextKeyView" ref="165957708"/>
 						<reference key="IBUIBackgroundColor" ref="427251072"/>
 						<bool key="IBUIOpaque">NO</bool>
 						<bool key="IBUIClipsSubviews">YES</bool>
@@ -221,7 +214,6 @@
 				</array>
 				<string key="NSFrameSize">{152, 152}</string>
 				<reference key="NSSuperview"/>
-				<reference key="NSWindow"/>
 				<reference key="NSNextKeyView" ref="582525683"/>
 				<string key="NSReuseIdentifierKey">_NS:9</string>
 				<reference key="IBUIBackgroundColor" ref="427251072"/>
@@ -358,58 +350,7 @@
 			<nil key="sourceID"/>
 			<int key="maxID">46</int>
 		</object>
-		<object class="IBClassDescriber" key="IBDocument.Classes">
-			<array class="NSMutableArray" key="referencedPartialClassDescriptions">
-				<object class="IBPartialClassDescription">
-					<string key="className">SYNChannelMidCell</string>
-					<string key="superclassName">UICollectionViewCell</string>
-					<dictionary class="NSMutableDictionary" key="outlets">
-						<string key="deleteButton">UIButton</string>
-						<string key="imageView">UIImageView</string>
-						<string key="panelSelectedImageView">UIImageView</string>
-						<string key="titleLabel">UILabel</string>
-					</dictionary>
-					<dictionary class="NSMutableDictionary" key="toOneOutletInfosByName">
-						<object class="IBToOneOutletInfo" key="deleteButton">
-							<string key="name">deleteButton</string>
-							<string key="candidateClassName">UIButton</string>
-						</object>
-						<object class="IBToOneOutletInfo" key="imageView">
-							<string key="name">imageView</string>
-							<string key="candidateClassName">UIImageView</string>
-						</object>
-						<object class="IBToOneOutletInfo" key="panelSelectedImageView">
-							<string key="name">panelSelectedImageView</string>
-							<string key="candidateClassName">UIImageView</string>
-						</object>
-						<object class="IBToOneOutletInfo" key="titleLabel">
-							<string key="name">titleLabel</string>
-							<string key="candidateClassName">UILabel</string>
-						</object>
-					</dictionary>
-					<object class="IBClassDescriptionSource" key="sourceIdentifier">
-						<string key="majorKey">IBProjectSource</string>
-						<string key="minorKey">./Classes/SYNChannelMidCell.h</string>
-					</object>
-				</object>
-				<object class="IBPartialClassDescription">
-					<string key="className">UICollectionReusableView</string>
-					<string key="superclassName">UIView</string>
-					<object class="IBClassDescriptionSource" key="sourceIdentifier">
-						<string key="majorKey">IBProjectSource</string>
-						<string key="minorKey">./Classes/UICollectionReusableView.h</string>
-					</object>
-				</object>
-				<object class="IBPartialClassDescription">
-					<string key="className">UICollectionViewCell</string>
-					<string key="superclassName">UICollectionReusableView</string>
-					<object class="IBClassDescriptionSource" key="sourceIdentifier">
-						<string key="majorKey">IBProjectSource</string>
-						<string key="minorKey">./Classes/UICollectionViewCell.h</string>
-					</object>
-				</object>
-			</array>
-		</object>
+		<object class="IBClassDescriber" key="IBDocument.Classes"/>
 		<int key="IBDocument.localizationMode">0</int>
 		<string key="IBDocument.TargetRuntimeIdentifier">IBIPadFramework</string>
 		<bool key="IBDocument.PluginDeclaredDependenciesTrackSystemTargetVersion">YES</bool>

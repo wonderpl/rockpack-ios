@@ -388,6 +388,9 @@
 
 - (void) viewWillDisappear: (BOOL) animated
 {
+    [[NSNotificationCenter defaultCenter] postNotificationName: kNoteAllNavControlsShow
+                                                        object: self
+                                                      userInfo: nil];
     
     [self.videoThumbnailCollectionView removeObserver: self
                                            forKeyPath: kCollectionViewContentOffsetKey];
@@ -427,10 +430,12 @@
                                          forState: UIControlStateNormal];
 }
 
--(void)coverImageChangedHandler:(NSNotification*)notification
+
+- (void) coverImageChangedHandler: (NSNotification*) notification
 {
     NSDictionary * detailDictionary = [notification userInfo];
-    NSString* coverArtUrl = (NSString*)[detailDictionary objectForKey:kCoverArt];
+    NSString* coverArtUrl = (NSString*)[detailDictionary objectForKey: kCoverArt];
+    
     if (!coverArtUrl)
         return;
     
@@ -595,7 +600,7 @@
     
     
     // special mode for the favorite channel so we cannot delete the videos (un-heart them only)
-    if(self.channel.favouritesValue)
+    if (self.channel.favouritesValue)
     {
         videoThumbnailCell.displayMode = kChannelThumbnailDisplayModeDisplayFavourite;
     }
@@ -956,7 +961,7 @@
     self.addButton.hidden = YES;
     
     
-    if(self.channel.categoryId)
+    if (self.channel.categoryId)
     {
         //If a category is already selected on the channel, we should display it when entering edit mode
         
@@ -973,10 +978,10 @@
     
         NSArray* selectedCategoryResult = [appDelegate.mainManagedObjectContext executeFetchRequest: categoriesFetchRequest
                                                                                 error: &error];
-        if([selectedCategoryResult count]>0)
+        if ([selectedCategoryResult count]>0)
         {
             Genre* genre = [selectedCategoryResult objectAtIndex:0];
-            if([[SYNDeviceManager sharedInstance] isIPhone] && [genre isKindOfClass:[SubGenre class]])
+            if ([[SYNDeviceManager sharedInstance] isIPhone] && [genre isKindOfClass:[SubGenre class]])
             {
                 SubGenre* subCategory = (SubGenre*) genre;
                 [self.selectCategoryButton setTitle: [NSString stringWithFormat:@"%@/\n%@", subCategory.genre.name, subCategory.name]
@@ -1118,12 +1123,16 @@
         startFrame.origin.y = self.view.frame.size.height;
         self.coverImageSelector.view.frame = startFrame;
         [self.view addSubview:self.coverImageSelector.view];
-        [UIView animateWithDuration:0.3f delay:0.0f options:UIViewAnimationOptionCurveEaseOut animations:^{
-            CGRect endFrame = self.coverImageSelector.view.frame;
-            endFrame.origin.y = 0.0f;
-            self.coverImageSelector.view.frame = endFrame;
-        } completion:nil];
         
+        [UIView animateWithDuration: 0.3f
+                              delay: 0.0f
+                            options: UIViewAnimationOptionCurveEaseOut
+                         animations: ^{
+                             CGRect endFrame = self.coverImageSelector.view.frame;
+                             endFrame.origin.y = 0.0f;
+                             self.coverImageSelector.view.frame = endFrame;
+                         }
+                         completion:nil];
     }
 }
 
@@ -1150,26 +1159,20 @@
     {
         if (self.categoriesTabViewController.view.alpha == 0.0f)
         {
-            
-            
             [UIView animateWithDuration: kChannelEditModeAnimationDuration
                              animations: ^{
-                                 
                                  // Fade up the category tab controller // 
-                                 self.categoriesTabViewController.view.alpha = 1.0f;
-                                 
-                                 
+                                 self.categoriesTabViewController.view.alpha = 1.0f;   
                              }
-                             completion:^(BOOL finished) {
-                                 
+                             completion: ^(BOOL finished) {
                                  // if no category has been selected then select first //
                                  
-                                 if([self.channel.categoryId isEqualToString:@""])
+                                 if ([self.channel.categoryId isEqualToString:@""])
                                  {
-                                     SubGenre* firstSelection = (SubGenre*)[self.categoriesTabViewController selectAndReturnGenreForId:0
-                                                                                                                      andSubcategories:YES];
+                                     SubGenre* firstSelection = (SubGenre*)[self.categoriesTabViewController selectAndReturnGenreForId: 0
+                                                                                                                      andSubcategories: YES];
                                      
-                                     if(firstSelection)
+                                     if (firstSelection)
                                      {
                                          self.channel.categoryId = firstSelection.uniqueId;
                                          [self updateCategoryButtonText: [NSString stringWithFormat:@"%@/%@",
@@ -1180,16 +1183,12 @@
                                          [self.categoriesTabViewController deselectAll];
                                      }
                                  }
-                                 
-                                 
+
                                  [UIView animateWithDuration:0.4f
                                                        delay:0.1f
                                                      options:UIViewAnimationOptionBeginFromCurrentState | UIViewAnimationOptionCurveEaseInOut
                                                   animations:^{
-                                                      
-                                                      
                                                       // slide down the video collection view a bit //
-                                                      
                                                       CGFloat totalY =
                                                       kChannelCreationCollectionViewOffsetY + kChannelCreationCategoryAdditionalOffsetY;
                                                       self.videoThumbnailCollectionView.contentInset = UIEdgeInsetsMake(totalY, 0, 0, 0);
@@ -1201,7 +1200,6 @@
                                                   } completion:^(BOOL finished) {
                                      
                                                   }];
-                                 
                              }];
         }
     }
@@ -1221,6 +1219,7 @@
                 return;
             }
         }
+        
         CGRect startFrame = self.categoryTableViewController.view.frame;
         startFrame.origin.y = self.view.frame.size.height;
         self.categoryTableViewController.view.frame = startFrame;
@@ -1269,6 +1268,7 @@
                      completion: nil];
 }
 
+
 - (IBAction) addItToChannelPresssed: (id) sender
 {
     [[NSNotificationCenter defaultCenter] postNotificationName: kNoteAddToChannelRequest
@@ -1288,8 +1288,6 @@
 - (void) handleNewTabSelectionWithGenre: (Genre*) genre
 {
     // in the case of @"OTHER" the actual cid for the backend call is @"all" //
-    
-    
     if (!genre)
     {
         
@@ -1302,7 +1300,7 @@
 
     // update the text field with the format "GENRE/SUBGENRE"
 
-    if ([genre isMemberOfClass:[SubGenre class]])
+    if ([genre isMemberOfClass: [SubGenre class]])
     {
         [self hideCategoryChooser];
         [self updateCategoryButtonText: [NSString stringWithFormat:@"%@/%@", ((SubGenre*)genre).genre.name, genre.name]];
@@ -1311,12 +1309,7 @@
     {
         [self updateCategoryButtonText: genre.name];
     }
-        
-
 }
-
-
-
 
 
 #pragma mark - Channel Creation (3 steps)
@@ -1452,10 +1445,12 @@
                                           }];
 }
 
--(void) showError: (NSString*) errorMessage
+
+- (void) showError: (NSString*) errorMessage
 {
     self.createChannelButton.hidden = NO;
     [self.activityIndicator stopAnimating];
+    
     [[[UIAlertView alloc] initWithTitle: NSLocalizedString(@"Error", nil)
                                 message: errorMessage
                                delegate: nil
@@ -1507,6 +1502,7 @@
     
 }
 
+
 - (void) textViewDidEndEditing: (UITextView *) textView
 {
     if ([[SYNDeviceManager sharedInstance] isIPhone])
@@ -1553,8 +1549,7 @@
         if (UI_USER_INTERFACE_IDIOM() == UIUserInterfaceIdiomPad)
         {
             // Create out concerns table view controller
-            self.reportConcernTableViewController = [[SYNReportConcernTableViewController alloc]
-                                                initWithSendReportBlock: ^ (NSString *reportString){
+            self.reportConcernTableViewController = [[SYNReportConcernTableViewController alloc] initWithSendReportBlock: ^ (NSString *reportString){
                                                     [self.reportConcernPopoverController dismissPopoverAnimated: YES];
                                                     [self reportConcern: reportString];
                                                     self.reportConcernButton.selected = FALSE;
@@ -1819,10 +1814,7 @@
 
 #pragma mark - iPhone viewcontroller dismissal
 - (IBAction) backButtonTapped: (id) sender
-{
-    [[NSNotificationCenter defaultCenter] postNotificationName: kNoteAllNavControlsShow
-                                                        object: self
-                                                      userInfo: nil];
+{    
     CATransition *animation = [CATransition animation];
     
     [animation setType:kCATransitionReveal];
@@ -1834,22 +1826,22 @@
       kCAMediaTimingFunctionEaseInEaseOut]];
     
     [self.view.window.layer addAnimation: animation
-                                  forKey:nil];
+                                  forKey: nil];
     
     [self dismissViewControllerAnimated: NO
                              completion: nil];
 }
 
 
--(void)addSubscribeActivityIndicator
+- (void) addSubscribeActivityIndicator
 {
-    self.subscribingIndicator = [[UIActivityIndicatorView alloc] initWithActivityIndicatorStyle:UIActivityIndicatorViewStyleWhite];
+    self.subscribingIndicator = [[UIActivityIndicatorView alloc] initWithActivityIndicatorStyle: UIActivityIndicatorViewStyleWhite];
     CGRect indicatorRect = self.subscribingIndicator.frame;
     indicatorRect.origin.x = self.subscribeButton.frame.origin.x - 32.0;
     indicatorRect.origin.y = self.subscribeButton.frame.origin.y + 10.0;
     self.subscribingIndicator.frame = indicatorRect;
     [self.subscribingIndicator startAnimating];
-    [self.view addSubview:self.subscribingIndicator];
+    [self.view addSubview: self.subscribingIndicator];
 }
 
 
