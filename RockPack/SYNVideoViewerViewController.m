@@ -50,6 +50,7 @@
 @property (nonatomic, strong) IBOutlet BBCyclingLabel *channelTitleLabel;
 @property (nonatomic, strong) IBOutlet BBCyclingLabel *videoTitleLabel;
 @property (nonatomic, strong) IBOutlet UIView *swipeView;
+@property (nonatomic, strong) IBOutlet UIActivityIndicatorView *heartActivityIndicator;
 @property (nonatomic, strong) NSArray *videoInstanceArray;
 @property (nonatomic, strong) SYNReportConcernTableViewController *reportConcernTableViewController;
 @property (nonatomic, strong) SYNVideoViewerThumbnailLayout *layout;
@@ -543,13 +544,20 @@
 
 - (IBAction) toggleStarButton: (UIButton *) button
 {
+    button.selected = !button.selected;
+    
+    NSString *starAction = (button.selected == TRUE) ? @"star" : @"unstar";
+    
+    [self.heartActivityIndicator startAnimating];
+    
     VideoInstance *videoInstance = self.videoInstanceArray [self.currentSelectedIndex];
     
     [appDelegate.oAuthNetworkEngine recordActivityForUserId: appDelegate.currentUser.uniqueId
-                                                     action: @"star" videoInstanceId: videoInstance.uniqueId
+                                                     action: starAction
+                                            videoInstanceId: videoInstance.uniqueId
                                           completionHandler: ^(id response) {
-                                              button.selected = !button.selected;
-                                              
+                                              [self.heartActivityIndicator stopAnimating];
+
                                               if (videoInstance.video.starredByUserValue == TRUE)
                                               {
                                                   // Currently highlighted, so decrement
@@ -565,11 +573,13 @@
                                               
                                               [self updateVideoDetailsForIndex: self.currentSelectedIndex];
                                               
-                                              [appDelegate saveContext:YES];
+                                              [appDelegate saveContext: YES];
                                               
-                                          } errorHandler: ^(id error) {
-                                              NSLog(@"Could not star video");
-                                          }];
+                                          }
+                                               errorHandler: ^(id error) {
+                                                   [self.heartActivityIndicator stopAnimating];
+                                                   NSLog(@"Could not star video");
+                                               }];
 }
 
 - (IBAction) userTouchedCloseButton: (id) sender
