@@ -168,6 +168,7 @@
                                         animated: YES];
     
     NSString *imageURLString;
+    NSString *remoteId;
     
     // There are two sections for cover thumbnails, the first represents 'no cover' the second contains all images
     switch (indexPath.section)
@@ -175,6 +176,7 @@
         case 0:
         {
             imageURLString = @"";
+            remoteId = @"";
         }
         break;
             
@@ -184,6 +186,7 @@
             CoverArt *coverArt = [self.channelCoverFetchedResultsController objectAtIndexPath: [NSIndexPath indexPathForRow: indexPath.row
                                                                                                                   inSection: 1]];
             imageURLString = coverArt.thumbnailURL;
+            remoteId = coverArt.coverRef;
         }
             break;
             
@@ -193,13 +196,14 @@
             CoverArt *coverArt = [self.channelCoverFetchedResultsController objectAtIndexPath: [NSIndexPath indexPathForRow: indexPath.row
                                                                                                                   inSection: 0]];
             imageURLString = coverArt.thumbnailURL;
+            remoteId = coverArt.coverRef;
         }
         break;  
     }
     
     [[NSNotificationCenter defaultCenter] postNotificationName: kCoverArtChanged
                                                         object: self
-                                                      userInfo: @{kCoverArt:imageURLString}];
+                                                      userInfo: @{kCoverArt:imageURLString , kCoverImageReference:remoteId}];
 }
 
 
