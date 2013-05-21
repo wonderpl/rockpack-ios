@@ -200,7 +200,7 @@
     oldSubscription.subscribedByUserValue = NO;
 }
 
--(NSString*)fullName
+-(NSString*) fullName
 {
     return [NSString stringWithFormat:@"%@ %@", self.firstName, self.lastName];
 }

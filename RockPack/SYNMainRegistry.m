@@ -447,7 +447,8 @@
    
         [existingChannelsByIndex setObject:existingChannel forKey:existingChannel.uniqueId];
         
-        existingChannel.popularValue = NO; // set all to NO
+        if(!append)
+            existingChannel.popularValue = NO; // set all to NO
         
         // if we do not append and the channel is not owned by the user then delete
         if(!append && existingChannel.channelOwner != appDelegate.currentUser)
