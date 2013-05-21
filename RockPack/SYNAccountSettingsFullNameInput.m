@@ -139,7 +139,8 @@
 
 -(void)saveButtonPressed:(UIButton*)button
 {
-    
+    [self.lastNameInputField resignFirstResponder];
+    [self.inputField resignFirstResponder];
     
     if ([self.inputField.text isEqualToString:self.appDelegate.currentUser.firstName] && // user did not change anything
        [self.lastNameInputField.text isEqualToString:self.appDelegate.currentUser.lastName] &&

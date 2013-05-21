@@ -542,8 +542,9 @@
     [networkOperation addHeaders: @{@"Content-Type" : @"image/png", @"Content-Length" : lengthString}];
 
     [self addCommonHandlerToNetworkOperation: networkOperation
-                           completionHandler: completionBlock
-                                errorHandler: errorBlock];
+                           completionHandler:^(NSDictionary* result) {
+                               completionBlock([networkOperation.readonlyResponse allHeaderFields]);
+                           } errorHandler: errorBlock];
     
     [self enqueueSignedOperation: networkOperation];
 }

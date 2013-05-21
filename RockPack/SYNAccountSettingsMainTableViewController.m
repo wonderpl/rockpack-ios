@@ -397,7 +397,7 @@
 
     // Calculate age, taking account of leap-years etc. (probably too accurate!)
     NSDateComponents* ageComponents = [[NSCalendar currentCalendar] components: NSYearCalendarUnit
-                                                                      fromDate: user.dateOfBirth
+                                                                      fromDate: datePicker.date
                                                                         toDate: NSDate.date
                                                                        options: 0];
     
