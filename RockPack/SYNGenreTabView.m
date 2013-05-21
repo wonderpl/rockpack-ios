@@ -324,6 +324,8 @@
 
 -(void)highlightTabWithGenre:(Genre*)genreSelected
 {
+    if(!genreSelected)
+        return;
     
     if([genreSelected isMemberOfClass:[Genre class]])
     {
@@ -338,6 +340,7 @@
                 [itemView makeStandard];
             }
         }
+        return; // stop recursive call
            
     }
     else
@@ -353,7 +356,7 @@
                 [itemView makeStandard];
             }
         }
-        [self highlightTabWithGenre:((SubGenre*)genreSelected).genre];
+        [self highlightTabWithGenre:((Genre*)((SubGenre*)genreSelected).genre)]; // recurse once for Genre as well.
     }
     
     

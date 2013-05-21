@@ -50,25 +50,22 @@ static NSEntityDescription *categoryEntity = nil;
     {
         instance = matchingCategoryInstanceEntries[0];
         
-        // Mark this object so that it is not deleted in the post-import step
-        instance.markedForDeletionValue = FALSE;
+        instance.markedForDeletionValue = NO;
         
-        // NSLog(@"Using existing Category instance with id %@", instance.uniqueId);
         
-        return instance;
     }
     else
     {
         instance = [Genre insertInManagedObjectContext: managedObjectContext];
         
         
-        [instance setAttributesFromDictionary: dictionary
-                                       withId: uniqueId
-                    usingManagedObjectContext: managedObjectContext];
-        
-        
-        return instance;
     }
+    
+    [instance setAttributesFromDictionary: dictionary
+                                   withId: uniqueId
+                usingManagedObjectContext: managedObjectContext];
+    
+    return instance;
 }
 
 
@@ -100,10 +97,13 @@ static NSEntityDescription *categoryEntity = nil;
     }
     
     
-    for (NSDictionary* subcategoryData in [dictionary objectForKey: @"sub_categories"])
+    for (NSDictionary* subgenreData in [dictionary objectForKey: @"sub_categories"])
     {
-        SubGenre* subgenre = [SubGenre instanceFromDictionary: subcategoryData usingManagedObjectContext: managedObjectContext];
-        [self addSubgenresObject:subgenre];
+        SubGenre* subgenre = [SubGenre instanceFromDictionary: subgenreData
+                                    usingManagedObjectContext: managedObjectContext];
+        
+        
+        [self.subgenresSet addObject:subgenre];
         
     }
     
