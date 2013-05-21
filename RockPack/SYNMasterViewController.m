@@ -19,8 +19,8 @@
 #import "SYNFacebookManager.h"
 #import "SYNMasterViewController.h"
 #import "SYNNetworkErrorView.h"
+#import "SYNOAuthNetworkEngine.h"
 #import "SYNObjectFactory.h"
-#import "SYNRefreshButton.h"
 #import "SYNSearchBoxViewController.h"
 #import "SYNSearchRootViewController.h"
 #import "SYNSideNavigationViewController.h"
@@ -28,7 +28,6 @@
 #import "SYNVideoViewerViewController.h"
 #import "UIFont+SYNFont.h"
 #import <QuartzCore/QuartzCore.h>
-#import "SYNOAuthNetworkEngine.h"
 
 #define kMovableViewOffX -58
 
@@ -681,7 +680,7 @@ typedef void(^AnimationCompletionBlock)(BOOL finished);
 
 
 
--(void)allNavControlsRequested:(NSNotification*) notification
+- (void) allNavControlsRequested: (NSNotification*) notification
 {
     NSString* notificationName = [notification name];
     if(!notificationName)
@@ -705,10 +704,10 @@ typedef void(^AnimationCompletionBlock)(BOOL finished);
         self.dotsView.hidden = YES;
         self.movableButtonsContainer.hidden = YES;
         self.containerViewController.scrollView .scrollEnabled = NO;
+        self.sideNavigationViewController.state = SideNavigationStateHidden;
     }
     
 }
-
 
 
 - (void) navigateToPage: (NSNotification*) notification
@@ -718,23 +717,23 @@ typedef void(^AnimationCompletionBlock)(BOOL finished);
     if(!pageName)
         return;
     
-    
-    if(self.overlayNavigationController)
+    if (self.overlayNavigationController)
     {
         self.overlayNavigationController = nil;
     }
-    else if(showingBackButton)
+    else if (showingBackButton)
     {
         [self popCurrentViewController:self.backButtonControl];
     }
     
-    [self.containerViewController navigateToPageByName:pageName];
+    [self.containerViewController navigateToPageByName: pageName];
     
     self.sideNavigationViewController.state = SideNavigationStateHidden;
         
 }
 
--(void)channelSuccessfullySaved:(NSNotification*)note
+
+- (void) channelSuccessfullySaved: (NSNotification*) note
 {
     NSString* message = [[SYNDeviceManager sharedInstance] isIPhone]?
     NSLocalizedString(@"CHANNEL SAVED",nil):
@@ -742,29 +741,38 @@ typedef void(^AnimationCompletionBlock)(BOOL finished);
     [self presentSuccessNotificationWithMessage:message];
 }
 
--(void)hideOrShowNetworkMessages:(NSNotification*)note
+
+- (void) hideOrShowNetworkMessages: (NSNotification*) note
 {
-    if([note.name isEqualToString:kNoteShowNetworkMessages])
+    if ([note.name isEqualToString: kNoteShowNetworkMessages])
     {
         self.errorContainerView.hidden = NO;
-        [UIView animateWithDuration:0.3f delay:0.0f options:UIViewAnimationCurveEaseOut animations:^{
-            CGRect newFrame = self.errorContainerView.frame;
-            newFrame.origin.y = 0.0f;
-            self.errorContainerView.frame = newFrame;
-        } completion:nil];
+        [UIView animateWithDuration: 0.3f
+                              delay: 0.0f
+                            options: UIViewAnimationCurveEaseOut
+                         animations: ^{
+                             CGRect newFrame = self.errorContainerView.frame;
+                             newFrame.origin.y = 0.0f;
+                             self.errorContainerView.frame = newFrame;
+                         }
+                         completion:nil];
     }
     else
     {
-        [UIView animateWithDuration:0.3f delay:0.0f options:UIViewAnimationCurveEaseIn animations:^{
-            CGRect newFrame = self.errorContainerView.frame;
-            newFrame.origin.y = 60.0f;
-            self.errorContainerView.frame = newFrame;
-        } completion:^(BOOL finished) {
-            if(finished)
-            {
-                self.errorContainerView.hidden = YES;
-            }
-        }];
+        [UIView animateWithDuration: 0.3f
+                              delay: 0.0f
+                            options: UIViewAnimationCurveEaseIn
+                         animations: ^{
+                             CGRect newFrame = self.errorContainerView.frame;
+                             newFrame.origin.y = 60.0f;
+                             self.errorContainerView.frame = newFrame;
+                         }
+                         completion: ^(BOOL finished){
+                             if (finished)
+                             {
+                                 self.errorContainerView.hidden = YES;
+                             }
+                         }];
     }
 }
 
