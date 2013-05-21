@@ -1068,8 +1068,10 @@ typedef void(^AnimationCompletionBlock)(BOOL finished);
         newFrame.origin.y = [[SYNDeviceManager sharedInstance] currentScreenHeightWithStatusBar] - newFrame.size.height;
         successNotification.frame = newFrame;
     } completion:^(BOOL finished) {
-        [UIView animateWithDuration:0.3f delay:10.0f options:UIViewAnimationOptionCurveEaseInOut animations:^{
-            successNotification.alpha = 0.0f;
+        [UIView animateWithDuration:0.3f delay:4.0f options:UIViewAnimationOptionCurveEaseIn animations:^{
+            CGRect newFrame = successNotification.frame;
+            newFrame.origin.y = [[SYNDeviceManager sharedInstance] currentScreenHeightWithStatusBar] + newFrame.size.height;
+            successNotification.frame = newFrame;
         } completion:^(BOOL finished) {
             [successNotification removeFromSuperview];
         }];
