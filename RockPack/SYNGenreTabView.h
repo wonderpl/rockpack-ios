@@ -10,7 +10,10 @@
 #import "SYNTabViewDelegate.h"
 #import "SYNTabView.h"
 
+
+
 @interface SYNGenreTabView : SYNTabView
+
 
 - (id) initWithSize: (CGFloat) totalWidth
       andHomeButton: (NSString*) homeButtonString;

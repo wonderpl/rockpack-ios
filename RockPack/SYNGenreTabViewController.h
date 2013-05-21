@@ -12,10 +12,12 @@
 
 @interface SYNGenreTabViewController : SYNTabViewController 
 
+@property (nonatomic) BOOL showOtherInSubcategories;
+
 - (id) initWithHomeButton: (NSString*) homeButtomString;
 
 -(void) deselectAll;
--(void)autoSelectFirstTab;
+-(void) autoSelectFirstTab;
 
 
 @end

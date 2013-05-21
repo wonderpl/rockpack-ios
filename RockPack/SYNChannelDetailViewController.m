@@ -1101,7 +1101,7 @@
     {
         if (self.categoriesTabViewController.view.alpha == 0.0f)
         {
-            [self.categoriesTabViewController deselectAll];
+            
             
             [UIView animateWithDuration: kChannelEditModeAnimationDuration
                              animations: ^{
@@ -1113,7 +1113,13 @@
                              }
                              completion:^(BOOL finished) {
                                  
-                                 [self.categoriesTabViewController autoSelectFirstTab];
+                                 // if no category has been selected then select first //
+                                 
+                                 if([self.channel.categoryId isEqualToString:@""])
+                                 {
+                                     [self.categoriesTabViewController autoSelectFirstTab];
+                                 }
+                                 
                                  
                                  [UIView animateWithDuration:0.4f
                                                        delay:0.1f

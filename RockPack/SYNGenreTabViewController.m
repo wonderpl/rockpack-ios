@@ -115,6 +115,10 @@
 - (void) handleMainTap: (UIView *) tab
 {
     
+    SYNGenreItemView* genreTab = (SYNGenreItemView*)tab;
+    for (SubGenre* sg in genreTab.model.subgenres) {
+        NSLog(@" === SubGenre found: %@ (p %i)", sg.name, [sg.priority intValue]);
+    }
     
     if (!tab || tab.tag == 0)
     {
@@ -132,34 +136,8 @@
         return;   
     }
     
-    SYNAppDelegate* appDelegate = (SYNAppDelegate *)[[UIApplication sharedApplication] delegate];
-
-    NSEntityDescription* categoryEntity = [NSEntityDescription entityForName: @"Genre"
-                                                      inManagedObjectContext: appDelegate.mainManagedObjectContext];
     
-    NSFetchRequest *categoriesFetchRequest = [[NSFetchRequest alloc] init];
-    [categoriesFetchRequest setEntity: categoryEntity];
-    
-    NSPredicate *predicate = [NSPredicate predicateWithFormat: @"uniqueId == %d", tab.tag];
-    [categoriesFetchRequest setPredicate: predicate];
-    
-    NSError* error = nil;
-    
-    NSArray *matchingCategoryInstanceEntries = [appDelegate.mainManagedObjectContext executeFetchRequest: categoriesFetchRequest
-                                                                                                   error: &error];
-    
-    if (matchingCategoryInstanceEntries.count == 0)
-    {
-        DebugLog(@"WARNING: Found NO Category for Tab %d", tab.tag);
-        return;
-    }
-    
-    if (matchingCategoryInstanceEntries.count > 1)
-    {
-        DebugLog(@"WARNING: Found multiple (%i) Categories for Tab %d", matchingCategoryInstanceEntries.count, tab.tag);
-    }
-    
-    Genre* genreSelected = (Genre*)matchingCategoryInstanceEntries[0];
+    Genre* genreSelected = (Genre*)genreTab.model;
     
     NSMutableSet* filteredSet = [[NSMutableSet alloc] init];
     
@@ -196,6 +174,8 @@
 
 - (void) handleSecondaryTap: (UIView *) tab
 {
+    
+    
     
     SYNAppDelegate* appDelegate = (SYNAppDelegate *)[[UIApplication sharedApplication] delegate];
     
@@ -259,6 +239,10 @@
 -(void)autoSelectFirstTab
 {
     [self.categoriesTabView autoSelectFirstTab];
+}
+-(void)highlightTabWithId:(NSString*)tabId
+{
+    
 }
 
 @end
