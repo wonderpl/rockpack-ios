@@ -320,13 +320,43 @@
     }
 }
 
--(void)autoSelectFirstTab
+
+
+-(void)highlightTabWithGenre:(Genre*)genreSelected
 {
-    SYNGenreItemView* firstTab = (SYNGenreItemView*)self.mainTabsView.subviews[0];
     
-    [firstTab makeHighlighted];
+    if([genreSelected isMemberOfClass:[Genre class]])
+    {
+        for(SYNGenreItemView* itemView in self.mainTabsView.subviews)
+        {
+            if([genreSelected.uniqueId intValue] == itemView.tag)
+            {
+                [itemView makeHighlighted];
+            }
+            else
+            {
+                [itemView makeStandard];
+            }
+        }
+           
+    }
+    else
+    {
+        for(SYNGenreItemView* itemView in self.secondaryTabsView.subviews)
+        {
+            if([genreSelected.uniqueId intValue] == itemView.tag)
+            {
+                [itemView makeHighlighted];
+            }
+            else
+            {
+                [itemView makeStandard];
+            }
+        }
+        [self highlightTabWithGenre:((SubGenre*)genreSelected).genre];
+    }
     
-    [self.tapDelegate handleMainTap: firstTab];
+    
 }
 
 @end

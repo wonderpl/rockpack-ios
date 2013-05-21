@@ -58,9 +58,9 @@ extern const struct GenreFetchedProperties {
 
 
 
-@property (nonatomic, strong) NSSet *subgenres;
+@property (nonatomic, strong) NSOrderedSet *subgenres;
 
-- (NSMutableSet*)subgenresSet;
+- (NSMutableOrderedSet*)subgenresSet;
 
 
 
@@ -70,8 +70,8 @@ extern const struct GenreFetchedProperties {
 
 @interface _Genre (CoreDataGeneratedAccessors)
 
-- (void)addSubgenres:(NSSet*)value_;
-- (void)removeSubgenres:(NSSet*)value_;
+- (void)addSubgenres:(NSOrderedSet*)value_;
+- (void)removeSubgenres:(NSOrderedSet*)value_;
 - (void)addSubgenresObject:(SubGenre*)value_;
 - (void)removeSubgenresObject:(SubGenre*)value_;
 
@@ -96,8 +96,8 @@ extern const struct GenreFetchedProperties {
 
 
 
-- (NSMutableSet*)primitiveSubgenres;
-- (void)setPrimitiveSubgenres:(NSMutableSet*)value;
+- (NSMutableOrderedSet*)primitiveSubgenres;
+- (void)setPrimitiveSubgenres:(NSMutableOrderedSet*)value;
 
 
 @end

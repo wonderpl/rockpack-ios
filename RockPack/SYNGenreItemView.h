@@ -18,8 +18,12 @@ typedef enum {
 @interface SYNGenreItemView : UIView
 {
     @private TabItemType type;
-    @private UIColor* grayColor; 
+    @private UIColor* grayColor;
+    @private Genre* model;
 }
+
+
+@property (nonatomic, readonly) Genre* model;
 
 @property (nonatomic, strong) UIImageView* glowImageView;
 @property (nonatomic, strong) UILabel* label;

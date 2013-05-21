@@ -31,6 +31,8 @@
 
 @implementation SYNGenreItemView
 
+@synthesize model;
+
 - (id) initWithTabItemModel: (Genre *) tabItemModel
 {
     if ((self = [super init]))
@@ -44,7 +46,10 @@
         else
             type = TabItemTypeMain;
         
-        [self setViewAttributesWithItemName: tabItemModel.name];
+        
+        model = tabItemModel;
+        
+        [self setViewAttributesWithItemName: model.name];
     }
     
     return self;
