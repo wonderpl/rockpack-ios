@@ -1876,7 +1876,11 @@
           withRemoteId: (NSString *) remoteId
 {
     self.selectedCoverId = remoteId;
-    [self.channelCoverImageView setImageFromURL:[NSURL URLWithString: imageUrlString]];
+    
+    NSString* largeImageUrlString = [imageUrlString stringByReplacingOccurrencesOfString:@"thumbnail_medium" withString:@"background"];
+    [self.channelCoverImageView setImageWithURL: [NSURL URLWithString: largeImageUrlString]
+                               placeholderImage: [UIImage imageNamed: @"PlaceholderChannelCreation.png"]
+                                        options: SDWebImageRetryFailed];
     [self closeImageSelector: imageSelector];
 }
 
