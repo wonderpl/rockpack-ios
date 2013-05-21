@@ -10,7 +10,11 @@
 #import "SYNTabViewDelegate.h"
 #import "SYNTabView.h"
 
+
+@class Genre;
+
 @interface SYNGenreTabView : SYNTabView
+
 
 - (id) initWithSize: (CGFloat) totalWidth
       andHomeButton: (NSString*) homeButtonString;
@@ -19,6 +23,6 @@
 - (void) showSecondaryTabs;
 
 -(void) deselectAll;
--(void) autoSelectFirstTab;
+-(void)highlightTabWithGenre:(Genre*)genreSelected;
 
 @end

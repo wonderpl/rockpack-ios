@@ -10,12 +10,15 @@
 
 #import "SYNTabViewController.h"
 
+@class Genre;
 @interface SYNGenreTabViewController : SYNTabViewController 
+
+@property (nonatomic) BOOL showOtherInSubcategories;
 
 - (id) initWithHomeButton: (NSString*) homeButtomString;
 
 -(void) deselectAll;
--(void)autoSelectFirstTab;
+-(void)highlightTabWithId:(NSInteger)identifier andSubcategories:(BOOL)showSubcategories;
 
 
 @end

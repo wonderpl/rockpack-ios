@@ -21,6 +21,7 @@
 @property (nonatomic, strong) NSString *currentTopLevelCategoryName;
 @property (nonatomic, assign) NSString* homeButtomString;
 @property (nonatomic, readonly) SYNGenreTabView* categoriesTabView;
+@property (nonatomic, strong) NSArray* genresFetched;
 @end
 
 
@@ -82,10 +83,10 @@
     
     categoriesFetchRequest.includesSubentities = NO;
 
-    NSArray *matchingCategoryInstanceEntries = [appDelegate.mainManagedObjectContext executeFetchRequest: categoriesFetchRequest
+    self.genresFetched = [appDelegate.mainManagedObjectContext executeFetchRequest: categoriesFetchRequest
                                                                                                    error: &error];
     
-    if (matchingCategoryInstanceEntries.count == 0)
+    if (self.genresFetched.count == 0)
     {
         
         [appDelegate.networkEngine updateCategoriesOnCompletion: ^{
@@ -97,7 +98,7 @@
         return;
     }
     
-    [self.tabView createCategoriesTab:matchingCategoryInstanceEntries];
+    [self.tabView createCategoriesTab:self.genresFetched];
 }
 
 
@@ -115,6 +116,10 @@
 - (void) handleMainTap: (UIView *) tab
 {
     
+    SYNGenreItemView* genreTab = (SYNGenreItemView*)tab;
+    for (SubGenre* sg in genreTab.model.subgenres) {
+        NSLog(@" === SubGenre found: %@ (p %i)", sg.name, [sg.priority intValue]);
+    }
     
     if (!tab || tab.tag == 0)
     {
@@ -132,45 +137,28 @@
         return;   
     }
     
-    SYNAppDelegate* appDelegate = (SYNAppDelegate *)[[UIApplication sharedApplication] delegate];
-
-    NSEntityDescription* categoryEntity = [NSEntityDescription entityForName: @"Genre"
-                                                      inManagedObjectContext: appDelegate.mainManagedObjectContext];
     
-    NSFetchRequest *categoriesFetchRequest = [[NSFetchRequest alloc] init];
-    [categoriesFetchRequest setEntity: categoryEntity];
-    
-    NSPredicate *predicate = [NSPredicate predicateWithFormat: @"uniqueId == %d", tab.tag];
-    [categoriesFetchRequest setPredicate: predicate];
-    
-    NSError* error = nil;
-    
-    NSArray *matchingCategoryInstanceEntries = [appDelegate.mainManagedObjectContext executeFetchRequest: categoriesFetchRequest
-                                                                                                   error: &error];
-    
-    if (matchingCategoryInstanceEntries.count == 0)
-    {
-        DebugLog(@"WARNING: Found NO Category for Tab %d", tab.tag);
-        return;
-    }
-    
-    if (matchingCategoryInstanceEntries.count > 1)
-    {
-        DebugLog(@"WARNING: Found multiple (%i) Categories for Tab %d", matchingCategoryInstanceEntries.count, tab.tag);
-    }
-    
-    Genre* genreSelected = (Genre*)matchingCategoryInstanceEntries[0];
+    Genre* genreSelected = (Genre*)genreTab.model;
     
     NSMutableSet* filteredSet = [[NSMutableSet alloc] init];
+    
+    SubGenre* otherSubGenre; // if we need to show it at the end
     
     for (SubGenre* subgenre in genreSelected.subgenres)
     {
         if ([subgenre.priority integerValue] < 0)
         {
+            if([[subgenre.name uppercaseString] isEqualToString:@"OTHER"])
+                otherSubGenre = subgenre;
             continue;
         }
         
         [filteredSet addObject: subgenre];
+    }
+    
+    if (otherSubGenre)
+    {
+        [filteredSet addObject: otherSubGenre];
     }
     
     if (self.delegate && [self.delegate showSubcategories])
@@ -196,6 +184,8 @@
 
 - (void) handleSecondaryTap: (UIView *) tab
 {
+    
+    
     
     SYNAppDelegate* appDelegate = (SYNAppDelegate *)[[UIApplication sharedApplication] delegate];
     
@@ -256,9 +246,16 @@
 {
     [self.categoriesTabView deselectAll];
 }
--(void)autoSelectFirstTab
+
+-(void)highlightTabWithId:(NSInteger)identifier andSubcategories:(BOOL)showSubcategories
 {
-    [self.categoriesTabView autoSelectFirstTab];
+    if(!self.genresFetched || (self.genresFetched.count - 1) < identifier)
+        return;
+    Genre* genreToHighlight = self.genresFetched[identifier];
+    if(!showSubcategories)
+        [self.categoriesTabView highlightTabWithGenre:genreToHighlight];
+    else
+        [self.categoriesTabView highlightTabWithGenre:genreToHighlight];
 }
 
 @end
