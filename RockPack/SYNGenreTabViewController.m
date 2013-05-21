@@ -279,16 +279,12 @@
     if(subcats)
     {
         genreToSelect = (SubGenre*)[genreToSelect.subgenres firstObject];
+        [self handleMainGenreSelection:((SubGenre*)genreToSelect).genre];
     }
-    
     
     
     [self.categoriesTabView highlightTabWithGenre:genreToSelect];
     
-    if(subcats)
-    {
-        [self handleMainGenreSelection:genreToSelect];
-    }
     
     
     
