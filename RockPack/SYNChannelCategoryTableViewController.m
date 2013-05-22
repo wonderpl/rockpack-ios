@@ -51,6 +51,7 @@
 {
     _headerRegister = [NSMutableDictionary dictionary];
     _showAllCategoriesHeader = YES;
+    _showOtherSubCategory = NO;
 }
 
 - (void)viewDidLoad
@@ -345,6 +346,7 @@
         {
             [self.categoryTableControllerDelegate categoryTableController:self didSelectCategory:nil];
         }
+        self.confirmButton.enabled = NO;
         
     }
     
@@ -354,27 +356,22 @@
     {
         [CATransaction commit];
     }
-    
-    self.confirmButton.enabled = NO;
 }
 
 -(void)expandSection:(NSInteger)section
 {
     NSMutableDictionary* sectionDictionary = [self.transientDatasource objectAtIndex:section];
+    
     Genre * category = [self.categoriesDatasource objectAtIndex:section];
-    NSArray* newSubCategories = [category.subgenres sortedArrayUsingComparator:^NSComparisonResult(id obj1, id obj2) {
-        
-        if(((SubGenre*)obj1).priority > ((SubGenre*)obj2).priority)
-            return (NSComparisonResult)NSOrderedDescending;
-        else if(((SubGenre*)obj1).priority < ((SubGenre*)obj2).priority)
-            return (NSComparisonResult)NSOrderedAscending;
-        
-        return (NSComparisonResult)NSOrderedSame;
-    }];
+    NSArray* newSubCategories = [category.subgenres array];
     NSPredicate* predicate = [NSPredicate predicateWithFormat:@"priority > 0"];
     newSubCategories = [newSubCategories filteredArrayUsingPredicate:predicate];
+    NSSortDescriptor* idSortDescriptor = [[NSSortDescriptor alloc] initWithKey: @"priority"
+                                                                     ascending: NO];
+    newSubCategories = [newSubCategories sortedArrayUsingDescriptors:@[idSortDescriptor]];
     [sectionDictionary setObject:newSubCategories forKey:kSubCategoriesKey];
     [self.transientDatasource replaceObjectAtIndex:section withObject:sectionDictionary];
+    
     NSMutableArray* indexPaths = [NSMutableArray arrayWithCapacity:[newSubCategories count]];
     for(int i=0; i< [newSubCategories count]; i++)
     {
@@ -391,11 +388,18 @@
     } completion:nil];
     
     //Callback to update content
-    if([self.categoryTableControllerDelegate respondsToSelector:@selector(categoryTableController:didSelectCategory:)])
+    if(!self.confirmButton)
     {
-        [self.categoryTableControllerDelegate categoryTableController:self didSelectCategory:category];
+
+        if([self.categoryTableControllerDelegate respondsToSelector:@selector(categoryTableController:didSelectCategory:)])
+        {
+            [self.categoryTableControllerDelegate categoryTableController:self didSelectCategory:category];
+        }
     }
-    self.confirmButton.enabled = NO;
+    else
+    {
+        self.confirmButton.enabled = YES;
+    }
     self.lastSelectedIndexpath = [NSIndexPath indexPathForRow:-1 inSection:section];
 }
 
@@ -451,9 +455,27 @@
 - (IBAction)confirmButtonTapped:(id)sender {
     if([self.categoryTableControllerDelegate respondsToSelector:@selector(categoryTableController:didSelectSubCategory:)])
     {
-        SubGenre* subCategory = [[[self.transientDatasource objectAtIndex:self.lastSelectedIndexpath.section] objectForKey:kSubCategoriesKey] objectAtIndex:self.lastSelectedIndexpath.row];
-        [self.categoryTableControllerDelegate categoryTableController:self
-                                                 didSelectSubCategory:subCategory];
+        if(self.lastSelectedIndexpath)
+        {
+            if(self.lastSelectedIndexpath.row >= 0)
+            {
+                if([self.categoryTableControllerDelegate respondsToSelector:@selector(categoryTableController:didSelectSubCategory:)])
+                {
+                    SubGenre* subCategory = [[[self.transientDatasource objectAtIndex:self.lastSelectedIndexpath.section] objectForKey:kSubCategoriesKey] objectAtIndex:self.lastSelectedIndexpath.row];
+                    [self.categoryTableControllerDelegate categoryTableController:self
+                                                             didSelectSubCategory:subCategory];
+                }
+            }
+            else
+            {
+                if([self.categoryTableControllerDelegate respondsToSelector:@selector(categoryTableController:didSelectCategory:)])
+                {
+                    Genre* category = [self.categoriesDatasource objectAtIndex:self.lastSelectedIndexpath.section];
+                    [self.categoryTableControllerDelegate categoryTableController:self didSelectCategory:category];
+                }
+            }
+        }
+        
     }
     
 }

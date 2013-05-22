@@ -150,7 +150,7 @@
 }
 
 
-- (void) createSubcategoriesTab: (NSSet*) subcategories
+- (void) createSubcategoriesTab: (NSArray*) subcategories
 {
     // Clean current subviews
     for (UIView* sview in self.secondaryTabsView.subviews)
@@ -160,13 +160,8 @@
         [divider removeFromSuperview];
     
     SYNGenreItemView* tab = nil;
- 
-    NSSortDescriptor* idSortDescriptor = [[NSSortDescriptor alloc] initWithKey: @"priority"
-                                                                     ascending: NO];
-    
-    NSArray* sortedSubcategories = [subcategories sortedArrayUsingDescriptors: [NSArray arrayWithObject: idSortDescriptor]];
         
-    for (SubGenre* subcategory in sortedSubcategories)
+    for (SubGenre* subcategory in subcategories)
     {
         tab = [[SYNGenreItemView alloc] initWithTabItemModel: subcategory];
         [self.secondaryTabsView addSubview: tab];

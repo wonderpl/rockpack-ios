@@ -87,7 +87,6 @@
 @property (weak, nonatomic) IBOutlet UILabel *byLabel;
 
 //iPhone specific
-@property (nonatomic,strong) AVURLAsset* selectedAsset;
 @property (nonatomic,strong) SYNChannelCoverImageSelectorViewController* coverImageSelector;
 @property (strong,nonatomic) SYNChannelCategoryTableViewController *categoryTableViewController;
 @property (weak, nonatomic) IBOutlet UIActivityIndicatorView *activityIndicator;
@@ -234,6 +233,7 @@
         // Create categories tab, but make invisible (alpha = 0) for now
         self.categoriesTabViewController = [[SYNGenreTabViewController alloc] initWithHomeButton: @"hiden"];
         self.categoriesTabViewController.delegate = self;
+        self.categoriesTabViewController.showOtherInSubcategories = YES;
         CGRect tabFrame = self.categoriesTabViewController.view.frame;
         tabFrame.origin.y = kChannelCreationCategoryTabOffsetY;
         self.categoriesTabViewController.view.frame = tabFrame;
@@ -1027,21 +1027,9 @@
     self.channel.title = self.channelTitleTextView.text;
     self.channel.channelDescription = @"Test Description";
     
-    NSString* category = self.selectedCategoryId;
-    if ([category length] == 0)
-    {
-        category = self.channel.categoryId;
-        if (!category)
-        {
-            category = @"all";
-        }
-    }
+    NSString* category = [self categoryIdStringForServiceCall];
     
-    NSString* cover = self.selectedCoverId;
-    if ([cover length]==0)
-    {
-        cover = @"KEEP";
-    }
+    NSString* cover = [self coverIdStringForServiceCall];
     
     [appDelegate.oAuthNetworkEngine updateChannelForUserId: appDelegate.currentOAuth2Credentials.userId
                                                  channelId: self.channel.uniqueId
@@ -1212,6 +1200,7 @@
             self.categoryTableViewController = [[SYNChannelCategoryTableViewController alloc] initWithNibName:@"SYNChannelCategoryTableViewControllerFullscreen~iphone" bundle: [NSBundle mainBundle]];
             self.categoryTableViewController.categoryTableControllerDelegate = self;
             self.categoryTableViewController.showAllCategoriesHeader = NO;
+            self.categoryTableViewController.showOtherSubCategory = YES;
         }
         else
         {
@@ -1293,12 +1282,11 @@
     if (!genre)
     {
         
-        self.channel.categoryId = @"all";
+        self.selectedCategoryId = @"";
         [self updateCategoryButtonText: @"OTHER"];
         return;
     }
         
-    self.channel.categoryId = genre.uniqueId;
 
     // update the text field with the format "GENRE/SUBGENRE"
 
@@ -1306,10 +1294,25 @@
     {
         [self hideCategoryChooser];
         [self updateCategoryButtonText: [NSString stringWithFormat:@"%@/%@", ((SubGenre*)genre).genre.name, genre.name]];
+        self.selectedCategoryId = genre.uniqueId;
     }
     else
     {
-        [self updateCategoryButtonText: genre.name];
+        NSArray* filteredSubcategories = [[genre.subgenres array] filteredArrayUsingPredicate:[NSPredicate predicateWithFormat:@"priority = -1"]];
+        if([filteredSubcategories count] == 1)
+        {
+            SubGenre* otherSubGenre = [filteredSubcategories objectAtIndex:0];
+            
+            self.selectedCategoryId = otherSubGenre.uniqueId;
+            
+            [self updateCategoryButtonText: [NSString stringWithFormat:@"%@/%@", otherSubGenre.genre.name, otherSubGenre.name]];
+        }
+        else
+        {
+            self.selectedCategoryId = genre.uniqueId;
+            [self updateCategoryButtonText: genre.name];
+        }
+
     }
 }
 
@@ -1331,11 +1334,15 @@
     
     self.channel.channelDescription = self.channel.channelDescription ? self.channel.channelDescription : @"";
     
+    NSString* category = [self categoryIdStringForServiceCall];
+    
+    NSString* cover = [self coverIdStringForServiceCall];
+    
     [appDelegate.oAuthNetworkEngine createChannelForUserId: appDelegate.currentOAuth2Credentials.userId
                                                      title: self.channel.title
                                                description: self.channel.channelDescription
-                                                  category: self.selectedCategoryId
-                                                     cover: self.selectedCoverId
+                                                  category: category
+                                                     cover: cover
                                                   isPublic: YES
                                          completionHandler: ^(NSDictionary* resourceCreated) {
                                              NSString* channelId = [resourceCreated objectForKey: @"id"];
@@ -1460,6 +1467,32 @@
                                delegate: nil
                       cancelButtonTitle: NSLocalizedString(@"OK", nil)
                       otherButtonTitles: nil] show];
+}
+
+#pragma mark - channel and cover id preparation
+
+-(NSString*)categoryIdStringForServiceCall
+{
+    NSString* category = self.selectedCategoryId;
+    if ([category length] == 0)
+    {
+        category = self.channel.categoryId;
+        if (!category)
+        {
+            category = @"";
+        }
+    }
+    return category;
+}
+
+-(NSString*)coverIdStringForServiceCall
+{
+    NSString* cover = self.selectedCoverId;
+    if ([cover length]==0)
+    {
+        cover = @"KEEP";
+    }
+    return cover;
 }
 
 
@@ -1851,6 +1884,30 @@
 
 #pragma mark - iPhone Category Table delegate
 
+- (void) categoryTableController:(SYNChannelCategoryTableViewController *)tableController didSelectCategory:(Genre *)category
+{
+    if(category)
+    {
+        NSArray* filteredSubcategories = [[category.subgenres array] filteredArrayUsingPredicate:[NSPredicate predicateWithFormat:@"priority = -1"]];
+        if([filteredSubcategories count] == 1)
+        {
+            SubGenre* otherSubGenre = [filteredSubcategories objectAtIndex:0];
+            
+            self.selectedCategoryId = otherSubGenre.uniqueId;
+            
+            [self.selectCategoryButton setTitle: [NSString stringWithFormat:@"%@/\n%@", otherSubGenre.genre.name, otherSubGenre.name]
+                                       forState: UIControlStateNormal];    }
+        else
+        {
+            self.selectedCategoryId = category.uniqueId;
+            
+            [self.selectCategoryButton setTitle: [NSString stringWithFormat:@"%@", category.name]
+                                       forState: UIControlStateNormal];
+        }
+        [self hideCategoriesTable];
+    }
+}
+
 - (void) categoryTableController:(SYNChannelCategoryTableViewController *)tableController didSelectSubCategory:(SubGenre *)subCategory
 {
     self.selectedCategoryId = subCategory.uniqueId;
@@ -1863,8 +1920,6 @@
 
 - (void) categoryTableControllerDeselectedAll: (SYNChannelCategoryTableViewController *) tableController
 {
-    [self.selectCategoryButton setTitle: NSLocalizedString(@"SELECT A\nCATEGORY", nil)
-                               forState: UIControlStateNormal];
     
     [self hideCategoriesTable];
 }
@@ -1904,15 +1959,6 @@
                      }];
     
     self.imageSelectorOpen = FALSE;
-}
-
-
-- (void) imageSelector: (SYNChannelCoverImageSelectorViewController *) imageSelector
-   didSelectAVURLAsset:(AVURLAsset *)asset
-{
-    self.selectedAsset = asset;
-    [self closeImageSelector: imageSelector];
-    
 }
 
 

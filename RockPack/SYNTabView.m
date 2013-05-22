@@ -58,7 +58,7 @@
 }
 
 
-- (void) createSubcategoriesTab: (NSSet*) subcategories
+- (void) createSubcategoriesTab: (NSArray*) subcategories
 {
     // implement in subclass
 }
