@@ -761,6 +761,15 @@ typedef enum {
     // Turn off button highlighting
     self.captiveButton.selected = FALSE;
     
+    self.darkOverlay.alpha = 1.0;
+    
+    [UIView animateWithDuration:0.3
+                     animations:^{
+                         self.darkOverlay.alpha = 0.0;
+                     } completion:^(BOOL finished) {
+                         self.darkOverlay.hidden = TRUE;
+                     }];
+    
     [[SYNSoundPlayer sharedInstance] playSoundByName: kSoundNewSlideOut];
     
     [UIView animateWithDuration: 0.2f
@@ -775,6 +784,7 @@ typedef enum {
                          [self reset];
                          [self deselectAllCells];
                      }];
+
 }
 
 #pragma mark - Notification Handlers
