@@ -103,6 +103,7 @@
     if (!itemsArray)
         return NO;
     
+    
     for (NSDictionary* subscriptionChannel in itemsArray)
     {
         
@@ -119,7 +120,11 @@
         
         [currentUser addSubscriptionsObject:channel];
         
+        
+        
     }
+    
+    
     
     BOOL saveResult = [self saveImportContext];
     if(!saveResult)
@@ -435,13 +440,13 @@
     
     
     NSError* error;
-    NSArray *matchingChannelEntries = [appDelegate.mainManagedObjectContext executeFetchRequest: channelFetchRequest
+    NSArray *existingChannels = [appDelegate.mainManagedObjectContext executeFetchRequest: channelFetchRequest
                                                                                           error: &error];
     
     
-    NSMutableDictionary* existingChannelsByIndex = [NSMutableDictionary dictionaryWithCapacity: matchingChannelEntries.count];
+    NSMutableDictionary* existingChannelsByIndex = [NSMutableDictionary dictionaryWithCapacity: existingChannels.count];
     
-    for (Channel* existingChannel in matchingChannelEntries)
+    for (Channel* existingChannel in existingChannels)
     {
         
    
@@ -450,10 +455,23 @@
         if(!append)
             existingChannel.popularValue = NO; // set all to NO
         
-        // if we do not append and the channel is not owned by the user then delete
+        // if we do not append and the channel is not owned by the user then delete //
+        
+        
         if(!append && existingChannel.channelOwner != appDelegate.currentUser)
             existingChannel.markedForDeletionValue = YES; 
            
+    }
+    
+    // find the subscriptions that where in the fetched channels //
+    
+    NSMutableOrderedSet* existingChannelsSet = [NSMutableOrderedSet orderedSetWithArray:existingChannels];
+    
+    [existingChannelsSet intersectOrderedSet:appDelegate.currentUser.subscriptionsSet];
+    
+    for (Channel* subscribedChannel in existingChannelsSet)
+    {
+        subscribedChannel.markedForDeletionValue = NO;
         
     }
 
@@ -484,7 +502,7 @@
             channel.popularValue = YES;
     }
     
-    [self removeUnusedManagedObjects: matchingChannelEntries
+    [self removeUnusedManagedObjects: existingChannels
               inManagedObjectContext: appDelegate.mainManagedObjectContext];
     
     BOOL saveResult = [self saveImportContext];

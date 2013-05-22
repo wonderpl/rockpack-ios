@@ -958,25 +958,25 @@
 
 - (void) setUser: (ChannelOwner*) user
 {
-    if (user == _user)
-        return;
-    
-    if ([user.uniqueId isEqual:_user.uniqueId])
+    if (user == _user || [user.uniqueId isEqual:_user.uniqueId]) // if we try and pass the same user.
         return;
     
     _user = user;
     
     if (self.userProfileController)
-        [self.userProfileController setChannelOwner:self.user];
+        [self.userProfileController setChannelOwner:self.user]; // if we have a panel ready, pass the user to it.
     
     
     [self.channelThumbnailCollectionView reloadData];
+    
     
     if (self.subscriptionsViewController)
         self.subscriptionsViewController.user = user;
     
     
-    // update the channels on another user's profile //
+    
+    
+    // update the channels on another user's profile, the User (current user) has his channels ready from startup //
     
     if ([user isMemberOfClass:[ChannelOwner class]])
     {
