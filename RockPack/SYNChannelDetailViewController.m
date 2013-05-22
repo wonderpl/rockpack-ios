@@ -263,9 +263,7 @@
                                        forState: UIControlStateNormal];
         
         // Now do fancy attributed string
-        //NSString *categoryString = @"SELECT A CATEGORY (Optional)";
-        NSString *categoryString = nil;
-        NSLocalizedString (@"SELECT A CATEGORY", nil);
+        NSString *categoryString = NSLocalizedString (@"SELECT A CATEGORY", nil);
 
         
         NSMutableAttributedString* attributedCategoryString = [[NSMutableAttributedString alloc] initWithString: categoryString
@@ -370,7 +368,7 @@
     {
         [[NSNotificationCenter defaultCenter] postNotificationName: kChannelUpdateRequest
                                                             object: self
-                                                          userInfo: @{kChannel: self.channel}];
+                                                           userInfo: @{kChannel: self.channel}];
     }
     
     
