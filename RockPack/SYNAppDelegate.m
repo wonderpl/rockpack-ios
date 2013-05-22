@@ -6,6 +6,9 @@
 //  Copyright (c) 2012 Nick Banks. All rights reserved.
 //
 
+#if DEBUG
+#import <SparkInspector/SparkInspector.h>
+#endif
 #import "AppConstants.h"
 #import "ChannelOwner.h"
 #import "GAI.h"
@@ -55,6 +58,11 @@ extern void instrumentObjcMessageSends(BOOL);
 - (BOOL) application:(UIApplication *) application
          didFinishLaunchingWithOptions: (NSDictionary *) launchOptions
 {
+    // Enable the Spark Inspector
+    #if DEBUG
+    [SparkInspector enableObservation];
+    #endif
+
     
     // Install our exception handler (must happen on the next turn through the event loop - as opposed to right now)
     [self performSelector: @selector(installUncaughtExceptionHandler)

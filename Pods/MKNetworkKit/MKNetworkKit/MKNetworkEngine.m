@@ -131,6 +131,7 @@ static NSOperationQueue *_sharedNetworkQueue;
     }
     
     self.customOperationSubclass = [MKNetworkOperation class];
+    self.shouldSendAcceptLanguageHeader = YES;
   }
   
   return self;
@@ -145,6 +146,20 @@ static NSOperationQueue *_sharedNetworkQueue;
 #pragma mark Memory Mangement
 
 -(void) dealloc {
+  
+#if TARGET_OS_IPHONE
+#if __IPHONE_OS_VERSION_MIN_REQUIRED < 60000
+  dispatch_release(_backgroundCacheQueue);
+  dispatch_release(_operationQueue);
+#endif
+  
+#else
+  
+#if MAC_OS_X_VERSION_MIN_REQUIRED < 1080
+  dispatch_release(_backgroundCacheQueue);
+  dispatch_release(_operationQueue);
+#endif
+#endif
   
   [[NSNotificationCenter defaultCenter] removeObserver:self name:kReachabilityChangedNotification object:nil];
 #if TARGET_OS_IPHONE
@@ -187,7 +202,7 @@ static NSOperationQueue *_sharedNetworkQueue;
 {
   if([self.reachability currentReachabilityStatus] == ReachableViaWiFi)
   {
-//    DLog(@"Server [%@] is reachable via Wifi", self.hostName);
+    DLog(@"Server [%@] is reachable via Wifi", self.hostName);
     [_sharedNetworkQueue setMaxConcurrentOperationCount:6];
     
     [self checkAndRestoreFrozenOperations];
@@ -199,7 +214,7 @@ static NSOperationQueue *_sharedNetworkQueue;
       DLog(@" Disabling engine as server [%@] is reachable only via cellular data.", self.hostName);
       [_sharedNetworkQueue setMaxConcurrentOperationCount:0];
     } else {
-//      DLog(@"Server [%@] is reachable only via cellular data", self.hostName);
+      DLog(@"Server [%@] is reachable only via cellular data", self.hostName);
       [_sharedNetworkQueue setMaxConcurrentOperationCount:2];
       [self checkAndRestoreFrozenOperations];
     }
@@ -239,15 +254,20 @@ static NSOperationQueue *_sharedNetworkQueue;
 
 +(void) cancelOperationsContainingURLString:(NSString*) string {
   
-  NSArray *runningOperations = _sharedNetworkQueue.operations;
-  [runningOperations enumerateObjectsUsingBlock:^(id obj, NSUInteger idx, BOOL *stop) {
-    
-    MKNetworkOperation *thisOperation = obj;
-    if([[thisOperation.readonlyRequest.URL absoluteString] rangeOfString:string].location != NSNotFound) {
-    
-      [thisOperation cancel];
-    }
+  [self cancelOperationsMatchingBlock:^BOOL (MKNetworkOperation* op) {
+    return [[op.readonlyRequest.URL absoluteString] rangeOfString:string].location != NSNotFound;
   }];
+}
+
++(void) cancelOperationsMatchingBlock:(BOOL (^)(MKNetworkOperation* op))block {
+    
+    NSArray *runningOperations = _sharedNetworkQueue.operations;
+    [runningOperations enumerateObjectsUsingBlock:^(id obj, NSUInteger idx, BOOL *stop) {
+        
+        MKNetworkOperation *thisOperation = obj;
+        if (block(thisOperation))
+            [thisOperation cancel];
+    }];
 }
 
 -(void) cancelAllOperations {
@@ -372,6 +392,7 @@ static NSOperationQueue *_sharedNetworkQueue;
                                    httpMethod:(NSString*)method {
   
   MKNetworkOperation *operation = [[self.customOperationSubclass alloc] initWithURLString:urlString params:body httpMethod:method];
+  operation.shouldSendAcceptLanguageHeader = self.shouldSendAcceptLanguageHeader;
   
   [self prepareHeaders:operation];
   return operation;
@@ -410,15 +431,20 @@ static NSOperationQueue *_sharedNetworkQueue;
   if(operation == nil) return;
   
   dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0), ^{
+    
+    
+     __weak id weakSelf = self;
+    
+    
     [operation setCacheHandler:^(MKNetworkOperation* completedCacheableOperation) {
       
       // if this is not called, the request would have been a non cacheable request
       //completedCacheableOperation.cacheHeaders;
       NSString *uniqueId = [completedCacheableOperation uniqueIdentifier];
-      [self saveCacheData:[completedCacheableOperation responseData]
+      [weakSelf saveCacheData:[completedCacheableOperation responseData]
                    forKey:uniqueId];
       
-      (self.cacheInvalidationParams)[uniqueId] = completedCacheableOperation.cacheHeaders;
+      ([weakSelf cacheInvalidationParams])[uniqueId] = completedCacheableOperation.cacheHeaders;
     }];
     
     __block double expiryTimeInSeconds = 0.0f;

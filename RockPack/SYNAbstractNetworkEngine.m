@@ -72,7 +72,7 @@
                                errorHandler: (MKNKUserErrorBlock) errorBlock
 {
     // First, copy the network operation so that if authentication fails we can try again
-    SYNNetworkOperationJsonObject *retryNetworkOperation = [networkOperation mutableCopy];
+    SYNNetworkOperationJsonObject *retryNetworkOperation = [networkOperation copyForRetry];
     
     // Set the callback logic for our standard network operation 
     [networkOperation addJSONCompletionHandler: ^(id response)
