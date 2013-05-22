@@ -138,7 +138,10 @@
 
 - (BOOL) registerCategoriesFromDictionary: (NSDictionary*) dictionary
 {
+    
+    
     // == Check for Validity == //
+    
     NSDictionary *categoriesDictionary = [dictionary objectForKey: @"categories"];
     if (!categoriesDictionary || ![categoriesDictionary isKindOfClass: [NSDictionary class]])
         return NO;
@@ -151,60 +154,65 @@
         return YES;
     
     
-    // Query for existing objects
+    // Query for existing objects //
+    
     NSFetchRequest *categoriesFetchRequest = [[NSFetchRequest alloc] init];
     [categoriesFetchRequest setEntity: [NSEntityDescription entityForName: @"Genre"
                                                    inManagedObjectContext: appDelegate.mainManagedObjectContext]];
     
+    categoriesFetchRequest.includesSubentities = NO;
+    
     
     NSError* error;
-    NSArray *existingCategories = [appDelegate.mainManagedObjectContext executeFetchRequest: categoriesFetchRequest
+    NSArray *previousCategories = [appDelegate.mainManagedObjectContext executeFetchRequest: categoriesFetchRequest
                                                                                           error: &error];
     
-    NSMutableDictionary* existingCategoriesByIndex = [NSMutableDictionary dictionaryWithCapacity:existingCategories.count];
+    // store Genre objects by unqueId key value //
+    NSMutableDictionary* previousCategoriesByIndex = [NSMutableDictionary dictionaryWithCapacity:previousCategories.count];
+    for (Channel* existingCategory in previousCategories)
+        [previousCategoriesByIndex setObject:existingCategory forKey:existingCategory.uniqueId];
     
-    for (Channel* existingCategory in existingCategories)
-    {
-        
-        [existingCategoriesByIndex setObject:existingCategory forKey:existingCategory.uniqueId];
-        
-        existingCategory.markedForDeletionValue = YES; // if a real genre is passed - delete the old objects
-    }
     
 
     for (NSDictionary *categoryDictionary in itemArray)
     {
         
         
-        NSString *uniqueId = [categoryDictionary objectForKey: @"id"];
+        NSString *uniqueId = [categoryDictionary objectForKey: @"id"]; // no id, no way to check the dictionary
         if (!uniqueId)
             continue;
         
         Genre* genre;
         
-        genre = [existingCategoriesByIndex objectForKey:uniqueId];
+        genre = [previousCategoriesByIndex objectForKey:uniqueId];
         
         if(!genre)
         {
             genre = [Genre instanceFromDictionary: categoryDictionary
                         usingManagedObjectContext: appDelegate.mainManagedObjectContext];
         }
+        else // found in existingCategoriesByIndex
+        {
+            
+            [previousCategoriesByIndex removeObjectForKey:genre.uniqueId];
+        }
         
-        genre.markedForDeletionValue = NO;
         
         genre.priority = [categoryDictionary objectForKey: @"priority"
                                               withDefault: [NSNumber numberWithInt: 0]];
         
         
+    }
+    
+    
+    // delete remaining objects
+    
+    for (id key in previousCategoriesByIndex)
+    {
+        Genre* genre = (Genre*)[previousCategoriesByIndex valueForKey:key];
+        [appDelegate.mainManagedObjectContext deleteObject:genre];
         
     }
-        
-    
-   
-    
-    [self removeUnusedManagedObjects: existingCategories
-              inManagedObjectContext: appDelegate.mainManagedObjectContext];
-    
     
     
     [appDelegate saveContext: TRUE];
@@ -489,10 +497,11 @@
         
         if(!append)
         {
-            // no need to test for !genre because it is going to be set underneath
+            // 
             existingChannel.popularValue = NO;
             
             existingChannel.markedForDeletionValue = YES;
+            
             existingChannel.freshValue = NO;
         }
             
