@@ -69,6 +69,8 @@
 		011A164116F10014008CF25E /* PlaceholderVideoBottom.png in Resources */ = {isa = PBXBuildFile; fileRef = 011A163E16F10014008CF25E /* PlaceholderVideoBottom.png */; };
 		011A164216F10014008CF25E /* PlaceholderVideoMiddle.png in Resources */ = {isa = PBXBuildFile; fileRef = 011A163F16F10014008CF25E /* PlaceholderVideoMiddle.png */; };
 		011A164316F10014008CF25E /* PlaceholderVideoTop.png in Resources */ = {isa = PBXBuildFile; fileRef = 011A164016F10014008CF25E /* PlaceholderVideoTop.png */; };
+		011BA5DD174D1EB700041A16 /* SYNCoverRightMoreView.m in Sources */ = {isa = PBXBuildFile; fileRef = 011BA5DC174D1EB700041A16 /* SYNCoverRightMoreView.m */; };
+		011BA5DF174D1ECB00041A16 /* SYNCoverRightMoreView.xib in Resources */ = {isa = PBXBuildFile; fileRef = 011BA5DE174D1ECB00041A16 /* SYNCoverRightMoreView.xib */; };
 		011C1675173003E800CF50B9 /* OWActivityViewController.strings in Resources */ = {isa = PBXBuildFile; fileRef = 011C1652173003E800CF50B9 /* OWActivityViewController.strings */; };
 		011C1676173003E800CF50B9 /* OWActivity.m in Sources */ = {isa = PBXBuildFile; fileRef = 011C1659173003E800CF50B9 /* OWActivity.m */; };
 		011C1677173003E800CF50B9 /* OWActivityDelegateObject.m in Sources */ = {isa = PBXBuildFile; fileRef = 011C165B173003E800CF50B9 /* OWActivityDelegateObject.m */; };
@@ -1112,6 +1114,9 @@
 		011A163E16F10014008CF25E /* PlaceholderVideoBottom.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = PlaceholderVideoBottom.png; path = Assets/Images/PlaceholderVideoBottom.png; sourceTree = "<group>"; };
 		011A163F16F10014008CF25E /* PlaceholderVideoMiddle.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = PlaceholderVideoMiddle.png; path = Assets/Images/PlaceholderVideoMiddle.png; sourceTree = "<group>"; };
 		011A164016F10014008CF25E /* PlaceholderVideoTop.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = PlaceholderVideoTop.png; path = Assets/Images/PlaceholderVideoTop.png; sourceTree = "<group>"; };
+		011BA5DB174D1EB700041A16 /* SYNCoverRightMoreView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SYNCoverRightMoreView.h; sourceTree = "<group>"; };
+		011BA5DC174D1EB700041A16 /* SYNCoverRightMoreView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SYNCoverRightMoreView.m; sourceTree = "<group>"; };
+		011BA5DE174D1ECB00041A16 /* SYNCoverRightMoreView.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = SYNCoverRightMoreView.xib; sourceTree = "<group>"; };
 		011C1653173003E800CF50B9 /* en */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = en; path = en.lproj/OWActivityViewController.strings; sourceTree = "<group>"; };
 		011C1654173003E800CF50B9 /* fr */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = fr; path = fr.lproj/OWActivityViewController.strings; sourceTree = "<group>"; };
 		011C1655173003E800CF50B9 /* ru */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = ru; path = ru.lproj/OWActivityViewController.strings; sourceTree = "<group>"; };
@@ -3102,6 +3107,9 @@
 				BE7D342F170DDB310085AB81 /* SYNChannelFooterMoreView.h */,
 				BE7D3430170DDB310085AB81 /* SYNChannelFooterMoreView.m */,
 				BE7D342D170DD8C90085AB81 /* SYNChannelFooterMoreView.xib */,
+				011BA5DB174D1EB700041A16 /* SYNCoverRightMoreView.h */,
+				011BA5DC174D1EB700041A16 /* SYNCoverRightMoreView.m */,
+				011BA5DE174D1ECB00041A16 /* SYNCoverRightMoreView.xib */,
 			);
 			name = Supplementary;
 			sourceTree = "<group>";
@@ -5484,6 +5492,7 @@
 				1FD12373174CD76700144374 /* NavDefault@2x.png in Resources */,
 				1FD12374174CD76700144374 /* NavHighlighted.png in Resources */,
 				1FD12375174CD76700144374 /* NavHighlighted@2x.png in Resources */,
+				011BA5DF174D1ECB00041A16 /* SYNCoverRightMoreView.xib in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -5701,6 +5710,7 @@
 				3864D2DC1743DB3000A90ED3 /* SYNImagePickerController.m in Sources */,
 				BEBD09811744ECD50092F527 /* SYNAddButtonControl.m in Sources */,
 				01D0998B17452A4000351C82 /* BBCyclingLabel.m in Sources */,
+				011BA5DD174D1EB700041A16 /* SYNCoverRightMoreView.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
