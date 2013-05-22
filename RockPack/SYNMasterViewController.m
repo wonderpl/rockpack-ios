@@ -453,9 +453,8 @@ typedef void(^AnimationCompletionBlock)(BOOL finished);
                          self.darkOverlayView.alpha = 1.0;
                      } completion:^(BOOL finished) {
                          self.darkOverlayView.hidden = NO;
-    self.sideNavigationViewController.state = SideNavigationStateHalf;
                      }];
-
+    self.sideNavigationViewController.state = SideNavigationStateHalf;
     
 }
 
@@ -539,7 +538,6 @@ typedef void(^AnimationCompletionBlock)(BOOL finished);
                          self.darkOverlayView.alpha = 0.0;
                      } completion:^(BOOL finished) {
                          self.darkOverlayView.hidden = YES;
-                         self.sideNavigationViewController.state = SideNavigationStateHalf;
                      }];
     CGRect sboxFrame = self.searchBoxController.view.frame;
     
@@ -619,7 +617,6 @@ typedef void(^AnimationCompletionBlock)(BOOL finished);
                          self.darkOverlayView.alpha = 1.0;
                      } completion:^(BOOL finished) {
                          self.darkOverlayView.hidden = NO;
-                         self.sideNavigationViewController.state = SideNavigationStateHalf;
                      }];
     
 }
