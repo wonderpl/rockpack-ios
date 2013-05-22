@@ -1055,6 +1055,7 @@
                                              self.saveChannelButton.enabled = YES;
                                              self.saveChannelButton.hidden = YES;
                                              self.cancelEditButton.hidden = YES;
+                                             self.addButton.hidden = NO;
                                              
                                              [self setVideosForChannelById: channelId
                                                                  isUpdated: YES];
@@ -1446,7 +1447,7 @@
                                               
                                               if ([[SYNDeviceManager sharedInstance] isIPad])
                                               {
-                                                  self.addButton.hidden = YES;
+//                                                  self.addButton.hidden = YES;
                                                   self.createChannelButton.hidden = YES;
                                                   
                                               }
