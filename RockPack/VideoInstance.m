@@ -102,7 +102,7 @@ static NSEntityDescription *videoInstanceEntity = nil;
     [instance setAttributesFromDictionary: dictionary
                                    withId: uniqueId
                 usingManagedObjectContext: managedObjectContext
-                      ignoringObjectTypes: (ignoringObjects == kIgnoreChannelObjects) ? kIgnoreChannelObjects : kIgnoreVideoInstanceObjects
+                      ignoringObjectTypes: ignoringObjects
                                 andViewId: viewId];
     
     return instance;

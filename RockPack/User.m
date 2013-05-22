@@ -105,7 +105,6 @@
                  ignoringObjectTypes: (IgnoringObjects) ignoringObjects {
     
     
-    
     // Sets attributes for ChannelOwner (superclass) AND adds Channels
     
     [super setAttributesFromDictionary: dictionary

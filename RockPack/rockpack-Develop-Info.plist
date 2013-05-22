@@ -4,10 +4,12 @@
 <dict>
 	<key>APIHostName</key>
 	<string>demo.rockpack.com</string>
+	<key>BuildTarget</key>
+	<string>Develop</string>
 	<key>CFBundleDevelopmentRegion</key>
 	<string>en</string>
 	<key>CFBundleDisplayName</key>
-	<string>${PRODUCT_NAME}</string>
+	<string>Rockpack</string>
 	<key>CFBundleExecutable</key>
 	<string>${EXECUTABLE_NAME}</string>
 	<key>CFBundleIconFiles</key>
@@ -48,8 +50,6 @@
 	<string>131721883664256</string>
 	<key>FullVersion</key>
 	<string>unknown</string>
-	<key>BuildTarget</key>
-	<string>Develop</string>
 	<key>LSApplicationCategoryType</key>
 	<string></string>
 	<key>LSRequiresIPhoneOS</key>
