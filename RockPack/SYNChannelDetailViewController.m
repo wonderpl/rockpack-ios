@@ -180,8 +180,7 @@
     {
         layout.sectionInset = UIEdgeInsetsMake(0.0f, 5.0f, 0.0f, 5.0f);
     }
-    
-    
+
     // == Video Cells == //
     
     UINib *videoThumbnailCellNib = [UINib nibWithNibName: @"SYNVideoThumbnailRegularCell"
@@ -190,15 +189,12 @@
     [self.videoThumbnailCollectionView registerNib: videoThumbnailCellNib
                         forCellWithReuseIdentifier: @"SYNVideoThumbnailRegularCell"];
     
-    
-    
     // == Cover Image == //
   
     if (self.mode == kChannelDetailsModeDisplay) // only load bg on display
     {
         self.currentWebImageOperation = [self loadBackgroundImage];
     }
-    
     
     // == Avatar Image == //
     
@@ -223,11 +219,6 @@
     {
         self.avatarImageView.image = placeholderImage;
     }
-    
-    
-    
-    
-    
 
     if (!isIPhone)
     {
@@ -311,10 +302,10 @@
         // Cover Image Selector //
         
     }
+    
     self.selectedCategoryId = @"";
     self.selectedCoverId = @"";
-    
-    
+
     CGRect correctRect = self.coverChooserMasterView.frame;
     correctRect.origin.y = 404.0;
     self.coverChooserMasterView.frame = correctRect;
@@ -1021,6 +1012,10 @@
         self.activityIndicator.hidden = NO;
         [self.activityIndicator startAnimating];
     }
+    else
+    {
+        self.saveChannelButton.enabled = NO;
+    }
     
     [self hideCategoryChooser];
     
@@ -1053,19 +1048,21 @@
                                                      cover: cover
                                                   isPublic: YES
                                          completionHandler: ^(NSDictionary* resourceCreated) {
+
                                              NSString* channelId = [resourceCreated objectForKey: @"id"];
                                              
                                              [self setEditControlsVisibility: NO];
+                                             self.saveChannelButton.enabled = YES;
                                              self.saveChannelButton.hidden = YES;
                                              self.cancelEditButton.hidden = YES;
-
+                                             
                                              [self setVideosForChannelById: channelId
                                                                  isUpdated: YES];
                                              
                                              [[NSNotificationCenter defaultCenter] postNotificationName: kNoteAllNavControlsShow
                                                                                                  object: self
                                                                                                userInfo: nil];
-                                             
+
                                              // this block will also call the [self getChanelById:channelId isUpdated:YES] //
                                          }
                                               errorHandler: ^(NSDictionary* error) {
@@ -1080,6 +1077,7 @@
                                                   DebugLog(@"Error @ saveChannelPressed:");
                                                   NSString* errorMessage = NSLocalizedString(errorText, nil);
                                                   [self showError: errorMessage];
+                                                  self.saveChannelButton.enabled = YES;
                                               }];
 }
 
