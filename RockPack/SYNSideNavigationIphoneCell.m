@@ -123,6 +123,9 @@
     if(highlighted)
     {
         self.backgroundImageView.image = [UIImage imageNamed:@"NavHighlighted"];
+        self.textLabel.textColor = self.defaultColor;
+        self.textLabel.shadowColor = self.defaultShadowColor;
+        self.textLabel.shadowOffset = CGSizeMake(0.0f,1.0f);
     }
     else
     {
