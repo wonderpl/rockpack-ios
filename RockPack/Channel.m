@@ -98,42 +98,21 @@ static NSEntityDescription *channelEntity = nil;
     self.uniqueId = uniqueId;
     
     
-    [self setBasicAttributesFromDictionary:dictionary];
     
-    
-    
-    NSDictionary* videosDictionary = [dictionary objectForKey:@"videos"];
-    if (!(ignoringObjects & kIgnoreVideoInstanceObjects) && [videosDictionary isKindOfClass:[NSDictionary class]])
+    if (!(ignoringObjects & kIgnoreVideoInstanceObjects))
     {
-        
-        NSArray *itemArray = [videosDictionary objectForKey: @"items"];
-        if(![itemArray isKindOfClass:[NSArray class]])
-            return;
-        
         [self.videoInstancesSet removeAllObjects];
         
-        // view id is ChannelDetails
-        
-        for (NSDictionary *itemDictionary in itemArray)
-        {
-            
-            VideoInstance* videoInstance = [VideoInstance instanceFromDictionary: itemDictionary
-                                                       usingManagedObjectContext: self.managedObjectContext
-                                                             ignoringObjectTypes: kIgnoreChannelObjects
-                                                                       andViewId: viewId];
-            
-            if(!videoInstance) // nil can be returned by a malformed JSON or missing a uniqueId
-                continue;
-            
-            [self addVideoInstancesObject:videoInstance];
-            
-        }
+        [self addVideoInstancesFromDictionary:dictionary
+                    usingManagedObjectContext:self.managedObjectContext
+                                    andViewId:viewId];
         
     }
     
+    [self setBasicAttributesFromDictionary:dictionary];
     
     NSDictionary* ownerDictionary = [dictionary objectForKey: @"owner"];
-    if(!(ignoringObjects & kIgnoreChannelOwnerObject) && [ownerDictionary isKindOfClass:[NSDictionary class]])
+    if(!(ignoringObjects & kIgnoreChannelOwnerObject) && ownerDictionary)
     {
         self.channelOwner = [ChannelOwner instanceFromDictionary: ownerDictionary
                                        usingManagedObjectContext: self.managedObjectContext
@@ -142,7 +121,7 @@ static NSEntityDescription *channelEntity = nil;
     
     
     NSDictionary* channelCoverDictionary = [dictionary objectForKey:@"cover"];
-    if(!(ignoringObjects & kIgnoreChannelCover) && [channelCoverDictionary isKindOfClass:[NSDictionary class]])
+    if(!(ignoringObjects & kIgnoreChannelCover) && channelCoverDictionary)
     {
         self.channelCover = [ChannelCover instanceFromDictionary:channelCoverDictionary
                                        usingManagedObjectContext:self.managedObjectContext];
@@ -210,12 +189,38 @@ static NSEntityDescription *channelEntity = nil;
                                                             usingManagedObjectContext:self.managedObjectContext];
         
         
-        [self addVideoInstancesObject:copyOfVideoInstance];
+        copyOfVideoInstance.channel = self;
+        [self.videoInstancesSet addObject: copyOfVideoInstance];
         
     }
     
 }
 
+-(void)addVideoInstancesFromDictionary: (NSDictionary*)dictionary
+             usingManagedObjectContext: (NSManagedObjectContext *) managedObjectContext
+                             andViewId: (NSString *) viewId {
+    
+    
+    NSDictionary *videosDictionary = [dictionary objectForKey: @"videos"];
+    if(!videosDictionary || ![videosDictionary isKindOfClass: [NSDictionary class]])
+        return;
+    
+    NSArray *itemArray = [videosDictionary objectForKey: @"items"];
+    if(!itemArray || ![itemArray isKindOfClass: [NSArray class]])
+        return;
+    
+    for (NSDictionary *itemDictionary in itemArray)
+    {
+        if (![itemDictionary isKindOfClass: [NSDictionary class]])
+            continue;
+        
+        [self.videoInstancesSet addObject: [VideoInstance instanceFromDictionary: itemDictionary
+                                                       usingManagedObjectContext: self.managedObjectContext
+                                                             ignoringObjectTypes: kIgnoreChannelObjects
+                                                                       andViewId: viewId]];
+        
+    }
+}
 
 
 #pragma mark - Object reference counting
@@ -239,16 +244,6 @@ static NSEntityDescription *channelEntity = nil;
     {
         [self.managedObjectContext deleteObject: videoInstance];
     }
-}
-
-
-#pragma mark - Accessors
-
-
--(void)addVideoInstancesObject:(VideoInstance *)value_
-{
-    [self.videoInstancesSet addObject: value_];
-    value_.channel = self;
 }
 
 

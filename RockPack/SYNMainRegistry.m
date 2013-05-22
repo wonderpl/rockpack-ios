@@ -40,7 +40,7 @@
     
     User* newUser = [User instanceFromDictionary: dictionary
                        usingManagedObjectContext: appDelegate.mainManagedObjectContext
-                             ignoringObjectTypes: kIgnoreVideoInstanceObjects];
+                             ignoringObjectTypes: kIgnoreNothing];
     
     if(!newUser)
         return NO;
@@ -138,10 +138,7 @@
 
 - (BOOL) registerCategoriesFromDictionary: (NSDictionary*) dictionary
 {
-    
-    
     // == Check for Validity == //
-    
     NSDictionary *categoriesDictionary = [dictionary objectForKey: @"categories"];
     if (!categoriesDictionary || ![categoriesDictionary isKindOfClass: [NSDictionary class]])
         return NO;
@@ -154,65 +151,60 @@
         return YES;
     
     
-    // Query for existing objects //
-    
+    // Query for existing objects
     NSFetchRequest *categoriesFetchRequest = [[NSFetchRequest alloc] init];
     [categoriesFetchRequest setEntity: [NSEntityDescription entityForName: @"Genre"
                                                    inManagedObjectContext: appDelegate.mainManagedObjectContext]];
     
-    categoriesFetchRequest.includesSubentities = NO;
-    
     
     NSError* error;
-    NSArray *previousCategories = [appDelegate.mainManagedObjectContext executeFetchRequest: categoriesFetchRequest
+    NSArray *existingCategories = [appDelegate.mainManagedObjectContext executeFetchRequest: categoriesFetchRequest
                                                                                           error: &error];
     
-    // store Genre objects by unqueId key value //
-    NSMutableDictionary* previousCategoriesByIndex = [NSMutableDictionary dictionaryWithCapacity:previousCategories.count];
-    for (Channel* existingCategory in previousCategories)
-        [previousCategoriesByIndex setObject:existingCategory forKey:existingCategory.uniqueId];
+    NSMutableDictionary* existingCategoriesByIndex = [NSMutableDictionary dictionaryWithCapacity:existingCategories.count];
     
+    for (Channel* existingCategory in existingCategories)
+    {
+        
+        [existingCategoriesByIndex setObject:existingCategory forKey:existingCategory.uniqueId];
+        
+        existingCategory.markedForDeletionValue = YES; // if a real genre is passed - delete the old objects
+    }
     
 
     for (NSDictionary *categoryDictionary in itemArray)
     {
         
         
-        NSString *uniqueId = [categoryDictionary objectForKey: @"id"]; // no id, no way to check the dictionary
+        NSString *uniqueId = [categoryDictionary objectForKey: @"id"];
         if (!uniqueId)
             continue;
         
         Genre* genre;
         
-        genre = [previousCategoriesByIndex objectForKey:uniqueId];
+        genre = [existingCategoriesByIndex objectForKey:uniqueId];
         
         if(!genre)
         {
             genre = [Genre instanceFromDictionary: categoryDictionary
                         usingManagedObjectContext: appDelegate.mainManagedObjectContext];
         }
-        else // found in existingCategoriesByIndex
-        {
-            
-            [previousCategoriesByIndex removeObjectForKey:genre.uniqueId];
-        }
         
+        genre.markedForDeletionValue = NO;
         
         genre.priority = [categoryDictionary objectForKey: @"priority"
                                               withDefault: [NSNumber numberWithInt: 0]];
         
         
-    }
-    
-    
-    // delete remaining objects
-    
-    for (id key in previousCategoriesByIndex)
-    {
-        Genre* genre = (Genre*)[previousCategoriesByIndex valueForKey:key];
-        [appDelegate.mainManagedObjectContext deleteObject:genre];
         
     }
+        
+    
+   
+    
+    [self removeUnusedManagedObjects: existingCategories
+              inManagedObjectContext: appDelegate.mainManagedObjectContext];
+    
     
     
     [appDelegate saveContext: TRUE];
@@ -496,15 +488,18 @@
         [existingChannelsByIndex setObject:existingChannel forKey:existingChannel.uniqueId];
         
         if(!append)
-        {
-            // 
-            existingChannel.popularValue = NO;
-            
+            existingChannel.popularValue = NO; // set all to NO
+        
+        // if we do not append and the channel is not owned by the user then delete //
+        
+        if(!append)
             existingChannel.markedForDeletionValue = YES;
-            
-            existingChannel.freshValue = NO;
-        }
-            
+        
+        
+        // set the old channels to not fresh and refresh on demand //
+        
+        existingChannel.freshValue = NO;
+           
     }
     
     
