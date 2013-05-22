@@ -78,11 +78,11 @@ static NSEntityDescription *channelEntity = nil;
         instance = [Channel insertInManagedObjectContext: managedObjectContext];
     }
     
-    
     [instance setAttributesFromDictionary: dictionary
                                    withId: uniqueId
                       ignoringObjectTypes: ignoringObjects
                                 andViewId: viewId];
+    
     
     return instance;
     
@@ -147,7 +147,7 @@ static NSEntityDescription *channelEntity = nil;
     self.title = [dictionary upperCaseStringForKey: @"title"
                                        withDefault: @""];
     
-    DebugLog(@"*** Title: %@", self.title);
+    NSLog(@"* Title: %@", self.title);
     
     self.lastUpdated = [dictionary dateFromISO6801StringForKey: @"last_updated"
                                                    withDefault: [NSDate date]];

@@ -122,10 +122,9 @@ static NSEntityDescription *channelOwnerEntity = nil;
                                          usingManagedObjectContext:managedObjectContex
                                                ignoringObjectTypes:kIgnoreChannelOwnerObject
                                                          andViewId:kProfileViewId];
-                channel.channelOwner = self;
                 
                 
-                [self.channelsSet addObject:channel];
+                [self addChannelsObject:channel];
                 
             }
         }
@@ -137,7 +136,24 @@ static NSEntityDescription *channelOwnerEntity = nil;
 
 #pragma mark - Channels
 
+-(void)addChannelsObject:(Channel *)newChannel
+{
+    [self.channelsSet addObject:newChannel];
+    newChannel.channelOwner = self;
+}
 
+-(void)addSubscriptionsObject:(Channel *)newSubscription
+{
+    [self.subscriptionsSet addObject:newSubscription];
+    [newSubscription.subscribersSet addObject:self];
+    newSubscription.subscribersCountValue += 1;
+}
+-(void)removeSubscriptionsObject:(Channel *)oldSubscription
+{
+    [self.subscriptionsSet removeObject:oldSubscription];
+    [oldSubscription.subscribersSet removeObject:self];
+    oldSubscription.subscribersCountValue -= 1;
+}
 
 #pragma mark - Helper methods
 

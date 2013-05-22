@@ -13,5 +13,6 @@
 
 
 @property (nonatomic, weak) ChannelOwner* user;
+@property (nonatomic, assign) BOOL hideUserProfile;
 
 @end

@@ -98,7 +98,8 @@
     // == Channels Page == //
     
     SYNChannelsRootViewController *channelsRootViewController = [[SYNChannelsRootViewController alloc] initWithViewId: kChannelsViewId];
-    if([[SYNDeviceManager sharedInstance] isIPad])
+    BOOL isIPad = [[SYNDeviceManager sharedInstance] isIPad];
+    if(isIPad)
     {
         channelsRootViewController.tabViewController = [[SYNGenreTabViewController alloc] initWithHomeButton: @"ALL"];
         [channelsRootViewController addChildViewController:channelsRootViewController.tabViewController];
@@ -111,6 +112,10 @@
     // == Profile Page == //
     
     SYNProfileRootViewController *myRockpackViewController = [[SYNProfileRootViewController alloc] initWithViewId: kProfileViewId];
+    if(!isIPad)
+    {
+        myRockpackViewController.hideUserProfile = YES;
+    }
     myRockpackViewController.user = appDelegate.currentUser;
     
     
@@ -279,6 +284,8 @@
         }
         page++;
     }
+    
+    
 }
 
 

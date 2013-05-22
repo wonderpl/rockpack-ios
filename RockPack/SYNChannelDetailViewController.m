@@ -685,7 +685,7 @@
     self.editButton.hidden = (visible && ! [self.channel.channelOwner.uniqueId isEqualToString: appDelegate.currentUser.uniqueId]);
     [(LXReorderableCollectionViewFlowLayout *)self.videoThumbnailCollectionView.collectionViewLayout longPressGestureRecognizer].enabled = (visible) ? FALSE : TRUE;
     
-    if (visible == FALSE)
+    if (visible == NO)
     {
         // If we are in edit mode, then hide navigation controls
         [[NSNotificationCenter defaultCenter] postNotificationName: kChannelsNavControlsHide
@@ -1022,6 +1022,8 @@
         [self.activityIndicator startAnimating];
     }
     
+    [self hideCategoryChooser];
+    
     self.channel.title = self.channelTitleTextView.text;
     self.channel.channelDescription = @"Test Description";
     
@@ -1320,10 +1322,11 @@
         [self.activityIndicator startAnimating];
     }
     
+    [self hideCategoryChooser];
+    
     self.channel.title = self.channelTitleTextView.text;
     
-    DebugLog(@"Cid: %@", self.channel.categoryId);
-    
+    self.channel.channelDescription = self.channel.channelDescription ? self.channel.channelDescription : @"";
     
     [appDelegate.oAuthNetworkEngine createChannelForUserId: appDelegate.currentOAuth2Credentials.userId
                                                      title: self.channel.title
@@ -1432,7 +1435,9 @@
                                               
                                               [[NSNotificationCenter defaultCenter] postNotificationName: kVideoQueueClear
                                                                                                   object: nil];
-                                              [[NSNotificationCenter defaultCenter] postNotificationName:kNoteChannelSaved object:self];
+                                              
+                                              [[NSNotificationCenter defaultCenter] postNotificationName:kNoteChannelSaved
+                                                                                                  object:self];
                                               
                                           } errorHandler:^(id err) {
                                               
