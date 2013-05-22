@@ -11,6 +11,7 @@
 #import "UIFont+SYNFont.h"
 #import "UIImageView+WebCache.h"
 #import "User.h"
+#import "SYNDeviceManager.h"
 
 @interface SYNUserProfileViewController ()
 
@@ -48,18 +49,43 @@
 
 - (void) pack
 {
-    CGRect textRect = CGRectZero;
-    textRect.size = [self.fullNameLabel.text sizeWithFont:self.fullNameLabel.font];
-    CGRect referenceRect = self.profileImageView.frame;
-    textRect.origin = CGPointMake(referenceRect.origin.x + referenceRect.size.width + 10.0,
-                                  referenceRect.origin.y + 10.0);
-    self.fullNameLabel.frame = textRect;
-    
-    textRect.origin = CGPointMake(textRect.origin.x,
-                                  textRect.origin.y + textRect.size.height - 5.0);
-    textRect.size = [self.userNameLabel.text sizeWithFont:self.userNameLabel.font];
-    
-    self.userNameLabel.frame = textRect;
+    if([[SYNDeviceManager sharedInstance] isIPhone])
+    {
+        self.fullNameLabel.font = [UIFont rockpackFontOfSize:17.0f];
+        [self.fullNameLabel removeFromSuperview];
+        self.fullNameLabel.frame = CGRectMake(44.0f, 0.0f, 150, 34);
+        [self.fullNameLabel sizeToFit];
+        CGPoint center = self.view.center;
+        CGRect newFrame = self.view.frame;
+        newFrame.size.width = 34.0f+self.fullNameLabel.frame.size.width;
+        self.view.frame = newFrame;
+        [self.view addSubview:self.fullNameLabel];
+        self.fullNameLabel.center = CGPointMake(44.0f + self.fullNameLabel.frame.size.width/2.0f, 21.0f);
+        self.view.center = center;
+    }
+    else
+    {
+        CGSize maxSize = [self.fullNameLabel.text sizeWithFont:self.fullNameLabel.font];
+        CGRect selfFrame = self.view.frame;
+        if (maxSize.width + self.fullNameLabel.frame.origin.x > selfFrame.size.width)
+        {
+            selfFrame.size.width = maxSize.width + self.fullNameLabel.frame.origin.x + 30.0;
+            self.view.frame = selfFrame;
+        }
+        
+        CGRect textRect = CGRectZero;
+        textRect.size = [self.fullNameLabel.text sizeWithFont:self.fullNameLabel.font];
+        CGRect referenceRect = self.profileImageView.frame;
+        textRect.origin = CGPointMake(referenceRect.origin.x + referenceRect.size.width + 10.0,
+                                      referenceRect.origin.y + 10.0);
+        self.fullNameLabel.frame = textRect;
+        
+        textRect.origin = CGPointMake(textRect.origin.x,
+                                      textRect.origin.y + textRect.size.height - 5.0);
+        textRect.size = [self.userNameLabel.text sizeWithFont:self.userNameLabel.font];
+        
+        self.userNameLabel.frame = textRect;
+    }
 }
 
 
@@ -92,14 +118,6 @@
     }
     
     self.fullNameLabel.text = userName;
-    
-    CGSize maxSize = [self.fullNameLabel.text sizeWithFont:self.fullNameLabel.font];
-    CGRect selfFrame = self.view.frame;
-    if (maxSize.width + self.fullNameLabel.frame.origin.x > selfFrame.size.width)
-    {
-        selfFrame.size.width = maxSize.width + self.fullNameLabel.frame.origin.x + 30.0;
-        self.view.frame = selfFrame;
-    }
     
     UIImage* placeholderImage = [UIImage imageNamed: @"PlaceholderAvatarProfile.png"];
     
