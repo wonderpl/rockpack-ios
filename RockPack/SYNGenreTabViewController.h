@@ -18,7 +18,7 @@
 - (id) initWithHomeButton: (NSString*) homeButtomString;
 
 -(void) deselectAll;
--(Genre*)selectAndReturnGenreForId:(NSInteger)identifier andSubcategories:(BOOL)showSubcategories;
-
+-(Genre*)selectAndReturnGenreForIndexPath:(NSIndexPath*)indexPath andSubcategories:(BOOL)subcats;
+-(NSIndexPath*)findIndexPathForGenreId:(NSString*)genreId;
 
 @end

@@ -307,7 +307,7 @@ typedef enum {
 - (UITableViewCell *) tableView: (UITableView *) tableView
           cellForRowAtIndexPath: (NSIndexPath *) indexPath
 {
-    BOOL isIPad = [[SYNDeviceManager sharedInstance] isIPad];
+    //BOOL isIPad = [[SYNDeviceManager sharedInstance] isIPad];
     static NSString *CellIdentifier = @"NavigationCell";
     UITableViewCell *cell;
     

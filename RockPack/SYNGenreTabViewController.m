@@ -268,17 +268,17 @@
     [self.categoriesTabView deselectAll];
 }
 
--(Genre*)selectAndReturnGenreForId:(NSInteger)identifier andSubcategories:(BOOL)subcats
+-(Genre*)selectAndReturnGenreForIndexPath:(NSIndexPath*)indexPath andSubcategories:(BOOL)subcats
 {
-    if(!self.genresFetched || (self.genresFetched.count - 1) < identifier)
+    if(!self.genresFetched || !indexPath || !(self.genresFetched.count > indexPath.section))
         return nil;
     
     
-    Genre* genreToSelect = (Genre*)[self.genresFetched objectAtIndex:identifier];
+    Genre* genreToSelect = (Genre*)[self.genresFetched objectAtIndex:indexPath.section];
     
-    if(subcats)
+    if(subcats && genreToSelect.subgenres.count > indexPath.item)
     {
-        genreToSelect = (SubGenre*)[genreToSelect.subgenres firstObject];
+        genreToSelect = (SubGenre*)[genreToSelect.subgenres objectAtIndex:indexPath.item];
         [self handleMainGenreSelection:((SubGenre*)genreToSelect).genre];
     }
     
@@ -286,10 +286,49 @@
     [self.categoriesTabView highlightTabWithGenre:genreToSelect];
     
     
-    
-    
     return genreToSelect;
         
+}
+
+-(NSIndexPath*)findIndexPathForGenreId:(NSString*)genreId
+{
+    
+    NSInteger section = -1;
+    NSInteger item = -1;
+    
+    NSInteger _section = 0;
+    NSInteger _item = 0;
+    
+    for (Genre* genre in self.genresFetched)
+    {
+        if([genre.uniqueId isEqualToString:genreId])
+        {
+            section = section; // the genre is a top level category
+            item = 0;
+            break;
+        }
+            
+        
+        for (SubGenre* subgenre in genre.subgenres)
+        {
+            if([subgenre.uniqueId isEqualToString:genreId])
+            {
+                
+                section = [self.genresFetched indexOfObject:subgenre.genre]; // get the parent genre
+                item = _item;
+                break;
+            }
+                
+            
+            _item++;
+        }
+        
+        _section++;
+        _item = 0;
+    }
+    
+    NSIndexPath* indexPath = [NSIndexPath indexPathForItem:item inSection:section];
+    return indexPath;
 }
 
 @end

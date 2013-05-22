@@ -307,9 +307,11 @@
         }
     }
     
-    NSPredicate* notOwnedByUserPredicate = [NSPredicate predicateWithFormat: @"channelOwner.uniqueId != %@", appDelegate.currentUser.uniqueId];
+    // only get the channels marked as fresh //
     
-    NSPredicate* finalPredicate = [NSCompoundPredicate andPredicateWithSubpredicates: @[genrePredicate, notOwnedByUserPredicate]];
+    NSPredicate* isFreshPredicate = [NSPredicate predicateWithFormat: @"fresh == YES"];
+    
+    NSPredicate* finalPredicate = [NSCompoundPredicate andPredicateWithSubpredicates: @[genrePredicate, isFreshPredicate]];
 
     [request setPredicate:finalPredicate];
     
@@ -716,9 +718,14 @@
     CGPoint currentOffset = self.channelThumbnailCollectionView.contentOffset;
     currentOffset.y = 0;
     
-    // Need to do this immediately, as opposed to animated or we may get strange offsets
+    // Need to do this immediately, as opposed to animated or we may get strange offsets //
+    
     [self.channelThumbnailCollectionView setContentOffset: currentOffset
                                                  animated: NO];
+    
+    // display what is already in the DB and then load and display again
+    
+    [self displayChannelsForGenre:genre];
     
     [self loadChannelsForGenre: genre];
 }
