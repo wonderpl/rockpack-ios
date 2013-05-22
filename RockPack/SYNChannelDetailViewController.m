@@ -179,8 +179,7 @@
     {
         layout.sectionInset = UIEdgeInsetsMake(0.0f, 5.0f, 0.0f, 5.0f);
     }
-    
-    
+
     // == Video Cells == //
     
     UINib *videoThumbnailCellNib = [UINib nibWithNibName: @"SYNVideoThumbnailRegularCell"
@@ -189,15 +188,12 @@
     [self.videoThumbnailCollectionView registerNib: videoThumbnailCellNib
                         forCellWithReuseIdentifier: @"SYNVideoThumbnailRegularCell"];
     
-    
-    
     // == Cover Image == //
   
     if (self.mode == kChannelDetailsModeDisplay) // only load bg on display
     {
         self.currentWebImageOperation = [self loadBackgroundImage];
     }
-    
     
     // == Avatar Image == //
     
@@ -222,11 +218,6 @@
     {
         self.avatarImageView.image = placeholderImage;
     }
-    
-    
-    
-    
-    
 
     if (!isIPhone)
     {
@@ -273,7 +264,8 @@
         
         // Now do fancy attributed string
         //NSString *categoryString = @"SELECT A CATEGORY (Optional)";
-        NSString *categoryString = NSLocalizedString (@"SELECT A CATEGORY", nil);
+        NSString *categoryString = nil;
+        NSLocalizedString (@"SELECT A CATEGORY", nil);
 
         
         NSMutableAttributedString* attributedCategoryString = [[NSMutableAttributedString alloc] initWithString: categoryString
@@ -311,10 +303,10 @@
         // Cover Image Selector //
         
     }
+    
     self.selectedCategoryId = @"";
     self.selectedCoverId = @"";
-    
-    
+
     CGRect correctRect = self.coverChooserMasterView.frame;
     correctRect.origin.y = 404.0;
     self.coverChooserMasterView.frame = correctRect;
@@ -1015,11 +1007,15 @@
 
 - (IBAction) saveChannelTapped: (id) sender
 { 
-    if ([[SYNDeviceManager sharedInstance] isIPhone])
+    if ([SYNDeviceManager.sharedInstance isIPhone])
     {
         self.saveChannelButton.hidden = YES;
         self.activityIndicator.hidden = NO;
         [self.activityIndicator startAnimating];
+    }
+    else
+    {
+        self.saveChannelButton.enabled = NO;
     }
     
     [self hideCategoryChooser];
@@ -1027,6 +1023,7 @@
     self.channel.title = self.channelTitleTextView.text;
     self.channel.channelDescription = @"Test Description";
     
+
     NSString* category = [self categoryIdStringForServiceCall];
     
     NSString* cover = [self coverIdStringForServiceCall];
@@ -1039,15 +1036,14 @@
                                                      cover: cover
                                                   isPublic: YES
                                          completionHandler: ^(NSDictionary* resourceCreated) {
-                                             
+
                                              NSString* channelId = [resourceCreated objectForKey: @"id"];
                                              
-                                             
                                              [self setEditControlsVisibility: NO];
+                                             self.saveChannelButton.enabled = YES;
                                              self.saveChannelButton.hidden = YES;
                                              self.cancelEditButton.hidden = YES;
-                                             
-                                             
+                                             self.addButton.hidden = NO;
                                              
                                              [self setVideosForChannelById: channelId
                                                                  isUpdated: YES];
@@ -1055,9 +1051,8 @@
                                              [[NSNotificationCenter defaultCenter] postNotificationName: kNoteAllNavControlsShow
                                                                                                  object: self
                                                                                                userInfo: nil];
-                                             
+
                                              // this block will also call the [self getChanelById:channelId isUpdated:YES] //
-                                             
                                          }
                                               errorHandler: ^(NSDictionary* error) {
                                                   NSDictionary* specificErrors = [error objectForKey: @"form_errors"];
@@ -1070,7 +1065,8 @@
                                                   
                                                   DebugLog(@"Error @ saveChannelPressed:");
                                                   NSString* errorMessage = NSLocalizedString(errorText, nil);
-                                                  [self showError:errorMessage];
+                                                  [self showError: errorMessage];
+                                                  self.saveChannelButton.enabled = YES;
                                               }];
 }
 
@@ -1155,18 +1151,50 @@
                                  self.categoriesTabViewController.view.alpha = 1.0f;   
                              }
                              completion: ^(BOOL finished) {
+                                 
+                                 
+                                 
                                  // if no category has been selected then select first //
                                  
                                  if ([self.channel.categoryId isEqualToString:@""])
                                  {
-                                     SubGenre* firstSelection = (SubGenre*)[self.categoriesTabViewController selectAndReturnGenreForId: 0
-                                                                                                                      andSubcategories: YES];
+                                     NSIndexPath* firstFirstIndexPath = [NSIndexPath indexPathForItem:0 inSection:0];
+                                     SubGenre* firstSelection =
+                                     (SubGenre*)[self.categoriesTabViewController selectAndReturnGenreForIndexPath:firstFirstIndexPath
+                                                                                                  andSubcategories:YES];
                                      
                                      if (firstSelection)
                                      {
                                          self.channel.categoryId = firstSelection.uniqueId;
                                          [self updateCategoryButtonText: [NSString stringWithFormat:@"%@/%@",
                                                                           firstSelection.genre.name, firstSelection.name]];
+                                     }
+                                     else
+                                     {
+                                         [self.categoriesTabViewController deselectAll];
+                                     }
+                                 }
+                                 else
+                                 {
+                                     NSIndexPath* genreIndexPath = [self.categoriesTabViewController findIndexPathForGenreId:self.channel.categoryId];
+                                     Genre* genreSelected =
+                                     [self.categoriesTabViewController selectAndReturnGenreForIndexPath:genreIndexPath
+                                                                                       andSubcategories:YES];
+                                     
+                                     if(genreSelected)
+                                     {
+                                         
+                                         if([genreSelected isMemberOfClass:[Genre class]])
+                                         {
+                                             [self updateCategoryButtonText: [NSString stringWithFormat:@"%@", genreSelected.name]];
+                                         }
+                                         else
+                                         {
+                                             [self updateCategoryButtonText: [NSString stringWithFormat:@"%@/%@",
+                                                                              ((SubGenre*)genreSelected).genre.name, genreSelected.name]];
+                                         }
+                                             
+                                         
                                      }
                                      else
                                      {
@@ -1264,7 +1292,6 @@
 {
     [[NSNotificationCenter defaultCenter] postNotificationName: kNoteAddToChannelRequest
                                                         object: self];
-    
 }
 
 
@@ -1327,6 +1354,10 @@
         self.activityIndicator.hidden = NO;
         [self.activityIndicator startAnimating];
     }
+    else
+    {
+        self.createChannelButton.enabled = NO;
+    }
     
     [self hideCategoryChooser];
     
@@ -1348,20 +1379,29 @@
                                              NSString* channelId = [resourceCreated objectForKey: @"id"];
                                              
                                              [self setVideosForChannelById:channelId isUpdated:NO];
+                                             
+                                             [self setEditControlsVisibility: NO];
+                                             self.createChannelButton.enabled = YES;
+                                             self.createChannelButton.hidden = YES;
+                                             self.cancelEditButton.hidden = YES;
+                                             self.addButton.hidden = NO;
+                                             
+                                             [[NSNotificationCenter defaultCenter] postNotificationName: kNoteAllNavControlsShow
+                                                                                                 object: self
+                                                                                               userInfo: nil];
                                          }
                                               errorHandler: ^(id error) {
-                                             
-                                             DebugLog(@"Error @ createChannelPressed:");
-                                             NSString* errorMessage = NSLocalizedString(@"Could not create channel. Please try again later.", nil);
-                                             if ([[error objectForKey: @"form_errors"] objectForKey :@"title"])
-                                             {
-                                                 errorMessage = NSLocalizedString(@"You already created a channel with this title. Please choose a different title.",nil);
-                                             };
-
-                                             [self showError:errorMessage];
-                                             
-                                             
-                                         }];
+                                                  
+                                                  DebugLog(@"Error @ createChannelPressed:");
+                                                  NSString* errorMessage = NSLocalizedString(@"Could not create channel. Please try again later.", nil);
+                                                  if ([[error objectForKey: @"form_errors"] objectForKey :@"title"])
+                                                  {
+                                                      errorMessage = NSLocalizedString(@"You already created a channel with this title. Please choose a different title.",nil);
+                                                  };
+                                                  
+                                                  self.createChannelButton.enabled = YES;
+                                                  [self showError:errorMessage];
+                                              }];
 }
 
 
@@ -1426,7 +1466,7 @@
                                               
                                               if ([[SYNDeviceManager sharedInstance] isIPad])
                                               {
-                                                  self.addButton.hidden = YES;
+//                                                  self.addButton.hidden = YES;
                                                   self.createChannelButton.hidden = YES;
                                                   
                                               }
@@ -1992,7 +2032,7 @@
     CGRect croppingRect = UIInterfaceOrientationIsLandscape(orientation) ?
     CGRectMake(0.0, 138.0, 1024.0, 886.0) : CGRectMake(138.0, 0.0, 886.0, 1024.0);
     
-    if (self.mode == kChannelDetailsModeEdit && !self.originalBackgroundImage) // set the bg var once
+    if (self.originalBackgroundImage == nil) // set the bg var once
     {
         self.originalBackgroundImage = self.channelCoverImageView.image;
     }
@@ -2005,6 +2045,7 @@
     
     return croppedImage;
 }
+
 
 - (id<SDWebImageOperation>) loadBackgroundImage
 {

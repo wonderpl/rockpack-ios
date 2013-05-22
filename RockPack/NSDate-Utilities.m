@@ -402,7 +402,7 @@
             break;
             
         case 5:
-            string = NSLocalizedString (@"THURDAY", nil);
+            string = NSLocalizedString (@"THURSDAY", nil);
             break;
             
         case 6:

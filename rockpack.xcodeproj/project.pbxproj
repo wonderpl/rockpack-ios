@@ -480,6 +480,10 @@
 		1F82780E174BB7310012F9F5 /* ButtonNavSelected@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 1F82780C174BB7310012F9F5 /* ButtonNavSelected@2x.png */; };
 		1FC8FEA817340708000FF0B2 /* ShadowCategorySlide@2x~iphone.png in Resources */ = {isa = PBXBuildFile; fileRef = 1FC8FEA617340708000FF0B2 /* ShadowCategorySlide@2x~iphone.png */; };
 		1FC8FEA917340708000FF0B2 /* ShadowCategorySlide~iphone.png in Resources */ = {isa = PBXBuildFile; fileRef = 1FC8FEA717340708000FF0B2 /* ShadowCategorySlide~iphone.png */; };
+		1FD12372174CD76700144374 /* NavDefault.png in Resources */ = {isa = PBXBuildFile; fileRef = 1FD1236E174CD76700144374 /* NavDefault.png */; };
+		1FD12373174CD76700144374 /* NavDefault@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 1FD1236F174CD76700144374 /* NavDefault@2x.png */; };
+		1FD12374174CD76700144374 /* NavHighlighted.png in Resources */ = {isa = PBXBuildFile; fileRef = 1FD12370174CD76700144374 /* NavHighlighted.png */; };
+		1FD12375174CD76700144374 /* NavHighlighted@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 1FD12371174CD76700144374 /* NavHighlighted@2x.png */; };
 		1FE4BA40174BCF19001DC49C /* Default-Portrait~ipad.png in Resources */ = {isa = PBXBuildFile; fileRef = 1FE4BA3F174BCF19001DC49C /* Default-Portrait~ipad.png */; };
 		1FE4BA42174BCF1E001DC49C /* Default-Portrait@2x~ipad.png in Resources */ = {isa = PBXBuildFile; fileRef = 1FE4BA41174BCF1E001DC49C /* Default-Portrait@2x~ipad.png */; };
 		1FE4BA44174BCF23001DC49C /* Default-Landscape~ipad.png in Resources */ = {isa = PBXBuildFile; fileRef = 1FE4BA43174BCF23001DC49C /* Default-Landscape~ipad.png */; };
@@ -1047,7 +1051,7 @@
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
-		010DEFD01629BDC40080F26B /* Rockpack.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = Rockpack.app; sourceTree = BUILT_PRODUCTS_DIR; };
+		010DEFD01629BDC40080F26B /* rockpack.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = rockpack.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		010DEFD41629BDC40080F26B /* UIKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = UIKit.framework; path = System/Library/Frameworks/UIKit.framework; sourceTree = SDKROOT; };
 		010DEFD61629BDC40080F26B /* Foundation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Foundation.framework; path = System/Library/Frameworks/Foundation.framework; sourceTree = SDKROOT; };
 		010DEFD81629BDC40080F26B /* CoreGraphics.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreGraphics.framework; path = System/Library/Frameworks/CoreGraphics.framework; sourceTree = SDKROOT; };
@@ -1619,6 +1623,10 @@
 		1F82780C174BB7310012F9F5 /* ButtonNavSelected@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = "ButtonNavSelected@2x.png"; path = "Assets/Images/ButtonNavSelected@2x.png"; sourceTree = "<group>"; };
 		1FC8FEA617340708000FF0B2 /* ShadowCategorySlide@2x~iphone.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "ShadowCategorySlide@2x~iphone.png"; sourceTree = "<group>"; };
 		1FC8FEA717340708000FF0B2 /* ShadowCategorySlide~iphone.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "ShadowCategorySlide~iphone.png"; sourceTree = "<group>"; };
+		1FD1236E174CD76700144374 /* NavDefault.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = NavDefault.png; path = Assets/Images/NavDefault.png; sourceTree = "<group>"; };
+		1FD1236F174CD76700144374 /* NavDefault@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = "NavDefault@2x.png"; path = "Assets/Images/NavDefault@2x.png"; sourceTree = "<group>"; };
+		1FD12370174CD76700144374 /* NavHighlighted.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = NavHighlighted.png; path = Assets/Images/NavHighlighted.png; sourceTree = "<group>"; };
+		1FD12371174CD76700144374 /* NavHighlighted@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = "NavHighlighted@2x.png"; path = "Assets/Images/NavHighlighted@2x.png"; sourceTree = "<group>"; };
 		1FE4BA3F174BCF19001DC49C /* Default-Portrait~ipad.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "Default-Portrait~ipad.png"; sourceTree = "<group>"; };
 		1FE4BA41174BCF1E001DC49C /* Default-Portrait@2x~ipad.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "Default-Portrait@2x~ipad.png"; sourceTree = "<group>"; };
 		1FE4BA43174BCF23001DC49C /* Default-Landscape~ipad.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "Default-Landscape~ipad.png"; sourceTree = "<group>"; };
@@ -2322,7 +2330,7 @@
 		010DEFD11629BDC40080F26B /* Products */ = {
 			isa = PBXGroup;
 			children = (
-				010DEFD01629BDC40080F26B /* Rockpack.app */,
+				010DEFD01629BDC40080F26B /* rockpack.app */,
 			);
 			name = Products;
 			sourceTree = "<group>";
@@ -4380,6 +4388,10 @@
 				BE7D34EF1715AD060085AB81 /* ButtonNavHighlighted@2x.png */,
 				1F82780B174BB7310012F9F5 /* ButtonNavSelected.png */,
 				1F82780C174BB7310012F9F5 /* ButtonNavSelected@2x.png */,
+				1FD1236E174CD76700144374 /* NavDefault.png */,
+				1FD1236F174CD76700144374 /* NavDefault@2x.png */,
+				1FD12370174CD76700144374 /* NavHighlighted.png */,
+				1FD12371174CD76700144374 /* NavHighlighted@2x.png */,
 				BE7D34F71715C66B0085AB81 /* NavSelected.png */,
 				BE7D34F81715C66B0085AB81 /* NavSelected@2x.png */,
 				BE7D34FB1715C68C0085AB81 /* NavArrow.png */,
@@ -4615,7 +4627,7 @@
 			);
 			name = rockpack;
 			productName = RockPack;
-			productReference = 010DEFD01629BDC40080F26B /* Rockpack.app */;
+			productReference = 010DEFD01629BDC40080F26B /* rockpack.app */;
 			productType = "com.apple.product-type.application";
 		};
 /* End PBXNativeTarget section */
@@ -5476,6 +5488,10 @@
 				1FE4BA49174BF02A001DC49C /* NotificationBubble.png in Resources */,
 				1FE4BA4A174BF02A001DC49C /* NotificationBubble@2x.png in Resources */,
 				38015B4E174CC51A005D3F18 /* SYNUserProfileViewController~iphone.xib in Resources */,
+				1FD12372174CD76700144374 /* NavDefault.png in Resources */,
+				1FD12373174CD76700144374 /* NavDefault@2x.png in Resources */,
+				1FD12374174CD76700144374 /* NavHighlighted.png in Resources */,
+				1FD12375174CD76700144374 /* NavHighlighted@2x.png in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -5812,11 +5828,22 @@
 					"\"$(SRCROOT)\"",
 				);
 				OTHER_LDFLAGS = (
-					"$(inherited)",
+					"-ObjC",
+					"-lz",
+					"-framework",
+					CFNetwork,
+					"-framework",
+					QuartzCore,
+					"-framework",
+					Security,
+					"-framework",
+					SystemConfiguration,
 					"-lsqlite3.0",
 					"-licucore",
+					"-framework",
+					SparkInspector,
 				);
-				PRODUCT_NAME = Rockpack;
+				PRODUCT_NAME = rockpack;
 				PROVISIONING_PROFILE = "";
 				"PROVISIONING_PROFILE[sdk=iphoneos*]" = "";
 				TARGETED_DEVICE_FAMILY = "1,2";
@@ -5844,11 +5871,20 @@
 					"\"$(SRCROOT)\"",
 				);
 				OTHER_LDFLAGS = (
-					"$(inherited)",
+					"-ObjC",
+					"-lz",
+					"-framework",
+					CFNetwork,
+					"-framework",
+					QuartzCore,
+					"-framework",
+					Security,
+					"-framework",
+					SystemConfiguration,
 					"-lsqlite3.0",
 					"-licucore",
 				);
-				PRODUCT_NAME = Rockpack;
+				PRODUCT_NAME = rockpack;
 				TARGETED_DEVICE_FAMILY = "1,2";
 				WRAPPER_EXTENSION = app;
 			};
@@ -5901,11 +5937,20 @@
 					"\"$(SRCROOT)\"",
 				);
 				OTHER_LDFLAGS = (
-					"$(inherited)",
+					"-ObjC",
+					"-lz",
+					"-framework",
+					CFNetwork,
+					"-framework",
+					QuartxCore,
+					"-framework",
+					Security,
+					"-framework",
+					SystemConfiguration,
 					"-lsqlite3.0",
 					"-licucore",
 				);
-				PRODUCT_NAME = Rockpack;
+				PRODUCT_NAME = rockpack;
 				PROVISIONING_PROFILE = "";
 				"PROVISIONING_PROFILE[sdk=iphoneos*]" = "";
 				TARGETED_DEVICE_FAMILY = "1,2";

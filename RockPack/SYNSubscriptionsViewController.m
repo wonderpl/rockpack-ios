@@ -143,10 +143,7 @@
 
 -(void)setUser:(ChannelOwner*)user
 {
-    if(user == _user)
-        return;
-    
-    if([user.uniqueId isEqual:_user.uniqueId])
+    if(user == _user || [user.uniqueId isEqual:_user.uniqueId])
         return;
     
     _user = user;
@@ -156,7 +153,7 @@
 }
 -(ChannelOwner*)user
 {
-    return _user;
+    return (ChannelOwner*)_user;
 }
 
 

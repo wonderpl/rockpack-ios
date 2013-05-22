@@ -22,10 +22,13 @@
 @property (nonatomic, assign) NSString* homeButtomString;
 @property (nonatomic, readonly) SYNGenreTabView* categoriesTabView;
 @property (nonatomic, strong) NSArray* genresFetched;
+@property (nonatomic, weak) SYNAppDelegate* appDelegate;
 @end
 
 
 @implementation SYNGenreTabViewController
+
+@synthesize appDelegate;
 
 
 - (id) initWithHomeButton: (NSString*) homeButtomString
@@ -33,6 +36,8 @@
     if ((self = [super init]))
     {
         self.homeButtomString = homeButtomString;
+        
+        self.appDelegate = (SYNAppDelegate *)[[UIApplication sharedApplication] delegate];
     }
     
     return self;
@@ -58,6 +63,20 @@
 {
     [super viewDidLoad];
     
+    
+    
+    [appDelegate.networkEngine updateCategoriesOnCompletion: ^{
+        
+        
+        [self loadCategories];
+        
+        
+    } onError:^(NSError* error) {
+        DebugLog(@"%@", [error debugDescription]);
+        
+        
+    }];
+    
     [self loadCategories];
 }
 
@@ -66,7 +85,7 @@
 {
     NSError* error;
     
-    SYNAppDelegate* appDelegate = (SYNAppDelegate *)[[UIApplication sharedApplication] delegate];
+    
     
     NSEntityDescription* categoryEntity = [NSEntityDescription entityForName: @"Genre"
                                                       inManagedObjectContext: appDelegate.mainManagedObjectContext];
@@ -85,34 +104,14 @@
     categoriesFetchRequest.includesSubentities = NO;
 
     self.genresFetched = [appDelegate.mainManagedObjectContext executeFetchRequest: categoriesFetchRequest
-                                                                                                   error: &error];
+                                                                             error: &error];
     
-    if (self.genresFetched.count == 0)
-    {
-        
-        [appDelegate.networkEngine updateCategoriesOnCompletion: ^{
-            [self loadCategories];
-        } onError:^(NSError* error) {
-            DebugLog(@"%@", [error debugDescription]);
-        }];
-        
-        return;
-    }
-    
-    
-    
-    
-    [self.tabView createCategoriesTab:self.genresFetched];
+    if(self.genresFetched.count > 0)
+        [self.tabView createCategoriesTab:self.genresFetched];
 }
 
 
-#pragma mark - Orientation Change
 
-- (void) willAnimateRotationToInterfaceOrientation: (UIInterfaceOrientation) toInterfaceOrientation
-                                          duration: (NSTimeInterval) duration
-{
-    [self.tabView refreshViewForOrientation: toInterfaceOrientation];
-}
 
 
 #pragma mark - TabView Delagate methods
@@ -177,47 +176,15 @@
     {
         [self.tabView createSubcategoriesTab:newSubCategories];
     }
-    
 }
 
 
 - (void) handleSecondaryTap: (UIView *) tab
 {
     
+    SYNGenreItemView* subGenreTab = (SYNGenreItemView*)tab;
     
-    
-    SYNAppDelegate* appDelegate = (SYNAppDelegate *)[[UIApplication sharedApplication] delegate];
-    
-    
-    NSEntityDescription* categoryEntity = [NSEntityDescription entityForName: @"SubGenre"
-                                                      inManagedObjectContext: appDelegate.mainManagedObjectContext];
-    
-    NSFetchRequest *categoriesFetchRequest = [[NSFetchRequest alloc] init];
-    [categoriesFetchRequest setEntity: categoryEntity];
-    
-    //DebugLog(@"Tag clicked : %d", tab.tag);
-    
-    NSPredicate *predicate = [NSPredicate predicateWithFormat: @"uniqueId == %d", tab.tag];
-    [categoriesFetchRequest setPredicate: predicate];
-    
-    NSError* error = nil;
-    
-    NSArray *matchingCategoryInstanceEntries = [appDelegate.mainManagedObjectContext executeFetchRequest: categoriesFetchRequest
-                                                                                                   error: &error];
-    
-    if (matchingCategoryInstanceEntries.count == 0)
-    {
-        DebugLog(@"WARNING: Found NO Category for Tab %d", tab.tag);
-        return;
-    }
-    
-    if (matchingCategoryInstanceEntries.count > 1)
-    {
-        DebugLog(@"WARNING: Found multiple (%i) Categories for Tab %d", matchingCategoryInstanceEntries.count, tab.tag);
-        
-    }
-    
-    SubGenre* subGenreSelected = (SubGenre*)matchingCategoryInstanceEntries[0];
+    SubGenre* subGenreSelected = (SubGenre*)subGenreTab.model;
     
     [self.delegate handleSecondaryTap: tab];
     
@@ -226,7 +193,6 @@
     
     
     // == Log subcategory in Google Analytics == //
-    
     
     id<GAITracker> tracker = [GAI sharedInstance].defaultTracker;
     
@@ -250,17 +216,20 @@
     [self.categoriesTabView deselectAll];
 }
 
--(Genre*)selectAndReturnGenreForId:(NSInteger)identifier andSubcategories:(BOOL)subcats
+
+#pragma mark - Getting Genre from Tab Bar 
+
+-(Genre*)selectAndReturnGenreForIndexPath:(NSIndexPath*)indexPath andSubcategories:(BOOL)subcats
 {
-    if(!self.genresFetched || (self.genresFetched.count - 1) < identifier)
+    if(!self.genresFetched || !indexPath || !(self.genresFetched.count > indexPath.section))
         return nil;
     
     
-    Genre* genreToSelect = (Genre*)[self.genresFetched objectAtIndex:identifier];
+    Genre* genreToSelect = (Genre*)[self.genresFetched objectAtIndex:indexPath.section];
     
-    if(subcats)
+    if(subcats && genreToSelect.subgenres.count > indexPath.item)
     {
-        genreToSelect = (SubGenre*)[genreToSelect.subgenres firstObject];
+        genreToSelect = (SubGenre*)[genreToSelect.subgenres objectAtIndex:indexPath.item];
         [self handleMainGenreSelection:((SubGenre*)genreToSelect).genre];
     }
     
@@ -268,10 +237,57 @@
     [self.categoriesTabView highlightTabWithGenre:genreToSelect];
     
     
-    
-    
     return genreToSelect;
         
+}
+
+-(NSIndexPath*)findIndexPathForGenreId:(NSString*)genreId
+{
+    
+    NSInteger section = -1;
+    NSInteger item = -1;
+    
+    NSInteger _section = 0;
+    NSInteger _item = 0;
+    
+    for (Genre* genre in self.genresFetched)
+    {
+        if([genre.uniqueId isEqualToString:genreId])
+        {
+            section = section; // the genre is a top level category
+            item = 0;
+            break;
+        }
+            
+        
+        for (SubGenre* subgenre in genre.subgenres)
+        {
+            if([subgenre.uniqueId isEqualToString:genreId])
+            {
+                
+                section = [self.genresFetched indexOfObject:subgenre.genre]; // get the parent genre
+                item = _item;
+                break;
+            }
+                
+            
+            _item++;
+        }
+        
+        _section++;
+        _item = 0;
+    }
+    
+    NSIndexPath* indexPath = [NSIndexPath indexPathForItem:item inSection:section];
+    return indexPath;
+}
+
+#pragma mark - Orientation Change
+
+- (void) willAnimateRotationToInterfaceOrientation: (UIInterfaceOrientation) toInterfaceOrientation
+                                          duration: (NSTimeInterval) duration
+{
+    [self.tabView refreshViewForOrientation: toInterfaceOrientation];
 }
 
 @end

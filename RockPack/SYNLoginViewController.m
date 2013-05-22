@@ -97,8 +97,8 @@
         memberLabel.font = rockpackBigLabelFont;
         areYouNewLabel.font = rockpackBigLabelFont;
         
-        passwordForgottenLabel.font = [UIFont rockpackFontOfSize: 14];
-        secondaryFacebookMessage.font = [UIFont rockpackFontOfSize: 20];
+        passwordForgottenLabel.font = [UIFont rockpackFontOfSize: 14.0];
+        secondaryFacebookMessage.font = [UIFont rockpackFontOfSize: 20.0];
         termsAndConditionsLabel.font = [UIFont rockpackFontOfSize: 14.0];
         termsAndConditionsLabelSide.font = termsAndConditionsLabel.font;
         wellSendYouLabel.font = [UIFont rockpackFontOfSize: 16.0];
@@ -1389,18 +1389,17 @@
     if (UIInterfaceOrientationIsPortrait(toInterfaceOrientation))
     {
         signUpButton.center = CGPointMake(604.0, signUpButton.center.y);
-        passwordForgottenLabel.center = CGPointMake(650.0, passwordForgottenLabel.center.y);
+        passwordForgottenLabel.center = CGPointMake(115.0, passwordForgottenLabel.center.y);
         faceImageButton.center = CGPointMake(124.0, faceImageButton.center.y);
         self.avatarImageView.center = CGPointMake(124.0, self.avatarImageView.center.y);
         termsAndConditionsLabel.center = CGPointMake(termsAndConditionsLabel.center.x, 714.0);
-        termsAndConditionsLabelSide.center = CGPointMake(termsAndConditionsLabelSide.center.x, 714.0);
-        
+        termsAndConditionsLabelSide.center = CGPointMake(termsAndConditionsLabelSide.center.x, 714.0);        
         registerButton.center = CGPointMake(registerButton.center.x, 704.0); 
     }
     else
     {
         signUpButton.center = CGPointMake(730.0, signUpButton.center.y);
-        passwordForgottenLabel.center = CGPointMake(780.0, passwordForgottenLabel.center.y);
+        passwordForgottenLabel.center = CGPointMake(248.0, passwordForgottenLabel.center.y);
         faceImageButton.center = CGPointMake(254.0, faceImageButton.center.y);
         self.avatarImageView.center = CGPointMake(254.0, self.avatarImageView.center.y);
         termsAndConditionsLabel.center = CGPointMake(termsAndConditionsLabel.center.x, 370.0);

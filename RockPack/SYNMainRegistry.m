@@ -40,7 +40,7 @@
     
     User* newUser = [User instanceFromDictionary: dictionary
                        usingManagedObjectContext: appDelegate.mainManagedObjectContext
-                             ignoringObjectTypes: kIgnoreNothing];
+                             ignoringObjectTypes: kIgnoreVideoInstanceObjects];
     
     if(!newUser)
         return NO;
@@ -103,6 +103,7 @@
     if (!itemsArray)
         return NO;
     
+    
     for (NSDictionary* subscriptionChannel in itemsArray)
     {
         
@@ -119,7 +120,11 @@
         
         [currentUser addSubscriptionsObject:channel];
         
+        
+        
     }
+    
+    
     
     BOOL saveResult = [self saveImportContext];
     if(!saveResult)
@@ -139,33 +144,68 @@
         return NO;
     
     NSArray *itemArray = [categoriesDictionary objectForKey: @"items"];
-    
-    if (![itemArray isKindOfClass: [NSArray class]] || [itemArray count] == 0)
+    if (![itemArray isKindOfClass: [NSArray class]])
         return NO;
     
-    // We need to mark all of our existing Category objects corresponding to this viewId, just in case they are no longer required
-    // and should be removed in a post-import cleanup
-    NSArray *existingObjectsInViewId = [self markManagedObjectForPossibleDeletionWithEntityName: @"Genre"
-                                                                                      andViewId: nil
-                                                                         inManagedObjectContext: importManagedObjectContext];
+    if (itemArray.count == 0)
+        return YES;
     
-    // === Main Processing === //
+    
+    // Query for existing objects
+    NSFetchRequest *categoriesFetchRequest = [[NSFetchRequest alloc] init];
+    [categoriesFetchRequest setEntity: [NSEntityDescription entityForName: @"Genre"
+                                                   inManagedObjectContext: appDelegate.mainManagedObjectContext]];
+    
+    
+    NSError* error;
+    NSArray *existingCategories = [appDelegate.mainManagedObjectContext executeFetchRequest: categoriesFetchRequest
+                                                                                          error: &error];
+    
+    NSMutableDictionary* existingCategoriesByIndex = [NSMutableDictionary dictionaryWithCapacity:existingCategories.count];
+    
+    for (Channel* existingCategory in existingCategories)
+    {
+        
+        [existingCategoriesByIndex setObject:existingCategory forKey:existingCategory.uniqueId];
+        
+        existingCategory.markedForDeletionValue = YES; // if a real genre is passed - delete the old objects
+    }
+    
+
     for (NSDictionary *categoryDictionary in itemArray)
-        if ([categoryDictionary isKindOfClass: [NSDictionary class]])
-            [Genre instanceFromDictionary: categoryDictionary
-                   usingManagedObjectContext: importManagedObjectContext];
+    {
+        
+        
+        NSString *uniqueId = [categoryDictionary objectForKey: @"id"];
+        if (!uniqueId)
+            continue;
+        
+        Genre* genre;
+        
+        genre = [existingCategoriesByIndex objectForKey:uniqueId];
+        
+        if(!genre)
+        {
+            genre = [Genre instanceFromDictionary: categoryDictionary
+                        usingManagedObjectContext: appDelegate.mainManagedObjectContext];
+        }
+        
+        genre.markedForDeletionValue = NO;
+        
+        genre.priority = [categoryDictionary objectForKey: @"priority"
+                                              withDefault: [NSNumber numberWithInt: 0]];
+        
+        
+        
+    }
+        
     
-    // == =============== == //
+   
     
-    // Now remove any Category objects that are no longer referenced in the import
-    [self removeUnusedManagedObjects: existingObjectsInViewId
-              inManagedObjectContext: importManagedObjectContext];
+    [self removeUnusedManagedObjects: existingCategories
+              inManagedObjectContext: appDelegate.mainManagedObjectContext];
     
-    // [[NSNotificationCenter defaultCenter] postNotificationName: kCategoriesUpdated object: nil];
     
-    BOOL saveResult = [self saveImportContext];
-    if (!saveResult)
-        return NO;
     
     [appDelegate saveContext: TRUE];
     
@@ -221,9 +261,10 @@
     if (![itemArray isKindOfClass: [NSArray class]])
         return NO;
     
-    // == =============== == //
+    if (itemArray.count == 0)
+        return YES;
     
-    //Get all current videos for the viewId
+    
     NSEntityDescription* videoInstanceEntity = [NSEntityDescription entityForName: @"VideoInstance"
                                                            inManagedObjectContext: importManagedObjectContext];
     NSFetchRequest *videoInstanceFetchRequest = [[NSFetchRequest alloc] init];
@@ -435,27 +476,47 @@
     
     
     NSError* error;
-    NSArray *matchingChannelEntries = [appDelegate.mainManagedObjectContext executeFetchRequest: channelFetchRequest
+    NSArray *existingChannels = [appDelegate.mainManagedObjectContext executeFetchRequest: channelFetchRequest
                                                                                           error: &error];
     
     
-    NSMutableDictionary* existingChannelsByIndex = [NSMutableDictionary dictionaryWithCapacity: matchingChannelEntries.count];
+    NSMutableDictionary* existingChannelsByIndex = [NSMutableDictionary dictionaryWithCapacity: existingChannels.count];
     
-    for (Channel* existingChannel in matchingChannelEntries)
+    for (Channel* existingChannel in existingChannels)
     {
         
-   
         [existingChannelsByIndex setObject:existingChannel forKey:existingChannel.uniqueId];
         
         if(!append)
             existingChannel.popularValue = NO; // set all to NO
         
-        // if we do not append and the channel is not owned by the user then delete
-        if(!append && existingChannel.channelOwner != appDelegate.currentUser)
-            existingChannel.markedForDeletionValue = YES; 
-           
+        // if we do not append and the channel is not owned by the user then delete //
         
+        if(!append)
+            existingChannel.markedForDeletionValue = YES;
+        
+        
+        // set the old channels to not fresh and refresh on demand //
+        
+        existingChannel.freshValue = NO;
+           
     }
+    
+    
+    
+    // protect owned and subscribed channels from deletion //
+    
+    for (Channel* subscribedChannel in appDelegate.currentUser.subscriptions)
+    {
+        subscribedChannel.markedForDeletionValue = NO;
+    }
+    
+    for (Channel* ownedChannels in appDelegate.currentUser.channels)
+    {
+        ownedChannels.markedForDeletionValue = NO;
+    }
+    
+    
 
     for (NSDictionary *itemDictionary in itemArray)
     {
@@ -477,14 +538,16 @@
 
         channel.markedForDeletionValue = NO;
         
+        channel.freshValue = YES;
+        
         channel.position = [itemDictionary objectForKey: @"position"
                                             withDefault: [NSNumber numberWithInt: 0]];
         
-        if (!genre)
+        if (!genre) // nil is passed in case of the @"all" category which is popular
             channel.popularValue = YES;
     }
     
-    [self removeUnusedManagedObjects: matchingChannelEntries
+    [self removeUnusedManagedObjects: existingChannels
               inManagedObjectContext: appDelegate.mainManagedObjectContext];
     
     BOOL saveResult = [self saveImportContext];

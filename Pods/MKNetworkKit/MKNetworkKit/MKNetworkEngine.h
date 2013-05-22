@@ -269,6 +269,15 @@
 +(void) cancelOperationsContainingURLString:(NSString*) string;
 
 /*!
+ *  @abstract Cancels operations matching the given block.
+ *
+ *  @discussion
+ *	Cancels all operations in the shared queue for which the given block returns YES.
+ *
+ */
++(void) cancelOperationsMatchingBlock:(BOOL (^)(MKNetworkOperation*))block;
+
+/*!
  *  @abstract Cancels all operations created by this engine
  *
  *  @discussion
@@ -388,5 +397,14 @@
  *	This method is a handy helper that you can use to check for network reachability.
  */
 -(BOOL) isReachable;
+
+/*!
+ *  @abstract Boolean variable that states whether the request should automatically include an Accept-Language header.
+ *  @property shouldSendAcceptLanguageHeader
+ *
+ *  @discussion
+ *	The default value is YES. MKNetworkKit will generate an Accept-Language header using [NSLocale preferredLanguages] + "en-US".
+ */
+@property (nonatomic, assign) BOOL shouldSendAcceptLanguageHeader;
 
 @end
