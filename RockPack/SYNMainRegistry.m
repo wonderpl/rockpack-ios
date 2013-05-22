@@ -474,6 +474,8 @@
         subscribedChannel.markedForDeletionValue = NO;
         
     }
+    
+    
 
     for (NSDictionary *itemDictionary in itemArray)
     {
