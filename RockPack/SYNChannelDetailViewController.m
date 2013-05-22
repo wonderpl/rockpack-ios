@@ -227,6 +227,7 @@
         self.categoriesTabViewController.showOtherInSubcategories = YES;
         CGRect tabFrame = self.categoriesTabViewController.view.frame;
         tabFrame.origin.y = kChannelCreationCategoryTabOffsetY;
+        tabFrame.size.width = self.view.frame.size.width;
         self.categoriesTabViewController.view.frame = tabFrame;
         [self.view addSubview: self.categoriesTabViewController.view];
         self.categoriesTabViewController.view.autoresizingMask = UIViewAutoresizingFlexibleWidth;
@@ -264,8 +265,7 @@
         
         // Now do fancy attributed string
         //NSString *categoryString = @"SELECT A CATEGORY (Optional)";
-        NSString *categoryString = nil;
-        NSLocalizedString (@"SELECT A CATEGORY", nil);
+        NSString *categoryString = NSLocalizedString (@"SELECT A CATEGORY", nil);
 
         
         NSMutableAttributedString* attributedCategoryString = [[NSMutableAttributedString alloc] initWithString: categoryString
@@ -937,7 +937,8 @@
 
 - (IBAction) editButtonTapped: (id) sender
 {
-    [[NSNotificationCenter defaultCenter] postNotificationName: ([[SYNDeviceManager sharedInstance] isIPad])? kChannelsNavControlsHide : kNoteAllNavControlsHide
+    BOOL isIPad = [[SYNDeviceManager sharedInstance] isIPad];
+    [[NSNotificationCenter defaultCenter] postNotificationName: (isIPad)? kChannelsNavControlsHide : kNoteAllNavControlsHide
                                                         object: self
                                                       userInfo: nil];
     
@@ -973,15 +974,25 @@
         if ([selectedCategoryResult count]>0)
         {
             Genre* genre = [selectedCategoryResult objectAtIndex:0];
+            NSString* newTitle = nil;
             if ([[SYNDeviceManager sharedInstance] isIPhone] && [genre isKindOfClass:[SubGenre class]])
             {
                 SubGenre* subCategory = (SubGenre*) genre;
-                [self.selectCategoryButton setTitle: [NSString stringWithFormat:@"%@/\n%@", subCategory.genre.name, subCategory.name]
-                                               forState: UIControlStateNormal];
+                newTitle =[NSString stringWithFormat:@"%@/\n%@", subCategory.genre.name, subCategory.name];
             }
             else
             {
-                [self.selectCategoryButton setTitle: [NSString stringWithFormat:@"%@",genre.name] forState: UIControlStateNormal];
+                newTitle = genre.name;
+            }
+            
+            if(isIPad)
+            {
+                [self updateCategoryButtonText:newTitle];
+            }
+            else
+            {
+                [self.selectCategoryButton setTitle: newTitle
+                                        forState: UIControlStateNormal];
             }
         }
     }
@@ -1021,7 +1032,7 @@
     [self hideCategoryChooser];
     
     self.channel.title = self.channelTitleTextView.text;
-    self.channel.channelDescription = @"Test Description";
+    self.channel.channelDescription = self.channel.channelDescription ? self.channel.channelDescription : @"";
     
 
     NSString* category = [self categoryIdStringForServiceCall];
@@ -1156,18 +1167,25 @@
                                  
                                  // if no category has been selected then select first //
                                  
-                                 if ([self.channel.categoryId isEqualToString:@""])
+                                 if ([self.selectedCategoryId isEqualToString:@""])
                                  {
                                      NSIndexPath* firstFirstIndexPath = [NSIndexPath indexPathForItem:0 inSection:0];
-                                     SubGenre* firstSelection =
-                                     (SubGenre*)[self.categoriesTabViewController selectAndReturnGenreForIndexPath:firstFirstIndexPath
+                                     Genre* firstSelection = [self.categoriesTabViewController selectAndReturnGenreForIndexPath:firstFirstIndexPath
                                                                                                   andSubcategories:YES];
                                      
                                      if (firstSelection)
                                      {
-                                         self.channel.categoryId = firstSelection.uniqueId;
-                                         [self updateCategoryButtonText: [NSString stringWithFormat:@"%@/%@",
-                                                                          firstSelection.genre.name, firstSelection.name]];
+                                         self.selectedCategoryId = firstSelection.uniqueId;
+                                         if([firstSelection isKindOfClass:[SubGenre class]])
+                                         {
+                                             SubGenre* firstSelectedSubGenre = (SubGenre*)firstSelection;
+                                             [self updateCategoryButtonText: [NSString stringWithFormat:@"%@/%@",
+                                                                          firstSelectedSubGenre.genre.name, firstSelectedSubGenre.name]];
+                                         }
+                                         else
+                                         {
+                                             [self updateCategoryButtonText: firstSelection.name];
+                                         }
                                      }
                                      else
                                      {
@@ -1186,7 +1204,7 @@
                                          
                                          if([genreSelected isMemberOfClass:[Genre class]])
                                          {
-                                             [self updateCategoryButtonText: [NSString stringWithFormat:@"%@", genreSelected.name]];
+                                             [self updateCategoryButtonText:genreSelected.name];
                                          }
                                          else
                                          {
@@ -1941,7 +1959,7 @@
         {
             self.selectedCategoryId = category.uniqueId;
             
-            [self.selectCategoryButton setTitle: [NSString stringWithFormat:@"%@", category.name]
+            [self.selectCategoryButton setTitle: category.name
                                        forState: UIControlStateNormal];
         }
         [self hideCategoriesTable];
