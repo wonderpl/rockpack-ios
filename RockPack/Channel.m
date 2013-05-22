@@ -103,10 +103,8 @@ static NSEntityDescription *channelEntity = nil;
     
     
     NSDictionary* videosDictionary = [dictionary objectForKey:@"videos"];
-    
     if (!(ignoringObjects & kIgnoreVideoInstanceObjects) && [videosDictionary isKindOfClass:[NSDictionary class]])
     {
-        
         
         NSArray *itemArray = [videosDictionary objectForKey: @"items"];
         if(![itemArray isKindOfClass:[NSArray class]])
@@ -114,17 +112,19 @@ static NSEntityDescription *channelEntity = nil;
         
         [self.videoInstancesSet removeAllObjects];
         
+        // view id is ChannelDetails
         
         for (NSDictionary *itemDictionary in itemArray)
         {
-            if (![itemDictionary isKindOfClass: [NSDictionary class]])
-                continue;
-            
             
             VideoInstance* videoInstance = [VideoInstance instanceFromDictionary: itemDictionary
-                                                           usingManagedObjectContext: self.managedObjectContext
-                                                                 ignoringObjectTypes: kIgnoreChannelObjects
-                                                                           andViewId: viewId];
+                                                       usingManagedObjectContext: self.managedObjectContext
+                                                             ignoringObjectTypes: kIgnoreChannelObjects
+                                                                       andViewId: viewId];
+            
+            if(!videoInstance) // nil can be returned by a malformed JSON or missing a uniqueId
+                continue;
+            
             [self addVideoInstancesObject:videoInstance];
             
         }

@@ -488,18 +488,14 @@
         [existingChannelsByIndex setObject:existingChannel forKey:existingChannel.uniqueId];
         
         if(!append)
-            existingChannel.popularValue = NO; // set all to NO
-        
-        // if we do not append and the channel is not owned by the user then delete //
-        
-        if(!append)
+        {
+            // no need to test for !genre because it is going to be set underneath
+            existingChannel.popularValue = NO;
+            
             existingChannel.markedForDeletionValue = YES;
-        
-        
-        // set the old channels to not fresh and refresh on demand //
-        
-        existingChannel.freshValue = NO;
-           
+            existingChannel.freshValue = NO;
+        }
+            
     }
     
     
