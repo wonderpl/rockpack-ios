@@ -4,6 +4,7 @@
 #import "_AbstractCommon.h"
 
 const struct AbstractCommonAttributes AbstractCommonAttributes = {
+	.fresh = @"fresh",
 	.markedForDeletion = @"markedForDeletion",
 	.uniqueId = @"uniqueId",
 };
@@ -40,6 +41,11 @@ const struct AbstractCommonFetchedProperties AbstractCommonFetchedProperties = {
 + (NSSet*)keyPathsForValuesAffectingValueForKey:(NSString*)key {
 	NSSet *keyPaths = [super keyPathsForValuesAffectingValueForKey:key];
 	
+	if ([key isEqualToString:@"freshValue"]) {
+		NSSet *affectingKey = [NSSet setWithObject:@"fresh"];
+		keyPaths = [keyPaths setByAddingObjectsFromSet:affectingKey];
+		return keyPaths;
+	}
 	if ([key isEqualToString:@"markedForDeletionValue"]) {
 		NSSet *affectingKey = [NSSet setWithObject:@"markedForDeletion"];
 		keyPaths = [keyPaths setByAddingObjectsFromSet:affectingKey];
@@ -48,6 +54,32 @@ const struct AbstractCommonFetchedProperties AbstractCommonFetchedProperties = {
 
 	return keyPaths;
 }
+
+
+
+
+@dynamic fresh;
+
+
+
+- (BOOL)freshValue {
+	NSNumber *result = [self fresh];
+	return [result boolValue];
+}
+
+- (void)setFreshValue:(BOOL)value_ {
+	[self setFresh:[NSNumber numberWithBool:value_]];
+}
+
+- (BOOL)primitiveFreshValue {
+	NSNumber *result = [self primitiveFresh];
+	return [result boolValue];
+}
+
+- (void)setPrimitiveFreshValue:(BOOL)value_ {
+	[self setPrimitiveFresh:[NSNumber numberWithBool:value_]];
+}
+
 
 
 

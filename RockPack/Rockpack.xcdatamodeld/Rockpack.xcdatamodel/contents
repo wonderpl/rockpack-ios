@@ -1,6 +1,7 @@
 <?xml version="1.0" encoding="UTF-8" standalone="yes"?>
 <model name="" userDefinedModelVersionIdentifier="" type="com.apple.IDECoreDataModeler.DataModel" documentVersion="1.0" lastSavedToolsVersion="2061" systemVersion="12D78" minimumToolsVersion="Xcode 4.3" macOSVersion="Automatic" iOSVersion="Automatic">
     <entity name="AbstractCommon" representedClassName="AbstractCommon" isAbstract="YES" syncable="YES">
+        <attribute name="fresh" optional="YES" attributeType="Boolean" syncable="YES"/>
         <attribute name="markedForDeletion" attributeType="Boolean" defaultValueString="NO" syncable="YES"/>
         <attribute name="uniqueId" optional="YES" attributeType="String" syncable="YES"/>
         <compoundIndexes>
@@ -90,7 +91,7 @@
         <relationship name="video" optional="YES" minCount="1" maxCount="1" deletionRule="Nullify" destinationEntity="Video" inverseName="videoInstances" inverseEntity="Video" syncable="YES"/>
     </entity>
     <elements>
-        <element name="AbstractCommon" positionX="-74" positionY="-333" width="128" height="75"/>
+        <element name="AbstractCommon" positionX="-74" positionY="-333" width="128" height="88"/>
         <element name="Channel" positionX="-2" positionY="72" width="128" height="268"/>
         <element name="ChannelCover" positionX="-164" positionY="-27" width="128" height="133"/>
         <element name="ChannelOwner" positionX="-344" positionY="48" width="128" height="105"/>

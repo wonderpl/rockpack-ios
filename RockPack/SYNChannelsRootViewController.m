@@ -353,7 +353,7 @@
 }
 
 
-#pragma mark - Helper methods
+#pragma mark - Helper Methods
 
 
 - (CGSize) itemSize
