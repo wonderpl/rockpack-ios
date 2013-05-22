@@ -209,6 +209,7 @@
 						<int key="NSvFlags">289</int>
 						<string key="NSFrame">{{954, 10}, {60, 61}}</string>
 						<reference key="NSSuperview" ref="766721923"/>
+						<reference key="NSNextKeyView"/>
 						<string key="NSReuseIdentifierKey">_NS:9</string>
 						<bool key="IBUIOpaque">NO</bool>
 						<string key="targetRuntimeIdentifier">IBIPadFramework</string>
@@ -223,6 +224,10 @@
 						<object class="NSCustomResource" key="IBUIHighlightedImage">
 							<string key="NSClassName">NSImage</string>
 							<string key="NSResourceName">ButtonNavHighlighted.png</string>
+						</object>
+						<object class="NSCustomResource" key="IBUISelectedImage">
+							<string key="NSClassName">NSImage</string>
+							<string key="NSResourceName">ButtonNavSelected.png</string>
 						</object>
 						<object class="NSCustomResource" key="IBUINormalImage">
 							<string key="NSClassName">NSImage</string>
@@ -507,7 +512,7 @@
 				<string key="-2.CustomClassName">UIResponder</string>
 				<string key="-2.IBPluginDependency">com.apple.InterfaceBuilder.IBCocoaTouchPlugin</string>
 				<string key="101.IBPluginDependency">com.apple.InterfaceBuilder.IBCocoaTouchPlugin</string>
-				<real value="1" key="101.IBUIButtonInspectorSelectedStateConfigurationMetadataKey"/>
+				<real value="2" key="101.IBUIButtonInspectorSelectedStateConfigurationMetadataKey"/>
 				<string key="105.IBPluginDependency">com.apple.InterfaceBuilder.IBCocoaTouchPlugin</string>
 				<real value="0.0" key="105.IBUIButtonInspectorSelectedStateConfigurationMetadataKey"/>
 				<string key="118.IBPluginDependency">com.apple.InterfaceBuilder.IBCocoaTouchPlugin</string>
@@ -540,6 +545,7 @@
 			<string key="ButtonCancelHighlighted.png">{60, 61}</string>
 			<string key="ButtonNav.png">{60, 61}</string>
 			<string key="ButtonNavHighlighted.png">{60, 61}</string>
+			<string key="ButtonNavSelected.png">{60, 61}</string>
 			<string key="ButtonSearch.png">{60, 61}</string>
 			<string key="ButtonSearchHighlighted.png">{60, 61}</string>
 		</dictionary>

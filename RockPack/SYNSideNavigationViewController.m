@@ -55,17 +55,17 @@ typedef enum {
 @property (nonatomic, strong) UIView* bottomExtraView;
 @property (nonatomic, strong) UIViewController* currentlyLoadedViewController;
 @property (nonatomic, weak) SYNAppDelegate* appDelegate;
-@property (weak, nonatomic) IBOutlet UIImageView *backgroundImageView;
-@property (weak, nonatomic) IBOutlet UILabel *nicknameLabel;
 @property (strong, nonatomic) SYNImagePickerController* imagePickerController;
 @property (weak, nonatomic) IBOutlet UIActivityIndicatorView *activityIndicator;
 @property (weak, nonatomic) IBOutlet UIButton *avatarButton;
+@property (weak, nonatomic) IBOutlet UIImageView *backgroundImageView;
+@property (weak, nonatomic) IBOutlet UILabel *nicknameLabel;
 
 //iPhone specific
 @property (weak, nonatomic) IBOutlet UIImageView *navigationContainerBackgroundImage;
+@property (weak, nonatomic) IBOutlet UILabel *navigationContainerTitleLabel;
 @property (weak, nonatomic) IBOutlet UIView *mainContentView;
 @property (weak, nonatomic) IBOutlet UIView *navigationContainerView;
-@property (weak, nonatomic) IBOutlet UILabel *navigationContainerTitleLabel;
 
 
 @end
@@ -76,9 +76,6 @@ typedef enum {
 // Only need synthesize for custom setters, use latest ObjC naming convention
 @synthesize user = _user;
 @synthesize currentlyLoadedViewController = _currentlyLoadedViewController;
-@synthesize keyForSelectedPage;
-@synthesize appDelegate;
-@synthesize unreadNotifications;
 @synthesize state = _state;
 
 - (id) init
@@ -98,7 +95,6 @@ typedef enum {
         self.appDelegate = (SYNAppDelegate*)[[UIApplication sharedApplication] delegate];
         
         self.unreadNotifications = 0;
-        
     }
         
     return self;
@@ -134,14 +130,12 @@ typedef enum {
                                          blue: (51.0/255.0)
                                         alpha: (1.0)];
     
-    
     self.cellByPageName = [NSMutableDictionary dictionaryWithCapacity:3];
     
     CGRect newFrame = self.view.frame;
     
     if ([[SYNDeviceManager sharedInstance] isIPhone])
     {
-        
         newFrame.size.height = [[SYNDeviceManager sharedInstance] currentScreenHeight] - 78.0f;
         self.view.frame = newFrame;
         self.mainContentView.frame = self.view.bounds;
@@ -156,7 +150,6 @@ typedef enum {
         self.navigationContainerTitleLabel.font = [UIFont rockpackFontOfSize:self.navigationContainerTitleLabel.font.pointSize];
         
         self.navigationContainerBackgroundImage.image = [[UIImage imageNamed:@"PanelMenuSecondLevel"] resizableImageWithCapInsets:UIEdgeInsetsMake(65, 0, 1, 0)];
-        
     }
     else // isIPad == TRUE
     {
@@ -172,8 +165,7 @@ typedef enum {
         
         newFrame.size.height = [[SYNDeviceManager sharedInstance] currentScreenHeight];
         self.view.frame = newFrame;
-    
-    
+
         // == Settings Button == //
         
         CGRect settingsButtonFrame = self.settingsButton.frame;
@@ -187,7 +179,6 @@ typedef enum {
         versionNumberLabelFrame.origin.y = [[SYNDeviceManager sharedInstance] currentScreenHeight] - 55.0 - settingsButtonFrame.size.height;
         self.versionNumberLabel.frame = versionNumberLabelFrame;
         self.versionNumberLabel.autoresizingMask = UIViewAutoresizingFlexibleTopMargin;
-        
         
         // == User Name Label == //
         
@@ -224,58 +215,58 @@ typedef enum {
 
 - (void) getNotifications
 {
-    [appDelegate.oAuthNetworkEngine notificationsFromUserId: appDelegate.currentUser.uniqueId
-                                          completionHandler: ^(id response) {
-                                              
-                                              if (![response isKindOfClass:[NSDictionary class]])
-                                                  return;
-                                              
-                                              NSDictionary* responseDictionary = (NSDictionary*)response;
-                                              
-                                              NSDictionary* notificationsDictionary = [responseDictionary objectForKey:@"notifications"];
-                                              if (!notificationsDictionary)
-                                                  return;
-                                              
-                                              NSNumber* totalNumber = [notificationsDictionary objectForKey:@"total"];
-                                              if (!totalNumber)
-                                                  return;
-                                              
-                                              NSInteger total = [totalNumber integerValue];
-                                              
-                                              if (total == 0)
-                                              {
-                                                  [self.tableView reloadData];
-                                                  return;
-                                              }
-                                              
-                                              NSArray* itemsArray = (NSArray*)[notificationsDictionary objectForKey:@"items"];
-                                              if (!itemsArray)
-                                              {
-                                                  // TODO: handle erro in parsing items
-                                                  return;
-                                                  
-                                              }
-                                              
-                                              self.notifications = [NSMutableArray arrayWithCapacity:unreadNotifications];
-                                              
-                                              for (NSDictionary* itemData in itemsArray)
-                                              {
-                                                  if (!itemData) continue;
-                                                  
-                                                  SYNRockpackNotification* notification = [SYNRockpackNotification notificationWithData:itemData];
-                                                  
-                                                  if(!notification.read)
-                                                      self.unreadNotifications++;
-                                                  
-                                                  [self.notifications addObject:notification];
-                                                  
-                                              }
-                                              
-                                              [self.tableView reloadData];
-                                          }
-                                               errorHandler:^(id error) {
-                                                   DebugLog(@"Could not load notifications");
-                                               }];
+    [self.appDelegate.oAuthNetworkEngine notificationsFromUserId: self.appDelegate.currentUser.uniqueId
+                                               completionHandler: ^(id response) {
+                                                   
+                                                   if (![response isKindOfClass:[NSDictionary class]])
+                                                       return;
+                                                   
+                                                   NSDictionary* responseDictionary = (NSDictionary*)response;
+                                                   
+                                                   NSDictionary* notificationsDictionary = [responseDictionary objectForKey:@"notifications"];
+                                                   if (!notificationsDictionary)
+                                                       return;
+                                                   
+                                                   NSNumber* totalNumber = [notificationsDictionary objectForKey:@"total"];
+                                                   if (!totalNumber)
+                                                       return;
+                                                   
+                                                   NSInteger total = [totalNumber integerValue];
+                                                   
+                                                   if (total == 0)
+                                                   {
+                                                       [self.tableView reloadData];
+                                                       return;
+                                                   }
+                                                   
+                                                   NSArray* itemsArray = (NSArray*)[notificationsDictionary objectForKey:@"items"];
+                                                   if (!itemsArray)
+                                                   {
+                                                       // TODO: handle erro in parsing items
+                                                       return;
+                                                       
+                                                   }
+                                                   
+                                                   self.notifications = [NSMutableArray arrayWithCapacity: self.unreadNotifications];
+                                                   
+                                                   for (NSDictionary* itemData in itemsArray)
+                                                   {
+                                                       if (!itemData) continue;
+                                                       
+                                                       SYNRockpackNotification* notification = [SYNRockpackNotification notificationWithData:itemData];
+                                                       
+                                                       if(!notification.read)
+                                                           self.unreadNotifications++;
+                                                       
+                                                       [self.notifications addObject:notification];
+                                                       
+                                                   }
+                                                   
+                                                   [self.tableView reloadData];
+                                               }
+                                                    errorHandler:^(id error) {
+                                                        DebugLog(@"Could not load notifications");
+                                                    }];
 }
 
 
@@ -325,18 +316,11 @@ typedef enum {
         cell = [tableView dequeueReusableCellWithIdentifier:CellIdentifier];
         if (!cell)
         {
-            if (isIPad)
-            {
-                cell = [[UITableViewCell alloc] initWithStyle: UITableViewCellStyleDefault
-                                      reuseIdentifier: CellIdentifier];
-            }
-            else
-            {
-                SYNSideNavigationIphoneCell* iPhoneCell = [[SYNSideNavigationIphoneCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:CellIdentifier];
-                iPhoneCell.accessoryNumberLabel.hidden = YES;
-                iPhoneCell.accessoryNumberBackground.hidden = YES;
-                cell = iPhoneCell; 
-            }
+            SYNSideNavigationIphoneCell* iPhoneCell = [[SYNSideNavigationIphoneCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:CellIdentifier];
+            iPhoneCell.accessoryNumberLabel.hidden = YES;
+            iPhoneCell.accessoryNumberBackground.hidden = YES;
+            cell = iPhoneCell; 
+   
         }
         
         NSDictionary* navigationElement = (NSDictionary*)[self.navigationData objectAtIndex: indexPath.row];
@@ -359,24 +343,19 @@ typedef enum {
         {
             if(indexPath.row == kNotificationsRowIndex)
             {
-                if(isIPad)
-                {
-                    cellTitle = [NSString stringWithFormat:@"%@       %i", cellTitle, self.unreadNotifications];
-                }
-                else
-                {
-                    SYNSideNavigationIphoneCell* iPhoneCell = (SYNSideNavigationIphoneCell*)cell;
-                    [iPhoneCell setAccessoryNumber:[NSString stringWithFormat:@"%i",self.unreadNotifications]];
-                    iPhoneCell.accessoryNumberLabel.hidden = NO;
-                    iPhoneCell.accessoryNumberBackground.hidden = NO;
-                }
-                cell.accessoryView = [[UIImageView alloc] initWithImage: [UIImage imageNamed: @"NavArrow"]]; 
+
+                SYNSideNavigationIphoneCell* iPhoneCell = (SYNSideNavigationIphoneCell*)cell;
+                [iPhoneCell setAccessoryNumber:[NSString stringWithFormat:@"%i",self.unreadNotifications]];
+                iPhoneCell.accessoryNumberLabel.hidden = NO;
+                iPhoneCell.accessoryNumberBackground.hidden = NO;
+
+                iPhoneCell.accessoryView = [[UIImageView alloc] initWithImage: [UIImage imageNamed: @"NavArrow"]];
                     
             }
             else
             {
-                
-                cell.accessoryView = [[UIImageView alloc] initWithImage: [UIImage imageNamed: @"NavArrow"]];
+                SYNSideNavigationIphoneCell* iPhoneCell = (SYNSideNavigationIphoneCell*)cell;
+                iPhoneCell.accessoryView = [[UIImageView alloc] initWithImage: [UIImage imageNamed: @"NavArrow"]];
             }
         }
         
@@ -384,16 +363,6 @@ typedef enum {
 
         cell.textLabel.text = cellTitle;
         
-        
-        if (isIPad)
-        {
-            cell.textLabel.font = [UIFont rockpackFontOfSize: 15.0];
-            
-            UIView* selectedView = [[UIView alloc] initWithFrame: cell.frame];
-            selectedView.backgroundColor = [UIColor colorWithPatternImage: [UIImage imageNamed: @"NavSelected"]];
-            cell.selectedBackgroundView = selectedView;
-            cell.textLabel.textColor = self.navItemColor;
-        } 
     }
     
     return cell;
@@ -444,7 +413,7 @@ typedef enum {
         
         self.navigationContainerTitleLabel.text = NSLocalizedString(@"NOTIFICATIONS",nil);
         self.state = SideNavigationStateFull;
-        self.currentlySelectedIndexPath = nil;
+        
         
     }
     else
@@ -455,6 +424,8 @@ typedef enum {
                                                                              userInfo: @{@"pageName":navigationAction}];
         
         [[NSNotificationCenter defaultCenter] postNotification: navigationNotification];
+        
+        
     }
     
     // Google analytics
@@ -715,6 +686,8 @@ typedef enum {
 
 - (void) showHalfNavigation
 {
+    // Light up navigation button
+    self.captiveButton.selected = TRUE;
     
     [[SYNSoundPlayer sharedInstance] playSoundByName: kSoundNewSlideIn];
     
@@ -741,6 +714,9 @@ typedef enum {
 
 - (void) showFullNavigation
 {
+    // Light up navigation button
+    self.captiveButton.selected = TRUE;
+    
     self.userNameLabel.text = [_user.fullName uppercaseString];
     if ([[SYNDeviceManager sharedInstance] isIPad])
     {
@@ -783,6 +759,9 @@ typedef enum {
 
 - (void) showHiddenNavigation
 {
+    // Turn off button highlighting
+    self.captiveButton.selected = FALSE;
+    
     [[SYNSoundPlayer sharedInstance] playSoundByName: kSoundNewSlideOut];
     
     [UIView animateWithDuration: 0.2f

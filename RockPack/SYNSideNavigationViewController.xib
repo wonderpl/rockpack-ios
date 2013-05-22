@@ -2,10 +2,10 @@
 <archive type="com.apple.InterfaceBuilder3.CocoaTouch.iPad.XIB" version="8.00">
 	<data>
 		<int key="IBDocument.SystemTarget">1552</int>
-		<string key="IBDocument.SystemVersion">12D78</string>
+		<string key="IBDocument.SystemVersion">12C3006</string>
 		<string key="IBDocument.InterfaceBuilderVersion">3084</string>
-		<string key="IBDocument.AppKitVersion">1187.37</string>
-		<string key="IBDocument.HIToolboxVersion">626.00</string>
+		<string key="IBDocument.AppKitVersion">1187.34</string>
+		<string key="IBDocument.HIToolboxVersion">625.00</string>
 		<object class="NSMutableDictionary" key="IBDocument.PluginVersions">
 			<string key="NS.key.0">com.apple.InterfaceBuilder.IBCocoaTouchPlugin</string>
 			<string key="NS.object.0">2083</string>
@@ -44,7 +44,6 @@
 						<int key="NSvFlags">292</int>
 						<string key="NSFrameSize">{556, 82}</string>
 						<reference key="NSSuperview" ref="1018200067"/>
-						<reference key="NSWindow"/>
 						<reference key="NSNextKeyView" ref="515784887"/>
 						<string key="NSReuseIdentifierKey">_NS:9</string>
 						<bool key="IBUIUserInteractionEnabled">NO</bool>
@@ -57,9 +56,8 @@
 					<object class="IBUITableView" id="747146287">
 						<reference key="NSNextResponder" ref="1018200067"/>
 						<int key="NSvFlags">274</int>
-						<string key="NSFrame">{{6, 82}, {188, 338}}</string>
+						<string key="NSFrame">{{5, 82}, {189, 338}}</string>
 						<reference key="NSSuperview" ref="1018200067"/>
-						<reference key="NSWindow"/>
 						<reference key="NSNextKeyView" ref="517436346"/>
 						<string key="NSReuseIdentifierKey">_NS:9</string>
 						<object class="NSColor" key="IBUIBackgroundColor">
@@ -69,6 +67,7 @@
 						<bool key="IBUIClipsSubviews">YES</bool>
 						<string key="targetRuntimeIdentifier">IBIPadFramework</string>
 						<bool key="IBUIAlwaysBounceVertical">YES</bool>
+						<bool key="IBUIScrollEnabled">NO</bool>
 						<bool key="IBUIShowsHorizontalScrollIndicator">NO</bool>
 						<bool key="IBUIShowsVerticalScrollIndicator">NO</bool>
 						<int key="IBUISectionIndexMinimumDisplayRowCount">0</int>
@@ -82,7 +81,6 @@
 						<int key="NSvFlags">289</int>
 						<string key="NSFrame">{{16, 10}, {60, 60}}</string>
 						<reference key="NSSuperview" ref="1018200067"/>
-						<reference key="NSWindow"/>
 						<reference key="NSNextKeyView" ref="120960240"/>
 						<string key="NSReuseIdentifierKey">_NS:9</string>
 						<bool key="IBUIUserInteractionEnabled">NO</bool>
@@ -97,7 +95,6 @@
 						<int key="NSvFlags">292</int>
 						<string key="NSFrame">{{196, 82}, {353, 586}}</string>
 						<reference key="NSSuperview" ref="1018200067"/>
-						<reference key="NSWindow"/>
 						<string key="NSReuseIdentifierKey">_NS:9</string>
 						<object class="NSColor" key="IBUIBackgroundColor">
 							<int key="NSColorSpace">1</int>
@@ -110,7 +107,6 @@
 						<int key="NSvFlags">292</int>
 						<string key="NSFrame">{{86, 21}, {476, 44}}</string>
 						<reference key="NSSuperview" ref="1018200067"/>
-						<reference key="NSWindow"/>
 						<reference key="NSNextKeyView" ref="747146287"/>
 						<string key="NSReuseIdentifierKey">_NS:9</string>
 						<object class="NSColor" key="IBUIBackgroundColor" id="509946622">
@@ -128,6 +124,11 @@
 							<bytes key="NSRGB">MC4zMDk4MDM5MjE2IDAuMjk4MDM5MjE1NyAwLjI5ODAzOTIxNTcAA</bytes>
 						</object>
 						<nil key="IBUIHighlightedColor"/>
+						<object class="NSColor" key="IBUIShadowColor" id="867777245">
+							<int key="NSColorSpace">3</int>
+							<bytes key="NSWhite">MQA</bytes>
+						</object>
+						<string key="IBUIShadowOffset">{0, 1}</string>
 						<int key="IBUIBaselineAdjustment">0</int>
 						<int key="IBUINumberOfLines">2</int>
 						<object class="IBUIFontDescription" key="IBUIFontDescription">
@@ -147,7 +148,6 @@
 						<int key="NSvFlags">268</int>
 						<string key="NSFrame">{{13, 590}, {169, 21}}</string>
 						<reference key="NSSuperview" ref="1018200067"/>
-						<reference key="NSWindow"/>
 						<reference key="NSNextKeyView" ref="898198165"/>
 						<string key="NSReuseIdentifierKey">_NS:9</string>
 						<bool key="IBUIOpaque">NO</bool>
@@ -180,17 +180,13 @@
 						<int key="NSvFlags">300</int>
 						<string key="NSFrame">{{15, 609}, {169, 50}}</string>
 						<reference key="NSSuperview" ref="1018200067"/>
-						<reference key="NSWindow"/>
 						<reference key="NSNextKeyView" ref="488699221"/>
 						<string key="NSReuseIdentifierKey">_NS:9</string>
 						<bool key="IBUIOpaque">NO</bool>
 						<string key="targetRuntimeIdentifier">IBIPadFramework</string>
 						<int key="IBUIContentHorizontalAlignment">0</int>
 						<int key="IBUIContentVerticalAlignment">0</int>
-						<object class="NSColor" key="IBUIHighlightedTitleColor" id="867777245">
-							<int key="NSColorSpace">3</int>
-							<bytes key="NSWhite">MQA</bytes>
-						</object>
+						<reference key="IBUIHighlightedTitleColor" ref="867777245"/>
 						<object class="NSColor" key="IBUINormalTitleColor">
 							<int key="NSColorSpace">1</int>
 							<bytes key="NSRGB">MC4xOTYwNzg0MzQ2IDAuMzA5ODAzOTMyOSAwLjUyMTU2ODY1NgA</bytes>
@@ -220,9 +216,8 @@
 					<object class="IBUIButton" id="120960240">
 						<reference key="NSNextResponder" ref="1018200067"/>
 						<int key="NSvFlags">292</int>
-						<string key="NSFrame">{{12, 7}, {60, 61}}</string>
+						<string key="NSFrame">{{6, 0}, {80, 80}}</string>
 						<reference key="NSSuperview" ref="1018200067"/>
-						<reference key="NSWindow"/>
 						<reference key="NSNextKeyView" ref="448978922"/>
 						<string key="NSReuseIdentifierKey">_NS:9</string>
 						<bool key="IBUIOpaque">NO</bool>
@@ -250,7 +245,6 @@
 						<int key="NSvFlags">-2147483356</int>
 						<string key="NSFrame">{{32, 27}, {20, 20}}</string>
 						<reference key="NSSuperview" ref="1018200067"/>
-						<reference key="NSWindow"/>
 						<reference key="NSNextKeyView" ref="329439129"/>
 						<string key="NSReuseIdentifierKey">_NS:9</string>
 						<bool key="IBUIOpaque">NO</bool>
@@ -259,7 +253,6 @@
 				</array>
 				<string key="NSFrameSize">{556, 670}</string>
 				<reference key="NSSuperview"/>
-				<reference key="NSWindow"/>
 				<reference key="NSNextKeyView" ref="861217670"/>
 				<string key="NSReuseIdentifierKey">_NS:10</string>
 				<reference key="IBUIBackgroundColor" ref="509946622"/>
@@ -494,102 +487,9 @@
 			<nil key="activeLocalization"/>
 			<dictionary class="NSMutableDictionary" key="localizations"/>
 			<nil key="sourceID"/>
-			<int key="maxID">39</int>
+			<int key="maxID">41</int>
 		</object>
-		<object class="IBClassDescriber" key="IBDocument.Classes">
-			<array class="NSMutableArray" key="referencedPartialClassDescriptions">
-				<object class="IBPartialClassDescription">
-					<string key="className">GAITrackedViewController</string>
-					<string key="superclassName">UIViewController</string>
-					<object class="IBClassDescriptionSource" key="sourceIdentifier">
-						<string key="majorKey">IBProjectSource</string>
-						<string key="minorKey">./Classes/GAITrackedViewController.h</string>
-					</object>
-				</object>
-				<object class="IBPartialClassDescription">
-					<string key="className">SYNSideNavigationViewController</string>
-					<string key="superclassName">GAITrackedViewController</string>
-					<dictionary class="NSMutableDictionary" key="outlets">
-						<string key="activityIndicator">UIActivityIndicatorView</string>
-						<string key="avatarButton">UIButton</string>
-						<string key="backgroundImageView">UIImageView</string>
-						<string key="containerView">UIView</string>
-						<string key="mainContentView">UIView</string>
-						<string key="navigationContainerBackgroundImage">UIImageView</string>
-						<string key="navigationContainerTitleLabel">UILabel</string>
-						<string key="navigationContainerView">UIView</string>
-						<string key="nicknameLabel">UILabel</string>
-						<string key="profilePictureImageView">UIImageView</string>
-						<string key="settingsButton">UIButton</string>
-						<string key="tableView">UITableView</string>
-						<string key="userNameLabel">UILabel</string>
-						<string key="versionNumberLabel">UILabel</string>
-					</dictionary>
-					<dictionary class="NSMutableDictionary" key="toOneOutletInfosByName">
-						<object class="IBToOneOutletInfo" key="activityIndicator">
-							<string key="name">activityIndicator</string>
-							<string key="candidateClassName">UIActivityIndicatorView</string>
-						</object>
-						<object class="IBToOneOutletInfo" key="avatarButton">
-							<string key="name">avatarButton</string>
-							<string key="candidateClassName">UIButton</string>
-						</object>
-						<object class="IBToOneOutletInfo" key="backgroundImageView">
-							<string key="name">backgroundImageView</string>
-							<string key="candidateClassName">UIImageView</string>
-						</object>
-						<object class="IBToOneOutletInfo" key="containerView">
-							<string key="name">containerView</string>
-							<string key="candidateClassName">UIView</string>
-						</object>
-						<object class="IBToOneOutletInfo" key="mainContentView">
-							<string key="name">mainContentView</string>
-							<string key="candidateClassName">UIView</string>
-						</object>
-						<object class="IBToOneOutletInfo" key="navigationContainerBackgroundImage">
-							<string key="name">navigationContainerBackgroundImage</string>
-							<string key="candidateClassName">UIImageView</string>
-						</object>
-						<object class="IBToOneOutletInfo" key="navigationContainerTitleLabel">
-							<string key="name">navigationContainerTitleLabel</string>
-							<string key="candidateClassName">UILabel</string>
-						</object>
-						<object class="IBToOneOutletInfo" key="navigationContainerView">
-							<string key="name">navigationContainerView</string>
-							<string key="candidateClassName">UIView</string>
-						</object>
-						<object class="IBToOneOutletInfo" key="nicknameLabel">
-							<string key="name">nicknameLabel</string>
-							<string key="candidateClassName">UILabel</string>
-						</object>
-						<object class="IBToOneOutletInfo" key="profilePictureImageView">
-							<string key="name">profilePictureImageView</string>
-							<string key="candidateClassName">UIImageView</string>
-						</object>
-						<object class="IBToOneOutletInfo" key="settingsButton">
-							<string key="name">settingsButton</string>
-							<string key="candidateClassName">UIButton</string>
-						</object>
-						<object class="IBToOneOutletInfo" key="tableView">
-							<string key="name">tableView</string>
-							<string key="candidateClassName">UITableView</string>
-						</object>
-						<object class="IBToOneOutletInfo" key="userNameLabel">
-							<string key="name">userNameLabel</string>
-							<string key="candidateClassName">UILabel</string>
-						</object>
-						<object class="IBToOneOutletInfo" key="versionNumberLabel">
-							<string key="name">versionNumberLabel</string>
-							<string key="candidateClassName">UILabel</string>
-						</object>
-					</dictionary>
-					<object class="IBClassDescriptionSource" key="sourceIdentifier">
-						<string key="majorKey">IBProjectSource</string>
-						<string key="minorKey">./Classes/SYNSideNavigationViewController.h</string>
-					</object>
-				</object>
-			</array>
-		</object>
+		<object class="IBClassDescriber" key="IBDocument.Classes"/>
 		<int key="IBDocument.localizationMode">0</int>
 		<string key="IBDocument.TargetRuntimeIdentifier">IBIPadFramework</string>
 		<bool key="IBDocument.PluginDeclaredDependenciesTrackSystemTargetVersion">YES</bool>

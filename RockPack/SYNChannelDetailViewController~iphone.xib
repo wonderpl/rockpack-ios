@@ -1401,8 +1401,8 @@
 			<string key="ButtonReport@2x~iphone.png">{88, 88}</string>
 			<string key="ButtonReportHighlighted~iphone.png">{44, 44}</string>
 			<string key="ButtonReportSelected~iphone.png">{44, 44}</string>
-			<string key="ButtonSave.png">{130, 45}</string>
-			<string key="ButtonSaveHighlighted.png">{130, 45}</string>
+			<string key="ButtonSave.png">{140, 45}</string>
+			<string key="ButtonSaveHighlighted.png">{140, 45}</string>
 			<string key="ButtonShare.png">{61, 61}</string>
 			<string key="ButtonShareHighlighted.png">{61, 61}</string>
 			<string key="ButtonSubscribe.png">{120, 45}</string>
