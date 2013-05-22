@@ -3271,10 +3271,6 @@
 				01EC6235166EAAA6003154B1 /* SYNChannelDetailViewController.m */,
 				01ABBB3317218A60007E4462 /* SYNChannelDetailViewController.xib */,
 				38FD441E172A9E280086B524 /* SYNChannelDetailViewController~iphone.xib */,
-				3862E8AC172979410066E8E7 /* SYNChannelCategoryTableViewController.h */,
-				3862E8AD172979410066E8E7 /* SYNChannelCategoryTableViewController.m */,
-				3862E8AE172979410066E8E7 /* SYNChannelCategoryTableViewController~iphone.xib */,
-				38BACE89173AB4B500406597 /* SYNChannelCategoryTableViewControllerFullscreen~iphone.xib */,
 			);
 			name = Channels;
 			sourceTree = "<group>";
@@ -3597,6 +3593,17 @@
 				1F46C86A1743C2FD00C6089D /* ButtonReportSelected~iphone.png */,
 			);
 			name = reportConcern;
+			sourceTree = "<group>";
+		};
+		38015B4F174CCE1A005D3F18 /* CategoryTableViewController (iPhone) */ = {
+			isa = PBXGroup;
+			children = (
+				3862E8AC172979410066E8E7 /* SYNChannelCategoryTableViewController.h */,
+				3862E8AD172979410066E8E7 /* SYNChannelCategoryTableViewController.m */,
+				3862E8AE172979410066E8E7 /* SYNChannelCategoryTableViewController~iphone.xib */,
+				38BACE89173AB4B500406597 /* SYNChannelCategoryTableViewControllerFullscreen~iphone.xib */,
+			);
+			name = "CategoryTableViewController (iPhone)";
 			sourceTree = "<group>";
 		};
 		3864D2D91743DB1B00A90ED3 /* SYNImagePicker */ = {
@@ -4561,6 +4568,7 @@
 		BEF9E5A516DBCDEF00286113 /* Components */ = {
 			isa = PBXGroup;
 			children = (
+				38015B4F174CCE1A005D3F18 /* CategoryTableViewController (iPhone) */,
 				BEBD097E1744EC920092F527 /* Add Button Control */,
 				3864D2D91743DB1B00A90ED3 /* SYNImagePicker */,
 				BEBD09781743A1700092F527 /* CoverArt Chooser View */,
