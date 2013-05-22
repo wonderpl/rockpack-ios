@@ -51,6 +51,7 @@ typedef void(^AnimationCompletionBlock)(BOOL finished);
 @property (nonatomic, strong) IBOutlet UIView* movableButtonsContainer;
 @property (nonatomic, strong) IBOutlet UIView* navigationContainerView;
 @property (nonatomic, strong) IBOutlet UIView* overlayView;
+@property (nonatomic, strong) IBOutlet UIView* darkOverlayView;
 @property (nonatomic, strong) SYNAccountSettingsModalContainer* modalAccountContainer;
 @property (nonatomic, strong) SYNBackButtonControl* backButtonControl;
 @property (nonatomic, strong) SYNExistingChannelsViewController* existingChannelsController;
@@ -130,6 +131,8 @@ typedef void(^AnimationCompletionBlock)(BOOL finished);
     // Not super-elegant, but as the nav controller is controlled from multiple places
     // it is the only way to guarantee it will work nicely
     self.sideNavigationViewController.captiveButton = self.sideNavigationButton;
+    
+    self.darkOverlayView.hidden = YES;
     
     // == Fade in from splash screen (not in AppDelegate so that the Orientation is known) == //
     
@@ -320,6 +323,14 @@ typedef void(^AnimationCompletionBlock)(BOOL finished);
         NSString* controllerTitle = self.containerViewController.showingViewController.title;
         
         [self.sideNavigationViewController setSelectedCellByPageName:controllerTitle];
+        self.darkOverlayView.alpha = 1.0;
+        
+        [UIView animateWithDuration:0.3
+                         animations:^{
+                             self.darkOverlayView.alpha = 0.0;
+                         } completion:^(BOOL finished) {
+                             self.darkOverlayView.hidden = YES;
+                         }];
     }
 }
 
@@ -402,11 +413,28 @@ typedef void(^AnimationCompletionBlock)(BOOL finished);
        || self.sideNavigationViewController.state == SideNavigationStateHalf)
     {
         self.sideNavigationViewController.state = SideNavigationStateHidden;
+        self.darkOverlayView.alpha = 1.0;
+        
+        [UIView animateWithDuration:0.3
+                         animations:^{
+                             self.darkOverlayView.alpha = 0.0;
+                         } completion:^(BOOL finished) {
+                             self.darkOverlayView.hidden = YES;
+                         }];
+
 //        sender.selected = NO;
     }
     else
     {
         [self showSideNavigation];
+        self.darkOverlayView.alpha = 0.0;
+        
+        [UIView animateWithDuration:0.3
+                         animations:^{
+                             self.darkOverlayView.alpha = 1.0;
+                         } completion:^(BOOL finished) {
+                             self.darkOverlayView.hidden = NO;
+                         }];
 //        sender.selected = YES;
     }
 }
@@ -418,8 +446,16 @@ typedef void(^AnimationCompletionBlock)(BOOL finished);
     
     [self.sideNavigationViewController setSelectedCellByPageName: controllerTitle];
     
+    self.darkOverlayView.alpha = 0.0;
     
+    [UIView animateWithDuration:0.3
+                     animations:^{
+                         self.darkOverlayView.alpha = 1.0;
+                     } completion:^(BOOL finished) {
+                         self.darkOverlayView.hidden = NO;
     self.sideNavigationViewController.state = SideNavigationStateHalf;
+                     }];
+
     
 }
 
@@ -446,7 +482,7 @@ typedef void(^AnimationCompletionBlock)(BOOL finished);
     self.videoViewerViewController.view.alpha = 0.0f;
     self.videoViewerViewController.overlayParent = self;
     
-    [UIView animateWithDuration: 0.5f
+    [UIView animateWithDuration: 0.3f
                           delay: 0.0f
                         options: UIViewAnimationOptionCurveEaseInOut
                      animations: ^{
@@ -496,6 +532,15 @@ typedef void(^AnimationCompletionBlock)(BOOL finished);
     
     self.sideNavigationButton.hidden = YES;
     
+    self.darkOverlayView.alpha = 1.0;
+    
+    [UIView animateWithDuration:0.3
+                     animations:^{
+                         self.darkOverlayView.alpha = 0.0;
+                     } completion:^(BOOL finished) {
+                         self.darkOverlayView.hidden = YES;
+                         self.sideNavigationViewController.state = SideNavigationStateHalf;
+                     }];
     CGRect sboxFrame = self.searchBoxController.view.frame;
     
     // place according to the position of the back button //
@@ -566,6 +611,17 @@ typedef void(^AnimationCompletionBlock)(BOOL finished);
     [self.searchBoxController.view removeFromSuperview];
     
     self.sideNavigationButton.hidden = NO;
+    
+    self.darkOverlayView.alpha = 0.0;
+    
+    [UIView animateWithDuration:0.3
+                     animations:^{
+                         self.darkOverlayView.alpha = 1.0;
+                     } completion:^(BOOL finished) {
+                         self.darkOverlayView.hidden = NO;
+                         self.sideNavigationViewController.state = SideNavigationStateHalf;
+                     }];
+    
 }
 
 
