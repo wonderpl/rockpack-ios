@@ -1162,18 +1162,50 @@
                                  self.categoriesTabViewController.view.alpha = 1.0f;   
                              }
                              completion: ^(BOOL finished) {
+                                 
+                                 
+                                 
                                  // if no category has been selected then select first //
                                  
                                  if ([self.channel.categoryId isEqualToString:@""])
                                  {
-                                     SubGenre* firstSelection = (SubGenre*)[self.categoriesTabViewController selectAndReturnGenreForId: 0
-                                                                                                                      andSubcategories: YES];
+                                     NSIndexPath* firstFirstIndexPath = [NSIndexPath indexPathForItem:0 inSection:0];
+                                     SubGenre* firstSelection =
+                                     (SubGenre*)[self.categoriesTabViewController selectAndReturnGenreForIndexPath:firstFirstIndexPath
+                                                                                                  andSubcategories:YES];
                                      
                                      if (firstSelection)
                                      {
                                          self.channel.categoryId = firstSelection.uniqueId;
                                          [self updateCategoryButtonText: [NSString stringWithFormat:@"%@/%@",
                                                                           firstSelection.genre.name, firstSelection.name]];
+                                     }
+                                     else
+                                     {
+                                         [self.categoriesTabViewController deselectAll];
+                                     }
+                                 }
+                                 else
+                                 {
+                                     NSIndexPath* genreIndexPath = [self.categoriesTabViewController findIndexPathForGenreId:self.channel.categoryId];
+                                     Genre* genreSelected =
+                                     [self.categoriesTabViewController selectAndReturnGenreForIndexPath:genreIndexPath
+                                                                                       andSubcategories:YES];
+                                     
+                                     if(genreSelected)
+                                     {
+                                         
+                                         if([genreSelected isMemberOfClass:[Genre class]])
+                                         {
+                                             [self updateCategoryButtonText: [NSString stringWithFormat:@"%@", genreSelected.name]];
+                                         }
+                                         else
+                                         {
+                                             [self updateCategoryButtonText: [NSString stringWithFormat:@"%@/%@",
+                                                                              ((SubGenre*)genreSelected).genre.name, genreSelected.name]];
+                                         }
+                                             
+                                         
                                      }
                                      else
                                      {

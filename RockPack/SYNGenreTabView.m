@@ -75,6 +75,13 @@
         
         [self addSubview: bgMainTabsView];
         [self addSubview:self.mainTabsView];
+        
+        
+        self.dividerOverlayView = [[UIView alloc] initWithFrame: self.mainTabsView.frame];
+        self.dividerOverlayView.userInteractionEnabled = NO;
+        self.dividerOverlayView.autoresizingMask = UIViewAutoresizingFlexibleWidth;
+        
+        [self addSubview: self.dividerOverlayView];
     }
     
     return self;
@@ -85,10 +92,18 @@
 {
     SYNGenreItemView* tab = nil;
     
-    self.dividerOverlayView = [[UIView alloc] initWithFrame: self.mainTabsView.frame];
-    self.dividerOverlayView.userInteractionEnabled = NO;
-    self.dividerOverlayView.autoresizingMask = UIViewAutoresizingFlexibleWidth;
+    // clean existing //
     
+    for (SYNGenreItemView* tabView in self.mainTabsView.subviews)
+        [tabView removeFromSuperview];
+    
+    for (UIView* divider in self.dividerOverlayView.subviews)
+        [divider removeFromSuperview];
+    
+    if(self.homeButton)
+        [self.homeButton removeFromSuperview];
+    
+
     CGFloat nextOrigin = 0.0;
     
     if ([self.homeButtonString isEqualToString:@"icon"]) // special case where we put the 'home' icon instead of text
@@ -133,9 +148,10 @@
                                                                            action: @selector(mainTapPressed:)]];
     }
     
-    [self addSubview: self.dividerOverlayView];
     
-    //Layout tabs according to orientation
+    
+    // Layout tabs according to orientation //
+    
     [self refreshViewForOrientation: [[UIApplication sharedApplication] statusBarOrientation]];
 }
 
