@@ -144,33 +144,68 @@
         return NO;
     
     NSArray *itemArray = [categoriesDictionary objectForKey: @"items"];
-    
-    if (![itemArray isKindOfClass: [NSArray class]] || [itemArray count] == 0)
+    if (![itemArray isKindOfClass: [NSArray class]])
         return NO;
     
-    // We need to mark all of our existing Category objects corresponding to this viewId, just in case they are no longer required
-    // and should be removed in a post-import cleanup
-    NSArray *existingObjectsInViewId = [self markManagedObjectForPossibleDeletionWithEntityName: @"Genre"
-                                                                                      andViewId: nil
-                                                                         inManagedObjectContext: importManagedObjectContext];
+    if (itemArray.count == 0)
+        return YES;
     
-    // === Main Processing === //
+    
+    // Query for existing objects
+    NSFetchRequest *categoriesFetchRequest = [[NSFetchRequest alloc] init];
+    [categoriesFetchRequest setEntity: [NSEntityDescription entityForName: @"Genre"
+                                                   inManagedObjectContext: appDelegate.mainManagedObjectContext]];
+    
+    
+    NSError* error;
+    NSArray *existingCategories = [appDelegate.mainManagedObjectContext executeFetchRequest: categoriesFetchRequest
+                                                                                          error: &error];
+    
+    NSMutableDictionary* existingCategoriesByIndex = [NSMutableDictionary dictionaryWithCapacity:existingCategories.count];
+    
+    for (Channel* existingCategory in existingCategories)
+    {
+        
+        [existingCategoriesByIndex setObject:existingCategory forKey:existingCategory.uniqueId];
+        
+        existingCategory.markedForDeletionValue = YES; // if a real genre is passed - delete the old objects
+    }
+    
+
     for (NSDictionary *categoryDictionary in itemArray)
-        if ([categoryDictionary isKindOfClass: [NSDictionary class]])
-            [Genre instanceFromDictionary: categoryDictionary
-                   usingManagedObjectContext: importManagedObjectContext];
+    {
+        
+        
+        NSString *uniqueId = [categoryDictionary objectForKey: @"id"];
+        if (!uniqueId)
+            continue;
+        
+        Genre* genre;
+        
+        genre = [existingCategoriesByIndex objectForKey:uniqueId];
+        
+        if(!genre)
+        {
+            genre = [Genre instanceFromDictionary: categoryDictionary
+                        usingManagedObjectContext: appDelegate.mainManagedObjectContext];
+        }
+        
+        genre.markedForDeletionValue = NO;
+        
+        genre.priority = [categoryDictionary objectForKey: @"priority"
+                                              withDefault: [NSNumber numberWithInt: 0]];
+        
+        
+        
+    }
+        
     
-    // == =============== == //
+   
     
-    // Now remove any Category objects that are no longer referenced in the import
-    [self removeUnusedManagedObjects: existingObjectsInViewId
-              inManagedObjectContext: importManagedObjectContext];
+    [self removeUnusedManagedObjects: existingCategories
+              inManagedObjectContext: appDelegate.mainManagedObjectContext];
     
-    // [[NSNotificationCenter defaultCenter] postNotificationName: kCategoriesUpdated object: nil];
     
-    BOOL saveResult = [self saveImportContext];
-    if (!saveResult)
-        return NO;
     
     [appDelegate saveContext: TRUE];
     
@@ -226,9 +261,10 @@
     if (![itemArray isKindOfClass: [NSArray class]])
         return NO;
     
-    // == =============== == //
+    if (itemArray.count == 0)
+        return YES;
     
-    //Get all current videos for the viewId
+    
     NSEntityDescription* videoInstanceEntity = [NSEntityDescription entityForName: @"VideoInstance"
                                                            inManagedObjectContext: importManagedObjectContext];
     NSFetchRequest *videoInstanceFetchRequest = [[NSFetchRequest alloc] init];
