@@ -316,18 +316,11 @@ typedef enum {
         cell = [tableView dequeueReusableCellWithIdentifier:CellIdentifier];
         if (!cell)
         {
-            if (isIPad)
-            {
-                cell = [[UITableViewCell alloc] initWithStyle: UITableViewCellStyleDefault
-                                      reuseIdentifier: CellIdentifier];
-            }
-            else
-            {
-                SYNSideNavigationIphoneCell* iPhoneCell = [[SYNSideNavigationIphoneCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:CellIdentifier];
-                iPhoneCell.accessoryNumberLabel.hidden = YES;
-                iPhoneCell.accessoryNumberBackground.hidden = YES;
-                cell = iPhoneCell; 
-            }
+            SYNSideNavigationIphoneCell* iPhoneCell = [[SYNSideNavigationIphoneCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:CellIdentifier];
+            iPhoneCell.accessoryNumberLabel.hidden = YES;
+            iPhoneCell.accessoryNumberBackground.hidden = YES;
+            cell = iPhoneCell; 
+   
         }
         
         NSDictionary* navigationElement = (NSDictionary*)[self.navigationData objectAtIndex: indexPath.row];
@@ -350,24 +343,19 @@ typedef enum {
         {
             if(indexPath.row == kNotificationsRowIndex)
             {
-                if(isIPad)
-                {
-                    cellTitle = [NSString stringWithFormat:@"%@       %i", cellTitle, self.unreadNotifications];
-                }
-                else
-                {
-                    SYNSideNavigationIphoneCell* iPhoneCell = (SYNSideNavigationIphoneCell*)cell;
-                    [iPhoneCell setAccessoryNumber:[NSString stringWithFormat:@"%i",self.unreadNotifications]];
-                    iPhoneCell.accessoryNumberLabel.hidden = NO;
-                    iPhoneCell.accessoryNumberBackground.hidden = NO;
-                }
-                cell.accessoryView = [[UIImageView alloc] initWithImage: [UIImage imageNamed: @"NavArrow"]]; 
+
+                SYNSideNavigationIphoneCell* iPhoneCell = (SYNSideNavigationIphoneCell*)cell;
+                [iPhoneCell setAccessoryNumber:[NSString stringWithFormat:@"%i",self.unreadNotifications]];
+                iPhoneCell.accessoryNumberLabel.hidden = NO;
+                iPhoneCell.accessoryNumberBackground.hidden = NO;
+
+                iPhoneCell.accessoryView = [[UIImageView alloc] initWithImage: [UIImage imageNamed: @"NavArrow"]];
                     
             }
             else
             {
-                
-                cell.accessoryView = [[UIImageView alloc] initWithImage: [UIImage imageNamed: @"NavArrow"]];
+                SYNSideNavigationIphoneCell* iPhoneCell = (SYNSideNavigationIphoneCell*)cell;
+                iPhoneCell.accessoryView = [[UIImageView alloc] initWithImage: [UIImage imageNamed: @"NavArrow"]];
             }
         }
         
@@ -375,16 +363,6 @@ typedef enum {
 
         cell.textLabel.text = cellTitle;
         
-        
-        if (isIPad)
-        {
-            cell.textLabel.font = [UIFont rockpackFontOfSize: 15.0];
-            
-            UIView* selectedView = [[UIView alloc] initWithFrame: cell.frame];
-            selectedView.backgroundColor = [UIColor colorWithPatternImage: [UIImage imageNamed: @"NavSelected"]];
-            cell.selectedBackgroundView = selectedView;
-            cell.textLabel.textColor = self.navItemColor;
-        } 
     }
     
     return cell;
@@ -435,7 +413,7 @@ typedef enum {
         
         self.navigationContainerTitleLabel.text = NSLocalizedString(@"NOTIFICATIONS",nil);
         self.state = SideNavigationStateFull;
-        self.currentlySelectedIndexPath = nil;
+        
         
     }
     else

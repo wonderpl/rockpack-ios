@@ -1053,33 +1053,43 @@ typedef void(^AnimationCompletionBlock)(BOOL finished);
     }];
 }
 
--(void) presentSuccessNotificationWithMessage:(NSString*)message
+
+- (void) presentSuccessNotificationWithMessage: (NSString*) message
 {
     __block SYNNetworkErrorView* successNotification = [[SYNNetworkErrorView alloc] init];
-    successNotification.backgroundColor = [UIColor colorWithPatternImage:[UIImage imageNamed:@"BarSucess"]];
-    [successNotification setText:message];
-    [self.errorContainerView addSubview:successNotification];
-    [UIView animateWithDuration:0.3f delay:0.0f options:UIViewAnimationOptionCurveEaseOut animations:^{
-        CGRect newFrame = successNotification.frame;
-        newFrame.origin.y = [[SYNDeviceManager sharedInstance] currentScreenHeightWithStatusBar] - newFrame.size.height;
-        successNotification.frame = newFrame;
-    } completion:^(BOOL finished) {
-        [UIView animateWithDuration:0.3f delay:4.0f options:UIViewAnimationOptionCurveEaseIn animations:^{
-            CGRect newFrame = successNotification.frame;
-            newFrame.origin.y = [[SYNDeviceManager sharedInstance] currentScreenHeightWithStatusBar] + newFrame.size.height;
-            successNotification.frame = newFrame;
-        } completion:^(BOOL finished) {
-            [successNotification removeFromSuperview];
-        }];
-    }];
+    successNotification.backgroundColor = [UIColor colorWithPatternImage: [UIImage imageNamed: @"BarSucess"]];
+    [successNotification setText: message];
+    [self.errorContainerView addSubview: successNotification];
+    
+    [UIView animateWithDuration: 0.3f
+                          delay: 0.0f
+                        options: UIViewAnimationOptionCurveEaseOut
+                     animations: ^{
+                         CGRect newFrame = successNotification.frame;
+                         newFrame.origin.y = [[SYNDeviceManager sharedInstance] currentScreenHeightWithStatusBar] - newFrame.size.height;
+                         successNotification.frame = newFrame;
+                     }
+                     completion: ^(BOOL finished) {
+                         [UIView animateWithDuration: 0.3f
+                                               delay: 4.0f
+                                             options: UIViewAnimationOptionCurveEaseIn
+                                          animations: ^{
+                                              CGRect newFrame = successNotification.frame;
+                                              newFrame.origin.y = [[SYNDeviceManager sharedInstance] currentScreenHeightWithStatusBar] + newFrame.size.height;
+                                              successNotification.frame = newFrame;
+                                          }
+                                          completion: ^(BOOL finished) {
+                                              [successNotification removeFromSuperview];
+                                          }];
+                     }];
 }
 
 
 #pragma mark - Interface Orientation Methods
 
--(NSUInteger)supportedInterfaceOrientations
+- (NSUInteger) supportedInterfaceOrientations
 {
-    if([[SYNDeviceManager sharedInstance]isIPhone])
+    if ([SYNDeviceManager.sharedInstance isIPhone])
     {
         return UIInterfaceOrientationMaskPortrait;
     }
@@ -1089,11 +1099,14 @@ typedef void(^AnimationCompletionBlock)(BOOL finished);
     }
 }
 
--(void)willAnimateRotationToInterfaceOrientation:(UIInterfaceOrientation)toInterfaceOrientation duration:(NSTimeInterval)duration
-{
-    [super willAnimateRotationToInterfaceOrientation:toInterfaceOrientation duration:duration];
 
-    if(self.accountSettingsPopover)
+- (void) willAnimateRotationToInterfaceOrientation: (UIInterfaceOrientation) toInterfaceOrientation
+                                          duration: (NSTimeInterval)duration
+{
+    [super willAnimateRotationToInterfaceOrientation: toInterfaceOrientation
+                                            duration: duration];
+
+    if (self.accountSettingsPopover)
     {
         CGRect rect = CGRectMake([[SYNDeviceManager sharedInstance] currentScreenWidth] * 0.5,
                                  [[SYNDeviceManager sharedInstance] currentScreenHeight] * 0.5, 1, 1);
@@ -1109,20 +1122,17 @@ typedef void(^AnimationCompletionBlock)(BOOL finished);
 
 #pragma mark - Overlay Accessor Methods
 
--(void)setOverlayNavigationController:(UINavigationController *)overlayNavigationController
+-(void) setOverlayNavigationController: (UINavigationController *) overlayNavigationController
 {
-    if(_overlayNavigationController && overlayNavigationController) // there can be only one overlay at a time
+    if (_overlayNavigationController && overlayNavigationController) // there can be only one overlay at a time
         return;
-    
-    
-    if(overlayNavigationController) // if we did not pass nil
+
+    if (overlayNavigationController) // if we did not pass nil
     {
-        
-        
         [self.overlayContainerView addSubview:overlayNavigationController.view];
         
 
-        if([[SYNDeviceManager sharedInstance] isIPhone])
+        if ([[SYNDeviceManager sharedInstance] isIPhone])
         {
             overlayNavigationController.view.frame = self.overlayContainerView.bounds;
         }
@@ -1133,9 +1143,7 @@ typedef void(^AnimationCompletionBlock)(BOOL finished);
         
         self.overlayContainerView.userInteractionEnabled = YES;
         self.overlayContainerView.alpha = 0.0;
-        
-        
-        
+
         [UIView animateWithDuration: 0.5f
                               delay: 0.0f
                             options: UIViewAnimationOptionCurveEaseIn
@@ -1145,9 +1153,7 @@ typedef void(^AnimationCompletionBlock)(BOOL finished);
                          completion: ^(BOOL finished) {
                              
                              self.containerView.hidden = YES;
-                             
-                             
-                             
+
                              [_overlayNavigationController removeFromParentViewController];
                              _overlayNavigationController = overlayNavigationController;
                              [self addChildViewController: _overlayNavigationController];
@@ -1159,10 +1165,7 @@ typedef void(^AnimationCompletionBlock)(BOOL finished);
                                                   self.overlayContainerView.alpha = 1.0;
                                               }
                                               completion:^(BOOL finished) {
-                                                  
-                                                  
-                                                  
-                                                  if([[SYNDeviceManager sharedInstance] isIPhone])
+                                                  if ([[SYNDeviceManager sharedInstance] isIPhone])
                                                   {
                                                    
                                                       // The search overlay sits on the side navigation on iPhone, move it into the overlay temporarily
@@ -1180,8 +1183,7 @@ typedef void(^AnimationCompletionBlock)(BOOL finished);
             {
                 animationDuration = 0.1f;
             }
-            
-            
+
             // if the controller underneath has not popped controllers to its stack, hide back button //
 
             if(self.containerViewController.showingViewController.navigationController.viewControllers.count == 1)
@@ -1218,25 +1220,26 @@ typedef void(^AnimationCompletionBlock)(BOOL finished);
         {
             _overlayContainerView = nil;
         }
-       
     }
-    
-    
 }
 
--(UINavigationController*)overlayNavigationController
+
+- (UINavigationController*) overlayNavigationController
 {
     return _overlayNavigationController;
 }
 
--(SYNAbstractViewController*)showingViewController
+
+- (SYNAbstractViewController*) showingViewController
 {
     SYNAbstractViewController* absctractVc;
-    if(self.overlayNavigationController) {
+    if (self.overlayNavigationController)
+    {
         absctractVc = (SYNAbstractViewController*)self.overlayNavigationController.topViewController;
     }
          
-    else {
+    else
+    {
         absctractVc = self.containerViewController.showingViewController;
     }
     

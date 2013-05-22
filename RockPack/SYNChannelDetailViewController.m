@@ -1015,17 +1015,20 @@
 
 - (IBAction) saveChannelTapped: (id) sender
 { 
-    if ([[SYNDeviceManager sharedInstance] isIPhone])
+    if ([SYNDeviceManager.sharedInstance isIPhone])
     {
         self.saveChannelButton.hidden = YES;
         self.activityIndicator.hidden = NO;
         [self.activityIndicator startAnimating];
     }
     
+    [self hideCategoryChooser];
+    
     self.channel.title = self.channelTitleTextView.text;
     self.channel.channelDescription = @"Test Description";
     
     NSString* category = self.selectedCategoryId;
+    
     if ([category length] == 0)
     {
         category = self.channel.categoryId;
@@ -1036,7 +1039,8 @@
     }
     
     NSString* cover = self.selectedCoverId;
-    if ([cover length]==0)
+    
+    if ([cover length] ==0 )
     {
         cover = @"KEEP";
     }
@@ -1049,16 +1053,12 @@
                                                      cover: cover
                                                   isPublic: YES
                                          completionHandler: ^(NSDictionary* resourceCreated) {
-                                             
                                              NSString* channelId = [resourceCreated objectForKey: @"id"];
-                                             
                                              
                                              [self setEditControlsVisibility: NO];
                                              self.saveChannelButton.hidden = YES;
                                              self.cancelEditButton.hidden = YES;
-                                             
-                                             
-                                             
+
                                              [self setVideosForChannelById: channelId
                                                                  isUpdated: YES];
                                              
@@ -1067,7 +1067,6 @@
                                                                                                userInfo: nil];
                                              
                                              // this block will also call the [self getChanelById:channelId isUpdated:YES] //
-                                             
                                          }
                                               errorHandler: ^(NSDictionary* error) {
                                                   NSDictionary* specificErrors = [error objectForKey: @"form_errors"];
@@ -1080,7 +1079,7 @@
                                                   
                                                   DebugLog(@"Error @ saveChannelPressed:");
                                                   NSString* errorMessage = NSLocalizedString(errorText, nil);
-                                                  [self showError:errorMessage];
+                                                  [self showError: errorMessage];
                                               }];
 }
 
@@ -1322,6 +1321,8 @@
         self.activityIndicator.hidden = NO;
         [self.activityIndicator startAnimating];
     }
+    
+    [self hideCategoryChooser];
     
     self.channel.title = self.channelTitleTextView.text;
     
@@ -1942,7 +1943,7 @@
     CGRect croppingRect = UIInterfaceOrientationIsLandscape(orientation) ?
     CGRectMake(0.0, 138.0, 1024.0, 886.0) : CGRectMake(138.0, 0.0, 886.0, 1024.0);
     
-    if (self.mode == kChannelDetailsModeEdit && !self.originalBackgroundImage) // set the bg var once
+    if (self.originalBackgroundImage == nil) // set the bg var once
     {
         self.originalBackgroundImage = self.channelCoverImageView.image;
     }
@@ -1955,6 +1956,7 @@
     
     return croppedImage;
 }
+
 
 - (id<SDWebImageOperation>) loadBackgroundImage
 {

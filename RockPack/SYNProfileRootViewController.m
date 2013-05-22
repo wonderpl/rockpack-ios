@@ -80,7 +80,7 @@
     BOOL isIPhone =  [[SYNDeviceManager sharedInstance] isIPhone];
     
     // User Profile
-    if (!isIPhone)
+    if(!self.hideUserProfile)
     {
         self.userProfileController = [[SYNUserProfileViewController alloc] init];
     }
@@ -235,12 +235,17 @@
     [self.view addSubview: self.userProfileController.view];
 
     
-    CGRect userProfileFrame = self.userProfileController.view.frame;
-    userProfileFrame.origin.y = 80.0;
-    self.userProfileController.view.autoresizingMask = UIViewAutoresizingFlexibleRightMargin;
-    self.userProfileController.view.frame = userProfileFrame;
-    
-    [self.view addSubview: self.userProfileController.view];
+    if(isIPhone)
+    {
+        self.userProfileController.view.center = CGPointMake(160.0f, 28.0f);
+    }
+    else
+    {
+        CGRect userProfileFrame = self.userProfileController.view.frame;
+        userProfileFrame.origin.y = 80.0;
+        self.userProfileController.view.autoresizingMask = UIViewAutoresizingFlexibleRightMargin;
+        self.userProfileController.view.frame = userProfileFrame;
+    }
     
     [self.view addSubview: self.deletionCancelView];
     [self.view addSubview: self.channelThumbnailCollectionView];
