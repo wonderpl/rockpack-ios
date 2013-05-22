@@ -60,5 +60,13 @@
  */
 @property (nonatomic, assign) BOOL showAllCategoriesHeader;
 
+/**
+	toggles showing the "OTHER" sub category
+ 
+    set to NO by default
+ */
+@property (nonatomic, assign) BOOL showOtherSubCategory;
+
+
 
 @end

@@ -163,36 +163,19 @@
 {
    
     
-    NSMutableSet* filteredSet = [[NSMutableSet alloc] init];
-    
-    SubGenre* otherSubGenre; // if we need to show it at the end
-    
-    for (SubGenre* subgenre in genreSelected.subgenres)
-    {
-        if ([subgenre.priority integerValue] < 0)
-        {
-            if([[subgenre.name uppercaseString] isEqualToString:@"OTHER"])
-                otherSubGenre = subgenre;
-            
-            continue;
-        }
-        
-        [filteredSet addObject: subgenre];
-    }
-    
-    if (self.showOtherInSubcategories)
-    {
-        [filteredSet addObject: otherSubGenre];
-    }
-    
+    NSArray* newSubCategories = [genreSelected.subgenres array];
+    NSPredicate* predicate = [NSPredicate predicateWithFormat:@"priority > 0"];
+    newSubCategories = [newSubCategories filteredArrayUsingPredicate:predicate];
+    NSSortDescriptor* idSortDescriptor = [[NSSortDescriptor alloc] initWithKey: @"priority"
+                                                                     ascending: NO];
+    newSubCategories = [newSubCategories sortedArrayUsingDescriptors:@[idSortDescriptor]];
     
     // Finally Show SubGenres if needed
     
     if (self.delegate && [self.delegate showSubGenres])
     {
-        [self.tabView createSubcategoriesTab: filteredSet];
+        [self.tabView createSubcategoriesTab:newSubCategories];
     }
-        
 }
 
 

@@ -80,7 +80,8 @@
             
         case 1:
         {
-            if(self.channelCoverFetchedResultsController.sections.count > 1)
+            // Rockpack channel covers
+            if (self.channelCoverFetchedResultsController.sections.count > 1)
             {
                 sectionInfo = self.channelCoverFetchedResultsController.sections [1];
                 return sectionInfo.numberOfObjects;
@@ -91,7 +92,8 @@
             
         case 2:
         {
-            if(self.channelCoverFetchedResultsController.sections.count > 0)
+            // User channel covers
+            if (self.channelCoverFetchedResultsController.sections.count > 0)
             {
                 sectionInfo = self.channelCoverFetchedResultsController.sections [0];
                 return sectionInfo.numberOfObjects;
@@ -137,7 +139,7 @@
                                                        options: SDWebImageRetryFailed];
             return coverThumbnailCell;
         }
-            break;
+        break;
             
         case 2:
         {
@@ -278,6 +280,25 @@
                                 atScrollPosition: UICollectionViewScrollPositionNone
                                         animated: YES];
 }
+
+#pragma mark - Paging control
+
+- (void) scrollViewDidScroll: (UIScrollView *) scrollView
+{
+    DebugLog (@"Scrolling");
+    // when reaching far right hand side, load a new page
+    if (scrollView.contentOffset.x == scrollView.contentSize.width - scrollView.bounds.size.width)
+    {
+            DebugLog (@"Scrolling more");
+//        // ask next page only if we haven't reached last page
+//        if(![self.flickrPaginator reachedLastPage])
+//        {
+//            // fetch next page of results
+//            [self fetchNextPage];
+//        }
+    }
+}
+
 
 
 @end

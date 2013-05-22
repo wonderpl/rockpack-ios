@@ -15,7 +15,7 @@
 
 - (id) initWithSize: (CGFloat) totalWidth;
 - (void) createCategoriesTab: (NSArray*) categories;
-- (void) createSubcategoriesTab: (NSSet*) subcategories;
+- (void) createSubcategoriesTab: (NSArray*) subcategories;
 - (void) setSelectedWithId: (NSString*) selectedId;
 
 /**
