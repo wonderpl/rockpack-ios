@@ -1022,6 +1022,8 @@
         [self.activityIndicator startAnimating];
     }
     
+    [self hideCategoryChooser];
+    
     self.channel.title = self.channelTitleTextView.text;
     self.channel.channelDescription = @"Test Description";
     
@@ -1322,6 +1324,8 @@
         self.activityIndicator.hidden = NO;
         [self.activityIndicator startAnimating];
     }
+    
+    [self hideCategoryChooser];
     
     self.channel.title = self.channelTitleTextView.text;
     
