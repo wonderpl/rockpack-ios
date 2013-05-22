@@ -175,7 +175,7 @@ typedef void(^AnimationCompletionBlock)(BOOL finished);
     // == Back Button == //
     
     self.backButtonControl = [SYNBackButtonControl backButton];
-    [self.movableButtonsContainer addSubview:self.backButtonControl];
+    [self.movableButtonsContainer addSubview: self.backButtonControl];
     self.backButtonControl.alpha = 0.0;
     
     self.movableButtonsContainer.userInteractionEnabled = YES;

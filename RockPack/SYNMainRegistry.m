@@ -449,7 +449,6 @@
     for (Channel* existingChannel in existingChannels)
     {
         
-   
         [existingChannelsByIndex setObject:existingChannel forKey:existingChannel.uniqueId];
         
         if(!append)
@@ -457,22 +456,28 @@
         
         // if we do not append and the channel is not owned by the user then delete //
         
+        if(!append)
+            existingChannel.markedForDeletionValue = YES;
         
-        if(!append && existingChannel.channelOwner != appDelegate.currentUser)
-            existingChannel.markedForDeletionValue = YES; 
+        
+        // set the old channels to not fresh and refresh on demand //
+        
+        existingChannel.freshValue = NO;
            
     }
     
-    // find the subscriptions that where in the fetched channels //
     
-    NSMutableOrderedSet* existingChannelsSet = [NSMutableOrderedSet orderedSetWithArray:existingChannels];
     
-    [existingChannelsSet intersectOrderedSet:appDelegate.currentUser.subscriptionsSet];
+    // protect owned and subscribed channels from deletion //
     
-    for (Channel* subscribedChannel in existingChannelsSet)
+    for (Channel* subscribedChannel in appDelegate.currentUser.subscriptions)
     {
         subscribedChannel.markedForDeletionValue = NO;
-        
+    }
+    
+    for (Channel* ownedChannels in appDelegate.currentUser.channels)
+    {
+        ownedChannels.markedForDeletionValue = NO;
     }
     
     
@@ -497,10 +502,12 @@
 
         channel.markedForDeletionValue = NO;
         
+        channel.freshValue = YES;
+        
         channel.position = [itemDictionary objectForKey: @"position"
                                             withDefault: [NSNumber numberWithInt: 0]];
         
-        if (!genre)
+        if (!genre) // nil is passed in case of the @"all" category which is popular
             channel.popularValue = YES;
     }
     
