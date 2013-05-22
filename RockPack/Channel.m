@@ -2,6 +2,7 @@
 #import "ChannelOwner.h"
 #import "ChannelCover.h"
 #import "NSDictionary+Validation.h"
+#import "AppConstants.h"
 #import "VideoInstance.h"
 
 static NSEntityDescription *channelEntity = nil;
@@ -88,6 +89,7 @@ static NSEntityDescription *channelEntity = nil;
     
 }
 
+// This is called directly by the ChannelManager to get the videos
 
 - (void) setAttributesFromDictionary: (NSDictionary *) dictionary
                               withId: (NSString *) uniqueId
@@ -110,16 +112,18 @@ static NSEntityDescription *channelEntity = nil;
         if(![itemArray isKindOfClass:[NSArray class]])
             return;
         
+        
+        
         [self.videoInstancesSet removeAllObjects];
         
-        // view id is ChannelDetails
+        // view id is @"ChannelDetails"
         
         for (NSDictionary *itemDictionary in itemArray)
         {
             
             VideoInstance* videoInstance = [VideoInstance instanceFromDictionary: itemDictionary
                                                        usingManagedObjectContext: self.managedObjectContext
-                                                             ignoringObjectTypes: kIgnoreChannelObjects
+                                                             ignoringObjectTypes: kIgnoreNothing
                                                                        andViewId: viewId];
             
             if(!videoInstance) // nil can be returned by a malformed JSON or missing a uniqueId

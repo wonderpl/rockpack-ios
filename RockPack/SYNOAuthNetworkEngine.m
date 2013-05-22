@@ -1077,9 +1077,9 @@
     [self enqueueSignedOperation: networkOperation];
 }
 
-// Subscription updates
 
-// New way of getting updates to the user's subscriptions
+
+// This is NOT the method called when User logs in for their subscriptions, its called by the FeedViewController
 
 - (void) subscriptionsUpdatesForUserId: (NSString *) userId
                                  start: (unsigned int) start
@@ -1107,7 +1107,7 @@
          if(!weakSelf) return;
          
          BOOL registryResultOk = [weakSelf.registry registerVideoInstancesFromDictionary: (NSDictionary *) response
-                                                                               forViewId: @"Home"
+                                                                               forViewId: kFeedViewId
                                                                              byAppending: NO];
          
          if (!registryResultOk)

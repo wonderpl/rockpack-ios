@@ -145,12 +145,20 @@ static NSEntityDescription *videoInstanceEntity = nil;
                            ignoringObjectTypes: ignoringObjects
                                      andViewId: viewId];
     
+    
+    
     if (!(ignoringObjects & kIgnoreChannelObjects))
     {
-        self.channel = [Channel instanceFromDictionary: [dictionary objectForKey: @"channel"]
-                         usingManagedObjectContext: managedObjectContext
-                               ignoringObjectTypes: ignoringObjects
-                                         andViewId: viewId];
+        // used to return a string instead of a dictinary
+        id channelDataField = [dictionary objectForKey: @"channel"];
+        if([channelDataField isKindOfClass:[NSDictionary class]])
+        {
+            self.channel = [Channel instanceFromDictionary: (NSDictionary*)channelDataField
+                                 usingManagedObjectContext: managedObjectContext
+                                       ignoringObjectTypes: ignoringObjects
+                                                 andViewId: viewId];
+        }
+        
     }
 }
 

@@ -270,7 +270,6 @@
                                                                                                      attributes: @{NSForegroundColorAttributeName : [UIColor colorWithRed: 40.0f/255.0f green: 45.0f/255.0f blue: 51.0f/255.0f alpha: 1.0f],
                                                                                            NSFontAttributeName : [UIFont boldRockpackFontOfSize: 18.0f]}];
         
-        
         // Set text on add cover and select category buttons
         [self.selectCategoryButton setAttributedTitle: attributedCategoryString
                                              forState: UIControlStateNormal];
