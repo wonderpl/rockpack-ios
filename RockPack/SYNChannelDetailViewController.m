@@ -1303,7 +1303,6 @@
 {
     [[NSNotificationCenter defaultCenter] postNotificationName: kNoteAddToChannelRequest
                                                         object: self];
-    
 }
 
 
@@ -1352,6 +1351,10 @@
         self.activityIndicator.hidden = NO;
         [self.activityIndicator startAnimating];
     }
+    else
+    {
+        self.createChannelButton.enabled = NO;
+    }
     
     [self hideCategoryChooser];
     
@@ -1369,20 +1372,29 @@
                                              NSString* channelId = [resourceCreated objectForKey: @"id"];
                                              
                                              [self setVideosForChannelById:channelId isUpdated:NO];
+                                             
+                                             [self setEditControlsVisibility: NO];
+                                             self.createChannelButton.enabled = YES;
+                                             self.createChannelButton.hidden = YES;
+                                             self.cancelEditButton.hidden = YES;
+                                             self.addButton.hidden = NO;
+                                             
+                                             [[NSNotificationCenter defaultCenter] postNotificationName: kNoteAllNavControlsShow
+                                                                                                 object: self
+                                                                                               userInfo: nil];
                                          }
                                               errorHandler: ^(id error) {
-                                             
-                                             DebugLog(@"Error @ createChannelPressed:");
-                                             NSString* errorMessage = NSLocalizedString(@"Could not create channel. Please try again later.", nil);
-                                             if ([[error objectForKey: @"form_errors"] objectForKey :@"title"])
-                                             {
-                                                 errorMessage = NSLocalizedString(@"You already created a channel with this title. Please choose a different title.",nil);
-                                             };
-
-                                             [self showError:errorMessage];
-                                             
-                                             
-                                         }];
+                                                  
+                                                  DebugLog(@"Error @ createChannelPressed:");
+                                                  NSString* errorMessage = NSLocalizedString(@"Could not create channel. Please try again later.", nil);
+                                                  if ([[error objectForKey: @"form_errors"] objectForKey :@"title"])
+                                                  {
+                                                      errorMessage = NSLocalizedString(@"You already created a channel with this title. Please choose a different title.",nil);
+                                                  };
+                                                  
+                                                  self.createChannelButton.enabled = YES;
+                                                  [self showError:errorMessage];
+                                              }];
 }
 
 
