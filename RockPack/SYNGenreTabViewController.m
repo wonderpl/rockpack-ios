@@ -193,8 +193,6 @@
         [self.tabView createSubcategoriesTab: filteredSet];
     }
         
-    
-    
 }
 
 

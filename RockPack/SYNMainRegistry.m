@@ -40,7 +40,7 @@
     
     User* newUser = [User instanceFromDictionary: dictionary
                        usingManagedObjectContext: appDelegate.mainManagedObjectContext
-                             ignoringObjectTypes: kIgnoreNothing];
+                             ignoringObjectTypes: kIgnoreVideoInstanceObjects];
     
     if(!newUser)
         return NO;

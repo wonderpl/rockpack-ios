@@ -215,6 +215,7 @@
     if (!channel.resourceURL || [channel.resourceURL isEqualToString: @""])
         return;
     
+    
     // define success block //
     
     MKNKUserSuccessBlock successBlock = ^(NSDictionary *responseDictionary) {
