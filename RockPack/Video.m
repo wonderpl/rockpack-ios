@@ -37,6 +37,8 @@ static NSEntityDescription *videoEntity = nil;
     
     instance.sourceId = video.sourceId;
     
+    instance.sourceUsername = video.sourceUsername;
+    
     instance.starCount = video.starCount;
     
     instance.starredByUser = video.starredByUser;
@@ -148,6 +150,9 @@ static NSEntityDescription *videoEntity = nil;
     self.sourceId = [dictionary objectForKey: @"source_id"
                                  withDefault: @""];
     
+    self.sourceUsername = [dictionary objectForKey: @"source_username"
+                                       withDefault: @""];
+    
     self.starCount = [dictionary objectForKey: @"star_count"
                                   withDefault: [NSNumber numberWithInt: 0]];
     
@@ -175,7 +180,7 @@ static NSEntityDescription *videoEntity = nil;
 
 - (NSString *) description
 {
-    return [NSString stringWithFormat: @"uniqueId(%@), categoryId: %@, source: %@, sourceId: %@, starCount: %@, starredByUser: %@, thumbnailURL: %@", self.uniqueId, self.categoryId, self.source, self.sourceId, self.starCount, self.starredByUser, self.thumbnailURL];
+    return [NSString stringWithFormat: @"uniqueId(%@), categoryId: %@, source: %@, sourceId: %@, sourceUsername: %@ starCount: %@, starredByUser: %@, thumbnailURL: %@", self.uniqueId, self.categoryId, self.source, self.sourceId, self.sourceUsername, self.starCount, self.starredByUser, self.thumbnailURL];
 }
 
 @end

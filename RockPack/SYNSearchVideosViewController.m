@@ -22,10 +22,14 @@
 #import "SYNIntegralCollectionViewFlowLayout.h"
 
 @interface SYNSearchVideosViewController ()
+{
+    BOOL isIphone;
+}
 
 
 @property (nonatomic, strong) SYNChannelFooterMoreView* footerView;
 @property (nonatomic, weak) NSString* searchTerm;
+@property (nonatomic, strong)NSCalendar* currentCalendar;
 
 @end
 
@@ -38,7 +42,8 @@
 - (void) viewDidLoad
 {
     
-    
+    self.currentCalendar = [NSCalendar currentCalendar];
+    isIphone = [[SYNDeviceManager sharedInstance] isIPhone];
     
     self.trackedViewName = @"Search - Videos";
     
@@ -73,8 +78,6 @@
     self.videoThumbnailCollectionView.backgroundColor = [UIColor clearColor];
     
     self.view.autoresizingMask = UIViewAutoresizingFlexibleWidth | UIViewAutoresizingFlexibleHeight;
-    
-    
     
 }
 
@@ -188,8 +191,7 @@
         videoThumbnailCell.numberOfViewLabel.text = [[NSString stringWithFormat:@"%@ views", viewsNumberString] uppercaseString];
         
         
-        NSCalendar* currentCalendar = [NSCalendar currentCalendar];
-        NSDateComponents* differenceDateComponents = [currentCalendar components:(NSYearCalendarUnit| NSMonthCalendarUnit | NSDayCalendarUnit) fromDate:video.dateUploaded toDate:[NSDate date] options:0];
+        NSDateComponents* differenceDateComponents = [self.currentCalendar components:(NSYearCalendarUnit| NSMonthCalendarUnit | NSDayCalendarUnit) fromDate:video.dateUploaded toDate:[NSDate date] options:0];
         
         NSMutableString* format = [[NSMutableString alloc] init];
         
@@ -205,12 +207,22 @@
         else
             [format appendString: NSLocalizedString(@"Today", nil)];
         
-
-        videoThumbnailCell.dateAddedLabel.text = [format uppercaseString];
+        if(isIphone)
+        {
+            //On iPhone, append You Tube User name to the date label
+            videoThumbnailCell.dateAddedLabel.text = [NSString stringWithFormat:@"%@ BY %@",[format uppercaseString], [video.sourceUsername uppercaseString]];
+        }
+        else
+        {
+            //On iPad a separate label is used for the youtube user name
+            videoThumbnailCell.dateAddedLabel.text = [format uppercaseString];
+            videoThumbnailCell.youTubeUserLabel.text = [NSString stringWithFormat:@"BY %@",[video.sourceUsername uppercaseString]];
+        }
+        
         
         NSUInteger minutes = ([video.duration integerValue] / 60) % 60;
         NSUInteger seconds = [video.duration integerValue] % 60;
-        videoThumbnailCell.usernameText = [NSString stringWithFormat: @"%i:%i", minutes, seconds];
+        videoThumbnailCell.durationLabel.text = [NSString stringWithFormat: @"%i:%i", minutes, seconds];
         
 
         videoThumbnailCell.viewControllerDelegate = self;

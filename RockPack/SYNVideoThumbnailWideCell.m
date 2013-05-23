@@ -44,6 +44,7 @@
     self.byLabel.font = [UIFont rockpackFontOfSize: self.byLabel.font.pointSize];
     
     self.numberOfViewLabel.font = [UIFont rockpackFontOfSize: self.numberOfViewLabel.font.pointSize];
+    self.youTubeUserLabel.font = [UIFont rockpackFontOfSize: self.youTubeUserLabel.font.pointSize];
     self.dateAddedLabel.font = [UIFont rockpackFontOfSize: self.dateAddedLabel.font.pointSize];
     self.durationLabel.font = [UIFont rockpackFontOfSize: self.durationLabel.font.pointSize];
     self.highlightedBackgroundView.hidden = TRUE;
