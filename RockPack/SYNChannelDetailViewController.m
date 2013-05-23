@@ -1165,34 +1165,23 @@
                                  self.categoriesTabViewController.view.alpha = 1.0f;   
                              }
                              completion: ^(BOOL finished) {
-<<<<<<< HEAD
-                                 // if no category has been selected then select first //
-                                 
+
                                  if ([self.selectedCategoryId isEqualToString: @""])
                                  {
-                                    if (self.categoriesTabViewController.otherGenre)
-=======
-                                 if ([self.selectedCategoryId isEqualToString:@""])
-                                 {
                                      // if no category has been selected the "other" category if it exists
-                                    if(self.categoriesTabViewController.otherGenre)
->>>>>>> origin/develop
+                                    if( self.categoriesTabViewController.otherGenre)
                                     {
                                         [self handleNewTabSelectionWithGenre: self.categoriesTabViewController.otherGenre];
                                     }
                                  }
                                  else
                                  {
-<<<<<<< HEAD
                                      NSIndexPath* genreIndexPath = [self.categoriesTabViewController findIndexPathForGenreId: self.selectedCategoryId];
-=======
-                                     NSIndexPath* genreIndexPath = [self.categoriesTabViewController findIndexPathForGenreId:self.selectedCategoryId];
                                      if(!genreIndexPath)
                                      {
                                          //"Other/other" selected. Do nothing
                                          return;
                                      }
->>>>>>> origin/develop
                                      Genre* genreSelected =
                                      [self.categoriesTabViewController selectAndReturnGenreForIndexPath: genreIndexPath
                                                                                        andSubcategories: YES];
