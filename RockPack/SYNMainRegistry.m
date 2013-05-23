@@ -111,8 +111,7 @@
         
         Channel* channel = [Channel instanceFromDictionary:subscriptionChannel
                                  usingManagedObjectContext:currentUser.managedObjectContext
-                                       ignoringObjectTypes:kIgnoreNothing
-                                                 andViewId:kProfileViewId];
+                                       ignoringObjectTypes:kIgnoreNothing];
         
         if (!channel)
             continue;
@@ -312,8 +311,7 @@
             // Create a new video object. kIgnoreStoredObjects makes sure no attempt is made to query first
             video = [VideoInstance instanceFromDictionary: itemDictionary
                                 usingManagedObjectContext: appDelegate.mainManagedObjectContext
-                                      ignoringObjectTypes: kIgnoreStoredObjects
-                                                andViewId: viewId];
+                                      ignoringObjectTypes: kIgnoreStoredObjects];
             
         }
         
@@ -351,8 +349,7 @@
     
     [Channel instanceFromDictionary: dictionary
           usingManagedObjectContext: importManagedObjectContext
-                ignoringObjectTypes: kIgnoreNothing
-                          andViewId: kChannelDetailsViewId];
+                ignoringObjectTypes: kIgnoreNothing];
     
     BOOL saveResult = [self saveImportContext];
     if (!saveResult)
@@ -422,8 +419,7 @@
         {
             channel = [Channel instanceFromDictionary: itemDictionary
                             usingManagedObjectContext: channelOwner.managedObjectContext
-                                  ignoringObjectTypes: (kIgnoreStoredObjects | kIgnoreChannelOwnerObject)
-                                            andViewId: kChannelsViewId];
+                                  ignoringObjectTypes: (kIgnoreStoredObjects | kIgnoreChannelOwnerObject)];
         }
         
         
@@ -543,8 +539,7 @@
         {
             channel = [Channel instanceFromDictionary: itemDictionary
                             usingManagedObjectContext: appDelegate.mainManagedObjectContext
-                                  ignoringObjectTypes: kIgnoreStoredObjects
-                                            andViewId: kChannelsViewId];
+                                  ignoringObjectTypes: kIgnoreStoredObjects];
         }
 
         channel.markedForDeletionValue = NO;

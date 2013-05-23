@@ -226,8 +226,7 @@
         
         [channel setAttributesFromDictionary: channelDictionary
                                       withId: channel.uniqueId
-                         ignoringObjectTypes: kIgnoreChannelOwnerObject
-                                   andViewId: kChannelDetailsViewId];
+                         ignoringObjectTypes: kIgnoreChannelOwnerObject];
         
         
         channel.position = savedPosition;

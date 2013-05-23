@@ -52,7 +52,6 @@ static NSEntityDescription *videoEntity = nil;
 + (Video *) instanceFromDictionary: (NSDictionary *) dictionary
          usingManagedObjectContext: (NSManagedObjectContext *) managedObjectContext
                 ignoringObjectTypes: (IgnoringObjects) ignoringObjects
-                         andViewId: (NSString *) viewId
 {
     NSError *error = nil;
     
@@ -101,8 +100,7 @@ static NSEntityDescription *videoEntity = nil;
         [instance setAttributesFromDictionary: dictionary
                                        withId: uniqueId
                     usingManagedObjectContext: managedObjectContext
-                          ignoringObjectTypes: ignoringObjects
-                                    andViewId: viewId];
+                          ignoringObjectTypes: ignoringObjects];
     }
     
     // Update video starred & viewed
@@ -116,7 +114,6 @@ static NSEntityDescription *videoEntity = nil;
                               withId: (NSString *) uniqueId
            usingManagedObjectContext: (NSManagedObjectContext *) managedObjectContext
                  ignoringObjectTypes: (IgnoringObjects) ignoringObjects
-                           andViewId: (NSString *) viewId
 
 {
     // Is we are not actually a dictionary, then bail
