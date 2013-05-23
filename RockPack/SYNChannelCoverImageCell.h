@@ -12,10 +12,10 @@
 
 @interface SYNChannelCoverImageCell : UICollectionViewCell
 
-@property (nonatomic,weak) IBOutlet UIImageView* channelCoverImageView;
-@property (weak, nonatomic) IBOutlet UIImageView *glossImage;
+@property (nonatomic, weak) IBOutlet UIImageView* channelCoverImageView;
+@property (nonatomic, weak) IBOutlet UIImageView *glossImage;
 
--(void)setTitleText:(NSString*)titleText;
+- (void) setTitleText: (NSString*) titleText;
+- (void) setimageFromAsset: (ALAsset*) asset;
 
--(void)setimageFromAsset:(ALAsset*)asset;
 @end

@@ -11,17 +11,17 @@
 #import "CoverArt.h"
 #import "GKImageCropViewController.h"
 #import "GKImagePicker.h"
+#import "SYNAppDelegate.h"
 #import "SYNChannelCoverImageCell.h"
 #import "SYNChannelCoverImageSelectorViewController.h"
+#import "SYNNetworkEngine.h"
+#import "SYNOAuthNetworkEngine.h"
 #import "UIFont+SYNFont.h"
 #import "UIImageView+ImageProcessing.h"
 #import "UIImageView+WebCache.h"
 #import <AVFoundation/AVFoundation.h>
 #import <AssetsLibrary/AssetsLibrary.h>
 #import <QuartzCore/QuartzCore.h>
-#import "SYNAppDelegate.h"
-#import "SYNNetworkEngine.h"
-#import "SYNOAuthNetworkEngine.h"
 
 enum ChannelCoverSelectorState {
     kChannelCoverDefault = 0,
@@ -29,10 +29,12 @@ enum ChannelCoverSelectorState {
     kChannelCoverLocalAlbum = 2
 };
 
+
 @interface SYNChannelCoverImageSelectorViewController () <UICollectionViewDataSource,
                                                           UICollectionViewDelegate,
                                                           GKImageCropControllerDelegate,
-                                                          GKImagePickerDelegate, NSFetchedResultsControllerDelegate>
+                                                          GKImagePickerDelegate,
+                                                          NSFetchedResultsControllerDelegate>
 
 @property (nonatomic, assign) BOOL supportsCamera;
 @property (nonatomic, assign) enum ChannelCoverSelectorState currentState;
@@ -41,14 +43,14 @@ enum ChannelCoverSelectorState {
 @property (nonatomic, strong) NSArray* sortedKeys;
 @property (nonatomic, strong) NSMutableDictionary* userAssetGroups;
 @property (nonatomic, strong) NSString* selectedAlbumKey;
+@property (nonatomic, strong) NSString* selectedImageURL;
+@property (strong,nonatomic) NSFetchedResultsController* fetchedResultsController;
 @property (weak, nonatomic) IBOutlet UIButton *backButton;
 @property (weak, nonatomic) IBOutlet UIButton *cameraButton;
 @property (weak, nonatomic) IBOutlet UIButton *closeButton;
 @property (weak, nonatomic) IBOutlet UICollectionView *collectionView;
 @property (weak, nonatomic) IBOutlet UILabel *titleLabel;
 @property (weak, nonatomic) IBOutlet UIView *contentContainerView;
-
-@property (strong,nonatomic) NSFetchedResultsController* fetchedResultsController;
 @property (weak, nonatomic) SYNAppDelegate* appDelegate;
 
 @end
@@ -56,6 +58,15 @@ enum ChannelCoverSelectorState {
 
 @implementation SYNChannelCoverImageSelectorViewController
 
+- (id) initWithSelectedImageURL: (NSString *) selectedImageURL
+{
+    if ((self = [super init]))
+    {
+        self.selectedImageURL = selectedImageURL;
+    }
+    
+    return self;
+}
 
 
 - (void) viewDidLoad
@@ -73,7 +84,7 @@ enum ChannelCoverSelectorState {
                                       inManagedObjectContext: self.appDelegate.mainManagedObjectContext];
     
     
-    fetchRequest.sortDescriptors = @[[[NSSortDescriptor alloc] initWithKey: @"userUpload" ascending: YES],
+    fetchRequest.sortDescriptors = @[[[NSSortDescriptor alloc] initWithKey: @"userUpload" ascending: NO],
                                      [[NSSortDescriptor alloc] initWithKey: @"position" ascending: YES]];
     
     self.fetchedResultsController = [[NSFetchedResultsController alloc] initWithFetchRequest: fetchRequest
@@ -82,7 +93,6 @@ enum ChannelCoverSelectorState {
                                                                                                cacheName: nil];
     
     self.fetchedResultsController.delegate = self;
-    
     
     NSError *error = nil;
     
@@ -189,18 +199,23 @@ enum ChannelCoverSelectorState {
     {
         if (indexPath.row == 0)
         {
-            cell.channelCoverImageView.image = [UIImage imageNamed:@"ChannelCreationCoverNone.png"];
+            cell.channelCoverImageView.image = [UIImage imageNamed: @"ChannelCreationCoverNone.png"];
             cell.glossImage.hidden = YES;
         }
         else
         {
-            indexPath = [NSIndexPath indexPathForRow:indexPath.row - 1 inSection:0];
-            CoverArt *coverArt = [[self.fetchedResultsController fetchedObjects] objectAtIndex:indexPath.row];
-
+            indexPath = [NSIndexPath indexPathForRow: indexPath.row - 1 inSection:0];
+            CoverArt *coverArt = [[self.fetchedResultsController fetchedObjects] objectAtIndex: indexPath.row];
 
             [cell.channelCoverImageView setImageWithURL: [NSURL URLWithString: coverArt.thumbnailURL]
                                        placeholderImage: [UIImage imageNamed: @"PlaceholderChannelCreation.png"]
                                                 options: SDWebImageRetryFailed];
+            
+            // And we are not on the 'no cover' placeholder
+            if ([coverArt.thumbnailURL isEqualToString: self.selectedImageURL])
+            {
+                cell.selected = TRUE;
+            }
 
             cell.glossImage.hidden = NO;
         }
@@ -226,15 +241,17 @@ enum ChannelCoverSelectorState {
     }
     else
     {
-        ALAssetsGroup* group = [[self.userAssetGroups objectForKey:self.selectedAlbumKey] objectForKey:@"group"];
+        ALAssetsGroup* group = [[self.userAssetGroups objectForKey: self.selectedAlbumKey] objectForKey: @"group"];
+        
         [group enumerateAssetsAtIndexes: [NSIndexSet indexSetWithIndex:indexPath.row]
                                 options: 0
                              usingBlock: ^(ALAsset *result, NSUInteger index, BOOL *stop) {
-                                 if(result)
+                                 if (result)
                                  {
                                      [cell setimageFromAsset: result];
                                  }
                              }];
+        
         cell.glossImage.hidden = NO;
     }
     
@@ -313,7 +330,7 @@ enum ChannelCoverSelectorState {
         {
             NSString* returnStringURL = nil;
             NSString* returnCoverId = @"";
-            if(indexPath.row != 0)
+            if (indexPath.row != 0)
             {
                 indexPath = [NSIndexPath indexPathForRow:indexPath.row - 1 inSection:0];
                 CoverArt *coverArt = [[self.fetchedResultsController fetchedObjects] objectAtIndex:indexPath.row];
@@ -467,6 +484,7 @@ enum ChannelCoverSelectorState {
                              }];
 }
 
+
 - (void) updateCoverArt
 {
     // Update the list of cover art
@@ -486,8 +504,8 @@ enum ChannelCoverSelectorState {
 }
 
 
-
 #pragma mark - fetched result controller delegate
+
 - (void) controllerDidChangeContent: (NSFetchedResultsController *) controller
 {
     [self refreshChannelCoverData];
