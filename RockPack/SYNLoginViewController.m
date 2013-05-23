@@ -668,7 +668,7 @@
                forPassword: passwordInputField.text
          completionHandler: ^(NSDictionary* dictionary) {
             
-             DebugLog(@"User Registerd: %@", [dictionary objectForKey: @"username");
+             DebugLog(@"User Registerd: %@", [dictionary objectForKey: @"username"]);
              
              // by this time the currentUser is set in the DB //
              

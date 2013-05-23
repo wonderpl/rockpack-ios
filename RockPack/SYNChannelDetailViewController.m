@@ -492,10 +492,7 @@
             self.noVideosMessageView = nil;
         }
         
-        for (VideoInstance* vi in self.channel.videoInstances)
-        {
-            NSLog(@"*** Channel is : %@", vi.channel.title);
-        }
+        
     }
 }
 
@@ -2040,7 +2037,7 @@
 - (UIImage*) croppedImageForOrientation: (UIInterfaceOrientation) orientation
 {
     CGRect croppingRect = UIInterfaceOrientationIsLandscape(orientation) ?
-    CGRectMake(0.0, 138.0, 1024.0, 886.0) : CGRectMake(138.0, 0.0, 886.0, 1024.0);
+    CGRectMake(0.0, 138.0, 1024.0, 886.0) : CGRectMake(69.0, 0.0, 886.0, 1024.0);
     
     if (self.originalBackgroundImage == nil) // set the bg var once
     {
