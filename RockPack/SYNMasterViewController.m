@@ -317,28 +317,13 @@ typedef void(^AnimationCompletionBlock)(BOOL finished);
     {
         [self.sideNavigationViewController deselectAllCells];
         [self showSideNavigation];
-        self.darkOverlayView.alpha = 0.0;
-        
-        [UIView animateWithDuration:0.3
-                         animations:^{
-                             self.darkOverlayView.alpha = 1.0;
-                         } completion:^(BOOL finished) {
-                             self.darkOverlayView.hidden = NO;
-                         }];
     }
     else
     {
         NSString* controllerTitle = self.containerViewController.showingViewController.title;
         
         [self.sideNavigationViewController setSelectedCellByPageName:controllerTitle];
-        self.darkOverlayView.alpha = 1.0;
-        
-        [UIView animateWithDuration:0.3
-                         animations:^{
-                             self.darkOverlayView.alpha = 0.0;
-                         } completion:^(BOOL finished) {
-                             self.darkOverlayView.hidden = YES;
-                         }];
+
     }
 }
 
