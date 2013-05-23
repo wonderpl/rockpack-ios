@@ -4,6 +4,7 @@
 #import "NSDictionary+Validation.h"
 #import "VideoInstance.h"
 #import "AppConstants.h"
+#import "SYNAppDelegate.h"
 
 static NSEntityDescription *channelEntity = nil;
 
@@ -116,7 +117,6 @@ static NSEntityDescription *channelEntity = nil;
         
         [self.videoInstancesSet removeAllObjects];
         
-        
         for (NSDictionary *channelDictionary in itemArray)
         {
             // viewId is @"ChannelDetails" not kFeedViewId
@@ -124,7 +124,7 @@ static NSEntityDescription *channelEntity = nil;
             VideoInstance* videoInstance = [VideoInstance instanceFromDictionary: channelDictionary
                                                        usingManagedObjectContext: self.managedObjectContext
                                                              ignoringObjectTypes: kIgnoreChannelObjects
-                                                                       andViewId: kFeedViewId];
+                                                                       andViewId: viewId];
             
             if(!videoInstance)
                 continue;
@@ -132,7 +132,7 @@ static NSEntityDescription *channelEntity = nil;
             [self addVideoInstancesObject:videoInstance];
             
         }
-        
+    
     }
     
     [self setBasicAttributesFromDictionary:dictionary];

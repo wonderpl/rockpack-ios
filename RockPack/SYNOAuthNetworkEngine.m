@@ -1099,29 +1099,16 @@
                                                                                                    httpMethod: @"GET"
                                                                                                           ssl: YES];
     
-    __weak typeof(self) weakSelf = self;
     
     [self addCommonHandlerToNetworkOperation: networkOperation
                            completionHandler: ^(id response) {
                                
-         if(!weakSelf) return;
          
-         BOOL registryResultOk = [weakSelf.registry registerVideoInstancesFromDictionary: (NSDictionary *) response
-                                                                               forViewId: kFeedViewId
-                                                                             byAppending: NO];
          
-         if (!registryResultOk)
-         {
-             NSError* error = [NSError errorWithDomain: @""
-                                                  code: kJSONParseError
-                                              userInfo: nil];
-             errorBlock(error);
-             return;
-         }
-         else
-         {
-             completionBlock(response);
-         }
+         
+         completionBlock(response);
+         
+         
      }
      errorHandler: errorBlock];
 

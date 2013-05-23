@@ -80,7 +80,7 @@ static NSEntityDescription *videoInstanceEntity = nil;
         [videoInstanceFetchRequest setEntity: videoInstanceEntity];
         
         // Search on the unique Id
-        NSPredicate *predicate = [NSPredicate predicateWithFormat: @"uniqueId == %@ AND viewId == %@", uniqueId, viewId];
+        NSPredicate *predicate = [NSPredicate predicateWithFormat: @"uniqueId == %@", uniqueId, viewId];
         [videoInstanceFetchRequest setPredicate: predicate];
         
         NSArray *matchingVideoInstanceEntries = [managedObjectContext executeFetchRequest: videoInstanceFetchRequest
