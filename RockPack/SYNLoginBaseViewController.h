@@ -61,4 +61,6 @@ typedef enum {
 
 - (BOOL) isNetworkAccessibleOtherwiseShowErrorAlert;
 
+- (void) doFacebookLoginAnimation;
+
 @end

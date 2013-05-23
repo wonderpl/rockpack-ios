@@ -667,8 +667,8 @@
     [self loginForUsername: userNameInputField.text
                forPassword: passwordInputField.text
          completionHandler: ^(NSDictionary* dictionary) {
-             NSString* username = [dictionary objectForKey: @"username"];
-             DebugLog(@"User Registerd: %@", username);
+            
+             DebugLog(@"User Registerd: %@", [dictionary objectForKey: @"username");
              
              // by this time the currentUser is set in the DB //
              
@@ -812,10 +812,11 @@
     [self doFacebookLoginAnimation];
     
     [self loginThroughFacebookWithCompletionHandler: ^(NSDictionary * dictionary) {
-        [activityIndicator stopAnimating];
-        [self completeLoginProcess];
-    }
-                                       errorHandler:^(id error) {
+        
+                                        [activityIndicator stopAnimating];
+                                        [self completeLoginProcess];
+        
+                                    }  errorHandler:^(id error) {
                                            
                                            [self doFacebookFailAnimation];
                                            
