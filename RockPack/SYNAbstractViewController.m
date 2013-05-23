@@ -204,6 +204,7 @@
     {
         noteName = kVideoQueueAdd;
         
+        
         [appDelegate.oAuthNetworkEngine recordActivityForUserId: appDelegate.currentUser.uniqueId
                                                          action: @"select"
                                                 videoInstanceId: videoInstance.uniqueId
@@ -217,13 +218,19 @@
     else
     {
         noteName = kVideoQueueRemove;
+        
     }
     
     [[NSNotificationCenter defaultCenter] postNotificationName: noteName
                                                         object: self
                                                       userInfo: @{@"VideoInstance" : videoInstance}];
     
-    _addButton.selected = !_addButton.selected;
+    
+    
+    
+    [self.videoThumbnailCollectionView reloadData];
+    
+    
 
 }
 

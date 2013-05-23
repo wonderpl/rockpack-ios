@@ -165,6 +165,7 @@
 {
     UICollectionViewCell *cell = nil;
     
+
     if (cv == self.videoThumbnailCollectionView)
     {
         // No, but it was our collection view
@@ -226,6 +227,10 @@
         
 
         videoThumbnailCell.viewControllerDelegate = self;
+        
+        
+        videoThumbnailCell.addItButton.highlighted = NO;
+        videoThumbnailCell.addItButton.selected = videoInstance.selectedForVideoQueue;
         
         cell = videoThumbnailCell;
     }

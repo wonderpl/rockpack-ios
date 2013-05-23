@@ -218,12 +218,12 @@
     
     // define success block //
     
-    MKNKUserSuccessBlock successBlock = ^(NSDictionary *responseDictionary) {
+    MKNKUserSuccessBlock successBlock = ^(NSDictionary *channelDictionary) {
         
         
         NSNumber *savedPosition = channel.position;
         
-        [channel setAttributesFromDictionary: responseDictionary
+        [channel setAttributesFromDictionary: channelDictionary
                                       withId: channel.uniqueId
                          ignoringObjectTypes: kIgnoreChannelOwnerObject
                                    andViewId: kChannelDetailsViewId];

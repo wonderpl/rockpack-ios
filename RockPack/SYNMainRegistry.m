@@ -157,6 +157,10 @@
                                                    inManagedObjectContext: appDelegate.mainManagedObjectContext]];
     
     
+    // must not fetch SubGenres
+    categoriesFetchRequest.includesSubentities = NO;
+    
+    
     NSError* error;
     NSArray *existingCategories = [appDelegate.mainManagedObjectContext executeFetchRequest: categoriesFetchRequest
                                                                                           error: &error];
