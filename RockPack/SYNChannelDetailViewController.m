@@ -222,7 +222,7 @@
     if (!isIPhone)
     {
         // Create categories tab, but make invisible (alpha = 0) for now
-        self.categoriesTabViewController = [[SYNGenreTabViewController alloc] initWithHomeButton: @"hiden"];
+        self.categoriesTabViewController = [[SYNGenreTabViewController alloc] initWithHomeButton: NSLocalizedString(@"OTHER", nil)];
         self.categoriesTabViewController.delegate = self;
         self.categoriesTabViewController.showOtherInSubcategories = YES;
         CGRect tabFrame = self.categoriesTabViewController.view.frame;
@@ -1244,7 +1244,6 @@
             self.categoryTableViewController = [[SYNChannelCategoryTableViewController alloc] initWithNibName:@"SYNChannelCategoryTableViewControllerFullscreen~iphone" bundle: [NSBundle mainBundle]];
             self.categoryTableViewController.categoryTableControllerDelegate = self;
             self.categoryTableViewController.showAllCategoriesHeader = NO;
-            self.categoryTableViewController.showOtherSubCategory = YES;
         }
         else
         {

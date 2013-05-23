@@ -54,18 +54,12 @@
 @property (weak, nonatomic) IBOutlet UIButton *confirmButton;
 @property (weak, nonatomic) IBOutlet UIButton *closeButton;
 /**
-	toggles the showing of an "All categories" cell at the top of the list
+	toggles the showing of an "All categories" cell or an "Other" category cell at the top of the list
  
     set to YES by default
  */
 @property (nonatomic, assign) BOOL showAllCategoriesHeader;
 
-/**
-	toggles showing the "OTHER" sub category
- 
-    set to NO by default
- */
-@property (nonatomic, assign) BOOL showOtherSubCategory;
 
 
 
