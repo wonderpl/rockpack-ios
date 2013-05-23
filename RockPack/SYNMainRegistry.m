@@ -167,7 +167,7 @@
     
     NSMutableDictionary* existingCategoriesByIndex = [NSMutableDictionary dictionaryWithCapacity:existingCategories.count];
     
-    for (Channel* existingCategory in existingCategories)
+    for (Genre* existingCategory in existingCategories)
     {
         
         [existingCategoriesByIndex setObject:existingCategory forKey:existingCategory.uniqueId];
@@ -192,6 +192,10 @@
         {
             genre = [Genre instanceFromDictionary: categoryDictionary
                         usingManagedObjectContext: appDelegate.mainManagedObjectContext];
+        }
+        else
+        {
+            [genre setAttributesFromDictionary:categoryDictionary withId:uniqueId usingManagedObjectContext:appDelegate.mainManagedObjectContext];
         }
         
         genre.markedForDeletionValue = NO;
