@@ -49,6 +49,8 @@
 @property (nonatomic, strong) Genre* currentGenre;
 @property (nonatomic, weak) SYNMainRegistry* mainRegistry;
 
+@property (nonatomic, strong) UIView* emptyGenreMessageView;
+
 @property (nonatomic, strong) SYNChannelCategoryTableViewController* categoryTableViewController;
 @property (nonatomic, strong) UIButton* categorySelectButton;
 @property (nonatomic, strong) UIControl* categorySelectDismissControl;
@@ -264,6 +266,8 @@
                                                       
                                                       [self displayChannelsForGenre:genre];
                                                       
+                                                      
+                                                      
                                                   } onError: ^(NSDictionary* errorInfo) {
                                                       DebugLog(@"Could not load channels: %@", errorInfo);
                                                       self.footerView.showsLoading = NO;
@@ -335,10 +339,60 @@
     
     self.channels = [NSMutableArray arrayWithArray:resultsArray];
     
+    if(self.channels.count > 0)
+    {
+        if(self.emptyGenreMessageView)
+        {
+            [self.emptyGenreMessageView removeFromSuperview];
+            self.emptyGenreMessageView = nil;
+        }
+    }
+    else
+    {
+        [self displayEmptyGenreMessage];
+    }
+
+
     if(!isAnimating)
+    {
         [self.channelThumbnailCollectionView reloadData];
+    }
+
+
+
+
+}
+
+
+-(void)displayEmptyGenreMessage
+{
     
+    if(self.emptyGenreMessageView) // add no more than one
+        return;
     
+    CGRect mainFrame = CGRectMake(0.0, 0.0, 280.0, 60.0);
+    self.emptyGenreMessageView = [[UIView alloc] initWithFrame:mainFrame];
+    self.emptyGenreMessageView.center = CGPointMake(self.view.center.x, 280.0);
+    self.emptyGenreMessageView.frame = CGRectIntegral(self.emptyGenreMessageView.frame);
+    
+    UIView* emptyGenreBG = [[UIView alloc] initWithFrame:mainFrame];
+    emptyGenreBG.backgroundColor = [UIColor darkGrayColor];
+    emptyGenreBG.alpha = 0.4;
+    [self.emptyGenreMessageView addSubview:emptyGenreBG];
+    
+    UILabel* emptyGenreLabel = [[UILabel alloc] initWithFrame:CGRectZero];
+    emptyGenreLabel.font = [UIFont rockpackFontOfSize:20.0];
+    emptyGenreLabel.backgroundColor = [UIColor clearColor];
+    emptyGenreLabel.textColor = [UIColor whiteColor];
+    emptyGenreLabel.text = @"NO CHANNELS FOUND";
+    emptyGenreLabel.textAlignment = NSTextAlignmentCenter;
+    [emptyGenreLabel sizeToFit];
+    emptyGenreLabel.center = CGPointMake(self.emptyGenreMessageView.frame.size.width * 0.5, self.emptyGenreMessageView.frame.size.height * 0.5 + 4.0);
+    emptyGenreLabel.frame = CGRectIntegral(emptyGenreLabel.frame);
+    
+    [self.emptyGenreMessageView addSubview:emptyGenreLabel];
+    
+    [self.view addSubview:self.emptyGenreMessageView];
 }
 
 

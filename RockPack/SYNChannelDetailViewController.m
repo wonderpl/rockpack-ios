@@ -112,6 +112,8 @@
 		self.channel = channel;
         _mode = mode;
         
+        
+        
 	}
 
 	return self;
@@ -480,6 +482,7 @@
     {
         [self reloadCollectionViews];
         
+        
         if (self.channel.videoInstances.count == 0)
         {
             [self showNoVideosMessage];
@@ -488,6 +491,11 @@
         {
             [self.noVideosMessageView removeFromSuperview];
             self.noVideosMessageView = nil;
+        }
+        
+        for (VideoInstance* vi in self.channel.videoInstances)
+        {
+            NSLog(@"*** Channel is : %@", vi.channel.title);
         }
     }
 }

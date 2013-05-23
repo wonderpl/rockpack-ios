@@ -91,6 +91,7 @@
     
     VideoInstance* videoInstanceToAdd = (VideoInstance*) notification.userInfo[kVideoInstance];
     [self addVideoToQueue: videoInstanceToAdd];
+    videoInstanceToAdd.selectedForVideoQueue = YES;
 }
 
 
@@ -99,6 +100,7 @@
     
     VideoInstance* videoInstanceToAdd = (VideoInstance*) notification.userInfo[kVideoInstance];
     [self removeFromVideoQueue: videoInstanceToAdd];
+    videoInstanceToAdd.selectedForVideoQueue = NO;
 }
 
 -(void)handleVideoQueueClearRequest:(NSNotification*)notification
@@ -173,9 +175,9 @@
     VideoInstance* copyOfVideoInstance = [VideoInstance instanceFromVideoInstance: videoInstance
                                                         usingManagedObjectContext: self.appDelegate.channelsManagedObjectContext];
     
-    copyOfVideoInstance.channel = self.currentlyCreatingChannel;
     
-    [self.currentlyCreatingChannel.videoInstancesSet addObject: copyOfVideoInstance];
+    
+    [self.currentlyCreatingChannel addVideoInstancesObject:copyOfVideoInstance];
     
     self.isEmpty = NO;
     

@@ -16,6 +16,8 @@ static NSEntityDescription *videoInstanceEntity = nil;
 
 @implementation VideoInstance
 
+@synthesize selectedForVideoQueue;
+
 +(VideoInstance*) instanceFromVideoInstance:(VideoInstance*)existingInstance
                   usingManagedObjectContext: (NSManagedObjectContext *) managedObjectContext {
     
@@ -49,8 +51,13 @@ static NSEntityDescription *videoInstanceEntity = nil;
 {
     NSError *error = nil;
     
-    NSString *uniqueId = [dictionary objectForKey: @"id"
-                                      withDefault: @"Uninitialized Id"];
+    if (![dictionary isKindOfClass: [NSDictionary class]])
+        return nil;
+    
+    NSString *uniqueId = [dictionary objectForKey: @"id"];
+    
+    if(!uniqueId || ![uniqueId isKindOfClass:[NSString class]])
+        return nil;
     
     
     if (videoInstanceEntity == nil)
@@ -115,15 +122,12 @@ static NSEntityDescription *videoInstanceEntity = nil;
                  ignoringObjectTypes: (IgnoringObjects) ignoringObjects
                            andViewId: (NSString *) viewId
 {
-    // Is we are not actually a dictionary, then bail
-    if (![dictionary isKindOfClass: [NSDictionary class]])
-    {
-        AssertOrLog (@"setAttributesFromDictionary: not a dictionary, unable to construct object");
-        return;
-    }
     
-    // Simple objects
+    
+    
+    
     self.uniqueId = uniqueId;
+    
     self.viewId = viewId;
     
     self.position = [dictionary objectForKey: @"position"

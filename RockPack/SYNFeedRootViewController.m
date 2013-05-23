@@ -260,9 +260,8 @@
     
     fetchRequest.predicate = [NSPredicate predicateWithFormat:[NSString stringWithFormat:@"viewId == \"%@\"", viewId]];
     
-    fetchRequest.sortDescriptors = @[
-                                     [[NSSortDescriptor alloc] initWithKey: @"dateAdded" ascending: NO]
-                                     ];
+    
+    fetchRequest.sortDescriptors = @[[[NSSortDescriptor alloc] initWithKey: @"dateAdded" ascending: NO]];
     
     
     self.fetchedResultsController = [[NSFetchedResultsController alloc] initWithFetchRequest: fetchRequest
@@ -349,10 +348,11 @@
     videoThumbnailCell.channelNameText = videoInstance.channel.title;
     videoThumbnailCell.usernameText = [NSString stringWithFormat: @"%@", videoInstance.channel.channelOwner.displayName];
     videoThumbnailCell.addItButton.highlighted = NO;
-    videoThumbnailCell.addItButton.selected = [appDelegate.videoQueue videoInstanceIsAddedToChannel:videoInstance];
+    videoThumbnailCell.addItButton.selected = videoInstance.selectedForVideoQueue;
     
     
     videoThumbnailCell.viewControllerDelegate = self;
+    
     
     cell = videoThumbnailCell;
     
