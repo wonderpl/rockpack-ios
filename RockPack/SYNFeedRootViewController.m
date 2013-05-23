@@ -260,9 +260,8 @@
     
     fetchRequest.predicate = [NSPredicate predicateWithFormat:[NSString stringWithFormat:@"viewId == \"%@\"", viewId]];
     
-    fetchRequest.sortDescriptors = @[
-                                     [[NSSortDescriptor alloc] initWithKey: @"dateAdded" ascending: NO]
-                                     ];
+    
+    fetchRequest.sortDescriptors = @[[[NSSortDescriptor alloc] initWithKey: @"dateAdded" ascending: NO]];
     
     
     self.fetchedResultsController = [[NSFetchedResultsController alloc] initWithFetchRequest: fetchRequest
