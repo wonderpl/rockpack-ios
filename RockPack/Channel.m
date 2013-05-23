@@ -28,7 +28,10 @@ static NSEntityDescription *channelEntity = nil;
                  ignoringObjectTypes: (IgnoringObjects) ignoringObjects
 {
     
-    NSError *error = nil;
+    
+    
+    if (![dictionary isKindOfClass: [NSDictionary class]])
+        return nil;
     
    
     NSString *uniqueId = [dictionary objectForKey: @"id"
@@ -59,6 +62,7 @@ static NSEntityDescription *channelEntity = nil;
         
         [channelFetchRequest setPredicate: predicate];
         
+        NSError *error = nil;
         NSArray *matchingChannelEntries = [managedObjectContext executeFetchRequest: channelFetchRequest
                                                                               error: &error];
         

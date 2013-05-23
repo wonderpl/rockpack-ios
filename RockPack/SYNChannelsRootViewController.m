@@ -229,6 +229,13 @@
     [GAI.sharedInstance.defaultTracker sendView: @"Channels - Root"];
 }
 
+-(void)animatedPushViewController:(UIViewController *)vc
+{
+    [super animatedPushViewController:vc];
+    
+    [[NSNotificationCenter defaultCenter] postNotificationName: kNoteSearchBarRequestHide
+                                                        object: self];
+}
 
 #pragma mark - Loading of Channels
 
