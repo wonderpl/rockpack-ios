@@ -207,7 +207,7 @@ typedef enum {
 
 - (void) viewWillAppear:(BOOL)animated
 {
-    [self viewWillAppear: animated];
+    [super viewWillAppear: animated];
     
     // Google analytics support
     [GAI.sharedInstance.defaultTracker sendView: @"Navigation"];
