@@ -1397,7 +1397,11 @@
     
     NSString* category = [self categoryIdStringForServiceCall];
     
-    NSString* cover = [self coverIdStringForServiceCall];
+    NSString* cover =  self.selectedCoverId;
+    if ([cover length]==0)
+    {
+        cover = @"";
+    }
     
     [appDelegate.oAuthNetworkEngine createChannelForUserId: appDelegate.currentOAuth2Credentials.userId
                                                      title: self.channel.title
@@ -1546,7 +1550,7 @@
     if ([category length] == 0)
     {
         category = self.channel.categoryId;
-        if (!category)
+        if ([category length]==0)
         {
             category = @"";
         }
