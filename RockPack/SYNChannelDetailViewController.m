@@ -668,6 +668,9 @@
     self.profileImageButton.enabled = visible;
     self.subscribeButton.hidden = (visible && [self.channel.channelOwner.uniqueId isEqualToString: appDelegate.currentUser.uniqueId]);
     self.editButton.hidden = (visible && ! [self.channel.channelOwner.uniqueId isEqualToString: appDelegate.currentUser.uniqueId]);
+    
+    self.editButton.enabled = (self.channel.favouritesValue) ? FALSE : TRUE;
+    
     [(LXReorderableCollectionViewFlowLayout *)self.videoThumbnailCollectionView.collectionViewLayout longPressGestureRecognizer].enabled = (visible) ? FALSE : TRUE;
     
 //    self.channel.favouritesValue
