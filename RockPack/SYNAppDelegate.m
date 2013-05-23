@@ -537,6 +537,22 @@ extern void instrumentObjcMessageSends(BOOL);
     }
     
     
+    // == Clear Categories (Genres) == //
+    
+    [fetchRequest setEntity:[NSEntityDescription entityForName:@"Genre"
+                                        inManagedObjectContext:self.mainManagedObjectContext]];
+    
+    itemsToDelete = [self.mainManagedObjectContext executeFetchRequest:fetchRequest error:&error];
+    
+    for (NSManagedObject* objectToDelete in itemsToDelete) {
+        
+        [self.mainManagedObjectContext deleteObject:objectToDelete];
+    }
+    
+    
+    // == Save == //
+    
+    
     [self saveContext:YES];
     
     if(!userBound)
