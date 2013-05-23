@@ -349,4 +349,9 @@
     return isReachable;
 }
 
+-(void)doFacebookLoginAnimation
+{
+    // to be implemented by subclass
+}
+
 @end
