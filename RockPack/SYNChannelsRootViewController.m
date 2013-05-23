@@ -215,7 +215,7 @@
 {
     [self updateAnalytics];
     
-    // no NSRangeZero existst so we must zero it explicitely
+    [appDelegate.networkEngine cancelAllOperations];
     
     dataRequestRange = NSMakeRange(1, STANDARD_REQUEST_LENGTH);
     

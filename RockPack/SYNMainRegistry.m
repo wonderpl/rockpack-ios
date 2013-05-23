@@ -249,6 +249,7 @@
     return YES;
 }
 
+#pragma mark - VideoInstances
 
 - (BOOL) registerVideoInstancesFromDictionary: (NSDictionary *) dictionary
                                     forViewId: (NSString*) viewId
@@ -283,12 +284,14 @@
     {
         [existingVideosByIndex setObject:existingVideo forKey:existingVideo.uniqueId];
         
-        // We need to mark all of our existing VideoInstance objects corresponding to this viewId, just in case they are no longer required
-        // and should be removed in a post-import cleanup
         
-        existingVideo.markedForDeletionValue = YES;
+        if(!append)
+        {
+            
+            existingVideo.markedForDeletionValue = YES;
+            existingVideo.freshValue = NO;
+        }
         
-        existingVideo.freshValue = NO;
     }
     
     
@@ -325,15 +328,14 @@
     [self removeUnusedManagedObjects: matchingVideoInstanceEntries
               inManagedObjectContext: appDelegate.mainManagedObjectContext];
     
-    BOOL saveResult = [self saveImportContext];
-    if(!saveResult)
-        return NO;
+    
     
     [appDelegate saveContext: TRUE];
     
     return YES;
 }
 
+#pragma mark - Channels
 
 - (BOOL) registerChannelFromDictionary: (NSDictionary*) dictionary
 {
