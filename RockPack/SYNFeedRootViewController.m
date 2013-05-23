@@ -229,10 +229,25 @@
                                                             start: 0
                                                              size: 0
                                                 completionHandler: ^(NSDictionary *responseDictionary) {
+                                                    
+                                                    if(![responseDictionary isKindOfClass:[NSDictionary class]])
+                                                    {
+                                                        
+                                                    }
+                                                    BOOL registryResultOk = [appDelegate.mainRegistry registerVideoInstancesFromDictionary: responseDictionary
+                                                                                                                                 forViewId: kFeedViewId
+                                                                                                                               byAppending: NO];
+                                                    
+                                                    if (!registryResultOk)
+                                                    {
+                                                        DebugLog(@"Refresh subscription updates failed");
+                                                        
+                                                        return;
+                                                    }
+                                                    
                                                     [self handleRefreshComplete];
-                                                    // DebugLog(@"Refresh subscription updates successful");
-                                                }
-                                                     errorHandler: ^(NSDictionary* errorDictionary) {
+                                                    
+                                                } errorHandler: ^(NSDictionary* errorDictionary) {
                                                          [self handleRefreshComplete];
                                                          DebugLog(@"Refresh subscription updates failed");
                                                      }];
@@ -269,7 +284,7 @@
                                       inManagedObjectContext: appDelegate.mainManagedObjectContext];
     
     
-    fetchRequest.predicate = [NSPredicate predicateWithFormat:[NSString stringWithFormat:@"viewId == \"%@\"", viewId]];
+    fetchRequest.predicate = [NSPredicate predicateWithFormat:[NSString stringWithFormat:@"fresh == YES"]];
     
     
     fetchRequest.sortDescriptors = @[[[NSSortDescriptor alloc] initWithKey: @"dateAdded" ascending: NO]];

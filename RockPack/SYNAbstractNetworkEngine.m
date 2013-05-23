@@ -165,6 +165,7 @@
              // TODO: Remove test code
              // Simulate failure, buy refreshing token and sending API call again
              // OK, all seems to have gone well, return the object
+             
              completionBlock(response);
          }
      }

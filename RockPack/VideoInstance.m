@@ -24,7 +24,6 @@ static NSEntityDescription *videoInstanceEntity = nil;
     VideoInstance* instance = [VideoInstance insertInManagedObjectContext: managedObjectContext];
     
     instance.uniqueId = existingInstance.uniqueId;
-    instance.viewId = existingInstance.viewId;
     
     instance.position = existingInstance.position;
     
@@ -47,7 +46,6 @@ static NSEntityDescription *videoInstanceEntity = nil;
 + (VideoInstance *) instanceFromDictionary: (NSDictionary *) dictionary
                  usingManagedObjectContext: (NSManagedObjectContext *) managedObjectContext
                         ignoringObjectTypes: (IgnoringObjects) ignoringObjects
-                                 andViewId: (NSString *) viewId
 {
     NSError *error = nil;
     
@@ -80,7 +78,7 @@ static NSEntityDescription *videoInstanceEntity = nil;
         [videoInstanceFetchRequest setEntity: videoInstanceEntity];
         
         // Search on the unique Id
-        NSPredicate *predicate = [NSPredicate predicateWithFormat: @"uniqueId == %@ AND viewId == %@", uniqueId, viewId];
+        NSPredicate *predicate = [NSPredicate predicateWithFormat: @"uniqueId == %@", uniqueId];
         [videoInstanceFetchRequest setPredicate: predicate];
         
         NSArray *matchingVideoInstanceEntries = [managedObjectContext executeFetchRequest: videoInstanceFetchRequest
@@ -109,8 +107,7 @@ static NSEntityDescription *videoInstanceEntity = nil;
     [instance setAttributesFromDictionary: dictionary
                                    withId: uniqueId
                 usingManagedObjectContext: managedObjectContext
-                      ignoringObjectTypes: (ignoringObjects == kIgnoreChannelObjects) ? kIgnoreChannelObjects : kIgnoreVideoInstanceObjects
-                                andViewId: viewId];
+                      ignoringObjectTypes: (ignoringObjects == kIgnoreChannelObjects) ? kIgnoreChannelObjects : kIgnoreVideoInstanceObjects];
     
     return instance;
 }
@@ -120,7 +117,6 @@ static NSEntityDescription *videoInstanceEntity = nil;
                               withId: (NSString *) uniqueId
            usingManagedObjectContext: (NSManagedObjectContext *) managedObjectContext
                  ignoringObjectTypes: (IgnoringObjects) ignoringObjects
-                           andViewId: (NSString *) viewId
 {
     
     
@@ -128,7 +124,6 @@ static NSEntityDescription *videoInstanceEntity = nil;
     
     self.uniqueId = uniqueId;
     
-    self.viewId = viewId;
     
     self.position = [dictionary objectForKey: @"position"
                                  withDefault: [NSNumber numberWithInt: 0]];
@@ -142,15 +137,13 @@ static NSEntityDescription *videoInstanceEntity = nil;
     // NSManagedObjects
     self.video = [Video instanceFromDictionary: [dictionary objectForKey: @"video"]
                      usingManagedObjectContext: managedObjectContext
-                           ignoringObjectTypes: ignoringObjects
-                                     andViewId: viewId];
+                           ignoringObjectTypes: ignoringObjects];
     
     if (!(ignoringObjects & kIgnoreChannelObjects))
     {
         self.channel = [Channel instanceFromDictionary: [dictionary objectForKey: @"channel"]
-                         usingManagedObjectContext: managedObjectContext
-                               ignoringObjectTypes: ignoringObjects
-                                         andViewId: viewId];
+                             usingManagedObjectContext: managedObjectContext
+                                   ignoringObjectTypes: ignoringObjects];
     }
 }
 
@@ -186,7 +179,7 @@ static NSEntityDescription *videoInstanceEntity = nil;
 
 - (NSString *) description
 {
-    return [NSString stringWithFormat: @"VideoInstance: uniqueId(%@), viewId(%@), dateAdded (%@), title(%@)", self.uniqueId, self.viewId, self.dateAdded, self.title];
+    return [NSString stringWithFormat: @"VideoInstance: uniqueId(%@), dateAdded (%@), title(%@)", self.uniqueId, self.dateAdded, self.title];
 }
 
 @end

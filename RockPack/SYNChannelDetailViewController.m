@@ -1447,8 +1447,7 @@
                                               }
                                               Channel* createdChannel = [Channel instanceFromDictionary:dictionary
                                                                               usingManagedObjectContext:appDelegate.mainManagedObjectContext
-                                                                                    ignoringObjectTypes:ignore
-                                                                                              andViewId:kProfileViewId];
+                                                                                    ignoringObjectTypes:ignore];
                                               
                                               createdChannel.channelOwner = appDelegate.currentUser;
                                               

@@ -4,6 +4,7 @@
 #import "NSDictionary+Validation.h"
 #import "VideoInstance.h"
 #import "AppConstants.h"
+#import "SYNAppDelegate.h"
 
 static NSEntityDescription *channelEntity = nil;
 
@@ -25,7 +26,6 @@ static NSEntityDescription *channelEntity = nil;
 + (Channel *) instanceFromDictionary: (NSDictionary *) dictionary
            usingManagedObjectContext: (NSManagedObjectContext *) managedObjectContext
                  ignoringObjectTypes: (IgnoringObjects) ignoringObjects
-                           andViewId: (NSString *) viewId
 {
     
     NSError *error = nil;
@@ -81,8 +81,7 @@ static NSEntityDescription *channelEntity = nil;
     
     [instance setAttributesFromDictionary: dictionary
                                    withId: uniqueId
-                      ignoringObjectTypes: ignoringObjects
-                                andViewId: viewId];
+                      ignoringObjectTypes: ignoringObjects];
     
     
     return instance;
@@ -92,8 +91,7 @@ static NSEntityDescription *channelEntity = nil;
 
 - (void) setAttributesFromDictionary: (NSDictionary *) dictionary
                               withId: (NSString *) uniqueId
-                 ignoringObjectTypes: (IgnoringObjects) ignoringObjects
-                           andViewId: (NSString *) viewId {
+                 ignoringObjectTypes: (IgnoringObjects) ignoringObjects {
     
     
     self.uniqueId = uniqueId;
@@ -116,15 +114,13 @@ static NSEntityDescription *channelEntity = nil;
         
         [self.videoInstancesSet removeAllObjects];
         
-        
         for (NSDictionary *channelDictionary in itemArray)
         {
             // viewId is @"ChannelDetails" not kFeedViewId
             
             VideoInstance* videoInstance = [VideoInstance instanceFromDictionary: channelDictionary
                                                        usingManagedObjectContext: self.managedObjectContext
-                                                             ignoringObjectTypes: kIgnoreChannelObjects
-                                                                       andViewId: kFeedViewId];
+                                                             ignoringObjectTypes: kIgnoreChannelObjects];
             
             if(!videoInstance)
                 continue;
@@ -132,7 +128,7 @@ static NSEntityDescription *channelEntity = nil;
             [self addVideoInstancesObject:videoInstance];
             
         }
-        
+    
     }
     
     [self setBasicAttributesFromDictionary:dictionary];
