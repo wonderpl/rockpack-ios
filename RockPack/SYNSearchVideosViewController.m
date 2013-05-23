@@ -8,9 +8,12 @@
 
 #import "Channel.h"
 #import "ChannelOwner.h"
+#import "GAI.h"
 #import "NSDate-Utilities.h"
 #import "SYNAppDelegate.h"
+#import "SYNChannelFooterMoreView.h"
 #import "SYNDeviceManager.h"
+#import "SYNIntegralCollectionViewFlowLayout.h"
 #import "SYNSearchRootViewController.h"
 #import "SYNSearchTabView.h"
 #import "SYNSearchVideosViewController.h"
@@ -18,8 +21,6 @@
 #import "UIImageView+WebCache.h"
 #import "Video.h"
 #import "VideoInstance.h"
-#import "SYNChannelFooterMoreView.h"
-#import "SYNIntegralCollectionViewFlowLayout.h"
 
 @interface SYNSearchVideosViewController ()
 {
@@ -28,10 +29,11 @@
 
 
 @property (nonatomic, strong) SYNChannelFooterMoreView* footerView;
-@property (nonatomic, weak) NSString* searchTerm;
 @property (nonatomic, strong)NSCalendar* currentCalendar;
+@property (nonatomic, weak) NSString* searchTerm;
 
 @end
+
 
 @implementation SYNSearchVideosViewController
 
@@ -44,8 +46,6 @@
     
     self.currentCalendar = [NSCalendar currentCalendar];
     isIphone = [[SYNDeviceManager sharedInstance] isIPhone];
-    
-    self.trackedViewName = @"Search - Videos";
     
     // Init collection view
     UINib *videoThumbnailCellNib = [UINib nibWithNibName: @"SYNVideoThumbnailWideCell"
@@ -78,20 +78,23 @@
     self.videoThumbnailCollectionView.backgroundColor = [UIColor clearColor];
     
     self.view.autoresizingMask = UIViewAutoresizingFlexibleWidth | UIViewAutoresizingFlexibleHeight;
-    
 }
 
--(void)viewWillAppear:(BOOL)animated
+
+- (void) viewWillAppear: (BOOL) animated
 {
-    [super viewWillAppear:animated];
+    [super viewWillAppear: animated];
+
+    // Google analytics support
+    [GAI.sharedInstance.defaultTracker sendView: @"Search - Videos"];
     
-    [[NSNotificationCenter defaultCenter] postNotificationName:kNoteSearchBarRequestShow
-                                                        object:self];
+    [[NSNotificationCenter defaultCenter] postNotificationName: kNoteSearchBarRequestShow
+                                                        object: self];
 }
 
-- (NSFetchedResultsController *)fetchedResultsController
+
+- (NSFetchedResultsController *) fetchedResultsController
 {
-    
     if (fetchedResultsController != nil)
         return fetchedResultsController;
         
@@ -118,43 +121,33 @@
     ZAssert([fetchedResultsController performFetch: &error],
             @"Search Videos Fetch Request Failed: %@\n%@", [error localizedDescription], [error userInfo]);
     
-    return fetchedResultsController;
-    
-    
+    return fetchedResultsController; 
 }
 
 
--(void)performSearchWithTerm:(NSString*)term
+- (void) performSearchWithTerm: (NSString*) term
 {
-    
-    
-
     self.searchTerm = term;
 
-    [self.appDelegate.networkEngine searchVideosForTerm:self.searchTerm
-                                                inRange:self.dataRequestRange
-                                             onComplete:^(int itemsCount) {
-                                            
+    [self.appDelegate.networkEngine searchVideosForTerm: self.searchTerm
+                                                inRange: self.dataRequestRange
+                                             onComplete: ^(int itemsCount) {
                                                  self.dataItemsAvailable = itemsCount;
-        
                                              }];
     
     
 }
 
 
-
 - (void) controllerDidChangeContent: (NSFetchedResultsController *) controller
 {
-
     DebugLog(@"Total Search Items: %i", controller.fetchedObjects.count);
     
     if(self.itemToUpdate)
-        [self.itemToUpdate setNumberOfItems:[controller.fetchedObjects count] animated:YES];
-    
+        [self.itemToUpdate setNumberOfItems: [controller.fetchedObjects count]
+                                   animated: YES];
     
     [self reloadCollectionViews];
-    
 }
 
 
@@ -197,18 +190,18 @@
         NSMutableString* format = [[NSMutableString alloc] init];
         
         // FIXME: Needs more intelligent localisation
-        if(differenceDateComponents.year > 0)
+        if (differenceDateComponents.year > 0)
             [format appendFormat:@"%i Year%@ Ago", differenceDateComponents.year, (differenceDateComponents.year > 1 ? @"s" : @"")];
-        else if(differenceDateComponents.month > 0)
+        else if (differenceDateComponents.month > 0)
             [format appendFormat:@"%i Month%@ Ago", differenceDateComponents.month, (differenceDateComponents.month > 1 ? @"s" : @"")];
-        else if(differenceDateComponents.day > 1)
+        else if (differenceDateComponents.day > 1)
             [format appendFormat:@"%i %@", differenceDateComponents.day, NSLocalizedString(@"Days Ago", nil)];
-        else if(differenceDateComponents.day > 0)
+        else if (differenceDateComponents.day > 0)
             [format appendString: NSLocalizedString(@"Yesterday", nil)];
         else
             [format appendString: NSLocalizedString(@"Today", nil)];
         
-        if(isIphone)
+        if (isIphone)
         {
             //On iPhone, append You Tube User name to the date label
             videoThumbnailCell.dateAddedLabel.text = [NSString stringWithFormat:@"%@ BY %@",[format uppercaseString], [video.sourceUsername uppercaseString]];
@@ -270,35 +263,37 @@
 }
 
 
-
-
--(void)willAnimateRotationToInterfaceOrientation:(UIInterfaceOrientation)toInterfaceOrientation duration:(NSTimeInterval)duration
+- (void) willAnimateRotationToInterfaceOrientation: (UIInterfaceOrientation) toInterfaceOrientation
+                                          duration: (NSTimeInterval) duration
 {
-    [super willAnimateRotationToInterfaceOrientation:toInterfaceOrientation duration:duration];
+    [super willAnimateRotationToInterfaceOrientation: toInterfaceOrientation
+                                            duration: duration];
     
 }
 
--(void)didRotateFromInterfaceOrientation:(UIInterfaceOrientation)fromInterfaceOrientation
+
+- (void) didRotateFromInterfaceOrientation: (UIInterfaceOrientation) fromInterfaceOrientation
 {
-    [super didRotateFromInterfaceOrientation:fromInterfaceOrientation];
+    [super didRotateFromInterfaceOrientation: fromInterfaceOrientation];
     
 }
 
--(void)willRotateToInterfaceOrientation:(UIInterfaceOrientation)toInterfaceOrientation duration:(NSTimeInterval)duration
+
+- (void) willRotateToInterfaceOrientation: (UIInterfaceOrientation) toInterfaceOrientation
+                                 duration: (NSTimeInterval) duration
 {
-    [super willRotateToInterfaceOrientation:toInterfaceOrientation duration:duration];
+    [super willRotateToInterfaceOrientation: toInterfaceOrientation
+                                   duration: duration];
     [self reloadCollectionViews];
 }
 
-#pragma mark - Load More Footer
 
+#pragma mark - Load More Footer
 
 - (UICollectionReusableView *) collectionView: (UICollectionView *) collectionView
             viewForSupplementaryElementOfKind: (NSString *) kind
                                   atIndexPath: (NSIndexPath *) indexPath
 {
-    
-    
     UICollectionReusableView* supplementaryView;
     
     if (kind == UICollectionElementKindSectionHeader)
@@ -331,6 +326,7 @@
     return supplementaryView;
 }
 
+
 - (void) loadMoreChannels: (UIButton*) sender
 {
     
@@ -340,7 +336,7 @@
     
     NSInteger nextStart = self.dataRequestRange.location + self.dataRequestRange.length; // one is subtracted when the call happens for 0 indexing
     
-    if(nextStart >= self.dataItemsAvailable)
+    if (nextStart >= self.dataItemsAvailable)
         return;
     
     NSInteger nextSize = (nextStart + 48) >= self.dataItemsAvailable ? (self.dataItemsAvailable - nextStart) : 48;
@@ -348,39 +344,38 @@
     
     self.dataRequestRange = NSMakeRange(nextStart, nextSize);
     
-    [appDelegate.networkEngine searchVideosForTerm:self.searchTerm
-                                           inRange:self.dataRequestRange
-                                        onComplete:^(int itemsCount) {
-                                            
+    [appDelegate.networkEngine searchVideosForTerm: self.searchTerm
+                                           inRange: self.dataRequestRange
+                                        onComplete: ^(int itemsCount) {
                                             self.dataItemsAvailable = itemsCount;
                                             self.footerView.showsLoading = NO;
-                                            
                                         }];
 }
 
--(CGSize)footerSize
+
+- (CGSize) footerSize
 {
     return [[SYNDeviceManager sharedInstance] isIPhone]? CGSizeMake(320.0f, 64.0f) : CGSizeMake(1024.0, 64.0);
 }
 
--(SYNAppDelegate*)appDelegate
+
+- (SYNAppDelegate*) appDelegate
 {
-    
-    if(!appDelegate)
+    if (!appDelegate)
         appDelegate = (SYNAppDelegate*)[[UIApplication sharedApplication] delegate];
     
     return appDelegate;
 }
 
--(NSRange)dataRequestRange
+
+- (NSRange) dataRequestRange
 {
-    if(dataRequestRange.length == 0) {
+    if(dataRequestRange.length == 0)
+    {
         dataRequestRange = NSMakeRange(0, 48);
-        
     }
         
     return dataRequestRange;
-    
 }
 
 @end

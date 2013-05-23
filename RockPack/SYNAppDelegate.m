@@ -27,7 +27,6 @@
 #import "UIImageView+MKNetworkKitAdditions.h"
 #import "UncaughtExceptionHandler.h"
 #import <FacebookSDK/FacebookSDK.h>
-//#import <XRay/XRay.h>
 #import <objc/runtime.h>
 
 extern void instrumentObjcMessageSends(BOOL);
@@ -59,9 +58,9 @@ extern void instrumentObjcMessageSends(BOOL);
          didFinishLaunchingWithOptions: (NSDictionary *) launchOptions
 {
     // Enable the Spark Inspector
-    #if DEBUG
+#if DEBUG
     [SparkInspector enableObservation];
-    #endif
+#endif
 
     
     // Install our exception handler (must happen on the next turn through the event loop - as opposed to right now)
@@ -94,13 +93,13 @@ extern void instrumentObjcMessageSends(BOOL);
     }
     
     // Automatically send uncaught exceptions to Google Analytics.
-//    [GAI sharedInstance].trackUncaughtExceptions = YES;
+    [GAI sharedInstance].trackUncaughtExceptions = YES;
     
     // Optional: set Google Analytics dispatch interval 
     [GAI sharedInstance].dispatchInterval = 30;
     
     // Set debug to YES to enable  extra debugging information.
-//    [GAI sharedInstance].debug = YES;
+    [GAI sharedInstance].debug = YES;
     
     // Create tracker instance.
     [[GAI sharedInstance] trackerWithTrackingId: kGoogleAnalyticsId];

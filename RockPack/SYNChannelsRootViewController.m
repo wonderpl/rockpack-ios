@@ -12,6 +12,7 @@
 #import "ChannelOwner.h"
 #import "SYNAppDelegate.h"
 #import "ChannelCover.h"
+#import "GAI.h"
 #import "SYNChannelCategoryTableViewController.h"
 #import "SYNChannelDetailViewController.h"
 #import "SYNChannelFooterMoreView.h"
@@ -91,8 +92,6 @@
 
 - (void) loadView
 {
-    // Google Analytics support
-    self.trackedViewName = @"Channels - Root";
     BOOL isIPhone = [[SYNDeviceManager sharedInstance] isIPhone];
     
     SYNIntegralCollectionViewFlowLayout* flowLayout;
@@ -207,7 +206,15 @@
 }
 
 
-
+- (void) viewWillAppear: (BOOL) animated
+{
+    [super viewWillAppear: animated];
+    
+    // Google analytics support
+    [GAI.sharedInstance.defaultTracker sendView: @"Channels - Root"];
+    
+    self.touchedChannelButton = NO;
+}
 
 
 #pragma mark - Loading of Channels
@@ -409,23 +416,14 @@
     [self.view addSubview:self.updateMessageView];
 }
 
-- (void) viewWillAppear: (BOOL) animated
-{
-    [super viewWillAppear: animated];
-    
-    self.touchedChannelButton = NO;
-}
 
-
--(void)viewDidScrollToFront
+- (void) viewDidScrollToFront
 {
     // no NSRangeZero existst so we must zero it explicitely
     
     dataRequestRange = NSMakeRange(1, STANDARD_REQUEST_LENGTH);
     
-    
     [self loadChannelsForGenre:currentGenre];
-    
 }
 
 
