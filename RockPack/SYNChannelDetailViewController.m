@@ -1173,13 +1173,9 @@
                                  self.categoriesTabViewController.view.alpha = 1.0f;   
                              }
                              completion: ^(BOOL finished) {
-                                 
-                                 
-                                 
-                                 // if no category has been selected then select first //
-                                 
                                  if ([self.selectedCategoryId isEqualToString:@""])
                                  {
+                                     // if no category has been selected the "other" category if it exists
                                     if(self.categoriesTabViewController.otherGenre)
                                     {
                                         [self handleNewTabSelectionWithGenre:self.categoriesTabViewController.otherGenre];
@@ -1188,6 +1184,11 @@
                                  else
                                  {
                                      NSIndexPath* genreIndexPath = [self.categoriesTabViewController findIndexPathForGenreId:self.selectedCategoryId];
+                                     if(!genreIndexPath)
+                                     {
+                                         //"Other/other" selected. Do nothing
+                                         return;
+                                     }
                                      Genre* genreSelected =
                                      [self.categoriesTabViewController selectAndReturnGenreForIndexPath:genreIndexPath
                                                                                        andSubcategories:YES];
