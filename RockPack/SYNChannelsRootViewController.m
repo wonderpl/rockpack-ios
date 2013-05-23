@@ -31,6 +31,9 @@
 #define STANDARD_REQUEST_LENGTH 48
 #define kChannelsCache @"ChannelsCache"
 
+#define kEmptyGenreMessage @"NO CHANNELS FOUND"
+#define kLoadingGenreMessage @"LOADING CHANNELS"
+
 @interface SYNChannelsRootViewController () <UIScrollViewDelegate, SYNChannelCategoryTableViewDelegate>
 
 #ifdef ALLOWS_PINCH_GESTURES
@@ -48,7 +51,7 @@
 @property (nonatomic, strong) Genre* currentGenre;
 @property (nonatomic, weak) SYNMainRegistry* mainRegistry;
 
-@property (nonatomic, strong) UIView* emptyGenreMessageView;
+@property (nonatomic, strong) UIView* updateMessageView;
 
 @property (nonatomic, strong) SYNChannelCategoryTableViewController* categoryTableViewController;
 @property (nonatomic, strong) UIButton* categorySelectButton;
@@ -256,8 +259,16 @@
                                                           DebugLog(@"Registration of Channel Failed for: %@", currentCategoryId);
                                                           return;
                                                       }
+                                                      if(dataItemsAvailable == 0)
+                                                      {
+                                                          [self displayUpdateWithMessage:kEmptyGenreMessage];
+                                                      }
+                                                      else
+                                                      {
+                                                          [self displayChannelsForGenre:genre];
+                                                      }
                                                       
-                                                      [self displayChannelsForGenre:genre];
+                                                      
                                                       
                                                       
                                                       
@@ -334,15 +345,15 @@
     
     if(self.channels.count > 0)
     {
-        if(self.emptyGenreMessageView)
+        if(self.updateMessageView)
         {
-            [self.emptyGenreMessageView removeFromSuperview];
-            self.emptyGenreMessageView = nil;
+            [self.updateMessageView removeFromSuperview];
+            self.updateMessageView = nil;
         }
     }
     else
     {
-        [self displayEmptyGenreMessage];
+        [self displayUpdateWithMessage:kLoadingGenreMessage];
     }
 
 
@@ -357,35 +368,45 @@
 }
 
 
--(void)displayEmptyGenreMessage
+-(void)displayUpdateWithMessage:(NSString*)message
 {
+   
     
-    if(self.emptyGenreMessageView) // add no more than one
-        return;
+    if(self.updateMessageView)
+    {
+        [self.updateMessageView removeFromSuperview];
+        self.updateMessageView = nil;
     
-    CGRect mainFrame = CGRectMake(0.0, 0.0, 280.0, 60.0);
-    self.emptyGenreMessageView = [[UIView alloc] initWithFrame:mainFrame];
-    self.emptyGenreMessageView.center = CGPointMake(self.view.center.x, 280.0);
-    self.emptyGenreMessageView.frame = CGRectIntegral(self.emptyGenreMessageView.frame);
+    }
+        
+    
+    UIFont* fontToUse = [UIFont rockpackFontOfSize:20.0];
+    CGSize size = [message sizeWithFont:fontToUse];
+    
+    CGRect mainFrame = CGRectMake(0.0, 0.0, size.width + 40.0, size.height + 40.0);
+
+    
+    self.updateMessageView = [[UIView alloc] initWithFrame:mainFrame];
+    self.updateMessageView.center = CGPointMake(self.view.center.x, 280.0);
+    self.updateMessageView.frame = CGRectIntegral(self.updateMessageView.frame);
     
     UIView* emptyGenreBG = [[UIView alloc] initWithFrame:mainFrame];
     emptyGenreBG.backgroundColor = [UIColor darkGrayColor];
     emptyGenreBG.alpha = 0.4;
-    [self.emptyGenreMessageView addSubview:emptyGenreBG];
+    [self.updateMessageView addSubview:emptyGenreBG];
     
-    UILabel* emptyGenreLabel = [[UILabel alloc] initWithFrame:CGRectZero];
-    emptyGenreLabel.font = [UIFont rockpackFontOfSize:20.0];
+    UILabel* emptyGenreLabel = [[UILabel alloc] initWithFrame:CGRectMake(0.0, 0.0, size.width, size.height)];
+    emptyGenreLabel.font = fontToUse;
     emptyGenreLabel.backgroundColor = [UIColor clearColor];
     emptyGenreLabel.textColor = [UIColor whiteColor];
-    emptyGenreLabel.text = @"NO CHANNELS FOUND";
+    emptyGenreLabel.text = message;
     emptyGenreLabel.textAlignment = NSTextAlignmentCenter;
-    [emptyGenreLabel sizeToFit];
-    emptyGenreLabel.center = CGPointMake(self.emptyGenreMessageView.frame.size.width * 0.5, self.emptyGenreMessageView.frame.size.height * 0.5 + 4.0);
+    emptyGenreLabel.center = CGPointMake(self.updateMessageView.frame.size.width * 0.5, self.updateMessageView.frame.size.height * 0.5 + 4.0);
     emptyGenreLabel.frame = CGRectIntegral(emptyGenreLabel.frame);
     
-    [self.emptyGenreMessageView addSubview:emptyGenreLabel];
+    [self.updateMessageView addSubview:emptyGenreLabel];
     
-    [self.view addSubview:self.emptyGenreMessageView];
+    [self.view addSubview:self.updateMessageView];
 }
 
 - (void) viewWillAppear: (BOOL) animated
