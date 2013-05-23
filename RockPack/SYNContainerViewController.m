@@ -170,6 +170,17 @@
 }
 
 
+#pragma mark - maintaion orientation
+
+-(void)refreshView
+{
+    [self packViewControllersForInterfaceOrientation: [[SYNDeviceManager sharedInstance] orientation]];
+    
+    [[NSNotificationCenter defaultCenter] postNotificationName: kScrollerPageChanged
+                                                        object: self
+                                                      userInfo: @{kCurrentPage:@(self.scrollView.page)}];
+}
+
 #pragma mark - Placement of Views
 
 - (void) packViewControllersForInterfaceOrientation: (UIInterfaceOrientation) orientation
