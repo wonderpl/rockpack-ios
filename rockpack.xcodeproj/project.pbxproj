@@ -5952,7 +5952,7 @@
 					"-framework",
 					CFNetwork,
 					"-framework",
-					QuartxCore,
+					QuartzCore,
 					"-framework",
 					Security,
 					"-framework",
