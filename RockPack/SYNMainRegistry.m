@@ -291,8 +291,7 @@
         // We need to mark all of our existing VideoInstance objects corresponding to this viewId, just in case they are no longer required
         // and should be removed in a post-import cleanup
         
-        if(existingVideo.freshValue)
-            existingVideo.markedForDeletionValue = YES;
+        existingVideo.markedForDeletionValue = YES;
         
         existingVideo.freshValue = NO;
     }
