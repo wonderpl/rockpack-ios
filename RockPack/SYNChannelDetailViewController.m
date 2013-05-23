@@ -10,6 +10,7 @@
 #import "ChannelCover.h"
 #import "ChannelOwner.h"
 #import "CoverArt.h"
+#import "GAI.h"
 #import "GKImagePicker.h"
 #import "Genre.h"
 #import "SSTextView.h"
@@ -126,10 +127,7 @@
     [super viewDidLoad];
     
     BOOL isIPhone= [[SYNDeviceManager sharedInstance] isIPhone];
-    
-    // Google Analytics support
-    self.trackedViewName = @"Channels - Detail";
-    
+
     // Originally the opacity was required to be 0.25f, but this appears less visible on the actual screen
     // Set custom fonts and shadows for labels
     self.channelOwnerLabel.font = [UIFont boldRockpackFontOfSize: self.channelOwnerLabel.font.pointSize];
@@ -323,7 +321,8 @@
 {
     [super viewWillAppear: animated];
     
-    
+    // Google analytics support
+    [GAI.sharedInstance.defaultTracker sendView: @"Channels - Detail"];
     
     [[NSNotificationCenter defaultCenter] addObserver: self
                                              selector: @selector(mainContextDataChanged:)

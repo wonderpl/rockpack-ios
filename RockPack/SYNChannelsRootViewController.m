@@ -12,6 +12,7 @@
 #import "ChannelOwner.h"
 #import "SYNAppDelegate.h"
 #import "ChannelCover.h"
+#import "GAI.h"
 #import "SYNChannelCategoryTableViewController.h"
 #import "SYNChannelDetailViewController.h"
 #import "SYNChannelFooterMoreView.h"
@@ -31,6 +32,9 @@
 #define STANDARD_REQUEST_LENGTH 48
 #define kChannelsCache @"ChannelsCache"
 
+#define kEmptyGenreMessage @"NO CHANNELS FOUND"
+#define kLoadingGenreMessage @"LOADING CHANNELS"
+
 @interface SYNChannelsRootViewController () <UIScrollViewDelegate, SYNChannelCategoryTableViewDelegate>
 
 #ifdef ALLOWS_PINCH_GESTURES
@@ -47,6 +51,8 @@
 @property (nonatomic, strong) NSString* currentCategoryId;
 @property (nonatomic, strong) Genre* currentGenre;
 @property (nonatomic, weak) SYNMainRegistry* mainRegistry;
+
+@property (nonatomic, strong) UIView* updateMessageView;
 
 @property (nonatomic, strong) SYNChannelCategoryTableViewController* categoryTableViewController;
 @property (nonatomic, strong) UIButton* categorySelectButton;
@@ -86,8 +92,6 @@
 
 - (void) loadView
 {
-    // Google Analytics support
-    self.trackedViewName = @"Channels - Root";
     BOOL isIPhone = [[SYNDeviceManager sharedInstance] isIPhone];
     
     SYNIntegralCollectionViewFlowLayout* flowLayout;
@@ -202,7 +206,15 @@
 }
 
 
-
+- (void) viewWillAppear: (BOOL) animated
+{
+    [super viewWillAppear: animated];
+    
+    // Google analytics support
+    [GAI.sharedInstance.defaultTracker sendView: @"Channels - Root"];
+    
+    self.touchedChannelButton = NO;
+}
 
 
 #pragma mark - Loading of Channels
@@ -254,8 +266,18 @@
                                                           DebugLog(@"Registration of Channel Failed for: %@", currentCategoryId);
                                                           return;
                                                       }
+                                                      if(dataItemsAvailable == 0)
+                                                      {
+                                                          [self displayUpdateWithMessage:kEmptyGenreMessage];
+                                                      }
+                                                      else
+                                                      {
+                                                          [self displayChannelsForGenre:genre];
+                                                      }
                                                       
-                                                      [self displayChannelsForGenre:genre];
+                                                      
+                                                      
+                                                      
                                                       
                                                   } onError: ^(NSDictionary* errorInfo) {
                                                       DebugLog(@"Could not load channels: %@", errorInfo);
@@ -328,30 +350,80 @@
     
     self.channels = [NSMutableArray arrayWithArray:resultsArray];
     
+    if(self.channels.count > 0)
+    {
+        if(self.updateMessageView)
+        {
+            [self.updateMessageView removeFromSuperview];
+            self.updateMessageView = nil;
+        }
+    }
+    else
+    {
+        [self displayUpdateWithMessage:kLoadingGenreMessage];
+    }
+
+
     if(!isAnimating)
+    {
         [self.channelThumbnailCollectionView reloadData];
-    
-    
+    }
+
+
+
+
 }
 
 
-- (void) viewWillAppear: (BOOL) animated
+-(void)displayUpdateWithMessage:(NSString*)message
 {
-    [super viewWillAppear: animated];
+   
     
-    self.touchedChannelButton = NO;
+    if(self.updateMessageView)
+    {
+        [self.updateMessageView removeFromSuperview];
+        self.updateMessageView = nil;
+    
+    }
+        
+    
+    UIFont* fontToUse = [UIFont rockpackFontOfSize:20.0];
+    CGSize size = [message sizeWithFont:fontToUse];
+    
+    CGRect mainFrame = CGRectMake(0.0, 0.0, size.width + 40.0, size.height + 40.0);
+
+    
+    self.updateMessageView = [[UIView alloc] initWithFrame:mainFrame];
+    self.updateMessageView.center = CGPointMake(self.view.center.x, 280.0);
+    self.updateMessageView.frame = CGRectIntegral(self.updateMessageView.frame);
+    
+    UIView* emptyGenreBG = [[UIView alloc] initWithFrame:mainFrame];
+    emptyGenreBG.backgroundColor = [UIColor darkGrayColor];
+    emptyGenreBG.alpha = 0.4;
+    [self.updateMessageView addSubview:emptyGenreBG];
+    
+    UILabel* emptyGenreLabel = [[UILabel alloc] initWithFrame:CGRectMake(0.0, 0.0, size.width, size.height)];
+    emptyGenreLabel.font = fontToUse;
+    emptyGenreLabel.backgroundColor = [UIColor clearColor];
+    emptyGenreLabel.textColor = [UIColor whiteColor];
+    emptyGenreLabel.text = message;
+    emptyGenreLabel.textAlignment = NSTextAlignmentCenter;
+    emptyGenreLabel.center = CGPointMake(self.updateMessageView.frame.size.width * 0.5, self.updateMessageView.frame.size.height * 0.5 + 4.0);
+    emptyGenreLabel.frame = CGRectIntegral(emptyGenreLabel.frame);
+    
+    [self.updateMessageView addSubview:emptyGenreLabel];
+    
+    [self.view addSubview:self.updateMessageView];
 }
 
 
--(void)viewDidScrollToFront
+- (void) viewDidScrollToFront
 {
     // no NSRangeZero existst so we must zero it explicitely
     
     dataRequestRange = NSMakeRange(1, STANDARD_REQUEST_LENGTH);
     
-    
     [self loadChannelsForGenre:currentGenre];
-    
 }
 
 

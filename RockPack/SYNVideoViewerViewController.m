@@ -10,6 +10,7 @@
 #import "Channel.h"
 #import "ChannelCover.h"
 #import "ChannelOwner.h"
+#import "GAI.h"
 #import "LXReorderableCollectionViewFlowLayout.h"
 #import "NSIndexPath+Arithmetic.h"
 #import "SYNAbstractViewController.h"
@@ -86,9 +87,6 @@
 - (void) viewDidLoad
 {
     [super viewDidLoad];
-    
-    // Google Analytics support
-    self.trackedViewName = @"Video Viewer";
     
     BOOL isIPhone = [[SYNDeviceManager sharedInstance] isIPhone];
         BOOL isLandscape = [[SYNDeviceManager sharedInstance] isLandscape];
@@ -251,6 +249,9 @@
 - (void) viewWillAppear: (BOOL) animated
 {
     [super viewWillAppear: animated];
+
+    // Google analytics support
+    [GAI.sharedInstance.defaultTracker sendView:  @"Video Viewer"];
     
     [self.videoPlaybackViewController setPlaylist: self.videoInstanceArray
                                     selectedIndex: self.currentSelectedIndex
@@ -266,7 +267,7 @@
         self.currentOrientaiton = [[UIDevice currentDevice] orientation];
         [[UIDevice currentDevice] beginGeneratingDeviceOrientationNotifications];
         self.originalFrame = self.swipeView.frame;
-        if(self.currentOrientaiton == UIDeviceOrientationLandscapeLeft)
+        if (self.currentOrientaiton == UIDeviceOrientationLandscapeLeft)
         {
             [self userTappedVideo];
         }
@@ -524,7 +525,7 @@
     
     VideoInstance *videoInstance = self.videoInstanceArray [self.currentSelectedIndex];
     
-    if([appDelegate.videoQueue videoInstanceIsAddedToChannel:videoInstance])
+    if ([appDelegate.videoQueue videoInstanceIsAddedToChannel:videoInstance])
     {
         [[NSNotificationCenter defaultCenter] postNotificationName: kVideoQueueRemove
                                                         object: self
@@ -707,10 +708,10 @@
     }
     else
     {
-        if(self.currentOrientaiton == UIDeviceOrientationPortrait)
+        if (self.currentOrientaiton == UIDeviceOrientationPortrait)
         {
             UIDeviceOrientation deviceOrientation = [[UIDevice currentDevice] orientation];
-            if(UIDeviceOrientationIsLandscape(deviceOrientation))
+            if (UIDeviceOrientationIsLandscape(deviceOrientation))
             {
                 [self changePlayerOrientation:deviceOrientation];
             }
@@ -897,13 +898,13 @@
                             self.videoPlaybackViewController.shuttleBarView.alpha = 1.0f;
                         }
                         completion:^(BOOL finished) {
-                            if(finished)
+                            if (finished)
                             {
                                 [[NSNotificationCenter defaultCenter] postNotificationName:kNoteShowNetworkMessages object:nil];
                             }
                         }];
     }
-    else if(UIDeviceOrientationIsLandscape(newOrientation))
+    else if (UIDeviceOrientationIsLandscape(newOrientation))
     {
         self.currentOrientaiton = newOrientation;
         [[UIApplication sharedApplication] setStatusBarHidden:YES withAnimation:UIStatusBarAnimationSlide];
@@ -913,7 +914,7 @@
                            options: UIViewAnimationOptionCurveEaseInOut
                         animations: ^ {
                             CGRect fullScreenFrame = CGRectMake(0,0,[[SYNDeviceManager sharedInstance] currentScreenHeight], [[SYNDeviceManager sharedInstance] currentScreenWidth]);
-                            if(fullScreenFrame.size.width < fullScreenFrame.size.height)
+                            if (fullScreenFrame.size.width < fullScreenFrame.size.height)
                             {
                                 //Device orientation may confuse screen dimensions. Ensure the width is always the larger dimension.
                                 fullScreenFrame = CGRectMake(0,0,[[SYNDeviceManager sharedInstance] currentScreenWidth], [[SYNDeviceManager sharedInstance] currentScreenHeight]);

@@ -7,6 +7,7 @@
 //
 
 #import "Channel.h"
+#import "GAI.h"
 #import "SYNChannelDetailViewController.h"
 #import "SYNChannelMidCell.h"
 #import "ChannelCover.h"
@@ -46,12 +47,12 @@
 @property (nonatomic, strong) SYNDeletionWobbleLayout* channelsPortraitLayout;
 @property (nonatomic, strong) SYNDeletionWobbleLayout* subscriptionsLandscapeLayout;
 @property (nonatomic, strong) SYNDeletionWobbleLayout* subscriptionsPortraitLayout;
-@property (nonatomic, strong) UIView* deletionCancelView;
 @property (nonatomic, strong) SYNSubscriptionsViewController* subscriptionsViewController;
 @property (nonatomic, strong) SYNUserProfileViewController* userProfileController;
 @property (nonatomic, strong) SYNYouHeaderView* headerChannelsView;
 @property (nonatomic, strong) SYNYouHeaderView* headerSubscriptionsView;
 @property (nonatomic, strong) UITapGestureRecognizer* tapGestureRecognizer;
+@property (nonatomic, strong) UIView* deletionCancelView;
 @property (nonatomic, weak) Channel* channelDeleteCandidate;
 @property (nonatomic, weak) SYNChannelMidCell* cellDeleteCandidate;
 @property (nonatomic, weak) UIButton* channelsTabButton;
@@ -141,18 +142,20 @@
         self.headerChannelsView.frame = newFrame;
         [self.headerChannelsView setFontSize: 12.0f];
         
-        [self.headerChannelsView setTitle: NSLocalizedString(@"CHANNELS",nil)
-                                andNumber: 2];
         
         self.headerChannelsView.userInteractionEnabled = NO;
     }
     else
     {
-        [self.headerChannelsView setTitle: NSLocalizedString(@"YOUR CHANNELS", nil)
-                                andNumber: 2];
         
-        [self.headerChannelsView setBackgroundImage: ([[SYNDeviceManager sharedInstance] isLandscape] ? [UIImage imageNamed: @"HeaderProfileChannelsLandscape"] : [UIImage imageNamed: @"HeaderProfilePortraitBoth"])];
+        
+        [self.headerChannelsView setBackgroundImage: ([[SYNDeviceManager sharedInstance] isLandscape] ?
+                                                      [UIImage imageNamed: @"HeaderProfileChannelsLandscape"] :
+                                                      [UIImage imageNamed: @"HeaderProfilePortraitBoth"])];
     }
+    
+    [self.headerChannelsView setTitle: [self getHeaderTitleForChannels]
+                            andNumber: 0];
     
     CGRect collectionViewFrame = CGRectMake(0.0,
                                             self.headerChannelsView.frame.origin.y + self.headerChannelsView.currentHeight,
@@ -312,9 +315,7 @@
 - (void) viewDidLoad
 {
     [super viewDidLoad];
-    
-    self.trackedViewName = @"You - Root";
-    
+
     // Init collection view
     UINib *thumbnailCellNib = [UINib nibWithNibName: @"SYNChannelMidCell"
                                              bundle: nil];
@@ -354,6 +355,9 @@
 - (void) viewWillAppear: (BOOL) animated
 {
     [super viewWillAppear: animated];
+    
+    // Google analytics support
+    [GAI.sharedInstance.defaultTracker sendView: @"You - Root"];
     
     self.deletionModeActive = NO;
     
@@ -608,7 +612,7 @@
     [super reloadCollectionViews];
     
     NSInteger totalChannels = self.user.channels.count;
-    NSString* title = [[SYNDeviceManager sharedInstance] isIPhone] ? NSLocalizedString(@"CHANNELS",nil): NSLocalizedString(@"YOUR CHANNELS",nil);
+    NSString* title = [self getHeaderTitleForChannels];
     [self.headerChannelsView setTitle: title
                              andNumber: totalChannels];
     
@@ -616,6 +620,22 @@
     [self.channelThumbnailCollectionView reloadData];
 }
 
+-(NSString*)getHeaderTitleForChannels
+{
+    if([[SYNDeviceManager sharedInstance] isIPhone])
+    {
+        return NSLocalizedString(@"CHANNELS",nil);
+        
+    }
+    else
+    {
+        if(self.user == appDelegate.currentUser)
+            return NSLocalizedString(@"YOUR CHANNELS",nil);
+        else
+            return NSLocalizedString(@"CHANNELS",nil);
+    }
+     
+}
 
 #pragma mark - UICollectionView DataSource/Delegate
 

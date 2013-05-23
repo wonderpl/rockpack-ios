@@ -81,14 +81,11 @@
 @synthesize wellSendYouLabel;
 @synthesize elementsOffsetY;
 
+
 - (void) viewDidLoad
 {
     [super viewDidLoad];
-    
-    // Google Analytics support
-    self.trackedViewName = @"Login";
 
-    
     activityIndicator.hidesWhenStopped = YES;
     
         // == Setup Fonts for labels (except Input Fields)
@@ -158,6 +155,9 @@
 - (void) viewDidAppear: (BOOL) animated
 {
     [super viewDidAppear:animated];
+
+    // Google analytics support
+    [GAI.sharedInstance.defaultTracker sendView: @"Login - iPad"];
     
     memberLabel.center = CGPointMake(memberLabel.center.x, loginButton.center.y - 54.0);
     memberLabel.frame = CGRectIntegral(memberLabel.frame);
