@@ -106,14 +106,10 @@
 - (id) initWithChannel: (Channel *) channel
              usingMode: (kChannelDetailsMode) mode
 {
-
     if ((self = [super initWithViewId: kChannelDetailsViewId]))
     {
 		self.channel = channel;
         _mode = mode;
-        
-        
-        
 	}
 
 	return self;
@@ -126,7 +122,7 @@
 {
     [super viewDidLoad];
     
-    BOOL isIPhone= [[SYNDeviceManager sharedInstance] isIPhone];
+    BOOL isIPhone = [SYNDeviceManager.sharedInstance isIPhone];
 
     // Originally the opacity was required to be 0.25f, but this appears less visible on the actual screen
     // Set custom fonts and shadows for labels
@@ -273,8 +269,9 @@
         // Set text on add cover and select category buttons
         [self.selectCategoryButton setAttributedTitle: attributedCategoryString
                                              forState: UIControlStateNormal];
-        self.coverChooserController = [[SYNCoverChooserController alloc] init];
-        [self addChildViewController:self.coverChooserController];
+        
+        self.coverChooserController = [[SYNCoverChooserController alloc] initWithSelectedImageURL: self.channel.channelCover.imageUrl];
+        [self addChildViewController: self.coverChooserController];
         self.coverChooserMasterView = self.coverChooserController.view;
         
     }
@@ -295,10 +292,7 @@
         if (self.mode == kChannelDetailsModeEdit)
         {
             self.view.backgroundColor = [UIColor colorWithWhite:0.92f alpha:1.0f];
-        }
-        
-        // Cover Image Selector //
-        
+        } 
     }
     
     self.selectedCategoryId = self.channel.categoryId;
@@ -321,8 +315,10 @@
 {
     [super viewWillAppear: animated];
     
+    NSString *viewMode = [NSString stringWithFormat: @"Channels - Detail - %@", (self.mode == kChannelDetailsModeDisplay) ? @"Display" : @"Edit"];
+    
     // Google analytics support
-    [GAI.sharedInstance.defaultTracker sendView: @"Channels - Detail"];
+    [GAI.sharedInstance.defaultTracker sendView: viewMode];
     
     [[NSNotificationCenter defaultCenter] addObserver: self
                                              selector: @selector(mainContextDataChanged:)
@@ -344,17 +340,14 @@
                                              selector: @selector(coverImageChangedHandler:)
                                                  name: kCoverArtChanged
                                                object: nil];
-    
 
-    
-    
     self.subscribeButton.enabled = YES;
     self.subscribeButton.selected = self.channel.subscribedByUserValue;
     
     [self.channel addObserver: self
                    forKeyPath: kSubscribedByUserKey
                       options: NSKeyValueObservingOptionNew
-                      context :nil];
+                      context: nil];
     
     // We set up assets depending on whether we are in display or edit mode
     [self setDisplayControlsVisibility: (self.mode == kChannelDetailsModeDisplay)];
@@ -979,7 +972,7 @@
             if ([genre isKindOfClass:[SubGenre class]])
             {
                 SubGenre* subCategory = (SubGenre*) genre;
-                if([[SYNDeviceManager sharedInstance] isIPhone])
+                if ([[SYNDeviceManager sharedInstance] isIPhone])
                 {
                     newTitle =[NSString stringWithFormat:@"%@/\n%@", subCategory.genre.name, subCategory.name];
                 }
@@ -993,7 +986,7 @@
                 newTitle = genre.name;
             }
             
-            if(isIPad)
+            if (isIPad)
             {
                 [self updateCategoryButtonText:newTitle];
             }
@@ -1124,7 +1117,7 @@
     }
     else
     {
-        self.coverImageSelector = [[SYNChannelCoverImageSelectorViewController alloc] init];
+        self.coverImageSelector = [[SYNChannelCoverImageSelectorViewController alloc] initWithSelectedImageURL: self.channel.channelCover.imageUrl];
         self.coverImageSelector.imageSelectorDelegate = self;
         CGRect startFrame = self.coverImageSelector.view.frame;
         startFrame.origin.y = self.view.frame.size.height;
@@ -1172,40 +1165,38 @@
                                  self.categoriesTabViewController.view.alpha = 1.0f;   
                              }
                              completion: ^(BOOL finished) {
-                                 if ([self.selectedCategoryId isEqualToString:@""])
+
+                                 if ([self.selectedCategoryId isEqualToString: @""])
                                  {
                                      // if no category has been selected the "other" category if it exists
-                                    if(self.categoriesTabViewController.otherGenre)
+                                    if( self.categoriesTabViewController.otherGenre)
                                     {
-                                        [self handleNewTabSelectionWithGenre:self.categoriesTabViewController.otherGenre];
+                                        [self handleNewTabSelectionWithGenre: self.categoriesTabViewController.otherGenre];
                                     }
                                  }
                                  else
                                  {
-                                     NSIndexPath* genreIndexPath = [self.categoriesTabViewController findIndexPathForGenreId:self.selectedCategoryId];
+                                     NSIndexPath* genreIndexPath = [self.categoriesTabViewController findIndexPathForGenreId: self.selectedCategoryId];
                                      if(!genreIndexPath)
                                      {
                                          //"Other/other" selected. Do nothing
                                          return;
                                      }
                                      Genre* genreSelected =
-                                     [self.categoriesTabViewController selectAndReturnGenreForIndexPath:genreIndexPath
-                                                                                       andSubcategories:YES];
+                                     [self.categoriesTabViewController selectAndReturnGenreForIndexPath: genreIndexPath
+                                                                                       andSubcategories: YES];
                                      
-                                     if(genreSelected)
+                                     if (genreSelected)
                                      {
-                                         
-                                         if([genreSelected isMemberOfClass:[Genre class]])
+                                         if ([genreSelected isMemberOfClass: [Genre class]])
                                          {
-                                             [self updateCategoryButtonText:genreSelected.name];
+                                             [self updateCategoryButtonText: genreSelected.name];
                                          }
                                          else
                                          {
-                                             [self updateCategoryButtonText: [NSString stringWithFormat:@"%@/%@",
+                                             [self updateCategoryButtonText: [NSString stringWithFormat: @"%@/%@",
                                                                               ((SubGenre*)genreSelected).genre.name, genreSelected.name]];
-                                         }
-                                             
-                                         
+                                         }   
                                      }
                                      else
                                      {
@@ -1213,10 +1204,10 @@
                                      }
                                  }
 
-                                 [UIView animateWithDuration:0.4f
-                                                       delay:0.1f
-                                                     options:UIViewAnimationOptionBeginFromCurrentState | UIViewAnimationOptionCurveEaseInOut
-                                                  animations:^{
+                                 [UIView animateWithDuration: 0.4f
+                                                       delay: 0.1f
+                                                     options: UIViewAnimationOptionBeginFromCurrentState | UIViewAnimationOptionCurveEaseInOut
+                                                  animations: ^{
                                                       // slide down the video collection view a bit //
                                                       CGFloat totalY =
                                                       kChannelCreationCollectionViewOffsetY + kChannelCreationCategoryAdditionalOffsetY;
@@ -1226,7 +1217,8 @@
                                                       kChannelCreationCollectionViewOffsetY + kChannelCreationCategoryAdditionalOffsetY;
                                                       self.videoThumbnailCollectionView.contentOffset = CGPointMake (0, -(totalX));
                                      
-                                                  } completion:^(BOOL finished) {
+                                                  }
+                                                  completion:^(BOOL finished) {
                                      
                                                   }];
                              }];
@@ -1284,7 +1276,6 @@
                          }
                          completion: nil];
     }
-    
 }
 
 
@@ -1343,10 +1334,8 @@
         [self updateCategoryButtonText: @"OTHER"];
         return;
     }
-        
 
     // update the text field with the format "GENRE/SUBGENRE"
-
     if ([genre isMemberOfClass: [SubGenre class]])
     {
         [self hideCategoryChooser];
@@ -1356,7 +1345,7 @@
     else
     {
         NSArray* filteredSubcategories = [[genre.subgenres array] filteredArrayUsingPredicate:[NSPredicate predicateWithFormat:@"priority = -1"]];
-        if([filteredSubcategories count] == 1)
+        if ([filteredSubcategories count] == 1)
         {
             SubGenre* otherSubGenre = [filteredSubcategories objectAtIndex:0];
             
@@ -1369,7 +1358,6 @@
             self.selectedCategoryId = genre.uniqueId;
             [self updateCategoryButtonText: genre.name];
         }
-
     }
 }
 
@@ -1542,6 +1530,7 @@
                       otherButtonTitles: nil] show];
 }
 
+
 #pragma mark - channel and cover id preparation
 
 -(NSString*)categoryIdStringForServiceCall
@@ -1557,6 +1546,7 @@
     }
     return category;
 }
+
 
 -(NSString*)coverIdStringForServiceCall
 {
@@ -1959,10 +1949,10 @@
 
 - (void) categoryTableController:(SYNChannelCategoryTableViewController *)tableController didSelectCategory:(Genre *)category
 {
-    if(category)
+    if (category)
     {
         NSArray* filteredSubcategories = [[category.subgenres array] filteredArrayUsingPredicate:[NSPredicate predicateWithFormat:@"priority = -1"]];
-        if([filteredSubcategories count] == 1)
+        if ([filteredSubcategories count] == 1)
         {
             SubGenre* otherSubGenre = [filteredSubcategories objectAtIndex:0];
             
@@ -2050,6 +2040,8 @@
           withRemoteId: (NSString *) remoteId
 {
     self.selectedCoverId = remoteId;
+    
+    self.channel.channelCover.imageUrl = imageUrlString;
     
     NSString* largeImageUrlString = [imageUrlString stringByReplacingOccurrencesOfString:@"thumbnail_medium" withString:@"background"];
     [self.channelCoverImageView setImageWithURL: [NSURL URLWithString: largeImageUrlString]

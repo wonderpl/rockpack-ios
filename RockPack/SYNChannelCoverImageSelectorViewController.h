@@ -32,5 +32,6 @@
 
 @property (nonatomic, weak) id<SYNChannelCoverImageSelectorDelegate> imageSelectorDelegate;
 
+- (id) initWithSelectedImageURL: (NSString *) selectedImageURL;
 
 @end

@@ -12,7 +12,6 @@
 
 @interface SYNCoverThumbnailCell ()
 
-@property (nonatomic, assign)  BOOL coverSelected;
 @property (nonatomic, strong) IBOutlet UIImageView *selectedOverlayImageView;
 
 @end
@@ -20,7 +19,6 @@
 
 @implementation SYNCoverThumbnailCell
 
-@synthesize coverSelected = _displayMode;
 
 - (void) awakeFromNib
 {

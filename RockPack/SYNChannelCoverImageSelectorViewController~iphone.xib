@@ -454,7 +454,7 @@
 			<string key="ButtonCameraHighlighted~iphone.png">{58, 58}</string>
 			<string key="ButtonCamera~iphone.png">{58, 58}</string>
 			<string key="ButtonCancel.png">{60, 61}</string>
-			<string key="ButtonCancelHighlighted.png">{120, 122}</string>
+			<string key="ButtonCancelHighlighted.png">{60, 61}</string>
 			<string key="ButtonCoverBackHighlighted~iphone.png">{58, 58}</string>
 			<string key="ButtonCoverBack~iphone.png">{58, 58}</string>
 		</dictionary>

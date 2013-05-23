@@ -29,6 +29,7 @@
 @property (nonatomic, strong) IBOutlet UICollectionView *collectionView;
 @property (nonatomic, strong) NSFetchedResultsController *channelCoverFetchedResultsController;
 @property (nonatomic, strong) NSIndexPath* indexPathSelected;
+@property (nonatomic, strong) NSString* selectedImageURL;
 @property (nonatomic, weak) SYNAppDelegate* appDelegate;
 
 @end
@@ -36,14 +37,12 @@
 
 @implementation SYNCoverChooserController
 
-
-- (id) initWithNibName: (NSString *) nibNameOrNil
-                bundle: (NSBundle *) nibBundleOrNil
+- (id) initWithSelectedImageURL: (NSString *) selectedImageURL
 {
-    if ((self = [super initWithNibName: nibNameOrNil
-                                bundle: nibBundleOrNil]))
+    if ((self = [super init]))
     {
         self.appDelegate = (SYNAppDelegate*)[[UIApplication sharedApplication] delegate];
+        self.selectedImageURL = selectedImageURL;
     }
     
     return self;
@@ -117,46 +116,58 @@
 - (UICollectionViewCell *) collectionView: (UICollectionView *) collectionView
                    cellForItemAtIndexPath: (NSIndexPath *) indexPath
 {
+    CoverArt *coverArt = nil;
+    
     SYNCoverThumbnailCell *coverThumbnailCell = [collectionView dequeueReusableCellWithReuseIdentifier: @"SYNCoverThumbnailCell"
                                                                                           forIndexPath: indexPath];
-        switch (indexPath.section)
+    switch (indexPath.section)
     {
         case 0:
         {
             coverThumbnailCell.coverImageView.image = [UIImage imageNamed: @"ChannelCreationCoverNone.png"];
-            return coverThumbnailCell;
         }
         break;
             
         case 1:
         {
             // Rockpack channel covers
-            CoverArt *coverArt = [self.channelCoverFetchedResultsController objectAtIndexPath: [NSIndexPath indexPathForRow: indexPath.row
+            coverArt = [self.channelCoverFetchedResultsController objectAtIndexPath: [NSIndexPath indexPathForRow: indexPath.row
                                                                                                                   inSection: 1]];
             
             [coverThumbnailCell.coverImageView setImageWithURL: [NSURL URLWithString: coverArt.thumbnailURL]
                                               placeholderImage: [UIImage imageNamed: @"PlaceholderChannelCreation.png"]
                                                        options: SDWebImageRetryFailed];
-            return coverThumbnailCell;
         }
         break;
             
         case 2:
         {
             // User channel covers
-            CoverArt *coverArt = [self.channelCoverFetchedResultsController objectAtIndexPath: [NSIndexPath indexPathForRow: indexPath.row
+            coverArt = [self.channelCoverFetchedResultsController objectAtIndexPath: [NSIndexPath indexPathForRow: indexPath.row
                                                                                                                       inSection: 0]];
             
             [coverThumbnailCell.coverImageView setImageWithURL: [NSURL URLWithString: coverArt.thumbnailURL]
                                               placeholderImage: [UIImage imageNamed: @"PlaceholderChannelCreation.png"]
                                                        options: SDWebImageRetryFailed];
-            return coverThumbnailCell;
         }
         break;      
     }
     
-    return nil;
-   
+    // If the user hasn't actually selected a cover, then try to match the cover id with the one for our cell,
+    // and select if true
+    if (self.indexPathSelected == nil)
+    {
+        // And we are not on the 'no cover' placeholder
+        if (coverArt != nil)
+        {
+            if ([coverArt.thumbnailURL isEqualToString: self.selectedImageURL])
+            {
+                coverThumbnailCell.selected = TRUE;
+            }
+        }
+    }
+    
+    return coverThumbnailCell;
 }
 
 
@@ -168,7 +179,6 @@
     [self.collectionView scrollToItemAtIndexPath: indexPath
                                 atScrollPosition: UICollectionViewScrollPositionNone
                                         animated: YES];
-    
     NSString *imageURLString;
     NSString *remoteId;
     

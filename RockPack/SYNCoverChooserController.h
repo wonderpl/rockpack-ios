@@ -16,6 +16,7 @@
 @property (nonatomic, readonly) UICollectionView* collectionView;
 @property (nonatomic, strong) IBOutlet UIButton *cameraButton;
 
--(void)updateCoverArt;
+- (id) initWithSelectedImageURL: (NSString *) selectedImageURL;
+- (void) updateCoverArt;
 
 @end

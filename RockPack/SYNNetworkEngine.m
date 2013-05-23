@@ -30,19 +30,14 @@
     return hostName;
 }
 
--(id)initWithDefaultSettings
+- (id) initWithDefaultSettings
 {
-    
     hostName = [[NSBundle mainBundle] objectForInfoDictionaryKey:@"APIHostName"];
     
-    self = [super initWithDefaultSettings];
-    
-    if(self) {
-        
-        
-        
+    if ((self = [super initWithDefaultSettings]))
+    {
+        // Custom init goes here
     }
-    
     
     return self;
 }

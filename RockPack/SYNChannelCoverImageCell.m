@@ -6,28 +6,34 @@
 //  Copyright (c) 2013 Nick Banks. All rights reserved.
 //
 
+#import "AppConstants.h"
 #import "SYNChannelCoverImageCell.h"
+#import "UIFont+SYNFont.h"
 #import <AVFoundation/AVFoundation.h>
 #import <AssetsLibrary/AssetsLibrary.h>
-#import "UIFont+SYNFont.h"
 
 
 @interface SYNChannelCoverImageCell ()
-@property (nonatomic, retain)NSURL* latestAssetUrl;
-@property (weak, nonatomic) IBOutlet UILabel *titleLabel;
+
+@property (nonatomic, retain) NSURL* latestAssetUrl;
+@property (nonatomic, strong) IBOutlet UIImageView *selectedOverlayImageView;
 @property (nonatomic, strong) UIImage* placeholderImage;
+@property (weak, nonatomic) IBOutlet UILabel *titleLabel;
+
 @end
+
 
 @implementation SYNChannelCoverImageCell
 
--(void)layoutSubviews
+- (void) layoutSubviews
 {
     [super layoutSubviews];
-    self.titleLabel.font = [UIFont boldRockpackFontOfSize:self.titleLabel.font.pointSize];
-    self.placeholderImage = [UIImage imageNamed:@"PlaceholderChannelCover.png"];
+    self.titleLabel.font = [UIFont boldRockpackFontOfSize: self.titleLabel.font.pointSize];
+    self.placeholderImage = [UIImage imageNamed: @"PlaceholderChannelCover.png"];
 }
 
--(void)setTitleText:(NSString*)titleText
+
+- (void) setTitleText: (NSString*) titleText
 {
     CGRect oldFrame = self.titleLabel.frame;
     self.titleLabel.text = [titleText uppercaseString];
@@ -38,15 +44,17 @@
     self.titleLabel.frame = newFrame;
 }
 
--(void)setimageFromAsset:(ALAsset*)asset;
+
+- (void) setimageFromAsset: (ALAsset*) asset;
 {
     self.channelCoverImageView.image = self.placeholderImage;
-    if(asset)
+    
+    if (asset)
     {
         self.latestAssetUrl = [asset valueForProperty:ALAssetPropertyAssetURL];
         dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0), ^{
-            __block NSURL* url = [asset valueForProperty:ALAssetPropertyAssetURL];
-            __block UIImage* resultImage = [UIImage imageWithCGImage:asset.thumbnail];
+            __block NSURL* url = [asset valueForProperty: ALAssetPropertyAssetURL];
+            __block UIImage* resultImage = [UIImage imageWithCGImage: asset.thumbnail];
             dispatch_async(dispatch_get_main_queue(), ^{
                 if([url isEqual:self.latestAssetUrl])
                 {
@@ -54,6 +62,36 @@
                 }
             });
         });
+    }
+}
+
+
+- (void) setSelected: (BOOL) selected
+{
+    [super setSelected: selected];
+    
+    if (selected)
+    {
+        // Guard against multiple repeated selections
+        if (self.selectedOverlayImageView.alpha == 0.0f)
+        {
+            [UIView animateWithDuration: kChannelEditModeAnimationDuration
+                             animations: ^{
+                                 self.selectedOverlayImageView.alpha = 1.0f;
+                             }
+                             completion: nil];
+        }
+    }
+    else
+    {
+        if (self.selectedOverlayImageView.alpha == 1.0f)
+        {
+            [UIView animateWithDuration: kChannelEditModeAnimationDuration
+                             animations: ^{
+                                 self.selectedOverlayImageView.alpha = 0.0f;
+                             }
+                             completion: nil];
+        }
     }
 }
 
