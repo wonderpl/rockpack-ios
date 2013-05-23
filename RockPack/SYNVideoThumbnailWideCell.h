@@ -30,6 +30,7 @@ typedef enum {
 @property (nonatomic, strong) IBOutlet UILabel *numberOfViewLabel;
 @property (nonatomic, strong) IBOutlet UILabel *dateAddedLabel;
 @property (nonatomic, strong) IBOutlet UILabel *durationLabel;
+@property (weak, nonatomic) IBOutlet UILabel *youTubeUserLabel;
 
 @property (nonatomic, weak) VideoInstance* videoInstance;
 

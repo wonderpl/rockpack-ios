@@ -75,6 +75,7 @@
         <attribute name="duration" optional="YES" attributeType="Integer 64" defaultValueString="0" syncable="YES"/>
         <attribute name="source" attributeType="String" syncable="YES"/>
         <attribute name="sourceId" optional="YES" attributeType="String" syncable="YES"/>
+        <attribute name="sourceUsername" optional="YES" attributeType="String" syncable="YES"/>
         <attribute name="starCount" optional="YES" attributeType="Integer 64" defaultValueString="0" syncable="YES"/>
         <attribute name="starredByUser" optional="YES" attributeType="Boolean" defaultValueString="NO" syncable="YES"/>
         <attribute name="thumbnailURL" optional="YES" attributeType="String" defaultValueString="http://" syncable="YES"/>
@@ -99,7 +100,7 @@
         <element name="Genre" positionX="-270" positionY="-204" width="128" height="88"/>
         <element name="SubGenre" positionX="-468" positionY="-189" width="128" height="60"/>
         <element name="User" positionX="-342" positionY="186" width="128" height="223"/>
-        <element name="Video" positionX="153" positionY="72" width="128" height="210"/>
+        <element name="Video" positionX="153" positionY="72" width="128" height="223"/>
         <element name="VideoInstance" positionX="351" positionY="207" width="128" height="135"/>
     </elements>
 </model>

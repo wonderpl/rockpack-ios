@@ -173,7 +173,7 @@
 										<string key="NSFrame">{{10, 26}, {220, 21}}</string>
 										<reference key="NSSuperview" ref="239537915"/>
 										<reference key="NSWindow"/>
-										<reference key="NSNextKeyView" ref="820602389"/>
+										<reference key="NSNextKeyView" ref="693576759"/>
 										<string key="NSReuseIdentifierKey">_NS:9</string>
 										<reference key="IBUIBackgroundColor" ref="67368057"/>
 										<bool key="IBUIAutoresizesSubviews">NO</bool>
@@ -183,6 +183,31 @@
 										<string key="targetRuntimeIdentifier">IBIPadFramework</string>
 										<string key="IBUIText">BASEMENT JAXX</string>
 										<reference key="IBUITextColor" ref="342278999"/>
+										<nil key="IBUIHighlightedColor"/>
+										<int key="IBUIBaselineAdjustment">0</int>
+										<reference key="IBUIFontDescription" ref="909412018"/>
+										<reference key="IBUIFont" ref="162055809"/>
+										<bool key="IBUIAdjustsFontSizeToFit">NO</bool>
+									</object>
+									<object class="IBUILabel" id="693576759">
+										<reference key="NSNextResponder" ref="239537915"/>
+										<int key="NSvFlags">290</int>
+										<string key="NSFrame">{{10, 42}, {220, 21}}</string>
+										<reference key="NSSuperview" ref="239537915"/>
+										<reference key="NSWindow"/>
+										<reference key="NSNextKeyView" ref="820602389"/>
+										<string key="NSReuseIdentifierKey">_NS:9</string>
+										<reference key="IBUIBackgroundColor" ref="67368057"/>
+										<bool key="IBUIAutoresizesSubviews">NO</bool>
+										<bool key="IBUIClearsContextBeforeDrawing">NO</bool>
+										<int key="IBUIContentMode">7</int>
+										<bool key="IBUIUserInteractionEnabled">NO</bool>
+										<string key="targetRuntimeIdentifier">IBIPadFramework</string>
+										<string key="IBUIText">BASEMENT JAXX</string>
+										<object class="NSColor" key="IBUITextColor">
+											<int key="NSColorSpace">1</int>
+											<bytes key="NSRGB">MC43MzMzMzMzNDkyIDAuNzMzMzMzMzQ5MiAwLjczMzMzMzM0OTIAA</bytes>
+										</object>
 										<nil key="IBUIHighlightedColor"/>
 										<int key="IBUIBaselineAdjustment">0</int>
 										<reference key="IBUIFontDescription" ref="909412018"/>
@@ -572,14 +597,6 @@
 				</object>
 				<object class="IBConnectionRecord">
 					<object class="IBCocoaTouchOutletConnection" key="connection">
-						<string key="label">numberOfViewLabel</string>
-						<reference key="source" ref="182925985"/>
-						<reference key="destination" ref="487122063"/>
-					</object>
-					<int key="connectionID">79</int>
-				</object>
-				<object class="IBConnectionRecord">
-					<object class="IBCocoaTouchOutletConnection" key="connection">
 						<string key="label">dateAddedLabel</string>
 						<reference key="source" ref="182925985"/>
 						<reference key="destination" ref="272361376"/>
@@ -641,6 +658,22 @@
 						<reference key="destination" ref="1047662222"/>
 					</object>
 					<int key="connectionID">101</int>
+				</object>
+				<object class="IBConnectionRecord">
+					<object class="IBCocoaTouchOutletConnection" key="connection">
+						<string key="label">numberOfViewLabel</string>
+						<reference key="source" ref="182925985"/>
+						<reference key="destination" ref="693576759"/>
+					</object>
+					<int key="connectionID">103</int>
+				</object>
+				<object class="IBConnectionRecord">
+					<object class="IBCocoaTouchOutletConnection" key="connection">
+						<string key="label">youTubeUserLabel</string>
+						<reference key="source" ref="182925985"/>
+						<reference key="destination" ref="487122063"/>
+					</object>
+					<int key="connectionID">104</int>
 				</object>
 			</array>
 			<object class="IBMutableOrderedSet" key="objectRecords">
@@ -709,6 +742,7 @@
 							<reference ref="272361376"/>
 							<reference ref="487122063"/>
 							<reference ref="820602389"/>
+							<reference ref="693576759"/>
 						</array>
 						<reference key="parent" ref="182925985"/>
 						<string key="objectName">Video Info View</string>
@@ -757,7 +791,7 @@
 						<int key="objectID">77</int>
 						<reference key="object" ref="487122063"/>
 						<reference key="parent" ref="239537915"/>
-						<string key="objectName">Number of views - Label</string>
+						<string key="objectName">You Tube User - Label </string>
 					</object>
 					<object class="IBObjectRecord">
 						<int key="objectID">78</int>
@@ -806,6 +840,12 @@
 						<reference key="parent" ref="76609695"/>
 						<string key="objectName">View - Channel Thumbnail drop shadow</string>
 					</object>
+					<object class="IBObjectRecord">
+						<int key="objectID">102</int>
+						<reference key="object" ref="693576759"/>
+						<reference key="parent" ref="239537915"/>
+						<string key="objectName">Number of views - Label</string>
+					</object>
 				</array>
 			</object>
 			<dictionary class="NSMutableDictionary" key="flattenedProperties">
@@ -813,6 +853,7 @@
 				<string key="-2.CustomClassName">UIResponder</string>
 				<string key="-2.IBPluginDependency">com.apple.InterfaceBuilder.IBCocoaTouchPlugin</string>
 				<string key="100.IBPluginDependency">com.apple.InterfaceBuilder.IBCocoaTouchPlugin</string>
+				<string key="102.IBPluginDependency">com.apple.InterfaceBuilder.IBCocoaTouchPlugin</string>
 				<string key="17.IBPluginDependency">com.apple.InterfaceBuilder.IBCocoaTouchPlugin</string>
 				<string key="28.IBPluginDependency">com.apple.InterfaceBuilder.IBCocoaTouchPlugin</string>
 				<string key="3.CustomClassName">SYNVideoThumbnailWideCell</string>
@@ -839,7 +880,7 @@
 			<nil key="activeLocalization"/>
 			<dictionary class="NSMutableDictionary" key="localizations"/>
 			<nil key="sourceID"/>
-			<int key="maxID">101</int>
+			<int key="maxID">104</int>
 		</object>
 		<object class="IBClassDescriber" key="IBDocument.Classes">
 			<array class="NSMutableArray" key="referencedPartialClassDescriptions">
