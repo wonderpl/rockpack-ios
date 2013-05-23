@@ -356,8 +356,7 @@
 {
     [super viewWillAppear: animated];
     
-    // Google analytics support
-    [GAI.sharedInstance.defaultTracker sendView: @"You - Root"];
+//    [self updateAnalytics];
     
     self.deletionModeActive = NO;
     
@@ -380,6 +379,21 @@
 }
 
 
+- (void) viewDidScrollToFront
+{
+    [self updateAnalytics];
+    
+    [self reloadCollectionViews];
+}
+
+
+- (void) updateAnalytics
+{
+    // Google analytics support
+    [GAI.sharedInstance.defaultTracker sendView: @"You - Root"];
+}
+
+
 - (void) handleDataModelChange: (NSNotification*) notification
 {
     NSArray* updatedObjects = [[notification userInfo] objectForKey: NSUpdatedObjectsKey];
@@ -392,10 +406,6 @@
     }];
 }
 
--(void)viewDidScrollToFront
-{
-    [self reloadCollectionViews];
-}
 
 #pragma mark - gesture-recognition action methods
 

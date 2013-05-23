@@ -32,9 +32,6 @@
 #define STANDARD_REQUEST_LENGTH 48
 #define kChannelsCache @"ChannelsCache"
 
-#define kEmptyGenreMessage @"NO CHANNELS FOUND"
-#define kLoadingGenreMessage @"LOADING CHANNELS"
-
 @interface SYNChannelsRootViewController () <UIScrollViewDelegate, SYNChannelCategoryTableViewDelegate>
 
 #ifdef ALLOWS_PINCH_GESTURES
@@ -52,7 +49,7 @@
 @property (nonatomic, strong) Genre* currentGenre;
 @property (nonatomic, weak) SYNMainRegistry* mainRegistry;
 
-@property (nonatomic, strong) UIView* updateMessageView;
+@property (nonatomic, strong) UIView* emptyGenreMessageView;
 
 @property (nonatomic, strong) SYNChannelCategoryTableViewController* categoryTableViewController;
 @property (nonatomic, strong) UIButton* categorySelectButton;
@@ -200,9 +197,7 @@
     [self.view addGestureRecognizer: pinchOnChannelView];
 #endif
     
-    currentGenre = nil;
-    
-    
+    currentGenre = nil; 
 }
 
 
@@ -210,10 +205,28 @@
 {
     [super viewWillAppear: animated];
     
-    // Google analytics support
-    [GAI.sharedInstance.defaultTracker sendView: @"Channels - Root"];
+//    [self updateAnalytics];
     
     self.touchedChannelButton = NO;
+}
+
+
+- (void) viewDidScrollToFront
+{
+    [self updateAnalytics];
+    
+    // no NSRangeZero existst so we must zero it explicitely
+    
+    dataRequestRange = NSMakeRange(1, STANDARD_REQUEST_LENGTH);
+    
+    [self loadChannelsForGenre:currentGenre];
+}
+
+
+- (void) updateAnalytics
+{
+    // Google analytics support
+    [GAI.sharedInstance.defaultTracker sendView: @"Channels - Root"];
 }
 
 
@@ -266,16 +279,8 @@
                                                           DebugLog(@"Registration of Channel Failed for: %@", currentCategoryId);
                                                           return;
                                                       }
-                                                      if(dataItemsAvailable == 0)
-                                                      {
-                                                          [self displayUpdateWithMessage:kEmptyGenreMessage];
-                                                      }
-                                                      else
-                                                      {
-                                                          [self displayChannelsForGenre:genre];
-                                                      }
                                                       
-                                                      
+                                                      [self displayChannelsForGenre:genre];
                                                       
                                                       
                                                       
@@ -350,80 +355,55 @@
     
     self.channels = [NSMutableArray arrayWithArray:resultsArray];
     
-    if(self.channels.count > 0)
+    if (self.channels.count > 0)
     {
-        if(self.updateMessageView)
+        if (self.emptyGenreMessageView)
         {
-            [self.updateMessageView removeFromSuperview];
-            self.updateMessageView = nil;
+            [self.emptyGenreMessageView removeFromSuperview];
+            self.emptyGenreMessageView = nil;
         }
     }
     else
     {
-        [self displayUpdateWithMessage:kLoadingGenreMessage];
+        [self displayEmptyGenreMessage];
     }
 
-
-    if(!isAnimating)
+    if (!isAnimating)
     {
         [self.channelThumbnailCollectionView reloadData];
     }
-
-
-
-
 }
 
 
--(void)displayUpdateWithMessage:(NSString*)message
+- (void) displayEmptyGenreMessage
 {
-   
     
-    if(self.updateMessageView)
-    {
-        [self.updateMessageView removeFromSuperview];
-        self.updateMessageView = nil;
+    if(self.emptyGenreMessageView) // add no more than one
+        return;
     
-    }
-        
-    
-    UIFont* fontToUse = [UIFont rockpackFontOfSize:20.0];
-    CGSize size = [message sizeWithFont:fontToUse];
-    
-    CGRect mainFrame = CGRectMake(0.0, 0.0, size.width + 40.0, size.height + 40.0);
-
-    
-    self.updateMessageView = [[UIView alloc] initWithFrame:mainFrame];
-    self.updateMessageView.center = CGPointMake(self.view.center.x, 280.0);
-    self.updateMessageView.frame = CGRectIntegral(self.updateMessageView.frame);
+    CGRect mainFrame = CGRectMake(0.0, 0.0, 280.0, 60.0);
+    self.emptyGenreMessageView = [[UIView alloc] initWithFrame:mainFrame];
+    self.emptyGenreMessageView.center = CGPointMake(self.view.center.x, 280.0);
+    self.emptyGenreMessageView.frame = CGRectIntegral(self.emptyGenreMessageView.frame);
     
     UIView* emptyGenreBG = [[UIView alloc] initWithFrame:mainFrame];
     emptyGenreBG.backgroundColor = [UIColor darkGrayColor];
     emptyGenreBG.alpha = 0.4;
-    [self.updateMessageView addSubview:emptyGenreBG];
+    [self.emptyGenreMessageView addSubview:emptyGenreBG];
     
-    UILabel* emptyGenreLabel = [[UILabel alloc] initWithFrame:CGRectMake(0.0, 0.0, size.width, size.height)];
-    emptyGenreLabel.font = fontToUse;
+    UILabel* emptyGenreLabel = [[UILabel alloc] initWithFrame:CGRectZero];
+    emptyGenreLabel.font = [UIFont rockpackFontOfSize:20.0];
     emptyGenreLabel.backgroundColor = [UIColor clearColor];
     emptyGenreLabel.textColor = [UIColor whiteColor];
-    emptyGenreLabel.text = message;
+    emptyGenreLabel.text = @"NO CHANNELS FOUND";
     emptyGenreLabel.textAlignment = NSTextAlignmentCenter;
-    emptyGenreLabel.center = CGPointMake(self.updateMessageView.frame.size.width * 0.5, self.updateMessageView.frame.size.height * 0.5 + 4.0);
+    [emptyGenreLabel sizeToFit];
+    emptyGenreLabel.center = CGPointMake(self.emptyGenreMessageView.frame.size.width * 0.5, self.emptyGenreMessageView.frame.size.height * 0.5 + 4.0);
     emptyGenreLabel.frame = CGRectIntegral(emptyGenreLabel.frame);
     
-    [self.updateMessageView addSubview:emptyGenreLabel];
+    [self.emptyGenreMessageView addSubview:emptyGenreLabel];
     
-    [self.view addSubview:self.updateMessageView];
-}
-
-
-- (void) viewDidScrollToFront
-{
-    // no NSRangeZero existst so we must zero it explicitely
-    
-    dataRequestRange = NSMakeRange(1, STANDARD_REQUEST_LENGTH);
-    
-    [self loadChannelsForGenre:currentGenre];
+    [self.view addSubview:self.emptyGenreMessageView];
 }
 
 

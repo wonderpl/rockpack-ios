@@ -172,26 +172,37 @@
     [self.view addSubview: self.refreshButton];
 }
 
-- (void) refreshButtonPressed
-{
-    [self.refreshButton startRefreshCycle];
-    [self refreshVideoThumbnails];
-}
-
-
-- (void) viewDidScrollToFront
-{
-    [self refreshButtonPressed];
-}
 
 - (void) viewWillAppear: (BOOL) animated
 {
     [super viewWillAppear:animated];
     
     // Google analytics support
-    [GAI.sharedInstance.defaultTracker sendView: @"Feed"];
+    [self updateAnalytics];
     
     [self.videoThumbnailCollectionView reloadData];
+}
+
+
+- (void) viewDidScrollToFront
+{
+    [self updateAnalytics];
+    
+    [self refreshButtonPressed];
+}
+
+
+- (void) updateAnalytics
+{
+    // Google analytics support
+    [GAI.sharedInstance.defaultTracker sendView: @"Feed"];
+}
+
+
+- (void) refreshButtonPressed
+{
+    [self.refreshButton startRefreshCycle];
+    [self refreshVideoThumbnails];
 }
 
 
