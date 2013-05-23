@@ -376,8 +376,6 @@ typedef void(^AnimationCompletionBlock)(BOOL finished);
     Channel* channel = (Channel*)[[notification userInfo] objectForKey:kChannel];
     if(!channel)
         return;
-    
-    
 
     //Upload the data
     [appDelegate.oAuthNetworkEngine updateVideosForChannelForUserId:appDelegate.currentUser.uniqueId channelId:channel.uniqueId videoInstanceSet:channel.videoInstancesSet completionHandler:^(NSDictionary* result) {
@@ -730,7 +728,7 @@ typedef void(^AnimationCompletionBlock)(BOOL finished);
         self.pageTitleLabel.hidden = NO;
         self.dotsView.hidden = NO;
         self.movableButtonsContainer.hidden = NO;
-        self.containerViewController.scrollView .scrollEnabled = YES;
+        //self.containerViewController.scrollView.scrollEnabled = YES;
     }
     else
     {
@@ -740,7 +738,7 @@ typedef void(^AnimationCompletionBlock)(BOOL finished);
         self.pageTitleLabel.hidden = YES;
         self.dotsView.hidden = YES;
         self.movableButtonsContainer.hidden = YES;
-        self.containerViewController.scrollView .scrollEnabled = NO;
+        //self.containerViewController.scrollView .scrollEnabled = NO;
         self.sideNavigationViewController.state = SideNavigationStateHidden;
     }
 }
