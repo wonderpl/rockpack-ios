@@ -1006,6 +1006,7 @@
                                         forState: UIControlStateNormal];
             }
         }
+        self.selectedCategoryId = self.channel.categoryId;
     }
     
 }
@@ -1019,6 +1020,7 @@
     
     [self setEditControlsVisibility: NO];
     [self displayChannelDetails];
+    self.categoryTableViewController = nil;
     self.saveChannelButton.hidden = YES;
     self.cancelEditButton.hidden = YES;
     self.addButton.hidden = NO;
@@ -1240,6 +1242,25 @@
             self.categoryTableViewController = [[SYNChannelCategoryTableViewController alloc] initWithNibName:@"SYNChannelCategoryTableViewControllerFullscreen~iphone" bundle: [NSBundle mainBundle]];
             self.categoryTableViewController.categoryTableControllerDelegate = self;
             self.categoryTableViewController.showAllCategoriesHeader = NO;
+            
+            [self.view addSubview:self.categoryTableViewController.view];
+            
+            BOOL hasACategory = [self.selectedCategoryId length]>0;
+            [self.categoryTableViewController setSelectedCategoryForId:hasACategory?self.selectedCategoryId:nil];
+            if(!hasACategory)
+            {
+                // Set the default other/other subgenre
+                NSArray* filteredSubcategories = [[self.categoryTableViewController.otherGenre.subgenres array] filteredArrayUsingPredicate:[NSPredicate predicateWithFormat:@"priority = -1"]];
+                 if([filteredSubcategories count] == 1)
+                 {
+                     SubGenre* otherSubGenre = [filteredSubcategories objectAtIndex:0];
+                     
+                     self.selectedCategoryId = otherSubGenre.uniqueId;
+                     
+                     [self.selectCategoryButton setTitle: [NSString stringWithFormat:@"%@/\n%@", otherSubGenre.genre.name, otherSubGenre.name]
+                                                forState: UIControlStateNormal];
+                 }
+            }
         }
         else
         {
@@ -1253,6 +1274,7 @@
         CGRect startFrame = self.categoryTableViewController.view.frame;
         startFrame.origin.y = self.view.frame.size.height;
         self.categoryTableViewController.view.frame = startFrame;
+
         [self.view addSubview:self.categoryTableViewController.view];
         
         [UIView animateWithDuration: 0.3f
@@ -1946,7 +1968,8 @@
             self.selectedCategoryId = otherSubGenre.uniqueId;
             
             [self.selectCategoryButton setTitle: [NSString stringWithFormat:@"%@/\n%@", otherSubGenre.genre.name, otherSubGenre.name]
-                                       forState: UIControlStateNormal];    }
+                                       forState: UIControlStateNormal];
+        }
         else
         {
             self.selectedCategoryId = category.uniqueId;
