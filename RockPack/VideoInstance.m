@@ -16,6 +16,8 @@ static NSEntityDescription *videoInstanceEntity = nil;
 
 @implementation VideoInstance
 
+@synthesize selectedForVideoQueue;
+
 +(VideoInstance*) instanceFromVideoInstance:(VideoInstance*)existingInstance
                   usingManagedObjectContext: (NSManagedObjectContext *) managedObjectContext {
     

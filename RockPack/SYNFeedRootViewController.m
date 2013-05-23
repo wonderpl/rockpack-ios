@@ -348,10 +348,11 @@
     videoThumbnailCell.channelNameText = videoInstance.channel.title;
     videoThumbnailCell.usernameText = [NSString stringWithFormat: @"%@", videoInstance.channel.channelOwner.displayName];
     videoThumbnailCell.addItButton.highlighted = NO;
-    videoThumbnailCell.addItButton.selected = [appDelegate.videoQueue videoInstanceIsAddedToChannel:videoInstance];
+    videoThumbnailCell.addItButton.selected = videoInstance.selectedForVideoQueue;
     
     
     videoThumbnailCell.viewControllerDelegate = self;
+    
     
     cell = videoThumbnailCell;
     

@@ -11,6 +11,8 @@
 +(VideoInstance*) instanceFromVideoInstance:(VideoInstance*)existingInstance
                   usingManagedObjectContext: (NSManagedObjectContext *) managedObjectContext;
 
+@property (nonatomic) BOOL selectedForVideoQueue;
+
 - (NSNumber *) daysAgo;
 - (NSDate *) dateAddedIgnoringTime;
 

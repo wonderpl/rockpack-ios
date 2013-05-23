@@ -91,6 +91,7 @@
     
     VideoInstance* videoInstanceToAdd = (VideoInstance*) notification.userInfo[kVideoInstance];
     [self addVideoToQueue: videoInstanceToAdd];
+    videoInstanceToAdd.selectedForVideoQueue = YES;
 }
 
 
@@ -99,6 +100,7 @@
     
     VideoInstance* videoInstanceToAdd = (VideoInstance*) notification.userInfo[kVideoInstance];
     [self removeFromVideoQueue: videoInstanceToAdd];
+    videoInstanceToAdd.selectedForVideoQueue = NO;
 }
 
 -(void)handleVideoQueueClearRequest:(NSNotification*)notification
