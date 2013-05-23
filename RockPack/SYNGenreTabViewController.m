@@ -282,7 +282,15 @@
 
 -(NSIndexPath*)findIndexPathForGenreId:(NSString*)genreId
 {
-    
+    if (self.otherGenre)
+    {
+        NSArray* otherSubCategory = [[self.otherGenre.subgenres array] filteredArrayUsingPredicate:[NSPredicate predicateWithFormat:@"uniqueId = %@",genreId]];
+        if([otherSubCategory count])
+        {
+            //The Other/other category is selected by default. return nothing;
+            return nil;
+        }
+    }
     NSInteger section = -1;
     NSInteger item = -1;
     
