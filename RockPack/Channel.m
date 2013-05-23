@@ -111,6 +111,9 @@ static NSEntityDescription *channelEntity = nil;
     if (!(ignoringObjects & kIgnoreVideoInstanceObjects) && hasVideoInstances)
     {
         
+    
+        
+        NSOrderedSet* copyOfVideoInstance = [NSOrderedSet orderedSetWithOrderedSet:self.videoInstances];
         
         [self.videoInstancesSet removeAllObjects];
         
@@ -118,9 +121,14 @@ static NSEntityDescription *channelEntity = nil;
         {
             // viewId is @"ChannelDetails" not kFeedViewId
             
-            VideoInstance* videoInstance = [VideoInstance instanceFromDictionary: channelDictionary
-                                                       usingManagedObjectContext: self.managedObjectContext
-                                                             ignoringObjectTypes: kIgnoreChannelObjects];
+            
+            VideoInstance* videoInstance;
+            
+            videoInstance = [VideoInstance instanceFromDictionary: channelDictionary
+                                        usingManagedObjectContext: self.managedObjectContext
+                                              ignoringObjectTypes: kIgnoreChannelObjects];
+            
+            
             
             if(!videoInstance)
                 continue;
@@ -128,6 +136,15 @@ static NSEntityDescription *channelEntity = nil;
             [self addVideoInstancesObject:videoInstance];
             
         }
+        
+        
+        for (VideoInstance* oldVideoInstance in copyOfVideoInstance)
+        {
+            oldVideoInstance.channel = self;
+            
+        }
+        
+        
     
     }
     

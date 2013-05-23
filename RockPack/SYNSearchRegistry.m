@@ -88,11 +88,10 @@
         if (![itemDictionary isKindOfClass: [NSDictionary class]])
             continue;
         
-        Channel* c = [Channel instanceFromDictionary:itemDictionary
+        Channel* channel = [Channel instanceFromDictionary:itemDictionary
                            usingManagedObjectContext:importManagedObjectContext
                                  ignoringObjectTypes:kIgnoreNothing];
-        if(!c)
-            NSLog(@"Could not inset channel");
+        
     }
     
             
