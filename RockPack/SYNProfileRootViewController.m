@@ -356,7 +356,7 @@
 {
     [super viewWillAppear: animated];
     
-    [self updateAnalytics];
+//    [self updateAnalytics];
     
     self.deletionModeActive = NO;
     

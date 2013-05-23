@@ -197,9 +197,7 @@
     [self.view addGestureRecognizer: pinchOnChannelView];
 #endif
     
-    currentGenre = nil;
-    
-    
+    currentGenre = nil; 
 }
 
 
@@ -207,7 +205,7 @@
 {
     [super viewWillAppear: animated];
     
-    [self updateAnalytics];
+//    [self updateAnalytics];
     
     self.touchedChannelButton = NO;
 }
