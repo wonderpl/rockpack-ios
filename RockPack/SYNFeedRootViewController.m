@@ -10,6 +10,7 @@
 #import "Channel.h"
 #import "ChannelOwner.h"
 #import "ChannelCover.h"
+#import "GAI.h"
 #import "NSDate-Utilities.h"
 #import "SYNAppDelegate.h"
 #import "SYNFeedRootViewController.h"
@@ -131,9 +132,6 @@
 {
     [super viewDidLoad];
     
-    // Google Analytics support
-    self.trackedViewName = @"Feed";
-    
     self.refreshControl = [[UIRefreshControl alloc] initWithFrame: CGRectMake(0, -44, 320, 44)];
     
     [self.refreshControl addTarget: self
@@ -190,6 +188,8 @@
 {
     [super viewWillAppear:animated];
     
+    // Google analytics support
+    [GAI.sharedInstance.defaultTracker sendView: @"Feed"];
     
     [self.videoThumbnailCollectionView reloadData];
 }

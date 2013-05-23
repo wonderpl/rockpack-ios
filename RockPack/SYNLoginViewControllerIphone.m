@@ -6,14 +6,15 @@
 //  Copyright (c) 2013 Nick Banks. All rights reserved.
 //
 
-#import "SYNLoginViewControllerIphone.h"
-#import "SYNLoginViewController.h"
-#import "SYNDeviceManager.h"
-#import "UIFont+SYNFont.h"
-#import "SYNOAuthNetworkEngine.h"
+#import "GAI.h"
 #import "RegexKitLite.h"
-#import <FacebookSDK/FacebookSDK.h>
+#import "SYNDeviceManager.h"
 #import "SYNFacebookManager.h"
+#import "SYNLoginViewController.h"
+#import "SYNLoginViewControllerIphone.h"
+#import "SYNOAuthNetworkEngine.h"
+#import "UIFont+SYNFont.h"
+#import <FacebookSDK/FacebookSDK.h>
 
 #define kLoginAnimationTransitionDuration 0.3f
 
@@ -64,21 +65,10 @@
 
 @implementation SYNLoginViewControllerIphone 
 
-- (id)initWithNibName:(NSString *)nibNameOrNil bundle:(NSBundle *)nibBundleOrNil
-{
-    self = [super initWithNibName:nibNameOrNil bundle:nibBundleOrNil];
-    if (self) {
-        // Custom initialization
-    }
-    return self;
-}
 
-- (void)viewDidLoad
+- (void) viewDidLoad
 {
     [super viewDidLoad];
-    
-    // Google Analytics support
-    self.trackedViewName = @"Login";
     
     BOOL isPreIPhone5 = [[SYNDeviceManager sharedInstance] currentScreenHeight] < 500;
     
@@ -165,20 +155,22 @@
     self.emailInputField.returnKeyType = UIReturnKeySend;
     
     self.state = kLoginScreenStateInitial;
-    
-    
 }
 
-- (void)didReceiveMemoryWarning
+
+- (void) viewWillAppear:(BOOL)animated
 {
-    [super didReceiveMemoryWarning];
-    // Dispose of any resources that can be recreated.
+    [super viewWillAppear: animated];
+    
+    // Google analytics support
+    [GAI.sharedInstance.defaultTracker sendView: @"Login - iPhone"];
 }
+
 
 #pragma mark - button IBActions
 
-- (IBAction)facebookTapped:(id)sender {
-    
+- (IBAction) facebookTapped: (id) sender
+{
     if(![self isNetworkAccessibleOtherwiseShowErrorAlert])
     {
         return;
@@ -192,9 +184,6 @@
         [self doFacebookFailedAnimation];
         if([error isKindOfClass:[NSDictionary class]])
         {
-
-            
-            
             NSDictionary* formErrors = error[@"form_errors"];
 
             
@@ -227,8 +216,9 @@
     }];
 }
 
-- (IBAction)signupTapped:(id)sender {
-    
+
+- (IBAction) signupTapped: (id) sender
+{
     self.state = kLoginScreenStateRegister;
     
     [self turnOnButton:self.cancelButton];
@@ -251,8 +241,10 @@
     } completion:nil];
     
 }
-- (IBAction)loginTapped:(id)sender {
-    
+
+
+- (IBAction) loginTapped: (id) sender
+{
     self.state = kLoginScreenStateLogin;
     
     [self turnOnButton:self.backButton];
@@ -273,8 +265,9 @@
     }];
 }
 
-- (IBAction)forgotPasswordTapped:(id)sender {
-    
+
+- (IBAction) forgotPasswordTapped: (id) sender
+{
     self.state = kLoginScreenStatePasswordRetrieve;
     self.confirmButton.enabled = YES;
     [UIView animateWithDuration:kLoginAnimationTransitionDuration delay:0.0f options:UIViewAnimationOptionCurveEaseInOut animations:^{
@@ -291,17 +284,20 @@
     }];
 
 }
-- (IBAction)photoButtonTapped:(id)sender
+
+
+- (IBAction) photoButtonTapped: (id) sender
 {
             self.imagePicker = [[SYNImagePickerController alloc] initWithHostViewController:self];
             self.imagePicker.delegate = self;
             [self.imagePicker presentImagePickerAsPopupFromView:nil arrowDirection:UIPopoverArrowDirectionLeft];
 }
 
-- (IBAction)backbuttonTapped:(id)sender
+
+- (IBAction) backbuttonTapped: (id) sender
 {
-    
-    switch (self.state) {
+    switch (self.state)
+    {
         case kLoginScreenStateRegisterStepTwo:
         {
             [self turnOnButton:self.backButton];
@@ -366,8 +362,12 @@
         }
     }
 }
-- (IBAction)cancelTapped:(id)sender {
-    switch (self.state) {
+
+
+- (IBAction) cancelTapped: (id) sender
+{
+    switch (self.state)
+    {
         case kLoginScreenStateRegister:
         {
             self.state = kLoginScreenStateInitial;
@@ -394,8 +394,10 @@
     }
 
 }
-- (IBAction)confirmTapped:(id)sender {
-    
+
+
+- (IBAction) confirmTapped: (id) sender
+{
     [self.registeringUserEmailInputField resignFirstResponder];
     [self.registeringUserPasswordInputField resignFirstResponder];
     [self.ddInputField resignFirstResponder];
@@ -409,7 +411,6 @@
     {
         return;
     }
-    
     
     switch (self.state) {
         case kLoginScreenStateLogin:
@@ -544,12 +545,12 @@
         }
         default:
             break;
-    }
-    
-    
+    } 
 }
 
-- (IBAction)nextTapped:(id)sender {
+
+- (IBAction) nextTapped: (id) sender
+{
     self.state = kLoginScreenStateRegisterStepTwo;
     [self turnOnButton:self.backButton];
     [self turnOnButton:self.confirmButton];
@@ -572,14 +573,20 @@
     
 }
 
-- (IBAction)termsTapped:(id)sender {
+
+- (IBAction) termsTapped: (id) sender
+{
 }
 
-- (IBAction)privacyPolicyTapped:(id)sender {
+
+- (IBAction) privacyPolicyTapped: (id) sender
+{
 }
+
 
 #pragma mark - facebook UI animation
--(void)doFacebookLoginAnimation
+
+- (void) doFacebookLoginAnimation
 {
     self.activityIndicator.center = self.initialView.center;
     self.activityIndicator.hidden = NO;
@@ -598,7 +605,8 @@
     }];
 }
 
--(void)doFacebookFailedAnimation
+
+- (void) doFacebookFailedAnimation
 {
     [self.activityIndicator stopAnimating];
     [UIView animateWithDuration:kLoginAnimationTransitionDuration delay:0.0f options:UIViewAnimationCurveEaseInOut animations:^{
@@ -615,8 +623,10 @@
     }];
 }
 
+
 #pragma mark - login completion
--(void) completeLoginProcess
+
+- (void) completeLoginProcess
 {
 
     [self.activityIndicator stopAnimating];
@@ -647,17 +657,20 @@
      }];
 }
 
+
 #pragma mark - validation methods
 
--(BOOL)validateLogin
+- (BOOL) validateLogin
 {
     return self.userNameInputField.text.length > 0 && self.passwordInputField.text.length > 0 ;
 }
 
--(BOOL)validateRegistrationFirstScreen
+
+- (BOOL) validateRegistrationFirstScreen
 {
     return [self.registeringUserNameInputField.text isMatchedByRegex:@"^[a-zA-Z0-9\\._]+$"];
 }
+
 
 -(BOOL)validateRegistrationSecondScreen
 {
@@ -665,9 +678,10 @@
     self.ddInputField.text.length == 2 && self.mmInputField.text.length == 2 && self.yyyyInputField.text.length == 4;
 }
 
+
 #pragma mark - UITextField delegate
 
--(IBAction)textfieldDidChange:(id)sender
+- (IBAction) textfieldDidChange: (id) sender
 {
     self.signupErrorLabel.text = @"";
     self.loginErrorLabel.text = @"";
@@ -686,6 +700,7 @@
             break;
     }
 }
+
 
 - (BOOL) textFieldShouldReturn: (UITextField *) textField
 {
@@ -723,7 +738,7 @@
 
 #pragma mark - button enabling convenience methods
 
--(void)turnOnButton:(UIButton*)button
+- (void) turnOnButton: (UIButton*) button
 {
     button.hidden = NO;
     button.alpha = 0.0f;
@@ -732,7 +747,8 @@
     } completion:nil];
 }
 
--(void)turnOffButton:(UIButton*)button
+
+- (void) turnOffButton: (UIButton*) button
 {
     [UIView animateWithDuration:kLoginAnimationTransitionDuration delay:0.0f options:UIViewAnimationOptionCurveEaseInOut animations:^{
         button.alpha = 0.0f;
@@ -744,7 +760,9 @@
     }];
 }
 
--(void)picker:(SYNImagePickerController *)picker finishedWithImage:(UIImage *)image
+
+- (void) picker: (SYNImagePickerController *) picker
+         finishedWithImage: (UIImage *) image
 {
     self.imagePicker = nil;
     // Save our avatar
