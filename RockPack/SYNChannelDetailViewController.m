@@ -42,7 +42,6 @@
                                               SYNChannelCategoryTableViewDelegate,
                                               SYNChannelCoverImageSelectorDelegate>
 
-
 @property (nonatomic, assign)  CGPoint originalContentOffset;
 @property (nonatomic, assign, getter = isImageSelectorOpen) BOOL imageSelectorOpen;
 @property (nonatomic, strong) GKImagePicker *imagePicker;
@@ -50,7 +49,7 @@
 @property (nonatomic, strong) IBOutlet UIButton *buyButton;
 @property (nonatomic, strong) IBOutlet UIButton *cameraButton;
 @property (nonatomic, strong) IBOutlet UIButton *createChannelButton;
-@property (strong, nonatomic) IBOutlet UIButton *saveChannelButton;
+@property (nonatomic, strong) IBOutlet UIButton *saveChannelButton;
 @property (nonatomic, strong) IBOutlet UIButton *shareButton;
 @property (nonatomic, strong) IBOutlet UIButton* addCoverButton;
 @property (nonatomic, strong) IBOutlet UIButton* profileImageButton;
@@ -71,21 +70,21 @@
 @property (nonatomic, strong) IBOutlet UIView *masterControlsView;
 @property (nonatomic, strong) NSFetchedResultsController *channelCoverFetchedResultsController;
 @property (nonatomic, strong) NSFetchedResultsController *userChannelCoverFetchedResultsController;
-@property (nonatomic, strong) SYNGenreTabViewController *categoriesTabViewController;
+@property (nonatomic, strong) NSString* selectedCategoryId;
+@property (nonatomic, strong) NSString* selectedCoverId;
 @property (nonatomic, strong) SYNCoverChooserController* coverChooserController;
+@property (nonatomic, strong) SYNGenreTabViewController *categoriesTabViewController;
 @property (nonatomic, strong) SYNReportConcernTableViewController *reportConcernTableViewController;
 @property (nonatomic, strong) UIActivityIndicatorView* subscribingIndicator;
 @property (nonatomic, strong) UIImage* originalBackgroundImage;
 @property (nonatomic, strong) UIView *coverChooserMasterView;
 @property (nonatomic, strong) UIView* noVideosMessageView;
+@property (nonatomic, strong) VideoInstance* instanceToDelete;
 @property (nonatomic, strong) id<SDWebImageOperation> currentWebImageOperation;
 @property (nonatomic, weak) Channel *channel;
-@property (nonatomic,strong) NSString* selectedCategoryId;
-@property (nonatomic,strong) NSString* selectedCoverId;
-@property (nonatomic,strong) VideoInstance* instanceToDelete;
-@property (weak, nonatomic) IBOutlet UIButton *cancelEditButton;
-@property (weak, nonatomic) IBOutlet UIButton *editButton;
-@property (weak, nonatomic) IBOutlet UILabel *byLabel;
+@property (nonatomic, weak) IBOutlet UIButton *cancelEditButton;
+@property (nonatomic, weak) IBOutlet UIButton *editButton;
+@property (nonatomic, weak) IBOutlet UILabel *byLabel;
 
 //iPhone specific
 @property (nonatomic,strong) SYNChannelCoverImageSelectorViewController* coverImageSelector;
@@ -670,6 +669,8 @@
     self.subscribeButton.hidden = (visible && [self.channel.channelOwner.uniqueId isEqualToString: appDelegate.currentUser.uniqueId]);
     self.editButton.hidden = (visible && ! [self.channel.channelOwner.uniqueId isEqualToString: appDelegate.currentUser.uniqueId]);
     [(LXReorderableCollectionViewFlowLayout *)self.videoThumbnailCollectionView.collectionViewLayout longPressGestureRecognizer].enabled = (visible) ? FALSE : TRUE;
+    
+//    self.channel.favouritesValue
     
     if (visible == NO)
     {
