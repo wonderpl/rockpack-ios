@@ -265,9 +265,10 @@
 - (void) navigateToPageByName: (NSString*) pageName
 {
     int page = 0;
+    
     for (UINavigationController* nvc in self.childViewControllers)
     {
-        if ([pageName isEqualToString:nvc.title])
+        if ([pageName isEqualToString: nvc.title])
         {
             [self.scrollView setPage: page
                             animated: YES];
@@ -296,7 +297,7 @@
 - (void) scrollViewDidEndScrollingAnimation: (UIScrollView *) scrollView
 {
     // catch programmatic animations
-    [self scrollViewDidEndDecelerating:scrollView];
+    [self scrollViewDidEndDecelerating: scrollView];
 }
 
 

@@ -207,10 +207,28 @@
 {
     [super viewWillAppear: animated];
     
-    // Google analytics support
-    [GAI.sharedInstance.defaultTracker sendView: @"Channels - Root"];
+    [self updateAnalytics];
     
     self.touchedChannelButton = NO;
+}
+
+
+- (void) viewDidScrollToFront
+{
+    [self updateAnalytics];
+    
+    // no NSRangeZero existst so we must zero it explicitely
+    
+    dataRequestRange = NSMakeRange(1, STANDARD_REQUEST_LENGTH);
+    
+    [self loadChannelsForGenre:currentGenre];
+}
+
+
+- (void) updateAnalytics
+{
+    // Google analytics support
+    [GAI.sharedInstance.defaultTracker sendView: @"Channels - Root"];
 }
 
 
@@ -339,9 +357,9 @@
     
     self.channels = [NSMutableArray arrayWithArray:resultsArray];
     
-    if(self.channels.count > 0)
+    if (self.channels.count > 0)
     {
-        if(self.emptyGenreMessageView)
+        if (self.emptyGenreMessageView)
         {
             [self.emptyGenreMessageView removeFromSuperview];
             self.emptyGenreMessageView = nil;
@@ -352,19 +370,14 @@
         [self displayEmptyGenreMessage];
     }
 
-
-    if(!isAnimating)
+    if (!isAnimating)
     {
         [self.channelThumbnailCollectionView reloadData];
     }
-
-
-
-
 }
 
 
--(void)displayEmptyGenreMessage
+- (void) displayEmptyGenreMessage
 {
     
     if(self.emptyGenreMessageView) // add no more than one
@@ -393,16 +406,6 @@
     [self.emptyGenreMessageView addSubview:emptyGenreLabel];
     
     [self.view addSubview:self.emptyGenreMessageView];
-}
-
-
-- (void) viewDidScrollToFront
-{
-    // no NSRangeZero existst so we must zero it explicitely
-    
-    dataRequestRange = NSMakeRange(1, STANDARD_REQUEST_LENGTH);
-    
-    [self loadChannelsForGenre:currentGenre];
 }
 
 
