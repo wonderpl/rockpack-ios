@@ -224,9 +224,8 @@
     if (!isIPhone)
     {
         // Create categories tab, but make invisible (alpha = 0) for now
-        self.categoriesTabViewController = [[SYNGenreTabViewController alloc] initWithHomeButton: NSLocalizedString(@"OTHER", nil)];
+        self.categoriesTabViewController = [[SYNGenreTabViewController alloc] initWithHomeButton: @"other"];
         self.categoriesTabViewController.delegate = self;
-        self.categoriesTabViewController.showOtherInSubcategories = YES;
         CGRect tabFrame = self.categoriesTabViewController.view.frame;
         tabFrame.origin.y = kChannelCreationCategoryTabOffsetY;
         tabFrame.size.width = self.view.frame.size.width;
@@ -304,7 +303,7 @@
         
     }
     
-    self.selectedCategoryId = @"";
+    self.selectedCategoryId = self.channel.categoryId;
     self.selectedCoverId = @"";
 
     CGRect correctRect = self.coverChooserMasterView.frame;
@@ -981,10 +980,17 @@
         {
             Genre* genre = [selectedCategoryResult objectAtIndex:0];
             NSString* newTitle = nil;
-            if ([[SYNDeviceManager sharedInstance] isIPhone] && [genre isKindOfClass:[SubGenre class]])
+            if ([genre isKindOfClass:[SubGenre class]])
             {
                 SubGenre* subCategory = (SubGenre*) genre;
-                newTitle =[NSString stringWithFormat:@"%@/\n%@", subCategory.genre.name, subCategory.name];
+                if([[SYNDeviceManager sharedInstance] isIPhone])
+                {
+                    newTitle =[NSString stringWithFormat:@"%@/\n%@", subCategory.genre.name, subCategory.name];
+                }
+                else
+                {
+                    newTitle =[NSString stringWithFormat:@"%@/%@", subCategory.genre.name, subCategory.name];
+                }
             }
             else
             {
@@ -1175,32 +1181,14 @@
                                  
                                  if ([self.selectedCategoryId isEqualToString:@""])
                                  {
-                                     NSIndexPath* firstFirstIndexPath = [NSIndexPath indexPathForItem:0 inSection:0];
-                                     Genre* firstSelection = [self.categoriesTabViewController selectAndReturnGenreForIndexPath:firstFirstIndexPath
-                                                                                                  andSubcategories:YES];
-                                     
-                                     if (firstSelection)
-                                     {
-                                         self.selectedCategoryId = firstSelection.uniqueId;
-                                         if([firstSelection isKindOfClass:[SubGenre class]])
-                                         {
-                                             SubGenre* firstSelectedSubGenre = (SubGenre*)firstSelection;
-                                             [self updateCategoryButtonText: [NSString stringWithFormat:@"%@/%@",
-                                                                          firstSelectedSubGenre.genre.name, firstSelectedSubGenre.name]];
-                                         }
-                                         else
-                                         {
-                                             [self updateCategoryButtonText: firstSelection.name];
-                                         }
-                                     }
-                                     else
-                                     {
-                                         [self.categoriesTabViewController deselectAll];
-                                     }
+                                    if(self.categoriesTabViewController.otherGenre)
+                                    {
+                                        [self handleNewTabSelectionWithGenre:self.categoriesTabViewController.otherGenre];
+                                    }
                                  }
                                  else
                                  {
-                                     NSIndexPath* genreIndexPath = [self.categoriesTabViewController findIndexPathForGenreId:self.channel.categoryId];
+                                     NSIndexPath* genreIndexPath = [self.categoriesTabViewController findIndexPathForGenreId:self.selectedCategoryId];
                                      Genre* genreSelected =
                                      [self.categoriesTabViewController selectAndReturnGenreForIndexPath:genreIndexPath
                                                                                        andSubcategories:YES];
@@ -1328,7 +1316,7 @@
 
 - (void) handleNewTabSelectionWithGenre: (Genre*) genre
 {
-    // in the case of @"OTHER" the actual cid for the backend call is @"all" //
+    // the tab selector should alwaysreturn a genre. If no genre is sent, the "Othre" category is missing and we will have to make do with an empty string.
     if (!genre)
     {
         
@@ -2098,11 +2086,6 @@
 
 #pragma mark - Tab View Methods
 
-- (void) setTabViewController: (SYNTabViewController *) newTabViewController
-{
-    [super setTabViewController:newTabViewController];
-    ((SYNGenreTabViewController*)newTabViewController).showOtherInSubcategories = YES;
-}
 
 - (BOOL) needsAddButton
 {

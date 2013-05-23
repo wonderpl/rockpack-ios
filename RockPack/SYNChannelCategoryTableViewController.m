@@ -106,7 +106,7 @@
             SYNChannelCategoryTableHeader* topHeader = [[SYNChannelCategoryTableHeader alloc] init];
             topHeader.frame = CGRectMake(0.0f, 0.0f, self.tableView.frame.size.width, 45.0f);
             [topHeader layoutSubviews];
-            topHeader.titleLabel.text = NSLocalizedString(@"OTHER",nil);
+            topHeader.titleLabel.text = [self.otherGenre.name uppercaseString];
             topHeader.headerButton.tag = -1;
             topHeader.backgroundImage.image = [UIImage imageNamed:@"CategorySlide"];
             [topHeader.headerButton addTarget:self action:@selector(tappedOtherCategory:) forControlEvents:UIControlEventTouchUpInside];

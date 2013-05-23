@@ -13,7 +13,11 @@
 @class Genre;
 @interface SYNGenreTabViewController : SYNTabViewController 
 
-@property (nonatomic) BOOL showOtherInSubcategories;
+/**
+	The default "OTHER" option for the GenreTabViewController. Set when the view is loaded. nil if "OTHER" is not an option.
+ */
+@property (nonatomic, strong) Genre* otherGenre;
+
 
 - (id) initWithHomeButton: (NSString*) homeButtomString;
 

@@ -900,7 +900,6 @@
     self.subCategoryNameLabel.frame = newFrame;
     
 
-    [self handleNewTabSelectionWithId: subCategory.uniqueId];
     [self handleNewTabSelectionWithGenre: subCategory];
 
     [self toggleChannelsCategoryTable:nil];
@@ -914,7 +913,6 @@
     self.subCategoryNameLabel.hidden = YES;
     self.arrowImage.hidden = YES;
     
-    [self handleNewTabSelectionWithId: @"all"];
     [self handleNewTabSelectionWithGenre: nil];
     
     [self toggleChannelsCategoryTable: nil];
