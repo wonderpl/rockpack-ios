@@ -15,42 +15,45 @@
 
 - (id)initWithFrame:(CGRect)frame
 {
-    self = [super initWithFrame:frame];
-    if (self) {
+    if ((self = [super initWithFrame:frame]))
+    {
         // Initialization code
     }
+    
     return self;
 }
 
+
 #pragma mark - Accessors
 
--(void)setPage:(NSInteger)page animated:(BOOL)animated
+- (void )setPage: (NSInteger) page
+        animated: (BOOL) animated
 {
-    if(!self.scrollEnabled)
+    if (!self.scrollEnabled)
         return;
     
     CGPoint newPoint = CGPointMake(page * [[SYNDeviceManager sharedInstance] currentScreenWidth], 0.0);
-    [self setContentOffset:newPoint animated:YES];
+    
+    [self setContentOffset: newPoint
+                  animated: YES];
     
     // we do not hold the page as an ivar because it is calculated in the getter
 }
 
--(void)setPage:(NSInteger)page
+
+- (void) setPage: (NSInteger) page
 {
-    
-    [self setPage:page animated:NO];
-    
+    [self setPage: page
+         animated: NO];
 }
 
 
-
--(NSInteger)page
+- (NSInteger) page
 {
     CGFloat currentScrollerOffset = self.contentOffset.x;
     int pageWidth = (int)self.contentSize.width / self.subviews.count;
     NSInteger page = roundf((currentScrollerOffset / pageWidth)); // 0 indexed
     return page;
-    
 }
 
 @end

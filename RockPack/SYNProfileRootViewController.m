@@ -7,6 +7,7 @@
 //
 
 #import "Channel.h"
+#import "GAI.h"
 #import "SYNChannelDetailViewController.h"
 #import "SYNChannelMidCell.h"
 #import "ChannelCover.h"
@@ -46,12 +47,12 @@
 @property (nonatomic, strong) SYNDeletionWobbleLayout* channelsPortraitLayout;
 @property (nonatomic, strong) SYNDeletionWobbleLayout* subscriptionsLandscapeLayout;
 @property (nonatomic, strong) SYNDeletionWobbleLayout* subscriptionsPortraitLayout;
-@property (nonatomic, strong) UIView* deletionCancelView;
 @property (nonatomic, strong) SYNSubscriptionsViewController* subscriptionsViewController;
 @property (nonatomic, strong) SYNUserProfileViewController* userProfileController;
 @property (nonatomic, strong) SYNYouHeaderView* headerChannelsView;
 @property (nonatomic, strong) SYNYouHeaderView* headerSubscriptionsView;
 @property (nonatomic, strong) UITapGestureRecognizer* tapGestureRecognizer;
+@property (nonatomic, strong) UIView* deletionCancelView;
 @property (nonatomic, weak) Channel* channelDeleteCandidate;
 @property (nonatomic, weak) SYNChannelMidCell* cellDeleteCandidate;
 @property (nonatomic, weak) UIButton* channelsTabButton;
@@ -312,9 +313,7 @@
 - (void) viewDidLoad
 {
     [super viewDidLoad];
-    
-    self.trackedViewName = @"You - Root";
-    
+
     // Init collection view
     UINib *thumbnailCellNib = [UINib nibWithNibName: @"SYNChannelMidCell"
                                              bundle: nil];
@@ -354,6 +353,9 @@
 - (void) viewWillAppear: (BOOL) animated
 {
     [super viewWillAppear: animated];
+    
+    // Google analytics support
+    [GAI.sharedInstance.defaultTracker sendView: @"You - Root"];
     
     self.deletionModeActive = NO;
     

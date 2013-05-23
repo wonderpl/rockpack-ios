@@ -19,18 +19,15 @@ typedef enum {
 
 @interface SYNContainerViewController : GAITrackedViewController <UIScrollViewDelegate>
 
-
+@property (nonatomic) CGPoint currentPageOffset;
+@property (nonatomic) ScrollingDirection scrollingDirection;
+@property (nonatomic, readonly) NSInteger currentPage;
 @property (nonatomic, readonly) SYNAbstractViewController* showingViewController;
 @property (nonatomic, readonly) SYNContainerScrollView* scrollView;
 
+- (SYNAbstractViewController*) nextShowingViewController;
 
-@property (nonatomic, readonly) NSInteger currentPage;
-
-@property (nonatomic) CGPoint currentPageOffset;
-@property (nonatomic) ScrollingDirection scrollingDirection;
--(SYNAbstractViewController*)nextShowingViewController;
-
--(void) navigateToPageByName:(NSString*)pageName;
+- (void) navigateToPageByName: (NSString*) pageName;
 
 
 

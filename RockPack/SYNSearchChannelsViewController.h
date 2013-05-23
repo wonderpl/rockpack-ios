@@ -17,6 +17,6 @@
 @property (nonatomic, weak) SYNSearchRootViewController* parent;
 @property (nonatomic, weak) SYNSearchTabView* itemToUpdate;
 
--(void)performSearchWithTerm:(NSString*)term;
+- (void) performSearchWithTerm: (NSString*) term;
 
 @end

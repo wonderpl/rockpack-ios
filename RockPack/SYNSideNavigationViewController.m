@@ -8,8 +8,10 @@
 
 #import "AppConstants.h"
 #import "GAI.h"
+#import "SYNAccountSettingsMainTableViewController.h"
 #import "SYNAppDelegate.h"
 #import "SYNDeviceManager.h"
+#import "SYNImagePickerController.h"
 #import "SYNNotificationsViewController.h"
 #import "SYNOAuthNetworkEngine.h"
 #import "SYNRockpackNotification.h"
@@ -17,12 +19,10 @@
 #import "SYNSideNavigationIphoneCell.h"
 #import "SYNSideNavigationViewController.h"
 #import "SYNSoundPlayer.h"
-#import "SYNAccountSettingsMainTableViewController.h"
 #import "UIFont+SYNFont.h"
 #import "UIImageView+ImageProcessing.h"
 #import "UIImageView+WebCache.h"
 #import <QuartzCore/QuartzCore.h>
-#import "SYNImagePickerController.h"
 
 
 #define kSideNavTitle @"kSideNavTitle"
@@ -38,7 +38,6 @@ typedef enum {
 } kSideNavigationType;
 
 @interface SYNSideNavigationViewController ()<UITextFieldDelegate, SYNImagePickerControllerDelegate>
-
 
 @property (nonatomic) NSInteger unreadNotifications;
 @property (nonatomic, strong) IBOutlet UIButton* settingsButton;
@@ -112,15 +111,12 @@ typedef enum {
     NSString * buildTarget = [[NSBundle mainBundle] objectForInfoDictionaryKey: (NSString *)kSYNBundleBuildTarget];
     
     NSString * appBuild;
-    if([buildTarget isEqualToString:@"Develop"])
+    if ([buildTarget isEqualToString:@"Develop"])
         appBuild = [[NSBundle mainBundle] objectForInfoDictionaryKey: (NSString *)kSYNBundleFullVersion];
     else
         appBuild = [[NSBundle mainBundle] objectForInfoDictionaryKey: (NSString *)kCFBundleVersionKey];
     
     self.versionNumberLabel.text = appBuild;
-    
-    // Google Analytics support
-    self.trackedViewName = @"Navigation";
     
     self.userNameLabel.font = [UIFont rockpackFontOfSize: self.userNameLabel.font.pointSize];
     self.nicknameLabel.font = [UIFont rockpackFontOfSize: self.nicknameLabel.font.pointSize];
@@ -209,6 +205,14 @@ typedef enum {
     [self getNotifications];
 }
 
+- (void) viewWillAppear:(BOOL)animated
+{
+    [super viewWillAppear: animated];
+    
+    // Google analytics support
+    [GAI.sharedInstance.defaultTracker sendView: @"Navigation"];
+}
+
 
 
 #pragma mark - Notifications
@@ -255,7 +259,7 @@ typedef enum {
                                                        
                                                        SYNRockpackNotification* notification = [SYNRockpackNotification notificationWithData:itemData];
                                                        
-                                                       if(!notification.read)
+                                                       if (!notification.read)
                                                            self.unreadNotifications++;
                                                        
                                                        [self.notifications addObject:notification];
@@ -340,7 +344,7 @@ typedef enum {
         }
         else
         {
-            if(indexPath.row == kNotificationsRowIndex)
+            if (indexPath.row == kNotificationsRowIndex)
             {
 
                 SYNSideNavigationIphoneCell* iPhoneCell = (SYNSideNavigationIphoneCell*)cell;
@@ -374,7 +378,7 @@ typedef enum {
     
     
     // if we are re-clicking a cell, return without deselecting
-    if(indexPath.row < kNotificationsRowIndex && [indexPath compare: self.currentlySelectedIndexPath] == NSOrderedSame)
+    if (indexPath.row < kNotificationsRowIndex && [indexPath compare: self.currentlySelectedIndexPath] == NSOrderedSame)
     {
         
         return;
@@ -384,7 +388,7 @@ typedef enum {
     UITableViewCell* previousSelectedCell = [self.tableView cellForRowAtIndexPath: self.currentlySelectedIndexPath];
     [previousSelectedCell setSelected: NO];
     
-    if(self.currentlySelectedIndexPath.row > 3)
+    if (self.currentlySelectedIndexPath.row > 3)
     {
         [self.tableView deselectRowAtIndexPath: indexPath
                                       animated: YES];
@@ -404,7 +408,7 @@ typedef enum {
         
         // == NOTIFICATIONS == //
         
-        if(indexPath.row == kNotificationsRowIndex)
+        if (indexPath.row == kNotificationsRowIndex)
         {
             
             ((SYNNotificationsViewController*)self.currentlyLoadedViewController).notifications = self.notifications;
@@ -466,12 +470,12 @@ typedef enum {
 {
     self.keyForSelectedPage = pageName;
     UITableViewCell* cellSelected = (UITableViewCell*)[self.cellByPageName objectForKey: pageName];
-    if(!cellSelected)
+    if (!cellSelected)
         return;
     
     for (UITableViewCell* cell in [self.cellByPageName allValues])
     {
-        if(cellSelected == cell)
+        if (cellSelected == cell)
             [cell setSelected:YES];
         else
             [cell setSelected:NO];
@@ -510,7 +514,7 @@ typedef enum {
     _currentlyLoadedViewController = currentlyLoadedVC;
     
     // Bail out if setting to nil
-    if(!self.currentlyLoadedViewController)
+    if (!self.currentlyLoadedViewController)
         return;
     
     CGSize containerSize = self.containerView.frame.size;
@@ -695,7 +699,7 @@ typedef enum {
                         options: UIViewAnimationOptionCurveEaseInOut | UIViewAnimationOptionBeginFromCurrentState
                      animations: ^{
                          CGRect sideNavigationFrame = self.view.frame;
-                         if([[SYNDeviceManager sharedInstance] isIPad])
+                         if ([[SYNDeviceManager sharedInstance] isIPad])
                          {
                              sideNavigationFrame.origin.x = 1024.0 - 192.0;
                              self.userNameLabel.alpha = 0.0;
@@ -821,7 +825,7 @@ typedef enum {
     [self.appDelegate.oAuthNetworkEngine updateAvatarForUserId: self.appDelegate.currentOAuth2Credentials.userId image:image completionHandler:^(NSDictionary* result) {
         self.profilePictureImageView.image = image;
         NSString* newURL = [result objectForKey:@"Location"];
-        if(newURL)
+        if (newURL)
         {
             self.appDelegate.currentUser.thumbnailURL = newURL;
             [self.appDelegate saveContext:YES];

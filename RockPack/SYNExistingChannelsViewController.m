@@ -7,6 +7,7 @@
 //
 
 #import "AppConstants.h"
+#import "GAI.h"
 #import "SYNChannelCreateNewCell.h"
 #import "SYNChannelDetailViewController.h"
 #import "SYNChannelMidCell.h"
@@ -77,7 +78,10 @@
 
 - (void) viewWillAppear: (BOOL) animated
 {
-    [super viewWillAppear:animated];
+    [super viewWillAppear: animated];
+    
+    // Google analytics support
+    [GAI.sharedInstance.defaultTracker sendView: @"Channels - Create - Select"];
     
     self.closeButton.enabled = YES;
     self.confirmButtom.enabled = YES;

@@ -8,7 +8,6 @@
 //  Abstract view controller to provide functionality common to all Rockpack view controllers
 
 
-#import "GAITrackedViewController.h"
 #import "SYNAddButtonControl.h"
 #import "SYNAppDelegate.h"
 #import "SYNNetworkEngine.h"
@@ -21,7 +20,7 @@ typedef void (^SYNShareCompletionBlock)(void);
 
 @class VideoInstance, Channel, ChannelOwner, Genre, SubGenre;
 
-@interface SYNAbstractViewController : GAITrackedViewController <NSFetchedResultsControllerDelegate,
+@interface SYNAbstractViewController : UIViewController <NSFetchedResultsControllerDelegate,
                                                                  UICollectionViewDataSource,
                                                                  UICollectionViewDelegate,
                                                                  SYNTabViewDelegate>
