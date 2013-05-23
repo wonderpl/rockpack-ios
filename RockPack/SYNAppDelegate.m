@@ -381,11 +381,31 @@ extern void instrumentObjcMessageSends(BOOL);
         } // else the existing persistent store is compatible with the current model - nice!
     } // else no database file yet
     
+    
     NSPersistentStore *store = [persistentStoreCoordinator addPersistentStoreWithType: NSSQLiteStoreType
                                                                         configuration: nil
                                                                                   URL: storeURL
-                                                                              options: nil
+                                                                              options: @{NSMigratePersistentStoresAutomaticallyOption:@(YES)}
                                                                                 error: &error];
+    if(error)
+    {
+        if ([[NSFileManager defaultManager] removeItemAtURL: storeURL
+                                                      error: &error])
+        {
+            DebugLog(@"Existing database - migration failed so deleted");
+        }
+        else
+        {
+            DebugLog(@"*** Could not delete persistent store, %@", error);
+        }
+        
+        store = [persistentStoreCoordinator addPersistentStoreWithType: NSSQLiteStoreType
+                                                                            configuration: nil
+                                                                                      URL: storeURL
+                                                                                  options: @{NSMigratePersistentStoresAutomaticallyOption:@(YES)}
+                                                                                    error: &error];
+        
+    }
     if (store == nil)
     {
         DebugLog(@"Error adding persistent store to coordinator %@\n%@", [error localizedDescription], [error userInfo]);

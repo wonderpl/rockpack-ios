@@ -9,6 +9,7 @@ const struct VideoAttributes VideoAttributes = {
 	.duration = @"duration",
 	.source = @"source",
 	.sourceId = @"sourceId",
+	.sourceUsername = @"sourceUsername",
 	.starCount = @"starCount",
 	.starredByUser = @"starredByUser",
 	.thumbnailURL = @"thumbnailURL",
@@ -129,6 +130,13 @@ const struct VideoFetchedProperties VideoFetchedProperties = {
 
 
 @dynamic sourceId;
+
+
+
+
+
+
+@dynamic sourceUsername;
 
 
 
