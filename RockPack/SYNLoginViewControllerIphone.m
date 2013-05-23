@@ -421,8 +421,8 @@
             self.activityIndicator.center = self.confirmButton.center;
             [self.activityIndicator startAnimating];
             [self loginForUsername:self.userNameInputField.text forPassword:self.passwordInputField.text completionHandler:^(NSDictionary* dictionary) {
-                NSString* username = [dictionary objectForKey:@"username"];
-                DebugLog(@"User Registerd: %@", username);
+         
+                DebugLog(@"User Registerd: %@", [dictionary objectForKey:@"username"]);
                 
                 //[self.activityIndicator stopAnimating];
                 

@@ -485,10 +485,7 @@
             self.noVideosMessageView = nil;
         }
         
-        for (VideoInstance* vi in self.channel.videoInstances)
-        {
-            NSLog(@"*** Channel is : %@", vi.channel.title);
-        }
+        
     }
 }
 
@@ -999,6 +996,7 @@
                                         forState: UIControlStateNormal];
             }
         }
+        self.selectedCategoryId = self.channel.categoryId;
     }
     
 }
@@ -1012,6 +1010,7 @@
     
     [self setEditControlsVisibility: NO];
     [self displayChannelDetails];
+    self.categoryTableViewController = nil;
     self.saveChannelButton.hidden = YES;
     self.cancelEditButton.hidden = YES;
     self.addButton.hidden = NO;
@@ -1166,18 +1165,34 @@
                                  self.categoriesTabViewController.view.alpha = 1.0f;   
                              }
                              completion: ^(BOOL finished) {
+<<<<<<< HEAD
                                  // if no category has been selected then select first //
                                  
                                  if ([self.selectedCategoryId isEqualToString: @""])
                                  {
                                     if (self.categoriesTabViewController.otherGenre)
+=======
+                                 if ([self.selectedCategoryId isEqualToString:@""])
+                                 {
+                                     // if no category has been selected the "other" category if it exists
+                                    if(self.categoriesTabViewController.otherGenre)
+>>>>>>> origin/develop
                                     {
                                         [self handleNewTabSelectionWithGenre: self.categoriesTabViewController.otherGenre];
                                     }
                                  }
                                  else
                                  {
+<<<<<<< HEAD
                                      NSIndexPath* genreIndexPath = [self.categoriesTabViewController findIndexPathForGenreId: self.selectedCategoryId];
+=======
+                                     NSIndexPath* genreIndexPath = [self.categoriesTabViewController findIndexPathForGenreId:self.selectedCategoryId];
+                                     if(!genreIndexPath)
+                                     {
+                                         //"Other/other" selected. Do nothing
+                                         return;
+                                     }
+>>>>>>> origin/develop
                                      Genre* genreSelected =
                                      [self.categoriesTabViewController selectAndReturnGenreForIndexPath: genreIndexPath
                                                                                        andSubcategories: YES];
@@ -1227,6 +1242,25 @@
             self.categoryTableViewController = [[SYNChannelCategoryTableViewController alloc] initWithNibName:@"SYNChannelCategoryTableViewControllerFullscreen~iphone" bundle: [NSBundle mainBundle]];
             self.categoryTableViewController.categoryTableControllerDelegate = self;
             self.categoryTableViewController.showAllCategoriesHeader = NO;
+            
+            [self.view addSubview:self.categoryTableViewController.view];
+            
+            BOOL hasACategory = [self.selectedCategoryId length]>0;
+            [self.categoryTableViewController setSelectedCategoryForId:hasACategory?self.selectedCategoryId:nil];
+            if(!hasACategory)
+            {
+                // Set the default other/other subgenre
+                NSArray* filteredSubcategories = [[self.categoryTableViewController.otherGenre.subgenres array] filteredArrayUsingPredicate:[NSPredicate predicateWithFormat:@"priority = -1"]];
+                 if([filteredSubcategories count] == 1)
+                 {
+                     SubGenre* otherSubGenre = [filteredSubcategories objectAtIndex:0];
+                     
+                     self.selectedCategoryId = otherSubGenre.uniqueId;
+                     
+                     [self.selectCategoryButton setTitle: [NSString stringWithFormat:@"%@/\n%@", otherSubGenre.genre.name, otherSubGenre.name]
+                                                forState: UIControlStateNormal];
+                 }
+            }
         }
         else
         {
@@ -1240,6 +1274,7 @@
         CGRect startFrame = self.categoryTableViewController.view.frame;
         startFrame.origin.y = self.view.frame.size.height;
         self.categoryTableViewController.view.frame = startFrame;
+
         [self.view addSubview:self.categoryTableViewController.view];
         
         [UIView animateWithDuration: 0.3f
@@ -1361,7 +1396,11 @@
     
     NSString* category = [self categoryIdStringForServiceCall];
     
-    NSString* cover = [self coverIdStringForServiceCall];
+    NSString* cover =  self.selectedCoverId;
+    if ([cover length]==0)
+    {
+        cover = @"";
+    }
     
     [appDelegate.oAuthNetworkEngine createChannelForUserId: appDelegate.currentOAuth2Credentials.userId
                                                      title: self.channel.title
@@ -1430,8 +1469,7 @@
                                               }
                                               Channel* createdChannel = [Channel instanceFromDictionary:dictionary
                                                                               usingManagedObjectContext:appDelegate.mainManagedObjectContext
-                                                                                    ignoringObjectTypes:ignore
-                                                                                              andViewId:kProfileViewId];
+                                                                                    ignoringObjectTypes:ignore];
                                               
                                               createdChannel.channelOwner = appDelegate.currentUser;
                                               
@@ -1512,7 +1550,7 @@
     if ([category length] == 0)
     {
         category = self.channel.categoryId;
-        if (!category)
+        if ([category length]==0)
         {
             category = @"";
         }
@@ -1932,7 +1970,8 @@
             self.selectedCategoryId = otherSubGenre.uniqueId;
             
             [self.selectCategoryButton setTitle: [NSString stringWithFormat:@"%@/\n%@", otherSubGenre.genre.name, otherSubGenre.name]
-                                       forState: UIControlStateNormal];    }
+                                       forState: UIControlStateNormal];
+        }
         else
         {
             self.selectedCategoryId = category.uniqueId;
@@ -2028,7 +2067,7 @@
 - (UIImage*) croppedImageForOrientation: (UIInterfaceOrientation) orientation
 {
     CGRect croppingRect = UIInterfaceOrientationIsLandscape(orientation) ?
-    CGRectMake(0.0, 138.0, 1024.0, 886.0) : CGRectMake(138.0, 0.0, 886.0, 1024.0);
+    CGRectMake(0.0, 138.0, 1024.0, 886.0) : CGRectMake(69.0, 0.0, 886.0, 1024.0);
     
     if (self.originalBackgroundImage == nil) // set the bg var once
     {

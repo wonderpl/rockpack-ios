@@ -138,8 +138,8 @@
 
             // the dictionary contains a User dictionary //
             
-            NSString* username = [dictionary objectForKey: @"username"];
-            DebugLog(@"User Registerd: %@", username);
+          
+            DebugLog(@"User Registerd: %@", [dictionary objectForKey: @"username"]);
             
             // by this time the currentUser is set in the DB //
             
@@ -234,12 +234,17 @@
                      dimension: ageString];
         }
         
+        [self doFacebookLoginAnimation];
+        
         [self.appDelegate.oAuthNetworkEngine doFacebookLoginWithAccessToken: accessTokenData.accessToken
                                                           completionHandler: ^(SYNOAuth2Credential* credential) {
             [self.appDelegate.oAuthNetworkEngine userInformationFromCredentials: credential
                                                               completionHandler: ^(NSDictionary* dictionary) {
                 [self checkAndSaveRegisteredUser: credential];
+                                                                  
                 completionBlock(dictionary);
+                                                                  
+                                                                  
             } errorHandler:errorBlock];
         } errorHandler: errorBlock];
     }
@@ -342,6 +347,11 @@
         [alert show];
     }
     return isReachable;
+}
+
+-(void)doFacebookLoginAnimation
+{
+    // to be implemented by subclass
 }
 
 @end

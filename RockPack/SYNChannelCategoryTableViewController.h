@@ -60,6 +60,17 @@
  */
 @property (nonatomic, assign) BOOL showAllCategoriesHeader;
 
+/**
+	the genre representing the "Other" category. Set when the view is loaded. nil if not available.
+ */
+@property (nonatomic, strong) Genre* otherGenre;
+
+/**
+    Pre-select a category based on its ID
+	@param selectedCategoryId the category ID. passing nil will select the "Other" button
+ */
+-(void)setSelectedCategoryForId:(NSString*)selectedCategoryId;
+
 
 
 

@@ -944,8 +944,7 @@ typedef void(^AnimationCompletionBlock)(BOOL finished);
     
     
     
-    //FIXME: Nick to rework
-    [self.containerViewController viewWillAppear:NO];
+    [self.containerViewController refreshView];
     
 }
 

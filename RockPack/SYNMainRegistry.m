@@ -66,18 +66,14 @@
     // dictionary also contains the set of user channels
     
     ChannelOwner* channelOwner = [ChannelOwner instanceFromDictionary: dictionary
-                                            usingManagedObjectContext: importManagedObjectContext
+                                            usingManagedObjectContext: appDelegate.mainManagedObjectContext
                                                   ignoringObjectTypes: kIgnoreNothing];
     
     if (!channelOwner)
         return NO;
     
     
-    BOOL saveResult = [self saveImportContext];
-    if (!saveResult)
-        return NO;
-    
-    [appDelegate saveContext: TRUE];
+    [appDelegate saveContext: YES];
     
     
     return YES;
@@ -111,8 +107,7 @@
         
         Channel* channel = [Channel instanceFromDictionary:subscriptionChannel
                                  usingManagedObjectContext:currentUser.managedObjectContext
-                                       ignoringObjectTypes:kIgnoreNothing
-                                                 andViewId:kProfileViewId];
+                                       ignoringObjectTypes:kIgnoreNothing];
         
         if (!channel)
             continue;
@@ -273,15 +268,14 @@
         return YES;
     
     
-    NSEntityDescription* videoInstanceEntity = [NSEntityDescription entityForName: @"VideoInstance"
-                                                           inManagedObjectContext: importManagedObjectContext];
     NSFetchRequest *videoInstanceFetchRequest = [[NSFetchRequest alloc] init];
-    [videoInstanceFetchRequest setEntity: videoInstanceEntity];
-    NSPredicate *predicate = [NSPredicate predicateWithFormat: @"viewId == %@", viewId];
-    [videoInstanceFetchRequest setPredicate: predicate];
+    [videoInstanceFetchRequest setEntity: [NSEntityDescription entityForName: @"VideoInstance"
+                                                      inManagedObjectContext: appDelegate.mainManagedObjectContext]];
+    
     NSError* error = nil;
-    NSArray *matchingVideoInstanceEntries = [importManagedObjectContext executeFetchRequest: videoInstanceFetchRequest
-                                                                                error: &error];
+    NSArray *matchingVideoInstanceEntries = [appDelegate.mainManagedObjectContext executeFetchRequest: videoInstanceFetchRequest
+                                                                                                error: &error];
+    
     NSMutableDictionary* existingVideosByIndex = [NSMutableDictionary dictionaryWithCapacity:matchingVideoInstanceEntries.count];
     
     // Organise videos by Id
@@ -291,10 +285,12 @@
         
         // We need to mark all of our existing VideoInstance objects corresponding to this viewId, just in case they are no longer required
         // and should be removed in a post-import cleanup
+        
         existingVideo.markedForDeletionValue = YES;
+        
+        existingVideo.freshValue = NO;
     }
     
-        // === Main Processing === //
     
     for (NSDictionary *itemDictionary in itemArray)
     {
@@ -310,23 +306,24 @@
             // The video is not in the dictionary of existing videos
             // Create a new video object. kIgnoreStoredObjects makes sure no attempt is made to query first
             video = [VideoInstance instanceFromDictionary: itemDictionary
-                                usingManagedObjectContext: importManagedObjectContext
-                                      ignoringObjectTypes: kIgnoreStoredObjects
-                                                andViewId: viewId];
+                                usingManagedObjectContext: appDelegate.mainManagedObjectContext
+                                      ignoringObjectTypes: kIgnoreStoredObjects];
             
         }
         
         video.markedForDeletionValue = NO; // This video is in the dictionary and should not be deleted.
         
+        video.freshValue = YES;
+        
         video.position = [itemDictionary objectForKey: @"position"
                                           withDefault: [NSNumber numberWithInt: 0]];
     }    
     
-    // == =============== == //
+    
     
     // Now remove any VideoInstance objects that are no longer referenced in the import
     [self removeUnusedManagedObjects: matchingVideoInstanceEntries
-              inManagedObjectContext: importManagedObjectContext];
+              inManagedObjectContext: appDelegate.mainManagedObjectContext];
     
     BOOL saveResult = [self saveImportContext];
     if(!saveResult)
@@ -347,13 +344,9 @@
     // == =============== == //
     
     [Channel instanceFromDictionary: dictionary
-          usingManagedObjectContext: importManagedObjectContext
-                ignoringObjectTypes: kIgnoreNothing
-                          andViewId: kChannelDetailsViewId];
+          usingManagedObjectContext: appDelegate.mainManagedObjectContext
+                ignoringObjectTypes: kIgnoreNothing];
     
-    BOOL saveResult = [self saveImportContext];
-    if (!saveResult)
-        return NO;
     
     [appDelegate saveContext: TRUE];
     
@@ -419,8 +412,7 @@
         {
             channel = [Channel instanceFromDictionary: itemDictionary
                             usingManagedObjectContext: channelOwner.managedObjectContext
-                                  ignoringObjectTypes: (kIgnoreStoredObjects | kIgnoreChannelOwnerObject)
-                                            andViewId: kChannelsViewId];
+                                  ignoringObjectTypes: (kIgnoreStoredObjects | kIgnoreChannelOwnerObject)];
         }
         
         
@@ -540,8 +532,7 @@
         {
             channel = [Channel instanceFromDictionary: itemDictionary
                             usingManagedObjectContext: appDelegate.mainManagedObjectContext
-                                  ignoringObjectTypes: kIgnoreStoredObjects
-                                            andViewId: kChannelsViewId];
+                                  ignoringObjectTypes: kIgnoreStoredObjects];
         }
 
         channel.markedForDeletionValue = NO;
