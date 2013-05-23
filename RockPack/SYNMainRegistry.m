@@ -66,18 +66,14 @@
     // dictionary also contains the set of user channels
     
     ChannelOwner* channelOwner = [ChannelOwner instanceFromDictionary: dictionary
-                                            usingManagedObjectContext: importManagedObjectContext
+                                            usingManagedObjectContext: appDelegate.mainManagedObjectContext
                                                   ignoringObjectTypes: kIgnoreNothing];
     
     if (!channelOwner)
         return NO;
     
     
-    BOOL saveResult = [self saveImportContext];
-    if (!saveResult)
-        return NO;
-    
-    [appDelegate saveContext: TRUE];
+    [appDelegate saveContext: YES];
     
     
     return YES;
@@ -348,12 +344,9 @@
     // == =============== == //
     
     [Channel instanceFromDictionary: dictionary
-          usingManagedObjectContext: importManagedObjectContext
+          usingManagedObjectContext: appDelegate.mainManagedObjectContext
                 ignoringObjectTypes: kIgnoreNothing];
     
-    BOOL saveResult = [self saveImportContext];
-    if (!saveResult)
-        return NO;
     
     [appDelegate saveContext: TRUE];
     
