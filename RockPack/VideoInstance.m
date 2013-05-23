@@ -47,18 +47,10 @@ static NSEntityDescription *videoInstanceEntity = nil;
                         ignoringObjectTypes: (IgnoringObjects) ignoringObjects
                                  andViewId: (NSString *) viewId
 {
-    
-    
-    
-    if (![dictionary isKindOfClass: [NSDictionary class]])
-        return nil;
+    NSError *error = nil;
     
     NSString *uniqueId = [dictionary objectForKey: @"id"
-                                      withDefault: @""];
-    
-    
-    if([uniqueId isEqualToString:@""]) // no id no object
-        return nil;
+                                      withDefault: @"Uninitialized Id"];
     
     
     if (videoInstanceEntity == nil)
@@ -84,7 +76,6 @@ static NSEntityDescription *videoInstanceEntity = nil;
         NSPredicate *predicate = [NSPredicate predicateWithFormat: @"uniqueId == %@ AND viewId == %@", uniqueId, viewId];
         [videoInstanceFetchRequest setPredicate: predicate];
         
-        NSError *error = nil;
         NSArray *matchingVideoInstanceEntries = [managedObjectContext executeFetchRequest: videoInstanceFetchRequest
                                                                                     error: &error];
         
@@ -111,7 +102,7 @@ static NSEntityDescription *videoInstanceEntity = nil;
     [instance setAttributesFromDictionary: dictionary
                                    withId: uniqueId
                 usingManagedObjectContext: managedObjectContext
-                      ignoringObjectTypes: ignoringObjects
+                      ignoringObjectTypes: (ignoringObjects == kIgnoreChannelObjects) ? kIgnoreChannelObjects : kIgnoreVideoInstanceObjects
                                 andViewId: viewId];
     
     return instance;
@@ -124,7 +115,12 @@ static NSEntityDescription *videoInstanceEntity = nil;
                  ignoringObjectTypes: (IgnoringObjects) ignoringObjects
                            andViewId: (NSString *) viewId
 {
-    
+    // Is we are not actually a dictionary, then bail
+    if (![dictionary isKindOfClass: [NSDictionary class]])
+    {
+        AssertOrLog (@"setAttributesFromDictionary: not a dictionary, unable to construct object");
+        return;
+    }
     
     // Simple objects
     self.uniqueId = uniqueId;

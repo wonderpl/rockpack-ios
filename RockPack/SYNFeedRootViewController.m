@@ -218,13 +218,10 @@
                                                             start: 0
                                                              size: 0
                                                 completionHandler: ^(NSDictionary *responseDictionary) {
-                                                    
-                                                    
                                                     [self handleRefreshComplete];
-                                                    
-                                                    
-                                                    
-                                                } errorHandler: ^(NSDictionary* errorDictionary) {
+                                                    // DebugLog(@"Refresh subscription updates successful");
+                                                }
+                                                     errorHandler: ^(NSDictionary* errorDictionary) {
                                                          [self handleRefreshComplete];
                                                          DebugLog(@"Refresh subscription updates failed");
                                                      }];
@@ -233,7 +230,7 @@
 
 - (void) handleRefreshComplete
 {
-    self.refreshing = NO;
+    self.refreshing = FALSE;
     [self.refreshControl endRefreshing];
     [self.refreshButton endRefreshCycle];
 }
@@ -330,7 +327,6 @@
     UICollectionViewCell *cell = nil;
     
     VideoInstance *videoInstance = [self.fetchedResultsController objectAtIndexPath: indexPath];
-    
     
     SYNVideoThumbnailWideCell *videoThumbnailCell = [cv dequeueReusableCellWithReuseIdentifier: @"SYNVideoThumbnailWideCell"
                                                                                   forIndexPath: indexPath];

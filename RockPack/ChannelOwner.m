@@ -120,7 +120,7 @@ static NSEntityDescription *channelOwnerEntity = nil;
                 
                 Channel* channel = [Channel instanceFromDictionary:channelDictionary
                                          usingManagedObjectContext:managedObjectContex
-                                               ignoringObjectTypes:(ignoringObjects|kIgnoreChannelOwnerObject)
+                                               ignoringObjectTypes:kIgnoreChannelOwnerObject
                                                          andViewId:kProfileViewId];
                 
                 

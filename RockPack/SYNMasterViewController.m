@@ -131,9 +131,8 @@ typedef void(^AnimationCompletionBlock)(BOOL finished);
     // Not super-elegant, but as the nav controller is controlled from multiple places
     // it is the only way to guarantee it will work nicely
     self.sideNavigationViewController.captiveButton = self.sideNavigationButton;
-    
-    self.darkOverlayView.hidden = YES;
-    
+    self.sideNavigationViewController.darkOverlay = self.darkOverlayView;
+        
     // == Fade in from splash screen (not in AppDelegate so that the Orientation is known) == //
     
     UIImageView *splashView;
@@ -225,9 +224,10 @@ typedef void(^AnimationCompletionBlock)(BOOL finished);
     
     [self pageChanged:self.containerViewController.scrollView.page];
     
+    self.darkOverlayView.hidden = YES;
+    
     
     // == Set Up Notifications == //
-    
     
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(backButtonRequested:) name:kNoteBackButtonShow object:nil];
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(backButtonRequested:) name:kNoteBackButtonHide object:nil];
@@ -317,6 +317,14 @@ typedef void(^AnimationCompletionBlock)(BOOL finished);
     {
         [self.sideNavigationViewController deselectAllCells];
         [self showSideNavigation];
+        self.darkOverlayView.alpha = 0.0;
+        
+        [UIView animateWithDuration:0.3
+                         animations:^{
+                             self.darkOverlayView.alpha = 1.0;
+                         } completion:^(BOOL finished) {
+                             self.darkOverlayView.hidden = NO;
+                         }];
     }
     else
     {
@@ -453,9 +461,8 @@ typedef void(^AnimationCompletionBlock)(BOOL finished);
                          self.darkOverlayView.alpha = 1.0;
                      } completion:^(BOOL finished) {
                          self.darkOverlayView.hidden = NO;
-    self.sideNavigationViewController.state = SideNavigationStateHalf;
                      }];
-
+    self.sideNavigationViewController.state = SideNavigationStateHalf;
     
 }
 
@@ -539,7 +546,6 @@ typedef void(^AnimationCompletionBlock)(BOOL finished);
                          self.darkOverlayView.alpha = 0.0;
                      } completion:^(BOOL finished) {
                          self.darkOverlayView.hidden = YES;
-                         self.sideNavigationViewController.state = SideNavigationStateHalf;
                      }];
     CGRect sboxFrame = self.searchBoxController.view.frame;
     
@@ -619,7 +625,6 @@ typedef void(^AnimationCompletionBlock)(BOOL finished);
                          self.darkOverlayView.alpha = 1.0;
                      } completion:^(BOOL finished) {
                          self.darkOverlayView.hidden = NO;
-                         self.sideNavigationViewController.state = SideNavigationStateHalf;
                      }];
     
 }

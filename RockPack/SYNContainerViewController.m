@@ -340,8 +340,8 @@
 
 -(SYNAbstractViewController*)showingViewController
 {
-
-    return (SYNAbstractViewController*)((UINavigationController*)self.selectedNavigationController).visibleViewController;
+    UINavigationController* navController =(UINavigationController*)self.selectedNavigationController;
+    return (SYNAbstractViewController*)[navController.viewControllers objectAtIndex:0];
 
 }
 
