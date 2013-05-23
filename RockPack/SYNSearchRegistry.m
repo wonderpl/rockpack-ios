@@ -85,12 +85,16 @@
     
     for (NSDictionary *itemDictionary in itemArray)
     {
-        if (![itemDictionary isKindOfClass: [NSDictionary class]])
-            continue;
+        
         
         Channel* channel = [Channel instanceFromDictionary:itemDictionary
-                           usingManagedObjectContext:importManagedObjectContext
-                                 ignoringObjectTypes:kIgnoreNothing];
+                                 usingManagedObjectContext:importManagedObjectContext
+                                       ignoringObjectTypes:kIgnoreNothing];
+        
+        if(!channel)
+        {
+            DebugLog(@"Could not instantiate channel with data:\n%@", itemDictionary);
+        }
         
     }
     
