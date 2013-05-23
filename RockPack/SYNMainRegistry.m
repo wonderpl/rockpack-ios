@@ -497,8 +497,8 @@
         
         
         // set the old channels to not fresh and refresh on demand //
-        
-        existingChannel.freshValue = NO;
+        if(!append)
+            existingChannel.freshValue = NO;
            
     }
     
