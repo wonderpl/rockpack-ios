@@ -424,7 +424,7 @@
     // Query for existing objects
     NSFetchRequest *channelFetchRequest = [[NSFetchRequest alloc] init];
     [channelFetchRequest setEntity: [NSEntityDescription entityForName: @"Channel"
-                                                inManagedObjectContext: appDelegate.mainManagedObjectContext]];
+                                                inManagedObjectContext: importManagedObjectContext]];
     
     NSPredicate* genrePredicate;
     
@@ -443,7 +443,7 @@
     [channelFetchRequest setPredicate: genrePredicate];
 
     NSError* error;
-    NSArray *existingChannels = [appDelegate.mainManagedObjectContext executeFetchRequest: channelFetchRequest
+    NSArray *existingChannels = [importManagedObjectContext executeFetchRequest: channelFetchRequest
                                                                                           error: &error];
     
     NSMutableDictionary* existingChannelsByIndex = [NSMutableDictionary dictionaryWithCapacity: existingChannels.count];
@@ -493,7 +493,7 @@
         if (!channel)
         {
             channel = [Channel instanceFromDictionary: itemDictionary
-                            usingManagedObjectContext: appDelegate.mainManagedObjectContext
+                            usingManagedObjectContext: importManagedObjectContext
                                   ignoringObjectTypes: kIgnoreStoredObjects];
         }
 
@@ -509,7 +509,7 @@
     }
     
     [self removeUnusedManagedObjects: existingChannels
-              inManagedObjectContext: appDelegate.mainManagedObjectContext];
+              inManagedObjectContext: importManagedObjectContext];
     
     BOOL saveResult = [self saveImportContext];
     if(!saveResult)

@@ -133,7 +133,7 @@
     self.channelThumbnailCollectionView.autoresizingMask = UIViewAutoresizingFlexibleWidth | UIViewAutoresizingFlexibleHeight;
     
     CGRect newFrame;
-    if(isIPhone)
+    if (isIPhone)
     {
         newFrame = CGRectMake(0.0f, 59.0f, [[SYNDeviceManager sharedInstance] currentScreenWidth], [[SYNDeviceManager sharedInstance] currentScreenHeight] - 20.0f);
     }
@@ -155,7 +155,7 @@
     
     dataRequestRange = NSMakeRange(1, STANDARD_REQUEST_LENGTH);
     
-    if(self.enableCategoryTable)
+    if (self.enableCategoryTable)
     {
         [self layoutChannelsCategoryTable];
     }
@@ -223,13 +223,15 @@
     [GAI.sharedInstance.defaultTracker sendView: @"Channels - Root"];
 }
 
--(void)animatedPushViewController:(UIViewController *)vc
+
+- (void) animatedPushViewController: (UIViewController *) vc
 {
     [super animatedPushViewController:vc];
     
     [[NSNotificationCenter defaultCenter] postNotificationName: kNoteSearchBarRequestHide
                                                         object: self];
 }
+
 
 #pragma mark - Loading of Channels
 
@@ -296,7 +298,7 @@
     
     NSInteger nextStart = dataRequestRange.location + dataRequestRange.length; // one is subtracted when the call happens for 0 indexing
     
-    if(nextStart >= dataItemsAvailable)
+    if (nextStart >= dataItemsAvailable)
         return;
     
     NSInteger nextSize = (nextStart + STANDARD_REQUEST_LENGTH) >= dataItemsAvailable ? (dataItemsAvailable - nextStart) : STANDARD_REQUEST_LENGTH;
@@ -322,7 +324,7 @@
     }
     else
     {
-        if([genre isMemberOfClass:[Genre class]]) // no isKindOfClass: which will always return true in this case
+        if ([genre isMemberOfClass:[Genre class]]) // no isKindOfClass: which will always return true in this case
         {
             genrePredicate = [NSPredicate predicateWithFormat: @"categoryId IN %@", [genre getSubGenreIdArray]];
         }
@@ -346,6 +348,7 @@
     [request setSortDescriptors:@[positionDescriptor]];
     
     NSError *error = nil;
+    DebugLog(@"&&&&& Execute fetch request");
     NSArray *resultsArray = [appDelegate.mainManagedObjectContext executeFetchRequest: request
                                                                                 error: &error];
     if (!resultsArray)
@@ -366,17 +369,15 @@
         [self displayEmptyGenreMessage];
     }
 
-    if (!isAnimating)
-    {
-        [self.channelThumbnailCollectionView reloadData];
-    }
+    // We shouldn't wait until the animation is over, as this will result in crashes if the user is scrolling
+    [self.channelThumbnailCollectionView reloadData];
 }
 
 
 - (void) displayEmptyGenreMessage
 {
     
-    if(self.emptyGenreMessageView) // add no more than one
+    if (self.emptyGenreMessageView) // add no more than one
         return;
     
     CGRect mainFrame = CGRectMake(0.0, 0.0, 280.0, 60.0);
@@ -438,7 +439,9 @@
 - (UICollectionViewCell *) collectionView: (UICollectionView *) collectionView
                    cellForItemAtIndexPath: (NSIndexPath *) indexPath
 {
+    DebugLog(@"£££££ Cell for item");
     Channel *channel = self.channels[indexPath.row];
+    DebugLog(@"£££££ Cell for item --");
     
     SYNChannelThumbnailCell *channelThumbnailCell = [collectionView dequeueReusableCellWithReuseIdentifier: @"SYNChannelThumbnailCell"
                                                                                               forIndexPath: indexPath];
@@ -450,7 +453,7 @@
     [channelThumbnailCell setChannelTitle: channel.title];
     channelThumbnailCell.displayNameLabel.text = [NSString stringWithFormat: @"%@", channel.channelOwner.displayName];
     channelThumbnailCell.viewControllerDelegate = self;
-
+    
     return channelThumbnailCell;
 }
 
@@ -489,7 +492,7 @@
     
     if (kind == UICollectionElementKindSectionFooter)
     {
-        if(self.channels.count == 0 || (self.dataRequestRange.location + self.dataRequestRange.length) >= dataItemsAvailable)
+        if (self.channels.count == 0 || (self.dataRequestRange.location + self.dataRequestRange.length) >= dataItemsAvailable)
         {
             return supplementaryView;
         }
@@ -513,7 +516,7 @@
 
 - (void) collectionView: (UICollectionView *) collectionView didSelectItemAtIndexPath: (NSIndexPath *) indexPath
 {
-    if(self.isAnimating) // prevent double clicking
+    if (self.isAnimating) // prevent double clicking
         return;
     
     Channel *channel = (Channel*)self.channels[indexPath.row];
@@ -670,7 +673,7 @@
 -(void)animateCollectionViewDown:(BOOL)down
 {
     
-    if(down && !tabExpanded)
+    if (down && !tabExpanded)
     {
         
         
@@ -695,7 +698,7 @@
                              self.channelThumbnailCollectionView.frame = currentCollectionViewFrame;
                          }];
     }
-    else if(tabExpanded)
+    else if (tabExpanded)
     {
         
         isAnimating = YES;

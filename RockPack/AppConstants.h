@@ -330,13 +330,21 @@ typedef enum {
 // Video Overlay
 //
 
-#define kVideoBackgroundColour          [UIColor blackColor]
-#define kBufferMonitoringTimerInterval  1.0f
+// Maximum number of times the player time remains the same before restart attempted
+#define kMaxStallCount                  20
+
+// Time between shuttle bar updates
 #define kShuttleBarUpdateTimerInterval  0.1f
+
+// How long for the placeholder animations to cycle
 #define kMiddlePlaceholderCycleTime     2.0f
-#define kMiddlePlaceholderIdentifier    @"MiddlePlaceholder"
 #define kBottomPlaceholderCycleTime     4.0f
+#define kMiddlePlaceholderIdentifier    @"MiddlePlaceholder"
+
 #define kBottomPlaceholderIdentifier    @"BottomPlaceholder"
+
+#define kVideoBackgroundColour          [UIColor blackColor]
+
 #define kShuttleBarHeight               44.0f
 #define kShuttleBarTimeLabelWidth       40.0f
 #define kShuttleBarTimeLabelOffset      100.0f

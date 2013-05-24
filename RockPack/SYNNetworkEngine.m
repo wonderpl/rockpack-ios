@@ -30,9 +30,10 @@
     return hostName;
 }
 
+
 - (id) initWithDefaultSettings
 {
-    hostName = [[NSBundle mainBundle] objectForInfoDictionaryKey:@"APIHostName"];
+    hostName = [[NSBundle mainBundle] objectForInfoDictionaryKey: @"APIHostName"];
     
     if ((self = [super initWithDefaultSettings]))
     {
@@ -49,14 +50,13 @@
 - (void) updateCategoriesOnCompletion: (MKNKVoidBlock) completionBlock
                               onError: (MKNKErrorBlock) errorBlock
 {
-    
     SYNNetworkOperationJsonObject *networkOperation =
-    (SYNNetworkOperationJsonObject*)[self operationWithPath:kAPICategories params:[self getLocalParam]];
-    
-    
+    (SYNNetworkOperationJsonObject*)[self operationWithPath: kAPICategories
+                                                     params: [self getLocalParam]];
+
     [networkOperation addJSONCompletionHandler:^(NSDictionary *dictionary) {
         
-        BOOL registryResultOk = [self.registry registerCategoriesFromDictionary:dictionary];
+        BOOL registryResultOk = [self.registry registerCategoriesFromDictionary: dictionary];
         if (!registryResultOk)
             return;
         
@@ -67,12 +67,10 @@
         DebugLog(@"API request failed");
         
     }];
-    
-    
-    [self enqueueOperation: networkOperation];
-    
-    
+
+    [self enqueueOperation: networkOperation]; 
 }
+
 
 - (void) updateCoverArtWithWithStart: (unsigned int) start
                                 size: (unsigned int) size
@@ -182,6 +180,7 @@
     
 }
 
+
 - (void) updateChannelsScreenForCategory: (NSString*) categoryId
                                 forRange: (NSRange) range
                            ignoringCache: (BOOL) ignore
@@ -277,23 +276,23 @@
                       andRange: (NSRange)range
                     onComplete: (MKNKSearchSuccessBlock)completeBlock
 {
-    
-    
-    if(searchTerm == nil || [searchTerm isEqualToString:@""])
+    if (searchTerm == nil || [searchTerm isEqualToString:@""])
         return;
-    
-    
+
     NSMutableDictionary* tempParameters = [NSMutableDictionary dictionary];
     
     [tempParameters setObject:searchTerm forKey:@"q"];
     
-    [tempParameters setObject:[NSString stringWithFormat:@"%i", range.location] forKey:@"start"];
-    [tempParameters setObject:[NSString stringWithFormat:@"%i", range.length] forKey:@"size"];
+    [tempParameters setObject: [NSString stringWithFormat: @"%i", range.location]
+                       forKey:@"start"];
+    
+    [tempParameters setObject: [NSString stringWithFormat: @"%i", range.length]
+                       forKey: @"size"];
     
     [tempParameters addEntriesFromDictionary: [self getLocalParam]];
     
     
-    NSDictionary* parameters = [NSDictionary dictionaryWithDictionary:tempParameters];
+    NSDictionary* parameters = [NSDictionary dictionaryWithDictionary: tempParameters];
     
     SYNNetworkOperationJsonObject *networkOperation =
     (SYNNetworkOperationJsonObject*)[self operationWithPath:kAPISearchChannels params:parameters];
@@ -343,7 +342,8 @@
     
     [self registerOperationSubclass: [SYNNetworkOperationJsonObjectParse class]];
     
-    NSDictionary* parameters = [self getLocalParamWithParams:[NSDictionary dictionaryWithObject:hint forKey:@"q"]];
+    NSDictionary* parameters = [self getLocalParamWithParams: [NSDictionary dictionaryWithObject: hint
+                                                                                          forKey: @"q"]];
     
     NSString* apiForEntity;
     if(entityType == EntityTypeChannel)
@@ -354,15 +354,12 @@
         return; // do not accept any unknown type
     
     SYNNetworkOperationJsonObjectParse *networkOperation =
-    (SYNNetworkOperationJsonObjectParse*)[self operationWithPath:apiForEntity params:parameters];
+    (SYNNetworkOperationJsonObjectParse*)[self operationWithPath: apiForEntity
+                                                          params: parameters];
     
-    [networkOperation addJSONCompletionHandler:^(NSArray *array) {
-        
+    [networkOperation addJSONCompletionHandler: ^(NSArray *array) {
         completionBlock(array);
-        
-        
-    } errorHandler:errorBlock];
-    
+    } errorHandler: errorBlock];
     
     [self enqueueOperation: networkOperation];
     
@@ -376,11 +373,10 @@
 #pragma User Data
 
 
--(void)channelOwnerDataForChannelOwner:(ChannelOwner*)channelOwner
-                            onComplete:(MKNKUserSuccessBlock)completeBlock
-                               onError:(MKNKUserErrorBlock)errorBlock
+- (void) channelOwnerDataForChannelOwner: (ChannelOwner*) channelOwner
+                              onComplete: (MKNKUserSuccessBlock) completeBlock
+                                 onError: (MKNKUserErrorBlock) errorBlock
 {
-    
     NSDictionary *apiSubstitutionDictionary = @{@"USERID" : channelOwner.uniqueId};
     
     // same as for User
@@ -388,7 +384,6 @@
     
     SYNNetworkOperationJsonObject *networkOperation = (SYNNetworkOperationJsonObject*)[self operationWithPath: apiString
                                                                                                        params: [self getLocalParam]];
-    
     
     [networkOperation addJSONCompletionHandler: ^(NSDictionary *dictionary) {
         
@@ -398,23 +393,18 @@
             errorBlock(@{@"error":possibleError});
             return;
         }
-        
-        
+
         BOOL registryResultOk = [self.registry registerChannelOwnerFromDictionary: dictionary];
         if (!registryResultOk)
         {
             errorBlock(@{@"parsing_error":@"response is not a dictionary"});
             return;
         }
-            
-        
+
         // == Subscriptions == //
-        
         [self channelOwnerSubscriptionsForUserId: channelOwner.uniqueId
                                         forRange: NSMakeRange(0, 48)
                                completionHandler: ^(id subscriptionsDictionary) {
-                              
-                              
                                    NSString* possibleError = subscriptionsDictionary[@"error"];
                               
                                    if (possibleError)
@@ -422,6 +412,8 @@
                                        errorBlock(@{@"error":possibleError});
                                        return;
                                    }
+
+                                   [channelOwner addSubscriptionsDictionary:dictionary];
                                    
                               
 //                                   [channelOwner addSubscriptionsDictionary:dictionary];
@@ -439,20 +431,15 @@
                               
                                 completeBlock(subscriptionsDictionary);
                               
-                              
-                               } errorHandler:errorBlock];
-        
-        
-        
-        
+
+                               } errorHandler:errorBlock];  
      } errorHandler: ^(NSError* error) {
          errorBlock(error);
      }];
     
     [self enqueueOperation: networkOperation];
-    
-    
 }
+
 
 - (void) channelOwnerSubscriptionsForUserId: (NSString *) userId
                                    forRange:(NSRange)range
@@ -471,20 +458,17 @@
                                                                                                        params: params];
     
     [networkOperation addJSONCompletionHandler: ^(NSDictionary *dictionary) {
-        
         if(!dictionary) {
             errorBlock(dictionary);
             return;
         }
-            
+        
         completionBlock(dictionary);
         
     } errorHandler:^(NSError *error) {
         errorBlock(error);
     }];
-    
-    
-    
+
     [self enqueueOperation: networkOperation];
 }
 

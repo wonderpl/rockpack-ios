@@ -532,16 +532,25 @@
                                                                                                    httpMethod: @"PUT"
                                                                                                           ssl: TRUE];
     // We have to perform the image upload with an input stream
-    NSData *imageData = UIImagePNGRepresentation(image);
+    NSData *imageData = UIImageJPEGRepresentation(image, 0.70);
     NSString *lengthString = [NSString stringWithFormat: @"%@", [NSNumber numberWithUnsignedLong: imageData.length]];
     NSInputStream *inputStream = [NSInputStream inputStreamWithData: imageData];
     networkOperation.uploadStream = inputStream;
     
-    [networkOperation addHeaders: @{@"Content-Type" : @"image/png", @"Content-Length" : lengthString}];
-
+    [networkOperation addHeaders: @{@"Content-Type" : @"image/jpeg", @"Content-Length" : lengthString}];
+    SYNAppDelegate* blockAppDelegate = self.appDelegate;
     [self addCommonHandlerToNetworkOperation: networkOperation
                            completionHandler:^(NSDictionary* result) {
-                               completionBlock([networkOperation.readonlyResponse allHeaderFields]);
+                               NSDictionary* headerDictionary = [networkOperation.readonlyResponse allHeaderFields];
+                               User* currentUser = blockAppDelegate.currentUser;
+                               if(currentUser)
+                               {
+                                   NSString *newThumbnailURL = [headerDictionary objectForKey:@"Location"];
+                                   currentUser.thumbnailURL = newThumbnailURL;
+                                   [blockAppDelegate saveContext:YES];
+                                   [[NSNotificationCenter defaultCenter] postNotificationName:kUserDataChanged object:nil userInfo:@{@"user":currentUser}];
+                               }
+                               completionBlock(headerDictionary);
                            } errorHandler: errorBlock];
     
     [self enqueueSignedOperation: networkOperation];
