@@ -50,7 +50,11 @@
 {
     NSError* error;
     
-    if (![importManagedObjectContext save: &error])
+    if ([importManagedObjectContext save: &error])
+    {
+        return YES;
+    }
+    else
     {
         // Something went wrong, so print as much debug info as we can
         NSArray* detailedErrors = [[error userInfo] objectForKey: NSDetailedErrorsKey];
