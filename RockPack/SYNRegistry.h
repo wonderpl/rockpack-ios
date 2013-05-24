@@ -16,10 +16,10 @@
 }
 
 
--(id)initWithManagedObjectContext:(NSManagedObjectContext*)moc;
-+(id)registry;
+- (id) initWithManagedObjectContext: (NSManagedObjectContext*) moc;
++ (id) registry;
 
--(BOOL)saveImportContext;
--(BOOL)clearImportContextFromEntityName:(NSString*)entityName;
+- (BOOL) saveImportContext;
+- (BOOL) clearImportContextFromEntityName: (NSString*) entityName;
 
 @end
