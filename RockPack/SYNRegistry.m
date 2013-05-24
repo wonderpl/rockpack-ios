@@ -11,8 +11,13 @@
 
 @implementation SYNRegistry
 
++ (id) registry
+{
+    return [[self alloc] init];
+}
 
--(id)init
+
+- (id) init
 {
     if (self = [super init])
     {
@@ -20,79 +25,89 @@
         importManagedObjectContext = [[NSManagedObjectContext alloc] initWithConcurrencyType: NSConfinementConcurrencyType];
         importManagedObjectContext.parentContext = appDelegate.mainManagedObjectContext;
     }
-    return self;
-}
-
-+(id)registry
-{
-    return [[self alloc] init];
-}
-
--(id)initWithManagedObjectContext:(NSManagedObjectContext*)moc
-{
-    if (self = [self init])
-    {
-        
-        if(moc)
-        {
-            importManagedObjectContext.parentContext = moc;
-        }
-        
-        
-    }
     
     return self;
 }
 
+
+- (id) initWithManagedObjectContext: (NSManagedObjectContext*) moc
+{
+    if (self = [self init])
+    {
+        if (moc)
+        {
+            importManagedObjectContext.parentContext = moc;
+        }
+    }
+    
+    return self;
+}
 
 
 #pragma mark - Import Context Management
 
--(BOOL)saveImportContext
+- (BOOL) saveImportContext
 {
     NSError* error;
     
-    if([importManagedObjectContext save:&error])
+    if ([importManagedObjectContext save: &error])
+    {
         return YES;
-    
-    // else...
-    NSArray* detailedErrors = [[error userInfo] objectForKey:NSDetailedErrorsKey];
-    if ([detailedErrors count] > 0)
-        for(NSError* detailedError in detailedErrors)
-            DebugLog(@"Import MOC Save Error (Detailed): %@", [detailedError userInfo]);
-    
+    }
+    else
+    {
+        // Something went wrong, so print as much debug info as we can
+        NSArray* detailedErrors = [[error userInfo] objectForKey: NSDetailedErrorsKey];
+        {
+            if ([detailedErrors count] > 0)
+            {
+                for(NSError* detailedError in detailedErrors)
+                {
+                    DebugLog(@"Import MOC Save Error (Detailed): %@", [detailedError userInfo]);
+                }
+            }
+        }
+    }
     
     return NO;
 }
 
--(BOOL)clearImportContextFromEntityName:(NSString*)entityName
+
+- (BOOL) clearImportContextFromEntityName: (NSString*) entityName
 {
     NSFetchRequest * fetchRequest = [[NSFetchRequest alloc] init];
     
-    NSEntityDescription* entityDescription = [NSEntityDescription entityForName:entityName inManagedObjectContext:importManagedObjectContext];
-    [fetchRequest setEntity:entityDescription];
+    NSEntityDescription* entityDescription = [NSEntityDescription entityForName: entityName
+                                                         inManagedObjectContext: importManagedObjectContext];
+    [fetchRequest setEntity: entityDescription];
     
-    NSError* error = nil;
-    NSArray * result = [importManagedObjectContext executeFetchRequest:fetchRequest error:&error];
+    NSError *error = nil;
+    NSArray *result = [importManagedObjectContext executeFetchRequest: fetchRequest
+                                                                 error: &error];
     
-    if(error != nil)
+    // Bail, if our fetch request failed
+    if (error)
+    {
+        AssertOrLog(@"clearImportContextFromEntityName: Fetch request failed");
         return NO;
+    }
     
     for (id basket in result)
     {
-        [importManagedObjectContext deleteObject:basket];
+        [importManagedObjectContext deleteObject: basket];
     }
-        
     
     BOOL saveResult = [self saveImportContext];
-    if(!saveResult)
+    
+    if (!saveResult)
+    {
+        AssertOrLog(@"clearImportContextFromEntityName: Save failed");
         return NO;
+    }
     
     [appDelegate saveSearchContext];
     
-    return YES;
-    
-    
+    return YES;  
 }
 
 @end

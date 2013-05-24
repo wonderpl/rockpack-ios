@@ -63,7 +63,9 @@
         completionBlock();
         
     } errorHandler:^(NSError* error) {
+        
         DebugLog(@"API request failed");
+        
     }];
     
     
@@ -111,7 +113,6 @@
     SYNNetworkOperationJsonObject *networkOperation = (SYNNetworkOperationJsonObject*)[self operationWithPath: kAPIGetCoverArt
                                                                                                        params: [self getLocalParam]];
     
-    
     [networkOperation addJSONCompletionHandler: ^(NSDictionary *dictionary)
     {
         BOOL registryResultOk = [self.registry registerCoverArtFromDictionary: dictionary
@@ -125,41 +126,43 @@
     } errorHandler: ^(NSError* error) {
         
         DebugLog(@"API request failed");
-        
     }];
     
     [self enqueueOperation: networkOperation];
 }
 
 
-- (void) updateVideosScreenForCategory:(NSString*)categoryId
+- (void) updateVideosScreenForCategory: (NSString*) categoryId
 {
     NSDictionary* parameters;
-    if([categoryId isEqualToString:@"all"])
+    
+    if ([categoryId isEqualToString: @"all"])
+    {
         parameters = [self getLocalParam];
+    }
     else
-        parameters = [self getLocalParamWithParams:[NSDictionary dictionaryWithObject:categoryId forKey:@"category"]];
+    {
+        parameters = [self getLocalParamWithParams: [NSDictionary dictionaryWithObject: categoryId
+                                                                                forKey: @"category"]];
+    }
     
     DebugLog(@"Network Engine requesting Videos with locale: %@", self.localeString);
     
     SYNNetworkOperationJsonObject *networkOperation =
     (SYNNetworkOperationJsonObject*)[self operationWithPath:kAPIPopularVideos params:parameters];
     
-    [networkOperation addJSONCompletionHandler:^(NSDictionary *dictionary) {
+    [networkOperation addJSONCompletionHandler: ^(NSDictionary *dictionary) {
         
         BOOL registryResultOk = [self.registry registerVideoInstancesFromDictionary:dictionary forViewId:@"Videos" byAppending:NO];
-        if (!registryResultOk) {
+        if (!registryResultOk)
+        {
             DebugLog(@"Update Videos Screens Request Failed");
             return;
         }
-        
-        
-        
-    } errorHandler:^(NSError* error) {
+    } errorHandler: ^(NSError* error) {
         DebugLog(@"Update Videos Screens Request Failed");
     }];
-    
-    
+
     [self enqueueOperation: networkOperation];
 }
 
@@ -179,70 +182,72 @@
     
 }
 
-- (void) updateChannelsScreenForCategory:(NSString*)categoryId
-                                forRange:(NSRange)range
-                           ignoringCache:(BOOL)ingore
-                            onCompletion:(MKNKJSONCompleteBlock)completeBlock
-                                 onError:(MKNKJSONErrorBlock)errorBlock {
-    
-    
+- (void) updateChannelsScreenForCategory: (NSString*) categoryId
+                                forRange: (NSRange) range
+                           ignoringCache: (BOOL) ignore
+                            onCompletion: (MKNKJSONCompleteBlock) completeBlock
+                                 onError: (MKNKJSONErrorBlock) errorBlock
+{
     NSMutableDictionary* tempParameters = [NSMutableDictionary dictionary];
-    [tempParameters setObject:[NSString stringWithFormat:@"%i", range.location - 1] forKey:@"start"]; // compensate for 0 indexed
-    [tempParameters setObject:[NSString stringWithFormat:@"%i", range.length] forKey:@"size"];
     
-    if(![categoryId isEqualToString:@"all"]) {
-        [tempParameters setObject:categoryId forKey:@"category"];
+    [tempParameters setObject: [NSString stringWithFormat: @"%i", range.location - 1]
+                       forKey: @"start"]; // compensate for 0 indexed
+    
+    [tempParameters setObject: [NSString stringWithFormat: @"%i", range.length]
+                       forKey: @"size"];
+    
+    if (![categoryId isEqualToString: @"all"])
+    {
+        [tempParameters setObject: categoryId
+                           forKey: @"category"];
     }
-        
-    
-    NSDictionary* parameters = [self getLocalParamWithParams:tempParameters];
-    
-    
+
+    NSDictionary* parameters = [self getLocalParamWithParams: tempParameters];
+
     SYNNetworkOperationJsonObject *networkOperation =
-    (SYNNetworkOperationJsonObject*)[self operationWithPath:kAPIPopularChannels params: parameters];
+    (SYNNetworkOperationJsonObject*)[self operationWithPath: kAPIPopularChannels
+                                                     params: parameters];
     
-    networkOperation.ignoreCachedResponse = ingore;
+    networkOperation.ignoreCachedResponse = ignore;
     
-    [networkOperation addJSONCompletionHandler:^(NSDictionary *dictionary) {
-        
+    [networkOperation addJSONCompletionHandler: ^(NSDictionary *dictionary){
         completeBlock(dictionary);
-        
-    } errorHandler:^(NSError* error) {
-        
+    } errorHandler: ^(NSError* error) {
         errorBlock(@{@"network_error":@"Engine Failed to Load Channels"});
     }];
     
     [self enqueueOperation: networkOperation];
-    
 }
 
 
 #pragma mark - Search
 
-- (void) searchVideosForTerm:(NSString*)searchTerm
-                     inRange:(NSRange)range
-                  onComplete:(MKNKSearchSuccessBlock)completeBlock
+- (void) searchVideosForTerm: (NSString*)searchTerm
+                     inRange: (NSRange)range
+                  onComplete: (MKNKSearchSuccessBlock)completeBlock
 {
-    
-    
-    if(searchTerm == nil || [searchTerm isEqualToString:@""])
+    if (searchTerm == nil || [searchTerm isEqualToString:@""])
         return;
     
     NSMutableDictionary* tempParameters = [NSMutableDictionary dictionary];
     
-    [tempParameters setObject:searchTerm forKey:@"q"];
+    [tempParameters setObject:searchTerm forKey: @"q"];
     
-    [tempParameters setObject:[NSString stringWithFormat:@"%i", range.location] forKey:@"start"];
-    [tempParameters setObject:[NSString stringWithFormat:@"%i", range.length] forKey:@"size"];
+    [tempParameters setObject: [NSString stringWithFormat: @"%i", range.location]
+                       forKey: @"start"];
     
-    [tempParameters addEntriesFromDictionary:[self getLocalParam]];
+    [tempParameters setObject: [NSString stringWithFormat: @"%i", range.length]
+                       forKey: @"size"];
     
-    NSDictionary* parameters = [NSDictionary dictionaryWithDictionary:tempParameters];
+    [tempParameters addEntriesFromDictionary: [self getLocalParam]];
+    
+    NSDictionary* parameters = [NSDictionary dictionaryWithDictionary: tempParameters];
     
     SYNNetworkOperationJsonObject *networkOperation =
-    (SYNNetworkOperationJsonObject*)[self operationWithPath:kAPISearchVideos params:parameters];
+    (SYNNetworkOperationJsonObject*)[self operationWithPath: kAPISearchVideos
+                                                     params: parameters];
     
-    [networkOperation addJSONCompletionHandler:^(NSDictionary *dictionary) {
+    [networkOperation addJSONCompletionHandler: ^(NSDictionary *dictionary) {
         
         int itemsCount = 0;
         
@@ -253,14 +258,11 @@
         if (totalNumber && [totalNumber isKindOfClass: [NSNumber class]])
             itemsCount = totalNumber.intValue;
         
-        
-        
         BOOL registryResultOk = [self.searchRegistry registerVideosFromDictionary:dictionary];
         if (!registryResultOk)
             return;
         
         completeBlock(itemsCount);
-        
         
     } errorHandler:^(NSError* error) {
         DebugLog(@"Update Videos Screens Request Failed");
@@ -271,9 +273,9 @@
 }
 
 
-- (void) searchChannelsForTerm:(NSString*)searchTerm
-                      andRange:(NSRange)range
-                    onComplete:(MKNKSearchSuccessBlock)completeBlock
+- (void) searchChannelsForTerm: (NSString*)searchTerm
+                      andRange: (NSRange)range
+                    onComplete: (MKNKSearchSuccessBlock)completeBlock
 {
     
     
@@ -288,7 +290,7 @@
     [tempParameters setObject:[NSString stringWithFormat:@"%i", range.location] forKey:@"start"];
     [tempParameters setObject:[NSString stringWithFormat:@"%i", range.length] forKey:@"size"];
     
-    [tempParameters addEntriesFromDictionary:[self getLocalParam]];
+    [tempParameters addEntriesFromDictionary: [self getLocalParam]];
     
     
     NSDictionary* parameters = [NSDictionary dictionaryWithDictionary:tempParameters];
@@ -296,20 +298,23 @@
     SYNNetworkOperationJsonObject *networkOperation =
     (SYNNetworkOperationJsonObject*)[self operationWithPath:kAPISearchChannels params:parameters];
     
-    [networkOperation addJSONCompletionHandler:^(NSDictionary *dictionary) {
+    [networkOperation addJSONCompletionHandler: ^(NSDictionary *dictionary) {
         
         
         int itemsCount = 0;
         
-        if(!dictionary)
+        if (!dictionary)
             return;
         
-        NSNumber *totalNumber = (NSNumber*)[[dictionary objectForKey: @"channels"] objectForKey:@"total"];
+        NSNumber *totalNumber = (NSNumber*)dictionary[@"channels"][@"total"];
+        
         if (totalNumber && [totalNumber isKindOfClass: [NSNumber class]])
+        {
             itemsCount = totalNumber.intValue;
+        }
         
+        BOOL registryResultOk = [self.searchRegistry registerChannelsFromDictionary: dictionary];
         
-        BOOL registryResultOk = [self.searchRegistry registerChannelsFromDictionary:dictionary];
         if (!registryResultOk)
             return;
         
@@ -324,21 +329,19 @@
     [self enqueueOperation: networkOperation];
 }
 
+
 #pragma mark - Autocomplete
 
-- (void) getAutocompleteForHint:(NSString*)hint
-                    forResource:(EntityType)entityType
+- (void) getAutocompleteForHint: (NSString*)hint
+                    forResource: (EntityType)entityType
                    withComplete: (MKNKAutocompleteProcessBlock) completionBlock
-                        andError: (MKNKErrorBlock) errorBlock
+                       andError: (MKNKErrorBlock) errorBlock
 {
-    
-    if(!hint) return;
-    
+    if (!hint) return;
     
     // Register the class to be used for this operation only
     
-    [self registerOperationSubclass:[SYNNetworkOperationJsonObjectParse class]];
-    
+    [self registerOperationSubclass: [SYNNetworkOperationJsonObjectParse class]];
     
     NSDictionary* parameters = [self getLocalParamWithParams:[NSDictionary dictionaryWithObject:hint forKey:@"q"]];
     
@@ -397,7 +400,6 @@
         }
         
         
-        
         BOOL registryResultOk = [self.registry registerChannelOwnerFromDictionary: dictionary];
         if (!registryResultOk)
         {
@@ -422,20 +424,20 @@
                                    }
                                    
                               
-                                   [channelOwner addSubscriptionsDictionary:dictionary];
-                                   
-                                   // save the context, whichever it is
-                                   
-                                   NSError* error;
-                                   
-                                   if ([channelOwner.managedObjectContext hasChanges])
-                                   {
-                                       [channelOwner.managedObjectContext save: &error];
-                                       
-                                   }
-                                   
+//                                   [channelOwner addSubscriptionsDictionary:dictionary];
+//                                   
+//                                   // save the context, whichever it is
+//                                   
+//                                   NSError* error;
+//                                   
+//                                   if ([channelOwner.managedObjectContext hasChanges])
+//                                   {
+//                                       [channelOwner.managedObjectContext save: &error];
+//                                       
+//                                   }
+//                                   
                               
-                                   completeBlock(subscriptionsDictionary);
+                                completeBlock(subscriptionsDictionary);
                               
                               
                                } errorHandler:errorBlock];

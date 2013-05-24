@@ -15,7 +15,6 @@
 #import "GAI.h"
 #import "SYNChannelCategoryTableViewController.h"
 #import "SYNChannelDetailViewController.h"
-#import "SYNChannelFooterMoreView.h"
 #import "SYNChannelThumbnailCell.h"
 #import "SYNChannelsRootViewController.h"
 #import "SYNDeviceManager.h"
@@ -29,7 +28,7 @@
 #import "Video.h"
 #import "VideoInstance.h"
 
-#define STANDARD_REQUEST_LENGTH 48
+
 #define kChannelsCache @"ChannelsCache"
 
 @interface SYNChannelsRootViewController () <UIScrollViewDelegate, SYNChannelCategoryTableViewDelegate>
@@ -57,7 +56,6 @@
 @property (nonatomic, strong) UILabel* subCategoryNameLabel;
 @property (nonatomic, strong) UIImageView* arrowImage;
 @property (nonatomic, strong) NSMutableArray* channels;
-@property (nonatomic, strong) SYNChannelFooterMoreView* footerView;
 
 
 @property (nonatomic, strong) Genre* allGenre;
@@ -251,8 +249,8 @@
     [appDelegate.networkEngine updateChannelsScreenForCategory: (genre ? genre.uniqueId : @"all")
                                                       forRange: dataRequestRange
                                                  ignoringCache: NO
-                                                  onCompletion: ^(NSDictionary* response) {
-                                                      
+                                                  onCompletion: ^(NSDictionary* response)
+    {
                                                       NSDictionary *channelsDictionary = [response objectForKey: @"channels"];
                                                       if (!channelsDictionary || ![channelsDictionary isKindOfClass: [NSDictionary class]])
                                                           return;
@@ -271,10 +269,9 @@
                                                       
                                                       dataItemsAvailable = [totalNumber integerValue];
                                                       
-                                                      BOOL registryResultOk = [appDelegate.mainRegistry registerChannelsFromDictionary:response
-                                                                                                                              forGenre:genre
-                                                                                                                           byAppending:append];
-                                                      
+                                                      BOOL registryResultOk = [appDelegate.mainRegistry registerChannelsFromDictionary: response
+                                                                                                                              forGenre: genre
+                                                                                                                           byAppending: append];
                                                       self.footerView.showsLoading = NO;
                                                       
                                                       if (!registryResultOk)
@@ -284,10 +281,8 @@
                                                       }
                                                       
                                                       [self displayChannelsForGenre:genre];
-                                                      
-                                                      
-                                                      
-                                                  } onError: ^(NSDictionary* errorInfo) {
+                                                  }
+                                                       onError: ^(NSDictionary* errorInfo) {
                                                       DebugLog(@"Could not load channels: %@", errorInfo);
                                                       self.footerView.showsLoading = NO;
                                                   }];

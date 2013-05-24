@@ -7,6 +7,7 @@
 //
 
 #import "SYNAbstractViewController.h"
+#import "SYNChannelFooterMoreView.h"
 
 @interface SYNChannelsRootViewController : SYNAbstractViewController {
     @protected
@@ -15,6 +16,8 @@
 
 @property (nonatomic, strong) UICollectionView *channelThumbnailCollectionView;
 @property (nonatomic, assign) BOOL enableCategoryTable;
+
+@property (nonatomic, strong) SYNChannelFooterMoreView* footerView;
 
 
 @end

@@ -14,6 +14,5 @@
                               withId: (NSString *) uniqueId
                  ignoringObjectTypes: (IgnoringObjects) ignoringObjects;
 
-- (void) addVideoInstancesFromChannel: (Channel*) channel;
 
 @end
