@@ -3027,9 +3027,9 @@
 				0142ED8716B19FBE008694DA /* SYNProfileRootViewController.h */,
 				0142ED8816B19FBE008694DA /* SYNProfileRootViewController.m */,
 				BE86BF15171F001E0006DC8A /* SYNSubscriptionsViewController.h */,
+				BE86BF1E171FFB980006DC8A /* SYNYouHeaderView.m */,
 				BE86BF16171F001E0006DC8A /* SYNSubscriptionsViewController.m */,
 				BE86BF1D171FFB980006DC8A /* SYNYouHeaderView.h */,
-				BE86BF1E171FFB980006DC8A /* SYNYouHeaderView.m */,
 			);
 			name = Profile;
 			sourceTree = "<group>";
@@ -3106,8 +3106,8 @@
 				018919FF1672255F00AB07BB /* SYNHomeSectionHeaderView.xib */,
 				BE7D342F170DDB310085AB81 /* SYNChannelFooterMoreView.h */,
 				BE7D3430170DDB310085AB81 /* SYNChannelFooterMoreView.m */,
-				BE7D342D170DD8C90085AB81 /* SYNChannelFooterMoreView.xib */,
 				011BA5DB174D1EB700041A16 /* SYNCoverRightMoreView.h */,
+				BE7D342D170DD8C90085AB81 /* SYNChannelFooterMoreView.xib */,
 				011BA5DC174D1EB700041A16 /* SYNCoverRightMoreView.m */,
 				011BA5DE174D1ECB00041A16 /* SYNCoverRightMoreView.xib */,
 			);
