@@ -119,13 +119,13 @@
     
     self.cancelButton = [UIButton buttonWithType:UIButtonTypeCustom];
     
-    [self.cancelButton setBackgroundImage:[[UIImage imageNamed:@"PLCameraSheetButton.png"] stretchableImageWithLeftCapWidth:5 topCapHeight:0] forState:UIControlStateNormal];
-    [self.cancelButton setBackgroundImage:[[UIImage imageNamed:@"PLCameraSheetButtonPressed.png"] stretchableImageWithLeftCapWidth:5 topCapHeight:0] forState:UIControlStateHighlighted];
+    [self.cancelButton setBackgroundImage:[UIImage imageNamed:@"ButtonCancel~iphone.png"] forState:UIControlStateNormal];
+    [self.cancelButton setBackgroundImage:[UIImage imageNamed:@"ButtonCancelHighlighted~iphone.png"] forState:UIControlStateHighlighted];
     
     [[self.cancelButton titleLabel] setFont: [UIFont boldRockpackFontOfSize: 11.0]];
     [[self.cancelButton titleLabel] setShadowOffset:CGSizeMake(0, 1)];
-    [self.cancelButton setFrame:CGRectMake(0, 0, 50, 30)];
-    [self.cancelButton setTitle:NSLocalizedString(@"CANCEL",@"") forState:UIControlStateNormal];
+    [self.cancelButton setFrame:CGRectMake(0, 0, 48, 49)];
+    [self.cancelButton setTitle:nil forState:UIControlStateNormal];
     [self.cancelButton setTitleShadowColor:[UIColor colorWithRed:0.827 green:0.831 blue:0.839 alpha:1] forState:UIControlStateNormal];
     [self.cancelButton  addTarget:self action:@selector(_actionCancel) forControlEvents:UIControlEventTouchUpInside];
     
@@ -135,13 +135,13 @@
     
     self.useButton = [UIButton buttonWithType:UIButtonTypeCustom];
     
-    [self.useButton setBackgroundImage:[[UIImage imageNamed:@"PLCameraSheetDoneButton.png"] stretchableImageWithLeftCapWidth:5 topCapHeight:0] forState:UIControlStateNormal];
-    [self.useButton setBackgroundImage:[[UIImage imageNamed:@"PLCameraSheetDoneButtonPressed.png"] stretchableImageWithLeftCapWidth:5 topCapHeight:0] forState:UIControlStateHighlighted];
+    [self.useButton setBackgroundImage:[UIImage imageNamed:@"ButtonConfirmYellow~iphone.png"] forState:UIControlStateNormal];
+    [self.useButton setBackgroundImage:[UIImage imageNamed:@"ButtonConfirmYellowHighlighted~iphone.png"] forState:UIControlStateHighlighted];
     
     [[self.useButton titleLabel] setFont:[UIFont boldRockpackFontOfSize:11]];
     [[self.useButton titleLabel] setShadowOffset:CGSizeMake(0, -1)];
-    [self.useButton setFrame:CGRectMake(0, 0, 50, 30)];
-    [self.useButton setTitle:NSLocalizedString(@"USE",@"") forState:UIControlStateNormal];
+    [self.useButton setFrame:CGRectMake(0, 0, 48, 49)];
+    [self.useButton setTitle:nil forState:UIControlStateNormal];
     [self.useButton setTitleShadowColor:[UIColor colorWithRed:0.118 green:0.247 blue:0.455 alpha:1] forState:UIControlStateNormal];
     [self.useButton  addTarget:self action:@selector(_actionUse) forControlEvents:UIControlEventTouchUpInside];
     
@@ -150,8 +150,8 @@
 - (UIImage *)_toolbarBackgroundImage{
     
     CGFloat components[] = {
-        1., 1., 1., 1.,
-        123./255., 125/255., 132./255., 1.
+        0., 0., 0., 0.,
+        0./255., 0./255., 0./255., 1.
     };
     
     UIGraphicsBeginImageContextWithOptions(CGSizeMake(320, 54), YES, 0.0);
@@ -180,19 +180,20 @@
         [self _setupCancelButton];
         [self _setupUseButton];
         
-        UILabel *info = [[UILabel alloc] initWithFrame:CGRectZero];
+        UILabel *info = [[UILabel alloc] initWithFrame:CGRectMake((self.view.frame.size.width-250)/2, 20, 320, 40)];
         info.text = NSLocalizedString(@"MOVE AND SCALE", @"");
-        info.textColor = [UIColor colorWithRed:0.173 green:0.173 blue:0.173 alpha:1];
+        info.textColor = [UIColor colorWithRed:255.0/255.0 green:255.0/255.0 blue:255.0/255.0 alpha:1];
         info.backgroundColor = [UIColor clearColor];
-        info.shadowColor = [UIColor colorWithRed:0.827 green:0.831 blue:0.839 alpha:1];
-        info.shadowOffset = CGSizeMake(0, 1);
-        info.font = [UIFont boldSystemFontOfSize:18];
-        [info sizeToFit];
+        info.font = [UIFont rockpackFontOfSize:18];
+        info.textAlignment = NSTextAlignmentCenter;
+        //[info sizeToFit];
+        
         
         UIBarButtonItem *cancel = [[UIBarButtonItem alloc] initWithCustomView:self.cancelButton];
         UIBarButtonItem *flex = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemFlexibleSpace target:nil action:nil];
         UIBarButtonItem *lbl = [[UIBarButtonItem alloc] initWithCustomView:info];
         UIBarButtonItem *use = [[UIBarButtonItem alloc] initWithCustomView:self.useButton];
+
         
         [self.toolbar setItems:[NSArray arrayWithObjects:cancel, flex, lbl, flex, use, nil]];
     }
@@ -234,8 +235,8 @@
 - (void)viewWillLayoutSubviews{
     [super viewWillLayoutSubviews];
     
-    self.imageCropView.frame = self.view.bounds;
-    self.toolbar.frame = CGRectMake(0, CGRectGetHeight(self.view.frame) - 54, 320, 54);
+    self.imageCropView.frame = CGRectMake(self.view.center.x - (self.view.frame.size.width * 0.5), (self.view.center.y + 50) - (self.view.frame.size.height *0.5), self.view.frame.size.width,self.view.frame.size.height);
+    self.toolbar.frame = CGRectMake((self.view.center.x + 6) - (self.view.frame.size.width * 0.5), self.view.center.y - 174, 308, 54);
 }
 
 - (BOOL)shouldAutorotateToInterfaceOrientation:(UIInterfaceOrientation)interfaceOrientation
