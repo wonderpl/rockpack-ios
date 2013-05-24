@@ -107,44 +107,56 @@ static NSEntityDescription *channelOwnerEntity = nil;
                                      withDefault: @"http://localhost"];
     
     self.displayName = [dictionary upperCaseStringForKey: @"display_name"
-                                      withDefault: @""];
+                                             withDefault: @""];
     
     
+    BOOL hasChannels = YES;
     
     if(!(ignoringObjects & kIgnoreChannelObjects))
     {
-        BOOL hasChannels = YES;
+        
         
         NSDictionary* channelsDictionary = [dictionary objectForKey:@"channels"];
-        if(![channelsDictionary isKindOfClass:[NSDictionary class]])
+        if([channelsDictionary isKindOfClass:[NSNull class]])
+        {
+            
             hasChannels = NO;
+        }
+        
+        
         
         NSArray* channelItemsArray = [channelsDictionary objectForKey:@"items"];
-        if(![channelsDictionary isKindOfClass:[NSArray class]])
+        if([channelItemsArray isKindOfClass:[NSNull class]])
+        {
+   
             hasChannels = NO;
+        }
         
-        NSOrderedSet* oldChannels = [NSOrderedSet orderedSetWithOrderedSet:self.channels];
+        NSOrderedSet* oldUserChannels = [NSOrderedSet orderedSetWithOrderedSet:self.channels];
         
-        [self.channelsSet removeAllObjects];
         
         if(hasChannels)
         {
+            [self.channelsSet removeAllObjects];
+            
             for (NSDictionary* channelDictionary in channelItemsArray)
             {
                 
-                Channel* channel = [Channel instanceFromDictionary:channelDictionary
-                                         usingManagedObjectContext:managedObjectContex
-                                               ignoringObjectTypes:kIgnoreChannelOwnerObject];
+                Channel* channel = [Channel instanceFromDictionary: channelDictionary
+                                         usingManagedObjectContext: managedObjectContex
+                                               ignoringObjectTypes: kIgnoreChannelOwnerObject];
                 
+                if(!channel)
+                    continue;
                 
-                [self addChannelsObject:channel];
+                [self.channelsSet addObject:channel];
                 
             }
         }
         
         // restore the link
         
-        [oldChannels enumerateObjectsUsingBlock:^(Channel* channel, NSUInteger idx, BOOL *stop) {
+        [oldUserChannels enumerateObjectsUsingBlock:^(Channel* channel, NSUInteger idx, BOOL *stop) {
             channel.channelOwner = self;
         }];
     }

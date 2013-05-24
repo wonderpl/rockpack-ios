@@ -34,8 +34,9 @@ static NSEntityDescription *channelEntity = nil;
         return nil;
     
    
-    NSString *uniqueId = [dictionary objectForKey: @"id"
-                                      withDefault: @"Uninitialized Id"];
+    NSString *uniqueId = [dictionary objectForKey: @"id"];
+    if(!uniqueId || ![uniqueId isKindOfClass:[NSString class]])
+        return nil;
     
     
     if (channelEntity == nil)

@@ -295,7 +295,6 @@
                                                                                                    httpMethod: @"GET"
                                                                                                           ssl: TRUE];
     
-    
     [self addCommonHandlerToNetworkOperation: networkOperation
                            completionHandler: completionBlock
                                 errorHandler: errorBlock];
@@ -322,7 +321,6 @@
     [networkOperation addHeaders: @{@"Content-Type" : @"application/json"}];
     networkOperation.postDataEncoding = MKNKPostDataEncodingTypeJSON;
     
-    
     [self addCommonHandlerToNetworkOperation: networkOperation
                            completionHandler: completionBlock
                                 errorHandler: errorBlock];
@@ -343,7 +341,7 @@
     SYNNetworkOperationJsonObject *networkOperation = (SYNNetworkOperationJsonObject*)[self operationWithPath: apiString
                                                                                                        params: @{@"locale" : self.localeString}
                                                                                                    httpMethod: @"GET"
-                                                                                                          ssl: TRUE];
+                                                                                                          ssl: YES];
     
     [networkOperation addJSONCompletionHandler:^(NSDictionary *responseDictionary)
     {
