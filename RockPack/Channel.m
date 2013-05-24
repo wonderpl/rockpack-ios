@@ -231,7 +231,6 @@ static NSEntityDescription *channelEntity = nil;
         VideoInstance* copyOfVideoInstance = [VideoInstance instanceFromVideoInstance:videoInstance
                                                             usingManagedObjectContext:self.managedObjectContext];
         
-        
         [self addVideoInstancesObject:copyOfVideoInstance];
         
     }

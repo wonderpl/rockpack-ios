@@ -109,11 +109,25 @@ static NSEntityDescription *channelOwnerEntity = nil;
     self.displayName = [dictionary upperCaseStringForKey: @"display_name"
                                       withDefault: @""];
     
+    
+    
     if(!(ignoringObjects & kIgnoreChannelObjects))
     {
-        NSDictionary* channelsArray = [dictionary objectForKey:@"channels"];
-        NSArray* channelItemsArray;
-        if(channelsArray && (channelItemsArray = [channelsArray objectForKey:@"items"]))
+        BOOL hasChannels = YES;
+        
+        NSDictionary* channelsDictionary = [dictionary objectForKey:@"channels"];
+        if(![channelsDictionary isKindOfClass:[NSDictionary class]])
+            hasChannels = NO;
+        
+        NSArray* channelItemsArray = [channelsDictionary objectForKey:@"items"];
+        if(![channelsDictionary isKindOfClass:[NSArray class]])
+            hasChannels = NO;
+        
+        NSOrderedSet* oldChannels = [NSOrderedSet orderedSetWithOrderedSet:self.channels];
+        
+        [self.channelsSet removeAllObjects];
+        
+        if(hasChannels)
         {
             for (NSDictionary* channelDictionary in channelItemsArray)
             {
@@ -127,6 +141,12 @@ static NSEntityDescription *channelOwnerEntity = nil;
                 
             }
         }
+        
+        // restore the link
+        
+        [oldChannels enumerateObjectsUsingBlock:^(Channel* channel, NSUInteger idx, BOOL *stop) {
+            channel.channelOwner = self;
+        }];
     }
     
     
@@ -135,7 +155,36 @@ static NSEntityDescription *channelOwnerEntity = nil;
 
 #pragma mark - Channels
 
-
+-(void)addSubscriptionsDictionary:(NSDictionary *)subscriptionsDictionary
+{
+    NSDictionary* channeslDictionary = [subscriptionsDictionary objectForKey: @"channels"];
+    if (!channeslDictionary)
+        return;
+    
+    NSArray* itemsArray = [channeslDictionary objectForKey: @"items"];
+    if (!itemsArray)
+        return;
+    
+    
+    [self.subscriptionsSet removeAllObjects];
+    
+    for (NSDictionary* subscriptionChannel in itemsArray)
+    {
+        
+        // must use the main context so as to be able to link it with the channel owner
+        
+        Channel* channel = [Channel instanceFromDictionary: subscriptionChannel
+                                 usingManagedObjectContext: self.managedObjectContext
+                                       ignoringObjectTypes: kIgnoreNothing];
+        
+        if (!channel)
+            continue;
+        
+        
+        [self addSubscriptionsObject:channel];
+        
+    }
+}
 
 -(void)addChannelsObject:(Channel *)newChannel
 {

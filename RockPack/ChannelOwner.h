@@ -19,4 +19,6 @@
 
 -(NSDictionary*) channelsDictionary;
 
+-(void)addSubscriptionsDictionary:(NSDictionary *)subscriptionsDictionary;
+
 @end
