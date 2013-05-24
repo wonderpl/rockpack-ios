@@ -63,7 +63,9 @@
         completionBlock();
         
     } errorHandler:^(NSError* error) {
+        
         DebugLog(@"API request failed");
+        
     }];
     
     

@@ -180,10 +180,18 @@
     // Google analytics support
     [self updateAnalytics];
     
+    [[NSNotificationCenter defaultCenter] addObserver:self
+                                             selector:@selector(videoQueueCleared)
+                                                 name:kVideoQueueClear
+                                               object:nil];
+    
     [self.videoThumbnailCollectionView reloadData];
 }
 
-
+-(void)videoQueueCleared
+{
+    [self.videoThumbnailCollectionView reloadData];
+}
 - (void) viewDidScrollToFront
 {
     [self updateAnalytics];

@@ -390,13 +390,7 @@ typedef void(^AnimationCompletionBlock)(BOOL finished);
     for (VideoInstance* newVideoInstance in currentlyCreating.videoInstances)
     {
         [setOfVideosToPost addObject:newVideoInstance];
-        NSLog(@"Adding VI: %@", newVideoInstance.title);
     }
-    
-    NSLog(@"selectedChannel: %@", selectedChannel);
-    
-    NSLog(@"currentlyCreating.videoInstances.count: %i", currentlyCreating.videoInstances.count);
-    
     
     
     
