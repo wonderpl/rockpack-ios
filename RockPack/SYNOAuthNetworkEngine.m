@@ -540,10 +540,19 @@
     networkOperation.uploadStream = inputStream;
     
     [networkOperation addHeaders: @{@"Content-Type" : @"image/png", @"Content-Length" : lengthString}];
-
+    SYNAppDelegate* blockAppDelegate = self.appDelegate;
     [self addCommonHandlerToNetworkOperation: networkOperation
                            completionHandler:^(NSDictionary* result) {
-                               completionBlock([networkOperation.readonlyResponse allHeaderFields]);
+                               NSDictionary* headerDictionary = [networkOperation.readonlyResponse allHeaderFields];
+                               User* currentUser = blockAppDelegate.currentUser;
+                               if(currentUser)
+                               {
+                                   NSString *newThumbnailURL = [headerDictionary objectForKey:@"Location"];
+                                   currentUser.thumbnailURL = newThumbnailURL;
+                                   [blockAppDelegate saveContext:YES];
+                                   [[NSNotificationCenter defaultCenter] postNotificationName:kUserDataChanged object:nil];
+                               }
+                               completionBlock(headerDictionary);
                            } errorHandler: errorBlock];
     
     [self enqueueSignedOperation: networkOperation];
