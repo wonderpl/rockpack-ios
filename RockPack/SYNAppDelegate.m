@@ -99,7 +99,7 @@ extern void instrumentObjcMessageSends(BOOL);
     [GAI sharedInstance].dispatchInterval = 30;
     
     // Set debug to YES to enable  extra debugging information.
-    [GAI sharedInstance].debug = YES;
+    [GAI sharedInstance].debug = NO;
     
     // Create tracker instance.
     [[GAI sharedInstance] trackerWithTrackingId: kGoogleAnalyticsId];
