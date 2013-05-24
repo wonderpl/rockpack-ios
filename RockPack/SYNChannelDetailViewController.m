@@ -1438,6 +1438,7 @@
     [appDelegate.oAuthNetworkEngine updateVideosForChannelForUserId: appDelegate.currentOAuth2Credentials.userId
                                                           channelId: channelId
                                                    videoInstanceSet: self.channel.videoInstances
+                                                      clearPrevious: YES
                                                   completionHandler: ^(id response) {
                                                       // a 204 returned
                                                       

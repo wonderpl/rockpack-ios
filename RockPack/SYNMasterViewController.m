@@ -390,26 +390,23 @@ typedef void(^AnimationCompletionBlock)(BOOL finished);
     for (VideoInstance* newVideoInstance in currentlyCreating.videoInstances)
     {
         [setOfVideosToPost addObject:newVideoInstance];
+        NSLog(@"Adding VI: %@", newVideoInstance.title);
     }
+    
+    NSLog(@"selectedChannel: %@", selectedChannel);
+    
+    NSLog(@"currentlyCreating.videoInstances.count: %i", currentlyCreating.videoInstances.count);
+    
+    
+    
     
     [appDelegate.oAuthNetworkEngine updateVideosForChannelForUserId: appDelegate.currentUser.uniqueId
                                                           channelId: selectedChannel.uniqueId
                                                    videoInstanceSet: setOfVideosToPost
+                                                      clearPrevious: NO
                                                   completionHandler: ^(NSDictionary* result) {
                                                       
-                                                      // succeeded in saving to remote server now save locally //
-                                                      
-                                                      for (VideoInstance* videoInstance in currentlyCreating.videoInstances)
-                                                      {
-                                                          VideoInstance* copyOfVideoInstance =
-                                                          [VideoInstance instanceFromVideoInstance:videoInstance
-                                                                         usingManagedObjectContext:selectedChannel.managedObjectContext];
-                                                          
-                                                          [selectedChannel.videoInstancesSet addObject:copyOfVideoInstance];
-                                                          
-                                                      }
-                                                      
-        
+
                                                       [self presentSuccessNotificationWithMessage:message];
                                                       
                                                       [[NSNotificationCenter defaultCenter] postNotificationName: kVideoQueueClear

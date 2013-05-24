@@ -758,6 +758,7 @@
 - (void) updateVideosForChannelForUserId: (NSString *) userId
                                channelId: (NSString *) channelId
                         videoInstanceSet: (NSOrderedSet *) videoInstanceSet
+                           clearPrevious: (BOOL) clearPrevious
                        completionHandler: (MKNKUserSuccessBlock) completionBlock
                             errorHandler: (MKNKUserErrorBlock) errorBlock
 {
@@ -768,7 +769,7 @@
     
     SYNNetworkOperationJsonObject *networkOperation = (SYNNetworkOperationJsonObject*)[self operationWithPath: apiString
                                                                                                        params: nil
-                                                                                                   httpMethod: @"PUT"
+                                                                                                   httpMethod: (clearPrevious ? @"PUT" : @"POST")
                                                                                                           ssl: TRUE];
     [networkOperation setCustomPostDataEncodingHandler: ^NSString * (NSDictionary *postDataDict)
      {

@@ -396,7 +396,6 @@
         }
         
         
-        
         BOOL registryResultOk = [self.registry registerChannelOwnerFromDictionary: dictionary];
         if (!registryResultOk)
         {
@@ -434,7 +433,7 @@
 //                                   }
 //                                   
                               
-                                   completeBlock(subscriptionsDictionary);
+                                completeBlock(subscriptionsDictionary);
                               
                               
                                } errorHandler:errorBlock];
