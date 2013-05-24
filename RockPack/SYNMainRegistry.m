@@ -466,7 +466,7 @@
     
     NSPredicate* genrePredicate;
     
-    if(genre)
+    if (genre)
     {
         if ([genre isMemberOfClass: [Genre class]])
         {
@@ -479,19 +479,18 @@
     }
 
     [channelFetchRequest setPredicate: genrePredicate];
-    
-    
+
     NSError* error;
     NSArray *existingChannels = [appDelegate.mainManagedObjectContext executeFetchRequest: channelFetchRequest
                                                                                           error: &error];
-    
     
     NSMutableDictionary* existingChannelsByIndex = [NSMutableDictionary dictionaryWithCapacity: existingChannels.count];
     
     for (Channel* existingChannel in existingChannels)
     {
         
-        [existingChannelsByIndex setObject:existingChannel forKey:existingChannel.uniqueId];
+        [existingChannelsByIndex setObject: existingChannel
+                                    forKey: existingChannel.uniqueId];
         
         if(!append)
             existingChannel.popularValue = NO; // set all to NO
@@ -507,11 +506,8 @@
             existingChannel.freshValue = NO;
            
     }
-    
-    
-    
+
     // protect owned and subscribed channels from deletion //
-    
     for (Channel* subscribedChannel in appDelegate.currentUser.subscriptions)
     {
         subscribedChannel.markedForDeletionValue = NO;
@@ -522,8 +518,6 @@
         ownedChannels.markedForDeletionValue = NO;
     }
     
-    
-
     for (NSDictionary *itemDictionary in itemArray)
     {
         NSString *uniqueId = [itemDictionary objectForKey: @"id"];
