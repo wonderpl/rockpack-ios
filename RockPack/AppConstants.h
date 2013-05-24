@@ -389,8 +389,6 @@ typedef enum {
 #define kNoteHideNetworkMessages    @"kNoteHideNetworkMessages"
 #define kNoteShowNetworkMessages    @"kNoteShowNetworkMessages"
 
-#define kNoteCurrentUserAvatarURLChangedNotification   @"kNoteCurrentUserAvatarURLChangedNotification"
-
 //
 // Tracking
 //
