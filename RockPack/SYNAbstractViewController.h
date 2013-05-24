@@ -45,6 +45,8 @@ typedef void (^SYNShareCompletionBlock)(void);
 @property (readonly) NSManagedObjectContext *mainManagedObjectContext;
 @property (readonly, getter = isVideoQueueVisible) BOOL videoQueueVisible;
 
+@property (nonatomic) BOOL isAnimating;
+
 // date related ivars
 
 @property (nonatomic) NSRange dataRequestRange;

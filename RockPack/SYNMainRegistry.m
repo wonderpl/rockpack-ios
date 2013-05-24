@@ -47,9 +47,6 @@
     
     newUser.currentValue = YES;
     
-    BOOL saveResult = [self saveImportContext];
-    if(!saveResult)
-        return NO;
     
     [appDelegate saveContext: TRUE];
     
@@ -59,7 +56,10 @@
 
 - (BOOL) registerChannelOwnerFromDictionary: (NSDictionary*) dictionary
 {
+    
+    
     // == Check for Validity == //
+    
     if (!dictionary || ![dictionary isKindOfClass: [NSDictionary class]])
         return NO;
     
@@ -80,59 +80,15 @@
 }
 - (BOOL) registerSubscriptionsForCurrentUserFromDictionary: (NSDictionary*) dictionary
 {
-    return [self registerSubscriptionsFromDictionary: dictionary
-                                     forChannelOwner: appDelegate.currentUser];
+    [appDelegate.currentUser addSubscriptionsDictionary:dictionary];
+    
+    [appDelegate saveContext:YES];
+    
+    return YES;
     
 }
 
-- (BOOL) registerSubscriptionsFromDictionary: (NSDictionary*) dictionary
-                             forChannelOwner: (ChannelOwner*) channelOwner
-{
-    // == Check for Validity == //
-    if (!dictionary ||
-        ![dictionary isKindOfClass: [NSDictionary class]] ||
-        !channelOwner)
-        return NO;
-    
-    
-    NSDictionary* channeslDictionary = [dictionary objectForKey: @"channels"];
-    if (!channeslDictionary)
-        return NO;
-    
-    NSArray* itemsArray = [channeslDictionary objectForKey: @"items"];
-    if (!itemsArray)
-        return NO;
-    
-    
-    for (NSDictionary* subscriptionChannel in itemsArray)
-    {
-        
-        // must use the main context so as to be able to link it with the channel owner
-        
-        Channel* channel = [Channel instanceFromDictionary: subscriptionChannel
-                                 usingManagedObjectContext: channelOwner.managedObjectContext
-                                       ignoringObjectTypes: kIgnoreNothing];
-        
-        if (!channel)
-            continue;
-        
-        
-        [channelOwner addSubscriptionsObject:channel];
-        
-        
-        
-    }
-    
-    
-    
-    BOOL saveResult = [self saveImportContext];
-    if(!saveResult)
-        return NO;
-    
-    [appDelegate saveContext: TRUE];
-    
-    return YES;
-}
+
 
 
 - (BOOL) registerCategoriesFromDictionary: (NSDictionary*) dictionary

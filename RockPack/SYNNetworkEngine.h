@@ -22,8 +22,6 @@
 
 - (void) updateVideosScreenForCategory: (NSString*) categoryId;
 
--(void)updateChannelOwnerDataForChannelOwner:(ChannelOwner*)channelOwner;
-
 
 - (void) updateChannelsScreenForCategory:(NSString*)categoryId
                                 forRange:(NSRange)range

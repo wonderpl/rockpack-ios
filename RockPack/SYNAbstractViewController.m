@@ -134,15 +134,19 @@
     self.view.alpha = 1.0f;
     vc.view.alpha = 0.0f;
     
+    self.isAnimating = YES;
+    
     [UIView animateWithDuration: 0.5f
                           delay: 0.0f
-                        options: UIViewAnimationOptionCurveEaseInOut
+                        options: UIViewAnimationOptionCurveEaseInOut | UIViewAnimationOptionBeginFromCurrentState
                      animations: ^ {
                          // Contract thumbnail view
                          self.view.alpha = 0.0f;
                          vc.view.alpha = 1.0f;
                      }
-                     completion: nil];
+                     completion:^(BOOL finished) {
+                         self.isAnimating = NO;
+                     }];
     
     [self.navigationController pushViewController: vc
                                          animated: NO];

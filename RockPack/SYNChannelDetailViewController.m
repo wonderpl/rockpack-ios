@@ -1038,7 +1038,6 @@
     
     [self hideCategoryChooser];
     
-    self.channel.title = self.channelTitleTextView.text;
     self.channel.channelDescription = self.channel.channelDescription ? self.channel.channelDescription : @"";
     
 
@@ -1048,7 +1047,7 @@
     
     [appDelegate.oAuthNetworkEngine updateChannelForUserId: appDelegate.currentOAuth2Credentials.userId
                                                  channelId: self.channel.uniqueId
-                                                     title: self.channel.title
+                                                     title: self.channelTitleTextView.text
                                                description: (self.channel.channelDescription)
                                                   category: category
                                                      cover: cover
@@ -1074,17 +1073,22 @@
                                          }
                                               errorHandler: ^(NSDictionary* error) {
                                                   NSDictionary* specificErrors = [error objectForKey: @"form_errors"];
-                                                  NSString* errorText = [specificErrors objectForKey: @"title"];
-                                                  
+                                                  id errorText = [specificErrors objectForKey: @"title"];
+                                                  if ([errorText isKindOfClass:[NSArray class]])
+                                                  {
+                                                      errorText = [errorText objectAtIndex:0];
+                                                  }
                                                   if (!errorText)
                                                   {
                                                       errorText = @"Could not save channel. Please try again later.";
                                                   }
                                                   
                                                   DebugLog(@"Error @ saveChannelPressed:");
-                                                  NSString* errorMessage = NSLocalizedString(errorText, nil);
-                                                  [self showError: errorMessage];
+                                                  errorText = NSLocalizedString(errorText, nil);
+                                                  [self showError: errorText];
+                                                  self.saveChannelButton.hidden = NO;
                                                   self.saveChannelButton.enabled = YES;
+                                                  [self.activityIndicator stopAnimating];
                                               }];
 }
 
@@ -1266,6 +1270,7 @@
         
         CGRect startFrame = self.categoryTableViewController.view.frame;
         startFrame.origin.y = self.view.frame.size.height;
+        startFrame.size.height = self.view.frame.size.height;
         self.categoryTableViewController.view.frame = startFrame;
 
         [self.view addSubview:self.categoryTableViewController.view];
@@ -1404,17 +1409,10 @@
                                          completionHandler: ^(NSDictionary* resourceCreated) {
                                              NSString* channelId = [resourceCreated objectForKey: @"id"];
                                              
+                                             self.createChannelButton.hidden = YES;
+                                             
                                              [self setVideosForChannelById:channelId isUpdated:NO];
                                              
-                                             [self setEditControlsVisibility: NO];
-                                             self.createChannelButton.enabled = YES;
-                                             self.createChannelButton.hidden = YES;
-                                             self.cancelEditButton.hidden = YES;
-                                             self.addButton.hidden = NO;
-                                             
-                                             [[NSNotificationCenter defaultCenter] postNotificationName: kNoteAllNavControlsShow
-                                                                                                 object: self
-                                                                                               userInfo: nil];
                                          }
                                               errorHandler: ^(id error) {
                                                   
@@ -1425,7 +1423,11 @@
                                                       errorMessage = NSLocalizedString(@"You already created a channel with this title. Please choose a different title.",nil);
                                                   };
                                                   
+                                                  
                                                   self.createChannelButton.enabled = YES;
+                                                  self.createChannelButton.hidden = NO;
+                                                  self.cancelEditButton.hidden = YES;
+                                                  self.addButton.hidden = YES;                                                  
                                                   [self showError:errorMessage];
                                               }];
 }
@@ -1442,10 +1444,50 @@
                                                       [self fetchAndStoreUpdatedChannelForId:channelId isUpdate:isUpdated];
                                                       
                                                   } errorHandler: ^(id err) {
+                                                      NSString* errorMessage = nil;
+                                                      if ([err isKindOfClass:[NSDictionary class]])
+                                                      {
+                                                          errorMessage = [err objectForKey:@"message"];
+                                                          if (!errorMessage)
+                                                          {
+                                                              errorMessage = [err objectForKey:@"error"];
+                                                          }
+                                                      }
+                                                      self.addButton.hidden = YES;
                                                       
-                                                           
-                                                           DebugLog(@"Error @ addVideosToNewChannelForId:");
-                                                           [self showError:NSLocalizedString(@"Could not create channel. Please try again later.", nil)];
+                                                      if(isUpdated)
+                                                      {
+                                                          [self.activityIndicator stopAnimating];
+                                                          self.cancelEditButton.hidden = NO;
+                                                          self.cancelEditButton.enabled = YES;
+                                                          self.createChannelButton.enabled = YES;
+                                                          self.createChannelButton.hidden = NO;
+                                                          
+                                                          if(!errorMessage)
+                                                          {
+                                                              errorMessage = NSLocalizedString(@"Could not update the channel videos. Please review and try again later.", nil);
+                                                          }
+                                                          DebugLog(@"Error @ setVideosForChannelById:");
+                                                          [self showError: errorMessage];
+                                                          
+                                                      }
+                                                      else
+                                                      {
+                                                          [self.activityIndicator stopAnimating];
+                                                          self.cancelEditButton.hidden = YES;
+                                                          self.cancelEditButton.enabled = YES;
+                                                          self.saveChannelButton.enabled = YES;
+                                                          self.saveChannelButton.hidden = NO;
+                                                          
+                                                          if(!errorMessage)
+                                                          {
+                                                              errorMessage = NSLocalizedString(@"Could not add videos to channel. Please review and try again later.", nil);
+                                                          }
+                                                          DebugLog(@"Error @ setVideosForChannelById:");
+                                                          [self showError: errorMessage];
+                                                        
+                                                      }
+                                                      
                                                 }];
 }
 
@@ -1489,24 +1531,11 @@
                                               
                                               [self setDisplayControlsVisibility:YES];
                                               
-                                              if ([[SYNDeviceManager sharedInstance] isIPad])
-                                              {
-//                                                      self.addButton.hidden = YES;
-                                                  self.createChannelButton.hidden = YES;
-                                                  
-                                              }
-                                              else
-                                              {
-                                                  // On iPad the existing channels viewcontroller's view is removed from the master view controller when a new channel is created.
-                                                  // On iPhone we want to be able to go back which means the existing channels view remains onscreen. Here we remove it as channel creation was complete.
-                                                  UIViewController *master = self.presentingViewController;
-                                                  [[[[master childViewControllers] lastObject] view] removeFromSuperview];
-                                                  [self setDisplayControlsVisibility:YES];
-                                                  
-                                                  //Move the back button from the edit view to allow closing this view
-                                                  [self.backButton removeFromSuperview];
-                                                  [self.view addSubview:self.backButton];
-                                              }
+                                              [[NSNotificationCenter defaultCenter] postNotificationName: kNoteAllNavControlsShow
+                                                                                                  object: self
+                                                                                                userInfo: nil];
+                                              
+                                              [self finaliseViewStatusAfterCreateOrUpdate:[[SYNDeviceManager sharedInstance] isIPad]];
                                               
                                               [[NSNotificationCenter defaultCenter] postNotificationName: kVideoQueueClear
                                                                                                   object: nil];
@@ -1517,10 +1546,67 @@
                                           } errorHandler:^(id err) {
                                               
                                               DebugLog(@"Error @ getNewlyCreatedChannelForId:");
-                                              [self showError: NSLocalizedString(@"Could not create channel. Please try again later.", nil)];
+                                              [self showError: NSLocalizedString(@"Could not retrieve the uploaded channel data. Please try accessing it from your profile later.", nil)];
+                                              self.channelOwnerLabel.text = appDelegate.currentUser.displayName;
+                                              
+                                              [self displayChannelDetails];
+                                              
+                                              [self setDisplayControlsVisibility:YES];
+                                              
+                                              [[NSNotificationCenter defaultCenter] postNotificationName: kNoteAllNavControlsShow
+                                                                                                  object: self
+                                                                                                userInfo: nil];
+                                              
+                                              [self finaliseViewStatusAfterCreateOrUpdate:[[SYNDeviceManager sharedInstance] isIPad]];
+                                            
+                                              
+                                              [[NSNotificationCenter defaultCenter] postNotificationName: kVideoQueueClear
+                                                                                                  object: nil];
                                           }];
 }
 
+-(void)finaliseViewStatusAfterCreateOrUpdate:(BOOL)isIPad
+{
+    if (isIPad)
+    {
+        self.addButton.hidden = NO;
+        self.createChannelButton.hidden = YES;
+        
+        
+    }
+    else
+    {
+        SYNMasterViewController *master = (SYNMasterViewController*) self.presentingViewController;
+        if(master)
+        {
+            //This scenario happens on channel creation only and means this channel is presented modally.
+            //After creation want to show it as if it is part of the master view hierarchy.
+            //Thus we move the view there.
+            
+            //This removes the "existing channels view controller"
+            [[[[master childViewControllers] lastObject] view] removeFromSuperview];
+            
+            //Now dimiss self modally (not animated)
+            [master dismissViewControllerAnimated:NO completion:nil];
+            
+            //Change to display mode
+            self.mode = kChannelDetailsModeDisplay;
+            
+            //Don't really like this, but send notification to hide title and dots for a seamless transition.
+            [[NSNotificationCenter defaultCenter] postNotificationName: kNoteHideTitleAndDots
+                                                                object: self
+                                                              userInfo: nil];
+            
+            //And show as if displayed from the normal master view hierarchy
+            SYNAbstractViewController* currentRootViewcontroller = [[master containerViewController] showingViewController];
+            [currentRootViewcontroller animatedPushViewController:self];
+        }
+        
+        [self setDisplayControlsVisibility:YES];
+        [self.activityIndicator stopAnimating];
+    }
+
+}
 
 - (void) showError: (NSString*) errorMessage
 {

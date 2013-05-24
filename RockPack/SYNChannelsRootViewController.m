@@ -42,7 +42,6 @@
 
 #endif
 
-@property (getter = hasTouchedChannelButton) BOOL touchedChannelButton;
 
 @property (nonatomic, assign) BOOL ignoreRefresh;
 @property (nonatomic, strong) NSString* currentCategoryId;
@@ -59,7 +58,7 @@
 @property (nonatomic, strong) UIImageView* arrowImage;
 @property (nonatomic, strong) NSMutableArray* channels;
 @property (nonatomic, strong) SYNChannelFooterMoreView* footerView;
-@property (nonatomic) BOOL isAnimating;
+
 
 @property (nonatomic, strong) Genre* allGenre;
 @end
@@ -205,9 +204,6 @@
 {
     [super viewWillAppear: animated];
     
-//    [self updateAnalytics];
-    
-    self.touchedChannelButton = NO;
 }
 
 
@@ -518,18 +514,14 @@
 }
 
 
-- (void) collectionView: (UICollectionView *) collectionView
-         didSelectItemAtIndexPath: (NSIndexPath *) indexPath
+- (void) collectionView: (UICollectionView *) collectionView didSelectItemAtIndexPath: (NSIndexPath *) indexPath
 {
-    if (self.hasTouchedChannelButton == NO)
-    {
-        self.touchedChannelButton = YES;
-        
-        Channel *channel = (Channel*)self.channels[indexPath.row];
-        
-        
-        [self viewChannelDetails:channel];
-    }
+    if(self.isAnimating) // prevent double clicking
+        return;
+    
+    Channel *channel = (Channel*)self.channels[indexPath.row];
+    
+    [self viewChannelDetails:channel];
 }
 
 

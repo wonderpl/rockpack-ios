@@ -372,18 +372,6 @@
 
 #pragma User Data
 
--(void)updateChannelOwnerDataForChannelOwner:(ChannelOwner*)channelOwner
-{
-    [self channelOwnerDataForChannelOwner:channelOwner onComplete:^(id dictionary) {
-        
-        BOOL registryResultOk = [self.registry registerChannelOwnerFromDictionary: dictionary];
-        if (!registryResultOk)
-            return;
-        
-    } onError:^(id error) {
-        DebugLog(@"Could not update channels for channel owner %@", channelOwner.uniqueId);
-    }];
-}
 
 -(void)channelOwnerDataForChannelOwner:(ChannelOwner*)channelOwner
                             onComplete:(MKNKUserSuccessBlock)completeBlock
@@ -401,17 +389,19 @@
     
     [networkOperation addJSONCompletionHandler: ^(NSDictionary *dictionary) {
         
-        if(![dictionary isKindOfClass:[NSDictionary class]])
-        {
-            errorBlock(@{@"parsing_error":@"response is not a dictionary"});
-            return;
-        }
-        
         NSString* possibleError = dictionary[@"error"];
-        
         if(possibleError)
         {
             errorBlock(@{@"error":possibleError});
+            return;
+        }
+        
+        
+        
+        BOOL registryResultOk = [self.registry registerChannelOwnerFromDictionary: dictionary];
+        if (!registryResultOk)
+        {
+            errorBlock(@{@"parsing_error":@"response is not a dictionary"});
             return;
         }
             
@@ -430,11 +420,20 @@
                                        errorBlock(@{@"error":possibleError});
                                        return;
                                    }
+                                   
                               
-                                   BOOL userRegistered = [self.registry registerSubscriptionsFromDictionary:subscriptionsDictionary
-                                                                                            forChannelOwner:channelOwner];
-                                   if(!userRegistered)
-                                       return;
+                                   [channelOwner addSubscriptionsDictionary:dictionary];
+                                   
+                                   // save the context, whichever it is
+                                   
+                                   NSError* error;
+                                   
+                                   if ([channelOwner.managedObjectContext hasChanges])
+                                   {
+                                       [channelOwner.managedObjectContext save: &error];
+                                       
+                                   }
+                                   
                               
                                    completeBlock(subscriptionsDictionary);
                               
