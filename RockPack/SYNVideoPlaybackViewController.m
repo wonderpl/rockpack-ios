@@ -446,12 +446,27 @@ static UIWebView* vimeoideoWebViewInstance;
     self.videoPlaceholderMiddleImageView = [self createNewVideoPlaceholderImageView: @"PlaceholderVideoMiddle.png"];
     self.videoPlaceholderBottomImageView = [self createNewVideoPlaceholderImageView: @"PlaceholderVideoBottom.png"];
     
+#ifdef SHOW_BRANDING    
+    UIImage *brandingImage = [UIImage imageNamed: @"Icon.png"];
+    CGFloat imageOffsetX = self.view.bounds.size.width - brandingImage.size.width - 10;
+    CGFloat imageOffsetY = self.view.bounds.size.height - brandingImage.size.height - 10;
+
+    
+    UIImageView *brandingView = [[UIImageView alloc] initWithFrame: CGRectMake(imageOffsetX, imageOffsetY, brandingImage.size.width, brandingImage.size.height)];
+    
+    brandingView.image = brandingImage;
+#endif
+    
     // Pop them in a view to keep them together
     UIView *videoPlaceholderView = [[UIView alloc] initWithFrame: self.view.bounds];
     
     [videoPlaceholderView addSubview: self.videoPlaceholderBottomImageView];
     [videoPlaceholderView addSubview: self.videoPlaceholderMiddleImageView];
     [videoPlaceholderView addSubview: self.videoPlaceholderTopImageView];
+    
+#ifdef SHOW_BRANDING   
+    [videoPlaceholderView addSubview: brandingView];
+#endif
     
     [self.view addSubview: videoPlaceholderView];
 

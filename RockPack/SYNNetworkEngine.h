@@ -44,12 +44,12 @@
                    withComplete: (MKNKAutocompleteProcessBlock) completionBlock
                        andError: (MKNKErrorBlock) errorBlock;
 
-- (void) coverArtWithWithStart: (unsigned int) start
-                          size: (unsigned int) size
-             completionHandler: (MKNKUserSuccessBlock) completionBlock
-                  errorHandler: (MKNKUserErrorBlock) errorBlock;
+- (void) updateCoverArtWithWithStart: (unsigned int) start
+                                size: (unsigned int) size
+                   completionHandler: (MKNKJSONCompleteBlock) completionBlock
+                        errorHandler: (MKNKUserErrorBlock) errorBlock;
 
-- (void) updateCoverArtOnCompletion: (MKNKVoidBlock) completionBlock
+- (void) updateCoverArtOnCompletion: (MKNKJSONCompleteBlock) completionBlock
                             onError: (MKNKErrorBlock) errorBlock;
 
 - (void) updateChannel: (NSString *) resourceURL
