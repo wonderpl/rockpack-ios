@@ -78,18 +78,22 @@
     
     return YES;
 }
-
-
 - (BOOL) registerSubscriptionsForCurrentUserFromDictionary: (NSDictionary*) dictionary
 {
+    return [self registerSubscriptionsFromDictionary: dictionary
+                                     forChannelOwner: appDelegate.currentUser];
+    
+}
+
+- (BOOL) registerSubscriptionsFromDictionary: (NSDictionary*) dictionary
+                             forChannelOwner: (ChannelOwner*) channelOwner
+{
     // == Check for Validity == //
-    if (!dictionary || ![dictionary isKindOfClass: [NSDictionary class]])
+    if (!dictionary ||
+        ![dictionary isKindOfClass: [NSDictionary class]] ||
+        !channelOwner)
         return NO;
     
-    User* currentUser = appDelegate.currentUser;
-    
-    if (!currentUser)
-        return NO;
     
     NSDictionary* channeslDictionary = [dictionary objectForKey: @"channels"];
     if (!channeslDictionary)
@@ -105,15 +109,15 @@
         
         // must use the main context so as to be able to link it with the channel owner
         
-        Channel* channel = [Channel instanceFromDictionary:subscriptionChannel
-                                 usingManagedObjectContext:currentUser.managedObjectContext
-                                       ignoringObjectTypes:kIgnoreNothing];
+        Channel* channel = [Channel instanceFromDictionary: subscriptionChannel
+                                 usingManagedObjectContext: channelOwner.managedObjectContext
+                                       ignoringObjectTypes: kIgnoreNothing];
         
         if (!channel)
             continue;
         
         
-        [currentUser addSubscriptionsObject:channel];
+        [channelOwner addSubscriptionsObject:channel];
         
         
         

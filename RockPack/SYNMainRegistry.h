@@ -36,4 +36,7 @@
 - (BOOL) registerCoverArtFromDictionary: (NSDictionary*) dictionary
                           forUserUpload: (BOOL) userUpload;
 
+- (BOOL) registerSubscriptionsFromDictionary: (NSDictionary*) dictionary
+                             forChannelOwner: (ChannelOwner*) channelOwner;
+
 @end
