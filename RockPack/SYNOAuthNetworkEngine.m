@@ -550,7 +550,7 @@
                                    NSString *newThumbnailURL = [headerDictionary objectForKey:@"Location"];
                                    currentUser.thumbnailURL = newThumbnailURL;
                                    [blockAppDelegate saveContext:YES];
-                                   [[NSNotificationCenter defaultCenter] postNotificationName:kUserDataChanged object:nil];
+                                   [[NSNotificationCenter defaultCenter] postNotificationName:kUserDataChanged object:nil userInfo:@{@"user":currentUser}];
                                }
                                completionBlock(headerDictionary);
                            } errorHandler: errorBlock];

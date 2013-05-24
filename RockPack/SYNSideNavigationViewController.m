@@ -202,6 +202,11 @@ typedef enum {
                                                  name: kHideSideNavigationView
                                                object: nil];
     
+    [[NSNotificationCenter defaultCenter] addObserver: self
+                                             selector: @selector(userDataChanged:)
+                                                 name: kUserDataChanged
+                                               object: nil];
+    
     [self getNotifications];
 }
 
@@ -457,11 +462,22 @@ typedef enum {
 - (void) setUser: (User *) user
 {
     _user = user;
-    self.userNameLabel.text = [self.user.fullName uppercaseString];
-    self.nicknameLabel.text = self.user.username;
+    NSString* fullname = user.fullName;
+    if([fullname length]>1)
+    {
+        self.userNameLabel.text = [self.user.fullName uppercaseString];
+        self.nicknameLabel.text = self.user.username;
+    }
+    else
+    {
+        self.userNameLabel.text = self.user.username;
+        self.nicknameLabel.text = @"";
+    }
+    
+    UIImage* placeholder =self.profilePictureImageView.image ? self.profilePictureImageView.image : [UIImage imageNamed: @"PlaceholderNotificationAvatar"];
     
     [self.profilePictureImageView setImageWithURL: [NSURL URLWithString: self.user.thumbnailURL]
-                                 placeholderImage: [UIImage imageNamed: @"PlaceholderNotificationAvatar"]
+                                 placeholderImage: placeholder
                                           options: SDWebImageRetryFailed];
 }
 
@@ -720,7 +736,6 @@ typedef enum {
     // Light up navigation button
     self.captiveButton.selected = TRUE;
     
-    self.userNameLabel.text = [_user.fullName uppercaseString];
     if ([[SYNDeviceManager sharedInstance] isIPad])
     {
         [UIView animateWithDuration: 0.5f
@@ -796,6 +811,11 @@ typedef enum {
 -(void)changeOfViewRequested:(NSNotification*)notification
 {
     self.state = SideNavigationStateHidden;
+}
+
+-(void)userDataChanged:(NSNotification*)notification
+{
+    [self setUser:self.appDelegate.currentUser];
 }
 
 

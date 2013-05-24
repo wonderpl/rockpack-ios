@@ -42,8 +42,10 @@
     User* currentUser = (User*)[[notification userInfo] objectForKey: @"user"];
     if(!currentUser)
         return;
-    
-    [self setChannelOwner:currentUser];
+    if ([self.channelOwner.uniqueId isEqualToString:self.channelOwner.uniqueId])
+    {
+        [self setChannelOwner:currentUser];
+    }
 }
 
 
@@ -109,14 +111,14 @@
         User* ownerAsUser = (User*)channelOwner;
         userName = [ownerAsUser.fullName uppercaseString];
         
-        if([userName isEqualToString:@""])
+        if([userName length]>1)
         {
             userName = ownerAsUser.username;
+            self.userNameLabel.text = @"";
         }
         else
         {
             self.userNameLabel.text = ownerAsUser.username;
-            self.userNameLabel.text = @"";
         }
         
         
@@ -129,7 +131,7 @@
     
     self.fullNameLabel.text = userName;
     
-    UIImage* placeholderImage = [UIImage imageNamed: @"PlaceholderAvatarProfile.png"];
+    UIImage* placeholderImage = self.profileImageView.image ? self.profileImageView.image : [UIImage imageNamed: @"PlaceholderAvatarProfile.png"];
     
     if(![channelOwner.thumbnailURL isEqualToString:@""]) // there is a url string
     {

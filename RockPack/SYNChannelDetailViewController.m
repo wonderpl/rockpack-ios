@@ -339,6 +339,14 @@
                                              selector: @selector(coverImageChangedHandler:)
                                                  name: kCoverArtChanged
                                                object: nil];
+    
+    if(self.channel.channelOwner.uniqueId == appDelegate.currentUser.uniqueId)
+    {
+        [[NSNotificationCenter defaultCenter] addObserver: self
+                                                selector: @selector(reloadUserImage:)
+                                                name: kUserDataChanged
+                                                object: nil];
+    }
 
     self.subscribeButton.enabled = YES;
     self.subscribeButton.selected = self.channel.subscribedByUserValue;
@@ -386,6 +394,11 @@
     [[NSNotificationCenter defaultCenter] removeObserver: self
                                                     name: kCoverArtChanged
                                                   object: nil];
+    
+    [[NSNotificationCenter defaultCenter] removeObserver: self
+                                                 name: kUserDataChanged
+                                               object: nil];
+
     
     if (self.subscribingIndicator)
     {
@@ -2197,4 +2210,25 @@
     return YES;
 }
 
+#pragma mark - user avatar image update
+
+-(void)reloadUserImage:(NSNotification*)note
+{
+    //If this channel is owned by the logged in user we are subscribing to this notification when the user data changes. we therefore re-load the avatar image
+    
+    UIImage* placeholder =self.avatarImageView.image ? self.avatarImageView.image : [UIImage imageNamed: @"PlaceholderChannelCreation.png"];
+    
+    NSArray *thumbnailURLItems = [appDelegate.currentUser.thumbnailURL componentsSeparatedByString:@"/"];
+    
+    if (thumbnailURLItems.count >= 6) // there is a url string with the proper format
+    {
+        
+        // whatever is set to be the default size by the server (ex. 'thumbnail_small') //
+        NSString* thumbnailSizeString = thumbnailURLItems[5];
+    
+        NSString* imageUrlString = [appDelegate.currentUser.thumbnailURL stringByReplacingOccurrencesOfString:thumbnailSizeString withString:@"thumbnail_large"];
+    
+        [self.avatarImageView setImageWithURL: [NSURL URLWithString:imageUrlString] placeholderImage: placeholder options: SDWebImageRetryFailed];
+    }
+}
 @end
