@@ -421,18 +421,18 @@
                                    }
                                    
                               
-                                   [channelOwner addSubscriptionsDictionary:dictionary];
-                                   
-                                   // save the context, whichever it is
-                                   
-                                   NSError* error;
-                                   
-                                   if ([channelOwner.managedObjectContext hasChanges])
-                                   {
-                                       [channelOwner.managedObjectContext save: &error];
-                                       
-                                   }
-                                   
+//                                   [channelOwner addSubscriptionsDictionary:dictionary];
+//                                   
+//                                   // save the context, whichever it is
+//                                   
+//                                   NSError* error;
+//                                   
+//                                   if ([channelOwner.managedObjectContext hasChanges])
+//                                   {
+//                                       [channelOwner.managedObjectContext save: &error];
+//                                       
+//                                   }
+//                                   
                               
                                    completeBlock(subscriptionsDictionary);
                               
