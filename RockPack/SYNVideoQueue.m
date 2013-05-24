@@ -134,7 +134,7 @@
         return;
     }
     
-    BOOL isIPhone = [[SYNDeviceManager sharedInstance] isIPhone];
+    BOOL isIPhone = [SYNDeviceManager.sharedInstance isIPhone];
     
     if(isIPhone)
     {

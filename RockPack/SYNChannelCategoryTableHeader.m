@@ -16,7 +16,9 @@
     self = [super init];
     if(self)
     {
-        UIView* subView = [[[NSBundle mainBundle] loadNibNamed:@"SYNChannelCategoryTableHeader" owner:self options:nil] objectAtIndex:0];
+        UIView* subView = [[NSBundle mainBundle] loadNibNamed: @"SYNChannelCategoryTableHeader"
+                                                         owner: self
+                                                       options:nil] [0];
         subView.frame = self.bounds;
         self.titleLabel.font = [UIFont rockpackFontOfSize:self.titleLabel.font.pointSize];
         [self addSubview:subView];

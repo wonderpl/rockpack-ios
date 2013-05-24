@@ -26,7 +26,7 @@
     if (self) {
         
         
-        CGFloat barWidth = [[SYNDeviceManager sharedInstance] currentScreenWidth] - 90.0;
+        CGFloat barWidth = [SYNDeviceManager.sharedInstance currentScreenWidth] - 90.0;
         
         backgroundPanel = [[UIView alloc] initWithFrame:CGRectMake(0.0, 0.0, barWidth, 61.0)];
         backgroundPanel.backgroundColor = [UIColor whiteColor];
@@ -115,7 +115,7 @@
 
 -(void)resizeForHeight:(CGFloat)height
 {
-    if([[SYNDeviceManager sharedInstance] isIPad])
+    if([SYNDeviceManager.sharedInstance isIPad])
     {
         
     

@@ -46,8 +46,8 @@
 
 - (void) loadView
 {
-    CGRect frame = CGRectMake(0.0, 0.0,[[SYNDeviceManager sharedInstance] currentScreenWidth],
-                               [[SYNDeviceManager sharedInstance] currentScreenHeight]);
+    CGRect frame = CGRectMake(0.0, 0.0,[SYNDeviceManager.sharedInstance currentScreenWidth],
+                               [SYNDeviceManager.sharedInstance currentScreenHeight]);
     
     self.view = [[UIView alloc] initWithFrame: frame];
     self.view.autoresizingMask = UIViewAutoresizingFlexibleWidth| UIViewAutoresizingFlexibleHeight; 
@@ -80,7 +80,7 @@
                                    action: @selector(channelTabPressed:)
                          forControlEvents:UIControlEventTouchUpInside];
     
-    CGFloat correctTabsY = [[SYNDeviceManager sharedInstance] isIPad] ? 104.0 : self.channelsSearchTabView.frame.size.height/2 + 65.0f;
+    CGFloat correctTabsY = [SYNDeviceManager.sharedInstance isIPad] ? 104.0 : self.channelsSearchTabView.frame.size.height/2 + 65.0f;
     tabsContainer.center = CGPointMake(self.view.center.x, correctTabsY);
     tabsContainer.frame = CGRectIntegral(tabsContainer.frame);
     
@@ -196,7 +196,7 @@
         [self.currentController.view removeFromSuperview];
     
     self.currentController = newController;
-    if (!hasLaidOut && [[SYNDeviceManager sharedInstance] isIPhone])
+    if (!hasLaidOut && [SYNDeviceManager.sharedInstance isIPhone])
     {
         CGRect collectionViewFrame = CGRectMake(0,108.0f,320.0f,self.view.frame.size.height - 108.0f);
         self.searchVideosController.videoThumbnailCollectionView.frame = collectionViewFrame;
@@ -225,7 +225,7 @@
     
     self.currentController = newController;
     
-    if (!hasLaidOut && [[SYNDeviceManager sharedInstance] isIPhone])
+    if (!hasLaidOut && [SYNDeviceManager.sharedInstance isIPhone])
     {
         CGRect collectionViewFrame = CGRectMake(0,48.0f,320.0f,self.view.frame.size.height - 108.0f);
         self.searchChannelsController.channelThumbnailCollectionView.frame = collectionViewFrame;

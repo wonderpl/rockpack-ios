@@ -30,7 +30,7 @@
 {
     [super viewDidLoad];
     
-    BOOL isIpad = [[SYNDeviceManager sharedInstance] isIPad];
+    BOOL isIpad = [SYNDeviceManager.sharedInstance isIPad];
     
     self.inputField.tag =1 ;
     self.inputField.delegate = self;

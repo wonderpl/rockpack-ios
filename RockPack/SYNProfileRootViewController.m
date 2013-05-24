@@ -78,7 +78,7 @@
 
 - (void) loadView
 {
-    BOOL isIPhone =  [[SYNDeviceManager sharedInstance] isIPhone];
+    BOOL isIPhone =  [SYNDeviceManager.sharedInstance isIPhone];
     
     // User Profile
     if(!self.hideUserProfile)
@@ -130,7 +130,7 @@
                                                                           sectionInset: UIEdgeInsetsMake(kInterRowMargin, 4.0, kInterRowMargin, 4.0)];
     }                                                                                                                                                                                                                                                                        
                                                                                                                                                                                                                     
-    CGFloat correctWidth = [[SYNDeviceManager sharedInstance] isLandscape] ? 600.0 : 400.0;
+    CGFloat correctWidth = [SYNDeviceManager.sharedInstance isLandscape] ? 600.0 : 400.0;
     
     self.headerChannelsView = [SYNYouHeaderView headerViewForWidth: correctWidth];
     
@@ -149,7 +149,7 @@
     {
         
         
-        [self.headerChannelsView setBackgroundImage: ([[SYNDeviceManager sharedInstance] isLandscape] ?
+        [self.headerChannelsView setBackgroundImage: ([SYNDeviceManager.sharedInstance isLandscape] ?
                                                       [UIImage imageNamed: @"HeaderProfileChannelsLandscape"] :
                                                       [UIImage imageNamed: @"HeaderProfilePortraitBoth"])];
     }
@@ -160,7 +160,7 @@
     CGRect collectionViewFrame = CGRectMake(0.0,
                                             self.headerChannelsView.frame.origin.y + self.headerChannelsView.currentHeight,
                                             correctWidth,
-                                            [[SYNDeviceManager sharedInstance] currentScreenHeightWithStatusBar] - kYouCollectionViewOffsetY);
+                                            [SYNDeviceManager.sharedInstance currentScreenHeightWithStatusBar] - kYouCollectionViewOffsetY);
     
     self.channelThumbnailCollectionView = [[UICollectionView alloc] initWithFrame: collectionViewFrame
                                                              collectionViewLayout: self.channelsLandscapeLayout];
@@ -178,7 +178,7 @@
     subColViewFrame.origin.x = isIPhone ? 0.0f : collectionViewFrame.origin.x + collectionViewFrame.size.width + 10.0;
     subColViewFrame.origin.y = collectionViewFrame.origin.y;
     subColViewFrame.size.height = collectionViewFrame.size.height;
-    subColViewFrame.size.width = [[SYNDeviceManager sharedInstance] currentScreenWidth] - subColViewFrame.origin.x - 10.0;
+    subColViewFrame.size.width = [SYNDeviceManager.sharedInstance currentScreenWidth] - subColViewFrame.origin.x - 10.0;
     [self.subscriptionsViewController setViewFrame: subColViewFrame];
     
     if (self.user)
@@ -204,7 +204,7 @@
         [self.headerSubscriptionsView setTitle: NSLocalizedString(@"YOUR SUBSCRIPTIONS", nil)
                                      andNumber: 0];
         
-        [self.headerSubscriptionsView setBackgroundImage: ([[SYNDeviceManager sharedInstance] isLandscape] ? [UIImage imageNamed: @"HeaderProfileSubscriptionsLandscape"] : [UIImage imageNamed: @"HeaderProfilePortraitBoth"])];
+        [self.headerSubscriptionsView setBackgroundImage: ([SYNDeviceManager.sharedInstance isLandscape] ? [UIImage imageNamed: @"HeaderProfileSubscriptionsLandscape"] : [UIImage imageNamed: @"HeaderProfilePortraitBoth"])];
     }
     
     CGRect headerSubFrame = self.headerSubscriptionsView.frame;
@@ -213,13 +213,13 @@
     
     self.view = [[UIView alloc] initWithFrame: CGRectMake(0.0f,
                                                           0.0f,
-                                                          [[SYNDeviceManager sharedInstance] currentScreenWidth],
-                                                          [[SYNDeviceManager sharedInstance] currentScreenHeightWithStatusBar])];
+                                                          [SYNDeviceManager.sharedInstance currentScreenWidth],
+                                                          [SYNDeviceManager.sharedInstance currentScreenHeightWithStatusBar])];
     
     self.deletionCancelView = [[UIView alloc] initWithFrame: CGRectMake(0.0f,
                                                                                     0.0f,
-                                                                                    [[SYNDeviceManager sharedInstance] currentScreenWidth],
-                                                                                    [[SYNDeviceManager sharedInstance] currentScreenHeightWithStatusBar])];
+                                                                                    [SYNDeviceManager.sharedInstance currentScreenWidth],
+                                                                                    [SYNDeviceManager.sharedInstance currentScreenHeightWithStatusBar])];
     
     self.deletionCancelView.backgroundColor = [UIColor clearColor];
 //    self.deletionCancelView.hidden = TRUE;
@@ -362,7 +362,7 @@
     
     self.subscriptionsViewController.collectionView.delegate = self;
     
-    [self updateLayoutForOrientation: [[SYNDeviceManager sharedInstance] orientation]];
+    [self updateLayoutForOrientation: [SYNDeviceManager.sharedInstance orientation]];
     
     
 }
@@ -495,7 +495,7 @@
     CGFloat viewHeight;
     SYNDeletionWobbleLayout* channelsLayout;
     SYNDeletionWobbleLayout* subscriptionsLayout;
-    BOOL isIPhone = [[SYNDeviceManager sharedInstance] isIPhone];
+    BOOL isIPhone = [SYNDeviceManager.sharedInstance isIPhone];
     //Setup the headers
     
     if (isIPhone)
@@ -509,7 +509,7 @@
         newFrame.size.width = 160.0f;
         self.headerSubscriptionsView.frame = newFrame;
         
-        viewHeight = MAX([[SYNDeviceManager sharedInstance] currentScreenHeight], [[SYNDeviceManager sharedInstance] currentScreenWidth]) - 20.0f;
+        viewHeight = MAX([SYNDeviceManager.sharedInstance currentScreenHeight], [SYNDeviceManager.sharedInstance currentScreenWidth]) - 20.0f;
         channelsLayout = self.channelsPortraitLayout;
         subscriptionsLayout = self.subscriptionsPortraitLayout;
     }
@@ -549,9 +549,9 @@
         }
     
         //Apply correct backgorund images
-        [self.headerSubscriptionsView setBackgroundImage:([[SYNDeviceManager sharedInstance] isLandscape] ? [UIImage imageNamed:@"HeaderProfileSubscriptionsLandscape"] : [UIImage imageNamed: @"HeaderProfilePortraitBoth"])];
+        [self.headerSubscriptionsView setBackgroundImage:([SYNDeviceManager.sharedInstance isLandscape] ? [UIImage imageNamed:@"HeaderProfileSubscriptionsLandscape"] : [UIImage imageNamed: @"HeaderProfilePortraitBoth"])];
         
-        [self.headerChannelsView setBackgroundImage:[[SYNDeviceManager sharedInstance] isLandscape] ? [UIImage imageNamed: @"HeaderProfileChannelsLandscape"] : [UIImage imageNamed: @"HeaderProfilePortraitBoth"]];
+        [self.headerChannelsView setBackgroundImage:[SYNDeviceManager.sharedInstance isLandscape] ? [UIImage imageNamed: @"HeaderProfileChannelsLandscape"] : [UIImage imageNamed: @"HeaderProfilePortraitBoth"]];
     }
 
     NSIndexPath* indexPath = nil;
@@ -630,7 +630,7 @@
 
 -(NSString*)getHeaderTitleForChannels
 {
-    if([[SYNDeviceManager sharedInstance] isIPhone])
+    if([SYNDeviceManager.sharedInstance isIPhone])
     {
         return NSLocalizedString(@"CHANNELS",nil);
         
@@ -738,7 +738,7 @@
 
 - (void) scrollViewDidScroll: (UIScrollView *) scrollView
 {
-    if ([[SYNDeviceManager sharedInstance] isIPad])
+    if ([SYNDeviceManager.sharedInstance isIPad])
     {
         CGPoint offset;
         if ([scrollView isEqual: self.channelThumbnailCollectionView])

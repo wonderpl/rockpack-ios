@@ -30,7 +30,7 @@
     {
         self.contentSizeForViewInPopover = CGSizeMake(380, 476);
         
-        BOOL isIpad = [[SYNDeviceManager sharedInstance] isIPad];
+        BOOL isIpad = [SYNDeviceManager.sharedInstance isIPad];
         
         self.appDelegate = (SYNAppDelegate*)[[UIApplication sharedApplication] delegate];
         

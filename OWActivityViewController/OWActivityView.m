@@ -163,7 +163,7 @@
 
 - (void)buttonPressed:(UIButton *)button
 {
-    OWActivity *activity = [_activities objectAtIndex:button.tag];
+    OWActivity *activity = _activities [button.tag];
     activity.activityViewController = _activityViewController;
     if (activity.actionBlock) {
         activity.actionBlock(activity, _activityViewController);

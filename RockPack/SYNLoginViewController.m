@@ -215,7 +215,7 @@
     
     _facebookLoginIsInProcess = NO;
     
-    if ([[SYNDeviceManager sharedInstance] isPortrait])
+    if ([SYNDeviceManager.sharedInstance isPortrait])
     {
         signUpButton.center = CGPointMake(facebookSignInButton.center.x + 304.0, signUpButton.center.y);
         faceImageButton.center = CGPointMake(78.0, faceImageButton.center.y);
@@ -1432,7 +1432,7 @@
 
 - (CGFloat) elementsOffsetY
 {
-        if ([[SYNDeviceManager sharedInstance] isLandscape])
+        if ([SYNDeviceManager.sharedInstance isLandscape])
             return 284.0;
         else
             return 284.0;    
@@ -1441,7 +1441,7 @@
 
 - (void) placeSecondaryElements
 {
-    CGFloat registerOffsetY = [[SYNDeviceManager sharedInstance] isPortrait] ? 704.0 : 358.0;
+    CGFloat registerOffsetY = [SYNDeviceManager.sharedInstance isPortrait] ? 704.0 : 358.0;
     registerButton.center = CGPointMake(registerButton.center.x, registerOffsetY);
     areYouNewLabel.center = CGPointMake(areYouNewLabel.center.x, registerButton.center.y - 44.0);
     memberLabel.center = CGPointMake(loginButton.center.x, areYouNewLabel.center.y);
@@ -1449,7 +1449,7 @@
     dividerImageView.center = CGPointMake(dividerImageView.center.x, dividerImageView.center.y - self.elementsOffsetY);
     passwordForgottenLabel.center = CGPointMake(passwordForgottenLabel.center.x, passwordForgottenLabel.center.y - self.elementsOffsetY);
     passwordForgottenButton.center = CGPointMake(passwordForgottenButton.center.x, passwordForgottenButton.center.y - self.elementsOffsetY);
-    CGFloat termsOffsetY = [[SYNDeviceManager sharedInstance] isPortrait] ? 714.0 : 370.0;
+    CGFloat termsOffsetY = [SYNDeviceManager.sharedInstance isPortrait] ? 714.0 : 370.0;
     termsAndConditionsLabel.center = CGPointMake(termsAndConditionsLabel.center.x, termsOffsetY);
     termsAndConditionsLabelSide.center = CGPointMake(termsAndConditionsLabelSide.center.x, termsOffsetY);
     

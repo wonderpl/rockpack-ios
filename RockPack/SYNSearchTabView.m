@@ -38,7 +38,7 @@
                 break;
         }
         
-        BOOL isIPad = [[SYNDeviceManager sharedInstance] isIPad];
+        BOOL isIPad = [SYNDeviceManager.sharedInstance isIPad];
         
         
         onColor = [UIColor whiteColor];

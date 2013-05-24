@@ -221,7 +221,7 @@ NSTimeInterval const kBBCyclingLabelDefaultTransitionDuration = 0.3;
 - (void)setText:(NSString*)text animated:(BOOL)animated
 {
     NSUInteger nextLabelIndex = [self nextLabelIndex];
-    UILabel* nextLabel = [_labels objectAtIndex:nextLabelIndex];
+    UILabel* nextLabel = _labels [nextLabelIndex];
     UILabel* previousLabel = _currentLabel;
 
     nextLabel.text = text;
@@ -289,7 +289,7 @@ NSTimeInterval const kBBCyclingLabelDefaultTransitionDuration = 0.3;
     }
 
     _currentLabelIndex = 0;
-    _currentLabel = [labels objectAtIndex:0];
+    _currentLabel = labels[0];
     _labels = labels;
 
     _currentLabel.hidden = NO;

@@ -168,7 +168,7 @@
     // == main text label == //
     
     CGRect textLabelFrame = self.textLabel.frame;
-    CGFloat maxWidth = [[SYNDeviceManager sharedInstance] isIPad] ? 200.0 : 170.0 ;
+    CGFloat maxWidth = [SYNDeviceManager.sharedInstance isIPad] ? 200.0 : 170.0 ;
     mainTextSize = [messageTitle sizeWithFont:self.textLabel.font
                             constrainedToSize:CGSizeMake(maxWidth, 500.0)
                                 lineBreakMode:self.textLabel.lineBreakMode];

@@ -205,7 +205,7 @@ static UIWebView* vimeoideoWebViewInstance;
 - (NSString *) videoQuality
 {
     // Based on empirical evidence (Youtube app), determine the appropriate quality level based on device and connectivity
-    BOOL isIpad = [[SYNDeviceManager sharedInstance] isIPad];
+    BOOL isIpad = [SYNDeviceManager.sharedInstance isIPad];
     SYNAppDelegate* appDelegate = UIApplication.sharedApplication.delegate;
     SYNMasterViewController *masterViewController = (SYNMasterViewController*)appDelegate.masterViewController;
     NSString *suggestedQuality = @"default";
@@ -721,7 +721,7 @@ static UIWebView* vimeoideoWebViewInstance;
 
 - (void) stopVideo
 {
-    [self.currentVideoWebView stringByEvaluatingJavaScriptFromString: @"player.stopVideo(); "];
+    [self.currentVideoWebView stringByEvaluatingJavaScriptFromString: @"player.stopVideo();"];
     
     self.playFlag = FALSE;
 }

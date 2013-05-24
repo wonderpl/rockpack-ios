@@ -45,7 +45,7 @@
 {
     
     self.currentCalendar = [NSCalendar currentCalendar];
-    isIphone = [[SYNDeviceManager sharedInstance] isIPhone];
+    isIphone = [SYNDeviceManager.sharedInstance isIPhone];
     
     // Init collection view
     UINib *videoThumbnailCellNib = [UINib nibWithNibName: @"SYNVideoThumbnailWideCell"
@@ -70,8 +70,8 @@
     
     CGRect collectionFrame = self.videoThumbnailCollectionView.frame;
     collectionFrame.origin.y += 40.0;
-    collectionFrame.size.width = [[SYNDeviceManager sharedInstance] currentScreenWidth];
-    collectionFrame.size.height = [[SYNDeviceManager sharedInstance] currentScreenHeight] - 190.0;
+    collectionFrame.size.width = [SYNDeviceManager.sharedInstance currentScreenWidth];
+    collectionFrame.size.height = [SYNDeviceManager.sharedInstance currentScreenHeight] - 190.0;
     self.videoThumbnailCollectionView.frame = collectionFrame;
     
     self.videoThumbnailCollectionView.autoresizingMask = UIViewAutoresizingFlexibleWidth| UIViewAutoresizingFlexibleHeight;
@@ -251,9 +251,9 @@
                   layout:(UICollectionViewLayout*)collectionViewLayout
   sizeForItemAtIndexPath:(NSIndexPath *)indexPath {
     
-    if([[SYNDeviceManager sharedInstance]isIPad])
+    if([SYNDeviceManager.sharedInstance isIPad])
     {
-        if([[SYNDeviceManager sharedInstance] isLandscape])
+        if([SYNDeviceManager.sharedInstance isLandscape])
         {
             return CGSizeMake(497, 140);
         }
@@ -361,7 +361,7 @@
 
 - (CGSize) footerSize
 {
-    return [[SYNDeviceManager sharedInstance] isIPhone]? CGSizeMake(320.0f, 64.0f) : CGSizeMake(1024.0, 64.0);
+    return [SYNDeviceManager.sharedInstance isIPhone]? CGSizeMake(320.0f, 64.0f) : CGSizeMake(1024.0, 64.0);
 }
 
 

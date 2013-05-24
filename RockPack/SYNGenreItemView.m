@@ -133,7 +133,7 @@
 - (void) resizeForOrientation: (UIInterfaceOrientation) orientation
                    withHeight: (CGFloat) height
 {
-    BOOL isLandscape = [[SYNDeviceManager sharedInstance] isLandscape];
+    BOOL isLandscape = [SYNDeviceManager.sharedInstance isLandscape];
     CGFloat offsetX;
     UIFont* fontToUse;
     CGFloat labelYOffset;

@@ -58,7 +58,7 @@
 
 - (void) loadView
 {
-    CGRect scrollerFrame = CGRectMake(0.0, 0.0, [[SYNDeviceManager sharedInstance] currentScreenWidth], [[SYNDeviceManager sharedInstance] currentScreenHeight]);
+    CGRect scrollerFrame = CGRectMake(0.0, 0.0, [SYNDeviceManager.sharedInstance currentScreenWidth], [SYNDeviceManager.sharedInstance currentScreenHeight]);
     SYNContainerScrollView* scrollView = [[SYNContainerScrollView alloc] initWithFrame:scrollerFrame];
 
     scrollView.autoresizingMask = UIViewAutoresizingNone;
@@ -83,7 +83,7 @@
     
     // == Channels Page == //
     SYNChannelsRootViewController *channelsRootViewController = [[SYNChannelsRootViewController alloc] initWithViewId: kChannelsViewId];
-    BOOL isIPad = [[SYNDeviceManager sharedInstance] isIPad];
+    BOOL isIPad = [SYNDeviceManager.sharedInstance isIPad];
     if (isIPad)
     {
         channelsRootViewController.tabViewController = [[SYNGenreTabViewController alloc] initWithHomeButton: @"ALL"];
@@ -150,7 +150,7 @@
 
 - (void) viewWillAppear: (BOOL) animated
 {
-    [self packViewControllersForInterfaceOrientation: [[SYNDeviceManager sharedInstance] orientation]];
+    [self packViewControllersForInterfaceOrientation: [SYNDeviceManager.sharedInstance orientation]];
     
     [[NSNotificationCenter defaultCenter] postNotificationName: kScrollerPageChanged
                                                         object: self
@@ -162,7 +162,7 @@
 
 -(void)refreshView
 {
-    [self packViewControllersForInterfaceOrientation: [[SYNDeviceManager sharedInstance] orientation]];
+    [self packViewControllersForInterfaceOrientation: [SYNDeviceManager.sharedInstance orientation]];
     
     [[NSNotificationCenter defaultCenter] postNotificationName: kScrollerPageChanged
                                                         object: self
@@ -174,11 +174,11 @@
 - (void) packViewControllersForInterfaceOrientation: (UIInterfaceOrientation) orientation
 {
     CGRect newFrame;
-    if ([[SYNDeviceManager sharedInstance] isIPhone])
+    if ([SYNDeviceManager.sharedInstance isIPhone])
     {
         // The full screen video player can interfere with reading the screen dimensions on viewWillAppear.
         // Use MAX and MIN to determine which one is width and which one is height
-        CGSize screenSize = CGSizeMake([[SYNDeviceManager sharedInstance] currentScreenWidth],[[SYNDeviceManager sharedInstance] currentScreenHeight]);
+        CGSize screenSize = CGSizeMake([SYNDeviceManager.sharedInstance currentScreenWidth],[SYNDeviceManager.sharedInstance currentScreenHeight]);
         newFrame = CGRectMake(0, 0, MIN(screenSize.width, screenSize.height), MAX(screenSize.width, screenSize.height) - 20.0f);
     }
     else if (UIDeviceOrientationIsLandscape(orientation))
@@ -330,7 +330,7 @@
 - (SYNAbstractViewController*) showingViewController
 {
     UINavigationController* navController =(UINavigationController*)self.selectedNavigationController;
-    return (SYNAbstractViewController*)[navController.viewControllers objectAtIndex: 0];
+    return (SYNAbstractViewController*)navController.viewControllers[0];
 
 }
 

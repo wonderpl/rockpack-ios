@@ -177,7 +177,7 @@ extern void instrumentObjcMessageSends(BOOL);
 
 - (UIViewController*) createAndReturnLoginViewController
 {
-    if ([[SYNDeviceManager sharedInstance] isIPad])
+    if ([SYNDeviceManager.sharedInstance isIPad])
     {
         self.loginViewController = [[SYNLoginViewController alloc] init];
     }

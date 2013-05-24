@@ -23,7 +23,7 @@
 
 -(id)initWithStyle:(UITableViewCellStyle)style reuseIdentifier:(NSString *)reuseIdentifier
 {
-    BOOL isIPad = [[SYNDeviceManager sharedInstance] isIPad];
+    BOOL isIPad = [SYNDeviceManager.sharedInstance isIPad];
     
     self = [super initWithStyle:style reuseIdentifier:reuseIdentifier];
     if(self)
@@ -74,7 +74,7 @@
 {
     [super layoutSubviews];
     
-    BOOL isIPad = [[SYNDeviceManager sharedInstance] isIPad];
+    BOOL isIPad = [SYNDeviceManager.sharedInstance isIPad];
 
     CGPoint center = self.textLabel.center;
 
@@ -135,7 +135,7 @@
 
 -(void)setAccessoryNumber:(NSString *)accessoryNumberString
 {
-    BOOL isIPad = [[SYNDeviceManager sharedInstance] isIPad];
+    BOOL isIPad = [SYNDeviceManager.sharedInstance isIPad];
     
     self.accessoryNumberLabel.text = accessoryNumberString;
     [self.accessoryNumberLabel sizeToFit];

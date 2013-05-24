@@ -29,8 +29,8 @@
 {
     UIImage* bgImage = [UIImage imageNamed:@"BarNetwork"];
     CGRect finalFrame = CGRectMake(0.0,
-                                   [[SYNDeviceManager sharedInstance] currentScreenHeightWithStatusBar],
-                                   [[SYNDeviceManager sharedInstance] currentScreenWidth],
+                                   [SYNDeviceManager.sharedInstance currentScreenHeightWithStatusBar],
+                                   [SYNDeviceManager.sharedInstance currentScreenWidth],
                                    bgImage.size.height);
     
     

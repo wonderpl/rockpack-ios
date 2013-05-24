@@ -72,7 +72,7 @@
 {
     [super viewDidLoad];
     
-    BOOL isPreIPhone5 = [[SYNDeviceManager sharedInstance] currentScreenHeight] < 500;
+    BOOL isPreIPhone5 = [SYNDeviceManager.sharedInstance currentScreenHeight] < 500;
     
     //Move all subviews offscreen
     CGPoint newCenter = self.loginView.center;
@@ -639,7 +639,7 @@
     [self.activityIndicator stopAnimating];
     
     UIImageView *splashView = nil;
-    if([[SYNDeviceManager sharedInstance] currentScreenHeight]>480.0f)
+    if([SYNDeviceManager.sharedInstance currentScreenHeight]>480.0f)
     {
         splashView = [[UIImageView alloc] initWithImage:[UIImage imageNamed: @"Default-568h"]];
     }

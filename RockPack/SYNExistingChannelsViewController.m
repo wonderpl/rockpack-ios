@@ -38,7 +38,7 @@
     [super viewDidLoad];
     
     // We need to use a custom layout (as due to the deletion/wobble logic used elsewhere)
-    if ([[SYNDeviceManager sharedInstance] isIPad])
+    if ([SYNDeviceManager.sharedInstance isIPad])
     {
         // iPad layout & size
         self.channelThumbnailCollectionView.collectionViewLayout =
@@ -87,7 +87,7 @@
     self.confirmButtom.enabled = YES;
     
     
-    [self packViewForInterfaceOrientation:[[SYNDeviceManager sharedInstance] orientation]];
+    [self packViewForInterfaceOrientation:[SYNDeviceManager.sharedInstance orientation]];
     
     [self.channelThumbnailCollectionView reloadData];
 }
@@ -226,7 +226,7 @@
 {
     if (indexPath.row == 0)
     {
-        if([[SYNDeviceManager sharedInstance] isIPad])
+        if([SYNDeviceManager.sharedInstance isIPad])
         {
             if (!appDelegate.videoQueue.currentlyCreatingChannel)
                 return;
@@ -299,7 +299,7 @@
 {
     CGRect collectionFrame = self.channelThumbnailCollectionView.frame;
     
-    if ([[SYNDeviceManager sharedInstance] isIPad])
+    if ([SYNDeviceManager.sharedInstance isIPad])
     {
         if(UIInterfaceOrientationIsPortrait(interfaceOrientation))
         {
@@ -319,7 +319,7 @@
     self.channelThumbnailCollectionView.frame = CGRectIntegral(collectionFrame);
     
     CGRect selfFrame = self.view.frame;
-    selfFrame.size = [[SYNDeviceManager sharedInstance] currentScreenSize];
+    selfFrame.size = [SYNDeviceManager.sharedInstance currentScreenSize];
     self.view.frame = selfFrame;
     
     

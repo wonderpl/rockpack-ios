@@ -86,7 +86,7 @@
 
 - (void) loadView
 {
-    BOOL isIPhone = [[SYNDeviceManager sharedInstance] isIPhone];
+    BOOL isIPhone = [SYNDeviceManager.sharedInstance isIPhone];
     
     SYNIntegralCollectionViewFlowLayout* flowLayout;
     
@@ -115,11 +115,11 @@
     CGRect channelCollectionViewFrame;
     if (isIPhone)
     {
-        channelCollectionViewFrame = CGRectMake(0.0f, 103.0f, [[SYNDeviceManager sharedInstance] currentScreenWidth],[[SYNDeviceManager sharedInstance] currentScreenHeight] - 123.0f);
+        channelCollectionViewFrame = CGRectMake(0.0f, 103.0f, [SYNDeviceManager.sharedInstance currentScreenWidth],[SYNDeviceManager.sharedInstance currentScreenHeight] - 123.0f);
     }
     else
     {
-        channelCollectionViewFrame = [[SYNDeviceManager sharedInstance] isLandscape] ?
+        channelCollectionViewFrame = [SYNDeviceManager.sharedInstance isLandscape] ?
         CGRectMake(0.0, kStandardCollectionViewOffsetY + topTabBarHeight, kFullScreenWidthLandscape, kFullScreenHeightLandscapeMinusStatusBar - kStandardCollectionViewOffsetY - topTabBarHeight) :
         CGRectMake(0.0f, kStandardCollectionViewOffsetY + topTabBarHeight, kFullScreenWidthPortrait, kFullScreenHeightPortraitMinusStatusBar  - kStandardCollectionViewOffsetY - topTabBarHeight);
     }
@@ -135,11 +135,11 @@
     CGRect newFrame;
     if (isIPhone)
     {
-        newFrame = CGRectMake(0.0f, 59.0f, [[SYNDeviceManager sharedInstance] currentScreenWidth], [[SYNDeviceManager sharedInstance] currentScreenHeight] - 20.0f);
+        newFrame = CGRectMake(0.0f, 59.0f, [SYNDeviceManager.sharedInstance currentScreenWidth], [SYNDeviceManager.sharedInstance currentScreenHeight] - 20.0f);
     }
     else
     {
-        newFrame = [[SYNDeviceManager sharedInstance] isLandscape] ?
+        newFrame = [SYNDeviceManager.sharedInstance isLandscape] ?
         CGRectMake(0.0, 0.0, kFullScreenWidthLandscape, kFullScreenHeightLandscapeMinusStatusBar) :
         CGRectMake(0.0f, 0.0f, kFullScreenWidthPortrait, kFullScreenHeightPortraitMinusStatusBar);
     }
@@ -411,12 +411,12 @@
 
 - (CGSize) itemSize
 {
-    return [[SYNDeviceManager sharedInstance] isIPhone] ? CGSizeMake(152.0f, 152.0f) : CGSizeMake(251.0, 274.0);
+    return [SYNDeviceManager.sharedInstance isIPhone] ? CGSizeMake(152.0f, 152.0f) : CGSizeMake(251.0, 274.0);
 }
 
 - (CGSize) footerSize
 {
-    return [[SYNDeviceManager sharedInstance] isIPhone] ? CGSizeMake(320.0f, 64.0f) : CGSizeMake(1024.0, 64.0);
+    return [SYNDeviceManager.sharedInstance isIPhone] ? CGSizeMake(320.0f, 64.0f) : CGSizeMake(1024.0, 64.0);
 }
 
 

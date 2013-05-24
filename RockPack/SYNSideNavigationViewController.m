@@ -130,9 +130,9 @@ typedef enum {
     
     CGRect newFrame = self.view.frame;
     
-    if ([[SYNDeviceManager sharedInstance] isIPhone])
+    if ([SYNDeviceManager.sharedInstance isIPhone])
     {
-        newFrame.size.height = [[SYNDeviceManager sharedInstance] currentScreenHeight] - 78.0f;
+        newFrame.size.height = [SYNDeviceManager.sharedInstance currentScreenHeight] - 78.0f;
         self.view.frame = newFrame;
         self.mainContentView.frame = self.view.bounds;
         self.backgroundImageView.image = [[UIImage imageNamed:@"PanelMenu"] resizableImageWithCapInsets:UIEdgeInsetsMake( 68.0f, 0.0f, 65.0f ,0.0f)];
@@ -153,26 +153,26 @@ typedef enum {
         self.bottomExtraView = [[UIView alloc] initWithFrame:CGRectMake(0.0,
                                                                         bgHeight,
                                                                         self.backgroundImageView.frame.size.width,
-                                                                        [[SYNDeviceManager sharedInstance] currentScreenHeight] - bgHeight)];
+                                                                        [SYNDeviceManager.sharedInstance currentScreenHeight] - bgHeight)];
         
         self.bottomExtraView.backgroundColor = [UIColor colorWithPatternImage:[UIImage imageNamed:@"PanelMenuBottom"]];
         
         [self.view insertSubview:self.bottomExtraView belowSubview:self.backgroundImageView];
         
-        newFrame.size.height = [[SYNDeviceManager sharedInstance] currentScreenHeight];
+        newFrame.size.height = [SYNDeviceManager.sharedInstance currentScreenHeight];
         self.view.frame = newFrame;
 
         // == Settings Button == //
         
         CGRect settingsButtonFrame = self.settingsButton.frame;
-        settingsButtonFrame.origin.y = [[SYNDeviceManager sharedInstance] currentScreenHeight] - 26.0 - settingsButtonFrame.size.height;
+        settingsButtonFrame.origin.y = [SYNDeviceManager.sharedInstance currentScreenHeight] - 26.0 - settingsButtonFrame.size.height;
         self.settingsButton.frame = settingsButtonFrame;
         self.settingsButton.autoresizingMask = UIViewAutoresizingFlexibleTopMargin;
         
         // == Verion number label == //
         
         CGRect versionNumberLabelFrame = self.versionNumberLabel.frame;
-        versionNumberLabelFrame.origin.y = [[SYNDeviceManager sharedInstance] currentScreenHeight] - 55.0 - settingsButtonFrame.size.height;
+        versionNumberLabelFrame.origin.y = [SYNDeviceManager.sharedInstance currentScreenHeight] - 55.0 - settingsButtonFrame.size.height;
         self.versionNumberLabel.frame = versionNumberLabelFrame;
         self.versionNumberLabel.autoresizingMask = UIViewAutoresizingFlexibleTopMargin;
         
@@ -559,7 +559,7 @@ typedef enum {
     
     
     CGFloat correctHeight = UIInterfaceOrientationIsPortrait(toInterfaceOrientation) ?
-    [[SYNDeviceManager sharedInstance] currentScreenHeight] : [[SYNDeviceManager sharedInstance] currentScreenWidth];
+    [SYNDeviceManager.sharedInstance currentScreenHeight] : [SYNDeviceManager.sharedInstance currentScreenWidth];
     
     CGRect newFrame = self.view.frame;
     newFrame.size.height = correctHeight;
@@ -581,13 +581,13 @@ typedef enum {
                                             duration: duration];
     
     CGRect settingsButtonFrame = self.settingsButton.frame;
-    settingsButtonFrame.origin.y = [[SYNDeviceManager sharedInstance] currentScreenHeight] - 30.0 - settingsButtonFrame.size.height;
+    settingsButtonFrame.origin.y = [SYNDeviceManager.sharedInstance currentScreenHeight] - 30.0 - settingsButtonFrame.size.height;
     self.settingsButton.frame = settingsButtonFrame;
     
     // == Verion number label == //
     
     CGRect versionNumberLabelFrame = self.versionNumberLabel.frame;
-    versionNumberLabelFrame.origin.y = [[SYNDeviceManager sharedInstance] currentScreenHeight] - 55.0 - settingsButtonFrame.size.height;
+    versionNumberLabelFrame.origin.y = [SYNDeviceManager.sharedInstance currentScreenHeight] - 55.0 - settingsButtonFrame.size.height;
     self.versionNumberLabel.frame = versionNumberLabelFrame;
     
     // FIXME:???
@@ -715,7 +715,7 @@ typedef enum {
                         options: UIViewAnimationOptionCurveEaseInOut | UIViewAnimationOptionBeginFromCurrentState
                      animations: ^{
                          CGRect sideNavigationFrame = self.view.frame;
-                         if ([[SYNDeviceManager sharedInstance] isIPad])
+                         if ([SYNDeviceManager.sharedInstance isIPad])
                          {
                              sideNavigationFrame.origin.x = 1024.0 - 192.0;
                              self.userNameLabel.alpha = 0.0;
@@ -736,7 +736,7 @@ typedef enum {
     // Light up navigation button
     self.captiveButton.selected = TRUE;
     
-    if ([[SYNDeviceManager sharedInstance] isIPad])
+    if ([SYNDeviceManager.sharedInstance isIPad])
     {
         [UIView animateWithDuration: 0.5f
                               delay: 0.0f

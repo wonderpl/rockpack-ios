@@ -51,7 +51,7 @@
 
 - (void) pack
 {
-    if([[SYNDeviceManager sharedInstance] isIPhone])
+    if ([SYNDeviceManager.sharedInstance isIPhone])
     {
         
         NSMutableParagraphStyle *style = [[NSMutableParagraphStyle alloc] init];

@@ -69,7 +69,7 @@
     
     self.contentSizeForViewInPopover = CGSizeMake(380, 476);
 
-    self.tableView.scrollEnabled = [[SYNDeviceManager sharedInstance] isIPhone];
+    self.tableView.scrollEnabled = [SYNDeviceManager.sharedInstance isIPhone];
     
     UILabel* titleLabel = [[UILabel alloc] initWithFrame: CGRectMake(0.0, 10.0, 100.0, 20.0)];
     titleLabel.backgroundColor = [UIColor clearColor];
@@ -307,7 +307,7 @@
                 
                 [dobController.datePicker setDate:date];
                 
-                if ([[SYNDeviceManager sharedInstance] isIPad])
+                if ([SYNDeviceManager.sharedInstance isIPad])
                 {
                     if(self.dobPopover)
                         return;

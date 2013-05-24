@@ -287,7 +287,7 @@
     }
     else if ([self.reachability currentReachabilityStatus] == NotReachable)
     {
-        NSString* message = [[SYNDeviceManager sharedInstance] isIPad] ? NSLocalizedString(@"NO NETWORK, PLEASE CHECK YOUR INTERNET CONNECTION.", nil)
+        NSString* message = [SYNDeviceManager.sharedInstance isIPad] ? NSLocalizedString(@"NO NETWORK, PLEASE CHECK YOUR INTERNET CONNECTION.", nil)
         : NSLocalizedString(@"NO NETWORK", nil);
         [self presentNetworkErrorViewWithMesssage: message];
     }

@@ -110,12 +110,12 @@
 
 - (void) setUsernameText: (NSString *) text
 {
-    if ([[SYNDeviceManager sharedInstance] isIPad])
+    if ([SYNDeviceManager.sharedInstance isIPad])
     {
         //CGRect byFrame = self.byLabel.frame;
         CGRect usernameFrame = self.usernameLabel.frame;
         
-        if ([[SYNDeviceManager sharedInstance] isLandscape])
+        if ([SYNDeviceManager.sharedInstance isLandscape])
         {
             // Landscape
             //byFrame.origin.x = 78.0f;
@@ -149,7 +149,7 @@
 
 - (void) setChannelNameText:(NSString *)channelNameText
 {
-    if ([[SYNDeviceManager sharedInstance]isIPad])
+    if ([SYNDeviceManager.sharedInstance isIPad])
     {
         CGRect currentFrame = self.channelName.frame;
         CGFloat defaultWidth = currentFrame.size.width;

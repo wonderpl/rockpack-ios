@@ -32,7 +32,7 @@
         [self addSubview:button];
         
 #ifdef USE_TITLE_STRING
-        if([[SYNDeviceManager sharedInstance] isIPad])
+        if([SYNDeviceManager.sharedInstance isIPad])
         {
             // == UIView == //
             

@@ -53,7 +53,7 @@
 
 - (void) loadView
 {
-    BOOL isIPhone = [[SYNDeviceManager sharedInstance] isIPhone];
+    BOOL isIPhone = [SYNDeviceManager.sharedInstance isIPhone];
     UIEdgeInsets insets;
     
     if (isIPhone)
@@ -90,7 +90,7 @@
     
     if (isIPhone)
     {
-        CGSize screenSize= CGSizeMake([[SYNDeviceManager sharedInstance]currentScreenWidth],[[SYNDeviceManager sharedInstance]currentScreenHeight]);
+        CGSize screenSize= CGSizeMake([SYNDeviceManager.sharedInstance currentScreenWidth],[SYNDeviceManager.sharedInstance currentScreenHeight]);
         videoCollectionViewFrame = CGRectMake(0.0, kStandardCollectionViewOffsetYiPhone, screenSize.width, screenSize.height - 20.0f - kStandardCollectionViewOffsetYiPhone);
         selfFrame = CGRectMake(0.0, 0.0, screenSize.width, screenSize.height - 20.0f);
     }
@@ -166,8 +166,8 @@
                  forControlEvents: UIControlEventTouchUpInside];
     
     CGRect refreshButtonFrame = self.refreshButton.frame;
-    refreshButtonFrame.origin.x = [[SYNDeviceManager sharedInstance] isIPad]? 5.0f  : 5.0f;
-    refreshButtonFrame.origin.y = [[SYNDeviceManager sharedInstance] isIPad]? 7.0f : 5.0f;
+    refreshButtonFrame.origin.x = [SYNDeviceManager.sharedInstance isIPad]? 5.0f  : 5.0f;
+    refreshButtonFrame.origin.y = [SYNDeviceManager.sharedInstance isIPad]? 7.0f : 5.0f;
     self.refreshButton.frame = refreshButtonFrame;
     [self.view addSubview: self.refreshButton];
 }
@@ -339,11 +339,11 @@
                    layout: (UICollectionViewLayout*) collectionViewLayout
    sizeForItemAtIndexPath: (NSIndexPath *) indexPath
 {
-    if([[SYNDeviceManager sharedInstance] isIPhone])
+    if([SYNDeviceManager.sharedInstance isIPhone])
     {
         return CGSizeMake(310,221);
     }
-    else if([[SYNDeviceManager sharedInstance] isLandscape])
+    else if([SYNDeviceManager.sharedInstance isLandscape])
     {
         return CGSizeMake(497, 140);
     }
@@ -372,11 +372,11 @@
                                         placeholderImage: [UIImage imageNamed: @"PlaceholderChannelSmall.png"]
                                                  options: SDWebImageRetryFailed];
     
-    videoThumbnailCell.channelImageView.hidden = [[SYNDeviceManager sharedInstance] isPortrait]
-                                                 && [[SYNDeviceManager sharedInstance] isIPad];
+    videoThumbnailCell.channelImageView.hidden = [SYNDeviceManager.sharedInstance isPortrait]
+                                                 && [SYNDeviceManager.sharedInstance isIPad];
     
-    videoThumbnailCell.channelShadowView.hidden = [[SYNDeviceManager sharedInstance] isPortrait]
-                                                  && [[SYNDeviceManager sharedInstance] isIPad];
+    videoThumbnailCell.channelShadowView.hidden = [SYNDeviceManager.sharedInstance isPortrait]
+                                                  && [SYNDeviceManager.sharedInstance isIPad];
     
     videoThumbnailCell.videoTitle.text = videoInstance.title;
     videoThumbnailCell.channelNameText = videoInstance.channel.title;
@@ -400,7 +400,7 @@
 {
     if (collectionView == self.videoThumbnailCollectionView)
     {
-        if([[SYNDeviceManager sharedInstance] isIPad])
+        if([SYNDeviceManager.sharedInstance isIPad])
         {
             return CGSizeMake(1024, 65);   
         }
@@ -474,7 +474,7 @@
         headerSupplementaryView.viewControllerDelegate = self;
         headerSupplementaryView.focus = focus;
         headerSupplementaryView.sectionTitleLabel.text = sectionText.uppercaseString;
-        if ([[SYNDeviceManager sharedInstance] isLandscape])
+        if ([SYNDeviceManager.sharedInstance isLandscape])
         {
             headerSupplementaryView.sectionView.image = [UIImage imageNamed:@"PanelDay"];
         }

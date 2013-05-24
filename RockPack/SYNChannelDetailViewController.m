@@ -168,7 +168,7 @@
     if (isIPhone)
     {
         layout.sectionInset = UIEdgeInsetsMake(0.0f, 0.0f, 0.0f, 0.0f);
-        self.videoThumbnailCollectionView.contentInset = UIEdgeInsetsMake([[SYNDeviceManager sharedInstance] currentScreenHeight] - 168.0f, 0.0f, 0.0f, 0.0f);
+        self.videoThumbnailCollectionView.contentInset = UIEdgeInsetsMake([SYNDeviceManager.sharedInstance currentScreenHeight] - 168.0f, 0.0f, 0.0f, 0.0f);
     }
     else
     {
@@ -843,7 +843,7 @@
 {
     NSString* noteName;
     
-    if (!addButton.selected || [[SYNDeviceManager sharedInstance] isIPhone]) // There is only ever one video in the queue on iPhone. Always fire the add action.
+    if (!addButton.selected || [SYNDeviceManager.sharedInstance isIPhone]) // There is only ever one video in the queue on iPhone. Always fire the add action.
     {
         noteName = kVideoQueueAdd;
         
@@ -875,7 +875,7 @@
     
     NSIndexPath *indexPath = [self.videoThumbnailCollectionView indexPathForItemAtPoint: v.center];
     
-    self.instanceToDelete = (VideoInstance*)[self.channel.videoInstances objectAtIndex: indexPath.item];
+    self.instanceToDelete = (VideoInstance*)self.channel.videoInstances[indexPath.item];
     
     if (self.instanceToDelete != nil)
     {
@@ -922,7 +922,7 @@
 - (IBAction) addCoverButtonTapped: (UIButton *) button
 {
     // Prevent multiple clicks of the add cover button on iPhoen
-    if ([[SYNDeviceManager sharedInstance] isIPhone])
+    if ([SYNDeviceManager.sharedInstance isIPhone])
     {
         if (self.isImageSelectorOpen == TRUE)
         {
@@ -948,7 +948,7 @@
 
 - (IBAction) editButtonTapped: (id) sender
 {
-    BOOL isIPad = [[SYNDeviceManager sharedInstance] isIPad];
+    BOOL isIPad = [SYNDeviceManager.sharedInstance isIPad];
     [[NSNotificationCenter defaultCenter] postNotificationName: (isIPad)? kChannelsNavControlsHide : kNoteAllNavControlsHide
                                                         object: self
                                                       userInfo: nil];
@@ -984,12 +984,12 @@
                                                                                 error: &error];
         if ([selectedCategoryResult count]>0)
         {
-            Genre* genre = [selectedCategoryResult objectAtIndex:0];
+            Genre* genre = selectedCategoryResult[0];
             NSString* newTitle = nil;
             if ([genre isKindOfClass:[SubGenre class]])
             {
                 SubGenre* subCategory = (SubGenre*) genre;
-                if ([[SYNDeviceManager sharedInstance] isIPhone])
+                if ([SYNDeviceManager.sharedInstance isIPhone])
                 {
                     newTitle =[NSString stringWithFormat:@"%@/\n%@", subCategory.genre.name, subCategory.name];
                 }
@@ -1089,7 +1089,7 @@
                                                   id errorText = [specificErrors objectForKey: @"title"];
                                                   if ([errorText isKindOfClass:[NSArray class]])
                                                   {
-                                                      errorText = [errorText objectAtIndex:0];
+                                                      errorText = errorText[0];
                                                   }
                                                   if (!errorText)
                                                   {
@@ -1110,7 +1110,7 @@
 
 - (void) showCoverChooser
 {
-    if ([[SYNDeviceManager sharedInstance] isIPad])
+    if ([SYNDeviceManager.sharedInstance isIPad])
     {
         // Check to see if we are already display the cover chooser
         if (self.coverChooserMasterView.alpha == 0.0f)
@@ -1176,7 +1176,7 @@
 
 - (void) showCategoryChooser
 {
-    if ([[SYNDeviceManager sharedInstance] isIPad])
+    if ([SYNDeviceManager.sharedInstance isIPad])
     {
         if (self.categoriesTabViewController.view.alpha == 0.0f)
         {
@@ -1263,7 +1263,7 @@
                 NSArray* filteredSubcategories = [[self.categoryTableViewController.otherGenre.subgenres array] filteredArrayUsingPredicate:[NSPredicate predicateWithFormat:@"priority = -1"]];
                  if([filteredSubcategories count] == 1)
                  {
-                     SubGenre* otherSubGenre = [filteredSubcategories objectAtIndex:0];
+                     SubGenre* otherSubGenre = filteredSubcategories[0];
                      
                      self.selectedCategoryId = otherSubGenre.uniqueId;
                      
@@ -1369,7 +1369,7 @@
         NSArray* filteredSubcategories = [[genre.subgenres array] filteredArrayUsingPredicate:[NSPredicate predicateWithFormat:@"priority = -1"]];
         if ([filteredSubcategories count] == 1)
         {
-            SubGenre* otherSubGenre = [filteredSubcategories objectAtIndex:0];
+            SubGenre* otherSubGenre = filteredSubcategories[0];
             
             self.selectedCategoryId = otherSubGenre.uniqueId;
             
@@ -1388,7 +1388,7 @@
 
 - (IBAction) createChannelPressed: (id) sender
 {
-    if ([[SYNDeviceManager sharedInstance] isIPhone])
+    if ([SYNDeviceManager.sharedInstance isIPhone])
     {
         self.createChannelButton.hidden = YES;
         self.activityIndicator.hidden = NO;
@@ -1549,7 +1549,7 @@
                                                                                                   object: self
                                                                                                 userInfo: nil];
                                               
-                                              [self finaliseViewStatusAfterCreateOrUpdate:[[SYNDeviceManager sharedInstance] isIPad]];
+                                              [self finaliseViewStatusAfterCreateOrUpdate:[SYNDeviceManager.sharedInstance isIPad]];
                                               
                                               [[NSNotificationCenter defaultCenter] postNotificationName: kVideoQueueClear
                                                                                                   object: nil];
@@ -1571,7 +1571,7 @@
                                                                                                   object: self
                                                                                                 userInfo: nil];
                                               
-                                              [self finaliseViewStatusAfterCreateOrUpdate:[[SYNDeviceManager sharedInstance] isIPad]];
+                                              [self finaliseViewStatusAfterCreateOrUpdate:[SYNDeviceManager.sharedInstance isIPad]];
                                             
                                               
                                               [[NSNotificationCenter defaultCenter] postNotificationName: kVideoQueueClear
@@ -1697,7 +1697,7 @@
 
 - (void) textViewDidBeginEditing: (UITextView *) textView
 {
-    if ([[SYNDeviceManager sharedInstance] isIPhone])
+    if ([SYNDeviceManager.sharedInstance isIPhone])
     {
         self.createChannelButton.hidden = YES;
         self.saveChannelButton.hidden = YES;
@@ -1709,7 +1709,7 @@
 
 - (void) textViewDidEndEditing: (UITextView *) textView
 {
-    if ([[SYNDeviceManager sharedInstance] isIPhone])
+    if ([SYNDeviceManager.sharedInstance isIPhone])
     {
         self.createChannelButton.hidden = NO;
         self.saveChannelButton.hidden = NO;
@@ -2058,7 +2058,7 @@
         NSArray* filteredSubcategories = [[category.subgenres array] filteredArrayUsingPredicate:[NSPredicate predicateWithFormat:@"priority = -1"]];
         if ([filteredSubcategories count] == 1)
         {
-            SubGenre* otherSubGenre = [filteredSubcategories objectAtIndex:0];
+            SubGenre* otherSubGenre = filteredSubcategories[0];
             
             self.selectedCategoryId = otherSubGenre.uniqueId;
             
@@ -2190,7 +2190,7 @@
                                         
                                         wself.originalBackgroundImage = image;
                                         
-                                        UIImage* croppedImage = [wself croppedImageForOrientation:[[SYNDeviceManager sharedInstance] orientation]];
+                                        UIImage* croppedImage = [wself croppedImageForOrientation:[SYNDeviceManager.sharedInstance orientation]];
                                         
                                         [UIView transitionWithView: wself.view
                                                           duration: 0.35f

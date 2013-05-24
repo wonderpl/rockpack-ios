@@ -78,7 +78,7 @@
     }
 
     
-    SYNGenreTabView* categoriesTabView = [[SYNGenreTabView alloc] initWithSize: [[SYNDeviceManager sharedInstance] currentScreenWidth]
+    SYNGenreTabView* categoriesTabView = [[SYNGenreTabView alloc] initWithSize: [SYNDeviceManager.sharedInstance currentScreenWidth]
                                                                            andHomeButton: self.homeButtomString];
     categoriesTabView.tapDelegate = self;
     

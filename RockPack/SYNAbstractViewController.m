@@ -204,7 +204,7 @@
     NSIndexPath *indexPath = [self.videoThumbnailCollectionView indexPathForItemAtPoint: v.center];
     VideoInstance *videoInstance = [self.fetchedResultsController objectAtIndexPath: indexPath];
     
-    if (!_addButton.selected || [[SYNDeviceManager sharedInstance] isIPhone]) // There is only ever one video in the queue on iPhone. Always fire the add action.
+    if (!_addButton.selected || [SYNDeviceManager.sharedInstance isIPhone]) // There is only ever one video in the queue on iPhone. Always fire the add action.
     {
         noteName = kVideoQueueAdd;
         
@@ -499,7 +499,7 @@
                                               UIImage *capturedScreenImage = UIGraphicsGetImageFromCurrentImageContext();
                                               UIGraphicsEndImageContext();
                                               
-                                              UIInterfaceOrientation orientation = [[SYNDeviceManager sharedInstance] orientation];
+                                              UIInterfaceOrientation orientation = [SYNDeviceManager.sharedInstance orientation];
                                               
                                               switch (orientation)
                                               {

@@ -93,7 +93,7 @@ typedef void(^AnimationCompletionBlock)(BOOL finished);
         self.sideNavigationViewController = [[SYNSideNavigationViewController alloc] init];
         
         self.sideNavigationViewController.view.frame = CGRectMake(1024.0,
-                                                                  ([[SYNDeviceManager sharedInstance] isIPad] ? 0.0 : 58.0f),
+                                                                  ([SYNDeviceManager.sharedInstance isIPad] ? 0.0 : 58.0f),
                                                                   self.sideNavigationViewController.view.frame.size.width,
                                                                   self.sideNavigationViewController.view.frame.size.height);
 
@@ -105,7 +105,7 @@ typedef void(^AnimationCompletionBlock)(BOOL finished);
 
         // == Search Box == //
     
-        if([[SYNDeviceManager sharedInstance] isIPad])
+        if([SYNDeviceManager.sharedInstance isIPad])
         {
             self.searchBoxController = [[SYNSearchBoxViewController alloc] init];
             CGRect autocompleteControllerFrame = self.searchBoxController.view.frame;
@@ -137,9 +137,9 @@ typedef void(^AnimationCompletionBlock)(BOOL finished);
     // == Fade in from splash screen (not in AppDelegate so that the Orientation is known) == //
     
     UIImageView *splashView;
-    if ([[SYNDeviceManager sharedInstance] isIPhone])
+    if ([SYNDeviceManager.sharedInstance isIPhone])
     {
-        if ([[SYNDeviceManager sharedInstance] currentScreenHeight]>480.0f)
+        if ([SYNDeviceManager.sharedInstance currentScreenHeight]>480.0f)
         {
             splashView = [[UIImageView alloc] initWithImage:[UIImage imageNamed: @"Default-568h"]];
         }
@@ -380,7 +380,7 @@ typedef void(^AnimationCompletionBlock)(BOOL finished);
     if(!selectedChannel)
         return;
     
-    NSString* message = [[SYNDeviceManager sharedInstance] isIPhone]?
+    NSString* message = [SYNDeviceManager.sharedInstance isIPhone]?
     NSLocalizedString(@"VIDEO SUCCESSFULLY ADDED",nil):
     NSLocalizedString(@"YOUR VIDEOS HAVE BEEN SUCCESSFULLY ADDED INTO YOUR CHANNEL",nil);
     
@@ -575,7 +575,7 @@ typedef void(^AnimationCompletionBlock)(BOOL finished);
     
     [self.view insertSubview:self.searchBoxController.view aboveSubview:self.overlayContainerView];
     
-    if ([[SYNDeviceManager sharedInstance] isIPad] && sender != nil)
+    if ([SYNDeviceManager.sharedInstance isIPad] && sender != nil)
     {
         [self.searchBoxController.searchTextField becomeFirstResponder];
     }
@@ -590,7 +590,7 @@ typedef void(^AnimationCompletionBlock)(BOOL finished);
     if(!termString)
         return;
     
-    BOOL isIPad =[[SYNDeviceManager sharedInstance] isIPad];
+    BOOL isIPad =[SYNDeviceManager.sharedInstance isIPad];
     if(isIPad)
     {
         //self.closeSearchButton.hidden = YES;
@@ -689,7 +689,7 @@ typedef void(^AnimationCompletionBlock)(BOOL finished);
     }
     else if ([self.reachability currentReachabilityStatus] == NotReachable)
     {
-        NSString* message = [[SYNDeviceManager sharedInstance] isIPad] ? NSLocalizedString(@"NO NETWORK, PLEASE CHECK YOUR INTERNET CONNECTION.", nil)
+        NSString* message = [SYNDeviceManager.sharedInstance isIPad] ? NSLocalizedString(@"NO NETWORK, PLEASE CHECK YOUR INTERNET CONNECTION.", nil)
                                                                        : NSLocalizedString(@"NO NETWORK", nil);
         [self presentNetworkErrorViewWithMesssage: message];
     }
@@ -702,7 +702,7 @@ typedef void(^AnimationCompletionBlock)(BOOL finished);
 {
     [UIView animateWithDuration:0.3 delay:0.0 options:UIViewAnimationCurveEaseInOut animations:^{
         CGRect erroViewFrame = self.networkErrorView.frame;
-        erroViewFrame.origin.y = [[SYNDeviceManager sharedInstance] currentScreenHeight];
+        erroViewFrame.origin.y = [SYNDeviceManager.sharedInstance currentScreenHeight];
         self.networkErrorView.frame = erroViewFrame;
     } completion:^(BOOL finished) {
         [self.networkErrorView removeFromSuperview];
@@ -806,7 +806,7 @@ typedef void(^AnimationCompletionBlock)(BOOL finished);
 
 - (void) channelSuccessfullySaved: (NSNotification*) note
 {
-    NSString* message = [[SYNDeviceManager sharedInstance] isIPhone]?
+    NSString* message = [SYNDeviceManager.sharedInstance isIPhone]?
     NSLocalizedString(@"CHANNEL SAVED",nil):
     NSLocalizedString(@"YOUR CHANNEL HAS BEEN SAVED SUCCESSFULLY",nil);
     [self presentSuccessNotificationWithMessage:message];
@@ -884,7 +884,7 @@ typedef void(^AnimationCompletionBlock)(BOOL finished);
         targetFrame = self.movableButtonsContainer.frame;
         targetAlpha = 1.0;
         
-        if ([[SYNDeviceManager sharedInstance] isIPad])
+        if ([SYNDeviceManager.sharedInstance isIPad])
         {
             targetFrame.origin.x = 10.0;
         }
@@ -999,7 +999,7 @@ typedef void(^AnimationCompletionBlock)(BOOL finished);
     
     
     
-    if([[SYNDeviceManager sharedInstance] isIPad])
+    if([SYNDeviceManager.sharedInstance isIPad])
     {
         
         
@@ -1014,8 +1014,8 @@ typedef void(^AnimationCompletionBlock)(BOOL finished);
         
         self.accountSettingsPopover.popoverBackgroundViewClass = [SYNAccountSettingsPopoverBackgroundView class];
         
-        CGRect rect = CGRectMake([[SYNDeviceManager sharedInstance] currentScreenWidth] * 0.5,
-                                 [[SYNDeviceManager sharedInstance] currentScreenHeight] * 0.5, 1, 1);
+        CGRect rect = CGRectMake([SYNDeviceManager.sharedInstance currentScreenWidth] * 0.5,
+                                 [SYNDeviceManager.sharedInstance currentScreenHeight] * 0.5, 1, 1);
         
         [self.accountSettingsPopover presentPopoverFromRect: rect
                                                      inView: self.view
@@ -1037,7 +1037,7 @@ typedef void(^AnimationCompletionBlock)(BOOL finished);
         modalFrame.size.height = self.view.frame.size.height - 60.0f;
         [self.modalAccountContainer setModalViewFrame:modalFrame];
         
-        modalFrame.origin.y = [[SYNDeviceManager sharedInstance] currentScreenHeight];
+        modalFrame.origin.y = [SYNDeviceManager.sharedInstance currentScreenHeight];
         self.modalAccountContainer.view.frame = modalFrame;
         
         self.accountSettingsCoverView.alpha = 0.0;
@@ -1063,7 +1063,7 @@ typedef void(^AnimationCompletionBlock)(BOOL finished);
 {
     
     CGRect hiddenFrame = self.modalAccountContainer.view.frame;
-    hiddenFrame.origin.y = [[SYNDeviceManager sharedInstance] currentScreenHeight];
+    hiddenFrame.origin.y = [SYNDeviceManager.sharedInstance currentScreenHeight];
     [UIView animateWithDuration:0.5 animations:^{
         
         self.accountSettingsCoverView.alpha = 0.0;
@@ -1127,7 +1127,7 @@ typedef void(^AnimationCompletionBlock)(BOOL finished);
     
     [UIView animateWithDuration:0.3 animations:^{
         CGRect erroViewFrame = self.networkErrorView.frame;
-        erroViewFrame.origin.y = [[SYNDeviceManager sharedInstance] currentScreenHeightWithStatusBar] - erroViewFrame.size.height;
+        erroViewFrame.origin.y = [SYNDeviceManager.sharedInstance currentScreenHeightWithStatusBar] - erroViewFrame.size.height;
         
         self.networkErrorView.frame = erroViewFrame;
     }];
@@ -1146,7 +1146,7 @@ typedef void(^AnimationCompletionBlock)(BOOL finished);
                         options: UIViewAnimationOptionCurveEaseOut
                      animations: ^{
                          CGRect newFrame = successNotification.frame;
-                         newFrame.origin.y = [[SYNDeviceManager sharedInstance] currentScreenHeightWithStatusBar] - newFrame.size.height;
+                         newFrame.origin.y = [SYNDeviceManager.sharedInstance currentScreenHeightWithStatusBar] - newFrame.size.height;
                          successNotification.frame = newFrame;
                      }
                      completion: ^(BOOL finished) {
@@ -1155,7 +1155,7 @@ typedef void(^AnimationCompletionBlock)(BOOL finished);
                                              options: UIViewAnimationOptionCurveEaseIn
                                           animations: ^{
                                               CGRect newFrame = successNotification.frame;
-                                              newFrame.origin.y = [[SYNDeviceManager sharedInstance] currentScreenHeightWithStatusBar] + newFrame.size.height;
+                                              newFrame.origin.y = [SYNDeviceManager.sharedInstance currentScreenHeightWithStatusBar] + newFrame.size.height;
                                               successNotification.frame = newFrame;
                                           }
                                           completion: ^(BOOL finished) {
@@ -1188,8 +1188,8 @@ typedef void(^AnimationCompletionBlock)(BOOL finished);
 
     if (self.accountSettingsPopover)
     {
-        CGRect rect = CGRectMake([[SYNDeviceManager sharedInstance] currentScreenWidth] * 0.5,
-                                 [[SYNDeviceManager sharedInstance] currentScreenHeight] * 0.5, 1, 1);
+        CGRect rect = CGRectMake([SYNDeviceManager.sharedInstance currentScreenWidth] * 0.5,
+                                 [SYNDeviceManager.sharedInstance currentScreenHeight] * 0.5, 1, 1);
         
         [self.accountSettingsPopover presentPopoverFromRect: rect
                                                      inView: self.view
@@ -1212,7 +1212,7 @@ typedef void(^AnimationCompletionBlock)(BOOL finished);
         [self.overlayContainerView addSubview:overlayNavigationController.view];
         
 
-        if ([[SYNDeviceManager sharedInstance] isIPhone])
+        if ([SYNDeviceManager.sharedInstance isIPhone])
         {
             overlayNavigationController.view.frame = self.overlayContainerView.bounds;
         }
@@ -1245,7 +1245,7 @@ typedef void(^AnimationCompletionBlock)(BOOL finished);
                                                   self.overlayContainerView.alpha = 1.0;
                                               }
                                               completion:^(BOOL finished) {
-                                                  if ([[SYNDeviceManager sharedInstance] isIPhone])
+                                                  if ([SYNDeviceManager.sharedInstance isIPhone])
                                                   {
                                                    
                                                       // The search overlay sits on the side navigation on iPhone, move it into the overlay temporarily
@@ -1259,7 +1259,7 @@ typedef void(^AnimationCompletionBlock)(BOOL finished);
         if(_overlayContainerView) // nil was passed and there was another on screen (remove)
         {
             NSTimeInterval animationDuration = 0.5f;
-            if([[SYNDeviceManager sharedInstance] isIPhone])
+            if([SYNDeviceManager.sharedInstance isIPhone])
             {
                 animationDuration = 0.1f;
             }

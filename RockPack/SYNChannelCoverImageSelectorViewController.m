@@ -205,7 +205,7 @@ enum ChannelCoverSelectorState {
         else
         {
             indexPath = [NSIndexPath indexPathForRow: indexPath.row - 1 inSection:0];
-            CoverArt *coverArt = [[self.fetchedResultsController fetchedObjects] objectAtIndex: indexPath.row];
+            CoverArt *coverArt = self.fetchedResultsController.fetchedObjects[indexPath.row];
 
             [cell.channelCoverImageView setImageWithURL: [NSURL URLWithString: coverArt.thumbnailURL]
                                        placeholderImage: [UIImage imageNamed: @"PlaceholderChannelCreation.png"]
@@ -233,7 +233,7 @@ enum ChannelCoverSelectorState {
             {
                 indexPath = [NSIndexPath indexPathForRow: indexPath.row - 1 inSection:0];
             }
-            title = [self.sortedKeys objectAtIndex:indexPath.row];
+            title = self.sortedKeys[indexPath.row];
             ALAsset* imageAsset = [[self.userAssetGroups objectForKey: title] objectForKey: @"coverAsset"];
             [cell setimageFromAsset:imageAsset];
             cell.glossImage.hidden = NO;
@@ -333,7 +333,7 @@ enum ChannelCoverSelectorState {
             if (indexPath.row != 0)
             {
                 indexPath = [NSIndexPath indexPathForRow:indexPath.row - 1 inSection:0];
-                CoverArt *coverArt = [[self.fetchedResultsController fetchedObjects] objectAtIndex:indexPath.row];
+                CoverArt *coverArt = self.fetchedResultsController.fetchedObjects[indexPath.row];
                     returnStringURL = coverArt.thumbnailURL;
                     returnCoverId = coverArt.coverRef;
                 
