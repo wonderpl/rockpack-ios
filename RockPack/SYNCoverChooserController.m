@@ -17,6 +17,7 @@
 #import "SYNChannelCoverImageCell.h"
 #import "SYNChannelCoverImageSelectorViewController.h"
 #import "SYNCoverChooserController.h"
+#import "SYNCoverRightMoreView.h"
 #import "SYNCoverThumbnailCell.h"
 #import "SYNNetworkEngine.h"
 #import "SYNOAuthNetworkEngine.h"
@@ -29,6 +30,7 @@
 @property (nonatomic, strong) IBOutlet UICollectionView *collectionView;
 @property (nonatomic, strong) NSFetchedResultsController *channelCoverFetchedResultsController;
 @property (nonatomic, strong) NSIndexPath* indexPathSelected;
+@property (nonatomic, strong) SYNCoverRightMoreView* coverRightMoreView;
 @property (nonatomic, strong) NSString* selectedImageURL;
 @property (nonatomic, weak) SYNAppDelegate* appDelegate;
 
@@ -59,6 +61,14 @@
     
     [self.collectionView registerNib: coverThumbnailCellNib
           forCellWithReuseIdentifier: @"SYNCoverThumbnailCell"];
+    
+    // Register Footer
+    UINib *moreViewNib = [UINib nibWithNibName: @"SYNCoverRightMoreView"
+                                        bundle: nil];
+    
+    [self.collectionView registerNib: moreViewNib
+          forSupplementaryViewOfKind: UICollectionElementKindSectionFooter
+                 withReuseIdentifier: @"SYNCoverRightMoreView"];
 }
 
 
@@ -252,6 +262,46 @@
 }
 
 
+#pragma mark - Supplementary views
+
+- (UICollectionReusableView *) collectionView: (UICollectionView *) collectionView
+            viewForSupplementaryElementOfKind: (NSString *) kind
+                                  atIndexPath: (NSIndexPath *) indexPath
+{
+    UICollectionReusableView* supplementaryView;
+    
+    if (collectionView != self.collectionView)
+        return nil;
+
+    if (kind == UICollectionElementKindSectionFooter && indexPath.section == 2)
+    {        
+        self.coverRightMoreView = [self.collectionView dequeueReusableSupplementaryViewOfKind: kind
+                                                                          withReuseIdentifier: @"SYNCoverRightMoreView"
+                                                                                 forIndexPath: indexPath];
+        
+        supplementaryView = self.coverRightMoreView;
+    }
+    
+    return supplementaryView;
+}
+
+- (CGSize) collectionView: (UICollectionView *) collectionView
+           layout: (UICollectionViewLayout*) collectionViewLayout
+           referenceSizeForFooterInSection: (NSInteger) section
+{
+    if (section == 2)
+    {
+        return CGSizeMake(141.0f, 121.0f);
+    }
+    else
+    {
+        return CGSizeZero;
+    }
+}
+
+
+
+
 - (void) controllerDidChangeContent: (NSFetchedResultsController *) controller
 {
     [self.collectionView reloadData];
@@ -262,11 +312,14 @@
 - (void) updateCoverArt
 {
     // Update the list of cover art
-    [self.appDelegate.networkEngine updateCoverArtOnCompletion: ^{
-        DebugLog(@"Success");
-    } onError: ^(NSError* error) {
-        DebugLog(@"%@", [error debugDescription]);
-    }];
+    [self.appDelegate.networkEngine updateCoverArtWithWithStart: 0
+                                                           size: 50
+                                              completionHandler: ^(NSDictionary *dictionary){
+                                                  DebugLog(@"Success");
+                                              }
+                                                   errorHandler: ^(NSError* error) {
+                                                       DebugLog(@"%@", [error debugDescription]);
+                                                   }];
     
     [self.appDelegate.oAuthNetworkEngine updateCoverArtForUserId: self.appDelegate.currentOAuth2Credentials.userId
                                                onCompletion: ^{
@@ -300,13 +353,33 @@
     if (scrollView.contentOffset.x == scrollView.contentSize.width - scrollView.bounds.size.width)
     {
             DebugLog (@"Scrolling more");
-//        // ask next page only if we haven't reached last page
-//        if(![self.flickrPaginator reachedLastPage])
-//        {
-//            // fetch next page of results
-//            [self fetchNextPage];
-//        }
+        
+        self.coverRightMoreView.loadingLabel.text = @"Loading";
+        [self.coverRightMoreView.loadingIndicatorView startAnimating];
+        
     }
+}
+
+
+- (void) loadMoreChannels: (UIButton*) sender
+{
+    // (UIButton*) sender can be nil when called directly //
+    if (self.coverRightMoreView.loadingIndicatorView.isAnimating == YES)
+    {
+        
+    }
+//    
+//    NSInteger nextStart = dataRequestRange.location + dataRequestRange.length; // one is subtracted when the call happens for 0 indexing
+//    
+//    if(nextStart >= dataItemsAvailable)
+//        return;
+//    
+//    NSInteger nextSize = (nextStart + STANDARD_REQUEST_LENGTH) >= dataItemsAvailable ? (dataItemsAvailable - nextStart) : STANDARD_REQUEST_LENGTH;
+//    
+//    dataRequestRange = NSMakeRange(nextStart, nextSize);
+//    
+//    [self loadChannelsForGenre: currentGenre
+//                   byAppending: YES];
 }
 
 

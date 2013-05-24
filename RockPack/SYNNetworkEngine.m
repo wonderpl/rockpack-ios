@@ -45,25 +45,6 @@
 
 #pragma mark - Engine API
 
-- (void) coverArtWithWithStart: (unsigned int) start
-                          size: (unsigned int) size
-             completionHandler: (MKNKUserSuccessBlock) completionBlock
-                  errorHandler: (MKNKUserErrorBlock) errorBlock
-{
-    // If size is 0, then don't include start and size in the call (i.e. just use default params), otherwise assume both params are valid
-    NSDictionary *params = [self paramsAndLocaleForStart: start
-                                                    size: size];
-    
-    SYNNetworkOperationJsonObject *networkOperation = (SYNNetworkOperationJsonObject*)[self operationWithPath: kAPIGetCoverArt
-                                                                                                       params: params
-                                                                                                   httpMethod: @"GET"];
-    [self addCommonHandlerToNetworkOperation: networkOperation
-                           completionHandler: completionBlock
-                                errorHandler: errorBlock];
-    
-    [self enqueueOperation: networkOperation];
-}
-
 
 - (void) updateCategoriesOnCompletion: (MKNKVoidBlock) completionBlock
                               onError: (MKNKErrorBlock) errorBlock
@@ -91,7 +72,40 @@
     
 }
 
-- (void) updateCoverArtOnCompletion: (MKNKVoidBlock) completionBlock
+- (void) updateCoverArtWithWithStart: (unsigned int) start
+                                size: (unsigned int) size
+                   completionHandler: (MKNKJSONCompleteBlock) completionBlock
+                        errorHandler: (MKNKUserErrorBlock) errorBlock
+{
+    // If size is 0, then don't include start and size in the call (i.e. just use default params), otherwise assume both params are valid
+    NSDictionary *params = [self paramsAndLocaleForStart: start
+                                                    size: size];
+    
+    SYNNetworkOperationJsonObject *networkOperation = (SYNNetworkOperationJsonObject*)[self operationWithPath: kAPIGetCoverArt
+                                                                                                       params: params
+                                                                                                   httpMethod: @"GET"];
+    
+    [networkOperation addJSONCompletionHandler: ^(NSDictionary *dictionary)
+     {
+         BOOL registryResultOk = [self.registry registerCoverArtFromDictionary: dictionary
+                                                                 forUserUpload: NO];
+         
+         if (!registryResultOk)
+             return;
+         
+         completionBlock(dictionary);
+         
+     } errorHandler: ^(NSError* error) {
+         
+         DebugLog(@"API request failed");
+         
+     }];
+    
+    [self enqueueOperation: networkOperation];
+}
+
+
+- (void) updateCoverArtOnCompletion: (MKNKJSONCompleteBlock) completionBlock
                             onError: (MKNKErrorBlock) errorBlock
 {
     SYNNetworkOperationJsonObject *networkOperation = (SYNNetworkOperationJsonObject*)[self operationWithPath: kAPIGetCoverArt
@@ -106,7 +120,7 @@
         if (!registryResultOk)
             return;
         
-        completionBlock();
+        completionBlock(dictionary);
         
     } errorHandler: ^(NSError* error) {
         

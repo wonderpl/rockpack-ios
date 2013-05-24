@@ -238,6 +238,8 @@ typedef void(^AnimationCompletionBlock)(BOOL finished);
     
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(hideSomeNavControlsRequested:) name:kChannelsNavControlsHide object:nil];
     
+    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(hideTitleAndDots:) name:kNoteHideTitleAndDots object:nil];
+    
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(addToChannelRequested:) name:kNoteAddToChannelRequest object:nil];
     
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(searchBarRequested:) name:kNoteSearchBarRequestHide object:nil];
@@ -818,6 +820,12 @@ typedef void(^AnimationCompletionBlock)(BOOL finished);
                              }
                          }];
     }
+}
+
+-(void)hideTitleAndDots:(NSNotification*)note
+{
+    self.dotsView.alpha = 0.0f;
+    self.pageTitleLabel.alpha = 0.0f;
 }
 
 

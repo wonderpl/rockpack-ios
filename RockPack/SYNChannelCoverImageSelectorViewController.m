@@ -488,7 +488,7 @@ enum ChannelCoverSelectorState {
 - (void) updateCoverArt
 {
     // Update the list of cover art
-    [self.appDelegate.networkEngine updateCoverArtOnCompletion: ^{
+    [self.appDelegate.networkEngine updateCoverArtOnCompletion: ^(NSDictionary * dictionary){
         DebugLog(@"Success");
     } onError: ^(NSError* error) {
         DebugLog(@"%@", [error debugDescription]);

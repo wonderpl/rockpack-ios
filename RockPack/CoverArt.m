@@ -55,7 +55,6 @@ static NSEntityDescription *coverArtEntity = nil;
     {
         instance = matchingChannelCoverInstanceEntries [0];
         
-        
         instance.markedForDeletionValue = NO;
         
         return instance;

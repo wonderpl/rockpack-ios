@@ -10,4 +10,7 @@
 
 @interface SYNCoverRightMoreView : UICollectionReusableView
 
+@property (nonatomic, strong) IBOutlet UIActivityIndicatorView *loadingIndicatorView;
+@property (nonatomic, strong) IBOutlet UILabel *loadingLabel;
+
 @end
