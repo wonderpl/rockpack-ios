@@ -868,6 +868,7 @@ typedef void(^AnimationCompletionBlock)(BOOL finished);
         {
             targetFrame.origin.x = 5.0;
         }
+        [self.containerViewController backButtonWillShow];
     }
     else
     {
@@ -882,6 +883,7 @@ typedef void(^AnimationCompletionBlock)(BOOL finished);
         targetFrame = self.movableButtonsContainer.frame;
         targetFrame.origin.x = kMovableViewOffX;
         targetAlpha = 0.0;
+        [self.containerViewController backButtonwillHide];
     }
     
     [UIView animateWithDuration: 0.6f
