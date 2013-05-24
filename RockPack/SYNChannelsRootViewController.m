@@ -251,8 +251,8 @@
     [appDelegate.networkEngine updateChannelsScreenForCategory: (genre ? genre.uniqueId : @"all")
                                                       forRange: dataRequestRange
                                                  ignoringCache: NO
-                                                  onCompletion: ^(NSDictionary* response) {
-                                                      
+                                                  onCompletion: ^(NSDictionary* response)
+    {
                                                       NSDictionary *channelsDictionary = [response objectForKey: @"channels"];
                                                       if (!channelsDictionary || ![channelsDictionary isKindOfClass: [NSDictionary class]])
                                                           return;
@@ -271,10 +271,9 @@
                                                       
                                                       dataItemsAvailable = [totalNumber integerValue];
                                                       
-                                                      BOOL registryResultOk = [appDelegate.mainRegistry registerChannelsFromDictionary:response
-                                                                                                                              forGenre:genre
-                                                                                                                           byAppending:append];
-                                                      
+                                                      BOOL registryResultOk = [appDelegate.mainRegistry registerChannelsFromDictionary: response
+                                                                                                                              forGenre: genre
+                                                                                                                           byAppending: append];
                                                       self.footerView.showsLoading = NO;
                                                       
                                                       if (!registryResultOk)
@@ -284,10 +283,8 @@
                                                       }
                                                       
                                                       [self displayChannelsForGenre:genre];
-                                                      
-                                                      
-                                                      
-                                                  } onError: ^(NSDictionary* errorInfo) {
+                                                  }
+                                                       onError: ^(NSDictionary* errorInfo) {
                                                       DebugLog(@"Could not load channels: %@", errorInfo);
                                                       self.footerView.showsLoading = NO;
                                                   }];
