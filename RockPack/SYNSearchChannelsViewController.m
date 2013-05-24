@@ -13,6 +13,8 @@
 
 @interface SYNSearchChannelsViewController ()
 
+@property (nonatomic, weak) NSString* searchTerm;
+
 @end
 
 
@@ -91,6 +93,8 @@
     NSError *error = nil;
     NSArray *resultsArray = [appDelegate.searchManagedObjectContext executeFetchRequest: request
                                                                                   error: &error];
+    
+    
     if (!resultsArray)
         return;
     
@@ -109,20 +113,47 @@
     // override 
 }
 
-
-- (void) performSearchWithTerm: (NSString*) term
+- (void) loadMoreChannels: (UIButton*) sender
 {
+    
+    self.footerView.showsLoading = YES;
+    
+    NSInteger nextStart = self.dataRequestRange.location + self.dataRequestRange.length; // one is subtracted when the call happens for 0 indexing
+    
+    if(nextStart >= self.dataItemsAvailable)
+        return;
+    
+    NSInteger nextSize = (nextStart + STANDARD_REQUEST_LENGTH) >= self.dataItemsAvailable ? (self.dataItemsAvailable - nextStart) : STANDARD_REQUEST_LENGTH;
+    
+    self.dataRequestRange = NSMakeRange(nextStart, nextSize);
+    
+    [appDelegate.networkEngine searchChannelsForTerm: self.searchTerm
+                                            andRange: self.dataRequestRange
+                                          onComplete: ^(int itemsCount) {
+                                              self.dataItemsAvailable = itemsCount;
+                                          }];
+}
+
+
+- (void) performNewSearchWithTerm: (NSString*) term
+{
+    
+    
     if (!appDelegate)
         appDelegate = (SYNAppDelegate*)[[UIApplication sharedApplication] delegate];
     
-    if (self.dataRequestRange.length == 0)
-        self.dataRequestRange = NSMakeRange(0, 48);
+    self.dataRequestRange = NSMakeRange(0, 48);
+        
+    
+    
     
     [appDelegate.networkEngine searchChannelsForTerm: term
                                             andRange: self.dataRequestRange
                                           onComplete: ^(int itemsCount) {
                                               self.dataItemsAvailable = itemsCount;
                                           }];
+    
+    self.searchTerm = term;
 }   
 
 

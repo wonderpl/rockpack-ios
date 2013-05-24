@@ -15,7 +15,6 @@
 #import "GAI.h"
 #import "SYNChannelCategoryTableViewController.h"
 #import "SYNChannelDetailViewController.h"
-#import "SYNChannelFooterMoreView.h"
 #import "SYNChannelThumbnailCell.h"
 #import "SYNChannelsRootViewController.h"
 #import "SYNDeviceManager.h"
@@ -29,7 +28,7 @@
 #import "Video.h"
 #import "VideoInstance.h"
 
-#define STANDARD_REQUEST_LENGTH 48
+
 #define kChannelsCache @"ChannelsCache"
 
 @interface SYNChannelsRootViewController () <UIScrollViewDelegate, SYNChannelCategoryTableViewDelegate>
@@ -57,7 +56,6 @@
 @property (nonatomic, strong) UILabel* subCategoryNameLabel;
 @property (nonatomic, strong) UIImageView* arrowImage;
 @property (nonatomic, strong) NSMutableArray* channels;
-@property (nonatomic, strong) SYNChannelFooterMoreView* footerView;
 
 
 @property (nonatomic, strong) Genre* allGenre;

@@ -125,17 +125,23 @@
 }
 
 
-- (void) performSearchWithTerm: (NSString*) term
+- (void) performNewSearchWithTerm: (NSString*) term
 {
-    self.searchTerm = term;
+    
+    if (!appDelegate)
+        appDelegate = (SYNAppDelegate*)[[UIApplication sharedApplication] delegate];
+    
+    self.dataRequestRange = NSMakeRange(0, 48);
+    
+    
 
-    [self.appDelegate.networkEngine searchVideosForTerm: self.searchTerm
+    [self.appDelegate.networkEngine searchVideosForTerm: term
                                                 inRange: self.dataRequestRange
                                              onComplete: ^(int itemsCount) {
                                                  self.dataItemsAvailable = itemsCount;
                                              }];
     
-    
+    self.searchTerm = term;
 }
 
 
