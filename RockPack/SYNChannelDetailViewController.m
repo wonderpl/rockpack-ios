@@ -1038,7 +1038,6 @@
     
     [self hideCategoryChooser];
     
-    self.channel.title = self.channelTitleTextView.text;
     self.channel.channelDescription = self.channel.channelDescription ? self.channel.channelDescription : @"";
     
 
@@ -1048,7 +1047,7 @@
     
     [appDelegate.oAuthNetworkEngine updateChannelForUserId: appDelegate.currentOAuth2Credentials.userId
                                                  channelId: self.channel.uniqueId
-                                                     title: self.channel.title
+                                                     title: self.channelTitleTextView.text
                                                description: (self.channel.channelDescription)
                                                   category: category
                                                      cover: cover
@@ -1536,40 +1535,7 @@
                                                                                                   object: self
                                                                                                 userInfo: nil];
                                               
-                                              if ([[SYNDeviceManager sharedInstance] isIPad])
-                                              {
-                                                  self.addButton.hidden = NO;
-                                                  self.createChannelButton.hidden = YES;
-                                                  
-                                                  
-                                              }
-                                              else
-                                              {
-                                                  SYNMasterViewController *master = (SYNMasterViewController*) self.presentingViewController;
-                                                  if(master)
-                                                  {
-                                                      //This scenario happens on channel creation only and means this channel is presented modally.
-                                                      //After creation want to show it as if it is part of the master view hierarchy.
-                                                      //Thus we move the view there.
-                                                      
-                                                      //This removes the "existing channels view controller"
-                                                      [[[[master childViewControllers] lastObject] view] removeFromSuperview];
-                                                      
-                                                      //Now dimiss self modally (not animated)
-                                                      [master dismissViewControllerAnimated:NO completion:nil];
-                                                      
-                                                      //Change to display mode
-                                                      self.mode = kChannelDetailsModeDisplay;
-                                                      
-                                                      //And show as if displayed from the normal master view hierarchy
-                                                      SYNAbstractViewController* currentRootViewcontroller = [[master containerViewController] showingViewController];
-                                                      [currentRootViewcontroller animatedPushViewController:self];
-                                                  }
-                                                
-                                                  [self setDisplayControlsVisibility:YES];
-                                                  [self.activityIndicator stopAnimating];
-                                                  
-                                              }
+                                              [self finaliseViewStatusAfterCreateOrUpdate:[[SYNDeviceManager sharedInstance] isIPad]];
                                               
                                               [[NSNotificationCenter defaultCenter] postNotificationName: kVideoQueueClear
                                                                                                   object: nil];
@@ -1591,45 +1557,56 @@
                                                                                                   object: self
                                                                                                 userInfo: nil];
                                               
-                                              if ([[SYNDeviceManager sharedInstance] isIPad])
-                                              {
-                                                  self.addButton.hidden = NO;
-                                                  self.createChannelButton.hidden = YES;
-                                                  
-                                                  
-                                              }
-                                              else
-                                              {
-                                                  SYNMasterViewController *master = (SYNMasterViewController*) self.presentingViewController;
-                                                  if(master)
-                                                  {
-                                                      //This scenario happens on channel creation only and means this channel is presented modally.
-                                                      //After creation want to show it as if it is part of the master view hierarchy.
-                                                      //Thus we move the view there.
-                                                      
-                                                      //This removes the "existing channels view controller"
-                                                      [[[[master childViewControllers] lastObject] view] removeFromSuperview];
-                                                      
-                                                      //Now dimiss self modally (not animated)
-                                                      [master dismissViewControllerAnimated:NO completion:nil];
-                                                      
-                                                      //Change to display mode
-                                                      self.mode = kChannelDetailsModeDisplay;
-                                                      
-                                                      //And show as if displayed from the normal master view hierarchy
-                                                      SYNAbstractViewController* currentRootViewcontroller = [[master containerViewController] showingViewController];
-                                                      [currentRootViewcontroller animatedPushViewController:self];
-                                                  }
-                                                  
-                                                  [self setDisplayControlsVisibility:YES];
-                                                  [self.activityIndicator stopAnimating];
-                                              }
+                                              [self finaliseViewStatusAfterCreateOrUpdate:[[SYNDeviceManager sharedInstance] isIPad]];
+                                            
                                               
                                               [[NSNotificationCenter defaultCenter] postNotificationName: kVideoQueueClear
                                                                                                   object: nil];
                                           }];
 }
 
+-(void)finaliseViewStatusAfterCreateOrUpdate:(BOOL)isIPad
+{
+    if (isIPad)
+    {
+        self.addButton.hidden = NO;
+        self.createChannelButton.hidden = YES;
+        
+        
+    }
+    else
+    {
+        SYNMasterViewController *master = (SYNMasterViewController*) self.presentingViewController;
+        if(master)
+        {
+            //This scenario happens on channel creation only and means this channel is presented modally.
+            //After creation want to show it as if it is part of the master view hierarchy.
+            //Thus we move the view there.
+            
+            //This removes the "existing channels view controller"
+            [[[[master childViewControllers] lastObject] view] removeFromSuperview];
+            
+            //Now dimiss self modally (not animated)
+            [master dismissViewControllerAnimated:NO completion:nil];
+            
+            //Change to display mode
+            self.mode = kChannelDetailsModeDisplay;
+            
+            //Don't really like this, but send notification to hide title and dots for a seamless transition.
+            [[NSNotificationCenter defaultCenter] postNotificationName: kNoteHideTitleAndDots
+                                                                object: self
+                                                              userInfo: nil];
+            
+            //And show as if displayed from the normal master view hierarchy
+            SYNAbstractViewController* currentRootViewcontroller = [[master containerViewController] showingViewController];
+            [currentRootViewcontroller animatedPushViewController:self];
+        }
+        
+        [self setDisplayControlsVisibility:YES];
+        [self.activityIndicator stopAnimating];
+    }
+
+}
 
 - (void) showError: (NSString*) errorMessage
 {
