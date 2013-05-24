@@ -22,7 +22,6 @@
 
 @interface SYNVideoPlaybackViewController () <UIWebViewDelegate>
 
-
 @property (nonatomic, assign) BOOL autoPlay;
 @property (nonatomic, assign) BOOL currentVideoViewedFlag;
 @property (nonatomic, assign) BOOL disableTimeUpdating;
@@ -33,8 +32,9 @@
 @property (nonatomic, assign) BOOL shuttledByUser;
 @property (nonatomic, assign) CGRect requestedFrame;
 @property (nonatomic, assign) NSTimeInterval currentDuration;
-@property (nonatomic, assign) NSTimeInterval loadTime;
+@property (nonatomic, assign) NSTimeInterval lastTime;
 @property (nonatomic, assign) int currentSelectedIndex;
+@property (nonatomic, assign) int stallCount;
 @property (nonatomic, strong) CABasicAnimation *placeholderBottomLayerAnimation;
 @property (nonatomic, strong) CABasicAnimation *placeholderMiddleLayerAnimation;
 @property (nonatomic, strong) NSArray *videoInstanceArray;
@@ -50,6 +50,7 @@
 @property (nonatomic, strong) UISlider *shuttleSlider;
 @property (nonatomic, strong) UIView *videoPlaceholderView;
 @property (nonatomic, strong) UIWebView *currentVideoWebView;
+
 @end
 
 
@@ -720,7 +721,7 @@ static UIWebView* vimeoideoWebViewInstance;
 
 - (void) stopVideo
 {
-    [self.currentVideoWebView stringByEvaluatingJavaScriptFromString: @"player.stopVideo();"];
+    [self.currentVideoWebView stringByEvaluatingJavaScriptFromString: @"player.stopVideo(); "];
     
     self.playFlag = FALSE;
 }
@@ -831,6 +832,7 @@ static UIWebView* vimeoideoWebViewInstance;
          shouldStartLoadWithRequest: (NSURLRequest *) request
          navigationType: (UIWebViewNavigationType) navigationType
 {
+    DebugLog(@"-----%@", request.debugDescription);
     NSString *scheme = request.URL.scheme;
     
     // If we have an event from one of our players (as opposed to something else)
@@ -885,7 +887,10 @@ static UIWebView* vimeoideoWebViewInstance;
 
 - (void) handleCurrentYouTubePlayerEventNamed: (NSString *) actionName
                                     eventData: (NSString *) actionData
-{    if ([actionName isEqualToString: @"ready"])
+{
+    DebugLog (@"actionname = %@, actiondata = %@", actionName, actionData);
+    
+    if ([actionName isEqualToString: @"ready"])
     {
         // We probably don't get this event any more as the player is already set up (asynchronously)
         DebugLog (@"++++++++++ Player ready - player ready");
@@ -920,8 +925,6 @@ static UIWebView* vimeoideoWebViewInstance;
             // If we are playing then out shuttle / pause / play cycle is over
             self.shuttledByUser = TRUE;
             self.notYetPlaying = FALSE;
-            
-//            [self fadeUpVideoPlayer];
             
             // Now cache the duration of this video for use in the progress updates
             self.currentDuration = self.duration;
@@ -978,6 +981,7 @@ static UIWebView* vimeoideoWebViewInstance;
     else if ([actionName isEqualToString: @"error"])
     {
         DebugLog (@"!!!!!!!!!! Error");
+        [self fadeUpVideoPlayer];
     }
     else if ([actionName isEqualToString: @"apiChange"])
     {
@@ -1037,11 +1041,40 @@ static UIWebView* vimeoideoWebViewInstance;
     NSLog (@"Current time %lf", currentTime);
     
     // We need to wait until the play time starts to increase before fading up the video
-    if (currentTime > 0.0f && self.fadeUpScheduled == FALSE)
+    if (currentTime > 0.0f)
     {
-        DebugLog(@"More than");
-        self.fadeUpScheduled = TRUE;
-        [self fadeUpVideoPlayer];
+        // Fade up the player if we haven't already
+        if (self.fadeUpScheduled == FALSE)
+        {
+            // Reset our stall count, once per video
+            self.stallCount = 0;
+            
+            // Fade up the video and fade out the placeholder
+            self.fadeUpScheduled = TRUE;
+            [self fadeUpVideoPlayer];
+        }
+        
+        // Check to see if the player has stalled (a number of instances of the same time)
+        if (currentTime == self.lastTime)
+        {
+            self.stallCount++;
+            
+            if (self.stallCount > kMaxStallCount)
+            {
+                DebugLog (@"*** Stalled: Attempting to restart player");
+                [self playVideo];
+
+                // Reset our stall count (could make this negative to give restarts longer)
+                self.stallCount = 0;
+            }
+        }
+        else
+        {
+            self.lastTime = currentTime;
+            
+            // Reset our stall count 
+            self.stallCount = 0;
+        }
     }
     
     // Update current time label

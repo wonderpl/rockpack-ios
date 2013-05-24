@@ -134,7 +134,16 @@
                 }
                 
                 // Now pass this back to the UIWebView
-                window.location = url;
+                execute(url);
+            }
+            
+            function execute(url)
+            {
+                var iframe = document.createElement("IFRAME");
+                iframe.setAttribute("src", url);
+                document.documentElement.appendChild(iframe);
+                iframe.parentNode.removeChild(iframe);
+                iframe = null;
             }
             
             // Translate the Youtube player state into a human readable string
