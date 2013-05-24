@@ -135,22 +135,26 @@ static NSEntityDescription *channelOwnerEntity = nil;
 
 #pragma mark - Channels
 
+
+
 -(void)addChannelsObject:(Channel *)newChannel
 {
     [self.channelsSet addObject:newChannel];
-    newChannel.channelOwner = self;
 }
+-(void)removeChannelsObject:(Channel *)oldChannel
+{
+    [self.channelsSet removeObject:oldChannel];
+}
+
 
 -(void)addSubscriptionsObject:(Channel *)newSubscription
 {
     [self.subscriptionsSet addObject:newSubscription];
-    [newSubscription.subscribersSet addObject:self];
     newSubscription.subscribersCountValue += 1;
 }
 -(void)removeSubscriptionsObject:(Channel *)oldSubscription
 {
     [self.subscriptionsSet removeObject:oldSubscription];
-    [oldSubscription.subscribersSet removeObject:self];
     oldSubscription.subscribersCountValue -= 1;
 }
 

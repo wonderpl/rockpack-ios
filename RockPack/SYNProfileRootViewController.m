@@ -364,10 +364,7 @@
     
     [self updateLayoutForOrientation: [[SYNDeviceManager sharedInstance] orientation]];
     
-    if (self.user)
-    {
-        [self reloadCollectionViews];
-    }
+    
 }
 
 
@@ -382,6 +379,8 @@
 - (void) viewDidScrollToFront
 {
     [self updateAnalytics];
+    
+    [appDelegate.networkEngine cancelAllOperations];
     
     [self reloadCollectionViews];
 }
@@ -445,12 +444,7 @@
 {
     if (self.isDeletionModeActive)
     {
-//        NSIndexPath *indexPath = [self.channelThumbnailCollectionView indexPathForItemAtPoint: [recognizer locationInView: self.channelThumbnailCollectionView]];
-        
-//        if (!indexPath)
-        {
-            self.deletionModeActive = NO;
-        }
+       self.deletionModeActive = NO;
     }
 }
 
@@ -629,6 +623,10 @@
     [self.subscriptionsViewController reloadCollectionViews];
     [self.channelThumbnailCollectionView reloadData];
 }
+
+#pragma mark - Updating
+
+
 
 -(NSString*)getHeaderTitleForChannels
 {
