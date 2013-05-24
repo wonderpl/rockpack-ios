@@ -27,6 +27,7 @@
 #import "SYNSoundPlayer.h"
 #import "SYNVideoViewerViewController.h"
 #import "UIFont+SYNFont.h"
+#import "VideoInstance.h"
 #import <QuartzCore/QuartzCore.h>
 
 #define kMovableViewOffX -58
@@ -374,20 +375,53 @@ typedef void(^AnimationCompletionBlock)(BOOL finished);
 
 -(void)addedToChannelAction:(NSNotification*)notification
 {
-    //Videos have been added to a channel
-    Channel* channel = (Channel*)[[notification userInfo] objectForKey:kChannel];
-    if(!channel)
+    
+    Channel* selectedChannel = (Channel*)[[notification userInfo] objectForKey:kChannel];
+    if(!selectedChannel)
         return;
+    
+    NSString* message = [[SYNDeviceManager sharedInstance] isIPhone]?
+    NSLocalizedString(@"VIDEO SUCCESSFULLY ADDED",nil):
+    NSLocalizedString(@"YOUR VIDEOS HAVE BEEN SUCCESSFULLY ADDED INTO YOUR CHANNEL",nil);
+    
+    Channel* currentlyCreating = appDelegate.videoQueue.currentlyCreatingChannel;
 
-    //Upload the data
-    [appDelegate.oAuthNetworkEngine updateVideosForChannelForUserId:appDelegate.currentUser.uniqueId channelId:channel.uniqueId videoInstanceSet:channel.videoInstancesSet completionHandler:^(NSDictionary* result) {
-        NSString* message = [[SYNDeviceManager sharedInstance] isIPhone]?
-        NSLocalizedString(@"VIDEO SUCCESSFULLY ADDED",nil):
-        NSLocalizedString(@"YOUR VIDEOS HAVE BEEN SUCCESSFULLY ADDED INTO YOUR CHANNEL",nil);
-        [self presentSuccessNotificationWithMessage:message];
-    } errorHandler:^(NSDictionary* errorDictionary) {
-        // Show error message?
-    }];
+    NSMutableOrderedSet* setOfVideosToPost = [NSMutableOrderedSet orderedSetWithOrderedSet:selectedChannel.videoInstancesSet];
+    for (VideoInstance* newVideoInstance in currentlyCreating.videoInstances)
+    {
+        [setOfVideosToPost addObject:newVideoInstance];
+    }
+    
+    [appDelegate.oAuthNetworkEngine updateVideosForChannelForUserId: appDelegate.currentUser.uniqueId
+                                                          channelId: selectedChannel.uniqueId
+                                                   videoInstanceSet: setOfVideosToPost
+                                                  completionHandler: ^(NSDictionary* result) {
+                                                      
+                                                      // succeeded in saving to remote server now save locally //
+                                                      
+                                                      for (VideoInstance* videoInstance in currentlyCreating.videoInstances)
+                                                      {
+                                                          VideoInstance* copyOfVideoInstance =
+                                                          [VideoInstance instanceFromVideoInstance:videoInstance
+                                                                         usingManagedObjectContext:selectedChannel.managedObjectContext];
+                                                          
+                                                          [selectedChannel.videoInstancesSet addObject:copyOfVideoInstance];
+                                                          
+                                                      }
+                                                      
+        
+                                                      [self presentSuccessNotificationWithMessage:message];
+                                                      
+                                                      [[NSNotificationCenter defaultCenter] postNotificationName: kVideoQueueClear
+                                                                                                          object: self];
+                                                      
+                                                      
+                                                  } errorHandler:^(NSDictionary* errorDictionary) {
+                                                      
+                                                      [[NSNotificationCenter defaultCenter] postNotificationName: kVideoQueueClear
+                                                                                                          object: self];
+      
+                                                  }];
 
     
 }

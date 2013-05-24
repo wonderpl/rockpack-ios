@@ -207,23 +207,17 @@
                    } completion: ^(BOOL finished) {
                        
                        [self.view removeFromSuperview];
-        
-                       Channel* currentlyCreating = appDelegate.videoQueue.currentlyCreatingChannel;
-                       [self.selectedChannel addVideoInstancesFromChannel: currentlyCreating];
-                       [appDelegate saveContext:YES];
-        
                        [self removeFromParentViewController];
                        
-                       // send to master controller
+                       // send to MasterViewController
         
                        [[NSNotificationCenter defaultCenter] postNotificationName: kNoteVideoAddedToExistingChannel
                                                                            object: self
                                                                          userInfo: @{kChannel:self.selectedChannel}];
                        
-                       // clear the video queue after this action //
+                     
                        
-                       [[NSNotificationCenter defaultCenter] postNotificationName: kVideoQueueClear
-                                                                           object: self];
+                       
     }];
 }
 

@@ -223,19 +223,6 @@ static NSEntityDescription *channelEntity = nil;
 #pragma mark - Adding Video Instances
 
 
--(void)addVideoInstancesFromChannel:(Channel*)channel
-{
-    
-    for (VideoInstance* videoInstance in channel.videoInstances)
-    {
-        VideoInstance* copyOfVideoInstance = [VideoInstance instanceFromVideoInstance:videoInstance
-                                                            usingManagedObjectContext:self.managedObjectContext];
-        
-        [self addVideoInstancesObject:copyOfVideoInstance];
-        
-    }
-    
-}
 
 -(void)addVideoInstancesObject:(VideoInstance *)value_
 {
