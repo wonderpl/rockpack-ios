@@ -190,7 +190,7 @@ static NSEntityDescription *channelEntity = nil;
     self.title = [dictionary upperCaseStringForKey: @"title"
                                        withDefault: @""];
     
-    NSLog(@"* Title: %@", self.title);
+    // NSLog(@"* Title: %@", self.title);
     
     self.lastUpdated = [dictionary dateFromISO6801StringForKey: @"last_updated"
                                                    withDefault: [NSDate date]];
