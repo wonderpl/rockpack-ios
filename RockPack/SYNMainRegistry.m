@@ -78,18 +78,22 @@
     
     return YES;
 }
-
-
 - (BOOL) registerSubscriptionsForCurrentUserFromDictionary: (NSDictionary*) dictionary
 {
+    return [self registerSubscriptionsFromDictionary: dictionary
+                                     forChannelOwner: appDelegate.currentUser];
+    
+}
+
+- (BOOL) registerSubscriptionsFromDictionary: (NSDictionary*) dictionary
+                             forChannelOwner: (ChannelOwner*) channelOwner
+{
     // == Check for Validity == //
-    if (!dictionary || ![dictionary isKindOfClass: [NSDictionary class]])
+    if (!dictionary ||
+        ![dictionary isKindOfClass: [NSDictionary class]] ||
+        !channelOwner)
         return NO;
     
-    User* currentUser = appDelegate.currentUser;
-    
-    if (!currentUser)
-        return NO;
     
     NSDictionary* channeslDictionary = [dictionary objectForKey: @"channels"];
     if (!channeslDictionary)
@@ -105,15 +109,15 @@
         
         // must use the main context so as to be able to link it with the channel owner
         
-        Channel* channel = [Channel instanceFromDictionary:subscriptionChannel
-                                 usingManagedObjectContext:currentUser.managedObjectContext
-                                       ignoringObjectTypes:kIgnoreNothing];
+        Channel* channel = [Channel instanceFromDictionary: subscriptionChannel
+                                 usingManagedObjectContext: channelOwner.managedObjectContext
+                                       ignoringObjectTypes: kIgnoreNothing];
         
         if (!channel)
             continue;
         
         
-        [currentUser addSubscriptionsObject:channel];
+        [channelOwner addSubscriptionsObject:channel];
         
         
         
@@ -249,6 +253,7 @@
     return YES;
 }
 
+#pragma mark - VideoInstances
 
 - (BOOL) registerVideoInstancesFromDictionary: (NSDictionary *) dictionary
                                     forViewId: (NSString*) viewId
@@ -283,12 +288,14 @@
     {
         [existingVideosByIndex setObject:existingVideo forKey:existingVideo.uniqueId];
         
-        // We need to mark all of our existing VideoInstance objects corresponding to this viewId, just in case they are no longer required
-        // and should be removed in a post-import cleanup
         
-        existingVideo.markedForDeletionValue = YES;
+        if(!append)
+        {
+            
+            existingVideo.markedForDeletionValue = YES;
+            existingVideo.freshValue = NO;
+        }
         
-        existingVideo.freshValue = NO;
     }
     
     
@@ -325,15 +332,14 @@
     [self removeUnusedManagedObjects: matchingVideoInstanceEntries
               inManagedObjectContext: appDelegate.mainManagedObjectContext];
     
-    BOOL saveResult = [self saveImportContext];
-    if(!saveResult)
-        return NO;
+    
     
     [appDelegate saveContext: TRUE];
     
     return YES;
 }
 
+#pragma mark - Channels
 
 - (BOOL) registerChannelFromDictionary: (NSDictionary*) dictionary
 {

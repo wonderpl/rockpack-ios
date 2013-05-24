@@ -378,6 +378,7 @@
     
     NSDictionary *apiSubstitutionDictionary = @{@"USERID" : channelOwner.uniqueId};
     
+    // same as for User
     NSString *apiString = [kAPIGetUserDetails stringByReplacingOccurrencesOfStrings: apiSubstitutionDictionary];
     
     SYNNetworkOperationJsonObject *networkOperation = (SYNNetworkOperationJsonObject*)[self operationWithPath: apiString
@@ -386,10 +387,48 @@
     
     [networkOperation addJSONCompletionHandler: ^(NSDictionary *dictionary) {
         
-        if(!dictionary)
+        if(![dictionary isKindOfClass:[NSDictionary class]])
+        {
+            errorBlock(@{@"parsing_error":@"response is not a dictionary"});
             return;
+        }
         
-        completeBlock(dictionary);
+        NSString* possibleError = dictionary[@"error"];
+        
+        if(possibleError)
+        {
+            errorBlock(@{@"error":possibleError});
+            return;
+        }
+            
+        
+        // == Subscriptions == //
+        
+        [self channelOwnerSubscriptionsForUserId: channelOwner.uniqueId
+                                        forRange: NSMakeRange(0, 48)
+                               completionHandler: ^(id subscriptionsDictionary) {
+                              
+                              
+                                   NSString* possibleError = subscriptionsDictionary[@"error"];
+                              
+                                   if (possibleError)
+                                   {
+                                       errorBlock(@{@"error":possibleError});
+                                       return;
+                                   }
+                              
+                                   BOOL userRegistered = [self.registry registerSubscriptionsFromDictionary:subscriptionsDictionary
+                                                                                            forChannelOwner:channelOwner];
+                                   if(!userRegistered)
+                                       return;
+                              
+                                   completeBlock(subscriptionsDictionary);
+                              
+                              
+                               } errorHandler:errorBlock];
+        
+        
+        
         
      } errorHandler: ^(NSError* error) {
          errorBlock(error);
@@ -398,6 +437,40 @@
     [self enqueueOperation: networkOperation];
     
     
+}
+
+- (void) channelOwnerSubscriptionsForUserId: (NSString *) userId
+                                   forRange:(NSRange)range
+                          completionHandler: (MKNKUserSuccessBlock) completionBlock
+                               errorHandler: (MKNKUserErrorBlock) errorBlock
+{
+    NSDictionary *apiSubstitutionDictionary = @{@"USERID" : userId};
+    
+    NSDictionary *params = [self paramsForStart: range.location
+                                           size: range.length];
+    
+    // we are not using the subscriptions_url returned from user info data but using a std one.
+    NSString *apiString = [kAPIGetUserSubscriptions stringByReplacingOccurrencesOfStrings: apiSubstitutionDictionary];
+    
+    SYNNetworkOperationJsonObject *networkOperation = (SYNNetworkOperationJsonObject*)[self operationWithPath: apiString
+                                                                                                       params: params];
+    
+    [networkOperation addJSONCompletionHandler: ^(NSDictionary *dictionary) {
+        
+        if(!dictionary) {
+            errorBlock(dictionary);
+            return;
+        }
+            
+        completionBlock(dictionary);
+        
+    } errorHandler:^(NSError *error) {
+        errorBlock(error);
+    }];
+    
+    
+    
+    [self enqueueOperation: networkOperation];
 }
 
 @end

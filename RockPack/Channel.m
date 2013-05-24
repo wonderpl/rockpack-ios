@@ -241,7 +241,11 @@ static NSEntityDescription *channelEntity = nil;
 -(void)addVideoInstancesObject:(VideoInstance *)value_
 {
     [self.videoInstancesSet addObject:value_];
-    value_.channel = self;
+}
+
+-(void)removeVideoInstancesObject:(VideoInstance *)value_
+{
+    [self.videoInstancesSet removeObject:value_];
 }
 
 
