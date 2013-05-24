@@ -299,6 +299,8 @@
     (SYNNetworkOperationJsonObject*)[self operationWithPath:kAPISearchChannels params:parameters];
     
     [networkOperation addJSONCompletionHandler: ^(NSDictionary *dictionary) {
+        
+        
         int itemsCount = 0;
         
         if (!dictionary)

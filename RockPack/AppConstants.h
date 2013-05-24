@@ -84,6 +84,8 @@
 #define kAPIUpdateChannelPrivacy    @"/ws/USERID/channels/CHANNELID/public/"     /* PUT */
 #define kAPIDeleteChannel           @"/ws/USERID/channels/CHANNELID/"     /* PUT */
 
+#define STANDARD_REQUEST_LENGTH 48
+
 // Videos for channel
 #define kAPIGetVideosForChannel     @"/ws/USERID/channels/CHANNELID/videos/"    /* GET */
 #define kAPIUpdateVideosForChannel  @"/ws/USERID/channels/CHANNELID/videos/"    /* PUT */ /* POST */
