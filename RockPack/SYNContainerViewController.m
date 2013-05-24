@@ -123,15 +123,6 @@
     [self packViewControllersForInterfaceOrientation:UIDeviceOrientationLandscapeLeft];
     
     // == Register Notifications == //
-    [[NSNotificationCenter defaultCenter] addObserver: self
-                                             selector: @selector(backButtonShow:)
-                                                 name: kNoteBackButtonShow
-                                               object: nil];
-    
-    [[NSNotificationCenter defaultCenter] addObserver: self
-                                             selector: @selector(backButtonHide:)
-                                                 name: kNoteBackButtonHide
-                                                object:nil];
     
     [[NSNotificationCenter defaultCenter] addObserver: self
                                              selector: @selector(profileRequested:)
@@ -258,13 +249,13 @@
 }
 
 
-- (void) backButtonShow: (NSNotification*) notification
+- (void) backButtonWillShow
 {
     self.scrollView.scrollEnabled = NO;
 }
 
 
-- (void) backButtonHide: (NSNotification*) notification
+- (void) backButtonwillHide
 {
     self.scrollView.scrollEnabled = YES;
 }
