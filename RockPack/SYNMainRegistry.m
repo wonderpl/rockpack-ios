@@ -409,12 +409,18 @@
     // == Check for Validity == //
     NSDictionary *channelsDictionary = [dictionary objectForKey: @"channels"];
     if (!channelsDictionary || ![channelsDictionary isKindOfClass: [NSDictionary class]])
+    {
+        AssertOrLog(@"registerChannelsFromDictionary: unexpected JSON format");
         return NO;
+    }
     
     NSArray *itemArray = [channelsDictionary objectForKey: @"items"];
     if (![itemArray isKindOfClass: [NSArray class]])
+    {
+        AssertOrLog(@"registerChannelsFromDictionary: unexpected JSON format");
         return NO;
-    
+    }
+
     // Query for existing objects
     NSFetchRequest *channelFetchRequest = [[NSFetchRequest alloc] init];
     [channelFetchRequest setEntity: [NSEntityDescription entityForName: @"Channel"

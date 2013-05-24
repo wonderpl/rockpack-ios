@@ -274,7 +274,6 @@
                                                       BOOL registryResultOk = [appDelegate.mainRegistry registerChannelsFromDictionary: response
                                                                                                                               forGenre: genre
                                                                                                                            byAppending: append];
-                                                      
                                                       self.footerView.showsLoading = NO;
                                                       
                                                       if (!registryResultOk)

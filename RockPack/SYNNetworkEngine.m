@@ -194,7 +194,7 @@
     [tempParameters setObject: [NSString stringWithFormat: @"%i", range.length]
                        forKey: @"size"];
     
-    if (![categoryId isEqualToString :@"all"])
+    if (![categoryId isEqualToString: @"all"])
     {
         [tempParameters setObject: categoryId
                            forKey: @"category"];
