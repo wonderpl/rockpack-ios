@@ -35,6 +35,9 @@ typedef enum {
 -(void)refreshView;
 
 
+- (void) backButtonWillShow;
+- (void) backButtonwillHide;
+
 
 
 @end

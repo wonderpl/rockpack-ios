@@ -295,7 +295,6 @@
                                                                                                    httpMethod: @"GET"
                                                                                                           ssl: TRUE];
     
-    
     [self addCommonHandlerToNetworkOperation: networkOperation
                            completionHandler: completionBlock
                                 errorHandler: errorBlock];
@@ -322,7 +321,6 @@
     [networkOperation addHeaders: @{@"Content-Type" : @"application/json"}];
     networkOperation.postDataEncoding = MKNKPostDataEncodingTypeJSON;
     
-    
     [self addCommonHandlerToNetworkOperation: networkOperation
                            completionHandler: completionBlock
                                 errorHandler: errorBlock];
@@ -343,7 +341,7 @@
     SYNNetworkOperationJsonObject *networkOperation = (SYNNetworkOperationJsonObject*)[self operationWithPath: apiString
                                                                                                        params: @{@"locale" : self.localeString}
                                                                                                    httpMethod: @"GET"
-                                                                                                          ssl: TRUE];
+                                                                                                          ssl: YES];
     
     [networkOperation addJSONCompletionHandler:^(NSDictionary *responseDictionary)
     {
@@ -534,16 +532,25 @@
                                                                                                    httpMethod: @"PUT"
                                                                                                           ssl: TRUE];
     // We have to perform the image upload with an input stream
-    NSData *imageData = UIImagePNGRepresentation(image);
+    NSData *imageData = UIImageJPEGRepresentation(image, 0.70);
     NSString *lengthString = [NSString stringWithFormat: @"%@", [NSNumber numberWithUnsignedLong: imageData.length]];
     NSInputStream *inputStream = [NSInputStream inputStreamWithData: imageData];
     networkOperation.uploadStream = inputStream;
     
-    [networkOperation addHeaders: @{@"Content-Type" : @"image/png", @"Content-Length" : lengthString}];
-
+    [networkOperation addHeaders: @{@"Content-Type" : @"image/jpeg", @"Content-Length" : lengthString}];
+    SYNAppDelegate* blockAppDelegate = self.appDelegate;
     [self addCommonHandlerToNetworkOperation: networkOperation
                            completionHandler:^(NSDictionary* result) {
-                               completionBlock([networkOperation.readonlyResponse allHeaderFields]);
+                               NSDictionary* headerDictionary = [networkOperation.readonlyResponse allHeaderFields];
+                               User* currentUser = blockAppDelegate.currentUser;
+                               if(currentUser)
+                               {
+                                   NSString *newThumbnailURL = [headerDictionary objectForKey:@"Location"];
+                                   currentUser.thumbnailURL = newThumbnailURL;
+                                   [blockAppDelegate saveContext:YES];
+                                   [[NSNotificationCenter defaultCenter] postNotificationName:kUserDataChanged object:nil userInfo:@{@"user":currentUser}];
+                               }
+                               completionBlock(headerDictionary);
                            } errorHandler: errorBlock];
     
     [self enqueueSignedOperation: networkOperation];
@@ -760,6 +767,7 @@
 - (void) updateVideosForChannelForUserId: (NSString *) userId
                                channelId: (NSString *) channelId
                         videoInstanceSet: (NSOrderedSet *) videoInstanceSet
+                           clearPrevious: (BOOL) clearPrevious
                        completionHandler: (MKNKUserSuccessBlock) completionBlock
                             errorHandler: (MKNKUserErrorBlock) errorBlock
 {
@@ -770,7 +778,7 @@
     
     SYNNetworkOperationJsonObject *networkOperation = (SYNNetworkOperationJsonObject*)[self operationWithPath: apiString
                                                                                                        params: nil
-                                                                                                   httpMethod: @"PUT"
+                                                                                                   httpMethod: (clearPrevious ? @"PUT" : @"POST")
                                                                                                           ssl: TRUE];
     [networkOperation setCustomPostDataEncodingHandler: ^NSString * (NSDictionary *postDataDict)
      {

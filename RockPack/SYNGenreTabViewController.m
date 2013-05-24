@@ -96,7 +96,14 @@
     [super viewDidLoad];
     
     
+    [self updateCategoriesFromWS];
     
+    
+    [self loadCategories];
+}
+
+-(void)updateCategoriesFromWS
+{
     [appDelegate.networkEngine updateCategoriesOnCompletion: ^{
         
         
@@ -108,8 +115,6 @@
         
         
     }];
-    
-    [self loadCategories];
 }
 
 
@@ -140,6 +145,8 @@
     
     if(self.genresFetched.count > 0)
         [self.tabView createCategoriesTab:self.genresFetched];
+    else
+        [self updateCategoriesFromWS];
 }
 
 

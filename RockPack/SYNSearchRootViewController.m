@@ -270,8 +270,8 @@
         DebugLog(@"Could not clean Channel from search context");
     }
 
-    [self.searchVideosController performSearchWithTerm:searchTerm];
-    [self.searchChannelsController performSearchWithTerm:searchTerm];
+    [self.searchVideosController performNewSearchWithTerm:searchTerm];
+    [self.searchChannelsController performNewSearchWithTerm:searchTerm];
 }
 
 

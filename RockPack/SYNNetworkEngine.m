@@ -63,7 +63,9 @@
         completionBlock();
         
     } errorHandler:^(NSError* error) {
+        
         DebugLog(@"API request failed");
+        
     }];
     
     
@@ -297,6 +299,8 @@
     (SYNNetworkOperationJsonObject*)[self operationWithPath:kAPISearchChannels params:parameters];
     
     [networkOperation addJSONCompletionHandler: ^(NSDictionary *dictionary) {
+        
+        
         int itemsCount = 0;
         
         if (!dictionary)
@@ -396,7 +400,6 @@
         }
         
         
-        
         BOOL registryResultOk = [self.registry registerChannelOwnerFromDictionary: dictionary];
         if (!registryResultOk)
         {
@@ -421,20 +424,20 @@
                                    }
                                    
                               
-                                   [channelOwner addSubscriptionsDictionary:dictionary];
-                                   
-                                   // save the context, whichever it is
-                                   
-                                   NSError* error;
-                                   
-                                   if ([channelOwner.managedObjectContext hasChanges])
-                                   {
-                                       [channelOwner.managedObjectContext save: &error];
-                                       
-                                   }
-                                   
+//                                   [channelOwner addSubscriptionsDictionary:dictionary];
+//                                   
+//                                   // save the context, whichever it is
+//                                   
+//                                   NSError* error;
+//                                   
+//                                   if ([channelOwner.managedObjectContext hasChanges])
+//                                   {
+//                                       [channelOwner.managedObjectContext save: &error];
+//                                       
+//                                   }
+//                                   
                               
-                                   completeBlock(subscriptionsDictionary);
+                                completeBlock(subscriptionsDictionary);
                               
                               
                                } errorHandler:errorBlock];
