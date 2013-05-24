@@ -295,7 +295,6 @@
                                                                                                    httpMethod: @"GET"
                                                                                                           ssl: TRUE];
     
-    
     [self addCommonHandlerToNetworkOperation: networkOperation
                            completionHandler: completionBlock
                                 errorHandler: errorBlock];
@@ -322,7 +321,6 @@
     [networkOperation addHeaders: @{@"Content-Type" : @"application/json"}];
     networkOperation.postDataEncoding = MKNKPostDataEncodingTypeJSON;
     
-    
     [self addCommonHandlerToNetworkOperation: networkOperation
                            completionHandler: completionBlock
                                 errorHandler: errorBlock];
@@ -343,7 +341,7 @@
     SYNNetworkOperationJsonObject *networkOperation = (SYNNetworkOperationJsonObject*)[self operationWithPath: apiString
                                                                                                        params: @{@"locale" : self.localeString}
                                                                                                    httpMethod: @"GET"
-                                                                                                          ssl: TRUE];
+                                                                                                          ssl: YES];
     
     [networkOperation addJSONCompletionHandler:^(NSDictionary *responseDictionary)
     {
@@ -760,6 +758,7 @@
 - (void) updateVideosForChannelForUserId: (NSString *) userId
                                channelId: (NSString *) channelId
                         videoInstanceSet: (NSOrderedSet *) videoInstanceSet
+                           clearPrevious: (BOOL) clearPrevious
                        completionHandler: (MKNKUserSuccessBlock) completionBlock
                             errorHandler: (MKNKUserErrorBlock) errorBlock
 {
@@ -770,7 +769,7 @@
     
     SYNNetworkOperationJsonObject *networkOperation = (SYNNetworkOperationJsonObject*)[self operationWithPath: apiString
                                                                                                        params: nil
-                                                                                                   httpMethod: @"PUT"
+                                                                                                   httpMethod: (clearPrevious ? @"PUT" : @"POST")
                                                                                                           ssl: TRUE];
     [networkOperation setCustomPostDataEncodingHandler: ^NSString * (NSDictionary *postDataDict)
      {
@@ -1099,29 +1098,16 @@
                                                                                                    httpMethod: @"GET"
                                                                                                           ssl: YES];
     
-    __weak typeof(self) weakSelf = self;
     
     [self addCommonHandlerToNetworkOperation: networkOperation
                            completionHandler: ^(id response) {
                                
-         if(!weakSelf) return;
          
-         BOOL registryResultOk = [weakSelf.registry registerVideoInstancesFromDictionary: (NSDictionary *) response
-                                                                               forViewId: kFeedViewId
-                                                                             byAppending: NO];
          
-         if (!registryResultOk)
-         {
-             NSError* error = [NSError errorWithDomain: @""
-                                                  code: kJSONParseError
-                                              userInfo: nil];
-             errorBlock(error);
-             return;
-         }
-         else
-         {
-             completionBlock(response);
-         }
+         
+         completionBlock(response);
+         
+         
      }
      errorHandler: errorBlock];
 

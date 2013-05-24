@@ -36,4 +36,5 @@
 - (BOOL) registerCoverArtFromDictionary: (NSDictionary*) dictionary
                           forUserUpload: (BOOL) userUpload;
 
+
 @end

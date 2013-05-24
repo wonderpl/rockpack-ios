@@ -19,7 +19,7 @@
 @interface SYNGenreTabViewController ()
 
 
-@property (nonatomic, assign) NSString* homeButtomString;
+@property (nonatomic, strong) NSString* homeButtomString;
 @property (nonatomic, readonly) SYNGenreTabView* categoriesTabView;
 @property (nonatomic, strong) NSArray* genresFetched;
 @property (nonatomic, weak) SYNAppDelegate* appDelegate;
@@ -46,6 +46,38 @@
 
 - (void) loadView
 {
+ 
+    //TODO: This should be reworked. The home label string should not be used to define behaviour.
+    if([self.homeButtomString isEqualToString:@"other"] )
+    {
+        NSEntityDescription* categoryEntity = [NSEntityDescription entityForName: @"Genre"
+                                                          inManagedObjectContext: appDelegate.mainManagedObjectContext];
+        
+        // Look for Other category and show it if present.
+        NSFetchRequest *categoriesFetchRequest = [[NSFetchRequest alloc] init];
+        [categoriesFetchRequest setEntity:categoryEntity];
+        
+        NSPredicate* predicate = [NSPredicate predicateWithFormat:@"priority == -1"];
+        [categoriesFetchRequest setPredicate:predicate];
+        
+        NSSortDescriptor *sortDescriptor = [[NSSortDescriptor alloc] initWithKey: @"priority" ascending:NO];
+        [categoriesFetchRequest setSortDescriptors:@[sortDescriptor]];
+        
+        categoriesFetchRequest.includesSubentities = NO;
+        
+        
+        NSError* error;
+        
+        NSArray* otherFetchArray = [appDelegate.mainManagedObjectContext executeFetchRequest: categoriesFetchRequest
+                                                                                       error: &error];
+        if([otherFetchArray count]==1)
+        {
+            self.otherGenre = [otherFetchArray objectAtIndex:0];
+            self.homeButtomString = [self.otherGenre.name uppercaseString];
+        }
+    }
+
+    
     SYNGenreTabView* categoriesTabView = [[SYNGenreTabView alloc] initWithSize: [[SYNDeviceManager sharedInstance] currentScreenWidth]
                                                                            andHomeButton: self.homeButtomString];
     categoriesTabView.tapDelegate = self;
@@ -126,8 +158,15 @@
         // home button pressed
         [self.delegate handleMainTap: tab];
         
-        [self.delegate handleNewTabSelectionWithId: @"all"];
-        [self.delegate handleNewTabSelectionWithGenre: nil];
+        if(self.otherGenre && tab.tag ==0)
+        {
+            //The "OTHER" category has been chosen on the channel create or edit screen
+            [self.delegate handleNewTabSelectionWithGenre: self.otherGenre];
+        }
+        else
+        {
+            [self.delegate handleNewTabSelectionWithGenre: nil];
+        }
         
         if (tab.tag == 0)
         {
@@ -243,7 +282,15 @@
 
 -(NSIndexPath*)findIndexPathForGenreId:(NSString*)genreId
 {
-    
+    if (self.otherGenre)
+    {
+        NSArray* otherSubCategory = [[self.otherGenre.subgenres array] filteredArrayUsingPredicate:[NSPredicate predicateWithFormat:@"uniqueId = %@",genreId]];
+        if([otherSubCategory count])
+        {
+            //The Other/other category is selected by default. return nothing;
+            return nil;
+        }
+    }
     NSInteger section = -1;
     NSInteger item = -1;
     

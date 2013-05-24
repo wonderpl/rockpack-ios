@@ -17,6 +17,7 @@
 #import "SYNChannelCoverImageCell.h"
 #import "SYNChannelCoverImageSelectorViewController.h"
 #import "SYNCoverChooserController.h"
+#import "SYNCoverRightMoreView.h"
 #import "SYNCoverThumbnailCell.h"
 #import "SYNNetworkEngine.h"
 #import "SYNOAuthNetworkEngine.h"
@@ -29,6 +30,8 @@
 @property (nonatomic, strong) IBOutlet UICollectionView *collectionView;
 @property (nonatomic, strong) NSFetchedResultsController *channelCoverFetchedResultsController;
 @property (nonatomic, strong) NSIndexPath* indexPathSelected;
+@property (nonatomic, strong) SYNCoverRightMoreView* coverRightMoreView;
+@property (nonatomic, strong) NSString* selectedImageURL;
 @property (nonatomic, weak) SYNAppDelegate* appDelegate;
 
 @end
@@ -36,14 +39,12 @@
 
 @implementation SYNCoverChooserController
 
-
-- (id) initWithNibName: (NSString *) nibNameOrNil
-                bundle: (NSBundle *) nibBundleOrNil
+- (id) initWithSelectedImageURL: (NSString *) selectedImageURL
 {
-    if ((self = [super initWithNibName: nibNameOrNil
-                                bundle: nibBundleOrNil]))
+    if ((self = [super init]))
     {
         self.appDelegate = (SYNAppDelegate*)[[UIApplication sharedApplication] delegate];
+        self.selectedImageURL = selectedImageURL;
     }
     
     return self;
@@ -60,6 +61,14 @@
     
     [self.collectionView registerNib: coverThumbnailCellNib
           forCellWithReuseIdentifier: @"SYNCoverThumbnailCell"];
+    
+    // Register Footer
+    UINib *moreViewNib = [UINib nibWithNibName: @"SYNCoverRightMoreView"
+                                        bundle: nil];
+    
+    [self.collectionView registerNib: moreViewNib
+          forSupplementaryViewOfKind: UICollectionElementKindSectionFooter
+                 withReuseIdentifier: @"SYNCoverRightMoreView"];
 }
 
 
@@ -117,46 +126,58 @@
 - (UICollectionViewCell *) collectionView: (UICollectionView *) collectionView
                    cellForItemAtIndexPath: (NSIndexPath *) indexPath
 {
+    CoverArt *coverArt = nil;
+    
     SYNCoverThumbnailCell *coverThumbnailCell = [collectionView dequeueReusableCellWithReuseIdentifier: @"SYNCoverThumbnailCell"
                                                                                           forIndexPath: indexPath];
-        switch (indexPath.section)
+    switch (indexPath.section)
     {
         case 0:
         {
             coverThumbnailCell.coverImageView.image = [UIImage imageNamed: @"ChannelCreationCoverNone.png"];
-            return coverThumbnailCell;
         }
         break;
             
         case 1:
         {
             // Rockpack channel covers
-            CoverArt *coverArt = [self.channelCoverFetchedResultsController objectAtIndexPath: [NSIndexPath indexPathForRow: indexPath.row
+            coverArt = [self.channelCoverFetchedResultsController objectAtIndexPath: [NSIndexPath indexPathForRow: indexPath.row
                                                                                                                   inSection: 1]];
             
             [coverThumbnailCell.coverImageView setImageWithURL: [NSURL URLWithString: coverArt.thumbnailURL]
                                               placeholderImage: [UIImage imageNamed: @"PlaceholderChannelCreation.png"]
                                                        options: SDWebImageRetryFailed];
-            return coverThumbnailCell;
         }
         break;
             
         case 2:
         {
             // User channel covers
-            CoverArt *coverArt = [self.channelCoverFetchedResultsController objectAtIndexPath: [NSIndexPath indexPathForRow: indexPath.row
+            coverArt = [self.channelCoverFetchedResultsController objectAtIndexPath: [NSIndexPath indexPathForRow: indexPath.row
                                                                                                                       inSection: 0]];
             
             [coverThumbnailCell.coverImageView setImageWithURL: [NSURL URLWithString: coverArt.thumbnailURL]
                                               placeholderImage: [UIImage imageNamed: @"PlaceholderChannelCreation.png"]
                                                        options: SDWebImageRetryFailed];
-            return coverThumbnailCell;
         }
         break;      
     }
     
-    return nil;
-   
+    // If the user hasn't actually selected a cover, then try to match the cover id with the one for our cell,
+    // and select if true
+    if (self.indexPathSelected == nil)
+    {
+        // And we are not on the 'no cover' placeholder
+        if (coverArt != nil)
+        {
+            if ([coverArt.thumbnailURL isEqualToString: self.selectedImageURL])
+            {
+                coverThumbnailCell.selected = TRUE;
+            }
+        }
+    }
+    
+    return coverThumbnailCell;
 }
 
 
@@ -168,7 +189,6 @@
     [self.collectionView scrollToItemAtIndexPath: indexPath
                                 atScrollPosition: UICollectionViewScrollPositionNone
                                         animated: YES];
-    
     NSString *imageURLString;
     NSString *remoteId;
     
@@ -242,6 +262,46 @@
 }
 
 
+#pragma mark - Supplementary views
+
+- (UICollectionReusableView *) collectionView: (UICollectionView *) collectionView
+            viewForSupplementaryElementOfKind: (NSString *) kind
+                                  atIndexPath: (NSIndexPath *) indexPath
+{
+    UICollectionReusableView* supplementaryView;
+    
+    if (collectionView != self.collectionView)
+        return nil;
+
+    if (kind == UICollectionElementKindSectionFooter && indexPath.section == 2)
+    {        
+        self.coverRightMoreView = [self.collectionView dequeueReusableSupplementaryViewOfKind: kind
+                                                                          withReuseIdentifier: @"SYNCoverRightMoreView"
+                                                                                 forIndexPath: indexPath];
+        
+        supplementaryView = self.coverRightMoreView;
+    }
+    
+    return supplementaryView;
+}
+
+- (CGSize) collectionView: (UICollectionView *) collectionView
+           layout: (UICollectionViewLayout*) collectionViewLayout
+           referenceSizeForFooterInSection: (NSInteger) section
+{
+    if (section == 2)
+    {
+        return CGSizeMake(141.0f, 121.0f);
+    }
+    else
+    {
+        return CGSizeZero;
+    }
+}
+
+
+
+
 - (void) controllerDidChangeContent: (NSFetchedResultsController *) controller
 {
     [self.collectionView reloadData];
@@ -252,11 +312,14 @@
 - (void) updateCoverArt
 {
     // Update the list of cover art
-    [self.appDelegate.networkEngine updateCoverArtOnCompletion: ^{
-        DebugLog(@"Success");
-    } onError: ^(NSError* error) {
-        DebugLog(@"%@", [error debugDescription]);
-    }];
+    [self.appDelegate.networkEngine updateCoverArtWithWithStart: 0
+                                                           size: 50
+                                              completionHandler: ^(NSDictionary *dictionary){
+                                                  DebugLog(@"Success");
+                                              }
+                                                   errorHandler: ^(NSError* error) {
+                                                       DebugLog(@"%@", [error debugDescription]);
+                                                   }];
     
     [self.appDelegate.oAuthNetworkEngine updateCoverArtForUserId: self.appDelegate.currentOAuth2Credentials.userId
                                                onCompletion: ^{
@@ -290,13 +353,33 @@
     if (scrollView.contentOffset.x == scrollView.contentSize.width - scrollView.bounds.size.width)
     {
             DebugLog (@"Scrolling more");
-//        // ask next page only if we haven't reached last page
-//        if(![self.flickrPaginator reachedLastPage])
-//        {
-//            // fetch next page of results
-//            [self fetchNextPage];
-//        }
+        
+        self.coverRightMoreView.loadingLabel.text = @"Loading";
+        [self.coverRightMoreView.loadingIndicatorView startAnimating];
+        
     }
+}
+
+
+- (void) loadMoreChannels: (UIButton*) sender
+{
+    // (UIButton*) sender can be nil when called directly //
+    if (self.coverRightMoreView.loadingIndicatorView.isAnimating == YES)
+    {
+        
+    }
+//    
+//    NSInteger nextStart = dataRequestRange.location + dataRequestRange.length; // one is subtracted when the call happens for 0 indexing
+//    
+//    if(nextStart >= dataItemsAvailable)
+//        return;
+//    
+//    NSInteger nextSize = (nextStart + STANDARD_REQUEST_LENGTH) >= dataItemsAvailable ? (dataItemsAvailable - nextStart) : STANDARD_REQUEST_LENGTH;
+//    
+//    dataRequestRange = NSMakeRange(nextStart, nextSize);
+//    
+//    [self loadChannelsForGenre: currentGenre
+//                   byAppending: YES];
 }
 
 

@@ -207,23 +207,17 @@
                    } completion: ^(BOOL finished) {
                        
                        [self.view removeFromSuperview];
-        
-                       Channel* currentlyCreating = appDelegate.videoQueue.currentlyCreatingChannel;
-                       [self.selectedChannel addVideoInstancesFromChannel: currentlyCreating];
-                       [appDelegate saveContext:YES];
-        
                        [self removeFromParentViewController];
                        
-                       // send to master controller
+                       // send to MasterViewController
         
                        [[NSNotificationCenter defaultCenter] postNotificationName: kNoteVideoAddedToExistingChannel
                                                                            object: self
                                                                          userInfo: @{kChannel:self.selectedChannel}];
                        
-                       // clear the video queue after this action //
+                     
                        
-                       [[NSNotificationCenter defaultCenter] postNotificationName: kVideoQueueClear
-                                                                           object: self];
+                       
     }];
 }
 
@@ -264,6 +258,9 @@
             SYNChannelDetailViewController *channelCreationVC =
             [[SYNChannelDetailViewController alloc] initWithChannel: appDelegate.videoQueue.currentlyCreatingChannel
                                                           usingMode: kChannelDetailsModeEdit] ;
+            CGRect newFrame = channelCreationVC.view.frame;
+            newFrame.size.height = self.view.frame.size.height;
+            channelCreationVC.view.frame = newFrame;
             CATransition *animation = [CATransition animation];
             
             [animation setType:kCATransitionMoveIn];

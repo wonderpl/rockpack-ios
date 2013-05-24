@@ -7,25 +7,20 @@
 //
 
 #import "SYNCoverRightMoreView.h"
+#import "UIFont+SYNFont.h"
+
+@interface SYNCoverRightMoreView ()
+
+@end
 
 @implementation SYNCoverRightMoreView
 
-- (id)initWithFrame:(CGRect)frame
+- (void) awakeFromNib
 {
-    self = [super initWithFrame:frame];
-    if (self) {
-        // Initialization code
-    }
-    return self;
+    [super awakeFromNib];
+    
+    self.loadingLabel.font = [UIFont rockpackFontOfSize: 14.0f];
+    self.loadingIndicatorView.hidden = TRUE;
 }
-
-/*
-// Only override drawRect: if you perform custom drawing.
-// An empty implementation adversely affects performance during animation.
-- (void)drawRect:(CGRect)rect
-{
-    // Drawing code
-}
-*/
 
 @end

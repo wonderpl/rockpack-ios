@@ -42,7 +42,6 @@
                                               SYNChannelCategoryTableViewDelegate,
                                               SYNChannelCoverImageSelectorDelegate>
 
-
 @property (nonatomic, assign)  CGPoint originalContentOffset;
 @property (nonatomic, assign, getter = isImageSelectorOpen) BOOL imageSelectorOpen;
 @property (nonatomic, strong) GKImagePicker *imagePicker;
@@ -50,7 +49,7 @@
 @property (nonatomic, strong) IBOutlet UIButton *buyButton;
 @property (nonatomic, strong) IBOutlet UIButton *cameraButton;
 @property (nonatomic, strong) IBOutlet UIButton *createChannelButton;
-@property (strong, nonatomic) IBOutlet UIButton *saveChannelButton;
+@property (nonatomic, strong) IBOutlet UIButton *saveChannelButton;
 @property (nonatomic, strong) IBOutlet UIButton *shareButton;
 @property (nonatomic, strong) IBOutlet UIButton* addCoverButton;
 @property (nonatomic, strong) IBOutlet UIButton* profileImageButton;
@@ -71,21 +70,21 @@
 @property (nonatomic, strong) IBOutlet UIView *masterControlsView;
 @property (nonatomic, strong) NSFetchedResultsController *channelCoverFetchedResultsController;
 @property (nonatomic, strong) NSFetchedResultsController *userChannelCoverFetchedResultsController;
-@property (nonatomic, strong) SYNGenreTabViewController *categoriesTabViewController;
+@property (nonatomic, strong) NSString* selectedCategoryId;
+@property (nonatomic, strong) NSString* selectedCoverId;
 @property (nonatomic, strong) SYNCoverChooserController* coverChooserController;
+@property (nonatomic, strong) SYNGenreTabViewController *categoriesTabViewController;
 @property (nonatomic, strong) SYNReportConcernTableViewController *reportConcernTableViewController;
 @property (nonatomic, strong) UIActivityIndicatorView* subscribingIndicator;
 @property (nonatomic, strong) UIImage* originalBackgroundImage;
 @property (nonatomic, strong) UIView *coverChooserMasterView;
 @property (nonatomic, strong) UIView* noVideosMessageView;
+@property (nonatomic, strong) VideoInstance* instanceToDelete;
 @property (nonatomic, strong) id<SDWebImageOperation> currentWebImageOperation;
 @property (nonatomic, weak) Channel *channel;
-@property (nonatomic,strong) NSString* selectedCategoryId;
-@property (nonatomic,strong) NSString* selectedCoverId;
-@property (nonatomic,strong) VideoInstance* instanceToDelete;
-@property (weak, nonatomic) IBOutlet UIButton *cancelEditButton;
-@property (weak, nonatomic) IBOutlet UIButton *editButton;
-@property (weak, nonatomic) IBOutlet UILabel *byLabel;
+@property (nonatomic, weak) IBOutlet UIButton *cancelEditButton;
+@property (nonatomic, weak) IBOutlet UIButton *editButton;
+@property (nonatomic, weak) IBOutlet UILabel *byLabel;
 
 //iPhone specific
 @property (nonatomic,strong) SYNChannelCoverImageSelectorViewController* coverImageSelector;
@@ -106,14 +105,10 @@
 - (id) initWithChannel: (Channel *) channel
              usingMode: (kChannelDetailsMode) mode
 {
-
     if ((self = [super initWithViewId: kChannelDetailsViewId]))
     {
 		self.channel = channel;
         _mode = mode;
-        
-        
-        
 	}
 
 	return self;
@@ -126,7 +121,7 @@
 {
     [super viewDidLoad];
     
-    BOOL isIPhone= [[SYNDeviceManager sharedInstance] isIPhone];
+    BOOL isIPhone = [SYNDeviceManager.sharedInstance isIPhone];
 
     // Originally the opacity was required to be 0.25f, but this appears less visible on the actual screen
     // Set custom fonts and shadows for labels
@@ -222,9 +217,8 @@
     if (!isIPhone)
     {
         // Create categories tab, but make invisible (alpha = 0) for now
-        self.categoriesTabViewController = [[SYNGenreTabViewController alloc] initWithHomeButton: @"hiden"];
+        self.categoriesTabViewController = [[SYNGenreTabViewController alloc] initWithHomeButton: @"other"];
         self.categoriesTabViewController.delegate = self;
-        self.categoriesTabViewController.showOtherInSubcategories = YES;
         CGRect tabFrame = self.categoriesTabViewController.view.frame;
         tabFrame.origin.y = kChannelCreationCategoryTabOffsetY;
         tabFrame.size.width = self.view.frame.size.width;
@@ -274,8 +268,9 @@
         // Set text on add cover and select category buttons
         [self.selectCategoryButton setAttributedTitle: attributedCategoryString
                                              forState: UIControlStateNormal];
-        self.coverChooserController = [[SYNCoverChooserController alloc] init];
-        [self addChildViewController:self.coverChooserController];
+        
+        self.coverChooserController = [[SYNCoverChooserController alloc] initWithSelectedImageURL: self.channel.channelCover.imageUrl];
+        [self addChildViewController: self.coverChooserController];
         self.coverChooserMasterView = self.coverChooserController.view;
         
     }
@@ -296,13 +291,10 @@
         if (self.mode == kChannelDetailsModeEdit)
         {
             self.view.backgroundColor = [UIColor colorWithWhite:0.92f alpha:1.0f];
-        }
-        
-        // Cover Image Selector //
-        
+        } 
     }
     
-    self.selectedCategoryId = @"";
+    self.selectedCategoryId = self.channel.categoryId;
     self.selectedCoverId = @"";
 
     CGRect correctRect = self.coverChooserMasterView.frame;
@@ -322,8 +314,10 @@
 {
     [super viewWillAppear: animated];
     
+    NSString *viewMode = [NSString stringWithFormat: @"Channels - Detail - %@", (self.mode == kChannelDetailsModeDisplay) ? @"Display" : @"Edit"];
+    
     // Google analytics support
-    [GAI.sharedInstance.defaultTracker sendView: @"Channels - Detail"];
+    [GAI.sharedInstance.defaultTracker sendView: viewMode];
     
     [[NSNotificationCenter defaultCenter] addObserver: self
                                              selector: @selector(mainContextDataChanged:)
@@ -345,17 +339,14 @@
                                              selector: @selector(coverImageChangedHandler:)
                                                  name: kCoverArtChanged
                                                object: nil];
-    
 
-    
-    
     self.subscribeButton.enabled = YES;
     self.subscribeButton.selected = self.channel.subscribedByUserValue;
     
     [self.channel addObserver: self
                    forKeyPath: kSubscribedByUserKey
                       options: NSKeyValueObservingOptionNew
-                      context :nil];
+                      context: nil];
     
     // We set up assets depending on whether we are in display or edit mode
     [self setDisplayControlsVisibility: (self.mode == kChannelDetailsModeDisplay)];
@@ -493,10 +484,7 @@
             self.noVideosMessageView = nil;
         }
         
-        for (VideoInstance* vi in self.channel.videoInstances)
-        {
-            NSLog(@"*** Channel is : %@", vi.channel.title);
-        }
+        
     }
 }
 
@@ -680,7 +668,12 @@
     self.profileImageButton.enabled = visible;
     self.subscribeButton.hidden = (visible && [self.channel.channelOwner.uniqueId isEqualToString: appDelegate.currentUser.uniqueId]);
     self.editButton.hidden = (visible && ! [self.channel.channelOwner.uniqueId isEqualToString: appDelegate.currentUser.uniqueId]);
+    
+    self.editButton.enabled = (self.channel.favouritesValue) ? FALSE : TRUE;
+    
     [(LXReorderableCollectionViewFlowLayout *)self.videoThumbnailCollectionView.collectionViewLayout longPressGestureRecognizer].enabled = (visible) ? FALSE : TRUE;
+    
+//    self.channel.favouritesValue
     
     if (visible == NO)
     {
@@ -980,17 +973,24 @@
         {
             Genre* genre = [selectedCategoryResult objectAtIndex:0];
             NSString* newTitle = nil;
-            if ([[SYNDeviceManager sharedInstance] isIPhone] && [genre isKindOfClass:[SubGenre class]])
+            if ([genre isKindOfClass:[SubGenre class]])
             {
                 SubGenre* subCategory = (SubGenre*) genre;
-                newTitle =[NSString stringWithFormat:@"%@/\n%@", subCategory.genre.name, subCategory.name];
+                if ([[SYNDeviceManager sharedInstance] isIPhone])
+                {
+                    newTitle =[NSString stringWithFormat:@"%@/\n%@", subCategory.genre.name, subCategory.name];
+                }
+                else
+                {
+                    newTitle =[NSString stringWithFormat:@"%@/%@", subCategory.genre.name, subCategory.name];
+                }
             }
             else
             {
                 newTitle = genre.name;
             }
             
-            if(isIPad)
+            if (isIPad)
             {
                 [self updateCategoryButtonText:newTitle];
             }
@@ -1000,6 +1000,7 @@
                                         forState: UIControlStateNormal];
             }
         }
+        self.selectedCategoryId = self.channel.categoryId;
     }
     
 }
@@ -1013,6 +1014,7 @@
     
     [self setEditControlsVisibility: NO];
     [self displayChannelDetails];
+    self.categoryTableViewController = nil;
     self.saveChannelButton.hidden = YES;
     self.cancelEditButton.hidden = YES;
     self.addButton.hidden = NO;
@@ -1036,7 +1038,6 @@
     
     [self hideCategoryChooser];
     
-    self.channel.title = self.channelTitleTextView.text;
     self.channel.channelDescription = self.channel.channelDescription ? self.channel.channelDescription : @"";
     
 
@@ -1046,7 +1047,7 @@
     
     [appDelegate.oAuthNetworkEngine updateChannelForUserId: appDelegate.currentOAuth2Credentials.userId
                                                  channelId: self.channel.uniqueId
-                                                     title: self.channel.title
+                                                     title: self.channelTitleTextView.text
                                                description: (self.channel.channelDescription)
                                                   category: category
                                                      cover: cover
@@ -1072,17 +1073,22 @@
                                          }
                                               errorHandler: ^(NSDictionary* error) {
                                                   NSDictionary* specificErrors = [error objectForKey: @"form_errors"];
-                                                  NSString* errorText = [specificErrors objectForKey: @"title"];
-                                                  
+                                                  id errorText = [specificErrors objectForKey: @"title"];
+                                                  if ([errorText isKindOfClass:[NSArray class]])
+                                                  {
+                                                      errorText = [errorText objectAtIndex:0];
+                                                  }
                                                   if (!errorText)
                                                   {
                                                       errorText = @"Could not save channel. Please try again later.";
                                                   }
                                                   
                                                   DebugLog(@"Error @ saveChannelPressed:");
-                                                  NSString* errorMessage = NSLocalizedString(errorText, nil);
-                                                  [self showError: errorMessage];
+                                                  errorText = NSLocalizedString(errorText, nil);
+                                                  [self showError: errorText];
+                                                  self.saveChannelButton.hidden = NO;
                                                   self.saveChannelButton.enabled = YES;
+                                                  [self.activityIndicator stopAnimating];
                                               }];
 }
 
@@ -1119,7 +1125,7 @@
     }
     else
     {
-        self.coverImageSelector = [[SYNChannelCoverImageSelectorViewController alloc] init];
+        self.coverImageSelector = [[SYNChannelCoverImageSelectorViewController alloc] initWithSelectedImageURL: self.channel.channelCover.imageUrl];
         self.coverImageSelector.imageSelectorDelegate = self;
         CGRect startFrame = self.coverImageSelector.view.frame;
         startFrame.origin.y = self.view.frame.size.height;
@@ -1167,57 +1173,38 @@
                                  self.categoriesTabViewController.view.alpha = 1.0f;   
                              }
                              completion: ^(BOOL finished) {
-                                 
-                                 
-                                 
-                                 // if no category has been selected then select first //
-                                 
-                                 if ([self.selectedCategoryId isEqualToString:@""])
+
+                                 if ([self.selectedCategoryId isEqualToString: @""])
                                  {
-                                     NSIndexPath* firstFirstIndexPath = [NSIndexPath indexPathForItem:0 inSection:0];
-                                     Genre* firstSelection = [self.categoriesTabViewController selectAndReturnGenreForIndexPath:firstFirstIndexPath
-                                                                                                  andSubcategories:YES];
-                                     
-                                     if (firstSelection)
-                                     {
-                                         self.selectedCategoryId = firstSelection.uniqueId;
-                                         if([firstSelection isKindOfClass:[SubGenre class]])
-                                         {
-                                             SubGenre* firstSelectedSubGenre = (SubGenre*)firstSelection;
-                                             [self updateCategoryButtonText: [NSString stringWithFormat:@"%@/%@",
-                                                                          firstSelectedSubGenre.genre.name, firstSelectedSubGenre.name]];
-                                         }
-                                         else
-                                         {
-                                             [self updateCategoryButtonText: firstSelection.name];
-                                         }
-                                     }
-                                     else
-                                     {
-                                         [self.categoriesTabViewController deselectAll];
-                                     }
+                                     // if no category has been selected the "other" category if it exists
+                                    if( self.categoriesTabViewController.otherGenre)
+                                    {
+                                        [self handleNewTabSelectionWithGenre: self.categoriesTabViewController.otherGenre];
+                                    }
                                  }
                                  else
                                  {
-                                     NSIndexPath* genreIndexPath = [self.categoriesTabViewController findIndexPathForGenreId:self.channel.categoryId];
-                                     Genre* genreSelected =
-                                     [self.categoriesTabViewController selectAndReturnGenreForIndexPath:genreIndexPath
-                                                                                       andSubcategories:YES];
-                                     
-                                     if(genreSelected)
+                                     NSIndexPath* genreIndexPath = [self.categoriesTabViewController findIndexPathForGenreId: self.selectedCategoryId];
+                                     if(!genreIndexPath)
                                      {
-                                         
-                                         if([genreSelected isMemberOfClass:[Genre class]])
+                                         //"Other/other" selected. Do nothing
+                                         return;
+                                     }
+                                     Genre* genreSelected =
+                                     [self.categoriesTabViewController selectAndReturnGenreForIndexPath: genreIndexPath
+                                                                                       andSubcategories: YES];
+                                     
+                                     if (genreSelected)
+                                     {
+                                         if ([genreSelected isMemberOfClass: [Genre class]])
                                          {
-                                             [self updateCategoryButtonText:genreSelected.name];
+                                             [self updateCategoryButtonText: genreSelected.name];
                                          }
                                          else
                                          {
-                                             [self updateCategoryButtonText: [NSString stringWithFormat:@"%@/%@",
+                                             [self updateCategoryButtonText: [NSString stringWithFormat: @"%@/%@",
                                                                               ((SubGenre*)genreSelected).genre.name, genreSelected.name]];
-                                         }
-                                             
-                                         
+                                         }   
                                      }
                                      else
                                      {
@@ -1225,10 +1212,10 @@
                                      }
                                  }
 
-                                 [UIView animateWithDuration:0.4f
-                                                       delay:0.1f
-                                                     options:UIViewAnimationOptionBeginFromCurrentState | UIViewAnimationOptionCurveEaseInOut
-                                                  animations:^{
+                                 [UIView animateWithDuration: 0.4f
+                                                       delay: 0.1f
+                                                     options: UIViewAnimationOptionBeginFromCurrentState | UIViewAnimationOptionCurveEaseInOut
+                                                  animations: ^{
                                                       // slide down the video collection view a bit //
                                                       CGFloat totalY =
                                                       kChannelCreationCollectionViewOffsetY + kChannelCreationCategoryAdditionalOffsetY;
@@ -1238,7 +1225,8 @@
                                                       kChannelCreationCollectionViewOffsetY + kChannelCreationCategoryAdditionalOffsetY;
                                                       self.videoThumbnailCollectionView.contentOffset = CGPointMake (0, -(totalX));
                                      
-                                                  } completion:^(BOOL finished) {
+                                                  }
+                                                  completion:^(BOOL finished) {
                                      
                                                   }];
                              }];
@@ -1251,7 +1239,25 @@
             self.categoryTableViewController = [[SYNChannelCategoryTableViewController alloc] initWithNibName:@"SYNChannelCategoryTableViewControllerFullscreen~iphone" bundle: [NSBundle mainBundle]];
             self.categoryTableViewController.categoryTableControllerDelegate = self;
             self.categoryTableViewController.showAllCategoriesHeader = NO;
-            self.categoryTableViewController.showOtherSubCategory = YES;
+            
+            [self.view addSubview:self.categoryTableViewController.view];
+            
+            BOOL hasACategory = [self.selectedCategoryId length]>0;
+            [self.categoryTableViewController setSelectedCategoryForId:hasACategory?self.selectedCategoryId:nil];
+            if(!hasACategory)
+            {
+                // Set the default other/other subgenre
+                NSArray* filteredSubcategories = [[self.categoryTableViewController.otherGenre.subgenres array] filteredArrayUsingPredicate:[NSPredicate predicateWithFormat:@"priority = -1"]];
+                 if([filteredSubcategories count] == 1)
+                 {
+                     SubGenre* otherSubGenre = [filteredSubcategories objectAtIndex:0];
+                     
+                     self.selectedCategoryId = otherSubGenre.uniqueId;
+                     
+                     [self.selectCategoryButton setTitle: [NSString stringWithFormat:@"%@/\n%@", otherSubGenre.genre.name, otherSubGenre.name]
+                                                forState: UIControlStateNormal];
+                 }
+            }
         }
         else
         {
@@ -1264,7 +1270,9 @@
         
         CGRect startFrame = self.categoryTableViewController.view.frame;
         startFrame.origin.y = self.view.frame.size.height;
+        startFrame.size.height = self.view.frame.size.height;
         self.categoryTableViewController.view.frame = startFrame;
+
         [self.view addSubview:self.categoryTableViewController.view];
         
         [UIView animateWithDuration: 0.3f
@@ -1277,7 +1285,6 @@
                          }
                          completion: nil];
     }
-    
 }
 
 
@@ -1328,7 +1335,7 @@
 
 - (void) handleNewTabSelectionWithGenre: (Genre*) genre
 {
-    // in the case of @"OTHER" the actual cid for the backend call is @"all" //
+    // the tab selector should alwaysreturn a genre. If no genre is sent, the "Othre" category is missing and we will have to make do with an empty string.
     if (!genre)
     {
         
@@ -1336,10 +1343,8 @@
         [self updateCategoryButtonText: @"OTHER"];
         return;
     }
-        
 
     // update the text field with the format "GENRE/SUBGENRE"
-
     if ([genre isMemberOfClass: [SubGenre class]])
     {
         [self hideCategoryChooser];
@@ -1349,7 +1354,7 @@
     else
     {
         NSArray* filteredSubcategories = [[genre.subgenres array] filteredArrayUsingPredicate:[NSPredicate predicateWithFormat:@"priority = -1"]];
-        if([filteredSubcategories count] == 1)
+        if ([filteredSubcategories count] == 1)
         {
             SubGenre* otherSubGenre = [filteredSubcategories objectAtIndex:0];
             
@@ -1362,7 +1367,6 @@
             self.selectedCategoryId = genre.uniqueId;
             [self updateCategoryButtonText: genre.name];
         }
-
     }
 }
 
@@ -1390,7 +1394,11 @@
     
     NSString* category = [self categoryIdStringForServiceCall];
     
-    NSString* cover = [self coverIdStringForServiceCall];
+    NSString* cover =  self.selectedCoverId;
+    if ([cover length]==0)
+    {
+        cover = @"";
+    }
     
     [appDelegate.oAuthNetworkEngine createChannelForUserId: appDelegate.currentOAuth2Credentials.userId
                                                      title: self.channel.title
@@ -1401,17 +1409,10 @@
                                          completionHandler: ^(NSDictionary* resourceCreated) {
                                              NSString* channelId = [resourceCreated objectForKey: @"id"];
                                              
+                                             self.createChannelButton.hidden = YES;
+                                             
                                              [self setVideosForChannelById:channelId isUpdated:NO];
                                              
-                                             [self setEditControlsVisibility: NO];
-                                             self.createChannelButton.enabled = YES;
-                                             self.createChannelButton.hidden = YES;
-                                             self.cancelEditButton.hidden = YES;
-                                             self.addButton.hidden = NO;
-                                             
-                                             [[NSNotificationCenter defaultCenter] postNotificationName: kNoteAllNavControlsShow
-                                                                                                 object: self
-                                                                                               userInfo: nil];
                                          }
                                               errorHandler: ^(id error) {
                                                   
@@ -1422,7 +1423,11 @@
                                                       errorMessage = NSLocalizedString(@"You already created a channel with this title. Please choose a different title.",nil);
                                                   };
                                                   
+                                                  
                                                   self.createChannelButton.enabled = YES;
+                                                  self.createChannelButton.hidden = NO;
+                                                  self.cancelEditButton.hidden = YES;
+                                                  self.addButton.hidden = YES;                                                  
                                                   [self showError:errorMessage];
                                               }];
 }
@@ -1433,16 +1438,57 @@
     [appDelegate.oAuthNetworkEngine updateVideosForChannelForUserId: appDelegate.currentOAuth2Credentials.userId
                                                           channelId: channelId
                                                    videoInstanceSet: self.channel.videoInstances
+                                                      clearPrevious: YES
                                                   completionHandler: ^(id response) {
                                                       // a 204 returned
                                                       
                                                       [self fetchAndStoreUpdatedChannelForId:channelId isUpdate:isUpdated];
                                                       
                                                   } errorHandler: ^(id err) {
+                                                      NSString* errorMessage = nil;
+                                                      if ([err isKindOfClass:[NSDictionary class]])
+                                                      {
+                                                          errorMessage = [err objectForKey:@"message"];
+                                                          if (!errorMessage)
+                                                          {
+                                                              errorMessage = [err objectForKey:@"error"];
+                                                          }
+                                                      }
+                                                      self.addButton.hidden = YES;
                                                       
-                                                           
-                                                           DebugLog(@"Error @ addVideosToNewChannelForId:");
-                                                           [self showError:NSLocalizedString(@"Could not create channel. Please try again later.", nil)];
+                                                      if(isUpdated)
+                                                      {
+                                                          [self.activityIndicator stopAnimating];
+                                                          self.cancelEditButton.hidden = NO;
+                                                          self.cancelEditButton.enabled = YES;
+                                                          self.createChannelButton.enabled = YES;
+                                                          self.createChannelButton.hidden = NO;
+                                                          
+                                                          if(!errorMessage)
+                                                          {
+                                                              errorMessage = NSLocalizedString(@"Could not update the channel videos. Please review and try again later.", nil);
+                                                          }
+                                                          DebugLog(@"Error @ setVideosForChannelById:");
+                                                          [self showError: errorMessage];
+                                                          
+                                                      }
+                                                      else
+                                                      {
+                                                          [self.activityIndicator stopAnimating];
+                                                          self.cancelEditButton.hidden = YES;
+                                                          self.cancelEditButton.enabled = YES;
+                                                          self.saveChannelButton.enabled = YES;
+                                                          self.saveChannelButton.hidden = NO;
+                                                          
+                                                          if(!errorMessage)
+                                                          {
+                                                              errorMessage = NSLocalizedString(@"Could not add videos to channel. Please review and try again later.", nil);
+                                                          }
+                                                          DebugLog(@"Error @ setVideosForChannelById:");
+                                                          [self showError: errorMessage];
+                                                        
+                                                      }
+                                                      
                                                 }];
 }
 
@@ -1459,8 +1505,7 @@
                                               }
                                               Channel* createdChannel = [Channel instanceFromDictionary:dictionary
                                                                               usingManagedObjectContext:appDelegate.mainManagedObjectContext
-                                                                                    ignoringObjectTypes:ignore
-                                                                                              andViewId:kProfileViewId];
+                                                                                    ignoringObjectTypes:ignore];
                                               
                                               createdChannel.channelOwner = appDelegate.currentUser;
                                               
@@ -1487,24 +1532,11 @@
                                               
                                               [self setDisplayControlsVisibility:YES];
                                               
-                                              if ([[SYNDeviceManager sharedInstance] isIPad])
-                                              {
-//                                                  self.addButton.hidden = YES;
-                                                  self.createChannelButton.hidden = YES;
-                                                  
-                                              }
-                                              else
-                                              {
-                                                  // On iPad the existing channels viewcontroller's view is removed from the master view controller when a new channel is created.
-                                                  // On iPhone we want to be able to go back which means the existing channels view remains onscreen. Here we remove it as channel creation was complete.
-                                                  UIViewController *master = self.presentingViewController;
-                                                  [[[[master childViewControllers] lastObject] view] removeFromSuperview];
-                                                  [self setDisplayControlsVisibility:YES];
-                                                  
-                                                  //Move the back button from the edit view to allow closing this view
-                                                  [self.backButton removeFromSuperview];
-                                                  [self.view addSubview:self.backButton];
-                                              }
+                                              [[NSNotificationCenter defaultCenter] postNotificationName: kNoteAllNavControlsShow
+                                                                                                  object: self
+                                                                                                userInfo: nil];
+                                              
+                                              [self finaliseViewStatusAfterCreateOrUpdate:[[SYNDeviceManager sharedInstance] isIPad]];
                                               
                                               [[NSNotificationCenter defaultCenter] postNotificationName: kVideoQueueClear
                                                                                                   object: nil];
@@ -1515,10 +1547,67 @@
                                           } errorHandler:^(id err) {
                                               
                                               DebugLog(@"Error @ getNewlyCreatedChannelForId:");
-                                              [self showError: NSLocalizedString(@"Could not create channel. Please try again later.", nil)];
+                                              [self showError: NSLocalizedString(@"Could not retrieve the uploaded channel data. Please try accessing it from your profile later.", nil)];
+                                              self.channelOwnerLabel.text = appDelegate.currentUser.displayName;
+                                              
+                                              [self displayChannelDetails];
+                                              
+                                              [self setDisplayControlsVisibility:YES];
+                                              
+                                              [[NSNotificationCenter defaultCenter] postNotificationName: kNoteAllNavControlsShow
+                                                                                                  object: self
+                                                                                                userInfo: nil];
+                                              
+                                              [self finaliseViewStatusAfterCreateOrUpdate:[[SYNDeviceManager sharedInstance] isIPad]];
+                                            
+                                              
+                                              [[NSNotificationCenter defaultCenter] postNotificationName: kVideoQueueClear
+                                                                                                  object: nil];
                                           }];
 }
 
+-(void)finaliseViewStatusAfterCreateOrUpdate:(BOOL)isIPad
+{
+    if (isIPad)
+    {
+        self.addButton.hidden = NO;
+        self.createChannelButton.hidden = YES;
+        
+        
+    }
+    else
+    {
+        SYNMasterViewController *master = (SYNMasterViewController*) self.presentingViewController;
+        if(master)
+        {
+            //This scenario happens on channel creation only and means this channel is presented modally.
+            //After creation want to show it as if it is part of the master view hierarchy.
+            //Thus we move the view there.
+            
+            //This removes the "existing channels view controller"
+            [[[[master childViewControllers] lastObject] view] removeFromSuperview];
+            
+            //Now dimiss self modally (not animated)
+            [master dismissViewControllerAnimated:NO completion:nil];
+            
+            //Change to display mode
+            self.mode = kChannelDetailsModeDisplay;
+            
+            //Don't really like this, but send notification to hide title and dots for a seamless transition.
+            [[NSNotificationCenter defaultCenter] postNotificationName: kNoteHideTitleAndDots
+                                                                object: self
+                                                              userInfo: nil];
+            
+            //And show as if displayed from the normal master view hierarchy
+            SYNAbstractViewController* currentRootViewcontroller = [[master containerViewController] showingViewController];
+            [currentRootViewcontroller animatedPushViewController:self];
+        }
+        
+        [self setDisplayControlsVisibility:YES];
+        [self.activityIndicator stopAnimating];
+    }
+
+}
 
 - (void) showError: (NSString*) errorMessage
 {
@@ -1532,6 +1621,7 @@
                       otherButtonTitles: nil] show];
 }
 
+
 #pragma mark - channel and cover id preparation
 
 -(NSString*)categoryIdStringForServiceCall
@@ -1540,13 +1630,14 @@
     if ([category length] == 0)
     {
         category = self.channel.categoryId;
-        if (!category)
+        if ([category length]==0)
         {
             category = @"";
         }
     }
     return category;
 }
+
 
 -(NSString*)coverIdStringForServiceCall
 {
@@ -1949,17 +2040,18 @@
 
 - (void) categoryTableController:(SYNChannelCategoryTableViewController *)tableController didSelectCategory:(Genre *)category
 {
-    if(category)
+    if (category)
     {
         NSArray* filteredSubcategories = [[category.subgenres array] filteredArrayUsingPredicate:[NSPredicate predicateWithFormat:@"priority = -1"]];
-        if([filteredSubcategories count] == 1)
+        if ([filteredSubcategories count] == 1)
         {
             SubGenre* otherSubGenre = [filteredSubcategories objectAtIndex:0];
             
             self.selectedCategoryId = otherSubGenre.uniqueId;
             
             [self.selectCategoryButton setTitle: [NSString stringWithFormat:@"%@/\n%@", otherSubGenre.genre.name, otherSubGenre.name]
-                                       forState: UIControlStateNormal];    }
+                                       forState: UIControlStateNormal];
+        }
         else
         {
             self.selectedCategoryId = category.uniqueId;
@@ -2040,6 +2132,8 @@
 {
     self.selectedCoverId = remoteId;
     
+    self.channel.channelCover.imageUrl = imageUrlString;
+    
     NSString* largeImageUrlString = [imageUrlString stringByReplacingOccurrencesOfString:@"thumbnail_medium" withString:@"background"];
     [self.channelCoverImageView setImageWithURL: [NSURL URLWithString: largeImageUrlString]
                                placeholderImage: [UIImage imageNamed: @"PlaceholderChannelCreation.png"]
@@ -2053,7 +2147,7 @@
 - (UIImage*) croppedImageForOrientation: (UIInterfaceOrientation) orientation
 {
     CGRect croppingRect = UIInterfaceOrientationIsLandscape(orientation) ?
-    CGRectMake(0.0, 138.0, 1024.0, 886.0) : CGRectMake(138.0, 0.0, 886.0, 1024.0);
+    CGRectMake(0.0, 138.0, 1024.0, 886.0) : CGRectMake(69.0, 0.0, 886.0, 1024.0);
     
     if (self.originalBackgroundImage == nil) // set the bg var once
     {
@@ -2098,11 +2192,6 @@
 
 #pragma mark - Tab View Methods
 
-- (void) setTabViewController: (SYNTabViewController *) newTabViewController
-{
-    [super setTabViewController:newTabViewController];
-    ((SYNGenreTabViewController*)newTabViewController).showOtherInSubcategories = YES;
-}
 
 - (BOOL) needsAddButton
 {

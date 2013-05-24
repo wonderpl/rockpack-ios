@@ -5,17 +5,14 @@
 
 + (Channel *) instanceFromDictionary: (NSDictionary *) dictionary
            usingManagedObjectContext: (NSManagedObjectContext *) managedObjectContext
-                  ignoringObjectTypes: (IgnoringObjects) ignoringObjects
-                           andViewId: (NSString *) viewId;
+                  ignoringObjectTypes: (IgnoringObjects) ignoringObjects;
 
 
 @property (nonatomic) BOOL hasChangedSubscribeValue;
 
 - (void) setAttributesFromDictionary: (NSDictionary *) dictionary
                               withId: (NSString *) uniqueId
-                 ignoringObjectTypes: (IgnoringObjects) ignoringObjects
-                           andViewId: (NSString *) viewId;
+                 ignoringObjectTypes: (IgnoringObjects) ignoringObjects;
 
-- (void) addVideoInstancesFromChannel: (Channel*) channel;
 
 @end

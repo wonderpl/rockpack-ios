@@ -123,15 +123,6 @@
     [self packViewControllersForInterfaceOrientation:UIDeviceOrientationLandscapeLeft];
     
     // == Register Notifications == //
-    [[NSNotificationCenter defaultCenter] addObserver: self
-                                             selector: @selector(backButtonShow:)
-                                                 name: kNoteBackButtonShow
-                                               object: nil];
-    
-    [[NSNotificationCenter defaultCenter] addObserver: self
-                                             selector: @selector(backButtonHide:)
-                                                 name: kNoteBackButtonHide
-                                                object:nil];
     
     [[NSNotificationCenter defaultCenter] addObserver: self
                                              selector: @selector(profileRequested:)
@@ -164,11 +155,19 @@
     [[NSNotificationCenter defaultCenter] postNotificationName: kScrollerPageChanged
                                                         object: self
                                                       userInfo: @{kCurrentPage:@(self.scrollView.page)}];
-    //FIXME: Nick to rework
-    [self.childViewControllers makeObjectsPerformSelector: @selector(viewWillAppear:)
-                                               withObject: nil];
 }
 
+
+#pragma mark - maintaion orientation
+
+-(void)refreshView
+{
+    [self packViewControllersForInterfaceOrientation: [[SYNDeviceManager sharedInstance] orientation]];
+    
+    [[NSNotificationCenter defaultCenter] postNotificationName: kScrollerPageChanged
+                                                        object: self
+                                                      userInfo: @{kCurrentPage:@(self.scrollView.page)}];
+}
 
 #pragma mark - Placement of Views
 
@@ -250,13 +249,13 @@
 }
 
 
-- (void) backButtonShow: (NSNotification*) notification
+- (void) backButtonWillShow
 {
     self.scrollView.scrollEnabled = NO;
 }
 
 
-- (void) backButtonHide: (NSNotification*) notification
+- (void) backButtonwillHide
 {
     self.scrollView.scrollEnabled = YES;
 }
@@ -265,9 +264,10 @@
 - (void) navigateToPageByName: (NSString*) pageName
 {
     int page = 0;
+    
     for (UINavigationController* nvc in self.childViewControllers)
     {
-        if ([pageName isEqualToString:nvc.title])
+        if ([pageName isEqualToString: nvc.title])
         {
             [self.scrollView setPage: page
                             animated: YES];
@@ -296,7 +296,7 @@
 - (void) scrollViewDidEndScrollingAnimation: (UIScrollView *) scrollView
 {
     // catch programmatic animations
-    [self scrollViewDidEndDecelerating:scrollView];
+    [self scrollViewDidEndDecelerating: scrollView];
 }
 
 

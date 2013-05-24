@@ -47,9 +47,6 @@
     
     newUser.currentValue = YES;
     
-    BOOL saveResult = [self saveImportContext];
-    if(!saveResult)
-        return NO;
     
     [appDelegate saveContext: TRUE];
     
@@ -59,81 +56,39 @@
 
 - (BOOL) registerChannelOwnerFromDictionary: (NSDictionary*) dictionary
 {
+    
+    
     // == Check for Validity == //
+    
     if (!dictionary || ![dictionary isKindOfClass: [NSDictionary class]])
         return NO;
     
     // dictionary also contains the set of user channels
     
     ChannelOwner* channelOwner = [ChannelOwner instanceFromDictionary: dictionary
-                                            usingManagedObjectContext: importManagedObjectContext
+                                            usingManagedObjectContext: appDelegate.mainManagedObjectContext
                                                   ignoringObjectTypes: kIgnoreNothing];
     
     if (!channelOwner)
         return NO;
     
     
-    BOOL saveResult = [self saveImportContext];
-    if (!saveResult)
-        return NO;
-    
-    [appDelegate saveContext: TRUE];
+    [appDelegate saveContext: YES];
     
     
     return YES;
 }
-
-
 - (BOOL) registerSubscriptionsForCurrentUserFromDictionary: (NSDictionary*) dictionary
 {
-    // == Check for Validity == //
-    if (!dictionary || ![dictionary isKindOfClass: [NSDictionary class]])
-        return NO;
+    [appDelegate.currentUser addSubscriptionsDictionary:dictionary];
     
-    User* currentUser = appDelegate.currentUser;
-    
-    if (!currentUser)
-        return NO;
-    
-    NSDictionary* channeslDictionary = [dictionary objectForKey: @"channels"];
-    if (!channeslDictionary)
-        return NO;
-    
-    NSArray* itemsArray = [channeslDictionary objectForKey: @"items"];
-    if (!itemsArray)
-        return NO;
-    
-    
-    for (NSDictionary* subscriptionChannel in itemsArray)
-    {
-        
-        // must use the main context so as to be able to link it with the channel owner
-        
-        Channel* channel = [Channel instanceFromDictionary:subscriptionChannel
-                                 usingManagedObjectContext:currentUser.managedObjectContext
-                                       ignoringObjectTypes:kIgnoreNothing
-                                                 andViewId:kProfileViewId];
-        
-        if (!channel)
-            continue;
-        
-        
-        [currentUser addSubscriptionsObject:channel];
-        
-        
-        
-    }
-    
-    
-    
-    BOOL saveResult = [self saveImportContext];
-    if(!saveResult)
-        return NO;
-    
-    [appDelegate saveContext: TRUE];
+    [appDelegate saveContext:YES];
     
     return YES;
+    
 }
+
+
 
 
 - (BOOL) registerCategoriesFromDictionary: (NSDictionary*) dictionary
@@ -167,7 +122,7 @@
     
     NSMutableDictionary* existingCategoriesByIndex = [NSMutableDictionary dictionaryWithCapacity:existingCategories.count];
     
-    for (Channel* existingCategory in existingCategories)
+    for (Genre* existingCategory in existingCategories)
     {
         
         [existingCategoriesByIndex setObject:existingCategory forKey:existingCategory.uniqueId];
@@ -192,6 +147,10 @@
         {
             genre = [Genre instanceFromDictionary: categoryDictionary
                         usingManagedObjectContext: appDelegate.mainManagedObjectContext];
+        }
+        else
+        {
+            [genre setAttributesFromDictionary:categoryDictionary withId:uniqueId usingManagedObjectContext:appDelegate.mainManagedObjectContext];
         }
         
         genre.markedForDeletionValue = NO;
@@ -250,6 +209,7 @@
     return YES;
 }
 
+#pragma mark - VideoInstances
 
 - (BOOL) registerVideoInstancesFromDictionary: (NSDictionary *) dictionary
                                     forViewId: (NSString*) viewId
@@ -269,15 +229,14 @@
         return YES;
     
     
-    NSEntityDescription* videoInstanceEntity = [NSEntityDescription entityForName: @"VideoInstance"
-                                                           inManagedObjectContext: importManagedObjectContext];
     NSFetchRequest *videoInstanceFetchRequest = [[NSFetchRequest alloc] init];
-    [videoInstanceFetchRequest setEntity: videoInstanceEntity];
-    NSPredicate *predicate = [NSPredicate predicateWithFormat: @"viewId == %@", viewId];
-    [videoInstanceFetchRequest setPredicate: predicate];
+    [videoInstanceFetchRequest setEntity: [NSEntityDescription entityForName: @"VideoInstance"
+                                                      inManagedObjectContext: appDelegate.mainManagedObjectContext]];
+    
     NSError* error = nil;
-    NSArray *matchingVideoInstanceEntries = [importManagedObjectContext executeFetchRequest: videoInstanceFetchRequest
-                                                                                error: &error];
+    NSArray *matchingVideoInstanceEntries = [appDelegate.mainManagedObjectContext executeFetchRequest: videoInstanceFetchRequest
+                                                                                                error: &error];
+    
     NSMutableDictionary* existingVideosByIndex = [NSMutableDictionary dictionaryWithCapacity:matchingVideoInstanceEntries.count];
     
     // Organise videos by Id
@@ -285,12 +244,16 @@
     {
         [existingVideosByIndex setObject:existingVideo forKey:existingVideo.uniqueId];
         
-        // We need to mark all of our existing VideoInstance objects corresponding to this viewId, just in case they are no longer required
-        // and should be removed in a post-import cleanup
-        existingVideo.markedForDeletionValue = YES;
+        
+        if(!append)
+        {
+            
+            existingVideo.markedForDeletionValue = YES;
+            existingVideo.freshValue = NO;
+        }
+        
     }
     
-        // === Main Processing === //
     
     for (NSDictionary *itemDictionary in itemArray)
     {
@@ -306,33 +269,33 @@
             // The video is not in the dictionary of existing videos
             // Create a new video object. kIgnoreStoredObjects makes sure no attempt is made to query first
             video = [VideoInstance instanceFromDictionary: itemDictionary
-                                usingManagedObjectContext: importManagedObjectContext
-                                      ignoringObjectTypes: kIgnoreStoredObjects
-                                                andViewId: viewId];
+                                usingManagedObjectContext: appDelegate.mainManagedObjectContext
+                                      ignoringObjectTypes: kIgnoreStoredObjects];
             
         }
         
         video.markedForDeletionValue = NO; // This video is in the dictionary and should not be deleted.
         
+        video.freshValue = YES;
+        
         video.position = [itemDictionary objectForKey: @"position"
                                           withDefault: [NSNumber numberWithInt: 0]];
     }    
     
-    // == =============== == //
+    
     
     // Now remove any VideoInstance objects that are no longer referenced in the import
     [self removeUnusedManagedObjects: matchingVideoInstanceEntries
-              inManagedObjectContext: importManagedObjectContext];
+              inManagedObjectContext: appDelegate.mainManagedObjectContext];
     
-    BOOL saveResult = [self saveImportContext];
-    if(!saveResult)
-        return NO;
+    
     
     [appDelegate saveContext: TRUE];
     
     return YES;
 }
 
+#pragma mark - Channels
 
 - (BOOL) registerChannelFromDictionary: (NSDictionary*) dictionary
 {
@@ -343,13 +306,9 @@
     // == =============== == //
     
     [Channel instanceFromDictionary: dictionary
-          usingManagedObjectContext: importManagedObjectContext
-                ignoringObjectTypes: kIgnoreNothing
-                          andViewId: kChannelDetailsViewId];
+          usingManagedObjectContext: appDelegate.mainManagedObjectContext
+                ignoringObjectTypes: kIgnoreNothing];
     
-    BOOL saveResult = [self saveImportContext];
-    if (!saveResult)
-        return NO;
     
     [appDelegate saveContext: TRUE];
     
@@ -415,8 +374,7 @@
         {
             channel = [Channel instanceFromDictionary: itemDictionary
                             usingManagedObjectContext: channelOwner.managedObjectContext
-                                  ignoringObjectTypes: (kIgnoreStoredObjects | kIgnoreChannelOwnerObject)
-                                            andViewId: kChannelsViewId];
+                                  ignoringObjectTypes: (kIgnoreStoredObjects | kIgnoreChannelOwnerObject)];
         }
         
         
@@ -451,12 +409,18 @@
     // == Check for Validity == //
     NSDictionary *channelsDictionary = [dictionary objectForKey: @"channels"];
     if (!channelsDictionary || ![channelsDictionary isKindOfClass: [NSDictionary class]])
+    {
+        AssertOrLog(@"registerChannelsFromDictionary: unexpected JSON format");
         return NO;
+    }
     
     NSArray *itemArray = [channelsDictionary objectForKey: @"items"];
     if (![itemArray isKindOfClass: [NSArray class]])
+    {
+        AssertOrLog(@"registerChannelsFromDictionary: unexpected JSON format");
         return NO;
-    
+    }
+
     // Query for existing objects
     NSFetchRequest *channelFetchRequest = [[NSFetchRequest alloc] init];
     [channelFetchRequest setEntity: [NSEntityDescription entityForName: @"Channel"
@@ -464,7 +428,7 @@
     
     NSPredicate* genrePredicate;
     
-    if(genre)
+    if (genre)
     {
         if ([genre isMemberOfClass: [Genre class]])
         {
@@ -477,19 +441,18 @@
     }
 
     [channelFetchRequest setPredicate: genrePredicate];
-    
-    
+
     NSError* error;
     NSArray *existingChannels = [appDelegate.mainManagedObjectContext executeFetchRequest: channelFetchRequest
                                                                                           error: &error];
-    
     
     NSMutableDictionary* existingChannelsByIndex = [NSMutableDictionary dictionaryWithCapacity: existingChannels.count];
     
     for (Channel* existingChannel in existingChannels)
     {
         
-        [existingChannelsByIndex setObject:existingChannel forKey:existingChannel.uniqueId];
+        [existingChannelsByIndex setObject: existingChannel
+                                    forKey: existingChannel.uniqueId];
         
         if(!append)
             existingChannel.popularValue = NO; // set all to NO
@@ -501,15 +464,12 @@
         
         
         // set the old channels to not fresh and refresh on demand //
-        
-        existingChannel.freshValue = NO;
+        if(!append)
+            existingChannel.freshValue = NO;
            
     }
-    
-    
-    
+
     // protect owned and subscribed channels from deletion //
-    
     for (Channel* subscribedChannel in appDelegate.currentUser.subscriptions)
     {
         subscribedChannel.markedForDeletionValue = NO;
@@ -520,8 +480,6 @@
         ownedChannels.markedForDeletionValue = NO;
     }
     
-    
-
     for (NSDictionary *itemDictionary in itemArray)
     {
         NSString *uniqueId = [itemDictionary objectForKey: @"id"];
@@ -536,8 +494,7 @@
         {
             channel = [Channel instanceFromDictionary: itemDictionary
                             usingManagedObjectContext: appDelegate.mainManagedObjectContext
-                                  ignoringObjectTypes: kIgnoreStoredObjects
-                                            andViewId: kChannelsViewId];
+                                  ignoringObjectTypes: kIgnoreStoredObjects];
         }
 
         channel.markedForDeletionValue = NO;

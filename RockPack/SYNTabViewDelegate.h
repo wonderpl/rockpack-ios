@@ -17,7 +17,11 @@
 - (void) handleSecondaryTap: (UIView*) tab;
 
 // general
+/**
+	@deprecated
+ */
 - (void) handleNewTabSelectionWithId: (NSString*) itemId;
+
 - (void) handleNewTabSelectionWithGenre: (Genre*) name;
 
 - (BOOL) showSubGenres;

@@ -107,27 +107,58 @@ static NSEntityDescription *channelOwnerEntity = nil;
                                      withDefault: @"http://localhost"];
     
     self.displayName = [dictionary upperCaseStringForKey: @"display_name"
-                                      withDefault: @""];
+                                             withDefault: @""];
+    
+    
+    BOOL hasChannels = YES;
     
     if(!(ignoringObjects & kIgnoreChannelObjects))
     {
-        NSDictionary* channelsArray = [dictionary objectForKey:@"channels"];
-        NSArray* channelItemsArray;
-        if(channelsArray && (channelItemsArray = [channelsArray objectForKey:@"items"]))
+        
+        
+        NSDictionary* channelsDictionary = [dictionary objectForKey:@"channels"];
+        if([channelsDictionary isKindOfClass:[NSNull class]])
         {
+            
+            hasChannels = NO;
+        }
+        
+        
+        
+        NSArray* channelItemsArray = [channelsDictionary objectForKey:@"items"];
+        if([channelItemsArray isKindOfClass:[NSNull class]])
+        {
+   
+            hasChannels = NO;
+        }
+        
+        NSOrderedSet* oldUserChannels = [NSOrderedSet orderedSetWithOrderedSet:self.channels];
+        
+        
+        if(hasChannels)
+        {
+            [self.channelsSet removeAllObjects];
+            
             for (NSDictionary* channelDictionary in channelItemsArray)
             {
                 
-                Channel* channel = [Channel instanceFromDictionary:channelDictionary
-                                         usingManagedObjectContext:managedObjectContex
-                                               ignoringObjectTypes:kIgnoreChannelOwnerObject
-                                                         andViewId:kProfileViewId];
+                Channel* channel = [Channel instanceFromDictionary: channelDictionary
+                                         usingManagedObjectContext: managedObjectContex
+                                               ignoringObjectTypes: kIgnoreChannelOwnerObject];
                 
+                if(!channel)
+                    continue;
                 
-                [self addChannelsObject:channel];
+                [self.channelsSet addObject:channel];
                 
             }
         }
+        
+        // restore the link
+        
+        [oldUserChannels enumerateObjectsUsingBlock:^(Channel* channel, NSUInteger idx, BOOL *stop) {
+            channel.channelOwner = self;
+        }];
     }
     
     
@@ -136,22 +167,55 @@ static NSEntityDescription *channelOwnerEntity = nil;
 
 #pragma mark - Channels
 
+-(void)addSubscriptionsDictionary:(NSDictionary *)subscriptionsDictionary
+{
+    NSDictionary* channeslDictionary = [subscriptionsDictionary objectForKey: @"channels"];
+    if (!channeslDictionary)
+        return;
+    
+    NSArray* itemsArray = [channeslDictionary objectForKey: @"items"];
+    if (!itemsArray)
+        return;
+    
+    
+    [self.subscriptionsSet removeAllObjects];
+    
+    for (NSDictionary* subscriptionChannel in itemsArray)
+    {
+        
+        // must use the main context so as to be able to link it with the channel owner
+        
+        Channel* channel = [Channel instanceFromDictionary: subscriptionChannel
+                                 usingManagedObjectContext: self.managedObjectContext
+                                       ignoringObjectTypes: kIgnoreNothing];
+        
+        if (!channel)
+            continue;
+        
+        
+        [self addSubscriptionsObject:channel];
+        
+    }
+}
+
 -(void)addChannelsObject:(Channel *)newChannel
 {
     [self.channelsSet addObject:newChannel];
-    newChannel.channelOwner = self;
 }
+-(void)removeChannelsObject:(Channel *)oldChannel
+{
+    [self.channelsSet removeObject:oldChannel];
+}
+
 
 -(void)addSubscriptionsObject:(Channel *)newSubscription
 {
     [self.subscriptionsSet addObject:newSubscription];
-    [newSubscription.subscribersSet addObject:self];
     newSubscription.subscribersCountValue += 1;
 }
 -(void)removeSubscriptionsObject:(Channel *)oldSubscription
 {
     [self.subscriptionsSet removeObject:oldSubscription];
-    [oldSubscription.subscribersSet removeObject:self];
     oldSubscription.subscribersCountValue -= 1;
 }
 

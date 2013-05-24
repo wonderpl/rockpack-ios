@@ -106,6 +106,9 @@
 
     CGFloat nextOrigin = 0.0;
     
+    
+    //TODO: This should be reworked. The home label string should not be used to define behaviour.
+    
     if ([self.homeButtonString isEqualToString:@"icon"]) // special case where we put the 'home' icon instead of text
     {
         self.homeButton = [UIButton buttonWithType: UIButtonTypeCustom];

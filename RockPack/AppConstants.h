@@ -86,7 +86,7 @@
 
 // Videos for channel
 #define kAPIGetVideosForChannel     @"/ws/USERID/channels/CHANNELID/videos/"    /* GET */
-#define kAPIUpdateVideosForChannel  @"/ws/USERID/channels/CHANNELID/videos/"    /* PUT */
+#define kAPIUpdateVideosForChannel  @"/ws/USERID/channels/CHANNELID/videos/"    /* PUT */ /* POST */
 
 // User activity
 #define kAPIRecordUserActivity      @"/ws/USERID/activity/"                     /* POST */
@@ -362,6 +362,7 @@ typedef enum {
 
 #define kNoteAllNavControlsShow     @"kNoteAllNavControlsShow"
 #define kNoteAllNavControlsHide     @"kNoteAllNavControlsHide"
+#define kNoteHideTitleAndDots       @"kNoteAllHideTitleAndDots"
 
 #define kChannelsNavControlsHide    @"kChannelsNavControlsHide"
 

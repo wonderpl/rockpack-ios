@@ -5,8 +5,7 @@
 
 + (Video *) instanceFromDictionary: (NSDictionary *) dictionary
          usingManagedObjectContext: (NSManagedObjectContext *) managedObjectContext
-               ignoringObjectTypes: (IgnoringObjects) ignoringObjects
-                         andViewId: (NSString *) viewId;
+               ignoringObjectTypes: (IgnoringObjects) ignoringObjects;
 
 +(Video*)instanceFromVideo:(Video*)video
  usingManagedObjectContext: (NSManagedObjectContext *) managedObjectContext;

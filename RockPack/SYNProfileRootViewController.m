@@ -142,18 +142,20 @@
         self.headerChannelsView.frame = newFrame;
         [self.headerChannelsView setFontSize: 12.0f];
         
-        [self.headerChannelsView setTitle: NSLocalizedString(@"CHANNELS",nil)
-                                andNumber: 2];
         
         self.headerChannelsView.userInteractionEnabled = NO;
     }
     else
     {
-        [self.headerChannelsView setTitle: NSLocalizedString(@"YOUR CHANNELS", nil)
-                                andNumber: 2];
         
-        [self.headerChannelsView setBackgroundImage: ([[SYNDeviceManager sharedInstance] isLandscape] ? [UIImage imageNamed: @"HeaderProfileChannelsLandscape"] : [UIImage imageNamed: @"HeaderProfilePortraitBoth"])];
+        
+        [self.headerChannelsView setBackgroundImage: ([[SYNDeviceManager sharedInstance] isLandscape] ?
+                                                      [UIImage imageNamed: @"HeaderProfileChannelsLandscape"] :
+                                                      [UIImage imageNamed: @"HeaderProfilePortraitBoth"])];
     }
+    
+    [self.headerChannelsView setTitle: [self getHeaderTitleForChannels]
+                            andNumber: 0];
     
     CGRect collectionViewFrame = CGRectMake(0.0,
                                             self.headerChannelsView.frame.origin.y + self.headerChannelsView.currentHeight,
@@ -354,8 +356,7 @@
 {
     [super viewWillAppear: animated];
     
-    // Google analytics support
-    [GAI.sharedInstance.defaultTracker sendView: @"You - Root"];
+//    [self updateAnalytics];
     
     self.deletionModeActive = NO;
     
@@ -363,10 +364,7 @@
     
     [self updateLayoutForOrientation: [[SYNDeviceManager sharedInstance] orientation]];
     
-    if (self.user)
-    {
-        [self reloadCollectionViews];
-    }
+    
 }
 
 
@@ -375,6 +373,23 @@
     [super viewWillDisappear: animated];
     
     self.deletionModeActive = NO;
+}
+
+
+- (void) viewDidScrollToFront
+{
+    [self updateAnalytics];
+    
+    [appDelegate.networkEngine cancelAllOperations];
+    
+    [self reloadCollectionViews];
+}
+
+
+- (void) updateAnalytics
+{
+    // Google analytics support
+    [GAI.sharedInstance.defaultTracker sendView: @"You - Root"];
 }
 
 
@@ -390,10 +405,6 @@
     }];
 }
 
--(void)viewDidScrollToFront
-{
-    [self reloadCollectionViews];
-}
 
 #pragma mark - gesture-recognition action methods
 
@@ -433,12 +444,7 @@
 {
     if (self.isDeletionModeActive)
     {
-//        NSIndexPath *indexPath = [self.channelThumbnailCollectionView indexPathForItemAtPoint: [recognizer locationInView: self.channelThumbnailCollectionView]];
-        
-//        if (!indexPath)
-        {
-            self.deletionModeActive = NO;
-        }
+       self.deletionModeActive = NO;
     }
 }
 
@@ -610,7 +616,7 @@
     [super reloadCollectionViews];
     
     NSInteger totalChannels = self.user.channels.count;
-    NSString* title = [[SYNDeviceManager sharedInstance] isIPhone] ? NSLocalizedString(@"CHANNELS",nil): NSLocalizedString(@"YOUR CHANNELS",nil);
+    NSString* title = [self getHeaderTitleForChannels];
     [self.headerChannelsView setTitle: title
                              andNumber: totalChannels];
     
@@ -618,6 +624,26 @@
     [self.channelThumbnailCollectionView reloadData];
 }
 
+#pragma mark - Updating
+
+
+
+-(NSString*)getHeaderTitleForChannels
+{
+    if([[SYNDeviceManager sharedInstance] isIPhone])
+    {
+        return NSLocalizedString(@"CHANNELS",nil);
+        
+    }
+    else
+    {
+        if(self.user == appDelegate.currentUser)
+            return NSLocalizedString(@"YOUR CHANNELS",nil);
+        else
+            return NSLocalizedString(@"CHANNELS",nil);
+    }
+     
+}
 
 #pragma mark - UICollectionView DataSource/Delegate
 

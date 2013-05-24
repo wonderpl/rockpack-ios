@@ -7,7 +7,6 @@ const struct VideoInstanceAttributes VideoInstanceAttributes = {
 	.dateAdded = @"dateAdded",
 	.position = @"position",
 	.title = @"title",
-	.viewId = @"viewId",
 };
 
 const struct VideoInstanceRelationships VideoInstanceRelationships = {
@@ -90,13 +89,6 @@ const struct VideoInstanceFetchedProperties VideoInstanceFetchedProperties = {
 
 
 @dynamic title;
-
-
-
-
-
-
-@dynamic viewId;
 
 
 

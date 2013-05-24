@@ -29,6 +29,15 @@ typedef enum {
 
 - (void) navigateToPageByName: (NSString*) pageName;
 
+/**
+	Method to re-layout view to maintain orientation. Specifically intended for when orientation may have changed during popover views.
+ */
+-(void)refreshView;
+
+
+- (void) backButtonWillShow;
+- (void) backButtonwillHide;
+
 
 
 @end

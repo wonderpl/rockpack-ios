@@ -21,9 +21,9 @@
 }
 
 @property (nonatomic, strong) NSArray* categoriesDatasource;
-@property NSMutableArray* transientDatasource;
-@property NSIndexPath* lastSelectedIndexpath;
-@property NSMutableDictionary* headerRegister;
+@property (nonatomic, strong) NSMutableArray* transientDatasource;
+@property (nonatomic, strong) NSIndexPath* lastSelectedIndexpath;
+@property (nonatomic, strong) NSMutableDictionary* headerRegister;
 
 @end
 
@@ -51,7 +51,6 @@
 {
     _headerRegister = [NSMutableDictionary dictionary];
     _showAllCategoriesHeader = YES;
-    _showOtherSubCategory = NO;
 }
 
 - (void)viewDidLoad
@@ -62,6 +61,7 @@
     
     if(self.showAllCategoriesHeader)
     {
+        // Show all category
         SYNChannelCategoryTableHeader* topHeader = [[SYNChannelCategoryTableHeader alloc] init];
         topHeader.frame = CGRectMake(0.0f, 0.0f, self.tableView.frame.size.width, 45.0f);
         [topHeader layoutSubviews];
@@ -73,6 +73,26 @@
         [topHeader.headerButton addTarget:self action:@selector(releasedAllCategories:) forControlEvents:UIControlEventTouchUpOutside];
         [topHeader.arrowImage removeFromSuperview];
         self.tableView.tableHeaderView = topHeader;
+    }
+    else
+    {
+        NSPredicate* predicate = [NSPredicate predicateWithFormat:@"priority == -1"];
+        self.otherGenre = [self fetchGenreWithPredicate:predicate includeSubGenres:NO];
+        if(self.otherGenre)
+        {
+            SYNChannelCategoryTableHeader* topHeader = [[SYNChannelCategoryTableHeader alloc] init];
+            topHeader.frame = CGRectMake(0.0f, 0.0f, self.tableView.frame.size.width, 45.0f);
+            [topHeader layoutSubviews];
+            topHeader.titleLabel.text = [self.otherGenre.name uppercaseString];
+            topHeader.headerButton.tag = -1;
+            topHeader.backgroundImage.image = [UIImage imageNamed:@"CategorySlide"];
+            [topHeader.headerButton addTarget:self action:@selector(tappedOtherCategory:) forControlEvents:UIControlEventTouchUpInside];
+            [topHeader.headerButton addTarget:self action:@selector(pressedOtherCategory:) forControlEvents:UIControlEventTouchDown];
+            [topHeader.headerButton addTarget:self action:@selector(releasedOtherCategorys:) forControlEvents:UIControlEventTouchUpOutside];
+            [topHeader.arrowImage removeFromSuperview];
+            self.tableView.tableHeaderView = topHeader;
+        }
+
     }
     
     if(self.closeButton)
@@ -106,8 +126,8 @@
     NSFetchRequest *categoriesFetchRequest = [[NSFetchRequest alloc] init];
     [categoriesFetchRequest setEntity:categoryEntity];
     
-    NSPredicate* excludePredicate = [NSPredicate predicateWithFormat:@"priority >= 0"];
-    [categoriesFetchRequest setPredicate:excludePredicate];
+    NSPredicate* predicate = [NSPredicate predicateWithFormat:@"priority >= 0"];
+    [categoriesFetchRequest setPredicate:predicate];
     
     NSSortDescriptor *sortDescriptor = [[NSSortDescriptor alloc] initWithKey: @"priority" ascending:NO];
     [categoriesFetchRequest setSortDescriptors:@[sortDescriptor]];
@@ -130,7 +150,7 @@
         } onError:^(NSError* error) {
             DebugLog(@"%@", [error debugDescription]);
         }];
-        
+        hasRetried = YES;
         return;
     }
     else
@@ -425,6 +445,8 @@
     
 }
 
+#pragma mark - allCategories header
+
 -(void)pressedAllCategories:(UIButton*)header;
 {
     SYNChannelCategoryTableHeader* headerView = (SYNChannelCategoryTableHeader*)self.tableView.tableHeaderView;
@@ -452,6 +474,108 @@
     self.lastSelectedIndexpath = nil;
     
 }
+
+#pragma mark - OtherCategory tapped
+
+-(void)pressedOtherCategory:(UIButton*)header;
+{
+    SYNChannelCategoryTableHeader* headerView = (SYNChannelCategoryTableHeader*)self.tableView.tableHeaderView;
+    headerView.backgroundImage.image = [UIImage imageNamed:@"CategorySlideHighlighted"];
+}
+
+-(void)releasedOtherCategory:(UIButton*)header
+{
+    SYNChannelCategoryTableHeader* headerView = (SYNChannelCategoryTableHeader*)self.tableView.tableHeaderView;
+    headerView.backgroundImage.image = [UIImage imageNamed:@"CategorySlide"];
+}
+
+-(void)tappedOtherCategory:(UIButton*)header
+{
+    SYNChannelCategoryTableHeader* headerView = (SYNChannelCategoryTableHeader*)self.tableView.tableHeaderView;
+    headerView.backgroundImage.image = [UIImage imageNamed:@"CategorySlideSelected"];
+    if(self.lastSelectedIndexpath)
+    {
+        [self closeSection:self.lastSelectedIndexpath.section];
+    }
+    if([self.categoryTableControllerDelegate respondsToSelector:@selector(categoryTableControllerDeselectedAll:)])
+    {
+        [self.categoryTableControllerDelegate categoryTableController:self didSelectCategory:self.otherGenre];
+    }
+    self.confirmButton.enabled = NO;
+    self.lastSelectedIndexpath = nil;
+    
+}
+
+#pragma mark - set selected Genre
+-(void)setSelectedCategoryForId:(NSString*)selectedCategoryId
+{
+    if(!selectedCategoryId)
+    {
+        //Set Other selected
+        SYNChannelCategoryTableHeader* headerView = (SYNChannelCategoryTableHeader*)self.tableView.tableHeaderView;
+        headerView.backgroundImage.image = [UIImage imageNamed:@"CategorySlideSelected"];
+        headerView.titleLabel.textColor = [UIColor whiteColor];
+        headerView.titleLabel.shadowColor = [UIColor colorWithWhite:1.0f alpha:0.15f];
+        headerView.backgroundImage.image = [UIImage imageNamed:@"CategorySlideSelected"];
+        return;
+    }
+    //We'll pre-select the right genre by simulating the equivalent user input
+    NSPredicate* predicate = [NSPredicate predicateWithFormat:@"uniqueId == %@",selectedCategoryId];
+    Genre* genreToSelect = [self fetchGenreWithPredicate:predicate includeSubGenres:YES];
+    if(genreToSelect)
+    {
+        //We've found the selected genre
+        if([genreToSelect isKindOfClass:[SubGenre class]])
+        {
+            //It's a sub genre. First open it's parent category
+            SubGenre* subGenre = (SubGenre*) genreToSelect;
+            
+            //Is it the "other/other" category?
+            if([subGenre.genre isEqual:self.otherGenre])
+            {
+                SYNChannelCategoryTableHeader* headerView = (SYNChannelCategoryTableHeader*)self.tableView.tableHeaderView;
+                headerView.titleLabel.textColor = [UIColor whiteColor];
+                headerView.titleLabel.shadowColor = [UIColor colorWithWhite:1.0f alpha:0.15f];
+                headerView.backgroundImage.image = [UIImage imageNamed:@"CategorySlideSelected"];
+
+                return;
+            }
+            
+            Genre* superGenre = subGenre.genre;
+            int index = [self.categoriesDatasource indexOfObject:superGenre];
+            if(index != NSNotFound)
+            {
+                SYNChannelCategoryTableHeader* header = (SYNChannelCategoryTableHeader*)[self tableView:nil viewForHeaderInSection:index];
+                [self tappedHeader:header.headerButton];
+                //Now try to get the index of the subGenre
+                NSMutableDictionary* sectionDictionary = [self.transientDatasource objectAtIndex:index];
+                NSArray* subGenres = [sectionDictionary objectForKey:kSubCategoriesKey];
+                if(subGenres)
+                {
+                    int subCategoryIndex = [subGenres indexOfObject:subGenre];
+                    if (subCategoryIndex != NSNotFound)
+                    {
+                        //Simulate the user having tapped it
+                        [self tableView:nil didSelectRowAtIndexPath:[NSIndexPath indexPathForRow:subCategoryIndex inSection:index]];
+                    }
+                }
+            }
+        }
+        else
+        {
+            //It's a genre, expand its section
+            int index = [self.categoriesDatasource indexOfObject:genreToSelect];
+            if(index != NSNotFound)
+            {
+                SYNChannelCategoryTableHeader* header = (SYNChannelCategoryTableHeader*)[self tableView:nil viewForHeaderInSection:index];
+                [self tappedHeader:header.headerButton];
+            }
+        }
+    }
+}
+
+#pragma mark - UI button interactions (only present in channel create/edit)
+
 - (IBAction)confirmButtonTapped:(id)sender {
     if([self.categoryTableControllerDelegate respondsToSelector:@selector(categoryTableController:didSelectSubCategory:)])
     {
@@ -486,6 +610,39 @@
         [self.categoryTableControllerDelegate categoryTableControllerDeselectedAll:self];
     }
     
+}
+
+#pragma mark - fetchHelper
+-(Genre*)fetchGenreWithPredicate:(NSPredicate*)predicate includeSubGenres:(BOOL)includeSubGenres
+{
+    SYNAppDelegate* appDelegate = (SYNAppDelegate *)[[UIApplication sharedApplication] delegate];
+    
+    NSEntityDescription* categoryEntity = [NSEntityDescription entityForName: @"Genre"
+                                                      inManagedObjectContext: appDelegate.mainManagedObjectContext];
+    
+    // Look for Other category and show it if present.
+    NSFetchRequest *categoriesFetchRequest = [[NSFetchRequest alloc] init];
+    [categoriesFetchRequest setEntity:categoryEntity];
+    
+    [categoriesFetchRequest setPredicate:predicate];
+    
+    NSSortDescriptor *sortDescriptor = [[NSSortDescriptor alloc] initWithKey: @"priority" ascending:NO];
+    [categoriesFetchRequest setSortDescriptors:@[sortDescriptor]];
+    
+    categoriesFetchRequest.includesSubentities = includeSubGenres;
+    
+    
+    NSError* error;
+    
+    NSArray* otherFetchArray = [appDelegate.mainManagedObjectContext executeFetchRequest: categoriesFetchRequest
+                                                                                   error: &error];
+    
+    if([otherFetchArray count]==1)
+    {
+        return [otherFetchArray objectAtIndex:0];
+    }
+
+    return nil;
 }
 
 @end

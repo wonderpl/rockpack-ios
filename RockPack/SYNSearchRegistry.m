@@ -55,8 +55,7 @@
             
             [VideoInstance instanceFromDictionary: fullItemDictionary
                         usingManagedObjectContext: importManagedObjectContext
-                              ignoringObjectTypes: kIgnoreChannelObjects
-                                        andViewId: kSearchViewId];
+                              ignoringObjectTypes: kIgnoreChannelObjects];
         }
             
     }
@@ -86,15 +85,17 @@
     
     for (NSDictionary *itemDictionary in itemArray)
     {
-        if (![itemDictionary isKindOfClass: [NSDictionary class]])
-            continue;
         
-        Channel* c = [Channel instanceFromDictionary:itemDictionary
-                           usingManagedObjectContext:importManagedObjectContext
-                                 ignoringObjectTypes:kIgnoreNothing
-                                           andViewId:kSearchViewId];
-        if(!c)
-            NSLog(@"Could not inset channel");
+        
+        Channel* channel = [Channel instanceFromDictionary:itemDictionary
+                                 usingManagedObjectContext:importManagedObjectContext
+                                       ignoringObjectTypes:kIgnoreNothing];
+        
+        if(!channel)
+        {
+            DebugLog(@"Could not instantiate channel with data:\n%@", itemDictionary);
+        }
+        
     }
     
             

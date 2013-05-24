@@ -27,6 +27,7 @@
 #import "SYNSoundPlayer.h"
 #import "SYNVideoViewerViewController.h"
 #import "UIFont+SYNFont.h"
+#import "VideoInstance.h"
 #import <QuartzCore/QuartzCore.h>
 
 #define kMovableViewOffX -58
@@ -238,6 +239,8 @@ typedef void(^AnimationCompletionBlock)(BOOL finished);
     
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(hideSomeNavControlsRequested:) name:kChannelsNavControlsHide object:nil];
     
+    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(hideTitleAndDots:) name:kNoteHideTitleAndDots object:nil];
+    
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(addToChannelRequested:) name:kNoteAddToChannelRequest object:nil];
     
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(searchBarRequested:) name:kNoteSearchBarRequestHide object:nil];
@@ -372,22 +375,50 @@ typedef void(^AnimationCompletionBlock)(BOOL finished);
 
 -(void)addedToChannelAction:(NSNotification*)notification
 {
-    //Videos have been added to a channel
-    Channel* channel = (Channel*)[[notification userInfo] objectForKey:kChannel];
-    if(!channel)
+    
+    Channel* selectedChannel = (Channel*)[[notification userInfo] objectForKey:kChannel];
+    if(!selectedChannel)
         return;
     
+    NSString* message = [[SYNDeviceManager sharedInstance] isIPhone]?
+    NSLocalizedString(@"VIDEO SUCCESSFULLY ADDED",nil):
+    NSLocalizedString(@"YOUR VIDEOS HAVE BEEN SUCCESSFULLY ADDED INTO YOUR CHANNEL",nil);
     
+    Channel* currentlyCreating = appDelegate.videoQueue.currentlyCreatingChannel;
 
-    //Upload the data
-    [appDelegate.oAuthNetworkEngine updateVideosForChannelForUserId:appDelegate.currentUser.uniqueId channelId:channel.uniqueId videoInstanceSet:channel.videoInstancesSet completionHandler:^(NSDictionary* result) {
-        NSString* message = [[SYNDeviceManager sharedInstance] isIPhone]?
-        NSLocalizedString(@"VIDEO SUCCESSFULLY ADDED",nil):
-        NSLocalizedString(@"YOUR VIDEOS HAVE BEEN SUCCESSFULLY ADDED INTO YOUR CHANNEL",nil);
-        [self presentSuccessNotificationWithMessage:message];
-    } errorHandler:^(NSDictionary* errorDictionary) {
-        // Show error message?
-    }];
+    NSMutableOrderedSet* setOfVideosToPost = [NSMutableOrderedSet orderedSetWithOrderedSet:selectedChannel.videoInstancesSet];
+    for (VideoInstance* newVideoInstance in currentlyCreating.videoInstances)
+    {
+        [setOfVideosToPost addObject:newVideoInstance];
+        NSLog(@"Adding VI: %@", newVideoInstance.title);
+    }
+    
+    NSLog(@"selectedChannel: %@", selectedChannel);
+    
+    NSLog(@"currentlyCreating.videoInstances.count: %i", currentlyCreating.videoInstances.count);
+    
+    
+    
+    
+    [appDelegate.oAuthNetworkEngine updateVideosForChannelForUserId: appDelegate.currentUser.uniqueId
+                                                          channelId: selectedChannel.uniqueId
+                                                   videoInstanceSet: setOfVideosToPost
+                                                      clearPrevious: NO
+                                                  completionHandler: ^(NSDictionary* result) {
+                                                      
+
+                                                      [self presentSuccessNotificationWithMessage:message];
+                                                      
+                                                      [[NSNotificationCenter defaultCenter] postNotificationName: kVideoQueueClear
+                                                                                                          object: self];
+                                                      
+                                                      
+                                                  } errorHandler:^(NSDictionary* errorDictionary) {
+                                                      
+                                                      [[NSNotificationCenter defaultCenter] postNotificationName: kVideoQueueClear
+                                                                                                          object: self];
+      
+                                                  }];
 
     
 }
@@ -604,13 +635,15 @@ typedef void(^AnimationCompletionBlock)(BOOL finished);
     self.sideNavigationButton.hidden = NO;
     
     self.darkOverlayView.alpha = 0.0;
-    
-    [UIView animateWithDuration:0.3
-                     animations:^{
-                         self.darkOverlayView.alpha = 1.0;
-                     } completion:^(BOOL finished) {
-                         self.darkOverlayView.hidden = NO;
-                     }];
+ 
+//  FIXME: This needs looking into.
+//    [UIView animateWithDuration:0.3
+//                     animations:^{
+//                         self.darkOverlayView.alpha = 1.0;
+//                     } completion:^(BOOL finished) {
+//                         self.darkOverlayView.hidden = NO;
+//                     }];
+//    
     
 }
 
@@ -730,7 +763,7 @@ typedef void(^AnimationCompletionBlock)(BOOL finished);
         self.pageTitleLabel.hidden = NO;
         self.dotsView.hidden = NO;
         self.movableButtonsContainer.hidden = NO;
-        self.containerViewController.scrollView .scrollEnabled = YES;
+        //self.containerViewController.scrollView.scrollEnabled = YES;
     }
     else
     {
@@ -740,7 +773,7 @@ typedef void(^AnimationCompletionBlock)(BOOL finished);
         self.pageTitleLabel.hidden = YES;
         self.dotsView.hidden = YES;
         self.movableButtonsContainer.hidden = YES;
-        self.containerViewController.scrollView .scrollEnabled = NO;
+        //self.containerViewController.scrollView .scrollEnabled = NO;
         self.sideNavigationViewController.state = SideNavigationStateHidden;
     }
 }
@@ -820,6 +853,12 @@ typedef void(^AnimationCompletionBlock)(BOOL finished);
     }
 }
 
+-(void)hideTitleAndDots:(NSNotification*)note
+{
+    self.dotsView.alpha = 0.0f;
+    self.pageTitleLabel.alpha = 0.0f;
+}
+
 
 #pragma mark - Navigation Methods
 
@@ -860,6 +899,7 @@ typedef void(^AnimationCompletionBlock)(BOOL finished);
         {
             targetFrame.origin.x = 5.0;
         }
+        [self.containerViewController backButtonWillShow];
     }
     else
     {
@@ -874,6 +914,7 @@ typedef void(^AnimationCompletionBlock)(BOOL finished);
         targetFrame = self.movableButtonsContainer.frame;
         targetFrame.origin.x = kMovableViewOffX;
         targetAlpha = 0.0;
+        [self.containerViewController backButtonwillHide];
     }
     
     [UIView animateWithDuration: 0.6f
@@ -946,8 +987,7 @@ typedef void(^AnimationCompletionBlock)(BOOL finished);
     
     
     
-    //FIXME: Nick to rework
-    [self.containerViewController viewWillAppear:NO];
+    [self.containerViewController refreshView];
     
 }
 

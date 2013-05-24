@@ -4,6 +4,7 @@
 #import "NSDictionary+Validation.h"
 #import "VideoInstance.h"
 #import "AppConstants.h"
+#import "SYNAppDelegate.h"
 
 static NSEntityDescription *channelEntity = nil;
 
@@ -25,14 +26,17 @@ static NSEntityDescription *channelEntity = nil;
 + (Channel *) instanceFromDictionary: (NSDictionary *) dictionary
            usingManagedObjectContext: (NSManagedObjectContext *) managedObjectContext
                  ignoringObjectTypes: (IgnoringObjects) ignoringObjects
-                           andViewId: (NSString *) viewId
 {
     
-    NSError *error = nil;
+    
+    
+    if (![dictionary isKindOfClass: [NSDictionary class]])
+        return nil;
     
    
-    NSString *uniqueId = [dictionary objectForKey: @"id"
-                                      withDefault: @"Uninitialized Id"];
+    NSString *uniqueId = [dictionary objectForKey: @"id"];
+    if(!uniqueId || ![uniqueId isKindOfClass:[NSString class]])
+        return nil;
     
     
     if (channelEntity == nil)
@@ -59,6 +63,7 @@ static NSEntityDescription *channelEntity = nil;
         
         [channelFetchRequest setPredicate: predicate];
         
+        NSError *error = nil;
         NSArray *matchingChannelEntries = [managedObjectContext executeFetchRequest: channelFetchRequest
                                                                               error: &error];
         
@@ -81,8 +86,7 @@ static NSEntityDescription *channelEntity = nil;
     
     [instance setAttributesFromDictionary: dictionary
                                    withId: uniqueId
-                      ignoringObjectTypes: ignoringObjects
-                                andViewId: viewId];
+                      ignoringObjectTypes: ignoringObjects];
     
     
     return instance;
@@ -92,8 +96,7 @@ static NSEntityDescription *channelEntity = nil;
 
 - (void) setAttributesFromDictionary: (NSDictionary *) dictionary
                               withId: (NSString *) uniqueId
-                 ignoringObjectTypes: (IgnoringObjects) ignoringObjects
-                           andViewId: (NSString *) viewId {
+                 ignoringObjectTypes: (IgnoringObjects) ignoringObjects {
     
     
     self.uniqueId = uniqueId;
@@ -113,18 +116,24 @@ static NSEntityDescription *channelEntity = nil;
     if (!(ignoringObjects & kIgnoreVideoInstanceObjects) && hasVideoInstances)
     {
         
+    
+        
+        NSOrderedSet* copyOfVideoInstance = [NSOrderedSet orderedSetWithOrderedSet:self.videoInstances];
         
         [self.videoInstancesSet removeAllObjects];
-        
         
         for (NSDictionary *channelDictionary in itemArray)
         {
             // viewId is @"ChannelDetails" not kFeedViewId
             
-            VideoInstance* videoInstance = [VideoInstance instanceFromDictionary: channelDictionary
-                                                       usingManagedObjectContext: self.managedObjectContext
-                                                             ignoringObjectTypes: kIgnoreChannelObjects
-                                                                       andViewId: kFeedViewId];
+            
+            VideoInstance* videoInstance;
+            
+            videoInstance = [VideoInstance instanceFromDictionary: channelDictionary
+                                        usingManagedObjectContext: self.managedObjectContext
+                                              ignoringObjectTypes: kIgnoreChannelObjects];
+            
+            
             
             if(!videoInstance)
                 continue;
@@ -133,6 +142,15 @@ static NSEntityDescription *channelEntity = nil;
             
         }
         
+        
+        for (VideoInstance* oldVideoInstance in copyOfVideoInstance)
+        {
+            oldVideoInstance.channel = self;
+            
+        }
+        
+        
+    
     }
     
     [self setBasicAttributesFromDictionary:dictionary];
@@ -163,7 +181,7 @@ static NSEntityDescription *channelEntity = nil;
     
     NSNumber* categoryNumber = [dictionary objectForKey:@"category"];
     
-    self.categoryId = (categoryNumber && [categoryNumber isKindOfClass:[NSNumber class]]) ? [categoryNumber stringValue] : @"0" ;
+    self.categoryId = (categoryNumber && [categoryNumber isKindOfClass:[NSNumber class]]) ? [categoryNumber stringValue] : @"" ;
     
     self.position = [dictionary objectForKey: @"position"
                                  withDefault: [NSNumber numberWithInt: 0]];
@@ -173,7 +191,7 @@ static NSEntityDescription *channelEntity = nil;
     self.title = [dictionary upperCaseStringForKey: @"title"
                                        withDefault: @""];
     
-    NSLog(@"* Title: %@", self.title);
+    // NSLog(@"* Title: %@", self.title);
     
     self.lastUpdated = [dictionary dateFromISO6801StringForKey: @"last_updated"
                                                    withDefault: [NSDate date]];
@@ -206,25 +224,15 @@ static NSEntityDescription *channelEntity = nil;
 #pragma mark - Adding Video Instances
 
 
--(void)addVideoInstancesFromChannel:(Channel*)channel
-{
-    
-    for (VideoInstance* videoInstance in channel.videoInstances)
-    {
-        VideoInstance* copyOfVideoInstance = [VideoInstance instanceFromVideoInstance:videoInstance
-                                                            usingManagedObjectContext:self.managedObjectContext];
-        
-        
-        [self addVideoInstancesObject:copyOfVideoInstance];
-        
-    }
-    
-}
 
 -(void)addVideoInstancesObject:(VideoInstance *)value_
 {
     [self.videoInstancesSet addObject:value_];
-    value_.channel = self;
+}
+
+-(void)removeVideoInstancesObject:(VideoInstance *)value_
+{
+    [self.videoInstancesSet removeObject:value_];
 }
 
 

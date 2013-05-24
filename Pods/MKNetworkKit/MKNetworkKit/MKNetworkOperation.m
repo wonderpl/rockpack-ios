@@ -457,26 +457,28 @@ OSStatus extractIdentityAndTrust(CFDataRef inPKCS12Data,
 
     theCopy.postDataEncoding = _postDataEncoding;
     [theCopy setStringEncoding:self.stringEncoding];
-    [theCopy setUniqueId:[self.uniqueId copy]];
-    [theCopy setRequest:[self.request copy]];
-    [theCopy setFieldsToBePosted:[self.fieldsToBePosted copy]];
-    [theCopy setFilesToBePosted:[self.filesToBePosted copy]];
-    [theCopy setDataToBePosted:[self.dataToBePosted copy]];
-    [theCopy setUsername:[self.username copy]];
-    [theCopy setPassword:[self.password copy]];
-    [theCopy setClientCertificate:[self.clientCertificate copy]];
-    [theCopy setClientCertificatePassword:[self.clientCertificatePassword copy]];
-    [theCopy setResponseBlocks:[self.responseBlocks copy]];
-    [theCopy setErrorBlocks:[self.errorBlocks copy]];
-    [theCopy setErrorBlocksType2:[self.errorBlocksType2 copy]];
-    [theCopy setMutableData:[self.mutableData copy]];
-    [theCopy setNotModifiedHandlers:[self.notModifiedHandlers copy]];
-    [theCopy setUploadProgressChangedHandlers:[self.uploadProgressChangedHandlers copy]];
-    [theCopy setDownloadProgressChangedHandlers:[self.downloadProgressChangedHandlers copy]];
-    [theCopy setDownloadStreams:[self.downloadStreams copy]];
-    [theCopy setCachedResponse:[self.cachedResponse copy]];
+    [theCopy setUniqueId:[self.uniqueId mutableCopy]];
+    [theCopy setRequest:[self.request mutableCopy]];
+    [theCopy setFieldsToBePosted:[self.fieldsToBePosted mutableCopy]];
+    [theCopy setFilesToBePosted:[self.filesToBePosted mutableCopy]];
+    [theCopy setDataToBePosted:[self.dataToBePosted mutableCopy]];
+    [theCopy setUsername:[self.username mutableCopy]];
+    [theCopy setPassword:[self.password mutableCopy]];
+    [theCopy setClientCertificate:[self.clientCertificate mutableCopy]];
+    [theCopy setClientCertificatePassword:[self.clientCertificatePassword mutableCopy]];
+    [theCopy setResponseBlocks:[self.responseBlocks mutableCopy]];
+    [theCopy setErrorBlocks:[self.errorBlocks mutableCopy]];
+    [theCopy setErrorBlocksType2:[self.errorBlocksType2 mutableCopy]];
+    [theCopy setMutableData:[self.mutableData mutableCopy]];
+    [theCopy setNotModifiedHandlers:[self.notModifiedHandlers mutableCopy]];
+    [theCopy setUploadProgressChangedHandlers:[self.uploadProgressChangedHandlers mutableCopy]];
+    [theCopy setDownloadProgressChangedHandlers:[self.downloadProgressChangedHandlers mutableCopy]];
+    [theCopy setDownloadStreams:[self.downloadStreams mutableCopy]];
+    [theCopy setCachedResponse:[self.cachedResponse mutableCopy]];
     [theCopy setCacheHandlingBlock:self.cacheHandlingBlock];
     [theCopy setCredentialPersistence:self.credentialPersistence];
+    
+    
     
     return theCopy;
 }

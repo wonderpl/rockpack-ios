@@ -54,18 +54,23 @@
 @property (weak, nonatomic) IBOutlet UIButton *confirmButton;
 @property (weak, nonatomic) IBOutlet UIButton *closeButton;
 /**
-	toggles the showing of an "All categories" cell at the top of the list
+	toggles the showing of an "All categories" cell or an "Other" category cell at the top of the list
  
     set to YES by default
  */
 @property (nonatomic, assign) BOOL showAllCategoriesHeader;
 
 /**
-	toggles showing the "OTHER" sub category
- 
-    set to NO by default
+	the genre representing the "Other" category. Set when the view is loaded. nil if not available.
  */
-@property (nonatomic, assign) BOOL showOtherSubCategory;
+@property (nonatomic, strong) Genre* otherGenre;
+
+/**
+    Pre-select a category based on its ID
+	@param selectedCategoryId the category ID. passing nil will select the "Other" button
+ */
+-(void)setSelectedCategoryForId:(NSString*)selectedCategoryId;
+
 
 
 

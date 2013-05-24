@@ -137,13 +137,15 @@
 
 - (void) animatedPushViewController: (UIViewController *) vc
 {
-    //[super animatedPushViewController:vc];
-    
+    // we push to the parent
     [((SYNSearchRootViewController*)self.parentViewController) animatedPushViewController: vc];
-    
-    [[NSNotificationCenter defaultCenter] postNotificationName: kNoteSearchBarRequestHide
-                                                        object: self];
 }
 
+#pragma mark - UICollectionView Delegate
+
+-(void)collectionView:(UICollectionView *)collectionView didSelectItemAtIndexPath:(NSIndexPath *)indexPath
+{
+    [super collectionView:collectionView didSelectItemAtIndexPath:indexPath];
+}
 
 @end
