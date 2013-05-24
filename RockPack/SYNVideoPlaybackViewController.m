@@ -27,6 +27,7 @@
 @property (nonatomic, assign) BOOL currentVideoViewedFlag;
 @property (nonatomic, assign) BOOL disableTimeUpdating;
 @property (nonatomic, assign) BOOL fadeOutScheduled;
+@property (nonatomic, assign) BOOL fadeUpScheduled;
 @property (nonatomic, assign) BOOL notYetPlaying;
 @property (nonatomic, assign) BOOL playFlag;
 @property (nonatomic, assign) BOOL shuttledByUser;
@@ -920,13 +921,14 @@ static UIWebView* vimeoideoWebViewInstance;
             self.shuttledByUser = TRUE;
             self.notYetPlaying = FALSE;
             
-            [self fadeUpVideoPlayer];
+//            [self fadeUpVideoPlayer];
             
             // Now cache the duration of this video for use in the progress updates
             self.currentDuration = self.duration;
             
             if (self.currentDuration > 0.0f)
             {
+                self.fadeUpScheduled = FALSE;
                 // Only start if we have a valid duration
                 [self startShuttleBarUpdateTimer];
                 self.durationLabel.text = [NSString timecodeStringFromSeconds: self.currentDuration];
@@ -1032,6 +1034,15 @@ static UIWebView* vimeoideoWebViewInstance;
     // just after a user shuttle event)
     
     NSTimeInterval currentTime = self.currentTime;
+    NSLog (@"Current time %lf", currentTime);
+    
+    // We need to wait until the play time starts to increase before fading up the video
+    if (currentTime > 0.0f && self.fadeUpScheduled == FALSE)
+    {
+        DebugLog(@"More than");
+        self.fadeUpScheduled = TRUE;
+        [self fadeUpVideoPlayer];
+    }
     
     // Update current time label
     self.currentTimeLabel.text = [NSString timecodeStringFromSeconds: currentTime];
@@ -1149,7 +1160,7 @@ static UIWebView* vimeoideoWebViewInstance;
 {
     // Tweaked this as the QuickTime logo seems to appear otherwise
     [UIView animateWithDuration: 0.5f
-                          delay: 1.0f
+                          delay: 0.0f
                         options: UIViewAnimationOptionCurveEaseInOut
                      animations: ^ {
                          self.currentVideoWebView.alpha = 1.0f;
