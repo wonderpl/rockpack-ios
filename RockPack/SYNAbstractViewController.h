@@ -32,6 +32,7 @@ typedef void (^SYNShareCompletionBlock)(void);
     NSString* viewId;
     NSFetchedResultsController* fetchedResultsController;
     CGFloat startAnimationDelay;
+    NSString* abstractTitle;
 }
 
 

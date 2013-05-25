@@ -39,12 +39,6 @@
 #define kExistingChannelsViewId     @"ExistingChannels"
 #define kChannelDetailsViewId       @"ChannelDetails"
 
-#define kFeedTitle                  @"Feed"
-#define kChannelsTitle              @"Channels"
-#define kProfileTitle               @"Profile"
-#define kSearchTitle                @"Search"
-#define kUserChanneslTitle          @"UserChannels"
-#define kChannelDetailsTitle        @"ChannelDetails"
 
 #define kAPIRefreshToken            @"/ws/token"
 

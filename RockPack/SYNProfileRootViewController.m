@@ -65,15 +65,7 @@
 
 @synthesize user = _user;
 
-- (id) initWithViewId: (NSString *) vid
-{
-    if ((self = [super initWithViewId: vid]))
-    {
-        self.title = kProfileTitle;
-    }
-    
-    return self;
-}
+
 
 
 - (void) loadView

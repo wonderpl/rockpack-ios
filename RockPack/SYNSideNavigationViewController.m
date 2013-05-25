@@ -83,11 +83,18 @@ typedef enum {
                                 bundle: nil]))
     {
         self.navigationData = @[
-                                @{kSideNavTitle: NSLocalizedString(@"FEED", nil), kSideNavType: @(kSideNavigationTypePage), kSideNavAction: kFeedTitle},
-                                @{kSideNavTitle: NSLocalizedString(@"CHANNELS", nil), kSideNavType: @(kSideNavigationTypePage), kSideNavAction: kChannelsTitle},
-                                @{kSideNavTitle: NSLocalizedString(@"PROFILE", nil), kSideNavType: @(kSideNavigationTypePage), kSideNavAction: kProfileTitle},
-                                @{kSideNavTitle: NSLocalizedString(@"NOTIFICATIONS", nil), kSideNavType: @(kSideNavigationTypeLoad), kSideNavAction: @"SYNNotificationsViewController"}
-                                ];
+                @{kSideNavTitle: NSLocalizedString(@"FEED", nil),
+                   kSideNavType: @(kSideNavigationTypePage),
+                 kSideNavAction: kFeedViewId},
+                @{kSideNavTitle: NSLocalizedString(@"CHANNELS", nil),
+                   kSideNavType: @(kSideNavigationTypePage),
+                 kSideNavAction: kChannelsViewId},
+                @{kSideNavTitle: NSLocalizedString(@"PROFILE", nil),
+                   kSideNavType: @(kSideNavigationTypePage),
+                 kSideNavAction: kProfileViewId},
+                @{kSideNavTitle: NSLocalizedString(@"NOTIFICATIONS", nil),
+                   kSideNavType: @(kSideNavigationTypeLoad),
+                 kSideNavAction: @"SYNNotificationsViewController"}];
         
         _state = SideNavigationStateHidden;
         

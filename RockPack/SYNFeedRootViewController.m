@@ -38,7 +38,7 @@
 
 @implementation SYNFeedRootViewController
 
-#pragma mark - View Lifecycle
+#pragma mark - View Lifecyclea
 
 
 - (void) loadView

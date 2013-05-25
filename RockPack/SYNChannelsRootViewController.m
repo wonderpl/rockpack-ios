@@ -73,15 +73,8 @@
 
 #pragma mark - View lifecycle
 
-- (id) initWithViewId: (NSString *) vid
-{
-    if ((self = [super initWithViewId: vid]))
-    {
-        self.title = kChannelsTitle;
-    }
-    
-    return self;
-}
+
+
 
 
 - (void) loadView

@@ -34,14 +34,7 @@
 @synthesize tabsContainer;
 @synthesize videoSearchTabView, channelsSearchTabView;
 
-- (id) initWithViewId: (NSString *) vid
-{
-    if ((self = [super initWithViewId: vid]))
-    {
-        self.title = kSearchTitle;
-    }
-    return self;
-}
+
 
 
 - (void) loadView

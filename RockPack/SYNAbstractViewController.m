@@ -446,12 +446,17 @@
     return NO;
 }
 
+-(void)setTitle:(NSString *)title
+{
+    abstractTitle = title;
+}
+
 -(NSString*)title
 {
-    if(_title || [_title isEqualToString:@""])
-        return viewId;
+    if(abstractTitle && ![abstractTitle isEqualToString:@""])
+        return abstractTitle;
     else
-        return _title;
+        return viewId;
 }
 
 #pragma mark - Social network sharing
