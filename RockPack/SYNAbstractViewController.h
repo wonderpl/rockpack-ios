@@ -45,6 +45,7 @@ typedef void (^SYNShareCompletionBlock)(void);
 @property (nonatomic, strong) UIImageView *draggedView;
 @property (readonly) NSManagedObjectContext *mainManagedObjectContext;
 @property (readonly, getter = isVideoQueueVisible) BOOL videoQueueVisible;
+@property (nonatomic, readonly) NSString* viewId;
 
 @property (nonatomic) BOOL isAnimating;
 

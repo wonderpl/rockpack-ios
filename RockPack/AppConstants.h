@@ -17,7 +17,7 @@
 // Returns a list of all the recently added videos associated with a user's subscribed channels (the %@ represents the USERID)
 #define kAPIRecentlyAddedVideoInSubscribedChannelsForUser @"ws/%@/subscriptions/recent_videos/"
 
-// Main RestFul API
+
 // Entities
 
 #define kChannel                    @"Channel"
@@ -30,8 +30,8 @@
 
 #define kForceRefreshValue          @"kForceRefreshValue"
 
-// OAuth2
 
+// viewId
 #define kFeedViewId                 @"Feed"
 #define kChannelsViewId             @"Channels"
 #define kProfileViewId              @"Profile"
@@ -39,7 +39,7 @@
 #define kExistingChannelsViewId     @"ExistingChannels"
 #define kChannelDetailsViewId       @"ChannelDetails"
 
-
+// OAuth2
 #define kAPIRefreshToken            @"/ws/token"
 
 // Login
@@ -51,6 +51,8 @@
 
 #define kCoverArtChanged            @"kCoverArtChanged"
 
+
+// == Main WS API == //
 
 // Search according to term, currently a wrapper around YouTube
 #define kAPISearchVideos            @"/ws/search/videos/"

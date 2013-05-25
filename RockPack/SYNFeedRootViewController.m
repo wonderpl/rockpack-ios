@@ -193,7 +193,7 @@
 - (void) updateAnalytics
 {
     // Google analytics support
-    [GAI.sharedInstance.defaultTracker sendView: @"Feed"];
+    [GAI.sharedInstance.defaultTracker sendView: viewId];
 }
 
 

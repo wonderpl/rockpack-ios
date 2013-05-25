@@ -59,12 +59,13 @@
 @synthesize tabViewController;
 @synthesize addButton;
 
+@synthesize viewId;
+
 #pragma mark - Custom accessor methods
 
 - (id) init
 {
-//    DebugLog (@"WARNING: init called on Abstract View Controller, call initWithViewId instead");
-    return [self initWithViewId: @"UnintializedViewId"];
+    return [self initWithViewId: @"Unknown"];
 }
 
 
