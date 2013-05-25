@@ -2206,6 +2206,47 @@
 #pragma mark - Tab View Methods
 
 
+-(void)setChannel:(Channel *)channel
+{
+    if([channel.viewId isEqualToString:self.viewId])
+    {
+        _channel = channel;
+        return;
+    }
+    
+    // create a copy that belongs to this viewId (@"ChannelDetails")
+    
+    NSFetchRequest *channelFetchRequest = [[NSFetchRequest alloc] init];
+    [channelFetchRequest setEntity: [NSEntityDescription entityForName: @"Channel"
+                                                inManagedObjectContext: channel.managedObjectContext]];
+    
+    
+    NSPredicate *predicate = [NSPredicate predicateWithFormat: @"uniqueId == %@ AND viewId == %@", channel.uniqueId, self.viewId];
+    
+    [channelFetchRequest setPredicate: predicate];
+    
+    NSError *error = nil;
+    NSArray *matchingChannelEntries = [appDelegate.mainManagedObjectContext executeFetchRequest: channelFetchRequest
+                                                                                          error: &error];
+    
+    
+    if (matchingChannelEntries.count > 0)
+    {
+        _channel = (Channel*)matchingChannelEntries[0];
+        
+        _channel.markedForDeletionValue = NO;
+        
+    }
+    
+    if(!_channel)
+    {
+        _channel = [Channel instanceFromChannel:channel
+                                       inViewId:self.viewId];
+    }
+    
+}
+
+
 - (BOOL) needsAddButton
 {
     return YES;

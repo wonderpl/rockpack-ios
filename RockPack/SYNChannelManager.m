@@ -225,7 +225,6 @@
         NSNumber *savedPosition = channel.position;
         
         [channel setAttributesFromDictionary: channelDictionary
-                                      withId: channel.uniqueId
                          ignoringObjectTypes: kIgnoreChannelOwnerObject];
         
         

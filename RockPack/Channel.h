@@ -11,8 +11,9 @@
 @property (nonatomic) BOOL hasChangedSubscribeValue;
 
 - (void) setAttributesFromDictionary: (NSDictionary *) dictionary
-                              withId: (NSString *) uniqueId
                  ignoringObjectTypes: (IgnoringObjects) ignoringObjects;
+
++ (Channel *) instanceFromChannel:(Channel *)channel inViewId:(NSString *)viewId;
 
 
 @end

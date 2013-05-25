@@ -21,7 +21,42 @@ static NSEntityDescription *channelEntity = nil;
 
 #pragma mark - Object factory
 
-
++ (Channel *) instanceFromChannel:(Channel *)channel inViewId:(NSString *)viewId
+{
+    Channel* copyChannel = [Channel insertInManagedObjectContext: channel.managedObjectContext];
+    
+    copyChannel.uniqueId = channel.uniqueId;
+    
+    copyChannel.categoryId = channel.categoryId;
+    
+    copyChannel.position = channel.position;
+    
+    copyChannel.title = channel.title;
+    
+    copyChannel.lastUpdated = channel.lastUpdated;
+    
+    copyChannel.subscribersCount = channel.subscribersCount;
+    
+    copyChannel.favouritesValue = channel.favouritesValue;
+    
+    copyChannel.resourceURL = channel.resourceURL;
+    
+    copyChannel.channelDescription = channel.channelDescription;
+    
+    copyChannel.eCommerceURL = copyChannel.eCommerceURL;
+    
+    for (VideoInstance* videoInstance in channel.videoInstances)
+    {
+        VideoInstance* copyVideoInstance = [VideoInstance instanceFromVideoInstance:videoInstance
+                                                          usingManagedObjectContext:channel.managedObjectContext];
+        copyVideoInstance.viewId = viewId;
+        [copyChannel.videoInstancesSet addObject:copyVideoInstance];
+    }
+    
+    return copyChannel;
+    
+    
+}
 
 + (Channel *) instanceFromDictionary: (NSDictionary *) dictionary
            usingManagedObjectContext: (NSManagedObjectContext *) managedObjectContext
@@ -82,10 +117,11 @@ static NSEntityDescription *channelEntity = nil;
     if(!instance)
     {
         instance = [Channel insertInManagedObjectContext: managedObjectContext];
+        
+        instance.uniqueId = uniqueId;
     }
     
     [instance setAttributesFromDictionary: dictionary
-                                   withId: uniqueId
                       ignoringObjectTypes: ignoringObjects];
     
     
@@ -95,11 +131,10 @@ static NSEntityDescription *channelEntity = nil;
 
 
 - (void) setAttributesFromDictionary: (NSDictionary *) dictionary
-                              withId: (NSString *) uniqueId
                  ignoringObjectTypes: (IgnoringObjects) ignoringObjects {
     
     
-    self.uniqueId = uniqueId;
+    
     
     BOOL hasVideoInstances = YES;
     
@@ -118,14 +153,9 @@ static NSEntityDescription *channelEntity = nil;
         
     
         
-        NSOrderedSet* copyOfVideoInstance = [NSOrderedSet orderedSetWithOrderedSet:self.videoInstances];
-        
-        [self.videoInstancesSet removeAllObjects];
-        
         for (NSDictionary *channelDictionary in itemArray)
         {
             // viewId is @"ChannelDetails" not kFeedViewId
-            
             
             VideoInstance* videoInstance;
             
@@ -142,12 +172,6 @@ static NSEntityDescription *channelEntity = nil;
             
         }
         
-        
-        for (VideoInstance* oldVideoInstance in copyOfVideoInstance)
-        {
-            oldVideoInstance.channel = self;
-            
-        }
         
         
     
@@ -186,12 +210,8 @@ static NSEntityDescription *channelEntity = nil;
     self.position = [dictionary objectForKey: @"position"
                                  withDefault: [NSNumber numberWithInt: 0]];
     
-    
-    
     self.title = [dictionary upperCaseStringForKey: @"title"
                                        withDefault: @""];
-    
-    // NSLog(@"* Title: %@", self.title);
     
     self.lastUpdated = [dictionary dateFromISO6801StringForKey: @"last_updated"
                                                    withDefault: [NSDate date]];
@@ -199,15 +219,14 @@ static NSEntityDescription *channelEntity = nil;
     self.subscribersCount = [dictionary objectForKey: @"subscriber_count"
                                          withDefault: [NSNumber numberWithInt:0]];
     
+    
+    
     // this field only comes back for the favourites channel
+    
     NSNumber* favourites = [dictionary objectForKey:@"favourites"];
     
     self.favouritesValue = ![favourites isKindOfClass:[NSNull class]] ? [favourites boolValue] : NO;
     
-    if([self.title isEqualToString:@"FAVOURITES"])
-    {
-        DebugLog(@"Favourites Value: %@", favourites);
-    }
     
     self.resourceURL = [dictionary objectForKey: @"resource_url"
                                     withDefault: @"http://localhost"];

@@ -31,7 +31,6 @@ static NSEntityDescription *videoInstanceEntity = nil;
     
     instance.title = existingInstance.title;
     
-    
     instance.video = [Video instanceFromVideo:existingInstance.video
                     usingManagedObjectContext:managedObjectContext];
     
