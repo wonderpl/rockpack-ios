@@ -352,7 +352,7 @@
     SYNNetworkOperationJsonObject *networkOperation = (SYNNetworkOperationJsonObject*)[self operationWithPath: apiString
                                                                                                        params: [self getLocalParam]];
     
-    [networkOperation addJSONCompletionHandler: ^(NSDictionary *dictionary) {
+    [networkOperation addJSONCompletionHandler: ^(id dictionary) {
         
         NSString* possibleError = dictionary[@"error"];
         if(possibleError)
@@ -361,41 +361,8 @@
             return;
         }
 
+        completeBlock(dictionary);
 
-        // == Subscriptions == //
-        [self channelOwnerSubscriptionsForUserId: channelOwner.uniqueId
-                                        forRange: NSMakeRange(0, 48)
-                               completionHandler: ^(id subscriptionsDictionary) {
-                                   
-                                   
-                                   NSString* possibleError = subscriptionsDictionary[@"error"];
-                              
-                                   if (possibleError)
-                                   {
-                                       errorBlock(@{@"error":possibleError});
-                                       return;
-                                   }
-                                   
-                                   
-                                   [channelOwner addSubscriptionsDictionary:subscriptionsDictionary];
-                                   
-                            
-                                   
-                                   // save the context, whichever it is
-                                   
-                                   NSError* error;
-                                   
-                                   if ([channelOwner.managedObjectContext hasChanges])
-                                   {
-                                       [channelOwner.managedObjectContext save: &error];
-                                       
-                                   }
-                                   
-                              
-                                   completeBlock(subscriptionsDictionary);
-                              
-
-                               } errorHandler:errorBlock];  
      } errorHandler: ^(NSError* error) {
          errorBlock(error);
      }];
@@ -404,12 +371,12 @@
 }
 
 
-- (void) channelOwnerSubscriptionsForUserId: (NSString *) userId
-                                   forRange:(NSRange)range
-                          completionHandler: (MKNKUserSuccessBlock) completionBlock
-                               errorHandler: (MKNKUserErrorBlock) errorBlock
+- (void) channelOwnerSubscriptionsForOwner: (ChannelOwner*) channelOwner
+                                  forRange: (NSRange)range
+                         completionHandler: (MKNKUserSuccessBlock) completionBlock
+                              errorHandler: (MKNKUserErrorBlock) errorBlock
 {
-    NSDictionary *apiSubstitutionDictionary = @{@"USERID" : userId};
+    NSDictionary *apiSubstitutionDictionary = @{@"USERID" : channelOwner.uniqueId};
     
     NSDictionary *params = [self paramsForStart: range.location
                                            size: range.length];

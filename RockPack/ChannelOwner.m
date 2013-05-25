@@ -220,6 +220,12 @@
     if (!itemsArray)
         return;
     
+    NSMutableDictionary* subscriptionInsancesByIdDictionary = [[NSMutableDictionary alloc] initWithCapacity:self.subscriptions.count];
+    
+    for (Channel* su in self.subscriptions)
+        [subscriptionInsancesByIdDictionary setObject:su forKey:su.uniqueId];
+    
+    
     
     [self.subscriptionsSet removeAllObjects];
     
@@ -230,13 +236,23 @@
         
         Channel* channel = [Channel instanceFromDictionary: subscriptionChannel
                                  usingManagedObjectContext: self.managedObjectContext
-                                       ignoringObjectTypes: kIgnoreNothing];
+                                       ignoringObjectTypes: kIgnoreStoredObjects | kIgnoreChannelOwnerObject | kIgnoreVideoInstanceObjects];
         
         if (!channel)
             continue;
         
         
         [self addSubscriptionsObject:channel];
+        
+    }
+    
+    for (id key in subscriptionInsancesByIdDictionary)
+    {
+        Channel* su = [subscriptionInsancesByIdDictionary objectForKey:key];
+        if(!su)
+            continue;
+        
+        [self.managedObjectContext deleteObject:su];
         
     }
 }

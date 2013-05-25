@@ -266,24 +266,34 @@
 -(void)updateChannelsForChannelOwner:(ChannelOwner*)channelOwner
 {
     
-    MKNKUserSuccessBlock successBlock = ^(NSDictionary *channelOwnerDictionary) {
-        
-        
-        
-        [channelOwner setAttributesFromDictionary: channelOwnerDictionary
-                              ignoringObjectTypes: kIgnoreVideoInstanceObjects];
-        
-        
-        NSError *error = nil;
-        ZAssert([channelOwner.managedObjectContext save: &error], @"Error saving Search moc: %@\n%@",
-                [error localizedDescription], [error userInfo]);
+    MKNKUserErrorBlock errorBlock = ^(id error) {
         
     };
     
+    
     [appDelegate.networkEngine channelOwnerDataForChannelOwner:channelOwner
-                                                    onComplete:successBlock onError:^(id error) {
+                                                    onComplete:^(id dictionary) {
+                                                        
+                                                        
+                    [channelOwner setAttributesFromDictionary: dictionary
+                                          ignoringObjectTypes: kIgnoreVideoInstanceObjects | kIgnoreChannelOwnerObject];
+                                                        
+                    [appDelegate.networkEngine channelOwnerSubscriptionsForOwner:channelOwner
+                                                                        forRange:NSMakeRange(0, 48)
+                                                               completionHandler:^(id dictionary) {
+                                                                                                       
+                                                                   [channelOwner addSubscriptionsDictionary:dictionary];
+                                                                   
+                                                                   NSError *error = nil;
+                                                                   ZAssert([channelOwner.managedObjectContext save: &error], @"Error saving Search moc: %@\n%@",
+                                                                           [error localizedDescription], [error userInfo]);
+                                                                   
+                                                                                                       
+                                                                    } errorHandler:errorBlock];
         
-                                                    }];
+                                                        
+                                                        
+                    } onError:errorBlock];
 }
 
 -(BOOL)isSubscribedByCurrentUser:(Channel*)channel

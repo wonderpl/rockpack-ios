@@ -56,4 +56,9 @@
                             onComplete:(MKNKUserSuccessBlock)completeBlock
                                onError:(MKNKUserErrorBlock)errorBlock;
 
+- (void) channelOwnerSubscriptionsForOwner: (ChannelOwner*) channelOwner
+                                  forRange: (NSRange)range
+                         completionHandler: (MKNKUserSuccessBlock) completionBlock
+                              errorHandler: (MKNKUserErrorBlock) errorBlock;
+
 @end
