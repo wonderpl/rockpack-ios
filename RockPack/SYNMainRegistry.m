@@ -322,23 +322,7 @@
 
 #pragma mark - Channels
 
-- (BOOL) registerChannelFromDictionary: (NSDictionary*) dictionary
-{
-    // == Check for Validity == //
-    if (!dictionary || ![dictionary isKindOfClass: [NSDictionary class]])
-        return NO;
-    
-    // == =============== == //
-    
-    [Channel instanceFromDictionary: dictionary
-          usingManagedObjectContext: appDelegate.mainManagedObjectContext
-                ignoringObjectTypes: kIgnoreNothing];
-    
-    
-    [appDelegate saveContext: TRUE];
-    
-    return YES;
-}
+
 
 
 - (BOOL) registerChannelsFromDictionary: (NSDictionary *) dictionary
@@ -361,11 +345,12 @@
         return YES;
     
     // Query for existing objects
+    
     NSFetchRequest *channelFetchRequest = [[NSFetchRequest alloc] init];
     [channelFetchRequest setEntity: [NSEntityDescription entityForName: @"Channel"
                                                 inManagedObjectContext: channelOwner.managedObjectContext]];
     
-    NSPredicate* ownedByUserPredicate = [NSPredicate predicateWithFormat:@"channelOwner.uniqueId == %@", channelOwner.uniqueId];
+    NSPredicate* ownedByUserPredicate = [NSPredicate predicateWithFormat:@"channelOwner.uniqueId == %@ AND viewId", channelOwner.uniqueId, kProfileViewId];
     
     [channelFetchRequest setPredicate: ownedByUserPredicate];
     
@@ -377,7 +362,7 @@
     
     for (Channel* existingChannel in matchingChannelEntries)
     {
-        // NSLog(@" - Channel: %@ (%@)", existingChannel.title, existingChannel.categoryId);
+        
         [existingChannelsByIndex setObject:existingChannel forKey:existingChannel.uniqueId];
         
         if (!append)
@@ -408,7 +393,9 @@
         channel.position = [itemDictionary objectForKey: @"position"
                                             withDefault: [NSNumber numberWithInt: 0]];
         
-        [channelOwner addChannelsObject:channel];
+        channel.viewId = kProfileViewId;
+        
+        [channelOwner.channelsSet addObject:channel];
     }
     
     
@@ -425,7 +412,7 @@
     return YES;
 }
 
-
+// Called by main channel page
 
 - (BOOL) registerChannelsFromDictionary: (NSDictionary *) dictionary
                                forGenre: (Genre*) genre
@@ -451,25 +438,36 @@
     [channelFetchRequest setEntity: [NSEntityDescription entityForName: @"Channel"
                                                 inManagedObjectContext: importManagedObjectContext]];
     
-    NSPredicate* genrePredicate;
+    NSMutableArray* predicates = [[NSMutableArray alloc] initWithCapacity:2];
+    
+    
+    [predicates addObject: [NSPredicate predicateWithFormat: @"viewId == %@", kChannelsViewId]];
     
     if (genre)
     {
         if ([genre isMemberOfClass: [Genre class]])
         {
-            genrePredicate = [NSPredicate predicateWithFormat: @"categoryId IN %@", [genre getSubGenreIdArray]];
+            [predicates addObject: [NSPredicate predicateWithFormat: @"categoryId IN %@", [genre getSubGenreIdArray]]];
         }
         else
         {
-            genrePredicate = [NSPredicate predicateWithFormat: @"categoryId == %@", genre.uniqueId];
+            [predicates addObject: [NSPredicate predicateWithFormat: @"categoryId == %@", genre.uniqueId]];
         }
+        
+        [channelFetchRequest setPredicate: [NSCompoundPredicate andPredicateWithSubpredicates: predicates]];
     }
+    else // if nil was passed (@"all") then only the first predicate is valid
+    {
+        [channelFetchRequest setPredicate: (NSPredicate*)predicates[0]];
+    }
+    
+    
 
-    [channelFetchRequest setPredicate: genrePredicate];
+    
 
     NSError* error;
     NSArray *existingChannels = [importManagedObjectContext executeFetchRequest: channelFetchRequest
-                                                                                          error: &error];
+                                                                          error: &error];
     
     NSMutableDictionary* existingChannelsByIndex = [NSMutableDictionary dictionaryWithCapacity: existingChannels.count];
     
@@ -494,16 +492,6 @@
            
     }
 
-    // protect owned and subscribed channels from deletion //
-    for (Channel* subscribedChannel in appDelegate.currentUser.subscriptions)
-    {
-        subscribedChannel.markedForDeletionValue = NO;
-    }
-    
-    for (Channel* ownedChannels in appDelegate.currentUser.channels)
-    {
-        ownedChannels.markedForDeletionValue = NO;
-    }
     
     for (NSDictionary *itemDictionary in itemArray)
     {
@@ -531,6 +519,8 @@
         
         if (!genre) // nil is passed in case of the @"all" category which is popular
             channel.popularValue = YES;
+        
+        channel.viewId = kChannelsViewId;
     }
     
     [self removeUnusedManagedObjects: existingChannels

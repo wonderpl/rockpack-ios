@@ -18,7 +18,6 @@
 - (BOOL) registerDataForFeedFromDictionary: (NSDictionary *) dictionary
                                byAppending: (BOOL) append;
 
-- (BOOL) registerChannelFromDictionary: (NSDictionary*) dictionary;
 
 - (BOOL) registerChannelsFromDictionary: (NSDictionary *) dictionary
                                         forGenre: (Genre *) genre
