@@ -32,15 +32,12 @@
 
 // OAuth2
 
-#define kFeedViewId                 @"Home"
+#define kFeedViewId                 @"Feed"
 #define kChannelsViewId             @"Channels"
-#define kProfileViewId              @"You"
+#define kProfileViewId              @"Profile"
 #define kSearchViewId               @"Search"
-#define kUserChanneslViewId         @"UserChannels"
 #define kExistingChannelsViewId     @"ExistingChannels"
 #define kChannelDetailsViewId       @"ChannelDetails"
-#define kCoverArtViewId             @"CoverArt"
-#define kUserCoverArtViewId         @"UserCoverArt"
 
 #define kFeedTitle                  @"Feed"
 #define kChannelsTitle              @"Channels"

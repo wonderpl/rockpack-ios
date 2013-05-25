@@ -446,6 +446,14 @@
     return NO;
 }
 
+-(NSString*)title
+{
+    if(_title || [_title isEqualToString:@""])
+        return viewId;
+    else
+        return _title;
+}
+
 #pragma mark - Social network sharing
 
 - (void) shareVideoInstance: (VideoInstance *) videoInstance

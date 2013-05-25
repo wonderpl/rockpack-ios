@@ -40,16 +40,6 @@
 
 #pragma mark - View Lifecycle
 
-- (id) initWithViewId: (NSString *) vid
-{
-    if ((self = [super initWithViewId: vid]))
-    {
-        self.title = kFeedTitle;
-    }
-    
-    return self;
-}
-
 
 - (void) loadView
 {
