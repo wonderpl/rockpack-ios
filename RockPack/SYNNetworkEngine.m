@@ -130,39 +130,6 @@
 }
 
 
-- (void) updateVideosScreenForCategory: (NSString*) categoryId
-{
-    NSDictionary* parameters;
-    
-    if ([categoryId isEqualToString: @"all"])
-    {
-        parameters = [self getLocalParam];
-    }
-    else
-    {
-        parameters = [self getLocalParamWithParams: [NSDictionary dictionaryWithObject: categoryId
-                                                                                forKey: @"category"]];
-    }
-    
-    DebugLog(@"Network Engine requesting Videos with locale: %@", self.localeString);
-    
-    SYNNetworkOperationJsonObject *networkOperation =
-    (SYNNetworkOperationJsonObject*)[self operationWithPath:kAPIPopularVideos params:parameters];
-    
-    [networkOperation addJSONCompletionHandler: ^(NSDictionary *dictionary) {
-        
-        BOOL registryResultOk = [self.registry registerVideoInstancesFromDictionary:dictionary forViewId:@"Videos" byAppending:NO];
-        if (!registryResultOk)
-        {
-            DebugLog(@"Update Videos Screens Request Failed");
-            return;
-        }
-    } errorHandler: ^(NSError* error) {
-        DebugLog(@"Update Videos Screens Request Failed");
-    }];
-
-    [self enqueueOperation: networkOperation];
-}
 
 
 - (void) updateChannel: (NSString *) resourceURL

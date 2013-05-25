@@ -233,7 +233,7 @@
                                                         
                                                     }
                                                     BOOL registryResultOk = [appDelegate.mainRegistry registerVideoInstancesFromDictionary: responseDictionary
-                                                                                                                                 forViewId: kFeedViewId
+                                                                                                                                 forViewId: self.viewId // @"Feed"
                                                                                                                                byAppending: NO];
                                                     
                                                     if (!registryResultOk)

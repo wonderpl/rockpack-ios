@@ -233,23 +233,27 @@
     [videoInstanceFetchRequest setEntity: [NSEntityDescription entityForName: @"VideoInstance"
                                                       inManagedObjectContext: appDelegate.mainManagedObjectContext]];
     
-    NSError* error = nil;
-    NSArray *matchingVideoInstanceEntries = [appDelegate.mainManagedObjectContext executeFetchRequest: videoInstanceFetchRequest
-                                                                                                error: &error];
+    NSPredicate* viewIdPredicate = [NSPredicate predicateWithFormat:@"viewId == %@ AND fresh == YES", viewId];
     
-    NSMutableDictionary* existingVideosByIndex = [NSMutableDictionary dictionaryWithCapacity:matchingVideoInstanceEntries.count];
+    
+    videoInstanceFetchRequest.predicate = viewIdPredicate;
+    
+    NSError* error = nil;
+    NSArray *existingFeedVideoInstances = [appDelegate.mainManagedObjectContext executeFetchRequest: videoInstanceFetchRequest
+                                                                                              error: &error];
+    
+    NSMutableDictionary* existingVideosByIndex = [NSMutableDictionary dictionaryWithCapacity:existingFeedVideoInstances.count];
     
     // Organise videos by Id
-    for (VideoInstance* existingVideo in matchingVideoInstanceEntries)
+    for (VideoInstance* existingVideoInstance in existingFeedVideoInstances)
     {
-        [existingVideosByIndex setObject:existingVideo forKey:existingVideo.uniqueId];
-        
+        [existingVideosByIndex setObject:existingVideoInstance forKey:existingVideoInstance.uniqueId];
         
         if(!append)
         {
             
-            existingVideo.markedForDeletionValue = YES;
-            existingVideo.freshValue = NO;
+            existingVideoInstance.markedForDeletionValue = YES;
+            existingVideoInstance.freshValue = NO;
         }
         
     }
@@ -262,32 +266,44 @@
         if(!uniqueId)
             continue;
         
-        VideoInstance* video = [existingVideosByIndex objectForKey:uniqueId];
+        VideoInstance* videoInstance = [existingVideosByIndex objectForKey:uniqueId];
         
-        if (!video)
+        if (!videoInstance)
         {
             // The video is not in the dictionary of existing videos
             // Create a new video object. kIgnoreStoredObjects makes sure no attempt is made to query first
-            video = [VideoInstance instanceFromDictionary: itemDictionary
-                                usingManagedObjectContext: appDelegate.mainManagedObjectContext
+            videoInstance = [VideoInstance instanceFromDictionary: itemDictionary
+                                usingManagedObjectContext: importManagedObjectContext
                                       ignoringObjectTypes: kIgnoreStoredObjects];
             
         }
+        else
+        {
+            NSLog(@"Video Instance : %@", videoInstance.title);
+        }
         
-        video.markedForDeletionValue = NO; // This video is in the dictionary and should not be deleted.
+        videoInstance.markedForDeletionValue = NO; // This video is in the dictionary and should not be deleted.
         
-        video.freshValue = YES;
+        videoInstance.freshValue = YES;
         
-        video.position = [itemDictionary objectForKey: @"position"
-                                          withDefault: [NSNumber numberWithInt: 0]];
+        videoInstance.position = [itemDictionary objectForKey: @"position"
+                                                  withDefault: [NSNumber numberWithInt: 0]];
+        
+        videoInstance.viewId = viewId;
     }    
     
     
     
-    // Now remove any VideoInstance objects that are no longer referenced in the import
-    [self removeUnusedManagedObjects: matchingVideoInstanceEntries
-              inManagedObjectContext: appDelegate.mainManagedObjectContext];
+    for (VideoInstance* existingVideoInstance in existingFeedVideoInstances)
+    {
+        if(!existingVideoInstance.markedForDeletionValue)
+            continue;
+        
+        [appDelegate.mainManagedObjectContext deleteObject:existingVideoInstance];
+    }
     
+    if(![self saveImportContext])
+        return NO;
     
     
     [appDelegate saveContext: TRUE];
@@ -571,7 +587,7 @@
          if (managedObject.markedForDeletionValue)
          {
              [managedObjectContext deleteObject:managedObject];
-             // DebugLog (@"Deleted NSManagedObject that is no longer used after import");
+             
          }
      }];
 }
