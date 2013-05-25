@@ -432,9 +432,8 @@
 - (UICollectionViewCell *) collectionView: (UICollectionView *) collectionView
                    cellForItemAtIndexPath: (NSIndexPath *) indexPath
 {
-    DebugLog(@"£££££ Cell for item");
+    
     Channel *channel = self.channels[indexPath.row];
-    DebugLog(@"£££££ Cell for item --");
     
     SYNChannelThumbnailCell *channelThumbnailCell = [collectionView dequeueReusableCellWithReuseIdentifier: @"SYNChannelThumbnailCell"
                                                                                               forIndexPath: indexPath];

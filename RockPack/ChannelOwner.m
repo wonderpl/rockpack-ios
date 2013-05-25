@@ -3,7 +3,7 @@
 #import "NSDictionary+Validation.h"
 #import "AppConstants.h"
 
-static NSEntityDescription *channelOwnerEntity = nil;
+
 
 @interface ChannelOwner ()
 
@@ -41,29 +41,17 @@ static NSEntityDescription *channelOwnerEntity = nil;
 {
     NSError *error = nil;
     
+//    if(![dictionary isKindOfClass:[NSDictionary class]])
+//        return nil;
     
-    NSString *uniqueId = [dictionary objectForKey: @"id"
-                                      withDefault: @"Uninitialized Id"];
+    NSString *uniqueId = [dictionary objectForKey: @"id"];
     
-    // Only create an entity description once, should increase performance
-    if (channelOwnerEntity == nil)
-    {
-        // Do once, and only once
-        static dispatch_once_t oncePredicate;
-        dispatch_once(&oncePredicate, ^
-        {
-            // Not entirely sure I shouldn't 'copy' this object before assigning it to the static variable
-            channelOwnerEntity = [NSEntityDescription entityForName: @"ChannelOwner"
-                                             inManagedObjectContext: managedObjectContext];
-          
-        });
-    }
     
-    // Now we need to see if this object already exists, and if so return it and if not create it
     NSFetchRequest *channelOwnerFetchRequest = [[NSFetchRequest alloc] init];
-    [channelOwnerFetchRequest setEntity: channelOwnerEntity];
+    [channelOwnerFetchRequest setEntity: [NSEntityDescription entityForName: @"ChannelOwner"
+                                                     inManagedObjectContext: managedObjectContext]];
     
-    // Search on the unique Id
+    
     NSPredicate *predicate = [NSPredicate predicateWithFormat: @"uniqueId == %@", uniqueId];
     [channelOwnerFetchRequest setPredicate: predicate];
     

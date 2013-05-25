@@ -372,6 +372,8 @@
         [self channelOwnerSubscriptionsForUserId: channelOwner.uniqueId
                                         forRange: NSMakeRange(0, 48)
                                completionHandler: ^(id subscriptionsDictionary) {
+                                   
+                                   
                                    NSString* possibleError = subscriptionsDictionary[@"error"];
                               
                                    if (possibleError)
@@ -379,24 +381,24 @@
                                        errorBlock(@{@"error":possibleError});
                                        return;
                                    }
-
-                                   [channelOwner addSubscriptionsDictionary:dictionary];
+                                   
+                                   
+                                   [channelOwner addSubscriptionsDictionary:subscriptionsDictionary];
+                                   
+                            
+                                   
+                                   // save the context, whichever it is
+                                   
+                                   NSError* error;
+                                   
+                                   if ([channelOwner.managedObjectContext hasChanges])
+                                   {
+                                       [channelOwner.managedObjectContext save: &error];
+                                       
+                                   }
                                    
                               
-//                                   [channelOwner addSubscriptionsDictionary:dictionary];
-//                                   
-//                                   // save the context, whichever it is
-//                                   
-//                                   NSError* error;
-//                                   
-//                                   if ([channelOwner.managedObjectContext hasChanges])
-//                                   {
-//                                       [channelOwner.managedObjectContext save: &error];
-//                                       
-//                                   }
-//                                   
-                              
-                                completeBlock(subscriptionsDictionary);
+                                   completeBlock(subscriptionsDictionary);
                               
 
                                } errorHandler:errorBlock];  
@@ -418,14 +420,19 @@
     NSDictionary *params = [self paramsForStart: range.location
                                            size: range.length];
     
+    
+    
     // we are not using the subscriptions_url returned from user info data but using a std one.
     NSString *apiString = [kAPIGetUserSubscriptions stringByReplacingOccurrencesOfStrings: apiSubstitutionDictionary];
+    
     
     SYNNetworkOperationJsonObject *networkOperation = (SYNNetworkOperationJsonObject*)[self operationWithPath: apiString
                                                                                                        params: params];
     
-    [networkOperation addJSONCompletionHandler: ^(NSDictionary *dictionary) {
-        if(!dictionary) {
+    [networkOperation addJSONCompletionHandler: ^(id dictionary) {
+        
+        if(!dictionary)
+        {
             errorBlock(dictionary);
             return;
         }
