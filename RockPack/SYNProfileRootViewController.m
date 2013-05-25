@@ -340,7 +340,7 @@
                                                  name: NSManagedObjectContextObjectsDidChangeNotification
                                                object: self.user.managedObjectContext];
     
-    [self.userProfileController setChannelOwner:self.user];
+    
 }
 
 
@@ -354,7 +354,14 @@
     
     self.subscriptionsViewController.collectionView.delegate = self;
     
+    [self.userProfileController setChannelOwner:self.user];
+    
+    self.subscriptionsViewController.user = self.user;
+    
+    
     [self updateLayoutForOrientation: [SYNDeviceManager.sharedInstance orientation]];
+    
+    [self.channelThumbnailCollectionView reloadData];
     
     
 }
@@ -983,40 +990,31 @@
 
 - (void) setUser: (ChannelOwner*) user
 {
-    if (user == _user || [user.uniqueId isEqual:_user.uniqueId]) // if we try and pass the same user.
+    
+    
+    
+    
+    if([_user isMemberOfClass:[User class]] || !user) // if we are passing the current user, end here
+    {
+        
+        _user = user;
+        
         return;
-    
-    _user = user;
-    
-    if(!_user)
-        return;
-    
-    if (self.userProfileController)
-        [self.userProfileController setChannelOwner:self.user]; // if we have a panel ready, pass the user to it.
-    
-    
-    [self.channelThumbnailCollectionView reloadData];
-    
-    
-    if (self.subscriptionsViewController)
-        self.subscriptionsViewController.user = user;
-    
-    if([_user isMemberOfClass:[User class]]) // if we are passing the current user, end here
-        return;
+    }
     
     // create a copy that belongs to this viewId (@"ChannelDetails")
     
-    NSFetchRequest *channelFetchRequest = [[NSFetchRequest alloc] init];
+    NSFetchRequest *channelOwnerFetchRequest = [[NSFetchRequest alloc] init];
     
-    [channelFetchRequest setEntity: [NSEntityDescription entityForName: @"ChannelOwner"
+    [channelOwnerFetchRequest setEntity: [NSEntityDescription entityForName: @"ChannelOwner"
                                                 inManagedObjectContext: user.managedObjectContext]];
     
-    channelFetchRequest.includesSubentities = NO;
+    channelOwnerFetchRequest.includesSubentities = NO;
     
-    [channelFetchRequest setPredicate: [NSPredicate predicateWithFormat: @"uniqueId == %@ AND viewId == %@", user.uniqueId, self.viewId]];
+    [channelOwnerFetchRequest setPredicate: [NSPredicate predicateWithFormat: @"uniqueId == %@ AND viewId == %@", user.uniqueId, self.viewId]];
     
     NSError *error = nil;
-    NSArray *matchingChannelOwnerEntries = [user.managedObjectContext executeFetchRequest: channelFetchRequest
+    NSArray *matchingChannelOwnerEntries = [user.managedObjectContext executeFetchRequest: channelOwnerFetchRequest
                                                                                     error: &error];
     
     if (matchingChannelOwnerEntries.count > 0)
@@ -1032,17 +1030,25 @@
     }
     else
     {
-        _user = [ChannelOwner instanceFromChannelOwner:user
-                                             andViewId:self.viewId
-                             usingManagedObjectContext:user.managedObjectContext
-                                   ignoringObjectTypes:kIgnoreVideoInstanceObjects];
+        
+        _user = [ChannelOwner instanceFromChannelOwner: user
+                                             andViewId: self.viewId
+                             usingManagedObjectContext: user.managedObjectContext
+                                   ignoringObjectTypes: kIgnoreVideoInstanceObjects | kIgnoreChannelOwnerObject];
+        
+        if(self.user)
+        {
+            [self.user.managedObjectContext save:&error];
+            if(error)
+                _user = nil; // further error code
+        }
     }
     
     // update the channels on another user's profile, the User (current user) has his channels ready from startup //
     
     [[NSNotificationCenter defaultCenter] postNotificationName:kChannelOwnerUpdateRequest
                                                         object:self
-                                                      userInfo:@{kChannelOwner:user}];
+                                                      userInfo:@{kChannelOwner:self.user}];
 }
 -(ChannelOwner*)user
 {

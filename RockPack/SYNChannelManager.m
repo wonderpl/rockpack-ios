@@ -271,7 +271,7 @@
         
         
         [channelOwner setAttributesFromDictionary: channelOwnerDictionary
-                              ignoringObjectTypes: kIgnoreVideoInstanceObjects | kIgnoreChannelOwnerObject];
+                              ignoringObjectTypes: kIgnoreVideoInstanceObjects];
         
         
         NSError *error = nil;

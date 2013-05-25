@@ -373,7 +373,7 @@
 
 - (void) viewProfileDetails: (ChannelOwner *) channelOwner
 {
-    SYNProfileRootViewController *profileVC = [[SYNProfileRootViewController alloc] initWithViewId:@""];
+    SYNProfileRootViewController *profileVC = [[SYNProfileRootViewController alloc] initWithViewId:kProfileViewId];
     
     profileVC.user = channelOwner;
     

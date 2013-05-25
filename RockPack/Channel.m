@@ -53,10 +53,13 @@
     
     copyChannel.viewId = viewId;
     
+    if (!(ignoringObjects & kIgnoreChannelOwnerObject))
+    {
+        copyChannel.channelOwner = [ChannelOwner instanceFromChannelOwner:channel.channelOwner
+                                                                andViewId:viewId usingManagedObjectContext:channel.managedObjectContext
+                                                      ignoringObjectTypes:kIgnoreChannelObjects];
+    }
     
-    copyChannel.channelOwner = [ChannelOwner instanceFromChannelOwner:channel.channelOwner
-                                                            andViewId:viewId usingManagedObjectContext:channel.managedObjectContext
-                                                  ignoringObjectTypes:kIgnoreChannelObjects];
     
     copyChannel.channelCover = [ChannelCover instanceFromChannelCover:channel.channelCover
                                             usingManagedObjectContext:channel.managedObjectContext];

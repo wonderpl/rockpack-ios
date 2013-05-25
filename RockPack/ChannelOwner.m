@@ -24,6 +24,7 @@
     if(!existingChannelOwner)
         return nil;
     
+    
     ChannelOwner *copyChannelOwner = [ChannelOwner insertInManagedObjectContext: managedObjectContext];
     
     copyChannelOwner.uniqueId = existingChannelOwner.uniqueId;
@@ -41,7 +42,7 @@
             Channel* copyChannel = [Channel instanceFromChannel:channel
                                                       andViewId:viewId
                                       usingManagedObjectContext:existingChannelOwner.managedObjectContext
-                                            ignoringObjectTypes:kIgnoreVideoInstanceObjects];
+                                            ignoringObjectTypes:ignoringObjects];
             
             
             [copyChannelOwner.channelsSet addObject:copyChannel];
@@ -165,7 +166,7 @@
             {
                 channel = [Channel instanceFromDictionary: channelDictionary
                                 usingManagedObjectContext: self.managedObjectContext
-                                      ignoringObjectTypes: kIgnoreStoredObjects | kIgnoreChannelOwnerObject];
+                                      ignoringObjectTypes: ignoringObjects | kIgnoreStoredObjects | kIgnoreChannelOwnerObject];
                 
                 
                 

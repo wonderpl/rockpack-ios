@@ -81,10 +81,12 @@
 @property (nonatomic, strong) UIView* noVideosMessageView;
 @property (nonatomic, strong) VideoInstance* instanceToDelete;
 @property (nonatomic, strong) id<SDWebImageOperation> currentWebImageOperation;
-@property (nonatomic, weak) Channel *channel;
+
 @property (nonatomic, weak) IBOutlet UIButton *cancelEditButton;
 @property (nonatomic, weak) IBOutlet UIButton *editButton;
 @property (nonatomic, weak) IBOutlet UILabel *byLabel;
+
+@property (nonatomic, strong) Channel *channel;
 
 //iPhone specific
 @property (nonatomic,strong) SYNChannelCoverImageSelectorViewController* coverImageSelector;
@@ -101,6 +103,7 @@
 
 @synthesize channelCoverFetchedResultsController = _channelCoverFetchedResultsController;
 @synthesize userChannelCoverFetchedResultsController = _userChannelCoverFetchedResultsController;
+@synthesize channel = _channel;
 
 - (id) initWithChannel: (Channel *) channel
              usingMode: (kChannelDetailsMode) mode
@@ -314,6 +317,8 @@
 {
     [super viewWillAppear: animated];
     
+    
+    
     NSString *viewMode = [NSString stringWithFormat: @"Channels - Detail - %@", (self.mode == kChannelDetailsModeDisplay) ? @"Display" : @"Edit"];
     
     // Google analytics support
@@ -364,12 +369,6 @@
     
     // Only do this is we have a resource URL (i.e. we haven't just created the channel)
     
-    if (self.mode == kChannelDetailsModeDisplay && self.channel != nil)
-    {
-        [[NSNotificationCenter defaultCenter] postNotificationName: kChannelUpdateRequest
-                                                            object: self
-                                                           userInfo: @{kChannel: self.channel}];
-    }
     
     
     [self displayChannelDetails];
@@ -2209,6 +2208,8 @@
 -(void)setChannel:(Channel *)channel
 {
 
+    if(!channel)
+        return;
     
     // create a copy that belongs to this viewId (@"ChannelDetails")
     
@@ -2233,17 +2234,19 @@
         _channel.markedForDeletionValue = NO;
         
         if(matchingChannelEntries.count > 1) // housekeeping, there can be only one!
-            for (int i = 1; matchingChannelEntries.count; i++)
+            for (int i = 1; i < matchingChannelEntries.count; i++)
                 [channel.managedObjectContext deleteObject:(matchingChannelEntries[i])];
             
         
     }
     else
     {
+        
         _channel = [Channel instanceFromChannel:channel
                                       andViewId:self.viewId
                       usingManagedObjectContext:channel.managedObjectContext
                             ignoringObjectTypes:kIgnoreNothing];
+        
         
         if(_channel)
         {
@@ -2254,7 +2257,12 @@
             
     }
     
-    
+    if (_channel && self.mode == kChannelDetailsModeDisplay)
+    {
+        [[NSNotificationCenter defaultCenter] postNotificationName: kChannelUpdateRequest
+                                                            object: self
+                                                          userInfo: @{kChannel: self.channel}];
+    }
     
 }
 
@@ -2285,4 +2293,6 @@
         [self.avatarImageView setImageWithURL: [NSURL URLWithString:imageUrlString] placeholderImage: placeholder options: SDWebImageRetryFailed];
     }
 }
+
+
 @end

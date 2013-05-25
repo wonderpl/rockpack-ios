@@ -103,9 +103,11 @@
     self.label.userInteractionEnabled = NO;
     self.label.backgroundColor = [UIColor clearColor];
     
-    self.backgroundColor = [UIColor clearColor];
+    
     
     [self addSubview: self.label];
+    
+    self.backgroundColor = [UIColor clearColor];
 
 }
 

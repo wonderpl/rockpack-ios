@@ -361,12 +361,6 @@
             return;
         }
 
-        BOOL registryResultOk = [self.registry registerChannelOwnerFromDictionary: dictionary];
-        if (!registryResultOk)
-        {
-            errorBlock(@{@"parsing_error":@"response is not a dictionary"});
-            return;
-        }
 
         // == Subscriptions == //
         [self channelOwnerSubscriptionsForUserId: channelOwner.uniqueId

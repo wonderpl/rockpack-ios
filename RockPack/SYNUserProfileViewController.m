@@ -138,14 +138,22 @@
         NSArray *thumbnailURLItems = [channelOwner.thumbnailURL componentsSeparatedByString:@"/"];
         
         // whatever is set to be the default size by the server (ex. 'thumbnail_small') //
-        NSString* thumbnailSizeString = thumbnailURLItems[5];
+        if(thumbnailURLItems.count >= 5)
+        {
+            NSString* thumbnailSizeString = thumbnailURLItems[5];
+            
+            
+            NSString* thumbnailUrlString = [channelOwner.thumbnailURL stringByReplacingOccurrencesOfString:thumbnailSizeString withString:@"thumbnail_medium"];
+            
+            [self.profileImageView setImageWithURL: [NSURL URLWithString: thumbnailUrlString]
+                                  placeholderImage: placeholderImage
+                                           options: SDWebImageRetryFailed];
+        }
+        else
+        {
+            self.profileImageView.image = placeholderImage;
+        }
         
-        
-        NSString* thumbnailUrlString = [channelOwner.thumbnailURL stringByReplacingOccurrencesOfString:thumbnailSizeString withString:@"thumbnail_medium"];
-        
-        [self.profileImageView setImageWithURL: [NSURL URLWithString: thumbnailUrlString]
-                              placeholderImage: placeholderImage
-                                       options: SDWebImageRetryFailed];
     }
     else
     {
