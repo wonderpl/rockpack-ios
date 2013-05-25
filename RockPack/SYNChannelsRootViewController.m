@@ -327,11 +327,13 @@
         }
     }
     
+    NSPredicate* viewIdPredicate = [NSPredicate predicateWithFormat: @"viewId == %@", kChannelsViewId];
+    
     // only get the channels marked as fresh //
     
     NSPredicate* isFreshPredicate = [NSPredicate predicateWithFormat: @"fresh == YES"];
     
-    NSPredicate* finalPredicate = [NSCompoundPredicate andPredicateWithSubpredicates: @[genrePredicate, isFreshPredicate]];
+    NSPredicate* finalPredicate = [NSCompoundPredicate andPredicateWithSubpredicates: @[genrePredicate, isFreshPredicate, viewIdPredicate]];
 
     [request setPredicate:finalPredicate];
     

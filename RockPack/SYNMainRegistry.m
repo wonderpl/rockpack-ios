@@ -474,6 +474,8 @@
     for (Channel* existingChannel in existingChannels)
     {
         
+        
+        
         [existingChannelsByIndex setObject: existingChannel
                                     forKey: existingChannel.uniqueId];
         
@@ -508,7 +510,9 @@
             channel = [Channel instanceFromDictionary: itemDictionary
                             usingManagedObjectContext: importManagedObjectContext
                                   ignoringObjectTypes: kIgnoreStoredObjects];
+            
         }
+        
 
         channel.markedForDeletionValue = NO;
         
