@@ -2208,26 +2208,23 @@
 
 -(void)setChannel:(Channel *)channel
 {
-    if([channel.viewId isEqualToString:self.viewId])
-    {
-        _channel = channel;
-        return;
-    }
+
     
     // create a copy that belongs to this viewId (@"ChannelDetails")
     
     NSFetchRequest *channelFetchRequest = [[NSFetchRequest alloc] init];
+    
     [channelFetchRequest setEntity: [NSEntityDescription entityForName: @"Channel"
                                                 inManagedObjectContext: channel.managedObjectContext]];
     
     
-    NSPredicate *predicate = [NSPredicate predicateWithFormat: @"uniqueId == %@ AND viewId == %@", channel.uniqueId, self.viewId];
     
-    [channelFetchRequest setPredicate: predicate];
+    
+    [channelFetchRequest setPredicate: [NSPredicate predicateWithFormat: @"uniqueId == %@ AND viewId == %@", channel.uniqueId, self.viewId]];
     
     NSError *error = nil;
-    NSArray *matchingChannelEntries = [appDelegate.mainManagedObjectContext executeFetchRequest: channelFetchRequest
-                                                                                          error: &error];
+    NSArray *matchingChannelEntries = [channel.managedObjectContext executeFetchRequest: channelFetchRequest
+                                                                                  error: &error];
     
     
     if (matchingChannelEntries.count > 0)
@@ -2241,8 +2238,13 @@
     if(!_channel)
     {
         _channel = [Channel instanceFromChannel:channel
-                                       inViewId:self.viewId];
+                                      andViewId:self.viewId
+                      usingManagedObjectContext:channel.managedObjectContext];
+        
+        
     }
+    
+    [channel.managedObjectContext save:&error];
     
 }
 

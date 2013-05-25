@@ -290,6 +290,8 @@
                                                   withDefault: [NSNumber numberWithInt: 0]];
         
         videoInstance.viewId = viewId;
+        
+        videoInstance.channel.viewId = viewId;
     }    
     
     

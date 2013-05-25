@@ -13,7 +13,9 @@
 - (void) setAttributesFromDictionary: (NSDictionary *) dictionary
                  ignoringObjectTypes: (IgnoringObjects) ignoringObjects;
 
-+ (Channel *) instanceFromChannel:(Channel *)channel inViewId:(NSString *)viewId;
++ (Channel *) instanceFromChannel: (Channel *)channel
+                        andViewId: (NSString*)viewId
+        usingManagedObjectContext: (NSManagedObjectContext *) managedObjectContext;
 
 
 @end

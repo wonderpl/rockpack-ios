@@ -21,7 +21,9 @@ static NSEntityDescription *channelEntity = nil;
 
 #pragma mark - Object factory
 
-+ (Channel *) instanceFromChannel:(Channel *)channel inViewId:(NSString *)viewId
++ (Channel *) instanceFromChannel: (Channel *)channel
+                        andViewId: (NSString*)viewId
+        usingManagedObjectContext: (NSManagedObjectContext *) managedObjectContext
 {
     Channel* copyChannel = [Channel insertInManagedObjectContext: channel.managedObjectContext];
     
@@ -45,11 +47,17 @@ static NSEntityDescription *channelEntity = nil;
     
     copyChannel.eCommerceURL = copyChannel.eCommerceURL;
     
+    copyChannel.viewId = viewId;
+    
+    copyChannel.channelOwner = channel.channelOwner;
+    
     for (VideoInstance* videoInstance in channel.videoInstances)
     {
         VideoInstance* copyVideoInstance = [VideoInstance instanceFromVideoInstance:videoInstance
                                                           usingManagedObjectContext:channel.managedObjectContext];
+        
         copyVideoInstance.viewId = viewId;
+        
         [copyChannel.videoInstancesSet addObject:copyVideoInstance];
     }
     
@@ -151,7 +159,7 @@ static NSEntityDescription *channelEntity = nil;
     if (!(ignoringObjects & kIgnoreVideoInstanceObjects) && hasVideoInstances)
     {
         
-    
+        [self.videoInstancesSet removeAllObjects];
         
         for (NSDictionary *channelDictionary in itemArray)
         {
