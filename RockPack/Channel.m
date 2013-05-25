@@ -51,6 +51,9 @@ static NSEntityDescription *channelEntity = nil;
     
     copyChannel.channelOwner = channel.channelOwner;
     
+    copyChannel.channelCover = [ChannelCover instanceFromChannelCover:channel.channelCover
+                                            usingManagedObjectContext:channel.managedObjectContext];
+    
     for (VideoInstance* videoInstance in channel.videoInstances)
     {
         VideoInstance* copyVideoInstance = [VideoInstance instanceFromVideoInstance:videoInstance

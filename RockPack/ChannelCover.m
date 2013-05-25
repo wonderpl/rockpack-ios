@@ -6,6 +6,18 @@
 
 @implementation ChannelCover
 
++ (ChannelCover *) instanceFromChannelCover:(ChannelCover *)channelCover
+                  usingManagedObjectContext: (NSManagedObjectContext *) managedObjectContext
+{
+    ChannelCover* instance = [ChannelCover insertInManagedObjectContext: managedObjectContext];
+    instance.startU = channelCover.startU;
+    instance.startV = channelCover.startV;
+    instance.endU = channelCover.endU;
+    instance.endV = channelCover.endV;
+    instance.imageUrl = channelCover.imageUrl;
+    return instance;
+}
+
 + (ChannelCover *) instanceFromDictionary: (NSDictionary *) dictionary
                 usingManagedObjectContext: (NSManagedObjectContext *) managedObjectContext
 {
