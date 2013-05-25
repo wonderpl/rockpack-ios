@@ -6,7 +6,6 @@
 #import "AppConstants.h"
 #import "SYNAppDelegate.h"
 
-static NSEntityDescription *channelEntity = nil;
 
 @interface Channel ()
 
@@ -24,7 +23,12 @@ static NSEntityDescription *channelEntity = nil;
 + (Channel *) instanceFromChannel: (Channel *)channel
                         andViewId: (NSString*)viewId
         usingManagedObjectContext: (NSManagedObjectContext *) managedObjectContext
+              ignoringObjectTypes: (IgnoringObjects) ignoringObjects
 {
+    
+    if(!channel)
+        return nil;
+    
     Channel* copyChannel = [Channel insertInManagedObjectContext: channel.managedObjectContext];
     
     copyChannel.uniqueId = channel.uniqueId;
@@ -45,24 +49,34 @@ static NSEntityDescription *channelEntity = nil;
     
     copyChannel.channelDescription = channel.channelDescription;
     
-    copyChannel.eCommerceURL = copyChannel.eCommerceURL;
+    copyChannel.eCommerceURL = channel.eCommerceURL;
     
     copyChannel.viewId = viewId;
     
-    copyChannel.channelOwner = channel.channelOwner;
+    
+    copyChannel.channelOwner = [ChannelOwner instanceFromChannelOwner:channel.channelOwner
+                                                            andViewId:viewId usingManagedObjectContext:channel.managedObjectContext
+                                                  ignoringObjectTypes:kIgnoreChannelObjects];
     
     copyChannel.channelCover = [ChannelCover instanceFromChannelCover:channel.channelCover
                                             usingManagedObjectContext:channel.managedObjectContext];
     
-    for (VideoInstance* videoInstance in channel.videoInstances)
+    
+    if (!(ignoringObjects & kIgnoreVideoInstanceObjects))
     {
-        VideoInstance* copyVideoInstance = [VideoInstance instanceFromVideoInstance:videoInstance
-                                                          usingManagedObjectContext:channel.managedObjectContext];
         
-        copyVideoInstance.viewId = viewId;
+        for (VideoInstance* videoInstance in channel.videoInstances)
+        {
+            VideoInstance* copyVideoInstance = [VideoInstance instanceFromVideoInstance:videoInstance
+                                                              usingManagedObjectContext:channel.managedObjectContext];
+            
+            copyVideoInstance.viewId = viewId;
+            
+            [copyChannel.videoInstancesSet addObject:copyVideoInstance];
+        }
         
-        [copyChannel.videoInstancesSet addObject:copyVideoInstance];
     }
+    
     
     return copyChannel;
     
@@ -85,24 +99,13 @@ static NSEntityDescription *channelEntity = nil;
         return nil;
     
     
-    if (channelEntity == nil)
-    {
-        // Do once, and only once
-        static dispatch_once_t oncePredicate;
-        dispatch_once(&oncePredicate, ^
-        {
-            // Not entirely sure I shouldn't 'copy' this object before assigning it to the static variable
-            channelEntity = [NSEntityDescription entityForName: @"Channel"
-                                        inManagedObjectContext: managedObjectContext];
-        });
-    }
-    
     Channel *instance;
     
     if(!(ignoringObjects & kIgnoreStoredObjects))
     {
         NSFetchRequest *channelFetchRequest = [[NSFetchRequest alloc] init];
-        [channelFetchRequest setEntity: channelEntity];
+        [channelFetchRequest setEntity: [NSEntityDescription entityForName: @"Channel"
+                                                    inManagedObjectContext: managedObjectContext]];
         
         
         NSPredicate *predicate = [NSPredicate predicateWithFormat: @"uniqueId == %@", uniqueId];
@@ -162,28 +165,67 @@ static NSEntityDescription *channelEntity = nil;
     if (!(ignoringObjects & kIgnoreVideoInstanceObjects) && hasVideoInstances)
     {
         
+        
+        
+        NSMutableDictionary* videoInsanceByIdDictionary = [[NSMutableDictionary alloc] initWithCapacity:self.videoInstances.count];
+        
+        for (VideoInstance* vi in self.videoInstances)
+            [videoInsanceByIdDictionary setObject:vi forKey:vi.uniqueId];
+        
+        
         [self.videoInstancesSet removeAllObjects];
+        
+        NSString* newUniqueId;
         
         for (NSDictionary *channelDictionary in itemArray)
         {
-            // viewId is @"ChannelDetails" not kFeedViewId
+            // viewId is @"ChannelDetails" because that is the only case where videos are passed
             
             VideoInstance* videoInstance;
             
-            videoInstance = [VideoInstance instanceFromDictionary: channelDictionary
-                                        usingManagedObjectContext: self.managedObjectContext
-                                              ignoringObjectTypes: kIgnoreChannelObjects];
+            newUniqueId = [dictionary objectForKey: @"id"
+                                       withDefault: @""];
             
+            
+            videoInstance = [videoInsanceByIdDictionary objectForKey:[dictionary objectForKey: @"id"]];
+            
+            if(!videoInstance)
+            {
+                videoInstance = [VideoInstance instanceFromDictionary: channelDictionary
+                                            usingManagedObjectContext: self.managedObjectContext
+                                                  ignoringObjectTypes: kIgnoreStoredObjects | kIgnoreChannelObjects];
+                
+                
+            }
+            else
+            {
+                [videoInsanceByIdDictionary removeObjectForKey:newUniqueId];
+            }
             
             
             if(!videoInstance)
                 continue;
             
-            [self addVideoInstancesObject:videoInstance];
+            videoInstance.viewId = self.viewId;
+            
+            videoInstance.position = [dictionary objectForKey: @"position"
+                                                  withDefault: [NSNumber numberWithInt: 0]];
+            
+            [self.videoInstancesSet addObject:videoInstance];
             
         }
         
+        // clean the remaining //
         
+        for (id key in videoInsanceByIdDictionary)
+        {
+            VideoInstance* vi = [videoInsanceByIdDictionary objectForKey:key];
+            if(!vi)
+                continue;
+            
+            [self.managedObjectContext deleteObject:vi];
+            
+        }
         
     
     }

@@ -23,9 +23,6 @@
                                         forGenre: (Genre *) genre
                                      byAppending: (BOOL) append;
 
-- (BOOL) registerChannelsFromDictionary: (NSDictionary *) dictionary
-                        forChannelOwner: (ChannelOwner*) genre
-                            byAppending: (BOOL) append;
 
 - (BOOL) registerUserFromDictionary: (NSDictionary*) dictionary;
 - (BOOL) registerChannelOwnerFromDictionary: (NSDictionary*) dictionary;

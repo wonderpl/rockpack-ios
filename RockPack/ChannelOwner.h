@@ -8,12 +8,12 @@
                       ignoringObjectTypes: (IgnoringObjects) ignoringObjects;
 
 
-+ (ChannelOwner *) instanceFromChannelOwner:(ChannelOwner*)existingChannelOwner
-                  usingManagedObjectContext: (NSManagedObjectContext *) managedObjectContext;
++ (ChannelOwner *) instanceFromChannelOwner: (ChannelOwner*)existingChannelOwner
+                                  andViewId: (NSString*)viewId
+                  usingManagedObjectContext: (NSManagedObjectContext *) managedObjectContext
+                        ignoringObjectTypes: (IgnoringObjects) ignoringObjects;
 
 - (void) setAttributesFromDictionary: (NSDictionary *) dictionary
-                              withId: (NSString *) uniqueId
-           usingManagedObjectContext: (NSManagedObjectContext *) managedObjectContex
                  ignoringObjectTypes: (IgnoringObjects) ignoringObjects;
 
 

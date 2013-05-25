@@ -325,94 +325,7 @@
 
 
 
-- (BOOL) registerChannelsFromDictionary: (NSDictionary *) dictionary
-                        forChannelOwner: (ChannelOwner*) channelOwner
-                            byAppending: (BOOL) append
-{
-    // == Check for Validity == //
-    if(!channelOwner)
-        return NO;
-    
-    NSDictionary *channelsDictionary = [dictionary objectForKey: @"channels"];
-    if (!channelsDictionary || ![channelsDictionary isKindOfClass: [NSDictionary class]])
-        return NO;
-    
-    NSArray *itemArray = [channelsDictionary objectForKey: @"items"];
-    if (![itemArray isKindOfClass: [NSArray class]])
-        return NO;
-    
-    if (itemArray.count == 0)
-        return YES;
-    
-    // Query for existing objects
-    
-    NSFetchRequest *channelFetchRequest = [[NSFetchRequest alloc] init];
-    [channelFetchRequest setEntity: [NSEntityDescription entityForName: @"Channel"
-                                                inManagedObjectContext: channelOwner.managedObjectContext]];
-    
-    NSPredicate* ownedByUserPredicate = [NSPredicate predicateWithFormat:@"channelOwner.uniqueId == %@ AND viewId", channelOwner.uniqueId, kProfileViewId];
-    
-    [channelFetchRequest setPredicate: ownedByUserPredicate];
-    
-    NSError* error;
-    NSArray *matchingChannelEntries = [channelOwner.managedObjectContext executeFetchRequest: channelFetchRequest
-                                                                                       error: &error];
-    
-    NSMutableDictionary* existingChannelsByIndex = [NSMutableDictionary dictionaryWithCapacity:matchingChannelEntries.count];
-    
-    for (Channel* existingChannel in matchingChannelEntries)
-    {
-        
-        [existingChannelsByIndex setObject:existingChannel forKey:existingChannel.uniqueId];
-        
-        if (!append)
-            existingChannel.markedForDeletionValue = YES; // if a real genre is passed - delete the old objects
-    }
-    
-    for (NSDictionary *itemDictionary in itemArray)
-    {
-        
-        NSString *uniqueId = [itemDictionary objectForKey: @"id"];
-        if (!uniqueId)
-            continue;
-        
-        Channel* channel;
-        
-        channel = [existingChannelsByIndex objectForKey:uniqueId];
-        
-        if (!channel)
-        {
-            channel = [Channel instanceFromDictionary: itemDictionary
-                            usingManagedObjectContext: channelOwner.managedObjectContext
-                                  ignoringObjectTypes: (kIgnoreStoredObjects | kIgnoreChannelOwnerObject)];
-        }
-        
-        
-        channel.markedForDeletionValue = NO;
-        
-        channel.position = [itemDictionary objectForKey: @"position"
-                                            withDefault: [NSNumber numberWithInt: 0]];
-        
-        channel.viewId = kProfileViewId;
-        
-        [channelOwner.channelsSet addObject:channel];
-    }
-    
-    
-    [self removeUnusedManagedObjects: matchingChannelEntries
-              inManagedObjectContext: channelOwner.managedObjectContext];
-    
-    
-    BOOL saveResult = [self saveImportContext];
-    if (!saveResult)
-        return NO;
-    
-    [appDelegate saveContext: TRUE];
-    
-    return YES;
-}
-
-// Called by main channel page
+// Called by Main Channel page
 
 - (BOOL) registerChannelsFromDictionary: (NSDictionary *) dictionary
                                forGenre: (Genre*) genre
@@ -461,9 +374,6 @@
         [channelFetchRequest setPredicate: (NSPredicate*)predicates[0]];
     }
     
-    
-
-    
 
     NSError* error;
     NSArray *existingChannels = [importManagedObjectContext executeFetchRequest: channelFetchRequest
@@ -509,7 +419,7 @@
         {
             channel = [Channel instanceFromDictionary: itemDictionary
                             usingManagedObjectContext: importManagedObjectContext
-                                  ignoringObjectTypes: kIgnoreStoredObjects];
+                                  ignoringObjectTypes: kIgnoreStoredObjects | kIgnoreVideoInstanceObjects];
             
         }
         

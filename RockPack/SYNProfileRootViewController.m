@@ -988,6 +988,9 @@
     
     _user = user;
     
+    if(!_user)
+        return;
+    
     if (self.userProfileController)
         [self.userProfileController setChannelOwner:self.user]; // if we have a panel ready, pass the user to it.
     
@@ -998,17 +1001,48 @@
     if (self.subscriptionsViewController)
         self.subscriptionsViewController.user = user;
     
+    if([_user isMemberOfClass:[User class]]) // if we are passing the current user, end here
+        return;
     
+    // create a copy that belongs to this viewId (@"ChannelDetails")
     
+    NSFetchRequest *channelFetchRequest = [[NSFetchRequest alloc] init];
+    
+    [channelFetchRequest setEntity: [NSEntityDescription entityForName: @"ChannelOwner"
+                                                inManagedObjectContext: user.managedObjectContext]];
+    
+    channelFetchRequest.includesSubentities = NO;
+    
+    [channelFetchRequest setPredicate: [NSPredicate predicateWithFormat: @"uniqueId == %@ AND viewId == %@", user.uniqueId, self.viewId]];
+    
+    NSError *error = nil;
+    NSArray *matchingChannelOwnerEntries = [user.managedObjectContext executeFetchRequest: channelFetchRequest
+                                                                                    error: &error];
+    
+    if (matchingChannelOwnerEntries.count > 0)
+    {
+        _user = (ChannelOwner*)matchingChannelOwnerEntries[0];
+        _user.markedForDeletionValue = NO;
+        
+        if(matchingChannelOwnerEntries.count > 1) // housekeeping, there can be only one!
+            for (int i = 1; i < matchingChannelOwnerEntries.count; i++)
+                [user.managedObjectContext deleteObject:(matchingChannelOwnerEntries[i])];
+        
+        
+    }
+    else
+    {
+        _user = [ChannelOwner instanceFromChannelOwner:user
+                                             andViewId:self.viewId
+                             usingManagedObjectContext:user.managedObjectContext
+                                   ignoringObjectTypes:kIgnoreVideoInstanceObjects];
+    }
     
     // update the channels on another user's profile, the User (current user) has his channels ready from startup //
     
-    if ([user isMemberOfClass:[ChannelOwner class]])
-    {
-        [[NSNotificationCenter defaultCenter] postNotificationName:kChannelOwnerUpdateRequest
-                                                            object:self
-                                                          userInfo:@{kChannelOwner:user}];
-    }
+    [[NSNotificationCenter defaultCenter] postNotificationName:kChannelOwnerUpdateRequest
+                                                        object:self
+                                                      userInfo:@{kChannelOwner:user}];
 }
 -(ChannelOwner*)user
 {

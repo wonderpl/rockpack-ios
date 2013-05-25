@@ -2230,21 +2230,31 @@
     if (matchingChannelEntries.count > 0)
     {
         _channel = (Channel*)matchingChannelEntries[0];
-        
         _channel.markedForDeletionValue = NO;
         
+        if(matchingChannelEntries.count > 1) // housekeeping, there can be only one!
+            for (int i = 1; matchingChannelEntries.count; i++)
+                [channel.managedObjectContext deleteObject:(matchingChannelEntries[i])];
+            
+        
     }
-    
-    if(!_channel)
+    else
     {
         _channel = [Channel instanceFromChannel:channel
                                       andViewId:self.viewId
-                      usingManagedObjectContext:channel.managedObjectContext];
+                      usingManagedObjectContext:channel.managedObjectContext
+                            ignoringObjectTypes:kIgnoreNothing];
         
-        
+        if(_channel)
+        {
+            [channel.managedObjectContext save:&error];
+            if(error)
+                _channel = nil; // further error code
+        }
+            
     }
     
-    [channel.managedObjectContext save:&error];
+    
     
 }
 

@@ -210,6 +210,8 @@
                                          }];
 }
 
+#pragma mark - Updating
+
 -(void)updateChannel:(Channel*)channel withForceRefresh:(BOOL)refresh
 {
     if (!channel.resourceURL || [channel.resourceURL isEqualToString: @""])
@@ -231,14 +233,9 @@
         channel.position = savedPosition;
         
         
-        if(channel.managedObjectContext == appDelegate.mainManagedObjectContext)
-        {
-            [appDelegate saveContext:YES];
-        }
-        else if (channel.managedObjectContext == appDelegate.searchManagedObjectContext)
-        {
-            [appDelegate saveSearchContext];
-        };
+        NSError *error = nil;
+        ZAssert([channel.managedObjectContext save: &error], @"Error saving Search moc: %@\n%@",
+                [error localizedDescription], [error userInfo]);
         
     };
     
@@ -264,18 +261,27 @@
     }
 }
 
+// From Profile Page only
+
 -(void)updateChannelsForChannelOwner:(ChannelOwner*)channelOwner
 {
+    
+    MKNKUserSuccessBlock successBlock = ^(NSDictionary *channelOwnerDictionary) {
+        
+        
+        
+        [channelOwner setAttributesFromDictionary: channelOwnerDictionary
+                              ignoringObjectTypes: kIgnoreVideoInstanceObjects | kIgnoreChannelOwnerObject];
+        
+        
+        NSError *error = nil;
+        ZAssert([channelOwner.managedObjectContext save: &error], @"Error saving Search moc: %@\n%@",
+                [error localizedDescription], [error userInfo]);
+        
+    };
+    
     [appDelegate.networkEngine channelOwnerDataForChannelOwner:channelOwner
-                                                    onComplete:^(id dictionary) {
-        
-        
-        
-                                                        [appDelegate.mainRegistry registerChannelsFromDictionary:dictionary
-                                                                                                 forChannelOwner:channelOwner
-                                                                                                     byAppending:NO];
-        
-                                                    } onError:^(id error) {
+                                                    onComplete:successBlock onError:^(id error) {
         
                                                     }];
 }

@@ -74,7 +74,7 @@
 
 - (void) setViewAttributesWithItemName: (NSString *) itemName
 {
-    self.backgroundColor = [UIColor clearColor];
+    
     
     if (type == TabItemTypeMain)
     grayColor = [UIColor colorWithRed: (40.0/255.0)
@@ -102,6 +102,8 @@
     self.label.textColor = grayColor;
     self.label.userInteractionEnabled = NO;
     self.label.backgroundColor = [UIColor clearColor];
+    
+    self.backgroundColor = [UIColor clearColor];
     
     [self addSubview: self.label];
 
