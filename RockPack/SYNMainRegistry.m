@@ -211,9 +211,8 @@
 
 #pragma mark - VideoInstances
 
-- (BOOL) registerVideoInstancesFromDictionary: (NSDictionary *) dictionary
-                                    forViewId: (NSString*) viewId
-                                  byAppending: (BOOL) append
+- (BOOL) registerDataForFeedFromDictionary: (NSDictionary *) dictionary
+                               byAppending: (BOOL) append
 {
     // == Check for Validity == //
     NSDictionary *videosDictionary = [dictionary objectForKey: @"videos"];
@@ -233,7 +232,7 @@
     [videoInstanceFetchRequest setEntity: [NSEntityDescription entityForName: @"VideoInstance"
                                                       inManagedObjectContext: appDelegate.mainManagedObjectContext]];
     
-    NSPredicate* viewIdPredicate = [NSPredicate predicateWithFormat:@"viewId == %@ AND fresh == YES", viewId];
+    NSPredicate* viewIdPredicate = [NSPredicate predicateWithFormat:@"viewId == %@ AND fresh == YES", kFeedViewId];
     
     
     videoInstanceFetchRequest.predicate = viewIdPredicate;
@@ -254,6 +253,8 @@
             
             existingVideoInstance.markedForDeletionValue = YES;
             existingVideoInstance.freshValue = NO;
+            existingVideoInstance.channel.markedForDeletionValue = YES;
+            existingVideoInstance.channel.freshValue = NO;
         }
         
     }
@@ -273,8 +274,8 @@
             // The video is not in the dictionary of existing videos
             // Create a new video object. kIgnoreStoredObjects makes sure no attempt is made to query first
             videoInstance = [VideoInstance instanceFromDictionary: itemDictionary
-                                usingManagedObjectContext: importManagedObjectContext
-                                      ignoringObjectTypes: kIgnoreStoredObjects];
+                                        usingManagedObjectContext: importManagedObjectContext
+                                              ignoringObjectTypes: kIgnoreStoredObjects];
             
         }
         else
@@ -284,24 +285,30 @@
         
         videoInstance.markedForDeletionValue = NO; // This video is in the dictionary and should not be deleted.
         
-        videoInstance.freshValue = YES;
+        
         
         videoInstance.position = [itemDictionary objectForKey: @"position"
                                                   withDefault: [NSNumber numberWithInt: 0]];
         
-        videoInstance.viewId = viewId;
+        videoInstance.viewId = kFeedViewId;
+        videoInstance.freshValue = YES;
         
-        videoInstance.channel.viewId = viewId;
+        videoInstance.channel.viewId = kFeedViewId;
+        videoInstance.channel.freshValue = YES;
+        
     }    
     
     
     
-    for (VideoInstance* existingVideoInstance in existingFeedVideoInstances)
+    for (VideoInstance* oldVideoInstance in existingFeedVideoInstances)
     {
-        if(!existingVideoInstance.markedForDeletionValue)
+        if(!oldVideoInstance.markedForDeletionValue)
             continue;
         
-        [appDelegate.mainManagedObjectContext deleteObject:existingVideoInstance];
+        if(!oldVideoInstance.channel.freshValue) // delete channels that are not used in the feed anymore
+            [appDelegate.mainManagedObjectContext deleteObject:oldVideoInstance.channel];
+        
+        [appDelegate.mainManagedObjectContext deleteObject:oldVideoInstance];
     }
     
     if(![self saveImportContext])

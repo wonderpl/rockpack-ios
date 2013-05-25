@@ -229,9 +229,8 @@
                                                 completionHandler: ^(NSDictionary *responseDictionary) {
                                                     
                                                    
-                                                    BOOL registryResultOk = [appDelegate.mainRegistry registerVideoInstancesFromDictionary: responseDictionary
-                                                                                                                                 forViewId: self.viewId // @"Feed"
-                                                                                                                               byAppending: NO];
+                                                    BOOL registryResultOk = [appDelegate.mainRegistry registerDataForFeedFromDictionary: responseDictionary
+                                                                                                                            byAppending: NO];
                                                     
                                                     if (!registryResultOk)
                                                     {
