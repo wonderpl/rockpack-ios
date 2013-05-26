@@ -144,7 +144,11 @@
             tf.leftViewMode = UITextFieldViewModeAlways;
         }
     
+    if([[SYNDeviceManager sharedInstance] isPortrait])
+    {
+        
         signUpButton.center = CGPointMake(facebookSignInButton.center.x + 304.0, signUpButton.center.y);
+    }
     
         self.state = kLoginScreenStateInitial;
     
@@ -163,6 +167,8 @@
     
     memberLabel.center = CGPointMake(memberLabel.center.x, loginButton.center.y - 54.0);
     memberLabel.frame = CGRectIntegral(memberLabel.frame);
+    
+    
 }
 
 
@@ -218,7 +224,6 @@
     
     if ([SYNDeviceManager.sharedInstance isPortrait])
     {
-        
         
         faceImageButton.center = CGPointMake(78.0, faceImageButton.center.y);
         self.avatarImageView.center = CGPointMake(78.0, self.avatarImageView.center.y);

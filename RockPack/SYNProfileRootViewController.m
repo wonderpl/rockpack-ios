@@ -57,6 +57,7 @@
 @property (nonatomic, weak) SYNChannelMidCell* cellDeleteCandidate;
 @property (nonatomic, weak) UIButton* channelsTabButton;
 @property (nonatomic, weak) UIButton* subscriptionsTabButton;
+@property (nonatomic) BOOL isUserProfile;
 
 @end
 
@@ -396,10 +397,13 @@
     
     [updatedObjects enumerateObjectsUsingBlock: ^(id obj, NSUInteger idx, BOOL *stop) {
         
-        // Only Monitors User Objects
-        if ([obj isMemberOfClass:[User class]])
+        
+        if ([obj isKindOfClass:[ChannelOwner class]])
         {
-            [self reloadCollectionViews];
+            if([self.user.uniqueId isEqualToString:((ChannelOwner*)obj).uniqueId])
+                [self reloadCollectionViews];
+            
+           
         }
     }];
 }
@@ -992,17 +996,14 @@
 {
     
     
-    if([user isKindOfClass:[User class]] || !user) // if we are passing the current user, end here
+    if([user isMemberOfClass:[User class]] || !user) // if we are passing the current user, end here
     {
         
         _user = user;
         
         // monitor user real time
         
-        [[NSNotificationCenter defaultCenter] addObserver: self
-                                                 selector: @selector(handleDataModelChange:)
-                                                     name: NSManagedObjectContextObjectsDidChangeNotification
-                                                   object: self.user.managedObjectContext];
+        self.isUserProfile = YES;
         
         return;
     }
@@ -1055,6 +1056,11 @@
     [[NSNotificationCenter defaultCenter] postNotificationName:kChannelOwnerUpdateRequest
                                                         object:self
                                                       userInfo:@{kChannelOwner:self.user}];
+    
+    [[NSNotificationCenter defaultCenter] addObserver: self
+                                             selector: @selector(handleDataModelChange:)
+                                                 name: NSManagedObjectContextObjectsDidChangeNotification
+                                               object: self.user.managedObjectContext];
 }
 -(ChannelOwner*)user
 {
