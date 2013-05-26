@@ -77,7 +77,6 @@
     {
         instance = matchingCategoryInstanceEntries[0];
         
-        
     }
     else
     {

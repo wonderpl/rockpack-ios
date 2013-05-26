@@ -678,14 +678,21 @@
              
          }
               errorHandler:^(NSDictionary* errorDictionary) {
-                  NSDictionary* errors = errorDictionary [@"error"];
                   
+                  NSDictionary* errors = errorDictionary [@"error"];
                   if (errors)
                   {
                       [self placeErrorLabel: @"Username could be incorrect"
                                  nextToView: userNameInputField];
                       
                       [self placeErrorLabel: @"Password could be incorrect"
+                                 nextToView: passwordInputField];
+                  }
+                  
+                  NSDictionary* savingError = errorDictionary [@"saving_error"];
+                  if(savingError)
+                  {
+                      [self placeErrorLabel: @"Please try again."
                                  nextToView: passwordInputField];
                   }
                   

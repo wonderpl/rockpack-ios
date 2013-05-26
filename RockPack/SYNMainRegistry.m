@@ -36,6 +36,8 @@
     if (!dictionary || ![dictionary isKindOfClass: [NSDictionary class]])
         return NO;
     
+    
+    
     // dictionary also contains the set of user channels
     
     User* newUser = [User instanceFromDictionary: dictionary

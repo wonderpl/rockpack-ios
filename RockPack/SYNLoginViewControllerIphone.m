@@ -429,15 +429,22 @@
          
                 DebugLog(@"User Registerd: %@", [dictionary objectForKey:@"username"]);
                 
-                //[self.activityIndicator stopAnimating];
+                [self.activityIndicator stopAnimating];
                 
                 [self completeLoginProcess];
+                
             } errorHandler:^(NSDictionary* errorDictionary) {
+                NSString* savingError = errorDictionary[@"saving_error"];
+                if(errorDictionary) {
+                    self.loginErrorLabel.text = NSLocalizedString(@"PLEASE TRY AGAIN NOW", nil);
+                } else {
+                    self.loginErrorLabel.text = NSLocalizedString(@"CHECK USERNAME AND PASSWORD", nil);
+                }
                 [self.activityIndicator stopAnimating];
                 [self turnOnButton:self.backButton];
                 [self turnOnButton:self.confirmButton];
                 
-                self.loginErrorLabel.text = NSLocalizedString(@"CHECK USERNAME AND PASSWORD", nil);
+                
             }];
             break;
         }

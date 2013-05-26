@@ -356,8 +356,11 @@
         // Register User
         
         BOOL userRegistered = [self.registry registerUserFromDictionary:responseDictionary];
-        if(!userRegistered)
+        if(!userRegistered) {
+            errorBlock(@{@"saving_error":@"Main Registry Could Not Save the User"});
             return;
+        }
+            
         
         // Get subscriptions
         

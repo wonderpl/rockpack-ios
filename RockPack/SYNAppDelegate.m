@@ -567,6 +567,12 @@ extern void instrumentObjcMessageSends(BOOL);
         if(userEntries.count > 0)
         {
             _currentUser = (User*)userEntries[0];
+            
+            if(userEntries.count > 1) // housekeeping, clear duplicate user entries
+                for (int u = 1; u < userEntries.count; u++)
+                    [self.mainManagedObjectContext deleteObject:((User*)userEntries[u])];
+                    
+                
         }
         else
         {

@@ -148,6 +148,7 @@
         
         for (Channel* ch in self.channels)
             [channelInsanceByIdDictionary setObject:ch forKey:ch.uniqueId];
+            
         
         [self.channelsSet removeAllObjects];
         
@@ -157,8 +158,7 @@
         {
             Channel* channel;
             
-            newUniqueId = [dictionary objectForKey: @"id"
-                                       withDefault: @""];
+            newUniqueId = [channelDictionary objectForKey: @"id" withDefault: @""];
             
             channel = [channelInsanceByIdDictionary objectForKey:newUniqueId];
             
@@ -186,6 +186,7 @@
             
             channel.position = [dictionary objectForKey: @"position"
                                             withDefault: [NSNumber numberWithInt: 0]];
+            
             
             [self.channelsSet addObject:channel];
             

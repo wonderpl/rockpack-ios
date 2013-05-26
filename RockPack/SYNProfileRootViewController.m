@@ -994,7 +994,7 @@
     
     
     
-    if([_user isMemberOfClass:[User class]] || !user) // if we are passing the current user, end here
+    if([user isKindOfClass:[User class]] || !user) // if we are passing the current user, end here
     {
         
         _user = user;
@@ -1043,6 +1043,7 @@
                 _user = nil; // further error code
         }
     }
+    
     
     // update the channels on another user's profile, the User (current user) has his channels ready from startup //
     

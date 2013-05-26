@@ -136,7 +136,7 @@
         
         [self.appDelegate.oAuthNetworkEngine userInformationFromCredentials: credential completionHandler: ^(NSDictionary* dictionary) {
 
-            // the dictionary contains a User dictionary //
+            // the dictionary contains a User dictionary (without subscriptions) //
             
           
             DebugLog(@"User Registerd: %@", [dictionary objectForKey: @"username"]);
@@ -144,6 +144,7 @@
             // by this time the currentUser is set in the DB //
             
             [self checkAndSaveRegisteredUser: credential];
+            
             completionBlock(dictionary);
             
         } errorHandler:errorBlock];
