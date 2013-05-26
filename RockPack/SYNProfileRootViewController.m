@@ -389,6 +389,7 @@
 }
 
 
+
 - (void) handleDataModelChange: (NSNotification*) notification
 {
     NSArray* updatedObjects = [[notification userInfo] objectForKey: NSUpdatedObjectsKey];
