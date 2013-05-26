@@ -144,6 +144,8 @@
             tf.leftViewMode = UITextFieldViewModeAlways;
         }
     
+        signUpButton.center = CGPointMake(facebookSignInButton.center.x + 304.0, signUpButton.center.y);
+    
         self.state = kLoginScreenStateInitial;
     
         UITapGestureRecognizer* tapGesture = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(outerViewTapped:)];
@@ -210,21 +212,24 @@
     self.avatarImageView.center = CGPointMake(self.avatarImageView.center.x - 50.0, self.avatarImageView.center.y);
     
     facebookSignInButton.enabled = YES;
-    facebookSignInButton.frame = facebookButtonInitialFrame;
     facebookSignInButton.alpha = 1.0;
     
     _facebookLoginIsInProcess = NO;
     
     if ([SYNDeviceManager.sharedInstance isPortrait])
     {
-        signUpButton.center = CGPointMake(facebookSignInButton.center.x + 304.0, signUpButton.center.y);
+        
+        
         faceImageButton.center = CGPointMake(78.0, faceImageButton.center.y);
         self.avatarImageView.center = CGPointMake(78.0, self.avatarImageView.center.y);
         passwordForgottenLabel.center = CGPointMake(650.0, passwordForgottenLabel.center.y);
+        
     }
 
     signUpButton.enabled = YES;
     signUpButton.alpha = 1.0;
+    signUpButton.hidden = NO;
+    
     [activityIndicator stopAnimating];  
 }
 

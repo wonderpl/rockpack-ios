@@ -239,7 +239,6 @@
                   byAppending: (BOOL) append
 {
     
-//    NSLog(@"Loading Channels %i to %i from %i total", (dataRequestRange.location - 1), (dataRequestRange.location - 1) + (dataRequestRange.length - 1), dataItemsAvailable);
     
     [appDelegate.networkEngine updateChannelsScreenForCategory: (genre ? genre.uniqueId : @"all")
                                                       forRange: dataRequestRange
@@ -337,15 +336,13 @@
 
     [request setPredicate:finalPredicate];
     
-    NSSortDescriptor *positionDescriptor = [[NSSortDescriptor alloc] initWithKey:@"position"
-                                                                       ascending:YES];
+    NSSortDescriptor *positionDescriptor = [[NSSortDescriptor alloc] initWithKey:@"position"  ascending:YES];
     
     [request setSortDescriptors:@[positionDescriptor]];
     
     NSError *error = nil;
-    DebugLog(@"&&&&& Execute fetch request");
-    NSArray *resultsArray = [appDelegate.mainManagedObjectContext executeFetchRequest: request
-                                                                                error: &error];
+    
+    NSArray *resultsArray = [appDelegate.mainManagedObjectContext executeFetchRequest: request error: &error];
     if (!resultsArray)
         return;
     
