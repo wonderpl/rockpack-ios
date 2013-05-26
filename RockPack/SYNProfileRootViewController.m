@@ -335,10 +335,7 @@
     tap.delegate = self;
     [self.channelThumbnailCollectionView addGestureRecognizer: tap];
     
-    [[NSNotificationCenter defaultCenter] addObserver: self
-                                             selector: @selector(handleDataModelChange:)
-                                                 name: NSManagedObjectContextObjectsDidChangeNotification
-                                               object: self.user.managedObjectContext];
+    
     
     
 }
@@ -397,8 +394,10 @@
     NSArray* updatedObjects = [[notification userInfo] objectForKey: NSUpdatedObjectsKey];
     
     [updatedObjects enumerateObjectsUsingBlock: ^(id obj, NSUInteger idx, BOOL *stop) {
-        // only caches channel objects
-        if ([obj isMemberOfClass:[ChannelOwner class]]) {
+        
+        // Only Monitors User Objects
+        if ([obj isMemberOfClass:[User class]])
+        {
             [self reloadCollectionViews];
         }
     }];
@@ -992,12 +991,17 @@
 {
     
     
-    
-    
     if([user isKindOfClass:[User class]] || !user) // if we are passing the current user, end here
     {
         
         _user = user;
+        
+        // monitor user real time
+        
+        [[NSNotificationCenter defaultCenter] addObserver: self
+                                                 selector: @selector(handleDataModelChange:)
+                                                     name: NSManagedObjectContextObjectsDidChangeNotification
+                                                   object: self.user.managedObjectContext];
         
         return;
     }
