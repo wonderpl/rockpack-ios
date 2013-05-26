@@ -28,6 +28,7 @@
 @property (nonatomic, weak) Channel* selectedChannel;
 @property (nonatomic, weak) SYNChannelMidCell* selectedCell;
 @property (strong, nonatomic) IBOutlet UILabel *titleLabel;
+@property (nonatomic, strong) NSArray* channels;
 
 @end
 
@@ -73,6 +74,20 @@
                           forCellWithReuseIdentifier: @"SYNChannelMidCell"];
     
     self.titleLabel.font = [UIFont boldRockpackFontOfSize:self.titleLabel.font.pointSize];
+    
+    // Copy Channels and filter them
+    
+    NSMutableArray* allChannels = [NSMutableArray arrayWithCapacity:appDelegate.currentUser.channels.count];
+    for (Channel* ch in appDelegate.currentUser.channels)
+    {
+        if (ch.favouritesValue) // remove the favourites channel because it can be added to only by subscribing to a video
+            continue;
+        
+        [allChannels addObject:ch];
+        
+    }
+    
+    self.channels = [NSArray arrayWithArray:allChannels];
 }
 
 
@@ -93,41 +108,6 @@
 }
 
 
-#pragma mark - Data Source
-
-- (NSFetchedResultsController *) fetchedResultsController
-{
-    NSError *error = nil;
-    
-    // Return cached version if we have already created one
-    if (fetchedResultsController != nil)
-        return fetchedResultsController;
-    
-    NSFetchRequest *fetchRequest = [[NSFetchRequest alloc] init];
-    
-    ChannelOwner* meAsOwner = (ChannelOwner*)appDelegate.currentUser;
-    
-    // Edit the entity name as appropriate.
-    fetchRequest.entity = [NSEntityDescription entityForName: @"Channel"
-                                      inManagedObjectContext: appDelegate.mainManagedObjectContext];
-    
-    NSPredicate* ownedByUserPredicate = [NSPredicate predicateWithFormat:   [NSString stringWithFormat: @"channelOwner.uniqueId == '%@'", meAsOwner.uniqueId]];
-    
-    fetchRequest.predicate = ownedByUserPredicate;
-    fetchRequest.sortDescriptors = @[[[NSSortDescriptor alloc] initWithKey: @"title"
-                                                                 ascending: YES]];
-    
-    self.fetchedResultsController = [[NSFetchedResultsController alloc] initWithFetchRequest: fetchRequest
-                                                                        managedObjectContext: appDelegate.mainManagedObjectContext
-                                                                          sectionNameKeyPath: nil
-                                                                                   cacheName: nil];
-    fetchedResultsController.delegate = self;
-    
-    ZAssert([fetchedResultsController performFetch: &error],
-            @"YouRootViewController failed: %@\n%@", [error localizedDescription], [error userInfo]);
-    
-    return fetchedResultsController;
-}
 
 
 #pragma mark - UICollectionView DataSource
@@ -135,7 +115,7 @@
 - (NSInteger) collectionView: (UICollectionView *) view
       numberOfItemsInSection: (NSInteger) section
 {
-    return self.fetchedResultsController.fetchedObjects.count + 1; // add one for the 'create new channel' cell
+    return self.channels.count + 1; // add one for the 'create new channel' cell
 }
 
 
@@ -159,7 +139,7 @@
     }
     else
     {
-        Channel *channel = (Channel*)self.fetchedResultsController.fetchedObjects[indexPath.row-1];
+        Channel *channel = (Channel*)self.channels[indexPath.row-1];
         
         SYNChannelMidCell *channelThumbnailCell = [collectionView dequeueReusableCellWithReuseIdentifier: @"SYNChannelMidCell"
                                                                                             forIndexPath: indexPath];
@@ -282,7 +262,9 @@
     {
         self.selectedCell = (SYNChannelMidCell*)[self.channelThumbnailCollectionView cellForItemAtIndexPath:indexPath];
         //Compensate for the extra "create new" cell
-        self.selectedChannel = (Channel*)[self.fetchedResultsController objectAtIndexPath: [NSIndexPath indexPathForRow:indexPath.row - 1 inSection:indexPath.section]];     }
+        self.selectedChannel = (Channel*)self.channels[indexPath.row - 1];
+    }
+    
 }
 
 

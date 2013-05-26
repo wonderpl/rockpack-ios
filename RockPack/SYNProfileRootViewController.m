@@ -995,17 +995,25 @@
 - (void) setUser: (ChannelOwner*) user
 {
     
+    if(self.user) // if we have an existing user
+    {
+        // remove the listener, even if nil is passed
+        
+        [[NSNotificationCenter defaultCenter] removeObserver:self
+                                                        name:NSManagedObjectContextObjectsDidChangeNotification
+                                                      object:self.user];
+        
+        
+    }
+    
+    
     _user = user;
     
-    if(!appDelegate)
-        appDelegate = (SYNAppDelegate*)[[UIApplication sharedApplication] delegate];
+    if(!self.user) // if no user has been passed, set to nil and then return
+        return;
     
-    // if we have passed any other user than the current, create a copy and refresh, (the User is monitored real time)
-    
-    if(self.user && ![self.user.uniqueId isEqualToString:appDelegate.currentUser.uniqueId]) // if we are passing the current user, end here
+    if(![self.user isMemberOfClass:[User class]]) // is a User has been passsed dont copy him as there can be only one.
     {
-        // create a copy that belongs to this viewId (@"ChannelDetails")
-        
         NSFetchRequest *channelOwnerFetchRequest = [[NSFetchRequest alloc] init];
         
         [channelOwnerFetchRequest setEntity: [NSEntityDescription entityForName: @"ChannelOwner"
@@ -1046,20 +1054,29 @@
             }
         }
         
+    }
+    
+    
+    
         
-        // update the channels on another user's profile, the User (current user) has his channels ready from startup //
+        
+    if(self.user) // if a user has been passed or found, monitor
+    {
+        
+        [[NSNotificationCenter defaultCenter] addObserver: self
+                                                 selector: @selector(handleDataModelChange:)
+                                                     name: NSManagedObjectContextObjectsDidChangeNotification
+                                                   object: self.user.managedObjectContext];
+        
         
         [[NSNotificationCenter defaultCenter] postNotificationName:kChannelOwnerUpdateRequest
                                                             object:self
                                                           userInfo:@{kChannelOwner:self.user}];
+        
+        
     }
     
-    // monitor the user's activity
     
-    [[NSNotificationCenter defaultCenter] addObserver: self
-                                             selector: @selector(handleDataModelChange:)
-                                                 name: NSManagedObjectContextObjectsDidChangeNotification
-                                               object: self.user.managedObjectContext];
     
     
 }
