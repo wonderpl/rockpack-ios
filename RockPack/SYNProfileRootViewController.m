@@ -995,72 +995,73 @@
 - (void) setUser: (ChannelOwner*) user
 {
     
+    _user = user;
     
-    if([user isMemberOfClass:[User class]] || !user) // if we are passing the current user, end here
+    if(!appDelegate)
+        appDelegate = (SYNAppDelegate*)[[UIApplication sharedApplication] delegate];
+    
+    // if we have passed any other user than the current, create a copy and refresh, (the User is monitored real time)
+    
+    if(self.user && ![self.user.uniqueId isEqualToString:appDelegate.currentUser.uniqueId]) // if we are passing the current user, end here
     {
+        // create a copy that belongs to this viewId (@"ChannelDetails")
         
-        _user = user;
+        NSFetchRequest *channelOwnerFetchRequest = [[NSFetchRequest alloc] init];
         
-        // monitor user real time
+        [channelOwnerFetchRequest setEntity: [NSEntityDescription entityForName: @"ChannelOwner"
+                                                         inManagedObjectContext: user.managedObjectContext]];
         
-        self.isUserProfile = YES;
+        channelOwnerFetchRequest.includesSubentities = NO;
         
-        return;
-    }
-    
-    // create a copy that belongs to this viewId (@"ChannelDetails")
-    
-    NSFetchRequest *channelOwnerFetchRequest = [[NSFetchRequest alloc] init];
-    
-    [channelOwnerFetchRequest setEntity: [NSEntityDescription entityForName: @"ChannelOwner"
-                                                inManagedObjectContext: user.managedObjectContext]];
-    
-    channelOwnerFetchRequest.includesSubentities = NO;
-    
-    [channelOwnerFetchRequest setPredicate: [NSPredicate predicateWithFormat: @"uniqueId == %@ AND viewId == %@", user.uniqueId, self.viewId]];
-    
-    NSError *error = nil;
-    NSArray *matchingChannelOwnerEntries = [user.managedObjectContext executeFetchRequest: channelOwnerFetchRequest
-                                                                                    error: &error];
-    
-    if (matchingChannelOwnerEntries.count > 0)
-    {
-        _user = (ChannelOwner*)matchingChannelOwnerEntries[0];
-        _user.markedForDeletionValue = NO;
+        [channelOwnerFetchRequest setPredicate: [NSPredicate predicateWithFormat: @"uniqueId == %@ AND viewId == %@", user.uniqueId, self.viewId]];
         
-        if(matchingChannelOwnerEntries.count > 1) // housekeeping, there can be only one!
-            for (int i = 1; i < matchingChannelOwnerEntries.count; i++)
-                [user.managedObjectContext deleteObject:(matchingChannelOwnerEntries[i])];
+        NSError *error = nil;
+        NSArray *matchingChannelOwnerEntries = [user.managedObjectContext executeFetchRequest: channelOwnerFetchRequest
+                                                                                        error: &error];
         
-        
-    }
-    else
-    {
-        
-        _user = [ChannelOwner instanceFromChannelOwner: user
-                                             andViewId: self.viewId
-                             usingManagedObjectContext: user.managedObjectContext
-                                   ignoringObjectTypes: kIgnoreVideoInstanceObjects | kIgnoreChannelOwnerObject];
-        
-        if(self.user)
+        if (matchingChannelOwnerEntries.count > 0)
         {
-            [self.user.managedObjectContext save:&error];
-            if(error)
-                _user = nil; // further error code
+            _user = (ChannelOwner*)matchingChannelOwnerEntries[0];
+            _user.markedForDeletionValue = NO;
+            
+            if(matchingChannelOwnerEntries.count > 1) // housekeeping, there can be only one!
+                for (int i = 1; i < matchingChannelOwnerEntries.count; i++)
+                    [user.managedObjectContext deleteObject:(matchingChannelOwnerEntries[i])];
+            
+            
         }
+        else
+        {
+            
+            _user = [ChannelOwner instanceFromChannelOwner: user
+                                                 andViewId: self.viewId
+                                 usingManagedObjectContext: user.managedObjectContext
+                                       ignoringObjectTypes: kIgnoreVideoInstanceObjects | kIgnoreChannelOwnerObject];
+            
+            if(self.user)
+            {
+                [self.user.managedObjectContext save:&error];
+                if(error)
+                    _user = nil; // further error code
+            }
+        }
+        
+        
+        // update the channels on another user's profile, the User (current user) has his channels ready from startup //
+        
+        [[NSNotificationCenter defaultCenter] postNotificationName:kChannelOwnerUpdateRequest
+                                                            object:self
+                                                          userInfo:@{kChannelOwner:self.user}];
     }
     
-    
-    // update the channels on another user's profile, the User (current user) has his channels ready from startup //
-    
-    [[NSNotificationCenter defaultCenter] postNotificationName:kChannelOwnerUpdateRequest
-                                                        object:self
-                                                      userInfo:@{kChannelOwner:self.user}];
+    // monitor the user's activity
     
     [[NSNotificationCenter defaultCenter] addObserver: self
                                              selector: @selector(handleDataModelChange:)
                                                  name: NSManagedObjectContextObjectsDidChangeNotification
                                                object: self.user.managedObjectContext];
+    
+    
 }
 -(ChannelOwner*)user
 {

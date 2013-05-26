@@ -280,10 +280,7 @@
                                               ignoringObjectTypes: kIgnoreStoredObjects];
             
         }
-        else
-        {
-            NSLog(@"Video Instance : %@", videoInstance.title);
-        }
+        
         
         videoInstance.markedForDeletionValue = NO; // This video is in the dictionary and should not be deleted.
         

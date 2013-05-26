@@ -96,6 +96,7 @@
 @property (weak, nonatomic) IBOutlet UIButton *cancelTextInputButton;
 @property (weak, nonatomic) IBOutlet UIImageView *textBackgroundImageView;
 
+
 @end
 
 
@@ -834,6 +835,9 @@
 
 - (IBAction) profileImagePressed: (UIButton*) sender
 {
+    if([self.channel.channelOwner.uniqueId isEqualToString:appDelegate.currentUser.uniqueId])
+        return;
+        
     [self viewProfileDetails: self.channel.channelOwner];
 }
 

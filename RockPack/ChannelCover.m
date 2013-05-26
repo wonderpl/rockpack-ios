@@ -34,7 +34,7 @@
     
     if (aoiArray && [aoiArray isKindOfClass:[NSArray class]]) // can be nil
     {
-        NSLog(@"* AOI: %@", aoiArray);
+        
         instance.startU = (NSNumber*)aoiArray[0];
         instance.startV = (NSNumber*)aoiArray[1];
         instance.endU = (NSNumber*)aoiArray[2];
