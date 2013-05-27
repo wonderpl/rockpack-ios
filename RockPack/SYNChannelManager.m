@@ -271,29 +271,66 @@
     };
     
     
-    [appDelegate.networkEngine channelOwnerDataForChannelOwner:channelOwner
-                                                    onComplete:^(id dictionary) {
-                                                        
-                                                        
-                    [channelOwner setAttributesFromDictionary: dictionary
-                                          ignoringObjectTypes: kIgnoreVideoInstanceObjects | kIgnoreChannelOwnerObject];
-                                                        
-                    [appDelegate.networkEngine channelOwnerSubscriptionsForOwner:channelOwner
-                                                                        forRange:NSMakeRange(0, 48)
-                                                               completionHandler:^(id dictionary) {
-                                                                                                       
-                                                                   [channelOwner addSubscriptionsDictionary:dictionary];
-                                                                   
-                                                                   NSError *error = nil;
-                                                                   ZAssert([channelOwner.managedObjectContext save: &error], @"Error saving Search moc: %@\n%@",
-                                                                           [error localizedDescription], [error userInfo]);
-                                                                   
-                                                                                                       
-                                                                    } errorHandler:errorBlock];
+    if([channelOwner isMemberOfClass:[User class]]) // the user uses the oAuthEngine to avoid caching
+    {
+        [appDelegate.oAuthNetworkEngine userDataForUser:((User*)channelOwner) onCompletion:^(id dictionary) {
+            
+            [channelOwner setAttributesFromDictionary: dictionary
+                                  ignoringObjectTypes: kIgnoreVideoInstanceObjects | kIgnoreChannelOwnerObject];
+            
+            [appDelegate.oAuthNetworkEngine userSubscriptionsForUser:((User*)channelOwner) onCompletion:^(id dictionary) {
+                
+                
+                [channelOwner addSubscriptionsDictionary:dictionary];
+                
+                NSError *error = nil;
+                [channelOwner.managedObjectContext save: &error];
+                if(error)
+                {
+                    NSString* errorString = [NSString stringWithFormat:@"%@ %@", [error localizedDescription], [error userInfo]];
+                    DebugLog(@"%@", errorString);
+                    errorBlock(@{@"saving_error":errorString});
+                }
+               
+                
+            } onError:errorBlock];
+            
+            
+        } onError:errorBlock];
         
-                                                        
-                                                        
-                    } onError:errorBlock];
+    }
+    else // common channel owners user the public API
+    {
+        [appDelegate.networkEngine channelOwnerDataForChannelOwner:channelOwner onComplete:^(id dictionary) {
+            
+            [channelOwner setAttributesFromDictionary: dictionary
+                                  ignoringObjectTypes: kIgnoreVideoInstanceObjects | kIgnoreChannelOwnerObject];
+                                                            
+            [appDelegate.networkEngine channelOwnerSubscriptionsForOwner:channelOwner
+                                                                forRange:NSMakeRange(0, 48)
+                                                       completionHandler:^(id dictionary) {
+                                                                                                           
+            [channelOwner addSubscriptionsDictionary:dictionary];
+                                                           
+                    NSError *error = nil;
+                    [channelOwner.managedObjectContext save: &error];
+                    if(error)
+                    {
+                        NSString* errorString = [NSString stringWithFormat:@"%@ %@", [error localizedDescription], [error userInfo]];
+                        DebugLog(@"%@", errorString);
+                        errorBlock(@{@"saving_error":errorString});
+                    }
+                                                                                                           
+                                                                                                           
+            } errorHandler:errorBlock];
+                                                            
+        } onError:errorBlock];
+    
+    }
+    
+    
+    
+    
 }
 
 -(BOOL)isSubscribedByCurrentUser:(Channel*)channel

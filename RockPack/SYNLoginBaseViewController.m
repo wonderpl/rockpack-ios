@@ -134,7 +134,7 @@
 
         // Case where the user is a member of Rockpack but has not signing in this device
         
-        [self.appDelegate.oAuthNetworkEngine userInformationFromCredentials: credential completionHandler: ^(NSDictionary* dictionary) {
+        [self.appDelegate.oAuthNetworkEngine retrieveAndRegisterUserFromCredentials: credential completionHandler: ^(NSDictionary* dictionary) {
 
             // the dictionary contains a User dictionary (without subscriptions) //
             
@@ -175,7 +175,7 @@
     [self.appDelegate.oAuthNetworkEngine registerUserWithData:userData completionHandler: ^(SYNOAuth2Credential* credential) {
         
         // Case where the user registers
-        [self.appDelegate.oAuthNetworkEngine userInformationFromCredentials: credential
+        [self.appDelegate.oAuthNetworkEngine retrieveAndRegisterUserFromCredentials: credential
                                                           completionHandler: ^(NSDictionary* dictionary) {
                                                               [self checkAndSaveRegisteredUser: credential];
                                                               completionBlock(dictionary);
@@ -239,7 +239,7 @@
         
         [self.appDelegate.oAuthNetworkEngine doFacebookLoginWithAccessToken: accessTokenData.accessToken
                                                           completionHandler: ^(SYNOAuth2Credential* credential) {
-            [self.appDelegate.oAuthNetworkEngine userInformationFromCredentials: credential
+            [self.appDelegate.oAuthNetworkEngine retrieveAndRegisterUserFromCredentials: credential
                                                               completionHandler: ^(NSDictionary* dictionary) {
                 [self checkAndSaveRegisteredUser: credential];
                                                                   

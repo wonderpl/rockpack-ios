@@ -34,7 +34,7 @@ typedef void (^SYNOAuth2RefreshCompletionBlock)(NSError *error);
                             errorHandler: (MKNKErrorBlock) errorBlock;
 // User information
 
-- (void) userInformationFromCredentials: (SYNOAuth2Credential *) credentials
+- (void) retrieveAndRegisterUserFromCredentials: (SYNOAuth2Credential *) credentials
                       completionHandler: (MKNKUserSuccessBlock) completionBlock
                            errorHandler: (MKNKUserErrorBlock) errorBlock;
 
@@ -102,6 +102,14 @@ typedef void (^SYNOAuth2RefreshCompletionBlock)(NSError *error);
                            clearPrevious: (BOOL) clearPrevious
                        completionHandler: (MKNKUserSuccessBlock) completionBlock
                             errorHandler: (MKNKUserErrorBlock) errorBlock;
+
+-(void)userDataForUser:(User*)user
+          onCompletion:(MKNKUserSuccessBlock) completionBlock
+               onError: (MKNKUserErrorBlock) errorBlock;
+
+-(void)userSubscriptionsForUser:(User*)user
+                   onCompletion:(MKNKUserSuccessBlock) completionBlock
+                        onError: (MKNKUserErrorBlock) errorBlock;
 
 // User activity
 

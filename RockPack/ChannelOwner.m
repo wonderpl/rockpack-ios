@@ -152,11 +152,6 @@
         
         [self.channelsSet removeAllObjects];
         
-        NSLog(@"Cleared! %i left...", self.channels.count);
-        for (Channel* ch in self.channels)
-        {
-            NSLog(@"Registered: %@", ch.title);
-        }
         
         NSString *newUniqueId;
         
@@ -173,7 +168,6 @@
                 channel = [Channel instanceFromDictionary: channelDictionary
                                 usingManagedObjectContext: self.managedObjectContext
                                       ignoringObjectTypes: ignoringObjects | kIgnoreStoredObjects | kIgnoreChannelOwnerObject];
-                
                 
                 
             }
@@ -194,18 +188,10 @@
                                             withDefault: [NSNumber numberWithInt: 0]];
             
             
-            NSLog(@"Registering: %@", channel.title);
             
             [self.channelsSet addObject:channel];
             
         }
-        
-        NSLog(@"After, we have %i!", self.channels.count);
-        for (Channel* ch in self.channels)
-        {
-            NSLog(@"Registered: %@", ch.title);
-        }
-        
         
         
         for (id key in channelInsanceByIdDictionary)

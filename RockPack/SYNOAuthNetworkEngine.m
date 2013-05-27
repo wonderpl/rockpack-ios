@@ -328,9 +328,59 @@
     [self enqueueSignedOperation: networkOperation];
 }
 
+-(void)userDataForUser:(User*)user
+          onCompletion:(MKNKUserSuccessBlock) completionBlock
+               onError: (MKNKUserErrorBlock) errorBlock
+{
+    NSDictionary *apiSubstitutionDictionary = @{@"USERID" : user.uniqueId};
+    
+    NSString *apiString = [kAPIGetUserDetails stringByReplacingOccurrencesOfStrings: apiSubstitutionDictionary];
+    
+    SYNNetworkOperationJsonObject *networkOperation = (SYNNetworkOperationJsonObject*)[self operationWithPath: apiString
+                                                                                                       params: @{@"locale" : self.localeString}
+                                                                                                   httpMethod: @"GET"
+                                                                                                          ssl: YES];
+    
+    [self addCommonHandlerToNetworkOperation: networkOperation
+                           completionHandler: completionBlock
+                                errorHandler: errorBlock];
+    
+    
+    
+    [self enqueueSignedOperation: networkOperation];
+    
+    
+}
+
+-(void)userSubscriptionsForUser:(User*)user
+                   onCompletion:(MKNKUserSuccessBlock) completionBlock
+                        onError: (MKNKUserErrorBlock) errorBlock
+{
+    
+    NSDictionary *apiSubstitutionDictionary = @{@"USERID" : user.uniqueId};
+    
+    NSDictionary *params = [self paramsForStart: 0
+                                           size: 1000];
+    
+   
+    NSString *apiString = [kAPIGetUserSubscriptions stringByReplacingOccurrencesOfStrings: apiSubstitutionDictionary];
+    
+    SYNNetworkOperationJsonObject *networkOperation = (SYNNetworkOperationJsonObject*)[self operationWithPath: apiString
+                                                                                                       params: params
+                                                                                                   httpMethod: @"GET"
+                                                                                                          ssl: YES];
+    [self addCommonHandlerToNetworkOperation: networkOperation
+                           completionHandler: completionBlock
+                                errorHandler: errorBlock];
+    
+    
+    
+    [self enqueueSignedOperation: networkOperation];
+    
+}
 
 
-- (void) userInformationFromCredentials: (SYNOAuth2Credential *) credentials
+- (void) retrieveAndRegisterUserFromCredentials: (SYNOAuth2Credential *) credentials
                       completionHandler: (MKNKUserSuccessBlock) completionBlock
                            errorHandler: (MKNKUserErrorBlock) errorBlock
 {
