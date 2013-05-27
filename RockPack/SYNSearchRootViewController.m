@@ -196,10 +196,11 @@
         self.searchVideosController.videoThumbnailCollectionView.backgroundColor = [UIColor colorWithWhite:0.97f alpha:1.0f];
         UICollectionViewFlowLayout* layout = (UICollectionViewFlowLayout*)self.currentController.videoThumbnailCollectionView.collectionViewLayout;
         UIEdgeInsets insets= layout.sectionInset;
-        insets.top = 10.0f;
+        insets.top = 2.0f;
         insets.bottom = 10.0f;
         layout.sectionInset = insets;
     }
+    
 }
 
 
@@ -220,15 +221,16 @@
     
     if (!hasLaidOut && [SYNDeviceManager.sharedInstance isIPhone])
     {
-        CGRect collectionViewFrame = CGRectMake(0,48.0f,320.0f,self.view.frame.size.height - 108.0f);
+        CGRect collectionViewFrame = CGRectMake(0,48.0f,320.0f,self.view.frame.size.height - 53.0f);
         self.searchChannelsController.channelThumbnailCollectionView.frame = collectionViewFrame;
         self.searchChannelsController.channelThumbnailCollectionView.backgroundColor = [UIColor colorWithWhite:0.97f alpha:1.0f];
         UICollectionViewFlowLayout* layout = (UICollectionViewFlowLayout*)self.searchChannelsController.channelThumbnailCollectionView.collectionViewLayout;
         UIEdgeInsets insets= layout.sectionInset;
-        insets.top = 10.0f;
-        insets.bottom = 10.0f;
+        insets.top = 5.0f;
+        insets.bottom = 0.0f;
         layout.sectionInset = insets;
     }
+    
 }
 
 
