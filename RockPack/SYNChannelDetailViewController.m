@@ -1571,6 +1571,8 @@
                                               
                                               [self setDisplayControlsVisibility:YES];
                                               
+                                              self.mode = kChannelDetailsModeDisplay;
+                                              
                                               [[NSNotificationCenter defaultCenter] postNotificationName: kNoteAllNavControlsShow
                                                                                                   object: self
                                                                                                 userInfo: nil];
@@ -1582,6 +1584,8 @@
                                               
                                               [[NSNotificationCenter defaultCenter] postNotificationName:kNoteChannelSaved
                                                                                                   object:self];
+                                              
+                                              [self.videoThumbnailCollectionView reloadData];
                                               
                                           } errorHandler:^(id err) {
                                               
