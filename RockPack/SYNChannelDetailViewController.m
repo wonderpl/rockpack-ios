@@ -790,6 +790,9 @@
     else if ([keyPath isEqualToString: kSubscribedByUserKey])
     {
         NSNumber* newSubscribedByUserValue = (NSNumber*)[change valueForKey: NSKeyValueChangeNewKey];
+        if([newSubscribedByUserValue isKindOfClass:[NSNull class]])
+            return;
+        
         BOOL finalValue = [newSubscribedByUserValue boolValue];
         self.subscribeButton.selected = finalValue;
         self.subscribeButton.enabled = YES;
