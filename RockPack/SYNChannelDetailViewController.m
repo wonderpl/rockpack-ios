@@ -790,6 +790,9 @@
     else if ([keyPath isEqualToString: kSubscribedByUserKey])
     {
         NSNumber* newSubscribedByUserValue = (NSNumber*)[change valueForKey: NSKeyValueChangeNewKey];
+        if([newSubscribedByUserValue isKindOfClass:[NSNull class]])
+            return;
+        
         BOOL finalValue = [newSubscribedByUserValue boolValue];
         self.subscribeButton.selected = finalValue;
         self.subscribeButton.enabled = YES;
@@ -1642,7 +1645,7 @@
                                                               userInfo: nil];
             
             //And show as if displayed from the normal master view hierarchy
-            SYNAbstractViewController* currentRootViewcontroller = [[master containerViewController] showingViewController];
+            SYNAbstractViewController *currentRootViewcontroller = [master showingViewController];
             [currentRootViewcontroller animatedPushViewController:self];
         }
         

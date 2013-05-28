@@ -166,13 +166,15 @@
 
     UIViewController *parentVC = self.navigationController.viewControllers[viewControllersCount - 2];
     parentVC.view.alpha = 0.0f;
+    
+    UIViewController *currentVC =self.navigationController.viewControllers[viewControllersCount - 1];
 
     [UIView animateWithDuration: 0.5f
                           delay: 0.0f
                         options: UIViewAnimationOptionCurveEaseInOut
                      animations: ^{
          
-         self.view.alpha = 0.0f;
+         currentVC.view.alpha = 0.0f;
          parentVC.view.alpha = 1.0f;
          
      } completion: ^(BOOL finished) {
@@ -180,6 +182,33 @@
      }];
     
     [self.navigationController popViewControllerAnimated:NO];
+}
+
+- (void) animatedPopToRootViewController
+{
+    NSInteger viewControllersCount = self.navigationController.viewControllers.count;
+    
+    if (viewControllersCount < 2) // we must have at least two to pop one
+        return;
+    
+    UIViewController *targetVC = self.navigationController.viewControllers[0];
+    targetVC.view.alpha = 0.0f;
+    
+    UIViewController *currentVC =self.navigationController.viewControllers[viewControllersCount - 1];
+    
+    [UIView animateWithDuration: 0.5f
+                          delay: 0.0f
+                        options: UIViewAnimationOptionCurveEaseInOut
+                     animations: ^{
+                         
+                         currentVC.view.alpha = 0.0f;
+                         targetVC.view.alpha = 1.0f;
+                         
+                     } completion: ^(BOOL finished) {
+                         DebugLog(@"");
+                     }];
+    
+    [self.navigationController popToViewController:targetVC animated:NO];
 }
 
 
