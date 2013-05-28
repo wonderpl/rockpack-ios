@@ -102,15 +102,10 @@
     
         NSMutableAttributedString* termsString = [[NSMutableAttributedString alloc] initWithString: NSLocalizedString(@"BY USING ROCKPACK, YOU AGREE TO OUR\nTERMS & SERVICES AND PRIVACY POLICY", nil)];
         
-        [termsString addAttribute: NSForegroundColorAttributeName value: [UIColor colorWithRed: (70.0/255.0)
-                                                                                         green: (206.0/255.0)
-                                                                                          blue: (210.0/255.0)
-                                                                                         alpha:(1.0)] range: NSMakeRange(36, 16)];
+        [termsString addAttribute: NSForegroundColorAttributeName value: [UIColor colorWithRed:(11.0/255.0) green:(166.0/255.0) blue:(171.0/255.0) alpha:(1.0)] range: NSMakeRange(36, 16)];
         
-        [termsString addAttribute: NSForegroundColorAttributeName value: [UIColor colorWithRed: (70.0/255.0)
-                                                                                         green: (206.0/255.0)
-                                                                                          blue: (210.0/255.0)
-                                                                                         alpha: (1.0)] range: NSMakeRange(57, 14)];
+        [termsString addAttribute: NSForegroundColorAttributeName value: [UIColor colorWithRed:(11.0/255.0) green:(166.0/255.0) blue:(171.0/255.0) alpha:(1.0)] range: NSMakeRange(57, 14)];
+    
         // add terms buttons
         termsAndConditionsLabel.attributedText = termsString;
         termsAndConditionsLabelSide.attributedText = termsAndConditionsLabel.attributedText;
