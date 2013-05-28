@@ -136,7 +136,9 @@
     
     notificationCell.delegate = self;
     
-    notificationCell.detailTextLabel.text = @"8 Mins";
+    NSLog(@"%@", notification.dateDifferenceString);
+    
+    notificationCell.detailTextLabel.text = notification.dateDifferenceString;
     
     return notificationCell;
 }

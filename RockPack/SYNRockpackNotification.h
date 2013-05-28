@@ -20,6 +20,7 @@ typedef enum {
 @property (nonatomic) NSInteger identifier;
 @property (nonatomic, strong) NSString* messageType;
 @property (nonatomic, strong) NSDate* dateCreated;
+@property (nonatomic, strong) NSString* dateDifferenceString;
 @property (nonatomic) BOOL read;
 
 @property (nonatomic, readonly) kNotificationObjectType objectType;
