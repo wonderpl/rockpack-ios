@@ -611,20 +611,23 @@ typedef enum {
 }
 
 
-#pragma mark - UITextFieldDelegate
+#pragma mark - UITextFieldDelegate - iphone specific
 
 - (BOOL)textFieldShouldBeginEditing:(UITextField *)textField
 {
+    [[self.parentViewController view] addSubview:self.searchViewController.searchBoxView];
+    CGRect newFrame = self.searchViewController.searchBoxView.frame;
+    newFrame.origin = CGPointMake(0,58.0f);
+    self.searchViewController.searchBoxView.frame = newFrame;
     [UIView animateWithDuration: 0.2f
                          delay :0.0f
                         options: UIViewAnimationOptionCurveEaseInOut
                      animations: ^{
                          self.mainContentView.alpha = 0.0f;
                          
-                         CGRect endFrame = self.view.frame;
-                         endFrame.size.height +=58;
+                         CGRect endFrame = self.searchViewController.searchBoxView.frame;
                          endFrame.origin.y -=58;
-                         self.view.frame = endFrame;
+                         self.searchViewController.searchBoxView.frame = endFrame;
                          
                      }
                      completion: ^(BOOL finished) {
@@ -633,10 +636,11 @@ typedef enum {
                                              options: UIViewAnimationOptionCurveEaseOut
                                           animations: ^{
                                               [self.searchViewController.searchBoxView revealCloseButton];
+
                                           }
                                           completion: nil];
                          
-                         self.mainContentView.hidden = YES;
+                         
                          
                      }];
     
@@ -645,7 +649,7 @@ typedef enum {
 }
 
 
-#pragma mark - close search callback
+#pragma mark - close search callback iPhone specific
 
 - (void) closeSearch: (id) sender
 {
@@ -662,23 +666,31 @@ typedef enum {
                         options: UIViewAnimationOptionCurveEaseIn
                      animations: ^{
                          [self.searchViewController.searchBoxView hideCloseButton];
+                         _state = SideNavigationStateHalf;
                      }
                      completion: ^(BOOL finished) {
                          self.mainContentView.hidden = NO;
-                         
+                         CGRect sideNavigationFrame = self.view.frame;
+                         sideNavigationFrame.origin.x = 704.0f;
+                         self.view.frame = sideNavigationFrame;
                          [UIView animateWithDuration: 0.2f
                                                delay: 0.0f
                                              options: UIViewAnimationOptionCurveEaseInOut
                                           animations: ^{
                                               self.mainContentView.alpha = 1.0f;
-                                              CGRect endFrame = self.view.frame;
-                                              endFrame.size.height -=58;
-                                              endFrame.origin.y +=58;
-                                              self.view.frame = endFrame;
+                                              
+                                              
+                                              CGRect newFrame = self.searchViewController.searchBoxView.frame;
+                                              newFrame.origin = CGPointMake(0,58.0f);
+                                              self.searchViewController.searchBoxView.frame = newFrame;
                                           }
                                           completion:^(BOOL finished)
                           {
-                          }];
+                              CGRect newFrame = self.searchViewController.searchBoxView.frame;
+                              newFrame.origin = CGPointMake(0,0.0f);
+                              self.searchViewController.searchBoxView.frame = newFrame;
+                              [self.view addSubview:self.searchViewController.searchBoxView];
+                        }];
                          
                      }];
 }
@@ -716,6 +728,11 @@ typedef enum {
     self.captiveButton.selected = TRUE;
     
     [[SYNSoundPlayer sharedInstance] playSoundByName: kSoundNewSlideIn];
+    self.mainContentView.alpha = 1.0f;
+    [self.view addSubview:self.searchViewController.searchBoxView];
+    self.searchViewController.searchBoxView.searchTextField.delegate = self;
+    [self.searchViewController.searchBoxView resignFirstResponder];
+    [self.searchViewController.searchBoxView hideCloseButton];
     
     [UIView animateWithDuration: kRockieTalkieAnimationDuration
                           delay: 0.0f

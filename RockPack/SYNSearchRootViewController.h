@@ -7,6 +7,7 @@
 //
 
 #import "SYNAbstractViewController.h"
+@class SYNSearchBoxViewController;
 
 @interface SYNSearchRootViewController : SYNAbstractViewController {
     @private
@@ -14,8 +15,9 @@
     BOOL viewIsOnScreen;
 }
 
-
 -(void)showSearchResultsForTerm:(NSString*)newSearchTerm;
 
+//iPhone specific
+@property (nonatomic, weak) SYNSearchBoxViewController* searchBoxViewController;
 
 @end
