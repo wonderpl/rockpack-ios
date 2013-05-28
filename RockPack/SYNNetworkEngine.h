@@ -17,7 +17,7 @@
 
 @property (nonatomic) BOOL shouldFirstCheckCache;
 
-- (void) updateCategoriesOnCompletion: (MKNKVoidBlock) completionBlock
+- (void) updateCategoriesOnCompletion: (MKNKJSONCompleteBlock) completionBlock
                               onError: (MKNKErrorBlock) errorBlock;
 
 

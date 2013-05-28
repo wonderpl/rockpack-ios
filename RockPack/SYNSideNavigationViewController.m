@@ -231,58 +231,61 @@ typedef enum {
 
 - (void) getNotifications
 {
-    [self.appDelegate.oAuthNetworkEngine notificationsFromUserId: self.appDelegate.currentUser.uniqueId
-                                               completionHandler: ^(id response) {
+    [self.appDelegate.oAuthNetworkEngine notificationsFromUserId: self.appDelegate.currentUser.uniqueId completionHandler: ^(id response) {
                                                    
-                                                   if (![response isKindOfClass:[NSDictionary class]])
-                                                       return;
+            if (![response isKindOfClass:[NSDictionary class]])
+                return;
                                                    
-                                                   NSDictionary* responseDictionary = (NSDictionary*)response;
+            NSDictionary* responseDictionary = (NSDictionary*)response;
                                                    
-                                                   NSDictionary* notificationsDictionary = [responseDictionary objectForKey:@"notifications"];
-                                                   if (!notificationsDictionary)
-                                                       return;
+            NSDictionary* notificationsDictionary = [responseDictionary objectForKey:@"notifications"];
+            if (!notificationsDictionary)
+                return;
                                                    
-                                                   NSNumber* totalNumber = [notificationsDictionary objectForKey:@"total"];
-                                                   if (!totalNumber)
-                                                       return;
+            NSNumber* totalNumber = [notificationsDictionary objectForKey:@"total"];
+            if (!totalNumber)
+                return;
                                                    
-                                                   NSInteger total = [totalNumber integerValue];
+            NSInteger total = [totalNumber integerValue];
                                                    
-                                                   if (total == 0)
-                                                   {
-                                                       [self.tableView reloadData];
-                                                       return;
-                                                   }
+            if (total == 0)
+            {
+                [self.tableView reloadData];
+                return;
+            }
                                                    
-                                                   NSArray* itemsArray = (NSArray*)[notificationsDictionary objectForKey:@"items"];
-                                                   if (!itemsArray)
-                                                   {
-                                                       // TODO: handle erro in parsing items
-                                                       return;
+            NSArray* itemsArray = (NSArray*)[notificationsDictionary objectForKey:@"items"];
+            if (!itemsArray)
+            {
+                // TODO: handle erro in parsing items
+                return;
                                                        
-                                                   }
+            }
                                                    
-                                                   self.notifications = [NSMutableArray arrayWithCapacity: self.unreadNotifications];
+            self.notifications = [NSMutableArray arrayWithCapacity: total];
                                                    
-                                                   for (NSDictionary* itemData in itemsArray)
-                                                   {
-                                                       if (!itemData) continue;
+            for (NSDictionary* itemData in itemsArray)
+            {
+                if (![itemData isKindOfClass:[NSDictionary class]]) continue;
                                                        
-                                                       SYNRockpackNotification* notification = [SYNRockpackNotification notificationWithData:itemData];
+                SYNRockpackNotification* notification = [SYNRockpackNotification notificationWithData:itemData];
                                                        
-                                                       if (!notification.read)
-                                                           self.unreadNotifications++;
+                if (!notification.read)
+                    self.unreadNotifications++;
                                                        
-                                                       [self.notifications addObject:notification];
+                [self.notifications addObject:notification];
                                                        
-                                                   }
+            }
                                                    
-                                                   [self.tableView reloadData];
-                                               }
-                                                    errorHandler:^(id error) {
-                                                        DebugLog(@"Could not load notifications");
-                                                    }];
+            [self.tableView reloadData];
+        
+        
+        
+        
+        
+    } errorHandler:^(id error) {
+        DebugLog(@"Could not load notifications");
+    }];
 }
 
 

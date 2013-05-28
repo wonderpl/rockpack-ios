@@ -157,8 +157,13 @@
                                                           fromUserId:appDelegate.currentUser.uniqueId
                                                    completionHandler:^(id responce) {
                                                        
+                                                       SYNRockpackNotification* notification = [_notifications objectAtIndex:indexPath.row];
+                                                       notification.read = YES;
+                                                       
                                                        [[NSNotificationCenter defaultCenter] postNotificationName:kNotificationMarkedRead
                                                                                                            object:self];
+                                                       
+                                                       
         
                                                    } errorHandler:^(id error) {
         

@@ -2695,7 +2695,7 @@
 			name = You;
 			sourceTree = "<group>";
 		};
-		0142ED9216B1C914008694DA /* Categories Tab */ = {
+		0142ED9216B1C914008694DA /* Genre Tab */ = {
 			isa = PBXGroup;
 			children = (
 				BE08159D16D3EF7F00ADB1DC /* SYNGenreTabViewController.h */,
@@ -2705,7 +2705,7 @@
 				BEA043E916CABF1F005406E7 /* SYNGenreItemView.h */,
 				BEA043EA16CABF1F005406E7 /* SYNGenreItemView.m */,
 			);
-			name = "Categories Tab";
+			name = "Genre Tab";
 			sourceTree = "<group>";
 		};
 		0142EDB016B2E992008694DA /* Channel viewer */ = {
@@ -4126,7 +4126,7 @@
 				BE0815A416D4E53500ADB1DC /* SYNTabViewController.m */,
 				BE0815A016D4DADA00ADB1DC /* SYNTabView.h */,
 				BE0815A116D4DADA00ADB1DC /* SYNTabView.m */,
-				0142ED9216B1C914008694DA /* Categories Tab */,
+				0142ED9216B1C914008694DA /* Genre Tab */,
 			);
 			name = "Tab Bars";
 			sourceTree = "<group>";

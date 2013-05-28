@@ -104,8 +104,14 @@
 
 -(void)updateCategoriesFromWS
 {
-    [appDelegate.networkEngine updateCategoriesOnCompletion: ^{
+    [appDelegate.networkEngine updateCategoriesOnCompletion: ^(NSDictionary* dictionary){
         
+        BOOL registryResultOk = [appDelegate.mainRegistry registerCategoriesFromDictionary: dictionary];
+        if (!registryResultOk) {
+            DebugLog(@"*** Cannot Register Genre Objects! ***");
+            return;
+        }
+            
         
         [self loadCategories];
         
@@ -121,8 +127,6 @@
 - (void) loadCategories
 {
     NSError* error;
-    
-    
     
     NSEntityDescription* categoryEntity = [NSEntityDescription entityForName: @"Genre"
                                                       inManagedObjectContext: appDelegate.mainManagedObjectContext];

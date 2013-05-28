@@ -435,7 +435,7 @@
                 
             } errorHandler:^(NSDictionary* errorDictionary) {
                 NSString* savingError = errorDictionary[@"saving_error"];
-                if(errorDictionary) {
+                if(savingError) {
                     self.loginErrorLabel.text = NSLocalizedString(@"PLEASE TRY AGAIN NOW", nil);
                 } else {
                     self.loginErrorLabel.text = NSLocalizedString(@"CHECK USERNAME AND PASSWORD", nil);

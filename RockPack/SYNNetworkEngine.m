@@ -47,7 +47,7 @@
 #pragma mark - Engine API
 
 
-- (void) updateCategoriesOnCompletion: (MKNKVoidBlock) completionBlock
+- (void) updateCategoriesOnCompletion: (MKNKJSONCompleteBlock) completionBlock
                               onError: (MKNKErrorBlock) errorBlock
 {
     SYNNetworkOperationJsonObject *networkOperation =
@@ -56,11 +56,8 @@
 
     [networkOperation addJSONCompletionHandler:^(NSDictionary *dictionary) {
         
-        BOOL registryResultOk = [self.registry registerCategoriesFromDictionary: dictionary];
-        if (!registryResultOk)
-            return;
         
-        completionBlock();
+        completionBlock(dictionary);
         
     } errorHandler:^(NSError* error) {
         
