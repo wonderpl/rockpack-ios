@@ -28,6 +28,12 @@
             return;
         }
         
+        if (completedOperation.HTTPStatusCode == 201)
+        {
+            responseBlock(@{@"response":@"RESOURCE CREATED"});
+            return;
+        }
+        
          
         [completedOperation responseJSONWithOptions: NSJSONReadingAllowFragments
                                   completionHandler: ^(id jsonObject) {

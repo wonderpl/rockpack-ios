@@ -398,11 +398,9 @@
     [updatedObjects enumerateObjectsUsingBlock: ^(id obj, NSUInteger idx, BOOL *stop) {
         
         
-        if ([obj isKindOfClass:[ChannelOwner class]])
+        if ([obj isKindOfClass:[ChannelOwner class]] && [((ChannelOwner*)obj).uniqueId isEqualToString:self.user.uniqueId])
         {
-            if([self.user.uniqueId isEqualToString:((ChannelOwner*)obj).uniqueId])
-                [self reloadCollectionViews];
-            
+            [self reloadCollectionViews];
            
         }
     }];

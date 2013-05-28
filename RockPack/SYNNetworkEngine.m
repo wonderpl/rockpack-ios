@@ -54,6 +54,7 @@
     (SYNNetworkOperationJsonObject*)[self operationWithPath: kAPICategories
                                                      params: [self getLocalParam]];
 
+    networkOperation.ignoreCachedResponse = YES;
     [networkOperation addJSONCompletionHandler:^(NSDictionary *dictionary) {
         
         

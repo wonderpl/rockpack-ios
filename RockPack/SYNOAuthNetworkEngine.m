@@ -1162,16 +1162,8 @@
     
     
     [self addCommonHandlerToNetworkOperation: networkOperation
-                           completionHandler: ^(id response) {
-                               
-         
-         
-         
-         completionBlock(response);
-         
-         
-     }
-     errorHandler: errorBlock];
+                           completionHandler: completionBlock
+                                errorHandler: errorBlock];
 
     [self enqueueSignedOperation: networkOperation];  
 }

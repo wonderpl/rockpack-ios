@@ -96,10 +96,18 @@
     [super viewDidLoad];
     
     
-    [self updateCategoriesFromWS];
     
     
     [self loadCategories];
+    
+    if(self.genresFetched.count > 0) // if there are genres in the DB call for a refresh, else it has already done sos...
+    {
+        [self updateCategoriesFromWS];
+    }
+    
+    
+    
+        
 }
 
 -(void)updateCategoriesFromWS
@@ -112,7 +120,6 @@
             return;
         }
             
-        
         [self loadCategories];
         
         
@@ -147,10 +154,15 @@
     self.genresFetched = [appDelegate.mainManagedObjectContext executeFetchRequest: categoriesFetchRequest
                                                                              error: &error];
     
+    
     if(self.genresFetched.count > 0)
+    {
         [self.tabView createCategoriesTab:self.genresFetched];
+    }
     else
+    {
         [self updateCategoriesFromWS];
+    }
 }
 
 

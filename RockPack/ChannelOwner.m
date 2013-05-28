@@ -275,11 +275,7 @@
     [self.subscriptionsSet addObject:newSubscription];
     newSubscription.subscribersCountValue += 1;
 }
--(void)removeSubscriptionsObject:(Channel *)oldSubscription
-{
-    [self.subscriptionsSet removeObject:oldSubscription];
-    oldSubscription.subscribersCountValue -= 1;
-}
+
 
 #pragma mark - Helper methods
 
