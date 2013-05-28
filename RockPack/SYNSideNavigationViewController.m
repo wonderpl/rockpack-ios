@@ -484,8 +484,7 @@ typedef enum {
         self.nicknameLabel.text = @"";
     }
     
-    // We can't use our
-    
+    // We can't use our standard asynchronous loader due to cacheing    
     dispatch_queue_t callerQueue = dispatch_get_main_queue();
     dispatch_queue_t downloadQueue = dispatch_queue_create("com.rockpack.avatarloadingqueue", NULL);
     dispatch_async(downloadQueue, ^{

@@ -7,13 +7,20 @@
 //
 
 #import "AppConstants.h"
+#import "SYNAppDelegate.h"
+#import "SYNDeviceManager.h"
+#import "SYNImagePickerController.h"
 #import "SYNUserProfileViewController.h"
 #import "UIFont+SYNFont.h"
 #import "UIImageView+WebCache.h"
 #import "User.h"
-#import "SYNDeviceManager.h"
+#import "SYNOAuthNetworkEngine.h"
 
-@interface SYNUserProfileViewController ()
+@interface SYNUserProfileViewController () <SYNImagePickerControllerDelegate>
+
+@property (nonatomic, strong) SYNImagePickerController* imagePickerController;
+@property (nonatomic, strong) IBOutlet UIButton* avatarButton;
+@property (nonatomic, strong) IBOutlet UIActivityIndicatorView* activityIndicatorView;
 
 @end
 
@@ -32,7 +39,6 @@
                                              selector: @selector(userDataChanged:)
                                                  name: kUserDataChanged
                                                object: nil];
-
     [self pack];
 }
 
@@ -42,9 +48,10 @@
     User* currentUser = (User*)[[notification userInfo] objectForKey: @"user"];
     if(!currentUser)
         return;
-    if ([self.channelOwner.uniqueId isEqualToString:self.channelOwner.uniqueId])
+    
+    if ([self.channelOwner.uniqueId isEqualToString: currentUser.uniqueId])
     {
-        [self setChannelOwner:currentUser];
+        [self setChannelOwner: currentUser];
     }
 }
 
@@ -121,19 +128,23 @@
             self.userNameLabel.text = ownerAsUser.username;
         }
         
-        
+        // Enable change avatar button
+        self.avatarButton.enabled = TRUE;
     }
     else
     {
         userName = channelOwner.displayName;
         self.userNameLabel.text = @"";
+        
+        // Disable change avatar button
+        self.avatarButton.enabled = FALSE;
     }
     
     self.fullNameLabel.text = userName;
     
     UIImage* placeholderImage = self.profileImageView.image ? self.profileImageView.image : [UIImage imageNamed: @"PlaceholderAvatarProfile.png"];
     
-    if(![channelOwner.thumbnailURL isEqualToString:@""]) // there is a url string
+    if (![channelOwner.thumbnailURL isEqualToString:@""]) // there is a url string
     {
         NSArray *thumbnailURLItems = [channelOwner.thumbnailURL componentsSeparatedByString:@"/"];
         
@@ -145,28 +156,82 @@
             
             NSString* thumbnailUrlString = [channelOwner.thumbnailURL stringByReplacingOccurrencesOfString:thumbnailSizeString withString:@"thumbnail_medium"];
             
-            [self.profileImageView setImageWithURL: [NSURL URLWithString: thumbnailUrlString]
-                                  placeholderImage: placeholderImage
-                                           options: SDWebImageRetryFailed];
+//            [self.profileImageView setImageWithURL: [NSURL URLWithString: thumbnailUrlString]
+//                                  placeholderImage: placeholderImage
+//                                           options: SDWebImageRetryFailed];
+            
+            // We can't use our standard asynchronous loader due to cacheing
+            dispatch_queue_t callerQueue = dispatch_get_main_queue();
+            dispatch_queue_t downloadQueue = dispatch_queue_create("com.rockpack.avatarloadingqueue", NULL);
+            dispatch_async(downloadQueue, ^{
+                NSData * imageData = [NSData dataWithContentsOfURL: [NSURL URLWithString: thumbnailUrlString]];
+                
+                dispatch_async(callerQueue, ^{
+                    self.self.profileImageView.image = [UIImage imageWithData: imageData];
+                });
+            });
         }
         else
         {
             self.profileImageView.image = placeholderImage;
         }
-        
     }
     else
     {
         self.profileImageView.image = placeholderImage;
     }
-    
-    
-    
+
     [self pack];
 }
 
 
 
+- (IBAction) userTouchedAvatarButton: (UIButton *) avatarButton
+{
+    self.imagePickerController = [[SYNImagePickerController alloc] initWithHostViewController: self];
+    self.imagePickerController.delegate = self;
+    
+    [self.imagePickerController presentImagePickerAsPopupFromView: avatarButton
+                                                   arrowDirection: UIPopoverArrowDirectionRight];
+}
 
+#pragma mark - image picker delegate
+
+- (void) picker: (SYNImagePickerController *) picker
+         finishedWithImage: (UIImage *) image
+{
+    SYNAppDelegate *appDelegate = (SYNAppDelegate *)[[UIApplication sharedApplication] delegate];
+    
+    self.avatarButton.enabled = NO;
+    self.profileImageView.image = image;
+    [self.activityIndicatorView startAnimating];
+    [appDelegate.oAuthNetworkEngine updateAvatarForUserId: appDelegate.currentOAuth2Credentials.userId
+                                                    image: image
+                                        completionHandler: ^(NSDictionary* result)
+     {
+         //         self.profilePictureImageView.image = image;
+         [self.activityIndicatorView stopAnimating];
+         self.avatarButton.enabled = YES;
+     }
+                                             errorHandler: ^(id error)
+     {
+         [self.profileImageView setImageWithURL: [NSURL URLWithString: self.channelOwner.thumbnailURL]
+                               placeholderImage: [UIImage imageNamed: @"PlaceholderNotificationAvatar"]
+                                        options: SDWebImageRetryFailed];
+         
+         [self.activityIndicatorView stopAnimating];
+         self.avatarButton.enabled = YES;
+         
+         UIAlertView* alert = [[UIAlertView alloc] initWithTitle: NSLocalizedString(@"Oops",nil)
+                                                         message: NSLocalizedString(@"We were not able to upload the photo at the moment. Try again later.",nil)
+                                                        delegate: nil
+                                               cancelButtonTitle: nil
+                                               otherButtonTitles: NSLocalizedString(@"OK",nil), nil];
+         [alert show];
+     }];
+    
+    self.imagePickerController = nil;
+    
+}
 
 @end
