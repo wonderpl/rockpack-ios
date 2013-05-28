@@ -567,7 +567,19 @@
         self.buyButton.hidden = FALSE;
     }
     
-    self.channelTitleTextView.text = self.channel.title;
+    // Set title //
+    
+    NSLog(@"Channel: %@", self.channel);
+    
+    if(self.channel.title)
+    {
+        self.channelTitleTextView.text = self.channel.title;
+    }
+    else
+    {
+        self.channelTitleTextView.text = @"";
+    }
+    
     
     [self adjustTextView];
 }
@@ -2217,6 +2229,17 @@
 
     if(!channel)
         return;
+    
+    
+    if(!appDelegate)
+        appDelegate = (SYNAppDelegate*)[[UIApplication sharedApplication] delegate];
+    
+    // if the channel is an under creation one then
+    if(channel.managedObjectContext == appDelegate.channelsManagedObjectContext)
+    {
+        _channel = channel;
+        return;
+    }
     
     // create a copy that belongs to this viewId (@"ChannelDetails")
     
