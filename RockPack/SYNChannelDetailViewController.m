@@ -355,6 +355,8 @@
     }
 
     self.subscribeButton.enabled = YES;
+    
+    
     self.subscribeButton.selected = self.channel.subscribedByUserValue;
     
     [self.channel addObserver: self
