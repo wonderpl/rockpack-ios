@@ -13,4 +13,9 @@
 + (UIImage*) imageWithImage: (UIImage*) image
 			   scaledToSize: (CGSize) newSize;
 
+- (NSData*) jpegDataForResizedImageWithMaxDimension: (CGFloat) maxDimension;
+
++ (UIImage*) scaleAndRotateImage: (UIImage*) image
+                     withMaxSize: (int) newSize;
+
 @end
