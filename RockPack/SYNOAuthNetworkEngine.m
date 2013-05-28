@@ -14,6 +14,7 @@
 #import "SYNOAuthNetworkEngine.h"
 #import "Video.h"
 #import "VideoInstance.h"
+#import "UIImage+Resize.h"
 
 @interface SYNOAuthNetworkEngine ()
 
@@ -584,8 +585,21 @@
                                                                                                        params: nil
                                                                                                    httpMethod: @"PUT"
                                                                                                           ssl: TRUE];
+
+    UIImage *newImage = [UIImage scaleAndRotateImage: image
+                                         withMaxSize: 600];
+    
+    
+        DebugLog(@"New image width: %f, height%f", newImage.size.width, newImage.size.height);
     // We have to perform the image upload with an input stream
-    NSData *imageData = UIImageJPEGRepresentation(image, 0.70);
+
+    NSData *imageData = UIImageJPEGRepresentation(newImage, 0.70);
+    
+    // Other attempts at performing scaling
+    //    NSData *imageData = UIImagePNGRepresentation(newImage);
+    //    NSData *imageData = UIImageJPEGRepresentation(image, 0.70);
+    //    NSData *imageData = [image jpegDataForResizedImageWithMaxDimension: 600];
+    
     NSString *lengthString = [NSString stringWithFormat: @"%@", [NSNumber numberWithUnsignedLong: imageData.length]];
     NSInputStream *inputStream = [NSInputStream inputStreamWithData: imageData];
     networkOperation.uploadStream = inputStream;
@@ -593,18 +607,22 @@
     [networkOperation addHeaders: @{@"Content-Type" : @"image/jpeg", @"Content-Length" : lengthString}];
     SYNAppDelegate* blockAppDelegate = self.appDelegate;
     [self addCommonHandlerToNetworkOperation: networkOperation
-                           completionHandler:^(NSDictionary* result) {
+                           completionHandler: ^(NSDictionary* result) {
                                NSDictionary* headerDictionary = [networkOperation.readonlyResponse allHeaderFields];
                                User* currentUser = blockAppDelegate.currentUser;
-                               if(currentUser)
+                               
+                               if (currentUser)
                                {
-                                   NSString *newThumbnailURL = [headerDictionary objectForKey:@"Location"];
+                                   NSString *newThumbnailURL = [headerDictionary objectForKey: @"Location"];
                                    currentUser.thumbnailURL = newThumbnailURL;
-                                   [blockAppDelegate saveContext:YES];
-                                   [[NSNotificationCenter defaultCenter] postNotificationName:kUserDataChanged object:nil userInfo:@{@"user":currentUser}];
+                                   [blockAppDelegate saveContext: YES];
+                                   [[NSNotificationCenter defaultCenter] postNotificationName: kUserDataChanged
+                                                                                       object: nil
+                                                                                     userInfo: @{@"user":currentUser}];
                                }
                                completionBlock(headerDictionary);
-                           } errorHandler: errorBlock];
+                           }
+                                errorHandler: errorBlock];
     
     [self enqueueSignedOperation: networkOperation];
 }
@@ -1013,7 +1031,15 @@
                                                                                                    httpMethod: @"POST"
                                                                                                           ssl: TRUE];
     // We have to perform the image upload with an input stream
-    NSData *imageData = UIImageJPEGRepresentation(image, 0.70);
+    UIImage *newImage = [UIImage scaleAndRotateImage: image
+                                         withMaxSize: 2028];
+    
+    
+    DebugLog(@"New image width: %f, height%f", newImage.size.width, newImage.size.height);
+    // We have to perform the image upload with an input stream
+    
+    NSData *imageData = UIImageJPEGRepresentation(newImage, 0.70);
+
     NSString *lengthString = [NSString stringWithFormat: @"%@", [NSNumber numberWithUnsignedLong: imageData.length]];
     NSInputStream *inputStream = [NSInputStream inputStreamWithData: imageData];
     networkOperation.uploadStream = inputStream;
