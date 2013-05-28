@@ -1543,6 +1543,12 @@
                                               [self.channel removeObserver: self
                                                                 forKeyPath: kSubscribedByUserKey];
                                               
+                                              // this will delete the edited channel from channels context //
+                                              
+                                              [self.channel.managedObjectContext deleteObject:self.channel];
+                                              
+                                              
+                                              
                                               self.channel = createdChannel;
                                               
                                               [self.channel addObserver: self
@@ -2227,19 +2233,21 @@
 -(void)setChannel:(Channel *)channel
 {
 
-    if(!channel)
-        return;
-    
-    
     if(!appDelegate)
         appDelegate = (SYNAppDelegate*)[[UIApplication sharedApplication] delegate];
     
-    // if the channel is an under creation one then
-    if(channel.managedObjectContext == appDelegate.channelsManagedObjectContext)
+    
+    NSError *error = nil;
+    
+
+    if(!channel)
     {
-        _channel = channel;
+        _channel = nil;
         return;
     }
+        
+
+    
     
     // create a copy that belongs to this viewId (@"ChannelDetails")
     
@@ -2253,7 +2261,7 @@
     
     [channelFetchRequest setPredicate: [NSPredicate predicateWithFormat: @"uniqueId == %@ AND viewId == %@", channel.uniqueId, self.viewId]];
     
-    NSError *error = nil;
+    
     NSArray *matchingChannelEntries = [channel.managedObjectContext executeFetchRequest: channelFetchRequest
                                                                                   error: &error];
     

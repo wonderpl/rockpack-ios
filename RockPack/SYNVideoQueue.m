@@ -106,16 +106,13 @@
 -(void)handleVideoQueueClearRequest:(NSNotification*)notification
 {
     
-    
-    
     if(!self.currentlyCreatingChannel)
         return;
     
     
-    for (VideoInstance* currentVideoInstance in self.currentlyCreatingChannel.videoInstances) {
-        
+    for (VideoInstance* currentVideoInstance in self.currentlyCreatingChannel.videoInstances)
+    {
         [self.appDelegate.channelsManagedObjectContext deleteObject:currentVideoInstance];
-        
     }
     
     [self.appDelegate.channelsManagedObjectContext deleteObject:self.currentlyCreatingChannel];
