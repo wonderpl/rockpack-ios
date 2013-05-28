@@ -1057,9 +1057,6 @@
     }
     
     
-    
-        
-        
     if(self.user) // if a user has been passed or found, monitor
     {
         
@@ -1080,6 +1077,8 @@
     
     
 }
+
+
 -(ChannelOwner*)user
 {
     return _user;
