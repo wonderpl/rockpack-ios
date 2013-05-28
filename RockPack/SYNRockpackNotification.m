@@ -8,6 +8,8 @@
 
 #import "SYNRockpackNotification.h"
 #import "SYNAppDelegate.h"
+#import "NSDate+RFC1123.h"
+#import "ISO8601DateFormatter.h"
 
 @implementation SYNRockpackNotification
 
@@ -28,13 +30,70 @@
         if(dateString)
         {
             
-            NSDateFormatter* formatter = [[NSDateFormatter alloc] init];
-            [formatter setDateFormat:@"yyyy'-'MM'-'dd'T'HH':'mm':'ss'Z'"];
+            ISO8601DateFormatter* formatter = [[ISO8601DateFormatter alloc] init];
             
             NSDate* date = [formatter dateFromString:dateString];
             if(date)
             {
                 self.dateCreated = date;
+                
+                // find difference from today
+                
+                NSCalendar *calendar = [[NSCalendar alloc] initWithCalendarIdentifier:NSGregorianCalendar];
+                NSDateComponents *components = [calendar components:NSYearCalendarUnit | NSMonthCalendarUnit | NSDayCalendarUnit | NSMinuteCalendarUnit | NSHourCalendarUnit
+                                                           fromDate:self.dateCreated
+                                                             toDate:[NSDate date]
+                                                            options:0];
+                
+                NSMutableString* dateDifferenceMutableString = [[NSMutableString alloc] init];
+                
+                if(components.year > 0)
+                {
+                    [dateDifferenceMutableString appendString:@"More than a year ago"];
+                }
+                else if(components.month > 0)
+                {
+                    [dateDifferenceMutableString appendString:[NSString stringWithFormat:@"%i month%@", components.month, (components.month > 1 ? @"s" : @"")]];
+                    
+                    if(components.day > 0)
+                    {
+                        [dateDifferenceMutableString appendString:[NSString stringWithFormat:@" and %i day%@ ago", components.day, (components.day > 1 ? @"s" : @"")]];
+                    }
+                    
+                    
+                }
+                else if(components.day > 0)
+                {
+                    [dateDifferenceMutableString appendString:[NSString stringWithFormat:@"%i day%@", components.day, (components.day > 1 ? @"s" : @"")]];
+                    
+                    if(components.hour > 0)
+                    {
+                        [dateDifferenceMutableString appendString:[NSString stringWithFormat:@" and %i hour%@ ago", components.hour, (components.hour > 1 ? @"s" : @"")]];
+                    }
+                    
+                }
+                else if(components.hour > 0)
+                {
+                    [dateDifferenceMutableString appendString:[NSString stringWithFormat:@"%i hour%@", components.hour, (components.hour > 1 ? @"s" : @"")]];
+                    
+                    if(components.minute > 0)
+                    {
+                        [dateDifferenceMutableString appendString:[NSString stringWithFormat:@" and %i minute%@ ago", components.minute, (components.minute > 1 ? @"s" : @"")]];
+                    }
+                    
+                }
+                else
+                {
+                    [dateDifferenceMutableString appendString:[NSString stringWithFormat:@"%i minute%@ ago", components.minute, (components.minute > 1 ? @"s" : @"")]];
+                }
+                
+                
+                self.dateDifferenceString = [NSString stringWithString:dateDifferenceMutableString];
+                
+            }
+            else
+            {
+                self.dateDifferenceString = dateString;
             }
             
         }

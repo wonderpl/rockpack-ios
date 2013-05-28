@@ -43,6 +43,8 @@
     
     copyChannel.subscribersCount = channel.subscribersCount;
     
+    copyChannel.subscribedByUserValue = channel.subscribedByUserValue;
+    
     copyChannel.favouritesValue = channel.favouritesValue;
     
     copyChannel.resourceURL = channel.resourceURL;

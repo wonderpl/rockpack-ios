@@ -47,20 +47,19 @@
 #pragma mark - Engine API
 
 
-- (void) updateCategoriesOnCompletion: (MKNKVoidBlock) completionBlock
+- (void) updateCategoriesOnCompletion: (MKNKJSONCompleteBlock) completionBlock
                               onError: (MKNKErrorBlock) errorBlock
 {
     SYNNetworkOperationJsonObject *networkOperation =
     (SYNNetworkOperationJsonObject*)[self operationWithPath: kAPICategories
-                                                     params: [self getLocalParam]];
+                                                     params: [self getLocalParam]
+                                                 httpMethod: @"GET"];
 
+    //networkOperation.ignoreCachedResponse = YES;
     [networkOperation addJSONCompletionHandler:^(NSDictionary *dictionary) {
         
-        BOOL registryResultOk = [self.registry registerCategoriesFromDictionary: dictionary];
-        if (!registryResultOk)
-            return;
         
-        completionBlock();
+        completionBlock(dictionary);
         
     } errorHandler:^(NSError* error) {
         

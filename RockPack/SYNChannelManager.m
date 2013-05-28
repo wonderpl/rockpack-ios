@@ -124,26 +124,21 @@
                                             completionHandler: ^(NSDictionary *responseDictionary) {
                                                 
                                                 
-                                                
                                                 channel.hasChangedSubscribeValue = YES;
                                                 
-                                                [appDelegate.currentUser addSubscriptionsObject:channel];
+                                                [appDelegate.currentUser.subscriptionsSet addObject:channel];
                                                 
-                                                if(channel.managedObjectContext == appDelegate.mainManagedObjectContext)
-                                                {
-                                                    [appDelegate saveContext:YES];
-                                                }
-                                                else if (channel.managedObjectContext == appDelegate.searchManagedObjectContext)
-                                                {
-                                                    [appDelegate saveSearchContext];
-                                                }
+                                                channel.subscribedByUserValue = YES;
+                                                channel.subscribersCountValue++;
+                                                
+                                                [appDelegate saveContext:YES];
                                                 
                                                 
                                             } errorHandler: ^(NSDictionary* errorDictionary) {
                                                 
                                                 // so that the observer will pick up the change and stop the activity indicator
                                                 channel.subscribedByUserValue = channel.subscribedByUserValue;
-                                            
+                                                channel.hasChangedSubscribeValue = NO;
                                                 
                                                 
                                             }];
@@ -160,26 +155,26 @@
                                                       channelId: channel.uniqueId
                                               completionHandler: ^(NSDictionary *responseDictionary) {
                                                   
-                                                  
                                                   channel.hasChangedSubscribeValue = YES;
                                                   
-                                                  [appDelegate.currentUser removeSubscriptionsObject:channel];
                                                   
                                                   
-                                                  if(channel.managedObjectContext == appDelegate.mainManagedObjectContext)
-                                                  {
-                                                      [appDelegate saveContext:YES];
-                                                  }
-                                                  else if (channel.managedObjectContext == appDelegate.searchManagedObjectContext)
-                                                  {
-                                                      [appDelegate saveSearchContext];
-                                                  }
+                                                  
+                                                  
+                                                  [appDelegate.currentUser.subscriptionsSet removeObject:channel];
+                                                  
+                                                  channel.subscribedByUserValue = NO;
+                                                  channel.subscribersCountValue--;
+                                                  
+                                                  
+                                                  [appDelegate saveContext:YES];
+                                                                       
                                                   
                                                 } errorHandler: ^(NSDictionary* errorDictionary) {
                                                     
                                                     // so that the observer will pick up the change and stop the activity indicator
                                                     channel.subscribedByUserValue = channel.subscribedByUserValue;
-                                                    
+                                                    channel.hasChangedSubscribeValue = NO;
                                                     
                                                 }];
     
@@ -192,20 +187,18 @@
                                                  channelId:channel.uniqueId
                                          completionHandler:^(id response) {
                                              
-                                             NSMutableOrderedSet *channelsSet = [NSMutableOrderedSet orderedSetWithOrderedSet:appDelegate.currentUser.channels];
                                              
                                              
-                                             [channelsSet removeObject:channel];
                                              
-                                             [appDelegate.currentUser setChannels:channelsSet];
+                                             [appDelegate.currentUser.channelsSet removeObject:channel];
+                                             
+                                             
                                              
                                              [appDelegate saveContext:YES];
                                              
-                                             DebugLog(@"Delete channel succeed");
                 
                                          } errorHandler:^(id error) {
                                              
-                                             DebugLog(@"Delete channel NOT succeed");
         
                                          }];
 }

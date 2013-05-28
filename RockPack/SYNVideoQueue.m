@@ -105,14 +105,14 @@
 
 -(void)handleVideoQueueClearRequest:(NSNotification*)notification
 {
+    
     if(!self.currentlyCreatingChannel)
         return;
     
     
-    for (VideoInstance* currentVideoInstance in self.currentlyCreatingChannel.videoInstances) {
-        
+    for (VideoInstance* currentVideoInstance in self.currentlyCreatingChannel.videoInstances)
+    {
         [self.appDelegate.channelsManagedObjectContext deleteObject:currentVideoInstance];
-        
     }
     
     [self.appDelegate.channelsManagedObjectContext deleteObject:self.currentlyCreatingChannel];
@@ -147,7 +147,7 @@
         self.currentlyCreatingChannel = [Channel insertInManagedObjectContext: self.appDelegate.channelsManagedObjectContext];
         
         User* meOnAnotherContext = [User instanceFromUser:self.appDelegate.currentUser
-                                        usingManagedObjectContext:self.currentlyCreatingChannel.managedObjectContext];
+                                usingManagedObjectContext:self.currentlyCreatingChannel.managedObjectContext];
         
         self.currentlyCreatingChannel.channelOwner = (ChannelOwner*)meOnAnotherContext;
         
@@ -202,6 +202,7 @@
         if([currentVideoInstance.uniqueId isEqualToString:videoInstance.uniqueId]) {
             
             [self.appDelegate.channelsManagedObjectContext deleteObject:currentVideoInstance];
+            
             [self.appDelegate saveChannelsContext];
             
             break;

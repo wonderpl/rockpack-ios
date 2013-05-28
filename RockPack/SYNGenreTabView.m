@@ -24,6 +24,7 @@
 @property (nonatomic, strong) UIView* secondaryTabsView;
 @property (nonatomic, weak) UIButton* homeButton;
 @property (nonatomic, assign) NSString* homeButtonString;
+@property (nonatomic, strong) UILabel* loadingLabel;
 
 @end
 
@@ -82,6 +83,20 @@
         self.dividerOverlayView.autoresizingMask = UIViewAutoresizingFlexibleWidth;
         
         [self addSubview: self.dividerOverlayView];
+        
+        // == Loading Label == //
+        NSString* loadingString = @"Loading Channel Genres ...";
+        CGRect loadingLabelFrame;
+        UIFont* rpFont = [UIFont rockpackFontOfSize:18];
+        loadingLabelFrame.size = [loadingString sizeWithFont:rpFont];
+        self.loadingLabel = [[UILabel alloc] initWithFrame:loadingLabelFrame];
+        self.loadingLabel.font = rpFont;
+        self.loadingLabel.text = loadingString;
+        self.loadingLabel.textColor = [UIColor grayColor];
+        self.loadingLabel.backgroundColor = [UIColor clearColor];
+        self.loadingLabel.center = CGPointMake(self.frame.size.width * 0.5, 26.0);
+        self.loadingLabel.frame = CGRectIntegral(self.loadingLabel.frame);
+        [self addSubview:self.loadingLabel];
     }
     
     return self;
@@ -90,6 +105,7 @@
 
 - (void) createCategoriesTab: (NSArray*) categories
 {
+    
     SYNGenreItemView* tab = nil;
     
     // clean existing //
@@ -102,6 +118,12 @@
     
     if(self.homeButton)
         [self.homeButton removeFromSuperview];
+    
+    if(self.loadingLabel)
+    {
+        [self.loadingLabel removeFromSuperview];
+        self.loadingLabel = nil;
+    }
     
 
     CGFloat nextOrigin = 0.0;

@@ -184,17 +184,7 @@
 
 #pragma mark - Accessors
 
--(void)addSubscriptionsObject:(Channel *)newSubscription
-{
-    [super addSubscriptionsObject:newSubscription];
-    newSubscription.subscribedByUserValue = YES;
-}
 
--(void)removeSubscriptionsObject:(Channel *)oldSubscription
-{
-    [super removeSubscriptionsObject:oldSubscription];
-    oldSubscription.subscribedByUserValue = NO;
-}
 
 -(NSString*) fullName
 {

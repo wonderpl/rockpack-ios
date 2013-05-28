@@ -398,11 +398,9 @@
     [updatedObjects enumerateObjectsUsingBlock: ^(id obj, NSUInteger idx, BOOL *stop) {
         
         
-        if ([obj isKindOfClass:[ChannelOwner class]])
+        if ([obj isKindOfClass:[ChannelOwner class]] && [((ChannelOwner*)obj).uniqueId isEqualToString:self.user.uniqueId])
         {
-            if([self.user.uniqueId isEqualToString:((ChannelOwner*)obj).uniqueId])
-                [self reloadCollectionViews];
-            
+            [self reloadCollectionViews];
            
         }
     }];
@@ -429,6 +427,9 @@
 
 - (void) activateDeletionMode: (UILongPressGestureRecognizer *) recognizer
 {
+    if(![self.user.uniqueId isEqualToString:appDelegate.currentUser.uniqueId]) // cannot delete channels of another user
+        return;
+    
     if (recognizer.state == UIGestureRecognizerStateBegan)
     {
         NSIndexPath *indexPath = [self.channelThumbnailCollectionView indexPathForItemAtPoint: [recognizer locationInView: self.channelThumbnailCollectionView]];
@@ -924,12 +925,12 @@
     
     if (self.subscriptionsTabActive)
     {
-        [self.headerChannelsView setColorsForText:[UIColor colorWithRed:106.0f/255.0f green:114.0f/255.0f blue:122.0f/255.0f alpha:1.0f] parentheses:[UIColor colorWithRed:187.0f/255.0f green:187.0f/255.0f blue:187.0f/255.0f alpha:1.0f] number:[UIColor colorWithRed:46.0f/255.0f green:192.0f/255.0f blue:197.0f/255.0f alpha:1.0f]];
+        [self.headerChannelsView setColorsForText:[UIColor colorWithRed:106.0f/255.0f green:114.0f/255.0f blue:122.0f/255.0f alpha:1.0f] parentheses:[UIColor colorWithRed:187.0f/255.0f green:187.0f/255.0f blue:187.0f/255.0f alpha:1.0f] number:[UIColor colorWithRed:11.0f/255.0f green:166.0f/255.0f blue:171.0f/255.0f alpha:1.0f]];
         [self.headerSubscriptionsView setColorsForText:[UIColor colorWithRed:1.0f green:1.0f blue:1.0f alpha:1.0f] parentheses:[UIColor colorWithRed:1.0f green:1.0f blue:1.0f alpha:1.0f] number:[UIColor colorWithRed:1.0f green:1.0f blue:1.0f alpha:1.0f]];
     }
     else
     {
-        [self.headerSubscriptionsView setColorsForText:[UIColor colorWithRed:106.0f/255.0f green:114.0f/255.0f blue:122.0f/255.0f alpha:1.0f] parentheses:[UIColor colorWithRed:187.0f/255.0f green:187.0f/255.0f blue:187.0f/255.0f alpha:1.0f] number:[UIColor colorWithRed:46.0f/255.0f green:192.0f/255.0f blue:197.0f/255.0f alpha:1.0f]];
+        [self.headerSubscriptionsView setColorsForText:[UIColor colorWithRed:106.0f/255.0f green:114.0f/255.0f blue:122.0f/255.0f alpha:1.0f] parentheses:[UIColor colorWithRed:187.0f/255.0f green:187.0f/255.0f blue:187.0f/255.0f alpha:1.0f] number:[UIColor colorWithRed:11.0f/255.0f green:166.0f/255.0f blue:171.0f/255.0f alpha:1.0f]];
         [self.headerChannelsView setColorsForText:[UIColor colorWithRed:1.0f green:1.0f blue:1.0f alpha:1.0f] parentheses:[UIColor colorWithRed:1.0f green:1.0f blue:1.0f alpha:1.0f] number:[UIColor colorWithRed:1.0f green:1.0f blue:1.0f alpha:1.0f]];
     }
     
@@ -1057,9 +1058,6 @@
     }
     
     
-    
-        
-        
     if(self.user) // if a user has been passed or found, monitor
     {
         
@@ -1080,6 +1078,8 @@
     
     
 }
+
+
 -(ChannelOwner*)user
 {
     return _user;

@@ -195,14 +195,16 @@ extern void instrumentObjcMessageSends(BOOL);
     if (!self.currentUser || !self.currentUser.current)
         return;
     
+    
+    self.window.rootViewController = [self createAndReturnLoginViewController];
+    
     self.currentUser.currentValue = NO;
     
     [self clearCoreDataMainEntities:YES];
 
     self.currentOAuth2Credentials = nil;
     _currentUser = nil;
-
-    self.window.rootViewController = [self createAndReturnLoginViewController];  
+ 
 }
 
 

@@ -245,7 +245,9 @@
             continue;
         
         
-        [self addSubscriptionsObject:channel];
+        [self.subscriptionsSet addObject:channel];
+        channel.subscribedByUserValue = YES;
+        
         
     }
     
@@ -270,16 +272,7 @@
 }
 
 
--(void)addSubscriptionsObject:(Channel *)newSubscription
-{
-    [self.subscriptionsSet addObject:newSubscription];
-    newSubscription.subscribersCountValue += 1;
-}
--(void)removeSubscriptionsObject:(Channel *)oldSubscription
-{
-    [self.subscriptionsSet removeObject:oldSubscription];
-    oldSubscription.subscribersCountValue -= 1;
-}
+
 
 #pragma mark - Helper methods
 

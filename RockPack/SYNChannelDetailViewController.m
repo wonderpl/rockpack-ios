@@ -355,6 +355,8 @@
     }
 
     self.subscribeButton.enabled = YES;
+    
+    
     self.subscribeButton.selected = self.channel.subscribedByUserValue;
     
     [self.channel addObserver: self
@@ -567,7 +569,19 @@
         self.buyButton.hidden = FALSE;
     }
     
-    self.channelTitleTextView.text = self.channel.title;
+    // Set title //
+    
+    NSLog(@"Channel: %@", self.channel);
+    
+    if(self.channel.title)
+    {
+        self.channelTitleTextView.text = self.channel.title;
+    }
+    else
+    {
+        self.channelTitleTextView.text = @"";
+    }
+    
     
     [self adjustTextView];
 }
@@ -776,11 +790,11 @@
     else if ([keyPath isEqualToString: kSubscribedByUserKey])
     {
         NSNumber* newSubscribedByUserValue = (NSNumber*)[change valueForKey: NSKeyValueChangeNewKey];
-        if(![newSubscribedByUserValue isEqual:[NSNull null]])
-        {
-            BOOL finalValue = [newSubscribedByUserValue boolValue];
-            self.subscribeButton.selected = finalValue;
-        }
+        if([newSubscribedByUserValue isKindOfClass:[NSNull class]])
+            return;
+        
+        BOOL finalValue = [newSubscribedByUserValue boolValue];
+        self.subscribeButton.selected = finalValue;
         self.subscribeButton.enabled = YES;
         
         if (self.subscribingIndicator)
@@ -1426,6 +1440,8 @@
                                                      cover: cover
                                                   isPublic: YES
                                          completionHandler: ^(NSDictionary* resourceCreated) {
+                                             
+                                             
                                              NSString* channelId = [resourceCreated objectForKey: @"id"];
                                              
                                              self.createChannelButton.hidden = YES;
@@ -1454,6 +1470,7 @@
 
 - (void) setVideosForChannelById: (NSString*) channelId isUpdated:(BOOL) isUpdated
 {
+    
     [appDelegate.oAuthNetworkEngine updateVideosForChannelForUserId: appDelegate.currentOAuth2Credentials.userId
                                                           channelId: channelId
                                                    videoInstanceSet: self.channel.videoInstances
@@ -1531,6 +1548,12 @@
                                               [self.channel removeObserver: self
                                                                 forKeyPath: kSubscribedByUserKey];
                                               
+                                              // this will delete the edited channel from channels context //
+
+                                              [self.channel.managedObjectContext deleteObject:self.channel];
+                                              
+                                              
+                                              
                                               self.channel = createdChannel;
                                               
                                               [self.channel addObserver: self
@@ -1551,6 +1574,8 @@
                                               
                                               [self setDisplayControlsVisibility:YES];
                                               
+                                              self.mode = kChannelDetailsModeDisplay;
+                                              
                                               [[NSNotificationCenter defaultCenter] postNotificationName: kNoteAllNavControlsShow
                                                                                                   object: self
                                                                                                 userInfo: nil];
@@ -1562,6 +1587,8 @@
                                               
                                               [[NSNotificationCenter defaultCenter] postNotificationName:kNoteChannelSaved
                                                                                                   object:self];
+                                              
+                                              [self.videoThumbnailCollectionView reloadData];
                                               
                                           } errorHandler:^(id err) {
                                               
@@ -2215,8 +2242,21 @@
 -(void)setChannel:(Channel *)channel
 {
 
+    if(!appDelegate)
+        appDelegate = (SYNAppDelegate*)[[UIApplication sharedApplication] delegate];
+    
+    
+    NSError *error = nil;
+    
+
     if(!channel)
+    {
+        _channel = nil;
         return;
+    }
+        
+
+    
     
     // create a copy that belongs to this viewId (@"ChannelDetails")
     
@@ -2230,7 +2270,7 @@
     
     [channelFetchRequest setPredicate: [NSPredicate predicateWithFormat: @"uniqueId == %@ AND viewId == %@", channel.uniqueId, self.viewId]];
     
-    NSError *error = nil;
+    
     NSArray *matchingChannelEntries = [channel.managedObjectContext executeFetchRequest: channelFetchRequest
                                                                                   error: &error];
     

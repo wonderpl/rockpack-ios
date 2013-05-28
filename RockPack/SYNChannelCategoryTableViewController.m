@@ -143,7 +143,13 @@
     if (self.categoriesDatasource.count <= 0 && ! hasRetried)
     {
         
-        [appDelegate.networkEngine updateCategoriesOnCompletion:^{
+        [appDelegate.networkEngine updateCategoriesOnCompletion:^(NSDictionary* dictionary){
+            
+            BOOL registryResultOk = [appDelegate.mainRegistry registerCategoriesFromDictionary: dictionary];
+            if (!registryResultOk) {
+                DebugLog(@"*** Cannot Register Genre Objects! ***");
+                return;
+            }
             
             [self loadCategories];
             

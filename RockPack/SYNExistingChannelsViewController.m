@@ -75,19 +75,7 @@
     
     self.titleLabel.font = [UIFont boldRockpackFontOfSize:self.titleLabel.font.pointSize];
     
-    // Copy Channels and filter them
     
-    NSMutableArray* allChannels = [NSMutableArray arrayWithCapacity:appDelegate.currentUser.channels.count];
-    for (Channel* ch in appDelegate.currentUser.channels)
-    {
-        if (ch.favouritesValue) // remove the favourites channel because it can be added to only by subscribing to a video
-            continue;
-        
-        [allChannels addObject:ch];
-        
-    }
-    
-    self.channels = [NSArray arrayWithArray:allChannels];
 }
 
 
@@ -101,6 +89,20 @@
     self.closeButton.enabled = YES;
     self.confirmButtom.enabled = YES;
     
+    // Copy Channels and filter them
+    
+    NSMutableArray* allChannels = [NSMutableArray arrayWithCapacity:appDelegate.currentUser.channels.count];
+    for (Channel* ch in appDelegate.currentUser.channels)
+    {
+        if (ch.favouritesValue) // remove the favourites channel because it can be added to only by subscribing to a video
+            continue;
+        
+        [allChannels addObject:ch];
+        
+    }
+    
+    self.channels = [NSArray arrayWithArray:allChannels];
+    
     
     [self packViewForInterfaceOrientation:[SYNDeviceManager.sharedInstance orientation]];
     
@@ -108,7 +110,12 @@
 }
 
 
-
+-(void)viewWillDisappear:(BOOL)animated
+{
+    [super viewWillDisappear:animated];
+    
+    self.channels = nil;
+}
 
 #pragma mark - UICollectionView DataSource
 
