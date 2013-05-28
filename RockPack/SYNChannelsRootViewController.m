@@ -243,8 +243,8 @@
     [appDelegate.networkEngine updateChannelsScreenForCategory: (genre ? genre.uniqueId : @"all")
                                                       forRange: dataRequestRange
                                                  ignoringCache: NO
-                                                  onCompletion: ^(NSDictionary* response)
-    {
+                                                  onCompletion: ^(NSDictionary* response) {
+                                                      
                                                       NSDictionary *channelsDictionary = [response objectForKey: @"channels"];
                                                       if (!channelsDictionary || ![channelsDictionary isKindOfClass: [NSDictionary class]])
                                                           return;

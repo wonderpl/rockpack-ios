@@ -427,6 +427,9 @@
 
 - (void) activateDeletionMode: (UILongPressGestureRecognizer *) recognizer
 {
+    if(![self.user.uniqueId isEqualToString:appDelegate.currentUser.uniqueId]) // cannot delete channels of another user
+        return;
+    
     if (recognizer.state == UIGestureRecognizerStateBegan)
     {
         NSIndexPath *indexPath = [self.channelThumbnailCollectionView indexPathForItemAtPoint: [recognizer locationInView: self.channelThumbnailCollectionView]];

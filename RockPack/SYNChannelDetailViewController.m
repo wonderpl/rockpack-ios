@@ -1544,7 +1544,7 @@
                                                                 forKeyPath: kSubscribedByUserKey];
                                               
                                               // this will delete the edited channel from channels context //
-                                              
+
                                               [self.channel.managedObjectContext deleteObject:self.channel];
                                               
                                               
