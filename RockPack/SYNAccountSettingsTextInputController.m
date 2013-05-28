@@ -133,7 +133,7 @@
                                                                 self.contentSizeForViewInPopover.width - 20.0,
                                                                 50)];
     
-    errorLabel.textColor = [UIColor colorWithRed:(46.0/255.0) green:(192.0/255.0) blue:(197.0/255.0) alpha:(1.0)];
+    errorLabel.textColor = [UIColor colorWithRed:(11.0/255.0) green:(166.0/255.0) blue:(171.0/255.0) alpha:(1.0)];
     errorLabel.font = [UIFont rockpackFontOfSize: 18];
     errorLabel.numberOfLines = 0;
     errorLabel.textAlignment = NSTextAlignmentCenter;
