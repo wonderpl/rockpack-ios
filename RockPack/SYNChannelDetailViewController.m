@@ -1423,6 +1423,8 @@
                                                      cover: cover
                                                   isPublic: YES
                                          completionHandler: ^(NSDictionary* resourceCreated) {
+                                             
+                                             
                                              NSString* channelId = [resourceCreated objectForKey: @"id"];
                                              
                                              self.createChannelButton.hidden = YES;
@@ -1451,6 +1453,7 @@
 
 - (void) setVideosForChannelById: (NSString*) channelId isUpdated:(BOOL) isUpdated
 {
+    
     [appDelegate.oAuthNetworkEngine updateVideosForChannelForUserId: appDelegate.currentOAuth2Credentials.userId
                                                           channelId: channelId
                                                    videoInstanceSet: self.channel.videoInstances

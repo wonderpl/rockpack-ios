@@ -52,9 +52,10 @@
 {
     SYNNetworkOperationJsonObject *networkOperation =
     (SYNNetworkOperationJsonObject*)[self operationWithPath: kAPICategories
-                                                     params: [self getLocalParam]];
+                                                     params: [self getLocalParam]
+                                                 httpMethod: @"GET"];
 
-    networkOperation.ignoreCachedResponse = YES;
+    //networkOperation.ignoreCachedResponse = YES;
     [networkOperation addJSONCompletionHandler:^(NSDictionary *dictionary) {
         
         

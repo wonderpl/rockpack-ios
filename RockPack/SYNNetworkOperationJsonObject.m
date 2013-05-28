@@ -16,21 +16,23 @@
 {
     BOOL ignore = self.ignoreCachedResponse;
     
+    
+    NSLog(@"Adding: %@", self.url);
+    
     [self addCompletionHandler:^(MKNetworkOperation *completedOperation)
     {
-         
+        
+        NSLog(@"Returned: %@", completedOperation.url);
         if(ignore && completedOperation.isCachedResponse)
+        {
+            //DebugLog(@"Ignoring Cached Response...");
             return;
+        }
+            
         
         if (completedOperation.HTTPStatusCode == 204)
         {
             responseBlock(@{@"response":@"NO CONTENT"});
-            return;
-        }
-        
-        if (completedOperation.HTTPStatusCode == 201)
-        {
-            responseBlock(@{@"response":@"RESOURCE CREATED"});
             return;
         }
         
