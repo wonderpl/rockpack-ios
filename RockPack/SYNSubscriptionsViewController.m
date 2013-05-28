@@ -35,7 +35,7 @@
 
 - (CGSize) itemSize
 {
-    return CGSizeMake(184.0, 184.0);
+    return CGSizeMake(192.0, 192.0);
 }
 
 

@@ -10,6 +10,9 @@
 #import "SYNSearchChannelsViewController.h"
 #import "SYNSearchRootViewController.h"
 #import "SYNSearchTabView.h"
+#import "SYNDeviceManager.h"
+#import "SYNDeviceManager.h"
+
 
 @interface SYNSearchChannelsViewController ()
 
@@ -44,10 +47,27 @@
 {
     [super viewDidLoad];
     
-    CGRect collectionFrame = self.channelThumbnailCollectionView.frame;
-    collectionFrame.origin.y += 60.0;
-    collectionFrame.size.height -= 60.0;
-    self.channelThumbnailCollectionView.frame = collectionFrame;  
+    if ([SYNDeviceManager.sharedInstance isIPhone]) {
+        CGRect collectionFrame = self.channelThumbnailCollectionView.frame;
+        collectionFrame.origin.y += 60.0;
+        collectionFrame.size.height -= 60.0;
+        self.channelThumbnailCollectionView.frame = collectionFrame;
+    }
+    
+    else {
+        
+        CGRect collectionFrame = self.channelThumbnailCollectionView.frame;
+        collectionFrame.origin.y += 5.0;
+        collectionFrame.size.height -= 5.0;
+        self.channelThumbnailCollectionView.frame = collectionFrame;
+        
+        UICollectionViewFlowLayout* layout = (UICollectionViewFlowLayout*)self.channelThumbnailCollectionView.collectionViewLayout;
+        UIEdgeInsets insets= layout.sectionInset;
+        insets.top = 0.0f;
+        insets.bottom = -50.0f;
+        layout.sectionInset = insets;
+        
+    }
 }
 
 

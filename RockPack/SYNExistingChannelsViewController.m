@@ -43,9 +43,9 @@
     {
         // iPad layout & size
         self.channelThumbnailCollectionView.collectionViewLayout =
-        [SYNDeletionWobbleLayout layoutWithItemSize: CGSizeMake(184.0f, 184.0f)
-                            minimumInterItemSpacing: 10.0f
-                                 minimumLineSpacing: 10.0f
+        [SYNDeletionWobbleLayout layoutWithItemSize: CGSizeMake(192.0f, 192.0f)
+                            minimumInterItemSpacing: 0.0f
+                                 minimumLineSpacing: 5.0f
                                     scrollDirection: UICollectionViewScrollDirectionVertical
                                        sectionInset: UIEdgeInsetsMake(0.0f, 0.0f, 0.0f, 0.0f)];
     }
@@ -53,11 +53,11 @@
     {
         // iPhone layout & size
         self.channelThumbnailCollectionView.collectionViewLayout =
-        [SYNDeletionWobbleLayout layoutWithItemSize: CGSizeMake(152.0f, 152.0f)
-                            minimumInterItemSpacing: 6.0f
-                                 minimumLineSpacing: 5.0f
+        [SYNDeletionWobbleLayout layoutWithItemSize: CGSizeMake(158.0f, 158.0f)
+                            minimumInterItemSpacing: 0.0f
+                                 minimumLineSpacing: 0.0f
                                     scrollDirection: UICollectionViewScrollDirectionVertical
-                                       sectionInset: UIEdgeInsetsMake(5.0f, 5.0f, 5.0f, 5.0f)];
+                                       sectionInset: UIEdgeInsetsMake(2.0f, 2.0f, 0.0f, 2.0f)];
     }
 
     UINib *createCellNib = [UINib nibWithNibName: @"SYNChannelCreateNewCell"
@@ -285,11 +285,11 @@
     {
         if(UIInterfaceOrientationIsPortrait(interfaceOrientation))
         {
-            collectionFrame.size.width = 572.0;
+            collectionFrame.size.width = 580.0;
         }
         else
         {
-            collectionFrame.size.width = 766.0;
+            collectionFrame.size.width = 780.0;
         }
     }
     else

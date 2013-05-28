@@ -480,6 +480,12 @@
 		1F82780A174BB7070012F9F5 /* ButtonNavSelected~iphone.png in Resources */ = {isa = PBXBuildFile; fileRef = 1F827808174BB7070012F9F5 /* ButtonNavSelected~iphone.png */; };
 		1F82780D174BB7310012F9F5 /* ButtonNavSelected.png in Resources */ = {isa = PBXBuildFile; fileRef = 1F82780B174BB7310012F9F5 /* ButtonNavSelected.png */; };
 		1F82780E174BB7310012F9F5 /* ButtonNavSelected@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 1F82780C174BB7310012F9F5 /* ButtonNavSelected@2x.png */; };
+		1FABF7A11753D83A00AE5CCB /* ShadowChannelThumb.png in Resources */ = {isa = PBXBuildFile; fileRef = 1FABF79F1753D83A00AE5CCB /* ShadowChannelThumb.png */; };
+		1FABF7A21753D83A00AE5CCB /* ShadowChannelThumb@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 1FABF7A01753D83A00AE5CCB /* ShadowChannelThumb@2x.png */; };
+		1FABF7A51753DA1500AE5CCB /* ShadowChannelMidThumb.png in Resources */ = {isa = PBXBuildFile; fileRef = 1FABF7A31753DA1500AE5CCB /* ShadowChannelMidThumb.png */; };
+		1FABF7A61753DA1500AE5CCB /* ShadowChannelMidThumb@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 1FABF7A41753DA1500AE5CCB /* ShadowChannelMidThumb@2x.png */; };
+		1FABF7A91753EAEA00AE5CCB /* ShadowChannelThumb@2x~iphone.png in Resources */ = {isa = PBXBuildFile; fileRef = 1FABF7A71753EAEA00AE5CCB /* ShadowChannelThumb@2x~iphone.png */; };
+		1FABF7AA1753EAEA00AE5CCB /* ShadowChannelThumb~iphone.png in Resources */ = {isa = PBXBuildFile; fileRef = 1FABF7A81753EAEA00AE5CCB /* ShadowChannelThumb~iphone.png */; };
 		1FC8FEA817340708000FF0B2 /* ShadowCategorySlide@2x~iphone.png in Resources */ = {isa = PBXBuildFile; fileRef = 1FC8FEA617340708000FF0B2 /* ShadowCategorySlide@2x~iphone.png */; };
 		1FC8FEA917340708000FF0B2 /* ShadowCategorySlide~iphone.png in Resources */ = {isa = PBXBuildFile; fileRef = 1FC8FEA717340708000FF0B2 /* ShadowCategorySlide~iphone.png */; };
 		1FD12372174CD76700144374 /* NavDefault.png in Resources */ = {isa = PBXBuildFile; fileRef = 1FD1236E174CD76700144374 /* NavDefault.png */; };
@@ -1627,6 +1633,12 @@
 		1F827808174BB7070012F9F5 /* ButtonNavSelected~iphone.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "ButtonNavSelected~iphone.png"; sourceTree = "<group>"; };
 		1F82780B174BB7310012F9F5 /* ButtonNavSelected.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = ButtonNavSelected.png; path = Assets/Images/ButtonNavSelected.png; sourceTree = "<group>"; };
 		1F82780C174BB7310012F9F5 /* ButtonNavSelected@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = "ButtonNavSelected@2x.png"; path = "Assets/Images/ButtonNavSelected@2x.png"; sourceTree = "<group>"; };
+		1FABF79F1753D83A00AE5CCB /* ShadowChannelThumb.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = ShadowChannelThumb.png; path = Assets/Images/ShadowChannelThumb.png; sourceTree = "<group>"; };
+		1FABF7A01753D83A00AE5CCB /* ShadowChannelThumb@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = "ShadowChannelThumb@2x.png"; path = "Assets/Images/ShadowChannelThumb@2x.png"; sourceTree = "<group>"; };
+		1FABF7A31753DA1500AE5CCB /* ShadowChannelMidThumb.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = ShadowChannelMidThumb.png; path = Assets/Images/ShadowChannelMidThumb.png; sourceTree = "<group>"; };
+		1FABF7A41753DA1500AE5CCB /* ShadowChannelMidThumb@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = "ShadowChannelMidThumb@2x.png"; path = "Assets/Images/ShadowChannelMidThumb@2x.png"; sourceTree = "<group>"; };
+		1FABF7A71753EAEA00AE5CCB /* ShadowChannelThumb@2x~iphone.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "ShadowChannelThumb@2x~iphone.png"; sourceTree = "<group>"; };
+		1FABF7A81753EAEA00AE5CCB /* ShadowChannelThumb~iphone.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "ShadowChannelThumb~iphone.png"; sourceTree = "<group>"; };
 		1FC8FEA617340708000FF0B2 /* ShadowCategorySlide@2x~iphone.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "ShadowCategorySlide@2x~iphone.png"; sourceTree = "<group>"; };
 		1FC8FEA717340708000FF0B2 /* ShadowCategorySlide~iphone.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "ShadowCategorySlide~iphone.png"; sourceTree = "<group>"; };
 		1FD1236E174CD76700144374 /* NavDefault.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = NavDefault.png; path = Assets/Images/NavDefault.png; sourceTree = "<group>"; };
@@ -3215,10 +3227,14 @@
 			children = (
 				1F59ED1817396E1D00430C24 /* GlossChannelMid.png */,
 				1F59ED1917396E1D00430C24 /* GlossChannelMid@2x.png */,
+				1FABF7A31753DA1500AE5CCB /* ShadowChannelMidThumb.png */,
+				1FABF7A41753DA1500AE5CCB /* ShadowChannelMidThumb@2x.png */,
 				011C16911732834F00CF50B9 /* PanelChannelCreateNew.png */,
 				011C16921732834F00CF50B9 /* PanelChannelCreateNew@2x.png */,
 				01B34C9616A99D6A002AD8FB /* GlossChannelThumbnail.png */,
 				01B34C9716A99D6A002AD8FB /* GlossChannelThumbnail@2x.png */,
+				1FABF79F1753D83A00AE5CCB /* ShadowChannelThumb.png */,
+				1FABF7A01753D83A00AE5CCB /* ShadowChannelThumb@2x.png */,
 			);
 			name = "Channel Thumbnail";
 			sourceTree = "<group>";
@@ -3728,6 +3744,8 @@
 				38A2FF4E1731607F00FB9F57 /* SubCategorySlide~iphone.png */,
 				1FC8FEA617340708000FF0B2 /* ShadowCategorySlide@2x~iphone.png */,
 				1FC8FEA717340708000FF0B2 /* ShadowCategorySlide~iphone.png */,
+				1FABF7A71753EAEA00AE5CCB /* ShadowChannelThumb@2x~iphone.png */,
+				1FABF7A81753EAEA00AE5CCB /* ShadowChannelThumb~iphone.png */,
 			);
 			path = channels;
 			sourceTree = "<group>";
@@ -5506,6 +5524,12 @@
 				1FD12374174CD76700144374 /* NavHighlighted.png in Resources */,
 				1FD12375174CD76700144374 /* NavHighlighted@2x.png in Resources */,
 				011BA5DF174D1ECB00041A16 /* SYNCoverRightMoreView.xib in Resources */,
+				1FABF7A11753D83A00AE5CCB /* ShadowChannelThumb.png in Resources */,
+				1FABF7A21753D83A00AE5CCB /* ShadowChannelThumb@2x.png in Resources */,
+				1FABF7A51753DA1500AE5CCB /* ShadowChannelMidThumb.png in Resources */,
+				1FABF7A61753DA1500AE5CCB /* ShadowChannelMidThumb@2x.png in Resources */,
+				1FABF7A91753EAEA00AE5CCB /* ShadowChannelThumb@2x~iphone.png in Resources */,
+				1FABF7AA1753EAEA00AE5CCB /* ShadowChannelThumb~iphone.png in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

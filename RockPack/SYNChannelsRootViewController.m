@@ -85,11 +85,11 @@
     
     if (isIPhone)
     {
-        flowLayout = [SYNIntegralCollectionViewFlowLayout layoutWithItemSize: CGSizeMake(152.0f, 167.0f)
+        flowLayout = [SYNIntegralCollectionViewFlowLayout layoutWithItemSize: CGSizeMake(158.0f, 169.0f)
                                                      minimumInterItemSpacing: 0.0
-                                                          minimumLineSpacing: 6.0
+                                                          minimumLineSpacing: 4.0
                                                              scrollDirection: UICollectionViewScrollDirectionVertical
-                                                                sectionInset: UIEdgeInsetsMake(5.0, 5.0, 5.0, 5.0)];
+                                                                sectionInset: UIEdgeInsetsMake(2.0, 2.0, 6.0, 2.0)];
         flowLayout.footerReferenceSize = [self footerSize];
     }
     else

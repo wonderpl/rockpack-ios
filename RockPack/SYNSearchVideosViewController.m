@@ -68,11 +68,28 @@
     
     // override the data loading
     
-    CGRect collectionFrame = self.videoThumbnailCollectionView.frame;
-    collectionFrame.origin.y += 40.0;
-    collectionFrame.size.width = [SYNDeviceManager.sharedInstance currentScreenWidth];
-    collectionFrame.size.height = [SYNDeviceManager.sharedInstance currentScreenHeight] - 190.0;
-    self.videoThumbnailCollectionView.frame = collectionFrame;
+    if (isIphone)
+    {
+        CGRect collectionFrame = self.videoThumbnailCollectionView.frame;
+        collectionFrame.origin.y += 40.0;
+        collectionFrame.size.width = [SYNDeviceManager.sharedInstance currentScreenWidth];
+        collectionFrame.size.height = [SYNDeviceManager.sharedInstance currentScreenHeight] - 190.0;
+        self.videoThumbnailCollectionView.frame = collectionFrame;
+    }
+    
+    else
+    {
+        CGRect collectionFrame = self.videoThumbnailCollectionView.frame;
+        collectionFrame.origin.y += 54.0;
+        collectionFrame.size.width = [SYNDeviceManager.sharedInstance currentScreenWidth];
+        collectionFrame.size.height = [SYNDeviceManager.sharedInstance currentScreenHeight] - 150.0;
+        self.videoThumbnailCollectionView.frame = collectionFrame;
+        UICollectionViewFlowLayout* layout = (UICollectionViewFlowLayout*)self.videoThumbnailCollectionView.collectionViewLayout;
+        UIEdgeInsets insets= layout.sectionInset;
+        insets.top = 0.0f;
+        insets.bottom = 15.0f;
+        layout.sectionInset = insets;
+    }
     
     self.videoThumbnailCollectionView.autoresizingMask = UIViewAutoresizingFlexibleWidth| UIViewAutoresizingFlexibleHeight;
     self.videoThumbnailCollectionView.backgroundColor = [UIColor clearColor];

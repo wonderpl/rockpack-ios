@@ -53,7 +53,7 @@
         
         UIImage* loopImage = [UIImage imageNamed:@"IconSearch"];
         UIImageView* loopImageView = [[UIImageView alloc] initWithImage:loopImage];
-        loopImageView.frame = CGRectMake(10.0, 14.0, loopImage.size.width, loopImage.size.height);
+        loopImageView.frame = CGRectMake(15.0, 15.0, loopImage.size.width, loopImage.size.height);
         loopImageView.image = loopImage;
         grayPanel.autoresizingMask = UIViewAutoresizingFlexibleBottomMargin | UIViewAutoresizingFlexibleWidth;
         [grayPanel addSubview:loopImageView];
@@ -62,7 +62,7 @@
         // == Label == //
         
         CGRect fieldRect = grayPanel.frame;
-        fieldRect.origin.x += 18.0 + loopImage.size.width;
+        fieldRect.origin.x += 28.0 + loopImage.size.width;
         fieldRect.origin.y += 14.0;
         fieldRect.size.width -= 28.0 * 2;
         fieldRect.size.height -= 14.0 * 2;

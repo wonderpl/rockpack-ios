@@ -41,10 +41,24 @@
 						<reference key="NSNextResponder" ref="409767515"/>
 						<int key="NSvFlags">256</int>
 						<array class="NSMutableArray" key="NSSubviews">
+							<object class="IBUIImageView" id="112621966">
+								<reference key="NSNextResponder" ref="432022389"/>
+								<int key="NSvFlags">292</int>
+								<string key="NSFrameSize">{158, 158}</string>
+								<reference key="NSSuperview" ref="432022389"/>
+								<reference key="NSNextKeyView" ref="923717632"/>
+								<string key="NSReuseIdentifierKey">_NS:9</string>
+								<bool key="IBUIUserInteractionEnabled">NO</bool>
+								<string key="targetRuntimeIdentifier">IBIPadFramework</string>
+								<object class="NSCustomResource" key="IBUIImage">
+									<string key="NSClassName">NSImage</string>
+									<string key="NSResourceName">ShadowChannelThumb~iphone.png</string>
+								</object>
+							</object>
 							<object class="IBUIImageView" id="923717632">
 								<reference key="NSNextResponder" ref="432022389"/>
 								<int key="NSvFlags">292</int>
-								<string key="NSFrameSize">{152, 152}</string>
+								<string key="NSFrame">{{3, 3}, {152, 152}}</string>
 								<reference key="NSSuperview" ref="432022389"/>
 								<reference key="NSNextKeyView" ref="4067991"/>
 								<string key="NSReuseIdentifierKey">_NS:9</string>
@@ -60,7 +74,7 @@
 							<object class="IBUIImageView" id="4067991">
 								<reference key="NSNextResponder" ref="432022389"/>
 								<int key="NSvFlags">292</int>
-								<string key="NSFrameSize">{152, 152}</string>
+								<string key="NSFrame">{{3, 3}, {152, 152}}</string>
 								<reference key="NSSuperview" ref="432022389"/>
 								<reference key="NSNextKeyView" ref="137495722"/>
 								<string key="NSReuseIdentifierKey">_NS:9</string>
@@ -77,7 +91,7 @@
 							<object class="IBUIImageView" id="137495722">
 								<reference key="NSNextResponder" ref="432022389"/>
 								<int key="NSvFlags">292</int>
-								<string key="NSFrameSize">{152, 152}</string>
+								<string key="NSFrame">{{3, 3}, {152, 152}}</string>
 								<reference key="NSSuperview" ref="432022389"/>
 								<reference key="NSNextKeyView" ref="907959281"/>
 								<string key="NSReuseIdentifierKey">_NS:9</string>
@@ -92,7 +106,7 @@
 							<object class="IBUILabel" id="907959281">
 								<reference key="NSNextResponder" ref="432022389"/>
 								<int key="NSvFlags">292</int>
-								<string key="NSFrame">{{10, 104}, {132, 47}}</string>
+								<string key="NSFrame">{{13, 107}, {132, 47}}</string>
 								<reference key="NSSuperview" ref="432022389"/>
 								<reference key="NSNextKeyView" ref="367563212"/>
 								<string key="NSReuseIdentifierKey">_NS:9</string>
@@ -134,8 +148,9 @@
 							<object class="IBUILabel" id="367563212">
 								<reference key="NSNextResponder" ref="432022389"/>
 								<int key="NSvFlags">292</int>
-								<string key="NSFrame">{{0, 153}, {152, 21}}</string>
+								<string key="NSFrame">{{3, 156}, {152, 21}}</string>
 								<reference key="NSSuperview" ref="432022389"/>
+								<reference key="NSNextKeyView"/>
 								<string key="NSReuseIdentifierKey">_NS:9</string>
 								<object class="NSColor" key="IBUIBackgroundColor">
 									<int key="NSColorSpace">1</int>
@@ -167,9 +182,9 @@
 							<object class="IBUIButton" id="180858007">
 								<reference key="NSNextResponder" ref="432022389"/>
 								<int key="NSvFlags">292</int>
-								<string key="NSFrame">{{-44, 146}, {241, 27}}</string>
+								<string key="NSFrame">{{-41, 149}, {241, 27}}</string>
 								<reference key="NSSuperview" ref="432022389"/>
-								<reference key="NSNextKeyView" ref="923717632"/>
+								<reference key="NSNextKeyView" ref="112621966"/>
 								<string key="NSReuseIdentifierKey">_NS:9</string>
 								<bool key="IBUIClearsContextBeforeDrawing">NO</bool>
 								<string key="targetRuntimeIdentifier">IBIPadFramework</string>
@@ -198,7 +213,7 @@
 								</object>
 							</object>
 						</array>
-						<string key="NSFrameSize">{152, 167}</string>
+						<string key="NSFrameSize">{158, 169}</string>
 						<reference key="NSSuperview" ref="409767515"/>
 						<reference key="NSNextKeyView" ref="180858007"/>
 						<reference key="IBUIBackgroundColor" ref="255104461"/>
@@ -209,7 +224,7 @@
 						<string key="targetRuntimeIdentifier">IBIPadFramework</string>
 					</object>
 				</array>
-				<string key="NSFrameSize">{152, 167}</string>
+				<string key="NSFrameSize">{158, 169}</string>
 				<reference key="NSSuperview"/>
 				<reference key="NSNextKeyView" ref="432022389"/>
 				<string key="NSReuseIdentifierKey">_NS:9</string>
@@ -287,6 +302,7 @@
 							<reference ref="907959281"/>
 							<reference ref="367563212"/>
 							<reference ref="180858007"/>
+							<reference ref="112621966"/>
 						</array>
 						<reference key="parent" ref="0"/>
 						<string key="objectName">Channel Thumbnail Cell</string>
@@ -325,6 +341,12 @@
 						<reference key="parent" ref="409767515"/>
 						<string key="objectName">Display Name Button</string>
 					</object>
+					<object class="IBObjectRecord">
+						<int key="objectID">88</int>
+						<reference key="object" ref="112621966"/>
+						<reference key="parent" ref="409767515"/>
+						<string key="objectName">Image View - Shadow</string>
+					</object>
 				</array>
 			</object>
 			<dictionary class="NSMutableDictionary" key="flattenedProperties">
@@ -339,12 +361,13 @@
 				<string key="78.IBPluginDependency">com.apple.InterfaceBuilder.IBCocoaTouchPlugin</string>
 				<string key="82.IBPluginDependency">com.apple.InterfaceBuilder.IBCocoaTouchPlugin</string>
 				<string key="84.IBPluginDependency">com.apple.InterfaceBuilder.IBCocoaTouchPlugin</string>
+				<string key="88.IBPluginDependency">com.apple.InterfaceBuilder.IBCocoaTouchPlugin</string>
 			</dictionary>
 			<dictionary class="NSMutableDictionary" key="unlocalizedProperties"/>
 			<nil key="activeLocalization"/>
 			<dictionary class="NSMutableDictionary" key="localizations"/>
 			<nil key="sourceID"/>
-			<int key="maxID">87</int>
+			<int key="maxID">88</int>
 		</object>
 		<object class="IBClassDescriber" key="IBDocument.Classes"/>
 		<int key="IBDocument.localizationMode">0</int>
@@ -355,6 +378,7 @@
 			<string key="ChannelCreationCoverNone.png">{160, 121}</string>
 			<string key="GlossChannelProfile~iphone.png">{152, 152}</string>
 			<string key="PanelChannelProfile~iphone.png">{152, 152}</string>
+			<string key="ShadowChannelThumb~iphone.png">{158, 158}</string>
 		</dictionary>
 		<string key="IBCocoaTouchPluginVersion">2083</string>
 	</data>

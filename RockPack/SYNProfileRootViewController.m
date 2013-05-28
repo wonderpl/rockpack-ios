@@ -26,7 +26,7 @@
 #import "Video.h"
 
 #define kInterChannelSpacing 150.0
-#define kInterRowMargin 12.0f
+#define kInterRowMargin 8.0f
 
 @interface SYNProfileRootViewController () <SYNDeletionWobbleLayoutDelegate, UIGestureRecognizerDelegate>
 
@@ -80,47 +80,47 @@
     }
 
     // Main Collection View
-    self.channelsLandscapeLayout = [SYNDeletionWobbleLayout layoutWithItemSize: CGSizeMake(184.0f, 184.0f)
-                                                       minimumInterItemSpacing: kInterRowMargin
-                                                            minimumLineSpacing: kInterRowMargin
+    self.channelsLandscapeLayout = [SYNDeletionWobbleLayout layoutWithItemSize: CGSizeMake(192.0f, 192.0f)
+                                                       minimumInterItemSpacing: 0.0
+                                                            minimumLineSpacing: 5.0
                                                                scrollDirection: UICollectionViewScrollDirectionVertical
-                                                                  sectionInset: UIEdgeInsetsMake(0.0f, kInterRowMargin, kInterRowMargin, kInterRowMargin + 12.0f)];
+                                                                  sectionInset: UIEdgeInsetsMake(kInterRowMargin - 8.0, 8.0, kInterRowMargin, 18.0)];
     
 
-    self.subscriptionsLandscapeLayout = [SYNDeletionWobbleLayout layoutWithItemSize:CGSizeMake(184.0, 184.0f)
-                                                                        minimumInterItemSpacing: kInterRowMargin - 2
-                                                                             minimumLineSpacing: kInterRowMargin
+    self.subscriptionsLandscapeLayout = [SYNDeletionWobbleLayout layoutWithItemSize:CGSizeMake(192.0, 192.0f)
+                                                                        minimumInterItemSpacing: 0.0
+                                                                             minimumLineSpacing: 5.0
                                                                                 scrollDirection: UICollectionViewScrollDirectionVertical
-                                                                                   sectionInset: UIEdgeInsetsMake(0.0f, kInterRowMargin + 6.0f, kInterRowMargin, kInterRowMargin + 2)];
+                                                                                   sectionInset: UIEdgeInsetsMake(kInterRowMargin - 8.0, 12.0, kInterRowMargin, 11.0)];
     
     
     if (isIPhone)
     {
-        self.channelsPortraitLayout = [SYNDeletionWobbleLayout layoutWithItemSize: CGSizeMake(152.0f, 152.0f)
+        self.channelsPortraitLayout = [SYNDeletionWobbleLayout layoutWithItemSize: CGSizeMake(158.0f, 158.0f)
                                                           minimumInterItemSpacing: 0.0f
-                                                               minimumLineSpacing: 6.0f
+                                                               minimumLineSpacing: 0.0f
                                                                   scrollDirection: UICollectionViewScrollDirectionVertical
-                                                                     sectionInset: UIEdgeInsetsMake(5.0, 5.0, 5.0, 5.0)];
+                                                                     sectionInset: UIEdgeInsetsMake(3.0, 2.0, 0.0, 2.0)];
 
-        self.subscriptionsPortraitLayout = [SYNDeletionWobbleLayout layoutWithItemSize: CGSizeMake(152.0f, 152.0f)
+        self.subscriptionsPortraitLayout = [SYNDeletionWobbleLayout layoutWithItemSize: CGSizeMake(158.0f, 158.0f)
                                                                minimumInterItemSpacing: 0.0f
-                                                                    minimumLineSpacing: 6.0f
+                                                                    minimumLineSpacing: 0.0f
                                                                        scrollDirection: UICollectionViewScrollDirectionVertical
-                                                                          sectionInset: UIEdgeInsetsMake(5.0, 5.0, 5.0, 5.0)];
+                                                                          sectionInset: UIEdgeInsetsMake(3.0, 2.0, 0.0, 2.0)];
     }
     else
     {
-        self.channelsPortraitLayout = [SYNDeletionWobbleLayout layoutWithItemSize: CGSizeMake(184.0, 184.0)
-                                                          minimumInterItemSpacing: 4.0f
-                                                               minimumLineSpacing: 8.0f
+        self.channelsPortraitLayout = [SYNDeletionWobbleLayout layoutWithItemSize: CGSizeMake(192.0, 192.0)
+                                                          minimumInterItemSpacing: 0.0f
+                                                               minimumLineSpacing: 0.0f
                                                                   scrollDirection: UICollectionViewScrollDirectionVertical
-                                                                     sectionInset: UIEdgeInsetsMake(kInterRowMargin, 4.0, kInterRowMargin, 4.0)];
+                                                                     sectionInset: UIEdgeInsetsMake(kInterRowMargin, 0.0, kInterRowMargin, 0.0)];
         
-        self.subscriptionsPortraitLayout = [SYNDeletionWobbleLayout layoutWithItemSize: CGSizeMake(184.0, 184.0)
-                                                               minimumInterItemSpacing: 4.0f
-                                                                    minimumLineSpacing: 8.0f
+        self.subscriptionsPortraitLayout = [SYNDeletionWobbleLayout layoutWithItemSize: CGSizeMake(192.0, 192.0)
+                                                               minimumInterItemSpacing: 0.0f
+                                                                    minimumLineSpacing: 0.0f
                                                                        scrollDirection: UICollectionViewScrollDirectionVertical
-                                                                          sectionInset: UIEdgeInsetsMake(kInterRowMargin, 4.0, kInterRowMargin, 4.0)];
+                                                                          sectionInset: UIEdgeInsetsMake(kInterRowMargin, 0.0, kInterRowMargin, 0.0)];
     }                                                                                                                                                                                                                                                                        
                                                                                                                                                                                                                     
     CGFloat correctWidth = [SYNDeviceManager.sharedInstance isLandscape] ? 600.0 : 400.0;
