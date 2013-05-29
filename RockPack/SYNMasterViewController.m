@@ -860,6 +860,8 @@ typedef void(^AnimationCompletionBlock)(BOOL finished);
 
 #pragma mark - Navigation Methods
 
+// when a view is pushed, this gets called
+
 - (void) showBackButton: (BOOL) show // popping
 {
     CGRect targetFrame;
@@ -957,7 +959,7 @@ typedef void(^AnimationCompletionBlock)(BOOL finished);
         }
         else // go back to containerView
         {
-            self.overlayNavigationController = nil; // animate the overlay out
+            self.overlayNavigationController = nil; // animate the overlay out using the setter method
             
             
             

@@ -202,7 +202,6 @@
 {
     [self updateAnalytics];
     
-    [appDelegate.networkEngine cancelAllOperations];
     
     dataRequestRange = NSMakeRange(1, STANDARD_REQUEST_LENGTH);
     
