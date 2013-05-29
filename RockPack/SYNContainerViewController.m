@@ -21,6 +21,7 @@
 #import <QuartzCore/QuartzCore.h>
 #import "SYNDeviceManager.h"
 #import "SYNObjectFactory.h"
+#import "SYNChannelDetailViewController.h"
 
 @interface SYNContainerViewController () <UIPopoverControllerDelegate,
                                           UITextViewDelegate>
@@ -122,6 +123,7 @@
     
     [self packViewControllersForInterfaceOrientation:UIDeviceOrientationLandscapeLeft];
     
+    
     // == Register Notifications == //
     
     [[NSNotificationCenter defaultCenter] addObserver: self
@@ -129,12 +131,14 @@
                                                  name: kProfileRequested
                                                object: nil];
     
+    // Fired from SideNavigation when the user clicks on a notification's channel icon 
     [[NSNotificationCenter defaultCenter] addObserver: self
                                              selector: @selector(channelDetailsRequested:)
                                                  name: kChannelDetailsRequested
                                                object: nil];
     
     // == Set Firts Page == //
+    
     if (appDelegate.currentUser.subscriptions.count > 3)
     {
         self.selectedNavigationController = self.childViewControllers[0];
@@ -245,7 +249,11 @@
     if (!channel)
         return;
     
-    [self.showingViewController viewChannelDetails: channel];
+    SYNChannelDetailViewController *channelVC = [[SYNChannelDetailViewController alloc] initWithChannel: channel
+                                                                                              usingMode: kChannelDetailsModeDisplay];
+    
+    
+    [self.showingViewController animatedPushViewController: channelVC];
 }
 
 
