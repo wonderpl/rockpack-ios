@@ -429,7 +429,10 @@
                                   ignoringObjectTypes: kIgnoreStoredObjects | kIgnoreVideoInstanceObjects];
             
         }
-        
+        else
+        {
+            [existingChannelsByIndex removeObjectForKey: uniqueId];
+        }
 
         channel.markedForDeletionValue = NO;
         
@@ -444,14 +447,23 @@
         channel.viewId = kChannelsViewId;
     }
     
-    [self removeUnusedManagedObjects: existingChannels
-              inManagedObjectContext: importManagedObjectContext];
+    // delete old objects //
+    
+    for (id key in existingChannelsByIndex)
+    {
+        Channel* ch = (Channel*)[existingChannelsByIndex objectForKey:key];
+        if(!ch) continue;
+        
+        [ch.managedObjectContext deleteObject:ch];
+    }
     
     BOOL saveResult = [self saveImportContext];
     if(!saveResult)
         return NO;
     
     [appDelegate saveContext: TRUE];
+    
+    
     
     return YES;
 }

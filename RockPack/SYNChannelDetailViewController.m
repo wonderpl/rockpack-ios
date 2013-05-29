@@ -343,6 +343,11 @@
                                                  name: kCoverArtChanged
                                                object: nil];
     
+    [[NSNotificationCenter defaultCenter] addObserver:self
+                                             selector:@selector(videoQueueCleared)
+                                                 name:kVideoQueueClear
+                                               object:nil];
+    
     if(self.channel.channelOwner.uniqueId == appDelegate.currentUser.uniqueId)
     {
         [[NSNotificationCenter defaultCenter] addObserver: self
@@ -397,6 +402,10 @@
     [[NSNotificationCenter defaultCenter] removeObserver: self
                                                     name: kUserDataChanged
                                                   object: nil];
+    
+    [[NSNotificationCenter defaultCenter] removeObserver:self
+                                                    name:kVideoQueueClear
+                                                  object:nil];
 
     
     if (self.subscribingIndicator)
@@ -406,11 +415,13 @@
     }
         
 
-
     [super viewWillDisappear: animated];
 }
 
-
+-(void) videoQueueCleared
+{
+    [self.videoThumbnailCollectionView reloadData];
+}
 - (void) updateCategoryButtonText: (NSString *) buttonText
 {
     NSMutableAttributedString* attributedCategoryString = [[NSMutableAttributedString alloc] initWithString: buttonText
@@ -1591,7 +1602,6 @@
                                               [[NSNotificationCenter defaultCenter] postNotificationName:kNoteChannelSaved
                                                                                                   object:self];
                                               
-                                              [self.videoThumbnailCollectionView reloadData];
                                               
                                           } errorHandler:^(id err) {
                                               
