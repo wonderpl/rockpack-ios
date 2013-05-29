@@ -12,6 +12,7 @@
 #import "SYNSearchTabView.h"
 #import "SYNDeviceManager.h"
 #import "SYNDeviceManager.h"
+#import "SYNChannelDetailViewController.h"
 
 
 @interface SYNSearchChannelsViewController ()
@@ -196,7 +197,16 @@
 
 -(void)collectionView:(UICollectionView *)collectionView didSelectItemAtIndexPath:(NSIndexPath *)indexPath
 {
-    [super collectionView:collectionView didSelectItemAtIndexPath:indexPath];
+    if (self.isAnimating) // prevent double clicking
+        return;
+    
+    
+    Channel *channel = (Channel*)(self->channels[indexPath.row]);
+    
+    SYNChannelDetailViewController *channelVC = [[SYNChannelDetailViewController alloc] initWithChannel: channel
+                                                                                              usingMode: kChannelDetailsModeDisplay];
+    
+    [self animatedPushViewController: channelVC];
 }
 
 @end

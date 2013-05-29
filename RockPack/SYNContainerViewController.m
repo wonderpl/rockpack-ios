@@ -248,10 +248,10 @@
 {
     // check whether we are in search mode //
     
-    if( ((SYNMasterViewController*)self.parentViewController).isInSearchMode )
-    {
-        return;
-    }
+//    if( ((SYNMasterViewController*)self.parentViewController).isInSearchMode && [self.showingViewController.viewId isEqualToString:kChannelsViewId])
+//    {
+//        return;
+//    }
     
     Channel* channel = (Channel*)[[notification userInfo] objectForKey: kChannel];
     if (!channel)
@@ -259,7 +259,6 @@
     
     SYNChannelDetailViewController *channelVC = [[SYNChannelDetailViewController alloc] initWithChannel: channel
                                                                                               usingMode: kChannelDetailsModeDisplay];
-    
     
     [self.showingViewController animatedPushViewController: channelVC];
 }
