@@ -491,6 +491,12 @@ typedef void(^AnimationCompletionBlock)(BOOL finished);
     
     self.videoViewerViewController = [[SYNVideoViewerViewController alloc] initWithVideoInstanceArray: videoInstanceArray
                                                                                         selectedIndex: selectedIndex];
+    
+    if([originViewController isKindOfClass:[SYNChannelDetailViewController class]])
+    {
+        self.videoViewerViewController.shownFromChannelScreen = YES;
+    }
+    
     [self addChildViewController: self.videoViewerViewController];
     
     self.videoViewerViewController.view.frame = self.overlayView.bounds;
@@ -860,6 +866,8 @@ typedef void(^AnimationCompletionBlock)(BOOL finished);
 
 #pragma mark - Navigation Methods
 
+// when a view is pushed, this gets called
+
 - (void) showBackButton: (BOOL) show // popping
 {
     CGRect targetFrame;
@@ -957,7 +965,7 @@ typedef void(^AnimationCompletionBlock)(BOOL finished);
         }
         else // go back to containerView
         {
-            self.overlayNavigationController = nil; // animate the overlay out
+            self.overlayNavigationController = nil; // animate the overlay out using the setter method
             
             
             

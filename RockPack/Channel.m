@@ -29,7 +29,7 @@
     if(!channel)
         return nil;
     
-    Channel* copyChannel = [Channel insertInManagedObjectContext: channel.managedObjectContext];
+    Channel* copyChannel = [Channel insertInManagedObjectContext: managedObjectContext];
     
     copyChannel.uniqueId = channel.uniqueId;
     
@@ -58,24 +58,19 @@
     if (!(ignoringObjects & kIgnoreChannelOwnerObject))
     {
         copyChannel.channelOwner = [ChannelOwner instanceFromChannelOwner:channel.channelOwner
-                                                                andViewId:viewId usingManagedObjectContext:channel.managedObjectContext
-                                                      ignoringObjectTypes:kIgnoreChannelObjects];
+                                                                andViewId:viewId
+                                                usingManagedObjectContext:managedObjectContext
+                                                      ignoringObjectTypes:kIgnoreChannelObjects | kIgnoreSubscriptionObjects];
     }
-    else
-    {
-        copyChannel.channelOwner = channel.channelOwner;
-    }
+    
     
     if (!(ignoringObjects & kIgnoreChannelCover))
     {
         
         copyChannel.channelCover = [ChannelCover instanceFromChannelCover:channel.channelCover
-                                                usingManagedObjectContext:channel.managedObjectContext];
+                                                usingManagedObjectContext:managedObjectContext];
     }
-    else
-    {
-        copyChannel.channelCover = channel.channelCover;
-    }
+    
     
     
     if (!(ignoringObjects & kIgnoreVideoInstanceObjects))
@@ -84,7 +79,7 @@
         for (VideoInstance* videoInstance in channel.videoInstances)
         {
             VideoInstance* copyVideoInstance = [VideoInstance instanceFromVideoInstance:videoInstance
-                                                              usingManagedObjectContext:channel.managedObjectContext];
+                                                              usingManagedObjectContext:managedObjectContext];
             
             copyVideoInstance.viewId = viewId;
             
@@ -92,10 +87,7 @@
         }
         
     }
-    else
-    {
-        copyChannel.videoInstances = channel.videoInstances;
-    }
+    
     
     
     return copyChannel;

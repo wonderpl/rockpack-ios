@@ -363,6 +363,7 @@
     
     [predicates addObject: [NSPredicate predicateWithFormat: @"viewId == %@", kChannelsViewId]];
     
+    
     if (genre)
     {
         if ([genre isMemberOfClass: [Genre class]])
@@ -382,6 +383,9 @@
     }
     
 
+    
+    // Get a list of existing channels in in a dictionary
+    
     NSError* error;
     NSArray *existingChannels = [importManagedObjectContext executeFetchRequest: channelFetchRequest
                                                                           error: &error];
@@ -390,8 +394,6 @@
     
     for (Channel* existingChannel in existingChannels)
     {
-        
-        
         
         [existingChannelsByIndex setObject: existingChannel
                                     forKey: existingChannel.uniqueId];
@@ -411,6 +413,14 @@
            
     }
 
+    // Set subscriptions dictionary
+    
+    NSMutableDictionary* existingSubscriptionsByIndex = [NSMutableDictionary dictionaryWithCapacity: appDelegate.currentUser.subscriptions.count];
+    for (Channel* subscription in appDelegate.currentUser.subscriptions)
+        [existingSubscriptionsByIndex setObject:subscription forKey:subscription.uniqueId];
+        
+    
+    // Loop through the fresh data from the server
     
     for (NSDictionary *itemDictionary in itemArray)
     {
@@ -441,6 +451,10 @@
         channel.position = [itemDictionary objectForKey: @"position"
                                             withDefault: [NSNumber numberWithInt: 0]];
         
+        Channel* subscription = [existingSubscriptionsByIndex objectForKey:channel.uniqueId];
+        if(subscription)
+            channel.subscribedByUserValue = YES;
+        
         if (!genre) // nil is passed in case of the @"all" category which is popular
             channel.popularValue = YES;
         
@@ -449,13 +463,14 @@
     
     // delete old objects //
     
-    for (id key in existingChannelsByIndex)
-    {
-        Channel* ch = (Channel*)[existingChannelsByIndex objectForKey:key];
-        if(!ch) continue;
-        
-        [ch.managedObjectContext deleteObject:ch];
+    for (id key in existingChannelsByIndex) {
+        Channel* deleteCandidate = (Channel*)[existingChannelsByIndex objectForKey:key];
+        if(deleteCandidate && deleteCandidate.markedForDeletionValue)
+            [deleteCandidate.managedObjectContext deleteObject:deleteCandidate];
     }
+
+    
+    
     
     BOOL saveResult = [self saveImportContext];
     if(!saveResult)

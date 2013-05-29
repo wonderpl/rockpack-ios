@@ -202,8 +202,6 @@
 {
     [self updateAnalytics];
     
-    [appDelegate.networkEngine cancelAllOperations];
-    
     dataRequestRange = NSMakeRange(1, STANDARD_REQUEST_LENGTH);
     
     [self loadChannelsForGenre:currentGenre];
@@ -332,7 +330,10 @@
     
     NSPredicate* isFreshPredicate = [NSPredicate predicateWithFormat: @"fresh == YES"];
     
-    NSPredicate* finalPredicate = [NSCompoundPredicate andPredicateWithSubpredicates: @[genrePredicate, isFreshPredicate, viewIdPredicate]];
+    NSPredicate* isNotFavoritesPredicate = [NSPredicate predicateWithFormat: @"favourites == NO"];
+    
+    
+    NSPredicate* finalPredicate = [NSCompoundPredicate andPredicateWithSubpredicates: @[genrePredicate, isFreshPredicate, viewIdPredicate, isNotFavoritesPredicate]];
 
     [request setPredicate:finalPredicate];
     

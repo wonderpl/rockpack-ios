@@ -125,11 +125,34 @@
                                                 
                                                 
                                                 channel.hasChangedSubscribeValue = YES;
-                                                
-                                                [appDelegate.currentUser.subscriptionsSet addObject:channel];
-                                                
                                                 channel.subscribedByUserValue = YES;
-                                                channel.subscribersCountValue++;
+                                                channel.subscribersCountValue += 1;
+                                                
+                                                
+                                                // the channel that got updated was a copy inside the ChannelDetails, so we must copy it to user
+                                                
+                                                IgnoringObjects copyFlags = kIgnoreVideoInstanceObjects;
+                                                
+                                                Channel* subscription = [Channel instanceFromChannel:channel
+                                                                                           andViewId:kProfileViewId
+                                                                           usingManagedObjectContext:appDelegate.currentUser.managedObjectContext
+                                                                                 ignoringObjectTypes:copyFlags];
+                                                
+                                                
+                                                subscription.hasChangedSubscribeValue = YES;
+                                                subscription.subscribedByUserValue = YES;
+                                                subscription.subscribersCountValue++;
+                                                
+                                                [appDelegate.currentUser.subscriptionsSet addObject:subscription];
+                                                
+                                                
+                                                // might be in search context
+                                                NSError* error;
+                                                [channel.managedObjectContext save:&error];
+                                                if(!error)
+                                                {
+                                                    
+                                                }
                                                 
                                                 [appDelegate saveContext:YES];
                                                 
@@ -158,15 +181,24 @@
                                                   
                                                   
                                                   channel.hasChangedSubscribeValue = YES;
-                                                  
-                                
-                                                  
-                                                  [appDelegate.currentUser.subscriptionsSet removeObject:channel];
-                                                  
                                                   channel.subscribedByUserValue = NO;
-                                                  channel.subscribersCountValue--;
+                                                  channel.subscribersCountValue -= 1;
                                                   
-                                                  NSLog(@"%i", appDelegate.currentUser.subscriptions.count);
+                                                  // the channel that got updated was a copy inside the ChannelDetails, so we must find the original and update it.
+                                                  for (Channel* subscription in appDelegate.currentUser.subscriptions)
+                                                  {
+                                                      if([subscription.uniqueId isEqualToString:channel.uniqueId])
+                                                      {
+                                                          subscription.subscribedByUserValue = NO;
+                                                          subscription.subscribersCountValue--;
+                                                          
+                                                          [appDelegate.currentUser.subscriptionsSet removeObject:subscription];
+                                                          
+                                                          break;
+                                                      }
+                                                  }
+                                                  
+                                                  
                                                   
                                                   [appDelegate saveContext:YES];
                                                                        
@@ -188,12 +220,9 @@
                                                  channelId:channel.uniqueId
                                          completionHandler:^(id response) {
                                              
-                                             
-                                             
+                                             // this is done through the profile view so no need to copy the channel over.
                                              
                                              [appDelegate.currentUser.channelsSet removeObject:channel];
-                                             
-                                             
                                              
                                              [appDelegate saveContext:YES];
                                              
@@ -220,8 +249,21 @@
         
         NSNumber *savedPosition = channel.position;
         
+        
         [channel setAttributesFromDictionary: channelDictionary
                          ignoringObjectTypes: kIgnoreChannelOwnerObject];
+        
+        // the channel that got updated was a copy inside the ChannelDetails, so we must find the original and update it.
+        for (Channel* userChannel in appDelegate.currentUser.channels)
+        {
+            if([userChannel.uniqueId isEqualToString:channel.uniqueId])
+            {
+                [userChannel setAttributesFromDictionary: channelDictionary
+                                     ignoringObjectTypes: kIgnoreChannelOwnerObject];
+                
+                break;
+            }
+        }
         
         
         channel.position = savedPosition;
@@ -242,6 +284,8 @@
     
     if (refresh == YES || [channel.resourceURL hasPrefix: @"https"]) // https does not cache so it is fresh
     {
+        
+        
         [appDelegate.oAuthNetworkEngine updateChannel: channel.resourceURL
                                     completionHandler: successBlock
                                          errorHandler: errorBlock];
@@ -249,6 +293,8 @@
     }
     else
     {
+        
+        
         [appDelegate.networkEngine updateChannel: channel.resourceURL
                                completionHandler: successBlock
                                     errorHandler: errorBlock];
