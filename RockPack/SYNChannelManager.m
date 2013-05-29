@@ -139,9 +139,7 @@
                                                                                  ignoringObjectTypes:copyFlags];
                                                 
                                                 
-                                                subscription.hasChangedSubscribeValue = YES;
-                                                subscription.subscribedByUserValue = YES;
-                                                subscription.subscribersCountValue++;
+                                                
                                                 
                                                 [appDelegate.currentUser.subscriptionsSet addObject:subscription];
                                                 
@@ -189,8 +187,7 @@
                                                   {
                                                       if([subscription.uniqueId isEqualToString:channel.uniqueId])
                                                       {
-                                                          subscription.subscribedByUserValue = NO;
-                                                          subscription.subscribersCountValue--;
+                                                          
                                                           
                                                           [appDelegate.currentUser.subscriptionsSet removeObject:subscription];
                                                           

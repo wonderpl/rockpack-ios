@@ -184,7 +184,18 @@
 
 #pragma mark - Accessors
 
-
+-(void)addSubscriptionsObject:(Channel *)value_
+{
+    value_.subscribedByUserValue = YES;
+    value_.subscribersCountValue += 1;
+    [self.subscriptionsSet addObject:value_];
+}
+-(void)removeSubscriptionsObject:(Channel *)value_
+{
+    value_.subscribedByUserValue = NO;
+    value_.subscribersCountValue -= 1;
+    [self.subscriptionsSet removeObject:value_];
+}
 
 -(NSString*) fullName
 {

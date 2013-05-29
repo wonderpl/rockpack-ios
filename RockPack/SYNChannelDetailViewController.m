@@ -408,7 +408,8 @@
         [self.subscribingIndicator removeFromSuperview];
         self.subscribingIndicator = nil;
     }
-        
+    
+    self.channel = nil;
 
     [super viewWillDisappear: animated];
 }

@@ -247,6 +247,8 @@
     
     [self.subscriptionsSet removeAllObjects];
     
+    
+    
     for (NSDictionary* subscriptionChannel in itemsArray)
     {
         
@@ -260,8 +262,8 @@
             continue;
         
         
-        [self.subscriptionsSet addObject:channel];
-        channel.subscribedByUserValue = YES;
+        [self addSubscriptionsObject:channel];
+        
         channel.viewId = self.viewId;
         
     }
@@ -287,7 +289,18 @@
 }
 
 
+#pragma mark - Accessors
 
+-(void)addSubscriptionsObject:(Channel *)value_
+{
+    
+    [self.subscriptionsSet addObject:value_];
+}
+-(void)removeSubscriptionsObject:(Channel *)value_
+{
+    
+    [self.subscriptionsSet removeObject:value_];
+}
 
 #pragma mark - Helper methods
 
@@ -319,6 +332,7 @@
     
     return ownerDescription;
 }
+
 
 
 @end
