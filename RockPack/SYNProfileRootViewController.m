@@ -192,7 +192,7 @@
     }
     else
     {
-        [self.headerSubscriptionsView setTitle: NSLocalizedString(@"YOUR SUBSCRIPTIONS", nil)
+        [self.headerSubscriptionsView setTitle: NSLocalizedString(@"MY SUBSCRIPTIONS", nil)
                                      andNumber: 0];
         
         [self.headerSubscriptionsView setBackgroundImage: ([SYNDeviceManager.sharedInstance isLandscape] ? [UIImage imageNamed: @"HeaderProfileSubscriptionsLandscape"] : [UIImage imageNamed: @"HeaderProfilePortraitBoth"])];
@@ -631,7 +631,7 @@
     else
     {
         if(self.user == appDelegate.currentUser)
-            return NSLocalizedString(@"YOUR CHANNELS",nil);
+            return NSLocalizedString(@"MY CHANNELS",nil);
         else
             return NSLocalizedString(@"CHANNELS",nil);
     }
