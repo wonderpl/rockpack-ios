@@ -64,7 +64,7 @@
         <attribute name="emailAddress" optional="YES" attributeType="String" syncable="YES"/>
         <attribute name="firstName" optional="YES" attributeType="String" syncable="YES"/>
         <attribute name="fullNameIsPublic" optional="YES" attributeType="Boolean" syncable="YES"/>
-        <attribute name="gender" optional="YES" attributeType="Boolean" syncable="YES"/>
+        <attribute name="gender" optional="YES" attributeType="Integer 32" syncable="YES"/>
         <attribute name="lastName" optional="YES" attributeType="String" syncable="YES"/>
         <attribute name="locale" optional="YES" attributeType="String" syncable="YES"/>
         <attribute name="subscriptionsUrl" optional="YES" attributeType="String" syncable="YES"/>
