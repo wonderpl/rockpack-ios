@@ -455,6 +455,7 @@
         if(deleteCandidate && deleteCandidate.markedForDeletionValue)
             [deleteCandidate.managedObjectContext deleteObject:deleteCandidate];
     }
+
     
     
     
