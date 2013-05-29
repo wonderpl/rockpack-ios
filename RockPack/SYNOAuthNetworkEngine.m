@@ -35,14 +35,16 @@
 
 -(id)initWithDefaultSettings
 {
-    self = [super initWithDefaultSettings];
-    
-    self.appDelegate = (SYNAppDelegate*)[[UIApplication sharedApplication] delegate];
-    
-    // read host from plist
     
     hostName = [[NSBundle mainBundle] objectForInfoDictionaryKey:@"SecureAPIHostName"];
 
+    self = [super initWithDefaultSettings];
+    if(self)
+    {
+        self.appDelegate = (SYNAppDelegate*)[[UIApplication sharedApplication] delegate];
+    }
+    // read host from plist
+    
     
     return self;
 }
