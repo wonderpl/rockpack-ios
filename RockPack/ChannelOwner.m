@@ -256,7 +256,7 @@
         
         Channel* channel = [Channel instanceFromDictionary: subscriptionChannel
                                  usingManagedObjectContext: self.managedObjectContext
-                                       ignoringObjectTypes: kIgnoreStoredObjects | kIgnoreChannelOwnerObject | kIgnoreVideoInstanceObjects];
+                                       ignoringObjectTypes: kIgnoreStoredObjects | kIgnoreVideoInstanceObjects];
         
         if (!channel)
             continue;
