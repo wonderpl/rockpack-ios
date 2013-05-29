@@ -75,7 +75,7 @@ typedef void (^SYNShareCompletionBlock)(void);
 - (void) displayVideoViewerWithVideoInstanceArray: (NSArray *) videoInstanceArray
                                  andSelectedIndex: (int) selectedIndex;
 
-- (void) viewChannelDetails: (Channel *) channel;
+
 - (void) viewProfileDetails: (ChannelOwner *) channelOwner;
 - (void) refresh;
 

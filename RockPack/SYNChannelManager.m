@@ -155,17 +155,18 @@
                                                       channelId: channel.uniqueId
                                               completionHandler: ^(NSDictionary *responseDictionary) {
                                                   
+                                                  
+                                                  
                                                   channel.hasChangedSubscribeValue = YES;
                                                   
-                                                  
-                                                  
-                                                  
+                                
                                                   
                                                   [appDelegate.currentUser.subscriptionsSet removeObject:channel];
                                                   
                                                   channel.subscribedByUserValue = NO;
                                                   channel.subscribersCountValue--;
                                                   
+                                                  NSLog(@"%i", appDelegate.currentUser.subscriptions.count);
                                                   
                                                   [appDelegate saveContext:YES];
                                                                        

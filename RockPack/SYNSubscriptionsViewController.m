@@ -143,11 +143,8 @@
 
 -(void)setUser:(ChannelOwner*)user
 {
-    if(user == _user || [user.uniqueId isEqual:_user.uniqueId])
-        return;
-    
+    // no additional checks because it is done above
     _user = user;
-    
     
     [self.channelThumbnailCollectionView reloadData];
 }

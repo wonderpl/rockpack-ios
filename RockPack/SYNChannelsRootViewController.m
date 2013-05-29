@@ -255,7 +255,7 @@
                                                       
                                                       dataRequestRange.length = itemArray.count;
                                                       
-                                                      NSLog(@"%i Items Fetched for %@ request", dataRequestRange.length, currentGenre.name ? currentGenre.name : @"popular");
+                                                      DebugLog(@"%i Items Fetched for %@ request", dataRequestRange.length, currentGenre.name ? currentGenre.name : @"popular");
                                                       
                                                       NSNumber *totalNumber = [channelsDictionary objectForKey: @"total"];
                                                       if (![totalNumber isKindOfClass: [NSNumber class]])
@@ -512,7 +512,9 @@
     
     Channel *channel = (Channel*)self.channels[indexPath.row];
     
-    [self viewChannelDetails:channel];
+    [[NSNotificationCenter defaultCenter] postNotificationName:kChannelDetailsRequested
+                                                        object:self
+                                                      userInfo:@{kChannel:channel}];
 }
 
 

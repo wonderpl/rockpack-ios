@@ -110,7 +110,7 @@
 
 - (void) viewDidScrollToFront
 {
-    DebugLog (@"came to front");
+    DebugLog (@"%@ came to front", self.title);
 }
 
 
@@ -167,7 +167,7 @@
     UIViewController *parentVC = self.navigationController.viewControllers[viewControllersCount - 2];
     parentVC.view.alpha = 0.0f;
     
-    UIViewController *currentVC =self.navigationController.viewControllers[viewControllersCount - 1];
+    UIViewController *currentVC = self.navigationController.viewControllers[viewControllersCount - 1];
 
     [UIView animateWithDuration: 0.5f
                           delay: 0.0f
@@ -361,29 +361,22 @@
 }
 
 
-// User touched the channel thumbnail in a video cell
+// User pressed the channel thumbnail in a VideoCell
 - (IBAction) channelButtonTapped: (UIButton *) channelButton
 {
     NSIndexPath *indexPath = [self indexPathFromVideoInstanceButton: channelButton];
     
-    // Bail if we don't have an index path
     if (indexPath)
     {
         VideoInstance *videoInstance = [self.fetchedResultsController objectAtIndexPath: indexPath];
         
-        [self viewChannelDetails: videoInstance.channel];
+        [[NSNotificationCenter defaultCenter] postNotificationName:kChannelDetailsRequested
+                                                            object:self
+                                                          userInfo:@{kChannel:videoInstance.channel}];
     }
 }
 
 
-- (void) viewChannelDetails: (Channel *) channel
-{
-    SYNChannelDetailViewController *channelVC = [[SYNChannelDetailViewController alloc] initWithChannel: channel
-                                                                                              usingMode: kChannelDetailsModeDisplay];
-    
-    
-    [self animatedPushViewController: channelVC];
-}
 
 
 - (IBAction) profileButtonTapped: (UIButton *) profileButton

@@ -125,7 +125,7 @@
     self.refreshControl = [[UIRefreshControl alloc] initWithFrame: CGRectMake(0, -44, 320, 44)];
     
     [self.refreshControl addTarget: self
-                            action: @selector(refreshVideoThumbnails)
+                            action: @selector(loadAndUpdateFeedData)
                   forControlEvents: UIControlEventValueChanged];
     
     
@@ -146,7 +146,7 @@
                         forSupplementaryViewOfKind: UICollectionElementKindSectionHeader
                                withReuseIdentifier: @"SYNHomeSectionHeaderView"];
     
-    [self refreshVideoThumbnails];
+    
     
     // == Refresh button == //
     self.refreshButton = [SYNRefreshButton refreshButton];
@@ -175,11 +175,14 @@
                                                  name:kVideoQueueClear
                                                object:nil];
     
-    [self.videoThumbnailCollectionView reloadData];
+    [self loadAndUpdateFeedData];
+    
+    
 }
 
 -(void)videoQueueCleared
 {
+    // this will remove the '+' from the videos that where selected
     [self.videoThumbnailCollectionView reloadData];
 }
 - (void) viewDidScrollToFront
@@ -200,7 +203,7 @@
 - (void) refreshButtonPressed
 {
     [self.refreshButton startRefreshCycle];
-    [self refreshVideoThumbnails];
+    [self loadAndUpdateFeedData];
 }
 
 
@@ -219,7 +222,7 @@
 }
 
 
-- (void) refreshVideoThumbnails
+- (void) loadAndUpdateFeedData
 {
     [self.refreshButton startRefreshCycle];
     
@@ -242,6 +245,7 @@
                                                     [self handleRefreshComplete];
                                                     
                                                 } errorHandler: ^(NSDictionary* errorDictionary) {
+                                                    
                                                          [self handleRefreshComplete];
                                                          DebugLog(@"Refresh subscription updates failed");
                                                      }];
@@ -258,7 +262,7 @@
 
 - (void) clearedLocationBoundData
 {
-    [self refreshVideoThumbnails];
+    [self loadAndUpdateFeedData];
     
 }
 
@@ -506,17 +510,6 @@
 }
 
 
-#pragma mark - UI Actions
-
-- (void) refresh
-{
-    [self refreshVideoThumbnails];
-}
-
-- (IBAction) touchVideoAddItButton: (UIButton *) addItButton
-{
-    DebugLog (@"No implementation yet");
-}
 
 
 

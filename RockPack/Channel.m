@@ -61,10 +61,21 @@
                                                                 andViewId:viewId usingManagedObjectContext:channel.managedObjectContext
                                                       ignoringObjectTypes:kIgnoreChannelObjects];
     }
+    else
+    {
+        copyChannel.channelOwner = channel.channelOwner;
+    }
     
-    
-    copyChannel.channelCover = [ChannelCover instanceFromChannelCover:channel.channelCover
-                                            usingManagedObjectContext:channel.managedObjectContext];
+    if (!(ignoringObjects & kIgnoreChannelCover))
+    {
+        
+        copyChannel.channelCover = [ChannelCover instanceFromChannelCover:channel.channelCover
+                                                usingManagedObjectContext:channel.managedObjectContext];
+    }
+    else
+    {
+        copyChannel.channelCover = channel.channelCover;
+    }
     
     
     if (!(ignoringObjects & kIgnoreVideoInstanceObjects))
@@ -80,6 +91,10 @@
             [copyChannel.videoInstancesSet addObject:copyVideoInstance];
         }
         
+    }
+    else
+    {
+        copyChannel.videoInstances = channel.videoInstances;
     }
     
     

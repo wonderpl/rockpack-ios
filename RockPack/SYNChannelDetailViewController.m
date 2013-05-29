@@ -325,10 +325,7 @@
     // Google analytics support
     [GAI.sharedInstance.defaultTracker sendView: viewMode];
     
-    [[NSNotificationCenter defaultCenter] addObserver: self
-                                             selector: @selector(mainContextDataChanged:)
-                                                 name: NSManagedObjectContextDidSaveNotification
-                                               object: self.channel.managedObjectContext];
+    
     
     // Use KVO on the collection view to detect user scrolling (to fade out overlaid controls)
     [self.videoThumbnailCollectionView addObserver: self
@@ -345,6 +342,11 @@
                                              selector: @selector(coverImageChangedHandler:)
                                                  name: kCoverArtChanged
                                                object: nil];
+    
+    [[NSNotificationCenter defaultCenter] addObserver:self
+                                             selector:@selector(videoQueueCleared)
+                                                 name:kVideoQueueClear
+                                               object:nil];
     
     if(self.channel.channelOwner.uniqueId == appDelegate.currentUser.uniqueId)
     {
@@ -398,8 +400,12 @@
                                                   object: nil];
     
     [[NSNotificationCenter defaultCenter] removeObserver: self
-                                                 name: kUserDataChanged
-                                               object: nil];
+                                                    name: kUserDataChanged
+                                                  object: nil];
+    
+    [[NSNotificationCenter defaultCenter] removeObserver:self
+                                                    name:kVideoQueueClear
+                                                  object:nil];
 
     
     if (self.subscribingIndicator)
@@ -409,14 +415,13 @@
     }
         
 
-
-    [[NSNotificationCenter defaultCenter] removeObserver: self
-                                                    name: NSManagedObjectContextDidSaveNotification
-                                                  object: self.channel.managedObjectContext];
     [super viewWillDisappear: animated];
 }
 
-
+-(void) videoQueueCleared
+{
+    [self.videoThumbnailCollectionView reloadData];
+}
 - (void) updateCategoryButtonText: (NSString *) buttonText
 {
     NSMutableAttributedString* attributedCategoryString = [[NSMutableAttributedString alloc] initWithString: buttonText
@@ -481,26 +486,35 @@
 
 - (void) mainContextDataChanged: (NSNotification*) notification
 {
-    if (!notification)
-        return;
+    NSArray* updatedObjects = [[notification userInfo] objectForKey: NSUpdatedObjectsKey];
     
-    if (notification.object == self.channel.managedObjectContext)
-    {
-        [self reloadCollectionViews];
+    // In the Future use...
+    // NSArray* insertedObjects = [[notification userInfo] objectForKey: NSInsertedObjectsKey];
+    // NSArray* insertedObjects = [[notification userInfo] objectForKey: NSDeletedObjectsKey];
+    
+    [updatedObjects enumerateObjectsUsingBlock: ^(id obj, NSUInteger idx, BOOL *stop) {
         
         
-        if (self.channel.videoInstances.count == 0)
+        if ([obj isKindOfClass:[Channel class]] && [((Channel*)obj).uniqueId isEqualToString:self.channel.uniqueId])
         {
-            [self showNoVideosMessage];
+            if (self.channel.videoInstances.count == 0)
+            {
+                [self showNoVideosMessage];
+            }
+            else if (self.noVideosMessageView != nil)
+            {
+                [self.noVideosMessageView removeFromSuperview];
+                self.noVideosMessageView = nil;
+            }
+            
+            [self reloadCollectionViews];
+            
+            return;
+            
         }
-        else if (self.noVideosMessageView != nil)
-        {
-            [self.noVideosMessageView removeFromSuperview];
-            self.noVideosMessageView = nil;
-        }
-        
-        
-    }
+    }];
+    
+    
 }
 
 - (void) showNoVideosMessage
@@ -1588,7 +1602,6 @@
                                               [[NSNotificationCenter defaultCenter] postNotificationName:kNoteChannelSaved
                                                                                                   object:self];
                                               
-                                              [self.videoThumbnailCollectionView reloadData];
                                               
                                           } errorHandler:^(id err) {
                                               
@@ -2242,73 +2255,93 @@
 -(void)setChannel:(Channel *)channel
 {
 
-    if(!appDelegate)
-        appDelegate = (SYNAppDelegate*)[[UIApplication sharedApplication] delegate];
-    
     
     NSError *error = nil;
     
-
-    if(!channel)
+    
+    if(self.channel)
     {
-        _channel = nil;
+        [[NSNotificationCenter defaultCenter] removeObserver: self
+                                                        name: NSManagedObjectContextObjectsDidChangeNotification
+                                                      object: self.channel.managedObjectContext];
+        
+        
+    }
+    
+    _channel = channel;
+
+    if(!self.channel)
         return;
-    }
         
-
+    BOOL isUserLinkedDoNotCopy =
+    [channel.viewId isEqualToString:kProfileViewId] &&
+    (self.channel.subscribedByUser || self.channel.channelOwner == appDelegate.currentUser);
     
-    
-    // create a copy that belongs to this viewId (@"ChannelDetails")
-    
-    NSFetchRequest *channelFetchRequest = [[NSFetchRequest alloc] init];
-    
-    [channelFetchRequest setEntity: [NSEntityDescription entityForName: @"Channel"
-                                                inManagedObjectContext: channel.managedObjectContext]];
-    
-    
-    
-    
-    [channelFetchRequest setPredicate: [NSPredicate predicateWithFormat: @"uniqueId == %@ AND viewId == %@", channel.uniqueId, self.viewId]];
-    
-    
-    NSArray *matchingChannelEntries = [channel.managedObjectContext executeFetchRequest: channelFetchRequest
-                                                                                  error: &error];
-    
-    
-    if (matchingChannelEntries.count > 0)
+    if(!isUserLinkedDoNotCopy) // if the details are revealed by the UserProfile dont copy
     {
-        _channel = (Channel*)matchingChannelEntries[0];
-        _channel.markedForDeletionValue = NO;
+        // create a copy that belongs to this viewId (@"ChannelDetails")
         
-        if(matchingChannelEntries.count > 1) // housekeeping, there can be only one!
-            for (int i = 1; i < matchingChannelEntries.count; i++)
-                [channel.managedObjectContext deleteObject:(matchingChannelEntries[i])];
-            
+        NSFetchRequest *channelFetchRequest = [[NSFetchRequest alloc] init];
         
-    }
-    else
-    {
-        
-        _channel = [Channel instanceFromChannel:channel
-                                      andViewId:self.viewId
-                      usingManagedObjectContext:channel.managedObjectContext
-                            ignoringObjectTypes:kIgnoreNothing];
+        [channelFetchRequest setEntity: [NSEntityDescription entityForName: @"Channel"
+                                                    inManagedObjectContext: channel.managedObjectContext]];
         
         
-        if(_channel)
+        
+        
+        [channelFetchRequest setPredicate: [NSPredicate predicateWithFormat: @"uniqueId == %@ AND viewId == %@", channel.uniqueId, self.viewId]];
+        
+        
+        NSArray *matchingChannelEntries = [channel.managedObjectContext executeFetchRequest: channelFetchRequest
+                                                                                      error: &error];
+        
+        
+        if (matchingChannelEntries.count > 0)
         {
-            [channel.managedObjectContext save:&error];
-            if(error)
-                _channel = nil; // further error code
-        }
+            _channel = (Channel*)matchingChannelEntries[0];
+            _channel.markedForDeletionValue = NO;
             
+            if(matchingChannelEntries.count > 1) // housekeeping, there can be only one!
+                for (int i = 1; i < matchingChannelEntries.count; i++)
+                    [channel.managedObjectContext deleteObject:(matchingChannelEntries[i])];
+            
+            
+        }
+        else
+        {
+            
+            _channel = [Channel instanceFromChannel:channel
+                                          andViewId:self.viewId
+                          usingManagedObjectContext:channel.managedObjectContext
+                                ignoringObjectTypes:kIgnoreNothing];
+            
+            
+            if(_channel)
+            {
+                [channel.managedObjectContext save:&error];
+                if(error)
+                    _channel = nil; // further error code
+            }
+            
+        }
     }
     
-    if (_channel && self.mode == kChannelDetailsModeDisplay)
+    
+    
+    if (self.channel)
     {
-        [[NSNotificationCenter defaultCenter] postNotificationName: kChannelUpdateRequest
-                                                            object: self
-                                                          userInfo: @{kChannel: self.channel}];
+        [[NSNotificationCenter defaultCenter] addObserver: self
+                                                 selector: @selector(mainContextDataChanged:)
+                                                     name: NSManagedObjectContextDidSaveNotification
+                                                   object: self.channel.managedObjectContext];
+        
+        if(self.mode == kChannelDetailsModeDisplay)
+        {
+            [[NSNotificationCenter defaultCenter] postNotificationName: kChannelUpdateRequest
+                                                                object: self
+                                                              userInfo: @{kChannel: self.channel}];
+        }
+        
     }
     
 }

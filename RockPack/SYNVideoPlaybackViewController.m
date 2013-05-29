@@ -319,6 +319,14 @@ static UIWebView* vimeoideoWebViewInstance;
 
 - (UIView *) createShuttleBarView
 {
+    CGFloat shuttleBarButtonWidth = kShuttleBarButtonWidthiPhone;
+    CGFloat airplayOffset = 0;
+    
+    if ([SYNDeviceManager.sharedInstance isIPad])
+    {
+        shuttleBarButtonWidth = kShuttleBarButtonWidthiPad;
+        airplayOffset = 18;
+    }
     // Create out shuttle bar view at the bottom of our video view
     CGRect shuttleBarFrame = self.view.frame;
     shuttleBarFrame.size.height = kShuttleBarHeight;
@@ -336,7 +344,7 @@ static UIWebView* vimeoideoWebViewInstance;
     self.shuttleBarPlayPauseButton = [UIButton buttonWithType: UIButtonTypeCustom];
     
     // Set this subview to appear slightly offset from the left-hand side
-    self.shuttleBarPlayPauseButton.frame = CGRectMake(0, 0, kShuttleBarButtonWidth, kShuttleBarHeight);
+    self.shuttleBarPlayPauseButton.frame = CGRectMake(0, 0, shuttleBarButtonWidth, kShuttleBarHeight);
     
     [self.shuttleBarPlayPauseButton setImage: [UIImage imageNamed: @"ButtonShuttleBarPause.png"]
                                     forState: UIControlStateNormal];
@@ -349,14 +357,14 @@ static UIWebView* vimeoideoWebViewInstance;
     [shuttleBarView addSubview: self.shuttleBarPlayPauseButton];
     
     // Add time labels
-    self.currentTimeLabel = [self createTimeLabelAtXPosition: kShuttleBarButtonWidth
+    self.currentTimeLabel = [self createTimeLabelAtXPosition: shuttleBarButtonWidth
                                                textAlignment: NSTextAlignmentRight];
     
     self.currentTimeLabel.text =  [NSString timecodeStringFromSeconds: 0.0f];
     
     [shuttleBarView addSubview: self.currentTimeLabel];
     
-    self.durationLabel = [self createTimeLabelAtXPosition: self.view.frame.size.width - kShuttleBarTimeLabelWidth - kShuttleBarButtonWidth
+    self.durationLabel = [self createTimeLabelAtXPosition: self.view.frame.size.width - kShuttleBarTimeLabelWidth - shuttleBarButtonWidth
                                             textAlignment: NSTextAlignmentLeft];
     
     self.durationLabel.text =  [NSString timecodeStringFromSeconds: 0.0f];
@@ -365,17 +373,17 @@ static UIWebView* vimeoideoWebViewInstance;
     
     // Add shuttle slider
     // Set custom slider track images
-    CGFloat sliderOffset = kShuttleBarButtonWidth + kShuttleBarTimeLabelWidth + kShuttleBarSliderOffset;
+    CGFloat sliderOffset = shuttleBarButtonWidth + kShuttleBarTimeLabelWidth + kShuttleBarSliderOffset;
     
     UIImage *sliderBackgroundImage = [UIImage imageNamed: @"ShuttleBarPlayerBar.png"];
     
-    UIImageView *sliderBackgroundImageView = [[UIImageView alloc] initWithFrame: CGRectMake(sliderOffset+2, 17, shuttleBarFrame.size.width - 2 - (2 * sliderOffset), 10)];
+    UIImageView *sliderBackgroundImageView = [[UIImageView alloc] initWithFrame: CGRectMake(sliderOffset+2, 17, shuttleBarFrame.size.width - 4 - (2 * sliderOffset), 10)];
     
     sliderBackgroundImageView.image = [sliderBackgroundImage resizableImageWithCapInsets: UIEdgeInsetsMake(0.0f, 10.0f, 0.0f, 10.0f)];
     [shuttleBarView addSubview: sliderBackgroundImageView];
     
     // Add the progress bar over the background, but underneath the slider
-    self.bufferingProgressView = [[UIProgressView alloc] initWithFrame: CGRectMake(sliderOffset+1, 17, shuttleBarFrame.size.width - (2 * sliderOffset), 10)];
+    self.bufferingProgressView = [[UIProgressView alloc] initWithFrame: CGRectMake(sliderOffset+1, 17, shuttleBarFrame.size.width - 4 -(2 * sliderOffset), 10)];
     UIImage *progressImage = [[UIImage imageNamed: @"ShuttleBarBufferBar.png"] resizableImageWithCapInsets: UIEdgeInsetsMake(0.0f, 10.0f, 0.0f, 10.0f)];
     // Note: this image needs to be exactly the same size at the left hand-track bar, or the bar will only display as a line
 	UIImage *shuttleSliderRightTrack = [[UIImage imageNamed: @"ShuttleBarRemainingBar.png"] resizableImageWithCapInsets: UIEdgeInsetsMake(0.0f, 10.0f, 0.0f, 10.0f)];
@@ -411,7 +419,7 @@ static UIWebView* vimeoideoWebViewInstance;
     // Add AirPlay button
     // This is a crafty (apple approved) hack, where we set the showVolumeSlider parameter to NO, so only the AirPlay symbol gets shown
     MPVolumeView *volumeView = [[MPVolumeView alloc] init];
-    volumeView.frame = CGRectMake(self.view.frame.size.width - kShuttleBarButtonWidth + 18, 12, 25, kShuttleBarHeight);
+    volumeView.frame = CGRectMake(self.view.frame.size.width - shuttleBarButtonWidth + airplayOffset, 12, 25, kShuttleBarHeight);
     [volumeView setShowsVolumeSlider: NO];
     [volumeView sizeToFit];
     volumeView.backgroundColor = [UIColor clearColor];
