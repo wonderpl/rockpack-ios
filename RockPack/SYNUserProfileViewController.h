@@ -9,11 +9,6 @@
 #import <UIKit/UIKit.h>
 #import "ChannelOwner.h"
 
-@protocol SYNUserProfileViewControllerDelegate <NSObject>
-
-- (void) showAvatarPicker;
-
-@end
 
 @interface SYNUserProfileViewController : UIViewController
 
@@ -21,7 +16,6 @@
 @property (nonatomic, strong) IBOutlet UILabel* fullNameLabel;
 @property (nonatomic, strong) IBOutlet UILabel* userNameLabel;
 @property (nonatomic, weak) ChannelOwner* channelOwner;
-@property (nonatomic, weak) id<SYNUserProfileViewControllerDelegate> delegate;
 
 - (void) setChannelOwner: (ChannelOwner*) channelOwner;
 

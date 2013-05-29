@@ -5893,6 +5893,11 @@
 				);
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
 				GCC_PREFIX_HEADER = "RockPack/rockpack-Prefix.pch";
+				GCC_PREPROCESSOR_DEFINITIONS = (
+					"$(inherited)",
+					"COCOAPODS=1",
+					"USEUDID=1",
+				);
 				INFOPLIST_FILE = "RockPack/rockpack-Develop-Info.plist";
 				LIBRARY_SEARCH_PATHS = (
 					"$(inherited)",
@@ -6002,6 +6007,11 @@
 				);
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
 				GCC_PREFIX_HEADER = "RockPack/rockpack-Prefix.pch";
+				GCC_PREPROCESSOR_DEFINITIONS = (
+					"$(inherited)",
+					"COCOAPODS=1",
+					"USEUDID=1",
+				);
 				INFOPLIST_FILE = "RockPack/rockpack-Release-Info.plist";
 				LIBRARY_SEARCH_PATHS = (
 					"$(inherited)",

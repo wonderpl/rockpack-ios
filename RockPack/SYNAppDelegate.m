@@ -26,6 +26,7 @@
 #import "UIImageView+ImageProcessing.h"
 #import "UIImageView+MKNetworkKitAdditions.h"
 #import "UncaughtExceptionHandler.h"
+#import <AVFoundation/AVFoundation.h>
 #import <FacebookSDK/FacebookSDK.h>
 #import <objc/runtime.h>
 
@@ -59,7 +60,19 @@ extern void instrumentObjcMessageSends(BOOL);
     // Enable the Spark Inspector
 #if DEBUG
     [SparkInspector enableObservation];
+    
+    [TestFlight setDeviceIdentifier: [[UIDevice currentDevice] uniqueIdentifier]];
 #endif
+
+    // We need to set the audio session so that that app will continue to play audio even if the mute switch is on
+    AVAudioSession *audioSession = [AVAudioSession sharedInstance];
+    NSError *setCategoryError = nil;
+    
+    if (![audioSession setCategory: AVAudioSessionCategoryPlayback
+                             error: &setCategoryError])
+    {
+        DebugLog(@"Error setting AVAudioSessionCategoryPlayback: %@", setCategoryError);
+    };
 
     
     // Install our exception handler (must happen on the next turn through the event loop - as opposed to right now)
