@@ -544,7 +544,7 @@ typedef void(^AnimationCompletionBlock)(BOOL finished);
 - (IBAction) showSearchBoxField: (id) sender
 {
     
-    if (self.searchBoxController.view.superview) // if it is on stage already
+    if (self.isInSearchMode) // if it is on stage already
         return;
     
     self.sideNavigationButton.hidden = YES;
@@ -1329,5 +1329,8 @@ typedef void(^AnimationCompletionBlock)(BOOL finished);
     return absctractVc;
 }
 
-
+-(BOOL)isInSearchMode
+{
+    return (BOOL)self.searchBoxController.view.superview;
+}
 @end

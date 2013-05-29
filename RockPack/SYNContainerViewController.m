@@ -22,6 +22,7 @@
 #import "SYNDeviceManager.h"
 #import "SYNObjectFactory.h"
 #import "SYNChannelDetailViewController.h"
+#import "SYNMasterViewController.h"
 
 @interface SYNContainerViewController () <UIPopoverControllerDelegate,
                                           UITextViewDelegate>
@@ -245,6 +246,13 @@
 
 - (void) channelDetailsRequested: (NSNotification*) notification
 {
+    // check whether we are in search mode //
+    
+    if( ((SYNMasterViewController*)self.parentViewController).isInSearchMode )
+    {
+        return;
+    }
+    
     Channel* channel = (Channel*)[[notification userInfo] objectForKey: kChannel];
     if (!channel)
         return;
