@@ -81,10 +81,12 @@
 @property (nonatomic, strong) UIView* noVideosMessageView;
 @property (nonatomic, strong) VideoInstance* instanceToDelete;
 @property (nonatomic, strong) id<SDWebImageOperation> currentWebImageOperation;
-@property (nonatomic, weak) Channel *channel;
+
 @property (nonatomic, weak) IBOutlet UIButton *cancelEditButton;
 @property (nonatomic, weak) IBOutlet UIButton *editButton;
 @property (nonatomic, weak) IBOutlet UILabel *byLabel;
+
+@property (nonatomic, strong) Channel *channel;
 
 //iPhone specific
 @property (nonatomic,strong) SYNChannelCoverImageSelectorViewController* coverImageSelector;
@@ -94,6 +96,7 @@
 @property (weak, nonatomic) IBOutlet UIButton *cancelTextInputButton;
 @property (weak, nonatomic) IBOutlet UIImageView *textBackgroundImageView;
 
+
 @end
 
 
@@ -101,6 +104,7 @@
 
 @synthesize channelCoverFetchedResultsController = _channelCoverFetchedResultsController;
 @synthesize userChannelCoverFetchedResultsController = _userChannelCoverFetchedResultsController;
+@synthesize channel = _channel;
 
 - (id) initWithChannel: (Channel *) channel
              usingMode: (kChannelDetailsMode) mode
@@ -168,7 +172,7 @@
     if (isIPhone)
     {
         layout.sectionInset = UIEdgeInsetsMake(0.0f, 0.0f, 0.0f, 0.0f);
-        self.videoThumbnailCollectionView.contentInset = UIEdgeInsetsMake([[SYNDeviceManager sharedInstance] currentScreenHeight] - 168.0f, 0.0f, 0.0f, 0.0f);
+        self.videoThumbnailCollectionView.contentInset = UIEdgeInsetsMake([SYNDeviceManager.sharedInstance currentScreenHeight] - 168.0f, 0.0f, 0.0f, 0.0f);
     }
     else
     {
@@ -314,15 +318,14 @@
 {
     [super viewWillAppear: animated];
     
+    
+    
     NSString *viewMode = [NSString stringWithFormat: @"Channels - Detail - %@", (self.mode == kChannelDetailsModeDisplay) ? @"Display" : @"Edit"];
     
     // Google analytics support
     [GAI.sharedInstance.defaultTracker sendView: viewMode];
     
-    [[NSNotificationCenter defaultCenter] addObserver: self
-                                             selector: @selector(mainContextDataChanged:)
-                                                 name: NSManagedObjectContextDidSaveNotification
-                                               object: self.channel.managedObjectContext];
+    
     
     // Use KVO on the collection view to detect user scrolling (to fade out overlaid controls)
     [self.videoThumbnailCollectionView addObserver: self
@@ -339,14 +342,26 @@
                                              selector: @selector(coverImageChangedHandler:)
                                                  name: kCoverArtChanged
                                                object: nil];
+    
+    [[NSNotificationCenter defaultCenter] addObserver:self
+                                             selector:@selector(videoQueueCleared)
+                                                 name:kVideoQueueClear
+                                               object:nil];
+    
+    if(self.channel.channelOwner.uniqueId == appDelegate.currentUser.uniqueId)
+    {
+        [[NSNotificationCenter defaultCenter] addObserver: self
+                                                selector: @selector(reloadUserImage:)
+                                                name: kUserDataChanged
+                                                object: nil];
+    }
 
     self.subscribeButton.enabled = YES;
+    
+    
     self.subscribeButton.selected = self.channel.subscribedByUserValue;
     
-    [self.channel addObserver: self
-                   forKeyPath: kSubscribedByUserKey
-                      options: NSKeyValueObservingOptionNew
-                      context: nil];
+    
     
     // We set up assets depending on whether we are in display or edit mode
     [self setDisplayControlsVisibility: (self.mode == kChannelDetailsModeDisplay)];
@@ -356,12 +371,6 @@
     
     // Only do this is we have a resource URL (i.e. we haven't just created the channel)
     
-    if (self.mode == kChannelDetailsModeDisplay && self.channel != nil)
-    {
-        [[NSNotificationCenter defaultCenter] postNotificationName: kChannelUpdateRequest
-                                                            object: self
-                                                           userInfo: @{kChannel: self.channel}];
-    }
     
     
     [self displayChannelDetails];
@@ -377,8 +386,6 @@
     [self.videoThumbnailCollectionView removeObserver: self
                                            forKeyPath: kCollectionViewContentOffsetKey];
 
-    [self.channel removeObserver: self
-                      forKeyPath: kSubscribedByUserKey];
     
     [self.channelTitleTextView removeObserver: self
                                    forKeyPath: kTextViewContentSizeKey];
@@ -387,6 +394,15 @@
                                                     name: kCoverArtChanged
                                                   object: nil];
     
+    [[NSNotificationCenter defaultCenter] removeObserver: self
+                                                    name: kUserDataChanged
+                                                  object: nil];
+    
+    [[NSNotificationCenter defaultCenter] removeObserver:self
+                                                    name:kVideoQueueClear
+                                                  object:nil];
+
+    
     if (self.subscribingIndicator)
     {
         [self.subscribingIndicator removeFromSuperview];
@@ -394,14 +410,13 @@
     }
         
 
-
-    [[NSNotificationCenter defaultCenter] removeObserver: self
-                                                    name: NSManagedObjectContextDidSaveNotification
-                                                  object: self.channel.managedObjectContext];
     [super viewWillDisappear: animated];
 }
 
-
+-(void) videoQueueCleared
+{
+    [self.videoThumbnailCollectionView reloadData];
+}
 - (void) updateCategoryButtonText: (NSString *) buttonText
 {
     NSMutableAttributedString* attributedCategoryString = [[NSMutableAttributedString alloc] initWithString: buttonText
@@ -466,26 +481,35 @@
 
 - (void) mainContextDataChanged: (NSNotification*) notification
 {
-    if (!notification)
-        return;
+    NSArray* updatedObjects = [[notification userInfo] objectForKey: NSUpdatedObjectsKey];
     
-    if (notification.object == self.channel.managedObjectContext)
-    {
-        [self reloadCollectionViews];
+    // In the Future use...
+    // NSArray* insertedObjects = [[notification userInfo] objectForKey: NSInsertedObjectsKey];
+    // NSArray* insertedObjects = [[notification userInfo] objectForKey: NSDeletedObjectsKey];
+    
+    [updatedObjects enumerateObjectsUsingBlock: ^(id obj, NSUInteger idx, BOOL *stop) {
         
         
-        if (self.channel.videoInstances.count == 0)
+        if ([obj isKindOfClass:[Channel class]] && [((Channel*)obj).uniqueId isEqualToString:self.channel.uniqueId])
         {
-            [self showNoVideosMessage];
+            if (self.channel.videoInstances.count == 0)
+            {
+                [self showNoVideosMessage];
+            }
+            else if (self.noVideosMessageView != nil)
+            {
+                [self.noVideosMessageView removeFromSuperview];
+                self.noVideosMessageView = nil;
+            }
+            
+            [self reloadCollectionViews];
+            
+            return;
+            
         }
-        else if (self.noVideosMessageView != nil)
-        {
-            [self.noVideosMessageView removeFromSuperview];
-            self.noVideosMessageView = nil;
-        }
-        
-        
-    }
+    }];
+    
+    
 }
 
 - (void) showNoVideosMessage
@@ -554,7 +578,19 @@
         self.buyButton.hidden = FALSE;
     }
     
-    self.channelTitleTextView.text = self.channel.title;
+    // Set title //
+    
+    NSLog(@"Channel: %@", self.channel);
+    
+    if(self.channel.title)
+    {
+        self.channelTitleTextView.text = self.channel.title;
+    }
+    else
+    {
+        self.channelTitleTextView.text = @"";
+    }
+    
     
     [self adjustTextView];
 }
@@ -733,7 +769,7 @@
             //Bottom vertical alignment
             CGFloat topCorrect = ([tv bounds].size.height - [tv contentSize].height);
 //            topCorrect = (topCorrect <0.0 ? 0.0 : topCorrect);
-                    NSLog (@"offset %f, bounds.height %f, content.height %f, content.height2 %f", tv.contentOffset.y, [tv bounds].size.height, [tv contentSize].height, -topCorrect);
+
         
         [tv setContentOffset: (CGPoint){.x = 0, .y = -topCorrect}
                     animated: NO];
@@ -763,6 +799,9 @@
     else if ([keyPath isEqualToString: kSubscribedByUserKey])
     {
         NSNumber* newSubscribedByUserValue = (NSNumber*)[change valueForKey: NSKeyValueChangeNewKey];
+        if([newSubscribedByUserValue isKindOfClass:[NSNull class]])
+            return;
+        
         BOOL finalValue = [newSubscribedByUserValue boolValue];
         self.subscribeButton.selected = finalValue;
         self.subscribeButton.enabled = YES;
@@ -822,6 +861,9 @@
 
 - (IBAction) profileImagePressed: (UIButton*) sender
 {
+    if([self.channel.channelOwner.uniqueId isEqualToString:appDelegate.currentUser.uniqueId])
+        return;
+        
     [self viewProfileDetails: self.channel.channelOwner];
 }
 
@@ -830,7 +872,7 @@
 {
     NSString* noteName;
     
-    if (!addButton.selected || [[SYNDeviceManager sharedInstance] isIPhone]) // There is only ever one video in the queue on iPhone. Always fire the add action.
+    if (!addButton.selected || [SYNDeviceManager.sharedInstance isIPhone]) // There is only ever one video in the queue on iPhone. Always fire the add action.
     {
         noteName = kVideoQueueAdd;
         
@@ -862,7 +904,7 @@
     
     NSIndexPath *indexPath = [self.videoThumbnailCollectionView indexPathForItemAtPoint: v.center];
     
-    self.instanceToDelete = (VideoInstance*)[self.channel.videoInstances objectAtIndex: indexPath.item];
+    self.instanceToDelete = (VideoInstance*)self.channel.videoInstances[indexPath.item];
     
     if (self.instanceToDelete != nil)
     {
@@ -909,7 +951,7 @@
 - (IBAction) addCoverButtonTapped: (UIButton *) button
 {
     // Prevent multiple clicks of the add cover button on iPhoen
-    if ([[SYNDeviceManager sharedInstance] isIPhone])
+    if ([SYNDeviceManager.sharedInstance isIPhone])
     {
         if (self.isImageSelectorOpen == TRUE)
         {
@@ -935,7 +977,7 @@
 
 - (IBAction) editButtonTapped: (id) sender
 {
-    BOOL isIPad = [[SYNDeviceManager sharedInstance] isIPad];
+    BOOL isIPad = [SYNDeviceManager.sharedInstance isIPad];
     [[NSNotificationCenter defaultCenter] postNotificationName: (isIPad)? kChannelsNavControlsHide : kNoteAllNavControlsHide
                                                         object: self
                                                       userInfo: nil];
@@ -971,12 +1013,12 @@
                                                                                 error: &error];
         if ([selectedCategoryResult count]>0)
         {
-            Genre* genre = [selectedCategoryResult objectAtIndex:0];
+            Genre* genre = selectedCategoryResult[0];
             NSString* newTitle = nil;
             if ([genre isKindOfClass:[SubGenre class]])
             {
                 SubGenre* subCategory = (SubGenre*) genre;
-                if ([[SYNDeviceManager sharedInstance] isIPhone])
+                if ([SYNDeviceManager.sharedInstance isIPhone])
                 {
                     newTitle =[NSString stringWithFormat:@"%@/\n%@", subCategory.genre.name, subCategory.name];
                 }
@@ -1076,7 +1118,7 @@
                                                   id errorText = [specificErrors objectForKey: @"title"];
                                                   if ([errorText isKindOfClass:[NSArray class]])
                                                   {
-                                                      errorText = [errorText objectAtIndex:0];
+                                                      errorText = errorText[0];
                                                   }
                                                   if (!errorText)
                                                   {
@@ -1097,7 +1139,7 @@
 
 - (void) showCoverChooser
 {
-    if ([[SYNDeviceManager sharedInstance] isIPad])
+    if ([SYNDeviceManager.sharedInstance isIPad])
     {
         // Check to see if we are already display the cover chooser
         if (self.coverChooserMasterView.alpha == 0.0f)
@@ -1163,7 +1205,7 @@
 
 - (void) showCategoryChooser
 {
-    if ([[SYNDeviceManager sharedInstance] isIPad])
+    if ([SYNDeviceManager.sharedInstance isIPad])
     {
         if (self.categoriesTabViewController.view.alpha == 0.0f)
         {
@@ -1250,7 +1292,7 @@
                 NSArray* filteredSubcategories = [[self.categoryTableViewController.otherGenre.subgenres array] filteredArrayUsingPredicate:[NSPredicate predicateWithFormat:@"priority = -1"]];
                  if([filteredSubcategories count] == 1)
                  {
-                     SubGenre* otherSubGenre = [filteredSubcategories objectAtIndex:0];
+                     SubGenre* otherSubGenre = filteredSubcategories[0];
                      
                      self.selectedCategoryId = otherSubGenre.uniqueId;
                      
@@ -1356,7 +1398,7 @@
         NSArray* filteredSubcategories = [[genre.subgenres array] filteredArrayUsingPredicate:[NSPredicate predicateWithFormat:@"priority = -1"]];
         if ([filteredSubcategories count] == 1)
         {
-            SubGenre* otherSubGenre = [filteredSubcategories objectAtIndex:0];
+            SubGenre* otherSubGenre = filteredSubcategories[0];
             
             self.selectedCategoryId = otherSubGenre.uniqueId;
             
@@ -1375,7 +1417,7 @@
 
 - (IBAction) createChannelPressed: (id) sender
 {
-    if ([[SYNDeviceManager sharedInstance] isIPhone])
+    if ([SYNDeviceManager.sharedInstance isIPhone])
     {
         self.createChannelButton.hidden = YES;
         self.activityIndicator.hidden = NO;
@@ -1407,6 +1449,8 @@
                                                      cover: cover
                                                   isPublic: YES
                                          completionHandler: ^(NSDictionary* resourceCreated) {
+                                             
+                                             
                                              NSString* channelId = [resourceCreated objectForKey: @"id"];
                                              
                                              self.createChannelButton.hidden = YES;
@@ -1435,6 +1479,7 @@
 
 - (void) setVideosForChannelById: (NSString*) channelId isUpdated:(BOOL) isUpdated
 {
+    
     [appDelegate.oAuthNetworkEngine updateVideosForChannelForUserId: appDelegate.currentOAuth2Credentials.userId
                                                           channelId: channelId
                                                    videoInstanceSet: self.channel.videoInstances
@@ -1509,15 +1554,16 @@
                                               
                                               createdChannel.channelOwner = appDelegate.currentUser;
                                               
-                                              [self.channel removeObserver: self
-                                                                forKeyPath: kSubscribedByUserKey];
+                                              
+                                              
+                                              // this will delete the edited channel from channels context //
+
+                                              [self.channel.managedObjectContext deleteObject:self.channel];
+                                              
+                                              
                                               
                                               self.channel = createdChannel;
                                               
-                                              [self.channel addObserver: self
-                                                             forKeyPath: kSubscribedByUserKey
-                                                                options: NSKeyValueObservingOptionNew
-                                                               context :nil];
                                               
                                               DebugLog(@"Channel: %@", createdChannel);
                                               
@@ -1532,17 +1578,20 @@
                                               
                                               [self setDisplayControlsVisibility:YES];
                                               
+                                              self.mode = kChannelDetailsModeDisplay;
+                                              
                                               [[NSNotificationCenter defaultCenter] postNotificationName: kNoteAllNavControlsShow
                                                                                                   object: self
                                                                                                 userInfo: nil];
                                               
-                                              [self finaliseViewStatusAfterCreateOrUpdate:[[SYNDeviceManager sharedInstance] isIPad]];
+                                              [self finaliseViewStatusAfterCreateOrUpdate:[SYNDeviceManager.sharedInstance isIPad]];
                                               
                                               [[NSNotificationCenter defaultCenter] postNotificationName: kVideoQueueClear
                                                                                                   object: nil];
                                               
                                               [[NSNotificationCenter defaultCenter] postNotificationName:kNoteChannelSaved
                                                                                                   object:self];
+                                              
                                               
                                           } errorHandler:^(id err) {
                                               
@@ -1558,7 +1607,7 @@
                                                                                                   object: self
                                                                                                 userInfo: nil];
                                               
-                                              [self finaliseViewStatusAfterCreateOrUpdate:[[SYNDeviceManager sharedInstance] isIPad]];
+                                              [self finaliseViewStatusAfterCreateOrUpdate:[SYNDeviceManager.sharedInstance isIPad]];
                                             
                                               
                                               [[NSNotificationCenter defaultCenter] postNotificationName: kVideoQueueClear
@@ -1599,7 +1648,7 @@
                                                               userInfo: nil];
             
             //And show as if displayed from the normal master view hierarchy
-            SYNAbstractViewController* currentRootViewcontroller = [[master containerViewController] showingViewController];
+            SYNAbstractViewController *currentRootViewcontroller = [master showingViewController];
             [currentRootViewcontroller animatedPushViewController:self];
         }
         
@@ -1684,7 +1733,7 @@
 
 - (void) textViewDidBeginEditing: (UITextView *) textView
 {
-    if ([[SYNDeviceManager sharedInstance] isIPhone])
+    if ([SYNDeviceManager.sharedInstance isIPhone])
     {
         self.createChannelButton.hidden = YES;
         self.saveChannelButton.hidden = YES;
@@ -1696,7 +1745,7 @@
 
 - (void) textViewDidEndEditing: (UITextView *) textView
 {
-    if ([[SYNDeviceManager sharedInstance] isIPhone])
+    if ([SYNDeviceManager.sharedInstance isIPhone])
     {
         self.createChannelButton.hidden = NO;
         self.saveChannelButton.hidden = NO;
@@ -2045,7 +2094,7 @@
         NSArray* filteredSubcategories = [[category.subgenres array] filteredArrayUsingPredicate:[NSPredicate predicateWithFormat:@"priority = -1"]];
         if ([filteredSubcategories count] == 1)
         {
-            SubGenre* otherSubGenre = [filteredSubcategories objectAtIndex:0];
+            SubGenre* otherSubGenre = filteredSubcategories[0];
             
             self.selectedCategoryId = otherSubGenre.uniqueId;
             
@@ -2177,7 +2226,7 @@
                                         
                                         wself.originalBackgroundImage = image;
                                         
-                                        UIImage* croppedImage = [wself croppedImageForOrientation:[[SYNDeviceManager sharedInstance] orientation]];
+                                        UIImage* croppedImage = [wself croppedImageForOrientation:[SYNDeviceManager.sharedInstance orientation]];
                                         
                                         [UIView transitionWithView: wself.view
                                                           duration: 0.35f
@@ -2193,9 +2242,135 @@
 #pragma mark - Tab View Methods
 
 
+-(void)setChannel:(Channel *)channel
+{
+
+    
+    NSError *error = nil;
+    
+    if(!appDelegate) appDelegate = UIApplication.sharedApplication.delegate;
+    
+    
+    if(self.channel)
+    {
+        [[NSNotificationCenter defaultCenter] removeObserver: self
+                                                        name: NSManagedObjectContextObjectsDidChangeNotification
+                                                      object: self.channel.managedObjectContext];
+        
+        [self.channel removeObserver: self
+                          forKeyPath: kSubscribedByUserKey];
+    }
+    
+    _channel = channel;
+
+    if(!self.channel)
+        return;
+        
+    
+    
+    // create a copy that belongs to this viewId (@"ChannelDetails")
+    
+    NSFetchRequest *channelFetchRequest = [[NSFetchRequest alloc] init];
+    
+    [channelFetchRequest setEntity: [NSEntityDescription entityForName: @"Channel"
+                                                inManagedObjectContext: channel.managedObjectContext]];
+    
+    
+    [channelFetchRequest setPredicate: [NSPredicate predicateWithFormat: @"uniqueId == %@ AND viewId == %@", channel.uniqueId, self.viewId]];
+    
+    
+    NSArray *matchingChannelEntries = [channel.managedObjectContext executeFetchRequest: channelFetchRequest
+                                                                                  error: &error];
+    
+    
+    if (matchingChannelEntries.count > 0)
+    {
+        _channel = (Channel*)matchingChannelEntries[0];
+        _channel.markedForDeletionValue = NO;
+        
+        if(matchingChannelEntries.count > 1) // housekeeping, there can be only one!
+            for (int i = 1; i < matchingChannelEntries.count; i++)
+                [channel.managedObjectContext deleteObject:(matchingChannelEntries[i])];
+        
+        
+    }
+    else
+    {
+        IgnoringObjects flags = kIgnoreNothing;
+        if(self.channel.channelOwner == appDelegate.currentUser)
+            flags |= kIgnoreChannelOwnerObject;
+        
+        _channel = [Channel instanceFromChannel:channel
+                                      andViewId:self.viewId
+                      usingManagedObjectContext:channel.managedObjectContext
+                            ignoringObjectTypes:flags];
+        
+        
+        if(_channel)
+        {
+            [channel.managedObjectContext save:&error];
+            if(error)
+                _channel = nil; // further error code
+        }
+        
+    }
+    
+    
+    
+    if (self.channel)
+    {
+        
+        
+        
+        [[NSNotificationCenter defaultCenter] addObserver: self
+                                                 selector: @selector(mainContextDataChanged:)
+                                                     name: NSManagedObjectContextDidSaveNotification
+                                                   object: self.channel.managedObjectContext];
+        [self.channel addObserver: self
+                       forKeyPath: kSubscribedByUserKey
+                          options: NSKeyValueObservingOptionNew
+                          context: nil];
+        
+        if(self.mode == kChannelDetailsModeDisplay)
+        {
+            
+            
+            [[NSNotificationCenter defaultCenter] postNotificationName: kChannelUpdateRequest
+                                                                object: self
+                                                              userInfo: @{kChannel: self.channel}];
+        }
+        
+    }
+    
+}
+
+
 - (BOOL) needsAddButton
 {
     return YES;
 }
+
+#pragma mark - user avatar image update
+
+-(void)reloadUserImage:(NSNotification*)note
+{
+    //If this channel is owned by the logged in user we are subscribing to this notification when the user data changes. we therefore re-load the avatar image
+    
+    UIImage* placeholder = self.avatarImageView.image ? self.avatarImageView.image : [UIImage imageNamed: @"PlaceholderChannelCreation.png"];
+    
+    NSArray *thumbnailURLItems = [appDelegate.currentUser.thumbnailURL componentsSeparatedByString:@"/"];
+    
+    if (thumbnailURLItems.count >= 6) // there is a url string with the proper format
+    {
+        
+        // whatever is set to be the default size by the server (ex. 'thumbnail_small') //
+        NSString* thumbnailSizeString = thumbnailURLItems[5];
+    
+        NSString* imageUrlString = [appDelegate.currentUser.thumbnailURL stringByReplacingOccurrencesOfString:thumbnailSizeString withString:@"thumbnail_large"];
+    
+        [self.avatarImageView setImageWithURL: [NSURL URLWithString:imageUrlString] placeholderImage: placeholder options: SDWebImageRetryFailed];
+    }
+}
+
 
 @end

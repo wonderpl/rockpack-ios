@@ -61,6 +61,8 @@
 
 @property (nonatomic, strong) IBOutlet UIImageView* avatarImageView;
 
+@property (nonatomic, strong) NSDateFormatter* formatter;
+
 @end
 
 @implementation SYNLoginViewControllerIphone 
@@ -70,7 +72,7 @@
 {
     [super viewDidLoad];
     
-    BOOL isPreIPhone5 = [[SYNDeviceManager sharedInstance] currentScreenHeight] < 500;
+    BOOL isPreIPhone5 = [SYNDeviceManager.sharedInstance currentScreenHeight] < 500;
     
     //Move all subviews offscreen
     CGPoint newCenter = self.loginView.center;
@@ -139,8 +141,8 @@
     self.signupErrorLabel.font = [UIFont rockpackFontOfSize:self.signupErrorLabel.font.pointSize];
     
     NSMutableAttributedString* termsString = [[NSMutableAttributedString alloc] initWithString:@"BY SIGNING INTO ROCKPACK, YOU AGREE TO OUR TERMS OF SERVICE AND PRIVACY POLICY"];
-    [termsString addAttribute: NSForegroundColorAttributeName value: [UIColor colorWithRed:(32.0/255.0) green:(195.0/255.0) blue:(226.0/255.0) alpha:(1.0)] range: NSMakeRange(42, 17)];
-    [termsString addAttribute: NSForegroundColorAttributeName value: [UIColor colorWithRed:(32.0/255.0) green:(195.0/255.0) blue:(226.0/255.0) alpha:(1.0)] range: NSMakeRange(64, 14)];
+    [termsString addAttribute: NSForegroundColorAttributeName value: [UIColor colorWithRed:(11.0/255.0) green:(166.0/255.0) blue:(171.0/255.0) alpha:(1.0)] range: NSMakeRange(42, 17)];
+    [termsString addAttribute: NSForegroundColorAttributeName value: [UIColor colorWithRed:(11.0/255.0) green:(166.0/255.0) blue:(171.0/255.0) alpha:(1.0)] range: NSMakeRange(64, 14)];
     self.termsAndConditionsLabel.attributedText = termsString;
     self.termsAndConditionsLabel.font = [UIFont rockpackFontOfSize:self.termsAndConditionsLabel.font.pointSize];
     
@@ -155,6 +157,9 @@
     self.emailInputField.returnKeyType = UIReturnKeySend;
     
     self.state = kLoginScreenStateInitial;
+    
+    self.formatter = [[NSDateFormatter alloc] init];
+    self.formatter.dateFormat = @"dd/MM/yyyy";
 }
 
 
@@ -424,15 +429,22 @@
          
                 DebugLog(@"User Registerd: %@", [dictionary objectForKey:@"username"]);
                 
-                //[self.activityIndicator stopAnimating];
+                [self.activityIndicator stopAnimating];
                 
                 [self completeLoginProcess];
+                
             } errorHandler:^(NSDictionary* errorDictionary) {
+                NSString* savingError = errorDictionary[@"saving_error"];
+                if(savingError) {
+                    self.loginErrorLabel.text = NSLocalizedString(@"PLEASE TRY AGAIN NOW", nil);
+                } else {
+                    self.loginErrorLabel.text = NSLocalizedString(@"CHECK USERNAME AND PASSWORD", nil);
+                }
                 [self.activityIndicator stopAnimating];
                 [self turnOnButton:self.backButton];
                 [self turnOnButton:self.confirmButton];
                 
-                self.loginErrorLabel.text = NSLocalizedString(@"CHECK USERNAME AND PASSWORD", nil);
+                
             }];
             break;
         }
@@ -443,6 +455,8 @@
             [self.activityIndicator startAnimating];
             [self turnOffButton:self.backButton];
             [self turnOffButton:self.confirmButton];
+            self.ddInputField.text = [self zeroPadIfOneCharacter:self.ddInputField.text];
+            self.mmInputField.text = [self zeroPadIfOneCharacter:self.mmInputField.text];
             NSDictionary* userData = @{@"username": self.registeringUserNameInputField.text,
                                        @"password": self.registeringUserPasswordInputField.text,
                                        @"date_of_birth": [NSString stringWithFormat:@"%@-%@-%@", self.yyyyInputField.text, self.mmInputField.text, self.ddInputField.text],
@@ -453,7 +467,13 @@
                 
                 if(self.avatarImage)
                 {
-                    [self uploadAvatarImage:self.avatarImage completionHandler:nil errorHandler:nil];
+                    [self uploadAvatarImage:self.avatarImage completionHandler:nil errorHandler:^(id dictionary) {
+                        [[[UIAlertView alloc] initWithTitle: NSLocalizedString(@"Upload error", nil)
+                                                    message: NSLocalizedString(@"Avatar upload failed. Try again from the menu.", nil)
+                                                   delegate: nil
+                                          cancelButtonTitle: NSLocalizedString(@"OK", nil)
+                                          otherButtonTitles: nil] show];
+                    }];
                 }
                 [self completeLoginProcess];
                 
@@ -632,7 +652,7 @@
     [self.activityIndicator stopAnimating];
     
     UIImageView *splashView = nil;
-    if([[SYNDeviceManager sharedInstance] currentScreenHeight]>480.0f)
+    if([SYNDeviceManager.sharedInstance currentScreenHeight]>480.0f)
     {
         splashView = [[UIImageView alloc] initWithImage:[UIImage imageNamed: @"Default-568h"]];
     }
@@ -674,8 +694,29 @@
 
 -(BOOL)validateRegistrationSecondScreen
 {
-    return [self validateRegistrationFirstScreen] && [self.registeringUserEmailInputField.text isMatchedByRegex:@"^([a-zA-Z0-9%_.+\\-]+)@([a-zA-Z0-9.\\-]+?\\.[a-zA-Z]{2,6})$"] && self.registeringUserPasswordInputField.text.length>0 &&
-    self.ddInputField.text.length == 2 && self.mmInputField.text.length == 2 && self.yyyyInputField.text.length == 4;
+    
+    BOOL result = [self validateRegistrationFirstScreen] && [self.registeringUserEmailInputField.text isMatchedByRegex:@"^([a-zA-Z0-9%_.+\\-]+)@([a-zA-Z0-9.\\-]+?\\.[a-zA-Z]{2,6})$"] && self.registeringUserPasswordInputField.text.length>0;
+    
+    result = result && [self validDateEntered];
+    
+    return result;
+}
+
+-(BOOL)validDateEntered
+{
+    if([self.yyyyInputField.text length]!= 4 )
+    {
+        return NO;
+    }
+    
+    //Zero-pad single number day and month values
+    NSString* day= [self zeroPadIfOneCharacter:self.ddInputField.text];
+    
+    NSString* month= [self zeroPadIfOneCharacter:self.mmInputField.text];
+    
+    NSString* dateString = [NSString stringWithFormat:@"%@/%@/%@", day, month, self.yyyyInputField.text];
+    NSDate* date = [self.formatter dateFromString:dateString];
+    return (date != nil);
 }
 
 
@@ -699,6 +740,34 @@
         default:
             break;
     }
+    if(sender == self.ddInputField && [self.ddInputField.text length]==2)
+    {
+        [self.mmInputField becomeFirstResponder];
+        if([self.mmInputField.text length]>0 && [self.yyyyInputField.text length]>0 && ! [self validDateEntered])
+        {
+            self.signupErrorLabel.text = [NSString stringWithFormat:@"Day %@, Month %@, Year %@ is not a valid date of birth",self.ddInputField.text, self.mmInputField.text, self.yyyyInputField.text];
+        }
+    }
+    else if(sender == self.mmInputField && [self.mmInputField.text length]==2)
+    {
+        [self.yyyyInputField becomeFirstResponder];
+        if([self.ddInputField.text length]>0 && [self.yyyyInputField.text length]>0 && ! [self validDateEntered])
+        {
+            self.signupErrorLabel.text = [NSString stringWithFormat:@"Day %@, Month %@, Year %@ is not a valid date of birth",self.ddInputField.text, self.mmInputField.text, self.yyyyInputField.text];
+        }
+    }
+    else if(sender == self.yyyyInputField && [self.yyyyInputField.text length] >= 4)
+    {
+        if( [self validDateEntered]&& [self.yyyyInputField.text length] ==4 )
+        {
+           [sender resignFirstResponder];
+        }
+        else
+        {
+            self.signupErrorLabel.text = [NSString stringWithFormat:@"Day %@, Month %@, Year %@ is not a valid date of birth",self.ddInputField.text, self.mmInputField.text, self.yyyyInputField.text];
+        }
+        
+    }
 }
 
 
@@ -716,11 +785,14 @@
             case 4:
             case 12:
                 //Last field on a form. Confirm!
-                [self confirmTapped:nil];
+                if(self.confirmButton.enabled)
+                {
+                    [self confirmTapped:nil];
+                }
                 break;
             case 6:
                 //First page of Sign Up. Go next!
-                if([self validateRegistrationFirstScreen])
+                if(self.nextButton.enabled)
                 {
                     [self nextTapped:nil];
                 }
@@ -772,5 +844,16 @@
     self.avatarImageView.image = image;
 }
 
+
+#pragma mark - zero padding convenience method
+-(NSString*)zeroPadIfOneCharacter:(NSString*)inputString
+{
+    if([inputString length]==1)
+    {
+        return [NSString stringWithFormat:@"0%@",inputString];
+    }
+
+    return inputString;
+}
 
 @end

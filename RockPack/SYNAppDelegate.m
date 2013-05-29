@@ -177,7 +177,7 @@ extern void instrumentObjcMessageSends(BOOL);
 
 - (UIViewController*) createAndReturnLoginViewController
 {
-    if ([[SYNDeviceManager sharedInstance] isIPad])
+    if ([SYNDeviceManager.sharedInstance isIPad])
     {
         self.loginViewController = [[SYNLoginViewController alloc] init];
     }
@@ -195,14 +195,16 @@ extern void instrumentObjcMessageSends(BOOL);
     if (!self.currentUser || !self.currentUser.current)
         return;
     
+    
+    self.window.rootViewController = [self createAndReturnLoginViewController];
+    
     self.currentUser.currentValue = NO;
     
     [self clearCoreDataMainEntities:YES];
 
     self.currentOAuth2Credentials = nil;
     _currentUser = nil;
-
-    self.window.rootViewController = [self createAndReturnLoginViewController];  
+ 
 }
 
 
@@ -567,6 +569,12 @@ extern void instrumentObjcMessageSends(BOOL);
         if(userEntries.count > 0)
         {
             _currentUser = (User*)userEntries[0];
+            
+            if(userEntries.count > 1) // housekeeping, clear duplicate user entries
+                for (int u = 1; u < userEntries.count; u++)
+                    [self.mainManagedObjectContext deleteObject:((User*)userEntries[u])];
+                    
+                
         }
         else
         {

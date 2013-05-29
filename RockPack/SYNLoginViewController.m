@@ -102,15 +102,10 @@
     
         NSMutableAttributedString* termsString = [[NSMutableAttributedString alloc] initWithString: NSLocalizedString(@"BY USING ROCKPACK, YOU AGREE TO OUR\nTERMS & SERVICES AND PRIVACY POLICY", nil)];
         
-        [termsString addAttribute: NSForegroundColorAttributeName value: [UIColor colorWithRed: (70.0/255.0)
-                                                                                         green: (206.0/255.0)
-                                                                                          blue: (210.0/255.0)
-                                                                                         alpha:(1.0)] range: NSMakeRange(36, 16)];
+        [termsString addAttribute: NSForegroundColorAttributeName value: [UIColor colorWithRed:(11.0/255.0) green:(166.0/255.0) blue:(171.0/255.0) alpha:(1.0)] range: NSMakeRange(36, 16)];
         
-        [termsString addAttribute: NSForegroundColorAttributeName value: [UIColor colorWithRed: (70.0/255.0)
-                                                                                         green: (206.0/255.0)
-                                                                                          blue: (210.0/255.0)
-                                                                                         alpha: (1.0)] range: NSMakeRange(57, 14)];
+        [termsString addAttribute: NSForegroundColorAttributeName value: [UIColor colorWithRed:(11.0/255.0) green:(166.0/255.0) blue:(171.0/255.0) alpha:(1.0)] range: NSMakeRange(57, 14)];
+    
         // add terms buttons
         termsAndConditionsLabel.attributedText = termsString;
         termsAndConditionsLabelSide.attributedText = termsAndConditionsLabel.attributedText;
@@ -144,6 +139,12 @@
             tf.leftViewMode = UITextFieldViewModeAlways;
         }
     
+    if([[SYNDeviceManager sharedInstance] isPortrait])
+    {
+        
+        signUpButton.center = CGPointMake(facebookSignInButton.center.x + 304.0, signUpButton.center.y);
+    }
+    
         self.state = kLoginScreenStateInitial;
     
         UITapGestureRecognizer* tapGesture = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(outerViewTapped:)];
@@ -161,6 +162,8 @@
     
     memberLabel.center = CGPointMake(memberLabel.center.x, loginButton.center.y - 54.0);
     memberLabel.frame = CGRectIntegral(memberLabel.frame);
+    
+    
 }
 
 
@@ -210,21 +213,23 @@
     self.avatarImageView.center = CGPointMake(self.avatarImageView.center.x - 50.0, self.avatarImageView.center.y);
     
     facebookSignInButton.enabled = YES;
-    facebookSignInButton.frame = facebookButtonInitialFrame;
     facebookSignInButton.alpha = 1.0;
     
     _facebookLoginIsInProcess = NO;
     
-    if ([[SYNDeviceManager sharedInstance] isPortrait])
+    if ([SYNDeviceManager.sharedInstance isPortrait])
     {
-        signUpButton.center = CGPointMake(facebookSignInButton.center.x + 304.0, signUpButton.center.y);
+        
         faceImageButton.center = CGPointMake(78.0, faceImageButton.center.y);
         self.avatarImageView.center = CGPointMake(78.0, self.avatarImageView.center.y);
         passwordForgottenLabel.center = CGPointMake(650.0, passwordForgottenLabel.center.y);
+        
     }
 
     signUpButton.enabled = YES;
     signUpButton.alpha = 1.0;
+    signUpButton.hidden = NO;
+    
     [activityIndicator stopAnimating];  
 }
 
@@ -678,14 +683,21 @@
              
          }
               errorHandler:^(NSDictionary* errorDictionary) {
-                  NSDictionary* errors = errorDictionary [@"error"];
                   
+                  NSDictionary* errors = errorDictionary [@"error"];
                   if (errors)
                   {
                       [self placeErrorLabel: @"Username could be incorrect"
                                  nextToView: userNameInputField];
                       
                       [self placeErrorLabel: @"Password could be incorrect"
+                                 nextToView: passwordInputField];
+                  }
+                  
+                  NSDictionary* savingError = errorDictionary [@"saving_error"];
+                  if(savingError)
+                  {
+                      [self placeErrorLabel: @"Please try again."
                                  nextToView: passwordInputField];
                   }
                   
@@ -1432,7 +1444,7 @@
 
 - (CGFloat) elementsOffsetY
 {
-        if ([[SYNDeviceManager sharedInstance] isLandscape])
+        if ([SYNDeviceManager.sharedInstance isLandscape])
             return 284.0;
         else
             return 284.0;    
@@ -1441,7 +1453,7 @@
 
 - (void) placeSecondaryElements
 {
-    CGFloat registerOffsetY = [[SYNDeviceManager sharedInstance] isPortrait] ? 704.0 : 358.0;
+    CGFloat registerOffsetY = [SYNDeviceManager.sharedInstance isPortrait] ? 704.0 : 358.0;
     registerButton.center = CGPointMake(registerButton.center.x, registerOffsetY);
     areYouNewLabel.center = CGPointMake(areYouNewLabel.center.x, registerButton.center.y - 44.0);
     memberLabel.center = CGPointMake(loginButton.center.x, areYouNewLabel.center.y);
@@ -1449,7 +1461,7 @@
     dividerImageView.center = CGPointMake(dividerImageView.center.x, dividerImageView.center.y - self.elementsOffsetY);
     passwordForgottenLabel.center = CGPointMake(passwordForgottenLabel.center.x, passwordForgottenLabel.center.y - self.elementsOffsetY);
     passwordForgottenButton.center = CGPointMake(passwordForgottenButton.center.x, passwordForgottenButton.center.y - self.elementsOffsetY);
-    CGFloat termsOffsetY = [[SYNDeviceManager sharedInstance] isPortrait] ? 714.0 : 370.0;
+    CGFloat termsOffsetY = [SYNDeviceManager.sharedInstance isPortrait] ? 714.0 : 370.0;
     termsAndConditionsLabel.center = CGPointMake(termsAndConditionsLabel.center.x, termsOffsetY);
     termsAndConditionsLabelSide.center = CGPointMake(termsAndConditionsLabelSide.center.x, termsOffsetY);
     

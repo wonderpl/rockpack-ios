@@ -14,6 +14,7 @@
 #import "SYNOAuthNetworkEngine.h"
 #import "Video.h"
 #import "VideoInstance.h"
+#import "UIImage+Resize.h"
 
 @interface SYNOAuthNetworkEngine ()
 
@@ -34,14 +35,16 @@
 
 -(id)initWithDefaultSettings
 {
-    self = [super initWithDefaultSettings];
-    
-    self.appDelegate = (SYNAppDelegate*)[[UIApplication sharedApplication] delegate];
-    
-    // read host from plist
     
     hostName = [[NSBundle mainBundle] objectForInfoDictionaryKey:@"SecureAPIHostName"];
 
+    self = [super initWithDefaultSettings];
+    if(self)
+    {
+        self.appDelegate = (SYNAppDelegate*)[[UIApplication sharedApplication] delegate];
+    }
+    // read host from plist
+    
     
     return self;
 }
@@ -328,9 +331,59 @@
     [self enqueueSignedOperation: networkOperation];
 }
 
+-(void)userDataForUser:(User*)user
+          onCompletion:(MKNKUserSuccessBlock) completionBlock
+               onError: (MKNKUserErrorBlock) errorBlock
+{
+    NSDictionary *apiSubstitutionDictionary = @{@"USERID" : user.uniqueId};
+    
+    NSString *apiString = [kAPIGetUserDetails stringByReplacingOccurrencesOfStrings: apiSubstitutionDictionary];
+    
+    SYNNetworkOperationJsonObject *networkOperation = (SYNNetworkOperationJsonObject*)[self operationWithPath: apiString
+                                                                                                       params: @{@"locale" : self.localeString}
+                                                                                                   httpMethod: @"GET"
+                                                                                                          ssl: YES];
+    
+    [self addCommonHandlerToNetworkOperation: networkOperation
+                           completionHandler: completionBlock
+                                errorHandler: errorBlock];
+    
+    
+    
+    [self enqueueSignedOperation: networkOperation];
+    
+    
+}
+
+-(void)userSubscriptionsForUser:(User*)user
+                   onCompletion:(MKNKUserSuccessBlock) completionBlock
+                        onError: (MKNKUserErrorBlock) errorBlock
+{
+    
+    NSDictionary *apiSubstitutionDictionary = @{@"USERID" : user.uniqueId};
+    
+    NSDictionary *params = [self paramsForStart: 0
+                                           size: 1000];
+    
+   
+    NSString *apiString = [kAPIGetUserSubscriptions stringByReplacingOccurrencesOfStrings: apiSubstitutionDictionary];
+    
+    SYNNetworkOperationJsonObject *networkOperation = (SYNNetworkOperationJsonObject*)[self operationWithPath: apiString
+                                                                                                       params: params
+                                                                                                   httpMethod: @"GET"
+                                                                                                          ssl: YES];
+    [self addCommonHandlerToNetworkOperation: networkOperation
+                           completionHandler: completionBlock
+                                errorHandler: errorBlock];
+    
+    
+    
+    [self enqueueSignedOperation: networkOperation];
+    
+}
 
 
-- (void) userInformationFromCredentials: (SYNOAuth2Credential *) credentials
+- (void) retrieveAndRegisterUserFromCredentials: (SYNOAuth2Credential *) credentials
                       completionHandler: (MKNKUserSuccessBlock) completionBlock
                            errorHandler: (MKNKUserErrorBlock) errorBlock
 {
@@ -356,8 +409,11 @@
         // Register User
         
         BOOL userRegistered = [self.registry registerUserFromDictionary:responseDictionary];
-        if(!userRegistered)
+        if(!userRegistered) {
+            errorBlock(@{@"saving_error":@"Main Registry Could Not Save the User"});
             return;
+        }
+            
         
         // Get subscriptions
         
@@ -531,18 +587,47 @@
                                                                                                        params: nil
                                                                                                    httpMethod: @"PUT"
                                                                                                           ssl: TRUE];
+
+    UIImage *newImage = [UIImage scaleAndRotateImage: image
+                                         withMaxSize: 600];
+    
+    
+        DebugLog(@"New image width: %f, height%f", newImage.size.width, newImage.size.height);
     // We have to perform the image upload with an input stream
-    NSData *imageData = UIImagePNGRepresentation(image);
+
+    NSData *imageData = UIImageJPEGRepresentation(newImage, 0.70);
+    
+    // Other attempts at performing scaling
+    //    NSData *imageData = UIImagePNGRepresentation(newImage);
+    //    NSData *imageData = UIImageJPEGRepresentation(image, 0.70);
+    //    NSData *imageData = [image jpegDataForResizedImageWithMaxDimension: 600];
+    
     NSString *lengthString = [NSString stringWithFormat: @"%@", [NSNumber numberWithUnsignedLong: imageData.length]];
     NSInputStream *inputStream = [NSInputStream inputStreamWithData: imageData];
     networkOperation.uploadStream = inputStream;
     
-    [networkOperation addHeaders: @{@"Content-Type" : @"image/png", @"Content-Length" : lengthString}];
-
+    [networkOperation addHeaders: @{@"Content-Type" : @"image/jpeg", @"Content-Length" : lengthString}];
+    SYNAppDelegate* blockAppDelegate = self.appDelegate;
     [self addCommonHandlerToNetworkOperation: networkOperation
-                           completionHandler:^(NSDictionary* result) {
-                               completionBlock([networkOperation.readonlyResponse allHeaderFields]);
-                           } errorHandler: errorBlock];
+                           completionHandler: ^(NSDictionary* result) {
+                               NSDictionary* headerDictionary = [networkOperation.readonlyResponse allHeaderFields];
+                               User* currentUser = blockAppDelegate.currentUser;
+                               
+                               if (currentUser)
+                               {
+                                   NSString *newThumbnailURL = [headerDictionary objectForKey: @"Location"];
+                                   currentUser.thumbnailURL = newThumbnailURL;
+                                   [blockAppDelegate saveContext: YES];
+                                   [[NSNotificationCenter defaultCenter] postNotificationName: kUserDataChanged
+                                                                                       object: nil
+                                                                                     userInfo: @{@"user":currentUser}];
+                               }
+                               if(completionBlock) //Important to nil check blocks - otherwise crash may ensue!
+                               {
+                                   completionBlock(headerDictionary);
+                               }
+                           }
+                                errorHandler: errorBlock];
     
     [self enqueueSignedOperation: networkOperation];
 }
@@ -951,7 +1036,15 @@
                                                                                                    httpMethod: @"POST"
                                                                                                           ssl: TRUE];
     // We have to perform the image upload with an input stream
-    NSData *imageData = UIImageJPEGRepresentation(image, 0.70);
+    UIImage *newImage = [UIImage scaleAndRotateImage: image
+                                         withMaxSize: 2028];
+    
+    
+    DebugLog(@"New image width: %f, height%f", newImage.size.width, newImage.size.height);
+    // We have to perform the image upload with an input stream
+    
+    NSData *imageData = UIImageJPEGRepresentation(newImage, 0.70);
+
     NSString *lengthString = [NSString stringWithFormat: @"%@", [NSNumber numberWithUnsignedLong: imageData.length]];
     NSInputStream *inputStream = [NSInputStream inputStreamWithData: imageData];
     networkOperation.uploadStream = inputStream;
@@ -1100,16 +1193,8 @@
     
     
     [self addCommonHandlerToNetworkOperation: networkOperation
-                           completionHandler: ^(id response) {
-                               
-         
-         
-         
-         completionBlock(response);
-         
-         
-     }
-     errorHandler: errorBlock];
+                           completionHandler: completionBlock
+                                errorHandler: errorBlock];
 
     [self enqueueSignedOperation: networkOperation];  
 }

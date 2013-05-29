@@ -45,7 +45,7 @@
 {
     
     self.currentCalendar = [NSCalendar currentCalendar];
-    isIphone = [[SYNDeviceManager sharedInstance] isIPhone];
+    isIphone = [SYNDeviceManager.sharedInstance isIPhone];
     
     // Init collection view
     UINib *videoThumbnailCellNib = [UINib nibWithNibName: @"SYNVideoThumbnailWideCell"
@@ -68,11 +68,28 @@
     
     // override the data loading
     
-    CGRect collectionFrame = self.videoThumbnailCollectionView.frame;
-    collectionFrame.origin.y += 40.0;
-    collectionFrame.size.width = [[SYNDeviceManager sharedInstance] currentScreenWidth];
-    collectionFrame.size.height = [[SYNDeviceManager sharedInstance] currentScreenHeight] - 190.0;
-    self.videoThumbnailCollectionView.frame = collectionFrame;
+    if (isIphone)
+    {
+        CGRect collectionFrame = self.videoThumbnailCollectionView.frame;
+        collectionFrame.origin.y += 40.0;
+        collectionFrame.size.width = [SYNDeviceManager.sharedInstance currentScreenWidth];
+        collectionFrame.size.height = [SYNDeviceManager.sharedInstance currentScreenHeight] - 190.0;
+        self.videoThumbnailCollectionView.frame = collectionFrame;
+    }
+    
+    else
+    {
+        CGRect collectionFrame = self.videoThumbnailCollectionView.frame;
+        collectionFrame.origin.y += 54.0;
+        collectionFrame.size.width = [SYNDeviceManager.sharedInstance currentScreenWidth];
+        collectionFrame.size.height = [SYNDeviceManager.sharedInstance currentScreenHeight] - 150.0;
+        self.videoThumbnailCollectionView.frame = collectionFrame;
+        UICollectionViewFlowLayout* layout = (UICollectionViewFlowLayout*)self.videoThumbnailCollectionView.collectionViewLayout;
+        UIEdgeInsets insets= layout.sectionInset;
+        insets.top = 0.0f;
+        insets.bottom = 15.0f;
+        layout.sectionInset = insets;
+    }
     
     self.videoThumbnailCollectionView.autoresizingMask = UIViewAutoresizingFlexibleWidth| UIViewAutoresizingFlexibleHeight;
     self.videoThumbnailCollectionView.backgroundColor = [UIColor clearColor];
@@ -125,17 +142,23 @@
 }
 
 
-- (void) performSearchWithTerm: (NSString*) term
+- (void) performNewSearchWithTerm: (NSString*) term
 {
-    self.searchTerm = term;
+    
+    if (!appDelegate)
+        appDelegate = (SYNAppDelegate*)[[UIApplication sharedApplication] delegate];
+    
+    self.dataRequestRange = NSMakeRange(0, 48);
+    
+    
 
-    [self.appDelegate.networkEngine searchVideosForTerm: self.searchTerm
+    [self.appDelegate.networkEngine searchVideosForTerm: term
                                                 inRange: self.dataRequestRange
                                              onComplete: ^(int itemsCount) {
                                                  self.dataItemsAvailable = itemsCount;
                                              }];
     
-    
+    self.searchTerm = term;
 }
 
 
@@ -245,9 +268,9 @@
                   layout:(UICollectionViewLayout*)collectionViewLayout
   sizeForItemAtIndexPath:(NSIndexPath *)indexPath {
     
-    if([[SYNDeviceManager sharedInstance]isIPad])
+    if([SYNDeviceManager.sharedInstance isIPad])
     {
-        if([[SYNDeviceManager sharedInstance] isLandscape])
+        if([SYNDeviceManager.sharedInstance isLandscape])
         {
             return CGSizeMake(497, 140);
         }
@@ -355,7 +378,7 @@
 
 - (CGSize) footerSize
 {
-    return [[SYNDeviceManager sharedInstance] isIPhone]? CGSizeMake(320.0f, 64.0f) : CGSizeMake(1024.0, 64.0);
+    return [SYNDeviceManager.sharedInstance isIPhone]? CGSizeMake(320.0f, 64.0f) : CGSizeMake(1024.0, 64.0);
 }
 
 

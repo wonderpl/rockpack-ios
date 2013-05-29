@@ -22,18 +22,19 @@
 
 @interface SYNVideoPlaybackViewController () <UIWebViewDelegate>
 
-
 @property (nonatomic, assign) BOOL autoPlay;
 @property (nonatomic, assign) BOOL currentVideoViewedFlag;
 @property (nonatomic, assign) BOOL disableTimeUpdating;
 @property (nonatomic, assign) BOOL fadeOutScheduled;
+@property (nonatomic, assign) BOOL fadeUpScheduled;
 @property (nonatomic, assign) BOOL notYetPlaying;
 @property (nonatomic, assign) BOOL playFlag;
 @property (nonatomic, assign) BOOL shuttledByUser;
 @property (nonatomic, assign) CGRect requestedFrame;
 @property (nonatomic, assign) NSTimeInterval currentDuration;
-@property (nonatomic, assign) NSTimeInterval loadTime;
+@property (nonatomic, assign) NSTimeInterval lastTime;
 @property (nonatomic, assign) int currentSelectedIndex;
+@property (nonatomic, assign) int stallCount;
 @property (nonatomic, strong) CABasicAnimation *placeholderBottomLayerAnimation;
 @property (nonatomic, strong) CABasicAnimation *placeholderMiddleLayerAnimation;
 @property (nonatomic, strong) NSArray *videoInstanceArray;
@@ -49,6 +50,7 @@
 @property (nonatomic, strong) UISlider *shuttleSlider;
 @property (nonatomic, strong) UIView *videoPlaceholderView;
 @property (nonatomic, strong) UIWebView *currentVideoWebView;
+
 @end
 
 
@@ -203,7 +205,7 @@ static UIWebView* vimeoideoWebViewInstance;
 - (NSString *) videoQuality
 {
     // Based on empirical evidence (Youtube app), determine the appropriate quality level based on device and connectivity
-    BOOL isIpad = [[SYNDeviceManager sharedInstance] isIPad];
+    BOOL isIpad = [SYNDeviceManager.sharedInstance isIPad];
     SYNAppDelegate* appDelegate = UIApplication.sharedApplication.delegate;
     SYNMasterViewController *masterViewController = (SYNMasterViewController*)appDelegate.masterViewController;
     NSString *suggestedQuality = @"default";
@@ -317,6 +319,14 @@ static UIWebView* vimeoideoWebViewInstance;
 
 - (UIView *) createShuttleBarView
 {
+    CGFloat shuttleBarButtonWidth = kShuttleBarButtonWidthiPhone;
+    CGFloat airplayOffset = 0;
+    
+    if ([SYNDeviceManager.sharedInstance isIPad])
+    {
+        shuttleBarButtonWidth = kShuttleBarButtonWidthiPad;
+        airplayOffset = 18;
+    }
     // Create out shuttle bar view at the bottom of our video view
     CGRect shuttleBarFrame = self.view.frame;
     shuttleBarFrame.size.height = kShuttleBarHeight;
@@ -334,7 +344,7 @@ static UIWebView* vimeoideoWebViewInstance;
     self.shuttleBarPlayPauseButton = [UIButton buttonWithType: UIButtonTypeCustom];
     
     // Set this subview to appear slightly offset from the left-hand side
-    self.shuttleBarPlayPauseButton.frame = CGRectMake(0, 0, kShuttleBarButtonWidth, kShuttleBarHeight);
+    self.shuttleBarPlayPauseButton.frame = CGRectMake(0, 0, shuttleBarButtonWidth, kShuttleBarHeight);
     
     [self.shuttleBarPlayPauseButton setImage: [UIImage imageNamed: @"ButtonShuttleBarPause.png"]
                                     forState: UIControlStateNormal];
@@ -347,14 +357,14 @@ static UIWebView* vimeoideoWebViewInstance;
     [shuttleBarView addSubview: self.shuttleBarPlayPauseButton];
     
     // Add time labels
-    self.currentTimeLabel = [self createTimeLabelAtXPosition: kShuttleBarButtonWidth
+    self.currentTimeLabel = [self createTimeLabelAtXPosition: shuttleBarButtonWidth
                                                textAlignment: NSTextAlignmentRight];
     
     self.currentTimeLabel.text =  [NSString timecodeStringFromSeconds: 0.0f];
     
     [shuttleBarView addSubview: self.currentTimeLabel];
     
-    self.durationLabel = [self createTimeLabelAtXPosition: self.view.frame.size.width - kShuttleBarTimeLabelWidth - kShuttleBarButtonWidth
+    self.durationLabel = [self createTimeLabelAtXPosition: self.view.frame.size.width - kShuttleBarTimeLabelWidth - shuttleBarButtonWidth
                                             textAlignment: NSTextAlignmentLeft];
     
     self.durationLabel.text =  [NSString timecodeStringFromSeconds: 0.0f];
@@ -363,17 +373,17 @@ static UIWebView* vimeoideoWebViewInstance;
     
     // Add shuttle slider
     // Set custom slider track images
-    CGFloat sliderOffset = kShuttleBarButtonWidth + kShuttleBarTimeLabelWidth + kShuttleBarSliderOffset;
+    CGFloat sliderOffset = shuttleBarButtonWidth + kShuttleBarTimeLabelWidth + kShuttleBarSliderOffset;
     
     UIImage *sliderBackgroundImage = [UIImage imageNamed: @"ShuttleBarPlayerBar.png"];
     
-    UIImageView *sliderBackgroundImageView = [[UIImageView alloc] initWithFrame: CGRectMake(sliderOffset+2, 17, shuttleBarFrame.size.width - 2 - (2 * sliderOffset), 10)];
+    UIImageView *sliderBackgroundImageView = [[UIImageView alloc] initWithFrame: CGRectMake(sliderOffset+2, 17, shuttleBarFrame.size.width - 4 - (2 * sliderOffset), 10)];
     
     sliderBackgroundImageView.image = [sliderBackgroundImage resizableImageWithCapInsets: UIEdgeInsetsMake(0.0f, 10.0f, 0.0f, 10.0f)];
     [shuttleBarView addSubview: sliderBackgroundImageView];
     
     // Add the progress bar over the background, but underneath the slider
-    self.bufferingProgressView = [[UIProgressView alloc] initWithFrame: CGRectMake(sliderOffset+1, 17, shuttleBarFrame.size.width - (2 * sliderOffset), 10)];
+    self.bufferingProgressView = [[UIProgressView alloc] initWithFrame: CGRectMake(sliderOffset+1, 17, shuttleBarFrame.size.width - 4 -(2 * sliderOffset), 10)];
     UIImage *progressImage = [[UIImage imageNamed: @"ShuttleBarBufferBar.png"] resizableImageWithCapInsets: UIEdgeInsetsMake(0.0f, 10.0f, 0.0f, 10.0f)];
     // Note: this image needs to be exactly the same size at the left hand-track bar, or the bar will only display as a line
 	UIImage *shuttleSliderRightTrack = [[UIImage imageNamed: @"ShuttleBarRemainingBar.png"] resizableImageWithCapInsets: UIEdgeInsetsMake(0.0f, 10.0f, 0.0f, 10.0f)];
@@ -409,7 +419,7 @@ static UIWebView* vimeoideoWebViewInstance;
     // Add AirPlay button
     // This is a crafty (apple approved) hack, where we set the showVolumeSlider parameter to NO, so only the AirPlay symbol gets shown
     MPVolumeView *volumeView = [[MPVolumeView alloc] init];
-    volumeView.frame = CGRectMake(self.view.frame.size.width - kShuttleBarButtonWidth + 18, 12, 25, kShuttleBarHeight);
+    volumeView.frame = CGRectMake(self.view.frame.size.width - shuttleBarButtonWidth + airplayOffset, 12, 25, kShuttleBarHeight);
     [volumeView setShowsVolumeSlider: NO];
     [volumeView sizeToFit];
     volumeView.backgroundColor = [UIColor clearColor];
@@ -830,6 +840,7 @@ static UIWebView* vimeoideoWebViewInstance;
          shouldStartLoadWithRequest: (NSURLRequest *) request
          navigationType: (UIWebViewNavigationType) navigationType
 {
+    DebugLog(@"-----%@", request.debugDescription);
     NSString *scheme = request.URL.scheme;
     
     // If we have an event from one of our players (as opposed to something else)
@@ -884,7 +895,10 @@ static UIWebView* vimeoideoWebViewInstance;
 
 - (void) handleCurrentYouTubePlayerEventNamed: (NSString *) actionName
                                     eventData: (NSString *) actionData
-{    if ([actionName isEqualToString: @"ready"])
+{
+    DebugLog (@"actionname = %@, actiondata = %@", actionName, actionData);
+    
+    if ([actionName isEqualToString: @"ready"])
     {
         // We probably don't get this event any more as the player is already set up (asynchronously)
         DebugLog (@"++++++++++ Player ready - player ready");
@@ -920,13 +934,12 @@ static UIWebView* vimeoideoWebViewInstance;
             self.shuttledByUser = TRUE;
             self.notYetPlaying = FALSE;
             
-            [self fadeUpVideoPlayer];
-            
             // Now cache the duration of this video for use in the progress updates
             self.currentDuration = self.duration;
             
             if (self.currentDuration > 0.0f)
             {
+                self.fadeUpScheduled = FALSE;
                 // Only start if we have a valid duration
                 [self startShuttleBarUpdateTimer];
                 self.durationLabel.text = [NSString timecodeStringFromSeconds: self.currentDuration];
@@ -976,6 +989,7 @@ static UIWebView* vimeoideoWebViewInstance;
     else if ([actionName isEqualToString: @"error"])
     {
         DebugLog (@"!!!!!!!!!! Error");
+        [self fadeUpVideoPlayer];
     }
     else if ([actionName isEqualToString: @"apiChange"])
     {
@@ -1032,6 +1046,44 @@ static UIWebView* vimeoideoWebViewInstance;
     // just after a user shuttle event)
     
     NSTimeInterval currentTime = self.currentTime;
+    NSLog (@"Current time %lf", currentTime);
+    
+    // We need to wait until the play time starts to increase before fading up the video
+    if (currentTime > 0.0f)
+    {
+        // Fade up the player if we haven't already
+        if (self.fadeUpScheduled == FALSE)
+        {
+            // Reset our stall count, once per video
+            self.stallCount = 0;
+            
+            // Fade up the video and fade out the placeholder
+            self.fadeUpScheduled = TRUE;
+            [self fadeUpVideoPlayer];
+        }
+        
+        // Check to see if the player has stalled (a number of instances of the same time)
+        if (currentTime == self.lastTime)
+        {
+            self.stallCount++;
+            
+            if (self.stallCount > kMaxStallCount)
+            {
+                DebugLog (@"*** Stalled: Attempting to restart player");
+                [self playVideo];
+
+                // Reset our stall count (could make this negative to give restarts longer)
+                self.stallCount = 0;
+            }
+        }
+        else
+        {
+            self.lastTime = currentTime;
+            
+            // Reset our stall count 
+            self.stallCount = 0;
+        }
+    }
     
     // Update current time label
     self.currentTimeLabel.text = [NSString timecodeStringFromSeconds: currentTime];
@@ -1149,7 +1201,7 @@ static UIWebView* vimeoideoWebViewInstance;
 {
     // Tweaked this as the QuickTime logo seems to appear otherwise
     [UIView animateWithDuration: 0.5f
-                          delay: 1.0f
+                          delay: 0.0f
                         options: UIViewAnimationOptionCurveEaseInOut
                      animations: ^ {
                          self.currentVideoWebView.alpha = 1.0f;

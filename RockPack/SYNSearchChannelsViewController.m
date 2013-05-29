@@ -10,8 +10,14 @@
 #import "SYNSearchChannelsViewController.h"
 #import "SYNSearchRootViewController.h"
 #import "SYNSearchTabView.h"
+#import "SYNDeviceManager.h"
+#import "SYNDeviceManager.h"
+#import "SYNChannelDetailViewController.h"
+
 
 @interface SYNSearchChannelsViewController ()
+
+@property (nonatomic, weak) NSString* searchTerm;
 
 @end
 
@@ -42,10 +48,27 @@
 {
     [super viewDidLoad];
     
-    CGRect collectionFrame = self.channelThumbnailCollectionView.frame;
-    collectionFrame.origin.y += 60.0;
-    collectionFrame.size.height -= 60.0;
-    self.channelThumbnailCollectionView.frame = collectionFrame;  
+    if ([SYNDeviceManager.sharedInstance isIPhone]) {
+        CGRect collectionFrame = self.channelThumbnailCollectionView.frame;
+        collectionFrame.origin.y += 60.0;
+        collectionFrame.size.height -= 60.0;
+        self.channelThumbnailCollectionView.frame = collectionFrame;
+    }
+    
+    else {
+        
+        CGRect collectionFrame = self.channelThumbnailCollectionView.frame;
+        collectionFrame.origin.y += 5.0;
+        collectionFrame.size.height -= 5.0;
+        self.channelThumbnailCollectionView.frame = collectionFrame;
+        
+        UICollectionViewFlowLayout* layout = (UICollectionViewFlowLayout*)self.channelThumbnailCollectionView.collectionViewLayout;
+        UIEdgeInsets insets= layout.sectionInset;
+        insets.top = 0.0f;
+        insets.bottom = -50.0f;
+        layout.sectionInset = insets;
+        
+    }
 }
 
 
@@ -91,6 +114,8 @@
     NSError *error = nil;
     NSArray *resultsArray = [appDelegate.searchManagedObjectContext executeFetchRequest: request
                                                                                   error: &error];
+    
+    
     if (!resultsArray)
         return;
     
@@ -106,23 +131,50 @@
 
 - (void) loadChannelsForGenre: (Genre*) genre
 {
-    // override 
+    // override superclass method as there are no genres here
+}
+
+- (void) loadMoreChannels: (UIButton*) sender
+{
+    
+    self.footerView.showsLoading = YES;
+    
+    NSInteger nextStart = self.dataRequestRange.location + self.dataRequestRange.length; // one is subtracted when the call happens for 0 indexing
+    
+    if(nextStart >= self.dataItemsAvailable)
+        return;
+    
+    NSInteger nextSize = (nextStart + STANDARD_REQUEST_LENGTH) >= self.dataItemsAvailable ? (self.dataItemsAvailable - nextStart) : STANDARD_REQUEST_LENGTH;
+    
+    self.dataRequestRange = NSMakeRange(nextStart, nextSize);
+    
+    [appDelegate.networkEngine searchChannelsForTerm: self.searchTerm
+                                            andRange: self.dataRequestRange
+                                          onComplete: ^(int itemsCount) {
+                                              self.dataItemsAvailable = itemsCount;
+                                          }];
 }
 
 
-- (void) performSearchWithTerm: (NSString*) term
+- (void) performNewSearchWithTerm: (NSString*) term
 {
+    
+    
     if (!appDelegate)
         appDelegate = (SYNAppDelegate*)[[UIApplication sharedApplication] delegate];
     
-    if (self.dataRequestRange.length == 0)
-        self.dataRequestRange = NSMakeRange(0, 48);
+    self.dataRequestRange = NSMakeRange(0, 48);
+        
+    
+    
     
     [appDelegate.networkEngine searchChannelsForTerm: term
                                             andRange: self.dataRequestRange
                                           onComplete: ^(int itemsCount) {
                                               self.dataItemsAvailable = itemsCount;
                                           }];
+    
+    self.searchTerm = term;
 }   
 
 
@@ -145,7 +197,16 @@
 
 -(void)collectionView:(UICollectionView *)collectionView didSelectItemAtIndexPath:(NSIndexPath *)indexPath
 {
-    [super collectionView:collectionView didSelectItemAtIndexPath:indexPath];
+    if (self.isAnimating) // prevent double clicking
+        return;
+    
+    
+    Channel *channel = (Channel*)(self->channels[indexPath.row]);
+    
+    SYNChannelDetailViewController *channelVC = [[SYNChannelDetailViewController alloc] initWithChannel: channel
+                                                                                              usingMode: kChannelDetailsModeDisplay];
+    
+    [self animatedPushViewController: channelVC];
 }
 
 @end

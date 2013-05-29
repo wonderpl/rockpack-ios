@@ -38,13 +38,13 @@
                 break;
         }
         
-        BOOL isIPad = [[SYNDeviceManager sharedInstance] isIPad];
+        BOOL isIPad = [SYNDeviceManager.sharedInstance isIPad];
         
         
         onColor = [UIColor whiteColor];
         offColor = isIPad?[UIColor darkGrayColor]:[UIColor colorWithRed:40.0f/255.0f green:45.0f/255.0f blue:51.0f/255.0f alpha:1.0f];
         self.parenthesesColor = [UIColor colorWithWhite:170.0f/255.0f alpha:1.0f];
-        self.numberColor = [UIColor colorWithRed:46.0f/255.0f green:192.0f/255.0f blue:197.0f/255.0f alpha:1.0f];
+        self.numberColor = [UIColor colorWithRed:(11.0/255.0) green:(166.0/255.0) blue:(171.0/255.0) alpha:(1.0)];
         bgImageView = [[UIImageView alloc] initWithImage:backgroundImageOff];
         
         [self addSubview:bgImageView];

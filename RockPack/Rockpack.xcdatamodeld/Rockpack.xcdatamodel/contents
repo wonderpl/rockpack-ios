@@ -4,6 +4,7 @@
         <attribute name="fresh" optional="YES" attributeType="Boolean" syncable="YES"/>
         <attribute name="markedForDeletion" attributeType="Boolean" defaultValueString="NO" syncable="YES"/>
         <attribute name="uniqueId" optional="YES" attributeType="String" syncable="YES"/>
+        <attribute name="viewId" optional="YES" attributeType="String" syncable="YES"/>
         <compoundIndexes>
             <compoundIndex>
                 <index value="uniqueId"/>
@@ -91,7 +92,7 @@
         <relationship name="video" optional="YES" minCount="1" maxCount="1" deletionRule="Nullify" destinationEntity="Video" inverseName="videoInstances" inverseEntity="Video" syncable="YES"/>
     </entity>
     <elements>
-        <element name="AbstractCommon" positionX="-74" positionY="-333" width="128" height="88"/>
+        <element name="AbstractCommon" positionX="-74" positionY="-333" width="128" height="103"/>
         <element name="Channel" positionX="-2" positionY="72" width="128" height="268"/>
         <element name="ChannelCover" positionX="-164" positionY="-27" width="128" height="133"/>
         <element name="ChannelOwner" positionX="-344" positionY="48" width="128" height="105"/>
@@ -99,7 +100,7 @@
         <element name="Genre" positionX="-270" positionY="-204" width="128" height="88"/>
         <element name="SubGenre" positionX="-468" positionY="-189" width="128" height="60"/>
         <element name="User" positionX="-342" positionY="186" width="128" height="223"/>
-        <element name="Video" positionX="153" positionY="72" width="128" height="223"/>
-        <element name="VideoInstance" positionX="351" positionY="207" width="128" height="118"/>
+        <element name="Video" positionX="250" positionY="18" width="128" height="223"/>
+        <element name="VideoInstance" positionX="196" positionY="297" width="128" height="118"/>
     </elements>
 </model>

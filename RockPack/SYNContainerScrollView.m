@@ -32,7 +32,7 @@
     if (!self.scrollEnabled)
         return;
     
-    CGPoint newPoint = CGPointMake(page * [[SYNDeviceManager sharedInstance] currentScreenWidth], 0.0);
+    CGPoint newPoint = CGPointMake(page * [SYNDeviceManager.sharedInstance currentScreenWidth], 0.0);
     
     [self setContentOffset: newPoint
                   animated: YES];

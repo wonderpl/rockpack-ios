@@ -38,7 +38,7 @@
 
 -(void)presentImagePickerAsPopupFromView:(UIView*)view arrowDirection:(UIPopoverArrowDirection)direction
 {
-    if([[SYNDeviceManager sharedInstance] isIPhone])
+    if([SYNDeviceManager.sharedInstance isIPhone])
     {
         [self presentImagePickerModally];
     }
@@ -116,7 +116,7 @@
 
 - (void) showImagePicker: (UIImagePickerControllerSourceType) sourceType
 {
-    if([[SYNDeviceManager sharedInstance] isIPhone])
+    if([SYNDeviceManager.sharedInstance isIPhone])
     {
         [self showImagePickerModally:sourceType];
         return;

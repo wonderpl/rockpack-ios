@@ -52,9 +52,9 @@
 {
     [super viewDidLoad];
     
-    self.contentSizeForViewInPopover = CGSizeMake([[SYNDeviceManager sharedInstance] isIPad]? 380 : [[SYNDeviceManager sharedInstance] currentScreenWidth], 476);
+    self.contentSizeForViewInPopover = CGSizeMake([SYNDeviceManager.sharedInstance isIPad]? 380 : [SYNDeviceManager.sharedInstance currentScreenWidth], 476);
     
-    self.view.backgroundColor = [[SYNDeviceManager sharedInstance] isIPad] ? [UIColor clearColor] : [UIColor whiteColor];
+    self.view.backgroundColor = [SYNDeviceManager.sharedInstance isIPad] ? [UIColor clearColor] : [UIColor whiteColor];
     
     self.sizeInContainer = self.contentSizeForViewInPopover.width - 20.0;
     
@@ -63,7 +63,7 @@
     UIImage* buttonImage = [UIImage imageNamed: @"ButtonAccountSaveDefault.png"];
     saveButton = [UIButton buttonWithType: UIButtonTypeCustom];
     saveButton.frame = CGRectMake(0.0, 0.0, buttonImage.size.width, buttonImage.size.height);
-    saveButton.center = CGPointMake(([[SYNDeviceManager sharedInstance] isIPad] ? 190.0 : 160.0), saveButton.center.y);
+    saveButton.center = CGPointMake(([SYNDeviceManager.sharedInstance isIPad] ? 190.0 : 160.0), saveButton.center.y);
     
     [saveButton setImage: buttonImage
                 forState: UIControlStateNormal];
@@ -133,7 +133,7 @@
                                                                 self.contentSizeForViewInPopover.width - 20.0,
                                                                 50)];
     
-    errorLabel.textColor = [UIColor colorWithRed:(46.0/255.0) green:(192.0/255.0) blue:(197.0/255.0) alpha:(1.0)];
+    errorLabel.textColor = [UIColor colorWithRed:(11.0/255.0) green:(166.0/255.0) blue:(171.0/255.0) alpha:(1.0)];
     errorLabel.font = [UIFont rockpackFontOfSize: 18];
     errorLabel.numberOfLines = 0;
     errorLabel.textAlignment = NSTextAlignmentCenter;

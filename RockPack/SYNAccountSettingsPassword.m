@@ -130,7 +130,7 @@
                                 
                                 if(errorMessage.count > 0)
                                 {
-                                    self.errorLabel.text = (NSString*)[errorMessage objectAtIndex:0];
+                                    self.errorLabel.text = (NSString*)errorMessage[0];
                                 }
                                 else
                                 {

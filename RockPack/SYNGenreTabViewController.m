@@ -78,7 +78,7 @@
     }
 
     
-    SYNGenreTabView* categoriesTabView = [[SYNGenreTabView alloc] initWithSize: [[SYNDeviceManager sharedInstance] currentScreenWidth]
+    SYNGenreTabView* categoriesTabView = [[SYNGenreTabView alloc] initWithSize: [SYNDeviceManager.sharedInstance currentScreenWidth]
                                                                            andHomeButton: self.homeButtomString];
     categoriesTabView.tapDelegate = self;
     
@@ -95,18 +95,28 @@
 {
     [super viewDidLoad];
     
-    
-    [self updateCategoriesFromWS];
-    
-    
     [self loadCategories];
+    
+    if(self.genresFetched.count > 0) // if there are genres in the DB call for a refresh, else it has already done sos...
+    {
+        [self updateCategoriesFromWS];
+    }
+    
+        
 }
 
 -(void)updateCategoriesFromWS
 {
-    [appDelegate.networkEngine updateCategoriesOnCompletion: ^{
+    
+    
+    [appDelegate.networkEngine updateCategoriesOnCompletion: ^(NSDictionary* dictionary){
         
-        
+        BOOL registryResultOk = [appDelegate.mainRegistry registerCategoriesFromDictionary: dictionary];
+        if (!registryResultOk) {
+            DebugLog(@"*** Cannot Register Genre Objects! ***");
+            return;
+        }
+            
         [self loadCategories];
         
         
@@ -121,8 +131,6 @@
 - (void) loadCategories
 {
     NSError* error;
-    
-    
     
     NSEntityDescription* categoryEntity = [NSEntityDescription entityForName: @"Genre"
                                                       inManagedObjectContext: appDelegate.mainManagedObjectContext];
@@ -143,10 +151,17 @@
     self.genresFetched = [appDelegate.mainManagedObjectContext executeFetchRequest: categoriesFetchRequest
                                                                              error: &error];
     
+    
+    //DebugLog(@"* Genre Objects Loaded: %i", self.genresFetched.count);
+    
     if(self.genresFetched.count > 0)
+    {
         [self.tabView createCategoriesTab:self.genresFetched];
+    }
     else
+    {
         [self updateCategoriesFromWS];
+    }
 }
 
 

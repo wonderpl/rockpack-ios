@@ -63,7 +63,7 @@ static char operationKey;
                 {
                     [UIView transitionWithView: self.superview
                                       duration: 0.35f
-                                       options: UIViewAnimationOptionTransitionCrossDissolve
+                                       options: UIViewAnimationOptionTransitionCrossDissolve | UIViewAnimationOptionAllowUserInteraction
                                     animations: ^{
                                         sself.image = image;
                                     }

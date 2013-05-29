@@ -5,8 +5,6 @@
 #import "VideoInstance.h"
 
 
-static NSEntityDescription *videoInstanceEntity = nil;
-
 @interface VideoInstance ()
 
 // Private interface goes here.
@@ -31,7 +29,6 @@ static NSEntityDescription *videoInstanceEntity = nil;
     
     instance.title = existingInstance.title;
     
-    
     instance.video = [Video instanceFromVideo:existingInstance.video
                     usingManagedObjectContext:managedObjectContext];
     
@@ -53,29 +50,18 @@ static NSEntityDescription *videoInstanceEntity = nil;
         return nil;
     
     NSString *uniqueId = [dictionary objectForKey: @"id"];
-    
     if(!uniqueId || ![uniqueId isKindOfClass:[NSString class]])
         return nil;
     
     
-    if (videoInstanceEntity == nil)
-    {
-        
-        static dispatch_once_t oncePredicate;
-        dispatch_once(&oncePredicate, ^{
-            
-            videoInstanceEntity = [NSEntityDescription entityForName: @"VideoInstance"
-                                              inManagedObjectContext: managedObjectContext];
-          
-        });
-    }
     
     VideoInstance *instance;
     
     if(!(ignoringObjects & kIgnoreStoredObjects))
     {
         NSFetchRequest *videoInstanceFetchRequest = [[NSFetchRequest alloc] init];
-        [videoInstanceFetchRequest setEntity: videoInstanceEntity];
+        [videoInstanceFetchRequest setEntity: [NSEntityDescription entityForName: @"VideoInstance"
+                                                          inManagedObjectContext: managedObjectContext]];
         
         // Search on the unique Id
         NSPredicate *predicate = [NSPredicate predicateWithFormat: @"uniqueId == %@", uniqueId];

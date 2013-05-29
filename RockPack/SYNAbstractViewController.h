@@ -32,6 +32,7 @@ typedef void (^SYNShareCompletionBlock)(void);
     NSString* viewId;
     NSFetchedResultsController* fetchedResultsController;
     CGFloat startAnimationDelay;
+    NSString* abstractTitle;
 }
 
 
@@ -44,6 +45,7 @@ typedef void (^SYNShareCompletionBlock)(void);
 @property (nonatomic, strong) UIImageView *draggedView;
 @property (readonly) NSManagedObjectContext *mainManagedObjectContext;
 @property (readonly, getter = isVideoQueueVisible) BOOL videoQueueVisible;
+@property (nonatomic, readonly) NSString* viewId;
 
 @property (nonatomic) BOOL isAnimating;
 
@@ -66,13 +68,14 @@ typedef void (^SYNShareCompletionBlock)(void);
 // Fade old VC out, fade new VC in (as opposed to regular push animation)
 - (void) animatedPushViewController: (UIViewController *) vc;
 - (IBAction) animatedPopViewController;
+- (void) animatedPopToRootViewController;
 
 - (BOOL) collectionView: (UICollectionView *) cv didSelectItemAtIndexPathAbstract: (NSIndexPath *) indexPath;
 
 - (void) displayVideoViewerWithVideoInstanceArray: (NSArray *) videoInstanceArray
                                  andSelectedIndex: (int) selectedIndex;
 
-- (void) viewChannelDetails: (Channel *) channel;
+
 - (void) viewProfileDetails: (ChannelOwner *) channelOwner;
 - (void) refresh;
 

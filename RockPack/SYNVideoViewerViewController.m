@@ -30,6 +30,7 @@
 #import "Video.h"
 #import "VideoInstance.h"
 #import <MediaPlayer/MediaPlayer.h>
+#import "SYNChannelDetailViewController.h"
 
 @interface SYNVideoViewerViewController () <UIGestureRecognizerDelegate,
                                             UIPopoverControllerDelegate>
@@ -88,8 +89,8 @@
 {
     [super viewDidLoad];
     
-    BOOL isIPhone = [[SYNDeviceManager sharedInstance] isIPhone];
-        BOOL isLandscape = [[SYNDeviceManager sharedInstance] isLandscape];
+    BOOL isIPhone = [SYNDeviceManager.sharedInstance isIPhone];
+        BOOL isLandscape = [SYNDeviceManager.sharedInstance isLandscape];
     
     if (isIPhone)
     {
@@ -257,7 +258,7 @@
                                     selectedIndex: self.currentSelectedIndex
                                          autoPlay: TRUE];
     
-    if ([[SYNDeviceManager sharedInstance] isIPhone])
+    if ([SYNDeviceManager.sharedInstance isIPhone])
     {
         CGRect videoFrame = self.videoPlaybackViewController.view.frame;
         videoFrame.origin = self.swipeView.frame.origin;
@@ -291,7 +292,7 @@
 {
     // Let's make sure that we stop playing the current video
     self.videoPlaybackViewController = nil;
-    if ([[SYNDeviceManager sharedInstance] isIPhone])
+    if ([SYNDeviceManager.sharedInstance isIPhone])
     {
         [[NSNotificationCenter defaultCenter] removeObserver:self name:UIDeviceOrientationDidChangeNotification object:nil];
     }
@@ -488,7 +489,7 @@
                          layout: (UICollectionViewLayout*) collectionViewLayout
          insetForSectionAtIndex: (NSInteger)section
 {
-    CGFloat insetWidth = [[SYNDeviceManager sharedInstance] isIPhone] ? 81.0f : 438.0f;
+    CGFloat insetWidth = [SYNDeviceManager.sharedInstance isIPhone] ? 81.0f : 438.0f;
     
     // We only have one section, so add both trailing and leading insets
     return UIEdgeInsetsMake (0, insetWidth, 0, insetWidth );
@@ -605,12 +606,21 @@
 // The user touched the invisible button above the channel thumbnail, taking the user to the channel page
 - (IBAction) userTouchedChannelButton: (id) sender
 {
+    if(self.shownFromChannelScreen)
+    {
+        //Don't navigate to the channel in a new view controller, instead just pop this video player
+        [self userTouchedCloseButton:nil];
+        return;
+    }
     [self.overlayParent removeVideoOverlayController];
     
     // Get the video instance for the currently selected video
     VideoInstance *videoInstance = self.videoInstanceArray [self.currentSelectedIndex];
     
-    [(SYNAbstractViewController *)self.overlayParent.originViewController viewChannelDetails: videoInstance.channel];
+    [[NSNotificationCenter defaultCenter] postNotificationName:kChannelDetailsRequested
+                                                        object:self
+                                                      userInfo:@{kChannel:videoInstance.channel}];
+    
 }
 
 
@@ -628,12 +638,12 @@
 
 - (void) userTappedVideo
 {
-    if ([[SYNDeviceManager sharedInstance] isIPad])
+    if ([SYNDeviceManager.sharedInstance isIPad])
     {
         // iPad
         if (self.isVideoExpanded)
         {
-            if ([[SYNDeviceManager sharedInstance] isLandscape])
+            if ([SYNDeviceManager.sharedInstance isLandscape])
             {
                 // Landscape
                 [UIView transitionWithView: self.view
@@ -670,7 +680,7 @@
         }
         else
         {
-            if ([[SYNDeviceManager sharedInstance] isLandscape])
+            if ([SYNDeviceManager.sharedInstance isLandscape])
             {
                 // Landscape
                 [UIView transitionWithView: self.view
@@ -913,11 +923,11 @@
                           duration: 0.5f
                            options: UIViewAnimationOptionCurveEaseInOut
                         animations: ^ {
-                            CGRect fullScreenFrame = CGRectMake(0,0,[[SYNDeviceManager sharedInstance] currentScreenHeight], [[SYNDeviceManager sharedInstance] currentScreenWidth]);
+                            CGRect fullScreenFrame = CGRectMake(0,0,[SYNDeviceManager.sharedInstance currentScreenHeight], [SYNDeviceManager.sharedInstance currentScreenWidth]);
                             if (fullScreenFrame.size.width < fullScreenFrame.size.height)
                             {
                                 //Device orientation may confuse screen dimensions. Ensure the width is always the larger dimension.
-                                fullScreenFrame = CGRectMake(0,0,[[SYNDeviceManager sharedInstance] currentScreenWidth], [[SYNDeviceManager sharedInstance] currentScreenHeight]);
+                                fullScreenFrame = CGRectMake(0,0,[SYNDeviceManager.sharedInstance currentScreenWidth], [SYNDeviceManager.sharedInstance currentScreenHeight]);
                             }
                             self.blackPanelView.alpha = 1.0f;
                             self.chromeView.alpha = 0.0f;

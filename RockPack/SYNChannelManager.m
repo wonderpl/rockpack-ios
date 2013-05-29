@@ -124,26 +124,44 @@
                                             completionHandler: ^(NSDictionary *responseDictionary) {
                                                 
                                                 
-                                                
                                                 channel.hasChangedSubscribeValue = YES;
+                                                channel.subscribedByUserValue = YES;
+                                                channel.subscribersCountValue += 1;
                                                 
-                                                [appDelegate.currentUser addSubscriptionsObject:channel];
                                                 
-                                                if(channel.managedObjectContext == appDelegate.mainManagedObjectContext)
+                                                // the channel that got updated was a copy inside the ChannelDetails, so we must copy it to user
+                                                
+                                                IgnoringObjects copyFlags = kIgnoreVideoInstanceObjects;
+                                                
+                                                Channel* subscription = [Channel instanceFromChannel:channel
+                                                                                           andViewId:kProfileViewId
+                                                                           usingManagedObjectContext:appDelegate.currentUser.managedObjectContext
+                                                                                 ignoringObjectTypes:copyFlags];
+                                                
+                                                
+                                                subscription.hasChangedSubscribeValue = YES;
+                                                subscription.subscribedByUserValue = YES;
+                                                subscription.subscribersCountValue++;
+                                                
+                                                [appDelegate.currentUser.subscriptionsSet addObject:subscription];
+                                                
+                                                
+                                                // might be in search context
+                                                NSError* error;
+                                                [channel.managedObjectContext save:&error];
+                                                if(!error)
                                                 {
-                                                    [appDelegate saveContext:YES];
+                                                    
                                                 }
-                                                else if (channel.managedObjectContext == appDelegate.searchManagedObjectContext)
-                                                {
-                                                    [appDelegate saveSearchContext];
-                                                }
+                                                
+                                                [appDelegate saveContext:YES];
                                                 
                                                 
                                             } errorHandler: ^(NSDictionary* errorDictionary) {
                                                 
                                                 // so that the observer will pick up the change and stop the activity indicator
                                                 channel.subscribedByUserValue = channel.subscribedByUserValue;
-                                            
+                                                channel.hasChangedSubscribeValue = NO;
                                                 
                                                 
                                             }];
@@ -161,25 +179,35 @@
                                               completionHandler: ^(NSDictionary *responseDictionary) {
                                                   
                                                   
+                                                  
                                                   channel.hasChangedSubscribeValue = YES;
+                                                  channel.subscribedByUserValue = NO;
+                                                  channel.subscribersCountValue -= 1;
                                                   
-                                                  [appDelegate.currentUser removeSubscriptionsObject:channel];
-                                                  
-                                                  
-                                                  if(channel.managedObjectContext == appDelegate.mainManagedObjectContext)
+                                                  // the channel that got updated was a copy inside the ChannelDetails, so we must find the original and update it.
+                                                  for (Channel* subscription in appDelegate.currentUser.subscriptions)
                                                   {
-                                                      [appDelegate saveContext:YES];
+                                                      if([subscription.uniqueId isEqualToString:channel.uniqueId])
+                                                      {
+                                                          subscription.subscribedByUserValue = NO;
+                                                          subscription.subscribersCountValue--;
+                                                          
+                                                          [appDelegate.currentUser.subscriptionsSet removeObject:subscription];
+                                                          
+                                                          break;
+                                                      }
                                                   }
-                                                  else if (channel.managedObjectContext == appDelegate.searchManagedObjectContext)
-                                                  {
-                                                      [appDelegate saveSearchContext];
-                                                  }
+                                                  
+                                                  
+                                                  
+                                                  [appDelegate saveContext:YES];
+                                                                       
                                                   
                                                 } errorHandler: ^(NSDictionary* errorDictionary) {
                                                     
                                                     // so that the observer will pick up the change and stop the activity indicator
                                                     channel.subscribedByUserValue = channel.subscribedByUserValue;
-                                                    
+                                                    channel.hasChangedSubscribeValue = NO;
                                                     
                                                 }];
     
@@ -192,23 +220,20 @@
                                                  channelId:channel.uniqueId
                                          completionHandler:^(id response) {
                                              
-                                             NSMutableOrderedSet *channelsSet = [NSMutableOrderedSet orderedSetWithOrderedSet:appDelegate.currentUser.channels];
+                                             // this is done through the profile view so no need to copy the channel over.
                                              
-                                             
-                                             [channelsSet removeObject:channel];
-                                             
-                                             [appDelegate.currentUser setChannels:channelsSet];
+                                             [appDelegate.currentUser.channelsSet removeObject:channel];
                                              
                                              [appDelegate saveContext:YES];
                                              
-                                             DebugLog(@"Delete channel succeed");
                 
                                          } errorHandler:^(id error) {
                                              
-                                             DebugLog(@"Delete channel NOT succeed");
         
                                          }];
 }
+
+#pragma mark - Updating
 
 -(void)updateChannel:(Channel*)channel withForceRefresh:(BOOL)refresh
 {
@@ -224,22 +249,29 @@
         
         NSNumber *savedPosition = channel.position;
         
+        
         [channel setAttributesFromDictionary: channelDictionary
-                                      withId: channel.uniqueId
                          ignoringObjectTypes: kIgnoreChannelOwnerObject];
+        
+        // the channel that got updated was a copy inside the ChannelDetails, so we must find the original and update it.
+        for (Channel* userChannel in appDelegate.currentUser.channels)
+        {
+            if([userChannel.uniqueId isEqualToString:channel.uniqueId])
+            {
+                [userChannel setAttributesFromDictionary: channelDictionary
+                                     ignoringObjectTypes: kIgnoreChannelOwnerObject];
+                
+                break;
+            }
+        }
         
         
         channel.position = savedPosition;
         
         
-        if(channel.managedObjectContext == appDelegate.mainManagedObjectContext)
-        {
-            [appDelegate saveContext:YES];
-        }
-        else if (channel.managedObjectContext == appDelegate.searchManagedObjectContext)
-        {
-            [appDelegate saveSearchContext];
-        };
+        NSError *error = nil;
+        ZAssert([channel.managedObjectContext save: &error], @"Error saving Search moc: %@\n%@",
+                [error localizedDescription], [error userInfo]);
         
     };
     
@@ -252,6 +284,8 @@
     
     if (refresh == YES || [channel.resourceURL hasPrefix: @"https"]) // https does not cache so it is fresh
     {
+        
+        
         [appDelegate.oAuthNetworkEngine updateChannel: channel.resourceURL
                                     completionHandler: successBlock
                                          errorHandler: errorBlock];
@@ -259,26 +293,84 @@
     }
     else
     {
+        
+        
         [appDelegate.networkEngine updateChannel: channel.resourceURL
                                completionHandler: successBlock
                                     errorHandler: errorBlock];
     }
 }
 
+// From Profile Page only
+
 -(void)updateChannelsForChannelOwner:(ChannelOwner*)channelOwner
 {
-    [appDelegate.networkEngine channelOwnerDataForChannelOwner:channelOwner
-                                                    onComplete:^(id dictionary) {
+    
+    MKNKUserErrorBlock errorBlock = ^(id error) {
         
+    };
+    
+    
+    if([channelOwner isMemberOfClass:[User class]]) // the user uses the oAuthEngine to avoid caching
+    {
+        [appDelegate.oAuthNetworkEngine userDataForUser:((User*)channelOwner) onCompletion:^(id dictionary) {
+            
+            [channelOwner setAttributesFromDictionary: dictionary
+                                  ignoringObjectTypes: kIgnoreVideoInstanceObjects | kIgnoreChannelOwnerObject];
+            
+            [appDelegate.oAuthNetworkEngine userSubscriptionsForUser:((User*)channelOwner) onCompletion:^(id dictionary) {
+                
+                
+                [channelOwner addSubscriptionsDictionary:dictionary];
+                
+                NSError *error = nil;
+                [channelOwner.managedObjectContext save: &error];
+                if(error)
+                {
+                    NSString* errorString = [NSString stringWithFormat:@"%@ %@", [error localizedDescription], [error userInfo]];
+                    DebugLog(@"%@", errorString);
+                    errorBlock(@{@"saving_error":errorString});
+                }
+               
+                
+            } onError:errorBlock];
+            
+            
+        } onError:errorBlock];
         
-        
-                                                        [appDelegate.mainRegistry registerChannelsFromDictionary:dictionary
-                                                                                                 forChannelOwner:channelOwner
-                                                                                                     byAppending:NO];
-        
-                                                    } onError:^(id error) {
-        
-                                                    }];
+    }
+    else // common channel owners user the public API
+    {
+        [appDelegate.networkEngine channelOwnerDataForChannelOwner:channelOwner onComplete:^(id dictionary) {
+            
+            [channelOwner setAttributesFromDictionary: dictionary
+                                  ignoringObjectTypes: kIgnoreVideoInstanceObjects | kIgnoreChannelOwnerObject];
+                                                            
+            [appDelegate.networkEngine channelOwnerSubscriptionsForOwner:channelOwner
+                                                                forRange:NSMakeRange(0, 48)
+                                                       completionHandler:^(id dictionary) {
+                                                                                                           
+            [channelOwner addSubscriptionsDictionary:dictionary];
+                                                           
+                    NSError *error = nil;
+                    [channelOwner.managedObjectContext save: &error];
+                    if(error)
+                    {
+                        NSString* errorString = [NSString stringWithFormat:@"%@ %@", [error localizedDescription], [error userInfo]];
+                        DebugLog(@"%@", errorString);
+                        errorBlock(@{@"saving_error":errorString});
+                    }
+                                                                                                           
+                                                                                                           
+            } errorHandler:errorBlock];
+                                                            
+        } onError:errorBlock];
+    
+    }
+    
+    
+    
+    
 }
 
 -(BOOL)isSubscribedByCurrentUser:(Channel*)channel

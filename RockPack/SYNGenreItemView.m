@@ -74,7 +74,7 @@
 
 - (void) setViewAttributesWithItemName: (NSString *) itemName
 {
-    self.backgroundColor = [UIColor clearColor];
+    
     
     if (type == TabItemTypeMain)
     grayColor = [UIColor colorWithRed: (40.0/255.0)
@@ -103,7 +103,11 @@
     self.label.userInteractionEnabled = NO;
     self.label.backgroundColor = [UIColor clearColor];
     
+    
+    
     [self addSubview: self.label];
+    
+    self.backgroundColor = [UIColor clearColor];
 
 }
 
@@ -133,7 +137,7 @@
 - (void) resizeForOrientation: (UIInterfaceOrientation) orientation
                    withHeight: (CGFloat) height
 {
-    BOOL isLandscape = [[SYNDeviceManager sharedInstance] isLandscape];
+    BOOL isLandscape = [SYNDeviceManager.sharedInstance isLandscape];
     CGFloat offsetX;
     UIFont* fontToUse;
     CGFloat labelYOffset;

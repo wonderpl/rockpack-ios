@@ -6,7 +6,6 @@
 #import "AppConstants.h"
 #import "SYNAppDelegate.h"
 
-static NSEntityDescription *channelEntity = nil;
 
 @interface Channel ()
 
@@ -21,7 +20,80 @@ static NSEntityDescription *channelEntity = nil;
 
 #pragma mark - Object factory
 
-
++ (Channel *) instanceFromChannel: (Channel *)channel
+                        andViewId: (NSString*)viewId
+        usingManagedObjectContext: (NSManagedObjectContext *) managedObjectContext
+              ignoringObjectTypes: (IgnoringObjects) ignoringObjects
+{
+    
+    if(!channel)
+        return nil;
+    
+    Channel* copyChannel = [Channel insertInManagedObjectContext: managedObjectContext];
+    
+    copyChannel.uniqueId = channel.uniqueId;
+    
+    copyChannel.categoryId = channel.categoryId;
+    
+    copyChannel.position = channel.position;
+    
+    copyChannel.title = channel.title;
+    
+    copyChannel.lastUpdated = channel.lastUpdated;
+    
+    copyChannel.subscribersCount = channel.subscribersCount;
+    
+    copyChannel.subscribedByUserValue = channel.subscribedByUserValue;
+    
+    copyChannel.favouritesValue = channel.favouritesValue;
+    
+    copyChannel.resourceURL = channel.resourceURL;
+    
+    copyChannel.channelDescription = channel.channelDescription;
+    
+    copyChannel.eCommerceURL = channel.eCommerceURL;
+    
+    copyChannel.viewId = viewId;
+    
+    if (!(ignoringObjects & kIgnoreChannelOwnerObject))
+    {
+        copyChannel.channelOwner = [ChannelOwner instanceFromChannelOwner:channel.channelOwner
+                                                                andViewId:viewId
+                                                usingManagedObjectContext:managedObjectContext
+                                                      ignoringObjectTypes:kIgnoreChannelObjects | kIgnoreSubscriptionObjects];
+    }
+    
+    
+    if (!(ignoringObjects & kIgnoreChannelCover))
+    {
+        
+        copyChannel.channelCover = [ChannelCover instanceFromChannelCover:channel.channelCover
+                                                usingManagedObjectContext:managedObjectContext];
+    }
+    
+    
+    
+    if (!(ignoringObjects & kIgnoreVideoInstanceObjects))
+    {
+        
+        for (VideoInstance* videoInstance in channel.videoInstances)
+        {
+            VideoInstance* copyVideoInstance = [VideoInstance instanceFromVideoInstance:videoInstance
+                                                              usingManagedObjectContext:managedObjectContext];
+            
+            copyVideoInstance.viewId = viewId;
+            
+            [copyChannel.videoInstancesSet addObject:copyVideoInstance];
+        }
+        
+    }
+    
+    
+    
+    return copyChannel;
+    
+    
+}
 
 + (Channel *) instanceFromDictionary: (NSDictionary *) dictionary
            usingManagedObjectContext: (NSManagedObjectContext *) managedObjectContext
@@ -39,24 +111,13 @@ static NSEntityDescription *channelEntity = nil;
         return nil;
     
     
-    if (channelEntity == nil)
-    {
-        // Do once, and only once
-        static dispatch_once_t oncePredicate;
-        dispatch_once(&oncePredicate, ^
-        {
-            // Not entirely sure I shouldn't 'copy' this object before assigning it to the static variable
-            channelEntity = [NSEntityDescription entityForName: @"Channel"
-                                        inManagedObjectContext: managedObjectContext];
-        });
-    }
-    
     Channel *instance;
     
     if(!(ignoringObjects & kIgnoreStoredObjects))
     {
         NSFetchRequest *channelFetchRequest = [[NSFetchRequest alloc] init];
-        [channelFetchRequest setEntity: channelEntity];
+        [channelFetchRequest setEntity: [NSEntityDescription entityForName: @"Channel"
+                                                    inManagedObjectContext: managedObjectContext]];
         
         
         NSPredicate *predicate = [NSPredicate predicateWithFormat: @"uniqueId == %@", uniqueId];
@@ -82,10 +143,11 @@ static NSEntityDescription *channelEntity = nil;
     if(!instance)
     {
         instance = [Channel insertInManagedObjectContext: managedObjectContext];
+        
+        instance.uniqueId = uniqueId;
     }
     
     [instance setAttributesFromDictionary: dictionary
-                                   withId: uniqueId
                       ignoringObjectTypes: ignoringObjects];
     
     
@@ -95,11 +157,10 @@ static NSEntityDescription *channelEntity = nil;
 
 
 - (void) setAttributesFromDictionary: (NSDictionary *) dictionary
-                              withId: (NSString *) uniqueId
                  ignoringObjectTypes: (IgnoringObjects) ignoringObjects {
     
     
-    self.uniqueId = uniqueId;
+    
     
     BOOL hasVideoInstances = YES;
     
@@ -116,39 +177,67 @@ static NSEntityDescription *channelEntity = nil;
     if (!(ignoringObjects & kIgnoreVideoInstanceObjects) && hasVideoInstances)
     {
         
-    
         
-        NSOrderedSet* copyOfVideoInstance = [NSOrderedSet orderedSetWithOrderedSet:self.videoInstances];
+        
+        NSMutableDictionary* videoInsanceByIdDictionary = [[NSMutableDictionary alloc] initWithCapacity:self.videoInstances.count];
+        
+        for (VideoInstance* vi in self.videoInstances)
+            [videoInsanceByIdDictionary setObject:vi forKey:vi.uniqueId];
+        
         
         [self.videoInstancesSet removeAllObjects];
         
+        NSString* newUniqueId;
+        
         for (NSDictionary *channelDictionary in itemArray)
         {
-            // viewId is @"ChannelDetails" not kFeedViewId
-            
+            // viewId is @"ChannelDetails" because that is the only case where videos are passed
             
             VideoInstance* videoInstance;
             
-            videoInstance = [VideoInstance instanceFromDictionary: channelDictionary
-                                        usingManagedObjectContext: self.managedObjectContext
-                                              ignoringObjectTypes: kIgnoreChannelObjects];
+            newUniqueId = [dictionary objectForKey: @"id"
+                                       withDefault: @""];
             
+            
+            videoInstance = [videoInsanceByIdDictionary objectForKey:[dictionary objectForKey: @"id"]];
+            
+            if(!videoInstance)
+            {
+                videoInstance = [VideoInstance instanceFromDictionary: channelDictionary
+                                            usingManagedObjectContext: self.managedObjectContext
+                                                  ignoringObjectTypes: kIgnoreStoredObjects | kIgnoreChannelObjects];
+                
+                
+            }
+            else
+            {
+                [videoInsanceByIdDictionary removeObjectForKey:newUniqueId];
+            }
             
             
             if(!videoInstance)
                 continue;
             
-            [self addVideoInstancesObject:videoInstance];
+            videoInstance.viewId = self.viewId;
+            
+            videoInstance.position = [dictionary objectForKey: @"position"
+                                                  withDefault: [NSNumber numberWithInt: 0]];
+            
+            [self.videoInstancesSet addObject:videoInstance];
             
         }
         
+        // clean the remaining //
         
-        for (VideoInstance* oldVideoInstance in copyOfVideoInstance)
+        for (id key in videoInsanceByIdDictionary)
         {
-            oldVideoInstance.channel = self;
+            VideoInstance* vi = [videoInsanceByIdDictionary objectForKey:key];
+            if(!vi)
+                continue;
+            
+            [self.managedObjectContext deleteObject:vi];
             
         }
-        
         
     
     }
@@ -186,12 +275,8 @@ static NSEntityDescription *channelEntity = nil;
     self.position = [dictionary objectForKey: @"position"
                                  withDefault: [NSNumber numberWithInt: 0]];
     
-    
-    
     self.title = [dictionary upperCaseStringForKey: @"title"
                                        withDefault: @""];
-    
-    // NSLog(@"* Title: %@", self.title);
     
     self.lastUpdated = [dictionary dateFromISO6801StringForKey: @"last_updated"
                                                    withDefault: [NSDate date]];
@@ -199,15 +284,14 @@ static NSEntityDescription *channelEntity = nil;
     self.subscribersCount = [dictionary objectForKey: @"subscriber_count"
                                          withDefault: [NSNumber numberWithInt:0]];
     
+    
+    
     // this field only comes back for the favourites channel
+    
     NSNumber* favourites = [dictionary objectForKey:@"favourites"];
     
     self.favouritesValue = ![favourites isKindOfClass:[NSNull class]] ? [favourites boolValue] : NO;
     
-    if([self.title isEqualToString:@"FAVOURITES"])
-    {
-        DebugLog(@"Favourites Value: %@", favourites);
-    }
     
     self.resourceURL = [dictionary objectForKey: @"resource_url"
                                     withDefault: @"http://localhost"];

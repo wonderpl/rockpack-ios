@@ -3,7 +3,7 @@
 #import "NSDictionary+Validation.h"
 #import "AppConstants.h"
 
-static NSEntityDescription *channelOwnerEntity = nil;
+
 
 @interface ChannelOwner ()
 
@@ -16,23 +16,59 @@ static NSEntityDescription *channelOwnerEntity = nil;
 
 #pragma mark - Object factory
 
-+ (ChannelOwner *) instanceFromChannelOwner:(ChannelOwner*)existingChannelOwner
++ (ChannelOwner *) instanceFromChannelOwner: (ChannelOwner*)existingChannelOwner
+                                  andViewId: (NSString*)viewId
                   usingManagedObjectContext: (NSManagedObjectContext *) managedObjectContext
+                        ignoringObjectTypes: (IgnoringObjects) ignoringObjects
 {
     if(!existingChannelOwner)
         return nil;
     
-    ChannelOwner *instance = [ChannelOwner insertInManagedObjectContext: managedObjectContext];
     
-    instance.uniqueId = existingChannelOwner.uniqueId;
+    ChannelOwner *copyChannelOwner = [ChannelOwner insertInManagedObjectContext: managedObjectContext];
     
-    instance.thumbnailURL = existingChannelOwner.thumbnailURL;
+    copyChannelOwner.uniqueId = existingChannelOwner.uniqueId;
     
-    instance.displayName = existingChannelOwner.displayName;
+    copyChannelOwner.thumbnailURL = existingChannelOwner.thumbnailURL;
     
-    // no videos
+    copyChannelOwner.displayName = existingChannelOwner.displayName;
     
-    return instance;
+    copyChannelOwner.viewId = viewId;
+    
+    if(!(ignoringObjects & kIgnoreChannelObjects))
+    {
+        for (Channel* channel in existingChannelOwner.channels)
+        {
+            Channel* copyChannel = [Channel instanceFromChannel:channel
+                                                      andViewId:viewId
+                                      usingManagedObjectContext:existingChannelOwner.managedObjectContext
+                                            ignoringObjectTypes:ignoringObjects | kIgnoreChannelOwnerObject];
+            
+            
+            [copyChannelOwner.channelsSet addObject:copyChannel];
+            
+        }
+    }
+    
+    
+    if(!(ignoringObjects & kIgnoreSubscriptionObjects))
+    {
+        for (Channel* channel in existingChannelOwner.subscriptions)
+        {
+            Channel* copyChannel = [Channel instanceFromChannel:channel
+                                                      andViewId:viewId
+                                      usingManagedObjectContext:existingChannelOwner.managedObjectContext
+                                            ignoringObjectTypes:ignoringObjects];
+            
+            
+            [copyChannelOwner.subscriptionsSet addObject:copyChannel];
+            
+        }
+    }
+    
+    
+    
+    return copyChannelOwner;
 }
 
 + (ChannelOwner *) instanceFromDictionary: (NSDictionary *) dictionary
@@ -41,45 +77,46 @@ static NSEntityDescription *channelOwnerEntity = nil;
 {
     NSError *error = nil;
     
+    if(!dictionary || ![dictionary isKindOfClass:[NSDictionary class]])
+        return nil;
     
-    NSString *uniqueId = [dictionary objectForKey: @"id"
-                                      withDefault: @"Uninitialized Id"];
+    NSString *uniqueId = [dictionary objectForKey: @"id"];
+    if([uniqueId isKindOfClass:[NSNull class]])
+        return nil;
     
-    // Only create an entity description once, should increase performance
-    if (channelOwnerEntity == nil)
-    {
-        // Do once, and only once
-        static dispatch_once_t oncePredicate;
-        dispatch_once(&oncePredicate, ^
-        {
-            // Not entirely sure I shouldn't 'copy' this object before assigning it to the static variable
-            channelOwnerEntity = [NSEntityDescription entityForName: @"ChannelOwner"
-                                             inManagedObjectContext: managedObjectContext];
-          
-        });
-    }
-    
-    // Now we need to see if this object already exists, and if so return it and if not create it
-    NSFetchRequest *channelOwnerFetchRequest = [[NSFetchRequest alloc] init];
-    [channelOwnerFetchRequest setEntity: channelOwnerEntity];
-    
-    // Search on the unique Id
-    NSPredicate *predicate = [NSPredicate predicateWithFormat: @"uniqueId == %@", uniqueId];
-    [channelOwnerFetchRequest setPredicate: predicate];
-    
-    NSArray *matchingChannelOwnerEntries = [managedObjectContext executeFetchRequest: channelOwnerFetchRequest
-                                                                               error: &error];
     ChannelOwner *instance;
     
-    if (matchingChannelOwnerEntries.count > 0)
-        instance = matchingChannelOwnerEntries[0];
-    else
+    if(!(ignoringObjects & kIgnoreStoredObjects))
+    {
+        NSFetchRequest *channelOwnerFetchRequest = [[NSFetchRequest alloc] init];
+        [channelOwnerFetchRequest setEntity: [NSEntityDescription entityForName: @"ChannelOwner"
+                                                         inManagedObjectContext: managedObjectContext]];
+        
+        
+        NSPredicate *predicate = [NSPredicate predicateWithFormat: @"uniqueId == %@", uniqueId];
+        [channelOwnerFetchRequest setPredicate: predicate];
+        
+        NSArray *matchingChannelOwnerEntries = [managedObjectContext executeFetchRequest: channelOwnerFetchRequest
+                                                                                   error: &error];
+        
+        if (matchingChannelOwnerEntries.count > 0)
+        {
+            instance = matchingChannelOwnerEntries[0];
+        }
+            
+        
+    }
+    
+    
+    if(!instance)
+    {
         instance = [ChannelOwner insertInManagedObjectContext: managedObjectContext];
+    }
+    
+    instance.uniqueId = uniqueId;
         
     
     [instance setAttributesFromDictionary: dictionary
-                                   withId: uniqueId
-                usingManagedObjectContext: managedObjectContext
                       ignoringObjectTypes: ignoringObjects];
     
     
@@ -88,8 +125,6 @@ static NSEntityDescription *channelOwnerEntity = nil;
 
 
 - (void) setAttributesFromDictionary: (NSDictionary *) dictionary
-                              withId: (NSString *) uniqueId
-           usingManagedObjectContext: (NSManagedObjectContext *) managedObjectContex
                  ignoringObjectTypes: (IgnoringObjects) ignoringObjects {
     
     
@@ -101,7 +136,7 @@ static NSEntityDescription *channelOwnerEntity = nil;
     }
     
     // Simple objects
-    self.uniqueId = uniqueId;
+    
     
     self.thumbnailURL = [dictionary objectForKey: @"avatar_thumbnail_url"
                                      withDefault: @"http://localhost"];
@@ -112,53 +147,80 @@ static NSEntityDescription *channelOwnerEntity = nil;
     
     BOOL hasChannels = YES;
     
-    if(!(ignoringObjects & kIgnoreChannelObjects))
+    NSDictionary* channelsDictionary = [dictionary objectForKey:@"channels"];
+    if([channelsDictionary isKindOfClass:[NSNull class]])
+        hasChannels = NO;
+    
+    NSArray* channelItemsArray = [channelsDictionary objectForKey:@"items"];
+    if([channelItemsArray isKindOfClass:[NSNull class]])
+        hasChannels = NO;
+    
+    if(!(ignoringObjects & kIgnoreChannelObjects) && hasChannels)
     {
         
+        // viewId is @"Profile" because this is the only place it is passed
         
-        NSDictionary* channelsDictionary = [dictionary objectForKey:@"channels"];
-        if([channelsDictionary isKindOfClass:[NSNull class]])
-        {
+        NSMutableDictionary* channelInsanceByIdDictionary = [[NSMutableDictionary alloc] initWithCapacity:self.channels.count];
+        
+        for (Channel* ch in self.channels)
+            [channelInsanceByIdDictionary setObject:ch forKey:ch.uniqueId];
             
-            hasChannels = NO;
-        }
+        
+        [self.channelsSet removeAllObjects];
         
         
+        NSString *newUniqueId;
         
-        NSArray* channelItemsArray = [channelsDictionary objectForKey:@"items"];
-        if([channelItemsArray isKindOfClass:[NSNull class]])
+        for (NSDictionary* channelDictionary in channelItemsArray)
         {
-   
-            hasChannels = NO;
-        }
-        
-        NSOrderedSet* oldUserChannels = [NSOrderedSet orderedSetWithOrderedSet:self.channels];
-        
-        
-        if(hasChannels)
-        {
-            [self.channelsSet removeAllObjects];
+            Channel* channel;
             
-            for (NSDictionary* channelDictionary in channelItemsArray)
+            newUniqueId = [channelDictionary objectForKey: @"id" withDefault: @""];
+            
+            channel = [channelInsanceByIdDictionary objectForKey:newUniqueId];
+            
+            if(!channel)
             {
+                channel = [Channel instanceFromDictionary: channelDictionary
+                                usingManagedObjectContext: self.managedObjectContext
+                                      ignoringObjectTypes: ignoringObjects | kIgnoreStoredObjects | kIgnoreChannelOwnerObject];
                 
-                Channel* channel = [Channel instanceFromDictionary: channelDictionary
-                                         usingManagedObjectContext: managedObjectContex
-                                               ignoringObjectTypes: kIgnoreChannelOwnerObject];
-                
-                if(!channel)
-                    continue;
-                
-                [self.channelsSet addObject:channel];
                 
             }
+            else
+            {
+                [channelInsanceByIdDictionary removeObjectForKey:newUniqueId];
+            }
+           
+            
+            if(!channel)
+                continue;
+            
+            channel.viewId = self.viewId;
+            
+            channel.markedForDeletionValue = NO;
+            
+            channel.position = [dictionary objectForKey: @"position"
+                                            withDefault: [NSNumber numberWithInt: 0]];
+            
+            
+            
+            [self.channelsSet addObject:channel];
+            
         }
         
-        // restore the link
         
-        [oldUserChannels enumerateObjectsUsingBlock:^(Channel* channel, NSUInteger idx, BOOL *stop) {
-            channel.channelOwner = self;
-        }];
+        for (id key in channelInsanceByIdDictionary)
+        {
+            Channel* ch = [channelInsanceByIdDictionary objectForKey:key];
+            if(!ch)
+                continue;
+            
+            [self.managedObjectContext deleteObject:ch];
+            
+        }
+        
+        
     }
     
     
@@ -177,6 +239,11 @@ static NSEntityDescription *channelOwnerEntity = nil;
     if (!itemsArray)
         return;
     
+    NSMutableDictionary* subscriptionInsancesByIdDictionary = [[NSMutableDictionary alloc] initWithCapacity:self.subscriptions.count];
+    
+    for (Channel* su in self.subscriptions)
+        [subscriptionInsancesByIdDictionary setObject:su forKey:su.uniqueId];
+    
     
     [self.subscriptionsSet removeAllObjects];
     
@@ -187,13 +254,25 @@ static NSEntityDescription *channelOwnerEntity = nil;
         
         Channel* channel = [Channel instanceFromDictionary: subscriptionChannel
                                  usingManagedObjectContext: self.managedObjectContext
-                                       ignoringObjectTypes: kIgnoreNothing];
+                                       ignoringObjectTypes: kIgnoreStoredObjects | kIgnoreChannelOwnerObject | kIgnoreVideoInstanceObjects];
         
         if (!channel)
             continue;
         
         
-        [self addSubscriptionsObject:channel];
+        [self.subscriptionsSet addObject:channel];
+        channel.subscribedByUserValue = YES;
+        channel.viewId = self.viewId;
+        
+    }
+    
+    for (id key in subscriptionInsancesByIdDictionary)
+    {
+        Channel* su = [subscriptionInsancesByIdDictionary objectForKey:key];
+        if(!su)
+            continue;
+        
+        [self.managedObjectContext deleteObject:su];
         
     }
 }
@@ -208,16 +287,7 @@ static NSEntityDescription *channelOwnerEntity = nil;
 }
 
 
--(void)addSubscriptionsObject:(Channel *)newSubscription
-{
-    [self.subscriptionsSet addObject:newSubscription];
-    newSubscription.subscribersCountValue += 1;
-}
--(void)removeSubscriptionsObject:(Channel *)oldSubscription
-{
-    [self.subscriptionsSet removeObject:oldSubscription];
-    oldSubscription.subscribersCountValue -= 1;
-}
+
 
 #pragma mark - Helper methods
 

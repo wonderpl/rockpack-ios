@@ -24,22 +24,23 @@
 @implementation SYNAccountSettingsModalContainer
 
 
--(id)initWithNavigationController:(UINavigationController*)navigationController andCompletionBlock:(DoneButtonBlock)block
+- (id) initWithNavigationController: (UINavigationController*) navigationController
+                 andCompletionBlock: (DoneButtonBlock) block
 {
-    if(self = [super initWithNibName:@"SYNAccountSettingsModalContainer" bundle:[NSBundle mainBundle]])
+    if (self = [super initWithNibName: @"SYNAccountSettingsModalContainer"
+                              bundle: [NSBundle mainBundle]])
     {
         childNavigationController = navigationController;
         childNavigationController.delegate = self;
         [self addChildViewController:childNavigationController];
         _doneBlock = block;
-        
     }
+    
     return self;
 }
 
 
-
-- (void)viewDidLoad
+- (void) viewDidLoad
 {
     [super viewDidLoad];
     
@@ -47,63 +48,79 @@
     
     [self.contentView addSubview:childNavigationController.view];
     
-    self.backgroundImage.image = [[UIImage imageNamed:@"PanelMenuSecondLevel"] resizableImageWithCapInsets:UIEdgeInsetsMake(65, 0, 1, 0)];
+    self.backgroundImage.image = [[UIImage imageNamed: @"PanelMenuSecondLevel"] resizableImageWithCapInsets: UIEdgeInsetsMake(65, 0, 1, 0)];
     
-    self.titleLabel.font = [UIFont rockpackFontOfSize:self.titleLabel.font.pointSize];
+    self.titleLabel.font = [UIFont rockpackFontOfSize: self.titleLabel.font.pointSize];
     self.titleLabel.text = NSLocalizedString(@"SETTINGS",nil);
 	
 }
 
-- (IBAction)backButtonTapped:(id)sender {
+
+- (IBAction) backButtonTapped: (id) sender
+{
     [childNavigationController popViewControllerAnimated:YES];
 }
-- (IBAction)doneButtonTapped:(id)sender {
+
+
+- (IBAction) doneButtonTapped: (id) sender
+{
     UIViewController* viewController = [childNavigationController topViewController];
-    if(viewController ==[ childNavigationController.viewControllers objectAtIndex:0] )
+    
+    if (viewController == childNavigationController.viewControllers[0])
     {
         self.doneBlock();
     }
     else
     {
-        if([viewController isKindOfClass:[SYNAccountSettingsTextInputController class]])
+        if ([viewController isKindOfClass: [SYNAccountSettingsTextInputController class]])
         {
             SYNAccountSettingsTextInputController* controller = (SYNAccountSettingsTextInputController*)viewController;
-            [controller saveButtonPressed:nil];
+            [controller saveButtonPressed: nil];
         }
-
     }
 }
 
--(void)setModalViewFrame:(CGRect)newFrame
+
+- (void) setModalViewFrame: (CGRect) newFrame
 {
     self.view.frame = newFrame;
     childNavigationController.view.frame = self.contentView.bounds;
 }
 
+
 #pragma mark - navigation controller delegate
--(void)navigationController:(UINavigationController *)navigationController willShowViewController:(UIViewController *)viewController animated:(BOOL)animated
+
+- (void) navigationController: (UINavigationController *)navigationController
+       willShowViewController: (UIViewController *) viewController
+                     animated: (BOOL) animated
 {
-   if(viewController == [navigationController.viewControllers objectAtIndex:0] )
+   if (viewController == navigationController.viewControllers[0])
    {
        self.doneButton.hidden = NO;
        self.backButton.hidden = NO;
        
-       [self.doneButton setImage:[UIImage imageNamed:@"ButtonSettingsDone"] forState:UIControlStateNormal];
-       [self.doneButton setImage:[UIImage imageNamed:@"ButtonSettingsDoneHighlighted"] forState:UIControlStateHighlighted];
+       [self.doneButton setImage: [UIImage imageNamed: @"ButtonSettingsDone"]
+                        forState: UIControlStateNormal];
        
-       [UIView animateWithDuration:0.3f delay:0.0f options:UIViewAnimationOptionCurveEaseInOut animations:^{
-           self.doneButton.alpha = 1.0f;
-           self.backButton.alpha = 0.0f;
-       } completion:^(BOOL finished) {
-           self.doneButton.hidden = NO;
-           self.backButton.hidden = YES;
-           
-       }];
+       [self.doneButton setImage: [UIImage imageNamed: @"ButtonSettingsDoneHighlighted"]
+                        forState: UIControlStateHighlighted];
+       
+       [UIView animateWithDuration: 0.3f
+                             delay: 0.0f
+                           options: UIViewAnimationOptionCurveEaseInOut
+                        animations: ^{
+                            self.doneButton.alpha = 1.0f;
+                            self.backButton.alpha = 0.0f;
+                        }
+                        completion:^(BOOL finished) {
+                            self.doneButton.hidden = NO;
+                            self.backButton.hidden = YES;
+                        }];
    }
     else
     {
         BOOL hideDoneButton = YES;
-        if([viewController isKindOfClass:[SYNAccountSettingsTextInputController class]])
+        if ([viewController isKindOfClass: [SYNAccountSettingsTextInputController class]])
         {
             hideDoneButton = NO;
             SYNAccountSettingsTextInputController* controller = (SYNAccountSettingsTextInputController*)viewController;
@@ -115,25 +132,30 @@
             [self.view addSubview:controller.spinner];
             controller.spinner.center = self.doneButton.center;
             
-            [self.doneButton setImage:[UIImage imageNamed:@"ButtonSettingsSave"] forState:UIControlStateNormal];
-            [self.doneButton setImage:[UIImage imageNamed:@"ButtonSettingsSaveHighlighted"] forState:UIControlStateHighlighted];
+            [self.doneButton setImage: [UIImage imageNamed: @"ButtonSettingsSave"]
+                             forState: UIControlStateNormal];
+            
+            [self.doneButton setImage: [UIImage imageNamed: @"ButtonSettingsSaveHighlighted"]
+                             forState: UIControlStateHighlighted];
         }
         
         self.doneButton.hidden = NO;
         self.backButton.hidden = NO;
-        [UIView animateWithDuration:0.3f delay:0.0f options:UIViewAnimationOptionCurveEaseInOut animations:^{
-            self.doneButton.alpha = hideDoneButton? 0.0f : 1.0f;
-            self.backButton.alpha = 1.0f;
-        } completion:^(BOOL finished) {
-            self.doneButton.hidden = hideDoneButton;
-            self.backButton.hidden = NO;
-            
-        }];
+        
+        [UIView animateWithDuration: 0.3f
+                              delay: 0.0f
+                            options: UIViewAnimationOptionCurveEaseInOut
+                         animations: ^{
+                             self.doneButton.alpha = hideDoneButton? 0.0f : 1.0f;
+                             self.backButton.alpha = 1.0f;
+                         }
+                         completion:^(BOOL finished) {
+                             self.doneButton.hidden = hideDoneButton;
+                             self.backButton.hidden = NO;
+                             
+                         }];
     }
-    
-   
 }
-
 
 
 @end

@@ -28,6 +28,7 @@
 @property (nonatomic, weak) Channel* selectedChannel;
 @property (nonatomic, weak) SYNChannelMidCell* selectedCell;
 @property (strong, nonatomic) IBOutlet UILabel *titleLabel;
+@property (nonatomic, strong) NSArray* channels;
 
 @end
 
@@ -38,13 +39,13 @@
     [super viewDidLoad];
     
     // We need to use a custom layout (as due to the deletion/wobble logic used elsewhere)
-    if ([[SYNDeviceManager sharedInstance] isIPad])
+    if ([SYNDeviceManager.sharedInstance isIPad])
     {
         // iPad layout & size
         self.channelThumbnailCollectionView.collectionViewLayout =
-        [SYNDeletionWobbleLayout layoutWithItemSize: CGSizeMake(184.0f, 184.0f)
-                            minimumInterItemSpacing: 10.0f
-                                 minimumLineSpacing: 10.0f
+        [SYNDeletionWobbleLayout layoutWithItemSize: CGSizeMake(192.0f, 192.0f)
+                            minimumInterItemSpacing: 0.0f
+                                 minimumLineSpacing: 5.0f
                                     scrollDirection: UICollectionViewScrollDirectionVertical
                                        sectionInset: UIEdgeInsetsMake(0.0f, 0.0f, 0.0f, 0.0f)];
     }
@@ -52,11 +53,11 @@
     {
         // iPhone layout & size
         self.channelThumbnailCollectionView.collectionViewLayout =
-        [SYNDeletionWobbleLayout layoutWithItemSize: CGSizeMake(152.0f, 152.0f)
-                            minimumInterItemSpacing: 6.0f
-                                 minimumLineSpacing: 5.0f
+        [SYNDeletionWobbleLayout layoutWithItemSize: CGSizeMake(158.0f, 158.0f)
+                            minimumInterItemSpacing: 0.0f
+                                 minimumLineSpacing: 0.0f
                                     scrollDirection: UICollectionViewScrollDirectionVertical
-                                       sectionInset: UIEdgeInsetsMake(5.0f, 5.0f, 5.0f, 5.0f)];
+                                       sectionInset: UIEdgeInsetsMake(2.0f, 2.0f, 0.0f, 2.0f)];
     }
 
     UINib *createCellNib = [UINib nibWithNibName: @"SYNChannelCreateNewCell"
@@ -73,6 +74,8 @@
                           forCellWithReuseIdentifier: @"SYNChannelMidCell"];
     
     self.titleLabel.font = [UIFont boldRockpackFontOfSize:self.titleLabel.font.pointSize];
+    
+    
 }
 
 
@@ -86,56 +89,40 @@
     self.closeButton.enabled = YES;
     self.confirmButtom.enabled = YES;
     
+    // Copy Channels and filter them
     
-    [self packViewForInterfaceOrientation:[[SYNDeviceManager sharedInstance] orientation]];
+    NSMutableArray* allChannels = [NSMutableArray arrayWithCapacity:appDelegate.currentUser.channels.count];
+    for (Channel* ch in appDelegate.currentUser.channels)
+    {
+        if (ch.favouritesValue) // remove the favourites channel because it can be added to only by subscribing to a video
+            continue;
+        
+        [allChannels addObject:ch];
+        
+    }
+    
+    self.channels = [NSArray arrayWithArray:allChannels];
+    
+    
+    [self packViewForInterfaceOrientation:[SYNDeviceManager.sharedInstance orientation]];
     
     [self.channelThumbnailCollectionView reloadData];
 }
 
 
-#pragma mark - Data Source
-
-- (NSFetchedResultsController *) fetchedResultsController
+-(void)viewWillDisappear:(BOOL)animated
 {
-    NSError *error = nil;
+    [super viewWillDisappear:animated];
     
-    // Return cached version if we have already created one
-    if (fetchedResultsController != nil)
-        return fetchedResultsController;
-    
-    NSFetchRequest *fetchRequest = [[NSFetchRequest alloc] init];
-    
-    ChannelOwner* meAsOwner = (ChannelOwner*)appDelegate.currentUser;
-    
-    // Edit the entity name as appropriate.
-    fetchRequest.entity = [NSEntityDescription entityForName: @"Channel"
-                                      inManagedObjectContext: appDelegate.mainManagedObjectContext];
-    
-    NSPredicate* ownedByUserPredicate = [NSPredicate predicateWithFormat:   [NSString stringWithFormat: @"channelOwner.uniqueId == '%@'", meAsOwner.uniqueId]];
-    
-    fetchRequest.predicate = ownedByUserPredicate;
-    fetchRequest.sortDescriptors = @[[[NSSortDescriptor alloc] initWithKey: @"title"
-                                                                 ascending: YES]];
-    
-    self.fetchedResultsController = [[NSFetchedResultsController alloc] initWithFetchRequest: fetchRequest
-                                                                        managedObjectContext: appDelegate.mainManagedObjectContext
-                                                                          sectionNameKeyPath: nil
-                                                                                   cacheName: nil];
-    fetchedResultsController.delegate = self;
-    
-    ZAssert([fetchedResultsController performFetch: &error],
-            @"YouRootViewController failed: %@\n%@", [error localizedDescription], [error userInfo]);
-    
-    return fetchedResultsController;
+    self.channels = nil;
 }
-
 
 #pragma mark - UICollectionView DataSource
 
 - (NSInteger) collectionView: (UICollectionView *) view
       numberOfItemsInSection: (NSInteger) section
 {
-    return self.fetchedResultsController.fetchedObjects.count + 1; // add one for the 'create new channel' cell
+    return self.channels.count + 1; // add one for the 'create new channel' cell
 }
 
 
@@ -159,7 +146,7 @@
     }
     else
     {
-        Channel *channel = (Channel*)self.fetchedResultsController.fetchedObjects[indexPath.row-1];
+        Channel *channel = (Channel*)self.channels[indexPath.row-1];
         
         SYNChannelMidCell *channelThumbnailCell = [collectionView dequeueReusableCellWithReuseIdentifier: @"SYNChannelMidCell"
                                                                                             forIndexPath: indexPath];
@@ -226,7 +213,7 @@
 {
     if (indexPath.row == 0)
     {
-        if([[SYNDeviceManager sharedInstance] isIPad])
+        if([SYNDeviceManager.sharedInstance isIPad])
         {
             if (!appDelegate.videoQueue.currentlyCreatingChannel)
                 return;
@@ -282,7 +269,9 @@
     {
         self.selectedCell = (SYNChannelMidCell*)[self.channelThumbnailCollectionView cellForItemAtIndexPath:indexPath];
         //Compensate for the extra "create new" cell
-        self.selectedChannel = (Channel*)[self.fetchedResultsController objectAtIndexPath: [NSIndexPath indexPathForRow:indexPath.row - 1 inSection:indexPath.section]];     }
+        self.selectedChannel = (Channel*)self.channels[indexPath.row - 1];
+    }
+    
 }
 
 
@@ -299,15 +288,15 @@
 {
     CGRect collectionFrame = self.channelThumbnailCollectionView.frame;
     
-    if ([[SYNDeviceManager sharedInstance] isIPad])
+    if ([SYNDeviceManager.sharedInstance isIPad])
     {
         if(UIInterfaceOrientationIsPortrait(interfaceOrientation))
         {
-            collectionFrame.size.width = 572.0;
+            collectionFrame.size.width = 580.0;
         }
         else
         {
-            collectionFrame.size.width = 766.0;
+            collectionFrame.size.width = 780.0;
         }
     }
     else
@@ -319,7 +308,7 @@
     self.channelThumbnailCollectionView.frame = CGRectIntegral(collectionFrame);
     
     CGRect selfFrame = self.view.frame;
-    selfFrame.size = [[SYNDeviceManager sharedInstance] currentScreenSize];
+    selfFrame.size = [SYNDeviceManager.sharedInstance currentScreenSize];
     self.view.frame = selfFrame;
     
     

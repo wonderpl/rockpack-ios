@@ -15,19 +15,14 @@
 
 - (BOOL) registerCategoriesFromDictionary: (NSDictionary*) dictionary;
 
-- (BOOL) registerVideoInstancesFromDictionary: (NSDictionary *) dictionary
-                                    forViewId: (NSString*) viewId
-                                  byAppending: (BOOL) append;
+- (BOOL) registerDataForFeedFromDictionary: (NSDictionary *) dictionary
+                               byAppending: (BOOL) append;
 
-- (BOOL) registerChannelFromDictionary: (NSDictionary*) dictionary;
 
 - (BOOL) registerChannelsFromDictionary: (NSDictionary *) dictionary
                                         forGenre: (Genre *) genre
                                      byAppending: (BOOL) append;
 
-- (BOOL) registerChannelsFromDictionary: (NSDictionary *) dictionary
-                        forChannelOwner: (ChannelOwner*) genre
-                            byAppending: (BOOL) append;
 
 - (BOOL) registerUserFromDictionary: (NSDictionary*) dictionary;
 - (BOOL) registerChannelOwnerFromDictionary: (NSDictionary*) dictionary;

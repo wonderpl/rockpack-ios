@@ -21,6 +21,8 @@
 #import <QuartzCore/QuartzCore.h>
 #import "SYNDeviceManager.h"
 #import "SYNObjectFactory.h"
+#import "SYNChannelDetailViewController.h"
+#import "SYNMasterViewController.h"
 
 @interface SYNContainerViewController () <UIPopoverControllerDelegate,
                                           UITextViewDelegate>
@@ -58,7 +60,7 @@
 
 - (void) loadView
 {
-    CGRect scrollerFrame = CGRectMake(0.0, 0.0, [[SYNDeviceManager sharedInstance] currentScreenWidth], [[SYNDeviceManager sharedInstance] currentScreenHeight]);
+    CGRect scrollerFrame = CGRectMake(0.0, 0.0, [SYNDeviceManager.sharedInstance currentScreenWidth], [SYNDeviceManager.sharedInstance currentScreenHeight]);
     SYNContainerScrollView* scrollView = [[SYNContainerScrollView alloc] initWithFrame:scrollerFrame];
 
     scrollView.autoresizingMask = UIViewAutoresizingNone;
@@ -83,7 +85,7 @@
     
     // == Channels Page == //
     SYNChannelsRootViewController *channelsRootViewController = [[SYNChannelsRootViewController alloc] initWithViewId: kChannelsViewId];
-    BOOL isIPad = [[SYNDeviceManager sharedInstance] isIPad];
+    BOOL isIPad = [SYNDeviceManager.sharedInstance isIPad];
     if (isIPad)
     {
         channelsRootViewController.tabViewController = [[SYNGenreTabViewController alloc] initWithHomeButton: @"ALL"];
@@ -122,6 +124,7 @@
     
     [self packViewControllersForInterfaceOrientation:UIDeviceOrientationLandscapeLeft];
     
+    
     // == Register Notifications == //
     
     [[NSNotificationCenter defaultCenter] addObserver: self
@@ -129,12 +132,14 @@
                                                  name: kProfileRequested
                                                object: nil];
     
+    // Fired from SideNavigation when the user clicks on a notification's channel icon 
     [[NSNotificationCenter defaultCenter] addObserver: self
                                              selector: @selector(channelDetailsRequested:)
                                                  name: kChannelDetailsRequested
                                                object: nil];
     
     // == Set Firts Page == //
+    
     if (appDelegate.currentUser.subscriptions.count > 3)
     {
         self.selectedNavigationController = self.childViewControllers[0];
@@ -150,7 +155,7 @@
 
 - (void) viewWillAppear: (BOOL) animated
 {
-    [self packViewControllersForInterfaceOrientation: [[SYNDeviceManager sharedInstance] orientation]];
+    [self packViewControllersForInterfaceOrientation: [SYNDeviceManager.sharedInstance orientation]];
     
     [[NSNotificationCenter defaultCenter] postNotificationName: kScrollerPageChanged
                                                         object: self
@@ -162,7 +167,7 @@
 
 -(void)refreshView
 {
-    [self packViewControllersForInterfaceOrientation: [[SYNDeviceManager sharedInstance] orientation]];
+    [self packViewControllersForInterfaceOrientation: [SYNDeviceManager.sharedInstance orientation]];
     
     [[NSNotificationCenter defaultCenter] postNotificationName: kScrollerPageChanged
                                                         object: self
@@ -174,11 +179,11 @@
 - (void) packViewControllersForInterfaceOrientation: (UIInterfaceOrientation) orientation
 {
     CGRect newFrame;
-    if ([[SYNDeviceManager sharedInstance] isIPhone])
+    if ([SYNDeviceManager.sharedInstance isIPhone])
     {
         // The full screen video player can interfere with reading the screen dimensions on viewWillAppear.
         // Use MAX and MIN to determine which one is width and which one is height
-        CGSize screenSize = CGSizeMake([[SYNDeviceManager sharedInstance] currentScreenWidth],[[SYNDeviceManager sharedInstance] currentScreenHeight]);
+        CGSize screenSize = CGSizeMake([SYNDeviceManager.sharedInstance currentScreenWidth],[SYNDeviceManager.sharedInstance currentScreenHeight]);
         newFrame = CGRectMake(0, 0, MIN(screenSize.width, screenSize.height), MAX(screenSize.width, screenSize.height) - 20.0f);
     }
     else if (UIDeviceOrientationIsLandscape(orientation))
@@ -241,11 +246,21 @@
 
 - (void) channelDetailsRequested: (NSNotification*) notification
 {
+    // check whether we are in search mode //
+    
+//    if( ((SYNMasterViewController*)self.parentViewController).isInSearchMode && [self.showingViewController.viewId isEqualToString:kChannelsViewId])
+//    {
+//        return;
+//    }
+    
     Channel* channel = (Channel*)[[notification userInfo] objectForKey: kChannel];
     if (!channel)
         return;
     
-    [self.showingViewController viewChannelDetails: channel];
+    SYNChannelDetailViewController *channelVC = [[SYNChannelDetailViewController alloc] initWithChannel: channel
+                                                                                              usingMode: kChannelDetailsModeDisplay];
+    
+    [self.showingViewController animatedPushViewController: channelVC];
 }
 
 
@@ -330,7 +345,7 @@
 - (SYNAbstractViewController*) showingViewController
 {
     UINavigationController* navController =(UINavigationController*)self.selectedNavigationController;
-    return (SYNAbstractViewController*)[navController.viewControllers objectAtIndex: 0];
+    return (SYNAbstractViewController*)navController.viewControllers[0];
 
 }
 

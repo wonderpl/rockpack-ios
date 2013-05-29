@@ -38,22 +38,12 @@
 
 @implementation SYNFeedRootViewController
 
-#pragma mark - View Lifecycle
-
-- (id) initWithViewId: (NSString *) vid
-{
-    if ((self = [super initWithViewId: vid]))
-    {
-        self.title = kFeedTitle;
-    }
-    
-    return self;
-}
+#pragma mark - View Lifecyclea
 
 
 - (void) loadView
 {
-    BOOL isIPhone = [[SYNDeviceManager sharedInstance] isIPhone];
+    BOOL isIPhone = [SYNDeviceManager.sharedInstance isIPhone];
     UIEdgeInsets insets;
     
     if (isIPhone)
@@ -90,7 +80,7 @@
     
     if (isIPhone)
     {
-        CGSize screenSize= CGSizeMake([[SYNDeviceManager sharedInstance]currentScreenWidth],[[SYNDeviceManager sharedInstance]currentScreenHeight]);
+        CGSize screenSize= CGSizeMake([SYNDeviceManager.sharedInstance currentScreenWidth],[SYNDeviceManager.sharedInstance currentScreenHeight]);
         videoCollectionViewFrame = CGRectMake(0.0, kStandardCollectionViewOffsetYiPhone, screenSize.width, screenSize.height - 20.0f - kStandardCollectionViewOffsetYiPhone);
         selfFrame = CGRectMake(0.0, 0.0, screenSize.width, screenSize.height - 20.0f);
     }
@@ -135,7 +125,7 @@
     self.refreshControl = [[UIRefreshControl alloc] initWithFrame: CGRectMake(0, -44, 320, 44)];
     
     [self.refreshControl addTarget: self
-                            action: @selector(refreshVideoThumbnails)
+                            action: @selector(loadAndUpdateFeedData)
                   forControlEvents: UIControlEventValueChanged];
     
     
@@ -156,7 +146,7 @@
                         forSupplementaryViewOfKind: UICollectionElementKindSectionHeader
                                withReuseIdentifier: @"SYNHomeSectionHeaderView"];
     
-    [self refreshVideoThumbnails];
+    
     
     // == Refresh button == //
     self.refreshButton = [SYNRefreshButton refreshButton];
@@ -166,8 +156,8 @@
                  forControlEvents: UIControlEventTouchUpInside];
     
     CGRect refreshButtonFrame = self.refreshButton.frame;
-    refreshButtonFrame.origin.x = [[SYNDeviceManager sharedInstance] isIPad]? 5.0f  : 5.0f;
-    refreshButtonFrame.origin.y = [[SYNDeviceManager sharedInstance] isIPad]? 7.0f : 5.0f;
+    refreshButtonFrame.origin.x = [SYNDeviceManager.sharedInstance isIPad]? 5.0f  : 5.0f;
+    refreshButtonFrame.origin.y = [SYNDeviceManager.sharedInstance isIPad]? 7.0f : 5.0f;
     self.refreshButton.frame = refreshButtonFrame;
     [self.view addSubview: self.refreshButton];
 }
@@ -185,11 +175,14 @@
                                                  name:kVideoQueueClear
                                                object:nil];
     
-    [self.videoThumbnailCollectionView reloadData];
+    [self loadAndUpdateFeedData];
+    
+    
 }
 
 -(void)videoQueueCleared
 {
+    // this will remove the '+' from the videos that where selected
     [self.videoThumbnailCollectionView reloadData];
 }
 - (void) viewDidScrollToFront
@@ -203,14 +196,14 @@
 - (void) updateAnalytics
 {
     // Google analytics support
-    [GAI.sharedInstance.defaultTracker sendView: @"Feed"];
+    [GAI.sharedInstance.defaultTracker sendView: viewId];
 }
 
 
 - (void) refreshButtonPressed
 {
     [self.refreshButton startRefreshCycle];
-    [self refreshVideoThumbnails];
+    [self loadAndUpdateFeedData];
 }
 
 
@@ -229,7 +222,7 @@
 }
 
 
-- (void) refreshVideoThumbnails
+- (void) loadAndUpdateFeedData
 {
     [self.refreshButton startRefreshCycle];
     
@@ -238,13 +231,9 @@
                                                              size: 0
                                                 completionHandler: ^(NSDictionary *responseDictionary) {
                                                     
-                                                    if(![responseDictionary isKindOfClass:[NSDictionary class]])
-                                                    {
-                                                        
-                                                    }
-                                                    BOOL registryResultOk = [appDelegate.mainRegistry registerVideoInstancesFromDictionary: responseDictionary
-                                                                                                                                 forViewId: kFeedViewId
-                                                                                                                               byAppending: NO];
+                                                   
+                                                    BOOL registryResultOk = [appDelegate.mainRegistry registerDataForFeedFromDictionary: responseDictionary
+                                                                                                                            byAppending: NO];
                                                     
                                                     if (!registryResultOk)
                                                     {
@@ -256,6 +245,7 @@
                                                     [self handleRefreshComplete];
                                                     
                                                 } errorHandler: ^(NSDictionary* errorDictionary) {
+                                                    
                                                          [self handleRefreshComplete];
                                                          DebugLog(@"Refresh subscription updates failed");
                                                      }];
@@ -272,7 +262,7 @@
 
 - (void) clearedLocationBoundData
 {
-    [self refreshVideoThumbnails];
+    [self loadAndUpdateFeedData];
     
 }
 
@@ -339,11 +329,11 @@
                    layout: (UICollectionViewLayout*) collectionViewLayout
    sizeForItemAtIndexPath: (NSIndexPath *) indexPath
 {
-    if([[SYNDeviceManager sharedInstance] isIPhone])
+    if([SYNDeviceManager.sharedInstance isIPhone])
     {
         return CGSizeMake(310,221);
     }
-    else if([[SYNDeviceManager sharedInstance] isLandscape])
+    else if([SYNDeviceManager.sharedInstance isLandscape])
     {
         return CGSizeMake(497, 140);
     }
@@ -372,15 +362,18 @@
                                         placeholderImage: [UIImage imageNamed: @"PlaceholderChannelSmall.png"]
                                                  options: SDWebImageRetryFailed];
     
-    videoThumbnailCell.channelImageView.hidden = [[SYNDeviceManager sharedInstance] isPortrait]
-                                                 && [[SYNDeviceManager sharedInstance] isIPad];
+    videoThumbnailCell.channelImageView.hidden = [SYNDeviceManager.sharedInstance isPortrait]
+                                                 && [SYNDeviceManager.sharedInstance isIPad];
     
-    videoThumbnailCell.channelShadowView.hidden = [[SYNDeviceManager sharedInstance] isPortrait]
-                                                  && [[SYNDeviceManager sharedInstance] isIPad];
+    videoThumbnailCell.channelShadowView.hidden = [SYNDeviceManager.sharedInstance isPortrait]
+                                                  && [SYNDeviceManager.sharedInstance isIPad];
     
     videoThumbnailCell.videoTitle.text = videoInstance.title;
+    
     videoThumbnailCell.channelNameText = videoInstance.channel.title;
+    
     videoThumbnailCell.usernameText = [NSString stringWithFormat: @"%@", videoInstance.channel.channelOwner.displayName];
+    
     videoThumbnailCell.addItButton.highlighted = NO;
     videoThumbnailCell.addItButton.selected = [appDelegate.videoQueue videoInstanceIsAddedToChannel:videoInstance];;
     
@@ -400,7 +393,7 @@
 {
     if (collectionView == self.videoThumbnailCollectionView)
     {
-        if([[SYNDeviceManager sharedInstance] isIPad])
+        if([SYNDeviceManager.sharedInstance isIPad])
         {
             return CGSizeMake(1024, 65);   
         }
@@ -474,7 +467,7 @@
         headerSupplementaryView.viewControllerDelegate = self;
         headerSupplementaryView.focus = focus;
         headerSupplementaryView.sectionTitleLabel.text = sectionText.uppercaseString;
-        if ([[SYNDeviceManager sharedInstance] isLandscape])
+        if ([SYNDeviceManager.sharedInstance isLandscape])
         {
             headerSupplementaryView.sectionView.image = [UIImage imageNamed:@"PanelDay"];
         }
@@ -517,17 +510,6 @@
 }
 
 
-#pragma mark - UI Actions
-
-- (void) refresh
-{
-    [self refreshVideoThumbnails];
-}
-
-- (IBAction) touchVideoAddItButton: (UIButton *) addItButton
-{
-    DebugLog (@"No implementation yet");
-}
 
 
 

@@ -13,6 +13,7 @@
 #import "SYNSearchRootViewController.h"
 #import "SYNSearchTabView.h"
 #import "SYNSearchVideosViewController.h"
+#import "SYNSearchBoxViewController.h"
 
 @interface SYNSearchRootViewController ()
 
@@ -34,20 +35,13 @@
 @synthesize tabsContainer;
 @synthesize videoSearchTabView, channelsSearchTabView;
 
-- (id) initWithViewId: (NSString *) vid
-{
-    if ((self = [super initWithViewId: vid]))
-    {
-        self.title = kSearchTitle;
-    }
-    return self;
-}
+
 
 
 - (void) loadView
 {
-    CGRect frame = CGRectMake(0.0, 0.0,[[SYNDeviceManager sharedInstance] currentScreenWidth],
-                               [[SYNDeviceManager sharedInstance] currentScreenHeight]);
+    CGRect frame = CGRectMake(0.0, 0.0,[SYNDeviceManager.sharedInstance currentScreenWidth],
+                               [SYNDeviceManager.sharedInstance currentScreenHeight]);
     
     self.view = [[UIView alloc] initWithFrame: frame];
     self.view.autoresizingMask = UIViewAutoresizingFlexibleWidth| UIViewAutoresizingFlexibleHeight; 
@@ -80,7 +74,7 @@
                                    action: @selector(channelTabPressed:)
                          forControlEvents:UIControlEventTouchUpInside];
     
-    CGFloat correctTabsY = [[SYNDeviceManager sharedInstance] isIPad] ? 104.0 : self.channelsSearchTabView.frame.size.height/2 + 65.0f;
+    CGFloat correctTabsY = [SYNDeviceManager.sharedInstance isIPad] ? 104.0 : self.channelsSearchTabView.frame.size.height/2 + 65.0f;
     tabsContainer.center = CGPointMake(self.view.center.x, correctTabsY);
     tabsContainer.frame = CGRectIntegral(tabsContainer.frame);
     
@@ -115,7 +109,16 @@
         [self performSearchForCurrentSearchTerm];
     
     if (!self.currentController)
-        [self videoTabPressed:nil];  
+        [self videoTabPressed:nil];
+    
+    if([[SYNDeviceManager sharedInstance] isIPhone])
+    {
+        [[NSNotificationCenter defaultCenter] postNotificationName: kNoteAllNavControlsHide
+                                                        object: self];
+        [self.view addSubview:self.searchBoxViewController.searchBoxView];
+        [self.searchBoxViewController.searchBoxView revealCloseButton];
+    }
+    
 }
 
 
@@ -125,6 +128,11 @@
     
     [[NSNotificationCenter defaultCenter] postNotificationName: kNoteSearchBarRequestHide
                                                         object: self];
+    if([[SYNDeviceManager sharedInstance] isIPhone])
+    {
+        [[NSNotificationCenter defaultCenter] postNotificationName: kNoteAllNavControlsShow
+                                                        object: self];
+    }
     
 }
 
@@ -196,17 +204,18 @@
         [self.currentController.view removeFromSuperview];
     
     self.currentController = newController;
-    if (!hasLaidOut && [[SYNDeviceManager sharedInstance] isIPhone])
+    if (!hasLaidOut && [SYNDeviceManager.sharedInstance isIPhone])
     {
         CGRect collectionViewFrame = CGRectMake(0,108.0f,320.0f,self.view.frame.size.height - 108.0f);
         self.searchVideosController.videoThumbnailCollectionView.frame = collectionViewFrame;
         self.searchVideosController.videoThumbnailCollectionView.backgroundColor = [UIColor colorWithWhite:0.97f alpha:1.0f];
         UICollectionViewFlowLayout* layout = (UICollectionViewFlowLayout*)self.currentController.videoThumbnailCollectionView.collectionViewLayout;
         UIEdgeInsets insets= layout.sectionInset;
-        insets.top = 10.0f;
+        insets.top = 2.0f;
         insets.bottom = 10.0f;
         layout.sectionInset = insets;
     }
+    
 }
 
 
@@ -225,17 +234,18 @@
     
     self.currentController = newController;
     
-    if (!hasLaidOut && [[SYNDeviceManager sharedInstance] isIPhone])
+    if (!hasLaidOut && [SYNDeviceManager.sharedInstance isIPhone])
     {
-        CGRect collectionViewFrame = CGRectMake(0,48.0f,320.0f,self.view.frame.size.height - 108.0f);
+        CGRect collectionViewFrame = CGRectMake(0,48.0f,320.0f,self.view.frame.size.height - 53.0f);
         self.searchChannelsController.channelThumbnailCollectionView.frame = collectionViewFrame;
         self.searchChannelsController.channelThumbnailCollectionView.backgroundColor = [UIColor colorWithWhite:0.97f alpha:1.0f];
         UICollectionViewFlowLayout* layout = (UICollectionViewFlowLayout*)self.searchChannelsController.channelThumbnailCollectionView.collectionViewLayout;
         UIEdgeInsets insets= layout.sectionInset;
-        insets.top = 10.0f;
-        insets.bottom = 10.0f;
+        insets.top = 5.0f;
+        insets.bottom = 0.0f;
         layout.sectionInset = insets;
     }
+    
 }
 
 
@@ -270,8 +280,8 @@
         DebugLog(@"Could not clean Channel from search context");
     }
 
-    [self.searchVideosController performSearchWithTerm:searchTerm];
-    [self.searchChannelsController performSearchWithTerm:searchTerm];
+    [self.searchVideosController performNewSearchWithTerm:searchTerm];
+    [self.searchChannelsController performNewSearchWithTerm:searchTerm];
 }
 
 

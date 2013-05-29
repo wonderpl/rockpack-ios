@@ -17,10 +17,8 @@
 
 @property (nonatomic) BOOL shouldFirstCheckCache;
 
-- (void) updateCategoriesOnCompletion: (MKNKVoidBlock) completionBlock
+- (void) updateCategoriesOnCompletion: (MKNKJSONCompleteBlock) completionBlock
                               onError: (MKNKErrorBlock) errorBlock;
-
-- (void) updateVideosScreenForCategory: (NSString*) categoryId;
 
 
 - (void) updateChannelsScreenForCategory:(NSString*)categoryId
@@ -57,5 +55,10 @@
 -(void)channelOwnerDataForChannelOwner:(ChannelOwner*)channelOwner
                             onComplete:(MKNKUserSuccessBlock)completeBlock
                                onError:(MKNKUserErrorBlock)errorBlock;
+
+- (void) channelOwnerSubscriptionsForOwner: (ChannelOwner*) channelOwner
+                                  forRange: (NSRange)range
+                         completionHandler: (MKNKUserSuccessBlock) completionBlock
+                              errorHandler: (MKNKUserErrorBlock) errorBlock;
 
 @end

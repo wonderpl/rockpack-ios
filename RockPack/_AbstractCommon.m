@@ -7,6 +7,7 @@ const struct AbstractCommonAttributes AbstractCommonAttributes = {
 	.fresh = @"fresh",
 	.markedForDeletion = @"markedForDeletion",
 	.uniqueId = @"uniqueId",
+	.viewId = @"viewId",
 };
 
 const struct AbstractCommonRelationships AbstractCommonRelationships = {
@@ -111,6 +112,13 @@ const struct AbstractCommonFetchedProperties AbstractCommonFetchedProperties = {
 
 
 @dynamic uniqueId;
+
+
+
+
+
+
+@dynamic viewId;
 
 
 

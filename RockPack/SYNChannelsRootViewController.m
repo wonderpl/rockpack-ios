@@ -15,7 +15,6 @@
 #import "GAI.h"
 #import "SYNChannelCategoryTableViewController.h"
 #import "SYNChannelDetailViewController.h"
-#import "SYNChannelFooterMoreView.h"
 #import "SYNChannelThumbnailCell.h"
 #import "SYNChannelsRootViewController.h"
 #import "SYNDeviceManager.h"
@@ -29,7 +28,7 @@
 #import "Video.h"
 #import "VideoInstance.h"
 
-#define STANDARD_REQUEST_LENGTH 48
+
 #define kChannelsCache @"ChannelsCache"
 
 @interface SYNChannelsRootViewController () <UIScrollViewDelegate, SYNChannelCategoryTableViewDelegate>
@@ -57,7 +56,6 @@
 @property (nonatomic, strong) UILabel* subCategoryNameLabel;
 @property (nonatomic, strong) UIImageView* arrowImage;
 @property (nonatomic, strong) NSMutableArray* channels;
-@property (nonatomic, strong) SYNChannelFooterMoreView* footerView;
 
 
 @property (nonatomic, strong) Genre* allGenre;
@@ -75,30 +73,23 @@
 
 #pragma mark - View lifecycle
 
-- (id) initWithViewId: (NSString *) vid
-{
-    if ((self = [super initWithViewId: vid]))
-    {
-        self.title = kChannelsTitle;
-    }
-    
-    return self;
-}
+
+
 
 
 - (void) loadView
 {
-    BOOL isIPhone = [[SYNDeviceManager sharedInstance] isIPhone];
+    BOOL isIPhone = [SYNDeviceManager.sharedInstance isIPhone];
     
     SYNIntegralCollectionViewFlowLayout* flowLayout;
     
     if (isIPhone)
     {
-        flowLayout = [SYNIntegralCollectionViewFlowLayout layoutWithItemSize: CGSizeMake(152.0f, 167.0f)
+        flowLayout = [SYNIntegralCollectionViewFlowLayout layoutWithItemSize: CGSizeMake(158.0f, 169.0f)
                                                      minimumInterItemSpacing: 0.0
-                                                          minimumLineSpacing: 6.0
+                                                          minimumLineSpacing: 4.0
                                                              scrollDirection: UICollectionViewScrollDirectionVertical
-                                                                sectionInset: UIEdgeInsetsMake(5.0, 5.0, 5.0, 5.0)];
+                                                                sectionInset: UIEdgeInsetsMake(2.0, 2.0, 6.0, 2.0)];
         flowLayout.footerReferenceSize = [self footerSize];
     }
     else
@@ -117,11 +108,11 @@
     CGRect channelCollectionViewFrame;
     if (isIPhone)
     {
-        channelCollectionViewFrame = CGRectMake(0.0f, 103.0f, [[SYNDeviceManager sharedInstance] currentScreenWidth],[[SYNDeviceManager sharedInstance] currentScreenHeight] - 123.0f);
+        channelCollectionViewFrame = CGRectMake(0.0f, 103.0f, [SYNDeviceManager.sharedInstance currentScreenWidth],[SYNDeviceManager.sharedInstance currentScreenHeight] - 123.0f);
     }
     else
     {
-        channelCollectionViewFrame = [[SYNDeviceManager sharedInstance] isLandscape] ?
+        channelCollectionViewFrame = [SYNDeviceManager.sharedInstance isLandscape] ?
         CGRectMake(0.0, kStandardCollectionViewOffsetY + topTabBarHeight, kFullScreenWidthLandscape, kFullScreenHeightLandscapeMinusStatusBar - kStandardCollectionViewOffsetY - topTabBarHeight) :
         CGRectMake(0.0f, kStandardCollectionViewOffsetY + topTabBarHeight, kFullScreenWidthPortrait, kFullScreenHeightPortraitMinusStatusBar  - kStandardCollectionViewOffsetY - topTabBarHeight);
     }
@@ -135,13 +126,13 @@
     self.channelThumbnailCollectionView.autoresizingMask = UIViewAutoresizingFlexibleWidth | UIViewAutoresizingFlexibleHeight;
     
     CGRect newFrame;
-    if(isIPhone)
+    if (isIPhone)
     {
-        newFrame = CGRectMake(0.0f, 59.0f, [[SYNDeviceManager sharedInstance] currentScreenWidth], [[SYNDeviceManager sharedInstance] currentScreenHeight] - 20.0f);
+        newFrame = CGRectMake(0.0f, 59.0f, [SYNDeviceManager.sharedInstance currentScreenWidth], [SYNDeviceManager.sharedInstance currentScreenHeight] - 20.0f);
     }
     else
     {
-        newFrame = [[SYNDeviceManager sharedInstance] isLandscape] ?
+        newFrame = [SYNDeviceManager.sharedInstance isLandscape] ?
         CGRectMake(0.0, 0.0, kFullScreenWidthLandscape, kFullScreenHeightLandscapeMinusStatusBar) :
         CGRectMake(0.0f, 0.0f, kFullScreenWidthPortrait, kFullScreenHeightPortraitMinusStatusBar);
     }
@@ -157,7 +148,7 @@
     
     dataRequestRange = NSMakeRange(1, STANDARD_REQUEST_LENGTH);
     
-    if(self.enableCategoryTable)
+    if (self.enableCategoryTable)
     {
         [self layoutChannelsCategoryTable];
     }
@@ -211,8 +202,6 @@
 {
     [self updateAnalytics];
     
-    [appDelegate.networkEngine cancelAllOperations];
-    
     dataRequestRange = NSMakeRange(1, STANDARD_REQUEST_LENGTH);
     
     [self loadChannelsForGenre:currentGenre];
@@ -225,13 +214,15 @@
     [GAI.sharedInstance.defaultTracker sendView: @"Channels - Root"];
 }
 
--(void)animatedPushViewController:(UIViewController *)vc
+
+- (void) animatedPushViewController: (UIViewController *) vc
 {
     [super animatedPushViewController:vc];
     
     [[NSNotificationCenter defaultCenter] postNotificationName: kNoteSearchBarRequestHide
                                                         object: self];
 }
+
 
 #pragma mark - Loading of Channels
 
@@ -246,13 +237,12 @@
                   byAppending: (BOOL) append
 {
     
-//    NSLog(@"Loading Channels %i to %i from %i total", (dataRequestRange.location - 1), (dataRequestRange.location - 1) + (dataRequestRange.length - 1), dataItemsAvailable);
     
     [appDelegate.networkEngine updateChannelsScreenForCategory: (genre ? genre.uniqueId : @"all")
                                                       forRange: dataRequestRange
                                                  ignoringCache: NO
-                                                  onCompletion: ^(NSDictionary* response)
-    {
+                                                  onCompletion: ^(NSDictionary* response) {
+                                                      
                                                       NSDictionary *channelsDictionary = [response objectForKey: @"channels"];
                                                       if (!channelsDictionary || ![channelsDictionary isKindOfClass: [NSDictionary class]])
                                                           return;
@@ -263,7 +253,7 @@
                                                       
                                                       dataRequestRange.length = itemArray.count;
                                                       
-                                                      NSLog(@"%i Items Fetched for %@ request", dataRequestRange.length, currentGenre.name ? currentGenre.name : @"popular");
+                                                      DebugLog(@"%i Items Fetched for %@ request", dataRequestRange.length, currentGenre.name ? currentGenre.name : @"popular");
                                                       
                                                       NSNumber *totalNumber = [channelsDictionary objectForKey: @"total"];
                                                       if (![totalNumber isKindOfClass: [NSNumber class]])
@@ -298,7 +288,7 @@
     
     NSInteger nextStart = dataRequestRange.location + dataRequestRange.length; // one is subtracted when the call happens for 0 indexing
     
-    if(nextStart >= dataItemsAvailable)
+    if (nextStart >= dataItemsAvailable)
         return;
     
     NSInteger nextSize = (nextStart + STANDARD_REQUEST_LENGTH) >= dataItemsAvailable ? (dataItemsAvailable - nextStart) : STANDARD_REQUEST_LENGTH;
@@ -324,7 +314,7 @@
     }
     else
     {
-        if([genre isMemberOfClass:[Genre class]]) // no isKindOfClass: which will always return true in this case
+        if ([genre isMemberOfClass:[Genre class]]) // no isKindOfClass: which will always return true in this case
         {
             genrePredicate = [NSPredicate predicateWithFormat: @"categoryId IN %@", [genre getSubGenreIdArray]];
         }
@@ -334,22 +324,26 @@
         }
     }
     
+    NSPredicate* viewIdPredicate = [NSPredicate predicateWithFormat: @"viewId == %@", kChannelsViewId];
+    
     // only get the channels marked as fresh //
     
     NSPredicate* isFreshPredicate = [NSPredicate predicateWithFormat: @"fresh == YES"];
     
-    NSPredicate* finalPredicate = [NSCompoundPredicate andPredicateWithSubpredicates: @[genrePredicate, isFreshPredicate]];
+    NSPredicate* isNotFavoritesPredicate = [NSPredicate predicateWithFormat: @"favourites == NO"];
+    
+    
+    NSPredicate* finalPredicate = [NSCompoundPredicate andPredicateWithSubpredicates: @[genrePredicate, isFreshPredicate, viewIdPredicate, isNotFavoritesPredicate]];
 
     [request setPredicate:finalPredicate];
     
-    NSSortDescriptor *positionDescriptor = [[NSSortDescriptor alloc] initWithKey:@"position"
-                                                                       ascending:YES];
+    NSSortDescriptor *positionDescriptor = [[NSSortDescriptor alloc] initWithKey:@"position"  ascending:YES];
     
     [request setSortDescriptors:@[positionDescriptor]];
     
     NSError *error = nil;
-    NSArray *resultsArray = [appDelegate.mainManagedObjectContext executeFetchRequest: request
-                                                                                error: &error];
+    
+    NSArray *resultsArray = [appDelegate.mainManagedObjectContext executeFetchRequest: request error: &error];
     if (!resultsArray)
         return;
     
@@ -368,17 +362,15 @@
         [self displayEmptyGenreMessage];
     }
 
-    if (!isAnimating)
-    {
-        [self.channelThumbnailCollectionView reloadData];
-    }
+    // We shouldn't wait until the animation is over, as this will result in crashes if the user is scrolling
+    [self.channelThumbnailCollectionView reloadData];
 }
 
 
 - (void) displayEmptyGenreMessage
 {
     
-    if(self.emptyGenreMessageView) // add no more than one
+    if (self.emptyGenreMessageView) // add no more than one
         return;
     
     CGRect mainFrame = CGRectMake(0.0, 0.0, 280.0, 60.0);
@@ -412,12 +404,12 @@
 
 - (CGSize) itemSize
 {
-    return [[SYNDeviceManager sharedInstance] isIPhone] ? CGSizeMake(152.0f, 152.0f) : CGSizeMake(251.0, 274.0);
+    return [SYNDeviceManager.sharedInstance isIPhone] ? CGSizeMake(152.0f, 152.0f) : CGSizeMake(251.0, 274.0);
 }
 
 - (CGSize) footerSize
 {
-    return [[SYNDeviceManager sharedInstance] isIPhone] ? CGSizeMake(320.0f, 64.0f) : CGSizeMake(1024.0, 64.0);
+    return [SYNDeviceManager.sharedInstance isIPhone] ? CGSizeMake(320.0f, 64.0f) : CGSizeMake(1024.0, 64.0);
 }
 
 
@@ -440,6 +432,7 @@
 - (UICollectionViewCell *) collectionView: (UICollectionView *) collectionView
                    cellForItemAtIndexPath: (NSIndexPath *) indexPath
 {
+    
     Channel *channel = self.channels[indexPath.row];
     
     SYNChannelThumbnailCell *channelThumbnailCell = [collectionView dequeueReusableCellWithReuseIdentifier: @"SYNChannelThumbnailCell"
@@ -452,7 +445,7 @@
     [channelThumbnailCell setChannelTitle: channel.title];
     channelThumbnailCell.displayNameLabel.text = [NSString stringWithFormat: @"%@", channel.channelOwner.displayName];
     channelThumbnailCell.viewControllerDelegate = self;
-
+    
     return channelThumbnailCell;
 }
 
@@ -491,7 +484,7 @@
     
     if (kind == UICollectionElementKindSectionFooter)
     {
-        if(self.channels.count == 0 || (self.dataRequestRange.location + self.dataRequestRange.length) >= dataItemsAvailable)
+        if (self.channels.count == 0 || (self.dataRequestRange.location + self.dataRequestRange.length) >= dataItemsAvailable)
         {
             return supplementaryView;
         }
@@ -515,12 +508,14 @@
 
 - (void) collectionView: (UICollectionView *) collectionView didSelectItemAtIndexPath: (NSIndexPath *) indexPath
 {
-    if(self.isAnimating) // prevent double clicking
+    if (self.isAnimating) // prevent double clicking
         return;
     
     Channel *channel = (Channel*)self.channels[indexPath.row];
     
-    [self viewChannelDetails:channel];
+    [[NSNotificationCenter defaultCenter] postNotificationName:kChannelDetailsRequested
+                                                        object:self
+                                                      userInfo:@{kChannel:channel}];
 }
 
 
@@ -672,7 +667,7 @@
 -(void)animateCollectionViewDown:(BOOL)down
 {
     
-    if(down && !tabExpanded)
+    if (down && !tabExpanded)
     {
         
         
@@ -697,7 +692,7 @@
                              self.channelThumbnailCollectionView.frame = currentCollectionViewFrame;
                          }];
     }
-    else if(tabExpanded)
+    else if (tabExpanded)
     {
         
         isAnimating = YES;

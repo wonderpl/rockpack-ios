@@ -5,6 +5,9 @@
 + (ChannelCover *) instanceFromDictionary: (NSDictionary *) dictionary
                 usingManagedObjectContext: (NSManagedObjectContext *) managedObjectContext;
 
++ (ChannelCover *) instanceFromChannelCover:(ChannelCover *)channelCover
+                  usingManagedObjectContext: (NSManagedObjectContext *) managedObjectContext;
+
 @property (nonatomic, readonly) NSString* imageSmallUrl;
 @property (nonatomic, readonly) NSString* imageMediumUrl;
 @property (nonatomic, readonly) NSString* imageLargeUrl;

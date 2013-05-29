@@ -27,7 +27,7 @@
     [super awakeFromNib];
     
     
-    if([[SYNDeviceManager sharedInstance] isIPad]){
+    if([SYNDeviceManager.sharedInstance isIPad]){
         self.sectionTitleLabel.font = [UIFont rockpackFontOfSize: 20.0f];
     }
     

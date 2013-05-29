@@ -32,7 +32,7 @@
         
         self.contentSizeForViewInPopover = CGSizeMake(380, 476);
         
-        BOOL isIpad = [[SYNDeviceManager sharedInstance] isIPad];
+        BOOL isIpad = [SYNDeviceManager.sharedInstance isIPad];
         
         
         CGRect tableViewFrame = CGRectMake(0.0, 0.0, (isIpad ? 380.0 : 320.0), 100.0);

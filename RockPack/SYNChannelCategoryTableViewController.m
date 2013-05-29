@@ -143,7 +143,13 @@
     if (self.categoriesDatasource.count <= 0 && ! hasRetried)
     {
         
-        [appDelegate.networkEngine updateCategoriesOnCompletion:^{
+        [appDelegate.networkEngine updateCategoriesOnCompletion:^(NSDictionary* dictionary){
+            
+            BOOL registryResultOk = [appDelegate.mainRegistry registerCategoriesFromDictionary: dictionary];
+            if (!registryResultOk) {
+                DebugLog(@"*** Cannot Register Genre Objects! ***");
+                return;
+            }
             
             [self loadCategories];
             
@@ -176,7 +182,7 @@
 
 - (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section
 {
-    return [[[self.transientDatasource objectAtIndex:section] valueForKey:kSubCategoriesKey] count];
+    return [[self.transientDatasource[section] valueForKey:kSubCategoriesKey] count];
 }
 
 -(CGFloat)tableView:(UITableView *)tableView heightForHeaderInSection:(NSInteger)section
@@ -191,7 +197,7 @@
 
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath
 {
-    SubGenre* subCategory = [[[self.transientDatasource objectAtIndex:indexPath.section] valueForKey:kSubCategoriesKey] objectAtIndex:indexPath.row];
+    SubGenre* subCategory = [self.transientDatasource[indexPath.section] valueForKey:kSubCategoriesKey][indexPath.row];
     SYNChannelCategoryTableCell *cell = (SYNChannelCategoryTableCell*) [tableView dequeueReusableCellWithIdentifier:@"SYNChannelCategoryTableCell"];
     cell.titleLabel.text = subCategory.name;
     return cell;
@@ -207,7 +213,7 @@
 
 -(UIView*)tableView:(UITableView *)tableView viewForHeaderInSection:(NSInteger)section
 {
-    NSDictionary* dictionary = [self.transientDatasource objectAtIndex:section];
+    NSDictionary* dictionary = self.transientDatasource[section];
     SYNChannelCategoryTableHeader *header = [self.headerRegister objectForKey:@(section)];
     if(!header)
     {
@@ -281,7 +287,7 @@
 
 -(void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath
 {
-    SubGenre* subCategory = [[[self.transientDatasource objectAtIndex:indexPath.section] objectForKey:kSubCategoriesKey] objectAtIndex:indexPath.row];
+    SubGenre* subCategory = [[self.transientDatasource objectAtIndex:indexPath.section] objectForKey:kSubCategoriesKey][indexPath.row];
     //Callback to update content
     if(!self.confirmButton)
     {
@@ -310,7 +316,7 @@
 -(void)releasedHeader:(UIButton*)header
 {
     SYNChannelCategoryTableHeader* headerView = [self.headerRegister objectForKey:@(header.tag)];
-    NSMutableDictionary* sectionDictionary = [self.transientDatasource objectAtIndex:header.tag];
+    NSMutableDictionary* sectionDictionary = self.transientDatasource[header.tag];
     NSArray* subCategories = [sectionDictionary objectForKey:kSubCategoriesKey];
     if(subCategories)
     {
@@ -330,7 +336,7 @@
     BOOL needToOpen = !self.lastSelectedIndexpath || self.lastSelectedIndexpath.section != header.tag;
     if(needToOpen)
     {
-        Genre* category = [self.categoriesDatasource objectAtIndex:header.tag];
+        Genre* category = self.categoriesDatasource[header.tag];
         if([category.subgenres count]<1)
         {
             needToOpen = NO;
@@ -380,9 +386,9 @@
 
 -(void)expandSection:(NSInteger)section
 {
-    NSMutableDictionary* sectionDictionary = [self.transientDatasource objectAtIndex:section];
+    NSMutableDictionary* sectionDictionary = self.transientDatasource[section];
     
-    Genre * category = [self.categoriesDatasource objectAtIndex:section];
+    Genre * category = self.categoriesDatasource[section];
     NSArray* newSubCategories = [category.subgenres array];
     NSPredicate* predicate = [NSPredicate predicateWithFormat:@"priority > 0"];
     newSubCategories = [newSubCategories filteredArrayUsingPredicate:predicate];
@@ -425,7 +431,7 @@
 
 -(void)closeSection:(NSInteger)section
 {
-    NSMutableDictionary* sectionDictionary = [self.transientDatasource objectAtIndex:section];
+    NSMutableDictionary* sectionDictionary = self.transientDatasource[section];
     NSArray* subCategories = [sectionDictionary objectForKey:kSubCategoriesKey];
     [sectionDictionary removeObjectForKey:kSubCategoriesKey];
     [self.transientDatasource replaceObjectAtIndex:section withObject:sectionDictionary];
@@ -548,7 +554,7 @@
                 SYNChannelCategoryTableHeader* header = (SYNChannelCategoryTableHeader*)[self tableView:nil viewForHeaderInSection:index];
                 [self tappedHeader:header.headerButton];
                 //Now try to get the index of the subGenre
-                NSMutableDictionary* sectionDictionary = [self.transientDatasource objectAtIndex:index];
+                NSMutableDictionary* sectionDictionary = self.transientDatasource[index];
                 NSArray* subGenres = [sectionDictionary objectForKey:kSubCategoriesKey];
                 if(subGenres)
                 {
@@ -585,7 +591,7 @@
             {
                 if([self.categoryTableControllerDelegate respondsToSelector:@selector(categoryTableController:didSelectSubCategory:)])
                 {
-                    SubGenre* subCategory = [[[self.transientDatasource objectAtIndex:self.lastSelectedIndexpath.section] objectForKey:kSubCategoriesKey] objectAtIndex:self.lastSelectedIndexpath.row];
+                    SubGenre* subCategory = [self.transientDatasource[self.lastSelectedIndexpath.section] objectForKey:kSubCategoriesKey][self.lastSelectedIndexpath.row];
                     [self.categoryTableControllerDelegate categoryTableController:self
                                                              didSelectSubCategory:subCategory];
                 }
@@ -594,7 +600,7 @@
             {
                 if([self.categoryTableControllerDelegate respondsToSelector:@selector(categoryTableController:didSelectCategory:)])
                 {
-                    Genre* category = [self.categoriesDatasource objectAtIndex:self.lastSelectedIndexpath.section];
+                    Genre* category = self.categoriesDatasource[self.lastSelectedIndexpath.section];
                     [self.categoryTableControllerDelegate categoryTableController:self didSelectCategory:category];
                 }
             }
@@ -639,7 +645,7 @@
     
     if([otherFetchArray count]==1)
     {
-        return [otherFetchArray objectAtIndex:0];
+        return otherFetchArray[0];
     }
 
     return nil;

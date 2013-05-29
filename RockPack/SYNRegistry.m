@@ -49,7 +49,6 @@
 - (BOOL) saveImportContext
 {
     NSError* error;
-    
     if ([importManagedObjectContext save: &error])
     {
         return YES;

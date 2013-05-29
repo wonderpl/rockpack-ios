@@ -8,6 +8,7 @@ extern const struct AbstractCommonAttributes {
 	__unsafe_unretained NSString *fresh;
 	__unsafe_unretained NSString *markedForDeletion;
 	__unsafe_unretained NSString *uniqueId;
+	__unsafe_unretained NSString *viewId;
 } AbstractCommonAttributes;
 
 extern const struct AbstractCommonRelationships {
@@ -15,6 +16,7 @@ extern const struct AbstractCommonRelationships {
 
 extern const struct AbstractCommonFetchedProperties {
 } AbstractCommonFetchedProperties;
+
 
 
 
@@ -72,6 +74,16 @@ extern const struct AbstractCommonFetchedProperties {
 
 
 
+@property (nonatomic, strong) NSString* viewId;
+
+
+
+//- (BOOL)validateViewId:(id*)value_ error:(NSError**)error_;
+
+
+
+
+
 
 @end
 
@@ -102,6 +114,12 @@ extern const struct AbstractCommonFetchedProperties {
 
 - (NSString*)primitiveUniqueId;
 - (void)setPrimitiveUniqueId:(NSString*)value;
+
+
+
+
+- (NSString*)primitiveViewId;
+- (void)setPrimitiveViewId:(NSString*)value;
 
 
 

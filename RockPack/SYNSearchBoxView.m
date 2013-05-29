@@ -26,7 +26,7 @@
     if (self) {
         
         
-        CGFloat barWidth = [[SYNDeviceManager sharedInstance] currentScreenWidth] - 90.0;
+        CGFloat barWidth = [SYNDeviceManager.sharedInstance currentScreenWidth] - 90.0;
         
         backgroundPanel = [[UIView alloc] initWithFrame:CGRectMake(0.0, 0.0, barWidth, 61.0)];
         backgroundPanel.backgroundColor = [UIColor whiteColor];
@@ -53,7 +53,7 @@
         
         UIImage* loopImage = [UIImage imageNamed:@"IconSearch"];
         UIImageView* loopImageView = [[UIImageView alloc] initWithImage:loopImage];
-        loopImageView.frame = CGRectMake(10.0, 14.0, loopImage.size.width, loopImage.size.height);
+        loopImageView.frame = CGRectMake(15.0, 15.0, loopImage.size.width, loopImage.size.height);
         loopImageView.image = loopImage;
         grayPanel.autoresizingMask = UIViewAutoresizingFlexibleBottomMargin | UIViewAutoresizingFlexibleWidth;
         [grayPanel addSubview:loopImageView];
@@ -62,7 +62,7 @@
         // == Label == //
         
         CGRect fieldRect = grayPanel.frame;
-        fieldRect.origin.x += 18.0 + loopImage.size.width;
+        fieldRect.origin.x += 28.0 + loopImage.size.width;
         fieldRect.origin.y += 14.0;
         fieldRect.size.width -= 28.0 * 2;
         fieldRect.size.height -= 14.0 * 2;
@@ -73,6 +73,7 @@
         self.searchTextField.autocorrectionType = UITextAutocorrectionTypeNo;
         self.searchTextField.autocapitalizationType = UITextAutocapitalizationTypeAllCharacters;
         self.searchTextField.autoresizingMask = UIViewAutoresizingFlexibleWidth;
+        self.searchTextField.clearButtonMode = UITextFieldViewModeWhileEditing;
         
         // Display Search instead of Return on iPad Keyboard
         self.searchTextField.returnKeyType = UIReturnKeySearch;
@@ -106,6 +107,7 @@
     self.searchTextField.layer.shadowColor = [UIColor whiteColor].CGColor;
     self.searchTextField.layer.shadowOffset = CGSizeMake(0.0f,1.0f);
     self.searchTextField.autocorrectionType = UITextAutocorrectionTypeNo;
+    self.searchTextField.clearButtonMode = UITextFieldViewModeWhileEditing;
     
     // Display Search instead of Return on iPhone Keyboard
     self.searchTextField.returnKeyType = UIReturnKeySearch;
@@ -115,7 +117,7 @@
 
 -(void)resizeForHeight:(CGFloat)height
 {
-    if([[SYNDeviceManager sharedInstance] isIPad])
+    if([SYNDeviceManager.sharedInstance isIPad])
     {
         
     

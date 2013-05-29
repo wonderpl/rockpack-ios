@@ -17,7 +17,7 @@
 // Returns a list of all the recently added videos associated with a user's subscribed channels (the %@ represents the USERID)
 #define kAPIRecentlyAddedVideoInSubscribedChannelsForUser @"ws/%@/subscriptions/recent_videos/"
 
-// Main RestFul API
+
 // Entities
 
 #define kChannel                    @"Channel"
@@ -30,25 +30,16 @@
 
 #define kForceRefreshValue          @"kForceRefreshValue"
 
-// OAuth2
 
-#define kFeedViewId                 @"Home"
+// viewId
+#define kFeedViewId                 @"Feed"
 #define kChannelsViewId             @"Channels"
-#define kProfileViewId              @"You"
+#define kProfileViewId              @"Profile"
 #define kSearchViewId               @"Search"
-#define kUserChanneslViewId         @"UserChannels"
 #define kExistingChannelsViewId     @"ExistingChannels"
 #define kChannelDetailsViewId       @"ChannelDetails"
-#define kCoverArtViewId             @"CoverArt"
-#define kUserCoverArtViewId         @"UserCoverArt"
 
-#define kFeedTitle                  @"Feed"
-#define kChannelsTitle              @"Channels"
-#define kProfileTitle               @"Profile"
-#define kSearchTitle                @"Search"
-#define kUserChanneslTitle          @"UserChannels"
-#define kChannelDetailsTitle        @"ChannelDetails"
-
+// OAuth2
 #define kAPIRefreshToken            @"/ws/token"
 
 // Login
@@ -60,6 +51,8 @@
 
 #define kCoverArtChanged            @"kCoverArtChanged"
 
+
+// == Main WS API == //
 
 // Search according to term, currently a wrapper around YouTube
 #define kAPISearchVideos            @"/ws/search/videos/"
@@ -83,6 +76,8 @@
 #define kAPIUpdateExistingChannel   @"/ws/USERID/channels/CHANNELID/"           /* PUT */
 #define kAPIUpdateChannelPrivacy    @"/ws/USERID/channels/CHANNELID/public/"     /* PUT */
 #define kAPIDeleteChannel           @"/ws/USERID/channels/CHANNELID/"     /* PUT */
+
+#define STANDARD_REQUEST_LENGTH 48
 
 // Videos for channel
 #define kAPIGetVideosForChannel     @"/ws/USERID/channels/CHANNELID/videos/"    /* GET */
@@ -328,18 +323,26 @@ typedef enum {
 // Video Overlay
 //
 
-#define kVideoBackgroundColour          [UIColor blackColor]
-#define kBufferMonitoringTimerInterval  1.0f
+// Maximum number of times the player time remains the same before restart attempted
+#define kMaxStallCount                  20
+
+// Time between shuttle bar updates
 #define kShuttleBarUpdateTimerInterval  0.1f
+
+// How long for the placeholder animations to cycle
 #define kMiddlePlaceholderCycleTime     2.0f
-#define kMiddlePlaceholderIdentifier    @"MiddlePlaceholder"
 #define kBottomPlaceholderCycleTime     4.0f
+#define kMiddlePlaceholderIdentifier    @"MiddlePlaceholder"
+
 #define kBottomPlaceholderIdentifier    @"BottomPlaceholder"
+
+#define kVideoBackgroundColour          [UIColor blackColor]
+
 #define kShuttleBarHeight               44.0f
 #define kShuttleBarTimeLabelWidth       40.0f
-#define kShuttleBarTimeLabelOffset      100.0f
-#define kShuttleBarButtonWidth          77.0f
-#define kShuttleBarSliderOffset         10.0f
+#define kShuttleBarButtonWidthiPad      77.0f
+#define kShuttleBarButtonWidthiPhone    40.0f
+#define kShuttleBarSliderOffset         5.0f
 
 #define kSYNBundleFullVersion           @"FullVersion"
 #define kSYNBundleBuildTarget           @"BuildTarget"

@@ -134,9 +134,9 @@
 
         // Case where the user is a member of Rockpack but has not signing in this device
         
-        [self.appDelegate.oAuthNetworkEngine userInformationFromCredentials: credential completionHandler: ^(NSDictionary* dictionary) {
+        [self.appDelegate.oAuthNetworkEngine retrieveAndRegisterUserFromCredentials: credential completionHandler: ^(NSDictionary* dictionary) {
 
-            // the dictionary contains a User dictionary //
+            // the dictionary contains a User dictionary (without subscriptions) //
             
           
             DebugLog(@"User Registerd: %@", [dictionary objectForKey: @"username"]);
@@ -144,6 +144,7 @@
             // by this time the currentUser is set in the DB //
             
             [self checkAndSaveRegisteredUser: credential];
+            
             completionBlock(dictionary);
             
         } errorHandler:errorBlock];
@@ -174,7 +175,7 @@
     [self.appDelegate.oAuthNetworkEngine registerUserWithData:userData completionHandler: ^(SYNOAuth2Credential* credential) {
         
         // Case where the user registers
-        [self.appDelegate.oAuthNetworkEngine userInformationFromCredentials: credential
+        [self.appDelegate.oAuthNetworkEngine retrieveAndRegisterUserFromCredentials: credential
                                                           completionHandler: ^(NSDictionary* dictionary) {
                                                               [self checkAndSaveRegisteredUser: credential];
                                                               completionBlock(dictionary);
@@ -238,7 +239,7 @@
         
         [self.appDelegate.oAuthNetworkEngine doFacebookLoginWithAccessToken: accessTokenData.accessToken
                                                           completionHandler: ^(SYNOAuth2Credential* credential) {
-            [self.appDelegate.oAuthNetworkEngine userInformationFromCredentials: credential
+            [self.appDelegate.oAuthNetworkEngine retrieveAndRegisterUserFromCredentials: credential
                                                               completionHandler: ^(NSDictionary* dictionary) {
                 [self checkAndSaveRegisteredUser: credential];
                                                                   
@@ -287,7 +288,7 @@
     }
     else if ([self.reachability currentReachabilityStatus] == NotReachable)
     {
-        NSString* message = [[SYNDeviceManager sharedInstance] isIPad] ? NSLocalizedString(@"NO NETWORK, PLEASE CHECK YOUR INTERNET CONNECTION.", nil)
+        NSString* message = [SYNDeviceManager.sharedInstance isIPad] ? NSLocalizedString(@"NO NETWORK, PLEASE CHECK YOUR INTERNET CONNECTION.", nil)
         : NSLocalizedString(@"NO NETWORK", nil);
         [self presentNetworkErrorViewWithMesssage: message];
     }

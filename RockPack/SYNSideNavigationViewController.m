@@ -83,11 +83,18 @@ typedef enum {
                                 bundle: nil]))
     {
         self.navigationData = @[
-                                @{kSideNavTitle: NSLocalizedString(@"FEED", nil), kSideNavType: @(kSideNavigationTypePage), kSideNavAction: kFeedTitle},
-                                @{kSideNavTitle: NSLocalizedString(@"CHANNELS", nil), kSideNavType: @(kSideNavigationTypePage), kSideNavAction: kChannelsTitle},
-                                @{kSideNavTitle: NSLocalizedString(@"PROFILE", nil), kSideNavType: @(kSideNavigationTypePage), kSideNavAction: kProfileTitle},
-                                @{kSideNavTitle: NSLocalizedString(@"NOTIFICATIONS", nil), kSideNavType: @(kSideNavigationTypeLoad), kSideNavAction: @"SYNNotificationsViewController"}
-                                ];
+                @{kSideNavTitle: NSLocalizedString(@"FEED", nil),
+                   kSideNavType: @(kSideNavigationTypePage),
+                 kSideNavAction: kFeedViewId},
+                @{kSideNavTitle: NSLocalizedString(@"CHANNELS", nil),
+                   kSideNavType: @(kSideNavigationTypePage),
+                 kSideNavAction: kChannelsViewId},
+                @{kSideNavTitle: NSLocalizedString(@"PROFILE", nil),
+                   kSideNavType: @(kSideNavigationTypePage),
+                 kSideNavAction: kProfileViewId},
+                @{kSideNavTitle: NSLocalizedString(@"NOTIFICATIONS", nil),
+                   kSideNavType: @(kSideNavigationTypeLoad),
+                 kSideNavAction: @"SYNNotificationsViewController"}];
         
         _state = SideNavigationStateHidden;
         
@@ -130,9 +137,9 @@ typedef enum {
     
     CGRect newFrame = self.view.frame;
     
-    if ([[SYNDeviceManager sharedInstance] isIPhone])
+    if ([SYNDeviceManager.sharedInstance isIPhone])
     {
-        newFrame.size.height = [[SYNDeviceManager sharedInstance] currentScreenHeight] - 78.0f;
+        newFrame.size.height = [SYNDeviceManager.sharedInstance currentScreenHeight] - 78.0f;
         self.view.frame = newFrame;
         self.mainContentView.frame = self.view.bounds;
         self.backgroundImageView.image = [[UIImage imageNamed:@"PanelMenu"] resizableImageWithCapInsets:UIEdgeInsetsMake( 68.0f, 0.0f, 65.0f ,0.0f)];
@@ -153,26 +160,26 @@ typedef enum {
         self.bottomExtraView = [[UIView alloc] initWithFrame:CGRectMake(0.0,
                                                                         bgHeight,
                                                                         self.backgroundImageView.frame.size.width,
-                                                                        [[SYNDeviceManager sharedInstance] currentScreenHeight] - bgHeight)];
+                                                                        [SYNDeviceManager.sharedInstance currentScreenHeight] - bgHeight)];
         
         self.bottomExtraView.backgroundColor = [UIColor colorWithPatternImage:[UIImage imageNamed:@"PanelMenuBottom"]];
         
         [self.view insertSubview:self.bottomExtraView belowSubview:self.backgroundImageView];
         
-        newFrame.size.height = [[SYNDeviceManager sharedInstance] currentScreenHeight];
+        newFrame.size.height = [SYNDeviceManager.sharedInstance currentScreenHeight];
         self.view.frame = newFrame;
 
         // == Settings Button == //
         
         CGRect settingsButtonFrame = self.settingsButton.frame;
-        settingsButtonFrame.origin.y = [[SYNDeviceManager sharedInstance] currentScreenHeight] - 26.0 - settingsButtonFrame.size.height;
+        settingsButtonFrame.origin.y = [SYNDeviceManager.sharedInstance currentScreenHeight] - 26.0 - settingsButtonFrame.size.height;
         self.settingsButton.frame = settingsButtonFrame;
         self.settingsButton.autoresizingMask = UIViewAutoresizingFlexibleTopMargin;
         
         // == Verion number label == //
         
         CGRect versionNumberLabelFrame = self.versionNumberLabel.frame;
-        versionNumberLabelFrame.origin.y = [[SYNDeviceManager sharedInstance] currentScreenHeight] - 55.0 - settingsButtonFrame.size.height;
+        versionNumberLabelFrame.origin.y = [SYNDeviceManager.sharedInstance currentScreenHeight] - 55.0 - settingsButtonFrame.size.height;
         self.versionNumberLabel.frame = versionNumberLabelFrame;
         self.versionNumberLabel.autoresizingMask = UIViewAutoresizingFlexibleTopMargin;
         
@@ -202,6 +209,11 @@ typedef enum {
                                                  name: kHideSideNavigationView
                                                object: nil];
     
+    [[NSNotificationCenter defaultCenter] addObserver: self
+                                             selector: @selector(userDataChanged:)
+                                                 name: kUserDataChanged
+                                               object: nil];
+    
     [self getNotifications];
 }
 
@@ -219,58 +231,61 @@ typedef enum {
 
 - (void) getNotifications
 {
-    [self.appDelegate.oAuthNetworkEngine notificationsFromUserId: self.appDelegate.currentUser.uniqueId
-                                               completionHandler: ^(id response) {
+    [self.appDelegate.oAuthNetworkEngine notificationsFromUserId: self.appDelegate.currentUser.uniqueId completionHandler: ^(id response) {
                                                    
-                                                   if (![response isKindOfClass:[NSDictionary class]])
-                                                       return;
+            if (![response isKindOfClass:[NSDictionary class]])
+                return;
                                                    
-                                                   NSDictionary* responseDictionary = (NSDictionary*)response;
+            NSDictionary* responseDictionary = (NSDictionary*)response;
                                                    
-                                                   NSDictionary* notificationsDictionary = [responseDictionary objectForKey:@"notifications"];
-                                                   if (!notificationsDictionary)
-                                                       return;
+            NSDictionary* notificationsDictionary = [responseDictionary objectForKey:@"notifications"];
+            if (!notificationsDictionary)
+                return;
                                                    
-                                                   NSNumber* totalNumber = [notificationsDictionary objectForKey:@"total"];
-                                                   if (!totalNumber)
-                                                       return;
+            NSNumber* totalNumber = [notificationsDictionary objectForKey:@"total"];
+            if (!totalNumber)
+                return;
                                                    
-                                                   NSInteger total = [totalNumber integerValue];
+            NSInteger total = [totalNumber integerValue];
                                                    
-                                                   if (total == 0)
-                                                   {
-                                                       [self.tableView reloadData];
-                                                       return;
-                                                   }
+            if (total == 0)
+            {
+                [self.tableView reloadData];
+                return;
+            }
                                                    
-                                                   NSArray* itemsArray = (NSArray*)[notificationsDictionary objectForKey:@"items"];
-                                                   if (!itemsArray)
-                                                   {
-                                                       // TODO: handle erro in parsing items
-                                                       return;
+            NSArray* itemsArray = (NSArray*)[notificationsDictionary objectForKey:@"items"];
+            if (!itemsArray)
+            {
+                // TODO: handle erro in parsing items
+                return;
                                                        
-                                                   }
+            }
                                                    
-                                                   self.notifications = [NSMutableArray arrayWithCapacity: self.unreadNotifications];
+            self.notifications = [NSMutableArray arrayWithCapacity: total];
                                                    
-                                                   for (NSDictionary* itemData in itemsArray)
-                                                   {
-                                                       if (!itemData) continue;
+            for (NSDictionary* itemData in itemsArray)
+            {
+                if (![itemData isKindOfClass:[NSDictionary class]]) continue;
                                                        
-                                                       SYNRockpackNotification* notification = [SYNRockpackNotification notificationWithData:itemData];
+                SYNRockpackNotification* notification = [SYNRockpackNotification notificationWithData:itemData];
                                                        
-                                                       if (!notification.read)
-                                                           self.unreadNotifications++;
+                if (!notification.read)
+                    self.unreadNotifications++;
                                                        
-                                                       [self.notifications addObject:notification];
+                [self.notifications addObject:notification];
                                                        
-                                                   }
+            }
                                                    
-                                                   [self.tableView reloadData];
-                                               }
-                                                    errorHandler:^(id error) {
-                                                        DebugLog(@"Could not load notifications");
-                                                    }];
+            [self.tableView reloadData];
+        
+        
+        
+        
+        
+    } errorHandler:^(id error) {
+        DebugLog(@"Could not load notifications");
+    }];
 }
 
 
@@ -457,12 +472,28 @@ typedef enum {
 - (void) setUser: (User *) user
 {
     _user = user;
-    self.userNameLabel.text = [self.user.fullName uppercaseString];
-    self.nicknameLabel.text = self.user.username;
+    NSString* fullname = user.fullName;
+    if([fullname length]>1)
+    {
+        self.userNameLabel.text = [self.user.fullName uppercaseString];
+        self.nicknameLabel.text = self.user.username;
+    }
+    else
+    {
+        self.userNameLabel.text = self.user.username;
+        self.nicknameLabel.text = @"";
+    }
     
-    [self.profilePictureImageView setImageWithURL: [NSURL URLWithString: self.user.thumbnailURL]
-                                 placeholderImage: [UIImage imageNamed: @"PlaceholderNotificationAvatar"]
-                                          options: SDWebImageRetryFailed];
+    // We can't use our standard asynchronous loader due to cacheing    
+    dispatch_queue_t callerQueue = dispatch_get_main_queue();
+    dispatch_queue_t downloadQueue = dispatch_queue_create("com.rockpack.avatarloadingqueue", NULL);
+    dispatch_async(downloadQueue, ^{
+        NSData * imageData = [NSData dataWithContentsOfURL: [NSURL URLWithString: self.user.thumbnailURL]];
+        
+        dispatch_async(callerQueue, ^{
+            self.profilePictureImageView.image = [UIImage imageWithData: imageData];
+        });
+    });
 }
 
 
@@ -543,7 +574,7 @@ typedef enum {
     
     
     CGFloat correctHeight = UIInterfaceOrientationIsPortrait(toInterfaceOrientation) ?
-    [[SYNDeviceManager sharedInstance] currentScreenHeight] : [[SYNDeviceManager sharedInstance] currentScreenWidth];
+    [SYNDeviceManager.sharedInstance currentScreenHeight] : [SYNDeviceManager.sharedInstance currentScreenWidth];
     
     CGRect newFrame = self.view.frame;
     newFrame.size.height = correctHeight;
@@ -565,13 +596,13 @@ typedef enum {
                                             duration: duration];
     
     CGRect settingsButtonFrame = self.settingsButton.frame;
-    settingsButtonFrame.origin.y = [[SYNDeviceManager sharedInstance] currentScreenHeight] - 30.0 - settingsButtonFrame.size.height;
+    settingsButtonFrame.origin.y = [SYNDeviceManager.sharedInstance currentScreenHeight] - 30.0 - settingsButtonFrame.size.height;
     self.settingsButton.frame = settingsButtonFrame;
     
     // == Verion number label == //
     
     CGRect versionNumberLabelFrame = self.versionNumberLabel.frame;
-    versionNumberLabelFrame.origin.y = [[SYNDeviceManager sharedInstance] currentScreenHeight] - 55.0 - settingsButtonFrame.size.height;
+    versionNumberLabelFrame.origin.y = [SYNDeviceManager.sharedInstance currentScreenHeight] - 55.0 - settingsButtonFrame.size.height;
     self.versionNumberLabel.frame = versionNumberLabelFrame;
     
     // FIXME:???
@@ -588,20 +619,23 @@ typedef enum {
 }
 
 
-#pragma mark - UITextFieldDelegate
+#pragma mark - UITextFieldDelegate - iphone specific
 
 - (BOOL)textFieldShouldBeginEditing:(UITextField *)textField
 {
+    [[self.parentViewController view] addSubview:self.searchViewController.searchBoxView];
+    CGRect newFrame = self.searchViewController.searchBoxView.frame;
+    newFrame.origin = CGPointMake(0,58.0f);
+    self.searchViewController.searchBoxView.frame = newFrame;
     [UIView animateWithDuration: 0.2f
                          delay :0.0f
                         options: UIViewAnimationOptionCurveEaseInOut
                      animations: ^{
                          self.mainContentView.alpha = 0.0f;
                          
-                         CGRect endFrame = self.view.frame;
-                         endFrame.size.height +=58;
+                         CGRect endFrame = self.searchViewController.searchBoxView.frame;
                          endFrame.origin.y -=58;
-                         self.view.frame = endFrame;
+                         self.searchViewController.searchBoxView.frame = endFrame;
                          
                      }
                      completion: ^(BOOL finished) {
@@ -610,10 +644,11 @@ typedef enum {
                                              options: UIViewAnimationOptionCurveEaseOut
                                           animations: ^{
                                               [self.searchViewController.searchBoxView revealCloseButton];
+
                                           }
                                           completion: nil];
                          
-                         self.mainContentView.hidden = YES;
+                         
                          
                      }];
     
@@ -622,7 +657,7 @@ typedef enum {
 }
 
 
-#pragma mark - close search callback
+#pragma mark - close search callback iPhone specific
 
 - (void) closeSearch: (id) sender
 {
@@ -639,23 +674,31 @@ typedef enum {
                         options: UIViewAnimationOptionCurveEaseIn
                      animations: ^{
                          [self.searchViewController.searchBoxView hideCloseButton];
+                         _state = SideNavigationStateHalf;
                      }
                      completion: ^(BOOL finished) {
                          self.mainContentView.hidden = NO;
-                         
+                         CGRect sideNavigationFrame = self.view.frame;
+                         sideNavigationFrame.origin.x = 704.0f;
+                         self.view.frame = sideNavigationFrame;
                          [UIView animateWithDuration: 0.2f
                                                delay: 0.0f
                                              options: UIViewAnimationOptionCurveEaseInOut
                                           animations: ^{
                                               self.mainContentView.alpha = 1.0f;
-                                              CGRect endFrame = self.view.frame;
-                                              endFrame.size.height -=58;
-                                              endFrame.origin.y +=58;
-                                              self.view.frame = endFrame;
+                                              
+                                              
+                                              CGRect newFrame = self.searchViewController.searchBoxView.frame;
+                                              newFrame.origin = CGPointMake(0,58.0f);
+                                              self.searchViewController.searchBoxView.frame = newFrame;
                                           }
                                           completion:^(BOOL finished)
                           {
-                          }];
+                              CGRect newFrame = self.searchViewController.searchBoxView.frame;
+                              newFrame.origin = CGPointMake(0,0.0f);
+                              self.searchViewController.searchBoxView.frame = newFrame;
+                              [self.view addSubview:self.searchViewController.searchBoxView];
+                        }];
                          
                      }];
 }
@@ -693,13 +736,18 @@ typedef enum {
     self.captiveButton.selected = TRUE;
     
     [[SYNSoundPlayer sharedInstance] playSoundByName: kSoundNewSlideIn];
+    self.mainContentView.alpha = 1.0f;
+    [self.view addSubview:self.searchViewController.searchBoxView];
+    self.searchViewController.searchBoxView.searchTextField.delegate = self;
+    [self.searchViewController.searchBoxView resignFirstResponder];
+    [self.searchViewController.searchBoxView hideCloseButton];
     
     [UIView animateWithDuration: kRockieTalkieAnimationDuration
                           delay: 0.0f
                         options: UIViewAnimationOptionCurveEaseInOut | UIViewAnimationOptionBeginFromCurrentState
                      animations: ^{
                          CGRect sideNavigationFrame = self.view.frame;
-                         if ([[SYNDeviceManager sharedInstance] isIPad])
+                         if ([SYNDeviceManager.sharedInstance isIPad])
                          {
                              sideNavigationFrame.origin.x = 1024.0 - 192.0;
                              self.userNameLabel.alpha = 0.0;
@@ -720,8 +768,7 @@ typedef enum {
     // Light up navigation button
     self.captiveButton.selected = TRUE;
     
-    self.userNameLabel.text = [_user.fullName uppercaseString];
-    if ([[SYNDeviceManager sharedInstance] isIPad])
+    if ([SYNDeviceManager.sharedInstance isIPad])
     {
         [UIView animateWithDuration: 0.5f
                               delay: 0.0f
@@ -799,9 +846,15 @@ typedef enum {
 }
 
 
+- (void) userDataChanged: (NSNotification*) notification
+{
+    [self setUser: self.appDelegate.currentUser];
+}
+
+
 #pragma mark - iPhone navigate back from notifications
-- (IBAction)navigateBackTapped:(id)sender {
-    
+- (IBAction) navigateBackTapped: (id) sender
+{
     [UIView animateWithDuration: 0.3f
                           delay: 0.0f
                         options: UIViewAnimationOptionCurveEaseInOut
@@ -811,40 +864,45 @@ typedef enum {
                          startFrame.origin.x = self.view.frame.size.width;
                          self.navigationContainerView.frame = startFrame;
                          
-                     } completion: ^(BOOL finished) {
-                         self.currentlyLoadedViewController = nil;}];
+                     }
+                     completion: ^(BOOL finished) {
+                         self.currentlyLoadedViewController = nil;
+                     }];
 }
 
 #pragma mark - image picker delegate
 
--(void)picker:(SYNImagePickerController *)picker finishedWithImage:(UIImage *)image
+- (void) picker: (SYNImagePickerController *) picker
+         finishedWithImage: (UIImage *) image
 {
+    DebugLog(@"Orign image width: %f, height%f", image.size.width, image.size.height);
     self.avatarButton.enabled = NO;
     self.profilePictureImageView.image = image;
     [self.activityIndicator startAnimating];
-    [self.appDelegate.oAuthNetworkEngine updateAvatarForUserId: self.appDelegate.currentOAuth2Credentials.userId image:image completionHandler:^(NSDictionary* result) {
-        self.profilePictureImageView.image = image;
-        NSString* newURL = [result objectForKey:@"Location"];
-        if (newURL)
-        {
-            self.appDelegate.currentUser.thumbnailURL = newURL;
-            [self.appDelegate saveContext:YES];
-            self.user = self.appDelegate.currentUser;
-            [self.profilePictureImageView setImageWithURL: [NSURL URLWithString: self.user.thumbnailURL]
-                                         placeholderImage: image
-                                                  options: SDWebImageRetryFailed];
-        }
-        [self.activityIndicator stopAnimating];
-        self.avatarButton.enabled = YES;
-    } errorHandler:^(id error) {
-        [self.profilePictureImageView setImageWithURL: [NSURL URLWithString: self.user.thumbnailURL]
-                                     placeholderImage: [UIImage imageNamed: @"PlaceholderNotificationAvatar"]
-                                              options: SDWebImageRetryFailed];
-        [self.activityIndicator stopAnimating];
-        self.avatarButton.enabled = YES;
-        UIAlertView* alert = [[UIAlertView alloc] initWithTitle:NSLocalizedString(@"Oops",nil) message:NSLocalizedString(@"We were not able to upload the photo at the moment. Try again later.",nil) delegate:nil cancelButtonTitle:nil otherButtonTitles:NSLocalizedString(@"OK",nil), nil];
-        [alert show];
-    }];
+    [self.appDelegate.oAuthNetworkEngine updateAvatarForUserId: self.appDelegate.currentOAuth2Credentials.userId
+                                                         image: image
+                                             completionHandler: ^(NSDictionary* result)
+     {
+//         self.profilePictureImageView.image = image;
+         [self.activityIndicator stopAnimating];
+         self.avatarButton.enabled = YES;
+     }
+                                                  errorHandler: ^(id error)
+     {
+         [self.profilePictureImageView setImageWithURL: [NSURL URLWithString: self.user.thumbnailURL]
+                                      placeholderImage: [UIImage imageNamed: @"PlaceholderNotificationAvatar"]
+                                               options: SDWebImageRetryFailed];
+         
+         [self.activityIndicator stopAnimating];
+         self.avatarButton.enabled = YES;
+         
+         UIAlertView* alert = [[UIAlertView alloc] initWithTitle: NSLocalizedString(@"Oops",nil)
+                                                         message: NSLocalizedString(@"We were not able to upload the photo at the moment. Try again later.",nil)
+                                                        delegate: nil
+                                               cancelButtonTitle: nil
+                                               otherButtonTitles: NSLocalizedString(@"OK",nil), nil];
+         [alert show];
+     }];
     
     self.imagePickerController = nil;
 

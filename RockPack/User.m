@@ -77,19 +77,19 @@
     {
         instance = matchingCategoryInstanceEntries[0];
         
-        
     }
     else
     {
         instance = [User insertInManagedObjectContext: managedObjectContext];
         
-        instance.uniqueId = uniqueId;
+        
         
         
     }
     
+    instance.uniqueId = uniqueId;
+    
     [instance setAttributesFromDictionary: dictionary
-                                   withId: uniqueId
                 usingManagedObjectContext: managedObjectContext
                       ignoringObjectTypes: ignoringObjects];
     
@@ -100,7 +100,6 @@
 
 
 - (void) setAttributesFromDictionary: (NSDictionary *) dictionary
-                              withId: (NSString *) uniqueId
            usingManagedObjectContext: (NSManagedObjectContext *) managedObjectContext
                  ignoringObjectTypes: (IgnoringObjects) ignoringObjects {
     
@@ -108,8 +107,6 @@
     // Sets attributes for ChannelOwner (superclass) AND adds Channels
     
     [super setAttributesFromDictionary: dictionary
-                                withId: uniqueId
-             usingManagedObjectContext: managedObjectContext
                    ignoringObjectTypes: ignoringObjects];
     
     // Then set the rest
@@ -187,17 +184,7 @@
 
 #pragma mark - Accessors
 
--(void)addSubscriptionsObject:(Channel *)newSubscription
-{
-    [super addSubscriptionsObject:newSubscription];
-    newSubscription.subscribedByUserValue = YES;
-}
 
--(void)removeSubscriptionsObject:(Channel *)oldSubscription
-{
-    [super removeSubscriptionsObject:oldSubscription];
-    oldSubscription.subscribedByUserValue = NO;
-}
 
 -(NSString*) fullName
 {

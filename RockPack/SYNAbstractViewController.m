@@ -59,12 +59,13 @@
 @synthesize tabViewController;
 @synthesize addButton;
 
+@synthesize viewId;
+
 #pragma mark - Custom accessor methods
 
 - (id) init
 {
-//    DebugLog (@"WARNING: init called on Abstract View Controller, call initWithViewId instead");
-    return [self initWithViewId: @"UnintializedViewId"];
+    return [self initWithViewId: @"Unknown"];
 }
 
 
@@ -109,7 +110,7 @@
 
 - (void) viewDidScrollToFront
 {
-    DebugLog (@"came to front");
+    DebugLog (@"%@ came to front", self.title);
 }
 
 
@@ -165,13 +166,15 @@
 
     UIViewController *parentVC = self.navigationController.viewControllers[viewControllersCount - 2];
     parentVC.view.alpha = 0.0f;
+    
+    UIViewController *currentVC = self.navigationController.viewControllers[viewControllersCount - 1];
 
     [UIView animateWithDuration: 0.5f
                           delay: 0.0f
                         options: UIViewAnimationOptionCurveEaseInOut
                      animations: ^{
          
-         self.view.alpha = 0.0f;
+         currentVC.view.alpha = 0.0f;
          parentVC.view.alpha = 1.0f;
          
      } completion: ^(BOOL finished) {
@@ -179,6 +182,33 @@
      }];
     
     [self.navigationController popViewControllerAnimated:NO];
+}
+
+- (void) animatedPopToRootViewController
+{
+    NSInteger viewControllersCount = self.navigationController.viewControllers.count;
+    
+    if (viewControllersCount < 2) // we must have at least two to pop one
+        return;
+    
+    UIViewController *targetVC = self.navigationController.viewControllers[0];
+    targetVC.view.alpha = 0.0f;
+    
+    UIViewController *currentVC =self.navigationController.viewControllers[viewControllersCount - 1];
+    
+    [UIView animateWithDuration: 0.5f
+                          delay: 0.0f
+                        options: UIViewAnimationOptionCurveEaseInOut
+                     animations: ^{
+                         
+                         currentVC.view.alpha = 0.0f;
+                         targetVC.view.alpha = 1.0f;
+                         
+                     } completion: ^(BOOL finished) {
+                         DebugLog(@"");
+                     }];
+    
+    [self.navigationController popToViewController:targetVC animated:NO];
 }
 
 
@@ -204,7 +234,7 @@
     NSIndexPath *indexPath = [self.videoThumbnailCollectionView indexPathForItemAtPoint: v.center];
     VideoInstance *videoInstance = [self.fetchedResultsController objectAtIndexPath: indexPath];
     
-    if (!_addButton.selected || [[SYNDeviceManager sharedInstance] isIPhone]) // There is only ever one video in the queue on iPhone. Always fire the add action.
+    if (!_addButton.selected || [SYNDeviceManager.sharedInstance isIPhone]) // There is only ever one video in the queue on iPhone. Always fire the add action.
     {
         noteName = kVideoQueueAdd;
         
@@ -331,29 +361,22 @@
 }
 
 
-// User touched the channel thumbnail in a video cell
+// User pressed the channel thumbnail in a VideoCell
 - (IBAction) channelButtonTapped: (UIButton *) channelButton
 {
     NSIndexPath *indexPath = [self indexPathFromVideoInstanceButton: channelButton];
     
-    // Bail if we don't have an index path
     if (indexPath)
     {
         VideoInstance *videoInstance = [self.fetchedResultsController objectAtIndexPath: indexPath];
         
-        [self viewChannelDetails: videoInstance.channel];
+        [[NSNotificationCenter defaultCenter] postNotificationName:kChannelDetailsRequested
+                                                            object:self
+                                                          userInfo:@{kChannel:videoInstance.channel}];
     }
 }
 
 
-- (void) viewChannelDetails: (Channel *) channel
-{
-    SYNChannelDetailViewController *channelVC = [[SYNChannelDetailViewController alloc] initWithChannel: channel
-                                                                                              usingMode: kChannelDetailsModeDisplay];
-    
-    
-    [self animatedPushViewController: channelVC];
-}
 
 
 - (IBAction) profileButtonTapped: (UIButton *) profileButton
@@ -372,7 +395,7 @@
 
 - (void) viewProfileDetails: (ChannelOwner *) channelOwner
 {
-    SYNProfileRootViewController *profileVC = [[SYNProfileRootViewController alloc] initWithViewId:@""];
+    SYNProfileRootViewController *profileVC = [[SYNProfileRootViewController alloc] initWithViewId:kProfileViewId];
     
     profileVC.user = channelOwner;
     
@@ -446,6 +469,19 @@
     return NO;
 }
 
+-(void)setTitle:(NSString *)title
+{
+    abstractTitle = title;
+}
+
+-(NSString*)title
+{
+    if(abstractTitle && ![abstractTitle isEqualToString:@""])
+        return abstractTitle;
+    else
+        return viewId;
+}
+
 #pragma mark - Social network sharing
 
 - (void) shareVideoInstance: (VideoInstance *) videoInstance
@@ -499,7 +535,7 @@
                                               UIImage *capturedScreenImage = UIGraphicsGetImageFromCurrentImageContext();
                                               UIGraphicsEndImageContext();
                                               
-                                              UIInterfaceOrientation orientation = [[SYNDeviceManager sharedInstance] orientation];
+                                              UIInterfaceOrientation orientation = [SYNDeviceManager.sharedInstance orientation];
                                               
                                               switch (orientation)
                                               {
