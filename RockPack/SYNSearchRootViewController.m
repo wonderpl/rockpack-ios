@@ -13,6 +13,7 @@
 #import "SYNSearchRootViewController.h"
 #import "SYNSearchTabView.h"
 #import "SYNSearchVideosViewController.h"
+#import "SYNSearchBoxViewController.h"
 
 @interface SYNSearchRootViewController ()
 
@@ -108,7 +109,16 @@
         [self performSearchForCurrentSearchTerm];
     
     if (!self.currentController)
-        [self videoTabPressed:nil];  
+        [self videoTabPressed:nil];
+    
+    if([[SYNDeviceManager sharedInstance] isIPhone])
+    {
+        [[NSNotificationCenter defaultCenter] postNotificationName: kNoteAllNavControlsHide
+                                                        object: self];
+        [self.view addSubview:self.searchBoxViewController.searchBoxView];
+        [self.searchBoxViewController.searchBoxView revealCloseButton];
+    }
+    
 }
 
 
@@ -118,6 +128,11 @@
     
     [[NSNotificationCenter defaultCenter] postNotificationName: kNoteSearchBarRequestHide
                                                         object: self];
+    if([[SYNDeviceManager sharedInstance] isIPhone])
+    {
+        [[NSNotificationCenter defaultCenter] postNotificationName: kNoteAllNavControlsShow
+                                                        object: self];
+    }
     
 }
 

@@ -68,6 +68,7 @@ typedef void (^SYNShareCompletionBlock)(void);
 // Fade old VC out, fade new VC in (as opposed to regular push animation)
 - (void) animatedPushViewController: (UIViewController *) vc;
 - (IBAction) animatedPopViewController;
+- (void) animatedPopToRootViewController;
 
 - (BOOL) collectionView: (UICollectionView *) cv didSelectItemAtIndexPathAbstract: (NSIndexPath *) indexPath;
 

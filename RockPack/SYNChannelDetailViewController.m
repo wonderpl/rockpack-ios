@@ -1648,7 +1648,7 @@
                                                               userInfo: nil];
             
             //And show as if displayed from the normal master view hierarchy
-            SYNAbstractViewController* currentRootViewcontroller = [[master containerViewController] showingViewController];
+            SYNAbstractViewController *currentRootViewcontroller = [master showingViewController];
             [currentRootViewcontroller animatedPushViewController:self];
         }
         

@@ -602,8 +602,14 @@ typedef void(^AnimationCompletionBlock)(BOOL finished);
     {        
         self.searchViewController = [[SYNSearchRootViewController alloc] initWithViewId: kSearchViewId];
         self.overlayNavigationController = [SYNObjectFactory wrapInNavigationController: self.searchViewController];
-        
-        
+        [self.searchViewController.view addSubview:self.sideNavigationViewController.searchViewController.searchBoxView];
+        self.searchViewController.searchBoxViewController = self.sideNavigationViewController.searchViewController;
+
+    }
+    else if([[SYNDeviceManager sharedInstance] isIPhone])
+    {
+        SYNAbstractViewController* topController = (SYNAbstractViewController*)self.searchViewController.navigationController.topViewController;
+        [topController animatedPopToRootViewController];
     }
     
     
@@ -615,9 +621,19 @@ typedef void(^AnimationCompletionBlock)(BOOL finished);
 
 - (void) searchCancelledIPhone: (NSNotification*) notification
 {
-    [self cancelButtonPressed: nil];
-    [self.sideNavigationViewController.view addSubview: self.sideNavigationViewController.searchViewController.searchBoxView];
-    self.overlayNavigationController = nil;
+    if(self.searchViewController.navigationController.topViewController == self.searchViewController)
+    {
+        [self cancelButtonPressed: nil];
+        self.overlayNavigationController = nil;
+    }
+    [UIView animateWithDuration:0.3
+                        animations:^{
+                self.darkOverlayView.alpha = 1.0;
+                        } completion:^(BOOL finished) {
+                            self.darkOverlayView.hidden = NO;
+                       }];
+
+    [self.view addSubview: self.sideNavigationViewController.searchViewController.searchBoxView];
 }
 
 
@@ -627,18 +643,6 @@ typedef void(^AnimationCompletionBlock)(BOOL finished);
     [self.searchBoxController.view removeFromSuperview];
     
     self.sideNavigationButton.hidden = NO;
-    
-    self.darkOverlayView.alpha = 0.0;
- 
-//  FIXME: This needs looking into.
-//    [UIView animateWithDuration:0.3
-//                     animations:^{
-//                         self.darkOverlayView.alpha = 1.0;
-//                     } completion:^(BOOL finished) {
-//                         self.darkOverlayView.hidden = NO;
-//                     }];
-//    
-    
 }
 
 
@@ -1247,9 +1251,8 @@ typedef void(^AnimationCompletionBlock)(BOOL finished);
                                               completion:^(BOOL finished) {
                                                   if ([SYNDeviceManager.sharedInstance isIPhone])
                                                   {
-                                                   
                                                       // The search overlay sits on the side navigation on iPhone, move it into the overlay temporarily
-                                                     [self.overlayContainerView addSubview: self.sideNavigationViewController.searchViewController.searchBoxView];
+                                                     [[[self.overlayNavigationController.viewControllers objectAtIndex:0] view] addSubview: self.sideNavigationViewController.searchViewController.searchBoxView];
                                                   }
                                               }];
                          }];

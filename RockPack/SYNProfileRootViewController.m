@@ -7,13 +7,14 @@
 //
 
 #import "Channel.h"
+#import "ChannelCover.h"
 #import "GAI.h"
 #import "SYNChannelDetailViewController.h"
 #import "SYNChannelMidCell.h"
-#import "ChannelCover.h"
 #import "SYNChannelThumbnailCell.h"
 #import "SYNDeletionWobbleLayout.h"
 #import "SYNDeviceManager.h"
+#import "SYNImagePickerController.h"
 #import "SYNIntegralCollectionViewFlowLayout.h"
 #import "SYNOAuthNetworkEngine.h"
 #import "SYNPassthroughView.h"
@@ -28,7 +29,10 @@
 #define kInterChannelSpacing 150.0
 #define kInterRowMargin 8.0f
 
-@interface SYNProfileRootViewController () <SYNDeletionWobbleLayoutDelegate, UIGestureRecognizerDelegate>
+@interface SYNProfileRootViewController () <SYNDeletionWobbleLayoutDelegate,
+                                            UIGestureRecognizerDelegate,
+                                            SYNImagePickerControllerDelegate,
+                                            SYNUserProfileViewControllerDelegate>
 
 // Enable to allow the user to 'pinch out' on thumbnails
 #ifdef ALLOWS_PINCH_GESTURES
@@ -40,6 +44,7 @@
 #endif
 
 @property (nonatomic) BOOL deleteCellModeOn;
+@property (nonatomic) BOOL isUserProfile;
 @property (nonatomic, assign) BOOL subscriptionsTabActive;
 @property (nonatomic, assign, getter = isDeletionModeActive) BOOL deletionModeActive;
 @property (nonatomic, strong) IBOutlet UICollectionView *channelThumbnailCollectionView;
@@ -57,7 +62,6 @@
 @property (nonatomic, weak) SYNChannelMidCell* cellDeleteCandidate;
 @property (nonatomic, weak) UIButton* channelsTabButton;
 @property (nonatomic, weak) UIButton* subscriptionsTabButton;
-@property (nonatomic) BOOL isUserProfile;
 
 @end
 
@@ -65,9 +69,6 @@
 @implementation SYNProfileRootViewController
 
 @synthesize user = _user;
-
-
-
 
 - (void) loadView
 {
@@ -92,8 +93,7 @@
                                                                              minimumLineSpacing: 5.0
                                                                                 scrollDirection: UICollectionViewScrollDirectionVertical
                                                                                    sectionInset: UIEdgeInsetsMake(kInterRowMargin - 8.0, 12.0, kInterRowMargin, 11.0)];
-    
-    
+
     if (isIPhone)
     {
         self.channelsPortraitLayout = [SYNDeletionWobbleLayout layoutWithItemSize: CGSizeMake(158.0f, 158.0f)
@@ -140,8 +140,6 @@
     }
     else
     {
-        
-        
         [self.headerChannelsView setBackgroundImage: ([SYNDeviceManager.sharedInstance isLandscape] ?
                                                       [UIImage imageNamed: @"HeaderProfileChannelsLandscape"] :
                                                       [UIImage imageNamed: @"HeaderProfilePortraitBoth"])];
@@ -194,7 +192,7 @@
     }
     else
     {
-        [self.headerSubscriptionsView setTitle: NSLocalizedString(@"YOUR SUBSCRIPTIONS", nil)
+        [self.headerSubscriptionsView setTitle: NSLocalizedString(@"MY SUBSCRIPTIONS", nil)
                                      andNumber: 0];
         
         [self.headerSubscriptionsView setBackgroundImage: ([SYNDeviceManager.sharedInstance isLandscape] ? [UIImage imageNamed: @"HeaderProfileSubscriptionsLandscape"] : [UIImage imageNamed: @"HeaderProfilePortraitBoth"])];
@@ -231,7 +229,7 @@
     [self.view addSubview: self.userProfileController.view];
 
     
-    if(isIPhone)
+    if (isIPhone)
     {
         self.userProfileController.view.center = CGPointMake(160.0f, 28.0f);
     }
@@ -335,10 +333,6 @@
                                                                           action: @selector(endDeletionMode:)];
     tap.delegate = self;
     [self.channelThumbnailCollectionView addGestureRecognizer: tap];
-    
-    
-    
-    
 }
 
 
@@ -346,22 +340,17 @@
 {
     [super viewWillAppear: animated];
     
-//    [self updateAnalytics];
-    
     self.deletionModeActive = NO;
     
     self.subscriptionsViewController.collectionView.delegate = self;
     
-    [self.userProfileController setChannelOwner:self.user];
+    [self.userProfileController setChannelOwner: self.user];
     
     self.subscriptionsViewController.user = self.user;
     
-    
     [self updateLayoutForOrientation: [SYNDeviceManager.sharedInstance orientation]];
     
-    [self.channelThumbnailCollectionView reloadData];
-    
-    
+    [self.channelThumbnailCollectionView reloadData];  
 }
 
 
@@ -645,7 +634,7 @@
     else
     {
         if(self.user == appDelegate.currentUser)
-            return NSLocalizedString(@"YOUR CHANNELS",nil);
+            return NSLocalizedString(@"MY CHANNELS",nil);
         else
             return NSLocalizedString(@"CHANNELS",nil);
     }
