@@ -51,6 +51,7 @@
     }
     
     
+    
     if(!(ignoringObjects & kIgnoreSubscriptionObjects))
     {
         for (Channel* channel in existingChannelOwner.subscriptions)

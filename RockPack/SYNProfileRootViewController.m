@@ -1020,7 +1020,7 @@
         else
         {
             
-            IgnoringObjects flags = kIgnoreChannelOwnerObject; // these flags are passed to the Channels
+            IgnoringObjects flags = kIgnoreVideoInstanceObjects | kIgnoreChannelOwnerObject; // these flags are passed to the Channels
             
             _user = [ChannelOwner instanceFromChannelOwner: user
                                                  andViewId: self.viewId
