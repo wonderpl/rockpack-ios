@@ -330,7 +330,10 @@
     
     NSPredicate* isFreshPredicate = [NSPredicate predicateWithFormat: @"fresh == YES"];
     
-    NSPredicate* finalPredicate = [NSCompoundPredicate andPredicateWithSubpredicates: @[genrePredicate, isFreshPredicate, viewIdPredicate]];
+    NSPredicate* isNotFavoritesPredicate = [NSPredicate predicateWithFormat: @"favourites == NO"];
+    
+    
+    NSPredicate* finalPredicate = [NSCompoundPredicate andPredicateWithSubpredicates: @[genrePredicate, isFreshPredicate, viewIdPredicate, isNotFavoritesPredicate]];
 
     [request setPredicate:finalPredicate];
     

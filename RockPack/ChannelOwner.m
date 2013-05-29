@@ -42,14 +42,13 @@
             Channel* copyChannel = [Channel instanceFromChannel:channel
                                                       andViewId:viewId
                                       usingManagedObjectContext:existingChannelOwner.managedObjectContext
-                                            ignoringObjectTypes:ignoringObjects];
+                                            ignoringObjectTypes:ignoringObjects | kIgnoreChannelOwnerObject];
             
             
             [copyChannelOwner.channelsSet addObject:copyChannel];
             
         }
     }
-    
     
     
     if(!(ignoringObjects & kIgnoreSubscriptionObjects))
@@ -244,7 +243,6 @@
     
     for (Channel* su in self.subscriptions)
         [subscriptionInsancesByIdDictionary setObject:su forKey:su.uniqueId];
-    
     
     
     [self.subscriptionsSet removeAllObjects];

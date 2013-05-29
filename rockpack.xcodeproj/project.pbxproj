@@ -834,6 +834,14 @@
 		BE0815D816D645F600ADB1DC /* SYNShareOverlayViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = BE0815D616D645F600ADB1DC /* SYNShareOverlayViewController.xib */; };
 		BE0AAD2916E6534300DA958E /* SYNAutocompleteSuggestionsController.m in Sources */ = {isa = PBXBuildFile; fileRef = BE0AAD2816E6534300DA958E /* SYNAutocompleteSuggestionsController.m */; };
 		BE0FF0321754C39D0088294F /* ISO8601DateFormatter.m in Sources */ = {isa = PBXBuildFile; fileRef = BE0FF0311754C39D0088294F /* ISO8601DateFormatter.m */; settings = {COMPILER_FLAGS = "-fno-objc-arc"; }; };
+		BE0FF03B175639A40088294F /* Icon-Dev-72.png in Resources */ = {isa = PBXBuildFile; fileRef = BE0FF033175639A40088294F /* Icon-Dev-72.png */; };
+		BE0FF03C175639A40088294F /* Icon-Dev-72@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = BE0FF034175639A40088294F /* Icon-Dev-72@2x.png */; };
+		BE0FF03D175639A40088294F /* Icon-Dev-Small-50.png in Resources */ = {isa = PBXBuildFile; fileRef = BE0FF035175639A40088294F /* Icon-Dev-Small-50.png */; };
+		BE0FF03E175639A40088294F /* Icon-Dev-Small-50@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = BE0FF036175639A40088294F /* Icon-Dev-Small-50@2x.png */; };
+		BE0FF03F175639A40088294F /* Icon-Dev-Small.png in Resources */ = {isa = PBXBuildFile; fileRef = BE0FF037175639A40088294F /* Icon-Dev-Small.png */; };
+		BE0FF040175639A40088294F /* Icon-Dev-Small@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = BE0FF038175639A40088294F /* Icon-Dev-Small@2x.png */; };
+		BE0FF041175639A40088294F /* Icon-Dev.png in Resources */ = {isa = PBXBuildFile; fileRef = BE0FF039175639A40088294F /* Icon-Dev.png */; };
+		BE0FF042175639A40088294F /* Icon-Dev@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = BE0FF03A175639A40088294F /* Icon-Dev@2x.png */; };
 		BE13E38916FB85220098F23C /* SYNAccountSettingsLocation.m in Sources */ = {isa = PBXBuildFile; fileRef = BE13E38816FB85220098F23C /* SYNAccountSettingsLocation.m */; };
 		BE13E38C16FC85E60098F23C /* SYNAccountSettingsAbout.m in Sources */ = {isa = PBXBuildFile; fileRef = BE13E38B16FC85E50098F23C /* SYNAccountSettingsAbout.m */; };
 		BE21EE7C16F9FF520067223B /* SYNAccountSettingsTextInputController.m in Sources */ = {isa = PBXBuildFile; fileRef = BE21EE7B16F9FF520067223B /* SYNAccountSettingsTextInputController.m */; };
@@ -2011,6 +2019,14 @@
 		BE0AAD2816E6534300DA958E /* SYNAutocompleteSuggestionsController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SYNAutocompleteSuggestionsController.m; sourceTree = "<group>"; };
 		BE0FF0301754C39D0088294F /* ISO8601DateFormatter.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ISO8601DateFormatter.h; sourceTree = "<group>"; };
 		BE0FF0311754C39D0088294F /* ISO8601DateFormatter.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ISO8601DateFormatter.m; sourceTree = "<group>"; };
+		BE0FF033175639A40088294F /* Icon-Dev-72.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = "Icon-Dev-72.png"; path = "Assets/Images/Icon-Dev-72.png"; sourceTree = "<group>"; };
+		BE0FF034175639A40088294F /* Icon-Dev-72@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = "Icon-Dev-72@2x.png"; path = "Assets/Images/Icon-Dev-72@2x.png"; sourceTree = "<group>"; };
+		BE0FF035175639A40088294F /* Icon-Dev-Small-50.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = "Icon-Dev-Small-50.png"; path = "Assets/Images/Icon-Dev-Small-50.png"; sourceTree = "<group>"; };
+		BE0FF036175639A40088294F /* Icon-Dev-Small-50@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = "Icon-Dev-Small-50@2x.png"; path = "Assets/Images/Icon-Dev-Small-50@2x.png"; sourceTree = "<group>"; };
+		BE0FF037175639A40088294F /* Icon-Dev-Small.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = "Icon-Dev-Small.png"; path = "Assets/Images/Icon-Dev-Small.png"; sourceTree = "<group>"; };
+		BE0FF038175639A40088294F /* Icon-Dev-Small@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = "Icon-Dev-Small@2x.png"; path = "Assets/Images/Icon-Dev-Small@2x.png"; sourceTree = "<group>"; };
+		BE0FF039175639A40088294F /* Icon-Dev.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = "Icon-Dev.png"; path = "Assets/Images/Icon-Dev.png"; sourceTree = "<group>"; };
+		BE0FF03A175639A40088294F /* Icon-Dev@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = "Icon-Dev@2x.png"; path = "Assets/Images/Icon-Dev@2x.png"; sourceTree = "<group>"; };
 		BE13E38716FB85220098F23C /* SYNAccountSettingsLocation.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SYNAccountSettingsLocation.h; sourceTree = "<group>"; };
 		BE13E38816FB85220098F23C /* SYNAccountSettingsLocation.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SYNAccountSettingsLocation.m; sourceTree = "<group>"; };
 		BE13E38A16FC85E50098F23C /* SYNAccountSettingsAbout.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SYNAccountSettingsAbout.h; sourceTree = "<group>"; };
@@ -3015,6 +3031,14 @@
 				01677F0316554CC700B1B1D8 /* Icon-Small@2x.png */,
 				01677F0416554CC700B1B1D8 /* Icon.png */,
 				01677F0516554CC700B1B1D8 /* Icon@2x.png */,
+				BE0FF033175639A40088294F /* Icon-Dev-72.png */,
+				BE0FF034175639A40088294F /* Icon-Dev-72@2x.png */,
+				BE0FF035175639A40088294F /* Icon-Dev-Small-50.png */,
+				BE0FF036175639A40088294F /* Icon-Dev-Small-50@2x.png */,
+				BE0FF037175639A40088294F /* Icon-Dev-Small.png */,
+				BE0FF038175639A40088294F /* Icon-Dev-Small@2x.png */,
+				BE0FF039175639A40088294F /* Icon-Dev.png */,
+				BE0FF03A175639A40088294F /* Icon-Dev@2x.png */,
 			);
 			name = "App Icons";
 			sourceTree = "<group>";
@@ -5530,6 +5554,14 @@
 				1FABF7A61753DA1500AE5CCB /* ShadowChannelMidThumb@2x.png in Resources */,
 				1FABF7A91753EAEA00AE5CCB /* ShadowChannelThumb@2x~iphone.png in Resources */,
 				1FABF7AA1753EAEA00AE5CCB /* ShadowChannelThumb~iphone.png in Resources */,
+				BE0FF03B175639A40088294F /* Icon-Dev-72.png in Resources */,
+				BE0FF03C175639A40088294F /* Icon-Dev-72@2x.png in Resources */,
+				BE0FF03D175639A40088294F /* Icon-Dev-Small-50.png in Resources */,
+				BE0FF03E175639A40088294F /* Icon-Dev-Small-50@2x.png in Resources */,
+				BE0FF03F175639A40088294F /* Icon-Dev-Small.png in Resources */,
+				BE0FF040175639A40088294F /* Icon-Dev-Small@2x.png in Resources */,
+				BE0FF041175639A40088294F /* Icon-Dev.png in Resources */,
+				BE0FF042175639A40088294F /* Icon-Dev@2x.png in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
