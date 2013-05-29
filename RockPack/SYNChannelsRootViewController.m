@@ -202,7 +202,6 @@
 {
     [self updateAnalytics];
     
-    
     dataRequestRange = NSMakeRange(1, STANDARD_REQUEST_LENGTH);
     
     [self loadChannelsForGenre:currentGenre];

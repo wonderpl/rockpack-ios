@@ -449,13 +449,10 @@
     
     // delete old objects //
     
-    for (id key in existingChannelsByIndex)
-    {
-        Channel* ch = (Channel*)[existingChannelsByIndex objectForKey:key];
-        if(!ch) continue;
-        
-        [ch.managedObjectContext deleteObject:ch];
-    }
+    [self removeUnusedManagedObjects: existingChannels
+              inManagedObjectContext: appDelegate.mainManagedObjectContext];
+    
+    
     
     BOOL saveResult = [self saveImportContext];
     if(!saveResult)

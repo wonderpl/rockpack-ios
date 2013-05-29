@@ -361,10 +361,7 @@
     
     self.subscribeButton.selected = self.channel.subscribedByUserValue;
     
-    [self.channel addObserver: self
-                   forKeyPath: kSubscribedByUserKey
-                      options: NSKeyValueObservingOptionNew
-                      context: nil];
+    
     
     // We set up assets depending on whether we are in display or edit mode
     [self setDisplayControlsVisibility: (self.mode == kChannelDetailsModeDisplay)];
@@ -389,8 +386,6 @@
     [self.videoThumbnailCollectionView removeObserver: self
                                            forKeyPath: kCollectionViewContentOffsetKey];
 
-    [self.channel removeObserver: self
-                      forKeyPath: kSubscribedByUserKey];
     
     [self.channelTitleTextView removeObserver: self
                                    forKeyPath: kTextViewContentSizeKey];
@@ -1559,8 +1554,7 @@
                                               
                                               createdChannel.channelOwner = appDelegate.currentUser;
                                               
-                                              [self.channel removeObserver: self
-                                                                forKeyPath: kSubscribedByUserKey];
+                                              
                                               
                                               // this will delete the edited channel from channels context //
 
@@ -1570,10 +1564,6 @@
                                               
                                               self.channel = createdChannel;
                                               
-                                              [self.channel addObserver: self
-                                                             forKeyPath: kSubscribedByUserKey
-                                                                options: NSKeyValueObservingOptionNew
-                                                               context :nil];
                                               
                                               DebugLog(@"Channel: %@", createdChannel);
                                               
@@ -2265,7 +2255,8 @@
                                                         name: NSManagedObjectContextObjectsDidChangeNotification
                                                       object: self.channel.managedObjectContext];
         
-        
+        [self.channel removeObserver: self
+                          forKeyPath: kSubscribedByUserKey];
     }
     
     _channel = channel;
@@ -2273,57 +2264,55 @@
     if(!self.channel)
         return;
         
-    BOOL isUserLinkedDoNotCopy =
-    [channel.viewId isEqualToString:kProfileViewId] &&
-    (self.channel.subscribedByUser || self.channel.channelOwner == appDelegate.currentUser);
     
-    if(!isUserLinkedDoNotCopy) // if the details are revealed by the UserProfile dont copy
+    
+    // create a copy that belongs to this viewId (@"ChannelDetails")
+    
+    NSFetchRequest *channelFetchRequest = [[NSFetchRequest alloc] init];
+    
+    [channelFetchRequest setEntity: [NSEntityDescription entityForName: @"Channel"
+                                                inManagedObjectContext: channel.managedObjectContext]];
+    
+    
+    
+    
+    [channelFetchRequest setPredicate: [NSPredicate predicateWithFormat: @"uniqueId == %@ AND viewId == %@", channel.uniqueId, self.viewId]];
+    
+    
+    NSArray *matchingChannelEntries = [channel.managedObjectContext executeFetchRequest: channelFetchRequest
+                                                                                  error: &error];
+    
+    
+    if (matchingChannelEntries.count > 0)
     {
-        // create a copy that belongs to this viewId (@"ChannelDetails")
+        _channel = (Channel*)matchingChannelEntries[0];
+        _channel.markedForDeletionValue = NO;
         
-        NSFetchRequest *channelFetchRequest = [[NSFetchRequest alloc] init];
-        
-        [channelFetchRequest setEntity: [NSEntityDescription entityForName: @"Channel"
-                                                    inManagedObjectContext: channel.managedObjectContext]];
-        
-        
+        if(matchingChannelEntries.count > 1) // housekeeping, there can be only one!
+            for (int i = 1; i < matchingChannelEntries.count; i++)
+                [channel.managedObjectContext deleteObject:(matchingChannelEntries[i])];
         
         
-        [channelFetchRequest setPredicate: [NSPredicate predicateWithFormat: @"uniqueId == %@ AND viewId == %@", channel.uniqueId, self.viewId]];
+    }
+    else
+    {
+        IgnoringObjects flags = kIgnoreNothing;
+        if(self.channel.channelOwner == appDelegate.currentUser)
+            flags |= kIgnoreChannelOwnerObject;
+        
+        _channel = [Channel instanceFromChannel:channel
+                                      andViewId:self.viewId
+                      usingManagedObjectContext:channel.managedObjectContext
+                            ignoringObjectTypes:flags];
         
         
-        NSArray *matchingChannelEntries = [channel.managedObjectContext executeFetchRequest: channelFetchRequest
-                                                                                      error: &error];
-        
-        
-        if (matchingChannelEntries.count > 0)
+        if(_channel)
         {
-            _channel = (Channel*)matchingChannelEntries[0];
-            _channel.markedForDeletionValue = NO;
-            
-            if(matchingChannelEntries.count > 1) // housekeeping, there can be only one!
-                for (int i = 1; i < matchingChannelEntries.count; i++)
-                    [channel.managedObjectContext deleteObject:(matchingChannelEntries[i])];
-            
-            
+            [channel.managedObjectContext save:&error];
+            if(error)
+                _channel = nil; // further error code
         }
-        else
-        {
-            
-            _channel = [Channel instanceFromChannel:channel
-                                          andViewId:self.viewId
-                          usingManagedObjectContext:channel.managedObjectContext
-                                ignoringObjectTypes:kIgnoreNothing];
-            
-            
-            if(_channel)
-            {
-                [channel.managedObjectContext save:&error];
-                if(error)
-                    _channel = nil; // further error code
-            }
-            
-        }
+        
     }
     
     
@@ -2334,9 +2323,15 @@
                                                  selector: @selector(mainContextDataChanged:)
                                                      name: NSManagedObjectContextDidSaveNotification
                                                    object: self.channel.managedObjectContext];
+        [self.channel addObserver: self
+                       forKeyPath: kSubscribedByUserKey
+                          options: NSKeyValueObservingOptionNew
+                          context: nil];
         
         if(self.mode == kChannelDetailsModeDisplay)
         {
+            
+            
             [[NSNotificationCenter defaultCenter] postNotificationName: kChannelUpdateRequest
                                                                 object: self
                                                               userInfo: @{kChannel: self.channel}];
@@ -2358,7 +2353,7 @@
 {
     //If this channel is owned by the logged in user we are subscribing to this notification when the user data changes. we therefore re-load the avatar image
     
-    UIImage* placeholder =self.avatarImageView.image ? self.avatarImageView.image : [UIImage imageNamed: @"PlaceholderChannelCreation.png"];
+    UIImage* placeholder = self.avatarImageView.image ? self.avatarImageView.image : [UIImage imageNamed: @"PlaceholderChannelCreation.png"];
     
     NSArray *thumbnailURLItems = [appDelegate.currentUser.thumbnailURL componentsSeparatedByString:@"/"];
     
