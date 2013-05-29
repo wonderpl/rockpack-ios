@@ -737,10 +737,18 @@
     if(sender == self.ddInputField && [self.ddInputField.text length]==2)
     {
         [self.mmInputField becomeFirstResponder];
+        if([self.mmInputField.text length]>0 && [self.yyyyInputField.text length]>0 && ! [self validDateEntered])
+        {
+            self.signupErrorLabel.text = [NSString stringWithFormat:@"Day %@, Month %@, Year %@ is not a valid date of birth",self.ddInputField.text, self.mmInputField.text, self.yyyyInputField.text];
+        }
     }
     else if(sender == self.mmInputField && [self.mmInputField.text length]==2)
     {
         [self.yyyyInputField becomeFirstResponder];
+        if([self.ddInputField.text length]>0 && [self.yyyyInputField.text length]>0 && ! [self validDateEntered])
+        {
+            self.signupErrorLabel.text = [NSString stringWithFormat:@"Day %@, Month %@, Year %@ is not a valid date of birth",self.ddInputField.text, self.mmInputField.text, self.yyyyInputField.text];
+        }
     }
     else if(sender == self.yyyyInputField && [self.yyyyInputField.text length] >= 4)
     {

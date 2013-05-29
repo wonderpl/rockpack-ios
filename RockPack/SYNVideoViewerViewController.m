@@ -610,7 +610,10 @@
     // Get the video instance for the currently selected video
     VideoInstance *videoInstance = self.videoInstanceArray [self.currentSelectedIndex];
     
-    [(SYNAbstractViewController *)self.overlayParent.originViewController viewChannelDetails: videoInstance.channel];
+    [[NSNotificationCenter defaultCenter] postNotificationName:kChannelDetailsRequested
+                                                        object:self
+                                                      userInfo:@{kChannel:videoInstance.channel}];
+    
 }
 
 
