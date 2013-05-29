@@ -355,6 +355,9 @@
                                                 name: kUserDataChanged
                                                 object: nil];
     }
+    
+    [[NSNotificationCenter defaultCenter] postNotificationName: kNoteSearchBarRequestHide
+                                                        object: self];
 
     self.subscribeButton.enabled = YES;
     

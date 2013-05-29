@@ -207,10 +207,12 @@ typedef void(^AnimationCompletionBlock)(BOOL finished);
     UIImage* dotImage = [UIImage imageNamed:@"NavigationDot"];
     CGPoint center = self.dotsView.center;
     CGRect newFrame = self.dotsView.frame;
-    newFrame.size.width = (2*numberOfDots - 1) * dotImage.size.width;
+    newFrame.size.width = (2 * numberOfDots - 1) * dotImage.size.width;
     newFrame.origin.x = round(center.x - newFrame.size.width/2.0f);
     self.dotsView.frame = newFrame;
+    
     CGFloat dotSpacing = 2*dotImage.size.width;
+    
     for(int i = 0; i < numberOfDots; i++)
     {
         UIImageView* dotImageView = [[UIImageView alloc] initWithImage:dotImage];
@@ -553,7 +555,15 @@ typedef void(^AnimationCompletionBlock)(BOOL finished);
     if (self.isInSearchMode) // if it is on stage already
         return;
     
-    self.sideNavigationButton.hidden = YES;
+    
+    if(self.overlayNavigationController && self.overlayNavigationController.topViewController == self.searchViewController)
+    {
+        self.sideNavigationButton.hidden = NO;
+    }
+    else
+    {
+        self.sideNavigationButton.hidden = YES;
+    }
     
     self.darkOverlayView.alpha = 1.0;
     
@@ -762,12 +772,19 @@ typedef void(^AnimationCompletionBlock)(BOOL finished);
     if ([notificationName isEqualToString: kNoteAllNavControlsShow])
     {
         self.searchButton.hidden = NO;
-        self.sideNavigationButton.hidden = NO;
+        
+        if(self.overlayNavigationController.topViewController == self.searchViewController)
+        {
+            self.sideNavigationButton.hidden = NO;
+        }
+        
+        
         self.closeSearchButton.hidden = NO;
+        
         self.pageTitleLabel.hidden = NO;
+        
         self.dotsView.hidden = NO;
         self.movableButtonsContainer.hidden = NO;
-        //self.containerViewController.scrollView.scrollEnabled = YES;
     }
     else
     {
@@ -777,7 +794,6 @@ typedef void(^AnimationCompletionBlock)(BOOL finished);
         self.pageTitleLabel.hidden = YES;
         self.dotsView.hidden = YES;
         self.movableButtonsContainer.hidden = YES;
-        //self.containerViewController.scrollView .scrollEnabled = NO;
         self.sideNavigationViewController.state = SideNavigationStateHidden;
     }
 }
@@ -965,12 +981,15 @@ typedef void(^AnimationCompletionBlock)(BOOL finished);
         }
         else // go back to containerView
         {
+            
+            if(self.overlayNavigationController.topViewController == self.searchViewController)
+            {
+                [self cancelButtonPressed:nil];
+            }
+            
             self.overlayNavigationController = nil; // animate the overlay out using the setter method
             
-            
-            
         }
-        
         
     }
     else

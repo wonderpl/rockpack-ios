@@ -126,8 +126,7 @@
 {
     [super viewWillDisappear:animated];
     
-    [[NSNotificationCenter defaultCenter] postNotificationName: kNoteSearchBarRequestHide
-                                                        object: self];
+    
     if([[SYNDeviceManager sharedInstance] isIPhone])
     {
         [[NSNotificationCenter defaultCenter] postNotificationName: kNoteAllNavControlsShow
