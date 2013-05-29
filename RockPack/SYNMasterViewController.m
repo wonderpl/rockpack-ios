@@ -491,6 +491,12 @@ typedef void(^AnimationCompletionBlock)(BOOL finished);
     
     self.videoViewerViewController = [[SYNVideoViewerViewController alloc] initWithVideoInstanceArray: videoInstanceArray
                                                                                         selectedIndex: selectedIndex];
+    
+    if([originViewController isKindOfClass:[SYNChannelDetailViewController class]])
+    {
+        self.videoViewerViewController.shownFromChannelScreen = YES;
+    }
+    
     [self addChildViewController: self.videoViewerViewController];
     
     self.videoViewerViewController.view.frame = self.overlayView.bounds;
