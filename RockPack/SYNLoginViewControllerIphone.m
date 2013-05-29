@@ -467,7 +467,13 @@
                 
                 if(self.avatarImage)
                 {
-                    [self uploadAvatarImage:self.avatarImage completionHandler:nil errorHandler:nil];
+                    [self uploadAvatarImage:self.avatarImage completionHandler:nil errorHandler:^(id dictionary) {
+                        [[[UIAlertView alloc] initWithTitle: NSLocalizedString(@"Upload error", nil)
+                                                    message: NSLocalizedString(@"Avatar upload failed. Try again from the menu.", nil)
+                                                   delegate: nil
+                                          cancelButtonTitle: NSLocalizedString(@"OK", nil)
+                                          otherButtonTitles: nil] show];
+                    }];
                 }
                 [self completeLoginProcess];
                 
