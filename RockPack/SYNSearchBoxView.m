@@ -73,6 +73,7 @@
         self.searchTextField.autocorrectionType = UITextAutocorrectionTypeNo;
         self.searchTextField.autocapitalizationType = UITextAutocapitalizationTypeAllCharacters;
         self.searchTextField.autoresizingMask = UIViewAutoresizingFlexibleWidth;
+        self.searchTextField.clearButtonMode = UITextFieldViewModeWhileEditing;
         
         // Display Search instead of Return on iPad Keyboard
         self.searchTextField.returnKeyType = UIReturnKeySearch;
@@ -106,6 +107,7 @@
     self.searchTextField.layer.shadowColor = [UIColor whiteColor].CGColor;
     self.searchTextField.layer.shadowOffset = CGSizeMake(0.0f,1.0f);
     self.searchTextField.autocorrectionType = UITextAutocorrectionTypeNo;
+    self.searchTextField.clearButtonMode = UITextFieldViewModeWhileEditing;
     
     // Display Search instead of Return on iPhone Keyboard
     self.searchTextField.returnKeyType = UIReturnKeySearch;

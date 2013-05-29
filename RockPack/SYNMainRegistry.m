@@ -450,7 +450,7 @@
     // delete old objects //
     
     [self removeUnusedManagedObjects: existingChannels
-              inManagedObjectContext: appDelegate.mainManagedObjectContext];
+              inManagedObjectContext: importManagedObjectContext];
     
     
     
