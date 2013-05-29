@@ -30,6 +30,7 @@
 #import "Video.h"
 #import "VideoInstance.h"
 #import <MediaPlayer/MediaPlayer.h>
+#import "SYNChannelDetailViewController.h"
 
 @interface SYNVideoViewerViewController () <UIGestureRecognizerDelegate,
                                             UIPopoverControllerDelegate>
@@ -605,6 +606,12 @@
 // The user touched the invisible button above the channel thumbnail, taking the user to the channel page
 - (IBAction) userTouchedChannelButton: (id) sender
 {
+    if(self.shownFromChannelScreen)
+    {
+        //Don't navigate to the channel in a new view controller, instead just pop this video player
+        [self userTouchedCloseButton:nil];
+        return;
+    }
     [self.overlayParent removeVideoOverlayController];
     
     // Get the video instance for the currently selected video
