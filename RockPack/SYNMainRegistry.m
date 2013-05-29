@@ -363,6 +363,7 @@
     
     [predicates addObject: [NSPredicate predicateWithFormat: @"viewId == %@", kChannelsViewId]];
     
+    
     if (genre)
     {
         if ([genre isMemberOfClass: [Genre class]])
@@ -449,8 +450,11 @@
     
     // delete old objects //
     
-    [self removeUnusedManagedObjects: existingChannels
-              inManagedObjectContext: appDelegate.mainManagedObjectContext];
+    for (id key in existingChannelsByIndex) {
+        Channel* deleteCandidate = (Channel*)[existingChannelsByIndex objectForKey:key];
+        if(deleteCandidate && deleteCandidate.markedForDeletionValue)
+            [deleteCandidate.managedObjectContext deleteObject:deleteCandidate];
+    }
     
     
     

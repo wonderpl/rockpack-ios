@@ -131,7 +131,7 @@
 
 - (void) loadChannelsForGenre: (Genre*) genre
 {
-    // override 
+    // override superclass method as there are no genres here
 }
 
 - (void) loadMoreChannels: (UIButton*) sender

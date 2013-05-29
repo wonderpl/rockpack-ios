@@ -769,7 +769,7 @@
             //Bottom vertical alignment
             CGFloat topCorrect = ([tv bounds].size.height - [tv contentSize].height);
 //            topCorrect = (topCorrect <0.0 ? 0.0 : topCorrect);
-                    NSLog (@"offset %f, bounds.height %f, content.height %f, content.height2 %f", tv.contentOffset.y, [tv bounds].size.height, [tv contentSize].height, -topCorrect);
+
         
         [tv setContentOffset: (CGPoint){.x = 0, .y = -topCorrect}
                     animated: NO];
@@ -2248,6 +2248,8 @@
     
     NSError *error = nil;
     
+    if(!appDelegate) appDelegate = UIApplication.sharedApplication.delegate;
+    
     
     if(self.channel)
     {
@@ -2319,6 +2321,17 @@
     
     if (self.channel)
     {
+        for (Channel* subscription in appDelegate.currentUser.subscriptions)
+        {
+            if([subscription.uniqueId isEqualToString:self.channel.uniqueId])
+            {
+                self.channel.subscribedByUserValue = YES;
+                break;
+            }
+            
+        }
+        
+        
         [[NSNotificationCenter defaultCenter] addObserver: self
                                                  selector: @selector(mainContextDataChanged:)
                                                      name: NSManagedObjectContextDidSaveNotification

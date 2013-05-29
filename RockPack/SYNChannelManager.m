@@ -126,23 +126,33 @@
                                                 
                                                 channel.hasChangedSubscribeValue = YES;
                                                 channel.subscribedByUserValue = YES;
-                                                channel.subscribersCountValue++;
+                                                channel.subscribersCountValue += 1;
+                                                
                                                 
                                                 // the channel that got updated was a copy inside the ChannelDetails, so we must copy it to user
+                                                
+                                                IgnoringObjects copyFlags = kIgnoreVideoInstanceObjects;
                                                 
                                                 Channel* subscription = [Channel instanceFromChannel:channel
                                                                                            andViewId:kProfileViewId
                                                                            usingManagedObjectContext:appDelegate.currentUser.managedObjectContext
-                                                                                 ignoringObjectTypes:kIgnoreChannelOwnerObject];
+                                                                                 ignoringObjectTypes:copyFlags];
                                                 
-                                                [appDelegate.currentUser.subscriptionsSet addObject:subscription];
+                                                
                                                 subscription.hasChangedSubscribeValue = YES;
                                                 subscription.subscribedByUserValue = YES;
                                                 subscription.subscribersCountValue++;
                                                 
+                                                [appDelegate.currentUser.subscriptionsSet addObject:subscription];
+                                                
+                                                
                                                 // might be in search context
                                                 NSError* error;
                                                 [channel.managedObjectContext save:&error];
+                                                if(!error)
+                                                {
+                                                    
+                                                }
                                                 
                                                 [appDelegate saveContext:YES];
                                                 
@@ -171,22 +181,23 @@
                                                   
                                                   
                                                   channel.hasChangedSubscribeValue = YES;
+                                                  channel.subscribedByUserValue = NO;
+                                                  channel.subscribersCountValue -= 1;
                                                   
                                                   // the channel that got updated was a copy inside the ChannelDetails, so we must find the original and update it.
                                                   for (Channel* subscription in appDelegate.currentUser.subscriptions)
                                                   {
                                                       if([subscription.uniqueId isEqualToString:channel.uniqueId])
                                                       {
-                                                          [appDelegate.currentUser.subscriptionsSet removeObject:subscription];
                                                           subscription.subscribedByUserValue = NO;
                                                           subscription.subscribersCountValue--;
+                                                          
+                                                          [appDelegate.currentUser.subscriptionsSet removeObject:subscription];
+                                                          
                                                           break;
                                                       }
                                                   }
                                                   
-                                                  
-                                                  channel.subscribedByUserValue = NO;
-                                                  channel.subscribersCountValue--;
                                                   
                                                   
                                                   [appDelegate saveContext:YES];
