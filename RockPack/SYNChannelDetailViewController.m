@@ -2276,8 +2276,6 @@
                                                 inManagedObjectContext: channel.managedObjectContext]];
     
     
-    
-    
     [channelFetchRequest setPredicate: [NSPredicate predicateWithFormat: @"uniqueId == %@ AND viewId == %@", channel.uniqueId, self.viewId]];
     
     
@@ -2321,15 +2319,7 @@
     
     if (self.channel)
     {
-        for (Channel* subscription in appDelegate.currentUser.subscriptions)
-        {
-            if([subscription.uniqueId isEqualToString:self.channel.uniqueId])
-            {
-                self.channel.subscribedByUserValue = YES;
-                break;
-            }
-            
-        }
+        
         
         
         [[NSNotificationCenter defaultCenter] addObserver: self
