@@ -401,6 +401,8 @@
         if ([obj isKindOfClass:[ChannelOwner class]] && [((ChannelOwner*)obj).uniqueId isEqualToString:self.user.uniqueId])
         {
             [self reloadCollectionViews];
+            
+            return;
            
         }
     }];
@@ -617,12 +619,13 @@
 
 - (void) reloadCollectionViews
 {
-    [super reloadCollectionViews];
     
     NSInteger totalChannels = self.user.channels.count;
     NSString* title = [self getHeaderTitleForChannels];
+    
     [self.headerChannelsView setTitle: title
                              andNumber: totalChannels];
+    
     
     [self.subscriptionsViewController reloadCollectionViews];
     [self.channelThumbnailCollectionView reloadData];
@@ -694,20 +697,6 @@
     
     return channelThumbnailCell;
 }
-
-
-//- (BOOL) collectionView: (UICollectionView *) collectionView
-//         shouldSelectItemAtIndexPath: (NSIndexPath *) indexPath
-//{
-//    if (self.isDeletionModeActive)
-//    {
-//        return NO;
-//    }
-//    else
-//    {
-//        return YES;
-//    }
-//}
 
 
 - (void) collectionView: (UICollectionView *) collectionView
@@ -1013,7 +1002,7 @@
     if(!self.user) // if no user has been passed, set to nil and then return
         return;
     
-    if(![self.user isMemberOfClass:[User class]]) // is a User has been passsed dont copy him as there can be only one.
+    if(![self.user isMemberOfClass:[User class]]) // is a User has been passsed dont copy him OR his channels as there can be only one.
     {
         NSFetchRequest *channelOwnerFetchRequest = [[NSFetchRequest alloc] init];
         
@@ -1042,16 +1031,19 @@
         else
         {
             
+            IgnoringObjects flags = kIgnoreVideoInstanceObjects | kIgnoreChannelOwnerObject; // these flags are passed to the Channels
+            
             _user = [ChannelOwner instanceFromChannelOwner: user
                                                  andViewId: self.viewId
                                  usingManagedObjectContext: user.managedObjectContext
-                                       ignoringObjectTypes: kIgnoreVideoInstanceObjects | kIgnoreChannelOwnerObject];
+                                       ignoringObjectTypes: flags];
             
             if(self.user)
             {
                 [self.user.managedObjectContext save:&error];
                 if(error)
                     _user = nil; // further error code
+                
             }
         }
         
@@ -1063,7 +1055,7 @@
         
         [[NSNotificationCenter defaultCenter] addObserver: self
                                                  selector: @selector(handleDataModelChange:)
-                                                     name: NSManagedObjectContextObjectsDidChangeNotification
+                                                     name: NSManagedObjectContextDidSaveNotification
                                                    object: self.user.managedObjectContext];
         
         

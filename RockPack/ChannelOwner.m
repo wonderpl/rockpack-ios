@@ -51,6 +51,22 @@
     }
     
     
+    if(!(ignoringObjects & kIgnoreSubscriptionObjects))
+    {
+        for (Channel* channel in existingChannelOwner.subscriptions)
+        {
+            Channel* copyChannel = [Channel instanceFromChannel:channel
+                                                      andViewId:viewId
+                                      usingManagedObjectContext:existingChannelOwner.managedObjectContext
+                                            ignoringObjectTypes:ignoringObjects];
+            
+            
+            [copyChannelOwner.subscriptionsSet addObject:copyChannel];
+            
+        }
+    }
+    
+    
     
     return copyChannelOwner;
 }
@@ -247,7 +263,7 @@
         
         [self.subscriptionsSet addObject:channel];
         channel.subscribedByUserValue = YES;
-        
+        channel.viewId = self.viewId;
         
     }
     

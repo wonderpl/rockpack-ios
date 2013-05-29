@@ -44,11 +44,19 @@
                        usingManagedObjectContext: appDelegate.mainManagedObjectContext
                              ignoringObjectTypes: kIgnoreNothing];
     
+    
+    
     if(!newUser)
         return NO;
     
     newUser.currentValue = YES;
     
+    // Pass viewId s.
+    
+    for (Channel* ch in newUser.channels)
+        ch.viewId = kProfileViewId;
+    
+    newUser.viewId = kProfileViewId;
     
     [appDelegate saveContext: TRUE];
     
