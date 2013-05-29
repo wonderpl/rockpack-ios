@@ -702,6 +702,9 @@
     self.editControlsView.alpha = (visible) ? 0.0f : 1.0f;
     self.coverChooserMasterView.hidden = (visible) ? TRUE : FALSE;
     self.profileImageButton.enabled = visible;
+    
+    
+    
     self.subscribeButton.hidden = (visible && [self.channel.channelOwner.uniqueId isEqualToString: appDelegate.currentUser.uniqueId]);
     self.editButton.hidden = (visible && ! [self.channel.channelOwner.uniqueId isEqualToString: appDelegate.currentUser.uniqueId]);
     
@@ -2297,14 +2300,19 @@
     else
     {
         IgnoringObjects flags = kIgnoreNothing;
-        if(self.channel.channelOwner == appDelegate.currentUser)
+        if(channel.channelOwner == appDelegate.currentUser)
             flags |= kIgnoreChannelOwnerObject;
+        
+            
         
         _channel = [Channel instanceFromChannel:channel
                                       andViewId:self.viewId
                       usingManagedObjectContext:channel.managedObjectContext
                             ignoringObjectTypes:flags];
         
+        
+        if(channel.channelOwner == appDelegate.currentUser)
+            _channel.channelOwner = appDelegate.currentUser;
         
         if(_channel)
         {
