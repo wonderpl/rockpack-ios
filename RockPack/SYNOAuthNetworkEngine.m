@@ -622,7 +622,10 @@
                                                                                        object: nil
                                                                                      userInfo: @{@"user":currentUser}];
                                }
-                               completionBlock(headerDictionary);
+                               if(completionBlock) //Important to nil check blocks - otherwise crash may ensue!
+                               {
+                                   completionBlock(headerDictionary);
+                               }
                            }
                                 errorHandler: errorBlock];
     
