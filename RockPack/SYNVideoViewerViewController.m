@@ -901,11 +901,13 @@
                             self.chromeView.alpha = 1.0f;
                             self.swipeView.transform = CGAffineTransformIdentity;
                             self.videoPlaybackViewController.view.transform = self.swipeView.transform;
+                            self.videoPlaybackViewController.shuttleBarView.transform = CGAffineTransformIdentity;
                             self.swipeView.frame = self.originalFrame;
                             CGRect videoFrame = self.videoPlaybackViewController.view.frame;
                             videoFrame.origin = self.originalFrame.origin;
                             self.videoPlaybackViewController.view.frame = videoFrame;
                             self.videoPlaybackViewController.shuttleBarView.alpha = 1.0f;
+                            self.iPhonePanelImageView.alpha = 1.0f;
                         }
                         completion:^(BOOL finished) {
                             if (finished)
@@ -929,15 +931,34 @@
                                 //Device orientation may confuse screen dimensions. Ensure the width is always the larger dimension.
                                 fullScreenFrame = CGRectMake(0,0,[SYNDeviceManager.sharedInstance currentScreenWidth], [SYNDeviceManager.sharedInstance currentScreenHeight]);
                             }
+                            
+
                             self.blackPanelView.alpha = 1.0f;
                             self.chromeView.alpha = 0.0f;
                             self.swipeView.frame =  fullScreenFrame;
                             self.swipeView.center = CGPointMake(fullScreenFrame.size.height/2.0f,fullScreenFrame.size.width/2.0f - 20.0f);
-                            self.videoPlaybackViewController.view.center =self.swipeView.center;
+                            self.videoPlaybackViewController.view.center = self.swipeView.center;
                             self.swipeView.transform = CGAffineTransformMakeRotation((newOrientation==UIDeviceOrientationLandscapeLeft) ? M_PI_2 : -M_PI_2 );
-                            CGFloat scaleFactor = fullScreenFrame.size.width/self.videoPlaybackViewController.view.frame.size.width;
+                            
+                            CGFloat scaleFactor = fullScreenFrame.size.width / self.videoPlaybackViewController.view.frame.size.width;
+                            NSLog (@"w1 = %f, w2 = %f", fullScreenFrame.size.width, self.videoPlaybackViewController.view.frame.size.width);
+                            if (self.videoPlaybackViewController.view.frame.size.width < self.videoPlaybackViewController.view.frame.size.height)
+                            {
+                                scaleFactor = self.videoPlaybackViewController.view.frame.size.height / fullScreenFrame.size.height;
+                            }
+                            
                             self.videoPlaybackViewController.view.transform = CGAffineTransformScale(self.swipeView.transform,scaleFactor,scaleFactor);
-                            self.videoPlaybackViewController.shuttleBarView.alpha = 0.0f;
+                            self.videoPlaybackViewController.shuttleBarView.transform = CGAffineTransformScale(CGAffineTransformIdentity,1.0f/scaleFactor,1.0f/scaleFactor);
+
+                            //
+                            CGRect shuttleBarFrame = self.videoPlaybackViewController.shuttleBarView.frame;
+                            shuttleBarFrame.size.width = fullScreenFrame.size.width*(1.0f/scaleFactor);
+                            shuttleBarFrame.size.height = kShuttleBarHeight*(1.0f/scaleFactor);;
+                            shuttleBarFrame.origin.x = 0.0f;
+                            shuttleBarFrame.origin.y = (self.videoPlaybackViewController.view.frame.size.width - kShuttleBarHeight)*(1.0f/scaleFactor);
+                            self.videoPlaybackViewController.shuttleBarView.frame = shuttleBarFrame;
+                            
+                            self.iPhonePanelImageView.alpha = 0.0f;
                         }
                         completion: nil];
     }

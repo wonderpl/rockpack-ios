@@ -319,14 +319,17 @@ static UIWebView* vimeoideoWebViewInstance;
 
 - (UIView *) createShuttleBarView
 {
+    CGFloat shuttleBarButtonOffset = kShuttleBarButtonOffsetiPhone;
     CGFloat shuttleBarButtonWidth = kShuttleBarButtonWidthiPhone;
     CGFloat airplayOffset = 0;
     
     if ([SYNDeviceManager.sharedInstance isIPad])
     {
+        shuttleBarButtonOffset = kShuttleBarButtonWidthiPad;
         shuttleBarButtonWidth = kShuttleBarButtonWidthiPad;
         airplayOffset = 18;
     }
+    
     // Create out shuttle bar view at the bottom of our video view
     CGRect shuttleBarFrame = self.view.frame;
     shuttleBarFrame.size.height = kShuttleBarHeight;
@@ -338,13 +341,14 @@ static UIWebView* vimeoideoWebViewInstance;
     UIView *shuttleBarBackgroundView = [[UIView alloc] initWithFrame: shuttleBarView.bounds];
     shuttleBarBackgroundView.alpha = 0.5f;
     shuttleBarBackgroundView.backgroundColor = [UIColor blackColor];
+    shuttleBarBackgroundView.autoresizingMask = UIViewAutoresizingFlexibleWidth | UIViewAutoresizingFlexibleHeight;
     [shuttleBarView addSubview: shuttleBarBackgroundView];
     
     // Add play/pause button
     self.shuttleBarPlayPauseButton = [UIButton buttonWithType: UIButtonTypeCustom];
     
     // Set this subview to appear slightly offset from the left-hand side
-    self.shuttleBarPlayPauseButton.frame = CGRectMake(0, 0, shuttleBarButtonWidth, kShuttleBarHeight);
+    self.shuttleBarPlayPauseButton.frame = CGRectMake(20, 0, shuttleBarButtonOffset, kShuttleBarHeight);
     
     [self.shuttleBarPlayPauseButton setImage: [UIImage imageNamed: @"ButtonShuttleBarPause.png"]
                                     forState: UIControlStateNormal];
@@ -1063,7 +1067,7 @@ static UIWebView* vimeoideoWebViewInstance;
         }
         
         // Check to see if the player has stalled (a number of instances of the same time)
-        if (currentTime == self.lastTime)
+        if (currentTime == self.lastTime && self.playFlag == TRUE)
         {
             self.stallCount++;
             
@@ -1087,7 +1091,7 @@ static UIWebView* vimeoideoWebViewInstance;
     
     // Update current time label
     self.currentTimeLabel.text = [NSString timecodeStringFromSeconds: currentTime];
-    
+//        self.currentTimeLabel.text = [NSString timecodeStringFromSeconds: 9*60*60+59*60+59];
     // Calculate the currently viewed percentage
     float viewedPercentage = currentTime / self.currentDuration;
     

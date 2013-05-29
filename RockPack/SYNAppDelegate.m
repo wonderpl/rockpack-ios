@@ -60,7 +60,9 @@ extern void instrumentObjcMessageSends(BOOL);
     // Enable the Spark Inspector
 #if DEBUG
     [SparkInspector enableObservation];
+#endif
     
+#if USEUDID
     [TestFlight setDeviceIdentifier: [[UIDevice currentDevice] uniqueIdentifier]];
 #endif
 
