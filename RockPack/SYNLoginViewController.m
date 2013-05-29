@@ -623,7 +623,7 @@
     // email
     if (userNameInputField.text.length < 1)
     {
-        [self placeErrorLabel: NSLocalizedString(@"Please enter a user name", nil)
+        [self placeErrorLabel: NSLocalizedString(@"Please enter your email or username", nil)
                    nextToView: userNameInputField];
         
         [userNameInputField becomeFirstResponder];
@@ -633,7 +633,7 @@
 
     if (passwordInputField.text.length < 1)
     {
-        [self placeErrorLabel: NSLocalizedString(@"Please enter a password", nil)
+        [self placeErrorLabel: NSLocalizedString(@"Please enter your password", nil)
                    nextToView: passwordInputField];
         
         [passwordInputField becomeFirstResponder];
@@ -644,6 +644,23 @@
     return YES;
 }
 
+
+- (BOOL) resetPasswordFormIsValid
+{
+    
+    if (userNameInputField.text.length < 1)
+    {
+        [self placeErrorLabel: NSLocalizedString(@"Please provide a username or an email", nil)
+                   nextToView: userNameInputField];
+        
+        [userNameInputField becomeFirstResponder];
+        
+        return NO;
+    }
+    
+    return YES;
+    
+}
 
 - (IBAction) doLogin: (id) sender
 {
@@ -732,7 +749,11 @@
         return;
     }
     
+    if (![self resetPasswordFormIsValid])
+        return;
+    
     [self doRequestPasswordResetForUsername:self.userNameInputField.text completionHandler: ^(NSDictionary * completionInfo) {
+        
         if ([completionInfo valueForKey: @"error"])
         {
             [self placeErrorLabel: @"User unknown"
@@ -889,7 +910,7 @@
 {
     if (emailInputField.text.length < 1)
     {
-        [self placeErrorLabel: @"Please enter an email address"
+        [self placeErrorLabel: @"Please enter a valid email address"
                    nextToView: emailInputField];
         
         [emailInputField becomeFirstResponder];
@@ -901,7 +922,7 @@
     
     if (![emailInputField.text isMatchedByRegex: @"^([a-zA-Z0-9%_.+\\-]+)@([a-zA-Z0-9.\\-]+?\\.[a-zA-Z]{2,6})$"])
     {
-        [self placeErrorLabel: NSLocalizedString(@"Email Address Not Valid", nil)
+        [self placeErrorLabel: NSLocalizedString(@"Please enter a valid email address", nil)
                    nextToView: emailInputField];
         
         [emailInputField becomeFirstResponder];
@@ -909,9 +930,21 @@
         return NO;
     }
     
-    if (userNameInputField.text.length < 1)
+    // == Determine if we are in login or registration mode by asking if the Register button is visible and show different error messages == //
+    
+    if (userNameInputField.text.length < 1 && registerButton.hidden == YES)
     {
-        [self placeErrorLabel: NSLocalizedString(@"Please enter a user name", nil)
+        [self placeErrorLabel: NSLocalizedString(@"Please enter your email or username", nil)
+                   nextToView: userNameInputField];
+        
+        [userNameInputField becomeFirstResponder];
+        
+        return NO;
+    }
+    
+    if (userNameInputField.text.length < 1 && registerButton.hidden == NO)
+    {
+        [self placeErrorLabel: NSLocalizedString(@"Please choose a username", nil)
                    nextToView: userNameInputField];
         
         [userNameInputField becomeFirstResponder];
@@ -930,10 +963,21 @@
         return NO;
     }
     
+    // == Determine if we are in login or registration mode by asking if the Register button is visible and show different error messages == //
     
-    if (passwordInputField.text.length < 1)
+    if (passwordInputField.text.length < 1 && registerButton.hidden == YES)
     {
-        [self placeErrorLabel: NSLocalizedString(@"Please enter a password", nil)
+        [self placeErrorLabel: NSLocalizedString(@"Please enter your password", nil)
+                   nextToView: passwordInputField];
+        
+        [passwordInputField becomeFirstResponder];
+        
+        return NO;
+    }
+    
+    if (passwordInputField.text.length < 1 && registerButton.hidden == NO)
+    {
+        [self placeErrorLabel: NSLocalizedString(@"Please choose a password", nil)
                    nextToView: passwordInputField];
         
         [passwordInputField becomeFirstResponder];
@@ -952,6 +996,8 @@
         
         return NO;
     }
+    
+    
     
     // == Check wether the DOB fields contain numbers == //
     
@@ -989,7 +1035,7 @@
     // == In the future == //
     
     if ([nowDate compare:potentialDate] == NSOrderedAscending) {
-        [self placeErrorLabel: NSLocalizedString(@"The Date is in the future", nil)
+        [self placeErrorLabel: NSLocalizedString(@"Looks like you're born in the future!", nil)
                    nextToView: dobView];
         
         return NO;
@@ -1005,7 +1051,7 @@
     
     if ([tooYoungDate compare:potentialDate] == NSOrderedAscending) {
         
-        [self placeErrorLabel: NSLocalizedString(@"Cannot create an account for under 13", nil)
+        [self placeErrorLabel: NSLocalizedString(@"Rockpack is not available for under 13's yet", nil)
                    nextToView: dobView];
         
         return NO;
