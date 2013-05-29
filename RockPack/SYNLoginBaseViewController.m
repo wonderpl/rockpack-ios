@@ -344,7 +344,7 @@
     BOOL isReachable = ![self.reachability currentReachabilityStatus] == NotReachable;
     if(! isReachable)
     {
-        UIAlertView* alert = [[UIAlertView alloc] initWithTitle:NSLocalizedString(@"No Internet connection",nil) message:NSLocalizedString(@"You need an Internet connection to log in, register or request your password.",nil) delegate:nil cancelButtonTitle:nil otherButtonTitles:NSLocalizedString(@"OK",nil), nil];
+        UIAlertView* alert = [[UIAlertView alloc] initWithTitle:NSLocalizedString(@"Oops!",nil) message:NSLocalizedString(@"Please make sure you are connected to the internet and try again.",nil) delegate:nil cancelButtonTitle:nil otherButtonTitles:NSLocalizedString(@"OK",nil), nil];
         [alert show];
     }
     return isReachable;
