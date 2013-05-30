@@ -29,6 +29,7 @@
 @property (nonatomic, assign) BOOL notYetPlaying;
 @property (nonatomic, assign) BOOL playFlag;
 @property (nonatomic, assign) BOOL shuttledByUser;
+@property (nonatomic, assign) BOOL hasReloadedWebView;
 @property (nonatomic, assign) CGRect requestedFrame;
 @property (nonatomic, assign) CGRect originalShuttleBarFrame;
 @property (nonatomic, assign) NSTimeInterval currentDuration;
@@ -38,6 +39,7 @@
 @property (nonatomic, strong) CABasicAnimation *placeholderBottomLayerAnimation;
 @property (nonatomic, strong) CABasicAnimation *placeholderMiddleLayerAnimation;
 @property (nonatomic, strong) NSArray *videoInstanceArray;
+@property (nonatomic, strong) NSString *sourceIdToReload;
 @property (nonatomic, strong) NSTimer *shuttleBarUpdateTimer;
 @property (nonatomic, strong) SYNVideoIndexUpdater indexUpdater;
 @property (nonatomic, strong) UIButton *shuttleBarPlayPauseButton;
@@ -707,14 +709,45 @@ static UIWebView* vimeoideoWebViewInstance;
 - (void) playYouTubeVideoWithSourceId: (NSString *) sourceId
 {
     DebugLog(@"*** Playing: Load video command sent");
-
     self.notYetPlaying = TRUE;
-    NSString *loadString = [NSString stringWithFormat: @"player.loadVideoById('%@', '0', '%@');", sourceId, self.videoQuality];
-    [self.currentVideoWebView stringByEvaluatingJavaScriptFromString: loadString];
-    self.playFlag = TRUE;
     
-    [self.shuttleBarPlayPauseButton setImage: [UIImage imageNamed: @"ButtonShuttleBarPause.png"]
-                                    forState: UIControlStateNormal];
+    // Check to see if our JS is loaded
+    NSString *availability = [self.currentVideoWebView stringByEvaluatingJavaScriptFromString: @"checkPlayerAvailability();"];
+    if ([availability isEqualToString: @"true"])
+    {
+        // Our JS is loaded
+        NSString *loadString = [NSString stringWithFormat: @"player.loadVideoById('%@', '0', '%@');", sourceId, self.videoQuality];
+        [self.currentVideoWebView stringByEvaluatingJavaScriptFromString: loadString];
+        
+        self.playFlag = TRUE;
+        
+        [self.shuttleBarPlayPauseButton setImage: [UIImage imageNamed: @"ButtonShuttleBarPause.png"]
+                                        forState: UIControlStateNormal];
+    }
+    else
+    {
+        // Something unloaded our JS, so use different approach
+        // Reload out webview and load the new video when we get an event to say that the player is ready
+        self.hasReloadedWebView = TRUE;
+        self.sourceIdToReload = sourceId;
+        
+        NSError *error = nil;
+        NSString *fullPath = [[NSBundle mainBundle] pathForResource: @"YouTubeIFramePlayer"
+                                                             ofType: @"html"];
+        
+        NSString *templateHTMLString = [NSString stringWithContentsOfFile: fullPath
+                                                                 encoding: NSUTF8StringEncoding
+                                                                    error: &error];
+        
+        NSString *iFrameHTML = [NSString stringWithFormat: templateHTMLString,
+                                (int) [SYNVideoPlaybackViewController videoWidth],
+                                (int) [SYNVideoPlaybackViewController videoHeight]];
+        
+        [self.currentVideoWebView loadHTMLString: iFrameHTML
+                                  baseURL: [NSURL URLWithString: @"http://www.youtube.com"]];
+
+        self.currentVideoWebView.delegate = self;
+    }
 }
 
 
@@ -935,6 +968,21 @@ static UIWebView* vimeoideoWebViewInstance;
     {
         // We probably don't get this event any more as the player is already set up (asynchronously)
         DebugLog (@"++++++++++ Player ready - player ready");
+        
+        // If the user moved away from the original player page, then we should have already detected this
+        // so we need to start playing again when we have loaded
+        if (self.hasReloadedWebView == TRUE)
+        {
+            self.hasReloadedWebView = FALSE;
+            
+            NSString *loadString = [NSString stringWithFormat: @"player.loadVideoById('%@', '0', '%@');", self.sourceIdToReload, self.videoQuality];
+            [self.currentVideoWebView stringByEvaluatingJavaScriptFromString: loadString];
+            
+            self.playFlag = TRUE;
+            
+            [self.shuttleBarPlayPauseButton setImage: [UIImage imageNamed: @"ButtonShuttleBarPause.png"]
+                                            forState: UIControlStateNormal];
+        }
     }
     else if ([actionName isEqualToString: @"stateChange"])
     {
