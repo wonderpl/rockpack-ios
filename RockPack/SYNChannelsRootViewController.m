@@ -308,7 +308,7 @@
     
     NSPredicate* genrePredicate;
     
-    if (!genre) // all category
+    if (!genre) // @"all" category
     {
         genrePredicate = [NSPredicate predicateWithFormat: @"popular == YES"];
     }
@@ -333,7 +333,8 @@
     NSPredicate* isNotFavoritesPredicate = [NSPredicate predicateWithFormat: @"favourites == NO"];
     
     
-    NSPredicate* finalPredicate = [NSCompoundPredicate andPredicateWithSubpredicates: @[genrePredicate, isFreshPredicate, viewIdPredicate, isNotFavoritesPredicate]];
+    NSPredicate* finalPredicate = [NSCompoundPredicate andPredicateWithSubpredicates:
+                                   @[genrePredicate, isFreshPredicate, viewIdPredicate, isNotFavoritesPredicate]];
 
     [request setPredicate:finalPredicate];
     
@@ -363,6 +364,7 @@
     }
 
     // We shouldn't wait until the animation is over, as this will result in crashes if the user is scrolling
+    
     [self.channelThumbnailCollectionView reloadData];
 }
 

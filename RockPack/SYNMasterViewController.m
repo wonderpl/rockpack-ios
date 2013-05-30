@@ -581,6 +581,8 @@ typedef void(^AnimationCompletionBlock)(BOOL finished);
     
     [self.view insertSubview:self.searchBoxController.view aboveSubview:self.overlayContainerView];
     
+    self.searchBoxController.searchTextField.text = @"";
+    
     if ([SYNDeviceManager.sharedInstance isIPad] && sender != nil)
     {
         [self.searchBoxController.searchTextField becomeFirstResponder];
