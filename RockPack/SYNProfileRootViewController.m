@@ -184,8 +184,9 @@
         self.headerSubscriptionsView.frame = newFrame;
         [self.headerSubscriptionsView setFontSize: 12.0f];
         
-        [self.headerSubscriptionsView setTitle: NSLocalizedString(@"SUBSCRIPTIONS",nil)
+        [self.headerSubscriptionsView setTitle: NSLocalizedString(@"MY SUBSCRIPTIONS",nil)
                                      andNumber: 0];
+        
         
         self.headerSubscriptionsView.userInteractionEnabled = NO;
     }
@@ -627,7 +628,10 @@
 {
     if([SYNDeviceManager.sharedInstance isIPhone])
     {
-        return NSLocalizedString(@"CHANNELS",nil);
+        if(self.user == appDelegate.currentUser)
+            return NSLocalizedString(@"MY CHANNELS",nil);
+        else
+            return NSLocalizedString(@"CHANNELS",nil);
         
     }
     else

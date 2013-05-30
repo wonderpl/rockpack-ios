@@ -97,7 +97,7 @@
     {
         self.addButton = [SYNAddButtonControl button];
         CGRect addButtonFrame = self.addButton.frame;
-        addButtonFrame.origin.x = 884.0f; // 884.0f
+        addButtonFrame.origin.x = self.view.frame.size.width - 140.0f; // 884.0f
         addButtonFrame.origin.y = 80.0f;
         self.addButton.frame = addButtonFrame;
 
