@@ -34,6 +34,7 @@
 @property (nonatomic, strong) UIRefreshControl *refreshControl;
 @property (nonatomic, strong) SYNFeedMessagesView* emptyGenreMessageView;
 
+
 @end
 
 
@@ -417,6 +418,7 @@
 }
 
 
+
 - (CGSize) collectionView: (UICollectionView *) collectionView
                    layout: (UICollectionViewLayout*) collectionViewLayout
                    referenceSizeForHeaderInSection: (NSInteger) section
@@ -442,18 +444,17 @@
                                   atIndexPath: (NSIndexPath *) indexPath
 {
     
-    UICollectionReusableView *sectionSupplementaryView = nil;
+    UICollectionReusableView *supplementaryView = nil;
     
-    if (collectionView == self.videoThumbnailCollectionView)
+    // Work out the day
+    id<NSFetchedResultsSectionInfo> sectionInfo = [self.fetchedResultsController.sections objectAtIndex: indexPath.section];
+    
+    // In the 'name' attribut of the sectionInfo we have actually the keypath data (i.e in this case Date without time)
+    
+    // TODO: We might want to optimise this instead of creating a new date formatter each time
+    
+    if (kind == UICollectionElementKindSectionHeader)
     {
-        // Work out the day
-        id<NSFetchedResultsSectionInfo> sectionInfo = [self.fetchedResultsController.sections objectAtIndex: indexPath.section];
-        
-        // In the 'name' attribut of the sectionInfo we have actually the keypath data (i.e in this case Date without time)
-        
-        // TODO: We might want to optimise this instead of creating a new date formatter each time
-
-        
         NSDate *date = [self.dateFormatter dateFromString: sectionInfo.name];
         
         SYNHomeSectionHeaderView *headerSupplementaryView = [collectionView dequeueReusableSupplementaryViewOfKind: kind
@@ -506,10 +507,32 @@
             headerSupplementaryView.sectionView.image = [UIImage imageNamed:@"PanelDayPortrait"];
         }
         
-        sectionSupplementaryView = headerSupplementaryView;
+        supplementaryView = headerSupplementaryView;
+    }
+    
+    else if (kind == UICollectionElementKindSectionFooter)
+    {
+        
+        if(self.fetchedResultsController.fetchedObjects.count == 0 ||
+           (self.dataRequestRange.location + self.dataRequestRange.length) >= self.dataItemsAvailable)
+        {
+            return supplementaryView;
+        }
+        
+        self.footerView = [self.videoThumbnailCollectionView dequeueReusableSupplementaryViewOfKind: kind
+                                                                                withReuseIdentifier: @"SYNChannelFooterMoreView"
+                                                                                       forIndexPath: indexPath];
+        
+        [self.footerView.loadMoreButton addTarget: self
+                                           action: @selector(loadMoreVideos:)
+                                 forControlEvents: UIControlEventTouchUpInside];
+        
+        //[self loadMoreChannels:self.footerView.loadMoreButton];
+        
+        supplementaryView = self.footerView;
     }
 
-    return sectionSupplementaryView;
+    return supplementaryView;
 }
 
 - (void) collectionView: (UICollectionView *) collectionView
@@ -533,6 +556,17 @@
     }
 }
 
+#pragma mark - Load More Footer
+
+
+
+- (void) loadMoreVideos: (UIButton*) sender
+{
+    
+    [self incrementRangeForNextRequest];
+    
+    
+}
 
 - (BOOL) needsAddButton
 {

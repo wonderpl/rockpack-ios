@@ -17,7 +17,6 @@
 @property (nonatomic, strong) UICollectionView *channelThumbnailCollectionView;
 @property (nonatomic, assign) BOOL enableCategoryTable;
 
-@property (nonatomic, strong) SYNChannelFooterMoreView* footerView;
 
 
 @end

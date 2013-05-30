@@ -13,6 +13,7 @@
 #import "SYNNetworkEngine.h"
 #import "SYNTabViewController.h"
 #import "SYNTabViewDelegate.h"
+#import "SYNChannelFooterMoreView.h"
 #import <CoreData/CoreData.h>
 #import <UIKit/UIKit.h>
 
@@ -56,6 +57,9 @@ typedef void (^SYNShareCompletionBlock)(void);
 
 @property (nonatomic, strong) SYNAddButtonControl* addButton;
 
+
+@property (nonatomic, strong) SYNChannelFooterMoreView* footerView;
+
 - (void) handleNewTabSelectionWithId: (NSString*) selectionId;
 - (void) handleNewTabSelectionWithGenre: (Genre*) name;
 
@@ -84,6 +88,8 @@ typedef void (^SYNShareCompletionBlock)(void);
 - (void) viewDidScrollToFront;
 - (BOOL) needsAddButton;
 - (BOOL) toleratesSearchBar;
+
+- (void) incrementRangeForNextRequest;
 
 // Share
 - (void) shareVideoInstance: (VideoInstance *) videoInstance

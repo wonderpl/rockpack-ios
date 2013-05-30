@@ -292,18 +292,10 @@
 
 - (void) loadMoreChannels: (UIButton*) sender
 {
-    // (UIButton*) sender can be nil when called directly //
-    self.footerView.showsLoading = YES;
     
-    NSInteger nextStart = dataRequestRange.location + dataRequestRange.length; // one is subtracted when the call happens for 0 indexing
-    
-    if (nextStart >= dataItemsAvailable)
-        return;
-    
-    NSInteger nextSize = (nextStart + STANDARD_REQUEST_LENGTH) >= dataItemsAvailable ? (dataItemsAvailable - nextStart) : STANDARD_REQUEST_LENGTH;
-    
-    dataRequestRange = NSMakeRange(nextStart, nextSize);
 
+    [self incrementRangeForNextRequest];
+    
     [self loadChannelsForGenre: currentGenre
                    byAppending: YES];
 }

@@ -11,7 +11,6 @@
 #import "GAI.h"
 #import "NSDate-Utilities.h"
 #import "SYNAppDelegate.h"
-#import "SYNChannelFooterMoreView.h"
 #import "SYNDeviceManager.h"
 #import "SYNIntegralCollectionViewFlowLayout.h"
 #import "SYNSearchRootViewController.h"
@@ -28,7 +27,7 @@
 }
 
 
-@property (nonatomic, strong) SYNChannelFooterMoreView* footerView;
+
 @property (nonatomic, strong)NSCalendar* currentCalendar;
 @property (nonatomic, weak) NSString* searchTerm;
 
@@ -309,61 +308,10 @@
 }
 
 
-#pragma mark - Load More Footer
-
-- (UICollectionReusableView *) collectionView: (UICollectionView *) collectionView
-            viewForSupplementaryElementOfKind: (NSString *) kind
-                                  atIndexPath: (NSIndexPath *) indexPath
-{
-    UICollectionReusableView* supplementaryView;
-    
-    if (kind == UICollectionElementKindSectionHeader)
-    {
-        // nothing yet
-    }
-    
-    if (kind == UICollectionElementKindSectionFooter)
-    {
-        
-        if(self.fetchedResultsController.fetchedObjects.count == 0 ||
-           (self.dataRequestRange.location + self.dataRequestRange.length) >= self.dataItemsAvailable)
-        {
-            return supplementaryView;
-        }
-        
-        self.footerView = [self.videoThumbnailCollectionView dequeueReusableSupplementaryViewOfKind: kind
-                                                                                withReuseIdentifier: @"SYNChannelFooterMoreView"
-                                                                                       forIndexPath: indexPath];
-        
-        [self.footerView.loadMoreButton addTarget: self
-                                           action: @selector(loadMoreChannels:)
-                                 forControlEvents: UIControlEventTouchUpInside];
-        
-        //[self loadMoreChannels:self.footerView.loadMoreButton];
-        
-        supplementaryView = self.footerView;
-    }
-    
-    return supplementaryView;
-}
-
-
-- (void) loadMoreChannels: (UIButton*) sender
+- (void) loadMoreVideos: (UIButton*) sender
 {
     
-    // (UIButton*) sender can be nil when called directly //
-    
-    self.footerView.showsLoading = YES;
-    
-    NSInteger nextStart = self.dataRequestRange.location + self.dataRequestRange.length; // one is subtracted when the call happens for 0 indexing
-    
-    if (nextStart >= self.dataItemsAvailable)
-        return;
-    
-    NSInteger nextSize = (nextStart + 48) >= self.dataItemsAvailable ? (self.dataItemsAvailable - nextStart) : 48;
-    
-    
-    self.dataRequestRange = NSMakeRange(nextStart, nextSize);
+    [self incrementRangeForNextRequest];
     
     [appDelegate.networkEngine searchVideosForTerm: self.searchTerm
                                            inRange: self.dataRequestRange
@@ -372,6 +320,7 @@
                                             self.footerView.showsLoading = NO;
                                         }];
 }
+
 
 
 - (CGSize) footerSize
