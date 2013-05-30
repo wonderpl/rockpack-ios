@@ -585,7 +585,7 @@
                                               NSString *resourceURLString = responseDictionary[@"resource_url"];
                                               NSString *message = responseDictionary[@"message"];
                                               
-                                              if (resourceURLString == nil || [message isKindOfClass: [NSNull class]] || [resourceURLString isEqualToString: @""])
+                                              if (resourceURLString == nil || [resourceURLString isEqualToString: @""])
                                               {
                                                   resourceURLString = @"http://www.rockpack.com";
                                               }
