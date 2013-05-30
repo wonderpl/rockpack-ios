@@ -908,7 +908,7 @@
     }
 }
 
--(void)changePlayerOrientation:(UIDeviceOrientation)newOrientation
+-(void) changePlayerOrientation: (UIDeviceOrientation) newOrientation
 {
     if (newOrientation == UIDeviceOrientationPortrait)
     {
@@ -952,8 +952,12 @@
         [self.videoPlaybackViewController.shuttleBarMaxMinButton setImage: [UIImage imageNamed: @"ButtonShuttleBarMinimise.png"]
                                                                  forState: UIControlStateNormal];
         self.currentOrientation = newOrientation;
-        [[UIApplication sharedApplication] setStatusBarHidden:YES withAnimation:UIStatusBarAnimationSlide];
-        [[NSNotificationCenter defaultCenter] postNotificationName:kNoteHideNetworkMessages object:nil];
+        [[UIApplication sharedApplication] setStatusBarHidden: YES
+                                                withAnimation: UIStatusBarAnimationSlide];
+        
+        [[NSNotificationCenter defaultCenter] postNotificationName: kNoteHideNetworkMessages
+                                                            object: nil];
+        
         self.swipeView.transform = CGAffineTransformIdentity;
         [UIView transitionWithView: self.view
                           duration: 0.5f
@@ -969,7 +973,6 @@
                             self.blackPanelView.alpha = 1.0f;
                             self.chromeView.alpha = 0.0f;
                             self.swipeView.frame =  fullScreenFrame;
-//                            self.swipeView.backgroundColor = [UIColor greenColor];
                             self.swipeView.center = CGPointMake(fullScreenFrame.size.height/2.0f,fullScreenFrame.size.width/2.0f - 20.0f);
                             self.videoPlaybackViewController.view.center = CGPointMake(fullScreenFrame.size.height/2.0f,fullScreenFrame.size.width/2.0f - 20.0f);
                             
@@ -1010,7 +1013,6 @@
 
 - (void) scheduleFadeOutShuttleBar
 {
-    __weak typeof(self) weakSelf = self;
     self.videoPlaybackViewController.shuttleBarView.alpha = 1.0f;
     // Arrange to fade out shuttle bar
     [self performBlock: ^{
@@ -1029,8 +1031,6 @@
 
 - (void) cancelscheduledFadeOutShuttleBar
 {
-    __weak typeof(self) weakSelf = self;
-    
     // Arrange to fade out shuttle bar
     [self performBlock: ^{
         [UIView animateWithDuration: 0.5f
