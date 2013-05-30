@@ -138,8 +138,20 @@
     
     
     // == Gender == //
+    NSString* genderString = [dictionary objectForKey:@"gender"];
     
-    self.genderValue = GenderUndecided;
+    if(!genderString || [genderString isEqual:[NSNull null]])
+    {
+        self.genderValue = GenderUndecided;
+    }
+    else if([[genderString uppercaseString] isEqual:@"M"])
+    {
+        self.genderValue = GenderMale;
+    }
+    else if([[genderString uppercaseString] isEqual:@"F"])
+    {
+        self.genderValue = GenderFemale;
+    }
     
     
     
