@@ -704,10 +704,10 @@
                   NSDictionary* errors = errorDictionary [@"error"];
                   if (errors)
                   {
-                      [self placeErrorLabel: @"Username could be incorrect"
-                                 nextToView: userNameInputField];
+                      //[self placeErrorLabel: @"Username could be incorrect"
+                      //           nextToView: userNameInputField];
                       
-                      [self placeErrorLabel: @"Password could be incorrect"
+                      [self placeErrorLabel: @"Your username or password is incorrect"
                                  nextToView: passwordInputField];
                   }
                   
@@ -756,14 +756,14 @@
         
         if ([completionInfo valueForKey: @"error"])
         {
-            [self placeErrorLabel: @"User unknown"
+            [self placeErrorLabel: @"Sorry, we don't recognise this username or email"
                        nextToView: self.userNameInputField];
             
         }
         else
         {
             [[[UIAlertView alloc] initWithTitle: @"Password Reset"
-                                        message: @"Check your email for instructions"
+                                        message: @"Check your email and follow the instructions"
                                        delegate: nil
                               cancelButtonTitle: @"OK"
                               otherButtonTitles: nil] show];

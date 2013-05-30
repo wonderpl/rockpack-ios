@@ -440,7 +440,7 @@
                 if(savingError) {
                     self.loginErrorLabel.text = NSLocalizedString(@"PLEASE TRY AGAIN", nil);
                 } else {
-                    self.loginErrorLabel.text = NSLocalizedString(@"CHECK USERNAME AND PASSWORD", nil);
+                    self.loginErrorLabel.text = NSLocalizedString(@"YOUR USERNAME OR PASSWORD IS INCORRECT.", nil);
                 }
                 [self.activityIndicator stopAnimating];
                 [self turnOnButton:self.backButton];
@@ -546,14 +546,18 @@
             [self doRequestPasswordResetForUsername:self.emailInputField.text completionHandler:^(NSDictionary *completionInfo) {
                 if ([completionInfo valueForKey:@"error"])
                 {
-                    self.passwordResetErrorLabel.text = NSLocalizedString(@"USER UNKNOWN", nil);
+                    self.passwordResetErrorLabel.text = NSLocalizedString(@"SORRY, WE DON'T RECOGNISE THIS USERNAME OR EMAIL", nil);
                     [self turnOnButton:self.backButton];
                     [self turnOnButton:self.confirmButton];
                     
                 }
                 else
                 {
-                    self.passwordResetErrorLabel.text = NSLocalizedString(@"CHECK YOUR EMAIL FOR INSTRUCTIONS", nil);
+                    [[[UIAlertView alloc] initWithTitle: @"Password Reset"
+                                                message: @"Check your email and follow the instructions."
+                                               delegate: nil
+                                      cancelButtonTitle: @"OK"
+                                      otherButtonTitles: nil] show];
                     [self turnOnButton:self.backButton];
                     
                 }
