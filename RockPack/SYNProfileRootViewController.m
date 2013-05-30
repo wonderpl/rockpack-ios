@@ -669,7 +669,6 @@
                                    placeholderImage: [UIImage imageNamed: @"PlaceholderChannelMid.png"]
                                             options: SDWebImageRetryFailed];
     
-    NSLog(@"@@@@ for: %@ image is: %@", channel.title, channel.channelCover.imageLargeUrl);
     
     // Make sure we can't delete the favourites channel
     if (channel.favouritesValue == TRUE)

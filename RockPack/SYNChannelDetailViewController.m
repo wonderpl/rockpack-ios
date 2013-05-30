@@ -2421,7 +2421,6 @@
     {
         
         
-        
         [[NSNotificationCenter defaultCenter] addObserver: self
                                                  selector: @selector(mainContextDataChanged:)
                                                      name: NSManagedObjectContextDidSaveNotification
