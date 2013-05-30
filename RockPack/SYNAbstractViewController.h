@@ -108,4 +108,6 @@ typedef void (^SYNShareCompletionBlock)(void);
 
 - (void) initiatePurchaseAtURL: (NSURL *) purchaseURL;
 
+- (CGSize) footerSize;
+
 @end

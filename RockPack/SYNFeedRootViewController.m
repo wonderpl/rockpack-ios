@@ -61,23 +61,23 @@
     
     SYNIntegralCollectionViewFlowLayout *standardFlowLayout;
     if (isIPhone)
-    {
         standardFlowLayout = [SYNIntegralCollectionViewFlowLayout
                               layoutWithItemSize:CGSizeMake(497.0f , 141.0f)
                               minimumInterItemSpacing:0.0f
                               minimumLineSpacing:10.0f
                               scrollDirection:UICollectionViewScrollDirectionVertical
                               sectionInset:insets];
-    }
+    
     else
-    {
         standardFlowLayout = [SYNIntegralCollectionViewFlowLayout
                               layoutWithItemSize:CGSizeMake(497.0f , 141.0f)
                               minimumInterItemSpacing:0.0f
                               minimumLineSpacing:30.0f
                               scrollDirection:UICollectionViewScrollDirectionVertical
                               sectionInset:insets];
-    }
+    
+    
+    standardFlowLayout.footerReferenceSize = [self footerSize];
     
     CGRect videoCollectionViewFrame, selfFrame;
     
@@ -149,7 +149,13 @@
                         forSupplementaryViewOfKind: UICollectionElementKindSectionHeader
                                withReuseIdentifier: @"SYNHomeSectionHeaderView"];
     
+    // Register Footer
+    UINib *footerViewNib = [UINib nibWithNibName: @"SYNChannelFooterMoreView"
+                                          bundle: nil];
     
+    [self.videoThumbnailCollectionView registerNib: footerViewNib
+                          forSupplementaryViewOfKind: UICollectionElementKindSectionFooter
+                                 withReuseIdentifier: @"SYNChannelFooterMoreView"];
     
     // == Refresh button == //
     self.refreshButton = [SYNRefreshButton refreshButton];
@@ -223,7 +229,7 @@
 
 - (void) controllerDidChangeContent: (NSFetchedResultsController *) controller
 {
-    //[self.videoThumbnailCollectionView reloadData];
+    self.dataItemsAvailable = controller.fetchedObjects.count;
 }
 
 
@@ -512,6 +518,8 @@
     
     else if (kind == UICollectionElementKindSectionFooter)
     {
+        if(indexPath.section < self.fetchedResultsController.sections.count - 1)
+            return supplementaryView;
         
         if(self.fetchedResultsController.fetchedObjects.count == 0 ||
            (self.dataRequestRange.location + self.dataRequestRange.length) >= self.dataItemsAvailable)

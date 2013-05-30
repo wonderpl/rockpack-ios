@@ -655,5 +655,12 @@
 	}
 }
 
+// Load more footer
+
+- (CGSize) footerSize
+{
+    return [SYNDeviceManager.sharedInstance isIPhone] ? CGSizeMake(320.0f, 64.0f) : CGSizeMake(1024.0, 64.0);
+}
+
 
 @end

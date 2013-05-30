@@ -85,23 +85,21 @@
     SYNIntegralCollectionViewFlowLayout* flowLayout;
     
     if (isIPhone)
-    {
         flowLayout = [SYNIntegralCollectionViewFlowLayout layoutWithItemSize: CGSizeMake(158.0f, 169.0f)
                                                      minimumInterItemSpacing: 0.0
                                                           minimumLineSpacing: 4.0
                                                              scrollDirection: UICollectionViewScrollDirectionVertical
                                                                 sectionInset: UIEdgeInsetsMake(2.0, 2.0, 6.0, 2.0)];
-        flowLayout.footerReferenceSize = [self footerSize];
-    }
     else
-    {
         flowLayout = [SYNIntegralCollectionViewFlowLayout layoutWithItemSize: [self itemSize]
                                                      minimumInterItemSpacing: 0.0
                                                           minimumLineSpacing: 0.0
                                                              scrollDirection: UICollectionViewScrollDirectionVertical
                                                                 sectionInset: UIEdgeInsetsMake(6.0, 6.0, 5.0, 6.0)];
-        flowLayout.footerReferenceSize = [self footerSize];
-    }
+        
+    
+    
+    flowLayout.footerReferenceSize = [self footerSize];
     
     // Work out how hight the inital tab bar is
     CGFloat topTabBarHeight = [UIImage imageNamed: @"CategoryBar"].size.height;
@@ -392,10 +390,7 @@
     return [SYNDeviceManager.sharedInstance isIPhone] ? CGSizeMake(152.0f, 152.0f) : CGSizeMake(251.0, 274.0);
 }
 
-- (CGSize) footerSize
-{
-    return [SYNDeviceManager.sharedInstance isIPhone] ? CGSizeMake(320.0f, 64.0f) : CGSizeMake(1024.0, 64.0);
-}
+
 
 
 #pragma mark - CollectionView Delegate
