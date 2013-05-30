@@ -286,6 +286,8 @@
     [self.channelsSet removeObject:oldChannel];
 }
 
+
+
 -(void)addSubscriptionsObject:(Channel *)value_
 {
     [self.subscriptionsSet addObject:value_];
