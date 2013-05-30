@@ -169,6 +169,8 @@
     refreshButtonFrame.origin.y = [SYNDeviceManager.sharedInstance isIPad]? 7.0f : 5.0f;
     self.refreshButton.frame = refreshButtonFrame;
     [self.view addSubview: self.refreshButton];
+    
+    self.dataRequestRange = NSMakeRange(0, STANDARD_REQUEST_LENGTH);
 }
 
 
@@ -183,6 +185,8 @@
                                              selector:@selector(videoQueueCleared)
                                                  name:kVideoQueueClear
                                                object:nil];
+    
+    
     
     [self loadAndUpdateFeedData];
     
@@ -221,6 +225,7 @@
 {
     [super willRotateToInterfaceOrientation: toInterfaceOrientation
                                    duration: duration];
+    
     [self.videoThumbnailCollectionView reloadData];
 }
 
@@ -229,7 +234,8 @@
 
 - (void) controllerDidChangeContent: (NSFetchedResultsController *) controller
 {
-    self.dataItemsAvailable = controller.fetchedObjects.count;
+  
+    
 }
 
 
@@ -239,13 +245,20 @@
     [self.refreshButton startRefreshCycle];
     
     [appDelegate.oAuthNetworkEngine subscriptionsUpdatesForUserId:  appDelegate.currentOAuth2Credentials.userId
-                                                            start: 0
-                                                             size: 0
+                                                            start: self.dataRequestRange.location
+                                                             size: self.dataRequestRange.length
                                                 completionHandler: ^(NSDictionary *responseDictionary) {
                                                     
-                                                   
+                                                    BOOL toAppend = (self.dataRequestRange.location > 0);
+                                                    
                                                     BOOL registryResultOk = [appDelegate.mainRegistry registerDataForFeedFromDictionary: responseDictionary
-                                                                                                                            byAppending: NO];
+                                                                                                                            byAppending: toAppend];
+                                                    
+                                                    NSNumber* totalNumber = [[responseDictionary objectForKey:@"videos"] objectForKey:@"total"];
+                                                    if(totalNumber && ![totalNumber isKindOfClass:[NSNull class]])
+                                                        self.dataItemsAvailable = [totalNumber integerValue];
+                                                    else
+                                                        self.dataItemsAvailable = self.dataRequestRange.length;
                                                     
                                                     if (!registryResultOk)
                                                     {
@@ -261,6 +274,8 @@
                                                         [self displayEmptyGenreMessage];
                                                     else
                                                         [self removeEmptyGenreMessage];
+                                                    
+                                                    self.footerView.showsLoading = NO;
                                                     
                                                     [self handleRefreshComplete];
                                                     
@@ -572,6 +587,8 @@
 {
     
     [self incrementRangeForNextRequest];
+    
+    [self loadAndUpdateFeedData];
     
     
 }

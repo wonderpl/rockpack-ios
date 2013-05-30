@@ -318,6 +318,7 @@
                                         onComplete: ^(int itemsCount) {
                                             self.dataItemsAvailable = itemsCount;
                                             self.footerView.showsLoading = NO;
+                                            [self.videoThumbnailCollectionView reloadData];
                                         }];
 }
 
