@@ -327,6 +327,7 @@
                 
             } completion:^(BOOL finished) {
                 [self.registeringUserNameInputField becomeFirstResponder];
+                [self turnOffButton:self.backButton];
             }];
             
             break;
