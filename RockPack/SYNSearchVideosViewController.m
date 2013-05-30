@@ -105,8 +105,6 @@
     // Google analytics support
     [GAI.sharedInstance.defaultTracker sendView: @"Search - Videos"];
     
-    [[NSNotificationCenter defaultCenter] postNotificationName: kNoteSearchBarRequestShow
-                                                        object: self];
 }
 
 

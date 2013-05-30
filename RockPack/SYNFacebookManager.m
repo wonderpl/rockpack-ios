@@ -182,6 +182,9 @@ typedef enum
         // We need to be very careful here as the completionHandler will be called
         // EVERY time the session state changes (not just on successful opening of
         // an active session
+        
+        __block BOOL hasExecuted = NO; // Keep track of whether the completion handler has been called.
+        
         [FBSession openActiveSessionWithReadPermissions: self.readPermissions
                                            allowLoginUI: YES
                                       completionHandler: ^(FBSession *session,
@@ -189,6 +192,17 @@ typedef enum
                                                            NSError *error) {
                                           NSString *errorMessage = nil;
                                           
+                                          //We only expect this completion handler to be called once. The FBSession seems to store it
+                                          //and it gets called again on logout. the hasExecuted boolean flag prevents the block from being called unless it has been
+                                          //recreated again during another login attempt.
+                                          if(hasExecuted)
+                                          {
+                                              return;
+                                          }
+                                          else
+                                          {
+                                              hasExecuted = YES;
+                                          }
                                           // Check to see if the user cancelled the log in
                                           if (status == FBSessionStateClosedLoginFailed)
                                           {

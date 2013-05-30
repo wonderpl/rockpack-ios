@@ -553,7 +553,8 @@ typedef void(^AnimationCompletionBlock)(BOOL finished);
     if (self.isInSearchMode) // if it is on stage already
         return;
     
-    self.sideNavigationButton.hidden = YES;
+    if(!self.overlayNavigationController) // we are on the main stage and the X button should appear
+        self.sideNavigationButton.hidden = YES;
     
     self.darkOverlayView.alpha = 1.0;
     
@@ -764,12 +765,13 @@ typedef void(^AnimationCompletionBlock)(BOOL finished);
     if ([notificationName isEqualToString: kNoteAllNavControlsShow])
     {
         self.searchButton.hidden = NO;
+        
         self.sideNavigationButton.hidden = NO;
+        
         self.closeSearchButton.hidden = NO;
         self.pageTitleLabel.hidden = NO;
         self.dotsView.hidden = NO;
         self.movableButtonsContainer.hidden = NO;
-        //self.containerViewController.scrollView.scrollEnabled = YES;
     }
     else
     {
@@ -779,7 +781,6 @@ typedef void(^AnimationCompletionBlock)(BOOL finished);
         self.pageTitleLabel.hidden = YES;
         self.dotsView.hidden = YES;
         self.movableButtonsContainer.hidden = YES;
-        //self.containerViewController.scrollView .scrollEnabled = NO;
         self.sideNavigationViewController.state = SideNavigationStateHidden;
     }
 }
@@ -967,6 +968,11 @@ typedef void(^AnimationCompletionBlock)(BOOL finished);
         }
         else // go back to containerView
         {
+            
+            if(self.isInSearchMode)
+            {
+                [self cancelButtonPressed:nil];
+            }
             self.overlayNavigationController = nil; // animate the overlay out using the setter method
             
             

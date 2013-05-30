@@ -80,8 +80,6 @@
     // Google analytics support
     [GAI.sharedInstance.defaultTracker sendView: @"Search - Channels"];
     
-    [[NSNotificationCenter defaultCenter] postNotificationName:kNoteSearchBarRequestShow
-                                                        object:self];
     
 }
 
