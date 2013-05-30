@@ -173,7 +173,8 @@
     
     
     VideoInstance* copyOfVideoInstance = [VideoInstance instanceFromVideoInstance: videoInstance
-                                                        usingManagedObjectContext: self.appDelegate.channelsManagedObjectContext];
+                                                        usingManagedObjectContext: self.appDelegate.channelsManagedObjectContext
+                                                              ignoringObjectTypes: kIgnoreChannelObjects];
     
     
     
