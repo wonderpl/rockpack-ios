@@ -974,18 +974,13 @@
 
 - (void) setUser: (ChannelOwner*) user
 {
-    
-    
-    
-    if(self.user) // if we have an existing user
+    if (self.user) // if we have an existing user
     {
         // remove the listener, even if nil is passed
         
         [[NSNotificationCenter defaultCenter] removeObserver:self
                                                         name:NSManagedObjectContextObjectsDidChangeNotification
                                                       object:self.user];
-        
-        
     }
     
     
@@ -1014,13 +1009,10 @@
             
             if(matchingChannelOwnerEntries.count > 1) // housekeeping, there can be only one!
                 for (int i = 1; i < matchingChannelOwnerEntries.count; i++)
-                    [user.managedObjectContext deleteObject:(matchingChannelOwnerEntries[i])];
-            
-            
+                    [user.managedObjectContext deleteObject:(matchingChannelOwnerEntries[i])]; 
         }
         else
         {
-            
             IgnoringObjects flags = kIgnoreChannelOwnerObject | kIgnoreVideoInstanceObjects; // these flags are passed to the Channels
             
             _user = [ChannelOwner instanceFromChannelOwner: user
@@ -1035,43 +1027,33 @@
                     _user = nil; // further error code
                 
             }
-        }
-        
+        } 
     }
     else
     {
         _user = user; // if User isKindOfClass [User class]
     }
     
-    
     if(self.user) // if a user has been passed or found, monitor
     {
-        
         [[NSNotificationCenter defaultCenter] addObserver: self
                                                  selector: @selector(handleDataModelChange:)
                                                      name: NSManagedObjectContextDidSaveNotification
                                                    object: self.user.managedObjectContext];
         
-        
         [[NSNotificationCenter defaultCenter] postNotificationName:kChannelOwnerUpdateRequest
                                                             object:self
                                                           userInfo:@{kChannelOwner:self.user}];
-        
-        
-    }
-    
-    
-    
-    
+    }  
 }
 
 
--(ChannelOwner*)user
+- (ChannelOwner*) user
 {
     return _user;
 }
 
--(void)dealloc
+- (void) dealloc
 {
     self.user = nil;
 }

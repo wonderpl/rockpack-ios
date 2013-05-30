@@ -92,7 +92,7 @@
 
 -(void)setFontSize:(CGFloat)pointSize
 {
-    label.font =[UIFont rockpackFontOfSize:pointSize];
+    label.font = [UIFont rockpackFontOfSize:pointSize];
 }
 
 -(void) setColorsForText:(UIColor*)textColor parentheses:(UIColor*)parenthesesColor number:(UIColor*)numberColor
