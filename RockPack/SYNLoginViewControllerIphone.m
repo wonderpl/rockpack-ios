@@ -327,6 +327,7 @@
                 
             } completion:^(BOOL finished) {
                 [self.registeringUserNameInputField becomeFirstResponder];
+                [self turnOffButton:self.backButton];
             }];
             
             break;
@@ -721,6 +722,7 @@
         return NO;
     }
     
+    
     //Zero-pad single number day and month values
     NSString* day= [self zeroPadIfOneCharacter:self.ddInputField.text];
     
@@ -808,6 +810,12 @@ shouldChangeCharactersInRange: (NSRange) range
             self.signupErrorLabel.text = [NSString stringWithFormat:@"Sorry, this date is not valid"];
         }
     }
+    
+    if(![self.signupErrorLabel.text isEqualToString: @""])
+    {
+        [sender resignFirstResponder];
+    }
+    
 }
 
 

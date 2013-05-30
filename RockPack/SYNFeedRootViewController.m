@@ -34,6 +34,7 @@
 @property (nonatomic, strong) UIRefreshControl *refreshControl;
 @property (nonatomic, strong) SYNFeedMessagesView* emptyGenreMessageView;
 
+
 @end
 
 
@@ -60,23 +61,23 @@
     
     SYNIntegralCollectionViewFlowLayout *standardFlowLayout;
     if (isIPhone)
-    {
         standardFlowLayout = [SYNIntegralCollectionViewFlowLayout
                               layoutWithItemSize:CGSizeMake(497.0f , 141.0f)
                               minimumInterItemSpacing:0.0f
                               minimumLineSpacing:10.0f
                               scrollDirection:UICollectionViewScrollDirectionVertical
                               sectionInset:insets];
-    }
+    
     else
-    {
         standardFlowLayout = [SYNIntegralCollectionViewFlowLayout
                               layoutWithItemSize:CGSizeMake(497.0f , 141.0f)
                               minimumInterItemSpacing:0.0f
                               minimumLineSpacing:30.0f
                               scrollDirection:UICollectionViewScrollDirectionVertical
                               sectionInset:insets];
-    }
+    
+    
+    standardFlowLayout.footerReferenceSize = [self footerSize];
     
     CGRect videoCollectionViewFrame, selfFrame;
     
@@ -148,7 +149,13 @@
                         forSupplementaryViewOfKind: UICollectionElementKindSectionHeader
                                withReuseIdentifier: @"SYNHomeSectionHeaderView"];
     
+    // Register Footer
+    UINib *footerViewNib = [UINib nibWithNibName: @"SYNChannelFooterMoreView"
+                                          bundle: nil];
     
+    [self.videoThumbnailCollectionView registerNib: footerViewNib
+                          forSupplementaryViewOfKind: UICollectionElementKindSectionFooter
+                                 withReuseIdentifier: @"SYNChannelFooterMoreView"];
     
     // == Refresh button == //
     self.refreshButton = [SYNRefreshButton refreshButton];
@@ -162,6 +169,8 @@
     refreshButtonFrame.origin.y = [SYNDeviceManager.sharedInstance isIPad]? 7.0f : 5.0f;
     self.refreshButton.frame = refreshButtonFrame;
     [self.view addSubview: self.refreshButton];
+    
+    self.dataRequestRange = NSMakeRange(0, STANDARD_REQUEST_LENGTH);
 }
 
 
@@ -176,6 +185,8 @@
                                              selector:@selector(videoQueueCleared)
                                                  name:kVideoQueueClear
                                                object:nil];
+    
+    
     
     [self loadAndUpdateFeedData];
     
@@ -214,6 +225,7 @@
 {
     [super willRotateToInterfaceOrientation: toInterfaceOrientation
                                    duration: duration];
+    
     [self.videoThumbnailCollectionView reloadData];
 }
 
@@ -222,7 +234,8 @@
 
 - (void) controllerDidChangeContent: (NSFetchedResultsController *) controller
 {
-    //[self.videoThumbnailCollectionView reloadData];
+  
+    
 }
 
 
@@ -232,13 +245,20 @@
     [self.refreshButton startRefreshCycle];
     
     [appDelegate.oAuthNetworkEngine subscriptionsUpdatesForUserId:  appDelegate.currentOAuth2Credentials.userId
-                                                            start: 0
-                                                             size: 0
+                                                            start: self.dataRequestRange.location
+                                                             size: self.dataRequestRange.length
                                                 completionHandler: ^(NSDictionary *responseDictionary) {
                                                     
-                                                   
+                                                    BOOL toAppend = (self.dataRequestRange.location > 0);
+                                                    
                                                     BOOL registryResultOk = [appDelegate.mainRegistry registerDataForFeedFromDictionary: responseDictionary
-                                                                                                                            byAppending: NO];
+                                                                                                                            byAppending: toAppend];
+                                                    
+                                                    NSNumber* totalNumber = [[responseDictionary objectForKey:@"videos"] objectForKey:@"total"];
+                                                    if(totalNumber && ![totalNumber isKindOfClass:[NSNull class]])
+                                                        self.dataItemsAvailable = [totalNumber integerValue];
+                                                    else
+                                                        self.dataItemsAvailable = self.dataRequestRange.length;
                                                     
                                                     if (!registryResultOk)
                                                     {
@@ -254,6 +274,8 @@
                                                         [self displayEmptyGenreMessage];
                                                     else
                                                         [self removeEmptyGenreMessage];
+                                                    
+                                                    self.footerView.showsLoading = NO;
                                                     
                                                     [self handleRefreshComplete];
                                                     
@@ -417,6 +439,7 @@
 }
 
 
+
 - (CGSize) collectionView: (UICollectionView *) collectionView
                    layout: (UICollectionViewLayout*) collectionViewLayout
                    referenceSizeForHeaderInSection: (NSInteger) section
@@ -442,18 +465,17 @@
                                   atIndexPath: (NSIndexPath *) indexPath
 {
     
-    UICollectionReusableView *sectionSupplementaryView = nil;
+    UICollectionReusableView *supplementaryView = nil;
     
-    if (collectionView == self.videoThumbnailCollectionView)
+    // Work out the day
+    id<NSFetchedResultsSectionInfo> sectionInfo = [self.fetchedResultsController.sections objectAtIndex: indexPath.section];
+    
+    // In the 'name' attribut of the sectionInfo we have actually the keypath data (i.e in this case Date without time)
+    
+    // TODO: We might want to optimise this instead of creating a new date formatter each time
+    
+    if (kind == UICollectionElementKindSectionHeader)
     {
-        // Work out the day
-        id<NSFetchedResultsSectionInfo> sectionInfo = [self.fetchedResultsController.sections objectAtIndex: indexPath.section];
-        
-        // In the 'name' attribut of the sectionInfo we have actually the keypath data (i.e in this case Date without time)
-        
-        // TODO: We might want to optimise this instead of creating a new date formatter each time
-
-        
         NSDate *date = [self.dateFormatter dateFromString: sectionInfo.name];
         
         SYNHomeSectionHeaderView *headerSupplementaryView = [collectionView dequeueReusableSupplementaryViewOfKind: kind
@@ -506,10 +528,34 @@
             headerSupplementaryView.sectionView.image = [UIImage imageNamed:@"PanelDayPortrait"];
         }
         
-        sectionSupplementaryView = headerSupplementaryView;
+        supplementaryView = headerSupplementaryView;
+    }
+    
+    else if (kind == UICollectionElementKindSectionFooter)
+    {
+        if(indexPath.section < self.fetchedResultsController.sections.count - 1)
+            return supplementaryView;
+        
+        if(self.fetchedResultsController.fetchedObjects.count == 0 ||
+           (self.dataRequestRange.location + self.dataRequestRange.length) >= self.dataItemsAvailable)
+        {
+            return supplementaryView;
+        }
+        
+        self.footerView = [self.videoThumbnailCollectionView dequeueReusableSupplementaryViewOfKind: kind
+                                                                                withReuseIdentifier: @"SYNChannelFooterMoreView"
+                                                                                       forIndexPath: indexPath];
+        
+        [self.footerView.loadMoreButton addTarget: self
+                                           action: @selector(loadMoreVideos:)
+                                 forControlEvents: UIControlEventTouchUpInside];
+        
+        //[self loadMoreChannels:self.footerView.loadMoreButton];
+        
+        supplementaryView = self.footerView;
     }
 
-    return sectionSupplementaryView;
+    return supplementaryView;
 }
 
 - (void) collectionView: (UICollectionView *) collectionView
@@ -533,6 +579,19 @@
     }
 }
 
+#pragma mark - Load More Footer
+
+
+
+- (void) loadMoreVideos: (UIButton*) sender
+{
+    
+    [self incrementRangeForNextRequest];
+    
+    [self loadAndUpdateFeedData];
+    
+    
+}
 
 - (BOOL) needsAddButton
 {
