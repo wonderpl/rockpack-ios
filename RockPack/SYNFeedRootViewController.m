@@ -214,7 +214,7 @@
 {
     [super willRotateToInterfaceOrientation: toInterfaceOrientation
                                    duration: duration];
-    [self reloadCollectionViews];
+    [self.videoThumbnailCollectionView reloadData];
 }
 
 
