@@ -23,6 +23,7 @@
 #import "VideoInstance.h"
 #import "SYNDeviceManager.h"
 #import "UIImageView+WebCache.h"
+#import "SYNFeedMessagesView.h"
 
 @interface SYNFeedRootViewController ()
 
@@ -31,6 +32,7 @@
 @property (nonatomic, strong) NSTimer *timer;
 @property (nonatomic, strong) SYNHomeSectionHeaderView *supplementaryViewWithRefreshButton;
 @property (nonatomic, strong) UIRefreshControl *refreshControl;
+@property (nonatomic, strong) SYNFeedMessagesView* emptyGenreMessageView;
 
 @end
 
@@ -245,7 +247,13 @@
                                                         return;
                                                     }
                                                     
+                                                    
                                                     [self.videoThumbnailCollectionView reloadData];
+                                                    
+                                                    if(self.fetchedResultsController.fetchedObjects.count == 0)
+                                                        [self displayEmptyGenreMessage];
+                                                    else
+                                                        [self removeEmptyGenreMessage];
                                                     
                                                     [self handleRefreshComplete];
                                                     
@@ -271,6 +279,27 @@
     
 }
 
+-(void)removeEmptyGenreMessage
+{
+    if(!self.emptyGenreMessageView)
+        return;
+    
+    [self.emptyGenreMessageView removeFromSuperview];
+}
+
+- (void) displayEmptyGenreMessage
+{
+    
+    if (self.emptyGenreMessageView)
+        return;
+    
+    self.emptyGenreMessageView = [SYNFeedMessagesView withMessage:@"Your feed looks a little empty!"];
+    
+    self.emptyGenreMessageView.center = CGPointMake(self.view.center.x, 280.0);
+    self.emptyGenreMessageView.frame = CGRectIntegral(self.emptyGenreMessageView.frame);
+    
+    [self.view addSubview:self.emptyGenreMessageView];
+}
 
 #pragma mark - Fetched results
 
@@ -313,14 +342,7 @@
 
 - (NSInteger) numberOfSectionsInCollectionView: (UICollectionView *) collectionView
 {
-    if (collectionView == self.videoThumbnailCollectionView)
-    {
-        return self.fetchedResultsController.sections.count;
-    }
-    else
-    {
-        return 1;
-    }
+    return self.fetchedResultsController.sections.count;
 }
 
 
