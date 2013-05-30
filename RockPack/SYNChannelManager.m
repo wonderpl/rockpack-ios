@@ -140,7 +140,7 @@
                                                 
                                                 
                                                 subscription.hasChangedSubscribeValue = YES;
-                                                subscription.subscribersCountValue++;
+                                                
                                                 
                                                 [appDelegate.currentUser addSubscriptionsObject:subscription];
                                                 
@@ -188,8 +188,6 @@
                                                   {
                                                       if([subscription.uniqueId isEqualToString:channel.uniqueId])
                                                       {
-                                                          
-                                                          subscription.subscribersCountValue--;
                                                           
                                                           [appDelegate.currentUser removeSubscriptionsObject:subscription];
                                                           

@@ -185,13 +185,16 @@
 
 -(void)addSubscriptionsObject:(Channel *)value_
 {
-    [super addSubscriptionsObject:value_];
+    [self.subscriptionsSet addObject:value_];
     value_.subscribedByUserValue = YES;
+    value_.subscribersCountValue++;
 }
 -(void)removeSubscriptionsObject:(Channel *)value_
 {
-    [super removeSubscriptionsObject:value_];
     value_.subscribedByUserValue = NO;
+    value_.subscribersCountValue--;
+    [self.subscriptionsSet removeObject:value_];
+    
 }
 
 -(NSString*) fullName
