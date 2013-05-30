@@ -197,6 +197,14 @@
     
 }
 
+-(void)viewDidAppear:(BOOL)animated
+{
+    [super viewDidAppear:animated];
+    
+    [self displayChannelsForGenre:currentGenre];
+    
+    [self loadChannelsForGenre:currentGenre];
+}
 
 - (void) viewDidScrollToFront
 {
@@ -330,11 +338,10 @@
     
     NSPredicate* isFreshPredicate = [NSPredicate predicateWithFormat: @"fresh == YES"];
     
-    NSPredicate* isNotFavoritesPredicate = [NSPredicate predicateWithFormat: @"favourites == NO"];
     
     
     NSPredicate* finalPredicate = [NSCompoundPredicate andPredicateWithSubpredicates:
-                                   @[genrePredicate, isFreshPredicate, viewIdPredicate, isNotFavoritesPredicate]];
+                                   @[genrePredicate, isFreshPredicate, viewIdPredicate]];
 
     [request setPredicate:finalPredicate];
     

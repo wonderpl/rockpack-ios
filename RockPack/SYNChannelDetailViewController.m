@@ -380,6 +380,9 @@
 
 - (void) viewWillDisappear: (BOOL) animated
 {
+    
+    [super viewWillDisappear: animated];
+    
     [[NSNotificationCenter defaultCenter] postNotificationName: kNoteAllNavControlsShow
                                                         object: self
                                                       userInfo: nil];
@@ -409,9 +412,10 @@
         [self.subscribingIndicator removeFromSuperview];
         self.subscribingIndicator = nil;
     }
-        
+    
+    self.channel = nil;
 
-    [super viewWillDisappear: animated];
+    
 }
 
 -(void) videoQueueCleared
@@ -2317,7 +2321,7 @@
         
         if(_channel)
         {
-            [channel.managedObjectContext save:&error];
+            [_channel.managedObjectContext save:&error];
             if(error)
                 _channel = nil; // further error code
         }
