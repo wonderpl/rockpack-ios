@@ -206,6 +206,12 @@
 {
     NSString *reportString = self.concernsArray[self.selectedIndexPath.row];
     self.sendReportBlock(reportString);
+    
+    [[[UIAlertView alloc] initWithTitle: NSLocalizedString(@"Thanks!", nil)
+                                message: NSLocalizedString(@"A member of our editorial team will review this content and take any necessary action.", nil)
+                               delegate: nil
+                      cancelButtonTitle: NSLocalizedString(@"OK", nil)
+                      otherButtonTitles: nil] show];
 }
 
 @end

@@ -7,7 +7,7 @@
 */
 
 
-"starred_action" = "has starred";
+"starred_action" = "has liked";
 "subscribed_action" = "has subscribed to";
 "your_channel_object" = "your channel";
 "your_video_object" = "your video";
