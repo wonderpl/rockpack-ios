@@ -22,6 +22,7 @@ typedef void (^SYNVideoIndexUpdater)(int);
 @property (nonatomic, assign, readonly) NSTimeInterval duration;
 @property (nonatomic, strong) UIView *shuttleBarView;
 @property (nonatomic, strong) VideoInstance* currentVideoInstance;
+@property (nonatomic, strong) UIButton *shuttleBarMaxMinButton;
 
 + (SYNVideoPlaybackViewController*) sharedInstance;
 
@@ -36,5 +37,6 @@ typedef void (^SYNVideoIndexUpdater)(int);
 // Player control
 - (void) playVideoAtIndex: (int) index;
 - (void) loadNextVideo;
+- (void) resetShuttleBarFrame;
 
 @end
