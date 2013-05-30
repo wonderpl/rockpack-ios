@@ -218,6 +218,7 @@ extern void instrumentObjcMessageSends(BOOL);
     [self clearCoreDataMainEntities:YES];
 
     self.currentOAuth2Credentials = nil;
+    
     _currentUser = nil;
  
 }
