@@ -216,14 +216,17 @@
 }
 
 
-- (void) reloadCollectionViews
+
+
+- (void) controllerDidChangeContent: (NSFetchedResultsController *) controller
 {
-    [self.videoThumbnailCollectionView reloadData];
+    //[self.videoThumbnailCollectionView reloadData];
 }
 
 
 - (void) loadAndUpdateFeedData
 {
+    
     [self.refreshButton startRefreshCycle];
     
     [appDelegate.oAuthNetworkEngine subscriptionsUpdatesForUserId:  appDelegate.currentOAuth2Credentials.userId
@@ -241,6 +244,8 @@
                                                         
                                                         return;
                                                     }
+                                                    
+                                                    [self.videoThumbnailCollectionView reloadData];
                                                     
                                                     [self handleRefreshComplete];
                                                     
@@ -282,7 +287,10 @@
                                       inManagedObjectContext: appDelegate.mainManagedObjectContext];
     
     
-    fetchRequest.predicate = [NSPredicate predicateWithFormat:[NSString stringWithFormat:@"fresh == YES"]];
+    NSPredicate* predicate = [NSPredicate predicateWithFormat:[NSString stringWithFormat:@"viewId == \"%@\" AND fresh == YES", kFeedViewId]];
+    
+                              
+    fetchRequest.predicate = predicate;
     
     
     fetchRequest.sortDescriptors = @[[[NSSortDescriptor alloc] initWithKey: @"dateAdded" ascending: NO]];

@@ -2305,14 +2305,13 @@
     }
     else
     {
-        IgnoringObjects flags = kIgnoreNothing;
-        if(self.channel.channelOwner == appDelegate.currentUser)
-            flags |= kIgnoreChannelOwnerObject;
+        
+        // the User will be copyed over, but as a ChannelOwner, so "current" will not be set to YES
         
         _channel = [Channel instanceFromChannel:channel
                                       andViewId:self.viewId
                       usingManagedObjectContext:channel.managedObjectContext
-                            ignoringObjectTypes:flags];
+                            ignoringObjectTypes:kIgnoreNothing];
         
         
         if(_channel)
