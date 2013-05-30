@@ -18,5 +18,6 @@
 @property (nonatomic, strong) IBOutlet UIButton *closeButton;
 @property (nonatomic, strong) SYNMasterViewController *overlayParent;
 @property (nonatomic, assign) BOOL shownFromChannelScreen;
+@property (nonatomic, strong) IBOutlet UIImageView *iPhonePanelImageView;
 
 @end
