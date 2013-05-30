@@ -341,7 +341,7 @@ static UIWebView* vimeoideoWebViewInstance;
     UIView *shuttleBarBackgroundView = [[UIView alloc] initWithFrame: shuttleBarView.bounds];
     shuttleBarBackgroundView.alpha = 0.5f;
     shuttleBarBackgroundView.backgroundColor = [UIColor blackColor];
-    shuttleBarBackgroundView.autoresizingMask = UIViewAutoresizingFlexibleWidth | UIViewAutoresizingFlexibleHeight;
+    shuttleBarBackgroundView.autoresizingMask = UIViewAutoresizingFlexibleWidth;
     [shuttleBarView addSubview: shuttleBarBackgroundView];
     
     // Add play/pause button
@@ -373,6 +373,7 @@ static UIWebView* vimeoideoWebViewInstance;
     
     self.durationLabel.text =  [NSString timecodeStringFromSeconds: 0.0f];
     
+    self.durationLabel.autoresizingMask = UIViewAutoresizingFlexibleLeftMargin;
     [shuttleBarView addSubview: self.durationLabel];
     
     // Add shuttle slider
@@ -384,6 +385,7 @@ static UIWebView* vimeoideoWebViewInstance;
     UIImageView *sliderBackgroundImageView = [[UIImageView alloc] initWithFrame: CGRectMake(sliderOffset+2, 17, shuttleBarFrame.size.width - 4 - (2 * sliderOffset), 10)];
     
     sliderBackgroundImageView.image = [sliderBackgroundImage resizableImageWithCapInsets: UIEdgeInsetsMake(0.0f, 10.0f, 0.0f, 10.0f)];
+    sliderBackgroundImageView.autoresizingMask = UIViewAutoresizingFlexibleWidth;
     [shuttleBarView addSubview: sliderBackgroundImageView];
     
     // Add the progress bar over the background, but underneath the slider
@@ -395,6 +397,7 @@ static UIWebView* vimeoideoWebViewInstance;
     self.bufferingProgressView.progressImage = progressImage;
     self.bufferingProgressView.trackImage = shuttleSliderRightTrack;
     self.bufferingProgressView.progress = 0.0f;
+    self.bufferingProgressView.autoresizingMask = UIViewAutoresizingFlexibleWidth;
     [shuttleBarView addSubview: self.bufferingProgressView];
     
     self.shuttleSlider = [[UISlider alloc] initWithFrame: CGRectMake(sliderOffset, 9, shuttleBarFrame.size.width - (2 * sliderOffset), 25)];
@@ -418,6 +421,7 @@ static UIWebView* vimeoideoWebViewInstance;
                            action: @selector(updateTimeFromSlider:)
                  forControlEvents: UIControlEventValueChanged];
     
+    self.shuttleSlider.autoresizingMask = UIViewAutoresizingFlexibleWidth;
     [shuttleBarView addSubview: self.shuttleSlider];
     
     // Add AirPlay button
@@ -427,8 +431,8 @@ static UIWebView* vimeoideoWebViewInstance;
     [volumeView setShowsVolumeSlider: NO];
     [volumeView sizeToFit];
     volumeView.backgroundColor = [UIColor clearColor];
+    volumeView.autoresizingMask = UIViewAutoresizingFlexibleLeftMargin;
     [shuttleBarView addSubview: volumeView];
-    
     [self.view addSubview: shuttleBarView];
     
     return shuttleBarView;
