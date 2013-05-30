@@ -75,7 +75,7 @@
 - (void) viewWillAppear: (BOOL) animated
 {
     // override the data loading
-    [self reloadCollectionViews];
+    [self displayChannelsForGenre];
     
     // Google analytics support
     [GAI.sharedInstance.defaultTracker sendView: @"Search - Channels"];
@@ -88,15 +88,21 @@
 
 - (void) handleDataModelChange: (NSNotification*) dataNotification
 {
-    // channels are inserted so they are caught in the NSInsertedObjectsKey array
-    // NSArray* updatedObjects = (NSArray*)[[dataNotification userInfo] objectForKey: NSInsertedObjectsKey];
-    
+        
     // this is mainly for the number refresh at the tabs
-    [self reloadCollectionViews];
+    [self displayChannelsForGenre];
     
 }
 
-- (void) reloadCollectionViews
+#pragma mark - Overloading Methods
+// override the loading of channels form superclass, genre is NOT used in this class but is passed for the overloading to work //
+
+-(void)displayChannelsForGenre
+{
+    [self displayChannelsForGenre:nil];
+}
+
+- (void) displayChannelsForGenre: (Genre*) genre
 {
     NSFetchRequest *request = [[NSFetchRequest alloc] init];
     [request setEntity:[NSEntityDescription entityForName: @"Channel"
@@ -134,6 +140,12 @@
     // override superclass method as there are no genres here
 }
 
+- (void) loadChannelsForGenre: (Genre*) genre
+                  byAppending: (BOOL) append
+{
+    // override superclass method as there are no genres here
+}
+
 - (void) loadMoreChannels: (UIButton*) sender
 {
     
@@ -155,6 +167,7 @@
                                           }];
 }
 
+#pragma mark - Perform Search
 
 - (void) performNewSearchWithTerm: (NSString*) term
 {
