@@ -600,7 +600,6 @@
         self.channelTitleTextView.text = @"";
     }
     
-    
         
     
     [self adjustTextView];
