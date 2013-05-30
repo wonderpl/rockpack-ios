@@ -184,8 +184,9 @@
         self.headerSubscriptionsView.frame = newFrame;
         [self.headerSubscriptionsView setFontSize: 12.0f];
         
-        [self.headerSubscriptionsView setTitle: NSLocalizedString(@"SUBSCRIPTIONS",nil)
+        [self.headerSubscriptionsView setTitle: NSLocalizedString(@"MY SUBSCRIPTIONS",nil)
                                      andNumber: 0];
+        
         
         self.headerSubscriptionsView.userInteractionEnabled = NO;
     }
@@ -627,7 +628,10 @@
 {
     if([SYNDeviceManager.sharedInstance isIPhone])
     {
-        return NSLocalizedString(@"CHANNELS",nil);
+        if(self.user == appDelegate.currentUser)
+            return NSLocalizedString(@"MY CHANNELS",nil);
+        else
+            return NSLocalizedString(@"CHANNELS",nil);
         
     }
     else
@@ -974,6 +978,8 @@
 - (void) setUser: (ChannelOwner*) user
 {
     
+    
+    
     if(self.user) // if we have an existing user
     {
         // remove the listener, even if nil is passed
@@ -986,12 +992,10 @@
     }
     
     
-    _user = user;
-    
-    if(!self.user) // if no user has been passed, set to nil and then return
+    if(!user) // if no user has been passed, set to nil and then return
         return;
     
-    if(![self.user isMemberOfClass:[User class]]) // is a User has been passsed dont copy him OR his channels as there can be only one.
+    if(![user isMemberOfClass:[User class]]) // is a User has been passsed dont copy him OR his channels as there can be only one.
     {
         NSFetchRequest *channelOwnerFetchRequest = [[NSFetchRequest alloc] init];
         
@@ -1037,6 +1041,10 @@
         }
         
     }
+    else
+    {
+        _user = user; // if User isKindOfClass [User class]
+    }
     
     
     if(self.user) // if a user has been passed or found, monitor
@@ -1064,6 +1072,11 @@
 -(ChannelOwner*)user
 {
     return _user;
+}
+
+-(void)dealloc
+{
+    self.user = nil;
 }
 
 @end

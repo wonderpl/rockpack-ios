@@ -21,6 +21,8 @@
         
         // Label
         
+        message = [message uppercaseString];
+        
         UIFont* fontToUse = [UIFont rockpackFontOfSize:20.0];
         
         CGRect labelFrame = CGRectZero;
