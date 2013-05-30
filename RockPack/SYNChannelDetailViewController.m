@@ -319,7 +319,6 @@
     [super viewWillAppear: animated];
     
     
-    
     NSString *viewMode = [NSString stringWithFormat: @"Channels - Detail - %@", (self.mode == kChannelDetailsModeDisplay) ? @"Display" : @"Edit"];
     
     // Google analytics support
@@ -369,9 +368,11 @@
     // Refresh our view
     [self.videoThumbnailCollectionView reloadData];
     
-    // Only do this is we have a resource URL (i.e. we haven't just created the channel)
     
-    
+    if(self.channel.videoInstances.count == 0)
+    {
+        [self showNoVideosMessage:@"LOADING VIDEOS"];
+    }
     
     [self displayChannelDetails];
 }
@@ -379,6 +380,9 @@
 
 - (void) viewWillDisappear: (BOOL) animated
 {
+    
+    [super viewWillDisappear: animated];
+    
     [[NSNotificationCenter defaultCenter] postNotificationName: kNoteAllNavControlsShow
                                                         object: self
                                                       userInfo: nil];
@@ -408,9 +412,10 @@
         [self.subscribingIndicator removeFromSuperview];
         self.subscribingIndicator = nil;
     }
-        
+    
+    self.channel = nil;
 
-    [super viewWillDisappear: animated];
+    
 }
 
 -(void) videoQueueCleared
@@ -492,14 +497,14 @@
         
         if ([obj isKindOfClass:[Channel class]] && [((Channel*)obj).uniqueId isEqualToString:self.channel.uniqueId])
         {
-            if (self.channel.videoInstances.count == 0)
+            
+            if(self.channel.videoInstances.count == 0)
             {
-                [self showNoVideosMessage];
+                [self showNoVideosMessage:@"THERE ARE NO VIDEOS IN THIS CHANNEL YET"];
             }
-            else if (self.noVideosMessageView != nil)
+            else
             {
-                [self.noVideosMessageView removeFromSuperview];
-                self.noVideosMessageView = nil;
+                [self showNoVideosMessage:nil];
             }
             
             [self reloadCollectionViews];
@@ -512,8 +517,18 @@
     
 }
 
-- (void) showNoVideosMessage
+- (void) showNoVideosMessage:(NSString*)message
 {
+    if(self.noVideosMessageView)
+    {
+        [self.noVideosMessageView removeFromSuperview];
+        self.noVideosMessageView = nil;
+        
+    }
+    
+    if(!message)
+        return;
+    
     CGSize viewFrameSize = CGSizeMake(360.0, 50.0);
     self.noVideosMessageView = [[UIView alloc] initWithFrame:CGRectMake(0.0, 640.0, viewFrameSize.width, viewFrameSize.height)];
     self.noVideosMessageView.center = CGPointMake(self.view.frame.size.width * 0.5, self.noVideosMessageView.center.y);
@@ -528,7 +543,7 @@
     
     
     UILabel* noVideosLabel = [[UILabel alloc] initWithFrame:CGRectZero];
-    noVideosLabel.text = @"THERE ARE NO VIDEOS IN THIS CHANNEL YET";
+    noVideosLabel.text = message;
     noVideosLabel.textAlignment = NSTextAlignmentCenter;
     noVideosLabel.font = [UIFont rockpackFontOfSize:16.0];
     noVideosLabel.textColor = [UIColor whiteColor];
@@ -567,7 +582,6 @@
     self.channelOwnerLabel.text = self.channel.channelOwner.displayName;
     
     
-    NSLog(@"current channel s count : %lld", self.channel.subscribersCountValue);
     
     NSString *detailsString = [NSString stringWithFormat: @"%lld %@", self.channel.subscribersCountValue, NSLocalizedString(@"SUBSCRIBERS", nil)];
     self.channelDetailsLabel.text = detailsString;
@@ -580,7 +594,6 @@
     
     // Set title //
     
-    NSLog(@"Channel: %@", self.channel);
     
     if(self.channel.title)
     {
@@ -591,6 +604,7 @@
         self.channelTitleTextView.text = @"";
     }
     
+        
     
     [self adjustTextView];
 }
@@ -2296,19 +2310,18 @@
     }
     else
     {
-        IgnoringObjects flags = kIgnoreNothing;
-        if(self.channel.channelOwner == appDelegate.currentUser)
-            flags |= kIgnoreChannelOwnerObject;
+        
+        // the User will be copyed over, but as a ChannelOwner, so "current" will not be set to YES
         
         _channel = [Channel instanceFromChannel:channel
                                       andViewId:self.viewId
                       usingManagedObjectContext:channel.managedObjectContext
-                            ignoringObjectTypes:flags];
+                            ignoringObjectTypes:kIgnoreNothing];
         
         
         if(_channel)
         {
-            [channel.managedObjectContext save:&error];
+            [_channel.managedObjectContext save:&error];
             if(error)
                 _channel = nil; // further error code
         }
@@ -2330,6 +2343,8 @@
                        forKeyPath: kSubscribedByUserKey
                           options: NSKeyValueObservingOptionNew
                           context: nil];
+        
+        
         
         if(self.mode == kChannelDetailsModeDisplay)
         {

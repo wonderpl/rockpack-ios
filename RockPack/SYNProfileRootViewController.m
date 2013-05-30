@@ -31,8 +31,7 @@
 
 @interface SYNProfileRootViewController () <SYNDeletionWobbleLayoutDelegate,
                                             UIGestureRecognizerDelegate,
-                                            SYNImagePickerControllerDelegate,
-                                            SYNUserProfileViewControllerDelegate>
+                                            SYNImagePickerControllerDelegate>
 
 // Enable to allow the user to 'pinch out' on thumbnails
 #ifdef ALLOWS_PINCH_GESTURES
@@ -1020,7 +1019,7 @@
         else
         {
             
-            IgnoringObjects flags = kIgnoreVideoInstanceObjects | kIgnoreChannelOwnerObject; // these flags are passed to the Channels
+            IgnoringObjects flags = kIgnoreChannelOwnerObject | kIgnoreVideoInstanceObjects; // these flags are passed to the Channels
             
             _user = [ChannelOwner instanceFromChannelOwner: user
                                                  andViewId: self.viewId

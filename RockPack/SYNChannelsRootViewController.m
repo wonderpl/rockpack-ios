@@ -197,6 +197,14 @@
     
 }
 
+-(void)viewDidAppear:(BOOL)animated
+{
+    [super viewDidAppear:animated];
+    
+    [self displayChannelsForGenre:currentGenre];
+    
+    [self loadChannelsForGenre:currentGenre];
+}
 
 - (void) viewDidScrollToFront
 {
@@ -308,7 +316,7 @@
     
     NSPredicate* genrePredicate;
     
-    if (!genre) // all category
+    if (!genre) // @"all" category
     {
         genrePredicate = [NSPredicate predicateWithFormat: @"popular == YES"];
     }
@@ -330,10 +338,10 @@
     
     NSPredicate* isFreshPredicate = [NSPredicate predicateWithFormat: @"fresh == YES"];
     
-    NSPredicate* isNotFavoritesPredicate = [NSPredicate predicateWithFormat: @"favourites == NO"];
     
     
-    NSPredicate* finalPredicate = [NSCompoundPredicate andPredicateWithSubpredicates: @[genrePredicate, isFreshPredicate, viewIdPredicate, isNotFavoritesPredicate]];
+    NSPredicate* finalPredicate = [NSCompoundPredicate andPredicateWithSubpredicates:
+                                   @[genrePredicate, isFreshPredicate, viewIdPredicate]];
 
     [request setPredicate:finalPredicate];
     
@@ -363,6 +371,7 @@
     }
 
     // We shouldn't wait until the animation is over, as this will result in crashes if the user is scrolling
+    
     [self.channelThumbnailCollectionView reloadData];
 }
 

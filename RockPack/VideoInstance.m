@@ -17,7 +17,8 @@
 @synthesize selectedForVideoQueue;
 
 +(VideoInstance*) instanceFromVideoInstance:(VideoInstance*)existingInstance
-                  usingManagedObjectContext: (NSManagedObjectContext *) managedObjectContext {
+                  usingManagedObjectContext: (NSManagedObjectContext *) managedObjectContext
+                        ignoringObjectTypes: (IgnoringObjects) ignoringObjects {
     
     VideoInstance* instance = [VideoInstance insertInManagedObjectContext: managedObjectContext];
     
@@ -31,6 +32,14 @@
     
     instance.video = [Video instanceFromVideo:existingInstance.video
                     usingManagedObjectContext:managedObjectContext];
+    
+    if (!(ignoringObjects & kIgnoreChannelObjects))
+    {
+        instance.channel = [Channel instanceFromChannel:existingInstance.channel
+                                              andViewId:instance.viewId
+                              usingManagedObjectContext:managedObjectContext
+                                    ignoringObjectTypes:ignoringObjects | kIgnoreChannelOwnerObject | kIgnoreVideoInstanceObjects];
+    }
     
     
     
