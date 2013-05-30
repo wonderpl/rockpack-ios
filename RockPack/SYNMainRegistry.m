@@ -263,6 +263,7 @@
             
             existingVideoInstance.markedForDeletionValue = YES;
             existingVideoInstance.freshValue = NO;
+            
             existingVideoInstance.channel.markedForDeletionValue = YES;
             existingVideoInstance.channel.freshValue = NO;
         }

@@ -268,6 +268,20 @@
 
 }
 
+- (void) incrementRangeForNextRequest
+{
+    // (UIButton*) sender can be nil when called directly //
+    self.footerView.showsLoading = YES;
+    
+    NSInteger nextStart = self.dataRequestRange.location + self.dataRequestRange.length; // one is subtracted when the call happens for 0 indexing
+    
+    if (nextStart >= self.dataItemsAvailable)
+        return;
+    
+    NSInteger nextSize = (nextStart + STANDARD_REQUEST_LENGTH) >= self.dataItemsAvailable ? (self.dataItemsAvailable - nextStart) : STANDARD_REQUEST_LENGTH;
+    
+    self.dataRequestRange = NSMakeRange(nextStart, nextSize);
+}
 
 - (NSIndexPath *) indexPathFromVideoInstanceButton: (UIButton *) button
 {
@@ -639,6 +653,13 @@
 	{
 		[[UIApplication sharedApplication] openURL: purchaseURL];
 	}
+}
+
+// Load more footer
+
+- (CGSize) footerSize
+{
+    return [SYNDeviceManager.sharedInstance isIPhone] ? CGSizeMake(320.0f, 64.0f) : CGSizeMake(1024.0, 64.0);
 }
 
 

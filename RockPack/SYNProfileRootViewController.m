@@ -1074,4 +1074,9 @@
     return _user;
 }
 
+-(void)dealloc
+{
+    self.user = nil;
+}
+
 @end

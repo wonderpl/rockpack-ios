@@ -7,6 +7,7 @@
 //
 
 #import "AppConstants.h"
+#import "NSObject+Blocks.h"
 #import "NSString+Timecode.h"
 #import "SYNAppDelegate.h"
 #import "SYNDeviceManager.h"
@@ -17,8 +18,6 @@
 #import <CoreData/CoreData.h>
 #import <MediaPlayer/MediaPlayer.h>
 #import <QuartzCore/CoreAnimation.h>
-#import "NSObject+Blocks.h"
-#import "SYNDeviceManager.h"
 
 @interface SYNVideoPlaybackViewController () <UIWebViewDelegate>
 
@@ -31,6 +30,7 @@
 @property (nonatomic, assign) BOOL playFlag;
 @property (nonatomic, assign) BOOL shuttledByUser;
 @property (nonatomic, assign) CGRect requestedFrame;
+@property (nonatomic, assign) CGRect originalShuttleBarFrame;
 @property (nonatomic, assign) NSTimeInterval currentDuration;
 @property (nonatomic, assign) NSTimeInterval lastTime;
 @property (nonatomic, assign) int currentSelectedIndex;
@@ -327,7 +327,7 @@ static UIWebView* vimeoideoWebViewInstance;
     {
         shuttleBarButtonOffset = kShuttleBarButtonWidthiPad;
         shuttleBarButtonWidth = kShuttleBarButtonWidthiPad;
-        airplayOffset = 18;
+        airplayOffset = 0;
     }
     
     // Create out shuttle bar view at the bottom of our video view
@@ -424,10 +424,28 @@ static UIWebView* vimeoideoWebViewInstance;
     self.shuttleSlider.autoresizingMask = UIViewAutoresizingFlexibleWidth;
     [shuttleBarView addSubview: self.shuttleSlider];
     
+    if ([SYNDeviceManager.sharedInstance isIPhone])
+    {
+        // Add max/min button
+        self.shuttleBarMaxMinButton = [UIButton buttonWithType: UIButtonTypeCustom];
+        
+        // Set this subview to appear slightly offset from the left-hand side
+        self.shuttleBarMaxMinButton.frame = CGRectMake(300 - shuttleBarButtonOffset, 0, shuttleBarButtonOffset, kShuttleBarHeight);
+        
+        [self.shuttleBarMaxMinButton setImage: [UIImage imageNamed: @"ButtonShuttleBarMaximise.png"]
+                                     forState: UIControlStateNormal];
+        
+        self.shuttleBarMaxMinButton.backgroundColor = [UIColor clearColor];
+        
+        self.shuttleBarMaxMinButton.autoresizingMask = UIViewAutoresizingFlexibleLeftMargin;
+        
+        [shuttleBarView addSubview: self.shuttleBarMaxMinButton];
+    }
+    
     // Add AirPlay button
     // This is a crafty (apple approved) hack, where we set the showVolumeSlider parameter to NO, so only the AirPlay symbol gets shown
     MPVolumeView *volumeView = [[MPVolumeView alloc] init];
-    volumeView.frame = CGRectMake(self.view.frame.size.width - shuttleBarButtonWidth + airplayOffset, 12, 25, kShuttleBarHeight);
+    volumeView.frame = CGRectMake(self.view.frame.size.width - 30 , 12, 25, kShuttleBarHeight);
     [volumeView setShowsVolumeSlider: NO];
     [volumeView sizeToFit];
     volumeView.backgroundColor = [UIColor clearColor];
@@ -435,7 +453,14 @@ static UIWebView* vimeoideoWebViewInstance;
     [shuttleBarView addSubview: volumeView];
     [self.view addSubview: shuttleBarView];
     
+    self.originalShuttleBarFrame = shuttleBarView.frame;
+    
     return shuttleBarView;
+}
+
+- (void) resetShuttleBarFrame
+{
+    self.shuttleBarView.frame = self.originalShuttleBarFrame;
 }
 
 
