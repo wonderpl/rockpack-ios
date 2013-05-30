@@ -111,10 +111,15 @@
     if (!self.currentController)
         [self videoTabPressed:nil];
     
+    
+    [[NSNotificationCenter defaultCenter] postNotificationName: kNoteSearchBarRequestShow
+                                                        object: self];
+    
     if([[SYNDeviceManager sharedInstance] isIPhone])
     {
         [[NSNotificationCenter defaultCenter] postNotificationName: kNoteAllNavControlsHide
                                                         object: self];
+        
         [self.view addSubview:self.searchBoxViewController.searchBoxView];
         [self.searchBoxViewController.searchBoxView revealCloseButton];
     }
@@ -126,8 +131,7 @@
 {
     [super viewWillDisappear:animated];
     
-    [[NSNotificationCenter defaultCenter] postNotificationName: kNoteSearchBarRequestHide
-                                                        object: self];
+    
     if([[SYNDeviceManager sharedInstance] isIPhone])
     {
         [[NSNotificationCenter defaultCenter] postNotificationName: kNoteAllNavControlsShow
