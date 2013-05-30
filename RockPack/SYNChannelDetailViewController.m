@@ -252,7 +252,7 @@
     if (!isIPhone)
     {
         // Set text on add cover and select category buttons
-        NSString *coverString = NSLocalizedString (@"ADD A COVER", nil);
+        NSString *coverString = NSLocalizedString (@"SELECT A COVER", nil);
         
         NSMutableAttributedString* attributedCoverString = [[NSMutableAttributedString alloc] initWithString: coverString
                                                                                                   attributes: @{NSForegroundColorAttributeName : [UIColor colorWithRed: 40.0f/255.0f green: 45.0f/255.0f blue: 51.0f/255.0f alpha: 1.0f],
@@ -1133,6 +1133,7 @@
                                               errorHandler: ^(NSDictionary* error) {
                                                   NSDictionary* specificErrors = [error objectForKey: @"form_errors"];
                                                   id errorText = [specificErrors objectForKey: @"title"];
+                                                  id errorTitle = @"Error";
                                                   if ([errorText isKindOfClass:[NSArray class]])
                                                   {
                                                       errorText = errorText[0];
@@ -1144,7 +1145,7 @@
                                                   
                                                   DebugLog(@"Error @ saveChannelPressed:");
                                                   errorText = NSLocalizedString(errorText, nil);
-                                                  [self showError: errorText];
+                                                  [self showError: errorText showErrorTitle:errorTitle];
                                                   self.saveChannelButton.hidden = NO;
                                                   self.saveChannelButton.enabled = YES;
                                                   [self.activityIndicator stopAnimating];
@@ -1478,10 +1479,33 @@
                                               errorHandler: ^(id error) {
                                                   
                                                   DebugLog(@"Error @ createChannelPressed:");
+                                                  
+                                                  NSString *errorTitle = NSLocalizedString(@"ERROR", nil);
                                                   NSString* errorMessage = NSLocalizedString(@"Could not create channel. Please try again later.", nil);
-                                                  if ([[error objectForKey: @"form_errors"] objectForKey :@"title"])
+                                                  
+                                                  NSArray *errorTitleArray =  [[error objectForKey: @"form_errors"] objectForKey :@"title"];
+                                                  
+                                                  if ([errorTitleArray count] > 0)
                                                   {
-                                                      errorMessage = NSLocalizedString(@"You already created a channel with this title. Please choose a different title.",nil);
+                                                      
+                                                      NSString* errorType = [errorTitleArray objectAtIndex:0];
+                                                      
+                                                      if ([errorType isEqualToString:@"Duplicate title."])
+                                                      {
+                                                          errorTitle = NSLocalizedString(@"Title Already Exists", nil);
+                                                          errorMessage = NSLocalizedString(@"You've already created a channel with this title. Please choose another.",nil);
+                                                      }
+                                                      
+                                                      else if ([errorType isEqualToString:@"Mind your language!"])
+                                                      {
+                                                          errorTitle = NSLocalizedString(@"Mind your language!", nil);
+                                                          errorMessage = NSLocalizedString(@"This channel title may include inapproriate words.",nil);
+                                                      }
+                                                      
+                                                      else
+                                                      {
+                                                          errorMessage = NSLocalizedString(@" ",nil);
+                                                      }
                                                   };
                                                   
                                                   
@@ -1489,7 +1513,7 @@
                                                   self.createChannelButton.hidden = NO;
                                                   self.cancelEditButton.hidden = YES;
                                                   self.addButton.hidden = YES;                                                  
-                                                  [self showError:errorMessage];
+                                                  [self showError:errorMessage showErrorTitle:errorTitle];
                                               }];
 }
 
@@ -1508,6 +1532,7 @@
                                                       
                                                   } errorHandler: ^(id err) {
                                                       NSString* errorMessage = nil;
+                                                      NSString* errorTitle = nil;
                                                       if ([err isKindOfClass:[NSDictionary class]])
                                                       {
                                                           errorMessage = [err objectForKey:@"message"];
@@ -1531,7 +1556,7 @@
                                                               errorMessage = NSLocalizedString(@"Could not update the channel videos. Please review and try again later.", nil);
                                                           }
                                                           DebugLog(@"Error @ setVideosForChannelById:");
-                                                          [self showError: errorMessage];
+                                                          [self showError: errorMessage showErrorTitle:errorTitle];
                                                           
                                                       }
                                                       else
@@ -1547,7 +1572,7 @@
                                                               errorMessage = NSLocalizedString(@"Could not add videos to channel. Please review and try again later.", nil);
                                                           }
                                                           DebugLog(@"Error @ setVideosForChannelById:");
-                                                          [self showError: errorMessage];
+                                                          [self showError: errorMessage showErrorTitle:errorTitle];
                                                         
                                                       }
                                                       
@@ -1613,7 +1638,7 @@
                                           } errorHandler:^(id err) {
                                               
                                               DebugLog(@"Error @ getNewlyCreatedChannelForId:");
-                                              [self showError: NSLocalizedString(@"Could not retrieve the uploaded channel data. Please try accessing it from your profile later.", nil)];
+                                              [self showError: NSLocalizedString(@"Could not retrieve the uploaded channel data. Please try accessing it from your profile later.", nil) showErrorTitle:@"Error"];
                                               self.channelOwnerLabel.text = appDelegate.currentUser.displayName;
                                               
                                               [self displayChannelDetails];
@@ -1675,12 +1700,12 @@
 
 }
 
-- (void) showError: (NSString*) errorMessage
+- (void) showError: (NSString*) errorMessage showErrorTitle: (NSString*) errorTitle
 {
     self.createChannelButton.hidden = NO;
     [self.activityIndicator stopAnimating];
-    
-    [[[UIAlertView alloc] initWithTitle: NSLocalizedString(@"Error", nil)
+        
+    [[[UIAlertView alloc] initWithTitle: errorTitle
                                 message: errorMessage
                                delegate: nil
                       cancelButtonTitle: NSLocalizedString(@"OK", nil)
