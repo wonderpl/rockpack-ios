@@ -123,7 +123,7 @@
                                                    channelURL: channel.resourceURL
                                             completionHandler: ^(NSDictionary *responseDictionary) {
                                                 
-                                                
+                                                // This notifies the ChannelDetails through KVO
                                                 channel.hasChangedSubscribeValue = YES;
                                                 channel.subscribedByUserValue = YES;
                                                 channel.subscribersCountValue += 1;
@@ -148,7 +148,7 @@
                                                 // might be in search context
                                                 NSError* error;
                                                 [channel.managedObjectContext save:&error];
-                                                if(!error)
+                                                if(error)
                                                 {
                                                     
                                                 }
@@ -158,9 +158,7 @@
                                                 
                                             } errorHandler: ^(NSDictionary* errorDictionary) {
                                                 
-                                                // so that the observer will pick up the change and stop the activity indicator
-                                                channel.subscribedByUserValue = channel.subscribedByUserValue;
-                                                channel.hasChangedSubscribeValue = NO;
+                                                
                                                 
                                                 
                                             }];
@@ -178,7 +176,7 @@
                                               completionHandler: ^(NSDictionary *responseDictionary) {
                                                   
                                                   
-                                                  
+                                                  // This notifies the ChannelDetails through KVO
                                                   channel.hasChangedSubscribeValue = YES;
                                                   channel.subscribedByUserValue = NO;
                                                   channel.subscribersCountValue -= 1;
@@ -195,16 +193,19 @@
                                                       }
                                                   }
                                                   
-                                                  
+                                                  NSError* error;
+                                                  [channel.managedObjectContext save:&error];
+                                                  if(error)
+                                                  {
+                                                      
+                                                  }
                                                   
                                                   [appDelegate saveContext:YES];
                                                                        
                                                   
                                                 } errorHandler: ^(NSDictionary* errorDictionary) {
                                                     
-                                                    // so that the observer will pick up the change and stop the activity indicator
-                                                    channel.subscribedByUserValue = channel.subscribedByUserValue;
-                                                    channel.hasChangedSubscribeValue = NO;
+                                                    
                                                     
                                                 }];
     

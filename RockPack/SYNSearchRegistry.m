@@ -81,11 +81,6 @@
         return NO;
     
     
-    NSMutableDictionary* subscriptionById = [[NSMutableDictionary alloc] initWithCapacity:appDelegate.currentUser.subscriptions.count];
-    for (Channel* subscription in appDelegate.currentUser.subscriptions) {
-        [subscriptionById setObject:subscription forKey:subscription.uniqueId];
-    }
-        
         
     
     for (NSDictionary *itemDictionary in itemArray)
@@ -102,12 +97,8 @@
             continue;
         }
         
-        Channel* potential = [subscriptionById objectForKey:[itemDictionary objectForKey: @"id"]];
+
         
-        if(potential) {
-            channel.subscribedByUserValue = YES;
-        } 
-            
         
     }
     

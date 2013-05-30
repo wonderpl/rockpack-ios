@@ -515,6 +515,16 @@
                 [self showNoVideosMessage:nil];
             }
             
+            
+            self.subscribeButton.selected = self.channel.subscribedByUserValue;
+            self.subscribeButton.enabled = YES;
+            
+            if (self.subscribingIndicator)
+            {
+                [self.subscribingIndicator removeFromSuperview];
+                self.subscribingIndicator = nil;
+            }
+            
             [self reloadCollectionViews];
             
             return;
@@ -836,23 +846,7 @@
             }
         }
     }
-    else if ([keyPath isEqualToString: kSubscribedByUserKey])
-    {
-        NSNumber* newSubscribedByUserValue = (NSNumber*)[change valueForKey: NSKeyValueChangeNewKey];
-        if([newSubscribedByUserValue isKindOfClass:[NSNull class]])
-            return;
-        
-        BOOL finalValue = [newSubscribedByUserValue boolValue];
-        self.subscribeButton.selected = finalValue;
-        self.subscribeButton.enabled = YES;
-        
-        if (self.subscribingIndicator)
-        {
-            [self.subscribingIndicator removeFromSuperview];
-            self.subscribingIndicator = nil;
-        }
-        
-    }
+    
 }
 
 
@@ -2363,8 +2357,7 @@
                                                         name: NSManagedObjectContextObjectsDidChangeNotification
                                                       object: self.channel.managedObjectContext];
         
-        [self.channel removeObserver: self
-                          forKeyPath: kSubscribedByUserKey];
+        
     }
     
     _channel = channel;
@@ -2429,20 +2422,25 @@
     {
         
         
+        
+        
+        
         [[NSNotificationCenter defaultCenter] addObserver: self
                                                  selector: @selector(mainContextDataChanged:)
                                                      name: NSManagedObjectContextDidSaveNotification
                                                    object: self.channel.managedObjectContext];
-        [self.channel addObserver: self
-                       forKeyPath: kSubscribedByUserKey
-                          options: NSKeyValueObservingOptionNew
-                          context: nil];
         
+        
+        // check for subscribed
+        self.channel.subscribedByUserValue = NO;
+        for (Channel* subscription in appDelegate.currentUser.subscriptions)
+            if([subscription.uniqueId isEqualToString:self.channel.uniqueId])
+                self.channel.subscribedByUserValue = YES;
+            
         
         
         if(self.mode == kChannelDetailsModeDisplay)
         {
-            
             
             [[NSNotificationCenter defaultCenter] postNotificationName: kChannelUpdateRequest
                                                                 object: self
