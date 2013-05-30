@@ -76,12 +76,17 @@
     if (!channelsDictionary || ![channelsDictionary isKindOfClass: [NSDictionary class]])
         return NO;
     
-    
-    
     NSArray *itemArray = [channelsDictionary objectForKey: @"items"];
     if (![itemArray isKindOfClass: [NSArray class]])
         return NO;
     
+    
+    NSMutableDictionary* subscriptionById = [[NSMutableDictionary alloc] initWithCapacity:appDelegate.currentUser.subscriptions.count];
+    for (Channel* subscription in appDelegate.currentUser.subscriptions) {
+        [subscriptionById setObject:subscription forKey:subscription.uniqueId];
+    }
+        
+        
     
     for (NSDictionary *itemDictionary in itemArray)
     {
@@ -89,12 +94,20 @@
         
         Channel* channel = [Channel instanceFromDictionary:itemDictionary
                                  usingManagedObjectContext:importManagedObjectContext
-                                       ignoringObjectTypes:kIgnoreNothing];
+                                       ignoringObjectTypes:kIgnoreStoredObjects]; // do not look for stored objects because search is always fresh
         
         if(!channel)
         {
             DebugLog(@"Could not instantiate channel with data:\n%@", itemDictionary);
+            continue;
         }
+        
+        Channel* potential = [subscriptionById objectForKey:[itemDictionary objectForKey: @"id"]];
+        
+        if(potential) {
+            channel.subscribedByUserValue = YES;
+        } 
+            
         
     }
     
