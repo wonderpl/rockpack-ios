@@ -1591,8 +1591,6 @@
                                               }
                                               
                                               
-                                              
-                                              
                                               DebugLog(@"Channel: %@", createdChannel);
                                               
                                               [appDelegate saveContext:YES];
