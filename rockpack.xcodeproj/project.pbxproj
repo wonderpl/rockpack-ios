@@ -183,6 +183,10 @@
 		0173F70816E0C56B005B3ECA /* SYNVideoViewerThumbnailLayout.m in Sources */ = {isa = PBXBuildFile; fileRef = 0173F70716E0C56B005B3ECA /* SYNVideoViewerThumbnailLayout.m */; };
 		0173F70B16E0C5DF005B3ECA /* SYNVideoViewerThumbnailLayoutAttributes.m in Sources */ = {isa = PBXBuildFile; fileRef = 0173F70A16E0C5DF005B3ECA /* SYNVideoViewerThumbnailLayoutAttributes.m */; };
 		017A9EFA16E77E6600AA5B18 /* UIView+Subviews.m in Sources */ = {isa = PBXBuildFile; fileRef = 017A9EF916E77E6600AA5B18 /* UIView+Subviews.m */; };
+		01811A5717576D2A00AFA926 /* ButtonShuttleBarMaximise@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 01811A5317576D2A00AFA926 /* ButtonShuttleBarMaximise@2x.png */; };
+		01811A5817576D2A00AFA926 /* ButtonShuttleBarMaximise.png in Resources */ = {isa = PBXBuildFile; fileRef = 01811A5417576D2A00AFA926 /* ButtonShuttleBarMaximise.png */; };
+		01811A5917576D2A00AFA926 /* ButtonShuttleBarMinimise.png in Resources */ = {isa = PBXBuildFile; fileRef = 01811A5517576D2A00AFA926 /* ButtonShuttleBarMinimise.png */; };
+		01811A5A17576D2A00AFA926 /* ButtonShuttleBarMinimise@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 01811A5617576D2A00AFA926 /* ButtonShuttleBarMinimise@2x.png */; };
 		018919FC1672253E00AB07BB /* SYNHomeSectionHeaderView.m in Sources */ = {isa = PBXBuildFile; fileRef = 018919FB1672253E00AB07BB /* SYNHomeSectionHeaderView.m */; };
 		01891A001672255F00AB07BB /* SYNHomeSectionHeaderView.xib in Resources */ = {isa = PBXBuildFile; fileRef = 018919FF1672255F00AB07BB /* SYNHomeSectionHeaderView.xib */; };
 		01891A3D16725A3400AB07BB /* PanelDay.png in Resources */ = {isa = PBXBuildFile; fileRef = 01891A3916725A3400AB07BB /* PanelDay.png */; };
@@ -1302,6 +1306,10 @@
 		0173F70A16E0C5DF005B3ECA /* SYNVideoViewerThumbnailLayoutAttributes.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SYNVideoViewerThumbnailLayoutAttributes.m; sourceTree = "<group>"; };
 		017A9EF816E77E6600AA5B18 /* UIView+Subviews.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "UIView+Subviews.h"; sourceTree = "<group>"; };
 		017A9EF916E77E6600AA5B18 /* UIView+Subviews.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "UIView+Subviews.m"; sourceTree = "<group>"; };
+		01811A5317576D2A00AFA926 /* ButtonShuttleBarMaximise@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = "ButtonShuttleBarMaximise@2x.png"; path = "Assets/Images/ButtonShuttleBarMaximise@2x.png"; sourceTree = "<group>"; };
+		01811A5417576D2A00AFA926 /* ButtonShuttleBarMaximise.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = ButtonShuttleBarMaximise.png; path = Assets/Images/ButtonShuttleBarMaximise.png; sourceTree = "<group>"; };
+		01811A5517576D2A00AFA926 /* ButtonShuttleBarMinimise.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = ButtonShuttleBarMinimise.png; path = Assets/Images/ButtonShuttleBarMinimise.png; sourceTree = "<group>"; };
+		01811A5617576D2A00AFA926 /* ButtonShuttleBarMinimise@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = "ButtonShuttleBarMinimise@2x.png"; path = "Assets/Images/ButtonShuttleBarMinimise@2x.png"; sourceTree = "<group>"; };
 		018919FA1672253E00AB07BB /* SYNHomeSectionHeaderView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SYNHomeSectionHeaderView.h; sourceTree = "<group>"; };
 		018919FB1672253E00AB07BB /* SYNHomeSectionHeaderView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SYNHomeSectionHeaderView.m; sourceTree = "<group>"; };
 		018919FF1672255F00AB07BB /* SYNHomeSectionHeaderView.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = SYNHomeSectionHeaderView.xib; sourceTree = "<group>"; };
@@ -3473,6 +3481,10 @@
 		01F8E73316AFF426000D44B9 /* Video viewer */ = {
 			isa = PBXGroup;
 			children = (
+				01811A5317576D2A00AFA926 /* ButtonShuttleBarMaximise@2x.png */,
+				01811A5417576D2A00AFA926 /* ButtonShuttleBarMaximise.png */,
+				01811A5517576D2A00AFA926 /* ButtonShuttleBarMinimise.png */,
+				01811A5617576D2A00AFA926 /* ButtonShuttleBarMinimise@2x.png */,
 				01F1B892172A9B41005735AF /* ButtonCloseHighlighted.png */,
 				01F1B893172A9B41005735AF /* ButtonCloseHighlighted@2x.png */,
 				01F1B85E172A9ADF005735AF /* ButtonVideoOverlayAdd.png */,
@@ -5562,6 +5574,10 @@
 				BE0FF040175639A40088294F /* Icon-Dev-Small@2x.png in Resources */,
 				BE0FF041175639A40088294F /* Icon-Dev.png in Resources */,
 				BE0FF042175639A40088294F /* Icon-Dev@2x.png in Resources */,
+				01811A5717576D2A00AFA926 /* ButtonShuttleBarMaximise@2x.png in Resources */,
+				01811A5817576D2A00AFA926 /* ButtonShuttleBarMaximise.png in Resources */,
+				01811A5917576D2A00AFA926 /* ButtonShuttleBarMinimise.png in Resources */,
+				01811A5A17576D2A00AFA926 /* ButtonShuttleBarMinimise@2x.png in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
