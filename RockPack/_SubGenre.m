@@ -4,6 +4,7 @@
 #import "_SubGenre.h"
 
 const struct SubGenreAttributes SubGenreAttributes = {
+	.isDefault = @"isDefault",
 };
 
 const struct SubGenreRelationships SubGenreRelationships = {
@@ -39,9 +40,40 @@ const struct SubGenreFetchedProperties SubGenreFetchedProperties = {
 + (NSSet*)keyPathsForValuesAffectingValueForKey:(NSString*)key {
 	NSSet *keyPaths = [super keyPathsForValuesAffectingValueForKey:key];
 	
+	if ([key isEqualToString:@"isDefaultValue"]) {
+		NSSet *affectingKey = [NSSet setWithObject:@"isDefault"];
+		keyPaths = [keyPaths setByAddingObjectsFromSet:affectingKey];
+		return keyPaths;
+	}
 
 	return keyPaths;
 }
+
+
+
+
+@dynamic isDefault;
+
+
+
+- (BOOL)isDefaultValue {
+	NSNumber *result = [self isDefault];
+	return [result boolValue];
+}
+
+- (void)setIsDefaultValue:(BOOL)value_ {
+	[self setIsDefault:[NSNumber numberWithBool:value_]];
+}
+
+- (BOOL)primitiveIsDefaultValue {
+	NSNumber *result = [self primitiveIsDefault];
+	return [result boolValue];
+}
+
+- (void)setPrimitiveIsDefaultValue:(BOOL)value_ {
+	[self setPrimitiveIsDefault:[NSNumber numberWithBool:value_]];
+}
+
 
 
 

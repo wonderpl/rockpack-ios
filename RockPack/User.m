@@ -178,13 +178,21 @@
         self.locale = localeFromDict;
     }
     
-    
                         
 }
 
 #pragma mark - Accessors
 
-
+-(void)addSubscriptionsObject:(Channel *)value_
+{
+    [super addSubscriptionsObject:value_];
+    value_.subscribedByUserValue = YES;
+}
+-(void)removeSubscriptionsObject:(Channel *)value_
+{
+    [super removeSubscriptionsObject:value_];
+    value_.subscribedByUserValue = NO;
+}
 
 -(NSString*) fullName
 {

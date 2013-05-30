@@ -38,32 +38,30 @@ static NSEntityDescription *subcategoryEntity = nil;
     NSPredicate *predicate = [NSPredicate predicateWithFormat: @"uniqueId == %@", uniqueId];
     [subcategoryFetchRequest setPredicate: predicate];
     
-    NSArray *matchingVideoInstanceEntries = [managedObjectContext executeFetchRequest: subcategoryFetchRequest
+    NSArray *matchingSubGenreEntries = [managedObjectContext executeFetchRequest: subcategoryFetchRequest
                                                                                 error: &error];
     
     SubGenre *instance;
     
-    if (matchingVideoInstanceEntries.count > 0)
+    if (matchingSubGenreEntries.count > 0)
     {
-        instance = matchingVideoInstanceEntries[0];
+        instance = matchingSubGenreEntries[0];
         
         // NSLog(@"Using existing VideoInstance instance with id %@", instance.uniqueId);
-        
-        return instance;
     }
     else
     {
         instance = [SubGenre insertInManagedObjectContext: managedObjectContext];
         
         
-        [instance setAttributesFromDictionary: dictionary
-                                       withId: uniqueId
-                    usingManagedObjectContext: managedObjectContext];
-        
         // NSLog(@"Created VideoInstance instance with id %@", instance.uniqueId);
-        
-        return instance;
     }
+    
+    [instance setAttributesFromDictionary: dictionary
+                                   withId: uniqueId
+                usingManagedObjectContext: managedObjectContext];
+    
+    return instance;
 }
 
 
@@ -87,6 +85,9 @@ static NSEntityDescription *subcategoryEntity = nil;
     
     NSNumber* priorityString = (NSNumber*)[dictionary objectForKey:@"priority"];
     self.priority = [NSNumber numberWithInteger:[priorityString integerValue]];
+    
+    NSNumber* isDefault = [dictionary objectForKey:@"default"];
+    self.isDefaultValue = [isDefault boolValue];
     
     
 }

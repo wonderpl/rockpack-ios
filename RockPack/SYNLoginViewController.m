@@ -230,6 +230,8 @@
     signUpButton.alpha = 1.0;
     signUpButton.hidden = NO;
     
+    loginButton.enabled = YES;
+    
     [activityIndicator stopAnimating];  
 }
 

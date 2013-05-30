@@ -48,7 +48,7 @@
     }
     else if(displayMode == kChannelThumbnailDisplayModeDisplayFavourite)
     {
-        self.addItButton.hidden = YES;
+        self.addItButton.hidden = NO;
         self.deleteButton.hidden = YES;
     }
     else

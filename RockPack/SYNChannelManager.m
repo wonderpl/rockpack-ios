@@ -140,10 +140,9 @@
                                                 
                                                 
                                                 subscription.hasChangedSubscribeValue = YES;
-                                                subscription.subscribedByUserValue = YES;
                                                 subscription.subscribersCountValue++;
                                                 
-                                                [appDelegate.currentUser.subscriptionsSet addObject:subscription];
+                                                [appDelegate.currentUser addSubscriptionsObject:subscription];
                                                 
                                                 
                                                 // might be in search context
@@ -189,10 +188,10 @@
                                                   {
                                                       if([subscription.uniqueId isEqualToString:channel.uniqueId])
                                                       {
-                                                          subscription.subscribedByUserValue = NO;
+                                                          
                                                           subscription.subscribersCountValue--;
                                                           
-                                                          [appDelegate.currentUser.subscriptionsSet removeObject:subscription];
+                                                          [appDelegate.currentUser removeSubscriptionsObject:subscription];
                                                           
                                                           break;
                                                       }

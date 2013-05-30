@@ -260,8 +260,8 @@
             continue;
         
         
-        [self.subscriptionsSet addObject:channel];
-        channel.subscribedByUserValue = YES;
+        [self addSubscriptionsObject:channel];
+        
         channel.viewId = self.viewId;
         
     }
@@ -286,7 +286,14 @@
     [self.channelsSet removeObject:oldChannel];
 }
 
-
+-(void)addSubscriptionsObject:(Channel *)value_
+{
+    [self.subscriptionsSet addObject:value_];
+}
+-(void)removeSubscriptions:(NSOrderedSet *)value_
+{
+    [self.subscriptionsSet removeObject:value_];
+}
 
 
 #pragma mark - Helper methods

@@ -93,7 +93,7 @@
                                                  name: kClearedLocationBoundData
                                                object: nil];
 
-    if (self.needsAddButton)
+    if (self.needsAddButton && [[SYNDeviceManager sharedInstance] isIPad])
     {
         self.addButton = [SYNAddButtonControl button];
         CGRect addButtonFrame = self.addButton.frame;
