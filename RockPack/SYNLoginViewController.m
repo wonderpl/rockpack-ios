@@ -831,6 +831,7 @@
                                     }  errorHandler:^(id error) {
                                            
                                            [self doFacebookFailAnimation];
+                                            facebookSignInButton.enabled = YES;
                                            
                                            if ([error isKindOfClass: [NSDictionary class]])
                                            {
@@ -838,7 +839,6 @@
                                                
                                                if (formErrors)
                                                {
-                                                   facebookSignInButton.enabled = YES;
                                                    secondaryFacebookMessage.text = NSLocalizedString(@"Could not log in through facebook", nil);
                                                    secondaryFacebookMessage.alpha = 1.0;
                                                }

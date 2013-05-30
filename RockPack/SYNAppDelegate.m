@@ -29,6 +29,7 @@
 #import <AVFoundation/AVFoundation.h>
 #import <FacebookSDK/FacebookSDK.h>
 #import <objc/runtime.h>
+#import "SYNFacebookManager.h"
 
 extern void instrumentObjcMessageSends(BOOL);
 
@@ -156,7 +157,11 @@ extern void instrumentObjcMessageSends(BOOL);
             [self.oAuthNetworkEngine refreshOAuthTokenWithCompletionHandler: ^(id response) {
                 self.window.rootViewController = [self createAndReturnRootViewController];
             } errorHandler: ^(id response) {
-                self.window.rootViewController = [self createAndReturnLoginViewController];
+                [self logout];
+                if(!self.window.rootViewController)
+                {
+                    self.window.rootViewController = [self createAndReturnLoginViewController];
+                }
             }];
             
             return YES;
@@ -212,6 +217,12 @@ extern void instrumentObjcMessageSends(BOOL);
     self.window.rootViewController = [self createAndReturnLoginViewController];
     
     self.currentUser.currentValue = NO;
+    
+    [self.mainManagedObjectContext deleteObject:self.currentUser];
+    
+    [[SYNFacebookManager sharedFBManager] logoutOnSuccess:^{
+    } onFailure:^(NSString *errorMessage) {
+    }];
     
     [self clearCoreDataMainEntities:YES];
 
@@ -509,6 +520,21 @@ extern void instrumentObjcMessageSends(BOOL);
         [self.mainManagedObjectContext deleteObject: objectToDelete];
     }
     
+    // == Clear Cover Art == //
+    
+    [fetchRequest setEntity:[NSEntityDescription entityForName: @"CoverArt"
+                                       inManagedObjectContext: self.mainManagedObjectContext]];
+    
+    
+    itemsToDelete = [self.mainManagedObjectContext executeFetchRequest: fetchRequest
+                                                                 error: &error];
+    
+    for (NSManagedObject* objectToDelete in itemsToDelete) {
+        
+        [self.mainManagedObjectContext deleteObject: objectToDelete];
+    }
+
+    
     // == Clear Channels == //
     
     if (!userBound)
@@ -538,7 +564,7 @@ extern void instrumentObjcMessageSends(BOOL);
     {
         [self.mainManagedObjectContext deleteObject:objectToDelete];
     }
-
+    
     // == Save == //
     [self saveContext: YES];
     
