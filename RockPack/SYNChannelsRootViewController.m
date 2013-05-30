@@ -197,6 +197,14 @@
     
 }
 
+-(void)viewDidAppear:(BOOL)animated
+{
+    [super viewDidAppear:animated];
+    
+    [self displayChannelsForGenre:currentGenre];
+    
+    [self loadChannelsForGenre:currentGenre];
+}
 
 - (void) viewDidScrollToFront
 {
