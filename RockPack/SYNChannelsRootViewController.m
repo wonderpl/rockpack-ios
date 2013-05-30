@@ -27,6 +27,7 @@
 #import "SYNGenreItemView.h"
 #import "Video.h"
 #import "VideoInstance.h"
+#import "SYNFeedMessagesView.h"
 
 
 #define kChannelsCache @"ChannelsCache"
@@ -47,7 +48,7 @@
 @property (nonatomic, strong) Genre* currentGenre;
 @property (nonatomic, weak) SYNMainRegistry* mainRegistry;
 
-@property (nonatomic, strong) UIView* emptyGenreMessageView;
+@property (nonatomic, strong) SYNFeedMessagesView* emptyGenreMessageView;
 
 @property (nonatomic, strong) SYNChannelCategoryTableViewController* categoryTableViewController;
 @property (nonatomic, strong) UIButton* categorySelectButton;
@@ -382,27 +383,10 @@
     if (self.emptyGenreMessageView) // add no more than one
         return;
     
-    CGRect mainFrame = CGRectMake(0.0, 0.0, 280.0, 60.0);
-    self.emptyGenreMessageView = [[UIView alloc] initWithFrame:mainFrame];
+    self.emptyGenreMessageView = [SYNFeedMessagesView withMessage:@"NO CHANNELS FOUND"];
+    
     self.emptyGenreMessageView.center = CGPointMake(self.view.center.x, 280.0);
     self.emptyGenreMessageView.frame = CGRectIntegral(self.emptyGenreMessageView.frame);
-    
-    UIView* emptyGenreBG = [[UIView alloc] initWithFrame:mainFrame];
-    emptyGenreBG.backgroundColor = [UIColor darkGrayColor];
-    emptyGenreBG.alpha = 0.4;
-    [self.emptyGenreMessageView addSubview:emptyGenreBG];
-    
-    UILabel* emptyGenreLabel = [[UILabel alloc] initWithFrame:CGRectZero];
-    emptyGenreLabel.font = [UIFont rockpackFontOfSize:20.0];
-    emptyGenreLabel.backgroundColor = [UIColor clearColor];
-    emptyGenreLabel.textColor = [UIColor whiteColor];
-    emptyGenreLabel.text = @"NO CHANNELS FOUND";
-    emptyGenreLabel.textAlignment = NSTextAlignmentCenter;
-    [emptyGenreLabel sizeToFit];
-    emptyGenreLabel.center = CGPointMake(self.emptyGenreMessageView.frame.size.width * 0.5, self.emptyGenreMessageView.frame.size.height * 0.5 + 4.0);
-    emptyGenreLabel.frame = CGRectIntegral(emptyGenreLabel.frame);
-    
-    [self.emptyGenreMessageView addSubview:emptyGenreLabel];
     
     [self.view addSubview:self.emptyGenreMessageView];
 }
