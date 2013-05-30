@@ -26,9 +26,9 @@
 @property (nonatomic, strong) IBOutlet UIButton* confirmButtom;
 @property (nonatomic, strong) IBOutlet UICollectionView* channelThumbnailCollectionView;
 @property (nonatomic, weak) Channel* selectedChannel;
-@property (nonatomic, weak) SYNChannelMidCell* selectedCell;
 @property (strong, nonatomic) IBOutlet UILabel *titleLabel;
 @property (nonatomic, strong) NSArray* channels;
+@property (nonatomic, strong) NSIndexPath* previouslySelectedPath;
 
 @end
 
@@ -147,7 +147,6 @@
     else
     {
         Channel *channel = (Channel*)self.channels[indexPath.row-1];
-        
         SYNChannelMidCell *channelThumbnailCell = [collectionView dequeueReusableCellWithReuseIdentifier: @"SYNChannelMidCell"
                                                                                             forIndexPath: indexPath];
 
@@ -156,6 +155,9 @@
                                                 options: SDWebImageRetryFailed];
 
         [channelThumbnailCell setChannelTitle: channel.title];
+        
+        channelThumbnailCell.specialSelected = (channel == self.selectedChannel);
+
         
         cell = channelThumbnailCell;
     }
@@ -219,7 +221,6 @@
                 return;
         
             self.selectedChannel = nil;
-            self.selectedCell = nil;
         
             [UIView animateWithDuration: 0.3
                                   delay: 0.0
@@ -267,9 +268,17 @@
     }
     else
     {
-        self.selectedCell = (SYNChannelMidCell*)[self.channelThumbnailCollectionView cellForItemAtIndexPath:indexPath];
+        if(self.previouslySelectedPath)
+        {
+            SYNChannelMidCell* cellToDeselect = (SYNChannelMidCell*)[self.channelThumbnailCollectionView cellForItemAtIndexPath:self.previouslySelectedPath];
+            cellToDeselect.specialSelected = NO;
+        }
+        
+        SYNChannelMidCell* cellToSelect = (SYNChannelMidCell*)[self.channelThumbnailCollectionView cellForItemAtIndexPath:indexPath];
+        cellToSelect.specialSelected = YES;
         //Compensate for the extra "create new" cell
         self.selectedChannel = (Channel*)self.channels[indexPath.row - 1];
+        self.previouslySelectedPath = indexPath;
     }
     
 }
@@ -312,16 +321,6 @@
     self.view.frame = selfFrame;
     
     
-}
-
-- (void) setSelectedCell: (SYNChannelMidCell *) selectedCell
-{
-    _selectedCell.specialSelected = NO;
-    
-    if(selectedCell) // we can still pass nill
-        selectedCell.specialSelected = YES;
-    
-    _selectedCell = selectedCell;
 }
 
 @end

@@ -341,7 +341,8 @@ typedef enum {
 #define kShuttleBarHeight               44.0f
 #define kShuttleBarTimeLabelWidth       40.0f
 #define kShuttleBarButtonWidthiPad      77.0f
-#define kShuttleBarButtonWidthiPhone    40.0f
+#define kShuttleBarButtonWidthiPhone    77.0f
+#define kShuttleBarButtonOffsetiPhone   67.0f
 #define kShuttleBarSliderOffset         5.0f
 
 #define kSYNBundleFullVersion           @"FullVersion"

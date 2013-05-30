@@ -140,9 +140,10 @@
     self.passwordResetErrorLabel.font = [UIFont rockpackFontOfSize:self.passwordResetErrorLabel.font.pointSize];
     self.signupErrorLabel.font = [UIFont rockpackFontOfSize:self.signupErrorLabel.font.pointSize];
     
-    NSMutableAttributedString* termsString = [[NSMutableAttributedString alloc] initWithString:@"BY SIGNING INTO ROCKPACK, YOU AGREE TO OUR TERMS OF SERVICE AND PRIVACY POLICY"];
-    [termsString addAttribute: NSForegroundColorAttributeName value: [UIColor colorWithRed:(11.0/255.0) green:(166.0/255.0) blue:(171.0/255.0) alpha:(1.0)] range: NSMakeRange(42, 17)];
-    [termsString addAttribute: NSForegroundColorAttributeName value: [UIColor colorWithRed:(11.0/255.0) green:(166.0/255.0) blue:(171.0/255.0) alpha:(1.0)] range: NSMakeRange(64, 14)];
+    NSMutableAttributedString* termsString = [[NSMutableAttributedString alloc] initWithString:@"BY USING ROCKPACK, YOU AGREE TO OUR\nTERMS OF SERVICES AND PRIVACY POLICY"];
+    
+    [termsString addAttribute: NSForegroundColorAttributeName value: [UIColor colorWithRed:(11.0/255.0) green:(166.0/255.0) blue:(171.0/255.0) alpha:(1.0)] range: NSMakeRange(36, 17)];
+    [termsString addAttribute: NSForegroundColorAttributeName value: [UIColor colorWithRed:(11.0/255.0) green:(166.0/255.0) blue:(171.0/255.0) alpha:(1.0)] range: NSMakeRange(58, 14)];
     self.termsAndConditionsLabel.attributedText = termsString;
     self.termsAndConditionsLabel.font = [UIFont rockpackFontOfSize:self.termsAndConditionsLabel.font.pointSize];
     
@@ -274,7 +275,7 @@
 - (IBAction) forgotPasswordTapped: (id) sender
 {
     self.state = kLoginScreenStatePasswordRetrieve;
-    self.confirmButton.enabled = YES;
+    self.confirmButton.enabled = [self validatePasswordRetrieve];
     [UIView animateWithDuration:kLoginAnimationTransitionDuration delay:0.0f options:UIViewAnimationOptionCurveEaseInOut animations:^{
         CGPoint newCenter = self.passwordView.center;
         newCenter.x = 160.0f;
@@ -326,6 +327,7 @@
                 
             } completion:^(BOOL finished) {
                 [self.registeringUserNameInputField becomeFirstResponder];
+                [self turnOffButton:self.backButton];
             }];
             
             break;
@@ -334,6 +336,7 @@
         case kLoginScreenStatePasswordRetrieve:
         {
             self.state = kLoginScreenStateLogin;
+            self.confirmButton.enabled = [self validateLogin];
             [UIView animateWithDuration:kLoginAnimationTransitionDuration delay:0.0f options:UIViewAnimationOptionCurveEaseInOut animations:^{
                 CGPoint newCenter = self.passwordView.center;
                 newCenter.x = 480.0f;
@@ -436,9 +439,9 @@
             } errorHandler:^(NSDictionary* errorDictionary) {
                 NSString* savingError = errorDictionary[@"saving_error"];
                 if(savingError) {
-                    self.loginErrorLabel.text = NSLocalizedString(@"PLEASE TRY AGAIN NOW", nil);
+                    self.loginErrorLabel.text = NSLocalizedString(@"PLEASE TRY AGAIN", nil);
                 } else {
-                    self.loginErrorLabel.text = NSLocalizedString(@"CHECK USERNAME AND PASSWORD", nil);
+                    self.loginErrorLabel.text = NSLocalizedString(@"YOUR USERNAME OR PASSWORD IS INCORRECT.", nil);
                 }
                 [self.activityIndicator stopAnimating];
                 [self turnOnButton:self.backButton];
@@ -469,7 +472,7 @@
                 {
                     [self uploadAvatarImage:self.avatarImage completionHandler:nil errorHandler:^(id dictionary) {
                         [[[UIAlertView alloc] initWithTitle: NSLocalizedString(@"Upload error", nil)
-                                                    message: NSLocalizedString(@"Avatar upload failed. Try again from the menu.", nil)
+                                                    message: NSLocalizedString(@"Avatar upload failed. Please try again.", nil)
                                                    delegate: nil
                                           cancelButtonTitle: NSLocalizedString(@"OK", nil)
                                           otherButtonTitles: nil] show];
@@ -544,14 +547,18 @@
             [self doRequestPasswordResetForUsername:self.emailInputField.text completionHandler:^(NSDictionary *completionInfo) {
                 if ([completionInfo valueForKey:@"error"])
                 {
-                    self.passwordResetErrorLabel.text = NSLocalizedString(@"USER UNKNOWN", nil);
+                    self.passwordResetErrorLabel.text = NSLocalizedString(@"SORRY, WE DON'T RECOGNISE THIS USERNAME OR EMAIL", nil);
                     [self turnOnButton:self.backButton];
                     [self turnOnButton:self.confirmButton];
                     
                 }
                 else
                 {
-                    self.passwordResetErrorLabel.text = NSLocalizedString(@"CHECK YOUR EMAIL FOR INSTRUCTIONS", nil);
+                    [[[UIAlertView alloc] initWithTitle: @"Password Reset"
+                                                message: @"Check your email and follow the instructions."
+                                               delegate: nil
+                                      cancelButtonTitle: @"OK"
+                                      otherButtonTitles: nil] show];
                     [self turnOnButton:self.backButton];
                     
                 }
@@ -692,6 +699,12 @@
 }
 
 
+- (BOOL) validatePasswordRetrieve
+{
+    return self.emailInputField.text.length > 0;
+}
+
+
 -(BOOL)validateRegistrationSecondScreen
 {
     
@@ -709,6 +722,7 @@
         return NO;
     }
     
+    
     //Zero-pad single number day and month values
     NSString* day= [self zeroPadIfOneCharacter:self.ddInputField.text];
     
@@ -716,11 +730,38 @@
     
     NSString* dateString = [NSString stringWithFormat:@"%@/%@/%@", day, month, self.yyyyInputField.text];
     NSDate* date = [self.formatter dateFromString:dateString];
-    return (date != nil);
+    return (date != nil && [date timeIntervalSinceNow] < 0);
 }
 
 
 #pragma mark - UITextField delegate
+
+- (BOOL) textField: (UITextField *) textField
+shouldChangeCharactersInRange: (NSRange) range
+ replacementString: (NSString *) newCharacter
+{
+    
+    NSUInteger oldLength = textField.text.length;
+    NSUInteger replacementLength = newCharacter.length;
+    NSUInteger rangeLength = range.length;
+    
+    NSUInteger newLength = (oldLength + replacementLength) - rangeLength;
+    
+    
+    if ((textField == self.ddInputField || textField == self.mmInputField) && newLength > 2)
+        return NO;
+    if (textField == self.yyyyInputField && newLength > 4)
+        return NO;
+    
+    
+    
+    NSNumberFormatter* numberFormatter = [[NSNumberFormatter alloc] init];
+    if (textField == self.ddInputField || textField == self.mmInputField || textField == self.yyyyInputField)
+        if (![numberFormatter numberFromString:newCharacter] && newCharacter.length != 0) // is backspace, length is 0
+            return NO;
+
+    return YES;
+}
 
 - (IBAction) textfieldDidChange: (id) sender
 {
@@ -737,15 +778,19 @@
         case kLoginScreenStateRegisterStepTwo:
             self.confirmButton.enabled = [self validateRegistrationSecondScreen];
             break;
+        case kLoginScreenStatePasswordRetrieve:
+            self.confirmButton.enabled = [self validatePasswordRetrieve];
+            break;
         default:
             break;
     }
+    
     if(sender == self.ddInputField && [self.ddInputField.text length]==2)
     {
         [self.mmInputField becomeFirstResponder];
         if([self.mmInputField.text length]>0 && [self.yyyyInputField.text length]>0 && ! [self validDateEntered])
         {
-            self.signupErrorLabel.text = [NSString stringWithFormat:@"Day %@, Month %@, Year %@ is not a valid date of birth",self.ddInputField.text, self.mmInputField.text, self.yyyyInputField.text];
+            self.signupErrorLabel.text = [NSString stringWithFormat:@"Sorry, this date is not valid"];
         }
     }
     else if(sender == self.mmInputField && [self.mmInputField.text length]==2)
@@ -753,21 +798,24 @@
         [self.yyyyInputField becomeFirstResponder];
         if([self.ddInputField.text length]>0 && [self.yyyyInputField.text length]>0 && ! [self validDateEntered])
         {
-            self.signupErrorLabel.text = [NSString stringWithFormat:@"Day %@, Month %@, Year %@ is not a valid date of birth",self.ddInputField.text, self.mmInputField.text, self.yyyyInputField.text];
+            self.signupErrorLabel.text = [NSString stringWithFormat:@"Sorry, this date is not valid"];
         }
     }
     else if(sender == self.yyyyInputField && [self.yyyyInputField.text length] >= 4)
     {
-        if( [self validDateEntered]&& [self.yyyyInputField.text length] ==4 )
+    
+        [sender resignFirstResponder];
+        if(! ([self validDateEntered]&& [self.yyyyInputField.text length] ==4) )
         {
-           [sender resignFirstResponder];
+            self.signupErrorLabel.text = [NSString stringWithFormat:@"Sorry, this date is not valid"];
         }
-        else
-        {
-            self.signupErrorLabel.text = [NSString stringWithFormat:@"Day %@, Month %@, Year %@ is not a valid date of birth",self.ddInputField.text, self.mmInputField.text, self.yyyyInputField.text];
-        }
-        
     }
+    
+    if(![self.signupErrorLabel.text isEqualToString: @""])
+    {
+        [sender resignFirstResponder];
+    }
+    
 }
 
 

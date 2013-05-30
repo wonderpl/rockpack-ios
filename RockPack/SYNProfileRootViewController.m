@@ -31,8 +31,7 @@
 
 @interface SYNProfileRootViewController () <SYNDeletionWobbleLayoutDelegate,
                                             UIGestureRecognizerDelegate,
-                                            SYNImagePickerControllerDelegate,
-                                            SYNUserProfileViewControllerDelegate>
+                                            SYNImagePickerControllerDelegate>
 
 // Enable to allow the user to 'pinch out' on thumbnails
 #ifdef ALLOWS_PINCH_GESTURES
@@ -185,15 +184,16 @@
         self.headerSubscriptionsView.frame = newFrame;
         [self.headerSubscriptionsView setFontSize: 12.0f];
         
-        [self.headerSubscriptionsView setTitle: NSLocalizedString(@"SUBSCRIPTIONS",nil)
-                                     andNumber: 0];
+//        [self.headerSubscriptionsView setTitle: NSLocalizedString(@"MY SUBSCRIPTIONS",nil)
+//                                     andNumber: 0];
+        
         
         self.headerSubscriptionsView.userInteractionEnabled = NO;
     }
     else
     {
-        [self.headerSubscriptionsView setTitle: NSLocalizedString(@"MY SUBSCRIPTIONS", nil)
-                                     andNumber: 0];
+//        [self.headerSubscriptionsView setTitle: NSLocalizedString(@"MY SUBSCRIPTIONS", nil)
+//                                     andNumber: 0];
         
         [self.headerSubscriptionsView setBackgroundImage: ([SYNDeviceManager.sharedInstance isLandscape] ? [UIImage imageNamed: @"HeaderProfileSubscriptionsLandscape"] : [UIImage imageNamed: @"HeaderProfilePortraitBoth"])];
     }
@@ -385,14 +385,11 @@
     NSArray* updatedObjects = [[notification userInfo] objectForKey: NSUpdatedObjectsKey];
     
     [updatedObjects enumerateObjectsUsingBlock: ^(id obj, NSUInteger idx, BOOL *stop) {
-        
-        
         if ([obj isKindOfClass:[ChannelOwner class]] && [((ChannelOwner*)obj).uniqueId isEqualToString:self.user.uniqueId])
         {
             [self reloadCollectionViews];
             
-            return;
-           
+            return; 
         }
     }];
 }
@@ -628,7 +625,10 @@
 {
     if([SYNDeviceManager.sharedInstance isIPhone])
     {
-        return NSLocalizedString(@"CHANNELS",nil);
+        if(self.user == appDelegate.currentUser)
+            return NSLocalizedString(@"MY CHANNELS",nil);
+        else
+            return NSLocalizedString(@"CHANNELS",nil);
         
     }
     else
@@ -921,13 +921,14 @@
     NSIndexPath *indexPath = [self.channelThumbnailCollectionView indexPathForItemAtPoint: v.center];
     self.channelDeleteCandidate = (Channel*)self.user.channels[indexPath.row];
     
-    NSString* message = [NSString stringWithFormat: NSLocalizedString(@"You are about to delete %@", nil), _channelDeleteCandidate.title];
+    NSString* message = [NSString stringWithFormat: NSLocalizedString(@"Are you sure you want to delete this channel?", nil), _channelDeleteCandidate.title];
+    NSString* title = [NSString stringWithFormat: NSLocalizedString(@"Delete %@", nil), _channelDeleteCandidate.title ];
     
-    [[[UIAlertView alloc] initWithTitle: NSLocalizedString(@"Delete?", nil)
+    [[[UIAlertView alloc] initWithTitle: title
                                 message: message
                                delegate: self
                       cancelButtonTitle: NSLocalizedString(@"Cancel", nil)
-                      otherButtonTitles: NSLocalizedString(@"OK", nil), nil] show];
+                      otherButtonTitles: NSLocalizedString(@"Delete", nil), nil] show];
 }
 
 
@@ -974,6 +975,8 @@
 - (void) setUser: (ChannelOwner*) user
 {
     
+    
+    
     if(self.user) // if we have an existing user
     {
         // remove the listener, even if nil is passed
@@ -986,12 +989,10 @@
     }
     
     
-    _user = user;
-    
-    if(!self.user) // if no user has been passed, set to nil and then return
+    if(!user) // if no user has been passed, set to nil and then return
         return;
     
-    if(![self.user isMemberOfClass:[User class]]) // is a User has been passsed dont copy him OR his channels as there can be only one.
+    if(![user isMemberOfClass:[User class]]) // is a User has been passsed dont copy him OR his channels as there can be only one.
     {
         NSFetchRequest *channelOwnerFetchRequest = [[NSFetchRequest alloc] init];
         
@@ -1020,7 +1021,7 @@
         else
         {
             
-            IgnoringObjects flags = kIgnoreVideoInstanceObjects | kIgnoreChannelOwnerObject; // these flags are passed to the Channels
+            IgnoringObjects flags = kIgnoreChannelOwnerObject | kIgnoreVideoInstanceObjects; // these flags are passed to the Channels
             
             _user = [ChannelOwner instanceFromChannelOwner: user
                                                  andViewId: self.viewId
@@ -1036,6 +1037,10 @@
             }
         }
         
+    }
+    else
+    {
+        _user = user; // if User isKindOfClass [User class]
     }
     
     
@@ -1064,6 +1069,11 @@
 -(ChannelOwner*)user
 {
     return _user;
+}
+
+-(void)dealloc
+{
+    self.user = nil;
 }
 
 @end

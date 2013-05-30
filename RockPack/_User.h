@@ -134,9 +134,9 @@ extern const struct UserFetchedProperties {
 
 
 
-@property BOOL genderValue;
-- (BOOL)genderValue;
-- (void)setGenderValue:(BOOL)value_;
+@property int32_t genderValue;
+- (int32_t)genderValue;
+- (void)setGenderValue:(int32_t)value_;
 
 //- (BOOL)validateGender:(id*)value_ error:(NSError**)error_;
 
@@ -245,8 +245,8 @@ extern const struct UserFetchedProperties {
 - (NSNumber*)primitiveGender;
 - (void)setPrimitiveGender:(NSNumber*)value;
 
-- (BOOL)primitiveGenderValue;
-- (void)setPrimitiveGenderValue:(BOOL)value_;
+- (int32_t)primitiveGenderValue;
+- (void)setPrimitiveGenderValue:(int32_t)value_;
 
 
 

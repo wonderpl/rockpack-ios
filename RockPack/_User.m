@@ -163,22 +163,22 @@ const struct UserFetchedProperties UserFetchedProperties = {
 
 
 
-- (BOOL)genderValue {
+- (int32_t)genderValue {
 	NSNumber *result = [self gender];
-	return [result boolValue];
+	return [result intValue];
 }
 
-- (void)setGenderValue:(BOOL)value_ {
-	[self setGender:[NSNumber numberWithBool:value_]];
+- (void)setGenderValue:(int32_t)value_ {
+	[self setGender:[NSNumber numberWithInt:value_]];
 }
 
-- (BOOL)primitiveGenderValue {
+- (int32_t)primitiveGenderValue {
 	NSNumber *result = [self primitiveGender];
-	return [result boolValue];
+	return [result intValue];
 }
 
-- (void)setPrimitiveGenderValue:(BOOL)value_ {
-	[self setPrimitiveGender:[NSNumber numberWithBool:value_]];
+- (void)setPrimitiveGenderValue:(int32_t)value_ {
+	[self setPrimitiveGender:[NSNumber numberWithInt:value_]];
 }
 
 

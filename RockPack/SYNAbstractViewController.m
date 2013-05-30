@@ -93,11 +93,11 @@
                                                  name: kClearedLocationBoundData
                                                object: nil];
 
-    if (self.needsAddButton)
+    if (self.needsAddButton && [[SYNDeviceManager sharedInstance] isIPad])
     {
         self.addButton = [SYNAddButtonControl button];
         CGRect addButtonFrame = self.addButton.frame;
-        addButtonFrame.origin.x = 884.0f; // 884.0f
+        addButtonFrame.origin.x = self.view.frame.size.width - 140.0f; // 884.0f
         addButtonFrame.origin.y = 80.0f;
         self.addButton.frame = addButtonFrame;
 
@@ -268,6 +268,20 @@
 
 }
 
+- (void) incrementRangeForNextRequest
+{
+    // (UIButton*) sender can be nil when called directly //
+    self.footerView.showsLoading = YES;
+    
+    NSInteger nextStart = self.dataRequestRange.location + self.dataRequestRange.length; // one is subtracted when the call happens for 0 indexing
+    
+    if (nextStart >= self.dataItemsAvailable)
+        return;
+    
+    NSInteger nextSize = (nextStart + STANDARD_REQUEST_LENGTH) >= self.dataItemsAvailable ? (self.dataItemsAvailable - nextStart) : STANDARD_REQUEST_LENGTH;
+    
+    self.dataRequestRange = NSMakeRange(nextStart, nextSize);
+}
 
 - (NSIndexPath *) indexPathFromVideoInstanceButton: (UIButton *) button
 {
@@ -585,7 +599,7 @@
                                               NSString *resourceURLString = responseDictionary[@"resource_url"];
                                               NSString *message = responseDictionary[@"message"];
                                               
-                                              if (resourceURLString == nil || [message isKindOfClass: [NSNull class]] || [resourceURLString isEqualToString: @""])
+                                              if (resourceURLString == nil || [resourceURLString isEqualToString: @""])
                                               {
                                                   resourceURLString = @"http://www.rockpack.com";
                                               }
@@ -639,6 +653,13 @@
 	{
 		[[UIApplication sharedApplication] openURL: purchaseURL];
 	}
+}
+
+// Load more footer
+
+- (CGSize) footerSize
+{
+    return [SYNDeviceManager.sharedInstance isIPhone] ? CGSizeMake(320.0f, 64.0f) : CGSizeMake(1024.0, 64.0);
 }
 
 

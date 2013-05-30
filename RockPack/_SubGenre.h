@@ -5,6 +5,7 @@
 #import "Genre.h"
 
 extern const struct SubGenreAttributes {
+	__unsafe_unretained NSString *isDefault;
 } SubGenreAttributes;
 
 extern const struct SubGenreRelationships {
@@ -17,6 +18,7 @@ extern const struct SubGenreFetchedProperties {
 @class Genre;
 
 
+
 @interface SubGenreID : NSManagedObjectID {}
 @end
 
@@ -25,6 +27,20 @@ extern const struct SubGenreFetchedProperties {
 + (NSString*)entityName;
 + (NSEntityDescription*)entityInManagedObjectContext:(NSManagedObjectContext*)moc_;
 - (SubGenreID*)objectID;
+
+
+
+
+
+@property (nonatomic, strong) NSNumber* isDefault;
+
+
+
+@property BOOL isDefaultValue;
+- (BOOL)isDefaultValue;
+- (void)setIsDefaultValue:(BOOL)value_;
+
+//- (BOOL)validateIsDefault:(id*)value_ error:(NSError**)error_;
 
 
 
@@ -45,6 +61,15 @@ extern const struct SubGenreFetchedProperties {
 @end
 
 @interface _SubGenre (CoreDataGeneratedPrimitiveAccessors)
+
+
+- (NSNumber*)primitiveIsDefault;
+- (void)setPrimitiveIsDefault:(NSNumber*)value;
+
+- (BOOL)primitiveIsDefaultValue;
+- (void)setPrimitiveIsDefaultValue:(BOOL)value_;
+
+
 
 
 

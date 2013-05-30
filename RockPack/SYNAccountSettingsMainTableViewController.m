@@ -198,7 +198,7 @@
                 break;
                 
             case 4:
-                if ([user.gender isEqual:@(GenderUndecided)])
+                if (user.genderValue == GenderUndecided)
                 {
                     cell.textLabel.text = NSLocalizedString (@"Gender", nil);
                 }

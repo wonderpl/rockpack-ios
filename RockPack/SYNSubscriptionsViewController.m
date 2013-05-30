@@ -111,14 +111,20 @@
 
 - (void) reloadCollectionViews
 {
-    
-    
     if (self.headerView)
     {
         NSInteger totalChannels = self.user.subscriptions.count;
         
-        [self.headerView setTitle: @"SUBSCRIPTIONS"
-                        andNumber: totalChannels];
+        if (self.user == appDelegate.currentUser)
+        {
+            [self.headerView setTitle: @"MY SUBSCRIPTIONS"
+                            andNumber: totalChannels];
+        }
+        else
+        {
+            [self.headerView setTitle: @"SUBSCRIPTIONS"
+                            andNumber: totalChannels];
+        }
     }
     
     [self.channelThumbnailCollectionView reloadData];

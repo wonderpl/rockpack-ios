@@ -138,10 +138,11 @@
                                                                            usingManagedObjectContext:appDelegate.currentUser.managedObjectContext
                                                                                  ignoringObjectTypes:copyFlags];
                                                 
+                                            
+                                                subscription.hasChangedSubscribeValue = YES;
                                                 
                                                 
-                                                
-                                                [appDelegate.currentUser.subscriptionsSet addObject:subscription];
+                                                [appDelegate.currentUser addSubscriptionsObject:subscription];
                                                 
                                                 
                                                 // might be in search context
@@ -188,8 +189,7 @@
                                                       if([subscription.uniqueId isEqualToString:channel.uniqueId])
                                                       {
                                                           
-                                                          
-                                                          [appDelegate.currentUser.subscriptionsSet removeObject:subscription];
+                                                          [appDelegate.currentUser removeSubscriptionsObject:subscription];
                                                           
                                                           break;
                                                       }

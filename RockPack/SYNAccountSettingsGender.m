@@ -121,7 +121,7 @@
     
     if (indexPath.row == 0)
     {
-        if (!self.appDelegate.currentUser.genderValue)
+        if (self.appDelegate.currentUser.genderValue == GenderMale)
             cell.accessoryType = UITableViewCellAccessoryCheckmark;
         else
             cell.accessoryType = UITableViewCellAccessoryNone;
@@ -130,7 +130,7 @@
     }
     else if (indexPath.row == 1)
     {
-        if (self.appDelegate.currentUser.genderValue)
+        if (self.appDelegate.currentUser.genderValue == GenderFemale)
             cell.accessoryType = UITableViewCellAccessoryCheckmark;
         else
             cell.accessoryType = UITableViewCellAccessoryNone;

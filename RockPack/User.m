@@ -138,8 +138,20 @@
     
     
     // == Gender == //
+    NSString* genderString = [dictionary objectForKey:@"gender"];
     
-    self.genderValue = GenderUndecided;
+    if(!genderString || [genderString isEqual:[NSNull null]])
+    {
+        self.genderValue = GenderUndecided;
+    }
+    else if([[genderString uppercaseString] isEqual:@"M"])
+    {
+        self.genderValue = GenderMale;
+    }
+    else if([[genderString uppercaseString] isEqual:@"F"])
+    {
+        self.genderValue = GenderFemale;
+    }
     
     
     
@@ -178,7 +190,6 @@
         self.locale = localeFromDict;
     }
     
-    
                         
 }
 
@@ -186,15 +197,17 @@
 
 -(void)addSubscriptionsObject:(Channel *)value_
 {
-    value_.subscribedByUserValue = YES;
-    value_.subscribersCountValue += 1;
+
     [self.subscriptionsSet addObject:value_];
+    value_.subscribedByUserValue = YES;
+    value_.subscribersCountValue++;
 }
 -(void)removeSubscriptionsObject:(Channel *)value_
 {
     value_.subscribedByUserValue = NO;
-    value_.subscribersCountValue -= 1;
+    value_.subscribersCountValue--;
     [self.subscriptionsSet removeObject:value_];
+    
 }
 
 -(NSString*) fullName

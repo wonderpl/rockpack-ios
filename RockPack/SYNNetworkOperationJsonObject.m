@@ -17,12 +17,9 @@
     BOOL ignore = self.ignoreCachedResponse;
     
     
-    NSLog(@"Adding: %@", self.url);
-    
     [self addCompletionHandler:^(MKNetworkOperation *completedOperation)
     {
         
-        NSLog(@"Returned: %@", completedOperation.url);
         if(ignore && completedOperation.isCachedResponse)
         {
             //DebugLog(@"Ignoring Cached Response...");

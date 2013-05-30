@@ -263,6 +263,7 @@
             
             existingVideoInstance.markedForDeletionValue = YES;
             existingVideoInstance.freshValue = NO;
+            
             existingVideoInstance.channel.markedForDeletionValue = YES;
             existingVideoInstance.channel.freshValue = NO;
         }
@@ -363,6 +364,7 @@
     
     [predicates addObject: [NSPredicate predicateWithFormat: @"viewId == %@", kChannelsViewId]];
     
+    // get all channels that are in the DB, any of them can belong to the new "popular" list
     
     if (genre)
     {

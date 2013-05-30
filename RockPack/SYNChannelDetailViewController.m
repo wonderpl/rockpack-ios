@@ -82,6 +82,8 @@
 @property (nonatomic, strong) VideoInstance* instanceToDelete;
 @property (nonatomic, strong) id<SDWebImageOperation> currentWebImageOperation;
 
+@property (nonatomic, weak) Channel* originalChannel;
+
 @property (nonatomic, weak) IBOutlet UIButton *cancelEditButton;
 @property (nonatomic, weak) IBOutlet UIButton *editButton;
 @property (nonatomic, weak) IBOutlet UILabel *byLabel;
@@ -252,7 +254,7 @@
     if (!isIPhone)
     {
         // Set text on add cover and select category buttons
-        NSString *coverString = NSLocalizedString (@"ADD A COVER", nil);
+        NSString *coverString = NSLocalizedString (@"SELECT A COVER", nil);
         
         NSMutableAttributedString* attributedCoverString = [[NSMutableAttributedString alloc] initWithString: coverString
                                                                                                   attributes: @{NSForegroundColorAttributeName : [UIColor colorWithRed: 40.0f/255.0f green: 45.0f/255.0f blue: 51.0f/255.0f alpha: 1.0f],
@@ -319,7 +321,6 @@
     [super viewWillAppear: animated];
     
     
-    
     NSString *viewMode = [NSString stringWithFormat: @"Channels - Detail - %@", (self.mode == kChannelDetailsModeDisplay) ? @"Display" : @"Edit"];
     
     // Google analytics support
@@ -364,6 +365,9 @@
     
     self.subscribeButton.selected = self.channel.subscribedByUserValue;
     
+    [[NSNotificationCenter defaultCenter] postNotificationName: kNoteSearchBarRequestHide
+                                                        object: self];
+    
     
     
     // We set up assets depending on whether we are in display or edit mode
@@ -372,9 +376,11 @@
     // Refresh our view
     [self.videoThumbnailCollectionView reloadData];
     
-    // Only do this is we have a resource URL (i.e. we haven't just created the channel)
     
-    
+    if(self.channel.videoInstances.count == 0)
+    {
+        [self showNoVideosMessage:@"LOADING VIDEOS"];
+    }
     
     [self displayChannelDetails];
 }
@@ -382,6 +388,9 @@
 
 - (void) viewWillDisappear: (BOOL) animated
 {
+    
+    [super viewWillDisappear: animated];
+    
     [[NSNotificationCenter defaultCenter] postNotificationName: kNoteAllNavControlsShow
                                                         object: self
                                                       userInfo: nil];
@@ -411,11 +420,11 @@
         [self.subscribingIndicator removeFromSuperview];
         self.subscribingIndicator = nil;
     }
-    
-    self.channel = nil;
 
-    [super viewWillDisappear: animated];
+    
 }
+
+
 
 -(void) videoQueueCleared
 {
@@ -496,14 +505,14 @@
         
         if ([obj isKindOfClass:[Channel class]] && [((Channel*)obj).uniqueId isEqualToString:self.channel.uniqueId])
         {
-            if (self.channel.videoInstances.count == 0)
+            
+            if(self.channel.videoInstances.count == 0)
             {
-                [self showNoVideosMessage];
+                [self showNoVideosMessage:@"THERE ARE NO VIDEOS IN THIS CHANNEL YET"];
             }
-            else if (self.noVideosMessageView != nil)
+            else
             {
-                [self.noVideosMessageView removeFromSuperview];
-                self.noVideosMessageView = nil;
+                [self showNoVideosMessage:nil];
             }
             
             [self reloadCollectionViews];
@@ -516,8 +525,18 @@
     
 }
 
-- (void) showNoVideosMessage
+- (void) showNoVideosMessage:(NSString*)message
 {
+    if(self.noVideosMessageView)
+    {
+        [self.noVideosMessageView removeFromSuperview];
+        self.noVideosMessageView = nil;
+        
+    }
+    
+    if(!message)
+        return;
+    
     CGSize viewFrameSize = CGSizeMake(360.0, 50.0);
     self.noVideosMessageView = [[UIView alloc] initWithFrame:CGRectMake(0.0, 640.0, viewFrameSize.width, viewFrameSize.height)];
     self.noVideosMessageView.center = CGPointMake(self.view.frame.size.width * 0.5, self.noVideosMessageView.center.y);
@@ -532,7 +551,7 @@
     
     
     UILabel* noVideosLabel = [[UILabel alloc] initWithFrame:CGRectZero];
-    noVideosLabel.text = @"THERE ARE NO VIDEOS IN THIS CHANNEL YET";
+    noVideosLabel.text = message;
     noVideosLabel.textAlignment = NSTextAlignmentCenter;
     noVideosLabel.font = [UIFont rockpackFontOfSize:16.0];
     noVideosLabel.textColor = [UIColor whiteColor];
@@ -571,7 +590,6 @@
     self.channelOwnerLabel.text = self.channel.channelOwner.displayName;
     
     
-    NSLog(@"current channel s count : %lld", self.channel.subscribersCountValue);
     
     NSString *detailsString = [NSString stringWithFormat: @"%lld %@", self.channel.subscribersCountValue, NSLocalizedString(@"SUBSCRIBERS", nil)];
     self.channelDetailsLabel.text = detailsString;
@@ -584,7 +602,6 @@
     
     // Set title //
     
-    NSLog(@"Channel: %@", self.channel);
     
     if(self.channel.title)
     {
@@ -595,6 +612,7 @@
         self.channelTitleTextView.text = @"";
     }
     
+        
     
     [self adjustTextView];
 }
@@ -712,7 +730,22 @@
     self.subscribeButton.hidden = (visible && [self.channel.channelOwner.uniqueId isEqualToString: appDelegate.currentUser.uniqueId]);
     self.editButton.hidden = (visible && ! [self.channel.channelOwner.uniqueId isEqualToString: appDelegate.currentUser.uniqueId]);
     
-    self.editButton.enabled = (self.channel.favouritesValue) ? FALSE : TRUE;
+    // If favourites channel, hide edit button and move subscribers
+    if (self.channel.favouritesValue)
+    {
+        self.editButton.hidden = TRUE;
+        
+        CGFloat offset = 125;
+        
+        if ([SYNDeviceManager.sharedInstance isIPad])
+        {
+            offset = 130;
+        }
+
+        CGRect frame = self.channelDetailsLabel.frame;
+        frame.origin.x -= offset;
+        self.channelDetailsLabel.frame = frame;
+    }
     
     [(LXReorderableCollectionViewFlowLayout *)self.videoThumbnailCollectionView.collectionViewLayout longPressGestureRecognizer].enabled = (visible) ? FALSE : TRUE;
     
@@ -1120,24 +1153,48 @@
 
                                              // this block will also call the [self getChanelById:channelId isUpdated:YES] //
                                          }
-                                              errorHandler: ^(NSDictionary* error) {
-                                                  NSDictionary* specificErrors = [error objectForKey: @"form_errors"];
-                                                  id errorText = [specificErrors objectForKey: @"title"];
-                                                  if ([errorText isKindOfClass:[NSArray class]])
-                                                  {
-                                                      errorText = errorText[0];
-                                                  }
-                                                  if (!errorText)
-                                                  {
-                                                      errorText = @"Could not save channel. Please try again later.";
-                                                  }
+                                              errorHandler: ^(id error) {
                                                   
                                                   DebugLog(@"Error @ saveChannelPressed:");
-                                                  errorText = NSLocalizedString(errorText, nil);
-                                                  [self showError: errorText];
+                                                  
+                                                  NSString *errorTitle = NSLocalizedString(@"ERROR", nil);
+                                                  NSString* errorMessage = NSLocalizedString(@"Could not create channel. Please try again later.", nil);
+                                                  
+                                                  NSArray *errorTitleArray =  [[error objectForKey: @"form_errors"] objectForKey :@"title"];
+                                                  
+                                                  if ([errorTitleArray count] > 0)
+                                                  {
+                                                      
+                                                      NSString* errorType = [errorTitleArray objectAtIndex:0];
+                                                      
+                                                      if ([errorType isEqualToString:@"Duplicate title."])
+                                                      {
+                                                          errorTitle = NSLocalizedString(@"Title Already Exists", nil);
+                                                          errorMessage = NSLocalizedString(@"You've already created a channel with this title. Please choose another.",nil);
+                                                      }
+                                                      
+                                                      else if ([errorType isEqualToString:@"Mind your language!"])
+                                                      {
+                                                          errorTitle = NSLocalizedString(@"Mind your language!", nil);
+                                                          errorMessage = NSLocalizedString(@"This channel title may include inappropriate words.",nil);
+                                                      }
+                                                      
+                                                      else
+                                                      {
+                                                          errorTitle = NSLocalizedString(@"Unknown Error", nil);
+                                                          errorMessage = NSLocalizedString(@"Could not save channel. Please try again later.",nil);
+                                                      }
+                                                  };
+     
+                                                                                                
+                                                  [self showError: errorMessage showErrorTitle:errorTitle];
                                                   self.saveChannelButton.hidden = NO;
                                                   self.saveChannelButton.enabled = YES;
                                                   [self.activityIndicator stopAnimating];
+                                                  
+
+                                                  
+                                                  
                                               }];
 }
 
@@ -1296,7 +1353,7 @@
             if(!hasACategory)
             {
                 // Set the default other/other subgenre
-                NSArray* filteredSubcategories = [[self.categoryTableViewController.otherGenre.subgenres array] filteredArrayUsingPredicate:[NSPredicate predicateWithFormat:@"priority = -1"]];
+                NSArray* filteredSubcategories = [[self.categoryTableViewController.otherGenre.subgenres array] filteredArrayUsingPredicate:[NSPredicate predicateWithFormat:@"isDefault == YES"]];
                  if([filteredSubcategories count] == 1)
                  {
                      SubGenre* otherSubGenre = filteredSubcategories[0];
@@ -1402,7 +1459,7 @@
     }
     else
     {
-        NSArray* filteredSubcategories = [[genre.subgenres array] filteredArrayUsingPredicate:[NSPredicate predicateWithFormat:@"priority = -1"]];
+        NSArray* filteredSubcategories = [[genre.subgenres array] filteredArrayUsingPredicate:[NSPredicate predicateWithFormat:@"isDefault == YES"]];
         if ([filteredSubcategories count] == 1)
         {
             SubGenre* otherSubGenre = filteredSubcategories[0];
@@ -1468,10 +1525,34 @@
                                               errorHandler: ^(id error) {
                                                   
                                                   DebugLog(@"Error @ createChannelPressed:");
+                                                  
+                                                  NSString *errorTitle = NSLocalizedString(@"ERROR", nil);
                                                   NSString* errorMessage = NSLocalizedString(@"Could not create channel. Please try again later.", nil);
-                                                  if ([[error objectForKey: @"form_errors"] objectForKey :@"title"])
+                                                  
+                                                  NSArray *errorTitleArray =  [[error objectForKey: @"form_errors"] objectForKey :@"title"];
+                                                  
+                                                  if ([errorTitleArray count] > 0)
                                                   {
-                                                      errorMessage = NSLocalizedString(@"You already created a channel with this title. Please choose a different title.",nil);
+                                                      
+                                                      NSString* errorType = [errorTitleArray objectAtIndex:0];
+                                                      
+                                                      if ([errorType isEqualToString:@"Duplicate title."])
+                                                      {
+                                                          errorTitle = NSLocalizedString(@"Title Already Exists", nil);
+                                                          errorMessage = NSLocalizedString(@"You've already created a channel with this title. Please choose another.",nil);
+                                                      }
+                                                      
+                                                      else if ([errorType isEqualToString:@"Mind your language!"])
+                                                      {
+                                                          errorTitle = NSLocalizedString(@"Mind your language!", nil);
+                                                          errorMessage = NSLocalizedString(@"This channel title may include inappropriate words.",nil);
+                                                      }
+                                                      
+                                                      else
+                                                      {
+                                                          errorTitle = NSLocalizedString(@"Unknown Error", nil);
+                                                          errorMessage = NSLocalizedString(@"Could not save channel. Please try again later.",nil);
+                                                      }
                                                   };
                                                   
                                                   
@@ -1479,7 +1560,7 @@
                                                   self.createChannelButton.hidden = NO;
                                                   self.cancelEditButton.hidden = YES;
                                                   self.addButton.hidden = YES;                                                  
-                                                  [self showError:errorMessage];
+                                                  [self showError:errorMessage showErrorTitle:errorTitle];
                                               }];
 }
 
@@ -1498,6 +1579,7 @@
                                                       
                                                   } errorHandler: ^(id err) {
                                                       NSString* errorMessage = nil;
+                                                      NSString* errorTitle = nil;
                                                       if ([err isKindOfClass:[NSDictionary class]])
                                                       {
                                                           errorMessage = [err objectForKey:@"message"];
@@ -1521,7 +1603,7 @@
                                                               errorMessage = NSLocalizedString(@"Could not update the channel videos. Please review and try again later.", nil);
                                                           }
                                                           DebugLog(@"Error @ setVideosForChannelById:");
-                                                          [self showError: errorMessage];
+                                                          [self showError: errorMessage showErrorTitle:errorTitle];
                                                           
                                                       }
                                                       else
@@ -1537,7 +1619,7 @@
                                                               errorMessage = NSLocalizedString(@"Could not add videos to channel. Please review and try again later.", nil);
                                                           }
                                                           DebugLog(@"Error @ setVideosForChannelById:");
-                                                          [self showError: errorMessage];
+                                                          [self showError: errorMessage showErrorTitle:errorTitle];
                                                         
                                                       }
                                                       
@@ -1550,26 +1632,40 @@
     [appDelegate.oAuthNetworkEngine channelCreatedForUserId: appDelegate.currentOAuth2Credentials.userId
                                                   channelId: channelId
                                           completionHandler: ^(id dictionary) {
+                                              
+                                              Channel* createdChannel;
+                                              
                                               IgnoringObjects ignore = kIgnoreChannelOwnerObject;
-                                              if (!isUpdate)
+                                              if (!isUpdate) // its a new creation
                                               {
                                                   ignore = ignore | kIgnoreStoredObjects;
+                                                  
+                                                  createdChannel = [Channel instanceFromDictionary:dictionary
+                                                                         usingManagedObjectContext:appDelegate.mainManagedObjectContext
+                                                                               ignoringObjectTypes:ignore];
+                                                  
+                                                  
+                                                  createdChannel.channelOwner = appDelegate.currentUser;
+                                                  
+                                                  
+                                                  // this will delete the edited channel from channels context //
+                                                  
+                                                  [self.channel.managedObjectContext deleteObject:self.channel];
+                                                  
+                                                  
+                                                  self.channel = createdChannel;
+                                                  
                                               }
-                                              Channel* createdChannel = [Channel instanceFromDictionary:dictionary
-                                                                              usingManagedObjectContext:appDelegate.mainManagedObjectContext
-                                                                                    ignoringObjectTypes:ignore];
-                                              
-                                              createdChannel.channelOwner = appDelegate.currentUser;
-                                              
-                                              
-                                              
-                                              // this will delete the edited channel from channels context //
-
-                                              [self.channel.managedObjectContext deleteObject:self.channel];
-                                              
-                                              
-                                              
-                                              self.channel = createdChannel;
+                                              else
+                                              {
+                                                  [self.channel setAttributesFromDictionary:dictionary
+                                                                        ignoringObjectTypes:ignore];
+                                                  
+                                                  // if editing the user's channel we must update the original
+                                                  
+                                                  [self.originalChannel  setAttributesFromDictionary:dictionary
+                                                                                 ignoringObjectTypes:ignore];
+                                              }
                                               
                                               
                                               DebugLog(@"Channel: %@", createdChannel);
@@ -1603,7 +1699,7 @@
                                           } errorHandler:^(id err) {
                                               
                                               DebugLog(@"Error @ getNewlyCreatedChannelForId:");
-                                              [self showError: NSLocalizedString(@"Could not retrieve the uploaded channel data. Please try accessing it from your profile later.", nil)];
+                                              [self showError: NSLocalizedString(@"Could not retrieve the uploaded channel data. Please try accessing it from your profile later.", nil) showErrorTitle:@"Error"];
                                               self.channelOwnerLabel.text = appDelegate.currentUser.displayName;
                                               
                                               [self displayChannelDetails];
@@ -1665,12 +1761,12 @@
 
 }
 
-- (void) showError: (NSString*) errorMessage
+- (void) showError: (NSString*) errorMessage showErrorTitle: (NSString*) errorTitle
 {
     self.createChannelButton.hidden = NO;
     [self.activityIndicator stopAnimating];
-    
-    [[[UIAlertView alloc] initWithTitle: NSLocalizedString(@"Error", nil)
+        
+    [[[UIAlertView alloc] initWithTitle: errorTitle
                                 message: errorMessage
                                delegate: nil
                       cancelButtonTitle: NSLocalizedString(@"OK", nil)
@@ -2098,7 +2194,7 @@
 {
     if (category)
     {
-        NSArray* filteredSubcategories = [[category.subgenres array] filteredArrayUsingPredicate:[NSPredicate predicateWithFormat:@"priority = -1"]];
+        NSArray* filteredSubcategories = [[category.subgenres array] filteredArrayUsingPredicate:[NSPredicate predicateWithFormat:@"isDefault == YES"]];
         if ([filteredSubcategories count] == 1)
         {
             SubGenre* otherSubGenre = filteredSubcategories[0];
@@ -2252,14 +2348,17 @@
 -(void)setChannel:(Channel *)channel
 {
 
+    self.originalChannel = channel;
     
     NSError *error = nil;
     
-    if(!appDelegate) appDelegate = UIApplication.sharedApplication.delegate;
+    if(!appDelegate)
+        appDelegate = UIApplication.sharedApplication.delegate;
     
     
     if(self.channel)
     {
+        
         [[NSNotificationCenter defaultCenter] removeObserver: self
                                                         name: NSManagedObjectContextObjectsDidChangeNotification
                                                       object: self.channel.managedObjectContext];
@@ -2273,7 +2372,6 @@
     if(!self.channel)
         return;
         
-    
     
     // create a copy that belongs to this viewId (@"ChannelDetails")
     
@@ -2303,16 +2401,14 @@
     }
     else
     {
-        IgnoringObjects flags = kIgnoreNothing;
-        if(channel.channelOwner == appDelegate.currentUser)
-            flags |= kIgnoreChannelOwnerObject;
+
         
-            
-        
+        // the User will be copyed over, but as a ChannelOwner, so "current" will not be set to YES
+
         _channel = [Channel instanceFromChannel:channel
                                       andViewId:self.viewId
                       usingManagedObjectContext:channel.managedObjectContext
-                            ignoringObjectTypes:flags];
+                            ignoringObjectTypes:kIgnoreNothing];
         
         
         if(channel.channelOwner == appDelegate.currentUser)
@@ -2320,7 +2416,7 @@
         
         if(_channel)
         {
-            [channel.managedObjectContext save:&error];
+            [_channel.managedObjectContext save:&error];
             if(error)
                 _channel = nil; // further error code
         }
@@ -2333,7 +2429,6 @@
     {
         
         
-        
         [[NSNotificationCenter defaultCenter] addObserver: self
                                                  selector: @selector(mainContextDataChanged:)
                                                      name: NSManagedObjectContextDidSaveNotification
@@ -2342,6 +2437,8 @@
                        forKeyPath: kSubscribedByUserKey
                           options: NSKeyValueObservingOptionNew
                           context: nil];
+        
+        
         
         if(self.mode == kChannelDetailsModeDisplay)
         {
@@ -2384,5 +2481,10 @@
     }
 }
 
+-(void)dealloc
+{
+    self.channel = nil;
+    self.originalChannel = nil;
+}
 
 @end

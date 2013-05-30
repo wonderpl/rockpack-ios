@@ -79,7 +79,8 @@
         for (VideoInstance* videoInstance in channel.videoInstances)
         {
             VideoInstance* copyVideoInstance = [VideoInstance instanceFromVideoInstance:videoInstance
-                                                              usingManagedObjectContext:managedObjectContext];
+                                                              usingManagedObjectContext:managedObjectContext
+                                                                    ignoringObjectTypes:kIgnoreChannelObjects];
             
             copyVideoInstance.viewId = viewId;
             
@@ -349,7 +350,8 @@
 - (NSString *) description
 {
     
-    NSMutableString* initialDescription = [NSMutableString stringWithFormat: @"* Channel ( cat:\"%@\", title:\"%@\" owner:\"%@\"), VI(%i):", self.categoryId, self.title, self.channelOwner.displayName, self.videoInstances.count];
+
+    NSMutableString* initialDescription = [NSMutableString stringWithFormat: @"- Channel (cat:'%@', title:'%@', owner:'%@'), VI(%i):", self.categoryId, self.title, self.channelOwner.displayName, self.videoInstances.count];
     
     for (VideoInstance* childrenVideoInstance in self.videoInstances)
     {

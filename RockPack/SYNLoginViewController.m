@@ -89,55 +89,80 @@
     activityIndicator.hidesWhenStopped = YES;
     
         // == Setup Fonts for labels (except Input Fields)
-        UIFont* rockpackBigLabelFont = [UIFont rockpackFontOfSize: 20];
+    UIFont* rockpackBigLabelFont = [UIFont rockpackFontOfSize: 20];
         
-        memberLabel.font = rockpackBigLabelFont;
-        areYouNewLabel.font = rockpackBigLabelFont;
+    memberLabel.font = rockpackBigLabelFont;
+    areYouNewLabel.font = rockpackBigLabelFont;
         
-        passwordForgottenLabel.font = [UIFont rockpackFontOfSize: 14.0];
-        secondaryFacebookMessage.font = [UIFont rockpackFontOfSize: 20.0];
-        termsAndConditionsLabel.font = [UIFont rockpackFontOfSize: 14.0];
-        termsAndConditionsLabelSide.font = termsAndConditionsLabel.font;
-        wellSendYouLabel.font = [UIFont rockpackFontOfSize: 16.0];
+    passwordForgottenLabel.font = [UIFont rockpackFontOfSize: 14.0];
+    secondaryFacebookMessage.font = [UIFont rockpackFontOfSize: 20.0];
+    termsAndConditionsLabel.font = [UIFont rockpackFontOfSize: 14.0];
+    termsAndConditionsLabelSide.font = termsAndConditionsLabel.font;
+    wellSendYouLabel.font = [UIFont rockpackFontOfSize: 16.0];
     
-        NSMutableAttributedString* termsString = [[NSMutableAttributedString alloc] initWithString: NSLocalizedString(@"BY USING ROCKPACK, YOU AGREE TO OUR\nTERMS & SERVICES AND PRIVACY POLICY", nil)];
+    NSMutableAttributedString* termsString = [[NSMutableAttributedString alloc] initWithString: NSLocalizedString(@"BY USING ROCKPACK, YOU AGREE TO OUR\nTERMS & SERVICES AND PRIVACY POLICY", nil)];
+
+        // TERMS & SERVICESs
+    
+    [termsString addAttribute: NSForegroundColorAttributeName
+                        value: [UIColor colorWithRed:(11.0/255.0) green:(166.0/255.0) blue:(171.0/255.0) alpha:(1.0)]
+                        range: NSMakeRange(36, 16)];
+    
         
-        [termsString addAttribute: NSForegroundColorAttributeName value: [UIColor colorWithRed:(11.0/255.0) green:(166.0/255.0) blue:(171.0/255.0) alpha:(1.0)] range: NSMakeRange(36, 16)];
+    
+    
+        // PRIVACY POLICY
+    
+    [termsString addAttribute: NSForegroundColorAttributeName
+                        value: [UIColor colorWithRed:(11.0/255.0) green:(166.0/255.0) blue:(171.0/255.0) alpha:(1.0)]
+                        range: NSMakeRange(57, 14)];
+    
         
-        [termsString addAttribute: NSForegroundColorAttributeName value: [UIColor colorWithRed:(11.0/255.0) green:(166.0/255.0) blue:(171.0/255.0) alpha:(1.0)] range: NSMakeRange(57, 14)];
     
         // add terms buttons
-        termsAndConditionsLabel.attributedText = termsString;
-        termsAndConditionsLabelSide.attributedText = termsAndConditionsLabel.attributedText;
+    termsAndConditionsLabel.attributedText = termsString;
+    termsAndConditionsLabelSide.attributedText = termsAndConditionsLabel.attributedText;
+    
+    UITapGestureRecognizer* termsAndConditionsTapRecogniser = [[UITapGestureRecognizer alloc] initWithTarget:self
+                                                                                                      action:@selector(termsAndConditionsTapped:)];
+    
+    [termsAndConditionsLabel setUserInteractionEnabled:YES];
+    [termsAndConditionsLabel addGestureRecognizer:termsAndConditionsTapRecogniser];
+    
+    [termsAndConditionsLabelSide setUserInteractionEnabled:YES];
+    [termsAndConditionsLabelSide addGestureRecognizer:termsAndConditionsTapRecogniser];
+    
+    
+    
+    
+    labelsToErrorArrows = [[NSMutableDictionary alloc] init];
         
-        labelsToErrorArrows = [[NSMutableDictionary alloc] init];
+    ddInputField.keyboardType = UIKeyboardTypeNumberPad;
+    mmInputField.keyboardType = UIKeyboardTypeNumberPad;
+    yyyyInputField.keyboardType = UIKeyboardTypeNumberPad;
         
-        ddInputField.keyboardType = UIKeyboardTypeNumberPad;
-        mmInputField.keyboardType = UIKeyboardTypeNumberPad;
-        yyyyInputField.keyboardType = UIKeyboardTypeNumberPad;
+    passwordInputField.secureTextEntry = YES;
         
-        passwordInputField.secureTextEntry = YES;
+    facebookButtonInitialFrame = facebookSignInButton.frame;
+    signUpButtonInitialFrame = signUpButton.frame;
         
-        facebookButtonInitialFrame = facebookSignInButton.frame;
-        signUpButtonInitialFrame = signUpButton.frame;
+    emailInputField.keyboardType = UIKeyboardTypeEmailAddress;
         
-        emailInputField.keyboardType = UIKeyboardTypeEmailAddress;
+    self.mainFormElements = @[];
         
-        self.mainFormElements = @[];
+    // == Setup Input Fields
         
-        // == Setup Input Fields
-        
-        UIFont* rockpackInputFont = [UIFont rockpackFontOfSize: 20];
-        NSArray* textFieldsToSetup = @[emailInputField, userNameInputField, passwordInputField,
+    UIFont* rockpackInputFont = [UIFont rockpackFontOfSize: 20];
+    NSArray* textFieldsToSetup = @[emailInputField, userNameInputField, passwordInputField,
                                        ddInputField, mmInputField, yyyyInputField];
         
-        for (UITextField* tf in textFieldsToSetup)
-        {
-            tf.font = rockpackInputFont;
-            // -- this is to create the left padding for the text fields (hack) -- //
-            tf.leftView = [[UIView alloc] initWithFrame:CGRectMake(0, 0, 10, 57)];
-            tf.leftViewMode = UITextFieldViewModeAlways;
-        }
+    for (UITextField* tf in textFieldsToSetup)
+    {
+        tf.font = rockpackInputFont;
+        // -- this is to create the left padding for the text fields (hack) -- //
+        tf.leftView = [[UIView alloc] initWithFrame:CGRectMake(0, 0, 10, 57)];
+        tf.leftViewMode = UITextFieldViewModeAlways;
+    }
     
     if([[SYNDeviceManager sharedInstance] isPortrait])
     {
@@ -145,12 +170,13 @@
         signUpButton.center = CGPointMake(facebookSignInButton.center.x + 304.0, signUpButton.center.y);
     }
     
-        self.state = kLoginScreenStateInitial;
+    self.state = kLoginScreenStateInitial;
     
-        UITapGestureRecognizer* tapGesture = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(outerViewTapped:)];
-        [self.view addGestureRecognizer:tapGesture];
+    UITapGestureRecognizer* tapGesture = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(outerViewTapped:)];
+    [self.view addGestureRecognizer:tapGesture];
 
 }
+
 
 
 - (void) viewDidAppear: (BOOL) animated
@@ -219,7 +245,6 @@
     
     if ([SYNDeviceManager.sharedInstance isPortrait])
     {
-        
         faceImageButton.center = CGPointMake(78.0, faceImageButton.center.y);
         self.avatarImageView.center = CGPointMake(78.0, self.avatarImageView.center.y);
         passwordForgottenLabel.center = CGPointMake(650.0, passwordForgottenLabel.center.y);
@@ -229,6 +254,8 @@
     signUpButton.enabled = YES;
     signUpButton.alpha = 1.0;
     signUpButton.hidden = NO;
+    
+    loginButton.enabled = YES;
     
     [activityIndicator stopAnimating];  
 }
@@ -623,7 +650,7 @@
     // email
     if (userNameInputField.text.length < 1)
     {
-        [self placeErrorLabel: NSLocalizedString(@"Please enter a user name", nil)
+        [self placeErrorLabel: NSLocalizedString(@"Please enter your email or username", nil)
                    nextToView: userNameInputField];
         
         [userNameInputField becomeFirstResponder];
@@ -633,7 +660,7 @@
 
     if (passwordInputField.text.length < 1)
     {
-        [self placeErrorLabel: NSLocalizedString(@"Please enter a password", nil)
+        [self placeErrorLabel: NSLocalizedString(@"Please enter your password", nil)
                    nextToView: passwordInputField];
         
         [passwordInputField becomeFirstResponder];
@@ -644,6 +671,23 @@
     return YES;
 }
 
+
+- (BOOL) resetPasswordFormIsValid
+{
+    
+    if (userNameInputField.text.length < 1)
+    {
+        [self placeErrorLabel: NSLocalizedString(@"Please provide a username or an email", nil)
+                   nextToView: userNameInputField];
+        
+        [userNameInputField becomeFirstResponder];
+        
+        return NO;
+    }
+    
+    return YES;
+    
+}
 
 - (IBAction) doLogin: (id) sender
 {
@@ -687,10 +731,10 @@
                   NSDictionary* errors = errorDictionary [@"error"];
                   if (errors)
                   {
-                      [self placeErrorLabel: @"Username could be incorrect"
-                                 nextToView: userNameInputField];
+                      //[self placeErrorLabel: @"Username could be incorrect"
+                      //           nextToView: userNameInputField];
                       
-                      [self placeErrorLabel: @"Password could be incorrect"
+                      [self placeErrorLabel: @"Your username or password is incorrect"
                                  nextToView: passwordInputField];
                   }
                   
@@ -732,17 +776,21 @@
         return;
     }
     
+    if (![self resetPasswordFormIsValid])
+        return;
+    
     [self doRequestPasswordResetForUsername:self.userNameInputField.text completionHandler: ^(NSDictionary * completionInfo) {
+        
         if ([completionInfo valueForKey: @"error"])
         {
-            [self placeErrorLabel: @"User unknown"
+            [self placeErrorLabel: @"Sorry, we don't recognise this username or email"
                        nextToView: self.userNameInputField];
             
         }
         else
         {
             [[[UIAlertView alloc] initWithTitle: @"Password Reset"
-                                        message: @"Check your email for instructions"
+                                        message: @"Check your email and follow the instructions"
                                        delegate: nil
                               cancelButtonTitle: @"OK"
                               otherButtonTitles: nil] show];
@@ -831,6 +879,7 @@
                                     }  errorHandler:^(id error) {
                                            
                                            [self doFacebookFailAnimation];
+                                            facebookSignInButton.enabled = YES;
                                            
                                            if ([error isKindOfClass: [NSDictionary class]])
                                            {
@@ -838,7 +887,6 @@
                                                
                                                if (formErrors)
                                                {
-                                                   facebookSignInButton.enabled = YES;
                                                    secondaryFacebookMessage.text = NSLocalizedString(@"Could not log in through facebook", nil);
                                                    secondaryFacebookMessage.alpha = 1.0;
                                                }
@@ -889,7 +937,7 @@
 {
     if (emailInputField.text.length < 1)
     {
-        [self placeErrorLabel: @"Please enter an email address"
+        [self placeErrorLabel: @"Please enter a valid email address"
                    nextToView: emailInputField];
         
         [emailInputField becomeFirstResponder];
@@ -901,7 +949,7 @@
     
     if (![emailInputField.text isMatchedByRegex: @"^([a-zA-Z0-9%_.+\\-]+)@([a-zA-Z0-9.\\-]+?\\.[a-zA-Z]{2,6})$"])
     {
-        [self placeErrorLabel: NSLocalizedString(@"Email Address Not Valid", nil)
+        [self placeErrorLabel: NSLocalizedString(@"Please enter a valid email address", nil)
                    nextToView: emailInputField];
         
         [emailInputField becomeFirstResponder];
@@ -909,9 +957,21 @@
         return NO;
     }
     
-    if (userNameInputField.text.length < 1)
+    // == Determine if we are in login or registration mode by asking if the Register button is visible and show different error messages == //
+    
+    if (userNameInputField.text.length < 1 && registerButton.hidden == YES)
     {
-        [self placeErrorLabel: NSLocalizedString(@"Please enter a user name", nil)
+        [self placeErrorLabel: NSLocalizedString(@"Please enter your email or username", nil)
+                   nextToView: userNameInputField];
+        
+        [userNameInputField becomeFirstResponder];
+        
+        return NO;
+    }
+    
+    if (userNameInputField.text.length < 1 && registerButton.hidden == NO)
+    {
+        [self placeErrorLabel: NSLocalizedString(@"Please choose a username", nil)
                    nextToView: userNameInputField];
         
         [userNameInputField becomeFirstResponder];
@@ -930,10 +990,21 @@
         return NO;
     }
     
+    // == Determine if we are in login or registration mode by asking if the Register button is visible and show different error messages == //
     
-    if (passwordInputField.text.length < 1)
+    if (passwordInputField.text.length < 1 && registerButton.hidden == YES)
     {
-        [self placeErrorLabel: NSLocalizedString(@"Please enter a password", nil)
+        [self placeErrorLabel: NSLocalizedString(@"Please enter your password", nil)
+                   nextToView: passwordInputField];
+        
+        [passwordInputField becomeFirstResponder];
+        
+        return NO;
+    }
+    
+    if (passwordInputField.text.length < 1 && registerButton.hidden == NO)
+    {
+        [self placeErrorLabel: NSLocalizedString(@"Please choose a password", nil)
                    nextToView: passwordInputField];
         
         [passwordInputField becomeFirstResponder];
@@ -945,13 +1016,15 @@
     
     if (ddInputField.text.length != 2 || mmInputField.text.length != 2 || yyyyInputField.text.length != 4)
     {
-        [self placeErrorLabel: NSLocalizedString(@"Date Invalid", nil)
+        [self placeErrorLabel: NSLocalizedString(@"Sorry, this date is not valid", nil)
                    nextToView: dobView];
         
         [ddInputField becomeFirstResponder];
         
         return NO;
     }
+    
+    
     
     // == Check wether the DOB fields contain numbers == //
     
@@ -978,7 +1051,7 @@
     
     if (!potentialDate)
     {
-        [self placeErrorLabel: NSLocalizedString(@"The Date is not Valid", nil)
+        [self placeErrorLabel: NSLocalizedString(@"Sorry, this date is not valid", nil)
                    nextToView: dobView];
         
         return NO;
@@ -989,7 +1062,7 @@
     // == In the future == //
     
     if ([nowDate compare:potentialDate] == NSOrderedAscending) {
-        [self placeErrorLabel: NSLocalizedString(@"The Date is in the future", nil)
+        [self placeErrorLabel: NSLocalizedString(@"Looks like you're born in the future!", nil)
                    nextToView: dobView];
         
         return NO;
@@ -1005,7 +1078,7 @@
     
     if ([tooYoungDate compare:potentialDate] == NSOrderedAscending) {
         
-        [self placeErrorLabel: NSLocalizedString(@"Cannot create an account for under 13", nil)
+        [self placeErrorLabel: NSLocalizedString(@"Rockpack is not available for under 13's yet", nil)
                    nextToView: dobView];
         
         return NO;
@@ -1291,6 +1364,25 @@
     return YES;
 }
 
+- (IBAction) textfieldDidChange: (id) sender
+{
+
+    if(sender == self.ddInputField && [self.ddInputField.text length]==2)
+    {
+        [self.mmInputField becomeFirstResponder];
+
+    }
+    else if(sender == self.mmInputField && [self.mmInputField.text length]==2)
+    {
+        [self.yyyyInputField becomeFirstResponder];
+
+    }
+    else if(sender == self.yyyyInputField && [self.yyyyInputField.text length] == 4)
+    {
+        //[sender resignFirstResponder];
+        
+    }
+}
 
 - (BOOL) textFieldShouldReturn: (UITextField *) textField
 {
@@ -1441,6 +1533,14 @@
     areYouNewLabel.frame = CGRectIntegral(areYouNewLabel.frame);
 }
 
+-(void)termsAndConditionsTapped:(UITapGestureRecognizer*)tapGestureRec
+{
+    CGPoint locationInView = [tapGestureRec locationInView:tapGestureRec.view];
+    NSLog(@"+ x:%f, y:%f", locationInView.x, locationInView.y);
+    
+    
+    
+}
 
 - (CGFloat) elementsOffsetY
 {

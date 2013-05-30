@@ -293,14 +293,13 @@
 
 -(void)addSubscriptionsObject:(Channel *)value_
 {
-    
     [self.subscriptionsSet addObject:value_];
 }
--(void)removeSubscriptionsObject:(Channel *)value_
+-(void)removeSubscriptions:(NSOrderedSet *)value_
 {
-    
     [self.subscriptionsSet removeObject:value_];
 }
+
 
 #pragma mark - Helper methods
 

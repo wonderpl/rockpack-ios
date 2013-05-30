@@ -88,6 +88,10 @@
     
     self.nameIsPublic = self.appDelegate.currentUser.fullNameIsPublicValue;
     
+    
+    self.inputField.placeholder = @"First Name";
+    self.lastNameInputField.placeholder = @"Last Name";
+    
 }
 
 

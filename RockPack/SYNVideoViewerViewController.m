@@ -13,7 +13,9 @@
 #import "GAI.h"
 #import "LXReorderableCollectionViewFlowLayout.h"
 #import "NSIndexPath+Arithmetic.h"
+#import "NSObject+Blocks.h"
 #import "SYNAbstractViewController.h"
+#import "SYNChannelDetailViewController.h"
 #import "SYNDeviceManager.h"
 #import "SYNMasterViewController.h"
 #import "SYNOAuthNetworkEngine.h"
@@ -30,7 +32,6 @@
 #import "Video.h"
 #import "VideoInstance.h"
 #import <MediaPlayer/MediaPlayer.h>
-#import "SYNChannelDetailViewController.h"
 
 @interface SYNVideoViewerViewController () <UIGestureRecognizerDelegate,
                                             UIPopoverControllerDelegate>
@@ -61,7 +62,7 @@
 @property (weak, nonatomic) IBOutlet UIButton *addVideoButton;
 
 //iPhone specific
-@property (nonatomic, assign) UIDeviceOrientation currentOrientaiton;
+@property (nonatomic, assign) UIDeviceOrientation currentOrientation;
 
 @end
 
@@ -265,10 +266,10 @@
         self.videoPlaybackViewController.view.frame = videoFrame;
         
         [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(deviceOrientationChange:) name:UIDeviceOrientationDidChangeNotification object:nil];
-        self.currentOrientaiton = [[UIDevice currentDevice] orientation];
+        self.currentOrientation = [[UIDevice currentDevice] orientation];
         [[UIDevice currentDevice] beginGeneratingDeviceOrientationNotifications];
         self.originalFrame = self.swipeView.frame;
-        if (self.currentOrientaiton == UIDeviceOrientationLandscapeLeft)
+        if (self.currentOrientation == UIDeviceOrientationLandscapeLeft)
         {
             [self userTappedVideo];
         }
@@ -284,7 +285,12 @@
     
     self.addButton.hidden = !self.addVideoButton.selected;
     
-    
+    if ([SYNDeviceManager.sharedInstance isIPhone])
+    {
+        [self.videoPlaybackViewController.shuttleBarMaxMinButton addTarget: self
+                                                                    action: @selector(userTouchedMaxMinButton)
+                                                          forControlEvents: UIControlEventTouchUpInside];
+    }
 }
 
 
@@ -680,6 +686,7 @@
         }
         else
         {
+            // 
             if ([SYNDeviceManager.sharedInstance isLandscape])
             {
                 // Landscape
@@ -715,25 +722,39 @@
                                 completion: nil];
             }
         }
+        
+        self.videoExpanded = !self.videoExpanded;
     }
     else
     {
-        if (self.currentOrientaiton == UIDeviceOrientationPortrait)
+        if (self.videoExpanded == TRUE)
         {
-            UIDeviceOrientation deviceOrientation = [[UIDevice currentDevice] orientation];
-            if (UIDeviceOrientationIsLandscape(deviceOrientation))
-            {
-                [self changePlayerOrientation:deviceOrientation];
-            }
-            else
-            {
-                [self changePlayerOrientation:UIDeviceOrientationLandscapeLeft];
-            }
+            [self scheduleFadeOutShuttleBar];
+        }
+    }
+    
+
+}
+
+
+- (void) userTouchedMaxMinButton
+{
+    if (self.currentOrientation == UIDeviceOrientationPortrait)
+    {
+        UIDeviceOrientation deviceOrientation = [[UIDevice currentDevice] orientation];
+        
+        if (UIDeviceOrientationIsLandscape(deviceOrientation))
+        {
+            [self changePlayerOrientation: deviceOrientation];
         }
         else
         {
-            [self changePlayerOrientation:UIDeviceOrientationPortrait];
+            [self changePlayerOrientation: UIDeviceOrientationLandscapeLeft];
         }
+    }
+    else
+    {
+        [self changePlayerOrientation: UIDeviceOrientationPortrait];
     }
     
     self.videoExpanded = !self.videoExpanded;
@@ -881,17 +902,22 @@
 -(void)deviceOrientationChange:(NSNotification*)note
 {
     UIDeviceOrientation newOrientation = [[UIDevice currentDevice] orientation];
-    if (self.currentOrientaiton != newOrientation && (newOrientation ==  UIDeviceOrientationPortrait || UIDeviceOrientationIsLandscape(newOrientation)))
+    if (self.currentOrientation != newOrientation && (newOrientation ==  UIDeviceOrientationPortrait || UIDeviceOrientationIsLandscape(newOrientation)))
     {
         [self changePlayerOrientation:newOrientation];
     }
 }
 
--(void)changePlayerOrientation:(UIDeviceOrientation)newOrientation
+-(void) changePlayerOrientation: (UIDeviceOrientation) newOrientation
 {
     if (newOrientation == UIDeviceOrientationPortrait)
     {
-        self.currentOrientaiton = UIDeviceOrientationPortrait;
+        self.videoExpanded = FALSE;
+        
+        [self.videoPlaybackViewController.shuttleBarMaxMinButton setImage: [UIImage imageNamed: @"ButtonShuttleBarMaximise.png"]
+                                                                 forState: UIControlStateNormal];
+        
+        self.currentOrientation = UIDeviceOrientationPortrait;
         [[UIApplication sharedApplication] setStatusBarHidden:NO withAnimation:UIStatusBarAnimationSlide];
         [UIView transitionWithView: self.view
                           duration: 0.5f
@@ -901,24 +927,38 @@
                             self.chromeView.alpha = 1.0f;
                             self.swipeView.transform = CGAffineTransformIdentity;
                             self.videoPlaybackViewController.view.transform = self.swipeView.transform;
+                            self.videoPlaybackViewController.shuttleBarView.transform = CGAffineTransformIdentity;
                             self.swipeView.frame = self.originalFrame;
                             CGRect videoFrame = self.videoPlaybackViewController.view.frame;
                             videoFrame.origin = self.originalFrame.origin;
                             self.videoPlaybackViewController.view.frame = videoFrame;
                             self.videoPlaybackViewController.shuttleBarView.alpha = 1.0f;
+                            [self.videoPlaybackViewController resetShuttleBarFrame];
+                            self.iPhonePanelImageView.alpha = 1.0f;
                         }
                         completion:^(BOOL finished) {
                             if (finished)
                             {
                                 [[NSNotificationCenter defaultCenter] postNotificationName:kNoteShowNetworkMessages object:nil];
                             }
+                            
+                            [self cancelscheduledFadeOutShuttleBar];
                         }];
     }
     else if (UIDeviceOrientationIsLandscape(newOrientation))
     {
-        self.currentOrientaiton = newOrientation;
-        [[UIApplication sharedApplication] setStatusBarHidden:YES withAnimation:UIStatusBarAnimationSlide];
-        [[NSNotificationCenter defaultCenter] postNotificationName:kNoteHideNetworkMessages object:nil];
+        self.videoExpanded = TRUE;
+        
+        [self.videoPlaybackViewController.shuttleBarMaxMinButton setImage: [UIImage imageNamed: @"ButtonShuttleBarMinimise.png"]
+                                                                 forState: UIControlStateNormal];
+        self.currentOrientation = newOrientation;
+        [[UIApplication sharedApplication] setStatusBarHidden: YES
+                                                withAnimation: UIStatusBarAnimationSlide];
+        
+        [[NSNotificationCenter defaultCenter] postNotificationName: kNoteHideNetworkMessages
+                                                            object: nil];
+        
+        self.swipeView.transform = CGAffineTransformIdentity;
         [UIView transitionWithView: self.view
                           duration: 0.5f
                            options: UIViewAnimationOptionCurveEaseInOut
@@ -929,19 +969,83 @@
                                 //Device orientation may confuse screen dimensions. Ensure the width is always the larger dimension.
                                 fullScreenFrame = CGRectMake(0,0,[SYNDeviceManager.sharedInstance currentScreenWidth], [SYNDeviceManager.sharedInstance currentScreenHeight]);
                             }
+                            
                             self.blackPanelView.alpha = 1.0f;
                             self.chromeView.alpha = 0.0f;
                             self.swipeView.frame =  fullScreenFrame;
                             self.swipeView.center = CGPointMake(fullScreenFrame.size.height/2.0f,fullScreenFrame.size.width/2.0f - 20.0f);
-                            self.videoPlaybackViewController.view.center =self.swipeView.center;
+                            self.videoPlaybackViewController.view.center = CGPointMake(fullScreenFrame.size.height/2.0f,fullScreenFrame.size.width/2.0f - 20.0f);
+                            
                             self.swipeView.transform = CGAffineTransformMakeRotation((newOrientation==UIDeviceOrientationLandscapeLeft) ? M_PI_2 : -M_PI_2 );
-                            CGFloat scaleFactor = fullScreenFrame.size.width/self.videoPlaybackViewController.view.frame.size.width;
-                            self.videoPlaybackViewController.view.transform = CGAffineTransformScale(self.swipeView.transform,scaleFactor,scaleFactor);
-                            self.videoPlaybackViewController.shuttleBarView.alpha = 0.0f;
+                            
+                            CGFloat scaleFactor = fullScreenFrame.size.width / self.videoPlaybackViewController.view.frame.size.width;
+                            NSLog (@"w1 = %f, w2 = %f", fullScreenFrame.size.width, self.videoPlaybackViewController.view.frame.size.width);
+                            if (self.videoPlaybackViewController.view.frame.size.width < self.videoPlaybackViewController.view.frame.size.height)
+                            {
+                                scaleFactor = self.videoPlaybackViewController.view.frame.size.height / fullScreenFrame.size.height;
+                            }
+                            
+                            self.videoPlaybackViewController.view.transform = CGAffineTransformScale(CGAffineTransformMakeRotation((newOrientation==UIDeviceOrientationLandscapeLeft) ? M_PI_2 : -M_PI_2 ),scaleFactor,scaleFactor);
+                            self.videoPlaybackViewController.shuttleBarView.transform = CGAffineTransformScale(CGAffineTransformIdentity,1.0f/scaleFactor,1.0f/scaleFactor);
+
+                            //
+                            CGRect shuttleBarFrame = self.videoPlaybackViewController.shuttleBarView.frame;
+                            shuttleBarFrame.size.width = fullScreenFrame.size.width*(1.0f/scaleFactor);
+                            shuttleBarFrame.size.height = kShuttleBarHeight*(1.0f/scaleFactor);
+                            shuttleBarFrame.origin.x = 0.0f;
+                            shuttleBarFrame.origin.y = (self.videoPlaybackViewController.view.frame.size.width - kShuttleBarHeight)*(1.0f/scaleFactor);
+                            self.videoPlaybackViewController.shuttleBarView.frame = shuttleBarFrame;
+                            
+                            self.iPhonePanelImageView.alpha = 0.0f;
                         }
-                        completion: nil];
+                        completion: ^(BOOL success){
+                            CGFloat adjustment = ([SYNDeviceManager.sharedInstance currentScreenWidth] > 480) ? 0 : 25;
+                            CGPoint currentCenter = self.swipeView.center;
+                            currentCenter.x += (newOrientation == UIDeviceOrientationLandscapeLeft) ? 44+adjustment : -(44+adjustment);
+                            self.swipeView.center = currentCenter;
+                            
+                            [self scheduleFadeOutShuttleBar];
+
+                        }];
     }
+}
+
+
+- (void) scheduleFadeOutShuttleBar
+{
+    self.videoPlaybackViewController.shuttleBarView.alpha = 1.0f;
+    // Arrange to fade out shuttle bar
+    [self performBlock: ^{
+        [UIView animateWithDuration: 0.5f
+                              delay: 0.0f
+                            options: UIViewAnimationOptionCurveEaseInOut
+                         animations: ^ {
+                             self.videoPlaybackViewController.shuttleBarView.alpha = 0.0f;
+                         }
+                         completion: nil];
+    }
+            afterDelay: 5.0f
+ cancelPreviousRequest: YES];
 
 }
+
+- (void) cancelscheduledFadeOutShuttleBar
+{
+    // Arrange to fade out shuttle bar
+    [self performBlock: ^{
+        [UIView animateWithDuration: 0.5f
+                              delay: 0.0f
+                            options: UIViewAnimationOptionCurveEaseInOut
+                         animations: ^ {
+                             self.videoPlaybackViewController.shuttleBarView.alpha = 1.0f;
+                         }
+                         completion: nil];
+    }
+            afterDelay: 0.0f
+ cancelPreviousRequest: YES];
+    
+}
+
+
 
 @end

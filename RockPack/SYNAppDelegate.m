@@ -26,8 +26,10 @@
 #import "UIImageView+ImageProcessing.h"
 #import "UIImageView+MKNetworkKitAdditions.h"
 #import "UncaughtExceptionHandler.h"
+#import <AVFoundation/AVFoundation.h>
 #import <FacebookSDK/FacebookSDK.h>
 #import <objc/runtime.h>
+#import "SYNFacebookManager.h"
 
 extern void instrumentObjcMessageSends(BOOL);
 
@@ -54,13 +56,27 @@ extern void instrumentObjcMessageSends(BOOL);
 @synthesize currentUser = _currentUser, currentOAuth2Credentials = _currentOAuth2Credentials;
 
 - (BOOL) application:(UIApplication *) application
-         didFinishLaunchingWithOptions: (NSDictionary *) launchOptions
+didFinishLaunchingWithOptions: (NSDictionary *) launchOptions
 {
     // Enable the Spark Inspector
 #if DEBUG
     [SparkInspector enableObservation];
 #endif
-
+    
+#if USEUDID
+    [TestFlight setDeviceIdentifier: [[UIDevice currentDevice] uniqueIdentifier]];
+#endif
+    
+    // We need to set the audio session so that that app will continue to play audio even if the mute switch is on
+    AVAudioSession *audioSession = [AVAudioSession sharedInstance];
+    NSError *setCategoryError = nil;
+    
+    if (![audioSession setCategory: AVAudioSessionCategoryPlayback
+                             error: &setCategoryError])
+    {
+        DebugLog(@"Error setting AVAudioSessionCategoryPlayback: %@", setCategoryError);
+    };
+    
     
     // Install our exception handler (must happen on the next turn through the event loop - as opposed to right now)
     [self performSelector: @selector(installUncaughtExceptionHandler)
@@ -75,7 +91,7 @@ extern void instrumentObjcMessageSends(BOOL);
     NSString *bundleAndVersionString = [NSString stringWithFormat:@"%@/%@",
                                         [[NSBundle mainBundle] infoDictionary][(NSString *)kCFBundleNameKey],
                                         [[NSBundle mainBundle] infoDictionary][(NSString *)kCFBundleVersionKey]];
-
+    
     // We just want the bit in-between the first set of brackets
     NSCharacterSet *separatorSet = [NSCharacterSet characterSetWithCharactersInString: @"()"];
     
@@ -94,7 +110,7 @@ extern void instrumentObjcMessageSends(BOOL);
     // Automatically send uncaught exceptions to Google Analytics.
     [GAI sharedInstance].trackUncaughtExceptions = YES;
     
-    // Optional: set Google Analytics dispatch interval 
+    // Optional: set Google Analytics dispatch interval
     [GAI sharedInstance].dispatchInterval = 30;
     
     // Set debug to YES to enable  extra debugging information.
@@ -103,9 +119,9 @@ extern void instrumentObjcMessageSends(BOOL);
     // Create tracker instance.
     [[GAI sharedInstance] trackerWithTrackingId: kGoogleAnalyticsId];
     
-    // Se up CoreData // 
+    // Se up CoreData //
     [self initializeCoreDataStack];
-
+    
     // Video Queue View Controller //
     self.videoQueue = [SYNVideoQueue queue];
     
@@ -114,7 +130,7 @@ extern void instrumentObjcMessageSends(BOOL);
     
     // Network Engine //
     [self initializeNetworkEngines];
-
+    
     [[NSNotificationCenter defaultCenter] addObserver: self
                                              selector: @selector(loginCompleted:)
                                                  name: kLoginCompleted
@@ -124,9 +140,9 @@ extern void instrumentObjcMessageSends(BOOL);
     
 	// Create a dictionary of defaults to add and register them (if they have not already been set)
 	NSDictionary *initDefaults = [NSDictionary dictionaryWithObjectsAndKeys: @(NO), kDownloadedVideoContentBool,
-                                                                             nil];
+                                  nil];
 	[defaults registerDefaults: initDefaults];
-
+    
     self.window = [[UIWindow alloc] initWithFrame: [[UIScreen mainScreen] bounds]];
     [self.window makeKeyAndVisible];
     
@@ -140,10 +156,60 @@ extern void instrumentObjcMessageSends(BOOL);
         // If we have a user and a refresh token... //
         if ([self.currentOAuth2Credentials hasExpired])
         {
+            
+            //Add imageview to the window as placeholder while we wait for the token refresh call.
+            
+            UIImageView* startImageView = nil;
+            CGPoint startImageCenter = self.window.center;
+            if([[SYNDeviceManager sharedInstance] isIPad])
+            {
+                if(UIDeviceOrientationIsLandscape([[SYNDeviceManager sharedInstance] currentOrientation]))
+                {
+                    startImageView = [[UIImageView alloc] initWithImage:[UIImage imageNamed:@"Default-Landscape"]];
+                    if([[SYNDeviceManager sharedInstance] currentOrientation]== UIDeviceOrientationLandscapeLeft)
+                    {
+                        startImageView.transform = CGAffineTransformMakeRotation(M_PI_2);
+                        startImageCenter.x-=10;
+                    }
+                    else
+                    {
+                        startImageView.transform = CGAffineTransformMakeRotation(-M_PI_2);
+                        startImageCenter.x+=10;
+                    }
+                    
+                }
+                else
+                {
+                    startImageView = [[UIImageView alloc] initWithImage:[UIImage imageNamed:@"Default-Portrait"]];
+                    startImageCenter.y+=10;
+                }
+            }
+            else
+            {
+                if([SYNDeviceManager.sharedInstance currentScreenHeight]>480.0f)
+                {
+                    startImageView = [[UIImageView alloc] initWithImage:[UIImage imageNamed:@"Default-568h"]];
+                }
+                else
+                {
+                    startImageView = [[UIImageView alloc] initWithImage:[UIImage imageNamed:@"Default"]];
+                }
+            }
+            [self.window addSubview:startImageView];
+            startImageView.center = startImageCenter;
+            
+            
+            //refresh token
             [self.oAuthNetworkEngine refreshOAuthTokenWithCompletionHandler: ^(id response) {
                 self.window.rootViewController = [self createAndReturnRootViewController];
+                [startImageView removeFromSuperview];
             } errorHandler: ^(id response) {
-                self.window.rootViewController = [self createAndReturnLoginViewController];
+                [self logout];
+                if(!self.window.rootViewController)
+                {
+                    self.window.rootViewController = [self createAndReturnLoginViewController];
+                }
+                [startImageView removeFromSuperview];
             }];
             
             return YES;
@@ -200,11 +266,18 @@ extern void instrumentObjcMessageSends(BOOL);
     
     self.currentUser.currentValue = NO;
     
+    [self.mainManagedObjectContext deleteObject:self.currentUser];
+    
+    [[SYNFacebookManager sharedFBManager] logoutOnSuccess:^{
+    } onFailure:^(NSString *errorMessage) {
+    }];
+    
     [self clearCoreDataMainEntities:YES];
-
+    
     self.currentOAuth2Credentials = nil;
+    
     _currentUser = nil;
- 
+    
 }
 
 
@@ -328,7 +401,7 @@ extern void instrumentObjcMessageSends(BOOL);
     
     ZAssert(channelsStore, @"Failed to initialize channels managed context in app delegate");
     self.channelsManagedObjectContext.persistentStoreCoordinator = channelsPersistentStoreCoordinator;
-
+    
     NSURL *storeURL = [[[NSFileManager defaultManager] URLsForDirectory: NSDocumentDirectory
                                                               inDomains: NSUserDomainMask] lastObject];
     
@@ -378,10 +451,10 @@ extern void instrumentObjcMessageSends(BOOL);
         }
         
         store = [persistentStoreCoordinator addPersistentStoreWithType: NSSQLiteStoreType
-                                                                            configuration: nil
-                                                                                      URL: storeURL
-                                                                                  options: @{NSMigratePersistentStoresAutomaticallyOption:@(YES)}
-                                                                                    error: &error]; 
+                                                         configuration: nil
+                                                                   URL: storeURL
+                                                               options: @{NSMigratePersistentStoresAutomaticallyOption:@(YES)}
+                                                                 error: &error];
     }
     if (store == nil)
     {
@@ -496,6 +569,21 @@ extern void instrumentObjcMessageSends(BOOL);
         [self.mainManagedObjectContext deleteObject: objectToDelete];
     }
     
+    // == Clear Cover Art == //
+    
+    [fetchRequest setEntity:[NSEntityDescription entityForName: @"CoverArt"
+                                        inManagedObjectContext: self.mainManagedObjectContext]];
+    
+    
+    itemsToDelete = [self.mainManagedObjectContext executeFetchRequest: fetchRequest
+                                                                 error: &error];
+    
+    for (NSManagedObject* objectToDelete in itemsToDelete) {
+        
+        [self.mainManagedObjectContext deleteObject: objectToDelete];
+    }
+    
+    
     // == Clear Channels == //
     
     if (!userBound)
@@ -525,7 +613,7 @@ extern void instrumentObjcMessageSends(BOOL);
     {
         [self.mainManagedObjectContext deleteObject:objectToDelete];
     }
-
+    
     // == Save == //
     [self saveContext: YES];
     
@@ -573,8 +661,8 @@ extern void instrumentObjcMessageSends(BOOL);
             if(userEntries.count > 1) // housekeeping, clear duplicate user entries
                 for (int u = 1; u < userEntries.count; u++)
                     [self.mainManagedObjectContext deleteObject:((User*)userEntries[u])];
-                    
-                
+            
+            
         }
         else
         {
@@ -604,7 +692,7 @@ extern void instrumentObjcMessageSends(BOOL);
     {
         [_currentOAuth2Credentials saveToKeychainForService: kOAuth2Service
                                                     account: self.currentUser.uniqueId];
-    } 
+    }
 }
 
 

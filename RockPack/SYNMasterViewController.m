@@ -555,15 +555,9 @@ typedef void(^AnimationCompletionBlock)(BOOL finished);
     if (self.isInSearchMode) // if it is on stage already
         return;
     
-    
-    if(self.overlayNavigationController && self.overlayNavigationController.topViewController == self.searchViewController)
-    {
-        self.sideNavigationButton.hidden = NO;
-    }
-    else
-    {
+
+    if(!self.overlayNavigationController) // we are on the main stage and the X button should appear
         self.sideNavigationButton.hidden = YES;
-    }
     
     self.darkOverlayView.alpha = 1.0;
     
@@ -590,6 +584,8 @@ typedef void(^AnimationCompletionBlock)(BOOL finished);
     self.searchBoxController.view.frame = sboxFrame;
     
     [self.view insertSubview:self.searchBoxController.view aboveSubview:self.overlayContainerView];
+    
+    self.searchBoxController.searchTextField.text = @"";
     
     if ([SYNDeviceManager.sharedInstance isIPad] && sender != nil)
     {
@@ -773,11 +769,7 @@ typedef void(^AnimationCompletionBlock)(BOOL finished);
     {
         self.searchButton.hidden = NO;
         
-        if(self.overlayNavigationController.topViewController == self.searchViewController)
-        {
-            self.sideNavigationButton.hidden = NO;
-        }
-        
+        self.sideNavigationButton.hidden = NO;
         
         self.closeSearchButton.hidden = NO;
         
@@ -981,6 +973,13 @@ typedef void(^AnimationCompletionBlock)(BOOL finished);
         }
         else // go back to containerView
         {
+            
+            if(self.isInSearchMode)
+            {
+                [self cancelButtonPressed:nil];
+            }
+            self.overlayNavigationController = nil; // animate the overlay out using the setter method
+
             
             if(self.overlayNavigationController.topViewController == self.searchViewController)
             {

@@ -27,6 +27,7 @@
 #import "SYNGenreItemView.h"
 #import "Video.h"
 #import "VideoInstance.h"
+#import "SYNFeedMessagesView.h"
 
 
 #define kChannelsCache @"ChannelsCache"
@@ -47,7 +48,7 @@
 @property (nonatomic, strong) Genre* currentGenre;
 @property (nonatomic, weak) SYNMainRegistry* mainRegistry;
 
-@property (nonatomic, strong) UIView* emptyGenreMessageView;
+@property (nonatomic, strong) SYNFeedMessagesView* emptyGenreMessageView;
 
 @property (nonatomic, strong) SYNChannelCategoryTableViewController* categoryTableViewController;
 @property (nonatomic, strong) UIButton* categorySelectButton;
@@ -84,23 +85,21 @@
     SYNIntegralCollectionViewFlowLayout* flowLayout;
     
     if (isIPhone)
-    {
         flowLayout = [SYNIntegralCollectionViewFlowLayout layoutWithItemSize: CGSizeMake(158.0f, 169.0f)
                                                      minimumInterItemSpacing: 0.0
                                                           minimumLineSpacing: 4.0
                                                              scrollDirection: UICollectionViewScrollDirectionVertical
                                                                 sectionInset: UIEdgeInsetsMake(2.0, 2.0, 6.0, 2.0)];
-        flowLayout.footerReferenceSize = [self footerSize];
-    }
     else
-    {
         flowLayout = [SYNIntegralCollectionViewFlowLayout layoutWithItemSize: [self itemSize]
                                                      minimumInterItemSpacing: 0.0
                                                           minimumLineSpacing: 0.0
                                                              scrollDirection: UICollectionViewScrollDirectionVertical
                                                                 sectionInset: UIEdgeInsetsMake(6.0, 6.0, 5.0, 6.0)];
-        flowLayout.footerReferenceSize = [self footerSize];
-    }
+        
+    
+    
+    flowLayout.footerReferenceSize = [self footerSize];
     
     // Work out how hight the inital tab bar is
     CGFloat topTabBarHeight = [UIImage imageNamed: @"CategoryBar"].size.height;
@@ -197,6 +196,14 @@
     
 }
 
+-(void)viewDidAppear:(BOOL)animated
+{
+    [super viewDidAppear:animated];
+    
+    [self displayChannelsForGenre:currentGenre];
+    
+    [self loadChannelsForGenre:currentGenre];
+}
 
 - (void) viewDidScrollToFront
 {
@@ -283,18 +290,10 @@
 
 - (void) loadMoreChannels: (UIButton*) sender
 {
-    // (UIButton*) sender can be nil when called directly //
-    self.footerView.showsLoading = YES;
     
-    NSInteger nextStart = dataRequestRange.location + dataRequestRange.length; // one is subtracted when the call happens for 0 indexing
-    
-    if (nextStart >= dataItemsAvailable)
-        return;
-    
-    NSInteger nextSize = (nextStart + STANDARD_REQUEST_LENGTH) >= dataItemsAvailable ? (dataItemsAvailable - nextStart) : STANDARD_REQUEST_LENGTH;
-    
-    dataRequestRange = NSMakeRange(nextStart, nextSize);
 
+    [self incrementRangeForNextRequest];
+    
     [self loadChannelsForGenre: currentGenre
                    byAppending: YES];
 }
@@ -308,7 +307,7 @@
     
     NSPredicate* genrePredicate;
     
-    if (!genre) // all category
+    if (!genre) // @"all" category
     {
         genrePredicate = [NSPredicate predicateWithFormat: @"popular == YES"];
     }
@@ -330,10 +329,10 @@
     
     NSPredicate* isFreshPredicate = [NSPredicate predicateWithFormat: @"fresh == YES"];
     
-    NSPredicate* isNotFavoritesPredicate = [NSPredicate predicateWithFormat: @"favourites == NO"];
     
     
-    NSPredicate* finalPredicate = [NSCompoundPredicate andPredicateWithSubpredicates: @[genrePredicate, isFreshPredicate, viewIdPredicate, isNotFavoritesPredicate]];
+    NSPredicate* finalPredicate = [NSCompoundPredicate andPredicateWithSubpredicates:
+                                   @[genrePredicate, isFreshPredicate, viewIdPredicate]];
 
     [request setPredicate:finalPredicate];
     
@@ -363,6 +362,7 @@
     }
 
     // We shouldn't wait until the animation is over, as this will result in crashes if the user is scrolling
+    
     [self.channelThumbnailCollectionView reloadData];
 }
 
@@ -373,27 +373,10 @@
     if (self.emptyGenreMessageView) // add no more than one
         return;
     
-    CGRect mainFrame = CGRectMake(0.0, 0.0, 280.0, 60.0);
-    self.emptyGenreMessageView = [[UIView alloc] initWithFrame:mainFrame];
+    self.emptyGenreMessageView = [SYNFeedMessagesView withMessage:@"NO CHANNELS FOUND"];
+    
     self.emptyGenreMessageView.center = CGPointMake(self.view.center.x, 280.0);
     self.emptyGenreMessageView.frame = CGRectIntegral(self.emptyGenreMessageView.frame);
-    
-    UIView* emptyGenreBG = [[UIView alloc] initWithFrame:mainFrame];
-    emptyGenreBG.backgroundColor = [UIColor darkGrayColor];
-    emptyGenreBG.alpha = 0.4;
-    [self.emptyGenreMessageView addSubview:emptyGenreBG];
-    
-    UILabel* emptyGenreLabel = [[UILabel alloc] initWithFrame:CGRectZero];
-    emptyGenreLabel.font = [UIFont rockpackFontOfSize:20.0];
-    emptyGenreLabel.backgroundColor = [UIColor clearColor];
-    emptyGenreLabel.textColor = [UIColor whiteColor];
-    emptyGenreLabel.text = @"NO CHANNELS FOUND";
-    emptyGenreLabel.textAlignment = NSTextAlignmentCenter;
-    [emptyGenreLabel sizeToFit];
-    emptyGenreLabel.center = CGPointMake(self.emptyGenreMessageView.frame.size.width * 0.5, self.emptyGenreMessageView.frame.size.height * 0.5 + 4.0);
-    emptyGenreLabel.frame = CGRectIntegral(emptyGenreLabel.frame);
-    
-    [self.emptyGenreMessageView addSubview:emptyGenreLabel];
     
     [self.view addSubview:self.emptyGenreMessageView];
 }
@@ -407,10 +390,7 @@
     return [SYNDeviceManager.sharedInstance isIPhone] ? CGSizeMake(152.0f, 152.0f) : CGSizeMake(251.0, 274.0);
 }
 
-- (CGSize) footerSize
-{
-    return [SYNDeviceManager.sharedInstance isIPhone] ? CGSizeMake(320.0f, 64.0f) : CGSizeMake(1024.0, 64.0);
-}
+
 
 
 #pragma mark - CollectionView Delegate

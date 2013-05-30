@@ -7,6 +7,7 @@
 //
 
 #import "AppConstants.h"
+#import "NSObject+Blocks.h"
 #import "NSString+Timecode.h"
 #import "SYNAppDelegate.h"
 #import "SYNDeviceManager.h"
@@ -17,8 +18,6 @@
 #import <CoreData/CoreData.h>
 #import <MediaPlayer/MediaPlayer.h>
 #import <QuartzCore/CoreAnimation.h>
-#import "NSObject+Blocks.h"
-#import "SYNDeviceManager.h"
 
 @interface SYNVideoPlaybackViewController () <UIWebViewDelegate>
 
@@ -30,7 +29,9 @@
 @property (nonatomic, assign) BOOL notYetPlaying;
 @property (nonatomic, assign) BOOL playFlag;
 @property (nonatomic, assign) BOOL shuttledByUser;
+@property (nonatomic, assign) BOOL hasReloadedWebView;
 @property (nonatomic, assign) CGRect requestedFrame;
+@property (nonatomic, assign) CGRect originalShuttleBarFrame;
 @property (nonatomic, assign) NSTimeInterval currentDuration;
 @property (nonatomic, assign) NSTimeInterval lastTime;
 @property (nonatomic, assign) int currentSelectedIndex;
@@ -38,6 +39,7 @@
 @property (nonatomic, strong) CABasicAnimation *placeholderBottomLayerAnimation;
 @property (nonatomic, strong) CABasicAnimation *placeholderMiddleLayerAnimation;
 @property (nonatomic, strong) NSArray *videoInstanceArray;
+@property (nonatomic, strong) NSString *sourceIdToReload;
 @property (nonatomic, strong) NSTimer *shuttleBarUpdateTimer;
 @property (nonatomic, strong) SYNVideoIndexUpdater indexUpdater;
 @property (nonatomic, strong) UIButton *shuttleBarPlayPauseButton;
@@ -319,14 +321,17 @@ static UIWebView* vimeoideoWebViewInstance;
 
 - (UIView *) createShuttleBarView
 {
+    CGFloat shuttleBarButtonOffset = kShuttleBarButtonOffsetiPhone;
     CGFloat shuttleBarButtonWidth = kShuttleBarButtonWidthiPhone;
     CGFloat airplayOffset = 0;
     
     if ([SYNDeviceManager.sharedInstance isIPad])
     {
+        shuttleBarButtonOffset = kShuttleBarButtonWidthiPad;
         shuttleBarButtonWidth = kShuttleBarButtonWidthiPad;
-        airplayOffset = 18;
+        airplayOffset = 0;
     }
+    
     // Create out shuttle bar view at the bottom of our video view
     CGRect shuttleBarFrame = self.view.frame;
     shuttleBarFrame.size.height = kShuttleBarHeight;
@@ -338,13 +343,14 @@ static UIWebView* vimeoideoWebViewInstance;
     UIView *shuttleBarBackgroundView = [[UIView alloc] initWithFrame: shuttleBarView.bounds];
     shuttleBarBackgroundView.alpha = 0.5f;
     shuttleBarBackgroundView.backgroundColor = [UIColor blackColor];
+    shuttleBarBackgroundView.autoresizingMask = UIViewAutoresizingFlexibleWidth;
     [shuttleBarView addSubview: shuttleBarBackgroundView];
     
     // Add play/pause button
     self.shuttleBarPlayPauseButton = [UIButton buttonWithType: UIButtonTypeCustom];
     
     // Set this subview to appear slightly offset from the left-hand side
-    self.shuttleBarPlayPauseButton.frame = CGRectMake(0, 0, shuttleBarButtonWidth, kShuttleBarHeight);
+    self.shuttleBarPlayPauseButton.frame = CGRectMake(20, 0, shuttleBarButtonOffset, kShuttleBarHeight);
     
     [self.shuttleBarPlayPauseButton setImage: [UIImage imageNamed: @"ButtonShuttleBarPause.png"]
                                     forState: UIControlStateNormal];
@@ -369,6 +375,7 @@ static UIWebView* vimeoideoWebViewInstance;
     
     self.durationLabel.text =  [NSString timecodeStringFromSeconds: 0.0f];
     
+    self.durationLabel.autoresizingMask = UIViewAutoresizingFlexibleLeftMargin;
     [shuttleBarView addSubview: self.durationLabel];
     
     // Add shuttle slider
@@ -380,6 +387,7 @@ static UIWebView* vimeoideoWebViewInstance;
     UIImageView *sliderBackgroundImageView = [[UIImageView alloc] initWithFrame: CGRectMake(sliderOffset+2, 17, shuttleBarFrame.size.width - 4 - (2 * sliderOffset), 10)];
     
     sliderBackgroundImageView.image = [sliderBackgroundImage resizableImageWithCapInsets: UIEdgeInsetsMake(0.0f, 10.0f, 0.0f, 10.0f)];
+    sliderBackgroundImageView.autoresizingMask = UIViewAutoresizingFlexibleWidth;
     [shuttleBarView addSubview: sliderBackgroundImageView];
     
     // Add the progress bar over the background, but underneath the slider
@@ -391,6 +399,7 @@ static UIWebView* vimeoideoWebViewInstance;
     self.bufferingProgressView.progressImage = progressImage;
     self.bufferingProgressView.trackImage = shuttleSliderRightTrack;
     self.bufferingProgressView.progress = 0.0f;
+    self.bufferingProgressView.autoresizingMask = UIViewAutoresizingFlexibleWidth;
     [shuttleBarView addSubview: self.bufferingProgressView];
     
     self.shuttleSlider = [[UISlider alloc] initWithFrame: CGRectMake(sliderOffset, 9, shuttleBarFrame.size.width - (2 * sliderOffset), 25)];
@@ -414,20 +423,46 @@ static UIWebView* vimeoideoWebViewInstance;
                            action: @selector(updateTimeFromSlider:)
                  forControlEvents: UIControlEventValueChanged];
     
+    self.shuttleSlider.autoresizingMask = UIViewAutoresizingFlexibleWidth;
     [shuttleBarView addSubview: self.shuttleSlider];
+    
+    if ([SYNDeviceManager.sharedInstance isIPhone])
+    {
+        // Add max/min button
+        self.shuttleBarMaxMinButton = [UIButton buttonWithType: UIButtonTypeCustom];
+        
+        // Set this subview to appear slightly offset from the left-hand side
+        self.shuttleBarMaxMinButton.frame = CGRectMake(300 - shuttleBarButtonOffset, 0, shuttleBarButtonOffset, kShuttleBarHeight);
+        
+        [self.shuttleBarMaxMinButton setImage: [UIImage imageNamed: @"ButtonShuttleBarMaximise.png"]
+                                     forState: UIControlStateNormal];
+        
+        self.shuttleBarMaxMinButton.backgroundColor = [UIColor clearColor];
+        
+        self.shuttleBarMaxMinButton.autoresizingMask = UIViewAutoresizingFlexibleLeftMargin;
+        
+        [shuttleBarView addSubview: self.shuttleBarMaxMinButton];
+    }
     
     // Add AirPlay button
     // This is a crafty (apple approved) hack, where we set the showVolumeSlider parameter to NO, so only the AirPlay symbol gets shown
     MPVolumeView *volumeView = [[MPVolumeView alloc] init];
-    volumeView.frame = CGRectMake(self.view.frame.size.width - shuttleBarButtonWidth + airplayOffset, 12, 25, kShuttleBarHeight);
+    volumeView.frame = CGRectMake(self.view.frame.size.width - 30 , 12, 25, kShuttleBarHeight);
     [volumeView setShowsVolumeSlider: NO];
     [volumeView sizeToFit];
     volumeView.backgroundColor = [UIColor clearColor];
+    volumeView.autoresizingMask = UIViewAutoresizingFlexibleLeftMargin;
     [shuttleBarView addSubview: volumeView];
-    
     [self.view addSubview: shuttleBarView];
     
+    self.originalShuttleBarFrame = shuttleBarView.frame;
+    
     return shuttleBarView;
+}
+
+- (void) resetShuttleBarFrame
+{
+    self.shuttleBarView.frame = self.originalShuttleBarFrame;
 }
 
 
@@ -674,14 +709,45 @@ static UIWebView* vimeoideoWebViewInstance;
 - (void) playYouTubeVideoWithSourceId: (NSString *) sourceId
 {
     DebugLog(@"*** Playing: Load video command sent");
-
     self.notYetPlaying = TRUE;
-    NSString *loadString = [NSString stringWithFormat: @"player.loadVideoById('%@', '0', '%@');", sourceId, self.videoQuality];
-    [self.currentVideoWebView stringByEvaluatingJavaScriptFromString: loadString];
-    self.playFlag = TRUE;
     
-    [self.shuttleBarPlayPauseButton setImage: [UIImage imageNamed: @"ButtonShuttleBarPause.png"]
-                                    forState: UIControlStateNormal];
+    // Check to see if our JS is loaded
+    NSString *availability = [self.currentVideoWebView stringByEvaluatingJavaScriptFromString: @"checkPlayerAvailability();"];
+    if ([availability isEqualToString: @"true"])
+    {
+        // Our JS is loaded
+        NSString *loadString = [NSString stringWithFormat: @"player.loadVideoById('%@', '0', '%@');", sourceId, self.videoQuality];
+        [self.currentVideoWebView stringByEvaluatingJavaScriptFromString: loadString];
+        
+        self.playFlag = TRUE;
+        
+        [self.shuttleBarPlayPauseButton setImage: [UIImage imageNamed: @"ButtonShuttleBarPause.png"]
+                                        forState: UIControlStateNormal];
+    }
+    else
+    {
+        // Something unloaded our JS, so use different approach
+        // Reload out webview and load the new video when we get an event to say that the player is ready
+        self.hasReloadedWebView = TRUE;
+        self.sourceIdToReload = sourceId;
+        
+        NSError *error = nil;
+        NSString *fullPath = [[NSBundle mainBundle] pathForResource: @"YouTubeIFramePlayer"
+                                                             ofType: @"html"];
+        
+        NSString *templateHTMLString = [NSString stringWithContentsOfFile: fullPath
+                                                                 encoding: NSUTF8StringEncoding
+                                                                    error: &error];
+        
+        NSString *iFrameHTML = [NSString stringWithFormat: templateHTMLString,
+                                (int) [SYNVideoPlaybackViewController videoWidth],
+                                (int) [SYNVideoPlaybackViewController videoHeight]];
+        
+        [self.currentVideoWebView loadHTMLString: iFrameHTML
+                                  baseURL: [NSURL URLWithString: @"http://www.youtube.com"]];
+
+        self.currentVideoWebView.delegate = self;
+    }
 }
 
 
@@ -902,6 +968,21 @@ static UIWebView* vimeoideoWebViewInstance;
     {
         // We probably don't get this event any more as the player is already set up (asynchronously)
         DebugLog (@"++++++++++ Player ready - player ready");
+        
+        // If the user moved away from the original player page, then we should have already detected this
+        // so we need to start playing again when we have loaded
+        if (self.hasReloadedWebView == TRUE)
+        {
+            self.hasReloadedWebView = FALSE;
+            
+            NSString *loadString = [NSString stringWithFormat: @"player.loadVideoById('%@', '0', '%@');", self.sourceIdToReload, self.videoQuality];
+            [self.currentVideoWebView stringByEvaluatingJavaScriptFromString: loadString];
+            
+            self.playFlag = TRUE;
+            
+            [self.shuttleBarPlayPauseButton setImage: [UIImage imageNamed: @"ButtonShuttleBarPause.png"]
+                                            forState: UIControlStateNormal];
+        }
     }
     else if ([actionName isEqualToString: @"stateChange"])
     {
@@ -1063,7 +1144,7 @@ static UIWebView* vimeoideoWebViewInstance;
         }
         
         // Check to see if the player has stalled (a number of instances of the same time)
-        if (currentTime == self.lastTime)
+        if (currentTime == self.lastTime && self.playFlag == TRUE)
         {
             self.stallCount++;
             
@@ -1087,7 +1168,7 @@ static UIWebView* vimeoideoWebViewInstance;
     
     // Update current time label
     self.currentTimeLabel.text = [NSString timecodeStringFromSeconds: currentTime];
-    
+//        self.currentTimeLabel.text = [NSString timecodeStringFromSeconds: 9*60*60+59*60+59];
     // Calculate the currently viewed percentage
     float viewedPercentage = currentTime / self.currentDuration;
     
