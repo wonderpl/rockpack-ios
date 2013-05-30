@@ -368,9 +368,11 @@
     // Refresh our view
     [self.videoThumbnailCollectionView reloadData];
     
-    // Only do this is we have a resource URL (i.e. we haven't just created the channel)
     
-    
+    if(self.channel.videoInstances.count == 0)
+    {
+        [self showNoVideosMessage:@"LOADING VIDEOS"];
+    }
     
     [self displayChannelDetails];
 }
@@ -598,8 +600,8 @@
         self.channelTitleTextView.text = @"";
     }
     
-    if(self.channel.videoInstances.count == 0)
-        [self showNoVideosMessage:@"LOADING VIDEOS"];
+    
+        
     
     [self adjustTextView];
 }
