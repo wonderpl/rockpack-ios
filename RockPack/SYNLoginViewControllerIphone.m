@@ -730,6 +730,33 @@
 
 #pragma mark - UITextField delegate
 
+- (BOOL) textField: (UITextField *) textField
+shouldChangeCharactersInRange: (NSRange) range
+ replacementString: (NSString *) newCharacter
+{
+    
+    NSUInteger oldLength = textField.text.length;
+    NSUInteger replacementLength = newCharacter.length;
+    NSUInteger rangeLength = range.length;
+    
+    NSUInteger newLength = (oldLength + replacementLength) - rangeLength;
+    
+    
+    if ((textField == self.ddInputField || textField == self.mmInputField) && newLength > 2)
+        return NO;
+    if (textField == self.yyyyInputField && newLength > 4)
+        return NO;
+    
+    
+    
+    NSNumberFormatter* numberFormatter = [[NSNumberFormatter alloc] init];
+    if (textField == self.ddInputField || textField == self.mmInputField || textField == self.yyyyInputField)
+        if (![numberFormatter numberFromString:newCharacter] && newCharacter.length != 0) // is backspace, length is 0
+            return NO;
+
+    return YES;
+}
+
 - (IBAction) textfieldDidChange: (id) sender
 {
     self.signupErrorLabel.text = @"";
