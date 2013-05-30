@@ -327,7 +327,7 @@ static UIWebView* vimeoideoWebViewInstance;
     {
         shuttleBarButtonOffset = kShuttleBarButtonWidthiPad;
         shuttleBarButtonWidth = kShuttleBarButtonWidthiPad;
-        airplayOffset = 18-57;
+        airplayOffset = 0;
     }
     
     // Create out shuttle bar view at the bottom of our video view
@@ -445,7 +445,7 @@ static UIWebView* vimeoideoWebViewInstance;
     // Add AirPlay button
     // This is a crafty (apple approved) hack, where we set the showVolumeSlider parameter to NO, so only the AirPlay symbol gets shown
     MPVolumeView *volumeView = [[MPVolumeView alloc] init];
-    volumeView.frame = CGRectMake(self.view.frame.size.width - shuttleBarButtonWidth + airplayOffset, 12, 25, kShuttleBarHeight);
+    volumeView.frame = CGRectMake(self.view.frame.size.width - 30 , 12, 25, kShuttleBarHeight);
     [volumeView setShowsVolumeSlider: NO];
     [volumeView sizeToFit];
     volumeView.backgroundColor = [UIColor clearColor];
