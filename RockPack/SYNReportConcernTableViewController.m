@@ -22,6 +22,7 @@
 @property (nonatomic, strong) IBOutlet UIButton *cancelButton;
 @property (nonatomic, strong) IBOutlet UIButton *reportButton;
 @property (nonatomic, strong) IBOutlet UITableView* tableView;
+@property (nonatomic, strong) IBOutlet UILabel *reportTableTitleLabel;
 
 @end
 
@@ -76,6 +77,8 @@
     UIButton *customCancelButton = [UIButton buttonWithType: UIButtonTypeCustom];
     UIImage* customCancelButtonImage = [UIImage imageNamed: @"ButtonPopoverCancel"];
     UIImage* customCancelButtonHighlightedImage = [UIImage imageNamed: @"ButtonPopoverCancelHighlighted.png"];
+    
+    self.reportTableTitleLabel.font = [UIFont boldRockpackFontOfSize: self.reportTableTitleLabel.font.pointSize];
     
     [customCancelButton setImage: customCancelButtonImage
                         forState: UIControlStateNormal];
