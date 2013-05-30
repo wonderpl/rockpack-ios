@@ -974,6 +974,8 @@
 - (void) setUser: (ChannelOwner*) user
 {
     
+    
+    
     if(self.user) // if we have an existing user
     {
         // remove the listener, even if nil is passed
@@ -986,12 +988,10 @@
     }
     
     
-    _user = user;
-    
-    if(!self.user) // if no user has been passed, set to nil and then return
+    if(!user) // if no user has been passed, set to nil and then return
         return;
     
-    if(![self.user isMemberOfClass:[User class]]) // is a User has been passsed dont copy him OR his channels as there can be only one.
+    if(![user isMemberOfClass:[User class]]) // is a User has been passsed dont copy him OR his channels as there can be only one.
     {
         NSFetchRequest *channelOwnerFetchRequest = [[NSFetchRequest alloc] init];
         
@@ -1036,6 +1036,10 @@
             }
         }
         
+    }
+    else
+    {
+        _user = user; // if User isKindOfClass [User class]
     }
     
     

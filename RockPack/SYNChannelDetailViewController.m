@@ -416,10 +416,12 @@
         self.subscribingIndicator = nil;
     }
     
-    self.channel = nil;
+    
 
     
 }
+
+
 
 -(void) videoQueueCleared
 {
@@ -2399,5 +2401,9 @@
     }
 }
 
+-(void)dealloc
+{
+    self.channel = nil;
+}
 
 @end
