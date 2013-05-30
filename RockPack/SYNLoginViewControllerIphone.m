@@ -728,7 +728,7 @@
     
     NSString* dateString = [NSString stringWithFormat:@"%@/%@/%@", day, month, self.yyyyInputField.text];
     NSDate* date = [self.formatter dateFromString:dateString];
-    return (date != nil);
+    return (date != nil && [date timeIntervalSinceNow] < 0);
 }
 
 
@@ -801,15 +801,12 @@ shouldChangeCharactersInRange: (NSRange) range
     }
     else if(sender == self.yyyyInputField && [self.yyyyInputField.text length] >= 4)
     {
-        if( [self validDateEntered]&& [self.yyyyInputField.text length] ==4 )
-        {
-           [sender resignFirstResponder];
-        }
-        else
+    
+        [sender resignFirstResponder];
+        if(! ([self validDateEntered]&& [self.yyyyInputField.text length] ==4) )
         {
             self.signupErrorLabel.text = [NSString stringWithFormat:@"Sorry, this date is not valid"];
         }
-        
     }
 }
 
