@@ -1309,7 +1309,7 @@
             if(!hasACategory)
             {
                 // Set the default other/other subgenre
-                NSArray* filteredSubcategories = [[self.categoryTableViewController.otherGenre.subgenres array] filteredArrayUsingPredicate:[NSPredicate predicateWithFormat:@"priority = -1"]];
+                NSArray* filteredSubcategories = [[self.categoryTableViewController.otherGenre.subgenres array] filteredArrayUsingPredicate:[NSPredicate predicateWithFormat:@"isDefault == YES"]];
                  if([filteredSubcategories count] == 1)
                  {
                      SubGenre* otherSubGenre = filteredSubcategories[0];
@@ -1415,7 +1415,7 @@
     }
     else
     {
-        NSArray* filteredSubcategories = [[genre.subgenres array] filteredArrayUsingPredicate:[NSPredicate predicateWithFormat:@"priority = -1"]];
+        NSArray* filteredSubcategories = [[genre.subgenres array] filteredArrayUsingPredicate:[NSPredicate predicateWithFormat:@"isDefault == YES"]];
         if ([filteredSubcategories count] == 1)
         {
             SubGenre* otherSubGenre = filteredSubcategories[0];
@@ -2144,7 +2144,7 @@
 {
     if (category)
     {
-        NSArray* filteredSubcategories = [[category.subgenres array] filteredArrayUsingPredicate:[NSPredicate predicateWithFormat:@"priority = -1"]];
+        NSArray* filteredSubcategories = [[category.subgenres array] filteredArrayUsingPredicate:[NSPredicate predicateWithFormat:@"isDefault == YES"]];
         if ([filteredSubcategories count] == 1)
         {
             SubGenre* otherSubGenre = filteredSubcategories[0];
