@@ -726,7 +726,22 @@
     self.subscribeButton.hidden = (visible && [self.channel.channelOwner.uniqueId isEqualToString: appDelegate.currentUser.uniqueId]);
     self.editButton.hidden = (visible && ! [self.channel.channelOwner.uniqueId isEqualToString: appDelegate.currentUser.uniqueId]);
     
-    self.editButton.enabled = (self.channel.favouritesValue) ? FALSE : TRUE;
+    // If favourites channel, hide edit button and move subscribers
+    if (self.channel.favouritesValue)
+    {
+        self.editButton.hidden = TRUE;
+        
+        CGFloat offset = 125;
+        
+        if ([SYNDeviceManager.sharedInstance isIPad])
+        {
+            offset = 130;
+        }
+
+        CGRect frame = self.channelDetailsLabel.frame;
+        frame.origin.x -= offset;
+        self.channelDetailsLabel.frame = frame;
+    }
     
     [(LXReorderableCollectionViewFlowLayout *)self.videoThumbnailCollectionView.collectionViewLayout longPressGestureRecognizer].enabled = (visible) ? FALSE : TRUE;
     
@@ -1134,25 +1149,48 @@
 
                                              // this block will also call the [self getChanelById:channelId isUpdated:YES] //
                                          }
-                                              errorHandler: ^(NSDictionary* error) {
-                                                  NSDictionary* specificErrors = [error objectForKey: @"form_errors"];
-                                                  id errorText = [specificErrors objectForKey: @"title"];
-                                                  id errorTitle = @"Error";
-                                                  if ([errorText isKindOfClass:[NSArray class]])
-                                                  {
-                                                      errorText = errorText[0];
-                                                  }
-                                                  if (!errorText)
-                                                  {
-                                                      errorText = @"Could not save channel. Please try again later.";
-                                                  }
+                                              errorHandler: ^(id error) {
                                                   
                                                   DebugLog(@"Error @ saveChannelPressed:");
-                                                  errorText = NSLocalizedString(errorText, nil);
-                                                  [self showError: errorText showErrorTitle:errorTitle];
+                                                  
+                                                  NSString *errorTitle = NSLocalizedString(@"ERROR", nil);
+                                                  NSString* errorMessage = NSLocalizedString(@"Could not create channel. Please try again later.", nil);
+                                                  
+                                                  NSArray *errorTitleArray =  [[error objectForKey: @"form_errors"] objectForKey :@"title"];
+                                                  
+                                                  if ([errorTitleArray count] > 0)
+                                                  {
+                                                      
+                                                      NSString* errorType = [errorTitleArray objectAtIndex:0];
+                                                      
+                                                      if ([errorType isEqualToString:@"Duplicate title."])
+                                                      {
+                                                          errorTitle = NSLocalizedString(@"Title Already Exists", nil);
+                                                          errorMessage = NSLocalizedString(@"You've already created a channel with this title. Please choose another.",nil);
+                                                      }
+                                                      
+                                                      else if ([errorType isEqualToString:@"Mind your language!"])
+                                                      {
+                                                          errorTitle = NSLocalizedString(@"Mind your language!", nil);
+                                                          errorMessage = NSLocalizedString(@"This channel title may include inappropriate words.",nil);
+                                                      }
+                                                      
+                                                      else
+                                                      {
+                                                          errorTitle = NSLocalizedString(@"Unknown Error", nil);
+                                                          errorMessage = NSLocalizedString(@"Could not save channel. Please try again later.",nil);
+                                                      }
+                                                  };
+     
+                                                                                                
+                                                  [self showError: errorMessage showErrorTitle:errorTitle];
                                                   self.saveChannelButton.hidden = NO;
                                                   self.saveChannelButton.enabled = YES;
                                                   [self.activityIndicator stopAnimating];
+                                                  
+
+                                                  
+                                                  
                                               }];
 }
 
@@ -1503,12 +1541,13 @@
                                                       else if ([errorType isEqualToString:@"Mind your language!"])
                                                       {
                                                           errorTitle = NSLocalizedString(@"Mind your language!", nil);
-                                                          errorMessage = NSLocalizedString(@"This channel title may include inapproriate words.",nil);
+                                                          errorMessage = NSLocalizedString(@"This channel title may include inappropriate words.",nil);
                                                       }
                                                       
                                                       else
                                                       {
-                                                          errorMessage = NSLocalizedString(@" ",nil);
+                                                          errorTitle = NSLocalizedString(@"Unknown Error", nil);
+                                                          errorMessage = NSLocalizedString(@"Could not save channel. Please try again later.",nil);
                                                       }
                                                   };
                                                   
