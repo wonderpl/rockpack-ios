@@ -319,7 +319,6 @@
     [super viewWillAppear: animated];
     
     
-    
     NSString *viewMode = [NSString stringWithFormat: @"Channels - Detail - %@", (self.mode == kChannelDetailsModeDisplay) ? @"Display" : @"Edit"];
     
     // Google analytics support
@@ -361,6 +360,9 @@
     
     self.subscribeButton.selected = self.channel.subscribedByUserValue;
     
+    [[NSNotificationCenter defaultCenter] postNotificationName: kNoteSearchBarRequestHide
+                                                        object: self];
+    
     
     
     // We set up assets depending on whether we are in display or edit mode
@@ -369,9 +371,11 @@
     // Refresh our view
     [self.videoThumbnailCollectionView reloadData];
     
-    // Only do this is we have a resource URL (i.e. we haven't just created the channel)
     
-    
+    if(self.channel.videoInstances.count == 0)
+    {
+        [self showNoVideosMessage:@"LOADING VIDEOS"];
+    }
     
     [self displayChannelDetails];
 }
@@ -379,6 +383,9 @@
 
 - (void) viewWillDisappear: (BOOL) animated
 {
+    
+    [super viewWillDisappear: animated];
+    
     [[NSNotificationCenter defaultCenter] postNotificationName: kNoteAllNavControlsShow
                                                         object: self
                                                       userInfo: nil];
@@ -408,9 +415,10 @@
         [self.subscribingIndicator removeFromSuperview];
         self.subscribingIndicator = nil;
     }
-        
+    
+    self.channel = nil;
 
-    [super viewWillDisappear: animated];
+    
 }
 
 -(void) videoQueueCleared
@@ -492,14 +500,14 @@
         
         if ([obj isKindOfClass:[Channel class]] && [((Channel*)obj).uniqueId isEqualToString:self.channel.uniqueId])
         {
-            if (self.channel.videoInstances.count == 0)
+            
+            if(self.channel.videoInstances.count == 0)
             {
-                [self showNoVideosMessage];
+                [self showNoVideosMessage:@"THERE ARE NO VIDEOS IN THIS CHANNEL YET"];
             }
-            else if (self.noVideosMessageView != nil)
+            else
             {
-                [self.noVideosMessageView removeFromSuperview];
-                self.noVideosMessageView = nil;
+                [self showNoVideosMessage:nil];
             }
             
             [self reloadCollectionViews];
@@ -512,8 +520,18 @@
     
 }
 
-- (void) showNoVideosMessage
+- (void) showNoVideosMessage:(NSString*)message
 {
+    if(self.noVideosMessageView)
+    {
+        [self.noVideosMessageView removeFromSuperview];
+        self.noVideosMessageView = nil;
+        
+    }
+    
+    if(!message)
+        return;
+    
     CGSize viewFrameSize = CGSizeMake(360.0, 50.0);
     self.noVideosMessageView = [[UIView alloc] initWithFrame:CGRectMake(0.0, 640.0, viewFrameSize.width, viewFrameSize.height)];
     self.noVideosMessageView.center = CGPointMake(self.view.frame.size.width * 0.5, self.noVideosMessageView.center.y);
@@ -528,7 +546,7 @@
     
     
     UILabel* noVideosLabel = [[UILabel alloc] initWithFrame:CGRectZero];
-    noVideosLabel.text = @"THERE ARE NO VIDEOS IN THIS CHANNEL YET";
+    noVideosLabel.text = message;
     noVideosLabel.textAlignment = NSTextAlignmentCenter;
     noVideosLabel.font = [UIFont rockpackFontOfSize:16.0];
     noVideosLabel.textColor = [UIColor whiteColor];
@@ -567,7 +585,6 @@
     self.channelOwnerLabel.text = self.channel.channelOwner.displayName;
     
     
-    NSLog(@"current channel s count : %lld", self.channel.subscribersCountValue);
     
     NSString *detailsString = [NSString stringWithFormat: @"%lld %@", self.channel.subscribersCountValue, NSLocalizedString(@"SUBSCRIBERS", nil)];
     self.channelDetailsLabel.text = detailsString;
@@ -580,7 +597,6 @@
     
     // Set title //
     
-    NSLog(@"Channel: %@", self.channel);
     
     if(self.channel.title)
     {
@@ -591,6 +607,7 @@
         self.channelTitleTextView.text = @"";
     }
     
+        
     
     [self adjustTextView];
 }
@@ -1543,26 +1560,37 @@
     [appDelegate.oAuthNetworkEngine channelCreatedForUserId: appDelegate.currentOAuth2Credentials.userId
                                                   channelId: channelId
                                           completionHandler: ^(id dictionary) {
+                                              
+                                              Channel* createdChannel;
+                                              
                                               IgnoringObjects ignore = kIgnoreChannelOwnerObject;
-                                              if (!isUpdate)
+                                              if (!isUpdate) // its a new creation
                                               {
                                                   ignore = ignore | kIgnoreStoredObjects;
+                                                  
+                                                  createdChannel = [Channel instanceFromDictionary:dictionary
+                                                                         usingManagedObjectContext:appDelegate.mainManagedObjectContext
+                                                                               ignoringObjectTypes:ignore];
+                                                  
+                                                  
+                                                  createdChannel.channelOwner = appDelegate.currentUser;
+                                                  
+                                                  
+                                                  // this will delete the edited channel from channels context //
+                                                  
+                                                  [self.channel.managedObjectContext deleteObject:self.channel];
+                                                  
+                                                  
+                                                  self.channel = createdChannel;
+                                                  
                                               }
-                                              Channel* createdChannel = [Channel instanceFromDictionary:dictionary
-                                                                              usingManagedObjectContext:appDelegate.mainManagedObjectContext
-                                                                                    ignoringObjectTypes:ignore];
-                                              
-                                              createdChannel.channelOwner = appDelegate.currentUser;
-                                              
-                                              
-                                              
-                                              // this will delete the edited channel from channels context //
-
-                                              [self.channel.managedObjectContext deleteObject:self.channel];
+                                              else
+                                              {
+                                                  [self.channel setAttributesFromDictionary:dictionary
+                                                                        ignoringObjectTypes:ignore];
+                                              }
                                               
                                               
-                                              
-                                              self.channel = createdChannel;
                                               
                                               
                                               DebugLog(@"Channel: %@", createdChannel);
@@ -2245,14 +2273,15 @@
 -(void)setChannel:(Channel *)channel
 {
 
-    
     NSError *error = nil;
     
-    if(!appDelegate) appDelegate = UIApplication.sharedApplication.delegate;
+    if(!appDelegate)
+        appDelegate = UIApplication.sharedApplication.delegate;
     
     
     if(self.channel)
     {
+        
         [[NSNotificationCenter defaultCenter] removeObserver: self
                                                         name: NSManagedObjectContextObjectsDidChangeNotification
                                                       object: self.channel.managedObjectContext];
@@ -2266,7 +2295,6 @@
     if(!self.channel)
         return;
         
-    
     
     // create a copy that belongs to this viewId (@"ChannelDetails")
     
@@ -2296,19 +2324,18 @@
     }
     else
     {
-        IgnoringObjects flags = kIgnoreNothing;
-        if(self.channel.channelOwner == appDelegate.currentUser)
-            flags |= kIgnoreChannelOwnerObject;
+        
+        // the User will be copyed over, but as a ChannelOwner, so "current" will not be set to YES
         
         _channel = [Channel instanceFromChannel:channel
                                       andViewId:self.viewId
                       usingManagedObjectContext:channel.managedObjectContext
-                            ignoringObjectTypes:flags];
+                            ignoringObjectTypes:kIgnoreNothing];
         
         
         if(_channel)
         {
-            [channel.managedObjectContext save:&error];
+            [_channel.managedObjectContext save:&error];
             if(error)
                 _channel = nil; // further error code
         }
@@ -2330,6 +2357,8 @@
                        forKeyPath: kSubscribedByUserKey
                           options: NSKeyValueObservingOptionNew
                           context: nil];
+        
+        
         
         if(self.mode == kChannelDetailsModeDisplay)
         {

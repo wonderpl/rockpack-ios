@@ -440,7 +440,7 @@
                 if(savingError) {
                     self.loginErrorLabel.text = NSLocalizedString(@"PLEASE TRY AGAIN", nil);
                 } else {
-                    self.loginErrorLabel.text = NSLocalizedString(@"CHECK USERNAME AND PASSWORD", nil);
+                    self.loginErrorLabel.text = NSLocalizedString(@"YOUR USERNAME OR PASSWORD IS INCORRECT.", nil);
                 }
                 [self.activityIndicator stopAnimating];
                 [self turnOnButton:self.backButton];
@@ -546,14 +546,18 @@
             [self doRequestPasswordResetForUsername:self.emailInputField.text completionHandler:^(NSDictionary *completionInfo) {
                 if ([completionInfo valueForKey:@"error"])
                 {
-                    self.passwordResetErrorLabel.text = NSLocalizedString(@"USER UNKNOWN", nil);
+                    self.passwordResetErrorLabel.text = NSLocalizedString(@"SORRY, WE DON'T RECOGNISE THIS USERNAME OR EMAIL", nil);
                     [self turnOnButton:self.backButton];
                     [self turnOnButton:self.confirmButton];
                     
                 }
                 else
                 {
-                    self.passwordResetErrorLabel.text = NSLocalizedString(@"CHECK YOUR EMAIL FOR INSTRUCTIONS", nil);
+                    [[[UIAlertView alloc] initWithTitle: @"Password Reset"
+                                                message: @"Check your email and follow the instructions."
+                                               delegate: nil
+                                      cancelButtonTitle: @"OK"
+                                      otherButtonTitles: nil] show];
                     [self turnOnButton:self.backButton];
                     
                 }
@@ -730,6 +734,33 @@
 
 #pragma mark - UITextField delegate
 
+- (BOOL) textField: (UITextField *) textField
+shouldChangeCharactersInRange: (NSRange) range
+ replacementString: (NSString *) newCharacter
+{
+    
+    NSUInteger oldLength = textField.text.length;
+    NSUInteger replacementLength = newCharacter.length;
+    NSUInteger rangeLength = range.length;
+    
+    NSUInteger newLength = (oldLength + replacementLength) - rangeLength;
+    
+    
+    if ((textField == self.ddInputField || textField == self.mmInputField) && newLength > 2)
+        return NO;
+    if (textField == self.yyyyInputField && newLength > 4)
+        return NO;
+    
+    
+    
+    NSNumberFormatter* numberFormatter = [[NSNumberFormatter alloc] init];
+    if (textField == self.ddInputField || textField == self.mmInputField || textField == self.yyyyInputField)
+        if (![numberFormatter numberFromString:newCharacter] && newCharacter.length != 0) // is backspace, length is 0
+            return NO;
+
+    return YES;
+}
+
 - (IBAction) textfieldDidChange: (id) sender
 {
     self.signupErrorLabel.text = @"";
@@ -757,7 +788,7 @@
         [self.mmInputField becomeFirstResponder];
         if([self.mmInputField.text length]>0 && [self.yyyyInputField.text length]>0 && ! [self validDateEntered])
         {
-            self.signupErrorLabel.text = [NSString stringWithFormat:@"Day %@, Month %@, Year %@ is not a valid date of birth",self.ddInputField.text, self.mmInputField.text, self.yyyyInputField.text];
+            self.signupErrorLabel.text = [NSString stringWithFormat:@"Sorry, this date is not valid"];
         }
     }
     else if(sender == self.mmInputField && [self.mmInputField.text length]==2)
@@ -765,7 +796,7 @@
         [self.yyyyInputField becomeFirstResponder];
         if([self.ddInputField.text length]>0 && [self.yyyyInputField.text length]>0 && ! [self validDateEntered])
         {
-            self.signupErrorLabel.text = [NSString stringWithFormat:@"Day %@, Month %@, Year %@ is not a valid date of birth",self.ddInputField.text, self.mmInputField.text, self.yyyyInputField.text];
+            self.signupErrorLabel.text = [NSString stringWithFormat:@"Sorry, this date is not valid"];
         }
     }
     else if(sender == self.yyyyInputField && [self.yyyyInputField.text length] >= 4)
@@ -776,7 +807,7 @@
         }
         else
         {
-            self.signupErrorLabel.text = [NSString stringWithFormat:@"Day %@, Month %@, Year %@ is not a valid date of birth",self.ddInputField.text, self.mmInputField.text, self.yyyyInputField.text];
+            self.signupErrorLabel.text = [NSString stringWithFormat:@"Sorry, this date is not valid"];
         }
         
     }

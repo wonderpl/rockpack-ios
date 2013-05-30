@@ -363,6 +363,7 @@
     
     [predicates addObject: [NSPredicate predicateWithFormat: @"viewId == %@", kChannelsViewId]];
     
+    // get all channels that are in the DB, any of them can belong to the new "popular" list
     
     if (genre)
     {

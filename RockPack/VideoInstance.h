@@ -8,7 +8,8 @@
                        ignoringObjectTypes: (IgnoringObjects) ignoringObjects;
 
 +(VideoInstance*) instanceFromVideoInstance:(VideoInstance*)existingInstance
-                  usingManagedObjectContext: (NSManagedObjectContext *) managedObjectContext;
+                  usingManagedObjectContext: (NSManagedObjectContext *) managedObjectContext
+                        ignoringObjectTypes: (IgnoringObjects) ignoringObjects;
 
 @property (nonatomic) BOOL selectedForVideoQueue;
 

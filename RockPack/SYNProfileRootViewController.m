@@ -920,13 +920,14 @@
     NSIndexPath *indexPath = [self.channelThumbnailCollectionView indexPathForItemAtPoint: v.center];
     self.channelDeleteCandidate = (Channel*)self.user.channels[indexPath.row];
     
-    NSString* message = [NSString stringWithFormat: NSLocalizedString(@"You are about to delete %@", nil), _channelDeleteCandidate.title];
+    NSString* message = [NSString stringWithFormat: NSLocalizedString(@"Are you sure you want to delete this channel?", nil), _channelDeleteCandidate.title];
+    NSString* title = [NSString stringWithFormat: NSLocalizedString(@"Delete %@", nil), _channelDeleteCandidate.title ];
     
-    [[[UIAlertView alloc] initWithTitle: NSLocalizedString(@"Delete?", nil)
+    [[[UIAlertView alloc] initWithTitle: title
                                 message: message
                                delegate: self
                       cancelButtonTitle: NSLocalizedString(@"Cancel", nil)
-                      otherButtonTitles: NSLocalizedString(@"OK", nil), nil] show];
+                      otherButtonTitles: NSLocalizedString(@"Delete", nil), nil] show];
 }
 
 
@@ -1019,7 +1020,7 @@
         else
         {
             
-            IgnoringObjects flags = kIgnoreVideoInstanceObjects | kIgnoreChannelOwnerObject; // these flags are passed to the Channels
+            IgnoringObjects flags = kIgnoreChannelOwnerObject | kIgnoreVideoInstanceObjects; // these flags are passed to the Channels
             
             _user = [ChannelOwner instanceFromChannelOwner: user
                                                  andViewId: self.viewId
