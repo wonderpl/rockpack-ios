@@ -275,6 +275,7 @@ didFinishLaunchingWithOptions: (NSDictionary *) launchOptions
     [self clearCoreDataMainEntities:YES];
     
     self.currentOAuth2Credentials = nil;
+    
     _currentUser = nil;
     
 }

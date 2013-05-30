@@ -1560,26 +1560,35 @@
     [appDelegate.oAuthNetworkEngine channelCreatedForUserId: appDelegate.currentOAuth2Credentials.userId
                                                   channelId: channelId
                                           completionHandler: ^(id dictionary) {
+                                              
+                                              Channel* createdChannel;
+                                              
                                               IgnoringObjects ignore = kIgnoreChannelOwnerObject;
-                                              if (!isUpdate)
+                                              if (!isUpdate) // its a new creation
                                               {
                                                   ignore = ignore | kIgnoreStoredObjects;
+                                                  
+                                                  createdChannel = [Channel instanceFromDictionary:dictionary
+                                                                         usingManagedObjectContext:appDelegate.mainManagedObjectContext
+                                                                               ignoringObjectTypes:ignore];
+                                                  
+                                                  
+                                                  createdChannel.channelOwner = appDelegate.currentUser;
+                                                  
+                                                  
+                                                  // this will delete the edited channel from channels context //
+                                                  
+                                                  [self.channel.managedObjectContext deleteObject:self.channel];
+                                                  
+                                                  
+                                                  self.channel = createdChannel;
+                                                  
                                               }
-                                              Channel* createdChannel = [Channel instanceFromDictionary:dictionary
-                                                                              usingManagedObjectContext:appDelegate.mainManagedObjectContext
-                                                                                    ignoringObjectTypes:ignore];
-                                              
-                                              createdChannel.channelOwner = appDelegate.currentUser;
-                                              
-                                              
-                                              
-                                              // this will delete the edited channel from channels context //
-
-                                              [self.channel.managedObjectContext deleteObject:self.channel];
-                                              
-                                              
-                                              
-                                              self.channel = createdChannel;
+                                              else
+                                              {
+                                                  [self.channel setAttributesFromDictionary:dictionary
+                                                                        ignoringObjectTypes:ignore];
+                                              }
                                               
                                               
                                               DebugLog(@"Channel: %@", createdChannel);
@@ -2262,14 +2271,15 @@
 -(void)setChannel:(Channel *)channel
 {
 
-    
     NSError *error = nil;
     
-    if(!appDelegate) appDelegate = UIApplication.sharedApplication.delegate;
+    if(!appDelegate)
+        appDelegate = UIApplication.sharedApplication.delegate;
     
     
     if(self.channel)
     {
+        
         [[NSNotificationCenter defaultCenter] removeObserver: self
                                                         name: NSManagedObjectContextObjectsDidChangeNotification
                                                       object: self.channel.managedObjectContext];
@@ -2283,7 +2293,6 @@
     if(!self.channel)
         return;
         
-    
     
     // create a copy that belongs to this viewId (@"ChannelDetails")
     

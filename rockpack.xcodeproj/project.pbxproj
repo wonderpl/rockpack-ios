@@ -183,6 +183,10 @@
 		0173F70816E0C56B005B3ECA /* SYNVideoViewerThumbnailLayout.m in Sources */ = {isa = PBXBuildFile; fileRef = 0173F70716E0C56B005B3ECA /* SYNVideoViewerThumbnailLayout.m */; };
 		0173F70B16E0C5DF005B3ECA /* SYNVideoViewerThumbnailLayoutAttributes.m in Sources */ = {isa = PBXBuildFile; fileRef = 0173F70A16E0C5DF005B3ECA /* SYNVideoViewerThumbnailLayoutAttributes.m */; };
 		017A9EFA16E77E6600AA5B18 /* UIView+Subviews.m in Sources */ = {isa = PBXBuildFile; fileRef = 017A9EF916E77E6600AA5B18 /* UIView+Subviews.m */; };
+		01811A5717576D2A00AFA926 /* ButtonShuttleBarMaximise@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 01811A5317576D2A00AFA926 /* ButtonShuttleBarMaximise@2x.png */; };
+		01811A5817576D2A00AFA926 /* ButtonShuttleBarMaximise.png in Resources */ = {isa = PBXBuildFile; fileRef = 01811A5417576D2A00AFA926 /* ButtonShuttleBarMaximise.png */; };
+		01811A5917576D2A00AFA926 /* ButtonShuttleBarMinimise.png in Resources */ = {isa = PBXBuildFile; fileRef = 01811A5517576D2A00AFA926 /* ButtonShuttleBarMinimise.png */; };
+		01811A5A17576D2A00AFA926 /* ButtonShuttleBarMinimise@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 01811A5617576D2A00AFA926 /* ButtonShuttleBarMinimise@2x.png */; };
 		018919FC1672253E00AB07BB /* SYNHomeSectionHeaderView.m in Sources */ = {isa = PBXBuildFile; fileRef = 018919FB1672253E00AB07BB /* SYNHomeSectionHeaderView.m */; };
 		01891A001672255F00AB07BB /* SYNHomeSectionHeaderView.xib in Resources */ = {isa = PBXBuildFile; fileRef = 018919FF1672255F00AB07BB /* SYNHomeSectionHeaderView.xib */; };
 		01891A3D16725A3400AB07BB /* PanelDay.png in Resources */ = {isa = PBXBuildFile; fileRef = 01891A3916725A3400AB07BB /* PanelDay.png */; };
@@ -934,6 +938,7 @@
 		BE2D2158171D8A4500B4B755 /* AvatarProfile.png in Resources */ = {isa = PBXBuildFile; fileRef = BE2D2156171D8A4500B4B755 /* AvatarProfile.png */; };
 		BE2D2159171D8A4500B4B755 /* AvatarProfile@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = BE2D2157171D8A4500B4B755 /* AvatarProfile@2x.png */; };
 		BE3A771117300D3C008ED81F /* SYNAccountSettingsModalContainer.m in Sources */ = {isa = PBXBuildFile; fileRef = BE3A771017300D3C008ED81F /* SYNAccountSettingsModalContainer.m */; };
+		BE5D29EB17577E2800C00486 /* SYNFeedMessagesView.m in Sources */ = {isa = PBXBuildFile; fileRef = BE5D29EA17577E2800C00486 /* SYNFeedMessagesView.m */; };
 		BE7D342E170DD8C90085AB81 /* SYNChannelFooterMoreView.xib in Resources */ = {isa = PBXBuildFile; fileRef = BE7D342D170DD8C90085AB81 /* SYNChannelFooterMoreView.xib */; };
 		BE7D3431170DDB310085AB81 /* SYNChannelFooterMoreView.m in Sources */ = {isa = PBXBuildFile; fileRef = BE7D3430170DDB310085AB81 /* SYNChannelFooterMoreView.m */; };
 		BE7D34CE1714434D0085AB81 /* SYNDeviceManager.m in Sources */ = {isa = PBXBuildFile; fileRef = BE7D34CD1714434D0085AB81 /* SYNDeviceManager.m */; };
@@ -1302,6 +1307,10 @@
 		0173F70A16E0C5DF005B3ECA /* SYNVideoViewerThumbnailLayoutAttributes.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SYNVideoViewerThumbnailLayoutAttributes.m; sourceTree = "<group>"; };
 		017A9EF816E77E6600AA5B18 /* UIView+Subviews.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "UIView+Subviews.h"; sourceTree = "<group>"; };
 		017A9EF916E77E6600AA5B18 /* UIView+Subviews.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "UIView+Subviews.m"; sourceTree = "<group>"; };
+		01811A5317576D2A00AFA926 /* ButtonShuttleBarMaximise@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = "ButtonShuttleBarMaximise@2x.png"; path = "Assets/Images/ButtonShuttleBarMaximise@2x.png"; sourceTree = "<group>"; };
+		01811A5417576D2A00AFA926 /* ButtonShuttleBarMaximise.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = ButtonShuttleBarMaximise.png; path = Assets/Images/ButtonShuttleBarMaximise.png; sourceTree = "<group>"; };
+		01811A5517576D2A00AFA926 /* ButtonShuttleBarMinimise.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = ButtonShuttleBarMinimise.png; path = Assets/Images/ButtonShuttleBarMinimise.png; sourceTree = "<group>"; };
+		01811A5617576D2A00AFA926 /* ButtonShuttleBarMinimise@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = "ButtonShuttleBarMinimise@2x.png"; path = "Assets/Images/ButtonShuttleBarMinimise@2x.png"; sourceTree = "<group>"; };
 		018919FA1672253E00AB07BB /* SYNHomeSectionHeaderView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SYNHomeSectionHeaderView.h; sourceTree = "<group>"; };
 		018919FB1672253E00AB07BB /* SYNHomeSectionHeaderView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SYNHomeSectionHeaderView.m; sourceTree = "<group>"; };
 		018919FF1672255F00AB07BB /* SYNHomeSectionHeaderView.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = SYNHomeSectionHeaderView.xib; sourceTree = "<group>"; };
@@ -2140,6 +2149,8 @@
 		BE2D2157171D8A4500B4B755 /* AvatarProfile@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = "AvatarProfile@2x.png"; path = "Assets/Images/AvatarProfile@2x.png"; sourceTree = "<group>"; };
 		BE3A770F17300D3C008ED81F /* SYNAccountSettingsModalContainer.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SYNAccountSettingsModalContainer.h; sourceTree = "<group>"; };
 		BE3A771017300D3C008ED81F /* SYNAccountSettingsModalContainer.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SYNAccountSettingsModalContainer.m; sourceTree = "<group>"; };
+		BE5D29E917577E2800C00486 /* SYNFeedMessagesView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SYNFeedMessagesView.h; sourceTree = "<group>"; };
+		BE5D29EA17577E2800C00486 /* SYNFeedMessagesView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SYNFeedMessagesView.m; sourceTree = "<group>"; };
 		BE7D342D170DD8C90085AB81 /* SYNChannelFooterMoreView.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = SYNChannelFooterMoreView.xib; sourceTree = "<group>"; };
 		BE7D342F170DDB310085AB81 /* SYNChannelFooterMoreView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SYNChannelFooterMoreView.h; sourceTree = "<group>"; };
 		BE7D3430170DDB310085AB81 /* SYNChannelFooterMoreView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SYNChannelFooterMoreView.m; sourceTree = "<group>"; };
@@ -3473,6 +3484,10 @@
 		01F8E73316AFF426000D44B9 /* Video viewer */ = {
 			isa = PBXGroup;
 			children = (
+				01811A5317576D2A00AFA926 /* ButtonShuttleBarMaximise@2x.png */,
+				01811A5417576D2A00AFA926 /* ButtonShuttleBarMaximise.png */,
+				01811A5517576D2A00AFA926 /* ButtonShuttleBarMinimise.png */,
+				01811A5617576D2A00AFA926 /* ButtonShuttleBarMinimise@2x.png */,
 				01F1B892172A9B41005735AF /* ButtonCloseHighlighted.png */,
 				01F1B893172A9B41005735AF /* ButtonCloseHighlighted@2x.png */,
 				01F1B85E172A9ADF005735AF /* ButtonVideoOverlayAdd.png */,
@@ -4345,13 +4360,15 @@
 			name = Login;
 			sourceTree = "<group>";
 		};
-		BE285DAD1725A20B00D995AB /* Network Error View */ = {
+		BE285DAD1725A20B00D995AB /* Error Views */ = {
 			isa = PBXGroup;
 			children = (
 				BE285DAE1725A23300D995AB /* SYNNetworkErrorView.h */,
 				BE285DAF1725A23300D995AB /* SYNNetworkErrorView.m */,
+				BE5D29E917577E2800C00486 /* SYNFeedMessagesView.h */,
+				BE5D29EA17577E2800C00486 /* SYNFeedMessagesView.m */,
 			);
-			name = "Network Error View";
+			name = "Error Views";
 			sourceTree = "<group>";
 		};
 		BE285DB91726826800D995AB /* Channels Manager */ = {
@@ -4624,7 +4641,7 @@
 				BE03A69016F7457900245314 /* Account Settings */,
 				011C1650173002D000CF50B9 /* Activity controller */,
 				BE7D354E1718704C0085AB81 /* Back Button */,
-				BE285DAD1725A20B00D995AB /* Network Error View */,
+				BE285DAD1725A20B00D995AB /* Error Views */,
 				BE0815CE16D6444200ADB1DC /* Overlays */,
 				01A3EC2A16AECE0F008DCE08 /* Popover */,
 				BE7D3538171708E20085AB81 /* Refresh Button */,
@@ -5562,6 +5579,10 @@
 				BE0FF040175639A40088294F /* Icon-Dev-Small@2x.png in Resources */,
 				BE0FF041175639A40088294F /* Icon-Dev.png in Resources */,
 				BE0FF042175639A40088294F /* Icon-Dev@2x.png in Resources */,
+				01811A5717576D2A00AFA926 /* ButtonShuttleBarMaximise@2x.png in Resources */,
+				01811A5817576D2A00AFA926 /* ButtonShuttleBarMaximise.png in Resources */,
+				01811A5917576D2A00AFA926 /* ButtonShuttleBarMinimise.png in Resources */,
+				01811A5A17576D2A00AFA926 /* ButtonShuttleBarMinimise@2x.png in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -5781,6 +5802,7 @@
 				01D0998B17452A4000351C82 /* BBCyclingLabel.m in Sources */,
 				011BA5DD174D1EB700041A16 /* SYNCoverRightMoreView.m in Sources */,
 				BE0FF0321754C39D0088294F /* ISO8601DateFormatter.m in Sources */,
+				BE5D29EB17577E2800C00486 /* SYNFeedMessagesView.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
