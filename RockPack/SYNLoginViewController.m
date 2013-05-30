@@ -989,7 +989,7 @@
     
     if (ddInputField.text.length != 2 || mmInputField.text.length != 2 || yyyyInputField.text.length != 4)
     {
-        [self placeErrorLabel: NSLocalizedString(@"Date Invalid", nil)
+        [self placeErrorLabel: NSLocalizedString(@"Sorry, this date is not valid", nil)
                    nextToView: dobView];
         
         [ddInputField becomeFirstResponder];
@@ -1024,7 +1024,7 @@
     
     if (!potentialDate)
     {
-        [self placeErrorLabel: NSLocalizedString(@"The Date is not Valid", nil)
+        [self placeErrorLabel: NSLocalizedString(@"Sorry, this date is not valid", nil)
                    nextToView: dobView];
         
         return NO;
@@ -1337,6 +1337,25 @@
     return YES;
 }
 
+- (IBAction) textfieldDidChange: (id) sender
+{
+
+    if(sender == self.ddInputField && [self.ddInputField.text length]==2)
+    {
+        [self.mmInputField becomeFirstResponder];
+
+    }
+    else if(sender == self.mmInputField && [self.mmInputField.text length]==2)
+    {
+        [self.yyyyInputField becomeFirstResponder];
+
+    }
+    else if(sender == self.yyyyInputField && [self.yyyyInputField.text length] == 4)
+    {
+        //[sender resignFirstResponder];
+        
+    }
+}
 
 - (BOOL) textFieldShouldReturn: (UITextField *) textField
 {
