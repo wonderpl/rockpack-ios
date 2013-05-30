@@ -235,7 +235,7 @@
 - (void) controllerDidChangeContent: (NSFetchedResultsController *) controller
 {
   
-    
+    [self.videoThumbnailCollectionView reloadData];
 }
 
 
@@ -267,8 +267,6 @@
                                                         return;
                                                     }
                                                     
-                                                    
-                                                    [self.videoThumbnailCollectionView reloadData];
                                                     
                                                     if(self.fetchedResultsController.fetchedObjects.count == 0)
                                                         [self displayEmptyGenreMessage];
