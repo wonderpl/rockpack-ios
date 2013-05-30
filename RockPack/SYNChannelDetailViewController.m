@@ -82,6 +82,8 @@
 @property (nonatomic, strong) VideoInstance* instanceToDelete;
 @property (nonatomic, strong) id<SDWebImageOperation> currentWebImageOperation;
 
+@property (nonatomic, weak) Channel* originalChannel;
+
 @property (nonatomic, weak) IBOutlet UIButton *cancelEditButton;
 @property (nonatomic, weak) IBOutlet UIButton *editButton;
 @property (nonatomic, weak) IBOutlet UILabel *byLabel;
@@ -1615,6 +1617,11 @@
                                               {
                                                   [self.channel setAttributesFromDictionary:dictionary
                                                                         ignoringObjectTypes:ignore];
+                                                  
+                                                  // if editing the user's channel we must update the original
+                                                  
+                                                  [self.originalChannel  setAttributesFromDictionary:dictionary
+                                                                                 ignoringObjectTypes:ignore];
                                               }
                                               
                                               
@@ -2298,6 +2305,8 @@
 -(void)setChannel:(Channel *)channel
 {
 
+    self.originalChannel = channel;
+    
     NSError *error = nil;
     
     if(!appDelegate)
@@ -2429,6 +2438,7 @@
 -(void)dealloc
 {
     self.channel = nil;
+    self.originalChannel = nil;
 }
 
 @end
