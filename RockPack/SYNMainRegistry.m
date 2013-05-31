@@ -240,7 +240,7 @@
     
     NSFetchRequest *videoInstanceFetchRequest = [[NSFetchRequest alloc] init];
     [videoInstanceFetchRequest setEntity: [NSEntityDescription entityForName: @"VideoInstance"
-                                                      inManagedObjectContext: appDelegate.mainManagedObjectContext]];
+                                                      inManagedObjectContext: importManagedObjectContext]];
     
     NSPredicate* viewIdPredicate = [NSPredicate predicateWithFormat:@"viewId == %@ AND fresh == YES", kFeedViewId];
     
@@ -248,7 +248,7 @@
     videoInstanceFetchRequest.predicate = viewIdPredicate;
     
     NSError* error = nil;
-    NSArray *existingFeedVideoInstances = [appDelegate.mainManagedObjectContext executeFetchRequest: videoInstanceFetchRequest
+    NSArray *existingFeedVideoInstances = [importManagedObjectContext executeFetchRequest: videoInstanceFetchRequest
                                                                                               error: &error];
     
     NSMutableDictionary* existingVideosByIndex = [NSMutableDictionary dictionaryWithCapacity:existingFeedVideoInstances.count];
@@ -313,10 +313,10 @@
         if(!oldVideoInstance.markedForDeletionValue)
             continue;
         
-        if(!oldVideoInstance.channel.freshValue) // delete channels that are not used in the feed anymore
-            [appDelegate.mainManagedObjectContext deleteObject:oldVideoInstance.channel];
+        if(!oldVideoInstance.channel.freshValue && oldVideoInstance.channel.markedForDeletionValue) // delete channels that are not used in the feed anymore
+            [oldVideoInstance.channel.managedObjectContext deleteObject:oldVideoInstance.channel];
         
-        [appDelegate.mainManagedObjectContext deleteObject:oldVideoInstance];
+        [oldVideoInstance.managedObjectContext deleteObject:oldVideoInstance];
     }
     
     if(![self saveImportContext])
