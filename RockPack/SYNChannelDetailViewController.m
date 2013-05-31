@@ -537,7 +537,7 @@
             
             if(self.channel.videoInstances.count == 0)
             {
-                [self showNoVideosMessage:@"THERE ARE NO VIDEOS IN THIS CHANNEL YET"];
+                [self showNoVideosMessage: NSLocalizedString(@"No videos in channel message",nil)];
             }
             else
             {
@@ -970,8 +970,8 @@
     
     if (self.instanceToDelete != nil)
     {
-        [[[UIAlertView alloc] initWithTitle: NSLocalizedString (@"Delete Video", nil)
-                                                        message: NSLocalizedString (@"Are you sure you want to delete this video?", nil)
+        [[[UIAlertView alloc] initWithTitle: NSLocalizedString (@"Delete video title", nil)
+                                                        message: NSLocalizedString (@"Delete video message", nil)
                                                        delegate: self
                                               cancelButtonTitle: NSLocalizedString (@"No", nil)
                                               otherButtonTitles: NSLocalizedString (@"Yes", nil), nil] show];
@@ -1178,8 +1178,8 @@
                                                   
                                                   DebugLog(@"Error @ saveChannelPressed:");
                                                   
-                                                  NSString *errorTitle = NSLocalizedString(@"ERROR", nil);
-                                                  NSString* errorMessage = NSLocalizedString(@"Could not create channel. Please try again later.", nil);
+                                                  NSString *errorTitle = NSLocalizedString(@"Unknown error title", nil);
+                                                  NSString* errorMessage = NSLocalizedString(@"Unknown error save message", nil);
                                                   
                                                   NSArray *errorTitleArray =  [[error objectForKey: @"form_errors"] objectForKey :@"title"];
                                                   
@@ -1190,20 +1190,20 @@
                                                       
                                                       if ([errorType isEqualToString:@"Duplicate title."])
                                                       {
-                                                          errorTitle = NSLocalizedString(@"Title Already Exists", nil);
-                                                          errorMessage = NSLocalizedString(@"You've already created a channel with this title. Please choose another.",nil);
+                                                          errorTitle = NSLocalizedString(@"Duplicate title", nil);
+                                                          errorMessage = NSLocalizedString(@"Duplicate message",nil);
                                                       }
                                                       
                                                       else if ([errorType isEqualToString:@"Mind your language!"])
                                                       {
-                                                          errorTitle = NSLocalizedString(@"Mind your language!", nil);
-                                                          errorMessage = NSLocalizedString(@"This channel title may include inappropriate words.",nil);
+                                                          errorTitle = NSLocalizedString(@"Naughty words title", nil);
+                                                          errorMessage = NSLocalizedString(@"Naughty words message",nil);
                                                       }
                                                       
                                                       else
                                                       {
-                                                          errorTitle = NSLocalizedString(@"Unknown Error", nil);
-                                                          errorMessage = NSLocalizedString(@"Could not save channel. Please try again later.",nil);
+                                                          errorTitle = NSLocalizedString(@"Unknown error title", nil);
+                                                          errorMessage = NSLocalizedString(@"Unknown error save message",nil);
                                                       }
                                                   };
      
@@ -1547,8 +1547,8 @@
                                                   
                                                   DebugLog(@"Error @ createChannelPressed:");
                                                   
-                                                  NSString *errorTitle = NSLocalizedString(@"ERROR", nil);
-                                                  NSString* errorMessage = NSLocalizedString(@"Could not create channel. Please try again later.", nil);
+                                                  NSString *errorTitle = NSLocalizedString(@"Unknown error title", nil);
+                                                  NSString* errorMessage = NSLocalizedString(@"Unknown error create message", nil);
                                                   
                                                   NSArray *errorTitleArray =  [[error objectForKey: @"form_errors"] objectForKey :@"title"];
                                                   
@@ -1559,20 +1559,20 @@
                                                       
                                                       if ([errorType isEqualToString:@"Duplicate title."])
                                                       {
-                                                          errorTitle = NSLocalizedString(@"Title Already Exists", nil);
-                                                          errorMessage = NSLocalizedString(@"You've already created a channel with this title. Please choose another.",nil);
+                                                          errorTitle = NSLocalizedString(@"Duplicate title", nil);
+                                                          errorMessage = NSLocalizedString(@"Duplicate message",nil);
                                                       }
                                                       
                                                       else if ([errorType isEqualToString:@"Mind your language!"])
                                                       {
-                                                          errorTitle = NSLocalizedString(@"Mind your language!", nil);
-                                                          errorMessage = NSLocalizedString(@"This channel title may include inappropriate words.",nil);
+                                                          errorTitle = NSLocalizedString(@"Naughty words title", nil);
+                                                          errorMessage = NSLocalizedString(@"Naughty words message",nil);
                                                       }
                                                       
                                                       else
                                                       {
-                                                          errorTitle = NSLocalizedString(@"Unknown Error", nil);
-                                                          errorMessage = NSLocalizedString(@"Could not save channel. Please try again later.",nil);
+                                                          errorTitle = NSLocalizedString(@"Unknown error title", nil);
+                                                          errorMessage = NSLocalizedString(@"Unknown error create message",nil);
                                                       }
                                                   };
                                                   
@@ -2368,7 +2368,7 @@
 
 -(void)setChannel:(Channel *)channel
 {
-
+    
     self.originalChannel = channel;
     
     NSError *error = nil;
@@ -2430,9 +2430,7 @@
                       usingManagedObjectContext:channel.managedObjectContext
                             ignoringObjectTypes:kIgnoreNothing];
         
-        
-        if(channel.channelOwner == appDelegate.currentUser)
-            _channel.channelOwner = appDelegate.currentUser;
+    
         
         if(_channel)
         {
