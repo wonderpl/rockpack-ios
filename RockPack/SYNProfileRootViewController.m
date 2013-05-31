@@ -626,17 +626,17 @@
     if([SYNDeviceManager.sharedInstance isIPhone])
     {
         if(self.user == appDelegate.currentUser)
-            return NSLocalizedString(@"MY CHANNELS",nil);
+            return NSLocalizedString(@"profile_screen_section_owner_created_title",nil);
         else
-            return NSLocalizedString(@"CHANNELS",nil);
+            return NSLocalizedString(@"profile_screen_section_user_created_title",nil);
         
     }
     else
     {
         if(self.user == appDelegate.currentUser)
-            return NSLocalizedString(@"MY CHANNELS",nil);
+            return NSLocalizedString(@"profile_screen_section_owner_created_title",nil);
         else
-            return NSLocalizedString(@"CHANNELS",nil);
+            return NSLocalizedString(@"profile_screen_section_user_created_title",nil);
     }
      
 }
@@ -921,8 +921,8 @@
     NSIndexPath *indexPath = [self.channelThumbnailCollectionView indexPathForItemAtPoint: v.center];
     self.channelDeleteCandidate = (Channel*)self.user.channels[indexPath.row];
     
-    NSString* message = [NSString stringWithFormat: NSLocalizedString(@"Are you sure you want to delete this channel?", nil), _channelDeleteCandidate.title];
-    NSString* title = [NSString stringWithFormat: NSLocalizedString(@"Delete %@", nil), _channelDeleteCandidate.title ];
+    NSString* message = [NSString stringWithFormat: NSLocalizedString(@"profile_screen_channel_delete_dialog_description", nil), _channelDeleteCandidate.title];
+    NSString* title = [NSString stringWithFormat: NSLocalizedString(@"profile_screen_channel_delete_dialog_title", nil), _channelDeleteCandidate.title ];
     
     [[[UIAlertView alloc] initWithTitle: title
                                 message: message

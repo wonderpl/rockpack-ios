@@ -32,9 +32,9 @@
 
 
 // viewId
-#define kFeedViewId                 @"Feed"
-#define kChannelsViewId             @"Channels"
-#define kProfileViewId              @"Profile"
+#define kFeedViewId                 NSLocalizedString(@"core_nav_section_feed", nil)
+#define kChannelsViewId             NSLocalizedString(@"core_nav_section_channels", nil)
+#define kProfileViewId              NSLocalizedString(@"core_nav_section_profile", nil)
 #define kSearchViewId               @"Search"
 #define kExistingChannelsViewId     @"ExistingChannels"
 #define kChannelDetailsViewId       @"ChannelDetails"

@@ -705,8 +705,8 @@ typedef void(^AnimationCompletionBlock)(BOOL finished);
     }
     else if ([self.reachability currentReachabilityStatus] == NotReachable)
     {
-        NSString* message = [SYNDeviceManager.sharedInstance isIPad] ? NSLocalizedString(@"NO NETWORK, PLEASE CHECK YOUR INTERNET CONNECTION.", nil)
-                                                                       : NSLocalizedString(@"NO NETWORK", nil);
+        NSString* message = [SYNDeviceManager.sharedInstance isIPad] ? NSLocalizedString(@"No_Network_iPad", nil)
+                                                                       : NSLocalizedString(@"No_Network_iPhone", nil);
         [self presentNetworkErrorViewWithMesssage: message];
     }
 }

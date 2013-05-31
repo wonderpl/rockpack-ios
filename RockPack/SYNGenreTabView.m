@@ -85,7 +85,7 @@
         [self addSubview: self.dividerOverlayView];
         
         // == Loading Label == //
-        NSString* loadingString = @"Loading Channel Genres ...";
+        NSString* loadingString = NSLocalizedString(@"channels_screen_loading_categories", nil);
         CGRect loadingLabelFrame;
         UIFont* rpFont = [UIFont rockpackFontOfSize:18];
         loadingLabelFrame.size = [loadingString sizeWithFont:rpFont];
