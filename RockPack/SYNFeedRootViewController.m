@@ -315,7 +315,7 @@
     if (self.emptyGenreMessageView)
         return;
     
-    self.emptyGenreMessageView = [SYNFeedMessagesView withMessage:@"Your feed looks a little empty!"];
+    self.emptyGenreMessageView = [SYNFeedMessagesView withMessage:@"Your feed looks a little empty! Subscribe to 3-5 channels"];
     
     self.emptyGenreMessageView.center = CGPointMake(self.view.center.x, 280.0);
     self.emptyGenreMessageView.frame = CGRectIntegral(self.emptyGenreMessageView.frame);
