@@ -1188,7 +1188,7 @@
                                                       
                                                       if ([errorType isEqualToString:@"Duplicate title."])
                                                       {
-                                                          errorTitle = NSLocalizedString(@"Title Already Exists", nil);
+                                                          errorTitle = NSLocalizedString(@"Duplicate title.", nil);
                                                           errorMessage = NSLocalizedString(@"You've already created a channel with this title. Please choose another.",nil);
                                                       }
                                                       
@@ -1557,7 +1557,7 @@
                                                       
                                                       if ([errorType isEqualToString:@"Duplicate title."])
                                                       {
-                                                          errorTitle = NSLocalizedString(@"Title Already Exists", nil);
+                                                          errorTitle = NSLocalizedString(@"Duplicate title.", nil);
                                                           errorMessage = NSLocalizedString(@"You've already created a channel with this title. Please choose another.",nil);
                                                       }
                                                       
