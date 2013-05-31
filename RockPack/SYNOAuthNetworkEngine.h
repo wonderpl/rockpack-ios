@@ -103,13 +103,13 @@ typedef void (^SYNOAuth2RefreshCompletionBlock)(NSError *error);
                        completionHandler: (MKNKUserSuccessBlock) completionBlock
                             errorHandler: (MKNKUserErrorBlock) errorBlock;
 
--(void)userDataForUser:(User*)user
-          onCompletion:(MKNKUserSuccessBlock) completionBlock
-               onError: (MKNKUserErrorBlock) errorBlock;
+- (void) userDataForUser: (User*) user
+            onCompletion: (MKNKUserSuccessBlock) completionBlock
+                 onError: (MKNKUserErrorBlock) errorBlock;
 
--(void)userSubscriptionsForUser:(User*)user
-                   onCompletion:(MKNKUserSuccessBlock) completionBlock
-                        onError: (MKNKUserErrorBlock) errorBlock;
+- (void) userSubscriptionsForUser: (User*)user
+                     onCompletion: (MKNKUserSuccessBlock) completionBlock
+                          onError: (MKNKUserErrorBlock) errorBlock;
 
 // User activity
 
@@ -135,7 +135,7 @@ typedef void (^SYNOAuth2RefreshCompletionBlock)(NSError *error);
 - (void) changeUserField: (NSString*) userField
                  forUser: (User *) user
             withNewValue: (id)newValue
-       completionHandler: (MKNKBasicSuccessBlock) successBlock
+       completionHandler: (MKNKUserSuccessBlock) completionBlock
             errorHandler: (MKNKUserErrorBlock) errorBlock;
 
 - (void) changeUserPasswordWithOldValue: (NSString*) oldPassword

@@ -15,6 +15,9 @@
 #import "SYNOAuth2Credential.h"
 
 
+#define kLoginTermsUrl @"http://rockpack.com/terms-and-conditions"
+#define kLoginPrivacyUrl @"http://rockpack.com/privacy"
+
 typedef enum {
     kLoginScreenStateNull = 0,
     kLoginScreenStateInitial,

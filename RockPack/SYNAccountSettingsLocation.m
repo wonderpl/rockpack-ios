@@ -173,7 +173,7 @@
     [self.appDelegate.oAuthNetworkEngine changeUserField:@"locale"
                                                  forUser:appDelegate.currentUser
                                             withNewValue:newLocale
-                                       completionHandler:^ {
+                                       completionHandler:^ (NSDictionary * dictionary){
                                            
                                            self.user.locale = newLocale;
                                            
