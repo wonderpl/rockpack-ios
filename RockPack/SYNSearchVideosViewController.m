@@ -130,10 +130,11 @@
     
     
     
-    NSError *error = nil;
-    
-    ZAssert([fetchedResultsController performFetch: &error],
-            @"Search Videos Fetch Request Failed: %@\n%@", [error localizedDescription], [error userInfo]);
+    NSError *error = nil;    
+    if (![fetchedResultsController performFetch: &error])
+    {
+        AssertOrLog(@"Search Videos Fetch Request Failed: %@\n%@", [error localizedDescription], [error userInfo]);
+    }
     
     return fetchedResultsController; 
 }

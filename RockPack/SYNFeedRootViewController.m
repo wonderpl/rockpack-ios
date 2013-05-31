@@ -354,7 +354,10 @@
     fetchedResultsController.delegate = self;
     
     NSError *error = nil;
-    ZAssert([fetchedResultsController performFetch: &error], @"videoInstanceFetchedResultsController:performFetch failed: %@\n%@", [error localizedDescription], [error userInfo]);
+    if (![fetchedResultsController performFetch: &error])
+    {
+        AssertOrLog(@"videoInstanceFetchedResultsController:performFetch failed: %@\n%@", [error localizedDescription], [error userInfo]);
+    }
     
     return fetchedResultsController;
 }

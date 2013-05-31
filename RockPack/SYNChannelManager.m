@@ -23,52 +23,50 @@
 
 @synthesize appDelegate;
 
-
--(id)init
-{
-    if (self = [super init])
-    {
-        
-        self.appDelegate = (SYNAppDelegate*)[[UIApplication sharedApplication] delegate];
-        
-        [[NSNotificationCenter defaultCenter] addObserver:self
-                                                 selector:@selector(channelSubscribeRequest:)
-                                                     name:kChannelSubscribeRequest
-                                                   object:nil];
-        
-        [[NSNotificationCenter defaultCenter] addObserver:self
-                                                 selector:@selector(channelUpdateRequest:)
-                                                     name:kChannelUpdateRequest
-                                                   object:nil];
-        
-        [[NSNotificationCenter defaultCenter] addObserver:self
-                                                 selector:@selector(channelOwnerUpdateRequest:)
-                                                     name:kChannelOwnerUpdateRequest
-                                                   object:nil];
-        
-        [[NSNotificationCenter defaultCenter] addObserver:self
-                                                 selector:@selector(channelDeleteRequest:)
-                                                     name:kChannelDeleteRequest
-                                                   object:nil];
-        
-        
-        
-    }
-    return self;
-}
-
-
-+(id)manager
++ (id) manager
 {
     return [[self alloc] init];
 }
 
+
+-(id) init
+{
+    if ((self = [super init]))
+    {
+        self.appDelegate = (SYNAppDelegate*)[[UIApplication sharedApplication] delegate];
+        
+        [[NSNotificationCenter defaultCenter] addObserver: self
+                                                 selector: @selector(channelSubscribeRequest:)
+                                                     name: kChannelSubscribeRequest
+                                                   object: nil];
+        
+        [[NSNotificationCenter defaultCenter] addObserver: self
+                                                 selector: @selector(channelUpdateRequest:)
+                                                     name: kChannelUpdateRequest
+                                                   object: nil];
+        
+        [[NSNotificationCenter defaultCenter] addObserver: self
+                                                 selector: @selector(channelOwnerUpdateRequest:)
+                                                     name: kChannelOwnerUpdateRequest
+                                                   object: nil];
+        
+        [[NSNotificationCenter defaultCenter] addObserver: self
+                                                 selector: @selector(channelDeleteRequest:)
+                                                     name: kChannelDeleteRequest
+                                                   object: nil]; 
+    }
+    
+    return self;
+}
+
+
 #pragma mark - Notification Handlers
 
--(void)channelSubscribeRequest:(NSNotification*)notification
+- (void) channelSubscribeRequest: (NSNotification*) notification
 {
-    Channel* channelToSubscribe = (Channel*)[[notification userInfo] objectForKey:kChannel];
-    if(!channelToSubscribe)
+    Channel* channelToSubscribe = (Channel*)[[notification userInfo] objectForKey: kChannel];
+    
+    if (!channelToSubscribe)
         return;
     
     // toggle subscription from/to channel //
@@ -82,31 +80,34 @@
     }
 }
 
-// update another user's profuile channels //
 
--(void)channelOwnerUpdateRequest:(NSNotification*)notification
+// update another user's profile channels //
+
+- (void) channelOwnerUpdateRequest: (NSNotification*) notification
 {
-    ChannelOwner* channelOwner = (ChannelOwner*)[[notification userInfo] objectForKey:kChannelOwner];
+    ChannelOwner* channelOwner = (ChannelOwner*)[[notification userInfo] objectForKey: kChannelOwner];
     if(!channelOwner)
         return;
     
     [self updateChannelsForChannelOwner:channelOwner];
 }
 
--(void)channelUpdateRequest:(NSNotification*)notification
+
+- (void) channelUpdateRequest: (NSNotification*) notification
 {
-    Channel* channelToUpdate = (Channel*)[[notification userInfo] objectForKey:kChannel];
+    Channel* channelToUpdate = (Channel*)[[notification userInfo] objectForKey: kChannel];
     
-    if(!channelToUpdate)
+    if (!channelToUpdate)
         return;
     
     [self updateChannel:channelToUpdate withForceRefresh:channelToUpdate.hasChangedSubscribeValue];
 }
 
--(void)channelDeleteRequest:(NSNotification*)notification
+
+- (void) channelDeleteRequest: (NSNotification*) notification
 {
-    Channel* channelToUpdate = (Channel*)[[notification userInfo] objectForKey:kChannel];
-    if(!channelToUpdate)
+    Channel* channelToUpdate = (Channel*)[[notification userInfo] objectForKey: kChannel];
+    if (!channelToUpdate)
         return;
     
     [self deleteChannel:channelToUpdate];
@@ -115,42 +116,34 @@
 
 #pragma mark - Implementation Methods
 
--(void)subscribeToChannel:(Channel*)channel
+- (void) subscribeToChannel: (Channel*) channel
 {
-    
-    
     [appDelegate.oAuthNetworkEngine channelSubscribeForUserId: appDelegate.currentOAuth2Credentials.userId
                                                    channelURL: channel.resourceURL
                                             completionHandler: ^(NSDictionary *responseDictionary) {
-                                                
-                                                
                                                 channel.hasChangedSubscribeValue = YES;
                                                 channel.subscribedByUserValue = YES;
                                                 channel.subscribersCountValue += 1;
-                                                
-                                                
+
                                                 // the channel that got updated was a copy inside the ChannelDetails, so we must copy it to user
-                                                
                                                 IgnoringObjects copyFlags = kIgnoreVideoInstanceObjects;
                                                 
-                                                Channel* subscription = [Channel instanceFromChannel:channel
-                                                                                           andViewId:kProfileViewId
-                                                                           usingManagedObjectContext:appDelegate.currentUser.managedObjectContext
-                                                                                 ignoringObjectTypes:copyFlags];
-                                                
-                                                
+                                                Channel* subscription = [Channel instanceFromChannel: channel
+                                                                                           andViewId: kProfileViewId
+                                                                           usingManagedObjectContext: appDelegate.currentUser.managedObjectContext
+                                                                                 ignoringObjectTypes: copyFlags];
+
                                                 subscription.hasChangedSubscribeValue = YES;
-                                                
-                                                
+
                                                 [appDelegate.currentUser addSubscriptionsObject:subscription];
-                                                
-                                                
+
                                                 // might be in search context
                                                 NSError* error;
-                                                [channel.managedObjectContext save:&error];
-                                                if(!error)
+                                                [channel.managedObjectContext save: &error];
+                                                
+                                                if (!error)
                                                 {
-                                                    
+                                                    // FIXME: We need to put some error handling in here
                                                 }
                                                 
                                                 [appDelegate saveContext:YES];
@@ -266,10 +259,11 @@
         channel.position = savedPosition;
         
         
-        NSError *error = nil;
-        ZAssert([channel.managedObjectContext save: &error], @"Error saving Search moc: %@\n%@",
-                [error localizedDescription], [error userInfo]);
-        
+        NSError *error = nil;        
+        if (![channel.managedObjectContext save: &error])
+        {
+            AssertOrLog(@"Channels Details Failed: %@\n%@", [error localizedDescription], [error userInfo]);
+        }
     };
     
     // define success block //

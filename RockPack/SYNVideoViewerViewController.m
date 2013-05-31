@@ -732,8 +732,6 @@
             [self scheduleFadeOutShuttleBar];
         }
     }
-    
-
 }
 
 
@@ -899,9 +897,10 @@
 }
 
 #pragma mark - orientation change iPhone
--(void)deviceOrientationChange:(NSNotification*)note
+- (void) deviceOrientationChange: (NSNotification*) note
 {
     UIDeviceOrientation newOrientation = [[UIDevice currentDevice] orientation];
+    
     if (self.currentOrientation != newOrientation && (newOrientation ==  UIDeviceOrientationPortrait || UIDeviceOrientationIsLandscape(newOrientation)))
     {
         [self changePlayerOrientation:newOrientation];
