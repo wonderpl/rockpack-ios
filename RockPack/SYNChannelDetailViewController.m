@@ -2428,8 +2428,7 @@
                       usingManagedObjectContext:channel.managedObjectContext
                             ignoringObjectTypes:kIgnoreNothing];
         
-        
-
+    
         
         if(_channel)
         {

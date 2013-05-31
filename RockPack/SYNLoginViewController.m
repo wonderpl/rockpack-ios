@@ -53,6 +53,7 @@
 @property (nonatomic, strong) IBOutlet UITextField* passwordInputField;
 @property (nonatomic, strong) IBOutlet UITextField* userNameInputField;
 @property (nonatomic, strong) IBOutlet UITextField* yyyyInputField;
+@property (nonatomic, strong) UIButton* termsAndConditionsButton;
 @property (nonatomic, strong) IBOutlet UIView* dobView;
 @property (nonatomic, strong) NSArray* mainFormElements;
 @property (nonatomic, strong) NSMutableDictionary* labelsToErrorArrows;
@@ -80,6 +81,7 @@
 @synthesize sendEmailButton;
 @synthesize wellSendYouLabel;
 @synthesize elementsOffsetY;
+@synthesize termsAndConditionsButton;
 
 
 - (void) viewDidLoad
@@ -123,16 +125,10 @@
     termsAndConditionsLabel.attributedText = termsString;
     termsAndConditionsLabelSide.attributedText = termsAndConditionsLabel.attributedText;
     
-    UITapGestureRecognizer* termsAndConditionsTapRecogniser = [[UITapGestureRecognizer alloc] initWithTarget:self
-                                                                                                      action:@selector(termsAndConditionsTapped:)];
-    
-    [termsAndConditionsLabel setUserInteractionEnabled:YES];
-    [termsAndConditionsLabel addGestureRecognizer:termsAndConditionsTapRecogniser];
-    
-    [termsAndConditionsLabelSide setUserInteractionEnabled:YES];
-    [termsAndConditionsLabelSide addGestureRecognizer:termsAndConditionsTapRecogniser];
-    
-    
+    self.termsAndConditionsButton = [UIButton buttonWithType:UIButtonTypeCustom];
+    self.termsAndConditionsButton.frame = self.termsAndConditionsLabel.frame;
+    [self.termsAndConditionsButton addTarget:self action:@selector(termsAndConditionsPressed:withEvent:) forControlEvents:UIControlEventTouchUpInside];
+    [self.view addSubview:termsAndConditionsButton];
     
     
     labelsToErrorArrows = [[NSMutableDictionary alloc] init];
@@ -177,7 +173,24 @@
 
 }
 
-
+-(void)termsAndConditionsPressed:(UIButton*)button withEvent:(UIEvent*)event
+{
+    
+    CGPoint center = [[[event allTouches] anyObject] locationInView:button];
+    BOOL isLeft = center.x > (self.termsAndConditionsButton.frame.size.width * 0.5);
+    NSURL* urlToGo;
+    if(isLeft)
+    {
+        urlToGo = [NSURL URLWithString: @"http://rockpack.com/privacy"];
+        
+    }
+    else
+    {
+        urlToGo = [NSURL URLWithString: @"http://rockpack.com/terms-and-conditions"];
+    }
+    
+    [[UIApplication sharedApplication] openURL:urlToGo];
+}
 
 - (void) viewDidAppear: (BOOL) animated
 {
@@ -232,6 +245,8 @@
     {
         control.alpha = 0.0;
     }
+    
+    termsAndConditionsButton.enabled = NO;
     
     dobView.center = CGPointMake(dobView.center.x - 50.0, dobView.center.y);
     emailInputField.center = CGPointMake(emailInputField.center.x - 50.0, emailInputField.center.y);
@@ -367,10 +382,13 @@
                                                                        
                                                                        termsAndConditionsLabel.alpha = 1.0;
                                                                        
+                                                                       
                                                                    }
                                                                    completion: ^(BOOL finished) {
                                                                        isAnimating = NO;
                                                                        
+                                                                       termsAndConditionsButton.enabled = YES;
+                                                                       termsAndConditionsButton.frame = termsAndConditionsLabel.frame;
                                                                        
                                                                        emailInputField.center = CGPointMake(emailInputField.center.x,
                                                                                                             emailInputField.center.y - self.elementsOffsetY);
@@ -452,6 +470,9 @@
                          }
                          completion: ^(BOOL finished) {
                              isAnimating = NO;
+                             
+                             termsAndConditionsButton.enabled = YES;
+                             termsAndConditionsButton.frame = termsAndConditionsLabel.frame;
                              [userNameInputField becomeFirstResponder];
                          }];
     }
@@ -483,9 +504,11 @@
                              wellSendYouLabel.alpha = 0.0;
                              
                              termsAndConditionsLabel.alpha = 1.0;
+                             
                          }
                          completion: ^(BOOL finished) {
                              isAnimating = NO;
+                             termsAndConditionsButton.enabled = YES;
                              [userNameInputField becomeFirstResponder];
                          }];
     }
@@ -570,6 +593,8 @@
                                               }
                                               completion: ^(BOOL finished) {
                                                   [emailInputField becomeFirstResponder];
+                                                  self.termsAndConditionsButton.frame = termsAndConditionsLabelSide.frame;
+                                                  self.termsAndConditionsButton.enabled = YES;
                                               }];
                          }];
     }
@@ -609,6 +634,8 @@
                              facebookSignInButton.center = CGPointMake(facebookSignInButton.center.x + kOffsetForRegisterForm,
                                                                        facebookSignInButton.center.y);
                          } completion: ^(BOOL finished) {
+                             self.termsAndConditionsButton.frame = termsAndConditionsLabelSide.frame;
+                             self.termsAndConditionsButton.enabled = YES;
                              [emailInputField becomeFirstResponder];
                          }];
     }
@@ -639,6 +666,7 @@
                      }
                      completion: ^(BOOL finished) {
                          isAnimating = NO;
+                         termsAndConditionsButton.enabled = YES;
                      }];
 }
 
@@ -1499,7 +1527,8 @@
         self.avatarImageView.center = CGPointMake(124.0, self.avatarImageView.center.y);
         termsAndConditionsLabel.center = CGPointMake(termsAndConditionsLabel.center.x, 714.0);
         termsAndConditionsLabelSide.center = CGPointMake(termsAndConditionsLabelSide.center.x, 714.0);        
-        registerButton.center = CGPointMake(registerButton.center.x, 704.0); 
+        registerButton.center = CGPointMake(registerButton.center.x, 704.0);
+        
     }
     else
     {
@@ -1511,6 +1540,7 @@
         termsAndConditionsLabelSide.center = CGPointMake(termsAndConditionsLabelSide.center.x, 370.0);
         registerButton.center = CGPointMake(registerButton.center.x, 358.0);
     }
+    
     
     areYouNewLabel.center = CGPointMake(areYouNewLabel.center.x, registerButton.center.y - 44.0);
     
@@ -1528,19 +1558,19 @@
     registerButton.frame = CGRectIntegral(registerButton.frame);
     signUpButton.frame = CGRectIntegral(signUpButton.frame);
     passwordForgottenLabel.frame = CGRectIntegral(passwordForgottenLabel.frame);
+    termsAndConditionsLabelSide.frame = CGRectIntegral(termsAndConditionsLabelSide.frame);
     faceImageButton.frame = CGRectIntegral(faceImageButton.frame);
     self.avatarImageView.frame = CGRectIntegral(self.avatarImageView.frame);
     areYouNewLabel.frame = CGRectIntegral(areYouNewLabel.frame);
+    
+    if(termsAndConditionsLabel.alpha > 0.0)
+        termsAndConditionsButton.frame = termsAndConditionsLabel.frame;
+    else
+        termsAndConditionsButton.frame = termsAndConditionsLabelSide.frame;
+    
 }
 
--(void)termsAndConditionsTapped:(UITapGestureRecognizer*)tapGestureRec
-{
-    CGPoint locationInView = [tapGestureRec locationInView:tapGestureRec.view];
-    NSLog(@"+ x:%f, y:%f", locationInView.x, locationInView.y);
-    
-    
-    
-}
+
 
 - (CGFloat) elementsOffsetY
 {
@@ -1575,6 +1605,11 @@
     termsAndConditionsLabel.frame = CGRectIntegral(termsAndConditionsLabel.frame);
     termsAndConditionsLabelSide.frame = CGRectIntegral(termsAndConditionsLabelSide.frame);
     memberLabel.frame = CGRectIntegral(memberLabel.frame);
+    
+    if(termsAndConditionsLabel.alpha > 0.0)
+        termsAndConditionsButton.frame = termsAndConditionsLabel.frame;
+    else
+        termsAndConditionsButton.frame = termsAndConditionsLabelSide.frame;
 }
 
 @end
