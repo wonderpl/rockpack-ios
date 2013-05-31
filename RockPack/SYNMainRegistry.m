@@ -244,16 +244,16 @@
     
     NSFetchRequest *videoInstanceFetchRequest = [[NSFetchRequest alloc] init];
     [videoInstanceFetchRequest setEntity: [NSEntityDescription entityForName: @"VideoInstance"
-                                                      inManagedObjectContext: appDelegate.mainManagedObjectContext]];
+                                                      inManagedObjectContext: importManagedObjectContext]];
     
-    NSPredicate* viewIdPredicate = [NSPredicate predicateWithFormat:@"viewId == %@ AND fresh == YES", kFeedViewId];
+    NSPredicate* viewIdPredicate = [NSPredicate predicateWithFormat:@"viewId == %@", kFeedViewId];
     
     
     videoInstanceFetchRequest.predicate = viewIdPredicate;
     
     NSError* error = nil;
-    NSArray *existingFeedVideoInstances = [appDelegate.mainManagedObjectContext executeFetchRequest: videoInstanceFetchRequest
-                                                                                              error: &error];
+    NSArray *existingFeedVideoInstances = [importManagedObjectContext executeFetchRequest: videoInstanceFetchRequest
+                                                                                    error: &error];
     
     NSMutableDictionary* existingVideosByIndex = [NSMutableDictionary dictionaryWithCapacity:existingFeedVideoInstances.count];
     
@@ -266,10 +266,7 @@
         {
             
             existingVideoInstance.markedForDeletionValue = YES;
-            existingVideoInstance.freshValue = NO;
-            
             existingVideoInstance.channel.markedForDeletionValue = YES;
-            existingVideoInstance.channel.freshValue = NO;
         }
         
     }
@@ -303,11 +300,10 @@
                                                   withDefault: [NSNumber numberWithInt: 0]];
         
         videoInstance.viewId = kFeedViewId;
-        videoInstance.freshValue = YES;
         
         videoInstance.channel.viewId = kFeedViewId;
-        videoInstance.channel.freshValue = YES;
         
+        videoInstance.channel.markedForDeletion = NO;
     }    
     
     
@@ -317,10 +313,10 @@
         if(!oldVideoInstance.markedForDeletionValue)
             continue;
         
-        if(!oldVideoInstance.channel.freshValue) // delete channels that are not used in the feed anymore
-            [appDelegate.mainManagedObjectContext deleteObject:oldVideoInstance.channel];
+        if(oldVideoInstance.channel && oldVideoInstance.channel.markedForDeletion) // delete channels that are not used in the feed anymore
+            [oldVideoInstance.channel.managedObjectContext deleteObject:oldVideoInstance.channel];
         
-        [appDelegate.mainManagedObjectContext deleteObject:oldVideoInstance];
+        [oldVideoInstance.managedObjectContext deleteObject:oldVideoInstance];
     }
     
     if(![self saveImportContext])

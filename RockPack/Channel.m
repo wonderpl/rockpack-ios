@@ -255,7 +255,7 @@
     
     
     NSDictionary* channelCoverDictionary = [dictionary objectForKey:@"cover"];
-    if(!(ignoringObjects & kIgnoreChannelCover) && channelCoverDictionary)
+    if(!(ignoringObjects & kIgnoreChannelCover) && [channelCoverDictionary isKindOfClass:[NSDictionary class]])
     {
         self.channelCover = [ChannelCover instanceFromDictionary:channelCoverDictionary
                                        usingManagedObjectContext:self.managedObjectContext];
