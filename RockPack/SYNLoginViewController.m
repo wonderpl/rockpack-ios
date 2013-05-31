@@ -181,12 +181,12 @@
     NSURL* urlToGo;
     if(isLeft)
     {
-        urlToGo = [NSURL URLWithString: @"http://rockpack.com/privacy"];
+        urlToGo = [NSURL URLWithString: kLoginPrivacyUrl];
         
     }
     else
     {
-        urlToGo = [NSURL URLWithString: @"http://rockpack.com/terms-and-conditions"];
+        urlToGo = [NSURL URLWithString: kLoginTermsUrl];
     }
     
     [[UIApplication sharedApplication] openURL:urlToGo];

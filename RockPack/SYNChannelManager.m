@@ -11,7 +11,7 @@
 #import "SYNOAuthNetworkEngine.h"
 #import "SYNNetworkEngine.h"
 #import "AppConstants.h"
-
+#import "VideoInstance.h"
 
 @interface SYNChannelManager()
 
@@ -100,7 +100,36 @@
     if (!channelToUpdate)
         return;
     
-    [self updateChannel:channelToUpdate withForceRefresh:channelToUpdate.hasChangedSubscribeValue];
+    // If the channel to be updated is not yet created then update it based on the videoQueue objects, else make a network call
+    
+    Channel* currentlyCreatingChannel = appDelegate.videoQueue.currentlyCreatingChannel;
+    if([channelToUpdate.uniqueId isEqualToString:currentlyCreatingChannel.uniqueId])
+    {
+        [channelToUpdate.videoInstancesSet enumerateObjectsUsingBlock:^(id obj, NSUInteger idx, BOOL *stop) {
+            [((VideoInstance*)obj).managedObjectContext deleteObject:obj];
+        }];
+        
+        for (VideoInstance* vi in currentlyCreatingChannel.videoInstances)
+        {
+            VideoInstance* copyOfVideoInstance = [VideoInstance instanceFromVideoInstance:vi
+                                                                usingManagedObjectContext:channelToUpdate.managedObjectContext
+                                                                      ignoringObjectTypes:kIgnoreChannelObjects];
+            
+            [channelToUpdate.videoInstancesSet addObject:copyOfVideoInstance];
+        }
+        
+        NSError* error;
+        [channelToUpdate.managedObjectContext save:&error];
+        
+        return;
+    }
+    else
+    {
+        [self updateChannel:channelToUpdate withForceRefresh:channelToUpdate.hasChangedSubscribeValue];
+    }
+    
+    
+    
 }
 
 
