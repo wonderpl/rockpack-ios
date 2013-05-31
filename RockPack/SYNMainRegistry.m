@@ -140,7 +140,8 @@
         existingCategory.markedForDeletionValue = YES; // if a real genre is passed - delete the old objects
     }
     
-
+    BOOL needsDataUpdate = NO;
+    
     for (NSDictionary *categoryDictionary in itemArray)
     {
         
@@ -157,6 +158,8 @@
         {
             genre = [Genre instanceFromDictionary: categoryDictionary
                         usingManagedObjectContext: appDelegate.mainManagedObjectContext];
+            
+            needsDataUpdate = YES;
         }
         else
         {
@@ -165,16 +168,19 @@
         
         genre.markedForDeletionValue = NO;
         
-        genre.priority = [categoryDictionary objectForKey: @"priority"
-                                              withDefault: [NSNumber numberWithInt: 0]];
-        
-        
+        NSNumber* remotePriority = [categoryDictionary objectForKey: @"priority" withDefault: [NSNumber numberWithInt: 0]];
+        if([remotePriority intValue] != genre.priorityValue)
+        {
+            genre.priority = remotePriority;
+            needsDataUpdate = YES;
+        }
         
     }
-        
+    
+    if(!needsDataUpdate)
+        return YES;
     
    
-    
     [self removeUnusedManagedObjects: existingCategories
               inManagedObjectContext: appDelegate.mainManagedObjectContext];
     
