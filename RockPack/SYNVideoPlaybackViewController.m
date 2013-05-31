@@ -294,9 +294,17 @@ static UIWebView* vimeoideoWebViewInstance;
 {
     [super viewWillAppear: animated];
     
-    // Make sure we are displaying the spinner and not the video at this stage
-    self.currentVideoWebView.alpha = 0.0f;
-    self.videoPlaceholderView.alpha = 1.0f;
+    // Check to see if were playing when we left this page
+    if (self.isPaused == TRUE)
+    {
+        [self playVideo];
+    }
+    else
+    {
+        // Make sure we are displaying the spinner and not the video at this stage
+        self.currentVideoWebView.alpha = 0.0f;
+        self.videoPlaceholderView.alpha = 1.0f;
+    }
     
     // Start animation
     [self animateVideoPlaceholder: YES];
@@ -309,7 +317,14 @@ static UIWebView* vimeoideoWebViewInstance;
     [self animateVideoPlaceholder: NO];
     
     [self stopShuttleBarUpdateTimer];
-    [self stopVideo];
+    
+    // Just pause the video, as we might come back to this view again (if we have pushed any views on top)
+    if (self.isPlaying == TRUE)
+    {
+        [self pauseVideo];
+    }
+
+    [self pauseVideo];
     
     [super viewDidDisappear: animated];
 }
@@ -844,6 +859,13 @@ static UIWebView* vimeoideoWebViewInstance;
     int playingValue = [[self.currentVideoWebView stringByEvaluatingJavaScriptFromString: @"player.getPlayerState();"] intValue];
     
     return (playingValue == 1) ? TRUE : FALSE;
+}
+
+- (BOOL) isPaused
+{
+    int playingValue = [[self.currentVideoWebView stringByEvaluatingJavaScriptFromString: @"player.getPlayerState();"] intValue];
+    
+    return (playingValue == 2) ? TRUE : FALSE;
 }
 
 
