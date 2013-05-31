@@ -147,13 +147,12 @@
 					</object>
 					<object class="IBUIActivityIndicatorView" id="87829684">
 						<reference key="NSNextResponder" ref="191373211"/>
-						<int key="NSvFlags">292</int>
+						<int key="NSvFlags">-2147483356</int>
 						<string key="NSFrame">{{31, 38}, {20, 20}}</string>
 						<reference key="NSSuperview" ref="191373211"/>
 						<string key="NSReuseIdentifierKey">_NS:9</string>
 						<bool key="IBUIOpaque">NO</bool>
 						<string key="targetRuntimeIdentifier">IBCocoaTouchFramework</string>
-						<bool key="IBUIAnimating">YES</bool>
 					</object>
 				</array>
 				<string key="NSFrameSize">{512, 95}</string>

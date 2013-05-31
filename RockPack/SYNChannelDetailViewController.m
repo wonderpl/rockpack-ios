@@ -726,7 +726,22 @@
     self.subscribeButton.hidden = (visible && [self.channel.channelOwner.uniqueId isEqualToString: appDelegate.currentUser.uniqueId]);
     self.editButton.hidden = (visible && ! [self.channel.channelOwner.uniqueId isEqualToString: appDelegate.currentUser.uniqueId]);
     
-    self.editButton.enabled = (self.channel.favouritesValue) ? FALSE : TRUE;
+    // If favourites channel, hide edit button and move subscribers
+    if (self.channel.favouritesValue)
+    {
+        self.editButton.hidden = TRUE;
+        
+        CGFloat offset = 125;
+        
+        if ([SYNDeviceManager.sharedInstance isIPad])
+        {
+            offset = 130;
+        }
+
+        CGRect frame = self.channelDetailsLabel.frame;
+        frame.origin.x -= offset;
+        self.channelDetailsLabel.frame = frame;
+    }
     
     [(LXReorderableCollectionViewFlowLayout *)self.videoThumbnailCollectionView.collectionViewLayout longPressGestureRecognizer].enabled = (visible) ? FALSE : TRUE;
     
@@ -2404,7 +2419,6 @@
     
     if (self.channel)
     {
-        
         
         
         [[NSNotificationCenter defaultCenter] addObserver: self

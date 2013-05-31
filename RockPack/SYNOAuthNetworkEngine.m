@@ -33,10 +33,10 @@
 
 #pragma mark - OAuth2 Housekeeping functions
 
--(id)initWithDefaultSettings
+- (id) initWithDefaultSettings
 {
     
-    hostName = [[NSBundle mainBundle] objectForInfoDictionaryKey:@"SecureAPIHostName"];
+    hostName = [[NSBundle mainBundle] objectForInfoDictionaryKey: @"SecureAPIHostName"];
 
     self = [super initWithDefaultSettings];
     if(self)
@@ -487,58 +487,50 @@
                                                                                                        params: nil
                                                                                                    httpMethod: @"PUT"
                                                                                                           ssl: YES];
-    
-    
-    if([newValue isKindOfClass:[NSString class]])
+
+    if ([newValue isKindOfClass:[NSString class]])
     {
         [networkOperation setCustomPostDataEncodingHandler: ^ NSString * (NSDictionary *postDataDict) {
             
-                                                    // Wrap it in quotes to make it valid JSON
-                                                    NSString *JSONFormattedFieldValue = [NSString stringWithFormat: @"\"%@\"", (NSString*)newValue];
-                                                    return JSONFormattedFieldValue;
+            // Wrap it in quotes to make it valid JSON
+            NSString *JSONFormattedFieldValue = [NSString stringWithFormat: @"\"%@\"", (NSString*)newValue];
+            return JSONFormattedFieldValue;
             
-                                                 } forType: @"application/json"];
+        } forType: @"application/json"];
     }
-    
-    // in reality the only case of passing a number is for a BOOL
-    else if([newValue isKindOfClass:[NSNumber class]])
+    else if ([newValue isKindOfClass:[NSNumber class]])
     {
+        // in reality the only case of passing a number is for a BOOL
         [networkOperation setCustomPostDataEncodingHandler: ^ NSString * (NSDictionary *postDataDict) {
             
-                                                    // Wrap it in quotes to make it valid JSON
-                                                    NSString *JSONFormattedBoolValue = ((NSNumber*)newValue).boolValue ? @"true" : @"false";
-                                                    return JSONFormattedBoolValue;
+            // Wrap it in quotes to make it valid JSON
+            NSString *JSONFormattedBoolValue = ((NSNumber*)newValue).boolValue ? @"true" : @"false";
+            return JSONFormattedBoolValue;
             
-                                                 } forType: @"application/json"];
+        } forType: @"application/json"];
     }
-    
-    
-    
-    [networkOperation addCompletionHandler:^(MKNetworkOperation* operation) {
-        
-        if(operation.HTTPStatusCode == 204) {
-            
+
+    [networkOperation addCompletionHandler: ^(MKNetworkOperation* operation) {
+        if (operation.HTTPStatusCode == 204)
+        {
             successBlock();
-            
-        } else {
-            
+        }
+        else
+        {
             errorBlock(@{@"http_error":[NSString stringWithFormat:@"%i", operation.HTTPStatusCode]});
-            
         }
-    
-    
-    } errorHandler:^(MKNetworkOperation* operation, NSError* error) {
-        
-        id responseJSON = [operation responseJSON];
-        
-        if(!responseJSON) {
-            errorBlock(@{@"responce_error" : @"malformed response"});
-            return;
-        }
-        
-        errorBlock(responseJSON);
-        
-    }];
+    }
+                              errorHandler: ^(MKNetworkOperation* operation, NSError* error) {
+                                  id responseJSON = [operation responseJSON];
+                                  
+                                  if (!responseJSON)
+                                  {
+                                      errorBlock(@{@"responce_error" : @"malformed response"});
+                                      return;
+                                  }
+                                  
+                                  errorBlock(responseJSON);
+                              }];
     
     [self enqueueSignedOperation: networkOperation];
 }

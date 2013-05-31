@@ -358,15 +358,23 @@ didFinishLaunchingWithOptions: (NSDictionary *) launchOptions
     NSError* error;
     
     NSURL *modelURL = [[NSBundle mainBundle] URLForResource: @"Rockpack" withExtension: @"momd"];
-    ZAssert(modelURL, @"Failed to find model URL");
+    if (!modelURL)
+    {
+        AssertOrLog(@"Failed to find model URL");
+    }
     
     NSManagedObjectModel *managedObjectModel = [[NSManagedObjectModel alloc] initWithContentsOfURL: modelURL];
-    ZAssert(managedObjectModel, @"Failed to initialize model");
+    if (!managedObjectModel)
+    {
+        AssertOrLog(@"Failed to initialize model");
+    }
     
     NSPersistentStoreCoordinator *persistentStoreCoordinator = nil;
     persistentStoreCoordinator = [[NSPersistentStoreCoordinator alloc] initWithManagedObjectModel: managedObjectModel];
-    ZAssert(persistentStoreCoordinator, @"Failed to initialize persistent store coordinator");
-    
+    if (!persistentStoreCoordinator)
+    {
+        AssertOrLog(@"Failed to initialize persistent store coordinator");
+    }
     // == Main Context
     
     self.privateManagedObjectContext = [[NSManagedObjectContext alloc] initWithConcurrencyType: NSPrivateQueueConcurrencyType];
@@ -384,7 +392,10 @@ didFinishLaunchingWithOptions: (NSDictionary *) launchOptions
                                                                                               URL: nil
                                                                                           options: nil
                                                                                             error: &error];
-    ZAssert(searchStore, @"Failed to initialize search managed context in app delegate");
+    if (!searchStore)
+    {
+        AssertOrLog(@"Failed to initialize search managed context in app delegate");
+    }
     self.searchManagedObjectContext.persistentStoreCoordinator = searchPersistentStoreCoordinator;
     
     
@@ -398,8 +409,10 @@ didFinishLaunchingWithOptions: (NSDictionary *) launchOptions
                                                                                                   URL: nil
                                                                                               options: nil
                                                                                                 error: &error];
-    
-    ZAssert(channelsStore, @"Failed to initialize channels managed context in app delegate");
+    if (!channelsStore)
+    {
+        AssertOrLog(@"Failed to initialize channels managed context in app delegate");
+    }
     self.channelsManagedObjectContext.persistentStoreCoordinator = channelsPersistentStoreCoordinator;
     
     NSURL *storeURL = [[[NSFileManager defaultManager] URLsForDirectory: NSDocumentDirectory
@@ -475,16 +488,20 @@ didFinishLaunchingWithOptions: (NSDictionary *) launchOptions
         [self.mainManagedObjectContext performBlockAndWait:^
          {
              NSError *error = nil;
-             ZAssert([self.mainManagedObjectContext save: &error], @"Error saving Main moc: %@\n%@",
-                     [error localizedDescription], [error userInfo]);
+             if (![self.mainManagedObjectContext save: &error])
+             {
+                 AssertOrLog(@"Error saving Main moc: %@\n%@", [error localizedDescription], [error userInfo]);
+             }
          }];
     }
     
     void (^savePrivate) (void) = ^
     {
         NSError *error = nil;
-        ZAssert([self.privateManagedObjectContext save: &error], @"Error saving Private moc: %@\n%@",
-                [error localizedDescription], [error userInfo]);
+        if (![self.privateManagedObjectContext save: &error])
+        {
+            AssertOrLog(@"Error saving Private moc: %@\n%@", [error localizedDescription], [error userInfo]);
+        }
     };
     
     if ([self.privateManagedObjectContext hasChanges])
@@ -507,8 +524,10 @@ didFinishLaunchingWithOptions: (NSDictionary *) launchOptions
     if ([self.searchManagedObjectContext hasChanges])
     {
         NSError *error = nil;
-        ZAssert([self.searchManagedObjectContext save: &error], @"Error saving Search moc: %@\n%@",
-                [error localizedDescription], [error userInfo]);
+        if (![self.searchManagedObjectContext save: &error])
+        {
+            AssertOrLog(@"Error saving Search moc: %@\n%@", [error localizedDescription], [error userInfo]);
+        }
     }
 }
 
@@ -521,8 +540,10 @@ didFinishLaunchingWithOptions: (NSDictionary *) launchOptions
     if([self.channelsManagedObjectContext hasChanges])
     {
         NSError *error = nil;
-        ZAssert([self.channelsManagedObjectContext save: &error], @"Error saving Search moc: %@\n%@",
-                [error localizedDescription], [error userInfo]);
+        if (![self.channelsManagedObjectContext save: &error])
+        {
+            AssertOrLog(@"Error saving Channels moc: %@\n%@", [error localizedDescription], [error userInfo]);
+        }
     }
 }
 

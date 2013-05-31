@@ -256,8 +256,10 @@
     
     NSError *error = nil;
     
-    ZAssert([_channelCoverFetchedResultsController performFetch: &error], @"Channels Details Failed: %@\n%@", [error localizedDescription], [error userInfo]);
-    
+    if (![_channelCoverFetchedResultsController performFetch: &error])
+    {
+        AssertOrLog(@"Channels Details Failed: %@\n%@", [error localizedDescription], [error userInfo]);
+    }
     return _channelCoverFetchedResultsController;
 }
 

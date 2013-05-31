@@ -365,7 +365,7 @@
 - (void) showLogoutAlert
 {
     UIAlertView *alert = [[UIAlertView alloc] initWithTitle: NSLocalizedString (@"Logout", nil)
-                                                    message: NSLocalizedString (@"Are you sure you want to log out?", nil)
+                                                    message: NSLocalizedString (@"Are you sure you want to Logout?", nil)
                                                    delegate: self
                                           cancelButtonTitle: NSLocalizedString (@"Cancel", nil)
                                           otherButtonTitles: NSLocalizedString (@"Logout", nil), nil];

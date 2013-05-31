@@ -96,7 +96,10 @@ enum ChannelCoverSelectorState {
     
     NSError *error = nil;
     
-    ZAssert([self.fetchedResultsController performFetch: &error], @"Channels Details Failed: %@\n%@", [error localizedDescription], [error userInfo]);
+    if (![self.fetchedResultsController performFetch: &error])
+    {
+        AssertOrLog(@"Channels Details Failed: %@\n%@", [error localizedDescription], [error userInfo]);
+    }
     
     self.supportsCamera = [UIImagePickerController isSourceTypeAvailable: UIImagePickerControllerSourceTypeCamera];
     
