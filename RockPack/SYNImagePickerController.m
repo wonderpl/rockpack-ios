@@ -67,12 +67,12 @@
 {
     if([UIImagePickerController isSourceTypeAvailable: UIImagePickerControllerSourceTypeCamera])
     {
-        UIActionSheet* sourceSelector = [[UIActionSheet alloc] initWithTitle: NSLocalizedString(@"Select source", nil)
+        UIActionSheet* sourceSelector = [[UIActionSheet alloc] initWithTitle: NSLocalizedString(@"channel_creation_screen_select_upload_photo_label", nil)
                                                                     delegate: self
                                                            cancelButtonTitle: NSLocalizedString(@"Cancel", nil)
                                                       destructiveButtonTitle: nil
-                                                           otherButtonTitles: NSLocalizedString(@"Camera", nil),
-                                         NSLocalizedString(@"Choose existing", nil), nil];
+                                                           otherButtonTitles: NSLocalizedString(@"camera_popover_button_takephoto_label", nil),
+                                         NSLocalizedString(@"camera_popover_button_choose_label", nil), nil];
         [sourceSelector showInView:self.hostViewController.view];
     }
     else

@@ -83,16 +83,16 @@ typedef enum {
                                 bundle: nil]))
     {
         self.navigationData = @[
-                @{kSideNavTitle: NSLocalizedString(@"FEED", nil),
+                @{kSideNavTitle: NSLocalizedString(@"core_nav_section_feed", nil),
                    kSideNavType: @(kSideNavigationTypePage),
                  kSideNavAction: kFeedViewId},
-                @{kSideNavTitle: NSLocalizedString(@"CHANNELS", nil),
+                @{kSideNavTitle: NSLocalizedString(@"core_nav_section_channels", nil),
                    kSideNavType: @(kSideNavigationTypePage),
                  kSideNavAction: kChannelsViewId},
-                @{kSideNavTitle: NSLocalizedString(@"PROFILE", nil),
+                @{kSideNavTitle: NSLocalizedString(@"core_nav_section_profile", nil),
                    kSideNavType: @(kSideNavigationTypePage),
                  kSideNavAction: kProfileViewId},
-                @{kSideNavTitle: NSLocalizedString(@"NOTIFICATIONS", nil),
+                @{kSideNavTitle: NSLocalizedString(@"core_nav_section_notifications", nil),
                    kSideNavType: @(kSideNavigationTypeLoad),
                  kSideNavAction: @"SYNNotificationsViewController"}];
         
@@ -429,7 +429,7 @@ typedef enum {
             ((SYNNotificationsViewController*)self.currentlyLoadedViewController).notifications = self.notifications;
         }
         
-        self.navigationContainerTitleLabel.text = NSLocalizedString(@"NOTIFICATIONS",nil);
+        self.navigationContainerTitleLabel.text = NSLocalizedString(@"core_nav_section_notifications",nil);
         self.state = SideNavigationStateFull;
         
         
@@ -896,8 +896,8 @@ typedef enum {
          [self.activityIndicator stopAnimating];
          self.avatarButton.enabled = YES;
          
-         UIAlertView* alert = [[UIAlertView alloc] initWithTitle: NSLocalizedString(@"Oops",nil)
-                                                         message: NSLocalizedString(@"We're having trouble uploading your photo. Please try again later.",nil)
+         UIAlertView* alert = [[UIAlertView alloc] initWithTitle: NSLocalizedString(@"register_screen_form_avatar_upload_title",nil)
+                                                         message: NSLocalizedString(@"register_screen_form_avatar_upload_description",nil)
                                                         delegate: nil
                                                cancelButtonTitle: nil
                                                otherButtonTitles: NSLocalizedString(@"OK",nil), nil];

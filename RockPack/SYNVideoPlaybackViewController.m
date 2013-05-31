@@ -295,6 +295,23 @@ static UIWebView* vimeoideoWebViewInstance;
     [super viewWillAppear: animated];
     
     // Check to see if were playing when we left this page
+    [self playIfVideoActive];
+}
+
+
+- (void) viewDidDisappear: (BOOL) animated
+{
+    // Just pause the video, as we might come back to this view again (if we have pushed any views on top)
+    [self pauseIfVideoActive];
+    
+    [self stopShuttleBarUpdateTimer];
+
+    [super viewDidDisappear: animated];
+}
+
+
+- (void) playIfVideoActive
+{
     if (self.isPaused == TRUE)
     {
         [self playVideo];
@@ -311,20 +328,15 @@ static UIWebView* vimeoideoWebViewInstance;
 }
 
 
-- (void) viewDidDisappear: (BOOL) animated
+- (void) pauseIfVideoActive
 {
-    // Start animation
-    [self animateVideoPlaceholder: NO];
-    
-    [self stopShuttleBarUpdateTimer];
-    
-    // Just pause the video, as we might come back to this view again (if we have pushed any views on top)
-    if (self.isPlaying == TRUE)
+    if (self.isPlayingOrBuffering == TRUE)
     {
         [self pauseVideo];
     }
     
-    [super viewDidDisappear: animated];
+    // Start animation
+    [self animateVideoPlaceholder: NO];
 }
 
 
@@ -857,6 +869,13 @@ static UIWebView* vimeoideoWebViewInstance;
     int playingValue = [[self.currentVideoWebView stringByEvaluatingJavaScriptFromString: @"player.getPlayerState();"] intValue];
     
     return (playingValue == 1) ? TRUE : FALSE;
+}
+
+- (BOOL) isPlayingOrBuffering
+{
+    int playingValue = [[self.currentVideoWebView stringByEvaluatingJavaScriptFromString: @"player.getPlayerState();"] intValue];
+    
+    return ((playingValue == 2) || (playingValue == 3)) ? TRUE : FALSE;
 }
 
 - (BOOL) isPaused

@@ -356,7 +356,7 @@
     {
             DebugLog (@"Scrolling more");
         
-        self.coverRightMoreView.loadingLabel.text = @"Loading";
+        self.coverRightMoreView.loadingLabel.text = NSLocalizedString(@"Loading", nil);
         [self.coverRightMoreView.loadingIndicatorView startAnimating];
         
     }

@@ -117,12 +117,12 @@
         
         if (self.user == appDelegate.currentUser)
         {
-            [self.headerView setTitle: @"MY SUBSCRIPTIONS"
+            [self.headerView setTitle: NSLocalizedString(@"profile_screen_section_owner_subscription_title", nil)
                             andNumber: totalChannels];
         }
         else
         {
-            [self.headerView setTitle: @"SUBSCRIPTIONS"
+            [self.headerView setTitle: NSLocalizedString(@"profile_screen_section_user_subscription_title", nil)
                             andNumber: totalChannels];
         }
     }

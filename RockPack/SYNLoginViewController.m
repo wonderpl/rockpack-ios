@@ -102,7 +102,7 @@
     termsAndConditionsLabelSide.font = termsAndConditionsLabel.font;
     wellSendYouLabel.font = [UIFont rockpackFontOfSize: 16.0];
     
-    NSMutableAttributedString* termsString = [[NSMutableAttributedString alloc] initWithString: NSLocalizedString(@"BY USING ROCKPACK, YOU AGREE TO OUR\nTERMS & SERVICES AND PRIVACY POLICY", nil)];
+    NSMutableAttributedString* termsString = [[NSMutableAttributedString alloc] initWithString: NSLocalizedString(@"register_screen_legal", nil)];
 
         // TERMS & SERVICESs
     
@@ -117,7 +117,7 @@
     
     [termsString addAttribute: NSForegroundColorAttributeName
                         value: [UIColor colorWithRed:(11.0/255.0) green:(166.0/255.0) blue:(171.0/255.0) alpha:(1.0)]
-                        range: NSMakeRange(57, 14)];
+                        range: NSMakeRange(57, 15)];
     
         
     
@@ -284,7 +284,7 @@
     memberLabel.center = CGPointMake(loginButton.center.x,
                                      registerButton.center.y - 57.0);
     
-    userNameInputField.placeholder = NSLocalizedString(@"USERNAME OR PASSWORD", nil);
+    userNameInputField.placeholder = NSLocalizedString(@"forgot_password_screen_form_field_username_placeholder", nil);
     
     memberLabel.frame = CGRectIntegral(memberLabel.frame);
     
@@ -325,7 +325,7 @@
     [self clearAllErrorArrows];
     
     isAnimating = YES;
-    userNameInputField.placeholder = NSLocalizedString(@"USERNAME", nil);
+    userNameInputField.placeholder = NSLocalizedString(@"login_screen_form_field_username_placeholder", nil);
     
     self.userNameInputField.returnKeyType = UIReturnKeyNext;
     self.passwordInputField.returnKeyType = UIReturnKeyGo;
@@ -521,7 +521,7 @@
     
     [self clearAllErrorArrows];
     isAnimating = YES;
-    userNameInputField.placeholder = NSLocalizedString(@"USERNAME", nil);
+    userNameInputField.placeholder = NSLocalizedString(@"login_screen_form_field_username_placeholder", nil);
     
     
     self.userNameInputField.returnKeyType = UIReturnKeyNext;
@@ -678,7 +678,7 @@
     // email
     if (userNameInputField.text.length < 1)
     {
-        [self placeErrorLabel: NSLocalizedString(@"Please enter your email or username", nil)
+        [self placeErrorLabel: NSLocalizedString(@"login_screen_form_field_username_error_empty", nil)
                    nextToView: userNameInputField];
         
         [userNameInputField becomeFirstResponder];
@@ -688,7 +688,7 @@
 
     if (passwordInputField.text.length < 1)
     {
-        [self placeErrorLabel: NSLocalizedString(@"Please enter your password", nil)
+        [self placeErrorLabel: NSLocalizedString(@"login_screen_form_field_password_error_empty", nil)
                    nextToView: passwordInputField];
         
         [passwordInputField becomeFirstResponder];
@@ -705,7 +705,7 @@
     
     if (userNameInputField.text.length < 1)
     {
-        [self placeErrorLabel: NSLocalizedString(@"Please provide a username or an email", nil)
+        [self placeErrorLabel: NSLocalizedString(@"forgot_password_screen_form_field_username_error_empty", nil)
                    nextToView: userNameInputField];
         
         [userNameInputField becomeFirstResponder];
@@ -762,14 +762,14 @@
                       //[self placeErrorLabel: @"Username could be incorrect"
                       //           nextToView: userNameInputField];
                       
-                      [self placeErrorLabel: @"Your username or password is incorrect"
+                      [self placeErrorLabel: NSLocalizedString(@"login_screen_form_field_username_password_error_incorrect", nil)
                                  nextToView: passwordInputField];
                   }
                   
                   NSDictionary* savingError = errorDictionary [@"saving_error"];
                   if(savingError)
                   {
-                      [self placeErrorLabel: @"Please try again."
+                      [self placeErrorLabel: NSLocalizedString(@"login_screen_saving_error", nil)
                                  nextToView: passwordInputField];
                   }
                   
@@ -811,25 +811,25 @@
         
         if ([completionInfo valueForKey: @"error"])
         {
-            [self placeErrorLabel: @"Sorry, we don't recognise this username or email"
+            [self placeErrorLabel: NSLocalizedString(@"forgot_password_screen_form_field_username_user_unknown", nil)
                        nextToView: self.userNameInputField];
             
         }
         else
         {
-            [[[UIAlertView alloc] initWithTitle: @"Password Reset"
-                                        message: @"Check your email and follow the instructions"
+            [[[UIAlertView alloc] initWithTitle: NSLocalizedString(@"forgot_password_screen_complete_title", nil)
+                                        message: NSLocalizedString(@"forgot_password_screen_complete_message", nil)
                                        delegate: nil
-                              cancelButtonTitle: @"OK"
+                              cancelButtonTitle: NSLocalizedString(@"OK", nil)
                               otherButtonTitles: nil] show];
             
         }
 
     } errorHandler: ^(NSError *error) {
-        [[[UIAlertView alloc] initWithTitle: @"Password Reset"
-                                    message: @"Error, request failed..."
+        [[[UIAlertView alloc] initWithTitle: NSLocalizedString(@"forgot_password_screen_complete_title", nil)
+                                    message: NSLocalizedString(@"forgot_password_screen_form_field_request_failed_error", nil)
                                    delegate: nil
-                          cancelButtonTitle: @"OK"
+                          cancelButtonTitle: NSLocalizedString(@"OK", nil)
                           otherButtonTitles: nil] show];
         
     }];
@@ -915,7 +915,7 @@
                                                
                                                if (formErrors)
                                                {
-                                                   secondaryFacebookMessage.text = NSLocalizedString(@"Could not log in through facebook", nil);
+                                                   secondaryFacebookMessage.text = NSLocalizedString(@"facebook_login_error_description", nil);
                                                    secondaryFacebookMessage.alpha = 1.0;
                                                }
                                                
@@ -924,7 +924,7 @@
                                            {_facebookLoginIsInProcess = NO;
                                                
                                                // TODO: Use custom alert box here
-                                               [[[UIAlertView alloc] initWithTitle: NSLocalizedString(@"Facebook Login", nil)
+                                               [[[UIAlertView alloc] initWithTitle: NSLocalizedString(@"facebook_login_error_title", nil)
                                                                            message: error
                                                                           delegate: nil
                                                                  cancelButtonTitle: NSLocalizedString(@"OK", nil)
@@ -965,7 +965,7 @@
 {
     if (emailInputField.text.length < 1)
     {
-        [self placeErrorLabel: @"Please enter a valid email address"
+        [self placeErrorLabel: @"egister_screen_form_field_email_error_empty"
                    nextToView: emailInputField];
         
         [emailInputField becomeFirstResponder];
@@ -977,7 +977,7 @@
     
     if (![emailInputField.text isMatchedByRegex: @"^([a-zA-Z0-9%_.+\\-]+)@([a-zA-Z0-9.\\-]+?\\.[a-zA-Z]{2,6})$"])
     {
-        [self placeErrorLabel: NSLocalizedString(@"Please enter a valid email address", nil)
+        [self placeErrorLabel: NSLocalizedString(@"register_screen_form_field_email_error_empty", nil)
                    nextToView: emailInputField];
         
         [emailInputField becomeFirstResponder];
@@ -989,7 +989,7 @@
     
     if (userNameInputField.text.length < 1 && registerButton.hidden == YES)
     {
-        [self placeErrorLabel: NSLocalizedString(@"Please enter your email or username", nil)
+        [self placeErrorLabel: NSLocalizedString(@"login_screen_form_field_username_error_empty", nil)
                    nextToView: userNameInputField];
         
         [userNameInputField becomeFirstResponder];
@@ -999,7 +999,7 @@
     
     if (userNameInputField.text.length < 1 && registerButton.hidden == NO)
     {
-        [self placeErrorLabel: NSLocalizedString(@"Please choose a username", nil)
+        [self placeErrorLabel: NSLocalizedString(@"register_screen_form_field_username_error_empty", nil)
                    nextToView: userNameInputField];
         
         [userNameInputField becomeFirstResponder];
@@ -1010,7 +1010,7 @@
     // == Username must be
     if (![userNameInputField.text isMatchedByRegex:@"^[a-zA-Z0-9\\._]+$"])
     {
-        [self placeErrorLabel: NSLocalizedString(@"Username has invalid characters", nil)
+        [self placeErrorLabel: NSLocalizedString(@"register_screen_form_field_username_error_invalid", nil)
                    nextToView: userNameInputField];
         
         [userNameInputField becomeFirstResponder];
@@ -1022,7 +1022,7 @@
     
     if (passwordInputField.text.length < 1 && registerButton.hidden == YES)
     {
-        [self placeErrorLabel: NSLocalizedString(@"Please enter your password", nil)
+        [self placeErrorLabel: NSLocalizedString(@"login_screen_form_field_password_error_empty", nil)
                    nextToView: passwordInputField];
         
         [passwordInputField becomeFirstResponder];
@@ -1032,7 +1032,7 @@
     
     if (passwordInputField.text.length < 1 && registerButton.hidden == NO)
     {
-        [self placeErrorLabel: NSLocalizedString(@"Please choose a password", nil)
+        [self placeErrorLabel: NSLocalizedString(@"register_screen_form_field_password_error_empty", nil)
                    nextToView: passwordInputField];
         
         [passwordInputField becomeFirstResponder];
@@ -1044,7 +1044,7 @@
     
     if (ddInputField.text.length != 2 || mmInputField.text.length != 2 || yyyyInputField.text.length != 4)
     {
-        [self placeErrorLabel: NSLocalizedString(@"Sorry, this date is not valid", nil)
+        [self placeErrorLabel: NSLocalizedString(@"register_screen_form_error_invalid_date", nil)
                    nextToView: dobView];
         
         [ddInputField becomeFirstResponder];
@@ -1062,7 +1062,7 @@
     {
         if (![numberFormatter numberFromString: dobField.text])
         {
-            [self placeErrorLabel: NSLocalizedString(@"Only enter numbers", nil)
+            [self placeErrorLabel: NSLocalizedString(@"register_screen_form_error_invalid_date", nil)
                        nextToView: dobView];
             
             [dobField becomeFirstResponder];
@@ -1079,7 +1079,7 @@
     
     if (!potentialDate)
     {
-        [self placeErrorLabel: NSLocalizedString(@"Sorry, this date is not valid", nil)
+        [self placeErrorLabel: NSLocalizedString(@"register_screen_form_error_invalid_date", nil)
                    nextToView: dobView];
         
         return NO;
@@ -1090,7 +1090,7 @@
     // == In the future == //
     
     if ([nowDate compare:potentialDate] == NSOrderedAscending) {
-        [self placeErrorLabel: NSLocalizedString(@"Looks like you're born in the future!", nil)
+        [self placeErrorLabel: NSLocalizedString(@"register_screen_form_error_future", nil)
                    nextToView: dobView];
         
         return NO;
@@ -1106,7 +1106,7 @@
     
     if ([tooYoungDate compare:potentialDate] == NSOrderedAscending) {
         
-        [self placeErrorLabel: NSLocalizedString(@"Rockpack is not available for under 13's yet", nil)
+        [self placeErrorLabel: NSLocalizedString(@"register_screen_form_error_under_13", nil)
                    nextToView: dobView];
         
         return NO;
@@ -1217,6 +1217,11 @@
     }
                errorHandler:^(NSDictionary* errorDictionary) {
                    DebugLog(@"Avatar upload failed");
+                   [[[UIAlertView alloc] initWithTitle: NSLocalizedString(@"register_screen_form_avatar_upload_title", nil)
+                                               message: NSLocalizedString(@"register_screen_form_avatar_upload_description.", nil)
+                                              delegate: nil
+                                     cancelButtonTitle: NSLocalizedString(@"OK", nil)
+                                     otherButtonTitles: nil] show];
                }];
 }
 
