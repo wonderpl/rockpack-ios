@@ -78,16 +78,12 @@ static UIWebView* vimeoideoWebViewInstance;
         dispatch_once(&oncePredicate, ^{
             // Create our shared intance
             _sharedInstance = [[super allocWithZone: nil] init];
-            
-            DebugLog(@"............................................ Webview - Starting to create");
             // Create the static instances of our webviews
             youTubeVideoWebViewInstance = [SYNVideoPlaybackViewController createNewYouTubeWebView];
             
 #ifdef ENABLE_VIMEO_PLAYER
             vimeoideoWebViewInstance = [SYNVideoPlaybackViewController createNewVimeoWebView];
 #endif
-
-            DebugLog(@"00000000000000000000000000000000000000000000 Webview - finished creating");
         });
     }
     

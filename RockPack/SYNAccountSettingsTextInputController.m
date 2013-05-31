@@ -240,7 +240,7 @@
     [self.appDelegate.oAuthNetworkEngine changeUserField: field
                                                  forUser: self.appDelegate.currentUser
                                             withNewValue: newValue
-                                       completionHandler: ^{
+                                       completionHandler: ^(NSDictionary * dictionary){
                                            
                                            [self.spinner stopAnimating];
                                            self.saveButton.hidden = NO;

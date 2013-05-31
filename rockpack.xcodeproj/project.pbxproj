@@ -294,7 +294,6 @@
 		01B0A96D166CEC4D00CAA235 /* BackgroundVideoThumbnailRegular.png in Resources */ = {isa = PBXBuildFile; fileRef = 01B0A96B166CEC4D00CAA235 /* BackgroundVideoThumbnailRegular.png */; };
 		01B0A970166CEE0700CAA235 /* GlossVideoThumbnailRegular.png in Resources */ = {isa = PBXBuildFile; fileRef = 01B0A96E166CEE0700CAA235 /* GlossVideoThumbnailRegular.png */; };
 		01B0A971166CEE0700CAA235 /* GlossVideoThumbnailRegular@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 01B0A96F166CEE0700CAA235 /* GlossVideoThumbnailRegular@2x.png */; };
-		01B34C9016A85623002AD8FB /* UICollectionViewCell+AsyncImage.m in Sources */ = {isa = PBXBuildFile; fileRef = 01B34C8F16A85622002AD8FB /* UICollectionViewCell+AsyncImage.m */; };
 		01B34C9816A99D6A002AD8FB /* GlossChannelThumbnail.png in Resources */ = {isa = PBXBuildFile; fileRef = 01B34C9616A99D6A002AD8FB /* GlossChannelThumbnail.png */; };
 		01B34C9916A99D6A002AD8FB /* GlossChannelThumbnail@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 01B34C9716A99D6A002AD8FB /* GlossChannelThumbnail@2x.png */; };
 		01B7F763164FC88A009C5CCD /* SYNChannelThumbnailCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 01B7F762164FC88A009C5CCD /* SYNChannelThumbnailCell.m */; };
@@ -1437,8 +1436,6 @@
 		01B0A96B166CEC4D00CAA235 /* BackgroundVideoThumbnailRegular.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = BackgroundVideoThumbnailRegular.png; path = Assets/Images/BackgroundVideoThumbnailRegular.png; sourceTree = "<group>"; };
 		01B0A96E166CEE0700CAA235 /* GlossVideoThumbnailRegular.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = GlossVideoThumbnailRegular.png; path = Assets/Images/GlossVideoThumbnailRegular.png; sourceTree = "<group>"; };
 		01B0A96F166CEE0700CAA235 /* GlossVideoThumbnailRegular@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = "GlossVideoThumbnailRegular@2x.png"; path = "Assets/Images/GlossVideoThumbnailRegular@2x.png"; sourceTree = "<group>"; };
-		01B34C8E16A85622002AD8FB /* UICollectionViewCell+AsyncImage.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "UICollectionViewCell+AsyncImage.h"; sourceTree = "<group>"; };
-		01B34C8F16A85622002AD8FB /* UICollectionViewCell+AsyncImage.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "UICollectionViewCell+AsyncImage.m"; sourceTree = "<group>"; };
 		01B34C9616A99D6A002AD8FB /* GlossChannelThumbnail.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = GlossChannelThumbnail.png; path = Assets/Images/GlossChannelThumbnail.png; sourceTree = "<group>"; };
 		01B34C9716A99D6A002AD8FB /* GlossChannelThumbnail@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = "GlossChannelThumbnail@2x.png"; path = "Assets/Images/GlossChannelThumbnail@2x.png"; sourceTree = "<group>"; };
 		01B37241162EBAD800A9F8F5 /* RockPack.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.xml; name = RockPack.entitlements; path = RockPack/RockPack.entitlements; sourceTree = "<group>"; };
@@ -1694,7 +1691,7 @@
 		3862E8BB172979A40066E8E7 /* SYNVideoViewerViewController~iphone.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = "SYNVideoViewerViewController~iphone.xib"; sourceTree = "<group>"; };
 		3864D2DA1743DB3000A90ED3 /* SYNImagePickerController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SYNImagePickerController.h; sourceTree = "<group>"; };
 		3864D2DB1743DB3000A90ED3 /* SYNImagePickerController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SYNImagePickerController.m; sourceTree = "<group>"; };
-		3885165B17579086001A9FD4 /* Rockpack 2.xcdatamodel */ = {isa = PBXFileReference; lastKnownFileType = file; path = "Rockpack 2.xcdatamodel"; sourceTree = "<group>"; };
+		3885165B17579086001A9FD4 /* Rockpack 2.xcdatamodel */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcdatamodel; path = "Rockpack 2.xcdatamodel"; sourceTree = "<group>"; };
 		388CAF24172E8F0C00721372 /* SYNSideNavigationViewController~iphone.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = "SYNSideNavigationViewController~iphone.xib"; sourceTree = "<group>"; };
 		388CAF65172EBDC100721372 /* SYNSideNavigationIphoneCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SYNSideNavigationIphoneCell.h; sourceTree = "<group>"; };
 		388CAF66172EBDC100721372 /* SYNSideNavigationIphoneCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SYNSideNavigationIphoneCell.m; sourceTree = "<group>"; };
@@ -3120,8 +3117,6 @@
 				01A79BA116F32C6900B05084 /* NSString+Timecode.m */,
 				01A79BA316F34BBF00B05084 /* NSString+Utils.h */,
 				01A79BA416F34BBF00B05084 /* NSString+Utils.m */,
-				01B34C8E16A85622002AD8FB /* UICollectionViewCell+AsyncImage.h */,
-				01B34C8F16A85622002AD8FB /* UICollectionViewCell+AsyncImage.m */,
 				019825EF162C94A300216900 /* UIColor+SYNColor.h */,
 				019825F0162C94A300216900 /* UIColor+SYNColor.m */,
 				019825F2162C94B500216900 /* UIFont+SYNFont.h */,
@@ -5661,7 +5656,6 @@
 				01C6FD14169E11B000E01AA3 /* _AbstractCommon.m in Sources */,
 				01C6FD15169E11B000E01AA3 /* AbstractCommon.m in Sources */,
 				01C74BAD169F239800B1CA02 /* SYNNetworkEngine.m in Sources */,
-				01B34C9016A85623002AD8FB /* UICollectionViewCell+AsyncImage.m in Sources */,
 				015CB01616AE039900FEB8E7 /* User.m in Sources */,
 				015CB01916AE03B200FEB8E7 /* _User.m in Sources */,
 				01A3EC2E16AECE4B008DCE08 /* SYNActivityPopoverViewController.m in Sources */,

@@ -198,6 +198,10 @@
     NSDictionary *refreshParams = @{@"grant_type" : @"refresh_token",
                                     @"refresh_token" : self.oAuth2Credential.refreshToken};
     
+//#warning "Test code - REMOVE"
+//    NSDictionary *refreshParams = @{@"grant_type" : @"refresh_token",
+//                                    @"refresh_token" : @"ssss"};
+    
     SYNNetworkOperationJsonObject *networkOperation = (SYNNetworkOperationJsonObject*) [self operationWithPath: kAPIRefreshToken
                                                                                                         params: refreshParams
                                                                                                     httpMethod: @"POST"
@@ -476,8 +480,9 @@
 - (void) changeUserField: (NSString*) userField
                  forUser: (User *) user
             withNewValue: (id)newValue
-       completionHandler: (MKNKBasicSuccessBlock) successBlock
-            errorHandler: (MKNKUserErrorBlock) errorBlock {
+       completionHandler: (MKNKUserSuccessBlock) completionBlock
+            errorHandler: (MKNKUserErrorBlock) errorBlock
+{
     
     NSDictionary *apiSubstitutionDictionary = @{@"USERID" : user.uniqueId, @"ATTRIBUTE" : userField};
     
@@ -488,10 +493,9 @@
                                                                                                    httpMethod: @"PUT"
                                                                                                           ssl: YES];
 
-    if ([newValue isKindOfClass:[NSString class]])
+    if ([newValue isKindOfClass: [NSString class]])
     {
         [networkOperation setCustomPostDataEncodingHandler: ^ NSString * (NSDictionary *postDataDict) {
-            
             // Wrap it in quotes to make it valid JSON
             NSString *JSONFormattedFieldValue = [NSString stringWithFormat: @"\"%@\"", (NSString*)newValue];
             return JSONFormattedFieldValue;
@@ -509,28 +513,10 @@
             
         } forType: @"application/json"];
     }
-
-    [networkOperation addCompletionHandler: ^(MKNetworkOperation* operation) {
-        if (operation.HTTPStatusCode == 204)
-        {
-            successBlock();
-        }
-        else
-        {
-            errorBlock(@{@"http_error":[NSString stringWithFormat:@"%i", operation.HTTPStatusCode]});
-        }
-    }
-                              errorHandler: ^(MKNetworkOperation* operation, NSError* error) {
-                                  id responseJSON = [operation responseJSON];
-                                  
-                                  if (!responseJSON)
-                                  {
-                                      errorBlock(@{@"responce_error" : @"malformed response"});
-                                      return;
-                                  }
-                                  
-                                  errorBlock(responseJSON);
-                              }];
+    
+    [self addCommonHandlerToNetworkOperation: networkOperation
+                           completionHandler: completionBlock
+                                errorHandler: errorBlock];
     
     [self enqueueSignedOperation: networkOperation];
 }
@@ -970,20 +956,18 @@
                                                                                                        params: [self getLocalParam]
                                                                                                    httpMethod: @"GET"
                                                                                                           ssl: TRUE];
+    __weak typeof(self) weakSelf = self;
     
-    
-    [networkOperation addJSONCompletionHandler: ^(NSDictionary *dictionary)
-     {
-         BOOL registryResultOk = [self.registry registerCoverArtFromDictionary: dictionary
-                                                                 forUserUpload: YES];
-         if (!registryResultOk)
-             return;
-         
-         completionBlock();
-     }
-                                  errorHandler: ^(NSError* error) {
-                                      DebugLog(@"API request failed");
-                                  }];
+    [self addCommonHandlerToNetworkOperation: networkOperation
+                           completionHandler: ^(NSDictionary *dictionary) {
+                               BOOL registryResultOk = [weakSelf.registry registerCoverArtFromDictionary: dictionary
+                                                                                           forUserUpload: YES];
+                               if (!registryResultOk)
+                                   return;
+                               
+                               completionBlock();
+                           }
+                                errorHandler: errorBlock];
     
     [self enqueueSignedOperation: networkOperation];
 }
@@ -1216,44 +1200,6 @@
                                 errorHandler: errorBlock];
     
     [self enqueueSignedOperation: networkOperation];
-}
-
-
-
-#pragma mark - Image Loading
-
-- (MKNetworkOperation*)imageAtURL:(NSURL *)url
-                             size:(CGSize) size
-                completionHandler:(MKNKImageBlock) imageFetchedBlock
-                     errorHandler:(MKNKResponseErrorBlock) errorBlock {
-    
-        
-    if (url == nil)
-        return nil;
-        
-    
-    MKNetworkOperation *op = [self operationWithURLString:[url absoluteString]];
-    NSLog(@"- %@", op.url);
-    op.shouldCacheResponseEvenIfProtocolIsHTTPS = YES;
-    
-    [op addCompletionHandler:^(MKNetworkOperation *completedOperation) {
-        [completedOperation decompressedResponseImageOfSize:size
-                                          completionHandler:^(UIImage *decompressedImage) {
-                                              if (imageFetchedBlock)
-                                                  imageFetchedBlock(decompressedImage,
-                                                                    url,
-                                                                    [completedOperation isCachedResponse]);
-                                          }];
-        
-    } errorHandler:^(MKNetworkOperation *completedOperation, NSError *error) {
-        if (errorBlock)
-            errorBlock(completedOperation, error);
-        DLog(@"%@", error);
-    }];
-    
-    [self enqueueSignedOperation:op];
-    
-    return op;
 }
 
 

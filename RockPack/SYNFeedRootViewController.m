@@ -339,11 +339,9 @@
     
     
     NSPredicate* predicate = [NSPredicate predicateWithFormat:[NSString stringWithFormat:@"viewId == \"%@\" AND fresh == YES", kFeedViewId]];
-    
-                              
+ 
     fetchRequest.predicate = predicate;
-    
-    
+
     fetchRequest.sortDescriptors = @[[[NSSortDescriptor alloc] initWithKey: @"dateAdded" ascending: NO]];
     
     
