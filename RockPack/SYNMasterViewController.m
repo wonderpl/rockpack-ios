@@ -46,6 +46,7 @@ typedef void(^AnimationCompletionBlock)(BOOL finished);
 @property (nonatomic, strong) IBOutlet UIButton* closeSearchButton;
 @property (nonatomic, strong) IBOutlet UIButton* searchButton;
 @property (nonatomic, strong) IBOutlet UIButton* sideNavigationButton;
+@property (nonatomic, strong) IBOutlet UIButton* hideNavigationButton;
 @property (nonatomic, strong) IBOutlet UILabel* pageTitleLabel;
 @property (nonatomic, strong) IBOutlet UIView* dotsView;
 @property (nonatomic, strong) IBOutlet UIView* errorContainerView;
@@ -475,6 +476,18 @@ typedef void(^AnimationCompletionBlock)(BOOL finished);
                      }];
     self.sideNavigationViewController.state = SideNavigationStateHalf;
     
+}
+
+- (IBAction)hideNavigation:(UIButton*)sender{
+    self.sideNavigationViewController.state = SideNavigationStateHidden;
+    self.darkOverlayView.alpha = 1.0;
+    
+    [UIView animateWithDuration:0.3
+                     animations:^{
+                         self.darkOverlayView.alpha = 0.0;
+                     } completion:^(BOOL finished) {
+                         self.darkOverlayView.hidden = YES;
+                     }];
 }
 
 
