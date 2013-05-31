@@ -244,20 +244,19 @@
                                        placeholderImage: [UIImage imageNamed: @"PlaceholderChannelSmall.png"]
                                                 options: SDWebImageRetryFailed];
     }
-
-}
-
-
-- (void) viewWillAppear: (BOOL) animated
-{
-    [super viewWillAppear: animated];
-
+    
     // Google analytics support
     [GAI.sharedInstance.defaultTracker sendView:  @"Video Viewer"];
     
     [self.videoPlaybackViewController setPlaylist: self.videoInstanceArray
                                     selectedIndex: self.currentSelectedIndex
                                          autoPlay: TRUE];
+}
+
+
+- (void) viewWillAppear: (BOOL) animated
+{
+    [super viewWillAppear: animated];
     
     if ([SYNDeviceManager.sharedInstance isIPhone])
     {
@@ -265,15 +264,24 @@
         videoFrame.origin = self.swipeView.frame.origin;
         self.videoPlaybackViewController.view.frame = videoFrame;
         
-        [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(deviceOrientationChange:) name:UIDeviceOrientationDidChangeNotification object:nil];
+        [[NSNotificationCenter defaultCenter] addObserver: self
+                                                 selector: @selector(deviceOrientationChange:)
+                                                     name: UIDeviceOrientationDidChangeNotification
+                                                   object: nil];
+        
         self.currentOrientation = [[UIDevice currentDevice] orientation];
         [[UIDevice currentDevice] beginGeneratingDeviceOrientationNotifications];
         self.originalFrame = self.swipeView.frame;
+        
         if (self.currentOrientation == UIDeviceOrientationLandscapeLeft)
         {
             [self userTappedVideo];
         }
-
+        
+        // The min / max button is only active on the iPhone
+        [self.videoPlaybackViewController.shuttleBarMaxMinButton addTarget: self
+                                                                    action: @selector(userTouchedMaxMinButton)
+                                                          forControlEvents: UIControlEventTouchUpInside];
     }
     
     // Update all the labels corresponding to the selected videos
@@ -285,25 +293,28 @@
     
     self.addButton.hidden = !self.addVideoButton.selected;
     
-    if ([SYNDeviceManager.sharedInstance isIPhone])
-    {
-        [self.videoPlaybackViewController.shuttleBarMaxMinButton addTarget: self
-                                                                    action: @selector(userTouchedMaxMinButton)
-                                                          forControlEvents: UIControlEventTouchUpInside];
-    }
+
 }
 
 
 - (void) viewWillDisappear: (BOOL) animated
 {
     // Let's make sure that we stop playing the current video
-    self.videoPlaybackViewController = nil;
     if ([SYNDeviceManager.sharedInstance isIPhone])
     {
-        [[NSNotificationCenter defaultCenter] removeObserver:self name:UIDeviceOrientationDidChangeNotification object:nil];
+        [[NSNotificationCenter defaultCenter] removeObserver: self
+                                                        name: UIDeviceOrientationDidChangeNotification
+                                                      object: nil];
+        
+        // Remember to remove the target, as we may be drilling down deeper to another vc (and then returning, which would mean multiple
+        // targets were added
+        [self.videoPlaybackViewController.shuttleBarMaxMinButton removeTarget: self
+                                                                       action: @selector(userTouchedMaxMinButton)
+                                                             forControlEvents: UIControlEventTouchUpInside];
     }
     
-    [[NSNotificationCenter defaultCenter] postNotificationName:kNoteShowNetworkMessages object:nil];
+    [[NSNotificationCenter defaultCenter] postNotificationName: kNoteShowNetworkMessages
+                                                        object: nil];
     
     [super viewWillDisappear: animated];
 }

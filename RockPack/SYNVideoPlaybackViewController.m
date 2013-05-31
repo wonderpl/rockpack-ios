@@ -323,8 +323,6 @@ static UIWebView* vimeoideoWebViewInstance;
     {
         [self pauseVideo];
     }
-
-    [self pauseVideo];
     
     [super viewDidDisappear: animated];
 }
