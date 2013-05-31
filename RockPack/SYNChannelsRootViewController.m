@@ -276,18 +276,17 @@
                                                       
                                                       [self displayChannelsForGenre:genre];
                                                       
-                                                      if (self.channels.count > 0)
+                                                      if (self.emptyGenreMessageView)
                                                       {
-                                                          if (self.emptyGenreMessageView)
-                                                          {
-                                                              [self.emptyGenreMessageView removeFromSuperview];
-                                                              self.emptyGenreMessageView = nil;
-                                                          }
+                                                          [self.emptyGenreMessageView removeFromSuperview];
+                                                          self.emptyGenreMessageView = nil;
                                                       }
-                                                      else
+                                                      
+                                                      if (self.channels.count == 0)
                                                       {
                                                           [self displayEmptyGenreMessage:@"NO CHANNELS FOUND"];
                                                       }
+                                                      
                                                       
                                                       
                                                       

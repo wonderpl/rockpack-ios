@@ -459,7 +459,8 @@
     
     // delete old objects //
     
-    for (id key in existingChannelsByIndex) {
+    for (id key in existingChannelsByIndex)
+    {
         Channel* deleteCandidate = (Channel*)[existingChannelsByIndex objectForKey:key];
         if(deleteCandidate && deleteCandidate.markedForDeletionValue)
             [deleteCandidate.managedObjectContext deleteObject:deleteCandidate];
