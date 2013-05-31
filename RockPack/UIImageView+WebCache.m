@@ -61,7 +61,7 @@ static char operationKey;
                 // If we were not returned directly from the cache, then fade up
                 if (cacheType == SDImageCacheTypeNone)
                 {
-                    [UIView transitionWithView: self.superview
+                    [UIView transitionWithView: sself.superview
                                       duration: 0.35f
                                        options: UIViewAnimationOptionTransitionCrossDissolve | UIViewAnimationOptionAllowUserInteraction
                                     animations: ^{

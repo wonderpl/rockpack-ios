@@ -38,5 +38,7 @@ typedef void (^SYNVideoIndexUpdater)(int);
 - (void) playVideoAtIndex: (int) index;
 - (void) loadNextVideo;
 - (void) resetShuttleBarFrame;
+- (void) playIfVideoActive;
+- (void) pauseIfVideoActive;
 
 @end

@@ -100,8 +100,8 @@
                       DebugLog (@"Refreshed");
                       // Now we have a new authentication token, we need to try the network operation again
                       // Set the callback logic for the network operation re-issued if the authentication token has expired and been renewed
-                      [retryNetworkOperation addJSONCompletionHandler: ^(id response)
-                       {
+                      [retryNetworkOperation
+                       addJSONCompletionHandler: ^(id response) {
                            // Check to see if our response is a NSDictionary and if it has an error hash
                            if ([response isKindOfClass: [NSDictionary class]] && ((NSDictionary *)response[@"error"] != nil))
                            {
@@ -129,8 +129,7 @@
                                completionBlock(response);
                            }
                        }
-                       errorHandler: ^(id response)
-                       {
+                       errorHandler: ^(id response) {
                            if ([response isKindOfClass: [NSError class]])
                            {
                                NSError *responseErrror = (NSError *) response;
@@ -150,26 +149,41 @@
                            }
                        }];
                       
+                      // We now try sending our network operation again
                       [self enqueueSignedOperation: retryNetworkOperation];
                   }
-                  errorHandler:  ^(id response)
-                  {
-                      DebugLog (@"Failed to Refresh");
-                      errorBlock(response);
-                  }];
+                                                 errorHandler:  ^(id response) {
+                                                     DebugLog (@"Failed to Refresh");
+                                                     
+                                                     if ([response isKindOfClass: [NSDictionary class]])
+                                                     {
+                                                         NSDictionary *responseDictionary = (NSDictionary *) response;
+                                                         
+                                                         NSString *errorString =  responseDictionary[@"error"];
+                                                         
+                                                         if ([errorString isEqualToString: @"invalid_grant"])
+                                                         {
+                                                             [[NSNotificationCenter defaultCenter] postNotificationName: kAccountSettingsLogout
+                                                                                                                 object: nil];
+                                                         }
+                                                         else
+                                                         {
+                                                             errorBlock(response);
+                                                         }
+                                                     }
+                                                     else
+                                                     {
+                                                         errorBlock(response);
+                                                     }
+                                                 }];
              }
-             
          }
          else
          {
-             // TODO: Remove test code
-             // Simulate failure, buy refreshing token and sending API call again
-             // OK, all seems to have gone well, return the object
-             
              completionBlock(response);
          }
      }
-     errorHandler: ^(id response)
+                                  errorHandler: ^(id response)
      {
          if ([response isKindOfClass: [NSError class]])
          {

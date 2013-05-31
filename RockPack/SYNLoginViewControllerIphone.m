@@ -603,11 +603,16 @@
 
 - (IBAction) termsTapped: (id) sender
 {
+    [[UIApplication sharedApplication] openURL:[NSURL URLWithString: kLoginTermsUrl]];
+
 }
 
 
 - (IBAction) privacyPolicyTapped: (id) sender
 {
+
+    [[UIApplication sharedApplication] openURL:[NSURL URLWithString: kLoginPrivacyUrl]];
+    
 }
 
 

@@ -78,16 +78,12 @@ static UIWebView* vimeoideoWebViewInstance;
         dispatch_once(&oncePredicate, ^{
             // Create our shared intance
             _sharedInstance = [[super allocWithZone: nil] init];
-            
-            DebugLog(@"............................................ Webview - Starting to create");
             // Create the static instances of our webviews
             youTubeVideoWebViewInstance = [SYNVideoPlaybackViewController createNewYouTubeWebView];
             
 #ifdef ENABLE_VIMEO_PLAYER
             vimeoideoWebViewInstance = [SYNVideoPlaybackViewController createNewVimeoWebView];
 #endif
-
-            DebugLog(@"00000000000000000000000000000000000000000000 Webview - finished creating");
         });
     }
     
@@ -298,24 +294,49 @@ static UIWebView* vimeoideoWebViewInstance;
 {
     [super viewWillAppear: animated];
     
-    // Make sure we are displaying the spinner and not the video at this stage
-    self.currentVideoWebView.alpha = 0.0f;
-    self.videoPlaceholderView.alpha = 1.0f;
+    // Check to see if were playing when we left this page
+    [self playIfVideoActive];
+}
+
+
+- (void) viewDidDisappear: (BOOL) animated
+{
+    // Just pause the video, as we might come back to this view again (if we have pushed any views on top)
+    [self pauseIfVideoActive];
+    
+    [self stopShuttleBarUpdateTimer];
+
+    [super viewDidDisappear: animated];
+}
+
+
+- (void) playIfVideoActive
+{
+    if (self.isPaused == TRUE)
+    {
+        [self playVideo];
+    }
+    else
+    {
+        // Make sure we are displaying the spinner and not the video at this stage
+        self.currentVideoWebView.alpha = 0.0f;
+        self.videoPlaceholderView.alpha = 1.0f;
+    }
     
     // Start animation
     [self animateVideoPlaceholder: YES];
 }
 
 
-- (void) viewDidDisappear: (BOOL) animated
+- (void) pauseIfVideoActive
 {
+    if (self.isPlayingOrBuffering == TRUE)
+    {
+        [self pauseVideo];
+    }
+    
     // Start animation
     [self animateVideoPlaceholder: NO];
-    
-    [self stopShuttleBarUpdateTimer];
-    [self stopVideo];
-    
-    [super viewDidDisappear: animated];
 }
 
 
@@ -848,6 +869,20 @@ static UIWebView* vimeoideoWebViewInstance;
     int playingValue = [[self.currentVideoWebView stringByEvaluatingJavaScriptFromString: @"player.getPlayerState();"] intValue];
     
     return (playingValue == 1) ? TRUE : FALSE;
+}
+
+- (BOOL) isPlayingOrBuffering
+{
+    int playingValue = [[self.currentVideoWebView stringByEvaluatingJavaScriptFromString: @"player.getPlayerState();"] intValue];
+    
+    return ((playingValue == 2) || (playingValue == 3)) ? TRUE : FALSE;
+}
+
+- (BOOL) isPaused
+{
+    int playingValue = [[self.currentVideoWebView stringByEvaluatingJavaScriptFromString: @"player.getPlayerState();"] intValue];
+    
+    return (playingValue == 2) ? TRUE : FALSE;
 }
 
 
