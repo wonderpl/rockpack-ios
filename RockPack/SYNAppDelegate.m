@@ -603,9 +603,16 @@ didFinishLaunchingWithOptions: (NSDictionary *) launchOptions
         [self.mainManagedObjectContext deleteObject: objectToDelete];
     }
     
+    fetchRequest.predicate = nil;
+    
+    
+    
     // == Clear Categories (Genres) == //
+    
     [fetchRequest setEntity:[NSEntityDescription entityForName: @"Genre"
                                         inManagedObjectContext: self.mainManagedObjectContext]];
+    
+    fetchRequest.includesSubentities = YES; // to include SubGenre objecst
     
     itemsToDelete = [self.mainManagedObjectContext executeFetchRequest:fetchRequest error:&error];
     
@@ -615,7 +622,7 @@ didFinishLaunchingWithOptions: (NSDictionary *) launchOptions
     }
     
     // == Save == //
-    [self saveContext: YES];
+    [self saveContext:YES];
     
     if(!userBound)
     {

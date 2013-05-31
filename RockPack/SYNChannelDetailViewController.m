@@ -349,6 +349,11 @@
                                                  name:kVideoQueueClear
                                                object:nil];
     
+    [[NSNotificationCenter defaultCenter] addObserver:self
+                                             selector:@selector(updateFailed:)
+                                                 name:kUpdateFailed
+                                               object:nil];
+    
     if(self.channel.channelOwner.uniqueId == appDelegate.currentUser.uniqueId)
     {
         [[NSNotificationCenter defaultCenter] addObserver: self
@@ -410,6 +415,10 @@
                                                     name: kUserDataChanged
                                                   object: nil];
     
+    [[NSNotificationCenter defaultCenter] removeObserver: self
+                                                    name: kUpdateFailed
+                                                  object: nil];
+    
     [[NSNotificationCenter defaultCenter] removeObserver:self
                                                     name:kVideoQueueClear
                                                   object:nil];
@@ -430,6 +439,23 @@
 {
     [self.videoThumbnailCollectionView reloadData];
 }
+
+-(void) updateFailed: (NSNotification*)notification
+{
+    self.subscribeButton.selected = self.channel.subscribedByUserValue;
+    self.subscribeButton.enabled = YES;
+    
+    if (self.subscribingIndicator)
+    {
+        [self.subscribingIndicator removeFromSuperview];
+        self.subscribingIndicator = nil;
+    }
+    
+    self.channelDetailsLabel.text = [NSString stringWithFormat:
+                                     @"SORRY... %@SUBSCRIBE FAILED. PLEASE TRY AGAIN", (self.channel.subscribedByUserValue ? @"UN" : @"")];
+}
+
+
 - (void) updateCategoryButtonText: (NSString *) buttonText
 {
     NSMutableAttributedString* attributedCategoryString = [[NSMutableAttributedString alloc] initWithString: buttonText
@@ -598,7 +624,6 @@
 - (void) displayChannelDetails
 {
     self.channelOwnerLabel.text = self.channel.channelOwner.displayName;
-    
     
     
     NSString *detailsString = [NSString stringWithFormat: @"%lld %@", self.channel.subscribersCountValue, NSLocalizedString(@"SUBSCRIBERS", nil)];
@@ -2420,10 +2445,6 @@
     
     if (self.channel)
     {
-        
-        
-        
-        
         
         [[NSNotificationCenter defaultCenter] addObserver: self
                                                  selector: @selector(mainContextDataChanged:)

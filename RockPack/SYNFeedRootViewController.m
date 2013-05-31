@@ -297,6 +297,8 @@
 
 - (void) clearedLocationBoundData
 {
+    [self.videoThumbnailCollectionView reloadData];
+    
     [self loadAndUpdateFeedData];
     
 }

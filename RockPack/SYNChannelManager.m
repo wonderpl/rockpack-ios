@@ -150,15 +150,19 @@
                                                 [channel.managedObjectContext save:&error];
                                                 if(error)
                                                 {
-                                                    
+                                                    [[NSNotificationCenter defaultCenter] postNotificationName:kUpdateFailed object:self];
+                                                }
+                                                else
+                                                {
+                                                    [appDelegate saveContext:YES];
                                                 }
                                                 
-                                                [appDelegate saveContext:YES];
+                                                
                                                 
                                                 
                                             } errorHandler: ^(NSDictionary* errorDictionary) {
                                                 
-                                                
+                                                [[NSNotificationCenter defaultCenter] postNotificationName:kUpdateFailed object:self];
                                                 
                                                 
                                             }];
@@ -197,15 +201,18 @@
                                                   [channel.managedObjectContext save:&error];
                                                   if(error)
                                                   {
-                                                      
+                                                      [[NSNotificationCenter defaultCenter] postNotificationName:kUpdateFailed object:self];
+                                                  }
+                                                  else
+                                                  {
+                                                      [appDelegate saveContext:YES];
                                                   }
                                                   
-                                                  [appDelegate saveContext:YES];
                                                                        
                                                   
                                                 } errorHandler: ^(NSDictionary* errorDictionary) {
                                                     
-                                                    
+                                                    [[NSNotificationCenter defaultCenter] postNotificationName:kUpdateFailed object:self];
                                                     
                                                 }];
     
