@@ -223,7 +223,7 @@
          self.avatarButton.enabled = YES;
          
          UIAlertView* alert = [[UIAlertView alloc] initWithTitle: NSLocalizedString(@"Oops",nil)
-                                                         message: NSLocalizedString(@"We were not able to upload the photo at the moment. Try again later.",nil)
+                                                         message: NSLocalizedString(@"We're having trouble uploading your photo. Please try again later.",nil)
                                                         delegate: nil
                                                cancelButtonTitle: nil
                                                otherButtonTitles: NSLocalizedString(@"OK",nil), nil];

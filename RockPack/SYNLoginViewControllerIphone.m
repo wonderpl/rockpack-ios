@@ -471,8 +471,8 @@
                 if(self.avatarImage)
                 {
                     [self uploadAvatarImage:self.avatarImage completionHandler:nil errorHandler:^(id dictionary) {
-                        [[[UIAlertView alloc] initWithTitle: NSLocalizedString(@"Upload error", nil)
-                                                    message: NSLocalizedString(@"Avatar upload failed. Please try again.", nil)
+                        [[[UIAlertView alloc] initWithTitle: NSLocalizedString(@"Oops", nil)
+                                                    message: NSLocalizedString(@"We're having trouble uploading your photo. Please try again.", nil)
                                                    delegate: nil
                                           cancelButtonTitle: NSLocalizedString(@"OK", nil)
                                           otherButtonTitles: nil] show];
