@@ -377,17 +377,7 @@
     
 }
 
--(BOOL)isSubscribedByCurrentUser:(Channel*)channel
-{
-    BOOL* isSubscribed = NULL;
-    [appDelegate.currentUser.subscriptions enumerateObjectsUsingBlock:^(id obj, NSUInteger idx, BOOL *stop) {
-        if( [((Channel*)obj).uniqueId isEqualToString:channel.uniqueId] ) {
-            *isSubscribed = YES;
-            *stop = YES;
-        }
-    }];
-    return isSubscribed;
-}
+
 
 
 @end

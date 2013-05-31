@@ -23,6 +23,7 @@
 @property (nonatomic, readonly) SYNGenreTabView* categoriesTabView;
 @property (nonatomic, strong) NSArray* genresFetched;
 @property (nonatomic, weak) SYNAppDelegate* appDelegate;
+@property (nonatomic) BOOL isLoadingCategories;
 @end
 
 
@@ -95,29 +96,34 @@
 {
     [super viewDidLoad];
     
-    [self loadCategories];
-    
-    if(self.genresFetched.count > 0) // if there are genres in the DB call for a refresh, else it has already done sos...
-    {
-        [self updateCategoriesFromWS];
-    }
+    [self displayLoadedGenres];
     
         
 }
 
--(void)updateCategoriesFromWS
+-(void)viewDidAppear:(BOOL)animated
+{
+    [self updateCategories];
+}
+
+-(void)updateCategories
 {
     
+    self.isLoadingCategories = YES;
     
     [appDelegate.networkEngine updateCategoriesOnCompletion: ^(NSDictionary* dictionary){
         
-        BOOL registryResultOk = [appDelegate.mainRegistry registerCategoriesFromDictionary: dictionary];
-        if (!registryResultOk) {
-            DebugLog(@"*** Cannot Register Genre Objects! ***");
-            return;
+        [appDelegate.mainRegistry registerCategoriesFromDictionary: dictionary];
+        
+        self.isLoadingCategories = NO;
+        
+        [self displayLoadedGenres];
+        
+        if(self.genresFetched.count == 0)
+        {
+            // keep calling recursively is 
+            [self updateCategories];
         }
-            
-        [self loadCategories];
         
         
     } onError:^(NSError* error) {
@@ -128,7 +134,7 @@
 }
 
 
-- (void) loadCategories
+- (void) displayLoadedGenres
 {
     NSError* error;
     
@@ -158,10 +164,9 @@
     {
         [self.tabView createCategoriesTab:self.genresFetched];
     }
-    else
-    {
-        [self updateCategoriesFromWS];
-    }
+
+
+    
 }
 
 

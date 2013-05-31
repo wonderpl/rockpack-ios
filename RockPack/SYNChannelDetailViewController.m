@@ -229,7 +229,7 @@
         tabFrame.origin.y = kChannelCreationCategoryTabOffsetY;
         tabFrame.size.width = self.view.frame.size.width;
         self.categoriesTabViewController.view.frame = tabFrame;
-        [self.view addSubview: self.categoriesTabViewController.view];
+        
         self.categoriesTabViewController.view.autoresizingMask = UIViewAutoresizingFlexibleWidth;
         self.categoriesTabViewController.view.alpha = 0.0f;
         [self addChildViewController: self.categoriesTabViewController];
@@ -532,14 +532,7 @@
         if ([obj isKindOfClass:[Channel class]] && [((Channel*)obj).uniqueId isEqualToString:self.channel.uniqueId])
         {
             
-            if(self.channel.videoInstances.count == 0)
-            {
-                [self showNoVideosMessage:@"THERE ARE NO VIDEOS IN THIS CHANNEL YET"];
-            }
-            else
-            {
-                [self showNoVideosMessage:nil];
-            }
+            
             
             
             self.subscribeButton.selected = self.channel.subscribedByUserValue;
@@ -552,6 +545,18 @@
             }
             
             [self reloadCollectionViews];
+            
+            
+            NSLog(@"Count %i", self.channel.videoInstances.count);
+            
+            if(self.channel.videoInstances.count == 0)
+            {
+                [self showNoVideosMessage:@"THERE ARE NO VIDEOS IN THIS CHANNEL YET"];
+            }
+            else
+            {
+                [self showNoVideosMessage:nil];
+            }
             
             return;
             
@@ -1290,6 +1295,8 @@
 {
     if ([SYNDeviceManager.sharedInstance isIPad])
     {
+        [self.view addSubview: self.categoriesTabViewController.view];
+        
         if (self.categoriesTabViewController.view.alpha == 0.0f)
         {
             [UIView animateWithDuration: kChannelEditModeAnimationDuration
@@ -1422,7 +1429,9 @@
                              // Fade out the category tab controller
                              self.categoriesTabViewController.view.alpha = 0.0f;
                          }
-                         completion: nil];
+                         completion:^(BOOL finished) {
+                             [self.categoriesTabViewController.view removeFromSuperview];
+                         }];
     }
 }
 
@@ -2444,18 +2453,24 @@
     if (self.channel)
     {
         
+        // check for subscribed
+        
+        
+        self.channel.subscribedByUserValue = NO;
+        for (Channel* subscription in appDelegate.currentUser.subscriptions)
+            if([subscription.uniqueId isEqualToString:self.channel.uniqueId])
+                self.channel.subscribedByUserValue = YES;
+        
+        
         [[NSNotificationCenter defaultCenter] addObserver: self
                                                  selector: @selector(mainContextDataChanged:)
                                                      name: NSManagedObjectContextDidSaveNotification
                                                    object: self.channel.managedObjectContext];
         
         
-        // check for subscribed
-        self.channel.subscribedByUserValue = NO;
-        for (Channel* subscription in appDelegate.currentUser.subscriptions)
-            if([subscription.uniqueId isEqualToString:self.channel.uniqueId])
-                self.channel.subscribedByUserValue = YES;
-            
+        
+        
+        
         
         
         if(self.mode == kChannelDetailsModeDisplay)
