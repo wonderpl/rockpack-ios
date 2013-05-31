@@ -32,6 +32,9 @@
 @interface SYNProfileRootViewController () <SYNDeletionWobbleLayoutDelegate,
                                             UIGestureRecognizerDelegate,
                                             SYNImagePickerControllerDelegate>
+{
+    BOOL _isIPhone;
+}
 
 // Enable to allow the user to 'pinch out' on thumbnails
 #ifdef ALLOWS_PINCH_GESTURES
@@ -62,6 +65,7 @@
 @property (nonatomic, weak) UIButton* channelsTabButton;
 @property (nonatomic, weak) UIButton* subscriptionsTabButton;
 
+
 @end
 
 
@@ -71,7 +75,7 @@
 
 - (void) loadView
 {
-    BOOL isIPhone =  [SYNDeviceManager.sharedInstance isIPhone];
+    _isIPhone =  [SYNDeviceManager.sharedInstance isIPhone];
     
     // User Profile
     if(!self.hideUserProfile)
@@ -93,7 +97,7 @@
                                                                                 scrollDirection: UICollectionViewScrollDirectionVertical
                                                                                    sectionInset: UIEdgeInsetsMake(kInterRowMargin - 8.0, 12.0, kInterRowMargin, 11.0)];
 
-    if (isIPhone)
+    if (_isIPhone)
     {
         self.channelsPortraitLayout = [SYNDeletionWobbleLayout layoutWithItemSize: CGSizeMake(158.0f, 158.0f)
                                                           minimumInterItemSpacing: 0.0f
@@ -126,7 +130,7 @@
     
     self.headerChannelsView = [SYNYouHeaderView headerViewForWidth: correctWidth];
     
-    if (isIPhone)
+    if (_isIPhone)
     {
         CGRect newFrame = self.headerChannelsView.frame;
         newFrame.origin.y = 59.0f;
@@ -165,7 +169,7 @@
     // Subscriptions Collection View
     self.subscriptionsViewController = [[SYNSubscriptionsViewController alloc] initWithViewId: kProfileViewId];
     CGRect subColViewFrame = self.subscriptionsViewController.view.frame;
-    subColViewFrame.origin.x = isIPhone ? 0.0f : collectionViewFrame.origin.x + collectionViewFrame.size.width + 10.0;
+    subColViewFrame.origin.x = _isIPhone ? 0.0f : collectionViewFrame.origin.x + collectionViewFrame.size.width + 10.0;
     subColViewFrame.origin.y = collectionViewFrame.origin.y;
     subColViewFrame.size.height = collectionViewFrame.size.height;
     subColViewFrame.size.width = [SYNDeviceManager.sharedInstance currentScreenWidth] - subColViewFrame.origin.x - 10.0;
@@ -176,7 +180,7 @@
     
     self.headerSubscriptionsView = [SYNYouHeaderView headerViewForWidth: 384];
     
-    if (isIPhone)
+    if (_isIPhone)
     {
         CGRect newFrame = self.headerSubscriptionsView.frame;
         newFrame.origin.y = 59.0f;
@@ -229,7 +233,7 @@
     [self.view addSubview: self.userProfileController.view];
 
     
-    if (isIPhone)
+    if (_isIPhone)
     {
         self.userProfileController.view.center = CGPointMake(160.0f, 28.0f);
     }
@@ -245,7 +249,7 @@
     [self.view addSubview: self.channelThumbnailCollectionView];
     [self.view addSubview: self.subscriptionsViewController.view];
     
-    if (isIPhone)
+    if (_isIPhone)
     {
         UIImage* tabButtonImage = [UIImage imageNamed: @"ButtonProfileChannels"];
         
@@ -350,7 +354,9 @@
     
     [self updateLayoutForOrientation: [SYNDeviceManager.sharedInstance orientation]];
     
-    [self.channelThumbnailCollectionView reloadData];  
+    [self.channelThumbnailCollectionView reloadData];
+    
+    [self resizeScrollViews];
 }
 
 
@@ -615,6 +621,8 @@
     
     [self.subscriptionsViewController reloadCollectionViews];
     [self.channelThumbnailCollectionView reloadData];
+    
+    [self resizeScrollViews];
 }
 
 #pragma mark - Updating
@@ -623,7 +631,7 @@
 
 -(NSString*)getHeaderTitleForChannels
 {
-    if([SYNDeviceManager.sharedInstance isIPhone])
+    if(_isIPhone)
     {
         if(self.user == appDelegate.currentUser)
             return NSLocalizedString(@"MY CHANNELS",nil);
@@ -720,7 +728,7 @@
 
 - (void) scrollViewDidScroll: (UIScrollView *) scrollView
 {
-    if ([SYNDeviceManager.sharedInstance isIPad])
+    if (!_isIPhone)
     {
         CGPoint offset;
         if ([scrollView isEqual: self.channelThumbnailCollectionView])
@@ -858,23 +866,23 @@
 
 - (void) resizeScrollViews
 {
+    if(_isIPhone)
+    {
+        return;
+    }
+    self.channelThumbnailCollectionView.contentInset = UIEdgeInsetsZero;
+    self.subscriptionsViewController.collectionView.contentInset = UIEdgeInsetsZero;
     CGSize channelViewSize = self.channelThumbnailCollectionView.contentSize;
     CGSize subscriptionsViewSize = self.subscriptionsViewController.collectionView.contentSize;
     
-    if (channelViewSize.height == subscriptionsViewSize.height)
-        return;
-    
-    CGRect paddingRect = CGRectZero;
-    paddingRect.origin.x = 0.0;
-    paddingRect.origin.y = channelViewSize.height;
-    paddingRect.size.width = channelViewSize.width;
-    paddingRect.size.height = 600.0;
-    UIView* paddingView = [[UIView alloc] initWithFrame: paddingRect];
-    paddingView.backgroundColor = [UIColor blueColor];
-    
-    [self.channelThumbnailCollectionView addSubview: paddingView];
-    channelViewSize.height = 2000.0;
-    [self.channelThumbnailCollectionView setContentSize: CGSizeMake(channelViewSize.width, 1000)];
+    if (channelViewSize.height < subscriptionsViewSize.height)
+    {
+        self.channelThumbnailCollectionView.contentInset = UIEdgeInsetsMake(0.0f, 0.0f, subscriptionsViewSize.height - channelViewSize.height, 0.0f);
+    }
+    else if(channelViewSize.height > subscriptionsViewSize.height)
+    {
+        self.subscriptionsViewController.collectionView.contentInset = UIEdgeInsetsMake(0.0f, 0.0f, channelViewSize.height - subscriptionsViewSize.height, 0.0f);
+    }
 }
 
 
@@ -962,6 +970,7 @@
                                                  _deleteCellModeOn = NO;
                                                  
                                                  [_channelThumbnailCollectionView reloadData];
+                                                 [self resizeScrollViews];
                                                  [_channelThumbnailCollectionView setNeedsLayout];
                                              });  
                                          }

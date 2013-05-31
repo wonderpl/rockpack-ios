@@ -121,6 +121,9 @@
     [appDelegate.oAuthNetworkEngine channelSubscribeForUserId: appDelegate.currentOAuth2Credentials.userId
                                                    channelURL: channel.resourceURL
                                             completionHandler: ^(NSDictionary *responseDictionary) {
+                                                
+                                                // This notifies the ChannelDetails through KVO
+
                                                 channel.hasChangedSubscribeValue = YES;
                                                 channel.subscribedByUserValue = YES;
                                                 channel.subscribersCountValue += 1;
@@ -128,10 +131,12 @@
                                                 // the channel that got updated was a copy inside the ChannelDetails, so we must copy it to user
                                                 IgnoringObjects copyFlags = kIgnoreVideoInstanceObjects;
                                                 
-                                                Channel* subscription = [Channel instanceFromChannel: channel
-                                                                                           andViewId: kProfileViewId
-                                                                           usingManagedObjectContext: appDelegate.currentUser.managedObjectContext
-                                                                                 ignoringObjectTypes: copyFlags];
+                                                Channel* subscription = [Channel instanceFromChannel:channel
+                                                                                           andViewId:kProfileViewId
+                                                                           usingManagedObjectContext:appDelegate.currentUser.managedObjectContext
+                                                                                 ignoringObjectTypes:copyFlags];
+                                                
+                                            
 
                                                 subscription.hasChangedSubscribeValue = YES;
 
@@ -139,21 +144,23 @@
 
                                                 // might be in search context
                                                 NSError* error;
-                                                [channel.managedObjectContext save: &error];
-                                                
-                                                if (!error)
+                                                [channel.managedObjectContext save:&error];
+                                                if(error)
                                                 {
-                                                    // FIXME: We need to put some error handling in here
+                                                    [[NSNotificationCenter defaultCenter] postNotificationName:kUpdateFailed object:self];
+
+                                                }
+                                                else
+                                                {
+                                                    [appDelegate saveContext:YES];
                                                 }
                                                 
-                                                [appDelegate saveContext:YES];
+                                                
                                                 
                                                 
                                             } errorHandler: ^(NSDictionary* errorDictionary) {
                                                 
-                                                // so that the observer will pick up the change and stop the activity indicator
-                                                channel.subscribedByUserValue = channel.subscribedByUserValue;
-                                                channel.hasChangedSubscribeValue = NO;
+                                                [[NSNotificationCenter defaultCenter] postNotificationName:kUpdateFailed object:self];
                                                 
                                                 
                                             }];
@@ -171,7 +178,7 @@
                                               completionHandler: ^(NSDictionary *responseDictionary) {
                                                   
                                                   
-                                                  
+                                                  // This notifies the ChannelDetails through KVO
                                                   channel.hasChangedSubscribeValue = YES;
                                                   channel.subscribedByUserValue = NO;
                                                   channel.subscribersCountValue -= 1;
@@ -188,16 +195,22 @@
                                                       }
                                                   }
                                                   
+                                                  NSError* error;
+                                                  [channel.managedObjectContext save:&error];
+                                                  if(error)
+                                                  {
+                                                      [[NSNotificationCenter defaultCenter] postNotificationName:kUpdateFailed object:self];
+                                                  }
+                                                  else
+                                                  {
+                                                      [appDelegate saveContext:YES];
+                                                  }
                                                   
-                                                  
-                                                  [appDelegate saveContext:YES];
                                                                        
                                                   
                                                 } errorHandler: ^(NSDictionary* errorDictionary) {
                                                     
-                                                    // so that the observer will pick up the change and stop the activity indicator
-                                                    channel.subscribedByUserValue = channel.subscribedByUserValue;
-                                                    channel.hasChangedSubscribeValue = NO;
+                                                    [[NSNotificationCenter defaultCenter] postNotificationName:kUpdateFailed object:self];
                                                     
                                                 }];
     
@@ -364,17 +377,7 @@
     
 }
 
--(BOOL)isSubscribedByCurrentUser:(Channel*)channel
-{
-    BOOL* isSubscribed = NULL;
-    [appDelegate.currentUser.subscriptions enumerateObjectsUsingBlock:^(id obj, NSUInteger idx, BOOL *stop) {
-        if( [((Channel*)obj).uniqueId isEqualToString:channel.uniqueId] ) {
-            *isSubscribed = YES;
-            *stop = YES;
-        }
-    }];
-    return isSubscribed;
-}
+
 
 
 @end

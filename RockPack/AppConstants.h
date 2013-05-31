@@ -126,7 +126,7 @@
 
 #define kRefreshComplete           @"kRefreshComplete"
 
-
+#define kUpdateFailed              @"kUpdateFailed"
 
 
 #define kShowUserChannels           @"kShowUserChannels"

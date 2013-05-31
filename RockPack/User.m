@@ -197,6 +197,7 @@
 
 -(void)addSubscriptionsObject:(Channel *)value_
 {
+
     [self.subscriptionsSet addObject:value_];
     value_.subscribedByUserValue = YES;
     value_.subscribersCountValue++;

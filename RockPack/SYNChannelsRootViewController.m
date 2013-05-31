@@ -190,11 +190,7 @@
 }
 
 
-- (void) viewWillAppear: (BOOL) animated
-{
-    [super viewWillAppear: animated];
-    
-}
+
 
 -(void)viewDidAppear:(BOOL)animated
 {
@@ -209,7 +205,6 @@
 {
     [self updateAnalytics];
     
-    dataRequestRange = NSMakeRange(1, STANDARD_REQUEST_LENGTH);
     
     [self loadChannelsForGenre:currentGenre];
 }
@@ -246,7 +241,7 @@
     
     
     [appDelegate.networkEngine updateChannelsScreenForCategory: (genre ? genre.uniqueId : @"all")
-                                                      forRange: dataRequestRange
+                                                      forRange: self.dataRequestRange
                                                  ignoringCache: NO
                                                   onCompletion: ^(NSDictionary* response) {
                                                       
@@ -266,7 +261,7 @@
                                                       if (![totalNumber isKindOfClass: [NSNumber class]])
                                                           return;
                                                       
-                                                      dataItemsAvailable = [totalNumber integerValue];
+                                                      self.dataItemsAvailable = [totalNumber integerValue];
                                                       
                                                       BOOL registryResultOk = [appDelegate.mainRegistry registerChannelsFromDictionary: response
                                                                                                                               forGenre: genre
@@ -280,8 +275,23 @@
                                                       }
                                                       
                                                       [self displayChannelsForGenre:genre];
-                                                  }
-                                                       onError: ^(NSDictionary* errorInfo) {
+                                                      
+                                                      if (self.channels.count > 0)
+                                                      {
+                                                          if (self.emptyGenreMessageView)
+                                                          {
+                                                              [self.emptyGenreMessageView removeFromSuperview];
+                                                              self.emptyGenreMessageView = nil;
+                                                          }
+                                                      }
+                                                      else
+                                                      {
+                                                          [self displayEmptyGenreMessage:@"NO CHANNELS FOUND"];
+                                                      }
+                                                      
+                                                      
+                                                      
+                                                  } onError: ^(NSDictionary* errorInfo) {
                                                       DebugLog(@"Could not load channels: %@", errorInfo);
                                                       self.footerView.showsLoading = NO;
                                                   }];
@@ -348,18 +358,7 @@
     
     self.channels = [NSMutableArray arrayWithArray:resultsArray];
     
-    if (self.channels.count > 0)
-    {
-        if (self.emptyGenreMessageView)
-        {
-            [self.emptyGenreMessageView removeFromSuperview];
-            self.emptyGenreMessageView = nil;
-        }
-    }
-    else
-    {
-        [self displayEmptyGenreMessage];
-    }
+    
 
     // We shouldn't wait until the animation is over, as this will result in crashes if the user is scrolling
     
@@ -367,13 +366,13 @@
 }
 
 
-- (void) displayEmptyGenreMessage
+- (void) displayEmptyGenreMessage:(NSString*)message
 {
     
     if (self.emptyGenreMessageView) // add no more than one
         return;
     
-    self.emptyGenreMessageView = [SYNFeedMessagesView withMessage:@"NO CHANNELS FOUND"];
+    self.emptyGenreMessageView = [SYNFeedMessagesView withMessage:message];
     
     self.emptyGenreMessageView.center = CGPointMake(self.view.center.x, 280.0);
     self.emptyGenreMessageView.frame = CGRectIntegral(self.emptyGenreMessageView.frame);
@@ -724,7 +723,7 @@
 
     currentCategoryId = genre.uniqueId;
 
-    dataRequestRange = NSMakeRange(1, STANDARD_REQUEST_LENGTH);
+    dataRequestRange = NSMakeRange(0, STANDARD_REQUEST_LENGTH);
 
     if (genre == nil)
     {
@@ -750,12 +749,27 @@
     
     [self displayChannelsForGenre:genre];
     
+    if (self.channels.count > 0)
+    {
+        if (self.emptyGenreMessageView)
+        {
+            [self.emptyGenreMessageView removeFromSuperview];
+            self.emptyGenreMessageView = nil;
+        }
+    }
+    else
+    {
+        [self displayEmptyGenreMessage:@"LOADING CHANNELS"];
+    }
+    
     [self loadChannelsForGenre: genre];
 }
 
 - (void) clearedLocationBoundData
 {
-    dataRequestRange = NSMakeRange(1, STANDARD_REQUEST_LENGTH);
+    [self displayChannelsForGenre:self.currentGenre];
+    
+    self.dataRequestRange = NSMakeRange(0, STANDARD_REQUEST_LENGTH);
     
     [self loadChannelsForGenre: nil];
 }

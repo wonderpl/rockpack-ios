@@ -247,6 +247,8 @@
     
     [self.subscriptionsSet removeAllObjects];
     
+    
+    
     for (NSDictionary* subscriptionChannel in itemsArray)
     {
         
@@ -287,6 +289,7 @@
 }
 
 
+#pragma mark - Accessors
 
 -(void)addSubscriptionsObject:(Channel *)value_
 {
@@ -328,6 +331,7 @@
     
     return ownerDescription;
 }
+
 
 
 @end
