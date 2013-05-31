@@ -2479,10 +2479,6 @@
         
         
         
-        
-        
-        
-        
         if(self.mode == kChannelDetailsModeDisplay)
         {
             

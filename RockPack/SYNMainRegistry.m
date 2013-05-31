@@ -179,11 +179,9 @@
     
     if(!needsDataUpdate)
         return YES;
-    
    
     [self removeUnusedManagedObjects: existingCategories
               inManagedObjectContext: appDelegate.mainManagedObjectContext];
-    
     
     
     [appDelegate saveContext: TRUE];
