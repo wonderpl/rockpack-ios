@@ -2366,7 +2366,7 @@
 
 -(void)setChannel:(Channel *)channel
 {
-
+    
     self.originalChannel = channel;
     
     NSError *error = nil;
@@ -2428,9 +2428,7 @@
                       usingManagedObjectContext:channel.managedObjectContext
                             ignoringObjectTypes:kIgnoreNothing];
         
-        
-        if(channel.channelOwner == appDelegate.currentUser)
-            _channel.channelOwner = appDelegate.currentUser;
+    
         
         if(_channel)
         {

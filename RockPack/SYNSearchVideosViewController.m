@@ -168,88 +168,93 @@
         [self.itemToUpdate setNumberOfItems: [controller.fetchedObjects count]
                                    animated: YES];
     
-    [self reloadCollectionViews];
+    [self.videoThumbnailCollectionView reloadData];
 }
 
 
 #pragma mark - Collection View Delegate
 
+- (NSInteger) numberOfSectionsInCollectionView: (UICollectionView *) collectionView
+{
+    return 1;
+}
+
+- (NSInteger) collectionView: (UICollectionView *) collectionView numberOfItemsInSection: (NSInteger) section
+{
+    return self.fetchedResultsController.fetchedObjects.count;
+    
+}
+
+
+
 - (UICollectionViewCell *) collectionView: (UICollectionView *) cv
                    cellForItemAtIndexPath: (NSIndexPath *) indexPath
 {
-    UICollectionViewCell *cell = nil;
     
-
-    if (cv == self.videoThumbnailCollectionView)
+    
+    
+    VideoInstance *videoInstance = [self.fetchedResultsController objectAtIndexPath: indexPath];
+    
+    SYNVideoThumbnailWideCell *videoThumbnailCell = [cv dequeueReusableCellWithReuseIdentifier: @"SYNVideoThumbnailWideCell"
+                                                                                  forIndexPath: indexPath];
+    
+    videoThumbnailCell.displayMode = kVideoThumbnailDisplayModeYoutube;
+    
+    [videoThumbnailCell.videoImageView setImageWithURL: [NSURL URLWithString: videoInstance.video.thumbnailURL]
+                                      placeholderImage: [UIImage imageNamed: @"PlaceholderVideoWide.png"]];
+    
+    videoThumbnailCell.videoTitle.text = videoInstance.title;
+    videoThumbnailCell.videoInstance = videoInstance;
+    
+    Video* video = videoInstance.video;
+    
+    NSNumberFormatter *numberFormatter = [[NSNumberFormatter alloc] init];
+    [numberFormatter setNumberStyle:NSNumberFormatterDecimalStyle];
+    NSString* viewsNumberString = [numberFormatter stringFromNumber:video.viewCount];
+    
+    videoThumbnailCell.numberOfViewLabel.text = [[NSString stringWithFormat:@"%@ views", viewsNumberString] uppercaseString];
+    
+    
+    NSDateComponents* differenceDateComponents = [self.currentCalendar components:(NSYearCalendarUnit| NSMonthCalendarUnit | NSDayCalendarUnit) fromDate:video.dateUploaded toDate:[NSDate date] options:0];
+    
+    NSMutableString* format = [[NSMutableString alloc] init];
+    
+    // FIXME: Needs more intelligent localisation
+    if (differenceDateComponents.year > 0)
+        [format appendFormat:@"%i Year%@ Ago", differenceDateComponents.year, (differenceDateComponents.year > 1 ? @"s" : @"")];
+    else if (differenceDateComponents.month > 0)
+        [format appendFormat:@"%i Month%@ Ago", differenceDateComponents.month, (differenceDateComponents.month > 1 ? @"s" : @"")];
+    else if (differenceDateComponents.day > 1)
+        [format appendFormat:@"%i %@", differenceDateComponents.day, NSLocalizedString(@"Days Ago", nil)];
+    else if (differenceDateComponents.day > 0)
+        [format appendString: NSLocalizedString(@"Yesterday", nil)];
+    else
+        [format appendString: NSLocalizedString(@"Today", nil)];
+    
+    if (isIphone)
     {
-        // No, but it was our collection view
-        VideoInstance *videoInstance = [self.fetchedResultsController objectAtIndexPath: indexPath];
-        
-        SYNVideoThumbnailWideCell *videoThumbnailCell = [cv dequeueReusableCellWithReuseIdentifier: @"SYNVideoThumbnailWideCell"
-                                                                                      forIndexPath: indexPath];
-        
-        
-        videoThumbnailCell.displayMode = kVideoThumbnailDisplayModeYoutube;
-        
-        [videoThumbnailCell.videoImageView setImageWithURL: [NSURL URLWithString: videoInstance.video.thumbnailURL]
-                                          placeholderImage: [UIImage imageNamed: @"PlaceholderVideoWide.png"]];
-
-        videoThumbnailCell.videoTitle.text = videoInstance.title;
-        videoThumbnailCell.videoInstance = videoInstance;
-        
-        Video* video = videoInstance.video;
-        
-        NSNumberFormatter *numberFormatter = [[NSNumberFormatter alloc] init];
-        [numberFormatter setNumberStyle:NSNumberFormatterDecimalStyle];
-        NSString* viewsNumberString = [numberFormatter stringFromNumber:video.viewCount];
-        
-        videoThumbnailCell.numberOfViewLabel.text = [[NSString stringWithFormat:@"%@ views", viewsNumberString] uppercaseString];
-        
-        
-        NSDateComponents* differenceDateComponents = [self.currentCalendar components:(NSYearCalendarUnit| NSMonthCalendarUnit | NSDayCalendarUnit) fromDate:video.dateUploaded toDate:[NSDate date] options:0];
-        
-        NSMutableString* format = [[NSMutableString alloc] init];
-        
-        // FIXME: Needs more intelligent localisation
-        if (differenceDateComponents.year > 0)
-            [format appendFormat:@"%i Year%@ Ago", differenceDateComponents.year, (differenceDateComponents.year > 1 ? @"s" : @"")];
-        else if (differenceDateComponents.month > 0)
-            [format appendFormat:@"%i Month%@ Ago", differenceDateComponents.month, (differenceDateComponents.month > 1 ? @"s" : @"")];
-        else if (differenceDateComponents.day > 1)
-            [format appendFormat:@"%i %@", differenceDateComponents.day, NSLocalizedString(@"Days Ago", nil)];
-        else if (differenceDateComponents.day > 0)
-            [format appendString: NSLocalizedString(@"Yesterday", nil)];
-        else
-            [format appendString: NSLocalizedString(@"Today", nil)];
-        
-        if (isIphone)
-        {
-            //On iPhone, append You Tube User name to the date label
-            videoThumbnailCell.dateAddedLabel.text = [NSString stringWithFormat:@"%@ BY %@",[format uppercaseString], [video.sourceUsername uppercaseString]];
-        }
-        else
-        {
-            //On iPad a separate label is used for the youtube user name
-            videoThumbnailCell.dateAddedLabel.text = [format uppercaseString];
-            videoThumbnailCell.youTubeUserLabel.text = [NSString stringWithFormat:@"BY %@",[video.sourceUsername uppercaseString]];
-        }
-        
-        
-        NSUInteger minutes = ([video.duration integerValue] / 60) % 60;
-        NSUInteger seconds = [video.duration integerValue] % 60;
-        videoThumbnailCell.durationLabel.text = [NSString stringWithFormat: @"%i:%i", minutes, seconds];
-        
-
-        videoThumbnailCell.viewControllerDelegate = self;
-        
-        
-        videoThumbnailCell.addItButton.highlighted = NO;
-        videoThumbnailCell.addItButton.selected = [appDelegate.videoQueue videoInstanceIsAddedToChannel:videoInstance];
-        
-        cell = videoThumbnailCell;
+        //On iPhone, append You Tube User name to the date label
+        videoThumbnailCell.dateAddedLabel.text = [NSString stringWithFormat:@"%@ BY %@",[format uppercaseString], [video.sourceUsername uppercaseString]];
+    }
+    else
+    {
+        //On iPad a separate label is used for the youtube user name
+        videoThumbnailCell.dateAddedLabel.text = [format uppercaseString];
+        videoThumbnailCell.youTubeUserLabel.text = [NSString stringWithFormat:@"BY %@",[video.sourceUsername uppercaseString]];
     }
     
-    return cell;
+    
+    NSUInteger minutes = ([video.duration integerValue] / 60) % 60;
+    NSUInteger seconds = [video.duration integerValue] % 60;
+    videoThumbnailCell.durationLabel.text = [NSString stringWithFormat: @"%i:%i", minutes, seconds];
+    
+    
+    videoThumbnailCell.viewControllerDelegate = self;
+    
+    videoThumbnailCell.addItButton.highlighted = NO;
+    videoThumbnailCell.addItButton.selected = [appDelegate.videoQueue videoInstanceIsAddedToChannel:videoInstance];
+    
+    return videoThumbnailCell;
 }
 
 

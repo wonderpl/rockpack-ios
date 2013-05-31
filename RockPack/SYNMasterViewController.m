@@ -64,7 +64,6 @@ typedef void(^AnimationCompletionBlock)(BOOL finished);
 @property (nonatomic, strong) UINavigationController* overlayNavigationController;
 @property (nonatomic, strong) UIPopoverController* accountSettingsPopover;
 @property (nonatomic, strong) UIView* accountSettingsCoverView;
-@property (nonatomic, strong) VideoOverlayDismissBlock videoOverlayDismissBlock;
 @property (strong, nonatomic) IBOutlet UIView *overlayContainerView;
 
 @end
@@ -484,9 +483,12 @@ typedef void(^AnimationCompletionBlock)(BOOL finished);
 - (void) addVideoOverlayToViewController: (UIViewController *) originViewController
                   withVideoInstanceArray: (NSArray*) videoInstanceArray
                         andSelectedIndex: (int) selectedIndex
-                               onDismiss: (VideoOverlayDismissBlock) dismissBlock
 {
-    self.videoOverlayDismissBlock = dismissBlock;
+    if(self.videoViewerViewController)
+    {
+        //Prevent presenting two video players.
+        return;
+    }
     
     // Remember the view controller that we came from
     self.originViewController = originViewController;
@@ -536,8 +538,6 @@ typedef void(^AnimationCompletionBlock)(BOOL finished);
                      completion: ^(BOOL finished) {
                          self.overlayView.userInteractionEnabled = NO;
                          [child removeFromSuperview];
-                         
-                         self.videoOverlayDismissBlock();
                          
                          [self.videoViewerViewController removeFromParentViewController];
                          self.videoViewerViewController = nil;
