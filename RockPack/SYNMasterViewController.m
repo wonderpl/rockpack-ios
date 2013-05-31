@@ -206,10 +206,12 @@ typedef void(^AnimationCompletionBlock)(BOOL finished);
     UIImage* dotImage = [UIImage imageNamed:@"NavigationDot"];
     CGPoint center = self.dotsView.center;
     CGRect newFrame = self.dotsView.frame;
-    newFrame.size.width = (2*numberOfDots - 1) * dotImage.size.width;
+    newFrame.size.width = (2 * numberOfDots - 1) * dotImage.size.width;
     newFrame.origin.x = round(center.x - newFrame.size.width/2.0f);
     self.dotsView.frame = newFrame;
+    
     CGFloat dotSpacing = 2*dotImage.size.width;
+    
     for(int i = 0; i < numberOfDots; i++)
     {
         UIImageView* dotImageView = [[UIImageView alloc] initWithImage:dotImage];
@@ -553,6 +555,7 @@ typedef void(^AnimationCompletionBlock)(BOOL finished);
     if (self.isInSearchMode) // if it is on stage already
         return;
     
+
     if(!self.overlayNavigationController) // we are on the main stage and the X button should appear
         self.sideNavigationButton.hidden = YES;
     
@@ -769,7 +772,9 @@ typedef void(^AnimationCompletionBlock)(BOOL finished);
         self.sideNavigationButton.hidden = NO;
         
         self.closeSearchButton.hidden = NO;
+        
         self.pageTitleLabel.hidden = NO;
+        
         self.dotsView.hidden = NO;
         self.movableButtonsContainer.hidden = NO;
     }
@@ -974,11 +979,16 @@ typedef void(^AnimationCompletionBlock)(BOOL finished);
                 [self cancelButtonPressed:nil];
             }
             self.overlayNavigationController = nil; // animate the overlay out using the setter method
+
             
+            if(self.overlayNavigationController.topViewController == self.searchViewController)
+            {
+                [self cancelButtonPressed:nil];
+            }
             
+            self.overlayNavigationController = nil; // animate the overlay out using the setter method
             
         }
-        
         
     }
     else

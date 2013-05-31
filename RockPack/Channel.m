@@ -350,6 +350,7 @@
 - (NSString *) description
 {
     
+
     NSMutableString* initialDescription = [NSMutableString stringWithFormat: @"- Channel (cat:'%@', title:'%@', owner:'%@'), VI(%i):", self.categoryId, self.title, self.channelOwner.displayName, self.videoInstances.count];
     
     for (VideoInstance* childrenVideoInstance in self.videoInstances)

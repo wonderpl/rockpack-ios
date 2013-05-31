@@ -415,12 +415,8 @@
            
     }
 
-    // Set subscriptions dictionary
+
     
-    NSMutableDictionary* existingSubscriptionsByIndex = [NSMutableDictionary dictionaryWithCapacity: appDelegate.currentUser.subscriptions.count];
-    for (Channel* subscription in appDelegate.currentUser.subscriptions)
-        [existingSubscriptionsByIndex setObject:subscription forKey:subscription.uniqueId];
-        
     
     // Loop through the fresh data from the server
     
@@ -453,9 +449,7 @@
         channel.position = [itemDictionary objectForKey: @"position"
                                             withDefault: [NSNumber numberWithInt: 0]];
         
-        Channel* subscription = [existingSubscriptionsByIndex objectForKey:channel.uniqueId];
-        if(subscription)
-            channel.subscribedByUserValue = YES;
+
         
         if (!genre) // nil is passed in case of the @"all" category which is popular
             channel.popularValue = YES;

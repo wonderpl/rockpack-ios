@@ -190,11 +190,7 @@
 }
 
 
-- (void) viewWillAppear: (BOOL) animated
-{
-    [super viewWillAppear: animated];
-    
-}
+
 
 -(void)viewDidAppear:(BOOL)animated
 {
@@ -209,7 +205,6 @@
 {
     [self updateAnalytics];
     
-    dataRequestRange = NSMakeRange(1, STANDARD_REQUEST_LENGTH);
     
     [self loadChannelsForGenre:currentGenre];
 }
@@ -246,7 +241,7 @@
     
     
     [appDelegate.networkEngine updateChannelsScreenForCategory: (genre ? genre.uniqueId : @"all")
-                                                      forRange: dataRequestRange
+                                                      forRange: self.dataRequestRange
                                                  ignoringCache: NO
                                                   onCompletion: ^(NSDictionary* response) {
                                                       
@@ -266,7 +261,7 @@
                                                       if (![totalNumber isKindOfClass: [NSNumber class]])
                                                           return;
                                                       
-                                                      dataItemsAvailable = [totalNumber integerValue];
+                                                      self.dataItemsAvailable = [totalNumber integerValue];
                                                       
                                                       BOOL registryResultOk = [appDelegate.mainRegistry registerChannelsFromDictionary: response
                                                                                                                               forGenre: genre
@@ -724,7 +719,7 @@
 
     currentCategoryId = genre.uniqueId;
 
-    dataRequestRange = NSMakeRange(1, STANDARD_REQUEST_LENGTH);
+    dataRequestRange = NSMakeRange(0, STANDARD_REQUEST_LENGTH);
 
     if (genre == nil)
     {
@@ -755,7 +750,9 @@
 
 - (void) clearedLocationBoundData
 {
-    dataRequestRange = NSMakeRange(1, STANDARD_REQUEST_LENGTH);
+    [self displayChannelsForGenre:self.currentGenre];
+    
+    self.dataRequestRange = NSMakeRange(0, STANDARD_REQUEST_LENGTH);
     
     [self loadChannelsForGenre: nil];
 }
