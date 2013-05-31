@@ -328,17 +328,10 @@
                                  andSelectedIndex: (int) selectedIndex
 {
     SYNMasterViewController *masterViewController = (SYNMasterViewController*)appDelegate.masterViewController;
-    
-    // We don't want to be able to present more than one video viewer at a time, so disable interaction with the videoThumbnailView here
-    // and then re-enable it once the overlay view has been dismissed
-    self.videoThumbnailCollectionView.userInteractionEnabled = NO;
-    
+        
     [masterViewController addVideoOverlayToViewController: self
                                    withVideoInstanceArray: videoInstanceArray
-                                         andSelectedIndex: selectedIndex
-                                                onDismiss: ^{
-                                                    self.videoThumbnailCollectionView.userInteractionEnabled = YES;
-                                                }];
+                                         andSelectedIndex: selectedIndex];
 }
 
 
