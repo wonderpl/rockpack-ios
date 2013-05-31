@@ -400,7 +400,7 @@
     [self.appDelegate.oAuthNetworkEngine changeUserField: @"date_of_birth"
                                                  forUser: self.appDelegate.currentUser
                                             withNewValue: dateString
-                                       completionHandler: ^ {
+                                       completionHandler: ^ (NSDictionary * dictionary){
                                            user.dateOfBirth = datePicker.date;
                                            self.dobTableViewCell.textLabel.text = [self getDOBPlainString: user.dateOfBirth];
                                            [dobLoader stopAnimating];

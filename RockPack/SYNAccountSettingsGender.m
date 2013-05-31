@@ -178,7 +178,7 @@
     [self.appDelegate.oAuthNetworkEngine changeUserField: @"gender"
                                                  forUser: self.appDelegate.currentUser
                                             withNewValue: newGender
-                                       completionHandler: ^ {
+                                       completionHandler: ^ (NSDictionary * dictionary){
                                            if([newGender isEqualToString: @"m"])
                                            {
                                                self.appDelegate.currentUser.gender = @(GenderMale);
