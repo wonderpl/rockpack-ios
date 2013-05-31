@@ -7,9 +7,61 @@
 */
 
 
+
+
+
+// == General == //
+
+"Yes" = "Yes";
+"No" = "No";
+"Cancel" = "Cancel";
+"Done" = "Done";
+"OK" = "OK";
+"SUBSCRIBERS" = "SUBSCRIBERS"
+
+
+
+
+
+// == Notifications == //
+
 "starred_action" = "has liked";
 "subscribed_action" = "has subscribed to";
 "your_channel_object" = "your channel";
 "your_video_object" = "your video";
-"Duplicate title." = "Title Already Exists";
-"Mind your language!" = "Mind your language!";
+
+
+
+
+// == Channel Detail == //
+
+"No videos in channel message" = "THERE ARE NO VIDEOS IN THIS CHANNEL YET";
+
+
+
+
+// == Channel Creation/Editing == //
+
+// Channel Title text view placeholder
+"CHANNEL NAME" = "CHANNEL NAME";
+
+// Select Cover / Category
+"SELECT A COVER" = "SELECT A COVER";
+"SELECT A CATEGORY" = "SELECT A CATEGORY";
+
+// Delete Video AlertView
+
+"Delete video title" = "Delete Video";
+"Delete video message" = "Are you sure you want to delete this video?";
+
+// Error AlertViews 
+
+"Duplicate title" = "Title Already Exists";
+"Duplicate message" = "You've already created a channel with this title. Please choose another.";
+
+"Naughty words title" = "Mind your language!";
+"Naughty words message" = "This channel title may include inappropriate words.";
+
+"Unknown error title" = "Error";
+"Unknown error create message" = "Could not create channel. Please try again later.";
+"Unknown error save message" = "Could not save channel. Please try again later.";
