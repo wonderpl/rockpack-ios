@@ -39,8 +39,7 @@ typedef void (^VideoOverlayDismissBlock)(void);
 
 - (void) addVideoOverlayToViewController: (UIViewController *) originViewController
                   withVideoInstanceArray: (NSArray*) videoInstanceArray
-                        andSelectedIndex: (int) selectedIndex
-                               onDismiss: (VideoOverlayDismissBlock) dismissBlock;
+                        andSelectedIndex: (int) selectedIndex;
 
 - (void) removeVideoOverlayController;
 
