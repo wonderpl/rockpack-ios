@@ -24,6 +24,7 @@
 @property (nonatomic, strong) NSArray* genresFetched;
 @property (nonatomic, weak) SYNAppDelegate* appDelegate;
 @property (nonatomic) BOOL isLoadingCategories;
+@property (nonatomic, weak) Genre* currentlySelectedGenre;
 @end
 
 
@@ -88,8 +89,6 @@
     // align to top
     self.view.frame = CGRectMake(0.0, kStandardCollectionViewOffsetY, self.view.frame.size.width, self.view.frame.size.height);
     self.view.autoresizingMask = UIViewAutoresizingFlexibleWidth;
-    
-    
 }
 
 -(void) viewDidLoad
@@ -163,6 +162,10 @@
     if(self.genresFetched.count > 0)
     {
         [self.tabView createCategoriesTab:self.genresFetched];
+        
+        if(self.currentlySelectedGenre)
+            [self selectTabForGenre:self.currentlySelectedGenre];
+        
     }
 
 
@@ -203,14 +206,14 @@
         return;   
     }
     
-    Genre* genreSelected = (Genre*)genreTab.model;
+    self.currentlySelectedGenre = (Genre*)genreTab.model;
 
-    [self handleMainGenreSelection:genreSelected];
+    [self handleMainGenreSelection:self.currentlySelectedGenre];
 
     [self.delegate handleMainTap: tab];
     
     
-    [self.delegate handleNewTabSelectionWithGenre: genreSelected];
+    [self.delegate handleNewTabSelectionWithGenre:self.currentlySelectedGenre];
     
     // == Log Category in Google Analytics == //
     
@@ -218,11 +221,11 @@
     
     [tracker sendEventWithCategory: @"uiAction"
                         withAction: @"categoryItemClick"
-                         withLabel: genreSelected.name
+                         withLabel: self.currentlySelectedGenre.name
                          withValue: nil];
     
     [tracker setCustom: kGADimensionCategory
-             dimension: genreSelected.name];
+             dimension: self.currentlySelectedGenre.name];
 }
 
 -(void)handleMainGenreSelection:(Genre*)genreSelected
@@ -234,6 +237,7 @@
     newSubCategories = [newSubCategories filteredArrayUsingPredicate:predicate];
     NSSortDescriptor* idSortDescriptor = [[NSSortDescriptor alloc] initWithKey: @"priority"
                                                                      ascending: NO];
+    
     newSubCategories = [newSubCategories sortedArrayUsingDescriptors:@[idSortDescriptor]];
     
     // Finally Show SubGenres if needed
@@ -250,11 +254,11 @@
     
     SYNGenreItemView* subGenreTab = (SYNGenreItemView*)tab;
     
-    SubGenre* subGenreSelected = (SubGenre*)subGenreTab.model;
+    self.currentlySelectedGenre = (SubGenre*)subGenreTab.model;
     
     [self.delegate handleSecondaryTap: tab];
     
-    [self.delegate handleNewTabSelectionWithGenre: subGenreSelected];
+    [self.delegate handleNewTabSelectionWithGenre: self.currentlySelectedGenre];
     
     
     
@@ -265,11 +269,11 @@
     // TODO: Not sure if we need both of these
     [tracker sendEventWithCategory: @"uiAction"
                         withAction: @"categoryItemClick"
-                         withLabel: subGenreSelected.name
+                         withLabel: self.currentlySelectedGenre.name
                          withValue: nil];
     
     [tracker setCustom: kGADimensionCategory
-             dimension: subGenreSelected.name];
+             dimension: self.currentlySelectedGenre.name];
 }
 
 -(SYNGenreTabView*)categoriesTabView
@@ -284,6 +288,18 @@
 
 
 #pragma mark - Getting Genre from Tab Bar 
+
+-(BOOL)selectTabForGenre:(Genre*)genre
+{
+    
+    NSIndexPath* indexPath = [self findIndexPathForGenreId:genre.uniqueId];
+    
+    Genre* selectedGenre = [self selectAndReturnGenreForIndexPath:indexPath andSubcategories:YES];
+    if(selectedGenre)
+        return YES;
+    
+    return NO;
+}
 
 -(Genre*)selectAndReturnGenreForIndexPath:(NSIndexPath*)indexPath andSubcategories:(BOOL)subcats
 {
@@ -318,6 +334,7 @@
             return nil;
         }
     }
+    
     NSInteger section = -1;
     NSInteger item = -1;
     
@@ -328,7 +345,7 @@
     {
         if([genre.uniqueId isEqualToString:genreId])
         {
-            section = section; // the genre is a top level category
+            section = _section; // the genre is a top level category
             item = 0;
             break;
         }
