@@ -41,6 +41,9 @@
                                               SYNCameraPopoverViewControllerDelegate,
                                               SYNChannelCategoryTableViewDelegate,
                                               SYNChannelCoverImageSelectorDelegate>
+{
+    BOOL _isIPhone; //So many calls were being made to the SYNDeviceManager a boolean initialised at viewDidLoad was introduced.
+}
 
 @property (nonatomic, assign)  CGPoint originalContentOffset;
 @property (nonatomic, assign, getter = isImageSelectorOpen) BOOL imageSelectorOpen;
@@ -127,7 +130,7 @@
 {
     [super viewDidLoad];
     
-    BOOL isIPhone = [SYNDeviceManager.sharedInstance isIPhone];
+    _isIPhone = [SYNDeviceManager.sharedInstance isIPhone];
 
     // Originally the opacity was required to be 0.25f, but this appears less visible on the actual screen
     // Set custom fonts and shadows for labels
@@ -165,13 +168,13 @@
     
     // Add a custom flow layout to our thumbail collection view (with the right size and spacing)
     LXReorderableCollectionViewFlowLayout *layout = [[LXReorderableCollectionViewFlowLayout alloc] init];
-    layout.itemSize = isIPhone?CGSizeMake(310.0f , 175.0f):CGSizeMake(249.0f , 141.0f);
-    layout.minimumInteritemSpacing = isIPhone ? 0.0f : 6.0f;
-    layout.minimumLineSpacing = isIPhone ? 4.0f : 6.0f;
+    layout.itemSize = _isIPhone?CGSizeMake(310.0f , 175.0f):CGSizeMake(249.0f , 141.0f);
+    layout.minimumInteritemSpacing = _isIPhone ? 0.0f : 6.0f;
+    layout.minimumLineSpacing = _isIPhone ? 4.0f : 6.0f;
     
     self.videoThumbnailCollectionView.collectionViewLayout = layout;
     
-    if (isIPhone)
+    if (_isIPhone)
     {
         layout.sectionInset = UIEdgeInsetsMake(0.0f, 0.0f, 0.0f, 0.0f);
         self.videoThumbnailCollectionView.contentInset = UIEdgeInsetsMake([SYNDeviceManager.sharedInstance currentScreenHeight] - 168.0f, 0.0f, 0.0f, 0.0f);
@@ -220,7 +223,7 @@
         self.avatarImageView.image = placeholderImage;
     }
 
-    if (!isIPhone)
+    if (!_isIPhone)
     {
         // Create categories tab, but make invisible (alpha = 0) for now
         self.categoriesTabViewController = [[SYNGenreTabViewController alloc] initWithHomeButton: @"other"];
@@ -251,7 +254,7 @@
     //Remove the save button. It is added back again if the edit button is tapped.
     [self.saveChannelButton removeFromSuperview];
     
-    if (!isIPhone)
+    if (!_isIPhone)
     {
         // Set text on add cover and select category buttons
         NSString *coverString = NSLocalizedString (@"SELECT A COVER", nil);
@@ -532,7 +535,15 @@
         if ([obj isKindOfClass:[Channel class]] && [((Channel*)obj).uniqueId isEqualToString:self.channel.uniqueId])
         {
             
-            
+
+            if(self.channel.videoInstances.count == 0)
+            {
+                [self showNoVideosMessage: NSLocalizedString(@"No videos in channel message",nil)];
+            }
+            else
+            {
+                [self showNoVideosMessage:nil];
+            }
             
             
             self.subscribeButton.selected = self.channel.subscribedByUserValue;
@@ -578,9 +589,9 @@
     if(!message)
         return;
     
-    CGSize viewFrameSize = CGSizeMake(360.0, 50.0);
+    CGSize viewFrameSize = _isIPhone ? CGSizeMake(300.0, 50.0) : CGSizeMake(360.0, 50.0);
     self.noVideosMessageView = [[UIView alloc] initWithFrame:CGRectMake(0.0, 640.0, viewFrameSize.width, viewFrameSize.height)];
-    self.noVideosMessageView.center = CGPointMake(self.view.frame.size.width * 0.5, self.noVideosMessageView.center.y);
+    self.noVideosMessageView.center = _isIPhone ? CGPointMake(self.view.frame.size.width * 0.5, self.view.frame.size.height - 70.0f) : CGPointMake(self.view.frame.size.width * 0.5, self.noVideosMessageView.center.y);
     self.noVideosMessageView.frame = CGRectIntegral(self.noVideosMessageView.frame);
     self.noVideosMessageView.autoresizingMask = UIViewAutoresizingFlexibleBottomMargin | UIViewAutoresizingFlexibleLeftMargin | UIViewAutoresizingFlexibleRightMargin;
     
@@ -594,7 +605,7 @@
     UILabel* noVideosLabel = [[UILabel alloc] initWithFrame:CGRectZero];
     noVideosLabel.text = message;
     noVideosLabel.textAlignment = NSTextAlignmentCenter;
-    noVideosLabel.font = [UIFont rockpackFontOfSize:16.0];
+    noVideosLabel.font = [UIFont rockpackFontOfSize:_isIPhone?12.0f:16.0f];
     noVideosLabel.textColor = [UIColor whiteColor];
     [noVideosLabel sizeToFit];
     noVideosLabel.center = CGPointMake(viewFrameSize.width * 0.5, viewFrameSize.height * 0.5 + 4.0);
@@ -777,7 +788,7 @@
         
         CGFloat offset = 125;
         
-        if ([SYNDeviceManager.sharedInstance isIPad])
+        if (!_isIPhone)
         {
             offset = 130;
         }
@@ -936,7 +947,7 @@
 {
     NSString* noteName;
     
-    if (!addButton.selected || [SYNDeviceManager.sharedInstance isIPhone]) // There is only ever one video in the queue on iPhone. Always fire the add action.
+    if (!addButton.selected || _isIPhone) // There is only ever one video in the queue on iPhone. Always fire the add action.
     {
         noteName = kVideoQueueAdd;
         
@@ -972,8 +983,8 @@
     
     if (self.instanceToDelete != nil)
     {
-        [[[UIAlertView alloc] initWithTitle: NSLocalizedString (@"Delete Video", nil)
-                                                        message: NSLocalizedString (@"Are you sure you want to delete this video?", nil)
+        [[[UIAlertView alloc] initWithTitle: NSLocalizedString (@"Delete video title", nil)
+                                                        message: NSLocalizedString (@"Delete video message", nil)
                                                        delegate: self
                                               cancelButtonTitle: NSLocalizedString (@"No", nil)
                                               otherButtonTitles: NSLocalizedString (@"Yes", nil), nil] show];
@@ -1014,8 +1025,8 @@
 
 - (IBAction) addCoverButtonTapped: (UIButton *) button
 {
-    // Prevent multiple clicks of the add cover button on iPhoen
-    if ([SYNDeviceManager.sharedInstance isIPhone])
+    // Prevent multiple clicks of the add cover button on iPhone
+    if (_isIPhone)
     {
         if (self.isImageSelectorOpen == TRUE)
         {
@@ -1041,8 +1052,7 @@
 
 - (IBAction) editButtonTapped: (id) sender
 {
-    BOOL isIPad = [SYNDeviceManager.sharedInstance isIPad];
-    [[NSNotificationCenter defaultCenter] postNotificationName: (isIPad)? kChannelsNavControlsHide : kNoteAllNavControlsHide
+    [[NSNotificationCenter defaultCenter] postNotificationName: (! _isIPhone) ? kChannelsNavControlsHide : kNoteAllNavControlsHide
                                                         object: self
                                                       userInfo: nil];
     
@@ -1082,7 +1092,7 @@
             if ([genre isKindOfClass:[SubGenre class]])
             {
                 SubGenre* subCategory = (SubGenre*) genre;
-                if ([SYNDeviceManager.sharedInstance isIPhone])
+                if (_isIPhone)
                 {
                     newTitle =[NSString stringWithFormat:@"%@/\n%@", subCategory.genre.name, subCategory.name];
                 }
@@ -1096,7 +1106,7 @@
                 newTitle = genre.name;
             }
             
-            if (isIPad)
+            if (!_isIPhone)
             {
                 [self updateCategoryButtonText:newTitle];
             }
@@ -1131,7 +1141,7 @@
 
 - (IBAction) saveChannelTapped: (id) sender
 { 
-    if ([SYNDeviceManager.sharedInstance isIPhone])
+    if (_isIPhone)
     {
         self.saveChannelButton.hidden = YES;
         self.activityIndicator.hidden = NO;
@@ -1181,8 +1191,8 @@
                                                   
                                                   DebugLog(@"Error @ saveChannelPressed:");
                                                   
-                                                  NSString *errorTitle = NSLocalizedString(@"ERROR", nil);
-                                                  NSString* errorMessage = NSLocalizedString(@"Could not create channel. Please try again later.", nil);
+                                                  NSString *errorTitle = NSLocalizedString(@"Unknown error title", nil);
+                                                  NSString* errorMessage = NSLocalizedString(@"Unknown error save message", nil);
                                                   
                                                   NSArray *errorTitleArray =  [[error objectForKey: @"form_errors"] objectForKey :@"title"];
                                                   
@@ -1193,20 +1203,20 @@
                                                       
                                                       if ([errorType isEqualToString:@"Duplicate title."])
                                                       {
-                                                          errorTitle = NSLocalizedString(@"Title Already Exists", nil);
-                                                          errorMessage = NSLocalizedString(@"You've already created a channel with this title. Please choose another.",nil);
+                                                          errorTitle = NSLocalizedString(@"Duplicate title", nil);
+                                                          errorMessage = NSLocalizedString(@"Duplicate message",nil);
                                                       }
                                                       
                                                       else if ([errorType isEqualToString:@"Mind your language!"])
                                                       {
-                                                          errorTitle = NSLocalizedString(@"Mind your language!", nil);
-                                                          errorMessage = NSLocalizedString(@"This channel title may include inappropriate words.",nil);
+                                                          errorTitle = NSLocalizedString(@"Naughty words title", nil);
+                                                          errorMessage = NSLocalizedString(@"Naughty words message",nil);
                                                       }
                                                       
                                                       else
                                                       {
-                                                          errorTitle = NSLocalizedString(@"Unknown Error", nil);
-                                                          errorMessage = NSLocalizedString(@"Could not save channel. Please try again later.",nil);
+                                                          errorTitle = NSLocalizedString(@"Unknown error title", nil);
+                                                          errorMessage = NSLocalizedString(@"Unknown error save message",nil);
                                                       }
                                                   };
      
@@ -1227,7 +1237,7 @@
 
 - (void) showCoverChooser
 {
-    if ([SYNDeviceManager.sharedInstance isIPad])
+    if (!_isIPhone)
     {
         // Check to see if we are already display the cover chooser
         if (self.coverChooserMasterView.alpha == 0.0f)
@@ -1293,7 +1303,7 @@
 
 - (void) showCategoryChooser
 {
-    if ([SYNDeviceManager.sharedInstance isIPad])
+    if (!_isIPhone)
     {
         [self.view addSubview: self.categoriesTabViewController.view];
         
@@ -1509,7 +1519,7 @@
 
 - (IBAction) createChannelPressed: (id) sender
 {
-    if ([SYNDeviceManager.sharedInstance isIPhone])
+    if (_isIPhone)
     {
         self.createChannelButton.hidden = YES;
         self.activityIndicator.hidden = NO;
@@ -1554,8 +1564,8 @@
                                                   
                                                   DebugLog(@"Error @ createChannelPressed:");
                                                   
-                                                  NSString *errorTitle = NSLocalizedString(@"ERROR", nil);
-                                                  NSString* errorMessage = NSLocalizedString(@"Could not create channel. Please try again later.", nil);
+                                                  NSString *errorTitle = NSLocalizedString(@"Unknown error title", nil);
+                                                  NSString* errorMessage = NSLocalizedString(@"Unknown error create message", nil);
                                                   
                                                   NSArray *errorTitleArray =  [[error objectForKey: @"form_errors"] objectForKey :@"title"];
                                                   
@@ -1566,20 +1576,20 @@
                                                       
                                                       if ([errorType isEqualToString:@"Duplicate title."])
                                                       {
-                                                          errorTitle = NSLocalizedString(@"Title Already Exists", nil);
-                                                          errorMessage = NSLocalizedString(@"You've already created a channel with this title. Please choose another.",nil);
+                                                          errorTitle = NSLocalizedString(@"Duplicate title", nil);
+                                                          errorMessage = NSLocalizedString(@"Duplicate message",nil);
                                                       }
                                                       
                                                       else if ([errorType isEqualToString:@"Mind your language!"])
                                                       {
-                                                          errorTitle = NSLocalizedString(@"Mind your language!", nil);
-                                                          errorMessage = NSLocalizedString(@"This channel title may include inappropriate words.",nil);
+                                                          errorTitle = NSLocalizedString(@"Naughty words title", nil);
+                                                          errorMessage = NSLocalizedString(@"Naughty words message",nil);
                                                       }
                                                       
                                                       else
                                                       {
-                                                          errorTitle = NSLocalizedString(@"Unknown Error", nil);
-                                                          errorMessage = NSLocalizedString(@"Could not save channel. Please try again later.",nil);
+                                                          errorTitle = NSLocalizedString(@"Unknown error title", nil);
+                                                          errorMessage = NSLocalizedString(@"Unknown error create message",nil);
                                                       }
                                                   };
                                                   
@@ -1715,7 +1725,7 @@
                                                                                                   object: self
                                                                                                 userInfo: nil];
                                               
-                                              [self finaliseViewStatusAfterCreateOrUpdate:[SYNDeviceManager.sharedInstance isIPad]];
+                                              [self finaliseViewStatusAfterCreateOrUpdate:!_isIPhone];
                                               
                                               [[NSNotificationCenter defaultCenter] postNotificationName: kVideoQueueClear
                                                                                                   object: nil];
@@ -1738,7 +1748,7 @@
                                                                                                   object: self
                                                                                                 userInfo: nil];
                                               
-                                              [self finaliseViewStatusAfterCreateOrUpdate:[SYNDeviceManager.sharedInstance isIPad]];
+                                              [self finaliseViewStatusAfterCreateOrUpdate:!_isIPhone];
                                             
                                               
                                               [[NSNotificationCenter defaultCenter] postNotificationName: kVideoQueueClear
@@ -1864,7 +1874,7 @@
 
 - (void) textViewDidBeginEditing: (UITextView *) textView
 {
-    if ([SYNDeviceManager.sharedInstance isIPhone])
+    if (_isIPhone)
     {
         self.createChannelButton.hidden = YES;
         self.saveChannelButton.hidden = YES;
@@ -1876,7 +1886,7 @@
 
 - (void) textViewDidEndEditing: (UITextView *) textView
 {
-    if ([SYNDeviceManager.sharedInstance isIPhone])
+    if (_isIPhone)
     {
         self.createChannelButton.hidden = NO;
         self.saveChannelButton.hidden = NO;
