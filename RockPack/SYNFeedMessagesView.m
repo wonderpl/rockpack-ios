@@ -8,6 +8,7 @@
 
 #import "SYNFeedMessagesView.h"
 #import "UIFont+SYNFont.h"
+#import "SYNDeviceManager.h"
 
 @implementation SYNFeedMessagesView
 
@@ -18,15 +19,22 @@
     
     if (self = [super init]) {
         
-        
+        BOOL isIPhone = [[SYNDeviceManager sharedInstance] isIPhone];
         // Label
         
         message = [message uppercaseString];
         
-        UIFont* fontToUse = [UIFont rockpackFontOfSize:20.0];
+        UIFont* fontToUse = [UIFont rockpackFontOfSize: isIPhone?13.0f:20.0];
         
         CGRect labelFrame = CGRectZero;
-        labelFrame.size = [message sizeWithFont:fontToUse];
+        if (!isIPhone)
+        {
+            labelFrame.size = [message sizeWithFont:fontToUse];
+        }
+        else
+        {
+            labelFrame.size = CGSizeMake(260.0f, 300.0f);
+        }
         
         UILabel* label = [[UILabel alloc] initWithFrame:labelFrame];
         label.font = fontToUse;
@@ -35,11 +43,16 @@
         label.text = message;
         label.textAlignment = NSTextAlignmentCenter;
         
+        if(isIPhone)
+        {
+            label.numberOfLines = 0;
+            [label sizeToFit];
+        }
         
         
         // BG
         
-        CGRect mainFrame = CGRectMake(0.0, 0.0, labelFrame.size.width + 40.0, labelFrame.size.height + 30.0);
+        CGRect mainFrame = CGRectMake(0.0, 0.0, label.frame.size.width + 40.0, label.frame.size.height + 30.0);
         
         UIView* bg = [[UIView alloc] initWithFrame:mainFrame];
         bg.backgroundColor = [UIColor darkGrayColor];

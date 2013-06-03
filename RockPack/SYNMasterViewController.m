@@ -353,7 +353,7 @@ typedef void(^AnimationCompletionBlock)(BOOL finished);
                          
                          if(self.videoViewerViewController)
                          {
-                             [self removeVideoOverlayController];
+                             [self.videoViewerViewController pauseIfVideoActive];
                          }
                      }];
     
@@ -361,6 +361,17 @@ typedef void(^AnimationCompletionBlock)(BOOL finished);
 
 -(void)createNewChannelAction:(NSNotification*)notification
 {
+    if(self.videoViewerViewController)
+    {
+        [self removeVideoOverlayController];
+    }
+    
+    if([[SYNDeviceManager sharedInstance] isIPhone])
+    {
+        //On iPhone the create workflow is presented modally on the existing channels page. Therefore return after closing the video player.
+        return;
+    }
+    
     Channel* channel = (Channel*)[[notification userInfo] objectForKey: kChannel];
     if(!channel)
         return;
@@ -380,7 +391,10 @@ typedef void(^AnimationCompletionBlock)(BOOL finished);
     
     Channel* selectedChannel = (Channel*)[[notification userInfo] objectForKey:kChannel];
     if(!selectedChannel)
+    {
+        [self resumeVideoIfShowing];
         return;
+    }
     
     NSString* message = [SYNDeviceManager.sharedInstance isIPhone]?
     NSLocalizedString(@"VIDEO SUCCESSFULLY ADDED",nil):
@@ -407,18 +421,27 @@ typedef void(^AnimationCompletionBlock)(BOOL finished);
                                                       
                                                       [[NSNotificationCenter defaultCenter] postNotificationName: kVideoQueueClear
                                                                                                           object: self];
-                                                      
+                                                      [self resumeVideoIfShowing];
                                                       
                                                   } errorHandler:^(NSDictionary* errorDictionary) {
                                                       
                                                       [[NSNotificationCenter defaultCenter] postNotificationName: kVideoQueueClear
                                                                                                           object: self];
+                                                      [self resumeVideoIfShowing];
       
                                                   }];
-
     
 }
 
+-(void)resumeVideoIfShowing
+{
+    //Special case! If we have a videoViewerViewContoroller here it means we are returning from the add to channel selector.
+    // try to resume playback.
+    if(self.videoViewerViewController)
+    {
+        [self.videoViewerViewController playIfVideoActive];
+    }
+}
 
 
 
@@ -539,9 +562,12 @@ typedef void(^AnimationCompletionBlock)(BOOL finished);
 
 
 - (void) removeVideoOverlayController
-{  
+{
+    if(!self.videoViewerViewController)
+    {
+        return;
+    }
     UIView* child = self.overlayView.subviews[0];
-    
     [UIView animateWithDuration: 0.25f
                           delay: 0.0f
                         options: UIViewAnimationOptionCurveEaseInOut
@@ -555,6 +581,7 @@ typedef void(^AnimationCompletionBlock)(BOOL finished);
                          [self.videoViewerViewController removeFromParentViewController];
                          self.videoViewerViewController = nil;
                      }];
+    
     //FIXME: Nick to rework
     [self.containerViewController viewWillAppear:NO];
 }
@@ -1022,9 +1049,8 @@ typedef void(^AnimationCompletionBlock)(BOOL finished);
        
     }
     
-    
-    
     [self.containerViewController refreshView];
+    
     
 }
 

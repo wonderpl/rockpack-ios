@@ -315,10 +315,12 @@
     if (self.emptyGenreMessageView)
         return;
     
-    self.emptyGenreMessageView = [SYNFeedMessagesView withMessage:@"Your feed looks a little empty!"];
-    
-    self.emptyGenreMessageView.center = CGPointMake(self.view.center.x, 280.0);
-    self.emptyGenreMessageView.frame = CGRectIntegral(self.emptyGenreMessageView.frame);
+    self.emptyGenreMessageView = [SYNFeedMessagesView withMessage:NSLocalizedString(@"Your feed looks a little empty! Subscribe to 3-5 channels.",nil)];
+    CGRect messageFrame = self.emptyGenreMessageView.frame;
+    messageFrame.origin.y = [[SYNDeviceManager sharedInstance] currentScreenHeight] - 60 - messageFrame.size.height;
+    messageFrame.origin.x = [[SYNDeviceManager sharedInstance] currentScreenWidth] * 0.5 - messageFrame.size.width * 0.5;
+    self.emptyGenreMessageView.frame = messageFrame;
+    self.emptyGenreMessageView.autoresizingMask = UIViewAutoresizingFlexibleTopMargin | UIViewAutoresizingFlexibleRightMargin | UIViewAutoresizingFlexibleLeftMargin;
     
     [self.view addSubview:self.emptyGenreMessageView];
 }
@@ -411,7 +413,7 @@
                                       placeholderImage: [UIImage imageNamed: @"PlaceholderVideoWide.png"]
                                                options: SDWebImageRetryFailed];
 
-    [videoThumbnailCell.channelImageView setImageWithURL: [NSURL URLWithString: videoInstance.channel.channelCover.imageSmallUrl]
+    [videoThumbnailCell.channelImageView setImageWithURL: [NSURL URLWithString: videoInstance.channel.channelOwner.thumbnailURL]
                                         placeholderImage: [UIImage imageNamed: @"PlaceholderChannelSmall.png"]
                                                  options: SDWebImageRetryFailed];
     

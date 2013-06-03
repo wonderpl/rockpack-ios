@@ -956,11 +956,10 @@
                                                                                                        params: [self getLocalParam]
                                                                                                    httpMethod: @"GET"
                                                                                                           ssl: TRUE];
-    __weak typeof(self) weakSelf = self;
-    
+    __weak SYNOAuthNetworkEngine* wself = self;
     [self addCommonHandlerToNetworkOperation: networkOperation
                            completionHandler: ^(NSDictionary *dictionary) {
-                               BOOL registryResultOk = [weakSelf.registry registerCoverArtFromDictionary: dictionary
+                               BOOL registryResultOk = [wself.registry registerCoverArtFromDictionary: dictionary
                                                                                            forUserUpload: YES];
                                if (!registryResultOk)
                                    return;
