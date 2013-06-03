@@ -275,7 +275,7 @@
                                                     
                                                     if(self.fetchedResultsController.fetchedObjects.count == 0)
                                                     {
-                                                        [self displayEmptyGenreMessage:@"feed_screen_empty_message"];
+                                                        [self displayEmptyGenreMessage:NSLocalizedString(@"feed_screen_empty_message", nil)];
                                                     }  
                                                     
                                                         
@@ -322,7 +322,7 @@
     if (self.emptyGenreMessageView)
         return;
     
-    self.emptyGenreMessageView = [SYNFeedMessagesView withMessage:NSLocalizedString(messageKey ,nil)];
+    self.emptyGenreMessageView = [SYNFeedMessagesView withMessage:NSLocalizedString(@"feed_screen_empty_message" ,nil)];
     CGRect messageFrame = self.emptyGenreMessageView.frame;
     messageFrame.origin.y = [[SYNDeviceManager sharedInstance] currentScreenHeight] - 60 - messageFrame.size.height;
     messageFrame.origin.x = [[SYNDeviceManager sharedInstance] currentScreenWidth] * 0.5 - messageFrame.size.width * 0.5;
