@@ -1051,26 +1051,35 @@
         return NO;
     }
     
-    // == Check for date == // 
+    // == Check for date == //
     
-    if (ddInputField.text.length != 2 || mmInputField.text.length != 2 || yyyyInputField.text.length != 4)
-    {
-        [self placeErrorLabel: NSLocalizedString(@"register_screen_form_error_invalid_date", nil)
-                   nextToView: dobView];
-        
-        [ddInputField becomeFirstResponder];
-        
-        return NO;
-    }
+    NSArray* dobTextFields = @[mmInputField, ddInputField, yyyyInputField];
+    
+    
     
     
     
     // == Check wether the DOB fields contain numbers == //
     
     NSNumberFormatter* numberFormatter = [[NSNumberFormatter alloc] init];
-    NSArray* dobTextFields = @[mmInputField, ddInputField, yyyyInputField];
+    
     for (UITextField* dobField in dobTextFields)
     {
+        if(dobField.text.length == 0)
+        {
+            [self placeErrorLabel: NSLocalizedString(@"register_screen_form_error_invalid_date", nil)
+                       nextToView: dobField];
+            
+            [ddInputField becomeFirstResponder];
+            
+            return NO;
+        }
+        
+        if(dobField.text.length == 1)
+        {
+            dobField.text = [NSString stringWithFormat:@"0%@", dobField.text]; // add a trailing 0
+        }
+        
         if (![numberFormatter numberFromString: dobField.text])
         {
             [self placeErrorLabel: NSLocalizedString(@"register_screen_form_error_invalid_date", nil)
