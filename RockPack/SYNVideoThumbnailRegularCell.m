@@ -8,6 +8,7 @@
 
 #import "SYNVideoThumbnailRegularCell.h"
 #import "UIFont+SYNFont.h"
+#import <QuartzCore/QuartzCore.h>
 
 @interface SYNVideoThumbnailRegularCell ()
 
@@ -82,6 +83,7 @@
 - (void) prepareForReuse
 {
     // We need to clean up any asynchronous image uploads
+    [self.imageView.layer removeAllAnimations];
     self.imageView.image = nil;
 }
 

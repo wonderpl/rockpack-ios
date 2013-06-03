@@ -250,11 +250,23 @@
     for (NSDictionary* subscriptionChannel in itemsArray)
     {
         
-        // must use the main context so as to be able to link it with the channel owner
+        NSString *uniqueId = [subscriptionChannel objectForKey: @"id"];
+        if(!uniqueId || ![uniqueId isKindOfClass:[NSString class]])
+            continue;
         
-        Channel* channel = [Channel instanceFromDictionary: subscriptionChannel
-                                 usingManagedObjectContext: self.managedObjectContext
-                                       ignoringObjectTypes: kIgnoreStoredObjects | kIgnoreVideoInstanceObjects];
+        Channel* channel = [subscriptionInsancesByIdDictionary objectForKey:uniqueId];
+        
+        if(!channel)
+        {
+            channel = [Channel instanceFromDictionary: subscriptionChannel
+                            usingManagedObjectContext: self.managedObjectContext
+                                  ignoringObjectTypes: kIgnoreStoredObjects | kIgnoreVideoInstanceObjects];
+        }
+        else
+        {
+            [subscriptionInsancesByIdDictionary removeObjectForKey:uniqueId];
+        }
+        
         
         if (!channel)
             continue;
