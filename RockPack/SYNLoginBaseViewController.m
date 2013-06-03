@@ -139,13 +139,23 @@
             // the dictionary contains a User dictionary (without subscriptions) //
             
           
-            DebugLog(@"User Registerd: %@", [dictionary objectForKey: @"username"]);
             
             // by this time the currentUser is set in the DB //
             
-            [self checkAndSaveRegisteredUser: credential];
+            if([self checkAndSaveRegisteredUser: credential])
+            {
+                
+                DebugLog(@"User Registerd: %@", [dictionary objectForKey: @"username"]);
+                _appDelegate.currentUser.loginOriginValue = LoginOriginRockpack;
+                completionBlock(dictionary);
+            }
+            else
+            {
+                DebugLog(@"ERROR: User not registered (User: %@)", _appDelegate.currentUser);
+                // TODO: handle user not being registered propery
+            }
             
-            completionBlock(dictionary);
+            
             
         } errorHandler:errorBlock];
         
@@ -237,12 +247,21 @@
         
         [self doFacebookLoginAnimation];
         
-        [self.appDelegate.oAuthNetworkEngine doFacebookLoginWithAccessToken: accessTokenData.accessToken
+        [_appDelegate.oAuthNetworkEngine doFacebookLoginWithAccessToken: accessTokenData.accessToken
                                                           completionHandler: ^(SYNOAuth2Credential* credential) {
-            [self.appDelegate.oAuthNetworkEngine retrieveAndRegisterUserFromCredentials: credential
+            [_appDelegate.oAuthNetworkEngine retrieveAndRegisterUserFromCredentials: credential
                                                               completionHandler: ^(NSDictionary* dictionary) {
-                [self checkAndSaveRegisteredUser: credential];
                                                                   
+                if([self checkAndSaveRegisteredUser: credential])
+                {
+                    _appDelegate.currentUser.loginOriginValue = LoginOriginFacebook;
+                }
+                else
+                {
+                    DebugLog(@"ERROR: User not registered (User: %@)", _appDelegate.currentUser);
+                    // TODO: handle user not being registered propery
+                }
+                    
                 completionBlock(dictionary);
                                                                   
                                                                   

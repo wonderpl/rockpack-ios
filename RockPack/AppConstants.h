@@ -282,6 +282,15 @@ typedef enum _Gender {
 #define kCurrentPage        @"kCurrentPage"
 
 
+//Login Origin
+
+
+typedef enum {
+    LoginOriginRockpack = 0,
+    LoginOriginFacebook = 1
+    
+} LoginOrigin;
+
 #define kLoginCompleted @"kLoginCompleted"
 
 typedef enum {

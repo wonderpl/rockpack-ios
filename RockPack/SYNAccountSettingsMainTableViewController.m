@@ -48,13 +48,22 @@
 {
     if ((self = [super initWithStyle: UITableViewStyleGrouped]))
     {
-        dataItems2ndSection = @[NSLocalizedString (@"Change Password", nil),
-                                NSLocalizedString (@"About", nil),
-                                NSLocalizedString (@"Logout", nil)];
         
         appDelegate = (SYNAppDelegate*)[[UIApplication sharedApplication] delegate];
         
         user = appDelegate.currentUser;
+        
+        
+        NSMutableArray* conditionalDataItems = [[NSMutableArray alloc] initWithCapacity:3];
+        
+        if(user.loginOriginValue == LoginOriginRockpack) // only rockpack users can change their password for now
+        {
+            [conditionalDataItems addObject:NSLocalizedString (@"Change Password", nil)];
+        }
+        
+        [conditionalDataItems addObjectsFromArray:@[NSLocalizedString (@"About", nil), NSLocalizedString (@"Logout", nil)]];
+        
+        dataItems2ndSection = [NSArray arrayWithArray:conditionalDataItems];
         
         self.title = @"ACCOUNT SETTINGS";
     }
@@ -153,6 +162,7 @@
         
         switch (indexPath.row)
         {
+                // first and last name
             case 0:
                 cell.imageView.image = [UIImage imageNamed: @"IconFullname.png"];
                 cell.textLabel.text = user.firstName;
@@ -160,7 +170,7 @@
                 cell.accessoryType = UITableViewCellAccessoryDisclosureIndicator;
                 break;
                 
-                
+                // username
             case 1:
                 cell.imageView.image = [UIImage imageNamed: @"IconUsername.png"];
                 cell.textLabel.text = user.username;
@@ -168,6 +178,7 @@
                 cell.accessoryType = UITableViewCellAccessoryDisclosureIndicator;
                 break;
                 
+                // email
             case 2:
                 if ([user.emailAddress isEqualToString:@""])
                 {
@@ -182,6 +193,7 @@
                 cell.accessoryType = UITableViewCellAccessoryDisclosureIndicator;
                 break;
                 
+                // locale
             case 3:
                 if ([user.locale isEqualToString:@"en-gb"])
                 {
@@ -197,6 +209,7 @@
                 cell.accessoryType = UITableViewCellAccessoryDisclosureIndicator;
                 break;
                 
+                // gender
             case 4:
                 if (user.genderValue == GenderUndecided)
                 {
@@ -212,6 +225,7 @@
                 cell.accessoryType = UITableViewCellAccessoryDisclosureIndicator;
                 break;
                 
+                // DOB
             case 5:
                 if (!user.dateOfBirth)
                     cell.textLabel.text = NSLocalizedString (@"Date of Birth", nil);
