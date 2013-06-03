@@ -149,31 +149,20 @@
 
 - (UIImage *)_toolbarBackgroundImage{
     
-    CGFloat components[] = {
-        0., 0., 0., 0.,
-        0./255., 0./255., 0./255., 1.
-    };
+    const float colorMask[6] = {222, 255, 222, 255, 222, 255};
+    UIImage *img = [[UIImage alloc] init];
+    UIImage *maskedImage = [UIImage imageWithCGImage: CGImageCreateWithMaskingColors(img.CGImage, colorMask)];
     
-    UIGraphicsBeginImageContextWithOptions(CGSizeMake(320, 54), YES, 0.0);
+    [self.toolbar setBackgroundImage:maskedImage forToolbarPosition:UIToolbarPositionAny barMetrics:UIBarMetricsDefault];
     
-    CGContextRef ctx = UIGraphicsGetCurrentContext();
-    CGColorSpaceRef colorSpace = CGColorSpaceCreateDeviceRGB();
-    CGGradientRef gradient = CGGradientCreateWithColorComponents(colorSpace, components, NULL, 2);
-    
-    CGContextDrawLinearGradient(ctx, gradient, CGPointMake(0, 0), CGPointMake(0, 54), kCGImageAlphaNoneSkipFirst);
-    
-    UIImage *viewImage = UIGraphicsGetImageFromCurrentImageContext();
-	
-	CGGradientRelease(gradient);
-    CGColorSpaceRelease(colorSpace);
-    UIGraphicsEndImageContext();
-    
-    return viewImage;
+    return maskedImage;
 }
 
 - (void)_setupToolbar{
     if (UI_USER_INTERFACE_IDIOM() == UIUserInterfaceIdiomPhone) {
         self.toolbar = [[UIToolbar alloc] initWithFrame:CGRectZero];
+        self.toolbar.clipsToBounds = YES;
+
         [self.toolbar setBackgroundImage:[self _toolbarBackgroundImage] forToolbarPosition:UIToolbarPositionAny barMetrics:UIBarMetricsDefault];
         [self.view addSubview:self.toolbar];
         
@@ -181,7 +170,7 @@
         [self _setupUseButton];
         
         UILabel *info = [[UILabel alloc] initWithFrame:CGRectMake((self.view.frame.size.width-250)/2, 20, 320, 40)];
-        info.text = NSLocalizedString(@"MOVE AND SCALE", @"");
+        info.text = NSLocalizedString(@"MOVE AND SCALE", nil);
         info.textColor = [UIColor colorWithRed:255.0/255.0 green:255.0/255.0 blue:255.0/255.0 alpha:1];
         info.backgroundColor = [UIColor clearColor];
         info.font = [UIFont rockpackFontOfSize:18];
