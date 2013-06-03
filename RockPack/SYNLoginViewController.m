@@ -984,7 +984,7 @@
 {
     if (emailInputField.text.length < 1)
     {
-        [self placeErrorLabel: @"egister_screen_form_field_email_error_empty"
+        [self placeErrorLabel: NSLocalizedString(@"register_screen_form_field_email_error_empty", nil)
                    nextToView: emailInputField];
         
         [emailInputField becomeFirstResponder];
