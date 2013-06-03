@@ -875,7 +875,7 @@ static UIWebView* vimeoideoWebViewInstance;
 {
     int playingValue = [[self.currentVideoWebView stringByEvaluatingJavaScriptFromString: @"player.getPlayerState();"] intValue];
     
-    return ((playingValue == 2) || (playingValue == 3)) ? TRUE : FALSE;
+    return ((playingValue == 1) || (playingValue == 3)) ? TRUE : FALSE;
 }
 
 - (BOOL) isPaused

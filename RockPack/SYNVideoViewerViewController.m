@@ -283,6 +283,13 @@
                                                                     action: @selector(userTouchedMaxMinButton)
                                                           forControlEvents: UIControlEventTouchUpInside];
     }
+    else
+    {
+        [[NSNotificationCenter defaultCenter] addObserver: self
+                                                 selector: @selector(refreshAddbuttonStatus:)
+                                                     name: kVideoQueueClear
+                                                   object: nil];
+    }
     
     // Update all the labels corresponding to the selected videos
     [self updateVideoDetailsForIndex: self.currentSelectedIndex];
@@ -290,9 +297,6 @@
     // We need to scroll the current thumbnail before the view appears (with no animation)
     [self scrollToCellAtIndex: self.currentSelectedIndex
                      animated: YES];
-    
-    self.addButton.hidden = !self.addVideoButton.selected;
-    
 
 }
 
@@ -305,6 +309,8 @@
         [[NSNotificationCenter defaultCenter] removeObserver: self
                                                         name: UIDeviceOrientationDidChangeNotification
                                                       object: nil];
+        //Stop generating notifications
+        [[UIDevice currentDevice] endGeneratingDeviceOrientationNotifications];
         
         // Remember to remove the target, as we may be drilling down deeper to another vc (and then returning, which would mean multiple
         // targets were added
@@ -312,9 +318,17 @@
                                                                        action: @selector(userTouchedMaxMinButton)
                                                              forControlEvents: UIControlEventTouchUpInside];
     }
+    else
+    {
+        [[NSNotificationCenter defaultCenter] removeObserver: self
+                                                        name: kVideoQueueClear
+                                                      object: nil];
+    }
     
     [[NSNotificationCenter defaultCenter] postNotificationName: kNoteShowNetworkMessages
                                                         object: nil];
+
+
     
     [super viewWillDisappear: animated];
 }
@@ -428,8 +442,7 @@
     self.channelTitleLabel.text = videoInstance.channel.title;
     self.videoTitleLabel.text = videoInstance.title;
     self.starButton.selected = videoInstance.video.starredByUserValue;
-    self.addVideoButton.selected = [appDelegate.videoQueue videoInstanceIsAddedToChannel:videoInstance];
-    self.addButton.hidden = !self.addVideoButton.selected;
+    [self refreshAddbuttonStatus:nil];
 }
 
 
@@ -540,10 +553,10 @@
 
 - (IBAction) userTouchedVideoAddItButton: (UIButton *) addItButton
 {
-    
+    BOOL isIpad = [[SYNDeviceManager sharedInstance] isIPad];
     VideoInstance *videoInstance = self.videoInstanceArray [self.currentSelectedIndex];
     
-    if ([appDelegate.videoQueue videoInstanceIsAddedToChannel:videoInstance])
+    if ([[SYNDeviceManager sharedInstance] isIPad] && [appDelegate.videoQueue videoInstanceIsAddedToChannel:videoInstance])
     {
         [[NSNotificationCenter defaultCenter] postNotificationName: kVideoQueueRemove
                                                         object: self
@@ -568,7 +581,10 @@
                                                    }];
         
     }
-    
+    if(!isIpad)
+    {
+        addItButton.selected = NO;
+    }
     self.addButton.hidden = !addItButton.selected;
 }
 
@@ -1057,5 +1073,25 @@
 }
 
 
+#pragma mark - play and pause video if active
+
+- (void) playIfVideoActive
+{
+    [self.videoPlaybackViewController playIfVideoActive];
+}
+
+- (void) pauseIfVideoActive
+{
+    [self.videoPlaybackViewController pauseIfVideoActive];
+}
+
+#pragma mark - refresh addbutton status
+-(void)refreshAddbuttonStatus:(NSNotification*)note
+{
+    //We should only track the status of the queue on iPad since iPhone only ever adds one object at a time
+    VideoInstance* videoInstance = self.videoInstanceArray[self.currentSelectedIndex];
+    self.addVideoButton.selected = [appDelegate.videoQueue videoInstanceIsAddedToChannel:videoInstance];
+    self.addButton.hidden = !self.addVideoButton.selected;
+}
 
 @end

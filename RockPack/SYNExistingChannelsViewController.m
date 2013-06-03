@@ -176,6 +176,10 @@
     }
                      completion: ^(BOOL finished) {
         [self.view removeFromSuperview];
+        // Post notification without object. Needed to restart video player if visible.
+        [[NSNotificationCenter defaultCenter] postNotificationName: kNoteVideoAddedToExistingChannel
+                                                                             object: self
+                                                                           userInfo: nil];
     }];
 }
 
@@ -262,6 +266,9 @@
             [self.view.window.layer addAnimation:animation forKey:nil];
             [self presentViewController:channelCreationVC animated:NO completion:^{
                 
+                [[NSNotificationCenter defaultCenter] postNotificationName: kNoteCreateNewChannel
+                                                                    object: self
+                                                                  userInfo: @{kChannel:appDelegate.videoQueue.currentlyCreatingChannel}];
             }];
             
         }
