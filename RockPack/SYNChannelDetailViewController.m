@@ -239,7 +239,6 @@
         [self addChildViewController: self.categoriesTabViewController];
     }
     
-    self.originalContentOffset = self.videoThumbnailCollectionView.contentOffset;
     
     self.originalMasterControlsViewOrigin = self.masterControlsView.frame.origin;
     
@@ -387,6 +386,9 @@
     }
     
     [self displayChannelDetails];
+    
+    
+    self.originalContentOffset = self.videoThumbnailCollectionView.contentOffset;
 }
 
 

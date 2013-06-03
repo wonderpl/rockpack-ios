@@ -14,6 +14,7 @@ const struct UserAttributes UserAttributes = {
 	.gender = @"gender",
 	.lastName = @"lastName",
 	.locale = @"locale",
+	.loginOrigin = @"loginOrigin",
 	.subscriptionsUrl = @"subscriptionsUrl",
 	.username = @"username",
 };
@@ -62,6 +63,11 @@ const struct UserFetchedProperties UserFetchedProperties = {
 	}
 	if ([key isEqualToString:@"genderValue"]) {
 		NSSet *affectingKey = [NSSet setWithObject:@"gender"];
+		keyPaths = [keyPaths setByAddingObjectsFromSet:affectingKey];
+		return keyPaths;
+	}
+	if ([key isEqualToString:@"loginOriginValue"]) {
+		NSSet *affectingKey = [NSSet setWithObject:@"loginOrigin"];
 		keyPaths = [keyPaths setByAddingObjectsFromSet:affectingKey];
 		return keyPaths;
 	}
@@ -194,6 +200,32 @@ const struct UserFetchedProperties UserFetchedProperties = {
 
 @dynamic locale;
 
+
+
+
+
+
+@dynamic loginOrigin;
+
+
+
+- (int16_t)loginOriginValue {
+	NSNumber *result = [self loginOrigin];
+	return [result shortValue];
+}
+
+- (void)setLoginOriginValue:(int16_t)value_ {
+	[self setLoginOrigin:[NSNumber numberWithShort:value_]];
+}
+
+- (int16_t)primitiveLoginOriginValue {
+	NSNumber *result = [self primitiveLoginOrigin];
+	return [result shortValue];
+}
+
+- (void)setPrimitiveLoginOriginValue:(int16_t)value_ {
+	[self setPrimitiveLoginOrigin:[NSNumber numberWithShort:value_]];
+}
 
 
 
