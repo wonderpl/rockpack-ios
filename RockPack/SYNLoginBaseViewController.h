@@ -62,6 +62,8 @@ typedef enum {
 
 - (void) setUpInitialState;
 
+-(void)reEnableLoginControls;
+
 - (BOOL) isNetworkAccessibleOtherwiseShowErrorAlert;
 
 - (void) doFacebookLoginAnimation;
