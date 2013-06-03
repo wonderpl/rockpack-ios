@@ -52,39 +52,49 @@ static char operationKey;
     if (url)
     {
         __weak UIImageView *wself = self;
-        id<SDWebImageOperation> operation = [SDWebImageManager.sharedManager downloadWithURL:url
-                                                                                     options:options
-                                                                                    progress:progressBlock
-                                                                                   completed:^(UIImage *image, NSError *error, SDImageCacheType cacheType, BOOL finished) {
-                                                                                       
-            __strong UIImageView *sself = wself;
-            if (!sself) return;
-                                                                                       
-            if (image)
-            {
-                // If we were not returned directly from the cache, then fade up
-                if (cacheType == SDImageCacheTypeNone)
-                {
-                    [UIView transitionWithView: sself.superview
-                                      duration: 0.35f
-                                       options: UIViewAnimationOptionTransitionCrossDissolve | UIViewAnimationOptionAllowUserInteraction
-                                    animations: ^{
-                                        sself.image = image;
-                                    }
-                                    completion: nil];
-                }
-                else
-                {
-                    sself.image = image;
-                }
-
-                [sself setNeedsLayout];
-            }
-            if (completedBlock && finished)
-            {
-                completedBlock(image, error, cacheType);
-            }
-        }];
+        id<SDWebImageOperation> operation = [SDWebImageManager.sharedManager downloadWithURL: url
+                                                                                     options: options
+                                                                                    progress: progressBlock
+                                                                                   completed:^ (UIImage *image, NSError *error, SDImageCacheType cacheType, BOOL finished)
+                                             {
+                                                 dispatch_async(dispatch_get_main_queue(), ^{
+                                                     __strong typeof(self) sself = wself;
+                                                     
+                                                     if (sself == nil)
+                                                     {
+                                                         // If the pointer is nil, then bail
+                                                         return;
+                                                     }
+                                                     
+                                                     if (image != nil)
+                                                     {
+                                                         // If we were not returned directly from the cache, then fade up
+                                                         if (cacheType == SDImageCacheTypeNone)
+                                                         {
+                                                             [UIView transitionWithView: sself.superview
+                                                                               duration: 0.35f
+                                                                                options: UIViewAnimationOptionTransitionCrossDissolve | UIViewAnimationOptionAllowUserInteraction
+                                                                             animations: ^{
+                                                                                 sself.image = image;
+                                                                             }
+                                                                             completion: nil];
+                                                         }
+                                                         else
+                                                         {
+                                                             sself.image = image;
+                                                         }
+                                                         
+                                                         [sself setNeedsLayout];
+                                                     }
+                                                     
+                                                     if (completedBlock && finished)
+                                                     {
+                                                         completedBlock(image, error, cacheType);
+                                                     }
+                                                 });
+                                                 
+                                             }];
+        
         objc_setAssociatedObject(self, &operationKey, operation, OBJC_ASSOCIATION_RETAIN_NONATOMIC);
     }
 }
