@@ -10,12 +10,15 @@
 #import "UIFont+SYNFont.h"
 #import "SYNDeviceManager.h"
 
-@interface SYNFeedMessagesView ()
-{
+#define kSpinnerTextDistance 12.0
+
+@interface SYNFeedMessagesView () {
     BOOL _isIPhone;
+    BOOL _isLoader;
+    UIActivityIndicatorView* _activityIndicatorView;
 }
 
-    @property UILabel* messageLabel;
+@property UILabel* messageLabel;
 
 @end
 
@@ -70,12 +73,13 @@
     self.messageLabel.text = [newMessage uppercaseString];
     [self.messageLabel sizeToFit];
 
-    CGRect mainFrame = CGRectMake(0.0, 0.0, self.messageLabel.frame.size.width + 40.0, self.messageLabel.frame.size.height + 30.0);
     
-    self.messageLabel.center = CGPointMake(mainFrame.size.width * 0.5, mainFrame.size.height * 0.5 + 4.0);
+    self.frame = [self returnMainFrame];
+    
+    self.messageLabel.center = CGPointMake(self.frame.size.width * 0.5, self.frame.size.height * 0.5 + 4.0);
     self.messageLabel.frame = CGRectIntegral(self.messageLabel.frame);
     
-    self.frame = mainFrame;
+    
     
 
 }
@@ -83,6 +87,58 @@
 + (id) withMessage: (NSString*) message
 {
     return [[self alloc] initWithMessage: message];
+}
+
++ (id) withMessage:(NSString *)message andLoader:(BOOL)isLoader
+{
+    SYNFeedMessagesView* instance = [self withMessage:message];
+    instance.isLoader = isLoader;
+    return instance;
+}
+
+-(void)setIsLoader:(BOOL)isLoader
+{
+    if(_isLoader == isLoader)
+        return;
+    
+    if(_isLoader) // remove existing no matter what
+    {
+        [_activityIndicatorView stopAnimating];
+        [_activityIndicatorView removeFromSuperview];
+        _activityIndicatorView = nil;
+    }
+    
+    _isLoader = isLoader;
+    
+    if(_isLoader)
+    {
+        _activityIndicatorView = [[UIActivityIndicatorView alloc] initWithActivityIndicatorStyle:UIActivityIndicatorViewStyleWhiteLarge];
+        _activityIndicatorView.hidesWhenStopped = YES;
+        CGRect activityFrame = _activityIndicatorView.frame;
+        activityFrame.origin.x = kSpinnerTextDistance + self.messageLabel.frame.origin.x + self.messageLabel.frame.size.width;
+        _activityIndicatorView.frame = activityFrame;
+        _activityIndicatorView.center = CGPointMake(_activityIndicatorView.center.x, self.frame.size.height * 0.5);
+        _activityIndicatorView.frame = CGRectIntegral(_activityIndicatorView.frame);
+        [self addSubview:_activityIndicatorView];
+        [_activityIndicatorView startAnimating];
+        
+        // set frame
+        
+        self.frame = [self returnMainFrame];
+    }
+    
+}
+
+-(CGRect)returnMainFrame
+{
+    CGRect mainFrame = CGRectMake(0.0, 0.0, self.messageLabel.frame.size.width + 40.0, self.messageLabel.frame.size.height + 30.0);
+    
+    if(_isLoader)
+    {
+        mainFrame.size.width += _activityIndicatorView.frame.size.width + kSpinnerTextDistance;
+    }
+    
+    return mainFrame;
 }
 
 @end

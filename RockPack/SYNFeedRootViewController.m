@@ -172,7 +172,7 @@
     
     self.dataRequestRange = NSMakeRange(0, STANDARD_REQUEST_LENGTH);
     
-    [self displayEmptyGenreMessage:NSLocalizedString(@"feed_screen_loading_message", nil)];
+    [self displayEmptyGenreMessage:NSLocalizedString(@"feed_screen_loading_message", nil) andLoader:YES];
     
     [self loadAndUpdateFeedData];
 }
@@ -271,7 +271,7 @@
                                                     
                                                     if(self.fetchedResultsController.fetchedObjects.count == 0)
                                                     {
-                                                        [self displayEmptyGenreMessage:NSLocalizedString(@"feed_screen_empty_message", nil)];
+                                                        [self displayEmptyGenreMessage:NSLocalizedString(@"feed_screen_empty_message", nil) andLoader:NO];
                                                     }  
                                                     
                                                         
@@ -312,12 +312,12 @@
     [self.emptyGenreMessageView removeFromSuperview];
 }
 
-- (void) displayEmptyGenreMessage:(NSString*)messageKey
+- (void) displayEmptyGenreMessage:(NSString*)messageKey andLoader:(BOOL)isLoader
 {
     
     if (!self.emptyGenreMessageView)
     {
-        self.emptyGenreMessageView = [SYNFeedMessagesView withMessage:NSLocalizedString(messageKey ,nil)];
+        self.emptyGenreMessageView = [SYNFeedMessagesView withMessage:NSLocalizedString(messageKey ,nil) andLoader:isLoader];
     }
     else
     {
