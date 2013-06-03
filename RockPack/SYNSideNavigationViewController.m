@@ -539,6 +539,7 @@ typedef enum {
             [cell setSelected: NO];
         }
     }
+    self.currentlySelectedIndexPath = nil;
 }
 
 - (void) setCurrentlyLoadedViewController: (UIViewController *) currentlyLoadedVC
@@ -568,6 +569,13 @@ typedef enum {
 - (void) reset
 {
     self.currentlySelectedIndexPath = nil;
+    if([[SYNDeviceManager sharedInstance] isIPhone])
+    {
+        CGRect startFrame = self.navigationContainerView.frame;
+        startFrame.origin.x = self.view.frame.size.width;
+        self.navigationContainerView.frame = startFrame;
+        self.currentlyLoadedViewController = nil;
+    }
     
 }
 
@@ -861,6 +869,7 @@ typedef enum {
 #pragma mark - iPhone navigate back from notifications
 - (IBAction) navigateBackTapped: (id) sender
 {
+    [self deselectAllCells];
     [UIView animateWithDuration: 0.3f
                           delay: 0.0f
                         options: UIViewAnimationOptionCurveEaseInOut
