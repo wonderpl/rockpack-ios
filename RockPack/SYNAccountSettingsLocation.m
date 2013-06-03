@@ -23,6 +23,7 @@
 
 @implementation SYNAccountSettingsLocation
 @synthesize appDelegate;
+@synthesize spinner;
 
 -(id)init
 {
@@ -170,20 +171,21 @@
 
 -(void)changeUserLocaleForValue:(NSString*)newLocale
 {
+    __weak SYNAccountSettingsLocation* wself = self;
     [self.appDelegate.oAuthNetworkEngine changeUserField:@"locale"
                                                  forUser:appDelegate.currentUser
                                             withNewValue:newLocale
                                        completionHandler:^ (NSDictionary * dictionary){
                                            
-                                           self.user.locale = newLocale;
+                                           appDelegate.currentUser.locale = newLocale;
                                            
-                                           [self.spinner stopAnimating];
+                                           [spinner stopAnimating];
                                            
                                            [appDelegate clearCoreDataMainEntities:NO];
                                            
-                                           [self.appDelegate saveContext:YES];
+                                           [appDelegate saveContext:YES];
                                            
-                                           [self.navigationController popViewControllerAnimated:YES];
+                                           [wself.navigationController popViewControllerAnimated:YES];
                                            
                                        } errorHandler:^(id errorInfo) {
                                            

@@ -80,8 +80,10 @@
 - (void) prepareForReuse
 {
     [self.imageView.layer removeAllAnimations];
+    [self.layer removeAllAnimations];
     
     self.imageView.image = nil;
+    
     self.deleteButton.hidden = TRUE;
     
 }
