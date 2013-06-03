@@ -644,7 +644,7 @@
     // Set title //
     
     
-    if(self.channel.title)
+    if (self.channel.title)
     {
         self.channelTitleTextView.text = self.channel.title;
     }
@@ -841,9 +841,7 @@
                        ofObject: (id) object
                          change: (NSDictionary *) change
                         context: (void *) context
-{
-
-    
+{   
     if ([keyPath isEqualToString: kTextViewContentSizeKey])
     {
         UITextView *tv = object;
@@ -855,8 +853,6 @@
         [tv setContentOffset: (CGPoint){.x = 0, .y = -topCorrect}
                     animated: NO];
     }
-    
-    
 }
 
 
@@ -2300,27 +2296,31 @@
     [self closeImageSelector: imageSelector];
 }
 
+
 #pragma mark - ScrollView Delegate
 
--(void)scrollViewDidScroll:(UIScrollView *)scrollView
+- (void) scrollViewDidScroll: (UIScrollView *) scrollView
 {
-    
-    
-    if (scrollView.contentOffset.y <= self.originalContentOffset.y)
+    if (scrollView == self.videoThumbnailCollectionView)
     {
-        self.masterControlsView.alpha = 1.0f;
-    }
-    else
-    {
-        CGFloat differenceInY = - (self.originalContentOffset.y - scrollView.contentOffset.y);
+        NSLog (@"contentOffset %f, orginContentOffset %f", scrollView.contentOffset.y , self.originalContentOffset.y);
         
-        if (differenceInY < kChannelDetailsFadeSpan)
+        if (scrollView.contentOffset.y <= self.originalContentOffset.y)
         {
-            self.masterControlsView.alpha = 1 - (differenceInY / kChannelDetailsFadeSpan);
+            self.masterControlsView.alpha = 1.0f;
         }
         else
         {
-            self.masterControlsView.alpha = 0.0f;
+            CGFloat differenceInY = - (self.originalContentOffset.y - scrollView.contentOffset.y);
+            
+            if (differenceInY < kChannelDetailsFadeSpan)
+            {
+                self.masterControlsView.alpha = 1 - (differenceInY / kChannelDetailsFadeSpan);
+            }
+            else
+            {
+                self.masterControlsView.alpha = 0.0f;
+            }
         }
     }
 }
@@ -2374,51 +2374,44 @@
                                     }];
 }
 
+
 #pragma mark - Tab View Methods
 
-
--(void)setChannel:(Channel *)channel
+- (void) setChannel: (Channel *) channel
 {
     
     self.originalChannel = channel;
     
     NSError *error = nil;
     
-    if(!appDelegate)
+    if (!appDelegate)
         appDelegate = UIApplication.sharedApplication.delegate;
     
-    
-    if(self.channel)
+    if (self.channel)
     {
         
         [[NSNotificationCenter defaultCenter] removeObserver: self
                                                         name: NSManagedObjectContextObjectsDidChangeNotification
-                                                      object: self.channel.managedObjectContext];
-        
-        
+                                                      object: self.channel.managedObjectContext];   
     }
     
     _channel = channel;
 
-    if(!self.channel)
+    if (!self.channel)
         return;
-        
-    
+
     // create a copy that belongs to this viewId (@"ChannelDetails")
-    
     NSFetchRequest *channelFetchRequest = [[NSFetchRequest alloc] init];
     
     [channelFetchRequest setEntity: [NSEntityDescription entityForName: @"Channel"
                                                 inManagedObjectContext: channel.managedObjectContext]];
-    
-    
+
     [channelFetchRequest setPredicate: [NSPredicate predicateWithFormat: @"uniqueId == %@ AND viewId == %@", channel.uniqueId, self.viewId]];
     
     
     NSArray *matchingChannelEntries = [channel.managedObjectContext executeFetchRequest: channelFetchRequest
                                                                                   error: &error];
-    
-    
+
     if (matchingChannelEntries.count > 0)
     {
         _channel = (Channel*)matchingChannelEntries[0];
@@ -2426,63 +2419,44 @@
         
         if(matchingChannelEntries.count > 1) // housekeeping, there can be only one!
             for (int i = 1; i < matchingChannelEntries.count; i++)
-                [channel.managedObjectContext deleteObject:(matchingChannelEntries[i])];
-        
-        
+                [channel.managedObjectContext deleteObject:(matchingChannelEntries[i])];  
     }
     else
     {
-
-        
         // the User will be copyed over, but as a ChannelOwner, so "current" will not be set to YES
-
         _channel = [Channel instanceFromChannel:channel
                                       andViewId:self.viewId
                       usingManagedObjectContext:channel.managedObjectContext
                             ignoringObjectTypes:kIgnoreNothing];
-        
-    
-        
+
         if(_channel)
         {
             [_channel.managedObjectContext save:&error];
             if(error)
                 _channel = nil; // further error code
         }
-        
     }
-    
-    
-    
+
     if (self.channel)
     {
-        
         // check for subscribed
-        
-        
         self.channel.subscribedByUserValue = NO;
         for (Channel* subscription in appDelegate.currentUser.subscriptions)
             if([subscription.uniqueId isEqualToString:self.channel.uniqueId])
                 self.channel.subscribedByUserValue = YES;
         
-        
         [[NSNotificationCenter defaultCenter] addObserver: self
                                                  selector: @selector(mainContextDataChanged:)
                                                      name: NSManagedObjectContextDidSaveNotification
                                                    object: self.channel.managedObjectContext];
-        
-        
-        
+
         if(self.mode == kChannelDetailsModeDisplay)
         {
-            
             [[NSNotificationCenter defaultCenter] postNotificationName: kChannelUpdateRequest
                                                                 object: self
                                                               userInfo: @{kChannel: self.channel}];
         }
-        
     }
-    
 }
 
 
@@ -2491,9 +2465,10 @@
     return YES;
 }
 
+
 #pragma mark - user avatar image update
 
--(void)reloadUserImage:(NSNotification*)note
+- (void) reloadUserImage: (NSNotification*) note
 {
     //If this channel is owned by the logged in user we are subscribing to this notification when the user data changes. we therefore re-load the avatar image
     
@@ -2513,7 +2488,8 @@
     }
 }
 
--(void)dealloc
+\
+- (void) dealloc
 {
     self.channel = nil;
     self.originalChannel = nil;
