@@ -253,7 +253,8 @@ typedef enum _Gender {
 #define kStandardCollectionViewOffsetYiPhone 60.0f
 #define kYouCollectionViewOffsetY 160.0f
 #define kChannelDetailsCollectionViewOffsetY 500.0f
-#define kChannelDetailsFadeSpan 15.0f
+#define kChannelDetailsFadeSpan 200.0f
+#define kChannelDetailsFadeSpaniPhone 100.0f
 
 #define kImageUploadWidth 1024
 #define kImageUploadHeight 768
@@ -281,6 +282,15 @@ typedef enum _Gender {
 
 #define kCurrentPage        @"kCurrentPage"
 
+
+//Login Origin
+
+
+typedef enum {
+    LoginOriginRockpack = 0,
+    LoginOriginFacebook = 1
+    
+} LoginOrigin;
 
 #define kLoginCompleted @"kLoginCompleted"
 

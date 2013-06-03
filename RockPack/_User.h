@@ -15,6 +15,7 @@ extern const struct UserAttributes {
 	__unsafe_unretained NSString *gender;
 	__unsafe_unretained NSString *lastName;
 	__unsafe_unretained NSString *locale;
+	__unsafe_unretained NSString *loginOrigin;
 	__unsafe_unretained NSString *subscriptionsUrl;
 	__unsafe_unretained NSString *username;
 } UserAttributes;
@@ -24,6 +25,7 @@ extern const struct UserRelationships {
 
 extern const struct UserFetchedProperties {
 } UserFetchedProperties;
+
 
 
 
@@ -164,6 +166,20 @@ extern const struct UserFetchedProperties {
 
 
 
+@property (nonatomic, strong) NSNumber* loginOrigin;
+
+
+
+@property int16_t loginOriginValue;
+- (int16_t)loginOriginValue;
+- (void)setLoginOriginValue:(int16_t)value_;
+
+//- (BOOL)validateLoginOrigin:(id*)value_ error:(NSError**)error_;
+
+
+
+
+
 @property (nonatomic, strong) NSString* subscriptionsUrl;
 
 
@@ -259,6 +275,15 @@ extern const struct UserFetchedProperties {
 
 - (NSString*)primitiveLocale;
 - (void)setPrimitiveLocale:(NSString*)value;
+
+
+
+
+- (NSNumber*)primitiveLoginOrigin;
+- (void)setPrimitiveLoginOrigin:(NSNumber*)value;
+
+- (int16_t)primitiveLoginOriginValue;
+- (void)setPrimitiveLoginOriginValue:(int16_t)value_;
 
 
 
