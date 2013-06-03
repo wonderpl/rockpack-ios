@@ -332,7 +332,6 @@
             
             break;
         }
-
         case kLoginScreenStatePasswordRetrieve:
         {
             self.state = kLoginScreenStateLogin;

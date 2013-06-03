@@ -1006,11 +1006,22 @@
         
         return NO;
     }
-    
+    //register_screen_form_field_username_error_too_long
     // == Username must be
+    
     if (![userNameInputField.text isMatchedByRegex:@"^[a-zA-Z0-9\\._]+$"])
     {
         [self placeErrorLabel: NSLocalizedString(@"register_screen_form_field_username_error_invalid", nil)
+                   nextToView: userNameInputField];
+        
+        [userNameInputField becomeFirstResponder];
+        
+        return NO;
+    }
+    
+    if(userNameInputField.text.length > 20)
+    {
+        [self placeErrorLabel: NSLocalizedString(@"register_screen_form_field_username_error_too_long", nil)
                    nextToView: userNameInputField];
         
         [userNameInputField becomeFirstResponder];
