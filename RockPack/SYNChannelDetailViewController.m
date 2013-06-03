@@ -564,7 +564,7 @@
             
             if(self.channel.videoInstances.count == 0)
             {
-                [self showNoVideosMessage:@"THERE ARE NO VIDEOS IN THIS CHANNEL YET"];
+                [self showNoVideosMessage: NSLocalizedString(@"channel_screen_no_videos",nil)];
             }
             else
             {
