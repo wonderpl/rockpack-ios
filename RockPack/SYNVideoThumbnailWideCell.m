@@ -99,7 +99,7 @@
     
     // User touches channel thumbnail
     [self.channelButton addTarget: self.viewControllerDelegate
-                           action: @selector(profileButtonTapped:)
+                           action: @selector(channelButtonTapped:)
                  forControlEvents: UIControlEventTouchUpInside];
     
     // User touches user details

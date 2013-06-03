@@ -190,10 +190,6 @@
                                                  name:kVideoQueueClear
                                                object:nil];
     
-    
-    
-    
-    
 }
 
 -(void)videoQueueCleared
