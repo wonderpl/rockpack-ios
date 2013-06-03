@@ -258,7 +258,7 @@
         
         cell.textLabel.font = [UIFont rockpackFontOfSize:18.0];
         
-        if (indexPath.row != 2)
+        if (indexPath.row != self.dataItems2ndSection.count - 1) // if its not the last element which is always the Logout button
         {
             cell.accessoryType = UITableViewCellAccessoryDisclosureIndicator;
         }
@@ -356,13 +356,17 @@
         switch (indexPath.row)
         { 
             case 0:
-                [self.navigationController pushViewController: [[SYNAccountSettingsPassword alloc] init]
-                                                     animated: YES];
+                if(self.dataItems2ndSection.count == 2)
+                    [self.navigationController pushViewController: [[SYNAccountSettingsAbout alloc] init] animated: YES];
+                else
+                    [self.navigationController pushViewController: [[SYNAccountSettingsPassword alloc] init] animated: YES];
                 break;
                 
             case 1:
-                [self.navigationController pushViewController: [[SYNAccountSettingsAbout alloc] init]
-                                                     animated: YES];
+                if(self.dataItems2ndSection.count == 2)
+                    [self showLogoutAlert];
+                else
+                    [self.navigationController pushViewController: [[SYNAccountSettingsAbout alloc] init] animated: YES];
                 break;
                 
             case 2:
