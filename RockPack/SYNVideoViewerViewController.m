@@ -98,7 +98,7 @@
         // Set custom fonts
         self.channelTitleLabel.font = [UIFont rockpackFontOfSize: 12.0f];
         self.channelCreatorLabel.font = [UIFont rockpackFontOfSize: 10.0f];
-        self.videoTitleLabel.font = [UIFont boldRockpackFontOfSize: 16.0f];
+        self.videoTitleLabel.font = [UIFont boldRockpackFontOfSize: 13.0f];
         
         // Cross-face transitions
         self.channelTitleLabel.transitionDuration = kTextCrossfadeDuration;
