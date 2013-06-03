@@ -331,14 +331,6 @@
     // Google analytics support
     [GAI.sharedInstance.defaultTracker sendView: viewMode];
     
-    
-    
-    // Use KVO on the collection view to detect user scrolling (to fade out overlaid controls)
-    [self.videoThumbnailCollectionView addObserver: self
-                                        forKeyPath: kCollectionViewContentOffsetKey
-                                           options: NSKeyValueObservingOptionNew
-                                           context: nil];
-    
     [self.channelTitleTextView addObserver: self
                                 forKeyPath: kTextViewContentSizeKey
                                    options: NSKeyValueObservingOptionNew
@@ -404,10 +396,6 @@
     [[NSNotificationCenter defaultCenter] postNotificationName: kNoteAllNavControlsShow
                                                         object: self
                                                       userInfo: nil];
-    
-    [self.videoThumbnailCollectionView removeObserver: self
-                                           forKeyPath: kCollectionViewContentOffsetKey];
-
     
     [self.channelTitleTextView removeObserver: self
                                    forKeyPath: kTextViewContentSizeKey];
