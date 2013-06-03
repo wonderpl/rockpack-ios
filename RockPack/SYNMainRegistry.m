@@ -90,7 +90,7 @@
 }
 - (BOOL) registerSubscriptionsForCurrentUserFromDictionary: (NSDictionary*) dictionary
 {
-    [appDelegate.currentUser addSubscriptionsDictionary:dictionary];
+    [appDelegate.currentUser setSubscriptionsDictionary:dictionary];
     
     [appDelegate saveContext:YES];
     

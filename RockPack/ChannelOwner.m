@@ -168,7 +168,6 @@
         
         [self.channelsSet removeAllObjects];
         
-        
         NSString *newUniqueId;
         
         for (NSDictionary* channelDictionary in channelItemsArray)
@@ -229,7 +228,7 @@
 
 #pragma mark - Channels
 
--(void)addSubscriptionsDictionary:(NSDictionary *)subscriptionsDictionary
+-(void)setSubscriptionsDictionary:(NSDictionary *)subscriptionsDictionary
 {
     NSDictionary* channeslDictionary = [subscriptionsDictionary objectForKey: @"channels"];
     if (!channeslDictionary)
@@ -246,7 +245,6 @@
     
     
     [self.subscriptionsSet removeAllObjects];
-    
     
     
     for (NSDictionary* subscriptionChannel in itemsArray)

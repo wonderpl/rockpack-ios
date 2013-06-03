@@ -353,8 +353,8 @@
             
             [appDelegate.oAuthNetworkEngine userSubscriptionsForUser:((User*)channelOwner) onCompletion:^(id dictionary) {
                 
-                
-                [channelOwner addSubscriptionsDictionary:dictionary];
+                // this will remove the old subscriptions
+                [channelOwner setSubscriptionsDictionary:dictionary];
                 
                 NSError *error = nil;
                 [channelOwner.managedObjectContext save: &error];
@@ -383,7 +383,7 @@
                                                                 forRange:NSMakeRange(0, 48)
                                                        completionHandler:^(id dictionary) {
                                                                                                            
-            [channelOwner addSubscriptionsDictionary:dictionary];
+            [channelOwner setSubscriptionsDictionary:dictionary];
                                                            
                     NSError *error = nil;
                     [channelOwner.managedObjectContext save: &error];

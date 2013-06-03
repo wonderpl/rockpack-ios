@@ -1638,7 +1638,7 @@
                                               
                                               Channel* createdChannel;
                                               
-                                              IgnoringObjects ignore = kIgnoreChannelOwnerObject;
+                                              IgnoringObjects ignore = kIgnoreStoredObjects | kIgnoreChannelOwnerObject;
                                               if (!isUpdate) // its a new creation
                                               {
                                                   ignore = ignore | kIgnoreStoredObjects;
@@ -1648,15 +1648,17 @@
                                                                                ignoringObjectTypes:ignore];
                                                   
                                                   
+                                                  // this will automatically add the channel to the set of channels of the User
+                                                  
                                                   createdChannel.channelOwner = appDelegate.currentUser;
                                                   
                                                   
-                                                  // this will delete the edited channel from channels context //
-                                                  
-                                                  [self.channel.managedObjectContext deleteObject:self.channel];
-                                                  
-                                                  
                                                   self.channel = createdChannel;
+                                                  
+                                                  DebugLog(@"Channel: %@", createdChannel);
+                                                  
+                                                  // (the channel that was under creation will be deleted from the kVideoQueueClear notification)
+                                                  
                                                   
                                               }
                                               else
@@ -1671,7 +1673,7 @@
                                               }
                                               
                                               
-                                              DebugLog(@"Channel: %@", createdChannel);
+                                              
                                               
                                               [appDelegate saveContext:YES];
                                               
