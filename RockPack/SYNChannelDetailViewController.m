@@ -2305,8 +2305,6 @@
 {
     if (scrollView == self.videoThumbnailCollectionView)
     {
-        NSLog (@"contentOffset %f, orginContentOffset %f", scrollView.contentOffset.y , self.originalContentOffset.y);
-        
         if (scrollView.contentOffset.y <= self.originalContentOffset.y)
         {
             self.masterControlsView.alpha = 1.0f;
