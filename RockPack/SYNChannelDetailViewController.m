@@ -46,6 +46,7 @@
 }
 
 @property (nonatomic, assign)  CGPoint originalContentOffset;
+@property (nonatomic, assign)  CGPoint originalMasterControlsViewOrigin;
 @property (nonatomic, assign, getter = isImageSelectorOpen) BOOL imageSelectorOpen;
 @property (nonatomic, strong) GKImagePicker *imagePicker;
 @property (nonatomic, strong) IBOutlet SSTextView *channelTitleTextView;
@@ -240,6 +241,7 @@
     
     self.originalContentOffset = self.videoThumbnailCollectionView.contentOffset;
     
+    self.originalMasterControlsViewOrigin = self.masterControlsView.frame.origin;
     
     
     if (self.mode == kChannelDetailsModeDisplay)
@@ -2303,6 +2305,8 @@
 
 - (void) scrollViewDidScroll: (UIScrollView *) scrollView
 {
+    CGFloat fadeSpan = (_isIPhone) ? kChannelDetailsFadeSpaniPhone : kChannelDetailsFadeSpan;
+    
     if (scrollView == self.videoThumbnailCollectionView)
     {
         if (scrollView.contentOffset.y <= self.originalContentOffset.y)
@@ -2313,9 +2317,15 @@
         {
             CGFloat differenceInY = - (self.originalContentOffset.y - scrollView.contentOffset.y);
             
-            if (differenceInY < kChannelDetailsFadeSpan)
+            CGRect frame = self.masterControlsView.frame;
+            
+            frame.origin.y = self.originalMasterControlsViewOrigin.y - (differenceInY / 1.5);
+            
+            self.masterControlsView.frame = frame;
+            
+            if (differenceInY < fadeSpan)
             {
-                self.masterControlsView.alpha = 1 - (differenceInY / kChannelDetailsFadeSpan);
+                self.masterControlsView.alpha = 1 - (differenceInY / fadeSpan);
             }
             else
             {
