@@ -58,7 +58,7 @@
     // Add title (offset due to custom font)
     UIView *containerView = [[UIView alloc] initWithFrame: CGRectMake (0, 0, 200, 28)];
     containerView.backgroundColor = [UIColor clearColor];
-    UILabel *label = [[UILabel alloc] initWithFrame: CGRectMake (0, 4, 200, 28)];
+    UILabel *label = [[UILabel alloc] initWithFrame: CGRectMake (0, 4, 180, 28)];
     label.backgroundColor = [UIColor clearColor];
     label.font = [UIFont rockpackFontOfSize: 20.0];
     label.textAlignment = NSTextAlignmentCenter;
@@ -102,7 +102,7 @@
     
     customUseButton.frame = CGRectMake(0.0, 0.0, customUseButtonImage.size.width, customUseButtonImage.size.height);
     UIBarButtonItem *customUseButtonItem = [[UIBarButtonItem alloc] initWithCustomView: customUseButton];
-    
+        
     self.navigationItem.rightBarButtonItem = customUseButtonItem;
 }
 

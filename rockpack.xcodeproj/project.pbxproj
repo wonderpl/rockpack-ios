@@ -1137,9 +1137,6 @@
 		011BA5DC174D1EB700041A16 /* SYNCoverRightMoreView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SYNCoverRightMoreView.m; sourceTree = "<group>"; };
 		011BA5DE174D1ECB00041A16 /* SYNCoverRightMoreView.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = SYNCoverRightMoreView.xib; sourceTree = "<group>"; };
 		011C1653173003E800CF50B9 /* en */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = en; path = en.lproj/OWActivityViewController.strings; sourceTree = "<group>"; };
-		011C1654173003E800CF50B9 /* fr */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = fr; path = fr.lproj/OWActivityViewController.strings; sourceTree = "<group>"; };
-		011C1655173003E800CF50B9 /* ru */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = ru; path = ru.lproj/OWActivityViewController.strings; sourceTree = "<group>"; };
-		011C1656173003E800CF50B9 /* zh-Hans */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = "zh-Hans"; path = "zh-Hans.lproj/OWActivityViewController.strings"; sourceTree = "<group>"; };
 		011C1657173003E800CF50B9 /* OWActivities.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = OWActivities.h; path = OWActivityViewController/OWActivities.h; sourceTree = SOURCE_ROOT; };
 		011C1658173003E800CF50B9 /* OWActivity.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = OWActivity.h; path = OWActivityViewController/OWActivity.h; sourceTree = SOURCE_ROOT; };
 		011C1659173003E800CF50B9 /* OWActivity.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = OWActivity.m; path = OWActivityViewController/OWActivity.m; sourceTree = SOURCE_ROOT; };
@@ -2258,10 +2255,6 @@
 		BEB15771173BDBD100DAFA2F /* ButtonReportSelected.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = ButtonReportSelected.png; path = Assets/Images/ButtonReportSelected.png; sourceTree = "<group>"; };
 		BEB15772173BDBD100DAFA2F /* ButtonReportSelected@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = "ButtonReportSelected@2x.png"; path = "Assets/Images/ButtonReportSelected@2x.png"; sourceTree = "<group>"; };
 		BEB1577C173C10E900DAFA2F /* en */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = en; path = en.lproj/Localizable.strings; sourceTree = "<group>"; };
-		BEB1577F173C114000DAFA2F /* fr */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = fr; path = fr.lproj/Localizable.strings; sourceTree = "<group>"; };
-		BEB15780173C119E00DAFA2F /* es */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = es; path = es.lproj/OWActivityViewController.strings; sourceTree = "<group>"; };
-		BEB15781173C119E00DAFA2F /* es */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = es; path = es.lproj/InfoPlist.strings; sourceTree = "<group>"; };
-		BEB15782173C119E00DAFA2F /* es */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = es; path = es.lproj/Localizable.strings; sourceTree = "<group>"; };
 		BEB15789173D016B00DAFA2F /* _CoverArt.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = _CoverArt.h; sourceTree = "<group>"; };
 		BEB1578A173D016B00DAFA2F /* _CoverArt.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = _CoverArt.m; sourceTree = "<group>"; };
 		BEB1578C173D060700DAFA2F /* _ChannelCover.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = _ChannelCover.h; sourceTree = "<group>"; };
@@ -5800,7 +5793,6 @@
 			isa = PBXVariantGroup;
 			children = (
 				010DEFDE1629BDC40080F26B /* en */,
-				BEB15781173C119E00DAFA2F /* es */,
 			);
 			name = InfoPlist.strings;
 			path = RockPack;
@@ -5810,10 +5802,6 @@
 			isa = PBXVariantGroup;
 			children = (
 				011C1653173003E800CF50B9 /* en */,
-				011C1654173003E800CF50B9 /* fr */,
-				011C1655173003E800CF50B9 /* ru */,
-				011C1656173003E800CF50B9 /* zh-Hans */,
-				BEB15780173C119E00DAFA2F /* es */,
 			);
 			name = OWActivityViewController.strings;
 			sourceTree = "<group>";
@@ -5822,8 +5810,6 @@
 			isa = PBXVariantGroup;
 			children = (
 				BEB1577C173C10E900DAFA2F /* en */,
-				BEB1577F173C114000DAFA2F /* fr */,
-				BEB15782173C119E00DAFA2F /* es */,
 			);
 			name = Localizable.strings;
 			sourceTree = "<group>";
