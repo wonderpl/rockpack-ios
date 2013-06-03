@@ -172,6 +172,8 @@
     
     self.dataRequestRange = NSMakeRange(0, STANDARD_REQUEST_LENGTH);
     
+    [self displayEmptyGenreMessage:@"feed_screen_loading_message"];
+    
     [self loadAndUpdateFeedData];
 }
 
@@ -269,10 +271,14 @@
                                                     }
                                                     
                                                     
+                                                    [self removeEmptyGenreMessage];
+                                                    
                                                     if(self.fetchedResultsController.fetchedObjects.count == 0)
-                                                        [self displayEmptyGenreMessage];
-                                                    else
-                                                        [self removeEmptyGenreMessage];
+                                                    {
+                                                        [self displayEmptyGenreMessage:@"feed_screen_empty_message"];
+                                                    }  
+                                                    
+                                                        
                                                     
                                                     self.footerView.showsLoading = NO;
                                                     
@@ -310,13 +316,13 @@
     [self.emptyGenreMessageView removeFromSuperview];
 }
 
-- (void) displayEmptyGenreMessage
+- (void) displayEmptyGenreMessage:(NSString*)messageKey
 {
     
     if (self.emptyGenreMessageView)
         return;
     
-    self.emptyGenreMessageView = [SYNFeedMessagesView withMessage:NSLocalizedString(@"feed_screen_empty_message",nil)];
+    self.emptyGenreMessageView = [SYNFeedMessagesView withMessage:NSLocalizedString(messageKey ,nil)];
     CGRect messageFrame = self.emptyGenreMessageView.frame;
     messageFrame.origin.y = [[SYNDeviceManager sharedInstance] currentScreenHeight] - 60 - messageFrame.size.height;
     messageFrame.origin.x = [[SYNDeviceManager sharedInstance] currentScreenWidth] * 0.5 - messageFrame.size.width * 0.5;

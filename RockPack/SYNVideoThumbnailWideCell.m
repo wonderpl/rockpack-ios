@@ -173,6 +173,9 @@
 - (void) prepareForReuse
 {
     // We need to clean up any asynchronous image uploads
+    [self.layer removeAllAnimations];
+    [self.channelImageView.layer removeAllAnimations];
+    
     self.videoImageView.image = nil;
     self.channelImageView.image = nil;
 }
