@@ -172,7 +172,7 @@
     
     self.dataRequestRange = NSMakeRange(0, STANDARD_REQUEST_LENGTH);
     
-    [self displayEmptyGenreMessage:@"feed_screen_loading_message"];
+    [self displayEmptyGenreMessage:NSLocalizedString(@"feed_screen_loading_message", nil)];
     
     [self loadAndUpdateFeedData];
 }
@@ -275,7 +275,7 @@
                                                     
                                                     if(self.fetchedResultsController.fetchedObjects.count == 0)
                                                     {
-                                                        [self displayEmptyGenreMessage:@"feed_screen_empty_message"];
+                                                        [self displayEmptyGenreMessage:NSLocalizedString(@"feed_screen_empty_message", nil)];
                                                     }  
                                                     
                                                         
