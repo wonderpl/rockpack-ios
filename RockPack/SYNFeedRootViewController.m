@@ -171,6 +171,8 @@
     [self.view addSubview: self.refreshButton];
     
     self.dataRequestRange = NSMakeRange(0, STANDARD_REQUEST_LENGTH);
+    
+    [self loadAndUpdateFeedData];
 }
 
 
@@ -188,7 +190,6 @@
     
     
     
-    [self loadAndUpdateFeedData];
     
     
 }
