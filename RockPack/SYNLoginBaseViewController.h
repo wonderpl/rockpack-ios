@@ -68,4 +68,17 @@ typedef enum {
 
 - (void) doFacebookLoginAnimation;
 
+// Form validation
+
+-(BOOL) registrationFormPartOneIsValidForUserName:(UITextField*)userNameInputField;
+
+- (BOOL) registrationFormIsValidForEmail:(UITextField*)emailInputField userName:(UITextField*)userNameInputField password:(UITextField*)passwordInputField dd:(UITextField*)ddInputField mm:(UITextField*)mmInputField yyyy:(UITextField*)yyyyInputField;
+
+- (BOOL) loginFormIsValidForUsername:(UITextField*)userNameInputField password:(UITextField*)passwordInputField;
+
+- (BOOL) resetPasswordFormIsValidForUsername:(UITextField*)userNameInputField;
+
+- (void) placeErrorLabel: (NSString*) errorText
+              nextToView: (UIView*) view;
+
 @end

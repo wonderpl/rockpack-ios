@@ -229,7 +229,6 @@
     
     [self turnOnButton:self.cancelButton];
     [self turnOnButton:self.nextButton];
-    self.nextButton.enabled = [self validateRegistrationFirstScreen];
     
     [UIView animateWithDuration:kLoginAnimationTransitionDuration delay:0.0f options:UIViewAnimationOptionCurveEaseInOut animations:^{
         CGPoint newCenter = self.firstSignupView.center;
@@ -255,7 +254,6 @@
     
     [self turnOnButton:self.backButton];
     [self turnOnButton:self.confirmButton];
-    self.confirmButton.enabled = [self validateLogin];
     
     [UIView animateWithDuration:kLoginAnimationTransitionDuration delay:0.0f options:UIViewAnimationOptionCurveEaseInOut animations:^{
         CGPoint newCenter = self.loginView.center;
@@ -275,7 +273,6 @@
 - (IBAction) forgotPasswordTapped: (id) sender
 {
     self.state = kLoginScreenStatePasswordRetrieve;
-    self.confirmButton.enabled = [self validatePasswordRetrieve];
     [UIView animateWithDuration:kLoginAnimationTransitionDuration delay:0.0f options:UIViewAnimationOptionCurveEaseInOut animations:^{
         CGPoint newCenter = self.passwordView.center;
         newCenter.x = 160.0f;
@@ -405,6 +402,24 @@
 
 - (IBAction) confirmTapped: (id) sender
 {
+    switch (self.state) {
+        case kLoginScreenStateLogin:
+            self.confirmButton.enabled = [self validateLogin];
+            break;
+        case kLoginScreenStateRegister:
+            self.nextButton.enabled = [self validateRegistrationFirstScreen];
+            break;
+        case kLoginScreenStateRegisterStepTwo:
+            self.confirmButton.enabled = [self validateRegistrationSecondScreen];
+            break;
+        case kLoginScreenStatePasswordRetrieve:
+            self.confirmButton.enabled = [self validatePasswordRetrieve];
+            break;
+        default:
+            break;
+    }
+
+    
     [self.registeringUserEmailInputField resignFirstResponder];
     [self.registeringUserPasswordInputField resignFirstResponder];
     [self.ddInputField resignFirstResponder];
@@ -577,6 +592,23 @@
 
 - (IBAction) nextTapped: (id) sender
 {
+    switch (self.state) {
+        case kLoginScreenStateLogin:
+            self.confirmButton.enabled = [self validateLogin];
+            break;
+        case kLoginScreenStateRegister:
+            self.nextButton.enabled = [self validateRegistrationFirstScreen];
+            break;
+        case kLoginScreenStateRegisterStepTwo:
+            self.confirmButton.enabled = [self validateRegistrationSecondScreen];
+            break;
+        case kLoginScreenStatePasswordRetrieve:
+            self.confirmButton.enabled = [self validatePasswordRetrieve];
+            break;
+        default:
+            break;
+    }
+    
     self.state = kLoginScreenStateRegisterStepTwo;
     [self turnOnButton:self.backButton];
     [self turnOnButton:self.confirmButton];
@@ -771,24 +803,7 @@ shouldChangeCharactersInRange: (NSRange) range
 {
     self.signupErrorLabel.text = @"";
     self.loginErrorLabel.text = @"";
-    self.passwordResetErrorLabel.text = @"";
-    switch (self.state) {
-        case kLoginScreenStateLogin:
-            self.confirmButton.enabled = [self validateLogin];
-            break;
-        case kLoginScreenStateRegister:
-            self.nextButton.enabled = [self validateRegistrationFirstScreen];
-            break;
-        case kLoginScreenStateRegisterStepTwo:
-            self.confirmButton.enabled = [self validateRegistrationSecondScreen];
-            break;
-        case kLoginScreenStatePasswordRetrieve:
-            self.confirmButton.enabled = [self validatePasswordRetrieve];
-            break;
-        default:
-            break;
-    }
-    
+    self.passwordResetErrorLabel.text = @"";    
     if(sender == self.ddInputField && [self.ddInputField.text length]==2)
     {
         [self.mmInputField becomeFirstResponder];

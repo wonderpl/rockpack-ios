@@ -747,7 +747,7 @@
         return;
     }
     
-    if (![self loginFormIsValid])
+    if (![self loginFormIsValidForUsername:userNameInputField password:passwordInputField])
         return;
     
     finalLoginButton.enabled = NO;
@@ -823,7 +823,7 @@
         return;
     }
     
-    if (![self resetPasswordFormIsValid])
+    if (![self resetPasswordFormIsValidForUsername:self.userNameInputField])
         return;
     
     [self doRequestPasswordResetForUsername:self.userNameInputField.text completionHandler: ^(NSDictionary * completionInfo) {
@@ -984,7 +984,7 @@
 {
     if (emailInputField.text.length < 1)
     {
-        [self placeErrorLabel: @"egister_screen_form_field_email_error_empty"
+        [self placeErrorLabel: NSLocalizedString(@"register_screen_form_field_email_error_empty",nil)
                    nextToView: emailInputField];
         
         [emailInputField becomeFirstResponder];
@@ -1177,7 +1177,7 @@
     // Check Text Fields
     [self clearAllErrorArrows];
     
-    if (![self registrationFormIsValid])
+    if (![self registrationFormIsValidForEmail:emailInputField userName:userNameInputField password:passwordInputField dd:ddInputField mm:mmInputField yyyy:yyyyInputField])
         return;
     
     [self resignAllFirstResponders];
@@ -1293,9 +1293,9 @@
 #pragma mark - Error Arrows
 
 - (void) placeErrorLabel: (NSString*) errorText
-              nextToView: (UIView*) view
+              nextToView: (UIView*) targetView
 {
-    SYNLoginErrorArrow* errorArrow = [labelsToErrorArrows objectForKey:[NSValue valueWithPointer:(__bridge const void *)(view)]];
+    SYNLoginErrorArrow* errorArrow = [labelsToErrorArrows objectForKey:[NSValue valueWithPointer:(__bridge const void *)(targetView)]];
     if (errorArrow)
     {
         [errorArrow setMessage:errorText];
@@ -1303,13 +1303,10 @@
     }
     
     errorArrow = [SYNLoginErrorArrow withMessage:errorText];
-    
-    CGFloat xPos = view.frame.origin.x + view.frame.size.width - 20.0;
-    CGRect errorArrowFrame = errorArrow.frame;
-    errorArrowFrame.origin.x = xPos;
-    
-    errorArrow.frame = errorArrowFrame;
-    errorArrow.center = CGPointMake(errorArrow.center.x, view.center.y);
+    CGPoint newPosition = targetView.center;
+    newPosition = [self.view convertPoint:newPosition fromView:targetView.superview];
+    newPosition.x +=  roundf(errorArrow.frame.size.width/2.0f + targetView.frame.size.width/2.0f - 20.0);
+    errorArrow.center = newPosition;
     
     errorArrow.alpha = 0.0;
     
@@ -1319,7 +1316,7 @@
                          errorArrow.alpha = 1.0;
                      }];
     
-    [labelsToErrorArrows setObject:errorArrow forKey:[NSValue valueWithPointer:(__bridge const void *)(view)]];
+    [labelsToErrorArrows setObject:errorArrow forKey:[NSValue valueWithPointer:(__bridge const void *)(targetView)]];
     [self.view addSubview:errorArrow];
 }
 
