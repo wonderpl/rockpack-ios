@@ -420,6 +420,7 @@
     
     // Loop through the fresh data from the server
     
+    
     for (NSDictionary *itemDictionary in itemArray)
     {
         NSString *uniqueId = [itemDictionary objectForKey: @"id"];
@@ -436,6 +437,7 @@
                             usingManagedObjectContext: importManagedObjectContext
                                   ignoringObjectTypes: kIgnoreStoredObjects | kIgnoreVideoInstanceObjects];
             
+           
         }
         else
         {
@@ -446,12 +448,16 @@
         
         channel.freshValue = YES;
         
-        channel.position = [itemDictionary objectForKey: @"position"
-                                            withDefault: [NSNumber numberWithInt: 0]];
+        NSNumber* remotePosition = [itemDictionary objectForKey: @"position" withDefault: [NSNumber numberWithInt: 0]];
+        if([remotePosition intValue] != channel.positionValue)
+        {
+            channel.position = remotePosition;
+        }
         
-
         
-        if (!genre) // nil is passed in case of the @"all" category which is popular
+        // nil is passed in case of the @"all" category which is popular
+        
+        if (!genre) 
             channel.popularValue = YES;
         
         channel.viewId = kChannelsViewId;
@@ -462,6 +468,7 @@
     for (id key in existingChannelsByIndex)
     {
         Channel* deleteCandidate = (Channel*)[existingChannelsByIndex objectForKey:key];
+        
         if(deleteCandidate && deleteCandidate.markedForDeletionValue)
             [deleteCandidate.managedObjectContext deleteObject:deleteCandidate];
     }
