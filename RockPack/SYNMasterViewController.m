@@ -46,6 +46,7 @@ typedef void(^AnimationCompletionBlock)(BOOL finished);
 @property (nonatomic, strong) IBOutlet UIButton* closeSearchButton;
 @property (nonatomic, strong) IBOutlet UIButton* searchButton;
 @property (nonatomic, strong) IBOutlet UIButton* sideNavigationButton;
+@property (nonatomic, strong) IBOutlet UIButton* hideNavigationButton;
 @property (nonatomic, strong) IBOutlet UILabel* pageTitleLabel;
 @property (nonatomic, strong) IBOutlet UIView* dotsView;
 @property (nonatomic, strong) IBOutlet UIView* errorContainerView;
@@ -500,6 +501,18 @@ typedef void(^AnimationCompletionBlock)(BOOL finished);
     
 }
 
+- (IBAction)hideNavigation:(UIButton*)sender{
+    self.sideNavigationViewController.state = SideNavigationStateHidden;
+    self.darkOverlayView.alpha = 1.0;
+    
+    [UIView animateWithDuration:0.3
+                     animations:^{
+                         self.darkOverlayView.alpha = 0.0;
+                     } completion:^(BOOL finished) {
+                         self.darkOverlayView.hidden = YES;
+                     }];
+}
+
 
 #pragma mark - Video Overlay View
 
@@ -732,8 +745,8 @@ typedef void(^AnimationCompletionBlock)(BOOL finished);
     }
     else if ([self.reachability currentReachabilityStatus] == NotReachable)
     {
-        NSString* message = [SYNDeviceManager.sharedInstance isIPad] ? NSLocalizedString(@"NO NETWORK, PLEASE CHECK YOUR INTERNET CONNECTION.", nil)
-                                                                       : NSLocalizedString(@"NO NETWORK", nil);
+        NSString* message = [SYNDeviceManager.sharedInstance isIPad] ? NSLocalizedString(@"No_Network_iPad", nil)
+                                                                       : NSLocalizedString(@"No_Network_iPhone", nil);
         [self presentNetworkErrorViewWithMesssage: message];
     }
 }

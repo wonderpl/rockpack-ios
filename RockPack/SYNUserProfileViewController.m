@@ -222,8 +222,8 @@
          [self.activityIndicatorView stopAnimating];
          self.avatarButton.enabled = YES;
          
-         UIAlertView* alert = [[UIAlertView alloc] initWithTitle: NSLocalizedString(@"Oops",nil)
-                                                         message: NSLocalizedString(@"We're having trouble uploading your photo. Please try again later.",nil)
+         UIAlertView* alert = [[UIAlertView alloc] initWithTitle: NSLocalizedString(@"register_screen_form_avatar_upload_title",nil)
+                                                         message: NSLocalizedString(@"register_screen_form_avatar_upload_description",nil)
                                                         delegate: nil
                                                cancelButtonTitle: nil
                                                otherButtonTitles: NSLocalizedString(@"OK",nil), nil];

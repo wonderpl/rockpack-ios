@@ -154,7 +154,7 @@
     // Needed for shadows to work
     self.channelTitleTextView.backgroundColor = [UIColor clearColor];
 
-    self.channelTitleTextView.placeholder = NSLocalizedString (@"CHANNEL NAME", nil);
+    self.channelTitleTextView.placeholder = NSLocalizedString (@"channel_creation_screen_field_channeltitle_placeholder", nil);
     
     self.channelTitleTextView.placeholderTextColor = [UIColor colorWithRed: 0.909
                                                                      green: 0.909
@@ -257,7 +257,7 @@
     if (!_isIPhone)
     {
         // Set text on add cover and select category buttons
-        NSString *coverString = NSLocalizedString (@"SELECT A COVER", nil);
+        NSString *coverString = NSLocalizedString (@"channel_creation_screen_button_selectcover_label", nil);
         
         NSMutableAttributedString* attributedCoverString = [[NSMutableAttributedString alloc] initWithString: coverString
                                                                                                   attributes: @{NSForegroundColorAttributeName : [UIColor colorWithRed: 40.0f/255.0f green: 45.0f/255.0f blue: 51.0f/255.0f alpha: 1.0f],
@@ -267,7 +267,7 @@
                                        forState: UIControlStateNormal];
         
         // Now do fancy attributed string
-        NSString *categoryString = NSLocalizedString (@"SELECT A CATEGORY", nil);
+        NSString *categoryString = NSLocalizedString (@"channel_creation_screen_button_selectcat_label", nil);
 
         
         NSMutableAttributedString* attributedCategoryString = [[NSMutableAttributedString alloc] initWithString: categoryString
@@ -387,7 +387,7 @@
     
     if(self.channel.videoInstances.count == 0)
     {
-        [self showNoVideosMessage:@"LOADING VIDEOS"];
+        [self showNoVideosMessage: NSLocalizedString(@"channel_screen_loading_videos", nil)];
     }
     
     [self displayChannelDetails];
@@ -455,7 +455,7 @@
     }
     
     self.channelDetailsLabel.text = [NSString stringWithFormat:
-                                     @"SORRY... %@SUBSCRIBE FAILED. PLEASE TRY AGAIN", (self.channel.subscribedByUserValue ? @"UN" : @"")];
+                                     NSLocalizedString(@"channel_screen_error_subscribe", nil)];
 }
 
 
@@ -538,7 +538,7 @@
 
             if(self.channel.videoInstances.count == 0)
             {
-                [self showNoVideosMessage: NSLocalizedString(@"No videos in channel message",nil)];
+                [self showNoVideosMessage: NSLocalizedString(@"channel_screen_no_videos",nil)];
             }
             else
             {
@@ -983,11 +983,11 @@
     
     if (self.instanceToDelete != nil)
     {
-        [[[UIAlertView alloc] initWithTitle: NSLocalizedString (@"Delete video title", nil)
-                                                        message: NSLocalizedString (@"Delete video message", nil)
+        [[[UIAlertView alloc] initWithTitle: NSLocalizedString (@"channel_creation_screen_channel_delete_dialog_title", nil)
+                                                        message: NSLocalizedString (@"channel_creation_screen_video_delete_dialog_description", nil)
                                                        delegate: self
-                                              cancelButtonTitle: NSLocalizedString (@"No", nil)
-                                              otherButtonTitles: NSLocalizedString (@"Yes", nil), nil] show];
+                                              cancelButtonTitle: NSLocalizedString (@"Cancel", nil)
+                                              otherButtonTitles: NSLocalizedString (@"Delete", nil), nil] show];
     }
 }
 
@@ -1191,8 +1191,8 @@
                                                   
                                                   DebugLog(@"Error @ saveChannelPressed:");
                                                   
-                                                  NSString *errorTitle = NSLocalizedString(@"Unknown error title", nil);
-                                                  NSString* errorMessage = NSLocalizedString(@"Unknown error save message", nil);
+                                                  NSString *errorTitle = NSLocalizedString(@"channel_creation_screen_error_unknown_title", nil);
+                                                  NSString* errorMessage = NSLocalizedString(@"channel_creation_screen_error_unknown_save_description", nil);
                                                   
                                                   NSArray *errorTitleArray =  [[error objectForKey: @"form_errors"] objectForKey :@"title"];
                                                   
@@ -1203,20 +1203,20 @@
                                                       
                                                       if ([errorType isEqualToString:@"Duplicate title."])
                                                       {
-                                                          errorTitle = NSLocalizedString(@"Duplicate title", nil);
-                                                          errorMessage = NSLocalizedString(@"Duplicate message",nil);
+                                                          errorTitle = NSLocalizedString(@"channel_creation_screen_error_existing_dialog_title", nil);
+                                                          errorMessage = NSLocalizedString(@"channel_creation_screen_error_existing_dialog_description",nil);
                                                       }
                                                       
                                                       else if ([errorType isEqualToString:@"Mind your language!"])
                                                       {
-                                                          errorTitle = NSLocalizedString(@"Naughty words title", nil);
-                                                          errorMessage = NSLocalizedString(@"Naughty words message",nil);
+                                                          errorTitle = NSLocalizedString(@"channel_creation_screen_error_inappropriate_dialog_title", nil);
+                                                          errorMessage = NSLocalizedString(@"channel_creation_screen_error_inappropriate_dialog_description",nil);
                                                       }
                                                       
                                                       else
                                                       {
-                                                          errorTitle = NSLocalizedString(@"Unknown error title", nil);
-                                                          errorMessage = NSLocalizedString(@"Unknown error save message",nil);
+                                                          errorTitle = NSLocalizedString(@"channel_creation_screen_error_unknown_title", nil);
+                                                          errorMessage = NSLocalizedString(@"channel_creation_screen_error_unknown_save_description",nil);
                                                       }
                                                   };
      
@@ -1564,8 +1564,8 @@
                                                   
                                                   DebugLog(@"Error @ createChannelPressed:");
                                                   
-                                                  NSString *errorTitle = NSLocalizedString(@"Unknown error title", nil);
-                                                  NSString* errorMessage = NSLocalizedString(@"Unknown error create message", nil);
+                                                  NSString *errorTitle = NSLocalizedString(@"channel_creation_screen_error_unknown_title", nil);
+                                                  NSString* errorMessage = NSLocalizedString(@"channel_creation_screen_error_unknown_create_description", nil);
                                                   
                                                   NSArray *errorTitleArray =  [[error objectForKey: @"form_errors"] objectForKey :@"title"];
                                                   
@@ -1576,20 +1576,20 @@
                                                       
                                                       if ([errorType isEqualToString:@"Duplicate title."])
                                                       {
-                                                          errorTitle = NSLocalizedString(@"Duplicate title", nil);
-                                                          errorMessage = NSLocalizedString(@"Duplicate message",nil);
+                                                          errorTitle = NSLocalizedString(@"channel_creation_screen_error_existing_dialog_title", nil);
+                                                          errorMessage = NSLocalizedString(@"channel_creation_screen_error_existing_dialog_description",nil);
                                                       }
                                                       
                                                       else if ([errorType isEqualToString:@"Mind your language!"])
                                                       {
-                                                          errorTitle = NSLocalizedString(@"Naughty words title", nil);
-                                                          errorMessage = NSLocalizedString(@"Naughty words message",nil);
+                                                          errorTitle = NSLocalizedString(@"channel_creation_screen_error_inappropriate_dialog_title", nil);
+                                                          errorMessage = NSLocalizedString(@"channel_creation_screen_error_inappropriate_dialog_description",nil);
                                                       }
                                                       
                                                       else
                                                       {
-                                                          errorTitle = NSLocalizedString(@"Unknown error title", nil);
-                                                          errorMessage = NSLocalizedString(@"Unknown error create message",nil);
+                                                          errorTitle = NSLocalizedString(@"channel_creation_screen_error_unknown_title", nil);
+                                                          errorMessage = NSLocalizedString(@"channel_creation_screen_error_unknown_create_description",nil);
                                                       }
                                                   };
                                                   

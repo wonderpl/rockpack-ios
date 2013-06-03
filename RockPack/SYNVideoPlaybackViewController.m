@@ -1221,14 +1221,12 @@ static UIWebView* vimeoideoWebViewInstance;
             {
                 self.fadeOutScheduled = TRUE;
                 
-                __weak typeof(self) weakSelf = self;
-                
                 [self performBlock: ^{
-                    if (weakSelf.fadeOutScheduled == TRUE)
+                    if (self.fadeOutScheduled == TRUE)
                     {
-                        weakSelf.fadeOutScheduled = FALSE;
+                        self.fadeOutScheduled = FALSE;
                         
-                        [weakSelf fadeOutVideoPlayer];
+                        [self fadeOutVideoPlayer];
                         DebugLog(@"***** Fadeout");
                     }
                     else
