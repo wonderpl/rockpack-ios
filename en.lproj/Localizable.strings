@@ -146,6 +146,7 @@
 // == Feed == //
 
 "feed_screen_section_title" = "FEED";
+"feed_screen_empty_message" = "Your feed looks pretty empty! Subscribe to more channels";
 
 
 // == Channels == //
