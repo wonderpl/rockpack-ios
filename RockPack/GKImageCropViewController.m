@@ -9,6 +9,7 @@
 #import "GKImageCropView.h"
 #import "GKImageCropViewController.h"
 #import "UIFont+SYNFont.h"
+#import <QuartzCore/QuartzCore.h>
 
 @interface GKImageCropViewController ()
 
@@ -169,14 +170,17 @@
         [self _setupCancelButton];
         [self _setupUseButton];
         
-        UILabel *info = [[UILabel alloc] initWithFrame:CGRectMake((self.view.frame.size.width-250)/2, 20, 320, 40)];
+        UILabel *info = [[UILabel alloc] initWithFrame:CGRectMake((self.view.frame.size.width-250)/2, 0, 320, 40)];
         info.text = NSLocalizedString(@"MOVE AND SCALE", nil);
         info.textColor = [UIColor colorWithRed:255.0/255.0 green:255.0/255.0 blue:255.0/255.0 alpha:1];
-        info.backgroundColor = [UIColor clearColor];
         info.font = [UIFont rockpackFontOfSize:18];
+        info.layer.shadowColor = [[UIColor colorWithRed:(1.0/255.0) green:(1.0/255.0) blue:(1.0/255.0) alpha:(1.0)] CGColor];
+        info.layer.shadowOffset = CGSizeMake(0.0, 1.0);
+        info.layer.shadowRadius = 1.0;
+        info.layer.shadowOpacity = 1.0;
+        info.backgroundColor = [UIColor clearColor];
         info.textAlignment = NSTextAlignmentCenter;
-        //[info sizeToFit];
-        
+        //[info sizeToFit];        
         
         UIBarButtonItem *cancel = [[UIBarButtonItem alloc] initWithCustomView:self.cancelButton];
         UIBarButtonItem *flex = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemFlexibleSpace target:nil action:nil];

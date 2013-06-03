@@ -2601,7 +2601,6 @@
 		012632CC162DF7B30009FF9C /* Collection Cells */ = {
 			isa = PBXGroup;
 			children = (
-				01D0996E1742C25D00351C82 /* New Group */,
 				0111CDF91729312000612186 /* Cover cells */,
 				01B7CD9D166E1616001F4AF0 /* Video cells */,
 				01B7CD9E166E163D001F4AF0 /* Channel cells */,
@@ -3363,13 +3362,6 @@
 				01D0996517429F4E00351C82 /* ButtonPopoverReportHighlighted@2x.png */,
 			);
 			name = "Report Concern";
-			sourceTree = "<group>";
-		};
-		01D0996E1742C25D00351C82 /* New Group */ = {
-			isa = PBXGroup;
-			children = (
-			);
-			name = "New Group";
 			sourceTree = "<group>";
 		};
 		01D0996F1742C29100351C82 /* Table Cells */ = {

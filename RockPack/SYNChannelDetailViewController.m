@@ -240,6 +240,8 @@
     
     self.originalContentOffset = self.videoThumbnailCollectionView.contentOffset;
     
+    
+    
     if (self.mode == kChannelDetailsModeDisplay)
     {
         self.addButton.hidden = NO;
@@ -865,28 +867,7 @@
         [tv setContentOffset: (CGPoint){.x = 0, .y = -topCorrect}
                     animated: NO];
     }
-    else if ([keyPath isEqualToString: kCollectionViewContentOffsetKey])
-    {
-        CGPoint newContentOffset = [[change valueForKey: NSKeyValueChangeNewKey] CGPointValue];
-
-        if (newContentOffset.y <= self.originalContentOffset.y)
-        {
-            self.masterControlsView.alpha = 1.0f;
-        }
-        else
-        {
-            CGFloat differenceInY = - (self.originalContentOffset.y - newContentOffset.y);
-
-            if (differenceInY < kChannelDetailsFadeSpan)
-            {
-                self.masterControlsView.alpha = 1 - (differenceInY / kChannelDetailsFadeSpan);
-            }
-            else
-            {
-                self.masterControlsView.alpha = 0.0f;
-            }
-        }
-    }
+    
     
 }
 
@@ -2329,6 +2310,31 @@
                                placeholderImage: [UIImage imageNamed: @"PlaceholderChannelCreation.png"]
                                         options: SDWebImageRetryFailed];
     [self closeImageSelector: imageSelector];
+}
+
+#pragma mark - ScrollView Delegate
+
+-(void)scrollViewDidScroll:(UIScrollView *)scrollView
+{
+    
+    
+    if (scrollView.contentOffset.y <= self.originalContentOffset.y)
+    {
+        self.masterControlsView.alpha = 1.0f;
+    }
+    else
+    {
+        CGFloat differenceInY = - (self.originalContentOffset.y - scrollView.contentOffset.y);
+        
+        if (differenceInY < kChannelDetailsFadeSpan)
+        {
+            self.masterControlsView.alpha = 1 - (differenceInY / kChannelDetailsFadeSpan);
+        }
+        else
+        {
+            self.masterControlsView.alpha = 0.0f;
+        }
+    }
 }
 
 
