@@ -1,10 +1,168 @@
-/* 
-  Localizable.strings
-  rockpack
+/*
+ Localizable.strings
+ rockpack
+ 
+ Created by Michael Michailidis on 09/05/2013.
+ Copyright (c) 2013 Nick Banks. All rights reserved.
+ */
 
-  Created by Michael Michailidis on 09/05/2013.
-  Copyright (c) 2013 Nick Banks. All rights reserved.
-*/
 
 
-"HelloKey" = "Hello";
+
+
+// == General == //
+
+"Yes" = "Yes";
+"No" = "No";
+"Cancel" = "Cancel";
+"Done" = "Done";
+"OK" = "OK";
+"Delete" = "Delete";
+"Loading" = "Loading";
+"Username" = "Username";
+"Password" = "Password";
+"Email" = "Email";
+
+"VIDEOS" = "VIDEOS";
+"CHANNELS" = "CHANNELS";
+"SUBSCRIBERS" = "SUBSCRIBERS";
+
+
+
+//Camera
+"channel_creation_screen_select_upload_photo_label" = "Select Source";
+"camera_popover_button_takephoto_label" = "Take Photo";
+"camera_popover_button_choose_label" = "Choose Existing";
+
+
+//Reachability
+"No_Network_iPad" = "NO NETWORK, PLEASE CHECK YOUR INTERNET CONNECTION.";
+"No_Network_iPhone" = "NO NETWORK.";
+
+
+
+
+// == Login / Registration / Forgot Password == //
+
+//By Using Rockpack... sentence
+"register_screen_legal" = "BY USING ROCKPACK, YOU AGREE TO OUR\nTERMS OF SERVICES AND PRIVACY POLICY";
+
+
+//Placeholder for username textfield
+"login_screen_form_field_username_placeholder" = "USERNAME";
+"login_screen_form_field_password_placeholder" = "PASSWORD";
+
+//No Connection Error AlertView
+"login_screen_form_no_connection_dialog_title" = "Oops";
+"login_screen_form_no_connection_dialog_message" = "Please make sure you are connected to the internet and try again.";
+
+
+// Errors - Login
+"login_screen_form_field_username_password_error_incorrect" = "YOUR USERNAME OR PASSWORD IS INCORRECT.";
+"login_screen_form_field_username_error_empty" = "Please enter your email or username";
+"login_screen_form_field_password_error_empty" = "Please enter your password";
+"login_screen_saving_error" = "Oops! Please try again.";
+
+//Errors - Registration
+"register_screen_form_field_email_error_empty" = "Please enter a valid email address";
+"register_screen_form_field_username_error_empty" = "Please choose a username";
+"register_screen_form_field_password_error_empty" =  "Please choose a password";
+"register_screen_form_field_username_error_invalid" = "Sorry, invalid characters";
+"register_screen_form_field_username_error_too_long" = "Username must be shorter than 20 letters";
+"register_screen_form_error_invalid_date" = "Sorry, invalid date";
+"register_screen_form_error_future" = "Looks like you're born in the future!";
+"register_screen_form_error_under_13" = "Rockpack is not available for under 13's yet";
+"register_screen_form_avatar_upload_title" = "Oops";
+"register_screen_form_avatar_upload_description" = "We're having trouble uploading your photo. Please try again.";
+
+//Facebook
+"facebook_login_error_title" = "Facebook Login";
+"facebook_login_error_description" = "We couldn't log you in with Facebook.";
+
+//Placeholder for forgot password textfield
+"forgot_password_screen_form_field_username_placeholder" = "USERNAME OR EMAIL";
+"forgot_password_screen_form_field_request_failed_error" = "Something went wrong. Please try again.";
+
+// Errors - Forgot password
+"forgot_password_screen_form_field_username_error_empty" = "Please provide a username or an email";
+"forgot_password_screen_form_field_username_user_unknown" = "Sorry, we don't recognise this username or email";
+
+// Password Reset - Email sent AlertView
+"forgot_password_screen_complete_title" = "Password Reset";
+"forgot_password_screen_complete_message" = "Check your email and follow the instructions.";
+
+
+// == Core Navigation == //
+
+"core_nav_section_feed" = "FEED";
+"core_nav_section_channels" = "CHANNELS";
+"core_nav_section_profile" = "PROFILE";
+"core_nav_section_notifications" = "NOTIFICATIONS";
+
+
+// == Notifications == //
+
+"starred_action" = "has liked";
+"subscribed_action" = "has subscribed to";
+"your_channel_object" = "your channel";
+"your_video_object" = "your video";
+
+
+
+
+// == Channel Detail == //
+
+"channel_screen_no_videos" = "THERE ARE NO VIDEOS IN THIS CHANNEL";
+"channel_screen_error_subscribe" = "SOMETHING WENT WRONG. PLEASE TRY AGAIN.";
+"channel_screen_loading_videos" = "LOADING VIDEOS...";
+
+
+
+// == Channel Creation/Editing == //
+
+// Channel Title text view placeholder
+"channel_creation_screen_field_channeltitle_placeholder" = "CHANNEL NAME";
+
+// Select Cover / Category
+"channel_creation_screen_button_selectcover_label" = "SELECT A COVER";
+"channel_creation_screen_button_selectcat_label" = "SELECT A CATEGORY";
+
+// Delete Video AlertView
+"channel_creation_screen_channel_delete_dialog_title" = "Delete Video";
+"channel_creation_screen_video_delete_dialog_description" = "Are you sure you want to delete this video?";
+
+// Error AlertViews
+"channel_creation_screen_error_existing_dialog_title" = "Title Already Exists";
+"channel_creation_screen_error_existing_dialog_description" = "You've already created a channel with this title. Please choose another.";
+
+"channel_creation_screen_error_inappropriate_dialog_title" = "Mind your language!";
+"channel_creation_screen_error_inappropriate_dialog_description" = "This channel title may include inappropriate words.";
+
+"channel_creation_screen_error_unknown_title" = "Oops";
+"channel_creation_screen_error_unknown_create_description" = "We couldn't create your channel. Please try again.";
+"channel_creation_screen_error_unknown_save_description" = "We couldn't save your channel. Please try again.";
+
+
+// == Feed == //
+
+"feed_screen_section_title" = "FEED";
+"feed_screen_empty_message" = "Your feed looks pretty empty! Subscribe to more channels";
+
+
+// == Channels == //
+
+"channels_screen_section_title" = "CHANNELS";
+
+"channels_screen_loading_categories" = "Loading Channel Categories...";
+
+// == Profile == //
+
+"profile_screen_section_title" = "PROFILE";
+
+"profile_screen_channel_delete_dialog_title" = "Delete %@";
+"profile_screen_channel_delete_dialog_description" = "Are you sure you want to delete this channel?";
+
+"profile_screen_section_owner_created_title" = "MY CHANNELS";
+"profile_screen_section_owner_subscription_title" = "MY SUBSCRIPTIONS";
+"profile_screen_section_user_created_title" = "CHANNELS";
+"profile_screen_section_user_subscription_title" = "SUBSCRIPTIONS";
