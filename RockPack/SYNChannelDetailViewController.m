@@ -1688,6 +1688,8 @@
                                               
                                               [self displayChannelDetails];
                                               
+                                              [self reloadUserImage: nil];
+                                              
                                               [self setDisplayControlsVisibility:YES];
                                               
                                               self.mode = kChannelDetailsModeDisplay;
