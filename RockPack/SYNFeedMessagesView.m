@@ -10,6 +10,15 @@
 #import "UIFont+SYNFont.h"
 #import "SYNDeviceManager.h"
 
+@interface SYNFeedMessagesView ()
+{
+    BOOL _isIPhone;
+}
+
+    @property UILabel* messageLabel;
+
+@end
+
 @implementation SYNFeedMessagesView
 
 
@@ -19,62 +28,56 @@
     
     if (self = [super init]) {
         
-        BOOL isIPhone = [[SYNDeviceManager sharedInstance] isIPhone];
+        _isIPhone = [[SYNDeviceManager sharedInstance] isIPhone];
         // Label
         
-        message = [message uppercaseString];
-        
-        UIFont* fontToUse = [UIFont rockpackFontOfSize: isIPhone?13.0f:20.0];
+        UIFont* fontToUse = [UIFont rockpackFontOfSize: _isIPhone?13.0f:20.0];
         
         CGRect labelFrame = CGRectZero;
-        if (!isIPhone)
-        {
-            labelFrame.size = [message sizeWithFont:fontToUse];
-        }
-        else
-        {
-            labelFrame.size = CGSizeMake(260.0f, 300.0f);
-        }
         
         UILabel* label = [[UILabel alloc] initWithFrame:labelFrame];
         label.font = fontToUse;
         label.backgroundColor = [UIColor clearColor];
         label.textColor = [UIColor whiteColor];
-        label.text = message;
         label.textAlignment = NSTextAlignmentCenter;
         
-        if(isIPhone)
+        if(_isIPhone)
         {
             label.numberOfLines = 0;
-            [label sizeToFit];
         }
-        
+        _messageLabel = label;
         
         // BG
-        
-        CGRect mainFrame = CGRectMake(0.0, 0.0, label.frame.size.width + 40.0, label.frame.size.height + 30.0);
-        
-        UIView* bg = [[UIView alloc] initWithFrame:mainFrame];
-        bg.backgroundColor = [UIColor darkGrayColor];
-        bg.alpha = 0.4;
-        
-        
-        
-        // Align
-        
-        label.center = CGPointMake(mainFrame.size.width * 0.5, mainFrame.size.height * 0.5 + 4.0);
-        label.frame = CGRectIntegral(label.frame);
-        
+        self.backgroundColor = [UIColor colorWithWhite:0.333f alpha:0.4f];
+
         
         // Add
-        
-        [self addSubview:bg];
         [self addSubview:label];
         
-        self.frame = mainFrame;
+        [self setMessage:message];
         
     }
     return self;
+}
+
+-(void)setMessage:(NSString*)newMessage
+{
+    if (_isIPhone)
+    {
+        self.messageLabel.frame = CGRectMake(0.0f, 0.0f, 260.0f, 300.0f);
+    }
+    
+    self.messageLabel.text = [newMessage uppercaseString];
+    [self.messageLabel sizeToFit];
+
+    CGRect mainFrame = CGRectMake(0.0, 0.0, self.messageLabel.frame.size.width + 40.0, self.messageLabel.frame.size.height + 30.0);
+    
+    self.messageLabel.center = CGPointMake(mainFrame.size.width * 0.5, mainFrame.size.height * 0.5 + 4.0);
+    self.messageLabel.frame = CGRectIntegral(self.messageLabel.frame);
+    
+    self.frame = mainFrame;
+    
+
 }
 
 + (id) withMessage: (NSString*) message
