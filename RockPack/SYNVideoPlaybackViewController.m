@@ -875,7 +875,7 @@ static UIWebView* vimeoideoWebViewInstance;
 {
     int playingValue = [[self.currentVideoWebView stringByEvaluatingJavaScriptFromString: @"player.getPlayerState();"] intValue];
     
-    return ((playingValue == 2) || (playingValue == 3)) ? TRUE : FALSE;
+    return ((playingValue == 1) || (playingValue == 3)) ? TRUE : FALSE;
 }
 
 - (BOOL) isPaused
@@ -1221,14 +1221,12 @@ static UIWebView* vimeoideoWebViewInstance;
             {
                 self.fadeOutScheduled = TRUE;
                 
-                __weak typeof(self) weakSelf = self;
-                
                 [self performBlock: ^{
-                    if (weakSelf.fadeOutScheduled == TRUE)
+                    if (self.fadeOutScheduled == TRUE)
                     {
-                        weakSelf.fadeOutScheduled = FALSE;
+                        self.fadeOutScheduled = FALSE;
                         
-                        [weakSelf fadeOutVideoPlayer];
+                        [self fadeOutVideoPlayer];
                         DebugLog(@"***** Fadeout");
                     }
                     else

@@ -20,4 +20,7 @@
 @property (nonatomic, assign) BOOL shownFromChannelScreen;
 @property (nonatomic, strong) IBOutlet UIImageView *iPhonePanelImageView;
 
+- (void) playIfVideoActive;
+- (void) pauseIfVideoActive;
+
 @end
