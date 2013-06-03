@@ -9,6 +9,7 @@
 #import "SYNVideoThumbnailSmallCell.h"
 #import "UIFont+SYNFont.h"
 #import "UIImageView+ImageProcessing.h"
+#import <QuartzCore/QuartzCore.h>
 
 @interface SYNVideoThumbnailSmallCell ()
 
@@ -173,6 +174,8 @@
 {
     // Set our cancelled pointer, so we don't display any expired images
     *self.cancelledPtr = YES;
+    
+    [self.imageView.layer removeAllAnimations];
 
     self.imageView.image = nil;
     self.mainView.alpha = 0.6f;

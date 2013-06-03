@@ -8,6 +8,7 @@
 
 #import "SYNChannelThumbnailCell.h"
 #import "UIFont+SYNFont.h"
+#import <QuartzCore/QuartzCore.h>
 
 @interface SYNChannelThumbnailCell ()
 
@@ -78,6 +79,8 @@
 // If this cell is going to be re-used, then clear the image and cancel any outstanding operations
 - (void) prepareForReuse
 {
+    [self.imageView.layer removeAllAnimations];
+    
     self.imageView.image = nil;
     self.deleteButton.hidden = TRUE;
     

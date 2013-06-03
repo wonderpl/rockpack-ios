@@ -249,7 +249,7 @@
     
     NSError* error = nil;
     NSArray *existingFeedVideoInstances = [importManagedObjectContext executeFetchRequest: videoInstanceFetchRequest
-                                                                                              error: &error];
+                                                                                    error: &error];
     
     NSMutableDictionary* existingVideosByIndex = [NSMutableDictionary dictionaryWithCapacity:existingFeedVideoInstances.count];
     
@@ -276,7 +276,7 @@
         
         NSString *uniqueId = [itemDictionary objectForKey: @"id"];
         if(!uniqueId)
-            continue;
+            continue; 
         
         VideoInstance* videoInstance = [existingVideosByIndex objectForKey:uniqueId];
         

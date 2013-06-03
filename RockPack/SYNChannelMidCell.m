@@ -134,6 +134,7 @@
 - (void) prepareForReuse
 {
     [self stopWobbling];
+    [self.imageView.layer removeAllAnimations];
     self.imageView.image = nil;
 }
 
