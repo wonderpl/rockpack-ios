@@ -271,6 +271,12 @@
     signUpButton.hidden = NO;
     
     loginButton.enabled = YES;
+    loginButton.hidden = NO;
+    
+    finalLoginButton.enabled = YES;
+    
+    userNameInputField.enabled = YES;
+    passwordInputField.enabled = YES;
     
     [activityIndicator stopAnimating];  
 }
@@ -514,6 +520,19 @@
     }
 }
 
+-(void)reEnableLoginControls
+{
+    userNameInputField.enabled = YES;
+    passwordInputField.enabled = YES;
+    
+    [activityIndicator stopAnimating];
+    finalLoginButton.enabled = YES;
+    
+    facebookSignInButton.enabled = YES;
+    
+    [userNameInputField becomeFirstResponder];
+    
+}
 
 - (void) setUpRegisterStateFromState: (kLoginScreenState) previousState
 {
