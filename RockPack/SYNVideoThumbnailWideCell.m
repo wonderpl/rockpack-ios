@@ -13,6 +13,7 @@
 #import "SYNVideoThumbnailWideCell.h"
 #import "UIFont+SYNFont.h"
 #import <QuartzCore/QuartzCore.h>
+#import "UIImageView+WebCache.h"
 
 @interface SYNVideoThumbnailWideCell ()
 
@@ -174,11 +175,12 @@
 {
     // We need to clean up any asynchronous image uploads
     [self.layer removeAllAnimations];
-    [self.channelImageView.layer removeAllAnimations];
-    [self.videoImageView.layer removeAllAnimations];
     
-    self.videoImageView.image = nil;
-    self.channelImageView.image = nil;
+    [self.videoImageView.layer removeAllAnimations];
+    [self.videoImageView setImageWithURL:nil];
+    
+    [self.channelImageView.layer removeAllAnimations];
+    [self.channelImageView setImageWithURL:nil];
 }
 
 @end

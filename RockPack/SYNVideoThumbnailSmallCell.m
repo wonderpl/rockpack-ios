@@ -177,7 +177,8 @@
     
     [self.imageView.layer removeAllAnimations];
 
-    self.imageView.image = nil;
+    [self.imageView setImageFromURL:nil];
+    
     self.mainView.alpha = 0.6f;
     self.colour = FALSE;
 }

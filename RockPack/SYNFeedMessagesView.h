@@ -15,4 +15,6 @@
 
 - (id) initWithMessage: (NSString*) message;
 
+-(void)setMessage:(NSString*)newMessage;
+
 @end

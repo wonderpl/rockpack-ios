@@ -9,6 +9,7 @@
 #import "SYNVideoThumbnailRegularCell.h"
 #import "UIFont+SYNFont.h"
 #import <QuartzCore/QuartzCore.h>
+#import "UIImageView+WebCache.h"
 
 @interface SYNVideoThumbnailRegularCell ()
 
@@ -84,7 +85,7 @@
 {
     // We need to clean up any asynchronous image uploads
     [self.imageView.layer removeAllAnimations];
-    self.imageView.image = nil;
+    [self.imageView setImageWithURL:nil];
 }
 
 @end
