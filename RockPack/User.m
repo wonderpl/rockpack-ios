@@ -179,6 +179,7 @@
     NSString* localeFromDict = [dictionary objectForKey:@"locale" withDefault:@""];
     
     
+    
     NSString* localeFromDevice = [(NSString*)CFBridgingRelease(CFLocaleCreateCanonicalLanguageIdentifierFromString(NULL, (CFStringRef)[NSLocale.autoupdatingCurrentLocale objectForKey: NSLocaleIdentifier])) lowercaseString];
     
     if([localeFromDict isEqualToString:@""]) {
