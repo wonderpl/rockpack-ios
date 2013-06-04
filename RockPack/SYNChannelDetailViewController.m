@@ -566,24 +566,6 @@
             return;
             
         }
-        else if([obj isKindOfClass:[User class]] && [self.channel.channelOwner.uniqueId isEqualToString:appDelegate.currentUser.uniqueId])
-        {
-            self.channel.channelOwner.displayName = appDelegate.currentUser.displayName;
-            NSLog(@"%@ %@", appDelegate.currentUser.displayName, appDelegate.currentUser.firstName);
-            self.channel.channelOwner.thumbnailURL = appDelegate.currentUser.thumbnailURL;
-            NSError* error;
-            [self.channel.channelOwner.managedObjectContext save:&error];
-            if(!error)
-            {
-                [self displayChannelDetails];
-            }
-            else
-            {
-                DebugLog(@"%@", [error description]);
-            }
-            
-            
-        }
     }];
     
     
@@ -996,14 +978,14 @@
                                                                 object: self
                                                               userInfo: @{kVideoInstance: self.instanceToDelete}];
         }
-        
-        // whatever the context, we must delete the video from the channel being displayed as well...
-        
-        NSMutableOrderedSet *channelsSet = [NSMutableOrderedSet orderedSetWithOrderedSet: self.channel.videoInstances];
-        
-        [channelsSet removeObject: self.instanceToDelete];
-        
-        [self.channel setVideoInstances: channelsSet];
+        else
+        {
+            NSMutableOrderedSet *channelsSet = [NSMutableOrderedSet orderedSetWithOrderedSet: self.channel.videoInstances];
+            
+            [channelsSet removeObject: self.instanceToDelete];
+            
+            [self.channel setVideoInstances: channelsSet];
+        }
         
         [self reloadCollectionViews];
     }

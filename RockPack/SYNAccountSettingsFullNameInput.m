@@ -11,7 +11,6 @@
 #import "SYNDeviceManager.h"
 #import "SYNOAuthNetworkEngine.h"
 
-
 @interface SYNAccountSettingsFullNameInput () <UITextFieldDelegate>
 
 @property (nonatomic, strong) UITableView* tableView;
@@ -161,19 +160,6 @@
         return;
     }
     
-    __weak SYNAccountSettingsFullNameInput* wself = self;
-    void (^displayNameAndFinishBlock)(void) = ^ {
-        
-        if(![wself.appDelegate.currentUser.firstName isEqualToString:@""] && self.appDelegate.currentUser.fullNameIsPublicValue)
-            wself.appDelegate.currentUser.displayName = wself.appDelegate.currentUser.fullName;
-        else
-            wself.appDelegate.currentUser.displayName = wself.appDelegate.currentUser.username;
-        
-        [wself.appDelegate saveContext:YES];
-        
-        [wself.navigationController popViewControllerAnimated:YES];
-    };
-    
     // must be done in steps as it is a series of API calls, first name first
     
     [self updateField:@"first_name" forValue:self.inputField.text withCompletionHandler:^{
@@ -195,23 +181,17 @@
                     
                     self.appDelegate.currentUser.fullNameIsPublicValue = self.nameIsPublic;
                     
-                    /* python code
-                     
-                        if self.first_name and self.display_fullname:
-                            return u'%s %s' % (self.first_name, self.last_name)
-                        else:
-                            return self.username
-                     
-                     */
+                    [self.appDelegate saveContext:YES];
                     
-                    displayNameAndFinishBlock();
-                    
+                    [self.navigationController popViewControllerAnimated:YES];
                     
                 }];
             }
             else
             {
-                displayNameAndFinishBlock();
+                [self.appDelegate saveContext:YES];
+                
+                [self.navigationController popViewControllerAnimated:YES];
             }
             
             
