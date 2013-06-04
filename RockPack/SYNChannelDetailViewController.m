@@ -72,8 +72,6 @@
 @property (nonatomic, strong) IBOutlet UIView *displayControlsView;
 @property (nonatomic, strong) IBOutlet UIView *editControlsView;
 @property (nonatomic, strong) IBOutlet UIView *masterControlsView;
-@property (nonatomic, strong) NSFetchedResultsController *channelCoverFetchedResultsController;
-@property (nonatomic, strong) NSFetchedResultsController *userChannelCoverFetchedResultsController;
 @property (nonatomic, strong) NSString* selectedCategoryId;
 @property (nonatomic, strong) NSString* selectedCoverId;
 @property (nonatomic, strong) SYNCoverChooserController* coverChooserController;
@@ -108,8 +106,6 @@
 
 @implementation SYNChannelDetailViewController
 
-@synthesize channelCoverFetchedResultsController = _channelCoverFetchedResultsController;
-@synthesize userChannelCoverFetchedResultsController = _userChannelCoverFetchedResultsController;
 @synthesize channel = _channel;
 
 - (id) initWithChannel: (Channel *) channel

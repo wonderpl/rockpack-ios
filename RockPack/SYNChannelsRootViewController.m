@@ -328,7 +328,6 @@
     NSPredicate* viewIdPredicate = [NSPredicate predicateWithFormat: @"viewId == %@", kChannelsViewId];
     
     // only get the channels marked as fresh //
-    
     NSPredicate* isFreshPredicate = [NSPredicate predicateWithFormat: @"fresh == YES"];
     
     
@@ -352,8 +351,6 @@
     
     self.channels = [NSMutableArray arrayWithArray:resultsArray];
     
-    
-
     // We shouldn't wait until the animation is over, as this will result in crashes if the user is scrolling
     
     [self.channelThumbnailCollectionView reloadData];

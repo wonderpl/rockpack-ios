@@ -164,7 +164,7 @@
 {
     DebugLog(@"Total Search Items: %i", controller.fetchedObjects.count);
     
-    if(self.itemToUpdate)
+    if (self.itemToUpdate)
         [self.itemToUpdate setNumberOfItems: [controller.fetchedObjects count]
                                    animated: YES];
     

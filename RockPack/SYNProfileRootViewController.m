@@ -47,9 +47,11 @@
 
 @property (nonatomic) BOOL deleteCellModeOn;
 @property (nonatomic) BOOL isUserProfile;
+@property (nonatomic, assign) BOOL shouldReloadCollectionView;
 @property (nonatomic, assign) BOOL subscriptionsTabActive;
 @property (nonatomic, assign, getter = isDeletionModeActive) BOOL deletionModeActive;
 @property (nonatomic, strong) IBOutlet UICollectionView *channelThumbnailCollectionView;
+@property (nonatomic, strong) NSBlockOperation *blockOperation;
 @property (nonatomic, strong) SYNDeletionWobbleLayout* channelsLandscapeLayout;
 @property (nonatomic, strong) SYNDeletionWobbleLayout* channelsPortraitLayout;
 @property (nonatomic, strong) SYNDeletionWobbleLayout* subscriptionsLandscapeLayout;
@@ -65,13 +67,13 @@
 @property (nonatomic, weak) UIButton* channelsTabButton;
 @property (nonatomic, weak) UIButton* subscriptionsTabButton;
 
-
 @end
 
 
 @implementation SYNProfileRootViewController
 
 @synthesize user = _user;
+
 
 - (void) loadView
 {
@@ -374,7 +376,6 @@
     
     [appDelegate.networkEngine cancelAllOperations];
     
-    
     [[NSNotificationCenter defaultCenter] postNotificationName:kChannelOwnerUpdateRequest
                                                         object:self
                                                       userInfo:@{kChannelOwner:self.user}];
@@ -385,23 +386,6 @@
 {
     // Google analytics support
     [GAI.sharedInstance.defaultTracker sendView: @"You - Root"];
-}
-
-
-
-- (void) handleDataModelChange: (NSNotification*) notification
-{
-    NSArray* updatedObjects = [[notification userInfo] objectForKey: NSUpdatedObjectsKey];
-    
-    [updatedObjects enumerateObjectsUsingBlock: ^(id obj, NSUInteger idx, BOOL *stop) {
-        if ([obj isKindOfClass:[ChannelOwner class]] && [((ChannelOwner*)obj).uniqueId isEqualToString:self.user.uniqueId])
-        {
-            [self.userProfileController setChannelOwner:obj];
-            [self reloadCollectionViews];
-            
-            return; 
-        }
-    }];
 }
 
 
@@ -450,6 +434,7 @@
     }
 }
 
+
 - (void) setDeletionModeActive: (BOOL) deletionModeActive
 {
     _deletionModeActive = deletionModeActive;
@@ -481,8 +466,8 @@
     }
 }
 
-#pragma mark - Orientation
 
+#pragma mark - Orientation
 
 - (void) willAnimateRotationToInterfaceOrientation: (UIInterfaceOrientation) toInterfaceOrientation
                                           duration: (NSTimeInterval) duration
@@ -615,7 +600,6 @@
 
 - (void) reloadCollectionViews
 {
-    
     NSInteger totalChannels = self.user.channels.count;
     NSString* title = [self getHeaderTitleForChannels];
     
@@ -633,32 +617,35 @@
 
 
 
--(NSString*)getHeaderTitleForChannels
+- (NSString*) getHeaderTitleForChannels
 {
     if(_isIPhone)
     {
-        if(self.user == appDelegate.currentUser)
+        if (self.user == appDelegate.currentUser)
             return NSLocalizedString(@"profile_screen_section_owner_created_title",nil);
         else
             return NSLocalizedString(@"profile_screen_section_user_created_title",nil);
-        
     }
     else
     {
-        if(self.user == appDelegate.currentUser)
+        if (self.user == appDelegate.currentUser)
             return NSLocalizedString(@"profile_screen_section_owner_created_title",nil);
         else
             return NSLocalizedString(@"profile_screen_section_user_created_title",nil);
     }
-     
 }
+
 
 #pragma mark - UICollectionView DataSource/Delegate
 
 - (NSInteger) collectionView: (UICollectionView *) view numberOfItemsInSection: (NSInteger) section
 {
-    // NSLog(@"%@", user);
+#ifdef SMART_RELOAD
+    id <NSFetchedResultsSectionInfo> sectionInfo = self.fetchedResultsController.sections[section];
+    return sectionInfo.numberOfObjects;
+#else
     return self.user.channels.count;
+#endif
 }
 
 
@@ -672,7 +659,7 @@
                    cellForItemAtIndexPath: (NSIndexPath *) indexPath
 {
     Channel *channel = (Channel*)self.user.channels[indexPath.row];
-    
+//    Channel *channel = (Channel*)[self.fetchedResultsController objectAtIndexPath: indexPath];
     SYNChannelMidCell *channelThumbnailCell = [collectionView dequeueReusableCellWithReuseIdentifier: @"SYNChannelMidCell"
                                                                                         forIndexPath: indexPath];
     
@@ -711,7 +698,6 @@
         return;
     }
 
-    
     Channel *channel;
     
     if (collectionView == self.channelThumbnailCollectionView)
@@ -728,6 +714,223 @@
     
     [self animatedPushViewController: channelVC];
 }
+
+#pragma mark - Collection updates
+
+#ifdef SMART_RELOAD
+
+#pragma mark - Fetched results
+//
+//[channelOwnerFetchRequest setEntity: [NSEntityDescription entityForName: @"ChannelOwner"
+//                                                 inManagedObjectContext: user.managedObjectContext]];
+//
+//channelOwnerFetchRequest.includesSubentities = NO;
+//
+//[channelOwnerFetchRequest setPredicate: [NSPredicate predicateWithFormat: @"uniqueId == %@ AND viewId == %@", user.uniqueId, self.viewId]];
+
+- (NSFetchedResultsController *) fetchedResultsController
+{
+    if (fetchedResultsController)
+        return fetchedResultsController;
+    
+    
+    NSFetchRequest *fetchRequest = [[NSFetchRequest alloc] init];
+    
+    // Edit the entity name as appropriate.
+    fetchRequest.entity = [NSEntityDescription entityForName: @"Channel"
+                                      inManagedObjectContext: appDelegate.mainManagedObjectContext];
+    
+    
+//    NSPredicate* predicate = [NSPredicate predicateWithFormat: [NSString stringWithFormat:  @"(channelOwner.uniqueId == %@) AND (channelOwner.viewId == %@) AND (self in channelOwner.channels.array)", self.user.uniqueId, self.viewId]];
+    
+    NSPredicate* predicate = [NSPredicate predicateWithFormat: [NSString stringWithFormat:  @"channelOwner.uniqueId == \"%@\"", self.user.uniqueId]];
+
+
+    fetchRequest.predicate = predicate;
+    
+    fetchRequest.sortDescriptors = @[[[NSSortDescriptor alloc] initWithKey: @"position" ascending: NO]];
+    
+    self.fetchedResultsController = [[NSFetchedResultsController alloc] initWithFetchRequest: fetchRequest
+                                                                        managedObjectContext: appDelegate.mainManagedObjectContext
+                                                                          sectionNameKeyPath: nil
+                                                                                   cacheName: nil];
+    fetchedResultsController.delegate = self;
+    
+    NSError *error = nil;
+    if (![fetchedResultsController performFetch: &error])
+    {
+        AssertOrLog(@"videoInstanceFetchedResultsController:performFetch failed: %@\n%@", [error localizedDescription], [error userInfo]);
+    }
+    
+    return fetchedResultsController;
+}
+
+
+
+- (void) controllerWillChangeContent: (NSFetchedResultsController *) controller
+{
+    self.shouldReloadCollectionView = NO;
+    self.blockOperation = [NSBlockOperation new];
+}
+
+// We need to serialise all of the updates, and we could either use performBatchUpdates or put then on
+
+// Add all our section changes to our block queue
+- (void) controller: (NSFetchedResultsController *) controller
+   didChangeSection: (id<NSFetchedResultsSectionInfo>) sectionInfo
+            atIndex: (NSUInteger) sectionIndex
+      forChangeType: (NSFetchedResultsChangeType) type
+{
+    __weak UICollectionView *collectionView = self.videoThumbnailCollectionView;
+    
+    switch (type)
+    {
+        case NSFetchedResultsChangeInsert:
+        {
+            [self.blockOperation addExecutionBlock: ^{
+                [collectionView insertSections: [NSIndexSet indexSetWithIndex: sectionIndex]];
+            }];
+            break;
+        }
+            
+        case NSFetchedResultsChangeDelete:
+        {
+            [self.blockOperation addExecutionBlock: ^{
+                [collectionView deleteSections: [NSIndexSet indexSetWithIndex: sectionIndex]];
+            }];
+            break;
+        }
+            
+        case NSFetchedResultsChangeUpdate:
+        {
+            [self.blockOperation addExecutionBlock: ^{
+                [collectionView reloadSections: [NSIndexSet indexSetWithIndex: sectionIndex]];
+            }];
+            break;
+        }
+            
+        default:
+            break;
+    }
+}
+
+
+//  Add all the object changes to our block queue
+- (void) controller: (NSFetchedResultsController *) controller
+    didChangeObject: (id) changeObject
+        atIndexPath: (NSIndexPath *) indexPath
+      forChangeType: (NSFetchedResultsChangeType) type
+       newIndexPath: (NSIndexPath *) newIndexPath
+{
+    __weak UICollectionView *collectionView = self.videoThumbnailCollectionView;
+    
+    switch (type)
+    {
+        case NSFetchedResultsChangeInsert:
+        {
+            if ([self.videoThumbnailCollectionView numberOfSections] > 0)
+            {
+                if ([self.videoThumbnailCollectionView numberOfItemsInSection: indexPath.section] == 0)
+                {
+                    self.shouldReloadCollectionView = YES;
+                }
+                else
+                {
+                    [self.blockOperation addExecutionBlock: ^{
+                        [collectionView insertItemsAtIndexPaths: @[newIndexPath]];
+                    }];
+                }
+            }
+            else
+            {
+                self.shouldReloadCollectionView = YES;
+            }
+            break;
+        }
+            
+        case NSFetchedResultsChangeDelete:
+        {
+            if ([self.videoThumbnailCollectionView numberOfItemsInSection: indexPath.section] == 1)
+            {
+                self.shouldReloadCollectionView = YES;
+            }
+            else
+            {
+                [self.blockOperation addExecutionBlock: ^{
+                    [collectionView deleteItemsAtIndexPaths:@[indexPath]];
+                }];
+            }
+            break;
+        }
+            
+        case NSFetchedResultsChangeUpdate:
+        {
+            [self.blockOperation addExecutionBlock: ^{
+                [collectionView reloadItemsAtIndexPaths: @[indexPath]];
+            }];
+            break;
+        }
+            
+        case NSFetchedResultsChangeMove:
+        {
+            [self.blockOperation addExecutionBlock: ^{
+                [collectionView moveItemAtIndexPath: indexPath
+                                        toIndexPath: newIndexPath];
+            }];
+            break;
+        }
+            
+        default:
+            break;
+    }
+}
+
+
+// Nasty hack to work around know problems with UICollectionView (http://openradar.appspot.com/12954582)
+- (void) controllerDidChangeContent: (NSFetchedResultsController *) controller
+{
+    if (self.shouldReloadCollectionView)
+    {
+        // Oh dear, we need to work around the bug, so just reload the collection view
+        [self.videoThumbnailCollectionView reloadData];
+    }
+    else
+    {
+        // Luckily we can use the nice UICollectionView animations, (within our batch update)
+        [self.videoThumbnailCollectionView performBatchUpdates: ^{
+            [self.blockOperation start];
+        } completion: nil];
+    }
+}
+
+#else
+
+- (void) handleDataModelChange: (NSNotification*) notification
+{
+    NSArray* updatedObjects = [[notification userInfo] objectForKey: NSUpdatedObjectsKey];
+    
+    [updatedObjects enumerateObjectsUsingBlock: ^(id obj, NSUInteger idx, BOOL *stop) {
+        if ([obj isKindOfClass:[ChannelOwner class]] && [((ChannelOwner*)obj).uniqueId isEqualToString:self.user.uniqueId])
+        {
+            [self.userProfileController setChannelOwner:obj];
+            [self reloadCollectionViews];
+            
+            return;
+        }
+    }];
+}
+
+
+- (void) controllerDidChangeContent: (NSFetchedResultsController *) controller
+{
+    
+    [self.videoThumbnailCollectionView reloadData];
+}
+
+#endif
+
+#pragma mark - Scroll handling
+
 
 
 - (void) scrollViewDidScroll: (UIScrollView *) scrollView
@@ -749,8 +952,6 @@
         }
     }
 }
-
-
 
 
 #ifdef ALLOWS_PINCH_GESTURES
@@ -990,17 +1191,17 @@
     if (self.user) // if we have an existing user
     {
         // remove the listener, even if nil is passed
-        
-        [[NSNotificationCenter defaultCenter] removeObserver:self
-                                                        name:NSManagedObjectContextObjectsDidChangeNotification
-                                                      object:self.user];
+#ifndef SMART_RELOAD  
+        [[NSNotificationCenter defaultCenter] removeObserver: self
+                                                        name: NSManagedObjectContextObjectsDidChangeNotification
+                                                      object: self.user];
+#endif
     }
     
-    
-    if(!user) // if no user has been passed, set to nil and then return
+    if (!user) // if no user has been passed, set to nil and then return
         return;
     
-    if(![user isMemberOfClass:[User class]]) // is a User has been passsed dont copy him OR his channels as there can be only one.
+    if (![user isMemberOfClass: [User class]]) // is a User has been passsed dont copy him OR his channels as there can be only one.
     {
         NSFetchRequest *channelOwnerFetchRequest = [[NSFetchRequest alloc] init];
         
@@ -1033,9 +1234,9 @@
                                  usingManagedObjectContext: user.managedObjectContext
                                        ignoringObjectTypes: flags];
             
-            if(self.user)
+            if (self.user)
             {
-                [self.user.managedObjectContext save:&error];
+                [self.user.managedObjectContext save: &error];
                 if(error)
                     _user = nil; // further error code
                 
@@ -1049,10 +1250,12 @@
     
     if(self.user) // if a user has been passed or found, monitor
     {
+#ifndef SMART_RELOAD  
         [[NSNotificationCenter defaultCenter] addObserver: self
                                                  selector: @selector(handleDataModelChange:)
                                                      name: NSManagedObjectContextDidSaveNotification
                                                    object: self.user.managedObjectContext];
+#endif
         
         [[NSNotificationCenter defaultCenter] postNotificationName:kChannelOwnerUpdateRequest
                                                             object:self
