@@ -978,14 +978,12 @@
                                                                 object: self
                                                               userInfo: @{kVideoInstance: self.instanceToDelete}];
         }
-        else
-        {
-            NSMutableOrderedSet *channelsSet = [NSMutableOrderedSet orderedSetWithOrderedSet: self.channel.videoInstances];
-            
-            [channelsSet removeObject: self.instanceToDelete];
-            
-            [self.channel setVideoInstances: channelsSet];
-        }
+        
+        NSMutableOrderedSet *channelsSet = [NSMutableOrderedSet orderedSetWithOrderedSet: self.channel.videoInstances];
+        
+        [channelsSet removeObject: self.instanceToDelete];
+        
+        [self.channel setVideoInstances: channelsSet];
         
         [self reloadCollectionViews];
     }
