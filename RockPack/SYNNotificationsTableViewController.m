@@ -149,18 +149,27 @@
 
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath
 {
-    NSArray* array = @[@(indexPath.row)];
+    
+    SYNRockpackNotification* notification = [_notifications objectAtIndex:indexPath.row];
+    if(!notification || notification.read)
+    {
+        DebugLog(@"Notificaiton clicked is read");
+        return;
+    }
+    NSArray* array = @[notification.identifier];
+    
     [appDelegate.oAuthNetworkEngine markAdReadForNotificationIndexes:array
                                                           fromUserId:appDelegate.currentUser.uniqueId
                                                    completionHandler:^(id responce) {
                                                        
-                                                       SYNRockpackNotification* notification = [_notifications objectAtIndex:indexPath.row];
+                                                       
                                                        notification.read = YES;
+                                                       
+                                                       
+                                                       [self.tableView reloadData];
                                                        
                                                        [[NSNotificationCenter defaultCenter] postNotificationName:kNotificationMarkedRead
                                                                                                            object:self];
-                                                       
-                                                       
         
                                                    } errorHandler:^(id error) {
         

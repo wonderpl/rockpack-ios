@@ -28,6 +28,8 @@
         
         self.selectionStyle = UITableViewCellSelectionStyleNone;
         
+        
+        
         // == frames == //
         
         imageViewRect = CGRectMake(8.0, 6.0, 60.0, 60.0);
@@ -53,10 +55,9 @@
                                                    green:(45.0/255.0)
                                                     blue:(51.0/255.0)
                                                    alpha:(1.0)];
-        
         // == Subtitle == //
         
-        self.detailTextLabel.backgroundColor = [UIColor clearColor];
+        
         self.detailTextLabel.font = [UIFont rockpackFontOfSize:12.0];
         self.detailTextLabel.textAlignment = NSTextAlignmentLeft;
         self.detailTextLabel.textColor = [UIColor colorWithRed:(187.0/255.0)
@@ -76,6 +77,8 @@
         dividerImageView.backgroundColor = [UIColor colorWithPatternImage:[UIImage imageNamed:@"NavDivider"]];
         
         [self addSubview:dividerImageView];
+        
+        
         
         // == Buttons == //
         
@@ -119,7 +122,13 @@
     detailsFrame.origin.y = self.textLabel.frame.origin.y + self.textLabel.frame.size.height;
     self.detailTextLabel.frame = detailsFrame;
     
-    dividerImageView.center = CGPointMake(self.center.x, self.frame.size.height - 4.0);
+    dividerImageView.center = CGPointMake(self.center.x, self.frame.size.height);
+    
+    if(_read)
+        self.backgroundColor = [UIColor clearColor];
+    else
+        self.backgroundColor = [UIColor colorWithRed:(226.0/255.0) green:(231.0/255.0) blue:(231.0/255.0) alpha:(1.0)];
+    
 }
 
 
@@ -184,21 +193,6 @@
     return self.textLabel.text;
 }
 
-- (void) setRead:(BOOL) read
-{
-    
-    _read = read;
-    if(_read)
-    {
-        self.backgroundColor = [UIColor clearColor];
-        
-    }
-    else
-    {
-        //self.backgroundColor = [UIColor colorWithRed:(226.0/255.0) green:(231.0/255.0) blue:(231.0/255.0) alpha:(1.0)];
-        self.backgroundColor = [UIColor greenColor];
-        
-    }
-}
+
 
 @end
