@@ -492,6 +492,11 @@ typedef enum {
         self.nicknameLabel.text = @"";
     }
     
+    if(!self.profilePictureImageView.image)
+    {
+        self.profilePictureImageView.image = [UIImage imageNamed:@"PlaceholderNotificationAvatar"];
+    }
+    
     // We can't use our standard asynchronous loader due to cacheing    
     dispatch_queue_t callerQueue = dispatch_get_main_queue();
     dispatch_queue_t downloadQueue = dispatch_queue_create("com.rockpack.avatarloadingqueue", NULL);
@@ -499,7 +504,10 @@ typedef enum {
         NSData * imageData = [NSData dataWithContentsOfURL: [NSURL URLWithString: self.user.thumbnailURL]];
         
         dispatch_async(callerQueue, ^{
-            self.profilePictureImageView.image = [UIImage imageWithData: imageData];
+            if (imageData)
+            {
+                self.profilePictureImageView.image = [UIImage imageWithData: imageData];
+            }
         });
     });
 }
