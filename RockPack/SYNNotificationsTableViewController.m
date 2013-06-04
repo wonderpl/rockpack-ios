@@ -156,7 +156,7 @@
         DebugLog(@"Notificaiton clicked is read");
         return;
     }
-    NSArray* array = @[notification.identifier];
+    NSArray* array = @[@(notification.identifier)];
     
     [appDelegate.oAuthNetworkEngine markAdReadForNotificationIndexes:array
                                                           fromUserId:appDelegate.currentUser.uniqueId

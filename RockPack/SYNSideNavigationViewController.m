@@ -270,6 +270,12 @@ typedef enum {
                 if (![itemData isKindOfClass:[NSDictionary class]]) continue;
                                                        
                 SYNRockpackNotification* notification = [SYNRockpackNotification notificationWithData:itemData];
+                
+                if(!notification)
+                {
+                    continue;
+                }
+                    
                                                        
                 if (!notification.read)
                     self.unreadNotifications++;
