@@ -7,6 +7,7 @@
 extern const struct ChannelOwnerAttributes {
 	__unsafe_unretained NSString *displayName;
 	__unsafe_unretained NSString *thumbnailURL;
+	__unsafe_unretained NSString *username;
 } ChannelOwnerAttributes;
 
 extern const struct ChannelOwnerRelationships {
@@ -19,6 +20,7 @@ extern const struct ChannelOwnerFetchedProperties {
 
 @class Channel;
 @class Channel;
+
 
 
 
@@ -51,6 +53,16 @@ extern const struct ChannelOwnerFetchedProperties {
 
 
 //- (BOOL)validateThumbnailURL:(id*)value_ error:(NSError**)error_;
+
+
+
+
+
+@property (nonatomic, strong) NSString* username;
+
+
+
+//- (BOOL)validateUsername:(id*)value_ error:(NSError**)error_;
 
 
 
@@ -98,6 +110,12 @@ extern const struct ChannelOwnerFetchedProperties {
 
 - (NSString*)primitiveThumbnailURL;
 - (void)setPrimitiveThumbnailURL:(NSString*)value;
+
+
+
+
+- (NSString*)primitiveUsername;
+- (void)setPrimitiveUsername:(NSString*)value;
 
 
 

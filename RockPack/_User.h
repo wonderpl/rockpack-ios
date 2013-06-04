@@ -17,7 +17,6 @@ extern const struct UserAttributes {
 	__unsafe_unretained NSString *locale;
 	__unsafe_unretained NSString *loginOrigin;
 	__unsafe_unretained NSString *subscriptionsUrl;
-	__unsafe_unretained NSString *username;
 } UserAttributes;
 
 extern const struct UserRelationships {
@@ -25,7 +24,6 @@ extern const struct UserRelationships {
 
 extern const struct UserFetchedProperties {
 } UserFetchedProperties;
-
 
 
 
@@ -190,16 +188,6 @@ extern const struct UserFetchedProperties {
 
 
 
-@property (nonatomic, strong) NSString* username;
-
-
-
-//- (BOOL)validateUsername:(id*)value_ error:(NSError**)error_;
-
-
-
-
-
 
 @end
 
@@ -290,12 +278,6 @@ extern const struct UserFetchedProperties {
 
 - (NSString*)primitiveSubscriptionsUrl;
 - (void)setPrimitiveSubscriptionsUrl:(NSString*)value;
-
-
-
-
-- (NSString*)primitiveUsername;
-- (void)setPrimitiveUsername:(NSString*)value;
 
 
 

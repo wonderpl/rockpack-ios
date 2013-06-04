@@ -425,31 +425,31 @@ didFinishLaunchingWithOptions: (NSDictionary *) launchOptions
     
     storeURL = [storeURL URLByAppendingPathComponent: @"Rockpack.sqlite"];
     
-    if ([[NSFileManager defaultManager] fileExistsAtPath: [storeURL path]])
-    {
-        NSDictionary *existingPersistentStoreMetadata = [NSPersistentStoreCoordinator metadataForPersistentStoreOfType: NSSQLiteStoreType
-                                                                                                                   URL: storeURL
-                                                                                                                 error: &error];
-        if (!existingPersistentStoreMetadata)
-        {
-            // Something *really* bad has happened to the persistent store
-            [NSException raise: NSInternalInconsistencyException
-                        format: @"Failed to read metadata for persistent store %@: %@", storeURL, error];
-        }
-        
-        if (![managedObjectModel isConfiguration: nil compatibleWithStoreMetadata: existingPersistentStoreMetadata])
-        {
-            if ([[NSFileManager defaultManager] removeItemAtURL: storeURL
-                                                          error: &error])
-            {
-                DebugLog(@"Existing database - incompatible schema detected, so deleted");
-            }
-            else
-            {
-                DebugLog(@"*** Could not delete persistent store, %@", error);
-            }
-        } // else the existing persistent store is compatible with the current model - nice!
-    } // else no database file yet
+//    if ([[NSFileManager defaultManager] fileExistsAtPath: [storeURL path]])
+//    {
+//        NSDictionary *existingPersistentStoreMetadata = [NSPersistentStoreCoordinator metadataForPersistentStoreOfType: NSSQLiteStoreType
+//                                                                                                                   URL: storeURL
+//                                                                                                                 error: &error];
+//        if (!existingPersistentStoreMetadata)
+//        {
+//            // Something *really* bad has happened to the persistent store
+//            [NSException raise: NSInternalInconsistencyException
+//                        format: @"Failed to read metadata for persistent store %@: %@", storeURL, error];
+//        }
+//        
+//        if (![managedObjectModel isConfiguration: nil compatibleWithStoreMetadata: existingPersistentStoreMetadata])
+//        {
+//            if ([[NSFileManager defaultManager] removeItemAtURL: storeURL
+//                                                          error: &error])
+//            {
+//                DebugLog(@"Existing database - incompatible schema detected, so deleted");
+//            }
+//            else
+//            {
+//                DebugLog(@"*** Could not delete persistent store, %@", error);
+//            }
+//        } // else the existing persistent store is compatible with the current model - nice!
+//    } // else no database file yet
     
     NSPersistentStore *store = [persistentStoreCoordinator addPersistentStoreWithType: NSSQLiteStoreType
                                                                         configuration: nil

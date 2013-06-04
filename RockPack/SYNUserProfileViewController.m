@@ -120,22 +120,15 @@
         {
             userName = [ownerAsUser.fullName uppercaseString];
         }
-        else
-        {
-            userName = [ownerAsUser.firstName uppercaseString];
-        }
+
         
         NSLog(@"userName: %@", userName);
         
         if(userName.length < 1)
         {
             userName = ownerAsUser.username;
-            self.userNameLabel.text = @"";
         }
-        else
-        {
-            self.userNameLabel.text = ownerAsUser.username;
-        }
+
         
         // Enable change avatar button
         self.avatarButton.enabled = TRUE;
@@ -143,12 +136,12 @@
     else
     {
         userName = channelOwner.displayName;
-        self.userNameLabel.text = @"";
         
         // Disable change avatar button
         self.avatarButton.enabled = FALSE;
     }
     
+    self.userNameLabel.text = channelOwner.username;
     self.fullNameLabel.text = userName;
     
     UIImage* placeholderImage = self.profileImageView.image ? self.profileImageView.image : [UIImage imageNamed: @"PlaceholderAvatarProfile.png"];

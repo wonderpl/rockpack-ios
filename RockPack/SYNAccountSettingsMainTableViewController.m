@@ -165,7 +165,7 @@
                 // first and last name
             case 0:
                 cell.imageView.image = [UIImage imageNamed: @"IconFullname.png"];
-                cell.textLabel.text = user.firstName;
+                cell.textLabel.text = user.fullName;
                 cell.detailTextLabel.text = user.fullNameIsPublicValue ? NSLocalizedString (@"Public" , nil) : NSLocalizedString (@"Private" , nil);
                 cell.accessoryType = UITableViewCellAccessoryDisclosureIndicator;
                 break;
