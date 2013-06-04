@@ -2544,11 +2544,24 @@
     }
 }
 
-\
+
 - (void) dealloc
 {
     self.channel = nil;
     self.originalChannel = nil;
+}
+
+#pragma mark - FAVOURITES WORKAROUND. TO BE REMOVED
+-(BOOL) isFavouritesChannel
+{
+    return ([self.channel.channelOwner.uniqueId isEqualToString:appDelegate.currentUser.uniqueId] && self.channel.favouritesValue);
+}
+
+-(void)refreshFavouritesChannel
+{
+    [[NSNotificationCenter defaultCenter] postNotificationName: kChannelUpdateRequest
+                                                       object: self
+                                                     userInfo: @{kChannel: self.channel}];
 }
 
 @end

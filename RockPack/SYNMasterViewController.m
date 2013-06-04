@@ -535,6 +535,16 @@ typedef void(^AnimationCompletionBlock)(BOOL finished);
     if([originViewController isKindOfClass:[SYNChannelDetailViewController class]])
     {
         self.videoViewerViewController.shownFromChannelScreen = YES;
+        
+        //FIXME: FAVOURITES Part of workaround for missing favourites functionality. Remove once resolved.
+        SYNChannelDetailViewController* channelDetailViewController = (SYNChannelDetailViewController*)originViewController;
+        if([channelDetailViewController isFavouritesChannel])
+        {
+            [self.videoViewerViewController markAsFavourites];
+        }
+
+        
+        
     }
     
     [self addChildViewController: self.videoViewerViewController];
@@ -567,6 +577,17 @@ typedef void(^AnimationCompletionBlock)(BOOL finished);
     {
         return;
     }
+    
+    if([self.originViewController isKindOfClass:[SYNChannelDetailViewController class]])
+    {
+        SYNChannelDetailViewController* channelDetailViewController = (SYNChannelDetailViewController*)self.originViewController;
+        if([channelDetailViewController isFavouritesChannel])
+        {
+            [channelDetailViewController refreshFavouritesChannel];
+        }
+ 
+    }
+    
     UIView* child = self.overlayView.subviews[0];
     [UIView animateWithDuration: 0.25f
                           delay: 0.0f

@@ -153,9 +153,6 @@ static NSEntityDescription *videoEntity = nil;
     self.starCount = [dictionary objectForKey: @"star_count"
                                   withDefault: [NSNumber numberWithInt: 0]];
     
-    self.starredByUser = [dictionary objectForKey: @"starred_by_user"
-                                      withDefault: [NSNumber numberWithBool: FALSE]];
-    
     self.thumbnailURL = [dictionary objectForKey: @"thumbnail_url"
                                      withDefault: @"http://"];
 }
