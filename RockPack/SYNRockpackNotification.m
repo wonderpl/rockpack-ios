@@ -20,9 +20,11 @@
     if(self = [super init])
     {
         SYNAppDelegate* appDelegate = (SYNAppDelegate*)[[UIApplication sharedApplication] delegate];
-        self.identifier = [data objectForKey:@"id"];
-        if(!self.identifier)
+        NSString* identifierString = [data objectForKey:@"id"];
+        if(!identifierString || ![identifierString isKindOfClass:[NSString class]])
             return nil;
+        
+        self.identifier = identifierString;
         
         self.messageType = [data objectForKey:@"message_type"];
         
@@ -159,7 +161,7 @@
 -(NSString*)description
 {
     NSMutableString* descriptionToReturn = [[NSMutableString alloc] init];
-    [descriptionToReturn appendFormat:@"<SYNRockpackNotification: %p", self];
+    [descriptionToReturn appendFormat:@"<SYNRockpackNotification: %p (%@", self, self.identifier];
     [descriptionToReturn appendFormat:@" channelOwner: %@", self.channelOwner.uniqueId];
     [descriptionToReturn appendString:@">"];
     return descriptionToReturn;

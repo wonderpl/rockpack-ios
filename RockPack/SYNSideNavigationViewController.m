@@ -245,25 +245,26 @@ typedef enum {
             NSNumber* totalNumber = [notificationsDictionary objectForKey:@"total"];
             if (!totalNumber)
                 return;
-                                                   
-            NSInteger total = [totalNumber integerValue];
-                                                   
-            if (total == 0)
-            {
-                [self.tableView reloadData];
-                return;
-            }
-                                                   
+        
             NSArray* itemsArray = (NSArray*)[notificationsDictionary objectForKey:@"items"];
             if (!itemsArray)
-            {
-                // TODO: handle erro in parsing items
                 return;
-                                                       
+        
+            NSInteger total = [totalNumber integerValue];
+                                                   
+            if (total == 0) // good responce but no notifications
+            {
+                [self.tableView reloadData];
+                
+                [self.notifications removeAllObjects];
+                self.notifications = nil;
+                
+                return;
             }
                                                    
             self.notifications = [NSMutableArray arrayWithCapacity: total];
-                                                   
+            self.unreadNotifications = 0;
+        
             for (NSDictionary* itemData in itemsArray)
             {
                 if (![itemData isKindOfClass:[NSDictionary class]]) continue;
@@ -291,7 +292,8 @@ typedef enum {
 
 - (void) notificationMarkedRead: (NSNotification*) notification
 {
-    
+    self.unreadNotifications--;
+    [self.tableView reloadData];
 }
 
 
@@ -733,6 +735,7 @@ typedef enum {
             
         case SideNavigationStateHalf:
             [self showHalfNavigation];
+            [self getNotifications];
             break;
             
         case SideNavigationStateFull:

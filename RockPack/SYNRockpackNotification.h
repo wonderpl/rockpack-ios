@@ -17,7 +17,7 @@ typedef enum {
 
 @interface SYNRockpackNotification : NSObject
 
-@property (nonatomic) NSInteger identifier;
+@property (nonatomic, strong) NSString* identifier;
 @property (nonatomic, strong) NSString* messageType;
 @property (nonatomic, strong) NSDate* dateCreated;
 @property (nonatomic, strong) NSString* dateDifferenceString;
