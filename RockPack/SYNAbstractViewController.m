@@ -105,6 +105,10 @@
         
         [self.view addSubview: addButton];
     }
+    
+    // for loading data
+    
+    self.dataRequestRange = NSMakeRange(0, STANDARD_REQUEST_LENGTH);
 }
 
 
@@ -238,16 +242,18 @@
     {
         noteName = kVideoQueueAdd;
         
-        
         [appDelegate.oAuthNetworkEngine recordActivityForUserId: appDelegate.currentUser.uniqueId
                                                          action: @"select"
                                                 videoInstanceId: videoInstance.uniqueId
                                               completionHandler: ^(id response) {
+                                                  
                                                   DebugLog (@"Acivity recorded: Select");
-                                              }
-                                                   errorHandler: ^(id error) {
-                                                       DebugLog (@"Acivity not recorded: Select");
-                                                   }];
+                                                  
+                                              } errorHandler: ^(id error) {
+                                                  
+                                                  DebugLog (@"Acivity not recorded: Select");
+                                                  
+                                              }];
     }
     else
     {

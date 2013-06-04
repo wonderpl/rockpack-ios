@@ -566,6 +566,12 @@
             return;
             
         }
+        else if([obj isKindOfClass:[User class]] && [self.channel.channelOwner.uniqueId isEqualToString:appDelegate.currentUser.uniqueId])
+        {
+            [self updateChannelOwnerWithUser];
+            
+            
+        }
     }];
     
     
@@ -775,8 +781,8 @@
     self.subscribeButton.hidden = (visible && [self.channel.channelOwner.uniqueId isEqualToString: appDelegate.currentUser.uniqueId]);
     self.editButton.hidden = (visible && ! [self.channel.channelOwner.uniqueId isEqualToString: appDelegate.currentUser.uniqueId]);
     
-    // If favourites channel, hide edit button and move subscribers
-    if (self.channel.favouritesValue)
+    // If the current user's favourites channel, hide edit button and move subscribers
+    if (self.channel.favouritesValue && [self.channel.channelOwner.uniqueId isEqualToString:appDelegate.currentUser.uniqueId])
     {
         self.editButton.hidden = TRUE;
         
@@ -2459,6 +2465,9 @@
             if([subscription.uniqueId isEqualToString:self.channel.uniqueId])
                 self.channel.subscribedByUserValue = YES;
         
+        if([self.channel.channelOwner.uniqueId isEqualToString:appDelegate.currentUser.uniqueId])
+            [self updateChannelOwnerWithUser];
+        
         [[NSNotificationCenter defaultCenter] addObserver: self
                                                  selector: @selector(mainContextDataChanged:)
                                                      name: NSManagedObjectContextDidSaveNotification
@@ -2471,6 +2480,39 @@
                                                               userInfo: @{kChannel: self.channel}];
         }
     }
+}
+
+- (void) updateChannelOwnerWithUser
+{
+    BOOL dateDirty = NO;
+    if(![self.channel.channelOwner.displayName isEqualToString: appDelegate.currentUser.displayName])
+    {
+        self.channel.channelOwner.displayName = appDelegate.currentUser.displayName;
+        dateDirty = YES;
+        
+    }
+    if(![self.channel.channelOwner.thumbnailURL isEqualToString: appDelegate.currentUser.thumbnailURL])
+    {
+        self.channel.channelOwner.thumbnailURL = appDelegate.currentUser.thumbnailURL;
+        dateDirty = YES;
+        
+    }
+    
+    if(dateDirty) // save
+    {
+        NSError* error;
+        [self.channel.channelOwner.managedObjectContext save:&error];
+        if(!error)
+        {
+            [self displayChannelDetails];
+        }
+        else
+        {
+            DebugLog(@"%@", [error description]);
+        }
+    }
+        
+    
 }
 
 
@@ -2502,11 +2544,24 @@
     }
 }
 
-\
+
 - (void) dealloc
 {
     self.channel = nil;
     self.originalChannel = nil;
+}
+
+#pragma mark - FAVOURITES WORKAROUND. TO BE REMOVED
+-(BOOL) isFavouritesChannel
+{
+    return ([self.channel.channelOwner.uniqueId isEqualToString:appDelegate.currentUser.uniqueId] && self.channel.favouritesValue);
+}
+
+-(void)refreshFavouritesChannel
+{
+    [[NSNotificationCenter defaultCenter] postNotificationName: kChannelUpdateRequest
+                                                       object: self
+                                                     userInfo: @{kChannel: self.channel}];
 }
 
 @end

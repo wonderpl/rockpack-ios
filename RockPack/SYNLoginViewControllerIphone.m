@@ -261,6 +261,11 @@
                      }];
 }
 
+-(void)reEnableLoginControls
+{
+    
+}
+
 
 #pragma mark - button IBActions
 
@@ -909,6 +914,8 @@ shouldChangeCharactersInRange: (NSRange) range
     if ((textField == self.ddInputField || textField == self.mmInputField) && newLength > 2)
         return NO;
     if (textField == self.yyyyInputField && newLength > 4)
+        return NO;
+    if(textField == self.registeringUserNameInputField && newLength > 20)
         return NO;
     
     

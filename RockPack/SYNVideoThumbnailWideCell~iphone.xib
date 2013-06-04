@@ -212,13 +212,13 @@
 										</object>
 										<bool key="IBUIAdjustsFontSizeToFit">NO</bool>
 									</object>
-									<object class="IBUIButton" id="725202316">
+									<object class="IBUIButton" id="1046033317">
 										<reference key="NSNextResponder" ref="224956200"/>
 										<int key="NSvFlags">292</int>
-										<string key="NSFrameSize">{44, 44}</string>
+										<string key="NSFrameSize">{195, 44}</string>
 										<reference key="NSSuperview" ref="224956200"/>
 										<reference key="NSWindow"/>
-										<reference key="NSNextKeyView" ref="437392156"/>
+										<reference key="NSNextKeyView" ref="658722323"/>
 										<string key="NSReuseIdentifierKey">_NS:9</string>
 										<bool key="IBUIAutoresizesSubviews">NO</bool>
 										<bool key="IBUIClearsContextBeforeDrawing">NO</bool>
@@ -234,13 +234,13 @@
 										<reference key="IBUIFontDescription" ref="139487933"/>
 										<reference key="IBUIFont" ref="171478253"/>
 									</object>
-									<object class="IBUIButton" id="1046033317">
+									<object class="IBUIButton" id="725202316">
 										<reference key="NSNextResponder" ref="224956200"/>
 										<int key="NSvFlags">292</int>
-										<string key="NSFrame">{{44, 0}, {151, 44}}</string>
+										<string key="NSFrame">{{43.5, 0}, {216.5, 25}}</string>
 										<reference key="NSSuperview" ref="224956200"/>
 										<reference key="NSWindow"/>
-										<reference key="NSNextKeyView" ref="658722323"/>
+										<reference key="NSNextKeyView" ref="437392156"/>
 										<string key="NSReuseIdentifierKey">_NS:9</string>
 										<bool key="IBUIAutoresizesSubviews">NO</bool>
 										<bool key="IBUIClearsContextBeforeDrawing">NO</bool>
@@ -618,9 +618,9 @@
 						<reference key="object" ref="224956200"/>
 						<array class="NSMutableArray" key="children">
 							<reference ref="354018233"/>
-							<reference ref="1046033317"/>
 							<reference ref="725202316"/>
 							<reference ref="437392156"/>
+							<reference ref="1046033317"/>
 							<reference ref="658722323"/>
 						</array>
 						<reference key="parent" ref="362352250"/>
@@ -698,10 +698,10 @@
 						<string key="objectName">Video Info View</string>
 					</object>
 					<object class="IBObjectRecord">
-						<int key="objectID">127</int>
-						<reference key="object" ref="804431002"/>
+						<int key="objectID">129</int>
+						<reference key="object" ref="536976737"/>
 						<reference key="parent" ref="616018756"/>
-						<string key="objectName">Duration - Label</string>
+						<string key="objectName">Data Added - Label</string>
 					</object>
 					<object class="IBObjectRecord">
 						<int key="objectID">128</int>
@@ -710,10 +710,10 @@
 						<string key="objectName">Number of views - Label</string>
 					</object>
 					<object class="IBObjectRecord">
-						<int key="objectID">129</int>
-						<reference key="object" ref="536976737"/>
+						<int key="objectID">127</int>
+						<reference key="object" ref="804431002"/>
 						<reference key="parent" ref="616018756"/>
-						<string key="objectName">Data Added - Label</string>
+						<string key="objectName">Duration - Label</string>
 					</object>
 				</array>
 			</object>

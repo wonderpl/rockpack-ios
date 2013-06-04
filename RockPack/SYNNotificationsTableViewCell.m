@@ -9,7 +9,7 @@
 #import "SYNNotificationsTableViewCell.h"
 #import "UIFont+SYNFont.h"
 #import "SYNDeviceManager.h"
-#import "SYNNotificationsViewController.h"
+#import "SYNNotificationsTableViewController.h"
 
 
 @implementation SYNNotificationsTableViewCell
@@ -17,11 +17,17 @@
 @synthesize thumbnailImageView;
 @synthesize messageTitle = _messageTitle;
 @synthesize delegate = _delegate;
+@synthesize read = _read;
 
 - (id)initWithStyle:(UITableViewCellStyle)style reuseIdentifier:(NSString *)reuseIdentifier
 {
     self = [super initWithStyle:UITableViewCellStyleSubtitle reuseIdentifier:reuseIdentifier];
     if (self) {
+        
+        
+        
+        self.selectionStyle = UITableViewCellSelectionStyleNone;
+        
         
         
         // == frames == //
@@ -49,10 +55,9 @@
                                                    green:(45.0/255.0)
                                                     blue:(51.0/255.0)
                                                    alpha:(1.0)];
-        
         // == Subtitle == //
         
-        self.detailTextLabel.backgroundColor = [UIColor clearColor];
+        
         self.detailTextLabel.font = [UIFont rockpackFontOfSize:12.0];
         self.detailTextLabel.textAlignment = NSTextAlignmentLeft;
         self.detailTextLabel.textColor = [UIColor colorWithRed:(187.0/255.0)
@@ -73,6 +78,8 @@
         
         [self addSubview:dividerImageView];
         
+        
+        
         // == Buttons == //
         
         mainImageButton = [UIButton buttonWithType:UIButtonTypeCustom];
@@ -87,14 +94,6 @@
     return self;
 }
 
-- (void)setSelected:(BOOL)selected animated:(BOOL)animated
-{
-    
-
-    // Configure the view for the selected state
-    
-    
-}
 
 
 - (void) layoutSubviews {
@@ -123,7 +122,13 @@
     detailsFrame.origin.y = self.textLabel.frame.origin.y + self.textLabel.frame.size.height;
     self.detailTextLabel.frame = detailsFrame;
     
-    dividerImageView.center = CGPointMake(self.center.x, self.frame.size.height - 4.0);
+    dividerImageView.center = CGPointMake(self.center.x, self.frame.size.height);
+    
+    if(_read)
+        self.backgroundColor = [UIColor clearColor];
+    else
+        self.backgroundColor = [UIColor colorWithRed:(226.0/255.0) green:(231.0/255.0) blue:(231.0/255.0) alpha:(1.0)];
+    
 }
 
 
@@ -131,7 +136,7 @@
 
 #pragma mark - Accesssors
 
--(void)setDelegate:(SYNNotificationsViewController *)newDelegate
+-(void)setDelegate:(SYNNotificationsTableViewController *)newDelegate
 {
     
     
@@ -156,7 +161,7 @@
 }
 
 
--(SYNNotificationsViewController*)delegate
+-(SYNNotificationsTableViewController*)delegate
 {
     return _delegate;
 }
@@ -187,6 +192,7 @@
 {
     return self.textLabel.text;
 }
+
 
 
 @end
