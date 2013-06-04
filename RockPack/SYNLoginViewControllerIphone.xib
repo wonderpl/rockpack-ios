@@ -1007,7 +1007,11 @@
 				</array>
 				<string key="NSFrame">{{0, 20}, {320, 548}}</string>
 				<reference key="NSSuperview"/>
+<<<<<<< HEAD
 				<reference key="NSNextKeyView" ref="244897070"/>
+=======
+				<reference key="NSNextKeyView" ref="254541825"/>
+>>>>>>> 863c5b92a3e9218bd1925bf34aea2b7609166836
 				<object class="NSColor" key="IBUIBackgroundColor">
 					<int key="NSColorSpace">2</int>
 					<bytes key="NSRGB">MC45NDUwOTgwMzkyIDAuOTQ1MDk4MDM5MiAwLjk0NTA5ODAzOTIAA</bytes>
@@ -1845,7 +1849,11 @@
 			<nil key="activeLocalization"/>
 			<dictionary class="NSMutableDictionary" key="localizations"/>
 			<nil key="sourceID"/>
+<<<<<<< HEAD
 			<int key="maxID">123</int>
+=======
+			<int key="maxID">121</int>
+>>>>>>> 863c5b92a3e9218bd1925bf34aea2b7609166836
 		</object>
 		<object class="IBClassDescriber" key="IBDocument.Classes"/>
 		<int key="IBDocument.localizationMode">0</int>
