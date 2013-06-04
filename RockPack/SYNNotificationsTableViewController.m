@@ -13,6 +13,7 @@
 #import "SYNRockpackNotification.h"
 #import "UIImageView+WebCache.h"
 #import "Video.h"
+#import "SYNMasterViewController.h"
 
 #define kNotificationsCellIdent @"kNotificationsCellIdent"
 
@@ -220,14 +221,11 @@
     
     if(notification.objectType == kNotificationObjectTypeVideo)
     {
-        Channel* channel = [self channelFromChannelId:notification.channelId];
-        
-        if(!channel)
-            return;
-        
-        [[NSNotificationCenter defaultCenter] postNotificationName:kChannelDetailsRequested
-                                                            object:self
-                                                          userInfo:@{kChannel:channel}];
+//        SYNMasterViewController *masterViewController = (SYNMasterViewController*)appDelegate.masterViewController;
+//        
+//        [masterViewController addVideoOverlayToViewController: self
+//                                       withVideoInstanceArray: @[]
+//                                             andSelectedIndex: 0];
     }
     else
     {

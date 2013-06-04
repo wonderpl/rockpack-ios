@@ -10,6 +10,7 @@
 #import "SYNAppDelegate.h"
 #import "NSDate+RFC1123.h"
 #import "ISO8601DateFormatter.h"
+#import "AppConstants.h"
 
 @implementation SYNRockpackNotification
 
@@ -125,6 +126,7 @@
             
             // the response can either have a channel tag or a video tag, in the second case the video tag will include a channel tag //
             
+            // case 1 : Channel Tag
             NSDictionary* channelDictionary = [messageDictionary objectForKey:@"channel"];
             if(channelDictionary && [channelDictionary isKindOfClass:[NSDictionary class]])
             {
@@ -133,6 +135,8 @@
                 self.channelId = [channelDictionary objectForKey:@"id"];
                 self.channelResourceUrl = [channelDictionary objectForKey:@"resource_url"];
                 self.channelThumbnailUrl = [channelDictionary objectForKey:@"thumbnail_url"];
+                
+                
             }
             
             
@@ -142,6 +146,8 @@
                 objectType = kNotificationObjectTypeVideo;
                 self.videoId = [videoDictionary objectForKey:@"id"];
                 self.videoThumbnailUrl = [videoDictionary objectForKey:@"thumbnail_url"];
+                
+                NSLog(@"self.videoThumbnailUrl: %@", self.videoThumbnailUrl);
                 
                 NSDictionary* channelDictionary = [videoDictionary objectForKey:@"channel"];
                 if(channelDictionary && [channelDictionary isKindOfClass:[NSDictionary class]])
@@ -160,6 +166,8 @@
                 self.channelOwner = [ChannelOwner instanceFromDictionary:userDictionary
                                                usingManagedObjectContext:appDelegate.mainManagedObjectContext
                                                      ignoringObjectTypes:kIgnoreChannelObjects];
+                
+                self.channelOwner.viewId = kSideNavigationViewId;
             }
         }
     }

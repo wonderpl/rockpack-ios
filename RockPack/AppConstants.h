@@ -38,6 +38,7 @@
 #define kSearchViewId               @"Search"
 #define kExistingChannelsViewId     @"ExistingChannels"
 #define kChannelDetailsViewId       @"ChannelDetails"
+#define kSideNavigationViewId       @"kSideNavigationViewId"
 
 // OAuth2
 #define kAPIRefreshToken            @"/ws/token"
