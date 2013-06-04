@@ -374,7 +374,10 @@
     
     [appDelegate.networkEngine cancelAllOperations];
     
-    [self reloadCollectionViews];
+    
+    [[NSNotificationCenter defaultCenter] postNotificationName:kChannelOwnerUpdateRequest
+                                                        object:self
+                                                      userInfo:@{kChannelOwner:self.user}];
 }
 
 
@@ -393,6 +396,7 @@
     [updatedObjects enumerateObjectsUsingBlock: ^(id obj, NSUInteger idx, BOOL *stop) {
         if ([obj isKindOfClass:[ChannelOwner class]] && [((ChannelOwner*)obj).uniqueId isEqualToString:self.user.uniqueId])
         {
+            [self.userProfileController setChannelOwner:obj];
             [self reloadCollectionViews];
             
             return; 

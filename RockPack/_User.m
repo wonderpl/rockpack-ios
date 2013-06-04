@@ -16,7 +16,6 @@ const struct UserAttributes UserAttributes = {
 	.locale = @"locale",
 	.loginOrigin = @"loginOrigin",
 	.subscriptionsUrl = @"subscriptionsUrl",
-	.username = @"username",
 };
 
 const struct UserRelationships UserRelationships = {
@@ -232,13 +231,6 @@ const struct UserFetchedProperties UserFetchedProperties = {
 
 
 @dynamic subscriptionsUrl;
-
-
-
-
-
-
-@dynamic username;
 
 
 
