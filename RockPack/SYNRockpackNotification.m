@@ -40,14 +40,22 @@
             ISO8601DateFormatter* formatter = [[ISO8601DateFormatter alloc] init];
             
             NSDate* date = [formatter dateFromString:dateString];
+
             if(date)
             {
                 self.dateCreated = date;
                 
                 // find difference from today
                 
+                NSTimeZone *timeZone = [NSTimeZone defaultTimeZone];
+                NSInteger seconds = [timeZone secondsFromGMTForDate: date];
+                date = [NSDate dateWithTimeInterval: seconds sinceDate: date];
+                
+                
                 NSCalendar *calendar = [[NSCalendar alloc] initWithCalendarIdentifier:NSGregorianCalendar];
-                NSDateComponents *components = [calendar components:NSYearCalendarUnit | NSMonthCalendarUnit | NSDayCalendarUnit | NSMinuteCalendarUnit | NSHourCalendarUnit
+                NSUInteger componentflags =
+                NSYearCalendarUnit | NSMonthCalendarUnit | NSDayCalendarUnit | NSMinuteCalendarUnit | NSHourCalendarUnit;
+                NSDateComponents *components = [calendar components:componentflags
                                                            fromDate:self.dateCreated
                                                              toDate:[NSDate date]
                                                             options:0];
