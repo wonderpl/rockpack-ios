@@ -33,10 +33,10 @@
 @property (nonatomic, strong) SYNHomeSectionHeaderView *supplementaryViewWithRefreshButton;
 @property (nonatomic, strong) UIRefreshControl *refreshControl;
 @property (nonatomic, strong) SYNFeedMessagesView* emptyGenreMessageView;
-
+@property (nonatomic, strong) NSBlockOperation *blockOperation;
+@property (nonatomic, assign) BOOL shouldReloadCollectionView;
 
 @end
-
 
 
 @implementation SYNFeedRootViewController
@@ -230,13 +230,147 @@
     [self.videoThumbnailCollectionView reloadData];
 }
 
+//- (void) controllerDidChangeContent: (NSFetchedResultsController *) controller
+//{
+//  
+//    [self.videoThumbnailCollectionView reloadData];
+//}
 
 
+- (void) controllerWillChangeContent: (NSFetchedResultsController *) controller
+{
+    self.shouldReloadCollectionView = NO;
+    self.blockOperation = [NSBlockOperation new];
+}
 
+// We need to serialise all of the updates, and we could either use performBatchUpdates or put then on 
+
+// Add all our section changes to our block queue
+- (void) controller: (NSFetchedResultsController *) controller
+   didChangeSection: (id<NSFetchedResultsSectionInfo>) sectionInfo
+            atIndex: (NSUInteger) sectionIndex
+      forChangeType: (NSFetchedResultsChangeType) type
+{
+    __weak UICollectionView *collectionView = self.videoThumbnailCollectionView;
+    
+    switch (type)
+    {
+        case NSFetchedResultsChangeInsert:
+        {
+            [self.blockOperation addExecutionBlock: ^{
+                [collectionView insertSections: [NSIndexSet indexSetWithIndex: sectionIndex]];
+            }];
+            break;
+        }
+            
+        case NSFetchedResultsChangeDelete:
+        {
+            [self.blockOperation addExecutionBlock: ^{
+                [collectionView deleteSections: [NSIndexSet indexSetWithIndex: sectionIndex]];
+            }];
+            break;
+        }
+            
+        case NSFetchedResultsChangeUpdate:
+        {
+            [self.blockOperation addExecutionBlock: ^{
+                [collectionView reloadSections: [NSIndexSet indexSetWithIndex: sectionIndex]];
+            }];
+            break;
+        }
+            
+        default:
+            break;
+    }
+}
+
+
+//  Add all the object changes to our block queue
+- (void) controller: (NSFetchedResultsController *) controller
+    didChangeObject: (id) changeObject
+        atIndexPath: (NSIndexPath *) indexPath
+      forChangeType: (NSFetchedResultsChangeType) type
+       newIndexPath: (NSIndexPath *) newIndexPath
+{
+    __weak UICollectionView *collectionView = self.videoThumbnailCollectionView;
+    
+    switch (type)
+    {
+        case NSFetchedResultsChangeInsert:
+        {
+            if ([self.videoThumbnailCollectionView numberOfSections] > 0)
+            {
+                if ([self.videoThumbnailCollectionView numberOfItemsInSection: indexPath.section] == 0)
+                {
+                    self.shouldReloadCollectionView = YES;
+                }
+                else
+                {
+                    [self.blockOperation addExecutionBlock: ^{
+                        [collectionView insertItemsAtIndexPaths: @[newIndexPath]];
+                    }];
+                }
+            }
+            else
+            {
+                self.shouldReloadCollectionView = YES;
+            }
+            break;
+        }
+            
+        case NSFetchedResultsChangeDelete:
+        {
+            if ([self.videoThumbnailCollectionView numberOfItemsInSection: indexPath.section] == 1)
+            {
+                self.shouldReloadCollectionView = YES;
+            }
+            else
+            {
+                [self.blockOperation addExecutionBlock: ^{
+                    [collectionView deleteItemsAtIndexPaths:@[indexPath]];
+                }];
+            }
+            break;
+        }
+            
+        case NSFetchedResultsChangeUpdate:
+        {
+            [self.blockOperation addExecutionBlock: ^{
+                [collectionView reloadItemsAtIndexPaths: @[indexPath]];
+            }];
+            break;
+        }
+            
+        case NSFetchedResultsChangeMove:
+        {
+            [self.blockOperation addExecutionBlock: ^{
+                [collectionView moveItemAtIndexPath: indexPath
+                                        toIndexPath: newIndexPath];
+            }];
+            break;
+        }
+            
+        default:
+            break;
+    }
+}
+
+
+// Nasty hack to work around know problems with UICollectionView (http://openradar.appspot.com/12954582)
 - (void) controllerDidChangeContent: (NSFetchedResultsController *) controller
 {
-  
-    [self.videoThumbnailCollectionView reloadData];
+    if (self.shouldReloadCollectionView)
+    {
+        // Oh dear, we need to work around the bug, so just reload the collection view
+        [self.videoThumbnailCollectionView reloadData];
+    }
+    else
+    {
+        // Luckily we can use the nice UICollectionView animations, (within our batch update)
+        [self.videoThumbnailCollectionView performBatchUpdates: ^{
+            [self.blockOperation start];
+        } completion: nil];
+    }
 }
 
 
