@@ -374,7 +374,10 @@
     
     [appDelegate.networkEngine cancelAllOperations];
     
-    [self reloadCollectionViews];
+    
+    [[NSNotificationCenter defaultCenter] postNotificationName:kChannelOwnerUpdateRequest
+                                                        object:self
+                                                      userInfo:@{kChannelOwner:self.user}];
 }
 
 
