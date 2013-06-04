@@ -94,7 +94,7 @@ typedef enum {
                  kSideNavAction: kProfileViewId},
                 @{kSideNavTitle: NSLocalizedString(@"core_nav_section_notifications", nil),
                    kSideNavType: @(kSideNavigationTypeLoad),
-                 kSideNavAction: @"SYNNotificationsViewController"}];
+                 kSideNavAction: @"SYNNotificationsTableViewController"}];
         
         _state = SideNavigationStateHidden;
         
@@ -426,10 +426,8 @@ typedef enum {
         // == NOTIFICATIONS == //
         
         if (indexPath.row == kNotificationsRowIndex)
-        {
-            
             ((SYNNotificationsTableViewController*)self.currentlyLoadedViewController).notifications = self.notifications;
-        }
+        
         
         self.navigationContainerTitleLabel.text = NSLocalizedString(@"core_nav_section_notifications",nil);
         self.state = SideNavigationStateFull;

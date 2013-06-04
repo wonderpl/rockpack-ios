@@ -243,6 +243,10 @@
     _notifications = notifications;
     [self.tableView reloadData];
 }
+-(NSArray*)notifications
+{
+    return _notifications;
+}
 
 -(Video*)videoFromVideoId:(NSString*)videoId
 {

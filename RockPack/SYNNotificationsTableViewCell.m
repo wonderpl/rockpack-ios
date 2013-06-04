@@ -25,6 +25,9 @@
     if (self) {
         
         
+        
+        self.selectionStyle = UITableViewCellSelectionStyleNone;
+        
         // == frames == //
         
         imageViewRect = CGRectMake(8.0, 6.0, 60.0, 60.0);
@@ -88,14 +91,6 @@
     return self;
 }
 
-- (void)setSelected:(BOOL)selected animated:(BOOL)animated
-{
-    
-
-    // Configure the view for the selected state
-    
-    
-}
 
 
 - (void) layoutSubviews {
@@ -196,10 +191,13 @@
     if(_read)
     {
         self.backgroundColor = [UIColor clearColor];
+        
     }
     else
     {
-        self.backgroundColor = [UIColor colorWithRed:(226.0/255.0) green:(231.0/255.0) blue:(231.0/255.0) alpha:(1.0)];
+        //self.backgroundColor = [UIColor colorWithRed:(226.0/255.0) green:(231.0/255.0) blue:(231.0/255.0) alpha:(1.0)];
+        self.backgroundColor = [UIColor greenColor];
+        
     }
 }
 
