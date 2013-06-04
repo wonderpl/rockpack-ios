@@ -102,7 +102,12 @@
 
 - (void) setUpInitialState;
 {
-    
+    //Override in subclass
+}
+
+-(void)reEnableLoginControls
+{
+    //Override in subclass
 }
 
 - (BOOL) checkAndSaveRegisteredUser: (SYNOAuth2Credential*) credential
@@ -462,13 +467,15 @@
         
         return NO;
     }
-    
+    return [self dateValidForDd:ddInputField mm:mmInputField yyyy:yyyyInputField];
+}
+
+
+-(BOOL)dateValidForDd:(UITextField*)ddInputField mm:(UITextField*)mmInputField yyyy:(UITextField*)yyyyInputField
+{
     // == Check for date == //
     
     NSArray* dobTextFields = @[mmInputField, ddInputField, yyyyInputField];
-    
-    
-    
     
     
     // == Check wether the DOB fields contain numbers == //
@@ -549,9 +556,6 @@
 
 - (BOOL) loginFormIsValidForUsername:(UITextField*)userNameInputField password:(UITextField*)passwordInputField
 {
-    // email
-    
-    BOOL result = YES;
     if (userNameInputField.text.length < 1)
     {
         [self placeErrorLabel: NSLocalizedString(@"login_screen_form_field_username_error_empty", nil)
@@ -559,7 +563,7 @@
         
         [userNameInputField becomeFirstResponder];
         
-        result = NO;
+        return NO;
     }
     
     if (passwordInputField.text.length < 1)
@@ -569,10 +573,10 @@
         
         [passwordInputField becomeFirstResponder];
         
-        result = NO;
+        return NO;
     }
     
-    return result;
+    return YES;
 }
 
 - (BOOL) resetPasswordFormIsValidForUsername:(UITextField*)userNameInputField
