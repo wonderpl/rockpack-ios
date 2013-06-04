@@ -12,7 +12,7 @@
 #import "SYNAppDelegate.h"
 #import "SYNDeviceManager.h"
 #import "SYNImagePickerController.h"
-#import "SYNNotificationsViewController.h"
+#import "SYNNotificationsTableViewController.h"
 #import "SYNOAuthNetworkEngine.h"
 #import "SYNRockpackNotification.h"
 #import "SYNSearchBoxViewController.h"
@@ -428,7 +428,7 @@ typedef enum {
         if (indexPath.row == kNotificationsRowIndex)
         {
             
-            ((SYNNotificationsViewController*)self.currentlyLoadedViewController).notifications = self.notifications;
+            ((SYNNotificationsTableViewController*)self.currentlyLoadedViewController).notifications = self.notifications;
         }
         
         self.navigationContainerTitleLabel.text = NSLocalizedString(@"core_nav_section_notifications",nil);
