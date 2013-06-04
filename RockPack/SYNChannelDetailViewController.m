@@ -781,8 +781,8 @@
     self.subscribeButton.hidden = (visible && [self.channel.channelOwner.uniqueId isEqualToString: appDelegate.currentUser.uniqueId]);
     self.editButton.hidden = (visible && ! [self.channel.channelOwner.uniqueId isEqualToString: appDelegate.currentUser.uniqueId]);
     
-    // If favourites channel, hide edit button and move subscribers
-    if (self.channel.favouritesValue)
+    // If the current user's favourites channel, hide edit button and move subscribers
+    if (self.channel.favouritesValue && [self.channel.channelOwner.uniqueId isEqualToString:appDelegate.currentUser.uniqueId])
     {
         self.editButton.hidden = TRUE;
         
