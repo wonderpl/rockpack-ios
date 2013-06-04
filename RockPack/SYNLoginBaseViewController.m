@@ -63,6 +63,11 @@
     return self;
 }
 
+-(void)reEnableLoginControls
+{
+    // implement in subclass
+}
+
 
 - (void) commonInit
 {
@@ -101,11 +106,6 @@
 }
 
 - (void) setUpInitialState;
-{
-    //Override in subclass
-}
-
--(void)reEnableLoginControls
 {
     //Override in subclass
 }

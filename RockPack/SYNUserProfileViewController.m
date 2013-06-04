@@ -116,9 +116,18 @@
     if ([channelOwner isKindOfClass:[User class]])
     {
         User* ownerAsUser = (User*)channelOwner;
-        userName = [ownerAsUser.fullName uppercaseString];
+        if(ownerAsUser.fullNameIsPublicValue)
+        {
+            userName = [ownerAsUser.fullName uppercaseString];
+        }
+        else
+        {
+            userName = [ownerAsUser.firstName uppercaseString];
+        }
         
-        if([userName length]>1)
+        NSLog(@"userName: %@", userName);
+        
+        if(userName.length < 1)
         {
             userName = ownerAsUser.username;
             self.userNameLabel.text = @"";
@@ -156,17 +165,16 @@
             
             NSString* thumbnailUrlString = [channelOwner.thumbnailURL stringByReplacingOccurrencesOfString:thumbnailSizeString withString:@"thumbnail_medium"];
             
-//            [self.profileImageView setImageWithURL: [NSURL URLWithString: thumbnailUrlString]
-//                                  placeholderImage: placeholderImage
-//                                           options: SDWebImageRetryFailed];
+
             
             // We can't use our standard asynchronous loader due to cacheing
-            dispatch_queue_t callerQueue = dispatch_get_main_queue();
+            
             dispatch_queue_t downloadQueue = dispatch_queue_create("com.rockpack.avatarloadingqueue", NULL);
             dispatch_async(downloadQueue, ^{
+                
                 NSData * imageData = [NSData dataWithContentsOfURL: [NSURL URLWithString: thumbnailUrlString]];
                 
-                dispatch_async(callerQueue, ^{
+                dispatch_async(dispatch_get_main_queue(), ^{
                     self.self.profileImageView.image = [UIImage imageWithData: imageData];
                 });
             });

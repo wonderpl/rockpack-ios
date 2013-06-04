@@ -3275,8 +3275,8 @@
 				38FD4420172AC9B30086B524 /* SYNVideoThumbnailRegularCell~iphone.xib */,
 				01363F221630B81400FFAA09 /* SYNVideoThumbnailWideCell.h */,
 				01363F231630B81400FFAA09 /* SYNVideoThumbnailWideCell.m */,
-				3862E8A3172979120066E8E7 /* SYNVideoThumbnailWideCell~iphone.xib */,
 				01363EC016300F3A00FFAA09 /* SYNVideoThumbnailWideCell.xib */,
+				3862E8A3172979120066E8E7 /* SYNVideoThumbnailWideCell~iphone.xib */,
 			);
 			name = "Video cells";
 			sourceTree = "<group>";

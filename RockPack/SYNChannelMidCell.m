@@ -10,6 +10,7 @@
 #import "SYNDeletionWobbleLayoutAttributes.h"
 #import "UIFont+SYNFont.h"
 #import <QuartzCore/QuartzCore.h>
+#import "UIImageView+WebCache.h"
 
 @implementation SYNChannelMidCell
 
@@ -135,7 +136,8 @@
 {
     [self stopWobbling];
     [self.imageView.layer removeAllAnimations];
-    self.imageView.image = nil;
+    
+    [self.imageView setImageWithURL:nil];
 }
 
 @end

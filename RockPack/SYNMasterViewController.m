@@ -847,13 +847,17 @@ typedef void(^AnimationCompletionBlock)(BOOL finished);
         return;
     
     if (self.overlayNavigationController)
-    {
         self.overlayNavigationController = nil;
+    
+    SYNAbstractViewController* showingVC = (SYNAbstractViewController *)self.containerViewController.showingViewController;
+    
+    if(showingVC.navigationController.viewControllers.count > 1) {
+        
+        [showingVC animatedPopToRootViewController];
+        [self showBackButton:NO];
     }
-    else if (showingBackButton)
-    {
-        [self popCurrentViewController:self.backButtonControl];
-    }
+    
+    self.containerViewController.scrollView.scrollEnabled = YES;
     
     [self.containerViewController navigateToPageByName: pageName];
     
@@ -996,17 +1000,21 @@ typedef void(^AnimationCompletionBlock)(BOOL finished);
 
 }
 
+
+
 - (void) popCurrentViewController: (id) sender
 {
     SYNAbstractViewController *abstractVC;
     
-    if(_overlayNavigationController)
+    if(self.overlayNavigationController)
     {
-        if(_overlayNavigationController.viewControllers.count > 1) // if the overlayController has itself pushed views, pop one of them
+        // if the overlay has views pushed to its navigation controller...
+        if(self.overlayNavigationController.viewControllers.count > 1) 
         {
-            abstractVC = (SYNAbstractViewController *)_overlayNavigationController.topViewController;
             
+            abstractVC = (SYNAbstractViewController *)self.overlayNavigationController.topViewController;
             
+            // ... pop one of them
             [abstractVC animatedPopViewController];
             
 
@@ -1021,13 +1029,6 @@ typedef void(^AnimationCompletionBlock)(BOOL finished);
             self.overlayNavigationController = nil; // animate the overlay out using the setter method
 
             
-            if(self.overlayNavigationController.topViewController == self.searchViewController)
-            {
-                [self cancelButtonPressed:nil];
-            }
-            
-            self.overlayNavigationController = nil; // animate the overlay out using the setter method
-            
         }
         
     }
@@ -1035,22 +1036,28 @@ typedef void(^AnimationCompletionBlock)(BOOL finished);
     {
         abstractVC = (SYNAbstractViewController *)self.containerViewController.showingViewController;
         
-        
-        if(abstractVC.navigationController.viewControllers.count <= 2) {
-            self.containerViewController.scrollView.scrollEnabled = YES;
-            [self showBackButton:NO];
-        }
+        // if there are controlleres to pop
+        if(abstractVC.navigationController.viewControllers.count >= 2)
+        {
+            // ... then pop the top one
+            [abstractVC animatedPopViewController];
             
+            // if we are at the last one...
+            if(abstractVC.navigationController.viewControllers.count <= 1)
+            {
+                // ... then hide the nav and enable the scrolling of the main sections
+                self.containerViewController.scrollView.scrollEnabled = YES;
+                [self showBackButton:NO];
+                
+            }
+        }
         
-        [abstractVC animatedPopViewController];
         
         // animate the search
         
-       
     }
     
     [self.containerViewController refreshView];
-    
     
 }
 
