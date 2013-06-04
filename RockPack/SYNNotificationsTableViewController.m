@@ -8,7 +8,7 @@
 
 #import "SYNAppDelegate.h"
 #import "SYNNotificationsTableViewCell.h"
-#import "SYNNotificationsViewController.h"
+#import "SYNNotificationsTableViewController.h"
 #import "SYNOAuthNetworkEngine.h"
 #import "SYNRockpackNotification.h"
 #import "UIImageView+WebCache.h"
@@ -16,14 +16,14 @@
 
 #define kNotificationsCellIdent @"kNotificationsCellIdent"
 
-@interface SYNNotificationsViewController ()
+@interface SYNNotificationsTableViewController ()
 
 
 @property (nonatomic, weak) SYNAppDelegate* appDelegate;
 @property (nonatomic, strong) UIImageView* logoImageView;
 @end
 
-@implementation SYNNotificationsViewController
+@implementation SYNNotificationsTableViewController
 
 @synthesize notifications = _notifications;
 @synthesize appDelegate;
@@ -114,15 +114,10 @@
     
     NSURL* thumbnaillUrl;
     if(notification.objectType == kNotificationObjectTypeVideo)
-    {
         thumbnaillUrl = [NSURL URLWithString:notification.videoThumbnailUrl];
-        
-    }
     else
-    {
         thumbnaillUrl = [NSURL URLWithString:notification.channelThumbnailUrl];
         
-    }
     
     UIImage* placeholder;
     if(notification.objectType == kNotificationObjectTypeVideo)
@@ -134,9 +129,11 @@
                                         placeholderImage: placeholder
                                                  options: SDWebImageRetryFailed];
     
+    
     notificationCell.delegate = self;
     
-    NSLog(@"%@", notification.dateDifferenceString);
+    notificationCell.read = notification.read;
+    
     
     notificationCell.detailTextLabel.text = notification.dateDifferenceString;
     
@@ -245,6 +242,10 @@
 {
     _notifications = notifications;
     [self.tableView reloadData];
+}
+-(NSArray*)notifications
+{
+    return _notifications;
 }
 
 -(Video*)videoFromVideoId:(NSString*)videoId

@@ -9,7 +9,7 @@
 #import "SYNNotificationsTableViewCell.h"
 #import "UIFont+SYNFont.h"
 #import "SYNDeviceManager.h"
-#import "SYNNotificationsViewController.h"
+#import "SYNNotificationsTableViewController.h"
 
 
 @implementation SYNNotificationsTableViewCell
@@ -17,12 +17,16 @@
 @synthesize thumbnailImageView;
 @synthesize messageTitle = _messageTitle;
 @synthesize delegate = _delegate;
+@synthesize read = _read;
 
 - (id)initWithStyle:(UITableViewCellStyle)style reuseIdentifier:(NSString *)reuseIdentifier
 {
     self = [super initWithStyle:UITableViewCellStyleSubtitle reuseIdentifier:reuseIdentifier];
     if (self) {
         
+        
+        
+        self.selectionStyle = UITableViewCellSelectionStyleNone;
         
         // == frames == //
         
@@ -87,14 +91,6 @@
     return self;
 }
 
-- (void)setSelected:(BOOL)selected animated:(BOOL)animated
-{
-    
-
-    // Configure the view for the selected state
-    
-    
-}
 
 
 - (void) layoutSubviews {
@@ -131,7 +127,7 @@
 
 #pragma mark - Accesssors
 
--(void)setDelegate:(SYNNotificationsViewController *)newDelegate
+-(void)setDelegate:(SYNNotificationsTableViewController *)newDelegate
 {
     
     
@@ -156,7 +152,7 @@
 }
 
 
--(SYNNotificationsViewController*)delegate
+-(SYNNotificationsTableViewController*)delegate
 {
     return _delegate;
 }
@@ -188,5 +184,21 @@
     return self.textLabel.text;
 }
 
+- (void) setRead:(BOOL) read
+{
+    
+    _read = read;
+    if(_read)
+    {
+        self.backgroundColor = [UIColor clearColor];
+        
+    }
+    else
+    {
+        //self.backgroundColor = [UIColor colorWithRed:(226.0/255.0) green:(231.0/255.0) blue:(231.0/255.0) alpha:(1.0)];
+        self.backgroundColor = [UIColor greenColor];
+        
+    }
+}
 
 @end
