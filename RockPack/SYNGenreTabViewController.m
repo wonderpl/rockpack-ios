@@ -49,8 +49,9 @@
 - (void) loadView
 {
  
-    //TODO: This should be reworked. The home label string should not be used to define behaviour.
-    if([self.homeButtomString isEqualToString:@"other"] )
+    
+    // TODO: String are fine, presumtion of queries it NOT!
+    if([self.homeButtomString isEqualToString:@"other"])
     {
         NSEntityDescription* categoryEntity = [NSEntityDescription entityForName: @"Genre"
                                                           inManagedObjectContext: appDelegate.mainManagedObjectContext];
@@ -72,13 +73,24 @@
         
         NSArray* otherFetchArray = [appDelegate.mainManagedObjectContext executeFetchRequest: categoriesFetchRequest
                                                                                        error: &error];
-        if([otherFetchArray count]==1)
+        if(otherFetchArray.count > 0)
         {
             self.otherGenre = [otherFetchArray objectAtIndex:0];
             self.homeButtomString = [self.otherGenre.name uppercaseString];
+            
+            if(otherFetchArray.count > 1) // home cleaning
+                for (Genre* duplicateOther in otherFetchArray)
+                    [duplicateOther.managedObjectContext deleteObject:duplicateOther];
+            
+            
         }
     }
+    else
+    {
+        self.otherGenre = nil;
+    }
 
+    self.currentlySelectedGenre = self.otherGenre;
     
     SYNGenreTabView* categoriesTabView = [[SYNGenreTabView alloc] initWithSize: [SYNDeviceManager.sharedInstance currentScreenWidth]
                                                                            andHomeButton: self.homeButtomString];
@@ -164,7 +176,7 @@
         [self.tabView createCategoriesTab:self.genresFetched];
         
         if(self.currentlySelectedGenre)
-            [self selectTabForGenre:self.currentlySelectedGenre];
+            [self highlightTabForGenre:self.currentlySelectedGenre];
         
     }
 
@@ -183,25 +195,26 @@
     
     SYNGenreItemView* genreTab = (SYNGenreItemView*)tab;
     
-    if (!tab || tab.tag == 0)
+    if (!tab || tab.tag == 0) // home button pressed
     {
-        // home button pressed
+        
         [self.delegate handleMainTap: tab];
         
-        if(self.otherGenre && tab.tag ==0)
+        
+        if(self.otherGenre)
         {
             //The "OTHER" category has been chosen on the channel create or edit screen
+            
             [self.delegate handleNewTabSelectionWithGenre: self.otherGenre];
+            
         }
+        
         else
         {
             [self.delegate handleNewTabSelectionWithGenre: nil];
         }
         
-        if (tab.tag == 0)
-        {
-            [self.categoriesTabView hideSecondaryTabs];
-        }
+        [self.categoriesTabView hideSecondaryTabs];
         
         return;   
     }
@@ -289,7 +302,7 @@
 
 #pragma mark - Getting Genre from Tab Bar 
 
--(BOOL)selectTabForGenre:(Genre*)genre
+-(BOOL)highlightTabForGenre:(Genre*)genre
 {
     
     NSIndexPath* indexPath = [self findIndexPathForGenreId:genre.uniqueId];
@@ -327,7 +340,9 @@
 {
     if (self.otherGenre)
     {
-        NSArray* otherSubCategory = [[self.otherGenre.subgenres array] filteredArrayUsingPredicate:[NSPredicate predicateWithFormat:@"uniqueId = %@",genreId]];
+        NSArray* otherSubCategory = [[self.otherGenre.subgenres array] filteredArrayUsingPredicate:
+                                     [NSPredicate predicateWithFormat:@"uniqueId = %@", genreId]];
+        
         if([otherSubCategory count])
         {
             //The Other/other category is selected by default. return nothing;

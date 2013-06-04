@@ -234,7 +234,7 @@
                   byAppending: (BOOL) append
 {
     
-    NSLog(@"Next request: %i - %i", self.dataRequestRange.location, self.dataRequestRange.length + self.dataRequestRange.location);
+    NSLog(@"Next request: %i - %i", self.dataRequestRange.location, self.dataRequestRange.length + self.dataRequestRange.location - 1);
     
     [appDelegate.networkEngine updateChannelsScreenForCategory: (genre ? genre.uniqueId : @"all")
                                                       forRange: self.dataRequestRange
@@ -259,7 +259,6 @@
                                                       
                                                       self.dataItemsAvailable = [totalNumber integerValue];
                                                       
-                                                      NSLog(@"Items Available: %i", self.dataItemsAvailable);
                                                       
                                                       BOOL registryResultOk = [appDelegate.mainRegistry registerChannelsFromDictionary: response
                                                                                                                               forGenre: genre
@@ -353,6 +352,8 @@
     NSArray *resultsArray = [appDelegate.mainManagedObjectContext executeFetchRequest: request error: &error];
     if (!resultsArray)
         return;
+    
+    NSLog(@"resultsArray: %i", resultsArray.count);
     
     self.channels = [NSMutableArray arrayWithArray:resultsArray];
     

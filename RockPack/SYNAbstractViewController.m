@@ -242,16 +242,18 @@
     {
         noteName = kVideoQueueAdd;
         
-        
         [appDelegate.oAuthNetworkEngine recordActivityForUserId: appDelegate.currentUser.uniqueId
                                                          action: @"select"
                                                 videoInstanceId: videoInstance.uniqueId
                                               completionHandler: ^(id response) {
+                                                  
                                                   DebugLog (@"Acivity recorded: Select");
-                                              }
-                                                   errorHandler: ^(id error) {
-                                                       DebugLog (@"Acivity not recorded: Select");
-                                                   }];
+                                                  
+                                              } errorHandler: ^(id error) {
+                                                  
+                                                  DebugLog (@"Acivity not recorded: Select");
+                                                  
+                                              }];
     }
     else
     {
