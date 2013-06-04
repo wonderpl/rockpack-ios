@@ -62,6 +62,11 @@
     return self;
 }
 
+-(void)reEnableLoginControls
+{
+    // implement in subclass
+}
+
 
 - (void) commonInit
 {

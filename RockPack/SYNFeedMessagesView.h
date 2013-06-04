@@ -10,8 +10,11 @@
 
 @interface SYNFeedMessagesView : UIView
 
+@property (nonatomic) BOOL isLoader;
+
 
 + (id) withMessage: (NSString*) message;
++ (id) withMessage:(NSString *)message andLoader:(BOOL)isLoader;
 
 - (id) initWithMessage: (NSString*) message;
 
