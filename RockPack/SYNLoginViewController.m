@@ -59,6 +59,7 @@
 @property (nonatomic, strong) NSMutableDictionary* labelsToErrorArrows;
 @property (nonatomic, strong) UIPopoverController* cameraMenuPopoverController;
 @property (nonatomic, strong) UIPopoverController* cameraPopoverController;
+@property (nonatomic, strong) IBOutlet UIImageView* loginBackgroundImage;
 
 @end
 
@@ -82,7 +83,6 @@
 @synthesize wellSendYouLabel;
 @synthesize elementsOffsetY;
 @synthesize termsAndConditionsButton;
-
 
 - (void) viewDidLoad
 {
@@ -192,6 +192,21 @@
     [[UIApplication sharedApplication] openURL:urlToGo];
 }
 
+- (void) viewWillAppear:(BOOL)animated
+{
+    self.loginBackgroundImage.frame = self.loginBackgroundImage.bounds;
+    
+    [UIView animateWithDuration:40.0f
+                          delay:0.0f
+                        options: UIViewAnimationOptionCurveEaseOut
+                     animations:^{
+                         self.loginBackgroundImage.frame = CGRectMake(self.loginBackgroundImage.frame.origin.x - 593.0f, self.loginBackgroundImage.frame.origin.y, self.loginBackgroundImage.frame.size.width, self.loginBackgroundImage.frame.size.height);
+                         
+                     } completion:^(BOOL finished) {
+                         //self.darkOverlayView.hidden = NO;
+                     }];
+}
+
 - (void) viewDidAppear: (BOOL) animated
 {
     [super viewDidAppear:animated];
@@ -201,7 +216,6 @@
     
     memberLabel.center = CGPointMake(memberLabel.center.x, loginButton.center.y - 54.0);
     memberLabel.frame = CGRectIntegral(memberLabel.frame);
-    
     
 }
 
@@ -283,7 +297,7 @@
 
 
 - (void) setUpPasswordState
-{
+{    
     self.initialUsernameFrame = userNameInputField.frame;
     loginButton.frame = registerButton.frame;
     sendEmailButton.enabled = YES;
@@ -326,6 +340,18 @@
 
 - (void) setUpLoginStateFromPreviousState: (kLoginScreenState) previousState
 {
+    //Fade out login background
+    self.loginBackgroundImage.alpha = 1.0f;
+    
+    [UIView animateWithDuration:0.6f
+                          delay:0.0f
+                        options: UIViewAnimationCurveEaseInOut
+                     animations:^{
+                         self.loginBackgroundImage.alpha = 0.0f;
+                         
+                     } completion:^(BOOL finished) {
+                     }];
+    
     secondaryFacebookMessage.alpha = 0.0;
     
     [self clearAllErrorArrows];
@@ -536,6 +562,32 @@
 
 - (void) setUpRegisterStateFromState: (kLoginScreenState) previousState
 {
+    //Fade out login background
+    self.loginBackgroundImage.alpha = 1.0f;
+    
+    [UIView animateWithDuration:0.6f
+                          delay:0.0f
+                        options: UIViewAnimationCurveEaseInOut
+                     animations:^{
+                         self.loginBackgroundImage.alpha = 0.0f;
+                         
+                     } completion:^(BOOL finished) {
+                     }];
+    
+    //Make member label grey
+    self.memberLabel.textColor = self.memberLabel.textColor;
+    self.memberLabel.shadowColor = self.memberLabel.shadowColor;
+    
+    [UIView animateWithDuration:0.6f
+                          delay:1.0f
+                        options: UIViewAnimationCurveEaseInOut
+                     animations:^{
+                         self.memberLabel.textColor = [UIColor colorWithRed:(130.0f/255.0f) green:(141.0f/255.0f) blue:(145.0f/255.0f) alpha:(1.0f)];
+                         self.memberLabel.shadowColor = [UIColor whiteColor];
+                         
+                     } completion:^(BOOL finished) {
+                     }];
+    
     secondaryFacebookMessage.alpha = 0.0;
     
     [self clearAllErrorArrows];
@@ -1373,6 +1425,21 @@
 - (void) completeLoginProcess
 {
     [activityIndicator stopAnimating];
+    
+    if (self.loginBackgroundImage.alpha == 1.0f)
+    {
+        //Fade out login background
+        self.loginBackgroundImage.alpha = 1.0f;
+        
+        [UIView animateWithDuration:0.6f
+                              delay:0.0f
+                            options: UIViewAnimationCurveEaseInOut
+                         animations:^{
+                             self.loginBackgroundImage.alpha = 0.0f;
+                             
+                         } completion:^(BOOL finished) {
+                         }];
+    }
     
     UIImageView *splashView = [[UIImageView alloc] initWithFrame: CGRectMake(0, 0, 1024, 748)];
     splashView.image = [UIImage imageNamed:  @"Default-Landscape.png"];

@@ -52,6 +52,8 @@
 @property (nonatomic, strong) IBOutlet UITextField* yyyyInputField;
 @property (nonatomic, strong) IBOutlet UILabel* wellSendYouLabel;
 @property (nonatomic, strong) IBOutlet UILabel* termsAndConditionsLabel;
+@property (nonatomic, strong) IBOutlet UIImageView* loginBackgroundImage;
+
 
 @property (nonatomic, strong) IBOutlet UIActivityIndicatorView* activityIndicator;
 
@@ -170,6 +172,18 @@
     
     // Google analytics support
     [GAI.sharedInstance.defaultTracker sendView: @"Login - iPhone"];
+    
+    self.loginBackgroundImage.frame = self.loginBackgroundImage.bounds;
+    
+    [UIView animateWithDuration:40.0f
+                          delay:0.0f
+                        options: UIViewAnimationOptionCurveEaseOut
+                     animations:^{
+                         self.loginBackgroundImage.frame = CGRectMake(self.loginBackgroundImage.frame.origin.x - 360.0f, self.loginBackgroundImage.frame.origin.y, self.loginBackgroundImage.frame.size.width, self.loginBackgroundImage.frame.size.height);
+                         
+                     } completion:^(BOOL finished) {
+                         //self.darkOverlayView.hidden = NO;
+                     }];
 }
 
 
@@ -225,6 +239,19 @@
 
 - (IBAction) signupTapped: (id) sender
 {
+    
+    //Fade out login background
+    self.loginBackgroundImage.alpha = 1.0f;
+    
+    [UIView animateWithDuration:0.3f
+                          delay:0.0f
+                        options: UIViewAnimationCurveEaseInOut
+                     animations:^{
+                         self.loginBackgroundImage.alpha = 0.0f;
+                         
+                     } completion:^(BOOL finished) {
+                     }];
+    
     self.state = kLoginScreenStateRegister;
     
     [self turnOnButton:self.cancelButton];
@@ -251,6 +278,19 @@
 
 - (IBAction) loginTapped: (id) sender
 {
+    
+    //Fade out login background
+    self.loginBackgroundImage.alpha = 1.0f;
+    
+    [UIView animateWithDuration:0.3f
+                          delay:0.0f
+                        options: UIViewAnimationCurveEaseInOut
+                     animations:^{
+                         self.loginBackgroundImage.alpha = 0.0f;
+                         
+                     } completion:^(BOOL finished) {
+                     }];
+    
     self.state = kLoginScreenStateLogin;
     
     [self turnOnButton:self.backButton];
@@ -353,6 +393,18 @@
         case kLoginScreenStateLogin:
         default:
         {
+            //Fade in login background
+            self.loginBackgroundImage.alpha = 0.0f;
+            
+            [UIView animateWithDuration:0.3f
+                                  delay:0.0f
+                                options: UIViewAnimationCurveEaseInOut
+                             animations:^{
+                                 self.loginBackgroundImage.alpha = 1.0f;
+                                 
+                             } completion:^(BOOL finished) {
+                             }];
+            
             self.state = kLoginScreenStateInitial;
             [UIView animateWithDuration:kLoginAnimationTransitionDuration delay:0.0f options:UIViewAnimationOptionCurveEaseInOut animations:^{
                 CGPoint newCenter = self.loginView.center;
@@ -377,6 +429,18 @@
     {
         case kLoginScreenStateRegister:
         {
+            //Fade in login background
+            self.loginBackgroundImage.alpha = 0.0f;
+            
+            [UIView animateWithDuration:0.3f
+                                  delay:0.0f
+                                options: UIViewAnimationCurveEaseInOut
+                             animations:^{
+                                 self.loginBackgroundImage.alpha = 1.0f;
+                                 
+                             } completion:^(BOOL finished) {
+                             }];
+            
             self.state = kLoginScreenStateInitial;
             [UIView animateWithDuration:kLoginAnimationTransitionDuration delay:0.0f options:UIViewAnimationOptionCurveEaseInOut animations:^{
                 CGPoint newCenter = self.firstSignupView.center;
@@ -661,6 +725,21 @@
 {
 
     [self.activityIndicator stopAnimating];
+    
+    if (self.loginBackgroundImage.alpha == 1.0f)
+    {
+        //Fade out login background
+        self.loginBackgroundImage.alpha = 1.0f;
+        
+        [UIView animateWithDuration:0.6f
+                              delay:0.0f
+                            options: UIViewAnimationCurveEaseInOut
+                         animations:^{
+                             self.loginBackgroundImage.alpha = 0.0f;
+                             
+                         } completion:^(BOOL finished) {
+                         }];
+    }
     
     UIImageView *splashView = nil;
     if([SYNDeviceManager.sharedInstance currentScreenHeight]>480.0f)
