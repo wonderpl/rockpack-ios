@@ -90,7 +90,7 @@
         self.otherGenre = nil;
     }
 
-    self.currentlySelectedGenre = self.otherGenre;
+    self.currentlySelectedGenre = nil;
     
     SYNGenreTabView* categoriesTabView = [[SYNGenreTabView alloc] initWithSize: [SYNDeviceManager.sharedInstance currentScreenWidth]
                                                                            andHomeButton: self.homeButtomString];
@@ -214,6 +214,8 @@
             [self.delegate handleNewTabSelectionWithGenre: nil];
         }
         
+        self.currentlySelectedGenre = nil;
+        
         [self.categoriesTabView hideSecondaryTabs];
         
         return;   
@@ -302,16 +304,22 @@
 
 #pragma mark - Getting Genre from Tab Bar 
 
--(BOOL)highlightTabForGenre:(Genre*)genre
+-(void)highlightTabForGenre:(Genre*)genre
 {
     
     NSIndexPath* indexPath = [self findIndexPathForGenreId:genre.uniqueId];
     
-    Genre* selectedGenre = [self selectAndReturnGenreForIndexPath:indexPath andSubcategories:YES];
-    if(selectedGenre)
-        return YES;
+    Genre* genreToSelect = (Genre*)[self.genresFetched objectAtIndex:indexPath.section];
     
-    return NO;
+    if(indexPath.item != -1)
+    {
+        genreToSelect = (SubGenre*)[genreToSelect.subgenres objectAtIndex:indexPath.item];
+        
+    }
+    
+    [self.categoriesTabView highlightTabWithGenre:genreToSelect];
+    
+    return;
 }
 
 -(Genre*)selectAndReturnGenreForIndexPath:(NSIndexPath*)indexPath andSubcategories:(BOOL)subcats
@@ -322,7 +330,7 @@
     
     Genre* genreToSelect = (Genre*)[self.genresFetched objectAtIndex:indexPath.section];
     
-    if(subcats && genreToSelect.subgenres.count > indexPath.item)
+    if(subcats && genreToSelect.subgenres.count > indexPath.item && indexPath.item != -1)
     {
         genreToSelect = (SubGenre*)[genreToSelect.subgenres objectAtIndex:indexPath.item];
         [self handleMainGenreSelection:((SubGenre*)genreToSelect).genre];
@@ -361,7 +369,7 @@
         if([genre.uniqueId isEqualToString:genreId])
         {
             section = _section; // the genre is a top level category
-            item = 0;
+            item = -1; // ... so it does not have a subcat
             break;
         }
             
