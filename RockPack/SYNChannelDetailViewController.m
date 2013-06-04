@@ -984,14 +984,14 @@
                                                                 object: self
                                                               userInfo: @{kVideoInstance: self.instanceToDelete}];
         }
-        
-        // whatever the context, we must delete the video from the channel being displayed as well...
-        
-        NSMutableOrderedSet *channelsSet = [NSMutableOrderedSet orderedSetWithOrderedSet: self.channel.videoInstances];
-        
-        [channelsSet removeObject: self.instanceToDelete];
-        
-        [self.channel setVideoInstances: channelsSet];
+        else
+        {
+            NSMutableOrderedSet *channelsSet = [NSMutableOrderedSet orderedSetWithOrderedSet: self.channel.videoInstances];
+            
+            [channelsSet removeObject: self.instanceToDelete];
+            
+            [self.channel setVideoInstances: channelsSet];
+        }
         
         [self reloadCollectionViews];
     }

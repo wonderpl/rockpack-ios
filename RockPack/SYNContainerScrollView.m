@@ -32,9 +32,6 @@
     if (!self.scrollEnabled)
         return;
     
-    if(page == self.page) // it is the current page
-        return;
-    
     CGPoint newPoint = CGPointMake(page * [SYNDeviceManager.sharedInstance currentScreenWidth], 0.0);
     
     [self setContentOffset: newPoint

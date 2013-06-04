@@ -122,7 +122,7 @@
         }
         else
         {
-            userName = [ownerAsUser.username uppercaseString];
+            userName = [ownerAsUser.firstName uppercaseString];
         }
         
         NSLog(@"userName: %@", userName);

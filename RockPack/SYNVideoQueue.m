@@ -98,9 +98,9 @@
 - (void) handleVideoQueueRemoveRequest:(NSNotification*)notification
 {
     
-    VideoInstance* videoInstanceToRemove = (VideoInstance*) notification.userInfo[kVideoInstance];
-    [self removeFromVideoQueue: videoInstanceToRemove];
-    videoInstanceToRemove.selectedForVideoQueue = NO;
+    VideoInstance* videoInstanceToAdd = (VideoInstance*) notification.userInfo[kVideoInstance];
+    [self removeFromVideoQueue: videoInstanceToAdd];
+    videoInstanceToAdd.selectedForVideoQueue = NO;
 }
 
 -(void)handleVideoQueueClearRequest:(NSNotification*)notification
