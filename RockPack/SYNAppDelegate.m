@@ -451,6 +451,7 @@ didFinishLaunchingWithOptions: (NSDictionary *) launchOptions
 //        } // else the existing persistent store is compatible with the current model - nice!
 //    } // else no database file yet
     
+    //Try to migrate
     NSPersistentStore *store = [persistentStoreCoordinator addPersistentStoreWithType: NSSQLiteStoreType
                                                                         configuration: nil
                                                                                   URL: storeURL
