@@ -374,7 +374,10 @@
     
     [appDelegate.networkEngine cancelAllOperations];
     
-    [self reloadCollectionViews];
+    
+    [[NSNotificationCenter defaultCenter] postNotificationName:kChannelOwnerUpdateRequest
+                                                        object:self
+                                                      userInfo:@{kChannelOwner:self.user}];
 }
 
 
@@ -596,7 +599,7 @@
     newFrame.size.width = isIPhone ? 320.0f : self.headerSubscriptionsView.frame.size.width;
     newFrame.size.height = viewHeight - newFrame.origin.y;
     newFrame.origin.x = isIPhone ? 0.0f : self.headerSubscriptionsView.frame.origin.x;
-    NSLog(@"Going to input with %f", newFrame.size.width);
+    
     self.subscriptionsViewController.view.frame = newFrame;
     self.subscriptionsViewController.channelThumbnailCollectionView.collectionViewLayout = subscriptionsLayout;
     [subscriptionsLayout invalidateLayout];

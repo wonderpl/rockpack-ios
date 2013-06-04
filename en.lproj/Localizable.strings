@@ -27,7 +27,7 @@
 "CHANNELS" = "CHANNELS";
 "SUBSCRIBERS" = "SUBSCRIBERS";
 
-
+"rockpack_strapline" = "WHAT'S ON YOUR CHANNEL?";
 
 //Camera
 "channel_creation_screen_select_upload_photo_label" = "Select Source";
@@ -38,8 +38,6 @@
 //Reachability
 "No_Network_iPad" = "NO NETWORK, PLEASE CHECK YOUR INTERNET CONNECTION.";
 "No_Network_iPhone" = "NO NETWORK.";
-
-
 
 
 // == Login / Registration / Forgot Password == //

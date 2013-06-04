@@ -47,6 +47,7 @@
 @property (nonatomic, strong) IBOutlet UILabel* termsAndConditionsLabel;
 @property (nonatomic, strong) IBOutlet UILabel* termsAndConditionsLabelSide;
 @property (nonatomic, strong) IBOutlet UILabel* wellSendYouLabel;
+@property (nonatomic, strong) IBOutlet UILabel* whatsOnYourChannelLabel;
 @property (nonatomic, strong) IBOutlet UITextField* ddInputField;
 @property (nonatomic, strong) IBOutlet UITextField* emailInputField;
 @property (nonatomic, strong) IBOutlet UITextField* mmInputField;
@@ -101,6 +102,9 @@
     termsAndConditionsLabel.font = [UIFont rockpackFontOfSize: 14.0];
     termsAndConditionsLabelSide.font = termsAndConditionsLabel.font;
     wellSendYouLabel.font = [UIFont rockpackFontOfSize: 16.0];
+    
+    self.whatsOnYourChannelLabel.font = [UIFont rockpackFontOfSize:self.whatsOnYourChannelLabel.font.pointSize];
+    self.whatsOnYourChannelLabel.text = NSLocalizedString(@"rockpack_strapline", nil);
     
     NSMutableAttributedString* termsString = [[NSMutableAttributedString alloc] initWithString: NSLocalizedString(@"register_screen_legal", nil)];
 
@@ -350,6 +354,7 @@
                          self.loginBackgroundImage.alpha = 0.0f;
                          
                      } completion:^(BOOL finished) {
+                         self.loginBackgroundImage.hidden = YES;
                      }];
     
     secondaryFacebookMessage.alpha = 0.0;
@@ -393,6 +398,7 @@
                              loginButton.alpha = 0.0;
                              
                              titleImageView.alpha = 0.0;
+                             self.whatsOnYourChannelLabel.alpha = 0.0f;
                          }
                          completion: ^(BOOL finished) {
                              [self placeSecondaryElements];
@@ -572,6 +578,7 @@
                          self.loginBackgroundImage.alpha = 0.0f;
                          
                      } completion:^(BOOL finished) {
+                         self.loginBackgroundImage.hidden = YES;
                      }];
     
     //Make member label grey
@@ -717,6 +724,7 @@
                          facebookSignInButton.alpha = 0.0;
                          
                          titleImageView.alpha = 0.0;
+                         self.whatsOnYourChannelLabel.alpha = 0.0;
                          registerNewUserButton.alpha = 1.0;
                          
                          dividerImageView.alpha = 0.0;

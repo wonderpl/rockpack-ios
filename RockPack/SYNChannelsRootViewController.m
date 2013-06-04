@@ -181,27 +181,22 @@
     [self.view addGestureRecognizer: pinchOnChannelView];
 #endif
     
-    currentGenre = nil; 
-}
-
-
-
-
--(void)viewDidAppear:(BOOL)animated
-{
-    [super viewDidAppear:animated];
+    currentGenre = nil;
     
     [self displayChannelsForGenre:currentGenre];
     
     [self loadChannelsForGenre:currentGenre];
 }
 
+
+
 - (void) viewDidScrollToFront
 {
     [self updateAnalytics];
     
-    
-    [self loadChannelsForGenre:currentGenre];
+    // if the user has requested 'Load More' channels then dont refresh the page cause he is in the middle of a search
+    if(self.dataRequestRange.location == 0)
+        [self loadChannelsForGenre:currentGenre];
 }
 
 
@@ -234,7 +229,7 @@
                   byAppending: (BOOL) append
 {
     
-    NSLog(@"Next request: %i - %i", self.dataRequestRange.location, self.dataRequestRange.length + self.dataRequestRange.location);
+    NSLog(@"Next request: %i - %i", self.dataRequestRange.location, self.dataRequestRange.length + self.dataRequestRange.location - 1);
     
     [appDelegate.networkEngine updateChannelsScreenForCategory: (genre ? genre.uniqueId : @"all")
                                                       forRange: self.dataRequestRange
@@ -251,7 +246,7 @@
                                                       
                                                       dataRequestRange.length = itemArray.count;
                                                       
-                                                      DebugLog(@"%i Items Fetched for %@ request", dataRequestRange.length, currentGenre.name ? currentGenre.name : @"popular");
+                                                      
                                                       
                                                       NSNumber *totalNumber = [channelsDictionary objectForKey: @"total"];
                                                       if (![totalNumber isKindOfClass: [NSNumber class]])
@@ -259,7 +254,6 @@
                                                       
                                                       self.dataItemsAvailable = [totalNumber integerValue];
                                                       
-                                                      NSLog(@"Items Available: %i", self.dataItemsAvailable);
                                                       
                                                       BOOL registryResultOk = [appDelegate.mainRegistry registerChannelsFromDictionary: response
                                                                                                                               forGenre: genre
@@ -353,6 +347,8 @@
     NSArray *resultsArray = [appDelegate.mainManagedObjectContext executeFetchRequest: request error: &error];
     if (!resultsArray)
         return;
+    
+    NSLog(@"resultsArray: %i", resultsArray.count);
     
     self.channels = [NSMutableArray arrayWithArray:resultsArray];
     
