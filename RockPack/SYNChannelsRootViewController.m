@@ -75,9 +75,6 @@
 #pragma mark - View lifecycle
 
 
-
-
-
 - (void) loadView
 {
     BOOL isIPhone = [SYNDeviceManager.sharedInstance isIPhone];
@@ -107,7 +104,7 @@
     CGRect channelCollectionViewFrame;
     if (isIPhone)
     {
-        channelCollectionViewFrame = CGRectMake(0.0f, 103.0f, [SYNDeviceManager.sharedInstance currentScreenWidth],[SYNDeviceManager.sharedInstance currentScreenHeight] - 123.0f);
+        channelCollectionViewFrame = CGRectMake(0.0f, 103.0f, [SYNDeviceManager.sharedInstance currentScreenWidth], [SYNDeviceManager.sharedInstance currentScreenHeight] - 123.0f);
     }
     else
     {
@@ -144,8 +141,6 @@
     [self.view addSubview:self.channelThumbnailCollectionView];
     
     startAnimationDelay = 0.0;
-    
-    dataRequestRange = NSMakeRange(1, STANDARD_REQUEST_LENGTH);
     
     if (self.enableCategoryTable)
     {
@@ -239,6 +234,7 @@
                   byAppending: (BOOL) append
 {
     
+    NSLog(@"Next request: %i - %i", self.dataRequestRange.location, self.dataRequestRange.length + self.dataRequestRange.location);
     
     [appDelegate.networkEngine updateChannelsScreenForCategory: (genre ? genre.uniqueId : @"all")
                                                       forRange: self.dataRequestRange
@@ -262,6 +258,8 @@
                                                           return;
                                                       
                                                       self.dataItemsAvailable = [totalNumber integerValue];
+                                                      
+                                                      NSLog(@"Items Available: %i", self.dataItemsAvailable);
                                                       
                                                       BOOL registryResultOk = [appDelegate.mainRegistry registerChannelsFromDictionary: response
                                                                                                                               forGenre: genre
@@ -302,6 +300,7 @@
     
 
     [self incrementRangeForNextRequest];
+    
     
     [self loadChannelsForGenre: currentGenre
                    byAppending: YES];

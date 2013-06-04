@@ -20,7 +20,11 @@
 @property (nonatomic, assign) BOOL shownFromChannelScreen;
 @property (nonatomic, strong) IBOutlet UIImageView *iPhonePanelImageView;
 
+
 - (void) playIfVideoActive;
 - (void) pauseIfVideoActive;
+
+// FIXME: FAVOURITES the method below is used as a workaround for missing favouriting/unfavouriting functionality. Must be removed and reworked when favouriting on Video or VideoInstance has been decided.
+-(void)markAsFavourites;
 
 @end

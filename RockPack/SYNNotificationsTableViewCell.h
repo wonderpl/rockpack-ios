@@ -8,12 +8,12 @@
 
 #import <UIKit/UIKit.h>
 
-@class SYNNotificationsViewController;
+@class SYNNotificationsTableViewController;
 
 @interface SYNNotificationsTableViewCell : UITableViewCell {
     CGSize mainTextSize;
     UIView* dividerImageView;
-    SYNNotificationsViewController* delegate;
+    SYNNotificationsTableViewController* delegate;
     CGRect imageViewRect;
     UIButton* mainImageButton;
     UIButton* secondaryImageButton;
@@ -22,5 +22,6 @@
 
 @property (nonatomic, strong) UIImageView* thumbnailImageView;
 @property (nonatomic, weak) NSString* messageTitle;
-@property (nonatomic, weak) SYNNotificationsViewController* delegate;
+@property (nonatomic, weak) SYNNotificationsTableViewController* delegate;
+@property (nonatomic) BOOL read;
 @end

@@ -64,6 +64,8 @@
 //iPhone specific
 @property (nonatomic, assign) UIDeviceOrientation currentOrientation;
 
+@property (nonatomic, strong) NSMutableArray* favouritesStatusArray;
+
 @end
 
 
@@ -78,6 +80,14 @@
     {
 		self.videoInstanceArray = videoInstanceArray;
         self.currentSelectedIndex = selectedIndex;
+        
+        //FIXME: FAVOURITES Temporary workaround for missing favourites status. remove when proper fix in place.
+        NSMutableArray* favouritesArray = [NSMutableArray arrayWithCapacity:[self.videoInstanceArray count]];
+        for(int i=0; i < [self.videoInstanceArray count]; i++)
+        {
+            [favouritesArray addObject:@(NO)];
+        }
+        _favouritesStatusArray = favouritesArray;
 	}
     
 	return self;
@@ -441,7 +451,7 @@
     
     self.channelTitleLabel.text = videoInstance.channel.title;
     self.videoTitleLabel.text = videoInstance.title;
-    self.starButton.selected = videoInstance.video.starredByUserValue;
+    self.starButton.selected = [self.favouritesStatusArray[index] boolValue];
     [self refreshAddbuttonStatus:nil];
 }
 
@@ -595,10 +605,12 @@
     
     NSString *starAction = (button.selected == TRUE) ? @"star" : @"unstar";
     
+    button.enabled = NO;
+    
     [self.heartActivityIndicator startAnimating];
     
     VideoInstance *videoInstance = self.videoInstanceArray [self.currentSelectedIndex];
-    
+    int starredIndex = self.currentSelectedIndex;
     [appDelegate.oAuthNetworkEngine recordActivityForUserId: appDelegate.currentUser.uniqueId
                                                      action: starAction
                                             videoInstanceId: videoInstance.uniqueId
@@ -618,14 +630,21 @@
                                                   videoInstance.video.starCountValue += 1;
                                               }
                                               
+                                              [self.favouritesStatusArray replaceObjectAtIndex:starredIndex withObject:@(button.selected)];
+                                              
                                               [self updateVideoDetailsForIndex: self.currentSelectedIndex];
                                               
                                               [appDelegate saveContext: YES];
+                                              
+                                              button.enabled = YES;
                                               
                                           }
                                                errorHandler: ^(id error) {
                                                    [self.heartActivityIndicator stopAnimating];
                                                    NSLog(@"Could not star video");
+                                                   button.selected = ! button.selected;
+                                                   button.enabled = YES;
+                                                   [self updateVideoDetailsForIndex: self.currentSelectedIndex];
                                                }];
 }
 
@@ -1092,6 +1111,15 @@
     VideoInstance* videoInstance = self.videoInstanceArray[self.currentSelectedIndex];
     self.addVideoButton.selected = [appDelegate.videoQueue videoInstanceIsAddedToChannel:videoInstance];
     self.addButton.hidden = !self.addVideoButton.selected;
+}
+
+#pragma mark - FIXME: FAVOURITES favourites workaround. Delete when feature has been developed.
+-(void)markAsFavourites
+{
+    for(int i=0; i < [self.videoInstanceArray count]; i++)
+    {
+        [self.favouritesStatusArray replaceObjectAtIndex:i withObject:@(YES)];
+    }
 }
 
 @end

@@ -442,7 +442,7 @@
 {
     if (self.isDeletionModeActive)
     {
-       self.deletionModeActive = FALSE;
+       self.deletionModeActive = NO;
     }
 }
 
@@ -699,12 +699,15 @@
 - (void) collectionView: (UICollectionView *) collectionView
          didSelectItemAtIndexPath: (NSIndexPath *) indexPath
 {
-    if (self.isDeletionModeActive)
+    if (self.deleteCellModeOn)
     {
-        self.deletionModeActive = FALSE;
+        self.deletionModeActive = NO;
+        SYNDeletionWobbleLayout *layout = (SYNDeletionWobbleLayout *)self.channelThumbnailCollectionView.collectionViewLayout;
+        [layout invalidateLayout];
         return;
     }
 
+    
     Channel *channel;
     
     if (collectionView == self.channelThumbnailCollectionView)

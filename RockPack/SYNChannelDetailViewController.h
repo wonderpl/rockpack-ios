@@ -23,4 +23,7 @@ typedef enum {
 
 @property (nonatomic, assign)  kChannelDetailsMode mode;
 
+//FIXME: FAVOURITES Part of workaound for missing favourites functionality. Remove once final solution implemented.
+-(BOOL) isFavouritesChannel;
+-(void)refreshFavouritesChannel;
 @end

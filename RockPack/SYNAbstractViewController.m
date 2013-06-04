@@ -105,6 +105,10 @@
         
         [self.view addSubview: addButton];
     }
+    
+    // for loading data
+    
+    self.dataRequestRange = NSMakeRange(0, STANDARD_REQUEST_LENGTH);
 }
 
 

@@ -12,7 +12,7 @@
 #import "SYNAppDelegate.h"
 #import "SYNDeviceManager.h"
 #import "SYNImagePickerController.h"
-#import "SYNNotificationsViewController.h"
+#import "SYNNotificationsTableViewController.h"
 #import "SYNOAuthNetworkEngine.h"
 #import "SYNRockpackNotification.h"
 #import "SYNSearchBoxViewController.h"
@@ -94,7 +94,7 @@ typedef enum {
                  kSideNavAction: kProfileViewId},
                 @{kSideNavTitle: NSLocalizedString(@"core_nav_section_notifications", nil),
                    kSideNavType: @(kSideNavigationTypeLoad),
-                 kSideNavAction: @"SYNNotificationsViewController"}];
+                 kSideNavAction: @"SYNNotificationsTableViewController"}];
         
         _state = SideNavigationStateHidden;
         
@@ -245,30 +245,37 @@ typedef enum {
             NSNumber* totalNumber = [notificationsDictionary objectForKey:@"total"];
             if (!totalNumber)
                 return;
-                                                   
-            NSInteger total = [totalNumber integerValue];
-                                                   
-            if (total == 0)
-            {
-                [self.tableView reloadData];
-                return;
-            }
-                                                   
+        
             NSArray* itemsArray = (NSArray*)[notificationsDictionary objectForKey:@"items"];
             if (!itemsArray)
-            {
-                // TODO: handle erro in parsing items
                 return;
-                                                       
+        
+            NSInteger total = [totalNumber integerValue];
+                                                   
+            if (total == 0) // good responce but no notifications
+            {
+                [self.tableView reloadData];
+                
+                [self.notifications removeAllObjects];
+                self.notifications = nil;
+                
+                return;
             }
                                                    
             self.notifications = [NSMutableArray arrayWithCapacity: total];
-                                                   
+            self.unreadNotifications = 0;
+        
             for (NSDictionary* itemData in itemsArray)
             {
                 if (![itemData isKindOfClass:[NSDictionary class]]) continue;
                                                        
                 SYNRockpackNotification* notification = [SYNRockpackNotification notificationWithData:itemData];
+                
+                if(!notification)
+                {
+                    continue;
+                }
+                    
                                                        
                 if (!notification.read)
                     self.unreadNotifications++;
@@ -291,7 +298,8 @@ typedef enum {
 
 - (void) notificationMarkedRead: (NSNotification*) notification
 {
-    
+    self.unreadNotifications--;
+    [self.tableView reloadData];
 }
 
 
@@ -426,10 +434,8 @@ typedef enum {
         // == NOTIFICATIONS == //
         
         if (indexPath.row == kNotificationsRowIndex)
-        {
-            
-            ((SYNNotificationsViewController*)self.currentlyLoadedViewController).notifications = self.notifications;
-        }
+            ((SYNNotificationsTableViewController*)self.currentlyLoadedViewController).notifications = self.notifications;
+        
         
         self.navigationContainerTitleLabel.text = NSLocalizedString(@"core_nav_section_notifications",nil);
         self.state = SideNavigationStateFull;
@@ -735,6 +741,7 @@ typedef enum {
             
         case SideNavigationStateHalf:
             [self showHalfNavigation];
+            [self getNotifications];
             break;
             
         case SideNavigationStateFull:

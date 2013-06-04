@@ -420,9 +420,13 @@
     
     // Loop through the fresh data from the server
     
+    NSLog(@"Logging %i items", itemArray.count);
+    
+    NSInteger items = 0;
     
     for (NSDictionary *itemDictionary in itemArray)
     {
+        items++;
         NSString *uniqueId = [itemDictionary objectForKey: @"id"];
         if(!uniqueId)
             continue;
@@ -473,7 +477,7 @@
             [deleteCandidate.managedObjectContext deleteObject:deleteCandidate];
     }
 
-    
+    NSLog(@"Items parsed %i", items);
     
     
     BOOL saveResult = [self saveImportContext];

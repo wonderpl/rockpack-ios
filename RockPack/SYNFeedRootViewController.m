@@ -127,6 +127,8 @@
     
     self.refreshControl = [[UIRefreshControl alloc] initWithFrame: CGRectMake(0, -44, 320, 44)];
     
+    self.refreshControl.tintColor = [UIColor colorWithRed:(11.0/255.0) green:(166.0/255.0) blue:(171.0/255.0) alpha:(1.0)];
+    
     [self.refreshControl addTarget: self
                             action: @selector(loadAndUpdateFeedData)
                   forControlEvents: UIControlEventValueChanged];

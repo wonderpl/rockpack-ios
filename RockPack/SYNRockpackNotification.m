@@ -20,15 +20,22 @@
     if(self = [super init])
     {
         SYNAppDelegate* appDelegate = (SYNAppDelegate*)[[UIApplication sharedApplication] delegate];
-        self.identifier = [data objectForKey:@"id"];
-        if(!self.identifier)
+        NSNumber* identifierNumber = [data objectForKey:@"id"];
+        if(!identifierNumber || ![identifierNumber isKindOfClass:[NSNumber class]])
+        {
+            NSLog(@"Did not find a valid notification id: %@", data);
             return nil;
+        }
+        
+        
+        self.identifier = [identifierNumber integerValue];
         
         self.messageType = [data objectForKey:@"message_type"];
         
         NSString* dateString = [data objectForKey:@"date_created"];
         if(dateString)
         {
+            
             
             ISO8601DateFormatter* formatter = [[ISO8601DateFormatter alloc] init];
             
@@ -159,8 +166,8 @@
 -(NSString*)description
 {
     NSMutableString* descriptionToReturn = [[NSMutableString alloc] init];
-    [descriptionToReturn appendFormat:@"<SYNRockpackNotification: %p", self];
-    [descriptionToReturn appendFormat:@" channelOwner: %@", self.channelOwner.uniqueId];
+    [descriptionToReturn appendFormat:@"<SYNRockpackNotification: %p (%i", self, self.identifier];
+    [descriptionToReturn appendFormat:@" channelOwner: %@)", self.channelOwner.uniqueId];
     [descriptionToReturn appendString:@">"];
     return descriptionToReturn;
 }

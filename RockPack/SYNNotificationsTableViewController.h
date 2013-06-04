@@ -8,7 +8,7 @@
 
 #import <UIKit/UIKit.h>
 
-@interface SYNNotificationsViewController : UITableViewController
+@interface SYNNotificationsTableViewController : UITableViewController
 
 @property (nonatomic, weak) NSArray* notifications;
 
