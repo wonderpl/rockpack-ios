@@ -429,6 +429,10 @@
 		1F2ACA66173C1D0400F2FE4F /* ButtonBuy~iphone.png in Resources */ = {isa = PBXBuildFile; fileRef = 1F2ACA62173C1D0400F2FE4F /* ButtonBuy~iphone.png */; };
 		1F2ACA67173C1D0400F2FE4F /* ButtonBuyHighlighted@2x~iphone.png in Resources */ = {isa = PBXBuildFile; fileRef = 1F2ACA63173C1D0400F2FE4F /* ButtonBuyHighlighted@2x~iphone.png */; };
 		1F2ACA68173C1D0400F2FE4F /* ButtonBuyHighlighted~iphone.png in Resources */ = {isa = PBXBuildFile; fileRef = 1F2ACA64173C1D0400F2FE4F /* ButtonBuyHighlighted~iphone.png */; };
+		1F32002F175DED7200310EB5 /* BackgroundLogin.jpg in Resources */ = {isa = PBXBuildFile; fileRef = 1F32002D175DED7200310EB5 /* BackgroundLogin.jpg */; };
+		1F320030175DED7200310EB5 /* BackgroundLogin@2x.jpg in Resources */ = {isa = PBXBuildFile; fileRef = 1F32002E175DED7200310EB5 /* BackgroundLogin@2x.jpg */; };
+		1F320034175E007F00310EB5 /* BackgroundLogin@2x~iphone.jpg in Resources */ = {isa = PBXBuildFile; fileRef = 1F320032175E007F00310EB5 /* BackgroundLogin@2x~iphone.jpg */; };
+		1F320035175E007F00310EB5 /* BackgroundLogin~iphone.jpg in Resources */ = {isa = PBXBuildFile; fileRef = 1F320033175E007F00310EB5 /* BackgroundLogin~iphone.jpg */; };
 		1F46C86B1743C2FD00C6089D /* ButtonReport@2x~iphone.png in Resources */ = {isa = PBXBuildFile; fileRef = 1F46C8651743C2FD00C6089D /* ButtonReport@2x~iphone.png */; };
 		1F46C86C1743C2FD00C6089D /* ButtonReport~iphone.png in Resources */ = {isa = PBXBuildFile; fileRef = 1F46C8661743C2FD00C6089D /* ButtonReport~iphone.png */; };
 		1F46C86D1743C2FD00C6089D /* ButtonReportHighlighted@2x~iphone.png in Resources */ = {isa = PBXBuildFile; fileRef = 1F46C8671743C2FD00C6089D /* ButtonReportHighlighted@2x~iphone.png */; };
@@ -1590,6 +1594,10 @@
 		1F2ACA62173C1D0400F2FE4F /* ButtonBuy~iphone.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "ButtonBuy~iphone.png"; sourceTree = "<group>"; };
 		1F2ACA63173C1D0400F2FE4F /* ButtonBuyHighlighted@2x~iphone.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "ButtonBuyHighlighted@2x~iphone.png"; sourceTree = "<group>"; };
 		1F2ACA64173C1D0400F2FE4F /* ButtonBuyHighlighted~iphone.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "ButtonBuyHighlighted~iphone.png"; sourceTree = "<group>"; };
+		1F32002D175DED7200310EB5 /* BackgroundLogin.jpg */ = {isa = PBXFileReference; lastKnownFileType = image.jpeg; name = BackgroundLogin.jpg; path = Assets/Images/BackgroundLogin.jpg; sourceTree = "<group>"; };
+		1F32002E175DED7200310EB5 /* BackgroundLogin@2x.jpg */ = {isa = PBXFileReference; lastKnownFileType = image.jpeg; name = "BackgroundLogin@2x.jpg"; path = "Assets/Images/BackgroundLogin@2x.jpg"; sourceTree = "<group>"; };
+		1F320032175E007F00310EB5 /* BackgroundLogin@2x~iphone.jpg */ = {isa = PBXFileReference; lastKnownFileType = image.jpeg; path = "BackgroundLogin@2x~iphone.jpg"; sourceTree = "<group>"; };
+		1F320033175E007F00310EB5 /* BackgroundLogin~iphone.jpg */ = {isa = PBXFileReference; lastKnownFileType = image.jpeg; path = "BackgroundLogin~iphone.jpg"; sourceTree = "<group>"; };
 		1F46C8651743C2FD00C6089D /* ButtonReport@2x~iphone.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = "ButtonReport@2x~iphone.png"; path = "reportConcern/ButtonReport@2x~iphone.png"; sourceTree = "<group>"; };
 		1F46C8661743C2FD00C6089D /* ButtonReport~iphone.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = "ButtonReport~iphone.png"; path = "reportConcern/ButtonReport~iphone.png"; sourceTree = "<group>"; };
 		1F46C8671743C2FD00C6089D /* ButtonReportHighlighted@2x~iphone.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = "ButtonReportHighlighted@2x~iphone.png"; path = "reportConcern/ButtonReportHighlighted@2x~iphone.png"; sourceTree = "<group>"; };
@@ -3621,6 +3629,15 @@
 			name = "Success Messages";
 			sourceTree = "<group>";
 		};
+		1F320031175DED7A00310EB5 /* Background */ = {
+			isa = PBXGroup;
+			children = (
+				1F32002D175DED7200310EB5 /* BackgroundLogin.jpg */,
+				1F32002E175DED7200310EB5 /* BackgroundLogin@2x.jpg */,
+			);
+			name = Background;
+			sourceTree = "<group>";
+		};
 		1F46C8711743C30000C6089D /* reportConcern */ = {
 			isa = PBXGroup;
 			children = (
@@ -3802,6 +3819,8 @@
 		38A2FF641731607F00FB9F57 /* login */ = {
 			isa = PBXGroup;
 			children = (
+				1F320032175E007F00310EB5 /* BackgroundLogin@2x~iphone.jpg */,
+				1F320033175E007F00310EB5 /* BackgroundLogin~iphone.jpg */,
 				38A2FF651731607F00FB9F57 /* ButtonFacebookDefault@2x~iphone.png */,
 				38A2FF661731607F00FB9F57 /* ButtonFacebookDefault~iphone.png */,
 				38A2FF671731607F00FB9F57 /* ButtonFacebookHighlighted@2x~iphone.png */,
@@ -4297,6 +4316,7 @@
 		BE270B8516EE485200CDDA6D /* Login */ = {
 			isa = PBXGroup;
 			children = (
+				1F320031175DED7A00310EB5 /* Background */,
 				BED4311816F1F0CF0051465B /* FieldPhoto.png */,
 				BED4311916F1F0CF0051465B /* FieldPhoto@2x.png */,
 				BED4310716EF8F7A0051465B /* ButtonRegisterBigDefault.png */,
@@ -5564,6 +5584,10 @@
 				01811A5817576D2A00AFA926 /* ButtonShuttleBarMaximise.png in Resources */,
 				01811A5917576D2A00AFA926 /* ButtonShuttleBarMinimise.png in Resources */,
 				01811A5A17576D2A00AFA926 /* ButtonShuttleBarMinimise@2x.png in Resources */,
+				1F32002F175DED7200310EB5 /* BackgroundLogin.jpg in Resources */,
+				1F320030175DED7200310EB5 /* BackgroundLogin@2x.jpg in Resources */,
+				1F320034175E007F00310EB5 /* BackgroundLogin@2x~iphone.jpg in Resources */,
+				1F320035175E007F00310EB5 /* BackgroundLogin~iphone.jpg in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

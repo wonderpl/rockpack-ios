@@ -52,6 +52,8 @@
 @property (nonatomic, strong) IBOutlet UITextField* yyyyInputField;
 @property (nonatomic, strong) IBOutlet UILabel* wellSendYouLabel;
 @property (nonatomic, strong) IBOutlet UILabel* termsAndConditionsLabel;
+@property (nonatomic, strong) IBOutlet UIImageView* loginBackgroundImage;
+
 
 @property (nonatomic, strong) IBOutlet UIActivityIndicatorView* activityIndicator;
 
@@ -170,6 +172,23 @@
     
     // Google analytics support
     [GAI.sharedInstance.defaultTracker sendView: @"Login - iPhone"];
+    
+    self.loginBackgroundImage.frame = self.loginBackgroundImage.bounds;
+    
+    [UIView animateWithDuration:40.0f
+                          delay:0.0f
+                        options: UIViewAnimationOptionCurveEaseOut
+                     animations:^{
+                         self.loginBackgroundImage.frame = CGRectMake(self.loginBackgroundImage.frame.origin.x - 360.0f, self.loginBackgroundImage.frame.origin.y, self.loginBackgroundImage.frame.size.width, self.loginBackgroundImage.frame.size.height);
+                         
+                     } completion:^(BOOL finished) {
+                         //self.darkOverlayView.hidden = NO;
+                     }];
+}
+
+-(void)reEnableLoginControls
+{
+    
 }
 
 
@@ -225,10 +244,24 @@
 
 - (IBAction) signupTapped: (id) sender
 {
+    
+    //Fade out login background
+    self.loginBackgroundImage.alpha = 1.0f;
+    
+    [UIView animateWithDuration:0.3f
+                          delay:0.0f
+                        options: UIViewAnimationCurveEaseInOut
+                     animations:^{
+                         self.loginBackgroundImage.alpha = 0.0f;
+                         
+                     } completion:^(BOOL finished) {
+                     }];
+    
     self.state = kLoginScreenStateRegister;
     
     [self turnOnButton:self.cancelButton];
     [self turnOnButton:self.nextButton];
+    self.nextButton.enabled = [self validateRegistrationFirstScreen];
     
     [UIView animateWithDuration:kLoginAnimationTransitionDuration delay:0.0f options:UIViewAnimationOptionCurveEaseInOut animations:^{
         CGPoint newCenter = self.firstSignupView.center;
@@ -250,10 +283,24 @@
 
 - (IBAction) loginTapped: (id) sender
 {
+    
+    //Fade out login background
+    self.loginBackgroundImage.alpha = 1.0f;
+    
+    [UIView animateWithDuration:0.3f
+                          delay:0.0f
+                        options: UIViewAnimationCurveEaseInOut
+                     animations:^{
+                         self.loginBackgroundImage.alpha = 0.0f;
+                         
+                     } completion:^(BOOL finished) {
+                     }];
+    
     self.state = kLoginScreenStateLogin;
     
     [self turnOnButton:self.backButton];
     [self turnOnButton:self.confirmButton];
+    self.confirmButton.enabled = [self validateLogin];
     
     [UIView animateWithDuration:kLoginAnimationTransitionDuration delay:0.0f options:UIViewAnimationOptionCurveEaseInOut animations:^{
         CGPoint newCenter = self.loginView.center;
@@ -273,6 +320,7 @@
 - (IBAction) forgotPasswordTapped: (id) sender
 {
     self.state = kLoginScreenStatePasswordRetrieve;
+    self.confirmButton.enabled = [self validatePasswordRetrieve];
     [UIView animateWithDuration:kLoginAnimationTransitionDuration delay:0.0f options:UIViewAnimationOptionCurveEaseInOut animations:^{
         CGPoint newCenter = self.passwordView.center;
         newCenter.x = 160.0f;
@@ -350,6 +398,18 @@
         case kLoginScreenStateLogin:
         default:
         {
+            //Fade in login background
+            self.loginBackgroundImage.alpha = 0.0f;
+            
+            [UIView animateWithDuration:0.3f
+                                  delay:0.0f
+                                options: UIViewAnimationCurveEaseInOut
+                             animations:^{
+                                 self.loginBackgroundImage.alpha = 1.0f;
+                                 
+                             } completion:^(BOOL finished) {
+                             }];
+            
             self.state = kLoginScreenStateInitial;
             [UIView animateWithDuration:kLoginAnimationTransitionDuration delay:0.0f options:UIViewAnimationOptionCurveEaseInOut animations:^{
                 CGPoint newCenter = self.loginView.center;
@@ -374,6 +434,18 @@
     {
         case kLoginScreenStateRegister:
         {
+            //Fade in login background
+            self.loginBackgroundImage.alpha = 0.0f;
+            
+            [UIView animateWithDuration:0.3f
+                                  delay:0.0f
+                                options: UIViewAnimationCurveEaseInOut
+                             animations:^{
+                                 self.loginBackgroundImage.alpha = 1.0f;
+                                 
+                             } completion:^(BOOL finished) {
+                             }];
+            
             self.state = kLoginScreenStateInitial;
             [UIView animateWithDuration:kLoginAnimationTransitionDuration delay:0.0f options:UIViewAnimationOptionCurveEaseInOut animations:^{
                 CGPoint newCenter = self.firstSignupView.center;
@@ -402,27 +474,6 @@
 
 - (IBAction) confirmTapped: (id) sender
 {
-    BOOL valid = YES;
-    switch (self.state) {
-        case kLoginScreenStateLogin:
-            valid = [self loginFormIsValidForUsername:self.userNameInputField password:self.passwordInputField];
-            break;
-        case kLoginScreenStateRegisterStepTwo:
-            valid = [self registrationFormIsValidForEmail:self.registeringUserEmailInputField userName:self.registeringUserNameInputField password:self.registeringUserPasswordInputField dd:self.ddInputField mm:self.mmInputField yyyy:self.yyyyInputField];
-            break;
-        case kLoginScreenStatePasswordRetrieve:
-            valid = [self resetPasswordFormIsValidForUsername:self.emailInputField];
-            break;
-        default:
-            valid = NO;
-            break;
-    }
-    if(!valid)
-    {
-        return;
-    }
-
-    
     [self.registeringUserEmailInputField resignFirstResponder];
     [self.registeringUserPasswordInputField resignFirstResponder];
     [self.ddInputField resignFirstResponder];
@@ -595,26 +646,12 @@
 
 - (IBAction) nextTapped: (id) sender
 {
-    BOOL valid = YES;
-    switch (self.state) {
-        case kLoginScreenStateRegister:
-            valid = [self registrationFormPartOneIsValidForUserName:self.registeringUserNameInputField];
-            break;
-        default:
-            valid = NO;
-            break;
-    }
-    
-    if(!valid)
-    {
-        return;
-    }
-    
     self.state = kLoginScreenStateRegisterStepTwo;
     [self turnOnButton:self.backButton];
     [self turnOnButton:self.confirmButton];
     [self turnOffButton:self.nextButton];
     [self turnOffButton:self.cancelButton];
+    self.confirmButton.enabled = [self validateRegistrationSecondScreen];
     [UIView animateWithDuration:kLoginAnimationTransitionDuration delay:0.0f options:UIViewAnimationOptionCurveEaseInOut animations:^{
         CGPoint newCenter = self.secondSignupView.center;
         newCenter.x = 160.0f;
@@ -693,6 +730,21 @@
 {
 
     [self.activityIndicator stopAnimating];
+    
+    if (self.loginBackgroundImage.alpha == 1.0f)
+    {
+        //Fade out login background
+        self.loginBackgroundImage.alpha = 1.0f;
+        
+        [UIView animateWithDuration:0.6f
+                              delay:0.0f
+                            options: UIViewAnimationCurveEaseInOut
+                         animations:^{
+                             self.loginBackgroundImage.alpha = 0.0f;
+                             
+                         } completion:^(BOOL finished) {
+                         }];
+    }
     
     UIImageView *splashView = nil;
     if([SYNDeviceManager.sharedInstance currentScreenHeight]>480.0f)
@@ -803,28 +855,48 @@ shouldChangeCharactersInRange: (NSRange) range
 {
     self.signupErrorLabel.text = @"";
     self.loginErrorLabel.text = @"";
-    self.passwordResetErrorLabel.text = @"";    
+    self.passwordResetErrorLabel.text = @"";
+    switch (self.state) {
+        case kLoginScreenStateLogin:
+            self.confirmButton.enabled = [self validateLogin];
+            break;
+        case kLoginScreenStateRegister:
+            self.nextButton.enabled = [self validateRegistrationFirstScreen];
+            break;
+        case kLoginScreenStateRegisterStepTwo:
+            self.confirmButton.enabled = [self validateRegistrationSecondScreen];
+            break;
+        case kLoginScreenStatePasswordRetrieve:
+            self.confirmButton.enabled = [self validatePasswordRetrieve];
+            break;
+        default:
+            break;
+    }
+    
     if(sender == self.ddInputField && [self.ddInputField.text length]==2)
     {
         [self.mmInputField becomeFirstResponder];
-        if([self.mmInputField.text length]>0 && [self.yyyyInputField.text length]>0 )
+        if([self.mmInputField.text length]>0 && [self.yyyyInputField.text length]>0 && ! [self validDateEntered])
         {
-            [self dateValidForDd:self.ddInputField mm:self.mmInputField yyyy:self.yyyyInputField];
+            self.signupErrorLabel.text = [NSString stringWithFormat: NSLocalizedString(@"register_screen_form_error_invalid_date", nil)];
         }
     }
     else if(sender == self.mmInputField && [self.mmInputField.text length]==2)
     {
         [self.yyyyInputField becomeFirstResponder];
-        if([self.ddInputField.text length]>0 && [self.yyyyInputField.text length]>0 )
+        if([self.ddInputField.text length]>0 && [self.yyyyInputField.text length]>0 && ! [self validDateEntered])
         {
-            [self dateValidForDd:self.ddInputField mm:self.mmInputField yyyy:self.yyyyInputField];
+            self.signupErrorLabel.text = [NSString stringWithFormat: NSLocalizedString(@"register_screen_form_error_invalid_date", nil)];
         }
     }
     else if(sender == self.yyyyInputField && [self.yyyyInputField.text length] >= 4)
     {
     
         [sender resignFirstResponder];
-        [self dateValidForDd:self.ddInputField mm:self.mmInputField yyyy:self.yyyyInputField];
+        if(! ([self validDateEntered]&& [self.yyyyInputField.text length] ==4) )
+        {
+            self.signupErrorLabel.text = [NSString stringWithFormat: NSLocalizedString(@"register_screen_form_error_invalid_date", nil)];
+        }
     }
     
     if(![self.signupErrorLabel.text isEqualToString: @""])
@@ -909,28 +981,15 @@ shouldChangeCharactersInRange: (NSRange) range
 }
 
 
-#pragma mark - validation
-- (void) placeErrorLabel: (NSString*) errorText
-              nextToView: (UIView*) view
+#pragma mark - zero padding convenience method
+-(NSString*)zeroPadIfOneCharacter:(NSString*)inputString
 {
-    UILabel* errorLabel = nil;
-    switch (self.state) {
-        case kLoginScreenStateLogin:
-            errorLabel = self.loginErrorLabel;
-            break;
-        case kLoginScreenStateRegister:
-            errorLabel = self.signupErrorLabel;
-            break;
-        case kLoginScreenStateRegisterStepTwo:
-            errorLabel = self.signupErrorLabel;
-            break;
-        case kLoginScreenStatePasswordRetrieve:
-            errorLabel = self.passwordResetErrorLabel;
-            break;
-        default:
-            break;
+    if([inputString length]==1)
+    {
+        return [NSString stringWithFormat:@"0%@",inputString];
     }
-    errorLabel.text = errorText;
+
+    return inputString;
 }
 
 @end
