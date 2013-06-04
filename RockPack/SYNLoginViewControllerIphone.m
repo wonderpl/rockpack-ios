@@ -172,6 +172,11 @@
     [GAI.sharedInstance.defaultTracker sendView: @"Login - iPhone"];
 }
 
+-(void)reEnableLoginControls
+{
+    
+}
+
 
 #pragma mark - button IBActions
 
