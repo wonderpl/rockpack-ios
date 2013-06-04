@@ -52,7 +52,10 @@
 @property (nonatomic, strong) IBOutlet UITextField* yyyyInputField;
 @property (nonatomic, strong) IBOutlet UILabel* wellSendYouLabel;
 @property (nonatomic, strong) IBOutlet UILabel* termsAndConditionsLabel;
+@property (nonatomic, strong) IBOutlet UILabel* whatsOnYourChannelLabel;
 @property (nonatomic, strong) IBOutlet UIImageView* loginBackgroundImage;
+@property (nonatomic, strong) IBOutlet UIImageView* rockpackLogoImage;
+
 
 
 @property (nonatomic, strong) IBOutlet UIActivityIndicatorView* activityIndicator;
@@ -141,6 +144,9 @@
     self.loginErrorLabel.font = [UIFont rockpackFontOfSize:self.loginErrorLabel.font.pointSize];
     self.passwordResetErrorLabel.font = [UIFont rockpackFontOfSize:self.passwordResetErrorLabel.font.pointSize];
     self.signupErrorLabel.font = [UIFont rockpackFontOfSize:self.signupErrorLabel.font.pointSize];
+    self.whatsOnYourChannelLabel.font = [UIFont rockpackFontOfSize:self.whatsOnYourChannelLabel.font.pointSize];
+    self.whatsOnYourChannelLabel.text = NSLocalizedString(@"rockpack_strapline", nil);
+
     
     NSMutableAttributedString* termsString = [[NSMutableAttributedString alloc] initWithString: NSLocalizedString(@"register_screen_legal" , nil)];
     
@@ -175,7 +181,7 @@
     
     self.loginBackgroundImage.frame = self.loginBackgroundImage.bounds;
     
-    [UIView animateWithDuration:40.0f
+    [UIView animateWithDuration:50.0f
                           delay:0.0f
                         options: UIViewAnimationOptionCurveEaseOut
                      animations:^{
@@ -183,6 +189,75 @@
                          
                      } completion:^(BOOL finished) {
                          //self.darkOverlayView.hidden = NO;
+                     }];
+    
+}
+
+- (void) viewDidAppear:(BOOL)animated
+{
+    
+    self.rockpackLogoImage.frame = self.rockpackLogoImage.frame;
+    
+    [UIView animateWithDuration:0.3f
+                          delay:0.1f
+                        options: UIViewAnimationOptionCurveEaseOut
+                     animations:^{
+                         self.rockpackLogoImage.frame = CGRectMake(self.rockpackLogoImage.frame.origin.x, 35.0f, self.rockpackLogoImage.frame.size.width, self.rockpackLogoImage.frame.size.height);
+                         
+                     } completion:^(BOOL finished) {
+                     }];
+    
+    self.whatsOnYourChannelLabel.frame = self.whatsOnYourChannelLabel.frame;
+    self.whatsOnYourChannelLabel.alpha = 0.0f;
+    
+    [UIView animateWithDuration:0.3f
+                          delay:0.1f
+                        options: UIViewAnimationOptionCurveEaseOut
+                     animations:^{
+                         self.whatsOnYourChannelLabel.frame = CGRectMake(self.whatsOnYourChannelLabel.frame.origin.x, 100.0f, self.whatsOnYourChannelLabel.frame.size.width, self.whatsOnYourChannelLabel.frame.size.height);
+                         self.whatsOnYourChannelLabel.alpha = 1.0f;
+                     } completion:^(BOOL finished) {
+                     }];
+    
+    
+    
+    self.facebookButton.alpha = 0.0f;
+    self.facebookButton.frame = self.facebookButton.frame;
+    
+    [UIView animateWithDuration:0.3f
+                          delay:0.1f
+                        options: UIViewAnimationOptionCurveEaseOut
+                     animations:^{
+                         self.facebookButton.alpha = 1.0f;
+                         self.facebookButton.frame = CGRectMake(self.facebookButton.frame.origin.x, self.facebookButton.frame.origin.y - 20.0f, self.facebookButton.frame.size.width, self.facebookButton.frame.size.height);
+                         
+                     } completion:^(BOOL finished) {
+                     }];
+    
+    self.signupButton.alpha = 0.0f;
+    self.signupButton.frame = self.signupButton.frame;
+    
+    [UIView animateWithDuration:0.3f
+                          delay:0.1f
+                        options: UIViewAnimationOptionCurveEaseOut
+                     animations:^{
+                         self.signupButton.alpha = 1.0f;
+                         self.signupButton.frame = CGRectMake(self.signupButton.frame.origin.x, self.signupButton.frame.origin.y - 20.0f, self.signupButton.frame.size.width, self.signupButton.frame.size.height);
+                         
+                     } completion:^(BOOL finished) {
+                     }];
+    
+    self.loginButton.alpha = 0.0f;
+    self.loginButton.frame = self.loginButton.frame;
+    
+    [UIView animateWithDuration:0.3f
+                          delay:0.1f
+                        options: UIViewAnimationOptionCurveEaseOut
+                     animations:^{
+                         self.loginButton.alpha = 1.0f;
+                         self.loginButton.frame = CGRectMake(self.loginButton.frame.origin.x, self.loginButton.frame.origin.y - 20.0f, self.loginButton.frame.size.width, self.loginButton.frame.size.height);
+                         
+                     } completion:^(BOOL finished) {
                      }];
 }
 
