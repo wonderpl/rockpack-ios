@@ -181,27 +181,22 @@
     [self.view addGestureRecognizer: pinchOnChannelView];
 #endif
     
-    currentGenre = nil; 
-}
-
-
-
-
--(void)viewDidAppear:(BOOL)animated
-{
-    [super viewDidAppear:animated];
+    currentGenre = nil;
     
     [self displayChannelsForGenre:currentGenre];
     
     [self loadChannelsForGenre:currentGenre];
 }
 
+
+
 - (void) viewDidScrollToFront
 {
     [self updateAnalytics];
     
-    
-    [self loadChannelsForGenre:currentGenre];
+    // if the user has requested 'Load More' channels then dont refresh the page cause he is in the middle of a search
+    if(self.dataRequestRange.location == 0)
+        [self loadChannelsForGenre:currentGenre];
 }
 
 
@@ -251,7 +246,7 @@
                                                       
                                                       dataRequestRange.length = itemArray.count;
                                                       
-                                                      DebugLog(@"%i Items Fetched for %@ request", dataRequestRange.length, currentGenre.name ? currentGenre.name : @"popular");
+                                                      
                                                       
                                                       NSNumber *totalNumber = [channelsDictionary objectForKey: @"total"];
                                                       if (![totalNumber isKindOfClass: [NSNumber class]])
