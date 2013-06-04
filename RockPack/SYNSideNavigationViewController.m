@@ -113,6 +113,8 @@ typedef enum {
 {
     [super viewDidLoad];
     
+    
+    
     // Version number display
 //    NSString * appVersion = [[NSBundle mainBundle] objectForInfoDictionaryKey: @"CFBundleShortVersionString"];
     NSString * buildTarget = [[NSBundle mainBundle] objectForInfoDictionaryKey: (NSString *)kSYNBundleBuildTarget];
@@ -363,7 +365,7 @@ typedef enum {
             {
 
                 SYNSideNavigationIphoneCell* iPhoneCell = (SYNSideNavigationIphoneCell*)cell;
-                [iPhoneCell setAccessoryNumber:[NSString stringWithFormat:@"%i",self.unreadNotifications]];
+                [iPhoneCell setAccessoryNumber:[NSString stringWithFormat:@"%i", self.unreadNotifications]];
                 iPhoneCell.accessoryNumberLabel.hidden = NO;
                 iPhoneCell.accessoryNumberBackground.hidden = NO;
 
@@ -391,16 +393,8 @@ typedef enum {
         didSelectRowAtIndexPath: (NSIndexPath *) indexPath
 {
     
-    // if we are re-clicking a cell, return without deselecting
-    if([indexPath compare: self.currentlySelectedIndexPath] == NSOrderedSame)
-    {
-        NSLog(@"Bail... because: indexPath [%i, %i] and current [%i, %i]", indexPath.section, indexPath.row, self.currentlySelectedIndexPath.section, self.currentlySelectedIndexPath.row);
-        return;
-    }
-        
+
     
-   
-        
     
     UITableViewCell* previousSelectedCell = [self.tableView cellForRowAtIndexPath: self.currentlySelectedIndexPath];
     [previousSelectedCell setSelected: NO];
