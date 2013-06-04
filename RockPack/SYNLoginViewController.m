@@ -1476,6 +1476,8 @@
         return NO;
     if (textField == yyyyInputField && newLength > 4)
         return NO;
+    if(textField == self.userNameInputField && newLength > 20)
+        return NO;
     
     
     

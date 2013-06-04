@@ -840,6 +840,8 @@ shouldChangeCharactersInRange: (NSRange) range
         return NO;
     if (textField == self.yyyyInputField && newLength > 4)
         return NO;
+    if(textField == self.registeringUserNameInputField && newLength > 20)
+        return NO;
     
     
     
