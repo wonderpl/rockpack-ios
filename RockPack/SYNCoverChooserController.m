@@ -100,7 +100,7 @@
             else
             {
                 // User channel covers
-                if (self.channelCoverFetchedResultsController.sections.count > 0)
+                if (self.channelCoverFetchedResultsController.sections.count > 1)
                 {
                     sectionInfo = self.channelCoverFetchedResultsController.sections [0];
                     return sectionInfo.numberOfObjects;
@@ -121,18 +121,19 @@
             }
             else
             {
-                if (self.shouldShowUploadingPlaceholder && self.channelCoverFetchedResultsController.sections.count > 0)
+                if (self.channelCoverFetchedResultsController.sections.count > 0)
                 {
                     sectionInfo = self.channelCoverFetchedResultsController.sections [0];
                     return sectionInfo.numberOfObjects;
                 }
+                else
+                {
+                    return 0;
+                }
             }
-            return 0;
         }
         break;
-            
-
-        break;       
+   
     }
     
     return 0;
@@ -142,6 +143,18 @@
 - (NSInteger) numberOfSectionsInCollectionView: (UICollectionView *) collectionView
 {
     return 3;
+}
+
+- (int) adjustedIndex
+{
+    int index = 0;
+    
+    if (self.channelCoverFetchedResultsController.sections.count > 1)
+    {
+        index = 1;
+    }
+    
+    return index;
 }
 
 
@@ -184,7 +197,7 @@
         {
             // User channel covers
             coverArt = [self.channelCoverFetchedResultsController objectAtIndexPath: [NSIndexPath indexPathForRow: indexPath.row
-                                                                                                        inSection: 1]];
+                                                                                                        inSection: self.adjustedIndex]];
             
             [coverThumbnailCell.coverImageView setImageWithURL: [NSURL URLWithString: coverArt.thumbnailURL]
                                               placeholderImage: [UIImage imageNamed: @"PlaceholderChannelCreation.png"]
@@ -239,11 +252,18 @@
                 
             case 1:
             {
-                // Rockpack channel covers
-                CoverArt *coverArt = [self.channelCoverFetchedResultsController objectAtIndexPath: [NSIndexPath indexPathForRow: indexPath.row
-                                                                                                                      inSection: 1]];
-                imageURLString = coverArt.thumbnailURL;
-                remoteId = coverArt.coverRef;
+                if (self.shouldShowUploadingPlaceholder)
+                {
+
+                }
+                else
+                {
+                    // Rockpack channel covers
+                    CoverArt *coverArt = [self.channelCoverFetchedResultsController objectAtIndexPath: [NSIndexPath indexPathForRow: indexPath.row
+                                                                                                                          inSection: 0]];
+                    imageURLString = coverArt.thumbnailURL;
+                    remoteId = coverArt.coverRef;
+                }
             }
                 break;
                 
@@ -251,7 +271,7 @@
             {
                 // User channel covers
                 CoverArt *coverArt = [self.channelCoverFetchedResultsController objectAtIndexPath: [NSIndexPath indexPathForRow: indexPath.row
-                                                                                                                      inSection: 0]];
+                                                                                                                      inSection: self.adjustedIndex]];
                 imageURLString = coverArt.thumbnailURL;
                 remoteId = coverArt.coverRef;
             }
@@ -260,18 +280,13 @@
         
         [[NSNotificationCenter defaultCenter] postNotificationName: kCoverArtChanged
                                                             object: self
-                                                          userInfo: @{kCoverArt:imageURLString , kCoverImageReference:remoteId}];
+                                                          userInfo: @{kCoverArt: imageURLString ,
+                                                                      kCoverImageReference: remoteId,
+                                                                      kCoverArtImage: self.placeholderImage}];
         
         if (previouslySelectedIndexPath)
         {
-            if (self.shouldShowUploadingPlaceholder && indexPath.section == 1)
-            {
-                
-            }
-            else
-            {
-                [collectionView reloadItemsAtIndexPaths: @[previouslySelectedIndexPath]];
-            }
+            [collectionView reloadItemsAtIndexPaths: @[previouslySelectedIndexPath]];
         }
     }
 }

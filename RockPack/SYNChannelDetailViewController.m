@@ -2178,6 +2178,7 @@
 
 - (void) uploadChannelImage: (UIImage *) imageToUpload
 {
+    
     [self.coverChooserController createCoverPlaceholder: imageToUpload];
     
     // Upload the image for this user
