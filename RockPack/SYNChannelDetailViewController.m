@@ -912,8 +912,15 @@
 - (IBAction) profileImagePressed: (UIButton*) sender
 {
     if([self.channel.channelOwner.uniqueId isEqualToString:appDelegate.currentUser.uniqueId])
-        return;
+    {
+        NSNotification* navigationNotification = [NSNotification notificationWithName: kNavigateToPage
+                                                                               object: self
+                                                                             userInfo: @{@"pageName":kProfileViewId}];
         
+        [[NSNotificationCenter defaultCenter] postNotification: navigationNotification];
+        return;
+    }
+    
     [self viewProfileDetails: self.channel.channelOwner];
 }
 
