@@ -173,6 +173,7 @@
             if ([coverArt.thumbnailURL isEqualToString: self.selectedImageURL])
             {
                 coverThumbnailCell.selected = TRUE;
+                self.indexPathSelected = indexPath;
             }
         }
     }
@@ -184,48 +185,55 @@
 - (void) collectionView: (UICollectionView *) collectionView
          didSelectItemAtIndexPath: (NSIndexPath *) indexPath
 {
-    self.indexPathSelected = indexPath;
-    
-    [self.collectionView scrollToItemAtIndexPath: indexPath
-                                atScrollPosition: UICollectionViewScrollPositionNone
-                                        animated: YES];
-    NSString *imageURLString;
-    NSString *remoteId;
-    
-    // There are two sections for cover thumbnails, the first represents 'no cover' the second contains all images
-    switch (indexPath.section)
+    // check to see that this is not our currently selected indexPath
+    if (![self.indexPathSelected isEqual: indexPath])
     {
-        case 0:
+        NSIndexPath *previouslySelectedIndexPath = self.indexPathSelected;
+        self.indexPathSelected = indexPath;
+        
+        [self.collectionView scrollToItemAtIndexPath: indexPath
+                                    atScrollPosition: UICollectionViewScrollPositionNone
+                                            animated: YES];
+        NSString *imageURLString;
+        NSString *remoteId;
+        
+        // There are two sections for cover thumbnails, the first represents 'no cover' the second contains all images
+        switch (indexPath.section)
         {
-            imageURLString = @"";
-            remoteId = @"";
-        }
-        break;
-            
-        case 1:
-        {
-            // Rockpack channel covers
-            CoverArt *coverArt = [self.channelCoverFetchedResultsController objectAtIndexPath: [NSIndexPath indexPathForRow: indexPath.row
-                                                                                                                  inSection: 1]];
-            imageURLString = coverArt.thumbnailURL;
-            remoteId = coverArt.coverRef;
-        }
+            case 0:
+            {
+                imageURLString = @"";
+                remoteId = @"";
+            }
             break;
-            
-        case 2:
-        {
-            // User channel covers
-            CoverArt *coverArt = [self.channelCoverFetchedResultsController objectAtIndexPath: [NSIndexPath indexPathForRow: indexPath.row
-                                                                                                                  inSection: 0]];
-            imageURLString = coverArt.thumbnailURL;
-            remoteId = coverArt.coverRef;
+                
+            case 1:
+            {
+                // Rockpack channel covers
+                CoverArt *coverArt = [self.channelCoverFetchedResultsController objectAtIndexPath: [NSIndexPath indexPathForRow: indexPath.row
+                                                                                                                      inSection: 1]];
+                imageURLString = coverArt.thumbnailURL;
+                remoteId = coverArt.coverRef;
+            }
+                break;
+                
+            case 2:
+            {
+                // User channel covers
+                CoverArt *coverArt = [self.channelCoverFetchedResultsController objectAtIndexPath: [NSIndexPath indexPathForRow: indexPath.row
+                                                                                                                      inSection: 0]];
+                imageURLString = coverArt.thumbnailURL;
+                remoteId = coverArt.coverRef;
+            }
+            break;  
         }
-        break;  
+        
+        [[NSNotificationCenter defaultCenter] postNotificationName: kCoverArtChanged
+                                                            object: self
+                                                          userInfo: @{kCoverArt:imageURLString , kCoverImageReference:remoteId}];
+        
+        [collectionView reloadItemsAtIndexPaths: @[previouslySelectedIndexPath]];
     }
-    
-    [[NSNotificationCenter defaultCenter] postNotificationName: kCoverArtChanged
-                                                        object: self
-                                                      userInfo: @{kCoverArt:imageURLString , kCoverImageReference:remoteId}];
 }
 
 
@@ -242,6 +250,8 @@
     fetchRequest.entity = [NSEntityDescription entityForName: @"CoverArt"
                                       inManagedObjectContext: self.appDelegate.mainManagedObjectContext];
     
+    fetchRequest.predicate = [NSPredicate predicateWithFormat: @"(userUpload == FALSE) OR (thumbnailURL == %@)", self.selectedImageURL];
+//    fetchRequest.predicate = [NSPredicate predicateWithFormat: @"(userUpload == FALSE)", self.selectedImageURL];
     
     fetchRequest.sortDescriptors = @[[[NSSortDescriptor alloc] initWithKey: @"userUpload" ascending: YES],
                                      [[NSSortDescriptor alloc] initWithKey: @"position" ascending: YES]];
