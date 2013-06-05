@@ -165,3 +165,8 @@
 "profile_screen_section_owner_subscription_title" = "MY SUBSCRIPTIONS";
 "profile_screen_section_user_created_title" = "CHANNELS";
 "profile_screen_section_user_subscription_title" = "SUBSCRIPTIONS";
+
+
+// == Settings == //
+
+"settings_popover_title" = "ACCOUNT SETTINGS";
