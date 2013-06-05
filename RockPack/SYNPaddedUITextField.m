@@ -7,6 +7,7 @@
 //
 
 #import "SYNPaddedUITextField.h"
+#import "UIFont+SYNFont.h"
 
 @implementation SYNPaddedUITextField
 
@@ -14,6 +15,7 @@
 {
     if (self = [super initWithFrame:frame]) {
         
+        self.font = [UIFont rockpackFontOfSize:16.0f];        
     }
     return self;
 }
@@ -21,19 +23,23 @@
 // placeholder position
 - (CGRect)textRectForBounds:(CGRect)bounds
 {
-    return [self getRectUniversal:bounds];
-}
+    CGRect origValue = [super textRectForBounds: bounds];
+    
+    /* Just a sample offset */
+    return CGRectOffset(origValue, 10.0f, 13.0f);}
 
 // text position
 - (CGRect)editingRectForBounds:(CGRect)bounds
 {
-    return [self getRectUniversal:bounds];
-}
+    CGRect origValue = [super textRectForBounds: bounds];
+    
+    /* Just a sample offset */
+    return CGRectOffset(origValue, 10.0f, 11.0f);}
 
 -(CGRect)getRectUniversal:(CGRect)bounds
 {
     if(self.leftView) {
-        return CGRectInset( bounds , self.leftView.frame.size.width , 10 );
+        return CGRectInset( bounds , 10, 10 );
     } else {
         return CGRectInset( bounds , 10 , 10 );
     }

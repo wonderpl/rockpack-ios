@@ -13,4 +13,7 @@
 + (CGFloat) arrowBase;
 + (UIEdgeInsets) contentViewInsets;
 
++ (BOOL) wantsDefaultContentAppearance;
+
+
 @end

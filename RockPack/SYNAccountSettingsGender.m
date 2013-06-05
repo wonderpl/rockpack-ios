@@ -12,6 +12,8 @@
 #import "SYNAppDelegate.h"
 #import "SYNOAuthNetworkEngine.h"
 #import "SYNDeviceManager.h"
+#import "SYNAccountSettingOtherTableViewCell.h"
+#import "UIFont+SYNFont.h"
 
 @interface SYNAccountSettingsGender ()
 
@@ -27,19 +29,20 @@
 - (id) init
 {
     if ((self = [super init]))
-    {
+    {        
         self.contentSizeForViewInPopover = CGSizeMake(380, 476);
         
         BOOL isIpad = [SYNDeviceManager.sharedInstance isIPad];
         
         self.appDelegate = (SYNAppDelegate*)[[UIApplication sharedApplication] delegate];
         
-        self.tableView = [[UITableView alloc] initWithFrame: CGRectMake(0.0, 0.0, (isIpad ? 380 : 320.0), 100.0) style: UITableViewStyleGrouped];
+        self.tableView = [[UITableView alloc] initWithFrame: CGRectMake((isIpad ? 1.0 : 0.0), 0.0, (isIpad ? 378 : 320.0), 100.0) style: UITableViewStyleGrouped];
         self.tableView.backgroundColor = [UIColor clearColor];
         self.tableView.opaque = NO;
         self.tableView.delegate = self;
         self.tableView.dataSource = self;
         self.tableView.backgroundView = nil;
+        self.tableView.scrollEnabled = NO;
         
         self.appDelegate = (SYNAppDelegate*)[[UIApplication sharedApplication] delegate];
         
@@ -115,8 +118,9 @@
           cellForRowAtIndexPath: (NSIndexPath *) indexPath
 {
     static NSString *CellIdentifier = @"Cell";
-    UITableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:CellIdentifier forIndexPath:indexPath];
-    
+    UITableViewCell *cell;
+    cell = [[SYNAccountSettingOtherTableViewCell alloc] initWithStyle: UITableViewCellStyleDefault
+                                                      reuseIdentifier: CellIdentifier];
     
     
     if (indexPath.row == 0)
@@ -137,6 +141,8 @@
         
         cell.textLabel.text = NSLocalizedString (@"Female", nil);
     }
+    
+    cell.textLabel.font = [UIFont rockpackFontOfSize:16.0];
     
     return cell;
 }

@@ -162,8 +162,10 @@
                                                                                                   self.sizeInContainer,
                                                                                                   40.0)];
     
-    newInputField.backgroundColor = [UIColor colorWithRed:(239.0/255.0) green:(239.0/255.0) blue:(239.0/255.0) alpha:(1.0)];
-    newInputField.layer.cornerRadius = 5.0f;
+    newInputField.backgroundColor = [UIColor colorWithWhite:(255.0/255.0) alpha:(1.0)];
+    newInputField.layer.cornerRadius = 0.0f;
+    newInputField.layer.borderWidth = 1.0f;
+    newInputField.layer.borderColor = [UIColor colorWithWhite:(209.0/255.0) alpha:(1.0)].CGColor;
     newInputField.textColor = [UIColor darkGrayColor];
     newInputField.delegate = self;
     
