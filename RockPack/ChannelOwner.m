@@ -75,7 +75,7 @@
                 usingManagedObjectContext: (NSManagedObjectContext *) managedObjectContext
                       ignoringObjectTypes: (IgnoringObjects) ignoringObjects;
 {
-    NSError *error = nil;
+    
     
     if(!dictionary || ![dictionary isKindOfClass:[NSDictionary class]])
         return nil;
@@ -84,34 +84,7 @@
     if([uniqueId isKindOfClass:[NSNull class]])
         return nil;
     
-    ChannelOwner *instance;
-    
-    if(!(ignoringObjects & kIgnoreStoredObjects))
-    {
-        NSFetchRequest *channelOwnerFetchRequest = [[NSFetchRequest alloc] init];
-        [channelOwnerFetchRequest setEntity: [NSEntityDescription entityForName: @"ChannelOwner"
-                                                         inManagedObjectContext: managedObjectContext]];
-        
-        
-        NSPredicate *predicate = [NSPredicate predicateWithFormat: @"uniqueId == %@", uniqueId];
-        [channelOwnerFetchRequest setPredicate: predicate];
-        
-        NSArray *matchingChannelOwnerEntries = [managedObjectContext executeFetchRequest: channelOwnerFetchRequest
-                                                                                   error: &error];
-        
-        if (matchingChannelOwnerEntries.count > 0)
-        {
-            instance = matchingChannelOwnerEntries[0];
-        }
-            
-        
-    }
-    
-    
-    if(!instance)
-    {
-        instance = [ChannelOwner insertInManagedObjectContext: managedObjectContext];
-    }
+    ChannelOwner *instance = [ChannelOwner insertInManagedObjectContext: managedObjectContext];
     
     instance.uniqueId = uniqueId;
         

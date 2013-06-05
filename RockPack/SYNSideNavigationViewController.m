@@ -398,7 +398,6 @@ typedef enum {
 - (void) tableView: (UITableView *) tableView
         didSelectRowAtIndexPath: (NSIndexPath *) indexPath
 {
-       
     UITableViewCell* previousSelectedCell = [self.tableView cellForRowAtIndexPath: self.currentlySelectedIndexPath];
     [previousSelectedCell setSelected: NO];
     

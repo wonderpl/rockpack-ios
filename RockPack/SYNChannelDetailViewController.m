@@ -515,13 +515,13 @@
 }
 
 
-- (void) mainContextDataChanged: (NSNotification*) notification
+- (void) handleDataModelChange: (NSNotification*) notification
 {
     NSArray* updatedObjects = [[notification userInfo] objectForKey: NSUpdatedObjectsKey];
     
     // In the Future use...
     // NSArray* insertedObjects = [[notification userInfo] objectForKey: NSInsertedObjectsKey];
-    // NSArray* insertedObjects = [[notification userInfo] objectForKey: NSDeletedObjectsKey];
+    // NSArray* deletedObjects = [[notification userInfo] objectForKey: NSDeletedObjectsKey];
     
     [updatedObjects enumerateObjectsUsingBlock: ^(id obj, NSUInteger idx, BOOL *stop) {
         
@@ -2476,7 +2476,7 @@
             [self updateChannelOwnerWithUser];
         
         [[NSNotificationCenter defaultCenter] addObserver: self
-                                                 selector: @selector(mainContextDataChanged:)
+                                                 selector: @selector(handleDataModelChange:)
                                                      name: NSManagedObjectContextDidSaveNotification
                                                    object: self.channel.managedObjectContext];
 

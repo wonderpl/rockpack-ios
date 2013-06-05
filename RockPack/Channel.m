@@ -161,8 +161,6 @@
                  ignoringObjectTypes: (IgnoringObjects) ignoringObjects {
     
     
-    
-    
     BOOL hasVideoInstances = YES;
     
     NSDictionary *videosDictionary = [dictionary objectForKey: @"videos"];

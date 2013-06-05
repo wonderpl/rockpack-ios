@@ -2,10 +2,10 @@
 <archive type="com.apple.InterfaceBuilder3.CocoaTouch.iPad.XIB" version="8.00">
 	<data>
 		<int key="IBDocument.SystemTarget">1552</int>
-		<string key="IBDocument.SystemVersion">12C3006</string>
+		<string key="IBDocument.SystemVersion">12D78</string>
 		<string key="IBDocument.InterfaceBuilderVersion">3084</string>
-		<string key="IBDocument.AppKitVersion">1187.34</string>
-		<string key="IBDocument.HIToolboxVersion">625.00</string>
+		<string key="IBDocument.AppKitVersion">1187.37</string>
+		<string key="IBDocument.HIToolboxVersion">626.00</string>
 		<object class="NSMutableDictionary" key="IBDocument.PluginVersions">
 			<string key="NS.key.0">com.apple.InterfaceBuilder.IBCocoaTouchPlugin</string>
 			<string key="NS.object.0">2083</string>
@@ -144,8 +144,8 @@
 									</object>
 									<object class="IBUIButton" id="635658748">
 										<reference key="NSNextResponder" ref="421928150"/>
-										<int key="NSvFlags">-2147483356</int>
-										<string key="NSFrame">{{216, 389}, {44, 44}}</string>
+										<int key="NSvFlags">-2147483380</int>
+										<string key="NSFrame">{{211, 404}, {44, 44}}</string>
 										<reference key="NSSuperview" ref="421928150"/>
 										<reference key="NSWindow"/>
 										<reference key="NSNextKeyView" ref="964655544"/>
@@ -187,7 +187,7 @@
 									<object class="IBUIButton" id="964655544">
 										<reference key="NSNextResponder" ref="421928150"/>
 										<int key="NSvFlags">268</int>
-										<string key="NSFrame">{{265, 389}, {44, 44}}</string>
+										<string key="NSFrame">{{265, 404}, {44, 44}}</string>
 										<reference key="NSSuperview" ref="421928150"/>
 										<reference key="NSWindow"/>
 										<reference key="NSNextKeyView" ref="574818441"/>
@@ -691,7 +691,6 @@
 						<string key="NSFrame">{{214, 1}, {106, 58}}</string>
 						<reference key="NSSuperview" ref="453930770"/>
 						<reference key="NSWindow"/>
-						<reference key="NSNextKeyView"/>
 						<string key="NSReuseIdentifierKey">_NS:9</string>
 						<bool key="IBUIOpaque">NO</bool>
 						<string key="targetRuntimeIdentifier">IBIPadFramework</string>
@@ -1459,6 +1458,65 @@
 				<object class="IBPartialClassDescription">
 					<string key="className">SYNChannelDetailViewController</string>
 					<string key="superclassName">SYNAbstractViewController</string>
+					<dictionary class="NSMutableDictionary" key="actions">
+						<string key="addCoverButtonTapped:">UIButton</string>
+						<string key="addItToChannelPresssed:">id</string>
+						<string key="backButtonTapped:">id</string>
+						<string key="cancelEditTapped:">id</string>
+						<string key="createChannelPressed:">id</string>
+						<string key="editButtonTapped:">id</string>
+						<string key="profileImagePressed:">UIButton</string>
+						<string key="saveChannelTapped:">id</string>
+						<string key="selectCategoryButtonTapped:">UIButton</string>
+						<string key="subscribeButtonTapped:">id</string>
+						<string key="userTouchedReportConcernButton:">UIButton</string>
+					</dictionary>
+					<dictionary class="NSMutableDictionary" key="actionInfosByName">
+						<object class="IBActionInfo" key="addCoverButtonTapped:">
+							<string key="name">addCoverButtonTapped:</string>
+							<string key="candidateClassName">UIButton</string>
+						</object>
+						<object class="IBActionInfo" key="addItToChannelPresssed:">
+							<string key="name">addItToChannelPresssed:</string>
+							<string key="candidateClassName">id</string>
+						</object>
+						<object class="IBActionInfo" key="backButtonTapped:">
+							<string key="name">backButtonTapped:</string>
+							<string key="candidateClassName">id</string>
+						</object>
+						<object class="IBActionInfo" key="cancelEditTapped:">
+							<string key="name">cancelEditTapped:</string>
+							<string key="candidateClassName">id</string>
+						</object>
+						<object class="IBActionInfo" key="createChannelPressed:">
+							<string key="name">createChannelPressed:</string>
+							<string key="candidateClassName">id</string>
+						</object>
+						<object class="IBActionInfo" key="editButtonTapped:">
+							<string key="name">editButtonTapped:</string>
+							<string key="candidateClassName">id</string>
+						</object>
+						<object class="IBActionInfo" key="profileImagePressed:">
+							<string key="name">profileImagePressed:</string>
+							<string key="candidateClassName">UIButton</string>
+						</object>
+						<object class="IBActionInfo" key="saveChannelTapped:">
+							<string key="name">saveChannelTapped:</string>
+							<string key="candidateClassName">id</string>
+						</object>
+						<object class="IBActionInfo" key="selectCategoryButtonTapped:">
+							<string key="name">selectCategoryButtonTapped:</string>
+							<string key="candidateClassName">UIButton</string>
+						</object>
+						<object class="IBActionInfo" key="subscribeButtonTapped:">
+							<string key="name">subscribeButtonTapped:</string>
+							<string key="candidateClassName">id</string>
+						</object>
+						<object class="IBActionInfo" key="userTouchedReportConcernButton:">
+							<string key="name">userTouchedReportConcernButton:</string>
+							<string key="candidateClassName">UIButton</string>
+						</object>
+					</dictionary>
 					<dictionary class="NSMutableDictionary" key="outlets">
 						<string key="activityIndicator">UIActivityIndicatorView</string>
 						<string key="addCoverButton">UIButton</string>

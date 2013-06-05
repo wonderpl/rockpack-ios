@@ -867,15 +867,13 @@ typedef void(^AnimationCompletionBlock)(BOOL finished);
     if(!pageName)
         return;
     
-    //Pop any overlay
-    if (self.overlayNavigationController)
+
+    if(self.isInSearchMode)
     {
-        if(self.isInSearchMode)
-        {
-            [self cancelButtonPressed:nil];
-        }
-        self.overlayNavigationController = nil; // animate the overlay out using the setter method
+        [self cancelButtonPressed:nil];
     }
+    self.overlayNavigationController = nil; // animate the overlay out using the setter method
+
     if (showingBackButton)
     {
         //pop the current section navcontroller to the root controller
@@ -884,6 +882,7 @@ typedef void(^AnimationCompletionBlock)(BOOL finished);
         
         [self showBackButton:NO];
         
+
     }
     
     //Scroll to the requested page
@@ -1053,13 +1052,6 @@ typedef void(^AnimationCompletionBlock)(BOOL finished);
             self.overlayNavigationController = nil; // animate the overlay out using the setter method
 
             
-            if(self.overlayNavigationController.topViewController == self.searchViewController)
-            {
-                [self cancelButtonPressed:nil];
-            }
-            
-            self.overlayNavigationController = nil; // animate the overlay out using the setter method
-            
         }
         
     }
@@ -1067,16 +1059,13 @@ typedef void(^AnimationCompletionBlock)(BOOL finished);
     {
         abstractVC = (SYNAbstractViewController *)self.containerViewController.showingViewController;
         
+        [abstractVC animatedPopViewController];
         
-        if(abstractVC.navigationController.viewControllers.count <= 2) {
+        if(abstractVC.navigationController.viewControllers.count < 2) {
             self.containerViewController.scrollView.scrollEnabled = YES;
             [self showBackButton:NO];
         }
             
-        
-        [abstractVC animatedPopViewController];
-        
-        // animate the search
         
        
     }
