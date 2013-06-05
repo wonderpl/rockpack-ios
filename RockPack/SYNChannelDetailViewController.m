@@ -467,7 +467,8 @@
 - (void) coverImageChangedHandler: (NSNotification*) notification
 {
     NSDictionary * detailDictionary = [notification userInfo];
-    NSString* coverArtUrl = (NSString*)[detailDictionary objectForKey: kCoverArt];
+    NSString* coverArtUrl = (NSString* )[detailDictionary objectForKey: kCoverArt];
+    UIImage* coverArtImage = (UIImage *)[detailDictionary objectForKey: kCoverArtImage];
     
     if (!coverArtUrl)
         return;
@@ -476,6 +477,16 @@
     {
         self.channelCoverImageView.image = nil;
         
+    }
+    else if ([coverArtUrl isEqualToString: @"uploading"])
+    {
+        [UIView transitionWithView: self.view
+                          duration: 0.35f
+                           options: UIViewAnimationOptionTransitionCrossDissolve | UIViewAnimationOptionAllowUserInteraction
+                        animations: ^{
+                            self.channelCoverImageView.image = coverArtImage;
+                        }
+                        completion: nil];
     }
     else
     {

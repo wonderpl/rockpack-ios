@@ -254,7 +254,8 @@
             {
                 if (self.shouldShowUploadingPlaceholder)
                 {
-
+                    imageURLString = @"uploading";
+                    remoteId = @"";
                 }
                 else
                 {
@@ -278,11 +279,15 @@
             break;  
         }
         
+        NSDictionary *userInfo = (self.placeholderImage) ?  @{kCoverArt: imageURLString ,
+                                                              kCoverImageReference: remoteId,
+                                                              kCoverArtImage: self.placeholderImage}
+                                                         :  @{kCoverArt: imageURLString ,
+                                                              kCoverImageReference: remoteId};
+        
         [[NSNotificationCenter defaultCenter] postNotificationName: kCoverArtChanged
                                                             object: self
-                                                          userInfo: @{kCoverArt: imageURLString ,
-                                                                      kCoverImageReference: remoteId,
-                                                                      kCoverArtImage: self.placeholderImage}];
+                                                          userInfo: userInfo];
         
         if (previouslySelectedIndexPath)
         {
