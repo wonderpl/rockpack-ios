@@ -1120,6 +1120,8 @@
                                 errorHandler: errorBlock];
     
     [self enqueueSignedOperation: networkOperation];
+    
+    NSLog(@"%@", networkOperation);
 }
 
 - (void) channelUnsubscribeForUserId: (NSString *) userId

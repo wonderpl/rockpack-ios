@@ -754,15 +754,7 @@
 
 #pragma mark - Helper methods
 
-- (void) reorderVideoInstances
-{
-    // Now we need to update the 'position' for each of the objects (so that we can keep in step with getFetchedResultsController
-    // Do this with block enumeration for speed
-    [self.channel.videoInstances enumerateObjectsUsingBlock: ^(id obj, NSUInteger index, BOOL *stop) {
-        [(VideoInstance *)obj setPositionValue : index];
-    }];
-    
-}
+
 
 
 #pragma mark - LXReorderableCollectionViewDelegateFlowLayout methods
@@ -772,16 +764,19 @@
     willMoveToIndexPath: (NSIndexPath *) toIndexPath {
 
     
-    NSMutableOrderedSet* mutableInstance = [[NSMutableOrderedSet alloc] initWithOrderedSet:self.channel.videoInstances];
     
-    [mutableInstance exchangeObjectAtIndex: fromIndexPath.item
-                         withObjectAtIndex: toIndexPath.item];
+    [self.channel.videoInstancesSet exchangeObjectAtIndex: fromIndexPath.item
+                                        withObjectAtIndex: toIndexPath.item];
     
-    self.channel.videoInstances = [[NSOrderedSet alloc] initWithOrderedSet: mutableInstance];
     
+    [self.channel.videoInstances enumerateObjectsUsingBlock: ^(id obj, NSUInteger index, BOOL *stop) {
+        NSLog(@"%@ (%lli)", [(VideoInstance *)obj title], [(VideoInstance *)obj positionValue]);
+    }];
     // Now we need to update the 'position' for each of the objects (so that we can keep in step with getFetchedResultsController
     // Do this with block enumeration for speed
-    [self reorderVideoInstances];
+    [self.channel.videoInstances enumerateObjectsUsingBlock: ^(id obj, NSUInteger index, BOOL *stop) {
+        [(VideoInstance *)obj setPositionValue : index];
+    }];
 }
 
 

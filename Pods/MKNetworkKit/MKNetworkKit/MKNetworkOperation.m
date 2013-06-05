@@ -202,9 +202,11 @@ OSStatus extractIdentityAndTrust(CFDataRef inPKCS12Data,
    [NSString stringWithFormat:@"%@; charset=%@", contentType, charset]
       forHTTPHeaderField:@"Content-Type"];
 }
+
 //===========================================================
 //  freezable
 //===========================================================
+
 - (BOOL)freezable
 {
   return _freezable;

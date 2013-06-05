@@ -101,7 +101,6 @@
         return;
     
     // If the channel to be updated is not yet created then update it based on the videoQueue objects, else make a network call
-    
     Channel* currentlyCreatingChannel = appDelegate.videoQueue.currentlyCreatingChannel;
     if([channelToUpdate.uniqueId isEqualToString:currentlyCreatingChannel.uniqueId])
     {
