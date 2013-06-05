@@ -24,6 +24,11 @@
 @synthesize arrowDirection = _arrowDirection;
 
 
++ (BOOL) wantsDefaultContentAppearance
+{
+    return NO;
+}
+
 #pragma mark - Overriden class methods
 
 // The width of the arrow triangle at its base.

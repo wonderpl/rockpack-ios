@@ -11,6 +11,8 @@
 #import "SYNAppDelegate.h"
 #import "SYNOAuthNetworkEngine.h"
 #import "SYNDeviceManager.h"
+#import "SYNAccountSettingOtherTableViewCell.h"
+#import "UIFont+SYNFont.h"
 
 @interface SYNAccountSettingsLocation ()
 
@@ -36,13 +38,14 @@
         BOOL isIpad = [SYNDeviceManager.sharedInstance isIPad];
         
         
-        CGRect tableViewFrame = CGRectMake(0.0, 0.0, (isIpad ? 380.0 : 320.0), 100.0);
+        CGRect tableViewFrame = CGRectMake((isIpad ? 1.0 : 0.0), 0.0, (isIpad ? 378.0 : 320.0), 100.0);
         self.tableView = [[UITableView alloc] initWithFrame:tableViewFrame style:UITableViewStyleGrouped];
         self.tableView.backgroundColor = [UIColor clearColor];
         self.tableView.opaque = NO;
         self.tableView.delegate = self;
         self.tableView.dataSource = self;
         self.tableView.backgroundView = nil;
+        self.tableView.scrollEnabled = NO;
         
         appDelegate = (SYNAppDelegate*)[[UIApplication sharedApplication] delegate];
         self.user = appDelegate.currentUser;
@@ -107,7 +110,9 @@
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath
 {
     static NSString *CellIdentifier = @"Cell";
-    UITableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:CellIdentifier forIndexPath:indexPath];
+    UITableViewCell *cell;
+    cell = [[SYNAccountSettingOtherTableViewCell alloc] initWithStyle: UITableViewCellStyleDefault
+                                                      reuseIdentifier: CellIdentifier];
     
     cell.accessoryType = UITableViewCellAccessoryNone;
     
@@ -127,6 +132,8 @@
             cell.accessoryType = UITableViewCellAccessoryCheckmark;
         }
     }
+    
+    cell.textLabel.font = [UIFont rockpackFontOfSize:16.0];
     
     return cell;
 }
