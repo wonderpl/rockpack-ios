@@ -157,24 +157,8 @@
         DebugLog(@"Notificaiton clicked is read");
         return;
     }
-    NSArray* array = @[@(notification.identifier)];
     
-    [appDelegate.oAuthNetworkEngine markAdReadForNotificationIndexes:array
-                                                          fromUserId:appDelegate.currentUser.uniqueId
-                                                   completionHandler:^(id responce) {
-                                                       
-                                                       
-                                                       notification.read = YES;
-                                                       
-                                                       
-                                                       [self.tableView reloadData];
-                                                       
-                                                       [[NSNotificationCenter defaultCenter] postNotificationName:kNotificationMarkedRead
-                                                                                                           object:self];
-        
-                                                   } errorHandler:^(id error) {
-        
-                                                   }];
+    [self markAsReadForNotification:notification];
 }
 
 #pragma mark - KVO
@@ -221,6 +205,8 @@
     
     if(notification.objectType == kNotificationObjectTypeVideo)
     {
+        // TODO: Handle
+        
 //        SYNMasterViewController *masterViewController = (SYNMasterViewController*)appDelegate.masterViewController;
 //        
 //        [masterViewController addVideoOverlayToViewController: self
@@ -240,7 +226,30 @@
     }
     
     
+    [self markAsReadForNotification:notification];
     
+}
+
+- (void) markAsReadForNotification:(SYNRockpackNotification*)notification
+{
+    NSArray* array = @[@(notification.identifier)];
+    
+    [appDelegate.oAuthNetworkEngine markAdReadForNotificationIndexes:array
+                                                          fromUserId:appDelegate.currentUser.uniqueId
+                                                   completionHandler:^(id responce) {
+                                                       
+                                                       
+                                                       notification.read = YES;
+                                                       
+                                                       
+                                                       [self.tableView reloadData];
+                                                       
+                                                       [[NSNotificationCenter defaultCenter] postNotificationName:kNotificationMarkedRead
+                                                                                                           object:self];
+                                                       
+                                                   } errorHandler:^(id error) {
+                                                       
+                                                   }];
 }
 
 #pragma mark - Accessors

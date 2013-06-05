@@ -245,6 +245,9 @@
             
             existingVideoInstance.channel.markedForDeletionValue = YES;
             existingVideoInstance.channel.freshValue = NO;
+            
+            existingVideoInstance.channel.channelOwner.markedForDeletionValue = YES;
+            existingVideoInstance.channel.channelOwner.freshValue = NO;
         }
         
     }
@@ -283,6 +286,9 @@
         videoInstance.channel.viewId = kFeedViewId;
         videoInstance.channel.freshValue = YES;
         
+        videoInstance.channel.channelOwner.viewId = kFeedViewId;
+        videoInstance.channel.channelOwner.freshValue = YES;
+        
     }    
     
     
@@ -292,7 +298,12 @@
         if(!oldVideoInstance.markedForDeletionValue)
             continue;
         
-        if(!oldVideoInstance.channel.freshValue && oldVideoInstance.channel.markedForDeletionValue) // delete channels that are not used in the feed anymore
+        // delete channels owners that are not used in the feed anymore
+        if(!oldVideoInstance.channel.channelOwner.freshValue && oldVideoInstance.channel.channelOwner.markedForDeletionValue)
+            [oldVideoInstance.channel.channelOwner.managedObjectContext deleteObject:oldVideoInstance.channel];
+        
+        // delete channels that are not used in the feed anymore
+        if(!oldVideoInstance.channel.freshValue && oldVideoInstance.channel.markedForDeletionValue) 
             [oldVideoInstance.channel.managedObjectContext deleteObject:oldVideoInstance.channel];
         
         [oldVideoInstance.managedObjectContext deleteObject:oldVideoInstance];

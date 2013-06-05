@@ -248,7 +248,7 @@
     {
         self.channelOwner = [ChannelOwner instanceFromDictionary: ownerDictionary
                                        usingManagedObjectContext: self.managedObjectContext
-                                             ignoringObjectTypes: kIgnoreChannelObjects];
+                                             ignoringObjectTypes: ignoringObjects | kIgnoreChannelObjects];
     }
     
     

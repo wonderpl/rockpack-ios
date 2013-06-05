@@ -1534,8 +1534,7 @@
                                              
                                              [self setVideosForChannelById:channelId isUpdated:NO];
                                              
-                                         }
-                                              errorHandler: ^(id error) {
+                                         } errorHandler: ^(id error) {
                                                   
                                                   DebugLog(@"Error @ createChannelPressed:");
                                                   
@@ -1664,6 +1663,8 @@
                                                   
                                                   
                                                   self.channel = createdChannel;
+                                                  
+                                                  self.originalChannel = self.channel;
                                                   
                                                   DebugLog(@"Channel: %@", createdChannel);
                                                   
