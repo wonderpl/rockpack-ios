@@ -37,8 +37,11 @@ typedef void (^SYNShareCompletionBlock)(void);
 }
 
 
+
+@property (nonatomic) BOOL isAnimating;
 @property (nonatomic, assign) BOOL inDrag;
 @property (nonatomic, assign) CGPoint initialDragCenter;
+@property (nonatomic, readonly) NSString* viewId;
 @property (nonatomic, strong) IBOutlet UICollectionView *videoThumbnailCollectionView;
 @property (nonatomic, strong) NSFetchedResultsController* fetchedResultsController;
 @property (nonatomic, strong) NSIndexPath *draggedIndexPath;
@@ -46,9 +49,6 @@ typedef void (^SYNShareCompletionBlock)(void);
 @property (nonatomic, strong) UIImageView *draggedView;
 @property (readonly) NSManagedObjectContext *mainManagedObjectContext;
 @property (readonly, getter = isVideoQueueVisible) BOOL videoQueueVisible;
-@property (nonatomic, readonly) NSString* viewId;
-
-@property (nonatomic) BOOL isAnimating;
 
 // date related ivars
 

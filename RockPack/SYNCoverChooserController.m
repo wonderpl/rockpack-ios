@@ -27,15 +27,17 @@
 
 @interface SYNCoverChooserController () 
 
+@property (nonatomic) NSInteger dataItemsAvailable;
+@property (nonatomic) NSRange dataRequestRange;
 @property (nonatomic, assign) BOOL shouldReloadCollectionView;
 @property (nonatomic, assign) BOOL shouldShowUploadingPlaceholder;
 @property (nonatomic, strong) IBOutlet UICollectionView *collectionView;
 @property (nonatomic, strong) NSBlockOperation *blockOperation;
-@property (nonatomic, strong) UIImage *placeholderImage;
 @property (nonatomic, strong) NSFetchedResultsController *channelCoverFetchedResultsController;
 @property (nonatomic, strong) NSIndexPath* indexPathSelected;
 @property (nonatomic, strong) NSString* selectedImageURL;
 @property (nonatomic, strong) SYNCoverRightMoreView* coverRightMoreView;
+@property (nonatomic, strong) UIImage *placeholderImage;
 @property (nonatomic, weak) SYNAppDelegate* appDelegate;
 
 @end
@@ -58,6 +60,9 @@
 - (void) viewDidLoad
 {
     [super viewDidLoad];
+    
+    // Initialise the span and size of the first data request
+    self.dataRequestRange = NSMakeRange(0, STANDARD_REQUEST_LENGTH);
     
     // Regster video thumbnail cell
     UINib *coverThumbnailCellNib = [UINib nibWithNibName: @"SYNCoverThumbnailCell"
@@ -375,13 +380,21 @@
 - (void) updateCoverArt
 {
     // Update the list of cover art
-    [self.appDelegate.networkEngine updateCoverArtWithWithStart: 0
-                                                           size: 50
+    [self.appDelegate.networkEngine updateCoverArtWithWithStart: self.dataRequestRange.location
+                                                           size: self.dataRequestRange.length
                                               completionHandler: ^(NSDictionary *dictionary){
                                                   DebugLog(@"Success");
+                                                  NSNumber* totalNumber = dictionary[@"cover_art"][@"total"];
+                                                  if (totalNumber && ![totalNumber isKindOfClass: [NSNull class]])
+                                                      self.dataItemsAvailable = [totalNumber integerValue];
+                                                  else
+                                                      self.dataItemsAvailable = self.dataRequestRange.length;
+
+                                                  [self displayLoadMoreMessage];
                                               }
                                                    errorHandler: ^(NSError* error) {
                                                        DebugLog(@"%@", [error debugDescription]);
+                                                       [self displayLoadMoreMessage];
                                                    }];
     
     [self.appDelegate.oAuthNetworkEngine updateCoverArtForUserId: self.appDelegate.currentOAuth2Credentials.userId
@@ -418,7 +431,33 @@
                                         animated: YES];
 }
 
-#pragma mark - Paging control
+#pragma mark - Paging
+
+- (void) incrementRangeForNextRequest
+{
+    NSInteger nextStart = self.dataRequestRange.location + self.dataRequestRange.length; // one is subtracted when the call happens for 0 indexing
+    
+    if (nextStart >= self.dataItemsAvailable)
+        return;
+    
+    NSInteger nextSize = (nextStart + STANDARD_REQUEST_LENGTH) >= self.dataItemsAvailable ? (self.dataItemsAvailable - nextStart) : STANDARD_REQUEST_LENGTH;
+    
+    self.dataRequestRange = NSMakeRange(nextStart, nextSize);
+}
+
+
+- (void) loadMoreCovers
+{
+    if (self.coverRightMoreView.loadingIndicatorView.isAnimating == NO)
+    {
+        [self displayLoadingMessageAndSpinner];
+        
+        [self incrementRangeForNextRequest];
+        
+        [self updateCoverArt];
+    }
+}
+
 
 - (void) scrollViewDidScroll: (UIScrollView *) scrollView
 {
@@ -426,34 +465,23 @@
     // when reaching far right hand side, load a new page
     if (scrollView.contentOffset.x == scrollView.contentSize.width - scrollView.bounds.size.width)
     {
-            DebugLog (@"Scrolling more");
-        
-        self.coverRightMoreView.loadingLabel.text = NSLocalizedString(@"Loading", nil);
-        [self.coverRightMoreView.loadingIndicatorView startAnimating];
-        
+        DebugLog (@"Scrolling more");
+        [self loadMoreCovers];
     }
 }
 
 
-- (void) loadMoreChannels: (UIButton*) sender
+- (void) displayLoadingMessageAndSpinner
 {
-    // (UIButton*) sender can be nil when called directly //
-    if (self.coverRightMoreView.loadingIndicatorView.isAnimating == YES)
-    {
-        
-    }
-//    
-//    NSInteger nextStart = dataRequestRange.location + dataRequestRange.length; // one is subtracted when the call happens for 0 indexing
-//    
-//    if(nextStart >= dataItemsAvailable)
-//        return;
-//    
-//    NSInteger nextSize = (nextStart + STANDARD_REQUEST_LENGTH) >= dataItemsAvailable ? (dataItemsAvailable - nextStart) : STANDARD_REQUEST_LENGTH;
-//    
-//    dataRequestRange = NSMakeRange(nextStart, nextSize);
-//    
-//    [self loadChannelsForGenre: currentGenre
-//                   byAppending: YES];
+    self.coverRightMoreView.loadingLabel.text = NSLocalizedString(@"Loading", nil);
+    [self.coverRightMoreView.loadingIndicatorView startAnimating];
+}
+
+
+- (void) displayLoadMoreMessage
+{
+    self.coverRightMoreView.loadingLabel.text = NSLocalizedString(@"Load More...", nil);
+    [self.coverRightMoreView.loadingIndicatorView stopAnimating];
 }
 
 
