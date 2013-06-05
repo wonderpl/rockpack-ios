@@ -73,8 +73,14 @@
     CGRect tableCellFrame = self.textLabel.frame;
     tableCellFrame.size.width += 30.0;
     tableCellFrame.origin.y = 9.0;
+    tableCellFrame.origin.x = self.imageView.frame.size.width + 11;
     self.textLabel.frame = tableCellFrame;
     self.textLabel.backgroundColor = [UIColor clearColor];
+    
+    self.detailTextLabel.frame = CGRectMake(self.textLabel.frame.origin.x, 22, 300, 20);
+    self.detailTextLabel.backgroundColor = [UIColor clearColor];
+    
+    self.imageView.frame = CGRectMake( 0, 7, 35, 30 );
     
 }
 

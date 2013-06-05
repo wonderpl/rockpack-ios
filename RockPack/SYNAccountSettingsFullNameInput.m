@@ -10,6 +10,7 @@
 #import "UIFont+SYNFont.h"
 #import "SYNDeviceManager.h"
 #import "SYNOAuthNetworkEngine.h"
+#import "SYNAccountSettingOtherTableViewCell.h"
 
 @interface SYNAccountSettingsFullNameInput () <UITextFieldDelegate>
 
@@ -32,6 +33,8 @@
     
     BOOL isIpad = [SYNDeviceManager.sharedInstance isIPad];
     
+    self.view.backgroundColor = [UIColor whiteColor];
+
     self.inputField.tag =1 ;
     self.inputField.delegate = self;
     
@@ -43,21 +46,20 @@
     self.lastNameInputField.delegate = self;
     
     [self.view addSubview:self.lastNameInputField];
+
     
     
     
-    
-    
-    
-    self.tableView = [[UITableView alloc] initWithFrame: CGRectMake(0.0,
+    self.tableView = [[UITableView alloc] initWithFrame: CGRectMake((isIpad ? 1.0 : 0.0),
                                                                     self.lastNameInputField.frame.origin.y + 42.0,
-                                                                    (isIpad ? 380 : 320.0),
+                                                                    (isIpad ? 378.0 : 320.0),
                                                                     100.0) style: UITableViewStyleGrouped];
     self.tableView.backgroundColor = [UIColor clearColor];
     self.tableView.opaque = NO;
     self.tableView.delegate = self;
     self.tableView.dataSource = self;
     self.tableView.backgroundView = nil;
+    self.tableView.scrollEnabled = NO;
     [self.view addSubview:self.tableView];
     
     
@@ -112,10 +114,9 @@
 {
     static NSString *CellIdentifier = @"Cell";
     UITableViewCell *cell;
-    
-    
-    cell = [[UITableViewCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:CellIdentifier];
-    
+    cell = [[SYNAccountSettingOtherTableViewCell alloc] initWithStyle: UITableViewCellStyleDefault
+                                                     reuseIdentifier: CellIdentifier];
+        
     cell.accessoryType = UITableViewCellAccessoryNone;
     
     if (indexPath.row == 0)
@@ -135,7 +136,7 @@
         }
     }
     
-    cell.textLabel.font = [UIFont rockpackFontOfSize:18.0];
+    cell.textLabel.font = [UIFont rockpackFontOfSize:16.0];
     
     
     return cell;
@@ -149,7 +150,7 @@
     if ([self.inputField.text isEqualToString:self.appDelegate.currentUser.firstName] && // user did not change anything
        [self.lastNameInputField.text isEqualToString:self.appDelegate.currentUser.lastName] &&
         self.nameIsPublic == self.appDelegate.currentUser.fullNameIsPublicValue) {
-        self.errorLabel.text = NSLocalizedString (@"You Have Made no Changes", nil);
+        [self.navigationController popViewControllerAnimated:YES];
         return;
     }
     

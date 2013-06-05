@@ -13,8 +13,8 @@
 
 @interface SYNAccountSettingsPassword ()
 
-@property (nonatomic, strong) UITextField* passwordField;
-@property (nonatomic, strong) UITextField* passwordConfirmField;
+@property (nonatomic, strong) SYNPaddedUITextField* passwordField;
+@property (nonatomic, strong) SYNPaddedUITextField* passwordConfirmField;
 
 @end
 
@@ -34,6 +34,9 @@
 - (void)viewDidLoad
 {
     [super viewDidLoad];
+    
+    self.view.backgroundColor = [UIColor whiteColor];
+
     self.inputField.text = @"";
     self.inputField.placeholder = NSLocalizedString (@"Old Password", nil);
     self.inputField.secureTextEntry = YES;

@@ -669,7 +669,7 @@
 
 - (void) displayChannelDetails
 {
-    self.channelOwnerLabel.text = self.channel.channelOwner.displayName;
+    self.channelOwnerLabel.text = [self.channel.channelOwner.displayName uppercaseString];
     
     
     NSString *detailsString = [NSString stringWithFormat: @"%lld %@", self.channel.subscribersCountValue, NSLocalizedString(@"SUBSCRIBERS", nil)];
@@ -776,31 +776,10 @@
     willMoveToIndexPath: (NSIndexPath *) toIndexPath {
 
     
-    if(fromIndexPath.item < toIndexPath.item)
-    {
-        for (int i = fromIndexPath.item; i < toIndexPath.item; i++)
-        {
-            
-            //NSLog(@"changing %i with %i", i + 1, i);
-            [self.channel.videoInstancesSet exchangeObjectAtIndex: i
-                                                withObjectAtIndex: i + 1];
-            
-        }
-    }
-    else
-    {
-        for (int i = fromIndexPath.item; i > toIndexPath.item; i--)
-        {
-            
-            //NSLog(@"changing %i with %i", i + 1, i);
-            [self.channel.videoInstancesSet exchangeObjectAtIndex: i
-                                                withObjectAtIndex: i - 1];
-            
-        }
-        
-    }
     
-    
+    VideoInstance* viToSwap = [self.channel.videoInstancesSet objectAtIndex:fromIndexPath.item];
+    [self.channel.videoInstancesSet removeObjectAtIndex:fromIndexPath.item];
+    [self.channel.videoInstancesSet insertObject:viToSwap atIndex:toIndexPath.item];
     
     // set the new positions
     [self.channel.videoInstances enumerateObjectsUsingBlock: ^(id obj, NSUInteger index, BOOL *stop) {
@@ -955,6 +934,7 @@
                                                             object: self
                                                           userInfo: @{ kChannel : self.channel }];
     }
+    
 }
 
 
@@ -1277,8 +1257,6 @@
             
             [self.coverChooserController updateCoverArt];
             
-            self.originalContentOffset = CGPointMake (0, kChannelCreationCollectionViewOffsetY +
-                                                      kChannelCreationCategoryAdditionalOffsetY);
             
             [UIView animateWithDuration: kChannelEditModeAnimationDuration
                              animations: ^{
@@ -1761,7 +1739,7 @@
                                               
                                               // Complete Channel Creation //
                                               
-                                              self.channelOwnerLabel.text = appDelegate.currentUser.displayName;
+                                              self.channelOwnerLabel.text = [appDelegate.currentUser.displayName uppercaseString];
                                               
                                               [self displayChannelDetails];
                                               
@@ -1788,7 +1766,7 @@
                                               
                                               DebugLog(@"Error @ getNewlyCreatedChannelForId:");
                                               [self showError: NSLocalizedString(@"Could not retrieve the uploaded channel data. Please try accessing it from your profile later.", nil) showErrorTitle:@"Error"];
-                                              self.channelOwnerLabel.text = appDelegate.currentUser.displayName;
+                                              self.channelOwnerLabel.text = [appDelegate.currentUser.displayName uppercaseString];
                                               
                                               [self displayChannelDetails];
                                               
@@ -2396,6 +2374,10 @@
     
     if (scrollView == self.videoThumbnailCollectionView)
     {
+        
+        NSLog(@"co: %f - oo: %f", scrollView.contentOffset.y, self.originalContentOffset.y);
+        
+        
         if (scrollView.contentOffset.y <= self.originalContentOffset.y)
         {
             self.masterControlsView.alpha = 1.0f;

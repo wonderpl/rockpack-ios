@@ -28,6 +28,8 @@
 {
     [super viewDidLoad];
     
+    self.view.backgroundColor = [UIColor whiteColor];
+
     UIButton *backButton = [UIButton buttonWithType:UIButtonTypeCustom];
     UIImage* backButtonImage = [UIImage imageNamed: @"ButtonAccountBackDefault.png"];
     UIImage* backButtonHighlightedImage = [UIImage imageNamed: @"ButtonAccountBackHighlighted.png"];
@@ -52,6 +54,7 @@
     [self.inputField resignFirstResponder];
     
     if([self.inputField.text isEqualToString:self.appDelegate.currentUser.username])
+        [self.navigationController popViewControllerAnimated:YES];
         return;
     
     if(![self formIsValid]) {
