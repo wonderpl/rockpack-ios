@@ -230,12 +230,8 @@
     [self.videoThumbnailCollectionView reloadData];
 }
 
-//- (void) controllerDidChangeContent: (NSFetchedResultsController *) controller
-//{
-//  
-//    [self.videoThumbnailCollectionView reloadData];
-//}
 
+#ifdef SMART_RELOAD
 
 - (void) controllerWillChangeContent: (NSFetchedResultsController *) controller
 {
@@ -372,6 +368,17 @@
         } completion: nil];
     }
 }
+
+#else
+
+
+- (void) controllerDidChangeContent: (NSFetchedResultsController *) controller
+{
+    
+    [self.videoThumbnailCollectionView reloadData];
+}
+
+#endif
 
 
 - (void) loadAndUpdateFeedData

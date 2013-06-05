@@ -441,4 +441,8 @@ typedef void (^JSONResponseBlock)(id jsonObject);
 
 #define ALLOWS_PINCH_GESTURES__
 
+// UICollectionView reload strategy
+
+#define SMART_RELOAD__
+
 #endif
