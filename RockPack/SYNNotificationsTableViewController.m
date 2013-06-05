@@ -93,6 +93,8 @@
     
     SYNRockpackNotification* notification = (SYNRockpackNotification*)[_notifications objectAtIndex:indexPath.row];
     
+    // NSLog(@">> notification: %i", notification.identifier);
+    
     NSMutableString* constructedMessage = [[NSMutableString alloc] init];
     [constructedMessage appendFormat:@"%@", [notification.channelOwner.displayName uppercaseString]];
     [constructedMessage appendString:@" has "];
@@ -150,31 +152,7 @@
 
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath
 {
-    
-    SYNRockpackNotification* notification = [_notifications objectAtIndex:indexPath.row];
-    if(!notification || notification.read)
-    {
-        DebugLog(@"Notificaiton clicked is read");
-        return;
-    }
-    NSArray* array = @[@(notification.identifier)];
-    
-    [appDelegate.oAuthNetworkEngine markAdReadForNotificationIndexes:array
-                                                          fromUserId:appDelegate.currentUser.uniqueId
-                                                   completionHandler:^(id responce) {
-                                                       
-                                                       
-                                                       notification.read = YES;
-                                                       
-                                                       
-                                                       [self.tableView reloadData];
-                                                       
-                                                       [[NSNotificationCenter defaultCenter] postNotificationName:kNotificationMarkedRead
-                                                                                                           object:self];
-        
-                                                   } errorHandler:^(id error) {
-        
-                                                   }];
+    [self markAsReadForNotification:[_notifications objectAtIndex:indexPath.row]];
 }
 
 #pragma mark - KVO
@@ -219,13 +197,20 @@
     
     SYNRockpackNotification* notification = self.notifications[indexPathForCellPressed.row];
     
+    if(!notification)
+        return;
+    
+    // keep the duplicate code to remind of a change that is in the process
     if(notification.objectType == kNotificationObjectTypeVideo)
     {
-//        SYNMasterViewController *masterViewController = (SYNMasterViewController*)appDelegate.masterViewController;
-//        
-//        [masterViewController addVideoOverlayToViewController: self
-//                                       withVideoInstanceArray: @[]
-//                                             andSelectedIndex: 0];
+        Channel* channel = [self channelFromChannelId:notification.channelId];
+        
+        if(!channel)
+            return;
+        
+        [[NSNotificationCenter defaultCenter] postNotificationName:kChannelDetailsRequested
+                                                            object:self
+                                                          userInfo:@{kChannel:channel}];
     }
     else
     {
@@ -240,7 +225,33 @@
     }
     
     
+    [self markAsReadForNotification:notification];
     
+}
+
+- (void) markAsReadForNotification:(SYNRockpackNotification*)notification
+{
+    if(notification == nil || notification.read) // if already read or nil, don't bother...
+        return;
+    
+    NSArray* array = @[@(notification.identifier)];
+    
+    [appDelegate.oAuthNetworkEngine markAdReadForNotificationIndexes:array
+                                                          fromUserId:appDelegate.currentUser.uniqueId
+                                                   completionHandler:^(id responce) {
+                                                       
+                                                       
+                                                       notification.read = YES;
+                                                       
+                                                       
+                                                       [self.tableView reloadData];
+                                                       
+                                                       [[NSNotificationCenter defaultCenter] postNotificationName:kNotificationMarkedRead
+                                                                                                           object:self];
+                                                       
+                                                   } errorHandler:^(id error) {
+                                                       
+                                                   }];
 }
 
 #pragma mark - Accessors

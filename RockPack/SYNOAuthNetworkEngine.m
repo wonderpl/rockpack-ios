@@ -837,7 +837,7 @@
     
     
     
-    NSArray* videoIdArray = [NSArray arrayWithArray:[videoInstanceSet array]];
+    NSArray* videoIdArray = [[videoInstanceSet array] valueForKey:@"uniqueId"];
     
     [networkOperation setCustomPostDataEncodingHandler: ^ NSString * (NSDictionary *postDataDict)
      {
