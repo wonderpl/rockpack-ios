@@ -776,31 +776,10 @@
     willMoveToIndexPath: (NSIndexPath *) toIndexPath {
 
     
-    if(fromIndexPath.item < toIndexPath.item)
-    {
-        for (int i = fromIndexPath.item; i < toIndexPath.item; i++)
-        {
-            
-            //NSLog(@"changing %i with %i", i + 1, i);
-            [self.channel.videoInstancesSet exchangeObjectAtIndex: i
-                                                withObjectAtIndex: i + 1];
-            
-        }
-    }
-    else
-    {
-        for (int i = fromIndexPath.item; i > toIndexPath.item; i--)
-        {
-            
-            //NSLog(@"changing %i with %i", i + 1, i);
-            [self.channel.videoInstancesSet exchangeObjectAtIndex: i
-                                                withObjectAtIndex: i - 1];
-            
-        }
-        
-    }
     
-    
+    VideoInstance* viToSwap = [self.channel.videoInstancesSet objectAtIndex:fromIndexPath.item];
+    [self.channel.videoInstancesSet removeObjectAtIndex:fromIndexPath.item];
+    [self.channel.videoInstancesSet insertObject:viToSwap atIndex:toIndexPath.item];
     
     // set the new positions
     [self.channel.videoInstances enumerateObjectsUsingBlock: ^(id obj, NSUInteger index, BOOL *stop) {
