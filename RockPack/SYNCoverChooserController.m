@@ -251,7 +251,6 @@
                                       inManagedObjectContext: self.appDelegate.mainManagedObjectContext];
     
     fetchRequest.predicate = [NSPredicate predicateWithFormat: @"(userUpload == FALSE) OR (thumbnailURL == %@)", self.selectedImageURL];
-//    fetchRequest.predicate = [NSPredicate predicateWithFormat: @"(userUpload == FALSE)", self.selectedImageURL];
     
     fetchRequest.sortDescriptors = @[[[NSSortDescriptor alloc] initWithKey: @"userUpload" ascending: YES],
                                      [[NSSortDescriptor alloc] initWithKey: @"position" ascending: YES]];
