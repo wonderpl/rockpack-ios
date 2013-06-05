@@ -150,7 +150,7 @@
     if ([self.inputField.text isEqualToString:self.appDelegate.currentUser.firstName] && // user did not change anything
        [self.lastNameInputField.text isEqualToString:self.appDelegate.currentUser.lastName] &&
         self.nameIsPublic == self.appDelegate.currentUser.fullNameIsPublicValue) {
-        self.errorLabel.text = NSLocalizedString (@"You Have Made no Changes", nil);
+        [self.navigationController popViewControllerAnimated:YES];
         return;
     }
     
