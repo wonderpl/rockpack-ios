@@ -25,7 +25,7 @@
 
 
 - (BOOL) registerUserFromDictionary: (NSDictionary*) dictionary;
-- (BOOL) registerChannelOwnerFromDictionary: (NSDictionary*) dictionary;
+
 - (BOOL) registerSubscriptionsForCurrentUserFromDictionary: (NSDictionary*) dictionary;
 
 - (BOOL) registerCoverArtFromDictionary: (NSDictionary*) dictionary

@@ -398,18 +398,6 @@ typedef enum {
 - (void) tableView: (UITableView *) tableView
         didSelectRowAtIndexPath: (NSIndexPath *) indexPath
 {
-    
-    // if we are re-clicking a cell, return without deselecting
-    if([indexPath compare: self.currentlySelectedIndexPath] == NSOrderedSame)
-    {
-        NSLog(@"Bail... because: indexPath [%i, %i] and current [%i, %i]", indexPath.section, indexPath.row, self.currentlySelectedIndexPath.section, self.currentlySelectedIndexPath.row);
-        return;
-    }
-        
-    
-   
-        
-    
     UITableViewCell* previousSelectedCell = [self.tableView cellForRowAtIndexPath: self.currentlySelectedIndexPath];
     [previousSelectedCell setSelected: NO];
     

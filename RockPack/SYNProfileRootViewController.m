@@ -392,8 +392,12 @@
 - (void) handleDataModelChange: (NSNotification*) notification
 {
     NSArray* updatedObjects = [[notification userInfo] objectForKey: NSUpdatedObjectsKey];
+//    NSArray* insertedObjects = [[notification userInfo] objectForKey: NSUpdatedObjectsKey];
+//    NSArray* deletedObjects = [[notification userInfo] objectForKey: NSUpdatedObjectsKey];
     
-    [updatedObjects enumerateObjectsUsingBlock: ^(id obj, NSUInteger idx, BOOL *stop) {
+    [updatedObjects enumerateObjectsUsingBlock: ^(id obj, NSUInteger idx, BOOL *stop)
+    {
+        
         if ([obj isKindOfClass:[ChannelOwner class]] && [((ChannelOwner*)obj).uniqueId isEqualToString:self.user.uniqueId])
         {
             [self.userProfileController setChannelOwner:obj];

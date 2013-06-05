@@ -515,13 +515,13 @@
 }
 
 
-- (void) mainContextDataChanged: (NSNotification*) notification
+- (void) handleDataModelChange: (NSNotification*) notification
 {
     NSArray* updatedObjects = [[notification userInfo] objectForKey: NSUpdatedObjectsKey];
     
     // In the Future use...
     // NSArray* insertedObjects = [[notification userInfo] objectForKey: NSInsertedObjectsKey];
-    // NSArray* insertedObjects = [[notification userInfo] objectForKey: NSDeletedObjectsKey];
+    // NSArray* deletedObjects = [[notification userInfo] objectForKey: NSDeletedObjectsKey];
     
     [updatedObjects enumerateObjectsUsingBlock: ^(id obj, NSUInteger idx, BOOL *stop) {
         
@@ -912,8 +912,15 @@
 - (IBAction) profileImagePressed: (UIButton*) sender
 {
     if([self.channel.channelOwner.uniqueId isEqualToString:appDelegate.currentUser.uniqueId])
-        return;
+    {
+        NSNotification* navigationNotification = [NSNotification notificationWithName: kNavigateToPage
+                                                                               object: self
+                                                                             userInfo: @{@"pageName":kProfileViewId}];
         
+        [[NSNotificationCenter defaultCenter] postNotification: navigationNotification];
+        return;
+    }
+    
     [self viewProfileDetails: self.channel.channelOwner];
 }
 
@@ -1534,8 +1541,7 @@
                                              
                                              [self setVideosForChannelById:channelId isUpdated:NO];
                                              
-                                         }
-                                              errorHandler: ^(id error) {
+                                         } errorHandler: ^(id error) {
                                                   
                                                   DebugLog(@"Error @ createChannelPressed:");
                                                   
@@ -1664,6 +1670,8 @@
                                                   
                                                   
                                                   self.channel = createdChannel;
+                                                  
+                                                  self.originalChannel = self.channel;
                                                   
                                                   DebugLog(@"Channel: %@", createdChannel);
                                                   
@@ -2469,7 +2477,7 @@
             [self updateChannelOwnerWithUser];
         
         [[NSNotificationCenter defaultCenter] addObserver: self
-                                                 selector: @selector(mainContextDataChanged:)
+                                                 selector: @selector(handleDataModelChange:)
                                                      name: NSManagedObjectContextDidSaveNotification
                                                    object: self.channel.managedObjectContext];
 

@@ -867,15 +867,25 @@ typedef void(^AnimationCompletionBlock)(BOOL finished);
     if(!pageName)
         return;
     
-    if (self.overlayNavigationController)
+
+    if(self.isInSearchMode)
     {
-        self.overlayNavigationController = nil;
+        [self cancelButtonPressed:nil];
     }
-    else if (showingBackButton)
+    self.overlayNavigationController = nil; // animate the overlay out using the setter method
+
+    if (showingBackButton)
     {
-        [self popCurrentViewController:self.backButtonControl];
+        //pop the current section navcontroller to the root controller
+        SYNAbstractViewController* abstractVC = (SYNAbstractViewController *)self.containerViewController.showingViewController;
+        [abstractVC animatedPopToRootViewController];
+        
+        [self showBackButton:NO];
+        
+
     }
     
+    //Scroll to the requested page
     [self.containerViewController navigateToPageByName: pageName];
     
     self.sideNavigationViewController.state = SideNavigationStateHidden;
@@ -1042,13 +1052,6 @@ typedef void(^AnimationCompletionBlock)(BOOL finished);
             self.overlayNavigationController = nil; // animate the overlay out using the setter method
 
             
-            if(self.overlayNavigationController.topViewController == self.searchViewController)
-            {
-                [self cancelButtonPressed:nil];
-            }
-            
-            self.overlayNavigationController = nil; // animate the overlay out using the setter method
-            
         }
         
     }
@@ -1056,16 +1059,13 @@ typedef void(^AnimationCompletionBlock)(BOOL finished);
     {
         abstractVC = (SYNAbstractViewController *)self.containerViewController.showingViewController;
         
+        [abstractVC animatedPopViewController];
         
-        if(abstractVC.navigationController.viewControllers.count <= 2) {
+        if(abstractVC.navigationController.viewControllers.count < 2) {
             self.containerViewController.scrollView.scrollEnabled = YES;
             [self showBackButton:NO];
         }
             
-        
-        [abstractVC animatedPopViewController];
-        
-        // animate the search
         
        
     }
