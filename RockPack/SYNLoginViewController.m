@@ -937,6 +937,8 @@
     loginButton.enabled = NO;
     passwordForgottenButton.enabled = NO;
     
+    activityIndicator.color = [UIColor whiteColor];
+    
     activityIndicator.center = CGPointMake(facebookSignInButton.frame.origin.x + facebookSignInButton.frame.size.width + 35.0,
                                            facebookSignInButton.center.y);
 }
