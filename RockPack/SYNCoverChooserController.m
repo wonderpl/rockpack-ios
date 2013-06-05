@@ -27,11 +27,15 @@
 
 @interface SYNCoverChooserController () 
 
+@property (nonatomic, assign) BOOL shouldReloadCollectionView;
+@property (nonatomic, assign) BOOL shouldShowUploadingPlaceholder;
 @property (nonatomic, strong) IBOutlet UICollectionView *collectionView;
+@property (nonatomic, strong) NSBlockOperation *blockOperation;
+@property (nonatomic, strong) UIImage *placeholderImage;
 @property (nonatomic, strong) NSFetchedResultsController *channelCoverFetchedResultsController;
 @property (nonatomic, strong) NSIndexPath* indexPathSelected;
-@property (nonatomic, strong) SYNCoverRightMoreView* coverRightMoreView;
 @property (nonatomic, strong) NSString* selectedImageURL;
+@property (nonatomic, strong) SYNCoverRightMoreView* coverRightMoreView;
 @property (nonatomic, weak) SYNAppDelegate* appDelegate;
 
 @end
@@ -89,28 +93,47 @@
             
         case 1:
         {
+            if (self.shouldShowUploadingPlaceholder)
+            {
+                return 1;
+            }
+            else
+            {
+                // User channel covers
+                if (self.channelCoverFetchedResultsController.sections.count > 1)
+                {
+                    sectionInfo = self.channelCoverFetchedResultsController.sections [0];
+                    return sectionInfo.numberOfObjects;
+                }
+            }
+            return 0;
+            
+        }
+        break;
+            
+        case 2:
+        {
             // Rockpack channel covers
             if (self.channelCoverFetchedResultsController.sections.count > 1)
             {
                 sectionInfo = self.channelCoverFetchedResultsController.sections [1];
                 return sectionInfo.numberOfObjects;
             }
-            return 0;
+            else
+            {
+                if (self.channelCoverFetchedResultsController.sections.count > 0)
+                {
+                    sectionInfo = self.channelCoverFetchedResultsController.sections [0];
+                    return sectionInfo.numberOfObjects;
+                }
+                else
+                {
+                    return 0;
+                }
+            }
         }
         break;
-            
-        case 2:
-        {
-            // User channel covers
-            if (self.channelCoverFetchedResultsController.sections.count > 0)
-            {
-                sectionInfo = self.channelCoverFetchedResultsController.sections [0];
-                return sectionInfo.numberOfObjects;
-            }
-            return 0;
-            
-        }
-        break;       
+   
     }
     
     return 0;
@@ -120,6 +143,18 @@
 - (NSInteger) numberOfSectionsInCollectionView: (UICollectionView *) collectionView
 {
     return 3;
+}
+
+- (int) adjustedIndex
+{
+    int index = 0;
+    
+    if (self.channelCoverFetchedResultsController.sections.count > 1)
+    {
+        index = 1;
+    }
+    
+    return index;
 }
 
 
@@ -140,13 +175,21 @@
             
         case 1:
         {
-            // Rockpack channel covers
-            coverArt = [self.channelCoverFetchedResultsController objectAtIndexPath: [NSIndexPath indexPathForRow: indexPath.row
-                                                                                                                  inSection: 1]];
-            
-            [coverThumbnailCell.coverImageView setImageWithURL: [NSURL URLWithString: coverArt.thumbnailURL]
-                                              placeholderImage: [UIImage imageNamed: @"PlaceholderChannelCreation.png"]
-                                                       options: SDWebImageRetryFailed];
+            if (self.shouldShowUploadingPlaceholder)
+            {
+                coverThumbnailCell.coverImageView.image = self.placeholderImage;
+            }
+            else
+            {
+                
+                // Rockpack channel covers
+                coverArt = [self.channelCoverFetchedResultsController objectAtIndexPath: [NSIndexPath indexPathForRow: indexPath.row
+                                                                                                            inSection: 0]];
+                
+                [coverThumbnailCell.coverImageView setImageWithURL: [NSURL URLWithString: coverArt.thumbnailURL]
+                                                  placeholderImage: [UIImage imageNamed: @"PlaceholderChannelCreation.png"]
+                                                           options: SDWebImageRetryFailed];
+            }
         }
         break;
             
@@ -154,13 +197,13 @@
         {
             // User channel covers
             coverArt = [self.channelCoverFetchedResultsController objectAtIndexPath: [NSIndexPath indexPathForRow: indexPath.row
-                                                                                                                      inSection: 0]];
+                                                                                                        inSection: self.adjustedIndex]];
             
             [coverThumbnailCell.coverImageView setImageWithURL: [NSURL URLWithString: coverArt.thumbnailURL]
                                               placeholderImage: [UIImage imageNamed: @"PlaceholderChannelCreation.png"]
                                                        options: SDWebImageRetryFailed];
         }
-        break;      
+        break;
     }
     
     // If the user hasn't actually selected a cover, then try to match the cover id with the one for our cell,
@@ -209,11 +252,19 @@
                 
             case 1:
             {
-                // Rockpack channel covers
-                CoverArt *coverArt = [self.channelCoverFetchedResultsController objectAtIndexPath: [NSIndexPath indexPathForRow: indexPath.row
-                                                                                                                      inSection: 1]];
-                imageURLString = coverArt.thumbnailURL;
-                remoteId = coverArt.coverRef;
+                if (self.shouldShowUploadingPlaceholder)
+                {
+                    imageURLString = @"uploading";
+                    remoteId = @"";
+                }
+                else
+                {
+                    // Rockpack channel covers
+                    CoverArt *coverArt = [self.channelCoverFetchedResultsController objectAtIndexPath: [NSIndexPath indexPathForRow: indexPath.row
+                                                                                                                          inSection: 0]];
+                    imageURLString = coverArt.thumbnailURL;
+                    remoteId = coverArt.coverRef;
+                }
             }
                 break;
                 
@@ -221,16 +272,22 @@
             {
                 // User channel covers
                 CoverArt *coverArt = [self.channelCoverFetchedResultsController objectAtIndexPath: [NSIndexPath indexPathForRow: indexPath.row
-                                                                                                                      inSection: 0]];
+                                                                                                                      inSection: self.adjustedIndex]];
                 imageURLString = coverArt.thumbnailURL;
                 remoteId = coverArt.coverRef;
             }
             break;  
         }
         
+        NSDictionary *userInfo = (self.placeholderImage) ?  @{kCoverArt: imageURLString ,
+                                                              kCoverImageReference: remoteId,
+                                                              kCoverArtImage: self.placeholderImage}
+                                                         :  @{kCoverArt: imageURLString ,
+                                                              kCoverImageReference: remoteId};
+        
         [[NSNotificationCenter defaultCenter] postNotificationName: kCoverArtChanged
                                                             object: self
-                                                          userInfo: @{kCoverArt:imageURLString , kCoverImageReference:remoteId}];
+                                                          userInfo: userInfo];
         
         if (previouslySelectedIndexPath)
         {
@@ -255,7 +312,7 @@
     
     fetchRequest.predicate = [NSPredicate predicateWithFormat: @"(userUpload == FALSE) OR (thumbnailURL == %@)", self.selectedImageURL];
     
-    fetchRequest.sortDescriptors = @[[[NSSortDescriptor alloc] initWithKey: @"userUpload" ascending: YES],
+    fetchRequest.sortDescriptors = @[[[NSSortDescriptor alloc] initWithKey: @"userUpload" ascending: NO],
                                      [[NSSortDescriptor alloc] initWithKey: @"position" ascending: YES]];
     
     self.channelCoverFetchedResultsController = [[NSFetchedResultsController alloc] initWithFetchRequest: fetchRequest
@@ -299,6 +356,7 @@
     return supplementaryView;
 }
 
+
 - (CGSize) collectionView: (UICollectionView *) collectionView
            layout: (UICollectionViewLayout*) collectionViewLayout
            referenceSizeForFooterInSection: (NSInteger) section
@@ -333,6 +391,17 @@
                                                     onError: ^(NSError* error) {
                                                         DebugLog(@"%@", [error debugDescription]);
                                                     }];
+}
+
+- (void) createCoverPlaceholder: (UIImage *) image
+{
+    self.placeholderImage = image;
+    self.shouldShowUploadingPlaceholder = TRUE;
+    [self.collectionView reloadData];
+    
+    SYNCoverThumbnailCell *coverThumbnailCell = (SYNCoverThumbnailCell *)[self.collectionView cellForItemAtIndexPath: [NSIndexPath indexPathForItem: 0 inSection: 1]];
+    
+    coverThumbnailCell.selected = TRUE;                                             
 }
 
 
@@ -387,155 +456,12 @@
 //                   byAppending: YES];
 }
 
-#ifdef SMART_RELOAD
 
-- (void) controllerWillChangeContent: (NSFetchedResultsController *) controller
-{
-    self.shouldReloadCollectionView = NO;
-    self.blockOperation = [NSBlockOperation new];
-}
-
-// We need to serialise all of the updates, and we could either use performBatchUpdates or put then on
-
-// Add all our section changes to our block queue
-- (void) controller: (NSFetchedResultsController *) controller
-   didChangeSection: (id<NSFetchedResultsSectionInfo>) sectionInfo
-            atIndex: (NSUInteger) sectionIndex
-      forChangeType: (NSFetchedResultsChangeType) type
-{
-    __weak UICollectionView *weakCollectionView = self.collectionView;
-    
-    switch (type)
-    {
-        case NSFetchedResultsChangeInsert:
-        {
-            [self.blockOperation addExecutionBlock: ^{
-                [weakCollectionView insertSections: [NSIndexSet indexSetWithIndex: sectionIndex]];
-            }];
-            break;
-        }
-            
-        case NSFetchedResultsChangeDelete:
-        {
-            [self.blockOperation addExecutionBlock: ^{
-                [weakCollectionView deleteSections: [NSIndexSet indexSetWithIndex: sectionIndex]];
-            }];
-            break;
-        }
-            
-        case NSFetchedResultsChangeUpdate:
-        {
-            [self.blockOperation addExecutionBlock: ^{
-                [weakCollectionView reloadSections: [NSIndexSet indexSetWithIndex: sectionIndex]];
-            }];
-            break;
-        }
-            
-        default:
-            break;
-    }
-}
-
-
-//  Add all the object changes to our block queue
-- (void) controller: (NSFetchedResultsController *) controller
-    didChangeObject: (id) changeObject
-        atIndexPath: (NSIndexPath *) indexPath
-      forChangeType: (NSFetchedResultsChangeType) type
-       newIndexPath: (NSIndexPath *) newIndexPath
-{
-    __weak UICollectionView *weakCollectionView = self.collectionView;
-    
-    switch (type)
-    {
-        case NSFetchedResultsChangeInsert:
-        {
-            if ([self.collectionView numberOfSections] > 0)
-            {
-                if ([self.collectionView numberOfItemsInSection: indexPath.section] == 0)
-                {
-                    self.shouldReloadCollectionView = YES;
-                }
-                else
-                {
-                    [self.blockOperation addExecutionBlock: ^{
-                        [weakCollectionView insertItemsAtIndexPaths: @[newIndexPath]];
-                    }];
-                }
-            }
-            else
-            {
-                self.shouldReloadCollectionView = YES;
-            }
-            break;
-        }
-            
-        case NSFetchedResultsChangeDelete:
-        {
-            if ([self.collectionView numberOfItemsInSection: indexPath.section] == 1)
-            {
-                self.shouldReloadCollectionView = YES;
-            }
-            else
-            {
-                [self.blockOperation addExecutionBlock: ^{
-                    [weakCollectionView deleteItemsAtIndexPaths:@[indexPath]];
-                }];
-            }
-            break;
-        }
-            
-        case NSFetchedResultsChangeUpdate:
-        {
-            [self.blockOperation addExecutionBlock: ^{
-                [weakCollectionView reloadItemsAtIndexPaths: @[indexPath]];
-            }];
-            break;
-        }
-            
-        case NSFetchedResultsChangeMove:
-        {
-            [self.blockOperation addExecutionBlock: ^{
-                [weakCollectionView moveItemAtIndexPath: indexPath
-                                            toIndexPath: newIndexPath];
-            }];
-            break;
-        }
-            
-        default:
-            break;
-    }
-}
-
-
-// Nasty hack to work around know problems with UICollectionView (http://openradar.appspot.com/12954582)
+// Old blunderbuss way of doing things
 - (void) controllerDidChangeContent: (NSFetchedResultsController *) controller
 {
-    if (self.shouldReloadCollectionView)
-    {
-        // Oh dear, we need to work around the bug, so just reload the collection view
-        [self.collectionView reloadData];
-    }
-    else
-    {
-        // Luckily we can use the nice UICollectionView animations, (within our batch update)
-        [self.videoThumbnailCollectionView performBatchUpdates: ^{
-            [self.blockOperation start];
-        } completion: nil];
-    }
-}
-
-#else
-
-
-- (void) controllerDidChangeContent: (NSFetchedResultsController *) controller
-{
-    
     [self.collectionView reloadData];
 }
-
-#endif
-
 
 
 @end

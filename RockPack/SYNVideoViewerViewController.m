@@ -382,13 +382,12 @@
 - (void) playVideoAtIndex: (int) index
 {
     // We should start playing the selected video and scroll the thumbnnail so that it appears under the arrow
+    self.currentSelectedIndex = index;
     [self.videoPlaybackViewController playVideoAtIndex: index];
     [self updateVideoDetailsForIndex: index];
     
     [self scrollToCellAtIndex: index
                      animated: YES];
-    
-    self.currentSelectedIndex = index;
 }
 
 
@@ -403,15 +402,15 @@
         SYNVideoThumbnailSmallCell *oldCell = (SYNVideoThumbnailSmallCell *)[self.videoThumbnailCollectionView cellForItemAtIndexPath: [NSIndexPath indexPathForItem: _currentSelectedIndex
                                                                                                                                                            inSection: 0]];
         
-        // This will trigger a nice face out animation to monochrome
-        oldCell.colour = FALSE;
+        // This will colour the cell monochrome
+        oldCell.colour = NO;
     }
     
     // Now fade up the new image to full colour
     SYNVideoThumbnailSmallCell *newCell = (SYNVideoThumbnailSmallCell *)[self.videoThumbnailCollectionView cellForItemAtIndexPath: [NSIndexPath indexPathForItem: currentSelectedIndex
                                                                                                                                                        inSection: 0]];
     
-    newCell.colour = TRUE;
+    newCell.colour = YES;
     
     _currentSelectedIndex = currentSelectedIndex;
     
@@ -442,11 +441,11 @@
     
     // In video overlay feed display BY followed by username, in video overlay search if no user name display nothing -Kish
     if ([videoInstance.channel.channelOwner.displayName length] == 0) {
-        self.channelCreatorLabel.text = [NSString stringWithFormat:@""];
+        self.channelCreatorLabel.text = @"";
     }
     else
     {
-        self.channelCreatorLabel.text = [NSString stringWithFormat:@"%@", videoInstance.channel.channelOwner.displayName];
+        self.channelCreatorLabel.text = videoInstance.channel.channelOwner.displayName;
     }
     
     self.channelTitleLabel.text = videoInstance.channel.title;

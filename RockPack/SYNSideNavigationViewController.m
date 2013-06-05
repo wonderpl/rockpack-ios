@@ -258,7 +258,6 @@ typedef enum {
                 
                 [self.notifications removeAllObjects];
                 self.notifications = nil;
-                
                 return;
             }
                                                    
@@ -286,6 +285,10 @@ typedef enum {
                                                    
             [self.tableView reloadData];
         
+        if(self.currentlyLoadedViewController && [self.currentlyLoadedViewController isKindOfClass:[SYNNotificationsTableViewController class]])
+        {
+            ((SYNNotificationsTableViewController*)self.currentlyLoadedViewController).notifications = self.notifications;
+        }
         
         
         
