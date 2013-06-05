@@ -1256,8 +1256,6 @@
             
             [self.coverChooserController updateCoverArt];
             
-            self.originalContentOffset = CGPointMake (0, kChannelCreationCollectionViewOffsetY +
-                                                      kChannelCreationCategoryAdditionalOffsetY);
             
             [UIView animateWithDuration: kChannelEditModeAnimationDuration
                              animations: ^{
@@ -2375,6 +2373,10 @@
     
     if (scrollView == self.videoThumbnailCollectionView)
     {
+        
+        NSLog(@"co: %f - oo: %f", scrollView.contentOffset.y, self.originalContentOffset.y);
+        
+        
         if (scrollView.contentOffset.y <= self.originalContentOffset.y)
         {
             self.masterControlsView.alpha = 1.0f;
