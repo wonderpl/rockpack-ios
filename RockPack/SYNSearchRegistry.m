@@ -53,9 +53,12 @@
             
             NSMutableDictionary* fullItemDictionary = [NSMutableDictionary dictionaryWithDictionary:itemDictionary];
             
-            [VideoInstance instanceFromDictionary: fullItemDictionary
-                        usingManagedObjectContext: importManagedObjectContext
-                              ignoringObjectTypes: kIgnoreChannelObjects];
+            // video instances on search do not have channels attached to them
+            VideoInstance* videoInstance = [VideoInstance instanceFromDictionary: fullItemDictionary
+                                                       usingManagedObjectContext: importManagedObjectContext
+                                                             ignoringObjectTypes: kIgnoreChannelObjects];
+            
+            videoInstance.viewId = kSearchViewId;
         }
             
     }

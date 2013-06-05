@@ -7,6 +7,9 @@
                  usingManagedObjectContext: (NSManagedObjectContext *) managedObjectContext
                        ignoringObjectTypes: (IgnoringObjects) ignoringObjects;
 
++ (VideoInstance *) instanceFromDictionary: (NSDictionary *) dictionary
+                 usingManagedObjectContext: (NSManagedObjectContext *) managedObjectContext;
+
 +(VideoInstance*) instanceFromVideoInstance:(VideoInstance*)existingInstance
                   usingManagedObjectContext: (NSManagedObjectContext *) managedObjectContext
                         ignoringObjectTypes: (IgnoringObjects) ignoringObjects;

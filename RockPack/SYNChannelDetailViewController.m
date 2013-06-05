@@ -382,7 +382,7 @@
     
     if(self.channel.videoInstances.count == 0)
     {
-        [self showNoVideosMessage: NSLocalizedString(@"channel_screen_loading_videos", nil)];
+        [self showNoVideosMessage: NSLocalizedString(@"channel_screen_loading_videos", nil) withLoader:YES];
     }
     
     [self displayChannelDetails];
@@ -532,11 +532,11 @@
 
             if(self.channel.videoInstances.count == 0)
             {
-                [self showNoVideosMessage: NSLocalizedString(@"channel_screen_no_videos",nil)];
+                [self showNoVideosMessage: NSLocalizedString(@"channel_screen_no_videos",nil) withLoader:NO];
             }
             else
             {
-                [self showNoVideosMessage:nil];
+                [self showNoVideosMessage:nil withLoader:NO];
             }
             
             
@@ -556,11 +556,11 @@
             
             if(self.channel.videoInstances.count == 0)
             {
-                [self showNoVideosMessage: NSLocalizedString(@"channel_screen_no_videos",nil)];
+                [self showNoVideosMessage: NSLocalizedString(@"channel_screen_no_videos",nil) withLoader:NO];
             }
             else
             {
-                [self showNoVideosMessage:nil];
+                [self showNoVideosMessage:nil withLoader:NO];
             }
             
             return;
@@ -577,7 +577,7 @@
     
 }
 
-- (void) showNoVideosMessage:(NSString*)message
+- (void) showNoVideosMessage:(NSString*)message withLoader:(BOOL)withLoader
 {
     if(self.noVideosMessageView)
     {
@@ -590,6 +590,12 @@
         return;
     
     CGSize viewFrameSize = _isIPhone ? CGSizeMake(300.0, 50.0) : CGSizeMake(360.0, 50.0);
+    if(withLoader && !_isIPhone)
+    {
+        viewFrameSize.width = 380.0;
+    }
+        
+        
     self.noVideosMessageView = [[UIView alloc] initWithFrame:CGRectMake(0.0, 640.0, viewFrameSize.width, viewFrameSize.height)];
     self.noVideosMessageView.center = _isIPhone ? CGPointMake(self.view.frame.size.width * 0.5, self.view.frame.size.height - 70.0f) : CGPointMake(self.view.frame.size.width * 0.5, self.noVideosMessageView.center.y);
     self.noVideosMessageView.frame = CGRectIntegral(self.noVideosMessageView.frame);
@@ -608,9 +614,23 @@
     noVideosLabel.font = [UIFont rockpackFontOfSize:_isIPhone?12.0f:16.0f];
     noVideosLabel.textColor = [UIColor whiteColor];
     [noVideosLabel sizeToFit];
+    noVideosLabel.backgroundColor = [UIColor clearColor];
     noVideosLabel.center = CGPointMake(viewFrameSize.width * 0.5, viewFrameSize.height * 0.5 + 4.0);
     noVideosLabel.frame = CGRectIntegral(noVideosLabel.frame);
-    noVideosLabel.backgroundColor = [UIColor clearColor];
+    
+    if(withLoader && !_isIPhone)
+    {
+        UIActivityIndicatorView* loader = [[UIActivityIndicatorView alloc] initWithActivityIndicatorStyle:UIActivityIndicatorViewStyleWhite];
+        CGRect loaderRect = loader.frame;
+        loaderRect.origin.x = noVideosLabel.frame.origin.x + noVideosLabel.frame.size.width + 8.0;
+        loaderRect.origin.y = 16.0;
+        loader.frame = loaderRect;
+        [self.noVideosMessageView addSubview:loader];
+        [loader startAnimating];
+        
+        
+    }
+    
     
     [self.noVideosMessageView addSubview:noVideosLabel];
     

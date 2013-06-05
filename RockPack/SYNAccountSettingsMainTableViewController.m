@@ -11,6 +11,7 @@
 #import "GAI.h"
 #import "NSString+Utils.h"
 #import "SYNAccountSettingTableViewCell.h"
+#import "SYNAccountSettingOtherTableViewCell.h"
 #import "SYNAccountSettingsAbout.h"
 #import "SYNAccountSettingsDOB.h"
 #import "SYNAccountSettingsEmail.h"
@@ -65,7 +66,7 @@
         
         dataItems2ndSection = [NSArray arrayWithArray:conditionalDataItems];
         
-        self.title = @"ACCOUNT SETTINGS";
+        self.title = NSLocalizedString (@"settings_popover_title" , nil);
     }
     
     return self;
@@ -80,10 +81,10 @@
 
     self.tableView.scrollEnabled = [SYNDeviceManager.sharedInstance isIPhone];
     
-    UILabel* titleLabel = [[UILabel alloc] initWithFrame: CGRectMake(0.0, 10.0, 100.0, 20.0)];
+    UILabel* titleLabel = [[UILabel alloc] initWithFrame: CGRectMake(0.0, 0.0, 100.0, 20.0)];
     titleLabel.backgroundColor = [UIColor clearColor];
     titleLabel.textColor = [UIColor colorWithRed: (28.0/255.0) green: (31.0/255.0) blue: (33.0/255.0) alpha: (1.0)];
-    titleLabel.text = @"Account Settings";
+    titleLabel.text = NSLocalizedString (@"settings_popover_title", nil);
     titleLabel.font = [UIFont rockpackFontOfSize:16.0];
     
     self.navigationItem.titleView = titleLabel;
@@ -239,8 +240,8 @@
                 
         }
         
-        cell.textLabel.font = [UIFont rockpackFontOfSize: 18.0];
-        cell.detailTextLabel.font = [UIFont rockpackFontOfSize: 13.0];
+        cell.textLabel.font = [UIFont rockpackFontOfSize: 16.0];
+        cell.detailTextLabel.font = [UIFont rockpackFontOfSize: 12.0];
         cell.textLabel.backgroundColor = [UIColor clearColor];
     }
     else
@@ -250,13 +251,13 @@
         
         if (!cell)
         {
-            cell = [[UITableViewCell alloc] initWithStyle: UITableViewCellStyleDefault
-                                          reuseIdentifier: CellIdentifier];
+            cell = [[SYNAccountSettingOtherTableViewCell alloc] initWithStyle: UITableViewCellStyleDefault
+                                                         reuseIdentifier: CellIdentifier];
         }
         
         cell.textLabel.text = (NSString*)dataItems2ndSection[indexPath.row];
-        
-        cell.textLabel.font = [UIFont rockpackFontOfSize:18.0];
+        cell.textLabel.font = [UIFont rockpackFontOfSize:16.0];
+        cell.textLabel.center = CGPointMake(0, 0);
         
         if (indexPath.row != self.dataItems2ndSection.count - 1) // if its not the last element which is always the Logout button
         {

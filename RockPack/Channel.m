@@ -204,7 +204,7 @@
             {
                 videoInstance = [VideoInstance instanceFromDictionary: channelDictionary
                                             usingManagedObjectContext: self.managedObjectContext
-                                                  ignoringObjectTypes: kIgnoreStoredObjects | kIgnoreChannelObjects];
+                                                  ignoringObjectTypes: kIgnoreChannelObjects];
                 
                 
             }
