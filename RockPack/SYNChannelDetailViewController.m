@@ -669,7 +669,7 @@
 
 - (void) displayChannelDetails
 {
-    self.channelOwnerLabel.text = self.channel.channelOwner.displayName;
+    self.channelOwnerLabel.text = [self.channel.channelOwner.displayName uppercaseString];
     
     
     NSString *detailsString = [NSString stringWithFormat: @"%lld %@", self.channel.subscribersCountValue, NSLocalizedString(@"SUBSCRIBERS", nil)];
@@ -934,6 +934,7 @@
                                                             object: self
                                                           userInfo: @{ kChannel : self.channel }];
     }
+    
 }
 
 
@@ -1738,7 +1739,7 @@
                                               
                                               // Complete Channel Creation //
                                               
-                                              self.channelOwnerLabel.text = appDelegate.currentUser.displayName;
+                                              self.channelOwnerLabel.text = [appDelegate.currentUser.displayName uppercaseString];
                                               
                                               [self displayChannelDetails];
                                               
@@ -1765,7 +1766,7 @@
                                               
                                               DebugLog(@"Error @ getNewlyCreatedChannelForId:");
                                               [self showError: NSLocalizedString(@"Could not retrieve the uploaded channel data. Please try accessing it from your profile later.", nil) showErrorTitle:@"Error"];
-                                              self.channelOwnerLabel.text = appDelegate.currentUser.displayName;
+                                              self.channelOwnerLabel.text = [appDelegate.currentUser.displayName uppercaseString];
                                               
                                               [self displayChannelDetails];
                                               
