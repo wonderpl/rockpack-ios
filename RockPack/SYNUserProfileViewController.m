@@ -118,11 +118,8 @@
         User* ownerAsUser = (User*)channelOwner;
         if(ownerAsUser.fullNameIsPublicValue)
         {
-            userName = [ownerAsUser.fullName uppercaseString];
+            userName = ownerAsUser.fullName;
         }
-
-        
-        NSLog(@"userName: %@", userName);
         
         if(userName.length < 1)
         {
@@ -141,8 +138,8 @@
         self.avatarButton.enabled = FALSE;
     }
     
-    self.userNameLabel.text = channelOwner.username;
-    self.fullNameLabel.text = userName;
+    self.userNameLabel.text = [channelOwner.username uppercaseString];
+    self.fullNameLabel.text = [userName uppercaseString];
     
     UIImage* placeholderImage = self.profileImageView.image ? self.profileImageView.image : [UIImage imageNamed: @"PlaceholderAvatarProfile.png"];
     
