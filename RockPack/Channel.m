@@ -222,9 +222,6 @@
             if(newPosition && [newPosition isKindOfClass:[NSNumber class]])
                 videoInstance.position = newPosition;
             
-            NSLog(@"Position = %@", newPosition);
-            
-            
             
             
             [self.videoInstancesSet addObject:videoInstance];

@@ -552,7 +552,6 @@
             [self reloadCollectionViews];
             
             
-            NSLog(@"Count %i", self.channel.videoInstances.count);
             
             if(self.channel.videoInstances.count == 0)
             {
@@ -725,6 +724,8 @@
     
     VideoInstance *videoInstance = self.channel.videoInstances [indexPath.item];
     
+    NSLog(@"VideoInstance: %@", videoInstance.title);
+    
     [videoThumbnailCell.imageView setImageWithURL: [NSURL URLWithString: videoInstance.video.thumbnailURL]
                                  placeholderImage: [UIImage imageNamed: @"PlaceholderVideoWide.png"]
                                           options: SDWebImageRetryFailed];
@@ -764,20 +765,43 @@
     willMoveToIndexPath: (NSIndexPath *) toIndexPath {
 
     
+    if(fromIndexPath.item < toIndexPath.item)
+    {
+        for (int i = fromIndexPath.item; i < toIndexPath.item; i++)
+        {
+            
+            //NSLog(@"changing %i with %i", i + 1, i);
+            [self.channel.videoInstancesSet exchangeObjectAtIndex: i
+                                                withObjectAtIndex: i + 1];
+            
+        }
+    }
+    else
+    {
+        for (int i = fromIndexPath.item; i > toIndexPath.item; i--)
+        {
+            
+            //NSLog(@"changing %i with %i", i + 1, i);
+            [self.channel.videoInstancesSet exchangeObjectAtIndex: i
+                                                withObjectAtIndex: i - 1];
+            
+        }
+        
+    }
     
-    [self.channel.videoInstancesSet exchangeObjectAtIndex: fromIndexPath.item
-                                        withObjectAtIndex: toIndexPath.item];
     
     
-    [self.channel.videoInstances enumerateObjectsUsingBlock: ^(id obj, NSUInteger index, BOOL *stop) {
-        NSLog(@"%@ (%lli)", [(VideoInstance *)obj title], [(VideoInstance *)obj positionValue]);
-    }];
-    // Now we need to update the 'position' for each of the objects (so that we can keep in step with getFetchedResultsController
-    // Do this with block enumeration for speed
+    // set the new positions
     [self.channel.videoInstances enumerateObjectsUsingBlock: ^(id obj, NSUInteger index, BOOL *stop) {
         [(VideoInstance *)obj setPositionValue : index];
+        
     }];
+    
+
+    
 }
+
+
 
 
 - (void) setDisplayControlsVisibility: (BOOL) visible
@@ -1593,8 +1617,10 @@
                                                   self.createChannelButton.enabled = YES;
                                                   self.createChannelButton.hidden = NO;
                                                   self.cancelEditButton.hidden = YES;
-                                                  self.addButton.hidden = YES;                                                  
+                                                  self.addButton.hidden = YES;
+                                             
                                                   [self showError:errorMessage showErrorTitle:errorTitle];
+                                             
                                               }];
 }
 
@@ -1607,13 +1633,17 @@
                                                    videoInstanceSet: self.channel.videoInstances
                                                       clearPrevious: YES
                                                   completionHandler: ^(id response) {
+                                                      
                                                       // a 204 returned
                                                       
                                                       [self fetchAndStoreUpdatedChannelForId:channelId isUpdate:isUpdated];
                                                       
                                                   } errorHandler: ^(id err) {
+                                                      
                                                       NSString* errorMessage = nil;
+                                                      
                                                       NSString* errorTitle = nil;
+                                                      
                                                       if ([err isKindOfClass:[NSDictionary class]])
                                                       {
                                                           errorMessage = [err objectForKey:@"message"];
@@ -1622,10 +1652,12 @@
                                                               errorMessage = [err objectForKey:@"error"];
                                                           }
                                                       }
+                                                      
                                                       self.addButton.hidden = YES;
                                                       
                                                       if(isUpdated)
                                                       {
+                                                          
                                                           [self.activityIndicator stopAnimating];
                                                           self.cancelEditButton.hidden = NO;
                                                           self.cancelEditButton.enabled = YES;
@@ -1703,6 +1735,11 @@
                                                   
                                                   [self.originalChannel  setAttributesFromDictionary:dictionary
                                                                                  ignoringObjectTypes:ignore];
+                                                  
+                                                  for (VideoInstance* vi in self.channel.videoInstances)
+                                                  {
+                                                      NSLog(@"> %@", vi.uniqueId);
+                                                  }
                                               }
                                               
                                               
