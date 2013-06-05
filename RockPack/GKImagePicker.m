@@ -8,6 +8,7 @@
 
 #import "GKImagePicker.h"
 #import "GKImageCropViewController.h"
+#import "UIFont+SYNFont.h"
 
 @interface GKImagePicker ()<UIImagePickerControllerDelegate, UINavigationControllerDelegate, GKImageCropControllerDelegate>
 @property (nonatomic, strong, readwrite) UIImagePickerController *imagePickerController;
@@ -34,10 +35,46 @@
         _imagePickerController = [[UIImagePickerController alloc] init];
         _imagePickerController.delegate = self;
         _imagePickerController.sourceType = UIImagePickerControllerSourceTypePhotoLibrary;
+<<<<<<< HEAD
+
+=======
+        
+>>>>>>> origin/develop
     }
     return self;
 }
 
+
+- (void) navigationController: (UINavigationController *) navigationController
+<<<<<<< HEAD
+        willShowViewController: (UIViewController *) viewController
+=======
+       willShowViewController: (UIViewController *) viewController
+>>>>>>> origin/develop
+                     animated: (BOOL) animated
+{
+    DebugLog (@"Items: %@", navigationController.navigationBar.items);
+    UIView *containerView = [[UIView alloc] initWithFrame: CGRectMake (0, 0, 200, 28)];
+    containerView.backgroundColor = [UIColor clearColor];
+    UILabel *label = [[UILabel alloc] initWithFrame: CGRectMake (0, 4, 180, 28)];
+    label.backgroundColor = [UIColor clearColor];
+    label.font = [UIFont rockpackFontOfSize: 20.0];
+    label.textAlignment = NSTextAlignmentCenter;
+    label.textColor = [UIColor blackColor];
+    label.text = navigationController.navigationBar.topItem.title.uppercaseString;
+<<<<<<< HEAD
+
+=======
+    
+>>>>>>> origin/develop
+    [containerView addSubview: label];
+    navigationController.navigationBar.topItem.titleView = containerView;
+}
+
+<<<<<<< HEAD
+
+=======
+>>>>>>> origin/develop
 # pragma mark -
 # pragma mark Private Methods
 

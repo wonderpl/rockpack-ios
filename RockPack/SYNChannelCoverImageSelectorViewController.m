@@ -83,6 +83,7 @@ enum ChannelCoverSelectorState {
     fetchRequest.entity = [NSEntityDescription entityForName: @"CoverArt"
                                       inManagedObjectContext: self.appDelegate.mainManagedObjectContext];
     
+    fetchRequest.predicate = [NSPredicate predicateWithFormat: @"(userUpload == FALSE) OR (thumbnailURL == %@)", self.selectedImageURL];
     
     fetchRequest.sortDescriptors = @[[[NSSortDescriptor alloc] initWithKey: @"userUpload" ascending: NO],
                                      [[NSSortDescriptor alloc] initWithKey: @"position" ascending: YES]];

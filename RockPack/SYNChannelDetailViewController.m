@@ -467,7 +467,8 @@
 - (void) coverImageChangedHandler: (NSNotification*) notification
 {
     NSDictionary * detailDictionary = [notification userInfo];
-    NSString* coverArtUrl = (NSString*)[detailDictionary objectForKey: kCoverArt];
+    NSString* coverArtUrl = (NSString* )[detailDictionary objectForKey: kCoverArt];
+    UIImage* coverArtImage = (UIImage *)[detailDictionary objectForKey: kCoverArtImage];
     
     if (!coverArtUrl)
         return;
@@ -476,6 +477,16 @@
     {
         self.channelCoverImageView.image = nil;
         
+    }
+    else if ([coverArtUrl isEqualToString: @"uploading"])
+    {
+        [UIView transitionWithView: self.view
+                          duration: 0.35f
+                           options: UIViewAnimationOptionTransitionCrossDissolve | UIViewAnimationOptionAllowUserInteraction
+                        animations: ^{
+                            self.channelCoverImageView.image = coverArtImage;
+                        }
+                        completion: nil];
     }
     else
     {
@@ -2148,6 +2159,7 @@
 - (void) imagePicker: (GKImagePicker *) imagePicker
          pickedImage: (UIImage *) image
 {
+    self.cameraButton.selected = NO;
     DebugLog(@"width %f, height %f", image.size.width, image.size.height);
     
     self.channelCoverImageView.image = image;
@@ -2157,8 +2169,10 @@
     [self hideImagePicker];
 }
 
+
 - (void) hideImagePicker
 {
+    self.cameraButton.selected = NO;
     if (UIUserInterfaceIdiomPad == UI_USER_INTERFACE_IDIOM())
     {
         
@@ -2175,6 +2189,9 @@
 
 - (void) uploadChannelImage: (UIImage *) imageToUpload
 {
+    
+    [self.coverChooserController createCoverPlaceholder: imageToUpload];
+    
     // Upload the image for this user
     [appDelegate.oAuthNetworkEngine uploadCoverArtForUserId: appDelegate.currentOAuth2Credentials.userId
                                                       image: imageToUpload
@@ -2184,7 +2201,7 @@
                                               if (imageUrl && [imageUrl isKindOfClass:[NSString class]])
                                               {
                                                   self.channel.channelCover.imageUrl = imageUrl;
-                                                  [self.coverChooserController updateCoverArt];
+//                                                  [self.coverChooserController updateUserArtWithURL: imageUrl];
                                                   DebugLog(@"Success");
                                               }
                                               else

@@ -18,5 +18,6 @@
 
 - (id) initWithSelectedImageURL: (NSString *) selectedImageURL;
 - (void) updateCoverArt;
+- (void) createCoverPlaceholder: (UIImage *) image;
 
 @end
