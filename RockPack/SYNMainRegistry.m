@@ -267,8 +267,7 @@
             // The video is not in the dictionary of existing videos
             // Create a new video object. kIgnoreStoredObjects makes sure no attempt is made to query first
             videoInstance = [VideoInstance instanceFromDictionary: itemDictionary
-                                        usingManagedObjectContext: importManagedObjectContext
-                                              ignoringObjectTypes: kIgnoreStoredObjects];
+                                        usingManagedObjectContext: importManagedObjectContext];
             
         }
         

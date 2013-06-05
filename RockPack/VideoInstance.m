@@ -51,9 +51,16 @@
 
 + (VideoInstance *) instanceFromDictionary: (NSDictionary *) dictionary
                  usingManagedObjectContext: (NSManagedObjectContext *) managedObjectContext
+{
+    return [VideoInstance instanceFromDictionary:dictionary
+                       usingManagedObjectContext:managedObjectContext
+                             ignoringObjectTypes:kIgnoreNothing];
+}
+
++ (VideoInstance *) instanceFromDictionary: (NSDictionary *) dictionary
+                 usingManagedObjectContext: (NSManagedObjectContext *) managedObjectContext
                         ignoringObjectTypes: (IgnoringObjects) ignoringObjects
 {
-    NSError *error = nil;
     
     if (![dictionary isKindOfClass: [NSDictionary class]])
         return nil;
@@ -63,61 +70,24 @@
         return nil;
     
     
+    VideoInstance *instance = [VideoInstance insertInManagedObjectContext: managedObjectContext];
     
-    VideoInstance *instance;
-    
-    if(!(ignoringObjects & kIgnoreStoredObjects))
-    {
-        NSFetchRequest *videoInstanceFetchRequest = [[NSFetchRequest alloc] init];
-        [videoInstanceFetchRequest setEntity: [NSEntityDescription entityForName: @"VideoInstance"
-                                                          inManagedObjectContext: managedObjectContext]];
-        
-        // Search on the unique Id
-        NSPredicate *predicate = [NSPredicate predicateWithFormat: @"uniqueId == %@", uniqueId];
-        [videoInstanceFetchRequest setPredicate: predicate];
-        
-        NSArray *matchingVideoInstanceEntries = [managedObjectContext executeFetchRequest: videoInstanceFetchRequest
-                                                                                    error: &error];
-        
-        if (matchingVideoInstanceEntries.count > 0)
-        {
-            instance = matchingVideoInstanceEntries[0];
-            
-            instance.markedForDeletionValue = NO;
-            
-            
-        }
-        
-    }
-    
-    
-    
-    if(!instance)
-    {
-        instance = [VideoInstance insertInManagedObjectContext: managedObjectContext];
-    }
-    
+    instance.uniqueId = uniqueId;
     
     
     [instance setAttributesFromDictionary: dictionary
-                                   withId: uniqueId
                 usingManagedObjectContext: managedObjectContext
-                      ignoringObjectTypes: (ignoringObjects == kIgnoreChannelObjects) ? kIgnoreChannelObjects : kIgnoreVideoInstanceObjects];
+                      ignoringObjectTypes: ignoringObjects];
     
     return instance;
 }
 
 
 - (void) setAttributesFromDictionary: (NSDictionary *) dictionary
-                              withId: (NSString *) uniqueId
            usingManagedObjectContext: (NSManagedObjectContext *) managedObjectContext
                  ignoringObjectTypes: (IgnoringObjects) ignoringObjects
 {
     
-    
-    
-    
-    self.uniqueId = uniqueId;
     
     
     self.position = [dictionary objectForKey: @"position"
@@ -138,7 +108,7 @@
     {
         self.channel = [Channel instanceFromDictionary: [dictionary objectForKey: @"channel"]
                              usingManagedObjectContext: managedObjectContext
-                                   ignoringObjectTypes: ignoringObjects];
+                                   ignoringObjectTypes: ignoringObjects | kIgnoreVideoInstanceObjects];
     }
 }
 
