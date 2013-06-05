@@ -175,18 +175,23 @@
 
 #pragma mark - Delegate Handler
 
+// this is the user who initialed the action, goes to is profile
 -(void)mainImageTableCellPressed:(UIButton*)button
 {
     SYNNotificationsTableViewCell* cellPressed = (SYNNotificationsTableViewCell*)button.superview;
     
     NSIndexPath* indexPathForCellPressed = [self.tableView indexPathForCell:cellPressed];
     
-    SYNRockpackNotification* notification = self.notifications[indexPathForCellPressed.row];
+    if(indexPathForCellPressed.row > self.notifications.count)
+        return;
     
+    SYNRockpackNotification* notification = self.notifications[indexPathForCellPressed.row];
     
     [[NSNotificationCenter defaultCenter] postNotificationName:kProfileRequested
                                                         object:self
                                                       userInfo:@{kChannelOwner:notification.channelOwner}];
+    
+    [self markAsReadForNotification:notification];
     
 }
 -(void)itemImageTableCellPressed:(UIButton*)button
