@@ -867,18 +867,25 @@ typedef void(^AnimationCompletionBlock)(BOOL finished);
     if(!pageName)
         return;
     
-    self.overlayNavigationController = nil; // remove the overlay if there...
-    
-    SYNAbstractViewController* abstractVC = (SYNAbstractViewController *)self.containerViewController.showingViewController;
-    
-    NSLog(@"%i", abstractVC.navigationController.viewControllers.count);
-    
-    if(abstractVC.navigationController.viewControllers.count > 1) {
+
+    if(self.isInSearchMode)
+    {
+        [self cancelButtonPressed:nil];
+    }
+    self.overlayNavigationController = nil; // animate the overlay out using the setter method
+
+    if (showingBackButton)
+    {
+        //pop the current section navcontroller to the root controller
+        SYNAbstractViewController* abstractVC = (SYNAbstractViewController *)self.containerViewController.showingViewController;
         [abstractVC animatedPopToRootViewController];
-        self.containerViewController.scrollView.scrollEnabled = YES;
+        
         [self showBackButton:NO];
+        
+
     }
     
+    //Scroll to the requested page
     [self.containerViewController navigateToPageByName: pageName];
     
     self.sideNavigationViewController.state = SideNavigationStateHidden;
