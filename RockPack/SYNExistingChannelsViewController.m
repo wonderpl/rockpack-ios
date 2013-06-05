@@ -89,20 +89,8 @@
     self.closeButton.enabled = YES;
     self.confirmButtom.enabled = YES;
     
-    // Copy Channels and filter them
-    
-    NSMutableArray* allChannels = [NSMutableArray arrayWithCapacity:appDelegate.currentUser.channels.count];
-    for (Channel* ch in appDelegate.currentUser.channels)
-    {
-        if (ch.favouritesValue) // remove the favourites channel because it can be added to only by subscribing to a video
-            continue;
-        
-        [allChannels addObject:ch];
-        
-    }
-    
-    self.channels = [NSArray arrayWithArray:allChannels];
-    
+    // Copy Channels     
+    self.channels = [appDelegate.currentUser.channels array];
     
     [self packViewForInterfaceOrientation:[SYNDeviceManager.sharedInstance orientation]];
     

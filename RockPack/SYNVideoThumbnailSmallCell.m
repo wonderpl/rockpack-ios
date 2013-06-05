@@ -79,6 +79,7 @@
 //                          placeholderImage: [UIImage imageNamed: @"AvatarProfile.png"]
 //                                   options: SDWebImageRetryFailed];
     
+    
     [self.imageView setAsynchronousImageFromURL: [NSURL URLWithString: imageURLString]
      completionHandler: ^(UIImage *fetchedImage, NSURL *url, BOOL isInCache)
      {         
@@ -97,6 +98,8 @@
              CIContext *context = [CIContext contextWithOptions: nil];
              CGImageRef imageRef = [context createCGImage: output
                                                  fromRect: output.extent];
+             UIImage *newImage = [UIImage imageWithCGImage: imageRef]; //UIImage is surprisingly thread safe and can be initialised here.
+             CGImageRelease(imageRef);
              
              dispatch_async(dispatch_get_main_queue(), ^
              {
@@ -104,25 +107,20 @@
                  {
                      // Do any UIKit calls on the main thread
                      weakSelf.colourImage = fetchedImage;
-                     
-                     UIImage *newImage = [UIImage imageWithCGImage: imageRef];
-                     CGImageRelease(imageRef);
                      weakSelf.monochromeImage = newImage;
                      
-                     if (!isInCache)
-                     {
-                         [UIView transitionWithView: weakSelf.imageView
-                                           duration: kFromCacheAnimationDuration
-                                            options: UIViewAnimationOptionTransitionCrossDissolve animations: ^
-                          {
-                              [weakSelf displayThumbnail: weakSelf.isColour];
-                          }
-                                         completion: nil];
-                     }
-                     else
-                     {
+//                     if (!isInCache)
+//                     {
+//                         [weakSelf displayThumbnail: weakSelf.isColour];
+//                         weakSelf.imageView.alpha= 0.0f;
+//                         [UIView animateWithDuration:kFromCacheAnimationDuration delay:0.0f options:UIViewAnimationOptionCurveEaseInOut animations:^{
+//                             weakSelf.imageView.alpha = 1.0f;
+//                         } completion:nil];
+//                     }
+//                     else
+//                     {
                          [weakSelf displayThumbnail: weakSelf.isColour];
-                     }
+//                     }
                  }
              });
          });
@@ -152,22 +150,10 @@
 
 - (void) setColour: (BOOL) colour
 {
-    if (self.colour != colour)
-    {
-        [UIView transitionWithView: self.imageView
-                          duration: kFromCacheAnimationDuration
-                           options: UIViewAnimationOptionTransitionCrossDissolve animations: ^
-         {
-             [self displayThumbnail: colour];
-         }
-         completion: ^(BOOL b)
-         {
-             _colour = colour;
-         }];
-    }
-    
+    [self displayThumbnail: colour];
     _colour = colour;
 }
+
 
 // If this cell is going to be re-used, then clear the image and cancel any outstanding operations
 - (void) prepareForReuse
@@ -177,7 +163,9 @@
     
     [self.imageView.layer removeAllAnimations];
 
-    [self.imageView setImageFromURL:nil];
+    self.imageView.image = nil ;
+    self.monochromeImage = nil;
+    self.colourImage = nil;
     
     self.mainView.alpha = 0.6f;
     self.colour = FALSE;

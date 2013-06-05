@@ -177,7 +177,6 @@
     {
         
         
-        
         NSMutableDictionary* videoInsanceByIdDictionary = [[NSMutableDictionary alloc] initWithCapacity:self.videoInstances.count];
         
         for (VideoInstance* vi in self.videoInstances)
@@ -219,8 +218,11 @@
             
             videoInstance.viewId = self.viewId;
             
-            videoInstance.position = [dictionary objectForKey: @"position"
-                                                  withDefault: [NSNumber numberWithInt: 0]];
+            NSNumber* newPosition = [channelDictionary objectForKey: @"position"];
+            if(newPosition && [newPosition isKindOfClass:[NSNumber class]])
+                videoInstance.position = newPosition;
+            
+            
             
             [self.videoInstancesSet addObject:videoInstance];
             

@@ -837,10 +837,13 @@
     
     
     
+    
     NSArray* videoIdArray = [[videoInstanceSet array] valueForKey:@"uniqueId"];
     
+    
+    
     [networkOperation setCustomPostDataEncodingHandler: ^ NSString * (NSDictionary *postDataDict)
-     {
+    {
          
          NSError *error;
          NSData *jsonData = [NSJSONSerialization dataWithJSONObject: videoIdArray
@@ -849,6 +852,8 @@
          
          NSString *jsonString = [[NSString alloc] initWithData: jsonData
                                                       encoding: NSUTF8StringEncoding];
+        
+        NSLog(@"%@", jsonString);
          
          return jsonString;
      }
@@ -1120,6 +1125,8 @@
                                 errorHandler: errorBlock];
     
     [self enqueueSignedOperation: networkOperation];
+    
+    NSLog(@"%@", networkOperation);
 }
 
 - (void) channelUnsubscribeForUserId: (NSString *) userId

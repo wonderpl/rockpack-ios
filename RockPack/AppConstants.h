@@ -27,6 +27,7 @@
 #define kUser                       @"User"
 #define kCoverArt                   @"CoverArt"
 #define kCoverImageReference        @"CoverImageReference"
+#define kCoverArtImage              @"CoverArtImage"
 
 #define kForceRefreshValue          @"kForceRefreshValue"
 

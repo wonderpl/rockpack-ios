@@ -467,7 +467,8 @@
 - (void) coverImageChangedHandler: (NSNotification*) notification
 {
     NSDictionary * detailDictionary = [notification userInfo];
-    NSString* coverArtUrl = (NSString*)[detailDictionary objectForKey: kCoverArt];
+    NSString* coverArtUrl = (NSString* )[detailDictionary objectForKey: kCoverArt];
+    UIImage* coverArtImage = (UIImage *)[detailDictionary objectForKey: kCoverArtImage];
     
     if (!coverArtUrl)
         return;
@@ -476,6 +477,16 @@
     {
         self.channelCoverImageView.image = nil;
         
+    }
+    else if ([coverArtUrl isEqualToString: @"uploading"])
+    {
+        [UIView transitionWithView: self.view
+                          duration: 0.35f
+                           options: UIViewAnimationOptionTransitionCrossDissolve | UIViewAnimationOptionAllowUserInteraction
+                        animations: ^{
+                            self.channelCoverImageView.image = coverArtImage;
+                        }
+                        completion: nil];
     }
     else
     {
@@ -552,7 +563,6 @@
             [self reloadCollectionViews];
             
             
-            NSLog(@"Count %i", self.channel.videoInstances.count);
             
             if(self.channel.videoInstances.count == 0)
             {
@@ -725,6 +735,8 @@
     
     VideoInstance *videoInstance = self.channel.videoInstances [indexPath.item];
     
+    NSLog(@"VideoInstance: %@", videoInstance.title);
+    
     [videoThumbnailCell.imageView setImageWithURL: [NSURL URLWithString: videoInstance.video.thumbnailURL]
                                  placeholderImage: [UIImage imageNamed: @"PlaceholderVideoWide.png"]
                                           options: SDWebImageRetryFailed];
@@ -754,15 +766,7 @@
 
 #pragma mark - Helper methods
 
-- (void) reorderVideoInstances
-{
-    // Now we need to update the 'position' for each of the objects (so that we can keep in step with getFetchedResultsController
-    // Do this with block enumeration for speed
-    [self.channel.videoInstances enumerateObjectsUsingBlock: ^(id obj, NSUInteger index, BOOL *stop) {
-        [(VideoInstance *)obj setPositionValue : index];
-    }];
-    
-}
+
 
 
 #pragma mark - LXReorderableCollectionViewDelegateFlowLayout methods
@@ -772,17 +776,22 @@
     willMoveToIndexPath: (NSIndexPath *) toIndexPath {
 
     
-    NSMutableOrderedSet* mutableInstance = [[NSMutableOrderedSet alloc] initWithOrderedSet:self.channel.videoInstances];
     
-    [mutableInstance exchangeObjectAtIndex: fromIndexPath.item
-                         withObjectAtIndex: toIndexPath.item];
+    VideoInstance* viToSwap = [self.channel.videoInstancesSet objectAtIndex:fromIndexPath.item];
+    [self.channel.videoInstancesSet removeObjectAtIndex:fromIndexPath.item];
+    [self.channel.videoInstancesSet insertObject:viToSwap atIndex:toIndexPath.item];
     
-    self.channel.videoInstances = [[NSOrderedSet alloc] initWithOrderedSet: mutableInstance];
+    // set the new positions
+    [self.channel.videoInstances enumerateObjectsUsingBlock: ^(id obj, NSUInteger index, BOOL *stop) {
+        [(VideoInstance *)obj setPositionValue : index];
+        
+    }];
     
-    // Now we need to update the 'position' for each of the objects (so that we can keep in step with getFetchedResultsController
-    // Do this with block enumeration for speed
-    [self reorderVideoInstances];
+
+    
 }
+
+
 
 
 - (void) setDisplayControlsVisibility: (BOOL) visible
@@ -1247,8 +1256,6 @@
             
             [self.coverChooserController updateCoverArt];
             
-            self.originalContentOffset = CGPointMake (0, kChannelCreationCollectionViewOffsetY +
-                                                      kChannelCreationCategoryAdditionalOffsetY);
             
             [UIView animateWithDuration: kChannelEditModeAnimationDuration
                              animations: ^{
@@ -1598,8 +1605,10 @@
                                                   self.createChannelButton.enabled = YES;
                                                   self.createChannelButton.hidden = NO;
                                                   self.cancelEditButton.hidden = YES;
-                                                  self.addButton.hidden = YES;                                                  
+                                                  self.addButton.hidden = YES;
+                                             
                                                   [self showError:errorMessage showErrorTitle:errorTitle];
+                                             
                                               }];
 }
 
@@ -1612,13 +1621,17 @@
                                                    videoInstanceSet: self.channel.videoInstances
                                                       clearPrevious: YES
                                                   completionHandler: ^(id response) {
+                                                      
                                                       // a 204 returned
                                                       
                                                       [self fetchAndStoreUpdatedChannelForId:channelId isUpdate:isUpdated];
                                                       
                                                   } errorHandler: ^(id err) {
+                                                      
                                                       NSString* errorMessage = nil;
+                                                      
                                                       NSString* errorTitle = nil;
+                                                      
                                                       if ([err isKindOfClass:[NSDictionary class]])
                                                       {
                                                           errorMessage = [err objectForKey:@"message"];
@@ -1627,10 +1640,12 @@
                                                               errorMessage = [err objectForKey:@"error"];
                                                           }
                                                       }
+                                                      
                                                       self.addButton.hidden = YES;
                                                       
                                                       if(isUpdated)
                                                       {
+                                                          
                                                           [self.activityIndicator stopAnimating];
                                                           self.cancelEditButton.hidden = NO;
                                                           self.cancelEditButton.enabled = YES;
@@ -1708,6 +1723,11 @@
                                                   
                                                   [self.originalChannel  setAttributesFromDictionary:dictionary
                                                                                  ignoringObjectTypes:ignore];
+                                                  
+                                                  for (VideoInstance* vi in self.channel.videoInstances)
+                                                  {
+                                                      NSLog(@"> %@", vi.uniqueId);
+                                                  }
                                               }
                                               
                                               
@@ -2148,6 +2168,7 @@
 - (void) imagePicker: (GKImagePicker *) imagePicker
          pickedImage: (UIImage *) image
 {
+    self.cameraButton.selected = NO;
     DebugLog(@"width %f, height %f", image.size.width, image.size.height);
     
     self.channelCoverImageView.image = image;
@@ -2157,8 +2178,10 @@
     [self hideImagePicker];
 }
 
+
 - (void) hideImagePicker
 {
+    self.cameraButton.selected = NO;
     if (UIUserInterfaceIdiomPad == UI_USER_INTERFACE_IDIOM())
     {
         
@@ -2175,6 +2198,9 @@
 
 - (void) uploadChannelImage: (UIImage *) imageToUpload
 {
+    
+    [self.coverChooserController createCoverPlaceholder: imageToUpload];
+    
     // Upload the image for this user
     [appDelegate.oAuthNetworkEngine uploadCoverArtForUserId: appDelegate.currentOAuth2Credentials.userId
                                                       image: imageToUpload
@@ -2184,7 +2210,7 @@
                                               if (imageUrl && [imageUrl isKindOfClass:[NSString class]])
                                               {
                                                   self.channel.channelCover.imageUrl = imageUrl;
-                                                  [self.coverChooserController updateCoverArt];
+//                                                  [self.coverChooserController updateUserArtWithURL: imageUrl];
                                                   DebugLog(@"Success");
                                               }
                                               else
@@ -2347,6 +2373,10 @@
     
     if (scrollView == self.videoThumbnailCollectionView)
     {
+        
+        NSLog(@"co: %f - oo: %f", scrollView.contentOffset.y, self.originalContentOffset.y);
+        
+        
         if (scrollView.contentOffset.y <= self.originalContentOffset.y)
         {
             self.masterControlsView.alpha = 1.0f;
