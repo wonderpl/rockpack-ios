@@ -54,6 +54,7 @@
     [self.inputField resignFirstResponder];
     
     if([self.inputField.text isEqualToString:self.appDelegate.currentUser.emailAddress])
+        [self.navigationController popViewControllerAnimated:YES];
         return;
     
     if(![self formIsValid]) {
