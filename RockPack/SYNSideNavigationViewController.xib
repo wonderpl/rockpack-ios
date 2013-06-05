@@ -2,10 +2,10 @@
 <archive type="com.apple.InterfaceBuilder3.CocoaTouch.iPad.XIB" version="8.00">
 	<data>
 		<int key="IBDocument.SystemTarget">1552</int>
-		<string key="IBDocument.SystemVersion">12D78</string>
+		<string key="IBDocument.SystemVersion">12C3006</string>
 		<string key="IBDocument.InterfaceBuilderVersion">3084</string>
-		<string key="IBDocument.AppKitVersion">1187.37</string>
-		<string key="IBDocument.HIToolboxVersion">626.00</string>
+		<string key="IBDocument.AppKitVersion">1187.34</string>
+		<string key="IBDocument.HIToolboxVersion">625.00</string>
 		<object class="NSMutableDictionary" key="IBDocument.PluginVersions">
 			<string key="NS.key.0">com.apple.InterfaceBuilder.IBCocoaTouchPlugin</string>
 			<string key="NS.object.0">2083</string>
@@ -92,8 +92,8 @@
 					</object>
 					<object class="IBUIView" id="488699221">
 						<reference key="NSNextResponder" ref="1018200067"/>
-						<int key="NSvFlags">292</int>
-						<string key="NSFrame">{{196, 82}, {353, 586}}</string>
+						<int key="NSvFlags">256</int>
+						<string key="NSFrame">{{194, 80}, {362, 590}}</string>
 						<reference key="NSSuperview" ref="1018200067"/>
 						<string key="NSReuseIdentifierKey">_NS:9</string>
 						<object class="NSColor" key="IBUIBackgroundColor">
@@ -430,12 +430,6 @@
 						<string key="objectName">User Name</string>
 					</object>
 					<object class="IBObjectRecord">
-						<int key="objectID">19</int>
-						<reference key="object" ref="488699221"/>
-						<reference key="parent" ref="1018200067"/>
-						<string key="objectName">Container View</string>
-					</object>
-					<object class="IBObjectRecord">
 						<int key="objectID">22</int>
 						<reference key="object" ref="898198165"/>
 						<reference key="parent" ref="1018200067"/>
@@ -462,6 +456,12 @@
 						<int key="objectID">37</int>
 						<reference key="object" ref="448978922"/>
 						<reference key="parent" ref="1018200067"/>
+					</object>
+					<object class="IBObjectRecord">
+						<int key="objectID">19</int>
+						<reference key="object" ref="488699221"/>
+						<reference key="parent" ref="1018200067"/>
+						<string key="objectName">Container View</string>
 					</object>
 				</array>
 			</object>

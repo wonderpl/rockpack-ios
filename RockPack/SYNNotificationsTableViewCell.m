@@ -32,7 +32,7 @@
         
         // == frames == //
         
-        imageViewRect = CGRectMake(8.0, 6.0, 60.0, 60.0);
+        imageViewRect = CGRectMake(8.0, 8.0, 60.0, 60.0);
         
         
         
@@ -73,7 +73,7 @@
         
         // == Divider Image View == //
         
-        dividerImageView = [[UIView alloc] initWithFrame:CGRectMake(0.0, 0.0, self.frame.size.width, 2.0)];
+        dividerImageView = [[UIView alloc] initWithFrame:CGRectMake(0.0, 0.0, 362.0, 2.0)];
         dividerImageView.backgroundColor = [UIColor colorWithPatternImage:[UIImage imageNamed:@"NavDivider"]];
         
         [self addSubview:dividerImageView];
