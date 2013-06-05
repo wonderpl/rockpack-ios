@@ -35,22 +35,13 @@
         _imagePickerController = [[UIImagePickerController alloc] init];
         _imagePickerController.delegate = self;
         _imagePickerController.sourceType = UIImagePickerControllerSourceTypePhotoLibrary;
-<<<<<<< HEAD
-
-=======
-        
->>>>>>> origin/develop
     }
     return self;
 }
 
 
 - (void) navigationController: (UINavigationController *) navigationController
-<<<<<<< HEAD
-        willShowViewController: (UIViewController *) viewController
-=======
        willShowViewController: (UIViewController *) viewController
->>>>>>> origin/develop
                      animated: (BOOL) animated
 {
     DebugLog (@"Items: %@", navigationController.navigationBar.items);
@@ -62,19 +53,10 @@
     label.textAlignment = NSTextAlignmentCenter;
     label.textColor = [UIColor blackColor];
     label.text = navigationController.navigationBar.topItem.title.uppercaseString;
-<<<<<<< HEAD
-
-=======
-    
->>>>>>> origin/develop
     [containerView addSubview: label];
     navigationController.navigationBar.topItem.titleView = containerView;
 }
 
-<<<<<<< HEAD
-
-=======
->>>>>>> origin/develop
 # pragma mark -
 # pragma mark Private Methods
 
