@@ -45,7 +45,6 @@
                              ignoringObjectTypes: kIgnoreNothing];
     
     
-    
     if(!newUser)
         return NO;
     
@@ -64,32 +63,12 @@
 }
 
 
-- (BOOL) registerChannelOwnerFromDictionary: (NSDictionary*) dictionary
-{
-    
-    
-    // == Check for Validity == //
-    
-    if (!dictionary || ![dictionary isKindOfClass: [NSDictionary class]])
-        return NO;
-    
-    // dictionary also contains the set of user channels
-    
-    ChannelOwner* channelOwner = [ChannelOwner instanceFromDictionary: dictionary
-                                            usingManagedObjectContext: appDelegate.mainManagedObjectContext
-                                                  ignoringObjectTypes: kIgnoreNothing];
-    
-    if (!channelOwner)
-        return NO;
-    
-    
-    [appDelegate saveContext: YES];
-    
-    
-    return YES;
-}
+
 - (BOOL) registerSubscriptionsForCurrentUserFromDictionary: (NSDictionary*) dictionary
 {
+    
+    // sets the view id
+    
     [appDelegate.currentUser setSubscriptionsDictionary:dictionary];
     
     [appDelegate saveContext:YES];

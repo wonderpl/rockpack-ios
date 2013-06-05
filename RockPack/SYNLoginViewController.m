@@ -505,6 +505,7 @@
                              termsAndConditionsLabelSide.alpha = 0.0;
 
                              termsAndConditionsLabel.alpha = 1.0;
+                             
                          }
                          completion: ^(BOOL finished) {
                              isAnimating = NO;
@@ -879,9 +880,7 @@
 - (IBAction) sendEmailButtonPressed: (id) sender
 {
     if (![self isNetworkAccessibleOtherwiseShowErrorAlert])
-    {
         return;
-    }
     
     if (![self resetPasswordFormIsValid])
         return;
@@ -932,7 +931,7 @@
     userNameInputField.enabled = NO;
     [userNameInputField resignFirstResponder];
     passwordForgottenButton.enabled = NO;
-    [passwordForgottenButton resignFirstResponder];
+    [passwordForgottenLabel resignFirstResponder];
     finalLoginButton.enabled = NO;
     loginButton.enabled = NO;
     passwordForgottenButton.enabled = NO;

@@ -53,39 +53,13 @@
        usingManagedObjectContext: (NSManagedObjectContext *) managedObjectContext
              ignoringObjectTypes: (IgnoringObjects) ignoringObjects
 {
-    NSError *error = nil;
     
     NSString *uniqueId = [dictionary objectForKey: @"id"]; 
     
     if(!uniqueId)
         return nil;
     
-    NSEntityDescription* userEntity = [NSEntityDescription entityForName: @"User"
-                                                  inManagedObjectContext: managedObjectContext];
-    
-    NSFetchRequest *userFetchRequest = [[NSFetchRequest alloc] init];
-    [userFetchRequest setEntity:userEntity];
-    
-    NSPredicate *predicate = [NSPredicate predicateWithFormat: @"uniqueId == %@", uniqueId];
-    [userFetchRequest setPredicate: predicate];
-    
-    
-    NSArray *matchingCategoryInstanceEntries = [managedObjectContext executeFetchRequest: userFetchRequest error: &error];
-    User *instance;
-    
-    if (matchingCategoryInstanceEntries.count > 0)
-    {
-        instance = matchingCategoryInstanceEntries[0];
-        
-    }
-    else
-    {
-        instance = [User insertInManagedObjectContext: managedObjectContext];
-        
-        
-        
-        
-    }
+    User *instance = [User insertInManagedObjectContext: managedObjectContext];
     
     instance.uniqueId = uniqueId;
     

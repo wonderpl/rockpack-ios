@@ -143,6 +143,7 @@
     if(delegate && newDelegate && delegate == newDelegate) // assign once
         return;
     
+    // we can pass nil to remove observers
     
     [mainImageButton removeTarget:delegate action:@selector(mainImageTableCellPressed:) forControlEvents:UIControlEventTouchUpInside];
     [secondaryImageButton removeTarget:delegate action:@selector(itemImageTableCellPressed:) forControlEvents:UIControlEventTouchUpInside];

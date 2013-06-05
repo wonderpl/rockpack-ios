@@ -834,16 +834,15 @@
                                                                                                        params: nil
                                                                                                    httpMethod: (clearPrevious ? @"PUT" : @"POST")
                                                                                                           ssl: TRUE];
-    [networkOperation setCustomPostDataEncodingHandler: ^NSString * (NSDictionary *postDataDict)
+    
+    
+    
+    NSArray* videoIdArray = [NSArray arrayWithArray:[videoInstanceSet array]];
+    
+    [networkOperation setCustomPostDataEncodingHandler: ^ NSString * (NSDictionary *postDataDict)
      {
-         NSError *error = nil;
-         NSMutableArray *videoIdArray = [[NSMutableArray alloc] initWithCapacity: videoInstanceSet.count];
          
-         for (VideoInstance *videoInstance in videoInstanceSet)
-         {
-             [videoIdArray addObject: videoInstance.uniqueId];
-         }
-         
+         NSError *error;
          NSData *jsonData = [NSJSONSerialization dataWithJSONObject: videoIdArray
                                                             options: 0
                                                               error: &error];

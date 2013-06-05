@@ -867,13 +867,16 @@ typedef void(^AnimationCompletionBlock)(BOOL finished);
     if(!pageName)
         return;
     
-    if (self.overlayNavigationController)
-    {
-        self.overlayNavigationController = nil;
-    }
-    else if (showingBackButton)
-    {
-        [self popCurrentViewController:self.backButtonControl];
+    self.overlayNavigationController = nil; // remove the overlay if there...
+    
+    SYNAbstractViewController* abstractVC = (SYNAbstractViewController *)self.containerViewController.showingViewController;
+    
+    NSLog(@"%i", abstractVC.navigationController.viewControllers.count);
+    
+    if(abstractVC.navigationController.viewControllers.count > 1) {
+        [abstractVC animatedPopToRootViewController];
+        self.containerViewController.scrollView.scrollEnabled = YES;
+        [self showBackButton:NO];
     }
     
     [self.containerViewController navigateToPageByName: pageName];
@@ -1042,13 +1045,6 @@ typedef void(^AnimationCompletionBlock)(BOOL finished);
             self.overlayNavigationController = nil; // animate the overlay out using the setter method
 
             
-            if(self.overlayNavigationController.topViewController == self.searchViewController)
-            {
-                [self cancelButtonPressed:nil];
-            }
-            
-            self.overlayNavigationController = nil; // animate the overlay out using the setter method
-            
         }
         
     }
@@ -1056,16 +1052,13 @@ typedef void(^AnimationCompletionBlock)(BOOL finished);
     {
         abstractVC = (SYNAbstractViewController *)self.containerViewController.showingViewController;
         
+        [abstractVC animatedPopViewController];
         
-        if(abstractVC.navigationController.viewControllers.count <= 2) {
+        if(abstractVC.navigationController.viewControllers.count < 2) {
             self.containerViewController.scrollView.scrollEnabled = YES;
             [self showBackButton:NO];
         }
             
-        
-        [abstractVC animatedPopViewController];
-        
-        // animate the search
         
        
     }
