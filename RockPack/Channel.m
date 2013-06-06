@@ -183,21 +183,20 @@
             [videoInsanceByIdDictionary setObject:vi forKey:vi.uniqueId];
         
         
-        [self.videoInstancesSet removeAllObjects];
+        
         
         NSString* newUniqueId;
+        VideoInstance* videoInstance;
+        
+        NSMutableArray* importArray = [[NSMutableArray alloc] initWithCapacity:itemArray.count];
         
         for (NSDictionary *channelDictionary in itemArray)
         {
-            // viewId is @"ChannelDetails" because that is the only case where videos are passed
-            
-            VideoInstance* videoInstance;
-            
-            newUniqueId = [dictionary objectForKey: @"id"
-                                       withDefault: @""];
             
             
-            videoInstance = [videoInsanceByIdDictionary objectForKey:[dictionary objectForKey: @"id"]];
+            newUniqueId = [dictionary objectForKey: @"id" withDefault: @""];
+            
+            videoInstance = [videoInsanceByIdDictionary objectForKey:newUniqueId];
             
             if(!videoInstance)
             {
@@ -216,6 +215,8 @@
             if(!videoInstance)
                 continue;
             
+            // viewId is probably @"ChannelDetails" because that is the only case where videos are passed to channels
+            
             videoInstance.viewId = self.viewId;
             
             NSNumber* newPosition = [channelDictionary objectForKey: @"position"];
@@ -223,12 +224,38 @@
                 videoInstance.position = newPosition;
             
             
-            
-            [self.videoInstancesSet addObject:videoInstance];
+            [importArray addObject:videoInstance];
             
         }
         
-        // clean the remaining //
+        // Sort in correct position
+        
+        [importArray sortUsingComparator:^NSComparisonResult(VideoInstance* vi_1, VideoInstance* vi_2) {
+            
+           if(vi_1.positionValue < vi_2.positionValue)
+               return NSOrderedAscending;
+           else if(vi_1.positionValue > vi_2.positionValue)
+               return NSOrderedDescending;
+            else
+                return NSOrderedSame;
+            
+        }];
+        
+        
+        // Add VideoInstances to channel's NSOrderedSet
+        
+        [self.videoInstancesSet removeAllObjects];
+        [self.videoInstancesSet addObjectsFromArray:importArray];
+        
+        
+        // Empty the temporary array
+        
+        [importArray removeAllObjects];
+        importArray = nil;
+        
+        
+        // Clean the remaining //
+        
         
         for (id key in videoInsanceByIdDictionary)
         {
