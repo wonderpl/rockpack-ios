@@ -74,12 +74,11 @@
 					</object>
 					<object class="IBUICollectionView" id="1042878543">
 						<reference key="NSNextResponder" ref="453930770"/>
-						<int key="NSvFlags">276</int>
+						<int key="NSvFlags">274</int>
 						<array class="NSMutableArray" key="NSSubviews"/>
 						<string key="NSFrame">{{0, 80}, {1024, 668}}</string>
 						<reference key="NSSuperview" ref="453930770"/>
 						<reference key="NSWindow"/>
-						<reference key="NSNextKeyView" ref="624001696"/>
 						<string key="NSReuseIdentifierKey">_NS:9</string>
 						<reference key="IBUIBackgroundColor" ref="905238541"/>
 						<bool key="IBUIClipsSubviews">YES</bool>
@@ -96,8 +95,6 @@
 						<object class="IBUICollectionViewFlowLayout" key="IBUICollectionViewLayout" id="220942766">
 							<reference key="IBUICollectionView" ref="1042878543"/>
 							<string key="IBUIItemSize">{249, 141}</string>
-							<float key="IBUIMinimumLineSpacing">6</float>
-							<float key="IBUIMinimumInteritemSpacing">6</float>
 							<double key="IBUISectionInset.top">0.0</double>
 							<double key="IBUISectionInset.bottom">0.0</double>
 							<double key="IBUISectionInset.left">5</double>
@@ -548,6 +545,7 @@
 						<string key="NSFrame">{{438, 30}, {148, 27}}</string>
 						<reference key="NSSuperview" ref="453930770"/>
 						<reference key="NSWindow"/>
+						<reference key="NSNextKeyView" ref="657402384"/>
 						<string key="NSReuseIdentifierKey">_NS:9</string>
 						<int key="IBUIContentMode">4</int>
 						<bool key="IBUIUserInteractionEnabled">NO</bool>
@@ -621,7 +619,7 @@
 						<string key="NSFrame">{{10, 10}, {60, 61}}</string>
 						<reference key="NSSuperview" ref="453930770"/>
 						<reference key="NSWindow"/>
-						<reference key="NSNextKeyView" ref="657402384"/>
+						<reference key="NSNextKeyView" ref="624001696"/>
 						<string key="NSReuseIdentifierKey">_NS:9</string>
 						<bool key="IBUIOpaque">NO</bool>
 						<string key="targetRuntimeIdentifier">IBIPadFramework</string>
