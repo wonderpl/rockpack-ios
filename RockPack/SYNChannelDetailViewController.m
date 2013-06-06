@@ -1729,6 +1729,9 @@
                                                   
                                                   createdChannel.channelOwner = appDelegate.currentUser;
                                                   
+                                                  if([createdChannel.categoryId isEqualToString:@""]) // channels with no category are private by default
+                                                      createdChannel.publicValue = NO;
+                                                  
                                                   
                                                   self.channel = createdChannel;
                                                   
