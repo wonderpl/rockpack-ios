@@ -679,8 +679,16 @@
 {
     self.channelOwnerLabel.text = [self.channel.channelOwner.displayName uppercaseString];
     
-    
-    NSString *detailsString = [NSString stringWithFormat: @"%lld %@", self.channel.subscribersCountValue, NSLocalizedString(@"SUBSCRIBERS", nil)];
+    NSString *detailsString;
+    if(self.channel.publicValue)
+    {
+        detailsString = [NSString stringWithFormat: @"%lld %@", self.channel.subscribersCountValue, NSLocalizedString(@"SUBSCRIBERS", nil)];
+        
+    }
+    else
+    {
+        detailsString = @"Private";
+    }
     self.channelDetailsLabel.text = detailsString;
     
     // If we have a valid ecommerce URL, then display the button

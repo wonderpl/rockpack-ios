@@ -53,6 +53,8 @@
     
     copyChannel.eCommerceURL = channel.eCommerceURL;
     
+    copyChannel.public = channel.public;
+    
     copyChannel.viewId = viewId;
     
     if (!(ignoringObjects & kIgnoreChannelOwnerObject))
@@ -326,6 +328,10 @@
     
     self.channelDescription = [dictionary objectForKey: @"description"
                                            withDefault: @""];
+    
+ 
+    self.public = [dictionary objectForKey: @"public"
+                               withDefault: [NSNumber numberWithBool:YES]]; // default is public
     
     self.eCommerceURL = [dictionary objectForKey: @"ecommerce_url"
                                      withDefault: @""];
