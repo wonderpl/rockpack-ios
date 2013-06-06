@@ -765,6 +765,7 @@
 {
     self.activityIndicator.center = self.initialView.center;
     self.activityIndicator.hidden = NO;
+    self.activityIndicator.color = [UIColor whiteColor];
     [self.activityIndicator startAnimating];
     [UIView animateWithDuration:kLoginAnimationTransitionDuration delay:0.0f options:UIViewAnimationCurveEaseInOut animations:^{
         self.signupButton.alpha = 0.0f;
