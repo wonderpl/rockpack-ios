@@ -202,8 +202,10 @@
 - (void) viewDidScrollToFront
 {
     [self updateAnalytics];
-    
-    [self refreshButtonPressed];
+    if(self.dataRequestRange.location == 0)
+    {
+        [self refreshButtonPressed];
+    }
 }
 
 
@@ -217,7 +219,9 @@
 - (void) refreshButtonPressed
 {
     [self.refreshButton startRefreshCycle];
+    self.dataRequestRange = NSMakeRange(0, STANDARD_REQUEST_LENGTH);
     [self loadAndUpdateFeedData];
+    [self.videoThumbnailCollectionView setContentOffset:CGPointZero animated:YES];
 }
 
 
@@ -496,7 +500,7 @@
  
     fetchRequest.predicate = predicate;
 
-    fetchRequest.sortDescriptors = @[[[NSSortDescriptor alloc] initWithKey: @"dateAdded" ascending: NO]];
+    fetchRequest.sortDescriptors = @[[[NSSortDescriptor alloc] initWithKey: @"dateAdded" ascending: NO],[[NSSortDescriptor alloc] initWithKey: @"position" ascending: YES]];
     
     
     self.fetchedResultsController = [[NSFetchedResultsController alloc] initWithFetchRequest: fetchRequest

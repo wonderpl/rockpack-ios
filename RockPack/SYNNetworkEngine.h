@@ -12,6 +12,7 @@
 #import "SYNAbstractNetworkEngine.h"
 #import "SYNNetworkOperationJsonObject.h"
 #import "ChannelOwner.h"
+#import "SYNNetworkOperationJsonObjectParse.h"
 
 @interface SYNNetworkEngine : SYNAbstractNetworkEngine
 
@@ -35,10 +36,10 @@
                       andRange:(NSRange)range
                     onComplete:(MKNKSearchSuccessBlock)completeBlock;
 
-- (void) getAutocompleteForHint: (NSString*) hint
-                    forResource: (EntityType) entityType
-                   withComplete: (MKNKAutocompleteProcessBlock) completionBlock
-                       andError: (MKNKErrorBlock) errorBlock;
+- (SYNNetworkOperationJsonObjectParse*) getAutocompleteForHint: (NSString*)hint
+                                                   forResource: (EntityType)entityType
+                                                  withComplete: (MKNKAutocompleteProcessBlock) completionBlock
+                                                      andError: (MKNKErrorBlock) errorBlock;
 
 - (void) updateCoverArtWithWithStart: (unsigned int) start
                                 size: (unsigned int) size
