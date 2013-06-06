@@ -230,16 +230,16 @@
         
         // Sort in correct position
         
-        [importArray sortUsingComparator:^NSComparisonResult(VideoInstance* vi_1, VideoInstance* vi_2) {
-            
-           if(vi_1.positionValue < vi_2.positionValue)
-               return NSOrderedAscending;
-           else if(vi_1.positionValue > vi_2.positionValue)
-               return NSOrderedDescending;
-            else
-                return NSOrderedSame;
-            
-        }];
+//        [importArray sortUsingComparator:^NSComparisonResult(VideoInstance* vi_1, VideoInstance* vi_2) {
+//            
+//           if(vi_1.positionValue < vi_2.positionValue)
+//               return NSOrderedAscending;
+//           else if(vi_1.positionValue > vi_2.positionValue)
+//               return NSOrderedDescending;
+//            else
+//                return NSOrderedSame;
+//            
+//        }];
         
         
         // Add VideoInstances to channel's NSOrderedSet
