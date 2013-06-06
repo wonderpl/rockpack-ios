@@ -240,6 +240,7 @@
         if(!append)
         {
             
+            
             existingVideoInstance.markedForDeletionValue = YES;
             existingVideoInstance.freshValue = NO;
             
@@ -252,15 +253,14 @@
         
     }
     
-    
     for (NSDictionary *itemDictionary in itemArray)
     {
-        
         NSString *uniqueId = [itemDictionary objectForKey: @"id"];
         if(!uniqueId)
             continue; 
         
-        VideoInstance* videoInstance = [existingVideosByIndex objectForKey:uniqueId];
+        VideoInstance* videoInstance;
+        videoInstance = [existingVideosByIndex objectForKey:uniqueId];
         
         if (!videoInstance)
         {
@@ -277,7 +277,8 @@
         
         
         videoInstance.position = [itemDictionary objectForKey: @"position"
-                                                  withDefault: [NSNumber numberWithInt: 0]];
+                                                  withDefault: @(0)];
+        NSLog(@"%@ : %@", videoInstance.title, videoInstance.position);
         
         videoInstance.viewId = kFeedViewId;
         videoInstance.freshValue = YES;
