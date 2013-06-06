@@ -92,12 +92,12 @@ typedef void(^AnimationCompletionBlock)(BOOL finished);
         // == Side Navigation == //
         self.sideNavigationViewController = [[SYNSideNavigationViewController alloc] init];
         
+        // just push to the side
         self.sideNavigationViewController.view.frame = CGRectMake(1024.0,
                                                                   ([SYNDeviceManager.sharedInstance isIPad] ? 0.0 : 58.0f),
                                                                   self.sideNavigationViewController.view.frame.size.width,
                                                                   self.sideNavigationViewController.view.frame.size.height);
 
-        self.sideNavigationViewController.view.autoresizingMask = UIViewAutoresizingFlexibleRightMargin;
         
         self.sideNavigationViewController.user = appDelegate.currentUser;
         

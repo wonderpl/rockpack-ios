@@ -931,7 +931,6 @@
     newFrame.origin.x = self.arrowImage.frame.origin.x + self.arrowImage.frame.size.width + 5.0f;
     self.subCategoryNameLabel.frame = newFrame;
     
-
     [self handleNewTabSelectionWithGenre: subCategory];
 
     [self toggleChannelsCategoryTable:nil];
