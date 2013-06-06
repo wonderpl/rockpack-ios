@@ -373,8 +373,6 @@
 {
     [self updateAnalytics];
     
-    [appDelegate.networkEngine cancelAllOperations];
-    
     
     [[NSNotificationCenter defaultCenter] postNotificationName:kChannelOwnerUpdateRequest
                                                         object:self

@@ -14,7 +14,7 @@
 #import "SYNNetworkEngine.h"
 #import "SYNDeviceManager.h"
 #import "SYNTextField.h"
-#import "SYNNetworkOperationJsonObjectParse.h"
+#import "MKNetworkOperation.h"
 
 #define kGrayPanelBorderWidth 2.0
 
@@ -27,7 +27,7 @@
 @property (nonatomic, strong) SYNAutocompleteSuggestionsController* autoSuggestionController;
 @property (nonatomic, weak) SYNAppDelegate* appDelegate;
 @property (nonatomic, weak) SYNTextField* searchTextField;
-@property (nonatomic, weak) SYNNetworkOperationJsonObjectParse* autocompleteNetworkOperation;
+@property (nonatomic, weak) MKNetworkOperation* autocompleteNetworkOperation;
 
 @end
 
