@@ -19,9 +19,9 @@
 #define kCategoriesTabOffsetXLandscape 34.0f
 #define kCategoriesTabOffsetXPortrait 16.0f
 
-#define kCategoriesTabLabelOffsetYLandscape 4.0f
+#define kCategoriesTabLabelOffsetYLandscape 6.0f
 #define kCategoriesTabLabelOffsetYPortrait 8.0f
-#define kCategoriesSubTabLabelOffsetY 10.0f
+#define kCategoriesSubTabLabelOffsetY 11.0f
 
 #define kCategoriesTabFontSizeLandscape 15.0f
 #define kCategoriesTabFontSizePortrait 13.0f
