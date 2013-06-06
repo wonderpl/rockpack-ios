@@ -30,6 +30,7 @@
 @property (nonatomic) NSInteger dataItemsAvailable;
 @property (nonatomic) NSRange dataRequestRange;
 @property (nonatomic, assign) BOOL shouldReloadCollectionView;
+@property (nonatomic, assign) BOOL noMoreCovers;
 @property (nonatomic, assign) BOOL shouldShowUploadingPlaceholder;
 @property (nonatomic, strong) IBOutlet UICollectionView *collectionView;
 @property (nonatomic, strong) NSBlockOperation *blockOperation;
@@ -366,7 +367,7 @@
            layout: (UICollectionViewLayout*) collectionViewLayout
            referenceSizeForFooterInSection: (NSInteger) section
 {
-    if (section == 2)
+    if (section == 2 && (self.noMoreCovers == FALSE))
     {
         return CGSizeMake(141.0f, 121.0f);
     }
@@ -438,11 +439,16 @@
     NSInteger nextStart = self.dataRequestRange.location + self.dataRequestRange.length; // one is subtracted when the call happens for 0 indexing
     
     if (nextStart >= self.dataItemsAvailable)
+    {
+        self.noMoreCovers = TRUE;
+        [self.collectionView reloadData];
         return;
+    }
     
     NSInteger nextSize = (nextStart + STANDARD_REQUEST_LENGTH) >= self.dataItemsAvailable ? (self.dataItemsAvailable - nextStart) : STANDARD_REQUEST_LENGTH;
     
     self.dataRequestRange = NSMakeRange(nextStart, nextSize);
+    NSLog (@"Range %d:%d    ", self.dataRequestRange.location, self.dataRequestRange.length);
 }
 
 
@@ -473,14 +479,12 @@
 
 - (void) displayLoadingMessageAndSpinner
 {
-    self.coverRightMoreView.loadingLabel.text = NSLocalizedString(@"Loading", nil);
     [self.coverRightMoreView.loadingIndicatorView startAnimating];
 }
 
 
 - (void) displayLoadMoreMessage
 {
-    self.coverRightMoreView.loadingLabel.text = NSLocalizedString(@"Load More...", nil);
     [self.coverRightMoreView.loadingIndicatorView stopAnimating];
 }
 

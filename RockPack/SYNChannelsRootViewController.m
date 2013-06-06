@@ -71,6 +71,7 @@
 @synthesize mainRegistry;
 @synthesize isAnimating;
 @synthesize channels;
+@synthesize runningNetworkOperation = _runningNetworkOperation;
 
 #pragma mark - View lifecycle
 
@@ -84,13 +85,13 @@
     if (isIPhone)
         flowLayout = [SYNIntegralCollectionViewFlowLayout layoutWithItemSize: CGSizeMake(158.0f, 169.0f)
                                                      minimumInterItemSpacing: 0.0
-                                                          minimumLineSpacing: 4.0
+                                                          minimumLineSpacing: 6.0
                                                              scrollDirection: UICollectionViewScrollDirectionVertical
-                                                                sectionInset: UIEdgeInsetsMake(2.0, 2.0, 6.0, 2.0)];
+                                                                sectionInset: UIEdgeInsetsMake(2.0, 2.0, 46.0, 2.0)];
     else
         flowLayout = [SYNIntegralCollectionViewFlowLayout layoutWithItemSize: [self itemSize]
                                                      minimumInterItemSpacing: 0.0
-                                                          minimumLineSpacing: 0.0
+                                                          minimumLineSpacing: 2.0
                                                              scrollDirection: UICollectionViewScrollDirectionVertical
                                                                 sectionInset: UIEdgeInsetsMake(6.0, 6.0, 5.0, 6.0)];
         
@@ -231,10 +232,10 @@
     
     NSLog(@"Next request: %i - %i", self.dataRequestRange.location, self.dataRequestRange.length + self.dataRequestRange.location - 1);
     
-    [appDelegate.networkEngine updateChannelsScreenForCategory: (genre ? genre.uniqueId : @"all")
-                                                      forRange: self.dataRequestRange
-                                                 ignoringCache: NO
-                                                  onCompletion: ^(NSDictionary* response) {
+    self.runningNetworkOperation = [appDelegate.networkEngine updateChannelsScreenForCategory: (genre ? genre.uniqueId : @"all")
+                                                                                     forRange: self.dataRequestRange
+                                                                                ignoringCache: NO
+                                                                                 onCompletion: ^(NSDictionary* response) {
                                                       
                                                       NSDictionary *channelsDictionary = [response objectForKey: @"channels"];
                                                       if (!channelsDictionary || ![channelsDictionary isKindOfClass: [NSDictionary class]])
@@ -936,6 +937,13 @@
     [self toggleChannelsCategoryTable:nil];
 }
 
+-(void)setRunningNetworkOperation:(MKNetworkOperation *)runningNetworkOperation
+{
+    if(_runningNetworkOperation)
+        [_runningNetworkOperation cancel];
+    
+    _runningNetworkOperation = runningNetworkOperation;
+}
 
 - (void) categoryTableControllerDeselectedAll: (SYNChannelCategoryTableViewController *) tableController
 {

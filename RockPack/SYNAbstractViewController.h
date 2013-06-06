@@ -14,6 +14,7 @@
 #import "SYNTabViewController.h"
 #import "SYNTabViewDelegate.h"
 #import "SYNChannelFooterMoreView.h"
+#import "MKNetworkOperation.h"
 #import <CoreData/CoreData.h>
 #import <UIKit/UIKit.h>
 
@@ -48,6 +49,7 @@ typedef void (^SYNShareCompletionBlock)(void);
 @property (nonatomic, strong) SYNTabViewController* tabViewController;
 @property (nonatomic, strong) UIImageView *draggedView;
 @property (readonly) NSManagedObjectContext *mainManagedObjectContext;
+@property (nonatomic, weak) MKNetworkOperation* runningNetworkOperation;
 @property (readonly, getter = isVideoQueueVisible) BOOL videoQueueVisible;
 
 // date related ivars

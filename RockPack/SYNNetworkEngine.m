@@ -146,7 +146,7 @@
 }
 
 
-- (void) updateChannelsScreenForCategory: (NSString*) categoryId
+- (MKNetworkOperation*) updateChannelsScreenForCategory: (NSString*) categoryId
                                 forRange: (NSRange) range
                            ignoringCache: (BOOL) ignore
                             onCompletion: (MKNKJSONCompleteBlock) completeBlock
@@ -181,6 +181,8 @@
     }];
     
     [self enqueueOperation: networkOperation];
+    
+    return networkOperation;
 }
 
 
@@ -296,10 +298,10 @@
 
 #pragma mark - Autocomplete
 
-- (SYNNetworkOperationJsonObjectParse*) getAutocompleteForHint: (NSString*)hint
-                                                   forResource: (EntityType)entityType
-                                                  withComplete: (MKNKAutocompleteProcessBlock) completionBlock
-                                                      andError: (MKNKErrorBlock) errorBlock
+- (MKNetworkOperation*) getAutocompleteForHint: (NSString*)hint
+                                   forResource: (EntityType)entityType
+                                  withComplete: (MKNKAutocompleteProcessBlock) completionBlock
+                                      andError: (MKNKErrorBlock) errorBlock
 {
     if (!hint)
         return nil;
