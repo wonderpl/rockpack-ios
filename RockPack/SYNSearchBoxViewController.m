@@ -14,6 +14,7 @@
 #import "SYNNetworkEngine.h"
 #import "SYNDeviceManager.h"
 #import "SYNTextField.h"
+#import "SYNNetworkOperationJsonObjectParse.h"
 
 #define kGrayPanelBorderWidth 2.0
 
@@ -26,6 +27,7 @@
 @property (nonatomic, strong) SYNAutocompleteSuggestionsController* autoSuggestionController;
 @property (nonatomic, weak) SYNAppDelegate* appDelegate;
 @property (nonatomic, weak) SYNTextField* searchTextField;
+@property (nonatomic, weak) SYNNetworkOperationJsonObjectParse* autocompleteNetworkOperation;
 
 @end
 
@@ -130,9 +132,10 @@
     
     self.autocompleteTimer = nil;
     
-    [appDelegate.networkEngine getAutocompleteForHint: self.searchTextField.text
-                                          forResource: EntityTypeVideo
-                                         withComplete: ^(NSArray* array) {
+    self.autocompleteNetworkOperation = [appDelegate.networkEngine getAutocompleteForHint: self.searchTextField.text
+                                                                              forResource: EntityTypeVideo
+                                                                             withComplete: ^(NSArray* array) {
+                                             
                                              NSArray* suggestionsReturned = array[1];
                                              
                                              NSMutableArray* wordsReturned = [NSMutableArray array];
@@ -177,7 +180,14 @@
     [self.autocompleteTimer invalidate];    
     self.autocompleteTimer = nil;
     
+    if(self.autocompleteNetworkOperation)
+    {
+        [self.autocompleteNetworkOperation cancel];
+    }
+    
     [self clear];
+    
+    // calls the MasterViewController
     
     [NSNotificationCenter.defaultCenter postNotificationName: kSearchTyped
                                                       object: self
