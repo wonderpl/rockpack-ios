@@ -1040,6 +1040,8 @@ typedef void(^AnimationCompletionBlock)(BOOL finished);
 {
     SYNAbstractViewController *abstractVC;
     
+    
+    
     if(_overlayNavigationController)
     {
         if(_overlayNavigationController.viewControllers.count > 1) // if the overlayController has itself pushed views, pop one of them
@@ -1423,7 +1425,7 @@ typedef void(^AnimationCompletionBlock)(BOOL finished);
     SYNAbstractViewController* absctractVc;
     if (self.overlayNavigationController)
     {
-        absctractVc = (SYNAbstractViewController*)self.overlayNavigationController.topViewController;
+        absctractVc = (SYNAbstractViewController*)self.overlayNavigationController.viewControllers[0];
     }
          
     else

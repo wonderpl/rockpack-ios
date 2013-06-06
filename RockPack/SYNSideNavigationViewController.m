@@ -610,13 +610,15 @@ typedef enum {
 
 #pragma mark - Orientation Change
 
-- (void) willRotateToInterfaceOrientation: (UIInterfaceOrientation) toInterfaceOrientation
-                                 duration: (NSTimeInterval) duration
+
+
+- (void) willAnimateRotationToInterfaceOrientation: (UIInterfaceOrientation) toInterfaceOrientation
+                                          duration: (NSTimeInterval) duration
 {
+    [super willAnimateRotationToInterfaceOrientation: toInterfaceOrientation
+                                            duration: duration];
     
-    
-    CGFloat correctHeight = UIInterfaceOrientationIsPortrait(toInterfaceOrientation) ?
-    [SYNDeviceManager.sharedInstance currentScreenHeight] : [SYNDeviceManager.sharedInstance currentScreenWidth];
+    CGFloat correctHeight = [SYNDeviceManager.sharedInstance currentScreenHeight];
     
     CGRect newFrame = self.view.frame;
     newFrame.size.height = correctHeight;
@@ -627,15 +629,6 @@ typedef enum {
     bottomExtraFrame.size.height = correctHeight - bottomExtraFrame.origin.y;
     
     self.bottomExtraView.frame = bottomExtraFrame;
-
-}
-
-
-- (void) willAnimateRotationToInterfaceOrientation: (UIInterfaceOrientation) toInterfaceOrientation
-                                          duration: (NSTimeInterval) duration
-{
-    [super willAnimateRotationToInterfaceOrientation: toInterfaceOrientation
-                                            duration: duration];
     
     CGRect settingsButtonFrame = self.settingsButton.frame;
     settingsButtonFrame.origin.y = [SYNDeviceManager.sharedInstance currentScreenHeight] - 30.0 - settingsButtonFrame.size.height;

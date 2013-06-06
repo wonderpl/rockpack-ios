@@ -232,6 +232,7 @@ static UIWebView* vimeoideoWebViewInstance;
         }
     }
     
+    DebugLog (@"Attempting to play quality: %@", suggestedQuality);
     return suggestedQuality;
 }
 
