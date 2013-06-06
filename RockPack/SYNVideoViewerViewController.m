@@ -287,11 +287,6 @@
         {
             [self userTappedVideo];
         }
-        
-        // The min / max button is only active on the iPhone
-        [self.videoPlaybackViewController.shuttleBarMaxMinButton addTarget: self
-                                                                    action: @selector(userTouchedMaxMinButton)
-                                                          forControlEvents: UIControlEventTouchUpInside];
     }
     else
     {
@@ -300,6 +295,12 @@
                                                      name: kVideoQueueClear
                                                    object: nil];
     }
+    
+    
+    // The min / max button is only active on the iPhone
+    [self.videoPlaybackViewController.shuttleBarMaxMinButton addTarget: self
+                                                                action: @selector(userTouchedMaxMinButton)
+                                                      forControlEvents: UIControlEventTouchUpInside];
     
     // Update all the labels corresponding to the selected videos
     [self updateVideoDetailsForIndex: self.currentSelectedIndex];
@@ -321,12 +322,6 @@
                                                       object: nil];
         //Stop generating notifications
         [[UIDevice currentDevice] endGeneratingDeviceOrientationNotifications];
-        
-        // Remember to remove the target, as we may be drilling down deeper to another vc (and then returning, which would mean multiple
-        // targets were added
-        [self.videoPlaybackViewController.shuttleBarMaxMinButton removeTarget: self
-                                                                       action: @selector(userTouchedMaxMinButton)
-                                                             forControlEvents: UIControlEventTouchUpInside];
     }
     else
     {
@@ -334,6 +329,12 @@
                                                         name: kVideoQueueClear
                                                       object: nil];
     }
+    
+    // Remember to remove the target, as we may be drilling down deeper to another vc (and then returning, which would mean multiple
+    // targets were added
+    [self.videoPlaybackViewController.shuttleBarMaxMinButton removeTarget: self
+                                                                   action: @selector(userTouchedMaxMinButton)
+                                                         forControlEvents: UIControlEventTouchUpInside];
     
     [[NSNotificationCenter defaultCenter] postNotificationName: kNoteShowNetworkMessages
                                                         object: nil];
@@ -782,25 +783,33 @@
 
 - (void) userTouchedMaxMinButton
 {
-    if (self.currentOrientation == UIDeviceOrientationPortrait)
+    if ([SYNDeviceManager.sharedInstance isIPhone])
     {
-        UIDeviceOrientation deviceOrientation = [[UIDevice currentDevice] orientation];
-        
-        if (UIDeviceOrientationIsLandscape(deviceOrientation))
+        if (self.currentOrientation == UIDeviceOrientationPortrait)
         {
-            [self changePlayerOrientation: deviceOrientation];
+            UIDeviceOrientation deviceOrientation = [[UIDevice currentDevice] orientation];
+            
+            if (UIDeviceOrientationIsLandscape(deviceOrientation))
+            {
+                [self changePlayerOrientation: deviceOrientation];
+            }
+            else
+            {
+                [self changePlayerOrientation: UIDeviceOrientationLandscapeLeft];
+            }
         }
         else
         {
-            [self changePlayerOrientation: UIDeviceOrientationLandscapeLeft];
+            [self changePlayerOrientation: UIDeviceOrientationPortrait];
         }
+        
+        self.videoExpanded = !self.videoExpanded;
     }
     else
     {
-        [self changePlayerOrientation: UIDeviceOrientationPortrait];
+        // We are on the iPad
+        [self userTappedVideo];
     }
-    
-    self.videoExpanded = !self.videoExpanded;
 }
 
 
