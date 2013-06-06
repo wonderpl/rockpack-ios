@@ -60,6 +60,7 @@
     self.tableView.dataSource = self;
     self.tableView.backgroundView = nil;
     self.tableView.scrollEnabled = NO;
+    self.tableView.separatorStyle = UITableViewCellSeparatorStyleSingleLine;
     [self.view addSubview:self.tableView];
     
     

@@ -43,6 +43,7 @@
         self.tableView.dataSource = self;
         self.tableView.backgroundView = nil;
         self.tableView.scrollEnabled = NO;
+        self.tableView.separatorStyle = UITableViewCellSeparatorStyleSingleLine;
         
         self.appDelegate = (SYNAppDelegate*)[[UIApplication sharedApplication] delegate];
         
