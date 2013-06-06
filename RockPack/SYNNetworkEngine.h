@@ -22,11 +22,11 @@
                               onError: (MKNKErrorBlock) errorBlock;
 
 
-- (void) updateChannelsScreenForCategory:(NSString*)categoryId
-                                forRange:(NSRange)range
-                           ignoringCache:(BOOL)ingore
-                            onCompletion:(MKNKJSONCompleteBlock)completeBlock
-                                 onError:(MKNKJSONErrorBlock)errorBlock;
+- (MKNetworkOperation*) updateChannelsScreenForCategory: (NSString*) categoryId
+                                               forRange: (NSRange) range
+                                          ignoringCache: (BOOL) ignore
+                                           onCompletion: (MKNKJSONCompleteBlock) completeBlock
+                                                onError: (MKNKJSONErrorBlock) errorBlock;
 
 - (void) searchVideosForTerm:(NSString*)searchTerm
                      inRange:(NSRange)range
@@ -36,10 +36,10 @@
                       andRange:(NSRange)range
                     onComplete:(MKNKSearchSuccessBlock)completeBlock;
 
-- (SYNNetworkOperationJsonObjectParse*) getAutocompleteForHint: (NSString*)hint
-                                                   forResource: (EntityType)entityType
-                                                  withComplete: (MKNKAutocompleteProcessBlock) completionBlock
-                                                      andError: (MKNKErrorBlock) errorBlock;
+- (MKNetworkOperation*) getAutocompleteForHint: (NSString*)hint
+                                   forResource: (EntityType)entityType
+                                  withComplete: (MKNKAutocompleteProcessBlock) completionBlock
+                                      andError: (MKNKErrorBlock) errorBlock;
 
 - (void) updateCoverArtWithWithStart: (unsigned int) start
                                 size: (unsigned int) size
