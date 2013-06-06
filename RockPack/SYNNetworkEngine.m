@@ -13,7 +13,6 @@
 #import "SYNAppDelegate.h"
 #import "SYNMainRegistry.h"
 #import "SYNNetworkEngine.h"
-#import "SYNNetworkOperationJsonObjectParse.h"
 #import "SYNSearchRegistry.h"
 #import "VideoInstance.h"
 
@@ -297,12 +296,13 @@
 
 #pragma mark - Autocomplete
 
-- (void) getAutocompleteForHint: (NSString*)hint
-                    forResource: (EntityType)entityType
-                   withComplete: (MKNKAutocompleteProcessBlock) completionBlock
-                       andError: (MKNKErrorBlock) errorBlock
+- (SYNNetworkOperationJsonObjectParse*) getAutocompleteForHint: (NSString*)hint
+                                                   forResource: (EntityType)entityType
+                                                  withComplete: (MKNKAutocompleteProcessBlock) completionBlock
+                                                      andError: (MKNKErrorBlock) errorBlock
 {
-    if (!hint) return;
+    if (!hint)
+        return nil;
     
     // Register the class to be used for this operation only
     
@@ -317,7 +317,7 @@
     else if(entityType == EntityTypeVideo)
         apiForEntity = kAPICompleteVideos;
     else
-        return; // do not accept any unknown type
+        return nil; // do not accept any unknown type
     
     SYNNetworkOperationJsonObjectParse *networkOperation =
     (SYNNetworkOperationJsonObjectParse*)[self operationWithPath: apiForEntity
@@ -332,6 +332,8 @@
     // Go back to the original operation class
     
     [self registerOperationSubclass:[SYNNetworkOperationJsonObject class]];
+    
+    return networkOperation;
     
 }
 
