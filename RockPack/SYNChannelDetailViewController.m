@@ -170,8 +170,8 @@
     // Add a custom flow layout to our thumbail collection view (with the right size and spacing)
     LXReorderableCollectionViewFlowLayout *layout = [[LXReorderableCollectionViewFlowLayout alloc] init];
     layout.itemSize = _isIPhone?CGSizeMake(310.0f , 175.0f):CGSizeMake(249.0f , 141.0f);
-    layout.minimumInteritemSpacing = _isIPhone ? 0.0f : 6.0f;
-    layout.minimumLineSpacing = _isIPhone ? 4.0f : 6.0f;
+    layout.minimumInteritemSpacing = _isIPhone ? 0.0f : 4.0f;
+    layout.minimumLineSpacing = _isIPhone ? 4.0f : 4.0f;
     
     self.videoThumbnailCollectionView.collectionViewLayout = layout;
     
@@ -513,7 +513,7 @@
     [super willRotateToInterfaceOrientation: toInterfaceOrientation
                                    duration: duration];
 
-    [self.self.videoThumbnailCollectionView.collectionViewLayout invalidateLayout];
+    [self.videoThumbnailCollectionView.collectionViewLayout invalidateLayout];
 }
 
 
@@ -679,8 +679,16 @@
 {
     self.channelOwnerLabel.text = [self.channel.channelOwner.displayName uppercaseString];
     
-    
-    NSString *detailsString = [NSString stringWithFormat: @"%lld %@", self.channel.subscribersCountValue, NSLocalizedString(@"SUBSCRIBERS", nil)];
+    NSString *detailsString;
+    if(self.channel.publicValue)
+    {
+        detailsString = [NSString stringWithFormat: @"%lld %@", self.channel.subscribersCountValue, NSLocalizedString(@"SUBSCRIBERS", nil)];
+        
+    }
+    else
+    {
+        detailsString = @"Private";
+    }
     self.channelDetailsLabel.text = detailsString;
     
     // If we have a valid ecommerce URL, then display the button
@@ -1721,10 +1729,15 @@
                                                   
                                                   createdChannel.channelOwner = appDelegate.currentUser;
                                                   
+                                                  Channel* oldChannel = self.channel;
                                                   
                                                   self.channel = createdChannel;
                                                   
                                                   self.originalChannel = self.channel;
+                                                  
+                                                  [oldChannel.managedObjectContext deleteObject:oldChannel];
+                                                  NSError* error;
+                                                  [oldChannel.managedObjectContext save:&error];
                                                   
                                                   DebugLog(@"Channel: %@", createdChannel);
                                                   

@@ -13,6 +13,7 @@
 #import "AppConstants.h"
 #import "SYNNetworkEngine.h"
 #import "SYNDeviceManager.h"
+#import "SYNTextField.h"
 
 #define kGrayPanelBorderWidth 2.0
 
@@ -24,7 +25,7 @@
 @property (nonatomic, strong) NSTimer* autocompleteTimer;
 @property (nonatomic, strong) SYNAutocompleteSuggestionsController* autoSuggestionController;
 @property (nonatomic, weak) SYNAppDelegate* appDelegate;
-@property (nonatomic, weak) UITextField* searchTextField;
+@property (nonatomic, weak) SYNTextField* searchTextField;
 
 @end
 
@@ -33,7 +34,6 @@
 
 @synthesize appDelegate;
 @synthesize initialPanelHeight;
-@synthesize isOnScreen;
 @synthesize searchBoxView;
 
 - (void) loadView
@@ -78,20 +78,7 @@
     [self.view addSubview:self.autoSuggestionController.tableView];
 }
 
-- (void) viewDidAppear: (BOOL) animated
-{
-    [super viewDidAppear:animated];
 
-    isOnScreen = YES;
-}
-
-
-- (void) viewDidDisappear: (BOOL) animated
-{
-    [super viewDidDisappear: animated];
-    
-    isOnScreen = NO;
-}
 
 
 #pragma mark - Text Field Delegate

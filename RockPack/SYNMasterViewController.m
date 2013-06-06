@@ -663,7 +663,7 @@ typedef void(^AnimationCompletionBlock)(BOOL finished);
     if(!termString)
         return;
     
-    BOOL isIPad =[SYNDeviceManager.sharedInstance isIPad];
+    BOOL isIPad = [SYNDeviceManager.sharedInstance isIPad];
     if(isIPad)
     {
         //self.closeSearchButton.hidden = YES;
@@ -831,6 +831,11 @@ typedef void(^AnimationCompletionBlock)(BOOL finished);
         self.searchButton.hidden = NO;
         
         self.sideNavigationButton.hidden = NO;
+        
+        if(self.isInSearchMode && [[SYNDeviceManager sharedInstance] isIPad])
+        {
+            self.sideNavigationButton.hidden = YES;
+        }
         
         self.closeSearchButton.hidden = NO;
         
@@ -1013,7 +1018,7 @@ typedef void(^AnimationCompletionBlock)(BOOL finished);
                          
                          // Re-Asjust the Search Box when the back arrow comes on/off screen //
                          
-                         if(self.searchBoxController.isOnScreen)
+                         if(self.isInSearchMode)
                          {
                              CGRect sboxFrame = self.searchBoxController.view.frame;
                              sboxFrame.origin.x = newSearchBoxOrigin;
@@ -1021,7 +1026,10 @@ typedef void(^AnimationCompletionBlock)(BOOL finished);
                              self.searchBoxController.view.frame = sboxFrame;
                          }
                      }
-                     completion: nil];
+                     completion:^(BOOL finished)
+                     {
+                         
+                     }];
     
     
 
@@ -1062,13 +1070,23 @@ typedef void(^AnimationCompletionBlock)(BOOL finished);
         [abstractVC animatedPopViewController];
         
         if(abstractVC.navigationController.viewControllers.count < 2) {
+            
             self.containerViewController.scrollView.scrollEnabled = YES;
+            
+            if(self.isInSearchMode)
+            {
+                self.closeSearchButton.hidden = NO;
+                self.sideNavigationButton.hidden = YES;
+            }
+            
             [self showBackButton:NO];
         }
             
         
        
     }
+    
+    
     
     [self.containerViewController refreshView];
     

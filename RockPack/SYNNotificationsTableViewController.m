@@ -53,6 +53,7 @@
 
     self.tableView.separatorStyle = UITableViewCellSeparatorStyleNone;
     [self.tableView registerClass:[SYNNotificationsTableViewCell class] forCellReuseIdentifier:kNotificationsCellIdent];
+    
 }
 
 -(void)viewWillAppear:(BOOL)animated

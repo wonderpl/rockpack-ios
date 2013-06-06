@@ -11,6 +11,7 @@ const struct ChannelAttributes ChannelAttributes = {
 	.lastUpdated = @"lastUpdated",
 	.popular = @"popular",
 	.position = @"position",
+	.public = @"public",
 	.resourceURL = @"resourceURL",
 	.subscribedByUser = @"subscribedByUser",
 	.subscribersCount = @"subscribersCount",
@@ -65,6 +66,11 @@ const struct ChannelFetchedProperties ChannelFetchedProperties = {
 	}
 	if ([key isEqualToString:@"positionValue"]) {
 		NSSet *affectingKey = [NSSet setWithObject:@"position"];
+		keyPaths = [keyPaths setByAddingObjectsFromSet:affectingKey];
+		return keyPaths;
+	}
+	if ([key isEqualToString:@"publicValue"]) {
+		NSSet *affectingKey = [NSSet setWithObject:@"public"];
 		keyPaths = [keyPaths setByAddingObjectsFromSet:affectingKey];
 		return keyPaths;
 	}
@@ -185,6 +191,32 @@ const struct ChannelFetchedProperties ChannelFetchedProperties = {
 
 - (void)setPrimitivePositionValue:(int64_t)value_ {
 	[self setPrimitivePosition:[NSNumber numberWithLongLong:value_]];
+}
+
+
+
+
+
+@dynamic public;
+
+
+
+- (BOOL)publicValue {
+	NSNumber *result = [self public];
+	return [result boolValue];
+}
+
+- (void)setPublicValue:(BOOL)value_ {
+	[self setPublic:[NSNumber numberWithBool:value_]];
+}
+
+- (BOOL)primitivePublicValue {
+	NSNumber *result = [self primitivePublic];
+	return [result boolValue];
+}
+
+- (void)setPrimitivePublicValue:(BOOL)value_ {
+	[self setPrimitivePublic:[NSNumber numberWithBool:value_]];
 }
 
 

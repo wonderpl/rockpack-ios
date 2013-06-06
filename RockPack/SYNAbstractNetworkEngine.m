@@ -21,7 +21,8 @@
     SYNAppDelegate* appDelegate = UIApplication.sharedApplication.delegate;
     
     if ((self = [super initWithHostName: self.hostName
-                     customHeaderFields: @{@"User-Agent" : appDelegate.userAgentString}]))
+                     customHeaderFields: @{@"User-Agent" : appDelegate.userAgentString,
+                                           @"Accept-Encoding" : @"gzip"}]))
     {
 
         

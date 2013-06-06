@@ -6,8 +6,9 @@
 //  Copyright (c) 2013 Nick Banks. All rights reserved.
 //
 
-#import "SYNSearchBoxView.h"
 #import "SYNDeviceManager.h"
+#import "SYNSearchBoxView.h"
+#import "SYNTextField.h"
 #import "UIFont+SYNFont.h"
 #import <QuartzCore/QuartzCore.h>
 
@@ -66,7 +67,7 @@
         fieldRect.origin.y += 14.0;
         fieldRect.size.width -= 28.0 * 2;
         fieldRect.size.height -= 14.0 * 2;
-        self.searchTextField = [[UITextField alloc] initWithFrame:fieldRect];
+        self.searchTextField = [[SYNTextField alloc] initWithFrame:fieldRect];
         self.searchTextField.font = [UIFont rockpackFontOfSize:26.0];
         self.searchTextField.backgroundColor = [UIColor clearColor];
         self.searchTextField.textAlignment = NSTextAlignmentLeft;
@@ -102,10 +103,11 @@
 {
     self.searchFieldFrameImageView.image = [[UIImage imageNamed:@"FieldSearch"] resizableImageWithCapInsets:UIEdgeInsetsMake(0.0f,20.0f, 0.0f, 20.0f)];
     self.searchTextField.font = [UIFont rockpackFontOfSize:self.searchTextField.font.pointSize];
-    self.searchTextField.textColor = [UIColor colorWithWhite:166.0f/255.0f alpha:1.0f];
-    self.searchTextField.layer.shadowOpacity=0.8;
+    self.searchTextField.textColor = [UIColor colorWithRed:40.0/255.0 green:45.0/255.0 blue:51.0/255.0 alpha:1.0];
+    self.searchTextField.layer.shadowOpacity = 1.0;
     self.searchTextField.layer.shadowColor = [UIColor whiteColor].CGColor;
     self.searchTextField.layer.shadowOffset = CGSizeMake(0.0f,1.0f);
+    self.searchTextField.layer.shadowRadius = 0.0f;
     self.searchTextField.autocorrectionType = UITextAutocorrectionTypeNo;
     self.searchTextField.clearButtonMode = UITextFieldViewModeWhileEditing;
     
