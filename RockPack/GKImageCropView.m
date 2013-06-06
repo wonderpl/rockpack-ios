@@ -9,6 +9,7 @@
 #import "GKImageCropView.h"
 #import "GKImageCropOverlayView.h"
 #import "GKResizeableCropOverlayView.h"
+#import "SYNDeviceManager.h"
 
 #import <QuartzCore/QuartzCore.h>
 
@@ -242,10 +243,20 @@ static CGRect GKScaleRect(CGRect rect, CGFloat scale)
         faktoredHeight =  size.height;
     }
     
-    self.cropOverlayView.frame = self.bounds;
-    self.scrollView.frame = CGRectMake(xOffset, yOffset, size.width, size.height);
     self.scrollView.contentSize = CGSizeMake(size.width, size.height);
     self.imageView.frame = CGRectMake(0, floor((size.height - faktoredHeight) * 0.5), faktoredWidth, faktoredHeight);
+    
+    if ([SYNDeviceManager.sharedInstance isIPad])
+    {
+        self.cropOverlayView.frame = CGRectMake(self.bounds.origin.x, self.bounds.origin.y - 50, self.bounds.size.width, self.bounds.size.height);
+        self.scrollView.frame = CGRectMake(xOffset, yOffset, size.width, size.height);
+    }
+    
+    else
+    {
+        self.cropOverlayView.frame = self.bounds;
+        self.scrollView.frame = CGRectMake(xOffset, yOffset + 50, size.width, size.height);
+    }
 }
 
 #pragma mark -

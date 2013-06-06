@@ -10,6 +10,7 @@
 #import "GKImageCropViewController.h"
 #import "UIFont+SYNFont.h"
 #import <QuartzCore/QuartzCore.h>
+#import "SYNDeviceManager.h"
 
 @interface GKImageCropViewController ()
 
@@ -208,7 +209,7 @@
 	// Do any additional setup after loading the view.
     
     self.title = NSLocalizedString(@"MOVE AND SCALE", @"");
-
+    
     [self _setupNavigationBar];
     [self _setupCropView];
     [self _setupToolbar];
@@ -227,8 +228,9 @@
 
 - (void)viewWillLayoutSubviews{
     [super viewWillLayoutSubviews];
+        
+    self.imageCropView.frame = CGRectMake(self.view.center.x - (self.view.frame.size.width * 0.5), (self.view.center.y) - (self.view.frame.size.height *0.5), self.view.frame.size.width,self.view.frame.size.height);
     
-    self.imageCropView.frame = CGRectMake(self.view.center.x - (self.view.frame.size.width * 0.5), (self.view.center.y + 50) - (self.view.frame.size.height *0.5), self.view.frame.size.width,self.view.frame.size.height);
     self.toolbar.frame = CGRectMake((self.view.center.x + 6) - (self.view.frame.size.width * 0.5), self.view.center.y - 174, 308, 54);
 }
 
