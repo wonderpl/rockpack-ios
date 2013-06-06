@@ -429,14 +429,25 @@ typedef enum {
             ((SYNNotificationsTableViewController*)self.currentlyLoadedViewController).notifications = self.notifications;
         
         
-        CGRect frameThatFits = self.currentlyLoadedViewController.view.frame;
-        frameThatFits.size.width = self.containerView.frame.size.width;
-        frameThatFits.size.height = self.containerView.frame.size.height - 20.0;
-        self.currentlyLoadedViewController.view.frame = frameThatFits;
+
         
+        if ([SYNDeviceManager.sharedInstance isIPad])
+        {
+            CGRect frameThatFits = self.currentlyLoadedViewController.view.frame;
+            frameThatFits.size.width = self.containerView.frame.size.width;
+            frameThatFits.size.height = self.containerView.frame.size.height - 10.0;
+            self.currentlyLoadedViewController.view.frame = frameThatFits;
+        }
+        
+        else if ([SYNDeviceManager.sharedInstance isIPhone])
+        {
+            CGRect frameThatFits = self.currentlyLoadedViewController.view.frame;
+            frameThatFits.size.width = self.containerView.frame.size.width;
+            frameThatFits.size.height = self.containerView.frame.size.height - 6.0;
+            self.currentlyLoadedViewController.view.frame = frameThatFits;
+        }
         self.navigationContainerTitleLabel.text = NSLocalizedString(@"core_nav_section_notifications",nil);
         self.state = SideNavigationStateFull;
-        
         
     }
     else
