@@ -54,18 +54,18 @@
     
     //fill inner border
     [[UIColor colorWithRed:1. green:1. blue:1. alpha:0.5] set];
-    UIRectFrame(CGRectMake(widthSpan - 2, heightSpan - 2, self.cropSize.width + 4, self.cropSize.height + 4));
+    UIRectFrame(CGRectMake(widthSpan - 2, heightSpan + 48, self.cropSize.width + 4, self.cropSize.height + 4));
     
     //fill inner rect
     [[UIColor clearColor] set];
-    UIRectFill(CGRectMake(widthSpan, heightSpan, self.cropSize.width, self.cropSize.height));
+    UIRectFill(CGRectMake(widthSpan, heightSpan + 50, self.cropSize.width, self.cropSize.height));
     
     
     
     if (heightSpan > 30 && (UI_USER_INTERFACE_IDIOM() == UIUserInterfaceIdiomPad)) {
         
         [[UIColor whiteColor] set];
-        [NSLocalizedString(@"Move and Scale", @"") drawInRect:CGRectMake(10, (height - heightSpan) + (heightSpan / 2 - 20 / 2) , width - 20, 20) 
+        [NSLocalizedString(@"", @"") drawInRect:CGRectMake(10, (height - heightSpan) + (heightSpan / 2 - 20 / 2) , width - 20, 20) 
                                                    withFont:[UIFont boldSystemFontOfSize:20] 
                                               lineBreakMode:NSLineBreakByTruncatingTail 
                                                   alignment:NSTextAlignmentCenter];
