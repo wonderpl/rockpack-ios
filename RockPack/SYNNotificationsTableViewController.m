@@ -53,6 +53,7 @@
 
     self.tableView.separatorStyle = UITableViewCellSeparatorStyleNone;
     [self.tableView registerClass:[SYNNotificationsTableViewCell class] forCellReuseIdentifier:kNotificationsCellIdent];
+    
 }
 
 -(void)viewWillAppear:(BOOL)animated
@@ -145,7 +146,7 @@
 
 - (CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath;
 {
-    return 80.0;
+    return 77.0;
 }
 
 #pragma mark - Table view delegate
@@ -215,7 +216,7 @@
         
         [[NSNotificationCenter defaultCenter] postNotificationName:kChannelDetailsRequested
                                                             object:self
-                                                          userInfo:@{kChannel:channel}];
+                                                          userInfo:@{kChannel:channel, kAutoPlayVideoId: notification.videoId}];
     }
     else
     {

@@ -364,6 +364,7 @@
 {
     [super viewWillDisappear: animated];
     
+    
     self.deletionModeActive = NO;
 }
 
@@ -392,8 +393,13 @@
 - (void) handleDataModelChange: (NSNotification*) notification
 {
     NSArray* updatedObjects = [[notification userInfo] objectForKey: NSUpdatedObjectsKey];
-//    NSArray* insertedObjects = [[notification userInfo] objectForKey: NSUpdatedObjectsKey];
-//    NSArray* deletedObjects = [[notification userInfo] objectForKey: NSUpdatedObjectsKey];
+    NSArray* insertedObjects = [[notification userInfo] objectForKey: NSInsertedObjectsKey];
+    NSArray* deletedObjects = [[notification userInfo] objectForKey: NSDeletedObjectsKey];
+    
+    NSLog(@"updated:%i inserted:%i deleted:%i", updatedObjects.count, insertedObjects.count, deletedObjects.count);
+    
+//    if(insertedObjects.count + deletedObjects.count == 0)
+//        return;
     
     [updatedObjects enumerateObjectsUsingBlock: ^(id obj, NSUInteger idx, BOOL *stop)
     {
@@ -405,6 +411,8 @@
             
             return; 
         }
+        
+        
     }];
 }
 

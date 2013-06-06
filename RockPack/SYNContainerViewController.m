@@ -259,6 +259,7 @@
     
     SYNChannelDetailViewController *channelVC = [[SYNChannelDetailViewController alloc] initWithChannel: channel
                                                                                               usingMode: kChannelDetailsModeDisplay];
+    channelVC.autoplayVideoId = [[notification userInfo] objectForKey:kAutoPlayVideoId];
     
     [self.showingViewController animatedPushViewController: channelVC];
 }

@@ -23,6 +23,7 @@
 #import "UIImageView+ImageProcessing.h"
 #import "UIImageView+WebCache.h"
 #import <QuartzCore/QuartzCore.h>
+#import "SYNDeviceManager.h"
 
 
 #define kSideNavTitle @"kSideNavTitle"
@@ -428,6 +429,11 @@ typedef enum {
             ((SYNNotificationsTableViewController*)self.currentlyLoadedViewController).notifications = self.notifications;
         
         
+        CGRect frameThatFits = self.currentlyLoadedViewController.view.frame;
+        frameThatFits.size.width = self.containerView.frame.size.width;
+        frameThatFits.size.height = self.containerView.frame.size.height - 20.0;
+        self.currentlyLoadedViewController.view.frame = frameThatFits;
+        
         self.navigationContainerTitleLabel.text = NSLocalizedString(@"core_nav_section_notifications",nil);
         self.state = SideNavigationStateFull;
         
@@ -560,12 +566,29 @@ typedef enum {
     if (!self.currentlyLoadedViewController)
         return;
     
-    CGSize containerSize = self.containerView.frame.size;
-    CGRect vcRect = self.currentlyLoadedViewController.view.frame;
-    vcRect.origin.x = 0.0;
-    vcRect.origin.y = 2.0;
-    vcRect.size = containerSize;
-    self.currentlyLoadedViewController.view.frame = vcRect;
+    if ([SYNDeviceManager.sharedInstance isIPhone])
+    {
+        CGSize containerSize = self.containerView.frame.size;
+        CGRect vcRect = self.currentlyLoadedViewController.view.frame;
+        vcRect.origin.x = 0.0;
+        vcRect.origin.y = 2.0;
+        vcRect.size = containerSize;
+        self.currentlyLoadedViewController.view.frame = vcRect;
+
+    }
+    
+    if ([SYNDeviceManager.sharedInstance isIPad]) {
+        CGRect screenRect = [[UIScreen mainScreen] bounds];
+        CGFloat screenHeight = screenRect.size.height;
+        
+        CGSize containerSize = CGSizeMake(self.containerView.frame.size.width, screenHeight - 82.0);
+        CGRect vcRect = self.currentlyLoadedViewController.view.frame;
+        vcRect.origin.x = 0.0;
+        vcRect.origin.y = 2.0;
+        vcRect.size = containerSize;
+        self.currentlyLoadedViewController.view.frame = vcRect;
+    }
+
     
     [self.containerView addSubview: self.currentlyLoadedViewController.view];
 }
