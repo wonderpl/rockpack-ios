@@ -33,7 +33,6 @@
 
 @synthesize appDelegate;
 @synthesize initialPanelHeight;
-@synthesize isOnScreen;
 @synthesize searchBoxView;
 
 - (void) loadView
@@ -78,20 +77,7 @@
     [self.view addSubview:self.autoSuggestionController.tableView];
 }
 
-- (void) viewDidAppear: (BOOL) animated
-{
-    [super viewDidAppear:animated];
 
-    isOnScreen = YES;
-}
-
-
-- (void) viewDidDisappear: (BOOL) animated
-{
-    [super viewDidDisappear: animated];
-    
-    isOnScreen = NO;
-}
 
 
 #pragma mark - Text Field Delegate

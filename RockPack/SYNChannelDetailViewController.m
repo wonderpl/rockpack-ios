@@ -170,8 +170,8 @@
     // Add a custom flow layout to our thumbail collection view (with the right size and spacing)
     LXReorderableCollectionViewFlowLayout *layout = [[LXReorderableCollectionViewFlowLayout alloc] init];
     layout.itemSize = _isIPhone?CGSizeMake(310.0f , 175.0f):CGSizeMake(249.0f , 141.0f);
-    layout.minimumInteritemSpacing = _isIPhone ? 0.0f : 6.0f;
-    layout.minimumLineSpacing = _isIPhone ? 4.0f : 6.0f;
+    layout.minimumInteritemSpacing = _isIPhone ? 0.0f : 4.0f;
+    layout.minimumLineSpacing = _isIPhone ? 4.0f : 4.0f;
     
     self.videoThumbnailCollectionView.collectionViewLayout = layout;
     
@@ -318,7 +318,10 @@
     
     [self.cameraButton addTarget:self action:@selector(userTouchedCameraButton:) forControlEvents:UIControlEventTouchUpInside];
     
-    
+    if(self.autoplayVideoId)
+    {
+        [self autoplayVideoIfAvailable];
+    }
 }
 
 
@@ -510,7 +513,7 @@
     [super willRotateToInterfaceOrientation: toInterfaceOrientation
                                    duration: duration];
 
-    [self.self.videoThumbnailCollectionView.collectionViewLayout invalidateLayout];
+    [self.videoThumbnailCollectionView.collectionViewLayout invalidateLayout];
 }
 
 
@@ -653,6 +656,11 @@
     [self.videoThumbnailCollectionView reloadData];
     
     [self displayChannelDetails];
+    
+    if(self.autoplayVideoId)
+    {
+        [self autoplayVideoIfAvailable];
+    }
 }
 
 
@@ -671,8 +679,16 @@
 {
     self.channelOwnerLabel.text = [self.channel.channelOwner.displayName uppercaseString];
     
-    
-    NSString *detailsString = [NSString stringWithFormat: @"%lld %@", self.channel.subscribersCountValue, NSLocalizedString(@"SUBSCRIBERS", nil)];
+    NSString *detailsString;
+    if(self.channel.publicValue)
+    {
+        detailsString = [NSString stringWithFormat: @"%lld %@", self.channel.subscribersCountValue, NSLocalizedString(@"SUBSCRIBERS", nil)];
+        
+    }
+    else
+    {
+        detailsString = @"Private";
+    }
     self.channelDetailsLabel.text = detailsString;
     
     // If we have a valid ecommerce URL, then display the button
@@ -766,7 +782,16 @@
 
 #pragma mark - Helper methods
 
-
+-(void)autoplayVideoIfAvailable
+{
+    NSArray* videoSubset = [[self.channel.videoInstances array] filteredArrayUsingPredicate:[NSPredicate predicateWithFormat:@"uniqueId == %@",self.autoplayVideoId]];
+    if([videoSubset count] ==1)
+    {
+        [self displayVideoViewerWithVideoInstanceArray: self.channel.videoInstances.array
+                                      andSelectedIndex: [self.channel.videoInstances indexOfObject:[videoSubset objectAtIndex:0]]];
+        self.autoplayVideoId= nil;
+    }
+}
 
 
 #pragma mark - LXReorderableCollectionViewDelegateFlowLayout methods

@@ -13,7 +13,6 @@
 @interface SYNSearchBoxViewController : UIViewController <UITextFieldDelegate, UITableViewDelegate>
 
 
-@property (nonatomic, readonly) BOOL isOnScreen;
 @property (nonatomic, readonly) SYNSearchBoxView* searchBoxView;
 @property (nonatomic, weak, readonly) UITextField* searchTextField;
 
