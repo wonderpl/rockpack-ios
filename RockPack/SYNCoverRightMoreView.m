@@ -19,7 +19,6 @@
 {
     [super awakeFromNib];
     
-    self.loadingLabel.font = [UIFont rockpackFontOfSize: 14.0f];
     self.loadingIndicatorView.hidden = TRUE;
 }
 

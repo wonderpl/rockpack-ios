@@ -592,14 +592,13 @@
 
 - (void) showNoVideosMessage:(NSString*)message withLoader:(BOOL)withLoader
 {
-    if(self.noVideosMessageView)
+    if (self.noVideosMessageView)
     {
         [self.noVideosMessageView removeFromSuperview];
-        self.noVideosMessageView = nil;
-        
+        self.noVideosMessageView = nil;  
     }
     
-    if(!message)
+    if (!message)
         return;
     
     CGSize viewFrameSize = _isIPhone ? CGSizeMake(300.0, 50.0) : CGSizeMake(360.0, 50.0);
@@ -607,8 +606,7 @@
     {
         viewFrameSize.width = 380.0;
     }
-        
-        
+  
     self.noVideosMessageView = [[UIView alloc] initWithFrame:CGRectMake(0.0, 640.0, viewFrameSize.width, viewFrameSize.height)];
     self.noVideosMessageView.center = _isIPhone ? CGPointMake(self.view.frame.size.width * 0.5, self.view.frame.size.height - 70.0f) : CGPointMake(self.view.frame.size.width * 0.5, self.noVideosMessageView.center.y);
     self.noVideosMessageView.frame = CGRectIntegral(self.noVideosMessageView.frame);
@@ -631,7 +629,7 @@
     noVideosLabel.center = CGPointMake(viewFrameSize.width * 0.5, viewFrameSize.height * 0.5 + 4.0);
     noVideosLabel.frame = CGRectIntegral(noVideosLabel.frame);
     
-    if(withLoader && !_isIPhone)
+    if (withLoader && !_isIPhone)
     {
         UIActivityIndicatorView* loader = [[UIActivityIndicatorView alloc] initWithActivityIndicatorStyle:UIActivityIndicatorViewStyleWhite];
         CGRect loaderRect = loader.frame;
@@ -639,12 +637,9 @@
         loaderRect.origin.y = 16.0;
         loader.frame = loaderRect;
         [self.noVideosMessageView addSubview:loader];
-        [loader startAnimating];
-        
-        
+        [loader startAnimating]; 
     }
-    
-    
+
     [self.noVideosMessageView addSubview:noVideosLabel];
     
     [self.view addSubview:self.noVideosMessageView];
@@ -680,14 +675,14 @@
     self.channelOwnerLabel.text = [self.channel.channelOwner.displayName uppercaseString];
     
     NSString *detailsString;
-    if(self.channel.publicValue)
+    
+    if (self.channel.publicValue)
     {
         detailsString = [NSString stringWithFormat: @"%lld %@", self.channel.subscribersCountValue, NSLocalizedString(@"SUBSCRIBERS", nil)];
-        
     }
     else
     {
-        detailsString = @"Private";
+        detailsString = @"PRIVATE";
     }
     self.channelDetailsLabel.text = detailsString;
     
@@ -698,8 +693,6 @@
     }
     
     // Set title //
-    
-    
     if (self.channel.title)
     {
         self.channelTitleTextView.text = self.channel.title;
@@ -708,9 +701,7 @@
     {
         self.channelTitleTextView.text = @"";
     }
-    
-        
-    
+
     [self adjustTextView];
 }
 
@@ -719,7 +710,6 @@
 
 - (NSInteger) collectionView: (UICollectionView *) collectionView numberOfItemsInSection: (NSInteger) section
 {
-    
     return self.channel.videoInstances.count;
 }
 
@@ -737,7 +727,6 @@
     
     SYNVideoThumbnailRegularCell *videoThumbnailCell = [collectionView dequeueReusableCellWithReuseIdentifier: @"SYNVideoThumbnailRegularCell"
                                                                                                  forIndexPath: indexPath];
-    
     
     // special mode for the favorite channel so we cannot delete the videos (un-heart them only)
     if (self.channel.favouritesValue)
@@ -798,10 +787,8 @@
 
 - (void) collectionView: (UICollectionView *) collectionView
         itemAtIndexPath: (NSIndexPath *) fromIndexPath
-    willMoveToIndexPath: (NSIndexPath *) toIndexPath {
-
-    
-    
+    willMoveToIndexPath: (NSIndexPath *) toIndexPath
+{
     VideoInstance* viToSwap = [self.channel.videoInstancesSet objectAtIndex:fromIndexPath.item];
     [self.channel.videoInstancesSet removeObjectAtIndex:fromIndexPath.item];
     [self.channel.videoInstancesSet insertObject:viToSwap atIndex:toIndexPath.item];
@@ -809,14 +796,8 @@
     // set the new positions
     [self.channel.videoInstances enumerateObjectsUsingBlock: ^(id obj, NSUInteger index, BOOL *stop) {
         [(VideoInstance *)obj setPositionValue : index];
-        
     }];
-    
-
-    
 }
-
-
 
 
 - (void) setDisplayControlsVisibility: (BOOL) visible
@@ -829,9 +810,7 @@
     self.editControlsView.alpha = (visible) ? 0.0f : 1.0f;
     self.coverChooserMasterView.hidden = (visible) ? TRUE : FALSE;
     self.profileImageButton.enabled = visible;
-    
-    
-    
+
     self.subscribeButton.hidden = (visible && [self.channel.channelOwner.uniqueId isEqualToString: appDelegate.currentUser.uniqueId]);
     self.editButton.hidden = (visible && ! [self.channel.channelOwner.uniqueId isEqualToString: appDelegate.currentUser.uniqueId]);
     
