@@ -103,10 +103,11 @@
 {
     self.searchFieldFrameImageView.image = [[UIImage imageNamed:@"FieldSearch"] resizableImageWithCapInsets:UIEdgeInsetsMake(0.0f,20.0f, 0.0f, 20.0f)];
     self.searchTextField.font = [UIFont rockpackFontOfSize:self.searchTextField.font.pointSize];
-    self.searchTextField.textColor = [UIColor colorWithWhite:166.0f/255.0f alpha:1.0f];
-    self.searchTextField.layer.shadowOpacity=0.8;
+    self.searchTextField.textColor = [UIColor colorWithRed:40.0/255.0 green:45.0/255.0 blue:51.0/255.0 alpha:1.0];
+    self.searchTextField.layer.shadowOpacity = 1.0;
     self.searchTextField.layer.shadowColor = [UIColor whiteColor].CGColor;
     self.searchTextField.layer.shadowOffset = CGSizeMake(0.0f,1.0f);
+    self.searchTextField.layer.shadowRadius = 0.0f;
     self.searchTextField.autocorrectionType = UITextAutocorrectionTypeNo;
     self.searchTextField.clearButtonMode = UITextFieldViewModeWhileEditing;
     
