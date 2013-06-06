@@ -201,13 +201,14 @@
     
     self.videoPlaybackViewController = [SYNVideoPlaybackViewController sharedInstance];
 
+    __weak SYNVideoViewerViewController* weakSelf = self;
     [self.videoPlaybackViewController updateWithFrame: videoFrame
                                          indexUpdater: ^(int newIndex){
-                                             self.currentSelectedIndex = newIndex;
-                                             [self updateVideoDetailsForIndex: self.currentSelectedIndex];
+                                             weakSelf.currentSelectedIndex = newIndex;
+                                             [weakSelf updateVideoDetailsForIndex: weakSelf.currentSelectedIndex];
                                              
                                              // We need to scroll the current thumbnail before the view appears (with no animation)
-                                             [self scrollToCellAtIndex: self.currentSelectedIndex
+                                             [weakSelf scrollToCellAtIndex: weakSelf.currentSelectedIndex
                                                               animated: YES];
                                          }];
     

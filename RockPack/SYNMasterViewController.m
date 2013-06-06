@@ -29,6 +29,7 @@
 #import "UIFont+SYNFont.h"
 #import "VideoInstance.h"
 #import <QuartzCore/QuartzCore.h>
+#import "SYNVideoPlaybackViewController.h"
 
 #define kMovableViewOffX -58
 
@@ -598,7 +599,7 @@ typedef void(^AnimationCompletionBlock)(BOOL finished);
                      completion: ^(BOOL finished) {
                          self.overlayView.userInteractionEnabled = NO;
                          [child removeFromSuperview];
-                         
+                         [self.videoViewerViewController.view removeFromSuperview];
                          [self.videoViewerViewController removeFromParentViewController];
                          self.videoViewerViewController = nil;
                      }];
