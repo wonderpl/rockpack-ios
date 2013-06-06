@@ -322,6 +322,8 @@
     {
         [self autoplayVideoIfAvailable];
     }
+    
+    self.originalContentOffset = self.videoThumbnailCollectionView.contentOffset;
 }
 
 
@@ -390,8 +392,6 @@
     
     [self displayChannelDetails];
     
-    
-    self.originalContentOffset = self.videoThumbnailCollectionView.contentOffset;
 }
 
 
@@ -2394,6 +2394,9 @@
         if (scrollView.contentOffset.y <= self.originalContentOffset.y)
         {
             self.masterControlsView.alpha = 1.0f;
+            CGRect frame = self.masterControlsView.frame;
+            frame.origin.y = self.originalMasterControlsViewOrigin.y;
+            self.masterControlsView.frame = frame;
         }
         else
         {
