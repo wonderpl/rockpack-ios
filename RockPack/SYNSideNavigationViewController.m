@@ -114,6 +114,8 @@ typedef enum {
 {
     [super viewDidLoad];
     
+    self.containerView.backgroundColor = [UIColor greenColor];
+    
     // Version number display
 //    NSString * appVersion = [[NSBundle mainBundle] objectForInfoDictionaryKey: @"CFBundleShortVersionString"];
     NSString * buildTarget = [[NSBundle mainBundle] objectForInfoDictionaryKey: (NSString *)kSYNBundleBuildTarget];
@@ -429,10 +431,6 @@ typedef enum {
             ((SYNNotificationsTableViewController*)self.currentlyLoadedViewController).notifications = self.notifications;
         
         
-        CGRect frameThatFits = self.currentlyLoadedViewController.view.frame;
-        frameThatFits.size.width = self.containerView.frame.size.width;
-        frameThatFits.size.height = self.containerView.frame.size.height - 20.0;
-        self.currentlyLoadedViewController.view.frame = frameThatFits;
         
         self.navigationContainerTitleLabel.text = NSLocalizedString(@"core_nav_section_notifications",nil);
         self.state = SideNavigationStateFull;
@@ -556,9 +554,7 @@ typedef enum {
 - (void) setCurrentlyLoadedViewController: (UIViewController *) currentlyLoadedVC
 {
     if (self.currentlyLoadedViewController)
-    {
         [self.currentlyLoadedViewController.view removeFromSuperview];
-    }
     
     _currentlyLoadedViewController = currentlyLoadedVC;
     
@@ -566,29 +562,19 @@ typedef enum {
     if (!self.currentlyLoadedViewController)
         return;
     
-    if ([SYNDeviceManager.sharedInstance isIPhone])
-    {
-        CGSize containerSize = self.containerView.frame.size;
-        CGRect vcRect = self.currentlyLoadedViewController.view.frame;
-        vcRect.origin.x = 0.0;
-        vcRect.origin.y = 2.0;
-        vcRect.size = containerSize;
-        self.currentlyLoadedViewController.view.frame = vcRect;
-
-    }
+    CGRect vcRect = self.currentlyLoadedViewController.view.frame;
     
-    if ([SYNDeviceManager.sharedInstance isIPad]) {
-        CGRect screenRect = [[UIScreen mainScreen] bounds];
-        CGFloat screenHeight = screenRect.size.height;
-        
-        CGSize containerSize = CGSizeMake(self.containerView.frame.size.width, screenHeight - 82.0);
-        CGRect vcRect = self.currentlyLoadedViewController.view.frame;
-        vcRect.origin.x = 0.0;
-        vcRect.origin.y = 2.0;
-        vcRect.size = containerSize;
-        self.currentlyLoadedViewController.view.frame = vcRect;
-    }
-
+    
+    vcRect.origin.x = 0.0;
+    vcRect.origin.y = 2.0;
+    
+    vcRect.size  = self.containerView.frame.size;
+    
+    if([SYNDeviceManager.sharedInstance isIPad])
+        vcRect.size.height = self.containerView.frame.size.height - 20.0;
+    
+    
+    self.currentlyLoadedViewController.view.frame = vcRect;
     
     [self.containerView addSubview: self.currentlyLoadedViewController.view];
 }
@@ -614,9 +600,21 @@ typedef enum {
                                  duration: (NSTimeInterval) duration
 {
     
+    [super willRotateToInterfaceOrientation:toInterfaceOrientation duration:duration];
     
-    CGFloat correctHeight = UIInterfaceOrientationIsPortrait(toInterfaceOrientation) ?
-    [SYNDeviceManager.sharedInstance currentScreenHeight] : [SYNDeviceManager.sharedInstance currentScreenWidth];
+    
+
+}
+
+
+- (void) willAnimateRotationToInterfaceOrientation: (UIInterfaceOrientation) toInterfaceOrientation
+                                          duration: (NSTimeInterval) duration
+{
+    [super willAnimateRotationToInterfaceOrientation: toInterfaceOrientation
+                                            duration: duration];
+    
+    
+    CGFloat correctHeight = [SYNDeviceManager.sharedInstance currentScreenHeight];
     
     CGRect newFrame = self.view.frame;
     newFrame.size.height = correctHeight;
@@ -627,15 +625,6 @@ typedef enum {
     bottomExtraFrame.size.height = correctHeight - bottomExtraFrame.origin.y;
     
     self.bottomExtraView.frame = bottomExtraFrame;
-
-}
-
-
-- (void) willAnimateRotationToInterfaceOrientation: (UIInterfaceOrientation) toInterfaceOrientation
-                                          duration: (NSTimeInterval) duration
-{
-    [super willAnimateRotationToInterfaceOrientation: toInterfaceOrientation
-                                            duration: duration];
     
     CGRect settingsButtonFrame = self.settingsButton.frame;
     settingsButtonFrame.origin.y = [SYNDeviceManager.sharedInstance currentScreenHeight] - 30.0 - settingsButtonFrame.size.height;
@@ -647,17 +636,22 @@ typedef enum {
     versionNumberLabelFrame.origin.y = [SYNDeviceManager.sharedInstance currentScreenHeight] - 55.0 - settingsButtonFrame.size.height;
     self.versionNumberLabel.frame = versionNumberLabelFrame;
     
-    // FIXME:???
-    if (UIInterfaceOrientationIsPortrait(toInterfaceOrientation))
+
+    
+    
+}
+
+-(void)didRotateFromInterfaceOrientation:(UIInterfaceOrientation)fromInterfaceOrientation
+{
+    [super didRotateFromInterfaceOrientation:fromInterfaceOrientation];
+    
+    if(self.containerView.subviews.count > 0) // if the container has children we must scale those as well
     {
-        
-        
+        UIView* child = (UIView*)self.containerView.subviews[0];
+        CGRect currentFrame = child.frame;
+        currentFrame.size.height = self.containerView.frame.size.height - 20.0;
+        child.frame = currentFrame;
     }
-    else
-    {
-        
-        
-    } 
 }
 
 

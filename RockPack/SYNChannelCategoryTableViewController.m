@@ -103,7 +103,6 @@
     if(self.confirmButton)
     {
         [self.confirmButton addTarget:self action:@selector(confirmButtonTapped:) forControlEvents:UIControlEventTouchUpInside];
-        self.confirmButton.enabled = NO;
     }
     
     [self loadCategories];
@@ -297,10 +296,6 @@
                                                      didSelectSubCategory:subCategory];
         }
     }
-    else
-    {
-        self.confirmButton.enabled = YES;
-    }
     self.lastSelectedIndexpath = indexPath;
 }
 
@@ -343,11 +338,20 @@
         }
         else
         {
-            [CATransaction begin];
-            
             [CATransaction setCompletionBlock:^{
                 NSIndexPath* topElement = [NSIndexPath indexPathForRow:0 inSection:header.tag];
                 [self.tableView scrollToRowAtIndexPath:topElement atScrollPosition:UITableViewScrollPositionTop animated:YES];
+            }];
+
+        }
+    }
+    else if(self.confirmButton)
+    {
+        [CATransaction begin];
+        if(self.lastSelectedIndexpath.section == header.tag)
+        {
+            [CATransaction setCompletionBlock:^{
+                [self.tableView setContentOffset:CGPointZero animated:YES];
             }];
         }
     }
@@ -364,6 +368,7 @@
     {
         //expand new section
         [self expandSection:header.tag];
+        [self deselectOtherCategory];
     }
     else
     {
@@ -372,13 +377,12 @@
         {
             [self.categoryTableControllerDelegate categoryTableController:self didSelectCategory:nil];
         }
-        self.confirmButton.enabled = NO;
-        
+        [self tappedOtherCategory:nil];
     }
     
     [self.tableView endUpdates];
     
-    if(needToOpen)
+    if(needToOpen || self.confirmButton)
     {
         [CATransaction commit];
     }
@@ -421,10 +425,6 @@
         {
             [self.categoryTableControllerDelegate categoryTableController:self didSelectCategory:category];
         }
-    }
-    else
-    {
-        self.confirmButton.enabled = YES;
     }
     self.lastSelectedIndexpath = [NSIndexPath indexPathForRow:-1 inSection:section];
 }
@@ -498,18 +498,23 @@
 -(void)tappedOtherCategory:(UIButton*)header
 {
     SYNChannelCategoryTableHeader* headerView = (SYNChannelCategoryTableHeader*)self.tableView.tableHeaderView;
+    headerView.titleLabel.textColor = [UIColor whiteColor];
+    headerView.titleLabel.shadowColor = [UIColor colorWithWhite:1.0f alpha:0.15f];
     headerView.backgroundImage.image = [UIImage imageNamed:@"CategorySlideSelected"];
     if(self.lastSelectedIndexpath)
     {
         [self closeSection:self.lastSelectedIndexpath.section];
     }
-    if([self.categoryTableControllerDelegate respondsToSelector:@selector(categoryTableControllerDeselectedAll:)])
-    {
-        [self.categoryTableControllerDelegate categoryTableController:self didSelectCategory:self.otherGenre];
-    }
-    self.confirmButton.enabled = NO;
     self.lastSelectedIndexpath = nil;
     
+}
+
+-(void)deselectOtherCategory;
+{
+    SYNChannelCategoryTableHeader* headerView = (SYNChannelCategoryTableHeader*)self.tableView.tableHeaderView;
+    headerView.titleLabel.textColor = [UIColor colorWithRed:106.0f/255.0f green:114.0f/255.0f blue:122.0f/255.0f alpha:1.0f];
+    headerView.titleLabel.shadowColor = [UIColor colorWithWhite:1.0f alpha:0.75f];
+    headerView.backgroundImage.image=[UIImage imageNamed:@"CategorySlide"];
 }
 
 #pragma mark - set selected Genre
@@ -519,7 +524,6 @@
     {
         //Set Other selected
         SYNChannelCategoryTableHeader* headerView = (SYNChannelCategoryTableHeader*)self.tableView.tableHeaderView;
-        headerView.backgroundImage.image = [UIImage imageNamed:@"CategorySlideSelected"];
         headerView.titleLabel.textColor = [UIColor whiteColor];
         headerView.titleLabel.shadowColor = [UIColor colorWithWhite:1.0f alpha:0.15f];
         headerView.backgroundImage.image = [UIImage imageNamed:@"CategorySlideSelected"];
@@ -603,6 +607,14 @@
                     Genre* category = self.categoriesDatasource[self.lastSelectedIndexpath.section];
                     [self.categoryTableControllerDelegate categoryTableController:self didSelectCategory:category];
                 }
+            }
+        }
+        else
+        {
+            //no selected indexpath.
+            if([self.categoryTableControllerDelegate respondsToSelector:@selector(categoryTableController:didSelectCategory:)])
+            {
+                [self.categoryTableControllerDelegate categoryTableController:self didSelectCategory:self.otherGenre];
             }
         }
         
