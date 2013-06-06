@@ -37,7 +37,7 @@
 
 //Reachability
 "No_Network_iPad" = "NO NETWORK, PLEASE CHECK YOUR INTERNET CONNECTION.";
-"No_Network_iPhone" = "NO NETWORK.";
+"No_Network_iPhone" = "NO NETWORK";
 
 
 // == Login / Registration / Forgot Password == //
