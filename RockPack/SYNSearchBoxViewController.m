@@ -13,6 +13,7 @@
 #import "AppConstants.h"
 #import "SYNNetworkEngine.h"
 #import "SYNDeviceManager.h"
+#import "SYNTextField.h"
 
 #define kGrayPanelBorderWidth 2.0
 
@@ -24,7 +25,7 @@
 @property (nonatomic, strong) NSTimer* autocompleteTimer;
 @property (nonatomic, strong) SYNAutocompleteSuggestionsController* autoSuggestionController;
 @property (nonatomic, weak) SYNAppDelegate* appDelegate;
-@property (nonatomic, weak) UITextField* searchTextField;
+@property (nonatomic, weak) SYNTextField* searchTextField;
 
 @end
 

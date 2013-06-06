@@ -21,6 +21,7 @@
 #import "SYNPopoverBackgroundView.h"
 #import "UIFont+SYNFont.h"
 #import "User.h"
+#import "SYNTextFieldLogin.h"
 
 @interface SYNLoginViewController ()  <UITextFieldDelegate, SYNImagePickerControllerDelegate>
 
@@ -48,12 +49,12 @@
 @property (nonatomic, strong) IBOutlet UILabel* termsAndConditionsLabelSide;
 @property (nonatomic, strong) IBOutlet UILabel* wellSendYouLabel;
 @property (nonatomic, strong) IBOutlet UILabel* whatsOnYourChannelLabel;
-@property (nonatomic, strong) IBOutlet UITextField* ddInputField;
-@property (nonatomic, strong) IBOutlet UITextField* emailInputField;
-@property (nonatomic, strong) IBOutlet UITextField* mmInputField;
-@property (nonatomic, strong) IBOutlet UITextField* passwordInputField;
-@property (nonatomic, strong) IBOutlet UITextField* userNameInputField;
-@property (nonatomic, strong) IBOutlet UITextField* yyyyInputField;
+@property (nonatomic, strong) IBOutlet SYNTextFieldLogin* ddInputField;
+@property (nonatomic, strong) IBOutlet SYNTextFieldLogin* emailInputField;
+@property (nonatomic, strong) IBOutlet SYNTextFieldLogin* mmInputField;
+@property (nonatomic, strong) IBOutlet SYNTextFieldLogin* passwordInputField;
+@property (nonatomic, strong) IBOutlet SYNTextFieldLogin* userNameInputField;
+@property (nonatomic, strong) IBOutlet SYNTextFieldLogin* yyyyInputField;
 @property (nonatomic, strong) UIButton* termsAndConditionsButton;
 @property (nonatomic, strong) IBOutlet UIView* dobView;
 @property (nonatomic, strong) NSArray* mainFormElements;
@@ -140,9 +141,7 @@
     ddInputField.keyboardType = UIKeyboardTypeNumberPad;
     mmInputField.keyboardType = UIKeyboardTypeNumberPad;
     yyyyInputField.keyboardType = UIKeyboardTypeNumberPad;
-        
-    passwordInputField.secureTextEntry = YES;
-        
+    
     facebookButtonInitialFrame = facebookSignInButton.frame;
     signUpButtonInitialFrame = signUpButton.frame;
         
@@ -159,9 +158,9 @@
     for (UITextField* tf in textFieldsToSetup)
     {
         tf.font = rockpackInputFont;
-        // -- this is to create the left padding for the text fields (hack) -- //
-        tf.leftView = [[UIView alloc] initWithFrame:CGRectMake(0, 0, 10, 57)];
-        tf.leftViewMode = UITextFieldViewModeAlways;
+//        // -- this is to create the left padding for the text fields (hack) -- //
+//        tf.leftView = [[UIView alloc] initWithFrame:CGRectMake(0, 0, 10, 57)];
+//        tf.leftViewMode = UITextFieldViewModeAlways;
     }
     
     if([[SYNDeviceManager sharedInstance] isPortrait])

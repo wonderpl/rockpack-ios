@@ -6,8 +6,9 @@
 //  Copyright (c) 2013 Nick Banks. All rights reserved.
 //
 
-#import "SYNSearchBoxView.h"
 #import "SYNDeviceManager.h"
+#import "SYNSearchBoxView.h"
+#import "SYNTextField.h"
 #import "UIFont+SYNFont.h"
 #import <QuartzCore/QuartzCore.h>
 
@@ -66,7 +67,7 @@
         fieldRect.origin.y += 14.0;
         fieldRect.size.width -= 28.0 * 2;
         fieldRect.size.height -= 14.0 * 2;
-        self.searchTextField = [[UITextField alloc] initWithFrame:fieldRect];
+        self.searchTextField = [[SYNTextField alloc] initWithFrame:fieldRect];
         self.searchTextField.font = [UIFont rockpackFontOfSize:26.0];
         self.searchTextField.backgroundColor = [UIColor clearColor];
         self.searchTextField.textAlignment = NSTextAlignmentLeft;
