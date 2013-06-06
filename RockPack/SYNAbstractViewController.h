@@ -40,6 +40,7 @@ typedef void (^SYNShareCompletionBlock)(void);
 
 
 @property (nonatomic) BOOL isAnimating;
+@property (nonatomic) BOOL isLocked;
 @property (nonatomic, assign) BOOL inDrag;
 @property (nonatomic, assign) CGPoint initialDragCenter;
 @property (nonatomic, readonly) NSString* viewId;
