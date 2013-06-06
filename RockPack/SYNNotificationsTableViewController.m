@@ -215,7 +215,7 @@
         
         [[NSNotificationCenter defaultCenter] postNotificationName:kChannelDetailsRequested
                                                             object:self
-                                                          userInfo:@{kChannel:channel}];
+                                                          userInfo:@{kChannel:channel, kAutoPlayVideoId: notification.videoId}];
     }
     else
     {
