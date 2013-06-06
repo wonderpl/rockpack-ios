@@ -1729,10 +1729,15 @@
                                                   
                                                   createdChannel.channelOwner = appDelegate.currentUser;
                                                   
+                                                  Channel* oldChannel = self.channel;
                                                   
                                                   self.channel = createdChannel;
                                                   
                                                   self.originalChannel = self.channel;
+                                                  
+                                                  [oldChannel.managedObjectContext deleteObject:oldChannel];
+                                                  NSError* error;
+                                                  [oldChannel.managedObjectContext save:&error];
                                                   
                                                   DebugLog(@"Channel: %@", createdChannel);
                                                   
