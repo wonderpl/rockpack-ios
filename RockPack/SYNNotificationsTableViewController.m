@@ -54,7 +54,6 @@
     self.tableView.separatorStyle = UITableViewCellSeparatorStyleNone;
     [self.tableView registerClass:[SYNNotificationsTableViewCell class] forCellReuseIdentifier:kNotificationsCellIdent];
     
-    self.tableView.backgroundColor = [UIColor greenColor];
 }
 
 -(void)viewWillAppear:(BOOL)animated
