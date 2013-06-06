@@ -1729,6 +1729,10 @@
                                                   
                                                   createdChannel.channelOwner = appDelegate.currentUser;
                                                   
+                                                  
+                                                  if([createdChannel.categoryId isEqualToString:@""])
+                                                      createdChannel.publicValue = NO;
+                                                  
                                                   Channel* oldChannel = self.channel;
                                                   
                                                   self.channel = createdChannel;
