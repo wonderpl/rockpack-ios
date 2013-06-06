@@ -682,7 +682,7 @@
     }
     else
     {
-        detailsString = @"Private";
+        detailsString = @"PRIVATE";
     }
     self.channelDetailsLabel.text = detailsString;
     
