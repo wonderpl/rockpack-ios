@@ -318,7 +318,10 @@
     
     [self.cameraButton addTarget:self action:@selector(userTouchedCameraButton:) forControlEvents:UIControlEventTouchUpInside];
     
-    
+    if(self.autoplayVideoId)
+    {
+        [self autoplayVideoIfAvailable];
+    }
 }
 
 
@@ -653,6 +656,11 @@
     [self.videoThumbnailCollectionView reloadData];
     
     [self displayChannelDetails];
+    
+    if(self.autoplayVideoId)
+    {
+        [self autoplayVideoIfAvailable];
+    }
 }
 
 
@@ -766,7 +774,16 @@
 
 #pragma mark - Helper methods
 
-
+-(void)autoplayVideoIfAvailable
+{
+    NSArray* videoSubset = [[self.channel.videoInstances array] filteredArrayUsingPredicate:[NSPredicate predicateWithFormat:@"uniqueId == %@",self.autoplayVideoId]];
+    if([videoSubset count] ==1)
+    {
+        [self displayVideoViewerWithVideoInstanceArray: self.channel.videoInstances.array
+                                      andSelectedIndex: [self.channel.videoInstances indexOfObject:[videoSubset objectAtIndex:0]]];
+        self.autoplayVideoId= nil;
+    }
+}
 
 
 #pragma mark - LXReorderableCollectionViewDelegateFlowLayout methods
