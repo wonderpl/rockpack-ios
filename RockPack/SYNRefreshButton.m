@@ -41,7 +41,15 @@
         
         self.self.button = [UIButton buttonWithType:UIButtonTypeCustom];
         self.button.frame = bg.frame;
+        
+        self.spinner = [[UIActivityIndicatorView alloc] init];
+        self.spinner.color = [UIColor colorWithRed:162.0/255.0 green:172.0/255.0 blue:176.0/255.0 alpha:1.0];
+        
+        
+        self.spinner.frame = bg.frame;
+        
         [self addSubview: self.button];
+        [self addSubview:self.spinner];
     }
     
     return self;
@@ -81,42 +89,17 @@
 
 - (void) spinRefreshButton: (BOOL) spin
 {
+        
     if (spin)
     {
-        [CATransaction begin];
-        
-        [CATransaction setValue: (id) kCFBooleanTrue
-                         forKey: kCATransactionDisableActions];
-        
-        CGRect frame = self.image.frame;
-        self.image.layer.anchorPoint = CGPointMake(0.5, 0.5);
-        self.image.layer.position = CGPointMake(frame.origin.x + 0.5 * frame.size.width, frame.origin.y + 0.5 * frame.size.height);
-        [CATransaction commit];
-        
-        [CATransaction begin];
-        
-        [CATransaction setValue: (id)kCFBooleanFalse
-                         forKey: kCATransactionDisableActions];
-        
-        [CATransaction setValue: [NSNumber numberWithFloat: 2.0]
-                         forKey: kCATransactionAnimationDuration];
-        
-        CABasicAnimation *animation;
-        animation = [CABasicAnimation animationWithKeyPath: @"transform.rotation.z"];
-        animation.fromValue = [NSNumber numberWithFloat: 0.0];
-        animation.toValue = [NSNumber numberWithFloat: 2 * M_PI];
-        animation.timingFunction = [CAMediaTimingFunction functionWithName: kCAMediaTimingFunctionLinear];
-        animation.speed = 1.0f;
-        animation.delegate = self;
-        
-        [self.image.layer addAnimation: animation
-                           forKey: @"rotationAnimation"];
-        
-        [CATransaction commit];
+        [self.spinner startAnimating];
+        self.image.alpha = 0.0;
+
     }
     else
     {
-        [self.image.layer removeAllAnimations];
+        [self.spinner stopAnimating];
+        self.image.alpha = 1.0;
     }
 }
 

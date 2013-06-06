@@ -11,6 +11,8 @@
 
 @interface SYNRefreshButton : UIControl
 
+@property (nonatomic, strong) IBOutlet UIActivityIndicatorView* spinner;
+
 - (void) startRefreshCycle;
 - (void) endRefreshCycle;
 
