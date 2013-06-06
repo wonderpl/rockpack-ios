@@ -85,13 +85,13 @@
     if (isIPhone)
         flowLayout = [SYNIntegralCollectionViewFlowLayout layoutWithItemSize: CGSizeMake(158.0f, 169.0f)
                                                      minimumInterItemSpacing: 0.0
-                                                          minimumLineSpacing: 4.0
+                                                          minimumLineSpacing: 6.0
                                                              scrollDirection: UICollectionViewScrollDirectionVertical
-                                                                sectionInset: UIEdgeInsetsMake(2.0, 2.0, 6.0, 2.0)];
+                                                                sectionInset: UIEdgeInsetsMake(2.0, 2.0, 46.0, 2.0)];
     else
         flowLayout = [SYNIntegralCollectionViewFlowLayout layoutWithItemSize: [self itemSize]
                                                      minimumInterItemSpacing: 0.0
-                                                          minimumLineSpacing: 0.0
+                                                          minimumLineSpacing: 2.0
                                                              scrollDirection: UICollectionViewScrollDirectionVertical
                                                                 sectionInset: UIEdgeInsetsMake(6.0, 6.0, 5.0, 6.0)];
         
