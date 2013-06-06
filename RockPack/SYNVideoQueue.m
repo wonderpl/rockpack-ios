@@ -136,13 +136,13 @@
     
     BOOL isIPhone = [SYNDeviceManager.sharedInstance isIPhone];
     
-    if(isIPhone)
+    if (isIPhone)
     {
         // Only one video isever added at a time on iPhone. Clear out any previously started queue.
         [self clearVideoQueue];
     }
     
-    if(!self.currentlyCreatingChannel) // create channel if there is none
+    if (!self.currentlyCreatingChannel) // create channel if there is none
     {
         self.currentlyCreatingChannel = [Channel insertInManagedObjectContext: self.appDelegate.channelsManagedObjectContext];
         
@@ -157,20 +157,17 @@
         self.currentlyCreatingChannel.uniqueId = kNewChannelPlaceholderId;
         
         [self.appDelegate saveChannelsContext];
-        
-        
-        
     }
     else // if there is a channel check of the video is a duplicate
     {
         for (VideoInstance* existingInstance in self.currentlyCreatingChannel.videoInstances)
-            if([existingInstance.video.uniqueId isEqualToString:videoInstance.video.uniqueId])
+        {
+            if ([existingInstance.video.uniqueId isEqualToString:videoInstance.video.uniqueId])
+            {
                 return;
-            
+            }
+        }
     }
-    
-    
-    
     
     VideoInstance* copyOfVideoInstance = [VideoInstance instanceFromVideoInstance: videoInstance
                                                         usingManagedObjectContext: self.appDelegate.channelsManagedObjectContext
