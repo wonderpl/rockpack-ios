@@ -316,7 +316,9 @@ enum ChannelCoverSelectorState {
                                      {
                                          ALAssetRepresentation* representation = [result defaultRepresentation];
                                          GKImageCropViewController* cropViewController = [[GKImageCropViewController alloc]init];
-                                         UIImage* selectedImage = [UIImage imageWithCGImage: [representation fullResolutionImage]];
+                                         CGFloat scale = representation.scale;
+                                         UIImageOrientation orientation = representation.orientation;
+                                         UIImage* selectedImage = [UIImage imageWithCGImage: [representation fullResolutionImage] scale:scale orientation:(UIImageOrientation)orientation];
                                          cropViewController.sourceImage = selectedImage;
                                          cropViewController.cropSize = CGSizeMake(280,280);
                                          cropViewController.delegate = self;
