@@ -2,10 +2,10 @@
 <archive type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="8.00">
 	<data>
 		<int key="IBDocument.SystemTarget">1552</int>
-		<string key="IBDocument.SystemVersion">12C3006</string>
+		<string key="IBDocument.SystemVersion">12E55</string>
 		<string key="IBDocument.InterfaceBuilderVersion">3084</string>
-		<string key="IBDocument.AppKitVersion">1187.34</string>
-		<string key="IBDocument.HIToolboxVersion">625.00</string>
+		<string key="IBDocument.AppKitVersion">1187.39</string>
+		<string key="IBDocument.HIToolboxVersion">626.00</string>
 		<object class="NSMutableDictionary" key="IBDocument.PluginVersions">
 			<string key="NS.key.0">com.apple.InterfaceBuilder.IBCocoaTouchPlugin</string>
 			<string key="NS.object.0">2083</string>
@@ -64,7 +64,7 @@
 								<string key="NSFrame">{{15, 170}, {290, 83}}</string>
 								<reference key="NSSuperview" ref="126965443"/>
 								<reference key="NSWindow"/>
-								<reference key="NSNextKeyView" ref="254541825"/>
+								<reference key="NSNextKeyView" ref="552180520"/>
 								<string key="NSReuseIdentifierKey">_NS:9</string>
 								<bool key="IBUIUserInteractionEnabled">NO</bool>
 								<string key="targetRuntimeIdentifier">IBCocoaTouchFramework</string>
@@ -186,7 +186,7 @@
 								<string key="NSFrame">{{160, 334}, {145, 54}}</string>
 								<reference key="NSSuperview" ref="126965443"/>
 								<reference key="NSWindow"/>
-								<reference key="NSNextKeyView" ref="260939047"/>
+								<reference key="NSNextKeyView" ref="254541825"/>
 								<string key="NSReuseIdentifierKey">_NS:9</string>
 								<bool key="IBUIOpaque">NO</bool>
 								<string key="targetRuntimeIdentifier">IBCocoaTouchFramework</string>
@@ -214,6 +214,7 @@
 						<string key="NSFrameSize">{320, 548}</string>
 						<reference key="NSSuperview" ref="191373211"/>
 						<reference key="NSWindow"/>
+						<reference key="NSNextKeyView" ref="260939047"/>
 						<string key="NSReuseIdentifierKey">_NS:9</string>
 						<object class="NSColor" key="IBUIBackgroundColor" id="1016712649">
 							<int key="NSColorSpace">3</int>
@@ -300,9 +301,9 @@
 								<int key="IBUIContentVerticalAlignment">0</int>
 								<string key="IBUIText"/>
 								<string key="IBUIPlaceholder">USERNAME</string>
-								<object class="NSColor" key="IBUITextColor">
-									<int key="NSColorSpace">2</int>
-									<bytes key="NSRGB">MC42IDAuNiAwLjYAA</bytes>
+								<object class="NSColor" key="IBUITextColor" id="389502267">
+									<int key="NSColorSpace">3</int>
+									<bytes key="NSWhite">MC4zMzMzMzMzMzMzAA</bytes>
 								</object>
 								<bool key="IBUIAdjustsFontSizeToFit">YES</bool>
 								<float key="IBUIMinimumFontSize">17</float>
@@ -336,10 +337,7 @@
 								<int key="IBUIContentVerticalAlignment">0</int>
 								<string key="IBUIText"/>
 								<string key="IBUIPlaceholder">PASSWORD</string>
-								<object class="NSColor" key="IBUITextColor">
-									<int key="NSColorSpace">2</int>
-									<bytes key="NSRGB">MC42IDAuNiAwLjYAA</bytes>
-								</object>
+								<reference key="IBUITextColor" ref="389502267"/>
 								<bool key="IBUIAdjustsFontSizeToFit">YES</bool>
 								<float key="IBUIMinimumFontSize">17</float>
 								<object class="IBUITextInputTraits" key="IBUITextInputTraits">
@@ -427,10 +425,7 @@
 								<int key="IBUIContentVerticalAlignment">0</int>
 								<string key="IBUIText"/>
 								<string key="IBUIPlaceholder">USERNAME OR EMAIL</string>
-								<object class="NSColor" key="IBUITextColor">
-									<int key="NSColorSpace">2</int>
-									<bytes key="NSRGB">MC42IDAuNiAwLjYAA</bytes>
-								</object>
+								<reference key="IBUITextColor" ref="389502267"/>
 								<bool key="IBUIAdjustsFontSizeToFit">YES</bool>
 								<float key="IBUIMinimumFontSize">17</float>
 								<object class="IBUITextInputTraits" key="IBUITextInputTraits">
@@ -547,10 +542,7 @@
 								<int key="IBUIContentVerticalAlignment">0</int>
 								<string key="IBUIText"/>
 								<string key="IBUIPlaceholder">USERNAME</string>
-								<object class="NSColor" key="IBUITextColor">
-									<int key="NSColorSpace">2</int>
-									<bytes key="NSRGB">MC42IDAuNiAwLjYAA</bytes>
-								</object>
+								<reference key="IBUITextColor" ref="389502267"/>
 								<int key="IBUITextAlignment">1</int>
 								<bool key="IBUIAdjustsFontSizeToFit">YES</bool>
 								<float key="IBUIMinimumFontSize">17</float>
@@ -692,10 +684,7 @@
 								<int key="IBUIContentVerticalAlignment">0</int>
 								<string key="IBUIText"/>
 								<string key="IBUIPlaceholder">EMAIL</string>
-								<object class="NSColor" key="IBUITextColor">
-									<int key="NSColorSpace">2</int>
-									<bytes key="NSRGB">MC42IDAuNiAwLjYAA</bytes>
-								</object>
+								<reference key="IBUITextColor" ref="389502267"/>
 								<int key="IBUITextAlignment">1</int>
 								<bool key="IBUIAdjustsFontSizeToFit">YES</bool>
 								<float key="IBUIMinimumFontSize">17</float>
@@ -723,10 +712,7 @@
 								<int key="IBUIContentVerticalAlignment">0</int>
 								<string key="IBUIText"/>
 								<string key="IBUIPlaceholder">PASSWORD</string>
-								<object class="NSColor" key="IBUITextColor">
-									<int key="NSColorSpace">2</int>
-									<bytes key="NSRGB">MC42IDAuNiAwLjYAA</bytes>
-								</object>
+								<reference key="IBUITextColor" ref="389502267"/>
 								<int key="IBUITextAlignment">1</int>
 								<bool key="IBUIAdjustsFontSizeToFit">YES</bool>
 								<float key="IBUIMinimumFontSize">17</float>
@@ -754,10 +740,7 @@
 								<int key="IBUIContentVerticalAlignment">0</int>
 								<string key="IBUIText"/>
 								<string key="IBUIPlaceholder">MM</string>
-								<object class="NSColor" key="IBUITextColor">
-									<int key="NSColorSpace">2</int>
-									<bytes key="NSRGB">MC42IDAuNiAwLjYAA</bytes>
-								</object>
+								<reference key="IBUITextColor" ref="389502267"/>
 								<int key="IBUITextAlignment">1</int>
 								<bool key="IBUIAdjustsFontSizeToFit">YES</bool>
 								<float key="IBUIMinimumFontSize">17</float>
@@ -784,10 +767,7 @@
 								<int key="IBUIContentVerticalAlignment">0</int>
 								<string key="IBUIText"/>
 								<string key="IBUIPlaceholder">YYYY</string>
-								<object class="NSColor" key="IBUITextColor">
-									<int key="NSColorSpace">2</int>
-									<bytes key="NSRGB">MC42IDAuNiAwLjYAA</bytes>
-								</object>
+								<reference key="IBUITextColor" ref="389502267"/>
 								<int key="IBUITextAlignment">1</int>
 								<bool key="IBUIAdjustsFontSizeToFit">YES</bool>
 								<float key="IBUIMinimumFontSize">17</float>
@@ -814,10 +794,7 @@
 								<int key="IBUIContentVerticalAlignment">0</int>
 								<string key="IBUIText"/>
 								<string key="IBUIPlaceholder">DD</string>
-								<object class="NSColor" key="IBUITextColor">
-									<int key="NSColorSpace">2</int>
-									<bytes key="NSRGB">MC42IDAuNiAwLjYAA</bytes>
-								</object>
+								<reference key="IBUITextColor" ref="389502267"/>
 								<int key="IBUITextAlignment">1</int>
 								<bool key="IBUIAdjustsFontSizeToFit">YES</bool>
 								<float key="IBUIMinimumFontSize">17</float>
@@ -1916,27 +1893,36 @@
 				<string key="22.IBPluginDependency">com.apple.InterfaceBuilder.IBCocoaTouchPlugin</string>
 				<string key="23.IBPluginDependency">com.apple.InterfaceBuilder.IBCocoaTouchPlugin</string>
 				<string key="24.IBPluginDependency">com.apple.InterfaceBuilder.IBCocoaTouchPlugin</string>
+				<string key="25.CustomClassName">SYNTextFieldLoginiPhone</string>
 				<string key="25.IBPluginDependency">com.apple.InterfaceBuilder.IBCocoaTouchPlugin</string>
+				<string key="26.CustomClassName">SYNTextFieldLoginiPhone</string>
 				<string key="26.IBPluginDependency">com.apple.InterfaceBuilder.IBCocoaTouchPlugin</string>
 				<string key="27.IBPluginDependency">com.apple.InterfaceBuilder.IBCocoaTouchPlugin</string>
+				<string key="28.CustomClassName">SYNTextFieldLoginiPhone</string>
 				<string key="28.IBPluginDependency">com.apple.InterfaceBuilder.IBCocoaTouchPlugin</string>
 				<string key="31.IBPluginDependency">com.apple.InterfaceBuilder.IBCocoaTouchPlugin</string>
 				<string key="33.IBPluginDependency">com.apple.InterfaceBuilder.IBCocoaTouchPlugin</string>
 				<string key="34.IBPluginDependency">com.apple.InterfaceBuilder.IBCocoaTouchPlugin</string>
 				<string key="36.IBPluginDependency">com.apple.InterfaceBuilder.IBCocoaTouchPlugin</string>
+				<string key="37.CustomClassName">SYNTextFieldLoginiPhone</string>
 				<string key="37.IBPluginDependency">com.apple.InterfaceBuilder.IBCocoaTouchPlugin</string>
 				<string key="38.IBPluginDependency">com.apple.InterfaceBuilder.IBCocoaTouchPlugin</string>
 				<string key="39.IBPluginDependency">com.apple.InterfaceBuilder.IBCocoaTouchPlugin</string>
 				<string key="4.IBPluginDependency">com.apple.InterfaceBuilder.IBCocoaTouchPlugin</string>
+				<string key="40.CustomClassName">SYNTextFieldLoginiPhone</string>
 				<string key="40.IBPluginDependency">com.apple.InterfaceBuilder.IBCocoaTouchPlugin</string>
+				<string key="41.CustomClassName">SYNTextFieldLoginiPhone</string>
 				<string key="41.IBPluginDependency">com.apple.InterfaceBuilder.IBCocoaTouchPlugin</string>
 				<string key="43.IBPluginDependency">com.apple.InterfaceBuilder.IBCocoaTouchPlugin</string>
 				<string key="44.IBPluginDependency">com.apple.InterfaceBuilder.IBCocoaTouchPlugin</string>
 				<string key="46.IBPluginDependency">com.apple.InterfaceBuilder.IBCocoaTouchPlugin</string>
 				<string key="47.IBPluginDependency">com.apple.InterfaceBuilder.IBCocoaTouchPlugin</string>
 				<string key="48.IBPluginDependency">com.apple.InterfaceBuilder.IBCocoaTouchPlugin</string>
+				<string key="50.CustomClassName">SYNTextFieldLoginiPhone</string>
 				<string key="50.IBPluginDependency">com.apple.InterfaceBuilder.IBCocoaTouchPlugin</string>
+				<string key="51.CustomClassName">SYNTextFieldLoginiPhone</string>
 				<string key="51.IBPluginDependency">com.apple.InterfaceBuilder.IBCocoaTouchPlugin</string>
+				<string key="52.CustomClassName">SYNTextFieldLoginiPhone</string>
 				<string key="52.IBPluginDependency">com.apple.InterfaceBuilder.IBCocoaTouchPlugin</string>
 				<string key="94.IBPluginDependency">com.apple.InterfaceBuilder.IBCocoaTouchPlugin</string>
 				<string key="95.IBPluginDependency">com.apple.InterfaceBuilder.IBCocoaTouchPlugin</string>
@@ -1977,9 +1963,9 @@
 						<string key="backButton">UIButton</string>
 						<string key="cancelButton">UIButton</string>
 						<string key="confirmButton">UIButton</string>
-						<string key="ddInputField">UITextField</string>
+						<string key="ddInputField">SYNTextFieldLoginiPhone</string>
 						<string key="dobView">UIView</string>
-						<string key="emailInputField">UITextField</string>
+						<string key="emailInputField">SYNTextFieldLoginiPhone</string>
 						<string key="facebookButton">UIButton</string>
 						<string key="firstSignupView">UIView</string>
 						<string key="initialView">UIView</string>
@@ -1987,25 +1973,25 @@
 						<string key="loginButton">UIButton</string>
 						<string key="loginErrorLabel">UILabel</string>
 						<string key="loginView">UIView</string>
-						<string key="mmInputField">UITextField</string>
+						<string key="mmInputField">SYNTextFieldLoginiPhone</string>
 						<string key="nextButton">UIButton</string>
 						<string key="passwordForgottenButton">UIButton</string>
-						<string key="passwordInputField">UITextField</string>
+						<string key="passwordInputField">SYNTextFieldLoginiPhone</string>
 						<string key="passwordResetErrorLabel">UILabel</string>
 						<string key="passwordView">UIView</string>
-						<string key="registeringUserEmailInputField">UITextField</string>
-						<string key="registeringUserNameInputField">UITextField</string>
-						<string key="registeringUserPasswordInputField">UITextField</string>
+						<string key="registeringUserEmailInputField">SYNTextFieldLoginiPhone</string>
+						<string key="registeringUserNameInputField">SYNTextFieldLoginiPhone</string>
+						<string key="registeringUserPasswordInputField">SYNTextFieldLoginiPhone</string>
 						<string key="rockpackLogoImage">UIImageView</string>
 						<string key="secondSignupView">UIView</string>
 						<string key="signupButton">UIButton</string>
 						<string key="signupErrorLabel">UILabel</string>
 						<string key="termsAndConditionsLabel">UILabel</string>
 						<string key="termsAndConditionsView">UIView</string>
-						<string key="userNameInputField">UITextField</string>
+						<string key="userNameInputField">SYNTextFieldLoginiPhone</string>
 						<string key="wellSendYouLabel">UILabel</string>
 						<string key="whatsOnYourChannelLabel">UILabel</string>
-						<string key="yyyyInputField">UITextField</string>
+						<string key="yyyyInputField">SYNTextFieldLoginiPhone</string>
 					</dictionary>
 					<dictionary class="NSMutableDictionary" key="toOneOutletInfosByName">
 						<object class="IBToOneOutletInfo" key="activityIndicator">
@@ -2034,7 +2020,7 @@
 						</object>
 						<object class="IBToOneOutletInfo" key="ddInputField">
 							<string key="name">ddInputField</string>
-							<string key="candidateClassName">UITextField</string>
+							<string key="candidateClassName">SYNTextFieldLoginiPhone</string>
 						</object>
 						<object class="IBToOneOutletInfo" key="dobView">
 							<string key="name">dobView</string>
@@ -2042,7 +2028,7 @@
 						</object>
 						<object class="IBToOneOutletInfo" key="emailInputField">
 							<string key="name">emailInputField</string>
-							<string key="candidateClassName">UITextField</string>
+							<string key="candidateClassName">SYNTextFieldLoginiPhone</string>
 						</object>
 						<object class="IBToOneOutletInfo" key="facebookButton">
 							<string key="name">facebookButton</string>
@@ -2074,7 +2060,7 @@
 						</object>
 						<object class="IBToOneOutletInfo" key="mmInputField">
 							<string key="name">mmInputField</string>
-							<string key="candidateClassName">UITextField</string>
+							<string key="candidateClassName">SYNTextFieldLoginiPhone</string>
 						</object>
 						<object class="IBToOneOutletInfo" key="nextButton">
 							<string key="name">nextButton</string>
@@ -2086,7 +2072,7 @@
 						</object>
 						<object class="IBToOneOutletInfo" key="passwordInputField">
 							<string key="name">passwordInputField</string>
-							<string key="candidateClassName">UITextField</string>
+							<string key="candidateClassName">SYNTextFieldLoginiPhone</string>
 						</object>
 						<object class="IBToOneOutletInfo" key="passwordResetErrorLabel">
 							<string key="name">passwordResetErrorLabel</string>
@@ -2098,15 +2084,15 @@
 						</object>
 						<object class="IBToOneOutletInfo" key="registeringUserEmailInputField">
 							<string key="name">registeringUserEmailInputField</string>
-							<string key="candidateClassName">UITextField</string>
+							<string key="candidateClassName">SYNTextFieldLoginiPhone</string>
 						</object>
 						<object class="IBToOneOutletInfo" key="registeringUserNameInputField">
 							<string key="name">registeringUserNameInputField</string>
-							<string key="candidateClassName">UITextField</string>
+							<string key="candidateClassName">SYNTextFieldLoginiPhone</string>
 						</object>
 						<object class="IBToOneOutletInfo" key="registeringUserPasswordInputField">
 							<string key="name">registeringUserPasswordInputField</string>
-							<string key="candidateClassName">UITextField</string>
+							<string key="candidateClassName">SYNTextFieldLoginiPhone</string>
 						</object>
 						<object class="IBToOneOutletInfo" key="rockpackLogoImage">
 							<string key="name">rockpackLogoImage</string>
@@ -2134,7 +2120,7 @@
 						</object>
 						<object class="IBToOneOutletInfo" key="userNameInputField">
 							<string key="name">userNameInputField</string>
-							<string key="candidateClassName">UITextField</string>
+							<string key="candidateClassName">SYNTextFieldLoginiPhone</string>
 						</object>
 						<object class="IBToOneOutletInfo" key="wellSendYouLabel">
 							<string key="name">wellSendYouLabel</string>
@@ -2146,12 +2132,20 @@
 						</object>
 						<object class="IBToOneOutletInfo" key="yyyyInputField">
 							<string key="name">yyyyInputField</string>
-							<string key="candidateClassName">UITextField</string>
+							<string key="candidateClassName">SYNTextFieldLoginiPhone</string>
 						</object>
 					</dictionary>
 					<object class="IBClassDescriptionSource" key="sourceIdentifier">
 						<string key="majorKey">IBProjectSource</string>
 						<string key="minorKey">./Classes/SYNLoginViewControllerIphone.h</string>
+					</object>
+				</object>
+				<object class="IBPartialClassDescription">
+					<string key="className">SYNTextFieldLoginiPhone</string>
+					<string key="superclassName">UITextField</string>
+					<object class="IBClassDescriptionSource" key="sourceIdentifier">
+						<string key="majorKey">IBProjectSource</string>
+						<string key="minorKey">./Classes/SYNTextFieldLoginiPhone.h</string>
 					</object>
 				</object>
 			</array>

@@ -15,46 +15,45 @@
 #import "SYNOAuthNetworkEngine.h"
 #import "UIFont+SYNFont.h"
 #import <FacebookSDK/FacebookSDK.h>
+#import "SYNTextFieldLoginiPhone.h"
 
 #define kLoginAnimationTransitionDuration 0.3f
 
 @interface SYNLoginViewControllerIphone () <UITextFieldDelegate, SYNImagePickerControllerDelegate>
 
-@property (weak, nonatomic) IBOutlet UIView *initialView;
-@property (weak, nonatomic) IBOutlet UIView *loginView;
-@property (weak, nonatomic) IBOutlet UIView *passwordView;
-@property (weak, nonatomic) IBOutlet UIView *firstSignupView;
-@property (weak, nonatomic) IBOutlet UIView *secondSignupView;
-@property (weak, nonatomic) IBOutlet UIButton *backButton;
-@property (weak, nonatomic) IBOutlet UIView *termsAndConditionsView;
 
+@property (nonatomic, strong) IBOutlet SYNTextFieldLoginiPhone* ddInputField;
+@property (nonatomic, strong) IBOutlet SYNTextFieldLoginiPhone* emailInputField;
+@property (nonatomic, strong) IBOutlet SYNTextFieldLoginiPhone* mmInputField;
+@property (nonatomic, strong) IBOutlet SYNTextFieldLoginiPhone* passwordInputField;
+@property (nonatomic, strong) IBOutlet SYNTextFieldLoginiPhone* registeringUserEmailInputField;
+@property (nonatomic, strong) IBOutlet SYNTextFieldLoginiPhone* registeringUserNameInputField;
+@property (nonatomic, strong) IBOutlet SYNTextFieldLoginiPhone* registeringUserPasswordInputField;
+@property (nonatomic, strong) IBOutlet SYNTextFieldLoginiPhone* userNameInputField;
+@property (nonatomic, strong) IBOutlet SYNTextFieldLoginiPhone* yyyyInputField;
+@property (nonatomic, strong) IBOutlet UIImageView* loginBackgroundImage;
+@property (nonatomic, strong) IBOutlet UIImageView* rockpackLogoImage;
+@property (nonatomic, strong) IBOutlet UILabel* termsAndConditionsLabel;
+@property (nonatomic, strong) IBOutlet UILabel* wellSendYouLabel;
+@property (nonatomic, strong) IBOutlet UILabel* whatsOnYourChannelLabel;
+@property (nonatomic, strong) IBOutlet UIView* dobView;
+@property (strong, nonatomic) NSDateFormatter * dateFormatter;
+@property (weak, nonatomic) IBOutlet UIButton *backButton;
 @property (weak, nonatomic) IBOutlet UIButton *cancelButton;
 @property (weak, nonatomic) IBOutlet UIButton *confirmButton;
+@property (weak, nonatomic) IBOutlet UIButton *facebookButton;
+@property (weak, nonatomic) IBOutlet UIButton *loginButton;
 @property (weak, nonatomic) IBOutlet UIButton *nextButton;
 @property (weak, nonatomic) IBOutlet UIButton *signupButton;
-@property (weak, nonatomic) IBOutlet UIButton *loginButton;
-@property (weak, nonatomic) IBOutlet UIButton *facebookButton;
-
 @property (weak, nonatomic) IBOutlet UILabel *loginErrorLabel;
 @property (weak, nonatomic) IBOutlet UILabel *passwordResetErrorLabel;
 @property (weak, nonatomic) IBOutlet UILabel *signupErrorLabel;
-@property (strong, nonatomic) NSDateFormatter * dateFormatter;
-
-@property (nonatomic, strong) IBOutlet UITextField* userNameInputField;
-@property (nonatomic, strong) IBOutlet UITextField* passwordInputField;
-@property (nonatomic, strong) IBOutlet UITextField* registeringUserNameInputField;
-@property (nonatomic, strong) IBOutlet UITextField* registeringUserEmailInputField;
-@property (nonatomic, strong) IBOutlet UITextField* registeringUserPasswordInputField;
-@property (nonatomic, strong) IBOutlet UITextField* emailInputField;
-@property (nonatomic, strong) IBOutlet UIView* dobView;
-@property (nonatomic, strong) IBOutlet UITextField* ddInputField;
-@property (nonatomic, strong) IBOutlet UITextField* mmInputField;
-@property (nonatomic, strong) IBOutlet UITextField* yyyyInputField;
-@property (nonatomic, strong) IBOutlet UILabel* wellSendYouLabel;
-@property (nonatomic, strong) IBOutlet UILabel* termsAndConditionsLabel;
-@property (nonatomic, strong) IBOutlet UILabel* whatsOnYourChannelLabel;
-@property (nonatomic, strong) IBOutlet UIImageView* loginBackgroundImage;
-@property (nonatomic, strong) IBOutlet UIImageView* rockpackLogoImage;
+@property (weak, nonatomic) IBOutlet UIView *firstSignupView;
+@property (weak, nonatomic) IBOutlet UIView *initialView;
+@property (weak, nonatomic) IBOutlet UIView *loginView;
+@property (weak, nonatomic) IBOutlet UIView *passwordView;
+@property (weak, nonatomic) IBOutlet UIView *secondSignupView;
+@property (weak, nonatomic) IBOutlet UIView *termsAndConditionsView;
 
 
 
