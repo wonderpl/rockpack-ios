@@ -71,14 +71,7 @@
 		AssertOrLog(@"enqueueSignedOperation - Not authenticated");
 	}
 	else
-    {
-        
-        
-        // We need to make a copy of the request first, so that we can re-submit on authentication error
-//        [request addCommonHandlerToNetworkOperation: networkOperation
-//                               completionHandler: completionBlock
-//                                    errorHandler: errorBlock];
-        
+    {   
         [request setUsername: kOAuth2ClientId
                     password: kOAuth2ClientSecret];
         
@@ -155,10 +148,13 @@
                       completionHandler: (MKNKLoginCompleteBlock) completionBlock
                            errorHandler: (MKNKUserErrorBlock) errorBlock
 {
+    // We need to handle locale differently (so add the locale to the URL) as opposed to the other parameters which are in the POST body
+    NSString *apiString = [NSString stringWithFormat: @"%@?locale=%@", kAPISecureExternalLogin, self.localeString];
+    
     NSDictionary* postLoginParams = @{@"external_system" : @"facebook",
                                       @"external_token" : facebookAccessToken};
     
-    SYNNetworkOperationJsonObject *networkOperation = (SYNNetworkOperationJsonObject*) [self operationWithPath: kAPISecureExternalLogin
+    SYNNetworkOperationJsonObject *networkOperation = (SYNNetworkOperationJsonObject*) [self operationWithPath: apiString
                                                                                                         params: postLoginParams
                                                                                                     httpMethod: @"POST"
                                                                                                            ssl: TRUE];
@@ -176,11 +172,14 @@
                 completionHandler: (MKNKLoginCompleteBlock) completionBlock
                      errorHandler: (MKNKUserErrorBlock) errorBlock
 {
+    // We need to handle locale differently (so add the locale to the URL) as opposed to the other parameters which are in the POST body
+    NSString *apiString = [NSString stringWithFormat: @"%@?locale=%@", kAPISecureLogin, self.localeString];
+    
     NSDictionary* postLoginParams = @{@"grant_type" : @"password",
                                       @"username" : username,
                                       @"password" : password};
     
-    SYNNetworkOperationJsonObject *networkOperation = (SYNNetworkOperationJsonObject*) [self operationWithPath: kAPISecureLogin
+    SYNNetworkOperationJsonObject *networkOperation = (SYNNetworkOperationJsonObject*) [self operationWithPath: apiString
                                                                                                         params: postLoginParams
                                                                                                     httpMethod: @"POST"
                                                                                                            ssl: TRUE];
@@ -195,14 +194,13 @@
 - (IBAction) refreshOAuthTokenWithCompletionHandler: (MKNKUserErrorBlock) completionBlock
                                        errorHandler: (MKNKUserSuccessBlock) errorBlock
 {
+    // We need to handle locale differently (so add the locale to the URL) as opposed to the other parameters which are in the POST body
+    NSString *apiString = [NSString stringWithFormat: @"%@?locale=%@", kAPIRefreshToken, self.localeString];
+    
     NSDictionary *refreshParams = @{@"grant_type" : @"refresh_token",
                                     @"refresh_token" : self.oAuth2Credential.refreshToken};
-    
-//#warning "Test code - REMOVE"
-//    NSDictionary *refreshParams = @{@"grant_type" : @"refresh_token",
-//                                    @"refresh_token" : @"ssss"};
-    
-    SYNNetworkOperationJsonObject *networkOperation = (SYNNetworkOperationJsonObject*) [self operationWithPath: kAPIRefreshToken
+
+    SYNNetworkOperationJsonObject *networkOperation = (SYNNetworkOperationJsonObject*) [self operationWithPath: apiString
                                                                                                         params: refreshParams
                                                                                                     httpMethod: @"POST"
                                                                                                            ssl: TRUE];  
@@ -249,7 +247,10 @@
             completionHandler: (MKNKLoginCompleteBlock) completionBlock
                  errorHandler: (MKNKUserErrorBlock) errorBlock
 {
-    SYNNetworkOperationJsonObject *networkOperation = (SYNNetworkOperationJsonObject*)[self operationWithPath: kAPISecureRegister
+    // We need to handle locale differently (so add the locale to the URL) as opposed to the other parameters which are in the POST body
+    NSString *apiString = [NSString stringWithFormat: @"%@?locale=%@", kAPISecureRegister, self.localeString];
+    
+    SYNNetworkOperationJsonObject *networkOperation = (SYNNetworkOperationJsonObject*)[self operationWithPath: apiString
                                                                                                        params: userData
                                                                                                    httpMethod: @"POST"
                                                                                                           ssl: TRUE];
@@ -269,7 +270,11 @@
                              errorHandler: (MKNKErrorBlock) errorBlock
 {
     NSDictionary* requestData = @{@"username" : username};
-    SYNNetworkOperationJsonObject *networkOperation = (SYNNetworkOperationJsonObject*)[self operationWithPath: kAPIPasswordReset
+
+    // We need to handle locale differently (so add the locale to the URL) as opposed to the other parameters which are in the POST body
+    NSString *apiString = [NSString stringWithFormat: @"%@?locale=%@", kAPIPasswordReset, self.localeString];
+    
+    SYNNetworkOperationJsonObject *networkOperation = (SYNNetworkOperationJsonObject*)[self operationWithPath: apiString
                                                                                                        params: requestData
                                                                                                    httpMethod: @"POST"
                                                                                                           ssl: TRUE];
@@ -318,8 +323,9 @@
     
     NSString *apiString = [kAPIGetUserNotifications stringByReplacingOccurrencesOfStrings: apiSubstitutionDictionary];
     
-    NSDictionary *params = @{@"mark_read" : indexes,
-                             @"locale" : self.localeString};
+    apiString = [NSString stringWithFormat: @"%@?locale=%@", apiString, self.localeString];
+    
+    NSDictionary *params = @{@"mark_read" : indexes};
     
     SYNNetworkOperationJsonObject *networkOperation = (SYNNetworkOperationJsonObject*)[self operationWithPath: apiString
                                                                                                        params: params
@@ -670,6 +676,8 @@
                              @"category" : category,
                              @"cover" : cover,
                              @"public" : @(isPublic)};
+
+    apiString = [NSString stringWithFormat: @"%@?locale=%@", apiString, self.localeString];
     
     SYNNetworkOperationJsonObject *networkOperation = (SYNNetworkOperationJsonObject*)[self operationWithPath: apiString
                                                                                                        params: params
@@ -829,6 +837,8 @@
                                                 @"CHANNELID" : channelId};
     
     NSString *apiString = [kAPIUpdateVideosForChannel stringByReplacingOccurrencesOfStrings: apiSubstitutionDictionary];
+
+    apiString = [NSString stringWithFormat: @"%@?locale=%@", apiString, self.localeString];
     
     SYNNetworkOperationJsonObject *networkOperation = (SYNNetworkOperationJsonObject*)[self operationWithPath: apiString
                                                                                                        params: nil
@@ -902,7 +912,6 @@
     NSDictionary *apiSubstitutionDictionary = @{@"USERID" : userId};
     
     NSString *apiString = [kAPIRecordUserActivity stringByReplacingOccurrencesOfStrings: apiSubstitutionDictionary];
-    
     
     // We need to handle locale differently (so add the locale to the URL) as opposed to the other parameters which are in the POST body
     apiString = [NSString stringWithFormat: @"%@?locale=%@", apiString, self.localeString];
@@ -1010,6 +1019,9 @@
     
     NSString *apiString = [kAPIUploadUserCoverArt stringByReplacingOccurrencesOfStrings: apiSubstitutionDictionary];
     
+    // We need to handle locale differently (so add the locale to the URL) as opposed to the other parameters which are in the POST body
+    apiString = [NSString stringWithFormat: @"%@?locale=%@", apiString, self.localeString];
+    
     SYNNetworkOperationJsonObject *networkOperation = (SYNNetworkOperationJsonObject*)[self operationWithPath: apiString
                                                                                                        params: nil
                                                                                                    httpMethod: @"POST"
@@ -1102,6 +1114,9 @@
     NSDictionary *apiSubstitutionDictionary = @{@"USERID" : userId};
     
     NSString *apiString = [kAPICreateUserSubscription stringByReplacingOccurrencesOfStrings: apiSubstitutionDictionary];
+
+    // We need to handle locale differently (so add the locale to the URL) as opposed to the other parameters which are in the POST body
+    apiString = [NSString stringWithFormat: @"%@?locale=%@", apiString, self.localeString];
     
     SYNNetworkOperationJsonObject *networkOperation = (SYNNetworkOperationJsonObject*)[self operationWithPath: apiString
                                                                                                        params: nil
