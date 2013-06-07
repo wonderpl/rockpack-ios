@@ -26,12 +26,12 @@
 @property (nonatomic, assign) BOOL disableTimeUpdating;
 @property (nonatomic, assign) BOOL fadeOutScheduled;
 @property (nonatomic, assign) BOOL fadeUpScheduled;
+@property (nonatomic, assign) BOOL hasReloadedWebView;
 @property (nonatomic, assign) BOOL notYetPlaying;
 @property (nonatomic, assign) BOOL playFlag;
 @property (nonatomic, assign) BOOL shuttledByUser;
-@property (nonatomic, assign) BOOL hasReloadedWebView;
-@property (nonatomic, assign) CGRect requestedFrame;
 @property (nonatomic, assign) CGRect originalShuttleBarFrame;
+@property (nonatomic, assign) CGRect requestedFrame;
 @property (nonatomic, assign) NSTimeInterval currentDuration;
 @property (nonatomic, assign) NSTimeInterval lastTime;
 @property (nonatomic, assign) int currentSelectedIndex;
@@ -39,6 +39,7 @@
 @property (nonatomic, strong) CABasicAnimation *placeholderBottomLayerAnimation;
 @property (nonatomic, strong) CABasicAnimation *placeholderMiddleLayerAnimation;
 @property (nonatomic, strong) NSArray *videoInstanceArray;
+@property (nonatomic, strong) NSString *channelCreator;
 @property (nonatomic, strong) NSString *sourceIdToReload;
 @property (nonatomic, strong) NSTimer *shuttleBarUpdateTimer;
 @property (nonatomic, strong) SYNVideoIndexUpdater indexUpdater;
@@ -48,6 +49,7 @@
 @property (nonatomic, strong) UIImageView *videoPlaceholderTopImageView;
 @property (nonatomic, strong) UILabel *currentTimeLabel;
 @property (nonatomic, strong) UILabel *durationLabel;
+@property (nonatomic, strong) UILabel *creatorLabel;
 @property (nonatomic, strong) UIProgressView *bufferingProgressView;
 @property (nonatomic, strong) UISlider *shuttleSlider;
 @property (nonatomic, strong) UIView *videoPlaceholderView;
@@ -140,7 +142,15 @@ static UIWebView* vimeoideoWebViewInstance;
     
     [newYouTubeWebView loadHTMLString: iFrameHTML
                               baseURL: [NSURL URLWithString: @"http://www.youtube.com"]];
-
+    
+#ifdef USE_HIRES_PLAYER
+    // If we are on the iPad then we need to super-size the webview so that we can scale down again
+    if ([SYNDeviceManager.sharedInstance isIPad])
+    {
+        newYouTubeWebView.transform = CGAffineTransformMakeScale(739.0f/1280.0f, 739.0f/1280.0f);
+    }
+#endif
+    
     return newYouTubeWebView;
 }
 
@@ -181,7 +191,11 @@ static UIWebView* vimeoideoWebViewInstance;
     
     if ([SYNDeviceManager.sharedInstance isIPad])
     {
+#ifdef USE_HIRES_PLAYER
+        width = 1280.0f;
+#else
         width = 739.0f;
+#endif
     }
     return width;
 }
@@ -193,7 +207,12 @@ static UIWebView* vimeoideoWebViewInstance;
     
     if ([SYNDeviceManager.sharedInstance isIPad])
     {
+#ifdef USE_HIRES_PLAYER
+        height = 768.0f;
+#else
         height = 416.0f;
+#endif
+
     }
     
     return height;
@@ -239,10 +258,18 @@ static UIWebView* vimeoideoWebViewInstance;
 
 
 - (void) updateWithFrame: (CGRect) frame
+          channelCreator: (NSString *) channelCreator
             indexUpdater: (SYNVideoIndexUpdater) indexUpdater;
 {
     self.requestedFrame = frame;
     self.indexUpdater = indexUpdater;
+    self.channelCreator = channelCreator;
+}
+
+- (void) updateChannelCreator: (NSString *) channelCreator
+{
+    self.channelCreator = channelCreator;
+    self.creatorLabel.text = channelCreator;
 }
 
 
@@ -514,19 +541,63 @@ static UIWebView* vimeoideoWebViewInstance;
 
 - (UIView *) createNewVideoPlaceholderView
 {
-    self.videoPlaceholderTopImageView = [self createNewVideoPlaceholderImageView: @"PlaceholderVideoTop.png"];
-    self.videoPlaceholderMiddleImageView = [self createNewVideoPlaceholderImageView: @"PlaceholderVideoMiddle.png"];
-    self.videoPlaceholderBottomImageView = [self createNewVideoPlaceholderImageView: @"PlaceholderVideoBottom.png"];
+    self.videoPlaceholderTopImageView = [self createNewVideoPlaceholderImageView: @"PlaceholderVideoTop"];
+    self.videoPlaceholderMiddleImageView = [self createNewVideoPlaceholderImageView: @"PlaceholderVideoMiddle"];
+    self.videoPlaceholderBottomImageView = [self createNewVideoPlaceholderImageView: @"PlaceholderVideoBottom"];
     
 #ifdef SHOW_BRANDING    
-    UIImage *brandingImage = [UIImage imageNamed: @"Icon.png"];
-    CGFloat imageOffsetX = self.view.bounds.size.width - brandingImage.size.width - 10;
-    CGFloat imageOffsetY = self.view.bounds.size.height - brandingImage.size.height - 10;
+    
+    UIButton *youTubeButton;
+    CGFloat youTubeButtonOffsetX;
+    CGFloat youTubeButtonOffsetY;
+    CGFloat creatorLabelOffsetX;
+    CGFloat creatorLabelOffsetY;
+    
+    UIImage *youTubeImage = [UIImage imageNamed: @"ButtonYouTubeDefault"];
+    
+    if ([SYNDeviceManager.sharedInstance isIPad])
+    {
+        youTubeButtonOffsetX = 320;
+        youTubeButtonOffsetY = 328;
+        creatorLabelOffsetX = 270;
+        creatorLabelOffsetY = youTubeButtonOffsetY + 23;
+    }
+    else
+    {
+        youTubeButtonOffsetX = 215;
+        youTubeButtonOffsetY = 8;
+        creatorLabelOffsetX = 10;
+        creatorLabelOffsetY = 12;
+    }
+    
+    // Create YouTube button
+    youTubeButton = [UIButton buttonWithType: UIButtonTypeCustom];
+    youTubeButton.frame =  CGRectMake(youTubeButtonOffsetX, youTubeButtonOffsetY, 100, 22);
+    
+    [youTubeButton setImage: youTubeImage
+                   forState: UIControlStateNormal];
+    
+    [youTubeButton addTarget: self
+                      action: @selector(openYouTubeURL:)
+            forControlEvents: UIControlEventTouchUpInside];
 
+    // Create channel creator label
+    self.creatorLabel = [[UILabel alloc] initWithFrame: CGRectMake(creatorLabelOffsetX, creatorLabelOffsetY, 200, 13)];
+    self.creatorLabel.backgroundColor = [UIColor clearColor];
+    self.creatorLabel.textColor = [UIColor colorWithWhite: 85.0f/255.0f alpha: 1.0f];
+    self.creatorLabel.font = [UIFont rockpackFontOfSize: 11.0f];
+    self.creatorLabel.text = self.channelCreator;
     
-    UIImageView *brandingView = [[UIImageView alloc] initWithFrame: CGRectMake(imageOffsetX, imageOffsetY, brandingImage.size.width, brandingImage.size.height)];
-    
-    brandingView.image = brandingImage;
+    // Alignment is different dependent on device
+    if ([SYNDeviceManager.sharedInstance isIPad])
+    {
+        self.creatorLabel.textAlignment = NSTextAlignmentCenter;
+    }
+    else
+    {
+        self.creatorLabel.textAlignment = NSTextAlignmentLeft;
+    }
+
 #endif
     
     // Pop them in a view to keep them together
@@ -537,7 +608,8 @@ static UIWebView* vimeoideoWebViewInstance;
     [videoPlaceholderView addSubview: self.videoPlaceholderTopImageView];
     
 #ifdef SHOW_BRANDING   
-    [videoPlaceholderView addSubview: brandingView];
+    [videoPlaceholderView addSubview: self.creatorLabel];
+    [videoPlaceholderView addSubview: youTubeButton];
 #endif
     
     [self.view addSubview: videoPlaceholderView];
@@ -1351,6 +1423,23 @@ static UIWebView* vimeoideoWebViewInstance;
                          self.videoPlaceholderView.alpha = 1.0f;
                      }
                      completion: nil];
+}
+
+
+#pragma mark - URL handling
+
+- (void) openYouTubeURL: (id) sender
+{
+    VideoInstance *videoInstance = self.videoInstanceArray [self.currentSelectedIndex];
+    
+    NSString *currentSourceId = videoInstance.video.sourceId;
+    NSString *URLString = [NSString stringWithFormat: @"http://www.youtube.com/watch?v=%@", currentSourceId];
+    NSURL *youTubeURL = [NSURL URLWithString: URLString];
+    
+    if ([[UIApplication sharedApplication] canOpenURL: youTubeURL])
+	{
+		[[UIApplication sharedApplication] openURL: youTubeURL];
+	}
 }
 
 @end

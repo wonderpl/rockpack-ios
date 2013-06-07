@@ -37,6 +37,7 @@
                                             UIPopoverControllerDelegate>
 
 @property (nonatomic, assign) CGRect originalFrame;
+@property (nonatomic, assign) CGRect originalSwipeFrame;
 @property (nonatomic, assign) int currentSelectedIndex;
 @property (nonatomic, getter = isVideoExpanded) BOOL videoExpanded;
 @property (nonatomic, strong) IBOutlet SYNPassthroughView *blackPanelView;
@@ -52,6 +53,7 @@
 @property (nonatomic, strong) IBOutlet BBCyclingLabel *channelCreatorLabel;
 @property (nonatomic, strong) IBOutlet BBCyclingLabel *channelTitleLabel;
 @property (nonatomic, strong) IBOutlet BBCyclingLabel *videoTitleLabel;
+@property (nonatomic, strong) IBOutlet SYNPassthroughView *placeholderView;
 @property (nonatomic, strong) IBOutlet UIView *swipeView;
 @property (nonatomic, strong) IBOutlet UIActivityIndicatorView *heartActivityIndicator;
 @property (nonatomic, strong) NSArray *videoInstanceArray;
@@ -134,7 +136,7 @@
         self.channelTitleLabel.textColor = [UIColor colorWithRed: 185.0f/ 255.0f green: 207.0f/ 255.0f blue: 216.0f/ 255.0f alpha: 1.0f];
         self.channelCreatorLabel.textColor = [UIColor colorWithRed: 108.0f/ 255.0f green: 117.0f/ 255.0f blue: 121.0f/ 255.0f alpha: 1.0f];
         self.channelCreatorLabel.textColor = [UIColor whiteColor];
-        self.channelCreatorLabel.text = @"xxxx";
+        self.channelCreatorLabel.text = @"";
         self.videoTitleLabel.textColor = [UIColor whiteColor];
     }
 
@@ -167,7 +169,7 @@
     {
         // iPhone
         videoView = self.view;
-        videoFrame = self.swipeView.frame;
+        videoFrame = self.placeholderView.frame;
         videoFrame.size.height = 180.0f;
         blackPanelFrame = CGRectMake(0, 0, 1024, 768);
     }
@@ -202,7 +204,7 @@
     self.videoPlaybackViewController = [SYNVideoPlaybackViewController sharedInstance];
 
     __weak SYNVideoViewerViewController* weakSelf = self;
-    [self.videoPlaybackViewController updateWithFrame: videoFrame
+    [self.videoPlaybackViewController updateWithFrame: videoFrame channelCreator: self.channelCreatorLabel.text
                                          indexUpdater: ^(int newIndex){
                                              weakSelf.currentSelectedIndex = newIndex;
                                              [weakSelf updateVideoDetailsForIndex: weakSelf.currentSelectedIndex];
@@ -272,7 +274,7 @@
     if ([SYNDeviceManager.sharedInstance isIPhone])
     {
         CGRect videoFrame = self.videoPlaybackViewController.view.frame;
-        videoFrame.origin = self.swipeView.frame.origin;
+        videoFrame.origin = self.placeholderView.frame.origin;
         self.videoPlaybackViewController.view.frame = videoFrame;
         
         [[NSNotificationCenter defaultCenter] addObserver: self
@@ -282,7 +284,8 @@
         
         self.currentOrientation = [[UIDevice currentDevice] orientation];
         [[UIDevice currentDevice] beginGeneratingDeviceOrientationNotifications];
-        self.originalFrame = self.swipeView.frame;
+        self.originalFrame = self.placeholderView.frame;
+        self.originalSwipeFrame = self.swipeView.frame;
         
         if (self.currentOrientation == UIDeviceOrientationLandscapeLeft)
         {
@@ -448,6 +451,7 @@
     else
     {
         self.channelCreatorLabel.text = videoInstance.channel.channelOwner.displayName;
+        [self.videoPlaybackViewController updateChannelCreator: videoInstance.channel.channelOwner.displayName];
     }
     
     self.channelTitleLabel.text = videoInstance.channel.title;
@@ -705,7 +709,7 @@
                                 animations: ^ {
                                     self.blackPanelView.alpha = 0.0f;
                                     self.chromeView.alpha = 1.0f;
-                                    self.swipeView.frame =  CGRectMake(172, 142, 676, 295);
+                                    self.swipeView.frame =  CGRectMake(172, 142, 676, 251);
                                     self.blackPanelView.frame = CGRectMake(0, 0, 1024, 768);
                                     self.videoPlaybackViewController.view.transform = CGAffineTransformMakeScale(1.0, 1.0);
                                     self.videoPlaybackViewController.view.center = CGPointMake(512, 279);
@@ -722,7 +726,7 @@
                                 animations: ^ {
                                     self.blackPanelView.alpha = 0.0f;
                                     self.chromeView.alpha = 1.0f;
-                                    self.swipeView.frame =  CGRectMake(172, 142, 676, 295);
+                                    self.swipeView.frame =  CGRectMake(172, 142, 676, 251);
                                     self.blackPanelView.frame = CGRectMake(128, -128, 768, 1024);
                                     self.videoPlaybackViewController.view.transform = CGAffineTransformMakeScale(1.0, 1.0);
                                     self.videoPlaybackViewController.view.center = CGPointMake(512, 279);
@@ -980,9 +984,9 @@
                             self.blackPanelView.alpha = 0.0f;
                             self.chromeView.alpha = 1.0f;
                             self.swipeView.transform = CGAffineTransformIdentity;
-                            self.videoPlaybackViewController.view.transform = self.swipeView.transform;
+                            self.videoPlaybackViewController.view.transform = CGAffineTransformIdentity;
                             self.videoPlaybackViewController.shuttleBarView.transform = CGAffineTransformIdentity;
-                            self.swipeView.frame = self.originalFrame;
+                            self.swipeView.frame = self.originalSwipeFrame;
                             CGRect videoFrame = self.videoPlaybackViewController.view.frame;
                             videoFrame.origin = self.originalFrame.origin;
                             self.videoPlaybackViewController.view.frame = videoFrame;
