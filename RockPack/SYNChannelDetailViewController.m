@@ -548,15 +548,51 @@
 {
     
     NSArray* updatedObjects = [[notification userInfo] objectForKey: NSUpdatedObjectsKey];
-    NSArray* insertedObjects = [[notification userInfo] objectForKey: NSInsertedObjectsKey];
-    NSArray* deletedObjects = [[notification userInfo] objectForKey: NSDeletedObjectsKey];
+//    NSArray* refreshedObjects = [[notification userInfo] objectForKey: NSRefreshedObjectsKey];
+//    NSArray* insertedObjects = [[notification userInfo] objectForKey: NSInsertedObjectsKey];
+//    NSArray* deletedObjects = [[notification userInfo] objectForKey: NSDeletedObjectsKey];
     
-    NSLog(@"ChDt: u:%i i:%i d:%i", updatedObjects.count, insertedObjects.count, deletedObjects.count);
+    
+//    [updatedObjects enumerateObjectsUsingBlock: ^(id obj, NSUInteger idx, BOOL *stop) {
+//        
+//        if ([obj isKindOfClass:[VideoInstance class]] && ((VideoInstance*)obj).channel == self.channel) {
+//            
+//            NSLog(@"| Updated: %@", ((VideoInstance*)obj).title);
+//        }
+//        
+//    }];
+//    
+//    [refreshedObjects enumerateObjectsUsingBlock: ^(id obj, NSUInteger idx, BOOL *stop) {
+//        
+//        if ([obj isKindOfClass:[VideoInstance class]] && ((VideoInstance*)obj).channel == self.channel) {
+//            
+//            NSLog(@"/ Refreshed: %@", ((VideoInstance*)obj).title);
+//        }
+//        
+//    }];
+//    
+//    [insertedObjects enumerateObjectsUsingBlock: ^(id obj, NSUInteger idx, BOOL *stop) {
+//        
+//        if ([obj isKindOfClass:[VideoInstance class]] && ((VideoInstance*)obj).channel == self.channel) {
+//            
+//            NSLog(@"+ Inserted: %@", ((VideoInstance*)obj).title);
+//        }
+//        
+//    }];
+//    
+//    [deletedObjects enumerateObjectsUsingBlock: ^(id obj, NSUInteger idx, BOOL *stop) {
+//        
+//        if ([obj isKindOfClass:[VideoInstance class]] && ((VideoInstance*)obj).channel == self.channel) {
+//            
+//            NSLog(@"- Deleted: %@", ((VideoInstance*)obj).title);
+//        }
+//        
+//    }];
     
     [updatedObjects enumerateObjectsUsingBlock: ^(id obj, NSUInteger idx, BOOL *stop) {
         
         
-        if ([obj isKindOfClass:[Channel class]] && [((Channel*)obj).uniqueId isEqualToString:self.channel.uniqueId])
+        if (obj == self.channel)
         {
             
             if(self.channel.videoInstances.count == 0)
@@ -2591,6 +2627,7 @@
         
         if([self.channel.channelOwner.uniqueId isEqualToString:appDelegate.currentUser.uniqueId])
             [self updateChannelOwnerWithUser];
+        
         
         [[NSNotificationCenter defaultCenter] addObserver: self
                                                  selector: @selector(handleDataModelChange:)

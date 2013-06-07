@@ -160,8 +160,6 @@
             [videoInsanceByIdDictionary setObject:vi forKey:vi.uniqueId];
         
         
-        
-        
         NSString* newUniqueId;
         VideoInstance* videoInstance;
         
@@ -171,7 +169,9 @@
         {
             
             
-            newUniqueId = [dictionary objectForKey: @"id" withDefault: @""];
+            newUniqueId = [channelDictionary objectForKey: @"id"];
+            if(!newUniqueId || ![newUniqueId isKindOfClass:[NSString class]])
+                continue;
             
             videoInstance = [videoInsanceByIdDictionary objectForKey:newUniqueId];
             
@@ -180,7 +180,6 @@
                 videoInstance = [VideoInstance instanceFromDictionary: channelDictionary
                                             usingManagedObjectContext: self.managedObjectContext
                                                   ignoringObjectTypes: kIgnoreChannelObjects];
-                
                 
             }
             else
