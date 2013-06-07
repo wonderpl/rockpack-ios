@@ -22,6 +22,7 @@
 #import <AVFoundation/AVFoundation.h>
 #import <AssetsLibrary/AssetsLibrary.h>
 #import <QuartzCore/QuartzCore.h>
+#import <ImageIO/ImageIO.h>
 
 enum ChannelCoverSelectorState {
     kChannelCoverDefault = 0,
@@ -318,7 +319,19 @@ enum ChannelCoverSelectorState {
                                          GKImageCropViewController* cropViewController = [[GKImageCropViewController alloc]init];
                                          CGFloat scale = representation.scale;
                                          ALAssetOrientation orientation = representation.orientation;
-                                         UIImage* selectedImage = [UIImage imageWithCGImage: [representation fullResolutionImage] scale:scale orientation:(UIImageOrientation)orientation];
+                                         UIImage* selectedImage = nil;
+                                         CGFloat maxDimension = MAX(representation.dimensions.height,representation.dimensions.height);
+                                         if(maxDimension > 3264.0f)
+                                         {
+                                             //Image too large
+                                             UIAlertView* alert = [[UIAlertView alloc] initWithTitle:@"Image too large" message:@"Images this large cannot be imported." delegate:nil cancelButtonTitle:@"OK" otherButtonTitles:nil];
+                                             [alert show];
+                                             return;
+                                         }
+                                         else
+                                         {
+                                             selectedImage = [UIImage imageWithCGImage: [representation fullResolutionImage] scale:scale orientation:(UIImageOrientation)orientation];
+                                         }
                                          cropViewController.sourceImage = selectedImage;
                                          cropViewController.cropSize = CGSizeMake(280,280);
                                          cropViewController.delegate = self;
