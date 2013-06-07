@@ -321,10 +321,10 @@ enum ChannelCoverSelectorState {
                                          ALAssetOrientation orientation = representation.orientation;
                                          UIImage* selectedImage = nil;
                                          CGFloat maxDimension = MAX(representation.dimensions.height,representation.dimensions.height);
-                                         if(maxDimension > 3264.0f)
+                                         if(maxDimension > kMaxSuportedImageSize)
                                          {
                                              //Image too large
-                                             UIAlertView* alert = [[UIAlertView alloc] initWithTitle:@"Image too large" message:@"Images this large cannot be imported." delegate:nil cancelButtonTitle:@"OK" otherButtonTitles:nil];
+                                             UIAlertView* alert = [[UIAlertView alloc] initWithTitle:NSLocalizedString(@"This image is too large", nil) message:[NSString stringWithFormat:NSLocalizedString(@"The maximum image resolution allowed for images is %dpx * %dpx.", nil), kMaxSuportedImageSize, kMaxSuportedImageSize] delegate:nil cancelButtonTitle:@"OK" otherButtonTitles:nil];
                                              [alert show];
                                              return;
                                          }

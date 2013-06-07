@@ -9,6 +9,7 @@
 #import "GKImagePicker.h"
 #import "GKImageCropViewController.h"
 #import "UIFont+SYNFont.h"
+#import "AppConstants.h"
 
 @interface GKImagePicker ()<UIImagePickerControllerDelegate, UINavigationControllerDelegate, GKImageCropControllerDelegate>
 @property (nonatomic, strong, readwrite) UIImagePickerController *imagePickerController;
@@ -94,10 +95,10 @@
     UIImage* image = [info objectForKey:UIImagePickerControllerOriginalImage];
 
     NSLog(@"%f,%f",image.size.width, image.size.height);
-    if(MAX(image.size.width, image.size.height)>3264)
+    if(MAX(image.size.width, image.size.height)>kMaxSuportedImageSize)
     {
         //Image too large
-        UIAlertView* alert = [[UIAlertView alloc] initWithTitle:@"Image too large" message:@"Images this large cannot be imported." delegate:nil cancelButtonTitle:@"OK" otherButtonTitles:nil];
+        UIAlertView* alert = [[UIAlertView alloc] initWithTitle:NSLocalizedString(@"This image is too large", nil) message:[NSString stringWithFormat:NSLocalizedString(@"The maximum image resolution allowed for images is %dpx * %dpx.", nil), kMaxSuportedImageSize, kMaxSuportedImageSize] delegate:nil cancelButtonTitle:@"OK" otherButtonTitles:nil];
         [alert show];
         [self imagePickerControllerDidCancel:picker];
         return;
