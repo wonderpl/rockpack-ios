@@ -754,7 +754,7 @@
 
 - (BOOL) needsAddButton
 {
-    return YES;
+    return NO;
 }
 
 
