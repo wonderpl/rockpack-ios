@@ -551,7 +551,7 @@
     NSArray* insertedObjects = [[notification userInfo] objectForKey: NSInsertedObjectsKey];
     NSArray* deletedObjects = [[notification userInfo] objectForKey: NSDeletedObjectsKey];
     
-    NSLog(@"updated:%i inserted:%i deleted:%i", updatedObjects.count, insertedObjects.count, deletedObjects.count);
+    NSLog(@"ChDt: u:%i i:%i d:%i", updatedObjects.count, insertedObjects.count, deletedObjects.count);
     
     [updatedObjects enumerateObjectsUsingBlock: ^(id obj, NSUInteger idx, BOOL *stop) {
         
@@ -755,7 +755,6 @@
     
     VideoInstance *videoInstance = self.channel.videoInstances [indexPath.item];
     
-    NSLog(@"VideoInstance: %@", videoInstance.title);
     
     [videoThumbnailCell.imageView setImageWithURL: [NSURL URLWithString: videoInstance.video.thumbnailURL]
                                  placeholderImage: [UIImage imageNamed: @"PlaceholderVideoWide.png"]
@@ -2440,9 +2439,6 @@
     
     if (scrollView == self.videoThumbnailCollectionView)
     {
-        
-        NSLog(@"co: %f - oo: %f", scrollView.contentOffset.y, self.originalContentOffset.y);
-        
         
         if (scrollView.contentOffset.y <= self.originalContentOffset.y)
         {

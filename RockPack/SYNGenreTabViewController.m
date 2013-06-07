@@ -103,6 +103,8 @@
     self.view.autoresizingMask = UIViewAutoresizingFlexibleWidth;
 }
 
+#pragma mark - View Life Cycle
+
 -(void) viewDidLoad
 {
     [super viewDidLoad];
@@ -112,8 +114,38 @@
         
 }
 
+-(void)viewWillAppear:(BOOL)animated
+{
+    [super viewWillAppear:animated];
+    
+    [[NSNotificationCenter defaultCenter] addObserver:self
+                                             selector:@selector(clearedLocationBoundData)
+                                                 name:kClearedLocationBoundData
+                                               object:nil];
+}
+
 -(void)viewDidAppear:(BOOL)animated
 {
+    [self updateCategories];
+}
+
+
+
+-(void)viewWillDisappear:(BOOL)animated
+{
+    [super viewWillDisappear:animated];
+    
+    [[NSNotificationCenter defaultCenter] removeObserver:self
+                                                    name:kClearedLocationBoundData
+                                                  object:nil];
+}
+
+-(void)clearedLocationBoundData
+{
+    self.currentlySelectedGenre = nil;
+    
+    [self.categoriesTabView hideSecondaryTabs];
+    
     [self updateCategories];
 }
 
@@ -383,8 +415,6 @@
                 item = _item;
                 break;
             }
-                
-            
             _item++;
         }
         

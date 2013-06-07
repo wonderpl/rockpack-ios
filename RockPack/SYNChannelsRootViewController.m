@@ -411,9 +411,8 @@
     SYNChannelThumbnailCell *channelThumbnailCell = [collectionView dequeueReusableCellWithReuseIdentifier: @"SYNChannelThumbnailCell"
                                                                                               forIndexPath: indexPath];
     
-    [channelThumbnailCell.imageView setImageWithURL: [NSURL URLWithString: channel.channelCover.imageLargeUrl]
-                                   placeholderImage: [UIImage imageNamed: @"PlaceholderChannel.png"]
-                                            options: SDWebImageRetryFailed];
+    
+    channelThumbnailCell.imageUrlString = channel.channelCover.imageLargeUrl;
     
     [channelThumbnailCell setChannelTitle: channel.title];
     channelThumbnailCell.displayNameLabel.text = [NSString stringWithFormat: @"%@", channel.channelOwner.displayName];
@@ -761,9 +760,11 @@
 
 - (void) clearedLocationBoundData
 {
-    [self displayChannelsForGenre:self.currentGenre];
+    [self animateCollectionViewDown:NO];
     
     self.dataRequestRange = NSMakeRange(0, STANDARD_REQUEST_LENGTH);
+    
+    self.currentGenre = nil;
     
     [self loadChannelsForGenre: nil];
 }
