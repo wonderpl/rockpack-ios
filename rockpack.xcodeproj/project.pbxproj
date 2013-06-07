@@ -391,6 +391,12 @@
 		01F94F1117609608006C024D /* SYNTextFieldLogin.m in Sources */ = {isa = PBXBuildFile; fileRef = 01F94F1017609608006C024D /* SYNTextFieldLogin.m */; };
 		01F94F1417609F9B006C024D /* SYNTextFieldLoginiPhone.m in Sources */ = {isa = PBXBuildFile; fileRef = 01F94F1317609F9A006C024D /* SYNTextFieldLoginiPhone.m */; };
 		01F94F171760A2D2006C024D /* SYNTextFieldSearchIPhone.m in Sources */ = {isa = PBXBuildFile; fileRef = 01F94F161760A2D2006C024D /* SYNTextFieldSearchIPhone.m */; };
+		01F94F2A1761EE56006C024D /* ButtonCreateDisabled.png in Resources */ = {isa = PBXBuildFile; fileRef = 01F94F241761EE56006C024D /* ButtonCreateDisabled.png */; };
+		01F94F2B1761EE56006C024D /* ButtonCreateDisabled@2x-iphone.png in Resources */ = {isa = PBXBuildFile; fileRef = 01F94F251761EE56006C024D /* ButtonCreateDisabled@2x-iphone.png */; };
+		01F94F2C1761EE56006C024D /* ButtonCreateDisabled@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 01F94F261761EE56006C024D /* ButtonCreateDisabled@2x.png */; };
+		01F94F2D1761EE56006C024D /* ButtonCreateDisabled~iphone.png in Resources */ = {isa = PBXBuildFile; fileRef = 01F94F271761EE56006C024D /* ButtonCreateDisabled~iphone.png */; };
+		01F94F2E1761EE56006C024D /* ButtonYouTubeDefault.png in Resources */ = {isa = PBXBuildFile; fileRef = 01F94F281761EE56006C024D /* ButtonYouTubeDefault.png */; };
+		01F94F2F1761EE56006C024D /* ButtonYouTubeDefault@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 01F94F291761EE56006C024D /* ButtonYouTubeDefault@2x.png */; };
 		1F003B42174A782100BBAE2F /* ButtonSettingsSave@2x~iphone.png in Resources */ = {isa = PBXBuildFile; fileRef = 1F003B3E174A782100BBAE2F /* ButtonSettingsSave@2x~iphone.png */; };
 		1F003B43174A782100BBAE2F /* ButtonSettingsSave~iphone.png in Resources */ = {isa = PBXBuildFile; fileRef = 1F003B3F174A782100BBAE2F /* ButtonSettingsSave~iphone.png */; };
 		1F003B44174A782100BBAE2F /* ButtonSettingsSaveHighlighted@2x~iphone.png in Resources */ = {isa = PBXBuildFile; fileRef = 1F003B40174A782100BBAE2F /* ButtonSettingsSaveHighlighted@2x~iphone.png */; };
@@ -1565,6 +1571,12 @@
 		01F94F1317609F9A006C024D /* SYNTextFieldLoginiPhone.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SYNTextFieldLoginiPhone.m; sourceTree = "<group>"; };
 		01F94F151760A2D1006C024D /* SYNTextFieldSearchIPhone.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SYNTextFieldSearchIPhone.h; sourceTree = "<group>"; };
 		01F94F161760A2D2006C024D /* SYNTextFieldSearchIPhone.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SYNTextFieldSearchIPhone.m; sourceTree = "<group>"; };
+		01F94F241761EE56006C024D /* ButtonCreateDisabled.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = ButtonCreateDisabled.png; path = Assets/Images/ButtonCreateDisabled.png; sourceTree = "<group>"; };
+		01F94F251761EE56006C024D /* ButtonCreateDisabled@2x-iphone.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = "ButtonCreateDisabled@2x-iphone.png"; path = "Assets/Images/ButtonCreateDisabled@2x-iphone.png"; sourceTree = "<group>"; };
+		01F94F261761EE56006C024D /* ButtonCreateDisabled@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = "ButtonCreateDisabled@2x.png"; path = "Assets/Images/ButtonCreateDisabled@2x.png"; sourceTree = "<group>"; };
+		01F94F271761EE56006C024D /* ButtonCreateDisabled~iphone.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = "ButtonCreateDisabled~iphone.png"; path = "Assets/Images/ButtonCreateDisabled~iphone.png"; sourceTree = "<group>"; };
+		01F94F281761EE56006C024D /* ButtonYouTubeDefault.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = ButtonYouTubeDefault.png; path = Assets/Images/ButtonYouTubeDefault.png; sourceTree = "<group>"; };
+		01F94F291761EE56006C024D /* ButtonYouTubeDefault@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = "ButtonYouTubeDefault@2x.png"; path = "Assets/Images/ButtonYouTubeDefault@2x.png"; sourceTree = "<group>"; };
 		1F003B3E174A782100BBAE2F /* ButtonSettingsSave@2x~iphone.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "ButtonSettingsSave@2x~iphone.png"; sourceTree = "<group>"; };
 		1F003B3F174A782100BBAE2F /* ButtonSettingsSave~iphone.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "ButtonSettingsSave~iphone.png"; sourceTree = "<group>"; };
 		1F003B40174A782100BBAE2F /* ButtonSettingsSaveHighlighted@2x~iphone.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "ButtonSettingsSaveHighlighted@2x~iphone.png"; sourceTree = "<group>"; };
@@ -2168,7 +2180,7 @@
 		BE2D2157171D8A4500B4B755 /* AvatarProfile@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = "AvatarProfile@2x.png"; path = "Assets/Images/AvatarProfile@2x.png"; sourceTree = "<group>"; };
 		BE3A770F17300D3C008ED81F /* SYNAccountSettingsModalContainer.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SYNAccountSettingsModalContainer.h; sourceTree = "<group>"; };
 		BE3A771017300D3C008ED81F /* SYNAccountSettingsModalContainer.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SYNAccountSettingsModalContainer.m; sourceTree = "<group>"; };
-		BE53EE6017609587008360D2 /* Rockpack 4.xcdatamodel */ = {isa = PBXFileReference; lastKnownFileType = file; path = "Rockpack 4.xcdatamodel"; sourceTree = "<group>"; };
+		BE53EE6017609587008360D2 /* Rockpack 4.xcdatamodel */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcdatamodel; path = "Rockpack 4.xcdatamodel"; sourceTree = "<group>"; };
 		BE5D29E917577E2800C00486 /* SYNFeedMessagesView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SYNFeedMessagesView.h; sourceTree = "<group>"; };
 		BE5D29EA17577E2800C00486 /* SYNFeedMessagesView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SYNFeedMessagesView.m; sourceTree = "<group>"; };
 		BE7D342D170DD8C90085AB81 /* SYNChannelFooterMoreView.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = SYNChannelFooterMoreView.xib; sourceTree = "<group>"; };
@@ -3353,6 +3365,12 @@
 		01B7F76C164FE464009C5CCD /* Channels */ = {
 			isa = PBXGroup;
 			children = (
+				01F94F241761EE56006C024D /* ButtonCreateDisabled.png */,
+				01F94F251761EE56006C024D /* ButtonCreateDisabled@2x-iphone.png */,
+				01F94F261761EE56006C024D /* ButtonCreateDisabled@2x.png */,
+				01F94F271761EE56006C024D /* ButtonCreateDisabled~iphone.png */,
+				01F94F281761EE56006C024D /* ButtonYouTubeDefault.png */,
+				01F94F291761EE56006C024D /* ButtonYouTubeDefault@2x.png */,
 				1F22C1861744ED0F0065D4BF /* ButtonSave.png */,
 				1F22C1871744ED0F0065D4BF /* ButtonSave@2x.png */,
 				1F22C1881744ED0F0065D4BF /* ButtonSaveHighlighted.png */,
@@ -5615,6 +5633,12 @@
 				1F320030175DED7200310EB5 /* BackgroundLogin@2x.jpg in Resources */,
 				1F320034175E007F00310EB5 /* BackgroundLogin@2x~iphone.jpg in Resources */,
 				1F320035175E007F00310EB5 /* BackgroundLogin~iphone.jpg in Resources */,
+				01F94F2A1761EE56006C024D /* ButtonCreateDisabled.png in Resources */,
+				01F94F2B1761EE56006C024D /* ButtonCreateDisabled@2x-iphone.png in Resources */,
+				01F94F2C1761EE56006C024D /* ButtonCreateDisabled@2x.png in Resources */,
+				01F94F2D1761EE56006C024D /* ButtonCreateDisabled~iphone.png in Resources */,
+				01F94F2E1761EE56006C024D /* ButtonYouTubeDefault.png in Resources */,
+				01F94F2F1761EE56006C024D /* ButtonYouTubeDefault@2x.png in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

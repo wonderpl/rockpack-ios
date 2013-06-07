@@ -447,4 +447,8 @@ typedef void (^JSONResponseBlock)(id jsonObject);
 
 #define SMART_RELOAD__
 
+// Do we display the video provider branding
+
+#define SHOW_BRANDING 
+
 #endif
