@@ -269,7 +269,7 @@ static UIWebView* vimeoideoWebViewInstance;
 - (void) updateChannelCreator: (NSString *) channelCreator
 {
     self.channelCreator = channelCreator;
-    self.creatorLabel.text = channelCreator;
+    [self setCreatorText: self.channelCreator];
 }
 
 
@@ -586,7 +586,8 @@ static UIWebView* vimeoideoWebViewInstance;
     self.creatorLabel.backgroundColor = [UIColor clearColor];
     self.creatorLabel.textColor = [UIColor colorWithWhite: 85.0f/255.0f alpha: 1.0f];
     self.creatorLabel.font = [UIFont rockpackFontOfSize: 11.0f];
-    self.creatorLabel.text = self.channelCreator;
+    
+    [self setCreatorText: self.channelCreator];
     
     // Alignment is different dependent on device
     if ([SYNDeviceManager.sharedInstance isIPad])
@@ -615,6 +616,11 @@ static UIWebView* vimeoideoWebViewInstance;
     [self.view addSubview: videoPlaceholderView];
 
     return videoPlaceholderView;
+}
+
+- (void) setCreatorText: (NSString *) creatorText;
+{
+    self.creatorLabel.text = [NSString stringWithFormat: @"Uploaded by %@", self.channelCreator];
 }
 
 

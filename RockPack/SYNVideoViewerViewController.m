@@ -137,6 +137,7 @@
         self.channelCreatorLabel.textColor = [UIColor colorWithRed: 108.0f/ 255.0f green: 117.0f/ 255.0f blue: 121.0f/ 255.0f alpha: 1.0f];
         self.channelCreatorLabel.textColor = [UIColor whiteColor];
         self.channelCreatorLabel.text = @"";
+        [self.videoPlaybackViewController updateChannelCreator: @""];
         self.videoTitleLabel.textColor = [UIColor whiteColor];
     }
 
@@ -447,11 +448,12 @@
     // In video overlay feed display BY followed by username, in video overlay search if no user name display nothing -Kish
     if ([videoInstance.channel.channelOwner.displayName length] == 0) {
         self.channelCreatorLabel.text = @"";
+        [self.videoPlaybackViewController updateChannelCreator: videoInstance.video.sourceUsername];
     }
     else
     {
         self.channelCreatorLabel.text = videoInstance.channel.channelOwner.displayName;
-        [self.videoPlaybackViewController updateChannelCreator: videoInstance.channel.channelOwner.displayName];
+        [self.videoPlaybackViewController updateChannelCreator: videoInstance.video.sourceUsername];
     }
     
     self.channelTitleLabel.text = videoInstance.channel.title;
