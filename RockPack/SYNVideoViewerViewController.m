@@ -202,10 +202,13 @@
     [videoView insertSubview: self.blackPanelView
                 aboveSubview: self.panelImageView];
     
+    VideoInstance *videoInstance = self.videoInstanceArray [self.currentSelectedIndex];
+    
     self.videoPlaybackViewController = [SYNVideoPlaybackViewController sharedInstance];
 
     __weak SYNVideoViewerViewController* weakSelf = self;
-    [self.videoPlaybackViewController updateWithFrame: videoFrame channelCreator: self.channelCreatorLabel.text
+    [self.videoPlaybackViewController updateWithFrame: videoFrame
+                                       channelCreator: videoInstance.video.sourceUsername
                                          indexUpdater: ^(int newIndex){
                                              weakSelf.currentSelectedIndex = newIndex;
                                              [weakSelf updateVideoDetailsForIndex: weakSelf.currentSelectedIndex];
@@ -242,9 +245,6 @@
     
     tapRecogniser.delegate = self;
     [self.swipeView addGestureRecognizer: tapRecogniser];
-    
-    VideoInstance *videoInstance = self.videoInstanceArray [self.currentSelectedIndex];
-
     
     if ([videoInstance.channel.channelOwner.displayName length] == 0)
     {
@@ -344,8 +344,6 @@
     [[NSNotificationCenter defaultCenter] postNotificationName: kNoteShowNetworkMessages
                                                         object: nil];
 
-
-    
     [super viewWillDisappear: animated];
 }
 

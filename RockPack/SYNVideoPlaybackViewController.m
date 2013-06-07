@@ -388,6 +388,8 @@ static UIWebView* vimeoideoWebViewInstance;
     shuttleBarFrame.origin.y = self.view.frame.size.height - kShuttleBarHeight;
     UIView *shuttleBarView = [[UIView alloc] initWithFrame: shuttleBarFrame];
     
+
+    
     // Add transparent background view
     UIView *shuttleBarBackgroundView = [[UIView alloc] initWithFrame: shuttleBarView.bounds];
     shuttleBarBackgroundView.alpha = 0.5f;
@@ -501,7 +503,7 @@ static UIWebView* vimeoideoWebViewInstance;
     // Add AirPlay button
     // This is a crafty (apple approved) hack, where we set the showVolumeSlider parameter to NO, so only the AirPlay symbol gets shown
     MPVolumeView *volumeView = [[MPVolumeView alloc] init];
-    volumeView.frame = CGRectMake(self.view.frame.size.width - (30 +  airplayOffset), 12, 25, kShuttleBarHeight);
+    volumeView.frame = CGRectMake(self.view.frame.size.width - (35 +  airplayOffset), 12, 44, kShuttleBarHeight);
     [volumeView setShowsVolumeSlider: NO];
     [volumeView sizeToFit];
     volumeView.backgroundColor = [UIColor clearColor];
@@ -510,6 +512,13 @@ static UIWebView* vimeoideoWebViewInstance;
     [self.view addSubview: shuttleBarView];
     
     self.originalShuttleBarFrame = shuttleBarView.frame;
+    
+#ifdef SHOW_DEBUG_COLOURS
+    shuttleBarView.backgroundColor = [UIColor redColor];
+    self.durationLabel.backgroundColor = [UIColor yellowColor];
+    volumeView.backgroundColor = [UIColor greenColor];
+    self.shuttleBarMaxMinButton.backgroundColor = [UIColor blueColor];
+#endif
     
     return shuttleBarView;
 }

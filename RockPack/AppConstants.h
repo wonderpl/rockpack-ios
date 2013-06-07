@@ -136,6 +136,8 @@
 
 #define kImageSizeStringReplace     @"thumbnail_medium"
 
+#define kMaxSuportedImageSize       3264
+
 // Timeout for API calls
 
 #define kAPIDefaultTimout 30
