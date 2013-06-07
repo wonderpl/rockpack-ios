@@ -396,18 +396,18 @@
     NSLog(@"updated:%i inserted:%i deleted:%i", updatedObjects.count, insertedObjects.count, deletedObjects.count);
     
     [updatedObjects enumerateObjectsUsingBlock: ^(id obj, NSUInteger idx, BOOL *stop)
-     {
-         
+    {
+        
          if ([obj isKindOfClass:[ChannelOwner class]] && [((ChannelOwner*)obj).uniqueId isEqualToString:self.user.uniqueId])
          {
              [self.userProfileController setChannelOwner:obj];
+             
              [self reloadCollectionViews];
              
              return;
          }
          
-         
-     }];
+    }];
     
     
 }
@@ -936,6 +936,9 @@
 
 - (void) channelDeleteButtonTapped: (UIButton*) sender
 {
+    if(_deleteCellModeOn)
+        return;
+    
     UIView * v = sender.superview.superview;
     self.indexPathToDelete = [self.channelThumbnailCollectionView indexPathForItemAtPoint: v.center];
     
@@ -977,26 +980,41 @@
     [appDelegate.oAuthNetworkEngine deleteChannelForUserId: appDelegate.currentUser.uniqueId
                                                  channelId: channelToDelete.uniqueId
                                          completionHandler: ^(id response) {
-                                             dispatch_async(dispatch_get_main_queue(), ^{
+                                             
+                                             UICollectionViewCell* cell =
+                                             [self.channelThumbnailCollectionView cellForItemAtIndexPath:self.indexPathToDelete];
+                                             
+                                             [UIView animateWithDuration:0.2 animations:^{
+                                                 
+                                                 cell.alpha = 0.0;
+                                                 
+                                             } completion:^(BOOL finished) {
                                                  
                                                  
                                                  [appDelegate.currentUser.channelsSet removeObject:channelToDelete];
                                                  
                                                  [channelToDelete.managedObjectContext deleteObject:channelToDelete];
                                                  
+                                                 
+                                                 [self.channelThumbnailCollectionView deleteItemsAtIndexPaths:@[self.indexPathToDelete]];
+                                                 
                                                  [appDelegate saveContext:YES];
                                                  
                                                  _deleteCellModeOn = NO;
                                                  
-                                                 [_channelThumbnailCollectionView reloadData];
                                                  
-                                                 [self resizeScrollViews];
                                                  
-                                                 [_channelThumbnailCollectionView setNeedsLayout];
-                                             });  
-                                         }
-                                              errorHandler: ^(id error) {
-                                                  DebugLog(@"Delete channel NOT succeed");
+                                             }];
+                                             
+                                             
+                                             
+                                             
+                                         } errorHandler: ^(id error) {
+                                             
+                                             
+                                                    DebugLog(@"Delete channel NOT succeed");
+                                             
+                                                    _deleteCellModeOn = NO;
                                               }];
 }
 
