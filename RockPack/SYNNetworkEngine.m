@@ -130,9 +130,9 @@
 
 
 
-- (void) updateChannel: (NSString *) resourceURL
-     completionHandler: (MKNKUserSuccessBlock) completionBlock
-          errorHandler: (MKNKUserErrorBlock) errorBlock
+- (MKNetworkOperation*) updateChannel: (NSString *) resourceURL
+                    completionHandler: (MKNKUserSuccessBlock) completionBlock
+                         errorHandler: (MKNKUserErrorBlock) errorBlock
 {
     SYNNetworkOperationJsonObject *networkOperation = (SYNNetworkOperationJsonObject*)[self operationWithURLString: resourceURL
                                                                                                            params: nil];
@@ -142,6 +142,8 @@
                                 errorHandler: errorBlock];
     
     [self enqueueOperation: networkOperation];
+    
+    return networkOperation;
     
 }
 

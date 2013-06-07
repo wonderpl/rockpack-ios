@@ -877,9 +877,9 @@
 }
 
 
-- (void) updateChannel: (NSString *) resourceURL
-     completionHandler: (MKNKUserSuccessBlock) completionBlock
-          errorHandler: (MKNKUserErrorBlock) errorBlock
+- (MKNetworkOperation*) updateChannel: (NSString *) resourceURL
+                    completionHandler: (MKNKUserSuccessBlock) completionBlock
+                         errorHandler: (MKNKUserErrorBlock) errorBlock
 {
     // get the path stripping the "http://" because we might want to force a refresh by using "https://"
     
@@ -897,6 +897,8 @@
                                 errorHandler: errorBlock];
     
     [self enqueueSignedOperation: networkOperation];
+    
+    return networkOperation;
     
 }
 

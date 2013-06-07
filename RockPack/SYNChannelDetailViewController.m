@@ -439,6 +439,12 @@
     }
 
     
+    // cancel the existing request if there is one
+    
+    [[NSNotificationCenter defaultCenter] postNotificationName: kChannelUpdateRequest
+                                                        object: self
+                                                      userInfo: nil];
+    
 }
 
 

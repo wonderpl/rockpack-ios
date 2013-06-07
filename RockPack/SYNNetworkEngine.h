@@ -49,9 +49,9 @@
 - (void) updateCoverArtOnCompletion: (MKNKJSONCompleteBlock) completionBlock
                             onError: (MKNKErrorBlock) errorBlock;
 
-- (void) updateChannel: (NSString *) resourceURL
-     completionHandler: (MKNKUserSuccessBlock) completionBlock
-          errorHandler: (MKNKUserErrorBlock) errorBlock;
+- (MKNetworkOperation*) updateChannel: (NSString *) resourceURL
+                    completionHandler: (MKNKUserSuccessBlock) completionBlock
+                         errorHandler: (MKNKUserErrorBlock) errorBlock;
 
 -(void)channelOwnerDataForChannelOwner:(ChannelOwner*)channelOwner
                             onComplete:(MKNKUserSuccessBlock)completeBlock
