@@ -10,4 +10,3 @@ This will evolve into a universal app capable of supporting iPhone and iPod touc
    
 * Only supports iOS 6.0 and greater
 * Only supports iPad 2 and above
-
