@@ -294,7 +294,7 @@
 
 -(void)termsButtonPressed:(UIButton*)button {
     
-    NSURL *url = [NSURL URLWithString:@"http://www.rockpack.com/tos"];
+    NSURL *url = [NSURL URLWithString:@"http://rockpack.com/tos"];
     
     if (![[UIApplication sharedApplication] openURL:url])
         
@@ -303,7 +303,7 @@
 
 -(void)privacyButtonPressed:(UIButton*)button {
     
-    NSURL *url = [NSURL URLWithString:@"http://www.rockpack.com/privacy"];
+    NSURL *url = [NSURL URLWithString:@"http://rockpack.com/privacy"];
     
     if (![[UIApplication sharedApplication] openURL:url])
         
