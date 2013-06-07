@@ -51,6 +51,7 @@
 @property (nonatomic, assign, getter = isImageSelectorOpen) BOOL imageSelectorOpen;
 @property (nonatomic, strong) GKImagePicker *imagePicker;
 @property (nonatomic, strong) IBOutlet SSTextView *channelTitleTextView;
+@property (nonatomic, strong) IBOutlet UIActivityIndicatorView *uploadImageSpinner;
 @property (nonatomic, strong) IBOutlet UIButton *buyButton;
 @property (nonatomic, strong) IBOutlet UIButton *cameraButton;
 @property (nonatomic, strong) IBOutlet UIButton *createChannelButton;
@@ -1200,6 +1201,7 @@
     else
     {
         self.saveChannelButton.enabled = NO;
+        [self.uploadImageSpinner startAnimating];
     }
     
     [self hideCategoryChooser];
@@ -1224,6 +1226,7 @@
                                              
                                              [self setEditControlsVisibility: NO];
                                              self.saveChannelButton.enabled = YES;
+                                             [self.uploadImageSpinner stopAnimating];
                                              self.saveChannelButton.hidden = YES;
                                              self.cancelEditButton.hidden = YES;
                                              self.addButton.hidden = NO;
@@ -1269,16 +1272,12 @@
                                                           errorMessage = NSLocalizedString(@"channel_creation_screen_error_unknown_save_description",nil);
                                                       }
                                                   };
-     
-                                                                                                
+                                          
                                                   [self showError: errorMessage showErrorTitle:errorTitle];
                                                   self.saveChannelButton.hidden = NO;
                                                   self.saveChannelButton.enabled = YES;
                                                   [self.activityIndicator stopAnimating];
-                                                  
-
-                                                  
-                                                  
+                                                  [self.uploadImageSpinner stopAnimating];
                                               }];
 }
 
@@ -2251,10 +2250,14 @@
     }
 }
 
+
 #pragma mark - Upload channel cover image
 
 - (void) uploadChannelImage: (UIImage *) imageToUpload
 {
+    self.createChannelButton.enabled = FALSE;
+    self.saveChannelButton.enabled = FALSE;
+    [self.uploadImageSpinner startAnimating];
     
     [self.coverChooserController createCoverPlaceholder: imageToUpload];
     
@@ -2262,6 +2265,10 @@
     [appDelegate.oAuthNetworkEngine uploadCoverArtForUserId: appDelegate.currentOAuth2Credentials.userId
                                                       image: imageToUpload
                                           completionHandler: ^(NSDictionary *dictionary){
+                                              self.createChannelButton.enabled = TRUE;
+                                              self.saveChannelButton.enabled = TRUE;
+                                              [self.uploadImageSpinner stopAnimating];
+                                              
                                               NSString *imageUrl = dictionary [@"thumbnail_url"];
 
                                               if (imageUrl && [imageUrl isKindOfClass:[NSString class]])
@@ -2272,12 +2279,15 @@
                                               }
                                               else
                                               {
-                                                  DebugLog(@"Failed to uploa wallpaper URL");
+                                                  DebugLog(@"Failed to upload wallpaper URL");
                                               }
                                               
                                               self.selectedCoverId = [dictionary objectForKey:@"cover_ref"];
                                           }
                                                errorHandler: ^(NSError* error) {
+                                                   self.createChannelButton.enabled = TRUE;
+                                                   self.saveChannelButton.enabled = TRUE;
+                                                   [self.uploadImageSpinner stopAnimating];
                                                    DebugLog(@"%@", [error debugDescription]);
                                                }];
 }
