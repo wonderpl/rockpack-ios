@@ -421,7 +421,13 @@
     return channelThumbnailCell;
 }
 
-
+- (void)collectionView:(UICollectionView *)collectionView
+  didEndDisplayingCell:(UICollectionViewCell *)cell
+    forItemAtIndexPath:(NSIndexPath *)indexPath
+{
+    [((SYNChannelThumbnailCell*)cell).imageView cancelCurrentImageLoad];
+    
+}
 - (void) displayNameButtonPressed: (UIButton*) button
 {
     

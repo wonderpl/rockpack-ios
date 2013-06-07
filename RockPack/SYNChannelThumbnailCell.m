@@ -102,14 +102,6 @@
                                 options: SDWebImageRetryFailed];
     }
     
-    if(_imageUrlString && [_imageUrlString isEqualToString:imageUrlString])
-    {
- 
-        return;
-    }
-    
-        
-    
     _imageUrlString = imageUrlString;
     
     [self.imageView setImageWithURL: [NSURL URLWithString: _imageUrlString]
@@ -117,6 +109,7 @@
                             options: SDWebImageRetryFailed];
     
 }
+
 
 
 @end

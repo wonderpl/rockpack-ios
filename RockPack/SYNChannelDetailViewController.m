@@ -548,15 +548,39 @@
 {
     
     NSArray* updatedObjects = [[notification userInfo] objectForKey: NSUpdatedObjectsKey];
-    NSArray* insertedObjects = [[notification userInfo] objectForKey: NSInsertedObjectsKey];
-    NSArray* deletedObjects = [[notification userInfo] objectForKey: NSDeletedObjectsKey];
-    
-    NSLog(@"ChDt: u:%i i:%i d:%i", updatedObjects.count, insertedObjects.count, deletedObjects.count);
+//    NSArray* insertedObjects = [[notification userInfo] objectForKey: NSInsertedObjectsKey];
+//    NSArray* deletedObjects = [[notification userInfo] objectForKey: NSDeletedObjectsKey];
+//    
+//    
+//    [updatedObjects enumerateObjectsUsingBlock: ^(id obj, NSUInteger idx, BOOL *stop) {
+//        if ([obj isKindOfClass:[VideoInstance class]] && ((VideoInstance*)obj).channel == self.channel) {
+//            
+//            NSLog(@"| Updated: %@", obj);
+//        }
+//        
+//    }];
+//    
+//    [insertedObjects enumerateObjectsUsingBlock: ^(id obj, NSUInteger idx, BOOL *stop) {
+//        if ([obj isKindOfClass:[VideoInstance class]] && ((VideoInstance*)obj).channel == self.channel) {
+//            
+//            NSLog(@"+ Inserted: %@", obj);
+//        }
+//        
+//    }];
+//    
+//    [deletedObjects enumerateObjectsUsingBlock: ^(id obj, NSUInteger idx, BOOL *stop) {
+//        
+//        if ([obj isKindOfClass:[VideoInstance class]] && ((VideoInstance*)obj).channel == self.channel) {
+//            
+//            NSLog(@"- Deleted: %@", obj);
+//        }
+//        
+//    }];
     
     [updatedObjects enumerateObjectsUsingBlock: ^(id obj, NSUInteger idx, BOOL *stop) {
         
         
-        if ([obj isKindOfClass:[Channel class]] && [((Channel*)obj).uniqueId isEqualToString:self.channel.uniqueId])
+        if (obj == self.channel)
         {
             
             if(self.channel.videoInstances.count == 0)
