@@ -395,40 +395,19 @@
     
     NSLog(@"updated:%i inserted:%i deleted:%i", updatedObjects.count, insertedObjects.count, deletedObjects.count);
     
-    if(insertedObjects.count > 0)
-    {
-        [insertedObjects enumerateObjectsUsingBlock: ^(id obj, NSUInteger idx, BOOL *stop)
+    [updatedObjects enumerateObjectsUsingBlock: ^(id obj, NSUInteger idx, BOOL *stop)
+     {
+         
+         if ([obj isKindOfClass:[ChannelOwner class]] && [((ChannelOwner*)obj).uniqueId isEqualToString:self.user.uniqueId])
          {
-             // a channel of this user
-             if ([obj isKindOfClass:[Channel class]] && [((Channel*)obj).channelOwner.uniqueId isEqualToString:self.user.uniqueId])
-             {
-                 //[self.userProfileController setChannelOwner:obj];
-                 [self reloadCollectionViews];
-                 
-                 return;
-             }
+             [self.userProfileController setChannelOwner:obj];
+             [self reloadCollectionViews];
              
-             
-         }];
-    }
-        
-    
-    if(deletedObjects.count > 0)
-    {
-        [deletedObjects enumerateObjectsUsingBlock: ^(id obj, NSUInteger idx, BOOL *stop)
-         {
-             // a channel of this user
-             if ([obj isKindOfClass:[Channel class]] && [((Channel*)obj).channelOwner.uniqueId isEqualToString:self.user.uniqueId])
-             {
-                 //[self.userProfileController setChannelOwner:obj];
-                 [self reloadCollectionViews];
-                 
-                 return;
-             }
-             
-             
-         }];
-    }
+             return;
+         }
+         
+         
+     }];
     
     
 }

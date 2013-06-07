@@ -467,7 +467,6 @@
             [deleteCandidate.managedObjectContext deleteObject:deleteCandidate];
     }
 
-    NSLog(@"Items parsed %i", items);
     
     
     BOOL saveResult = [self saveImportContext];
