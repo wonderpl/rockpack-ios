@@ -133,14 +133,7 @@
         DebugLog(@"Trying to add a nil video instance into the queue through: 'addVideoToQueue:'");
         return;
     }
-    
-    BOOL isIPhone = [SYNDeviceManager.sharedInstance isIPhone];
-    
-    if (isIPhone)
-    {
-        // Only one video isever added at a time on iPhone. Clear out any previously started queue.
-        [self clearVideoQueue];
-    }
+
     
     if (!self.currentlyCreatingChannel) // create channel if there is none
     {
@@ -158,14 +151,11 @@
         
         [self.appDelegate saveChannelsContext];
     }
-    else // if there is a channel check of the video is a duplicate
+    else // if there is a channel remove all videos
     {
         for (VideoInstance* existingInstance in self.currentlyCreatingChannel.videoInstances)
         {
-            if ([existingInstance.video.uniqueId isEqualToString:videoInstance.video.uniqueId])
-            {
-                return;
-            }
+            [self.appDelegate.channelsManagedObjectContext deleteObject:existingInstance];
         }
     }
     
@@ -178,11 +168,8 @@
     [self.currentlyCreatingChannel addVideoInstancesObject:copyOfVideoInstance];
     
     self.isEmpty = NO;
-    
-    if(isIPhone)
-    {
+
         [[NSNotificationCenter defaultCenter] postNotificationName:kNoteAddToChannelRequest object:self];
-    }
     
     
     
@@ -225,16 +212,10 @@
     }
     
     
-    [self.appDelegate.channelsManagedObjectContext deleteObject:self.currentlyCreatingChannel];
-    
-    
-    self.currentlyCreatingChannel = nil;
-    
-    
     [self.appDelegate saveChannelsContext];
     
     
-    self.isEmpty = NO;
+    self.isEmpty = YES;
     
     
     

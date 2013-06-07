@@ -948,7 +948,7 @@
 
 - (BOOL) needsAddButton
 {
-    return YES;
+    return NO;
 }
 
 #pragma mark - orientation change iPhone

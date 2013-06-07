@@ -424,6 +424,13 @@
                                                     name:kVideoQueueClear
                                                   object:nil];
 
+    if(!_isIPhone)
+    {
+        [[NSNotificationCenter defaultCenter] postNotificationName: kVideoQueueClear
+                                                        object: self
+                                                      userInfo: nil];
+    }
+
     
     if (self.subscribingIndicator)
     {
@@ -2603,7 +2610,7 @@
 
 - (BOOL) needsAddButton
 {
-    return YES;
+    return NO;
 }
 
 

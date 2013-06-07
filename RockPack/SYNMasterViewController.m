@@ -397,6 +397,9 @@ typedef void(^AnimationCompletionBlock)(BOOL finished);
     Channel* selectedChannel = (Channel*)[[notification userInfo] objectForKey:kChannel];
     if(!selectedChannel)
     {
+        //Channel select was cancelled.
+        [[NSNotificationCenter defaultCenter] postNotificationName: kVideoQueueClear
+                                                            object: nil];
         [self resumeVideoIfShowing];
         return;
     }
