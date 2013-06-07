@@ -109,7 +109,7 @@
     
     notificationCell.messageTitle = [NSString stringWithString:constructedMessage];
     
-    NSURL* userThumbnailUrl = [NSURL URLWithString:notification.channelOwner.thumbnailURL];
+    NSURL* userThumbnailUrl = [NSURL URLWithString:notification.channelOwner.thumbnailLargeUrl];
     
     [notificationCell.imageView setImageWithURL: userThumbnailUrl
                      placeholderImage: [UIImage imageNamed:@"PlaceholderNotificationAvatar.png"]

@@ -68,6 +68,8 @@
         // == Channel image view == //
         
         self.thumbnailImageView = [[UIImageView alloc] initWithFrame:CGRectMake(0.0, 0.0, 60, 60.0)]; // x, y will be set below
+        self.thumbnailImageView.contentMode = UIViewContentModeScaleAspectFit;
+        self.thumbnailImageView.clipsToBounds = TRUE;
         [self addSubview:self.thumbnailImageView];
         
         

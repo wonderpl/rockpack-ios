@@ -1019,6 +1019,10 @@ static UIWebView* vimeoideoWebViewInstance;
     NSString *currentSource = videoInstance.video.source;
     NSString *currentSourceId = videoInstance.video.sourceId;
     
+    // Try to set the duration
+    self.currentDuration = videoInstance.video.durationValue;
+    self.durationLabel.text = [NSString timecodeStringFromSeconds: self.currentDuration];
+    
     if ([currentSource isEqualToString: @"youtube"])
     {
         [self playYouTubeVideoWithSourceId: currentSourceId];
@@ -1176,6 +1180,7 @@ static UIWebView* vimeoideoWebViewInstance;
         }
         else if ([actionData isEqualToString: @"buffering"])
         {
+            // Now cache the duration of this video for use in the progress updates
             if (self.notYetPlaying  == TRUE)
             {
                 DebugLog (@"*** Buffering: Normal buffering - No action taken");
@@ -1405,6 +1410,8 @@ static UIWebView* vimeoideoWebViewInstance;
     float newTime = slider.value * self.currentDuration;
     
     [self setCurrentTime: newTime];
+    NSLog (@"Setting time %f", newTime);
+    
     self.currentTimeLabel.text = [NSString timecodeStringFromSeconds: newTime];
 }
 
