@@ -84,7 +84,7 @@
 @property (nonatomic, strong) UIImage* originalBackgroundImage;
 @property (nonatomic, strong) UIView *coverChooserMasterView;
 @property (nonatomic, strong) UIView* noVideosMessageView;
-@property (nonatomic, strong) VideoInstance* instanceToDelete;
+@property (nonatomic, strong) NSIndexPath* indexPathToDelete;
 @property (nonatomic, strong) id<SDWebImageOperation> currentWebImageOperation;
 
 @property (nonatomic, weak) Channel* originalChannel;
@@ -996,27 +996,28 @@
     addButton.selected = !addButton.selected;
 }
 
+#pragma mark - Deleting Video Instances
 
 - (void) videoDeleteButtonTapped: (UIButton *) deleteButton
 {
     UIView *v = deleteButton.superview.superview;
     
-    NSIndexPath *indexPath = [self.videoThumbnailCollectionView indexPathForItemAtPoint: v.center];
+    self.indexPathToDelete = [self.videoThumbnailCollectionView indexPathForItemAtPoint: v.center];
     
-    self.instanceToDelete = (VideoInstance*)self.channel.videoInstances[indexPath.item];
+    VideoInstance* videoInstanceToDelete = (VideoInstance*)self.channel.videoInstances[self.indexPathToDelete.item];
     
-    if (self.instanceToDelete != nil)
-    {
-        [[[UIAlertView alloc] initWithTitle: NSLocalizedString (@"channel_creation_screen_channel_delete_dialog_title", nil)
-                                                        message: NSLocalizedString (@"channel_creation_screen_video_delete_dialog_description", nil)
-                                                       delegate: self
-                                              cancelButtonTitle: NSLocalizedString (@"Cancel", nil)
-                                              otherButtonTitles: NSLocalizedString (@"Delete", nil), nil] show];
-    }
+    if (!videoInstanceToDelete)
+        return;
+    
+    [[[UIAlertView alloc] initWithTitle: NSLocalizedString (@"channel_creation_screen_channel_delete_dialog_title", nil)
+                                message: NSLocalizedString (@"channel_creation_screen_video_delete_dialog_description", nil)
+                               delegate: self
+                      cancelButtonTitle: NSLocalizedString (@"Cancel", nil)
+                      otherButtonTitles: NSLocalizedString (@"Delete", nil), nil] show];
 }
 
 
-// Alert view delegarte for 
+// Alert view delegarte for
 - (void) alertView: (UIAlertView *) alertView
          clickedButtonAtIndex: (NSInteger) buttonIndex
 {
@@ -1027,25 +1028,44 @@
     }
     else
     { 
-        if (self.channel.managedObjectContext == appDelegate.channelsManagedObjectContext) // the channel is the under creation channel
-        {
-            [[NSNotificationCenter defaultCenter] postNotificationName: kVideoQueueRemove
-                                                                object: self
-                                                              userInfo: @{kVideoInstance: self.instanceToDelete}];
-        }
-        else
-        {
-            NSMutableOrderedSet *channelsSet = [NSMutableOrderedSet orderedSetWithOrderedSet: self.channel.videoInstances];
-            
-            [channelsSet removeObject: self.instanceToDelete];
-            
-            [self.channel setVideoInstances: channelsSet];
-        }
+        [self deleteVideoInstance];
         
-        [self reloadCollectionViews];
+        
     }
 }
 
+- (void) deleteVideoInstance
+{
+    VideoInstance* videoInstanceToDelete = (VideoInstance*)self.channel.videoInstances[self.indexPathToDelete.item];
+    
+    if (!videoInstanceToDelete)
+        return;
+    
+    
+   
+    
+    UICollectionViewCell* cell =
+    [self.videoThumbnailCollectionView cellForItemAtIndexPath:self.indexPathToDelete];
+    
+    [UIView animateWithDuration:0.2 animations:^{
+        
+        cell.alpha = 0.0;
+        
+    } completion:^(BOOL finished) {
+        
+        
+         [self.channel.videoInstancesSet removeObject:videoInstanceToDelete];
+        
+        [videoInstanceToDelete.managedObjectContext deleteObject:videoInstanceToDelete];
+        
+        
+        [self.videoThumbnailCollectionView deleteItemsAtIndexPaths:@[self.indexPathToDelete]];
+        
+        [appDelegate saveContext:YES];
+        
+        
+    }];
+}
 
 - (IBAction) addCoverButtonTapped: (UIButton *) button
 {
