@@ -38,7 +38,7 @@
         
         if (isIpad)
         {
-            self.contentSizeForViewInPopover = CGSizeMake(380, 586);
+            self.contentSizeForViewInPopover = CGSizeMake(380, 476);
         }
         
         else
@@ -117,7 +117,7 @@
                                                                   + self.rockpackWithVersionLabel.frame.size.height
                                                                   + self.rockpackCopyrightTextLabel.frame.size.height
                                                                   + [self.attributionTextView contentSize].height
-                                                                  - 10.0,
+                                                                  - 5.0,
                                                                   
                                                                   160.0,
                                                                   
@@ -151,7 +151,8 @@
                                                                   + self.rockpackWithVersionLabel.frame.size.height
                                                                   + self.rockpackCopyrightTextLabel.frame.size.height
                                                                   + [self.attributionTextView contentSize].height
-                                                                  + self.termsButton.frame.size.height,
+                                                                  + self.termsButton.frame.size.height
+                                                                  + 5.0,
                                                                   
                                                                   160.0,
                                                                   
@@ -184,7 +185,7 @@
     BOOL isIpad = [SYNDeviceManager.sharedInstance isIPad];
     
     self.logoImageView = [[UIImageView alloc] initWithImage:[UIImage imageNamed:@"IconRockpackAbout"]];
-    self.logoImageView.frame = CGRectMake((self.contentSizeForViewInPopover.width * 0.5) - 38.0, (isIpad ? 50.0 : 30.0), 76.0, 77.0);
+    self.logoImageView.frame = CGRectMake((self.contentSizeForViewInPopover.width * 0.5) - 38.0, (isIpad ? 40.0 : 30.0), 76.0, 77.0);
     self.logoImageView.backgroundColor = [UIColor clearColor];
     [self.scrollView addSubview: self.logoImageView];
     
@@ -256,9 +257,11 @@
     
     self.attributionTextView = [[UITextView alloc] init];
     
+    BOOL isIpad = [SYNDeviceManager.sharedInstance isIPad];
+    
     NSMutableParagraphStyle *paragraphStyle = [[NSMutableParagraphStyle alloc] init];
-    paragraphStyle.minimumLineHeight = 15.0f;
-    paragraphStyle.maximumLineHeight = 15.0f;
+    paragraphStyle.minimumLineHeight = (isIpad ? 10.0f : 15.0f);
+    paragraphStyle.maximumLineHeight = (isIpad ? 10.0f : 15.0f);
     
     NSDictionary *attributes = @{
                                   NSParagraphStyleAttributeName : paragraphStyle,
