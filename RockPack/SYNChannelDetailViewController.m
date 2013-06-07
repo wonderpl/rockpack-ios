@@ -548,22 +548,34 @@
 {
     
     NSArray* updatedObjects = [[notification userInfo] objectForKey: NSUpdatedObjectsKey];
+//    NSArray* refreshedObjects = [[notification userInfo] objectForKey: NSRefreshedObjectsKey];
 //    NSArray* insertedObjects = [[notification userInfo] objectForKey: NSInsertedObjectsKey];
 //    NSArray* deletedObjects = [[notification userInfo] objectForKey: NSDeletedObjectsKey];
-//    
-//    
+    
+    
 //    [updatedObjects enumerateObjectsUsingBlock: ^(id obj, NSUInteger idx, BOOL *stop) {
+//        
 //        if ([obj isKindOfClass:[VideoInstance class]] && ((VideoInstance*)obj).channel == self.channel) {
 //            
-//            NSLog(@"| Updated: %@", obj);
+//            NSLog(@"| Updated: %@", ((VideoInstance*)obj).title);
+//        }
+//        
+//    }];
+//    
+//    [refreshedObjects enumerateObjectsUsingBlock: ^(id obj, NSUInteger idx, BOOL *stop) {
+//        
+//        if ([obj isKindOfClass:[VideoInstance class]] && ((VideoInstance*)obj).channel == self.channel) {
+//            
+//            NSLog(@"/ Refreshed: %@", ((VideoInstance*)obj).title);
 //        }
 //        
 //    }];
 //    
 //    [insertedObjects enumerateObjectsUsingBlock: ^(id obj, NSUInteger idx, BOOL *stop) {
+//        
 //        if ([obj isKindOfClass:[VideoInstance class]] && ((VideoInstance*)obj).channel == self.channel) {
 //            
-//            NSLog(@"+ Inserted: %@", obj);
+//            NSLog(@"+ Inserted: %@", ((VideoInstance*)obj).title);
 //        }
 //        
 //    }];
@@ -572,7 +584,7 @@
 //        
 //        if ([obj isKindOfClass:[VideoInstance class]] && ((VideoInstance*)obj).channel == self.channel) {
 //            
-//            NSLog(@"- Deleted: %@", obj);
+//            NSLog(@"- Deleted: %@", ((VideoInstance*)obj).title);
 //        }
 //        
 //    }];
@@ -2615,6 +2627,7 @@
         
         if([self.channel.channelOwner.uniqueId isEqualToString:appDelegate.currentUser.uniqueId])
             [self updateChannelOwnerWithUser];
+        
         
         [[NSNotificationCenter defaultCenter] addObserver: self
                                                  selector: @selector(handleDataModelChange:)

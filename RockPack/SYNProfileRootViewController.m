@@ -398,9 +398,9 @@
     [updatedObjects enumerateObjectsUsingBlock: ^(id obj, NSUInteger idx, BOOL *stop)
     {
         
-         if ([obj isKindOfClass:[ChannelOwner class]] && [((ChannelOwner*)obj).uniqueId isEqualToString:self.user.uniqueId])
+         if (obj == self.user)
          {
-             [self.userProfileController setChannelOwner:obj];
+             [self.userProfileController setChannelOwner:(ChannelOwner*)obj];
              
              [self reloadCollectionViews];
              
