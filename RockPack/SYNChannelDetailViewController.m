@@ -947,7 +947,7 @@
     [self shareChannel: self.channel
                 inView: self.view
               fromRect: self.shareButton.frame
-       arrowDirections: UIPopoverArrowDirectionDown
+       arrowDirections: UIPopoverArrowDirectionRight
             onComplete: ^{
                 // Re-enable button
                     shareButton.enabled = TRUE;

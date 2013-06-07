@@ -91,7 +91,18 @@
 
     GKImageCropViewController *cropController = [[GKImageCropViewController alloc] init];
     cropController.contentSizeForViewInPopover = picker.contentSizeForViewInPopover;
-    cropController.sourceImage = [info objectForKey:UIImagePickerControllerOriginalImage];
+    UIImage* image = [info objectForKey:UIImagePickerControllerOriginalImage];
+
+    NSLog(@"%f,%f",image.size.width, image.size.height);
+    if(MAX(image.size.width, image.size.height)>3264)
+    {
+        //Image too large
+        UIAlertView* alert = [[UIAlertView alloc] initWithTitle:@"Image too large" message:@"Images this large cannot be imported." delegate:nil cancelButtonTitle:@"OK" otherButtonTitles:nil];
+        [alert show];
+        [self imagePickerControllerDidCancel:picker];
+        return;
+    }
+    cropController.sourceImage = image;
     cropController.resizeableCropArea = self.resizeableCropArea;
     cropController.cropSize = self.cropSize;
     cropController.delegate = self;

@@ -72,8 +72,21 @@
                           completionHandler: (MKNKUserSuccessBlock) completionBlock
                                errorHandler: (MKNKUserErrorBlock) errorBlock
 {
+    [self addCommonHandlerToNetworkOperation:networkOperation completionHandler:completionBlock errorHandler:errorBlock retryInputStream:nil];
+}
+
+// This code block is common to all of the signup/signin methods
+- (void) addCommonHandlerToNetworkOperation:  (SYNNetworkOperationJsonObject *) networkOperation
+                          completionHandler: (MKNKUserSuccessBlock) completionBlock
+                               errorHandler: (MKNKUserErrorBlock) errorBlock
+                                retryInputStream: (NSInputStream*) retryInputStream
+{
     // First, copy the network operation so that if authentication fails we can try again
     SYNNetworkOperationJsonObject *retryNetworkOperation = [networkOperation copyForRetry];
+    if(retryInputStream)
+    {
+        [retryNetworkOperation setUploadStream:retryInputStream];
+    }
     
     // Set the callback logic for our standard network operation 
     [networkOperation addJSONCompletionHandler: ^(id response)
