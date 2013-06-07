@@ -134,6 +134,8 @@
 
 #define kShowUserChannels           @"kShowUserChannels"
 
+#define kImageSizeStringReplace     @"thumbnail_medium"
+
 // Timeout for API calls
 
 #define kAPIDefaultTimout 30

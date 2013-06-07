@@ -476,7 +476,7 @@
     self.emptyGenreMessageView = [SYNFeedMessagesView withMessage:NSLocalizedString(messageKey ,nil) andLoader:isLoader];
     
     CGRect messageFrame = self.emptyGenreMessageView.frame;
-    messageFrame.origin.y = [[SYNDeviceManager sharedInstance] currentScreenHeight] - 60 - messageFrame.size.height;
+    messageFrame.origin.y = [[SYNDeviceManager sharedInstance] currentScreenHeight] * 0.5 - messageFrame.size.height * 0.5;
     messageFrame.origin.x = [[SYNDeviceManager sharedInstance] currentScreenWidth] * 0.5 - messageFrame.size.width * 0.5;
     messageFrame= CGRectIntegral(messageFrame);
     self.emptyGenreMessageView.frame = messageFrame;
@@ -573,7 +573,7 @@
                                       placeholderImage: [UIImage imageNamed: @"PlaceholderVideoWide.png"]
                                                options: SDWebImageRetryFailed];
 
-    [videoThumbnailCell.channelImageView setImageWithURL: [NSURL URLWithString: videoInstance.channel.channelOwner.thumbnailURL]
+    [videoThumbnailCell.channelImageView setImageWithURL: [NSURL URLWithString: videoInstance.channel.channelOwner.thumbnailLargeUrl]
                                         placeholderImage: [UIImage imageNamed: @"PlaceholderChannelSmall.png"]
                                                  options: SDWebImageRetryFailed];
     

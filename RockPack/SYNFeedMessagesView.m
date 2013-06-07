@@ -34,7 +34,7 @@
         _isIPhone = [[SYNDeviceManager sharedInstance] isIPhone];
         // Label
         
-        UIFont* fontToUse = [UIFont rockpackFontOfSize: _isIPhone?13.0f:20.0];
+        UIFont* fontToUse = [UIFont rockpackFontOfSize: _isIPhone?12.0f : 16.0f ];
         
         CGRect labelFrame = CGRectZero;
         
@@ -51,7 +51,7 @@
         _messageLabel = label;
         
         // BG
-        self.backgroundColor = [UIColor colorWithWhite:0.333f alpha:0.4f];
+        self.backgroundColor = [UIColor colorWithWhite:0.333f alpha:0.8f];
 
         
         // Add
@@ -112,7 +112,7 @@
     
     if(_isLoader)
     {
-        _activityIndicatorView = [[UIActivityIndicatorView alloc] initWithActivityIndicatorStyle:UIActivityIndicatorViewStyleWhiteLarge];
+        _activityIndicatorView = [[UIActivityIndicatorView alloc] initWithActivityIndicatorStyle:UIActivityIndicatorViewStyleWhite];
         _activityIndicatorView.hidesWhenStopped = YES;
         CGRect activityFrame = _activityIndicatorView.frame;
         activityFrame.origin.x = kSpinnerTextDistance + self.messageLabel.frame.origin.x + self.messageLabel.frame.size.width;

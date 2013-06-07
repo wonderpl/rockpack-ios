@@ -33,6 +33,11 @@
                           completionHandler: (MKNKUserSuccessBlock) completionBlock
                                errorHandler: (MKNKUserErrorBlock) errorBlock;
 
+- (void) addCommonHandlerToNetworkOperation:  (SYNNetworkOperationJsonObject *) networkOperation
+                          completionHandler: (MKNKUserSuccessBlock) completionBlock
+                               errorHandler: (MKNKUserErrorBlock) errorBlock
+                           retryInputStream: (NSInputStream*) retryInputStream;
+
 - (IBAction) refreshOAuthTokenWithCompletionHandler: (MKNKUserErrorBlock) completionBlock
                                        errorHandler: (MKNKUserSuccessBlock) errorBlock;
 

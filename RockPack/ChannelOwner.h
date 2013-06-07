@@ -22,4 +22,7 @@
 
 -(void)setSubscriptionsDictionary:(NSDictionary *)subscriptionsDictionary;
 
+@property (nonatomic, readonly) NSString* thumbnailSmallUrl;
+@property (nonatomic, readonly) NSString* thumbnailLargeUrl;
+
 @end

@@ -8,6 +8,7 @@
 
 #import "SYNAccountSettingsEmail.h"
 #import "SYNOAuthNetworkEngine.h"
+#import "UIFont+SYNFont.h"
 
 @interface SYNAccountSettingsEmail ()
 
@@ -46,6 +47,21 @@
     UIBarButtonItem *backButtonItem = [[UIBarButtonItem alloc] initWithCustomView:backButton];
     
     self.navigationItem.leftBarButtonItem = backButtonItem;
+    
+    UILabel* titleLabel = [[UILabel alloc] initWithFrame: CGRectMake( -(self.contentSizeForViewInPopover.width * 0.5), -15.0, self.contentSizeForViewInPopover.width, 40.0)];
+    titleLabel.backgroundColor = [UIColor clearColor];
+    titleLabel.textColor = [UIColor colorWithRed: (28.0/255.0) green: (31.0/255.0) blue: (33.0/255.0) alpha: (1.0)];
+    titleLabel.text = NSLocalizedString (@"settings_popover_email_title", nil);
+    titleLabel.font = [UIFont boldRockpackFontOfSize:18.0];
+    titleLabel.textAlignment = NSTextAlignmentCenter;
+    titleLabel.shadowColor = [UIColor whiteColor];
+    titleLabel.shadowOffset = CGSizeMake(0.0, 1.0);
+    
+    
+    UIView * labelContentView = [[UIView alloc]init];
+    [labelContentView addSubview:titleLabel];
+    
+    self.navigationItem.titleView = labelContentView;
 }
 
 -(void)saveButtonPressed:(UIButton*)button
