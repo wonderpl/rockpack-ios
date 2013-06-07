@@ -28,15 +28,17 @@ typedef void (^SYNVideoIndexUpdater)(int);
 
 // Initialisation
 - (void) updateWithFrame: (CGRect) frame
+          channelCreator: (NSString *) channelCreator
             indexUpdater: (SYNVideoIndexUpdater) indexUpdater;
 
 - (void) setPlaylist: (NSArray *) playlistArray
        selectedIndex: (int) selectedIndex
             autoPlay: (BOOL) autoPlay;
 
+- (void) updateChannelCreator: (NSString *) channelCreator;
+
 // Player control
 - (void) playVideoAtIndex: (int) index;
-- (void) loadNextVideo;
 - (void) resetShuttleBarFrame;
 - (void) playIfVideoActive;
 - (void) pauseIfVideoActive;
