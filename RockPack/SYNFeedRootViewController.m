@@ -204,7 +204,7 @@
     [self updateAnalytics];
     if(self.dataRequestRange.location == 0)
     {
-        [self refreshButtonPressed];
+        [self refreshData];
     }
 }
 
@@ -218,10 +218,15 @@
 
 - (void) refreshButtonPressed
 {
+    [self refreshData];
+    [self.videoThumbnailCollectionView setContentOffset:CGPointZero animated:YES];
+}
+
+-(void)refreshData
+{
     [self.refreshButton startRefreshCycle];
     self.dataRequestRange = NSMakeRange(0, STANDARD_REQUEST_LENGTH);
     [self loadAndUpdateFeedData];
-    [self.videoThumbnailCollectionView setContentOffset:CGPointZero animated:YES];
 }
 
 
