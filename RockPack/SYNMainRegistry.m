@@ -213,9 +213,6 @@
     if (![itemArray isKindOfClass: [NSArray class]])
         return NO;
     
-    if (itemArray.count == 0)
-        return YES;
-    
     
     NSFetchRequest *videoInstanceFetchRequest = [[NSFetchRequest alloc] init];
     [videoInstanceFetchRequest setEntity: [NSEntityDescription entityForName: @"VideoInstance"
@@ -278,7 +275,6 @@
         
         videoInstance.position = [itemDictionary objectForKey: @"position"
                                                   withDefault: @(0)];
-        NSLog(@"%@ : %@", videoInstance.title, videoInstance.position);
         
         videoInstance.viewId = kFeedViewId;
         videoInstance.freshValue = YES;
@@ -291,7 +287,7 @@
         
     }    
     
-    
+    int d = 0;
     
     for (VideoInstance* oldVideoInstance in existingFeedVideoInstances)
     {
@@ -307,11 +303,16 @@
             [oldVideoInstance.channel.managedObjectContext deleteObject:oldVideoInstance.channel];
         
         [oldVideoInstance.managedObjectContext deleteObject:oldVideoInstance];
+        
+        d++;
     }
+    
+    NSLog(@"deleted feed objects: %i", d);
+    
+    
     
     if(![self saveImportContext])
         return NO;
-    
     
     [appDelegate saveContext: TRUE];
     
