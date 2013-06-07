@@ -1044,7 +1044,7 @@
     
     [self addCommonHandlerToNetworkOperation: networkOperation
                            completionHandler: completionBlock
-                                errorHandler: errorBlock];
+                                errorHandler: errorBlock retryInputStream:[NSInputStream inputStreamWithData: imageData]];
     
     [self enqueueSignedOperation: networkOperation];
 }
