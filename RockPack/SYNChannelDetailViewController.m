@@ -545,11 +545,12 @@
 
 - (void) handleDataModelChange: (NSNotification*) notification
 {
-    NSArray* updatedObjects = [[notification userInfo] objectForKey: NSUpdatedObjectsKey];
     
-    // In the Future use...
-    // NSArray* insertedObjects = [[notification userInfo] objectForKey: NSInsertedObjectsKey];
-    // NSArray* deletedObjects = [[notification userInfo] objectForKey: NSDeletedObjectsKey];
+    NSArray* updatedObjects = [[notification userInfo] objectForKey: NSUpdatedObjectsKey];
+    NSArray* insertedObjects = [[notification userInfo] objectForKey: NSInsertedObjectsKey];
+    NSArray* deletedObjects = [[notification userInfo] objectForKey: NSDeletedObjectsKey];
+    
+    NSLog(@"updated:%i inserted:%i deleted:%i", updatedObjects.count, insertedObjects.count, deletedObjects.count);
     
     [updatedObjects enumerateObjectsUsingBlock: ^(id obj, NSUInteger idx, BOOL *stop) {
         
@@ -557,7 +558,6 @@
         if ([obj isKindOfClass:[Channel class]] && [((Channel*)obj).uniqueId isEqualToString:self.channel.uniqueId])
         {
             
-
             if(self.channel.videoInstances.count == 0)
             {
                 [self showNoVideosMessage: NSLocalizedString(@"channel_screen_no_videos",nil) withLoader:NO];

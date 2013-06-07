@@ -190,12 +190,12 @@
 
 #pragma mark - Search
 
-- (void) searchVideosForTerm: (NSString*)searchTerm
-                     inRange: (NSRange)range
-                  onComplete: (MKNKSearchSuccessBlock)completeBlock
+- (MKNetworkOperation*) searchVideosForTerm: (NSString*)searchTerm
+                                    inRange: (NSRange)range
+                                 onComplete: (MKNKSearchSuccessBlock)completeBlock
 {
     if (searchTerm == nil || [searchTerm isEqualToString:@""])
-        return;
+        return nil;
     
     NSMutableDictionary* tempParameters = [NSMutableDictionary dictionary];
     
@@ -238,15 +238,17 @@
     
     
     [self enqueueOperation: networkOperation];
+    
+    return networkOperation;
 }
 
 
-- (void) searchChannelsForTerm: (NSString*)searchTerm
-                      andRange: (NSRange)range
-                    onComplete: (MKNKSearchSuccessBlock)completeBlock
-{
+- (MKNetworkOperation*) searchChannelsForTerm: (NSString*)searchTerm
+                                     andRange: (NSRange)range
+                                   onComplete: (MKNKSearchSuccessBlock)completeBlock
+{   
     if (searchTerm == nil || [searchTerm isEqualToString:@""])
-        return;
+        return nil;
 
     NSMutableDictionary* tempParameters = [NSMutableDictionary dictionary];
     
@@ -295,6 +297,8 @@
     
     
     [self enqueueOperation: networkOperation];
+    
+    return networkOperation;
 }
 
 
