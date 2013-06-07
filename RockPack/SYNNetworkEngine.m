@@ -130,9 +130,9 @@
 
 
 
-- (void) updateChannel: (NSString *) resourceURL
-     completionHandler: (MKNKUserSuccessBlock) completionBlock
-          errorHandler: (MKNKUserErrorBlock) errorBlock
+- (MKNetworkOperation*) updateChannel: (NSString *) resourceURL
+                    completionHandler: (MKNKUserSuccessBlock) completionBlock
+                         errorHandler: (MKNKUserErrorBlock) errorBlock
 {
     SYNNetworkOperationJsonObject *networkOperation = (SYNNetworkOperationJsonObject*)[self operationWithURLString: resourceURL
                                                                                                            params: nil];
@@ -142,6 +142,8 @@
                                 errorHandler: errorBlock];
     
     [self enqueueOperation: networkOperation];
+    
+    return networkOperation;
     
 }
 
@@ -188,12 +190,12 @@
 
 #pragma mark - Search
 
-- (void) searchVideosForTerm: (NSString*)searchTerm
-                     inRange: (NSRange)range
-                  onComplete: (MKNKSearchSuccessBlock)completeBlock
+- (MKNetworkOperation*) searchVideosForTerm: (NSString*)searchTerm
+                                    inRange: (NSRange)range
+                                 onComplete: (MKNKSearchSuccessBlock)completeBlock
 {
     if (searchTerm == nil || [searchTerm isEqualToString:@""])
-        return;
+        return nil;
     
     NSMutableDictionary* tempParameters = [NSMutableDictionary dictionary];
     
@@ -236,15 +238,17 @@
     
     
     [self enqueueOperation: networkOperation];
+    
+    return networkOperation;
 }
 
 
-- (void) searchChannelsForTerm: (NSString*)searchTerm
-                      andRange: (NSRange)range
-                    onComplete: (MKNKSearchSuccessBlock)completeBlock
-{
+- (MKNetworkOperation*) searchChannelsForTerm: (NSString*)searchTerm
+                                     andRange: (NSRange)range
+                                   onComplete: (MKNKSearchSuccessBlock)completeBlock
+{   
     if (searchTerm == nil || [searchTerm isEqualToString:@""])
-        return;
+        return nil;
 
     NSMutableDictionary* tempParameters = [NSMutableDictionary dictionary];
     
@@ -293,6 +297,8 @@
     
     
     [self enqueueOperation: networkOperation];
+    
+    return networkOperation;
 }
 
 

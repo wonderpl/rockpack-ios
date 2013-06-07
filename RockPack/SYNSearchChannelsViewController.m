@@ -13,11 +13,13 @@
 #import "SYNDeviceManager.h"
 #import "SYNDeviceManager.h"
 #import "SYNChannelDetailViewController.h"
-
+#import "MKNetworkOperation.h"
 
 @interface SYNSearchChannelsViewController ()
 
 @property (nonatomic, weak) NSString* searchTerm;
+
+@property (nonatomic, weak) MKNetworkOperation* runningSearchOperation;
 
 @end
 
@@ -25,6 +27,7 @@
 @implementation SYNSearchChannelsViewController
 
 @synthesize itemToUpdate;
+@synthesize runningNetworkOperation = _runningNetworkOperation;
 
 #pragma mark - View lifecycle
 
@@ -215,6 +218,14 @@
                                                                                               usingMode: kChannelDetailsModeDisplay];
     
     [self animatedPushViewController: channelVC];
+}
+
+-(void)setRunningSearchOperation:(MKNetworkOperation *)runningSearchOperation
+{
+    if(_runningNetworkOperation)
+        [_runningNetworkOperation cancel];
+    
+    _runningNetworkOperation = runningSearchOperation;
 }
 
 @end

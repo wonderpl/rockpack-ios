@@ -426,7 +426,7 @@
                                                         [self displayEmptyGenreMessage:NSLocalizedString(@"feed_screen_empty_message", nil) andLoader:NO];
                                                     }  
                                                     
-                                                        
+                                                    NSLog(@"new fetched count : %i", self.fetchedResultsController.fetchedObjects.count);
                                                     
                                                     self.footerView.showsLoading = NO;
                                                     
@@ -467,14 +467,13 @@
 - (void) displayEmptyGenreMessage:(NSString*)messageKey andLoader:(BOOL)isLoader
 {
     
-    if (!self.emptyGenreMessageView)
+    if (self.emptyGenreMessageView)
     {
-        self.emptyGenreMessageView = [SYNFeedMessagesView withMessage:NSLocalizedString(messageKey ,nil) andLoader:isLoader];
+        [self.emptyGenreMessageView removeFromSuperview];
+        self.emptyGenreMessageView = nil;
     }
-    else
-    {
-        [self.emptyGenreMessageView setMessage:NSLocalizedString(messageKey ,nil)];
-    }
+    
+    self.emptyGenreMessageView = [SYNFeedMessagesView withMessage:NSLocalizedString(messageKey ,nil) andLoader:isLoader];
     
     CGRect messageFrame = self.emptyGenreMessageView.frame;
     messageFrame.origin.y = [[SYNDeviceManager sharedInstance] currentScreenHeight] - 60 - messageFrame.size.height;

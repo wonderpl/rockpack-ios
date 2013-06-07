@@ -20,12 +20,14 @@
 #import "UIImageView+WebCache.h"
 #import "Video.h"
 #import "VideoInstance.h"
+#import "MKNetworkOperation.h"
 
 @interface SYNSearchVideosViewController ()
 {
     BOOL isIphone;
 }
 
+@property (nonatomic, weak) MKNetworkOperation* runningSearchOperation;
 
 
 @property (nonatomic, strong)NSCalendar* currentCalendar;
@@ -39,6 +41,7 @@
 @synthesize itemToUpdate;
 @synthesize dataRequestRange;
 @synthesize dataItemsAvailable;
+@synthesize runningNetworkOperation = _runningNetworkOperation;
 
 - (void) viewDidLoad
 {
@@ -150,11 +153,11 @@
     
     
 
-    [self.appDelegate.networkEngine searchVideosForTerm: term
-                                                inRange: self.dataRequestRange
-                                             onComplete: ^(int itemsCount) {
-                                                 self.dataItemsAvailable = itemsCount;
-                                             }];
+    self.runningSearchOperation =  [self.appDelegate.networkEngine searchVideosForTerm: term
+                                                                               inRange: self.dataRequestRange
+                                                                            onComplete: ^(int itemsCount) {
+                                                                                self.dataItemsAvailable = itemsCount;
+                                                                            }];
     
     self.searchTerm = term;
 }
@@ -354,6 +357,14 @@
     }
         
     return dataRequestRange;
+}
+
+-(void)setRunningSearchOperation:(MKNetworkOperation *)runningSearchOperation
+{
+    if(_runningNetworkOperation)
+        [_runningNetworkOperation cancel];
+    
+    _runningNetworkOperation = runningSearchOperation;
 }
 
 @end
