@@ -780,8 +780,16 @@ static UIWebView* vimeoideoWebViewInstance;
 
 - (void) playVideo
 {
-    [self.currentVideoWebView stringByEvaluatingJavaScriptFromString: @"player.playVideo();"];
-    self.playFlag = TRUE;
+    if([self.view superview])
+    {
+        [self.currentVideoWebView stringByEvaluatingJavaScriptFromString: @"player.playVideo();"];
+        self.playFlag = TRUE;
+    }
+    else
+    {
+        [self.currentVideoWebView stringByEvaluatingJavaScriptFromString: @"player.stopVideo();"];
+        self.playFlag = FALSE;;
+    }
 }
 
 

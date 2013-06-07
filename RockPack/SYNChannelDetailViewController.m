@@ -9,6 +9,7 @@
 #import "Channel.h"
 #import "ChannelCover.h"
 #import "ChannelOwner.h"
+#import "User.h"
 #import "CoverArt.h"
 #import "GAI.h"
 #import "GKImagePicker.h"
@@ -83,7 +84,7 @@
 @property (nonatomic, strong) UIImage* originalBackgroundImage;
 @property (nonatomic, strong) UIView *coverChooserMasterView;
 @property (nonatomic, strong) UIView* noVideosMessageView;
-@property (nonatomic, strong) VideoInstance* instanceToDelete;
+@property (nonatomic, strong) NSIndexPath* indexPathToDelete;
 @property (nonatomic, strong) id<SDWebImageOperation> currentWebImageOperation;
 
 @property (nonatomic, weak) Channel* originalChannel;
@@ -322,6 +323,8 @@
     {
         [self autoplayVideoIfAvailable];
     }
+    
+    self.originalContentOffset = self.videoThumbnailCollectionView.contentOffset;
 }
 
 
@@ -390,8 +393,6 @@
     
     [self displayChannelDetails];
     
-    
-    self.originalContentOffset = self.videoThumbnailCollectionView.contentOffset;
 }
 
 
@@ -422,6 +423,13 @@
     [[NSNotificationCenter defaultCenter] removeObserver:self
                                                     name:kVideoQueueClear
                                                   object:nil];
+
+    if(!_isIPhone)
+    {
+        [[NSNotificationCenter defaultCenter] postNotificationName: kVideoQueueClear
+                                                        object: self
+                                                      userInfo: nil];
+    }
 
     
     if (self.subscribingIndicator)
@@ -988,27 +996,28 @@
     addButton.selected = !addButton.selected;
 }
 
+#pragma mark - Deleting Video Instances
 
 - (void) videoDeleteButtonTapped: (UIButton *) deleteButton
 {
     UIView *v = deleteButton.superview.superview;
     
-    NSIndexPath *indexPath = [self.videoThumbnailCollectionView indexPathForItemAtPoint: v.center];
+    self.indexPathToDelete = [self.videoThumbnailCollectionView indexPathForItemAtPoint: v.center];
     
-    self.instanceToDelete = (VideoInstance*)self.channel.videoInstances[indexPath.item];
+    VideoInstance* videoInstanceToDelete = (VideoInstance*)self.channel.videoInstances[self.indexPathToDelete.item];
     
-    if (self.instanceToDelete != nil)
-    {
-        [[[UIAlertView alloc] initWithTitle: NSLocalizedString (@"channel_creation_screen_channel_delete_dialog_title", nil)
-                                                        message: NSLocalizedString (@"channel_creation_screen_video_delete_dialog_description", nil)
-                                                       delegate: self
-                                              cancelButtonTitle: NSLocalizedString (@"Cancel", nil)
-                                              otherButtonTitles: NSLocalizedString (@"Delete", nil), nil] show];
-    }
+    if (!videoInstanceToDelete)
+        return;
+    
+    [[[UIAlertView alloc] initWithTitle: NSLocalizedString (@"channel_creation_screen_channel_delete_dialog_title", nil)
+                                message: NSLocalizedString (@"channel_creation_screen_video_delete_dialog_description", nil)
+                               delegate: self
+                      cancelButtonTitle: NSLocalizedString (@"Cancel", nil)
+                      otherButtonTitles: NSLocalizedString (@"Delete", nil), nil] show];
 }
 
 
-// Alert view delegarte for 
+// Alert view delegarte for
 - (void) alertView: (UIAlertView *) alertView
          clickedButtonAtIndex: (NSInteger) buttonIndex
 {
@@ -1019,25 +1028,44 @@
     }
     else
     { 
-        if (self.channel.managedObjectContext == appDelegate.channelsManagedObjectContext) // the channel is the under creation channel
-        {
-            [[NSNotificationCenter defaultCenter] postNotificationName: kVideoQueueRemove
-                                                                object: self
-                                                              userInfo: @{kVideoInstance: self.instanceToDelete}];
-        }
-        else
-        {
-            NSMutableOrderedSet *channelsSet = [NSMutableOrderedSet orderedSetWithOrderedSet: self.channel.videoInstances];
-            
-            [channelsSet removeObject: self.instanceToDelete];
-            
-            [self.channel setVideoInstances: channelsSet];
-        }
+        [self deleteVideoInstance];
         
-        [self reloadCollectionViews];
+        
     }
 }
 
+- (void) deleteVideoInstance
+{
+    VideoInstance* videoInstanceToDelete = (VideoInstance*)self.channel.videoInstances[self.indexPathToDelete.item];
+    
+    if (!videoInstanceToDelete)
+        return;
+    
+    
+   
+    
+    UICollectionViewCell* cell =
+    [self.videoThumbnailCollectionView cellForItemAtIndexPath:self.indexPathToDelete];
+    
+    [UIView animateWithDuration:0.2 animations:^{
+        
+        cell.alpha = 0.0;
+        
+    } completion:^(BOOL finished) {
+        
+        
+         [self.channel.videoInstancesSet removeObject:videoInstanceToDelete];
+        
+        [videoInstanceToDelete.managedObjectContext deleteObject:videoInstanceToDelete];
+        
+        
+        [self.videoThumbnailCollectionView deleteItemsAtIndexPaths:@[self.indexPathToDelete]];
+        
+        [appDelegate saveContext:YES];
+        
+        
+    }];
+}
 
 - (IBAction) addCoverButtonTapped: (UIButton *) button
 {
@@ -1533,6 +1561,8 @@
 
 - (IBAction) createChannelPressed: (id) sender
 {
+    self.isLocked = YES; // prevent back button from firing
+    
     if (_isIPhone)
     {
         self.createChannelButton.hidden = YES;
@@ -1574,6 +1604,8 @@
                                              [self setVideosForChannelById:channelId isUpdated:NO];
                                              
                                          } errorHandler: ^(id error) {
+                                             
+                                                  self.isLocked = NO;
                                                   
                                                   DebugLog(@"Error @ createChannelPressed:");
                                                   
@@ -1620,6 +1652,7 @@
 
 - (void) setVideosForChannelById: (NSString*) channelId isUpdated:(BOOL) isUpdated
 {
+    self.isLocked = YES; // prevent back button from firing
     
     [appDelegate.oAuthNetworkEngine updateVideosForChannelForUserId: appDelegate.currentOAuth2Credentials.userId
                                                           channelId: channelId
@@ -1632,6 +1665,8 @@
                                                       [self fetchAndStoreUpdatedChannelForId:channelId isUpdate:isUpdated];
                                                       
                                                   } errorHandler: ^(id err) {
+                                                      
+                                                      self.isLocked = NO;
                                                       
                                                       NSString* errorMessage = nil;
                                                       
@@ -1694,19 +1729,18 @@
                                               
                                               Channel* createdChannel;
                                               
-                                              IgnoringObjects ignore = kIgnoreStoredObjects | kIgnoreChannelOwnerObject;
+                                       
                                               if (!isUpdate) // its a new creation
                                               {
-                                                  ignore = ignore | kIgnoreStoredObjects;
                                                   
                                                   createdChannel = [Channel instanceFromDictionary:dictionary
                                                                          usingManagedObjectContext:appDelegate.mainManagedObjectContext
-                                                                               ignoringObjectTypes:ignore];
+                                                                               ignoringObjectTypes:kIgnoreChannelOwnerObject];
                                                   
                                                   
                                                   // this will automatically add the channel to the set of channels of the User
                                                   
-                                                  createdChannel.channelOwner = appDelegate.currentUser;
+                                                  [appDelegate.currentUser.channelsSet addObject:createdChannel];
                                                   
                                                   
                                                   if([createdChannel.categoryId isEqualToString:@""])
@@ -1731,12 +1765,12 @@
                                               else
                                               {
                                                   [self.channel setAttributesFromDictionary:dictionary
-                                                                        ignoringObjectTypes:ignore];
+                                                                        ignoringObjectTypes:kIgnoreChannelOwnerObject];
                                                   
                                                   // if editing the user's channel we must update the original
                                                   
                                                   [self.originalChannel  setAttributesFromDictionary:dictionary
-                                                                                 ignoringObjectTypes:ignore];
+                                                                                 ignoringObjectTypes:kIgnoreChannelOwnerObject];
                                                   
                                                   for (VideoInstance* vi in self.channel.videoInstances)
                                                   {
@@ -1774,8 +1808,11 @@
                                               [[NSNotificationCenter defaultCenter] postNotificationName:kNoteChannelSaved
                                                                                                   object:self];
                                               
+                                              self.isLocked = NO;
                                               
                                           } errorHandler:^(id err) {
+                                              
+                                              self.isLocked = NO;
                                               
                                               DebugLog(@"Error @ getNewlyCreatedChannelForId:");
                                               [self showError: NSLocalizedString(@"Could not retrieve the uploaded channel data. Please try accessing it from your profile later.", nil) showErrorTitle:@"Error"];
@@ -1830,7 +1867,7 @@
                                                               userInfo: nil];
             
             //And show as if displayed from the normal master view hierarchy
-            SYNAbstractViewController *currentRootViewcontroller = [master showingViewController];
+            SYNAbstractViewController *currentRootViewcontroller = [master showingBaseViewController];
             [currentRootViewcontroller animatedPushViewController:self];
         }
         
@@ -2394,6 +2431,9 @@
         if (scrollView.contentOffset.y <= self.originalContentOffset.y)
         {
             self.masterControlsView.alpha = 1.0f;
+            CGRect frame = self.masterControlsView.frame;
+            frame.origin.y = self.originalMasterControlsViewOrigin.y;
+            self.masterControlsView.frame = frame;
         }
         else
         {
@@ -2590,7 +2630,7 @@
 
 - (BOOL) needsAddButton
 {
-    return YES;
+    return NO;
 }
 
 

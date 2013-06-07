@@ -91,8 +91,7 @@
         
         
         Channel* channel = [Channel instanceFromDictionary:itemDictionary
-                                 usingManagedObjectContext:importManagedObjectContext
-                                       ignoringObjectTypes:kIgnoreStoredObjects]; // do not look for stored objects because search is always fresh
+                                 usingManagedObjectContext:importManagedObjectContext]; 
         
         if(!channel)
         {

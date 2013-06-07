@@ -45,6 +45,7 @@
 @implementation SYNContainerViewController
 
 @dynamic scrollView;
+@dynamic showingBaseViewController;
 @dynamic showingViewController;
 
 @synthesize appDelegate;
@@ -240,18 +241,13 @@
     if (!channelOwner)
         return;
     
-    [self.showingViewController viewProfileDetails:channelOwner];
+    [self.showingBaseViewController viewProfileDetails:channelOwner];
 }
 
 
 - (void) channelDetailsRequested: (NSNotification*) notification
 {
-    // check whether we are in search mode //
-    
-//    if( ((SYNMasterViewController*)self.parentViewController).isInSearchMode && [self.showingViewController.viewId isEqualToString:kChannelsViewId])
-//    {
-//        return;
-//    }
+
     
     Channel* channel = (Channel*)[[notification userInfo] objectForKey: kChannel];
     if (!channel)
@@ -261,7 +257,7 @@
                                                                                               usingMode: kChannelDetailsModeDisplay];
     channelVC.autoplayVideoId = [[notification userInfo] objectForKey:kAutoPlayVideoId];
     
-    [self.showingViewController animatedPushViewController: channelVC];
+    [self.showingBaseViewController animatedPushViewController: channelVC];
 }
 
 
@@ -324,7 +320,7 @@
     
     self.currentPageOffset = self.scrollView.contentOffset;
     
-    [self.showingViewController viewDidScrollToFront];
+    [self.showingBaseViewController viewDidScrollToFront];
 }
 
 
@@ -343,12 +339,21 @@
 
 #pragma mark - Getters/Setters
 
+
 - (SYNAbstractViewController*) showingViewController
 {
-    UINavigationController* navController =(UINavigationController*)self.selectedNavigationController;
-    return (SYNAbstractViewController*)navController.viewControllers[0];
+    UINavigationController* selectedNavController = (UINavigationController*)self.selectedNavigationController;
+    return (SYNAbstractViewController*)selectedNavController.topViewController;
+    
+}
+
+- (SYNAbstractViewController*) showingBaseViewController
+{
+    UINavigationController* selectedNavController = (UINavigationController*)self.selectedNavigationController;
+    return (SYNAbstractViewController*)selectedNavController.viewControllers[0];
 
 }
+
 
 
 - (SYNAbstractViewController*) nextShowingViewController

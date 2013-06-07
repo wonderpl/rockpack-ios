@@ -282,7 +282,6 @@
                                                       
                                                       
                                                       
-                                                      
                                                   } onError: ^(NSDictionary* errorInfo) {
                                                       DebugLog(@"Could not load channels: %@", errorInfo);
                                                       self.footerView.showsLoading = NO;

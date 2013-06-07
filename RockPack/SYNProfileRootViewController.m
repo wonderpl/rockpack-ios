@@ -60,10 +60,9 @@
 @property (nonatomic, strong) SYNYouHeaderView* headerSubscriptionsView;
 @property (nonatomic, strong) UITapGestureRecognizer* tapGestureRecognizer;
 @property (nonatomic, strong) UIView* deletionCancelView;
-@property (nonatomic, weak) Channel* channelDeleteCandidate;
-@property (nonatomic, weak) SYNChannelMidCell* cellDeleteCandidate;
 @property (nonatomic, weak) UIButton* channelsTabButton;
 @property (nonatomic, weak) UIButton* subscriptionsTabButton;
+@property (nonatomic, strong) NSIndexPath* indexPathToDelete;
 
 
 @end
@@ -396,22 +395,21 @@
     
     NSLog(@"updated:%i inserted:%i deleted:%i", updatedObjects.count, insertedObjects.count, deletedObjects.count);
     
-//    if(insertedObjects.count + deletedObjects.count == 0)
-//        return;
-    
     [updatedObjects enumerateObjectsUsingBlock: ^(id obj, NSUInteger idx, BOOL *stop)
     {
         
-        if ([obj isKindOfClass:[ChannelOwner class]] && [((ChannelOwner*)obj).uniqueId isEqualToString:self.user.uniqueId])
-        {
-            [self.userProfileController setChannelOwner:obj];
-            [self reloadCollectionViews];
-            
-            return; 
-        }
-        
-        
+         if ([obj isKindOfClass:[ChannelOwner class]] && [((ChannelOwner*)obj).uniqueId isEqualToString:self.user.uniqueId])
+         {
+             [self.userProfileController setChannelOwner:obj];
+             
+             [self reloadCollectionViews];
+             
+             return;
+         }
+         
     }];
+    
+    
 }
 
 
@@ -934,15 +932,22 @@
     
 }
 
+#pragma mark - Deleting Channels
 
 - (void) channelDeleteButtonTapped: (UIButton*) sender
 {
-    UIView *v = sender.superview.superview;
-    NSIndexPath *indexPath = [self.channelThumbnailCollectionView indexPathForItemAtPoint: v.center];
-    self.channelDeleteCandidate = (Channel*)self.user.channels[indexPath.row];
+    if(_deleteCellModeOn)
+        return;
     
-    NSString* message = [NSString stringWithFormat: NSLocalizedString(@"profile_screen_channel_delete_dialog_description", nil), _channelDeleteCandidate.title];
-    NSString* title = [NSString stringWithFormat: NSLocalizedString(@"profile_screen_channel_delete_dialog_title", nil), _channelDeleteCandidate.title ];
+    UIView * v = sender.superview.superview;
+    self.indexPathToDelete = [self.channelThumbnailCollectionView indexPathForItemAtPoint: v.center];
+    
+    Channel* channelToDelete = (Channel*)self.user.channels[self.indexPathToDelete.row];
+    if(!channelToDelete)
+        return;
+    
+    NSString* message = [NSString stringWithFormat: NSLocalizedString(@"profile_screen_channel_delete_dialog_description", nil), channelToDelete.title];
+    NSString* title = [NSString stringWithFormat: NSLocalizedString(@"profile_screen_channel_delete_dialog_title", nil), channelToDelete.title ];
     
     [[[UIAlertView alloc] initWithTitle: title
                                 message: message
@@ -968,26 +973,48 @@
 
 - (void) deleteChannel
 {
+    Channel* channelToDelete = (Channel*)self.user.channels[self.indexPathToDelete.row];
+    if(!channelToDelete)
+        return;
+    
     [appDelegate.oAuthNetworkEngine deleteChannelForUserId: appDelegate.currentUser.uniqueId
-                                                 channelId: self.channelDeleteCandidate.uniqueId
+                                                 channelId: channelToDelete.uniqueId
                                          completionHandler: ^(id response) {
-                                             dispatch_async(dispatch_get_main_queue(), ^{
-                                                 NSMutableOrderedSet *channelsSet = [NSMutableOrderedSet orderedSetWithOrderedSet: appDelegate.currentUser.channels];
+                                             
+                                             UICollectionViewCell* cell =
+                                             [self.channelThumbnailCollectionView cellForItemAtIndexPath:self.indexPathToDelete];
+                                             
+                                             [UIView animateWithDuration:0.2 animations:^{
                                                  
-                                                 [channelsSet removeObject:self.channelDeleteCandidate];
+                                                 cell.alpha = 0.0;
                                                  
-                                                 [appDelegate.currentUser setChannels:channelsSet];
+                                             } completion:^(BOOL finished) {
+                                                 
+                                                 
+                                                 [appDelegate.currentUser.channelsSet removeObject:channelToDelete];
+                                                 
+                                                 [channelToDelete.managedObjectContext deleteObject:channelToDelete];
+                                                 
+                                                 
+                                                 [self.channelThumbnailCollectionView deleteItemsAtIndexPaths:@[self.indexPathToDelete]];
+                                                 
                                                  [appDelegate saveContext:YES];
                                                  
                                                  _deleteCellModeOn = NO;
                                                  
-                                                 [_channelThumbnailCollectionView reloadData];
-                                                 [self resizeScrollViews];
-                                                 [_channelThumbnailCollectionView setNeedsLayout];
-                                             });  
-                                         }
-                                              errorHandler: ^(id error) {
-                                                  DebugLog(@"Delete channel NOT succeed");
+                                                 
+                                                 
+                                             }];
+                                             
+                                             
+                                             
+                                             
+                                         } errorHandler: ^(id error) {
+                                             
+                                             
+                                                    DebugLog(@"Delete channel NOT succeed");
+                                             
+                                                    _deleteCellModeOn = NO;
                                               }];
 }
 

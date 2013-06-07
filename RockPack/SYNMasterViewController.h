@@ -33,6 +33,7 @@ typedef void (^VideoOverlayDismissBlock)(void);
 @property (nonatomic, readonly) BOOL isInSearchMode;
 
 
+@property (nonatomic, weak, readonly) SYNAbstractViewController* showingBaseViewController;
 @property (nonatomic, weak, readonly) SYNAbstractViewController* showingViewController;
 
 - (id) initWithContainerViewController: (UIViewController*) root;

@@ -429,7 +429,7 @@
         {
             channel = [Channel instanceFromDictionary: itemDictionary
                             usingManagedObjectContext: importManagedObjectContext
-                                  ignoringObjectTypes: kIgnoreStoredObjects | kIgnoreVideoInstanceObjects];
+                                  ignoringObjectTypes: kIgnoreVideoInstanceObjects];
             
            
         }
@@ -467,7 +467,6 @@
             [deleteCandidate.managedObjectContext deleteObject:deleteCandidate];
     }
 
-    NSLog(@"Items parsed %i", items);
     
     
     BOOL saveResult = [self saveImportContext];
