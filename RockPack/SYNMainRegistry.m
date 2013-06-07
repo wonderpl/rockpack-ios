@@ -429,7 +429,7 @@
         {
             channel = [Channel instanceFromDictionary: itemDictionary
                             usingManagedObjectContext: importManagedObjectContext
-                                  ignoringObjectTypes: kIgnoreStoredObjects | kIgnoreVideoInstanceObjects];
+                                  ignoringObjectTypes: kIgnoreVideoInstanceObjects];
             
            
         }

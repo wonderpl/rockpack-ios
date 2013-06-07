@@ -75,6 +75,10 @@ typedef void(^AnimationCompletionBlock)(BOOL finished);
 @synthesize containerViewController;
 @synthesize pageTitleLabel;
 @synthesize showingBackButton;
+
+@dynamic showingBaseViewController;
+@dynamic showingViewController;
+
 @synthesize sideNavigationOriginCenterX;
 @synthesize isDragging, buttonLocked;
 @synthesize overlayNavigationController = _overlayNavigationController;
@@ -316,7 +320,7 @@ typedef void(^AnimationCompletionBlock)(BOOL finished);
     }
     
     
-    self.pageTitleLabel.text = [self.containerViewController.showingViewController.title uppercaseString];
+    self.pageTitleLabel.text = [self.containerViewController.showingBaseViewController.title uppercaseString];
     
     
     if(self.sideNavigationViewController.state == SideNavigationStateFull)
@@ -326,7 +330,7 @@ typedef void(^AnimationCompletionBlock)(BOOL finished);
     }
     else
     {
-        NSString* controllerTitle = self.containerViewController.showingViewController.title;
+        NSString* controllerTitle = self.containerViewController.showingBaseViewController.title;
         
         [self.sideNavigationViewController setSelectedCellByPageName:controllerTitle];
 
@@ -377,13 +381,13 @@ typedef void(^AnimationCompletionBlock)(BOOL finished);
     if(!channel)
         return;
     
-    // - note: channel.managedObjectContext == appDelegate.chanelsContext
-    
+    // this channel's managedObjectContext is the appDelegate.channelManagedObjectContext
     SYNChannelDetailViewController *channelCreationVC =
     [[SYNChannelDetailViewController alloc] initWithChannel: channel
                                                   usingMode: kChannelDetailsModeEdit] ;
     
-    SYNAbstractViewController* showingController = self.showingViewController;
+    // either the current view on the container scroll view or the overlay navigation controller as in search mode
+    SYNAbstractViewController* showingController = self.showingBaseViewController;
     [showingController animatedPushViewController: channelCreationVC];
 }
 
@@ -486,7 +490,7 @@ typedef void(^AnimationCompletionBlock)(BOOL finished);
 
 - (void) showSideNavigation
 {
-    NSString* controllerTitle = self.containerViewController.showingViewController.title;
+    NSString* controllerTitle = self.containerViewController.showingBaseViewController.title;
     
     [self.sideNavigationViewController setSelectedCellByPageName: controllerTitle];
     
@@ -883,7 +887,7 @@ typedef void(^AnimationCompletionBlock)(BOOL finished);
     if (showingBackButton)
     {
         //pop the current section navcontroller to the root controller
-        SYNAbstractViewController* abstractVC = (SYNAbstractViewController *)self.containerViewController.showingViewController;
+        SYNAbstractViewController* abstractVC = (SYNAbstractViewController *)self.containerViewController.showingBaseViewController;
         [abstractVC animatedPopToRootViewController];
         
         [self showBackButton:NO];
@@ -1038,9 +1042,12 @@ typedef void(^AnimationCompletionBlock)(BOOL finished);
 
 - (void) popCurrentViewController: (id) sender
 {
+    
+    
+    if(self.showingViewController.isLocked)
+        return;
+    
     SYNAbstractViewController *abstractVC;
-    
-    
     
     if(_overlayNavigationController)
     {
@@ -1068,7 +1075,7 @@ typedef void(^AnimationCompletionBlock)(BOOL finished);
     }
     else
     {
-        abstractVC = (SYNAbstractViewController *)self.containerViewController.showingViewController;
+        abstractVC = (SYNAbstractViewController *)self.containerViewController.showingBaseViewController;
         
         [abstractVC animatedPopViewController];
         
@@ -1376,7 +1383,7 @@ typedef void(^AnimationCompletionBlock)(BOOL finished);
 
             // if the controller underneath has not popped controllers to its stack, hide back button //
 
-            if(self.containerViewController.showingViewController.navigationController.viewControllers.count == 1)
+            if(self.containerViewController.showingBaseViewController.navigationController.viewControllers.count == 1)
             {
                 [self showBackButton:NO];
             }
@@ -1420,18 +1427,27 @@ typedef void(^AnimationCompletionBlock)(BOOL finished);
 }
 
 
+
+// this always gets the BOTTOM of the showing navigation controller
+
 - (SYNAbstractViewController*) showingViewController
 {
     SYNAbstractViewController* absctractVc;
     if (self.overlayNavigationController)
-    {
-        absctractVc = (SYNAbstractViewController*)self.overlayNavigationController.viewControllers[0];
-    }
-         
+        absctractVc = (SYNAbstractViewController*)self.overlayNavigationController.topViewController;
     else
-    {
         absctractVc = self.containerViewController.showingViewController;
-    }
+    
+    return absctractVc;
+}
+
+- (SYNAbstractViewController*) showingBaseViewController
+{
+    SYNAbstractViewController* absctractVc;
+    if (self.overlayNavigationController)
+        absctractVc = (SYNAbstractViewController*)self.overlayNavigationController.viewControllers[0];
+    else
+        absctractVc = self.containerViewController.showingBaseViewController;
     
     return absctractVc;
 }

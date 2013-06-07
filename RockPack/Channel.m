@@ -100,6 +100,13 @@
 
 + (Channel *) instanceFromDictionary: (NSDictionary *) dictionary
            usingManagedObjectContext: (NSManagedObjectContext *) managedObjectContext
+{
+    return [Channel instanceFromDictionary:dictionary
+                 usingManagedObjectContext:managedObjectContext
+                       ignoringObjectTypes:kIgnoreNothing];
+}
++ (Channel *) instanceFromDictionary: (NSDictionary *) dictionary
+           usingManagedObjectContext: (NSManagedObjectContext *) managedObjectContext
                  ignoringObjectTypes: (IgnoringObjects) ignoringObjects
 {
     
@@ -114,41 +121,9 @@
         return nil;
     
     
-    Channel *instance;
+    Channel *instance = [Channel insertInManagedObjectContext: managedObjectContext];
     
-    if(!(ignoringObjects & kIgnoreStoredObjects))
-    {
-        NSFetchRequest *channelFetchRequest = [[NSFetchRequest alloc] init];
-        [channelFetchRequest setEntity: [NSEntityDescription entityForName: @"Channel"
-                                                    inManagedObjectContext: managedObjectContext]];
-        
-        
-        NSPredicate *predicate = [NSPredicate predicateWithFormat: @"uniqueId == %@", uniqueId];
-        
-        [channelFetchRequest setPredicate: predicate];
-        
-        NSError *error = nil;
-        NSArray *matchingChannelEntries = [managedObjectContext executeFetchRequest: channelFetchRequest
-                                                                              error: &error];
-        
-        
-        if (matchingChannelEntries.count > 0)
-        {
-            instance = matchingChannelEntries[0];
-            
-            instance.markedForDeletionValue = NO;
-            
-        }
-        
-    }
-    
-    
-    if(!instance)
-    {
-        instance = [Channel insertInManagedObjectContext: managedObjectContext];
-        
-        instance.uniqueId = uniqueId;
-    }
+    instance.uniqueId = uniqueId;
     
     [instance setAttributesFromDictionary: dictionary
                       ignoringObjectTypes: ignoringObjects];

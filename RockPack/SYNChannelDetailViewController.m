@@ -9,6 +9,7 @@
 #import "Channel.h"
 #import "ChannelCover.h"
 #import "ChannelOwner.h"
+#import "User.h"
 #import "CoverArt.h"
 #import "GAI.h"
 #import "GKImagePicker.h"
@@ -1533,6 +1534,8 @@
 
 - (IBAction) createChannelPressed: (id) sender
 {
+    self.isLocked = YES; // prevent back button from firing
+    
     if (_isIPhone)
     {
         self.createChannelButton.hidden = YES;
@@ -1574,6 +1577,8 @@
                                              [self setVideosForChannelById:channelId isUpdated:NO];
                                              
                                          } errorHandler: ^(id error) {
+                                             
+                                                  self.isLocked = NO;
                                                   
                                                   DebugLog(@"Error @ createChannelPressed:");
                                                   
@@ -1620,6 +1625,7 @@
 
 - (void) setVideosForChannelById: (NSString*) channelId isUpdated:(BOOL) isUpdated
 {
+    self.isLocked = YES; // prevent back button from firing
     
     [appDelegate.oAuthNetworkEngine updateVideosForChannelForUserId: appDelegate.currentOAuth2Credentials.userId
                                                           channelId: channelId
@@ -1632,6 +1638,8 @@
                                                       [self fetchAndStoreUpdatedChannelForId:channelId isUpdate:isUpdated];
                                                       
                                                   } errorHandler: ^(id err) {
+                                                      
+                                                      self.isLocked = NO;
                                                       
                                                       NSString* errorMessage = nil;
                                                       
@@ -1694,19 +1702,18 @@
                                               
                                               Channel* createdChannel;
                                               
-                                              IgnoringObjects ignore = kIgnoreStoredObjects | kIgnoreChannelOwnerObject;
+                                       
                                               if (!isUpdate) // its a new creation
                                               {
-                                                  ignore = ignore | kIgnoreStoredObjects;
                                                   
                                                   createdChannel = [Channel instanceFromDictionary:dictionary
                                                                          usingManagedObjectContext:appDelegate.mainManagedObjectContext
-                                                                               ignoringObjectTypes:ignore];
+                                                                               ignoringObjectTypes:kIgnoreChannelOwnerObject];
                                                   
                                                   
                                                   // this will automatically add the channel to the set of channels of the User
                                                   
-                                                  createdChannel.channelOwner = appDelegate.currentUser;
+                                                  [appDelegate.currentUser.channelsSet addObject:createdChannel];
                                                   
                                                   
                                                   if([createdChannel.categoryId isEqualToString:@""])
@@ -1731,12 +1738,12 @@
                                               else
                                               {
                                                   [self.channel setAttributesFromDictionary:dictionary
-                                                                        ignoringObjectTypes:ignore];
+                                                                        ignoringObjectTypes:kIgnoreChannelOwnerObject];
                                                   
                                                   // if editing the user's channel we must update the original
                                                   
                                                   [self.originalChannel  setAttributesFromDictionary:dictionary
-                                                                                 ignoringObjectTypes:ignore];
+                                                                                 ignoringObjectTypes:kIgnoreChannelOwnerObject];
                                                   
                                                   for (VideoInstance* vi in self.channel.videoInstances)
                                                   {
@@ -1774,8 +1781,11 @@
                                               [[NSNotificationCenter defaultCenter] postNotificationName:kNoteChannelSaved
                                                                                                   object:self];
                                               
+                                              self.isLocked = NO;
                                               
                                           } errorHandler:^(id err) {
+                                              
+                                              self.isLocked = NO;
                                               
                                               DebugLog(@"Error @ getNewlyCreatedChannelForId:");
                                               [self showError: NSLocalizedString(@"Could not retrieve the uploaded channel data. Please try accessing it from your profile later.", nil) showErrorTitle:@"Error"];
@@ -1830,7 +1840,7 @@
                                                               userInfo: nil];
             
             //And show as if displayed from the normal master view hierarchy
-            SYNAbstractViewController *currentRootViewcontroller = [master showingViewController];
+            SYNAbstractViewController *currentRootViewcontroller = [master showingBaseViewController];
             [currentRootViewcontroller animatedPushViewController:self];
         }
         

@@ -7,6 +7,9 @@
            usingManagedObjectContext: (NSManagedObjectContext *) managedObjectContext
                   ignoringObjectTypes: (IgnoringObjects) ignoringObjects;
 
++ (Channel *) instanceFromDictionary: (NSDictionary *) dictionary
+           usingManagedObjectContext: (NSManagedObjectContext *) managedObjectContext;
+
 
 @property (nonatomic) BOOL hasChangedSubscribeValue;
 

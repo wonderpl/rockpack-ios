@@ -157,7 +157,7 @@
             {
                 channel = [Channel instanceFromDictionary: channelDictionary
                                 usingManagedObjectContext: self.managedObjectContext
-                                      ignoringObjectTypes: ignoringObjects | kIgnoreStoredObjects | kIgnoreChannelOwnerObject];
+                                      ignoringObjectTypes: ignoringObjects | kIgnoreChannelOwnerObject];
                 
                 
             }
@@ -235,7 +235,7 @@
         {
             channel = [Channel instanceFromDictionary: subscriptionChannel
                             usingManagedObjectContext: self.managedObjectContext
-                                  ignoringObjectTypes: kIgnoreStoredObjects | kIgnoreVideoInstanceObjects];
+                                  ignoringObjectTypes: kIgnoreVideoInstanceObjects];
         }
         else
         {
