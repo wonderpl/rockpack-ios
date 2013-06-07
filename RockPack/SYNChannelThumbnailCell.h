@@ -17,6 +17,8 @@
 @property (nonatomic, strong) IBOutlet UIButton *displayNameButton;
 @property (nonatomic, strong) IBOutlet UIButton* deleteButton;
 
+@property (nonatomic, strong) NSString* imageUrlString;
+
 @property (nonatomic) BOOL shouldAnimate;
 
 @property (nonatomic, weak) Channel* channel;

@@ -573,7 +573,7 @@
                                       placeholderImage: [UIImage imageNamed: @"PlaceholderVideoWide.png"]
                                                options: SDWebImageRetryFailed];
 
-    [videoThumbnailCell.channelImageView setImageWithURL: [NSURL URLWithString: videoInstance.channel.channelOwner.thumbnailURL]
+    [videoThumbnailCell.channelImageView setImageWithURL: [NSURL URLWithString: videoInstance.channel.channelOwner.thumbnailLargeUrl]
                                         placeholderImage: [UIImage imageNamed: @"PlaceholderChannelSmall.png"]
                                                  options: SDWebImageRetryFailed];
     

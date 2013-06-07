@@ -1,7 +1,7 @@
 #import "ChannelCover.h"
 #import "NSDictionary+Validation.h"
+#import "AppConstants.h"
 
-#define kImageSizeStringReplace @"thumbnail_medium"
 
 
 @implementation ChannelCover
