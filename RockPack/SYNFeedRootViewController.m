@@ -426,7 +426,7 @@
                                                         [self displayEmptyGenreMessage:NSLocalizedString(@"feed_screen_empty_message", nil) andLoader:NO];
                                                     }  
                                                     
-                                                        
+                                                    NSLog(@"new fetched count : %i", self.fetchedResultsController.fetchedObjects.count);
                                                     
                                                     self.footerView.showsLoading = NO;
                                                     
@@ -467,17 +467,16 @@
 - (void) displayEmptyGenreMessage:(NSString*)messageKey andLoader:(BOOL)isLoader
 {
     
-    if (!self.emptyGenreMessageView)
+    if (self.emptyGenreMessageView)
     {
-        self.emptyGenreMessageView = [SYNFeedMessagesView withMessage:NSLocalizedString(messageKey ,nil) andLoader:isLoader];
-    }
-    else
-    {
-        [self.emptyGenreMessageView setMessage:NSLocalizedString(messageKey ,nil)];
+        [self.emptyGenreMessageView removeFromSuperview];
+        self.emptyGenreMessageView = nil;
     }
     
+    self.emptyGenreMessageView = [SYNFeedMessagesView withMessage:NSLocalizedString(messageKey ,nil) andLoader:isLoader];
+    
     CGRect messageFrame = self.emptyGenreMessageView.frame;
-    messageFrame.origin.y = [[SYNDeviceManager sharedInstance] currentScreenHeight] - 60 - messageFrame.size.height;
+    messageFrame.origin.y = [[SYNDeviceManager sharedInstance] currentScreenHeight] * 0.5 - messageFrame.size.height * 0.5;
     messageFrame.origin.x = [[SYNDeviceManager sharedInstance] currentScreenWidth] * 0.5 - messageFrame.size.width * 0.5;
     messageFrame= CGRectIntegral(messageFrame);
     self.emptyGenreMessageView.frame = messageFrame;
@@ -574,7 +573,7 @@
                                       placeholderImage: [UIImage imageNamed: @"PlaceholderVideoWide.png"]
                                                options: SDWebImageRetryFailed];
 
-    [videoThumbnailCell.channelImageView setImageWithURL: [NSURL URLWithString: videoInstance.channel.channelOwner.thumbnailURL]
+    [videoThumbnailCell.channelImageView setImageWithURL: [NSURL URLWithString: videoInstance.channel.channelOwner.thumbnailLargeUrl]
                                         placeholderImage: [UIImage imageNamed: @"PlaceholderChannelSmall.png"]
                                                  options: SDWebImageRetryFailed];
     

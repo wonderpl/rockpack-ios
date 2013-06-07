@@ -15,12 +15,15 @@
 
 @property (nonatomic, strong) IBOutlet UILabel* byLabel;
 
+
+
 @end
 
 @implementation SYNChannelThumbnailCell
 
 @synthesize viewControllerDelegate = _viewControllerDelegate;
 @synthesize shouldAnimate;
+@synthesize imageUrlString = _imageUrlString;
 
 - (void) awakeFromNib
 {
@@ -87,6 +90,31 @@
     [self.imageView setImageWithURL:nil];
     
     self.deleteButton.hidden = TRUE;
+    
+}
+
+-(void)setImageUrlString:(NSString *)imageUrlString
+{
+    if(!imageUrlString) // cancel the existing network operation
+    {
+        [self.imageView setImageWithURL: nil
+                       placeholderImage: [UIImage imageNamed: @"PlaceholderChannel.png"]
+                                options: SDWebImageRetryFailed];
+    }
+    
+    if(_imageUrlString && [_imageUrlString isEqualToString:imageUrlString])
+    {
+ 
+        return;
+    }
+    
+        
+    
+    _imageUrlString = imageUrlString;
+    
+    [self.imageView setImageWithURL: [NSURL URLWithString: _imageUrlString]
+                   placeholderImage: [UIImage imageNamed: @"PlaceholderChannel.png"]
+                            options: SDWebImageRetryFailed];
     
 }
 

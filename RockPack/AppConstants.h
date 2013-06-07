@@ -134,6 +134,8 @@
 
 #define kShowUserChannels           @"kShowUserChannels"
 
+#define kImageSizeStringReplace     @"thumbnail_medium"
+
 // Timeout for API calls
 
 #define kAPIDefaultTimout 30
@@ -446,5 +448,9 @@ typedef void (^JSONResponseBlock)(id jsonObject);
 // UICollectionView reload strategy
 
 #define SMART_RELOAD__
+
+// Do we display the video provider branding
+
+#define SHOW_BRANDING 
 
 #endif

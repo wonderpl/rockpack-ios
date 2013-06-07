@@ -28,13 +28,13 @@
                                            onCompletion: (MKNKJSONCompleteBlock) completeBlock
                                                 onError: (MKNKJSONErrorBlock) errorBlock;
 
-- (void) searchVideosForTerm:(NSString*)searchTerm
-                     inRange:(NSRange)range
-                  onComplete:(MKNKSearchSuccessBlock)completeBlock;
+- (MKNetworkOperation*) searchVideosForTerm:(NSString*)searchTerm
+                                    inRange:(NSRange)range
+                                 onComplete:(MKNKSearchSuccessBlock)completeBlock;
 
-- (void) searchChannelsForTerm:(NSString*)searchTerm
-                      andRange:(NSRange)range
-                    onComplete:(MKNKSearchSuccessBlock)completeBlock;
+- (MKNetworkOperation*) searchChannelsForTerm:(NSString*)searchTerm
+                                     andRange:(NSRange)range
+                                   onComplete:(MKNKSearchSuccessBlock)completeBlock;
 
 - (MKNetworkOperation*) getAutocompleteForHint: (NSString*)hint
                                    forResource: (EntityType)entityType
@@ -49,9 +49,9 @@
 - (void) updateCoverArtOnCompletion: (MKNKJSONCompleteBlock) completionBlock
                             onError: (MKNKErrorBlock) errorBlock;
 
-- (void) updateChannel: (NSString *) resourceURL
-     completionHandler: (MKNKUserSuccessBlock) completionBlock
-          errorHandler: (MKNKUserErrorBlock) errorBlock;
+- (MKNetworkOperation*) updateChannel: (NSString *) resourceURL
+                    completionHandler: (MKNKUserSuccessBlock) completionBlock
+                         errorHandler: (MKNKUserErrorBlock) errorBlock;
 
 -(void)channelOwnerDataForChannelOwner:(ChannelOwner*)channelOwner
                             onComplete:(MKNKUserSuccessBlock)completeBlock

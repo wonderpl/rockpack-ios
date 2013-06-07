@@ -51,6 +51,7 @@
 @property (nonatomic, assign, getter = isImageSelectorOpen) BOOL imageSelectorOpen;
 @property (nonatomic, strong) GKImagePicker *imagePicker;
 @property (nonatomic, strong) IBOutlet SSTextView *channelTitleTextView;
+@property (nonatomic, strong) IBOutlet UIActivityIndicatorView *uploadImageSpinner;
 @property (nonatomic, strong) IBOutlet UIButton *buyButton;
 @property (nonatomic, strong) IBOutlet UIButton *cameraButton;
 @property (nonatomic, strong) IBOutlet UIButton *createChannelButton;
@@ -439,6 +440,12 @@
     }
 
     
+    // cancel the existing request if there is one
+    
+    [[NSNotificationCenter defaultCenter] postNotificationName: kChannelUpdateRequest
+                                                        object: self
+                                                      userInfo: nil];
+    
 }
 
 
@@ -539,11 +546,12 @@
 
 - (void) handleDataModelChange: (NSNotification*) notification
 {
-    NSArray* updatedObjects = [[notification userInfo] objectForKey: NSUpdatedObjectsKey];
     
-    // In the Future use...
-    // NSArray* insertedObjects = [[notification userInfo] objectForKey: NSInsertedObjectsKey];
-    // NSArray* deletedObjects = [[notification userInfo] objectForKey: NSDeletedObjectsKey];
+    NSArray* updatedObjects = [[notification userInfo] objectForKey: NSUpdatedObjectsKey];
+    NSArray* insertedObjects = [[notification userInfo] objectForKey: NSInsertedObjectsKey];
+    NSArray* deletedObjects = [[notification userInfo] objectForKey: NSDeletedObjectsKey];
+    
+    NSLog(@"ChDt: u:%i i:%i d:%i", updatedObjects.count, insertedObjects.count, deletedObjects.count);
     
     [updatedObjects enumerateObjectsUsingBlock: ^(id obj, NSUInteger idx, BOOL *stop) {
         
@@ -551,7 +559,6 @@
         if ([obj isKindOfClass:[Channel class]] && [((Channel*)obj).uniqueId isEqualToString:self.channel.uniqueId])
         {
             
-
             if(self.channel.videoInstances.count == 0)
             {
                 [self showNoVideosMessage: NSLocalizedString(@"channel_screen_no_videos",nil) withLoader:NO];
@@ -748,7 +755,6 @@
     
     VideoInstance *videoInstance = self.channel.videoInstances [indexPath.item];
     
-    NSLog(@"VideoInstance: %@", videoInstance.title);
     
     [videoThumbnailCell.imageView setImageWithURL: [NSURL URLWithString: videoInstance.video.thumbnailURL]
                                  placeholderImage: [UIImage imageNamed: @"PlaceholderVideoWide.png"]
@@ -917,7 +923,7 @@
     [self shareChannel: self.channel
                 inView: self.view
               fromRect: self.shareButton.frame
-       arrowDirections: UIPopoverArrowDirectionDown
+       arrowDirections: UIPopoverArrowDirectionRight
             onComplete: ^{
                 // Re-enable button
                     shareButton.enabled = TRUE;
@@ -1194,6 +1200,7 @@
     else
     {
         self.saveChannelButton.enabled = NO;
+        [self.uploadImageSpinner startAnimating];
     }
     
     [self hideCategoryChooser];
@@ -1218,6 +1225,7 @@
                                              
                                              [self setEditControlsVisibility: NO];
                                              self.saveChannelButton.enabled = YES;
+                                             [self.uploadImageSpinner stopAnimating];
                                              self.saveChannelButton.hidden = YES;
                                              self.cancelEditButton.hidden = YES;
                                              self.addButton.hidden = NO;
@@ -1263,16 +1271,12 @@
                                                           errorMessage = NSLocalizedString(@"channel_creation_screen_error_unknown_save_description",nil);
                                                       }
                                                   };
-     
-                                                                                                
+                                          
                                                   [self showError: errorMessage showErrorTitle:errorTitle];
                                                   self.saveChannelButton.hidden = NO;
                                                   self.saveChannelButton.enabled = YES;
                                                   [self.activityIndicator stopAnimating];
-                                                  
-
-                                                  
-                                                  
+                                                  [self.uploadImageSpinner stopAnimating];
                                               }];
 }
 
@@ -2245,10 +2249,14 @@
     }
 }
 
+
 #pragma mark - Upload channel cover image
 
 - (void) uploadChannelImage: (UIImage *) imageToUpload
 {
+    self.createChannelButton.enabled = FALSE;
+    self.saveChannelButton.enabled = FALSE;
+    [self.uploadImageSpinner startAnimating];
     
     [self.coverChooserController createCoverPlaceholder: imageToUpload];
     
@@ -2256,6 +2264,10 @@
     [appDelegate.oAuthNetworkEngine uploadCoverArtForUserId: appDelegate.currentOAuth2Credentials.userId
                                                       image: imageToUpload
                                           completionHandler: ^(NSDictionary *dictionary){
+                                              self.createChannelButton.enabled = TRUE;
+                                              self.saveChannelButton.enabled = TRUE;
+                                              [self.uploadImageSpinner stopAnimating];
+                                              
                                               NSString *imageUrl = dictionary [@"thumbnail_url"];
 
                                               if (imageUrl && [imageUrl isKindOfClass:[NSString class]])
@@ -2266,12 +2278,15 @@
                                               }
                                               else
                                               {
-                                                  DebugLog(@"Failed to uploa wallpaper URL");
+                                                  DebugLog(@"Failed to upload wallpaper URL");
                                               }
                                               
                                               self.selectedCoverId = [dictionary objectForKey:@"cover_ref"];
                                           }
                                                errorHandler: ^(NSError* error) {
+                                                   self.createChannelButton.enabled = TRUE;
+                                                   self.saveChannelButton.enabled = TRUE;
+                                                   [self.uploadImageSpinner stopAnimating];
                                                    DebugLog(@"%@", [error debugDescription]);
                                                }];
 }
@@ -2424,9 +2439,6 @@
     
     if (scrollView == self.videoThumbnailCollectionView)
     {
-        
-        NSLog(@"co: %f - oo: %f", scrollView.contentOffset.y, self.originalContentOffset.y);
-        
         
         if (scrollView.contentOffset.y <= self.originalContentOffset.y)
         {

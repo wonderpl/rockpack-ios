@@ -12,10 +12,13 @@
 #import "SYNNetworkEngine.h"
 #import "AppConstants.h"
 #import "VideoInstance.h"
+#import "MKNetworkOperation.h"
 
 @interface SYNChannelManager()
 
 @property (nonatomic, weak) SYNAppDelegate* appDelegate;
+@property (nonatomic, weak) MKNetworkOperation* channelUpdateOperation;
+@property (nonatomic, weak) MKNetworkOperation* channelOwnerUpdateOperation;
 
 @end
 
@@ -98,7 +101,13 @@
     Channel* channelToUpdate = (Channel*)[[notification userInfo] objectForKey: kChannel];
     
     if (!channelToUpdate)
+    {
+        if(self.channelUpdateOperation)
+            [self.channelUpdateOperation cancel];
+        
         return;
+    }
+        
     
     // If the channel to be updated is not yet created then update it based on the videoQueue objects, else make a network call
     Channel* currentlyCreatingChannel = appDelegate.videoQueue.currentlyCreatingChannel;
@@ -272,7 +281,6 @@
         return;
     
     
-    
     // define success block //
     
     MKNKUserSuccessBlock successBlock = ^(NSDictionary *channelDictionary) {
@@ -318,18 +326,18 @@
     {
         
         
-        [appDelegate.oAuthNetworkEngine updateChannel: channel.resourceURL
-                                    completionHandler: successBlock
-                                         errorHandler: errorBlock];
+        self.channelUpdateOperation = [appDelegate.oAuthNetworkEngine updateChannel: channel.resourceURL
+                                                                  completionHandler: successBlock
+                                                                       errorHandler: errorBlock];
         
     }
     else
     {
         
         
-        [appDelegate.networkEngine updateChannel: channel.resourceURL
-                               completionHandler: successBlock
-                                    errorHandler: errorBlock];
+        self.channelUpdateOperation = [appDelegate.networkEngine updateChannel: channel.resourceURL
+                                                             completionHandler: successBlock
+                                                                  errorHandler: errorBlock];
     }
 }
 
