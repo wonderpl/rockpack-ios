@@ -88,7 +88,7 @@
 - (void) clear
 {
     [self.autoSuggestionController clearWords];
-    [self resizeTableView];
+    [self resizeTableView:YES];
 }
 
 
@@ -153,7 +153,7 @@
                                              
                                              [self.autoSuggestionController addWords:wordsReturned];
                                              
-                                             [self resizeTableView];
+                                             [self resizeTableView:NO];
                                              
                                              self.autoSuggestionController.tableView.alpha = 1.0;
                                              
@@ -162,11 +162,13 @@
 }
 
 
-- (void) resizeTableView
+- (void) resizeTableView:(BOOL)force
 {
-    CGFloat tableViewHeight = self.autoSuggestionController.tableHeight;
-    
-    [self.searchBoxView resizeForHeight: tableViewHeight];
+    if(force || [self.searchTextField isFirstResponder])
+    {
+        CGFloat tableViewHeight = self.autoSuggestionController.tableHeight;
+        [self.searchBoxView resizeForHeight: tableViewHeight];
+    }
 }
 
 
@@ -210,7 +212,7 @@
     
     [self.autoSuggestionController clearWords];
     
-    [self resizeTableView];
+    [self resizeTableView:YES];
     
     [self textFieldShouldReturn: self.searchTextField];
 }
