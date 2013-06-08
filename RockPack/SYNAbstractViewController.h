@@ -99,12 +99,14 @@ typedef void (^SYNShareCompletionBlock)(void);
                      inView: (UIView *) inView
                    fromRect: (CGRect) rect
             arrowDirections: (UIPopoverArrowDirection) arrowDirections
+          activityIndicator: (UIActivityIndicatorView *) activityIndicatorView
                  onComplete: (SYNShareCompletionBlock) completionBlock;
 
 - (void) shareChannel: (Channel *) channel
                inView: (UIView *) inView
              fromRect: (CGRect) rect
       arrowDirections: (UIPopoverArrowDirection) arrowDirections
+    activityIndicator: (UIActivityIndicatorView *) activityIndicatorView
            onComplete: (SYNShareCompletionBlock) completionBlock;
 
 // Purchase

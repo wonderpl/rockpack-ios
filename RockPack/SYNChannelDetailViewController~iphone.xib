@@ -148,7 +148,7 @@
 										<string key="NSFrame">{{211, 404}, {44, 44}}</string>
 										<reference key="NSSuperview" ref="421928150"/>
 										<reference key="NSWindow"/>
-										<reference key="NSNextKeyView" ref="964655544"/>
+										<reference key="NSNextKeyView" ref="104919480"/>
 										<string key="NSReuseIdentifierKey">_NS:9</string>
 										<bool key="IBUIOpaque">NO</bool>
 										<string key="targetRuntimeIdentifier">IBIPadFramework</string>
@@ -183,6 +183,17 @@
 											<double key="NSSize">15</double>
 											<int key="NSfFlags">16</int>
 										</object>
+									</object>
+									<object class="IBUIActivityIndicatorView" id="104919480">
+										<reference key="NSNextResponder" ref="421928150"/>
+										<int key="NSvFlags">-2147483380</int>
+										<string key="NSFrame">{{244, 416}, {20, 20}}</string>
+										<reference key="NSSuperview" ref="421928150"/>
+										<reference key="NSWindow"/>
+										<reference key="NSNextKeyView" ref="964655544"/>
+										<string key="NSReuseIdentifierKey">_NS:9</string>
+										<bool key="IBUIOpaque">NO</bool>
+										<string key="targetRuntimeIdentifier">IBIPadFramework</string>
 									</object>
 									<object class="IBUIButton" id="964655544">
 										<reference key="NSNextResponder" ref="421928150"/>
@@ -694,7 +705,6 @@
 						<string key="NSFrame">{{214, 1}, {106, 58}}</string>
 						<reference key="NSSuperview" ref="453930770"/>
 						<reference key="NSWindow"/>
-						<reference key="NSNextKeyView"/>
 						<string key="NSReuseIdentifierKey">_NS:9</string>
 						<bool key="IBUIOpaque">NO</bool>
 						<string key="targetRuntimeIdentifier">IBIPadFramework</string>
@@ -973,6 +983,14 @@
 				</object>
 				<object class="IBConnectionRecord">
 					<object class="IBCocoaTouchOutletConnection" key="connection">
+						<string key="label">shareActivityIndicator</string>
+						<reference key="source" ref="841351856"/>
+						<reference key="destination" ref="104919480"/>
+					</object>
+					<int key="connectionID">140</int>
+				</object>
+				<object class="IBConnectionRecord">
+					<object class="IBCocoaTouchOutletConnection" key="connection">
 						<string key="label">dataSource</string>
 						<reference key="source" ref="1042878543"/>
 						<reference key="destination" ref="841351856"/>
@@ -1184,6 +1202,7 @@
 							<reference ref="512270700"/>
 							<reference ref="226591683"/>
 							<reference ref="682383005"/>
+							<reference ref="104919480"/>
 						</array>
 						<reference key="parent" ref="793593682"/>
 						<string key="objectName">Passthrough View - Display Controls</string>
@@ -1351,6 +1370,12 @@
 						<reference key="parent" ref="453930770"/>
 						<string key="objectName">Image View - Rockpack Logo</string>
 					</object>
+					<object class="IBObjectRecord">
+						<int key="objectID">139</int>
+						<reference key="object" ref="104919480"/>
+						<reference key="parent" ref="421928150"/>
+						<string key="objectName">Activity Indicator - Share</string>
+					</object>
 				</array>
 			</object>
 			<dictionary class="NSMutableDictionary" key="flattenedProperties">
@@ -1379,6 +1404,7 @@
 				<real value="3" key="133.IBUIButtonInspectorSelectedStateConfigurationMetadataKey"/>
 				<string key="134.IBPluginDependency">com.apple.InterfaceBuilder.IBCocoaTouchPlugin</string>
 				<real value="3" key="134.IBUIButtonInspectorSelectedStateConfigurationMetadataKey"/>
+				<string key="139.IBPluginDependency">com.apple.InterfaceBuilder.IBCocoaTouchPlugin</string>
 				<string key="2.IBPluginDependency">com.apple.InterfaceBuilder.IBCocoaTouchPlugin</string>
 				<string key="3.IBPluginDependency">com.apple.InterfaceBuilder.IBCocoaTouchPlugin</string>
 				<string key="4.CustomClassName">SYNPassthroughView</string>
@@ -1410,7 +1436,7 @@
 			<nil key="activeLocalization"/>
 			<dictionary class="NSMutableDictionary" key="localizations"/>
 			<nil key="sourceID"/>
-			<int key="maxID">138</int>
+			<int key="maxID">140</int>
 		</object>
 		<object class="IBClassDescriber" key="IBDocument.Classes">
 			<array class="NSMutableArray" key="referencedPartialClassDescriptions">
@@ -1425,17 +1451,30 @@
 				<object class="IBPartialClassDescription">
 					<string key="className">SYNAbstractViewController</string>
 					<string key="superclassName">UIViewController</string>
-					<object class="NSMutableDictionary" key="actions">
-						<string key="NS.key.0">animatedPopViewController</string>
-						<string key="NS.object.0">id</string>
-					</object>
-					<object class="NSMutableDictionary" key="actionInfosByName">
-						<string key="NS.key.0">animatedPopViewController</string>
-						<object class="IBActionInfo" key="NS.object.0">
+					<dictionary class="NSMutableDictionary" key="actions">
+						<string key="animatedPopViewController">id</string>
+						<string key="channelButtonTapped:">UIButton</string>
+						<string key="profileButtonTapped:">UIButton</string>
+						<string key="userTouchedVideoShareButton:">UIButton</string>
+					</dictionary>
+					<dictionary class="NSMutableDictionary" key="actionInfosByName">
+						<object class="IBActionInfo" key="animatedPopViewController">
 							<string key="name">animatedPopViewController</string>
 							<string key="candidateClassName">id</string>
 						</object>
-					</object>
+						<object class="IBActionInfo" key="channelButtonTapped:">
+							<string key="name">channelButtonTapped:</string>
+							<string key="candidateClassName">UIButton</string>
+						</object>
+						<object class="IBActionInfo" key="profileButtonTapped:">
+							<string key="name">profileButtonTapped:</string>
+							<string key="candidateClassName">UIButton</string>
+						</object>
+						<object class="IBActionInfo" key="userTouchedVideoShareButton:">
+							<string key="name">userTouchedVideoShareButton:</string>
+							<string key="candidateClassName">UIButton</string>
+						</object>
+					</dictionary>
 					<dictionary class="NSMutableDictionary" key="outlets">
 						<string key="channelNameTextField">UITextField</string>
 						<string key="channelOverlayView">UIImageView</string>
@@ -1491,6 +1530,7 @@
 						<string key="reportConcernPopoverController">UIPopoverController</string>
 						<string key="saveChannelButton">UIButton</string>
 						<string key="selectCategoryButton">UIButton</string>
+						<string key="shareActivityIndicator">UIActivityIndicatorView</string>
 						<string key="shareButton">UIButton</string>
 						<string key="subscribeButton">UIButton</string>
 						<string key="textBackgroundImageView">UIImageView</string>
@@ -1603,6 +1643,10 @@
 						<object class="IBToOneOutletInfo" key="selectCategoryButton">
 							<string key="name">selectCategoryButton</string>
 							<string key="candidateClassName">UIButton</string>
+						</object>
+						<object class="IBToOneOutletInfo" key="shareActivityIndicator">
+							<string key="name">shareActivityIndicator</string>
+							<string key="candidateClassName">UIActivityIndicatorView</string>
 						</object>
 						<object class="IBToOneOutletInfo" key="shareButton">
 							<string key="name">shareButton</string>

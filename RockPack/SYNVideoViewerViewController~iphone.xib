@@ -45,7 +45,6 @@
 						<array class="NSMutableArray" key="NSSubviews"/>
 						<string key="NSFrame">{{0, 434}, {320, 114}}</string>
 						<reference key="NSSuperview" ref="753127512"/>
-						<reference key="NSNextKeyView"/>
 						<string key="NSReuseIdentifierKey">_NS:9</string>
 						<object class="NSColor" key="IBUIBackgroundColor" id="485997429">
 							<int key="NSColorSpace">3</int>
@@ -259,6 +258,16 @@
 								<reference key="IBUIFontDescription" ref="647382764"/>
 								<reference key="IBUIFont" ref="26539377"/>
 							</object>
+							<object class="IBUIActivityIndicatorView" id="1020949573">
+								<reference key="NSNextResponder" ref="1041950190"/>
+								<int key="NSvFlags">-2147483356</int>
+								<string key="NSFrame">{{255, 377}, {20, 20}}</string>
+								<reference key="NSSuperview" ref="1041950190"/>
+								<reference key="NSNextKeyView" ref="277142847"/>
+								<string key="NSReuseIdentifierKey">_NS:9</string>
+								<bool key="IBUIOpaque">NO</bool>
+								<string key="targetRuntimeIdentifier">IBIPadFramework</string>
+							</object>
 							<object class="IBUIButton" id="111671221">
 								<reference key="NSNextResponder" ref="1041950190"/>
 								<int key="NSvFlags">268</int>
@@ -307,7 +316,7 @@
 								<int key="NSvFlags">265</int>
 								<string key="NSFrame">{{270, 97.5}, {45, 45}}</string>
 								<reference key="NSSuperview" ref="1041950190"/>
-								<reference key="NSNextKeyView" ref="277142847"/>
+								<reference key="NSNextKeyView" ref="1020949573"/>
 								<string key="NSReuseIdentifierKey">_NS:9</string>
 								<bool key="IBUIOpaque">NO</bool>
 								<int key="IBUIContentMode">4</int>
@@ -533,6 +542,14 @@
 					<int key="connectionID">154</int>
 				</object>
 				<object class="IBConnectionRecord">
+					<object class="IBCocoaTouchOutletConnection" key="connection">
+						<string key="label">shareActivityIndicator</string>
+						<reference key="source" ref="841351856"/>
+						<reference key="destination" ref="1020949573"/>
+					</object>
+					<int key="connectionID">156</int>
+				</object>
+				<object class="IBConnectionRecord">
 					<object class="IBCocoaTouchEventConnection" key="connection">
 						<string key="label">userTouchedVideoAddItButton:</string>
 						<reference key="source" ref="111671221"/>
@@ -690,6 +707,7 @@
 							<reference ref="451920462"/>
 							<reference ref="277142847"/>
 							<reference ref="480475839"/>
+							<reference ref="1020949573"/>
 						</array>
 						<reference key="parent" ref="753127512"/>
 					</object>
@@ -770,6 +788,12 @@
 						<reference key="parent" ref="753127512"/>
 						<string key="objectName">Video Placeholder View</string>
 					</object>
+					<object class="IBObjectRecord">
+						<int key="objectID">155</int>
+						<reference key="object" ref="1020949573"/>
+						<reference key="parent" ref="1041950190"/>
+						<string key="objectName">Activity Indicator - Share</string>
+					</object>
 				</array>
 			</object>
 			<dictionary class="NSMutableDictionary" key="flattenedProperties">
@@ -801,6 +825,7 @@
 				<real value="1" key="15.IBUIButtonInspectorSelectedStateConfigurationMetadataKey"/>
 				<string key="152.CustomClassName">SYNPassthroughView</string>
 				<string key="152.IBPluginDependency">com.apple.InterfaceBuilder.IBCocoaTouchPlugin</string>
+				<string key="155.IBPluginDependency">com.apple.InterfaceBuilder.IBCocoaTouchPlugin</string>
 				<string key="19.IBPluginDependency">com.apple.InterfaceBuilder.IBCocoaTouchPlugin</string>
 				<string key="4.IBPluginDependency">com.apple.InterfaceBuilder.IBCocoaTouchPlugin</string>
 				<string key="79.IBPluginDependency">com.apple.InterfaceBuilder.IBCocoaTouchPlugin</string>
@@ -812,7 +837,7 @@
 			<nil key="activeLocalization"/>
 			<dictionary class="NSMutableDictionary" key="localizations"/>
 			<nil key="sourceID"/>
-			<int key="maxID">154</int>
+			<int key="maxID">156</int>
 		</object>
 		<object class="IBClassDescriber" key="IBDocument.Classes"/>
 		<int key="IBDocument.localizationMode">0</int>

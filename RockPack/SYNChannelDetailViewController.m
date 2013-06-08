@@ -93,6 +93,7 @@
 @property (nonatomic, weak) IBOutlet UIButton *editButton;
 @property (nonatomic, weak) IBOutlet UILabel *byLabel;
 @property (weak, nonatomic) IBOutlet UIActivityIndicatorView *activityIndicator;
+@property (weak, nonatomic) IBOutlet UIActivityIndicatorView *shareActivityIndicator;
 
 //iPhone specific
 @property (nonatomic,strong) SYNChannelCoverImageSelectorViewController* coverImageSelector;
@@ -974,6 +975,7 @@
                 inView: self.view
               fromRect: self.shareButton.frame
        arrowDirections: UIPopoverArrowDirectionRight
+     activityIndicator: self.shareActivityIndicator
             onComplete: ^{
                 // Re-enable button
                     shareButton.enabled = TRUE;
