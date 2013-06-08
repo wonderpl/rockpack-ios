@@ -543,6 +543,7 @@
 
 - (void) handleDataModelChange: (NSNotification*) notification
 {
+
     
     NSArray* updatedObjects = [[notification userInfo] objectForKey: NSUpdatedObjectsKey];
     NSArray* insertedObjects = [[notification userInfo] objectForKey: NSInsertedObjectsKey];
@@ -556,6 +557,7 @@
         if (obj == self.channel)
         {
             
+            
             self.subscribeButton.selected = self.channel.subscribedByUserValue;
             self.subscribeButton.enabled = YES;
             
@@ -564,6 +566,8 @@
                 [self.subscribingIndicator removeFromSuperview];
                 self.subscribingIndicator = nil;
             }
+            
+            
             
             // == Handle Rest == //
             
@@ -576,9 +580,8 @@
                 [self showNoVideosMessage:nil withLoader:NO];
             }
             
+            
             // == Handle Inserted ==
-            
-            
             
             
             NSMutableArray* insertedIndexPathArray = [NSMutableArray arrayWithCapacity:insertedObjects.count]; // maximum
@@ -595,18 +598,9 @@
                         
                         [insertedIndexPathArray addObject:[NSIndexPath indexPathForItem:cidx inSection:0]];
                     }
-                    
                 }];
                 
-                
-                
             }];
-                
-            if(insertedIndexPathArray.count > 0)
-            {
-                [self.videoThumbnailCollectionView insertItemsAtIndexPaths:insertedIndexPathArray];
-            }
-            
             
             
             // == Handle Deleted == //
@@ -630,6 +624,7 @@
                 
                 if([deletedIndetifiers containsObject:cell.dataIndetifier])
                 {
+                    NSLog(@"CD(-) Found Cell at: %i", index);
                     [deletedIndexPathArray addObject:[NSIndexPath indexPathForItem:index inSection:0]];
                 }
                 index++;
@@ -637,13 +632,17 @@
             }
             
             
-            if(deletedIndexPathArray.count > 0)
-            {
-                [self.videoThumbnailCollectionView deleteItemsAtIndexPaths:deletedIndexPathArray];
-            }
-            
-            
-            
+            [self.videoThumbnailCollectionView performBatchUpdates:^{
+                
+                if(insertedIndexPathArray.count > 0)
+                    [self.videoThumbnailCollectionView insertItemsAtIndexPaths:insertedIndexPathArray];
+                
+                if(deletedIndexPathArray.count > 0)
+                    [self.videoThumbnailCollectionView deleteItemsAtIndexPaths:deletedIndexPathArray];
+                
+            } completion:^(BOOL finished) {
+                
+            }];
             
             
             return;
