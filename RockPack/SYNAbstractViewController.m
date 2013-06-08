@@ -312,7 +312,9 @@
     [self shareVideoInstance: videoInstance
                       inView: self.view
                     fromRect: videoShareButton.frame
-             arrowDirections: UIPopoverArrowDirectionDown onComplete: ^{
+             arrowDirections: UIPopoverArrowDirectionDown
+           activityIndicator: nil
+                  onComplete: ^{
                  // Re-enable button
                  videoShareButton.enabled = TRUE;
              }];
@@ -518,6 +520,7 @@
                      inView: (UIView *) inView
                    fromRect: (CGRect) rect
             arrowDirections: (UIPopoverArrowDirection) arrowDirections
+          activityIndicator: (UIActivityIndicatorView *) activityIndicatorView
                  onComplete: (SYNShareCompletionBlock) completionBlock
 {
     [self shareObjectType: @"video_instance"
@@ -525,6 +528,7 @@
                    inView: inView
                  fromRect: rect
           arrowDirections: arrowDirections
+        activityIndicator: activityIndicatorView
                onComplete: completionBlock];
 }
 
@@ -533,6 +537,7 @@
                inView: (UIView *) inView
              fromRect: (CGRect) rect
       arrowDirections: (UIPopoverArrowDirection) arrowDirections
+    activityIndicator: (UIActivityIndicatorView *) activityIndicatorView
            onComplete: (SYNShareCompletionBlock) completionBlock 
 {
     [self shareObjectType: @"channel"
@@ -540,6 +545,7 @@
                    inView: inView
                  fromRect: rect
           arrowDirections: arrowDirections
+        activityIndicator: activityIndicatorView
                onComplete: completionBlock];
 }
 
@@ -549,12 +555,16 @@
                   inView: (UIView *) inView
                 fromRect: (CGRect) rect
          arrowDirections: (UIPopoverArrowDirection) arrowDirections
+       activityIndicator: (UIActivityIndicatorView *) activityIndicatorView
               onComplete: (SYNShareCompletionBlock) completionBlock
 {
+    [activityIndicatorView startAnimating];
+    
     // Update the star/unstar status on the server
     [appDelegate.oAuthNetworkEngine shareLinkWithObjectType: objectType
                                                    objectId: objectId
                                           completionHandler: ^(NSDictionary *responseDictionary) {
+                                              [activityIndicatorView stopAnimating];
                                               DebugLog(@"Share link successful");
                                               
                                               UIWindow *keyWindow = [[UIApplication sharedApplication] keyWindow];
@@ -653,6 +663,7 @@
                                               completionBlock();
                                           }
                                                errorHandler: ^(NSDictionary* errorDictionary) {
+                                                   [activityIndicatorView stopAnimating];
                                                    DebugLog(@"Share link failed");
                                                    completionBlock();
                                                }];

@@ -56,6 +56,7 @@
 @property (nonatomic, strong) IBOutlet SYNPassthroughView *placeholderView;
 @property (nonatomic, strong) IBOutlet UIView *swipeView;
 @property (nonatomic, strong) IBOutlet UIActivityIndicatorView *heartActivityIndicator;
+@property (nonatomic, strong) IBOutlet UIActivityIndicatorView *shareActivityIndicator;
 @property (nonatomic, strong) NSArray *videoInstanceArray;
 @property (nonatomic, strong) SYNReportConcernTableViewController *reportConcernTableViewController;
 @property (nonatomic, strong) SYNVideoViewerThumbnailLayout *layout;
@@ -828,6 +829,7 @@
                      inView: self.chromeView
                     fromRect: videoShareButton.frame
              arrowDirections: UIPopoverArrowDirectionDown
+           activityIndicator: self.shareActivityIndicator
                   onComplete: ^{
                      videoShareButton.enabled = TRUE;
              }];

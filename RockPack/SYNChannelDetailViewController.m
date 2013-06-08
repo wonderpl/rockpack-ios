@@ -93,6 +93,7 @@
 @property (nonatomic, weak) IBOutlet UIButton *editButton;
 @property (nonatomic, weak) IBOutlet UILabel *byLabel;
 @property (weak, nonatomic) IBOutlet UIActivityIndicatorView *activityIndicator;
+@property (weak, nonatomic) IBOutlet UIActivityIndicatorView *shareActivityIndicator;
 
 //iPhone specific
 @property (nonatomic,strong) SYNChannelCoverImageSelectorViewController* coverImageSelector;
@@ -745,10 +746,12 @@
     if (self.channel.publicValue)
     {
         detailsString = [NSString stringWithFormat: @"%lld %@", self.channel.subscribersCountValue, NSLocalizedString(@"SUBSCRIBERS", nil)];
+        self.shareButton.hidden = FALSE;
     }
     else
     {
         detailsString = @"PRIVATE";
+        self.shareButton.hidden = TRUE;
     }
     self.channelDetailsLabel.text = detailsString;
     
@@ -978,6 +981,7 @@
                 inView: self.view
               fromRect: self.shareButton.frame
        arrowDirections: UIPopoverArrowDirectionRight
+     activityIndicator: self.shareActivityIndicator
             onComplete: ^{
                 // Re-enable button
                     shareButton.enabled = TRUE;
