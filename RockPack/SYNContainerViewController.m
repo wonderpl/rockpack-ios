@@ -104,7 +104,7 @@
         myRockpackViewController.hideUserProfile = YES;
     }
     
-    myRockpackViewController.user = appDelegate.currentUser;
+    myRockpackViewController.channelOwner = appDelegate.currentUser;
     
     self.shouldAnimateViewTransitions = YES;
     

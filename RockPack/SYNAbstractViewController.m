@@ -410,7 +410,7 @@
 {
     SYNProfileRootViewController *profileVC = [[SYNProfileRootViewController alloc] initWithViewId:kProfileViewId];
     
-    profileVC.user = channelOwner;
+    profileVC.channelOwner = channelOwner;
     
     // if there is a profile already there just pass the new user if is different
     if(self.navigationController.viewControllers.count > 1)
@@ -419,10 +419,10 @@
         if([currentlyVisibleVC isKindOfClass:[SYNProfileRootViewController class]])
         {
             SYNProfileRootViewController* currentlyVisibleProfile = (SYNProfileRootViewController*)currentlyVisibleVC;
-            if([currentlyVisibleProfile.user.uniqueId isEqualToString:channelOwner.uniqueId])
+            if([currentlyVisibleProfile.channelOwner.uniqueId isEqualToString:channelOwner.uniqueId])
                 return;
             
-            currentlyVisibleProfile.user = channelOwner;
+            currentlyVisibleProfile.channelOwner = channelOwner;
             
             return;
         }

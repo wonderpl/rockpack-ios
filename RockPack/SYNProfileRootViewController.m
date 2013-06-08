@@ -70,7 +70,7 @@
 
 @implementation SYNProfileRootViewController
 
-@synthesize user = _user;
+@synthesize channelOwner = _user;
 
 - (void) loadView
 {
@@ -174,8 +174,8 @@
     subColViewFrame.size.width = [SYNDeviceManager.sharedInstance currentScreenWidth] - subColViewFrame.origin.x - 10.0;
     [self.subscriptionsViewController setViewFrame: subColViewFrame];
     
-    if (self.user)
-        self.subscriptionsViewController.user = self.user;
+    if (self.channelOwner)
+        self.subscriptionsViewController.user = self.channelOwner;
     
     self.headerSubscriptionsView = [SYNYouHeaderView headerViewForWidth: 384];
     
@@ -347,9 +347,9 @@
     
     self.subscriptionsViewController.collectionView.delegate = self;
     
-    [self.userProfileController setChannelOwner: self.user];
+    [self.userProfileController setChannelOwner: self.channelOwner];
     
-    self.subscriptionsViewController.user = self.user;
+    self.subscriptionsViewController.user = self.channelOwner;
     
     [self updateLayoutForOrientation: [SYNDeviceManager.sharedInstance orientation]];
     
@@ -375,7 +375,7 @@
     
     [[NSNotificationCenter defaultCenter] postNotificationName:kChannelOwnerUpdateRequest
                                                         object:self
-                                                      userInfo:@{kChannelOwner:self.user}];
+                                                      userInfo:@{kChannelOwner:self.channelOwner}];
 }
 
 
@@ -397,7 +397,7 @@
     [updatedObjects enumerateObjectsUsingBlock: ^(id obj, NSUInteger idx, BOOL *stop)
     {
         
-         if (obj == self.user)
+         if (obj == self.channelOwner)
          {
              
              [self.userProfileController setChannelOwner:(ChannelOwner*)obj];
@@ -407,7 +407,7 @@
              
              NSMutableArray* insertedIndexPathArray = [NSMutableArray arrayWithCapacity:insertedObjects.count]; // maximum
              
-             [self.user.channels enumerateObjectsUsingBlock:^(Channel* videoInstance, NSUInteger cidx, BOOL *cstop) {
+             [self.channelOwner.channels enumerateObjectsUsingBlock:^(Channel* videoInstance, NSUInteger cidx, BOOL *cstop) {
                  
                  
                  
@@ -463,7 +463,7 @@
                  
              } completion:^(BOOL finished) {
                  
-                 NSInteger totalChannels = self.user.channels.count;
+                 NSInteger totalChannels = self.channelOwner.channels.count;
                  NSString* title = [self getHeaderTitleForChannels];
                  
                  [self.headerChannelsView setTitle: title
@@ -506,7 +506,7 @@
 
 - (void) activateDeletionMode: (UILongPressGestureRecognizer *) recognizer
 {
-    if(![self.user.uniqueId isEqualToString:appDelegate.currentUser.uniqueId]) // cannot delete channels of another user
+    if(![self.channelOwner.uniqueId isEqualToString:appDelegate.currentUser.uniqueId]) // cannot delete channels of another user
         return;
     
     if (recognizer.state == UIGestureRecognizerStateBegan)
@@ -698,7 +698,7 @@
 - (void) reloadCollectionViews
 {
     
-    NSInteger totalChannels = self.user.channels.count;
+    NSInteger totalChannels = self.channelOwner.channels.count;
     NSString* title = [self getHeaderTitleForChannels];
     
     [self.headerChannelsView setTitle: title
@@ -719,7 +719,7 @@
 {
     if(_isIPhone)
     {
-        if(self.user == appDelegate.currentUser)
+        if(self.channelOwner == appDelegate.currentUser)
             return NSLocalizedString(@"profile_screen_section_owner_created_title",nil);
         else
             return NSLocalizedString(@"profile_screen_section_user_created_title",nil);
@@ -727,7 +727,7 @@
     }
     else
     {
-        if(self.user == appDelegate.currentUser)
+        if(self.channelOwner == appDelegate.currentUser)
             return NSLocalizedString(@"profile_screen_section_owner_created_title",nil);
         else
             return NSLocalizedString(@"profile_screen_section_user_created_title",nil);
@@ -740,7 +740,7 @@
 - (NSInteger) collectionView: (UICollectionView *) view numberOfItemsInSection: (NSInteger) section
 {
     // NSLog(@"%@", user);
-    return self.user.channels.count;
+    return self.channelOwner.channels.count;
 }
 
 
@@ -753,7 +753,7 @@
 - (UICollectionViewCell *) collectionView: (UICollectionView *) collectionView
                    cellForItemAtIndexPath: (NSIndexPath *) indexPath
 {
-    Channel *channel = (Channel*)self.user.channels[indexPath.row];
+    Channel *channel = (Channel*)self.channelOwner.channels[indexPath.row];
     
     SYNChannelMidCell *channelThumbnailCell = [collectionView dequeueReusableCellWithReuseIdentifier: @"SYNChannelMidCell"
                                                                                         forIndexPath: indexPath];
@@ -798,11 +798,11 @@
     
     if (collectionView == self.channelThumbnailCollectionView)
     {
-        channel = self.user.channels[indexPath.row];
+        channel = self.channelOwner.channels[indexPath.row];
     }
     else
     {
-        channel = self.user.subscriptions[indexPath.row];
+        channel = self.channelOwner.subscriptions[indexPath.row];
     }
     
     SYNChannelDetailViewController *channelVC = [[SYNChannelDetailViewController alloc] initWithChannel: channel
@@ -1018,7 +1018,7 @@
     UIView * v = sender.superview.superview;
     self.indexPathToDelete = [self.channelThumbnailCollectionView indexPathForItemAtPoint: v.center];
     
-    Channel* channelToDelete = (Channel*)self.user.channels[self.indexPathToDelete.row];
+    Channel* channelToDelete = (Channel*)self.channelOwner.channels[self.indexPathToDelete.row];
     if(!channelToDelete)
         return;
     
@@ -1049,7 +1049,7 @@
 
 - (void) deleteChannel
 {
-    Channel* channelToDelete = (Channel*)self.user.channels[self.indexPathToDelete.row];
+    Channel* channelToDelete = (Channel*)self.channelOwner.channels[self.indexPathToDelete.row];
     if(!channelToDelete)
         return;
     
@@ -1066,12 +1066,21 @@
                                                  
                                              } completion:^(BOOL finished) {
                                                  
+                                                 for (Channel* userChannel in appDelegate.currentUser.channels)
+                                                 {
+                                                     if([userChannel.uniqueId isEqualToString:channelToDelete.uniqueId])
+                                                     {
+                                                         [appDelegate.currentUser.channelsSet removeObject:userChannel];
+                                                         [appDelegate.currentUser.managedObjectContext deleteObject:userChannel];
+                                                     }
+                                                     
+                                                 }
                                                  
-                                                 [appDelegate.currentUser.channelsSet removeObject:channelToDelete];
                                                  
-                                                 [channelToDelete.managedObjectContext deleteObject:channelToDelete];
+                                                 [[NSNotificationCenter defaultCenter] postNotificationName:kChannelOwnerUpdateRequest
+                                                                                                     object:self
+                                                                                                   userInfo:@{kChannelOwner:self.channelOwner}];
                                                  
-                                                 [self.channelThumbnailCollectionView deleteItemsAtIndexPaths:@[self.indexPathToDelete]];
                                                  
                                                  [appDelegate saveContext:YES];
                                                  
@@ -1095,90 +1104,83 @@
 
 #pragma mark - Accessors
 
-- (void) setUser: (ChannelOwner*) user
+- (void) setChannelOwner: (ChannelOwner*) user
 {
-    if (self.user) // if we have an existing user
+    if (self.channelOwner) // if we have an existing user
     {
         // remove the listener, even if nil is passed
         
         [[NSNotificationCenter defaultCenter] removeObserver:self
                                                         name:NSManagedObjectContextObjectsDidChangeNotification
-                                                      object:self.user];
+                                                      object:self.channelOwner];
     }
     
     
     if(!user) // if no user has been passed, set to nil and then return
         return;
     
-    if(![user isMemberOfClass:[User class]]) // is a User has been passsed dont copy him OR his channels as there can be only one.
+    NSFetchRequest *channelOwnerFetchRequest = [[NSFetchRequest alloc] init];
+    
+    [channelOwnerFetchRequest setEntity: [NSEntityDescription entityForName: @"ChannelOwner"
+                                                     inManagedObjectContext: user.managedObjectContext]];
+    
+    channelOwnerFetchRequest.includesSubentities = NO;
+    
+    [channelOwnerFetchRequest setPredicate: [NSPredicate predicateWithFormat: @"uniqueId == %@ AND viewId == %@", user.uniqueId, self.viewId]];
+    
+    NSError *error = nil;
+    NSArray *matchingChannelOwnerEntries = [user.managedObjectContext executeFetchRequest: channelOwnerFetchRequest
+                                                                                    error: &error];
+    
+    if (matchingChannelOwnerEntries.count > 0)
     {
-        NSFetchRequest *channelOwnerFetchRequest = [[NSFetchRequest alloc] init];
+        _user = (ChannelOwner*)matchingChannelOwnerEntries[0];
+        _user.markedForDeletionValue = NO;
         
-        [channelOwnerFetchRequest setEntity: [NSEntityDescription entityForName: @"ChannelOwner"
-                                                         inManagedObjectContext: user.managedObjectContext]];
-        
-        channelOwnerFetchRequest.includesSubentities = NO;
-        
-        [channelOwnerFetchRequest setPredicate: [NSPredicate predicateWithFormat: @"uniqueId == %@ AND viewId == %@", user.uniqueId, self.viewId]];
-        
-        NSError *error = nil;
-        NSArray *matchingChannelOwnerEntries = [user.managedObjectContext executeFetchRequest: channelOwnerFetchRequest
-                                                                                        error: &error];
-        
-        if (matchingChannelOwnerEntries.count > 0)
-        {
-            _user = (ChannelOwner*)matchingChannelOwnerEntries[0];
-            _user.markedForDeletionValue = NO;
-            
-            if(matchingChannelOwnerEntries.count > 1) // housekeeping, there can be only one!
-                for (int i = 1; i < matchingChannelOwnerEntries.count; i++)
-                    [user.managedObjectContext deleteObject:(matchingChannelOwnerEntries[i])]; 
-        }
-        else
-        {
-            IgnoringObjects flags = kIgnoreChannelOwnerObject | kIgnoreVideoInstanceObjects; // these flags are passed to the Channels
-            
-            _user = [ChannelOwner instanceFromChannelOwner: user
-                                                 andViewId: self.viewId
-                                 usingManagedObjectContext: user.managedObjectContext
-                                       ignoringObjectTypes: flags];
-            
-            if(self.user)
-            {
-                [self.user.managedObjectContext save:&error];
-                if(error)
-                    _user = nil; // further error code
-                
-            }
-        } 
+        if(matchingChannelOwnerEntries.count > 1) // housekeeping, there can be only one!
+            for (int i = 1; i < matchingChannelOwnerEntries.count; i++)
+                [user.managedObjectContext deleteObject:(matchingChannelOwnerEntries[i])];
     }
     else
     {
-        _user = user; // if User isKindOfClass [User class]
+        IgnoringObjects flags = kIgnoreChannelOwnerObject | kIgnoreVideoInstanceObjects; // these flags are passed to the Channels
+        
+        _user = [ChannelOwner instanceFromChannelOwner: user
+                                             andViewId: self.viewId
+                             usingManagedObjectContext: user.managedObjectContext
+                                   ignoringObjectTypes: flags];
+        
+        if(self.channelOwner)
+        {
+            [self.channelOwner.managedObjectContext save:&error];
+            if(error)
+                _user = nil; // further error code
+            
+        }
     }
     
-    if(self.user) // if a user has been passed or found, monitor
+    if(self.channelOwner) // if a user has been passed or found, monitor
     {
         [[NSNotificationCenter defaultCenter] addObserver: self
                                                  selector: @selector(handleDataModelChange:)
                                                      name: NSManagedObjectContextDidSaveNotification
-                                                   object: self.user.managedObjectContext];
+                                                   object: self.channelOwner.managedObjectContext];
         
         [[NSNotificationCenter defaultCenter] postNotificationName:kChannelOwnerUpdateRequest
                                                             object:self
-                                                          userInfo:@{kChannelOwner:self.user}];
+                                                          userInfo:@{kChannelOwner:self.channelOwner}];
     }  
 }
 
 
-- (ChannelOwner*) user
+- (ChannelOwner*) channelOwner
 {
     return _user;
 }
 
 - (void) dealloc
 {
-    self.user = nil;
+    self.channelOwner = nil;
 }
 
 @end

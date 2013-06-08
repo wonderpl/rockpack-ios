@@ -351,7 +351,7 @@
     };
     
     
-    if([channelOwner isMemberOfClass:[User class]]) // the user uses the oAuthEngine to avoid caching
+    if([channelOwner.uniqueId isEqualToString:appDelegate.currentUser.uniqueId]) // the user uses the oAuthEngine to avoid caching
     {
         [appDelegate.oAuthNetworkEngine userDataForUser:((User*)channelOwner) onCompletion:^(id dictionary) {
             

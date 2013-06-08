@@ -44,6 +44,7 @@
                                       usingManagedObjectContext:existingChannelOwner.managedObjectContext
                                             ignoringObjectTypes:ignoringObjects | kIgnoreChannelOwnerObject];
             
+            NSLog(@"Copied channel %@", copyChannel.uniqueId);
             
             [copyChannelOwner.channelsSet addObject:copyChannel];
             

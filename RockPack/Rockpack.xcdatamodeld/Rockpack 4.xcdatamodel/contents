@@ -95,15 +95,15 @@
         <relationship name="video" optional="YES" minCount="1" maxCount="1" deletionRule="Nullify" destinationEntity="Video" inverseName="videoInstances" inverseEntity="Video" syncable="YES"/>
     </entity>
     <elements>
-        <element name="AbstractCommon" positionX="-74" positionY="-333" width="128" height="103"/>
-        <element name="Channel" positionX="-2" positionY="72" width="128" height="285"/>
-        <element name="ChannelCover" positionX="-164" positionY="-27" width="128" height="133"/>
-        <element name="ChannelOwner" positionX="-344" positionY="48" width="128" height="118"/>
-        <element name="CoverArt" positionX="189" positionY="-243" width="128" height="103"/>
-        <element name="Genre" positionX="-270" positionY="-204" width="128" height="88"/>
-        <element name="SubGenre" positionX="-468" positionY="-189" width="128" height="73"/>
-        <element name="User" positionX="-342" positionY="186" width="128" height="223"/>
-        <element name="Video" positionX="250" positionY="18" width="128" height="223"/>
-        <element name="VideoInstance" positionX="196" positionY="297" width="128" height="118"/>
+        <element name="AbstractCommon" positionX="0" positionY="0" width="0" height="0"/>
+        <element name="Channel" positionX="0" positionY="0" width="0" height="0"/>
+        <element name="ChannelCover" positionX="0" positionY="0" width="0" height="0"/>
+        <element name="ChannelOwner" positionX="0" positionY="0" width="0" height="0"/>
+        <element name="CoverArt" positionX="0" positionY="0" width="0" height="0"/>
+        <element name="Genre" positionX="0" positionY="0" width="0" height="0"/>
+        <element name="SubGenre" positionX="0" positionY="0" width="0" height="0"/>
+        <element name="User" positionX="0" positionY="0" width="0" height="0"/>
+        <element name="Video" positionX="0" positionY="0" width="0" height="0"/>
+        <element name="VideoInstance" positionX="0" positionY="0" width="0" height="0"/>
     </elements>
 </model>
