@@ -14,6 +14,8 @@
 @property (nonatomic, strong) IBOutlet UIImageView* panelSelectedImageView;
 @property (nonatomic, strong) IBOutlet UIButton* deleteButton;
 
+@property (nonatomic, strong) NSString* dataIndentifier;
+
 @property (nonatomic) BOOL specialSelected;
 
 - (void) setChannelTitle: (NSString*) titleString;

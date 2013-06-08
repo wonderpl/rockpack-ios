@@ -389,7 +389,10 @@
 
 - (void) handleDataModelChange: (NSNotification*) notification
 {
+    
     NSArray* updatedObjects = [[notification userInfo] objectForKey: NSUpdatedObjectsKey];
+    NSArray* insertedObjects = [[notification userInfo] objectForKey: NSInsertedObjectsKey];
+    NSArray* deletedObjects = [[notification userInfo] objectForKey: NSDeletedObjectsKey];
     
     [updatedObjects enumerateObjectsUsingBlock: ^(id obj, NSUInteger idx, BOOL *stop)
     {
@@ -399,13 +402,82 @@
              
              [self.userProfileController setChannelOwner:(ChannelOwner*)obj];
              
-             // Handle new insertions
+             // == Handle Inserted ==
              
-             [self reloadCollectionViews];
              
+             NSMutableArray* insertedIndexPathArray = [NSMutableArray arrayWithCapacity:insertedObjects.count]; // maximum
+             
+             [self.user.channels enumerateObjectsUsingBlock:^(Channel* videoInstance, NSUInteger cidx, BOOL *cstop) {
+                 
+                 
+                 
+                 [insertedObjects enumerateObjectsUsingBlock:^(id obj, NSUInteger idx, BOOL *stop) {
+                     
+                     if(obj == videoInstance)
+                     {
+                         NSLog(@"PR(+) Inserted (%@): %@", NSStringFromClass([obj class]), ((Channel*)obj).title);
+                         
+                         [insertedIndexPathArray addObject:[NSIndexPath indexPathForItem:cidx inSection:0]];
+                     }
+                 }];
+                 
+             }];
+             
+             
+             // == Handle Deleted == //
+             
+             NSMutableArray* deletedIndetifiers = [NSMutableArray arrayWithCapacity:deletedObjects.count];
+             NSMutableArray* deletedIndexPathArray = [NSMutableArray arrayWithCapacity:deletedObjects.count]; // maximum
+             [deletedObjects enumerateObjectsUsingBlock: ^(id obj, NSUInteger idx, BOOL *stop) {
+                 
+                 if ([obj isKindOfClass:[Channel class]]) {
+                     
+                     NSLog(@"PR(-) Deleted: %@", ((Channel*)obj).title);
+                     
+                     [deletedIndetifiers addObject:((Channel*)obj).uniqueId];
+                     
+                 }
+                 
+             }];
+             
+             int index = 0;
+             for(SYNChannelMidCell* cell in self.channelThumbnailCollectionView.visibleCells){
+                 
+                 if([deletedIndetifiers containsObject:cell.dataIndentifier])
+                 {
+                     NSLog(@"PR(-) Found Cell at: %i", index);
+                     [deletedIndexPathArray addObject:[NSIndexPath indexPathForItem:index inSection:0]];
+                 }
+                 index++;
+                 
+             }
+             
+             
+             [self.channelThumbnailCollectionView performBatchUpdates:^{
+                 
+                 if(insertedIndexPathArray.count > 0)
+                     [self.channelThumbnailCollectionView insertItemsAtIndexPaths:insertedIndexPathArray];
+                 
+                 if(deletedIndexPathArray.count > 0)
+                     [self.channelThumbnailCollectionView deleteItemsAtIndexPaths:deletedIndexPathArray];
+                 
+             } completion:^(BOOL finished) {
+                 
+                 NSInteger totalChannels = self.user.channels.count;
+                 NSString* title = [self getHeaderTitleForChannels];
+                 
+                 [self.headerChannelsView setTitle: title
+                                         andNumber: totalChannels];
+                 
+                 
+                 [self.subscriptionsViewController reloadCollectionViews];
+                 
+             }];
              
              
              return;
+             
+             
          }
         
     }];
@@ -575,6 +647,7 @@
         }
     }
     
+    
     // Setup Channel feed collection view
     newFrame = self.channelThumbnailCollectionView.frame;
     newFrame.size.width = isIPhone ? 320.0f : self.headerChannelsView.frame.size.width;
@@ -700,6 +773,8 @@
     {
         channelThumbnailCell.deleteButton.enabled = TRUE;
     }
+    
+    channelThumbnailCell.dataIndentifier = channel.uniqueId;
     
     [channelThumbnailCell setChannelTitle:channel.title];
     [channelThumbnailCell setViewControllerDelegate: self];
