@@ -402,6 +402,8 @@
          {
              [self.userProfileController setChannelOwner:(ChannelOwner*)obj];
              
+             
+             
              [self reloadCollectionViews];
              
              return;

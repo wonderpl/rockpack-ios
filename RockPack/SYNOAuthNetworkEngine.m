@@ -345,6 +345,12 @@
           onCompletion:(MKNKUserSuccessBlock) completionBlock
                onError: (MKNKUserErrorBlock) errorBlock
 {
+    if(!user || !user.uniqueId) {
+        errorBlock(@{@"parameter_error":@"the user passed has no unique id or is null"});
+        return;
+    }
+        
+    
     NSDictionary *apiSubstitutionDictionary = @{@"USERID" : user.uniqueId};
     
     NSString *apiString = [kAPIGetUserDetails stringByReplacingOccurrencesOfStrings: apiSubstitutionDictionary];

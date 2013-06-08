@@ -549,7 +549,7 @@
     
     NSArray* updatedObjects = [[notification userInfo] objectForKey: NSUpdatedObjectsKey];
 //    NSArray* refreshedObjects = [[notification userInfo] objectForKey: NSRefreshedObjectsKey];
-//    NSArray* insertedObjects = [[notification userInfo] objectForKey: NSInsertedObjectsKey];
+    NSArray* insertedObjects = [[notification userInfo] objectForKey: NSInsertedObjectsKey];
 //    NSArray* deletedObjects = [[notification userInfo] objectForKey: NSDeletedObjectsKey];
     
     
@@ -595,16 +595,6 @@
         if (obj == self.channel)
         {
             
-            if(self.channel.videoInstances.count == 0)
-            {
-                [self showNoVideosMessage: NSLocalizedString(@"channel_screen_no_videos",nil) withLoader:NO];
-            }
-            else
-            {
-                [self showNoVideosMessage:nil withLoader:NO];
-            }
-            
-            
             self.subscribeButton.selected = self.channel.subscribedByUserValue;
             self.subscribeButton.enabled = YES;
             
@@ -614,8 +604,31 @@
                 self.subscribingIndicator = nil;
             }
             
-            [self reloadCollectionViews];
+            // magia
             
+            NSMutableArray* indexPathArray = [NSMutableArray arrayWithCapacity:insertedObjects.count]; // maximum
+            
+            [self.channel.videoInstances enumerateObjectsUsingBlock:^(VideoInstance* videoInstance, NSUInteger cidx, BOOL *cstop) {
+                
+                [insertedObjects enumerateObjectsUsingBlock: ^(id obj, NSUInteger idx, BOOL *stop) {
+                    
+                    if (obj == videoInstance) {
+                        
+                        NSLog(@"+ Inserted: %@", ((VideoInstance*)obj).title);
+                        
+                        [indexPathArray addObject:[NSIndexPath indexPathForItem:cidx inSection:0]];
+                        
+                        
+                    }
+                    
+                }];
+                
+            }];
+                
+            if(indexPathArray.count > 0)
+                [self.videoThumbnailCollectionView insertItemsAtIndexPaths:indexPathArray];
+            
+            //[self reloadCollectionViews];
             
             
             if(self.channel.videoInstances.count == 0)
@@ -627,10 +640,11 @@
                 [self showNoVideosMessage:nil withLoader:NO];
             }
             
+            
             return;
             
         }
-        else if([obj isKindOfClass:[User class]] && [self.channel.channelOwner.uniqueId isEqualToString:appDelegate.currentUser.uniqueId])
+        else if(obj  == appDelegate.currentUser) // if username is being updated by account settings (or the private/public ivar)
         {
             [self updateChannelOwnerWithUser];
             
@@ -790,6 +804,8 @@
     }
     
     VideoInstance *videoInstance = self.channel.videoInstances [indexPath.item];
+    
+    NSLog(@"P: %lli", videoInstance.positionValue);
     
     
     [videoThumbnailCell.imageView setImageWithURL: [NSURL URLWithString: videoInstance.video.thumbnailURL]
