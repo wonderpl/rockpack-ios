@@ -390,25 +390,24 @@
 - (void) handleDataModelChange: (NSNotification*) notification
 {
     NSArray* updatedObjects = [[notification userInfo] objectForKey: NSUpdatedObjectsKey];
-    NSArray* insertedObjects = [[notification userInfo] objectForKey: NSInsertedObjectsKey];
-    NSArray* deletedObjects = [[notification userInfo] objectForKey: NSDeletedObjectsKey];
-    
-    NSLog(@"updated:%i inserted:%i deleted:%i", updatedObjects.count, insertedObjects.count, deletedObjects.count);
     
     [updatedObjects enumerateObjectsUsingBlock: ^(id obj, NSUInteger idx, BOOL *stop)
     {
         
          if (obj == self.user)
          {
+             
              [self.userProfileController setChannelOwner:(ChannelOwner*)obj];
              
-             
+             // Handle new insertions
              
              [self reloadCollectionViews];
              
+             
+             
              return;
          }
-         
+        
     }];
     
     
@@ -996,7 +995,6 @@
                                                  [appDelegate.currentUser.channelsSet removeObject:channelToDelete];
                                                  
                                                  [channelToDelete.managedObjectContext deleteObject:channelToDelete];
-                                                 
                                                  
                                                  [self.channelThumbnailCollectionView deleteItemsAtIndexPaths:@[self.indexPathToDelete]];
                                                  

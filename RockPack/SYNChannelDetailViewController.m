@@ -546,45 +546,10 @@
     
     NSArray* updatedObjects = [[notification userInfo] objectForKey: NSUpdatedObjectsKey];
 //    NSArray* refreshedObjects = [[notification userInfo] objectForKey: NSRefreshedObjectsKey];
-    NSArray* insertedObjects = [[notification userInfo] objectForKey: NSInsertedObjectsKey];
-//    NSArray* deletedObjects = [[notification userInfo] objectForKey: NSDeletedObjectsKey];
     
+    NSArray* deletedObjects = [[notification userInfo] objectForKey: NSDeletedObjectsKey];
     
-//    [updatedObjects enumerateObjectsUsingBlock: ^(id obj, NSUInteger idx, BOOL *stop) {
-//        
-//        if ([obj isKindOfClass:[VideoInstance class]] && ((VideoInstance*)obj).channel == self.channel) {
-//            
-//            NSLog(@"| Updated: %@", ((VideoInstance*)obj).title);
-//        }
-//        
-//    }];
-//    
-//    [refreshedObjects enumerateObjectsUsingBlock: ^(id obj, NSUInteger idx, BOOL *stop) {
-//        
-//        if ([obj isKindOfClass:[VideoInstance class]] && ((VideoInstance*)obj).channel == self.channel) {
-//            
-//            NSLog(@"/ Refreshed: %@", ((VideoInstance*)obj).title);
-//        }
-//        
-//    }];
-//    
-//    [insertedObjects enumerateObjectsUsingBlock: ^(id obj, NSUInteger idx, BOOL *stop) {
-//        
-//        if ([obj isKindOfClass:[VideoInstance class]] && ((VideoInstance*)obj).channel == self.channel) {
-//            
-//            NSLog(@"+ Inserted: %@", ((VideoInstance*)obj).title);
-//        }
-//        
-//    }];
-//    
-//    [deletedObjects enumerateObjectsUsingBlock: ^(id obj, NSUInteger idx, BOOL *stop) {
-//        
-//        if ([obj isKindOfClass:[VideoInstance class]] && ((VideoInstance*)obj).channel == self.channel) {
-//            
-//            NSLog(@"- Deleted: %@", ((VideoInstance*)obj).title);
-//        }
-//        
-//    }];
+
     
     [updatedObjects enumerateObjectsUsingBlock: ^(id obj, NSUInteger idx, BOOL *stop) {
         
@@ -601,32 +566,63 @@
                 self.subscribingIndicator = nil;
             }
             
-            // magia
+            // == Handle Inserted ==
             
+            NSArray* insertedObjects = [[notification userInfo] objectForKey: NSInsertedObjectsKey];
             NSMutableArray* indexPathArray = [NSMutableArray arrayWithCapacity:insertedObjects.count]; // maximum
             
             [self.channel.videoInstances enumerateObjectsUsingBlock:^(VideoInstance* videoInstance, NSUInteger cidx, BOOL *cstop) {
                 
-                [insertedObjects enumerateObjectsUsingBlock: ^(id obj, NSUInteger idx, BOOL *stop) {
+                if([insertedObjects containsObject:videoInstance])
+                {
+                    NSLog(@"CD(+) Inserted: %@", ((VideoInstance*)obj).title);
                     
-                    if (obj == videoInstance) {
-                        
-                        NSLog(@"+ Inserted: %@", ((VideoInstance*)obj).title);
-                        
-                        [indexPathArray addObject:[NSIndexPath indexPathForItem:cidx inSection:0]];
-                        
-                        
-                    }
-                    
-                }];
+                    [indexPathArray addObject:[NSIndexPath indexPathForItem:cidx inSection:0]];
+                }
+                
                 
             }];
                 
             if(indexPathArray.count > 0)
+            {
                 [self.videoThumbnailCollectionView insertItemsAtIndexPaths:indexPathArray];
+            }
+                
+            [indexPathArray removeAllObjects];
             
-            //[self reloadCollectionViews];
+            // == Handle Deleted == //
             
+            NSMutableArray* deletedIndetifiers = [NSMutableArray arrayWithCapacity:deletedObjects.count];
+            [deletedObjects enumerateObjectsUsingBlock: ^(id obj, NSUInteger idx, BOOL *stop) {
+                
+                if ([obj isKindOfClass:[VideoInstance class]]) {
+                    
+                    NSLog(@"CD(-) Deleted: %@ from %@", ((VideoInstance*)obj).title, ((VideoInstance*)obj).channel.title);
+                    
+                    [deletedIndetifiers addObject:((VideoInstance*)obj).uniqueId];
+                    
+                }
+                
+            }];
+            
+            int index = 0;
+            for(SYNVideoThumbnailRegularCell* cell in self.videoThumbnailCollectionView.visibleCells){
+                
+                if([deletedIndetifiers containsObject:cell.dataIndetifier])
+                {
+                    [indexPathArray addObject:[NSIndexPath indexPathForItem:index inSection:0]];
+                }
+                index++;
+                
+            }
+            
+            if(indexPathArray.count > 0)
+            {
+                [self.videoThumbnailCollectionView deleteItemsAtIndexPaths:indexPathArray];
+            }
+            
+            
+            // == Handle Rest == //
             
             if(self.channel.videoInstances.count == 0)
             {
@@ -791,6 +787,7 @@
                                                                                                  forIndexPath: indexPath];
     
     // special mode for the favorite channel so we cannot delete the videos (un-heart them only)
+    
     if (self.channel.favouritesValue)
     {
         videoThumbnailCell.displayMode = kChannelThumbnailDisplayModeDisplayFavourite;
@@ -811,6 +808,8 @@
     
     videoThumbnailCell.titleLabel.text = videoInstance.title;
     videoThumbnailCell.viewControllerDelegate = self;
+    
+    videoThumbnailCell.dataIndetifier = videoInstance.uniqueId;
     
     videoThumbnailCell.addItButton.highlighted = NO;
     videoThumbnailCell.addItButton.selected = [appDelegate.videoQueue videoInstanceIsAddedToChannel:videoInstance];

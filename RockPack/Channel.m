@@ -195,6 +195,8 @@
             
             videoInstance.viewId = self.viewId;
             
+            // all other properties of videoInstance like Video and Title are considered constant at the moment
+            
             NSNumber* newPosition = [channelDictionary objectForKey: @"position"];
             if(newPosition && [newPosition isKindOfClass:[NSNumber class]])
                 videoInstance.position = newPosition;
@@ -206,16 +208,7 @@
         
         // Sort in correct position
         
-//        [importArray sortUsingComparator:^NSComparisonResult(VideoInstance* vi_1, VideoInstance* vi_2) {
-//            
-//           if(vi_1.positionValue < vi_2.positionValue)
-//               return NSOrderedAscending;
-//           else if(vi_1.positionValue > vi_2.positionValue)
-//               return NSOrderedDescending;
-//            else
-//                return NSOrderedSame;
-//            
-//        }];
+
         
         
         // Add VideoInstances to channel's NSOrderedSet
