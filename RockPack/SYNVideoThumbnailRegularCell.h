@@ -18,6 +18,7 @@ typedef enum {
 
 @property (nonatomic, strong) IBOutlet UIImageView *imageView;
 @property (nonatomic, strong) IBOutlet UILabel *titleLabel;
+@property (nonatomic, strong) NSString* dataIndetifier;
 @property (nonatomic, weak) UIViewController *viewControllerDelegate;
 
 
