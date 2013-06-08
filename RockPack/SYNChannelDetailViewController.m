@@ -557,7 +557,6 @@
         if (obj == self.channel)
         {
             
-            
             self.subscribeButton.selected = self.channel.subscribedByUserValue;
             self.subscribeButton.enabled = YES;
             
@@ -651,8 +650,6 @@
         else if(obj  == appDelegate.currentUser) // if username is being updated by account settings (or the private/public ivar)
         {
             [self updateChannelOwnerWithUser];
-            
-            
         }
     }];
     
