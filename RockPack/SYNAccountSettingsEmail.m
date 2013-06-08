@@ -69,9 +69,11 @@
     
     [self.inputField resignFirstResponder];
     
-    if([self.inputField.text isEqualToString:self.appDelegate.currentUser.emailAddress])
+    if([self.inputField.text isEqualToString:self.appDelegate.currentUser.emailAddress]) {
         [self.navigationController popViewControllerAnimated:YES];
         return;
+    }
+        
     
     if(![self formIsValid]) {
         self.errorLabel.text = NSLocalizedString (@"You Have Entered Invalid Characters", nil);

@@ -370,8 +370,8 @@
     
     self.emptyGenreMessageView.center = CGPointMake(self.view.center.x, 280.0);
     self.emptyGenreMessageView.frame = CGRectIntegral(self.emptyGenreMessageView.frame);
-    
-    [self.view addSubview:self.emptyGenreMessageView];
+   
+    [self.view insertSubview:self.emptyGenreMessageView belowSubview:self.categoryTableViewController.view];
 }
 
 

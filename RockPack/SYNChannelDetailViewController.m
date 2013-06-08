@@ -544,10 +544,10 @@
 
 - (void) handleDataModelChange: (NSNotification*) notification
 {
+
     
     NSArray* updatedObjects = [[notification userInfo] objectForKey: NSUpdatedObjectsKey];
-//    NSArray* refreshedObjects = [[notification userInfo] objectForKey: NSRefreshedObjectsKey];
-    
+    NSArray* insertedObjects = [[notification userInfo] objectForKey: NSInsertedObjectsKey];
     NSArray* deletedObjects = [[notification userInfo] objectForKey: NSDeletedObjectsKey];
     
 
@@ -567,60 +567,6 @@
                 self.subscribingIndicator = nil;
             }
             
-            // == Handle Inserted ==
-            
-            NSArray* insertedObjects = [[notification userInfo] objectForKey: NSInsertedObjectsKey];
-            NSMutableArray* indexPathArray = [NSMutableArray arrayWithCapacity:insertedObjects.count]; // maximum
-            
-            [self.channel.videoInstances enumerateObjectsUsingBlock:^(VideoInstance* videoInstance, NSUInteger cidx, BOOL *cstop) {
-                
-                if([insertedObjects containsObject:videoInstance])
-                {
-                    NSLog(@"CD(+) Inserted: %@", ((VideoInstance*)obj).title);
-                    
-                    [indexPathArray addObject:[NSIndexPath indexPathForItem:cidx inSection:0]];
-                }
-                
-                
-            }];
-                
-            if(indexPathArray.count > 0)
-            {
-                [self.videoThumbnailCollectionView insertItemsAtIndexPaths:indexPathArray];
-            }
-                
-            [indexPathArray removeAllObjects];
-            
-            // == Handle Deleted == //
-            
-            NSMutableArray* deletedIndetifiers = [NSMutableArray arrayWithCapacity:deletedObjects.count];
-            [deletedObjects enumerateObjectsUsingBlock: ^(id obj, NSUInteger idx, BOOL *stop) {
-                
-                if ([obj isKindOfClass:[VideoInstance class]]) {
-                    
-                    NSLog(@"CD(-) Deleted: %@ from %@", ((VideoInstance*)obj).title, ((VideoInstance*)obj).channel.title);
-                    
-                    [deletedIndetifiers addObject:((VideoInstance*)obj).uniqueId];
-                    
-                }
-                
-            }];
-            
-            int index = 0;
-            for(SYNVideoThumbnailRegularCell* cell in self.videoThumbnailCollectionView.visibleCells){
-                
-                if([deletedIndetifiers containsObject:cell.dataIndetifier])
-                {
-                    [indexPathArray addObject:[NSIndexPath indexPathForItem:index inSection:0]];
-                }
-                index++;
-                
-            }
-            
-            if(indexPathArray.count > 0)
-            {
-                [self.videoThumbnailCollectionView deleteItemsAtIndexPaths:indexPathArray];
-            }
             
             
             // == Handle Rest == //
@@ -635,14 +581,76 @@
             }
             
             
+            // == Handle Inserted ==
+            
+            
+            NSMutableArray* insertedIndexPathArray = [NSMutableArray arrayWithCapacity:insertedObjects.count]; // maximum
+            
+            [self.channel.videoInstances enumerateObjectsUsingBlock:^(VideoInstance* videoInstance, NSUInteger cidx, BOOL *cstop) {
+                
+                
+                
+                [insertedObjects enumerateObjectsUsingBlock:^(id obj, NSUInteger idx, BOOL *stop) {
+                    
+                    if(obj == videoInstance)
+                    {
+                        NSLog(@"CD(+) Inserted (%@): %@", NSStringFromClass([obj class]), ((VideoInstance*)obj).title);
+                        
+                        [insertedIndexPathArray addObject:[NSIndexPath indexPathForItem:cidx inSection:0]];
+                    }
+                }];
+                
+            }];
+            
+            
+            // == Handle Deleted == //
+            
+            NSMutableArray* deletedIndetifiers = [NSMutableArray arrayWithCapacity:deletedObjects.count];
+            NSMutableArray* deletedIndexPathArray = [NSMutableArray arrayWithCapacity:deletedObjects.count]; // maximum
+            [deletedObjects enumerateObjectsUsingBlock: ^(id obj, NSUInteger idx, BOOL *stop) {
+                
+                if ([obj isKindOfClass:[VideoInstance class]]) {
+                    
+                    NSLog(@"CD(-) Deleted: %@", ((VideoInstance*)obj).title);
+                    
+                    [deletedIndetifiers addObject:((VideoInstance*)obj).uniqueId];
+                    
+                }
+                
+            }];
+            
+            int index = 0;
+            for(SYNVideoThumbnailRegularCell* cell in self.videoThumbnailCollectionView.visibleCells){
+                
+                if([deletedIndetifiers containsObject:cell.dataIndetifier])
+                {
+                    NSLog(@"CD(-) Found Cell at: %i", index);
+                    [deletedIndexPathArray addObject:[NSIndexPath indexPathForItem:index inSection:0]];
+                }
+                index++;
+                
+            }
+            
+            
+            [self.videoThumbnailCollectionView performBatchUpdates:^{
+                
+                if(insertedIndexPathArray.count > 0)
+                    [self.videoThumbnailCollectionView insertItemsAtIndexPaths:insertedIndexPathArray];
+                
+                if(deletedIndexPathArray.count > 0)
+                    [self.videoThumbnailCollectionView deleteItemsAtIndexPaths:deletedIndexPathArray];
+                
+            } completion:^(BOOL finished) {
+                
+            }];
+            
+            
             return;
             
         }
         else if(obj  == appDelegate.currentUser) // if username is being updated by account settings (or the private/public ivar)
         {
             [self updateChannelOwnerWithUser];
-            
-            
         }
     }];
     
@@ -801,8 +809,6 @@
     }
     
     VideoInstance *videoInstance = self.channel.videoInstances [indexPath.item];
-    
-    NSLog(@"P: %lli", videoInstance.positionValue);
     
     
     [videoThumbnailCell.imageView setImageWithURL: [NSURL URLWithString: videoInstance.video.thumbnailURL]
