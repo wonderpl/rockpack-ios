@@ -737,10 +737,12 @@
     if (self.channel.publicValue)
     {
         detailsString = [NSString stringWithFormat: @"%lld %@", self.channel.subscribersCountValue, NSLocalizedString(@"SUBSCRIBERS", nil)];
+        self.shareButton.hidden = FALSE;
     }
     else
     {
         detailsString = @"PRIVATE";
+        self.shareButton.hidden = TRUE;
     }
     self.channelDetailsLabel.text = detailsString;
     
