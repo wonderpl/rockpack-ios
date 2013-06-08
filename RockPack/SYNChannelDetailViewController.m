@@ -46,12 +46,13 @@
     BOOL _isIPhone; //So many calls were being made to the SYNDeviceManager a boolean initialised at viewDidLoad was introduced.
 }
 
+
 @property (nonatomic, assign)  CGPoint originalContentOffset;
 @property (nonatomic, assign)  CGPoint originalMasterControlsViewOrigin;
 @property (nonatomic, assign, getter = isImageSelectorOpen) BOOL imageSelectorOpen;
+@property (nonatomic, strong) Channel *channel;
 @property (nonatomic, strong) GKImagePicker *imagePicker;
 @property (nonatomic, strong) IBOutlet SSTextView *channelTitleTextView;
-@property (nonatomic, strong) IBOutlet UIActivityIndicatorView *uploadImageSpinner;
 @property (nonatomic, strong) IBOutlet UIButton *buyButton;
 @property (nonatomic, strong) IBOutlet UIButton *cameraButton;
 @property (nonatomic, strong) IBOutlet UIButton *createChannelButton;
@@ -76,6 +77,7 @@
 @property (nonatomic, strong) IBOutlet UIView *masterControlsView;
 @property (nonatomic, strong) NSFetchedResultsController *channelCoverFetchedResultsController;
 @property (nonatomic, strong) NSFetchedResultsController *userChannelCoverFetchedResultsController;
+@property (nonatomic, strong) NSIndexPath* indexPathToDelete;
 @property (nonatomic, strong) NSString* selectedCategoryId;
 @property (nonatomic, strong) NSString* selectedCoverId;
 @property (nonatomic, strong) SYNCoverChooserController* coverChooserController;
@@ -85,21 +87,16 @@
 @property (nonatomic, strong) UIImage* originalBackgroundImage;
 @property (nonatomic, strong) UIView *coverChooserMasterView;
 @property (nonatomic, strong) UIView* noVideosMessageView;
-@property (nonatomic, strong) NSIndexPath* indexPathToDelete;
 @property (nonatomic, strong) id<SDWebImageOperation> currentWebImageOperation;
-
 @property (nonatomic, weak) Channel* originalChannel;
-
 @property (nonatomic, weak) IBOutlet UIButton *cancelEditButton;
 @property (nonatomic, weak) IBOutlet UIButton *editButton;
 @property (nonatomic, weak) IBOutlet UILabel *byLabel;
-
-@property (nonatomic, strong) Channel *channel;
+@property (weak, nonatomic) IBOutlet UIActivityIndicatorView *activityIndicator;
 
 //iPhone specific
 @property (nonatomic,strong) SYNChannelCoverImageSelectorViewController* coverImageSelector;
 @property (strong,nonatomic) SYNChannelCategoryTableViewController *categoryTableViewController;
-@property (weak, nonatomic) IBOutlet UIActivityIndicatorView *activityIndicator;
 @property (weak, nonatomic) IBOutlet UIButton *backButton;
 @property (weak, nonatomic) IBOutlet UIButton *cancelTextInputButton;
 @property (weak, nonatomic) IBOutlet UIImageView *textBackgroundImageView;
@@ -1252,17 +1249,8 @@
 
 - (IBAction) saveChannelTapped: (id) sender
 { 
-    if (_isIPhone)
-    {
-        self.saveChannelButton.hidden = YES;
-        self.activityIndicator.hidden = NO;
-        [self.activityIndicator startAnimating];
-    }
-    else
-    {
-        self.saveChannelButton.enabled = NO;
-        [self.uploadImageSpinner startAnimating];
-    }
+    self.saveChannelButton.enabled = NO;
+    [self.activityIndicator startAnimating];
     
     [self hideCategoryChooser];
     
@@ -1286,7 +1274,7 @@
                                              
                                              [self setEditControlsVisibility: NO];
                                              self.saveChannelButton.enabled = YES;
-                                             [self.uploadImageSpinner stopAnimating];
+                                             [self.activityIndicator stopAnimating];
                                              self.saveChannelButton.hidden = YES;
                                              self.cancelEditButton.hidden = YES;
                                              self.addButton.hidden = NO;
@@ -1337,7 +1325,7 @@
                                                   self.saveChannelButton.hidden = NO;
                                                   self.saveChannelButton.enabled = YES;
                                                   [self.activityIndicator stopAnimating];
-                                                  [self.uploadImageSpinner stopAnimating];
+                                                  [self.activityIndicator stopAnimating];
                                               }];
 }
 
@@ -1628,16 +1616,8 @@
 {
     self.isLocked = YES; // prevent back button from firing
     
-    if (_isIPhone)
-    {
-        self.createChannelButton.hidden = YES;
-        self.activityIndicator.hidden = NO;
-        [self.activityIndicator startAnimating];
-    }
-    else
-    {
-        self.createChannelButton.enabled = NO;
-    }
+    self.createChannelButton.enabled = NO;
+    [self.activityIndicator startAnimating];
     
     [self hideCategoryChooser];
     
@@ -1648,6 +1628,7 @@
     NSString* category = [self categoryIdStringForServiceCall];
     
     NSString* cover =  self.selectedCoverId;
+    
     if ([cover length]==0)
     {
         cover = @"";
@@ -1664,7 +1645,9 @@
                                              
                                              NSString* channelId = [resourceCreated objectForKey: @"id"];
                                              
+                                             self.createChannelButton.enabled = YES;
                                              self.createChannelButton.hidden = YES;
+                                             [self.activityIndicator stopAnimating];
                                              
                                              [self setVideosForChannelById:channelId isUpdated:NO];
                                              
@@ -1705,11 +1688,11 @@
                                                   
                                                   
                                                   self.createChannelButton.enabled = YES;
-                                                  self.createChannelButton.hidden = NO;
                                                   self.cancelEditButton.hidden = YES;
                                                   self.addButton.hidden = YES;
                                              
-                                                  [self showError:errorMessage showErrorTitle:errorTitle];
+                                                  [self showError: errorMessage
+                                                   showErrorTitle:errorTitle];
                                              
                                               }];
 }
@@ -2317,7 +2300,7 @@
 {
     self.createChannelButton.enabled = FALSE;
     self.saveChannelButton.enabled = FALSE;
-    [self.uploadImageSpinner startAnimating];
+    [self.activityIndicator startAnimating];
     
     [self.coverChooserController createCoverPlaceholder: imageToUpload];
     
@@ -2327,7 +2310,7 @@
                                           completionHandler: ^(NSDictionary *dictionary){
                                               self.createChannelButton.enabled = TRUE;
                                               self.saveChannelButton.enabled = TRUE;
-                                              [self.uploadImageSpinner stopAnimating];
+                                              [self.activityIndicator stopAnimating];
                                               
                                               NSString *imageUrl = dictionary [@"thumbnail_url"];
 
@@ -2347,7 +2330,7 @@
                                                errorHandler: ^(NSError* error) {
                                                    self.createChannelButton.enabled = TRUE;
                                                    self.saveChannelButton.enabled = TRUE;
-                                                   [self.uploadImageSpinner stopAnimating];
+                                                   [self.activityIndicator stopAnimating];
                                                    DebugLog(@"%@", [error debugDescription]);
                                                }];
 }
