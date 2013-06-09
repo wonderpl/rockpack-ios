@@ -149,6 +149,12 @@
         case 0:
         {
             coverThumbnailCell.coverImageView.image = [UIImage imageNamed: @"ChannelCreationCoverNone.png"];
+            
+            if ([self.selectedImageURL isEqualToString: @""])
+            {
+                coverThumbnailCell.selected = TRUE;
+                self.indexPathSelected = indexPath;
+            }
         }
         break;
             
@@ -168,6 +174,12 @@
                                                   placeholderImage: [UIImage imageNamed: @"PlaceholderChannelCreation.png"]
                                                            options: SDWebImageRetryFailed];
             }
+            
+            if ([coverArt.thumbnailURL isEqualToString: self.selectedImageURL])
+            {
+                coverThumbnailCell.selected = TRUE;
+                self.indexPathSelected = indexPath;
+            }
         }
         break;
             
@@ -180,6 +192,12 @@
             [coverThumbnailCell.coverImageView setImageWithURL: [NSURL URLWithString: coverArt.thumbnailURL]
                                               placeholderImage: [UIImage imageNamed: @"PlaceholderChannelCreation.png"]
                                                        options: SDWebImageRetryFailed];
+            
+            if ([coverArt.thumbnailURL isEqualToString: self.selectedImageURL])
+            {
+                coverThumbnailCell.selected = TRUE;
+                self.indexPathSelected = indexPath;
+            }
         }
         break;
     }
@@ -191,10 +209,14 @@
         // And we are not on the 'no cover' placeholder
         if (coverArt != nil)
         {
-            if ([coverArt.thumbnailURL isEqualToString: self.selectedImageURL])
+            if ([coverArt.thumbnailURL isEqualToString: self.selectedImageURL] || coverArt == nil)
             {
                 coverThumbnailCell.selected = TRUE;
                 self.indexPathSelected = indexPath;
+            }
+            else
+            {
+                coverThumbnailCell.selected = FALSE;
             }
         }
     }
@@ -269,6 +291,7 @@
         
         if (previouslySelectedIndexPath)
         {
+            self.selectedImageURL = imageURLString;
             [collectionView reloadItemsAtIndexPaths: @[previouslySelectedIndexPath]];
         }
     }
