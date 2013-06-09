@@ -14,6 +14,7 @@
 #import "SYNAppDelegate.h"
 #import "SYNChannelCoverImageCell.h"
 #import "SYNChannelCoverImageSelectorViewController.h"
+#import "SYNChannelFooterMoreView.h"
 #import "SYNNetworkEngine.h"
 #import "SYNOAuthNetworkEngine.h"
 #import "UIFont+SYNFont.h"
@@ -21,8 +22,8 @@
 #import "UIImageView+WebCache.h"
 #import <AVFoundation/AVFoundation.h>
 #import <AssetsLibrary/AssetsLibrary.h>
-#import <QuartzCore/QuartzCore.h>
 #import <ImageIO/ImageIO.h>
+#import <QuartzCore/QuartzCore.h>
 
 enum ChannelCoverSelectorState {
     kChannelCoverDefault = 0,
@@ -37,6 +38,8 @@ enum ChannelCoverSelectorState {
                                                           GKImagePickerDelegate,
                                                           NSFetchedResultsControllerDelegate>
 
+@property (nonatomic) NSInteger dataItemsAvailable;
+@property (nonatomic) NSRange dataRequestRange;
 @property (nonatomic, assign) BOOL supportsCamera;
 @property (nonatomic, assign) enum ChannelCoverSelectorState currentState;
 @property (nonatomic, strong) ALAssetsLibrary* library;
@@ -45,6 +48,7 @@ enum ChannelCoverSelectorState {
 @property (nonatomic, strong) NSMutableDictionary* userAssetGroups;
 @property (nonatomic, strong) NSString* selectedAlbumKey;
 @property (nonatomic, strong) NSString* selectedImageURL;
+@property (nonatomic, strong) SYNChannelFooterMoreView* footerView;
 @property (strong,nonatomic) NSFetchedResultsController* fetchedResultsController;
 @property (weak, nonatomic) IBOutlet UIButton *backButton;
 @property (weak, nonatomic) IBOutlet UIButton *cameraButton;
@@ -103,6 +107,14 @@ enum ChannelCoverSelectorState {
         AssertOrLog(@"Channels Details Failed: %@\n%@", [error localizedDescription], [error userInfo]);
     }
     
+    NSLog (@"Count %d", self.fetchedResultsController.fetchedObjects.count);
+    
+    // If we already have itmes in the database, start after the last one of those
+    self.dataItemsAvailable = self.fetchedResultsController.fetchedObjects.count;
+    
+    // Initialise the span and size of the first data request
+    self.dataRequestRange = NSMakeRange(self.dataItemsAvailable, STANDARD_REQUEST_LENGTH);
+    
     self.supportsCamera = [UIImagePickerController isSourceTypeAvailable: UIImagePickerControllerSourceTypeCamera];
     
     self.titleLabel.font = [UIFont boldRockpackFontOfSize: self.titleLabel.font.pointSize];
@@ -156,6 +168,14 @@ enum ChannelCoverSelectorState {
     
     [self.collectionView registerNib: cellNib
           forCellWithReuseIdentifier: @"SYNChannelCoverImageCell"];
+    
+    // Register Footer
+    UINib *footerViewNib = [UINib nibWithNibName: @"SYNChannelFooterMoreView"
+                                          bundle: nil];
+    
+    [self.collectionView registerNib: footerViewNib
+          forSupplementaryViewOfKind: UICollectionElementKindSectionFooter
+                 withReuseIdentifier: @"SYNChannelFooterMoreView"];
 }
 
 
@@ -373,6 +393,74 @@ enum ChannelCoverSelectorState {
 }
 
 
+// Used for the collection view header
+- (UICollectionReusableView *) collectionView: (UICollectionView *) collectionView
+            viewForSupplementaryElementOfKind: (NSString *) kind
+                                  atIndexPath: (NSIndexPath *) indexPath
+{
+    
+    UICollectionReusableView *supplementaryView = nil;
+
+    // TODO: We might want to optimise this instead of creating a new date formatter each time
+    
+    if (kind == UICollectionElementKindSectionFooter)
+    {
+        if (indexPath.section < self.fetchedResultsController.sections.count - 1)
+            return supplementaryView;
+        
+        if (self.fetchedResultsController.fetchedObjects.count == 0 ||
+           (self.dataRequestRange.location + self.dataRequestRange.length) >= self.dataItemsAvailable)
+        {
+            return supplementaryView;
+        }
+        
+        self.footerView = [self.collectionView dequeueReusableSupplementaryViewOfKind: kind
+                                                                                withReuseIdentifier: @"SYNChannelFooterMoreView"
+                                                                                       forIndexPath: indexPath];
+        
+        [self.footerView.loadMoreButton addTarget: self
+                                           action: @selector(loadMoreCovers:)
+                                 forControlEvents: UIControlEventTouchUpInside];
+        
+        //[self loadMoreChannels:self.footerView.loadMoreButton];
+        
+        supplementaryView = self.footerView;
+    }
+    
+    return supplementaryView;
+}
+
+
+#pragma mark - Load More Footer
+
+- (void) incrementRangeForNextRequest
+{
+    // (UIButton*) sender can be nil when called directly //
+    self.footerView.showsLoading = YES;
+    
+    NSInteger nextStart = self.dataRequestRange.location + self.dataRequestRange.length; // one is subtracted when the call happens for 0 indexing
+    
+    if (nextStart >= self.dataItemsAvailable)
+        return;
+    
+    NSInteger nextSize = (nextStart + STANDARD_REQUEST_LENGTH) >= self.dataItemsAvailable ? (self.dataItemsAvailable - nextStart) : STANDARD_REQUEST_LENGTH;
+    
+    self.dataRequestRange = NSMakeRange(nextStart, nextSize);
+    
+    NSLog (@"Range %d:%d    ", self.dataRequestRange.location, self.dataRequestRange.length);
+}
+
+
+- (void) loadMoreCovers: (UIButton*) sender
+{
+    [self incrementRangeForNextRequest];
+    
+    [self updateCoverArt];
+}
+
+
+#pragma mark - Paging
+
 - (void) refreshChannelCoverData
 {
     if (self.currentState == kChannelCoverDefault)
@@ -504,22 +592,62 @@ enum ChannelCoverSelectorState {
 }
 
 
+//- (void) updateCoverArt
+//{
+//    // Update the list of cover art
+//    [self.appDelegate.networkEngine updateCoverArtOnCompletion: ^(NSDictionary * dictionary){
+//        DebugLog(@"Success");
+//    } onError: ^(NSError* error) {
+//        DebugLog(@"%@", [error debugDescription]);
+//    }];
+//    
+//    [self.appDelegate.oAuthNetworkEngine updateCoverArtForUserId: self.appDelegate.currentOAuth2Credentials.userId
+//                                               onCompletion: ^{
+//                                                   DebugLog(@"Success");
+//                                               }
+//                                                    onError: ^(NSError* error) {
+//                                                        DebugLog(@"%@", [error debugDescription]);
+//                                                    }];
+//}
+
+
 - (void) updateCoverArt
 {
     // Update the list of cover art
-    [self.appDelegate.networkEngine updateCoverArtOnCompletion: ^(NSDictionary * dictionary){
-        DebugLog(@"Success");
-    } onError: ^(NSError* error) {
-        DebugLog(@"%@", [error debugDescription]);
-    }];
+    [self.appDelegate.networkEngine updateCoverArtWithWithStart: self.dataRequestRange.location
+                                                           size: self.dataRequestRange.length
+                                              completionHandler: ^(NSDictionary *dictionary){
+                                                  DebugLog(@"Success");
+                                                  self.footerView.showsLoading = NO;
+                                                  NSNumber* totalNumber = dictionary[@"cover_art"][@"total"];
+                                                  if (totalNumber && ![totalNumber isKindOfClass: [NSNull class]])
+                                                      self.dataItemsAvailable = [totalNumber integerValue];
+                                                  else
+                                                      self.dataItemsAvailable = self.dataRequestRange.length;
+                                                  
+                                                  NSLog (@"Count %d", self.fetchedResultsController.fetchedObjects.count);
+//                                                  if ((self.dataRequestRange.location + self.dataRequestRange.length) >= self.dataItemsAvailable)
+                                                  {
+//                                                      self.noMoreCovers = TRUE;
+                                                      [self.collectionView reloadData];
+                                                      return;
+                                                  }
+                                                  
+//                                                  [self displayLoadMoreMessage];
+                                              }
+                                                   errorHandler: ^(NSError* error) {
+                                                                                                             self.footerView.showsLoading = NO;
+                                                       DebugLog(@"%@", [error debugDescription]);
+//                                                       [self displayLoadMoreMessage];
+                                                   }];
     
     [self.appDelegate.oAuthNetworkEngine updateCoverArtForUserId: self.appDelegate.currentOAuth2Credentials.userId
-                                               onCompletion: ^{
-                                                   DebugLog(@"Success");
-                                               }
-                                                    onError: ^(NSError* error) {
-                                                        DebugLog(@"%@", [error debugDescription]);
-                                                    }];
+                                                    onCompletion: ^{
+                                                        DebugLog(@"Success");
+                                                    }
+                                                         onError: ^(NSError* error) {
+                                                             DebugLog(@"%@", [error debugDescription]);
+                                                         }];
 }
 
 
