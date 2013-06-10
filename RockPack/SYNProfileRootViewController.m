@@ -25,6 +25,7 @@
 #import "UIFont+SYNFont.h"
 #import "UIImageView+WebCache.h"
 #import "Video.h"
+#import <QuartzCore/QuartzCore.h>
 
 #define kInterChannelSpacing 150.0
 #define kInterRowMargin 8.0f
@@ -464,6 +465,7 @@
                      
                      [deletedIndetifiers addObject:((Channel*)obj).uniqueId];
                      
+                     
                  }
                  
              }];
@@ -488,8 +490,11 @@
                                      andTotalCount: self.channelOwner.channels.count];
                  
                  
+                 
                  if(updatedIndexPathArray.count > 0)
                  {
+                     
+                     
                      [self.channelThumbnailCollectionView performBatchUpdates:^{
                          
                          [self.channelThumbnailCollectionView reloadItemsAtIndexPaths:updatedIndexPathArray];
@@ -497,8 +502,22 @@
                      } completion:^(BOOL finished) {
                          
                          self.isViewDirty = NO;
+                        
+                         [self.channelThumbnailCollectionView performBatchUpdates:^{
+                             
+                             [self.channelThumbnailCollectionView reloadItemsAtIndexPaths:updatedIndexPathArray];
+                             
+                         } completion:^(BOOL finished) {
+                             
+                             self.isViewDirty = NO;
+                             
+                             
+                             
+                         }];
                          
                      }];
+                     
+                     
                  }
                  else
                  {
@@ -801,7 +820,7 @@
     SYNChannelMidCell *channelThumbnailCell = [collectionView dequeueReusableCellWithReuseIdentifier: @"SYNChannelMidCell"
                                                                                         forIndexPath: indexPath];
     
-
+   
     [channelThumbnailCell.imageView setImageWithURL: [NSURL URLWithString: channel.channelCover.imageLargeUrl]
                                    placeholderImage: [UIImage imageNamed: @"PlaceholderChannelMid.png"]
                                             options: SDWebImageRetryFailed];
@@ -816,6 +835,8 @@
     {
         channelThumbnailCell.deleteButton.enabled = TRUE;
     }
+    
+    
     
     channelThumbnailCell.dataIndentifier = channel.uniqueId;
     
