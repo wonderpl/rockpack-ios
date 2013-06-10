@@ -149,9 +149,9 @@
              
              if(insertedIndexPathArray.count == 0 && deletedIndexPathArray.count == 0)
              {
-                 NSString* title = [self getHeaderTitleForSubscriptions];
-                 [self.headerSubscriptionsView setTitle: title
-                                              andNumber: 0];
+             
+                 [self.headerSubscriptionsView setTitle: [self getHeaderTitleForSubscriptions]
+                                              andNumber: self.channelOwner.subscriptions.count];
                  return;
              }
 
@@ -166,10 +166,9 @@
                  
               } completion:^(BOOL finished) {
                   
-                  NSInteger totalChannels = self.channelOwner.subscriptions.count;
-                  NSString* title = [self getHeaderTitleForSubscriptions];
-                  [self.headerSubscriptionsView setTitle: title
-                                  andNumber: totalChannels];
+                  
+                  [self.headerSubscriptionsView setTitle: [self getHeaderTitleForSubscriptions]
+                                               andNumber: self.channelOwner.subscriptions.count];
                   
                }];
              
