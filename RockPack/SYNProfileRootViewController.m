@@ -503,6 +503,7 @@
                          
                          self.isViewDirty = NO;
                         
+                         // hack to make the cell appear again, might be an iOS bug
                          [self.channelThumbnailCollectionView performBatchUpdates:^{
                              
                              [self.channelThumbnailCollectionView reloadItemsAtIndexPaths:updatedIndexPathArray];
