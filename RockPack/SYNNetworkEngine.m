@@ -214,6 +214,7 @@
     SYNNetworkOperationJsonObject *networkOperation =
     (SYNNetworkOperationJsonObject*)[self operationWithPath: kAPISearchVideos
                                                      params: parameters];
+    networkOperation.shouldNotCacheResponse = YES;
     
     [networkOperation addJSONCompletionHandler: ^(NSDictionary *dictionary) {
         
@@ -235,7 +236,6 @@
     } errorHandler:^(NSError* error) {
         DebugLog(@"Update Videos Screens Request Failed");
     }];
-    
     
     [self enqueueOperation: networkOperation];
     
@@ -267,6 +267,7 @@
     
     SYNNetworkOperationJsonObject *networkOperation =
     (SYNNetworkOperationJsonObject*)[self operationWithPath:kAPISearchChannels params:parameters];
+    networkOperation.shouldNotCacheResponse = YES;
     
     [networkOperation addJSONCompletionHandler: ^(NSDictionary *dictionary) {
         
