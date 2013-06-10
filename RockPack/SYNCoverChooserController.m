@@ -34,7 +34,8 @@
 @property (nonatomic, assign) BOOL shouldShowUploadingPlaceholder;
 @property (nonatomic, strong) IBOutlet UICollectionView *collectionView;
 @property (nonatomic, strong) NSBlockOperation *blockOperation;
-@property (nonatomic, strong) NSFetchedResultsController *channelCoverFetchedResultsController;
+@property (nonatomic, strong) NSFetchedResultsController *rockpackCoverFetchedResultsController;
+@property (nonatomic, strong) NSFetchedResultsController *userCoverFetchedResultsController;
 @property (nonatomic, strong) NSIndexPath* indexPathSelected;
 @property (nonatomic, strong) NSString* selectedImageURL;
 @property (nonatomic, strong) SYNCoverRightMoreView* coverRightMoreView;
@@ -62,8 +63,11 @@
 {
     [super viewDidLoad];
     
+    // If we already have itmes in the database, start after the last one of those
+    self.dataItemsAvailable = self.rockpackCoverFetchedResultsController.fetchedObjects.count;
+    
     // Initialise the span and size of the first data request
-    self.dataRequestRange = NSMakeRange(0, STANDARD_REQUEST_LENGTH);
+    self.dataRequestRange = NSMakeRange(self.dataItemsAvailable, STANDARD_REQUEST_LENGTH);
     
     // Regster video thumbnail cell
     UINib *coverThumbnailCellNib = [UINib nibWithNibName: @"SYNCoverThumbnailCell"
@@ -79,6 +83,8 @@
     [self.collectionView registerNib: moreViewNib
           forSupplementaryViewOfKind: UICollectionElementKindSectionFooter
                  withReuseIdentifier: @"SYNCoverRightMoreView"];
+    
+
 }
 
 
@@ -87,13 +93,11 @@
 - (NSInteger) collectionView: (UICollectionView *) collectionView
       numberOfItemsInSection: (NSInteger) section
 {
-    
-    id <NSFetchedResultsSectionInfo> sectionInfo;
-
     switch (section)
     {     
         case 0:
         {
+            // There is always a 'No Cover' option
             return 1;
         }
             
@@ -101,17 +105,15 @@
         {
             if (self.shouldShowUploadingPlaceholder)
             {
+                // Are we showing a placeholder?
                 return 1;
             }
-            else
+            else if (self.userCoverFetchedResultsController.fetchedObjects.count > 0)
             {
-                // User channel covers
-                if (self.channelCoverFetchedResultsController.sections.count > 1)
-                {
-                    sectionInfo = self.channelCoverFetchedResultsController.sections [0];
-                    return sectionInfo.numberOfObjects;
-                }
+                // Are we displaying the user photo that matches, we should only have a single match or no match
+                return 1;
             }
+            
             return 0;
             
         }
@@ -119,24 +121,7 @@
             
         case 2:
         {
-            // Rockpack channel covers
-            if (self.channelCoverFetchedResultsController.sections.count > 1)
-            {
-                sectionInfo = self.channelCoverFetchedResultsController.sections [1];
-                return sectionInfo.numberOfObjects;
-            }
-            else
-            {
-                if (self.channelCoverFetchedResultsController.sections.count > 0)
-                {
-                    sectionInfo = self.channelCoverFetchedResultsController.sections [0];
-                    return sectionInfo.numberOfObjects;
-                }
-                else
-                {
-                    return 0;
-                }
-            }
+            return self.rockpackCoverFetchedResultsController.fetchedObjects.count;
         }
         break;
    
@@ -149,18 +134,6 @@
 - (NSInteger) numberOfSectionsInCollectionView: (UICollectionView *) collectionView
 {
     return 3;
-}
-
-- (int) adjustedIndex
-{
-    int index = 0;
-    
-    if (self.channelCoverFetchedResultsController.sections.count > 1)
-    {
-        index = 1;
-    }
-    
-    return index;
 }
 
 
@@ -176,6 +149,12 @@
         case 0:
         {
             coverThumbnailCell.coverImageView.image = [UIImage imageNamed: @"ChannelCreationCoverNone.png"];
+            
+            if ([self.selectedImageURL isEqualToString: @""])
+            {
+                coverThumbnailCell.selected = TRUE;
+                self.indexPathSelected = indexPath;
+            }
         }
         break;
             
@@ -187,27 +166,38 @@
             }
             else
             {
-                
-                // Rockpack channel covers
-                coverArt = [self.channelCoverFetchedResultsController objectAtIndexPath: [NSIndexPath indexPathForRow: indexPath.row
-                                                                                                            inSection: 0]];
+                // User channel covers
+                coverArt = [self.userCoverFetchedResultsController objectAtIndexPath: [NSIndexPath indexPathForRow: 0
+                                                                                                         inSection: 0]];
                 
                 [coverThumbnailCell.coverImageView setImageWithURL: [NSURL URLWithString: coverArt.thumbnailURL]
                                                   placeholderImage: [UIImage imageNamed: @"PlaceholderChannelCreation.png"]
                                                            options: SDWebImageRetryFailed];
+            }
+            
+            if ([coverArt.thumbnailURL isEqualToString: self.selectedImageURL])
+            {
+                coverThumbnailCell.selected = TRUE;
+                self.indexPathSelected = indexPath;
             }
         }
         break;
             
         case 2:
         {
-            // User channel covers
-            coverArt = [self.channelCoverFetchedResultsController objectAtIndexPath: [NSIndexPath indexPathForRow: indexPath.row
-                                                                                                        inSection: self.adjustedIndex]];
+            // Rockpack channel covers
+            coverArt = [self.rockpackCoverFetchedResultsController objectAtIndexPath: [NSIndexPath indexPathForRow: indexPath.row
+                                                                                                         inSection: 0]];
             
             [coverThumbnailCell.coverImageView setImageWithURL: [NSURL URLWithString: coverArt.thumbnailURL]
                                               placeholderImage: [UIImage imageNamed: @"PlaceholderChannelCreation.png"]
                                                        options: SDWebImageRetryFailed];
+            
+            if ([coverArt.thumbnailURL isEqualToString: self.selectedImageURL])
+            {
+                coverThumbnailCell.selected = TRUE;
+                self.indexPathSelected = indexPath;
+            }
         }
         break;
     }
@@ -219,10 +209,14 @@
         // And we are not on the 'no cover' placeholder
         if (coverArt != nil)
         {
-            if ([coverArt.thumbnailURL isEqualToString: self.selectedImageURL])
+            if ([coverArt.thumbnailURL isEqualToString: self.selectedImageURL] || coverArt == nil)
             {
                 coverThumbnailCell.selected = TRUE;
                 self.indexPathSelected = indexPath;
+            }
+            else
+            {
+                coverThumbnailCell.selected = FALSE;
             }
         }
     }
@@ -266,7 +260,7 @@
                 else
                 {
                     // Rockpack channel covers
-                    CoverArt *coverArt = [self.channelCoverFetchedResultsController objectAtIndexPath: [NSIndexPath indexPathForRow: indexPath.row
+                    CoverArt *coverArt = [self.userCoverFetchedResultsController objectAtIndexPath: [NSIndexPath indexPathForRow: 0
                                                                                                                           inSection: 0]];
                     imageURLString = coverArt.thumbnailURL;
                     remoteId = coverArt.coverRef;
@@ -277,8 +271,8 @@
             case 2:
             {
                 // User channel covers
-                CoverArt *coverArt = [self.channelCoverFetchedResultsController objectAtIndexPath: [NSIndexPath indexPathForRow: indexPath.row
-                                                                                                                      inSection: self.adjustedIndex]];
+                CoverArt *coverArt = [self.rockpackCoverFetchedResultsController objectAtIndexPath: [NSIndexPath indexPathForRow: indexPath.row
+                                                                                                                       inSection: 0]];
                 imageURLString = coverArt.thumbnailURL;
                 remoteId = coverArt.coverRef;
             }
@@ -297,6 +291,7 @@
         
         if (previouslySelectedIndexPath)
         {
+            self.selectedImageURL = imageURLString;
             [collectionView reloadItemsAtIndexPaths: @[previouslySelectedIndexPath]];
         }
     }
@@ -305,10 +300,10 @@
 
 #pragma mark - Fetched Results Controller
 
-- (NSFetchedResultsController *) channelCoverFetchedResultsController
+- (NSFetchedResultsController *) rockpackCoverFetchedResultsController
 {
-    if (_channelCoverFetchedResultsController)
-        return _channelCoverFetchedResultsController;
+    if (_rockpackCoverFetchedResultsController)
+        return _rockpackCoverFetchedResultsController;
     
     NSFetchRequest *fetchRequest = [[NSFetchRequest alloc] init];
     
@@ -316,26 +311,57 @@
     fetchRequest.entity = [NSEntityDescription entityForName: @"CoverArt"
                                       inManagedObjectContext: self.appDelegate.mainManagedObjectContext];
     
-    fetchRequest.predicate = [NSPredicate predicateWithFormat: @"(userUpload == FALSE) OR (thumbnailURL == %@)", self.selectedImageURL];
+    fetchRequest.predicate = [NSPredicate predicateWithFormat: @"(userUpload == FALSE)", self.selectedImageURL];
     
-    fetchRequest.sortDescriptors = @[[[NSSortDescriptor alloc] initWithKey: @"userUpload" ascending: NO],
-                                     [[NSSortDescriptor alloc] initWithKey: @"position" ascending: YES]];
+    fetchRequest.sortDescriptors = @[[[NSSortDescriptor alloc] initWithKey: @"position" ascending: YES]];
     
-    self.channelCoverFetchedResultsController = [[NSFetchedResultsController alloc] initWithFetchRequest: fetchRequest
-                                                                                    managedObjectContext: self.appDelegate.mainManagedObjectContext
-                                                                                      sectionNameKeyPath: @"userUpload"
-                                                                                               cacheName: nil];
-
-    self.channelCoverFetchedResultsController.delegate = self;
+    self.rockpackCoverFetchedResultsController = [[NSFetchedResultsController alloc] initWithFetchRequest: fetchRequest
+                                                                                     managedObjectContext: self.appDelegate.mainManagedObjectContext
+                                                                                       sectionNameKeyPath: nil
+                                                                                                cacheName: nil];
+    
+    self.rockpackCoverFetchedResultsController.delegate = self;
     
     
     NSError *error = nil;
     
-    if (![_channelCoverFetchedResultsController performFetch: &error])
+    if (![_rockpackCoverFetchedResultsController performFetch: &error])
     {
         AssertOrLog(@"Channels Details Failed: %@\n%@", [error localizedDescription], [error userInfo]);
     }
-    return _channelCoverFetchedResultsController;
+    return _rockpackCoverFetchedResultsController;
+}
+
+
+- (NSFetchedResultsController *) userCoverFetchedResultsController
+{
+    if (_userCoverFetchedResultsController)
+        return _userCoverFetchedResultsController;
+    
+    NSFetchRequest *fetchRequest = [[NSFetchRequest alloc] init];
+    
+    
+    fetchRequest.entity = [NSEntityDescription entityForName: @"CoverArt"
+                                      inManagedObjectContext: self.appDelegate.mainManagedObjectContext];
+    
+    fetchRequest.predicate = [NSPredicate predicateWithFormat: @"(userUpload == TRUE) AND (thumbnailURL == %@)", self.selectedImageURL];
+    
+    fetchRequest.sortDescriptors = @[[[NSSortDescriptor alloc] initWithKey: @"position" ascending: YES]];
+    
+    self.userCoverFetchedResultsController = [[NSFetchedResultsController alloc] initWithFetchRequest: fetchRequest
+                                                                                 managedObjectContext: self.appDelegate.mainManagedObjectContext
+                                                                                   sectionNameKeyPath: nil
+                                                                                            cacheName: nil];
+    self.userCoverFetchedResultsController.delegate = self;
+    
+    
+    NSError *error = nil;
+    
+    if (![_userCoverFetchedResultsController performFetch: &error])
+    {
+        AssertOrLog(@"Channels Details Failed: %@\n%@", [error localizedDescription], [error userInfo]);
+    }
+    return _userCoverFetchedResultsController;
 }
 
 
@@ -391,6 +417,14 @@
                                                   else
                                                       self.dataItemsAvailable = self.dataRequestRange.length;
 
+                                                  NSLog (@"Count %d", self.rockpackCoverFetchedResultsController.fetchedObjects.count);
+                                                  if ((self.dataRequestRange.location + self.dataRequestRange.length) >= self.dataItemsAvailable)
+                                                  {
+                                                      self.noMoreCovers = TRUE;
+                                                      [self.collectionView reloadData];
+                                                      return;
+                                                  }
+
                                                   [self displayLoadMoreMessage];
                                               }
                                                    errorHandler: ^(NSError* error) {
@@ -437,13 +471,6 @@
 - (void) incrementRangeForNextRequest
 {
     NSInteger nextStart = self.dataRequestRange.location + self.dataRequestRange.length; // one is subtracted when the call happens for 0 indexing
-    
-    if (nextStart >= self.dataItemsAvailable)
-    {
-        self.noMoreCovers = TRUE;
-        [self.collectionView reloadData];
-        return;
-    }
     
     NSInteger nextSize = (nextStart + STANDARD_REQUEST_LENGTH) >= self.dataItemsAvailable ? (self.dataItemsAvailable - nextStart) : STANDARD_REQUEST_LENGTH;
     
