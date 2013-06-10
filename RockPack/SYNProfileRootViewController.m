@@ -336,6 +336,11 @@
                                                                           action: @selector(endDeletionMode:)];
     tap.delegate = self;
     [self.channelThumbnailCollectionView addGestureRecognizer: tap];
+    
+    
+    self.subscriptionsViewController.collectionView.delegate = self;
+    
+    [self.channelThumbnailCollectionView reloadData];
 }
 
 
@@ -345,15 +350,12 @@
     
     self.deletionModeActive = NO;
     
-    self.subscriptionsViewController.collectionView.delegate = self;
-    
-    [self.userProfileController setChannelOwner: self.channelOwner];
-    
-    self.subscriptionsViewController.channelOwner = self.channelOwner;
-    
     [self updateLayoutForOrientation: [SYNDeviceManager.sharedInstance orientation]];
     
-    [self.channelThumbnailCollectionView reloadData];
+    [[NSNotificationCenter defaultCenter] postNotificationName:kChannelOwnerUpdateRequest
+                                                        object:self
+                                                      userInfo:@{kChannelOwner:self.channelOwner}];
+    
     
     [self resizeScrollViews];
 }
@@ -1162,6 +1164,11 @@
         }
     }
     
+    
+    self.userProfileController.channelOwner = self.channelOwner;
+    
+    self.subscriptionsViewController.channelOwner = self.channelOwner;
+    
     if(self.channelOwner) // if a user has been passed or found, monitor
     {
         [[NSNotificationCenter defaultCenter] addObserver: self
@@ -1169,10 +1176,10 @@
                                                      name: NSManagedObjectContextDidSaveNotification
                                                    object: self.channelOwner.managedObjectContext];
         
-        [[NSNotificationCenter defaultCenter] postNotificationName:kChannelOwnerUpdateRequest
-                                                            object:self
-                                                          userInfo:@{kChannelOwner:self.channelOwner}];
-    }  
+//        [[NSNotificationCenter defaultCenter] postNotificationName:kChannelOwnerUpdateRequest
+//                                                            object:self
+//                                                          userInfo:@{kChannelOwner:self.channelOwner}];
+    }
 }
 
 

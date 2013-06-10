@@ -74,7 +74,6 @@
     correntFrame.size.width = 20.0;
     self.channelThumbnailCollectionView.frame = correntFrame;
     
-    [self.channelThumbnailCollectionView reloadData];
 }
 
 - (void) handleDataModelChange: (NSNotification*) notification
@@ -90,9 +89,12 @@
          {
              
              
+             
              // == Handle Inserted == //
              
              NSMutableArray* insertedIndexPathArray = [NSMutableArray arrayWithCapacity:insertedObjects.count]; // maximum
+             
+             NSLog(@"Updateing subscription cells: %i", self.channelThumbnailCollectionView.visibleCells.count);
              
              [self.channelOwner.subscriptions enumerateObjectsUsingBlock:^(Channel* subscriptionChannel, NSUInteger cidx, BOOL *cstop) {
                  
@@ -100,7 +102,7 @@
                      
                      if(obj == subscriptionChannel)
                      {
-                         NSLog(@"SC(+) Inserted (%@): %@", NSStringFromClass([obj class]), ((Channel*)obj).title);
+                         NSLog(@"SC(+) Inserted (%@ - %@): %@", NSStringFromClass([obj class]), ((Channel*)obj).uniqueId, ((Channel*)obj).title);
                          
                          [insertedIndexPathArray addObject:[NSIndexPath indexPathForItem:cidx inSection:0]];
                      }
@@ -117,7 +119,7 @@
                  
                  if ([obj isKindOfClass:[Channel class]]) {
                      
-                     NSLog(@"PR(-) Deleted: %@", ((Channel*)obj).title);
+                     NSLog(@"SC(-) Deleted: %@", ((Channel*)obj).title);
                      
                      [deletedIndetifiers addObject:((Channel*)obj).uniqueId];
                      
@@ -130,13 +132,12 @@
                  
                  if([deletedIndetifiers containsObject:cell.dataIndentifier])
                  {
-                     NSLog(@"PR(-) Found Cell at: %i", index);
+                     NSLog(@"SC(-) Found Cell at: %i", index);
                      [deletedIndexPathArray addObject:[NSIndexPath indexPathForItem:index inSection:0]];
                  }
                  index++;
                  
              }
-             
              
              [self.channelThumbnailCollectionView performBatchUpdates:^{
                  
@@ -146,13 +147,10 @@
                  if(deletedIndexPathArray.count > 0)
                      [self.channelThumbnailCollectionView deleteItemsAtIndexPaths:deletedIndexPathArray];
                  
-             } completion:^(BOOL finished) {
-                 
-                
-                 
-                 
-                 
-             }];
+              } completion:^(BOOL finished) {
+                  
+                                      
+               }];
              
              
              return;
@@ -183,16 +181,18 @@
     
     
     
-    Channel *channel = self.channelOwner.subscriptions[indexPath.item];
+    Channel *subscriptionChannel = self.channelOwner.subscriptions[indexPath.item];
     
     SYNChannelMidCell *channelThumbnailCell = [cv dequeueReusableCellWithReuseIdentifier: @"SYNChannelMidCell"
                                                                             forIndexPath: indexPath];
 
-    [channelThumbnailCell.imageView setImageWithURL: [NSURL URLWithString: channel.channelCover.imageLargeUrl]
+    [channelThumbnailCell.imageView setImageWithURL: [NSURL URLWithString: subscriptionChannel.channelCover.imageLargeUrl]
                                    placeholderImage: [UIImage imageNamed: @"PlaceholderChannelMid.png"]
                                             options: SDWebImageRetryFailed];
     
-    [channelThumbnailCell setChannelTitle: channel.title];
+    channelThumbnailCell.dataIndentifier = subscriptionChannel.uniqueId;
+    
+    [channelThumbnailCell setChannelTitle: subscriptionChannel.title];
     
     return channelThumbnailCell;
 }
@@ -257,8 +257,8 @@
                                              selector: @selector(handleDataModelChange:)
                                                  name: NSManagedObjectContextDidSaveNotification
                                                object: self.channelOwner.managedObjectContext];
-    
-    [self.channelThumbnailCollectionView reloadData];
+    // the Profile will call for updates
+   
 }
 -(ChannelOwner*)channelOwner
 {
