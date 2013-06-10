@@ -175,7 +175,7 @@
     [self.subscriptionsViewController setViewFrame: subColViewFrame];
     
     if (self.channelOwner)
-        self.subscriptionsViewController.user = self.channelOwner;
+        self.subscriptionsViewController.channelOwner = self.channelOwner;
     
     self.headerSubscriptionsView = [SYNYouHeaderView headerViewForWidth: 384];
     
@@ -349,7 +349,7 @@
     
     [self.userProfileController setChannelOwner: self.channelOwner];
     
-    self.subscriptionsViewController.user = self.channelOwner;
+    self.subscriptionsViewController.channelOwner = self.channelOwner;
     
     [self updateLayoutForOrientation: [SYNDeviceManager.sharedInstance orientation]];
     
@@ -407,13 +407,13 @@
              
              NSMutableArray* insertedIndexPathArray = [NSMutableArray arrayWithCapacity:insertedObjects.count]; // maximum
              
-             [self.channelOwner.channels enumerateObjectsUsingBlock:^(Channel* videoInstance, NSUInteger cidx, BOOL *cstop) {
+             [self.channelOwner.channels enumerateObjectsUsingBlock:^(Channel* channel, NSUInteger cidx, BOOL *cstop) {
                  
                  
                  
                  [insertedObjects enumerateObjectsUsingBlock:^(id obj, NSUInteger idx, BOOL *stop) {
                      
-                     if(obj == videoInstance)
+                     if(obj == channel)
                      {
                          NSLog(@"PR(+) Inserted (%@): %@", NSStringFromClass([obj class]), ((Channel*)obj).title);
                          
@@ -1116,8 +1116,11 @@
     }
     
     
-    if(!user) // if no user has been passed, set to nil and then return
+    if(!user)  { // if no user has been passed, set to nil and then return
+        _user = nil;
         return;
+    }
+        
     
     NSFetchRequest *channelOwnerFetchRequest = [[NSFetchRequest alloc] init];
     

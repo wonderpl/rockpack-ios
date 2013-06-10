@@ -22,7 +22,7 @@
 
 @implementation SYNSubscriptionsViewController
 
-@synthesize user = _user;
+@synthesize channelOwner = _channelOwner;
 
 - (void) loadView
 {
@@ -75,12 +75,99 @@
     self.channelThumbnailCollectionView.frame = correntFrame;
 }
 
+- (void) handleDataModelChange: (NSNotification*) notification
+{
+    NSArray* updatedObjects = [[notification userInfo] objectForKey: NSUpdatedObjectsKey];
+    NSArray* insertedObjects = [[notification userInfo] objectForKey: NSInsertedObjectsKey];
+    NSArray* deletedObjects = [[notification userInfo] objectForKey: NSDeletedObjectsKey];
+    
+    [updatedObjects enumerateObjectsUsingBlock: ^(id obj, NSUInteger idx, BOOL *stop)
+     {
+         
+         if (obj == self.channelOwner)
+         {
+             
+             
+             // == Handle Inserted == //
+             
+             NSMutableArray* insertedIndexPathArray = [NSMutableArray arrayWithCapacity:insertedObjects.count]; // maximum
+             
+             [self.channelOwner.subscriptions enumerateObjectsUsingBlock:^(Channel* subscriptionChannel, NSUInteger cidx, BOOL *cstop) {
+                 
+                 [insertedObjects enumerateObjectsUsingBlock:^(id obj, NSUInteger idx, BOOL *stop) {
+                     
+                     if(obj == subscriptionChannel)
+                     {
+                         NSLog(@"SC(+) Inserted (%@): %@", NSStringFromClass([obj class]), ((Channel*)obj).title);
+                         
+                         [insertedIndexPathArray addObject:[NSIndexPath indexPathForItem:cidx inSection:0]];
+                     }
+                 }];
+                 
+             }];
+             
+             
+             // == Handle Deleted == //
+             
+             NSMutableArray* deletedIndetifiers = [NSMutableArray arrayWithCapacity:deletedObjects.count];
+             NSMutableArray* deletedIndexPathArray = [NSMutableArray arrayWithCapacity:deletedObjects.count]; // maximum
+             [deletedObjects enumerateObjectsUsingBlock: ^(id obj, NSUInteger idx, BOOL *stop) {
+                 
+                 if ([obj isKindOfClass:[Channel class]]) {
+                     
+                     NSLog(@"PR(-) Deleted: %@", ((Channel*)obj).title);
+                     
+                     [deletedIndetifiers addObject:((Channel*)obj).uniqueId];
+                     
+                 }
+                 
+             }];
+             
+             int index = 0;
+             for(SYNChannelMidCell* cell in self.channelThumbnailCollectionView.visibleCells){
+                 
+                 if([deletedIndetifiers containsObject:cell.dataIndentifier])
+                 {
+                     NSLog(@"PR(-) Found Cell at: %i", index);
+                     [deletedIndexPathArray addObject:[NSIndexPath indexPathForItem:index inSection:0]];
+                 }
+                 index++;
+                 
+             }
+             
+             
+             [self.channelThumbnailCollectionView performBatchUpdates:^{
+                 
+                 if(insertedIndexPathArray.count > 0)
+                     [self.channelThumbnailCollectionView insertItemsAtIndexPaths:insertedIndexPathArray];
+                 
+                 if(deletedIndexPathArray.count > 0)
+                     [self.channelThumbnailCollectionView deleteItemsAtIndexPaths:deletedIndexPathArray];
+                 
+             } completion:^(BOOL finished) {
+                 
+                
+                 
+                 
+                 
+             }];
+             
+             
+             return;
+             
+             
+         }
+         
+     }];
+    
+}
+
 
 #pragma mark - UICollectionView Delegate Methods
 
 - (NSInteger) collectionView: (UICollectionView *) view numberOfItemsInSection: (NSInteger) section
 {
-    return self.user.subscriptions.count;
+    return self.channelOwner.subscriptions.count;
 }
 
 
@@ -94,7 +181,7 @@
     
     
     
-    Channel *channel = self.user.subscriptions[indexPath.item];
+    Channel *channel = self.channelOwner.subscriptions[indexPath.item];
     
     SYNChannelMidCell *channelThumbnailCell = [cv dequeueReusableCellWithReuseIdentifier: @"SYNChannelMidCell"
                                                                             forIndexPath: indexPath];
@@ -113,9 +200,9 @@
 {
     if (self.headerView)
     {
-        NSInteger totalChannels = self.user.subscriptions.count;
+        NSInteger totalChannels = self.channelOwner.subscriptions.count;
         
-        if (self.user == appDelegate.currentUser)
+        if (self.channelOwner == appDelegate.currentUser)
         {
             [self.headerView setTitle: NSLocalizedString(@"profile_screen_section_owner_subscription_title", nil)
                             andNumber: totalChannels];
@@ -147,16 +234,38 @@
 
 
 
--(void)setUser:(ChannelOwner*)user
+-(void)setChannelOwner:(ChannelOwner*)channelOnwer
 {
+    if (self.channelOwner) // if we have an existing user
+    {
+        // remove the listener, even if nil is passed
+        
+        [[NSNotificationCenter defaultCenter] removeObserver:self
+                                                        name:NSManagedObjectContextObjectsDidChangeNotification
+                                                      object:self.channelOwner];
+    }
+    
     // no additional checks because it is done above
-    _user = user;
+    _channelOwner = channelOnwer;
+    
+    if(!_channelOwner)
+        return;
+    
+    [[NSNotificationCenter defaultCenter] addObserver: self
+                                             selector: @selector(handleDataModelChange:)
+                                                 name: NSManagedObjectContextDidSaveNotification
+                                               object: self.channelOwner.managedObjectContext];
     
     [self.channelThumbnailCollectionView reloadData];
 }
--(ChannelOwner*)user
+-(ChannelOwner*)channelOwner
 {
-    return (ChannelOwner*)_user;
+    return (ChannelOwner*)_channelOwner;
+}
+
+- (void) dealloc
+{
+    self.channelOwner = nil;
 }
 
 

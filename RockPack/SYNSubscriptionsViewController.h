@@ -16,7 +16,7 @@
 @property (nonatomic, readonly) UICollectionView* collectionView;
 @property (nonatomic, weak) SYNYouHeaderView* headerView;
 
-@property (nonatomic, weak) ChannelOwner* user;
+@property (nonatomic, weak) ChannelOwner* channelOwner;
 
 - (void) setViewFrame: (CGRect) frame;
 

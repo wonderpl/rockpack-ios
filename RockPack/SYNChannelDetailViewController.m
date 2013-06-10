@@ -594,7 +594,7 @@
                     
                     if(obj == videoInstance)
                     {
-                        NSLog(@"CD(+) Inserted (%@): %@", NSStringFromClass([obj class]), ((VideoInstance*)obj).title);
+                        //NSLog(@"CD(+) Inserted (%@): %@", NSStringFromClass([obj class]), ((VideoInstance*)obj).title);
                         
                         [insertedIndexPathArray addObject:[NSIndexPath indexPathForItem:cidx inSection:0]];
                     }
@@ -611,7 +611,7 @@
                 
                 if ([obj isKindOfClass:[VideoInstance class]]) {
                     
-                    NSLog(@"CD(-) Deleted: %@", ((VideoInstance*)obj).title);
+                    //NSLog(@"CD(-) Deleted: %@", ((VideoInstance*)obj).title);
                     
                     [deletedIndetifiers addObject:((VideoInstance*)obj).uniqueId];
                     
@@ -624,7 +624,7 @@
                 
                 if([deletedIndetifiers containsObject:cell.dataIndetifier])
                 {
-                    NSLog(@"CD(-) Found Cell at: %i", index);
+                    //NSLog(@"CD(-) Found Cell at: %i", index);
                     [deletedIndexPathArray addObject:[NSIndexPath indexPathForItem:index inSection:0]];
                 }
                 index++;
