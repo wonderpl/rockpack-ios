@@ -3,7 +3,7 @@
 //  rockpack
 //
 //  Created by Michael Michailidis on 02/04/2013.
-//  Copyright (c) 2013 Nick Banks. All rights reserved.
+//  Copyright (c) Rockpack Ltd. All rights reserved.
 //
 
 #import "SYNAccountSettingsUsername.h"
@@ -62,6 +62,8 @@
     [labelContentView addSubview:titleLabel];
     
     self.navigationItem.titleView = labelContentView;
+    
+    self.errorLabel.text = @"Your username can only be changed one time";
     
 }
 -(void)saveButtonPressed:(UIButton*)button

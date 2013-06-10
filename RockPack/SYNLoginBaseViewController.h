@@ -3,7 +3,7 @@
 //  rockpack
 //
 //  Created by Mats Trovik on 14/05/2013.
-//  Copyright (c) 2013 Nick Banks. All rights reserved.
+//  Copyright (c) Rockpack Ltd. All rights reserved.
 //
 
 #import "GAITrackedViewController.h"
