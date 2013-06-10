@@ -154,12 +154,16 @@
             
             channel = [channelInsanceByIdDictionary objectForKey:newUniqueId];
             
+            IgnoringObjects ignoreInstantiationFlags = 
+            ignoringObjects | kIgnoreChannelOwnerObject;
+            
             if(!channel)
             {
                 channel = [Channel instanceFromDictionary: channelDictionary
                                 usingManagedObjectContext: self.managedObjectContext
-                                      ignoringObjectTypes: ignoringObjects | kIgnoreChannelOwnerObject];
+                                      ignoringObjectTypes: ignoreInstantiationFlags];
                 
+                channel.viewId = self.viewId;
                 
             }
             else
@@ -171,13 +175,10 @@
             if(!channel)
                 continue;
             
-            channel.viewId = self.viewId;
             
-            channel.markedForDeletionValue = NO;
             
-            channel.position = [dictionary objectForKey: @"position"
-                                            withDefault: [NSNumber numberWithInt: 0]];
-            
+            [channel setAttributesFromDictionary:channelDictionary
+                             ignoringObjectTypes:ignoreInstantiationFlags];
             
             
             [self.channelsSet addObject:channel];

@@ -102,7 +102,6 @@
              
              NSMutableArray* insertedIndexPathArray = [NSMutableArray arrayWithCapacity:insertedObjects.count]; // maximum
              
-             NSLog(@"Updateing subscription cells: %i", self.channelThumbnailCollectionView.visibleCells.count);
              
              [self.channelOwner.subscriptions enumerateObjectsUsingBlock:^(Channel* subscriptionChannel, NSUInteger cidx, BOOL *cstop) {
                  

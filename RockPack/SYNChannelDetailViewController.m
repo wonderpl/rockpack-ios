@@ -1834,10 +1834,7 @@
                                                   [self.originalChannel  setAttributesFromDictionary:dictionary
                                                                                  ignoringObjectTypes:kIgnoreChannelOwnerObject];
                                                   
-                                                  for (VideoInstance* vi in self.channel.videoInstances)
-                                                  {
-                                                      NSLog(@"> %@", vi.uniqueId);
-                                                  }
+                                                  
                                               }
                                               
                                               

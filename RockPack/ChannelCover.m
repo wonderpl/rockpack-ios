@@ -104,4 +104,9 @@
     return CGRectZero;
 }
 
+-(NSString*)description
+{
+    return [NSString stringWithFormat:@"%@", self.imageMediumUrl];
+}
+
 @end

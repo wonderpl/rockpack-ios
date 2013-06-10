@@ -242,7 +242,7 @@
     [self setBasicAttributesFromDictionary:dictionary];
     
     NSDictionary* ownerDictionary = [dictionary objectForKey: @"owner"];
-    if(!(ignoringObjects & kIgnoreChannelOwnerObject) && ownerDictionary)
+    if(!(ignoringObjects & kIgnoreChannelOwnerObject) && [ownerDictionary isKindOfClass:[NSDictionary class]])
     {
         self.channelOwner = [ChannelOwner instanceFromDictionary: ownerDictionary
                                        usingManagedObjectContext: self.managedObjectContext
@@ -253,8 +253,11 @@
     NSDictionary* channelCoverDictionary = [dictionary objectForKey:@"cover"];
     if(!(ignoringObjects & kIgnoreChannelCover) && [channelCoverDictionary isKindOfClass:[NSDictionary class]])
     {
+        
         self.channelCover = [ChannelCover instanceFromDictionary:channelCoverDictionary
                                        usingManagedObjectContext:self.managedObjectContext];
+        
+      
     }
     
     
