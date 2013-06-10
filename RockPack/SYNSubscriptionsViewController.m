@@ -13,9 +13,12 @@
 #import "SYNIntegralCollectionViewFlowLayout.h"
 #import "SYNSubscriptionsViewController.h"
 #import "UIImageView+WebCache.h"
+#import "SYNDeviceManager.h"
 
 @interface SYNSubscriptionsViewController ()
-
+{
+    BOOL _isIPhone;
+}
 
 @end
 
@@ -27,6 +30,8 @@
 - (void) loadView
 {
     [super loadView];
+    
+    _isIPhone =  [SYNDeviceManager.sharedInstance isIPhone];
     
     self.channelThumbnailCollectionView.backgroundColor = [UIColor clearColor];
     self.channelThumbnailCollectionView.showsVerticalScrollIndicator = NO;
@@ -54,6 +59,7 @@
     
     
     
+    
     // Register Footer
     UINib *footerViewNib = [UINib nibWithNibName: @"SYNChannelFooterMoreView"
                                           bundle: nil];
@@ -73,6 +79,8 @@
     CGRect correntFrame = self.channelThumbnailCollectionView.frame;
     correntFrame.size.width = 20.0;
     self.channelThumbnailCollectionView.frame = correntFrame;
+    
+    
     
 }
 
@@ -139,6 +147,15 @@
                  
              }
              
+             if(insertedIndexPathArray.count == 0 && deletedIndexPathArray.count == 0)
+             {
+                 NSString* title = [self getHeaderTitleForSubscriptions];
+                 [self.headerSubscriptionsView setTitle: title
+                                              andNumber: 0];
+                 return;
+             }
+
+             
              [self.channelThumbnailCollectionView performBatchUpdates:^{
                  
                  if(insertedIndexPathArray.count > 0)
@@ -149,7 +166,11 @@
                  
               } completion:^(BOOL finished) {
                   
-                                      
+                  NSInteger totalChannels = self.channelOwner.subscriptions.count;
+                  NSString* title = [self getHeaderTitleForSubscriptions];
+                  [self.headerSubscriptionsView setTitle: title
+                                  andNumber: totalChannels];
+                  
                }];
              
              
@@ -198,26 +219,7 @@
 }
 
 
-- (void) reloadCollectionViews
-{
-    if (self.headerView)
-    {
-        NSInteger totalChannels = self.channelOwner.subscriptions.count;
-        
-        if (self.channelOwner == appDelegate.currentUser)
-        {
-            [self.headerView setTitle: NSLocalizedString(@"profile_screen_section_owner_subscription_title", nil)
-                            andNumber: totalChannels];
-        }
-        else
-        {
-            [self.headerView setTitle: NSLocalizedString(@"profile_screen_section_user_subscription_title", nil)
-                            andNumber: totalChannels];
-        }
-    }
-    
-    [self.channelThumbnailCollectionView reloadData];
-}
+
 
 
 - (void) setViewFrame: (CGRect) frame
@@ -260,6 +262,29 @@
     // the Profile will call for updates
    
 }
+
+-(NSString*)getHeaderTitleForSubscriptions
+{
+    if(_isIPhone)
+    {
+        if([self.channelOwner.uniqueId isEqualToString: appDelegate.currentUser.uniqueId])
+            return NSLocalizedString(@"profile_screen_section_owner_subscription_title",nil);
+        else
+            return NSLocalizedString(@"profile_screen_section_user_subscription_title",nil);
+        
+    }
+    else
+    {
+        if([self.channelOwner.uniqueId isEqualToString: appDelegate.currentUser.uniqueId])
+            return NSLocalizedString(@"profile_screen_section_owner_subscription_title",nil);
+        else
+            return NSLocalizedString(@"profile_screen_section_user_subscription_title",nil);
+    }
+    
+}
+
+
+
 -(ChannelOwner*)channelOwner
 {
     return (ChannelOwner*)_channelOwner;

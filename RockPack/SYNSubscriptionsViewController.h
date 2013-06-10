@@ -14,7 +14,7 @@
 @interface SYNSubscriptionsViewController : SYNChannelsRootViewController
 
 @property (nonatomic, readonly) UICollectionView* collectionView;
-@property (nonatomic, weak) SYNYouHeaderView* headerView;
+@property (nonatomic, weak) SYNYouHeaderView* headerSubscriptionsView;
 
 @property (nonatomic, weak) ChannelOwner* channelOwner;
 

@@ -307,7 +307,6 @@
         d++;
     }
     
-    NSLog(@"deleted feed objects: %i", d);
     
     
     

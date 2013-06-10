@@ -187,16 +187,12 @@
         self.headerSubscriptionsView.frame = newFrame;
         [self.headerSubscriptionsView setFontSize: 12.0f];
         
-//        [self.headerSubscriptionsView setTitle: NSLocalizedString(@"MY SUBSCRIPTIONS",nil)
-//                                     andNumber: 0];
         
         
         self.headerSubscriptionsView.userInteractionEnabled = NO;
     }
     else
     {
-//        [self.headerSubscriptionsView setTitle: NSLocalizedString(@"MY SUBSCRIPTIONS", nil)
-//                                     andNumber: 0];
         
         [self.headerSubscriptionsView setBackgroundImage: ([SYNDeviceManager.sharedInstance isLandscape] ? [UIImage imageNamed: @"HeaderProfileSubscriptionsLandscape"] : [UIImage imageNamed: @"HeaderProfilePortraitBoth"])];
     }
@@ -225,7 +221,7 @@
     [self.deletionCancelView addGestureRecognizer: self.tapGestureRecognizer];
 
     
-    self.subscriptionsViewController.headerView = self.headerSubscriptionsView;
+    self.subscriptionsViewController.headerSubscriptionsView = self.headerSubscriptionsView;
     
     [self.view addSubview: self.headerChannelsView];
     [self.view addSubview: self.headerSubscriptionsView];
@@ -454,6 +450,13 @@
                  
              }
              
+             if(insertedIndexPathArray.count == 0 && deletedIndexPathArray.count == 0)
+             {
+                 NSString* title = [self getHeaderTitleForChannels];
+                 [self.headerSubscriptionsView setTitle: title
+                                              andNumber: 0];
+                 return;
+             }
              
              [self.channelThumbnailCollectionView performBatchUpdates:^{
                  
@@ -695,21 +698,6 @@
 }
 
 
-- (void) reloadCollectionViews
-{
-    
-    NSInteger totalChannels = self.channelOwner.channels.count;
-    NSString* title = [self getHeaderTitleForChannels];
-    
-    [self.headerChannelsView setTitle: title
-                             andNumber: totalChannels];
-    
-    
-    [self.subscriptionsViewController reloadCollectionViews];
-    [self.channelThumbnailCollectionView reloadData];
-    
-    [self resizeScrollViews];
-}
 
 #pragma mark - Updating
 
@@ -719,7 +707,7 @@
 {
     if(_isIPhone)
     {
-        if(self.channelOwner == appDelegate.currentUser)
+        if([self.channelOwner.uniqueId isEqualToString: appDelegate.currentUser.uniqueId])
             return NSLocalizedString(@"profile_screen_section_owner_created_title",nil);
         else
             return NSLocalizedString(@"profile_screen_section_user_created_title",nil);
@@ -727,7 +715,7 @@
     }
     else
     {
-        if(self.channelOwner == appDelegate.currentUser)
+        if([self.channelOwner.uniqueId isEqualToString: appDelegate.currentUser.uniqueId])
             return NSLocalizedString(@"profile_screen_section_owner_created_title",nil);
         else
             return NSLocalizedString(@"profile_screen_section_user_created_title",nil);
