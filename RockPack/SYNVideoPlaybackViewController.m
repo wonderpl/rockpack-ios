@@ -54,6 +54,8 @@
 @property (nonatomic, strong) UISlider *shuttleSlider;
 @property (nonatomic, strong) UIView *videoPlaceholderView;
 @property (nonatomic, strong) UIWebView *currentVideoWebView;
+@property (nonatomic, strong) CAAnimation *bottomPlacholderAnimationViewPosition;
+@property (nonatomic, strong) CAAnimation *middlePlacholderAnimationViewPosition;
 
 @end
 
@@ -322,6 +324,17 @@ static UIWebView* vimeoideoWebViewInstance;
 {
     [super viewWillAppear: animated];
     
+    // Handle re-starting animations when returning from background
+     [[NSNotificationCenter defaultCenter] addObserver: self
+                                              selector: @selector(applicationDidBecomeActive:)
+                                                  name: UIApplicationDidBecomeActiveNotification
+                                                object: nil];
+    
+    [[NSNotificationCenter defaultCenter] addObserver: self
+                                             selector: @selector(applicationWillResignActive:)
+                                                 name: UIApplicationWillResignActiveNotification
+                                               object: nil];
+    
     // Check to see if were playing when we left this page
     [self playIfVideoActive];
 }
@@ -329,6 +342,15 @@ static UIWebView* vimeoideoWebViewInstance;
 
 - (void) viewDidDisappear: (BOOL) animated
 {
+    // Handle pausing animations when losing focus
+    [[NSNotificationCenter defaultCenter] removeObserver: self
+                                                    name: UIApplicationDidBecomeActiveNotification
+                                                  object: nil];
+    
+    [[NSNotificationCenter defaultCenter] removeObserver: self
+                                                    name: UIApplicationWillResignActiveNotification
+                                                  object: nil];
+    
     // Just pause the video, as we might come back to this view again (if we have pushed any views on top)
     [self pauseIfVideoActive];
     
@@ -657,7 +679,7 @@ static UIWebView* vimeoideoWebViewInstance;
     else
     {
         // Stop the animations
-        [self.videoPlaceholderMiddleImageView.layer removeAllAnimations];
+        [self.videoPlaceholderBottomImageView.layer removeAllAnimations];
         [self.videoPlaceholderMiddleImageView.layer removeAllAnimations];
     }
 }
@@ -755,6 +777,78 @@ static UIWebView* vimeoideoWebViewInstance;
             [self spinBottomPlaceholderImageView];
         }
 	}
+}
+
+
+- (void) applicationWillResignActive: (id) application
+{
+#ifndef SMART_REANIMATION
+    [self animateVideoPlaceholder: FALSE];
+#else
+    self.bottomPlacholderAnimationViewPosition = [[self.videoPlaceholderBottomImageView.layer animationForKey: @"position"] copy];
+    
+    // Apple method from QA1673
+    [self pauseLayer: self.videoPlaceholderBottomImageView.layer]; // Apple method from QA1673
+    
+    self.middlePlacholderAnimationViewPosition = [[self.videoPlaceholderMiddleImageView.layer animationForKey: @"position"] copy];
+    
+    [self pauseLayer: self.videoPlaceholderBottomImageView.layer];
+#endif
+}
+
+
+- (void) applicationDidBecomeActive: (id) application
+{
+#ifndef SMART_REANIMATION
+    [self animateVideoPlaceholder: TRUE];
+#else
+    // Re-animate bottom layer
+    if (self.bottomPlacholderAnimationViewPosition != nil)
+    {
+        // re-add the core animation to the view
+        [self.videoPlaceholderBottomImageView.layer addAnimation: self.bottomPlacholderAnimationViewPosition
+                                                          forKey: @"position"]; 
+        self.bottomPlacholderAnimationViewPosition = nil;
+    }
+    
+    // Apple method from QA1673
+    [self resumeLayer: self.videoPlaceholderBottomImageView.layer];
+    
+    
+    // re-animate middle layer
+    if (self.middlePlacholderAnimationViewPosition != nil)
+    {
+        // re-add the core animation to the view
+        [self.videoPlaceholderMiddleImageView.layer addAnimation: self.middlePlacholderAnimationViewPosition
+                                                          forKey: @"position"];
+        self.middlePlacholderAnimationViewPosition = nil;
+    }
+    
+    // Apple method from QA1673
+    [self resumeLayer: self.videoPlaceholderMiddleImageView.layer];
+#endif
+}
+
+
+- (void) pauseLayer: (CALayer*) layer
+{
+    CFTimeInterval pausedTime = [layer convertTime: CACurrentMediaTime()
+                                         fromLayer: nil];
+    layer.speed = 0.0;
+    layer.timeOffset = pausedTime;
+}
+
+
+- (void) resumeLayer: (CALayer*) layer
+{
+    CFTimeInterval pausedTime = [layer timeOffset];
+    layer.speed = 1.0;
+    layer.timeOffset = 0.0;
+    layer.beginTime = 0.0;
+    
+    CFTimeInterval timeSincePause = [layer convertTime: CACurrentMediaTime()
+                                             fromLayer: nil] - pausedTime;
+    layer.beginTime = timeSincePause;
 }
 
 
@@ -1189,6 +1283,7 @@ static UIWebView* vimeoideoWebViewInstance;
             {
                 // Should already be playing so try to restart
                 DebugLog (@"*** Buffering: Buffering after play - Retrying play");
+                [self pauseVideo];
                 [self playVideo];
             }
         }
@@ -1292,6 +1387,7 @@ static UIWebView* vimeoideoWebViewInstance;
             if (self.stallCount > kMaxStallCount)
             {
                 DebugLog (@"*** Stalled: Attempting to restart player");
+                [self pauseVideo];
                 [self playVideo];
 
                 // Reset our stall count (could make this negative to give restarts longer)
