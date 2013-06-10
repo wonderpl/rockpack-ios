@@ -249,7 +249,10 @@
     
     NSUInteger minutes = ([video.duration integerValue] / 60) % 60;
     NSUInteger seconds = [video.duration integerValue] % 60;
-    videoThumbnailCell.durationLabel.text = [NSString stringWithFormat: @"%i:%i", minutes, seconds];
+    
+    NSString* minutesString = minutes > 9 ? [NSString stringWithFormat:@"%i", minutes] : [NSString stringWithFormat:@"0%i", minutes];
+    NSString* secondsString = seconds > 9 ? [NSString stringWithFormat:@"%i", seconds] : [NSString stringWithFormat:@"0%i", seconds];
+    videoThumbnailCell.durationLabel.text = [NSString stringWithFormat: @"%@:%@", minutesString, secondsString];
     
     
     videoThumbnailCell.viewControllerDelegate = self;
