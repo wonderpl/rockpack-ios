@@ -6,6 +6,7 @@
 //  Copyright (c) Rockpack Ltd. All rights reserved.
 //
 
+#import "GAI.h"
 #import "SYNAccountSettingsEmail.h"
 #import "SYNOAuthNetworkEngine.h"
 #import "UIFont+SYNFont.h"
@@ -28,6 +29,8 @@
 - (void)viewDidLoad
 {
     [super viewDidLoad];
+    
+    [GAI.sharedInstance.defaultTracker sendView: @"Account Settings - Email"];
 	
     self.view.backgroundColor = [UIColor whiteColor];
 

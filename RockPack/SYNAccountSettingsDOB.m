@@ -6,6 +6,7 @@
 //  Copyright (c) Rockpack Ltd. All rights reserved.
 //
 
+#import "GAI.h"
 #import "SYNAccountSettingsDOB.h"
 #import "SYNAppDelegate.h"
 #import "User.h"
@@ -36,6 +37,8 @@
 - (void)viewDidLoad
 {
     [super viewDidLoad];
+    
+    [GAI.sharedInstance.defaultTracker sendView: @"Account Settings - Date of birth"];
     
     [self.view addSubview:datePicker];
     

@@ -309,6 +309,15 @@
 - (void) viewDidLoad
 {
     [super viewDidLoad];
+    
+    if (self.user == appDelegate.currentUser)
+    {
+        [GAI.sharedInstance.defaultTracker sendView: @"Own Profile"];
+    }
+    else
+    {
+        [GAI.sharedInstance.defaultTracker sendView: @"User Profile"];
+    }
 
     // Init collection view
     UINib *thumbnailCellNib = [UINib nibWithNibName: @"SYNChannelMidCell"
@@ -370,7 +379,7 @@
 
 - (void) viewDidScrollToFront
 {
-    [self updateAnalytics];
+//    [self updateAnalytics];
     
     
     [[NSNotificationCenter defaultCenter] postNotificationName:kChannelOwnerUpdateRequest
@@ -382,7 +391,7 @@
 - (void) updateAnalytics
 {
     // Google analytics support
-    [GAI.sharedInstance.defaultTracker sendView: @"You - Root"];
+//    [GAI.sharedInstance.defaultTracker sendView: @"You - Root"];
 }
 
 
