@@ -53,6 +53,7 @@
 
 
 #define kCoverArtChanged            @"kCoverArtChanged"
+#define kCoverSetNoCover            @"kCoverSetNoCover"
 
 
 // == Main WS API == //

@@ -3,7 +3,7 @@
 //  rockpack
 //
 //  Created by Michael Michailidis on 11/03/2013.
-//  Copyright (c) 2013 Nick Banks. All rights reserved.
+//  Copyright (c) Rockpack Ltd. All rights reserved.
 //
 
 #import "GAI.h"
@@ -1484,8 +1484,11 @@
         return NO;
     if (textField == yyyyInputField && newLength > 4)
         return NO;
-    if(textField == self.userNameInputField && newLength > 20)
+    if(textField == self.userNameInputField && newLength > 26)
         return NO;
+    if(textField == self.passwordInputField && newLength > 20)
+        return NO;
+        
     
     
     

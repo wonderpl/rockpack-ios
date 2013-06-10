@@ -3,7 +3,7 @@
 //  rockpack
 //
 //  Created by Nick Banks on 24/01/2013.
-//  Copysubscriptions (c) 2013 Nick Banks. All subscriptionss reserved.
+//  Copysubscriptions (c) Rockpack Ltd. All subscriptionss reserved.
 //
 
 #import "Channel.h"

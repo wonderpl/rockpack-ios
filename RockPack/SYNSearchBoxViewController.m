@@ -3,7 +3,7 @@
 //  rockpack
 //
 //  Created by Michael Michailidis on 15/04/2013.
-//  Copyright (c) 2013 Nick Banks. All rights reserved.
+//  Copyright (c) Rockpack Ltd. All rights reserved.
 //
 
 #import "SYNSearchBoxViewController.h"
@@ -59,6 +59,7 @@
     
     self.searchTextField = self.searchBoxView.searchTextField;
     self.searchTextField.delegate = self;
+    [self.searchTextField addTarget:self action:@selector(textFieldDidChange:) forControlEvents:UIControlEventEditingChanged];
 	
     self.autoSuggestionController = [[SYNAutocompleteSuggestionsController alloc] init];
     self.autoSuggestionController.tableView.delegate = self;
@@ -92,9 +93,12 @@
 }
 
 
-- (void) textViewDidChange: (UITextView *) textView
+- (void) textFieldDidChange: (UITextField *) textView
 {
-    
+    if([textView.text length] == 0)
+    {
+        [self clear];
+    }
 }
 
 
@@ -199,7 +203,6 @@
     
     return YES;
 }
-
 
 #pragma mark - TableView Delegate
 
