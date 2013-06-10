@@ -1482,15 +1482,12 @@
     
     if ((textField == ddInputField || textField == mmInputField) && newLength > 2)
         return NO;
+    
     if (textField == yyyyInputField && newLength > 4)
         return NO;
+    
     if(textField == self.userNameInputField && newLength > 26)
         return NO;
-    if(textField == self.passwordInputField && newLength > 20)
-        return NO;
-        
-    
-    
     
     NSNumberFormatter* numberFormatter = [[NSNumberFormatter alloc] init];
     if (textField == ddInputField || textField == mmInputField || textField == yyyyInputField)
