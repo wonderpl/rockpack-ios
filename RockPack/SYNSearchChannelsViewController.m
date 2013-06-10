@@ -65,11 +65,11 @@
         collectionFrame.size.height -= 5.0;
         self.channelThumbnailCollectionView.frame = collectionFrame;
         
-        UICollectionViewFlowLayout* layout = (UICollectionViewFlowLayout*)self.channelThumbnailCollectionView.collectionViewLayout;
-        UIEdgeInsets insets= layout.sectionInset;
-        insets.top = 0.0f;
-        insets.bottom = -50.0f;
-        layout.sectionInset = insets;
+//        UICollectionViewFlowLayout* layout = (UICollectionViewFlowLayout*)self.channelThumbnailCollectionView.collectionViewLayout;
+//        UIEdgeInsets insets= layout.sectionInset;
+////        insets.top = 0.0f;
+////        insets.bottom = -50.0f;
+////        layout.sectionInset = insets;
         
     }
 }
@@ -126,10 +126,6 @@
     channels = [NSMutableArray arrayWithArray: resultsArray];
     
     [self.channelThumbnailCollectionView reloadData];
-    
-    if (self.itemToUpdate)
-        [self.itemToUpdate setNumberOfItems: resultsArray.count
-                                   animated: YES];
 }
 
 
@@ -183,6 +179,10 @@
                                             andRange: self.dataRequestRange
                                           onComplete: ^(int itemsCount) {
                                               self.dataItemsAvailable = itemsCount;
+                                              if (self.itemToUpdate)
+                                                  [self.itemToUpdate setNumberOfItems: self.dataItemsAvailable
+                                                                             animated: YES];
+
                                           }];
     
     self.searchTerm = term;
@@ -226,6 +226,14 @@
         [_runningNetworkOperation cancel];
     
     _runningNetworkOperation = runningSearchOperation;
+}
+
+#pragma mark - Helper Methods
+
+
+- (CGSize) itemSize
+{
+    return [SYNDeviceManager.sharedInstance isIPhone] ? CGSizeMake(152.0f, 152.0f) : CGSizeMake(251.0, 274.0);
 }
 
 @end

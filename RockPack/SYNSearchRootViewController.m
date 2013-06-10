@@ -240,7 +240,8 @@
     
     if (!hasLaidOut && [SYNDeviceManager.sharedInstance isIPhone])
     {
-        CGRect collectionViewFrame = CGRectMake(0,48.0f,320.0f,self.view.frame.size.height - 53.0f);
+        //FIXME: This magic number layout is not so good. self.view needs to be setup with the correct frame, and then we can start doing a relative layout.
+        CGRect collectionViewFrame = CGRectMake(0,48.0f,320.0f,self.view.frame.size.height - 103.0f);
         self.searchChannelsController.channelThumbnailCollectionView.frame = collectionViewFrame;
         self.searchChannelsController.channelThumbnailCollectionView.backgroundColor = [UIColor colorWithWhite:0.97f alpha:1.0f];
         UICollectionViewFlowLayout* layout = (UICollectionViewFlowLayout*)self.searchChannelsController.channelThumbnailCollectionView.collectionViewLayout;
