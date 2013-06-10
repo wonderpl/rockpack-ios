@@ -33,6 +33,7 @@
 #import "Video.h"
 #import "VideoInstance.h"
 #import "SYNCoverChooserController.h"
+#import "SYNDeviceManager.h"
 #import <AVFoundation/AVFoundation.h>
 #import <QuartzCore/QuartzCore.h>
 
@@ -2498,7 +2499,7 @@
                                         
                                         wself.originalBackgroundImage = image;
                                         
-                                        UIImage* croppedImage = [wself croppedImageForOrientation:[SYNDeviceManager.sharedInstance orientation]];
+                                        UIImage* croppedImage = [wself croppedImageForOrientation:[(SYNDeviceManager *)SYNDeviceManager.sharedInstance orientation]];
                                         
                                         [UIView transitionWithView: wself.view
                                                           duration: 0.35f
