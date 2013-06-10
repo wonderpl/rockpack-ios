@@ -91,6 +91,28 @@
     
     // Copy Channels     
     self.channels = [appDelegate.currentUser.channels array];
+    if (self.selectedChannel)
+    {
+        int selectedIndex = [self.channels indexOfObject:self.selectedChannel];
+        if( selectedIndex != NSNotFound)
+        {
+            self.selectedChannel = [self.channels objectAtIndex:selectedIndex];
+            self.previouslySelectedPath = [NSIndexPath indexPathForRow:selectedIndex + 1 inSection:0];
+            self.confirmButtom.enabled = YES;
+        }
+        else
+        {
+            self.previouslySelectedPath = nil;
+            self.selectedChannel = nil;
+            self.confirmButtom.enabled = NO;
+        }
+    }
+    else
+    {
+        self.previouslySelectedPath = nil;
+        self.selectedChannel = nil;
+        self.confirmButtom.enabled = NO;
+    }
     
     [self packViewForInterfaceOrientation:[SYNDeviceManager.sharedInstance orientation]];
     
@@ -207,6 +229,11 @@
 {
     if (indexPath.row == 0)
     {
+        //Reset any previous selection
+        self.previouslySelectedPath = nil;
+        self.selectedChannel = nil;
+        self.confirmButtom.enabled = NO;
+        
         if([SYNDeviceManager.sharedInstance isIPad])
         {
             if (!appDelegate.videoQueue.currentlyCreatingChannel)
@@ -229,6 +256,7 @@
                                                                                    object: self
                                                                                  userInfo: @{kChannel:appDelegate.videoQueue.currentlyCreatingChannel}];
                          }];
+            
         }
         else
         {
@@ -274,6 +302,7 @@
         //Compensate for the extra "create new" cell
         self.selectedChannel = (Channel*)self.channels[indexPath.row - 1];
         self.previouslySelectedPath = indexPath;
+        self.confirmButtom.enabled = YES;
     }
     
 }
