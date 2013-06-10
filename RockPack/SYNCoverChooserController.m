@@ -3,7 +3,7 @@
 //  rockpack
 //
 //  Created by Michael Michailidis on 14/05/2013.
-//  Copyright (c) 2013 Nick Banks. All rights reserved.
+//  Copyright (c) Rockpack Ltd. All rights reserved.
 //
 
 #import "AppConstants.h"
@@ -246,7 +246,7 @@
             case 0:
             {
                 imageURLString = @"";
-                remoteId = @"";
+                remoteId = kCoverSetNoCover;
             }
             break;
                 

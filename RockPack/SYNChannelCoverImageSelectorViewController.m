@@ -3,7 +3,7 @@
 //  rockpack
 //
 //  Created by Mats Trovik on 08/05/2013.
-//  Copyright (c) 2013 Nick Banks. All rights reserved.
+//  Copyright (c) Rockpack Ltd. All rights reserved.
 //
 
 
@@ -368,7 +368,7 @@ enum ChannelCoverSelectorState {
         case kChannelCoverDefault:
         {
             NSString* returnStringURL = nil;
-            NSString* returnCoverId = @"";
+            NSString* returnCoverId = kCoverSetNoCover;
             if (indexPath.row != 0)
             {
                 indexPath = [NSIndexPath indexPathForRow:indexPath.row - 1 inSection:0];

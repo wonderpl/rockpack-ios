@@ -3,7 +3,7 @@
 //  rockpack
 //
 //  Created by Nick Banks on 17/04/2013.
-//  Copyright (c) 2013 Nick Banks. All rights reserved.
+//  Copyright (c) Rockpack Ltd. All rights reserved.
 //
 
 #import "Channel.h"
@@ -1574,7 +1574,7 @@
     
     NSString* cover =  self.selectedCoverId;
     
-    if ([cover length]==0)
+    if ([cover length]==0 || [cover isEqualToString:kCoverSetNoCover])
     {
         cover = @"";
     }
@@ -1906,6 +1906,10 @@
     if ([cover length]==0)
     {
         cover = @"KEEP";
+    }
+    else if ([cover isEqualToString:kCoverSetNoCover])
+    {
+        cover = @"";
     }
     return cover;
 }

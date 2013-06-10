@@ -3,7 +3,7 @@
 //  rockpack
 //
 //  Created by Nick Banks on 06/06/2013.
-//  Copyright (c) 2013 Nick Banks. All rights reserved.
+//  Copyright (c) Rockpack Ltd. All rights reserved.
 //
 //  Bodge for custom font alignment in UITextFields
 
