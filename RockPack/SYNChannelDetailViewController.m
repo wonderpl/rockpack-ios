@@ -1837,8 +1837,6 @@
                                               }
                                               
                                               
-                                              
-                                              
                                               [appDelegate saveContext:YES];
                                               
                                               

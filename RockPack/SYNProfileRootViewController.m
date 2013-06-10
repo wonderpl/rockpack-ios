@@ -479,19 +479,22 @@
                                      andTotalCount: self.channelOwner.channels.count];
                  
                  
-                 [self.channelThumbnailCollectionView performBatchUpdates:^{
-                     
-                     if(updatedIndexPathArray.count > 0)
+                 if(updatedIndexPathArray.count > 0)
+                 {
+                     [self.channelThumbnailCollectionView performBatchUpdates:^{
+                         
                          [self.channelThumbnailCollectionView reloadItemsAtIndexPaths:updatedIndexPathArray];
-                  
-                     
-                     
-                     
-                 } completion:^(BOOL finished) {
-                     
+                         
+                     } completion:^(BOOL finished) {
+                         
+                         self.isViewDirty = NO;
+                         
+                     }];
+                 }
+                 else
+                 {
                      self.isViewDirty = NO;
-                     
-                 }];
+                 }
                  
                  
                  return;
