@@ -80,8 +80,6 @@ enum ChannelCoverSelectorState {
     
     self.appDelegate = (SYNAppDelegate*)[[UIApplication sharedApplication] delegate];
     
-    [self updateCoverArt];
-    
     NSFetchRequest *fetchRequest = [[NSFetchRequest alloc] init];
     
     
@@ -114,6 +112,8 @@ enum ChannelCoverSelectorState {
     
     // Initialise the span and size of the first data request
     self.dataRequestRange = NSMakeRange(self.dataItemsAvailable, STANDARD_REQUEST_LENGTH);
+    
+    [self updateCoverArt];
     
     self.supportsCamera = [UIImagePickerController isSourceTypeAvailable: UIImagePickerControllerSourceTypeCamera];
     
@@ -592,27 +592,10 @@ enum ChannelCoverSelectorState {
 }
 
 
-//- (void) updateCoverArt
-//{
-//    // Update the list of cover art
-//    [self.appDelegate.networkEngine updateCoverArtOnCompletion: ^(NSDictionary * dictionary){
-//        DebugLog(@"Success");
-//    } onError: ^(NSError* error) {
-//        DebugLog(@"%@", [error debugDescription]);
-//    }];
-//    
-//    [self.appDelegate.oAuthNetworkEngine updateCoverArtForUserId: self.appDelegate.currentOAuth2Credentials.userId
-//                                               onCompletion: ^{
-//                                                   DebugLog(@"Success");
-//                                               }
-//                                                    onError: ^(NSError* error) {
-//                                                        DebugLog(@"%@", [error debugDescription]);
-//                                                    }];
-//}
-
-
 - (void) updateCoverArt
 {
+    DebugLog(@"Updating range %d:%d", self.dataRequestRange.location, self.dataRequestRange.length);
+    
     // Update the list of cover art
     [self.appDelegate.networkEngine updateCoverArtWithWithStart: self.dataRequestRange.location
                                                            size: self.dataRequestRange.length

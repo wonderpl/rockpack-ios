@@ -406,6 +406,8 @@
 
 - (void) updateCoverArt
 {
+    DebugLog(@"Updating range %d:%d", self.dataRequestRange.location, self.dataRequestRange.length);
+    
     // Update the list of cover art
     [self.appDelegate.networkEngine updateCoverArtWithWithStart: self.dataRequestRange.location
                                                            size: self.dataRequestRange.length
@@ -417,7 +419,7 @@
                                                   else
                                                       self.dataItemsAvailable = self.dataRequestRange.length;
 
-                                                  NSLog (@"Count %d", self.rockpackCoverFetchedResultsController.fetchedObjects.count);
+                                                  DebugLog (@"Count %d", self.rockpackCoverFetchedResultsController.fetchedObjects.count);
                                                   if ((self.dataRequestRange.location + self.dataRequestRange.length) >= self.dataItemsAvailable)
                                                   {
                                                       self.noMoreCovers = TRUE;
@@ -475,7 +477,7 @@
     NSInteger nextSize = (nextStart + STANDARD_REQUEST_LENGTH) >= self.dataItemsAvailable ? (self.dataItemsAvailable - nextStart) : STANDARD_REQUEST_LENGTH;
     
     self.dataRequestRange = NSMakeRange(nextStart, nextSize);
-    NSLog (@"Range %d:%d    ", self.dataRequestRange.location, self.dataRequestRange.length);
+    DebugLog (@"Incrementing Range to %d:%d", self.dataRequestRange.location, self.dataRequestRange.length);
 }
 
 
