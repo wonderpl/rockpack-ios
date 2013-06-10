@@ -183,8 +183,7 @@
     [UIView animateWithDuration: 0.2
                      animations: ^{
         self.view.alpha = 0.0;
-    }
-                     completion: ^(BOOL finished) {
+    } completion: ^(BOOL finished) {
         [self.view removeFromSuperview];
         // Post notification without object. Needed to restart video player if visible.
         [[NSNotificationCenter defaultCenter] postNotificationName: kNoteVideoAddedToExistingChannel

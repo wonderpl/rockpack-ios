@@ -306,7 +306,7 @@
 {
     [super viewDidLoad];
     
-    if (self.user == appDelegate.currentUser)
+    if ([self.channelOwner.uniqueId isEqualToString: appDelegate.currentUser.uniqueId])
     {
         [GAI.sharedInstance.defaultTracker sendView: @"Own Profile"];
     }

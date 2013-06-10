@@ -917,6 +917,9 @@
                completionHandler: (MKNKUserSuccessBlock) completionBlock
                     errorHandler: (MKNKUserErrorBlock) errorBlock
 {
+    if(!userId || ![userId isKindOfClass:[NSString class]])
+        return;
+    
     NSDictionary *apiSubstitutionDictionary = @{@"USERID" : userId};
     
     NSString *apiString = [kAPIRecordUserActivity stringByReplacingOccurrencesOfStrings: apiSubstitutionDictionary];
