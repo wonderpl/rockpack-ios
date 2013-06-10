@@ -164,7 +164,6 @@
         NSString* newUniqueId;
         VideoInstance* videoInstance;
         
-        NSMutableArray* importArray = [[NSMutableArray alloc] initWithCapacity:itemArray.count];
         
         for (NSDictionary *channelDictionary in itemArray)
         {
@@ -182,46 +181,24 @@
                                             usingManagedObjectContext: self.managedObjectContext
                                                   ignoringObjectTypes: kIgnoreChannelObjects];
                 
+                if(!videoInstance)
+                    continue;
+                
+                videoInstance.viewId = self.viewId;
+                
+                [self.videoInstancesSet addObject:videoInstance];
+                
             }
             else
             {
                 [videoInsanceByIdDictionary removeObjectForKey:newUniqueId];
+                
+                NSNumber* newPosition = [channelDictionary objectForKey: @"position"];
+                if(newPosition && [newPosition isKindOfClass:[NSNumber class]])
+                    videoInstance.position = newPosition;
             }
             
-            
-            if(!videoInstance)
-                continue;
-            
-            // viewId is probably @"ChannelDetails" because that is the only case where videos are passed to channels
-            
-            videoInstance.viewId = self.viewId;
-            
-            // all other properties of videoInstance like Video and Title are considered constant at the moment
-            
-            NSNumber* newPosition = [channelDictionary objectForKey: @"position"];
-            if(newPosition && [newPosition isKindOfClass:[NSNumber class]])
-                videoInstance.position = newPosition;
-            
-            
-            [importArray addObject:videoInstance];
-            
         }
-        
-        // Sort in correct position
-        
-
-        
-        
-        // Add VideoInstances to channel's NSOrderedSet
-        
-        [self.videoInstancesSet removeAllObjects];
-        [self.videoInstancesSet addObjectsFromArray:importArray];
-        
-        
-        // Empty the temporary array
-        
-        [importArray removeAllObjects];
-        importArray = nil;
         
         
         // Clean the remaining //

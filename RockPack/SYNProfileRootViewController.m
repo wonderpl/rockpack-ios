@@ -412,15 +412,13 @@
              
              [self.channelOwner.channels enumerateObjectsUsingBlock:^(Channel* channel, NSUInteger cidx, BOOL *cstop) {
                  
-                 [updatedObjects enumerateObjectsUsingBlock:^(id obj, NSUInteger idx, BOOL *stop) {
+                 if(channel.hasUpdatedValues)
+                 {
+                     NSLog(@"PR(+) Updated (Channel): %@", channel.title);
                      
-                     if(obj == channel)
-                     {
-                         NSLog(@"PR(+) Updated (%@): %@", NSStringFromClass([obj class]), ((Channel*)obj).title);
-                         
-                         [updatedIndexPathArray addObject:[NSIndexPath indexPathForItem:cidx inSection:0]];
-                     }
-                 }];
+                     [updatedIndexPathArray addObject:[NSIndexPath indexPathForItem:cidx inSection:0]];
+                 }
+                 
                  
              }];
              
@@ -481,7 +479,20 @@
                                      andTotalCount: self.channelOwner.channels.count];
                  
                  
-                 self.isViewDirty = NO;
+                 [self.channelThumbnailCollectionView performBatchUpdates:^{
+                     
+                     if(updatedIndexPathArray.count > 0)
+                         [self.channelThumbnailCollectionView reloadItemsAtIndexPaths:updatedIndexPathArray];
+                  
+                     
+                     
+                     
+                 } completion:^(BOOL finished) {
+                     
+                     self.isViewDirty = NO;
+                     
+                 }];
+                 
                  
                  return;
              }
@@ -493,6 +504,9 @@
                  
                  if(deletedIndexPathArray.count > 0)
                      [self.channelThumbnailCollectionView deleteItemsAtIndexPaths:deletedIndexPathArray];
+                 
+                 if(updatedIndexPathArray.count > 0)
+                     [self.channelThumbnailCollectionView reloadItemsAtIndexPaths:updatedIndexPathArray];
                  
                  
              } completion:^(BOOL finished) {
@@ -796,6 +810,7 @@
     [channelThumbnailCell setChannelTitle:channel.title];
     [channelThumbnailCell setViewControllerDelegate: self];
 
+    channel.hasUpdatedValues = NO; // since all new changes are shown mark as clean.
     
     return channelThumbnailCell;
 }

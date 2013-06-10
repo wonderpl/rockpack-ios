@@ -3,7 +3,7 @@
 #import "NSDictionary+Validation.h"
 #import "AppConstants.h"
 
-
+#import "ChannelCover.h"
 
 @interface ChannelOwner ()
 
@@ -174,13 +174,10 @@
             {
                 [channelInsanceByIdDictionary removeObjectForKey:newUniqueId];
                 
-              
                 [channel setAttributesFromDictionary:channelDictionary
-                                 ignoringObjectTypes:ignoreInstantiationFlags];
+                                 ignoringObjectTypes:ignoringObjects];
             }
            
-            
-            
             
         }
         
@@ -220,8 +217,6 @@
         [subscriptionInsancesByIdDictionary setObject:su forKey:su.uniqueId];
     
     
-    
-    
     for (NSDictionary* subscriptionChannel in itemsArray)
     {
         
@@ -253,6 +248,7 @@
         
     }
     
+    // this will also remove the object from the nsset
     for (id key in subscriptionInsancesByIdDictionary)
     {
         Channel* su = [subscriptionInsancesByIdDictionary objectForKey:key];

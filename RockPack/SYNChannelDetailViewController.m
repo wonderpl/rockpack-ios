@@ -1831,8 +1831,7 @@
                                                   
                                                   // if editing the user's channel we must update the original
                                                   
-                                                  [self.originalChannel  setAttributesFromDictionary:dictionary
-                                                                                 ignoringObjectTypes:kIgnoreChannelOwnerObject];
+                                                  self.originalChannel.hasUpdatedValues = YES;
                                                   
                                                   
                                               }
