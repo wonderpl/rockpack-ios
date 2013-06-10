@@ -17,11 +17,13 @@
 
 - (CGRect) editingRectForBounds: (CGRect) bounds
 {
+    bounds.size.width -= 25;
     return CGRectOffset( bounds, 0, 2);
 }
 
 - (CGRect) textRectForBounds: (CGRect) bounds
 {
+    bounds.size.width -= 25;
     return CGRectOffset( bounds, 0, 4);
 }
 

@@ -1484,7 +1484,7 @@
         return NO;
     if (textField == yyyyInputField && newLength > 4)
         return NO;
-    if(textField == self.userNameInputField && newLength > 20)
+    if(textField == self.userNameInputField && newLength > 20 && self.state == kLoginScreenStateRegister && newLength > oldLength)
         return NO;
     
     
