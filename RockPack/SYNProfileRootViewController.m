@@ -472,8 +472,6 @@
                                          andNumber: totalChannels];
                  
                  
-                 [self.subscriptionsViewController reloadCollectionViews];
-                 
              }];
              
              
