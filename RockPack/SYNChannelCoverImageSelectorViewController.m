@@ -368,7 +368,7 @@ enum ChannelCoverSelectorState {
         case kChannelCoverDefault:
         {
             NSString* returnStringURL = nil;
-            NSString* returnCoverId = @"";
+            NSString* returnCoverId = kCoverSetNoCover;
             if (indexPath.row != 0)
             {
                 indexPath = [NSIndexPath indexPathForRow:indexPath.row - 1 inSection:0];

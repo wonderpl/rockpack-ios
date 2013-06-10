@@ -246,7 +246,7 @@
             case 0:
             {
                 imageURLString = @"";
-                remoteId = @"";
+                remoteId = kCoverSetNoCover;
             }
             break;
                 

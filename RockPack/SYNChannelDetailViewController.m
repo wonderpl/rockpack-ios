@@ -1574,7 +1574,7 @@
     
     NSString* cover =  self.selectedCoverId;
     
-    if ([cover length]==0)
+    if ([cover length]==0 || [cover isEqualToString:kCoverSetNoCover])
     {
         cover = @"";
     }
@@ -1906,6 +1906,10 @@
     if ([cover length]==0)
     {
         cover = @"KEEP";
+    }
+    else if ([cover isEqualToString:kCoverSetNoCover])
+    {
+        cover = @"";
     }
     return cover;
 }
