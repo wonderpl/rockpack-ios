@@ -73,6 +73,8 @@
     CGRect correntFrame = self.channelThumbnailCollectionView.frame;
     correntFrame.size.width = 20.0;
     self.channelThumbnailCollectionView.frame = correntFrame;
+    
+    [self.channelThumbnailCollectionView reloadData];
 }
 
 - (void) handleDataModelChange: (NSNotification*) notification
