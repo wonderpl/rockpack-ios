@@ -163,23 +163,20 @@
                                 usingManagedObjectContext: self.managedObjectContext
                                       ignoringObjectTypes: ignoreInstantiationFlags];
                 
+                if(!channel) // instantiation failed
+                    continue;
+                
                 channel.viewId = self.viewId;
                 
             }
             else
             {
                 [channelInsanceByIdDictionary removeObjectForKey:newUniqueId];
+                
+                [channel setAttributesFromDictionary:channelDictionary
+                                 ignoringObjectTypes:ignoreInstantiationFlags];
             }
            
-            
-            if(!channel)
-                continue;
-            
-            
-            
-            [channel setAttributesFromDictionary:channelDictionary
-                             ignoringObjectTypes:ignoreInstantiationFlags];
-            
             
             [self.channelsSet addObject:channel];
             
