@@ -6,6 +6,7 @@
 //  Copyright (c) Rockpack Ltd. All rights reserved.
 //
 
+#import "GAI.h"
 #import "SYNAccountSettingsPassword.h"
 #import "SYNAppDelegate.h"
 #import "SYNOAuthNetworkEngine.h"
@@ -35,6 +36,8 @@
 - (void)viewDidLoad
 {
     [super viewDidLoad];
+    
+    [GAI.sharedInstance.defaultTracker sendView: @"Account Settings - Password"];
     
     self.view.backgroundColor = [UIColor whiteColor];
 

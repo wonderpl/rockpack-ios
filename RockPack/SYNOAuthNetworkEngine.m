@@ -345,7 +345,7 @@
           onCompletion:(MKNKUserSuccessBlock) completionBlock
                onError: (MKNKUserErrorBlock) errorBlock
 {
-    if(!user || !user.uniqueId) {
+    if(!user || !user.uniqueId || ![user.uniqueId isKindOfClass:[NSString class]]) {
         errorBlock(@{@"parameter_error":@"the user passed has no unique id or is null"});
         return;
     }

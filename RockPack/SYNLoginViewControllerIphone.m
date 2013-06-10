@@ -175,9 +175,6 @@
 {
     [super viewWillAppear: animated];
     
-    // Google analytics support
-    [GAI.sharedInstance.defaultTracker sendView: @"Login - iPhone"];
-    
     self.loginBackgroundImage.frame = self.loginBackgroundImage.bounds;
     
     [UIView animateWithDuration:50.0f
@@ -318,6 +315,7 @@
 
 - (IBAction) signupTapped: (id) sender
 {
+    [GAI.sharedInstance.defaultTracker sendView: @"Register"];
     
     //Fade out login background
     self.loginBackgroundImage.alpha = 1.0f;
@@ -356,7 +354,7 @@
 
 - (IBAction) loginTapped: (id) sender
 {
-    
+    [GAI.sharedInstance.defaultTracker sendView: @"Login 1"];
     //Fade out login background
     self.loginBackgroundImage.alpha = 1.0f;
     
@@ -391,6 +389,8 @@
 
 - (IBAction) forgotPasswordTapped: (id) sender
 {
+    // Google analytics support
+    [GAI.sharedInstance.defaultTracker sendView: @"Forgot password"];
     self.state = kLoginScreenStatePasswordRetrieve;
     [UIView animateWithDuration:kLoginAnimationTransitionDuration delay:0.0f options:UIViewAnimationOptionCurveEaseInOut animations:^{
         CGPoint newCenter = self.passwordView.center;
@@ -751,6 +751,8 @@
     {
         return;
     }
+    
+    [GAI.sharedInstance.defaultTracker sendView: @"Login 2"];
     
     self.state = kLoginScreenStateRegisterStepTwo;
     [self turnOnButton:self.backButton];

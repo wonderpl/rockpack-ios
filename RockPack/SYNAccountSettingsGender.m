@@ -62,6 +62,8 @@
 - (void) viewDidLoad
 {
     [super viewDidLoad];
+    
+    [GAI.sharedInstance.defaultTracker sendView: @"Account Settings - Gender"];
 
     self.view.backgroundColor = [UIColor whiteColor];
     

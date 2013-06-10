@@ -245,11 +245,15 @@
     
     if (self.mode == kChannelDetailsModeDisplay)
     {
+        // Google analytics support
+        [GAI.sharedInstance.defaultTracker sendView: @"Channel - Details"];
         self.addButton.hidden = NO;
         self.createChannelButton.hidden = YES;
     }
     else
     {
+        // Google analytics support
+        [GAI.sharedInstance.defaultTracker sendView: @"Channel - Create"];
         self.addButton.hidden = YES;
         self.createChannelButton.hidden = NO;
     }
@@ -330,12 +334,6 @@
 - (void) viewWillAppear: (BOOL) animated
 {
     [super viewWillAppear: animated];
-    
-    
-    NSString *viewMode = [NSString stringWithFormat: @"Channels - Detail - %@", (self.mode == kChannelDetailsModeDisplay) ? @"Display" : @"Edit"];
-    
-    // Google analytics support
-    [GAI.sharedInstance.defaultTracker sendView: viewMode];
     
     [self.channelTitleTextView addObserver: self
                                 forKeyPath: kTextViewContentSizeKey
@@ -1105,6 +1103,8 @@
 
 - (IBAction) editButtonTapped: (id) sender
 {
+    [GAI.sharedInstance.defaultTracker sendView: @"Channel - Edit"];
+    
     [[NSNotificationCenter defaultCenter] postNotificationName: (! _isIPhone) ? kChannelsNavControlsHide : kNoteAllNavControlsHide
                                                         object: self
                                                       userInfo: nil];

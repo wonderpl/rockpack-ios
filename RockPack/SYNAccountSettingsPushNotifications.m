@@ -6,6 +6,7 @@
 //  Copyright (c) Rockpack Ltd. All rights reserved.
 //
 
+#import "GAI.h"
 #import "SYNAccountSettingsPushNotifications.h"
 #import "SYNAccountSettingsOnOffField.h"
 
@@ -29,6 +30,8 @@
 - (void)viewDidLoad
 {
     [super viewDidLoad];
+    
+    [GAI.sharedInstance.defaultTracker sendView: @"Account Settings - Push"];
     
     self.controls = [[NSMutableArray alloc] init];
     
