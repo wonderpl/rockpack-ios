@@ -151,7 +151,10 @@
              {
              
                  [self.headerSubscriptionsView setTitle: [self getHeaderTitleForSubscriptions]
-                                              andNumber: self.channelOwner.subscriptions.count];
+                                          andTotalCount: self.channelOwner.subscriptions.count];
+                 
+                 self.isViewDirty = NO;
+                 
                  return;
              }
 
@@ -168,7 +171,9 @@
                   
                   
                   [self.headerSubscriptionsView setTitle: [self getHeaderTitleForSubscriptions]
-                                               andNumber: self.channelOwner.subscriptions.count];
+                                           andTotalCount: self.channelOwner.subscriptions.count];
+                  
+                  self.isViewDirty = NO;
                   
                }];
              

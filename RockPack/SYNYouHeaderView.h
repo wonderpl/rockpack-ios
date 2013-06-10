@@ -19,7 +19,7 @@
 @property (nonatomic, readonly) CGFloat currentWidth;
 
 +(id)headerViewForWidth:(CGFloat)width;
--(void)setTitle:(NSString *)title andNumber:(NSInteger)number;
+-(void)setTitle:(NSString *)title andTotalCount:(NSInteger)number;
 
 -(void)setBackgroundImage:(UIImage*)backgroundImage;
 

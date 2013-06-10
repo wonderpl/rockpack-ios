@@ -634,7 +634,7 @@
             
             if(insertedIndexPathArray.count == 0 && deletedIndexPathArray.count == 0)
             {
-                
+                self.isViewDirty = NO;
                 return;
             }
             
@@ -647,6 +647,8 @@
                     [self.videoThumbnailCollectionView deleteItemsAtIndexPaths:deletedIndexPathArray];
                 
             } completion:^(BOOL finished) {
+                
+                self.isViewDirty = NO;
                 
             }];
             
@@ -841,6 +843,9 @@
 - (void) collectionView: (UICollectionView *) collectionView
          didSelectItemAtIndexPath: (NSIndexPath *) indexPath
 {
+    if(self.isViewDirty)
+        return;
+    
     if (self.mode != kChannelDetailsModeEdit)
     {
         [self displayVideoViewerWithVideoInstanceArray: self.channel.videoInstances.array

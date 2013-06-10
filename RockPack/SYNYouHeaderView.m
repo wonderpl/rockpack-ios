@@ -58,9 +58,10 @@
     return [[self alloc] initWithFrame:CGRectMake(0.0, 165.0f, width, 50.0)];
 }
 
--(void)setTitle:(NSString *)title andNumber:(NSInteger)number
+-(void)setTitle:(NSString *)title andTotalCount:(NSInteger)number
 {
-    NSString* completeString = [NSString stringWithFormat:NSLocalizedString(@"%@ (%i)",nil), title, number];
+    
+    NSString* completeString = [NSString stringWithFormat:NSLocalizedString(@"%@ (%@)",nil), title, number >= 0 ? [NSString stringWithFormat:@"%i", number] : @" - "];
 
     [self refreshLabelWithString:completeString];
     [label sizeToFit];

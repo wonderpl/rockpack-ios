@@ -147,8 +147,8 @@
                                                       [UIImage imageNamed: @"HeaderProfilePortraitBoth"])];
     }
     
-    [self.headerChannelsView setTitle: [self getHeaderTitleForChannels]
-                            andNumber: 0];
+//    [self.headerChannelsView setTitle: [self getHeaderTitleForChannels]
+//                        andTotalCount: -1]; // this will put a dash until it is loaded
     
     CGRect collectionViewFrame = CGRectMake(0.0,
                                             self.headerChannelsView.frame.origin.y + self.headerChannelsView.currentHeight,
@@ -348,6 +348,9 @@
     
     [self updateLayoutForOrientation: [SYNDeviceManager.sharedInstance orientation]];
     
+    self.isViewDirty = YES;
+    self.subscriptionsViewController.isViewDirty = YES;
+    
     [[NSNotificationCenter defaultCenter] postNotificationName:kChannelOwnerUpdateRequest
                                                         object:self
                                                       userInfo:@{kChannelOwner:self.channelOwner}];
@@ -452,9 +455,13 @@
              
              if(insertedIndexPathArray.count == 0 && deletedIndexPathArray.count == 0)
              {
-                 NSString* title = [self getHeaderTitleForChannels];
-                 [self.headerSubscriptionsView setTitle: title
-                                              andNumber: 0];
+         
+                
+                 [self.headerChannelsView setTitle: [self getHeaderTitleForChannels]
+                                     andTotalCount: self.channelOwner.channels.count];
+                 
+                 self.isViewDirty = NO;
+                 
                  return;
              }
              
@@ -468,11 +475,11 @@
                  
              } completion:^(BOOL finished) {
                  
-                 NSInteger totalChannels = self.channelOwner.channels.count;
-                 NSString* title = [self getHeaderTitleForChannels];
                  
-                 [self.headerChannelsView setTitle: title
-                                         andNumber: totalChannels];
+                 [self.headerChannelsView setTitle: [self getHeaderTitleForChannels]
+                                     andTotalCount: self.channelOwner.channels.count];
+                 
+                 self.isViewDirty = NO;
                  
                  
              }];
@@ -780,6 +787,9 @@
         self.deletionModeActive = NO;
         return;
     }
+    
+    if(self.isViewDirty)
+        return;
 
     
     Channel *channel;
@@ -1162,9 +1172,7 @@
                                                      name: NSManagedObjectContextDidSaveNotification
                                                    object: self.channelOwner.managedObjectContext];
         
-//        [[NSNotificationCenter defaultCenter] postNotificationName:kChannelOwnerUpdateRequest
-//                                                            object:self
-//                                                          userInfo:@{kChannelOwner:self.channelOwner}];
+
     }
 }
 
