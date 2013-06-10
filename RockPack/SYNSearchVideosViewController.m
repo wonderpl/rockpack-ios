@@ -157,6 +157,9 @@
                                                                                inRange: self.dataRequestRange
                                                                             onComplete: ^(int itemsCount) {
                                                                                 self.dataItemsAvailable = itemsCount;
+                                                                                if(self.itemToUpdate)
+                                                                                    [self.itemToUpdate setNumberOfItems: self.dataItemsAvailable
+                                                                                                               animated: YES];
                                                                             }];
     
     self.searchTerm = term;
@@ -166,10 +169,6 @@
 - (void) controllerDidChangeContent: (NSFetchedResultsController *) controller
 {
     DebugLog(@"Total Search Items: %i", controller.fetchedObjects.count);
-    
-    if(self.itemToUpdate)
-        [self.itemToUpdate setNumberOfItems: [controller.fetchedObjects count]
-                                   animated: YES];
     
     [self.videoThumbnailCollectionView reloadData];
 }
