@@ -23,6 +23,7 @@
 #import "User.h"
 #import "SYNTextFieldLogin.h"
 
+
 @interface SYNLoginViewController ()  <UITextFieldDelegate, SYNImagePickerControllerDelegate>
 
 @property (nonatomic) BOOL isAnimating;
@@ -752,50 +753,6 @@
 
 #pragma mark - Button Actions
 
-- (BOOL) loginFormIsValid
-{
-    // email
-    if (userNameInputField.text.length < 1)
-    {
-        [self placeErrorLabel: NSLocalizedString(@"login_screen_form_field_username_error_empty", nil)
-                   nextToView: userNameInputField];
-        
-        [userNameInputField becomeFirstResponder];
-        
-        return NO;
-    }
-
-    if (passwordInputField.text.length < 1)
-    {
-        [self placeErrorLabel: NSLocalizedString(@"login_screen_form_field_password_error_empty", nil)
-                   nextToView: passwordInputField];
-        
-        [passwordInputField becomeFirstResponder];
-        
-        return NO;
-    }
-
-    return YES;
-}
-
-
-- (BOOL) resetPasswordFormIsValid
-{
-    
-    if (userNameInputField.text.length < 1)
-    {
-        [self placeErrorLabel: NSLocalizedString(@"forgot_password_screen_form_field_username_error_empty", nil)
-                   nextToView: userNameInputField];
-        
-        [userNameInputField becomeFirstResponder];
-        
-        return NO;
-    }
-    
-    return YES;
-    
-}
-
 - (IBAction) doLogin: (id) sender
 {
     [self clearAllErrorArrows];
@@ -807,7 +764,7 @@
         return;
     }
     
-    if (![self loginFormIsValid])
+    if (![self loginFormIsValidForUsername:userNameInputField password:passwordInputField])
         return;
     
     finalLoginButton.enabled = NO;
@@ -838,8 +795,8 @@
                   NSDictionary* errors = errorDictionary [@"error"];
                   if (errors)
                   {
-                      //[self placeErrorLabel: @"Username could be incorrect"
-                      //           nextToView: userNameInputField];
+                      [self placeErrorLabel: NSLocalizedString(@"login_screen_form_field_username_password_error_incorrect", nil)
+                            nextToView: userNameInputField];
                       
                       [self placeErrorLabel: NSLocalizedString(@"login_screen_form_field_username_password_error_incorrect", nil)
                                  nextToView: passwordInputField];
@@ -881,7 +838,7 @@
     if (![self isNetworkAccessibleOtherwiseShowErrorAlert])
         return;
     
-    if (![self resetPasswordFormIsValid])
+    if (![self resetPasswordFormIsValidForUsername:self.userNameInputField])
         return;
     
     [self doRequestPasswordResetForUsername:self.userNameInputField.text completionHandler: ^(NSDictionary * completionInfo) {
@@ -1039,182 +996,6 @@
     //    }]; 
 }
 
-
-- (BOOL) registrationFormIsValid
-{
-    if (emailInputField.text.length < 1)
-    {
-        [self placeErrorLabel: NSLocalizedString(@"register_screen_form_field_email_error_empty", nil)
-                   nextToView: emailInputField];
-        
-        [emailInputField becomeFirstResponder];
-        
-        return NO;
-    }
-    
-    // == Regular expression through RegexKitLite.h (not arc compatible) == //
-    
-    if (![emailInputField.text isMatchedByRegex: @"^([a-zA-Z0-9%_.+\\-]+)@([a-zA-Z0-9.\\-]+?\\.[a-zA-Z]{2,6})$"])
-    {
-        [self placeErrorLabel: NSLocalizedString(@"register_screen_form_field_email_error_empty", nil)
-                   nextToView: emailInputField];
-        
-        [emailInputField becomeFirstResponder];
-        
-        return NO;
-    }
-    
-    // == Determine if we are in login or registration mode by asking if the Register button is visible and show different error messages == //
-    
-    if (userNameInputField.text.length < 1 && registerButton.hidden == YES)
-    {
-        [self placeErrorLabel: NSLocalizedString(@"login_screen_form_field_username_error_empty", nil)
-                   nextToView: userNameInputField];
-        
-        [userNameInputField becomeFirstResponder];
-        
-        return NO;
-    }
-    
-    if (userNameInputField.text.length < 1 && registerButton.hidden == NO)
-    {
-        [self placeErrorLabel: NSLocalizedString(@"register_screen_form_field_username_error_empty", nil)
-                   nextToView: userNameInputField];
-        
-        [userNameInputField becomeFirstResponder];
-        
-        return NO;
-    }
-    //register_screen_form_field_username_error_too_long
-    // == Username must be
-    
-    if (![userNameInputField.text isMatchedByRegex:@"^[a-zA-Z0-9\\._]+$"])
-    {
-        [self placeErrorLabel: NSLocalizedString(@"register_screen_form_field_username_error_invalid", nil)
-                   nextToView: userNameInputField];
-        
-        [userNameInputField becomeFirstResponder];
-        
-        return NO;
-    }
-    
-    if(userNameInputField.text.length > 20)
-    {
-        [self placeErrorLabel: NSLocalizedString(@"register_screen_form_field_username_error_too_long", nil)
-                   nextToView: userNameInputField];
-        
-        [userNameInputField becomeFirstResponder];
-        
-        return NO;
-    }
-    
-    // == Determine if we are in login or registration mode by asking if the Register button is visible and show different error messages == //
-    
-    if (passwordInputField.text.length < 1 && registerButton.hidden == YES)
-    {
-        [self placeErrorLabel: NSLocalizedString(@"login_screen_form_field_password_error_empty", nil)
-                   nextToView: passwordInputField];
-        
-        [passwordInputField becomeFirstResponder];
-        
-        return NO;
-    }
-    
-    if (passwordInputField.text.length < 1 && registerButton.hidden == NO)
-    {
-        [self placeErrorLabel: NSLocalizedString(@"register_screen_form_field_password_error_empty", nil)
-                   nextToView: passwordInputField];
-        
-        [passwordInputField becomeFirstResponder];
-        
-        return NO;
-    }
-    
-    // == Check for date == //
-    
-    NSArray* dobTextFields = @[mmInputField, ddInputField, yyyyInputField];
-    
-    
-    
-    
-    
-    // == Check wether the DOB fields contain numbers == //
-    
-    NSNumberFormatter* numberFormatter = [[NSNumberFormatter alloc] init];
-    
-    for (UITextField* dobField in dobTextFields)
-    {
-        if(dobField.text.length == 0)
-        {
-            [self placeErrorLabel: NSLocalizedString(@"register_screen_form_error_invalid_date", nil)
-                       nextToView: dobField];
-            
-            [ddInputField becomeFirstResponder];
-            
-            return NO;
-        }
-        
-        if(dobField.text.length == 1)
-        {
-            dobField.text = [NSString stringWithFormat:@"0%@", dobField.text]; // add a trailing 0
-        }
-        
-        if (![numberFormatter numberFromString: dobField.text])
-        {
-            [self placeErrorLabel: NSLocalizedString(@"register_screen_form_error_invalid_date", nil)
-                       nextToView: dobView];
-            
-            [dobField becomeFirstResponder];
-            
-            return NO;
-        }
-    }
-    
-    NSDateFormatter* dateFormatter = [[NSDateFormatter alloc] init];
-    [dateFormatter setDateFormat: @"yyyy-MM-dd"];
-    NSDate* potentialDate = [dateFormatter dateFromString: [self dateStringFromCurrentInput]];
-    
-    // == Not a real date == //
-    
-    if (!potentialDate)
-    {
-        [self placeErrorLabel: NSLocalizedString(@"register_screen_form_error_invalid_date", nil)
-                   nextToView: dobView];
-        
-        return NO;
-    }
-    
-    NSDate* nowDate = [NSDate date];
-    
-    // == In the future == //
-    
-    if ([nowDate compare:potentialDate] == NSOrderedAscending) {
-        [self placeErrorLabel: NSLocalizedString(@"register_screen_form_error_future", nil)
-                   nextToView: dobView];
-        
-        return NO;
-    }
-    
-    // == Yonger than 13 == //
-    
-    NSCalendar* gregorian = [[NSCalendar alloc] initWithCalendarIdentifier:NSGregorianCalendar];
-    NSDateComponents* nowDateComponents = [gregorian components:(NSYearCalendarUnit) fromDate:nowDate];
-    nowDateComponents.year -= 13;
-    
-    NSDate* tooYoungDate = [gregorian dateFromComponents:nowDateComponents];
-    
-    if ([tooYoungDate compare:potentialDate] == NSOrderedAscending) {
-        
-        [self placeErrorLabel: NSLocalizedString(@"register_screen_form_error_under_13", nil)
-                   nextToView: dobView];
-        
-        return NO;
-    }
-    
-    return YES;
-}
-
-
 - (void) resignAllFirstResponders
 {
     NSArray* allTextFields = @[emailInputField, userNameInputField, passwordForgottenButton, ddInputField, mmInputField, yyyyInputField];
@@ -1237,7 +1018,7 @@
     // Check Text Fields
     [self clearAllErrorArrows];
     
-    if (![self registrationFormIsValid])
+    if (![self registrationFormIsValidForEmail:emailInputField userName:userNameInputField password:passwordInputField dd:ddInputField mm:mmInputField yyyy:yyyyInputField])
         return;
     
     [self resignAllFirstResponders];
@@ -1353,9 +1134,9 @@
 #pragma mark - Error Arrows
 
 - (void) placeErrorLabel: (NSString*) errorText
-              nextToView: (UIView*) view
+              nextToView: (UIView*) targetView
 {
-    SYNLoginErrorArrow* errorArrow = [labelsToErrorArrows objectForKey:[NSValue valueWithPointer:(__bridge const void *)(view)]];
+    SYNLoginErrorArrow* errorArrow = [labelsToErrorArrows objectForKey:[NSValue valueWithPointer:(__bridge const void *)(targetView)]];
     if (errorArrow)
     {
         [errorArrow setMessage:errorText];
@@ -1364,12 +1145,11 @@
     
     errorArrow = [SYNLoginErrorArrow withMessage:errorText];
     
-    CGFloat xPos = view.frame.origin.x + view.frame.size.width - 20.0;
-    CGRect errorArrowFrame = errorArrow.frame;
-    errorArrowFrame.origin.x = xPos;
-    
-    errorArrow.frame = errorArrowFrame;
-    errorArrow.center = CGPointMake(errorArrow.center.x, view.center.y);
+    CGPoint newPosition = targetView.center;
+    newPosition = [self.view convertPoint:newPosition fromView:targetView.superview];
+    newPosition.x +=  (errorArrow.frame.size.width/2.0f + targetView.frame.size.width/2.0f - 20.0);
+    errorArrow.center = newPosition;
+    errorArrow.frame = CGRectIntegral(errorArrow.frame);
     
     errorArrow.alpha = 0.0;
     
@@ -1379,7 +1159,7 @@
                          errorArrow.alpha = 1.0;
                      }];
     
-    [labelsToErrorArrows setObject:errorArrow forKey:[NSValue valueWithPointer:(__bridge const void *)(view)]];
+    [labelsToErrorArrows setObject:errorArrow forKey:[NSValue valueWithPointer:(__bridge const void *)(targetView)]];
     [self.view addSubview:errorArrow];
 }
 
@@ -1484,12 +1264,8 @@
         return NO;
     if (textField == yyyyInputField && newLength > 4)
         return NO;
-    if(textField == self.userNameInputField && newLength > 26)
+    if(textField == self.userNameInputField && newLength > 20 && self.state == kLoginScreenStateRegister && newLength > oldLength)
         return NO;
-    if(textField == self.passwordInputField && newLength > 20)
-        return NO;
-        
-    
     
     
     NSNumberFormatter* numberFormatter = [[NSNumberFormatter alloc] init];
