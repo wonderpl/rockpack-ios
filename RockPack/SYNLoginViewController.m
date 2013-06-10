@@ -1484,8 +1484,11 @@
         return NO;
     if (textField == yyyyInputField && newLength > 4)
         return NO;
-    if(textField == self.userNameInputField && newLength > 20)
+    if(textField == self.userNameInputField && newLength > 26)
         return NO;
+    if(textField == self.passwordInputField && newLength > 20)
+        return NO;
+        
     
     
     
