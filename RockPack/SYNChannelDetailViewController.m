@@ -547,29 +547,16 @@
 
     
     NSArray* updatedObjects = [[notification userInfo] objectForKey: NSUpdatedObjectsKey];
-    NSArray* insertedObjects = [[notification userInfo] objectForKey: NSInsertedObjectsKey];
-    NSArray* deletedObjects = [[notification userInfo] objectForKey: NSDeletedObjectsKey];
+//    NSArray* insertedObjects = [[notification userInfo] objectForKey: NSInsertedObjectsKey];
+//    NSArray* deletedObjects = [[notification userInfo] objectForKey: NSDeletedObjectsKey];
     
 
     
     [updatedObjects enumerateObjectsUsingBlock: ^(id obj, NSUInteger idx, BOOL *stop) {
         
         
-        if (obj == self.channel)
+        if ([obj isKindOfClass:[Channel class]] && [((Channel*)obj).uniqueId isEqualToString:self.channel.uniqueId])
         {
-            
-            self.subscribeButton.selected = self.channel.subscribedByUserValue;
-            self.subscribeButton.enabled = YES;
-            
-            if (self.subscribingIndicator)
-            {
-                [self.subscribingIndicator removeFromSuperview];
-                self.subscribingIndicator = nil;
-            }
-            
-            
-            
-            // == Handle Rest == //
             
             if(self.channel.videoInstances.count == 0)
             {
@@ -581,89 +568,38 @@
             }
             
             
-            // == Handle Inserted ==
+            self.subscribeButton.selected = self.channel.subscribedByUserValue;
+            self.subscribeButton.enabled = YES;
             
-            
-            NSMutableArray* insertedIndexPathArray = [NSMutableArray arrayWithCapacity:insertedObjects.count]; // maximum
-            
-            [self.channel.videoInstances enumerateObjectsUsingBlock:^(VideoInstance* videoInstance, NSUInteger cidx, BOOL *cstop) {
-                
-                
-                
-                [insertedObjects enumerateObjectsUsingBlock:^(id obj, NSUInteger idx, BOOL *stop) {
-                    
-                    if(obj == videoInstance)
-                    {
-                        NSLog(@"CD(+) Inserted (%@): %@", NSStringFromClass([obj class]), ((VideoInstance*)obj).title);
-                        
-                        [insertedIndexPathArray addObject:[NSIndexPath indexPathForItem:cidx inSection:0]];
-                    }
-                }];
-                
-            }];
-            
-            
-            // == Handle Deleted == //
-            
-            NSMutableArray* deletedIndetifiers = [NSMutableArray arrayWithCapacity:deletedObjects.count];
-            NSMutableArray* deletedIndexPathArray = [NSMutableArray arrayWithCapacity:deletedObjects.count]; // maximum
-            [deletedObjects enumerateObjectsUsingBlock: ^(id obj, NSUInteger idx, BOOL *stop) {
-                
-                if ([obj isKindOfClass:[VideoInstance class]]) {
-                    
-                    NSLog(@"CD(-) Deleted: %@", ((VideoInstance*)obj).title);
-                    
-                    [deletedIndetifiers addObject:((VideoInstance*)obj).uniqueId];
-                    
-                }
-                
-            }];
-            
-            int index = 0;
-            for(SYNVideoThumbnailRegularCell* cell in self.videoThumbnailCollectionView.visibleCells){
-                
-                if([deletedIndetifiers containsObject:cell.dataIndetifier])
-                {
-                    NSLog(@"CD(-) Found Cell at: %i", index);
-                    [deletedIndexPathArray addObject:[NSIndexPath indexPathForItem:index inSection:0]];
-                }
-                index++;
-                
+            if (self.subscribingIndicator)
+            {
+                [self.subscribingIndicator removeFromSuperview];
+                self.subscribingIndicator = nil;
             }
             
-            @try {
-                
-                [self.videoThumbnailCollectionView performBatchUpdates:^{
-                    
-                    if(insertedIndexPathArray.count > 0)
-                        [self.videoThumbnailCollectionView insertItemsAtIndexPaths:insertedIndexPathArray];
-                    
-                    if(deletedIndexPathArray.count > 0)
-                        [self.videoThumbnailCollectionView deleteItemsAtIndexPaths:deletedIndexPathArray];
-                    
-                } completion:^(BOOL finished) {
-                    
-                }];
+            [self reloadCollectionViews];
+            
+            
+            
+            if(self.channel.videoInstances.count == 0)
+            {
+                [self showNoVideosMessage: NSLocalizedString(@"channel_screen_no_videos",nil) withLoader:NO];
             }
-            @catch (NSException *exception) {
-                DebugLog(@"Error in performBatchUpdates of the ChannelDetails:\n%@", [exception description]);
-                [self reloadCollectionViews];
+            else
+            {
+                [self showNoVideosMessage:nil withLoader:NO];
             }
-            
-            
-            
-            
             
             return;
             
         }
-        else if(obj  == appDelegate.currentUser) // if username is being updated by account settings (or the private/public ivar)
+        else if([obj isKindOfClass:[User class]] && [self.channel.channelOwner.uniqueId isEqualToString:appDelegate.currentUser.uniqueId])
         {
             [self updateChannelOwnerWithUser];
+            
+            
         }
     }];
-    
-    
 }
 
 - (void) showNoVideosMessage:(NSString*)message withLoader:(BOOL)withLoader
