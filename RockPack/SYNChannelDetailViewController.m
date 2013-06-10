@@ -632,24 +632,23 @@
                 
             }
             
-            @try {
+            if(insertedIndexPathArray.count == 0 && deletedIndexPathArray.count == 0)
+            {
                 
-                [self.videoThumbnailCollectionView performBatchUpdates:^{
-                    
-                    if(insertedIndexPathArray.count > 0)
-                        [self.videoThumbnailCollectionView insertItemsAtIndexPaths:insertedIndexPathArray];
-                    
-                    if(deletedIndexPathArray.count > 0)
-                        [self.videoThumbnailCollectionView deleteItemsAtIndexPaths:deletedIndexPathArray];
-                    
-                } completion:^(BOOL finished) {
-                    
-                }];
+                return;
             }
-            @catch (NSException *exception) {
-                DebugLog(@"Error in performBatchUpdates of the ChannelDetails:\n%@", [exception description]);
-                [self reloadCollectionViews];
-            }
+            
+            [self.videoThumbnailCollectionView performBatchUpdates:^{
+                
+                if(insertedIndexPathArray.count > 0)
+                    [self.videoThumbnailCollectionView insertItemsAtIndexPaths:insertedIndexPathArray];
+                
+                if(deletedIndexPathArray.count > 0)
+                    [self.videoThumbnailCollectionView deleteItemsAtIndexPaths:deletedIndexPathArray];
+                
+            } completion:^(BOOL finished) {
+                
+            }];
             
             
             
