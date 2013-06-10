@@ -6,11 +6,12 @@
 //  Copyright (c) Rockpack Ltd. All rights reserved.
 //
 
-#import "SYNAccountSettingsAbout.h"
-#import "UIFont+SYNFont.h"
-#import "SYNDeviceManager.h"
-#import <QuartzCore/QuartzCore.h>
 #import "AppConstants.h"
+#import "GAI.h"
+#import "SYNAccountSettingsAbout.h"
+#import "SYNDeviceManager.h"
+#import "UIFont+SYNFont.h"
+#import <QuartzCore/QuartzCore.h>
 
 
 @interface SYNAccountSettingsAbout ()
@@ -53,6 +54,8 @@
 - (void)viewDidLoad
 {
     [super viewDidLoad];
+    
+    [GAI.sharedInstance.defaultTracker sendView: @"Account Settings - About"];
 	
     self.view.backgroundColor = [UIColor colorWithWhite:247.0/255 alpha:1.0];
     

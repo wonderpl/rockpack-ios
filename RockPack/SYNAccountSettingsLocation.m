@@ -6,13 +6,14 @@
 //  Copyright (c) Rockpack Ltd. All rights reserved.
 //
 
-#import "SYNAccountSettingsLocation.h"
-#import "User.h"
-#import "SYNAppDelegate.h"
-#import "SYNOAuthNetworkEngine.h"
-#import "SYNDeviceManager.h"
+#import "GAI.h"
 #import "SYNAccountSettingOtherTableViewCell.h"
+#import "SYNAccountSettingsLocation.h"
+#import "SYNAppDelegate.h"
+#import "SYNDeviceManager.h"
+#import "SYNOAuthNetworkEngine.h"
 #import "UIFont+SYNFont.h"
+#import "User.h"
 
 @interface SYNAccountSettingsLocation ()
 
@@ -65,6 +66,8 @@
 - (void)viewDidLoad
 {
     [super viewDidLoad];
+    
+    [GAI.sharedInstance.defaultTracker sendView: @"Account Settings - Location"];
     
     self.view.backgroundColor = [UIColor whiteColor];
     

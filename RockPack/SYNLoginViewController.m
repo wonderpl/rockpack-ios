@@ -214,9 +214,6 @@
 - (void) viewDidAppear: (BOOL) animated
 {
     [super viewDidAppear:animated];
-
-    // Google analytics support
-    [GAI.sharedInstance.defaultTracker sendView: @"Login - iPad"];
     
     memberLabel.center = CGPointMake(memberLabel.center.x, loginButton.center.y - 54.0);
     memberLabel.frame = CGRectIntegral(memberLabel.frame);
@@ -232,13 +229,25 @@
         return;
     
     if (newState == kLoginScreenStateInitial)
+    {
+        [GAI.sharedInstance.defaultTracker sendView: @"Start"];
         [self setUpInitialState];
+    }
     else if (newState == kLoginScreenStateLogin)
+    {
+        [GAI.sharedInstance.defaultTracker sendView: @"Login 1"];
         [self setUpLoginStateFromPreviousState:state];
+    }
     else if (newState == kLoginScreenStateRegister)
+    {
+        [GAI.sharedInstance.defaultTracker sendView: @"Register"];
         [self setUpRegisterStateFromState:state];
+    }
     else if (newState == kLoginScreenStatePasswordRetrieve)
+    {
+        [GAI.sharedInstance.defaultTracker sendView: @"Forgot password"];
         [self setUpPasswordState];
+    }
     
     state = newState;
 }

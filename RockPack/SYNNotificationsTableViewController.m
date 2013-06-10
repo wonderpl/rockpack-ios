@@ -6,6 +6,7 @@
 //  Copyright (c) Rockpack Ltd. All rights reserved.
 //
 
+#import "GAI.h"
 #import "SYNAppDelegate.h"
 #import "SYNNotificationsTableViewCell.h"
 #import "SYNNotificationsTableViewController.h"
@@ -44,6 +45,8 @@
 - (void)viewDidLoad
 {
     [super viewDidLoad];
+    
+    [GAI.sharedInstance.defaultTracker sendView: @"Notifications"];
     
     self.appDelegate = (SYNAppDelegate*)[[UIApplication sharedApplication] delegate];
     

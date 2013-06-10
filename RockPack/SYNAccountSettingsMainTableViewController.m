@@ -77,6 +77,8 @@
 {
     [super viewDidLoad];
     
+    [GAI.sharedInstance.defaultTracker sendView: @"Account Settings - Root"];
+    
     self.contentSizeForViewInPopover = CGSizeMake(380, 476);
 
     self.tableView.scrollEnabled = [SYNDeviceManager.sharedInstance isIPhone];
