@@ -142,7 +142,6 @@
             [channelInsanceByIdDictionary setObject:ch forKey:ch.uniqueId];
             
         
-        [self.channelsSet removeAllObjects];
         
         NSString *newUniqueId;
         
@@ -168,17 +167,20 @@
                 
                 channel.viewId = self.viewId;
                 
+                [self.channelsSet addObject:channel];
+                
             }
             else
             {
                 [channelInsanceByIdDictionary removeObjectForKey:newUniqueId];
                 
+              
                 [channel setAttributesFromDictionary:channelDictionary
                                  ignoringObjectTypes:ignoreInstantiationFlags];
             }
            
             
-            [self.channelsSet addObject:channel];
+            
             
         }
         
@@ -218,7 +220,6 @@
         [subscriptionInsancesByIdDictionary setObject:su forKey:su.uniqueId];
     
     
-    [self.subscriptionsSet removeAllObjects];
     
     
     for (NSDictionary* subscriptionChannel in itemsArray)
@@ -235,6 +236,13 @@
             channel = [Channel instanceFromDictionary: subscriptionChannel
                             usingManagedObjectContext: self.managedObjectContext
                                   ignoringObjectTypes: kIgnoreVideoInstanceObjects];
+            
+            if (!channel)
+                continue;
+            
+            channel.viewId = self.viewId;
+            
+            [self addSubscriptionsObject:channel];
         }
         else
         {
@@ -242,13 +250,6 @@
         }
         
         
-        if (!channel)
-            continue;
-        
-        
-        [self addSubscriptionsObject:channel];
-        
-        channel.viewId = self.viewId;
         
     }
     

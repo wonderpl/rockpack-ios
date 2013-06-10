@@ -404,6 +404,27 @@
              [self.userProfileController setChannelOwner:(ChannelOwner*)obj];
              
              
+             
+             // == Handle Updated ==
+             
+             
+             NSMutableArray* updatedIndexPathArray = [NSMutableArray arrayWithCapacity:updatedObjects.count]; // maximum
+             
+             [self.channelOwner.channels enumerateObjectsUsingBlock:^(Channel* channel, NSUInteger cidx, BOOL *cstop) {
+                 
+                 [updatedObjects enumerateObjectsUsingBlock:^(id obj, NSUInteger idx, BOOL *stop) {
+                     
+                     if(obj == channel)
+                     {
+                         NSLog(@"PR(+) Updated (%@): %@", NSStringFromClass([obj class]), ((Channel*)obj).title);
+                         
+                         [updatedIndexPathArray addObject:[NSIndexPath indexPathForItem:cidx inSection:0]];
+                     }
+                 }];
+                 
+             }];
+             
+             
              // == Handle Inserted ==
              
              

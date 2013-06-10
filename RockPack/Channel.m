@@ -17,6 +17,7 @@
 @implementation Channel
 
 @synthesize hasChangedSubscribeValue;
+@synthesize hasUpdatedValues;
 
 #pragma mark - Object factory
 

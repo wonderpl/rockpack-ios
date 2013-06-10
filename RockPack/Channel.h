@@ -12,6 +12,7 @@
 
 
 @property (nonatomic) BOOL hasChangedSubscribeValue;
+@property (nonatomic) BOOL hasUpdatedValues;
 
 - (void) setAttributesFromDictionary: (NSDictionary *) dictionary
                  ignoringObjectTypes: (IgnoringObjects) ignoringObjects;
