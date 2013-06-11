@@ -153,7 +153,9 @@
     
     const float colorMask[6] = {222, 255, 222, 255, 222, 255};
     UIImage *img = [[UIImage alloc] init];
-    UIImage *maskedImage = [UIImage imageWithCGImage: CGImageCreateWithMaskingColors(img.CGImage, colorMask)];
+    CGImageRef imgRef = CGImageCreateWithMaskingColors(img.CGImage, colorMask);
+    UIImage *maskedImage = [UIImage imageWithCGImage: imgRef];
+    CGImageRelease(imgRef);
     
     [self.toolbar setBackgroundImage:maskedImage forToolbarPosition:UIToolbarPositionAny barMetrics:UIBarMetricsDefault];
     

@@ -319,6 +319,15 @@
     }
 }
 
+-(void)checkReachability
+{
+    if (!self.reachability)
+    {
+        self.reachability = [Reachability reachabilityWithHostname: _appDelegate.networkEngine.hostName];
+    }
+    [self reachabilityChanged:nil];
+}
+
 - (void) presentNetworkErrorViewWithMesssage: (NSString*) message
 {
     if(self.networkErrorView)

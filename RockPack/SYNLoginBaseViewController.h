@@ -85,4 +85,7 @@ typedef enum {
 
 -(NSString*)zeroPadIfOneCharacter:(NSString*)inputString;
 
+// Additional reachability enablig for resume from background scenario
+-(void)checkReachability;
+
 @end
