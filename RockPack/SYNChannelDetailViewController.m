@@ -33,6 +33,7 @@
 #import "Video.h"
 #import "VideoInstance.h"
 #import "SYNCoverChooserController.h"
+#import "SYNDeviceManager.h"
 #import <AVFoundation/AVFoundation.h>
 #import <QuartzCore/QuartzCore.h>
 
@@ -246,14 +247,14 @@
     if (self.mode == kChannelDetailsModeDisplay)
     {
         // Google analytics support
-        [GAI.sharedInstance.defaultTracker sendView: @"Channel - Details"];
+        [GAI.sharedInstance.defaultTracker sendView: @"Channel details"];
         self.addButton.hidden = NO;
         self.createChannelButton.hidden = YES;
     }
     else
     {
         // Google analytics support
-        [GAI.sharedInstance.defaultTracker sendView: @"Channel - Create"];
+        [GAI.sharedInstance.defaultTracker sendView: @"Add to channel"];
         self.addButton.hidden = YES;
         self.createChannelButton.hidden = NO;
     }
@@ -1172,7 +1173,7 @@
 
 - (IBAction) editButtonTapped: (id) sender
 {
-    [GAI.sharedInstance.defaultTracker sendView: @"Channel - Edit"];
+    [GAI.sharedInstance.defaultTracker sendView: @"Edit channel"];
     
     [[NSNotificationCenter defaultCenter] postNotificationName: (! _isIPhone) ? kChannelsNavControlsHide : kNoteAllNavControlsHide
                                                         object: self
@@ -2561,7 +2562,7 @@
                                         
                                         wself.originalBackgroundImage = image;
                                         
-                                        UIImage* croppedImage = [wself croppedImageForOrientation:[SYNDeviceManager.sharedInstance orientation]];
+                                        UIImage* croppedImage = [wself croppedImageForOrientation:[(SYNDeviceManager *)SYNDeviceManager.sharedInstance orientation]];
                                         
                                         [UIView transitionWithView: wself.view
                                                           duration: 0.35f
