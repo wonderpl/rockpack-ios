@@ -64,6 +64,8 @@
                                                             self.channelsSearchTabView.frame.size.width * 2.0,
                                                             self.channelsSearchTabView.frame.size.height)];
     
+    tabsContainer.autoresizingMask = UIViewAutoresizingFlexibleLeftMargin | UIViewAutoresizingFlexibleRightMargin;
+    
     [tabsContainer addSubview:self.channelsSearchTabView];
     [tabsContainer addSubview:self.videoSearchTabView];
     
