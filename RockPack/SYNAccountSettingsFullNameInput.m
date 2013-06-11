@@ -6,30 +6,34 @@
 //  Copyright (c) Rockpack Ltd. All rights reserved.
 //
 
+#import "GAI.h"
+#import "SYNAccountSettingOtherTableViewCell.h"
 #import "SYNAccountSettingsFullNameInput.h"
-#import "UIFont+SYNFont.h"
 #import "SYNDeviceManager.h"
 #import "SYNOAuthNetworkEngine.h"
-#import "SYNAccountSettingOtherTableViewCell.h"
+#import "UIFont+SYNFont.h"
 
 @interface SYNAccountSettingsFullNameInput () <UITextFieldDelegate>
 
-@property (nonatomic, strong) UITableView* tableView;
-
-@property (nonatomic, strong) SYNPaddedUITextField* lastNameInputField;
-
 @property (nonatomic) BOOL nameIsPublic;
+@property (nonatomic, strong) SYNPaddedUITextField* lastNameInputField;
+@property (nonatomic, strong) UITableView* tableView;
 
 @end
 
+
 @implementation SYNAccountSettingsFullNameInput
 
-
-
-
-- (void)viewDidLoad
+- (void) viewDidLoad
 {
     [super viewDidLoad];
+    
+    id<GAITracker> tracker = [GAI sharedInstance].defaultTracker;
+    
+    [tracker sendEventWithCategory: @"uiAction"
+                        withAction: @"accountPropertyChanged"
+                         withLabel: @"Full name"
+                         withValue: nil];
     
     BOOL isIpad = [SYNDeviceManager.sharedInstance isIPad];
     
@@ -46,9 +50,6 @@
     self.lastNameInputField.delegate = self;
     
     [self.view addSubview:self.lastNameInputField];
-
-    
-    
     
     self.tableView = [[UITableView alloc] initWithFrame: CGRectMake((isIpad ? 1.0 : 0.0),
                                                                     self.lastNameInputField.frame.origin.y + 42.0,
@@ -115,18 +116,22 @@
 
 #pragma mark - Table view data source
 
-- (NSInteger)numberOfSectionsInTableView:(UITableView *)tableView
+- (NSInteger) numberOfSectionsInTableView: (UITableView *) tableView
 {
     return 1;
 }
 
-- (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section
+
+- (NSInteger) tableView: (UITableView *) tableView
+  numberOfRowsInSection: (NSInteger) section
 {
     return 2;
     
 }
 
-- (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath
+
+- (UITableViewCell *) tableView: (UITableView *) tableView
+          cellForRowAtIndexPath: (NSIndexPath *) indexPath
 {
     static NSString *CellIdentifier = @"Cell";
     UITableViewCell *cell;
@@ -158,19 +163,22 @@
     return cell;
 }
 
--(void)saveButtonPressed:(UIButton*)button
+
+- (void) saveButtonPressed: (UIButton*) button
 {
     [self.lastNameInputField resignFirstResponder];
     [self.inputField resignFirstResponder];
     
     if ([self.inputField.text isEqualToString:self.appDelegate.currentUser.firstName] && // user did not change anything
        [self.lastNameInputField.text isEqualToString:self.appDelegate.currentUser.lastName] &&
-        self.nameIsPublic == self.appDelegate.currentUser.fullNameIsPublicValue) {
+        self.nameIsPublic == self.appDelegate.currentUser.fullNameIsPublicValue)
+    {
         [self.navigationController popViewControllerAnimated:YES];
         return;
     }
     
-    if (![self inputIsValid:self.inputField.text] || ![self inputIsValid:self.lastNameInputField.text]) {
+    if (![self inputIsValid:self.inputField.text] || ![self inputIsValid:self.lastNameInputField.text])
+    {
         self.errorLabel.text = NSLocalizedString (@"You Have Entered Invalid Characters", nil);
         [self.spinner stopAnimating];
         self.saveButton.hidden = NO;
@@ -194,21 +202,21 @@
             if(self.nameIsPublic != self.appDelegate.currentUser.fullNameIsPublicValue)
             {
                 
-                [self updateField:@"display_fullname" forValue:[NSNumber numberWithBool:self.nameIsPublic] withCompletionHandler:^{
+                [self updateField:@"display_fullname" forValue:[NSNumber numberWithBool: self.nameIsPublic] withCompletionHandler:^{
                     
                     self.appDelegate.currentUser.fullNameIsPublicValue = self.nameIsPublic;
                     
-                    [self.appDelegate saveContext:YES];
+                    [self.appDelegate saveContext: YES];
                     
-                    [self.navigationController popViewControllerAnimated:YES];
+                    [self.navigationController popViewControllerAnimated: YES];
                     
                 }];
             }
             else
             {
-                [self.appDelegate saveContext:YES];
+                [self.appDelegate saveContext: YES];
                 
-                [self.navigationController popViewControllerAnimated:YES];
+                [self.navigationController popViewControllerAnimated: YES];
             }
             
             
@@ -220,9 +228,9 @@
     
 }
 
--(BOOL)textFieldShouldReturn:(UITextField *)textField
+- (BOOL) textFieldShouldReturn: (UITextField *) textField
 {
-    UIView* view = [self.view viewWithTag:textField.tag +1];
+    UIView* view = [self.view viewWithTag: textField.tag +1];
     if(view)
     {
         [view becomeFirstResponder];

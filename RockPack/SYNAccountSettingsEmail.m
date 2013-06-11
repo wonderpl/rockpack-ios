@@ -30,7 +30,12 @@
 {
     [super viewDidLoad];
     
-    [GAI.sharedInstance.defaultTracker sendView: @"Account Settings - Email"];
+    id<GAITracker> tracker = [GAI sharedInstance].defaultTracker;
+    
+    [tracker sendEventWithCategory: @"uiAction"
+                        withAction: @"accountPropertyChanged"
+                         withLabel: @"Email"
+                         withValue: nil];
 	
     self.view.backgroundColor = [UIColor whiteColor];
 
@@ -38,16 +43,18 @@
     UIImage* backButtonImage = [UIImage imageNamed: @"ButtonAccountBackDefault.png"];
     UIImage* backButtonHighlightedImage = [UIImage imageNamed: @"ButtonAccountBackHighlighted.png"];
     
-    
     [backButton setImage: backButtonImage
                 forState: UIControlStateNormal];
     
     [backButton setImage: backButtonHighlightedImage
                 forState: UIControlStateHighlighted];
     
-    [backButton addTarget:self action:@selector(didTapBackButton:) forControlEvents:UIControlEventTouchUpInside];
+    [backButton addTarget: self
+                   action: @selector(didTapBackButton:)
+         forControlEvents: UIControlEventTouchUpInside];
+    
     backButton.frame = CGRectMake(0.0, 0.0, backButtonImage.size.width, backButtonImage.size.height);
-    UIBarButtonItem *backButtonItem = [[UIBarButtonItem alloc] initWithCustomView:backButton];
+    UIBarButtonItem *backButtonItem = [[UIBarButtonItem alloc] initWithCustomView: backButton];
     
     self.navigationItem.leftBarButtonItem = backButtonItem;
     
@@ -62,39 +69,38 @@
     
     
     UIView * labelContentView = [[UIView alloc]init];
-    [labelContentView addSubview:titleLabel];
+    [labelContentView addSubview: titleLabel];
     
     self.navigationItem.titleView = labelContentView;
 }
 
--(void)saveButtonPressed:(UIButton*)button
+
+- (void) saveButtonPressed: (UIButton*) button
 {
     
     [self.inputField resignFirstResponder];
     
-    if([self.inputField.text isEqualToString:self.appDelegate.currentUser.emailAddress]) {
-        [self.navigationController popViewControllerAnimated:YES];
+    if ([self.inputField.text isEqualToString: self.appDelegate.currentUser.emailAddress])
+    {
+        [self.navigationController popViewControllerAnimated: YES];
         return;
     }
         
     
-    if(![self formIsValid]) {
+    if (![self formIsValid])
+    {
         self.errorLabel.text = NSLocalizedString (@"You Have Entered Invalid Characters", nil);
         return;
     }
     
-    [self updateField:@"email" forValue:self.inputField.text withCompletionHandler:^{
+    [self updateField:@"email" forValue:self.inputField.text withCompletionHandler: ^{
         self.appDelegate.currentUser.emailAddress = self.inputField.text;
         
         
-        [self.appDelegate saveContext:YES];
+        [self.appDelegate saveContext: YES];
         
-        [self.navigationController popViewControllerAnimated:YES];
+        [self.navigationController popViewControllerAnimated: YES];
     }];
 }
-
-
-
-
 
 @end

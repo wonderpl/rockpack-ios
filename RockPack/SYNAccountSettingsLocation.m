@@ -67,7 +67,12 @@
 {
     [super viewDidLoad];
     
-    [GAI.sharedInstance.defaultTracker sendView: @"Account Settings - Location"];
+    id<GAITracker> tracker = [GAI sharedInstance].defaultTracker;
+    
+    [tracker sendEventWithCategory: @"uiAction"
+                        withAction: @"accountPropertyChanged"
+                         withLabel: @"Location"
+                         withValue: nil];
     
     self.view.backgroundColor = [UIColor whiteColor];
     

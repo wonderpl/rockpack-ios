@@ -31,7 +31,12 @@
 {
     [super viewDidLoad];
     
-    [GAI.sharedInstance.defaultTracker sendView: @"Account Settings - Share"];
+    id<GAITracker> tracker = [GAI sharedInstance].defaultTracker;
+    
+    [tracker sendEventWithCategory: @"uiAction"
+                        withAction: @"accountPropertyChanged"
+                         withLabel: @"Share"
+                         withValue: nil];
     
     self.controls = [[NSMutableArray alloc] init];
     

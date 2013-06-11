@@ -22,11 +22,12 @@
 
 
 
--(id)init
+- (id) init
 {
     self = [super init];
-    if(self) {
-        datePicker = [[UIDatePicker alloc] initWithFrame:CGRectMake(0.0, 0.0, 230.0, 280.0)];
+    if (self)
+    {
+        datePicker = [[UIDatePicker alloc] initWithFrame: CGRectMake(0.0, 0.0, 230.0, 280.0)];
         
         self.title = @"Choose a Date";
     }
@@ -34,18 +35,25 @@
     return self;
 }
 
-- (void)viewDidLoad
+
+- (void) viewDidLoad
 {
     [super viewDidLoad];
     
-    [GAI.sharedInstance.defaultTracker sendView: @"Account Settings - Date of birth"];
+    id<GAITracker> tracker = [GAI sharedInstance].defaultTracker;
     
-    [self.view addSubview:datePicker];
+    [tracker sendEventWithCategory: @"uiAction"
+                        withAction: @"accountPropertyChanged"
+                         withLabel: @"Date of birth"
+                         withValue: nil];
+    
+    [self.view addSubview: datePicker];
     
     self.view.backgroundColor = [UIColor whiteColor];
     
-    [datePicker setDatePickerMode:UIDatePickerModeDate];
+    [datePicker setDatePickerMode: UIDatePickerModeDate];
 }
+
 
 - (void) didTapBackButton: (id) sender
 {
