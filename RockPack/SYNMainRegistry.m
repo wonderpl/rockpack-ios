@@ -307,7 +307,7 @@
         d++;
     }
     
-    NSLog(@"deleted feed objects: %i", d);
+    DebugLog(@"deleted feed objects: %i", d);
     
     
     
@@ -411,7 +411,7 @@
     
     // Loop through the fresh data from the server
     
-    NSLog(@"Logging %i items", itemArray.count);
+    DebugLog(@"Logging %i items", itemArray.count);
     
     NSInteger items = 0;
     

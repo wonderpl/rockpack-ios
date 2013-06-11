@@ -1046,11 +1046,11 @@ static void rkl_cleanup_cacheSpinLockStatus(volatile NSUInteger *rkl_cacheSpinLo
   
   if(RKL_EXPECTED((rkl_cacheSpinLockStatus & RKLUnlockedCacheSpinLock) == 0UL, 0L) && RKL_EXPECTED((rkl_cacheSpinLockStatus & RKLLockedCacheSpinLock) != 0UL, 1L)) {
     if(rkl_cacheSpinLock != (OSSpinLock)0) {
-      if(didPrintForcedUnlockWarning == 0UL) { didPrintForcedUnlockWarning = 1UL; NSLog(@"[RegexKitLite] Unusual condition detected: Recorded that rkl_cacheSpinLock was locked, but for some reason it was not unlocked.  Forcibly unlocking rkl_cacheSpinLock. Set a breakpoint at rkl_debugCacheSpinLock to debug. This warning is only printed once."); }
+      if(didPrintForcedUnlockWarning == 0UL) { didPrintForcedUnlockWarning = 1UL; DebugLog(@"[RegexKitLite] Unusual condition detected: Recorded that rkl_cacheSpinLock was locked, but for some reason it was not unlocked.  Forcibly unlocking rkl_cacheSpinLock. Set a breakpoint at rkl_debugCacheSpinLock to debug. This warning is only printed once."); }
       rkl_debugCacheSpinLock(); // Since this is an unusual condition, offer an attempt to catch it before we unlock.
       OSSpinLockUnlock(&rkl_cacheSpinLock);
     } else {
-      if(didPrintNotLockedWarning    == 0UL) { didPrintNotLockedWarning    = 1UL; NSLog(@"[RegexKitLite] Unusual condition detected: Recorded that rkl_cacheSpinLock was locked, but for some reason it was not unlocked, yet rkl_cacheSpinLock is currently not locked? Set a breakpoint at rkl_debugCacheSpinLock to debug. This warning is only printed once."); }
+      if(didPrintNotLockedWarning    == 0UL) { didPrintNotLockedWarning    = 1UL; DebugLog(@"[RegexKitLite] Unusual condition detected: Recorded that rkl_cacheSpinLock was locked, but for some reason it was not unlocked, yet rkl_cacheSpinLock is currently not locked? Set a breakpoint at rkl_debugCacheSpinLock to debug. This warning is only printed once."); }
       rkl_debugCacheSpinLock();
     }
   }
