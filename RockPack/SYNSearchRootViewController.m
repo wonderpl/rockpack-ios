@@ -147,10 +147,8 @@
     }
     
     // Google analytics support
-    [GAI.sharedInstance.defaultTracker sendView: @"Search - Root"];
+//    [GAI.sharedInstance.defaultTracker sendView: @"Search - Root"];
     
-    
-        
     viewIsOnScreen = YES;
     
     if (searchTerm)
