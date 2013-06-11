@@ -247,13 +247,11 @@
         return;
     
     
-    SYNAbstractViewController* newController = self.searchVideosController;
-    
     
     [self.searchVideosController.view setHidden:NO];
     [self.searchChannelsController.view setHidden:YES];
     
-    self.currentController = newController;
+    self.currentController = self.searchVideosController;
     
     
     
@@ -266,13 +264,11 @@
         return;
     
     
-    SYNAbstractViewController* newController = self.searchChannelsController;
-    
     
     [self.searchVideosController.view setHidden:YES];
     [self.searchChannelsController.view setHidden:NO];
     
-    self.currentController = newController;
+    self.currentController = self.searchChannelsController;
     
     
     
