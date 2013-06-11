@@ -18,6 +18,7 @@
 @property (nonatomic, strong) IBOutlet UIButton* deleteButton;
 
 @property (nonatomic, strong) NSString* imageUrlString;
+@property (nonatomic, strong) NSString* dataIndentifier;
 
 @property (nonatomic) BOOL shouldAnimate;
 

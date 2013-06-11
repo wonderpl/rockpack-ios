@@ -184,7 +184,9 @@
     
     currentGenre = nil;
     
-    [self displayChannelsForGenre:currentGenre];
+    [self fetchChannelsForGenre:currentGenre];
+    
+    [self.channelThumbnailCollectionView reloadData];
     
     [self loadChannelsForGenre:currentGenre];
 }
@@ -215,7 +217,98 @@
     [[NSNotificationCenter defaultCenter] postNotificationName: kNoteSearchBarRequestHide
                                                         object: self];
 }
+#pragma mark - Handling Data Notifications
 
+- (void) handleDataModelChange: (NSNotification*) notification
+{
+    [self fetchChannelsForGenre:currentGenre]; // this will populate the self.channels array with fresh data
+    
+    //NSArray* updatedObjects = [[notification userInfo] objectForKey: NSUpdatedObjectsKey];
+    NSArray* insertedObjects = [[notification userInfo] objectForKey: NSInsertedObjectsKey];
+    NSArray* deletedObjects = [[notification userInfo] objectForKey: NSDeletedObjectsKey];
+    
+    
+    // == Handle Inserted ==
+    
+    
+    NSMutableArray* insertedIndexPathArray = [NSMutableArray arrayWithCapacity:insertedObjects.count]; // maximum
+    
+    
+    [self.channels enumerateObjectsUsingBlock:^(Channel* channel, NSUInteger cidx, BOOL *cstop) {
+        
+        [insertedObjects enumerateObjectsUsingBlock:^(id obj, NSUInteger idx, BOOL *stop) {
+            
+            if(obj == channel)
+            {
+                NSLog(@"CH(+) Inserted: %@", ((Channel*)obj).title);
+                
+                [insertedIndexPathArray addObject:[NSIndexPath indexPathForItem:idx inSection:0]];
+            }
+        }];
+    }];
+    
+    
+    
+    // == Handle Deleted == //
+    
+    NSMutableArray* deletedIndetifiers = [NSMutableArray arrayWithCapacity:deletedObjects.count];
+    NSMutableArray* deletedIndexPathArray = [NSMutableArray arrayWithCapacity:deletedObjects.count]; // maximum
+    [deletedObjects enumerateObjectsUsingBlock: ^(id obj, NSUInteger idx, BOOL *stop) {
+        
+        if ([obj isKindOfClass:[Channel class]]) {
+            
+            NSLog(@"PR(-) Deleted: %@", ((Channel*)obj).title);
+            
+            [deletedIndetifiers addObject:((Channel*)obj).uniqueId];
+            
+            
+        }
+        
+    }];
+    
+    int index = 0;
+    for(SYNChannelThumbnailCell* cell in self.channelThumbnailCollectionView.visibleCells) {
+        
+        if([deletedIndetifiers containsObject:cell.dataIndentifier])
+        {
+            NSLog(@"PR(-) Found Cell at: %i", index);
+            [deletedIndexPathArray addObject:[NSIndexPath indexPathForItem:index inSection:0]];
+        }
+        index++;
+        
+    }
+    
+    if(insertedIndexPathArray.count == 0 && deletedIndexPathArray.count == 0)
+    {
+        
+        
+        self.isViewDirty = NO;
+        
+        
+        return;
+    }
+    
+    [self.channelThumbnailCollectionView performBatchUpdates:^{
+        
+        if(insertedIndexPathArray.count > 0)
+            [self.channelThumbnailCollectionView insertItemsAtIndexPaths:insertedIndexPathArray];
+        
+        if(deletedIndexPathArray.count > 0)
+            [self.channelThumbnailCollectionView deleteItemsAtIndexPaths:deletedIndexPathArray];
+        
+        
+        
+    } completion:^(BOOL finished) {
+        
+        
+        self.isViewDirty = NO;
+        
+        
+    }];
+    
+    
+    return;
+}
 
 #pragma mark - Loading of Channels
 
@@ -267,8 +360,6 @@
                                                           return;
                                                       }
                                                       
-                                                      [self displayChannelsForGenre:genre];
-                                                      
                                                       if (self.emptyGenreMessageView)
                                                       {
                                                           [self.emptyGenreMessageView removeFromSuperview];
@@ -301,7 +392,7 @@
 }
 
 
-- (void) displayChannelsForGenre: (Genre*) genre
+- (void) fetchChannelsForGenre: (Genre*) genre
 {
     NSFetchRequest *request = [[NSFetchRequest alloc] init];
     [request setEntity:[NSEntityDescription entityForName: @"Channel"
@@ -352,11 +443,6 @@
     
     self.channels = [NSMutableArray arrayWithArray:resultsArray];
     
-    
-
-    // We shouldn't wait until the animation is over, as this will result in crashes if the user is scrolling
-    
-    [self.channelThumbnailCollectionView reloadData];
 }
 
 
@@ -750,7 +836,10 @@
         self.channelThumbnailCollectionView.alpha = 0.0;
         
     } completion:^(BOOL finished) {
-        [self displayChannelsForGenre:genre];
+        
+        [self fetchChannelsForGenre:genre];
+        
+        [self.channelThumbnailCollectionView reloadData];
         
         [UIView animateWithDuration:0.3 animations:^{
             self.channelThumbnailCollectionView.alpha = 1.0;

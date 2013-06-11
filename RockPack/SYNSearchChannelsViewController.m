@@ -100,10 +100,10 @@
 
 -(void)displayChannelsForGenre
 {
-    [self displayChannelsForGenre:nil];
+    [self fetchChannelsForGenre:nil];
 }
 
-- (void) displayChannelsForGenre: (Genre*) genre
+- (void) fetchChannelsForGenre: (Genre*) genre
 {
     NSFetchRequest *request = [[NSFetchRequest alloc] init];
     [request setEntity:[NSEntityDescription entityForName: @"Channel"
