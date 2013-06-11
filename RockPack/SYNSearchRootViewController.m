@@ -19,6 +19,7 @@
 
 @property (nonatomic) NSInteger tabSelected;
 @property (nonatomic, strong) NSString* currentSelectionId;
+@property (nonatomic, strong) NSString* lastSearchTerm;
 @property (nonatomic, strong) SYNSearchChannelsViewController* searchChannelsController;
 @property (nonatomic, strong) SYNSearchTabView* channelsSearchTabView;
 @property (nonatomic, strong) SYNSearchTabView* videoSearchTabView;
@@ -105,7 +106,7 @@
     
     viewIsOnScreen = YES;
     
-    if (searchTerm)
+    if (searchTerm && ![searchTerm isEqualToString: self.lastSearchTerm])
         [self performSearchForCurrentSearchTerm];
     
     if (!self.currentController)
@@ -129,6 +130,8 @@
 
 - (void) viewWillDisappear: (BOOL) animated
 {
+    self.lastSearchTerm = searchTerm;
+    
     [super viewWillDisappear:animated];
     
     
