@@ -191,7 +191,7 @@
 
 - (void) viewDidAppear:(BOOL)animated
 {
-    
+    [super viewDidAppear:animated];
     self.rockpackLogoImage.frame = self.rockpackLogoImage.frame;
     
     [UIView animateWithDuration:0.3f
