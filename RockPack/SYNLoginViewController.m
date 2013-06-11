@@ -198,6 +198,7 @@
 
 - (void) viewWillAppear:(BOOL)animated
 {
+    [super viewWillAppear:animated];
     self.loginBackgroundImage.frame = self.loginBackgroundImage.bounds;
     
     [UIView animateWithDuration:40.0f
