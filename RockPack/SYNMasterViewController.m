@@ -528,6 +528,9 @@ typedef void(^AnimationCompletionBlock)(BOOL finished);
                   withVideoInstanceArray: (NSArray*) videoInstanceArray
                         andSelectedIndex: (int) selectedIndex
 {
+    // FIXME: Replace with something more elegant (i.e. anything else)
+    appDelegate.searchRefreshDisabled = TRUE;
+    
     if(self.videoViewerViewController)
     {
         //Prevent presenting two video players.
@@ -581,6 +584,9 @@ typedef void(^AnimationCompletionBlock)(BOOL finished);
 
 - (void) removeVideoOverlayController
 {
+    // FIXME: Replace with something more elegant (i.e. anything else)
+    appDelegate.searchRefreshDisabled = FALSE;
+    
     if(!self.videoViewerViewController)
     {
         return;

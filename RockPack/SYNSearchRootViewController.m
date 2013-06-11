@@ -91,6 +91,12 @@
     
     [super viewWillAppear: animated];
     
+    // FIXME: Replace with something more elegant (i.e. anything else)
+    if (appDelegate.searchRefreshDisabled == TRUE)
+    {
+        return;
+    }
+    
     // Google analytics support
     [GAI.sharedInstance.defaultTracker sendView: @"Search - Root"];
     
@@ -106,7 +112,7 @@
     
     viewIsOnScreen = YES;
     
-    if (searchTerm && ![searchTerm isEqualToString: self.lastSearchTerm])
+    if (searchTerm)
         [self performSearchForCurrentSearchTerm];
     
     if (!self.currentController)
@@ -133,6 +139,12 @@
     self.lastSearchTerm = searchTerm;
     
     [super viewWillDisappear:animated];
+    
+    // FIXME: Replace with something more elegant (i.e. anything else)
+    if (appDelegate.searchRefreshDisabled == TRUE)
+    {
+        return;
+    }
     
     
     if([[SYNDeviceManager sharedInstance] isIPhone])
