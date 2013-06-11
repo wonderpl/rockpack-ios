@@ -62,7 +62,7 @@ static NSDateFormatter *dateFormatter = nil;
         
         if (date == nil)
         {
-            NSLog (@"Bad date %@", subString);
+            DebugLog (@"Bad date %@", subString);
 //            AssertOrLog(@"Unable to parse date");
             date = defaultDate;
         }

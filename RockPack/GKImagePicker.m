@@ -94,7 +94,7 @@
     cropController.contentSizeForViewInPopover = picker.contentSizeForViewInPopover;
     UIImage* image = [info objectForKey:UIImagePickerControllerOriginalImage];
 
-    NSLog(@"%f,%f",image.size.width, image.size.height);
+    DebugLog(@"%f,%f",image.size.width, image.size.height);
     if(MAX(image.size.width, image.size.height)>kMaxSuportedImageSize)
     {
         //Image too large

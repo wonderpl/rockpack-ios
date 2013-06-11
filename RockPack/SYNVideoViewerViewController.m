@@ -647,7 +647,7 @@
                                           }
                                                errorHandler: ^(id error) {
                                                    [self.heartActivityIndicator stopAnimating];
-                                                   NSLog(@"Could not star video");
+                                                   DebugLog(@"Could not star video");
                                                    button.selected = ! button.selected;
                                                    button.enabled = YES;
                                                    [self updateVideoDetailsForIndex: self.currentSelectedIndex];
@@ -1039,7 +1039,7 @@
                             self.swipeView.transform = CGAffineTransformMakeRotation((newOrientation==UIDeviceOrientationLandscapeLeft) ? M_PI_2 : -M_PI_2 );
                             
                             CGFloat scaleFactor = fullScreenFrame.size.width / self.videoPlaybackViewController.view.frame.size.width;
-                            NSLog (@"w1 = %f, w2 = %f", fullScreenFrame.size.width, self.videoPlaybackViewController.view.frame.size.width);
+                            DebugLog (@"w1 = %f, w2 = %f", fullScreenFrame.size.width, self.videoPlaybackViewController.view.frame.size.width);
                             if (self.videoPlaybackViewController.view.frame.size.width < self.videoPlaybackViewController.view.frame.size.height)
                             {
                                 scaleFactor = self.videoPlaybackViewController.view.frame.size.height / fullScreenFrame.size.height;

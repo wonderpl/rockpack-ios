@@ -426,7 +426,7 @@
                                                         [self displayEmptyGenreMessage:NSLocalizedString(@"feed_screen_empty_message", nil) andLoader:NO];
                                                     }  
                                                     
-                                                    NSLog(@"new fetched count : %i", self.fetchedResultsController.fetchedObjects.count);
+                                                    DebugLog(@"new fetched count : %i", self.fetchedResultsController.fetchedObjects.count);
                                                     
                                                     self.footerView.showsLoading = NO;
                                                     

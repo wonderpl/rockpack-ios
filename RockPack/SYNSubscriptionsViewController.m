@@ -133,7 +133,7 @@
 
 - (void) setViewFrame: (CGRect) frame
 {
-    NSLog(@"Width: %f", frame.size.width);
+    DebugLog(@"Width: %f", frame.size.width);
     self.view.frame = frame;
     self.channelThumbnailCollectionView.frame = CGRectMake(0.0, 0.0, frame.size.width, frame.size.height);
 }
