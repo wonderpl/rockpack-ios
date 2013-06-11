@@ -97,7 +97,7 @@
         
     
     
-    flowLayout.footerReferenceSize = [self footerSize];
+    //flowLayout.footerReferenceSize = [self footerSize];
     
     // Work out how hight the inital tab bar is
     CGFloat topTabBarHeight = [UIImage imageNamed: @"CategoryBar"].size.height;
@@ -182,11 +182,21 @@
     [self.view addGestureRecognizer: pinchOnChannelView];
 #endif
     
+    
+    // Add CoreData Notifications
+    
+    
+    
     currentGenre = nil;
     
     [self fetchChannelsForGenre:currentGenre];
     
-    [self.channelThumbnailCollectionView reloadData];
+    [self.channelThumbnailCollectionView reloadData];   
+    
+    [[NSNotificationCenter defaultCenter] addObserver: self
+                                             selector: @selector(handleDataModelChange:)
+                                                 name: NSManagedObjectContextDidSaveNotification
+                                               object: appDelegate.mainManagedObjectContext];
     
     [self loadChannelsForGenre:currentGenre];
 }
@@ -221,7 +231,11 @@
 
 - (void) handleDataModelChange: (NSNotification*) notification
 {
+    
+    
     [self fetchChannelsForGenre:currentGenre]; // this will populate the self.channels array with fresh data
+    
+    
     
     //NSArray* updatedObjects = [[notification userInfo] objectForKey: NSUpdatedObjectsKey];
     NSArray* insertedObjects = [[notification userInfo] objectForKey: NSInsertedObjectsKey];
@@ -240,9 +254,9 @@
             
             if(obj == channel)
             {
-                NSLog(@"CH(+) Inserted: %@", ((Channel*)obj).title);
+                NSLog(@"CH(+) Inserted: %@ at %i", ((Channel*)obj).title, cidx);
                 
-                [insertedIndexPathArray addObject:[NSIndexPath indexPathForItem:idx inSection:0]];
+                [insertedIndexPathArray addObject:[NSIndexPath indexPathForItem:cidx inSection:0]];
             }
         }];
     }];
@@ -277,13 +291,12 @@
         index++;
         
     }
+
     
     if(insertedIndexPathArray.count == 0 && deletedIndexPathArray.count == 0)
     {
         
-        
         self.isViewDirty = NO;
-        
         
         return;
     }
@@ -300,7 +313,7 @@
         
     } completion:^(BOOL finished) {
         
-        
+        [self.channelThumbnailCollectionView reloadData];
         self.isViewDirty = NO;
         
         
@@ -842,26 +855,29 @@
         [self.channelThumbnailCollectionView reloadData];
         
         [UIView animateWithDuration:0.3 animations:^{
+            
             self.channelThumbnailCollectionView.alpha = 1.0;
+            
+            if (self.channels.count > 0)
+            {
+                if (self.emptyGenreMessageView)
+                {
+                    [self.emptyGenreMessageView removeFromSuperview];
+                    self.emptyGenreMessageView = nil;
+                }
+            }
+            else
+            {
+                [self displayEmptyGenreMessage:@"LOADING CHANNELS"];
+            }
+            
+            [self loadChannelsForGenre: genre];
         }];
     }];
     
     
     
-    if (self.channels.count > 0)
-    {
-        if (self.emptyGenreMessageView)
-        {
-            [self.emptyGenreMessageView removeFromSuperview];
-            self.emptyGenreMessageView = nil;
-        }
-    }
-    else
-    {
-        [self displayEmptyGenreMessage:@"LOADING CHANNELS"];
-    }
     
-    [self loadChannelsForGenre: genre];
 }
 
 - (void) clearedLocationBoundData
@@ -1060,6 +1076,11 @@
     [self handleNewTabSelectionWithGenre: nil];
     
     [self toggleChannelsCategoryTable: nil];
+}
+
+- (BOOL) shouldInvalidateLayoutForBoundsChange:(CGRect)newBounds
+{
+    return YES;
 }
 
 @end
