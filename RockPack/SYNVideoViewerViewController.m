@@ -32,6 +32,7 @@
 #import "Video.h"
 #import "VideoInstance.h"
 #import <MediaPlayer/MediaPlayer.h>
+#import "SYNDeviceManager.h"
 
 @interface SYNVideoViewerViewController () <UIGestureRecognizerDelegate,
                                             UIPopoverControllerDelegate>
@@ -284,7 +285,7 @@
                                                      name: UIDeviceOrientationDidChangeNotification
                                                    object: nil];
         
-        self.currentOrientation = [[UIDevice currentDevice] orientation];
+        self.currentOrientation = SYNDeviceManager.sharedInstance.orientation;
         [[UIDevice currentDevice] beginGeneratingDeviceOrientationNotifications];
         self.originalFrame = self.placeholderView.frame;
         self.originalSwipeFrame = self.swipeView.frame;
@@ -546,6 +547,13 @@
 
 - (IBAction) userTouchedNextVideoButton: (id) sender
 {
+    id<GAITracker> tracker = [GAI sharedInstance].defaultTracker;
+    
+    [tracker sendEventWithCategory: @"uiAction"
+                        withAction: @"videoNextClick"
+                         withLabel: @"next"
+                         withValue: nil];
+    
     int index = (self.currentSelectedIndex + 1) % self.videoInstanceArray.count;
 
     
@@ -555,6 +563,13 @@
 
 - (IBAction) userTouchedPreviousVideoButton: (id) sender
 {
+    id<GAITracker> tracker = [GAI sharedInstance].defaultTracker;
+    
+    [tracker sendEventWithCategory: @"uiAction"
+                        withAction: @"videoNextClick"
+                         withLabel: @"prev"
+                         withValue: nil];
+    
     int index = self.currentSelectedIndex -  1;
     
     // wrap around if necessary
@@ -569,6 +584,13 @@
 
 - (IBAction) userTouchedVideoAddItButton: (UIButton *) addItButton
 {
+    id<GAITracker> tracker = [GAI sharedInstance].defaultTracker;
+    
+    [tracker sendEventWithCategory: @"uiAction"
+                        withAction: @"videoSelectButtonClick"
+                         withLabel: nil
+                         withValue: nil];
+    
     BOOL isIpad = [[SYNDeviceManager sharedInstance] isIPad];
     VideoInstance *videoInstance = self.videoInstanceArray [self.currentSelectedIndex];
     
@@ -607,6 +629,13 @@
 
 - (IBAction) toggleStarButton: (UIButton *) button
 {
+    id<GAITracker> tracker = [GAI sharedInstance].defaultTracker;
+    
+    [tracker sendEventWithCategory: @"uiAction"
+                        withAction: @"videoStarButtonClick"
+                         withLabel: nil
+                         withValue: nil];
+    
     button.selected = !button.selected;
     
     NSString *starAction = (button.selected == TRUE) ? @"star" : @"unstar";
@@ -788,7 +817,7 @@
 
 
 - (void) userTouchedMaxMinButton
-{
+{    
     if ([SYNDeviceManager.sharedInstance isIPhone])
     {
         if (self.currentOrientation == UIDeviceOrientationPortrait)
@@ -809,12 +838,23 @@
             [self changePlayerOrientation: UIDeviceOrientationPortrait];
         }
         
-        self.videoExpanded = !self.videoExpanded;
+//        self.videoExpanded = !self.videoExpanded;
     }
     else
     {
         // We are on the iPad
         [self userTappedVideo];
+    }
+    
+    if (self.isVideoExpanded)
+    {
+        // Update google analytics
+        id<GAITracker> tracker = [GAI sharedInstance].defaultTracker;
+        
+        [tracker sendEventWithCategory: @"uiAction"
+                            withAction: @"videoMaximizeClick"
+                             withLabel: nil
+                             withValue: nil];
     }
 }
 

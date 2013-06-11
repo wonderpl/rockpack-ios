@@ -943,6 +943,14 @@
 
 - (IBAction) subscribeButtonTapped: (id) sender
 {
+    // Update google analytics
+    id<GAITracker> tracker = [GAI sharedInstance].defaultTracker;
+    
+    [tracker sendEventWithCategory: @"uiAction"
+                        withAction: @"channelSubscribeButtonClick"
+                         withLabel: nil
+                         withValue: nil];
+    
     self.subscribeButton.enabled = NO;
     
     [self addSubscribeActivityIndicator];

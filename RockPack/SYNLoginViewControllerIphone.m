@@ -267,6 +267,13 @@
 
 - (IBAction) facebookTapped: (id) sender
 {
+    id<GAITracker> tracker = [GAI sharedInstance].defaultTracker;
+    
+    [tracker sendEventWithCategory: @"uiAction"
+                        withAction: @"facebookLogin"
+                         withLabel: nil
+                         withValue: nil];
+    
     if(![self isNetworkAccessibleOtherwiseShowErrorAlert])
     {
         return;

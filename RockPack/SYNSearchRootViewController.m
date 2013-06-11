@@ -99,9 +99,6 @@
         return;
     }
     
-    // Google analytics support
-    [GAI.sharedInstance.defaultTracker sendView: @"Search - Root"];
-    
     self.searchVideosController = [[SYNSearchVideosViewController alloc] initWithViewId:viewId];
     self.searchVideosController.itemToUpdate = self.videoSearchTabView;
     self.searchVideosController.parent = self;
