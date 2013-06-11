@@ -97,7 +97,7 @@
         
     
     
-    //flowLayout.footerReferenceSize = [self footerSize];
+    flowLayout.footerReferenceSize = [self footerSize];
     
     // Work out how hight the inital tab bar is
     CGFloat topTabBarHeight = [UIImage imageNamed: @"CategoryBar"].size.height;
@@ -561,22 +561,34 @@
     
     if (kind == UICollectionElementKindSectionFooter)
     {
+        
+        
+        
         if (self.channels.count == 0 || (self.dataRequestRange.location + self.dataRequestRange.length) >= dataItemsAvailable)
         {
-            return supplementaryView;
+            CGRect fakeViewFrame = CGRectZero;
+            fakeViewFrame.size = [self footerSize];
+            supplementaryView = [[UICollectionReusableView alloc] initWithFrame:fakeViewFrame];
+            
+            self.footerView = nil;
+        }
+        else
+        {
+            self.footerView = [self.channelThumbnailCollectionView dequeueReusableSupplementaryViewOfKind: kind
+                                                                                      withReuseIdentifier: @"SYNChannelFooterMoreView"
+                                                                                             forIndexPath: indexPath];
+            
+            [self.footerView.loadMoreButton addTarget: self
+                                               action: @selector(loadMoreChannels:)
+                                     forControlEvents: UIControlEventTouchUpInside];
+            
+            supplementaryView = self.footerView;
         }
         
-        self.footerView = [self.channelThumbnailCollectionView dequeueReusableSupplementaryViewOfKind: kind
-                                                                                    withReuseIdentifier: @"SYNChannelFooterMoreView"
-                                                                                           forIndexPath: indexPath];
         
-        [self.footerView.loadMoreButton addTarget: self
-                                           action: @selector(loadMoreChannels:)
-                                 forControlEvents: UIControlEventTouchUpInside];
+        //[self loadMoreChannels:self.footerView.loadMoreButton]; // for infinite scrolling
         
-        //[self loadMoreChannels:self.footerView.loadMoreButton];
         
-        supplementaryView = self.footerView;
     }
     
     return supplementaryView;
