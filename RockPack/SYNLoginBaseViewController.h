@@ -15,7 +15,7 @@
 #import "SYNOAuth2Credential.h"
 
 
-#define kLoginTermsUrl @"http://www.rockpack.com/tos"
+#define kLoginTermsUrl @"http://rockpack.com/tos"
 #define kLoginPrivacyUrl @"http://rockpack.com/privacy"
 
 typedef enum {
@@ -84,5 +84,8 @@ typedef enum {
               nextToView: (UIView*) view;
 
 -(NSString*)zeroPadIfOneCharacter:(NSString*)inputString;
+
+// Additional reachability enablig for resume from background scenario
+-(void)checkReachability;
 
 @end

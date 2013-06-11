@@ -29,6 +29,7 @@
 #import "UIImageView+ImageProcessing.h"
 #import "Video.h"
 #import "VideoInstance.h"
+#import "GAI.h"
 #import <QuartzCore/QuartzCore.h>
 
 @interface SYNAbstractViewController ()  <UITextFieldDelegate>
@@ -523,6 +524,13 @@
           activityIndicator: (UIActivityIndicatorView *) activityIndicatorView
                  onComplete: (SYNShareCompletionBlock) completionBlock
 {
+    id<GAITracker> tracker = [GAI sharedInstance].defaultTracker;
+    
+    [tracker sendEventWithCategory: @"uiAction"
+                        withAction: @"videoShareButtonClick"
+                         withLabel: nil
+                         withValue: nil];
+    
     [self shareObjectType: @"video_instance"
                  objectId: videoInstance.uniqueId
                    inView: inView
@@ -540,6 +548,13 @@
     activityIndicator: (UIActivityIndicatorView *) activityIndicatorView
            onComplete: (SYNShareCompletionBlock) completionBlock 
 {
+    id<GAITracker> tracker = [GAI sharedInstance].defaultTracker;
+    
+    [tracker sendEventWithCategory: @"uiAction"
+                        withAction: @"channelShareButtonClick"
+                         withLabel: nil
+                         withValue: nil];
+    
     [self shareObjectType: @"channel"
                  objectId: channel.uniqueId
                    inView: inView
@@ -627,7 +642,7 @@
                                               
                                               if (resourceURLString == nil || [resourceURLString isEqualToString: @""])
                                               {
-                                                  resourceURLString = @"http://www.rockpack.com";
+                                                  resourceURLString = @"http://rockpack.com";
                                               }
                                               
                                               if (message == nil || [message isKindOfClass: [NSNull class]])

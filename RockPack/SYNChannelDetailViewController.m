@@ -943,6 +943,14 @@
 
 - (IBAction) subscribeButtonTapped: (id) sender
 {
+    // Update google analytics
+    id<GAITracker> tracker = [GAI sharedInstance].defaultTracker;
+    
+    [tracker sendEventWithCategory: @"uiAction"
+                        withAction: @"channelSubscribeButtonClick"
+                         withLabel: nil
+                         withValue: nil];
+    
     self.subscribeButton.enabled = NO;
     
     [self addSubscribeActivityIndicator];
@@ -1766,10 +1774,7 @@
                                                   [self.originalChannel  setAttributesFromDictionary:dictionary
                                                                                  ignoringObjectTypes:kIgnoreChannelOwnerObject];
                                                   
-                                                  for (VideoInstance* vi in self.channel.videoInstances)
-                                                  {
-                                                      NSLog(@"> %@", vi.uniqueId);
-                                                  }
+                                                  
                                               }
                                               
                                               

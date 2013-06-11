@@ -55,6 +55,8 @@
 @property (readonly, nonatomic, strong) SYNMainRegistry* mainRegistry;
 @property (readonly, nonatomic, strong) SYNSearchRegistry* searchRegistry;
 
+@property (nonatomic, assign) BOOL searchRefreshDisabled;
+
 - (void) deleteDataObject:(NSManagedObject*)managedObject;
 - (void) saveContext: (BOOL) wait;
 - (void) saveSearchContext;
@@ -62,5 +64,6 @@
 - (void) clearCoreDataMainEntities:(BOOL)userBound;
 - (void) logout;
 - (void) resetCurrentOAuth2Credentials;
+
 
 @end

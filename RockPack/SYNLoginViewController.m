@@ -109,22 +109,20 @@
     self.whatsOnYourChannelLabel.text = NSLocalizedString(@"rockpack_strapline", nil);
     
     NSMutableAttributedString* termsString = [[NSMutableAttributedString alloc] initWithString: NSLocalizedString(@"register_screen_legal", nil)];
+    
+    
+    
 
         // TERMS & SERVICESs
     
-    [termsString addAttribute: NSForegroundColorAttributeName
-                        value: [UIColor colorWithRed:(11.0/255.0) green:(166.0/255.0) blue:(171.0/255.0) alpha:(1.0)]
-                        range: NSMakeRange(36, 16)];
+    [termsString addAttribute: NSForegroundColorAttributeName value: [UIColor colorWithRed:(11.0/255.0) green:(166.0/255.0) blue:(171.0/255.0) alpha:(1.0)] range: NSMakeRange(36, 17)];
     
         
     
     
         // PRIVACY POLICY
     
-    [termsString addAttribute: NSForegroundColorAttributeName
-                        value: [UIColor colorWithRed:(11.0/255.0) green:(166.0/255.0) blue:(171.0/255.0) alpha:(1.0)]
-                        range: NSMakeRange(57, 15)];
-    
+    [termsString addAttribute: NSForegroundColorAttributeName value: [UIColor colorWithRed:(11.0/255.0) green:(166.0/255.0) blue:(171.0/255.0) alpha:(1.0)] range: NSMakeRange(58, 14)];    
         
     
         // add terms buttons
@@ -179,7 +177,6 @@
 
 -(void)termsAndConditionsPressed:(UIButton*)button withEvent:(UIEvent*)event
 {
-    
     CGPoint center = [[[event allTouches] anyObject] locationInView:button];
     BOOL isLeft = center.x > (self.termsAndConditionsButton.frame.size.width * 0.5);
     NSURL* urlToGo;
@@ -198,6 +195,7 @@
 
 - (void) viewWillAppear:(BOOL)animated
 {
+    [super viewWillAppear:animated];
     self.loginBackgroundImage.frame = self.loginBackgroundImage.bounds;
     
     [UIView animateWithDuration:40.0f
@@ -932,6 +930,14 @@
 
 - (IBAction) signInWithFacebook: (id) sender
 {
+    id<GAITracker> tracker = [GAI sharedInstance].defaultTracker;
+    
+    [tracker sendEventWithCategory: @"uiAction"
+                        withAction: @"facebookLogin"
+                         withLabel: nil
+                         withValue: nil];
+    
+    
     _facebookLoginIsInProcess = NO;
     
     [self clearAllErrorArrows];

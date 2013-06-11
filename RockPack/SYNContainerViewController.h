@@ -26,8 +26,6 @@ typedef enum {
 @property (nonatomic, readonly) SYNAbstractViewController* showingViewController;
 @property (nonatomic, readonly) SYNContainerScrollView* scrollView;
 
-- (SYNAbstractViewController*) nextShowingViewController;
-
 - (void) navigateToPageByName: (NSString*) pageName;
 
 /**

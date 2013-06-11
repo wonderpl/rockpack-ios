@@ -528,6 +528,9 @@ typedef void(^AnimationCompletionBlock)(BOOL finished);
                   withVideoInstanceArray: (NSArray*) videoInstanceArray
                         andSelectedIndex: (int) selectedIndex
 {
+    // FIXME: Replace with something more elegant (i.e. anything else)
+    appDelegate.searchRefreshDisabled = TRUE;
+    
     if(self.videoViewerViewController)
     {
         //Prevent presenting two video players.
@@ -581,6 +584,9 @@ typedef void(^AnimationCompletionBlock)(BOOL finished);
 
 - (void) removeVideoOverlayController
 {
+    // FIXME: Replace with something more elegant (i.e. anything else)
+    appDelegate.searchRefreshDisabled = FALSE;
+    
     if(!self.videoViewerViewController)
     {
         return;
@@ -683,12 +689,11 @@ typedef void(^AnimationCompletionBlock)(BOOL finished);
     {        
         self.searchViewController = [[SYNSearchRootViewController alloc] initWithViewId: kSearchViewId];
         self.overlayNavigationController = [SYNObjectFactory wrapInNavigationController: self.searchViewController];
-        [self.searchViewController.view addSubview:self.sideNavigationViewController.searchViewController.searchBoxView];
-        self.searchViewController.searchBoxViewController = self.sideNavigationViewController.searchViewController;
-
     }
     else if([[SYNDeviceManager sharedInstance] isIPhone])
     {
+        [self.searchViewController.view addSubview:self.sideNavigationViewController.searchViewController.searchBoxView];
+        self.searchViewController.searchBoxViewController = self.sideNavigationViewController.searchViewController;
         SYNAbstractViewController* topController = (SYNAbstractViewController*)self.searchViewController.navigationController.topViewController;
         [topController animatedPopToRootViewController];
     }

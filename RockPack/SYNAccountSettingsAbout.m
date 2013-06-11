@@ -310,7 +310,7 @@
     
     if (![[UIApplication sharedApplication] openURL:url])
         
-        NSLog(@"%@%@",@"Failed to open url:",[url description]);
+        DebugLog(@"%@%@",@"Failed to open url:",[url description]);
 }
 
 - (void) privacyButtonPressed: (UIButton*) button
@@ -320,7 +320,7 @@
     
     if (![[UIApplication sharedApplication] openURL:url])
         
-        NSLog(@"%@%@",@"Failed to open url:",[url description]);
+        DebugLog(@"%@%@",@"Failed to open url:",[url description]);
 }
 
 

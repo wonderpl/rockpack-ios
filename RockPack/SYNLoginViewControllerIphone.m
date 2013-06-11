@@ -191,7 +191,7 @@
 
 - (void) viewDidAppear:(BOOL)animated
 {
-    
+    [super viewDidAppear:animated];
     self.rockpackLogoImage.frame = self.rockpackLogoImage.frame;
     
     [UIView animateWithDuration:0.3f
@@ -267,6 +267,13 @@
 
 - (IBAction) facebookTapped: (id) sender
 {
+    id<GAITracker> tracker = [GAI sharedInstance].defaultTracker;
+    
+    [tracker sendEventWithCategory: @"uiAction"
+                        withAction: @"facebookLogin"
+                         withLabel: nil
+                         withValue: nil];
+    
     if(![self isNetworkAccessibleOtherwiseShowErrorAlert])
     {
         return;

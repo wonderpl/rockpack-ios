@@ -230,7 +230,7 @@
                   byAppending: (BOOL) append
 {
     
-    NSLog(@"Next request: %i - %i", self.dataRequestRange.location, self.dataRequestRange.length + self.dataRequestRange.location - 1);
+    DebugLog(@"Next request: %i - %i", self.dataRequestRange.location, self.dataRequestRange.length + self.dataRequestRange.location - 1);
     
     self.runningNetworkOperation = [appDelegate.networkEngine updateChannelsScreenForCategory: (genre ? genre.uniqueId : @"all")
                                                                                      forRange: self.dataRequestRange
@@ -348,7 +348,7 @@
     if (!resultsArray)
         return;
     
-    NSLog(@"resultsArray: %i", resultsArray.count);
+    DebugLog(@"resultsArray: %i", resultsArray.count);
     
     self.channels = [NSMutableArray arrayWithArray:resultsArray];
     

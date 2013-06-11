@@ -105,7 +105,7 @@ enum ChannelCoverSelectorState {
         AssertOrLog(@"Channels Details Failed: %@\n%@", [error localizedDescription], [error userInfo]);
     }
     
-    NSLog (@"Count %d", self.fetchedResultsController.fetchedObjects.count);
+    DebugLog (@"Count %d", self.fetchedResultsController.fetchedObjects.count);
     
     // If we already have itmes in the database, start after the last one of those
     self.dataItemsAvailable = self.fetchedResultsController.fetchedObjects.count;
@@ -447,7 +447,7 @@ enum ChannelCoverSelectorState {
     
     self.dataRequestRange = NSMakeRange(nextStart, nextSize);
     
-    NSLog (@"Range %d:%d    ", self.dataRequestRange.location, self.dataRequestRange.length);
+    DebugLog (@"Range %d:%d    ", self.dataRequestRange.location, self.dataRequestRange.length);
 }
 
 
@@ -608,7 +608,7 @@ enum ChannelCoverSelectorState {
                                                   else
                                                       self.dataItemsAvailable = self.dataRequestRange.length;
                                                   
-                                                  NSLog (@"Count %d", self.fetchedResultsController.fetchedObjects.count);
+                                                  DebugLog (@"Count %d", self.fetchedResultsController.fetchedObjects.count);
 //                                                  if ((self.dataRequestRange.location + self.dataRequestRange.length) >= self.dataItemsAvailable)
                                                   {
 //                                                      self.noMoreCovers = TRUE;
