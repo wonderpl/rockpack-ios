@@ -41,6 +41,8 @@
     
     CGImageRef imgRef = CGImageSourceCreateThumbnailAtIndex(imageSource, 0, options);
     
+    CFRelease(options);
+    
     UIImage* scaledImage = [UIImage imageWithCGImage: imgRef];
     
     DebugLog(@"Scaled image width: %f, height%f", scaledImage.size.width, scaledImage.size.height);

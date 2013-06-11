@@ -86,7 +86,7 @@
         
         // == Loading Label == //
         NSString* loadingString = NSLocalizedString(@"channels_screen_loading_categories", nil);
-        CGRect loadingLabelFrame;
+        CGRect loadingLabelFrame = CGRectZero;
         UIFont* rpFont = [UIFont rockpackFontOfSize:18];
         loadingLabelFrame.size = [loadingString sizeWithFont:rpFont];
         self.loadingLabel = [[UILabel alloc] initWithFrame:loadingLabelFrame];
