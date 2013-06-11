@@ -746,7 +746,18 @@
     
     // display what is already in the DB and then load and display again
     
-    [self displayChannelsForGenre:genre];
+    [UIView animateWithDuration:0.3 animations:^{
+        self.channelThumbnailCollectionView.alpha = 0.0;
+        
+    } completion:^(BOOL finished) {
+        [self displayChannelsForGenre:genre];
+        
+        [UIView animateWithDuration:0.3 animations:^{
+            self.channelThumbnailCollectionView.alpha = 1.0;
+        }];
+    }];
+    
+    
     
     if (self.channels.count > 0)
     {
