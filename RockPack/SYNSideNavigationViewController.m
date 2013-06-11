@@ -114,16 +114,21 @@ typedef enum {
 {
     [super viewDidLoad];
     
+    
     // Version number display
+
+    NSString * appBuild =@"";
+#ifdef SHOWVERSIONNUMBER
 //    NSString * appVersion = [[NSBundle mainBundle] objectForInfoDictionaryKey: @"CFBundleShortVersionString"];
     NSString * buildTarget = [[NSBundle mainBundle] objectForInfoDictionaryKey: (NSString *)kSYNBundleBuildTarget];
     
-    NSString * appBuild;
     if ([buildTarget isEqualToString:@"Develop"])
         appBuild = [[NSBundle mainBundle] objectForInfoDictionaryKey: (NSString *)kSYNBundleFullVersion];
     else
         appBuild = [[NSBundle mainBundle] objectForInfoDictionaryKey: (NSString *)kCFBundleVersionKey];
     
+#endif
+
     self.versionNumberLabel.text = appBuild;
     
     self.userNameLabel.font = [UIFont rockpackFontOfSize: self.userNameLabel.font.pointSize];
