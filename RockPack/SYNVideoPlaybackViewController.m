@@ -1363,7 +1363,7 @@ static UIWebView* vimeoideoWebViewInstance;
     // just after a user shuttle event)
     
     NSTimeInterval currentTime = self.currentTime;
-    NSLog (@"Current time %lf", currentTime);
+    DebugLog (@"Current time %lf", currentTime);
     
     // We need to wait until the play time starts to increase before fading up the video
     if (currentTime > 0.0f)
@@ -1506,7 +1506,7 @@ static UIWebView* vimeoideoWebViewInstance;
     float newTime = slider.value * self.currentDuration;
     
     [self setCurrentTime: newTime];
-    NSLog (@"Setting time %f", newTime);
+    DebugLog (@"Setting time %f", newTime);
     
     self.currentTimeLabel.text = [NSString timecodeStringFromSeconds: newTime];
 }

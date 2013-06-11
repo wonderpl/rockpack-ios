@@ -221,13 +221,13 @@
 
 - (void) enqueueSignedOperation: (MKNetworkOperation *) request
 {
-    NSLog (@"Called abstract function - unexpected");
+    DebugLog (@"Called abstract function - unexpected");
 }
 
 - (void) refreshOAuthTokenWithCompletionHandler: (MKNKUserErrorBlock) completionBlock
                                        errorHandler: (MKNKUserSuccessBlock) errorBlock
 {
-    NSLog (@"Called abstract function - unexpected");
+    DebugLog (@"Called abstract function - unexpected");
 }
 
 

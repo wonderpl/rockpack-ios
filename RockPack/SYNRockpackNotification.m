@@ -24,7 +24,7 @@
         NSNumber* identifierNumber = [data objectForKey:@"id"];
         if(!identifierNumber || ![identifierNumber isKindOfClass:[NSNumber class]])
         {
-            NSLog(@"Did not find a valid notification id: %@", data);
+            DebugLog(@"Did not find a valid notification id: %@", data);
             return nil;
         }
         
@@ -147,7 +147,7 @@
                 self.videoId = [videoDictionary objectForKey:@"id"];
                 self.videoThumbnailUrl = [videoDictionary objectForKey:@"thumbnail_url"];
                 
-                NSLog(@"self.videoThumbnailUrl: %@", self.videoThumbnailUrl);
+                DebugLog(@"self.videoThumbnailUrl: %@", self.videoThumbnailUrl);
                 
                 NSDictionary* channelDictionary = [videoDictionary objectForKey:@"channel"];
                 if(channelDictionary && [channelDictionary isKindOfClass:[NSDictionary class]])

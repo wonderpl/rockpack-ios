@@ -1834,7 +1834,6 @@
                                                   
                                                   self.originalChannel.hasUpdatedValues = YES;
                                                   
-                                                  
                                               }
                                               
                                               

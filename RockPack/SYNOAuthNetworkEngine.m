@@ -869,7 +869,7 @@
          NSString *jsonString = [[NSString alloc] initWithData: jsonData
                                                       encoding: NSUTF8StringEncoding];
         
-        NSLog(@"%@", jsonString);
+        DebugLog(@"%@", jsonString);
          
          return jsonString;
      }
@@ -1152,7 +1152,7 @@
     
     [self enqueueSignedOperation: networkOperation];
     
-    NSLog(@"%@", networkOperation);
+    DebugLog(@"%@", networkOperation);
 }
 
 - (void) channelUnsubscribeForUserId: (NSString *) userId
