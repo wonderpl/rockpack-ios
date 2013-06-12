@@ -18,14 +18,14 @@
 @implementation SYNOnBoardingPopoverView
 
 +(id)withMessage:(NSString*)message
-      pointingTo:(CGPoint)point
+      pointingTo:(CGRect)pointRect
    withDirection:(PointingDirection)direction
 {
-    return [[self alloc] initWithMessage:(NSString*)message pointingTo:(CGPoint)point withDirection:(PointingDirection)direction];
+    return [[self alloc] initWithMessage:(NSString*)message pointingTo:(CGRect)pointRect withDirection:(PointingDirection)direction];
 }
 
 - (id)initWithMessage:(NSString*)message
-           pointingTo:(CGPoint)point
+           pointingTo:(CGRect)pointRect
         withDirection:(PointingDirection)direction
 {
     
@@ -35,7 +35,7 @@
         
         self.direction = direction;
         
-        self.point = point;
+        self.pointRect = pointRect;
         
         // panel view
         CGRect panelRect = CGRectMake(0.0, 0.0, 400.0, 220.0);

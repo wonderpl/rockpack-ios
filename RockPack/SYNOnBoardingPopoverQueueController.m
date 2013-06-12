@@ -160,28 +160,29 @@
     switch (popover.direction) {
             
         case PointingDirectionNone: // center in view
-            panelFrame.origin.y = self.view.frame.size.height * 0.5 - panelFrame.size.height * 0.5;
             panelFrame.origin.x = self.view.frame.size.width * 0.5 - panelFrame.size.width * 0.5;
+            panelFrame.origin.y = self.view.frame.size.height * 0.5 - panelFrame.size.height * 0.5;
             break;
             
         case PointingDirectionUp:
-            panelFrame.origin.y = popover.point.y + panelFrame.size.height + STD_PADDING_DISTANCE;
-            panelFrame.origin.x = popover.point.x - panelFrame.size.width + STD_PADDING_DISTANCE;
+            panelFrame.origin.x = popover.pointRect.origin.x + (popover.pointRect.size.height * 0.5) - panelFrame.size.width + STD_PADDING_DISTANCE;
+            panelFrame.origin.y = popover.pointRect.origin.y + popover.pointRect.size.height + STD_PADDING_DISTANCE;
+            
             break;
             
         case PointingDirectionDown:
-            panelFrame.origin.y = popover.point.y - panelFrame.size.height - STD_PADDING_DISTANCE;
-            panelFrame.origin.x = popover.point.x - panelFrame.size.width + STD_PADDING_DISTANCE;
+            panelFrame.origin.x = popover.pointRect.origin.x + (popover.pointRect.size.height * 0.5) - panelFrame.size.width + STD_PADDING_DISTANCE;
+            panelFrame.origin.y = popover.pointRect.origin.y - panelFrame.size.height - STD_PADDING_DISTANCE;
             break;
             
         case PointingDirectionLeft:
-            panelFrame.origin.y = popover.point.y - STD_PADDING_DISTANCE;
-            panelFrame.origin.x = popover.point.x + panelFrame.size.width + STD_PADDING_DISTANCE;
+            panelFrame.origin.y = popover.pointRect.origin.y - STD_PADDING_DISTANCE;
+            panelFrame.origin.x = popover.pointRect.origin.x + popover.pointRect.size.width + STD_PADDING_DISTANCE;
             break;
             
         case PointingDirectionRight:
-            panelFrame.origin.y = popover.point.y - STD_PADDING_DISTANCE;
-            panelFrame.origin.x = popover.point.x - panelFrame.size.width - STD_PADDING_DISTANCE;
+            panelFrame.origin.y = popover.pointRect.origin.y - STD_PADDING_DISTANCE;
+            panelFrame.origin.x = popover.pointRect.origin.x - panelFrame.size.width - STD_PADDING_DISTANCE;
             break;
             
     }
