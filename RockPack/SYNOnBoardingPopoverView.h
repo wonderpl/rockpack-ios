@@ -20,8 +20,8 @@
        pointingTo:(CGPoint)point
     withDirection:(PointingDirection)direction;
 
-@property (nonatomic, strong) UIView* backgroundView;
-@property (nonatomic, strong) UIView* panelView;
+@property (nonatomic) PointingDirection direction;
+@property (nonatomic) CGPoint point;
 @property (nonatomic, strong) UIButton* okButton;
 
 @end

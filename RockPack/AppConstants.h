@@ -290,6 +290,11 @@ typedef enum _Gender {
 
 #define kCurrentPage        @"kCurrentPage"
 
+// UserDefaults
+
+#define kUserDefaultsSubscribe @"ud_subscribe"
+#define kUserDefaultsAddVideo @"ud_addVideo"
+#define kUserDefaultsChannels @"ud_channels"
 
 //Login Origin
 

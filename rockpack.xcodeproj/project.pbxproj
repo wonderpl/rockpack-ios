@@ -962,6 +962,7 @@
 		BE2D2158171D8A4500B4B755 /* AvatarProfile.png in Resources */ = {isa = PBXBuildFile; fileRef = BE2D2156171D8A4500B4B755 /* AvatarProfile.png */; };
 		BE2D2159171D8A4500B4B755 /* AvatarProfile@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = BE2D2157171D8A4500B4B755 /* AvatarProfile@2x.png */; };
 		BE3983D11768A4AA00EE9C7B /* SYNOnBoardingPopoverView.m in Sources */ = {isa = PBXBuildFile; fileRef = BE3983D01768A4AA00EE9C7B /* SYNOnBoardingPopoverView.m */; };
+		BE3983D41768B6D800EE9C7B /* SYNOnBoardingPopoverQueueController.m in Sources */ = {isa = PBXBuildFile; fileRef = BE3983D31768B6D800EE9C7B /* SYNOnBoardingPopoverQueueController.m */; };
 		BE3A771117300D3C008ED81F /* SYNAccountSettingsModalContainer.m in Sources */ = {isa = PBXBuildFile; fileRef = BE3A771017300D3C008ED81F /* SYNAccountSettingsModalContainer.m */; };
 		BE5D29EB17577E2800C00486 /* SYNFeedMessagesView.m in Sources */ = {isa = PBXBuildFile; fileRef = BE5D29EA17577E2800C00486 /* SYNFeedMessagesView.m */; };
 		BE7D342E170DD8C90085AB81 /* SYNChannelFooterMoreView.xib in Resources */ = {isa = PBXBuildFile; fileRef = BE7D342D170DD8C90085AB81 /* SYNChannelFooterMoreView.xib */; };
@@ -2201,6 +2202,8 @@
 		BE2D2157171D8A4500B4B755 /* AvatarProfile@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = "AvatarProfile@2x.png"; path = "Assets/Images/AvatarProfile@2x.png"; sourceTree = "<group>"; };
 		BE3983CF1768A4AA00EE9C7B /* SYNOnBoardingPopoverView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SYNOnBoardingPopoverView.h; sourceTree = "<group>"; };
 		BE3983D01768A4AA00EE9C7B /* SYNOnBoardingPopoverView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SYNOnBoardingPopoverView.m; sourceTree = "<group>"; };
+		BE3983D21768B6D800EE9C7B /* SYNOnBoardingPopoverQueueController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SYNOnBoardingPopoverQueueController.h; sourceTree = "<group>"; };
+		BE3983D31768B6D800EE9C7B /* SYNOnBoardingPopoverQueueController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SYNOnBoardingPopoverQueueController.m; sourceTree = "<group>"; };
 		BE3A770F17300D3C008ED81F /* SYNAccountSettingsModalContainer.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SYNAccountSettingsModalContainer.h; sourceTree = "<group>"; };
 		BE3A771017300D3C008ED81F /* SYNAccountSettingsModalContainer.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SYNAccountSettingsModalContainer.m; sourceTree = "<group>"; };
 		BE53EE6017609587008360D2 /* Rockpack 4.xcdatamodel */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcdatamodel; path = "Rockpack 4.xcdatamodel"; sourceTree = "<group>"; };
@@ -4485,6 +4488,8 @@
 			children = (
 				BE3983CF1768A4AA00EE9C7B /* SYNOnBoardingPopoverView.h */,
 				BE3983D01768A4AA00EE9C7B /* SYNOnBoardingPopoverView.m */,
+				BE3983D21768B6D800EE9C7B /* SYNOnBoardingPopoverQueueController.h */,
+				BE3983D31768B6D800EE9C7B /* SYNOnBoardingPopoverQueueController.m */,
 			);
 			name = "OnBoarding Messages";
 			sourceTree = "<group>";
@@ -5925,6 +5930,7 @@
 				01F94F1417609F9B006C024D /* SYNTextFieldLoginiPhone.m in Sources */,
 				01F94F171760A2D2006C024D /* SYNTextFieldSearchIPhone.m in Sources */,
 				BE3983D11768A4AA00EE9C7B /* SYNOnBoardingPopoverView.m in Sources */,
+				BE3983D41768B6D800EE9C7B /* SYNOnBoardingPopoverQueueController.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
