@@ -762,6 +762,13 @@
 
 - (IBAction) doLogin: (id) sender
 {
+    id<GAITracker> tracker = [GAI sharedInstance].defaultTracker;
+    
+    [tracker sendEventWithCategory: @"goal"
+                        withAction: @"userLogin"
+                         withLabel: @"Rockpack"
+                         withValue: nil];
+    
     [self clearAllErrorArrows];
     
     [self resignAllFirstResponders];
@@ -937,6 +944,11 @@
                          withLabel: nil
                          withValue: nil];
     
+    [tracker sendEventWithCategory: @"goal"
+                        withAction: @"userLogin"
+                         withLabel: @"Facebook"
+                         withValue: nil];
+    
     
     _facebookLoginIsInProcess = NO;
     
@@ -1070,6 +1082,11 @@
     
     // Now set the age
     id<GAITracker> tracker = [GAI sharedInstance].defaultTracker;
+    
+    [tracker sendEventWithCategory: @"goal"
+                        withAction: @"userRegistration"
+                         withLabel: @"Rockpack"
+                         withValue: nil];
     
     [tracker setCustom: kGADimensionAge
              dimension: ageString];
