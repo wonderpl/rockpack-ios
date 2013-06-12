@@ -104,6 +104,7 @@ typedef void (^SYNShareCompletionBlock)(void);
                  onComplete: (SYNShareCompletionBlock) completionBlock;
 
 - (void) shareChannel: (Channel *) channel
+              isOwner: (NSNumber *) isOwner
                inView: (UIView *) inView
              fromRect: (CGRect) rect
       arrowDirections: (UIPopoverArrowDirection) arrowDirections

@@ -923,13 +923,14 @@
     shareButton.enabled = FALSE;
     
     [self shareChannel: self.channel
+               isOwner: ([self.channel.channelOwner.uniqueId isEqualToString:appDelegate.currentUser.uniqueId]) ? @(TRUE) : @(FALSE)
                 inView: self.view
               fromRect: self.shareButton.frame
        arrowDirections: UIPopoverArrowDirectionRight
      activityIndicator: self.shareActivityIndicator
             onComplete: ^{
                 // Re-enable button
-                    shareButton.enabled = TRUE;
+                shareButton.enabled = TRUE;
             }];
 }
 
@@ -976,7 +977,7 @@
 
 - (IBAction) profileImagePressed: (UIButton*) sender
 {
-    if([self.channel.channelOwner.uniqueId isEqualToString:appDelegate.currentUser.uniqueId])
+    if ([self.channel.channelOwner.uniqueId isEqualToString:appDelegate.currentUser.uniqueId])
     {
         NSNotification* navigationNotification = [NSNotification notificationWithName: kNavigateToPage
                                                                                object: self
