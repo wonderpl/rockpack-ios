@@ -64,7 +64,7 @@ didFinishLaunchingWithOptions: (NSDictionary *) launchOptions
 #endif
     
 #if USEUDID
-//    [TestFlight setDeviceIdentifier: [[UIDevice currentDevice] uniqueIdentifier]];
+    [TestFlight setDeviceIdentifier: [[UIDevice currentDevice] uniqueIdentifier]];
 #endif
     
     // We need to set the audio session so that that app will continue to play audio even if the mute switch is on
