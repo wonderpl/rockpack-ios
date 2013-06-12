@@ -1979,6 +1979,17 @@
     
 }
 
+-(void)viewDidAppear:(BOOL)animated
+{
+    [super viewDidAppear:animated];
+    
+    NSString* message = @"Tap this button to subscribe to a channel and get new videos in your feed.";
+    CGPoint point = CGPointZero;
+    SYNOnBoardingPopoverView* onBoadringPopover = [SYNOnBoardingPopoverView withMessage:message pointingTo:point withDirection:PointingDirectionNone];
+    [self.view addSubview:onBoadringPopover];
+    
+}
+
 
 - (void) textViewDidEndEditing: (UITextView *) textView
 {
