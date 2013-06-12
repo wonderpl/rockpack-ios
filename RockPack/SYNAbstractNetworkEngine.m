@@ -88,6 +88,8 @@
         [retryNetworkOperation setUploadStream:retryInputStream];
     }
     
+    __weak MKNetworkOperation *weakNetworkOperation = networkOperation;
+    
     // Set the callback logic for our standard network operation 
     [networkOperation addJSONCompletionHandler: ^(id response)
      {
@@ -204,6 +206,16 @@
              NSError *responseErrror = (NSError *) response;
              NSDictionary* customErrorDictionary = @{@"network_error" : [NSString stringWithFormat: @"%@, Server responded with %i", responseErrror.domain, responseErrror.code]};
              DebugLog(@"API Call failed: %@", customErrorDictionary);
+             
+             id<GAITracker> tracker = [GAI sharedInstance].defaultTracker;
+             
+             NSString *errorCodeString = [NSString stringWithFormat: @"Error %d", responseErrror.code];
+             
+             [tracker sendEventWithCategory: @"network"
+                                 withAction: errorCodeString
+                                  withLabel: weakNetworkOperation.url
+                                  withValue: nil];
+             
              errorBlock(customErrorDictionary);
          }
          else if ([response isKindOfClass: [NSDictionary class]] && ((NSDictionary *)response[@"error"] != nil))

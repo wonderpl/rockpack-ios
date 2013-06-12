@@ -10,6 +10,7 @@
 #import "Channel.h"
 #import "ChannelCover.h"
 #import "CoverArt.h"
+#import "GAI.h"
 #import "GKImagePicker.h"
 #import "SDWebImageManager.h"
 #import "SYNAppDelegate.h"
@@ -228,6 +229,8 @@
 - (void) collectionView: (UICollectionView *) collectionView
          didSelectItemAtIndexPath: (NSIndexPath *) indexPath
 {
+    id<GAITracker> tracker = [GAI sharedInstance].defaultTracker;
+    
     // check to see that this is not our currently selected indexPath
     if (![self.indexPathSelected isEqual: indexPath])
     {
@@ -245,6 +248,11 @@
         {
             case 0:
             {
+                [tracker sendEventWithCategory: @"goal"
+                                    withAction: @"channelCoverSelected"
+                                     withLabel: @"None"
+                                     withValue: nil];
+                
                 imageURLString = @"";
                 remoteId = kCoverSetNoCover;
             }
@@ -252,6 +260,11 @@
                 
             case 1:
             {
+                [tracker sendEventWithCategory: @"goal"
+                                    withAction: @"channelCoverSelected"
+                                     withLabel: @"Uploaded"
+                                     withValue: nil];
+                
                 if (self.shouldShowUploadingPlaceholder)
                 {
                     imageURLString = @"uploading";
@@ -270,6 +283,11 @@
                 
             case 2:
             {
+                [tracker sendEventWithCategory: @"goal"
+                                    withAction: @"channelCoverSelected"
+                                     withLabel: @"Rockpack"
+                                     withValue: nil];
+                
                 // User channel covers
                 CoverArt *coverArt = [self.rockpackCoverFetchedResultsController objectAtIndexPath: [NSIndexPath indexPathForRow: indexPath.row
                                                                                                                        inSection: 0]];

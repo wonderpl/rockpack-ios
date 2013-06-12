@@ -12,25 +12,25 @@
 
 @property (nonatomic, readonly) UIUserInterfaceIdiom idiom;
 
-+(id)sharedInstance;
++ (SYNDeviceManager *) sharedInstance;
 
 
--(BOOL)isIPad;
--(BOOL)isIPhone;
+- (BOOL) isIPad;
+- (BOOL) isIPhone;
 
--(BOOL)isLandscape;
--(BOOL)isPortrait;
+- (BOOL) isLandscape;
+- (BOOL) isPortrait;
 
--(BOOL)isRetina;
+- (BOOL) isRetina;
 
--(UIDeviceOrientation)orientation;
+- (UIDeviceOrientation) orientation;
 
--(CGFloat)currentScreenWidth;
--(CGFloat)currentScreenHeight;
--(CGFloat)currentScreenHeightWithStatusBar;
--(CGRect)currentScreenRect;
--(CGSize)currentScreenSize;
+- (CGFloat) currentScreenWidth;
+- (CGFloat) currentScreenHeight;
+- (CGFloat) currentScreenHeightWithStatusBar;
+- (CGRect) currentScreenRect;
+- (CGSize) currentScreenSize;
 
--(UIInterfaceOrientation)currentOrientation;
+- (UIInterfaceOrientation) currentOrientation;
 
 @end

@@ -227,8 +227,12 @@ typedef enum {
 {
     [super viewWillAppear: animated];
     
-    // Google analytics support
-    [GAI.sharedInstance.defaultTracker sendView: @"Navigation"];
+    id<GAITracker> tracker = [GAI sharedInstance].defaultTracker;
+    
+    [tracker sendEventWithCategory: @"uiAction"
+                        withAction: @"mainNavClick"
+                         withLabel: nil
+                         withValue: nil];
 }
 
 
