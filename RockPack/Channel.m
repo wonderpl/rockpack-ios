@@ -196,6 +196,10 @@
                 NSNumber* newPosition = [channelDictionary objectForKey: @"position"];
                 if(newPosition && [newPosition isKindOfClass:[NSNumber class]])
                     videoInstance.position = newPosition;
+                
+                // do same title
+                
+                // imageUrl
             }
             
         }

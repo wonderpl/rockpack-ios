@@ -57,7 +57,7 @@
 @property (nonatomic, strong) UILabel* subCategoryNameLabel;
 @property (nonatomic, strong) UIImageView* arrowImage;
 @property (nonatomic, strong) NSMutableArray* channels;
-
+@property (nonatomic) BOOL shouldReloadCollectionView;
 
 @property (nonatomic, strong) Genre* allGenre;
 @end
@@ -72,6 +72,7 @@
 @synthesize isAnimating;
 @synthesize channels;
 @synthesize runningNetworkOperation = _runningNetworkOperation;
+@synthesize shouldReloadCollectionView;
 
 #pragma mark - View lifecycle
 
@@ -232,10 +233,12 @@
 - (void) handleDataModelChange: (NSNotification*) notification
 {
     
+//    if(self.isViewDirty)
+//        return;
     
     [self fetchChannelsForGenre:currentGenre]; // this will populate the self.channels array with fresh data
     
-    
+    NSBlockOperation *batchUpdateBlockOperation = [NSBlockOperation new];
     
     //NSArray* updatedObjects = [[notification userInfo] objectForKey: NSUpdatedObjectsKey];
     NSArray* insertedObjects = [[notification userInfo] objectForKey: NSInsertedObjectsKey];
@@ -301,23 +304,64 @@
         return;
     }
     
-    [self.channelThumbnailCollectionView performBatchUpdates:^{
-        
-        if(insertedIndexPathArray.count > 0)
-            [self.channelThumbnailCollectionView insertItemsAtIndexPaths:insertedIndexPathArray];
-        
-        if(deletedIndexPathArray.count > 0)
-            [self.channelThumbnailCollectionView deleteItemsAtIndexPaths:deletedIndexPathArray];
-        
-        
-        
-    } completion:^(BOOL finished) {
-        
+    // check for damn iOS bugs
+    if(insertedIndexPathArray.count > 0)
+    {
+        if([self.channelThumbnailCollectionView numberOfSections] > 0)
+        {
+            
+            if([self.channelThumbnailCollectionView numberOfItemsInSection:0] == 0)
+            {
+                shouldReloadCollectionView = YES;
+            }
+            else
+            {
+                [batchUpdateBlockOperation addExecutionBlock:^{
+                    [self.channelThumbnailCollectionView insertItemsAtIndexPaths:insertedIndexPathArray];
+                }];
+            }
+        }
+        else
+        {
+            shouldReloadCollectionView = YES;
+        }
+    }
+    
+    if(deletedIndexPathArray.count > 0)
+    {
+        if ([self.channelThumbnailCollectionView numberOfItemsInSection:0] == 1)
+        {
+            shouldReloadCollectionView = YES;
+        }
+        else
+        {
+            [batchUpdateBlockOperation addExecutionBlock:^{
+                [self.channelThumbnailCollectionView deleteItemsAtIndexPaths:deletedIndexPathArray];
+            }];
+        }
+    }
+    
+    if(shouldReloadCollectionView)
+    {
         [self.channelThumbnailCollectionView reloadData];
         self.isViewDirty = NO;
-        
-        
-    }];
+    }
+    else
+    {
+        [self.channelThumbnailCollectionView performBatchUpdates:^{
+            
+            [batchUpdateBlockOperation start];
+            
+        } completion:^(BOOL finished) {
+            
+            [self.channelThumbnailCollectionView reloadData];
+            self.isViewDirty = NO;
+            
+            
+        }];
+    }
+    
+    
     
     
     return;
@@ -830,6 +874,8 @@
     {
         return;
     }
+    
+    self.runningNetworkOperation = nil; // this will stop existing requests
 
     currentCategoryId = genre.uniqueId;
 
