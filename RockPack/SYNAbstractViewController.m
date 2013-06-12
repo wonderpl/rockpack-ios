@@ -627,7 +627,7 @@
                                               
                                               if (resourceURLString == nil || [resourceURLString isEqualToString: @""])
                                               {
-                                                  resourceURLString = @"http://www.rockpack.com";
+                                                  resourceURLString = @"http://rockpack.com";
                                               }
                                               
                                               if (message == nil || [message isKindOfClass: [NSNull class]])
