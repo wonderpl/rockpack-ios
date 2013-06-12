@@ -10,6 +10,7 @@
 #import "SYNAppDelegate.h"
 #import "SYNNetworkEngine.h"
 #import "Genre.h"
+#import "GAI.h"
 #import "SubGenre.h"
 #import "SYNChannelCategoryTableCell.h"
 #import "SYNChannelCategoryTableHeader.h"
@@ -565,6 +566,13 @@
                     int subCategoryIndex = [subGenres indexOfObject:subGenre];
                     if (subCategoryIndex != NSNotFound)
                     {
+                        id<GAITracker> tracker = [GAI sharedInstance].defaultTracker;
+                        
+//                        [tracker sendEventWithCategory: @"goal"
+//                                            withAction: @"channelCategorised"
+//                                             withLabel: buttonText
+//                                             withValue: nil];
+//                        
                         //Simulate the user having tapped it
                         [self tableView:nil didSelectRowAtIndexPath:[NSIndexPath indexPathForRow:subCategoryIndex inSection:index]];
                     }

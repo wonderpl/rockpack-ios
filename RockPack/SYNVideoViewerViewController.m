@@ -524,6 +524,13 @@
 - (void) collectionView: (UICollectionView *) cv
          didSelectItemAtIndexPath: (NSIndexPath *) indexPath
 {
+    id<GAITracker> tracker = [GAI sharedInstance].defaultTracker;
+    
+    [tracker sendEventWithCategory: @"uiAction"
+                        withAction: @"videoBarClick"
+                         withLabel: nil
+                         withValue: nil];
+    
     // We should start playing the selected vide and scroll the thumbnnail so that it appears under the arrow
     [self playVideoAtIndex: indexPath.item];
 }

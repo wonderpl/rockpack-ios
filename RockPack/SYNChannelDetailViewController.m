@@ -950,6 +950,12 @@
                         withAction: @"channelSubscribeButtonClick"
                          withLabel: nil
                          withValue: nil];
+
+    // FIXME: Not sure why we need both of these
+    [tracker sendEventWithCategory: @"goal"
+                        withAction: @"userSubscription"
+                         withLabel: nil
+                         withValue: nil];
     
     self.subscribeButton.enabled = NO;
     
@@ -1541,8 +1547,17 @@
     if ([genre isMemberOfClass: [SubGenre class]])
     {
         [self hideCategoryChooser];
-        [self updateCategoryButtonText: [NSString stringWithFormat:@"%@/%@", ((SubGenre*)genre).genre.name, genre.name]];
+        NSString *buttonText = [NSString stringWithFormat:@"%@/%@", ((SubGenre*)genre).genre.name, genre.name];
+        [self updateCategoryButtonText: buttonText];
         self.selectedCategoryId = genre.uniqueId;
+        
+    
+        id<GAITracker> tracker = [GAI sharedInstance].defaultTracker;
+        
+        [tracker sendEventWithCategory: @"goal"
+                            withAction: @"channelCategorised"
+                             withLabel: buttonText
+                             withValue: nil];
     }
     else
     {
@@ -2253,6 +2268,13 @@
 
 - (void) uploadChannelImage: (UIImage *) imageToUpload
 {
+    id<GAITracker> tracker = [GAI sharedInstance].defaultTracker;
+    
+    [tracker sendEventWithCategory: @"goal"
+                        withAction: @"channelCoverUploaded"
+                         withLabel: nil
+                         withValue: nil];
+    
     self.createChannelButton.enabled = FALSE;
     self.saveChannelButton.enabled = FALSE;
     [self.activityIndicator startAnimating];
