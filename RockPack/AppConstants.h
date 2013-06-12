@@ -310,6 +310,15 @@ typedef enum {
     
 } EntityType;
 
+
+typedef enum {
+    PointingDirectionNone = 0,
+    PointingDirectionUp,
+    PointingDirectionDown,
+    PointingDirectionLeft,
+    PointingDirectionRight
+} PointingDirection;
+
 // Height of the bottom tab bar in pixels
 #define kBottomTabBarHeight 62
 
