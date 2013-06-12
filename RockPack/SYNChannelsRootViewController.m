@@ -195,6 +195,39 @@
 {
     [self updateAnalytics];
     
+    // On Boarding
+    
+    SYNOnBoardingPopoverQueueController* onBoardingQueue = [[SYNOnBoardingPopoverQueueController alloc] init];
+    
+    
+    NSUserDefaults *defaults = [NSUserDefaults standardUserDefaults];
+    BOOL hasShownSubscribeOnBoarding = [defaults boolForKey:kUserDefaultsChannels];
+    if(!hasShownSubscribeOnBoarding)
+    {
+        NSString* message = @"To start, browse channels created by other people. A channel is a collection of videos.";
+        
+        SYNOnBoardingPopoverView* subscribePopover = [SYNOnBoardingPopoverView withMessage:message
+                                                                                pointingTo:CGRectZero // it is a struct and cannot pass nil
+                                                                             withDirection:PointingDirectionNone];
+        
+        
+        [onBoardingQueue addPopover:subscribePopover];
+        
+        [defaults setBool:YES forKey:kUserDefaultsChannels];
+    }
+    
+    
+    if(!hasShownSubscribeOnBoarding)
+    {
+        [self.view addSubview:onBoardingQueue.view];
+        [self addChildViewController:onBoardingQueue];
+        [onBoardingQueue present];
+    }
+    else
+    {
+        onBoardingQueue = nil;
+    }
+    
     // if the user has requested 'Load More' channels then dont refresh the page cause he is in the middle of a search
     if(self.dataRequestRange.location == 0)
         [self loadChannelsForGenre:currentGenre];

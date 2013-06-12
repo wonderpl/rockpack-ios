@@ -13,15 +13,15 @@
 @interface SYNOnBoardingPopoverView : UIView
 
 - (id)initWithMessage:(NSString*)message
-           pointingTo:(CGPoint)point
+           pointingTo:(CGRect)pointRect
         withDirection:(PointingDirection)direction;
 
 + (id)withMessage:(NSString*)message
-       pointingTo:(CGPoint)point
+       pointingTo:(CGRect)pointRect
     withDirection:(PointingDirection)direction;
 
-@property (nonatomic, strong) UIView* backgroundView;
-@property (nonatomic, strong) UIView* panelView;
+@property (nonatomic) PointingDirection direction;
+@property (nonatomic) CGRect pointRect;
 @property (nonatomic, strong) UIButton* okButton;
 
 @end
