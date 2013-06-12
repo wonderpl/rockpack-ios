@@ -204,10 +204,14 @@
     BOOL hasShownSubscribeOnBoarding = [defaults boolForKey:kUserDefaultsChannels];
     if(!hasShownSubscribeOnBoarding)
     {
-        NSString* message = @"To start, browse channels created by other people. A channel is a collection of videos.";
+        NSString* message = @"To start, browse channels created\nby other people. A channel is a\ncollection of videos.";
         
+        CGFloat fontSize = [[SYNDeviceManager sharedInstance] isIPad] ? 19.0 : 15.0 ;
+        CGSize size = [[SYNDeviceManager sharedInstance] isIPad] ? CGSizeMake(340.0, 144.0) : CGSizeMake(260.0, 144.0);
         SYNOnBoardingPopoverView* subscribePopover = [SYNOnBoardingPopoverView withMessage:message
-                                                                                pointingTo:CGRectZero // it is a struct and cannot pass nil
+                                                                                  withSize:size
+                                                                               andFontSize:fontSize
+                                                                                pointingTo:CGRectZero
                                                                              withDirection:PointingDirectionNone];
         
         

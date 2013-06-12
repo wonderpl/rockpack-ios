@@ -12,13 +12,17 @@
 
 @interface SYNOnBoardingPopoverView : UIView
 
-- (id)initWithMessage:(NSString*)message
-           pointingTo:(CGRect)pointRect
-        withDirection:(PointingDirection)direction;
-
 + (id)withMessage:(NSString*)message
+         withSize:(CGSize)size
+      andFontSize:(CGFloat)fontSize
        pointingTo:(CGRect)pointRect
     withDirection:(PointingDirection)direction;
+
+- (id)initWithMessage:(NSString*)message
+             withSize:(CGSize)size
+          andFontSize:(CGFloat)fontSize
+           pointingTo:(CGRect)pointRect
+        withDirection:(PointingDirection)direction;
 
 @property (nonatomic) PointingDirection direction;
 @property (nonatomic) CGRect pointRect;

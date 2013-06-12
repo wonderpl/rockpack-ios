@@ -1994,7 +1994,10 @@
     {
         NSString* message = @"Tap this button to subscribe to a channel and get new videos in your feed.";
         PointingDirection direction = [[SYNDeviceManager sharedInstance] isIPad] ? PointingDirectionLeft : PointingDirectionUp;
+        CGFloat fontSize = [[SYNDeviceManager sharedInstance] isIPad] ? 19.0 : 15.0 ;
         SYNOnBoardingPopoverView* subscribePopover = [SYNOnBoardingPopoverView withMessage:message
+                                                                                  withSize:CGSizeMake(260.0, 144.0)
+                                                                               andFontSize:fontSize
                                                                                 pointingTo:self.subscribeButton.frame
                                                                              withDirection:direction];
       
@@ -2004,20 +2007,7 @@
         [defaults setBool:YES forKey:kUserDefaultsSubscribe];
     }
     
-    BOOL hasShownAddVideoOnBoarding = [defaults boolForKey:kUserDefaultsAddVideo];
-    if(!hasShownAddVideoOnBoarding)
-    {
-        NSString* message = @"Whenever you see a video you like tap the + button to add it to one of your channels.";
-
-        SYNOnBoardingPopoverView* addVideoPopover = [SYNOnBoardingPopoverView withMessage:message
-                                                                               pointingTo:self.subscribeButton.frame
-                                                                            withDirection:PointingDirectionNone];
-        
-        [onBoardingQueue addPopover:addVideoPopover];
-        
-        [defaults setBool:YES forKey:kUserDefaultsAddVideo];
-    }
-    if(!hasShownSubscribeOnBoarding || !hasShownAddVideoOnBoarding)
+    if(!hasShownSubscribeOnBoarding)
     {
         [self.view addSubview:onBoardingQueue.view];
         [self addChildViewController:onBoardingQueue];
