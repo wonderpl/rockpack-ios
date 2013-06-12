@@ -9,6 +9,7 @@
 #import "AppConstants.h"
 #import "AudioToolbox/AudioToolbox.h"
 #import "ChannelOwner.h"
+#import "GAI.h"
 #import "MKNetworkEngine.h"
 #import "SYNActivityPopoverViewController.h"
 #import "SYNContainerViewController.h"
@@ -29,6 +30,7 @@
 
 @property (nonatomic) BOOL didNotSwipeMessageInbox;
 @property (nonatomic) BOOL shouldAnimateViewTransitions;
+@property (nonatomic) int lastSelectedPageIndex;
 @property (nonatomic, assign) BOOL didNotSwipeShareMenu;
 @property (nonatomic, assign) double lowPassResults;
 @property (nonatomic, assign, getter = isShowingBackButton) BOOL showingBackButton;
@@ -72,6 +74,9 @@
     scrollView.showsVerticalScrollIndicator = NO;
     
     self.view = scrollView;
+    
+    // Indicate that we don't start with a selected page
+    self.lastSelectedPageIndex = -1;
 }
 
 
@@ -320,7 +325,25 @@
     
     self.currentPageOffset = self.scrollView.contentOffset;
     
-    [self.showingBaseViewController viewDidScrollToFront];
+    
+    // These are the things we need to do if the page has actually changed    
+    if (self.currentPage != self.lastSelectedPageIndex)
+    {
+        // Remember our last page
+        self.lastSelectedPageIndex = self.currentPage;
+        
+        // Update google analytics
+        id<GAITracker> tracker = [GAI sharedInstance].defaultTracker;
+        
+        [tracker sendEventWithCategory: @"uiAction"
+                            withAction: @"videoSelectButtonClick"
+                             withLabel: nil
+                             withValue: nil];
+        
+        // Now let the page know that it has the focus
+        // FIXME: We really need to use a proper control here (as opposed to a home-grown one), which should call the viewWillAppear (etc) on each view
+        [self.showingBaseViewController viewDidScrollToFront];
+    }
 }
 
 
@@ -353,24 +376,6 @@
     return (SYNAbstractViewController*)selectedNavController.viewControllers[0];
 
 }
-
-
-
-- (SYNAbstractViewController*) nextShowingViewController
-{
-    UINavigationController* navigationController;
-    if (self.scrollingDirection == ScrollingDirectionRight && (self.currentPage+1) < self.childViewControllers.count) {
-        navigationController = self.childViewControllers[(self.currentPage+1)];
-    }
-    else if (self.scrollingDirection == ScrollingDirectionLeft && (self.currentPage-1) >= 0) {
-        navigationController = self.childViewControllers[(self.currentPage-1)];
-    }
-    
-    return (SYNAbstractViewController*)(navigationController.visibleViewController);
-}
-
-
-
 
 
 - (void) setSelectedNavigationController: (UINavigationController *) selectedVC

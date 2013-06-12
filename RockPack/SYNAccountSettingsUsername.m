@@ -17,20 +17,17 @@
 
 @implementation SYNAccountSettingsUsername
 
-- (id)initWithNibName:(NSString *)nibNameOrNil bundle:(NSBundle *)nibBundleOrNil
-{
-    self = [super initWithNibName:nibNameOrNil bundle:nibBundleOrNil];
-    if (self) {
-        // Custom initialization
-    }
-    return self;
-}
 
-- (void)viewDidLoad
+- (void) viewDidLoad
 {
     [super viewDidLoad];
     
-    [GAI.sharedInstance.defaultTracker sendView: @"Account Settings - Username"];
+    id<GAITracker> tracker = [GAI sharedInstance].defaultTracker;
+    
+    [tracker sendEventWithCategory: @"uiAction"
+                        withAction: @"accountPropertyChanged"
+                         withLabel: @"Username"
+                         withValue: nil];
     
     self.view.backgroundColor = [UIColor whiteColor];
 

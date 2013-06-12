@@ -267,6 +267,18 @@
 
 - (IBAction) facebookTapped: (id) sender
 {
+    id<GAITracker> tracker = [GAI sharedInstance].defaultTracker;
+    
+    [tracker sendEventWithCategory: @"uiAction"
+                        withAction: @"facebookLogin"
+                         withLabel: nil
+                         withValue: nil];
+    
+    [tracker sendEventWithCategory: @"goal"
+                        withAction: @"userLogin"
+                         withLabel: @"Facebook"
+                         withValue: nil];
+    
     if(![self isNetworkAccessibleOtherwiseShowErrorAlert])
     {
         return;
@@ -315,6 +327,13 @@
 
 - (IBAction) signupTapped: (id) sender
 {
+    id<GAITracker> tracker = [GAI sharedInstance].defaultTracker;
+    
+    [tracker sendEventWithCategory: @"goal"
+                        withAction: @"userRegistration"
+                         withLabel: @"Rockpack"
+                         withValue: nil];
+    
     [GAI.sharedInstance.defaultTracker sendView: @"Register"];
     
     //Fade out login background
@@ -355,6 +374,14 @@
 - (IBAction) loginTapped: (id) sender
 {
     [GAI.sharedInstance.defaultTracker sendView: @"Login 1"];
+    
+    id<GAITracker> tracker = [GAI sharedInstance].defaultTracker;
+    
+    [tracker sendEventWithCategory: @"goal"
+                        withAction: @"userLogin"
+                         withLabel: @"Rockpack"
+                         withValue: nil];
+    
     //Fade out login background
     self.loginBackgroundImage.alpha = 1.0f;
     

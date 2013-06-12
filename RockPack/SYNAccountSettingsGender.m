@@ -63,8 +63,13 @@
 {
     [super viewDidLoad];
     
-    [GAI.sharedInstance.defaultTracker sendView: @"Account Settings - Gender"];
-
+    id<GAITracker> tracker = [GAI sharedInstance].defaultTracker;
+    
+    [tracker sendEventWithCategory: @"uiAction"
+                        withAction: @"accountPropertyChanged"
+                         withLabel: @"Gender"
+                         withValue: nil];
+    
     self.view.backgroundColor = [UIColor whiteColor];
     
     [self.view addSubview:self.tableView];

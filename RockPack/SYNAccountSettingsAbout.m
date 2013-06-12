@@ -29,14 +29,15 @@
 
 @implementation SYNAccountSettingsAbout
 
-- (id)initWithNibName:(NSString *)nibNameOrNil bundle:(NSBundle *)nibBundleOrNil
+- (id) initWithNibName: (NSString *) nibNameOrNil
+                bundle: (NSBundle *) nibBundleOrNil
 {
-    self = [super initWithNibName:nibNameOrNil bundle:nibBundleOrNil];
+    self = [super initWithNibName: nibNameOrNil bundle: nibBundleOrNil];
     
     BOOL isIpad = [SYNDeviceManager.sharedInstance isIPad];
     
-    if (self) {
-        
+    if (self)
+    {
         if (isIpad)
         {
             self.contentSizeForViewInPopover = CGSizeMake(380, 476);
@@ -51,11 +52,17 @@
     return self;
 }
 
-- (void)viewDidLoad
+
+- (void) viewDidLoad
 {
     [super viewDidLoad];
     
-    [GAI.sharedInstance.defaultTracker sendView: @"Account Settings - About"];
+    id<GAITracker> tracker = [GAI sharedInstance].defaultTracker;
+    
+    [tracker sendEventWithCategory: @"uiAction"
+                        withAction: @"accountPropertyChanged"
+                         withLabel: @"About"
+                         withValue: nil];
 	
     self.view.backgroundColor = [UIColor colorWithWhite:247.0/255 alpha:1.0];
     
@@ -183,8 +190,8 @@
 }
 
 
-- (void)rockpackLogoImage {
-    
+- (void) rockpackLogoImage
+{
     BOOL isIpad = [SYNDeviceManager.sharedInstance isIPad];
     
     self.logoImageView = [[UIImageView alloc] initWithImage:[UIImage imageNamed:@"IconRockpackAbout"]];
@@ -195,8 +202,8 @@
 }
 
 
-- (void)rockpackVersionLabel {
-    
+- (void) rockpackVersionLabel
+{
     //NSString * appVersion = [[NSBundle mainBundle] objectForInfoDictionaryKey: @"CFBundleShortVersionString"];
     NSString * buildTarget = [[NSBundle mainBundle] objectForInfoDictionaryKey: (NSString *)kSYNBundleBuildTarget];
     
@@ -230,8 +237,9 @@
 
 }
 
-- (void)copyrightRockpackLabel {
-    
+
+- (void) copyrightRockpackLabel
+{
     self.rockpackCopyrightTextLabel = [[UILabel alloc] initWithFrame:CGRectMake(0.0,
                                                                                 
                                                                                 self.logoImageView.frame.origin.y
@@ -256,8 +264,8 @@
 
 }
 
-- (void)attributionList {
-    
+- (void) attributionList
+{
     self.attributionTextView = [[UITextView alloc] init];
     
     BOOL isIpad = [SYNDeviceManager.sharedInstance isIPad];
@@ -295,8 +303,9 @@
 
 }
 
--(void)termsButtonPressed:(UIButton*)button {
-    
+
+- (void) termsButtonPressed: (UIButton*) button
+{
     NSURL *url = [NSURL URLWithString:@"http://rockpack.com/tos"];
     
     if (![[UIApplication sharedApplication] openURL:url])
@@ -304,7 +313,8 @@
         DebugLog(@"%@%@",@"Failed to open url:",[url description]);
 }
 
--(void)privacyButtonPressed:(UIButton*)button {
+- (void) privacyButtonPressed: (UIButton*) button
+{
     
     NSURL *url = [NSURL URLWithString:@"http://rockpack.com/privacy"];
     
@@ -313,8 +323,11 @@
         DebugLog(@"%@%@",@"Failed to open url:",[url description]);
 }
 
-- (void) didTapBackButton:(id)sender {
-    if(self.navigationController.viewControllers.count > 1) {
+
+- (void) didTapBackButton: (id) sender
+{
+    if(self.navigationController.viewControllers.count > 1)
+    {
         [self.navigationController popViewControllerAnimated:YES];
     }
 }
