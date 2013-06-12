@@ -6058,6 +6058,7 @@
 			buildSettings = {
 				CODE_SIGN_ENTITLEMENTS = RockPack/RockPack.entitlements;
 				CODE_SIGN_IDENTITY = "iPhone Distribution: Rockpack Ltd. (3M76KMT8LS)";
+				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Distribution: Rockpack Ltd. (3M76KMT8LS)";
 				COMPRESS_PNG_FILES = NO;
 				FRAMEWORK_SEARCH_PATHS = (
 					"$(inherited)",
@@ -6087,7 +6088,8 @@
 					"-licucore",
 				);
 				PRODUCT_NAME = rockpack;
-				PROVISIONING_PROFILE = "89A308E2-E9E9-480E-BF9F-5962B97E3CFB";
+				PROVISIONING_PROFILE = "E58F9298-B078-44C9-89D9-D5A1F17D9F58";
+				"PROVISIONING_PROFILE[sdk=iphoneos*]" = "E58F9298-B078-44C9-89D9-D5A1F17D9F58";
 				TARGETED_DEVICE_FAMILY = "1,2";
 				WRAPPER_EXTENSION = app;
 			};
