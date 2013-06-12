@@ -233,8 +233,7 @@
 - (void) handleDataModelChange: (NSNotification*) notification
 {
     
-//    if(self.isViewDirty)
-//        return;
+
     
     [self fetchChannelsForGenre:currentGenre]; // this will populate the self.channels array with fresh data
     
@@ -278,6 +277,14 @@
             
             [deletedIndetifiers addObject:((Channel*)obj).uniqueId];
             
+            [self.channels enumerateObjectsUsingBlock:^(Channel* channel, NSUInteger cidx, BOOL *cstop) {
+                
+                if(obj == channel)
+                {
+                    NSLog(@"Deleted by still existing!");
+                }
+    
+            }];
             
         }
         
@@ -343,11 +350,13 @@
     
     if(shouldReloadCollectionView)
     {
+        NSLog(@"shouldReloadCollectionView == YES");
         [self.channelThumbnailCollectionView reloadData];
         self.isViewDirty = NO;
     }
     else
     {
+        NSLog(@"performBatchUpdates:");
         [self.channelThumbnailCollectionView performBatchUpdates:^{
             
             [batchUpdateBlockOperation start];
@@ -539,6 +548,7 @@
 - (NSInteger) collectionView: (UICollectionView *) view
       numberOfItemsInSection: (NSInteger) section
 {
+    NSLog(@"-numberOfItemsInSection: %i", self.channels.count);
     return self.channels.count;
 
 }
