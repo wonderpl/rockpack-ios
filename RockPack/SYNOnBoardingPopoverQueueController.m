@@ -61,17 +61,23 @@
 {
     [super viewDidAppear:animated];
     
-    NSLog(@"Starting Q with %i", self.queue.count);
+    
     
 }
 
 -(void)present
 {
+    NSLog(@"Starting Q with %i", self.queue.count);
+    
     [self presentNextPopover];
 }
 
 -(void)presentNextPopover
 {
+    
+    NSLog(@"presentNextPopover: %i", self.queue.count);
+    
+    
     if(queue.count == 0) // renmove everything
     {
         [UIView animateWithDuration:0.3 animations:^{
@@ -83,8 +89,10 @@
     }
     else // go to next popover
     {
-        self.currentlyVisiblePopover = (SYNOnBoardingPopoverView*)[self.queue objectAtIndex:0];
-        [self.queue removeObject:_currentlyVisiblePopover];
+        SYNOnBoardingPopoverView* nextPopover = (SYNOnBoardingPopoverView*)[self.queue objectAtIndex:0];
+        [self.queue removeObject:nextPopover];
+        
+        self.currentlyVisiblePopover = nextPopover;
         
     }
 }
@@ -115,11 +123,13 @@
             
         }];
         
+        return;
+        
     }
     
     _currentlyVisiblePopover = currentlyVisiblePopover;
     
-    if(_currentlyVisiblePopover)
+    if(_currentlyVisiblePopover) // no nil was passed
     {
         [self placePopoverInView:_currentlyVisiblePopover];
         
@@ -129,9 +139,11 @@
                                           action:@selector(okButtonPressed:)
                                 forControlEvents:UIControlEventTouchUpInside];
         
+        
+        BOOL isFirstTime = self.backgroundView.alpha == 0.0;
         [UIView animateWithDuration:0.5 animations:^{
             self.currentlyVisiblePopover.alpha = 1.0;
-            if(self.backgroundView.alpha == 0.0)
+            if(isFirstTime)
                 self.backgroundView.alpha = 0.5;
         }];
     }
@@ -141,40 +153,43 @@
 
 -(void)placePopoverInView:(SYNOnBoardingPopoverView*)popover
 {
-    [self.view addSubview:popover];
+    
     
     CGRect panelFrame = popover.frame;
     
     switch (popover.direction) {
             
         case PointingDirectionNone: // center in view
-            panelFrame.origin.y = self.view.frame.size.height * 0.5 - panelFrame.size.height * 0.5;
             panelFrame.origin.x = self.view.frame.size.width * 0.5 - panelFrame.size.width * 0.5;
+            panelFrame.origin.y = self.view.frame.size.height * 0.5 - panelFrame.size.height * 0.5;
             break;
             
         case PointingDirectionUp:
-            panelFrame.origin.y = popover.point.y + panelFrame.size.height + STD_PADDING_DISTANCE;
-            panelFrame.origin.x = popover.point.x - panelFrame.size.width + STD_PADDING_DISTANCE;
+            panelFrame.origin.x = popover.pointRect.origin.x + (popover.pointRect.size.height * 0.5) - panelFrame.size.width + STD_PADDING_DISTANCE;
+            panelFrame.origin.y = popover.pointRect.origin.y + popover.pointRect.size.height + STD_PADDING_DISTANCE;
+            
             break;
             
         case PointingDirectionDown:
-            panelFrame.origin.y = popover.point.y - panelFrame.size.height - STD_PADDING_DISTANCE;
-            panelFrame.origin.x = popover.point.x - panelFrame.size.width + STD_PADDING_DISTANCE;
+            panelFrame.origin.x = popover.pointRect.origin.x + (popover.pointRect.size.height * 0.5) - panelFrame.size.width + STD_PADDING_DISTANCE;
+            panelFrame.origin.y = popover.pointRect.origin.y - panelFrame.size.height - STD_PADDING_DISTANCE;
             break;
             
         case PointingDirectionLeft:
-            panelFrame.origin.y = popover.point.y - STD_PADDING_DISTANCE;
-            panelFrame.origin.x = popover.point.x + panelFrame.size.width + STD_PADDING_DISTANCE;
+            panelFrame.origin.y = popover.pointRect.origin.y - STD_PADDING_DISTANCE;
+            panelFrame.origin.x = popover.pointRect.origin.x + popover.pointRect.size.width + STD_PADDING_DISTANCE;
             break;
             
         case PointingDirectionRight:
-            panelFrame.origin.y = popover.point.y - STD_PADDING_DISTANCE;
-            panelFrame.origin.x = popover.point.x - panelFrame.size.width - STD_PADDING_DISTANCE;
+            panelFrame.origin.y = popover.pointRect.origin.y - STD_PADDING_DISTANCE;
+            panelFrame.origin.x = popover.pointRect.origin.x - panelFrame.size.width - STD_PADDING_DISTANCE;
             break;
             
     }
     
     popover.frame = panelFrame;
+    
+    [self.view addSubview:popover];
 }
 
 

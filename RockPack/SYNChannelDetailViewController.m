@@ -2058,8 +2058,10 @@
     if(!hasShownSubscribeOnBoarding)
     {
         NSString* message = @"Tap this button to subscribe to a channel and get new videos in your feed.";
-        CGPoint point = CGPointZero;
-        SYNOnBoardingPopoverView* subscribePopover = [SYNOnBoardingPopoverView withMessage:message pointingTo:point withDirection:PointingDirectionNone];
+        
+        SYNOnBoardingPopoverView* subscribePopover = [SYNOnBoardingPopoverView withMessage:message
+                                                                                pointingTo:self.subscribeButton.frame
+                                                                             withDirection:PointingDirectionLeft];
       
         
         [onBoardingQueue addPopover:subscribePopover];
@@ -2071,8 +2073,10 @@
     if(!hasShownAddVideoOnBoarding)
     {
         NSString* message = @"Whenever you see a video you like tap the + button to add it to one of your channels.";
-        CGPoint point = CGPointZero;
-        SYNOnBoardingPopoverView* addVideoPopover = [SYNOnBoardingPopoverView withMessage:message pointingTo:point withDirection:PointingDirectionNone];
+
+        SYNOnBoardingPopoverView* addVideoPopover = [SYNOnBoardingPopoverView withMessage:message
+                                                                               pointingTo:self.subscribeButton.frame
+                                                                            withDirection:PointingDirectionNone];
         
         [onBoardingQueue addPopover:addVideoPopover];
         
