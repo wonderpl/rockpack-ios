@@ -8,6 +8,7 @@
 
 #import "UIImageView+WebCache.h"
 #import "objc/runtime.h"
+#import "SDWebImageManager.h"
 
 static char operationKey;
 
@@ -46,9 +47,19 @@ static char operationKey;
 - (void)setImageWithURL:(NSURL *)url placeholderImage:(UIImage *)placeholder options:(SDWebImageOptions)options progress:(SDWebImageDownloaderProgressBlock)progressBlock completed:(SDWebImageCompletedBlock)completedBlock;
 {
     [self cancelCurrentImageLoad];
-
-    self.image = placeholder;
     
+    NSString *key = [SDWebImageManager.sharedManager cacheKeyForURL: url];
+    UIImage *image = [SDWebImageManager.sharedManager.imageCache imageFromMemoryCacheForKey: key];
+    
+    if (image)
+    {
+        self.image = image;
+    }
+    else
+    {
+        self.image = placeholder;
+    }
+
     if (url)
     {
         __weak UIImageView *wself = self;
