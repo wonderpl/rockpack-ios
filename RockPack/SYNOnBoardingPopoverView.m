@@ -33,9 +33,18 @@
     if (self = [super init]) {
         
         
-        self.direction = direction;
+        
         
         self.pointRect = pointRect;
+        
+        if(CGRectEqualToRect(self.pointRect, CGRectZero))
+        {
+            self.direction = PointingDirectionNone;
+        }
+        else
+        {
+            self.direction = direction;
+        }
         
         // panel view
         CGRect panelRect = CGRectMake(0.0, 0.0, 400.0, 220.0);

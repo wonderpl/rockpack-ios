@@ -2027,9 +2027,6 @@
     {
         onBoardingQueue = nil;
     }
-        
-    
-    
     
 }
 
