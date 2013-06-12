@@ -1264,4 +1264,29 @@
 }
 
 
+- (void) reportPlayerErrorForVideoInstanceId: (NSString *) videoInstanceId
+                            errorDescription: (NSString *) errorDescription
+                           completionHandler: (MKNKUserSuccessBlock) completionBlock
+                                errorHandler: (MKNKUserErrorBlock) errorBlock
+{
+    // We need to handle locale differently (so add the locale to the URL) as opposed to the other parameters which are in the POST body
+    NSString *apiString = [NSString stringWithFormat: @"%@?locale=%@", kAPIReportPlayerError, self.localeString];
+    
+    NSDictionary *params = @{@"video_instance" : videoInstanceId,
+                             @"error" : videoInstanceId};
+    
+    SYNNetworkOperationJsonObject *networkOperation = (SYNNetworkOperationJsonObject*)[self operationWithPath: apiString
+                                                                                                       params: params
+                                                                                                   httpMethod: @"POST"
+                                                                                                          ssl: TRUE];
+    [networkOperation addHeaders: @{@"Content-Type" : @"application/json"}];
+    networkOperation.postDataEncoding = MKNKPostDataEncodingTypeJSON;
+    
+    [self addCommonHandlerToNetworkOperation: networkOperation
+                           completionHandler: completionBlock
+                                errorHandler: errorBlock];
+    
+    [self enqueueSignedOperation: networkOperation];}
+
+
 @end

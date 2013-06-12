@@ -120,6 +120,8 @@
 
 #define kAPIReportConcern           @"/ws/USERID/content_reports"               /* POST */
 
+#define kAPIReportPlayerError       @"/ws/videos/player_error/"                 /* POST */
+
 #define kAccountSettingsPressed     @"kAccountSettingsPressed"
 #define kAccountSettingsLogout      @"kAccountSettingsLogout"
 #define kUserDataChanged            @"kUserDataChanged"
