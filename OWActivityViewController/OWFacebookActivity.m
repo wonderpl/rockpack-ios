@@ -26,6 +26,7 @@
 #import "OWFacebookActivity.h"
 #import "OWActivityViewController.h"
 
+
 @implementation OWFacebookActivity
 
 - (id)init
@@ -44,27 +45,84 @@
             [weakSelf shareFromViewController:presenter
                                      text:[userInfo objectForKey:@"text"]
                                       url:[userInfo objectForKey:@"url"]
-                                    image:[userInfo objectForKey:@"image"]];
+                                    image:[userInfo objectForKey:@"image"]
+                                    owner:[userInfo objectForKey:@"owner"]];
         }];
     };
     
     return self;
 }
 
-- (void)shareFromViewController:(UIViewController *)viewController text:(NSString *)text url:(NSURL *)url image:(UIImage *)image
+- (void) shareFromViewController: (UIViewController *) viewController
+                            text: (NSString *) text url: (NSURL *) url
+                           image: (UIImage *) image
+                           owner: (NSNumber *) owner
 {
+    FBAppCall *appCall = nil;
     
-    SLComposeViewController *facebookViewComposer = [SLComposeViewController composeViewControllerForServiceType:SLServiceTypeFacebook];
+    id<FBOpenGraphAction> action = (id<FBOpenGraphAction>)[FBGraphObject graphObject];
     
-    viewController.modalPresentationStyle = UIModalPresentationCurrentContext;
-    if (text)
-        [facebookViewComposer setInitialText:text];
-    if (image)
-        [facebookViewComposer addImage:image];
-    if (url)
-        [facebookViewComposer addURL:url];
+    [action setObject: [url absoluteString]
+               forKey: @"channel"];
     
-    [viewController presentViewController:facebookViewComposer animated:YES completion:nil];
+    FBOpenGraphActionShareDialogParams* params = [[FBOpenGraphActionShareDialogParams alloc] init];
+    
+    params.actionType = @"rockpack-dev:create";
+    params.action = action;
+    params.previewPropertyName = @"channel";
+
+    
+    // Show the Share dialog if available
+    if (([FBDialogs canPresentShareDialogWithOpenGraphActionParams: params] == TRUE) && (owner.boolValue == TRUE))
+    { 
+        appCall = [FBDialogs presentShareDialogWithOpenGraphAction: [params action]
+                                                        actionType: [params actionType]
+                                               previewPropertyName: [params previewPropertyName]
+                                                       clientState: nil
+                                                           handler: ^(FBAppCall *call, NSDictionary *results, NSError *error) {
+                                                               if (error) {
+                                                                   NSLog(@"Error: %@", error.description);
+                                                               } else {
+                                                                   NSLog(@"Success!");
+                                                               }
+                                                           }];
+    }
+    else 
+    {
+        // Try the Share dialog if available
+        appCall = [FBDialogs presentShareDialogWithLink: url
+                                                   name: nil
+                                                caption: text
+                                            description: nil
+                                                picture: nil
+                                            clientState: nil
+                                                handler: ^(FBAppCall *call, NSDictionary *results, NSError *error) {
+                                                    if (error) {
+                                                        NSLog(@"Error: %@", error.description);
+                                                    } else {
+                                                        NSLog(@"Success!");
+                                                    }
+                                                }];
+    }
+    
+    // If neither of the above methods worked, then try the old way...
+    if (appCall == nil)
+    {
+        // OK, just default to LCD
+        SLComposeViewController *facebookViewComposer = [SLComposeViewController composeViewControllerForServiceType:SLServiceTypeFacebook];
+        
+        viewController.modalPresentationStyle = UIModalPresentationCurrentContext;
+        
+        if (text)
+            [facebookViewComposer setInitialText:text];
+        if (url)
+            [facebookViewComposer addURL:url];
+        
+        [viewController presentViewController: facebookViewComposer
+                                     animated: YES
+                                   completion: nil];
+    }
 }
+
 
 @end

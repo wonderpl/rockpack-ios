@@ -164,4 +164,6 @@ typedef void(^SDWebImageCompletedWithFinishedBlock)(UIImage *image, NSError *err
  */
 - (BOOL)isRunning;
 
+- (NSString *) cacheKeyForURL: (NSURL *) url;
+
 @end

@@ -25,8 +25,9 @@
 //
 
 #import "OWActivity.h"
+#import <FacebookSDK/FacebookSDK.h>
 #import <Social/Social.h>
 
-@interface OWFacebookActivity : OWActivity
+@interface OWFacebookActivity : OWActivity <FBLoginViewDelegate>
 
 @end

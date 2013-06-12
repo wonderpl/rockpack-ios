@@ -533,6 +533,7 @@
     
     [self shareObjectType: @"video_instance"
                  objectId: videoInstance.uniqueId
+                  isOwner:  @(FALSE)
                    inView: inView
                  fromRect: rect
           arrowDirections: arrowDirections
@@ -542,11 +543,12 @@
 
 
 - (void) shareChannel: (Channel *) channel
+              isOwner: (NSNumber *) isOwner
                inView: (UIView *) inView
              fromRect: (CGRect) rect
       arrowDirections: (UIPopoverArrowDirection) arrowDirections
     activityIndicator: (UIActivityIndicatorView *) activityIndicatorView
-           onComplete: (SYNShareCompletionBlock) completionBlock 
+           onComplete: (SYNShareCompletionBlock) completionBlock
 {
     id<GAITracker> tracker = [GAI sharedInstance].defaultTracker;
     
@@ -557,6 +559,7 @@
     
     [self shareObjectType: @"channel"
                  objectId: channel.uniqueId
+                  isOwner: isOwner
                    inView: inView
                  fromRect: rect
           arrowDirections: arrowDirections
@@ -567,6 +570,7 @@
 
 - (void) shareObjectType: (NSString *) objectType
                 objectId: (NSString *) objectId
+                 isOwner: (NSNumber *) isOwner
                   inView: (UIView *) inView
                 fromRect: (CGRect) rect
          arrowDirections: (UIPopoverArrowDirection) arrowDirections
@@ -654,7 +658,8 @@
                                               
                                               activityViewController.userInfo = @{@"text": message,
                                                                                   @"url": resourceURL,
-                                                                                  @"image" : capturedScreenImage};
+                                                                                  @"image" : capturedScreenImage,
+                                                                                  @"owner" : isOwner};
                                               
                                               // The activity controller needs to be presented from a popup on iPad, but normally on iPhone
                                               if (UI_USER_INTERFACE_IDIOM() == UIUserInterfaceIdiomPad)

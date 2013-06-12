@@ -290,6 +290,11 @@ typedef enum _Gender {
 
 #define kCurrentPage        @"kCurrentPage"
 
+// UserDefaults
+
+#define kUserDefaultsSubscribe @"ud_subscribe"
+#define kUserDefaultsAddVideo @"ud_addVideo"
+#define kUserDefaultsChannels @"ud_channels"
 
 //Login Origin
 
@@ -309,6 +314,15 @@ typedef enum {
     EntityTypeCategory
     
 } EntityType;
+
+
+typedef enum {
+    PointingDirectionNone = 0,
+    PointingDirectionUp,
+    PointingDirectionDown,
+    PointingDirectionLeft,
+    PointingDirectionRight
+} PointingDirection;
 
 // Height of the bottom tab bar in pixels
 #define kBottomTabBarHeight 62
