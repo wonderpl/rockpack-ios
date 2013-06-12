@@ -61,17 +61,23 @@
 {
     [super viewDidAppear:animated];
     
-    NSLog(@"Starting Q with %i", self.queue.count);
+    
     
 }
 
 -(void)present
 {
+    NSLog(@"Starting Q with %i", self.queue.count);
+    
     [self presentNextPopover];
 }
 
 -(void)presentNextPopover
 {
+    
+    NSLog(@"presentNextPopover: %i", self.queue.count);
+    
+    
     if(queue.count == 0) // renmove everything
     {
         [UIView animateWithDuration:0.3 animations:^{
@@ -83,8 +89,10 @@
     }
     else // go to next popover
     {
-        self.currentlyVisiblePopover = (SYNOnBoardingPopoverView*)[self.queue objectAtIndex:0];
-        [self.queue removeObject:_currentlyVisiblePopover];
+        SYNOnBoardingPopoverView* nextPopover = (SYNOnBoardingPopoverView*)[self.queue objectAtIndex:0];
+        [self.queue removeObject:nextPopover];
+        
+        self.currentlyVisiblePopover = nextPopover;
         
     }
 }
@@ -121,7 +129,7 @@
     
     _currentlyVisiblePopover = currentlyVisiblePopover;
     
-    if(_currentlyVisiblePopover)
+    if(_currentlyVisiblePopover) // no nil was passed
     {
         [self placePopoverInView:_currentlyVisiblePopover];
         
@@ -145,7 +153,7 @@
 
 -(void)placePopoverInView:(SYNOnBoardingPopoverView*)popover
 {
-    [self.view addSubview:popover];
+    
     
     CGRect panelFrame = popover.frame;
     
@@ -179,6 +187,8 @@
     }
     
     popover.frame = panelFrame;
+    
+    [self.view addSubview:popover];
 }
 
 
