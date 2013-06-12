@@ -115,6 +115,8 @@
             
         }];
         
+        return;
+        
     }
     
     _currentlyVisiblePopover = currentlyVisiblePopover;
@@ -129,9 +131,11 @@
                                           action:@selector(okButtonPressed:)
                                 forControlEvents:UIControlEventTouchUpInside];
         
+        
+        BOOL isFirstTime = self.backgroundView.alpha == 0.0;
         [UIView animateWithDuration:0.5 animations:^{
             self.currentlyVisiblePopover.alpha = 1.0;
-            if(self.backgroundView.alpha == 0.0)
+            if(isFirstTime)
                 self.backgroundView.alpha = 0.5;
         }];
     }
