@@ -784,14 +784,14 @@
         if (tabExpanded && !isAnimating)
             [self animateCollectionViewDown:NO];
         
-        return;
+        
     }
     
-    if (tabExpanded || isAnimating)
-        return;
-    
-    [self animateCollectionViewDown:YES];
-    
+    if (!tabExpanded && !isAnimating)
+    {
+        [self animateCollectionViewDown:YES];
+    }
+
     
 }
 
@@ -810,19 +810,17 @@
                               delay: 0.0
                             options: UIViewAnimationCurveEaseInOut
                          animations: ^{
+                             
                              CGRect currentCollectionViewFrame = self.channelThumbnailCollectionView.frame;
                              currentCollectionViewFrame.origin.y += kCategorySecondRowHeight;
-                             //
+                             currentCollectionViewFrame.size.height -= kCategorySecondRowHeight;
                              self.channelThumbnailCollectionView.frame = currentCollectionViewFrame;
                          }
                          completion: ^(BOOL result) {
                              
                              tabExpanded = YES;
                              isAnimating = NO;
-                             [self.channelThumbnailCollectionView reloadData];
-                             CGRect currentCollectionViewFrame = self.channelThumbnailCollectionView.frame;
-                             currentCollectionViewFrame.size.height -= kCategorySecondRowHeight;
-                             self.channelThumbnailCollectionView.frame = currentCollectionViewFrame;
+                             
                          }];
     }
     else if (tabExpanded)
@@ -837,7 +835,7 @@
                              
                              CGRect currentCollectionViewFrame = self.channelThumbnailCollectionView.frame;
                              currentCollectionViewFrame.origin.y -= kCategorySecondRowHeight;
-                             //
+                             currentCollectionViewFrame.size.height += kCategorySecondRowHeight;
                              self.channelThumbnailCollectionView.frame = currentCollectionViewFrame;
                              
                              
@@ -845,12 +843,6 @@
                              
                              tabExpanded = NO;
                              isAnimating = NO;
-                             
-                             [self.channelThumbnailCollectionView reloadData];
-                             
-                             CGRect currentCollectionViewFrame = self.channelThumbnailCollectionView.frame;
-                             currentCollectionViewFrame.size.height += kCategorySecondRowHeight;
-                             self.channelThumbnailCollectionView.frame = currentCollectionViewFrame;
                          }];
     }
 }
