@@ -34,7 +34,6 @@
         
         
         
-        
         self.pointRect = pointRect;
         
         if(CGRectEqualToRect(self.pointRect, CGRectZero))
@@ -47,9 +46,16 @@
         }
         
         // panel view
-        CGRect panelRect = CGRectMake(0.0, 0.0, 400.0, 220.0);
         
-        self.frame = panelRect;
+        if([[SYNDeviceManager sharedInstance] isIPad])
+        {
+            self.frame = CGRectMake(0.0, 0.0, 400.0, 220.0);
+        }
+        else
+        {
+            self.frame = CGRectMake(0.0, 0.0, 400.0, 220.0);
+        }
+        
         
         self.backgroundColor = [UIColor colorWithRed:(11.0/255.0) green:(166.0/255.0) blue:(171.0/255.0) alpha:(1.0)];
         

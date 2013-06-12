@@ -1993,10 +1993,10 @@
     if(!hasShownSubscribeOnBoarding)
     {
         NSString* message = @"Tap this button to subscribe to a channel and get new videos in your feed.";
-        
+        PointingDirection direction = [[SYNDeviceManager sharedInstance] isIPad] ? PointingDirectionLeft : PointingDirectionUp;
         SYNOnBoardingPopoverView* subscribePopover = [SYNOnBoardingPopoverView withMessage:message
                                                                                 pointingTo:self.subscribeButton.frame
-                                                                             withDirection:PointingDirectionLeft];
+                                                                             withDirection:direction];
       
         
         [onBoardingQueue addPopover:subscribePopover];
