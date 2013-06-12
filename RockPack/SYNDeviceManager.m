@@ -91,6 +91,10 @@
 
 -(CGFloat)currentScreenWidth
 {
+    if([self isIPhone])
+    {
+        return [[UIScreen mainScreen] bounds].size.width;
+    }
     if(UIDeviceOrientationIsPortrait([self orientation]))
         return [[UIScreen mainScreen] bounds].size.width;
     else
@@ -99,6 +103,10 @@
 
 -(CGFloat)currentScreenHeight
 {
+    if([self isIPhone])
+    {
+        return [[UIScreen mainScreen] bounds].size.height;
+    }
     if(UIDeviceOrientationIsPortrait([self orientation]))
         return [[UIScreen mainScreen] bounds].size.height;
     else
