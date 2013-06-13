@@ -266,7 +266,6 @@
     
     [self fetchChannelsForGenre:currentGenre]; // this will populate the self.channels array with fresh data
     
-    NSBlockOperation *batchUpdateBlockOperation = [NSBlockOperation new];
     
     //NSArray* updatedObjects = [[notification userInfo] objectForKey: NSUpdatedObjectsKey];
     NSArray* insertedObjects = [[notification userInfo] objectForKey: NSInsertedObjectsKey];
@@ -285,7 +284,7 @@
             
             if(obj == channel)
             {
-                NSLog(@"CH(+) Inserted: %@ at %i", ((Channel*)obj).title, cidx);
+                NSLog(@"CH(+) Inserted: %@ at %i for %@", ((Channel*)obj).title, cidx, ((Channel*)obj).viewId);
                 
                 [insertedIndexPathArray addObject:[NSIndexPath indexPathForItem:cidx inSection:0]];
             }
@@ -302,18 +301,11 @@
         
         if ([obj isKindOfClass:[Channel class]]) {
             
-            NSLog(@"PR(-) Deleted: %@", ((Channel*)obj).title);
+            NSLog(@"CH(-) Deleted: %@", ((Channel*)obj).title);
             
             [deletedIndetifiers addObject:((Channel*)obj).uniqueId];
             
-            [self.channels enumerateObjectsUsingBlock:^(Channel* channel, NSUInteger cidx, BOOL *cstop) {
-                
-                if(obj == channel)
-                {
-                    NSLog(@"Deleted by still existing!");
-                }
-    
-            }];
+            
             
         }
         
@@ -324,13 +316,19 @@
         
         if([deletedIndetifiers containsObject:cell.dataIndentifier])
         {
-            NSLog(@"PR(-) Found Cell at: %i", index);
+            NSLog(@"CH(-) Found Cell at: %i", index);
             [deletedIndexPathArray addObject:[NSIndexPath indexPathForItem:index inSection:0]];
         }
         index++;
         
     }
 
+    if(deletedIndetifiers.count > 0)
+    {
+        self.isViewDirty = NO;
+        [self.channelThumbnailCollectionView reloadData];
+        return;
+    }
     
     if(insertedIndexPathArray.count == 0 && deletedIndexPathArray.count == 0)
     {
@@ -340,65 +338,30 @@
         return;
     }
     
-    // check for damn iOS bugs
-    if(insertedIndexPathArray.count > 0)
+    if([self.channelThumbnailCollectionView numberOfItemsInSection:0] == 0)
     {
-        if([self.channelThumbnailCollectionView numberOfSections] > 0)
-        {
-            
-            if([self.channelThumbnailCollectionView numberOfItemsInSection:0] == 0)
-            {
-                shouldReloadCollectionView = YES;
-            }
-            else
-            {
-                [batchUpdateBlockOperation addExecutionBlock:^{
-                    [self.channelThumbnailCollectionView insertItemsAtIndexPaths:insertedIndexPathArray];
-                }];
-            }
-        }
-        else
-        {
-            shouldReloadCollectionView = YES;
-        }
+        self.isViewDirty = NO;
+        [self.channelThumbnailCollectionView reloadData];
+        return;
     }
     
-    if(deletedIndexPathArray.count > 0)
-    {
-        if ([self.channelThumbnailCollectionView numberOfItemsInSection:0] == 1)
-        {
-            shouldReloadCollectionView = YES;
-        }
-        else
-        {
-            [batchUpdateBlockOperation addExecutionBlock:^{
-                [self.channelThumbnailCollectionView deleteItemsAtIndexPaths:deletedIndexPathArray];
-            }];
-        }
-    }
     
-    if(shouldReloadCollectionView)
-    {
-        NSLog(@"shouldReloadCollectionView == YES");
+    NSLog(@"performBatchUpdates:");
+    [self.channelThumbnailCollectionView performBatchUpdates:^{
+        
+        if(insertedIndexPathArray.count > 0)
+            [self.channelThumbnailCollectionView insertItemsAtIndexPaths:insertedIndexPathArray];
+        
+        if(deletedIndexPathArray.count > 0)
+            [self.channelThumbnailCollectionView deleteItemsAtIndexPaths:deletedIndexPathArray];
+        
+    } completion:^(BOOL finished) {
+        
         [self.channelThumbnailCollectionView reloadData];
         self.isViewDirty = NO;
-    }
-    else
-    {
-        NSLog(@"performBatchUpdates:");
-        [self.channelThumbnailCollectionView performBatchUpdates:^{
-            
-            [batchUpdateBlockOperation start];
-            
-        } completion:^(BOOL finished) {
-            
-            [self.channelThumbnailCollectionView reloadData];
-            self.isViewDirty = NO;
-            
-            
-        }];
-    }
-    
+        
+        
+    }];
     
     
     
@@ -534,7 +497,7 @@
     if (!resultsArray)
         return;
     
-    DebugLog(@"resultsArray: %i", resultsArray.count);
+    DebugLog(@"Items Fetched: %i", resultsArray.count);
     
     self.channels = [NSMutableArray arrayWithArray:resultsArray];
     
@@ -938,6 +901,8 @@
         self.channelThumbnailCollectionView.alpha = 0.0;
         
     } completion:^(BOOL finished) {
+        
+        [self.channels removeAllObjects];
         
         [self fetchChannelsForGenre:genre];
         

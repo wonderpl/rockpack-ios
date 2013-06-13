@@ -492,7 +492,7 @@ didFinishLaunchingWithOptions: (NSDictionary *) launchOptions
 // Save the main context first (propagating the changes to the private) and then the private
 - (void) saveContext: (BOOL) wait
 {
-    
+    NSLog(@"%@", [NSThread callStackSymbols]);
     if ([self.mainManagedObjectContext hasChanges])
     {
         [self.mainManagedObjectContext performBlockAndWait:^
