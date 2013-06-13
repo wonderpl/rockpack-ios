@@ -46,6 +46,7 @@
                                               SYNChannelCoverImageSelectorDelegate>
 {
     BOOL _isIPhone; //So many calls were being made to the SYNDeviceManager a boolean initialised at viewDidLoad was introduced.
+    BOOL _hasAppeared; //Debug flag for finding double ViewDidAppear/disappear calls.
 }
 
 
@@ -125,6 +126,15 @@
 	}
 
 	return self;
+}
+
+- (void) dealloc
+{
+    if (_channelTitleTextView)
+    {
+        [_channelTitleTextView removeObserver: self
+                                   forKeyPath: kTextViewContentSizeKey];
+    }
 }
 
 
@@ -338,11 +348,6 @@
 {
     [super viewWillAppear: animated];
     
-    [self.channelTitleTextView addObserver: self
-                                forKeyPath: kTextViewContentSizeKey
-                                   options: NSKeyValueObservingOptionNew
-                                   context: NULL];
-    
     [[NSNotificationCenter defaultCenter] addObserver: self
                                              selector: @selector(coverImageChangedHandler:)
                                                  name: kCoverArtChanged
@@ -393,6 +398,12 @@
     
     [self displayChannelDetails];
     
+    if(_hasAppeared)
+    {
+        AssertOrLog(@"Detail View controller had viewWillAppear called twice!!!!");
+    }
+    _hasAppeared = YES;
+    
 }
 
 
@@ -404,10 +415,6 @@
     [[NSNotificationCenter defaultCenter] postNotificationName: kNoteAllNavControlsShow
                                                         object: self
                                                       userInfo: nil];
-    
-    [self.channelTitleTextView removeObserver: self
-                                   forKeyPath: kTextViewContentSizeKey];
-    
     [[NSNotificationCenter defaultCenter] removeObserver: self
                                                     name: kCoverArtChanged
                                                   object: nil];
@@ -445,6 +452,11 @@
                                                         object: self
                                                       userInfo: nil];
     
+    if(!_hasAppeared)
+    {
+        AssertOrLog(@"Detail View controller had viewWillDisappear called twice!!!!");
+    }
+    _hasAppeared = NO;
 }
 
 
@@ -718,6 +730,20 @@
     }
 
     [self adjustTextView];
+}
+
+-(void)setChannelTitleTextView:(SSTextView *)channelTitleTextView
+{
+    if (_channelTitleTextView)
+    {
+        [_channelTitleTextView removeObserver: self
+                                       forKeyPath: kTextViewContentSizeKey];
+    }
+    _channelTitleTextView = channelTitleTextView;
+    [_channelTitleTextView addObserver: self
+                            forKeyPath: kTextViewContentSizeKey
+                               options: NSKeyValueObservingOptionNew
+                               context: NULL];
 }
 
 
@@ -2490,7 +2516,6 @@
     [self closeImageSelector: imageSelector];
 }
 
-
 #pragma mark - ScrollView Delegate
 
 - (void) scrollViewDidScroll: (UIScrollView *) scrollView
@@ -2727,13 +2752,6 @@
     
         [self.avatarImageView setImageWithURL: [NSURL URLWithString:imageUrlString] placeholderImage: placeholder options: SDWebImageRetryFailed];
     }
-}
-
-
-- (void) dealloc
-{
-    self.channel = nil;
-    self.originalChannel = nil;
 }
 
 #pragma mark - FAVOURITES WORKAROUND. TO BE REMOVED
