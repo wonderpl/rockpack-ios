@@ -54,6 +54,7 @@
 @property (weak, nonatomic) IBOutlet UIView *passwordView;
 @property (weak, nonatomic) IBOutlet UIView *secondSignupView;
 @property (weak, nonatomic) IBOutlet UIView *termsAndConditionsView;
+@property (weak, nonatomic) IBOutlet UILabel *registeringUserErrorLabel;
 
 
 
@@ -66,6 +67,8 @@
 @property (nonatomic, strong) IBOutlet UIImageView* avatarImageView;
 
 @property (nonatomic, strong) NSDateFormatter* formatter;
+
+@property (nonatomic, strong) NSMutableArray* validUsernames;
 
 @end
 
@@ -793,6 +796,7 @@
     BOOL valid = YES;
     switch (self.state) {
             case kLoginScreenStateRegister:
+               [self.registeringUserNameInputField resignFirstResponder];
                valid = [self registrationFormPartOneIsValidForUserName:self.registeringUserNameInputField];
                break;
             default:
@@ -805,6 +809,79 @@
         return;
     }
     
+    if(!self.validUsernames)
+    {
+        self.validUsernames = [NSMutableArray array];
+    }
+    else
+    {
+        if([self.validUsernames indexOfObject:self.registeringUserNameInputField.text] !=NSNotFound)
+        {
+            [self showRegistrationStep2];
+            return;
+        }
+    }
+    
+    [self.activityIndicator startAnimating];
+    [self turnOffButton:self.cancelButton];
+    [self turnOffButton:self.nextButton];
+    
+    [self doRequestUsernameAvailabilityForUsername:self.registeringUserNameInputField.text completionHandler:^(NSDictionary *result) {
+        
+        [self.activityIndicator stopAnimating];
+        [self turnOnButton:self.cancelButton];
+        
+        NSNumber* availabilitynumber = [result objectForKey:@"available"];
+        if(availabilitynumber)
+        {
+        BOOL usernameAvailable = [availabilitynumber boolValue];
+            if(usernameAvailable)
+            {
+                [self showRegistrationStep2];
+            }
+            else
+            {
+                [self turnOnButton:self.nextButton];
+                self.registeringUserErrorLabel.text = NSLocalizedString(@"register_screen_form_field_username_already_taken", nil);
+            }
+        }
+        else
+        {
+            [self turnOnButton:self.nextButton];
+            self.registeringUserErrorLabel.text = NSLocalizedString(@"unknown_error_message", nil);
+        }
+    } errorHandler:^(NSError *error) {
+        
+        [self.activityIndicator stopAnimating];
+        [self turnOnButton:self.cancelButton];
+        [self turnOnButton:self.nextButton];
+        self.registeringUserErrorLabel.text = NSLocalizedString(@"unknown_error_message", nil);
+
+        
+    }];
+
+    
+}
+
+- (IBAction) termsTapped: (id) sender
+{
+    [[UIApplication sharedApplication] openURL:[NSURL URLWithString: kLoginTermsUrl]];
+
+}
+
+
+- (IBAction) privacyPolicyTapped: (id) sender
+{
+
+    [[UIApplication sharedApplication] openURL:[NSURL URLWithString: kLoginPrivacyUrl]];
+    
+}
+
+
+#pragma mark - show registration step 2 animation
+
+-(void)showRegistrationStep2
+{
     [GAI.sharedInstance.defaultTracker sendView: @"Login 2"];
     
     self.state = kLoginScreenStateRegisterStepTwo;
@@ -824,22 +901,6 @@
     } completion:^(BOOL finished) {
         [self.registeringUserEmailInputField becomeFirstResponder];
     }];
-
-    
-}
-
-
-- (IBAction) termsTapped: (id) sender
-{
-    [[UIApplication sharedApplication] openURL:[NSURL URLWithString: kLoginTermsUrl]];
-
-}
-
-
-- (IBAction) privacyPolicyTapped: (id) sender
-{
-
-    [[UIApplication sharedApplication] openURL:[NSURL URLWithString: kLoginPrivacyUrl]];
     
 }
 
@@ -933,56 +994,6 @@
      }];
 }
 
-
-#pragma mark - validation methods
-
-- (BOOL) validateLogin
-{
-    return self.userNameInputField.text.length > 0 && self.passwordInputField.text.length > 0 ;
-}
-
-
-- (BOOL) validateRegistrationFirstScreen
-{
-    return [self.registeringUserNameInputField.text isMatchedByRegex:@"^[a-zA-Z0-9\\._]+$"];
-}
-
-
-- (BOOL) validatePasswordRetrieve
-{
-    return self.emailInputField.text.length > 0;
-}
-
-
--(BOOL)validateRegistrationSecondScreen
-{
-    
-    BOOL result = [self validateRegistrationFirstScreen] && [self.registeringUserEmailInputField.text isMatchedByRegex:@"^([a-zA-Z0-9%_.+\\-]+)@([a-zA-Z0-9.\\-]+?\\.[a-zA-Z]{2,6})$"] && self.registeringUserPasswordInputField.text.length>0;
-    
-    result = result && [self validDateEntered];
-    
-    return result;
-}
-
--(BOOL)validDateEntered
-{
-    if([self.yyyyInputField.text length]!= 4 )
-    {
-        return NO;
-    }
-    
-    
-    //Zero-pad single number day and month values
-    NSString* day= [self zeroPadIfOneCharacter:self.ddInputField.text];
-    
-    NSString* month= [self zeroPadIfOneCharacter:self.mmInputField.text];
-    
-    NSString* dateString = [NSString stringWithFormat:@"%@/%@/%@", day, month, self.yyyyInputField.text];
-    NSDate* date = [self.formatter dateFromString:dateString];
-    return (date != nil && [date timeIntervalSinceNow] < 0);
-}
-
-
 #pragma mark - UITextField delegate
 
 - (BOOL) textField: (UITextField *) textField
@@ -1019,6 +1030,7 @@ shouldChangeCharactersInRange: (NSRange) range
     self.signupErrorLabel.text = @"";
     self.loginErrorLabel.text = @"";
     self.passwordResetErrorLabel.text = @"";
+    self.registeringUserErrorLabel.text = @"";
         
     if(sender == self.ddInputField && [self.ddInputField.text length]==2)
     {
@@ -1137,7 +1149,7 @@ shouldChangeCharactersInRange: (NSRange) range
             errorLabel = self.loginErrorLabel;
             break;
         case kLoginScreenStateRegister:
-            errorLabel = self.signupErrorLabel;
+            errorLabel = self.registeringUserErrorLabel;
             break;
         case kLoginScreenStateRegisterStepTwo:
             errorLabel = self.signupErrorLabel;
