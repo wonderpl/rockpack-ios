@@ -806,23 +806,6 @@
          }
               errorHandler:^(NSDictionary* errorDictionary) {
                   
-                  NSDictionary* errors = errorDictionary [@"error"];
-                  if (errors)
-                  {
-                      [self placeErrorLabel: NSLocalizedString(@"login_screen_form_field_username_password_error_incorrect", nil)
-                            nextToView: userNameInputField];
-                      
-                      [self placeErrorLabel: NSLocalizedString(@"login_screen_form_field_username_password_error_incorrect", nil)
-                                 nextToView: passwordInputField];
-                  }
-                  
-                  NSDictionary* savingError = errorDictionary [@"saving_error"];
-                  if(savingError)
-                  {
-                      [self placeErrorLabel: NSLocalizedString(@"login_screen_saving_error", nil)
-                                 nextToView: passwordInputField];
-                  }
-                  
                   finalLoginButton.enabled = YES;
                   
                   [activityIndicator stopAnimating];
@@ -834,6 +817,25 @@
                                    completion: ^(BOOL finished) {
                                        [userNameInputField becomeFirstResponder];
                                    }];
+                  
+                  NSDictionary* errors = errorDictionary [@"error"];
+                  if (errors)
+                  {
+                      [self placeErrorLabel: NSLocalizedString(@"login_screen_form_field_username_password_error_incorrect", nil)
+                                 nextToView: userNameInputField];
+                      
+                      [self placeErrorLabel: NSLocalizedString(@"login_screen_form_field_username_password_error_incorrect", nil)
+                                 nextToView: passwordInputField];
+                  }
+                  
+                  NSDictionary* savingError = errorDictionary [@"saving_error"];
+                  if(savingError)
+                  {
+                      [self placeErrorLabel: NSLocalizedString(@"login_screen_saving_error", nil)
+                                 nextToView: passwordInputField];
+                  }
+
+                  
               }];
 }
 
@@ -874,12 +876,14 @@
         }
 
     } errorHandler: ^(NSError *error) {
+        if (error.code<500 || error.code >= 600)
+        {
         [[[UIAlertView alloc] initWithTitle: NSLocalizedString(@"forgot_password_screen_complete_title", nil)
                                     message: NSLocalizedString(@"forgot_password_screen_form_field_request_failed_error", nil)
                                    delegate: nil
                           cancelButtonTitle: NSLocalizedString(@"OK", nil)
                           otherButtonTitles: nil] show];
-        
+        }
     }];
 }
 
@@ -1107,6 +1111,11 @@
                  }
              }
                   errorHandler: ^(NSDictionary* errorDictionary){
+                      registerNewUserButton.enabled = YES;
+                      
+                      [activityIndicator stopAnimating];
+                      registerNewUserButton.alpha = 1.0;
+                      
                       NSDictionary* formErrors = [errorDictionary objectForKey: @"form_errors"];
                       
                       if (formErrors)
@@ -1114,10 +1123,6 @@
                           [self showRegistrationError: formErrors];
                       }
                       
-                      registerNewUserButton.enabled = YES;
-                      
-                      [activityIndicator stopAnimating];
-                      registerNewUserButton.alpha = 1.0;
                   }];
 }
 

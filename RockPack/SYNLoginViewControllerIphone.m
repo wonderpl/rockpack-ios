@@ -623,15 +623,22 @@
                 [self completeLoginProcess];
                 
             } errorHandler:^(NSDictionary* errorDictionary) {
+                
+                [self.activityIndicator stopAnimating];
+                [self turnOnButton:self.backButton];
+                [self turnOnButton:self.confirmButton];
+                
+                NSError* networkError = [errorDictionary valueForKey:@"nserror"];
+                if (networkError.code >= 500 && networkError.code <600) {
+                    return;
+                }
+                
                 NSString* savingError = errorDictionary[@"saving_error"];
                 if(savingError) {
                     self.loginErrorLabel.text = NSLocalizedString(@"login_screen_saving_error", nil);
                 } else {
                     self.loginErrorLabel.text = NSLocalizedString(@"login_screen_form_field_username_password_error_incorrect", nil);
                 }
-                [self.activityIndicator stopAnimating];
-                [self turnOnButton:self.backButton];
-                [self turnOnButton:self.confirmButton];
                 
                 
             }];
@@ -672,6 +679,11 @@
                 [self turnOnButton:self.backButton];
                 [self turnOnButton:self.confirmButton];
                 
+                NSError* networkError = [errorDictionary valueForKey:@"nserror"];
+                if (networkError.code >= 500 && networkError.code <600) {
+                    return;
+                }
+                
                 NSDictionary* formErrors = [errorDictionary objectForKey:@"form_errors"];
                 NSString* errorString;
                 BOOL append = NO;
@@ -709,6 +721,20 @@
                         else
                         {
                             errorString = passwordErrorString;
+                        }
+                    }
+                    
+                    NSArray* dateError = [formErrors objectForKey:@"date_of_birth"];
+                    if (dateError)
+                    {
+                        NSString* dateErrorString = [NSString stringWithFormat:NSLocalizedString(@"%@: %@", nil), NSLocalizedString(@"DOB", nil),[dateError objectAtIndex:0]];
+                        if(append)
+                        {
+                            errorString = [NSString stringWithFormat:@"%@\n%@",errorString, dateErrorString];
+                        }
+                        else
+                        {
+                            errorString = dateErrorString;
                         }
                     }
                     
@@ -1125,5 +1151,6 @@ shouldChangeCharactersInRange: (NSRange) range
     
     errorLabel.text = errorText;
 }
+
 
 @end
