@@ -1990,6 +1990,7 @@
     
     NSUserDefaults *defaults = [NSUserDefaults standardUserDefaults];
     BOOL hasShownSubscribeOnBoarding = [defaults boolForKey:kUserDefaultsSubscribe];
+    NSLog(@"has? : %i", hasShownSubscribeOnBoarding);
     if(!hasShownSubscribeOnBoarding)
     {
         NSString* message = @"Tap this button to subscribe to a channel and get new videos in your feed.";
@@ -2005,18 +2006,13 @@
         [onBoardingQueue addPopover:subscribePopover];
         
         [defaults setBool:YES forKey:kUserDefaultsSubscribe];
-    }
-    
-    if(!hasShownSubscribeOnBoarding)
-    {
+        
+        
         [self.view addSubview:onBoardingQueue.view];
         [self addChildViewController:onBoardingQueue];
         [onBoardingQueue present];
     }
-    else
-    {
-        onBoardingQueue = nil;
-    }
+    
     
 }
 
