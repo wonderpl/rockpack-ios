@@ -2755,16 +2755,20 @@
         CGFloat fontSize = [[SYNDeviceManager sharedInstance] isIPad] ? 19.0 : 15.0 ;
         CGSize size = [[SYNDeviceManager sharedInstance] isIPad] ? CGSizeMake(340.0, 144.0) : CGSizeMake(260.0, 144.0);
         CGRect rectToPointTo = CGRectZero;
+        PointingDirection directionToPointTo = PointingDirectionDown;
         if(self.selectedCell)
         {
             rectToPointTo = [self.view convertRect:self.selectedCell.addItButton.frame fromView:self.selectedCell];
-            NSLog(@"%f %f", rectToPointTo.origin.x, rectToPointTo.origin.y);
+            if(rectToPointTo.origin.y < [[SYNDeviceManager sharedInstance] currentScreenHeight] * 0.5)
+                directionToPointTo = PointingDirectionUp;
+            
+            //NSLog(@"%f %f", rectToPointTo.origin.x, rectToPointTo.origin.y);
         }
         SYNOnBoardingPopoverView* subscribePopover = [SYNOnBoardingPopoverView withMessage:message
                                                                                   withSize:size
                                                                                andFontSize:fontSize
                                                                                 pointingTo:rectToPointTo
-                                                                             withDirection:PointingDirectionDown];
+                                                                             withDirection:directionToPointTo];
         
         
         [onBoardingQueue addPopover:subscribePopover];

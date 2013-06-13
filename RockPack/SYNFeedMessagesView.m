@@ -129,6 +129,8 @@
     
 }
 
+
+
 -(CGRect)returnMainFrame
 {
     CGRect mainFrame = CGRectMake(0.0, 0.0, self.messageLabel.frame.size.width + 40.0, self.messageLabel.frame.size.height + 30.0);
