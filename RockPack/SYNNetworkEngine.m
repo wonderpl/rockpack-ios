@@ -159,10 +159,13 @@
     [parameters setObject: self.localeString
                    forKey: @"locale"];
     
+    
+    
     SYNNetworkOperationJsonObject *networkOperation = (SYNNetworkOperationJsonObject*)[self operationWithPath: apiString
-                                                                                                       params: nil
+                                                                                                       params: parameters
                                                                                                    httpMethod: @"GET"
-                                                                                                          ssl: TRUE];
+                                                                                                          ssl: NO];
+    NSLog(@"url: %@", networkOperation.url);
     [self addCommonHandlerToNetworkOperation: networkOperation
                            completionHandler: completionBlock
                                 errorHandler: errorBlock];
