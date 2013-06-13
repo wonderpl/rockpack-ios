@@ -198,8 +198,6 @@
     // On Boarding
     
     SYNOnBoardingPopoverQueueController* onBoardingQueue = [[SYNOnBoardingPopoverQueueController alloc] init];
-    
-    
     NSUserDefaults *defaults = [NSUserDefaults standardUserDefaults];
     BOOL hasShownSubscribeOnBoarding = [defaults boolForKey:kUserDefaultsChannels];
     if(!hasShownSubscribeOnBoarding)
