@@ -93,11 +93,14 @@
         
         
         // buttom
-        
-        self.okButton = [UIButton buttonWithType:UIButtonTypeRoundedRect];
+        UIImage* okButtonImageNormal = [UIImage imageNamed:@"onboarding_button_ok"];
+        UIImage* okButtonImagePressed = [UIImage imageNamed:@"onboarding_button_ok_highlighted"];
+        self.okButton = [UIButton buttonWithType:UIButtonTypeCustom];
+        [self.okButton setImage:okButtonImageNormal forState:UIControlStateNormal];
+        [self.okButton setImage:okButtonImagePressed forState:UIControlStateHighlighted];
         
         CGRect buttonRect = self.okButton.frame;
-        buttonRect.size = CGSizeMake(100.0, 30.0);
+        buttonRect.size = okButtonImageNormal.size;
         buttonRect.origin.x = self.frame.size.width * 0.5 - buttonRect.size.width * 0.5;
         buttonRect.origin.y = labelRect.origin.y + labelRect.size.height + 10.0;
         self.okButton.frame = CGRectIntegral(buttonRect);
@@ -105,7 +108,31 @@
         [self addSubview:self.okButton];
         
         
-        // orient
+        // arrow
+        
+        UIImage* arrowImage;
+        switch (direction) {
+            case PointingDirectionDown:
+                arrowImage = [UIImage imageNamed:@"onboarding_arrow_bottom"];
+                break;
+            case PointingDirectionUp:
+                arrowImage = [UIImage imageNamed:@"onboarding_arrow_up"];
+                break;
+            case PointingDirectionLeft:
+                arrowImage = [UIImage imageNamed:@"onboarding_arrow_left"];
+                break;
+            case PointingDirectionRight:
+                arrowImage = [UIImage imageNamed:@"onboarding_arrow_right"];
+                break;
+                
+            case PointingDirectionNone:
+                arrowImage = [UIImage imageNamed:@""];
+                break;
+                
+        }
+        
+        
+        self.arrow = [[UIImageView alloc] initWithImage:arrowImage];
         
         
         

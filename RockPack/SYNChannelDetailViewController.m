@@ -2803,9 +2803,6 @@
 -(void)refreshFavouritesChannel
 {
     
-    // on bording
-    
-    
     [[NSNotificationCenter defaultCenter] postNotificationName: kChannelUpdateRequest
                                                        object: self
                                                      userInfo: @{kChannel: self.channel}];
