@@ -45,7 +45,7 @@
 
 - (void) userDataChanged: (NSNotification*) notification
 {
-    User* currentUser = (User*)[[notification userInfo] objectForKey: @"user"];
+    User* currentUser = (User*)[notification userInfo][@"user"];
     if(!currentUser)
         return;
     

@@ -248,15 +248,15 @@ typedef enum {
                                                    
             NSDictionary* responseDictionary = (NSDictionary*)response;
                                                    
-            NSDictionary* notificationsDictionary = [responseDictionary objectForKey:@"notifications"];
+            NSDictionary* notificationsDictionary = responseDictionary[@"notifications"];
             if (!notificationsDictionary)
                 return;
                                                    
-            NSNumber* totalNumber = [notificationsDictionary objectForKey:@"total"];
+            NSNumber* totalNumber = notificationsDictionary[@"total"];
             if (!totalNumber)
                 return;
         
-            NSArray* itemsArray = (NSArray*)[notificationsDictionary objectForKey:@"items"];
+            NSArray* itemsArray = (NSArray*)notificationsDictionary[@"items"];
             if (!itemsArray)
                 return;
         
@@ -362,21 +362,21 @@ typedef enum {
    
         }
         
-        NSDictionary* navigationElement = (NSDictionary*)[self.navigationData objectAtIndex: indexPath.row];
+        NSDictionary* navigationElement = (NSDictionary*)(self.navigationData)[indexPath.row];
         
         
-        kSideNavigationType navigationType = [((NSNumber*)[navigationElement objectForKey: kSideNavType]) integerValue];
+        kSideNavigationType navigationType = [((NSNumber*)navigationElement[kSideNavType]) integerValue];
         
         // == Type == //
         
-        NSString* cellTitle = [navigationElement objectForKey: kSideNavTitle];
+        NSString* cellTitle = navigationElement[kSideNavTitle];
         
         if (navigationType == kSideNavigationTypePage)
         {
             cell.accessoryType = UITableViewCellAccessoryNone;
-            NSString* pageName = [navigationElement objectForKey: kSideNavAction];
+            NSString* pageName = navigationElement[kSideNavAction];
             
-            [self.cellByPageName setObject:cell forKey:pageName];
+            (self.cellByPageName)[pageName] = cell;
         }
         else
         {
@@ -422,9 +422,9 @@ typedef enum {
     
     self.currentlySelectedIndexPath = indexPath;
     
-    NSDictionary* navigationElement = (NSDictionary*)[self.navigationData objectAtIndex: indexPath.row];
-    kSideNavigationType navigationType = [((NSNumber*)[navigationElement objectForKey: kSideNavType]) integerValue];
-    NSString* navigationAction = (NSString*)[navigationElement objectForKey: kSideNavAction];
+    NSDictionary* navigationElement = (NSDictionary*)(self.navigationData)[indexPath.row];
+    kSideNavigationType navigationType = [((NSNumber*)navigationElement[kSideNavType]) integerValue];
+    NSString* navigationAction = (NSString*)navigationElement[kSideNavAction];
     
     if (navigationType == kSideNavigationTypeLoad)
     {
@@ -533,7 +533,7 @@ typedef enum {
 - (void) setSelectedCellByPageName: (NSString*) pageName
 {
     self.keyForSelectedPage = pageName;
-    UITableViewCell* cellSelected = (UITableViewCell*)[self.cellByPageName objectForKey: pageName];
+    UITableViewCell* cellSelected = (UITableViewCell*)(self.cellByPageName)[pageName];
     
     if (!cellSelected)
         return;

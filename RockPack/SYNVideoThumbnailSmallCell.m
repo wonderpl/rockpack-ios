@@ -60,7 +60,7 @@
     dispatch_once(&pred, ^
                   {
                       filter = [CIFilter filterWithName: @"CIColorMonochrome"
-                                          keysAndValues: @"inputIntensity", [NSNumber numberWithFloat: 1.0],
+                                          keysAndValues: @"inputIntensity", @1.0f,
                                                          @"inputColor", [[CIColor alloc] initWithColor: [UIColor whiteColor]],
                                                          nil];
                   });

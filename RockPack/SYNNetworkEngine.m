@@ -150,14 +150,11 @@
     
     NSMutableDictionary* parameters = [NSMutableDictionary dictionary];
     
-    [parameters setObject: @(range.location)
-                   forKey: @"start"];
+    parameters[@"start"] = @(range.location);
     
-    [parameters setObject: @(range.length)
-                   forKey: @"size"];
+    parameters[@"size"] = @(range.length);
     
-    [parameters setObject: self.localeString
-                   forKey: @"locale"];
+    parameters[@"locale"] = self.localeString;
     
     
     
@@ -201,16 +198,13 @@
 {
     NSMutableDictionary* tempParameters = [NSMutableDictionary dictionary];
     
-    [tempParameters setObject: [NSString stringWithFormat: @"%i", range.location]
-                       forKey: @"start"]; 
+    tempParameters[@"start"] = [NSString stringWithFormat: @"%i", range.location]; 
     
-    [tempParameters setObject: [NSString stringWithFormat: @"%i", range.length]
-                       forKey: @"size"];
+    tempParameters[@"size"] = [NSString stringWithFormat: @"%i", range.length];
     
     if (![categoryId isEqualToString: @"all"])
     {
-        [tempParameters setObject: categoryId
-                           forKey: @"category"];
+        tempParameters[@"category"] = categoryId;
     }
 
     NSDictionary* parameters = [self getLocalParamWithParams: tempParameters];
@@ -248,13 +242,11 @@
     
     NSMutableDictionary* tempParameters = [NSMutableDictionary dictionary];
     
-    [tempParameters setObject:searchTerm forKey: @"q"];
+    tempParameters[@"q"] = searchTerm;
     
-    [tempParameters setObject: [NSString stringWithFormat: @"%i", range.location]
-                       forKey: @"start"];
+    tempParameters[@"start"] = [NSString stringWithFormat: @"%i", range.location];
     
-    [tempParameters setObject: [NSString stringWithFormat: @"%i", range.length]
-                       forKey: @"size"];
+    tempParameters[@"size"] = [NSString stringWithFormat: @"%i", range.length];
     
     [tempParameters addEntriesFromDictionary: [self getLocalParam]];
     
@@ -272,7 +264,7 @@
         if(!dictionary)
             return;
         
-        NSNumber *totalNumber = (NSNumber*)[[dictionary objectForKey: @"videos"] objectForKey:@"total"];
+        NSNumber *totalNumber = (NSNumber*)dictionary[@"videos"][@"total"];
         if (totalNumber && [totalNumber isKindOfClass: [NSNumber class]])
             itemsCount = totalNumber.intValue;
         
@@ -305,13 +297,11 @@
 
     NSMutableDictionary* tempParameters = [NSMutableDictionary dictionary];
     
-    [tempParameters setObject:searchTerm forKey:@"q"];
+    tempParameters[@"q"] = searchTerm;
     
-    [tempParameters setObject: [NSString stringWithFormat: @"%i", range.location]
-                       forKey:@"start"];
+    tempParameters[@"start"] = [NSString stringWithFormat: @"%i", range.location];
     
-    [tempParameters setObject: [NSString stringWithFormat: @"%i", range.length]
-                       forKey: @"size"];
+    tempParameters[@"size"] = [NSString stringWithFormat: @"%i", range.length];
     
     [tempParameters addEntriesFromDictionary: [self getLocalParam]];
     
@@ -374,8 +364,7 @@
     
     [self registerOperationSubclass: [SYNNetworkOperationJsonObjectParse class]];
     
-    NSDictionary* parameters = [self getLocalParamWithParams: [NSDictionary dictionaryWithObject: hint
-                                                                                          forKey: @"q"]];
+    NSDictionary* parameters = [self getLocalParamWithParams: @{@"q": hint}];
     
     NSString* apiForEntity;
     if(entityType == EntityTypeChannel)
@@ -417,14 +406,11 @@
     NSString *apiString = [kAPIGetUserDetails stringByReplacingOccurrencesOfStrings: apiSubstitutionDictionary];
     
     NSMutableDictionary* parameters = [[NSMutableDictionary alloc] initWithCapacity:3];
-    [parameters setObject: @(0)
-                   forKey: @"start"];
+    parameters[@"start"] = @(0);
     
-    [parameters setObject: @(1000)
-                   forKey: @"size"];
+    parameters[@"size"] = @(1000);
     
-    [parameters setObject: self.localeString
-                   forKey: @"locale"];
+    parameters[@"locale"] = self.localeString;
     
     SYNNetworkOperationJsonObject *networkOperation = (SYNNetworkOperationJsonObject*)[self operationWithPath: apiString
                                                                                                        params: parameters];

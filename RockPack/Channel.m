@@ -117,7 +117,7 @@
         return nil;
     
    
-    NSString *uniqueId = [dictionary objectForKey: @"id"];
+    NSString *uniqueId = dictionary[@"id"];
     if(!uniqueId || ![uniqueId isKindOfClass:[NSString class]])
         return nil;
     
@@ -141,18 +141,18 @@
     
     BOOL hasVideoInstances = YES;
     
-    NSDictionary *videosDictionary = [dictionary objectForKey: @"videos"];
+    NSDictionary *videosDictionary = dictionary[@"videos"];
     if(!videosDictionary || ![videosDictionary isKindOfClass: [NSDictionary class]])
         hasVideoInstances = NO;
     
-    NSArray *itemArray = [videosDictionary objectForKey: @"items"];
+    NSArray *itemArray = videosDictionary[@"items"];
     if(!itemArray || ![itemArray isKindOfClass: [NSArray class]])
         hasVideoInstances = NO;
     
     if (!(ignoringObjects & kIgnoreVideoInstanceObjects) && hasVideoInstances)
     {
         
-        NSNumber *totalNumber = [videosDictionary objectForKey: @"total"];
+        NSNumber *totalNumber = videosDictionary[@"total"];
         if([totalNumber isKindOfClass:[NSNumber class]])
             self.totalVideosValue = [totalNumber integerValue];
         else
@@ -161,7 +161,7 @@
         NSMutableDictionary* videoInsanceByIdDictionary = [[NSMutableDictionary alloc] initWithCapacity:self.videoInstances.count];
         
         for (VideoInstance* vi in self.videoInstances)
-            [videoInsanceByIdDictionary setObject:vi forKey:vi.uniqueId];
+            videoInsanceByIdDictionary[vi.uniqueId] = vi;
         
         
         NSString* newUniqueId;
@@ -173,11 +173,11 @@
         {
             
             
-            newUniqueId = [channelDictionary objectForKey: @"id"];
+            newUniqueId = channelDictionary[@"id"];
             if(!newUniqueId || ![newUniqueId isKindOfClass:[NSString class]])
                 continue;
             
-            videoInstance = [videoInsanceByIdDictionary objectForKey:newUniqueId];
+            videoInstance = videoInsanceByIdDictionary[newUniqueId];
             
             if(!videoInstance)
             {
@@ -201,7 +201,7 @@
             
             // all other properties of videoInstance like Video and Title are considered constant at the moment
             
-            NSNumber* newPosition = [channelDictionary objectForKey: @"position"];
+            NSNumber* newPosition = channelDictionary[@"position"];
             if(newPosition && [newPosition isKindOfClass:[NSNumber class]])
                 videoInstance.position = newPosition;
             
@@ -232,7 +232,7 @@
         
         for (id key in videoInsanceByIdDictionary)
         {
-            VideoInstance* vi = [videoInsanceByIdDictionary objectForKey:key];
+            VideoInstance* vi = videoInsanceByIdDictionary[key];
             if(!vi)
                 continue;
             
@@ -245,7 +245,7 @@
     
     [self setBasicAttributesFromDictionary:dictionary];
     
-    NSDictionary* ownerDictionary = [dictionary objectForKey: @"owner"];
+    NSDictionary* ownerDictionary = dictionary[@"owner"];
     if(!(ignoringObjects & kIgnoreChannelOwnerObject) && ownerDictionary)
     {
         self.channelOwner = [ChannelOwner instanceFromDictionary: ownerDictionary
@@ -254,7 +254,7 @@
     }
     
     
-    NSDictionary* channelCoverDictionary = [dictionary objectForKey:@"cover"];
+    NSDictionary* channelCoverDictionary = dictionary[@"cover"];
     if(!(ignoringObjects & kIgnoreChannelCover) && [channelCoverDictionary isKindOfClass:[NSDictionary class]])
     {
         self.channelCover = [ChannelCover instanceFromDictionary:channelCoverDictionary
@@ -269,12 +269,12 @@
 {
     
     
-    NSNumber* categoryNumber = [dictionary objectForKey:@"category"];
+    NSNumber* categoryNumber = dictionary[@"category"];
     
     self.categoryId = (categoryNumber && [categoryNumber isKindOfClass:[NSNumber class]]) ? [categoryNumber stringValue] : @"" ;
     
     self.position = [dictionary objectForKey: @"position"
-                                 withDefault: [NSNumber numberWithInt: 0]];
+                                 withDefault: @0];
     
     self.title = [dictionary upperCaseStringForKey: @"title"
                                        withDefault: @""];
@@ -283,13 +283,13 @@
                                                    withDefault: [NSDate date]];
     
     self.subscribersCount = [dictionary objectForKey: @"subscriber_count"
-                                         withDefault: [NSNumber numberWithInt:0]];
+                                         withDefault: @0];
     
     
     
     // this field only comes back for the favourites channel
     
-    NSNumber* favourites = [dictionary objectForKey:@"favourites"];
+    NSNumber* favourites = dictionary[@"favourites"];
     
     self.favouritesValue = ![favourites isKindOfClass:[NSNull class]] ? [favourites boolValue] : NO;
     
@@ -302,7 +302,7 @@
     
  
     self.public = [dictionary objectForKey: @"public"
-                               withDefault: [NSNumber numberWithBool:YES]]; // default is public
+                               withDefault: @YES]; // default is public
     
     self.eCommerceURL = [dictionary objectForKey: @"ecommerce_url"
                                      withDefault: @""];
@@ -316,11 +316,11 @@
 {
     BOOL hasVideoInstances = YES;
     
-    NSDictionary *videosDictionary = [videosInstancesDictionary objectForKey: @"videos"];
+    NSDictionary *videosDictionary = videosInstancesDictionary[@"videos"];
     if(!videosDictionary || ![videosDictionary isKindOfClass: [NSDictionary class]])
         hasVideoInstances = NO;
     
-    NSArray *itemArray = [videosDictionary objectForKey: @"items"];
+    NSArray *itemArray = videosDictionary[@"items"];
     if(!itemArray || ![itemArray isKindOfClass: [NSArray class]])
         hasVideoInstances = NO;
     
