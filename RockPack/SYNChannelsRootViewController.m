@@ -218,19 +218,13 @@
         [onBoardingQueue addPopover:subscribePopover];
         
         [defaults setBool:YES forKey:kUserDefaultsChannels];
-    }
-    
-    
-    if(!hasShownSubscribeOnBoarding)
-    {
+        
         [self.view addSubview:onBoardingQueue.view];
         [self addChildViewController:onBoardingQueue];
         [onBoardingQueue present];
     }
-    else
-    {
-        onBoardingQueue = nil;
-    }
+    
+
     
     // if the user has requested 'Load More' channels then dont refresh the page cause he is in the middle of a search
     if(self.dataRequestRange.location == 0)
