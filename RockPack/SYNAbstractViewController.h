@@ -68,6 +68,8 @@ typedef void (^SYNShareCompletionBlock)(void);
 - (void) handleNewTabSelectionWithId: (NSString*) selectionId;
 - (void) handleNewTabSelectionWithGenre: (Genre*) name;
 
+- (void) videoOverlayDidDissapear;
+
 
 - (void) reloadCollectionViews;
 
