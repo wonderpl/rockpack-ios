@@ -13,6 +13,8 @@
 
 @property (nonatomic) BOOL hasChangedSubscribeValue;
 
+@property (nonatomic) NSInteger totalVideosValue;
+
 - (void) setAttributesFromDictionary: (NSDictionary *) dictionary
                  ignoringObjectTypes: (IgnoringObjects) ignoringObjects;
 
@@ -20,6 +22,8 @@
                         andViewId: (NSString*)viewId
         usingManagedObjectContext: (NSManagedObjectContext *) managedObjectContext
               ignoringObjectTypes: (IgnoringObjects) ignoringObjects;
+
+-(void)addVideoInstancesFromDictionary:(NSDictionary*)videosInstancesDictionary;
 
 
 @end

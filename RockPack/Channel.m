@@ -17,6 +17,7 @@
 @implementation Channel
 
 @synthesize hasChangedSubscribeValue;
+@synthesize totalVideosValue;
 
 #pragma mark - Object factory
 
@@ -148,11 +149,14 @@
     if(!itemArray || ![itemArray isKindOfClass: [NSArray class]])
         hasVideoInstances = NO;
     
-    
-    
     if (!(ignoringObjects & kIgnoreVideoInstanceObjects) && hasVideoInstances)
     {
         
+        NSNumber *totalNumber = [videosDictionary objectForKey: @"total"];
+        if([totalNumber isKindOfClass:[NSNumber class]])
+            self.totalVideosValue = [totalNumber integerValue];
+        else
+            self.totalVideosValue = itemArray.count; // if the 'total' value was not returned then pass the existing numbers fetched
         
         NSMutableDictionary* videoInsanceByIdDictionary = [[NSMutableDictionary alloc] initWithCapacity:self.videoInstances.count];
         
@@ -308,7 +312,36 @@
 
 #pragma mark - Adding Video Instances
 
-
+-(void)addVideoInstancesFromDictionary:(NSDictionary*)videosInstancesDictionary
+{
+    BOOL hasVideoInstances = YES;
+    
+    NSDictionary *videosDictionary = [videosInstancesDictionary objectForKey: @"videos"];
+    if(!videosDictionary || ![videosDictionary isKindOfClass: [NSDictionary class]])
+        hasVideoInstances = NO;
+    
+    NSArray *itemArray = [videosDictionary objectForKey: @"items"];
+    if(!itemArray || ![itemArray isKindOfClass: [NSArray class]])
+        hasVideoInstances = NO;
+    
+    
+    for (NSDictionary *channelDictionary in itemArray)
+    {
+        
+        
+        VideoInstance* videoInstance = videoInstance = [VideoInstance instanceFromDictionary: channelDictionary
+                                                                   usingManagedObjectContext: self.managedObjectContext
+                                                                         ignoringObjectTypes: kIgnoreChannelObjects];
+        
+        if(!videoInstance)
+            continue;
+        
+        videoInstance.viewId = self.viewId;
+        
+        [self.videoInstancesSet addObject:videoInstance];
+        
+    }
+}
 
 -(void)addVideoInstancesObject:(VideoInstance *)value_
 {

@@ -137,19 +137,44 @@
 }
 
 
-
+- (void) videosForChannelForUserId: (NSString *) userId
+                         channelId: (NSString *) channelId
+                           inRange: (NSRange) range
+                 completionHandler: (MKNKUserSuccessBlock) completionBlock
+                      errorHandler: (MKNKUserErrorBlock) errorBlock
+{
+    NSDictionary *apiSubstitutionDictionary = @{@"USERID" : userId,
+                                                @"CHANNELID" : channelId};
+    
+    NSString *apiString = [kAPIGetVideosForChannel stringByReplacingOccurrencesOfStrings: apiSubstitutionDictionary];
+    
+    NSMutableDictionary* parameters = [NSMutableDictionary dictionary];
+    
+    [parameters setObject: @(range.location)
+                   forKey: @"start"];
+    
+    [parameters setObject: @(range.length)
+                   forKey: @"size"];
+    
+    [parameters setObject: self.localeString
+                   forKey: @"locale"];
+    
+    SYNNetworkOperationJsonObject *networkOperation = (SYNNetworkOperationJsonObject*)[self operationWithPath: apiString
+                                                                                                       params: nil
+                                                                                                   httpMethod: @"GET"
+                                                                                                          ssl: TRUE];
+    [self addCommonHandlerToNetworkOperation: networkOperation
+                           completionHandler: completionBlock
+                                errorHandler: errorBlock];
+    
+    [self enqueueOperation: networkOperation];
+}
 
 - (MKNetworkOperation*) updateChannel: (NSString *) resourceURL
                     completionHandler: (MKNKUserSuccessBlock) completionBlock
                          errorHandler: (MKNKUserErrorBlock) errorBlock
 {
-    NSMutableDictionary* parameters = [NSMutableDictionary dictionary];
-    
-    [parameters setObject: [NSString stringWithFormat: @"%i", 0]
-                       forKey: @"start"];
-    
-    [parameters setObject: [NSString stringWithFormat: @"%i", 1000]
-                       forKey: @"size"];
+    NSDictionary* parameters = [self getLocalParam];
     
     SYNNetworkOperationJsonObject *networkOperation = (SYNNetworkOperationJsonObject*)[self operationWithURLString: resourceURL
                                                                                                             params: parameters];
@@ -388,8 +413,18 @@
     // same as for User
     NSString *apiString = [kAPIGetUserDetails stringByReplacingOccurrencesOfStrings: apiSubstitutionDictionary];
     
+    NSMutableDictionary* parameters = [[NSMutableDictionary alloc] initWithCapacity:3];
+    [parameters setObject: @(0)
+                   forKey: @"start"];
+    
+    [parameters setObject: @(1000)
+                   forKey: @"size"];
+    
+    [parameters setObject: self.localeString
+                   forKey: @"locale"];
+    
     SYNNetworkOperationJsonObject *networkOperation = (SYNNetworkOperationJsonObject*)[self operationWithPath: apiString
-                                                                                                       params: [self getLocalParam]];
+                                                                                                       params: parameters];
     
     [networkOperation addJSONCompletionHandler: ^(id dictionary) {
         

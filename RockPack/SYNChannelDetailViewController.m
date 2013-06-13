@@ -176,6 +176,8 @@
     layout.minimumInteritemSpacing = _isIPhone ? 0.0f : 4.0f;
     layout.minimumLineSpacing = _isIPhone ? 4.0f : 4.0f;
     
+    layout.footerReferenceSize = [self footerSize];
+    
     self.videoThumbnailCollectionView.collectionViewLayout = layout;
     
     if (_isIPhone)
@@ -195,6 +197,16 @@
     
     [self.videoThumbnailCollectionView registerNib: videoThumbnailCellNib
                         forCellWithReuseIdentifier: @"SYNVideoThumbnailRegularCell"];
+    
+    // == Footer View == //
+    
+    // Register Footer
+    UINib *footerViewNib = [UINib nibWithNibName: @"SYNChannelFooterMoreView"
+                                          bundle: nil];
+    
+    [self.videoThumbnailCollectionView registerNib: footerViewNib
+                        forSupplementaryViewOfKind: UICollectionElementKindSectionFooter
+                               withReuseIdentifier: @"SYNChannelFooterMoreView"];
     
     // == Cover Image == //
   
@@ -552,7 +564,6 @@
 //    NSArray* deletedObjects = [[notification userInfo] objectForKey: NSDeletedObjectsKey];
     
 
-    
     [updatedObjects enumerateObjectsUsingBlock: ^(id obj, NSUInteger idx, BOOL *stop) {
         
         
@@ -567,6 +578,8 @@
             {
                 [self showNoVideosMessage:nil withLoader:NO];
             }
+            
+            self.dataItemsAvailable = self.channel.totalVideosValue;
             
             
             self.subscribeButton.selected = self.channel.subscribedByUserValue;
@@ -774,6 +787,96 @@
     return cell;
 }
 
+- (UICollectionReusableView *) collectionView: (UICollectionView *) collectionView
+            viewForSupplementaryElementOfKind: (NSString *) kind
+                                  atIndexPath: (NSIndexPath *) indexPath
+{
+    if (collectionView != self.videoThumbnailCollectionView)
+        return nil;
+    
+    
+    
+    UICollectionReusableView* supplementaryView;
+    
+    if (kind == UICollectionElementKindSectionHeader)
+    {
+        // nothing yet
+    }
+    
+    if (kind == UICollectionElementKindSectionFooter)
+    {
+        if (self.channel.videoInstances.count == 0 || (self.dataRequestRange.location + self.dataRequestRange.length) >= self.dataItemsAvailable)
+        {
+            return supplementaryView;
+        }
+        
+        self.footerView = [self.videoThumbnailCollectionView dequeueReusableSupplementaryViewOfKind: kind
+                                                                                  withReuseIdentifier: @"SYNChannelFooterMoreView"
+                                                                                         forIndexPath: indexPath];
+        
+        [self.footerView.loadMoreButton addTarget: self
+                                           action: @selector(loadMoreVideos:)
+                                 forControlEvents: UIControlEventTouchUpInside];
+        
+        //[self loadMoreChannels:self.footerView.loadMoreButton];
+        
+        supplementaryView = self.footerView;
+    }
+    
+    return supplementaryView;
+}
+
+-(void)loadMoreVideos:(UIButton*)footerButton
+{
+    
+    // define success block //
+    
+    [self incrementRangeForNextRequest];
+    
+    NSLog(@"Load More Videos (%i - %i)", self.dataRequestRange.location, self.dataRequestRange.location + self.dataRequestRange.length);
+    
+    
+    MKNKUserSuccessBlock successBlock = ^(NSDictionary *dictionary) {
+        
+        [self.channel addVideoInstancesFromDictionary:dictionary];
+        
+        NSError* error;
+        [self.channel.managedObjectContext save:&error];
+        
+        
+    };
+    
+        // define success block //
+        
+    MKNKUserErrorBlock errorBlock = ^(NSDictionary* errorDictionary) {
+        DebugLog(@"Update action failed");
+            
+    };
+        
+    if ([self.channel.resourceURL hasPrefix: @"https"]) // https does not cache so it is fresh
+    {
+            
+            
+            [appDelegate.oAuthNetworkEngine videosForChannelForUserId:appDelegate.currentUser.uniqueId
+                                                            channelId:self.channel.uniqueId
+                                                              inRange:self.dataRequestRange
+                                                    completionHandler:successBlock
+                                                         errorHandler:errorBlock];
+            
+        
+    }
+    else
+    {
+            
+            
+            [appDelegate.networkEngine videosForChannelForUserId:appDelegate.currentUser.uniqueId
+                                                       channelId:self.channel.uniqueId
+                                                         inRange:self.dataRequestRange
+                                               completionHandler:successBlock
+                                                    errorHandler:errorBlock];
+    }
+    
+}
 
 - (void) collectionView: (UICollectionView *) collectionView
          didSelectItemAtIndexPath: (NSIndexPath *) indexPath

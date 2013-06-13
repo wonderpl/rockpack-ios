@@ -62,4 +62,10 @@
                          completionHandler: (MKNKUserSuccessBlock) completionBlock
                               errorHandler: (MKNKUserErrorBlock) errorBlock;
 
+- (void) videosForChannelForUserId: (NSString *) userId
+                         channelId: (NSString *) channelId
+                           inRange: (NSRange) range
+                 completionHandler: (MKNKUserSuccessBlock) completionBlock
+                      errorHandler: (MKNKUserErrorBlock) errorBlock;
+
 @end

@@ -97,8 +97,11 @@ typedef void (^SYNOAuth2RefreshCompletionBlock)(NSError *error);
 
 - (void) videosForChannelForUserId: (NSString *) userId
                          channelId: (NSString *) channelId
+                           inRange: (NSRange) range
                  completionHandler: (MKNKUserSuccessBlock) completionBlock
                       errorHandler: (MKNKUserErrorBlock) errorBlock;
+
+
 
 - (void) updateVideosForChannelForUserId: (NSString *) userId
                                channelId: (NSString *) channelId
