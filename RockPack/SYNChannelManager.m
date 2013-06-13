@@ -285,9 +285,7 @@
     
     MKNKUserSuccessBlock successBlock = ^(NSDictionary *channelDictionary) {
         
-        
         NSNumber *savedPosition = channel.position;
-        
         
         [channel setAttributesFromDictionary: channelDictionary
                          ignoringObjectTypes: kIgnoreChannelOwnerObject];

@@ -27,5 +27,6 @@
 @property (nonatomic) PointingDirection direction;
 @property (nonatomic) CGRect pointRect;
 @property (nonatomic, strong) UIButton* okButton;
+@property (nonatomic, strong) UIImageView* arrow;
 
 @end

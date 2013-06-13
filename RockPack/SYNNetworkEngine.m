@@ -143,8 +143,16 @@
                     completionHandler: (MKNKUserSuccessBlock) completionBlock
                          errorHandler: (MKNKUserErrorBlock) errorBlock
 {
+    NSMutableDictionary* parameters = [NSMutableDictionary dictionary];
+    
+    [parameters setObject: [NSString stringWithFormat: @"%i", 0]
+                       forKey: @"start"];
+    
+    [parameters setObject: [NSString stringWithFormat: @"%i", 1000]
+                       forKey: @"size"];
+    
     SYNNetworkOperationJsonObject *networkOperation = (SYNNetworkOperationJsonObject*)[self operationWithURLString: resourceURL
-                                                                                                           params: nil];
+                                                                                                            params: parameters];
     
     [self addCommonHandlerToNetworkOperation: networkOperation
                            completionHandler: completionBlock
@@ -166,7 +174,7 @@
     NSMutableDictionary* tempParameters = [NSMutableDictionary dictionary];
     
     [tempParameters setObject: [NSString stringWithFormat: @"%i", range.location]
-                       forKey: @"start"]; // compensate for 0 indexed
+                       forKey: @"start"]; 
     
     [tempParameters setObject: [NSString stringWithFormat: @"%i", range.length]
                        forKey: @"size"];

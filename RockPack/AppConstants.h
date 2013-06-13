@@ -50,6 +50,7 @@
 #define kAPISecureExternalLogin     @"/ws/login/external/"
 #define kAPISecureRegister          @"/ws/register/"
 #define kAPIPasswordReset           @"/ws/reset-password/"                      /* POST */
+#define kAPIUsernameAvailability    @"/ws/register/availability/"
 
 
 #define kCoverArtChanged            @"kCoverArtChanged"
