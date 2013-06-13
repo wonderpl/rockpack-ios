@@ -36,6 +36,7 @@
 #import "SYNDeviceManager.h"
 #import <AVFoundation/AVFoundation.h>
 #import <QuartzCore/QuartzCore.h>
+#import "SYNOnBoardingPopoverQueueController.h"
 
 @interface SYNChannelDetailViewController () <UITextViewDelegate,
                                               GKImagePickerDelegate,
@@ -922,13 +923,14 @@
     shareButton.enabled = FALSE;
     
     [self shareChannel: self.channel
+               isOwner: ([self.channel.channelOwner.uniqueId isEqualToString:appDelegate.currentUser.uniqueId]) ? @(TRUE) : @(FALSE)
                 inView: self.view
               fromRect: self.shareButton.frame
        arrowDirections: UIPopoverArrowDirectionRight
      activityIndicator: self.shareActivityIndicator
             onComplete: ^{
                 // Re-enable button
-                    shareButton.enabled = TRUE;
+                shareButton.enabled = TRUE;
             }];
 }
 
@@ -975,7 +977,7 @@
 
 - (IBAction) profileImagePressed: (UIButton*) sender
 {
-    if([self.channel.channelOwner.uniqueId isEqualToString:appDelegate.currentUser.uniqueId])
+    if ([self.channel.channelOwner.uniqueId isEqualToString:appDelegate.currentUser.uniqueId])
     {
         NSNotification* navigationNotification = [NSNotification notificationWithName: kNavigateToPage
                                                                                object: self
@@ -1975,6 +1977,55 @@
         self.createChannelButton.hidden = YES;
         self.saveChannelButton.hidden = YES;
         self.cancelTextInputButton.hidden = NO;
+    }
+    
+}
+
+-(void)viewDidAppear:(BOOL)animated
+{
+    [super viewDidAppear:animated];
+    
+    SYNOnBoardingPopoverQueueController* onBoardingQueue = [[SYNOnBoardingPopoverQueueController alloc] init];
+    
+    
+    NSUserDefaults *defaults = [NSUserDefaults standardUserDefaults];
+    BOOL hasShownSubscribeOnBoarding = [defaults boolForKey:kUserDefaultsSubscribe];
+    if(!hasShownSubscribeOnBoarding)
+    {
+        NSString* message = @"Tap this button to subscribe to a channel and get new videos in your feed.";
+        PointingDirection direction = [[SYNDeviceManager sharedInstance] isIPad] ? PointingDirectionLeft : PointingDirectionUp;
+        SYNOnBoardingPopoverView* subscribePopover = [SYNOnBoardingPopoverView withMessage:message
+                                                                                pointingTo:self.subscribeButton.frame
+                                                                             withDirection:direction];
+      
+        
+        [onBoardingQueue addPopover:subscribePopover];
+        
+        [defaults setBool:YES forKey:kUserDefaultsSubscribe];
+    }
+    
+    BOOL hasShownAddVideoOnBoarding = [defaults boolForKey:kUserDefaultsAddVideo];
+    if(!hasShownAddVideoOnBoarding)
+    {
+        NSString* message = @"Whenever you see a video you like tap the + button to add it to one of your channels.";
+
+        SYNOnBoardingPopoverView* addVideoPopover = [SYNOnBoardingPopoverView withMessage:message
+                                                                               pointingTo:self.subscribeButton.frame
+                                                                            withDirection:PointingDirectionNone];
+        
+        [onBoardingQueue addPopover:addVideoPopover];
+        
+        [defaults setBool:YES forKey:kUserDefaultsAddVideo];
+    }
+    if(!hasShownSubscribeOnBoarding || !hasShownAddVideoOnBoarding)
+    {
+        [self.view addSubview:onBoardingQueue.view];
+        [self addChildViewController:onBoardingQueue];
+        [onBoardingQueue present];
+    }
+    else
+    {
+        onBoardingQueue = nil;
     }
     
 }

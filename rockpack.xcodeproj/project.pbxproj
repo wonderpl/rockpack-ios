@@ -153,6 +153,7 @@
 		014A4570166A39E60091E4E5 /* SYNChannelsRootViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 014A456E166A39E60091E4E5 /* SYNChannelsRootViewController.m */; };
 		014D514F16F738C500B82B00 /* SYNAbstractNetworkEngine.m in Sources */ = {isa = PBXBuildFile; fileRef = 014D514E16F738C500B82B00 /* SYNAbstractNetworkEngine.m */; };
 		015487CF16DCD2A1002A41A2 /* SYNVideoPlaybackViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 015487CE16DCD2A1002A41A2 /* SYNVideoPlaybackViewController.m */; };
+		0154E8481768E268001C7B75 /* SYNTimer.m in Sources */ = {isa = PBXBuildFile; fileRef = 0154E8461768E268001C7B75 /* SYNTimer.m */; };
 		015C13C1173B034C001569FE /* SYNReportConcernTableViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 015C13C0173B034C001569FE /* SYNReportConcernTableViewController.m */; };
 		015CB01616AE039900FEB8E7 /* User.m in Sources */ = {isa = PBXBuildFile; fileRef = 015CB01516AE039900FEB8E7 /* User.m */; };
 		015CB01916AE03B200FEB8E7 /* _User.m in Sources */ = {isa = PBXBuildFile; fileRef = 015CB01816AE03B200FEB8E7 /* _User.m */; };
@@ -961,6 +962,8 @@
 		BE2D2155171D5BD500B4B755 /* ButtonCancelHighlighted@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = BE2D2151171D5BD500B4B755 /* ButtonCancelHighlighted@2x.png */; };
 		BE2D2158171D8A4500B4B755 /* AvatarProfile.png in Resources */ = {isa = PBXBuildFile; fileRef = BE2D2156171D8A4500B4B755 /* AvatarProfile.png */; };
 		BE2D2159171D8A4500B4B755 /* AvatarProfile@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = BE2D2157171D8A4500B4B755 /* AvatarProfile@2x.png */; };
+		BE3983D11768A4AA00EE9C7B /* SYNOnBoardingPopoverView.m in Sources */ = {isa = PBXBuildFile; fileRef = BE3983D01768A4AA00EE9C7B /* SYNOnBoardingPopoverView.m */; };
+		BE3983D41768B6D800EE9C7B /* SYNOnBoardingPopoverQueueController.m in Sources */ = {isa = PBXBuildFile; fileRef = BE3983D31768B6D800EE9C7B /* SYNOnBoardingPopoverQueueController.m */; };
 		BE3A771117300D3C008ED81F /* SYNAccountSettingsModalContainer.m in Sources */ = {isa = PBXBuildFile; fileRef = BE3A771017300D3C008ED81F /* SYNAccountSettingsModalContainer.m */; };
 		BE5D29EB17577E2800C00486 /* SYNFeedMessagesView.m in Sources */ = {isa = PBXBuildFile; fileRef = BE5D29EA17577E2800C00486 /* SYNFeedMessagesView.m */; };
 		BE7D342E170DD8C90085AB81 /* SYNChannelFooterMoreView.xib in Resources */ = {isa = PBXBuildFile; fileRef = BE7D342D170DD8C90085AB81 /* SYNChannelFooterMoreView.xib */; };
@@ -1286,6 +1289,8 @@
 		014D514E16F738C500B82B00 /* SYNAbstractNetworkEngine.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SYNAbstractNetworkEngine.m; sourceTree = "<group>"; };
 		015487CD16DCD2A1002A41A2 /* SYNVideoPlaybackViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SYNVideoPlaybackViewController.h; sourceTree = "<group>"; };
 		015487CE16DCD2A1002A41A2 /* SYNVideoPlaybackViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SYNVideoPlaybackViewController.m; sourceTree = "<group>"; };
+		0154E8461768E268001C7B75 /* SYNTimer.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SYNTimer.m; sourceTree = "<group>"; };
+		0154E8471768E268001C7B75 /* SYNTimer.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SYNTimer.h; sourceTree = "<group>"; };
 		015C13BF173B034C001569FE /* SYNReportConcernTableViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SYNReportConcernTableViewController.h; sourceTree = "<group>"; };
 		015C13C0173B034C001569FE /* SYNReportConcernTableViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SYNReportConcernTableViewController.m; sourceTree = "<group>"; };
 		015CB01416AE039900FEB8E7 /* User.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = User.h; sourceTree = "<group>"; };
@@ -2198,6 +2203,10 @@
 		BE2D2151171D5BD500B4B755 /* ButtonCancelHighlighted@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = "ButtonCancelHighlighted@2x.png"; path = "Assets/Images/ButtonCancelHighlighted@2x.png"; sourceTree = "<group>"; };
 		BE2D2156171D8A4500B4B755 /* AvatarProfile.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = AvatarProfile.png; path = Assets/Images/AvatarProfile.png; sourceTree = "<group>"; };
 		BE2D2157171D8A4500B4B755 /* AvatarProfile@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = "AvatarProfile@2x.png"; path = "Assets/Images/AvatarProfile@2x.png"; sourceTree = "<group>"; };
+		BE3983CF1768A4AA00EE9C7B /* SYNOnBoardingPopoverView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SYNOnBoardingPopoverView.h; sourceTree = "<group>"; };
+		BE3983D01768A4AA00EE9C7B /* SYNOnBoardingPopoverView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SYNOnBoardingPopoverView.m; sourceTree = "<group>"; };
+		BE3983D21768B6D800EE9C7B /* SYNOnBoardingPopoverQueueController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SYNOnBoardingPopoverQueueController.h; sourceTree = "<group>"; };
+		BE3983D31768B6D800EE9C7B /* SYNOnBoardingPopoverQueueController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SYNOnBoardingPopoverQueueController.m; sourceTree = "<group>"; };
 		BE3A770F17300D3C008ED81F /* SYNAccountSettingsModalContainer.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SYNAccountSettingsModalContainer.h; sourceTree = "<group>"; };
 		BE3A771017300D3C008ED81F /* SYNAccountSettingsModalContainer.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SYNAccountSettingsModalContainer.m; sourceTree = "<group>"; };
 		BE53EE6017609587008360D2 /* Rockpack 4.xcdatamodel */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcdatamodel; path = "Rockpack 4.xcdatamodel"; sourceTree = "<group>"; };
@@ -2827,6 +2836,15 @@
 			name = "Channel viewer";
 			sourceTree = "<group>";
 		};
+		0154E8451768E25B001C7B75 /* Timers */ = {
+			isa = PBXGroup;
+			children = (
+				0154E8461768E268001C7B75 /* SYNTimer.m */,
+				0154E8471768E268001C7B75 /* SYNTimer.h */,
+			);
+			name = Timers;
+			sourceTree = "<group>";
+		};
 		015C13BE173B02D8001569FE /* Report Concerns */ = {
 			isa = PBXGroup;
 			children = (
@@ -3019,6 +3037,7 @@
 		019824E41629CAF500216900 /* Helpers */ = {
 			isa = PBXGroup;
 			children = (
+				0154E8451768E25B001C7B75 /* Timers */,
 				012BD2C7173BE84C00BE28B6 /* Async Image load and cache */,
 				BEE732B41727D7FD0083E1B9 /* Object Factory */,
 				BE285DB91726826800D995AB /* Channels Manager */,
@@ -4477,6 +4496,17 @@
 			name = "Error Messages";
 			sourceTree = "<group>";
 		};
+		BE3983CB1768A34700EE9C7B /* OnBoarding Messages */ = {
+			isa = PBXGroup;
+			children = (
+				BE3983CF1768A4AA00EE9C7B /* SYNOnBoardingPopoverView.h */,
+				BE3983D01768A4AA00EE9C7B /* SYNOnBoardingPopoverView.m */,
+				BE3983D21768B6D800EE9C7B /* SYNOnBoardingPopoverQueueController.h */,
+				BE3983D31768B6D800EE9C7B /* SYNOnBoardingPopoverQueueController.m */,
+			);
+			name = "OnBoarding Messages";
+			sourceTree = "<group>";
+		};
 		BE7C129C16EA4EF60015789B /* Search */ = {
 			isa = PBXGroup;
 			children = (
@@ -4716,6 +4746,7 @@
 		BEF9E5A516DBCDEF00286113 /* Components */ = {
 			isa = PBXGroup;
 			children = (
+				BE3983CB1768A34700EE9C7B /* OnBoarding Messages */,
 				38015B4F174CCE1A005D3F18 /* CategoryTableViewController (iPhone) */,
 				BEBD097E1744EC920092F527 /* Add Button Control */,
 				3864D2D91743DB1B00A90ED3 /* SYNImagePicker */,
@@ -5911,6 +5942,9 @@
 				01F94F1117609608006C024D /* SYNTextFieldLogin.m in Sources */,
 				01F94F1417609F9B006C024D /* SYNTextFieldLoginiPhone.m in Sources */,
 				01F94F171760A2D2006C024D /* SYNTextFieldSearchIPhone.m in Sources */,
+				BE3983D11768A4AA00EE9C7B /* SYNOnBoardingPopoverView.m in Sources */,
+				BE3983D41768B6D800EE9C7B /* SYNOnBoardingPopoverQueueController.m in Sources */,
+				0154E8481768E268001C7B75 /* SYNTimer.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

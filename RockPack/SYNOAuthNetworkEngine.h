@@ -208,4 +208,9 @@ typedef void (^SYNOAuth2RefreshCompletionBlock)(NSError *error);
               completionHandler: (MKNKUserSuccessBlock) completionBlock
                    errorHandler: (MKNKUserErrorBlock) errorBlock;
 
+- (void) reportPlayerErrorForVideoInstanceId: (NSString *) videoInstanceId
+                            errorDescription: (NSString *) errorDescription
+                           completionHandler: (MKNKUserSuccessBlock) completionBlock
+                                errorHandler: (MKNKUserErrorBlock) errorBlock;
+
 @end

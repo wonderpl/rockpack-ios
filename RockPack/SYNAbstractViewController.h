@@ -15,6 +15,8 @@
 #import "SYNTabViewDelegate.h"
 #import "SYNChannelFooterMoreView.h"
 #import "MKNetworkOperation.h"
+#import "SYNOnBoardingPopoverView.h"
+#import "SYNOnBoardingPopoverQueueController.h"
 #import <CoreData/CoreData.h>
 #import <UIKit/UIKit.h>
 
@@ -103,6 +105,7 @@ typedef void (^SYNShareCompletionBlock)(void);
                  onComplete: (SYNShareCompletionBlock) completionBlock;
 
 - (void) shareChannel: (Channel *) channel
+              isOwner: (NSNumber *) isOwner
                inView: (UIView *) inView
              fromRect: (CGRect) rect
       arrowDirections: (UIPopoverArrowDirection) arrowDirections

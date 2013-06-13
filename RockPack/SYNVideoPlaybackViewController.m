@@ -7,6 +7,7 @@
 //
 
 #import "AppConstants.h"
+#import "GAI.h"
 #import "NSObject+Blocks.h"
 #import "NSString+Timecode.h"
 #import "SYNAppDelegate.h"
@@ -30,6 +31,7 @@
 @property (nonatomic, assign) BOOL notYetPlaying;
 @property (nonatomic, assign) BOOL playFlag;
 @property (nonatomic, assign) BOOL shuttledByUser;
+@property (nonatomic, assign) BOOL recordedVideoView;
 @property (nonatomic, assign) CGRect originalShuttleBarFrame;
 @property (nonatomic, assign) CGRect requestedFrame;
 @property (nonatomic, assign) NSTimeInterval currentDuration;
@@ -42,6 +44,7 @@
 @property (nonatomic, strong) NSString *channelCreator;
 @property (nonatomic, strong) NSString *sourceIdToReload;
 @property (nonatomic, strong) NSTimer *shuttleBarUpdateTimer;
+@property (nonatomic, strong) NSTimer *recordVideoViewTimer;
 @property (nonatomic, strong) SYNVideoIndexUpdater indexUpdater;
 @property (nonatomic, strong) UIButton *shuttleBarPlayPauseButton;
 @property (nonatomic, strong) UIImageView *videoPlaceholderBottomImageView;
@@ -574,9 +577,7 @@ static UIWebView* vimeoideoWebViewInstance;
 {
     self.videoPlaceholderTopImageView = [self createNewVideoPlaceholderImageView: @"PlaceholderVideoTop"];
     self.videoPlaceholderMiddleImageView = [self createNewVideoPlaceholderImageView: @"PlaceholderVideoMiddle"];
-    self.videoPlaceholderBottomImageView = [self createNewVideoPlaceholderImageView: @"PlaceholderVideoBottom"];
-    
-#ifdef SHOW_BRANDING    
+    self.videoPlaceholderBottomImageView = [self createNewVideoPlaceholderImageView: @"PlaceholderVideoBottom"];    
     
     UIButton *youTubeButton;
     CGFloat youTubeButtonOffsetX;
@@ -629,20 +630,18 @@ static UIWebView* vimeoideoWebViewInstance;
     {
         self.creatorLabel.textAlignment = NSTextAlignmentLeft;
     }
-
-#endif
     
     // Pop them in a view to keep them together
     UIView *videoPlaceholderView = [[UIView alloc] initWithFrame: self.view.bounds];
     
+    // Placeholders
     [videoPlaceholderView addSubview: self.videoPlaceholderBottomImageView];
     [videoPlaceholderView addSubview: self.videoPlaceholderMiddleImageView];
     [videoPlaceholderView addSubview: self.videoPlaceholderTopImageView];
     
-#ifdef SHOW_BRANDING   
+    // Branding
     [videoPlaceholderView addSubview: self.creatorLabel];
     [videoPlaceholderView addSubview: youTubeButton];
-#endif
     
     [self.view addSubview: videoPlaceholderView];
 
@@ -851,6 +850,15 @@ static UIWebView* vimeoideoWebViewInstance;
     layer.beginTime = timeSincePause;
 }
 
+#pragma mark - Timer accessors
+
+- (void) setRecordVideoViewTimer: (NSTimer *) timer
+{
+    [_recordVideoViewTimer invalidate];
+    
+}
+
+
 
 #pragma mark - Source / Playlist management
 
@@ -918,6 +926,7 @@ static UIWebView* vimeoideoWebViewInstance;
 {
     DebugLog(@"*** Playing: Load video command sent");
     self.notYetPlaying = TRUE;
+    self.recordedVideoView = FALSE;
     
     // Check to see if our JS is loaded
     NSString *availability = [self.currentVideoWebView stringByEvaluatingJavaScriptFromString: @"checkPlayerAvailability();"];
@@ -961,7 +970,7 @@ static UIWebView* vimeoideoWebViewInstance;
 
 - (void) playVideo
 {
-    if([self.view superview])
+    if ([self.view superview])
     {
         [self.currentVideoWebView stringByEvaluatingJavaScriptFromString: @"player.playVideo();"];
         self.playFlag = TRUE;
@@ -1307,6 +1316,20 @@ static UIWebView* vimeoideoWebViewInstance;
     {
         DebugLog (@"!!!!!!!!!! Error");
         [self fadeUpVideoPlayer];
+        
+        SYNAppDelegate* appDelegate = UIApplication.sharedApplication.delegate;
+        VideoInstance *videoInstance = self.videoInstanceArray [self.currentSelectedIndex];
+        
+        [appDelegate.oAuthNetworkEngine reportPlayerErrorForVideoInstanceId: videoInstance.uniqueId
+                                                           errorDescription: actionData
+                                                          completionHandler: ^(NSDictionary * dictionary) {
+                                                              DebugLog(@"Reported video error");
+                                                          }
+                                                               errorHandler: ^(NSError* error) {
+                                                                   DebugLog(@"Report concern failed");
+                                                                   DebugLog(@"%@", [error debugDescription]);
+                                                               }];
+
     }
     else if ([actionName isEqualToString: @"apiChange"])
     {

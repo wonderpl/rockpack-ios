@@ -120,6 +120,8 @@
 
 #define kAPIReportConcern           @"/ws/USERID/content_reports"               /* POST */
 
+#define kAPIReportPlayerError       @"/ws/videos/player_error/"                 /* POST */
+
 #define kAccountSettingsPressed     @"kAccountSettingsPressed"
 #define kAccountSettingsLogout      @"kAccountSettingsLogout"
 #define kUserDataChanged            @"kUserDataChanged"
@@ -290,6 +292,11 @@ typedef enum _Gender {
 
 #define kCurrentPage        @"kCurrentPage"
 
+// UserDefaults
+
+#define kUserDefaultsSubscribe @"ud_subscribe"
+#define kUserDefaultsAddVideo @"ud_addVideo"
+#define kUserDefaultsChannels @"ud_channels"
 
 //Login Origin
 
@@ -309,6 +316,15 @@ typedef enum {
     EntityTypeCategory
     
 } EntityType;
+
+
+typedef enum {
+    PointingDirectionNone = 0,
+    PointingDirectionUp,
+    PointingDirectionDown,
+    PointingDirectionLeft,
+    PointingDirectionRight
+} PointingDirection;
 
 // Height of the bottom tab bar in pixels
 #define kBottomTabBarHeight 62
