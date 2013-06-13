@@ -311,6 +311,42 @@
 
 }
 
+- (void) doRequestUsernameAvailabilityForUsername: (NSString*) username
+                         completionHandler: (MKNKJSONCompleteBlock) completionBlock
+                              errorHandler: (MKNKErrorBlock) errorBlock
+{
+    NSDictionary* requestData = @{@"username" : username};
+    
+    // We need to handle locale differently (so add the locale to the URL) as opposed to the other parameters which are in the POST body
+    NSString *apiString = [NSString stringWithFormat: @"%@?locale=%@", kAPIUsernameAvailability, self.localeString];
+    
+    SYNNetworkOperationJsonObject *networkOperation = (SYNNetworkOperationJsonObject*)[self operationWithPath: apiString
+                                                                                                       params: requestData
+                                                                                                   httpMethod: @"POST"
+                                                                                                          ssl: TRUE];
+    [networkOperation addHeaders: @{@"Content-Type" : @"application/x-www-form-urlencoded"}];
+    
+    networkOperation.postDataEncoding = MKNKPostDataEncodingTypeURL;
+    
+    [networkOperation setUsername: kOAuth2ClientId
+                         password: @""
+                        basicAuth: YES];
+    
+    [networkOperation addJSONCompletionHandler: completionBlock
+                                  errorHandler:^(NSError *error) {
+                                      if (error.code >=500 && error.code < 600)
+                                      {
+                                          [self showErrorPopUpForError:error];
+                                      }
+                                      errorBlock(error);
+                                  }];
+    
+    [self enqueueOperation: networkOperation];
+    
+}
+
+
+
 #pragma mark - User Data
 
 - (void) notificationsFromUserId: (NSString *) userId

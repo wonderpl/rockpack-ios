@@ -181,6 +181,15 @@
                                                               errorHandler:errorBlock];
 }
 
+- (void) doRequestUsernameAvailabilityForUsername: (NSString*) username
+                                completionHandler: (MKNKJSONCompleteBlock) completionBlock
+                                     errorHandler: (MKNKErrorBlock) errorBlock
+{
+    [self.appDelegate.oAuthNetworkEngine doRequestUsernameAvailabilityForUsername:username
+                                                         completionHandler: completionBlock
+                                                              errorHandler:errorBlock];
+}
+
 
 #pragma mark - register user
 

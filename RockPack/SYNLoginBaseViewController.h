@@ -48,6 +48,10 @@ typedef enum {
                          completionHandler: (MKNKJSONCompleteBlock) completionBlock
                               errorHandler: (MKNKErrorBlock) errorBlock;
 
+- (void) doRequestUsernameAvailabilityForUsername: (NSString*) username
+                                completionHandler: (MKNKJSONCompleteBlock) completionBlock
+                                     errorHandler: (MKNKErrorBlock) errorBlock;
+
 - (void) registerUserWithData: (NSDictionary*) userData
             completionHandler: (MKNKUserSuccessBlock) completionBlock
                  errorHandler: (MKNKUserErrorBlock) errorBlock;
