@@ -1974,6 +1974,7 @@
 {
     if (_isIPhone)
     {
+        
         self.createChannelButton.hidden = YES;
         self.saveChannelButton.hidden = YES;
         self.cancelTextInputButton.hidden = NO;
@@ -1991,11 +1992,13 @@
     BOOL hasShownSubscribeOnBoarding = [defaults boolForKey:kUserDefaultsSubscribe];
     if(!hasShownSubscribeOnBoarding)
     {
+        BOOL isIpad = [[SYNDeviceManager sharedInstance] isIPad];
         NSString* message = @"Tap this button to subscribe to a channel and get new videos in your feed.";
-        PointingDirection direction = [[SYNDeviceManager sharedInstance] isIPad] ? PointingDirectionLeft : PointingDirectionUp;
-        CGFloat fontSize = [[SYNDeviceManager sharedInstance] isIPad] ? 19.0 : 15.0 ;
+        PointingDirection direction = isIpad ? PointingDirectionLeft : PointingDirectionUp;
+        CGFloat fontSize = isIpad ? 19.0 : 15.0 ;
+        CGSize size =  isIpad ? CGSizeMake(260.0, 144.0) : CGSizeMake(260.0, 128.0);
         SYNOnBoardingPopoverView* subscribePopover = [SYNOnBoardingPopoverView withMessage:message
-                                                                                  withSize:CGSizeMake(260.0, 144.0)
+                                                                                  withSize:size
                                                                                andFontSize:fontSize
                                                                                 pointingTo:self.subscribeButton.frame
                                                                              withDirection:direction];

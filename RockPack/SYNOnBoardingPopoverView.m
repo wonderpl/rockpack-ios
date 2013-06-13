@@ -40,8 +40,6 @@
     
     if (self = [super initWithFrame:CGRectMake(0.0, 0.0, size.width, size.height)]) {
         
-        
-        
         self.pointRect = pointRect;
         
         if(CGRectEqualToRect(self.pointRect, CGRectZero))

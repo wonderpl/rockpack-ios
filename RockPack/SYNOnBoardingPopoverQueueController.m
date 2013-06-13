@@ -165,7 +165,7 @@
             break;
             
         case PointingDirectionUp:
-            panelFrame.origin.x = popover.pointRect.origin.x + (popover.pointRect.size.height * 0.5) + panelFrame.size.width - STD_PADDING_DISTANCE;
+            panelFrame.origin.x = popover.pointRect.origin.x + (popover.pointRect.size.width * 0.5) - 40.0;
             panelFrame.origin.y = popover.pointRect.origin.y + popover.pointRect.size.height + STD_PADDING_DISTANCE;
             
             break;
