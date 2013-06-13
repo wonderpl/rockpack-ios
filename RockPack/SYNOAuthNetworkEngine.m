@@ -136,7 +136,13 @@
       errorHandler: ^(NSError* error)
      {
          DebugLog(@"Server Failed");
-         NSDictionary* customErrorDictionary = @{@"network_error": [NSString stringWithFormat: @"%@, Server responded with %i", error.domain, error.code]};
+         
+         if (error.code >=500 && error.code < 600)
+         {
+             [self showErrorPopUpForError:error];
+         }
+         
+         NSDictionary* customErrorDictionary = @{@"network_error": [NSString stringWithFormat: @"%@, Server responded with %i", error.domain, error.code], @"nserror" : error };
          errorBlock(customErrorDictionary);
      }];
 
@@ -233,6 +239,12 @@
      }
      errorHandler: ^(MKNetworkOperation* completedOperation, NSError* error)
      {
+         
+         if (error.code >=500 && error.code < 600)
+         {
+             [self showErrorPopUpForError:error];
+         }
+         
          NSDictionary *responseDictionary = [completedOperation responseJSON];
          errorBlock(responseDictionary);
          DebugLog (@"failed");
@@ -279,6 +291,7 @@
                                                                                                    httpMethod: @"POST"
                                                                                                           ssl: TRUE];
     [networkOperation addHeaders: @{@"Content-Type" : @"application/x-www-form-urlencoded"}];
+    
     networkOperation.postDataEncoding = MKNKPostDataEncodingTypeURL;
     
     [networkOperation setUsername: kOAuth2ClientId
@@ -286,7 +299,13 @@
                         basicAuth: YES];
     
     [networkOperation addJSONCompletionHandler: completionBlock
-                                  errorHandler :errorBlock];
+                                  errorHandler:^(NSError *error) {
+                                      if (error.code >=500 && error.code < 600)
+                                      {
+                                          [self showErrorPopUpForError:error];
+                                      }
+                                      errorBlock(error);
+                                  }];
     
     [self enqueueOperation: networkOperation];
 
@@ -458,11 +477,28 @@
                               completionBlock(responseDictionary);
                               
         
-                            } errorHandler:^(NSError* error) {
-                                
-                                DebugLog(@"API Call failed");
-                                NSDictionary* customErrorDictionary = @{@"network_error" : [NSString stringWithFormat: @"%@, Server responded with %i", error.domain, error.code]};
-                                errorBlock(customErrorDictionary);
+                            } errorHandler:^(id errorObject) {
+                                if([errorObject isKindOfClass:[NSDictionary class]])
+                                {
+                                    errorBlock(errorObject);
+                                }
+                                else if([errorObject isKindOfClass:[NSError class]])
+                                {
+                                    NSError* error = (NSError*) errorObject;
+                                    
+                                    if (error.code >=500 && error.code < 600)
+                                    {
+                                        [self showErrorPopUpForError:error];
+                                    }
+                                    
+                                    DebugLog(@"API Call failed");
+                                    NSDictionary* customErrorDictionary = @{@"network_error" : [NSString stringWithFormat: @"%@, Server responded with %i", error.domain, error.code] , @"nserror" : error };
+                                    errorBlock(customErrorDictionary);
+                                }
+                                else
+                                {
+                                    errorBlock(nil);
+                                }
         
                             }];
         
@@ -472,7 +508,13 @@
      errorHandler: ^(NSError* error)
      {
          DebugLog(@"API Call failed");
-         NSDictionary* customErrorDictionary = @{@"network_error" : [NSString stringWithFormat: @"%@, Server responded with %i", error.domain, error.code]};
+         
+         if (error.code >=500 && error.code < 600)
+         {
+             [self showErrorPopUpForError:error];
+         }
+         
+         NSDictionary* customErrorDictionary = @{@"network_error" : [NSString stringWithFormat: @"%@, Server responded with %i", error.domain, error.code] , @"nserror" : error };
          errorBlock(customErrorDictionary);
      }];
     

@@ -520,6 +520,12 @@
             return NO;
         }
     }
+    if(yyyyInputField.text.length < 4)
+    {
+        [self placeErrorLabel: NSLocalizedString(@"register_screen_form_error_invalid_date", nil)
+                   nextToView: yyyyInputField];
+        return NO;
+    }
     
     NSDateFormatter* dateFormatter = [[NSDateFormatter alloc] init];
     [dateFormatter setDateFormat: @"yyyy-MM-dd"];
@@ -622,7 +628,6 @@
     
     return inputString;
 }
-
 
 
 @end

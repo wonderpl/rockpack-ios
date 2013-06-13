@@ -61,7 +61,10 @@
         completionBlock(dictionary);
         
     } errorHandler:^(NSError* error) {
-        
+        if (error.code >=500 && error.code < 600)
+        {
+            [self showErrorPopUpForError:error];
+        }
         DebugLog(@"API request failed");
         
     }];
@@ -94,7 +97,10 @@
          completionBlock(dictionary);
          
      } errorHandler: ^(NSError* error) {
-         
+         if (error.code >=500 && error.code < 600)
+         {
+             [self showErrorPopUpForError:error];
+         }
          DebugLog(@"API request failed");
          
      }];
@@ -120,7 +126,10 @@
         completionBlock(dictionary);
         
     } errorHandler: ^(NSError* error) {
-        
+        if (error.code >=500 && error.code < 600)
+        {
+            [self showErrorPopUpForError:error];
+        }
         DebugLog(@"API request failed");
     }];
     
@@ -180,6 +189,10 @@
         completeBlock(dictionary);
     } errorHandler: ^(NSError* error) {
         errorBlock(@{@"network_error":@"Engine Failed to Load Channels"});
+        if (error.code >=500 && error.code < 600)
+        {
+            [self showErrorPopUpForError:error];
+        }
     }];
     
     [self enqueueOperation: networkOperation];
@@ -235,6 +248,10 @@
         
     } errorHandler:^(NSError* error) {
         DebugLog(@"Update Videos Screens Request Failed");
+        if (error.code >=500 && error.code < 600)
+        {
+            [self showErrorPopUpForError:error];
+        }
     }];
     
     [self enqueueOperation: networkOperation];
@@ -294,6 +311,10 @@
         
     } errorHandler:^(NSError* error) {
         DebugLog(@"Update Videos Screens Request Failed");
+        if (error.code >=500 && error.code < 600)
+        {
+            [self showErrorPopUpForError:error];
+        }
     }];
     
     
@@ -374,6 +395,10 @@
         completeBlock(dictionary);
 
      } errorHandler: ^(NSError* error) {
+         if (error.code >=500 && error.code < 600)
+         {
+             [self showErrorPopUpForError:error];
+         }
          errorBlock(error);
      }];
     
@@ -411,6 +436,10 @@
         completionBlock(dictionary);
         
     } errorHandler:^(NSError *error) {
+        if (error.code >=500 && error.code < 600)
+        {
+            [self showErrorPopUpForError:error];
+        }
         errorBlock(error);
     }];
 
