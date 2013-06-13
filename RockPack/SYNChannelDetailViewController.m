@@ -1987,10 +1987,8 @@
     
     SYNOnBoardingPopoverQueueController* onBoardingQueue = [[SYNOnBoardingPopoverQueueController alloc] init];
     
-    
     NSUserDefaults *defaults = [NSUserDefaults standardUserDefaults];
     BOOL hasShownSubscribeOnBoarding = [defaults boolForKey:kUserDefaultsSubscribe];
-    NSLog(@"has? : %i", hasShownSubscribeOnBoarding);
     if(!hasShownSubscribeOnBoarding)
     {
         NSString* message = @"Tap this button to subscribe to a channel and get new videos in your feed.";
@@ -2001,8 +1999,6 @@
                                                                                andFontSize:fontSize
                                                                                 pointingTo:self.subscribeButton.frame
                                                                              withDirection:direction];
-      
-        
         [onBoardingQueue addPopover:subscribePopover];
         
         [defaults setBool:YES forKey:kUserDefaultsSubscribe];
