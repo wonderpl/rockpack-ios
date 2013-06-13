@@ -524,7 +524,7 @@ typedef void(^AnimationCompletionBlock)(BOOL finished);
 
 #pragma mark - Video Overlay View
 
-- (void) addVideoOverlayToViewController: (UIViewController *) originViewController
+- (void) addVideoOverlayToViewController: (SYNAbstractViewController *) originViewController
                   withVideoInstanceArray: (NSArray*) videoInstanceArray
                         andSelectedIndex: (int) selectedIndex
 {
@@ -553,9 +553,6 @@ typedef void(^AnimationCompletionBlock)(BOOL finished);
         {
             [self.videoViewerViewController markAsFavourites];
         }
-
-        
-        
     }
     
     [self addChildViewController: self.videoViewerViewController];
@@ -617,6 +614,8 @@ typedef void(^AnimationCompletionBlock)(BOOL finished);
                          self.videoViewerViewController = nil;
                      }];
     
+    
+    [self.originViewController videoOverlayDidDissapear];
     //FIXME: Nick to rework
     [self.containerViewController viewWillAppear:NO];
 }

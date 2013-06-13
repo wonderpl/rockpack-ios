@@ -16,6 +16,7 @@
 #import "SYNChannelFooterMoreView.h"
 #import "MKNetworkOperation.h"
 #import "SYNOnBoardingPopoverView.h"
+#import "SYNOnBoardingPopoverQueueController.h"
 #import <CoreData/CoreData.h>
 #import <UIKit/UIKit.h>
 
@@ -68,6 +69,10 @@ typedef void (^SYNShareCompletionBlock)(void);
 - (void) handleNewTabSelectionWithId: (NSString*) selectionId;
 - (void) handleNewTabSelectionWithGenre: (Genre*) name;
 
+- (void) videoOverlayDidDissapear;
+- (void) displayVideoViewerFromView: (UIButton *) videoViewButton;
+
+- (NSIndexPath *) indexPathFromVideoInstanceButton: (UIButton *) button;
 
 - (void) reloadCollectionViews;
 

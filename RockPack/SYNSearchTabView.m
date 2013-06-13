@@ -81,8 +81,16 @@
 
 -(void)setNumberOfItems:(NSInteger)numberOfItems animated:(BOOL)animated
 {
-    
-    [self refreshLabelWithString:[NSString stringWithFormat:@"%@ (%i)", typeTitle, numberOfItems]];
+    NSString* numberString = nil;
+    if (numberOfItems > 1000)
+    {
+        numberString = [NSString stringWithFormat:@"%ik",numberOfItems/1000];
+    }
+    else
+    {
+        numberString = [NSString stringWithFormat:@"%i",numberOfItems];
+    }
+    [self refreshLabelWithString:[NSString stringWithFormat:@"%@ (%@)", typeTitle, numberString]];
 }
 
 #pragma mark - Control Methods

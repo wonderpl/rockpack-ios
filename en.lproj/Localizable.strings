@@ -140,6 +140,15 @@
 "channel_creation_screen_error_unknown_create_description" = "We couldn't create your channel. Please try again.";
 "channel_creation_screen_error_unknown_save_description" = "We couldn't save your channel. Please try again.";
 
+"500_error_message" = "Something went wrong with Rockpack. Please try again.";
+"503_error_message" = "Something went wrong with Rockpack. Please try again.";
+"504_error_message" = "Something went wrong with Rockpack. Please try again.";
+"unknown_error_message" = "Something went wrong with Rockpack. Please try again.";
+
+"500_error_title" = "Oops...";
+"503_error_title" = "Oops...";
+"504_error_title" = "Oops...";
+"unknown_error_title" = "Oops...";
 
 // == Feed == //
 

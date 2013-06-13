@@ -54,4 +54,6 @@
 
 - (void) enqueueSignedOperation: (MKNetworkOperation *) request;
 
+#pragma mark - HTTP status 5xx errors
+-(void)showErrorPopUpForError:(NSError*)error;
 @end

@@ -392,6 +392,11 @@
     }
 }
 
+- (void) videoOverlayDidDissapear
+{
+    // to be implemented by child
+}
+
 
 
 

@@ -102,6 +102,7 @@
 @property (strong,nonatomic) SYNChannelCategoryTableViewController *categoryTableViewController;
 @property (weak, nonatomic) IBOutlet UIButton *backButton;
 @property (weak, nonatomic) IBOutlet UIButton *cancelTextInputButton;
+@property (nonatomic, weak) SYNVideoThumbnailRegularCell* selectedCell;
 @property (weak, nonatomic) IBOutlet UIImageView *textBackgroundImageView;
 
 
@@ -848,6 +849,8 @@
     
     if (self.mode != kChannelDetailsModeEdit)
     {
+        self.selectedCell = (SYNVideoThumbnailRegularCell*)[self.videoThumbnailCollectionView cellForItemAtIndexPath:indexPath];
+        
         [self displayVideoViewerWithVideoInstanceArray: self.channel.videoInstances.array
                                       andSelectedIndex: indexPath.item];
     }
@@ -2039,6 +2042,7 @@
 {
     if (_isIPhone)
     {
+        
         self.createChannelButton.hidden = YES;
         self.saveChannelButton.hidden = YES;
         self.cancelTextInputButton.hidden = NO;
@@ -2052,48 +2056,29 @@
     
     SYNOnBoardingPopoverQueueController* onBoardingQueue = [[SYNOnBoardingPopoverQueueController alloc] init];
     
-    
     NSUserDefaults *defaults = [NSUserDefaults standardUserDefaults];
     BOOL hasShownSubscribeOnBoarding = [defaults boolForKey:kUserDefaultsSubscribe];
     if(!hasShownSubscribeOnBoarding)
     {
+        BOOL isIpad = [[SYNDeviceManager sharedInstance] isIPad];
         NSString* message = @"Tap this button to subscribe to a channel and get new videos in your feed.";
-        
+        PointingDirection direction = isIpad ? PointingDirectionLeft : PointingDirectionUp;
+        CGFloat fontSize = isIpad ? 19.0 : 15.0 ;
+        CGSize size =  isIpad ? CGSizeMake(260.0, 144.0) : CGSizeMake(260.0, 128.0);
         SYNOnBoardingPopoverView* subscribePopover = [SYNOnBoardingPopoverView withMessage:message
+                                                                                  withSize:size
+                                                                               andFontSize:fontSize
                                                                                 pointingTo:self.subscribeButton.frame
-                                                                             withDirection:PointingDirectionLeft];
-      
-        
+                                                                             withDirection:direction];
         [onBoardingQueue addPopover:subscribePopover];
         
         [defaults setBool:YES forKey:kUserDefaultsSubscribe];
-    }
-    
-    BOOL hasShownAddVideoOnBoarding = [defaults boolForKey:kUserDefaultsAddVideo];
-    if(!hasShownAddVideoOnBoarding)
-    {
-        NSString* message = @"Whenever you see a video you like tap the + button to add it to one of your channels.";
-
-        SYNOnBoardingPopoverView* addVideoPopover = [SYNOnBoardingPopoverView withMessage:message
-                                                                               pointingTo:self.subscribeButton.frame
-                                                                            withDirection:PointingDirectionNone];
         
-        [onBoardingQueue addPopover:addVideoPopover];
         
-        [defaults setBool:YES forKey:kUserDefaultsAddVideo];
-    }
-    if(!hasShownSubscribeOnBoarding || !hasShownAddVideoOnBoarding)
-    {
         [self.view addSubview:onBoardingQueue.view];
         [self addChildViewController:onBoardingQueue];
         [onBoardingQueue present];
     }
-    else
-    {
-        onBoardingQueue = nil;
-    }
-        
-    
     
     
 }
@@ -2822,8 +2807,52 @@
     return ([self.channel.channelOwner.uniqueId isEqualToString:appDelegate.currentUser.uniqueId] && self.channel.favouritesValue);
 }
 
+- (void) videoOverlayDidDissapear
+{
+    NSUserDefaults *defaults = [NSUserDefaults standardUserDefaults];
+    BOOL hasShownSubscribeOnBoarding = [defaults boolForKey:kUserDefaultsAddVideo];
+    if(!hasShownSubscribeOnBoarding)
+    {
+        SYNOnBoardingPopoverQueueController* onBoardingQueue = [[SYNOnBoardingPopoverQueueController alloc] init];
+        
+        NSString* message = @"Whenever you see a video you like tap the + button to add it to one of your channels.";
+        
+        CGFloat fontSize = [[SYNDeviceManager sharedInstance] isIPad] ? 19.0 : 15.0 ;
+        CGSize size = [[SYNDeviceManager sharedInstance] isIPad] ? CGSizeMake(340.0, 144.0) : CGSizeMake(260.0, 144.0);
+        CGRect rectToPointTo = CGRectZero;
+        PointingDirection directionToPointTo = PointingDirectionDown;
+        if(self.selectedCell)
+        {
+            rectToPointTo = [self.view convertRect:self.selectedCell.addItButton.frame fromView:self.selectedCell];
+            if(rectToPointTo.origin.y < [[SYNDeviceManager sharedInstance] currentScreenHeight] * 0.5)
+                directionToPointTo = PointingDirectionUp;
+            
+            //NSLog(@"%f %f", rectToPointTo.origin.x, rectToPointTo.origin.y);
+        }
+        SYNOnBoardingPopoverView* subscribePopover = [SYNOnBoardingPopoverView withMessage:message
+                                                                                  withSize:size
+                                                                               andFontSize:fontSize
+                                                                                pointingTo:rectToPointTo
+                                                                             withDirection:directionToPointTo];
+        
+        
+        [onBoardingQueue addPopover:subscribePopover];
+        
+        [defaults setBool:YES forKey:kUserDefaultsAddVideo];
+        
+        [self.view addSubview:onBoardingQueue.view];
+        [self addChildViewController:onBoardingQueue];
+        [onBoardingQueue present];
+    }
+}
+
+// since this is called when video overlay is being closed it is also used for the onboarding
 -(void)refreshFavouritesChannel
 {
+    
+    // on bording
+    
+    
     [[NSNotificationCenter defaultCenter] postNotificationName: kChannelUpdateRequest
                                                        object: self
                                                      userInfo: @{kChannel: self.channel}];

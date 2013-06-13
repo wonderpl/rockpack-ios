@@ -154,7 +154,7 @@
 -(void)placePopoverInView:(SYNOnBoardingPopoverView*)popover
 {
     
-    
+    CGSize screenSize = [[SYNDeviceManager sharedInstance] currentScreenSize];
     CGRect panelFrame = popover.frame;
     
     switch (popover.direction) {
@@ -165,27 +165,54 @@
             break;
             
         case PointingDirectionUp:
-            panelFrame.origin.x = popover.pointRect.origin.x + (popover.pointRect.size.height * 0.5) - panelFrame.size.width + STD_PADDING_DISTANCE;
+            panelFrame.origin.x = popover.pointRect.origin.x + (popover.pointRect.size.width * 0.5) - 40.0;
             panelFrame.origin.y = popover.pointRect.origin.y + popover.pointRect.size.height + STD_PADDING_DISTANCE;
+            
+            if(panelFrame.origin.x < STD_PADDING_DISTANCE)
+                panelFrame.origin.x = STD_PADDING_DISTANCE;
+            else if(panelFrame.origin.x + panelFrame.size.width > screenSize.width - STD_PADDING_DISTANCE)
+                panelFrame.origin.x = screenSize.width -  panelFrame.size.width - STD_PADDING_DISTANCE;
             
             break;
             
         case PointingDirectionDown:
             panelFrame.origin.x = popover.pointRect.origin.x + (popover.pointRect.size.height * 0.5) - panelFrame.size.width + STD_PADDING_DISTANCE;
             panelFrame.origin.y = popover.pointRect.origin.y - panelFrame.size.height - STD_PADDING_DISTANCE;
+            
+            if(panelFrame.origin.x < STD_PADDING_DISTANCE)
+                panelFrame.origin.x = STD_PADDING_DISTANCE;
+            else if(panelFrame.origin.x + panelFrame.size.width > screenSize.width - STD_PADDING_DISTANCE)
+                panelFrame.origin.x = screenSize.width -  panelFrame.size.width - STD_PADDING_DISTANCE;
+
             break;
             
         case PointingDirectionLeft:
             panelFrame.origin.y = popover.pointRect.origin.y - STD_PADDING_DISTANCE;
             panelFrame.origin.x = popover.pointRect.origin.x + popover.pointRect.size.width + STD_PADDING_DISTANCE;
+            
+            if(panelFrame.origin.y < STD_PADDING_DISTANCE)
+                panelFrame.origin.y = STD_PADDING_DISTANCE;
+            else if(panelFrame.origin.y + panelFrame.size.height > screenSize.height - STD_PADDING_DISTANCE)
+                panelFrame.origin.y = screenSize.width - panelFrame.size.height - STD_PADDING_DISTANCE;
+            
             break;
             
         case PointingDirectionRight:
             panelFrame.origin.y = popover.pointRect.origin.y - STD_PADDING_DISTANCE;
             panelFrame.origin.x = popover.pointRect.origin.x - panelFrame.size.width - STD_PADDING_DISTANCE;
+            
+            if(panelFrame.origin.y < STD_PADDING_DISTANCE)
+                panelFrame.origin.y = STD_PADDING_DISTANCE;
+            else if(panelFrame.origin.y + panelFrame.size.height > screenSize.height - STD_PADDING_DISTANCE)
+                panelFrame.origin.y = screenSize.width - panelFrame.size.height - STD_PADDING_DISTANCE;
+            
             break;
             
     }
+    
+    // correct frame
+    
+    
     
     popover.frame = panelFrame;
     

@@ -28,7 +28,7 @@ typedef void (^VideoOverlayDismissBlock)(void);
 
 @property (nonatomic, strong) IBOutlet UIView* containerView;
 @property (nonatomic, strong) SYNContainerViewController* containerViewController;
-@property (nonatomic, strong) UIViewController* originViewController;
+@property (nonatomic, strong) SYNAbstractViewController* originViewController;
 @property (strong, nonatomic) Reachability *reachability;
 @property (nonatomic, readonly) BOOL isInSearchMode;
 
@@ -38,7 +38,7 @@ typedef void (^VideoOverlayDismissBlock)(void);
 
 - (id) initWithContainerViewController: (UIViewController*) root;
 
-- (void) addVideoOverlayToViewController: (UIViewController *) originViewController
+- (void) addVideoOverlayToViewController: (SYNAbstractViewController *) originViewController
                   withVideoInstanceArray: (NSArray*) videoInstanceArray
                         andSelectedIndex: (int) selectedIndex;
 

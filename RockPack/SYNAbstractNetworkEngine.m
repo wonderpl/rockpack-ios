@@ -13,7 +13,14 @@
 #import "SYNAppDelegate.h"
 #import "User.h"
 
-@implementation SYNAbstractNetworkEngine
+@interface SYNAbstractNetworkEngine ()<UIAlertViewDelegate>
+{
+    BOOL isShowingNetworkError;
+}
+
+@end
+
+@implementation SYNAbstractNetworkEngine 
 @synthesize hostName;
 
 - (id) initWithDefaultSettings
@@ -80,7 +87,7 @@
                           completionHandler: (MKNKUserSuccessBlock) completionBlock
                                errorHandler: (MKNKUserErrorBlock) errorBlock
                                 retryInputStream: (NSInputStream*) retryInputStream
-{
+{    
     // First, copy the network operation so that if authentication fails we can try again
     SYNNetworkOperationJsonObject *retryNetworkOperation = [networkOperation copyForRetry];
     if(retryInputStream)
@@ -148,9 +155,13 @@
                        errorHandler: ^(id response) {
                            if ([response isKindOfClass: [NSError class]])
                            {
-                               NSError *responseErrror = (NSError *) response;
-                               NSDictionary* customErrorDictionary = @{@"network_error" : [NSString stringWithFormat: @"%@, Server responded with %i", responseErrror.domain, responseErrror.code]};
+                               NSError *responseError = (NSError *) response;
+                               NSDictionary* customErrorDictionary = @{@"network_error" : [NSString stringWithFormat: @"%@, Server responded with %i", responseError.domain, responseError.code ] ,@"nserror" : responseError};
                                DebugLog(@"API Call failed: %@", customErrorDictionary);
+                               if (responseError.code >=500 && responseError.code < 600)
+                               {
+                                   [self showErrorPopUpForError:responseError];
+                               }
                                errorBlock(customErrorDictionary);
                            }
                            else if ([response isKindOfClass: [NSDictionary class]] && ((NSDictionary *)response[@"error"] != nil))
@@ -203,19 +214,22 @@
      {
          if ([response isKindOfClass: [NSError class]])
          {
-             NSError *responseErrror = (NSError *) response;
-             NSDictionary* customErrorDictionary = @{@"network_error" : [NSString stringWithFormat: @"%@, Server responded with %i", responseErrror.domain, responseErrror.code]};
+             NSError *responseError = (NSError *) response;
+             NSDictionary* customErrorDictionary = @{@"network_error" : [NSString stringWithFormat: @"%@, Server responded with %i", responseError.domain, responseError.code], @"nserror" : responseError};
              DebugLog(@"API Call failed: %@", customErrorDictionary);
              
              id<GAITracker> tracker = [GAI sharedInstance].defaultTracker;
              
-             NSString *errorCodeString = [NSString stringWithFormat: @"Error %d", responseErrror.code];
+             NSString *errorCodeString = [NSString stringWithFormat: @"Error %d", responseError.code];
              
              [tracker sendEventWithCategory: @"network"
                                  withAction: errorCodeString
                                   withLabel: weakNetworkOperation.url
                                   withValue: nil];
-             
+             if (responseError.code >=500 && responseError.code < 600)
+             {
+                 [self showErrorPopUpForError:responseError];
+             }
              errorBlock(customErrorDictionary);
          }
          else if ([response isKindOfClass: [NSDictionary class]] && ((NSDictionary *)response[@"error"] != nil))
@@ -289,5 +303,50 @@
     [dictionaryWithLocale addEntriesFromDictionary:[self getLocalParam]];
     return dictionaryWithLocale;
 }
+
+#pragma mark - HTTP status 5xx errors
+
+-(void)showErrorPopUpForError:(NSError*)error
+{
+    dispatch_async(dispatch_get_main_queue(), ^{
+        if(!isShowingNetworkError)
+        {
+            isShowingNetworkError = YES;
+            NSString* errorMessage = nil;
+            NSString* errorTitle = nil;
+            switch (error.code) {
+                case 500:
+                    errorMessage = NSLocalizedString(@"500_error_message", nil);
+                    errorTitle = NSLocalizedString(@"500_error_title", nil);
+                    break;
+                case 503:
+                    errorMessage = NSLocalizedString(@"503_error_message", nil);
+                    errorTitle = NSLocalizedString(@"503_error_title", nil);
+                    break;
+                case 504:
+                    errorMessage = NSLocalizedString(@"504_error_message", nil);
+                    errorTitle = NSLocalizedString(@"504_error_title", nil);
+                    break;
+                default:
+                    errorMessage = NSLocalizedString(@"unknown_error_message", nil);
+                    errorTitle = NSLocalizedString(@"unknown_error_title", nil);
+                    break;
+            }
+            [[[UIAlertView alloc] initWithTitle: errorTitle
+                                    message: errorMessage
+                                   delegate: self
+                          cancelButtonTitle: NSLocalizedString(@"OK", nil)
+                          otherButtonTitles: nil] show];
+        }
+    });
+}
+
+#pragma mark - UIAlertViewDelegate
+-(void)alertView:(UIAlertView *)alertView willDismissWithButtonIndex:(NSInteger)buttonIndex
+{
+    isShowingNetworkError = NO;
+}
+    
+
 
 @end

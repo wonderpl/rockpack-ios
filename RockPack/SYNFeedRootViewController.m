@@ -35,6 +35,7 @@
 @property (nonatomic, strong) SYNFeedMessagesView* emptyGenreMessageView;
 @property (nonatomic, strong) NSBlockOperation *blockOperation;
 @property (nonatomic, assign) BOOL shouldReloadCollectionView;
+@property (nonatomic, weak) SYNVideoThumbnailWideCell* selectedCell;
 
 @end
 
@@ -558,6 +559,45 @@
     }
 }
 
+- (void) videoOverlayDidDissapear
+{
+    NSUserDefaults *defaults = [NSUserDefaults standardUserDefaults];
+    BOOL hasShownSubscribeOnBoarding = [defaults boolForKey:kUserDefaultsAddVideo];
+    if(!hasShownSubscribeOnBoarding)
+    {
+        SYNOnBoardingPopoverQueueController* onBoardingQueue = [[SYNOnBoardingPopoverQueueController alloc] init];
+        
+        NSString* message = @"Whenever you see a video you like tap the + button to add it to one of your channels.";
+        
+        CGFloat fontSize = [[SYNDeviceManager sharedInstance] isIPad] ? 19.0 : 15.0 ;
+        CGSize size = [[SYNDeviceManager sharedInstance] isIPad] ? CGSizeMake(340.0, 144.0) : CGSizeMake(260.0, 144.0);
+        CGRect rectToPointTo = CGRectZero;
+        PointingDirection directionToPointTo = PointingDirectionDown;
+        if(self.selectedCell)
+        {
+            rectToPointTo = [self.view convertRect:self.selectedCell.addItButton.frame fromView:self.selectedCell];
+            if(rectToPointTo.origin.y < [[SYNDeviceManager sharedInstance] currentScreenHeight] * 0.5)
+                directionToPointTo = PointingDirectionUp;
+            
+            //NSLog(@"%f %f", rectToPointTo.origin.x, rectToPointTo.origin.y);
+        }
+        SYNOnBoardingPopoverView* subscribePopover = [SYNOnBoardingPopoverView withMessage:message
+                                                                                  withSize:size
+                                                                               andFontSize:fontSize
+                                                                                pointingTo:rectToPointTo
+                                                                             withDirection:directionToPointTo];
+        
+        
+        [onBoardingQueue addPopover:subscribePopover];
+        
+        [defaults setBool:YES forKey:kUserDefaultsAddVideo];
+        
+        [self.view addSubview:onBoardingQueue.view];
+        [self addChildViewController:onBoardingQueue];
+        [onBoardingQueue present];
+    }
+}
+
 
 - (UICollectionViewCell *) collectionView: (UICollectionView *) cv
                    cellForItemAtIndexPath: (NSIndexPath *) indexPath
@@ -740,6 +780,18 @@
         // We should not be expecting any other supplementary views
         AssertOrLog(@"No valid collection view found");
     }
+}
+
+- (void) displayVideoViewerFromView: (UIButton *) videoViewButton
+{
+    
+    
+    NSIndexPath *indexPath = [self indexPathFromVideoInstanceButton: videoViewButton];
+    self.selectedCell = (SYNVideoThumbnailWideCell*)[self.videoThumbnailCollectionView cellForItemAtIndexPath:indexPath];
+    
+    
+    [super displayVideoViewerFromView: videoViewButton];
+    
 }
 
 #pragma mark - Load More Footer
