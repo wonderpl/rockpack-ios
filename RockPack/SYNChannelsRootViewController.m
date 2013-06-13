@@ -266,10 +266,7 @@
     NSArray* insertedObjects = [[notification userInfo] objectForKey: NSInsertedObjectsKey];
     NSArray* deletedObjects = [[notification userInfo] objectForKey: NSDeletedObjectsKey];
     
-    
-    
-    // == Handle Deleted == //
-    
+
     NSMutableArray* deletedIndexPathsFromPreviousFetchArray = [NSMutableArray arrayWithCapacity:deletedObjects.count]; // maximum
     [self.channels enumerateObjectsUsingBlock:^(Channel* channel, NSUInteger cidx, BOOL *cstop) {
         
@@ -277,7 +274,9 @@
             
             if(obj == channel)
             {
+
                 NSLog(@"CH(-) Deleted: %@", ((Channel*)obj).title);
+
                 
                 [deletedIndexPathsFromPreviousFetchArray addObject:[NSIndexPath indexPathForItem:cidx inSection:0]];
             }
@@ -288,6 +287,7 @@
 
     [self fetchChannelsForGenre:currentGenre]; // this will populate the self.channels array with fresh data
     
+
     
     // == Handle Inserted == //
     
