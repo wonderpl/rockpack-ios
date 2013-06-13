@@ -125,7 +125,7 @@
         UICollectionViewFlowLayout* layout = (UICollectionViewFlowLayout*)self.searchChannelsController.channelThumbnailCollectionView.collectionViewLayout;
         UIEdgeInsets insets= layout.sectionInset;
         insets.top = 5.0f;
-        insets.bottom = 0.0f;
+        insets.bottom = 10.0f;
         layout.sectionInset = insets;
     }
     
