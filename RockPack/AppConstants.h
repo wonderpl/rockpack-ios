@@ -294,9 +294,9 @@ typedef enum _Gender {
 
 // UserDefaults
 
-#define kUserDefaultsSubscribe @"ud_subscribe"
-#define kUserDefaultsAddVideo @"ud_addVideo"
-#define kUserDefaultsChannels @"ud_channels"
+#define kUserDefaultsSubscribe @"UD_OnBoaring_Subscribe"
+#define kUserDefaultsAddVideo @"UD_OnBoaring_AddVideo"
+#define kUserDefaultsChannels @"UD_OnBoaring_Channels"
 
 //Login Origin
 

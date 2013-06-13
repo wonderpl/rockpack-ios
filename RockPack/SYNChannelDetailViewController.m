@@ -1974,6 +1974,7 @@
 {
     if (_isIPhone)
     {
+        
         self.createChannelButton.hidden = YES;
         self.saveChannelButton.hidden = YES;
         self.cancelTextInputButton.hidden = NO;
@@ -1987,46 +1988,30 @@
     
     SYNOnBoardingPopoverQueueController* onBoardingQueue = [[SYNOnBoardingPopoverQueueController alloc] init];
     
-    
     NSUserDefaults *defaults = [NSUserDefaults standardUserDefaults];
     BOOL hasShownSubscribeOnBoarding = [defaults boolForKey:kUserDefaultsSubscribe];
     if(!hasShownSubscribeOnBoarding)
     {
+        BOOL isIpad = [[SYNDeviceManager sharedInstance] isIPad];
         NSString* message = @"Tap this button to subscribe to a channel and get new videos in your feed.";
-        PointingDirection direction = [[SYNDeviceManager sharedInstance] isIPad] ? PointingDirectionLeft : PointingDirectionUp;
+        PointingDirection direction = isIpad ? PointingDirectionLeft : PointingDirectionUp;
+        CGFloat fontSize = isIpad ? 19.0 : 15.0 ;
+        CGSize size =  isIpad ? CGSizeMake(260.0, 144.0) : CGSizeMake(260.0, 128.0);
         SYNOnBoardingPopoverView* subscribePopover = [SYNOnBoardingPopoverView withMessage:message
+                                                                                  withSize:size
+                                                                               andFontSize:fontSize
                                                                                 pointingTo:self.subscribeButton.frame
                                                                              withDirection:direction];
-      
-        
         [onBoardingQueue addPopover:subscribePopover];
         
         [defaults setBool:YES forKey:kUserDefaultsSubscribe];
-    }
-    
-    BOOL hasShownAddVideoOnBoarding = [defaults boolForKey:kUserDefaultsAddVideo];
-    if(!hasShownAddVideoOnBoarding)
-    {
-        NSString* message = @"Whenever you see a video you like tap the + button to add it to one of your channels.";
-
-        SYNOnBoardingPopoverView* addVideoPopover = [SYNOnBoardingPopoverView withMessage:message
-                                                                               pointingTo:self.subscribeButton.frame
-                                                                            withDirection:PointingDirectionNone];
         
-        [onBoardingQueue addPopover:addVideoPopover];
         
-        [defaults setBool:YES forKey:kUserDefaultsAddVideo];
-    }
-    if(!hasShownSubscribeOnBoarding || !hasShownAddVideoOnBoarding)
-    {
         [self.view addSubview:onBoardingQueue.view];
         [self addChildViewController:onBoardingQueue];
         [onBoardingQueue present];
     }
-    else
-    {
-        onBoardingQueue = nil;
-    }
+    
     
 }
 

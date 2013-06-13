@@ -17,22 +17,28 @@
 
 @implementation SYNOnBoardingPopoverView
 
-+(id)withMessage:(NSString*)message
-      pointingTo:(CGRect)pointRect
-   withDirection:(PointingDirection)direction
++ (id)withMessage:(NSString*)message
+         withSize:(CGSize)size
+      andFontSize:(CGFloat)fontSize
+       pointingTo:(CGRect)pointRect
+    withDirection:(PointingDirection)direction
 {
-    return [[self alloc] initWithMessage:(NSString*)message pointingTo:(CGRect)pointRect withDirection:(PointingDirection)direction];
+    return [[self alloc] initWithMessage:message
+                                withSize:size
+                             andFontSize:fontSize
+                              pointingTo:pointRect
+                           withDirection:direction];
 }
 
 - (id)initWithMessage:(NSString*)message
+             withSize:(CGSize)size
+          andFontSize:(CGFloat)fontSize
            pointingTo:(CGRect)pointRect
         withDirection:(PointingDirection)direction
 {
     
     
-    if (self = [super init]) {
-        
-        
+    if (self = [super initWithFrame:CGRectMake(0.0, 0.0, size.width, size.height)]) {
         
         self.pointRect = pointRect;
         
@@ -45,25 +51,24 @@
             self.direction = direction;
         }
         
-        // panel view
-        
-        if([[SYNDeviceManager sharedInstance] isIPad])
-        {
-            self.frame = CGRectMake(0.0, 0.0, 400.0, 220.0);
-        }
-        else
-        {
-            self.frame = CGRectMake(0.0, 0.0, 400.0, 220.0);
-        }
-        
+       
+        self.autoresizingMask = UIViewAutoresizingFlexibleLeftMargin | UIViewAutoresizingFlexibleRightMargin;
         
         self.backgroundColor = [UIColor colorWithRed:(11.0/255.0) green:(166.0/255.0) blue:(171.0/255.0) alpha:(1.0)];
         
         
         // text view
         
-        UILabel* label = [[UILabel alloc] initWithFrame:CGRectMake(0.0, 0.0, 300.0, 100.0)];
-        label.font = [UIFont rockpackFontOfSize:20.0];
+        CGRect labelRect = self.frame;
+        labelRect.origin.x = 15.0;
+        labelRect.origin.y = 15.0;
+        labelRect.size.width -= 30.0;
+        
+        
+        
+        
+        UILabel* label = [[UILabel alloc] init];
+        label.font = [UIFont rockpackFontOfSize:fontSize];
         label.lineBreakMode = NSLineBreakByWordWrapping;
         
         label.textAlignment = NSTextAlignmentCenter;
@@ -72,13 +77,16 @@
         label.textColor = [UIColor whiteColor];
         label.text = message;
         
-        CGRect centerRect = label.frame;
-        centerRect.origin.x = self.frame.size.width * 0.5 - label.frame.size.width * 0.5;
-        centerRect.origin.y = 20.0;
-        label.frame = CGRectIntegral(centerRect);
-        
         label.layer.shadowColor = [[UIColor darkGrayColor] CGColor];
         label.layer.shadowOffset = CGSizeMake(0.0, 2.0);
+        
+        CGSize textSize = [message sizeWithFont:label.font
+                                       forWidth:labelRect.size.width
+                                  lineBreakMode:label.lineBreakMode];
+        
+        labelRect.size.height = textSize.height * label.numberOfLines;
+        
+        label.frame = labelRect;
         
         [self addSubview:label];
         
@@ -87,10 +95,12 @@
         // buttom
         
         self.okButton = [UIButton buttonWithType:UIButtonTypeRoundedRect];
-        self.okButton.frame = CGRectMake(0.0, 0.0, 100.0, 30.0);
         
-        self.okButton.center = CGPointMake(self.center.x, 180.0);
-        self.okButton.frame = CGRectIntegral(self.okButton.frame);
+        CGRect buttonRect = self.okButton.frame;
+        buttonRect.size = CGSizeMake(100.0, 30.0);
+        buttonRect.origin.x = self.frame.size.width * 0.5 - buttonRect.size.width * 0.5;
+        buttonRect.origin.y = labelRect.origin.y + labelRect.size.height + 10.0;
+        self.okButton.frame = CGRectIntegral(buttonRect);
         
         [self addSubview:self.okButton];
         
