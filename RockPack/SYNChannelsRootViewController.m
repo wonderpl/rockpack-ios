@@ -266,24 +266,22 @@
     NSArray* insertedObjects = [[notification userInfo] objectForKey: NSInsertedObjectsKey];
     NSArray* deletedObjects = [[notification userInfo] objectForKey: NSDeletedObjectsKey];
     
-    // have we deleted from existing?
-    NSMutableArray* deletedFromPreviousFetchArray = [NSMutableArray arrayWithCapacity:deletedObjects.count]; // maximum
+    // have we deleted from existing? this means that cells that are not currently visible have been deleted
+    NSMutableArray* deletedIndexPathsFromPreviousFetchArray = [NSMutableArray arrayWithCapacity:deletedObjects.count]; // maximum
     [self.channels enumerateObjectsUsingBlock:^(Channel* channel, NSUInteger cidx, BOOL *cstop) {
         
         [deletedObjects enumerateObjectsUsingBlock:^(id obj, NSUInteger idx, BOOL *stop) {
             
             if(obj == channel)
             {
-                NSLog(@"CH(+) Deleted: %@ FROM previous fetch", ((Channel*)obj).title);
+                NSLog(@"CH(-) PREVIOUS: %@", ((Channel*)obj).title);
                 
-                [deletedFromPreviousFetchArray addObject:[NSIndexPath indexPathForItem:cidx inSection:0]];
+                [deletedIndexPathsFromPreviousFetchArray addObject:[NSIndexPath indexPathForItem:cidx inSection:0]];
             }
         }];
     }];
 
     [self fetchChannelsForGenre:currentGenre]; // this will populate the self.channels array with fresh data
-    
-    
     
     
     // == Handle Inserted ==
@@ -309,46 +307,54 @@
     
     // == Handle Deleted == //
     
-    NSMutableArray* deletedIndetifiers = [NSMutableArray arrayWithCapacity:deletedObjects.count];
-    NSMutableArray* deletedIndexPathArray = [NSMutableArray arrayWithCapacity:deletedObjects.count]; // maximum
-    [deletedObjects enumerateObjectsUsingBlock: ^(id obj, NSUInteger idx, BOOL *stop) {
-        
-        if ([obj isKindOfClass:[Channel class]]) {
-            
-            NSLog(@"CH(-) Deleted: %@", ((Channel*)obj).title);
-            
-            [deletedIndetifiers addObject:((Channel*)obj).uniqueId];
-            
-        }
-        
-    }];
+//    NSMutableArray* deletedIndetifiers = [NSMutableArray arrayWithCapacity:deletedObjects.count];
+//    NSMutableArray* deletedIndexPathArray = [NSMutableArray arrayWithCapacity:deletedObjects.count]; // maximum
+//    [deletedObjects enumerateObjectsUsingBlock: ^(id obj, NSUInteger idx, BOOL *stop) {
+//        
+//        if ([obj isKindOfClass:[Channel class]]) {
+//            
+//            NSLog(@"CH(-) Deleted: %@", ((Channel*)obj).title);
+//            
+//            [deletedIndetifiers addObject:((Channel*)obj).uniqueId];
+//            
+//        }
+//        
+//    }];
+//    
+//    
+//    for (NSInteger i = 0; i < [self.channelThumbnailCollectionView numberOfItemsInSection:0]; ++i)
+//    {
+//        SYNChannelThumbnailCell* cell =
+//        (SYNChannelThumbnailCell*)[self.channelThumbnailCollectionView cellForItemAtIndexPath:[NSIndexPath indexPathForRow:i
+//                                                                                                                 inSection:0]];
+//        NSLog(@"CH Looping at %i with %@", i, cell.dataIndentifier);
+//        
+//        [deletedIndetifiers enumerateObjectsUsingBlock:^(NSString* cuid, NSUInteger idx, BOOL *stop) {
+//            if([cuid isEqualToString:cell.dataIndentifier])
+//            {
+//                NSLog(@"CH(-) Found Cell at: %i", i);
+//                [deletedIndexPathArray addObject:[NSIndexPath indexPathForItem:index inSection:0]];
+//            }
+//        }];
+//        
+//      
+//    }
     
-    int index = 0;
-    for(SYNChannelThumbnailCell* cell in self.channelThumbnailCollectionView.visibleCells) {
-        
-        if([deletedIndetifiers containsObject:cell.dataIndentifier])
-        {
-            NSLog(@"CH(-) Found Cell at: %i", index);
-            [deletedIndexPathArray addObject:[NSIndexPath indexPathForItem:index inSection:0]];
-        }
-        index++;
-        
-    }
 
-    if(deletedFromPreviousFetchArray.count > 0)
-    {
-        self.isViewDirty = NO;
-        [self.channelThumbnailCollectionView reloadData];
-        return;
-    }
+//    if(deletedIndexPathsFromPreviousFetchArray.count > 0)
+//    {
+//        self.isViewDirty = NO;
+//        [self.channelThumbnailCollectionView reloadData];
+//        return;
+//    }
     
-    if(insertedIndexPathArray.count == 0 && deletedIndexPathArray.count == 0)
-    {
-        
-        self.isViewDirty = NO;
-        
-        return;
-    }
+//    if(insertedIndexPathArray.count == 0 && deletedIndexPathsFromPreviousFetchArray.count == 0)
+//    {
+//        
+//        self.isViewDirty = NO;
+//        
+//        return;
+//    }
     
     if([self.channelThumbnailCollectionView numberOfItemsInSection:0] == 0)
     {
@@ -364,8 +370,8 @@
         if(insertedIndexPathArray.count > 0)
             [self.channelThumbnailCollectionView insertItemsAtIndexPaths:insertedIndexPathArray];
         
-        if(deletedIndexPathArray.count > 0)
-            [self.channelThumbnailCollectionView deleteItemsAtIndexPaths:deletedIndexPathArray];
+        if(deletedIndexPathsFromPreviousFetchArray.count > 0)
+            [self.channelThumbnailCollectionView deleteItemsAtIndexPaths:deletedIndexPathsFromPreviousFetchArray];
         
     } completion:^(BOOL finished) {
         
@@ -574,6 +580,8 @@
     [channelThumbnailCell setChannelTitle: channel.title];
     channelThumbnailCell.displayNameLabel.text = [NSString stringWithFormat: @"%@", channel.channelOwner.displayName];
     channelThumbnailCell.viewControllerDelegate = self;
+    
+    channelThumbnailCell.dataIndentifier = channel.uniqueId;
     
     return channelThumbnailCell;
 }
