@@ -43,10 +43,11 @@
         NSDictionary *userInfo = weakSelf.userInfo ? weakSelf.userInfo : activityViewController.userInfo;
         [activityViewController dismissViewControllerAnimated:YES completion:^{
             [weakSelf shareFromViewController:presenter
-                                     text:[userInfo objectForKey:@"text"]
-                                      url:[userInfo objectForKey:@"url"]
-                                    image:[userInfo objectForKey:@"image"]
-                                    owner:[userInfo objectForKey:@"owner"]];
+                                         text:[userInfo objectForKey:@"text"]
+                                          url:[userInfo objectForKey:@"url"]
+                                        image:[userInfo objectForKey:@"image"]
+                                      isOwner:[userInfo objectForKey:@"owner"]
+                                      isVideo:[userInfo objectForKey:@"video"]];
         }];
     };
     
@@ -56,24 +57,48 @@
 - (void) shareFromViewController: (UIViewController *) viewController
                             text: (NSString *) text url: (NSURL *) url
                            image: (UIImage *) image
-                           owner: (NSNumber *) owner
+                           isOwner: (NSNumber *) isOwner
+                           isVideo: (NSNumber *) isVideo
 {
     FBAppCall *appCall = nil;
     
+    NSString *facebookNamespace = [[NSBundle mainBundle] objectForInfoDictionaryKey: @"FacebookNamespace"];
+    
     id<FBOpenGraphAction> action = (id<FBOpenGraphAction>)[FBGraphObject graphObject];
     
-    [action setObject: [url absoluteString]
-               forKey: @"channel"];
-    
     FBOpenGraphActionShareDialogParams* params = [[FBOpenGraphActionShareDialogParams alloc] init];
-    
-    params.actionType = @"rockpack-dev:create";
-    params.action = action;
-    params.previewPropertyName = @"channel";
-
+    if (isVideo.boolValue)
+    {
+        [action setObject: [url absoluteString]
+                   forKey: @"other"];
+        
+        params.action = action;
+        params.previewPropertyName = @"other";
+        params.actionType = [NSString stringWithFormat: @"%@vshare", facebookNamespace];
+//        params.actionType = @"rockpack-dev:vshare";
+    }
+    else
+    {
+        [action setObject: [url absoluteString]
+                   forKey: @"channel"];
+        
+        params.action = action;
+        params.previewPropertyName = @"channel";
+        
+        if (isOwner.boolValue == TRUE)
+        {
+            params.actionType = [NSString stringWithFormat: @"%@:create", facebookNamespace];
+//            params.actionType = @"rockpack-dev:create";
+        }
+        else
+        {
+            params.actionType = [NSString stringWithFormat: @"%@:share", facebookNamespace];
+//            params.actionType = @"rockpack-dev:share";
+        }
+    }
     
     // Show the Share dialog if available
-    if (([FBDialogs canPresentShareDialogWithOpenGraphActionParams: params] == TRUE) && (owner.boolValue == TRUE))
+    if (([FBDialogs canPresentShareDialogWithOpenGraphActionParams: params] == TRUE))
     { 
         appCall = [FBDialogs presentShareDialogWithOpenGraphAction: [params action]
                                                         actionType: [params actionType]
@@ -87,23 +112,23 @@
                                                                }
                                                            }];
     }
-    else 
-    {
-        // Try the Share dialog if available
-        appCall = [FBDialogs presentShareDialogWithLink: url
-                                                   name: nil
-                                                caption: text
-                                            description: nil
-                                                picture: nil
-                                            clientState: nil
-                                                handler: ^(FBAppCall *call, NSDictionary *results, NSError *error) {
-                                                    if (error) {
-                                                        NSLog(@"Error: %@", error.description);
-                                                    } else {
-                                                        NSLog(@"Success!");
-                                                    }
-                                                }];
-    }
+//    else 
+//    {
+//        // Try the Share dialog if available
+//        appCall = [FBDialogs presentShareDialogWithLink: url
+//                                                   name: nil
+//                                                caption: text
+//                                            description: nil
+//                                                picture: nil
+//                                            clientState: nil
+//                                                handler: ^(FBAppCall *call, NSDictionary *results, NSError *error) {
+//                                                    if (error) {
+//                                                        NSLog(@"Error: %@", error.description);
+//                                                    } else {
+//                                                        NSLog(@"Success!");
+//                                                    }
+//                                                }];
+//    }
     
     // If neither of the above methods worked, then try the old way...
     if (appCall == nil)

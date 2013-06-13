@@ -767,13 +767,68 @@ didFinishLaunchingWithOptions: (NSDictionary *) launchOptions
 }
 
 
+
+- (NSDictionary*) parseURLParams: (NSString *) query
+{
+    NSArray *pairs = [query componentsSeparatedByString: @"&"];
+    
+    NSMutableDictionary *params = [[NSMutableDictionary alloc] init];
+    
+    for (NSString *pair in pairs)
+    {
+        NSRange range = [pair rangeOfString: @"="];
+
+        NSString *key = [pair substringToIndex: range.location];
+        NSString *value = [pair substringFromIndex: range.location + 1];
+        
+        [params setObject: value
+                   forKey: key];
+    }
+    
+    return params;
+}
+
+
 - (BOOL) application: (UIApplication *) application
              openURL: (NSURL *) url
    sourceApplication: (NSString *) sourceApplication
           annotation: (id) annotation
 {
-    [[FBSession activeSession] handleOpenURL: url];
-    return YES;
+    // To check for a deep link, first parse the incoming URL
+    // to look for a target_url parameter
+    NSString *query = [url fragment];
+    
+    if (!query)
+    {
+        query = [url query];
+    }
+    
+    NSDictionary *params = [self parseURLParams: query];
+    
+    // Check if target URL exists
+    NSString *targetURLString = [params valueForKey: @"target_url"];
+    
+    if (targetURLString)
+    {
+        NSURL *targetURL = [NSURL URLWithString: targetURLString];
+        NSString *query2 = [targetURL query];
+        NSDictionary *targetParams = [self parseURLParams: query2];
+        NSString *deeplink = [targetParams valueForKey: @"deeplink"];
+        
+        // Check for the 'deeplink' parameter to check if this is one of
+        // our incoming news feed link
+        if (deeplink)
+        {
+            UIAlertView *alert = [[UIAlertView alloc] initWithTitle: @"News"
+                                                            message: [NSString stringWithFormat: @"Incoming: %@", deeplink]
+                                                           delegate: nil
+                                                  cancelButtonTitle: @"OK"
+                                                  otherButtonTitles: nil, nil];
+            [alert show];
+        }
+    }
+    
+    return [FBSession.activeSession handleOpenURL:url];
 }
 
 @end
