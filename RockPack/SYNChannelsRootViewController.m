@@ -262,14 +262,28 @@
 - (void) handleDataModelChange: (NSNotification*) notification
 {
     
-
-    
-    [self fetchChannelsForGenre:currentGenre]; // this will populate the self.channels array with fresh data
-    
-    
     //NSArray* updatedObjects = [[notification userInfo] objectForKey: NSUpdatedObjectsKey];
     NSArray* insertedObjects = [[notification userInfo] objectForKey: NSInsertedObjectsKey];
     NSArray* deletedObjects = [[notification userInfo] objectForKey: NSDeletedObjectsKey];
+    
+    // have we deleted from existing?
+    NSMutableArray* deletedFromPreviousFetchArray = [NSMutableArray arrayWithCapacity:deletedObjects.count]; // maximum
+    [self.channels enumerateObjectsUsingBlock:^(Channel* channel, NSUInteger cidx, BOOL *cstop) {
+        
+        [deletedObjects enumerateObjectsUsingBlock:^(id obj, NSUInteger idx, BOOL *stop) {
+            
+            if(obj == channel)
+            {
+                NSLog(@"CH(+) Deleted: %@ FROM previous fetch", ((Channel*)obj).title);
+                
+                [deletedFromPreviousFetchArray addObject:[NSIndexPath indexPathForItem:cidx inSection:0]];
+            }
+        }];
+    }];
+
+    [self fetchChannelsForGenre:currentGenre]; // this will populate the self.channels array with fresh data
+    
+    
     
     
     // == Handle Inserted ==
@@ -305,8 +319,6 @@
             
             [deletedIndetifiers addObject:((Channel*)obj).uniqueId];
             
-            
-            
         }
         
     }];
@@ -323,7 +335,7 @@
         
     }
 
-    if(deletedIndetifiers.count > 0)
+    if(deletedFromPreviousFetchArray.count > 0)
     {
         self.isViewDirty = NO;
         [self.channelThumbnailCollectionView reloadData];
@@ -466,9 +478,9 @@
     {
         if ([genre isMemberOfClass:[Genre class]]) // no isKindOfClass: which will always return true in this case
         {
-            genrePredicate = [NSPredicate predicateWithFormat: @"categoryId IN %@", [genre getSubGenreIdArray]];
+            genrePredicate = [NSPredicate predicateWithFormat: @"categoryId IN %@", [genre getSubGenreIdArray]]; // includes genre.uniqueId
         }
-        else
+        else // subgenre
         {
             genrePredicate = [NSPredicate predicateWithFormat: @"categoryId == %@", genre.uniqueId];
         }
@@ -478,12 +490,12 @@
     
     // only get the channels marked as fresh //
     
-    NSPredicate* isFreshPredicate = [NSPredicate predicateWithFormat: @"fresh == YES"];
+    //NSPredicate* isFreshPredicate = [NSPredicate predicateWithFormat: @"fresh == YES"];
     
     
     
     NSPredicate* finalPredicate = [NSCompoundPredicate andPredicateWithSubpredicates:
-                                   @[genrePredicate, isFreshPredicate, viewIdPredicate]];
+                                   @[genrePredicate, viewIdPredicate]];
 
     [request setPredicate:finalPredicate];
     
@@ -497,7 +509,7 @@
     if (!resultsArray)
         return;
     
-    DebugLog(@"Items Fetched: %i", resultsArray.count);
+    NSLog(@"Items Fetched: %i", resultsArray.count);
     
     self.channels = [NSMutableArray arrayWithArray:resultsArray];
     

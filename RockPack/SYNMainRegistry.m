@@ -329,6 +329,8 @@
                                forGenre: (Genre*) genre
                             byAppending: (BOOL) append
 {
+    NSLog(@"%@", [NSThread callStackSymbols]);
+    
     // == Check for Validity == //
     NSDictionary *channelsDictionary = [dictionary objectForKey: @"channels"];
     if (!channelsDictionary || ![channelsDictionary isKindOfClass: [NSDictionary class]])
