@@ -266,7 +266,10 @@
     NSArray* insertedObjects = [[notification userInfo] objectForKey: NSInsertedObjectsKey];
     NSArray* deletedObjects = [[notification userInfo] objectForKey: NSDeletedObjectsKey];
     
-    // have we deleted from existing? this means that cells that are not currently visible have been deleted
+    
+    
+    // == Handle Deleted == //
+    
     NSMutableArray* deletedIndexPathsFromPreviousFetchArray = [NSMutableArray arrayWithCapacity:deletedObjects.count]; // maximum
     [self.channels enumerateObjectsUsingBlock:^(Channel* channel, NSUInteger cidx, BOOL *cstop) {
         
@@ -274,18 +277,19 @@
             
             if(obj == channel)
             {
-                NSLog(@"CH(-) PREVIOUS: %@", ((Channel*)obj).title);
+                NSLog(@"CH(-) Deleted: %@", ((Channel*)obj).title);
                 
                 [deletedIndexPathsFromPreviousFetchArray addObject:[NSIndexPath indexPathForItem:cidx inSection:0]];
             }
         }];
     }];
+    
+    
 
     [self fetchChannelsForGenre:currentGenre]; // this will populate the self.channels array with fresh data
     
     
-    // == Handle Inserted ==
-    
+    // == Handle Inserted == //
     
     NSMutableArray* insertedIndexPathArray = [NSMutableArray arrayWithCapacity:insertedObjects.count]; // maximum
     
