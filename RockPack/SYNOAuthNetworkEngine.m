@@ -408,10 +408,21 @@
     
     NSDictionary *apiSubstitutionDictionary = @{@"USERID" : user.uniqueId};
     
+    NSMutableDictionary* parameters = [NSMutableDictionary dictionary];
+    
+    [parameters setObject: @(0)
+                   forKey: @"start"];
+    
+    [parameters setObject: @(1000)
+                   forKey: @"size"];
+    
+    [parameters setObject: self.localeString
+                   forKey: @"locale"];
+    
     NSString *apiString = [kAPIGetUserDetails stringByReplacingOccurrencesOfStrings: apiSubstitutionDictionary];
     
     SYNNetworkOperationJsonObject *networkOperation = (SYNNetworkOperationJsonObject*)[self operationWithPath: apiString
-                                                                                                       params: @{@"locale" : self.localeString}
+                                                                                                       params: parameters
                                                                                                    httpMethod: @"GET"
                                                                                                           ssl: YES];
     
@@ -433,14 +444,22 @@
     
     NSDictionary *apiSubstitutionDictionary = @{@"USERID" : user.uniqueId};
     
-    NSDictionary *params = [self paramsForStart: 0
-                                           size: 1000];
+    NSMutableDictionary* parameters = [NSMutableDictionary dictionary];
+    
+    [parameters setObject: @(0)
+                   forKey: @"start"];
+    
+    [parameters setObject: @(1000)
+                   forKey: @"size"];
+    
+    [parameters setObject: self.localeString
+                   forKey: @"locale"];
     
    
     NSString *apiString = [kAPIGetUserSubscriptions stringByReplacingOccurrencesOfStrings: apiSubstitutionDictionary];
     
     SYNNetworkOperationJsonObject *networkOperation = (SYNNetworkOperationJsonObject*)[self operationWithPath: apiString
-                                                                                                       params: params
+                                                                                                       params: parameters
                                                                                                    httpMethod: @"GET"
                                                                                                           ssl: YES];
     [self addCommonHandlerToNetworkOperation: networkOperation
@@ -889,13 +908,25 @@
 
 - (void) videosForChannelForUserId: (NSString *) userId
                          channelId: (NSString *) channelId
+                           inRange: (NSRange) range
                  completionHandler: (MKNKUserSuccessBlock) completionBlock
                       errorHandler: (MKNKUserErrorBlock) errorBlock
 {
     NSDictionary *apiSubstitutionDictionary = @{@"USERID" : userId,
                                                 @"CHANNELID" : channelId};
     
-    NSString *apiString = [kAPIUpdateVideosForChannel stringByReplacingOccurrencesOfStrings: apiSubstitutionDictionary];
+    NSString *apiString = [kAPIGetVideosForChannel stringByReplacingOccurrencesOfStrings: apiSubstitutionDictionary];
+    
+    NSMutableDictionary* parameters = [NSMutableDictionary dictionary];
+    
+    [parameters setObject: @(range.location)
+                   forKey: @"start"];
+    
+    [parameters setObject: @(range.length)
+                   forKey: @"size"];
+    
+    [parameters setObject: self.localeString
+                   forKey: @"locale"];
     
     SYNNetworkOperationJsonObject *networkOperation = (SYNNetworkOperationJsonObject*)[self operationWithPath: apiString
                                                                                                        params: nil
@@ -970,13 +1001,8 @@
     NSRange rangeOfWS = [resourceURL rangeOfString:@"/ws"];
     NSString* onlyThePathPart = [resourceURL substringFromIndex:rangeOfWS.location];
     
-    NSMutableDictionary* parameters = [NSMutableDictionary dictionary];
+    NSDictionary* parameters = [self getLocalParam];
     
-    [parameters setObject: [NSString stringWithFormat: @"%i", 0]
-                   forKey: @"start"];
-    
-    [parameters setObject: [NSString stringWithFormat: @"%i", 1000]
-                   forKey: @"size"];
     
     SYNNetworkOperationJsonObject *networkOperation = (SYNNetworkOperationJsonObject*)[self operationWithPath:onlyThePathPart
                                                                                                        params:parameters
@@ -992,6 +1018,8 @@
     return networkOperation;
     
 }
+
+
 
 
 // User activity

@@ -46,6 +46,7 @@
                                               SYNChannelCoverImageSelectorDelegate>
 {
     BOOL _isIPhone; //So many calls were being made to the SYNDeviceManager a boolean initialised at viewDidLoad was introduced.
+    BOOL _hasAppeared; //Debug flag for finding double ViewDidAppear/disappear calls.
 }
 
 
@@ -127,6 +128,15 @@
 	return self;
 }
 
+- (void) dealloc
+{
+    if (_channelTitleTextView)
+    {
+        [_channelTitleTextView removeObserver: self
+                                   forKeyPath: kTextViewContentSizeKey];
+    }
+}
+
 
 #pragma mark - View lifecyle
 
@@ -176,6 +186,8 @@
     layout.minimumInteritemSpacing = _isIPhone ? 0.0f : 4.0f;
     layout.minimumLineSpacing = _isIPhone ? 4.0f : 4.0f;
     
+    layout.footerReferenceSize = [self footerSize];
+    
     self.videoThumbnailCollectionView.collectionViewLayout = layout;
     
     if (_isIPhone)
@@ -195,6 +207,16 @@
     
     [self.videoThumbnailCollectionView registerNib: videoThumbnailCellNib
                         forCellWithReuseIdentifier: @"SYNVideoThumbnailRegularCell"];
+    
+    // == Footer View == //
+    
+    // Register Footer
+    UINib *footerViewNib = [UINib nibWithNibName: @"SYNChannelFooterMoreView"
+                                          bundle: nil];
+    
+    [self.videoThumbnailCollectionView registerNib: footerViewNib
+                        forSupplementaryViewOfKind: UICollectionElementKindSectionFooter
+                               withReuseIdentifier: @"SYNChannelFooterMoreView"];
     
     // == Cover Image == //
   
@@ -338,11 +360,6 @@
 {
     [super viewWillAppear: animated];
     
-    [self.channelTitleTextView addObserver: self
-                                forKeyPath: kTextViewContentSizeKey
-                                   options: NSKeyValueObservingOptionNew
-                                   context: NULL];
-    
     [[NSNotificationCenter defaultCenter] addObserver: self
                                              selector: @selector(coverImageChangedHandler:)
                                                  name: kCoverArtChanged
@@ -393,6 +410,12 @@
     
     [self displayChannelDetails];
     
+    if(_hasAppeared)
+    {
+        AssertOrLog(@"Detail View controller had viewWillAppear called twice!!!!");
+    }
+    _hasAppeared = YES;
+    
 }
 
 
@@ -404,10 +427,6 @@
     [[NSNotificationCenter defaultCenter] postNotificationName: kNoteAllNavControlsShow
                                                         object: self
                                                       userInfo: nil];
-    
-    [self.channelTitleTextView removeObserver: self
-                                   forKeyPath: kTextViewContentSizeKey];
-    
     [[NSNotificationCenter defaultCenter] removeObserver: self
                                                     name: kCoverArtChanged
                                                   object: nil];
@@ -445,6 +464,11 @@
                                                         object: self
                                                       userInfo: nil];
     
+    if(!_hasAppeared)
+    {
+        AssertOrLog(@"Detail View controller had viewWillDisappear called twice!!!!");
+    }
+    _hasAppeared = NO;
 }
 
 
@@ -553,13 +577,18 @@
     NSArray* deletedObjects = [[notification userInfo] objectForKey: NSDeletedObjectsKey];
     
     
-    
+
     [updatedObjects enumerateObjectsUsingBlock: ^(id obj, NSUInteger idx, BOOL *stop) {
         
         
         if (obj == self.channel)
         {
             
+            
+            self.dataItemsAvailable = self.channel.totalVideosValue;
+            
+            
+
             self.subscribeButton.selected = self.channel.subscribedByUserValue;
             self.subscribeButton.enabled = YES;
             
@@ -786,6 +815,20 @@
     [self adjustTextView];
 }
 
+-(void)setChannelTitleTextView:(SSTextView *)channelTitleTextView
+{
+    if (_channelTitleTextView)
+    {
+        [_channelTitleTextView removeObserver: self
+                                       forKeyPath: kTextViewContentSizeKey];
+    }
+    _channelTitleTextView = channelTitleTextView;
+    [_channelTitleTextView addObserver: self
+                            forKeyPath: kTextViewContentSizeKey
+                               options: NSKeyValueObservingOptionNew
+                               context: NULL];
+}
+
 
 #pragma mark - Collection Delegate Methods
 
@@ -840,6 +883,96 @@
     return cell;
 }
 
+- (UICollectionReusableView *) collectionView: (UICollectionView *) collectionView
+            viewForSupplementaryElementOfKind: (NSString *) kind
+                                  atIndexPath: (NSIndexPath *) indexPath
+{
+    if (collectionView != self.videoThumbnailCollectionView)
+        return nil;
+    
+    
+    
+    UICollectionReusableView* supplementaryView;
+    
+    if (kind == UICollectionElementKindSectionHeader)
+    {
+        // nothing yet
+    }
+    
+    if (kind == UICollectionElementKindSectionFooter)
+    {
+        if (self.channel.videoInstances.count == 0 || (self.dataRequestRange.location + self.dataRequestRange.length) >= self.dataItemsAvailable)
+        {
+            return supplementaryView;
+        }
+        
+        self.footerView = [self.videoThumbnailCollectionView dequeueReusableSupplementaryViewOfKind: kind
+                                                                                  withReuseIdentifier: @"SYNChannelFooterMoreView"
+                                                                                         forIndexPath: indexPath];
+        
+        [self.footerView.loadMoreButton addTarget: self
+                                           action: @selector(loadMoreVideos:)
+                                 forControlEvents: UIControlEventTouchUpInside];
+        
+        //[self loadMoreChannels:self.footerView.loadMoreButton];
+        
+        supplementaryView = self.footerView;
+    }
+    
+    return supplementaryView;
+}
+
+-(void)loadMoreVideos:(UIButton*)footerButton
+{
+    
+    // define success block //
+    
+    [self incrementRangeForNextRequest];
+    
+    NSLog(@"Load More Videos (%i - %i)", self.dataRequestRange.location, self.dataRequestRange.location + self.dataRequestRange.length);
+    
+    
+    MKNKUserSuccessBlock successBlock = ^(NSDictionary *dictionary) {
+        
+        [self.channel addVideoInstancesFromDictionary:dictionary];
+        
+        NSError* error;
+        [self.channel.managedObjectContext save:&error];
+        
+        
+    };
+    
+        // define success block //
+        
+    MKNKUserErrorBlock errorBlock = ^(NSDictionary* errorDictionary) {
+        DebugLog(@"Update action failed");
+            
+    };
+        
+    if ([self.channel.resourceURL hasPrefix: @"https"]) // https does not cache so it is fresh
+    {
+            
+            
+            [appDelegate.oAuthNetworkEngine videosForChannelForUserId:appDelegate.currentUser.uniqueId
+                                                            channelId:self.channel.uniqueId
+                                                              inRange:self.dataRequestRange
+                                                    completionHandler:successBlock
+                                                         errorHandler:errorBlock];
+            
+        
+    }
+    else
+    {
+            
+            
+            [appDelegate.networkEngine videosForChannelForUserId:appDelegate.currentUser.uniqueId
+                                                       channelId:self.channel.uniqueId
+                                                         inRange:self.dataRequestRange
+                                               completionHandler:successBlock
+                                                    errorHandler:errorBlock];
+    }
+    
+}
 
 - (void) collectionView: (UICollectionView *) collectionView
          didSelectItemAtIndexPath: (NSIndexPath *) indexPath
@@ -2555,7 +2688,6 @@
     [self closeImageSelector: imageSelector];
 }
 
-
 #pragma mark - ScrollView Delegate
 
 - (void) scrollViewDidScroll: (UIScrollView *) scrollView
@@ -2792,13 +2924,6 @@
     
         [self.avatarImageView setImageWithURL: [NSURL URLWithString:imageUrlString] placeholderImage: placeholder options: SDWebImageRetryFailed];
     }
-}
-
-
-- (void) dealloc
-{
-    self.channel = nil;
-    self.originalChannel = nil;
 }
 
 #pragma mark - FAVOURITES WORKAROUND. TO BE REMOVED
