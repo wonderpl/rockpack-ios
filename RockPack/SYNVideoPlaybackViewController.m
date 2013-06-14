@@ -45,6 +45,7 @@
 @property (nonatomic, strong) NSString *sourceIdToReload;
 @property (nonatomic, strong) NSTimer *shuttleBarUpdateTimer;
 @property (nonatomic, strong) NSTimer *recordVideoViewTimer;
+@property (nonatomic, strong) NSTimer *videoStallDetectionTimer;
 @property (nonatomic, strong) SYNVideoIndexUpdater indexUpdater;
 @property (nonatomic, strong) UIButton *shuttleBarPlayPauseButton;
 @property (nonatomic, strong) UIImageView *videoPlaceholderBottomImageView;
@@ -361,7 +362,7 @@ static UIWebView* vimeoideoWebViewInstance;
     [self pauseIfVideoActive];
     
     [self stopShuttleBarUpdateTimer];
-
+    [self stopVideoStallDetectionTimer];
     [super viewDidDisappear: animated];
 }
 
@@ -585,8 +586,7 @@ static UIWebView* vimeoideoWebViewInstance;
     UIButton *youTubeButton;
     CGFloat youTubeButtonOffsetX;
     CGFloat youTubeButtonOffsetY;
-    CGFloat creatorLabelOffsetX;
-    CGFloat creatorLabelOffsetY;
+
     
     UIImage *youTubeImage = [UIImage imageNamed: @"ButtonYouTubeDefault"];
     
@@ -594,15 +594,11 @@ static UIWebView* vimeoideoWebViewInstance;
     {
         youTubeButtonOffsetX = 320;
         youTubeButtonOffsetY = 328;
-        creatorLabelOffsetX = 270;
-        creatorLabelOffsetY = youTubeButtonOffsetY + 23;
     }
     else
     {
         youTubeButtonOffsetX = 215;
         youTubeButtonOffsetY = 8;
-        creatorLabelOffsetX = 10;
-        creatorLabelOffsetY = 12;
     }
     
     // Create YouTube button
@@ -615,24 +611,6 @@ static UIWebView* vimeoideoWebViewInstance;
     [youTubeButton addTarget: self
                       action: @selector(openYouTubeURL:)
             forControlEvents: UIControlEventTouchUpInside];
-
-    // Create channel creator label
-    self.creatorLabel = [[UILabel alloc] initWithFrame: CGRectMake(creatorLabelOffsetX, creatorLabelOffsetY, 200, 13)];
-    self.creatorLabel.backgroundColor = [UIColor clearColor];
-    self.creatorLabel.textColor = [UIColor colorWithWhite: 85.0f/255.0f alpha: 1.0f];
-    self.creatorLabel.font = [UIFont rockpackFontOfSize: 11.0f];
-    
-    [self setCreatorText: self.channelCreator];
-    
-    // Alignment is different dependent on device
-    if ([SYNDeviceManager.sharedInstance isIPad])
-    {
-        self.creatorLabel.textAlignment = NSTextAlignmentCenter;
-    }
-    else
-    {
-        self.creatorLabel.textAlignment = NSTextAlignmentLeft;
-    }
     
     // Pop them in a view to keep them together
     UIView *videoPlaceholderView = [[UIView alloc] initWithFrame: self.view.bounds];
@@ -643,7 +621,6 @@ static UIWebView* vimeoideoWebViewInstance;
     [videoPlaceholderView addSubview: self.videoPlaceholderTopImageView];
     
     // Branding
-    [videoPlaceholderView addSubview: self.creatorLabel];
     [videoPlaceholderView addSubview: youTubeButton];
     
     [self.view addSubview: videoPlaceholderView];
@@ -931,12 +908,16 @@ static UIWebView* vimeoideoWebViewInstance;
     self.notYetPlaying = TRUE;
     self.recordedVideoView = FALSE;
     
+    SYNAppDelegate* appDelegate = UIApplication.sharedApplication.delegate;
     // Check to see if our JS is loaded
     NSString *availability = [self.currentVideoWebView stringByEvaluatingJavaScriptFromString: @"checkPlayerAvailability();"];
-    if ([availability isEqualToString: @"true"])
+    if ([availability isEqualToString: @"true"] && appDelegate.playerUpdated == FALSE)
     {
         // Our JS is loaded
         NSString *loadString = [NSString stringWithFormat: @"player.loadVideoById('%@', '0', '%@');", sourceId, self.videoQuality];
+        
+        [self startVideoStallDetectionTimer];
+        
         [self.currentVideoWebView stringByEvaluatingJavaScriptFromString: loadString];
         
         self.playFlag = TRUE;
@@ -950,6 +931,7 @@ static UIWebView* vimeoideoWebViewInstance;
         // Reload out webview and load the new video when we get an event to say that the player is ready
         self.hasReloadedWebView = TRUE;
         self.sourceIdToReload = sourceId;
+        appDelegate.playerUpdated = FALSE;
         
         NSError *error = nil;
         
@@ -1018,6 +1000,8 @@ static UIWebView* vimeoideoWebViewInstance;
 
 - (void) pauseVideo
 {
+    [self stopShuttleBarUpdateTimer];
+    
     [self.currentVideoWebView stringByEvaluatingJavaScriptFromString: @"player.pauseVideo();"];
     
     self.playFlag = FALSE;
@@ -1026,6 +1010,8 @@ static UIWebView* vimeoideoWebViewInstance;
 
 - (void) stopVideo
 {
+    [self stopShuttleBarUpdateTimer];
+    
     [self.currentVideoWebView stringByEvaluatingJavaScriptFromString: @"player.stopVideo();"];
     
     self.playFlag = FALSE;
@@ -1105,7 +1091,6 @@ static UIWebView* vimeoideoWebViewInstance;
     
     // Make sure we don't receive any shuttle bar or buffer update timer events until we have loaded the new video
     [self stopShuttleBarUpdateTimer];
-    
     // Reset shuttle slider
     self.shuttleSlider.value = 0.0f;
     
@@ -1253,12 +1238,15 @@ static UIWebView* vimeoideoWebViewInstance;
         {
             DebugLog (@"*** Ended: Stopping - Fading out player & Loading next video");
             [self stopShuttleBarUpdateTimer];
+            [self stopVideoStallDetectionTimer];
             [self stopVideo];
             [self resetPlayerAttributes];
             [self loadNextVideo];
         }
         else if ([actionData isEqualToString: @"playing"])
         {
+            [self stopVideoStallDetectionTimer];
+            
             DebugLog(@"*** Playing: Starting - Fading up player");
             // If we are playing then out shuttle / pause / play cycle is over
             self.shuttledByUser = TRUE;
@@ -1284,6 +1272,7 @@ static UIWebView* vimeoideoWebViewInstance;
             }
             else
             {
+                [self stopVideoStallDetectionTimer];
                 DebugLog (@"*** Paused: Paused by user");
             }
         }
@@ -1355,7 +1344,45 @@ static UIWebView* vimeoideoWebViewInstance;
 - (void) handleCurrentVimeoPlayerEventNamed: (NSString *) actionName
                            eventData: (NSString *) actionData
 {
+    // TODO: Vimeo support
+}
+
+
+- (void) startVideoStallDetectionTimer
+{
+    [self.videoStallDetectionTimer invalidate];
     
+    // Schedule the timer on a different runloop so that we continue to get updates even when scrolling collection views etc.
+    self.videoStallDetectionTimer = [NSTimer timerWithTimeInterval: kVideoStallThresholdTime
+                                                         target: self
+                                                       selector: @selector(videoStallDetected)
+                                                       userInfo: nil
+                                                        repeats: NO];
+    
+    [[NSRunLoop mainRunLoop] addTimer: self.videoStallDetectionTimer forMode: NSRunLoopCommonModes];
+}
+
+
+
+- (void) stopVideoStallDetectionTimer
+{
+    [self.videoStallDetectionTimer invalidate], self.videoStallDetectionTimer = nil;
+}
+
+- (void) videoStallDetected
+{
+    SYNAppDelegate* appDelegate = UIApplication.sharedApplication.delegate;
+    VideoInstance *videoInstance = self.videoInstanceArray [self.currentSelectedIndex];
+    
+    [appDelegate.oAuthNetworkEngine reportPlayerErrorForVideoInstanceId: videoInstance.uniqueId
+                                                       errorDescription: @"Video stalled"
+                                                      completionHandler: ^(NSDictionary * dictionary) {
+                                                          DebugLog(@"Reported video stall");
+                                                      }
+                                                           errorHandler: ^(NSError* error) {
+                                                               DebugLog(@"Report video stall failed");
+                                                               DebugLog(@"%@", [error debugDescription]);
+                                                           }];
 }
 
 
@@ -1372,6 +1399,8 @@ static UIWebView* vimeoideoWebViewInstance;
     
     [[NSRunLoop mainRunLoop] addTimer: self.shuttleBarUpdateTimer forMode: NSRunLoopCommonModes];
 }
+
+
 
 
 - (void) stopShuttleBarUpdateTimer

@@ -168,8 +168,7 @@
     [self.currentlyCreatingChannel addVideoInstancesObject:copyOfVideoInstance];
     
     self.isEmpty = NO;
-
-        [[NSNotificationCenter defaultCenter] postNotificationName:kNoteAddToChannelRequest object:self];
+    [[NSNotificationCenter defaultCenter] postNotificationName:kNoteAddToChannelRequest object:self];
     
     
     

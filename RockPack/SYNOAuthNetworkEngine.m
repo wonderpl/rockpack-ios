@@ -410,14 +410,11 @@
     
     NSMutableDictionary* parameters = [NSMutableDictionary dictionary];
     
-    [parameters setObject: @(0)
-                   forKey: @"start"];
+    parameters[@"start"] = @(0);
     
-    [parameters setObject: @(1000)
-                   forKey: @"size"];
+    parameters[@"size"] = @(1000);
     
-    [parameters setObject: self.localeString
-                   forKey: @"locale"];
+    parameters[@"locale"] = self.localeString;
     
     NSString *apiString = [kAPIGetUserDetails stringByReplacingOccurrencesOfStrings: apiSubstitutionDictionary];
     
@@ -446,14 +443,11 @@
     
     NSMutableDictionary* parameters = [NSMutableDictionary dictionary];
     
-    [parameters setObject: @(0)
-                   forKey: @"start"];
+    parameters[@"start"] = @(0);
     
-    [parameters setObject: @(1000)
-                   forKey: @"size"];
+    parameters[@"size"] = @(1000);
     
-    [parameters setObject: self.localeString
-                   forKey: @"locale"];
+    parameters[@"locale"] = self.localeString;
     
    
     NSString *apiString = [kAPIGetUserSubscriptions stringByReplacingOccurrencesOfStrings: apiSubstitutionDictionary];
@@ -507,7 +501,7 @@
         
         // Get subscriptions
         
-        NSString* userId = [responseDictionary objectForKey:@"id"];
+        NSString* userId = responseDictionary[@"id"];
         
         
         [self channelSubscriptionsForUserId:userId
@@ -702,7 +696,7 @@
                                
                                if (currentUser)
                                {
-                                   NSString *newThumbnailURL = [headerDictionary objectForKey: @"Location"];
+                                   NSString *newThumbnailURL = headerDictionary[@"Location"];
                                    currentUser.thumbnailURL = newThumbnailURL;
                                    [blockAppDelegate saveContext: YES];
                                    [[NSNotificationCenter defaultCenter] postNotificationName: kUserDataChanged
@@ -919,14 +913,11 @@
     
     NSMutableDictionary* parameters = [NSMutableDictionary dictionary];
     
-    [parameters setObject: @(range.location)
-                   forKey: @"start"];
+    parameters[@"start"] = @(range.location);
     
-    [parameters setObject: @(range.length)
-                   forKey: @"size"];
+    parameters[@"size"] = @(range.length);
     
-    [parameters setObject: self.localeString
-                   forKey: @"locale"];
+    parameters[@"locale"] = self.localeString;
     
     SYNNetworkOperationJsonObject *networkOperation = (SYNNetworkOperationJsonObject*)[self operationWithPath: apiString
                                                                                                        params: nil

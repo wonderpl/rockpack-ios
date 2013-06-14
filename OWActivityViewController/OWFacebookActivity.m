@@ -74,8 +74,7 @@
         
         params.action = action;
         params.previewPropertyName = @"other";
-        params.actionType = [NSString stringWithFormat: @"%@vshare", facebookNamespace];
-//        params.actionType = @"rockpack-dev:vshare";
+        params.actionType = [NSString stringWithFormat: @"%@:vshare", facebookNamespace];
     }
     else
     {

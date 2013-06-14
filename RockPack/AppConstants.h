@@ -246,6 +246,10 @@ typedef enum _Gender {
 // Large Video panel
 #define kCreateChannelPanelAnimationDuration 0.3f
 
+#define kVideoInAnimationDuration 0.4f
+#define kVideoOutAnimationDuration 0.3f
+#define kAddToChannelAnimationDuration 0.3f
+
 //
 // Dimensions
 //
@@ -362,6 +366,9 @@ typedef enum {
 
 // Maximum number of times the player time remains the same before restart attempted
 #define kMaxStallCount                  20
+
+// Number of seconds we wait before reporting a video problem
+#define kVideoStallThresholdTime        20
 
 // Time between shuttle bar updates
 #define kShuttleBarUpdateTimerInterval  0.1f

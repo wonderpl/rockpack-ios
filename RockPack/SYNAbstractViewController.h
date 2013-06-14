@@ -86,7 +86,7 @@ typedef void (^SYNShareCompletionBlock)(void);
 - (BOOL) collectionView: (UICollectionView *) cv didSelectItemAtIndexPathAbstract: (NSIndexPath *) indexPath;
 
 - (void) displayVideoViewerWithVideoInstanceArray: (NSArray *) videoInstanceArray
-                                 andSelectedIndex: (int) selectedIndex;
+andSelectedIndex: (int) selectedIndex center:(CGPoint) center;
 
 
 - (void) viewProfileDetails: (ChannelOwner *) channelOwner;

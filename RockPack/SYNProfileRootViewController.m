@@ -398,7 +398,7 @@
 
 - (void) handleDataModelChange: (NSNotification*) notification
 {
-    NSArray* updatedObjects = [[notification userInfo] objectForKey: NSUpdatedObjectsKey];
+    NSArray* updatedObjects = [notification userInfo][NSUpdatedObjectsKey];
     
     [updatedObjects enumerateObjectsUsingBlock: ^(id obj, NSUInteger idx, BOOL *stop)
     {
@@ -577,7 +577,7 @@
     NSIndexPath* indexPath = nil;
     if (self.channelThumbnailCollectionView.contentOffset.y > self.subscriptionsViewController.channelThumbnailCollectionView.contentOffset.y)
     {
-        UICollectionViewCell* visibleCell = ([[self.channelThumbnailCollectionView visibleCells] count] > 0) ? [[self.channelThumbnailCollectionView visibleCells] objectAtIndex: 0] : nil;
+        UICollectionViewCell* visibleCell = ([[self.channelThumbnailCollectionView visibleCells] count] > 0) ? [self.channelThumbnailCollectionView visibleCells][0] : nil;
         if (visibleCell != nil)
         {
             indexPath = [self.channelThumbnailCollectionView indexPathForCell:visibleCell];
@@ -601,7 +601,7 @@
     
     if (!indexPath)
     {
-        UICollectionViewCell* visibleCell = ([[self.subscriptionsViewController.channelThumbnailCollectionView visibleCells] count] > 0) ? [[self.subscriptionsViewController.channelThumbnailCollectionView visibleCells] objectAtIndex: 0] : nil;
+        UICollectionViewCell* visibleCell = ([[self.subscriptionsViewController.channelThumbnailCollectionView visibleCells] count] > 0) ? [self.subscriptionsViewController.channelThumbnailCollectionView visibleCells][0] : nil;
         if (visibleCell != nil)
         {
             indexPath = [self.subscriptionsViewController.channelThumbnailCollectionView indexPathForCell: visibleCell];

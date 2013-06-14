@@ -590,16 +590,19 @@
                 break;
     }
     
-    if(!valid)
-    {
-        return;
-    }
-    
+    //Registration screen has no space for the keyboard together with the error message. ensure keyboard is always not showing on this screen.
     [self.registeringUserEmailInputField resignFirstResponder];
     [self.registeringUserPasswordInputField resignFirstResponder];
     [self.ddInputField resignFirstResponder];
     [self.yyyyInputField resignFirstResponder];
     [self.mmInputField resignFirstResponder];
+    
+    if(!valid)
+    {
+        return;
+    }
+    
+    // Hide the keyboard.
     [self.userNameInputField resignFirstResponder];
     [self.passwordInputField resignFirstResponder];
     [self.emailInputField resignFirstResponder];
@@ -847,8 +850,16 @@
         }
         else
         {
+            NSArray* formErrors = [result objectForKey:@"message"];
+            NSString* errorString = self.registeringUserErrorLabel.text = NSLocalizedString(@"unknown_error_message", nil);
+            if (formErrors && [formErrors count]>0)
+            {
+                errorString = [NSString stringWithFormat:NSLocalizedString(@"%@: %@", nil), NSLocalizedString(@"Username", nil), [formErrors objectAtIndex:0]];
+            }
+            
+            self.registeringUserErrorLabel.text = errorString;
+            
             [self turnOnButton:self.nextButton];
-            self.registeringUserErrorLabel.text = NSLocalizedString(@"unknown_error_message", nil);
         }
     } errorHandler:^(NSError *error) {
         

@@ -56,7 +56,7 @@
     else
     {
         // Something went wrong, so print as much debug info as we can
-        NSArray* detailedErrors = [[error userInfo] objectForKey: NSDetailedErrorsKey];
+        NSArray* detailedErrors = [error userInfo][NSDetailedErrorsKey];
         {
             if ([detailedErrors count] > 0)
             {
