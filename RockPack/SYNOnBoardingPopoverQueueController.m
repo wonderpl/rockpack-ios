@@ -39,6 +39,7 @@
     self.backgroundView = [[UIView alloc] initWithFrame:screenFrame];
     self.backgroundView.backgroundColor = [UIColor blackColor];
     self.backgroundView.alpha = 0.0;
+    self.backgroundView.userInteractionEnabled = NO;
     
     UIView* mainView = [[UIView alloc] initWithFrame:screenFrame];
     mainView.backgroundColor = [UIColor clearColor];
@@ -73,7 +74,7 @@
 
 -(void)present
 {
-    NSLog(@"Starting Q with %i", self.queue.count);
+    
     
     SYNAppDelegate* appDelegate = (SYNAppDelegate*)[UIApplication sharedApplication].delegate;
     
@@ -86,12 +87,11 @@
 -(void)presentNextPopover
 {
     
-    NSLog(@"presentNextPopover: %i", self.queue.count);
-    
     
     if(queue.count == 0) // renmove everything
     {
         [UIView animateWithDuration:0.3 animations:^{
+            self.currentlyVisiblePopover.alpha = 0.0;
             self.backgroundView.alpha = 0.0;
         } completion:^(BOOL finished) {
             [self.view removeFromSuperview];
@@ -100,6 +100,7 @@
     }
     else // go to next popover
     {
+        NSLog(@"Presenting %i", self.queue.count);
         SYNOnBoardingPopoverView* nextPopover = (SYNOnBoardingPopoverView*)(self.queue)[0];
         [self.queue removeObject:nextPopover];
         
