@@ -478,4 +478,29 @@
     [self enqueueOperation: networkOperation];
 }
 
+
+
+- (void) updatePlayerSourceWithCompletionHandler: (MKNKUserErrorBlock) completionBlock
+                                    errorHandler: (MKNKUserSuccessBlock) errorBlock
+{
+    SYNNetworkOperationJsonObject *networkOperation =
+    (SYNNetworkOperationJsonObject*)[self operationWithPath: kYouTubePlayerSource
+                                                     params: [self getLocalParam]
+                                                 httpMethod: @"GET"];
+    
+    networkOperation.ignoreCachedResponse = YES;
+    
+    [networkOperation addJSONCompletionHandler: ^(NSDictionary *dictionary) {
+
+        completionBlock(dictionary);
+        
+    } errorHandler:^(NSError* error) {
+        DebugLog(@"API request failed");
+        
+    }];
+    
+    [self enqueueOperation: networkOperation];
+}
+
+
 @end

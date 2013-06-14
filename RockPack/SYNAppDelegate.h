@@ -56,6 +56,7 @@
 @property (readonly, nonatomic, strong) SYNSearchRegistry* searchRegistry;
 
 @property (nonatomic, assign) BOOL searchRefreshDisabled;
+@property (nonatomic, assign) BOOL playerUpdated;
 
 - (void) deleteDataObject:(NSManagedObject*)managedObject;
 - (void) saveContext: (BOOL) wait;
