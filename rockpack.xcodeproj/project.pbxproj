@@ -974,13 +974,13 @@
 		BE3983E5176A108900EE9C7B /* onboarding_arrow_up@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = BE3983E1176A108800EE9C7B /* onboarding_arrow_up@2x.png */; };
 		BE3983EA176A129500EE9C7B /* onboarding_button_ok_highlighted.png in Resources */ = {isa = PBXBuildFile; fileRef = BE3983E6176A129300EE9C7B /* onboarding_button_ok_highlighted.png */; };
 		BE3983EB176A129500EE9C7B /* onboarding_button_ok_highlighted@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = BE3983E7176A129300EE9C7B /* onboarding_button_ok_highlighted@2x.png */; };
-		BE3983EC176A129500EE9C7B /* onboarding_button_ok_hover_highlighted@2x~iphone.png in Resources */ = {isa = PBXBuildFile; fileRef = BE3983E8176A129300EE9C7B /* onboarding_button_ok_hover_highlighted@2x~iphone.png */; };
-		BE3983ED176A129500EE9C7B /* onboarding_button_ok_hover_highlighted~iphone.png in Resources */ = {isa = PBXBuildFile; fileRef = BE3983E9176A129400EE9C7B /* onboarding_button_ok_hover_highlighted~iphone.png */; };
 		BE3983F2176A164500EE9C7B /* onboarding_arrow_left.png in Resources */ = {isa = PBXBuildFile; fileRef = BE3983EE176A164400EE9C7B /* onboarding_arrow_left.png */; };
 		BE3983F3176A164500EE9C7B /* onboarding_arrow_left@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = BE3983EF176A164400EE9C7B /* onboarding_arrow_left@2x.png */; };
 		BE3983F4176A164500EE9C7B /* onboarding_arrow_right.png in Resources */ = {isa = PBXBuildFile; fileRef = BE3983F0176A164400EE9C7B /* onboarding_arrow_right.png */; };
 		BE3983F5176A164500EE9C7B /* onboarding_arrow_right@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = BE3983F1176A164400EE9C7B /* onboarding_arrow_right@2x.png */; };
 		BE3A771117300D3C008ED81F /* SYNAccountSettingsModalContainer.m in Sources */ = {isa = PBXBuildFile; fileRef = BE3A771017300D3C008ED81F /* SYNAccountSettingsModalContainer.m */; };
+		BE4180F0176B35D800FCF994 /* onboarding_button_ok_highlighted@2x~iphone.png in Resources */ = {isa = PBXBuildFile; fileRef = BE4180EE176B35D800FCF994 /* onboarding_button_ok_highlighted@2x~iphone.png */; };
+		BE4180F1176B35D800FCF994 /* onboarding_button_ok_highlighted~iphone.png in Resources */ = {isa = PBXBuildFile; fileRef = BE4180EF176B35D800FCF994 /* onboarding_button_ok_highlighted~iphone.png */; };
 		BE5D29EB17577E2800C00486 /* SYNFeedMessagesView.m in Sources */ = {isa = PBXBuildFile; fileRef = BE5D29EA17577E2800C00486 /* SYNFeedMessagesView.m */; };
 		BE7D342E170DD8C90085AB81 /* SYNChannelFooterMoreView.xib in Resources */ = {isa = PBXBuildFile; fileRef = BE7D342D170DD8C90085AB81 /* SYNChannelFooterMoreView.xib */; };
 		BE7D3431170DDB310085AB81 /* SYNChannelFooterMoreView.m in Sources */ = {isa = PBXBuildFile; fileRef = BE7D3430170DDB310085AB81 /* SYNChannelFooterMoreView.m */; };
@@ -2233,14 +2233,14 @@
 		BE3983E1176A108800EE9C7B /* onboarding_arrow_up@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = "onboarding_arrow_up@2x.png"; path = "Assets/Images/onboarding_arrow_up@2x.png"; sourceTree = "<group>"; };
 		BE3983E6176A129300EE9C7B /* onboarding_button_ok_highlighted.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = onboarding_button_ok_highlighted.png; path = Assets/Images/onboarding_button_ok_highlighted.png; sourceTree = "<group>"; };
 		BE3983E7176A129300EE9C7B /* onboarding_button_ok_highlighted@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = "onboarding_button_ok_highlighted@2x.png"; path = "Assets/Images/onboarding_button_ok_highlighted@2x.png"; sourceTree = "<group>"; };
-		BE3983E8176A129300EE9C7B /* onboarding_button_ok_hover_highlighted@2x~iphone.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = "onboarding_button_ok_hover_highlighted@2x~iphone.png"; path = "Assets/Images/onboarding_button_ok_hover_highlighted@2x~iphone.png"; sourceTree = "<group>"; };
-		BE3983E9176A129400EE9C7B /* onboarding_button_ok_hover_highlighted~iphone.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = "onboarding_button_ok_hover_highlighted~iphone.png"; path = "Assets/Images/onboarding_button_ok_hover_highlighted~iphone.png"; sourceTree = "<group>"; };
 		BE3983EE176A164400EE9C7B /* onboarding_arrow_left.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = onboarding_arrow_left.png; path = Assets/Images/onboarding_arrow_left.png; sourceTree = "<group>"; };
 		BE3983EF176A164400EE9C7B /* onboarding_arrow_left@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = "onboarding_arrow_left@2x.png"; path = "Assets/Images/onboarding_arrow_left@2x.png"; sourceTree = "<group>"; };
 		BE3983F0176A164400EE9C7B /* onboarding_arrow_right.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = onboarding_arrow_right.png; path = Assets/Images/onboarding_arrow_right.png; sourceTree = "<group>"; };
 		BE3983F1176A164400EE9C7B /* onboarding_arrow_right@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = "onboarding_arrow_right@2x.png"; path = "Assets/Images/onboarding_arrow_right@2x.png"; sourceTree = "<group>"; };
 		BE3A770F17300D3C008ED81F /* SYNAccountSettingsModalContainer.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SYNAccountSettingsModalContainer.h; sourceTree = "<group>"; };
 		BE3A771017300D3C008ED81F /* SYNAccountSettingsModalContainer.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SYNAccountSettingsModalContainer.m; sourceTree = "<group>"; };
+		BE4180EE176B35D800FCF994 /* onboarding_button_ok_highlighted@2x~iphone.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = "onboarding_button_ok_highlighted@2x~iphone.png"; path = "Assets/Images/onboarding_button_ok_highlighted@2x~iphone.png"; sourceTree = "<group>"; };
+		BE4180EF176B35D800FCF994 /* onboarding_button_ok_highlighted~iphone.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = "onboarding_button_ok_highlighted~iphone.png"; path = "Assets/Images/onboarding_button_ok_highlighted~iphone.png"; sourceTree = "<group>"; };
 		BE53EE6017609587008360D2 /* Rockpack 4.xcdatamodel */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcdatamodel; path = "Rockpack 4.xcdatamodel"; sourceTree = "<group>"; };
 		BE5D29E917577E2800C00486 /* SYNFeedMessagesView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SYNFeedMessagesView.h; sourceTree = "<group>"; };
 		BE5D29EA17577E2800C00486 /* SYNFeedMessagesView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SYNFeedMessagesView.m; sourceTree = "<group>"; };
@@ -4543,7 +4543,6 @@
 		BE3983D5176A0CC600EE9C7B /* OnBoarding */ = {
 			isa = PBXGroup;
 			children = (
-				BE3983D6176A0CD200EE9C7B /* onboarding_button_ok.png */,
 				BE3983DE176A108700EE9C7B /* onboarding_arrow_bottom.png */,
 				BE3983DF176A108800EE9C7B /* onboarding_arrow_bottom@2x.png */,
 				BE3983EE176A164400EE9C7B /* onboarding_arrow_left.png */,
@@ -4552,13 +4551,14 @@
 				BE3983F1176A164400EE9C7B /* onboarding_arrow_right@2x.png */,
 				BE3983E0176A108800EE9C7B /* onboarding_arrow_up.png */,
 				BE3983E1176A108800EE9C7B /* onboarding_arrow_up@2x.png */,
+				BE3983D6176A0CD200EE9C7B /* onboarding_button_ok.png */,
 				BE3983D7176A0CD200EE9C7B /* onboarding_button_ok@2x.png */,
-				BE3983D8176A0CD200EE9C7B /* onboarding_button_ok@2x~iphone.png */,
 				BE3983D9176A0CD200EE9C7B /* onboarding_button_ok~iphone.png */,
+				BE3983D8176A0CD200EE9C7B /* onboarding_button_ok@2x~iphone.png */,
 				BE3983E6176A129300EE9C7B /* onboarding_button_ok_highlighted.png */,
 				BE3983E7176A129300EE9C7B /* onboarding_button_ok_highlighted@2x.png */,
-				BE3983E8176A129300EE9C7B /* onboarding_button_ok_hover_highlighted@2x~iphone.png */,
-				BE3983E9176A129400EE9C7B /* onboarding_button_ok_hover_highlighted~iphone.png */,
+				BE4180EE176B35D800FCF994 /* onboarding_button_ok_highlighted@2x~iphone.png */,
+				BE4180EF176B35D800FCF994 /* onboarding_button_ok_highlighted~iphone.png */,
 			);
 			name = OnBoarding;
 			sourceTree = "<group>";
@@ -5784,12 +5784,12 @@
 				BE3983E5176A108900EE9C7B /* onboarding_arrow_up@2x.png in Resources */,
 				BE3983EA176A129500EE9C7B /* onboarding_button_ok_highlighted.png in Resources */,
 				BE3983EB176A129500EE9C7B /* onboarding_button_ok_highlighted@2x.png in Resources */,
-				BE3983EC176A129500EE9C7B /* onboarding_button_ok_hover_highlighted@2x~iphone.png in Resources */,
-				BE3983ED176A129500EE9C7B /* onboarding_button_ok_hover_highlighted~iphone.png in Resources */,
 				BE3983F2176A164500EE9C7B /* onboarding_arrow_left.png in Resources */,
 				BE3983F3176A164500EE9C7B /* onboarding_arrow_left@2x.png in Resources */,
 				BE3983F4176A164500EE9C7B /* onboarding_arrow_right.png in Resources */,
 				BE3983F5176A164500EE9C7B /* onboarding_arrow_right@2x.png in Resources */,
+				BE4180F0176B35D800FCF994 /* onboarding_button_ok_highlighted@2x~iphone.png in Resources */,
+				BE4180F1176B35D800FCF994 /* onboarding_button_ok_highlighted~iphone.png in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -6112,7 +6112,7 @@
 			baseConfigurationReference = 276F95C3CF7F47FE9BF50F40 /* Pods.xcconfig */;
 			buildSettings = {
 				CODE_SIGN_ENTITLEMENTS = RockPack/RockPack.entitlements;
-				CODE_SIGN_IDENTITY = "iPhone Developer";
+				CODE_SIGN_IDENTITY = "iPhone Distribution: Rockpack Ltd. (3M76KMT8LS)";
 				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
 				COMPRESS_PNG_FILES = NO;
 				FRAMEWORK_SEARCH_PATHS = (
@@ -6151,7 +6151,6 @@
 					SparkInspector,
 				);
 				PRODUCT_NAME = rockpack;
-				PROVISIONING_PROFILE = "";
 				"PROVISIONING_PROFILE[sdk=iphoneos*]" = "";
 				TARGETED_DEVICE_FAMILY = "1,2";
 				WRAPPER_EXTENSION = app;
@@ -6163,6 +6162,8 @@
 			baseConfigurationReference = 276F95C3CF7F47FE9BF50F40 /* Pods.xcconfig */;
 			buildSettings = {
 				CODE_SIGN_ENTITLEMENTS = RockPack/RockPack.entitlements;
+				CODE_SIGN_IDENTITY = "iPhone Distribution: Rockpack Ltd. (3M76KMT8LS)";
+				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Distribution: Rockpack Ltd. (3M76KMT8LS)";
 				COMPRESS_PNG_FILES = NO;
 				FRAMEWORK_SEARCH_PATHS = (
 					"$(inherited)",
@@ -6192,6 +6193,8 @@
 					"-licucore",
 				);
 				PRODUCT_NAME = rockpack;
+				PROVISIONING_PROFILE = "E58F9298-B078-44C9-89D9-D5A1F17D9F58";
+				"PROVISIONING_PROFILE[sdk=iphoneos*]" = "E58F9298-B078-44C9-89D9-D5A1F17D9F58";
 				TARGETED_DEVICE_FAMILY = "1,2";
 				WRAPPER_EXTENSION = app;
 			};
@@ -6264,8 +6267,8 @@
 					"-licucore",
 				);
 				PRODUCT_NAME = rockpack;
-				PROVISIONING_PROFILE = "0A4DFE26-BCFF-485C-BE4D-05931D6DB080";
-				"PROVISIONING_PROFILE[sdk=iphoneos*]" = "0A4DFE26-BCFF-485C-BE4D-05931D6DB080";
+				PROVISIONING_PROFILE = "0FE0E436-224D-4FD0-B0AE-D0C9628B93B4";
+				"PROVISIONING_PROFILE[sdk=iphoneos*]" = "0FE0E436-224D-4FD0-B0AE-D0C9628B93B4";
 				TARGETED_DEVICE_FAMILY = "1,2";
 				WRAPPER_EXTENSION = app;
 			};

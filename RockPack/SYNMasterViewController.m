@@ -508,6 +508,13 @@ typedef void(^AnimationCompletionBlock)(BOOL finished);
 }
 
 
+
+-(IBAction)headerTapped:(id)sender
+{
+    [self.showingViewController headerTapped];
+}
+
+
 - (void) showSideNavigation
 {
     NSString* controllerTitle = self.containerViewController.showingBaseViewController.title;

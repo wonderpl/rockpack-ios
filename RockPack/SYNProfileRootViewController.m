@@ -1027,6 +1027,12 @@
                                               }];
 }
 
+-(void)headerTapped
+{
+    [self.channelThumbnailCollectionView setContentOffset:CGPointZero animated:YES];
+    [self.subscriptionsViewController headerTapped];
+}
+
 #pragma mark - Accessors
 
 - (void) setUser: (ChannelOwner*) user

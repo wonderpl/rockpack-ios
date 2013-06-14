@@ -162,7 +162,7 @@
                                                                                                        params: parameters
                                                                                                    httpMethod: @"GET"
                                                                                                           ssl: NO];
-    NSLog(@"url: %@", networkOperation.url);
+    
     [self addCommonHandlerToNetworkOperation: networkOperation
                            completionHandler: completionBlock
                                 errorHandler: errorBlock];

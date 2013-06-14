@@ -100,6 +100,8 @@ andSelectedIndex: (int) selectedIndex center:(CGPoint) center;
 
 - (void) incrementRangeForNextRequest;
 
+-(void)headerTapped;
+
 // Share
 - (void) shareVideoInstance: (VideoInstance *) videoInstance
                      inView: (UIView *) inView

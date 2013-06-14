@@ -145,7 +145,10 @@
     return self.channelThumbnailCollectionView;
 }
 
-
+-(void)headerTapped
+{
+    [self.channelThumbnailCollectionView setContentOffset:CGPointZero animated:YES];
+}
 
 -(void)setUser:(ChannelOwner*)user
 {
