@@ -2899,7 +2899,7 @@
 
 -(void)headerTapped
 {
-    [self.videoThumbnailCollectionView setContentOffset:CGPointMake(0.0, -500.0) animated:YES];
+    [self.videoThumbnailCollectionView setContentOffset:self.originalContentOffset animated:YES];
 }
 
 
