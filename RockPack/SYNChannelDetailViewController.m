@@ -198,6 +198,7 @@
     else
     {
         layout.sectionInset = UIEdgeInsetsMake(0.0f, 5.0f, 0.0f, 5.0f);
+        self.videoThumbnailCollectionView.contentInset = UIEdgeInsetsMake(500.0f, 0.0f, 0.0f, 0.0f);
     }
 
     // == Video Cells == //
@@ -912,7 +913,7 @@
         self.selectedCell = (SYNVideoThumbnailRegularCell*)[self.videoThumbnailCollectionView cellForItemAtIndexPath:indexPath];
         
         [self displayVideoViewerWithVideoInstanceArray: self.channel.videoInstances.array
-                                      andSelectedIndex: indexPath.item];
+                                      andSelectedIndex: indexPath.item center:[self.view convertPoint:[collectionView cellForItemAtIndexPath:indexPath].center fromView:collectionView]];
     }
 }
 
@@ -925,7 +926,7 @@
     if([videoSubset count] ==1)
     {
         [self displayVideoViewerWithVideoInstanceArray: self.channel.videoInstances.array
-                                      andSelectedIndex: [self.channel.videoInstances indexOfObject:[videoSubset objectAtIndex:0]]];
+                                      andSelectedIndex: [self.channel.videoInstances indexOfObject:[videoSubset objectAtIndex:0]] center:self.view.center];
         self.autoplayVideoId= nil;
     }
 }
@@ -1026,8 +1027,8 @@
 
 #pragma mark - KVO support
 
-// We face out all controls/information views when the user starts scrolling the videos collection view
-// but monitoring the collectionview content offset using KVO
+// We fade out all controls/information views when the user starts scrolling the videos collection view
+// by monitoring the collectionview content offset using KVO
 - (void) observeValueForKeyPath: (NSString *) keyPath
                        ofObject: (id) object
                          change: (NSDictionary *) change
@@ -1146,7 +1147,7 @@
     {
         [[NSNotificationCenter defaultCenter] postNotificationName: noteName
                                                             object: self
-                                                          userInfo: @{@"VideoInstance" : videoInstance}];
+                                                          userInfo: @{@"VideoInstance" : videoInstance , @"button" : addButton}];
     }
     
     addButton.selected = !addButton.selected;
@@ -2641,13 +2642,15 @@
             
             CGRect frame = self.masterControlsView.frame;
             
+            NSLog(@"differenceInY: %f", differenceInY);
+            
             frame.origin.y = self.originalMasterControlsViewOrigin.y - (differenceInY / 1.5);
             
             self.masterControlsView.frame = frame;
             
             if (differenceInY < fadeSpan)
             {
-                self.masterControlsView.alpha = 1 - (differenceInY / fadeSpan);
+                self.masterControlsView.alpha = 1 - (differenceInY / fadeSpan) * (differenceInY / fadeSpan);
             }
             else
             {
@@ -2826,6 +2829,11 @@
     }
         
     
+}
+
+-(void)headerTapped
+{
+    [self.videoThumbnailCollectionView setContentOffset:CGPointMake(0.0, -500.0) animated:YES];
 }
 
 

@@ -90,7 +90,7 @@
 {
     
     VideoInstance* videoInstanceToAdd = (VideoInstance*) notification.userInfo[kVideoInstance];
-    [self addVideoToQueue: videoInstanceToAdd];
+    [self addVideoToQueue: videoInstanceToAdd fromButton:notification.userInfo[@"button"]];
     videoInstanceToAdd.selectedForVideoQueue = YES;
 }
 
@@ -127,6 +127,11 @@
 #pragma mark - 
 
 - (void) addVideoToQueue: (VideoInstance *) videoInstance
+{
+    [self addVideoToQueue:videoInstance fromButton:nil];
+}
+
+- (void) addVideoToQueue: (VideoInstance *) videoInstance fromButton:(UIButton*)button
 {
     if (!videoInstance)
     {
@@ -168,8 +173,12 @@
     [self.currentlyCreatingChannel addVideoInstancesObject:copyOfVideoInstance];
     
     self.isEmpty = NO;
-
-        [[NSNotificationCenter defaultCenter] postNotificationName:kNoteAddToChannelRequest object:self];
+    NSDictionary* userinfo = [NSDictionary dictionary];
+    if(button)
+    {
+        userinfo = @{@"button":button};
+    }
+        [[NSNotificationCenter defaultCenter] postNotificationName:kNoteAddToChannelRequest object:self userInfo:userinfo];
     
     
     

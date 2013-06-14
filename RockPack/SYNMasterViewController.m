@@ -36,6 +36,7 @@
 #define kSearchBoxShrinkFactor 136.0
 
 
+
 typedef void(^AnimationCompletionBlock)(BOOL finished);
 
 @interface SYNMasterViewController ()
@@ -349,19 +350,35 @@ typedef void(^AnimationCompletionBlock)(BOOL finished);
     
     // fade in //
     
-    self.existingChannelsController.view.alpha = 0.0;
+    CGPoint originalCenter = self.existingChannelsController.view.center;
+    UIButton* button = [notification.userInfo objectForKey:@"button"];
+    if(button)
+    {
+        CGPoint startCenter = [self.view convertPoint:button.center fromView:button.superview];
+        self.existingChannelsController.view.center = startCenter;
+    }
     
-    [UIView animateWithDuration:0.3
-                     animations:^{
-                         self.existingChannelsController.view.alpha = 1.0;
-                     } completion:^(BOOL finished) {
-                         
+    self.existingChannelsController.view.transform = CGAffineTransformMakeScale(0.1f, 0.1f);
+    self.existingChannelsController.view.alpha = 0.0f;
+    [self.existingChannelsController prepareForAppearAnimation];
+    
+    
+    [UIView animateWithDuration: kInAnimationFirstPartDuration
+                          delay: 0.0f
+                        options: UIViewAnimationOptionCurveEaseInOut
+                     animations: ^{
+                         self.existingChannelsController.view.transform = CGAffineTransformMakeScale(1.0f, 1.0f);
+                         self.existingChannelsController.view.alpha = 1.0f;
+                         self.existingChannelsController.view.center = originalCenter;
+                     }
+                     completion: ^(BOOL finished) {
+                         [self.existingChannelsController runAppearAnimation];
                          if(self.videoViewerViewController)
                          {
                              [self.videoViewerViewController pauseIfVideoActive];
                          }
+
                      }];
-    
 }
 
 -(void)createNewChannelAction:(NSNotification*)notification
@@ -491,6 +508,13 @@ typedef void(^AnimationCompletionBlock)(BOOL finished);
 }
 
 
+
+-(IBAction)headerTapped:(id)sender
+{
+    [self.showingViewController headerTapped];
+}
+
+
 - (void) showSideNavigation
 {
     NSString* controllerTitle = self.containerViewController.showingBaseViewController.title;
@@ -526,7 +550,7 @@ typedef void(^AnimationCompletionBlock)(BOOL finished);
 
 - (void) addVideoOverlayToViewController: (SYNAbstractViewController *) originViewController
                   withVideoInstanceArray: (NSArray*) videoInstanceArray
-                        andSelectedIndex: (int) selectedIndex
+                        andSelectedIndex: (int) selectedIndex fromCenter:(CGPoint)centerPoint
 {
     // FIXME: Replace with something more elegant (i.e. anything else)
     appDelegate.searchRefreshDisabled = TRUE;
@@ -557,21 +581,31 @@ typedef void(^AnimationCompletionBlock)(BOOL finished);
     
     [self addChildViewController: self.videoViewerViewController];
     
+    
     self.videoViewerViewController.view.frame = self.overlayView.bounds;
     [self.overlayView addSubview: self.videoViewerViewController.view];
-    
-    self.videoViewerViewController.view.alpha = 0.0f;
     self.videoViewerViewController.overlayParent = self;
+    [self.videoViewerViewController prepareForAppearAnimation];
+
+    CGPoint delta = [self.originViewController.view convertPoint:centerPoint toView:self.view];
+    CGPoint originalCenter = self.videoViewerViewController.view.center;
+    self.videoViewerViewController.view.center = delta;
+    self.videoViewerViewController.view.transform = CGAffineTransformMakeScale(0.1f, 0.1f);
+    self.videoViewerViewController.view.alpha = 0.0f;
     
-    [UIView animateWithDuration: 0.3f
+    
+    [UIView animateWithDuration: kInAnimationFirstPartDuration
                           delay: 0.0f
                         options: UIViewAnimationOptionCurveEaseInOut
                      animations: ^{
-                         self.videoViewerViewController.view.alpha = 1.0f;
+                                 self.videoViewerViewController.view.transform = CGAffineTransformMakeScale(1.0f, 1.0f);
+                         self.self.videoViewerViewController.view.center = originalCenter;
+                                self.videoViewerViewController.view.alpha = 1.0f;
                      }
                      completion: ^(BOOL finished) {
+                         [self.videoViewerViewController runAppearAnimation];
                          self.overlayView.userInteractionEnabled = YES;
-                     }];
+    }];
     
     //video overlay bug - keyboard needs to be dismissed if a video is played;
     [self.searchBoxController.searchBoxView.searchTextField resignFirstResponder];
@@ -600,11 +634,13 @@ typedef void(^AnimationCompletionBlock)(BOOL finished);
     }
     
     UIView* child = self.overlayView.subviews[0];
-    [UIView animateWithDuration: 0.25f
+    
+    [UIView animateWithDuration: kOutAnimationDuration
                           delay: 0.0f
                         options: UIViewAnimationOptionCurveEaseInOut
                      animations: ^{
-                         child.alpha = 0.0f;
+                         self.videoViewerViewController.view.transform = CGAffineTransformMakeScale(0.2f, 0.2f);
+                         self.videoViewerViewController.view.alpha = 0.0f;
                      }
                      completion: ^(BOOL finished) {
                          self.overlayView.userInteractionEnabled = NO;
