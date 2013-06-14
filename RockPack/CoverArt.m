@@ -98,7 +98,7 @@ static NSEntityDescription *coverArtEntity = nil;
                                  withDefault: @"Uninitialized coverRef"];
     
     self.position = [dictionary objectForKey: @"position"
-                                 withDefault: [NSNumber numberWithInt: 0]];
+                                 withDefault: @0];
 }
 
 

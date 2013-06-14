@@ -84,12 +84,10 @@
     NSURL *url = [NSURL fileURLWithPath: @"/dev/null"];
     
     // Mono, 44.1kHz should be fine
-  	NSDictionary *settings = [NSDictionary dictionaryWithObjectsAndKeys:
-                              [NSNumber numberWithFloat: 44100.0],                 AVSampleRateKey,
-                              [NSNumber numberWithInt: kAudioFormatAppleLossless], AVFormatIDKey,
-                              [NSNumber numberWithInt: 1],                         AVNumberOfChannelsKey,
-                              [NSNumber numberWithInt: AVAudioQualityMax],         AVEncoderAudioQualityKey,
-                              nil];
+  	NSDictionary *settings = @{AVSampleRateKey: @44100.0f,
+                              AVFormatIDKey: @(kAudioFormatAppleLossless),
+                              AVNumberOfChannelsKey: @1,
+                              AVEncoderAudioQualityKey: @(AVAudioQualityMax)};
     
   	NSError *error;
     

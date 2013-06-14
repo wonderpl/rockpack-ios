@@ -139,8 +139,7 @@ didFinishLaunchingWithOptions: (NSDictionary *) launchOptions
     NSUserDefaults *defaults = [NSUserDefaults standardUserDefaults];
     
 	// Create a dictionary of defaults to add and register them (if they have not already been set)
-	NSDictionary *initDefaults = [NSDictionary dictionaryWithObjectsAndKeys: @(NO), kDownloadedVideoContentBool,
-                                  nil];
+	NSDictionary *initDefaults = @{kDownloadedVideoContentBool: @(NO)};
 	[defaults registerDefaults: initDefaults];
     
     self.window = [[UIWindow alloc] initWithFrame: [[UIScreen mainScreen] bounds]];
@@ -149,6 +148,12 @@ didFinishLaunchingWithOptions: (NSDictionary *) launchOptions
     // Initialise our video player, which ensures that it will be fully set up by the time the first video is played.
     // Tried doing this asynchronously, but could nto guarantee that it was initialised by the time that the first
     // video playback occurred
+    
+    // First we need to ensure that we have the player JS in place
+    [self copyFileFromAppBundleToDocumentsDirectory: @"YouTubeIFramePlayer"
+                                             ofType: @"html"];
+    
+    // Now cause the playback controller to be instantiated
     [SYNVideoPlaybackViewController sharedInstance];
     
     if (self.currentUser && self.currentOAuth2Credentials)
@@ -156,9 +161,7 @@ didFinishLaunchingWithOptions: (NSDictionary *) launchOptions
         // If we have a user and a refresh token... //
         if ([self.currentOAuth2Credentials hasExpired])
         {
-            
             //Add imageview to the window as placeholder while we wait for the token refresh call.
-            
             UIImageView* startImageView = nil;
             CGPoint startImageCenter = self.window.center;
             if([[SYNDeviceManager sharedInstance] isIPad])
@@ -229,6 +232,64 @@ didFinishLaunchingWithOptions: (NSDictionary *) launchOptions
     }
     
     return YES;
+}
+
+
+- (void) copyFileFromAppBundleToDocumentsDirectory: (NSString *) fileName
+                                            ofType: (NSString *) type
+{
+    NSError *error;
+    
+    NSFileManager *fileManager = [NSFileManager defaultManager];
+
+    NSArray *paths = NSSearchPathForDirectoriesInDomains(NSDocumentDirectory, NSUserDomainMask, YES);
+    NSString *documentsDirectory = paths[0];
+    NSString *pathComponent = [NSString stringWithFormat: @"%@.%@", fileName, type];
+    NSString *destinationPath = [documentsDirectory stringByAppendingPathComponent: pathComponent];
+    
+    if ([fileManager fileExistsAtPath: destinationPath] == NO)
+    {
+        NSString *sourcePath = [[NSBundle mainBundle] pathForResource: fileName
+                                                               ofType: type];
+        
+        [fileManager copyItemAtPath: sourcePath
+                             toPath: destinationPath
+                              error: &error];
+    }
+}
+
+
+- (void) saveAsFileToDocumentsDirectory: (NSString *) fileName
+                                 asType: (NSString *) type
+                            usingSource: (NSString *) source
+{
+    NSError *error;
+    NSString *destinationPath = [self destinationPathInDocumentsDirectoryUsingFilename:fileName
+                                                                               andType: type];
+
+    BOOL status = [source writeToFile: destinationPath
+                                 atomically: YES
+                                   encoding: NSUTF8StringEncoding
+                                      error: &error];
+    
+    // If something wet wrong, then revert to the original player source
+    if (!status)
+    {
+        [self copyFileFromAppBundleToDocumentsDirectory: fileName
+                                                 ofType: type];
+    }
+}
+
+
+- (NSString *) destinationPathInDocumentsDirectoryUsingFilename: (NSString *) fileName
+                                                        andType: (NSString *) type
+{
+    NSArray *paths = NSSearchPathForDirectoriesInDomains(NSDocumentDirectory, NSUserDomainMask, YES);
+    NSString *documentsDirectory = paths[0];
+    NSString *pathComponent = [NSString stringWithFormat: @"%@.%@", fileName, type];
+    NSString *destinationPath = [documentsDirectory stringByAppendingPathComponent: pathComponent];
+    
+    return destinationPath;
 }
 
 
@@ -781,8 +842,7 @@ didFinishLaunchingWithOptions: (NSDictionary *) launchOptions
         NSString *key = [pair substringToIndex: range.location];
         NSString *value = [pair substringFromIndex: range.location + 1];
         
-        [params setObject: value
-                   forKey: key];
+        params[key] = value;
     }
     
     return params;

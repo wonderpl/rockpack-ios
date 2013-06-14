@@ -54,7 +54,7 @@
              ignoringObjectTypes: (IgnoringObjects) ignoringObjects
 {
     
-    NSString *uniqueId = [dictionary objectForKey: @"id"]; 
+    NSString *uniqueId = dictionary[@"id"]; 
     
     if(!uniqueId)
         return nil;
@@ -85,34 +85,34 @@
     
     // Then set the rest
     
-    NSString* n_username = [dictionary objectForKey: @"username"];
+    NSString* n_username = dictionary[@"username"];
     self.username = n_username ? n_username : self.username;
 
-    NSString* n_emailAddress = [dictionary objectForKey:@"email"];
+    NSString* n_emailAddress = dictionary[@"email"];
     self.emailAddress = n_emailAddress ? n_emailAddress : self.emailAddress;
     
-    NSString* n_firstName = [dictionary objectForKey:@"first_name" ];
+    NSString* n_firstName = dictionary[@"first_name"];
     self.firstName = n_firstName ? n_firstName : self.firstName;
     
-    NSString* n_lastName = [dictionary objectForKey: @"last_name"];
+    NSString* n_lastName = dictionary[@"last_name"];
     self.lastName = n_lastName ? n_lastName : self.lastName;
     
     
-    NSDictionary* activity_url_dict = [dictionary objectForKey: @"activity"];
+    NSDictionary* activity_url_dict = dictionary[@"activity"];
     if(activity_url_dict)
-        self.activityUrl = [activity_url_dict objectForKey:@"resource_url"];
+        self.activityUrl = activity_url_dict[@"resource_url"];
     
-    NSDictionary* coverart_url_dict = [dictionary objectForKey: @"cover_art"];
+    NSDictionary* coverart_url_dict = dictionary[@"cover_art"];
     if(coverart_url_dict) 
-        self.coverartUrl = [coverart_url_dict objectForKey:@"resource_url"];
+        self.coverartUrl = coverart_url_dict[@"resource_url"];
     
-    NSDictionary* subscriptions_url_dict = [dictionary objectForKey: @"subscriptions"];
+    NSDictionary* subscriptions_url_dict = dictionary[@"subscriptions"];
     if(subscriptions_url_dict) 
-        self.subscriptionsUrl = [coverart_url_dict objectForKey:@"resource_url"];
+        self.subscriptionsUrl = coverart_url_dict[@"resource_url"];
     
     
     // == Gender == //
-    NSString* genderString = [dictionary objectForKey:@"gender"];
+    NSString* genderString = dictionary[@"gender"];
     
     if(!genderString || [genderString isEqual:[NSNull null]])
     {
@@ -131,7 +131,7 @@
     
     // == Date of Birth == //
     
-    NSString* dateOfBirthString = [dictionary objectForKey:@"date_of_birth"];
+    NSString* dateOfBirthString = dictionary[@"date_of_birth"];
     if([dateOfBirthString isKindOfClass:[NSNull class]]) {
         
         self.dateOfBirth = nil;
@@ -154,8 +154,7 @@
     
     
     
-    NSString* localeFromDevice = [(NSString*)CFBridgingRelease(CFLocaleCreateCanonicalLanguageIdentifierFromString(NULL, (CFStringRef)[NSLocale.autoupdatingCurrentLocale objectForKey: NSLocaleIdentifier])) lowercaseString];
-    
+    NSString* localeFromDevice = [(NSString*)CFBridgingRelease(CFLocaleCreateCanonicalLanguageIdentifierFromString(NULL, (CFStringRef)[NSLocale.autoupdatingCurrentLocale objectForKey: NSLocaleIdentifier])) lowercaseString];   
     if([localeFromDict isEqualToString:@""]) {
         
         self.locale = localeFromDevice;
