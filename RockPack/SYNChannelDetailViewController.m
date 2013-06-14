@@ -2695,6 +2695,7 @@
     
     CGRect croppingRect;
     CGRect bgCroppingRect;
+    
     if(UIInterfaceOrientationIsLandscape(orientation))
     {
         croppingRect = CGRectMake(0.0, 128.0, 1024.0, 768.0);
@@ -2740,7 +2741,7 @@
     UIImage* bgImage = [UIImage imageWithCGImage:cgimg];
     self.blurredBGImageView.image = bgImage;
     self.blurredBGImageView.frame = self.channelCoverImageView.frame;
-    self.blurredBGImageView.contentMode = UIViewContentModeCenter;
+    self.blurredBGImageView.contentMode = UIViewContentModeScaleAspectFill;
     
     CGImageRelease(cgimg);
     
