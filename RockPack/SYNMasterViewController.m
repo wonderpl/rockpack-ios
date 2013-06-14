@@ -294,7 +294,7 @@ typedef void(^AnimationCompletionBlock)(BOOL finished);
 
 -(void)scrollerPageChanged:(NSNotification*)notification
 {
-    NSNumber* pageNumber = [notification userInfo][kCurrentPage];
+    NSNumber* pageNumber = [[notification userInfo] objectForKey:kCurrentPage];
     if(!pageNumber)
         return;
     
@@ -348,28 +348,23 @@ typedef void(^AnimationCompletionBlock)(BOOL finished);
 
     [self.view addSubview:self.existingChannelsController.view];
     
-    // fade in //
+    // animate in //
     
-    CGPoint originalCenter = self.existingChannelsController.view.center;
-    UIButton* button = (notification.userInfo)[@"button"];
-    if(button)
-    {
-        CGPoint startCenter = [self.view convertPoint:button.center fromView:button.superview];
-        self.existingChannelsController.view.center = startCenter;
-    }
+    self.existingChannelsController.view.alpha = 1.0f;
     
-    self.existingChannelsController.view.transform = CGAffineTransformMakeScale(0.1f, 0.1f);
-    self.existingChannelsController.view.alpha = 0.0f;
+    CGRect newFrame = self.existingChannelsController.view.frame;
+    newFrame.origin.y = newFrame.size.height;
+    self.existingChannelsController.view.frame = newFrame;
     [self.existingChannelsController prepareForAppearAnimation];
     
     
-    [UIView animateWithDuration: kInAnimationFirstPartDuration
+    [UIView animateWithDuration: kAddToChannelAnimationDuration
                           delay: 0.0f
                         options: UIViewAnimationOptionCurveEaseInOut
                      animations: ^{
-                         self.existingChannelsController.view.transform = CGAffineTransformMakeScale(1.0f, 1.0f);
-                         self.existingChannelsController.view.alpha = 1.0f;
-                         self.existingChannelsController.view.center = originalCenter;
+                         CGRect newFrame = self.existingChannelsController.view.frame;
+                         newFrame.origin.y = 0.0f;
+                         self.existingChannelsController.view.frame = newFrame;
                      }
                      completion: ^(BOOL finished) {
                          [self.existingChannelsController runAppearAnimation];
@@ -394,7 +389,7 @@ typedef void(^AnimationCompletionBlock)(BOOL finished);
         return;
     }
     
-    Channel* channel = (Channel*)[notification userInfo][kChannel];
+    Channel* channel = (Channel*)[[notification userInfo] objectForKey: kChannel];
     if(!channel)
         return;
     
@@ -411,7 +406,7 @@ typedef void(^AnimationCompletionBlock)(BOOL finished);
 -(void)addedToChannelAction:(NSNotification*)notification
 {
     
-    Channel* selectedChannel = (Channel*)[notification userInfo][kChannel];
+    Channel* selectedChannel = (Channel*)[[notification userInfo] objectForKey:kChannel];
     if(!selectedChannel)
     {
         //Channel select was cancelled.
@@ -594,7 +589,7 @@ typedef void(^AnimationCompletionBlock)(BOOL finished);
     self.videoViewerViewController.view.alpha = 0.0f;
     
     
-    [UIView animateWithDuration: kInAnimationFirstPartDuration
+    [UIView animateWithDuration: kVideoInAnimationDuration
                           delay: 0.0f
                         options: UIViewAnimationOptionCurveEaseInOut
                      animations: ^{
@@ -635,7 +630,7 @@ typedef void(^AnimationCompletionBlock)(BOOL finished);
     
     UIView* child = self.overlayView.subviews[0];
     
-    [UIView animateWithDuration: kOutAnimationDuration
+    [UIView animateWithDuration: kVideoOutAnimationDuration
                           delay: 0.0f
                         options: UIViewAnimationOptionCurveEaseInOut
                      animations: ^{
@@ -707,7 +702,7 @@ typedef void(^AnimationCompletionBlock)(BOOL finished);
 - (void) searchTyped: (NSNotification*) notification
 {
     
-    NSString* termString = (NSString*)[notification userInfo][kSearchTerm];
+    NSString* termString = (NSString*)[[notification userInfo] objectForKey: kSearchTerm];
     
     if(!termString)
         return;
@@ -916,7 +911,7 @@ typedef void(^AnimationCompletionBlock)(BOOL finished);
 - (void) navigateToPage: (NSNotification*) notification
 {
     
-    NSString* pageName = [notification userInfo][@"pageName"];
+    NSString* pageName = [[notification userInfo] objectForKey: @"pageName"];
     if(!pageName)
         return;
     
@@ -1409,7 +1404,7 @@ typedef void(^AnimationCompletionBlock)(BOOL finished);
                                                   if ([SYNDeviceManager.sharedInstance isIPhone])
                                                   {
                                                       // The search overlay sits on the side navigation on iPhone, move it into the overlay temporarily
-                                                     [[(self.overlayNavigationController.viewControllers)[0] view] addSubview: self.sideNavigationViewController.searchViewController.searchBoxView];
+                                                     [[[self.overlayNavigationController.viewControllers objectAtIndex:0] view] addSubview: self.sideNavigationViewController.searchViewController.searchBoxView];
                                                   }
                                               }];
                          }];

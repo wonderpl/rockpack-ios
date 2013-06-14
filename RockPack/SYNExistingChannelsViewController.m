@@ -189,22 +189,15 @@
     self.closeButton.enabled = NO;
     self.confirmButtom.enabled = NO;
     
-    [UIView animateWithDuration: kOutAnimationDuration
-                          delay: 0.0f
-                        options: UIViewAnimationOptionCurveEaseInOut
-                     animations: ^{
-                         self.view.transform = CGAffineTransformMakeScale(0.2f, 0.2f);
-                         self.view.alpha = 0.0f;
-                     }
-                     completion: ^(BOOL finished) {
-                         [self.view removeFromSuperview];
-                         self.view.alpha = 1.0f;
-                         self.view.transform = CGAffineTransformMakeScale(1.0f, 1.0f);
-                         // Post notification without object. Needed to restart video player if visible.
-                         [[NSNotificationCenter defaultCenter] postNotificationName: kNoteVideoAddedToExistingChannel
-                                                                             object: self
-                                                                           userInfo: nil];
-                     }];
+    [self closeAnimation:^(BOOL finished) {
+        [self.view removeFromSuperview];
+        // Post notification without object. Needed to restart video player if visible.
+        [[NSNotificationCenter defaultCenter] postNotificationName: kNoteVideoAddedToExistingChannel
+                                                            object: self];
+    }];
+    
+    
+
     
 }
 
@@ -217,28 +210,29 @@
     self.confirmButtom.enabled = NO;
     self.closeButton.enabled = NO;
     
-    [UIView animateWithDuration: 0.2
-                     animations: ^{
-                         
-                         self.view.alpha = 0.0;
-                         
-                   } completion: ^(BOOL finished) {
-                       
-                       [self.view removeFromSuperview];
-                       [self removeFromParentViewController];
-                       
-                       // send to MasterViewController
-        
-                       [[NSNotificationCenter defaultCenter] postNotificationName: kNoteVideoAddedToExistingChannel
-                                                                           object: self
-                                                                         userInfo: @{kChannel:self.selectedChannel}];
-                       
-                     
-                       
-                       
+    [self closeAnimation:^(BOOL finished) {
+        [self.view removeFromSuperview];
+        [[NSNotificationCenter defaultCenter] postNotificationName: kNoteVideoAddedToExistingChannel
+                                                            object: self
+                                                          userInfo: @{kChannel:self.selectedChannel}];
+
     }];
+    
+    
 }
 
+-(void)closeAnimation:(void(^)(BOOL finished))completionBlock
+{
+    [UIView animateWithDuration: kAddToChannelAnimationDuration
+                          delay: 0.0f
+                        options: UIViewAnimationOptionCurveEaseInOut
+                     animations: ^{
+                         CGRect newFrame = self.view.frame;
+                         newFrame.origin.y = newFrame.size.height;
+                         self.view.frame = newFrame;
+                     }
+                     completion:completionBlock];
+}
 
 - (void) collectionView: (UICollectionView *) collectionView didSelectItemAtIndexPath: (NSIndexPath *) indexPath
 {
