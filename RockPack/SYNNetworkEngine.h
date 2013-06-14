@@ -68,4 +68,7 @@
                  completionHandler: (MKNKUserSuccessBlock) completionBlock
                       errorHandler: (MKNKUserErrorBlock) errorBlock;
 
+- (void) updatePlayerSourceWithCompletionHandler: (MKNKUserErrorBlock) completionBlock
+                                    errorHandler: (MKNKUserSuccessBlock) errorBlock;
+
 @end

@@ -367,6 +367,9 @@ typedef enum {
 // Maximum number of times the player time remains the same before restart attempted
 #define kMaxStallCount                  20
 
+// Number of seconds we wait before reporting a video problem
+#define kVideoStallThresholdTime        20
+
 // Time between shuttle bar updates
 #define kShuttleBarUpdateTimerInterval  0.1f
 
