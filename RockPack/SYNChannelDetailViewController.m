@@ -36,6 +36,7 @@
 #import "SYNDeviceManager.h"
 #import <AVFoundation/AVFoundation.h>
 #import <QuartzCore/QuartzCore.h>
+#import <CoreImage/CoreImage.h>
 #import "SYNOnBoardingPopoverQueueController.h"
 
 @interface SYNChannelDetailViewController () <UITextViewDelegate,
@@ -47,6 +48,11 @@
 {
     BOOL _isIPhone; //So many calls were being made to the SYNDeviceManager a boolean initialised at viewDidLoad was introduced.
     BOOL _hasAppeared; //Debug flag for finding double ViewDidAppear/disappear calls.
+    
+    // blurring
+    CIContext *context;
+    CIFilter *filter;
+    CIImage *backgroundCIImage;
 }
 
 
@@ -98,6 +104,9 @@
 @property (weak, nonatomic) IBOutlet UIActivityIndicatorView *activityIndicator;
 @property (weak, nonatomic) IBOutlet UIActivityIndicatorView *shareActivityIndicator;
 
+@property (nonatomic, readonly) CIImage* backgroundCIImage;
+@property (nonatomic, strong) UIImageView* blurredBGImageView;
+
 //iPhone specific
 @property (nonatomic,strong) SYNChannelCoverImageSelectorViewController* coverImageSelector;
 @property (strong,nonatomic) SYNChannelCategoryTableViewController *categoryTableViewController;
@@ -115,6 +124,7 @@
 @synthesize channelCoverFetchedResultsController = _channelCoverFetchedResultsController;
 @synthesize userChannelCoverFetchedResultsController = _userChannelCoverFetchedResultsController;
 @synthesize channel = _channel;
+@synthesize backgroundCIImage = backgroundCIImage;
 
 - (id) initWithChannel: (Channel *) channel
              usingMode: (kChannelDetailsMode) mode
@@ -225,6 +235,8 @@
     {
         self.currentWebImageOperation = [self loadBackgroundImage];
     }
+    
+    
     
     // == Avatar Image == //
     
@@ -2625,7 +2637,7 @@
 - (void) scrollViewDidScroll: (UIScrollView *) scrollView
 {
     CGFloat fadeSpan = (_isIPhone) ? kChannelDetailsFadeSpaniPhone : kChannelDetailsFadeSpan;
-    
+    CGFloat blurOpacity;
     if (scrollView == self.videoThumbnailCollectionView)
     {
         
@@ -2635,6 +2647,9 @@
             CGRect frame = self.masterControlsView.frame;
             frame.origin.y = self.originalMasterControlsViewOrigin.y;
             self.masterControlsView.frame = frame;
+            
+            blurOpacity = 0.0;
+            
         }
         else
         {
@@ -2642,7 +2657,6 @@
             
             CGRect frame = self.masterControlsView.frame;
             
-            NSLog(@"differenceInY: %f", differenceInY);
             
             frame.origin.y = self.originalMasterControlsViewOrigin.y - (differenceInY / 1.5);
             
@@ -2650,13 +2664,26 @@
             
             if (differenceInY < fadeSpan)
             {
-                self.masterControlsView.alpha = 1 - (differenceInY / fadeSpan) * (differenceInY / fadeSpan);
+                CGFloat fadeCoefficient = (differenceInY / fadeSpan);
+                self.masterControlsView.alpha = 1.0 - fadeCoefficient * fadeCoefficient;
             }
             else
             {
                 self.masterControlsView.alpha = 0.0f;
             }
+            
+            // blur background
+            
+            blurOpacity = differenceInY > 200 ? 1.0 : differenceInY / 200.0; // 1 .. 0
+            
+            
+            
         }
+        
+        self.channelCoverImageView.alpha = 1.0 - blurOpacity;
+        
+        
+        
     }
 }
 
@@ -2665,8 +2692,20 @@
 
 - (UIImage*) croppedImageForOrientation: (UIInterfaceOrientation) orientation
 {
-    CGRect croppingRect = UIInterfaceOrientationIsLandscape(orientation) ?
-    CGRectMake(0.0, 138.0, 1024.0, 886.0) : CGRectMake(69.0, 0.0, 886.0, 1024.0);
+    
+    CGRect croppingRect;
+    CGRect bgCroppingRect;
+    if(UIInterfaceOrientationIsLandscape(orientation))
+    {
+        croppingRect = CGRectMake(0.0, 128.0, 1024.0, 768.0);
+        bgCroppingRect = CGRectMake(0.0, 0.0, 1024.0, 768.0);
+    }
+    else
+    {
+        croppingRect = CGRectMake(128.0, 0.0, 768.0, 1024.0);
+        bgCroppingRect = CGRectMake(0.0, 0.0, 768.0, 1024.0);
+    }
+
     
     if (self.originalBackgroundImage == nil) // set the bg var once
     {
@@ -2676,6 +2715,36 @@
     CGImageRef croppedImageRef = CGImageCreateWithImageInRect([self.originalBackgroundImage CGImage], croppingRect);
     
     UIImage* croppedImage = [UIImage imageWithCGImage: croppedImageRef];
+    
+    
+    
+    // add blur
+    
+    backgroundCIImage = [CIImage imageWithCGImage:croppedImageRef];
+    context = [CIContext contextWithOptions:nil];
+    filter = [CIFilter filterWithName:@"CIGaussianBlur"];
+    [filter setValue:backgroundCIImage forKey:@"inputImage"];
+    [filter setValue:[NSNumber numberWithFloat:6.0] forKey:@"inputRadius"];
+    
+    CIImage *outputImage = [filter outputImage];
+    
+    CGImageRef cgimg = [context createCGImage:outputImage
+                                     fromRect:bgCroppingRect];
+    
+    if(!self.blurredBGImageView) {
+        self.blurredBGImageView = [[UIImageView alloc] init];
+        self.blurredBGImageView.autoresizingMask = UIViewAutoresizingFlexibleWidth | UIViewAutoresizingFlexibleHeight;
+        [self.view insertSubview:self.blurredBGImageView belowSubview:self.channelCoverImageView];
+    }
+        
+    UIImage* bgImage = [UIImage imageWithCGImage:cgimg];
+    self.blurredBGImageView.image = bgImage;
+    self.blurredBGImageView.frame = self.channelCoverImageView.frame;
+    self.blurredBGImageView.contentMode = UIViewContentModeCenter;
+    
+    NSLog(@"frame %@", NSStringFromCGRect(self.blurredBGImageView.frame));
+    CGImageRelease(cgimg);
+    
     
     CGImageRelease(croppedImageRef);
     
@@ -2698,12 +2767,16 @@
                                         
                                         UIImage* croppedImage = [wself croppedImageForOrientation:[(SYNDeviceManager *)SYNDeviceManager.sharedInstance orientation]];
                                         
+                                        
+                                        
                                         [UIView transitionWithView: wself.view
                                                           duration: 0.35f
                                                            options: UIViewAnimationOptionTransitionCrossDissolve
                                                         animations: ^{
                                                             wself.channelCoverImageView.image = croppedImage;
-                                                        } completion: nil];
+                                                        } completion:^(BOOL finished) {
+                                                            
+                                                        }];
                                         
                                         [wself.channelCoverImageView setNeedsLayout];
                                     }];
@@ -2909,6 +2982,7 @@
         [onBoardingQueue present];
     }
 }
+
 
 // since this is called when video overlay is being closed it is also used for the onboarding
 -(void)refreshFavouritesChannel
