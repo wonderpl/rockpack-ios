@@ -235,64 +235,6 @@ didFinishLaunchingWithOptions: (NSDictionary *) launchOptions
 }
 
 
-- (void) copyFileFromAppBundleToDocumentsDirectory: (NSString *) fileName
-                                            ofType: (NSString *) type
-{
-    NSError *error;
-    
-    NSFileManager *fileManager = [NSFileManager defaultManager];
-
-    NSArray *paths = NSSearchPathForDirectoriesInDomains(NSDocumentDirectory, NSUserDomainMask, YES);
-    NSString *documentsDirectory = paths[0];
-    NSString *pathComponent = [NSString stringWithFormat: @"%@.%@", fileName, type];
-    NSString *destinationPath = [documentsDirectory stringByAppendingPathComponent: pathComponent];
-    
-    if ([fileManager fileExistsAtPath: destinationPath] == NO)
-    {
-        NSString *sourcePath = [[NSBundle mainBundle] pathForResource: fileName
-                                                               ofType: type];
-        
-        [fileManager copyItemAtPath: sourcePath
-                             toPath: destinationPath
-                              error: &error];
-    }
-}
-
-
-- (void) saveAsFileToDocumentsDirectory: (NSString *) fileName
-                                 asType: (NSString *) type
-                            usingSource: (NSString *) source
-{
-    NSError *error;
-    NSString *destinationPath = [self destinationPathInDocumentsDirectoryUsingFilename:fileName
-                                                                               andType: type];
-
-    BOOL status = [source writeToFile: destinationPath
-                                 atomically: YES
-                                   encoding: NSUTF8StringEncoding
-                                      error: &error];
-    
-    // If something wet wrong, then revert to the original player source
-    if (!status)
-    {
-        [self copyFileFromAppBundleToDocumentsDirectory: fileName
-                                                 ofType: type];
-    }
-}
-
-
-- (NSString *) destinationPathInDocumentsDirectoryUsingFilename: (NSString *) fileName
-                                                        andType: (NSString *) type
-{
-    NSArray *paths = NSSearchPathForDirectoriesInDomains(NSDocumentDirectory, NSUserDomainMask, YES);
-    NSString *documentsDirectory = paths[0];
-    NSString *pathComponent = [NSString stringWithFormat: @"%@.%@", fileName, type];
-    NSString *destinationPath = [documentsDirectory stringByAppendingPathComponent: pathComponent];
-    
-    return destinationPath;
-}
-
-
 - (UIViewController*) createAndReturnRootViewController
 {
     SYNContainerViewController* containerViewController = [[SYNContainerViewController alloc] init];
@@ -398,6 +340,8 @@ didFinishLaunchingWithOptions: (NSDictionary *) launchOptions
     {
         [self.loginViewController checkReachability];
     }
+    
+    [self checkForUpdatedPlayerCode];
 }
 
 
@@ -890,5 +834,95 @@ didFinishLaunchingWithOptions: (NSDictionary *) launchOptions
     
     return [FBSession.activeSession handleOpenURL:url];
 }
+
+
+- (void) checkForUpdatedPlayerCode
+{
+//    "rockpack": "",
+//    "youtube": "<html><script>player def</script></html>"
+    
+    //refresh token
+    [self.networkEngine updatePlayerSourceWithCompletionHandler: ^ (NSDictionary *dictionary) {
+        if (dictionary && [dictionary isKindOfClass: [NSDictionary class]])
+        {
+            NSString *youTubePlayerURLString = dictionary[@"youtube"];
+            
+            [self saveAsFileToDocumentsDirectory: @"YouTubeIFramePlayer"
+                                          asType: @"html"
+                                     usingSource: youTubePlayerURLString];
+            
+            self.playerUpdated = TRUE;
+        }
+        else
+        {
+            DebugLog(@"Unexpected response from player source update");
+        }
+        
+    } errorHandler: ^(id response) {
+        DebugLog(@"Player source update failed");
+        // Don't worry, we'll try again next time the app comes to the foreground
+    }];
+    
+}
+
+
+- (void) copyFileFromAppBundleToDocumentsDirectory: (NSString *) fileName
+                                            ofType: (NSString *) type
+{
+    NSError *error;
+    
+    NSFileManager *fileManager = [NSFileManager defaultManager];
+    
+    NSArray *paths = NSSearchPathForDirectoriesInDomains(NSDocumentDirectory, NSUserDomainMask, YES);
+    NSString *documentsDirectory = paths[0];
+    NSString *pathComponent = [NSString stringWithFormat: @"%@.%@", fileName, type];
+    NSString *destinationPath = [documentsDirectory stringByAppendingPathComponent: pathComponent];
+    
+    if ([fileManager fileExistsAtPath: destinationPath] == NO)
+    {
+        NSString *sourcePath = [[NSBundle mainBundle] pathForResource: fileName
+                                                               ofType: type];
+        
+        [fileManager copyItemAtPath: sourcePath
+                             toPath: destinationPath
+                              error: &error];
+    }
+}
+
+
+- (void) saveAsFileToDocumentsDirectory: (NSString *) fileName
+                                 asType: (NSString *) type
+                            usingSource: (NSString *) source
+{
+    NSError *error;
+    NSString *destinationPath = [self destinationPathInDocumentsDirectoryUsingFilename:fileName
+                                                                               andType: type];
+    
+    BOOL status = [source writeToFile: destinationPath
+                           atomically: YES
+                             encoding: NSUTF8StringEncoding
+                                error: &error];
+    
+    // If something wet wrong, then revert to the original player source
+    if (!status)
+    {
+        [self copyFileFromAppBundleToDocumentsDirectory: fileName
+                                                 ofType: type];
+    }
+}
+
+
+- (NSString *) destinationPathInDocumentsDirectoryUsingFilename: (NSString *) fileName
+                                                        andType: (NSString *) type
+{
+    NSArray *paths = NSSearchPathForDirectoriesInDomains(NSDocumentDirectory, NSUserDomainMask, YES);
+    NSString *documentsDirectory = paths[0];
+    NSString *pathComponent = [NSString stringWithFormat: @"%@.%@", fileName, type];
+    NSString *destinationPath = [documentsDirectory stringByAppendingPathComponent: pathComponent];
+    
+    return destinationPath;
+}
+
+
 
 @end

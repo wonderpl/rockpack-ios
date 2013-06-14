@@ -239,7 +239,10 @@
     return self.channelThumbnailCollectionView;
 }
 
-
+-(void)headerTapped
+{
+    [self.channelThumbnailCollectionView setContentOffset:CGPointZero animated:YES];
+}
 
 -(void)setChannelOwner:(ChannelOwner*)channelOnwer
 {

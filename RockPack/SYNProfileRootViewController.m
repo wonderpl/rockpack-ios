@@ -400,10 +400,12 @@
 
 - (void) handleDataModelChange: (NSNotification*) notification
 {
+
     
     NSArray* updatedObjects = [[notification userInfo] objectForKey: NSUpdatedObjectsKey];
     NSArray* insertedObjects = [[notification userInfo] objectForKey: NSInsertedObjectsKey];
     NSArray* deletedObjects = [[notification userInfo] objectForKey: NSDeletedObjectsKey];
+
     
     [updatedObjects enumerateObjectsUsingBlock: ^(id obj, NSUInteger idx, BOOL *stop)
     {
@@ -716,7 +718,7 @@
     NSIndexPath* indexPath = nil;
     if (self.channelThumbnailCollectionView.contentOffset.y > self.subscriptionsViewController.channelThumbnailCollectionView.contentOffset.y)
     {
-        UICollectionViewCell* visibleCell = ([[self.channelThumbnailCollectionView visibleCells] count] > 0) ? [[self.channelThumbnailCollectionView visibleCells] objectAtIndex: 0] : nil;
+        UICollectionViewCell* visibleCell = ([[self.channelThumbnailCollectionView visibleCells] count] > 0) ? [self.channelThumbnailCollectionView visibleCells][0] : nil;
         if (visibleCell != nil)
         {
             indexPath = [self.channelThumbnailCollectionView indexPathForCell:visibleCell];
@@ -741,7 +743,7 @@
     
     if (!indexPath)
     {
-        UICollectionViewCell* visibleCell = ([[self.subscriptionsViewController.channelThumbnailCollectionView visibleCells] count] > 0) ? [[self.subscriptionsViewController.channelThumbnailCollectionView visibleCells] objectAtIndex: 0] : nil;
+        UICollectionViewCell* visibleCell = ([[self.subscriptionsViewController.channelThumbnailCollectionView visibleCells] count] > 0) ? [self.subscriptionsViewController.channelThumbnailCollectionView visibleCells][0] : nil;
         if (visibleCell != nil)
         {
             indexPath = [self.subscriptionsViewController.channelThumbnailCollectionView indexPathForCell: visibleCell];
@@ -1167,6 +1169,12 @@
                                              
                                                     _deleteCellModeOn = NO;
                                               }];
+}
+
+-(void)headerTapped
+{
+    [self.channelThumbnailCollectionView setContentOffset:CGPointZero animated:YES];
+    [self.subscriptionsViewController headerTapped];
 }
 
 #pragma mark - Accessors

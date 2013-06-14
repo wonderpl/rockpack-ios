@@ -246,6 +246,10 @@ typedef enum _Gender {
 // Large Video panel
 #define kCreateChannelPanelAnimationDuration 0.3f
 
+#define kVideoInAnimationDuration 0.4f
+#define kVideoOutAnimationDuration 0.3f
+#define kAddToChannelAnimationDuration 0.3f
+
 //
 // Dimensions
 //
@@ -266,7 +270,7 @@ typedef enum _Gender {
 #define kStandardCollectionViewOffsetYiPhone 60.0f
 #define kYouCollectionViewOffsetY 160.0f
 #define kChannelDetailsCollectionViewOffsetY 500.0f
-#define kChannelDetailsFadeSpan 200.0f
+#define kChannelDetailsFadeSpan 250.0f
 #define kChannelDetailsFadeSpaniPhone 100.0f
 
 #define kImageUploadWidth 1024
@@ -362,6 +366,9 @@ typedef enum {
 
 // Maximum number of times the player time remains the same before restart attempted
 #define kMaxStallCount                  20
+
+// Number of seconds we wait before reporting a video problem
+#define kVideoStallThresholdTime        20
 
 // Time between shuttle bar updates
 #define kShuttleBarUpdateTimerInterval  0.1f

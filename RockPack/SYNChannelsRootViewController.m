@@ -1156,9 +1156,15 @@
     [self toggleChannelsCategoryTable: nil];
 }
 
+
 - (BOOL) shouldInvalidateLayoutForBoundsChange:(CGRect)newBounds
 {
     return YES;
+}
+-(void)headerTapped
+{
+    [self.channelThumbnailCollectionView setContentOffset:CGPointZero animated:YES];
+
 }
 
 @end

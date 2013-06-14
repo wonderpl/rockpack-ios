@@ -160,18 +160,6 @@
                           forSupplementaryViewOfKind: UICollectionElementKindSectionFooter
                                  withReuseIdentifier: @"SYNChannelFooterMoreView"];
     
-    // == Refresh button == //
-    self.refreshButton = [SYNRefreshButton refreshButton];
-    
-    [self.refreshButton addTarget: self
-                           action: @selector(refreshButtonPressed)
-                 forControlEvents: UIControlEventTouchUpInside];
-    
-    CGRect refreshButtonFrame = self.refreshButton.frame;
-    refreshButtonFrame.origin.x = [SYNDeviceManager.sharedInstance isIPad]? 5.0f  : 5.0f;
-    refreshButtonFrame.origin.y = [SYNDeviceManager.sharedInstance isIPad]? 7.0f : 5.0f;
-    self.refreshButton.frame = refreshButtonFrame;
-    [self.view addSubview: self.refreshButton];
     
     self.dataRequestRange = NSMakeRange(0, STANDARD_REQUEST_LENGTH);
     
@@ -217,11 +205,6 @@
 }
 
 
-- (void) refreshButtonPressed
-{
-    [self refreshData];
-    [self.videoThumbnailCollectionView setContentOffset:CGPointZero animated:YES];
-}
 
 -(void)refreshData
 {
@@ -815,7 +798,10 @@
 
 
 
-
+-(void)headerTapped
+{
+    [self.videoThumbnailCollectionView setContentOffset:CGPointZero animated:YES];
+}
 
 
 

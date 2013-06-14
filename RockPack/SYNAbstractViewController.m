@@ -264,7 +264,7 @@
     
     [[NSNotificationCenter defaultCenter] postNotificationName: noteName
                                                         object: self
-                                                      userInfo: @{@"VideoInstance" : videoInstance}];
+                                                      userInfo: @{@"VideoInstance" : videoInstance }];
     
     
     
@@ -328,19 +328,28 @@
     
     id selectedVideo = [self.fetchedResultsController objectAtIndexPath:indexPath];
     NSArray* videoArray =  self.fetchedResultsController.fetchedObjects;
+    CGPoint center;
+    if(videoViewButton)
+    {
+        center = [self.view convertPoint:videoViewButton.center fromView:videoViewButton.superview];
+    }
+    else
+    {
+        center = self.view.center;
+    }
     [self displayVideoViewerWithVideoInstanceArray: videoArray
-                                  andSelectedIndex: [videoArray indexOfObject:selectedVideo]];
+                                  andSelectedIndex: [videoArray indexOfObject:selectedVideo] center:center];
 }
 
 
 - (void) displayVideoViewerWithVideoInstanceArray: (NSArray *) videoInstanceArray
-                                 andSelectedIndex: (int) selectedIndex
+                                andSelectedIndex: (int) selectedIndex center:(CGPoint)center
 {
     SYNMasterViewController *masterViewController = (SYNMasterViewController*)appDelegate.masterViewController;
         
     [masterViewController addVideoOverlayToViewController: self
                                    withVideoInstanceArray: videoInstanceArray
-                                         andSelectedIndex: selectedIndex];
+                                         andSelectedIndex: selectedIndex fromCenter:center];
 }
 
 
@@ -709,6 +718,11 @@
 	{
 		[[UIApplication sharedApplication] openURL: purchaseURL];
 	}
+}
+
+-(void)headerTapped
+{
+    
 }
 
 // Load more footer

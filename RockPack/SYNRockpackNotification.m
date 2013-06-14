@@ -21,7 +21,7 @@
     if(self = [super init])
     {
         SYNAppDelegate* appDelegate = (SYNAppDelegate*)[[UIApplication sharedApplication] delegate];
-        NSNumber* identifierNumber = [data objectForKey:@"id"];
+        NSNumber* identifierNumber = data[@"id"];
         if(!identifierNumber || ![identifierNumber isKindOfClass:[NSNumber class]])
         {
             DebugLog(@"Did not find a valid notification id: %@", data);
@@ -31,9 +31,9 @@
         
         self.identifier = [identifierNumber integerValue];
         
-        self.messageType = [data objectForKey:@"message_type"];
+        self.messageType = data[@"message_type"];
         
-        NSString* dateString = [data objectForKey:@"date_created"];
+        NSString* dateString = data[@"date_created"];
         if(dateString)
         {
             
@@ -114,52 +114,52 @@
             
         }
         
-        NSNumber* readNumber = [data objectForKey:@"read"];
+        NSNumber* readNumber = data[@"read"];
         if(readNumber)
         {
             self.read = [readNumber boolValue];
         }
         
-        NSDictionary* messageDictionary = [data objectForKey:@"message"];
+        NSDictionary* messageDictionary = data[@"message"];
         if(messageDictionary && [messageDictionary isKindOfClass:[NSDictionary class]])
         {
             
             // the response can either have a channel tag or a video tag, in the second case the video tag will include a channel tag //
             
             // case 1 : Channel Tag
-            NSDictionary* channelDictionary = [messageDictionary objectForKey:@"channel"];
+            NSDictionary* channelDictionary = messageDictionary[@"channel"];
             if(channelDictionary && [channelDictionary isKindOfClass:[NSDictionary class]])
             {
                 
                 objectType = kNotificationObjectTypeChannel;
-                self.channelId = [channelDictionary objectForKey:@"id"];
-                self.channelResourceUrl = [channelDictionary objectForKey:@"resource_url"];
-                self.channelThumbnailUrl = [channelDictionary objectForKey:@"thumbnail_url"];
+                self.channelId = channelDictionary[@"id"];
+                self.channelResourceUrl = channelDictionary[@"resource_url"];
+                self.channelThumbnailUrl = channelDictionary[@"thumbnail_url"];
                 
                 
             }
             
             
-            NSDictionary* videoDictionary = [messageDictionary objectForKey:@"video"];
+            NSDictionary* videoDictionary = messageDictionary[@"video"];
             if(videoDictionary && [videoDictionary isKindOfClass:[NSDictionary class]])
             {
                 objectType = kNotificationObjectTypeVideo;
-                self.videoId = [videoDictionary objectForKey:@"id"];
-                self.videoThumbnailUrl = [videoDictionary objectForKey:@"thumbnail_url"];
+                self.videoId = videoDictionary[@"id"];
+                self.videoThumbnailUrl = videoDictionary[@"thumbnail_url"];
                 
                 DebugLog(@"self.videoThumbnailUrl: %@", self.videoThumbnailUrl);
                 
-                NSDictionary* channelDictionary = [videoDictionary objectForKey:@"channel"];
+                NSDictionary* channelDictionary = videoDictionary[@"channel"];
                 if(channelDictionary && [channelDictionary isKindOfClass:[NSDictionary class]])
                 {
-                    self.channelId = [channelDictionary objectForKey:@"id"];
-                    self.channelResourceUrl = [channelDictionary objectForKey:@"resource_url"];
+                    self.channelId = channelDictionary[@"id"];
+                    self.channelResourceUrl = channelDictionary[@"resource_url"];
                     // no thumbnail url in case of a channel object within a video object
                     
                 }
             }
             
-            NSDictionary* userDictionary = [messageDictionary objectForKey:@"user"];
+            NSDictionary* userDictionary = messageDictionary[@"user"];
             if(userDictionary && [userDictionary isKindOfClass:[NSDictionary class]])
             {
                 

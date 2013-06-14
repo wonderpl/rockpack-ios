@@ -64,6 +64,7 @@
 @property (nonatomic, strong) IBOutlet UIPopoverController *reportConcernPopoverController;
 @property (nonatomic, strong) IBOutlet UIButton* reportConcernButton;
 @property (weak, nonatomic) IBOutlet UIButton *addVideoButton;
+@property (weak, nonatomic) IBOutlet UIButton *shareButton;
 
 //iPhone specific
 @property (nonatomic, assign) UIDeviceOrientation currentOrientation;
@@ -672,7 +673,7 @@
                                                   videoInstance.video.starCountValue += 1;
                                               }
                                               
-                                              [self.favouritesStatusArray replaceObjectAtIndex:starredIndex withObject:@(button.selected)];
+                                              (self.favouritesStatusArray)[starredIndex] = @(button.selected);
                                               
                                               [self updateVideoDetailsForIndex: self.currentSelectedIndex];
                                               
@@ -1180,8 +1181,59 @@
 {
     for(int i=0; i < [self.videoInstanceArray count]; i++)
     {
-        [self.favouritesStatusArray replaceObjectAtIndex:i withObject:@(YES)];
+        (self.favouritesStatusArray)[i] = @(YES);
     }
 }
+
+#pragma mark - Appear animation
+
+-(void)prepareForAppearAnimation
+{
+    self.addVideoButton.alpha = 0.0f;
+    self.addVideoButton.transform = CGAffineTransformMakeScale(1.3f, 1.3f);
+    
+    self.shareButton.alpha = 0.0f;
+    self.shareButton.transform = CGAffineTransformMakeTranslation(self.shareButton.frame.size.width, 0.0f);
+    
+    self.starButton.alpha = 0.0f;
+    self.starButton.transform = CGAffineTransformMakeTranslation(-self.shareButton.frame.size.width, 0.0f);
+    
+    if(self.currentSelectedIndex>1 || [self.videoInstanceArray count] < 4)
+    {
+        [self scrollToCellAtIndex:MAX(0, self.currentSelectedIndex - 3) animated:NO];
+    }
+    else
+    {
+        [self scrollToCellAtIndex:3 animated:NO];
+    }
+    self.videoThumbnailCollectionView.alpha = 0.0f;
+}
+
+-(void)runAppearAnimation
+{
+    [UIView animateWithDuration:0.5f delay:0.5f options:UIViewAnimationCurveEaseInOut animations:^{
+        
+        self.addVideoButton.transform = CGAffineTransformIdentity;
+        
+        self.shareButton.transform = CGAffineTransformIdentity;
+        
+        self.starButton.transform = CGAffineTransformIdentity;
+        
+        self.addVideoButton.alpha = 1.0f;
+        
+        self.shareButton.alpha = 1.0f;
+        
+        self.starButton.alpha = 1.0f;
+
+    } completion:nil];
+
+    
+    [UIView animateWithDuration:1.0f delay:0.0f options:UIViewAnimationCurveEaseInOut animations:^{
+        self.videoThumbnailCollectionView.alpha = 1.0f;
+    } completion:nil];
+    
+    [self scrollToCellAtIndex:self.currentSelectedIndex animated:YES];
+}
+
 
 @end

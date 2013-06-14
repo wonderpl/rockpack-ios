@@ -40,7 +40,7 @@ typedef void (^VideoOverlayDismissBlock)(void);
 
 - (void) addVideoOverlayToViewController: (SYNAbstractViewController *) originViewController
                   withVideoInstanceArray: (NSArray*) videoInstanceArray
-                        andSelectedIndex: (int) selectedIndex;
+                        andSelectedIndex: (int) selectedIndex fromCenter:(CGPoint)centerPoint;
 
 - (void) removeVideoOverlayController;
 
