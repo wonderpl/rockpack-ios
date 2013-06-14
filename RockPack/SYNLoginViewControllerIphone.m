@@ -590,16 +590,19 @@
                 break;
     }
     
-    if(!valid)
-    {
-        return;
-    }
-    
+    //Registration screen has no space for the keyboard together with the error message. ensure keyboard is always not showing on this screen.
     [self.registeringUserEmailInputField resignFirstResponder];
     [self.registeringUserPasswordInputField resignFirstResponder];
     [self.ddInputField resignFirstResponder];
     [self.yyyyInputField resignFirstResponder];
     [self.mmInputField resignFirstResponder];
+    
+    if(!valid)
+    {
+        return;
+    }
+    
+    // Hide the keyboard.
     [self.userNameInputField resignFirstResponder];
     [self.passwordInputField resignFirstResponder];
     [self.emailInputField resignFirstResponder];
