@@ -850,8 +850,16 @@
         }
         else
         {
+            NSArray* formErrors = [result objectForKey:@"message"];
+            NSString* errorString = self.registeringUserErrorLabel.text = NSLocalizedString(@"unknown_error_message", nil);
+            if (formErrors && [formErrors count]>0)
+            {
+                errorString = [NSString stringWithFormat:NSLocalizedString(@"%@: %@", nil), NSLocalizedString(@"Username", nil), [formErrors objectAtIndex:0]];
+            }
+            
+            self.registeringUserErrorLabel.text = errorString;
+            
             [self turnOnButton:self.nextButton];
-            self.registeringUserErrorLabel.text = NSLocalizedString(@"unknown_error_message", nil);
         }
     } errorHandler:^(NSError *error) {
         
