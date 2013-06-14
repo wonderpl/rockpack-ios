@@ -207,8 +207,6 @@
                 // imageUrl
             }
             
-<<<<<<< HEAD
-=======
             
             if(!videoInstance)
                 continue;
@@ -224,9 +222,8 @@
                 videoInstance.position = newPosition;
             
             
-            [importArray addObject:videoInstance];
+        
             
->>>>>>> develop
         }
         
         
@@ -248,13 +245,8 @@
     
     [self setBasicAttributesFromDictionary:dictionary];
     
-<<<<<<< HEAD
     NSDictionary* ownerDictionary = [dictionary objectForKey: @"owner"];
     if(!(ignoringObjects & kIgnoreChannelOwnerObject) && [ownerDictionary isKindOfClass:[NSDictionary class]])
-=======
-    NSDictionary* ownerDictionary = dictionary[@"owner"];
-    if(!(ignoringObjects & kIgnoreChannelOwnerObject) && ownerDictionary)
->>>>>>> develop
     {
         self.channelOwner = [ChannelOwner instanceFromDictionary: ownerDictionary
                                        usingManagedObjectContext: self.managedObjectContext
