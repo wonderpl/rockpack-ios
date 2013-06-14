@@ -711,6 +711,11 @@
 	}
 }
 
+-(void)headerTapped
+{
+    
+}
+
 // Load more footer
 
 - (CGSize) footerSize

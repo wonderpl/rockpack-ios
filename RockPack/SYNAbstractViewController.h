@@ -100,6 +100,8 @@ typedef void (^SYNShareCompletionBlock)(void);
 
 - (void) incrementRangeForNextRequest;
 
+-(void)headerTapped;
+
 // Share
 - (void) shareVideoInstance: (VideoInstance *) videoInstance
                      inView: (UIView *) inView

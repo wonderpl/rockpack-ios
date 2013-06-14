@@ -798,7 +798,10 @@
 
 
 
-
+-(void)headerTapped
+{
+    [self.videoThumbnailCollectionView setContentOffset:CGPointZero animated:YES];
+}
 
 
 

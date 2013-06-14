@@ -991,4 +991,9 @@
     [self toggleChannelsCategoryTable: nil];
 }
 
+-(void)headerTapped
+{
+    [self.channelThumbnailCollectionView setContentOffset:CGPointZero animated:YES];
+}
+
 @end
