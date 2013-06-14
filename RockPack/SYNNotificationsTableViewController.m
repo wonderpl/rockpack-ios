@@ -95,7 +95,7 @@
     
     SYNNotificationsTableViewCell *notificationCell = [tableView dequeueReusableCellWithIdentifier:kNotificationsCellIdent forIndexPath:indexPath];
     
-    SYNRockpackNotification* notification = (SYNRockpackNotification*)[_notifications objectAtIndex:indexPath.row];
+    SYNRockpackNotification* notification = (SYNRockpackNotification*)_notifications[indexPath.row];
     
     // NSLog(@">> notification: %i", notification.identifier);
     
@@ -156,7 +156,7 @@
 
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath
 {
-    [self markAsReadForNotification:[_notifications objectAtIndex:indexPath.row]];
+    [self markAsReadForNotification:_notifications[indexPath.row]];
 }
 
 #pragma mark - KVO

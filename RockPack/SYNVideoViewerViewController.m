@@ -673,7 +673,7 @@
                                                   videoInstance.video.starCountValue += 1;
                                               }
                                               
-                                              [self.favouritesStatusArray replaceObjectAtIndex:starredIndex withObject:@(button.selected)];
+                                              (self.favouritesStatusArray)[starredIndex] = @(button.selected);
                                               
                                               [self updateVideoDetailsForIndex: self.currentSelectedIndex];
                                               
@@ -1181,7 +1181,7 @@
 {
     for(int i=0; i < [self.videoInstanceArray count]; i++)
     {
-        [self.favouritesStatusArray replaceObjectAtIndex:i withObject:@(YES)];
+        (self.favouritesStatusArray)[i] = @(YES);
     }
 }
 

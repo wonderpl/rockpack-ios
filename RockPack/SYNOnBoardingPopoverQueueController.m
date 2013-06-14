@@ -89,7 +89,7 @@
     }
     else // go to next popover
     {
-        SYNOnBoardingPopoverView* nextPopover = (SYNOnBoardingPopoverView*)[self.queue objectAtIndex:0];
+        SYNOnBoardingPopoverView* nextPopover = (SYNOnBoardingPopoverView*)(self.queue)[0];
         [self.queue removeObject:nextPopover];
         
         self.currentlyVisiblePopover = nextPopover;
