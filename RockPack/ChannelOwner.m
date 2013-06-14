@@ -179,8 +179,6 @@
             }
            
             
-<<<<<<< HEAD
-=======
             if(!channel)
                 continue;
             
@@ -195,7 +193,6 @@
             
             [self.channelsSet addObject:channel];
             
->>>>>>> develop
         }
         
         
