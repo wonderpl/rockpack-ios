@@ -246,9 +246,9 @@ typedef enum _Gender {
 // Large Video panel
 #define kCreateChannelPanelAnimationDuration 0.3f
 
-#define kInAnimationFirstPartDuration 0.5f
-#define kInAnimationSecondPartDuration 0.05f
-#define kOutAnimationDuration 0.4f
+#define kVideoInAnimationDuration 0.4f
+#define kVideoOutAnimationDuration 0.3f
+#define kAddToChannelAnimationDuration 0.3f
 
 //
 // Dimensions

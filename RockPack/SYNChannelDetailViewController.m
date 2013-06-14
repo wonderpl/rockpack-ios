@@ -1147,7 +1147,7 @@
     {
         [[NSNotificationCenter defaultCenter] postNotificationName: noteName
                                                             object: self
-                                                          userInfo: @{@"VideoInstance" : videoInstance , @"button" : addButton}];
+                                                          userInfo: @{@"VideoInstance" : videoInstance}];
     }
     
     addButton.selected = !addButton.selected;

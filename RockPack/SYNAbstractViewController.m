@@ -264,7 +264,7 @@
     
     [[NSNotificationCenter defaultCenter] postNotificationName: noteName
                                                         object: self
-                                                      userInfo: @{@"VideoInstance" : videoInstance , @"button" : _addButton}];
+                                                      userInfo: @{@"VideoInstance" : videoInstance }];
     
     
     

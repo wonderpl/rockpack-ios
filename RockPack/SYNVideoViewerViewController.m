@@ -614,7 +614,7 @@
         [[NSNotificationCenter defaultCenter] postNotificationName: kVideoQueueAdd
                                                             object: self
          
-                                                          userInfo: @{@"VideoInstance" : videoInstance , @"button" :addItButton}];
+                                                          userInfo: @{@"VideoInstance" : videoInstance}];
         addItButton.selected = YES;
         [appDelegate.oAuthNetworkEngine recordActivityForUserId: appDelegate.currentUser.uniqueId
                                                          action: @"select"
@@ -1212,28 +1212,23 @@
 -(void)runAppearAnimation
 {
     [UIView animateWithDuration:0.5f delay:0.5f options:UIViewAnimationCurveEaseInOut animations:^{
+        
+        self.addVideoButton.transform = CGAffineTransformIdentity;
+        
+        self.shareButton.transform = CGAffineTransformIdentity;
+        
+        self.starButton.transform = CGAffineTransformIdentity;
+        
         self.addVideoButton.alpha = 1.0f;
-        self.addVideoButton.transform = CGAffineTransformMakeScale(0.9f, 0.9f);;
         
         self.shareButton.alpha = 1.0f;
-        self.shareButton.transform = CGAffineTransformMakeTranslation(-4.0, 0.0f);
         
         self.starButton.alpha = 1.0f;
-        self.starButton.transform = CGAffineTransformMakeTranslation(4.0, 0.0f);
-    } completion:^(BOOL finished) {
-        [UIView animateWithDuration:0.1f delay:0.0f options:UIViewAnimationCurveEaseInOut animations:^{
-            self.addVideoButton.transform = CGAffineTransformIdentity;
-            
-            self.shareButton.transform = CGAffineTransformIdentity;
-            
-            self.starButton.transform = CGAffineTransformIdentity;
-        } completion:^(BOOL finished) {
-            
-        }];
 
-    }];
+    } completion:nil];
+
     
-    [UIView animateWithDuration:0.5f delay:0.0f options:UIViewAnimationCurveEaseInOut animations:^{
+    [UIView animateWithDuration:1.0f delay:0.0f options:UIViewAnimationCurveEaseInOut animations:^{
         self.videoThumbnailCollectionView.alpha = 1.0f;
     } completion:nil];
     
