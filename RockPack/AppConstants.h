@@ -123,6 +123,8 @@
 
 #define kAPIReportPlayerError       @"/ws/videos/player_error/"                 /* POST */
 
+#define kYouTubePlayerSource        @"/ws/videos/players/"
+
 #define kAccountSettingsPressed     @"kAccountSettingsPressed"
 #define kAccountSettingsLogout      @"kAccountSettingsLogout"
 #define kUserDataChanged            @"kUserDataChanged"

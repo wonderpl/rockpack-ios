@@ -538,7 +538,8 @@
     
     [self shareObjectType: @"video_instance"
                  objectId: videoInstance.uniqueId
-                  isOwner:  @(FALSE)
+                  isOwner: @FALSE
+                  isVideo: @TRUE
                    inView: inView
                  fromRect: rect
           arrowDirections: arrowDirections
@@ -565,6 +566,7 @@
     [self shareObjectType: @"channel"
                  objectId: channel.uniqueId
                   isOwner: isOwner
+                  isVideo: @FALSE
                    inView: inView
                  fromRect: rect
           arrowDirections: arrowDirections
@@ -576,6 +578,7 @@
 - (void) shareObjectType: (NSString *) objectType
                 objectId: (NSString *) objectId
                  isOwner: (NSNumber *) isOwner
+                 isVideo: (NSNumber *) isVideo
                   inView: (UIView *) inView
                 fromRect: (CGRect) rect
          arrowDirections: (UIPopoverArrowDirection) arrowDirections
@@ -664,7 +667,8 @@
                                               activityViewController.userInfo = @{@"text": message,
                                                                                   @"url": resourceURL,
                                                                                   @"image" : capturedScreenImage,
-                                                                                  @"owner" : isOwner};
+                                                                                  @"owner" : isOwner,
+                                                                                  @"video" : isVideo};
                                               
                                               // The activity controller needs to be presented from a popup on iPad, but normally on iPhone
                                               if (UI_USER_INTERFACE_IDIOM() == UIUserInterfaceIdiomPad)

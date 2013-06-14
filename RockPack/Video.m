@@ -130,16 +130,16 @@ static NSEntityDescription *videoEntity = nil;
                                    withDefault: @""];
     
     self.viewCount = [dictionary objectForKey: @"source_view_count"
-                                   withDefault: [NSNumber numberWithInt: 0]];
+                                   withDefault: @0];
     
     self.dateUploaded = [dictionary dateFromISO6801StringForKey:@"source_date_uploaded"
                                                     withDefault:[NSDate date]];
     
     self.duration = [dictionary objectForKey: @"duration"
-                                 withDefault: [NSNumber numberWithInt: 0]];
+                                 withDefault: @0];
     
     self.viewCount = [dictionary objectForKey: @"source_view_count"
-                                  withDefault: [NSNumber numberWithInt: 0]];
+                                  withDefault: @0];
     
     self.source = [dictionary objectForKey: @"source"
                                withDefault: @""];
@@ -151,7 +151,7 @@ static NSEntityDescription *videoEntity = nil;
                                        withDefault: @""];
     
     self.starCount = [dictionary objectForKey: @"star_count"
-                                  withDefault: [NSNumber numberWithInt: 0]];
+                                  withDefault: @0];
     
     self.thumbnailURL = [dictionary objectForKey: @"thumbnail_url"
                                      withDefault: @"http://"];

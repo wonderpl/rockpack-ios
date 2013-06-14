@@ -139,8 +139,7 @@ didFinishLaunchingWithOptions: (NSDictionary *) launchOptions
     NSUserDefaults *defaults = [NSUserDefaults standardUserDefaults];
     
 	// Create a dictionary of defaults to add and register them (if they have not already been set)
-	NSDictionary *initDefaults = [NSDictionary dictionaryWithObjectsAndKeys: @(NO), kDownloadedVideoContentBool,
-                                  nil];
+	NSDictionary *initDefaults = @{kDownloadedVideoContentBool: @(NO)};
 	[defaults registerDefaults: initDefaults];
     
     self.window = [[UIWindow alloc] initWithFrame: [[UIScreen mainScreen] bounds]];
@@ -149,6 +148,12 @@ didFinishLaunchingWithOptions: (NSDictionary *) launchOptions
     // Initialise our video player, which ensures that it will be fully set up by the time the first video is played.
     // Tried doing this asynchronously, but could nto guarantee that it was initialised by the time that the first
     // video playback occurred
+    
+    // First we need to ensure that we have the player JS in place
+    [self copyFileFromAppBundleToDocumentsDirectory: @"YouTubeIFramePlayer"
+                                             ofType: @"html"];
+    
+    // Now cause the playback controller to be instantiated
     [SYNVideoPlaybackViewController sharedInstance];
     
     if (self.currentUser && self.currentOAuth2Credentials)
@@ -156,9 +161,7 @@ didFinishLaunchingWithOptions: (NSDictionary *) launchOptions
         // If we have a user and a refresh token... //
         if ([self.currentOAuth2Credentials hasExpired])
         {
-            
             //Add imageview to the window as placeholder while we wait for the token refresh call.
-            
             UIImageView* startImageView = nil;
             CGPoint startImageCenter = self.window.center;
             if([[SYNDeviceManager sharedInstance] isIPad])
@@ -229,6 +232,64 @@ didFinishLaunchingWithOptions: (NSDictionary *) launchOptions
     }
     
     return YES;
+}
+
+
+- (void) copyFileFromAppBundleToDocumentsDirectory: (NSString *) fileName
+                                            ofType: (NSString *) type
+{
+    NSError *error;
+    
+    NSFileManager *fileManager = [NSFileManager defaultManager];
+
+    NSArray *paths = NSSearchPathForDirectoriesInDomains(NSDocumentDirectory, NSUserDomainMask, YES);
+    NSString *documentsDirectory = paths[0];
+    NSString *pathComponent = [NSString stringWithFormat: @"%@.%@", fileName, type];
+    NSString *destinationPath = [documentsDirectory stringByAppendingPathComponent: pathComponent];
+    
+    if ([fileManager fileExistsAtPath: destinationPath] == NO)
+    {
+        NSString *sourcePath = [[NSBundle mainBundle] pathForResource: fileName
+                                                               ofType: type];
+        
+        [fileManager copyItemAtPath: sourcePath
+                             toPath: destinationPath
+                              error: &error];
+    }
+}
+
+
+- (void) saveAsFileToDocumentsDirectory: (NSString *) fileName
+                                 asType: (NSString *) type
+                            usingSource: (NSString *) source
+{
+    NSError *error;
+    NSString *destinationPath = [self destinationPathInDocumentsDirectoryUsingFilename:fileName
+                                                                               andType: type];
+
+    BOOL status = [source writeToFile: destinationPath
+                                 atomically: YES
+                                   encoding: NSUTF8StringEncoding
+                                      error: &error];
+    
+    // If something wet wrong, then revert to the original player source
+    if (!status)
+    {
+        [self copyFileFromAppBundleToDocumentsDirectory: fileName
+                                                 ofType: type];
+    }
+}
+
+
+- (NSString *) destinationPathInDocumentsDirectoryUsingFilename: (NSString *) fileName
+                                                        andType: (NSString *) type
+{
+    NSArray *paths = NSSearchPathForDirectoriesInDomains(NSDocumentDirectory, NSUserDomainMask, YES);
+    NSString *documentsDirectory = paths[0];
+    NSString *pathComponent = [NSString stringWithFormat: @"%@.%@", fileName, type];
+    NSString *destinationPath = [documentsDirectory stringByAppendingPathComponent: pathComponent];
+    
+    return destinationPath;
 }
 
 
@@ -767,13 +828,67 @@ didFinishLaunchingWithOptions: (NSDictionary *) launchOptions
 }
 
 
+
+- (NSDictionary*) parseURLParams: (NSString *) query
+{
+    NSArray *pairs = [query componentsSeparatedByString: @"&"];
+    
+    NSMutableDictionary *params = [[NSMutableDictionary alloc] init];
+    
+    for (NSString *pair in pairs)
+    {
+        NSRange range = [pair rangeOfString: @"="];
+
+        NSString *key = [pair substringToIndex: range.location];
+        NSString *value = [pair substringFromIndex: range.location + 1];
+        
+        params[key] = value;
+    }
+    
+    return params;
+}
+
+
 - (BOOL) application: (UIApplication *) application
              openURL: (NSURL *) url
    sourceApplication: (NSString *) sourceApplication
           annotation: (id) annotation
 {
-    [[FBSession activeSession] handleOpenURL: url];
-    return YES;
+    // To check for a deep link, first parse the incoming URL
+    // to look for a target_url parameter
+    NSString *query = [url fragment];
+    
+    if (!query)
+    {
+        query = [url query];
+    }
+    
+    NSDictionary *params = [self parseURLParams: query];
+    
+    // Check if target URL exists
+    NSString *targetURLString = [params valueForKey: @"target_url"];
+    
+    if (targetURLString)
+    {
+        NSURL *targetURL = [NSURL URLWithString: targetURLString];
+        NSString *query2 = [targetURL query];
+        NSDictionary *targetParams = [self parseURLParams: query2];
+        NSString *deeplink = [targetParams valueForKey: @"deeplink"];
+        
+        // Check for the 'deeplink' parameter to check if this is one of
+        // our incoming news feed link
+        if (deeplink)
+        {
+            UIAlertView *alert = [[UIAlertView alloc] initWithTitle: @"News"
+                                                            message: [NSString stringWithFormat: @"Incoming: %@", deeplink]
+                                                           delegate: nil
+                                                  cancelButtonTitle: @"OK"
+                                                  otherButtonTitles: nil, nil];
+            [alert show];
+        }
+    }
+    
+    return [FBSession.activeSession handleOpenURL:url];
 }
 
 @end

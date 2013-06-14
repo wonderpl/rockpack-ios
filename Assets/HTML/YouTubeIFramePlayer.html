@@ -56,7 +56,7 @@
                                        events:
                                        {
                                        'onReady': onPlayerReady,
-                                       'onStateChange': onPlayerStateChange,
+                                       // 'onStateChange': onPlayerStateChange,
                                        'onPlaybackQualityChange': onPlayerPlaybackQualityChange,
                                        'onPlaybackRateChange': onPlayerPlaybackRateChange,
                                        'onError': onPlayerError,
@@ -69,6 +69,7 @@
                                         {
                                         sizeToFit(document.getElementById("player"));
                                         });
+
             }
 
             
@@ -81,6 +82,8 @@
             function onPlayerReady(event)
             {
                 onEvent('ready', null);
+//                onEvent('stateChange', 'playing');
+                player.addEventListener('onStateChange', onPlayerStateChange);
 
             }
             

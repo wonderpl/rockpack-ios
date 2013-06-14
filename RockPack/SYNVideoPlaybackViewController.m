@@ -131,11 +131,14 @@ static UIWebView* vimeoideoWebViewInstance;
 // Create YouTube specific webview, based on common setup
 + (UIWebView *) createNewYouTubeWebView
 {
+    NSError *error = nil;
+    
     UIWebView *newYouTubeWebView = [SYNVideoPlaybackViewController createNewVideoWebView];
     
-    NSError *error = nil;
-    NSString *fullPath = [[NSBundle mainBundle] pathForResource: @"YouTubeIFramePlayer"
-                                                         ofType: @"html"];
+    // Get HTML from documents directory (as opposed to the bundle), so that we can update it
+    NSArray *paths = NSSearchPathForDirectoriesInDomains(NSDocumentDirectory, NSUserDomainMask, YES);
+    NSString *documentsDirectory = paths[0];
+    NSString *fullPath = [documentsDirectory stringByAppendingPathComponent: @"YouTubeIFramePlayer.html"];
     
     NSString *templateHTMLString = [NSString stringWithContentsOfFile: fullPath
                                                              encoding: NSUTF8StringEncoding
@@ -726,7 +729,7 @@ static UIWebView* vimeoideoWebViewInstance;
 					 forKey: kCATransactionDisableActions];
 	
     // Set duration of spin
-	[CATransaction setValue: [NSNumber numberWithFloat: cycleTime]
+	[CATransaction setValue: @(cycleTime)
                      forKey: kCATransactionAnimationDuration];
 	
 	animation = [CABasicAnimation animationWithKeyPath: @"transform.rotation.z"];
@@ -738,13 +741,13 @@ static UIWebView* vimeoideoWebViewInstance;
     // Alter to/from to change spin direction
     if (clockwise)
     {
-        animation.fromValue = [NSNumber numberWithFloat: 0.0];
+        animation.fromValue = @0.0f;
         animation.toValue = [NSNumber numberWithFloat: 2 * M_PI];
     }
     else
     {
         animation.fromValue = [NSNumber numberWithFloat: 2 * M_PI];
-        animation.toValue = [NSNumber numberWithFloat: 0.0f];
+        animation.toValue = @0.0f;
     }
 
 	animation.timingFunction = [CAMediaTimingFunction functionWithName: kCAMediaTimingFunctionLinear];
@@ -949,8 +952,11 @@ static UIWebView* vimeoideoWebViewInstance;
         self.sourceIdToReload = sourceId;
         
         NSError *error = nil;
-        NSString *fullPath = [[NSBundle mainBundle] pathForResource: @"YouTubeIFramePlayer"
-                                                             ofType: @"html"];
+        
+        // Get HTML from documents directory (as opposed to the bundle), so that we can update it
+        NSArray *paths = NSSearchPathForDirectoriesInDomains(NSDocumentDirectory, NSUserDomainMask, YES);
+        NSString *documentsDirectory = paths[0];
+        NSString *fullPath = [documentsDirectory stringByAppendingPathComponent: @"YouTubeIFramePlayer.html"];
         
         NSString *templateHTMLString = [NSString stringWithContentsOfFile: fullPath
                                                                  encoding: NSUTF8StringEncoding
@@ -961,7 +967,7 @@ static UIWebView* vimeoideoWebViewInstance;
                                 (int) [SYNVideoPlaybackViewController videoHeight]];
         
         [self.currentVideoWebView loadHTMLString: iFrameHTML
-                                  baseURL: [NSURL URLWithString: @"http://www.youtube.com"]];
+                                         baseURL: [NSURL URLWithString: @"http://www.youtube.com"]];
 
         self.currentVideoWebView.delegate = self;
     }

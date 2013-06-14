@@ -65,7 +65,7 @@
     if (![dictionary isKindOfClass: [NSDictionary class]])
         return nil;
     
-    NSString *uniqueId = [dictionary objectForKey: @"id"];
+    NSString *uniqueId = dictionary[@"id"];
     if(!uniqueId || ![uniqueId isKindOfClass:[NSString class]])
         return nil;
     
@@ -91,7 +91,7 @@
     
     
     self.position = [dictionary objectForKey: @"position"
-                                 withDefault: [NSNumber numberWithInt: 0]];
+                                 withDefault: @0];
     
     self.dateAdded = [dictionary dateFromISO6801StringForKey: @"date_added"
                                                  withDefault: [NSDate date]];
@@ -100,13 +100,13 @@
                                        withDefault: @""];
     
     // NSManagedObjects
-    self.video = [Video instanceFromDictionary: [dictionary objectForKey: @"video"]
+    self.video = [Video instanceFromDictionary: dictionary[@"video"]
                      usingManagedObjectContext: managedObjectContext
                            ignoringObjectTypes: ignoringObjects];
     
     if (!(ignoringObjects & kIgnoreChannelObjects))
     {
-        self.channel = [Channel instanceFromDictionary: [dictionary objectForKey: @"channel"]
+        self.channel = [Channel instanceFromDictionary: dictionary[@"channel"]
                              usingManagedObjectContext: managedObjectContext
                                    ignoringObjectTypes: ignoringObjects | kIgnoreVideoInstanceObjects];
     }

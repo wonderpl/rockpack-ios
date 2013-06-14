@@ -30,7 +30,7 @@
     instance.imageUrl = [dictionary objectForKey: @"thumbnail_url"
                                      withDefault: @"http://localhost/no_thumb.jpg"];
 
-    NSArray* aoiArray = [dictionary objectForKey: @"aoi"];
+    NSArray* aoiArray = dictionary[@"aoi"];
     
     if (aoiArray && [aoiArray isKindOfClass:[NSArray class]]) // can be nil
     {
@@ -43,10 +43,10 @@
     else
     {
         // map to the whole image
-        instance.startU = [NSNumber numberWithFloat: 0.0];
-        instance.startV = [NSNumber numberWithFloat: 0.0];
-        instance.endU = [NSNumber numberWithFloat: 1.0];
-        instance.endV = [NSNumber numberWithFloat: 1.0];
+        instance.startU = @0.0f;
+        instance.startV = @0.0f;
+        instance.endU = @1.0f;
+        instance.endV = @1.0f;
     }
     
     return instance;

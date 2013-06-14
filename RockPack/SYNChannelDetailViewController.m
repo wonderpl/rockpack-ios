@@ -952,7 +952,7 @@
     if ([self.channel.resourceURL hasPrefix: @"https"]) // https does not cache so it is fresh
     {
             
-            
+            NSLog(@"Loading from secure API");
             [appDelegate.oAuthNetworkEngine videosForChannelForUserId:appDelegate.currentUser.uniqueId
                                                             channelId:self.channel.uniqueId
                                                               inRange:self.dataRequestRange
@@ -964,7 +964,7 @@
     else
     {
             
-            
+            NSLog(@"Loading from public API");
             [appDelegate.networkEngine videosForChannelForUserId:appDelegate.currentUser.uniqueId
                                                        channelId:self.channel.uniqueId
                                                          inRange:self.dataRequestRange

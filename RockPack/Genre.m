@@ -85,19 +85,19 @@ static NSEntityDescription *categoryEntity = nil;
     
     
     self.name = [dictionary upperCaseStringForKey: @"name" withDefault: @"-?-"];
-    NSNumber* priorityString = (NSNumber*)[dictionary objectForKey:@"priority"];
-    self.priority = [NSNumber numberWithInteger:[priorityString integerValue]];
+    NSNumber* priorityString = (NSNumber*)dictionary[@"priority"];
+    self.priority = @([priorityString integerValue]);
     
     // Parse Subcategories
     
     
-    if(![dictionary objectForKey: @"sub_categories"] || ![[dictionary objectForKey: @"sub_categories"] isKindOfClass:[NSArray class]]) {
+    if(!dictionary[@"sub_categories"] || ![dictionary[@"sub_categories"] isKindOfClass:[NSArray class]]) {
         AssertOrLog (@"Category %@ did not have subcategories", self.name);
         return;
     }
     
     
-    for (NSDictionary* subgenreData in [dictionary objectForKey: @"sub_categories"])
+    for (NSDictionary* subgenreData in dictionary[@"sub_categories"])
     {
         SubGenre* subgenre = [SubGenre instanceFromDictionary: subgenreData
                                     usingManagedObjectContext: managedObjectContext];

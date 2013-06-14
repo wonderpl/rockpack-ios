@@ -81,7 +81,7 @@
     if(!dictionary || ![dictionary isKindOfClass:[NSDictionary class]])
         return nil;
     
-    NSString *uniqueId = [dictionary objectForKey: @"id"];
+    NSString *uniqueId = dictionary[@"id"];
     if([uniqueId isKindOfClass:[NSNull class]])
         return nil;
     
@@ -117,17 +117,17 @@
     
     self.displayName = [dictionary upperCaseStringForKey: @"display_name"
                                              withDefault: @""];
-    NSString* n_username = [dictionary objectForKey: @"username"];
+    NSString* n_username = dictionary[@"username"];
     self.username = n_username ? n_username : self.username;
     
     
     BOOL hasChannels = YES;
     
-    NSDictionary* channelsDictionary = [dictionary objectForKey:@"channels"];
+    NSDictionary* channelsDictionary = dictionary[@"channels"];
     if([channelsDictionary isKindOfClass:[NSNull class]])
         hasChannels = NO;
     
-    NSArray* channelItemsArray = [channelsDictionary objectForKey:@"items"];
+    NSArray* channelItemsArray = channelsDictionary[@"items"];
     if([channelItemsArray isKindOfClass:[NSNull class]])
         hasChannels = NO;
     
@@ -139,7 +139,7 @@
         NSMutableDictionary* channelInsanceByIdDictionary = [[NSMutableDictionary alloc] initWithCapacity:self.channels.count];
         
         for (Channel* ch in self.channels)
-            [channelInsanceByIdDictionary setObject:ch forKey:ch.uniqueId];
+            channelInsanceByIdDictionary[ch.uniqueId] = ch;
             
         
         
@@ -151,7 +151,7 @@
             
             newUniqueId = [channelDictionary objectForKey: @"id" withDefault: @""];
             
-            channel = [channelInsanceByIdDictionary objectForKey:newUniqueId];
+            channel = channelInsanceByIdDictionary[newUniqueId];
             
             IgnoringObjects ignoreInstantiationFlags = 
             ignoringObjects | kIgnoreChannelOwnerObject;
@@ -179,12 +179,29 @@
             }
            
             
+<<<<<<< HEAD
+=======
+            if(!channel)
+                continue;
+            
+            channel.viewId = self.viewId;
+            
+            channel.markedForDeletionValue = NO;
+            
+            channel.position = [dictionary objectForKey: @"position"
+                                            withDefault: @0];
+            
+            
+            
+            [self.channelsSet addObject:channel];
+            
+>>>>>>> develop
         }
         
         
         for (id key in channelInsanceByIdDictionary)
         {
-            Channel* ch = [channelInsanceByIdDictionary objectForKey:key];
+            Channel* ch = channelInsanceByIdDictionary[key];
             if(!ch)
                 continue;
             
@@ -203,28 +220,28 @@
 
 -(void)setSubscriptionsDictionary:(NSDictionary *)subscriptionsDictionary
 {
-    NSDictionary* channeslDictionary = [subscriptionsDictionary objectForKey: @"channels"];
+    NSDictionary* channeslDictionary = subscriptionsDictionary[@"channels"];
     if (!channeslDictionary)
         return;
     
-    NSArray* itemsArray = [channeslDictionary objectForKey: @"items"];
+    NSArray* itemsArray = channeslDictionary[@"items"];
     if (!itemsArray)
         return;
     
     NSMutableDictionary* subscriptionInsancesByIdDictionary = [[NSMutableDictionary alloc] initWithCapacity:self.subscriptions.count];
     
     for (Channel* su in self.subscriptions)
-        [subscriptionInsancesByIdDictionary setObject:su forKey:su.uniqueId];
+        subscriptionInsancesByIdDictionary[su.uniqueId] = su;
     
     
     for (NSDictionary* subscriptionChannel in itemsArray)
     {
         
-        NSString *uniqueId = [subscriptionChannel objectForKey: @"id"];
+        NSString *uniqueId = subscriptionChannel[@"id"];
         if(!uniqueId || ![uniqueId isKindOfClass:[NSString class]])
             continue;
         
-        Channel* channel = [subscriptionInsancesByIdDictionary objectForKey:uniqueId];
+        Channel* channel = subscriptionInsancesByIdDictionary[uniqueId];
         
         if(!channel)
         {
@@ -251,7 +268,7 @@
     // this will also remove the object from the nsset
     for (id key in subscriptionInsancesByIdDictionary)
     {
-        Channel* su = [subscriptionInsancesByIdDictionary objectForKey:key];
+        Channel* su = subscriptionInsancesByIdDictionary[key];
         if(!su)
             continue;
         
@@ -288,7 +305,7 @@
 {
     NSMutableDictionary* cDictionary = [NSMutableDictionary dictionary];
     for (Channel *channel in self.channels) {
-        [cDictionary setObject:channel forKey:channel.uniqueId];
+        cDictionary[channel.uniqueId] = channel;
     }
     return [NSDictionary dictionaryWithDictionary:cDictionary];
 }
