@@ -21,6 +21,9 @@
 #import <QuartzCore/QuartzCore.h>
 
 @interface SYNExistingChannelsViewController ()
+{
+    BOOL hideCells;
+}
 
 @property (nonatomic, strong) IBOutlet UIButton* closeButton;
 @property (nonatomic, strong) IBOutlet UIButton* confirmButtom;
@@ -171,6 +174,11 @@
         
         cell = channelThumbnailCell;
     }
+    
+    if(hideCells)
+    {
+        cell.contentView.alpha = 0.0f;
+    }
 
     return cell;
 }
@@ -180,17 +188,24 @@
 {
     self.closeButton.enabled = NO;
     self.confirmButtom.enabled = NO;
-    [UIView animateWithDuration: 0.2
+    
+    [UIView animateWithDuration: kOutAnimationDuration
+                          delay: 0.0f
+                        options: UIViewAnimationOptionCurveEaseInOut
                      animations: ^{
-        self.view.alpha = 0.0;
-    }
+                         self.view.transform = CGAffineTransformMakeScale(0.2f, 0.2f);
+                         self.view.alpha = 0.0f;
+                     }
                      completion: ^(BOOL finished) {
-        [self.view removeFromSuperview];
-        // Post notification without object. Needed to restart video player if visible.
-        [[NSNotificationCenter defaultCenter] postNotificationName: kNoteVideoAddedToExistingChannel
+                         [self.view removeFromSuperview];
+                         self.view.alpha = 1.0f;
+                         self.view.transform = CGAffineTransformMakeScale(1.0f, 1.0f);
+                         // Post notification without object. Needed to restart video player if visible.
+                         [[NSNotificationCenter defaultCenter] postNotificationName: kNoteVideoAddedToExistingChannel
                                                                              object: self
                                                                            userInfo: nil];
-    }];
+                     }];
+    
 }
 
 
@@ -345,6 +360,34 @@
     self.view.frame = selfFrame;
     
     
+}
+
+
+-(void)prepareForAppearAnimation;
+{
+    hideCells = YES;
+    UICollectionViewCell* cell = nil;
+    NSArray *indexPaths = [self.channelThumbnailCollectionView indexPathsForVisibleItems];
+    for (NSIndexPath* path in indexPaths) {
+        cell = [self.channelThumbnailCollectionView cellForItemAtIndexPath:path];
+        cell.contentView.alpha= 0.0f;
+    }
+}
+
+-(void)runAppearAnimation
+{
+    UICollectionViewCell* cell = nil;
+    NSArray* sortDescriptors = @[[[NSSortDescriptor alloc] initWithKey:@"section" ascending:YES],[[NSSortDescriptor alloc] initWithKey:@"row" ascending:YES]];
+    NSArray* indexPaths = [[self.channelThumbnailCollectionView indexPathsForVisibleItems] sortedArrayUsingDescriptors:sortDescriptors];
+    int count = 0;
+    for (NSIndexPath* path in indexPaths) {
+        cell = [self.channelThumbnailCollectionView cellForItemAtIndexPath:path];
+        [UIView animateWithDuration:0.2f delay:0.05*count options:UIViewAnimationCurveEaseInOut animations:^{
+           cell.contentView.alpha= 1.0f;
+        } completion:nil];
+        count++;
+    }
+    hideCells = NO;
 }
 
 @end

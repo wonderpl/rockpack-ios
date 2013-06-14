@@ -912,7 +912,7 @@
         self.selectedCell = (SYNVideoThumbnailRegularCell*)[self.videoThumbnailCollectionView cellForItemAtIndexPath:indexPath];
         
         [self displayVideoViewerWithVideoInstanceArray: self.channel.videoInstances.array
-                                      andSelectedIndex: indexPath.item];
+                                      andSelectedIndex: indexPath.item center:[self.view convertPoint:[collectionView cellForItemAtIndexPath:indexPath].center fromView:collectionView]];
     }
 }
 
@@ -925,7 +925,7 @@
     if([videoSubset count] ==1)
     {
         [self displayVideoViewerWithVideoInstanceArray: self.channel.videoInstances.array
-                                      andSelectedIndex: [self.channel.videoInstances indexOfObject:[videoSubset objectAtIndex:0]]];
+                                      andSelectedIndex: [self.channel.videoInstances indexOfObject:[videoSubset objectAtIndex:0]] center:self.view.center];
         self.autoplayVideoId= nil;
     }
 }
@@ -1146,7 +1146,7 @@
     {
         [[NSNotificationCenter defaultCenter] postNotificationName: noteName
                                                             object: self
-                                                          userInfo: @{@"VideoInstance" : videoInstance}];
+                                                          userInfo: @{@"VideoInstance" : videoInstance , @"button" : addButton}];
     }
     
     addButton.selected = !addButton.selected;
