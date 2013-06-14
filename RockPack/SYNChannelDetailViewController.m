@@ -2742,9 +2742,7 @@
     self.blurredBGImageView.frame = self.channelCoverImageView.frame;
     self.blurredBGImageView.contentMode = UIViewContentModeCenter;
     
-    NSLog(@"frame %@", NSStringFromCGRect(self.blurredBGImageView.frame));
     CGImageRelease(cgimg);
-    
     
     CGImageRelease(croppedImageRef);
     
