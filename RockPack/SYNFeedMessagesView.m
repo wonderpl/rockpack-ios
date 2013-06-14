@@ -34,7 +34,7 @@
         _isIPhone = [[SYNDeviceManager sharedInstance] isIPhone];
         // Label
         
-        UIFont* fontToUse = [UIFont rockpackFontOfSize: _isIPhone?12.0f : 16.0f ];
+        UIFont* fontToUse = [UIFont rockpackFontOfSize: _isIPhone? 14.0f : 20.0f ];
         
         CGRect labelFrame = CGRectZero;
         
