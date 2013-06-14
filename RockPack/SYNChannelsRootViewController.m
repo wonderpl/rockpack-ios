@@ -197,7 +197,7 @@
     
     // On Boarding
     
-    SYNOnBoardingPopoverQueueController* onBoardingQueue = [[SYNOnBoardingPopoverQueueController alloc] init];
+    
     NSUserDefaults *defaults = [NSUserDefaults standardUserDefaults];
     BOOL hasShownSubscribeOnBoarding = [defaults boolForKey:kUserDefaultsChannels];
     if(!hasShownSubscribeOnBoarding)
@@ -213,13 +213,11 @@
                                                                              withDirection:PointingDirectionNone];
         
         
-        [onBoardingQueue addPopover:subscribePopover];
+        [appDelegate.onBoardingQueue addPopover:subscribePopover];
         
         [defaults setBool:YES forKey:kUserDefaultsChannels];
         
-        [self.view addSubview:onBoardingQueue.view];
-        [self addChildViewController:onBoardingQueue];
-        [onBoardingQueue present];
+        [appDelegate.onBoardingQueue present];
     }
     
 

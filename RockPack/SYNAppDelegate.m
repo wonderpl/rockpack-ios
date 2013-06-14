@@ -46,6 +46,7 @@ extern void instrumentObjcMessageSends(BOOL);
 @property (nonatomic, strong) SYNNetworkEngine *networkEngine;
 @property (nonatomic, strong) SYNOAuthNetworkEngine *oAuthNetworkEngine;
 @property (nonatomic, strong) SYNVideoQueue* videoQueue;
+@property (nonatomic, strong) SYNOnBoardingPopoverQueueController* onBoardingQueue;
 
 @end
 
@@ -54,6 +55,8 @@ extern void instrumentObjcMessageSends(BOOL);
 
 @synthesize mainRegistry = _mainRegistry, searchRegistry = _searchRegistry;
 @synthesize currentUser = _currentUser, currentOAuth2Credentials = _currentOAuth2Credentials;
+@synthesize onBoardingQueue = _onBoardingQueue;
+
 
 - (BOOL) application:(UIApplication *) application
 didFinishLaunchingWithOptions: (NSDictionary *) launchOptions
@@ -127,6 +130,10 @@ didFinishLaunchingWithOptions: (NSDictionary *) launchOptions
     
     // Subscriptions Manager //
     self.channelManager = [SYNChannelManager manager];
+    
+    self.onBoardingQueue = [SYNOnBoardingPopoverQueueController queueController];
+    
+    
     
     // Network Engine //
     [self initializeNetworkEngines];

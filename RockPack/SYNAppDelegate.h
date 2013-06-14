@@ -14,6 +14,7 @@
 #import "User.h"
 #import "SYNOAuth2Credential.h"
 #import "SYNVideoQueue.h"
+#import "SYNOnBoardingPopoverQueueController.h"
 #import "SYNChannelManager.h"
 
 #define kShowLoginPhase YES
@@ -54,6 +55,8 @@
 
 @property (readonly, nonatomic, strong) SYNMainRegistry* mainRegistry;
 @property (readonly, nonatomic, strong) SYNSearchRegistry* searchRegistry;
+
+@property (nonatomic, readonly) SYNOnBoardingPopoverQueueController* onBoardingQueue;
 
 @property (nonatomic, assign) BOOL searchRefreshDisabled;
 @property (nonatomic, assign) BOOL playerUpdated;

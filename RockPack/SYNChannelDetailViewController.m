@@ -2131,7 +2131,6 @@
 {
     [super viewDidAppear:animated];
     
-    SYNOnBoardingPopoverQueueController* onBoardingQueue = [[SYNOnBoardingPopoverQueueController alloc] init];
     
     NSUserDefaults *defaults = [NSUserDefaults standardUserDefaults];
     BOOL hasShownSubscribeOnBoarding = [defaults boolForKey:kUserDefaultsSubscribe];
@@ -2147,14 +2146,12 @@
                                                                                andFontSize:fontSize
                                                                                 pointingTo:self.subscribeButton.frame
                                                                              withDirection:direction];
-        [onBoardingQueue addPopover:subscribePopover];
+        [appDelegate.onBoardingQueue addPopover:subscribePopover];
         
         [defaults setBool:YES forKey:kUserDefaultsSubscribe];
         
         
-        [self.view addSubview:onBoardingQueue.view];
-        [self addChildViewController:onBoardingQueue];
-        [onBoardingQueue present];
+        [appDelegate.onBoardingQueue present];
     }
     
     
@@ -2677,12 +2674,9 @@
             blurOpacity = differenceInY > 200 ? 1.0 : differenceInY / 200.0; // 1 .. 0
             
             
-            
         }
         
         self.channelCoverImageView.alpha = 1.0 - blurOpacity;
-        
-        
         
     }
 }

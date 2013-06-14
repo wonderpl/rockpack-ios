@@ -8,6 +8,7 @@
 
 #import "SYNOnBoardingPopoverQueueController.h"
 #import "SYNDeviceManager.h"
+#import "SYNAppDelegate.h"
 
 #define STD_PADDING_DISTANCE 20.0
 
@@ -24,6 +25,10 @@
 
 @synthesize queue;
 
++ (id) queueController
+{
+    return [[self alloc] init];
+}
 -(void)loadView
 {
     // background view
@@ -39,6 +44,7 @@
     mainView.backgroundColor = [UIColor clearColor];
     [mainView addSubview:self.backgroundView];
     
+    mainView.autoresizingMask = UIViewAutoresizingFlexibleWidth | UIViewAutoresizingFlexibleHeight;
     self.view = mainView;
 }
 
@@ -68,6 +74,11 @@
 -(void)present
 {
     NSLog(@"Starting Q with %i", self.queue.count);
+    
+    SYNAppDelegate* appDelegate = (SYNAppDelegate*)[UIApplication sharedApplication].delegate;
+    
+    [appDelegate.masterViewController addChildViewController:self];
+    [appDelegate.masterViewController.view addSubview:self.view];
     
     [self presentNextPopover];
 }
@@ -163,8 +174,8 @@
     switch (popover.direction) {
             
         case PointingDirectionNone: // center in view
-            panelFrame.origin.x = self.view.frame.size.width * 0.5 - panelFrame.size.width * 0.5;
-            panelFrame.origin.y = self.view.frame.size.height * 0.5 - panelFrame.size.height * 0.5;
+            panelFrame.origin.x = screenSize.width * 0.5 - panelFrame.size.width * 0.5;
+            panelFrame.origin.y = screenSize.height * 0.5 - panelFrame.size.height * 0.5;
             break;
             
         case PointingDirectionUp:
