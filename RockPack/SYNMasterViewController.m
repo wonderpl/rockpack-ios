@@ -294,7 +294,7 @@ typedef void(^AnimationCompletionBlock)(BOOL finished);
 
 -(void)scrollerPageChanged:(NSNotification*)notification
 {
-    NSNumber* pageNumber = [[notification userInfo] objectForKey:kCurrentPage];
+    NSNumber* pageNumber = [notification userInfo][kCurrentPage];
     if(!pageNumber)
         return;
     
@@ -351,7 +351,7 @@ typedef void(^AnimationCompletionBlock)(BOOL finished);
     // fade in //
     
     CGPoint originalCenter = self.existingChannelsController.view.center;
-    UIButton* button = [notification.userInfo objectForKey:@"button"];
+    UIButton* button = (notification.userInfo)[@"button"];
     if(button)
     {
         CGPoint startCenter = [self.view convertPoint:button.center fromView:button.superview];
@@ -394,7 +394,7 @@ typedef void(^AnimationCompletionBlock)(BOOL finished);
         return;
     }
     
-    Channel* channel = (Channel*)[[notification userInfo] objectForKey: kChannel];
+    Channel* channel = (Channel*)[notification userInfo][kChannel];
     if(!channel)
         return;
     
@@ -411,7 +411,7 @@ typedef void(^AnimationCompletionBlock)(BOOL finished);
 -(void)addedToChannelAction:(NSNotification*)notification
 {
     
-    Channel* selectedChannel = (Channel*)[[notification userInfo] objectForKey:kChannel];
+    Channel* selectedChannel = (Channel*)[notification userInfo][kChannel];
     if(!selectedChannel)
     {
         //Channel select was cancelled.
@@ -707,7 +707,7 @@ typedef void(^AnimationCompletionBlock)(BOOL finished);
 - (void) searchTyped: (NSNotification*) notification
 {
     
-    NSString* termString = (NSString*)[[notification userInfo] objectForKey: kSearchTerm];
+    NSString* termString = (NSString*)[notification userInfo][kSearchTerm];
     
     if(!termString)
         return;
@@ -916,7 +916,7 @@ typedef void(^AnimationCompletionBlock)(BOOL finished);
 - (void) navigateToPage: (NSNotification*) notification
 {
     
-    NSString* pageName = [[notification userInfo] objectForKey: @"pageName"];
+    NSString* pageName = [notification userInfo][@"pageName"];
     if(!pageName)
         return;
     
@@ -1409,7 +1409,7 @@ typedef void(^AnimationCompletionBlock)(BOOL finished);
                                                   if ([SYNDeviceManager.sharedInstance isIPhone])
                                                   {
                                                       // The search overlay sits on the side navigation on iPhone, move it into the overlay temporarily
-                                                     [[[self.overlayNavigationController.viewControllers objectAtIndex:0] view] addSubview: self.sideNavigationViewController.searchViewController.searchBoxView];
+                                                     [[(self.overlayNavigationController.viewControllers)[0] view] addSubview: self.sideNavigationViewController.searchViewController.searchBoxView];
                                                   }
                                               }];
                          }];

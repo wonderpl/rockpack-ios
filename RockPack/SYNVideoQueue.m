@@ -173,7 +173,7 @@
     [self.currentlyCreatingChannel addVideoInstancesObject:copyOfVideoInstance];
     
     self.isEmpty = NO;
-    NSDictionary* userinfo = [NSDictionary dictionary];
+    NSDictionary* userinfo = @{};
     if(button)
     {
         userinfo = @{@"button":button};

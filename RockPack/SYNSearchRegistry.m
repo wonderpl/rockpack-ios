@@ -34,13 +34,13 @@
     
     //[self clearImportContextFromEntityName:@"VideoInstance"];
     
-    NSDictionary *videosDictionary = [dictionary objectForKey: @"videos"];
+    NSDictionary *videosDictionary = dictionary[@"videos"];
     if (!videosDictionary || ![videosDictionary isKindOfClass: [NSDictionary class]])
         return NO;
     
     
     
-    NSArray *itemArray = [videosDictionary objectForKey: @"items"];
+    NSArray *itemArray = videosDictionary[@"items"];
     if (![itemArray isKindOfClass: [NSArray class]])
         return NO;
     
@@ -75,11 +75,11 @@
 
 -(BOOL)registerChannelsFromDictionary:(NSDictionary *)dictionary
 {
-    NSDictionary *channelsDictionary = [dictionary objectForKey: @"channels"];
+    NSDictionary *channelsDictionary = dictionary[@"channels"];
     if (!channelsDictionary || ![channelsDictionary isKindOfClass: [NSDictionary class]])
         return NO;
     
-    NSArray *itemArray = [channelsDictionary objectForKey: @"items"];
+    NSArray *itemArray = channelsDictionary[@"items"];
     if (![itemArray isKindOfClass: [NSArray class]])
         return NO;
     
