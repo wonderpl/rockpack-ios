@@ -45,13 +45,13 @@
 		</dict>
 	</array>
 	<key>CFBundleVersion</key>
-	<string>1.0.53</string>
+	<string>1.0.53.25</string>
 	<key>FacebookAppID</key>
 	<string>131721883664256</string>
 	<key>FacebookNamespace</key>
 	<string>rockpack-dev</string>
 	<key>FullVersion</key>
-	<string>1.0.53</string>
+	<string>1.0.53-25-g54e5fac</string>
 	<key>LSApplicationCategoryType</key>
 	<string></string>
 	<key>LSRequiresIPhoneOS</key>
