@@ -327,6 +327,8 @@
     if(!itemArray || ![itemArray isKindOfClass: [NSArray class]])
         hasVideoInstances = NO;
     
+    if(!hasVideoInstances)
+        return;
     
     for (NSDictionary *channelDictionary in itemArray)
     {

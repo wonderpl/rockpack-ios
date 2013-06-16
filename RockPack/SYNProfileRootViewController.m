@@ -1171,10 +1171,10 @@
                                               }];
 }
 
--(void)headerTapped
+- (void) headerTapped
 {
     [self.channelThumbnailCollectionView setContentOffset:CGPointZero animated:YES];
-    [self.subscriptionsViewController headerTapped];
+    // no need to animate the subscriptions part since it observes the channels thumbnails scroll view
 }
 
 #pragma mark - Accessors

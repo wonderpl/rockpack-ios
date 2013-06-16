@@ -13,7 +13,7 @@
 #define USE_TITLE_STRING__
 
 @implementation SYNBackButtonControl
-
+@synthesize button;
 
 -(id)init
 {

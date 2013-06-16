@@ -598,7 +598,10 @@
         {
             
             
+            
             self.dataItemsAvailable = self.channel.totalVideosValue;
+            
+            NSLog(@"total videos first batch: %i", self.channel.totalVideosValue);
             
             
 
@@ -907,21 +910,20 @@
     
     UICollectionReusableView* supplementaryView;
     
-    if (kind == UICollectionElementKindSectionHeader)
-    {
-        // nothing yet
-    }
-    
     if (kind == UICollectionElementKindSectionFooter)
     {
-        if (self.channel.videoInstances.count == 0 || (self.dataRequestRange.location + self.dataRequestRange.length) >= self.dataItemsAvailable)
+        if (self.channel.videoInstances.count == 0 ||
+           (self.dataRequestRange.location + self.dataRequestRange.length) >= self.dataItemsAvailable)
         {
-            return supplementaryView;
+            NSLog(@"%i > %i", (self.dataRequestRange.location + self.dataRequestRange.length), self.dataItemsAvailable);
+            return nil;
         }
         
+        NSLog(@"%i < %i", (self.dataRequestRange.location + self.dataRequestRange.length), self.dataItemsAvailable);
+        
         self.footerView = [self.videoThumbnailCollectionView dequeueReusableSupplementaryViewOfKind: kind
-                                                                                  withReuseIdentifier: @"SYNChannelFooterMoreView"
-                                                                                         forIndexPath: indexPath];
+                                                                                withReuseIdentifier: @"SYNChannelFooterMoreView"
+                                                                                       forIndexPath: indexPath];
         
         [self.footerView.loadMoreButton addTarget: self
                                            action: @selector(loadMoreVideos:)
@@ -942,8 +944,6 @@
     
     [self incrementRangeForNextRequest];
     
-    NSLog(@"Load More Videos (%i - %i)", self.dataRequestRange.location, self.dataRequestRange.location + self.dataRequestRange.length);
-    
     
     MKNKUserSuccessBlock successBlock = ^(NSDictionary *dictionary) {
         
@@ -952,6 +952,8 @@
         NSError* error;
         [self.channel.managedObjectContext save:&error];
         
+        self.footerView.showsLoading = NO;
+        
         
     };
     
@@ -959,6 +961,7 @@
         
     MKNKUserErrorBlock errorBlock = ^(NSDictionary* errorDictionary) {
         DebugLog(@"Update action failed");
+        self.footerView.showsLoading = NO;
             
     };
         
@@ -2196,37 +2199,52 @@
     
 }
 
+#pragma mark - On Boarding Messages
+
 -(void)viewDidAppear:(BOOL)animated
 {
     [super viewDidAppear:animated];
     
-    SYNOnBoardingPopoverQueueController* onBoardingQueue = [[SYNOnBoardingPopoverQueueController alloc] init];
+    [[NSNotificationCenter defaultCenter] postNotificationName:kMainControlsChangeEnter object:self];
     
-    NSUserDefaults *defaults = [NSUserDefaults standardUserDefaults];
-    BOOL hasShownSubscribeOnBoarding = [defaults boolForKey:kUserDefaultsSubscribe];
-    if(!hasShownSubscribeOnBoarding)
+    if(![self.channel.channelOwner.uniqueId isEqualToString:appDelegate.currentUser.uniqueId] ||
+       !self.channel.subscribedByUser)
     {
-        BOOL isIpad = [[SYNDeviceManager sharedInstance] isIPad];
-        NSString* message = @"Tap this button to subscribe to a channel and get new videos in your feed.";
-        PointingDirection direction = isIpad ? PointingDirectionLeft : PointingDirectionUp;
-        CGFloat fontSize = isIpad ? 19.0 : 15.0 ;
-        CGSize size =  isIpad ? CGSizeMake(260.0, 144.0) : CGSizeMake(260.0, 128.0);
-        SYNOnBoardingPopoverView* subscribePopover = [SYNOnBoardingPopoverView withMessage:message
-                                                                                  withSize:size
-                                                                               andFontSize:fontSize
-                                                                                pointingTo:self.subscribeButton.frame
-                                                                             withDirection:direction];
-        [onBoardingQueue addPopover:subscribePopover];
-        
-        [defaults setBool:YES forKey:kUserDefaultsSubscribe];
-        
-        
-        [self.view addSubview:onBoardingQueue.view];
-        [self addChildViewController:onBoardingQueue];
-        [onBoardingQueue present];
+        // avoid showing the on boarding related to subscription to already subscribed channel or user's own channel
+        NSUserDefaults *defaults = [NSUserDefaults standardUserDefaults];
+        BOOL hasShownSubscribeOnBoarding = [defaults boolForKey:kUserDefaultsSubscribe];
+        if(!hasShownSubscribeOnBoarding)
+        {
+            BOOL isIpad = [[SYNDeviceManager sharedInstance] isIPad];
+            NSString* message = @"Tap this button to subscribe to a channel and get new videos in your feed.";
+            PointingDirection direction = isIpad ? PointingDirectionLeft : PointingDirectionUp;
+            CGFloat fontSize = isIpad ? 19.0 : 15.0 ;
+            CGSize size =  isIpad ? CGSizeMake(260.0, 144.0) : CGSizeMake(260.0, 128.0);
+            SYNOnBoardingPopoverView* subscribePopover = [SYNOnBoardingPopoverView withMessage:message
+                                                                                      withSize:size
+                                                                                   andFontSize:fontSize
+                                                                                    pointingTo:self.subscribeButton.frame
+                                                                                 withDirection:direction];
+            [appDelegate.onBoardingQueue addPopover:subscribePopover];
+            
+            [defaults setBool:YES forKey:kUserDefaultsSubscribe];
+            
+            
+            [appDelegate.onBoardingQueue present];
+        }
     }
     
     
+    
+    
+}
+
+
+-(void)viewDidDisappear:(BOOL)animated
+{
+    [super viewDidDisappear:animated];
+    
+    [[NSNotificationCenter defaultCenter] postNotificationName:kMainControlsChangeLeave object:self];
 }
 
 
@@ -2746,12 +2764,9 @@
             blurOpacity = differenceInY > 200 ? 1.0 : differenceInY / 200.0; // 1 .. 0
             
             
-            
         }
         
         self.channelCoverImageView.alpha = 1.0 - blurOpacity;
-        
-        
         
     }
 }
@@ -2764,6 +2779,7 @@
     
     CGRect croppingRect;
     CGRect bgCroppingRect;
+    
     if(UIInterfaceOrientationIsLandscape(orientation))
     {
         croppingRect = CGRectMake(0.0, 128.0, 1024.0, 768.0);
@@ -2809,7 +2825,7 @@
     UIImage* bgImage = [UIImage imageWithCGImage:cgimg];
     self.blurredBGImageView.image = bgImage;
     self.blurredBGImageView.frame = self.channelCoverImageView.frame;
-    self.blurredBGImageView.contentMode = UIViewContentModeCenter;
+    self.blurredBGImageView.contentMode = UIViewContentModeScaleAspectFill;
     
     CGImageRelease(cgimg);
     
@@ -2973,7 +2989,7 @@
 
 -(void)headerTapped
 {
-    [self.videoThumbnailCollectionView setContentOffset:CGPointMake(0.0, -500.0) animated:YES];
+    [self.videoThumbnailCollectionView setContentOffset:self.originalContentOffset animated:YES];
 }
 
 
@@ -3022,7 +3038,7 @@
         NSString* message = @"Whenever you see a video you like tap the + button to add it to one of your channels.";
         
         CGFloat fontSize = [[SYNDeviceManager sharedInstance] isIPad] ? 19.0 : 15.0 ;
-        CGSize size = [[SYNDeviceManager sharedInstance] isIPad] ? CGSizeMake(340.0, 144.0) : CGSizeMake(260.0, 144.0);
+        CGSize size = [[SYNDeviceManager sharedInstance] isIPad] ? CGSizeMake(340.0, 164.0) : CGSizeMake(260.0, 144.0);
         CGRect rectToPointTo = CGRectZero;
         PointingDirection directionToPointTo = PointingDirectionDown;
         if(self.selectedCell)

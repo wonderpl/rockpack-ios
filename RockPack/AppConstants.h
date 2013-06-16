@@ -162,6 +162,9 @@
 
 // Notifications
 
+#define kMainControlsChangeEnter @"kMainControlsChangeEnter"
+#define kMainControlsChangeLeave @"kMainControlsChangeLeave"
+
 
 // One the APIs imported some new data - we will need to be more specific at some stage.
 #define kCategoriesUpdated @"kCategoriesUpdated"

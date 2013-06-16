@@ -243,6 +243,7 @@
 						<string key="NSFrame">{{954, 10}, {60, 61}}</string>
 						<reference key="NSSuperview" ref="766721923"/>
 						<reference key="NSWindow"/>
+						<reference key="NSNextKeyView"/>
 						<string key="NSReuseIdentifierKey">_NS:9</string>
 						<bool key="IBUIOpaque">NO</bool>
 						<string key="targetRuntimeIdentifier">IBIPadFramework</string>
@@ -567,7 +568,7 @@
 				<string key="101.IBPluginDependency">com.apple.InterfaceBuilder.IBCocoaTouchPlugin</string>
 				<real value="2" key="101.IBUIButtonInspectorSelectedStateConfigurationMetadataKey"/>
 				<string key="105.IBPluginDependency">com.apple.InterfaceBuilder.IBCocoaTouchPlugin</string>
-				<real value="0.0" key="105.IBUIButtonInspectorSelectedStateConfigurationMetadataKey"/>
+				<real value="1" key="105.IBUIButtonInspectorSelectedStateConfigurationMetadataKey"/>
 				<string key="118.IBPluginDependency">com.apple.InterfaceBuilder.IBCocoaTouchPlugin</string>
 				<real value="0.0" key="118.IBUIButtonInspectorSelectedStateConfigurationMetadataKey"/>
 				<string key="128.IBPluginDependency">com.apple.InterfaceBuilder.IBCocoaTouchPlugin</string>
@@ -692,13 +693,13 @@
 		<bool key="IBDocument.PluginDeclaredDependenciesTrackSystemTargetVersion">YES</bool>
 		<int key="IBDocument.defaultPropertyAccessControl">3</int>
 		<dictionary class="NSMutableDictionary" key="IBDocument.LastKnownImageSizes">
-			<string key="ButtonCancel.png">{60, 61}</string>
-			<string key="ButtonCancelHighlighted.png">{60, 61}</string>
-			<string key="ButtonNav.png">{60, 61}</string>
-			<string key="ButtonNavHighlighted.png">{60, 61}</string>
-			<string key="ButtonNavSelected.png">{60, 61}</string>
-			<string key="ButtonSearch.png">{60, 61}</string>
-			<string key="ButtonSearchHighlighted.png">{60, 61}</string>
+			<string key="ButtonCancel.png">{60, 60}</string>
+			<string key="ButtonCancelHighlighted.png">{60, 60}</string>
+			<string key="ButtonNav.png">{60, 60}</string>
+			<string key="ButtonNavHighlighted.png">{60, 60}</string>
+			<string key="ButtonNavSelected.png">{120, 120}</string>
+			<string key="ButtonSearch.png">{60, 60}</string>
+			<string key="ButtonSearchHighlighted.png">{60, 60}</string>
 		</dictionary>
 		<string key="IBCocoaTouchPluginVersion">2083</string>
 	</data>
