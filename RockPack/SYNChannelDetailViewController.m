@@ -2136,6 +2136,8 @@
 {
     [super viewDidAppear:animated];
     
+    [[NSNotificationCenter defaultCenter] postNotificationName:kMainControlsChangeEnter object:self];
+    
     if(![self.channel.channelOwner.uniqueId isEqualToString:appDelegate.currentUser.uniqueId] ||
        !self.channel.subscribedByUser)
     {
@@ -2166,6 +2168,14 @@
     
     
     
+}
+
+
+-(void)viewDidDisappear:(BOOL)animated
+{
+    [super viewDidDisappear:animated];
+    
+    [[NSNotificationCenter defaultCenter] postNotificationName:kMainControlsChangeLeave object:self];
 }
 
 
