@@ -702,7 +702,6 @@ typedef void(^AnimationCompletionBlock)(BOOL finished);
     {
         [self.searchBoxController.searchTextField becomeFirstResponder];
     }
-    
 }
 
 - (void) searchTyped: (NSNotification*) notification
