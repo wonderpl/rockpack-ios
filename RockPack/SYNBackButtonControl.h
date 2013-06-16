@@ -14,7 +14,7 @@
     UILabel* titleLabel;
     UITapGestureRecognizer* recogniser;
 }
-
+@property (nonatomic, readonly) UIButton* button;
 +(id)backButton;
 -(void)setBackTitle:(NSString*)backTitle;
 

@@ -204,6 +204,8 @@ typedef void(^AnimationCompletionBlock)(BOOL finished);
     self.accountSettingsCoverView.alpha = 0.5;
     self.accountSettingsCoverView.hidden = YES;
     
+    self.closeSearchButton.hidden = YES;
+    
     
     
     // == Set up Dots View == //
@@ -663,8 +665,10 @@ typedef void(^AnimationCompletionBlock)(BOOL finished);
         return;
     
 
-    if(!self.overlayNavigationController) // we are on the main stage and the X button should appear
+    if(!self.overlayNavigationController) {// we are on the main stage and the X button should appear
         self.sideNavigationButton.hidden = YES;
+        self.closeSearchButton.hidden = NO;
+    }
     
     self.darkOverlayView.alpha = 1.0;
     
@@ -712,7 +716,7 @@ typedef void(^AnimationCompletionBlock)(BOOL finished);
     BOOL isIPad = [SYNDeviceManager.sharedInstance isIPad];
     if(isIPad)
     {
-        //self.closeSearchButton.hidden = YES;
+        self.closeSearchButton.hidden = YES;
         self.sideNavigationButton.hidden = NO;
         
     }
@@ -744,6 +748,8 @@ typedef void(^AnimationCompletionBlock)(BOOL finished);
         [self cancelButtonPressed: nil];
         self.overlayNavigationController = nil;
     }
+    self.closeSearchButton.hidden = YES;
+    self.sideNavigationButton.hidden = NO;
     [UIView animateWithDuration:0.3
                         animations:^{
                 self.darkOverlayView.alpha = 1.0;
@@ -761,6 +767,8 @@ typedef void(^AnimationCompletionBlock)(BOOL finished);
     [self.searchBoxController.view removeFromSuperview];
     
     self.sideNavigationButton.hidden = NO;
+    
+    self.closeSearchButton.hidden = YES;
 }
 
 
@@ -876,13 +884,14 @@ typedef void(^AnimationCompletionBlock)(BOOL finished);
         self.searchButton.hidden = NO;
         
         self.sideNavigationButton.hidden = NO;
+        self.closeSearchButton.hidden = YES;
         
         if(self.isInSearchMode && [[SYNDeviceManager sharedInstance] isIPad])
         {
             self.sideNavigationButton.hidden = YES;
         }
         
-        self.closeSearchButton.hidden = NO;
+        
         
         self.pageTitleLabel.hidden = NO;
         
@@ -1511,6 +1520,9 @@ typedef void(^AnimationCompletionBlock)(BOOL finished);
         [self.closeSearchButton setImage:[UIImage imageNamed:@"ButtonCancelCD"] forState:UIControlStateNormal];
         [self.closeSearchButton setImage:[UIImage imageNamed:@"ButtonCancelCD"] forState:UIControlStateHighlighted];
         
+        [self.backButtonControl.button setImage:[UIImage imageNamed:@"ButtonBackCD"] forState:UIControlStateNormal];
+        [self.backButtonControl.button setImage:[UIImage imageNamed:@"ButtonBackHighlightedCD"] forState:UIControlStateHighlighted];
+        
         [self.sideNavigationButton setImage:[UIImage imageNamed:@"ButtonNavCD"] forState:UIControlStateNormal];
         [self.sideNavigationButton setImage:[UIImage imageNamed:@"ButtonNavHighlightedCD"] forState:UIControlStateHighlighted];
         [self.sideNavigationButton setImage:[UIImage imageNamed:@"ButtonNavSelectedCD"] forState:UIControlStateSelected];
@@ -1523,6 +1535,10 @@ typedef void(^AnimationCompletionBlock)(BOOL finished);
         
         [self.closeSearchButton setImage:[UIImage imageNamed:@"ButtonCancel"] forState:UIControlStateNormal];
         [self.closeSearchButton setImage:[UIImage imageNamed:@"ButtonCancelHighlighted"] forState:UIControlStateHighlighted];
+        
+        
+        [self.backButtonControl.button setImage:[UIImage imageNamed:@"ButtonBack"] forState:UIControlStateNormal];
+        [self.backButtonControl.button setImage:[UIImage imageNamed:@"ButtonBackHighlighted"] forState:UIControlStateHighlighted];
         
         [self.sideNavigationButton setImage:[UIImage imageNamed:@"ButtonNav"] forState:UIControlStateNormal];
         [self.sideNavigationButton setImage:[UIImage imageNamed:@"ButtonNavHighlighted"] forState:UIControlStateHighlighted];
