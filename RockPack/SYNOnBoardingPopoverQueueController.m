@@ -8,6 +8,7 @@
 
 #import "SYNOnBoardingPopoverQueueController.h"
 #import "SYNDeviceManager.h"
+#import "SYNAppDelegate.h"
 
 #define STD_PADDING_DISTANCE 20.0
 
@@ -24,6 +25,10 @@
 
 @synthesize queue;
 
++ (id) queueController
+{
+    return [[self alloc] init];
+}
 -(void)loadView
 {
     // background view
@@ -34,11 +39,13 @@
     self.backgroundView = [[UIView alloc] initWithFrame:screenFrame];
     self.backgroundView.backgroundColor = [UIColor blackColor];
     self.backgroundView.alpha = 0.0;
+    self.backgroundView.userInteractionEnabled = NO;
     
     UIView* mainView = [[UIView alloc] initWithFrame:screenFrame];
     mainView.backgroundColor = [UIColor clearColor];
     [mainView addSubview:self.backgroundView];
     
+    mainView.autoresizingMask = UIViewAutoresizingFlexibleWidth | UIViewAutoresizingFlexibleHeight;
     self.view = mainView;
 }
 
@@ -67,7 +74,12 @@
 
 -(void)present
 {
-    NSLog(@"Starting Q with %i", self.queue.count);
+    
+    
+    SYNAppDelegate* appDelegate = (SYNAppDelegate*)[UIApplication sharedApplication].delegate;
+    
+    [appDelegate.masterViewController addChildViewController:self];
+    [appDelegate.masterViewController.view addSubview:self.view];
     
     [self presentNextPopover];
 }
@@ -75,12 +87,11 @@
 -(void)presentNextPopover
 {
     
-    NSLog(@"presentNextPopover: %i", self.queue.count);
-    
     
     if(queue.count == 0) // renmove everything
     {
         [UIView animateWithDuration:0.3 animations:^{
+            self.currentlyVisiblePopover.alpha = 0.0;
             self.backgroundView.alpha = 0.0;
         } completion:^(BOOL finished) {
             [self.view removeFromSuperview];
@@ -89,6 +100,7 @@
     }
     else // go to next popover
     {
+        NSLog(@"Presenting %i", self.queue.count);
         SYNOnBoardingPopoverView* nextPopover = (SYNOnBoardingPopoverView*)(self.queue)[0];
         [self.queue removeObject:nextPopover];
         
@@ -163,8 +175,8 @@
     switch (popover.direction) {
             
         case PointingDirectionNone: // center in view
-            panelFrame.origin.x = self.view.frame.size.width * 0.5 - panelFrame.size.width * 0.5;
-            panelFrame.origin.y = self.view.frame.size.height * 0.5 - panelFrame.size.height * 0.5;
+            panelFrame.origin.x = screenSize.width * 0.5 - panelFrame.size.width * 0.5;
+            panelFrame.origin.y = screenSize.height * 0.5 - panelFrame.size.height * 0.5;
             break;
             
         case PointingDirectionUp:

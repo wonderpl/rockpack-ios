@@ -548,7 +548,6 @@
     BOOL hasShownSubscribeOnBoarding = [defaults boolForKey:kUserDefaultsAddVideo];
     if(!hasShownSubscribeOnBoarding)
     {
-        SYNOnBoardingPopoverQueueController* onBoardingQueue = [[SYNOnBoardingPopoverQueueController alloc] init];
         
         NSString* message = @"Whenever you see a video you like tap the + button to add it to one of your channels.";
         
@@ -571,13 +570,11 @@
                                                                              withDirection:directionToPointTo];
         
         
-        [onBoardingQueue addPopover:subscribePopover];
+        [appDelegate.onBoardingQueue addPopover:subscribePopover];
         
         [defaults setBool:YES forKey:kUserDefaultsAddVideo];
         
-        [self.view addSubview:onBoardingQueue.view];
-        [self addChildViewController:onBoardingQueue];
-        [onBoardingQueue present];
+        [appDelegate.onBoardingQueue present];
     }
 }
 

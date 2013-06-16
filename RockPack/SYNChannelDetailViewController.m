@@ -36,6 +36,7 @@
 #import "SYNDeviceManager.h"
 #import <AVFoundation/AVFoundation.h>
 #import <QuartzCore/QuartzCore.h>
+#import <CoreImage/CoreImage.h>
 #import "SYNOnBoardingPopoverQueueController.h"
 
 @interface SYNChannelDetailViewController () <UITextViewDelegate,
@@ -47,6 +48,11 @@
 {
     BOOL _isIPhone; //So many calls were being made to the SYNDeviceManager a boolean initialised at viewDidLoad was introduced.
     BOOL _hasAppeared; //Debug flag for finding double ViewDidAppear/disappear calls.
+    
+    // blurring
+    CIContext *context;
+    CIFilter *filter;
+    CIImage *backgroundCIImage;
 }
 
 
@@ -98,6 +104,9 @@
 @property (weak, nonatomic) IBOutlet UIActivityIndicatorView *activityIndicator;
 @property (weak, nonatomic) IBOutlet UIActivityIndicatorView *shareActivityIndicator;
 
+@property (nonatomic, readonly) CIImage* backgroundCIImage;
+@property (nonatomic, strong) UIImageView* blurredBGImageView;
+
 //iPhone specific
 @property (nonatomic,strong) SYNChannelCoverImageSelectorViewController* coverImageSelector;
 @property (strong,nonatomic) SYNChannelCategoryTableViewController *categoryTableViewController;
@@ -115,6 +124,7 @@
 @synthesize channelCoverFetchedResultsController = _channelCoverFetchedResultsController;
 @synthesize userChannelCoverFetchedResultsController = _userChannelCoverFetchedResultsController;
 @synthesize channel = _channel;
+@synthesize backgroundCIImage = backgroundCIImage;
 
 - (id) initWithChannel: (Channel *) channel
              usingMode: (kChannelDetailsMode) mode
@@ -225,6 +235,8 @@
     {
         self.currentWebImageOperation = [self loadBackgroundImage];
     }
+    
+    
     
     // == Avatar Image == //
     
@@ -592,7 +604,10 @@
                 [self showNoVideosMessage:nil withLoader:NO];
             }
             
+            
             self.dataItemsAvailable = self.channel.totalVideosValue;
+            
+            NSLog(@"total videos first batch: %i", self.channel.totalVideosValue);
             
             
             self.subscribeButton.selected = self.channel.subscribedByUserValue;
@@ -825,21 +840,20 @@
     
     UICollectionReusableView* supplementaryView;
     
-    if (kind == UICollectionElementKindSectionHeader)
-    {
-        // nothing yet
-    }
-    
     if (kind == UICollectionElementKindSectionFooter)
     {
-        if (self.channel.videoInstances.count == 0 || (self.dataRequestRange.location + self.dataRequestRange.length) >= self.dataItemsAvailable)
+        if (self.channel.videoInstances.count == 0 ||
+           (self.dataRequestRange.location + self.dataRequestRange.length) >= self.dataItemsAvailable)
         {
-            return supplementaryView;
+            NSLog(@"%i > %i", (self.dataRequestRange.location + self.dataRequestRange.length), self.dataItemsAvailable);
+            return nil;
         }
         
+        NSLog(@"%i < %i", (self.dataRequestRange.location + self.dataRequestRange.length), self.dataItemsAvailable);
+        
         self.footerView = [self.videoThumbnailCollectionView dequeueReusableSupplementaryViewOfKind: kind
-                                                                                  withReuseIdentifier: @"SYNChannelFooterMoreView"
-                                                                                         forIndexPath: indexPath];
+                                                                                withReuseIdentifier: @"SYNChannelFooterMoreView"
+                                                                                       forIndexPath: indexPath];
         
         [self.footerView.loadMoreButton addTarget: self
                                            action: @selector(loadMoreVideos:)
@@ -860,8 +874,6 @@
     
     [self incrementRangeForNextRequest];
     
-    NSLog(@"Load More Videos (%i - %i)", self.dataRequestRange.location, self.dataRequestRange.location + self.dataRequestRange.length);
-    
     
     MKNKUserSuccessBlock successBlock = ^(NSDictionary *dictionary) {
         
@@ -870,6 +882,8 @@
         NSError* error;
         [self.channel.managedObjectContext save:&error];
         
+        self.footerView.showsLoading = NO;
+        
         
     };
     
@@ -877,6 +891,7 @@
         
     MKNKUserErrorBlock errorBlock = ^(NSDictionary* errorDictionary) {
         DebugLog(@"Update action failed");
+        self.footerView.showsLoading = NO;
             
     };
         
@@ -2115,35 +2130,40 @@
     
 }
 
+#pragma mark - On Boarding Messages
+
 -(void)viewDidAppear:(BOOL)animated
 {
     [super viewDidAppear:animated];
     
-    SYNOnBoardingPopoverQueueController* onBoardingQueue = [[SYNOnBoardingPopoverQueueController alloc] init];
-    
-    NSUserDefaults *defaults = [NSUserDefaults standardUserDefaults];
-    BOOL hasShownSubscribeOnBoarding = [defaults boolForKey:kUserDefaultsSubscribe];
-    if(!hasShownSubscribeOnBoarding)
+    if(![self.channel.channelOwner.uniqueId isEqualToString:appDelegate.currentUser.uniqueId] ||
+       !self.channel.subscribedByUser)
     {
-        BOOL isIpad = [[SYNDeviceManager sharedInstance] isIPad];
-        NSString* message = @"Tap this button to subscribe to a channel and get new videos in your feed.";
-        PointingDirection direction = isIpad ? PointingDirectionLeft : PointingDirectionUp;
-        CGFloat fontSize = isIpad ? 19.0 : 15.0 ;
-        CGSize size =  isIpad ? CGSizeMake(260.0, 144.0) : CGSizeMake(260.0, 128.0);
-        SYNOnBoardingPopoverView* subscribePopover = [SYNOnBoardingPopoverView withMessage:message
-                                                                                  withSize:size
-                                                                               andFontSize:fontSize
-                                                                                pointingTo:self.subscribeButton.frame
-                                                                             withDirection:direction];
-        [onBoardingQueue addPopover:subscribePopover];
-        
-        [defaults setBool:YES forKey:kUserDefaultsSubscribe];
-        
-        
-        [self.view addSubview:onBoardingQueue.view];
-        [self addChildViewController:onBoardingQueue];
-        [onBoardingQueue present];
+        // avoid showing the on boarding related to subscription to already subscribed channel or user's own channel
+        NSUserDefaults *defaults = [NSUserDefaults standardUserDefaults];
+        BOOL hasShownSubscribeOnBoarding = [defaults boolForKey:kUserDefaultsSubscribe];
+        if(!hasShownSubscribeOnBoarding)
+        {
+            BOOL isIpad = [[SYNDeviceManager sharedInstance] isIPad];
+            NSString* message = @"Tap this button to subscribe to a channel and get new videos in your feed.";
+            PointingDirection direction = isIpad ? PointingDirectionLeft : PointingDirectionUp;
+            CGFloat fontSize = isIpad ? 19.0 : 15.0 ;
+            CGSize size =  isIpad ? CGSizeMake(260.0, 144.0) : CGSizeMake(260.0, 128.0);
+            SYNOnBoardingPopoverView* subscribePopover = [SYNOnBoardingPopoverView withMessage:message
+                                                                                      withSize:size
+                                                                                   andFontSize:fontSize
+                                                                                    pointingTo:self.subscribeButton.frame
+                                                                                 withDirection:direction];
+            [appDelegate.onBoardingQueue addPopover:subscribePopover];
+            
+            [defaults setBool:YES forKey:kUserDefaultsSubscribe];
+            
+            
+            [appDelegate.onBoardingQueue present];
+        }
     }
+    
+    
     
     
 }
@@ -2625,7 +2645,7 @@
 - (void) scrollViewDidScroll: (UIScrollView *) scrollView
 {
     CGFloat fadeSpan = (_isIPhone) ? kChannelDetailsFadeSpaniPhone : kChannelDetailsFadeSpan;
-    
+    CGFloat blurOpacity;
     if (scrollView == self.videoThumbnailCollectionView)
     {
         
@@ -2635,6 +2655,9 @@
             CGRect frame = self.masterControlsView.frame;
             frame.origin.y = self.originalMasterControlsViewOrigin.y;
             self.masterControlsView.frame = frame;
+            
+            blurOpacity = 0.0;
+            
         }
         else
         {
@@ -2642,7 +2665,6 @@
             
             CGRect frame = self.masterControlsView.frame;
             
-            NSLog(@"differenceInY: %f", differenceInY);
             
             frame.origin.y = self.originalMasterControlsViewOrigin.y - (differenceInY / 1.5);
             
@@ -2650,13 +2672,23 @@
             
             if (differenceInY < fadeSpan)
             {
-                self.masterControlsView.alpha = 1 - (differenceInY / fadeSpan) * (differenceInY / fadeSpan);
+                CGFloat fadeCoefficient = (differenceInY / fadeSpan);
+                self.masterControlsView.alpha = 1.0 - fadeCoefficient * fadeCoefficient;
             }
             else
             {
                 self.masterControlsView.alpha = 0.0f;
             }
+            
+            // blur background
+            
+            blurOpacity = differenceInY > 200 ? 1.0 : differenceInY / 200.0; // 1 .. 0
+            
+            
         }
+        
+        self.channelCoverImageView.alpha = 1.0 - blurOpacity;
+        
     }
 }
 
@@ -2665,8 +2697,21 @@
 
 - (UIImage*) croppedImageForOrientation: (UIInterfaceOrientation) orientation
 {
-    CGRect croppingRect = UIInterfaceOrientationIsLandscape(orientation) ?
-    CGRectMake(0.0, 138.0, 1024.0, 886.0) : CGRectMake(69.0, 0.0, 886.0, 1024.0);
+    
+    CGRect croppingRect;
+    CGRect bgCroppingRect;
+    
+    if(UIInterfaceOrientationIsLandscape(orientation))
+    {
+        croppingRect = CGRectMake(0.0, 128.0, 1024.0, 768.0);
+        bgCroppingRect = CGRectMake(0.0, 0.0, 1024.0, 768.0);
+    }
+    else
+    {
+        croppingRect = CGRectMake(128.0, 0.0, 768.0, 1024.0);
+        bgCroppingRect = CGRectMake(0.0, 0.0, 768.0, 1024.0);
+    }
+
     
     if (self.originalBackgroundImage == nil) // set the bg var once
     {
@@ -2676,6 +2721,34 @@
     CGImageRef croppedImageRef = CGImageCreateWithImageInRect([self.originalBackgroundImage CGImage], croppingRect);
     
     UIImage* croppedImage = [UIImage imageWithCGImage: croppedImageRef];
+    
+    
+    
+    // add blur
+    
+    backgroundCIImage = [CIImage imageWithCGImage:croppedImageRef];
+    context = [CIContext contextWithOptions:nil];
+    filter = [CIFilter filterWithName:@"CIGaussianBlur"];
+    [filter setValue:backgroundCIImage forKey:@"inputImage"];
+    [filter setValue:[NSNumber numberWithFloat:6.0] forKey:@"inputRadius"];
+    
+    CIImage *outputImage = [filter outputImage];
+    
+    CGImageRef cgimg = [context createCGImage:outputImage
+                                     fromRect:bgCroppingRect];
+    
+    if(!self.blurredBGImageView) {
+        self.blurredBGImageView = [[UIImageView alloc] init];
+        self.blurredBGImageView.autoresizingMask = UIViewAutoresizingFlexibleWidth | UIViewAutoresizingFlexibleHeight;
+        [self.view insertSubview:self.blurredBGImageView belowSubview:self.channelCoverImageView];
+    }
+        
+    UIImage* bgImage = [UIImage imageWithCGImage:cgimg];
+    self.blurredBGImageView.image = bgImage;
+    self.blurredBGImageView.frame = self.channelCoverImageView.frame;
+    self.blurredBGImageView.contentMode = UIViewContentModeScaleAspectFill;
+    
+    CGImageRelease(cgimg);
     
     CGImageRelease(croppedImageRef);
     
@@ -2698,12 +2771,16 @@
                                         
                                         UIImage* croppedImage = [wself croppedImageForOrientation:[(SYNDeviceManager *)SYNDeviceManager.sharedInstance orientation]];
                                         
+                                        
+                                        
                                         [UIView transitionWithView: wself.view
                                                           duration: 0.35f
                                                            options: UIViewAnimationOptionTransitionCrossDissolve
                                                         animations: ^{
                                                             wself.channelCoverImageView.image = croppedImage;
-                                                        } completion: nil];
+                                                        } completion:^(BOOL finished) {
+                                                            
+                                                        }];
                                         
                                         [wself.channelCoverImageView setNeedsLayout];
                                     }];
@@ -2833,7 +2910,7 @@
 
 -(void)headerTapped
 {
-    [self.videoThumbnailCollectionView setContentOffset:CGPointMake(0.0, -500.0) animated:YES];
+    [self.videoThumbnailCollectionView setContentOffset:self.originalContentOffset animated:YES];
 }
 
 
@@ -2882,7 +2959,7 @@
         NSString* message = @"Whenever you see a video you like tap the + button to add it to one of your channels.";
         
         CGFloat fontSize = [[SYNDeviceManager sharedInstance] isIPad] ? 19.0 : 15.0 ;
-        CGSize size = [[SYNDeviceManager sharedInstance] isIPad] ? CGSizeMake(340.0, 144.0) : CGSizeMake(260.0, 144.0);
+        CGSize size = [[SYNDeviceManager sharedInstance] isIPad] ? CGSizeMake(340.0, 164.0) : CGSizeMake(260.0, 144.0);
         CGRect rectToPointTo = CGRectZero;
         PointingDirection directionToPointTo = PointingDirectionDown;
         if(self.selectedCell)
@@ -2909,6 +2986,7 @@
         [onBoardingQueue present];
     }
 }
+
 
 // since this is called when video overlay is being closed it is also used for the onboarding
 -(void)refreshFavouritesChannel
