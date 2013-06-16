@@ -604,7 +604,10 @@
                 [self showNoVideosMessage:nil withLoader:NO];
             }
             
+            
             self.dataItemsAvailable = self.channel.totalVideosValue;
+            
+            NSLog(@"total videos first batch: %i", self.channel.totalVideosValue);
             
             
             self.subscribeButton.selected = self.channel.subscribedByUserValue;
@@ -837,21 +840,20 @@
     
     UICollectionReusableView* supplementaryView;
     
-    if (kind == UICollectionElementKindSectionHeader)
-    {
-        // nothing yet
-    }
-    
     if (kind == UICollectionElementKindSectionFooter)
     {
-        if (self.channel.videoInstances.count == 0 || (self.dataRequestRange.location + self.dataRequestRange.length) >= self.dataItemsAvailable)
+        if (self.channel.videoInstances.count == 0 ||
+           (self.dataRequestRange.location + self.dataRequestRange.length) >= self.dataItemsAvailable)
         {
-            return supplementaryView;
+            NSLog(@"%i > %i", (self.dataRequestRange.location + self.dataRequestRange.length), self.dataItemsAvailable);
+            return nil;
         }
         
+        NSLog(@"%i < %i", (self.dataRequestRange.location + self.dataRequestRange.length), self.dataItemsAvailable);
+        
         self.footerView = [self.videoThumbnailCollectionView dequeueReusableSupplementaryViewOfKind: kind
-                                                                                  withReuseIdentifier: @"SYNChannelFooterMoreView"
-                                                                                         forIndexPath: indexPath];
+                                                                                withReuseIdentifier: @"SYNChannelFooterMoreView"
+                                                                                       forIndexPath: indexPath];
         
         [self.footerView.loadMoreButton addTarget: self
                                            action: @selector(loadMoreVideos:)
@@ -872,8 +874,6 @@
     
     [self incrementRangeForNextRequest];
     
-    NSLog(@"Load More Videos (%i - %i)", self.dataRequestRange.location, self.dataRequestRange.location + self.dataRequestRange.length);
-    
     
     MKNKUserSuccessBlock successBlock = ^(NSDictionary *dictionary) {
         
@@ -882,6 +882,8 @@
         NSError* error;
         [self.channel.managedObjectContext save:&error];
         
+        self.footerView.showsLoading = NO;
+        
         
     };
     
@@ -889,6 +891,7 @@
         
     MKNKUserErrorBlock errorBlock = ^(NSDictionary* errorDictionary) {
         DebugLog(@"Update action failed");
+        self.footerView.showsLoading = NO;
             
     };
         
@@ -2899,7 +2902,7 @@
 
 -(void)headerTapped
 {
-    [self.videoThumbnailCollectionView setContentOffset:CGPointMake(0.0, -500.0) animated:YES];
+    [self.videoThumbnailCollectionView setContentOffset:self.originalContentOffset animated:YES];
 }
 
 
