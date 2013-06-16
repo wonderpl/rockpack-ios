@@ -1508,6 +1508,9 @@ typedef void(^AnimationCompletionBlock)(BOOL finished);
         [self.searchButton setImage:[UIImage imageNamed:@"ButtonSearchCD"] forState:UIControlStateNormal];
         [self.searchButton setImage:[UIImage imageNamed:@"ButtonSearchHighlightedCD"] forState:UIControlStateHighlighted];
         
+        [self.closeSearchButton setImage:[UIImage imageNamed:@"ButtonCancelCD"] forState:UIControlStateNormal];
+        [self.closeSearchButton setImage:[UIImage imageNamed:@"ButtonCancelCD"] forState:UIControlStateHighlighted];
+        
         [self.sideNavigationButton setImage:[UIImage imageNamed:@"ButtonNavCD"] forState:UIControlStateNormal];
         [self.sideNavigationButton setImage:[UIImage imageNamed:@"ButtonNavHighlightedCD"] forState:UIControlStateHighlighted];
         [self.sideNavigationButton setImage:[UIImage imageNamed:@"ButtonNavSelectedCD"] forState:UIControlStateSelected];
@@ -1517,6 +1520,9 @@ typedef void(^AnimationCompletionBlock)(BOOL finished);
     {
         [self.searchButton setImage:[UIImage imageNamed:@"ButtonSearch"] forState:UIControlStateNormal];
         [self.searchButton setImage:[UIImage imageNamed:@"ButtonSearchHighlighted"] forState:UIControlStateHighlighted];
+        
+        [self.closeSearchButton setImage:[UIImage imageNamed:@"ButtonCancel"] forState:UIControlStateNormal];
+        [self.closeSearchButton setImage:[UIImage imageNamed:@"ButtonCancelHighlighted"] forState:UIControlStateHighlighted];
         
         [self.sideNavigationButton setImage:[UIImage imageNamed:@"ButtonNav"] forState:UIControlStateNormal];
         [self.sideNavigationButton setImage:[UIImage imageNamed:@"ButtonNavHighlighted"] forState:UIControlStateHighlighted];

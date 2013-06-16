@@ -951,6 +951,8 @@
 		BE29A32C16DE56AB00C00F92 /* SYNSearchVideosViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = BE29A32B16DE56AB00C00F92 /* SYNSearchVideosViewController.m */; };
 		BE29A32F16DE8C8700C00F92 /* SYNSearchRootViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = BE29A32E16DE8C8700C00F92 /* SYNSearchRootViewController.m */; };
 		BE29A33216DE8CAE00C00F92 /* SYNSearchChannelsViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = BE29A33116DE8CAE00C00F92 /* SYNSearchChannelsViewController.m */; };
+		BE2AE4C1176E0F2E00A753E3 /* ButtonCancelCD.png in Resources */ = {isa = PBXBuildFile; fileRef = BE2AE4BF176E0F2E00A753E3 /* ButtonCancelCD.png */; };
+		BE2AE4C2176E0F2E00A753E3 /* ButtonCancelCD@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = BE2AE4C0176E0F2E00A753E3 /* ButtonCancelCD@2x.png */; };
 		BE2D213F171C527B00B4B755 /* ButtonBackLabel.png in Resources */ = {isa = PBXBuildFile; fileRef = BE2D213B171C527A00B4B755 /* ButtonBackLabel.png */; };
 		BE2D2140171C527B00B4B755 /* ButtonBackLabel@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = BE2D213C171C527B00B4B755 /* ButtonBackLabel@2x.png */; };
 		BE2D2145171C5A0600B4B755 /* SYNSearchBoxViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = BE2D2144171C5A0600B4B755 /* SYNSearchBoxViewController.m */; };
@@ -2221,6 +2223,8 @@
 		BE29A32E16DE8C8700C00F92 /* SYNSearchRootViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SYNSearchRootViewController.m; sourceTree = "<group>"; };
 		BE29A33016DE8CAE00C00F92 /* SYNSearchChannelsViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SYNSearchChannelsViewController.h; sourceTree = "<group>"; };
 		BE29A33116DE8CAE00C00F92 /* SYNSearchChannelsViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SYNSearchChannelsViewController.m; sourceTree = "<group>"; };
+		BE2AE4BF176E0F2E00A753E3 /* ButtonCancelCD.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = ButtonCancelCD.png; path = Assets/Images/ButtonCancelCD.png; sourceTree = "<group>"; };
+		BE2AE4C0176E0F2E00A753E3 /* ButtonCancelCD@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = "ButtonCancelCD@2x.png"; path = "Assets/Images/ButtonCancelCD@2x.png"; sourceTree = "<group>"; };
 		BE2D213B171C527A00B4B755 /* ButtonBackLabel.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = ButtonBackLabel.png; path = Assets/Images/ButtonBackLabel.png; sourceTree = "<group>"; };
 		BE2D213C171C527B00B4B755 /* ButtonBackLabel@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = "ButtonBackLabel@2x.png"; path = "Assets/Images/ButtonBackLabel@2x.png"; sourceTree = "<group>"; };
 		BE2D2143171C5A0600B4B755 /* SYNSearchBoxViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SYNSearchBoxViewController.h; sourceTree = "<group>"; };
@@ -4713,6 +4717,8 @@
 				BE7D34ED1715AD060085AB81 /* ButtonNav@2x.png */,
 				BE2D213B171C527A00B4B755 /* ButtonBackLabel.png */,
 				BE2D213C171C527B00B4B755 /* ButtonBackLabel@2x.png */,
+				BE2AE4BF176E0F2E00A753E3 /* ButtonCancelCD.png */,
+				BE2AE4C0176E0F2E00A753E3 /* ButtonCancelCD@2x.png */,
 				BE2D214A171D5B9500B4B755 /* IconSearch.png */,
 				BE2D214B171D5B9500B4B755 /* IconSearch@2x.png */,
 				BE2D214E171D5BD500B4B755 /* ButtonCancel.png */,
@@ -5846,6 +5852,8 @@
 				BEA2AEEF176E043F0099DB74 /* ButtonSearchCD@2x.png in Resources */,
 				BEA2AEF0176E043F0099DB74 /* ButtonSearchHighlightedCD.png in Resources */,
 				BEA2AEF1176E043F0099DB74 /* ButtonSearchHighlightedCD@2x.png in Resources */,
+				BE2AE4C1176E0F2E00A753E3 /* ButtonCancelCD.png in Resources */,
+				BE2AE4C2176E0F2E00A753E3 /* ButtonCancelCD@2x.png in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
