@@ -14,7 +14,6 @@
 #import "SYNAccountSettingsPopoverBackgroundView.h"
 #import <UIKit/UIKit.h>
 
-
 typedef void (^VideoOverlayDismissBlock)(void);
 
 @interface SYNMasterViewController : GAITrackedViewController <UIPopoverControllerDelegate,

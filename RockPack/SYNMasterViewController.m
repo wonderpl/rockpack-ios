@@ -241,6 +241,8 @@ typedef void(^AnimationCompletionBlock)(BOOL finished);
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(backButtonRequested:) name:kNoteBackButtonShow object:nil];
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(backButtonRequested:) name:kNoteBackButtonHide object:nil];
     
+    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(changeControlButtonsToMode:) name:kMainControlsChangeEnter object:nil];
+    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(changeControlButtonsToMode:) name:kMainControlsChangeLeave object:nil];
     
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(allNavControlsRequested:) name:kNoteAllNavControlsShow object:nil];
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(allNavControlsRequested:) name:kNoteAllNavControlsHide object:nil];
@@ -1493,5 +1495,32 @@ typedef void(^AnimationCompletionBlock)(BOOL finished);
 -(BOOL)isInSearchMode
 {
     return (BOOL)self.searchBoxController.view.superview;
+}
+
+-(void)changeControlButtonsToMode:(NSNotification*)notification
+{
+    SYNAbstractViewController* object = [notification object];
+    if(!object)
+        return;
+    
+    if([object.viewId isEqualToString:kChannelDetailsViewId] && [[notification name] isEqualToString:kMainControlsChangeEnter])
+    {
+        [self.searchButton setImage:[UIImage imageNamed:@"ButtonSearchCD"] forState:UIControlStateNormal];
+        [self.searchButton setImage:[UIImage imageNamed:@"ButtonSearchHighlightedCD"] forState:UIControlStateHighlighted];
+        
+        [self.sideNavigationButton setImage:[UIImage imageNamed:@"ButtonNavCD"] forState:UIControlStateNormal];
+        [self.sideNavigationButton setImage:[UIImage imageNamed:@"ButtonNavHighlightedCD"] forState:UIControlStateHighlighted];
+        [self.sideNavigationButton setImage:[UIImage imageNamed:@"ButtonNavSelectedCD"] forState:UIControlStateSelected];
+        
+    }
+    else
+    {
+        [self.searchButton setImage:[UIImage imageNamed:@"ButtonSearch"] forState:UIControlStateNormal];
+        [self.searchButton setImage:[UIImage imageNamed:@"ButtonSearchHighlighted"] forState:UIControlStateHighlighted];
+        
+        [self.sideNavigationButton setImage:[UIImage imageNamed:@"ButtonNav"] forState:UIControlStateNormal];
+        [self.sideNavigationButton setImage:[UIImage imageNamed:@"ButtonNavHighlighted"] forState:UIControlStateHighlighted];
+        [self.sideNavigationButton setImage:[UIImage imageNamed:@"ButtonNavSelected"] forState:UIControlStateSelected];
+    }
 }
 @end
