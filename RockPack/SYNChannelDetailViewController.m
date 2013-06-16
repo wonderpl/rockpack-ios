@@ -2130,32 +2130,40 @@
     
 }
 
+#pragma mark - On Boarding Messages
+
 -(void)viewDidAppear:(BOOL)animated
 {
     [super viewDidAppear:animated];
     
-    
-    NSUserDefaults *defaults = [NSUserDefaults standardUserDefaults];
-    BOOL hasShownSubscribeOnBoarding = [defaults boolForKey:kUserDefaultsSubscribe];
-    if(!hasShownSubscribeOnBoarding)
+    if(![self.channel.channelOwner.uniqueId isEqualToString:appDelegate.currentUser.uniqueId] ||
+       !self.channel.subscribedByUser)
     {
-        BOOL isIpad = [[SYNDeviceManager sharedInstance] isIPad];
-        NSString* message = @"Tap this button to subscribe to a channel and get new videos in your feed.";
-        PointingDirection direction = isIpad ? PointingDirectionLeft : PointingDirectionUp;
-        CGFloat fontSize = isIpad ? 19.0 : 15.0 ;
-        CGSize size =  isIpad ? CGSizeMake(260.0, 144.0) : CGSizeMake(260.0, 128.0);
-        SYNOnBoardingPopoverView* subscribePopover = [SYNOnBoardingPopoverView withMessage:message
-                                                                                  withSize:size
-                                                                               andFontSize:fontSize
-                                                                                pointingTo:self.subscribeButton.frame
-                                                                             withDirection:direction];
-        [appDelegate.onBoardingQueue addPopover:subscribePopover];
-        
-        [defaults setBool:YES forKey:kUserDefaultsSubscribe];
-        
-        
-        [appDelegate.onBoardingQueue present];
+        // avoid showing the on boarding related to subscription to already subscribed channel or user's own channel
+        NSUserDefaults *defaults = [NSUserDefaults standardUserDefaults];
+        BOOL hasShownSubscribeOnBoarding = [defaults boolForKey:kUserDefaultsSubscribe];
+        if(!hasShownSubscribeOnBoarding)
+        {
+            BOOL isIpad = [[SYNDeviceManager sharedInstance] isIPad];
+            NSString* message = @"Tap this button to subscribe to a channel and get new videos in your feed.";
+            PointingDirection direction = isIpad ? PointingDirectionLeft : PointingDirectionUp;
+            CGFloat fontSize = isIpad ? 19.0 : 15.0 ;
+            CGSize size =  isIpad ? CGSizeMake(260.0, 144.0) : CGSizeMake(260.0, 128.0);
+            SYNOnBoardingPopoverView* subscribePopover = [SYNOnBoardingPopoverView withMessage:message
+                                                                                      withSize:size
+                                                                                   andFontSize:fontSize
+                                                                                    pointingTo:self.subscribeButton.frame
+                                                                                 withDirection:direction];
+            [appDelegate.onBoardingQueue addPopover:subscribePopover];
+            
+            [defaults setBool:YES forKey:kUserDefaultsSubscribe];
+            
+            
+            [appDelegate.onBoardingQueue present];
+        }
     }
+    
+    
     
     
 }
