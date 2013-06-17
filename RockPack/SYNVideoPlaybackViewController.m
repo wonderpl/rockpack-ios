@@ -20,6 +20,9 @@
 #import <MediaPlayer/MediaPlayer.h>
 #import <QuartzCore/CoreAnimation.h>
 
+#define SHOW_SHUTTLE_DEBUG_COLOURS_
+#define SHOW_DEBUG_COLOURS_
+
 @interface SYNVideoPlaybackViewController () <UIWebViewDelegate>
 
 @property (nonatomic, assign) BOOL autoPlay;
@@ -542,7 +545,7 @@ static UIWebView* vimeoideoWebViewInstance;
     
     self.originalShuttleBarFrame = shuttleBarView.frame;
     
-#ifdef SHOW_DEBUG_COLOURS
+#ifdef SHOW_SHUTTLE_DEBUG_COLOURS
     shuttleBarView.backgroundColor = [UIColor redColor];
     self.durationLabel.backgroundColor = [UIColor yellowColor];
     volumeView.backgroundColor = [UIColor greenColor];
@@ -1287,7 +1290,7 @@ static UIWebView* vimeoideoWebViewInstance;
             {
                 // Should already be playing so try to restart
                 DebugLog (@"*** Buffering: Buffering after play - Retrying play");
-                [self pauseVideo];
+//                [self pauseVideo];
                 [self playVideo];
             }
         }
@@ -1445,7 +1448,7 @@ static UIWebView* vimeoideoWebViewInstance;
             if (self.stallCount > kMaxStallCount)
             {
                 DebugLog (@"*** Stalled: Attempting to restart player");
-                [self pauseVideo];
+//                [self pauseVideo];
                 [self playVideo];
 
                 // Reset our stall count (could make this negative to give restarts longer)

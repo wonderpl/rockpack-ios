@@ -292,7 +292,7 @@
 										<string key="NSFrame">{{190, 322}, {562, 45}}</string>
 										<reference key="NSSuperview" ref="421928150"/>
 										<reference key="NSWindow"/>
-										<reference key="NSNextKeyView" ref="624001696"/>
+										<reference key="NSNextKeyView" ref="474614300"/>
 										<string key="NSReuseIdentifierKey">_NS:9</string>
 										<bool key="IBUIOpaque">NO</bool>
 										<bool key="IBUIClipsSubviews">YES</bool>
@@ -553,7 +553,7 @@
 						<string key="NSFrame">{{438, 30}, {148, 27}}</string>
 						<reference key="NSSuperview" ref="453930770"/>
 						<reference key="NSWindow"/>
-						<reference key="NSNextKeyView" ref="474614300"/>
+						<reference key="NSNextKeyView" ref="657402384"/>
 						<string key="NSReuseIdentifierKey">_NS:9</string>
 						<int key="IBUIContentMode">4</int>
 						<bool key="IBUIUserInteractionEnabled">NO</bool>
@@ -632,7 +632,7 @@
 						<string key="NSFrame">{{10, 10}, {60, 61}}</string>
 						<reference key="NSSuperview" ref="453930770"/>
 						<reference key="NSWindow"/>
-						<reference key="NSNextKeyView" ref="657402384"/>
+						<reference key="NSNextKeyView" ref="624001696"/>
 						<string key="NSReuseIdentifierKey">_NS:9</string>
 						<bool key="IBUIOpaque">NO</bool>
 						<string key="targetRuntimeIdentifier">IBIPadFramework</string>
@@ -646,7 +646,7 @@
 						<reference key="IBUINormalTitleShadowColor" ref="271166090"/>
 						<object class="NSCustomResource" key="IBUIHighlightedImage">
 							<string key="NSClassName">NSImage</string>
-							<string key="NSResourceName">ButtonCancel.png</string>
+							<string key="NSResourceName">ButtonCancel@2x.png</string>
 						</object>
 						<object class="NSCustomResource" key="IBUINormalImage">
 							<string key="NSClassName">NSImage</string>
@@ -1214,6 +1214,12 @@
 						<string key="objectName">Cancel Edit Button</string>
 					</object>
 					<object class="IBObjectRecord">
+						<int key="objectID">8</int>
+						<reference key="object" ref="624001696"/>
+						<reference key="parent" ref="453930770"/>
+						<string key="objectName">Image View - Rockpack Logo</string>
+					</object>
+					<object class="IBObjectRecord">
 						<int key="objectID">141</int>
 						<reference key="object" ref="766813113"/>
 						<reference key="parent" ref="453930770"/>
@@ -1223,12 +1229,6 @@
 						<reference key="object" ref="671932892"/>
 						<reference key="parent" ref="421928150"/>
 						<string key="objectName">Activity Indicator - Share</string>
-					</object>
-					<object class="IBObjectRecord">
-						<int key="objectID">8</int>
-						<reference key="object" ref="624001696"/>
-						<reference key="parent" ref="453930770"/>
-						<string key="objectName">Image View - Rockpack Logo</string>
 					</object>
 				</array>
 			</object>
@@ -1252,7 +1252,7 @@
 				<string key="130.IBPluginDependency">com.apple.InterfaceBuilder.IBCocoaTouchPlugin</string>
 				<real value="3" key="130.IBUIButtonInspectorSelectedStateConfigurationMetadataKey"/>
 				<string key="137.IBPluginDependency">com.apple.InterfaceBuilder.IBCocoaTouchPlugin</string>
-				<real value="1" key="137.IBUIButtonInspectorSelectedStateConfigurationMetadataKey"/>
+				<real value="0.0" key="137.IBUIButtonInspectorSelectedStateConfigurationMetadataKey"/>
 				<string key="141.IBPluginDependency">com.apple.InterfaceBuilder.IBCocoaTouchPlugin</string>
 				<string key="144.IBPluginDependency">com.apple.InterfaceBuilder.IBCocoaTouchPlugin</string>
 				<string key="2.IBPluginDependency">com.apple.InterfaceBuilder.IBCocoaTouchPlugin</string>
@@ -1353,21 +1353,41 @@
 					<string key="superclassName">SYNAbstractViewController</string>
 					<dictionary class="NSMutableDictionary" key="actions">
 						<string key="addCoverButtonTapped:">UIButton</string>
+						<string key="addItToChannelPresssed:">id</string>
 						<string key="buyButtonTapped:">id</string>
+						<string key="createChannelPressed:">id</string>
+						<string key="profileImagePressed:">UIButton</string>
 						<string key="shareChannelButtonTapped:">UIButton</string>
+						<string key="subscribeButtonTapped:">id</string>
 					</dictionary>
 					<dictionary class="NSMutableDictionary" key="actionInfosByName">
 						<object class="IBActionInfo" key="addCoverButtonTapped:">
 							<string key="name">addCoverButtonTapped:</string>
 							<string key="candidateClassName">UIButton</string>
 						</object>
+						<object class="IBActionInfo" key="addItToChannelPresssed:">
+							<string key="name">addItToChannelPresssed:</string>
+							<string key="candidateClassName">id</string>
+						</object>
 						<object class="IBActionInfo" key="buyButtonTapped:">
 							<string key="name">buyButtonTapped:</string>
 							<string key="candidateClassName">id</string>
 						</object>
+						<object class="IBActionInfo" key="createChannelPressed:">
+							<string key="name">createChannelPressed:</string>
+							<string key="candidateClassName">id</string>
+						</object>
+						<object class="IBActionInfo" key="profileImagePressed:">
+							<string key="name">profileImagePressed:</string>
+							<string key="candidateClassName">UIButton</string>
+						</object>
 						<object class="IBActionInfo" key="shareChannelButtonTapped:">
 							<string key="name">shareChannelButtonTapped:</string>
 							<string key="candidateClassName">UIButton</string>
+						</object>
+						<object class="IBActionInfo" key="subscribeButtonTapped:">
+							<string key="name">subscribeButtonTapped:</string>
+							<string key="candidateClassName">id</string>
 						</object>
 					</dictionary>
 					<dictionary class="NSMutableDictionary" key="outlets">
@@ -1572,7 +1592,7 @@
 		<dictionary class="NSMutableDictionary" key="IBDocument.LastKnownImageSizes">
 			<string key="ButtonBuy.png">{61, 61}</string>
 			<string key="ButtonBuyHighlighted.png">{61, 61}</string>
-			<string key="ButtonCancel.png">{60, 60}</string>
+			<string key="ButtonCancel@2x.png">{120, 120}</string>
 			<string key="ButtonCancelCD.png">{60, 60}</string>
 			<string key="ButtonCategory.png">{295, 45}</string>
 			<string key="ButtonCategoryHighlighted.png">{295, 45}</string>

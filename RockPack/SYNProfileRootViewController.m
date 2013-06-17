@@ -713,15 +713,9 @@
     
     // Make sure we can't delete the favourites channel
     if (channel.favouritesValue)
-    {
         channelThumbnailCell.deleteButton.enabled = NO;
-        channelThumbnailCell.shadowOverlayImageView.hidden = YES;
-    }
     else
-    {
         channelThumbnailCell.deleteButton.enabled = YES;
-        channelThumbnailCell.shadowOverlayImageView.hidden = NO;
-    }
     
     [channelThumbnailCell setChannelTitle:channel.title];
     [channelThumbnailCell setViewControllerDelegate: self];

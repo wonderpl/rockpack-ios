@@ -104,7 +104,6 @@
                                    placeholderImage: [UIImage imageNamed: @"PlaceholderChannelMid.png"]
                                             options: SDWebImageRetryFailed];
     
-    channelThumbnailCell.shadowOverlayImageView.hidden = channel.favouritesValue;
     
     [channelThumbnailCell setChannelTitle: channel.title];
     
