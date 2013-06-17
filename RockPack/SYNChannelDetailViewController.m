@@ -2654,10 +2654,10 @@
 
 - (void) scrollViewDidScroll: (UIScrollView *) scrollView
 {
-    CGFloat fadeSpan = (_isIPhone) ? kChannelDetailsFadeSpaniPhone : kChannelDetailsFadeSpan;
-    CGFloat blurOpacity;
     if (scrollView == self.videoThumbnailCollectionView)
     {
+        CGFloat fadeSpan = (_isIPhone) ? kChannelDetailsFadeSpaniPhone : kChannelDetailsFadeSpan;
+        CGFloat blurOpacity;
         
         if (scrollView.contentOffset.y <= self.originalContentOffset.y)
         {
