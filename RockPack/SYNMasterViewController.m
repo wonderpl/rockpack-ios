@@ -21,15 +21,16 @@
 #import "SYNNetworkErrorView.h"
 #import "SYNOAuthNetworkEngine.h"
 #import "SYNObjectFactory.h"
+#import "SYNPageView.h"
 #import "SYNSearchBoxViewController.h"
 #import "SYNSearchRootViewController.h"
 #import "SYNSideNavigationViewController.h"
 #import "SYNSoundPlayer.h"
+#import "SYNVideoPlaybackViewController.h"
 #import "SYNVideoViewerViewController.h"
 #import "UIFont+SYNFont.h"
 #import "VideoInstance.h"
 #import <QuartzCore/QuartzCore.h>
-#import "SYNVideoPlaybackViewController.h"
 
 #define kMovableViewOffX -58
 
@@ -50,7 +51,7 @@ typedef void(^AnimationCompletionBlock)(BOOL finished);
 @property (nonatomic, strong) IBOutlet UIButton* sideNavigationButton;
 @property (nonatomic, strong) IBOutlet UIButton* hideNavigationButton;
 @property (nonatomic, strong) IBOutlet UILabel* pageTitleLabel;
-@property (nonatomic, strong) IBOutlet UIView* dotsView;
+@property (nonatomic, strong) IBOutlet SYNPageView* pagePositionIndicatorView;
 @property (nonatomic, strong) IBOutlet UIView* errorContainerView;
 @property (nonatomic, strong) IBOutlet UIView* movableButtonsContainer;
 @property (nonatomic, strong) IBOutlet UIView* navigationContainerView;
@@ -214,33 +215,6 @@ typedef void(^AnimationCompletionBlock)(BOOL finished);
     
     self.closeSearchButton.hidden = YES;
     
-    
-    
-    // == Set up Dots View == //
-    
-    self.dotsView.backgroundColor = [UIColor clearColor];
-    int numberOfDots = [self.containerViewController.childViewControllers count];
-    UIImage* dotImage = [UIImage imageNamed:@"NavigationDot"];
-    CGPoint center = self.dotsView.center;
-    CGRect newFrame = self.dotsView.frame;
-    newFrame.size.width = (2 * numberOfDots - 1) * dotImage.size.width;
-    newFrame.origin.x = round(center.x - newFrame.size.width/2.0f);
-    self.dotsView.frame = newFrame;
-    
-    CGFloat dotSpacing = 2*dotImage.size.width;
-    
-    for(int i = 0; i < numberOfDots; i++)
-    {
-        UIImageView* dotImageView = [[UIImageView alloc] initWithImage:dotImage];
-        CGRect dotImageViewFrame = dotImageView.frame;
-        dotImageViewFrame.origin.x = i * dotSpacing;
-        dotImageView.frame = dotImageViewFrame;
-        [self.dotsView addSubview:dotImageView];
-        
-        UITapGestureRecognizer* tapGestureRecogniser = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(dotTapped:)];
-        [dotImageView addGestureRecognizer:tapGestureRecogniser];
-     }
-    
     [self pageChanged:self.containerViewController.scrollView.page];
     
     self.darkOverlayView.hidden = YES;
@@ -291,9 +265,7 @@ typedef void(^AnimationCompletionBlock)(BOOL finished);
     
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(hideOrShowNetworkMessages:) name:kNoteShowNetworkMessages object:nil];
     
-    [self.navigationContainerView addSubview:self.sideNavigationViewController.view];
-    
-    
+    [self.navigationContainerView addSubview:self.sideNavigationViewController.view]; 
 }
 
 
@@ -302,8 +274,43 @@ typedef void(^AnimationCompletionBlock)(BOOL finished);
     [self.containerViewController swipedTo:recogniser.direction];
 }
 
+- (void) viewWillAppear: (BOOL) animated
+{
+    [super viewWillAppear: animated];
+    
+    [self.containerViewController.scrollView addObserver: self forKeyPath: kCollectionViewContentOffsetKey
+                                                 options: NSKeyValueObservingOptionNew
+                                                 context: nil];
+}
 
 
+- (void) viewWillDisappear: (BOOL) animated
+{
+    [self.containerViewController.scrollView removeObserver: self
+                                                 forKeyPath: kCollectionViewContentOffsetKey];
+    
+    [super viewWillDisappear: animated];
+}
+
+
+- (void) observeValueForKeyPath: (NSString *) keyPath
+                       ofObject: (id) object
+                         change: (NSDictionary *) change
+                        context: (void *) context
+{
+    if ([keyPath isEqualToString: kCollectionViewContentOffsetKey])
+    {
+        CGRect scrollViewFrame = self.containerViewController.scrollView.frame;
+        CGSize scrollViewContentSize = self.containerViewController.scrollView.contentSize;
+        CGPoint scrollViewContentOffset = self.containerViewController.scrollView.contentOffset;
+        
+        CGFloat frameWidth = scrollViewFrame.size.width;
+        CGFloat contentWidth = scrollViewContentSize.width;
+        CGFloat offset = scrollViewContentOffset.x;
+        
+        self.pagePositionIndicatorView.position = offset / (contentWidth - frameWidth);
+    }
+}
 
 #pragma mark - Scroller Changes
 
@@ -320,20 +327,20 @@ typedef void(^AnimationCompletionBlock)(BOOL finished);
 
 -(void)pageChanged:(NSInteger)pageNumber
 {
-    int totalDots = self.dotsView.subviews.count;
-    UIImageView* dotImageView;
-    for (int i = 0; i < totalDots; i++)
-    {
-        dotImageView = (UIImageView*)self.dotsView.subviews[i];
-        if (i == pageNumber) {
-            dotImageView.image = [UIImage imageNamed:@"NavigationDotCurrent"];
-        } else {
-            dotImageView.image = [UIImage imageNamed:@"NavigationDot"];
-        }
-        
-        
-        
-    }
+//    int totalDots = self.dotsView.subviews.count;
+//    UIImageView* dotImageView;
+//    for (int i = 0; i < totalDots; i++)
+//    {
+//        dotImageView = (UIImageView*)self.dotsView.subviews[i];
+//        if (i == pageNumber) {
+//            dotImageView.image = [UIImage imageNamed:@"NavigationDotCurrent"];
+//        } else {
+//            dotImageView.image = [UIImage imageNamed:@"NavigationDot"];
+//        }
+//        
+//        
+//        
+//    }
     
     
     self.pageTitleLabel.text = [self.containerViewController.showingBaseViewController.title uppercaseString];
@@ -905,7 +912,7 @@ typedef void(^AnimationCompletionBlock)(BOOL finished);
         
         self.pageTitleLabel.hidden = NO;
         
-        self.dotsView.hidden = NO;
+        self.pagePositionIndicatorView.hidden = NO;
         self.movableButtonsContainer.hidden = NO;
     }
     else
@@ -914,7 +921,7 @@ typedef void(^AnimationCompletionBlock)(BOOL finished);
         self.sideNavigationButton.hidden = YES;
         self.closeSearchButton.hidden = YES;
         self.pageTitleLabel.hidden = YES;
-        self.dotsView.hidden = YES;
+        self.pagePositionIndicatorView.hidden = YES;
         self.movableButtonsContainer.hidden = YES;
         self.sideNavigationViewController.state = SideNavigationStateHidden;
     }
@@ -1007,7 +1014,7 @@ typedef void(^AnimationCompletionBlock)(BOOL finished);
 
 -(void)hideTitleAndDots:(NSNotification*)note
 {
-    self.dotsView.alpha = 0.0f;
+    self.pagePositionIndicatorView.alpha = 0.0f;
     self.pageTitleLabel.alpha = 0.0f;
 }
 
@@ -1078,7 +1085,7 @@ typedef void(^AnimationCompletionBlock)(BOOL finished);
                          self.movableButtonsContainer.frame = targetFrame;
                          self.backButtonControl.alpha = targetAlpha;
                          self.pageTitleLabel.alpha = !targetAlpha;
-                         self.dotsView.alpha = !targetAlpha;
+                         self.pagePositionIndicatorView.alpha = !targetAlpha;
                          
                          // Re-Asjust the Search Box when the back arrow comes on/off screen //
                          
