@@ -22,7 +22,9 @@ enum SDImageCacheType
     /**
      * The image was obtained from the memory cache.
      */
-    SDImageCacheTypeMemory
+    SDImageCacheTypeMemory,
+    
+    SDImageCacheTypeMemoryMonochrome
 };
 typedef enum SDImageCacheType SDImageCacheType;
 
