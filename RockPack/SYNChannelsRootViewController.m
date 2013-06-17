@@ -451,7 +451,6 @@
     channelThumbnailCell.displayNameLabel.text = [NSString stringWithFormat: @"%@", channel.channelOwner.displayName];
     channelThumbnailCell.viewControllerDelegate = self;
     
-    channelThumbnailCell.shadowOverlayImageView.hidden = channel.favouritesValue;
     
     return channelThumbnailCell;
 }
