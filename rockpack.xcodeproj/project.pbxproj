@@ -513,6 +513,8 @@
 		1FD12373174CD76700144374 /* NavDefault@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 1FD1236F174CD76700144374 /* NavDefault@2x.png */; };
 		1FD12374174CD76700144374 /* NavHighlighted.png in Resources */ = {isa = PBXBuildFile; fileRef = 1FD12370174CD76700144374 /* NavHighlighted.png */; };
 		1FD12375174CD76700144374 /* NavHighlighted@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 1FD12371174CD76700144374 /* NavHighlighted@2x.png */; };
+		1FD8720F176F7F26009F4746 /* LoginErrorPortrait.png in Resources */ = {isa = PBXBuildFile; fileRef = 1FD8720D176F7F26009F4746 /* LoginErrorPortrait.png */; };
+		1FD87210176F7F26009F4746 /* LoginErrorPortrait@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 1FD8720E176F7F26009F4746 /* LoginErrorPortrait@2x.png */; };
 		1FE1C6601761FFFF00EDFC0E /* IconRockpackAbout.png in Resources */ = {isa = PBXBuildFile; fileRef = 1FE1C65E1761FFFF00EDFC0E /* IconRockpackAbout.png */; };
 		1FE1C6611761FFFF00EDFC0E /* IconRockpackAbout@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 1FE1C65F1761FFFF00EDFC0E /* IconRockpackAbout@2x.png */; };
 		1FE1C66617621F7400EDFC0E /* ButtonPrivacy.png in Resources */ = {isa = PBXBuildFile; fileRef = 1FE1C66217621F7400EDFC0E /* ButtonPrivacy.png */; };
@@ -1754,6 +1756,8 @@
 		1FD1236F174CD76700144374 /* NavDefault@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = "NavDefault@2x.png"; path = "Assets/Images/NavDefault@2x.png"; sourceTree = "<group>"; };
 		1FD12370174CD76700144374 /* NavHighlighted.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = NavHighlighted.png; path = Assets/Images/NavHighlighted.png; sourceTree = "<group>"; };
 		1FD12371174CD76700144374 /* NavHighlighted@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = "NavHighlighted@2x.png"; path = "Assets/Images/NavHighlighted@2x.png"; sourceTree = "<group>"; };
+		1FD8720D176F7F26009F4746 /* LoginErrorPortrait.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = LoginErrorPortrait.png; path = Assets/Images/LoginErrorPortrait.png; sourceTree = "<group>"; };
+		1FD8720E176F7F26009F4746 /* LoginErrorPortrait@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = "LoginErrorPortrait@2x.png"; path = "Assets/Images/LoginErrorPortrait@2x.png"; sourceTree = "<group>"; };
 		1FE1C65E1761FFFF00EDFC0E /* IconRockpackAbout.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = IconRockpackAbout.png; path = Assets/Images/IconRockpackAbout.png; sourceTree = "<group>"; };
 		1FE1C65F1761FFFF00EDFC0E /* IconRockpackAbout@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = "IconRockpackAbout@2x.png"; path = "Assets/Images/IconRockpackAbout@2x.png"; sourceTree = "<group>"; };
 		1FE1C66217621F7400EDFC0E /* ButtonPrivacy.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = ButtonPrivacy.png; path = Assets/Images/ButtonPrivacy.png; sourceTree = "<group>"; };
@@ -4538,6 +4542,8 @@
 				BED4310816EF8F7A0051465B /* ButtonRegisterBigDefault@2x.png */,
 				BED4312016F1F12D0051465B /* LoginError.png */,
 				BED4312116F1F12D0051465B /* LoginError@2x.png */,
+				1FD8720D176F7F26009F4746 /* LoginErrorPortrait.png */,
+				1FD8720E176F7F26009F4746 /* LoginErrorPortrait@2x.png */,
 				BED430FF16EF8D830051465B /* FieldDayMonth.png */,
 				BED4310016EF8D830051465B /* FieldDayMonth@2x.png */,
 				BED4310116EF8D830051465B /* FieldYear.png */,
@@ -5904,6 +5910,8 @@
 				BE2AE4D4176E689C00A753E3 /* ButtonBackCD~iphone.png in Resources */,
 				BE2AE4D5176E689C00A753E3 /* ButtonBackHighlightedCD@2x~iphone.png in Resources */,
 				BE2AE4D6176E689C00A753E3 /* ButtonBackHighlightedCD~iphone.png in Resources */,
+				1FD8720F176F7F26009F4746 /* LoginErrorPortrait.png in Resources */,
+				1FD87210176F7F26009F4746 /* LoginErrorPortrait@2x.png in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
