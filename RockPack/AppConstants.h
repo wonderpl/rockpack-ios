@@ -437,6 +437,7 @@ typedef enum {
 
 #define kNoteHideNetworkMessages    @"kNoteHideNetworkMessages"
 #define kNoteShowNetworkMessages    @"kNoteShowNetworkMessages"
+#define kNotePopCurrentViewController  @"kNotePopCurrentViewController"
 
 //
 // Tracking

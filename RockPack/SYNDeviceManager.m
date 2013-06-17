@@ -78,7 +78,9 @@
 
 -(CGRect)currentScreenRect
 {
-    return [[UIScreen mainScreen] bounds];
+    CGRect currentRect = CGRectZero;
+    currentRect.size = [self currentScreenSize];
+    return currentRect;
 }
 
 -(CGSize)currentScreenSize

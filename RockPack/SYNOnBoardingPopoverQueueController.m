@@ -89,8 +89,13 @@
     {
         [UIView animateWithDuration:0.3 animations:^{
             self.currentlyVisiblePopover.alpha = 0.0;
+            self.currentlyVisiblePopover.arrow.alpha = 0.0;
+            
             self.backgroundView.alpha = 0.0;
         } completion:^(BOOL finished) {
+            
+            [self.currentlyVisiblePopover removeFromSuperview];
+            [self.currentlyVisiblePopover.arrow removeFromSuperview];
             [self.view removeFromSuperview];
             [self removeFromParentViewController];
         }];
