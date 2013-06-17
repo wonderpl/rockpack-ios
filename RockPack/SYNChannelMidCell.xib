@@ -265,6 +265,14 @@
 					</object>
 					<int key="connectionID">44</int>
 				</object>
+				<object class="IBConnectionRecord">
+					<object class="IBCocoaTouchOutletConnection" key="connection">
+						<string key="label">shadowOverlayImageView</string>
+						<reference key="source" ref="411706856"/>
+						<reference key="destination" ref="729247233"/>
+					</object>
+					<int key="connectionID">48</int>
+				</object>
 			</array>
 			<object class="IBMutableOrderedSet" key="objectRecords">
 				<array key="orderedObjects">
@@ -306,13 +314,6 @@
 						<string key="objectName">Title UILabel</string>
 					</object>
 					<object class="IBObjectRecord">
-						<int key="objectID">9</int>
-						<reference key="object" ref="308581837"/>
-						<array class="NSMutableArray" key="children"/>
-						<reference key="parent" ref="411706856"/>
-						<string key="objectName">Image View - Channel Thumbnail</string>
-					</object>
-					<object class="IBObjectRecord">
 						<int key="objectID">41</int>
 						<reference key="object" ref="1069176426"/>
 						<reference key="parent" ref="411706856"/>
@@ -324,15 +325,21 @@
 						<string key="objectName">Button - Delete</string>
 					</object>
 					<object class="IBObjectRecord">
-						<int key="objectID">45</int>
-						<reference key="object" ref="729247233"/>
-						<reference key="parent" ref="411706856"/>
-					</object>
-					<object class="IBObjectRecord">
 						<int key="objectID">46</int>
 						<reference key="object" ref="202223226"/>
 						<reference key="parent" ref="411706856"/>
 						<string key="objectName">Image View - Shadow</string>
+					</object>
+					<object class="IBObjectRecord">
+						<int key="objectID">9</int>
+						<reference key="object" ref="308581837"/>
+						<reference key="parent" ref="411706856"/>
+						<string key="objectName">Image View - Channel Thumbnail</string>
+					</object>
+					<object class="IBObjectRecord">
+						<int key="objectID">45</int>
+						<reference key="object" ref="729247233"/>
+						<reference key="parent" ref="411706856"/>
 					</object>
 				</array>
 			</object>
@@ -354,7 +361,7 @@
 			<nil key="activeLocalization"/>
 			<dictionary class="NSMutableDictionary" key="localizations"/>
 			<nil key="sourceID"/>
-			<int key="maxID">46</int>
+			<int key="maxID">48</int>
 		</object>
 		<object class="IBClassDescriber" key="IBDocument.Classes">
 			<array class="NSMutableArray" key="referencedPartialClassDescriptions">
@@ -365,6 +372,7 @@
 						<string key="deleteButton">UIButton</string>
 						<string key="imageView">UIImageView</string>
 						<string key="panelSelectedImageView">UIImageView</string>
+						<string key="shadowOverlayImageView">UIImageView</string>
 						<string key="titleLabel">UILabel</string>
 					</dictionary>
 					<dictionary class="NSMutableDictionary" key="toOneOutletInfosByName">
@@ -378,6 +386,10 @@
 						</object>
 						<object class="IBToOneOutletInfo" key="panelSelectedImageView">
 							<string key="name">panelSelectedImageView</string>
+							<string key="candidateClassName">UIImageView</string>
+						</object>
+						<object class="IBToOneOutletInfo" key="shadowOverlayImageView">
+							<string key="name">shadowOverlayImageView</string>
 							<string key="candidateClassName">UIImageView</string>
 						</object>
 						<object class="IBToOneOutletInfo" key="titleLabel">

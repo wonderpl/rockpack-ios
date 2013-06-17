@@ -61,14 +61,11 @@
 {
     [super viewDidLoad];
 	
-    
 }
 
 -(void)viewDidAppear:(BOOL)animated
 {
     [super viewDidAppear:animated];
-    
-    
     
 }
 
@@ -124,10 +121,13 @@
         [UIView animateWithDuration:0.5 animations:^{
             
             self.currentlyVisiblePopover.alpha = 0.0;
+            self.currentlyVisiblePopover.arrow.alpha = 0.0;
             
         } completion:^(BOOL finished) {
             
+            [_currentlyVisiblePopover.arrow removeFromSuperview];
             [_currentlyVisiblePopover removeFromSuperview];
+            
             
             _currentlyVisiblePopover = nil;
             
@@ -146,6 +146,7 @@
         [self placePopoverInView:_currentlyVisiblePopover];
         
         _currentlyVisiblePopover.alpha = 0.0;
+        _currentlyVisiblePopover.arrow.alpha = 0.0;
         
         [_currentlyVisiblePopover.okButton addTarget:self
                                           action:@selector(okButtonPressed:)
@@ -155,6 +156,8 @@
         BOOL isFirstTime = self.backgroundView.alpha == 0.0;
         [UIView animateWithDuration:0.5 animations:^{
             self.currentlyVisiblePopover.alpha = 1.0;
+            self.currentlyVisiblePopover.arrow.alpha = 1.0;
+            
             if(isFirstTime)
                 self.backgroundView.alpha = 0.5;
         }];
@@ -243,6 +246,7 @@
     
     popover.frame = panelFrame;
     popover.arrow.frame = arrowFrame;
+    popover.arrow.alpha = 0.0;
     [self.view addSubview:popover.arrow];
     [self.view addSubview:popover];
 }
