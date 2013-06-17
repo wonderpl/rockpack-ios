@@ -1482,7 +1482,7 @@ typedef void(^AnimationCompletionBlock)(BOOL finished);
         }
         else // nil was passed while there was nothing on screen (it is already nil)
         {
-            _overlayContainerView = nil;
+            _overlayNavigationController = nil;
         }
     }
 }
