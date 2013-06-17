@@ -183,7 +183,7 @@ static char operationKey;
     id<SDWebImageOperation> operation = objc_getAssociatedObject(self, &operationKey);
     if (operation)
     {
-        DebugLog(@"Cancelling %@", operation);
+        //DebugLog(@"Cancelling %@", operation);
         [operation cancel];
         objc_setAssociatedObject(self, &operationKey, nil, OBJC_ASSOCIATION_RETAIN_NONATOMIC);
     }

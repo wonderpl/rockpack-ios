@@ -98,7 +98,7 @@
         
     
     
-    flowLayout.footerReferenceSize = [self footerSize];
+    //flowLayout.footerReferenceSize = [self footerSize];
     
     // Work out how hight the inital tab bar is
     CGFloat topTabBarHeight = [UIImage imageNamed: @"CategoryBar"].size.height;
@@ -313,57 +313,6 @@
     
     
     
-    // == Handle Deleted == //
-    
-//    NSMutableArray* deletedIndetifiers = [NSMutableArray arrayWithCapacity:deletedObjects.count];
-//    NSMutableArray* deletedIndexPathArray = [NSMutableArray arrayWithCapacity:deletedObjects.count]; // maximum
-//    [deletedObjects enumerateObjectsUsingBlock: ^(id obj, NSUInteger idx, BOOL *stop) {
-//        
-//        if ([obj isKindOfClass:[Channel class]]) {
-//            
-//            NSLog(@"CH(-) Deleted: %@", ((Channel*)obj).title);
-//            
-//            [deletedIndetifiers addObject:((Channel*)obj).uniqueId];
-//            
-//        }
-//        
-//    }];
-//    
-//    
-//    for (NSInteger i = 0; i < [self.channelThumbnailCollectionView numberOfItemsInSection:0]; ++i)
-//    {
-//        SYNChannelThumbnailCell* cell =
-//        (SYNChannelThumbnailCell*)[self.channelThumbnailCollectionView cellForItemAtIndexPath:[NSIndexPath indexPathForRow:i
-//                                                                                                                 inSection:0]];
-//        NSLog(@"CH Looping at %i with %@", i, cell.dataIndentifier);
-//        
-//        [deletedIndetifiers enumerateObjectsUsingBlock:^(NSString* cuid, NSUInteger idx, BOOL *stop) {
-//            if([cuid isEqualToString:cell.dataIndentifier])
-//            {
-//                NSLog(@"CH(-) Found Cell at: %i", i);
-//                [deletedIndexPathArray addObject:[NSIndexPath indexPathForItem:index inSection:0]];
-//            }
-//        }];
-//        
-//      
-//    }
-    
-
-//    if(deletedIndexPathsFromPreviousFetchArray.count > 0)
-//    {
-//        self.isViewDirty = NO;
-//        [self.channelThumbnailCollectionView reloadData];
-//        return;
-//    }
-    
-//    if(insertedIndexPathArray.count == 0 && deletedIndexPathsFromPreviousFetchArray.count == 0)
-//    {
-//        
-//        self.isViewDirty = NO;
-//        
-//        return;
-//    }
-    
     if([self.channelThumbnailCollectionView numberOfItemsInSection:0] == 0)
     {
         self.isViewDirty = NO;
@@ -383,7 +332,6 @@
         
     } completion:^(BOOL finished) {
         
-        [self.channelThumbnailCollectionView reloadData];
         self.isViewDirty = NO;
         
         
