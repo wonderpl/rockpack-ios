@@ -1383,7 +1383,7 @@
     NSString *apiString = [NSString stringWithFormat: @"%@?locale=%@", kAPIReportPlayerError, self.localeString];
     
     NSDictionary *params = @{@"video_instance" : videoInstanceId,
-                             @"error" : videoInstanceId};
+                             @"error" : errorDescription};
     
     SYNNetworkOperationJsonObject *networkOperation = (SYNNetworkOperationJsonObject*)[self operationWithPath: apiString
                                                                                                        params: params
