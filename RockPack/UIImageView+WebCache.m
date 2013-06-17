@@ -63,7 +63,7 @@ static char operationKey;
             if (image.monochromeImage != nil)
             {
                 dispatch_async(dispatch_get_main_queue(), ^{
-                    completedBlock(image, nil, SDImageCacheTypeMemory);
+                    completedBlock(image, nil, SDImageCacheTypeMemoryMonochrome);
                 });
                 return;
             }

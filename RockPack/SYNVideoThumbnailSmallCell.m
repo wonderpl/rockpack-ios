@@ -59,7 +59,7 @@
                                         // Now set out monchrome view as well
                                         weakSelf.monochromeImageView.image = image.monochromeImage;
                                         
-                                        if (cacheType == SDImageCacheTypeNone)
+                                        if (cacheType != SDImageCacheTypeMemoryMonochrome)
                                         {
                                             [UIView animateWithDuration: 0.35f
                                                                   delay: 0.0f
@@ -118,8 +118,11 @@
     // Cancel any ongoing requests
     [self.colourImageView cancelCurrentImageLoad];
     
-    [self.colourImageView.layer removeAllAnimations];
-    [self.monochromeImageView.layer removeAllAnimations];
+//    [self.colourImageView.layer removeAllAnimations];
+//    [self.monochromeImageView.layer removeAllAnimations];
+    
+    self.colourImageView.alpha = 0.0f;
+    self.monochromeImageView.alpha = 0.0f;
     
     self.colourImageView.image = nil;
     self.monochromeImageView.image = nil;
