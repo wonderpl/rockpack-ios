@@ -2,9 +2,9 @@
 <archive type="com.apple.InterfaceBuilder3.CocoaTouch.iPad.XIB" version="8.00">
 	<data>
 		<int key="IBDocument.SystemTarget">1552</int>
-		<string key="IBDocument.SystemVersion">12E55</string>
+		<string key="IBDocument.SystemVersion">12D78</string>
 		<string key="IBDocument.InterfaceBuilderVersion">3084</string>
-		<string key="IBDocument.AppKitVersion">1187.39</string>
+		<string key="IBDocument.AppKitVersion">1187.37</string>
 		<string key="IBDocument.HIToolboxVersion">626.00</string>
 		<object class="NSMutableDictionary" key="IBDocument.PluginVersions">
 			<string key="NS.key.0">com.apple.InterfaceBuilder.IBCocoaTouchPlugin</string>
@@ -420,7 +420,7 @@
 								<string key="NSFrameSize">{320, 467}</string>
 								<reference key="NSSuperview" ref="793593682"/>
 								<reference key="NSWindow"/>
-								<reference key="NSNextKeyView" ref="240192690"/>
+								<reference key="NSNextKeyView" ref="624001696"/>
 								<string key="NSReuseIdentifierKey">_NS:9</string>
 								<reference key="IBUIBackgroundColor" ref="905238541"/>
 								<string key="targetRuntimeIdentifier">IBIPadFramework</string>
@@ -689,7 +689,7 @@
 						<string key="NSFrame">{{102, 0}, {115, 48}}</string>
 						<reference key="NSSuperview" ref="453930770"/>
 						<reference key="NSWindow"/>
-						<reference key="NSNextKeyView" ref="1042878543"/>
+						<reference key="NSNextKeyView" ref="240192690"/>
 						<string key="NSReuseIdentifierKey">_NS:9</string>
 						<int key="IBUIContentMode">4</int>
 						<bool key="IBUIUserInteractionEnabled">NO</bool>
@@ -734,7 +734,7 @@
 						<string key="NSFrame">{{5, 5}, {48, 49}}</string>
 						<reference key="NSSuperview" ref="453930770"/>
 						<reference key="NSWindow"/>
-						<reference key="NSNextKeyView" ref="624001696"/>
+						<reference key="NSNextKeyView" ref="1042878543"/>
 						<string key="NSReuseIdentifierKey">_NS:9</string>
 						<bool key="IBUIOpaque">NO</bool>
 						<string key="targetRuntimeIdentifier">IBIPadFramework</string>
@@ -988,6 +988,14 @@
 						<reference key="destination" ref="104919480"/>
 					</object>
 					<int key="connectionID">140</int>
+				</object>
+				<object class="IBConnectionRecord">
+					<object class="IBCocoaTouchOutletConnection" key="connection">
+						<string key="label">logoImageView</string>
+						<reference key="source" ref="841351856"/>
+						<reference key="destination" ref="624001696"/>
+					</object>
+					<int key="connectionID">141</int>
 				</object>
 				<object class="IBConnectionRecord">
 					<object class="IBCocoaTouchOutletConnection" key="connection">
@@ -1365,16 +1373,16 @@
 						<string key="objectName">Button - Save channel</string>
 					</object>
 					<object class="IBObjectRecord">
-						<int key="objectID">8</int>
-						<reference key="object" ref="624001696"/>
-						<reference key="parent" ref="453930770"/>
-						<string key="objectName">Image View - Rockpack Logo</string>
-					</object>
-					<object class="IBObjectRecord">
 						<int key="objectID">139</int>
 						<reference key="object" ref="104919480"/>
 						<reference key="parent" ref="421928150"/>
 						<string key="objectName">Activity Indicator - Share</string>
+					</object>
+					<object class="IBObjectRecord">
+						<int key="objectID">8</int>
+						<reference key="object" ref="624001696"/>
+						<reference key="parent" ref="453930770"/>
+						<string key="objectName">Image View - Rockpack Logo</string>
 					</object>
 				</array>
 			</object>
@@ -1436,7 +1444,7 @@
 			<nil key="activeLocalization"/>
 			<dictionary class="NSMutableDictionary" key="localizations"/>
 			<nil key="sourceID"/>
-			<int key="maxID">140</int>
+			<int key="maxID">141</int>
 		</object>
 		<object class="IBClassDescriber" key="IBDocument.Classes">
 			<array class="NSMutableArray" key="referencedPartialClassDescriptions">
@@ -1502,6 +1510,25 @@
 				<object class="IBPartialClassDescription">
 					<string key="className">SYNChannelDetailViewController</string>
 					<string key="superclassName">SYNAbstractViewController</string>
+					<dictionary class="NSMutableDictionary" key="actions">
+						<string key="addCoverButtonTapped:">UIButton</string>
+						<string key="buyButtonTapped:">id</string>
+						<string key="shareChannelButtonTapped:">UIButton</string>
+					</dictionary>
+					<dictionary class="NSMutableDictionary" key="actionInfosByName">
+						<object class="IBActionInfo" key="addCoverButtonTapped:">
+							<string key="name">addCoverButtonTapped:</string>
+							<string key="candidateClassName">UIButton</string>
+						</object>
+						<object class="IBActionInfo" key="buyButtonTapped:">
+							<string key="name">buyButtonTapped:</string>
+							<string key="candidateClassName">id</string>
+						</object>
+						<object class="IBActionInfo" key="shareChannelButtonTapped:">
+							<string key="name">shareChannelButtonTapped:</string>
+							<string key="candidateClassName">UIButton</string>
+						</object>
+					</dictionary>
 					<dictionary class="NSMutableDictionary" key="outlets">
 						<string key="activityIndicator">UIActivityIndicatorView</string>
 						<string key="addCoverButton">UIButton</string>
@@ -1524,6 +1551,7 @@
 						<string key="displayControlsView">UIView</string>
 						<string key="editButton">UIButton</string>
 						<string key="editControlsView">UIView</string>
+						<string key="logoImageView">UIImageView</string>
 						<string key="masterControlsView">UIView</string>
 						<string key="profileImageButton">UIButton</string>
 						<string key="reportConcernButton">UIButton</string>
@@ -1620,6 +1648,10 @@
 							<string key="name">editControlsView</string>
 							<string key="candidateClassName">UIView</string>
 						</object>
+						<object class="IBToOneOutletInfo" key="logoImageView">
+							<string key="name">logoImageView</string>
+							<string key="candidateClassName">UIImageView</string>
+						</object>
 						<object class="IBToOneOutletInfo" key="masterControlsView">
 							<string key="name">masterControlsView</string>
 							<string key="candidateClassName">UIView</string>
@@ -1701,8 +1733,8 @@
 			<string key="ButtonBack~iphone.png">{48, 49}</string>
 			<string key="ButtonBuy.png">{61, 61}</string>
 			<string key="ButtonBuyHighlighted.png">{61, 61}</string>
-			<string key="ButtonCancel.png">{60, 61}</string>
-			<string key="ButtonCancelHighlighted.png">{60, 61}</string>
+			<string key="ButtonCancel.png">{60, 60}</string>
+			<string key="ButtonCancelHighlighted.png">{60, 60}</string>
 			<string key="ButtonConfirmYellowHighlighted~iphone.png">{48, 49}</string>
 			<string key="ButtonConfirmYellow~iphone.png">{48, 49}</string>
 			<string key="ButtonCoverCategoryHighlighted~iphone.png">{155, 65}</string>

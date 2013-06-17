@@ -280,7 +280,7 @@
             
             SYNChannelDetailViewController *channelCreationVC =
             [[SYNChannelDetailViewController alloc] initWithChannel: appDelegate.videoQueue.currentlyCreatingChannel
-                                                          usingMode: kChannelDetailsModeEdit] ;
+                                                          usingMode: kChannelDetailsModeCreate] ;
             CGRect newFrame = channelCreationVC.view.frame;
             newFrame.size.height = self.view.frame.size.height;
             channelCreationVC.view.frame = newFrame;
