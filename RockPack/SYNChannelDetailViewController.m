@@ -607,7 +607,7 @@
             
             self.dataItemsAvailable = self.channel.totalVideosValue;
             
-            NSLog(@"total videos first batch: %i", self.channel.totalVideosValue);
+            DebugLog(@"Total Videos on First Batch: %i", self.channel.totalVideosValue);
             
             
             self.subscribeButton.selected = self.channel.subscribedByUserValue;
@@ -649,7 +649,7 @@
     if (self.noVideosMessageView)
     {
         [self.noVideosMessageView removeFromSuperview];
-        self.noVideosMessageView = nil;  
+        self.noVideosMessageView = nil;
     }
     
     if (!message)
@@ -874,6 +874,7 @@
     
     MKNKUserSuccessBlock successBlock = ^(NSDictionary *dictionary) {
         
+        
         [self.channel addVideoInstancesFromDictionary:dictionary];
         
         NSError* error;
@@ -895,7 +896,7 @@
     if ([self.channel.resourceURL hasPrefix: @"https"]) // https does not cache so it is fresh
     {
             
-            NSLog(@"Loading from secure API");
+            
             [appDelegate.oAuthNetworkEngine videosForChannelForUserId:appDelegate.currentUser.uniqueId
                                                             channelId:self.channel.uniqueId
                                                               inRange:self.dataRequestRange
@@ -907,7 +908,7 @@
     else
     {
             
-            NSLog(@"Loading from public API");
+            
             [appDelegate.networkEngine videosForChannelForUserId:appDelegate.currentUser.uniqueId
                                                        channelId:self.channel.uniqueId
                                                          inRange:self.dataRequestRange
