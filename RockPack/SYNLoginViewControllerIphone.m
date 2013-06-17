@@ -262,7 +262,6 @@
 
 -(void)reEnableLoginControls
 {
-    
 }
 
 
@@ -452,7 +451,7 @@
     {
         case kLoginScreenStateRegisterStepTwo:
         {
-            [self turnOnButton:self.backButton];
+            [self turnOffButton:self.backButton];
             [self turnOffButton:self.confirmButton];
             [self turnOnButton:self.nextButton];
             [self turnOnButton:self.cancelButton];
@@ -1115,24 +1114,30 @@ shouldChangeCharactersInRange: (NSRange) range
 
 - (void) turnOnButton: (UIButton*) button
 {
-    button.hidden = NO;
-    button.alpha = 0.0f;
-    [UIView animateWithDuration:kLoginAnimationTransitionDuration delay:0.0f options:UIViewAnimationOptionCurveEaseInOut animations:^{
-        button.alpha = 1.0f;
-    } completion:nil];
+    if(button.hidden == YES)
+    {
+        button.hidden = NO;
+        button.alpha = 0.0f;
+        [UIView animateWithDuration:kLoginAnimationTransitionDuration delay:0.0f options:UIViewAnimationOptionCurveEaseInOut animations:^{
+            button.alpha = 1.0f;
+        } completion:nil];
+    }
 }
 
 
 - (void) turnOffButton: (UIButton*) button
 {
-    [UIView animateWithDuration:kLoginAnimationTransitionDuration delay:0.0f options:UIViewAnimationOptionCurveEaseInOut animations:^{
-        button.alpha = 0.0f;
-    } completion:^(BOOL finished) {
-        if(finished)
-        {
-            button.hidden = YES;
-        }
-    }];
+    if(button.hidden==NO)
+    {
+        [UIView animateWithDuration:kLoginAnimationTransitionDuration delay:0.0f options:UIViewAnimationOptionCurveEaseInOut animations:^{
+            button.alpha = 0.0f;
+        } completion:^(BOOL finished) {
+            if(finished)
+            {
+                button.hidden = YES;
+            }
+        }];
+    }
 }
 
 

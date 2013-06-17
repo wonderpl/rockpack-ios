@@ -287,7 +287,7 @@
     {
         faceImageButton.center = CGPointMake(78.0, faceImageButton.center.y);
         self.avatarImageView.center = CGPointMake(78.0, self.avatarImageView.center.y);
-        passwordForgottenLabel.center = CGPointMake(650.0, passwordForgottenLabel.center.y);
+        passwordForgottenLabel.center = CGPointMake(115.0, passwordForgottenLabel.center.y);
         
     }
 
@@ -1011,6 +1011,20 @@
 - (IBAction) forgottenPasswordPressed: (id) sender
 {
     self.state = kLoginScreenStatePasswordRetrieve;
+    
+    //Make member label grey
+    self.memberLabel.textColor = self.memberLabel.textColor;
+    self.memberLabel.shadowColor = self.memberLabel.shadowColor;
+    
+    [UIView animateWithDuration:0.6f
+                          delay:1.0f
+                        options: UIViewAnimationCurveEaseInOut
+                     animations:^{
+                         self.memberLabel.textColor = [UIColor colorWithRed:(130.0f/255.0f) green:(141.0f/255.0f) blue:(145.0f/255.0f) alpha:(1.0f)];
+                         self.memberLabel.shadowColor = [UIColor whiteColor];
+                         
+                     } completion:^(BOOL finished) {
+                     }];
 }
 
 

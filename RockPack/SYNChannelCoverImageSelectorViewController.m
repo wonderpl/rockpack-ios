@@ -194,7 +194,7 @@ enum ChannelCoverSelectorState {
     {
         case kChannelCoverDefault:
         {
-            return [[self.fetchedResultsController fetchedObjects] count] + 1;
+            return [[self.fetchedResultsController fetchedObjects] count] + 2;
             break;
         }
             
@@ -224,12 +224,17 @@ enum ChannelCoverSelectorState {
     {
         if (indexPath.row == 0)
         {
+            cell.channelCoverImageView.image = [UIImage imageNamed: @"ButtonCamera@2x.png"];
+            cell.glossImage.hidden = YES;
+        }
+        else if (indexPath.row == 1)
+        {
             cell.channelCoverImageView.image = [UIImage imageNamed: @"ChannelCreationCoverNone.png"];
             cell.glossImage.hidden = YES;
         }
         else
         {
-            indexPath = [NSIndexPath indexPathForRow: indexPath.row - 1 inSection:0];
+            indexPath = [NSIndexPath indexPathForRow: indexPath.row - 2 inSection:0];
             CoverArt *coverArt = self.fetchedResultsController.fetchedObjects[indexPath.row];
 
             [cell.channelCoverImageView setImageWithURL: [NSURL URLWithString: coverArt.thumbnailURL]
@@ -294,6 +299,7 @@ enum ChannelCoverSelectorState {
         case kChannelCoverCameraOptions:
             if (indexPath.row == 0 && self.supportsCamera)
             {
+                [collectionView deselectItemAtIndexPath:indexPath animated:NO];
                 GKImagePicker* picker = [[GKImagePicker alloc] init];
                 picker.cropSize = CGSizeMake(280, 280);
                 picker.delegate = self;
@@ -367,11 +373,16 @@ enum ChannelCoverSelectorState {
             
         case kChannelCoverDefault:
         {
+            if(indexPath.row ==0)
+            {
+                [self cameraButtonTapped:nil];
+                return;
+            }
             NSString* returnStringURL = nil;
             NSString* returnCoverId = kCoverSetNoCover;
-            if (indexPath.row != 0)
+            if (indexPath.row != 1)
             {
-                indexPath = [NSIndexPath indexPathForRow:indexPath.row - 1 inSection:0];
+                indexPath = [NSIndexPath indexPathForRow:indexPath.row - 2 inSection:0];
                 CoverArt *coverArt = self.fetchedResultsController.fetchedObjects[indexPath.row];
                     returnStringURL = coverArt.thumbnailURL;
                     returnCoverId = coverArt.coverRef;
