@@ -68,6 +68,7 @@ typedef void(^AnimationCompletionBlock)(BOOL finished);
 @property (nonatomic, strong) UIPopoverController* accountSettingsPopover;
 @property (nonatomic, strong) UIView* accountSettingsCoverView;
 @property (strong, nonatomic) IBOutlet UIView *overlayContainerView;
+@property (nonatomic, strong) IBOutlet UIButton* headerButton;
 
 @end
 
@@ -189,7 +190,14 @@ typedef void(^AnimationCompletionBlock)(BOOL finished);
     
     self.movableButtonsContainer.userInteractionEnabled = YES;
     
-    
+    UITapGestureRecognizer* tapGesture = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(headerTapped:)];
+    UISwipeGestureRecognizer* leftSwipeGesture = [[UISwipeGestureRecognizer alloc] initWithTarget:self action:@selector(headerSwiped:)];
+    leftSwipeGesture.direction = UISwipeGestureRecognizerDirectionLeft;
+    UISwipeGestureRecognizer* rightSwipeGesture = [[UISwipeGestureRecognizer alloc] initWithTarget:self action:@selector(headerSwiped:)];
+    rightSwipeGesture.direction = UISwipeGestureRecognizerDirectionRight;
+    [self.headerButton addGestureRecognizer:tapGesture];
+    [self.headerButton addGestureRecognizer:leftSwipeGesture];
+    [self.headerButton addGestureRecognizer:rightSwipeGesture];
     
     self.pageTitleLabel.font = [UIFont boldRockpackFontOfSize:self.pageTitleLabel.font.pointSize];
     self.pageTitleLabel.textColor = [UIColor colorWithRed:(40.0/255.0)
@@ -289,7 +297,10 @@ typedef void(^AnimationCompletionBlock)(BOOL finished);
 }
 
 
-
+-(void)headerSwiped:(UISwipeGestureRecognizer*)recogniser
+{
+    [self.containerViewController swipedTo:recogniser.direction];
+}
 
 
 
@@ -508,7 +519,7 @@ typedef void(^AnimationCompletionBlock)(BOOL finished);
 
 
 
--(IBAction)headerTapped:(id)sender
+-(void)headerTapped:(UIGestureRecognizer*)recogniser
 {
     [self.showingViewController headerTapped];
 }
@@ -1167,9 +1178,6 @@ typedef void(^AnimationCompletionBlock)(BOOL finished);
     
     if([SYNDeviceManager.sharedInstance isIPad])
     {
-        
-        
-        
         
         UINavigationController* navigationController = [[UINavigationController alloc] initWithRootViewController: accountsTableController];
         navigationController.view.backgroundColor = [UIColor clearColor];
