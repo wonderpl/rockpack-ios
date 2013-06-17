@@ -74,7 +74,7 @@
         
         params.action = action;
         params.previewPropertyName = @"other";
-        params.actionType = [NSString stringWithFormat: @"%@:vshare", facebookNamespace];
+        params.actionType = [NSString stringWithFormat: @"%@:share", facebookNamespace];
     }
     else
     {
