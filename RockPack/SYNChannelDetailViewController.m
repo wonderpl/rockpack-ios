@@ -2136,6 +2136,8 @@
 {
     [super viewDidAppear:animated];
     
+    self.videoThumbnailCollectionView.scrollsToTop = YES;
+    
     [[NSNotificationCenter defaultCenter] postNotificationName:kMainControlsChangeEnter object:self];
     
     if(![self.channel.channelOwner.uniqueId isEqualToString:appDelegate.currentUser.uniqueId] ||
@@ -2174,6 +2176,8 @@
 -(void)viewDidDisappear:(BOOL)animated
 {
     [super viewDidDisappear:animated];
+    
+    self.videoThumbnailCollectionView.scrollsToTop = NO;
     
     [[NSNotificationCenter defaultCenter] postNotificationName:kMainControlsChangeLeave object:self];
 }

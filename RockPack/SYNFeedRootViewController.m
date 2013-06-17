@@ -96,6 +96,7 @@
     
     self.videoThumbnailCollectionView = [[UICollectionView alloc] initWithFrame: videoCollectionViewFrame
                                                            collectionViewLayout:standardFlowLayout];
+    
     self.videoThumbnailCollectionView.delegate = self;
     self.videoThumbnailCollectionView.dataSource = self;
     self.videoThumbnailCollectionView.backgroundColor = [UIColor clearColor];
@@ -188,13 +189,23 @@
     // this will remove the '+' from the videos that where selected
     [self.videoThumbnailCollectionView reloadData];
 }
+
+#pragma mark - Container Scrol Delegates
+
 - (void) viewDidScrollToFront
 {
     [self updateAnalytics];
+    
+    self.videoThumbnailCollectionView.scrollsToTop = YES;
     if(self.dataRequestRange.location == 0)
     {
         [self refreshData];
     }
+}
+
+-(void)viewDidScrollToBack
+{
+    self.videoThumbnailCollectionView.scrollsToTop = NO;
 }
 
 

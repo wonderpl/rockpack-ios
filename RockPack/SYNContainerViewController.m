@@ -156,6 +156,8 @@
         self.selectedNavigationController = self.childViewControllers[1];
         self.scrollView.page = 1;
     }
+    
+    [self.showingBaseViewController viewDidScrollToFront];
 }
 
 
@@ -341,8 +343,12 @@
                              withValue: nil];
         
         // Now let the page know that it has the focus
-        // FIXME: We really need to use a proper control here (as opposed to a home-grown one), which should call the viewWillAppear (etc) on each view
+        
+        SYNAbstractViewController* lastSelectedViewController = (SYNAbstractViewController*)((UINavigationController*)self.childViewControllers[self.scrollView.page]).viewControllers[0];
+        [lastSelectedViewController viewDidScrollToBack];
         [self.showingBaseViewController viewDidScrollToFront];
+        
+        NSLog(@"last vc: %@ at %i", lastSelectedViewController.title, self.lastSelectedPageIndex);
     }
 }
 
