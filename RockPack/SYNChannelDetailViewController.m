@@ -833,9 +833,6 @@
             viewForSupplementaryElementOfKind: (NSString *) kind
                                   atIndexPath: (NSIndexPath *) indexPath
 {
-    if (collectionView != self.videoThumbnailCollectionView)
-        return nil;
-    
     
     
     UICollectionReusableView* supplementaryView;
@@ -845,23 +842,23 @@
         if (self.channel.videoInstances.count == 0 ||
            (self.dataRequestRange.location + self.dataRequestRange.length) >= self.dataItemsAvailable)
         {
-            NSLog(@"%i > %i", (self.dataRequestRange.location + self.dataRequestRange.length), self.dataItemsAvailable);
-            return nil;
+            supplementaryView = [[UICollectionReusableView alloc] initWithFrame:CGRectMake(0.0, 0.0, [self footerSize].width, [self footerSize].height)];
+            
+        }
+        else
+        {
+            self.footerView = [self.videoThumbnailCollectionView dequeueReusableSupplementaryViewOfKind: kind
+                                                                                    withReuseIdentifier: @"SYNChannelFooterMoreView"
+                                                                                           forIndexPath: indexPath];
+            
+            [self.footerView.loadMoreButton addTarget: self
+                                               action: @selector(loadMoreVideos:)
+                                     forControlEvents: UIControlEventTouchUpInside];
+            
+            
+            supplementaryView = self.footerView;
         }
         
-        NSLog(@"%i < %i", (self.dataRequestRange.location + self.dataRequestRange.length), self.dataItemsAvailable);
-        
-        self.footerView = [self.videoThumbnailCollectionView dequeueReusableSupplementaryViewOfKind: kind
-                                                                                withReuseIdentifier: @"SYNChannelFooterMoreView"
-                                                                                       forIndexPath: indexPath];
-        
-        [self.footerView.loadMoreButton addTarget: self
-                                           action: @selector(loadMoreVideos:)
-                                 forControlEvents: UIControlEventTouchUpInside];
-        
-        //[self loadMoreChannels:self.footerView.loadMoreButton];
-        
-        supplementaryView = self.footerView;
     }
     
     return supplementaryView;
@@ -1213,8 +1210,6 @@
     if (!videoInstanceToDelete)
         return;
     
-    
-   
     
     UICollectionViewCell* cell =
     [self.videoThumbnailCollectionView cellForItemAtIndexPath:self.indexPathToDelete];
