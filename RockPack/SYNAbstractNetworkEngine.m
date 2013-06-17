@@ -133,14 +133,18 @@
                                // Now check to see if we need to refresh the token
                                NSDictionary *responseDictionary = (NSDictionary *) response;
                                NSString *reason = responseDictionary[@"error"];
-                               if ([reason isEqualToString: @"expired_token"] == FALSE)
+                               if ([reason isEqualToString: @"expired_token"]
+                                   || [reason isEqualToString: @"invalid_request"]
+                                   || [reason isEqualToString: @"invalid_grant"]
+                                   || [reason isEqualToString: @"unsupported_grant_type"])
                                {
-                                   // Normal (?) error, we don't need to try refreshing the token
-                                   errorBlock(response);
+                                   // Just log the user out
+                                   [[NSNotificationCenter defaultCenter] postNotificationName: kAccountSettingsLogout
+                                                                                       object: nil];
                                }
                                else
                                {
-                                   // The OAuth2 token is still invalid, even after a refresh - so bail
+                                   // Not sure what is wrong, so don't log the user out
                                    DebugLog (@"refreshed token not valid");
                                    errorBlock(response);
                                }
