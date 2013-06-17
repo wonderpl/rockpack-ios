@@ -378,15 +378,26 @@
     self.deletionModeActive = NO;
 }
 
+#pragma mark - Container Scroll Delegates
 
 - (void) viewDidScrollToFront
 {
 //    [self updateAnalytics];
     
+    self.channelThumbnailCollectionView.scrollsToTop = YES;
+    
+    self.subscriptionsViewController.channelThumbnailCollectionView.scrollsToTop = YES;
     
     [[NSNotificationCenter defaultCenter] postNotificationName:kChannelOwnerUpdateRequest
                                                         object:self
                                                       userInfo:@{kChannelOwner:self.channelOwner}];
+}
+
+-(void)viewDidScrollToBack
+{
+    self.channelThumbnailCollectionView.scrollsToTop = NO;
+    
+    self.subscriptionsViewController.channelThumbnailCollectionView.scrollsToTop = NO;
 }
 
 
@@ -396,7 +407,7 @@
 //    [GAI.sharedInstance.defaultTracker sendView: @"You - Root"];
 }
 
-
+#pragma mark - Core Data Callbacks
 
 - (void) handleDataModelChange: (NSNotification*) notification
 {
@@ -828,14 +839,10 @@
     
     
     // Make sure we can't delete the favourites channel
-    if (channel.favouritesValue == TRUE)
-    {
-        channelThumbnailCell.deleteButton.enabled = FALSE;
-    }
+    if (channel.favouritesValue)
+        channelThumbnailCell.deleteButton.enabled = NO;
     else
-    {
-        channelThumbnailCell.deleteButton.enabled = TRUE;
-    }
+        channelThumbnailCell.deleteButton.enabled = YES;
     
     
     

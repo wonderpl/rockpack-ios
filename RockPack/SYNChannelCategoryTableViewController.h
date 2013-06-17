@@ -53,6 +53,7 @@
 @property (nonatomic,weak) IBOutlet UITableView* tableView;
 @property (weak, nonatomic) IBOutlet UIButton *confirmButton;
 @property (weak, nonatomic) IBOutlet UIButton *closeButton;
+@property (weak, nonatomic) IBOutlet UILabel *titleLabel;
 /**
 	toggles the showing of an "All categories" cell or an "Other" category cell at the top of the list
  

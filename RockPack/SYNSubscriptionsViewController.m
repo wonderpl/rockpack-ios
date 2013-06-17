@@ -201,7 +201,8 @@
 }
 
 
-- (UICollectionViewCell *) collectionView: (UICollectionView *) cv cellForItemAtIndexPath: (NSIndexPath *) indexPath {
+- (UICollectionViewCell *) collectionView: (UICollectionView *) cv
+                   cellForItemAtIndexPath: (NSIndexPath *) indexPath {
     
     
     
@@ -217,6 +218,8 @@
     channelThumbnailCell.dataIndentifier = subscriptionChannel.uniqueId;
     
     [channelThumbnailCell setChannelTitle: subscriptionChannel.title];
+
+  
     
     return channelThumbnailCell;
 }

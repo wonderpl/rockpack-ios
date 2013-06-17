@@ -156,6 +156,8 @@
         self.selectedNavigationController = self.childViewControllers[1];
         self.scrollView.page = 1;
     }
+    
+    [self.showingBaseViewController viewDidScrollToFront];
 }
 
 
@@ -166,6 +168,26 @@
     [[NSNotificationCenter defaultCenter] postNotificationName: kScrollerPageChanged
                                                         object: self
                                                       userInfo: @{kCurrentPage:@(self.scrollView.page)}];
+}
+
+-(void)swipedTo:(UISwipeGestureRecognizerDirection)direction
+{
+    NSInteger page = self.currentPage;
+  
+    if(direction == UISwipeGestureRecognizerDirectionLeft) // go right
+    {
+        page = self.currentPage + 1 < self.childViewControllers.count ? self.currentPage + 1 : self.currentPage;
+    }
+    else if (direction == UISwipeGestureRecognizerDirectionRight) // go left
+    {
+        page = self.currentPage - 1 >= 0 ? self.currentPage - 1 : self.currentPage;
+    }
+    else
+    {
+        return;
+    }
+    
+    [self.scrollView setPage: page animated: YES];
 }
 
 
@@ -341,8 +363,12 @@
                              withValue: nil];
         
         // Now let the page know that it has the focus
-        // FIXME: We really need to use a proper control here (as opposed to a home-grown one), which should call the viewWillAppear (etc) on each view
+        
+        SYNAbstractViewController* lastSelectedViewController = (SYNAbstractViewController*)((UINavigationController*)self.childViewControllers[self.scrollView.page]).viewControllers[0];
+        [lastSelectedViewController viewDidScrollToBack];
         [self.showingBaseViewController viewDidScrollToFront];
+        
+        NSLog(@"last vc: %@ at %i", lastSelectedViewController.title, self.lastSelectedPageIndex);
     }
 }
 

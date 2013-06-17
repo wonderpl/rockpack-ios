@@ -76,6 +76,8 @@
     [self.channelThumbnailCollectionView registerNib: thumbnailCellNib
                           forCellWithReuseIdentifier: @"SYNChannelMidCell"];
     
+    
+    
     self.titleLabel.font = [UIFont boldRockpackFontOfSize:self.titleLabel.font.pointSize];
     
     
@@ -85,6 +87,8 @@
 - (void) viewWillAppear: (BOOL) animated
 {
     [super viewWillAppear: animated];
+    
+    self.channelThumbnailCollectionView.scrollsToTop = YES;
     
     // Google analytics support
     [GAI.sharedInstance.defaultTracker sendView: @"Channels - Create - Select"];
@@ -126,6 +130,8 @@
 -(void)viewWillDisappear:(BOOL)animated
 {
     [super viewWillDisappear:animated];
+    
+    self.channelThumbnailCollectionView.scrollsToTop = NO;
     
     self.channels = nil;
 }
@@ -271,7 +277,7 @@
             
             SYNChannelDetailViewController *channelCreationVC =
             [[SYNChannelDetailViewController alloc] initWithChannel: appDelegate.videoQueue.currentlyCreatingChannel
-                                                          usingMode: kChannelDetailsModeEdit] ;
+                                                          usingMode: kChannelDetailsModeCreate] ;
             CGRect newFrame = channelCreationVC.view.frame;
             newFrame.size.height = self.view.frame.size.height;
             channelCreationVC.view.frame = newFrame;

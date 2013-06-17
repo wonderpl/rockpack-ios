@@ -96,6 +96,7 @@
     
     self.videoThumbnailCollectionView = [[UICollectionView alloc] initWithFrame: videoCollectionViewFrame
                                                            collectionViewLayout:standardFlowLayout];
+    
     self.videoThumbnailCollectionView.delegate = self;
     self.videoThumbnailCollectionView.dataSource = self;
     self.videoThumbnailCollectionView.backgroundColor = [UIColor clearColor];
@@ -125,6 +126,8 @@
 - (void) viewDidLoad
 {
     [super viewDidLoad];
+    
+    [self removeEmptyGenreMessage];
     
     self.refreshControl = [[UIRefreshControl alloc] initWithFrame: CGRectMake(0, -44, 320, 44)];
     
@@ -188,13 +191,23 @@
     // this will remove the '+' from the videos that where selected
     [self.videoThumbnailCollectionView reloadData];
 }
+
+#pragma mark - Container Scrol Delegates
+
 - (void) viewDidScrollToFront
 {
     [self updateAnalytics];
+    
+    self.videoThumbnailCollectionView.scrollsToTop = YES;
     if(self.dataRequestRange.location == 0)
     {
         [self refreshData];
     }
+}
+
+-(void)viewDidScrollToBack
+{
+    self.videoThumbnailCollectionView.scrollsToTop = NO;
 }
 
 
@@ -418,9 +431,15 @@
                                                     
                                                 } errorHandler: ^(NSDictionary* errorDictionary) {
                                                     
-                                                         [self handleRefreshComplete];
-                                                         DebugLog(@"Refresh subscription updates failed");
-                                                     }];
+                                                    [self handleRefreshComplete];
+                                                    
+                                                    [self removeEmptyGenreMessage];
+                                                    
+                                                    [self displayEmptyGenreMessage:NSLocalizedString(@"feed_screen_loading_error", nil) andLoader:NO];
+                                                    
+                                                     DebugLog(@"Refresh subscription updates failed");
+                                                    
+                                                }];
 }
 
 

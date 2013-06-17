@@ -121,6 +121,7 @@
     self.channelThumbnailCollectionView.delegate = self;
     self.channelThumbnailCollectionView.backgroundColor = [UIColor clearColor];
     self.channelThumbnailCollectionView.showsVerticalScrollIndicator = NO;
+    
     self.channelThumbnailCollectionView.autoresizingMask = UIViewAutoresizingFlexibleWidth | UIViewAutoresizingFlexibleHeight;
     
     CGRect newFrame;
@@ -210,6 +211,7 @@
     
     // On Boarding
     
+    self.channelThumbnailCollectionView.scrollsToTop = YES;
     
     NSUserDefaults *defaults = [NSUserDefaults standardUserDefaults];
     BOOL hasShownSubscribeOnBoarding = [defaults boolForKey:kUserDefaultsChannels];
@@ -240,6 +242,10 @@
         [self loadChannelsForGenre:currentGenre];
 }
 
+-(void)viewDidScrollToBack
+{
+    self.channelThumbnailCollectionView.scrollsToTop = NO;
+}
 
 - (void) updateAnalytics
 {
@@ -584,6 +590,7 @@
     channelThumbnailCell.viewControllerDelegate = self;
     
     channelThumbnailCell.dataIndentifier = channel.uniqueId;
+
     
     return channelThumbnailCell;
 }

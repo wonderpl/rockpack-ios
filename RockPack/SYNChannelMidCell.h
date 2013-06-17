@@ -13,6 +13,7 @@
 @property (nonatomic, strong) IBOutlet UILabel *titleLabel;
 @property (nonatomic, strong) IBOutlet UIImageView* panelSelectedImageView;
 @property (nonatomic, strong) IBOutlet UIButton* deleteButton;
+@property (nonatomic, strong) IBOutlet UIImageView* shadowOverlayImageView;
 
 @property (nonatomic, strong) NSString* dataIndentifier;
 

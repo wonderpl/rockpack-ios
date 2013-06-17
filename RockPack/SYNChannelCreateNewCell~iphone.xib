@@ -2,10 +2,10 @@
 <archive type="com.apple.InterfaceBuilder3.CocoaTouch.iPad.XIB" version="8.00">
 	<data>
 		<int key="IBDocument.SystemTarget">1552</int>
-		<string key="IBDocument.SystemVersion">12C3006</string>
+		<string key="IBDocument.SystemVersion">12D78</string>
 		<string key="IBDocument.InterfaceBuilderVersion">3084</string>
-		<string key="IBDocument.AppKitVersion">1187.34</string>
-		<string key="IBDocument.HIToolboxVersion">625.00</string>
+		<string key="IBDocument.AppKitVersion">1187.37</string>
+		<string key="IBDocument.HIToolboxVersion">626.00</string>
 		<object class="NSMutableDictionary" key="IBDocument.PluginVersions">
 			<string key="NS.key.0">com.apple.InterfaceBuilder.IBCocoaTouchPlugin</string>
 			<string key="NS.object.0">2083</string>
@@ -44,7 +44,6 @@
 								<int key="NSvFlags">292</int>
 								<string key="NSFrame">{{3, 3}, {152, 152}}</string>
 								<reference key="NSSuperview" ref="1069425472"/>
-								<reference key="NSWindow"/>
 								<string key="NSReuseIdentifierKey">_NS:9</string>
 								<bool key="IBUIUserInteractionEnabled">NO</bool>
 								<string key="targetRuntimeIdentifier">IBIPadFramework</string>
@@ -56,7 +55,6 @@
 						</array>
 						<string key="NSFrameSize">{158, 158}</string>
 						<reference key="NSSuperview" ref="534839242"/>
-						<reference key="NSWindow"/>
 						<reference key="NSNextKeyView" ref="553738829"/>
 						<object class="NSColor" key="IBUIBackgroundColor">
 							<int key="NSColorSpace">3</int>
@@ -71,7 +69,6 @@
 				</array>
 				<string key="NSFrameSize">{158, 158}</string>
 				<reference key="NSSuperview"/>
-				<reference key="NSWindow"/>
 				<reference key="NSNextKeyView" ref="1069425472"/>
 				<string key="NSReuseIdentifierKey">_NS:9</string>
 				<bool key="IBUIAutoresizesSubviews">NO</bool>

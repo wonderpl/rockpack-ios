@@ -725,6 +725,11 @@
     
 }
 
+-(void)viewDidScrollToBack
+{
+    // to be implemented by subclass
+}
+
 // Load more footer
 
 - (CGSize) footerSize

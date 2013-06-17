@@ -174,7 +174,13 @@
                     completionHandler: (MKNKUserSuccessBlock) completionBlock
                          errorHandler: (MKNKUserErrorBlock) errorBlock
 {
-    NSDictionary* parameters = [self getLocalParam];
+    NSMutableDictionary* parameters = [NSMutableDictionary dictionary];
+    
+    parameters[@"start"] = @(0);
+    
+    parameters[@"size"] = @(STANDARD_REQUEST_LENGTH);
+    
+    parameters[@"locale"] = self.localeString;
     
     SYNNetworkOperationJsonObject *networkOperation = (SYNNetworkOperationJsonObject*)[self operationWithURLString: resourceURL
                                                                                                             params: parameters];

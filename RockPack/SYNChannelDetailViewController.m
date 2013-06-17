@@ -115,6 +115,7 @@
 @property (nonatomic, weak) SYNVideoThumbnailRegularCell* selectedCell;
 @property (weak, nonatomic) IBOutlet UIImageView *textBackgroundImageView;
 
+@property (weak, nonatomic) IBOutlet UIImageView *logoImageView;
 
 @end
 
@@ -294,6 +295,11 @@
         [GAI.sharedInstance.defaultTracker sendView: @"Add to channel"];
         self.addButton.hidden = YES;
         self.createChannelButton.hidden = NO;
+        self.backButton.hidden = YES;
+        self.cancelEditButton.hidden = NO;
+        [[NSNotificationCenter defaultCenter] postNotificationName:kNoteAllNavControlsHide
+                                                            object: self
+                                                          userInfo: nil];
     }
     
     //Remove the save button. It is added back again if the edit button is tapped.
@@ -342,7 +348,7 @@
         self.selectCategoryButton.titleLabel.lineBreakMode = NSLineBreakByWordWrapping;
         self.selectCategoryButton.titleLabel.textAlignment = NSTextAlignmentCenter;
         
-        if (self.mode == kChannelDetailsModeEdit)
+        if (self.mode != kChannelDetailsModeDisplay)
         {
             self.view.backgroundColor = [UIColor colorWithWhite:0.92f alpha:1.0f];
         } 
@@ -544,15 +550,25 @@
     }
     else
     {
+        __weak SYNChannelDetailViewController *wself = self;
         NSString* largeImageUrlString = [coverArtUrl stringByReplacingOccurrencesOfString:@"thumbnail_medium" withString:@"background"];
         [self.channelCoverImageView setImageWithURL: [NSURL URLWithString: largeImageUrlString]
                                    placeholderImage: [UIImage imageNamed: @"PlaceholderChannelCreation.png"]
-                                            options: SDWebImageRetryFailed];
+                                            options: SDWebImageRetryFailed
+                                          completed:^(UIImage *image, NSError *error, SDImageCacheType cacheType) {
+                                              
+                                              wself.originalBackgroundImage = wself.channelCoverImageView.image;
+                                              
+                                              
+                                              [wself renderBlurredBackgroundWithCGImage:[[wself croppedImageForCurrentOrientation] CGImage]];
+             
+                                          }];
     }
     
     self.selectedCoverId = [detailDictionary objectForKey:kCoverImageReference];
     
-    self.originalBackgroundImage = nil;
+    
+    
 }
 
 
@@ -565,6 +581,8 @@
                                    duration: duration];
 
     [self.videoThumbnailCollectionView.collectionViewLayout invalidateLayout];
+    
+    
 }
 
 
@@ -574,9 +592,7 @@
     [super willAnimateRotationToInterfaceOrientation: toInterfaceOrientation
                                             duration: duration];
     
-    UIImage* croppedImage = [self croppedImageForOrientation: toInterfaceOrientation];
-    
-    self.channelCoverImageView.image = croppedImage;
+    self.channelCoverImageView.image = [self croppedImageForOrientation: toInterfaceOrientation];
 }
 
 
@@ -601,7 +617,7 @@
             
             self.dataItemsAvailable = self.channel.totalVideosValue;
             
-            NSLog(@"total videos first batch: %i", self.channel.totalVideosValue);
+            DebugLog(@"Total Videos on First Batch: %i", self.channel.totalVideosValue);
             
             
 
@@ -719,7 +735,7 @@
     if (self.noVideosMessageView)
     {
         [self.noVideosMessageView removeFromSuperview];
-        self.noVideosMessageView = nil;  
+        self.noVideosMessageView = nil;
     }
     
     if (!message)
@@ -903,9 +919,6 @@
             viewForSupplementaryElementOfKind: (NSString *) kind
                                   atIndexPath: (NSIndexPath *) indexPath
 {
-    if (collectionView != self.videoThumbnailCollectionView)
-        return nil;
-    
     
     
     UICollectionReusableView* supplementaryView;
@@ -915,23 +928,23 @@
         if (self.channel.videoInstances.count == 0 ||
            (self.dataRequestRange.location + self.dataRequestRange.length) >= self.dataItemsAvailable)
         {
-            NSLog(@"%i > %i", (self.dataRequestRange.location + self.dataRequestRange.length), self.dataItemsAvailable);
-            return nil;
+            supplementaryView = [[UICollectionReusableView alloc] initWithFrame:CGRectMake(0.0, 0.0, [self footerSize].width, [self footerSize].height)];
+            
+        }
+        else
+        {
+            self.footerView = [self.videoThumbnailCollectionView dequeueReusableSupplementaryViewOfKind: kind
+                                                                                    withReuseIdentifier: @"SYNChannelFooterMoreView"
+                                                                                           forIndexPath: indexPath];
+            
+            [self.footerView.loadMoreButton addTarget: self
+                                               action: @selector(loadMoreVideos:)
+                                     forControlEvents: UIControlEventTouchUpInside];
+            
+            
+            supplementaryView = self.footerView;
         }
         
-        NSLog(@"%i < %i", (self.dataRequestRange.location + self.dataRequestRange.length), self.dataItemsAvailable);
-        
-        self.footerView = [self.videoThumbnailCollectionView dequeueReusableSupplementaryViewOfKind: kind
-                                                                                withReuseIdentifier: @"SYNChannelFooterMoreView"
-                                                                                       forIndexPath: indexPath];
-        
-        [self.footerView.loadMoreButton addTarget: self
-                                           action: @selector(loadMoreVideos:)
-                                 forControlEvents: UIControlEventTouchUpInside];
-        
-        //[self loadMoreChannels:self.footerView.loadMoreButton];
-        
-        supplementaryView = self.footerView;
     }
     
     return supplementaryView;
@@ -946,6 +959,7 @@
     
     
     MKNKUserSuccessBlock successBlock = ^(NSDictionary *dictionary) {
+        
         
         [self.channel addVideoInstancesFromDictionary:dictionary];
         
@@ -968,7 +982,7 @@
     if ([self.channel.resourceURL hasPrefix: @"https"]) // https does not cache so it is fresh
     {
             
-            NSLog(@"Loading from secure API");
+            
             [appDelegate.oAuthNetworkEngine videosForChannelForUserId:appDelegate.currentUser.uniqueId
                                                             channelId:self.channel.uniqueId
                                                               inRange:self.dataRequestRange
@@ -980,7 +994,7 @@
     else
     {
             
-            NSLog(@"Loading from public API");
+            
             [appDelegate.networkEngine videosForChannelForUserId:appDelegate.currentUser.uniqueId
                                                        channelId:self.channel.uniqueId
                                                          inRange:self.dataRequestRange
@@ -996,7 +1010,7 @@
     if(self.isViewDirty)
         return;
     
-    if (self.mode != kChannelDetailsModeEdit)
+    if (self.mode == kChannelDetailsModeDisplay)
     {
         self.selectedCell = (SYNVideoThumbnailRegularCell*)[self.videoThumbnailCollectionView cellForItemAtIndexPath:indexPath];
         
@@ -1051,6 +1065,8 @@
     self.subscribeButton.hidden = (visible && [self.channel.channelOwner.uniqueId isEqualToString: appDelegate.currentUser.uniqueId]);
     self.editButton.hidden = (visible && ! [self.channel.channelOwner.uniqueId isEqualToString: appDelegate.currentUser.uniqueId]);
     
+    self.logoImageView.hidden = !visible;
+    
     // If the current user's favourites channel, hide edit button and move subscribers
     if (self.channel.favouritesValue && [self.channel.channelOwner.uniqueId isEqualToString:appDelegate.currentUser.uniqueId])
     {
@@ -1070,15 +1086,14 @@
     
     [(LXReorderableCollectionViewFlowLayout *)self.videoThumbnailCollectionView.collectionViewLayout longPressGestureRecognizer].enabled = (visible) ? FALSE : TRUE;
     
-//    self.channel.favouritesValue
-    
     if (visible == NO)
     {
         // If we are in edit mode, then hide navigation controls
-        [[NSNotificationCenter defaultCenter] postNotificationName: kChannelsNavControlsHide
+        [[NSNotificationCenter defaultCenter] postNotificationName: kNoteAllNavControlsHide
                                                             object: self
                                                           userInfo: nil];
     }
+
 }
 
 
@@ -1274,8 +1289,6 @@
     else
     { 
         [self deleteVideoInstance];
-        
-        
     }
 }
 
@@ -1286,8 +1299,6 @@
     if (!videoInstanceToDelete)
         return;
     
-    
-   
     
     UICollectionViewCell* cell =
     [self.videoThumbnailCollectionView cellForItemAtIndexPath:self.indexPathToDelete];
@@ -1343,7 +1354,7 @@
 {
     [GAI.sharedInstance.defaultTracker sendView: @"Edit channel"];
     
-    [[NSNotificationCenter defaultCenter] postNotificationName: (! _isIPhone) ? kChannelsNavControlsHide : kNoteAllNavControlsHide
+    [[NSNotificationCenter defaultCenter] postNotificationName:kNoteAllNavControlsHide
                                                         object: self
                                                       userInfo: nil];
     
@@ -1419,13 +1430,30 @@
                                                         object: self
                                                       userInfo: nil];
     
-    [self setEditControlsVisibility: NO];
-    [self displayChannelDetails];
-    self.categoryTableViewController = nil;
-    self.saveChannelButton.hidden = YES;
-    self.cancelEditButton.hidden = YES;
-    self.addButton.hidden = NO;
-    self.backButton.hidden= NO;
+
+    if(self.mode == kChannelDetailsModeCreate)
+    {
+        if(_isIPhone)
+        {
+            [self backButtonTapped:nil];
+        }
+        else
+        {
+            [[NSNotificationCenter defaultCenter] postNotificationName: kNotePopCurrentViewController
+                                                                object: self
+                                                              userInfo: nil];
+        }
+    }
+    else
+    {
+        [self setEditControlsVisibility: NO];
+        [self displayChannelDetails];
+        self.categoryTableViewController = nil;
+        self.saveChannelButton.hidden = YES;
+        self.cancelEditButton.hidden = YES;
+        self.addButton.hidden = NO;
+        self.backButton.hidden= NO;
+    }
 
 }
 
@@ -1525,9 +1553,9 @@
             
             [self.coverChooserController updateCoverArt];
             
-            
             [UIView animateWithDuration: kChannelEditModeAnimationDuration
                              animations: ^{
+                                 
                                  // Fade up the category tab controller
                                  self.coverChooserMasterView.alpha = 1.0f;
                                  
@@ -1810,6 +1838,7 @@
     
     self.createChannelButton.enabled = NO;
     [self.activityIndicator startAnimating];
+    self.cancelEditButton.hidden = YES;
     
     [self hideCategoryChooser];
     
@@ -1880,7 +1909,7 @@
                                                   
                                                   
                                                   self.createChannelButton.enabled = YES;
-                                                  self.cancelEditButton.hidden = YES;
+                                                  self.cancelEditButton.hidden = NO;
                                                   self.addButton.hidden = YES;
                                              
                                                   [self showError: errorMessage
@@ -1943,7 +1972,7 @@
                                                       else
                                                       {
                                                           [self.activityIndicator stopAnimating];
-                                                          self.cancelEditButton.hidden = YES;
+                                                          self.cancelEditButton.hidden = NO;
                                                           self.cancelEditButton.enabled = YES;
                                                           self.saveChannelButton.enabled = YES;
                                                           self.saveChannelButton.hidden = NO;
@@ -2073,7 +2102,6 @@
     {
         self.addButton.hidden = NO;
         self.createChannelButton.hidden = YES;
-        
         
     }
     else
@@ -2205,6 +2233,8 @@
 {
     [super viewDidAppear:animated];
     
+    self.videoThumbnailCollectionView.scrollsToTop = YES;
+    
     [[NSNotificationCenter defaultCenter] postNotificationName:kMainControlsChangeEnter object:self];
     
     if(![self.channel.channelOwner.uniqueId isEqualToString:appDelegate.currentUser.uniqueId] ||
@@ -2243,6 +2273,8 @@
 -(void)viewDidDisappear:(BOOL)animated
 {
     [super viewDidDisappear:animated];
+    
+    self.videoThumbnailCollectionView.scrollsToTop = NO;
     
     [[NSNotificationCenter defaultCenter] postNotificationName:kMainControlsChangeLeave object:self];
 }
@@ -2699,6 +2731,7 @@
       didSelectUIImage: (UIImage *) image
 {
     [self.channelCoverImageView setImage: image];
+    
     [self uploadChannelImage: image];
     [self closeImageSelector: imageSelector];
 }
@@ -2723,10 +2756,10 @@
 
 - (void) scrollViewDidScroll: (UIScrollView *) scrollView
 {
-    CGFloat fadeSpan = (_isIPhone) ? kChannelDetailsFadeSpaniPhone : kChannelDetailsFadeSpan;
-    CGFloat blurOpacity;
     if (scrollView == self.videoThumbnailCollectionView)
     {
+        CGFloat fadeSpan = (_isIPhone) ? kChannelDetailsFadeSpaniPhone : kChannelDetailsFadeSpan;
+        CGFloat blurOpacity;
         
         if (scrollView.contentOffset.y <= self.originalContentOffset.y)
         {
@@ -2774,26 +2807,26 @@
 
 #pragma mark - Image render
 
+- (UIImage*) croppedImageForCurrentOrientation
+{
+    return [self croppedImageForOrientation:[(SYNDeviceManager *)SYNDeviceManager.sharedInstance orientation]];
+}
+
 - (UIImage*) croppedImageForOrientation: (UIInterfaceOrientation) orientation
 {
     
     CGRect croppingRect;
-    CGRect bgCroppingRect;
     
     if(UIInterfaceOrientationIsLandscape(orientation))
-    {
         croppingRect = CGRectMake(0.0, 128.0, 1024.0, 768.0);
-        bgCroppingRect = CGRectMake(0.0, 0.0, 1024.0, 768.0);
-    }
     else
-    {
         croppingRect = CGRectMake(128.0, 0.0, 768.0, 1024.0);
-        bgCroppingRect = CGRectMake(0.0, 0.0, 768.0, 1024.0);
-    }
 
     
     if (self.originalBackgroundImage == nil) // set the bg var once
     {
+        
+        // in most cases this will not be called its a failsafe
         self.originalBackgroundImage = self.channelCoverImageView.image;
     }
     
@@ -2801,11 +2834,19 @@
     
     UIImage* croppedImage = [UIImage imageWithCGImage: croppedImageRef];
     
+    [self renderBlurredBackgroundWithCGImage:croppedImageRef];
     
+    CGImageRelease(croppedImageRef);
     
-    // add blur
+    return croppedImage;
+}
+
+
+
+-(void)renderBlurredBackgroundWithCGImage:(CGImageRef)imageRef
+{
     
-    backgroundCIImage = [CIImage imageWithCGImage:croppedImageRef];
+    backgroundCIImage = [CIImage imageWithCGImage:imageRef];
     context = [CIContext contextWithOptions:nil];
     filter = [CIFilter filterWithName:@"CIGaussianBlur"];
     [filter setValue:backgroundCIImage forKey:@"inputImage"];
@@ -2814,31 +2855,27 @@
     CIImage *outputImage = [filter outputImage];
     
     CGImageRef cgimg = [context createCGImage:outputImage
-                                     fromRect:bgCroppingRect];
+                                     fromRect:[[SYNDeviceManager sharedInstance] currentScreenRect]];
     
     if(!self.blurredBGImageView) {
         self.blurredBGImageView = [[UIImageView alloc] init];
         self.blurredBGImageView.autoresizingMask = UIViewAutoresizingFlexibleWidth | UIViewAutoresizingFlexibleHeight;
         [self.view insertSubview:self.blurredBGImageView belowSubview:self.channelCoverImageView];
     }
-        
+    
     UIImage* bgImage = [UIImage imageWithCGImage:cgimg];
     self.blurredBGImageView.image = bgImage;
     self.blurredBGImageView.frame = self.channelCoverImageView.frame;
-    self.blurredBGImageView.contentMode = UIViewContentModeScaleAspectFill;
+    //self.blurredBGImageView.contentMode = UIViewContentModeScaleAspectFill;
     
     CGImageRelease(cgimg);
-    
-    CGImageRelease(croppedImageRef);
-    
-    return croppedImage;
 }
-
 
 - (id<SDWebImageOperation>) loadBackgroundImage
 {
     __weak SDWebImageManager* shareImageManager = SDWebImageManager.sharedManager;
     __weak SYNChannelDetailViewController *wself = self;
+    
     return [shareImageManager downloadWithURL: [NSURL URLWithString:self.channel.channelCover.imageBackgroundUrl]
                                       options: SDWebImageRetryFailed
                                      progress: nil
@@ -2848,8 +2885,7 @@
                                         
                                         wself.originalBackgroundImage = image;
                                         
-                                        UIImage* croppedImage = [wself croppedImageForOrientation:[(SYNDeviceManager *)SYNDeviceManager.sharedInstance orientation]];
-                                        
+                                        UIImage* croppedImage = [wself croppedImageForCurrentOrientation];
                                         
                                         
                                         [UIView transitionWithView: wself.view

@@ -2,9 +2,9 @@
 <archive type="com.apple.InterfaceBuilder3.CocoaTouch.iPad.XIB" version="8.00">
 	<data>
 		<int key="IBDocument.SystemTarget">1552</int>
-		<string key="IBDocument.SystemVersion">12D78</string>
+		<string key="IBDocument.SystemVersion">12E55</string>
 		<string key="IBDocument.InterfaceBuilderVersion">3084</string>
-		<string key="IBDocument.AppKitVersion">1187.37</string>
+		<string key="IBDocument.AppKitVersion">1187.39</string>
 		<string key="IBDocument.HIToolboxVersion">626.00</string>
 		<object class="NSMutableDictionary" key="IBDocument.PluginVersions">
 			<string key="NS.key.0">com.apple.InterfaceBuilder.IBCocoaTouchPlugin</string>
@@ -391,7 +391,7 @@
 										<int key="NSvFlags">-2147483356</int>
 										<string key="NSFrame">{{511, 516}, {20, 20}}</string>
 										<reference key="NSSuperview" ref="1041950190"/>
-										<reference key="NSNextKeyView" ref="583567748"/>
+										<reference key="NSNextKeyView" ref="26338747"/>
 										<string key="NSReuseIdentifierKey">_NS:9</string>
 										<bool key="IBUIOpaque">NO</bool>
 										<string key="targetRuntimeIdentifier">IBIPadFramework</string>
@@ -401,7 +401,7 @@
 										<int key="NSvFlags">292</int>
 										<string key="NSFrame">{{433, 494}, {70, 69}}</string>
 										<reference key="NSSuperview" ref="1041950190"/>
-										<reference key="NSNextKeyView" ref="26338747"/>
+										<reference key="NSNextKeyView" ref="649622249"/>
 										<string key="NSReuseIdentifierKey">_NS:9</string>
 										<bool key="IBUIOpaque">NO</bool>
 										<string key="targetRuntimeIdentifier">IBIPadFramework</string>
@@ -441,7 +441,7 @@
 										<int key="NSvFlags">292</int>
 										<string key="NSFrame">{{672, 23}, {80, 80}}</string>
 										<reference key="NSSuperview" ref="1041950190"/>
-										<reference key="NSNextKeyView" ref="649622249"/>
+										<reference key="NSNextKeyView" ref="583567748"/>
 										<string key="NSReuseIdentifierKey">_NS:9</string>
 										<bool key="IBUIOpaque">NO</bool>
 										<int key="IBUIContentMode">4</int>
@@ -1061,7 +1061,7 @@
 				<string key="148.CustomClassName">BBCyclingLabel</string>
 				<string key="148.IBPluginDependency">com.apple.InterfaceBuilder.IBCocoaTouchPlugin</string>
 				<string key="15.IBPluginDependency">com.apple.InterfaceBuilder.IBCocoaTouchPlugin</string>
-				<real value="2" key="15.IBUIButtonInspectorSelectedStateConfigurationMetadataKey"/>
+				<real value="1" key="15.IBUIButtonInspectorSelectedStateConfigurationMetadataKey"/>
 				<string key="150.CustomClassName">BBCyclingLabel</string>
 				<string key="150.IBPluginDependency">com.apple.InterfaceBuilder.IBCocoaTouchPlugin</string>
 				<string key="152.CustomClassName">BBCyclingLabel</string>
@@ -1075,7 +1075,7 @@
 				<string key="19.IBPluginDependency">com.apple.InterfaceBuilder.IBCocoaTouchPlugin</string>
 				<string key="4.IBPluginDependency">com.apple.InterfaceBuilder.IBCocoaTouchPlugin</string>
 				<string key="79.IBPluginDependency">com.apple.InterfaceBuilder.IBCocoaTouchPlugin</string>
-				<real value="1" key="79.IBUIButtonInspectorSelectedStateConfigurationMetadataKey"/>
+				<real value="0.0" key="79.IBUIButtonInspectorSelectedStateConfigurationMetadataKey"/>
 				<string key="81.IBPluginDependency">com.apple.InterfaceBuilder.IBCocoaTouchPlugin</string>
 				<string key="82.IBPluginDependency">com.apple.InterfaceBuilder.IBCocoaTouchPlugin</string>
 			</dictionary>

@@ -96,6 +96,11 @@
     self.videoThumbnailCollectionView.autoresizingMask = UIViewAutoresizingFlexibleWidth| UIViewAutoresizingFlexibleHeight;
     self.videoThumbnailCollectionView.backgroundColor = [UIColor clearColor];
     
+    CGRect videoThumbFrame = self.videoThumbnailCollectionView.frame;
+    videoThumbFrame.size.height -= 4.0;
+    self.videoThumbnailCollectionView.frame = videoThumbFrame;
+    
+    
     self.view.autoresizingMask = UIViewAutoresizingFlexibleWidth | UIViewAutoresizingFlexibleHeight;
 }
 
