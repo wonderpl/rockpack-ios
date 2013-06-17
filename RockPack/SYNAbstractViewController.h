@@ -95,6 +95,7 @@ andSelectedIndex: (int) selectedIndex center:(CGPoint) center;
 
 - (id) initWithViewId: (NSString*) vid;
 - (void) viewDidScrollToFront;
+- (void) viewDidScrollToBack;
 - (BOOL) needsAddButton;
 - (BOOL) toleratesSearchBar;
 
