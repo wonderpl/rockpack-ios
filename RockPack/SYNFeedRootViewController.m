@@ -127,6 +127,8 @@
 {
     [super viewDidLoad];
     
+    [self removeEmptyGenreMessage];
+    
     self.refreshControl = [[UIRefreshControl alloc] initWithFrame: CGRectMake(0, -44, 320, 44)];
     
     self.refreshControl.tintColor = [UIColor colorWithRed:(11.0/255.0) green:(166.0/255.0) blue:(171.0/255.0) alpha:(1.0)];
@@ -429,9 +431,15 @@
                                                     
                                                 } errorHandler: ^(NSDictionary* errorDictionary) {
                                                     
-                                                         [self handleRefreshComplete];
-                                                         DebugLog(@"Refresh subscription updates failed");
-                                                     }];
+                                                    [self handleRefreshComplete];
+                                                    
+                                                    [self removeEmptyGenreMessage];
+                                                    
+                                                    [self displayEmptyGenreMessage:NSLocalizedString(@"feed_screen_loading_error", nil) andLoader:NO];
+                                                    
+                                                     DebugLog(@"Refresh subscription updates failed");
+                                                    
+                                                }];
 }
 
 
