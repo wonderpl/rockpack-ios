@@ -902,6 +902,7 @@ typedef void(^AnimationCompletionBlock)(BOOL finished);
         
         self.sideNavigationButton.hidden = NO;
         self.closeSearchButton.hidden = YES;
+        self.backButtonControl.hidden = NO;
         
         if(self.isInSearchMode && [[SYNDeviceManager sharedInstance] isIPad])
         {
@@ -932,6 +933,7 @@ typedef void(^AnimationCompletionBlock)(BOOL finished);
     self.searchButton.hidden = YES;
     self.closeSearchButton.hidden = YES;
     self.sideNavigationButton.hidden = YES;
+    self.backButtonControl.hidden = YES;
     self.sideNavigationViewController.state = SideNavigationStateHidden;
 }
 
@@ -1019,7 +1021,7 @@ typedef void(^AnimationCompletionBlock)(BOOL finished);
 }
 
 
-#pragma mark - Navigation Methods
+#pragma mark - View Stack Navigation
 
 // when a view is pushed, this gets called
 
@@ -1135,7 +1137,8 @@ typedef void(^AnimationCompletionBlock)(BOOL finished);
             }
             self.overlayNavigationController = nil; // animate the overlay out using the setter method
 
-            
+            NSLog(@"self.showingViewController = %@", self.showingViewController);
+            [self.showingViewController viewDidAppear:YES];
         }
         
     }
@@ -1387,6 +1390,9 @@ typedef void(^AnimationCompletionBlock)(BOOL finished);
 {
     if (_overlayNavigationController && overlayNavigationController) // there can be only one overlay at a time
         return;
+    
+    UINavigationController* oldOverlayNavigationController = _overlayNavigationController;
+    _overlayNavigationController = overlayNavigationController;
 
     if (overlayNavigationController) // if we did not pass nil
     {
@@ -1415,9 +1421,8 @@ typedef void(^AnimationCompletionBlock)(BOOL finished);
                              
                              self.containerView.hidden = YES;
 
-                             [_overlayNavigationController removeFromParentViewController];
-                             _overlayNavigationController = overlayNavigationController;
-                             [self addChildViewController: _overlayNavigationController];
+                             [oldOverlayNavigationController removeFromParentViewController];
+                             [self addChildViewController: overlayNavigationController];
                              
                              [UIView animateWithDuration: 0.7f
                                                    delay: 0.2f
@@ -1436,7 +1441,7 @@ typedef void(^AnimationCompletionBlock)(BOOL finished);
     }
     else
     {
-        if(_overlayContainerView) // nil was passed and there was another on screen (remove)
+        if(oldOverlayNavigationController) // nil was passed and there was another on screen (remove)
         {
             NSTimeInterval animationDuration = 0.5f;
             if([SYNDeviceManager.sharedInstance isIPhone])
@@ -1460,12 +1465,13 @@ typedef void(^AnimationCompletionBlock)(BOOL finished);
                              }
                              completion: ^(BOOL finished) {
                                  
-                                 [_overlayNavigationController.view removeFromSuperview];
-                                 [_overlayNavigationController removeFromParentViewController];
+                                 [oldOverlayNavigationController.view removeFromSuperview];
+                                 [oldOverlayNavigationController removeFromParentViewController];
                                  
-                                 _overlayNavigationController = nil;
+                                 
                                  self.containerView.hidden = NO;
                                  self.overlayContainerView.userInteractionEnabled = YES;
+                                 
                                  [UIView animateWithDuration: 0.7f
                                                        delay: 0.2f
                                                      options: UIViewAnimationOptionCurveEaseOut

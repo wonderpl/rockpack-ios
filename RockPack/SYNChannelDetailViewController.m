@@ -553,6 +553,8 @@
     self.selectedCoverId = [detailDictionary objectForKey:kCoverImageReference];
     
     self.originalBackgroundImage = nil;
+    
+    [self croppedImageForOrientation:[SYNDeviceManager.sharedInstance currentOrientation]];
 }
 
 
@@ -607,7 +609,7 @@
             
             self.dataItemsAvailable = self.channel.totalVideosValue;
             
-            NSLog(@"total videos first batch: %i", self.channel.totalVideosValue);
+            DebugLog(@"Total Videos on First Batch: %i", self.channel.totalVideosValue);
             
             
             self.subscribeButton.selected = self.channel.subscribedByUserValue;
@@ -649,7 +651,7 @@
     if (self.noVideosMessageView)
     {
         [self.noVideosMessageView removeFromSuperview];
-        self.noVideosMessageView = nil;  
+        self.noVideosMessageView = nil;
     }
     
     if (!message)
@@ -874,6 +876,7 @@
     
     MKNKUserSuccessBlock successBlock = ^(NSDictionary *dictionary) {
         
+        
         [self.channel addVideoInstancesFromDictionary:dictionary];
         
         NSError* error;
@@ -895,7 +898,7 @@
     if ([self.channel.resourceURL hasPrefix: @"https"]) // https does not cache so it is fresh
     {
             
-            NSLog(@"Loading from secure API");
+            
             [appDelegate.oAuthNetworkEngine videosForChannelForUserId:appDelegate.currentUser.uniqueId
                                                             channelId:self.channel.uniqueId
                                                               inRange:self.dataRequestRange
@@ -907,7 +910,7 @@
     else
     {
             
-            NSLog(@"Loading from public API");
+            
             [appDelegate.networkEngine videosForChannelForUserId:appDelegate.currentUser.uniqueId
                                                        channelId:self.channel.uniqueId
                                                          inRange:self.dataRequestRange
@@ -994,15 +997,6 @@
     
     [(LXReorderableCollectionViewFlowLayout *)self.videoThumbnailCollectionView.collectionViewLayout longPressGestureRecognizer].enabled = (visible) ? FALSE : TRUE;
     
-//    self.channel.favouritesValue
-    
-    if (visible == NO)
-    {
-        // If we are in edit mode, then hide navigation controls
-        [[NSNotificationCenter defaultCenter] postNotificationName: kChannelsNavControlsHide
-                                                            object: self
-                                                          userInfo: nil];
-    }
 }
 
 
@@ -1198,8 +1192,6 @@
     else
     { 
         [self deleteVideoInstance];
-        
-        
     }
 }
 
@@ -1342,6 +1334,7 @@
                                                       userInfo: nil];
     
     [self setEditControlsVisibility: NO];
+    
     [self displayChannelDetails];
     self.categoryTableViewController = nil;
     self.saveChannelButton.hidden = YES;
@@ -1447,9 +1440,9 @@
             
             [self.coverChooserController updateCoverArt];
             
-            
             [UIView animateWithDuration: kChannelEditModeAnimationDuration
                              animations: ^{
+                                 
                                  // Fade up the category tab controller
                                  self.coverChooserMasterView.alpha = 1.0f;
                                  
@@ -2629,6 +2622,7 @@
       didSelectUIImage: (UIImage *) image
 {
     [self.channelCoverImageView setImage: image];
+    
     [self uploadChannelImage: image];
     [self closeImageSelector: imageSelector];
 }

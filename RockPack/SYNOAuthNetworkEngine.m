@@ -992,7 +992,13 @@
     NSRange rangeOfWS = [resourceURL rangeOfString:@"/ws"];
     NSString* onlyThePathPart = [resourceURL substringFromIndex:rangeOfWS.location];
     
-    NSDictionary* parameters = [self getLocalParam];
+    NSMutableDictionary* parameters = [NSMutableDictionary dictionary];
+    
+    parameters[@"start"] = @(0);
+    
+    parameters[@"size"] = @(STANDARD_REQUEST_LENGTH);
+    
+    parameters[@"locale"] = self.localeString;
     
     
     SYNNetworkOperationJsonObject *networkOperation = (SYNNetworkOperationJsonObject*)[self operationWithPath:onlyThePathPart
