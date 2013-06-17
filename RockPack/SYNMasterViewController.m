@@ -902,6 +902,7 @@ typedef void(^AnimationCompletionBlock)(BOOL finished);
         
         self.sideNavigationButton.hidden = NO;
         self.closeSearchButton.hidden = YES;
+        self.backButtonControl.hidden = NO;
         
         if(self.isInSearchMode && [[SYNDeviceManager sharedInstance] isIPad])
         {
@@ -932,6 +933,7 @@ typedef void(^AnimationCompletionBlock)(BOOL finished);
     self.searchButton.hidden = YES;
     self.closeSearchButton.hidden = YES;
     self.sideNavigationButton.hidden = YES;
+    self.backButtonControl.hidden = YES;
     self.sideNavigationViewController.state = SideNavigationStateHidden;
 }
 

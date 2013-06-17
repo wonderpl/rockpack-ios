@@ -997,15 +997,6 @@
     
     [(LXReorderableCollectionViewFlowLayout *)self.videoThumbnailCollectionView.collectionViewLayout longPressGestureRecognizer].enabled = (visible) ? FALSE : TRUE;
     
-//    self.channel.favouritesValue
-    
-    if (visible == NO)
-    {
-        // If we are in edit mode, then hide navigation controls
-        [[NSNotificationCenter defaultCenter] postNotificationName: kChannelsNavControlsHide
-                                                            object: self
-                                                          userInfo: nil];
-    }
 }
 
 
@@ -1343,6 +1334,7 @@
                                                       userInfo: nil];
     
     [self setEditControlsVisibility: NO];
+    
     [self displayChannelDetails];
     self.categoryTableViewController = nil;
     self.saveChannelButton.hidden = YES;
