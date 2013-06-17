@@ -43,7 +43,7 @@
 #define kSideNavigationViewId       @"kSideNavigationViewId"
 
 // OAuth2
-#define kAPIRefreshToken            @"/ws/token"
+#define kAPIRefreshToken            @"/ws/token/"
 
 // Login
 #define kAPISecureLogin             @"/ws/login/"
@@ -119,7 +119,7 @@
 
 // Report concerns
 
-#define kAPIReportConcern           @"/ws/USERID/content_reports"               /* POST */
+#define kAPIReportConcern           @"/ws/USERID/content_reports/"               /* POST */
 
 #define kAPIReportPlayerError       @"/ws/videos/player_error/"                 /* POST */
 
@@ -437,6 +437,7 @@ typedef enum {
 
 #define kNoteHideNetworkMessages    @"kNoteHideNetworkMessages"
 #define kNoteShowNetworkMessages    @"kNoteShowNetworkMessages"
+#define kNotePopCurrentViewController  @"kNotePopCurrentViewController"
 
 //
 // Tracking

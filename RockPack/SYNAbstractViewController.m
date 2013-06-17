@@ -671,13 +671,41 @@
                                                   message = @"";
                                               }
                                               
+                                              NSString *userName = nil;
+                                              NSString *subject = nil;
+                                                                                            
+                                              SYNAppDelegate *appDelegate = (SYNAppDelegate *)[[UIApplication sharedApplication] delegate];
+                                              User* user = appDelegate.currentUser;
+                                              if (user.fullNameIsPublicValue)
+                                              {
+                                                  userName = user.fullName;
+                                              }
+                                              
+                                              if (userName.length < 1)
+                                              {
+                                                  userName = user.username;
+                                              }
+                                              
+                                              if (userName != nil)
+                                              {
+                                                  NSString *what = @"channel";
+                                                  
+                                                  if (isVideo.boolValue == TRUE)
+                                                  {
+                                                     what = @"video";
+                                                  }
+                                                  
+                                                  subject = [NSString stringWithFormat: @"%@ has shared a %@ with you", userName, what];
+                                              }
+
                                               NSURL *resourceURL = [NSURL URLWithString: resourceURLString];
                                               
                                               activityViewController.userInfo = @{@"text": message,
                                                                                   @"url": resourceURL,
                                                                                   @"image" : capturedScreenImage,
                                                                                   @"owner" : isOwner,
-                                                                                  @"video" : isVideo};
+                                                                                  @"video" : isVideo,
+                                                                                  @"subject" : subject};
                                               
                                               // The activity controller needs to be presented from a popup on iPad, but normally on iPhone
                                               if (UI_USER_INTERFACE_IDIOM() == UIUserInterfaceIdiomPad)
