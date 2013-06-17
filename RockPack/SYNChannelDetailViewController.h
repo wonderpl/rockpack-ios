@@ -11,7 +11,8 @@
 
 typedef enum {
     kChannelDetailsModeDisplay = 0,
-    kChannelDetailsModeEdit = 1
+    kChannelDetailsModeEdit = 1,
+    kChannelDetailsModeCreate =2
 } kChannelDetailsMode;
 
 @interface SYNChannelDetailViewController : SYNAbstractViewController <LXReorderableCollectionViewDelegateFlowLayout,

@@ -115,6 +115,7 @@
 @property (nonatomic, weak) SYNVideoThumbnailRegularCell* selectedCell;
 @property (weak, nonatomic) IBOutlet UIImageView *textBackgroundImageView;
 
+@property (weak, nonatomic) IBOutlet UIImageView *logoImageView;
 
 @end
 
@@ -294,6 +295,11 @@
         [GAI.sharedInstance.defaultTracker sendView: @"Add to channel"];
         self.addButton.hidden = YES;
         self.createChannelButton.hidden = NO;
+        self.backButton.hidden = YES;
+        self.cancelEditButton.hidden = NO;
+        [[NSNotificationCenter defaultCenter] postNotificationName:kNoteAllNavControlsHide
+                                                            object: self
+                                                          userInfo: nil];
     }
     
     //Remove the save button. It is added back again if the edit button is tapped.
@@ -342,7 +348,7 @@
         self.selectCategoryButton.titleLabel.lineBreakMode = NSLineBreakByWordWrapping;
         self.selectCategoryButton.titleLabel.textAlignment = NSTextAlignmentCenter;
         
-        if (self.mode == kChannelDetailsModeEdit)
+        if (self.mode != kChannelDetailsModeDisplay)
         {
             self.view.backgroundColor = [UIColor colorWithWhite:0.92f alpha:1.0f];
         } 
@@ -923,7 +929,7 @@
 - (void) collectionView: (UICollectionView *) collectionView
          didSelectItemAtIndexPath: (NSIndexPath *) indexPath
 {
-    if (self.mode != kChannelDetailsModeEdit)
+    if (self.mode == kChannelDetailsModeDisplay)
     {
         self.selectedCell = (SYNVideoThumbnailRegularCell*)[self.videoThumbnailCollectionView cellForItemAtIndexPath:indexPath];
         
@@ -978,6 +984,8 @@
     self.subscribeButton.hidden = (visible && [self.channel.channelOwner.uniqueId isEqualToString: appDelegate.currentUser.uniqueId]);
     self.editButton.hidden = (visible && ! [self.channel.channelOwner.uniqueId isEqualToString: appDelegate.currentUser.uniqueId]);
     
+    self.logoImageView.hidden = !visible;
+    
     // If the current user's favourites channel, hide edit button and move subscribers
     if (self.channel.favouritesValue && [self.channel.channelOwner.uniqueId isEqualToString:appDelegate.currentUser.uniqueId])
     {
@@ -1002,7 +1010,7 @@
     if (visible == NO)
     {
         // If we are in edit mode, then hide navigation controls
-        [[NSNotificationCenter defaultCenter] postNotificationName: kChannelsNavControlsHide
+        [[NSNotificationCenter defaultCenter] postNotificationName: kNoteAllNavControlsHide
                                                             object: self
                                                           userInfo: nil];
     }
@@ -1266,7 +1274,7 @@
 {
     [GAI.sharedInstance.defaultTracker sendView: @"Edit channel"];
     
-    [[NSNotificationCenter defaultCenter] postNotificationName: (! _isIPhone) ? kChannelsNavControlsHide : kNoteAllNavControlsHide
+    [[NSNotificationCenter defaultCenter] postNotificationName:kNoteAllNavControlsHide
                                                         object: self
                                                       userInfo: nil];
     
@@ -1342,13 +1350,29 @@
                                                         object: self
                                                       userInfo: nil];
     
-    [self setEditControlsVisibility: NO];
-    [self displayChannelDetails];
-    self.categoryTableViewController = nil;
-    self.saveChannelButton.hidden = YES;
-    self.cancelEditButton.hidden = YES;
-    self.addButton.hidden = NO;
-    self.backButton.hidden= NO;
+    if(self.mode == kChannelDetailsModeCreate)
+    {
+        if(_isIPhone)
+        {
+            [self backButtonTapped:nil];
+        }
+        else
+        {
+            [[NSNotificationCenter defaultCenter] postNotificationName: kNotePopCurrentViewController
+                                                                object: self
+                                                              userInfo: nil];
+        }
+    }
+    else
+    {
+        [self setEditControlsVisibility: NO];
+        [self displayChannelDetails];
+        self.categoryTableViewController = nil;
+        self.saveChannelButton.hidden = YES;
+        self.cancelEditButton.hidden = YES;
+        self.addButton.hidden = NO;
+        self.backButton.hidden= NO;
+    }
 
 }
 
@@ -1733,6 +1757,7 @@
     
     self.createChannelButton.enabled = NO;
     [self.activityIndicator startAnimating];
+    self.cancelEditButton.hidden = YES;
     
     [self hideCategoryChooser];
     
@@ -1803,7 +1828,7 @@
                                                   
                                                   
                                                   self.createChannelButton.enabled = YES;
-                                                  self.cancelEditButton.hidden = YES;
+                                                  self.cancelEditButton.hidden = NO;
                                                   self.addButton.hidden = YES;
                                              
                                                   [self showError: errorMessage
@@ -1866,7 +1891,7 @@
                                                       else
                                                       {
                                                           [self.activityIndicator stopAnimating];
-                                                          self.cancelEditButton.hidden = YES;
+                                                          self.cancelEditButton.hidden = NO;
                                                           self.cancelEditButton.enabled = YES;
                                                           self.saveChannelButton.enabled = YES;
                                                           self.saveChannelButton.hidden = NO;
@@ -2000,7 +2025,6 @@
     {
         self.addButton.hidden = NO;
         self.createChannelButton.hidden = YES;
-        
         
     }
     else

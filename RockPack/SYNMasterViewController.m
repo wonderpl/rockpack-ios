@@ -265,6 +265,8 @@ typedef void(^AnimationCompletionBlock)(BOOL finished);
     
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(hideOrShowNetworkMessages:) name:kNoteShowNetworkMessages object:nil];
     
+    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(popCurrentViewController:) name:kNotePopCurrentViewController object:nil];
+    
     [self.navigationContainerView addSubview:self.sideNavigationViewController.view]; 
 }
 
@@ -418,7 +420,7 @@ typedef void(^AnimationCompletionBlock)(BOOL finished);
     // this channel's managedObjectContext is the appDelegate.channelManagedObjectContext
     SYNChannelDetailViewController *channelCreationVC =
     [[SYNChannelDetailViewController alloc] initWithChannel: channel
-                                                  usingMode: kChannelDetailsModeEdit] ;
+                                                  usingMode: kChannelDetailsModeCreate] ;
     
     // either the current view on the container scroll view or the overlay navigation controller as in search mode
     SYNAbstractViewController* showingController = self.showingBaseViewController;
