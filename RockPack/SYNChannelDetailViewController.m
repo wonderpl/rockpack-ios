@@ -553,6 +553,8 @@
     self.selectedCoverId = [detailDictionary objectForKey:kCoverImageReference];
     
     self.originalBackgroundImage = nil;
+    
+    [self croppedImageForOrientation:[SYNDeviceManager.sharedInstance currentOrientation]];
 }
 
 
@@ -1199,8 +1201,6 @@
     else
     { 
         [self deleteVideoInstance];
-        
-        
     }
 }
 
@@ -2630,6 +2630,7 @@
       didSelectUIImage: (UIImage *) image
 {
     [self.channelCoverImageView setImage: image];
+    
     [self uploadChannelImage: image];
     [self closeImageSelector: imageSelector];
 }
