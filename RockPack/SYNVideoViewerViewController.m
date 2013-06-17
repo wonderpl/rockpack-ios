@@ -122,7 +122,7 @@
         
         self.channelTitleLabel.textColor = [UIColor colorWithRed: 234.0f/ 255.0f green: 234.0f/ 255.0f blue: 234.0f/ 255.0f alpha: 1.0f];
         self.channelCreatorLabel.textColor  = [UIColor colorWithRed: 234.0f/ 255.0f green: 234.0f/ 255.0f blue: 234.0f/ 255.0f alpha: 1.0f];
-        self.videoTitleLabel.textColor = [UIColor whiteColor];
+        self.videoTitleLabel.textColor = [UIColor colorWithRed: 204.0f/ 255.0f green: 204.0f/ 255.0f blue: 204.0f/ 255.0f alpha: 1.0f];
     }
     else
     {
@@ -141,7 +141,7 @@
         self.channelCreatorLabel.textColor = [UIColor whiteColor];
         self.channelCreatorLabel.text = @"";
         [self.videoPlaybackViewController updateChannelCreator: @""];
-        self.videoTitleLabel.textColor = [UIColor whiteColor];
+        self.videoTitleLabel.textColor = [UIColor colorWithRed: 204.0f/ 255.0f green: 204.0f/ 255.0f blue: 204.0f/ 255.0f alpha: 1.0f];
     }
 
 
@@ -390,11 +390,12 @@
 {
     // We should start playing the selected video and scroll the thumbnnail so that it appears under the arrow
     self.currentSelectedIndex = index;
-    [self.videoPlaybackViewController playVideoAtIndex: index];
-    [self updateVideoDetailsForIndex: index];
     
     [self scrollToCellAtIndex: index
                      animated: YES];
+    
+    [self.videoPlaybackViewController playVideoAtIndex: index];
+    [self updateVideoDetailsForIndex: index];
 }
 
 
@@ -516,7 +517,7 @@
         cell.colour = FALSE;
     }
     
-    cell.videoImageViewImage = videoInstance.video.thumbnailURL;
+    cell.imageWithURL = videoInstance.video.thumbnailURL;
     
     return cell;
 }

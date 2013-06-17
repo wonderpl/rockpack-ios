@@ -320,11 +320,13 @@
         
     };
     
+    
+    
     if (refresh == YES || [channel.resourceURL hasPrefix: @"https"] ||
         [channel.channelOwner.uniqueId isEqualToString:appDelegate.currentUser.uniqueId]) // https does not cache so it is fresh
     {
         
-        NSLog(@"Updating Private channel: %@", channel.resourceURL);
+        
         self.channelUpdateOperation = [appDelegate.oAuthNetworkEngine updateChannel: channel.resourceURL
                                                                   completionHandler: successBlock
                                                                        errorHandler: errorBlock];
@@ -333,7 +335,7 @@
     else
     {
         
-        NSLog(@"Updating Public channel: %@", channel.resourceURL);
+ 
         self.channelUpdateOperation = [appDelegate.networkEngine updateChannel: channel.resourceURL
                                                              completionHandler: successBlock
                                                                   errorHandler: errorBlock];

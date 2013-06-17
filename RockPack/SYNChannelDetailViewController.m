@@ -553,6 +553,8 @@
     self.selectedCoverId = [detailDictionary objectForKey:kCoverImageReference];
     
     self.originalBackgroundImage = nil;
+    
+    [self croppedImageForOrientation:[SYNDeviceManager.sharedInstance currentOrientation]];
 }
 
 
@@ -607,7 +609,7 @@
             
             self.dataItemsAvailable = self.channel.totalVideosValue;
             
-            NSLog(@"total videos first batch: %i", self.channel.totalVideosValue);
+            DebugLog(@"Total Videos on First Batch: %i", self.channel.totalVideosValue);
             
             
             self.subscribeButton.selected = self.channel.subscribedByUserValue;
@@ -649,7 +651,7 @@
     if (self.noVideosMessageView)
     {
         [self.noVideosMessageView removeFromSuperview];
-        self.noVideosMessageView = nil;  
+        self.noVideosMessageView = nil;
     }
     
     if (!message)
@@ -833,9 +835,6 @@
             viewForSupplementaryElementOfKind: (NSString *) kind
                                   atIndexPath: (NSIndexPath *) indexPath
 {
-    if (collectionView != self.videoThumbnailCollectionView)
-        return nil;
-    
     
     
     UICollectionReusableView* supplementaryView;
@@ -845,23 +844,23 @@
         if (self.channel.videoInstances.count == 0 ||
            (self.dataRequestRange.location + self.dataRequestRange.length) >= self.dataItemsAvailable)
         {
-            NSLog(@"%i > %i", (self.dataRequestRange.location + self.dataRequestRange.length), self.dataItemsAvailable);
-            return nil;
+            supplementaryView = [[UICollectionReusableView alloc] initWithFrame:CGRectMake(0.0, 0.0, [self footerSize].width, [self footerSize].height)];
+            
+        }
+        else
+        {
+            self.footerView = [self.videoThumbnailCollectionView dequeueReusableSupplementaryViewOfKind: kind
+                                                                                    withReuseIdentifier: @"SYNChannelFooterMoreView"
+                                                                                           forIndexPath: indexPath];
+            
+            [self.footerView.loadMoreButton addTarget: self
+                                               action: @selector(loadMoreVideos:)
+                                     forControlEvents: UIControlEventTouchUpInside];
+            
+            
+            supplementaryView = self.footerView;
         }
         
-        NSLog(@"%i < %i", (self.dataRequestRange.location + self.dataRequestRange.length), self.dataItemsAvailable);
-        
-        self.footerView = [self.videoThumbnailCollectionView dequeueReusableSupplementaryViewOfKind: kind
-                                                                                withReuseIdentifier: @"SYNChannelFooterMoreView"
-                                                                                       forIndexPath: indexPath];
-        
-        [self.footerView.loadMoreButton addTarget: self
-                                           action: @selector(loadMoreVideos:)
-                                 forControlEvents: UIControlEventTouchUpInside];
-        
-        //[self loadMoreChannels:self.footerView.loadMoreButton];
-        
-        supplementaryView = self.footerView;
     }
     
     return supplementaryView;
@@ -876,6 +875,7 @@
     
     
     MKNKUserSuccessBlock successBlock = ^(NSDictionary *dictionary) {
+        
         
         [self.channel addVideoInstancesFromDictionary:dictionary];
         
@@ -898,7 +898,7 @@
     if ([self.channel.resourceURL hasPrefix: @"https"]) // https does not cache so it is fresh
     {
             
-            NSLog(@"Loading from secure API");
+            
             [appDelegate.oAuthNetworkEngine videosForChannelForUserId:appDelegate.currentUser.uniqueId
                                                             channelId:self.channel.uniqueId
                                                               inRange:self.dataRequestRange
@@ -910,7 +910,7 @@
     else
     {
             
-            NSLog(@"Loading from public API");
+            
             [appDelegate.networkEngine videosForChannelForUserId:appDelegate.currentUser.uniqueId
                                                        channelId:self.channel.uniqueId
                                                          inRange:self.dataRequestRange
@@ -997,15 +997,6 @@
     
     [(LXReorderableCollectionViewFlowLayout *)self.videoThumbnailCollectionView.collectionViewLayout longPressGestureRecognizer].enabled = (visible) ? FALSE : TRUE;
     
-//    self.channel.favouritesValue
-    
-    if (visible == NO)
-    {
-        // If we are in edit mode, then hide navigation controls
-        [[NSNotificationCenter defaultCenter] postNotificationName: kChannelsNavControlsHide
-                                                            object: self
-                                                          userInfo: nil];
-    }
 }
 
 
@@ -1201,8 +1192,6 @@
     else
     { 
         [self deleteVideoInstance];
-        
-        
     }
 }
 
@@ -1213,8 +1202,6 @@
     if (!videoInstanceToDelete)
         return;
     
-    
-   
     
     UICollectionViewCell* cell =
     [self.videoThumbnailCollectionView cellForItemAtIndexPath:self.indexPathToDelete];
@@ -1347,6 +1334,7 @@
                                                       userInfo: nil];
     
     [self setEditControlsVisibility: NO];
+    
     [self displayChannelDetails];
     self.categoryTableViewController = nil;
     self.saveChannelButton.hidden = YES;
@@ -1452,9 +1440,9 @@
             
             [self.coverChooserController updateCoverArt];
             
-            
             [UIView animateWithDuration: kChannelEditModeAnimationDuration
                              animations: ^{
+                                 
                                  // Fade up the category tab controller
                                  self.coverChooserMasterView.alpha = 1.0f;
                                  
@@ -2136,6 +2124,8 @@
 {
     [super viewDidAppear:animated];
     
+    self.videoThumbnailCollectionView.scrollsToTop = YES;
+    
     [[NSNotificationCenter defaultCenter] postNotificationName:kMainControlsChangeEnter object:self];
     
     if(![self.channel.channelOwner.uniqueId isEqualToString:appDelegate.currentUser.uniqueId] ||
@@ -2174,6 +2164,8 @@
 -(void)viewDidDisappear:(BOOL)animated
 {
     [super viewDidDisappear:animated];
+    
+    self.videoThumbnailCollectionView.scrollsToTop = NO;
     
     [[NSNotificationCenter defaultCenter] postNotificationName:kMainControlsChangeLeave object:self];
 }
@@ -2630,6 +2622,7 @@
       didSelectUIImage: (UIImage *) image
 {
     [self.channelCoverImageView setImage: image];
+    
     [self uploadChannelImage: image];
     [self closeImageSelector: imageSelector];
 }
@@ -2654,10 +2647,10 @@
 
 - (void) scrollViewDidScroll: (UIScrollView *) scrollView
 {
-    CGFloat fadeSpan = (_isIPhone) ? kChannelDetailsFadeSpaniPhone : kChannelDetailsFadeSpan;
-    CGFloat blurOpacity;
     if (scrollView == self.videoThumbnailCollectionView)
     {
+        CGFloat fadeSpan = (_isIPhone) ? kChannelDetailsFadeSpaniPhone : kChannelDetailsFadeSpan;
+        CGFloat blurOpacity;
         
         if (scrollView.contentOffset.y <= self.originalContentOffset.y)
         {

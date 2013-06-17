@@ -249,7 +249,7 @@ typedef enum _Gender {
 // Large Video panel
 #define kCreateChannelPanelAnimationDuration 0.3f
 
-#define kVideoInAnimationDuration 0.4f
+#define kVideoInAnimationDuration 0.3f
 #define kVideoOutAnimationDuration 0.3f
 #define kAddToChannelAnimationDuration 0.3f
 
@@ -274,7 +274,7 @@ typedef enum _Gender {
 #define kYouCollectionViewOffsetY 160.0f
 #define kChannelDetailsCollectionViewOffsetY 500.0f
 #define kChannelDetailsFadeSpan 250.0f
-#define kChannelDetailsFadeSpaniPhone 100.0f
+#define kChannelDetailsFadeSpaniPhone 175.0f
 
 #define kImageUploadWidth 1024
 #define kImageUploadHeight 768

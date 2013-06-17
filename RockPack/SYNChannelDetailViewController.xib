@@ -1569,8 +1569,8 @@
 		<dictionary class="NSMutableDictionary" key="IBDocument.LastKnownImageSizes">
 			<string key="ButtonBuy.png">{61, 61}</string>
 			<string key="ButtonBuyHighlighted.png">{61, 61}</string>
-			<string key="ButtonCancel.png">{60, 61}</string>
-			<string key="ButtonCancelHighlighted.png">{60, 61}</string>
+			<string key="ButtonCancel.png">{60, 60}</string>
+			<string key="ButtonCancelHighlighted.png">{60, 60}</string>
 			<string key="ButtonCategory.png">{295, 45}</string>
 			<string key="ButtonCategoryHighlighted.png">{295, 45}</string>
 			<string key="ButtonCover.png">{295, 45}</string>

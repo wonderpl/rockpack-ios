@@ -15,6 +15,7 @@
 #import "SYNChannelCategoryTableCell.h"
 #import "SYNChannelCategoryTableHeader.h"
 #import <QuartzCore/QuartzCore.h>
+#import "UIFont+SYNFont.h"
 
 @interface SYNChannelCategoryTableViewController ()
 {
@@ -59,6 +60,8 @@
     [super viewDidLoad];
     
     [self.tableView registerNib:[UINib nibWithNibName:@"SYNChannelCategoryTableCell" bundle:[NSBundle mainBundle]] forCellReuseIdentifier:@"SYNChannelCategoryTableCell"];
+    
+    self.titleLabel.font = [UIFont boldRockpackFontOfSize: self.titleLabel.font.pointSize];
     
     if(self.showAllCategoriesHeader)
     {

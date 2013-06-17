@@ -90,7 +90,8 @@
 }
 
 
-- (UICollectionViewCell *) collectionView: (UICollectionView *) cv cellForItemAtIndexPath: (NSIndexPath *) indexPath {
+- (UICollectionViewCell *) collectionView: (UICollectionView *) cv
+                   cellForItemAtIndexPath: (NSIndexPath *) indexPath {
     
     
     
@@ -102,6 +103,8 @@
     [channelThumbnailCell.imageView setImageWithURL: [NSURL URLWithString: channel.channelCover.imageLargeUrl]
                                    placeholderImage: [UIImage imageNamed: @"PlaceholderChannelMid.png"]
                                             options: SDWebImageRetryFailed];
+    
+    channelThumbnailCell.shadowOverlayImageView.hidden = channel.favouritesValue;
     
     [channelThumbnailCell setChannelTitle: channel.title];
     
