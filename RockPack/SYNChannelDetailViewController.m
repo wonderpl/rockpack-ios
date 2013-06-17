@@ -1448,9 +1448,9 @@
             
             [self.coverChooserController updateCoverArt];
             
-            
             [UIView animateWithDuration: kChannelEditModeAnimationDuration
                              animations: ^{
+                                 
                                  // Fade up the category tab controller
                                  self.coverChooserMasterView.alpha = 1.0f;
                                  
