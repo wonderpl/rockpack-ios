@@ -9,6 +9,8 @@
 #import "UIImageView+WebCache.h"
 #import "objc/runtime.h"
 #import "SDWebImageManager.h"
+#import "UIImage+Monochrome.h"
+#import <QuartzCore/QuartzCore.h>
 
 static char operationKey;
 
@@ -44,7 +46,8 @@ static char operationKey;
     [self setImageWithURL:url placeholderImage:placeholder options:options progress:nil completed:completedBlock];
 }
 
-- (void)setImageWithURL:(NSURL *)url placeholderImage:(UIImage *)placeholder options:(SDWebImageOptions)options progress:(SDWebImageDownloaderProgressBlock)progressBlock completed:(SDWebImageCompletedBlock)completedBlock;
+
+- (void)setImageWithURL:(NSURL *)url placeholderImage:(UIImage *)placeholder options:(SDWebImageOptions)options progress:(SDWebImageDownloaderProgressBlock)progressBlock completed:(SDWebImageCompletedBlock)completedBlock
 {
     [self cancelCurrentImageLoad];
     
@@ -54,6 +57,17 @@ static char operationKey;
     if (image)
     {
         self.image = image;
+        
+        if (options & SDWebImageMonochromeVersion)
+        {
+            if (image.monochromeImage != nil)
+            {
+                dispatch_async(dispatch_get_main_queue(), ^{
+                    completedBlock(image, nil, SDImageCacheTypeMemory);
+                });
+                return;
+            }
+        }
     }
     else
     {
@@ -68,42 +82,95 @@ static char operationKey;
                                                                                     progress: progressBlock
                                                                                    completed:^ (UIImage *image, NSError *error, SDImageCacheType cacheType, BOOL finished)
                                              {
-                                                 dispatch_async(dispatch_get_main_queue(), ^{
-                                                     __strong typeof(self) sself = wself;
+                                                 if (options & SDWebImageMonochromeVersion)
+                                                 {
+                                                     __weak typeof(self) weakSelf = self;
                                                      
-                                                     if (sself == nil)
+                                                     if (weakSelf == nil)
                                                      {
                                                          // If the pointer is nil, then bail
                                                          return;
                                                      }
                                                      
-                                                     if (image != nil)
-                                                     {
-                                                         // If we were not returned directly from the cache, then fade up
-                                                         if (cacheType == SDImageCacheTypeNone)
+                                                     dispatch_async([UIImageView sharedImageProcessingQueue], ^
+                                                                    {
+                                                                        // Just do image processing on background thread
+                                                                        CIImage *colourImage = [CIImage imageWithCGImage: image.CGImage];
+                                                                        
+                                                                        // Only update the imput image each time (as opposed to creating the filter again)
+                                                                        [[UIImageView sharedFilter] setValue: colourImage
+                                                                                                      forKey: kCIInputImageKey];
+                                                                        
+                                                                        CIImage *monochromeImage = [UIImageView sharedFilter].outputImage;
+                                                                        
+                                                                        CIContext *context = [CIContext contextWithOptions: nil];
+                                                                        
+                                                                        CGImageRef imageRef = [context createCGImage: monochromeImage
+                                                                                                            fromRect: monochromeImage.extent];
+                                                                        
+                                                                        
+                                                                        dispatch_async(dispatch_get_main_queue(), ^{
+                                                                            // UIImage is surprisingly thread safe and can be initialised here.
+                                                                            UIImage *newMonochromeImage = [UIImage imageWithCGImage: imageRef];
+                                                                            CGImageRelease(imageRef);
+                                                                            weakSelf.image = image;
+                                                                            weakSelf.image.monochromeImage = newMonochromeImage;
+                                                                            
+                                                                            id<SDWebImageOperation> operation = objc_getAssociatedObject(weakSelf, &operationKey);
+                                                                            DebugLog(@"Checking %@", operation);
+                                                                            if (operation)
+                                                                            {
+                                                                                if (completedBlock && finished)
+                                                                                {
+                                                                                    completedBlock(image, error, cacheType);
+                                                                                }
+                                                                            }
+                                                                            else
+                                                                            {
+                                                                                DebugLog (@"cancelled 1");
+                                                                            }
+                                                                        });
+                                                                        
+                                                                    });
+                                                 }
+                                                 else
+                                                 {
+                                                     dispatch_async(dispatch_get_main_queue(), ^{
+                                                         __strong typeof(self) sself = wself;
+                                                         
+                                                         if (sself == nil)
                                                          {
-                                                             [UIView transitionWithView: sself.superview
-                                                                               duration: 0.35f
-                                                                                options: UIViewAnimationOptionTransitionCrossDissolve | UIViewAnimationOptionAllowUserInteraction
-                                                                             animations: ^{
-                                                                                 sself.image = image;
-                                                                             }
-                                                                             completion: nil];
-                                                         }
-                                                         else
-                                                         {
-                                                             sself.image = image;
+                                                             // If the pointer is nil, then bail
+                                                             return;
                                                          }
                                                          
-                                                         [sself setNeedsLayout];
-                                                     }
-                                                     
-                                                     if (completedBlock && finished)
-                                                     {
-                                                         completedBlock(image, error, cacheType);
-                                                     }
-                                                 });
-                                                 
+                                                         if (image != nil)
+                                                         {
+                                                             // If we were not returned directly from the cache, then fade up
+                                                             if (cacheType == SDImageCacheTypeNone)
+                                                             {
+                                                                 [UIView transitionWithView: sself.superview
+                                                                                   duration: 0.35f
+                                                                                    options: UIViewAnimationOptionTransitionCrossDissolve | UIViewAnimationOptionAllowUserInteraction
+                                                                                 animations: ^{
+                                                                                     sself.image = image;
+                                                                                 }
+                                                                                 completion: nil];
+                                                             }
+                                                             else
+                                                             {
+                                                                 sself.image = image;
+                                                             }
+                                                             
+                                                             [sself setNeedsLayout];
+                                                         }
+                                                         
+                                                         if (completedBlock && finished)
+                                                         {
+                                                             completedBlock(image, error, cacheType);
+                                                         }
+                                                     });
+                                                 }
                                              }];
         
         objc_setAssociatedObject(self, &operationKey, operation, OBJC_ASSOCIATION_RETAIN_NONATOMIC);
@@ -116,9 +183,43 @@ static char operationKey;
     id<SDWebImageOperation> operation = objc_getAssociatedObject(self, &operationKey);
     if (operation)
     {
+        DebugLog(@"Cancelling %@", operation);
         [operation cancel];
         objc_setAssociatedObject(self, &operationKey, nil, OBJC_ASSOCIATION_RETAIN_NONATOMIC);
     }
+}
+
+
+#pragma mark - Monochrome support
+
++ (dispatch_queue_t) sharedImageProcessingQueue
+{
+    static dispatch_once_t pred;
+    static dispatch_queue_t imageProcessingQueue;
+    
+    dispatch_once(&pred, ^
+                  {
+                      imageProcessingQueue = dispatch_queue_create("com.rockpack.imageprocessing", DISPATCH_QUEUE_SERIAL);
+                  });
+    
+    return imageProcessingQueue;
+}
+
+
++ (CIFilter *) sharedFilter
+{
+    static dispatch_once_t pred;
+    static CIFilter *filter;
+    
+    dispatch_once(&pred, ^
+                  {
+                      filter = [CIFilter filterWithName: @"CIColorMonochrome"
+                                          keysAndValues: @"inputIntensity", @1.0f,
+                                @"inputColor", [[CIColor alloc] initWithColor: [UIColor whiteColor]],
+                                nil];
+                  });
+    
+    return filter;
 }
 
 @end

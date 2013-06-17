@@ -227,6 +227,7 @@
 		019E82021654043A00744A03 /* Scroll.aif in Resources */ = {isa = PBXBuildFile; fileRef = 019E81FC1654043A00744A03 /* Scroll.aif */; };
 		019E82031654043A00744A03 /* Select.aif in Resources */ = {isa = PBXBuildFile; fileRef = 019E81FD1654043A00744A03 /* Select.aif */; };
 		019E82041654043A00744A03 /* Trash.aif in Resources */ = {isa = PBXBuildFile; fileRef = 019E81FE1654043A00744A03 /* Trash.aif */; };
+		01A02E76176E1EA5001F14BD /* UIImage+Monochrome.m in Sources */ = {isa = PBXBuildFile; fileRef = 01A02E75176E1EA5001F14BD /* UIImage+Monochrome.m */; };
 		01A076831676293200E1CDAD /* ButtonAdd@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 01A076781676292F00E1CDAD /* ButtonAdd@2x.png */; };
 		01A076841676293200E1CDAD /* ButtonAddHighlighted.png in Resources */ = {isa = PBXBuildFile; fileRef = 01A076791676292F00E1CDAD /* ButtonAddHighlighted.png */; };
 		01A076851676293200E1CDAD /* ButtonAddHighlighted@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 01A0767A1676292F00E1CDAD /* ButtonAddHighlighted@2x.png */; };
@@ -1422,6 +1423,8 @@
 		019E81FC1654043A00744A03 /* Scroll.aif */ = {isa = PBXFileReference; lastKnownFileType = file; name = Scroll.aif; path = Assets/Audio/Scroll.aif; sourceTree = "<group>"; };
 		019E81FD1654043A00744A03 /* Select.aif */ = {isa = PBXFileReference; lastKnownFileType = file; name = Select.aif; path = Assets/Audio/Select.aif; sourceTree = "<group>"; };
 		019E81FE1654043A00744A03 /* Trash.aif */ = {isa = PBXFileReference; lastKnownFileType = file; name = Trash.aif; path = Assets/Audio/Trash.aif; sourceTree = "<group>"; };
+		01A02E74176E1EA5001F14BD /* UIImage+Monochrome.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "UIImage+Monochrome.h"; sourceTree = "<group>"; };
+		01A02E75176E1EA5001F14BD /* UIImage+Monochrome.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "UIImage+Monochrome.m"; sourceTree = "<group>"; };
 		01A076781676292F00E1CDAD /* ButtonAdd@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = "ButtonAdd@2x.png"; path = "Assets/Images/ButtonAdd@2x.png"; sourceTree = "<group>"; };
 		01A076791676292F00E1CDAD /* ButtonAddHighlighted.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = ButtonAddHighlighted.png; path = Assets/Images/ButtonAddHighlighted.png; sourceTree = "<group>"; };
 		01A0767A1676292F00E1CDAD /* ButtonAddHighlighted@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = "ButtonAddHighlighted@2x.png"; path = "Assets/Images/ButtonAddHighlighted@2x.png"; sourceTree = "<group>"; };
@@ -3270,6 +3273,8 @@
 				017A9EF916E77E6600AA5B18 /* UIView+Subviews.m */,
 				012502AF16C958FA0029C7C8 /* UIView+Toast.h */,
 				012502B016C958FA0029C7C8 /* UIView+Toast.m */,
+				01A02E74176E1EA5001F14BD /* UIImage+Monochrome.h */,
+				01A02E75176E1EA5001F14BD /* UIImage+Monochrome.m */,
 			);
 			name = Categories;
 			sourceTree = "<group>";
@@ -6081,6 +6086,7 @@
 				BE3983D11768A4AA00EE9C7B /* SYNOnBoardingPopoverView.m in Sources */,
 				BE3983D41768B6D800EE9C7B /* SYNOnBoardingPopoverQueueController.m in Sources */,
 				0154E8481768E268001C7B75 /* SYNTimer.m in Sources */,
+				01A02E76176E1EA5001F14BD /* UIImage+Monochrome.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
