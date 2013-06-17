@@ -544,17 +544,25 @@
     }
     else
     {
+        __weak SYNChannelDetailViewController *wself = self;
         NSString* largeImageUrlString = [coverArtUrl stringByReplacingOccurrencesOfString:@"thumbnail_medium" withString:@"background"];
         [self.channelCoverImageView setImageWithURL: [NSURL URLWithString: largeImageUrlString]
                                    placeholderImage: [UIImage imageNamed: @"PlaceholderChannelCreation.png"]
-                                            options: SDWebImageRetryFailed];
+                                            options: SDWebImageRetryFailed
+                                          completed:^(UIImage *image, NSError *error, SDImageCacheType cacheType) {
+                                              
+                                              wself.originalBackgroundImage = wself.channelCoverImageView.image;
+                                              
+                                              
+                                              [wself renderBlurredBackgroundWithCGImage:[[wself croppedImageForCurrentOrientation] CGImage]];
+             
+                                          }];
     }
     
     self.selectedCoverId = [detailDictionary objectForKey:kCoverImageReference];
     
-    self.originalBackgroundImage = nil;
     
-    [self croppedImageForOrientation:[SYNDeviceManager.sharedInstance currentOrientation]];
+    
 }
 
 
@@ -567,6 +575,8 @@
                                    duration: duration];
 
     [self.videoThumbnailCollectionView.collectionViewLayout invalidateLayout];
+    
+    
 }
 
 
@@ -576,10 +586,9 @@
     [super willAnimateRotationToInterfaceOrientation: toInterfaceOrientation
                                             duration: duration];
     
-    UIImage* croppedImage = [self croppedImageForOrientation: toInterfaceOrientation];
-    
-    self.channelCoverImageView.image = croppedImage;
+    self.channelCoverImageView.image = [self croppedImageForOrientation: toInterfaceOrientation];
 }
+
 
 
 - (void) handleDataModelChange: (NSNotification*) notification
@@ -2698,26 +2707,26 @@
 
 #pragma mark - Image render
 
+- (UIImage*) croppedImageForCurrentOrientation
+{
+    return [self croppedImageForOrientation:[(SYNDeviceManager *)SYNDeviceManager.sharedInstance orientation]];
+}
+
 - (UIImage*) croppedImageForOrientation: (UIInterfaceOrientation) orientation
 {
     
     CGRect croppingRect;
-    CGRect bgCroppingRect;
     
     if(UIInterfaceOrientationIsLandscape(orientation))
-    {
         croppingRect = CGRectMake(0.0, 128.0, 1024.0, 768.0);
-        bgCroppingRect = CGRectMake(0.0, 0.0, 1024.0, 768.0);
-    }
     else
-    {
         croppingRect = CGRectMake(128.0, 0.0, 768.0, 1024.0);
-        bgCroppingRect = CGRectMake(0.0, 0.0, 768.0, 1024.0);
-    }
 
     
     if (self.originalBackgroundImage == nil) // set the bg var once
     {
+        
+        // in most cases this will not be called its a failsafe
         self.originalBackgroundImage = self.channelCoverImageView.image;
     }
     
@@ -2725,11 +2734,19 @@
     
     UIImage* croppedImage = [UIImage imageWithCGImage: croppedImageRef];
     
+    [self renderBlurredBackgroundWithCGImage:croppedImageRef];
     
+    CGImageRelease(croppedImageRef);
     
-    // add blur
+    return croppedImage;
+}
+
+
+
+-(void)renderBlurredBackgroundWithCGImage:(CGImageRef)imageRef
+{
     
-    backgroundCIImage = [CIImage imageWithCGImage:croppedImageRef];
+    backgroundCIImage = [CIImage imageWithCGImage:imageRef];
     context = [CIContext contextWithOptions:nil];
     filter = [CIFilter filterWithName:@"CIGaussianBlur"];
     [filter setValue:backgroundCIImage forKey:@"inputImage"];
@@ -2738,31 +2755,27 @@
     CIImage *outputImage = [filter outputImage];
     
     CGImageRef cgimg = [context createCGImage:outputImage
-                                     fromRect:bgCroppingRect];
+                                     fromRect:[[SYNDeviceManager sharedInstance] currentScreenRect]];
     
     if(!self.blurredBGImageView) {
         self.blurredBGImageView = [[UIImageView alloc] init];
         self.blurredBGImageView.autoresizingMask = UIViewAutoresizingFlexibleWidth | UIViewAutoresizingFlexibleHeight;
         [self.view insertSubview:self.blurredBGImageView belowSubview:self.channelCoverImageView];
     }
-        
+    
     UIImage* bgImage = [UIImage imageWithCGImage:cgimg];
     self.blurredBGImageView.image = bgImage;
     self.blurredBGImageView.frame = self.channelCoverImageView.frame;
-    self.blurredBGImageView.contentMode = UIViewContentModeScaleAspectFill;
+    //self.blurredBGImageView.contentMode = UIViewContentModeScaleAspectFill;
     
     CGImageRelease(cgimg);
-    
-    CGImageRelease(croppedImageRef);
-    
-    return croppedImage;
 }
-
 
 - (id<SDWebImageOperation>) loadBackgroundImage
 {
     __weak SDWebImageManager* shareImageManager = SDWebImageManager.sharedManager;
     __weak SYNChannelDetailViewController *wself = self;
+    
     return [shareImageManager downloadWithURL: [NSURL URLWithString:self.channel.channelCover.imageBackgroundUrl]
                                       options: SDWebImageRetryFailed
                                      progress: nil
@@ -2772,8 +2785,7 @@
                                         
                                         wself.originalBackgroundImage = image;
                                         
-                                        UIImage* croppedImage = [wself croppedImageForOrientation:[(SYNDeviceManager *)SYNDeviceManager.sharedInstance orientation]];
-                                        
+                                        UIImage* croppedImage = [wself croppedImageForCurrentOrientation];
                                         
                                         
                                         [UIView transitionWithView: wself.view
