@@ -1182,6 +1182,8 @@
     
     errorArrow = [SYNLoginErrorArrow withMessage:errorText];
     
+    errorArrow.autoresizingMask = UIViewAutoresizingFlexibleLeftMargin | UIViewAutoresizingFlexibleRightMargin;
+    
     CGPoint newPosition = targetView.center;
     newPosition = [self.view convertPoint:newPosition fromView:targetView.superview];
     newPosition.x +=  (errorArrow.frame.size.width/2.0f + targetView.frame.size.width/2.0f - 20.0);
@@ -1504,6 +1506,22 @@
         termsAndConditionsButton.frame = termsAndConditionsLabel.frame;
     else
         termsAndConditionsButton.frame = termsAndConditionsLabelSide.frame;
+    
+//    for (NSValue* targetViewPointerValue in labelsToErrorArrows)
+//    {
+//        UIView* targetView = (UIView*)[targetViewPointerValue pointerValue];
+//        if(!targetView)
+//            continue;
+//        
+//        SYNLoginErrorArrow* errorArrow = (SYNLoginErrorArrow*)[labelsToErrorArrows objectForKey:targetViewPointerValue];
+//        
+//        CGPoint newPosition = targetView.center;
+//        newPosition = [self.view convertPoint:newPosition fromView:targetView.superview];
+//        newPosition.x +=  (errorArrow.frame.size.width/2.0f + targetView.frame.size.width/2.0f - 20.0);
+//        errorArrow.center = newPosition;
+//        errorArrow.frame = CGRectIntegral(errorArrow.frame);
+//        
+//    }
     
 }
 

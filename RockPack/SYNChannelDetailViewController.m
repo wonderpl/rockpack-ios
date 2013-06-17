@@ -2709,7 +2709,6 @@
             
             CGRect frame = self.masterControlsView.frame;
             
-            
             frame.origin.y = self.originalMasterControlsViewOrigin.y - (differenceInY / 1.5);
             
             self.masterControlsView.frame = frame;
@@ -2726,8 +2725,7 @@
             
             // blur background
             
-            blurOpacity = differenceInY > 200 ? 1.0 : differenceInY / 200.0; // 1 .. 0
-            
+            blurOpacity = differenceInY > 140 ? 1.0 : differenceInY / 140.0; // 1 .. 0
             
         }
         
@@ -2778,29 +2776,43 @@
 -(void)renderBlurredBackgroundWithCGImage:(CGImageRef)imageRef
 {
     
-    backgroundCIImage = [CIImage imageWithCGImage:imageRef];
-    context = [CIContext contextWithOptions:nil];
-    filter = [CIFilter filterWithName:@"CIGaussianBlur"];
-    [filter setValue:backgroundCIImage forKey:@"inputImage"];
-    [filter setValue:[NSNumber numberWithFloat:6.0] forKey:@"inputRadius"];
-    
-    CIImage *outputImage = [filter outputImage];
-    
-    CGImageRef cgimg = [context createCGImage:outputImage
-                                     fromRect:[[SYNDeviceManager sharedInstance] currentScreenRect]];
-    
     if(!self.blurredBGImageView) {
         self.blurredBGImageView = [[UIImageView alloc] init];
         self.blurredBGImageView.autoresizingMask = UIViewAutoresizingFlexibleWidth | UIViewAutoresizingFlexibleHeight;
+        self.blurredBGImageView.contentMode = UIViewContentModeScaleAspectFill;
         [self.view insertSubview:self.blurredBGImageView belowSubview:self.channelCoverImageView];
     }
     
-    UIImage* bgImage = [UIImage imageWithCGImage:cgimg];
-    self.blurredBGImageView.image = bgImage;
-    self.blurredBGImageView.frame = self.channelCoverImageView.frame;
-    //self.blurredBGImageView.contentMode = UIViewContentModeScaleAspectFill;
     
-    CGImageRelease(cgimg);
+    self.blurredBGImageView.frame = self.channelCoverImageView.frame;
+    
+    __weak SYNChannelDetailViewController* wself = self;
+    dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_HIGH, 0), ^{
+        
+        backgroundCIImage = [CIImage imageWithCGImage:imageRef];
+        
+        context = [CIContext contextWithOptions:nil];
+        
+        filter = [CIFilter filterWithName:@"CIGaussianBlur"];
+        [filter setValue:backgroundCIImage forKey:@"inputImage"];
+        [filter setValue:[NSNumber numberWithFloat:7.0] forKey:@"inputRadius"];
+        
+        CIImage *outputImage = [filter outputImage];
+        
+        CGRect croppingRect = [[SYNDeviceManager sharedInstance] isLandscape] ? CGRectMake(0.0, 0.0, 1024.0, 768.0) : CGRectMake(0.0, 0.0, 768.0, 1024.0);
+        CGImageRef cgimg = [context createCGImage:outputImage
+                                         fromRect:croppingRect];
+        
+        
+        
+        UIImage* bgImage = [UIImage imageWithCGImage:cgimg];
+        CGImageRelease(cgimg);
+        
+        [wself.blurredBGImageView performSelectorOnMainThread:@selector(setImage:) withObject:bgImage waitUntilDone:YES];
+       
+        
+    });
+    
 }
 
 - (id<SDWebImageOperation>) loadBackgroundImage
