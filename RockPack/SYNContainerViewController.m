@@ -170,6 +170,26 @@
                                                       userInfo: @{kCurrentPage:@(self.scrollView.page)}];
 }
 
+-(void)swipedTo:(UISwipeGestureRecognizerDirection)direction
+{
+    NSInteger page = self.currentPage;
+  
+    if(direction == UISwipeGestureRecognizerDirectionLeft) // go right
+    {
+        page = self.currentPage + 1 < self.childViewControllers.count ? self.currentPage + 1 : self.currentPage;
+    }
+    else if (direction == UISwipeGestureRecognizerDirectionRight) // go left
+    {
+        page = self.currentPage - 1 >= 0 ? self.currentPage - 1 : self.currentPage;
+    }
+    else
+    {
+        return;
+    }
+    
+    [self.scrollView setPage: page animated: YES];
+}
+
 
 #pragma mark - maintaion orientation
 
