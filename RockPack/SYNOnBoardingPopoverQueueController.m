@@ -10,7 +10,7 @@
 #import "SYNDeviceManager.h"
 #import "SYNAppDelegate.h"
 
-#define STD_PADDING_DISTANCE 20.0
+#define STD_PADDING_DISTANCE 18.0
 
 @interface SYNOnBoardingPopoverQueueController ()
 
