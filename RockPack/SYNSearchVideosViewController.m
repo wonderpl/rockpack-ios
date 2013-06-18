@@ -83,8 +83,8 @@
     {
         CGRect collectionFrame = self.videoThumbnailCollectionView.frame;
         collectionFrame.origin.y += 54.0;
-        collectionFrame.size.width = [SYNDeviceManager.sharedInstance currentScreenWidth];
-        collectionFrame.size.height = [SYNDeviceManager.sharedInstance currentScreenHeight] - 150.0;
+        collectionFrame.size.width = self.view.frame.size.width;
+        collectionFrame.size.height = self.view.frame.size.height - 150.0;
         self.videoThumbnailCollectionView.frame = collectionFrame;
         UICollectionViewFlowLayout* layout = (UICollectionViewFlowLayout*)self.videoThumbnailCollectionView.collectionViewLayout;
         UIEdgeInsets insets= layout.sectionInset;
@@ -114,6 +114,10 @@
     
 }
 
+-(void)viewDidAppear:(BOOL)animated
+{
+    // override
+}
 
 - (NSFetchedResultsController *) fetchedResultsController
 {

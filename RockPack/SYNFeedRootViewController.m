@@ -163,12 +163,10 @@
                           forSupplementaryViewOfKind: UICollectionElementKindSectionFooter
                                  withReuseIdentifier: @"SYNChannelFooterMoreView"];
     
-    
+    NSLog(@"-- %@", NSStringFromCGRect(self.view.frame));
     self.dataRequestRange = NSMakeRange(0, STANDARD_REQUEST_LENGTH);
     
-    [self displayEmptyGenreMessage:NSLocalizedString(@"feed_screen_loading_message", nil) andLoader:YES];
     
-    [self loadAndUpdateFeedData];
 }
 
 
@@ -184,6 +182,15 @@
                                                  name:kVideoQueueClear
                                                object:nil];
     
+}
+
+-(void)viewDidAppear:(BOOL)animated
+{
+    [super viewDidAppear:animated];
+    
+    [self displayEmptyGenreMessage:NSLocalizedString(@"feed_screen_loading_message", nil) andLoader:YES];
+    
+    [self loadAndUpdateFeedData];
 }
 
 -(void)videoQueueCleared
@@ -478,11 +485,13 @@
     self.emptyGenreMessageView = [SYNFeedMessagesView withMessage:NSLocalizedString(messageKey ,nil) andLoader:isLoader];
     
     CGRect messageFrame = self.emptyGenreMessageView.frame;
-    messageFrame.origin.y = [[SYNDeviceManager sharedInstance] currentScreenHeight] * 0.5 - messageFrame.size.height * 0.5;
-    messageFrame.origin.x = [[SYNDeviceManager sharedInstance] currentScreenWidth] * 0.5 - messageFrame.size.width * 0.5;
-    messageFrame= CGRectIntegral(messageFrame);
+    messageFrame.origin.y = ([[SYNDeviceManager sharedInstance] currentScreenHeight] * 0.5) - (messageFrame.size.height * 0.5);
+    messageFrame.origin.x = ([[SYNDeviceManager sharedInstance] currentScreenWidth] * 0.5) - (messageFrame.size.width * 0.5);
+    
+    messageFrame = CGRectIntegral(messageFrame);
     self.emptyGenreMessageView.frame = messageFrame;
-    self.emptyGenreMessageView.autoresizingMask = UIViewAutoresizingFlexibleTopMargin | UIViewAutoresizingFlexibleRightMargin | UIViewAutoresizingFlexibleLeftMargin;
+    self.emptyGenreMessageView.autoresizingMask =
+    UIViewAutoresizingFlexibleTopMargin | UIViewAutoresizingFlexibleRightMargin | UIViewAutoresizingFlexibleLeftMargin;
     
     [self.view addSubview:self.emptyGenreMessageView];
 }
