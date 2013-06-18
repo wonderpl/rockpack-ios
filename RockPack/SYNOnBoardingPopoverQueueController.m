@@ -40,6 +40,7 @@
     self.backgroundView.backgroundColor = [UIColor blackColor];
     self.backgroundView.alpha = 0.0;
     self.backgroundView.userInteractionEnabled = NO;
+    self.backgroundView.autoresizingMask = UIViewAutoresizingFlexibleWidth | UIViewAutoresizingFlexibleHeight;
     
     UIView* mainView = [[UIView alloc] initWithFrame:screenFrame];
     mainView.backgroundColor = [UIColor clearColor];
@@ -180,6 +181,8 @@
     CGFloat midPointX = popover.pointRect.origin.x + (popover.pointRect.size.width * 0.5);
     CGFloat midPointY = popover.pointRect.origin.y + (popover.pointRect.size.height * 0.5);
     
+    popover.autoresizingMask = UIViewAutoresizingNone;
+    
     switch (popover.direction) {
             
         case PointingDirectionNone: // center in view
@@ -199,6 +202,8 @@
             arrowFrame.origin.x = midPointX - arrowFrame.size.width * 0.5;
             arrowFrame.origin.y = panelFrame.origin.y - arrowFrame.size.height;
             
+            popover.autoresizingMask |= UIViewAutoresizingFlexibleTopMargin;
+            
             break;
             
         case PointingDirectionDown:
@@ -212,6 +217,8 @@
             
             arrowFrame.origin.x = midPointX - arrowFrame.size.width * 0.5;
             arrowFrame.origin.y = panelFrame.origin.y + panelFrame.size.height;
+            
+            popover.autoresizingMask |= UIViewAutoresizingFlexibleBottomMargin;
             
             break;
             
@@ -227,6 +234,8 @@
             
             arrowFrame.origin.x = panelFrame.origin.x - arrowFrame.size.width;
             arrowFrame.origin.y = midPointY - arrowFrame.size.height * 0.5;
+            
+            popover.autoresizingMask |= UIViewAutoresizingFlexibleRightMargin;
           
             
             break;
@@ -243,6 +252,8 @@
             arrowFrame.origin.x = panelFrame.origin.x + panelFrame.size.width;
             arrowFrame.origin.y = midPointY - arrowFrame.size.height * 0.5;
             
+            popover.autoresizingMask |= UIViewAutoresizingFlexibleLeftMargin;
+            
             break;
             
     }
@@ -250,6 +261,11 @@
     // correct frame
     
     popover.frame = panelFrame;
+    
+    
+    
+    
+    
     popover.arrow.frame = arrowFrame;
     popover.arrow.alpha = 0.0;
     [self.view addSubview:popover.arrow];
