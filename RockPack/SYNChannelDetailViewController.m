@@ -1116,12 +1116,6 @@
                         withAction: @"channelSubscribeButtonClick"
                          withLabel: nil
                          withValue: nil];
-
-    // FIXME: Not sure why we need both of these
-    [tracker sendEventWithCategory: @"goal"
-                        withAction: @"userSubscription"
-                         withLabel: nil
-                         withValue: nil];
     
     self.subscribeButton.enabled = NO;
     
@@ -1388,7 +1382,15 @@
 
 
 - (IBAction) saveChannelTapped: (id) sender
-{ 
+{
+    
+    id<GAITracker> tracker = [GAI sharedInstance].defaultTracker;
+
+    [tracker sendEventWithCategory: @"uiAction"
+                        withAction: @"channelSaveButtonClick"
+                         withLabel: nil
+                         withValue: nil];
+    
     self.saveChannelButton.enabled = NO;
     [self.activityIndicator startAnimating];
     
