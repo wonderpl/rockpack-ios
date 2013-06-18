@@ -289,6 +289,12 @@
     [self doFacebookLoginAnimation];
     
     [self loginThroughFacebookWithCompletionHandler:^(NSDictionary * dictionary) {
+        
+        [tracker sendEventWithCategory: @"goal"
+                            withAction: @"userLogin"
+                             withLabel: @"Facebook"
+                             withValue: nil];
+        
         [self completeLoginProcess];
     } errorHandler:^(id error) {
         [self doFacebookFailedAnimation];

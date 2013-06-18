@@ -8,6 +8,7 @@
 
 
 #import "AppConstants.h"
+#import "GAI.h"
 #import "SYNAccountSettingsMainTableViewController.h"
 #import "SYNAccountSettingsModalContainer.h"
 #import "SYNActivityPopoverViewController.h"
@@ -460,7 +461,13 @@ typedef void(^AnimationCompletionBlock)(BOOL finished);
                                                       clearPrevious: NO
                                                   completionHandler: ^(NSDictionary* result) {
                                                       
-
+                                                      id<GAITracker> tracker = [GAI sharedInstance].defaultTracker;
+                                                      
+                                                      [tracker sendEventWithCategory: @"goal"
+                                                                          withAction: @"channelUpdated"
+                                                                           withLabel: nil
+                                                                           withValue: nil];
+                                                      
                                                       [self presentSuccessNotificationWithMessage:message];
                                                       
                                                       [[NSNotificationCenter defaultCenter] postNotificationName: kVideoQueueClear
