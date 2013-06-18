@@ -6334,8 +6334,8 @@
 			baseConfigurationReference = 276F95C3CF7F47FE9BF50F40 /* Pods.xcconfig */;
 			buildSettings = {
 				CODE_SIGN_ENTITLEMENTS = RockPack/RockPack.entitlements;
-				CODE_SIGN_IDENTITY = "iPhone Distribution";
-				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Distribution";
+				CODE_SIGN_IDENTITY = "iPhone Distribution: Rockpack Ltd. (3M76KMT8LS)";
+				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Distribution: Rockpack Ltd. (3M76KMT8LS)";
 				COMPRESS_PNG_FILES = NO;
 				FRAMEWORK_SEARCH_PATHS = (
 					"$(inherited)",
@@ -6371,8 +6371,8 @@
 					"-licucore",
 				);
 				PRODUCT_NAME = rockpack;
-				PROVISIONING_PROFILE = "";
-				"PROVISIONING_PROFILE[sdk=iphoneos*]" = "";
+				PROVISIONING_PROFILE = "33EFF378-91C8-4BD6-AAE5-9786BF6BD932";
+				"PROVISIONING_PROFILE[sdk=iphoneos*]" = "33EFF378-91C8-4BD6-AAE5-9786BF6BD932";
 				TARGETED_DEVICE_FAMILY = "1,2";
 				WRAPPER_EXTENSION = app;
 			};
