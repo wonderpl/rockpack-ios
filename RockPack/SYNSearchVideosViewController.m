@@ -114,6 +114,10 @@
     
 }
 
+-(void)viewDidAppear:(BOOL)animated
+{
+    // override
+}
 
 - (NSFetchedResultsController *) fetchedResultsController
 {
