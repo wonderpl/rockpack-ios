@@ -1871,7 +1871,6 @@
                                                    videoInstanceSet: self.channel.videoInstances
                                                       clearPrevious: YES
                                                   completionHandler: ^(id response) {
-                                                      
                                                       // a 204 returned
                                                       
                                                       [self fetchAndStoreUpdatedChannelForId:channelId isUpdate:isUpdated];

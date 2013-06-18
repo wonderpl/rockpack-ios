@@ -25,6 +25,7 @@
 
 @interface SYNVideoPlaybackViewController () <UIWebViewDelegate>
 
+@property (nonatomic, assign) float percentageViewed;
 @property (nonatomic, assign) BOOL autoPlay;
 @property (nonatomic, assign) BOOL currentVideoViewedFlag;
 @property (nonatomic, assign) BOOL disableTimeUpdating;
@@ -46,6 +47,7 @@
 @property (nonatomic, strong) NSArray *videoInstanceArray;
 @property (nonatomic, strong) NSString *channelCreator;
 @property (nonatomic, strong) NSString *sourceIdToReload;
+@property (nonatomic, strong) NSString *previousSourceId;
 @property (nonatomic, strong) NSTimer *shuttleBarUpdateTimer;
 @property (nonatomic, strong) NSTimer *recordVideoViewTimer;
 @property (nonatomic, strong) NSTimer *videoStallDetectionTimer;
@@ -360,6 +362,16 @@ static UIWebView* vimeoideoWebViewInstance;
     [[NSNotificationCenter defaultCenter] removeObserver: self
                                                     name: UIApplicationWillResignActiveNotification
                                                   object: nil];
+    
+    if (self.currentVideoViewedFlag == TRUE && self.previousSourceId != nil)
+    {
+        id<GAITracker> tracker = [GAI sharedInstance].defaultTracker;
+        
+        [tracker sendEventWithCategory: @"goal"
+                            withAction: @"videoViewed"
+                             withLabel: self.previousSourceId
+                             withValue: [NSNumber numberWithInt: (int) (self.percentageViewed  * 100.0f)]];
+    }
     
     // Just pause the video, as we might come back to this view again (if we have pushed any views on top)
     [self pauseIfVideoActive];
@@ -899,6 +911,9 @@ static UIWebView* vimeoideoWebViewInstance;
     self.currentSelectedIndex = selectedIndex;
     self.autoPlay = autoPlay;
     
+    self.currentVideoViewedFlag = FALSE;
+    self.previousSourceId = nil;
+    
     [self loadCurrentVideoWebView];
 }
 
@@ -1109,12 +1124,26 @@ static UIWebView* vimeoideoWebViewInstance;
 {
     [self resetPlayerAttributes];
     
+    
+    if (self.currentVideoViewedFlag == TRUE && self.previousSourceId != nil)
+    {
+        id<GAITracker> tracker = [GAI sharedInstance].defaultTracker;
+
+        [tracker sendEventWithCategory: @"goal"
+                            withAction: @"videoViewed"
+                             withLabel: self.previousSourceId
+                             withValue: [NSNumber numberWithInt: (int) (self.percentageViewed  * 100.0f)]];
+    }
+    
     self.currentVideoViewedFlag = FALSE;
+    self.percentageViewed = 0.0f;
 
     VideoInstance *videoInstance = self.videoInstanceArray [self.currentSelectedIndex];
     
     NSString *currentSource = videoInstance.video.source;
     NSString *currentSourceId = videoInstance.video.sourceId;
+    
+    self.previousSourceId = currentSourceId;
     
     // Try to set the duration
     self.currentDuration = videoInstance.video.durationValue;
@@ -1240,6 +1269,7 @@ static UIWebView* vimeoideoWebViewInstance;
         else if ([actionData isEqualToString: @"ended"])
         {
             DebugLog (@"*** Ended: Stopping - Fading out player & Loading next video");
+            self.percentageViewed = 1.0f;
             [self stopShuttleBarUpdateTimer];
             [self stopVideoStallDetectionTimer];
             [self stopVideo];
@@ -1469,6 +1499,8 @@ static UIWebView* vimeoideoWebViewInstance;
 //        self.currentTimeLabel.text = [NSString timecodeStringFromSeconds: 9*60*60+59*60+59];
     // Calculate the currently viewed percentage
     float viewedPercentage = currentTime / self.currentDuration;
+    
+    self.percentageViewed = viewedPercentage;
     
     // and slider
     if (self.disableTimeUpdating == FALSE)
