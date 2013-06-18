@@ -115,7 +115,7 @@
 
 - (void) viewDidScrollToFront
 {
-    DebugLog (@"%@ came to front", self.title);
+//    DebugLog (@"%@ came to front", self.title);
 }
 
 
@@ -183,7 +183,7 @@
          parentVC.view.alpha = 1.0f;
          
      } completion: ^(BOOL finished) {
-         DebugLog(@"");
+//         DebugLog(@"");
      }];
     
     [self.navigationController popViewControllerAnimated:NO];
@@ -210,7 +210,7 @@
                          targetVC.view.alpha = 1.0f;
                          
                      } completion: ^(BOOL finished) {
-                         DebugLog(@"");
+//                         DebugLog(@"");
                      }];
     
     [self.navigationController popToViewController:targetVC animated:NO];
@@ -248,11 +248,11 @@
                                                 videoInstanceId: videoInstance.uniqueId
                                               completionHandler: ^(id response) {
                                                   
-                                                  DebugLog (@"Acivity recorded: Select");
+//                                                  DebugLog (@"Acivity recorded: Select");
                                                   
                                               } errorHandler: ^(id error) {
                                                   
-                                                  DebugLog (@"Acivity not recorded: Select");
+//                                                  DebugLog (@"Acivity not recorded: Select");
                                                   
                                               }];
     }
@@ -601,7 +601,7 @@
                                                    objectId: objectId
                                           completionHandler: ^(NSDictionary *responseDictionary) {
                                               [activityIndicatorView stopAnimating];
-                                              DebugLog(@"Share link successful");
+//                                              DebugLog(@"Share link successful");
                                               
                                               UIWindow *keyWindow = [[UIApplication sharedApplication] keyWindow];
                                               CGRect keyWindowRect = [keyWindow bounds];
@@ -730,7 +730,7 @@
                                           }
                                                errorHandler: ^(NSDictionary* errorDictionary) {
                                                    [activityIndicatorView stopAnimating];
-                                                   DebugLog(@"Share link failed");
+//                                                   DebugLog(@"Share link failed");
                                                    completionBlock();
                                                }];
 

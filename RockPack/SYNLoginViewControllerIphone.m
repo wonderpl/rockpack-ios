@@ -375,7 +375,7 @@
 
 - (IBAction) loginTapped: (id) sender
 {
-    [GAI.sharedInstance.defaultTracker sendView: @"Login 1"];
+    [GAI.sharedInstance.defaultTracker sendView: @"Login"];
     
     id<GAITracker> tracker = [GAI sharedInstance].defaultTracker;
     
@@ -621,7 +621,7 @@
             [self.activityIndicator startAnimating];
             [self loginForUsername:self.userNameInputField.text forPassword:self.passwordInputField.text completionHandler:^(NSDictionary* dictionary) {
          
-                DebugLog(@"User Registerd: %@", [dictionary objectForKey:@"username"]);
+//                DebugLog(@"User Registerd: %@", [dictionary objectForKey:@"username"]);
                 
                 [self.activityIndicator stopAnimating];
                 
@@ -892,7 +892,7 @@
 
 -(void)showRegistrationStep2
 {
-    [GAI.sharedInstance.defaultTracker sendView: @"Login 2"];
+    [GAI.sharedInstance.defaultTracker sendView: @"Register 2"];
     
     self.state = kLoginScreenStateRegisterStepTwo;
     [self turnOnButton:self.backButton];

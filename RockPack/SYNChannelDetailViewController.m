@@ -624,8 +624,7 @@
             
             self.dataItemsAvailable = self.channel.totalVideosValue;
             
-            DebugLog(@"Total Videos on First Batch: %i", self.channel.totalVideosValue);
-            
+//            DebugLog(@"Total Videos on First Batch: %i", self.channel.totalVideosValue);
             
             self.subscribeButton.selected = self.channel.subscribedByUserValue;
             self.subscribeButton.enabled = YES;
@@ -1359,7 +1358,6 @@
                                                         object: self
                                                       userInfo: nil];
     
-
     if(self.mode == kChannelDetailsModeCreate)
     {
         if(_isIPhone)
@@ -1956,7 +1954,7 @@
                                                   NSError* error;
                                                   [oldChannel.managedObjectContext save:&error];
                                                   
-                                                  DebugLog(@"Channel: %@", createdChannel);
+//                                                  DebugLog(@"Channel: %@", createdChannel);
                                                   
                                                   // (the channel that was under creation will be deleted from the kVideoQueueClear notification)
                                                   
@@ -2358,7 +2356,7 @@
                                                   objectId: self.channel.uniqueId
                                                     reason: reportString
                                           completionHandler: ^(NSDictionary *dictionary){
-                                              DebugLog(@"Concern successfully reported");
+//                                              DebugLog(@"Concern successfully reported");
                                           }
                                                errorHandler: ^(NSError* error) {
                                                    DebugLog(@"Report concern failed");
@@ -2473,7 +2471,7 @@
          pickedImage: (UIImage *) image
 {
     self.cameraButton.selected = NO;
-    DebugLog(@"width %f, height %f", image.size.width, image.size.height);
+//    DebugLog(@"width %f, height %f", image.size.width, image.size.height);
     
     self.channelCoverImageView.image = image;
     
@@ -2530,7 +2528,7 @@
                                               {
                                                   self.channel.channelCover.imageUrl = imageUrl;
 //                                                  [self.coverChooserController updateUserArtWithURL: imageUrl];
-                                                  DebugLog(@"Success");
+//                                                  DebugLog(@"Success");
                                               }
                                               else
                                               {

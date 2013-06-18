@@ -45,7 +45,7 @@
        willShowViewController: (UIViewController *) viewController
                      animated: (BOOL) animated
 {
-    DebugLog (@"Items: %@", navigationController.navigationBar.items);
+//    DebugLog (@"Items: %@", navigationController.navigationBar.items);
     UIView *containerView = [[UIView alloc] initWithFrame: CGRectMake (0, 0, 200, 28)];
     containerView.backgroundColor = [UIColor clearColor];
     UILabel *label = [[UILabel alloc] initWithFrame: CGRectMake (0, 4, 180, 28)];
@@ -94,7 +94,7 @@
     cropController.contentSizeForViewInPopover = picker.contentSizeForViewInPopover;
     UIImage* image = [info objectForKey:UIImagePickerControllerOriginalImage];
 
-    DebugLog(@"%f,%f",image.size.width, image.size.height);
+//    DebugLog(@"%f,%f",image.size.width, image.size.height);
     if(MAX(image.size.width, image.size.height)>kMaxSuportedImageSize)
     {
         //Image too large

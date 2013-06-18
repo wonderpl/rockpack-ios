@@ -233,7 +233,7 @@
     }
     else if (newState == kLoginScreenStateLogin)
     {
-        [GAI.sharedInstance.defaultTracker sendView: @"Login 1"];
+        [GAI.sharedInstance.defaultTracker sendView: @"Login"];
         [self setUpLoginStateFromPreviousState:state];
     }
     else if (newState == kLoginScreenStateRegister)
@@ -1144,7 +1144,7 @@
 - (void) uploadAvatar: (UIImage *) avatarImage;
 {
     [self uploadAvatarImage:avatarImage completionHandler:^(NSDictionary* dictionary) {
-        DebugLog(@"Avatar uploaded successfully");
+//        DebugLog(@"Avatar uploaded successfully");
     }
                errorHandler:^(NSDictionary* errorDictionary) {
                    DebugLog(@"Avatar upload failed");

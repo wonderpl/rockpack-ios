@@ -50,7 +50,7 @@
             
         default:
             // Ignore everything else for now
-            DebugLog(@"Something elss");
+            DebugLog(@"Something else");
             break;
     }
     
@@ -74,7 +74,7 @@
                 
             default:
                 // Ignore everything else for now
-                DebugLog(@"Something elss");
+                DebugLog(@"Something else");
                 break;
         }
     }
