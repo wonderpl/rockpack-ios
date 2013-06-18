@@ -596,7 +596,7 @@
     id<GAITracker> tracker = [GAI sharedInstance].defaultTracker;
     
     [tracker sendEventWithCategory: @"uiAction"
-                        withAction: @"videoSelectButtonClick"
+                        withAction: @"videoPlusButtonClick"
                          withLabel: nil
                          withValue: nil];
     
