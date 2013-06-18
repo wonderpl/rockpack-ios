@@ -233,7 +233,7 @@
     }
     else if (newState == kLoginScreenStateLogin)
     {
-        [GAI.sharedInstance.defaultTracker sendView: @"Login 1"];
+        [GAI.sharedInstance.defaultTracker sendView: @"Login"];
         [self setUpLoginStateFromPreviousState:state];
     }
     else if (newState == kLoginScreenStateRegister)
@@ -946,13 +946,7 @@
     [tracker sendEventWithCategory: @"uiAction"
                         withAction: @"facebookLogin"
                          withLabel: nil
-                         withValue: nil];
-    
-    [tracker sendEventWithCategory: @"goal"
-                        withAction: @"userLogin"
-                         withLabel: @"Facebook"
-                         withValue: nil];
-    
+                         withValue: nil];    
     
     _facebookLoginIsInProcess = NO;
     
@@ -967,6 +961,11 @@
     [self doFacebookLoginAnimation];
     
     [self loginThroughFacebookWithCompletionHandler: ^(NSDictionary * dictionary) {
+        
+                                        [tracker sendEventWithCategory: @"goal"
+                                                            withAction: @"userLogin"
+                                                             withLabel: @"Facebook"
+                                                             withValue: nil];
         
                                         [activityIndicator stopAnimating];
                                         [self completeLoginProcess];
@@ -1144,7 +1143,7 @@
 - (void) uploadAvatar: (UIImage *) avatarImage;
 {
     [self uploadAvatarImage:avatarImage completionHandler:^(NSDictionary* dictionary) {
-        DebugLog(@"Avatar uploaded successfully");
+//        DebugLog(@"Avatar uploaded successfully");
     }
                errorHandler:^(NSDictionary* errorDictionary) {
                    DebugLog(@"Avatar upload failed");
@@ -1471,6 +1470,8 @@
 {
     [super willAnimateRotationToInterfaceOrientation: toInterfaceOrientation
                                             duration: duration];
+    
+    [self clearAllErrorArrows];
     
     if (UIInterfaceOrientationIsPortrait(toInterfaceOrientation))
     {

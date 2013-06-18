@@ -72,6 +72,7 @@
     scrollView.pagingEnabled = YES;
     scrollView.showsHorizontalScrollIndicator = NO;
     scrollView.showsVerticalScrollIndicator = NO;
+    scrollView.scrollsToTop = NO;
     
     self.view = scrollView;
     
@@ -150,11 +151,13 @@
     {
         self.selectedNavigationController = self.childViewControllers[0];
         // page is set automatically because it is the first one
+        self.lastSelectedPageIndex = 0;
     }
     else
     {
         self.selectedNavigationController = self.childViewControllers[1];
         self.scrollView.page = 1;
+        self.lastSelectedPageIndex = 1;
     }
     
     [self.showingBaseViewController viewDidScrollToFront];
@@ -350,10 +353,7 @@
     
     // These are the things we need to do if the page has actually changed    
     if (self.currentPage != self.lastSelectedPageIndex)
-    {
-        // Remember our last page
-        self.lastSelectedPageIndex = self.currentPage;
-        
+    {        
         // Update google analytics
         id<GAITracker> tracker = [GAI sharedInstance].defaultTracker;
         
@@ -363,12 +363,17 @@
                              withValue: nil];
         
         // Now let the page know that it has the focus
+        if(self.lastSelectedPageIndex >=0 && self.lastSelectedPageIndex <3)
+        {
+            SYNAbstractViewController* lastSelectedViewController = (SYNAbstractViewController*)((UINavigationController*)self.childViewControllers[self.lastSelectedPageIndex]).viewControllers[0];
+            [lastSelectedViewController viewDidScrollToBack];
+            NSLog(@"last vc: %@ at %i", lastSelectedViewController.title, self.lastSelectedPageIndex);
+        }
         
-        SYNAbstractViewController* lastSelectedViewController = (SYNAbstractViewController*)((UINavigationController*)self.childViewControllers[self.scrollView.page]).viewControllers[0];
-        [lastSelectedViewController viewDidScrollToBack];
-        [self.showingBaseViewController viewDidScrollToFront];
+         [self.showingBaseViewController viewDidScrollToFront];
         
-        NSLog(@"last vc: %@ at %i", lastSelectedViewController.title, self.lastSelectedPageIndex);
+        // Remember our last page
+        self.lastSelectedPageIndex = self.currentPage;
     }
 }
 

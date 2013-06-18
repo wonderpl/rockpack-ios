@@ -220,6 +220,7 @@ typedef enum {
                                                  name: kUserDataChanged
                                                object: nil];
     
+    self.tableView.scrollsToTop = NO;
     [self getNotifications];
 }
 
@@ -932,7 +933,7 @@ typedef enum {
 - (void) picker: (SYNImagePickerController *) picker
          finishedWithImage: (UIImage *) image
 {
-    DebugLog(@"Orign image width: %f, height%f", image.size.width, image.size.height);
+//    DebugLog(@"Orign image width: %f, height%f", image.size.width, image.size.height);
     self.avatarButton.enabled = NO;
     self.profilePictureImageView.image = image;
     [self.activityIndicator startAnimating];

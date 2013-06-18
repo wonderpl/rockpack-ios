@@ -559,8 +559,8 @@
                                               
                                               wself.originalBackgroundImage = wself.channelCoverImageView.image;
                                               
-                                              
-                                              [wself renderBlurredBackgroundWithCGImage:[[wself croppedImageForCurrentOrientation] CGImage]];
+                                              wself.channelCoverImageView.image = [wself croppedImageForCurrentOrientation];
+                                         
              
                                           }];
     }
@@ -624,8 +624,7 @@
             
             self.dataItemsAvailable = self.channel.totalVideosValue;
             
-            DebugLog(@"Total Videos on First Batch: %i", self.channel.totalVideosValue);
-            
+//            DebugLog(@"Total Videos on First Batch: %i", self.channel.totalVideosValue);
             
             self.subscribeButton.selected = self.channel.subscribedByUserValue;
             self.subscribeButton.enabled = YES;
@@ -988,6 +987,7 @@
     self.displayControlsView.alpha = (visible) ? 1.0f : 0.0f;
     self.editControlsView.alpha = (visible) ? 0.0f : 1.0f;
     self.coverChooserMasterView.hidden = (visible) ? TRUE : FALSE;
+    self.categoriesTabViewController.view.hidden = visible;
     self.profileImageButton.enabled = visible;
 
     self.subscribeButton.hidden = (visible && [self.channel.channelOwner.uniqueId isEqualToString: appDelegate.currentUser.uniqueId]);
@@ -1114,12 +1114,6 @@
     
     [tracker sendEventWithCategory: @"uiAction"
                         withAction: @"channelSubscribeButtonClick"
-                         withLabel: nil
-                         withValue: nil];
-
-    // FIXME: Not sure why we need both of these
-    [tracker sendEventWithCategory: @"goal"
-                        withAction: @"userSubscription"
                          withLabel: nil
                          withValue: nil];
     
@@ -1358,7 +1352,6 @@
                                                         object: self
                                                       userInfo: nil];
     
-
     if(self.mode == kChannelDetailsModeCreate)
     {
         if(_isIPhone)
@@ -1382,12 +1375,22 @@
         self.addButton.hidden = NO;
         self.backButton.hidden= NO;
     }
+    
+    [self.videoThumbnailCollectionView reloadData];
 
 }
 
 
 - (IBAction) saveChannelTapped: (id) sender
-{ 
+{
+    
+    id<GAITracker> tracker = [GAI sharedInstance].defaultTracker;
+
+    [tracker sendEventWithCategory: @"uiAction"
+                        withAction: @"channelSaveButtonClick"
+                         withLabel: nil
+                         withValue: nil];
+    
     self.saveChannelButton.enabled = NO;
     [self.activityIndicator startAnimating];
     
@@ -1408,7 +1411,13 @@
                                                      cover: cover
                                                   isPublic: YES
                                          completionHandler: ^(NSDictionary* resourceCreated) {
-
+                                             id<GAITracker> tracker = [GAI sharedInstance].defaultTracker;
+                                             
+                                             [tracker sendEventWithCategory: @"goal"
+                                                                 withAction: @"channelEdited"
+                                                                  withLabel: category
+                                                                  withValue: nil];
+                                             
                                              NSString* channelId = [resourceCreated objectForKey: @"id"];
                                              
                                              [self setEditControlsVisibility: NO];
@@ -1791,6 +1800,12 @@
                                                   isPublic: YES
                                          completionHandler: ^(NSDictionary* resourceCreated) {
                                              
+                                             id<GAITracker> tracker = [GAI sharedInstance].defaultTracker;
+                                             
+                                             [tracker sendEventWithCategory: @"goal"
+                                                                 withAction: @"channelCreated"
+                                                                  withLabel: category
+                                                                  withValue: nil];
                                              
                                              NSString* channelId = [resourceCreated objectForKey: @"id"];
                                              
@@ -1856,7 +1871,6 @@
                                                    videoInstanceSet: self.channel.videoInstances
                                                       clearPrevious: YES
                                                   completionHandler: ^(id response) {
-                                                      
                                                       // a 204 returned
                                                       
                                                       [self fetchAndStoreUpdatedChannelForId:channelId isUpdate:isUpdated];
@@ -1953,7 +1967,7 @@
                                                   NSError* error;
                                                   [oldChannel.managedObjectContext save:&error];
                                                   
-                                                  DebugLog(@"Channel: %@", createdChannel);
+//                                                  DebugLog(@"Channel: %@", createdChannel);
                                                   
                                                   // (the channel that was under creation will be deleted from the kVideoQueueClear notification)
                                                   
@@ -2178,10 +2192,10 @@
         if(!hasShownSubscribeOnBoarding)
         {
             BOOL isIpad = [[SYNDeviceManager sharedInstance] isIPad];
-            NSString* message = @"Tap this button to subscribe to a channel and get new videos in your feed.";
+            NSString* message = NSLocalizedString(@"onboarding_subscription", nil);
             PointingDirection direction = isIpad ? PointingDirectionLeft : PointingDirectionUp;
             CGFloat fontSize = isIpad ? 19.0 : 15.0 ;
-            CGSize size =  isIpad ? CGSizeMake(260.0, 144.0) : CGSizeMake(260.0, 128.0);
+            CGSize size =  isIpad ? CGSizeMake(260.0, 164.0) : CGSizeMake(260.0, 148.0);
             SYNOnBoardingPopoverView* subscribePopover = [SYNOnBoardingPopoverView withMessage:message
                                                                                       withSize:size
                                                                                    andFontSize:fontSize
@@ -2355,7 +2369,7 @@
                                                   objectId: self.channel.uniqueId
                                                     reason: reportString
                                           completionHandler: ^(NSDictionary *dictionary){
-                                              DebugLog(@"Concern successfully reported");
+//                                              DebugLog(@"Concern successfully reported");
                                           }
                                                errorHandler: ^(NSError* error) {
                                                    DebugLog(@"Report concern failed");
@@ -2470,7 +2484,7 @@
          pickedImage: (UIImage *) image
 {
     self.cameraButton.selected = NO;
-    DebugLog(@"width %f, height %f", image.size.width, image.size.height);
+//    DebugLog(@"width %f, height %f", image.size.width, image.size.height);
     
     self.channelCoverImageView.image = image;
     
@@ -2527,7 +2541,7 @@
                                               {
                                                   self.channel.channelCover.imageUrl = imageUrl;
 //                                                  [self.coverChooserController updateUserArtWithURL: imageUrl];
-                                                  DebugLog(@"Success");
+//                                                  DebugLog(@"Success");
                                               }
                                               else
                                               {
@@ -2786,8 +2800,10 @@
     
     self.blurredBGImageView.frame = self.channelCoverImageView.frame;
     
+    CGImageRetain(imageRef);
+    
     __weak SYNChannelDetailViewController* wself = self;
-    dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_HIGH, 0), ^{
+    dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0), ^{
         
         backgroundCIImage = [CIImage imageWithCGImage:imageRef];
         
@@ -2808,8 +2824,11 @@
         UIImage* bgImage = [UIImage imageWithCGImage:cgimg];
         CGImageRelease(cgimg);
         
-        [wself.blurredBGImageView performSelectorOnMainThread:@selector(setImage:) withObject:bgImage waitUntilDone:YES];
+        [wself.blurredBGImageView performSelectorOnMainThread:@selector(setImage:)
+                                                   withObject:bgImage
+                                                waitUntilDone:YES];
        
+        CGImageRelease(imageRef);
         
     });
     
@@ -3015,7 +3034,7 @@
     {
         SYNOnBoardingPopoverQueueController* onBoardingQueue = [[SYNOnBoardingPopoverQueueController alloc] init];
         
-        NSString* message = @"Whenever you see a video you like tap the + button to add it to one of your channels.";
+        NSString* message = NSLocalizedString(@"onboarding_video", nil);
         
         CGFloat fontSize = [[SYNDeviceManager sharedInstance] isIPad] ? 19.0 : 15.0 ;
         CGSize size = [[SYNDeviceManager sharedInstance] isIPad] ? CGSizeMake(340.0, 164.0) : CGSizeMake(260.0, 144.0);

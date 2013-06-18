@@ -100,7 +100,7 @@
     self.videoThumbnailCollectionView.delegate = self;
     self.videoThumbnailCollectionView.dataSource = self;
     self.videoThumbnailCollectionView.backgroundColor = [UIColor clearColor];
-    
+    self.videoThumbnailCollectionView.scrollsToTop = NO;
     if (isIPhone)
     {
         self.videoThumbnailCollectionView.contentInset = UIEdgeInsetsMake(4, 0, 0, 0);
@@ -197,7 +197,6 @@
 - (void) viewDidScrollToFront
 {
     [self updateAnalytics];
-    
     self.videoThumbnailCollectionView.scrollsToTop = YES;
     if(self.dataRequestRange.location == 0)
     {
@@ -423,7 +422,7 @@
                                                         [self displayEmptyGenreMessage:NSLocalizedString(@"feed_screen_empty_message", nil) andLoader:NO];
                                                     }  
                                                     
-                                                    DebugLog(@"new fetched count : %i", self.fetchedResultsController.fetchedObjects.count);
+//                                                    DebugLog(@"new fetched count : %i", self.fetchedResultsController.fetchedObjects.count);
                                                     
                                                     self.footerView.showsLoading = NO;
                                                     
@@ -568,10 +567,10 @@
     if(!hasShownSubscribeOnBoarding)
     {
         
-        NSString* message = @"Whenever you see a video you like tap the + button to add it to one of your channels.";
+        NSString* message = NSLocalizedString(@"onboarding_video", nil);
         
         CGFloat fontSize = [[SYNDeviceManager sharedInstance] isIPad] ? 19.0 : 15.0 ;
-        CGSize size = [[SYNDeviceManager sharedInstance] isIPad] ? CGSizeMake(340.0, 144.0) : CGSizeMake(260.0, 144.0);
+        CGSize size = [[SYNDeviceManager sharedInstance] isIPad] ? CGSizeMake(340.0, 164.0) : CGSizeMake(260.0, 144.0);
         CGRect rectToPointTo = CGRectZero;
         PointingDirection directionToPointTo = PointingDirectionDown;
         if(self.selectedCell)

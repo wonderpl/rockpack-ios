@@ -120,7 +120,7 @@
                  
                  [self refreshOAuthTokenWithCompletionHandler: ^(id response)
                   {
-                      DebugLog (@"Refreshed");
+                      DebugLog (@"Token refreshed");
                       // Now we have a new authentication token, we need to try the network operation again
                       // Set the callback logic for the network operation re-issued if the authentication token has expired and been renewed
                       [retryNetworkOperation
@@ -133,15 +133,19 @@
                                // Now check to see if we need to refresh the token
                                NSDictionary *responseDictionary = (NSDictionary *) response;
                                NSString *reason = responseDictionary[@"error"];
-                               if ([reason isEqualToString: @"expired_token"] == FALSE)
+                               if ([reason isEqualToString: @"expired_token"]
+                                   || [reason isEqualToString: @"invalid_request"]
+                                   || [reason isEqualToString: @"invalid_grant"]
+                                   || [reason isEqualToString: @"unsupported_grant_type"])
                                {
-                                   // Normal (?) error, we don't need to try refreshing the token
-                                   errorBlock(response);
+                                   // Just log the user out
+                                   [[NSNotificationCenter defaultCenter] postNotificationName: kAccountSettingsLogout
+                                                                                       object: nil];
                                }
                                else
                                {
-                                   // The OAuth2 token is still invalid, even after a refresh - so bail
-                                   DebugLog (@"refreshed token not valid");
+                                   // Not sure what is wrong, so don't log the user out
+                                   DebugLog (@"Failure during network operation retry: %@", reason);
                                    errorBlock(response);
                                }
                                
@@ -180,7 +184,7 @@
                       [self enqueueSignedOperation: retryNetworkOperation];
                   }
                                                  errorHandler:  ^(id response) {
-                                                     DebugLog (@"Failed to Refresh");
+                                                     DebugLog (@"Failed to refresh token");
                                                      
                                                      if ([response isKindOfClass: [NSDictionary class]])
                                                      {

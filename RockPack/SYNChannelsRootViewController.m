@@ -122,6 +122,7 @@
     self.channelThumbnailCollectionView.showsVerticalScrollIndicator = NO;
     
     self.channelThumbnailCollectionView.autoresizingMask = UIViewAutoresizingFlexibleWidth | UIViewAutoresizingFlexibleHeight;
+    self.channelThumbnailCollectionView.scrollsToTop = NO;
     
     CGRect newFrame;
     if (isIPhone)
@@ -204,7 +205,7 @@
     BOOL hasShownSubscribeOnBoarding = [defaults boolForKey:kUserDefaultsChannels];
     if(!hasShownSubscribeOnBoarding)
     {
-        NSString* message = @"To start, browse channels created\nby other people. A channel is a\ncollection of videos.";
+        NSString* message = NSLocalizedString(@"onboarding_channels", nil);
         
         CGFloat fontSize = [[SYNDeviceManager sharedInstance] isIPad] ? 19.0 : 15.0 ;
         CGSize size = [[SYNDeviceManager sharedInstance] isIPad] ? CGSizeMake(340.0, 164.0) : CGSizeMake(260.0, 144.0);
@@ -263,7 +264,7 @@
                   byAppending: (BOOL) append
 {
     
-    DebugLog(@"Next request: %i - %i", self.dataRequestRange.location, self.dataRequestRange.length + self.dataRequestRange.location - 1);
+//    DebugLog(@"Next request: %i - %i", self.dataRequestRange.location, self.dataRequestRange.length + self.dataRequestRange.location - 1);
     
     self.runningNetworkOperation = [appDelegate.networkEngine updateChannelsScreenForCategory: (genre ? genre.uniqueId : @"all")
                                                                                      forRange: self.dataRequestRange
@@ -381,7 +382,7 @@
     if (!resultsArray)
         return;
     
-    DebugLog(@"resultsArray: %i", resultsArray.count);
+//    DebugLog(@"resultsArray: %i", resultsArray.count);
     
     self.channels = [NSMutableArray arrayWithArray:resultsArray];
     
@@ -542,7 +543,7 @@
         // At this stage, we don't know whether the user is pinching in or out
         self.userPinchedOut = FALSE;
         
-        DebugLog (@"UIGestureRecognizerStateBegan");
+//        DebugLog (@"UIGestureRecognizerStateBegan");
         // figure out which item in the table was selected
         NSIndexPath *indexPath = [self.channelThumbnailCollectionView indexPathForItemAtPoint: [sender locationInView: self.channelThumbnailCollectionView]];
         
@@ -580,7 +581,7 @@
     }
     else if (sender.state == UIGestureRecognizerStateChanged)
     {
-        DebugLog (@"UIGestureRecognizerStateChanged");
+//        DebugLog (@"UIGestureRecognizerStateChanged");
         float scale = sender.scale;
         
         if (scale < 1.0)
@@ -597,7 +598,7 @@
     }
     else if (sender.state == UIGestureRecognizerStateEnded)
     {
-        DebugLog (@"UIGestureRecognizerStateEnded");
+//        DebugLog (@"UIGestureRecognizerStateEnded");
         
         if (self.userPinchedOut == TRUE)
         {
@@ -606,7 +607,7 @@
     }
     else if (sender.state == UIGestureRecognizerStateCancelled)
     {
-        DebugLog (@"UIGestureRecognizerStateCancelled");
+//        DebugLog (@"UIGestureRecognizerStateCancelled");
         [self.pinchedView removeFromSuperview];
     }
 }

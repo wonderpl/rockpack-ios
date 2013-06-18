@@ -6,9 +6,11 @@
 //  Copyright (c) Rockpack Ltd. All rights reserved.
 //
 
+#import "AppConstants.h"
 #import "SYNCoverThumbnailCell.h"
 #import "UIImageView+ImageProcessing.h"
-#import "AppConstants.h"
+#import "UIImageView+WebCache.h"
+#import <QuartzCore/QuartzCore.h>
 
 @interface SYNCoverThumbnailCell ()
 
@@ -61,7 +63,8 @@
 - (void) prepareForReuse
 {
     // We need to clean up any asynchronous image uploads
-    self.coverImageView.image = nil;
+    [self.coverImageView.layer removeAllAnimations];
+    [self.coverImageView setImageWithURL: nil];
     self.selectedOverlayImageView.alpha = 0.0f;
 }
 

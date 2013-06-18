@@ -174,6 +174,7 @@
     subColViewFrame.size.width = [SYNDeviceManager.sharedInstance currentScreenWidth] - subColViewFrame.origin.x - 10.0;
     [self.subscriptionsViewController setViewFrame: subColViewFrame];
     
+    
     if (self.user)
         self.subscriptionsViewController.user = self.user;
     
@@ -301,6 +302,10 @@
         
         [self updateTabStates];
     }
+    
+    self.subscriptionsViewController.channelThumbnailCollectionView.scrollsToTop = NO;
+    self.channelThumbnailCollectionView.scrollsToTop = NO;
+    
 }
 
 
@@ -382,9 +387,9 @@
 {
 //    [self updateAnalytics];
     
-    self.channelThumbnailCollectionView.scrollsToTop = YES;
+    self.channelThumbnailCollectionView.scrollsToTop = !self.subscriptionsTabActive;
     
-    self.subscriptionsViewController.channelThumbnailCollectionView.scrollsToTop = YES;
+    self.subscriptionsViewController.channelThumbnailCollectionView.scrollsToTop = self.subscriptionsTabActive;
     
     [[NSNotificationCenter defaultCenter] postNotificationName:kChannelOwnerUpdateRequest
                                                         object:self
@@ -786,7 +791,7 @@
         // At this stage, we don't know whether the user is pinching in or out
         self.userPinchedOut = FALSE;
         
-        DebugLog (@"UIGestureRecognizerStateBegan");
+//        DebugLog (@"UIGestureRecognizerStateBegan");
         // figure out which item in the table was selected
         NSIndexPath *indexPath = [self.channelThumbnailCollectionView indexPathForItemAtPoint: [sender locationInView: self.channelThumbnailCollectionView]];
         
@@ -823,7 +828,7 @@
     }
     else if (sender.state == UIGestureRecognizerStateChanged)
     {
-        DebugLog (@"UIGestureRecognizerStateChanged");
+//        DebugLog (@"UIGestureRecognizerStateChanged");
         float scale = sender.scale;
         
         if (scale < 1.0)
@@ -840,7 +845,7 @@
     }
     else if (sender.state == UIGestureRecognizerStateEnded)
     {
-        DebugLog (@"UIGestureRecognizerStateEnded");
+//        DebugLog (@"UIGestureRecognizerStateEnded");
         
         if (self.userPinchedOut == TRUE)
         {
@@ -849,7 +854,7 @@
     }
     else if (sender.state == UIGestureRecognizerStateCancelled)
     {
-        DebugLog (@"UIGestureRecognizerStateCancelled");
+//        DebugLog (@"UIGestureRecognizerStateCancelled");
         [self.pinchedView removeFromSuperview];
     }
 }
@@ -931,6 +936,11 @@
 
 - (void ) updateTabStates
 {
+    
+    self.channelThumbnailCollectionView.scrollsToTop = !self.subscriptionsTabActive;
+    
+    self.subscriptionsViewController.channelThumbnailCollectionView.scrollsToTop = self.subscriptionsTabActive;
+    
     self.channelsTabButton.selected = !self.subscriptionsTabActive;
     self.subscriptionsTabButton.selected = self.subscriptionsTabActive;
     self.channelThumbnailCollectionView.hidden = self.subscriptionsTabActive;
