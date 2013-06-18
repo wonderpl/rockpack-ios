@@ -424,20 +424,20 @@
 
 - (void) updateCoverArt
 {
-    DebugLog(@"Updating range %d:%d", self.dataRequestRange.location, self.dataRequestRange.length);
+//    DebugLog(@"Updating range %d:%d", self.dataRequestRange.location, self.dataRequestRange.length);
     
     // Update the list of cover art
     [self.appDelegate.networkEngine updateCoverArtWithWithStart: self.dataRequestRange.location
                                                            size: self.dataRequestRange.length
                                               completionHandler: ^(NSDictionary *dictionary){
-                                                  DebugLog(@"Success");
+//                                                  DebugLog(@"Success");
                                                   NSNumber* totalNumber = dictionary[@"cover_art"][@"total"];
                                                   if (totalNumber && ![totalNumber isKindOfClass: [NSNull class]])
                                                       self.dataItemsAvailable = [totalNumber integerValue];
                                                   else
                                                       self.dataItemsAvailable = self.dataRequestRange.length;
 
-                                                  DebugLog (@"Count %d", self.rockpackCoverFetchedResultsController.fetchedObjects.count);
+//                                                  DebugLog (@"Count %d", self.rockpackCoverFetchedResultsController.fetchedObjects.count);
                                                   if ((self.dataRequestRange.location + self.dataRequestRange.length) >= self.dataItemsAvailable)
                                                   {
                                                       self.noMoreCovers = TRUE;
@@ -454,7 +454,7 @@
     
     [self.appDelegate.oAuthNetworkEngine updateCoverArtForUserId: self.appDelegate.currentOAuth2Credentials.userId
                                                onCompletion: ^{
-                                                   DebugLog(@"Success");
+//                                                   DebugLog(@"Success");
                                                }
                                                     onError: ^(NSError* error) {
                                                         DebugLog(@"%@", [error debugDescription]);
@@ -495,7 +495,7 @@
     NSInteger nextSize = (nextStart + STANDARD_REQUEST_LENGTH) >= self.dataItemsAvailable ? (self.dataItemsAvailable - nextStart) : STANDARD_REQUEST_LENGTH;
     
     self.dataRequestRange = NSMakeRange(nextStart, nextSize);
-    DebugLog (@"Incrementing Range to %d:%d", self.dataRequestRange.location, self.dataRequestRange.length);
+//    DebugLog (@"Incrementing Range to %d:%d", self.dataRequestRange.location, self.dataRequestRange.length);
 }
 
 
@@ -514,11 +514,11 @@
 
 - (void) scrollViewDidScroll: (UIScrollView *) scrollView
 {
-    DebugLog (@"Scrolling");
+//    DebugLog (@"Scrolling");
     // when reaching far right hand side, load a new page
     if (scrollView.contentOffset.x == scrollView.contentSize.width - scrollView.bounds.size.width)
     {
-        DebugLog (@"Scrolling more");
+//        DebugLog (@"Scrolling more");
         [self loadMoreCovers];
     }
 }

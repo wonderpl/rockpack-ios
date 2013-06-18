@@ -370,7 +370,6 @@
     // Delete any channelOwners that are only associated with this channel
     if (self.channelOwner.channels.count == 1)
     {
-        // DebugLog(@"Single reference to ChannelOwner, will be deleted");
         [self.managedObjectContext deleteObject: self.channelOwner];
     }
     

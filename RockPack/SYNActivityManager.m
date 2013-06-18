@@ -43,9 +43,9 @@
 {
     [self.appDelegate.oAuthNetworkEngine activityForUserId: self.appDelegate.currentOAuth2Credentials.userId
                                          completionHandler: ^(NSDictionary *responseDictionary) {
-                                             DebugLog(@"Activity updates successful");
+//                                             DebugLog(@"Activity updates successful");
                                          } errorHandler: ^(NSDictionary* error) {
-                                             DebugLog(@"Activity updates failed");
+//                                             DebugLog(@"Activity updates failed");
                                          }];
 }
 

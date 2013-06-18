@@ -559,8 +559,8 @@
                                               
                                               wself.originalBackgroundImage = wself.channelCoverImageView.image;
                                               
-                                              
-                                              [wself renderBlurredBackgroundWithCGImage:[[wself croppedImageForCurrentOrientation] CGImage]];
+                                              wself.channelCoverImageView.image = [wself croppedImageForCurrentOrientation];
+                                         
              
                                           }];
     }
@@ -617,8 +617,7 @@
             
             self.dataItemsAvailable = self.channel.totalVideosValue;
             
-            DebugLog(@"Total Videos on First Batch: %i", self.channel.totalVideosValue);
-            
+//            DebugLog(@"Total Videos on First Batch: %i", self.channel.totalVideosValue);
             
 
             self.subscribeButton.selected = self.channel.subscribedByUserValue;
@@ -1060,6 +1059,7 @@
     self.displayControlsView.alpha = (visible) ? 1.0f : 0.0f;
     self.editControlsView.alpha = (visible) ? 0.0f : 1.0f;
     self.coverChooserMasterView.hidden = (visible) ? TRUE : FALSE;
+    self.categoriesTabViewController.view.hidden = visible;
     self.profileImageButton.enabled = visible;
 
     self.subscribeButton.hidden = (visible && [self.channel.channelOwner.uniqueId isEqualToString: appDelegate.currentUser.uniqueId]);
@@ -1430,7 +1430,6 @@
                                                         object: self
                                                       userInfo: nil];
     
-
     if(self.mode == kChannelDetailsModeCreate)
     {
         if(_isIPhone)
@@ -1454,6 +1453,8 @@
         self.addButton.hidden = NO;
         self.backButton.hidden= NO;
     }
+    
+    [self.videoThumbnailCollectionView reloadData];
 
 }
 
@@ -2025,7 +2026,7 @@
                                                   NSError* error;
                                                   [oldChannel.managedObjectContext save:&error];
                                                   
-                                                  DebugLog(@"Channel: %@", createdChannel);
+//                                                  DebugLog(@"Channel: %@", createdChannel);
                                                   
                                                   // (the channel that was under creation will be deleted from the kVideoQueueClear notification)
                                                   
@@ -2423,7 +2424,7 @@
                                                   objectId: self.channel.uniqueId
                                                     reason: reportString
                                           completionHandler: ^(NSDictionary *dictionary){
-                                              DebugLog(@"Concern successfully reported");
+//                                              DebugLog(@"Concern successfully reported");
                                           }
                                                errorHandler: ^(NSError* error) {
                                                    DebugLog(@"Report concern failed");
@@ -2538,7 +2539,7 @@
          pickedImage: (UIImage *) image
 {
     self.cameraButton.selected = NO;
-    DebugLog(@"width %f, height %f", image.size.width, image.size.height);
+//    DebugLog(@"width %f, height %f", image.size.width, image.size.height);
     
     self.channelCoverImageView.image = image;
     
@@ -2595,7 +2596,7 @@
                                               {
                                                   self.channel.channelCover.imageUrl = imageUrl;
 //                                                  [self.coverChooserController updateUserArtWithURL: imageUrl];
-                                                  DebugLog(@"Success");
+//                                                  DebugLog(@"Success");
                                               }
                                               else
                                               {
@@ -2777,7 +2778,6 @@
             
             CGRect frame = self.masterControlsView.frame;
             
-            
             frame.origin.y = self.originalMasterControlsViewOrigin.y - (differenceInY / 1.5);
             
             self.masterControlsView.frame = frame;
@@ -2794,8 +2794,7 @@
             
             // blur background
             
-            blurOpacity = differenceInY > 200 ? 1.0 : differenceInY / 200.0; // 1 .. 0
-            
+            blurOpacity = differenceInY > 140 ? 1.0 : differenceInY / 140.0; // 1 .. 0
             
         }
         
@@ -2846,29 +2845,48 @@
 -(void)renderBlurredBackgroundWithCGImage:(CGImageRef)imageRef
 {
     
-    backgroundCIImage = [CIImage imageWithCGImage:imageRef];
-    context = [CIContext contextWithOptions:nil];
-    filter = [CIFilter filterWithName:@"CIGaussianBlur"];
-    [filter setValue:backgroundCIImage forKey:@"inputImage"];
-    [filter setValue:[NSNumber numberWithFloat:6.0] forKey:@"inputRadius"];
-    
-    CIImage *outputImage = [filter outputImage];
-    
-    CGImageRef cgimg = [context createCGImage:outputImage
-                                     fromRect:[[SYNDeviceManager sharedInstance] currentScreenRect]];
-    
     if(!self.blurredBGImageView) {
         self.blurredBGImageView = [[UIImageView alloc] init];
         self.blurredBGImageView.autoresizingMask = UIViewAutoresizingFlexibleWidth | UIViewAutoresizingFlexibleHeight;
+        self.blurredBGImageView.contentMode = UIViewContentModeScaleAspectFill;
         [self.view insertSubview:self.blurredBGImageView belowSubview:self.channelCoverImageView];
     }
     
-    UIImage* bgImage = [UIImage imageWithCGImage:cgimg];
-    self.blurredBGImageView.image = bgImage;
-    self.blurredBGImageView.frame = self.channelCoverImageView.frame;
-    //self.blurredBGImageView.contentMode = UIViewContentModeScaleAspectFill;
     
-    CGImageRelease(cgimg);
+    self.blurredBGImageView.frame = self.channelCoverImageView.frame;
+    
+    CGImageRetain(imageRef);
+    
+    __weak SYNChannelDetailViewController* wself = self;
+    dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0), ^{
+        
+        backgroundCIImage = [CIImage imageWithCGImage:imageRef];
+        
+        context = [CIContext contextWithOptions:nil];
+        
+        filter = [CIFilter filterWithName:@"CIGaussianBlur"];
+        [filter setValue:backgroundCIImage forKey:@"inputImage"];
+        [filter setValue:[NSNumber numberWithFloat:7.0] forKey:@"inputRadius"];
+        
+        CIImage *outputImage = [filter outputImage];
+        
+        CGRect croppingRect = [[SYNDeviceManager sharedInstance] isLandscape] ? CGRectMake(0.0, 0.0, 1024.0, 768.0) : CGRectMake(0.0, 0.0, 768.0, 1024.0);
+        CGImageRef cgimg = [context createCGImage:outputImage
+                                         fromRect:croppingRect];
+        
+        
+        
+        UIImage* bgImage = [UIImage imageWithCGImage:cgimg];
+        CGImageRelease(cgimg);
+        
+        [wself.blurredBGImageView performSelectorOnMainThread:@selector(setImage:)
+                                                   withObject:bgImage
+                                                waitUntilDone:YES];
+       
+        CGImageRelease(imageRef);
+        
+    });
+    
 }
 
 - (id<SDWebImageOperation>) loadBackgroundImage

@@ -173,7 +173,7 @@
 
 - (void) controllerDidChangeContent: (NSFetchedResultsController *) controller
 {
-    DebugLog(@"Total Search Items: %i", controller.fetchedObjects.count);
+//    DebugLog(@"Total Search Items: %i", controller.fetchedObjects.count);
     
     [self.videoThumbnailCollectionView reloadData];
 }

@@ -907,7 +907,7 @@ static UIWebView* vimeoideoWebViewInstance;
 
 - (void) playYouTubeVideoWithSourceId: (NSString *) sourceId
 {
-    DebugLog(@"*** Playing: Load video command sent");
+//    DebugLog(@"*** Playing: Load video command sent");
     self.notYetPlaying = TRUE;
     self.recordedVideoView = FALSE;
     
@@ -1143,7 +1143,7 @@ static UIWebView* vimeoideoWebViewInstance;
          shouldStartLoadWithRequest: (NSURLRequest *) request
          navigationType: (UIWebViewNavigationType) navigationType
 {
-    DebugLog(@"-----%@", request.debugDescription);
+//    DebugLog(@"-----%@", request.debugDescription);
     NSString *scheme = request.URL.scheme;
     
     // If we have an event from one of our players (as opposed to something else)
@@ -1199,12 +1199,12 @@ static UIWebView* vimeoideoWebViewInstance;
 - (void) handleCurrentYouTubePlayerEventNamed: (NSString *) actionName
                                     eventData: (NSString *) actionData
 {
-    DebugLog (@"actionname = %@, actiondata = %@", actionName, actionData);
+//    DebugLog (@"actionname = %@, actiondata = %@", actionName, actionData);
     
     if ([actionName isEqualToString: @"ready"])
     {
         // We probably don't get this event any more as the player is already set up (asynchronously)
-        DebugLog (@"++++++++++ Player ready - player ready");
+//        DebugLog (@"++++++++++ Player ready - player ready");
         
         // If the user moved away from the original player page, then we should have already detected this
         // so we need to start playing again when we have loaded
@@ -1424,7 +1424,7 @@ static UIWebView* vimeoideoWebViewInstance;
     // just after a user shuttle event)
     
     NSTimeInterval currentTime = self.currentTime;
-    DebugLog (@"Current time %lf", currentTime);
+//    DebugLog (@"Current time %lf", currentTime);
     
     // We need to wait until the play time starts to increase before fading up the video
     if (currentTime > 0.0f)
@@ -1517,7 +1517,7 @@ static UIWebView* vimeoideoWebViewInstance;
                                                 videoInstanceId: self.currentVideoInstance.uniqueId
                                               completionHandler: ^(NSDictionary *responseDictionary)
          {
-             DebugLog(@"View action successful");
+//             DebugLog(@"View action successful");
          }
                                                    errorHandler: ^(NSDictionary* errorDictionary)
          {
@@ -1567,7 +1567,7 @@ static UIWebView* vimeoideoWebViewInstance;
     float newTime = slider.value * self.currentDuration;
     
     [self setCurrentTime: newTime];
-    DebugLog (@"Setting time %f", newTime);
+//    DebugLog (@"Setting time %f", newTime);
     
     self.currentTimeLabel.text = [NSString timecodeStringFromSeconds: newTime];
 }

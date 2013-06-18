@@ -105,7 +105,7 @@ enum ChannelCoverSelectorState {
         AssertOrLog(@"Channels Details Failed: %@\n%@", [error localizedDescription], [error userInfo]);
     }
     
-    DebugLog (@"Count %d", self.fetchedResultsController.fetchedObjects.count);
+//    DebugLog (@"Count %d", self.fetchedResultsController.fetchedObjects.count);
     
     // If we already have itmes in the database, start after the last one of those
     self.dataItemsAvailable = self.fetchedResultsController.fetchedObjects.count;
@@ -194,7 +194,7 @@ enum ChannelCoverSelectorState {
     {
         case kChannelCoverDefault:
         {
-            return [[self.fetchedResultsController fetchedObjects] count] + 1;
+            return [[self.fetchedResultsController fetchedObjects] count] + 2;
             break;
         }
             
@@ -224,12 +224,17 @@ enum ChannelCoverSelectorState {
     {
         if (indexPath.row == 0)
         {
+            cell.channelCoverImageView.image = [UIImage imageNamed: @"ButtonCamera@2x.png"];
+            cell.glossImage.hidden = YES;
+        }
+        else if (indexPath.row == 1)
+        {
             cell.channelCoverImageView.image = [UIImage imageNamed: @"ChannelCreationCoverNone.png"];
             cell.glossImage.hidden = YES;
         }
         else
         {
-            indexPath = [NSIndexPath indexPathForRow: indexPath.row - 1 inSection:0];
+            indexPath = [NSIndexPath indexPathForRow: indexPath.row - 2 inSection:0];
             CoverArt *coverArt = self.fetchedResultsController.fetchedObjects[indexPath.row];
 
             [cell.channelCoverImageView setImageWithURL: [NSURL URLWithString: coverArt.thumbnailURL]
@@ -294,6 +299,7 @@ enum ChannelCoverSelectorState {
         case kChannelCoverCameraOptions:
             if (indexPath.row == 0 && self.supportsCamera)
             {
+                [collectionView deselectItemAtIndexPath:indexPath animated:NO];
                 GKImagePicker* picker = [[GKImagePicker alloc] init];
                 picker.cropSize = CGSizeMake(280, 280);
                 picker.delegate = self;
@@ -367,11 +373,16 @@ enum ChannelCoverSelectorState {
             
         case kChannelCoverDefault:
         {
+            if(indexPath.row ==0)
+            {
+                [self cameraButtonTapped:nil];
+                return;
+            }
             NSString* returnStringURL = nil;
             NSString* returnCoverId = kCoverSetNoCover;
-            if (indexPath.row != 0)
+            if (indexPath.row != 1)
             {
-                indexPath = [NSIndexPath indexPathForRow:indexPath.row - 1 inSection:0];
+                indexPath = [NSIndexPath indexPathForRow:indexPath.row - 2 inSection:0];
                 CoverArt *coverArt = self.fetchedResultsController.fetchedObjects[indexPath.row];
                     returnStringURL = coverArt.thumbnailURL;
                     returnCoverId = coverArt.coverRef;
@@ -447,7 +458,7 @@ enum ChannelCoverSelectorState {
     
     self.dataRequestRange = NSMakeRange(nextStart, nextSize);
     
-    DebugLog (@"Range %d:%d    ", self.dataRequestRange.location, self.dataRequestRange.length);
+//    DebugLog (@"Range %d:%d    ", self.dataRequestRange.location, self.dataRequestRange.length);
 }
 
 
@@ -594,13 +605,13 @@ enum ChannelCoverSelectorState {
 
 - (void) updateCoverArt
 {
-    DebugLog(@"Updating range %d:%d", self.dataRequestRange.location, self.dataRequestRange.length);
+//    DebugLog(@"Updating range %d:%d", self.dataRequestRange.location, self.dataRequestRange.length);
     
     // Update the list of cover art
     [self.appDelegate.networkEngine updateCoverArtWithWithStart: self.dataRequestRange.location
                                                            size: self.dataRequestRange.length
                                               completionHandler: ^(NSDictionary *dictionary){
-                                                  DebugLog(@"Success");
+//                                                  DebugLog(@"Success");
                                                   self.footerView.showsLoading = NO;
                                                   NSNumber* totalNumber = dictionary[@"cover_art"][@"total"];
                                                   if (totalNumber && ![totalNumber isKindOfClass: [NSNull class]])
@@ -608,7 +619,7 @@ enum ChannelCoverSelectorState {
                                                   else
                                                       self.dataItemsAvailable = self.dataRequestRange.length;
                                                   
-                                                  DebugLog (@"Count %d", self.fetchedResultsController.fetchedObjects.count);
+//                                                  DebugLog (@"Count %d", self.fetchedResultsController.fetchedObjects.count);
 //                                                  if ((self.dataRequestRange.location + self.dataRequestRange.length) >= self.dataItemsAvailable)
                                                   {
 //                                                      self.noMoreCovers = TRUE;
@@ -620,16 +631,16 @@ enum ChannelCoverSelectorState {
                                               }
                                                    errorHandler: ^(NSError* error) {
                                                                                                              self.footerView.showsLoading = NO;
-                                                       DebugLog(@"%@", [error debugDescription]);
+                                                       DebugLog(@"Update cover art failed: %@", [error debugDescription]);
 //                                                       [self displayLoadMoreMessage];
                                                    }];
     
     [self.appDelegate.oAuthNetworkEngine updateCoverArtForUserId: self.appDelegate.currentOAuth2Credentials.userId
                                                     onCompletion: ^{
-                                                        DebugLog(@"Success");
+//                                                        DebugLog(@"Success");
                                                     }
                                                          onError: ^(NSError* error) {
-                                                             DebugLog(@"%@", [error debugDescription]);
+                                                             DebugLog(@"Update user cover art failed:%@", [error debugDescription]);
                                                          }];
 }
 

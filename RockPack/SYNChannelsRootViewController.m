@@ -355,7 +355,7 @@
                   byAppending: (BOOL) append
 {
     
-    DebugLog(@"Next request: %i - %i", self.dataRequestRange.location, self.dataRequestRange.length + self.dataRequestRange.location - 1);
+//    DebugLog(@"Next request: %i - %i", self.dataRequestRange.location, self.dataRequestRange.length + self.dataRequestRange.location - 1);
     
     self.runningNetworkOperation = [appDelegate.networkEngine updateChannelsScreenForCategory: (genre ? genre.uniqueId : @"all")
                                                                                      forRange: self.dataRequestRange
@@ -471,7 +471,6 @@
     if (!resultsArray)
         return;
     
-    NSLog(@"Items Fetched: %i", resultsArray.count);
     
     self.channels = [NSMutableArray arrayWithArray:resultsArray];
     
@@ -642,7 +641,7 @@
         // At this stage, we don't know whether the user is pinching in or out
         self.userPinchedOut = FALSE;
         
-        DebugLog (@"UIGestureRecognizerStateBegan");
+//        DebugLog (@"UIGestureRecognizerStateBegan");
         // figure out which item in the table was selected
         NSIndexPath *indexPath = [self.channelThumbnailCollectionView indexPathForItemAtPoint: [sender locationInView: self.channelThumbnailCollectionView]];
         
@@ -680,7 +679,7 @@
     }
     else if (sender.state == UIGestureRecognizerStateChanged)
     {
-        DebugLog (@"UIGestureRecognizerStateChanged");
+//        DebugLog (@"UIGestureRecognizerStateChanged");
         float scale = sender.scale;
         
         if (scale < 1.0)
@@ -697,7 +696,7 @@
     }
     else if (sender.state == UIGestureRecognizerStateEnded)
     {
-        DebugLog (@"UIGestureRecognizerStateEnded");
+//        DebugLog (@"UIGestureRecognizerStateEnded");
         
         if (self.userPinchedOut == TRUE)
         {
@@ -706,7 +705,7 @@
     }
     else if (sender.state == UIGestureRecognizerStateCancelled)
     {
-        DebugLog (@"UIGestureRecognizerStateCancelled");
+//        DebugLog (@"UIGestureRecognizerStateCancelled");
         [self.pinchedView removeFromSuperview];
     }
 }

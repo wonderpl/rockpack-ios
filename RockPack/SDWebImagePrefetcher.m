@@ -63,11 +63,11 @@
 
         if (image)
         {
-            DebugLog(@"Prefetched %d out of %d", self.finishedCount, self.prefetchURLs.count);
+//            DebugLog(@"Prefetched %d out of %d", self.finishedCount, self.prefetchURLs.count);
         }
         else
         {
-            DebugLog(@"Prefetched %d out of %d (Failed)", self.finishedCount, [self.prefetchURLs count]);
+//            DebugLog(@"Prefetched %d out of %d (Failed)", self.finishedCount, [self.prefetchURLs count]);
 
             // Add last failed
             self.skippedCount++;
@@ -91,7 +91,7 @@
 
 - (void)reportStatus
 {
-    DebugLog(@"Finished prefetching (%d successful, %d skipped, timeElasped %.2f)", [self.prefetchURLs count] - self.skippedCount, self.skippedCount, CFAbsoluteTimeGetCurrent() - self.startedTime);
+//    DebugLog(@"Finished prefetching (%d successful, %d skipped, timeElasped %.2f)", [self.prefetchURLs count] - self.skippedCount, self.skippedCount, CFAbsoluteTimeGetCurrent() - self.startedTime);
 }
 
 - (void)prefetchURLs:(NSArray *)urls

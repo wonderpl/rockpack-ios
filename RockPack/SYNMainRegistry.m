@@ -412,7 +412,7 @@
     
     // Loop through the fresh data from the server
     
-    DebugLog(@"Logging %i items", itemArray.count);
+//    DebugLog(@"Logging %i items", itemArray.count);
     
     NSInteger items = 0;
     

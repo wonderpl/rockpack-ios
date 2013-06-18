@@ -233,7 +233,7 @@
     }
     else if (newState == kLoginScreenStateLogin)
     {
-        [GAI.sharedInstance.defaultTracker sendView: @"Login 1"];
+        [GAI.sharedInstance.defaultTracker sendView: @"Login"];
         [self setUpLoginStateFromPreviousState:state];
     }
     else if (newState == kLoginScreenStateRegister)
@@ -287,7 +287,7 @@
     {
         faceImageButton.center = CGPointMake(78.0, faceImageButton.center.y);
         self.avatarImageView.center = CGPointMake(78.0, self.avatarImageView.center.y);
-        passwordForgottenLabel.center = CGPointMake(650.0, passwordForgottenLabel.center.y);
+        passwordForgottenLabel.center = CGPointMake(115.0, passwordForgottenLabel.center.y);
         
     }
 
@@ -1011,6 +1011,20 @@
 - (IBAction) forgottenPasswordPressed: (id) sender
 {
     self.state = kLoginScreenStatePasswordRetrieve;
+    
+    //Make member label grey
+    self.memberLabel.textColor = self.memberLabel.textColor;
+    self.memberLabel.shadowColor = self.memberLabel.shadowColor;
+    
+    [UIView animateWithDuration:0.6f
+                          delay:1.0f
+                        options: UIViewAnimationCurveEaseInOut
+                     animations:^{
+                         self.memberLabel.textColor = [UIColor colorWithRed:(130.0f/255.0f) green:(141.0f/255.0f) blue:(145.0f/255.0f) alpha:(1.0f)];
+                         self.memberLabel.shadowColor = [UIColor whiteColor];
+                         
+                     } completion:^(BOOL finished) {
+                     }];
 }
 
 
@@ -1130,7 +1144,7 @@
 - (void) uploadAvatar: (UIImage *) avatarImage;
 {
     [self uploadAvatarImage:avatarImage completionHandler:^(NSDictionary* dictionary) {
-        DebugLog(@"Avatar uploaded successfully");
+//        DebugLog(@"Avatar uploaded successfully");
     }
                errorHandler:^(NSDictionary* errorDictionary) {
                    DebugLog(@"Avatar upload failed");
@@ -1181,6 +1195,8 @@
     }
     
     errorArrow = [SYNLoginErrorArrow withMessage:errorText];
+    
+    errorArrow.autoresizingMask = UIViewAutoresizingFlexibleLeftMargin | UIViewAutoresizingFlexibleRightMargin;
     
     CGPoint newPosition = targetView.center;
     newPosition = [self.view convertPoint:newPosition fromView:targetView.superview];
@@ -1457,6 +1473,8 @@
     [super willAnimateRotationToInterfaceOrientation: toInterfaceOrientation
                                             duration: duration];
     
+    [self clearAllErrorArrows];
+    
     if (UIInterfaceOrientationIsPortrait(toInterfaceOrientation))
     {
         signUpButton.center = CGPointMake(604.0, signUpButton.center.y);
@@ -1505,6 +1523,22 @@
         termsAndConditionsButton.frame = termsAndConditionsLabel.frame;
     else
         termsAndConditionsButton.frame = termsAndConditionsLabelSide.frame;
+    
+//    for (NSValue* targetViewPointerValue in labelsToErrorArrows)
+//    {
+//        UIView* targetView = (UIView*)[targetViewPointerValue pointerValue];
+//        if(!targetView)
+//            continue;
+//        
+//        SYNLoginErrorArrow* errorArrow = (SYNLoginErrorArrow*)[labelsToErrorArrows objectForKey:targetViewPointerValue];
+//        
+//        CGPoint newPosition = targetView.center;
+//        newPosition = [self.view convertPoint:newPosition fromView:targetView.superview];
+//        newPosition.x +=  (errorArrow.frame.size.width/2.0f + targetView.frame.size.width/2.0f - 20.0);
+//        errorArrow.center = newPosition;
+//        errorArrow.frame = CGRectIntegral(errorArrow.frame);
+//        
+//    }
     
 }
 

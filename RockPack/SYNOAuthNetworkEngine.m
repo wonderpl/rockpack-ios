@@ -673,7 +673,7 @@
                                          withMaxSize: 600];
     
     
-        DebugLog(@"New image width: %f, height%f", newImage.size.width, newImage.size.height);
+//        DebugLog(@"New image width: %f, height%f", newImage.size.width, newImage.size.height);
     // We have to perform the image upload with an input stream
 
     NSData *imageData = UIImageJPEGRepresentation(newImage, 0.70);
@@ -969,8 +969,8 @@
          NSString *jsonString = [[NSString alloc] initWithData: jsonData
                                                       encoding: NSUTF8StringEncoding];
         
-        DebugLog(@"%@", jsonString);
-         
+//        DebugLog(@"%@", jsonString);
+        
          return jsonString;
      }
      forType: @"application/json"];
@@ -1152,7 +1152,7 @@
                                          withMaxSize: 2028];
     
     
-    DebugLog(@"New image width: %f, height%f", newImage.size.width, newImage.size.height);
+//    DebugLog(@"New image width: %f, height%f", newImage.size.width, newImage.size.height);
     // We have to perform the image upload with an input stream
     
     NSData *imageData = UIImageJPEGRepresentation(newImage, 0.70);
@@ -1262,7 +1262,7 @@
     
     [self enqueueSignedOperation: networkOperation];
     
-    DebugLog(@"%@", networkOperation);
+//    DebugLog(@"%@", networkOperation);
 }
 
 - (void) channelUnsubscribeForUserId: (NSString *) userId
@@ -1386,7 +1386,7 @@
     NSString *apiString = [NSString stringWithFormat: @"%@?locale=%@", kAPIReportPlayerError, self.localeString];
     
     NSDictionary *params = @{@"video_instance" : videoInstanceId,
-                             @"error" : videoInstanceId};
+                             @"error" : errorDescription};
     
     SYNNetworkOperationJsonObject *networkOperation = (SYNNetworkOperationJsonObject*)[self operationWithPath: apiString
                                                                                                        params: params

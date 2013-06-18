@@ -262,7 +262,6 @@
 
 -(void)reEnableLoginControls
 {
-    
 }
 
 
@@ -376,7 +375,7 @@
 
 - (IBAction) loginTapped: (id) sender
 {
-    [GAI.sharedInstance.defaultTracker sendView: @"Login 1"];
+    [GAI.sharedInstance.defaultTracker sendView: @"Login"];
     
     id<GAITracker> tracker = [GAI sharedInstance].defaultTracker;
     
@@ -452,7 +451,7 @@
     {
         case kLoginScreenStateRegisterStepTwo:
         {
-            [self turnOnButton:self.backButton];
+            [self turnOffButton:self.backButton];
             [self turnOffButton:self.confirmButton];
             [self turnOnButton:self.nextButton];
             [self turnOnButton:self.cancelButton];
@@ -622,7 +621,7 @@
             [self.activityIndicator startAnimating];
             [self loginForUsername:self.userNameInputField.text forPassword:self.passwordInputField.text completionHandler:^(NSDictionary* dictionary) {
          
-                DebugLog(@"User Registerd: %@", [dictionary objectForKey:@"username"]);
+//                DebugLog(@"User Registerd: %@", [dictionary objectForKey:@"username"]);
                 
                 [self.activityIndicator stopAnimating];
                 
@@ -893,7 +892,7 @@
 
 -(void)showRegistrationStep2
 {
-    [GAI.sharedInstance.defaultTracker sendView: @"Login 2"];
+    [GAI.sharedInstance.defaultTracker sendView: @"Register 2"];
     
     self.state = kLoginScreenStateRegisterStepTwo;
     [self turnOnButton:self.backButton];
@@ -1115,24 +1114,30 @@ shouldChangeCharactersInRange: (NSRange) range
 
 - (void) turnOnButton: (UIButton*) button
 {
-    button.hidden = NO;
-    button.alpha = 0.0f;
-    [UIView animateWithDuration:kLoginAnimationTransitionDuration delay:0.0f options:UIViewAnimationOptionCurveEaseInOut animations:^{
-        button.alpha = 1.0f;
-    } completion:nil];
+    if(button.hidden == YES)
+    {
+        button.hidden = NO;
+        button.alpha = 0.0f;
+        [UIView animateWithDuration:kLoginAnimationTransitionDuration delay:0.0f options:UIViewAnimationOptionCurveEaseInOut animations:^{
+            button.alpha = 1.0f;
+        } completion:nil];
+    }
 }
 
 
 - (void) turnOffButton: (UIButton*) button
 {
-    [UIView animateWithDuration:kLoginAnimationTransitionDuration delay:0.0f options:UIViewAnimationOptionCurveEaseInOut animations:^{
-        button.alpha = 0.0f;
-    } completion:^(BOOL finished) {
-        if(finished)
-        {
-            button.hidden = YES;
-        }
-    }];
+    if(button.hidden==NO)
+    {
+        [UIView animateWithDuration:kLoginAnimationTransitionDuration delay:0.0f options:UIViewAnimationOptionCurveEaseInOut animations:^{
+            button.alpha = 0.0f;
+        } completion:^(BOOL finished) {
+            if(finished)
+            {
+                button.hidden = YES;
+            }
+        }];
+    }
 }
 
 
