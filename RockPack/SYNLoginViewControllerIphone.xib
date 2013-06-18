@@ -2,10 +2,10 @@
 <archive type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="8.00">
 	<data>
 		<int key="IBDocument.SystemTarget">1552</int>
-		<string key="IBDocument.SystemVersion">12D78</string>
+		<string key="IBDocument.SystemVersion">12C3006</string>
 		<string key="IBDocument.InterfaceBuilderVersion">3084</string>
-		<string key="IBDocument.AppKitVersion">1187.37</string>
-		<string key="IBDocument.HIToolboxVersion">626.00</string>
+		<string key="IBDocument.AppKitVersion">1187.34</string>
+		<string key="IBDocument.HIToolboxVersion">625.00</string>
 		<object class="NSMutableDictionary" key="IBDocument.PluginVersions">
 			<string key="NS.key.0">com.apple.InterfaceBuilder.IBCocoaTouchPlugin</string>
 			<string key="NS.object.0">2083</string>
@@ -51,7 +51,7 @@
 						<string key="targetRuntimeIdentifier">IBCocoaTouchFramework</string>
 						<object class="NSCustomResource" key="IBUIImage">
 							<string key="NSClassName">NSImage</string>
-							<string key="NSResourceName">BackgroundLogin~iphone.jpg</string>
+							<string key="NSResourceName">BackgroundLogin.jpg</string>
 						</object>
 					</object>
 					<object class="IBUIView" id="126965443">
@@ -1024,7 +1024,6 @@
 								<string key="NSFrame">{{166, 11}, {154, 44}}</string>
 								<reference key="NSSuperview" ref="179032073"/>
 								<reference key="NSWindow"/>
-								<reference key="NSNextKeyView"/>
 								<string key="NSReuseIdentifierKey">_NS:9</string>
 								<bool key="IBUIOpaque">NO</bool>
 								<string key="targetRuntimeIdentifier">IBCocoaTouchFramework</string>
@@ -2005,70 +2004,6 @@
 				<object class="IBPartialClassDescription">
 					<string key="className">SYNLoginViewControllerIphone</string>
 					<string key="superclassName">SYNLoginBaseViewController</string>
-					<dictionary class="NSMutableDictionary" key="actions">
-						<string key="backbuttonTapped:">id</string>
-						<string key="cancelTapped:">id</string>
-						<string key="confirmTapped:">id</string>
-						<string key="facebookTapped:">id</string>
-						<string key="forgotPasswordTapped:">id</string>
-						<string key="loginTapped:">id</string>
-						<string key="nextTapped:">id</string>
-						<string key="photoButtonTapped:">id</string>
-						<string key="privacyPolicyTapped:">id</string>
-						<string key="signupTapped:">id</string>
-						<string key="termsTapped:">id</string>
-						<string key="textfieldDidChange:">id</string>
-					</dictionary>
-					<dictionary class="NSMutableDictionary" key="actionInfosByName">
-						<object class="IBActionInfo" key="backbuttonTapped:">
-							<string key="name">backbuttonTapped:</string>
-							<string key="candidateClassName">id</string>
-						</object>
-						<object class="IBActionInfo" key="cancelTapped:">
-							<string key="name">cancelTapped:</string>
-							<string key="candidateClassName">id</string>
-						</object>
-						<object class="IBActionInfo" key="confirmTapped:">
-							<string key="name">confirmTapped:</string>
-							<string key="candidateClassName">id</string>
-						</object>
-						<object class="IBActionInfo" key="facebookTapped:">
-							<string key="name">facebookTapped:</string>
-							<string key="candidateClassName">id</string>
-						</object>
-						<object class="IBActionInfo" key="forgotPasswordTapped:">
-							<string key="name">forgotPasswordTapped:</string>
-							<string key="candidateClassName">id</string>
-						</object>
-						<object class="IBActionInfo" key="loginTapped:">
-							<string key="name">loginTapped:</string>
-							<string key="candidateClassName">id</string>
-						</object>
-						<object class="IBActionInfo" key="nextTapped:">
-							<string key="name">nextTapped:</string>
-							<string key="candidateClassName">id</string>
-						</object>
-						<object class="IBActionInfo" key="photoButtonTapped:">
-							<string key="name">photoButtonTapped:</string>
-							<string key="candidateClassName">id</string>
-						</object>
-						<object class="IBActionInfo" key="privacyPolicyTapped:">
-							<string key="name">privacyPolicyTapped:</string>
-							<string key="candidateClassName">id</string>
-						</object>
-						<object class="IBActionInfo" key="signupTapped:">
-							<string key="name">signupTapped:</string>
-							<string key="candidateClassName">id</string>
-						</object>
-						<object class="IBActionInfo" key="termsTapped:">
-							<string key="name">termsTapped:</string>
-							<string key="candidateClassName">id</string>
-						</object>
-						<object class="IBActionInfo" key="textfieldDidChange:">
-							<string key="name">textfieldDidChange:</string>
-							<string key="candidateClassName">id</string>
-						</object>
-					</dictionary>
 					<dictionary class="NSMutableDictionary" key="outlets">
 						<string key="activityIndicator">UIActivityIndicatorView</string>
 						<string key="avatarImage">UIImage</string>
@@ -2273,7 +2208,7 @@
 		<bool key="IBDocument.PluginDeclaredDependenciesTrackSystemTargetVersion">YES</bool>
 		<int key="IBDocument.defaultPropertyAccessControl">3</int>
 		<dictionary class="NSMutableDictionary" key="IBDocument.LastKnownImageSizes">
-			<string key="BackgroundLogin~iphone.jpg">{680, 548}</string>
+			<string key="BackgroundLogin.jpg">{1617, 1024}</string>
 			<string key="ButtonFacebookDefault~iphone.png">{290, 54}</string>
 			<string key="ButtonFacebookHighlighted~iphone.png">{290, 54}</string>
 			<string key="ButtonLoginBackHighlighted~iphone.png">{58, 58}</string>

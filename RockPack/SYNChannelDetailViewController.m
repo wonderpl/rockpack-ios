@@ -1358,7 +1358,6 @@
                                                         object: self
                                                       userInfo: nil];
     
-
     if(self.mode == kChannelDetailsModeCreate)
     {
         if(_isIPhone)
