@@ -1382,6 +1382,8 @@
         self.addButton.hidden = NO;
         self.backButton.hidden= NO;
     }
+    
+    [self.videoThumbnailCollectionView reloadData];
 
 }
 
