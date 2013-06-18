@@ -559,8 +559,8 @@
                                               
                                               wself.originalBackgroundImage = wself.channelCoverImageView.image;
                                               
-                                              
-                                              [wself renderBlurredBackgroundWithCGImage:[[wself croppedImageForCurrentOrientation] CGImage]];
+                                              wself.channelCoverImageView.image = [wself croppedImageForCurrentOrientation];
+                                         
              
                                           }];
     }
@@ -987,6 +987,7 @@
     self.displayControlsView.alpha = (visible) ? 1.0f : 0.0f;
     self.editControlsView.alpha = (visible) ? 0.0f : 1.0f;
     self.coverChooserMasterView.hidden = (visible) ? TRUE : FALSE;
+    self.categoriesTabViewController.view.hidden = visible;
     self.profileImageButton.enabled = visible;
 
     self.subscribeButton.hidden = (visible && [self.channel.channelOwner.uniqueId isEqualToString: appDelegate.currentUser.uniqueId]);
@@ -1381,6 +1382,8 @@
         self.addButton.hidden = NO;
         self.backButton.hidden= NO;
     }
+    
+    [self.videoThumbnailCollectionView reloadData];
 
 }
 
@@ -2785,8 +2788,10 @@
     
     self.blurredBGImageView.frame = self.channelCoverImageView.frame;
     
+    CGImageRetain(imageRef);
+    
     __weak SYNChannelDetailViewController* wself = self;
-    dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_HIGH, 0), ^{
+    dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0), ^{
         
         backgroundCIImage = [CIImage imageWithCGImage:imageRef];
         
@@ -2807,8 +2812,11 @@
         UIImage* bgImage = [UIImage imageWithCGImage:cgimg];
         CGImageRelease(cgimg);
         
-        [wself.blurredBGImageView performSelectorOnMainThread:@selector(setImage:) withObject:bgImage waitUntilDone:YES];
+        [wself.blurredBGImageView performSelectorOnMainThread:@selector(setImage:)
+                                                   withObject:bgImage
+                                                waitUntilDone:YES];
        
+        CGImageRelease(imageRef);
         
     });
     

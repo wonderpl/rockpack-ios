@@ -674,7 +674,7 @@
                                               NSString *userName = nil;
                                               NSString *subject = nil;
                                                                                             
-                                              SYNAppDelegate *appDelegate = (SYNAppDelegate *)[[UIApplication sharedApplication] delegate];
+                                              
                                               User* user = appDelegate.currentUser;
                                               if (user.fullNameIsPublicValue)
                                               {
