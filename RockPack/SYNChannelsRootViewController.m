@@ -191,7 +191,7 @@
     
     currentGenre = nil;
     
-    [self fetchChannelsForGenre:currentGenre];
+    [self fetchChannelsForCurrentGenre];
     
     [self.channelThumbnailCollectionView reloadData];   
     
@@ -270,6 +270,7 @@
     NSArray* insertedObjects = [[notification userInfo] objectForKey: NSInsertedObjectsKey];
     NSArray* deletedObjects = [[notification userInfo] objectForKey: NSDeletedObjectsKey];
     
+    NSMutableSet* oldChannelsSet = [[NSMutableSet alloc] initWithArray:self.channels];
 
     NSMutableArray* deletedIndexPathsFromPreviousFetchArray = [NSMutableArray arrayWithCapacity:deletedObjects.count]; // maximum
     [self.channels enumerateObjectsUsingBlock:^(Channel* channel, NSUInteger cidx, BOOL *cstop) {
@@ -292,15 +293,31 @@
     [self fetchChannelsForGenre:currentGenre]; // this will populate the self.channels array with fresh data
     
 
+    // get difference
+    
+    NSMutableSet* addedChannelsSet = [[NSMutableSet alloc] initWithArray:self.channels];
+    
+    [addedChannelsSet minusSet:oldChannelsSet];
+    
+    
+    
+//    NSLog(@"Seemed to have added %i channels", addedChannelsSet.count);
+//    
+//    [addedChannelsSet enumerateObjectsUsingBlock:^(Channel* channel, BOOL *stop) {
+//        NSLog(@"Channel added %@", channel.title);
+//    }];
+    
+    //NSArray* addChannelsArray = ((NSSet*)addedChannelsSet).array;
     
     // == Handle Inserted == //
     
     NSMutableArray* insertedIndexPathArray = [NSMutableArray arrayWithCapacity:insertedObjects.count]; // maximum
     
-    
     [self.channels enumerateObjectsUsingBlock:^(Channel* channel, NSUInteger cidx, BOOL *cstop) {
         
         [insertedObjects enumerateObjectsUsingBlock:^(id obj, NSUInteger idx, BOOL *stop) {
+            
+           
             
             if(obj == channel)
             {
@@ -397,6 +414,9 @@
                                                           [self.emptyGenreMessageView removeFromSuperview];
                                                           self.emptyGenreMessageView = nil;
                                                       }
+                                                                                     
+                                                                                     
+                                                      [self fetchChannelsForCurrentGenre];
                                                       
                                                       if (self.channels.count == 0)
                                                       {
@@ -423,6 +443,10 @@
                    byAppending: YES];
 }
 
+-(void) fetchChannelsForCurrentGenre
+{
+    [self fetchChannelsForGenre:self.currentGenre];
+}
 
 - (void) fetchChannelsForGenre: (Genre*) genre
 {
@@ -474,6 +498,8 @@
     
     self.channels = [NSMutableArray arrayWithArray:resultsArray];
     
+    NSLog(@"fetched: %i channels for current genre", self.channels.count);
+    
 }
 
 
@@ -513,7 +539,7 @@
 - (NSInteger) collectionView: (UICollectionView *) view
       numberOfItemsInSection: (NSInteger) section
 {
-    NSLog(@"-numberOfItemsInSection: %i", self.channels.count);
+    NSLog(@"-numberOfItemsInSection: %i for \"%@\"", self.channels.count, self.currentGenre ? self.currentGenre.name : @"all");
     return self.channels.count;
 
 }
