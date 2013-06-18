@@ -233,7 +233,7 @@
     }
     else if (newState == kLoginScreenStateLogin)
     {
-        [GAI.sharedInstance.defaultTracker sendView: @"Login 1"];
+        [GAI.sharedInstance.defaultTracker sendView: @"Login"];
         [self setUpLoginStateFromPreviousState:state];
     }
     else if (newState == kLoginScreenStateRegister)
