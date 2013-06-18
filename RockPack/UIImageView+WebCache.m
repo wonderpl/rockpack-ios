@@ -117,7 +117,7 @@ static char operationKey;
                                                                             weakSelf.image.monochromeImage = newMonochromeImage;
                                                                             
                                                                             id<SDWebImageOperation> operation = objc_getAssociatedObject(weakSelf, &operationKey);
-                                                                            DebugLog(@"Checking %@", operation);
+
                                                                             if (operation)
                                                                             {
                                                                                 if (completedBlock && finished)
@@ -127,7 +127,7 @@ static char operationKey;
                                                                             }
                                                                             else
                                                                             {
-                                                                                DebugLog (@"cancelled 1");
+//                                                                                DebugLog (@"cancelled 1");
                                                                             }
                                                                         });
                                                                         
@@ -183,7 +183,6 @@ static char operationKey;
     id<SDWebImageOperation> operation = objc_getAssociatedObject(self, &operationKey);
     if (operation)
     {
-        DebugLog(@"Cancelling %@", operation);
         [operation cancel];
         objc_setAssociatedObject(self, &operationKey, nil, OBJC_ASSOCIATION_RETAIN_NONATOMIC);
     }

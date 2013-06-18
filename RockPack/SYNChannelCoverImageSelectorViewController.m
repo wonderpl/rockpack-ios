@@ -105,7 +105,7 @@ enum ChannelCoverSelectorState {
         AssertOrLog(@"Channels Details Failed: %@\n%@", [error localizedDescription], [error userInfo]);
     }
     
-    DebugLog (@"Count %d", self.fetchedResultsController.fetchedObjects.count);
+//    DebugLog (@"Count %d", self.fetchedResultsController.fetchedObjects.count);
     
     // If we already have itmes in the database, start after the last one of those
     self.dataItemsAvailable = self.fetchedResultsController.fetchedObjects.count;
@@ -458,7 +458,7 @@ enum ChannelCoverSelectorState {
     
     self.dataRequestRange = NSMakeRange(nextStart, nextSize);
     
-    DebugLog (@"Range %d:%d    ", self.dataRequestRange.location, self.dataRequestRange.length);
+//    DebugLog (@"Range %d:%d    ", self.dataRequestRange.location, self.dataRequestRange.length);
 }
 
 
@@ -605,13 +605,13 @@ enum ChannelCoverSelectorState {
 
 - (void) updateCoverArt
 {
-    DebugLog(@"Updating range %d:%d", self.dataRequestRange.location, self.dataRequestRange.length);
+//    DebugLog(@"Updating range %d:%d", self.dataRequestRange.location, self.dataRequestRange.length);
     
     // Update the list of cover art
     [self.appDelegate.networkEngine updateCoverArtWithWithStart: self.dataRequestRange.location
                                                            size: self.dataRequestRange.length
                                               completionHandler: ^(NSDictionary *dictionary){
-                                                  DebugLog(@"Success");
+//                                                  DebugLog(@"Success");
                                                   self.footerView.showsLoading = NO;
                                                   NSNumber* totalNumber = dictionary[@"cover_art"][@"total"];
                                                   if (totalNumber && ![totalNumber isKindOfClass: [NSNull class]])
@@ -619,7 +619,7 @@ enum ChannelCoverSelectorState {
                                                   else
                                                       self.dataItemsAvailable = self.dataRequestRange.length;
                                                   
-                                                  DebugLog (@"Count %d", self.fetchedResultsController.fetchedObjects.count);
+//                                                  DebugLog (@"Count %d", self.fetchedResultsController.fetchedObjects.count);
 //                                                  if ((self.dataRequestRange.location + self.dataRequestRange.length) >= self.dataItemsAvailable)
                                                   {
 //                                                      self.noMoreCovers = TRUE;
@@ -631,16 +631,16 @@ enum ChannelCoverSelectorState {
                                               }
                                                    errorHandler: ^(NSError* error) {
                                                                                                              self.footerView.showsLoading = NO;
-                                                       DebugLog(@"%@", [error debugDescription]);
+                                                       DebugLog(@"Update cover art failed: %@", [error debugDescription]);
 //                                                       [self displayLoadMoreMessage];
                                                    }];
     
     [self.appDelegate.oAuthNetworkEngine updateCoverArtForUserId: self.appDelegate.currentOAuth2Credentials.userId
                                                     onCompletion: ^{
-                                                        DebugLog(@"Success");
+//                                                        DebugLog(@"Success");
                                                     }
                                                          onError: ^(NSError* error) {
-                                                             DebugLog(@"%@", [error debugDescription]);
+                                                             DebugLog(@"Update user cover art failed:%@", [error debugDescription]);
                                                          }];
 }
 
