@@ -1116,12 +1116,6 @@
                         withAction: @"channelSubscribeButtonClick"
                          withLabel: nil
                          withValue: nil];
-
-    // FIXME: Not sure why we need both of these
-    [tracker sendEventWithCategory: @"goal"
-                        withAction: @"userSubscription"
-                         withLabel: nil
-                         withValue: nil];
     
     self.subscribeButton.enabled = NO;
     

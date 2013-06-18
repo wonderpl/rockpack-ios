@@ -6,13 +6,14 @@
 //  Copyright (c) Rockpack Ltd. All rights reserved.
 //
 
-#import "SYNChannelManager.h"
-#import "SYNAppDelegate.h"
-#import "SYNOAuthNetworkEngine.h"
-#import "SYNNetworkEngine.h"
 #import "AppConstants.h"
-#import "VideoInstance.h"
+#import "GAI.h"
 #import "MKNetworkOperation.h"
+#import "SYNAppDelegate.h"
+#import "SYNChannelManager.h"
+#import "SYNNetworkEngine.h"
+#import "SYNOAuthNetworkEngine.h"
+#import "VideoInstance.h"
 
 @interface SYNChannelManager()
 
@@ -159,6 +160,13 @@
                                                    channelURL: channel.resourceURL
                                             completionHandler: ^(NSDictionary *responseDictionary) {
                                                 
+                                                id<GAITracker> tracker = [GAI sharedInstance].defaultTracker;
+                                                
+                                                // FIXME: Not sure why we need both of these
+                                                [tracker sendEventWithCategory: @"goal"
+                                                                    withAction: @"userSubscription"
+                                                                     withLabel: nil
+                                                                     withValue: nil];
                                                 // This notifies the ChannelDetails through KVO
 
                                                 channel.hasChangedSubscribeValue = YES;
