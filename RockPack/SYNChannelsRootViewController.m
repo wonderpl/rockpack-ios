@@ -122,6 +122,7 @@
     self.channelThumbnailCollectionView.showsVerticalScrollIndicator = NO;
     
     self.channelThumbnailCollectionView.autoresizingMask = UIViewAutoresizingFlexibleWidth | UIViewAutoresizingFlexibleHeight;
+    self.channelThumbnailCollectionView.scrollsToTop = NO;
     
     CGRect newFrame;
     if (isIPhone)

@@ -220,6 +220,7 @@ typedef enum {
                                                  name: kUserDataChanged
                                                object: nil];
     
+    self.tableView.scrollsToTop = NO;
     [self getNotifications];
 }
 

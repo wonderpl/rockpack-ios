@@ -75,6 +75,7 @@
     
     [self.channelThumbnailCollectionView registerNib: thumbnailCellNib
                           forCellWithReuseIdentifier: @"SYNChannelMidCell"];
+    self.channelThumbnailCollectionView.scrollsToTop = NO;
     
     
     

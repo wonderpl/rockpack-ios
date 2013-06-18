@@ -51,6 +51,7 @@
     self.tableView.separatorColor = [UIColor rockpacLedColor];
     self.tableView.backgroundColor = [UIColor clearColor];
     self.tableView.scrollEnabled = NO;
+    self.tableView.scrollsToTop = NO;
 }
 
 

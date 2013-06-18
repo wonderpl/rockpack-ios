@@ -82,6 +82,7 @@
     self.contentSizeForViewInPopover = CGSizeMake(380, 476);
 
     self.tableView.scrollEnabled = [SYNDeviceManager.sharedInstance isIPhone];
+    self.tableView.scrollsToTop = NO;
     
     UILabel* titleLabel = [[UILabel alloc] initWithFrame: CGRectMake( -(self.contentSizeForViewInPopover.width * 0.5), -15.0, self.contentSizeForViewInPopover.width, 40.0)];
     titleLabel.backgroundColor = [UIColor clearColor];

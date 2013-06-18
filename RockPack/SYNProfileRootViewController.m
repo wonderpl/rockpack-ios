@@ -174,6 +174,7 @@
     subColViewFrame.size.width = [SYNDeviceManager.sharedInstance currentScreenWidth] - subColViewFrame.origin.x - 10.0;
     [self.subscriptionsViewController setViewFrame: subColViewFrame];
     
+    
     if (self.user)
         self.subscriptionsViewController.user = self.user;
     
@@ -301,6 +302,10 @@
         
         [self updateTabStates];
     }
+    
+    self.subscriptionsViewController.channelThumbnailCollectionView.scrollsToTop = NO;
+    self.channelThumbnailCollectionView.scrollsToTop = NO;
+    
 }
 
 
@@ -382,9 +387,9 @@
 {
 //    [self updateAnalytics];
     
-    self.channelThumbnailCollectionView.scrollsToTop = YES;
+    self.channelThumbnailCollectionView.scrollsToTop = !self.subscriptionsTabActive;
     
-    self.subscriptionsViewController.channelThumbnailCollectionView.scrollsToTop = YES;
+    self.subscriptionsViewController.channelThumbnailCollectionView.scrollsToTop = self.subscriptionsTabActive;
     
     [[NSNotificationCenter defaultCenter] postNotificationName:kChannelOwnerUpdateRequest
                                                         object:self
@@ -931,6 +936,11 @@
 
 - (void ) updateTabStates
 {
+    
+    self.channelThumbnailCollectionView.scrollsToTop = !self.subscriptionsTabActive;
+    
+    self.subscriptionsViewController.channelThumbnailCollectionView.scrollsToTop = self.subscriptionsTabActive;
+    
     self.channelsTabButton.selected = !self.subscriptionsTabActive;
     self.subscriptionsTabButton.selected = self.subscriptionsTabActive;
     self.channelThumbnailCollectionView.hidden = self.subscriptionsTabActive;

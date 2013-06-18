@@ -100,7 +100,7 @@
     self.videoThumbnailCollectionView.delegate = self;
     self.videoThumbnailCollectionView.dataSource = self;
     self.videoThumbnailCollectionView.backgroundColor = [UIColor clearColor];
-    
+    self.videoThumbnailCollectionView.scrollsToTop = NO;
     if (isIPhone)
     {
         self.videoThumbnailCollectionView.contentInset = UIEdgeInsetsMake(4, 0, 0, 0);
@@ -197,7 +197,6 @@
 - (void) viewDidScrollToFront
 {
     [self updateAnalytics];
-    
     self.videoThumbnailCollectionView.scrollsToTop = YES;
     if(self.dataRequestRange.location == 0)
     {
