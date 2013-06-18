@@ -98,7 +98,7 @@
         
     
     
-    //flowLayout.footerReferenceSize = [self footerSize];
+    flowLayout.footerReferenceSize = [self footerSize];
     
     // Work out how hight the inital tab bar is
     CGFloat topTabBarHeight = [UIImage imageNamed: @"CategoryBar"].size.height;
@@ -267,66 +267,49 @@
 {
     
     //NSArray* updatedObjects = [[notification userInfo] objectForKey: NSUpdatedObjectsKey];
-    NSArray* insertedObjects = [[notification userInfo] objectForKey: NSInsertedObjectsKey];
-    NSArray* deletedObjects = [[notification userInfo] objectForKey: NSDeletedObjectsKey];
+    //NSArray* insertedObjects = [[notification userInfo] objectForKey: NSInsertedObjectsKey];
+    //NSArray* deletedObjects = [[notification userInfo] objectForKey: NSDeletedObjectsKey];
     
-    NSMutableSet* oldChannelsSet = [[NSMutableSet alloc] initWithArray:self.channels];
+    NSOrderedSet* currentlyShowingChannelsSet = [[NSOrderedSet alloc] initWithArray:self.channels];
+    
+    [self fetchChannelsForGenre:currentGenre]; // this will populate the self.channels array with fresh data
+    
+    NSMutableOrderedSet* currentlyFetchedChannelsSet = [[NSMutableOrderedSet alloc] initWithArray:self.channels];
 
-    NSMutableArray* deletedIndexPathsFromPreviousFetchArray = [NSMutableArray arrayWithCapacity:deletedObjects.count]; // maximum
-    [self.channels enumerateObjectsUsingBlock:^(Channel* channel, NSUInteger cidx, BOOL *cstop) {
-        
-        [deletedObjects enumerateObjectsUsingBlock:^(id obj, NSUInteger idx, BOOL *stop) {
-            
-            if(obj == channel)
-            {
-
-                NSLog(@"CH(-) Deleted: %@", ((Channel*)obj).title);
-
-                
+    NSMutableOrderedSet* oldShowingChannelsSet = [[NSMutableOrderedSet alloc] initWithOrderedSet:currentlyShowingChannelsSet];
+    [oldShowingChannelsSet minusSet:[NSSet setWithArray:self.channels]];
+    
+    NSMutableOrderedSet* newlyFetchedChannelsSet = [[NSMutableOrderedSet alloc] initWithOrderedSet:currentlyFetchedChannelsSet];
+    [newlyFetchedChannelsSet minusSet:[NSSet setWithArray:[currentlyShowingChannelsSet array]]];
+    
+    NSMutableArray* deletedIndexPathsFromPreviousFetchArray = [NSMutableArray arrayWithCapacity:oldShowingChannelsSet.count]; // maximum
+    [currentlyShowingChannelsSet enumerateObjectsUsingBlock:^(Channel* currentlyShowingChannel, NSUInteger cidx, BOOL *stop) {
+        [oldShowingChannelsSet enumerateObjectsUsingBlock:^(Channel* oldShowingChannel, NSUInteger oidx, BOOL *stop) {
+            if(currentlyShowingChannel == oldShowingChannel) {
+                NSLog(@"CH(-) Deleted: %@", currentlyShowingChannel.title);
                 [deletedIndexPathsFromPreviousFetchArray addObject:[NSIndexPath indexPathForItem:cidx inSection:0]];
+                
             }
         }];
     }];
-    
-    
 
-    [self fetchChannelsForGenre:currentGenre]; // this will populate the self.channels array with fresh data
-    
-
-    // get difference
-    
-    NSMutableSet* addedChannelsSet = [[NSMutableSet alloc] initWithArray:self.channels];
-    
-    [addedChannelsSet minusSet:oldChannelsSet];
     
     
-    
-//    NSLog(@"Seemed to have added %i channels", addedChannelsSet.count);
-//    
-//    [addedChannelsSet enumerateObjectsUsingBlock:^(Channel* channel, BOOL *stop) {
-//        NSLog(@"Channel added %@", channel.title);
-//    }];
-    
-    //NSArray* addChannelsArray = ((NSSet*)addedChannelsSet).array;
-    
-    // == Handle Inserted == //
-    
-    NSMutableArray* insertedIndexPathArray = [NSMutableArray arrayWithCapacity:insertedObjects.count]; // maximum
-    
-    [self.channels enumerateObjectsUsingBlock:^(Channel* channel, NSUInteger cidx, BOOL *cstop) {
-        
-        [insertedObjects enumerateObjectsUsingBlock:^(id obj, NSUInteger idx, BOOL *stop) {
-            
-           
-            
-            if(obj == channel)
-            {
-                NSLog(@"CH(+) Inserted: %@ at %i for %@", ((Channel*)obj).title, cidx, ((Channel*)obj).viewId);
-                
+    NSMutableArray* insertedIndexPathArray = [NSMutableArray arrayWithCapacity:newlyFetchedChannelsSet.count]; // maximum
+    [currentlyFetchedChannelsSet enumerateObjectsUsingBlock:^(Channel* currentlyFetchedChannel, NSUInteger cidx, BOOL *stop) {
+        [newlyFetchedChannelsSet enumerateObjectsUsingBlock:^(Channel* newlyFetchedChannel, NSUInteger nidx, BOOL *stop) {
+            if(currentlyFetchedChannel == newlyFetchedChannel) {
+                NSLog(@"CH(+) Inserted: %@ at %i", currentlyFetchedChannel.title, cidx);
                 [insertedIndexPathArray addObject:[NSIndexPath indexPathForItem:cidx inSection:0]];
             }
         }];
     }];
+
+    
+    // == Handle Inserted == //
+    
+    
+    
     
     
     
@@ -899,7 +882,7 @@
     
     // display what is already in the DB and then load and display again
     
-    [UIView animateWithDuration:0.3 animations:^{
+    [UIView animateWithDuration:0.2 animations:^{
         self.channelThumbnailCollectionView.alpha = 0.0;
         
     } completion:^(BOOL finished) {
@@ -910,7 +893,7 @@
         
         [self.channelThumbnailCollectionView reloadData];
         
-        [UIView animateWithDuration:0.3 animations:^{
+        [UIView animateWithDuration:0.2 animations:^{
             
             self.channelThumbnailCollectionView.alpha = 1.0;
             
