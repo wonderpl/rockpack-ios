@@ -621,7 +621,7 @@
             [self.activityIndicator startAnimating];
             [self loginForUsername:self.userNameInputField.text forPassword:self.passwordInputField.text completionHandler:^(NSDictionary* dictionary) {
          
-                DebugLog(@"User Registerd: %@", [dictionary objectForKey:@"username"]);
+//                DebugLog(@"User Registerd: %@", [dictionary objectForKey:@"username"]);
                 
                 [self.activityIndicator stopAnimating];
                 

@@ -45,7 +45,7 @@
     
     UIImage* scaledImage = [UIImage imageWithCGImage: imgRef];
     
-    DebugLog(@"Scaled image width: %f, height%f", scaledImage.size.width, scaledImage.size.height);
+//    DebugLog(@"Scaled image width: %f, height%f", scaledImage.size.width, scaledImage.size.height);
     
     CGImageRelease(imgRef);
     CFRelease(imageSource);

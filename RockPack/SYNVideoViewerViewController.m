@@ -621,7 +621,7 @@
                                                          action: @"select"
                                                 videoInstanceId: videoInstance.uniqueId
                                               completionHandler: ^(id response) {
-                                                  DebugLog (@"Acivity recorded: Select");
+//                                                  DebugLog (@"Acivity recorded: Select");
                                               }
                                                    errorHandler: ^(id error) {
                                                        DebugLog (@"Acivity not recorded: Select");
@@ -993,7 +993,7 @@
                                                   objectId: videoInstance.video.uniqueId
                                                     reason: reportString
                                          completionHandler: ^(NSDictionary *dictionary){
-                                             DebugLog(@"Concern successfully reported");
+//                                             DebugLog(@"Concern successfully reported");
                                          }
                                               errorHandler: ^(NSError* error) {
                                                   DebugLog(@"Report concern failed");
@@ -1088,7 +1088,7 @@
                             self.swipeView.transform = CGAffineTransformMakeRotation((newOrientation==UIDeviceOrientationLandscapeLeft) ? M_PI_2 : -M_PI_2 );
                             
                             CGFloat scaleFactor = fullScreenFrame.size.width / self.videoPlaybackViewController.view.frame.size.width;
-                            DebugLog (@"w1 = %f, w2 = %f", fullScreenFrame.size.width, self.videoPlaybackViewController.view.frame.size.width);
+//                            DebugLog (@"w1 = %f, w2 = %f", fullScreenFrame.size.width, self.videoPlaybackViewController.view.frame.size.width);
                             if (self.videoPlaybackViewController.view.frame.size.width < self.videoPlaybackViewController.view.frame.size.height)
                             {
                                 scaleFactor = self.videoPlaybackViewController.view.frame.size.height / fullScreenFrame.size.height;

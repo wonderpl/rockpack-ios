@@ -147,7 +147,7 @@
                 self.videoId = videoDictionary[@"id"];
                 self.videoThumbnailUrl = videoDictionary[@"thumbnail_url"];
                 
-                DebugLog(@"self.videoThumbnailUrl: %@", self.videoThumbnailUrl);
+//                DebugLog(@"self.videoThumbnailUrl: %@", self.videoThumbnailUrl);
                 
                 NSDictionary* channelDictionary = videoDictionary[@"channel"];
                 if(channelDictionary && [channelDictionary isKindOfClass:[NSDictionary class]])

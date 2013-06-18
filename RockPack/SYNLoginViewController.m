@@ -1144,7 +1144,7 @@
 - (void) uploadAvatar: (UIImage *) avatarImage;
 {
     [self uploadAvatarImage:avatarImage completionHandler:^(NSDictionary* dictionary) {
-        DebugLog(@"Avatar uploaded successfully");
+//        DebugLog(@"Avatar uploaded successfully");
     }
                errorHandler:^(NSDictionary* errorDictionary) {
                    DebugLog(@"Avatar upload failed");
