@@ -170,7 +170,6 @@
                                                                                     [self.itemToUpdate setNumberOfItems: self.dataItemsAvailable
                                                                                                                animated: YES];
                                                                             }];
-    
     self.searchTerm = term;
 }
 
