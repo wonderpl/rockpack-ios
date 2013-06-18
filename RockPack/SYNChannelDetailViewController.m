@@ -2193,10 +2193,10 @@
         if(!hasShownSubscribeOnBoarding)
         {
             BOOL isIpad = [[SYNDeviceManager sharedInstance] isIPad];
-            NSString* message = @"Tap this button to subscribe to a channel and get new videos in your feed.";
+            NSString* message = NSLocalizedString(@"onboarding_subscription", nil);
             PointingDirection direction = isIpad ? PointingDirectionLeft : PointingDirectionUp;
             CGFloat fontSize = isIpad ? 19.0 : 15.0 ;
-            CGSize size =  isIpad ? CGSizeMake(260.0, 144.0) : CGSizeMake(260.0, 128.0);
+            CGSize size =  isIpad ? CGSizeMake(260.0, 164.0) : CGSizeMake(260.0, 148.0);
             SYNOnBoardingPopoverView* subscribePopover = [SYNOnBoardingPopoverView withMessage:message
                                                                                       withSize:size
                                                                                    andFontSize:fontSize
@@ -3035,7 +3035,7 @@
     {
         SYNOnBoardingPopoverQueueController* onBoardingQueue = [[SYNOnBoardingPopoverQueueController alloc] init];
         
-        NSString* message = @"Whenever you see a video you like tap the + button to add it to one of your channels.";
+        NSString* message = NSLocalizedString(@"onboarding_video", nil);
         
         CGFloat fontSize = [[SYNDeviceManager sharedInstance] isIPad] ? 19.0 : 15.0 ;
         CGSize size = [[SYNDeviceManager sharedInstance] isIPad] ? CGSizeMake(340.0, 164.0) : CGSizeMake(260.0, 144.0);
