@@ -158,6 +158,7 @@
                                             andRange: self.dataRequestRange
                                           onComplete: ^(int itemsCount) {
                                               self.dataItemsAvailable = itemsCount;
+                                              self.footerView.showsLoading = NO;
                                           }];
 }
 
