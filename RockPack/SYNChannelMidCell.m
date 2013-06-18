@@ -9,8 +9,8 @@
 #import "SYNChannelMidCell.h"
 #import "SYNDeletionWobbleLayoutAttributes.h"
 #import "UIFont+SYNFont.h"
-#import <QuartzCore/QuartzCore.h>
 #import "UIImageView+WebCache.h"
+#import <QuartzCore/QuartzCore.h>
 
 @implementation SYNChannelMidCell
 
@@ -135,9 +135,9 @@
 - (void) prepareForReuse
 {
     [self stopWobbling];
-    [self.imageView.layer removeAllAnimations];
     
-    [self.imageView setImageWithURL:nil];
+    [self.imageView.layer removeAllAnimations];
+    [self.imageView setImageWithURL: nil];
 }
 
 @end
