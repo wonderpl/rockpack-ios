@@ -164,8 +164,10 @@
             self.currentlyVisiblePopover.alpha = 1.0;
             self.currentlyVisiblePopover.arrow.alpha = 1.0;
             
-            if(isFirstTime)
+            if(isFirstTime) {
                 self.backgroundView.alpha = 0.5;
+            }
+            
         }];
     }
     
@@ -188,6 +190,8 @@
         case PointingDirectionNone: // center in view
             panelFrame.origin.x = screenSize.width * 0.5 - panelFrame.size.width * 0.5;
             panelFrame.origin.y = screenSize.height * 0.5 - panelFrame.size.height * 0.5;
+            
+            popover.autoresizingMask |= UIViewAutoresizingFlexibleLeftMargin | UIViewAutoresizingFlexibleRightMargin | UIViewAutoresizingFlexibleTopMargin;
             break;
             
         case PointingDirectionUp:
