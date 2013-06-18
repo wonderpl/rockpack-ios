@@ -1411,7 +1411,13 @@
                                                      cover: cover
                                                   isPublic: YES
                                          completionHandler: ^(NSDictionary* resourceCreated) {
-
+                                             id<GAITracker> tracker = [GAI sharedInstance].defaultTracker;
+                                             
+                                             [tracker sendEventWithCategory: @"goal"
+                                                                 withAction: @"channelEdited"
+                                                                  withLabel: category
+                                                                  withValue: nil];
+                                             
                                              NSString* channelId = [resourceCreated objectForKey: @"id"];
                                              
                                              [self setEditControlsVisibility: NO];
@@ -1794,6 +1800,12 @@
                                                   isPublic: YES
                                          completionHandler: ^(NSDictionary* resourceCreated) {
                                              
+                                             id<GAITracker> tracker = [GAI sharedInstance].defaultTracker;
+                                             
+                                             [tracker sendEventWithCategory: @"goal"
+                                                                 withAction: @"channelCreated"
+                                                                  withLabel: category
+                                                                  withValue: nil];
                                              
                                              NSString* channelId = [resourceCreated objectForKey: @"id"];
                                              
