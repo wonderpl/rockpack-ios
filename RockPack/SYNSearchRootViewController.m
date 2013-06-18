@@ -92,6 +92,7 @@
     self.searchVideosController.parent = self;
     [self addChildViewController:self.searchVideosController];
     [self.view insertSubview:self.searchVideosController.view belowSubview:tabsContainer];
+    
     self.searchVideosController.view.autoresizingMask = UIViewAutoresizingFlexibleWidth | UIViewAutoresizingFlexibleHeight;
     
     if ([SYNDeviceManager.sharedInstance isIPhone])
@@ -104,6 +105,12 @@
         insets.top = 2.0f;
         insets.bottom = 10.0f;
         layout.sectionInset = insets;
+    }
+    else
+    {
+        CGRect collectionViewFrame = self.searchVideosController.view.frame;
+        collectionViewFrame.size = self.view.frame.size;
+        self.searchVideosController.view.frame = collectionViewFrame;
     }
     
     
@@ -127,6 +134,12 @@
         insets.top = 5.0f;
         insets.bottom = 10.0f;
         layout.sectionInset = insets;
+    }
+    else
+    {
+        CGRect collectionViewFrame = self.searchChannelsController.view.frame;
+        collectionViewFrame.size = self.view.frame.size;
+        self.searchChannelsController.view.frame = collectionViewFrame;
     }
     
 
