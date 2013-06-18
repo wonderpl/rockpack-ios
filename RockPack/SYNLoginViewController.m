@@ -1472,6 +1472,8 @@
     [super willAnimateRotationToInterfaceOrientation: toInterfaceOrientation
                                             duration: duration];
     
+    [self clearAllErrorArrows];
+    
     if (UIInterfaceOrientationIsPortrait(toInterfaceOrientation))
     {
         signUpButton.center = CGPointMake(604.0, signUpButton.center.y);
