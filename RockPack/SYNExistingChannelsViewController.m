@@ -243,8 +243,15 @@
 
 - (void) collectionView: (UICollectionView *) collectionView didSelectItemAtIndexPath: (NSIndexPath *) indexPath
 {
+    id<GAITracker> tracker = [GAI sharedInstance].defaultTracker;
+    
     if (indexPath.row == 0)
     {
+        [tracker sendEventWithCategory: @"uiAction"
+                            withAction: @"channelSelectionClick"
+                             withLabel: @"New"
+                             withValue: nil];
+        
         //Reset any previous selection
         self.previouslySelectedPath = nil;
         self.selectedChannel = nil;
@@ -307,6 +314,11 @@
     }
     else
     {
+        [tracker sendEventWithCategory: @"uiAction"
+                            withAction: @"channelSelectionClick"
+                             withLabel: @"Existing"
+                             withValue: nil];
+        
         if(self.previouslySelectedPath)
         {
             SYNChannelMidCell* cellToDeselect = (SYNChannelMidCell*)[self.channelThumbnailCollectionView cellForItemAtIndexPath:self.previouslySelectedPath];

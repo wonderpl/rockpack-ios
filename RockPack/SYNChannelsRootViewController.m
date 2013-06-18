@@ -205,7 +205,7 @@
     BOOL hasShownSubscribeOnBoarding = [defaults boolForKey:kUserDefaultsChannels];
     if(!hasShownSubscribeOnBoarding)
     {
-        NSString* message = @"To start, browse channels created\nby other people. A channel is a\ncollection of videos.";
+        NSString* message = NSLocalizedString(@"onboarding_channels", nil);
         
         CGFloat fontSize = [[SYNDeviceManager sharedInstance] isIPad] ? 19.0 : 15.0 ;
         CGSize size = [[SYNDeviceManager sharedInstance] isIPad] ? CGSizeMake(340.0, 164.0) : CGSizeMake(260.0, 144.0);

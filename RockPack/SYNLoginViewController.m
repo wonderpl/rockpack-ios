@@ -946,13 +946,7 @@
     [tracker sendEventWithCategory: @"uiAction"
                         withAction: @"facebookLogin"
                          withLabel: nil
-                         withValue: nil];
-    
-    [tracker sendEventWithCategory: @"goal"
-                        withAction: @"userLogin"
-                         withLabel: @"Facebook"
-                         withValue: nil];
-    
+                         withValue: nil];    
     
     _facebookLoginIsInProcess = NO;
     
@@ -967,6 +961,11 @@
     [self doFacebookLoginAnimation];
     
     [self loginThroughFacebookWithCompletionHandler: ^(NSDictionary * dictionary) {
+        
+                                        [tracker sendEventWithCategory: @"goal"
+                                                            withAction: @"userLogin"
+                                                             withLabel: @"Facebook"
+                                                             withValue: nil];
         
                                         [activityIndicator stopAnimating];
                                         [self completeLoginProcess];

@@ -52,7 +52,6 @@
         }
         
        
-        self.autoresizingMask = UIViewAutoresizingFlexibleLeftMargin | UIViewAutoresizingFlexibleRightMargin;
         
         self.backgroundColor = [UIColor colorWithRed:(11.0/255.0) green:(166.0/255.0) blue:(171.0/255.0) alpha:(1.0)];
         
@@ -61,15 +60,19 @@
         
         CGRect labelRect = self.frame;
         labelRect.origin.x = 15.0;
-        labelRect.origin.y = 15.0;
+        labelRect.origin.y = 20.0;
         labelRect.size.width -= 30.0;
         
         
         
         
         UILabel* label = [[UILabel alloc] init];
+        
         label.font = [UIFont rockpackFontOfSize:fontSize];
+        label.shadowColor = [UIColor colorWithWhite:1.0f/255.0f alpha:0.15f];
+        label.shadowOffset = CGSizeMake(0.0f, 1.0f);
         label.lineBreakMode = NSLineBreakByWordWrapping;
+        
         
         label.textAlignment = NSTextAlignmentCenter;
         label.backgroundColor = [UIColor clearColor];

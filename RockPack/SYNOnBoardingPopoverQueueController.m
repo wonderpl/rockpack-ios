@@ -10,7 +10,7 @@
 #import "SYNDeviceManager.h"
 #import "SYNAppDelegate.h"
 
-#define STD_PADDING_DISTANCE 20.0
+#define STD_PADDING_DISTANCE 18.0
 
 @interface SYNOnBoardingPopoverQueueController ()
 
@@ -40,6 +40,7 @@
     self.backgroundView.backgroundColor = [UIColor blackColor];
     self.backgroundView.alpha = 0.0;
     self.backgroundView.userInteractionEnabled = NO;
+    self.backgroundView.autoresizingMask = UIViewAutoresizingFlexibleWidth | UIViewAutoresizingFlexibleHeight;
     
     UIView* mainView = [[UIView alloc] initWithFrame:screenFrame];
     mainView.backgroundColor = [UIColor clearColor];
@@ -163,8 +164,10 @@
             self.currentlyVisiblePopover.alpha = 1.0;
             self.currentlyVisiblePopover.arrow.alpha = 1.0;
             
-            if(isFirstTime)
+            if(isFirstTime) {
                 self.backgroundView.alpha = 0.5;
+            }
+            
         }];
     }
     
@@ -180,11 +183,15 @@
     CGFloat midPointX = popover.pointRect.origin.x + (popover.pointRect.size.width * 0.5);
     CGFloat midPointY = popover.pointRect.origin.y + (popover.pointRect.size.height * 0.5);
     
+    popover.autoresizingMask = UIViewAutoresizingNone;
+    
     switch (popover.direction) {
             
         case PointingDirectionNone: // center in view
             panelFrame.origin.x = screenSize.width * 0.5 - panelFrame.size.width * 0.5;
             panelFrame.origin.y = screenSize.height * 0.5 - panelFrame.size.height * 0.5;
+            
+            popover.autoresizingMask |= UIViewAutoresizingFlexibleLeftMargin | UIViewAutoresizingFlexibleRightMargin | UIViewAutoresizingFlexibleTopMargin;
             break;
             
         case PointingDirectionUp:
@@ -198,6 +205,8 @@
             
             arrowFrame.origin.x = midPointX - arrowFrame.size.width * 0.5;
             arrowFrame.origin.y = panelFrame.origin.y - arrowFrame.size.height;
+            
+            popover.autoresizingMask |= UIViewAutoresizingFlexibleTopMargin;
             
             break;
             
@@ -213,6 +222,8 @@
             arrowFrame.origin.x = midPointX - arrowFrame.size.width * 0.5;
             arrowFrame.origin.y = panelFrame.origin.y + panelFrame.size.height;
             
+            popover.autoresizingMask |= UIViewAutoresizingFlexibleBottomMargin;
+            
             break;
             
         case PointingDirectionLeft:
@@ -227,6 +238,8 @@
             
             arrowFrame.origin.x = panelFrame.origin.x - arrowFrame.size.width;
             arrowFrame.origin.y = midPointY - arrowFrame.size.height * 0.5;
+            
+            popover.autoresizingMask |= UIViewAutoresizingFlexibleRightMargin;
           
             
             break;
@@ -243,6 +256,8 @@
             arrowFrame.origin.x = panelFrame.origin.x + panelFrame.size.width;
             arrowFrame.origin.y = midPointY - arrowFrame.size.height * 0.5;
             
+            popover.autoresizingMask |= UIViewAutoresizingFlexibleLeftMargin;
+            
             break;
             
     }
@@ -250,6 +265,11 @@
     // correct frame
     
     popover.frame = panelFrame;
+    
+    
+    
+    
+    
     popover.arrow.frame = arrowFrame;
     popover.arrow.alpha = 0.0;
     [self.view addSubview:popover.arrow];

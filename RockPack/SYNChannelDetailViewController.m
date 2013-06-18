@@ -1116,12 +1116,6 @@
                         withAction: @"channelSubscribeButtonClick"
                          withLabel: nil
                          withValue: nil];
-
-    // FIXME: Not sure why we need both of these
-    [tracker sendEventWithCategory: @"goal"
-                        withAction: @"userSubscription"
-                         withLabel: nil
-                         withValue: nil];
     
     self.subscribeButton.enabled = NO;
     
@@ -1388,7 +1382,15 @@
 
 
 - (IBAction) saveChannelTapped: (id) sender
-{ 
+{
+    
+    id<GAITracker> tracker = [GAI sharedInstance].defaultTracker;
+
+    [tracker sendEventWithCategory: @"uiAction"
+                        withAction: @"channelSaveButtonClick"
+                         withLabel: nil
+                         withValue: nil];
+    
     self.saveChannelButton.enabled = NO;
     [self.activityIndicator startAnimating];
     
@@ -1409,7 +1411,13 @@
                                                      cover: cover
                                                   isPublic: YES
                                          completionHandler: ^(NSDictionary* resourceCreated) {
-
+                                             id<GAITracker> tracker = [GAI sharedInstance].defaultTracker;
+                                             
+                                             [tracker sendEventWithCategory: @"goal"
+                                                                 withAction: @"channelEdited"
+                                                                  withLabel: category
+                                                                  withValue: nil];
+                                             
                                              NSString* channelId = [resourceCreated objectForKey: @"id"];
                                              
                                              [self setEditControlsVisibility: NO];
@@ -1792,6 +1800,12 @@
                                                   isPublic: YES
                                          completionHandler: ^(NSDictionary* resourceCreated) {
                                              
+                                             id<GAITracker> tracker = [GAI sharedInstance].defaultTracker;
+                                             
+                                             [tracker sendEventWithCategory: @"goal"
+                                                                 withAction: @"channelCreated"
+                                                                  withLabel: category
+                                                                  withValue: nil];
                                              
                                              NSString* channelId = [resourceCreated objectForKey: @"id"];
                                              
@@ -1857,7 +1871,6 @@
                                                    videoInstanceSet: self.channel.videoInstances
                                                       clearPrevious: YES
                                                   completionHandler: ^(id response) {
-                                                      
                                                       // a 204 returned
                                                       
                                                       [self fetchAndStoreUpdatedChannelForId:channelId isUpdate:isUpdated];
@@ -2179,10 +2192,10 @@
         if(!hasShownSubscribeOnBoarding)
         {
             BOOL isIpad = [[SYNDeviceManager sharedInstance] isIPad];
-            NSString* message = @"Tap this button to subscribe to a channel and get new videos in your feed.";
+            NSString* message = NSLocalizedString(@"onboarding_subscription", nil);
             PointingDirection direction = isIpad ? PointingDirectionLeft : PointingDirectionUp;
             CGFloat fontSize = isIpad ? 19.0 : 15.0 ;
-            CGSize size =  isIpad ? CGSizeMake(260.0, 144.0) : CGSizeMake(260.0, 128.0);
+            CGSize size =  isIpad ? CGSizeMake(260.0, 164.0) : CGSizeMake(260.0, 148.0);
             SYNOnBoardingPopoverView* subscribePopover = [SYNOnBoardingPopoverView withMessage:message
                                                                                       withSize:size
                                                                                    andFontSize:fontSize
@@ -3021,7 +3034,7 @@
     {
         SYNOnBoardingPopoverQueueController* onBoardingQueue = [[SYNOnBoardingPopoverQueueController alloc] init];
         
-        NSString* message = @"Whenever you see a video you like tap the + button to add it to one of your channels.";
+        NSString* message = NSLocalizedString(@"onboarding_video", nil);
         
         CGFloat fontSize = [[SYNDeviceManager sharedInstance] isIPad] ? 19.0 : 15.0 ;
         CGSize size = [[SYNDeviceManager sharedInstance] isIPad] ? CGSizeMake(340.0, 164.0) : CGSizeMake(260.0, 144.0);
