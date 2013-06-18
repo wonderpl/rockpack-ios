@@ -559,8 +559,8 @@
                                               
                                               wself.originalBackgroundImage = wself.channelCoverImageView.image;
                                               
-                                              
-                                              [wself renderBlurredBackgroundWithCGImage:[[wself croppedImageForCurrentOrientation] CGImage]];
+                                              wself.channelCoverImageView.image = [wself croppedImageForCurrentOrientation];
+                                         
              
                                           }];
     }
@@ -2786,8 +2786,10 @@
     
     self.blurredBGImageView.frame = self.channelCoverImageView.frame;
     
+    CGImageRetain(imageRef);
+    
     __weak SYNChannelDetailViewController* wself = self;
-    dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_HIGH, 0), ^{
+    dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0), ^{
         
         backgroundCIImage = [CIImage imageWithCGImage:imageRef];
         
@@ -2808,8 +2810,11 @@
         UIImage* bgImage = [UIImage imageWithCGImage:cgimg];
         CGImageRelease(cgimg);
         
-        [wself.blurredBGImageView performSelectorOnMainThread:@selector(setImage:) withObject:bgImage waitUntilDone:YES];
+        [wself.blurredBGImageView performSelectorOnMainThread:@selector(setImage:)
+                                                   withObject:bgImage
+                                                waitUntilDone:YES];
        
+        CGImageRelease(imageRef);
         
     });
     
