@@ -128,8 +128,10 @@
 {
     if ((self = [super initWithViewId: kChannelDetailsViewId]))
     {
+        // mode must be set first because setChannel relies on it...
+        self.mode = mode;
+        
 		self.channel = channel;
-        _mode = mode;
 	}
 
 	return self;
@@ -150,6 +152,7 @@
 - (void) viewDidLoad
 {
     [super viewDidLoad];
+    
     
     _isIPhone = [SYNDeviceManager.sharedInstance isIPhone];
 
@@ -228,7 +231,7 @@
     
     // == Cover Image == //
   
-    if (self.mode == kChannelDetailsModeDisplay) // only load bg on display
+    if (self.mode == kChannelDetailsModeDisplay) // only load bg on display, creation will insert new bg
     {
         self.currentWebImageOperation = [self loadBackgroundImage];
     }
@@ -2746,6 +2749,7 @@
                                                      name: NSManagedObjectContextDidSaveNotification
                                                    object: self.channel.managedObjectContext];
 
+        
         if(self.mode == kChannelDetailsModeDisplay)
         {
             [[NSNotificationCenter defaultCenter] postNotificationName: kChannelUpdateRequest
