@@ -143,6 +143,7 @@
 		01363EB5162FDEA600FFAA09 /* NSObject+Blocks.m in Sources */ = {isa = PBXBuildFile; fileRef = 01363EB4162FDEA600FFAA09 /* NSObject+Blocks.m */; };
 		01363EC116300F3A00FFAA09 /* SYNVideoThumbnailWideCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 01363EC016300F3A00FFAA09 /* SYNVideoThumbnailWideCell.xib */; };
 		01363F241630B81400FFAA09 /* SYNVideoThumbnailWideCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 01363F231630B81400FFAA09 /* SYNVideoThumbnailWideCell.m */; };
+		0141CC701771DA4A00B617A7 /* SampleSpec.m in Sources */ = {isa = PBXBuildFile; fileRef = 0141CC6F1771DA4A00B617A7 /* SampleSpec.m */; };
 		0142ED8C16B1B39D008694DA /* SYNProfileRootViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 0142ED8816B19FBE008694DA /* SYNProfileRootViewController.m */; };
 		01450AF5171DB4B5009F54CD /* ButtonAddSelected.png in Resources */ = {isa = PBXBuildFile; fileRef = 01450AF3171DB4B5009F54CD /* ButtonAddSelected.png */; };
 		01450AF6171DB4B5009F54CD /* ButtonAddSelected@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 01450AF4171DB4B5009F54CD /* ButtonAddSelected@2x.png */; };
@@ -197,6 +198,11 @@
 		01891A001672255F00AB07BB /* SYNHomeSectionHeaderView.xib in Resources */ = {isa = PBXBuildFile; fileRef = 018919FF1672255F00AB07BB /* SYNHomeSectionHeaderView.xib */; };
 		01891A3D16725A3400AB07BB /* PanelDay.png in Resources */ = {isa = PBXBuildFile; fileRef = 01891A3916725A3400AB07BB /* PanelDay.png */; };
 		01891A3E16725A3400AB07BB /* PanelDay@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 01891A3A16725A3400AB07BB /* PanelDay@2x.png */; };
+		01901A971771CCBA007DBEAC /* SenTestingKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 01901A961771CCBA007DBEAC /* SenTestingKit.framework */; };
+		01901A981771CCBA007DBEAC /* UIKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 010DEFD41629BDC40080F26B /* UIKit.framework */; };
+		01901A991771CCBA007DBEAC /* Foundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 010DEFD61629BDC40080F26B /* Foundation.framework */; };
+		01901A9F1771CCBA007DBEAC /* InfoPlist.strings in Resources */ = {isa = PBXBuildFile; fileRef = 01901A9D1771CCBA007DBEAC /* InfoPlist.strings */; };
+		01901AA21771CCBA007DBEAC /* rockpackTests.m in Sources */ = {isa = PBXBuildFile; fileRef = 01901AA11771CCBA007DBEAC /* rockpackTests.m */; };
 		01946B551683209600354601 /* GlossChannelSmall.png in Resources */ = {isa = PBXBuildFile; fileRef = 01946B4D1683209600354601 /* GlossChannelSmall.png */; };
 		01946B561683209600354601 /* GlossChannelSmall@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 01946B4E1683209600354601 /* GlossChannelSmall@2x.png */; };
 		01946B571683209600354601 /* GlossVideo.png in Resources */ = {isa = PBXBuildFile; fileRef = 01946B4F1683209600354601 /* GlossVideo.png */; };
@@ -846,6 +852,7 @@
 		38C3FA7517203D6600F126B1 /* PanelDayPortrait@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 38C3FA7317203D6600F126B1 /* PanelDayPortrait@2x.png */; };
 		38FD441F172A9E280086B524 /* SYNChannelDetailViewController~iphone.xib in Resources */ = {isa = PBXBuildFile; fileRef = 38FD441E172A9E280086B524 /* SYNChannelDetailViewController~iphone.xib */; };
 		38FD4421172AC9B30086B524 /* SYNVideoThumbnailRegularCell~iphone.xib in Resources */ = {isa = PBXBuildFile; fileRef = 38FD4420172AC9B30086B524 /* SYNVideoThumbnailRegularCell~iphone.xib */; };
+		A77EDC52ADCD4B7BA4217379 /* libPods-rockpackTests.a in Frameworks */ = {isa = PBXBuildFile; fileRef = D9D50C4D95B04D83AF3B374D /* libPods-rockpackTests.a */; };
 		BE03A69316F7459D00245314 /* SYNAccountSettingsMainTableViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = BE03A69216F7459D00245314 /* SYNAccountSettingsMainTableViewController.m */; };
 		BE03A6CC16F7697900245314 /* ButtonSettingsHighlighted.png in Resources */ = {isa = PBXBuildFile; fileRef = BE03A6BE16F7697900245314 /* ButtonSettingsHighlighted.png */; };
 		BE03A6CD16F7697900245314 /* ButtonSettingsHighlighted@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = BE03A6BF16F7697900245314 /* ButtonSettingsHighlighted@2x.png */; };
@@ -1317,6 +1324,7 @@
 		01363EC016300F3A00FFAA09 /* SYNVideoThumbnailWideCell.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = SYNVideoThumbnailWideCell.xib; sourceTree = "<group>"; };
 		01363F221630B81400FFAA09 /* SYNVideoThumbnailWideCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SYNVideoThumbnailWideCell.h; sourceTree = "<group>"; };
 		01363F231630B81400FFAA09 /* SYNVideoThumbnailWideCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SYNVideoThumbnailWideCell.m; sourceTree = "<group>"; };
+		0141CC6F1771DA4A00B617A7 /* SampleSpec.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SampleSpec.m; sourceTree = "<group>"; };
 		0142ED8716B19FBE008694DA /* SYNProfileRootViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SYNProfileRootViewController.h; sourceTree = "<group>"; };
 		0142ED8816B19FBE008694DA /* SYNProfileRootViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SYNProfileRootViewController.m; sourceTree = "<group>"; };
 		01450AF3171DB4B5009F54CD /* ButtonAddSelected.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = ButtonAddSelected.png; path = Assets/Images/ButtonAddSelected.png; sourceTree = "<group>"; };
@@ -1390,6 +1398,13 @@
 		018919FF1672255F00AB07BB /* SYNHomeSectionHeaderView.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = SYNHomeSectionHeaderView.xib; sourceTree = "<group>"; };
 		01891A3916725A3400AB07BB /* PanelDay.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = PanelDay.png; path = Assets/Images/PanelDay.png; sourceTree = "<group>"; };
 		01891A3A16725A3400AB07BB /* PanelDay@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = "PanelDay@2x.png"; path = "Assets/Images/PanelDay@2x.png"; sourceTree = "<group>"; };
+		01901A951771CCBA007DBEAC /* rockpackTests.octest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = rockpackTests.octest; sourceTree = BUILT_PRODUCTS_DIR; };
+		01901A961771CCBA007DBEAC /* SenTestingKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = SenTestingKit.framework; path = Library/Frameworks/SenTestingKit.framework; sourceTree = DEVELOPER_DIR; };
+		01901A9C1771CCBA007DBEAC /* rockpackTests-Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = "rockpackTests-Info.plist"; sourceTree = "<group>"; };
+		01901A9E1771CCBA007DBEAC /* en */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = en; path = en.lproj/InfoPlist.strings; sourceTree = "<group>"; };
+		01901AA01771CCBA007DBEAC /* rockpackTests.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = rockpackTests.h; sourceTree = "<group>"; };
+		01901AA11771CCBA007DBEAC /* rockpackTests.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = rockpackTests.m; sourceTree = "<group>"; };
+		01901AA31771CCBA007DBEAC /* rockpackTests-Prefix.pch */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "rockpackTests-Prefix.pch"; sourceTree = "<group>"; };
 		01946B4D1683209600354601 /* GlossChannelSmall.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = GlossChannelSmall.png; path = Assets/Images/GlossChannelSmall.png; sourceTree = "<group>"; };
 		01946B4E1683209600354601 /* GlossChannelSmall@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = "GlossChannelSmall@2x.png"; path = "Assets/Images/GlossChannelSmall@2x.png"; sourceTree = "<group>"; };
 		01946B4F1683209600354601 /* GlossVideo.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = GlossVideo.png; path = Assets/Images/GlossVideo.png; sourceTree = "<group>"; };
@@ -2100,6 +2115,7 @@
 		38DC34B1175E42DF0048286C /* Rockpack 3.xcdatamodel */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcdatamodel; path = "Rockpack 3.xcdatamodel"; sourceTree = "<group>"; };
 		38FD441E172A9E280086B524 /* SYNChannelDetailViewController~iphone.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = "SYNChannelDetailViewController~iphone.xib"; sourceTree = "<group>"; };
 		38FD4420172AC9B30086B524 /* SYNVideoThumbnailRegularCell~iphone.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = "SYNVideoThumbnailRegularCell~iphone.xib"; sourceTree = "<group>"; };
+		AF1297D1996D408798EDDC4F /* Pods-rockpackTests.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-rockpackTests.xcconfig"; path = "Pods/Pods-rockpackTests.xcconfig"; sourceTree = SOURCE_ROOT; };
 		BE03A69116F7459D00245314 /* SYNAccountSettingsMainTableViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SYNAccountSettingsMainTableViewController.h; sourceTree = "<group>"; };
 		BE03A69216F7459D00245314 /* SYNAccountSettingsMainTableViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SYNAccountSettingsMainTableViewController.m; sourceTree = "<group>"; };
 		BE03A6BE16F7697900245314 /* ButtonSettingsHighlighted.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = ButtonSettingsHighlighted.png; path = Assets/Images/ButtonSettingsHighlighted.png; sourceTree = "<group>"; };
@@ -2470,6 +2486,7 @@
 		BEFAE89717241FD5009B2F66 /* SearchTabSelected@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = "SearchTabSelected@2x.png"; path = "Assets/Images/SearchTabSelected@2x.png"; sourceTree = "<group>"; };
 		BEFAE89A1725485B009B2F66 /* SYNVideoQueue.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SYNVideoQueue.h; sourceTree = "<group>"; };
 		BEFAE89B1725485B009B2F66 /* SYNVideoQueue.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SYNVideoQueue.m; sourceTree = "<group>"; };
+		D9D50C4D95B04D83AF3B374D /* libPods-rockpackTests.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = "libPods-rockpackTests.a"; sourceTree = BUILT_PRODUCTS_DIR; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -2507,18 +2524,30 @@
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
+		01901A911771CCBA007DBEAC /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				01901A971771CCBA007DBEAC /* SenTestingKit.framework in Frameworks */,
+				01901A981771CCBA007DBEAC /* UIKit.framework in Frameworks */,
+				01901A991771CCBA007DBEAC /* Foundation.framework in Frameworks */,
+				A77EDC52ADCD4B7BA4217379 /* libPods-rockpackTests.a in Frameworks */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
 		010DEFC51629BDC40080F26B = {
 			isa = PBXGroup;
 			children = (
-				016B97161770C42200892211 /* StoreKit.framework */,
-				010DEFDA1629BDC40080F26B /* Source */,
+				01901A9A1771CCBA007DBEAC /* rockpackTests */,
+				010DEFDA1629BDC40080F26B /* rockpack */,
 				019824DD1629CA3700216900 /* Resources */,
 				010DEFD31629BDC40080F26B /* Frameworks */,
 				010DEFD11629BDC40080F26B /* Products */,
 				276F95C3CF7F47FE9BF50F40 /* Pods.xcconfig */,
+				AF1297D1996D408798EDDC4F /* Pods-rockpackTests.xcconfig */,
 			);
 			sourceTree = "<group>";
 		};
@@ -2526,6 +2555,7 @@
 			isa = PBXGroup;
 			children = (
 				010DEFD01629BDC40080F26B /* rockpack.app */,
+				01901A951771CCBA007DBEAC /* rockpackTests.octest */,
 			);
 			name = Products;
 			sourceTree = "<group>";
@@ -2557,15 +2587,18 @@
 				01982575162AFB9600216900 /* QuartzCore.framework */,
 				0170717F165550BE00A3C7C4 /* Security.framework */,
 				012502C616CA99790029C7C8 /* Social.framework */,
+				016B97161770C42200892211 /* StoreKit.framework */,
 				0170717D165550A900A3C7C4 /* SystemConfiguration.framework */,
 				011C16851730043000CF50B9 /* Twitter.framework */,
 				010DEFD41629BDC40080F26B /* UIKit.framework */,
 				3685246F69AA4C9B93DDEDAC /* libPods.a */,
+				01901A961771CCBA007DBEAC /* SenTestingKit.framework */,
+				D9D50C4D95B04D83AF3B374D /* libPods-rockpackTests.a */,
 			);
 			name = Frameworks;
 			sourceTree = "<group>";
 		};
-		010DEFDA1629BDC40080F26B /* Source */ = {
+		010DEFDA1629BDC40080F26B /* rockpack */ = {
 			isa = PBXGroup;
 			children = (
 				01982525162A02DD00216900 /* Constants */,
@@ -2582,7 +2615,7 @@
 				019824E41629CAF500216900 /* Helpers */,
 				010DEFDB1629BDC40080F26B /* Supporting Files */,
 			);
-			name = Source;
+			name = rockpack;
 			path = RockPack;
 			sourceTree = "<group>";
 		};
@@ -3034,6 +3067,27 @@
 				01891A3A16725A3400AB07BB /* PanelDay@2x.png */,
 			);
 			name = Feed;
+			sourceTree = "<group>";
+		};
+		01901A9A1771CCBA007DBEAC /* rockpackTests */ = {
+			isa = PBXGroup;
+			children = (
+				01901AA01771CCBA007DBEAC /* rockpackTests.h */,
+				01901AA11771CCBA007DBEAC /* rockpackTests.m */,
+				0141CC6F1771DA4A00B617A7 /* SampleSpec.m */,
+				01901A9B1771CCBA007DBEAC /* Supporting Files */,
+			);
+			path = rockpackTests;
+			sourceTree = "<group>";
+		};
+		01901A9B1771CCBA007DBEAC /* Supporting Files */ = {
+			isa = PBXGroup;
+			children = (
+				01901A9C1771CCBA007DBEAC /* rockpackTests-Info.plist */,
+				01901A9D1771CCBA007DBEAC /* InfoPlist.strings */,
+				01901AA31771CCBA007DBEAC /* rockpackTests-Prefix.pch */,
+			);
+			name = "Supporting Files";
 			sourceTree = "<group>";
 		};
 		019824DD1629CA3700216900 /* Resources */ = {
@@ -4960,6 +5014,26 @@
 			productReference = 010DEFD01629BDC40080F26B /* rockpack.app */;
 			productType = "com.apple.product-type.application";
 		};
+		01901A941771CCBA007DBEAC /* rockpackTests */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = 01901AA71771CCBA007DBEAC /* Build configuration list for PBXNativeTarget "rockpackTests" */;
+			buildPhases = (
+				39A52BE75A62433CAD032D95 /* Check Pods Manifest.lock */,
+				01901A901771CCBA007DBEAC /* Sources */,
+				01901A911771CCBA007DBEAC /* Frameworks */,
+				01901A921771CCBA007DBEAC /* Resources */,
+				01901A931771CCBA007DBEAC /* ShellScript */,
+				0B5965BEFAB4487393D591C5 /* Copy Pods Resources */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+			);
+			name = rockpackTests;
+			productName = rockpackTests;
+			productReference = 01901A951771CCBA007DBEAC /* rockpackTests.octest */;
+			productType = "com.apple.product-type.bundle";
+		};
 /* End PBXNativeTarget section */
 
 /* Begin PBXProject section */
@@ -4987,6 +5061,7 @@
 			projectRoot = "";
 			targets = (
 				010DEFCF1629BDC40080F26B /* rockpack */,
+				01901A941771CCBA007DBEAC /* rockpackTests */,
 				01E427E61664EC9F009B941F /* Mogenerator */,
 			);
 		};
@@ -5903,9 +5978,30 @@
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
+		01901A921771CCBA007DBEAC /* Resources */ = {
+			isa = PBXResourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				01901A9F1771CCBA007DBEAC /* InfoPlist.strings in Resources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
 /* End PBXResourcesBuildPhase section */
 
 /* Begin PBXShellScriptBuildPhase section */
+		01901A931771CCBA007DBEAC /* ShellScript */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputPaths = (
+			);
+			outputPaths = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "# Run the unit tests in this test bundle.\n\"${SYSTEM_DEVELOPER_DIR}/Tools/RunUnitTests\"\n";
+		};
 		01E427EB1664ECB3009B941F /* ShellScript */ = {
 			isa = PBXShellScriptBuildPhase;
 			buildActionMask = 2147483647;
@@ -5918,6 +6014,34 @@
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/sh;
 			shellScript = "cd RockPack\nmogenerator --model Rockpack.xcdatamodeld --template-var arc=YES\n\n";
+		};
+		0B5965BEFAB4487393D591C5 /* Copy Pods Resources */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 8;
+			files = (
+			);
+			inputPaths = (
+			);
+			name = "Copy Pods Resources";
+			outputPaths = (
+			);
+			runOnlyForDeploymentPostprocessing = 1;
+			shellPath = /bin/sh;
+			shellScript = "\"${SRCROOT}/Pods/Pods-rockpackTests-resources.sh\"\n";
+		};
+		39A52BE75A62433CAD032D95 /* Check Pods Manifest.lock */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputPaths = (
+			);
+			name = "Check Pods Manifest.lock";
+			outputPaths = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "diff \"${PODS_ROOT}/../Podfile.lock\" \"${PODS_ROOT}/Manifest.lock\" > /dev/null\nif [[ $? != 0 ]] ; then\n    cat << EOM\nerror: The sandbox is not in sync with the Podfile.lock. Run 'pod install' or update your CocoaPods installation.\nEOM\n    exit 1\nfi\n";
 		};
 		3D694519866C43D0BEC8D1AD /* Copy Pods Resources */ = {
 			isa = PBXShellScriptBuildPhase;
@@ -6132,6 +6256,15 @@
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
+		01901A901771CCBA007DBEAC /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				01901AA21771CCBA007DBEAC /* rockpackTests.m in Sources */,
+				0141CC701771DA4A00B617A7 /* SampleSpec.m in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
 /* End PBXSourcesBuildPhase section */
 
 /* Begin PBXVariantGroup section */
@@ -6150,6 +6283,14 @@
 				011C1653173003E800CF50B9 /* en */,
 			);
 			name = OWActivityViewController.strings;
+			sourceTree = "<group>";
+		};
+		01901A9D1771CCBA007DBEAC /* InfoPlist.strings */ = {
+			isa = PBXVariantGroup;
+			children = (
+				01901A9E1771CCBA007DBEAC /* en */,
+			);
+			name = InfoPlist.strings;
 			sourceTree = "<group>";
 		};
 		BEB1577D173C10E900DAFA2F /* Localizable.strings */ = {
@@ -6312,6 +6453,75 @@
 			};
 			name = Release;
 		};
+		01901AA41771CCBA007DBEAC /* Debug */ = {
+			isa = XCBuildConfiguration;
+			baseConfigurationReference = AF1297D1996D408798EDDC4F /* Pods-rockpackTests.xcconfig */;
+			buildSettings = {
+				BUNDLE_LOADER = "$(BUILT_PRODUCTS_DIR)/rockpack.app/rockpack";
+				CLANG_WARN_CONSTANT_CONVERSION = YES;
+				CLANG_WARN_ENUM_CONVERSION = YES;
+				CLANG_WARN_INT_CONVERSION = YES;
+				FRAMEWORK_SEARCH_PATHS = (
+					"$(inherited)",
+					"\"$(SDKROOT)/Developer/Library/Frameworks\"",
+					"\"$(DEVELOPER_LIBRARY_DIR)/Frameworks\"",
+				);
+				GCC_PRECOMPILE_PREFIX_HEADER = YES;
+				GCC_PREFIX_HEADER = "rockpackTests/rockpackTests-Prefix.pch";
+				INFOPLIST_FILE = "rockpackTests/rockpackTests-Info.plist";
+				IPHONEOS_DEPLOYMENT_TARGET = 6.1;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				TEST_HOST = "$(BUNDLE_LOADER)";
+				WRAPPER_EXTENSION = octest;
+			};
+			name = Debug;
+		};
+		01901AA51771CCBA007DBEAC /* Release */ = {
+			isa = XCBuildConfiguration;
+			baseConfigurationReference = AF1297D1996D408798EDDC4F /* Pods-rockpackTests.xcconfig */;
+			buildSettings = {
+				BUNDLE_LOADER = "$(BUILT_PRODUCTS_DIR)/rockpack.app/rockpack";
+				CLANG_WARN_CONSTANT_CONVERSION = YES;
+				CLANG_WARN_ENUM_CONVERSION = YES;
+				CLANG_WARN_INT_CONVERSION = YES;
+				FRAMEWORK_SEARCH_PATHS = (
+					"$(inherited)",
+					"\"$(SDKROOT)/Developer/Library/Frameworks\"",
+					"\"$(DEVELOPER_LIBRARY_DIR)/Frameworks\"",
+				);
+				GCC_PRECOMPILE_PREFIX_HEADER = YES;
+				GCC_PREFIX_HEADER = "rockpackTests/rockpackTests-Prefix.pch";
+				INFOPLIST_FILE = "rockpackTests/rockpackTests-Info.plist";
+				IPHONEOS_DEPLOYMENT_TARGET = 6.1;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				TEST_HOST = "$(BUNDLE_LOADER)";
+				WRAPPER_EXTENSION = octest;
+			};
+			name = Release;
+		};
+		01901AA61771CCBA007DBEAC /* AdHoc */ = {
+			isa = XCBuildConfiguration;
+			baseConfigurationReference = AF1297D1996D408798EDDC4F /* Pods-rockpackTests.xcconfig */;
+			buildSettings = {
+				BUNDLE_LOADER = "$(BUILT_PRODUCTS_DIR)/rockpack.app/rockpack";
+				CLANG_WARN_CONSTANT_CONVERSION = YES;
+				CLANG_WARN_ENUM_CONVERSION = YES;
+				CLANG_WARN_INT_CONVERSION = YES;
+				FRAMEWORK_SEARCH_PATHS = (
+					"$(inherited)",
+					"\"$(SDKROOT)/Developer/Library/Frameworks\"",
+					"\"$(DEVELOPER_LIBRARY_DIR)/Frameworks\"",
+				);
+				GCC_PRECOMPILE_PREFIX_HEADER = YES;
+				GCC_PREFIX_HEADER = "rockpackTests/rockpackTests-Prefix.pch";
+				INFOPLIST_FILE = "rockpackTests/rockpackTests-Info.plist";
+				IPHONEOS_DEPLOYMENT_TARGET = 6.1;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				TEST_HOST = "$(BUNDLE_LOADER)";
+				WRAPPER_EXTENSION = octest;
+			};
+			name = AdHoc;
+		};
 		01B37242162EBAE900A9F8F5 /* AdHoc */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
@@ -6426,6 +6636,16 @@
 				010DEFF51629BDC40080F26B /* Debug */,
 				010DEFF61629BDC40080F26B /* Release */,
 				01B37243162EBAE900A9F8F5 /* AdHoc */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+		01901AA71771CCBA007DBEAC /* Build configuration list for PBXNativeTarget "rockpackTests" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				01901AA41771CCBA007DBEAC /* Debug */,
+				01901AA51771CCBA007DBEAC /* Release */,
+				01901AA61771CCBA007DBEAC /* AdHoc */,
 			);
 			defaultConfigurationIsVisible = 0;
 			defaultConfigurationName = Release;
