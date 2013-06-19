@@ -241,7 +241,7 @@
     // == Swipe to Exit == //
     
     UISwipeGestureRecognizer* swipeToExitGesture = [[UISwipeGestureRecognizer alloc] initWithTarget:self action:@selector(swipedToExit:)];
-    swipeToExitGesture.direction = UISwipeGestureRecognizerDirectionLeft;
+    swipeToExitGesture.direction = UISwipeGestureRecognizerDirectionRight;
     [self.view addGestureRecognizer:swipeToExitGesture];
     
     
