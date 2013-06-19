@@ -384,8 +384,9 @@
 - (NSString *) description
 {
     
+    NSString* channelOwnerName = self.channelOwner.displayName ? self.channelOwner.displayName : self.channelOwner.username;
 
-    NSMutableString* initialDescription = [NSMutableString stringWithFormat: @"- Channel (cat:'%@', title:'%@', owner:'%@'), VI(%i):", self.categoryId, self.title, self.channelOwner.displayName, self.videoInstances.count];
+    NSMutableString* initialDescription = [NSMutableString stringWithFormat: @"- Channel (title:'%@', category id:'%@' , owner name:'%@'), VI#(%i):", self.title, self.categoryId, channelOwnerName, self.videoInstances.count];
     
     for (VideoInstance* childrenVideoInstance in self.videoInstances)
     {

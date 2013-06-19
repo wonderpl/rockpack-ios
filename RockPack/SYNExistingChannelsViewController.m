@@ -263,6 +263,8 @@
                 return;
         
             self.selectedChannel = nil;
+            
+            NSLog(@"ChannelOwner: %@", appDelegate.videoQueue.currentlyCreatingChannel.channelOwner);
         
             [UIView animateWithDuration: 0.3
                                   delay: 0.0

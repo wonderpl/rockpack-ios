@@ -158,7 +158,7 @@
 
 // Placeholders
 
-#define kNewChannelPlaceholderId @"NewChannelPlaceholder"
+#define kNewChannelPlaceholderId @"NewChannelPlaceholderId"
 
 // Notifications
 
