@@ -116,6 +116,10 @@
     
     if ([newCharacter isEqualToString: @" "] && self.searchTextField.text.length == 0)
         return NO;
+    
+
+    if((range.location - range.length) < 3)
+        return YES;
 
     // == Restart Timer == //
     if (self.autocompleteTimer)

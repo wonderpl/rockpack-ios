@@ -241,7 +241,7 @@
     // == Swipe to Exit == //
     
     UISwipeGestureRecognizer* swipeToExitGesture = [[UISwipeGestureRecognizer alloc] initWithTarget:self action:@selector(swipedToExit:)];
-    swipeToExitGesture.direction = UISwipeGestureRecognizerDirectionLeft;
+    swipeToExitGesture.direction = UISwipeGestureRecognizerDirectionRight;
     [self.view addGestureRecognizer:swipeToExitGesture];
     
     
@@ -1386,6 +1386,9 @@
         self.cancelEditButton.hidden = YES;
         self.addButton.hidden = NO;
         self.backButton.hidden= NO;
+        
+        self.channel = self.originalChannel;
+        
         [self.videoThumbnailCollectionView reloadData];
     }
 
