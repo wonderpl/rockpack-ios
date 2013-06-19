@@ -435,7 +435,7 @@
     [self.videoThumbnailCollectionView reloadData];
     
     
-    if(self.channel.videoInstances.count == 0)
+    if(self.channel.videoInstances.count == 0 && ![self.channel.uniqueId isEqualToString:kNewChannelPlaceholderId])
     {
         [self showNoVideosMessage: NSLocalizedString(@"channel_screen_loading_videos", nil) withLoader:YES];
     }
