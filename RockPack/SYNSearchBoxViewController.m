@@ -116,6 +116,9 @@
     
     if ([newCharacter isEqualToString: @" "] && self.searchTextField.text.length == 0)
         return NO;
+    NSLog(@"%@", NSStringFromRange(range));
+    if(range.location < 3 ||  (range.location == 2 && range.length == 1))
+        return YES;
 
     // == Restart Timer == //
     if (self.autocompleteTimer)
