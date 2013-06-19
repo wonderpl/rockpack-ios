@@ -555,6 +555,7 @@
 		3864D2DC1743DB3000A90ED3 /* SYNImagePickerController.m in Sources */ = {isa = PBXBuildFile; fileRef = 3864D2DB1743DB3000A90ED3 /* SYNImagePickerController.m */; };
 		388CAF25172E8F0C00721372 /* SYNSideNavigationViewController~iphone.xib in Resources */ = {isa = PBXBuildFile; fileRef = 388CAF24172E8F0C00721372 /* SYNSideNavigationViewController~iphone.xib */; };
 		388CAF67172EBDC100721372 /* SYNSideNavigationIphoneCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 388CAF66172EBDC100721372 /* SYNSideNavigationIphoneCell.m */; };
+		38920DE717720F6E00C6EA25 /* RCKReportConcernController.m in Sources */ = {isa = PBXBuildFile; fileRef = 38920DE617720F6D00C6EA25 /* RCKReportConcernController.m */; };
 		38A200161731607F00FB9F57 /* AvatarChannel@2x~iphone.png in Resources */ = {isa = PBXBuildFile; fileRef = 38A2FF1E1731607F00FB9F57 /* AvatarChannel@2x~iphone.png */; };
 		38A200171731607F00FB9F57 /* AvatarChannel~iphone.png in Resources */ = {isa = PBXBuildFile; fileRef = 38A2FF1F1731607F00FB9F57 /* AvatarChannel~iphone.png */; };
 		38A200181731607F00FB9F57 /* BackgroundVideoThumbnailRegular@2x~iphone.png in Resources */ = {isa = PBXBuildFile; fileRef = 38A2FF201731607F00FB9F57 /* BackgroundVideoThumbnailRegular@2x~iphone.png */; };
@@ -1813,6 +1814,8 @@
 		388CAF24172E8F0C00721372 /* SYNSideNavigationViewController~iphone.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = "SYNSideNavigationViewController~iphone.xib"; sourceTree = "<group>"; };
 		388CAF65172EBDC100721372 /* SYNSideNavigationIphoneCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SYNSideNavigationIphoneCell.h; sourceTree = "<group>"; };
 		388CAF66172EBDC100721372 /* SYNSideNavigationIphoneCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SYNSideNavigationIphoneCell.m; sourceTree = "<group>"; };
+		38920DE517720F6D00C6EA25 /* RCKReportConcernController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = RCKReportConcernController.h; sourceTree = "<group>"; };
+		38920DE617720F6D00C6EA25 /* RCKReportConcernController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = RCKReportConcernController.m; sourceTree = "<group>"; };
 		38A200001731607F00FB9F57 /* ButtonVideoOverlayAddHighlighted~iphone.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "ButtonVideoOverlayAddHighlighted~iphone.png"; sourceTree = "<group>"; };
 		38A200011731607F00FB9F57 /* ButtonVideoOverlayAddSelected@2x~iphone.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "ButtonVideoOverlayAddSelected@2x~iphone.png"; sourceTree = "<group>"; };
 		38A200021731607F00FB9F57 /* ButtonVideoOverlayAddSelected~iphone.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "ButtonVideoOverlayAddSelected~iphone.png"; sourceTree = "<group>"; };
@@ -2987,6 +2990,8 @@
 				015C13C0173B034C001569FE /* SYNReportConcernTableViewController.m */,
 				01D0997D1742F9F700351C82 /* SYNReportConcernTableViewController.xib */,
 				01D0997F1742FA0D00351C82 /* SYNReportConcernTableViewControllerFullScreen~iphone.xib */,
+				38920DE517720F6D00C6EA25 /* RCKReportConcernController.h */,
+				38920DE617720F6D00C6EA25 /* RCKReportConcernController.m */,
 			);
 			name = "Report Concerns";
 			sourceTree = "<group>";
@@ -6253,6 +6258,7 @@
 				0154E8481768E268001C7B75 /* SYNTimer.m in Sources */,
 				01A02E76176E1EA5001F14BD /* UIImage+Monochrome.m in Sources */,
 				0198E46A176F0AEC00AFBE2F /* SYNPageView.m in Sources */,
+				38920DE717720F6E00C6EA25 /* RCKReportConcernController.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
