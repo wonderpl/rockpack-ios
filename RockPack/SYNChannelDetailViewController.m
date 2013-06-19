@@ -1374,9 +1374,8 @@
         self.cancelEditButton.hidden = YES;
         self.addButton.hidden = NO;
         self.backButton.hidden= NO;
+        [self.videoThumbnailCollectionView reloadData];
     }
-    
-    [self.videoThumbnailCollectionView reloadData];
 
 }
 
