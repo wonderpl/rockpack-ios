@@ -135,12 +135,6 @@
         insets.bottom = 10.0f;
         layout.sectionInset = insets;
     }
-    else
-    {
-        CGRect collectionViewFrame = self.searchChannelsController.view.frame;
-        collectionViewFrame.size = self.view.frame.size;
-        self.searchChannelsController.view.frame = collectionViewFrame;
-    }
     
 
     
