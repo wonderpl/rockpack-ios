@@ -414,15 +414,10 @@ typedef void(^AnimationCompletionBlock)(BOOL finished);
         return;
     }
     
-    Channel* channel = (Channel*)[[notification userInfo] objectForKey: kChannel];
-    if(!channel)
-        return;
-
-    
     
     // this channel's managedObjectContext is the appDelegate.channelManagedObjectContext
     SYNChannelDetailViewController *channelCreationVC =
-    [[SYNChannelDetailViewController alloc] initWithChannel: channel
+    [[SYNChannelDetailViewController alloc] initWithChannel: appDelegate.videoQueue.currentlyCreatingChannel
                                                   usingMode: kChannelDetailsModeCreate] ;
     
     // either the current view on the container scroll view or the overlay navigation controller as in search mode

@@ -18,6 +18,7 @@
 #import "SYNIntegralCollectionViewFlowLayout.h"
 #import "SYNOAuthNetworkEngine.h"
 #import "SYNPassthroughView.h"
+#import "SYNChannelCreateNewCell.h"
 #import "SYNProfileRootViewController.h"
 #import "SYNSubscriptionsViewController.h"
 #import "SYNUserProfileViewController.h"
@@ -332,6 +333,12 @@
         [GAI.sharedInstance.defaultTracker sendView: @"User Profile"];
     }
 
+    UINib *createCellNib = [UINib nibWithNibName: @"SYNChannelCreateNewCell"
+                                          bundle: nil];
+    
+    [self.channelThumbnailCollectionView registerNib: createCellNib
+                          forCellWithReuseIdentifier: @"SYNChannelCreateNewCell"];
+    
     // Init collection view
     UINib *thumbnailCellNib = [UINib nibWithNibName: @"SYNChannelMidCell"
                                              bundle: nil];
@@ -727,8 +734,7 @@
 
 - (NSInteger) collectionView: (UICollectionView *) view numberOfItemsInSection: (NSInteger) section
 {
-    // NSLog(@"%@", user);
-    return self.user.channels.count;
+    return self.user.channels.count + 1; // to account for the extra 'creation' cell at the start of the collection view
 }
 
 
@@ -741,28 +747,44 @@
 - (UICollectionViewCell *) collectionView: (UICollectionView *) collectionView
                    cellForItemAtIndexPath: (NSIndexPath *) indexPath
 {
-    Channel *channel = (Channel*)self.user.channels[indexPath.row];
+    UICollectionViewCell* cell = nil;
     
-    SYNChannelMidCell *channelThumbnailCell = [collectionView dequeueReusableCellWithReuseIdentifier: @"SYNChannelMidCell"
+    if (indexPath.row == 0) // first row (create)
+    {
+        SYNChannelCreateNewCell* createCell = [collectionView dequeueReusableCellWithReuseIdentifier: @"SYNChannelCreateNewCell"
                                                                                         forIndexPath: indexPath];
-    
-
-    [channelThumbnailCell.imageView setImageWithURL: [NSURL URLWithString: channel.channelCover.imageLargeUrl]
-                                   placeholderImage: [UIImage imageNamed: @"PlaceholderChannelMid.png"]
-                                            options: SDWebImageRetryFailed];
-    
-    
-    // Make sure we can't delete the favourites channel
-    if (channel.favouritesValue)
-        channelThumbnailCell.deleteButton.enabled = NO;
+        
+        cell = createCell;
+    }
     else
-        channelThumbnailCell.deleteButton.enabled = YES;
+    {
+        Channel *channel = (Channel*)self.user.channels[indexPath.row - 1];
+        
+        SYNChannelMidCell *channelThumbnailCell = [collectionView dequeueReusableCellWithReuseIdentifier: @"SYNChannelMidCell"
+                                                                                            forIndexPath: indexPath];
+        
+        
+        [channelThumbnailCell.imageView setImageWithURL: [NSURL URLWithString: channel.channelCover.imageLargeUrl]
+                                       placeholderImage: [UIImage imageNamed: @"PlaceholderChannelMid.png"]
+                                                options: SDWebImageRetryFailed];
+        
+        
+        // Make sure we can't delete the favourites channel
+        if (channel.favouritesValue)
+            channelThumbnailCell.deleteButton.enabled = NO;
+        else
+            channelThumbnailCell.deleteButton.enabled = YES;
+        
+        [channelThumbnailCell setChannelTitle:channel.title];
+        [channelThumbnailCell setViewControllerDelegate: self];
+        
+        cell = channelThumbnailCell;
+    }
     
-    [channelThumbnailCell setChannelTitle:channel.title];
-    [channelThumbnailCell setViewControllerDelegate: self];
+    
 
     
-    return channelThumbnailCell;
+    return cell;
 }
 
 
@@ -775,12 +797,20 @@
         return;
     }
 
+    if(indexPath.row == 0)
+    {
+        
+        [[NSNotificationCenter defaultCenter] postNotificationName: kNoteCreateNewChannel
+                                                            object: self];
+        
+        return;
+    }
     
     Channel *channel;
     
     if (collectionView == self.channelThumbnailCollectionView)
     {
-        channel = self.user.channels[indexPath.row];
+        channel = self.user.channels[indexPath.row - 1];
     }
     else
     {

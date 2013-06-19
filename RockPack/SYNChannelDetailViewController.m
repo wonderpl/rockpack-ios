@@ -27,6 +27,7 @@
 #import "SYNPopoverBackgroundView.h"
 #import "SYNReportConcernTableViewController.h"
 #import "SYNVideoThumbnailRegularCell.h"
+#import "SYNChannelCreateNewCell.h"
 #import "SubGenre.h"
 #import "UIFont+SYNFont.h"
 #import "UIImageView+WebCache.h"
@@ -822,6 +823,7 @@
                    cellForItemAtIndexPath: (NSIndexPath *) indexPath
 {
     UICollectionViewCell *cell = nil;
+    
     
     SYNVideoThumbnailRegularCell *videoThumbnailCell = [collectionView dequeueReusableCellWithReuseIdentifier: @"SYNVideoThumbnailRegularCell"
                                                                                                  forIndexPath: indexPath];
