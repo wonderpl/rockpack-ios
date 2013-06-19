@@ -23,6 +23,8 @@
     
     User* instance = [User insertInManagedObjectContext: managedObjectContext];
     
+    instance.uniqueId = oldUser.uniqueId;
+    
     instance.username = oldUser.username;
     
     instance.emailAddress = oldUser.emailAddress;
