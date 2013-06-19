@@ -375,7 +375,7 @@ enum ChannelCoverSelectorState {
         {
             if(indexPath.row ==0)
             {
-                [self cameraButtonTapped:nil];
+                [self cameraButtonTapped];
                 return;
             }
             NSString* returnStringURL = nil;
@@ -492,7 +492,7 @@ enum ChannelCoverSelectorState {
 
 #pragma mark - button actions
 
-- (IBAction) cameraButtonTapped: (id) sender
+- (void) cameraButtonTapped
 {
     CATransition *animation = [CATransition animation];
     [animation setType: kCATransitionPush];

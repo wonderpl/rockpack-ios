@@ -2194,8 +2194,8 @@
     
     [[NSNotificationCenter defaultCenter] postNotificationName:kMainControlsChangeEnter object:self];
     
-    if(![self.channel.channelOwner.uniqueId isEqualToString:appDelegate.currentUser.uniqueId] &&
-       !self.channel.subscribedByUser)
+
+    if(![self.channel.channelOwner.uniqueId isEqualToString:appDelegate.currentUser.uniqueId] && !self.channel.subscribedByUserValue)
     {
         // avoid showing the on boarding related to subscription to already subscribed channel or user's own channel
         NSUserDefaults *defaults = [NSUserDefaults standardUserDefaults];
@@ -2883,6 +2883,8 @@
     
     self.originalChannel = channel;
     
+    
+    
     NSError *error = nil;
     
     if (!appDelegate)
@@ -2940,6 +2942,7 @@
 
     if (self.channel)
     {
+        
         // check for subscribed
         self.channel.subscribedByUserValue = NO;
         for (Channel* subscription in appDelegate.currentUser.subscriptions)

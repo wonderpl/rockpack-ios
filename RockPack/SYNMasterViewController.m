@@ -417,6 +417,8 @@ typedef void(^AnimationCompletionBlock)(BOOL finished);
     Channel* channel = (Channel*)[[notification userInfo] objectForKey: kChannel];
     if(!channel)
         return;
+
+    
     
     // this channel's managedObjectContext is the appDelegate.channelManagedObjectContext
     SYNChannelDetailViewController *channelCreationVC =

@@ -134,7 +134,6 @@
         return;
     }
 
-    
     if (!self.currentlyCreatingChannel) // create channel if there is none
     {
         self.currentlyCreatingChannel = [Channel insertInManagedObjectContext: self.appDelegate.channelsManagedObjectContext];
@@ -143,13 +142,19 @@
                                 usingManagedObjectContext:self.currentlyCreatingChannel.managedObjectContext];
         
         self.currentlyCreatingChannel.channelOwner = (ChannelOwner*)meOnAnotherContext;
-        
+        self.currentlyCreatingChannel.title = @"";
         self.currentlyCreatingChannel.categoryId = @"";
         
         // Set the channel's unique Id to something temporary so that we can perform queries for the videoinstances it contains
         self.currentlyCreatingChannel.uniqueId = kNewChannelPlaceholderId;
         
-        [self.appDelegate saveChannelsContext];
+        
+        NSError *error = nil; // if we cannot save, bail
+        if (![self.appDelegate.channelsManagedObjectContext save: &error])
+        {
+            AssertOrLog(@"Error saving Channels moc: %@\n%@", [error localizedDescription], [error userInfo]);
+            return;
+        }
     }
     else // if there is a channel remove all videos
     {

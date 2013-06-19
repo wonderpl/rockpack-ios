@@ -301,16 +301,17 @@
 {
     
     
-    NSMutableString* ownerDescription = [NSMutableString stringWithFormat:@"User (%i) - username: '%@'", [self.uniqueId intValue], self.displayName];
+    NSMutableString* ownerDescription = [NSMutableString stringWithFormat:@"ChannelOwner id:%i, username: '%@'", [self.uniqueId intValue], self.displayName];
     
-    [ownerDescription appendFormat:@"\nUser Channels (%i)", self.channels.count];
+    [ownerDescription appendFormat:@"\nhas %i channels owned", self.channels.count];
     
     if(self.channels.count == 0) {
         [ownerDescription appendString:@"."];
     } else {
         [ownerDescription appendString:@":"];
         for (Channel* channel in self.channels)
-            [ownerDescription appendFormat:@"\n - %@ (%@)", channel.title, [channel.subscribedByUser boolValue] ? @"Subscribed" : @"-"];
+            [ownerDescription appendFormat:@"\n%@ (%@)",
+             [channel.subscribedByUser boolValue] ? @"+" : @"-",  [channel.title isEqualToString:@""] ? channel.title : @"No Title"];
         
     }
     
