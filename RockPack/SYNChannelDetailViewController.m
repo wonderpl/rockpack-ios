@@ -38,11 +38,11 @@
 #import <QuartzCore/QuartzCore.h>
 #import <CoreImage/CoreImage.h>
 #import "SYNOnBoardingPopoverQueueController.h"
+#import "SYNImagePickerController.h"
 
 @interface SYNChannelDetailViewController () <UITextViewDelegate,
-                                              GKImagePickerDelegate,
+                                              SYNImagePickerControllerDelegate,
                                               UIPopoverControllerDelegate,
-                                              SYNCameraPopoverViewControllerDelegate,
                                               SYNChannelCategoryTableViewDelegate,
                                               SYNChannelCoverImageSelectorDelegate>
 {
@@ -60,7 +60,7 @@
 @property (nonatomic, assign)  CGPoint originalMasterControlsViewOrigin;
 @property (nonatomic, assign, getter = isImageSelectorOpen) BOOL imageSelectorOpen;
 @property (nonatomic, strong) Channel *channel;
-@property (nonatomic, strong) GKImagePicker *imagePicker;
+@property (nonatomic, strong) SYNImagePickerController* imagePicker;
 @property (nonatomic, strong) IBOutlet SSTextView *channelTitleTextView;
 @property (nonatomic, strong) IBOutlet UIButton *buyButton;
 @property (nonatomic, strong) IBOutlet UIButton *cameraButton;
@@ -2393,133 +2393,21 @@
 
 - (void) userTouchedCameraButton: (UIButton*) button
 {
-    button.selected = !button.selected;
-    
-    if (button.selected)
-    {
-        SYNCameraPopoverViewController *actionPopoverController = [[SYNCameraPopoverViewController alloc] init];
-        actionPopoverController.delegate = self;
-        
-        // Need show the popover controller
-        self.cameraMenuPopoverController = [[UIPopoverController alloc] initWithContentViewController: actionPopoverController];
-       self.cameraMenuPopoverController.popoverContentSize = CGSizeMake(206, 96);
-        self.cameraMenuPopoverController.delegate = self;
-        self.cameraMenuPopoverController.popoverBackgroundViewClass = [SYNPopoverBackgroundView class];
-        
-        [self.cameraMenuPopoverController presentPopoverFromRect: button.frame
-                                                          inView: self.coverChooserMasterView
-                                        permittedArrowDirections: UIPopoverArrowDirectionLeft
-                                                        animated: YES];
-    }
-}
-
-
-- (void) popoverControllerDidDismissPopover: (UIPopoverController *) popoverController
-{
-    if (popoverController == self.cameraMenuPopoverController)
-    {
-        self.cameraButton.selected = NO;
-        self.cameraPopoverController = nil;
-    }
-    else if (popoverController == self.cameraPopoverController)
-    {
-        self.cameraButton.selected = NO;
-        self.cameraPopoverController = nil;
-    }
-    else if (popoverController == self.reportConcernPopoverController)
-    {
-        self.reportConcernButton.selected = NO;
-        self.reportConcernPopoverController = nil;
-    }
-    else
-    {
-        AssertOrLog(@"Unknown popup dismissed");
-    }
-}
-
-
-- (void) userTouchedTakePhotoButton
-{
-    [self.cameraMenuPopoverController dismissPopoverAnimated: NO];
-    [self showImagePicker: UIImagePickerControllerSourceTypeCamera];
-}
-
-
-- (void) userTouchedChooseExistingPhotoButton
-{
-    [self.cameraMenuPopoverController dismissPopoverAnimated: NO];
-    [self showImagePicker: UIImagePickerControllerSourceTypePhotoLibrary];
-}
-
-
-- (void) showImagePicker: (UIImagePickerControllerSourceType) sourceType
-{
-    self.imagePicker = [[GKImagePicker alloc] init];
-    self.imagePicker.cropSize = CGSizeMake(280, 280);
+    //Show imagePicker
+    self.imagePicker = [[SYNImagePickerController alloc] initWithHostViewController:self];
     self.imagePicker.delegate = self;
-    self.imagePicker.imagePickerController.sourceType = sourceType;
-    
-    if ((sourceType == UIImagePickerControllerSourceTypeCamera) && [UIImagePickerController respondsToSelector: @selector(isCameraDeviceAvailable:)])
-    {
-        if ([UIImagePickerController isCameraDeviceAvailable: UIImagePickerControllerCameraDeviceFront])
-        {
-            self.imagePicker.imagePickerController.cameraDevice = UIImagePickerControllerCameraDeviceRear;
-        }
-    }
-    
-    if (UI_USER_INTERFACE_IDIOM() == UIUserInterfaceIdiomPad)
-    {
-        self.cameraPopoverController = [[UIPopoverController alloc] initWithContentViewController: self.imagePicker.imagePickerController];
-        
-        self.cameraPopoverController.popoverBackgroundViewClass = [SYNPopoverBackgroundView class];
-        
-        [self.cameraPopoverController presentPopoverFromRect: self.cameraButton.frame
-                                                      inView: self.coverChooserMasterView
-                                    permittedArrowDirections: UIPopoverArrowDirectionLeft
-                                                    animated: YES];
-        
-        self.cameraPopoverController.delegate = self;
-    }
-    else
-    {
-        [self presentViewController: self.imagePicker.imagePickerController
-                           animated: YES
-                         completion: nil];
-    }
+    [self.imagePicker presentImagePickerAsPopupFromView:button arrowDirection:UIPopoverArrowDirectionLeft];
 }
 
+#pragma mark - SYNImagePickerDelegate
 
-# pragma mark - GKImagePicker Delegate Methods
-
-- (void) imagePicker: (GKImagePicker *) imagePicker
-         pickedImage: (UIImage *) image
+-(void)picker:(SYNImagePickerController *)picker finishedWithImage:(UIImage *)image
 {
-    self.cameraButton.selected = NO;
-//    DebugLog(@"width %f, height %f", image.size.width, image.size.height);
-    
+    //Imagepicker has picked an image
     self.channelCoverImageView.image = image;
-    
     [self uploadChannelImage: image];
-    
-    [self hideImagePicker];
+    self.imagePicker = nil;
 }
-
-
-- (void) hideImagePicker
-{
-    self.cameraButton.selected = NO;
-    if (UIUserInterfaceIdiomPad == UI_USER_INTERFACE_IDIOM())
-    {
-        
-        [self.cameraPopoverController dismissPopoverAnimated: YES];
-        
-    } else {
-        
-        [self.imagePicker.imagePickerController dismissViewControllerAnimated: YES
-                                                                   completion: nil];
-    }
-}
-
 
 #pragma mark - Upload channel cover image
 

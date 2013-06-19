@@ -20,7 +20,7 @@
 @property (nonatomic,strong)UIPopoverController* cameraMenuPopoverController;
 @property (nonatomic,strong)UIPopoverController* cameraPopoverController;
 @property (nonatomic,strong)GKImagePicker* imagePicker;
-@property (nonatomic,weak) UIView* popoverPresentingView;
+@property (nonatomic, assign) CGRect popoverPresentingFrame;
 @property (nonatomic, assign) UIPopoverArrowDirection direction;
 @end
 
@@ -44,7 +44,7 @@
     }
     else
     {
-        self.popoverPresentingView = view;
+        self.popoverPresentingFrame = [self.hostViewController.view convertRect:view.frame fromView:view.superview];
         self.direction = direction;
         SYNCameraPopoverViewController *actionPopoverController = [[SYNCameraPopoverViewController alloc] init];
         actionPopoverController.delegate = self;
@@ -55,7 +55,7 @@
         self.cameraMenuPopoverController.delegate = self;
         self.cameraMenuPopoverController.popoverBackgroundViewClass = [SYNPopoverBackgroundView class];
         
-        [self.cameraMenuPopoverController presentPopoverFromRect: self.popoverPresentingView.frame
+        [self.cameraMenuPopoverController presentPopoverFromRect: self.popoverPresentingFrame
                                                           inView: self.hostViewController.view
                                         permittedArrowDirections: self.direction
                                                         animated: YES];
@@ -137,7 +137,8 @@
     
     self.cameraPopoverController.popoverBackgroundViewClass = [SYNPopoverBackgroundView class];
     
-    [self.cameraPopoverController presentPopoverFromRect: self.popoverPresentingView.frame
+    
+    [self.cameraPopoverController presentPopoverFromRect: self.popoverPresentingFrame
                                                   inView: self.hostViewController.view
                                 permittedArrowDirections: self.direction
                                                 animated: YES];
