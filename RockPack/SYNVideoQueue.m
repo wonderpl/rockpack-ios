@@ -35,7 +35,7 @@
     {
         
         self.appDelegate = (SYNAppDelegate*)UIApplication.sharedApplication.delegate;
-        self.isEmpty = YES;
+    
         [self setup];
     }
     return self;
@@ -106,7 +106,7 @@
 -(void)handleVideoQueueClearRequest:(NSNotification*)notification
 {
     
-    if(!self.currentlyCreatingChannel)
+    if(self.currentlyCreatingChannel.videoInstances.count == 0)
         return;
     
     
@@ -121,7 +121,6 @@
     
     self.currentlyCreatingChannel = nil;
     
-    self.isEmpty = YES;
 }
 
 #pragma mark - 
@@ -134,7 +133,46 @@
         return;
     }
 
-    if (!self.currentlyCreatingChannel) // create channel if there is none
+    
+    VideoInstance* copyOfVideoInstance = [VideoInstance instanceFromVideoInstance: videoInstance
+                                                        usingManagedObjectContext: self.appDelegate.channelsManagedObjectContext
+                                                              ignoringObjectTypes: kIgnoreChannelObjects];
+    
+    
+    
+    [self.currentlyCreatingChannel addVideoInstancesObject:copyOfVideoInstance];
+    
+    
+    [[NSNotificationCenter defaultCenter] postNotificationName:kNoteAddToChannelRequest object:self];
+    
+    
+    
+}
+
+-(void)removeFromVideoQueue:(VideoInstance*)videoInstance
+{
+    
+    // clear objects from core data
+    
+    for (VideoInstance* currentVideoInstance in self.currentlyCreatingChannel.videoInstances) {
+        
+        if([currentVideoInstance.uniqueId isEqualToString:videoInstance.uniqueId]) {
+            
+            [self.appDelegate.channelsManagedObjectContext deleteObject:currentVideoInstance];
+            
+            [self.appDelegate saveChannelsContext];
+            
+            break;
+        }
+    }
+    
+}
+
+
+
+-(Channel*)currentlyCreatingChannel // lazy loading
+{
+    if (!_currentlyCreatingChannel) // create channel if there is none
     {
         self.currentlyCreatingChannel = [Channel insertInManagedObjectContext: self.appDelegate.channelsManagedObjectContext];
         
@@ -152,82 +190,19 @@
         NSError *error = nil; // if we cannot save, bail
         if (![self.appDelegate.channelsManagedObjectContext save: &error])
         {
-            AssertOrLog(@"Error saving Channels moc: %@\n%@", [error localizedDescription], [error userInfo]);
-            return;
+            DebugLog(@"Cannot save channel to context!");
+            
         }
     }
-    else // if there is a channel remove all videos
-    {
-        for (VideoInstance* existingInstance in self.currentlyCreatingChannel.videoInstances)
-        {
-            [self.appDelegate.channelsManagedObjectContext deleteObject:existingInstance];
-        }
-    }
-    
-    VideoInstance* copyOfVideoInstance = [VideoInstance instanceFromVideoInstance: videoInstance
-                                                        usingManagedObjectContext: self.appDelegate.channelsManagedObjectContext
-                                                              ignoringObjectTypes: kIgnoreChannelObjects];
-    
-    
-    
-    [self.currentlyCreatingChannel addVideoInstancesObject:copyOfVideoInstance];
-    
-    self.isEmpty = NO;
-    [[NSNotificationCenter defaultCenter] postNotificationName:kNoteAddToChannelRequest object:self];
-    
-    
-    
+    return _currentlyCreatingChannel;
 }
 
--(void)removeFromVideoQueue:(VideoInstance*)videoInstance
+-(BOOL)isEmpty
 {
-   if(!self.currentlyCreatingChannel)
-       return;
+    if(!_currentlyCreatingChannel)
+        return YES;
     
-    // clear objects from core data
-    
-    for (VideoInstance* currentVideoInstance in self.currentlyCreatingChannel.videoInstances) {
-        
-        if([currentVideoInstance.uniqueId isEqualToString:videoInstance.uniqueId]) {
-            
-            [self.appDelegate.channelsManagedObjectContext deleteObject:currentVideoInstance];
-            
-            [self.appDelegate saveChannelsContext];
-            
-            break;
-        }
-    }
-    
-    if(self.currentlyCreatingChannel.videoInstances.count == 0)
-        self.isEmpty = YES;
-    
+    return (_currentlyCreatingChannel.videoInstances.count == 0);
 }
-
-
-- (void) clearVideoQueue
-{
-    
-    if(!self.currentlyCreatingChannel) // no channel no queue
-        return;
-    
-    
-    for (VideoInstance* currentVideoInstance in self.currentlyCreatingChannel.videoInstances) {
-        [self.appDelegate.channelsManagedObjectContext deleteObject:currentVideoInstance];
-    }
-    
-    
-    [self.appDelegate saveChannelsContext];
-    
-    
-    self.isEmpty = YES;
-    
-    
-    
-}
-
-
-
-
-
 
 @end

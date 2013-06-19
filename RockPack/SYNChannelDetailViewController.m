@@ -23,6 +23,7 @@
 #import "SYNMasterViewController.h"
 #import "SYNOAuthNetworkEngine.h"
 #import "SYNVideoThumbnailRegularCell.h"
+#import "SYNChannelCreateNewCell.h"
 #import "SubGenre.h"
 #import "UIFont+SYNFont.h"
 #import "UIImageView+WebCache.h"
@@ -429,7 +430,7 @@
     [self.videoThumbnailCollectionView reloadData];
     
     
-    if(self.channel.videoInstances.count == 0)
+    if(self.channel.videoInstances.count == 0 && ![self.channel.uniqueId isEqualToString:kNewChannelPlaceholderId])
     {
         [self showNoVideosMessage: NSLocalizedString(@"channel_screen_loading_videos", nil) withLoader:YES];
     }
@@ -817,6 +818,7 @@
                    cellForItemAtIndexPath: (NSIndexPath *) indexPath
 {
     UICollectionViewCell *cell = nil;
+    
     
     SYNVideoThumbnailRegularCell *videoThumbnailCell = [collectionView dequeueReusableCellWithReuseIdentifier: @"SYNVideoThumbnailRegularCell"
                                                                                                  forIndexPath: indexPath];
