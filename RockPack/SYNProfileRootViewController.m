@@ -559,7 +559,6 @@
                                                      atScrollPosition: UICollectionViewScrollPositionTop
                                                              animated: NO];
         
-        //self.subscriptionsViewController.channelThumbnailCollectionView.contentOffset = self.channelThumbnailCollectionView.contentOffset;
         
     }
     if (self.subscriptionsIndexPath)
@@ -567,8 +566,6 @@
         [self.subscriptionsViewController.channelThumbnailCollectionView  scrollToItemAtIndexPath: self.subscriptionsIndexPath
                                                                                  atScrollPosition: UICollectionViewScrollPositionTop
                                                                                          animated: NO];
-        //self.channelThumbnailCollectionView.contentOffset = self.subscriptionsViewController.channelThumbnailCollectionView.contentOffset;
-        
     }
 
     self.orientationDesicionmaker = nil;
