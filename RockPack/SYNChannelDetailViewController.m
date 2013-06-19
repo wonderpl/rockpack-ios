@@ -1386,6 +1386,9 @@
         self.cancelEditButton.hidden = YES;
         self.addButton.hidden = NO;
         self.backButton.hidden= NO;
+        
+        self.channel = self.originalChannel;
+        
         [self.videoThumbnailCollectionView reloadData];
     }
 
