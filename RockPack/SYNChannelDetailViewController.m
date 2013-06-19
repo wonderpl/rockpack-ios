@@ -238,6 +238,12 @@
     }
     
     
+    // == Swipe to Exit == //
+    
+    UISwipeGestureRecognizer* swipeToExitGesture = [[UISwipeGestureRecognizer alloc] initWithTarget:self action:@selector(swipedToExit:)];
+    swipeToExitGesture.direction = UISwipeGestureRecognizerDirectionLeft;
+    [self.view addGestureRecognizer:swipeToExitGesture];
+    
     
     // == Avatar Image == //
     
@@ -360,6 +366,7 @@
     CGRect correctRect = self.coverChooserMasterView.frame;
     correctRect.origin.y = 404.0;
     self.coverChooserMasterView.frame = correctRect;
+    
     [self.editControlsView addSubview:self.coverChooserMasterView];
     
     self.cameraButton = self.coverChooserController.cameraButton;
@@ -372,6 +379,11 @@
     }
     
     self.originalContentOffset = self.videoThumbnailCollectionView.contentOffset;
+}
+
+-(void)swipedToExit:(UISwipeGestureRecognizer*)recogniser
+{
+    [[NSNotificationCenter defaultCenter] postNotificationName:kNotePopCurrentViewController object:self];
 }
 
 
@@ -2182,7 +2194,7 @@
     
     [[NSNotificationCenter defaultCenter] postNotificationName:kMainControlsChangeEnter object:self];
     
-    if(![self.channel.channelOwner.uniqueId isEqualToString:appDelegate.currentUser.uniqueId] ||
+    if(![self.channel.channelOwner.uniqueId isEqualToString:appDelegate.currentUser.uniqueId] &&
        !self.channel.subscribedByUser)
     {
         // avoid showing the on boarding related to subscription to already subscribed channel or user's own channel
