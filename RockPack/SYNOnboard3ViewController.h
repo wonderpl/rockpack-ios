@@ -7,7 +7,8 @@
 //
 
 #import <UIKit/UIKit.h>
+#import "SYNAbstractOnboardViewController.h"
 
-@interface SYNOnboard3ViewController : UIViewController
+@interface SYNOnboard3ViewController : SYNAbstractOnboardViewController
 
 @end
