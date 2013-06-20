@@ -219,19 +219,19 @@
 
     self.loginBackgroundImage.frame = self.loginBackgroundImage.bounds;
     
-    [UIView animateWithDuration:40.0f
-                          delay:0.0f
-                        options: UIViewAnimationOptionCurveEaseOut
-                     animations:^{
-                         self.loginBackgroundImage.frame =
-                         CGRectMake(self.loginBackgroundImage.frame.origin.x - 593.0f,
-                                    self.loginBackgroundImage.frame.origin.y,
-                                    self.loginBackgroundImage.frame.size.width,
-                                    self.loginBackgroundImage.frame.size.height);
-                         
-                     } completion:^(BOOL finished) {
-                         //self.darkOverlayView.hidden = NO;
-                     }];
+    //No More Animation
+//    [UIView animateWithDuration:40.0f
+//                          delay:0.0f
+//                        options: UIViewAnimationOptionCurveEaseOut
+//                     animations:^{
+//                         self.loginBackgroundImage.frame =
+//                         CGRectMake(self.loginBackgroundImage.frame.origin.x - 593.0f,
+//                                    self.loginBackgroundImage.frame.origin.y,
+//                                    self.loginBackgroundImage.frame.size.width,
+//                                    self.loginBackgroundImage.frame.size.height);
+//                         
+//                     } completion:^(BOOL finished) {
+//                     }];
 }
 
 - (void) viewDidAppear: (BOOL) animated
