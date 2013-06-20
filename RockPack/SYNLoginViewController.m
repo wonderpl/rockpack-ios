@@ -446,7 +446,7 @@
     
     CGRect signUpButtonFrame  = signUpButton.frame;
     if([[SYNDeviceManager sharedInstance] isPortrait])
-        signUpButtonFrame.origin.x = 570.0f;
+        signUpButtonFrame.origin.x = 644.0f;
     
     signUpButton.frame = signUpButtonFrame;
     
