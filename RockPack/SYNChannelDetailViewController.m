@@ -548,6 +548,8 @@
     {
         self.channelCoverImageView.image = nil;
         
+        self.blurredBGImageView.image = nil;
+        
     }
     else if ([coverArtUrl isEqualToString: @"uploading"])
     {
@@ -563,6 +565,7 @@
     {
         __weak SYNChannelDetailViewController *wself = self;
         NSString* largeImageUrlString = [coverArtUrl stringByReplacingOccurrencesOfString:@"thumbnail_medium" withString:@"background"];
+        
         [self.channelCoverImageView setImageWithURL: [NSURL URLWithString: largeImageUrlString]
                                    placeholderImage: [UIImage imageNamed: @"PlaceholderChannelCreation.png"]
                                             options: SDWebImageRetryFailed
