@@ -200,7 +200,7 @@
     // Set the page view controller's bounds using an inset rect so that self's view is visible around the edges of the pages.
     // This is the amount by which to offset the bottom of the page view from the bottom of the screen
     CGRect pageViewRect = self.view.bounds;
-    pageViewRect.size.height -= 120;
+    pageViewRect.size.height -= 240;
     self.pageViewController.view.frame = pageViewRect;
     
     [self.pageViewController didMoveToParentViewController: self];
@@ -396,8 +396,8 @@
     faceImageButton.center = CGPointMake(faceImageButton.center.x - 50.0, faceImageButton.center.y);
     self.avatarImageView.center = CGPointMake(self.avatarImageView.center.x - 50.0, self.avatarImageView.center.y);
     
-    facebookSignInButton.enabled = YES;
-    facebookSignInButton.alpha = 1.0;
+    facebookSignInButton.enabled = NO;
+    facebookSignInButton.alpha = 0.0;
     
     _facebookLoginIsInProcess = NO;
     
@@ -591,6 +591,7 @@
         [UIView animateWithDuration: 0.5
                          animations: ^{
                              facebookSignInButton.alpha = 1.0;
+                             facebookSignInButton.enabled = YES;
                              facebookSignInButton.center = CGPointMake(self.userNameInputField.center.x, facebookSignInButton.center.y);
                              
                              emailInputField.alpha = 0.0;
@@ -645,6 +646,7 @@
         [UIView animateWithDuration: 0.5
                          animations: ^{
                              facebookSignInButton.alpha = 1.0;
+                             facebookSignInButton.enabled = YES;
                              
                              CGFloat diff = userNameInputField.frame.origin.y - self.initialUsernameFrame.origin.y;
                              dividerImageView.center = CGPointMake(dividerImageView.center.x, dividerImageView.center.y - diff);
