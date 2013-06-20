@@ -795,6 +795,7 @@ typedef enum {
     [[SYNSoundPlayer sharedInstance] playSoundByName: kSoundNewSlideIn];
     self.mainContentView.alpha = 1.0f;
     [self.view addSubview:self.searchViewController.searchBoxView];
+    self.searchViewController.searchBoxView.searchTextField.text = @"";
     self.searchViewController.searchBoxView.searchTextField.delegate = self;
     [self.searchViewController.searchBoxView resignFirstResponder];
     [self.searchViewController.searchBoxView hideCloseButton];
