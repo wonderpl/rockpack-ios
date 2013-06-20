@@ -152,6 +152,17 @@
     {
         [self placePopoverInView:_currentlyVisiblePopover];
         
+        for (UIView* view in self.backgroundView.subviews) // clean from existing
+            [view removeFromSuperview];
+        
+        
+        if(_currentlyVisiblePopover.direction != PointingDirectionNone)
+            [self createBGSlicesForPopover:_currentlyVisiblePopover];
+        else
+            [self createBGForPopover:_currentlyVisiblePopover];
+        
+        
+        
         _currentlyVisiblePopover.alpha = 0.0;
         _currentlyVisiblePopover.arrow.alpha = 0.0;
         
@@ -272,7 +283,22 @@
     [self.view addSubview:popover.arrow];
     [self.view addSubview:popover];
     
-    // add bg 8 slices
+    
+        
+    
+}
+
+-(void)createBGForPopover:(SYNOnBoardingPopoverView*)popover
+{
+    UIView* bgView = [[UIView alloc] initWithFrame:self.backgroundView.frame];
+    bgView.backgroundColor = [UIColor blackColor];
+    [self.backgroundView addSubview:bgView];
+}
+
+
+-(void)createBGSlicesForPopover:(SYNOnBoardingPopoverView*)popover
+{
+    CGSize screenSize = [[SYNDeviceManager sharedInstance] currentScreenSize];
     
     float px[4] = {
         0.0f, popover.pointRect.origin.x,
@@ -284,9 +310,9 @@
         popover.pointRect.origin.y + popover.pointRect.size.height, screenSize.height
     };
     
-    int colors[9] = {
-        0x5786fd, 0xf2cd60, 0x7ac9bc, 0xc05bf5, 0x91ccb6, 0xf1c9d0, 0x622a23, 0xf6504d, 0x7db7e1
-    };
+//    int test_colors[9] = {
+//        0x5786fd, 0xf2cd60, 0x7ac9bc, 0xc05bf5, 0x91ccb6, 0xf1c9d0, 0x622a23, 0xf6504d, 0x7db7e1
+//    };
     
     float current_x = 0.0f;
     float current_y = 0.0f;
@@ -309,7 +335,20 @@
             current_h = py[i+1] - current_y;
             
             currentSlice = [[UIView alloc] initWithFrame:CGRectMake(current_x, current_y, current_w, current_h)];
-            currentSlice.backgroundColor = [UIColor colorWithHex:colors[i+j]];
+            
+            if(i == 1 && j == 1) // special interest slice
+            {
+                currentSlice.backgroundColor = [UIColor clearColor];
+                //UITapGestureRecognizer* recogniser = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(doit:)];
+                //[currentSlice addGestureRecognizer:recogniser];
+                
+            }
+            else
+            {
+                currentSlice.backgroundColor = [UIColor blackColor];
+            }
+            
+            
             currentSlice.autoresizingMask = UIViewAutoresizingFlexibleWidth | UIViewAutoresizingFlexibleHeight;
             
             [self.backgroundView addSubview:currentSlice];
@@ -317,10 +356,9 @@
     }
 }
 
-
--(void)createBGSlices
+-(void)doit:(UIGestureRecognizer*)recogniser
 {
-    
+    NSLog(@"Logged Tap!");
 }
 
 
