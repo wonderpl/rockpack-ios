@@ -1080,7 +1080,7 @@
     UIView * v = sender.superview.superview;
     self.indexPathToDelete = [self.channelThumbnailCollectionView indexPathForItemAtPoint: v.center];
     
-    Channel* channelToDelete = (Channel*)self.user.channels[self.indexPathToDelete.row];
+    Channel* channelToDelete = (Channel*)self.user.channels[self.indexPathToDelete.row - (self.isUserProfile ? 1 : 0)];
     if(!channelToDelete)
         return;
     
