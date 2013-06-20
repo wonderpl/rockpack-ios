@@ -15,15 +15,18 @@
 #import "SYNOAuthNetworkEngine.h"
 #import "SYNOnboard1ViewController.h"
 #import "SYNOnboard2ViewController.h"
+#import "SYNOnboard3ViewController.h"
+#import "SYNOnboard4ViewController.h"
 #import "SYNTextFieldLoginiPhone.h"
 #import "UIFont+SYNFont.h"
 #import <FacebookSDK/FacebookSDK.h>
 
 #define kLoginAnimationTransitionDuration 0.3f
 
-@interface SYNLoginViewControllerIphone () <UITextFieldDelegate, SYNImagePickerControllerDelegate>
-
-
+@interface SYNLoginViewControllerIphone () <UITextFieldDelegate,
+                                            SYNImagePickerControllerDelegate,
+                                            UIPageViewControllerDataSource,
+                                            UIPageViewControllerDelegate>
 
 @property (nonatomic, strong) IBOutlet SYNTextFieldLoginiPhone* ddInputField;
 @property (nonatomic, strong) IBOutlet SYNTextFieldLoginiPhone* emailInputField;
@@ -183,7 +186,10 @@
     self.pageViewController.delegate = self;
     
     // Setup the on-boarding controller
-    self.onboardingViewControllers = @[[SYNOnboard1ViewController new], [SYNOnboard2ViewController new]];
+    self.onboardingViewControllers = @[[SYNOnboard1ViewController new],
+                                       [SYNOnboard2ViewController new],
+                                       [SYNOnboard3ViewController new],
+                                       [SYNOnboard4ViewController new]];
     
     [self.pageViewController setViewControllers: @[self.onboardingViewControllers[0]]
                                       direction: UIPageViewControllerNavigationDirectionForward
