@@ -40,7 +40,7 @@
     self.backgroundView = [[UIView alloc] initWithFrame:screenFrame];
     //self.backgroundView.backgroundColor = [UIColor blackColor];
     self.backgroundView.alpha = 0.0;
-    self.backgroundView.userInteractionEnabled = NO;
+    self.backgroundView.userInteractionEnabled = YES;
     self.backgroundView.autoresizingMask = UIViewAutoresizingFlexibleWidth | UIViewAutoresizingFlexibleHeight;
     
     UIView* mainView = [[UIView alloc] initWithFrame:screenFrame];
@@ -143,7 +143,6 @@
         }];
         
         return;
-        
     }
     
     _currentlyVisiblePopover = currentlyVisiblePopover;
@@ -152,16 +151,7 @@
     {
         [self placePopoverInView:_currentlyVisiblePopover];
         
-        for (UIView* view in self.backgroundView.subviews) // clean from existing
-            [view removeFromSuperview];
-        
-        
-        if(_currentlyVisiblePopover.direction != PointingDirectionNone)
-            [self createBGSlicesForPopover:_currentlyVisiblePopover];
-        else
-            [self createBGForPopover:_currentlyVisiblePopover];
-        
-        
+        [self createBG];
         
         _currentlyVisiblePopover.alpha = 0.0;
         _currentlyVisiblePopover.arrow.alpha = 0.0;
@@ -185,7 +175,17 @@
     
 }
 
-
+-(void)createBG
+{
+    for (UIView* view in self.backgroundView.subviews) // clean from existing
+        [view removeFromSuperview];
+    
+    
+    if(_currentlyVisiblePopover.direction != PointingDirectionNone)
+        [self createBGSlicesForPopover:_currentlyVisiblePopover];
+    else
+        [self createBGForPopover:_currentlyVisiblePopover];
+}
 -(void)placePopoverInView:(SYNOnBoardingPopoverView*)popover
 {
     
@@ -338,9 +338,10 @@
             
             if(i == 1 && j == 1) // special interest slice
             {
+                
                 currentSlice.backgroundColor = [UIColor clearColor];
-                //UITapGestureRecognizer* recogniser = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(doit:)];
-                //[currentSlice addGestureRecognizer:recogniser];
+                UITapGestureRecognizer* recogniser = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(doit:)];
+                [currentSlice addGestureRecognizer:recogniser];
                 
             }
             else
@@ -356,6 +357,19 @@
     }
 }
 
+-(void)willAnimateRotationToInterfaceOrientation:(UIInterfaceOrientation)toInterfaceOrientation duration:(NSTimeInterval)duration
+{
+    [super willAnimateRotationToInterfaceOrientation:toInterfaceOrientation duration:duration];
+    
+    
+}
+
+-(void)didRotateFromInterfaceOrientation:(UIInterfaceOrientation)fromInterfaceOrientation
+{
+    [super didRotateFromInterfaceOrientation:fromInterfaceOrientation];
+    
+    [self createBG];
+}
 -(void)doit:(UIGestureRecognizer*)recogniser
 {
     NSLog(@"Logged Tap!");
