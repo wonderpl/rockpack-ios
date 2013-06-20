@@ -736,7 +736,7 @@
 
 - (NSInteger) collectionView: (UICollectionView *) view numberOfItemsInSection: (NSInteger) section
 {
-    return self.user.channels.count + 1; // to account for the extra 'creation' cell at the start of the collection view
+    return self.user.channels.count + (self.isUserProfile ? 1 : 0); // to account for the extra 'creation' cell at the start of the collection view
 }
 
 
@@ -751,7 +751,7 @@
 {
     UICollectionViewCell* cell = nil;
     
-    if (indexPath.row == 0) // first row (create)
+    if (self.isUserProfile && indexPath.row == 0) // first row for a user profile only (create)
     {
         SYNChannelCreateNewCell* createCell = [collectionView dequeueReusableCellWithReuseIdentifier: @"SYNChannelCreateNewCell"
                                                                                         forIndexPath: indexPath];
@@ -760,7 +760,7 @@
     }
     else
     {
-        Channel *channel = (Channel*)self.user.channels[indexPath.row - 1];
+        Channel *channel = (Channel*)self.user.channels[indexPath.row - (self.isUserProfile ? 1 : 0)];
         
         SYNChannelMidCell *channelThumbnailCell = [collectionView dequeueReusableCellWithReuseIdentifier: @"SYNChannelMidCell"
                                                                                             forIndexPath: indexPath];
@@ -805,7 +805,7 @@
     
     if (collectionView == self.channelThumbnailCollectionView)
     {
-        if(indexPath.row == 0)
+        if(self.isUserProfile && indexPath.row == 0)
         {
             if([[SYNDeviceManager sharedInstance] isIPad])
             {
@@ -848,7 +848,7 @@
         }
         else
         {
-            channel = self.user.channels[indexPath.row - 1];
+            channel = self.user.channels[indexPath.row - (self.isUserProfile ? 1 : 0)];
         }
         
     }
@@ -1174,6 +1174,8 @@
                                                       object:self.user];
     }
     
+    if(!appDelegate)
+        appDelegate = (SYNAppDelegate*)[[UIApplication sharedApplication] delegate];
     
     if(!user) // if no user has been passed, set to nil and then return
         return;
@@ -1223,10 +1225,18 @@
     else
     {
         _user = user; // if User isKindOfClass [User class]
+        
     }
     
     if(self.user) // if a user has been passed or found, monitor
     {
+        NSLog(@"self.user.uniqueId: %@ - appDelegate.currentUser.uniqueId: %@", self.user.uniqueId, appDelegate.currentUser);
+        
+        if([self.user.uniqueId isEqualToString:appDelegate.currentUser.uniqueId])
+            self.isUserProfile = YES;
+        else
+            self.isUserProfile = NO;
+        
         [[NSNotificationCenter defaultCenter] addObserver: self
                                                  selector: @selector(handleDataModelChange:)
                                                      name: NSManagedObjectContextDidSaveNotification
