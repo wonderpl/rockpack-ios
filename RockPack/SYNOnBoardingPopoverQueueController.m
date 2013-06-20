@@ -143,7 +143,6 @@
         }];
         
         return;
-        
     }
     
     _currentlyVisiblePopover = currentlyVisiblePopover;
@@ -340,7 +339,7 @@
             if(i == 1 && j == 1) // special interest slice
             {
                 
-                currentSlice.backgroundColor = [UIColor redColor];
+                currentSlice.backgroundColor = [UIColor clearColor];
                 UITapGestureRecognizer* recogniser = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(doit:)];
                 [currentSlice addGestureRecognizer:recogniser];
                 
@@ -362,12 +361,14 @@
 {
     [super willAnimateRotationToInterfaceOrientation:toInterfaceOrientation duration:duration];
     
-    for (UIView* view in self.backgroundView.subviews) // clean from existing
-        [view removeFromSuperview];
     
+}
+
+-(void)didRotateFromInterfaceOrientation:(UIInterfaceOrientation)fromInterfaceOrientation
+{
+    [super didRotateFromInterfaceOrientation:fromInterfaceOrientation];
     
-    
-    
+    [self createBG];
 }
 -(void)doit:(UIGestureRecognizer*)recogniser
 {
