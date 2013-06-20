@@ -613,8 +613,11 @@
 
     
     NSArray* updatedObjects = [[notification userInfo] objectForKey: NSUpdatedObjectsKey];
-//    NSArray* insertedObjects = [[notification userInfo] objectForKey: NSInsertedObjectsKey];
-//    NSArray* deletedObjects = [[notification userInfo] objectForKey: NSDeletedObjectsKey];
+    
+    
+    NSArray* deletedObjects = [[notification userInfo] objectForKey: NSDeletedObjectsKey]; // our channel has been deleted
+    if([deletedObjects containsObject:self.channel])
+        return;
     
 
     [updatedObjects enumerateObjectsUsingBlock: ^(id obj, NSUInteger idx, BOOL *stop) {
@@ -2689,7 +2692,7 @@
     {
         
         [[NSNotificationCenter defaultCenter] removeObserver: self
-                                                        name: NSManagedObjectContextObjectsDidChangeNotification
+                                                        name: NSManagedObjectContextDidSaveNotification
                                                       object: self.channel.managedObjectContext];   
     }
     

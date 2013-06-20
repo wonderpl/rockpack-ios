@@ -750,10 +750,14 @@ typedef void(^AnimationCompletionBlock)(BOOL finished);
     }
     else if([[SYNDeviceManager sharedInstance] isIPhone])
     {
-        [self.searchViewController.view addSubview:self.sideNavigationViewController.searchViewController.searchBoxView];
-        self.searchViewController.searchBoxViewController = self.sideNavigationViewController.searchViewController;
         SYNAbstractViewController* topController = (SYNAbstractViewController*)self.searchViewController.navigationController.topViewController;
         [topController animatedPopToRootViewController];
+    }
+    
+    if([[SYNDeviceManager sharedInstance] isIPhone])
+    {
+        [self.searchViewController.view addSubview:self.sideNavigationViewController.searchViewController.searchBoxView];
+        self.searchViewController.searchBoxViewController = self.sideNavigationViewController.searchViewController;
     }
     
     
