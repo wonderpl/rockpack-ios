@@ -13,13 +13,16 @@
 #import "SYNLoginViewController.h"
 #import "SYNLoginViewControllerIphone.h"
 #import "SYNOAuthNetworkEngine.h"
+#import "SYNOnboard1ViewController.h"
+#import "SYNOnboard2ViewController.h"
+#import "SYNTextFieldLoginiPhone.h"
 #import "UIFont+SYNFont.h"
 #import <FacebookSDK/FacebookSDK.h>
-#import "SYNTextFieldLoginiPhone.h"
 
 #define kLoginAnimationTransitionDuration 0.3f
 
 @interface SYNLoginViewControllerIphone () <UITextFieldDelegate, SYNImagePickerControllerDelegate>
+
 
 
 @property (nonatomic, strong) IBOutlet SYNTextFieldLoginiPhone* ddInputField;
@@ -37,7 +40,9 @@
 @property (nonatomic, strong) IBOutlet UILabel* wellSendYouLabel;
 @property (nonatomic, strong) IBOutlet UILabel* whatsOnYourChannelLabel;
 @property (nonatomic, strong) IBOutlet UIView* dobView;
+@property (strong, nonatomic) NSArray *onboardingViewControllers;
 @property (strong, nonatomic) NSDateFormatter * dateFormatter;
+@property (strong, nonatomic) UIPageViewController *pageViewController;
 @property (weak, nonatomic) IBOutlet UIButton *backButton;
 @property (weak, nonatomic) IBOutlet UIButton *cancelButton;
 @property (weak, nonatomic) IBOutlet UIButton *confirmButton;
@@ -47,6 +52,7 @@
 @property (weak, nonatomic) IBOutlet UIButton *signupButton;
 @property (weak, nonatomic) IBOutlet UILabel *loginErrorLabel;
 @property (weak, nonatomic) IBOutlet UILabel *passwordResetErrorLabel;
+@property (weak, nonatomic) IBOutlet UILabel *registeringUserErrorLabel;
 @property (weak, nonatomic) IBOutlet UILabel *signupErrorLabel;
 @property (weak, nonatomic) IBOutlet UIView *firstSignupView;
 @property (weak, nonatomic) IBOutlet UIView *initialView;
@@ -54,9 +60,6 @@
 @property (weak, nonatomic) IBOutlet UIView *passwordView;
 @property (weak, nonatomic) IBOutlet UIView *secondSignupView;
 @property (weak, nonatomic) IBOutlet UIView *termsAndConditionsView;
-@property (weak, nonatomic) IBOutlet UILabel *registeringUserErrorLabel;
-
-
 
 @property (nonatomic, strong) IBOutlet UIActivityIndicatorView* activityIndicator;
 
@@ -171,6 +174,33 @@
     
     self.formatter = [[NSDateFormatter alloc] init];
     self.formatter.dateFormat = @"dd/MM/yyyy";
+    
+    self.pageViewController = [[UIPageViewController alloc] initWithTransitionStyle: UIPageViewControllerTransitionStyleScroll
+                                                              navigationOrientation: UIPageViewControllerNavigationOrientationHorizontal
+                                                                            options: nil];
+    
+    self.pageViewController.dataSource = self;
+    self.pageViewController.delegate = self;
+    
+    // Setup the on-boarding controller
+    self.onboardingViewControllers = @[[SYNOnboard1ViewController new], [SYNOnboard2ViewController new]];
+    
+    [self.pageViewController setViewControllers: @[self.onboardingViewControllers[0]]
+                                      direction: UIPageViewControllerNavigationDirectionForward
+                                       animated: NO
+                                     completion: nil];
+    
+    [self addChildViewController: self.pageViewController];
+    [self.view addSubview: self.pageViewController.view];
+    
+    // Set the page view controller's bounds using an inset rect so that self's view is visible around the edges of the pages.
+    // This is the amount by which to offset the bottom of the page view from the bottom of the screen
+    CGRect pageViewRect = self.view.bounds;
+    pageViewRect.size.height -= 50;
+    self.pageViewController.view.frame = pageViewRect;
+    
+    [self.pageViewController didMoveToParentViewController: self];
+
 }
 
 
@@ -265,10 +295,122 @@
 }
 
 
+#pragma mark - Onboarding support
+
+- (void) hideOnboarding
+{
+    [UIView animateWithDuration: 0.3f
+                          delay: 0.1f
+                        options: UIViewAnimationOptionCurveEaseOut
+                     animations: ^{
+                         self.pageViewController.view.alpha = 0.0f;
+                     } completion:^(BOOL finished) {
+                         self.pageViewController.view.hidden = TRUE;
+                     }];
+}
+
+- (void) showOnboarding
+{
+    self.pageViewController.view.hidden = FALSE;
+    
+    [UIView animateWithDuration: 0.3f
+                          delay: 0.1f
+                        options: UIViewAnimationOptionCurveEaseOut
+                     animations: ^{
+                         self.pageViewController.view.alpha = 1.0f;
+                     } completion: nil];
+}
+
+#pragma mark - Page View Controller Data Source
+
+- (UIViewController *) pageViewController: (UIPageViewController *) pageViewController
+       viewControllerBeforeViewController: (UIViewController *) viewController
+{
+    NSUInteger numberOfOnboardViewControllers = self.onboardingViewControllers.count;
+    int index = 0;
+    for (UIViewController *vc in self.onboardingViewControllers)
+    {
+        if (vc == viewController)
+        {
+#ifdef WRAP_AROUND
+            if (index == 0)
+            {
+                return nil;
+            }
+            else
+            {
+                return self.onboardingViewControllers[index - 1];
+            }
+#else
+            if (index == 0)
+            {
+                return self.onboardingViewControllers [numberOfOnboardViewControllers - 1];
+            }
+            else
+            {
+                return self.onboardingViewControllers [index - 1];
+            }
+#endif
+        }
+        
+        index++;
+    }
+    
+    // If we got here then we didn't find the viewcontroller
+    return nil;
+}
+
+- (UIViewController *) pageViewController: (UIPageViewController *) pageViewController
+        viewControllerAfterViewController: (UIViewController *) viewController
+{
+    NSUInteger numberOfOnboardViewControllers = self.onboardingViewControllers.count;
+    int index = 0;
+    for (UIViewController *vc in self.onboardingViewControllers)
+    {
+        if (vc == viewController)
+        {
+#ifdef WRAP_AROUND
+            if (index == (self.onboardingViewControllers.count - 1))
+            {
+                return nil;
+            }
+            else
+            {
+                return self.onboardingViewControllers[(index + 1) % numberOfOnboardViewControllers];
+            }
+#else
+            return self.onboardingViewControllers [(index + 1) % numberOfOnboardViewControllers];
+#endif
+        }
+        
+        index++;
+    }
+    
+    // If we got here then we didn't find the viewcontroller
+    return nil;
+}
+
+
+
+- (NSInteger) presentationCountForPageViewController: (UIPageViewController *) pageViewController
+{
+    return self.onboardingViewControllers.count;
+}
+
+
+- (NSInteger) presentationIndexForPageViewController: (UIPageViewController *) pageViewController
+{
+    // Start off showing the first view controller
+    return 0;
+}
+
+
 #pragma mark - button IBActions
 
 - (IBAction) facebookTapped: (id) sender
 {
+    [self hideOnboarding];
+    
     id<GAITracker> tracker = [GAI sharedInstance].defaultTracker;
     
     [tracker sendEventWithCategory: @"uiAction"
@@ -335,6 +477,8 @@
 
 - (IBAction) signupTapped: (id) sender
 {
+    [self hideOnboarding];
+    
     id<GAITracker> tracker = [GAI sharedInstance].defaultTracker;
     
     [tracker sendEventWithCategory: @"goal"
@@ -381,6 +525,8 @@
 
 - (IBAction) loginTapped: (id) sender
 {
+    [self hideOnboarding];
+    
     [GAI.sharedInstance.defaultTracker sendView: @"Login"];
     
     id<GAITracker> tracker = [GAI sharedInstance].defaultTracker;

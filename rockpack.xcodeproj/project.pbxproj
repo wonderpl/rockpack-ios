@@ -181,6 +181,12 @@
 		016B97171770C42200892211 /* StoreKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 016B97161770C42200892211 /* StoreKit.framework */; };
 		0170717E165550A900A3C7C4 /* SystemConfiguration.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 0170717D165550A900A3C7C4 /* SystemConfiguration.framework */; };
 		01707180165550BE00A3C7C4 /* Security.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 0170717F165550BE00A3C7C4 /* Security.framework */; };
+		0171DBD617732B7600B3D510 /* SYNOnboard1ViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 0171DBD417732B7600B3D510 /* SYNOnboard1ViewController.m */; };
+		0171DBD717732B7600B3D510 /* SYNOnboard1ViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 0171DBD517732B7600B3D510 /* SYNOnboard1ViewController.xib */; };
+		0171DBDB17732C0600B3D510 /* SYNOnboard2ViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 0171DBD817732C0600B3D510 /* SYNOnboard2ViewController.xib */; };
+		0171DBDC17732C0600B3D510 /* SYNOnboard2ViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 0171DBD917732C0600B3D510 /* SYNOnboard2ViewController.m */; };
+		0171DC2E17733FA700B3D510 /* SYNOnboard1ViewController~iphone.xib in Resources */ = {isa = PBXBuildFile; fileRef = 0171DC2D17733FA700B3D510 /* SYNOnboard1ViewController~iphone.xib */; };
+		0171DC301773410200B3D510 /* SYNOnboard2ViewController~iphone.xib in Resources */ = {isa = PBXBuildFile; fileRef = 0171DC2F1773410200B3D510 /* SYNOnboard2ViewController~iphone.xib */; };
 		0173E6CC1718231F00EEE76B /* libGoogleAnalytics.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 0173E6CB1718231F00EEE76B /* libGoogleAnalytics.a */; };
 		0173F6FB16E028E4005B3ECA /* BackgroundVideoThumbnailSmall.png in Resources */ = {isa = PBXBuildFile; fileRef = 0173F6F716E028E4005B3ECA /* BackgroundVideoThumbnailSmall.png */; };
 		0173F6FC16E028E4005B3ECA /* BackgroundVideoThumbnailSmall@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 0173F6F816E028E4005B3ECA /* BackgroundVideoThumbnailSmall@2x.png */; };
@@ -1372,6 +1378,14 @@
 		016B97161770C42200892211 /* StoreKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = StoreKit.framework; path = System/Library/Frameworks/StoreKit.framework; sourceTree = SDKROOT; };
 		0170717D165550A900A3C7C4 /* SystemConfiguration.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = SystemConfiguration.framework; path = System/Library/Frameworks/SystemConfiguration.framework; sourceTree = SDKROOT; };
 		0170717F165550BE00A3C7C4 /* Security.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Security.framework; path = System/Library/Frameworks/Security.framework; sourceTree = SDKROOT; };
+		0171DBD317732B7600B3D510 /* SYNOnboard1ViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SYNOnboard1ViewController.h; sourceTree = "<group>"; };
+		0171DBD417732B7600B3D510 /* SYNOnboard1ViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SYNOnboard1ViewController.m; sourceTree = "<group>"; };
+		0171DBD517732B7600B3D510 /* SYNOnboard1ViewController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = SYNOnboard1ViewController.xib; sourceTree = "<group>"; };
+		0171DBD817732C0600B3D510 /* SYNOnboard2ViewController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = SYNOnboard2ViewController.xib; sourceTree = "<group>"; };
+		0171DBD917732C0600B3D510 /* SYNOnboard2ViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SYNOnboard2ViewController.m; sourceTree = "<group>"; };
+		0171DBDA17732C0600B3D510 /* SYNOnboard2ViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SYNOnboard2ViewController.h; sourceTree = "<group>"; };
+		0171DC2D17733FA700B3D510 /* SYNOnboard1ViewController~iphone.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = "SYNOnboard1ViewController~iphone.xib"; sourceTree = "<group>"; };
+		0171DC2F1773410200B3D510 /* SYNOnboard2ViewController~iphone.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = "SYNOnboard2ViewController~iphone.xib"; sourceTree = "<group>"; };
 		0173E6C6171822F000EEE76B /* GAI.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = GAI.h; sourceTree = "<group>"; };
 		0173E6C7171822F000EEE76B /* GAITrackedViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = GAITrackedViewController.h; sourceTree = "<group>"; };
 		0173E6C8171822F000EEE76B /* GAITracker.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = GAITracker.h; sourceTree = "<group>"; };
@@ -3005,6 +3019,21 @@
 			name = Networking;
 			sourceTree = "<group>";
 		};
+		0171DBD217732B5B00B3D510 /* On boarding */ = {
+			isa = PBXGroup;
+			children = (
+				0171DBD317732B7600B3D510 /* SYNOnboard1ViewController.h */,
+				0171DBD417732B7600B3D510 /* SYNOnboard1ViewController.m */,
+				0171DBD517732B7600B3D510 /* SYNOnboard1ViewController.xib */,
+				0171DC2D17733FA700B3D510 /* SYNOnboard1ViewController~iphone.xib */,
+				0171DBDA17732C0600B3D510 /* SYNOnboard2ViewController.h */,
+				0171DBD917732C0600B3D510 /* SYNOnboard2ViewController.m */,
+				0171DBD817732C0600B3D510 /* SYNOnboard2ViewController.xib */,
+				0171DC2F1773410200B3D510 /* SYNOnboard2ViewController~iphone.xib */,
+			);
+			name = "On boarding";
+			sourceTree = "<group>";
+		};
 		0173E6C5171822BF00EEE76B /* Google Analytics */ = {
 			isa = PBXGroup;
 			children = (
@@ -3157,6 +3186,7 @@
 		019824E11629CAB600216900 /* View Controllers */ = {
 			isa = PBXGroup;
 			children = (
+				0171DBD217732B5B00B3D510 /* On boarding */,
 				BEF9E5A516DBCDEF00286113 /* Components */,
 				BE270B7B16EDE0A500CDDA6D /* Login */,
 				BE0815C216D5386B00ADB1DC /* Master View Controller */,
@@ -5975,6 +6005,10 @@
 				BE2AE4D6176E689C00A753E3 /* ButtonBackHighlightedCD~iphone.png in Resources */,
 				1FD8720F176F7F26009F4746 /* LoginErrorPortrait.png in Resources */,
 				1FD87210176F7F26009F4746 /* LoginErrorPortrait@2x.png in Resources */,
+				0171DBD717732B7600B3D510 /* SYNOnboard1ViewController.xib in Resources */,
+				0171DBDB17732C0600B3D510 /* SYNOnboard2ViewController.xib in Resources */,
+				0171DC2E17733FA700B3D510 /* SYNOnboard1ViewController~iphone.xib in Resources */,
+				0171DC301773410200B3D510 /* SYNOnboard2ViewController~iphone.xib in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -6253,6 +6287,8 @@
 				0154E8481768E268001C7B75 /* SYNTimer.m in Sources */,
 				01A02E76176E1EA5001F14BD /* UIImage+Monochrome.m in Sources */,
 				0198E46A176F0AEC00AFBE2F /* SYNPageView.m in Sources */,
+				0171DBD617732B7600B3D510 /* SYNOnboard1ViewController.m in Sources */,
+				0171DBDC17732C0600B3D510 /* SYNOnboard2ViewController.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
