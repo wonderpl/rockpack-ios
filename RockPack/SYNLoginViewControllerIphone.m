@@ -76,16 +76,18 @@
 
 @property (nonatomic, strong) NSMutableArray* validUsernames;
 
+@property (nonatomic) BOOL isPreIPhone5;
+
 @end
 
 @implementation SYNLoginViewControllerIphone 
-
+@synthesize isPreIPhone5;
 
 - (void) viewDidLoad
 {
     [super viewDidLoad];
     
-    BOOL isPreIPhone5 = [SYNDeviceManager.sharedInstance currentScreenHeight] < 500;
+    self.isPreIPhone5 = [SYNDeviceManager.sharedInstance currentScreenHeight] < 500;
     
     //Move all subviews offscreen
     CGPoint newCenter = self.loginView.center;
@@ -232,12 +234,13 @@
 {
     [super viewDidAppear:animated];
     self.rockpackLogoImage.frame = self.rockpackLogoImage.frame;
-    
     [UIView animateWithDuration:0.3f
                           delay:0.1f
                         options: UIViewAnimationOptionCurveEaseOut
                      animations:^{
-                         self.rockpackLogoImage.frame = CGRectMake(self.rockpackLogoImage.frame.origin.x, 35.0f, self.rockpackLogoImage.frame.size.width, self.rockpackLogoImage.frame.size.height);
+                         self.rockpackLogoImage.frame = CGRectMake(self.rockpackLogoImage.frame.origin.x, 35.0f,
+                                                                   self.rockpackLogoImage.frame.size.width,
+                                                                   self.rockpackLogoImage.frame.size.height);
                          
                      } completion:^(BOOL finished) {
                      }];
@@ -257,21 +260,29 @@
     
     
     self.facebookButton.alpha = 0.0f;
-    self.facebookButton.frame = self.facebookButton.frame;
+    CGRect facebookButtonFrame = self.facebookButton.frame;
+    if(!isPreIPhone5)
+        facebookButtonFrame.origin.y += 80.0;
     
+    self.facebookButton.frame = facebookButtonFrame;
     [UIView animateWithDuration:0.3f
                           delay:0.1f
                         options: UIViewAnimationOptionCurveEaseOut
                      animations:^{
                          self.facebookButton.alpha = 1.0f;
-                         self.facebookButton.frame = CGRectMake(self.facebookButton.frame.origin.x, self.facebookButton.frame.origin.y - 20.0f, self.facebookButton.frame.size.width, self.facebookButton.frame.size.height);
+                         self.facebookButton.frame = CGRectMake(self.facebookButton.frame.origin.x,
+                                                                self.facebookButton.frame.origin.y - 20.0f,
+                                                                self.facebookButton.frame.size.width,
+                                                                self.facebookButton.frame.size.height);
                          
                      } completion:^(BOOL finished) {
                      }];
     
     self.signupButton.alpha = 0.0f;
-    self.signupButton.frame = self.signupButton.frame;
-    
+    CGRect signUpButtonFrame = self.signupButton.frame;
+    if(!isPreIPhone5)
+        signUpButtonFrame.origin.y += 80.0;
+    self.signupButton.frame = signUpButtonFrame;
     [UIView animateWithDuration:0.3f
                           delay:0.1f
                         options: UIViewAnimationOptionCurveEaseOut
@@ -283,7 +294,10 @@
                      }];
     
     self.loginButton.alpha = 0.0f;
-    self.loginButton.frame = self.loginButton.frame;
+    CGRect loginButtonFrame = self.loginButton.frame;
+    if(!isPreIPhone5)
+        loginButtonFrame.origin.y += 80.0;
+    self.loginButton.frame = loginButtonFrame;
     
     [UIView animateWithDuration:0.3f
                           delay:0.1f
