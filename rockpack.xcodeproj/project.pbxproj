@@ -193,6 +193,7 @@
 		0171DC3C17735A3D00B3D510 /* SYNOnboard3ViewController~iphone.xib in Resources */ = {isa = PBXBuildFile; fileRef = 0171DC3517735A3C00B3D510 /* SYNOnboard3ViewController~iphone.xib */; };
 		0171DC3D17735A3D00B3D510 /* SYNOnboard3ViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 0171DC3717735A3D00B3D510 /* SYNOnboard3ViewController.xib */; };
 		0171DC3E17735A3D00B3D510 /* SYNOnboard3ViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 0171DC3817735A3D00B3D510 /* SYNOnboard3ViewController.m */; };
+		0171DC4117735E9F00B3D510 /* SYNAbstractOnboardViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 0171DC4017735E9F00B3D510 /* SYNAbstractOnboardViewController.m */; };
 		0173E6CC1718231F00EEE76B /* libGoogleAnalytics.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 0173E6CB1718231F00EEE76B /* libGoogleAnalytics.a */; };
 		0173F6FB16E028E4005B3ECA /* BackgroundVideoThumbnailSmall.png in Resources */ = {isa = PBXBuildFile; fileRef = 0173F6F716E028E4005B3ECA /* BackgroundVideoThumbnailSmall.png */; };
 		0173F6FC16E028E4005B3ECA /* BackgroundVideoThumbnailSmall@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 0173F6F816E028E4005B3ECA /* BackgroundVideoThumbnailSmall@2x.png */; };
@@ -1400,6 +1401,8 @@
 		0171DC3617735A3C00B3D510 /* SYNOnboard3ViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SYNOnboard3ViewController.h; sourceTree = "<group>"; };
 		0171DC3717735A3D00B3D510 /* SYNOnboard3ViewController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = SYNOnboard3ViewController.xib; sourceTree = "<group>"; };
 		0171DC3817735A3D00B3D510 /* SYNOnboard3ViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SYNOnboard3ViewController.m; sourceTree = "<group>"; };
+		0171DC3F17735E9F00B3D510 /* SYNAbstractOnboardViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SYNAbstractOnboardViewController.h; sourceTree = "<group>"; };
+		0171DC4017735E9F00B3D510 /* SYNAbstractOnboardViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SYNAbstractOnboardViewController.m; sourceTree = "<group>"; };
 		0173E6C6171822F000EEE76B /* GAI.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = GAI.h; sourceTree = "<group>"; };
 		0173E6C7171822F000EEE76B /* GAITrackedViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = GAITrackedViewController.h; sourceTree = "<group>"; };
 		0173E6C8171822F000EEE76B /* GAITracker.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = GAITracker.h; sourceTree = "<group>"; };
@@ -3036,6 +3039,8 @@
 		0171DBD217732B5B00B3D510 /* On boarding */ = {
 			isa = PBXGroup;
 			children = (
+				0171DC3F17735E9F00B3D510 /* SYNAbstractOnboardViewController.h */,
+				0171DC4017735E9F00B3D510 /* SYNAbstractOnboardViewController.m */,
 				0171DBD317732B7600B3D510 /* SYNOnboard1ViewController.h */,
 				0171DBD417732B7600B3D510 /* SYNOnboard1ViewController.m */,
 				0171DBD517732B7600B3D510 /* SYNOnboard1ViewController.xib */,
@@ -3208,7 +3213,6 @@
 		019824E11629CAB600216900 /* View Controllers */ = {
 			isa = PBXGroup;
 			children = (
-				0171DBD217732B5B00B3D510 /* On boarding */,
 				BEF9E5A516DBCDEF00286113 /* Components */,
 				BE270B7B16EDE0A500CDDA6D /* Login */,
 				BE0815C216D5386B00ADB1DC /* Master View Controller */,
@@ -4617,6 +4621,7 @@
 		BE270B7B16EDE0A500CDDA6D /* Login */ = {
 			isa = PBXGroup;
 			children = (
+				0171DBD217732B5B00B3D510 /* On boarding */,
 				38281F1B17439B770024DC18 /* SYNLoginBaseViewController.h */,
 				38281F1C17439B770024DC18 /* SYNLoginBaseViewController.m */,
 				38BACDFD1732CCFB00406597 /* SYNLoginViewControllerIphone.h */,
@@ -6317,6 +6322,7 @@
 				0171DBDC17732C0600B3D510 /* SYNOnboard2ViewController.m in Sources */,
 				0171DC3917735A3D00B3D510 /* SYNOnboard4ViewController.m in Sources */,
 				0171DC3E17735A3D00B3D510 /* SYNOnboard3ViewController.m in Sources */,
+				0171DC4117735E9F00B3D510 /* SYNAbstractOnboardViewController.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
