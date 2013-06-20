@@ -658,6 +658,8 @@
             //Fade in login background
             self.loginBackgroundImage.alpha = 0.0f;
             
+            [self showOnboarding];
+            
             [UIView animateWithDuration:0.3f
                                   delay:0.0f
                                 options: UIViewAnimationCurveEaseInOut
@@ -693,6 +695,8 @@
         {
             //Fade in login background
             self.loginBackgroundImage.alpha = 0.0f;
+            
+            [self showOnboarding];
             
             [UIView animateWithDuration:0.3f
                                   delay:0.0f
