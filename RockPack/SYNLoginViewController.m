@@ -172,6 +172,7 @@
     {
         
         signUpButton.center = CGPointMake(facebookSignInButton.center.x + 304.0, signUpButton.center.y);
+
     }
     
     self.state = kLoginScreenStateInitial;
@@ -1628,7 +1629,7 @@
     
     if (UIInterfaceOrientationIsPortrait(toInterfaceOrientation))
     {
-        signUpButton.center = CGPointMake(604.0, signUpButton.center.y);
+        signUpButton.center = CGPointMake(524.0, signUpButton.center.y);
         passwordForgottenLabel.center = CGPointMake(115.0, passwordForgottenLabel.center.y);
         faceImageButton.center = CGPointMake(124.0, faceImageButton.center.y);
         self.avatarImageView.center = CGPointMake(124.0, self.avatarImageView.center.y);
@@ -1639,7 +1640,7 @@
     }
     else
     {
-        signUpButton.center = CGPointMake(730.0, signUpButton.center.y);
+        signUpButton.center = CGPointMake(670.0, signUpButton.center.y);
         passwordForgottenLabel.center = CGPointMake(248.0, passwordForgottenLabel.center.y);
         faceImageButton.center = CGPointMake(254.0, faceImageButton.center.y);
         self.avatarImageView.center = CGPointMake(254.0, self.avatarImageView.center.y);
