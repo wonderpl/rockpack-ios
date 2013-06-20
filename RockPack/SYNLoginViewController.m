@@ -234,6 +234,33 @@
 }
 
 
+#pragma mark - Onboarding support
+
+- (void) hideOnboarding
+{
+    [UIView animateWithDuration: 0.3f
+                          delay: 0.1f
+                        options: UIViewAnimationOptionCurveEaseOut
+                     animations: ^{
+                         self.pageViewController.view.alpha = 0.0f;
+                     } completion:^(BOOL finished) {
+                         self.pageViewController.view.hidden = TRUE;
+                     }];
+}
+
+- (void) showOnboarding
+{
+    self.pageViewController.view.hidden = FALSE;
+    
+    [UIView animateWithDuration: 0.3f
+                          delay: 0.1f
+                        options: UIViewAnimationOptionCurveEaseOut
+                     animations: ^{
+                         self.pageViewController.view.alpha = 1.0f;
+                     } completion: nil];
+}
+
+
 #pragma mark - Page View Controller Data Source
 
 - (UIViewController *) pageViewController: (UIPageViewController *) pageViewController
@@ -960,6 +987,8 @@
 
 - (IBAction) goToLoginForm: (id) sender
 {
+    [self hideOnboarding];
+    
     if (isAnimating)
         return;
     
@@ -1059,6 +1088,8 @@
 
 - (IBAction) signInWithFacebook: (id) sender
 {
+    [self hideOnboarding];
+    
     id<GAITracker> tracker = [GAI sharedInstance].defaultTracker;
     
     [tracker sendEventWithCategory: @"uiAction"
@@ -1376,6 +1407,8 @@
 
 - (IBAction) signUp: (id) sender
 {
+    [self hideOnboarding];
+    
     self.state = kLoginScreenStateRegister;
 }
 
