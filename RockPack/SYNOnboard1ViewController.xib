@@ -38,7 +38,7 @@
 					<object class="IBUILabel" id="816168417">
 						<reference key="NSNextResponder" ref="766721923"/>
 						<int key="NSvFlags">266</int>
-						<string key="NSFrame">{{0, 860}, {768, 99}}</string>
+						<string key="NSFrame">{{0, 865}, {768, 99}}</string>
 						<reference key="NSSuperview" ref="766721923"/>
 						<string key="NSReuseIdentifierKey">_NS:9</string>
 						<bool key="IBUIOpaque">NO</bool>

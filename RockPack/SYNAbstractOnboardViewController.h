@@ -11,5 +11,6 @@
 @interface SYNAbstractOnboardViewController : UIViewController
 
 @property (weak, nonatomic) IBOutlet UILabel *onboardMessageLabel;
+@property (weak, nonatomic) IBOutlet UILabel *onboardTitleLabel;
 
 @end
