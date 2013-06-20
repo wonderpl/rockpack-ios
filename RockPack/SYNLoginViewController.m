@@ -20,6 +20,8 @@
 #import "SYNOAuthNetworkEngine.h"
 #import "SYNOnboard1ViewController.h"
 #import "SYNOnboard2ViewController.h"
+#import "SYNOnboard3ViewController.h"
+#import "SYNOnboard4ViewController.h"
 #import "SYNPopoverBackgroundView.h"
 #import "SYNTextFieldLogin.h"
 #import "UIFont+SYNFont.h"
@@ -172,6 +174,7 @@
     {
         
         signUpButton.center = CGPointMake(facebookSignInButton.center.x + 304.0, signUpButton.center.y);
+
     }
     
     self.state = kLoginScreenStateInitial;
@@ -187,7 +190,10 @@
     self.pageViewController.delegate = self;
     
     // Setup the on-boarding controller
-    self.onboardingViewControllers = @[[SYNOnboard1ViewController new], [SYNOnboard2ViewController new]];
+    self.onboardingViewControllers = @[[SYNOnboard1ViewController new],
+                                       [SYNOnboard2ViewController new],
+                                       [SYNOnboard3ViewController new],
+                                       [SYNOnboard4ViewController new]];
     
     [self.pageViewController setViewControllers: @[self.onboardingViewControllers[0]]
                                       direction: UIPageViewControllerNavigationDirectionForward
@@ -423,8 +429,8 @@
     faceImageButton.center = CGPointMake(faceImageButton.center.x - 50.0, faceImageButton.center.y);
     self.avatarImageView.center = CGPointMake(self.avatarImageView.center.x - 50.0, self.avatarImageView.center.y);
     
-    facebookSignInButton.enabled = NO;
-    facebookSignInButton.alpha = 0.0;
+    facebookSignInButton.enabled = YES;
+    facebookSignInButton.alpha = 1.0;
     
     _facebookLoginIsInProcess = NO;
     
@@ -1628,9 +1634,10 @@
     
     if (UIInterfaceOrientationIsPortrait(toInterfaceOrientation))
     {
-        signUpButton.center = CGPointMake(604.0, signUpButton.center.y);
+        signUpButton.center = CGPointMake(524.0, signUpButton.center.y);
+//        facebookSignInButton.center = CGPointMake(200.0, facebookSignInButton.center.y);
         passwordForgottenLabel.center = CGPointMake(115.0, passwordForgottenLabel.center.y);
-        faceImageButton.center = CGPointMake(124.0, faceImageButton.center.y);
+        faceImageButton.center = CGPointMake(84.0, faceImageButton.center.y);
         self.avatarImageView.center = CGPointMake(124.0, self.avatarImageView.center.y);
         termsAndConditionsLabel.center = CGPointMake(termsAndConditionsLabel.center.x, 714.0);
         termsAndConditionsLabelSide.center = CGPointMake(termsAndConditionsLabelSide.center.x, 714.0);        
@@ -1639,7 +1646,8 @@
     }
     else
     {
-        signUpButton.center = CGPointMake(730.0, signUpButton.center.y);
+        signUpButton.center = CGPointMake(670.0, signUpButton.center.y);
+//        facebookSignInButton.center = CGPointMake(293.0, facebookSignInButton.center.y);
         passwordForgottenLabel.center = CGPointMake(248.0, passwordForgottenLabel.center.y);
         faceImageButton.center = CGPointMake(254.0, faceImageButton.center.y);
         self.avatarImageView.center = CGPointMake(254.0, self.avatarImageView.center.y);

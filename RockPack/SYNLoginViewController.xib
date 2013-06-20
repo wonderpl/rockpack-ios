@@ -2,10 +2,10 @@
 <archive type="com.apple.InterfaceBuilder3.CocoaTouch.iPad.XIB" version="8.00">
 	<data>
 		<int key="IBDocument.SystemTarget">1552</int>
-		<string key="IBDocument.SystemVersion">12C3006</string>
+		<string key="IBDocument.SystemVersion">12E55</string>
 		<string key="IBDocument.InterfaceBuilderVersion">3084</string>
-		<string key="IBDocument.AppKitVersion">1187.34</string>
-		<string key="IBDocument.HIToolboxVersion">625.00</string>
+		<string key="IBDocument.AppKitVersion">1187.39</string>
+		<string key="IBDocument.HIToolboxVersion">626.00</string>
 		<object class="NSMutableDictionary" key="IBDocument.PluginVersions">
 			<string key="NS.key.0">com.apple.InterfaceBuilder.IBCocoaTouchPlugin</string>
 			<string key="NS.object.0">2083</string>
@@ -123,8 +123,8 @@
 					</object>
 					<object class="IBUIButton" id="516248663">
 						<reference key="NSNextResponder" ref="766721923"/>
-						<int key="NSvFlags">293</int>
-						<string key="NSFrame">{{354, 322}, {316, 62}}</string>
+						<int key="NSvFlags">269</int>
+						<string key="NSFrame">{{293, 635}, {316, 62}}</string>
 						<reference key="NSSuperview" ref="766721923"/>
 						<reference key="NSWindow"/>
 						<reference key="NSNextKeyView" ref="865153711"/>
@@ -148,7 +148,7 @@
 							<string key="NSResourceName">ButtonFacebookHighlighted.png</string>
 						</object>
 						<reference key="IBUIDisabledImage" ref="604448609"/>
-						<object class="NSCustomResource" key="IBUINormalImage" id="756708476">
+						<object class="NSCustomResource" key="IBUINormalImage">
 							<string key="NSClassName">NSImage</string>
 							<string key="NSResourceName">ButtonFacebookDefault.png</string>
 						</object>
@@ -562,7 +562,7 @@
 						<string key="NSFrame">{{159, 341}, {187, 187}}</string>
 						<reference key="NSSuperview" ref="766721923"/>
 						<reference key="NSWindow"/>
-						<reference key="NSNextKeyView" ref="782413850"/>
+						<reference key="NSNextKeyView" ref="373837760"/>
 						<string key="NSReuseIdentifierKey">_NS:9</string>
 						<bool key="IBUIOpaque">NO</bool>
 						<string key="targetRuntimeIdentifier">IBIPadFramework</string>
@@ -725,31 +725,6 @@
 						<bool key="IBUIAdjustsFontSizeToFit">NO</bool>
 						<double key="preferredMaxLayoutWidth">307</double>
 					</object>
-					<object class="IBUIButton" id="782413850">
-						<reference key="NSNextResponder" ref="766721923"/>
-						<int key="NSvFlags">269</int>
-						<string key="NSFrame">{{293, 635}, {316, 62}}</string>
-						<reference key="NSSuperview" ref="766721923"/>
-						<reference key="NSWindow"/>
-						<reference key="NSNextKeyView" ref="373837760"/>
-						<string key="NSReuseIdentifierKey">_NS:9</string>
-						<bool key="IBUIOpaque">NO</bool>
-						<string key="targetRuntimeIdentifier">IBIPadFramework</string>
-						<int key="IBUIContentHorizontalAlignment">0</int>
-						<int key="IBUIContentVerticalAlignment">0</int>
-						<string key="IBUINormalTitle">Sign in with Facebook</string>
-						<reference key="IBUIHighlightedTitleColor" ref="403201091"/>
-						<object class="NSColor" key="IBUINormalTitleColor">
-							<int key="NSColorSpace">1</int>
-							<bytes key="NSRGB">MC4xOTYwNzg0MzQ2IDAuMzA5ODAzOTMyOSAwLjUyMTU2ODY1NgA</bytes>
-						</object>
-						<reference key="IBUINormalTitleShadowColor" ref="593093435"/>
-						<reference key="IBUIHighlightedImage" ref="604448609"/>
-						<reference key="IBUIDisabledImage" ref="604448609"/>
-						<reference key="IBUINormalImage" ref="756708476"/>
-						<reference key="IBUIFontDescription" ref="136119326"/>
-						<reference key="IBUIFont" ref="616079179"/>
-					</object>
 					<object class="IBUIButton" id="209120655">
 						<reference key="NSNextResponder" ref="766721923"/>
 						<int key="NSvFlags">269</int>
@@ -786,6 +761,7 @@
 						<string key="NSFrame">{{851, 638}, {113, 54}}</string>
 						<reference key="NSSuperview" ref="766721923"/>
 						<reference key="NSWindow"/>
+						<reference key="NSNextKeyView"/>
 						<string key="NSReuseIdentifierKey">_NS:9</string>
 						<bool key="IBUIOpaque">NO</bool>
 						<string key="targetRuntimeIdentifier">IBIPadFramework</string>
@@ -1252,15 +1228,6 @@
 					</object>
 					<int key="connectionID">90</int>
 				</object>
-				<object class="IBConnectionRecord">
-					<object class="IBCocoaTouchEventConnection" key="connection">
-						<string key="label">signInWithFacebook:</string>
-						<reference key="source" ref="782413850"/>
-						<reference key="destination" ref="841351856"/>
-						<int key="IBEventType">7</int>
-					</object>
-					<int key="connectionID">111</int>
-				</object>
 			</array>
 			<object class="IBMutableOrderedSet" key="objectRecords">
 				<array key="orderedObjects">
@@ -1311,15 +1278,8 @@
 							<reference ref="770791729"/>
 							<reference ref="293207444"/>
 							<reference ref="209120655"/>
-							<reference ref="782413850"/>
 						</array>
 						<reference key="parent" ref="0"/>
-					</object>
-					<object class="IBObjectRecord">
-						<int key="objectID">4</int>
-						<reference key="object" ref="516248663"/>
-						<reference key="parent" ref="766721923"/>
-						<string key="objectName">Facebook UIButton</string>
 					</object>
 					<object class="IBObjectRecord">
 						<int key="objectID">5</int>
@@ -1493,10 +1453,10 @@
 						<reference key="parent" ref="766721923"/>
 					</object>
 					<object class="IBObjectRecord">
-						<int key="objectID">110</int>
-						<reference key="object" ref="782413850"/>
+						<int key="objectID">4</int>
+						<reference key="object" ref="516248663"/>
 						<reference key="parent" ref="766721923"/>
-						<string key="objectName">Facebook UIButton Start Screen</string>
+						<string key="objectName">Facebook UIButton</string>
 					</object>
 				</array>
 			</object>
@@ -1510,8 +1470,6 @@
 				<string key="103.IBPluginDependency">com.apple.InterfaceBuilder.IBCocoaTouchPlugin</string>
 				<string key="105.IBPluginDependency">com.apple.InterfaceBuilder.IBCocoaTouchPlugin</string>
 				<string key="11.IBPluginDependency">com.apple.InterfaceBuilder.IBCocoaTouchPlugin</string>
-				<string key="110.IBPluginDependency">com.apple.InterfaceBuilder.IBCocoaTouchPlugin</string>
-				<real value="3" key="110.IBUIButtonInspectorSelectedStateConfigurationMetadataKey"/>
 				<string key="12.IBPluginDependency">com.apple.InterfaceBuilder.IBCocoaTouchPlugin</string>
 				<string key="13.IBPluginDependency">com.apple.InterfaceBuilder.IBCocoaTouchPlugin</string>
 				<real value="0.0" key="13.IBUIButtonInspectorSelectedStateConfigurationMetadataKey"/>
@@ -1556,7 +1514,7 @@
 			<nil key="activeLocalization"/>
 			<dictionary class="NSMutableDictionary" key="localizations"/>
 			<nil key="sourceID"/>
-			<int key="maxID">111</int>
+			<int key="maxID">112</int>
 		</object>
 		<object class="IBClassDescriber" key="IBDocument.Classes">
 			<array class="NSMutableArray" key="referencedPartialClassDescriptions">
@@ -1579,60 +1537,6 @@
 				<object class="IBPartialClassDescription">
 					<string key="className">SYNLoginViewController</string>
 					<string key="superclassName">SYNLoginBaseViewController</string>
-					<dictionary class="NSMutableDictionary" key="actions">
-						<string key="doLogin:">id</string>
-						<string key="faceButtonImagePressed:">UIButton</string>
-						<string key="forgottenPasswordPressed:">id</string>
-						<string key="goToLoginForm:">id</string>
-						<string key="registerNewUser:">id</string>
-						<string key="registerPressed:">id</string>
-						<string key="sendEmailButtonPressed:">id</string>
-						<string key="signInWithFacebook:">id</string>
-						<string key="signUp:">id</string>
-						<string key="textfieldDidChange:">id</string>
-					</dictionary>
-					<dictionary class="NSMutableDictionary" key="actionInfosByName">
-						<object class="IBActionInfo" key="doLogin:">
-							<string key="name">doLogin:</string>
-							<string key="candidateClassName">id</string>
-						</object>
-						<object class="IBActionInfo" key="faceButtonImagePressed:">
-							<string key="name">faceButtonImagePressed:</string>
-							<string key="candidateClassName">UIButton</string>
-						</object>
-						<object class="IBActionInfo" key="forgottenPasswordPressed:">
-							<string key="name">forgottenPasswordPressed:</string>
-							<string key="candidateClassName">id</string>
-						</object>
-						<object class="IBActionInfo" key="goToLoginForm:">
-							<string key="name">goToLoginForm:</string>
-							<string key="candidateClassName">id</string>
-						</object>
-						<object class="IBActionInfo" key="registerNewUser:">
-							<string key="name">registerNewUser:</string>
-							<string key="candidateClassName">id</string>
-						</object>
-						<object class="IBActionInfo" key="registerPressed:">
-							<string key="name">registerPressed:</string>
-							<string key="candidateClassName">id</string>
-						</object>
-						<object class="IBActionInfo" key="sendEmailButtonPressed:">
-							<string key="name">sendEmailButtonPressed:</string>
-							<string key="candidateClassName">id</string>
-						</object>
-						<object class="IBActionInfo" key="signInWithFacebook:">
-							<string key="name">signInWithFacebook:</string>
-							<string key="candidateClassName">id</string>
-						</object>
-						<object class="IBActionInfo" key="signUp:">
-							<string key="name">signUp:</string>
-							<string key="candidateClassName">id</string>
-						</object>
-						<object class="IBActionInfo" key="textfieldDidChange:">
-							<string key="name">textfieldDidChange:</string>
-							<string key="candidateClassName">id</string>
-						</object>
-					</dictionary>
 					<dictionary class="NSMutableDictionary" key="outlets">
 						<string key="activityIndicator">UIActivityIndicatorView</string>
 						<string key="areYouNewLabel">UILabel</string>
