@@ -421,8 +421,7 @@ typedef void(^AnimationCompletionBlock)(BOOL finished);
                                                   usingMode: kChannelDetailsModeCreate] ;
     
     // either the current view on the container scroll view or the overlay navigation controller as in search mode
-    SYNAbstractViewController* showingController = self.showingBaseViewController;
-    [showingController animatedPushViewController: channelCreationVC];
+    [self.showingBaseViewController animatedPushViewController: channelCreationVC];
 }
 
 -(void)addedToChannelAction:(NSNotification*)notification

@@ -24,8 +24,10 @@
 #import "SYNUserProfileViewController.h"
 #import "SYNYouHeaderView.h"
 #import "UIFont+SYNFont.h"
+#import "SYNDeviceManager.h"
 #import "UIImageView+WebCache.h"
 #import "Video.h"
+#import <QuartzCore/QuartzCore.h>
 
 #define kInterChannelSpacing 150.0
 #define kInterRowMargin 8.0f
@@ -799,9 +801,42 @@
 
     if(indexPath.row == 0)
     {
+        if([[SYNDeviceManager sharedInstance] isIPad])
+        {
+            [[NSNotificationCenter defaultCenter] postNotificationName: kNoteCreateNewChannel
+                                                                object: self];
+        }
+        else
+        {
+            
+            //On iPhone we want a different navigation structure. Slide the view in.
+            
+            SYNChannelDetailViewController *channelCreationVC =
+            [[SYNChannelDetailViewController alloc] initWithChannel: appDelegate.videoQueue.currentlyCreatingChannel
+                                                          usingMode: kChannelDetailsModeCreate] ;
+            
+            CGRect newFrame = channelCreationVC.view.frame;
+            newFrame.size.height = self.view.frame.size.height;
+            channelCreationVC.view.frame = newFrame;
+            CATransition *animation = [CATransition animation];
+            
+            [animation setType:kCATransitionMoveIn];
+            [animation setSubtype:kCATransitionFromRight];
+            
+            [animation setDuration:0.30];
+            [animation setTimingFunction:
+             [CAMediaTimingFunction functionWithName:
+              kCAMediaTimingFunctionEaseInEaseOut]];
+            
+            [self.view.window.layer addAnimation:animation forKey:nil];
+            [self presentViewController:channelCreationVC animated:NO completion:^{
+                
+                [[NSNotificationCenter defaultCenter] postNotificationName: kNoteCreateNewChannel
+                                                                    object: self];
+            }];
+            
+        }
         
-        [[NSNotificationCenter defaultCenter] postNotificationName: kNoteCreateNewChannel
-                                                            object: self];
         
         return;
     }

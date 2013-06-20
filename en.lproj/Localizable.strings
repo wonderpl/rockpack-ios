@@ -42,6 +42,14 @@
 
 // == Login / Registration / Forgot Password == //
 
+// Pre Sign-Up Onboarding
+
+"startscreen_onboard_1" = "Welcome to Rockpack, a place to create your own video channels with your favorite videos from across the web.";
+"startscreen_onboard_2" = "Tap the + to add videos to your channels.";
+"startscreen_onboard_3" = "Personalise your channel with a unique cover or your own photo.";
+"startscreen_onboard_4" = "Subscribe to channels curated by family, friends and experts.";
+
+
 //By Using Rockpack... sentence
 "register_screen_legal" = "BY USING ROCKPACK, YOU AGREE TO OUR\nTERMS OF SERVICES AND PRIVACY POLICY";
 

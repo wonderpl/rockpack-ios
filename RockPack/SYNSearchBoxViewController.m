@@ -118,7 +118,7 @@
         return NO;
     
 
-    if((range.location - range.length) < 3)
+    if((range.location - range.length) < 2)
         return YES;
 
     // == Restart Timer == //
