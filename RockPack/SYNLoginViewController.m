@@ -18,19 +18,29 @@
 #import "SYNNetworkEngine.h"
 #import "SYNOAuth2Credential.h"
 #import "SYNOAuthNetworkEngine.h"
+#import "SYNOnboard1ViewController.h"
+#import "SYNOnboard2ViewController.h"
 #import "SYNPopoverBackgroundView.h"
+#import "SYNTextFieldLogin.h"
 #import "UIFont+SYNFont.h"
 #import "User.h"
-#import "SYNTextFieldLogin.h"
 
-
-@interface SYNLoginViewController ()  <UITextFieldDelegate, SYNImagePickerControllerDelegate>
+@interface SYNLoginViewController ()  <UITextFieldDelegate,
+                                       SYNImagePickerControllerDelegate,
+                                       UIPageViewControllerDataSource,
+                                       UIPageViewControllerDelegate>
 
 @property (nonatomic) BOOL isAnimating;
 @property (nonatomic) CGRect facebookButtonInitialFrame;
 @property (nonatomic) CGRect initialUsernameFrame;
 @property (nonatomic) CGRect signUpButtonInitialFrame;
 @property (nonatomic, readonly) CGFloat elementsOffsetY;
+@property (nonatomic, strong) IBOutlet SYNTextFieldLogin* ddInputField;
+@property (nonatomic, strong) IBOutlet SYNTextFieldLogin* emailInputField;
+@property (nonatomic, strong) IBOutlet SYNTextFieldLogin* mmInputField;
+@property (nonatomic, strong) IBOutlet SYNTextFieldLogin* passwordInputField;
+@property (nonatomic, strong) IBOutlet SYNTextFieldLogin* userNameInputField;
+@property (nonatomic, strong) IBOutlet SYNTextFieldLogin* yyyyInputField;
 @property (nonatomic, strong) IBOutlet UIButton* faceImageButton;
 @property (nonatomic, strong) IBOutlet UIButton* facebookSignInButton;
 @property (nonatomic, strong) IBOutlet UIButton* finalLoginButton;
@@ -41,6 +51,7 @@
 @property (nonatomic, strong) IBOutlet UIButton* signUpButton;
 @property (nonatomic, strong) IBOutlet UIImageView* avatarImageView;
 @property (nonatomic, strong) IBOutlet UIImageView* dividerImageView;
+@property (nonatomic, strong) IBOutlet UIImageView* loginBackgroundImage;
 @property (nonatomic, strong) IBOutlet UIImageView* titleImageView;
 @property (nonatomic, strong) IBOutlet UILabel* areYouNewLabel;
 @property (nonatomic, strong) IBOutlet UILabel* memberLabel;
@@ -50,19 +61,14 @@
 @property (nonatomic, strong) IBOutlet UILabel* termsAndConditionsLabelSide;
 @property (nonatomic, strong) IBOutlet UILabel* wellSendYouLabel;
 @property (nonatomic, strong) IBOutlet UILabel* whatsOnYourChannelLabel;
-@property (nonatomic, strong) IBOutlet SYNTextFieldLogin* ddInputField;
-@property (nonatomic, strong) IBOutlet SYNTextFieldLogin* emailInputField;
-@property (nonatomic, strong) IBOutlet SYNTextFieldLogin* mmInputField;
-@property (nonatomic, strong) IBOutlet SYNTextFieldLogin* passwordInputField;
-@property (nonatomic, strong) IBOutlet SYNTextFieldLogin* userNameInputField;
-@property (nonatomic, strong) IBOutlet SYNTextFieldLogin* yyyyInputField;
-@property (nonatomic, strong) UIButton* termsAndConditionsButton;
 @property (nonatomic, strong) IBOutlet UIView* dobView;
 @property (nonatomic, strong) NSArray* mainFormElements;
 @property (nonatomic, strong) NSMutableDictionary* labelsToErrorArrows;
+@property (nonatomic, strong) UIButton* termsAndConditionsButton;
 @property (nonatomic, strong) UIPopoverController* cameraMenuPopoverController;
 @property (nonatomic, strong) UIPopoverController* cameraPopoverController;
-@property (nonatomic, strong) IBOutlet UIImageView* loginBackgroundImage;
+@property (strong, nonatomic) NSArray *onboardingViewControllers;
+@property (strong, nonatomic) UIPageViewController *pageViewController;
 
 @end
 
@@ -172,30 +178,39 @@
     
     UITapGestureRecognizer* tapGesture = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(outerViewTapped:)];
     [self.view addGestureRecognizer:tapGesture];
-
-}
-
--(void)termsAndConditionsPressed:(UIButton*)button withEvent:(UIEvent*)event
-{
-    CGPoint center = [[[event allTouches] anyObject] locationInView:button];
-    BOOL isLeft = center.x > (self.termsAndConditionsButton.frame.size.width * 0.5);
-    NSURL* urlToGo;
-    if(isLeft)
-    {
-        urlToGo = [NSURL URLWithString: kLoginPrivacyUrl];
-        
-    }
-    else
-    {
-        urlToGo = [NSURL URLWithString: kLoginTermsUrl];
-    }
     
-    [[UIApplication sharedApplication] openURL:urlToGo];
+    self.pageViewController = [[UIPageViewController alloc] initWithTransitionStyle: UIPageViewControllerTransitionStyleScroll
+                                                              navigationOrientation: UIPageViewControllerNavigationOrientationHorizontal
+                                                                            options: nil];
+    
+    self.pageViewController.dataSource = self;
+    self.pageViewController.delegate = self;
+    
+    // Setup the on-boarding controller
+    self.onboardingViewControllers = @[[SYNOnboard1ViewController new], [SYNOnboard2ViewController new]];
+    
+    [self.pageViewController setViewControllers: @[self.onboardingViewControllers[0]]
+                                      direction: UIPageViewControllerNavigationDirectionForward
+                                       animated: NO
+                                     completion: nil];
+    
+    [self addChildViewController: self.pageViewController];
+    [self.view addSubview: self.pageViewController.view];
+    
+    // Set the page view controller's bounds using an inset rect so that self's view is visible around the edges of the pages.
+    // This is the amount by which to offset the bottom of the page view from the bottom of the screen
+    CGRect pageViewRect = self.view.bounds;
+    pageViewRect.size.height -= 120;
+    self.pageViewController.view.frame = pageViewRect;
+    
+    [self.pageViewController didMoveToParentViewController: self];
 }
+
 
 - (void) viewWillAppear:(BOOL)animated
 {
     [super viewWillAppear:animated];
+
     self.loginBackgroundImage.frame = self.loginBackgroundImage.bounds;
     
     [UIView animateWithDuration:40.0f
@@ -217,6 +232,109 @@
     memberLabel.frame = CGRectIntegral(memberLabel.frame);
     
 }
+
+
+#pragma mark - Page View Controller Data Source
+
+- (UIViewController *) pageViewController: (UIPageViewController *) pageViewController
+       viewControllerBeforeViewController: (UIViewController *) viewController
+{
+    NSUInteger numberOfOnboardViewControllers = self.onboardingViewControllers.count;
+    int index = 0;
+    for (UIViewController *vc in self.onboardingViewControllers)
+    {
+        if (vc == viewController)
+        {
+#ifdef WRAP_AROUND
+            if (index == 0)
+            {
+                return nil;
+            }
+            else
+            {
+                return self.onboardingViewControllers[index - 1];
+            }
+#else
+            if (index == 0)
+            {
+                return self.onboardingViewControllers [numberOfOnboardViewControllers - 1];
+            }
+            else
+            {
+                return self.onboardingViewControllers [index - 1];
+            }
+#endif
+        }
+        
+        index++;
+    }
+    
+    // If we got here then we didn't find the viewcontroller
+    return nil;
+}
+
+- (UIViewController *) pageViewController: (UIPageViewController *) pageViewController
+        viewControllerAfterViewController: (UIViewController *) viewController
+{
+    NSUInteger numberOfOnboardViewControllers = self.onboardingViewControllers.count;
+    int index = 0;
+    for (UIViewController *vc in self.onboardingViewControllers)
+    {
+        if (vc == viewController)
+        {
+#ifdef WRAP_AROUND
+            if (index == (self.onboardingViewControllers.count - 1))
+            {
+                return nil;
+            }
+            else
+            {
+                return self.onboardingViewControllers[(index + 1) % numberOfOnboardViewControllers];
+            }
+#else
+            return self.onboardingViewControllers [(index + 1) % numberOfOnboardViewControllers];
+#endif
+        }
+        
+        index++;
+    }
+    
+    // If we got here then we didn't find the viewcontroller
+    return nil;
+}
+
+
+
+- (NSInteger) presentationCountForPageViewController: (UIPageViewController *) pageViewController
+{
+    return self.onboardingViewControllers.count;
+}
+
+
+- (NSInteger) presentationIndexForPageViewController: (UIPageViewController *) pageViewController
+{
+    // Start off showing the first view controller
+    return 0;
+}
+
+-(void)termsAndConditionsPressed:(UIButton*)button withEvent:(UIEvent*)event
+{
+    CGPoint center = [[[event allTouches] anyObject] locationInView:button];
+    BOOL isLeft = center.x > (self.termsAndConditionsButton.frame.size.width * 0.5);
+    NSURL* urlToGo;
+    if(isLeft)
+    {
+        urlToGo = [NSURL URLWithString: kLoginPrivacyUrl];
+        
+    }
+    else
+    {
+        urlToGo = [NSURL URLWithString: kLoginTermsUrl];
+    }
+    
+    [[UIApplication sharedApplication] openURL:urlToGo];
+}
+
 
 
 #pragma mark - States and Transitions
