@@ -11,17 +11,11 @@
 typedef void (^SYNCancelReportBlock)(void);
 typedef void (^SYNSendReportBlock)(NSString *reportString);
 typedef void (^SYNSelectedReportBlock)(void);
+typedef void (^SYNReportCompletedBlock)(void);
 
 @interface SYNReportConcernTableViewController :  UIViewController <UITableViewDataSource, UITableViewDelegate>
 
-// Initialiser for iPhone version
-- (id) initWithNibName: (NSString *) nibNameOrNil
-                bundle: (NSBundle *) nibBundleOrNil
-       sendReportBlock: (SYNSendReportBlock) sendReportBlock
-     cancelReportBlock: (SYNCancelReportBlock) cancelReportBlock;
 
-// Initialiser for iPad version
-- (id) initWithSendReportBlock: (SYNSendReportBlock) sendReportBlock
-             cancelReportBlock: (SYNCancelReportBlock) cancelReportBlock;
+-(void)reportConcernFromView:(UIButton*)presentingButton inViewController:(UIViewController*) viewController popOverArrowDirection:(UIPopoverArrowDirection)direction objectType:(NSString*)objectType objectId:(NSString*)objectId completedBlock:(SYNReportCompletedBlock)completedBlock;
 
 @end

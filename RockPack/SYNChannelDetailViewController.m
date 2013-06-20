@@ -36,7 +36,7 @@
 #import <CoreImage/CoreImage.h>
 #import "SYNOnBoardingPopoverQueueController.h"
 #import "SYNImagePickerController.h"
-#import "RCKReportConcernController.h"
+#import "SYNReportConcernTableViewController.h"
 
 @interface SYNChannelDetailViewController () <UITextViewDelegate,
                                               SYNImagePickerControllerDelegate,
@@ -101,7 +101,7 @@
 @property (nonatomic, readonly) CIImage* backgroundCIImage;
 @property (nonatomic, strong) UIImageView* blurredBGImageView;
 
-@property (nonatomic, strong) RCKReportConcernController* reportConcernController;
+@property (nonatomic, strong) SYNReportConcernTableViewController* reportConcernController;
 
 //iPhone specific
 @property (nonatomic,strong) SYNChannelCoverImageSelectorViewController* coverImageSelector;
@@ -2282,9 +2282,13 @@
     {
         if(!self.reportConcernController)
         {
-            self.reportConcernController = [[RCKReportConcernController alloc] initWithHostViewController:self];
+            self.reportConcernController = [[SYNReportConcernTableViewController alloc] init];
+
+            [self.reportConcernController reportConcernFromView:button inViewController:self popOverArrowDirection:UIPopoverArrowDirectionLeft objectType:@"channel" objectId:self.channel.uniqueId completedBlock:^{
+                    button.selected = NO;
+                    self.reportConcernController = nil;
+                }];
         }
-        [self.reportConcernController reportConcernFromView:button objectType:@"channel" objectId:self.channel.uniqueId];
     }
 }
 
