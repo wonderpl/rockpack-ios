@@ -276,6 +276,8 @@
                                                                 self.facebookButton.frame.size.height);
                          
                      } completion:^(BOOL finished) {
+                         
+                         
                      }];
     
     self.signupButton.alpha = 0.0f;
@@ -291,6 +293,8 @@
                          self.signupButton.frame = CGRectMake(self.signupButton.frame.origin.x, self.signupButton.frame.origin.y - 20.0f, self.signupButton.frame.size.width, self.signupButton.frame.size.height);
                          
                      } completion:^(BOOL finished) {
+                         
+                         
                      }];
     
     self.loginButton.alpha = 0.0f;

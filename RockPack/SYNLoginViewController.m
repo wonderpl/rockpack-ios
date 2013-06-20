@@ -436,6 +436,15 @@
     facebookSignInButton.enabled = YES;
     facebookSignInButton.alpha = 1.0;
     
+    CGRect facebookButtonFrame = facebookSignInButton.frame;
+    if([[SYNDeviceManager sharedInstance] isPortrait])
+        facebookButtonFrame.origin.x = 150.0f;
+    
+    facebookSignInButton.frame = facebookButtonFrame;
+    
+    facebookSignInButton.autoresizingMask = UIViewAutoresizingFlexibleTopMargin;
+    
+    
     _facebookLoginIsInProcess = NO;
     
     if ([SYNDeviceManager.sharedInstance isPortrait])
@@ -449,6 +458,12 @@
     signUpButton.enabled = YES;
     signUpButton.alpha = 1.0;
     signUpButton.hidden = NO;
+    
+    CGRect signUpButtonFrame  = signUpButton.frame;
+    if([[SYNDeviceManager sharedInstance] isPortrait])
+        signUpButtonFrame.origin.x = 570.0f;
+    
+    signUpButton.frame = signUpButtonFrame;
     
     loginButton.enabled = YES;
     loginButton.hidden = NO;
@@ -531,6 +546,9 @@
     
     if (previousState == kLoginScreenStateInitial)
     {
+        facebookSignInButton.frame = CGRectMake(userNameInputField.frame.origin.x - 4.0, 322.0, facebookSignInButton.frame.size.width, facebookSignInButton.frame.size.height);
+        facebookSignInButton.autoresizingMask = UIViewAutoresizingFlexibleBottomMargin;
+        
         NSArray* loginForControls = @[facebookSignInButton, userNameInputField, passwordInputField, finalLoginButton];
         float delay = 0.0;
         
@@ -781,7 +799,8 @@
                                      dobView.center.y);
         dobView.frame = CGRectIntegral(dobView.frame);
         
-        
+        facebookSignInButton.frame = CGRectMake(userNameInputField.frame.origin.x - 4.0, 322.0, facebookSignInButton.frame.size.width, facebookSignInButton.frame.size.height);
+        facebookSignInButton.autoresizingMask = UIViewAutoresizingFlexibleBottomMargin;
         NSArray* loginForControls = @[emailInputField, userNameInputField, passwordInputField, dobView, registerNewUserButton];
         float delay = 0.05;
         for (UIView* control in loginForControls)
@@ -1635,11 +1654,11 @@
                                             duration: duration];
     
     [self clearAllErrorArrows];
-    
+    CGRect facebookButtonFrame = facebookSignInButton.frame;
     if (UIInterfaceOrientationIsPortrait(toInterfaceOrientation))
     {
         signUpButton.center = CGPointMake(524.0, signUpButton.center.y);
-//        facebookSignInButton.center = CGPointMake(200.0, facebookSignInButton.center.y);
+        facebookButtonFrame.origin.x = 150.0f;
         passwordForgottenLabel.center = CGPointMake(115.0, passwordForgottenLabel.center.y);
         faceImageButton.center = CGPointMake(84.0, faceImageButton.center.y);
         self.avatarImageView.center = CGPointMake(124.0, self.avatarImageView.center.y);
@@ -1651,7 +1670,7 @@
     else
     {
         signUpButton.center = CGPointMake(670.0, signUpButton.center.y);
-//        facebookSignInButton.center = CGPointMake(293.0, facebookSignInButton.center.y);
+        facebookButtonFrame.origin.x = 293.0f;
         passwordForgottenLabel.center = CGPointMake(248.0, passwordForgottenLabel.center.y);
         faceImageButton.center = CGPointMake(254.0, faceImageButton.center.y);
         self.avatarImageView.center = CGPointMake(254.0, self.avatarImageView.center.y);
@@ -1661,15 +1680,18 @@
     }
     
     
+    
     areYouNewLabel.center = CGPointMake(areYouNewLabel.center.x, registerButton.center.y - 44.0);
     
     if (self.state != kLoginScreenStateInitial)
     {
         loginButton.center = registerButton.center;
+        
         memberLabel.center = CGPointMake(loginButton.center.x, areYouNewLabel.center.y - 8.0);
     }
     else
     {
+        facebookSignInButton.frame = facebookButtonFrame;
         memberLabel.center = CGPointMake(loginButton.center.x, loginButton.center.y - 54.0);
     }
     
