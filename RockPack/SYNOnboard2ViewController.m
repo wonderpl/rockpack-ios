@@ -21,6 +21,7 @@
     // Set up onboard text
     self.onboardMessageLabel.text = NSLocalizedString(@"startscreen_onboard_2", @"Text for onboard screen 2");
     
+    self.onboardTitleLabel.text = NSLocalizedString(@"startscreen_onboard_2_title", @"Text for onboard screen 2");
 }
 
 @end

@@ -30,7 +30,7 @@
     }
     else
     {
-        self.onboardMessageLabel.font = [UIFont rockpackFontOfSize: 12.0];
+        self.onboardMessageLabel.font = [UIFont rockpackFontOfSize: 14.0];
     }
     
     // Colour of onboard text
@@ -60,6 +60,51 @@
     
     // Opacity of onboard text shadow (0 - 1)
     self.onboardMessageLabel.layer.shadowOpacity = 0.3f;
+    
+    
+    
+    // TITLES
+    
+    // Set up onboard text
+    self.onboardTitleLabel.text = NSLocalizedString(@"startscreen_onboard_1", @"Text for onboard screen 1");
+    
+    // Set font
+    if (UI_USER_INTERFACE_IDIOM() == UIUserInterfaceIdiomPad)
+    {
+        self.onboardTitleLabel.font = [UIFont boldRockpackFontOfSize: 22.0];
+    }
+    else
+    {
+        self.onboardTitleLabel.font = [UIFont boldRockpackFontOfSize: 16.0];
+    }
+    
+    // Colour of onboard text
+    self.onboardTitleLabel.textColor = [UIColor whiteColor];
+    
+    // Colour of small DropShadow on text
+    self.onboardTitleLabel.shadowColor = [UIColor colorWithRed: 0.0f
+                                                           green: 0.0f
+                                                            blue: 0.0f
+                                                           alpha:0.2f];
+    
+    // Offset of small DropShadow's
+    
+    self.onboardTitleLabel.shadowOffset = CGSizeMake(0.0f, 1.0f);
+    
+    // Colour of onboard text shadow (R, G, B)
+    self.onboardTitleLabel.layer.shadowColor = [UIColor colorWithRed: 0.0f
+                                                                 green: 0.0f
+                                                                  blue: 0.0f
+                                                                 alpha: 1.0f].CGColor;
+    
+    // Offset of onboard text shadow (X, Y)
+    self.onboardTitleLabel.layer.shadowOffset = CGSizeMake(0.0, 0.0);
+    
+    // Radius of onboard text shadow (0 -> n)
+    self.onboardTitleLabel.layer.shadowRadius = 10.0f;
+    
+    // Opacity of onboard text shadow (0 - 1)
+    self.onboardTitleLabel.layer.shadowOpacity = 0.3f;
 }
 
 @end

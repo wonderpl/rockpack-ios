@@ -19,8 +19,9 @@
     [super viewDidLoad];
     
     // Set up onboard text
-    self.onboardMessageLabel.text = NSLocalizedString(@"startscreen_onboard_3", @"Text for onboard screen 3");
-    
+    self.onboardMessageLabel.text = NSLocalizedString(@"startscreen_onboard_4", @"Text for onboard screen 4");
+    self.onboardTitleLabel.text = NSLocalizedString(@"startscreen_onboard_4_title", @"Text for onboard screen 4");
+
 }
 
 
