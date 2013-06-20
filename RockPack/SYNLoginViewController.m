@@ -547,7 +547,7 @@
     if (previousState == kLoginScreenStateInitial)
     {
         facebookSignInButton.frame = CGRectMake(userNameInputField.frame.origin.x - 4.0, 322.0, facebookSignInButton.frame.size.width, facebookSignInButton.frame.size.height);
-        facebookSignInButton.autoresizingMask = UIViewAutoresizingFlexibleBottomMargin;
+        facebookSignInButton.autoresizingMask = UIViewAutoresizingFlexibleBottomMargin | UIViewAutoresizingFlexibleLeftMargin | UIViewAutoresizingFlexibleRightMargin;
         
         NSArray* loginForControls = @[facebookSignInButton, userNameInputField, passwordInputField, finalLoginButton];
         float delay = 0.0;
@@ -800,7 +800,7 @@
         dobView.frame = CGRectIntegral(dobView.frame);
         
         facebookSignInButton.frame = CGRectMake(userNameInputField.frame.origin.x - 4.0, 322.0, facebookSignInButton.frame.size.width, facebookSignInButton.frame.size.height);
-        facebookSignInButton.autoresizingMask = UIViewAutoresizingFlexibleBottomMargin;
+        facebookSignInButton.autoresizingMask = UIViewAutoresizingFlexibleBottomMargin | UIViewAutoresizingFlexibleLeftMargin | UIViewAutoresizingFlexibleRightMargin;
         NSArray* loginForControls = @[emailInputField, userNameInputField, passwordInputField, dobView, registerNewUserButton];
         float delay = 0.05;
         for (UIView* control in loginForControls)
