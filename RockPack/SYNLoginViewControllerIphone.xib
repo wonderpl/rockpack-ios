@@ -41,8 +41,8 @@
 				<array class="NSMutableArray" key="NSSubviews">
 					<object class="IBUIImageView" id="244897070">
 						<reference key="NSNextResponder" ref="191373211"/>
-						<int key="NSvFlags">292</int>
-						<string key="NSFrameSize">{680, 548}</string>
+						<int key="NSvFlags">293</int>
+						<string key="NSFrame">{{-170, 0}, {680, 548}}</string>
 						<reference key="NSSuperview" ref="191373211"/>
 						<reference key="NSWindow"/>
 						<reference key="NSNextKeyView" ref="126965443"/>
@@ -75,7 +75,7 @@
 							</object>
 							<object class="IBUILabel" id="260939047">
 								<reference key="NSNextResponder" ref="126965443"/>
-								<int key="NSvFlags">293</int>
+								<int key="NSvFlags">-2147483355</int>
 								<string key="NSFrame">{{0, 235}, {320, 21}}</string>
 								<reference key="NSSuperview" ref="126965443"/>
 								<reference key="NSWindow"/>
@@ -112,8 +112,8 @@
 							</object>
 							<object class="IBUIButton" id="552180520">
 								<reference key="NSNextResponder" ref="126965443"/>
-								<int key="NSvFlags">292</int>
-								<string key="NSFrame">{{15, 281}, {290, 54}}</string>
+								<int key="NSvFlags">269</int>
+								<string key="NSFrame">{{15, 357}, {290, 54}}</string>
 								<reference key="NSSuperview" ref="126965443"/>
 								<reference key="NSWindow"/>
 								<reference key="NSNextKeyView" ref="30524252"/>
@@ -152,8 +152,8 @@
 							</object>
 							<object class="IBUIButton" id="30524252">
 								<reference key="NSNextResponder" ref="126965443"/>
-								<int key="NSvFlags">292</int>
-								<string key="NSFrame">{{15, 334}, {145, 54}}</string>
+								<int key="NSvFlags">269</int>
+								<string key="NSFrame">{{15, 413}, {145, 54}}</string>
 								<reference key="NSSuperview" ref="126965443"/>
 								<reference key="NSWindow"/>
 								<reference key="NSNextKeyView" ref="111384023"/>
@@ -182,8 +182,8 @@
 							</object>
 							<object class="IBUIButton" id="111384023">
 								<reference key="NSNextResponder" ref="126965443"/>
-								<int key="NSvFlags">292</int>
-								<string key="NSFrame">{{160, 334}, {145, 54}}</string>
+								<int key="NSvFlags">269</int>
+								<string key="NSFrame">{{160, 413}, {145, 54}}</string>
 								<reference key="NSSuperview" ref="126965443"/>
 								<reference key="NSWindow"/>
 								<reference key="NSNextKeyView" ref="254541825"/>
@@ -2004,6 +2004,65 @@
 				<object class="IBPartialClassDescription">
 					<string key="className">SYNLoginViewControllerIphone</string>
 					<string key="superclassName">SYNLoginBaseViewController</string>
+					<dictionary class="NSMutableDictionary" key="actions">
+						<string key="backbuttonTapped:">id</string>
+						<string key="confirmTapped:">id</string>
+						<string key="facebookTapped:">id</string>
+						<string key="forgotPasswordTapped:">id</string>
+						<string key="loginTapped:">id</string>
+						<string key="nextTapped:">id</string>
+						<string key="photoButtonTapped:">id</string>
+						<string key="privacyPolicyTapped:">id</string>
+						<string key="signupTapped:">id</string>
+						<string key="termsTapped:">id</string>
+						<string key="textfieldDidChange:">id</string>
+					</dictionary>
+					<dictionary class="NSMutableDictionary" key="actionInfosByName">
+						<object class="IBActionInfo" key="backbuttonTapped:">
+							<string key="name">backbuttonTapped:</string>
+							<string key="candidateClassName">id</string>
+						</object>
+						<object class="IBActionInfo" key="confirmTapped:">
+							<string key="name">confirmTapped:</string>
+							<string key="candidateClassName">id</string>
+						</object>
+						<object class="IBActionInfo" key="facebookTapped:">
+							<string key="name">facebookTapped:</string>
+							<string key="candidateClassName">id</string>
+						</object>
+						<object class="IBActionInfo" key="forgotPasswordTapped:">
+							<string key="name">forgotPasswordTapped:</string>
+							<string key="candidateClassName">id</string>
+						</object>
+						<object class="IBActionInfo" key="loginTapped:">
+							<string key="name">loginTapped:</string>
+							<string key="candidateClassName">id</string>
+						</object>
+						<object class="IBActionInfo" key="nextTapped:">
+							<string key="name">nextTapped:</string>
+							<string key="candidateClassName">id</string>
+						</object>
+						<object class="IBActionInfo" key="photoButtonTapped:">
+							<string key="name">photoButtonTapped:</string>
+							<string key="candidateClassName">id</string>
+						</object>
+						<object class="IBActionInfo" key="privacyPolicyTapped:">
+							<string key="name">privacyPolicyTapped:</string>
+							<string key="candidateClassName">id</string>
+						</object>
+						<object class="IBActionInfo" key="signupTapped:">
+							<string key="name">signupTapped:</string>
+							<string key="candidateClassName">id</string>
+						</object>
+						<object class="IBActionInfo" key="termsTapped:">
+							<string key="name">termsTapped:</string>
+							<string key="candidateClassName">id</string>
+						</object>
+						<object class="IBActionInfo" key="textfieldDidChange:">
+							<string key="name">textfieldDidChange:</string>
+							<string key="candidateClassName">id</string>
+						</object>
+					</dictionary>
 					<dictionary class="NSMutableDictionary" key="outlets">
 						<string key="activityIndicator">UIActivityIndicatorView</string>
 						<string key="avatarImage">UIImage</string>

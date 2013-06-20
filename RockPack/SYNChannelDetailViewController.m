@@ -12,10 +12,8 @@
 #import "User.h"
 #import "CoverArt.h"
 #import "GAI.h"
-#import "GKImagePicker.h"
 #import "Genre.h"
 #import "SSTextView.h"
-#import "SYNCameraPopoverViewController.h"
 #import "SYNGenreTabViewController.h"
 #import "SYNChannelCategoryTableViewController.h"
 #import "SYNChannelCoverImageSelectorViewController.h"
@@ -24,9 +22,8 @@
 #import "SYNDeviceManager.h"
 #import "SYNMasterViewController.h"
 #import "SYNOAuthNetworkEngine.h"
-#import "SYNPopoverBackgroundView.h"
-#import "SYNReportConcernTableViewController.h"
 #import "SYNVideoThumbnailRegularCell.h"
+#import "SYNChannelCreateNewCell.h"
 #import "SubGenre.h"
 #import "UIFont+SYNFont.h"
 #import "UIImageView+WebCache.h"
@@ -38,11 +35,12 @@
 #import <QuartzCore/QuartzCore.h>
 #import <CoreImage/CoreImage.h>
 #import "SYNOnBoardingPopoverQueueController.h"
+#import "SYNImagePickerController.h"
+#import "SYNReportConcernTableViewController.h"
 
 @interface SYNChannelDetailViewController () <UITextViewDelegate,
-                                              GKImagePickerDelegate,
+                                              SYNImagePickerControllerDelegate,
                                               UIPopoverControllerDelegate,
-                                              SYNCameraPopoverViewControllerDelegate,
                                               SYNChannelCategoryTableViewDelegate,
                                               SYNChannelCoverImageSelectorDelegate>
 {
@@ -60,7 +58,7 @@
 @property (nonatomic, assign)  CGPoint originalMasterControlsViewOrigin;
 @property (nonatomic, assign, getter = isImageSelectorOpen) BOOL imageSelectorOpen;
 @property (nonatomic, strong) Channel *channel;
-@property (nonatomic, strong) GKImagePicker *imagePicker;
+@property (nonatomic, strong) SYNImagePickerController* imagePicker;
 @property (nonatomic, strong) IBOutlet SSTextView *channelTitleTextView;
 @property (nonatomic, strong) IBOutlet UIButton *buyButton;
 @property (nonatomic, strong) IBOutlet UIButton *cameraButton;
@@ -76,9 +74,6 @@
 @property (nonatomic, strong) IBOutlet UIImageView *channelCoverImageView;
 @property (nonatomic, strong) IBOutlet UILabel *channelDetailsLabel;
 @property (nonatomic, strong) IBOutlet UILabel *channelOwnerLabel;
-@property (nonatomic, strong) IBOutlet UIPopoverController *cameraMenuPopoverController;
-@property (nonatomic, strong) IBOutlet UIPopoverController *cameraPopoverController;
-@property (nonatomic, strong) IBOutlet UIPopoverController *reportConcernPopoverController;
 @property (nonatomic, strong) IBOutlet UIView *avatarBackgroundView;
 @property (nonatomic, strong) IBOutlet UIView *channelTitleTextBackgroundView;
 @property (nonatomic, strong) IBOutlet UIView *displayControlsView;
@@ -91,7 +86,6 @@
 @property (nonatomic, strong) NSString* selectedCoverId;
 @property (nonatomic, strong) SYNCoverChooserController* coverChooserController;
 @property (nonatomic, strong) SYNGenreTabViewController *categoriesTabViewController;
-@property (nonatomic, strong) SYNReportConcernTableViewController *reportConcernTableViewController;
 @property (nonatomic, strong) UIActivityIndicatorView* subscribingIndicator;
 @property (nonatomic, strong) UIImage* originalBackgroundImage;
 @property (nonatomic, strong) UIView *coverChooserMasterView;
@@ -106,6 +100,8 @@
 
 @property (nonatomic, readonly) CIImage* backgroundCIImage;
 @property (nonatomic, strong) UIImageView* blurredBGImageView;
+
+@property (nonatomic, strong) SYNReportConcernTableViewController* reportConcernController;
 
 //iPhone specific
 @property (nonatomic,strong) SYNChannelCoverImageSelectorViewController* coverImageSelector;
@@ -132,8 +128,10 @@
 {
     if ((self = [super initWithViewId: kChannelDetailsViewId]))
     {
+        // mode must be set first because setChannel relies on it...
+        self.mode = mode;
+        
 		self.channel = channel;
-        _mode = mode;
 	}
 
 	return self;
@@ -154,6 +152,7 @@
 - (void) viewDidLoad
 {
     [super viewDidLoad];
+    
     
     _isIPhone = [SYNDeviceManager.sharedInstance isIPhone];
 
@@ -232,10 +231,13 @@
     
     // == Cover Image == //
   
-    if (self.mode == kChannelDetailsModeDisplay) // only load bg on display
+    if (self.mode == kChannelDetailsModeDisplay) // only load bg on display, creation will insert new bg
     {
         self.currentWebImageOperation = [self loadBackgroundImage];
     }
+    
+    
+    // == Swipe to Exit == //
     
     
     
@@ -360,6 +362,7 @@
     CGRect correctRect = self.coverChooserMasterView.frame;
     correctRect.origin.y = 404.0;
     self.coverChooserMasterView.frame = correctRect;
+    
     [self.editControlsView addSubview:self.coverChooserMasterView];
     
     self.cameraButton = self.coverChooserController.cameraButton;
@@ -372,6 +375,11 @@
     }
     
     self.originalContentOffset = self.videoThumbnailCollectionView.contentOffset;
+}
+
+-(void)swipedToExit:(UISwipeGestureRecognizer*)recogniser
+{
+    [[NSNotificationCenter defaultCenter] postNotificationName:kNotePopCurrentViewController object:self];
 }
 
 
@@ -422,7 +430,7 @@
     [self.videoThumbnailCollectionView reloadData];
     
     
-    if(self.channel.videoInstances.count == 0)
+    if(self.channel.videoInstances.count == 0 && ![self.channel.uniqueId isEqualToString:kNewChannelPlaceholderId])
     {
         [self showNoVideosMessage: NSLocalizedString(@"channel_screen_loading_videos", nil) withLoader:YES];
     }
@@ -537,6 +545,8 @@
     {
         self.channelCoverImageView.image = nil;
         
+        self.blurredBGImageView.image = nil;
+        
     }
     else if ([coverArtUrl isEqualToString: @"uploading"])
     {
@@ -552,6 +562,7 @@
     {
         __weak SYNChannelDetailViewController *wself = self;
         NSString* largeImageUrlString = [coverArtUrl stringByReplacingOccurrencesOfString:@"thumbnail_medium" withString:@"background"];
+        
         [self.channelCoverImageView setImageWithURL: [NSURL URLWithString: largeImageUrlString]
                                    placeholderImage: [UIImage imageNamed: @"PlaceholderChannelCreation.png"]
                                             options: SDWebImageRetryFailed
@@ -602,8 +613,11 @@
 
     
     NSArray* updatedObjects = [[notification userInfo] objectForKey: NSUpdatedObjectsKey];
-//    NSArray* insertedObjects = [[notification userInfo] objectForKey: NSInsertedObjectsKey];
-//    NSArray* deletedObjects = [[notification userInfo] objectForKey: NSDeletedObjectsKey];
+    
+    
+    NSArray* deletedObjects = [[notification userInfo] objectForKey: NSDeletedObjectsKey]; // our channel has been deleted
+    if([deletedObjects containsObject:self.channel])
+        return;
     
 
     [updatedObjects enumerateObjectsUsingBlock: ^(id obj, NSUInteger idx, BOOL *stop) {
@@ -810,6 +824,7 @@
                    cellForItemAtIndexPath: (NSIndexPath *) indexPath
 {
     UICollectionViewCell *cell = nil;
+    
     
     SYNVideoThumbnailRegularCell *videoThumbnailCell = [collectionView dequeueReusableCellWithReuseIdentifier: @"SYNVideoThumbnailRegularCell"
                                                                                                  forIndexPath: indexPath];
@@ -1374,9 +1389,11 @@
         self.cancelEditButton.hidden = YES;
         self.addButton.hidden = NO;
         self.backButton.hidden= NO;
+        
+        self.channel = self.originalChannel;
+        
+        [self.videoThumbnailCollectionView reloadData];
     }
-    
-    [self.videoThumbnailCollectionView reloadData];
 
 }
 
@@ -2183,7 +2200,6 @@
     
     [[NSNotificationCenter defaultCenter] postNotificationName:kMainControlsChangeEnter object:self];
     
-    
 
     if(![self.channel.channelOwner.uniqueId isEqualToString:appDelegate.currentUser.uniqueId] && !self.channel.subscribedByUserValue)
     {
@@ -2269,113 +2285,17 @@
     button.selected = !button.selected;
     
     if (button.selected)
-    {        
-        if (UI_USER_INTERFACE_IDIOM() == UIUserInterfaceIdiomPad)
+    {
+        if(!self.reportConcernController)
         {
-            // Create out concerns table view controller
-            self.reportConcernTableViewController = [[SYNReportConcernTableViewController alloc] initWithSendReportBlock: ^ (NSString *reportString){
-                                                    [self.reportConcernPopoverController dismissPopoverAnimated: YES];
-                                                    [self reportConcern: reportString];
-                                                    self.reportConcernButton.selected = FALSE;
-                                                }
-                                                cancelReportBlock: ^{
-                                                    [self.reportConcernPopoverController dismissPopoverAnimated: YES];
-                                                    self.reportConcernButton.selected = FALSE;
-                                                }];
-            
-            // Wrap it in a navigation controller
-            UINavigationController *navController = [[UINavigationController alloc] initWithRootViewController: self.reportConcernTableViewController];
-            
-            // Hard way of adding a title (need to due to custom font offsets)
-            UIView *containerView = [[UIView alloc] initWithFrame: CGRectMake (0, 0, 80, 28)];
-            containerView.backgroundColor = [UIColor clearColor];
-            UILabel *label = [[UILabel alloc] initWithFrame: CGRectMake (0, 4, 80, 28)];
-            label.backgroundColor = [UIColor clearColor];
-            label.font = [UIFont boldRockpackFontOfSize: 20.0];
-            label.textAlignment = NSTextAlignmentCenter;
-            label.textColor = [UIColor blackColor];
-            label.shadowColor = [UIColor whiteColor];
-            label.shadowOffset = CGSizeMake(0.0, 1.0);
-            label.text = NSLocalizedString(@"REPORT", nil);
-            [containerView addSubview: label];
-            self.reportConcernTableViewController.navigationItem.titleView = containerView;
-            
-            // Need show the popover controller
-            self.reportConcernPopoverController = [[UIPopoverController alloc] initWithContentViewController: navController];
-            self.reportConcernPopoverController.popoverContentSize = CGSizeMake(245, 344);
-            self.reportConcernPopoverController.delegate = self;
-            self.reportConcernPopoverController.popoverBackgroundViewClass = [SYNPopoverBackgroundView class];
-            
-            // Now present appropriately
-            [self.reportConcernPopoverController presentPopoverFromRect: button.frame
-                                                                 inView: self.displayControlsView
-                                               permittedArrowDirections: UIPopoverArrowDirectionLeft
-                                                               animated: YES];
-        }
-        else
-        {
-            SYNMasterViewController *masterViewController = (SYNMasterViewController*)appDelegate.masterViewController;
-            
-            self.reportConcernTableViewController = [[SYNReportConcernTableViewController alloc] initWithNibName: @"SYNReportConcernTableViewControllerFullScreen~iphone"
-                                                                                                          bundle: [NSBundle mainBundle]
-                                                                                                 sendReportBlock: ^ (NSString *reportString){
-                                                                                                     [UIView animateWithDuration: kChannelEditModeAnimationDuration
-                                                                                                                      animations: ^{
-                                                                                                                          // Fade out the category tab controller
-                                                                                                                          self.reportConcernTableViewController.view.alpha = 0.0f;
-                                                                                                                      }
-                                                                                                                      completion: nil];
-                                                                                                     self.reportConcernButton.selected = FALSE;
-                                                                                                     [self reportConcern: reportString];
-                                                                                                 }
-                                                                                               cancelReportBlock: ^{
-                                                                                                   [UIView animateWithDuration: kChannelEditModeAnimationDuration
-                                                                                                                    animations: ^{
-                                                                                                                        // Fade out the category tab controller
-                                                                                                                        self.reportConcernTableViewController.view.alpha = 0.0f;
-                                                                                                                    }
-                                                                                                                    completion: ^(BOOL success){
-                                                                                                                        [self.reportConcernTableViewController.view removeFromSuperview];
-                                                                                                                    }];
-                                                                                                   self.reportConcernButton.selected = FALSE;
-                                                                                               }];
-            
-            
-            // Move off the bottom of the screen
-            CGRect startFrame = self.reportConcernTableViewController.view.frame;
-            startFrame.origin.y = self.view.frame.size.height;
-            self.reportConcernTableViewController.view.frame = startFrame;
-            
-            [masterViewController.view addSubview: self.reportConcernTableViewController.view];
-            
-            // Slide up onto the screen
-            [UIView animateWithDuration: 0.3f
-                                  delay: 0.0f
-                                options: UIViewAnimationOptionCurveEaseOut
-                             animations: ^{
-                                 CGRect endFrame = self.reportConcernTableViewController.view.frame;
-                                 endFrame.origin.y = 0.0f;
-                                 self.reportConcernTableViewController.view.frame = endFrame;
-                             }
-                             completion: nil];
-        }
-    }  
-}
+            self.reportConcernController = [[SYNReportConcernTableViewController alloc] init];
 
-
-- (void) reportConcern: (NSString *) reportString
-{
-    [appDelegate.oAuthNetworkEngine reportConcernForUserId: appDelegate.currentOAuth2Credentials.userId
-                                                objectType: @"channel"
-                                                  objectId: self.channel.uniqueId
-                                                    reason: reportString
-                                          completionHandler: ^(NSDictionary *dictionary){
-//                                              DebugLog(@"Concern successfully reported");
-                                          }
-                                               errorHandler: ^(NSError* error) {
-                                                   DebugLog(@"Report concern failed");
-                                                   DebugLog(@"%@", [error debugDescription]);
-                                               }];
+            [self.reportConcernController reportConcernFromView:button inViewController:self popOverArrowDirection:UIPopoverArrowDirectionLeft objectType:@"channel" objectId:self.channel.uniqueId completedBlock:^{
+                    button.selected = NO;
+                    self.reportConcernController = nil;
+                }];
+        }
+    }
 }
 
 
@@ -2383,133 +2303,21 @@
 
 - (void) userTouchedCameraButton: (UIButton*) button
 {
-    button.selected = !button.selected;
-    
-    if (button.selected)
-    {
-        SYNCameraPopoverViewController *actionPopoverController = [[SYNCameraPopoverViewController alloc] init];
-        actionPopoverController.delegate = self;
-        
-        // Need show the popover controller
-        self.cameraMenuPopoverController = [[UIPopoverController alloc] initWithContentViewController: actionPopoverController];
-       self.cameraMenuPopoverController.popoverContentSize = CGSizeMake(206, 96);
-        self.cameraMenuPopoverController.delegate = self;
-        self.cameraMenuPopoverController.popoverBackgroundViewClass = [SYNPopoverBackgroundView class];
-        
-        [self.cameraMenuPopoverController presentPopoverFromRect: button.frame
-                                                          inView: self.coverChooserMasterView
-                                        permittedArrowDirections: UIPopoverArrowDirectionLeft
-                                                        animated: YES];
-    }
-}
-
-
-- (void) popoverControllerDidDismissPopover: (UIPopoverController *) popoverController
-{
-    if (popoverController == self.cameraMenuPopoverController)
-    {
-        self.cameraButton.selected = NO;
-        self.cameraPopoverController = nil;
-    }
-    else if (popoverController == self.cameraPopoverController)
-    {
-        self.cameraButton.selected = NO;
-        self.cameraPopoverController = nil;
-    }
-    else if (popoverController == self.reportConcernPopoverController)
-    {
-        self.reportConcernButton.selected = NO;
-        self.reportConcernPopoverController = nil;
-    }
-    else
-    {
-        AssertOrLog(@"Unknown popup dismissed");
-    }
-}
-
-
-- (void) userTouchedTakePhotoButton
-{
-    [self.cameraMenuPopoverController dismissPopoverAnimated: NO];
-    [self showImagePicker: UIImagePickerControllerSourceTypeCamera];
-}
-
-
-- (void) userTouchedChooseExistingPhotoButton
-{
-    [self.cameraMenuPopoverController dismissPopoverAnimated: NO];
-    [self showImagePicker: UIImagePickerControllerSourceTypePhotoLibrary];
-}
-
-
-- (void) showImagePicker: (UIImagePickerControllerSourceType) sourceType
-{
-    self.imagePicker = [[GKImagePicker alloc] init];
-    self.imagePicker.cropSize = CGSizeMake(280, 280);
+    //Show imagePicker
+    self.imagePicker = [[SYNImagePickerController alloc] initWithHostViewController:self];
     self.imagePicker.delegate = self;
-    self.imagePicker.imagePickerController.sourceType = sourceType;
-    
-    if ((sourceType == UIImagePickerControllerSourceTypeCamera) && [UIImagePickerController respondsToSelector: @selector(isCameraDeviceAvailable:)])
-    {
-        if ([UIImagePickerController isCameraDeviceAvailable: UIImagePickerControllerCameraDeviceFront])
-        {
-            self.imagePicker.imagePickerController.cameraDevice = UIImagePickerControllerCameraDeviceRear;
-        }
-    }
-    
-    if (UI_USER_INTERFACE_IDIOM() == UIUserInterfaceIdiomPad)
-    {
-        self.cameraPopoverController = [[UIPopoverController alloc] initWithContentViewController: self.imagePicker.imagePickerController];
-        
-        self.cameraPopoverController.popoverBackgroundViewClass = [SYNPopoverBackgroundView class];
-        
-        [self.cameraPopoverController presentPopoverFromRect: self.cameraButton.frame
-                                                      inView: self.coverChooserMasterView
-                                    permittedArrowDirections: UIPopoverArrowDirectionLeft
-                                                    animated: YES];
-        
-        self.cameraPopoverController.delegate = self;
-    }
-    else
-    {
-        [self presentViewController: self.imagePicker.imagePickerController
-                           animated: YES
-                         completion: nil];
-    }
+    [self.imagePicker presentImagePickerAsPopupFromView:button arrowDirection:UIPopoverArrowDirectionLeft];
 }
 
+#pragma mark - SYNImagePickerDelegate
 
-# pragma mark - GKImagePicker Delegate Methods
-
-- (void) imagePicker: (GKImagePicker *) imagePicker
-         pickedImage: (UIImage *) image
+-(void)picker:(SYNImagePickerController *)picker finishedWithImage:(UIImage *)image
 {
-    self.cameraButton.selected = NO;
-//    DebugLog(@"width %f, height %f", image.size.width, image.size.height);
-    
+    //Imagepicker has picked an image
     self.channelCoverImageView.image = image;
-    
     [self uploadChannelImage: image];
-    
-    [self hideImagePicker];
+    self.imagePicker = nil;
 }
-
-
-- (void) hideImagePicker
-{
-    self.cameraButton.selected = NO;
-    if (UIUserInterfaceIdiomPad == UI_USER_INTERFACE_IDIOM())
-    {
-        
-        [self.cameraPopoverController dismissPopoverAnimated: YES];
-        
-    } else {
-        
-        [self.imagePicker.imagePickerController dismissViewControllerAnimated: YES
-                                                                   completion: nil];
-    }
-}
-
 
 #pragma mark - Upload channel cover image
 
@@ -2884,7 +2692,7 @@
     {
         
         [[NSNotificationCenter defaultCenter] removeObserver: self
-                                                        name: NSManagedObjectContextObjectsDidChangeNotification
+                                                        name: NSManagedObjectContextDidSaveNotification
                                                       object: self.channel.managedObjectContext];   
     }
     
@@ -2948,6 +2756,7 @@
                                                      name: NSManagedObjectContextDidSaveNotification
                                                    object: self.channel.managedObjectContext];
 
+        
         if(self.mode == kChannelDetailsModeDisplay)
         {
             [[NSNotificationCenter defaultCenter] postNotificationName: kChannelUpdateRequest

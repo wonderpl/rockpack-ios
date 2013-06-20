@@ -18,19 +18,31 @@
 #import "SYNNetworkEngine.h"
 #import "SYNOAuth2Credential.h"
 #import "SYNOAuthNetworkEngine.h"
+#import "SYNOnboard1ViewController.h"
+#import "SYNOnboard2ViewController.h"
+#import "SYNOnboard3ViewController.h"
+#import "SYNOnboard4ViewController.h"
 #import "SYNPopoverBackgroundView.h"
+#import "SYNTextFieldLogin.h"
 #import "UIFont+SYNFont.h"
 #import "User.h"
-#import "SYNTextFieldLogin.h"
 
-
-@interface SYNLoginViewController ()  <UITextFieldDelegate, SYNImagePickerControllerDelegate>
+@interface SYNLoginViewController ()  <UITextFieldDelegate,
+                                       SYNImagePickerControllerDelegate,
+                                       UIPageViewControllerDataSource,
+                                       UIPageViewControllerDelegate>
 
 @property (nonatomic) BOOL isAnimating;
 @property (nonatomic) CGRect facebookButtonInitialFrame;
 @property (nonatomic) CGRect initialUsernameFrame;
 @property (nonatomic) CGRect signUpButtonInitialFrame;
 @property (nonatomic, readonly) CGFloat elementsOffsetY;
+@property (nonatomic, strong) IBOutlet SYNTextFieldLogin* ddInputField;
+@property (nonatomic, strong) IBOutlet SYNTextFieldLogin* emailInputField;
+@property (nonatomic, strong) IBOutlet SYNTextFieldLogin* mmInputField;
+@property (nonatomic, strong) IBOutlet SYNTextFieldLogin* passwordInputField;
+@property (nonatomic, strong) IBOutlet SYNTextFieldLogin* userNameInputField;
+@property (nonatomic, strong) IBOutlet SYNTextFieldLogin* yyyyInputField;
 @property (nonatomic, strong) IBOutlet UIButton* faceImageButton;
 @property (nonatomic, strong) IBOutlet UIButton* facebookSignInButton;
 @property (nonatomic, strong) IBOutlet UIButton* finalLoginButton;
@@ -41,6 +53,7 @@
 @property (nonatomic, strong) IBOutlet UIButton* signUpButton;
 @property (nonatomic, strong) IBOutlet UIImageView* avatarImageView;
 @property (nonatomic, strong) IBOutlet UIImageView* dividerImageView;
+@property (nonatomic, strong) IBOutlet UIImageView* loginBackgroundImage;
 @property (nonatomic, strong) IBOutlet UIImageView* titleImageView;
 @property (nonatomic, strong) IBOutlet UILabel* areYouNewLabel;
 @property (nonatomic, strong) IBOutlet UILabel* memberLabel;
@@ -50,19 +63,14 @@
 @property (nonatomic, strong) IBOutlet UILabel* termsAndConditionsLabelSide;
 @property (nonatomic, strong) IBOutlet UILabel* wellSendYouLabel;
 @property (nonatomic, strong) IBOutlet UILabel* whatsOnYourChannelLabel;
-@property (nonatomic, strong) IBOutlet SYNTextFieldLogin* ddInputField;
-@property (nonatomic, strong) IBOutlet SYNTextFieldLogin* emailInputField;
-@property (nonatomic, strong) IBOutlet SYNTextFieldLogin* mmInputField;
-@property (nonatomic, strong) IBOutlet SYNTextFieldLogin* passwordInputField;
-@property (nonatomic, strong) IBOutlet SYNTextFieldLogin* userNameInputField;
-@property (nonatomic, strong) IBOutlet SYNTextFieldLogin* yyyyInputField;
-@property (nonatomic, strong) UIButton* termsAndConditionsButton;
 @property (nonatomic, strong) IBOutlet UIView* dobView;
 @property (nonatomic, strong) NSArray* mainFormElements;
 @property (nonatomic, strong) NSMutableDictionary* labelsToErrorArrows;
+@property (nonatomic, strong) UIButton* termsAndConditionsButton;
 @property (nonatomic, strong) UIPopoverController* cameraMenuPopoverController;
 @property (nonatomic, strong) UIPopoverController* cameraPopoverController;
-@property (nonatomic, strong) IBOutlet UIImageView* loginBackgroundImage;
+@property (strong, nonatomic) NSArray *onboardingViewControllers;
+@property (strong, nonatomic) UIPageViewController *pageViewController;
 
 @end
 
@@ -166,13 +174,169 @@
     {
         
         signUpButton.center = CGPointMake(facebookSignInButton.center.x + 304.0, signUpButton.center.y);
+
     }
     
     self.state = kLoginScreenStateInitial;
     
     UITapGestureRecognizer* tapGesture = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(outerViewTapped:)];
     [self.view addGestureRecognizer:tapGesture];
+    
+    self.pageViewController = [[UIPageViewController alloc] initWithTransitionStyle: UIPageViewControllerTransitionStyleScroll
+                                                              navigationOrientation: UIPageViewControllerNavigationOrientationHorizontal
+                                                                            options: nil];
+    
+    self.pageViewController.dataSource = self;
+    self.pageViewController.delegate = self;
+    
+    // Setup the on-boarding controller
+    self.onboardingViewControllers = @[[SYNOnboard1ViewController new],
+                                       [SYNOnboard2ViewController new],
+                                       [SYNOnboard3ViewController new],
+                                       [SYNOnboard4ViewController new]];
+    
+    [self.pageViewController setViewControllers: @[self.onboardingViewControllers[0]]
+                                      direction: UIPageViewControllerNavigationDirectionForward
+                                       animated: NO
+                                     completion: nil];
+    
+    [self addChildViewController: self.pageViewController];
+    [self.view addSubview: self.pageViewController.view];
+    
+    // Set the page view controller's bounds using an inset rect so that self's view is visible around the edges of the pages.
+    // This is the amount by which to offset the bottom of the page view from the bottom of the screen
+    CGRect pageViewRect = self.view.bounds;
+    pageViewRect.size.height -= 160;
+    self.pageViewController.view.frame = pageViewRect;
+    
+    [self.pageViewController didMoveToParentViewController: self];
+}
 
+
+- (void) viewWillAppear:(BOOL)animated
+{
+    [super viewWillAppear:animated];
+    
+}
+
+- (void) viewDidAppear: (BOOL) animated
+{
+    [super viewDidAppear:animated];
+    
+    memberLabel.center = CGPointMake(memberLabel.center.x, loginButton.center.y - 54.0);
+    memberLabel.frame = CGRectIntegral(memberLabel.frame);
+    
+}
+
+
+#pragma mark - Onboarding support
+
+- (void) hideOnboarding
+{
+    [UIView animateWithDuration: 0.3f
+                          delay: 0.1f
+                        options: UIViewAnimationOptionCurveEaseOut
+                     animations: ^{
+                         self.pageViewController.view.alpha = 0.0f;
+                     } completion:^(BOOL finished) {
+                         self.pageViewController.view.hidden = TRUE;
+                     }];
+}
+
+- (void) showOnboarding
+{
+    self.pageViewController.view.hidden = FALSE;
+    
+    [UIView animateWithDuration: 0.3f
+                          delay: 0.1f
+                        options: UIViewAnimationOptionCurveEaseOut
+                     animations: ^{
+                         self.pageViewController.view.alpha = 1.0f;
+                     } completion: nil];
+}
+
+
+#pragma mark - Page View Controller Data Source
+
+- (UIViewController *) pageViewController: (UIPageViewController *) pageViewController
+       viewControllerBeforeViewController: (UIViewController *) viewController
+{
+    NSUInteger numberOfOnboardViewControllers = self.onboardingViewControllers.count;
+    int index = 0;
+    for (UIViewController *vc in self.onboardingViewControllers)
+    {
+        if (vc == viewController)
+        {
+#ifdef WRAP_AROUND
+            if (index == 0)
+            {
+                return nil;
+            }
+            else
+            {
+                return self.onboardingViewControllers[index - 1];
+            }
+#else
+            if (index == 0)
+            {
+                return self.onboardingViewControllers [numberOfOnboardViewControllers - 1];
+            }
+            else
+            {
+                return self.onboardingViewControllers [index - 1];
+            }
+#endif
+        }
+        
+        index++;
+    }
+    
+    // If we got here then we didn't find the viewcontroller
+    return nil;
+}
+
+- (UIViewController *) pageViewController: (UIPageViewController *) pageViewController
+        viewControllerAfterViewController: (UIViewController *) viewController
+{
+    NSUInteger numberOfOnboardViewControllers = self.onboardingViewControllers.count;
+    int index = 0;
+    for (UIViewController *vc in self.onboardingViewControllers)
+    {
+        if (vc == viewController)
+        {
+#ifdef WRAP_AROUND
+            if (index == (self.onboardingViewControllers.count - 1))
+            {
+                return nil;
+            }
+            else
+            {
+                return self.onboardingViewControllers[(index + 1) % numberOfOnboardViewControllers];
+            }
+#else
+            return self.onboardingViewControllers [(index + 1) % numberOfOnboardViewControllers];
+#endif
+        }
+        
+        index++;
+    }
+    
+    // If we got here then we didn't find the viewcontroller
+    return nil;
+}
+
+
+
+- (NSInteger) presentationCountForPageViewController: (UIPageViewController *) pageViewController
+{
+    return self.onboardingViewControllers.count;
+}
+
+
+- (NSInteger) presentationIndexForPageViewController: (UIPageViewController *) pageViewController
+{
+    // Start off showing the first view controller
+    return 0;
 }
 
 -(void)termsAndConditionsPressed:(UIButton*)button withEvent:(UIEvent*)event
@@ -193,30 +357,6 @@
     [[UIApplication sharedApplication] openURL:urlToGo];
 }
 
-- (void) viewWillAppear:(BOOL)animated
-{
-    [super viewWillAppear:animated];
-    self.loginBackgroundImage.frame = self.loginBackgroundImage.bounds;
-    
-    [UIView animateWithDuration:40.0f
-                          delay:0.0f
-                        options: UIViewAnimationOptionCurveEaseOut
-                     animations:^{
-                         self.loginBackgroundImage.frame = CGRectMake(self.loginBackgroundImage.frame.origin.x - 593.0f, self.loginBackgroundImage.frame.origin.y, self.loginBackgroundImage.frame.size.width, self.loginBackgroundImage.frame.size.height);
-                         
-                     } completion:^(BOOL finished) {
-                         //self.darkOverlayView.hidden = NO;
-                     }];
-}
-
-- (void) viewDidAppear: (BOOL) animated
-{
-    [super viewDidAppear:animated];
-    
-    memberLabel.center = CGPointMake(memberLabel.center.x, loginButton.center.y - 54.0);
-    memberLabel.frame = CGRectIntegral(memberLabel.frame);
-    
-}
 
 
 #pragma mark - States and Transitions
@@ -281,6 +421,15 @@
     facebookSignInButton.enabled = YES;
     facebookSignInButton.alpha = 1.0;
     
+    CGRect facebookButtonFrame = facebookSignInButton.frame;
+    if([[SYNDeviceManager sharedInstance] isPortrait])
+        facebookButtonFrame.origin.x = 150.0f;
+    
+    facebookSignInButton.frame = facebookButtonFrame;
+    
+    facebookSignInButton.autoresizingMask = UIViewAutoresizingFlexibleTopMargin;
+    
+    
     _facebookLoginIsInProcess = NO;
     
     if ([SYNDeviceManager.sharedInstance isPortrait])
@@ -294,6 +443,12 @@
     signUpButton.enabled = YES;
     signUpButton.alpha = 1.0;
     signUpButton.hidden = NO;
+    
+    CGRect signUpButtonFrame  = signUpButton.frame;
+    if([[SYNDeviceManager sharedInstance] isPortrait])
+        signUpButtonFrame.origin.x = 644.0f;
+    
+    signUpButton.frame = signUpButtonFrame;
     
     loginButton.enabled = YES;
     loginButton.hidden = NO;
@@ -376,6 +531,9 @@
     
     if (previousState == kLoginScreenStateInitial)
     {
+        facebookSignInButton.frame = CGRectMake(userNameInputField.frame.origin.x - 4.0, 322.0, facebookSignInButton.frame.size.width, facebookSignInButton.frame.size.height);
+        facebookSignInButton.autoresizingMask = UIViewAutoresizingFlexibleBottomMargin | UIViewAutoresizingFlexibleLeftMargin | UIViewAutoresizingFlexibleRightMargin;
+        
         NSArray* loginForControls = @[facebookSignInButton, userNameInputField, passwordInputField, finalLoginButton];
         float delay = 0.0;
         
@@ -473,6 +631,7 @@
         [UIView animateWithDuration: 0.5
                          animations: ^{
                              facebookSignInButton.alpha = 1.0;
+                             facebookSignInButton.enabled = YES;
                              facebookSignInButton.center = CGPointMake(self.userNameInputField.center.x, facebookSignInButton.center.y);
                              
                              emailInputField.alpha = 0.0;
@@ -527,6 +686,7 @@
         [UIView animateWithDuration: 0.5
                          animations: ^{
                              facebookSignInButton.alpha = 1.0;
+                             facebookSignInButton.enabled = YES;
                              
                              CGFloat diff = userNameInputField.frame.origin.y - self.initialUsernameFrame.origin.y;
                              dividerImageView.center = CGPointMake(dividerImageView.center.x, dividerImageView.center.y - diff);
@@ -624,7 +784,8 @@
                                      dobView.center.y);
         dobView.frame = CGRectIntegral(dobView.frame);
         
-        
+        facebookSignInButton.frame = CGRectMake(userNameInputField.frame.origin.x - 4.0, 322.0, facebookSignInButton.frame.size.width, facebookSignInButton.frame.size.height);
+        facebookSignInButton.autoresizingMask = UIViewAutoresizingFlexibleBottomMargin | UIViewAutoresizingFlexibleLeftMargin | UIViewAutoresizingFlexibleRightMargin;
         NSArray* loginForControls = @[emailInputField, userNameInputField, passwordInputField, dobView, registerNewUserButton];
         float delay = 0.05;
         for (UIView* control in loginForControls)
@@ -842,6 +1003,8 @@
 
 - (IBAction) goToLoginForm: (id) sender
 {
+    [self hideOnboarding];
+    
     if (isAnimating)
         return;
     
@@ -941,6 +1104,8 @@
 
 - (IBAction) signInWithFacebook: (id) sender
 {
+    [self hideOnboarding];
+    
     id<GAITracker> tracker = [GAI sharedInstance].defaultTracker;
     
     [tracker sendEventWithCategory: @"uiAction"
@@ -1258,6 +1423,8 @@
 
 - (IBAction) signUp: (id) sender
 {
+    [self hideOnboarding];
+    
     self.state = kLoginScreenStateRegister;
 }
 
@@ -1472,12 +1639,13 @@
                                             duration: duration];
     
     [self clearAllErrorArrows];
-    
+    CGRect facebookButtonFrame = facebookSignInButton.frame;
     if (UIInterfaceOrientationIsPortrait(toInterfaceOrientation))
     {
-        signUpButton.center = CGPointMake(604.0, signUpButton.center.y);
+        signUpButton.center = CGPointMake(524.0, signUpButton.center.y);
+        facebookButtonFrame.origin.x = 150.0f;
         passwordForgottenLabel.center = CGPointMake(115.0, passwordForgottenLabel.center.y);
-        faceImageButton.center = CGPointMake(124.0, faceImageButton.center.y);
+        faceImageButton.center = CGPointMake(84.0, faceImageButton.center.y);
         self.avatarImageView.center = CGPointMake(124.0, self.avatarImageView.center.y);
         termsAndConditionsLabel.center = CGPointMake(termsAndConditionsLabel.center.x, 714.0);
         termsAndConditionsLabelSide.center = CGPointMake(termsAndConditionsLabelSide.center.x, 714.0);        
@@ -1486,7 +1654,8 @@
     }
     else
     {
-        signUpButton.center = CGPointMake(730.0, signUpButton.center.y);
+        signUpButton.center = CGPointMake(670.0, signUpButton.center.y);
+        facebookButtonFrame.origin.x = 293.0f;
         passwordForgottenLabel.center = CGPointMake(248.0, passwordForgottenLabel.center.y);
         faceImageButton.center = CGPointMake(254.0, faceImageButton.center.y);
         self.avatarImageView.center = CGPointMake(254.0, self.avatarImageView.center.y);
@@ -1496,15 +1665,18 @@
     }
     
     
+    
     areYouNewLabel.center = CGPointMake(areYouNewLabel.center.x, registerButton.center.y - 44.0);
     
     if (self.state != kLoginScreenStateInitial)
     {
         loginButton.center = registerButton.center;
+        
         memberLabel.center = CGPointMake(loginButton.center.x, areYouNewLabel.center.y - 8.0);
     }
     else
     {
+        facebookSignInButton.frame = facebookButtonFrame;
         memberLabel.center = CGPointMake(loginButton.center.x, loginButton.center.y - 54.0);
     }
     

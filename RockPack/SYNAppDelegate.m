@@ -9,13 +9,16 @@
 #if DEBUG
 #import <SparkInspector/SparkInspector.h>
 #endif
+
 #import "AppConstants.h"
+#import "Appirater.h"
 #import "ChannelOwner.h"
 #import "GAI.h"
 #import "SYNActivityManager.h"
 #import "SYNAppDelegate.h"
 #import "SYNContainerViewController.h"
 #import "SYNDeviceManager.h"
+#import "SYNFacebookManager.h"
 #import "SYNLoginViewController.h"
 #import "SYNLoginViewControllerIphone.h"
 #import "SYNMasterViewController.h"
@@ -29,7 +32,7 @@
 #import <AVFoundation/AVFoundation.h>
 #import <FacebookSDK/FacebookSDK.h>
 #import <objc/runtime.h>
-#import "SYNFacebookManager.h"
+
 
 extern void instrumentObjcMessageSends(BOOL);
 
@@ -61,6 +64,13 @@ extern void instrumentObjcMessageSends(BOOL);
 - (BOOL) application:(UIApplication *) application
 didFinishLaunchingWithOptions: (NSDictionary *) launchOptions
 {
+    [Appirater setAppId: @"660697542"];
+    [Appirater setDaysUntilPrompt: 1];
+    [Appirater setUsesUntilPrompt: 10];
+    [Appirater setSignificantEventsUntilPrompt: -1];
+    [Appirater setTimeBeforeReminding: 10];
+//    [Appirater setDebug: YES];
+    
     // Enable the Spark Inspector
 #if DEBUG
     [SparkInspector enableObservation];
@@ -205,6 +215,7 @@ didFinishLaunchingWithOptions: (NSDictionary *) launchOptions
                     startImageView = [[UIImageView alloc] initWithImage:[UIImage imageNamed:@"Default"]];
                 }
             }
+            
             [self.window addSubview:startImageView];
             startImageView.center = startImageCenter;
             
@@ -222,21 +233,23 @@ didFinishLaunchingWithOptions: (NSDictionary *) launchOptions
                 [startImageView removeFromSuperview];
             }];
             
-            return YES;
+//            return YES;
             
             // else if we have an access token //
         }
         else
         {
             self.window.rootViewController = [self createAndReturnRootViewController];
-            return YES;
+//            return YES;
         }
     }
     else
     {
         self.window.rootViewController = [self createAndReturnLoginViewController];
-        return YES;
+//        return YES;
     }
+    
+    [Appirater appLaunched: YES];
     
     return YES;
 }

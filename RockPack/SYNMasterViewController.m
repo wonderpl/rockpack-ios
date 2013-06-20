@@ -414,20 +414,14 @@ typedef void(^AnimationCompletionBlock)(BOOL finished);
         return;
     }
     
-    Channel* channel = (Channel*)[[notification userInfo] objectForKey: kChannel];
-    if(!channel)
-        return;
-
-    
     
     // this channel's managedObjectContext is the appDelegate.channelManagedObjectContext
     SYNChannelDetailViewController *channelCreationVC =
-    [[SYNChannelDetailViewController alloc] initWithChannel: channel
+    [[SYNChannelDetailViewController alloc] initWithChannel: appDelegate.videoQueue.currentlyCreatingChannel
                                                   usingMode: kChannelDetailsModeCreate] ;
     
     // either the current view on the container scroll view or the overlay navigation controller as in search mode
-    SYNAbstractViewController* showingController = self.showingBaseViewController;
-    [showingController animatedPushViewController: channelCreationVC];
+    [self.showingBaseViewController animatedPushViewController: channelCreationVC];
 }
 
 -(void)addedToChannelAction:(NSNotification*)notification
@@ -756,10 +750,14 @@ typedef void(^AnimationCompletionBlock)(BOOL finished);
     }
     else if([[SYNDeviceManager sharedInstance] isIPhone])
     {
-        [self.searchViewController.view addSubview:self.sideNavigationViewController.searchViewController.searchBoxView];
-        self.searchViewController.searchBoxViewController = self.sideNavigationViewController.searchViewController;
         SYNAbstractViewController* topController = (SYNAbstractViewController*)self.searchViewController.navigationController.topViewController;
         [topController animatedPopToRootViewController];
+    }
+    
+    if([[SYNDeviceManager sharedInstance] isIPhone])
+    {
+        [self.searchViewController.view addSubview:self.sideNavigationViewController.searchViewController.searchBoxView];
+        self.searchViewController.searchBoxViewController = self.sideNavigationViewController.searchViewController;
     }
     
     
