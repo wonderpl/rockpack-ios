@@ -239,9 +239,6 @@
     
     // == Swipe to Exit == //
     
-    UISwipeGestureRecognizer* swipeToExitGesture = [[UISwipeGestureRecognizer alloc] initWithTarget:self action:@selector(swipedToExit:)];
-    swipeToExitGesture.direction = UISwipeGestureRecognizerDirectionRight;
-    [self.view addGestureRecognizer:swipeToExitGesture];
     
     
     // == Avatar Image == //
