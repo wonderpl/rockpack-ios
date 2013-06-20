@@ -8,6 +8,7 @@
 
 #import "SYNOnBoardingPopoverQueueController.h"
 #import "SYNDeviceManager.h"
+#import "UIColor+SYNColor.h"
 #import "SYNAppDelegate.h"
 
 #define STD_PADDING_DISTANCE 18.0
@@ -37,7 +38,7 @@
     CGRect screenFrame = CGRectMake(0.0, 0.0, screenSize.width, screenSize.height);
     
     self.backgroundView = [[UIView alloc] initWithFrame:screenFrame];
-    self.backgroundView.backgroundColor = [UIColor blackColor];
+    //self.backgroundView.backgroundColor = [UIColor blackColor];
     self.backgroundView.alpha = 0.0;
     self.backgroundView.userInteractionEnabled = NO;
     self.backgroundView.autoresizingMask = UIViewAutoresizingFlexibleWidth | UIViewAutoresizingFlexibleHeight;
@@ -103,7 +104,7 @@
     }
     else // go to next popover
     {
-        NSLog(@"Presenting %i", self.queue.count);
+        
         SYNOnBoardingPopoverView* nextPopover = (SYNOnBoardingPopoverView*)(self.queue)[0];
         [self.queue removeObject:nextPopover];
         
@@ -266,16 +267,61 @@
     
     popover.frame = panelFrame;
     
-    
-    
-    
-    
     popover.arrow.frame = arrowFrame;
     popover.arrow.alpha = 0.0;
     [self.view addSubview:popover.arrow];
     [self.view addSubview:popover];
+    
+    // add bg 8 slices
+    
+    float px[4] = {
+        0.0f, popover.pointRect.origin.x,
+        popover.pointRect.origin.x + popover.pointRect.size.width, screenSize.width
+    };
+    
+    float py[4] = {
+        0.0f, popover.pointRect.origin.y,
+        popover.pointRect.origin.y + popover.pointRect.size.height, screenSize.height
+    };
+    
+    int colors[9] = {
+        0x5786fd, 0xf2cd60, 0x7ac9bc, 0xc05bf5, 0x91ccb6, 0xf1c9d0, 0x622a23, 0xf6504d, 0x7db7e1
+    };
+    
+    float current_x = 0.0f;
+    float current_y = 0.0f;
+    float current_w = 0.0f;
+    float current_h = 0.0f;
+    
+    UIView* currentSlice;
+    
+    for (int i = 0; i < 3; i++) {
+        
+        
+        current_y = py[i];
+        
+        for (int j = 0; j < 3; j++) {
+            
+            current_x = px[j];
+            
+            current_w = px[j+1] - current_x;
+            
+            current_h = py[i+1] - current_y;
+            
+            currentSlice = [[UIView alloc] initWithFrame:CGRectMake(current_x, current_y, current_w, current_h)];
+            currentSlice.backgroundColor = [UIColor colorWithHex:colors[i+j]];
+            currentSlice.autoresizingMask = UIViewAutoresizingFlexibleWidth | UIViewAutoresizingFlexibleHeight;
+            
+            [self.backgroundView addSubview:currentSlice];
+        }
+    }
 }
 
+
+-(void)createBGSlices
+{
+    
+}
 
 
 -(void)okButtonPressed:(UIButton*)buttonPressed

@@ -50,4 +50,9 @@
     return [UIColor colorWithRed: 146.0f/255.0f green: 169.0f/255.0f blue: 174.0f/255.0f alpha: 1.0f];
 }
 
++ (UIColor *) colorWithHex:(NSInteger)hex
+{
+    return [UIColor colorWithRed:((float)((hex & 0xFF0000) >> 16))/255.0 green:((float)((hex & 0xFF00) >> 8))/255.0 blue:((float)(hex & 0xFF))/255.0 alpha:1.0];
+}
+
 @end

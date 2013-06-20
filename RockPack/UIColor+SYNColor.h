@@ -18,4 +18,6 @@
 + (UIColor *) rockpacTurcoiseColor;
 + (UIColor *) rockpackHeaderSubtitleColor;
 
++ (UIColor *) colorWithHex:(NSInteger)hex;
+
 @end
