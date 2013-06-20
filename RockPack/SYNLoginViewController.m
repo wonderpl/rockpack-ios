@@ -206,7 +206,7 @@
     // Set the page view controller's bounds using an inset rect so that self's view is visible around the edges of the pages.
     // This is the amount by which to offset the bottom of the page view from the bottom of the screen
     CGRect pageViewRect = self.view.bounds;
-    pageViewRect.size.height -= 240;
+    pageViewRect.size.height -= 160;
     self.pageViewController.view.frame = pageViewRect;
     
     [self.pageViewController didMoveToParentViewController: self];
@@ -216,22 +216,7 @@
 - (void) viewWillAppear:(BOOL)animated
 {
     [super viewWillAppear:animated];
-
-    self.loginBackgroundImage.frame = self.loginBackgroundImage.bounds;
     
-    [UIView animateWithDuration:40.0f
-                          delay:0.0f
-                        options: UIViewAnimationOptionCurveEaseOut
-                     animations:^{
-                         self.loginBackgroundImage.frame =
-                         CGRectMake(self.loginBackgroundImage.frame.origin.x - 593.0f,
-                                    self.loginBackgroundImage.frame.origin.y,
-                                    self.loginBackgroundImage.frame.size.width,
-                                    self.loginBackgroundImage.frame.size.height);
-                         
-                     } completion:^(BOOL finished) {
-                         //self.darkOverlayView.hidden = NO;
-                     }];
 }
 
 - (void) viewDidAppear: (BOOL) animated
