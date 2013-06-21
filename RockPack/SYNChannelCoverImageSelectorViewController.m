@@ -429,9 +429,7 @@ enum ChannelCoverSelectorState {
                                                                                 withReuseIdentifier: @"SYNChannelFooterMoreView"
                                                                                        forIndexPath: indexPath];
         
-        [self.footerView.loadMoreButton addTarget: self
-                                           action: @selector(loadMoreCovers:)
-                                 forControlEvents: UIControlEventTouchUpInside];
+
         
         //[self loadMoreChannels:self.footerView.loadMoreButton];
         

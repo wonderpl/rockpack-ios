@@ -827,6 +827,17 @@
     [self.videoThumbnailCollectionView setContentOffset:CGPointZero animated:YES];
 }
 
+- (void) scrollViewDidScroll: (UIScrollView *) scrollView
+{
+    //    DebugLog (@"Scrolling");
+    // when reaching far right hand side, load a new page
+    if (scrollView.contentOffset.y == scrollView.contentSize.height - scrollView.bounds.size.height)
+    {
+          DebugLog (@"Scrolling more");
+        [self loadMoreVideos: nil];
+    }
+}
+
 
 
 @end
