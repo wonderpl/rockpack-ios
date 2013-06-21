@@ -20,21 +20,16 @@
 #import "RegexKitLite.h"
 
 
-@interface SYNLoginBaseViewController ()
+@interface SYNLoginBaseViewController () {
+    
+}
+
+@property (nonatomic, strong) NSArray* backgroundImagesArray;
+
 
 @end
 
 @implementation SYNLoginBaseViewController
-
-- (id) init
-{
-    if ((self = [super init]))
-    {
-        [self commonInit];
-    }
-        
-    return self;
-}
 
         
 - (id) initWithCoder: (NSCoder *) aDecoder
@@ -44,6 +39,7 @@
     if (self)
     {
         [self commonInit];
+        
     }
     
     return self;
@@ -75,6 +71,18 @@
     
     self.reachability = [Reachability reachabilityWithHostname: _appDelegate.networkEngine.hostName];
     
+    self.scrollingDirection = ScrollingDirectionNone;
+    self.currentOnBoardingPage = 0;
+    
+    self.loginBackgroundFrontImage.alpha = 0.0;
+    // create image array
+    NSMutableArray* imagesArray = [[NSMutableArray alloc] initWithCapacity:kLoginOnBoardingMessagesNum];
+    for (int i = 0; i < kLoginOnBoardingMessagesNum; i++)
+    {
+        [imagesArray addObject:[NSString stringWithFormat:@"login_bg_%i.jpg", (i+1)]];
+        NSLog(@"%@", [NSString stringWithFormat:@"login_bg_%i", (i+1)]);
+    }
+    self.backgroundImagesArray = [NSArray arrayWithArray:imagesArray];
     
 }
 
@@ -86,6 +94,44 @@
     
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(reachabilityChanged:) name:kReachabilityChangedNotification object:nil];
 
+}
+
+-(void)viewDidLoad
+{
+    [super viewDidLoad];
+    
+    CGRect totalImageRect;
+    
+    CGPoint correctPoint;
+    if([[SYNDeviceManager sharedInstance] isIPad]) {
+        
+        totalImageRect = CGRectMake(0.0, 0.0, 1024.0, 1024.0);
+        
+        correctPoint = self.view.center;
+        
+    }
+        
+    else {
+        
+        totalImageRect = CGRectMake(0.0, 0.0, [[SYNDeviceManager sharedInstance] currentScreenHeight], [[SYNDeviceManager sharedInstance] currentScreenHeight]);
+        correctPoint = self.view.center;
+        
+    }
+    
+    self.loginBackgroundImage.frame = totalImageRect;
+    self.loginBackgroundFrontImage.frame = totalImageRect;
+    
+    if([[SYNDeviceManager sharedInstance] isIPhone])
+    {
+        correctPoint.y = IS_IPHONE5 ? 280.0 : 240.0;
+    }
+    self.loginBackgroundImage.center = correctPoint;
+    self.loginBackgroundFrontImage.center = correctPoint;
+    
+    self.loginBackgroundImage.center = CGPointMake(self.view.center.x, self.loginBackgroundImage.center.y);
+    
+    
+    self.loginBackgroundImage.image = [UIImage imageNamed:self.backgroundImagesArray[0]]; // get the first image
 }
 
 - (void) viewDidAppear: (BOOL) animated
@@ -108,6 +154,17 @@
 - (void) setUpInitialState
 {
     //Override in subclass
+    
+}
+
+- (void) setUpLoginStateFromPreviousState: (kLoginScreenState) previousState
+{
+    self.onBoardingController.view.hidden = YES;
+}
+
+- (void) setUpRegisterStateFromState: (kLoginScreenState) previousState
+{
+    self.onBoardingController.view.hidden = YES;
 }
 
 - (BOOL) checkAndSaveRegisteredUser: (SYNOAuth2Credential*) credential
@@ -222,6 +279,28 @@
                                                   errorHandler: errorBlock];
 }
 
+- (void) hideOnboarding
+{
+    [UIView animateWithDuration: 0.3f
+                          delay: 0.1f
+                        options: UIViewAnimationOptionCurveEaseOut
+                     animations: ^{
+                         self.onBoardingController.view.alpha = 0.0;
+                     } completion:^(BOOL finished) {
+                         self.onBoardingController.view.hidden = YES;
+                     }];
+}
+
+- (void) showOnboarding
+{
+    self.onBoardingController.view.hidden = NO;
+    [UIView animateWithDuration: 0.3f
+                          delay: 0.1f
+                        options: UIViewAnimationOptionCurveEaseOut
+                     animations: ^{
+                         self.onBoardingController.view.alpha = 1.0;
+                     } completion: nil];
+}
 
 #pragma mark - login facebook
 
@@ -655,6 +734,124 @@
     }
     
     return inputString;
+}
+
+#pragma mark - ScrollView (on boarding) Delegate Methods
+
+-(void)scrollViewDidScroll:(UIScrollView *)scrollView
+{
+    
+    
+    CGFloat scrollerWidth = self.onBoardingController.scrollView.frame.size.width;
+    
+    CGFloat pinnedOffsetX = self.currentOnBoardingPage * scrollerWidth - self.onBoardingController.scrollView.contentOffset.x;
+    CGFloat ratio = fabsf(pinnedOffsetX / scrollerWidth);
+    
+    BOOL shouldFade = YES;
+    
+    if(pinnedOffsetX < 0.0) // scrolling towards right -->, pick next
+    {
+        if(self.currentOnBoardingPage == 3)
+            shouldFade = NO;
+        self.scrollingDirection = ScrollingDirectionRight;
+    }
+    else if(pinnedOffsetX > 0.0) // scrolling towards left <--, pick next
+    {
+        if(self.currentOnBoardingPage == 0)
+            shouldFade = NO;
+        self.scrollingDirection = ScrollingDirectionLeft;
+    }
+    else // at rest
+    {
+        self.scrollingDirection = ScrollingDirectionNone;
+    }
+    
+    if(shouldFade)
+    {
+        self.loginBackgroundImage.alpha = 1 - ratio;
+        self.loginBackgroundFrontImage.alpha = ratio;
+    }
+    else
+    {
+        self.loginBackgroundImage.alpha = 1.0;
+        self.loginBackgroundFrontImage.alpha = 1.0;
+    }
+    
+    
+    
+    //NSLog(@"ratio: %f", ratio);
+    
+    
+    
+}
+
+-(void)setScrollingDirection:(ScrollingDirection)scrollingDirection
+{
+    if(_scrollingDirection == scrollingDirection)
+        return;
+    
+    _scrollingDirection = scrollingDirection;
+    NSString* nameOfNextImage;
+    
+    nameOfNextImage = self.backgroundImagesArray[self.currentOnBoardingPage];
+    self.loginBackgroundImage.image = [UIImage imageNamed:nameOfNextImage];
+    
+    
+    switch (scrollingDirection) {
+        case ScrollingDirectionNone:
+         
+            nameOfNextImage = self.backgroundImagesArray[self.currentOnBoardingPage];
+            break;
+            
+        case ScrollingDirectionRight:
+            if(self.currentOnBoardingPage + 1 >= self.backgroundImagesArray.count)
+            {
+                
+                nameOfNextImage = self.backgroundImagesArray[self.currentOnBoardingPage];
+            }
+            else
+            {
+                
+                nameOfNextImage = self.backgroundImagesArray[self.currentOnBoardingPage + 1];
+            }
+                
+            
+            break;
+            
+        case ScrollingDirectionLeft:
+            if(self.currentOnBoardingPage - 1 < 0)
+            {
+                
+                nameOfNextImage = self.backgroundImagesArray[self.currentOnBoardingPage];
+            }
+            else
+            {
+             
+                nameOfNextImage = self.backgroundImagesArray[self.currentOnBoardingPage - 1];
+            }
+            break;
+    }
+    
+    
+    self.loginBackgroundFrontImage.image = [UIImage imageNamed:nameOfNextImage];
+    
+}
+
+-(void)scrollViewDidEndDecelerating:(UIScrollView *)scrollView
+{
+    
+    
+    CGFloat contentOffsetX = self.onBoardingController.scrollView.contentOffset.x;
+    self.currentOnBoardingPage = (NSInteger)floorf(contentOffsetX / self.onBoardingController.scrollView.frame.size.width);
+    
+    
+}
+
+-(void)setCurrentOnBoardingPage:(NSInteger)currentOnBoardingPage
+{
+    _currentOnBoardingPage = currentOnBoardingPage;
+    self.onBoardingController.pageControl.currentPage = currentOnBoardingPage;
+    self.scrollingDirection = ScrollingDirectionNone; // when we have a number we are at rest
 }
 
 

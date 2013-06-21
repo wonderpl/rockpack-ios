@@ -9,14 +9,13 @@
 #ifndef RockPack_AppContants_h
 #define RockPack_AppContants_h
 
+// User ratings mechanism
+
+#define ENABLE_USER_RATINGS__
 
 //
 // API
 //
-
-// Returns a list of all the recently added videos associated with a user's subscribed channels (the %@ represents the USERID)
-#define kAPIRecentlyAddedVideoInSubscribedChannelsForUser @"ws/%@/subscriptions/recent_videos/"
-
 
 // Entities
 
@@ -168,6 +167,8 @@
 
 // One the APIs imported some new data - we will need to be more specific at some stage.
 #define kCategoriesUpdated @"kCategoriesUpdated"
+
+#define kLoginOnBoardingMessagesNum 4
 
 // Observers
 #define kCollectionViewContentOffsetKey @"contentOffset"
@@ -327,6 +328,11 @@ typedef enum {
     
 } EntityType;
 
+typedef enum {
+    ScrollingDirectionNone = 0,
+    ScrollingDirectionLeft,
+    ScrollingDirectionRight,
+} ScrollingDirection;
 
 typedef enum {
     PointingDirectionNone = 0,
@@ -338,6 +344,8 @@ typedef enum {
 
 // Height of the bottom tab bar in pixels
 #define kBottomTabBarHeight 62
+
+#define IS_IPHONE5 (([[UIScreen mainScreen] bounds].size.height-568)?NO:YES)
 
 // Height of the header bar
 #define kHeaderBarHeight 44

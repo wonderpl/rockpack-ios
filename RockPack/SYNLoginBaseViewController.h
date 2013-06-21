@@ -12,6 +12,8 @@
 #import "SYNImagePickerController.h"
 #import "SYNNetworkErrorView.h"
 #import "SYNNetworkOperationJsonObject.h"
+
+#import "SYNLoginOnBoardingController.h"
 #import "SYNOAuth2Credential.h"
 
 
@@ -28,14 +30,19 @@ typedef enum {
 } kLoginScreenState;
 
 
-@interface SYNLoginBaseViewController : GAITrackedViewController
+@interface SYNLoginBaseViewController : GAITrackedViewController <UIScrollViewDelegate>
 
 @property (nonatomic, assign) kLoginScreenState state;
 @property (nonatomic, strong) Reachability *reachability;
 @property (nonatomic, strong) SYNImagePickerController* imagePicker;
 @property (nonatomic, strong) SYNNetworkErrorView* networkErrorView;
 @property (nonatomic,assign) SYNAppDelegate* appDelegate;
+@property (nonatomic) NSInteger currentOnBoardingPage;
+@property (nonatomic, strong) IBOutlet UIImageView* loginBackgroundImage;
+@property (nonatomic, strong) IBOutlet UIImageView* loginBackgroundFrontImage;
+@property (nonatomic) ScrollingDirection scrollingDirection;
 
+@property (nonatomic, strong) SYNLoginOnBoardingController* onBoardingController;
 
 - (BOOL) checkAndSaveRegisteredUser: (SYNOAuth2Credential*) credential;
 
@@ -65,12 +72,17 @@ typedef enum {
 
 
 - (void) setUpInitialState;
+- (void) setUpLoginStateFromPreviousState: (kLoginScreenState) previousState;
+- (void) setUpRegisterStateFromState: (kLoginScreenState) previousState;
 
 -(void)reEnableLoginControls;
 
 - (BOOL) isNetworkAccessibleOtherwiseShowErrorAlert;
 
 - (void) doFacebookLoginAnimation;
+
+- (void) hideOnboarding;
+- (void) showOnboarding;
 
 // Form validation
 
