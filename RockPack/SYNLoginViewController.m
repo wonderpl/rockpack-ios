@@ -499,9 +499,11 @@
                         options: UIViewAnimationCurveEaseInOut
                      animations:^{
                          self.loginBackgroundImage.alpha = 0.0f;
+                         self.loginBackgroundFrontImage.alpha = 0.0f;
                          
                      } completion:^(BOOL finished) {
                          self.loginBackgroundImage.hidden = YES;
+                         self.loginBackgroundFrontImage.hidden = YES;
                      }];
     
     secondaryFacebookMessage.alpha = 0.0;
@@ -730,9 +732,11 @@
                         options: UIViewAnimationCurveEaseInOut
                      animations:^{
                          self.loginBackgroundImage.alpha = 0.0f;
+                         self.loginBackgroundFrontImage.alpha = 0.0f;
                          
                      } completion:^(BOOL finished) {
                          self.loginBackgroundImage.hidden = YES;
+                         self.loginBackgroundFrontImage.hidden = YES;
                      }];
     
     //Make member label grey
@@ -1429,6 +1433,7 @@
                             options: UIViewAnimationCurveEaseInOut
                          animations:^{
                              self.loginBackgroundImage.alpha = 0.0f;
+                             self.loginBackgroundFrontImage.alpha = 0.0f;
                              
                          } completion:^(BOOL finished) {
                          }];

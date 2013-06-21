@@ -100,11 +100,17 @@
 {
     [super viewDidLoad];
     
-    CGRect totalImageRect = CGRectMake(0.0, 0.0, 1024.0, 1024.0);
+    CGRect totalImageRect;
+    if([[SYNDeviceManager sharedInstance] isIPad])
+        totalImageRect = CGRectMake(0.0, 0.0, 1024.0, 1024.0);
+    else
+        totalImageRect = CGRectMake(0.0, 0.0, [[SYNDeviceManager sharedInstance] currentScreenHeight], [[SYNDeviceManager sharedInstance] currentScreenHeight]);
     self.loginBackgroundImage.frame = totalImageRect;
     self.loginBackgroundImage.center = self.view.center;
     self.loginBackgroundFrontImage.frame = totalImageRect;
     self.loginBackgroundFrontImage.center = self.view.center;
+    
+    self.loginBackgroundImage.image = [UIImage imageNamed:self.backgroundImagesArray[0]]; // get the first image
 }
 
 - (void) viewDidAppear: (BOOL) animated
@@ -127,7 +133,7 @@
 - (void) setUpInitialState
 {
     //Override in subclass
-    self.loginBackgroundImage.image = [UIImage imageNamed:self.backgroundImagesArray[0]]; // get the first image
+    
 }
 
 - (void) setUpLoginStateFromPreviousState: (kLoginScreenState) previousState

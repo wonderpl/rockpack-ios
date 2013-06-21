@@ -20,9 +20,7 @@
 #define kLoginAnimationTransitionDuration 0.3f
 
 @interface SYNLoginViewControllerIphone () <UITextFieldDelegate,
-                                            SYNImagePickerControllerDelegate,
-                                            UIPageViewControllerDataSource,
-                                            UIPageViewControllerDelegate>
+                                            SYNImagePickerControllerDelegate>
 
 @property (nonatomic, strong) IBOutlet SYNTextFieldLoginiPhone* ddInputField;
 @property (nonatomic, strong) IBOutlet SYNTextFieldLoginiPhone* emailInputField;
@@ -384,6 +382,7 @@
                         options: UIViewAnimationCurveEaseInOut
                      animations:^{
                          self.loginBackgroundImage.alpha = 0.0f;
+                         self.loginBackgroundFrontImage.alpha = 0.0f;
                          
                      } completion:^(BOOL finished) {
                      }];
@@ -432,6 +431,7 @@
                         options: UIViewAnimationCurveEaseInOut
                      animations:^{
                          self.loginBackgroundImage.alpha = 0.0f;
+                         self.loginBackgroundFrontImage.alpha = 0.0f;
                          
                      } completion:^(BOOL finished) {
                          
@@ -548,6 +548,7 @@
                                 options: UIViewAnimationCurveEaseInOut
                              animations:^{
                                  self.loginBackgroundImage.alpha = 1.0f;
+                                 self.loginBackgroundFrontImage.alpha = 1.0f;
                                  
                              } completion:^(BOOL finished) {
                              }];
@@ -586,6 +587,7 @@
                                 options: UIViewAnimationCurveEaseInOut
                              animations:^{
                                  self.loginBackgroundImage.alpha = 1.0f;
+                                 self.loginBackgroundFrontImage.alpha = 1.0f;
                                  
                              } completion:^(BOOL finished) {
                              }];
@@ -1018,6 +1020,7 @@
                             options: UIViewAnimationCurveEaseInOut
                          animations:^{
                              self.loginBackgroundImage.alpha = 0.0f;
+                             self.loginBackgroundFrontImage.alpha = 0.0f;
                              
                          } completion:^(BOOL finished) {
                          }];
