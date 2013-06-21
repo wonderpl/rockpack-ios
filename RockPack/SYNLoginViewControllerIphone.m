@@ -13,10 +13,6 @@
 #import "SYNLoginViewController.h"
 #import "SYNLoginViewControllerIphone.h"
 #import "SYNOAuthNetworkEngine.h"
-#import "SYNOnboard1ViewController.h"
-#import "SYNOnboard2ViewController.h"
-#import "SYNOnboard3ViewController.h"
-#import "SYNOnboard4ViewController.h"
 #import "SYNTextFieldLoginiPhone.h"
 #import "UIFont+SYNFont.h"
 #import <FacebookSDK/FacebookSDK.h>
@@ -180,34 +176,7 @@
     self.formatter = [[NSDateFormatter alloc] init];
     self.formatter.dateFormat = @"dd/MM/yyyy";
     
-    self.pageViewController = [[UIPageViewController alloc] initWithTransitionStyle: UIPageViewControllerTransitionStyleScroll
-                                                              navigationOrientation: UIPageViewControllerNavigationOrientationHorizontal
-                                                                            options: nil];
     
-    self.pageViewController.dataSource = self;
-    self.pageViewController.delegate = self;
-    
-    // Setup the on-boarding controller
-    self.onboardingViewControllers = @[[SYNOnboard1ViewController new],
-                                       [SYNOnboard2ViewController new],
-                                       [SYNOnboard3ViewController new],
-                                       [SYNOnboard4ViewController new]];
-    
-    [self.pageViewController setViewControllers: @[self.onboardingViewControllers[0]]
-                                      direction: UIPageViewControllerNavigationDirectionForward
-                                       animated: NO
-                                     completion: nil];
-    
-    [self addChildViewController: self.pageViewController];
-    [self.view addSubview: self.pageViewController.view];
-    
-    // Set the page view controller's bounds using an inset rect so that self's view is visible around the edges of the pages.
-    // This is the amount by which to offset the bottom of the page view from the bottom of the screen
-    CGRect pageViewRect = self.view.bounds;
-    pageViewRect.size.height -= 130;
-    self.pageViewController.view.frame = pageViewRect;
-    
-    [self.pageViewController didMoveToParentViewController: self];
 
 }
 

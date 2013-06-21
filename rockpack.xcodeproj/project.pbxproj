@@ -181,19 +181,6 @@
 		016B97171770C42200892211 /* StoreKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 016B97161770C42200892211 /* StoreKit.framework */; };
 		0170717E165550A900A3C7C4 /* SystemConfiguration.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 0170717D165550A900A3C7C4 /* SystemConfiguration.framework */; };
 		01707180165550BE00A3C7C4 /* Security.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 0170717F165550BE00A3C7C4 /* Security.framework */; };
-		0171DBD617732B7600B3D510 /* SYNOnboard1ViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 0171DBD417732B7600B3D510 /* SYNOnboard1ViewController.m */; };
-		0171DBD717732B7600B3D510 /* SYNOnboard1ViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 0171DBD517732B7600B3D510 /* SYNOnboard1ViewController.xib */; };
-		0171DBDB17732C0600B3D510 /* SYNOnboard2ViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 0171DBD817732C0600B3D510 /* SYNOnboard2ViewController.xib */; };
-		0171DBDC17732C0600B3D510 /* SYNOnboard2ViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 0171DBD917732C0600B3D510 /* SYNOnboard2ViewController.m */; };
-		0171DC2E17733FA700B3D510 /* SYNOnboard1ViewController~iphone.xib in Resources */ = {isa = PBXBuildFile; fileRef = 0171DC2D17733FA700B3D510 /* SYNOnboard1ViewController~iphone.xib */; };
-		0171DC301773410200B3D510 /* SYNOnboard2ViewController~iphone.xib in Resources */ = {isa = PBXBuildFile; fileRef = 0171DC2F1773410200B3D510 /* SYNOnboard2ViewController~iphone.xib */; };
-		0171DC3917735A3D00B3D510 /* SYNOnboard4ViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 0171DC3117735A3C00B3D510 /* SYNOnboard4ViewController.m */; };
-		0171DC3A17735A3D00B3D510 /* SYNOnboard4ViewController~iphone.xib in Resources */ = {isa = PBXBuildFile; fileRef = 0171DC3317735A3C00B3D510 /* SYNOnboard4ViewController~iphone.xib */; };
-		0171DC3B17735A3D00B3D510 /* SYNOnboard4ViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 0171DC3417735A3C00B3D510 /* SYNOnboard4ViewController.xib */; };
-		0171DC3C17735A3D00B3D510 /* SYNOnboard3ViewController~iphone.xib in Resources */ = {isa = PBXBuildFile; fileRef = 0171DC3517735A3C00B3D510 /* SYNOnboard3ViewController~iphone.xib */; };
-		0171DC3D17735A3D00B3D510 /* SYNOnboard3ViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 0171DC3717735A3D00B3D510 /* SYNOnboard3ViewController.xib */; };
-		0171DC3E17735A3D00B3D510 /* SYNOnboard3ViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 0171DC3817735A3D00B3D510 /* SYNOnboard3ViewController.m */; };
-		0171DC4117735E9F00B3D510 /* SYNAbstractOnboardViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 0171DC4017735E9F00B3D510 /* SYNAbstractOnboardViewController.m */; };
 		0173E6CC1718231F00EEE76B /* libGoogleAnalytics.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 0173E6CB1718231F00EEE76B /* libGoogleAnalytics.a */; };
 		0173F6FB16E028E4005B3ECA /* BackgroundVideoThumbnailSmall.png in Resources */ = {isa = PBXBuildFile; fileRef = 0173F6F716E028E4005B3ECA /* BackgroundVideoThumbnailSmall.png */; };
 		0173F6FC16E028E4005B3ECA /* BackgroundVideoThumbnailSmall@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 0173F6F816E028E4005B3ECA /* BackgroundVideoThumbnailSmall@2x.png */; };
@@ -1119,6 +1106,7 @@
 		BEB1578B173D016B00DAFA2F /* _CoverArt.m in Sources */ = {isa = PBXBuildFile; fileRef = BEB1578A173D016B00DAFA2F /* _CoverArt.m */; };
 		BEB1578E173D060700DAFA2F /* _ChannelCover.m in Sources */ = {isa = PBXBuildFile; fileRef = BEB1578D173D060700DAFA2F /* _ChannelCover.m */; };
 		BEB15791173D061700DAFA2F /* ChannelCover.m in Sources */ = {isa = PBXBuildFile; fileRef = BEB15790173D061700DAFA2F /* ChannelCover.m */; };
+		BEB8300C17745A0400AAA8D5 /* SYNLoginOnBoardingController.m in Sources */ = {isa = PBXBuildFile; fileRef = BEB8300B17745A0400AAA8D5 /* SYNLoginOnBoardingController.m */; };
 		BEBD097C1743A18A0092F527 /* SYNCoverChooserController.m in Sources */ = {isa = PBXBuildFile; fileRef = BEBD097A1743A18A0092F527 /* SYNCoverChooserController.m */; };
 		BEBD097D1743A18A0092F527 /* SYNCoverChooserController.xib in Resources */ = {isa = PBXBuildFile; fileRef = BEBD097B1743A18A0092F527 /* SYNCoverChooserController.xib */; };
 		BEBD09811744ECD50092F527 /* SYNAddButtonControl.m in Sources */ = {isa = PBXBuildFile; fileRef = BEBD09801744ECD50092F527 /* SYNAddButtonControl.m */; };
@@ -1385,24 +1373,6 @@
 		016B97161770C42200892211 /* StoreKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = StoreKit.framework; path = System/Library/Frameworks/StoreKit.framework; sourceTree = SDKROOT; };
 		0170717D165550A900A3C7C4 /* SystemConfiguration.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = SystemConfiguration.framework; path = System/Library/Frameworks/SystemConfiguration.framework; sourceTree = SDKROOT; };
 		0170717F165550BE00A3C7C4 /* Security.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Security.framework; path = System/Library/Frameworks/Security.framework; sourceTree = SDKROOT; };
-		0171DBD317732B7600B3D510 /* SYNOnboard1ViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SYNOnboard1ViewController.h; sourceTree = "<group>"; };
-		0171DBD417732B7600B3D510 /* SYNOnboard1ViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SYNOnboard1ViewController.m; sourceTree = "<group>"; };
-		0171DBD517732B7600B3D510 /* SYNOnboard1ViewController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = SYNOnboard1ViewController.xib; sourceTree = "<group>"; };
-		0171DBD817732C0600B3D510 /* SYNOnboard2ViewController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = SYNOnboard2ViewController.xib; sourceTree = "<group>"; };
-		0171DBD917732C0600B3D510 /* SYNOnboard2ViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SYNOnboard2ViewController.m; sourceTree = "<group>"; };
-		0171DBDA17732C0600B3D510 /* SYNOnboard2ViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SYNOnboard2ViewController.h; sourceTree = "<group>"; };
-		0171DC2D17733FA700B3D510 /* SYNOnboard1ViewController~iphone.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = "SYNOnboard1ViewController~iphone.xib"; sourceTree = "<group>"; };
-		0171DC2F1773410200B3D510 /* SYNOnboard2ViewController~iphone.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = "SYNOnboard2ViewController~iphone.xib"; sourceTree = "<group>"; };
-		0171DC3117735A3C00B3D510 /* SYNOnboard4ViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SYNOnboard4ViewController.m; sourceTree = "<group>"; };
-		0171DC3217735A3C00B3D510 /* SYNOnboard4ViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SYNOnboard4ViewController.h; sourceTree = "<group>"; };
-		0171DC3317735A3C00B3D510 /* SYNOnboard4ViewController~iphone.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = "SYNOnboard4ViewController~iphone.xib"; sourceTree = "<group>"; };
-		0171DC3417735A3C00B3D510 /* SYNOnboard4ViewController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = SYNOnboard4ViewController.xib; sourceTree = "<group>"; };
-		0171DC3517735A3C00B3D510 /* SYNOnboard3ViewController~iphone.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = "SYNOnboard3ViewController~iphone.xib"; sourceTree = "<group>"; };
-		0171DC3617735A3C00B3D510 /* SYNOnboard3ViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SYNOnboard3ViewController.h; sourceTree = "<group>"; };
-		0171DC3717735A3D00B3D510 /* SYNOnboard3ViewController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = SYNOnboard3ViewController.xib; sourceTree = "<group>"; };
-		0171DC3817735A3D00B3D510 /* SYNOnboard3ViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SYNOnboard3ViewController.m; sourceTree = "<group>"; };
-		0171DC3F17735E9F00B3D510 /* SYNAbstractOnboardViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SYNAbstractOnboardViewController.h; sourceTree = "<group>"; };
-		0171DC4017735E9F00B3D510 /* SYNAbstractOnboardViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SYNAbstractOnboardViewController.m; sourceTree = "<group>"; };
 		0173E6C6171822F000EEE76B /* GAI.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = GAI.h; sourceTree = "<group>"; };
 		0173E6C7171822F000EEE76B /* GAITrackedViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = GAITrackedViewController.h; sourceTree = "<group>"; };
 		0173E6C8171822F000EEE76B /* GAITracker.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = GAITracker.h; sourceTree = "<group>"; };
@@ -2462,6 +2432,8 @@
 		BEB1578D173D060700DAFA2F /* _ChannelCover.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = _ChannelCover.m; sourceTree = "<group>"; };
 		BEB1578F173D061700DAFA2F /* ChannelCover.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ChannelCover.h; sourceTree = "<group>"; };
 		BEB15790173D061700DAFA2F /* ChannelCover.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ChannelCover.m; sourceTree = "<group>"; };
+		BEB8300A17745A0400AAA8D5 /* SYNLoginOnBoardingController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SYNLoginOnBoardingController.h; sourceTree = "<group>"; };
+		BEB8300B17745A0400AAA8D5 /* SYNLoginOnBoardingController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SYNLoginOnBoardingController.m; sourceTree = "<group>"; };
 		BEBD09791743A18A0092F527 /* SYNCoverChooserController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SYNCoverChooserController.h; sourceTree = "<group>"; };
 		BEBD097A1743A18A0092F527 /* SYNCoverChooserController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SYNCoverChooserController.m; sourceTree = "<group>"; };
 		BEBD097B1743A18A0092F527 /* SYNCoverChooserController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = SYNCoverChooserController.xib; sourceTree = "<group>"; };
@@ -3034,31 +3006,6 @@
 				BEA1E33216CE605A000AB59D /* Custom Network Operations */,
 			);
 			name = Networking;
-			sourceTree = "<group>";
-		};
-		0171DBD217732B5B00B3D510 /* On boarding */ = {
-			isa = PBXGroup;
-			children = (
-				0171DC3F17735E9F00B3D510 /* SYNAbstractOnboardViewController.h */,
-				0171DC4017735E9F00B3D510 /* SYNAbstractOnboardViewController.m */,
-				0171DBD317732B7600B3D510 /* SYNOnboard1ViewController.h */,
-				0171DBD417732B7600B3D510 /* SYNOnboard1ViewController.m */,
-				0171DBD517732B7600B3D510 /* SYNOnboard1ViewController.xib */,
-				0171DC2D17733FA700B3D510 /* SYNOnboard1ViewController~iphone.xib */,
-				0171DBDA17732C0600B3D510 /* SYNOnboard2ViewController.h */,
-				0171DBD917732C0600B3D510 /* SYNOnboard2ViewController.m */,
-				0171DBD817732C0600B3D510 /* SYNOnboard2ViewController.xib */,
-				0171DC2F1773410200B3D510 /* SYNOnboard2ViewController~iphone.xib */,
-				0171DC3617735A3C00B3D510 /* SYNOnboard3ViewController.h */,
-				0171DC3817735A3D00B3D510 /* SYNOnboard3ViewController.m */,
-				0171DC3717735A3D00B3D510 /* SYNOnboard3ViewController.xib */,
-				0171DC3517735A3C00B3D510 /* SYNOnboard3ViewController~iphone.xib */,
-				0171DC3217735A3C00B3D510 /* SYNOnboard4ViewController.h */,
-				0171DC3117735A3C00B3D510 /* SYNOnboard4ViewController.m */,
-				0171DC3417735A3C00B3D510 /* SYNOnboard4ViewController.xib */,
-				0171DC3317735A3C00B3D510 /* SYNOnboard4ViewController~iphone.xib */,
-			);
-			name = "On boarding";
 			sourceTree = "<group>";
 		};
 		0173E6C5171822BF00EEE76B /* Google Analytics */ = {
@@ -4621,7 +4568,6 @@
 		BE270B7B16EDE0A500CDDA6D /* Login */ = {
 			isa = PBXGroup;
 			children = (
-				0171DBD217732B5B00B3D510 /* On boarding */,
 				38281F1B17439B770024DC18 /* SYNLoginBaseViewController.h */,
 				38281F1C17439B770024DC18 /* SYNLoginBaseViewController.m */,
 				38BACDFD1732CCFB00406597 /* SYNLoginViewControllerIphone.h */,
@@ -4632,6 +4578,8 @@
 				BE270B7E16EDE0E800CDDA6D /* SYNLoginViewController.xib */,
 				BED4311516F0EBBB0051465B /* SYNLoginErrorArrow.h */,
 				BED4311616F0EBBB0051465B /* SYNLoginErrorArrow.m */,
+				BEB8300A17745A0400AAA8D5 /* SYNLoginOnBoardingController.h */,
+				BEB8300B17745A0400AAA8D5 /* SYNLoginOnBoardingController.m */,
 			);
 			name = Login;
 			sourceTree = "<group>";
@@ -6032,14 +5980,6 @@
 				BE2AE4D6176E689C00A753E3 /* ButtonBackHighlightedCD~iphone.png in Resources */,
 				1FD8720F176F7F26009F4746 /* LoginErrorPortrait.png in Resources */,
 				1FD87210176F7F26009F4746 /* LoginErrorPortrait@2x.png in Resources */,
-				0171DBD717732B7600B3D510 /* SYNOnboard1ViewController.xib in Resources */,
-				0171DBDB17732C0600B3D510 /* SYNOnboard2ViewController.xib in Resources */,
-				0171DC2E17733FA700B3D510 /* SYNOnboard1ViewController~iphone.xib in Resources */,
-				0171DC301773410200B3D510 /* SYNOnboard2ViewController~iphone.xib in Resources */,
-				0171DC3A17735A3D00B3D510 /* SYNOnboard4ViewController~iphone.xib in Resources */,
-				0171DC3B17735A3D00B3D510 /* SYNOnboard4ViewController.xib in Resources */,
-				0171DC3C17735A3D00B3D510 /* SYNOnboard3ViewController~iphone.xib in Resources */,
-				0171DC3D17735A3D00B3D510 /* SYNOnboard3ViewController.xib in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -6318,11 +6258,7 @@
 				0154E8481768E268001C7B75 /* SYNTimer.m in Sources */,
 				01A02E76176E1EA5001F14BD /* UIImage+Monochrome.m in Sources */,
 				0198E46A176F0AEC00AFBE2F /* SYNPageView.m in Sources */,
-				0171DBD617732B7600B3D510 /* SYNOnboard1ViewController.m in Sources */,
-				0171DBDC17732C0600B3D510 /* SYNOnboard2ViewController.m in Sources */,
-				0171DC3917735A3D00B3D510 /* SYNOnboard4ViewController.m in Sources */,
-				0171DC3E17735A3D00B3D510 /* SYNOnboard3ViewController.m in Sources */,
-				0171DC4117735E9F00B3D510 /* SYNAbstractOnboardViewController.m in Sources */,
+				BEB8300C17745A0400AAA8D5 /* SYNLoginOnBoardingController.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
