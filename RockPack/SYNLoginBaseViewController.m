@@ -80,7 +80,6 @@
     for (int i = 0; i < kLoginOnBoardingMessagesNum; i++)
     {
         [imagesArray addObject:[NSString stringWithFormat:@"login_bg_%i.jpg", (i+1)]];
-        NSLog(@"%@", [NSString stringWithFormat:@"login_bg_%i", (i+1)]);
     }
     self.backgroundImagesArray = [NSArray arrayWithArray:imagesArray];
     
@@ -793,6 +792,12 @@
     _scrollingDirection = scrollingDirection;
     NSString* nameOfNextImage;
     
+    
+    if(self.currentOnBoardingPage < 0)
+        self.currentOnBoardingPage = 0;
+    else if(self.currentOnBoardingPage > kLoginOnBoardingMessagesNum - 1)
+        self.currentOnBoardingPage = kLoginOnBoardingMessagesNum - 1;
+    
     nameOfNextImage = self.backgroundImagesArray[self.currentOnBoardingPage];
     self.loginBackgroundImage.image = [UIImage imageNamed:nameOfNextImage];
     
@@ -843,6 +848,7 @@
     
     CGFloat contentOffsetX = self.onBoardingController.scrollView.contentOffset.x;
     self.currentOnBoardingPage = (NSInteger)floorf(contentOffsetX / self.onBoardingController.scrollView.frame.size.width);
+    
     
     
 }

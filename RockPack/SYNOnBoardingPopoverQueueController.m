@@ -372,7 +372,7 @@
 }
 -(void)doit:(UIGestureRecognizer*)recogniser
 {
-    NSLog(@"Logged Tap!");
+    
 }
 
 

@@ -1144,7 +1144,6 @@ typedef void(^AnimationCompletionBlock)(BOOL finished);
             }
             self.overlayNavigationController = nil; // animate the overlay out using the setter method
 
-            NSLog(@"self.showingViewController = %@", self.showingViewController);
             [self.showingViewController viewDidAppear:YES];
         }
         
