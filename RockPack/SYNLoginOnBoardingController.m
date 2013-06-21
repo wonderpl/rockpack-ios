@@ -154,7 +154,7 @@
     onboardMessageLabel.shadowColor = [UIColor colorWithRed: 0.0f
                                                       green: 0.0f
                                                        blue: 0.0f
-                                                      alpha:0.2f];
+                                                      alpha:0.5f];
     onboardMessageLabel.font = fontToUse;
     // Offset of small DropShadow's
     
@@ -185,11 +185,11 @@
         UIFont* fontTitleToUse;
         if (UI_USER_INTERFACE_IDIOM() == UIUserInterfaceIdiomPad)
         {
-            fontTitleToUse = [UIFont boldRockpackFontOfSize: 24.0];
+            fontTitleToUse = [UIFont boldRockpackFontOfSize: 28.0];
         }
         else
         {
-            fontTitleToUse = [UIFont boldRockpackFontOfSize: 18.0];
+            fontTitleToUse = [UIFont boldRockpackFontOfSize: 22.0];
         }
         
         // Setup Frame for Title Message Label
@@ -214,7 +214,7 @@
         onboardTitleLabel.shadowColor = [UIColor colorWithRed: 0.0f
                                                         green: 0.0f
                                                          blue: 0.0f
-                                                        alpha: 0.2f];
+                                                        alpha: 0.5f];
         
         onboardTitleLabel.shadowOffset = CGSizeMake(0.0f, 1.0f);
         
