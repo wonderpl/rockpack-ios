@@ -142,13 +142,12 @@
 
 - (void) loadMoreChannels: (UIButton*) sender
 {
-    
-    self.footerView.showsLoading = YES;
-    
     NSInteger nextStart = self.dataRequestRange.location + self.dataRequestRange.length; // one is subtracted when the call happens for 0 indexing
     
     if(nextStart >= self.dataItemsAvailable)
         return;
+    
+    self.loadingMoreContent = YES;
     
     NSInteger nextSize = (nextStart + STANDARD_REQUEST_LENGTH) >= self.dataItemsAvailable ? (self.dataItemsAvailable - nextStart) : STANDARD_REQUEST_LENGTH;
     
@@ -158,7 +157,7 @@
                                             andRange: self.dataRequestRange
                                           onComplete: ^(int itemsCount) {
                                               self.dataItemsAvailable = itemsCount;
-                                              self.footerView.showsLoading = NO;
+                                              self.loadingMoreContent = NO;
                                           }];
 }
 

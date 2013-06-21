@@ -29,7 +29,7 @@
 #define kCoverArtImage              @"CoverArtImage"
 
 #define kForceRefreshValue          @"kForceRefreshValue"
-#define kAutoPlayVideoId          @"kAutoPlayVideoId"
+#define kAutoPlayVideoId            @"kAutoPlayVideoId"
 
 
 // viewId
@@ -255,6 +255,8 @@ typedef enum _Gender {
 //
 // Dimensions
 //
+
+#define kLoadMoreFooterViewHeight   50.0f
 
 #define kMinorDimension 768.0f
 #define kMajorDimension 1024.0f

@@ -42,6 +42,7 @@ typedef void (^SYNShareCompletionBlock)(void);
 
 
 @property (nonatomic) BOOL isAnimating;
+@property (nonatomic, assign, getter = isLoadingMoreContent) BOOL loadingMoreContent;
 @property (nonatomic) BOOL isLocked;
 @property (nonatomic, assign) BOOL inDrag;
 @property (nonatomic, assign) CGPoint initialDragCenter;
@@ -124,5 +125,6 @@ andSelectedIndex: (int) selectedIndex center:(CGPoint) center;
 - (void) initiatePurchaseAtURL: (NSURL *) purchaseURL;
 
 - (CGSize) footerSize;
+
 
 @end

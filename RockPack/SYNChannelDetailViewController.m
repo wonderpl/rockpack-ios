@@ -882,10 +882,6 @@
                                                                                     withReuseIdentifier: @"SYNChannelFooterMoreView"
                                                                                            forIndexPath: indexPath];
             
-            [self.footerView.loadMoreButton addTarget: self
-                                               action: @selector(loadMoreVideos:)
-                                     forControlEvents: UIControlEventTouchUpInside];
-            
             
             supplementaryView = self.footerView;
         }
@@ -895,59 +891,46 @@
     return supplementaryView;
 }
 
--(void)loadMoreVideos:(UIButton*)footerButton
+- (void) loadMoreVideos:(UIButton*)footerButton
 {
-    
     // define success block //
-    
     [self incrementRangeForNextRequest];
-    
-    
+
     MKNKUserSuccessBlock successBlock = ^(NSDictionary *dictionary) {
-        
-        
         [self.channel addVideoInstancesFromDictionary:dictionary];
         
         NSError* error;
         [self.channel.managedObjectContext save:&error];
         
-        self.footerView.showsLoading = NO;
-        
-        
+        self.loadingMoreContent = NO;
     };
     
-        // define success block //
+    // define success block //
         
     MKNKUserErrorBlock errorBlock = ^(NSDictionary* errorDictionary) {
         DebugLog(@"Update action failed");
-        self.footerView.showsLoading = NO;
+        self.loadingMoreContent = NO;
             
     };
         
     if ([self.channel.resourceURL hasPrefix: @"https"]) // https does not cache so it is fresh
     {
-            
-            
             [appDelegate.oAuthNetworkEngine videosForChannelForUserId:appDelegate.currentUser.uniqueId
                                                             channelId:self.channel.uniqueId
                                                               inRange:self.dataRequestRange
                                                     completionHandler:successBlock
-                                                         errorHandler:errorBlock];
-            
-        
+                                                         errorHandler:errorBlock];  
     }
     else
     {
-            
-            
             [appDelegate.networkEngine videosForChannelForUserId:appDelegate.currentUser.uniqueId
                                                        channelId:self.channel.uniqueId
                                                          inRange:self.dataRequestRange
                                                completionHandler:successBlock
-                                                    errorHandler:errorBlock];
+                                                errorHandler:errorBlock];
     }
-    
 }
+
 
 - (void) collectionView: (UICollectionView *) collectionView
          didSelectItemAtIndexPath: (NSIndexPath *) indexPath
@@ -2515,6 +2498,14 @@
     {
         CGFloat fadeSpan = (_isIPhone) ? kChannelDetailsFadeSpaniPhone : kChannelDetailsFadeSpan;
         CGFloat blurOpacity;
+        
+        // Try this first
+        // when reaching far right hand side, load a new page
+        if (scrollView.contentOffset.y >= scrollView.contentSize.height - scrollView.bounds.size.height - kLoadMoreFooterViewHeight
+            && self.isLoadingMoreContent == NO)
+        {
+            [self loadMoreVideos: nil];
+        }
         
         if (scrollView.contentOffset.y <= self.originalContentOffset.y)
         {

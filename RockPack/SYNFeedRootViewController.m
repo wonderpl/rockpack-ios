@@ -431,7 +431,7 @@
                                                     
 //                                                    DebugLog(@"new fetched count : %i", self.fetchedResultsController.fetchedObjects.count);
                                                     
-                                                    self.footerView.showsLoading = NO;
+                                                    self.loadingMoreContent = NO;
                                                     
                                                     [self handleRefreshComplete];
                                                     
@@ -756,12 +756,6 @@
                                                                                 withReuseIdentifier: @"SYNChannelFooterMoreView"
                                                                                        forIndexPath: indexPath];
         
-        [self.footerView.loadMoreButton addTarget: self
-                                           action: @selector(loadMoreVideos:)
-                                 forControlEvents: UIControlEventTouchUpInside];
-        
-        //[self loadMoreChannels:self.footerView.loadMoreButton];
-        
         supplementaryView = self.footerView;
     }
 
@@ -803,17 +797,13 @@
 
 #pragma mark - Load More Footer
 
-
-
 - (void) loadMoreVideos: (UIButton*) sender
 {
-    
     [self incrementRangeForNextRequest];
     
     [self loadAndUpdateFeedData];
-    
-    
 }
+
 
 - (BOOL) needsAddButton
 {
@@ -821,19 +811,18 @@
 }
 
 
-
--(void)headerTapped
+- (void) headerTapped
 {
     [self.videoThumbnailCollectionView setContentOffset:CGPointZero animated:YES];
 }
 
 - (void) scrollViewDidScroll: (UIScrollView *) scrollView
 {
-    //    DebugLog (@"Scrolling");
     // when reaching far right hand side, load a new page
-    if (scrollView.contentOffset.y == scrollView.contentSize.height - scrollView.bounds.size.height)
+    if (scrollView.contentOffset.y >= scrollView.contentSize.height - scrollView.bounds.size.height - kLoadMoreFooterViewHeight
+        && self.isLoadingMoreContent == NO)
     {
-          DebugLog (@"Scrolling more");
+        DebugLog (@"Scrolling more");
         [self loadMoreVideos: nil];
     }
 }

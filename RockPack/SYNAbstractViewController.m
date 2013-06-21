@@ -277,13 +277,12 @@
 
 - (void) incrementRangeForNextRequest
 {
-    // (UIButton*) sender can be nil when called directly //
-    self.footerView.showsLoading = YES;
-    
     NSInteger nextStart = self.dataRequestRange.location + self.dataRequestRange.length; // one is subtracted when the call happens for 0 indexing
     
     if (nextStart >= self.dataItemsAvailable)
         return;
+    
+    self.loadingMoreContent = YES;
     
     NSInteger nextSize = (nextStart + STANDARD_REQUEST_LENGTH) >= self.dataItemsAvailable ? (self.dataItemsAvailable - nextStart) : STANDARD_REQUEST_LENGTH;
     
@@ -748,15 +747,18 @@
 	}
 }
 
--(void)headerTapped
+- (void) headerTapped
 {
     
 }
 
--(void)viewDidScrollToBack
+- (void) viewDidScrollToBack
 {
     // to be implemented by subclass
 }
+
+
+#pragma mark - Load more footer
 
 // Load more footer
 
@@ -765,5 +767,13 @@
     return [SYNDeviceManager.sharedInstance isIPhone] ? CGSizeMake(320.0f, 64.0f) : CGSizeMake(1024.0, 64.0);
 }
 
+- (void) loadingMoreContent: (BOOL) loadingMoreContent
+{
+    // First set the state of our footer spinner
+    self.footerView.showsLoading = loadingMoreContent;
+    
+    // Now set our actual variable
+    _loadingMoreContent = loadingMoreContent;
+}
 
 @end

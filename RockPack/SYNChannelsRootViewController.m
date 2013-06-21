@@ -293,7 +293,7 @@
                                                       BOOL registryResultOk = [appDelegate.mainRegistry registerChannelsFromDictionary: response
                                                                                                                               forGenre: genre
                                                                                                                            byAppending: append];
-                                                      self.footerView.showsLoading = NO;
+                                                      self.loadingMoreContent = NO;
                                                       
                                                       if (!registryResultOk)
                                                       {
@@ -318,20 +318,29 @@
                                                       
                                                   } onError: ^(NSDictionary* errorInfo) {
                                                       DebugLog(@"Could not load channels: %@", errorInfo);
-                                                      self.footerView.showsLoading = NO;
+                                                        self.loadingMoreContent = NO;
                                                   }];
 }
 
 
 - (void) loadMoreChannels: (UIButton*) sender
 {
-    
-
     [self incrementRangeForNextRequest];
-    
     
     [self loadChannelsForGenre: currentGenre
                    byAppending: YES];
+}
+
+
+- (void) scrollViewDidScroll: (UIScrollView *) scrollView
+{
+    // when reaching far right hand side, load a new page
+    if (scrollView.contentOffset.y >= scrollView.contentSize.height - scrollView.bounds.size.height - kLoadMoreFooterViewHeight
+        && self.isLoadingMoreContent == NO)
+    {
+        DebugLog (@"Scrolling more");
+        [self loadMoreChannels: nil];
+    }
 }
 
 
@@ -505,10 +514,6 @@
         self.footerView = [self.channelThumbnailCollectionView dequeueReusableSupplementaryViewOfKind: kind
                                                                                     withReuseIdentifier: @"SYNChannelFooterMoreView"
                                                                                            forIndexPath: indexPath];
-        
-        [self.footerView.loadMoreButton addTarget: self
-                                           action: @selector(loadMoreChannels:)
-                                 forControlEvents: UIControlEventTouchUpInside];
         
         //[self loadMoreChannels:self.footerView.loadMoreButton];
         
@@ -1001,5 +1006,7 @@
 {
     [self.channelThumbnailCollectionView setContentOffset:CGPointZero animated:YES];
 }
+
+
 
 @end

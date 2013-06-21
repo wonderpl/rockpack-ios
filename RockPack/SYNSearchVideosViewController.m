@@ -336,7 +336,7 @@
                                            inRange: self.dataRequestRange
                                         onComplete: ^(int itemsCount) {
                                             self.dataItemsAvailable = itemsCount;
-                                            self.footerView.showsLoading = NO;
+                                            self.loadingMoreContent = NO;
                                             [self.videoThumbnailCollectionView reloadData];
                                         }];
 }
