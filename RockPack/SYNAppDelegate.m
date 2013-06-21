@@ -64,12 +64,14 @@ extern void instrumentObjcMessageSends(BOOL);
 - (BOOL) application:(UIApplication *) application
 didFinishLaunchingWithOptions: (NSDictionary *) launchOptions
 {
+#ifdef ENABLE_USER_RATINGS
     [Appirater setAppId: @"660697542"];
     [Appirater setDaysUntilPrompt: 1];
     [Appirater setUsesUntilPrompt: 10];
     [Appirater setSignificantEventsUntilPrompt: -1];
     [Appirater setTimeBeforeReminding: 10];
 //    [Appirater setDebug: YES];
+#endif
     
     // Enable the Spark Inspector
 #if DEBUG
@@ -233,23 +235,21 @@ didFinishLaunchingWithOptions: (NSDictionary *) launchOptions
                 [startImageView removeFromSuperview];
             }];
             
-//            return YES;
-            
             // else if we have an access token //
         }
         else
         {
             self.window.rootViewController = [self createAndReturnRootViewController];
-//            return YES;
         }
     }
     else
     {
         self.window.rootViewController = [self createAndReturnLoginViewController];
-//        return YES;
     }
     
+#ifdef ENABLE_USER_RATINGS
     [Appirater appLaunched: YES];
+#endif
     
     return YES;
 }
