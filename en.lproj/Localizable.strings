@@ -43,11 +43,11 @@
 // == Login / Registration / Forgot Password == //
 
 // Pre Sign-Up Onboarding
-"startscreen_onboard_1_title" = "";
-"startscreen_onboard_1" = "What's On Your Channel?\n ";
+"startscreen_onboard_1_title" = "What's On Your Channel?";
+"startscreen_onboard_1" = " \n ";
 
 "startscreen_onboard_2_title" = "Express Yourself";
-"startscreen_onboard_2" = "Create your own video channels and personalize\nthem with your own photos.";
+"startscreen_onboard_2" = "Create your own video channels and\npersonalize them with your own photos.";
 
 "startscreen_onboard_3_title" = "Be Inspired";
 "startscreen_onboard_3" = "Subscribe to channels curated by family,\nfriends and experts.";
