@@ -43,8 +43,6 @@
     
     self.view = [[UIView alloc] initWithFrame:self.scrollView.frame];
     self.view.autoresizingMask = UIViewAutoresizingFlexibleWidth;
-    //self.view.backgroundColor = [UIColor redColor];
-    NSLog(@"totalWidth %f", self.view.frame.size.width);
     
     [self.view addSubview:scrollView];
 }
@@ -85,9 +83,9 @@
         messageViewFrame = messageView.frame;
         messageViewFrame.origin.x = i * messageViewFrame.size.width;
         
-        messageView.frame = messageViewFrame;
+        messageView.frame = CGRectIntegral(messageViewFrame);
         
-        //messageView.backgroundColor = [UIColor colorWithHex:test_colors[i]];
+        
         
         [self.scrollView addSubview:messageView];
         
@@ -140,7 +138,7 @@
     if (UI_USER_INTERFACE_IDIOM() == UIUserInterfaceIdiomPhone)
         onboardMessageLabelFrame.origin.y = 150.0;
     
-    onboardMessageLabel.frame = onboardMessageLabelFrame;
+    onboardMessageLabel.frame = CGRectIntegral(onboardMessageLabelFrame);
     
     
     onboardMessageLabel.numberOfLines = 2;
@@ -202,7 +200,7 @@
         if (UI_USER_INTERFACE_IDIOM() == UIUserInterfaceIdiomPhone)
             onboardTitleLabelFrame.origin.y = 180.0;
         
-        UILabel* onboardTitleLabel = [[UILabel alloc] initWithFrame:onboardTitleLabelFrame];
+        UILabel* onboardTitleLabel = [[UILabel alloc] initWithFrame:CGRectIntegral(onboardTitleLabelFrame)];
      
         onboardTitleLabel.text = title;
         onboardTitleLabel.backgroundColor = [UIColor clearColor];
@@ -257,14 +255,14 @@
         
         newX += currenChildFrame.size.width;
         
-        childView.frame = currenChildFrame;
+        childView.frame = CGRectIntegral(currenChildFrame);
         
         totalScrollSize.width += currenChildFrame.size.width;
         
         for (UIView* subChildView in childView.subviews)
         {
             subChildView.center = CGPointMake(childView.frame.size.width * 0.5, subChildView.center.y);
-            
+            subChildView.frame = CGRectIntegral(subChildView.frame);
         }
     }
     
