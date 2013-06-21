@@ -231,6 +231,15 @@
 {
     [super willAnimateRotationToInterfaceOrientation:toInterfaceOrientation duration:duration];
     
+    
+    
+    
+}
+
+-(void)didRotateFromInterfaceOrientation:(UIInterfaceOrientation)fromInterfaceOrientation
+{
+    [super didRotateFromInterfaceOrientation:fromInterfaceOrientation];
+    
     CGRect currenChildFrame;
     CGFloat newX = 0.0;
     
@@ -240,7 +249,7 @@
     {
         currenChildFrame = childView.frame;
         
-        currenChildFrame.size.width = UIInterfaceOrientationIsPortrait(toInterfaceOrientation) ? 768.0 : 1024.0;
+        currenChildFrame.size.width = [[SYNDeviceManager sharedInstance] currentScreenWidth];
         
         currenChildFrame.origin.x = newX;
         
@@ -262,8 +271,6 @@
     CGPoint newCOffset = CGPointMake(self.pageControl.currentPage * currenChildFrame.size.width, self.scrollView.contentOffset.y);
     
     [self.scrollView setContentOffset:newCOffset];
-    
-    
 }
 
 @end
