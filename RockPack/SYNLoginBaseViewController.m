@@ -726,16 +726,37 @@
     CGFloat pinnedOffsetX = self.currentOnBoardingPage * scrollerWidth - self.onBoardingController.scrollView.contentOffset.x;
     CGFloat ratio = fabsf(pinnedOffsetX / scrollerWidth);
     
-    //NSLog(@"%f", pinnedOffsetX);
-    if(pinnedOffsetX < 0.0) // scrolling towards right -->, pick next
-        self.scrollingDirection = ScrollingDirectionRight;
-    else if(pinnedOffsetX > 0.0) // scrolling towards left <--, pick next
-        self.scrollingDirection = ScrollingDirectionLeft;
-    else // at rest
-        self.scrollingDirection = ScrollingDirectionNone;
+    BOOL shouldFade = YES;
     
-    self.loginBackgroundImage.alpha = 1 - ratio;
-    self.loginBackgroundFrontImage.alpha = ratio;
+    if(pinnedOffsetX < 0.0) // scrolling towards right -->, pick next
+    {
+        if(self.currentOnBoardingPage == 3)
+            shouldFade = NO;
+        self.scrollingDirection = ScrollingDirectionRight;
+    }
+    else if(pinnedOffsetX > 0.0) // scrolling towards left <--, pick next
+    {
+        if(self.currentOnBoardingPage == 0)
+            shouldFade = NO;
+        self.scrollingDirection = ScrollingDirectionLeft;
+    }
+    else // at rest
+    {
+        self.scrollingDirection = ScrollingDirectionNone;
+    }
+    
+    if(shouldFade)
+    {
+        self.loginBackgroundImage.alpha = 1 - ratio;
+        self.loginBackgroundFrontImage.alpha = ratio;
+    }
+    else
+    {
+        self.loginBackgroundImage.alpha = 1.0;
+        self.loginBackgroundFrontImage.alpha = 1.0;
+    }
+    
+    
     
     //NSLog(@"ratio: %f", ratio);
     
@@ -789,6 +810,8 @@
             }
             break;
     }
+    
+    
     self.loginBackgroundFrontImage.image = [UIImage imageNamed:nameOfNextImage];
     
 }
