@@ -376,6 +376,8 @@
 
 - (void) setUpInitialState
 {
+    [super setUpInitialState];
+    
     // controls to hide initially
     NSArray* controlsToHide = @[userNameInputField, passwordInputField, finalLoginButton, secondaryFacebookMessage,
                                 areYouNewLabel, registerButton, passwordForgottenLabel,
@@ -488,6 +490,7 @@
 
 - (void) setUpLoginStateFromPreviousState: (kLoginScreenState) previousState
 {
+    [super setUpLoginStateFromPreviousState:previousState];
     //Fade out login background
     self.loginBackgroundImage.alpha = 1.0f;
     
@@ -718,6 +721,7 @@
 
 - (void) setUpRegisterStateFromState: (kLoginScreenState) previousState
 {
+    [super setUpRegisterStateFromState:previousState];
     //Fade out login background
     self.loginBackgroundImage.alpha = 1.0f;
     

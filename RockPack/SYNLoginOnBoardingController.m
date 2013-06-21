@@ -12,7 +12,7 @@
 #import "UIColor+SYNColor.h"
 #import "SYNDeviceManager.h"
 
-#define MESSAGE_NUM 4
+#import "AppConstants.h"
 
 @interface SYNLoginOnBoardingController () <UIScrollViewDelegate>
 
@@ -68,7 +68,7 @@
 //            0x5786fd, 0xf2cd60, 0x7ac9bc, 0xc05bf5, 0x91ccb6, 0xf1c9d0, 0x622a23, 0xf6504d, 0x7db7e1
 //        };
     totalScrollSize.height = self.scrollView.frame.size.height;
-    for (int i = 0; i < MESSAGE_NUM; i++)
+    for (int i = 0; i < kLoginOnBoardingMessagesNum; i++)
     {
         localisedKey = [NSString stringWithFormat:@"startscreen_onboard_%i", i + 1];
         localisedDefault = [NSString stringWithFormat:@"Text for onboard screen %i", i + 1];
@@ -98,7 +98,7 @@
     
     
     self.pageControl = [[UIPageControl alloc] initWithFrame:CGRectMake(0.0, 0.0, 100.0, 40.0)];
-    self.pageControl.numberOfPages = MESSAGE_NUM;
+    self.pageControl.numberOfPages = kLoginOnBoardingMessagesNum;
     self.pageControl.center = CGPointMake(self.view.frame.size.width * 0.5, 280.0);
     self.pageControl.frame = CGRectIntegral(self.pageControl.frame);
     self.pageControl.userInteractionEnabled = NO; // dont block the screen

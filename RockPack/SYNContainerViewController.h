@@ -11,11 +11,6 @@
 #import "SYNContainerScrollView.h"
 #import <UIKit/UIKit.h>
 
-typedef enum {
-    ScrollingDirectionNone = 0,
-    ScrollingDirectionRight,
-    ScrollingDirectionLeft
-} ScrollingDirection;
 
 @interface SYNContainerViewController : GAITrackedViewController <UIScrollViewDelegate>
 

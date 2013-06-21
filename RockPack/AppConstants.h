@@ -169,6 +169,8 @@
 // One the APIs imported some new data - we will need to be more specific at some stage.
 #define kCategoriesUpdated @"kCategoriesUpdated"
 
+#define kLoginOnBoardingMessagesNum 4
+
 // Observers
 #define kCollectionViewContentOffsetKey @"contentOffset"
 #define kTextViewContentSizeKey @"contentSize"
@@ -327,6 +329,11 @@ typedef enum {
     
 } EntityType;
 
+typedef enum {
+    ScrollingDirectionNone = 0,
+    ScrollingDirectionLeft,
+    ScrollingDirectionRight,
+} ScrollingDirection;
 
 typedef enum {
     PointingDirectionNone = 0,

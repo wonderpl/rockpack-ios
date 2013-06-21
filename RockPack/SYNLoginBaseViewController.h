@@ -39,6 +39,8 @@ typedef enum {
 @property (nonatomic,assign) SYNAppDelegate* appDelegate;
 @property (nonatomic) NSInteger currentOnBoardingPage;
 @property (nonatomic, strong) IBOutlet UIImageView* loginBackgroundImage;
+@property (nonatomic, strong) IBOutlet UIImageView* loginBackgroundFrontImage;
+@property (nonatomic) ScrollingDirection scrollingDirection;
 
 @property (nonatomic, strong) SYNLoginOnBoardingController* onBoardingController;
 
@@ -70,12 +72,17 @@ typedef enum {
 
 
 - (void) setUpInitialState;
+- (void) setUpLoginStateFromPreviousState: (kLoginScreenState) previousState;
+- (void) setUpRegisterStateFromState: (kLoginScreenState) previousState;
 
 -(void)reEnableLoginControls;
 
 - (BOOL) isNetworkAccessibleOtherwiseShowErrorAlert;
 
 - (void) doFacebookLoginAnimation;
+
+- (void) hideOnboarding;
+- (void) showOnboarding;
 
 // Form validation
 

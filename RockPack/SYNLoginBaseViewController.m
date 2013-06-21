@@ -20,23 +20,16 @@
 #import "RegexKitLite.h"
 
 
-@interface SYNLoginBaseViewController ()
+@interface SYNLoginBaseViewController () {
+    
+}
 
 @property (nonatomic, strong) NSArray* backgroundImagesArray;
+
 
 @end
 
 @implementation SYNLoginBaseViewController
-
-- (id) init
-{
-    if ((self = [super init]))
-    {
-        [self commonInit];
-    }
-        
-    return self;
-}
 
         
 - (id) initWithCoder: (NSCoder *) aDecoder
@@ -46,6 +39,7 @@
     if (self)
     {
         [self commonInit];
+        
     }
     
     return self;
@@ -77,12 +71,18 @@
     
     self.reachability = [Reachability reachabilityWithHostname: _appDelegate.networkEngine.hostName];
     
+    self.scrollingDirection = ScrollingDirectionNone;
+    self.currentOnBoardingPage = 0;
     
-    self.backgroundImagesArray = [[NSArray alloc] initWithObjects:
-                                  [[UIImageView alloc] initWithImage:[UIImage imageNamed:@""]],
-                                  [[UIImageView alloc] initWithImage:[UIImage imageNamed:@""]],
-                                  [[UIImageView alloc] initWithImage:[UIImage imageNamed:@""]],
-                                  [[UIImageView alloc] initWithImage:[UIImage imageNamed:@""]], nil];
+    self.loginBackgroundFrontImage.alpha = 0.0;
+    // create image array
+    NSMutableArray* imagesArray = [[NSMutableArray alloc] initWithCapacity:kLoginOnBoardingMessagesNum];
+    for (int i = 0; i < kLoginOnBoardingMessagesNum; i++)
+    {
+        [imagesArray addObject:[NSString stringWithFormat:@"login_bg_%i.jpg", (i+1)]];
+        NSLog(@"%@", [NSString stringWithFormat:@"login_bg_%i", (i+1)]);
+    }
+    self.backgroundImagesArray = [NSArray arrayWithArray:imagesArray];
     
 }
 
@@ -94,6 +94,17 @@
     
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(reachabilityChanged:) name:kReachabilityChangedNotification object:nil];
 
+}
+
+-(void)viewDidLoad
+{
+    [super viewDidLoad];
+    
+    CGRect totalImageRect = CGRectMake(0.0, 0.0, 1024.0, 1024.0);
+    self.loginBackgroundImage.frame = totalImageRect;
+    self.loginBackgroundImage.center = self.view.center;
+    self.loginBackgroundFrontImage.frame = totalImageRect;
+    self.loginBackgroundFrontImage.center = self.view.center;
 }
 
 - (void) viewDidAppear: (BOOL) animated
@@ -116,6 +127,17 @@
 - (void) setUpInitialState
 {
     //Override in subclass
+    self.loginBackgroundImage.image = [UIImage imageNamed:self.backgroundImagesArray[0]]; // get the first image
+}
+
+- (void) setUpLoginStateFromPreviousState: (kLoginScreenState) previousState
+{
+    self.onBoardingController.view.hidden = YES;
+}
+
+- (void) setUpRegisterStateFromState: (kLoginScreenState) previousState
+{
+    self.onBoardingController.view.hidden = YES;
 }
 
 - (BOOL) checkAndSaveRegisteredUser: (SYNOAuth2Credential*) credential
@@ -230,6 +252,28 @@
                                                   errorHandler: errorBlock];
 }
 
+- (void) hideOnboarding
+{
+    [UIView animateWithDuration: 0.3f
+                          delay: 0.1f
+                        options: UIViewAnimationOptionCurveEaseOut
+                     animations: ^{
+                         self.onBoardingController.view.alpha = 0.0;
+                     } completion:^(BOOL finished) {
+                         self.onBoardingController.view.hidden = YES;
+                     }];
+}
+
+- (void) showOnboarding
+{
+    self.onBoardingController.view.hidden = NO;
+    [UIView animateWithDuration: 0.3f
+                          delay: 0.1f
+                        options: UIViewAnimationOptionCurveEaseOut
+                     animations: ^{
+                         self.onBoardingController.view.alpha = 1.0;
+                     } completion: nil];
+}
 
 #pragma mark - login facebook
 
@@ -670,14 +714,78 @@
 -(void)scrollViewDidScroll:(UIScrollView *)scrollView
 {
     
-    UIImageView* currentImageView = self.loginBackgroundImage;
     
-    CGFloat pinnedOffsetX = self.currentOnBoardingPage * self.onBoardingController.scrollView.frame.size.width - self.onBoardingController.scrollView.contentOffset.x;
+    CGFloat scrollerWidth = self.onBoardingController.scrollView.frame.size.width;
     
-    NSLog(@"pinnedOffestX: %f", pinnedOffsetX);
+    CGFloat pinnedOffsetX = self.currentOnBoardingPage * scrollerWidth - self.onBoardingController.scrollView.contentOffset.x;
+    CGFloat ratio = fabsf(pinnedOffsetX / scrollerWidth);
+    
+    //NSLog(@"%f", pinnedOffsetX);
+    if(pinnedOffsetX < 0.0) // scrolling towards right -->, pick next
+        self.scrollingDirection = ScrollingDirectionRight;
+    else if(pinnedOffsetX > 0.0) // scrolling towards left <--, pick next
+        self.scrollingDirection = ScrollingDirectionLeft;
+    else // at rest
+        self.scrollingDirection = ScrollingDirectionNone;
+    
+    self.loginBackgroundImage.alpha = 1 - ratio;
+    self.loginBackgroundFrontImage.alpha = ratio;
+    
+    //NSLog(@"ratio: %f", ratio);
     
     
     
+}
+
+-(void)setScrollingDirection:(ScrollingDirection)scrollingDirection
+{
+    if(_scrollingDirection == scrollingDirection)
+        return;
+    
+    _scrollingDirection = scrollingDirection;
+    NSString* nameOfNextImage;
+    
+    nameOfNextImage = self.backgroundImagesArray[self.currentOnBoardingPage];
+    self.loginBackgroundImage.image = [UIImage imageNamed:nameOfNextImage];
+    
+    NSLog(@"name of existing image (%@): %i", nameOfNextImage, self.currentOnBoardingPage);
+    
+    switch (scrollingDirection) {
+        case ScrollingDirectionNone:
+            NSLog(@"Resting at %i", self.currentOnBoardingPage);
+            nameOfNextImage = self.backgroundImagesArray[self.currentOnBoardingPage];
+            break;
+            
+        case ScrollingDirectionRight:
+            if(self.currentOnBoardingPage + 1 >= self.backgroundImagesArray.count)
+            {
+                NSLog(@"Right with %i >= %i", self.currentOnBoardingPage + 1, self.backgroundImagesArray.count);
+                nameOfNextImage = self.backgroundImagesArray[self.currentOnBoardingPage];
+            }
+            else
+            {
+                NSLog(@"Right with %i", self.currentOnBoardingPage + 1);
+                nameOfNextImage = self.backgroundImagesArray[self.currentOnBoardingPage + 1];
+            }
+                
+            
+            break;
+            
+        case ScrollingDirectionLeft:
+            if(self.currentOnBoardingPage - 1 < 0)
+            {
+                NSLog(@"Left with %i < 0", self.currentOnBoardingPage - 1);
+                nameOfNextImage = self.backgroundImagesArray[self.currentOnBoardingPage];
+            }
+            else
+            {
+                NSLog(@"Left with %i", self.currentOnBoardingPage + 1);
+                nameOfNextImage = self.backgroundImagesArray[self.currentOnBoardingPage - 1];
+            }
+            break;
+    }
+    self.loginBackgroundFrontImage.image = [UIImage imageNamed:nameOfNextImage];
+    NSLog(@"name of next image: %@", nameOfNextImage);
 }
 
 -(void)scrollViewDidEndDecelerating:(UIScrollView *)scrollView
@@ -694,6 +802,7 @@
 {
     _currentOnBoardingPage = currentOnBoardingPage;
     self.onBoardingController.pageControl.currentPage = currentOnBoardingPage;
+    self.scrollingDirection = ScrollingDirectionNone; // when we have a number we are at rest
 }
 
 
