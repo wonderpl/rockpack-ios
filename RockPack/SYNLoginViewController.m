@@ -19,6 +19,7 @@
 #import "SYNOAuth2Credential.h"
 #import "SYNOAuthNetworkEngine.h"
 #import "SYNPopoverBackgroundView.h"
+#import "SYNLoginOnBoardingController.h"
 #import "SYNTextFieldLogin.h"
 #import "UIFont+SYNFont.h"
 #import "User.h"
@@ -62,6 +63,7 @@
 @property (nonatomic, strong) IBOutlet UIView* dobView;
 @property (nonatomic, strong) NSArray* mainFormElements;
 @property (nonatomic, strong) NSMutableDictionary* labelsToErrorArrows;
+@property (nonatomic, strong) SYNLoginOnBoardingController* onBoardingController;
 @property (nonatomic, strong) UIButton* termsAndConditionsButton;
 @property (nonatomic, strong) UIPopoverController* cameraMenuPopoverController;
 @property (nonatomic, strong) UIPopoverController* cameraPopoverController;
@@ -177,6 +179,13 @@
     
     UITapGestureRecognizer* tapGesture = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(outerViewTapped:)];
     [self.view addGestureRecognizer:tapGesture];
+    
+    self.onBoardingController = [[SYNLoginOnBoardingController alloc] init];
+    CGRect onBoardingViewFrame = self.onBoardingController.view.frame;
+    onBoardingViewFrame.origin.x = self.view.frame.size.width * 0.5 - onBoardingViewFrame.size.width * 0.5;
+    onBoardingViewFrame.origin.y = 300.0;
+    self.onBoardingController.view.frame = onBoardingViewFrame;
+    [self.view addSubview:self.onBoardingController.view];
     
 }
 
@@ -426,7 +435,12 @@
     userNameInputField.enabled = YES;
     passwordInputField.enabled = YES;
     
-    [activityIndicator stopAnimating];  
+    [activityIndicator stopAnimating];
+    
+    
+    // on boarding
+    
+    
 }
 
 
