@@ -37,6 +37,8 @@ typedef enum {
 @property (nonatomic, strong) SYNImagePickerController* imagePicker;
 @property (nonatomic, strong) SYNNetworkErrorView* networkErrorView;
 @property (nonatomic,assign) SYNAppDelegate* appDelegate;
+@property (nonatomic) NSInteger currentOnBoardingPage;
+@property (nonatomic, strong) IBOutlet UIImageView* loginBackgroundImage;
 
 @property (nonatomic, strong) SYNLoginOnBoardingController* onBoardingController;
 

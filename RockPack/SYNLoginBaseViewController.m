@@ -22,6 +22,8 @@
 
 @interface SYNLoginBaseViewController ()
 
+@property (nonatomic, strong) NSArray* backgroundImagesArray;
+
 @end
 
 @implementation SYNLoginBaseViewController
@@ -75,6 +77,12 @@
     
     self.reachability = [Reachability reachabilityWithHostname: _appDelegate.networkEngine.hostName];
     
+    
+    self.backgroundImagesArray = [[NSArray alloc] initWithObjects:
+                                  [[UIImageView alloc] initWithImage:[UIImage imageNamed:@""]],
+                                  [[UIImageView alloc] initWithImage:[UIImage imageNamed:@""]],
+                                  [[UIImageView alloc] initWithImage:[UIImage imageNamed:@""]],
+                                  [[UIImageView alloc] initWithImage:[UIImage imageNamed:@""]], nil];
     
 }
 
@@ -662,14 +670,30 @@
 -(void)scrollViewDidScroll:(UIScrollView *)scrollView
 {
     
+    UIImageView* currentImageView = self.loginBackgroundImage;
+    
+    CGFloat pinnedOffsetX = self.currentOnBoardingPage * self.onBoardingController.scrollView.frame.size.width - self.onBoardingController.scrollView.contentOffset.x;
+    
+    NSLog(@"pinnedOffestX: %f", pinnedOffsetX);
+    
+    
+    
 }
 
 -(void)scrollViewDidEndDecelerating:(UIScrollView *)scrollView
 {
-    CGFloat contentOffsetX = self.onBoardingController.scrollView.contentOffset.x;
-    NSInteger page = (NSInteger)floorf(contentOffsetX / self.onBoardingController.scrollView.frame.size.width);
     
-    self.onBoardingController.pageControl.currentPage = page;
+    
+    CGFloat contentOffsetX = self.onBoardingController.scrollView.contentOffset.x;
+    self.currentOnBoardingPage = (NSInteger)floorf(contentOffsetX / self.onBoardingController.scrollView.frame.size.width);
+    
+    
+}
+
+-(void)setCurrentOnBoardingPage:(NSInteger)currentOnBoardingPage
+{
+    _currentOnBoardingPage = currentOnBoardingPage;
+    self.onBoardingController.pageControl.currentPage = currentOnBoardingPage;
 }
 
 
