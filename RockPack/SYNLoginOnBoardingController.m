@@ -99,7 +99,7 @@
     
     self.pageControl = [[UIPageControl alloc] initWithFrame:CGRectMake(0.0, 0.0, 100.0, 40.0)];
     self.pageControl.numberOfPages = kLoginOnBoardingMessagesNum;
-    self.pageControl.center = CGPointMake(self.view.frame.size.width * 0.5, 280.0);
+    self.pageControl.center = CGPointMake(self.view.frame.size.width * 0.5, 270.0);
     self.pageControl.frame = CGRectIntegral(self.pageControl.frame);
     self.pageControl.userInteractionEnabled = NO; // dont block the screen
     self.pageControl.autoresizingMask = UIViewAutoresizingFlexibleLeftMargin | UIViewAutoresizingFlexibleRightMargin;
@@ -124,7 +124,7 @@
     }
     else
     {
-        fontToUse = [UIFont rockpackFontOfSize: 14.0];
+        fontToUse = [UIFont rockpackFontOfSize: 16.0];
     }
     
     
@@ -136,7 +136,9 @@
     onboardMessageLabelFrame.size = CGSizeMake(self.scrollView.frame.size.width, 150.0);
     
     onboardMessageLabelFrame.origin.x = viewFrame.size.width * 0.5 - onboardMessageLabelFrame.size.width * 0.5;
-    onboardMessageLabelFrame.origin.y = 100.0;
+    onboardMessageLabelFrame.origin.y = 130.0;
+    if (UI_USER_INTERFACE_IDIOM() == UIUserInterfaceIdiomPhone)
+        onboardMessageLabelFrame.origin.y = 150.0;
     
     onboardMessageLabel.frame = onboardMessageLabelFrame;
     
@@ -189,16 +191,16 @@
         }
         else
         {
-            fontTitleToUse = [UIFont boldRockpackFontOfSize: 16.0];
+            fontTitleToUse = [UIFont boldRockpackFontOfSize: 18.0];
         }
         
         // Setup Frame for Title Message Label
         CGRect onboardTitleLabelFrame;
         onboardTitleLabelFrame.size = [title sizeWithFont:fontTitleToUse];
         onboardTitleLabelFrame.origin.x = viewFrame.size.width * 0.5 - onboardTitleLabelFrame.size.width * 0.5;
-        onboardTitleLabelFrame.origin.y = 60.0;
+        onboardTitleLabelFrame.origin.y = 140.0;
         if (UI_USER_INTERFACE_IDIOM() == UIUserInterfaceIdiomPhone)
-            onboardTitleLabelFrame.origin.y = 100.0;
+            onboardTitleLabelFrame.origin.y = 180.0;
         
         UILabel* onboardTitleLabel = [[UILabel alloc] initWithFrame:onboardTitleLabelFrame];
      
