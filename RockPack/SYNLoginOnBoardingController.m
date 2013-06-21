@@ -9,6 +9,7 @@
 #import "SYNLoginOnBoardingController.h"
 #import "UIFont+SYNFont.h"
 #import <QuartzCore/QuartzCore.h>
+#import "UIColor+SYNColor.h"
 #import "SYNDeviceManager.h"
 
 #define MESSAGE_NUM 4
@@ -25,9 +26,10 @@
 
 -(void)loadView
 {
-    CGFloat totalWidth = [[SYNDeviceManager sharedInstance] currentScreenWidth];
+    CGFloat totalWidth = 1024.0;
+    
     self.scrollView = [[UIScrollView alloc] initWithFrame:CGRectMake(0.0, 0.0, totalWidth, 300.0)];
-
+    self.scrollView.autoresizingMask = UIViewAutoresizingFlexibleWidth;
     
     scrollView.pagingEnabled = YES;
     scrollView.scrollEnabled = YES;
@@ -36,9 +38,13 @@
     scrollView.showsHorizontalScrollIndicator = NO;
     scrollView.showsVerticalScrollIndicator = NO;
     scrollView.delegate = self;
+    scrollView.autoresizingMask = UIViewAutoresizingFlexibleWidth;
     
     
     self.view = [[UIView alloc] initWithFrame:self.scrollView.frame];
+    self.view.autoresizingMask = UIViewAutoresizingFlexibleWidth;
+    //self.view.backgroundColor = [UIColor redColor];
+    NSLog(@"totalWidth %f", self.view.frame.size.width);
     
     [self.view addSubview:scrollView];
 }
@@ -57,6 +63,10 @@
     NSString* localisedDefault;
     
     CGSize totalScrollSize;
+    
+//        int test_colors[9] = {
+//            0x5786fd, 0xf2cd60, 0x7ac9bc, 0xc05bf5, 0x91ccb6, 0xf1c9d0, 0x622a23, 0xf6504d, 0x7db7e1
+//        };
     totalScrollSize.height = self.scrollView.frame.size.height;
     for (int i = 0; i < MESSAGE_NUM; i++)
     {
@@ -65,12 +75,19 @@
         
         messageText = NSLocalizedString(localisedKey, localisedDefault);
         
-        messageView = [self createNewMessageViewWithMessage:messageText andTitle:nil];
+        localisedKey = [NSString stringWithFormat:@"startscreen_onboard_%i_title", i + 1];
+        localisedDefault = [NSString stringWithFormat:@"Text for onboard title %i", i + 1];
+        
+        titleText = NSLocalizedString(localisedKey, localisedDefault);
+        
+        messageView = [self createNewMessageViewWithMessage:messageText andTitle:titleText];
         
         messageViewFrame = messageView.frame;
         messageViewFrame.origin.x = i * messageViewFrame.size.width;
         
         messageView.frame = messageViewFrame;
+        
+        //messageView.backgroundColor = [UIColor colorWithHex:test_colors[i]];
         
         [self.scrollView addSubview:messageView];
         
@@ -82,6 +99,10 @@
     
     self.pageControl = [[UIPageControl alloc] initWithFrame:CGRectMake(0.0, 0.0, 100.0, 40.0)];
     self.pageControl.numberOfPages = MESSAGE_NUM;
+    self.pageControl.center = CGPointMake(self.view.frame.size.width * 0.5, 280.0);
+    self.pageControl.frame = CGRectIntegral(self.pageControl.frame);
+    self.pageControl.userInteractionEnabled = NO; // dont block the screen
+    self.pageControl.autoresizingMask = UIViewAutoresizingFlexibleLeftMargin | UIViewAutoresizingFlexibleRightMargin;
     
     [self.view addSubview:self.pageControl];
     
@@ -92,7 +113,8 @@
     
     // Set up onboard text
     CGRect viewFrame = CGRectZero;
-    viewFrame.size = self.scrollView.frame.size;
+    viewFrame.size.width = [[SYNDeviceManager sharedInstance] currentScreenWidth];
+    viewFrame.size.height = self.scrollView.frame.size.height;
     UIView* messageView = [[UIView alloc] initWithFrame:viewFrame];
     
     UIFont* fontToUse;
@@ -105,9 +127,14 @@
         fontToUse = [UIFont rockpackFontOfSize: 14.0];
     }
     
+    // Setup Frame for Main Message Label
     CGRect onboardMessageLabelFrame;
     onboardMessageLabelFrame.size = [message sizeWithFont:fontToUse];
     onboardMessageLabelFrame.origin.x = viewFrame.size.width * 0.5 - onboardMessageLabelFrame.size.width * 0.5;
+    onboardMessageLabelFrame.origin.y = 100.0;
+    
+    
+    
     UILabel* onboardMessageLabel = [[UILabel alloc] initWithFrame:onboardMessageLabelFrame];
     
     onboardMessageLabel.text = message;
@@ -123,7 +150,7 @@
                                                       green: 0.0f
                                                        blue: 0.0f
                                                       alpha:0.2f];
-    
+    onboardMessageLabel.font = fontToUse;
     // Offset of small DropShadow's
     
     onboardMessageLabel.shadowOffset = CGSizeMake(0.0f, 1.0f);
@@ -149,21 +176,33 @@
     
     // TITLES
     
-    if(title != nil)
+    if(![title isEqualToString:@""])
     {
-        UILabel* onboardTitleLabel = [[UILabel alloc] initWithFrame:CGRectMake(0.0, 0.0, 100.0, 30.0)];
-        // Set up onboard text
-        onboardTitleLabel.text = NSLocalizedString(@"startscreen_onboard_1", @"Text for onboard screen 1");
         
         // Set font
+        UIFont* fontTitleToUse;
         if (UI_USER_INTERFACE_IDIOM() == UIUserInterfaceIdiomPad)
         {
-            onboardTitleLabel.font = [UIFont boldRockpackFontOfSize: 22.0];
+            fontTitleToUse = [UIFont boldRockpackFontOfSize: 22.0];
         }
         else
         {
-            onboardTitleLabel.font = [UIFont boldRockpackFontOfSize: 16.0];
+            fontTitleToUse = [UIFont boldRockpackFontOfSize: 16.0];
         }
+        
+        // Setup Frame for Title Message Label
+        CGRect onboardTitleLabelFrame;
+        onboardTitleLabelFrame.size = [title sizeWithFont:fontTitleToUse];
+        onboardTitleLabelFrame.origin.x = viewFrame.size.width * 0.5 - onboardTitleLabelFrame.size.width * 0.5;
+        onboardTitleLabelFrame.origin.y = 60.0;
+        
+        
+        UILabel* onboardTitleLabel = [[UILabel alloc] initWithFrame:onboardTitleLabelFrame];
+     
+        onboardTitleLabel.text = title;
+        onboardTitleLabel.backgroundColor = [UIColor clearColor];
+        
+        onboardTitleLabel.font = fontTitleToUse;
         
         // Colour of onboard text
         onboardTitleLabel.textColor = [UIColor whiteColor];
@@ -192,7 +231,10 @@
         
         // Opacity of onboard text shadow (0 - 1)
         onboardTitleLabel.layer.shadowOpacity = 0.3f;
+        
+        [messageView addSubview:onboardTitleLabel];
     }
+    
     
     return messageView;
 }
@@ -206,7 +248,47 @@
 
 -(void)scrollViewDidEndDecelerating:(UIScrollView *)scrollView
 {
-    CGFloat contentOffsetY = self.scrollView.contentOffset.y;
+    CGFloat contentOffsetX = self.scrollView.contentOffset.x;
+    NSInteger page = (NSInteger)floorf(contentOffsetX / self.scrollView.frame.size.width);
+
+    self.pageControl.currentPage = page;
+}
+
+-(void)willAnimateRotationToInterfaceOrientation:(UIInterfaceOrientation)toInterfaceOrientation duration:(NSTimeInterval)duration
+{
+    [super willAnimateRotationToInterfaceOrientation:toInterfaceOrientation duration:duration];
+    
+    CGRect currenChildFrame;
+    CGFloat newX = 0.0;
+    
+    CGSize totalScrollSize;
+    totalScrollSize.height = self.scrollView.frame.size.height;
+    for (UIView* childView in self.scrollView.subviews)
+    {
+        currenChildFrame = childView.frame;
+        
+        currenChildFrame.size.width = UIInterfaceOrientationIsPortrait(toInterfaceOrientation) ? 768.0 : 1024.0;
+        
+        currenChildFrame.origin.x = newX;
+        
+        newX += currenChildFrame.size.width;
+        
+        childView.frame = currenChildFrame;
+        
+        totalScrollSize.width += currenChildFrame.size.width;
+        
+        for (UIView* subChildView in childView.subviews)
+        {
+            subChildView.center = CGPointMake(childView.frame.size.width * 0.5, subChildView.center.y);
+            
+        }
+    }
+    
+    [self.scrollView setContentSize:totalScrollSize];
+    CGPoint newCOffset = CGPointMake(self.pageControl.currentPage * currenChildFrame.size.width, self.scrollView.contentOffset.y);
+    [self.scrollView setContentOffset:newCOffset];
+    
+    
 }
 
 @end

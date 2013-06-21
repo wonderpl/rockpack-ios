@@ -43,6 +43,7 @@
 // == Login / Registration / Forgot Password == //
 
 // Pre Sign-Up Onboarding
+"startscreen_onboard_1_title" = "";
 "startscreen_onboard_1" = "Share your video channels with the world";
 
 "startscreen_onboard_2_title" = "Express Yourself";

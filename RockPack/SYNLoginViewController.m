@@ -182,10 +182,13 @@
     
     self.onBoardingController = [[SYNLoginOnBoardingController alloc] init];
     CGRect onBoardingViewFrame = self.onBoardingController.view.frame;
-    onBoardingViewFrame.origin.x = self.view.frame.size.width * 0.5 - onBoardingViewFrame.size.width * 0.5;
+    onBoardingViewFrame.origin.x = 0.0;
     onBoardingViewFrame.origin.y = 300.0;
     self.onBoardingController.view.frame = onBoardingViewFrame;
+    self.onBoardingController.view.autoresizingMask =
+    UIViewAutoresizingFlexibleTopMargin | UIViewAutoresizingFlexibleWidth |UIViewAutoresizingFlexibleHeight;
     [self.view addSubview:self.onBoardingController.view];
+    [self addChildViewController:self.onBoardingController];
     
 }
 
