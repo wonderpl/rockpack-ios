@@ -183,10 +183,8 @@
     self.onBoardingController = [[SYNLoginOnBoardingController alloc] init];
     CGRect onBoardingViewFrame = self.onBoardingController.view.frame;
     onBoardingViewFrame.origin.x = 0.0;
-    onBoardingViewFrame.origin.y = 300.0;
+    onBoardingViewFrame.origin.y = [[SYNDeviceManager sharedInstance] isLandscape] ? 300.0 : 560.0;
     self.onBoardingController.view.frame = onBoardingViewFrame;
-    self.onBoardingController.view.autoresizingMask =
-    UIViewAutoresizingFlexibleTopMargin | UIViewAutoresizingFlexibleWidth |UIViewAutoresizingFlexibleHeight;
     [self.view addSubview:self.onBoardingController.view];
     [self addChildViewController:self.onBoardingController];
     
@@ -1625,6 +1623,7 @@
     
     [self clearAllErrorArrows];
     CGRect facebookButtonFrame = facebookSignInButton.frame;
+    CGRect onBoardingFrame = self.onBoardingController.view.frame;
     if (UIInterfaceOrientationIsPortrait(toInterfaceOrientation))
     {
         signUpButton.center = CGPointMake(524.0, signUpButton.center.y);
@@ -1635,7 +1634,7 @@
         termsAndConditionsLabel.center = CGPointMake(termsAndConditionsLabel.center.x, 714.0);
         termsAndConditionsLabelSide.center = CGPointMake(termsAndConditionsLabelSide.center.x, 714.0);        
         registerButton.center = CGPointMake(registerButton.center.x, 704.0);
-        
+        onBoardingFrame.origin.y = 560.0;
     }
     else
     {
@@ -1647,9 +1646,12 @@
         termsAndConditionsLabel.center = CGPointMake(termsAndConditionsLabel.center.x, 370.0);
         termsAndConditionsLabelSide.center = CGPointMake(termsAndConditionsLabelSide.center.x, 370.0);
         registerButton.center = CGPointMake(registerButton.center.x, 358.0);
+        onBoardingFrame.origin.y = 300.0;
     }
     
     
+    
+    self.onBoardingController.view.frame = onBoardingFrame;
     
     areYouNewLabel.center = CGPointMake(areYouNewLabel.center.x, registerButton.center.y - 44.0);
     
