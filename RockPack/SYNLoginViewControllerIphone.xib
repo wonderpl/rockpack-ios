@@ -1942,7 +1942,7 @@
 		<bool key="IBDocument.PluginDeclaredDependenciesTrackSystemTargetVersion">YES</bool>
 		<int key="IBDocument.defaultPropertyAccessControl">3</int>
 		<dictionary class="NSMutableDictionary" key="IBDocument.LastKnownImageSizes">
-			<string key="BackgroundLogin.jpg">{1617, 1024}</string>
+			<string key="BackgroundLogin.jpg">{16, 16}</string>
 			<string key="ButtonFacebookDefault~iphone.png">{290, 54}</string>
 			<string key="ButtonFacebookHighlighted~iphone.png">{290, 54}</string>
 			<string key="ButtonLoginBackHighlighted~iphone.png">{58, 58}</string>

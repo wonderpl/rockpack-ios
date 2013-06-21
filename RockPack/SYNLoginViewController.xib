@@ -733,6 +733,7 @@
 						<int key="NSvFlags">265</int>
 						<string key="NSFrame">{{851, 638}, {113, 54}}</string>
 						<reference key="NSSuperview" ref="766721923"/>
+						<reference key="NSNextKeyView"/>
 						<string key="NSReuseIdentifierKey">_NS:9</string>
 						<bool key="IBUIOpaque">NO</bool>
 						<string key="targetRuntimeIdentifier">IBIPadFramework</string>
@@ -1491,7 +1492,7 @@
 		<bool key="IBDocument.PluginDeclaredDependenciesTrackSystemTargetVersion">YES</bool>
 		<int key="IBDocument.defaultPropertyAccessControl">3</int>
 		<dictionary class="NSMutableDictionary" key="IBDocument.LastKnownImageSizes">
-			<string key="BackgroundLogin.jpg">{1617, 1024}</string>
+			<string key="BackgroundLogin.jpg">{16, 16}</string>
 			<string key="ButtonFacebookDefault.png">{316, 62}</string>
 			<string key="ButtonFacebookHighlighted.png">{316, 62}</string>
 			<string key="ButtonLoginBigDefault.png">{315, 62}</string>

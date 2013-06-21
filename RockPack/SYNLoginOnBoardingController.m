@@ -161,14 +161,11 @@
                                                              blue: 0.0f
                                                             alpha: 1.0f].CGColor;
     
-    // Offset of onboard text shadow (X, Y)
-    onboardMessageLabel.layer.shadowOffset = CGSizeMake(0.0, 0.0);
     
-    // Radius of onboard text shadow (0 -> n)
-    onboardMessageLabel.layer.shadowRadius = 10.0f;
     
-    // Opacity of onboard text shadow (0 - 1)
-    onboardMessageLabel.layer.shadowOpacity = 0.3f;
+    messageView.layer.shadowOffset = CGSizeMake(0.0, 1.0);
+    messageView.layer.shadowRadius = 10.0f;
+    messageView.layer.shadowOpacity = 0.3f;
     
     onboardMessageLabel.backgroundColor = [UIColor clearColor];
     
@@ -213,24 +210,7 @@
                                                          blue: 0.0f
                                                         alpha: 0.2f];
         
-        // Offset of small DropShadow's
         
-        onboardTitleLabel.shadowOffset = CGSizeMake(0.0f, 1.0f);
-        
-        // Colour of onboard text shadow (R, G, B)
-        onboardTitleLabel.layer.shadowColor = [UIColor colorWithRed: 0.0f
-                                                              green: 0.0f
-                                                               blue: 0.0f
-                                                              alpha: 1.0f].CGColor;
-        
-        // Offset of onboard text shadow (X, Y)
-        onboardTitleLabel.layer.shadowOffset = CGSizeMake(0.0, 0.0);
-        
-        // Radius of onboard text shadow (0 -> n)
-        onboardTitleLabel.layer.shadowRadius = 10.0f;
-        
-        // Opacity of onboard text shadow (0 - 1)
-        onboardTitleLabel.layer.shadowOpacity = 0.3f;
         
         [messageView addSubview:onboardTitleLabel];
     }

@@ -448,7 +448,6 @@
 		1F2ACA66173C1D0400F2FE4F /* ButtonBuy~iphone.png in Resources */ = {isa = PBXBuildFile; fileRef = 1F2ACA62173C1D0400F2FE4F /* ButtonBuy~iphone.png */; };
 		1F2ACA67173C1D0400F2FE4F /* ButtonBuyHighlighted@2x~iphone.png in Resources */ = {isa = PBXBuildFile; fileRef = 1F2ACA63173C1D0400F2FE4F /* ButtonBuyHighlighted@2x~iphone.png */; };
 		1F2ACA68173C1D0400F2FE4F /* ButtonBuyHighlighted~iphone.png in Resources */ = {isa = PBXBuildFile; fileRef = 1F2ACA64173C1D0400F2FE4F /* ButtonBuyHighlighted~iphone.png */; };
-		1F32002F175DED7200310EB5 /* BackgroundLogin.jpg in Resources */ = {isa = PBXBuildFile; fileRef = 1F32002D175DED7200310EB5 /* BackgroundLogin.jpg */; };
 		1F356185175F6F7400829457 /* SYNAccountSettingOtherTableViewCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 1F356184175F6F7400829457 /* SYNAccountSettingOtherTableViewCell.m */; };
 		1F46C86B1743C2FD00C6089D /* ButtonReport@2x~iphone.png in Resources */ = {isa = PBXBuildFile; fileRef = 1F46C8651743C2FD00C6089D /* ButtonReport@2x~iphone.png */; };
 		1F46C86C1743C2FD00C6089D /* ButtonReport~iphone.png in Resources */ = {isa = PBXBuildFile; fileRef = 1F46C8661743C2FD00C6089D /* ButtonReport~iphone.png */; };
@@ -1107,6 +1106,10 @@
 		BEB1578E173D060700DAFA2F /* _ChannelCover.m in Sources */ = {isa = PBXBuildFile; fileRef = BEB1578D173D060700DAFA2F /* _ChannelCover.m */; };
 		BEB15791173D061700DAFA2F /* ChannelCover.m in Sources */ = {isa = PBXBuildFile; fileRef = BEB15790173D061700DAFA2F /* ChannelCover.m */; };
 		BEB8300C17745A0400AAA8D5 /* SYNLoginOnBoardingController.m in Sources */ = {isa = PBXBuildFile; fileRef = BEB8300B17745A0400AAA8D5 /* SYNLoginOnBoardingController.m */; };
+		BEB83011177491ED00AAA8D5 /* login_bg_1.jpg in Resources */ = {isa = PBXBuildFile; fileRef = BEB8300D177491ED00AAA8D5 /* login_bg_1.jpg */; };
+		BEB83012177491ED00AAA8D5 /* login_bg_2.jpg in Resources */ = {isa = PBXBuildFile; fileRef = BEB8300E177491ED00AAA8D5 /* login_bg_2.jpg */; };
+		BEB83013177491ED00AAA8D5 /* login_bg_3.jpg in Resources */ = {isa = PBXBuildFile; fileRef = BEB8300F177491ED00AAA8D5 /* login_bg_3.jpg */; };
+		BEB83014177491ED00AAA8D5 /* login_bg_4.jpg in Resources */ = {isa = PBXBuildFile; fileRef = BEB83010177491ED00AAA8D5 /* login_bg_4.jpg */; };
 		BEBD097C1743A18A0092F527 /* SYNCoverChooserController.m in Sources */ = {isa = PBXBuildFile; fileRef = BEBD097A1743A18A0092F527 /* SYNCoverChooserController.m */; };
 		BEBD097D1743A18A0092F527 /* SYNCoverChooserController.xib in Resources */ = {isa = PBXBuildFile; fileRef = BEBD097B1743A18A0092F527 /* SYNCoverChooserController.xib */; };
 		BEBD09811744ECD50092F527 /* SYNAddButtonControl.m in Sources */ = {isa = PBXBuildFile; fileRef = BEBD09801744ECD50092F527 /* SYNAddButtonControl.m */; };
@@ -1697,7 +1700,6 @@
 		1F2ACA62173C1D0400F2FE4F /* ButtonBuy~iphone.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "ButtonBuy~iphone.png"; sourceTree = "<group>"; };
 		1F2ACA63173C1D0400F2FE4F /* ButtonBuyHighlighted@2x~iphone.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "ButtonBuyHighlighted@2x~iphone.png"; sourceTree = "<group>"; };
 		1F2ACA64173C1D0400F2FE4F /* ButtonBuyHighlighted~iphone.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "ButtonBuyHighlighted~iphone.png"; sourceTree = "<group>"; };
-		1F32002D175DED7200310EB5 /* BackgroundLogin.jpg */ = {isa = PBXFileReference; lastKnownFileType = image.jpeg; name = BackgroundLogin.jpg; path = Assets/Images/BackgroundLogin.jpg; sourceTree = "<group>"; };
 		1F356183175F6F7400829457 /* SYNAccountSettingOtherTableViewCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SYNAccountSettingOtherTableViewCell.h; sourceTree = "<group>"; };
 		1F356184175F6F7400829457 /* SYNAccountSettingOtherTableViewCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SYNAccountSettingOtherTableViewCell.m; sourceTree = "<group>"; };
 		1F46C8651743C2FD00C6089D /* ButtonReport@2x~iphone.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = "ButtonReport@2x~iphone.png"; path = "reportConcern/ButtonReport@2x~iphone.png"; sourceTree = "<group>"; };
@@ -2434,6 +2436,10 @@
 		BEB15790173D061700DAFA2F /* ChannelCover.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ChannelCover.m; sourceTree = "<group>"; };
 		BEB8300A17745A0400AAA8D5 /* SYNLoginOnBoardingController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SYNLoginOnBoardingController.h; sourceTree = "<group>"; };
 		BEB8300B17745A0400AAA8D5 /* SYNLoginOnBoardingController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SYNLoginOnBoardingController.m; sourceTree = "<group>"; };
+		BEB8300D177491ED00AAA8D5 /* login_bg_1.jpg */ = {isa = PBXFileReference; lastKnownFileType = image.jpeg; name = login_bg_1.jpg; path = Assets/Images/login_bg_1.jpg; sourceTree = "<group>"; };
+		BEB8300E177491ED00AAA8D5 /* login_bg_2.jpg */ = {isa = PBXFileReference; lastKnownFileType = image.jpeg; name = login_bg_2.jpg; path = Assets/Images/login_bg_2.jpg; sourceTree = "<group>"; };
+		BEB8300F177491ED00AAA8D5 /* login_bg_3.jpg */ = {isa = PBXFileReference; lastKnownFileType = image.jpeg; name = login_bg_3.jpg; path = Assets/Images/login_bg_3.jpg; sourceTree = "<group>"; };
+		BEB83010177491ED00AAA8D5 /* login_bg_4.jpg */ = {isa = PBXFileReference; lastKnownFileType = image.jpeg; name = login_bg_4.jpg; path = Assets/Images/login_bg_4.jpg; sourceTree = "<group>"; };
 		BEBD09791743A18A0092F527 /* SYNCoverChooserController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SYNCoverChooserController.h; sourceTree = "<group>"; };
 		BEBD097A1743A18A0092F527 /* SYNCoverChooserController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SYNCoverChooserController.m; sourceTree = "<group>"; };
 		BEBD097B1743A18A0092F527 /* SYNCoverChooserController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = SYNCoverChooserController.xib; sourceTree = "<group>"; };
@@ -3874,7 +3880,10 @@
 		1F320031175DED7A00310EB5 /* Background */ = {
 			isa = PBXGroup;
 			children = (
-				1F32002D175DED7200310EB5 /* BackgroundLogin.jpg */,
+				BEB8300D177491ED00AAA8D5 /* login_bg_1.jpg */,
+				BEB8300E177491ED00AAA8D5 /* login_bg_2.jpg */,
+				BEB8300F177491ED00AAA8D5 /* login_bg_3.jpg */,
+				BEB83010177491ED00AAA8D5 /* login_bg_4.jpg */,
 			);
 			name = Background;
 			sourceTree = "<group>";
@@ -5917,7 +5926,6 @@
 				01811A5817576D2A00AFA926 /* ButtonShuttleBarMaximise.png in Resources */,
 				01811A5917576D2A00AFA926 /* ButtonShuttleBarMinimise.png in Resources */,
 				01811A5A17576D2A00AFA926 /* ButtonShuttleBarMinimise@2x.png in Resources */,
-				1F32002F175DED7200310EB5 /* BackgroundLogin.jpg in Resources */,
 				01F94F2A1761EE56006C024D /* ButtonCreateDisabled.png in Resources */,
 				01F94F2B1761EE56006C024D /* ButtonCreateDisabled@2x~iphone.png in Resources */,
 				01F94F2C1761EE56006C024D /* ButtonCreateDisabled@2x.png in Resources */,
@@ -5980,6 +5988,10 @@
 				BE2AE4D6176E689C00A753E3 /* ButtonBackHighlightedCD~iphone.png in Resources */,
 				1FD8720F176F7F26009F4746 /* LoginErrorPortrait.png in Resources */,
 				1FD87210176F7F26009F4746 /* LoginErrorPortrait@2x.png in Resources */,
+				BEB83011177491ED00AAA8D5 /* login_bg_1.jpg in Resources */,
+				BEB83012177491ED00AAA8D5 /* login_bg_2.jpg in Resources */,
+				BEB83013177491ED00AAA8D5 /* login_bg_3.jpg in Resources */,
+				BEB83014177491ED00AAA8D5 /* login_bg_4.jpg in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
