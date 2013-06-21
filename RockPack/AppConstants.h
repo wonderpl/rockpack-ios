@@ -9,14 +9,13 @@
 #ifndef RockPack_AppContants_h
 #define RockPack_AppContants_h
 
+// User ratings mechanism
+
+#define ENABLE_USER_RATINGS__
 
 //
 // API
 //
-
-// Returns a list of all the recently added videos associated with a user's subscribed channels (the %@ represents the USERID)
-#define kAPIRecentlyAddedVideoInSubscribedChannelsForUser @"ws/%@/subscriptions/recent_videos/"
-
 
 // Entities
 
