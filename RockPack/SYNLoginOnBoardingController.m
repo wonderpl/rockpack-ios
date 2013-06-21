@@ -127,16 +127,21 @@
         fontToUse = [UIFont rockpackFontOfSize: 14.0];
     }
     
-    // Setup Frame for Main Message Label
+    
+    UILabel* onboardMessageLabel = [[UILabel alloc] init];
+    onboardMessageLabel.lineBreakMode = NSLineBreakByWordWrapping;
+    onboardMessageLabel.textAlignment = NSTextAlignmentCenter;
+    
     CGRect onboardMessageLabelFrame;
-    onboardMessageLabelFrame.size = [message sizeWithFont:fontToUse];
+    onboardMessageLabelFrame.size = CGSizeMake(self.scrollView.frame.size.width, 150.0);
+    
     onboardMessageLabelFrame.origin.x = viewFrame.size.width * 0.5 - onboardMessageLabelFrame.size.width * 0.5;
     onboardMessageLabelFrame.origin.y = 100.0;
     
+    onboardMessageLabel.frame = onboardMessageLabelFrame;
     
     
-    UILabel* onboardMessageLabel = [[UILabel alloc] initWithFrame:onboardMessageLabelFrame];
-    
+    onboardMessageLabel.numberOfLines = 2;
     onboardMessageLabel.text = message;
     
     // Set font
