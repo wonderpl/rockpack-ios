@@ -657,5 +657,20 @@
     return inputString;
 }
 
+#pragma mark - ScrollView (on boarding) Delegate Methods
+
+-(void)scrollViewDidScroll:(UIScrollView *)scrollView
+{
+    
+}
+
+-(void)scrollViewDidEndDecelerating:(UIScrollView *)scrollView
+{
+    CGFloat contentOffsetX = self.onBoardingController.scrollView.contentOffset.x;
+    NSInteger page = (NSInteger)floorf(contentOffsetX / self.onBoardingController.scrollView.frame.size.width);
+    
+    self.onBoardingController.pageControl.currentPage = page;
+}
+
 
 @end

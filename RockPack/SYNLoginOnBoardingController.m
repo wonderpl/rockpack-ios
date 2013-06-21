@@ -239,20 +239,7 @@
     return messageView;
 }
 
-#pragma mark - Delegate Methods
 
--(void)scrollViewDidScroll:(UIScrollView *)scrollView
-{
-    
-}
-
--(void)scrollViewDidEndDecelerating:(UIScrollView *)scrollView
-{
-    CGFloat contentOffsetX = self.scrollView.contentOffset.x;
-    NSInteger page = (NSInteger)floorf(contentOffsetX / self.scrollView.frame.size.width);
-
-    self.pageControl.currentPage = page;
-}
 
 -(void)willAnimateRotationToInterfaceOrientation:(UIInterfaceOrientation)toInterfaceOrientation duration:(NSTimeInterval)duration
 {

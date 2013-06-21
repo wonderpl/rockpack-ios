@@ -19,7 +19,6 @@
 #import "SYNOAuth2Credential.h"
 #import "SYNOAuthNetworkEngine.h"
 #import "SYNPopoverBackgroundView.h"
-#import "SYNLoginOnBoardingController.h"
 #import "SYNTextFieldLogin.h"
 #import "UIFont+SYNFont.h"
 #import "User.h"
@@ -63,7 +62,6 @@
 @property (nonatomic, strong) IBOutlet UIView* dobView;
 @property (nonatomic, strong) NSArray* mainFormElements;
 @property (nonatomic, strong) NSMutableDictionary* labelsToErrorArrows;
-@property (nonatomic, strong) SYNLoginOnBoardingController* onBoardingController;
 @property (nonatomic, strong) UIButton* termsAndConditionsButton;
 @property (nonatomic, strong) UIPopoverController* cameraMenuPopoverController;
 @property (nonatomic, strong) UIPopoverController* cameraPopoverController;
@@ -185,6 +183,7 @@
     onBoardingViewFrame.origin.x = 0.0;
     onBoardingViewFrame.origin.y = [[SYNDeviceManager sharedInstance] isLandscape] ? 300.0 : 560.0;
     self.onBoardingController.view.frame = onBoardingViewFrame;
+    self.onBoardingController.scrollView.delegate = self;
     [self.view addSubview:self.onBoardingController.view];
     [self addChildViewController:self.onBoardingController];
     

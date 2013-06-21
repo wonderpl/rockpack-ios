@@ -12,6 +12,8 @@
 #import "SYNImagePickerController.h"
 #import "SYNNetworkErrorView.h"
 #import "SYNNetworkOperationJsonObject.h"
+
+#import "SYNLoginOnBoardingController.h"
 #import "SYNOAuth2Credential.h"
 
 
@@ -28,7 +30,7 @@ typedef enum {
 } kLoginScreenState;
 
 
-@interface SYNLoginBaseViewController : GAITrackedViewController
+@interface SYNLoginBaseViewController : GAITrackedViewController <UIScrollViewDelegate>
 
 @property (nonatomic, assign) kLoginScreenState state;
 @property (nonatomic, strong) Reachability *reachability;
@@ -36,6 +38,7 @@ typedef enum {
 @property (nonatomic, strong) SYNNetworkErrorView* networkErrorView;
 @property (nonatomic,assign) SYNAppDelegate* appDelegate;
 
+@property (nonatomic, strong) SYNLoginOnBoardingController* onBoardingController;
 
 - (BOOL) checkAndSaveRegisteredUser: (SYNOAuth2Credential*) credential;
 

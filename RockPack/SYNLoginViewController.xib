@@ -1536,60 +1536,6 @@
 				<object class="IBPartialClassDescription">
 					<string key="className">SYNLoginViewController</string>
 					<string key="superclassName">SYNLoginBaseViewController</string>
-					<dictionary class="NSMutableDictionary" key="actions">
-						<string key="doLogin:">id</string>
-						<string key="faceButtonImagePressed:">UIButton</string>
-						<string key="forgottenPasswordPressed:">id</string>
-						<string key="goToLoginForm:">id</string>
-						<string key="registerNewUser:">id</string>
-						<string key="registerPressed:">id</string>
-						<string key="sendEmailButtonPressed:">id</string>
-						<string key="signInWithFacebook:">id</string>
-						<string key="signUp:">id</string>
-						<string key="textfieldDidChange:">id</string>
-					</dictionary>
-					<dictionary class="NSMutableDictionary" key="actionInfosByName">
-						<object class="IBActionInfo" key="doLogin:">
-							<string key="name">doLogin:</string>
-							<string key="candidateClassName">id</string>
-						</object>
-						<object class="IBActionInfo" key="faceButtonImagePressed:">
-							<string key="name">faceButtonImagePressed:</string>
-							<string key="candidateClassName">UIButton</string>
-						</object>
-						<object class="IBActionInfo" key="forgottenPasswordPressed:">
-							<string key="name">forgottenPasswordPressed:</string>
-							<string key="candidateClassName">id</string>
-						</object>
-						<object class="IBActionInfo" key="goToLoginForm:">
-							<string key="name">goToLoginForm:</string>
-							<string key="candidateClassName">id</string>
-						</object>
-						<object class="IBActionInfo" key="registerNewUser:">
-							<string key="name">registerNewUser:</string>
-							<string key="candidateClassName">id</string>
-						</object>
-						<object class="IBActionInfo" key="registerPressed:">
-							<string key="name">registerPressed:</string>
-							<string key="candidateClassName">id</string>
-						</object>
-						<object class="IBActionInfo" key="sendEmailButtonPressed:">
-							<string key="name">sendEmailButtonPressed:</string>
-							<string key="candidateClassName">id</string>
-						</object>
-						<object class="IBActionInfo" key="signInWithFacebook:">
-							<string key="name">signInWithFacebook:</string>
-							<string key="candidateClassName">id</string>
-						</object>
-						<object class="IBActionInfo" key="signUp:">
-							<string key="name">signUp:</string>
-							<string key="candidateClassName">id</string>
-						</object>
-						<object class="IBActionInfo" key="textfieldDidChange:">
-							<string key="name">textfieldDidChange:</string>
-							<string key="candidateClassName">id</string>
-						</object>
-					</dictionary>
 					<dictionary class="NSMutableDictionary" key="outlets">
 						<string key="activityIndicator">UIActivityIndicatorView</string>
 						<string key="areYouNewLabel">UILabel</string>
