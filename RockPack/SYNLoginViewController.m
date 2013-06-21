@@ -173,6 +173,12 @@
 
     }
     
+    CGRect signUpButtonFrame  = signUpButton.frame;
+    if([[SYNDeviceManager sharedInstance] isPortrait])
+        signUpButtonFrame.origin.x = 644.0f;
+    
+    signUpButton.frame = signUpButtonFrame;
+    
     self.state = kLoginScreenStateInitial;
     
     UITapGestureRecognizer* tapGesture = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(outerViewTapped:)];
@@ -423,11 +429,7 @@
     signUpButton.alpha = 1.0;
     signUpButton.hidden = NO;
     
-    CGRect signUpButtonFrame  = signUpButton.frame;
-    if([[SYNDeviceManager sharedInstance] isPortrait])
-        signUpButtonFrame.origin.x = 644.0f;
     
-    signUpButton.frame = signUpButtonFrame;
     
     loginButton.enabled = YES;
     loginButton.hidden = NO;
