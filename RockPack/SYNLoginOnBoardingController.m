@@ -120,7 +120,7 @@
     UIFont* fontToUse;
     if (UI_USER_INTERFACE_IDIOM() == UIUserInterfaceIdiomPad)
     {
-        fontToUse = [UIFont rockpackFontOfSize: 20.0];
+        fontToUse = [UIFont rockpackFontOfSize: 22.0];
     }
     else
     {
@@ -180,7 +180,7 @@
         UIFont* fontTitleToUse;
         if (UI_USER_INTERFACE_IDIOM() == UIUserInterfaceIdiomPad)
         {
-            fontTitleToUse = [UIFont boldRockpackFontOfSize: 22.0];
+            fontTitleToUse = [UIFont boldRockpackFontOfSize: 24.0];
         }
         else
         {
@@ -210,7 +210,7 @@
                                                          blue: 0.0f
                                                         alpha: 0.2f];
         
-        
+        onboardTitleLabel.shadowOffset = CGSizeMake(0.0f, 1.0f);
         
         [messageView addSubview:onboardTitleLabel];
     }
