@@ -101,14 +101,35 @@
     [super viewDidLoad];
     
     CGRect totalImageRect;
-    if([[SYNDeviceManager sharedInstance] isIPad])
+    
+    CGPoint correctPoint;
+    if([[SYNDeviceManager sharedInstance] isIPad]) {
+        
         totalImageRect = CGRectMake(0.0, 0.0, 1024.0, 1024.0);
-    else
+        
+        correctPoint = self.view.center;
+        
+    }
+        
+    else {
+        
         totalImageRect = CGRectMake(0.0, 0.0, [[SYNDeviceManager sharedInstance] currentScreenHeight], [[SYNDeviceManager sharedInstance] currentScreenHeight]);
+        correctPoint = self.view.center;
+        
+    }
+    
     self.loginBackgroundImage.frame = totalImageRect;
-    self.loginBackgroundImage.center = self.view.center;
     self.loginBackgroundFrontImage.frame = totalImageRect;
-    self.loginBackgroundFrontImage.center = self.view.center;
+    
+    if([[SYNDeviceManager sharedInstance] isIPhone])
+    {
+        correctPoint.y = IS_IPHONE5 ? 280.0 : 240.0;
+    }
+    self.loginBackgroundImage.center = correctPoint;
+    self.loginBackgroundFrontImage.center = correctPoint;
+    
+    self.loginBackgroundImage.center = CGPointMake(self.view.center.x, self.loginBackgroundImage.center.y);
+    
     
     self.loginBackgroundImage.image = [UIImage imageNamed:self.backgroundImagesArray[0]]; // get the first image
 }

@@ -258,7 +258,9 @@
     }
     
     [self.scrollView setContentSize:totalScrollSize];
+    
     CGPoint newCOffset = CGPointMake(self.pageControl.currentPage * currenChildFrame.size.width, self.scrollView.contentOffset.y);
+    
     [self.scrollView setContentOffset:newCOffset];
     
     
