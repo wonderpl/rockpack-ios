@@ -181,7 +181,7 @@
     if(![title isEqualToString:@""])
     {
         
-        // Set font
+      
         UIFont* fontTitleToUse;
         if (UI_USER_INTERFACE_IDIOM() == UIUserInterfaceIdiomPad)
         {
@@ -197,7 +197,8 @@
         onboardTitleLabelFrame.size = [title sizeWithFont:fontTitleToUse];
         onboardTitleLabelFrame.origin.x = viewFrame.size.width * 0.5 - onboardTitleLabelFrame.size.width * 0.5;
         onboardTitleLabelFrame.origin.y = 60.0;
-        
+        if (UI_USER_INTERFACE_IDIOM() == UIUserInterfaceIdiomPhone)
+            onboardTitleLabelFrame.origin.y = 100.0;
         
         UILabel* onboardTitleLabel = [[UILabel alloc] initWithFrame:onboardTitleLabelFrame];
      

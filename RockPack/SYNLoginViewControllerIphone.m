@@ -179,7 +179,7 @@
     CGRect onBoardingViewFrame = self.onBoardingController.view.frame;
     onBoardingViewFrame.origin.x = 0.0;
     onBoardingViewFrame.size.width = [[SYNDeviceManager sharedInstance] currentScreenWidth];
-    onBoardingViewFrame.origin.y = 200.0;
+    onBoardingViewFrame.origin.y = 120.0;
     self.onBoardingController.view.frame = onBoardingViewFrame;
     self.onBoardingController.scrollView.delegate = self;
     [self.view addSubview:self.onBoardingController.view];

@@ -754,23 +754,22 @@
     nameOfNextImage = self.backgroundImagesArray[self.currentOnBoardingPage];
     self.loginBackgroundImage.image = [UIImage imageNamed:nameOfNextImage];
     
-    NSLog(@"name of existing image (%@): %i", nameOfNextImage, self.currentOnBoardingPage);
     
     switch (scrollingDirection) {
         case ScrollingDirectionNone:
-            NSLog(@"Resting at %i", self.currentOnBoardingPage);
+         
             nameOfNextImage = self.backgroundImagesArray[self.currentOnBoardingPage];
             break;
             
         case ScrollingDirectionRight:
             if(self.currentOnBoardingPage + 1 >= self.backgroundImagesArray.count)
             {
-                NSLog(@"Right with %i >= %i", self.currentOnBoardingPage + 1, self.backgroundImagesArray.count);
+                
                 nameOfNextImage = self.backgroundImagesArray[self.currentOnBoardingPage];
             }
             else
             {
-                NSLog(@"Right with %i", self.currentOnBoardingPage + 1);
+                
                 nameOfNextImage = self.backgroundImagesArray[self.currentOnBoardingPage + 1];
             }
                 
@@ -780,18 +779,18 @@
         case ScrollingDirectionLeft:
             if(self.currentOnBoardingPage - 1 < 0)
             {
-                NSLog(@"Left with %i < 0", self.currentOnBoardingPage - 1);
+                
                 nameOfNextImage = self.backgroundImagesArray[self.currentOnBoardingPage];
             }
             else
             {
-                NSLog(@"Left with %i", self.currentOnBoardingPage + 1);
+             
                 nameOfNextImage = self.backgroundImagesArray[self.currentOnBoardingPage - 1];
             }
             break;
     }
     self.loginBackgroundFrontImage.image = [UIImage imageNamed:nameOfNextImage];
-    NSLog(@"name of next image: %@", nameOfNextImage);
+    
 }
 
 -(void)scrollViewDidEndDecelerating:(UIScrollView *)scrollView
