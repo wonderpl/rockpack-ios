@@ -286,7 +286,10 @@ didFinishLaunchingWithOptions: (NSDictionary *) launchOptions
         return;
     
     
+    
     self.window.rootViewController = [self createAndReturnLoginViewController];
+    
+    self.masterViewController = nil;
     
     self.currentUser.currentValue = NO;
     
