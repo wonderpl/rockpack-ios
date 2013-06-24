@@ -2522,7 +2522,7 @@
 {
     self.selectedCoverId = remoteId;
     
-    self.channel.channelCover.imageUrl = imageUrlString;
+    //self.channel.channelCover.imageUrl = imageUrlString;
     
     NSString* largeImageUrlString = [imageUrlString stringByReplacingOccurrencesOfString:@"thumbnail_medium" withString:@"background"];
     
