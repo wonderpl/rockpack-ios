@@ -1060,6 +1060,8 @@
 
 - (void) enterEditMode
 {
+    self.coverChooserController.selectedImageURL = self.channel.channelCover.imageUrl;
+    
     [UIView animateWithDuration: kChannelEditModeAnimationDuration
                      animations: ^{
                          [self setEditControlsVisibility: TRUE];
@@ -1365,6 +1367,12 @@
         self.selectedCategoryId = self.channel.categoryId;
     }
     
+    if (!_isIPhone)
+    {
+        self.coverChooserController.selectedImageURL = self.channel.channelCover.imageUrl;
+        
+        [self.coverChooserController.collectionView reloadData];
+    }
 }
 
 
