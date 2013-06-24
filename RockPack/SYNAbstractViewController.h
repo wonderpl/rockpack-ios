@@ -125,6 +125,8 @@ andSelectedIndex: (int) selectedIndex center:(CGPoint) center;
 
 - (void) initiatePurchaseAtURL: (NSURL *) purchaseURL;
 
+- (void) applicationWillEnterForeground: (UIApplication *) application;
+
 - (CGSize) footerSize;
 
 @end
