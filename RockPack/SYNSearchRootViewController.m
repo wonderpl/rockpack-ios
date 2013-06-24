@@ -170,7 +170,7 @@
     
     [[NSNotificationCenter defaultCenter] postNotificationName: kMainControlsChangeEnter
                                                         object: self];
-    
+        
     if([[SYNDeviceManager sharedInstance] isIPhone])
     {
         [[NSNotificationCenter defaultCenter] postNotificationName: kNoteAllNavControlsHide
