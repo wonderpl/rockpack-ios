@@ -553,12 +553,15 @@
     }
     else if ([coverArtUrl isEqualToString: @"uploading"])
     {
+        
+        wself.originalBackgroundImage = coverArtImage;
+        UIImage* newImage  = [wself croppedImageForCurrentOrientation];
+        
         [UIView transitionWithView: self.view
                           duration: 0.35f
                            options: UIViewAnimationOptionTransitionCrossDissolve | UIViewAnimationOptionAllowUserInteraction
                         animations: ^{
-                            wself.originalBackgroundImage = coverArtImage;
-                            wself.channelCoverImageView.image = [wself croppedImageForCurrentOrientation];
+                            wself.channelCoverImageView.image = newImage;
 
                         }
                         completion:nil];
@@ -2605,6 +2608,16 @@
         self.originalBackgroundImage = self.channelCoverImageView.image;
     }
     
+    if(self.originalBackgroundImage.size.height != 1024.0f)
+    {
+        // we expect square images 1024 x 1024 px
+        // scale the crop Rect
+        // should only happen when uploading new images.
+        CGFloat scaleX = self.originalBackgroundImage.size.width / 1024.0f;
+        CGFloat scaleY = self.originalBackgroundImage.size.height / 1024.0f;
+        croppingRect = CGRectApplyAffineTransform(croppingRect,CGAffineTransformMakeScale(scaleX, scaleY));
+    }
+    
     CGImageRef croppedImageRef = CGImageCreateWithImageInRect([self.originalBackgroundImage CGImage], croppingRect);
     
     UIImage* croppedImage = [UIImage imageWithCGImage: croppedImageRef];
@@ -2640,14 +2653,30 @@
         
         context = [CIContext contextWithOptions:nil];
         
+        
+        CGFloat imageWidth = CGImageGetWidth(imageRef);
+        CGFloat imageHeight = CGImageGetHeight(imageRef);
+        CGFloat largestDimension = MAX(imageWidth, imageHeight);
+        
+        CGFloat blurRadius = 7.0f;
+        if (largestDimension != 1024.0f)
+        {
+            //we expect one side to be 1024 px
+            //If not we are processing a cropped image for upload.
+            //Attempt to adjust the blur scale.
+            blurRadius *= largestDimension/1024.0f;
+            // Make min radius 1.0px if the image is really small so we do at least see some blurring
+            blurRadius = MAX(blurRadius,1.0f);
+        }
+        
         filter = [CIFilter filterWithName:@"CIGaussianBlur"];
         [filter setValue:backgroundCIImage forKey:@"inputImage"];
-        [filter setValue:[NSNumber numberWithFloat:7.0] forKey:@"inputRadius"];
+        [filter setValue:[NSNumber numberWithFloat:blurRadius] forKey:@"inputRadius"];
         
         CIImage *outputImage = [filter outputImage];
         
         CGImageRef cgimg = [context createCGImage:outputImage
-                                         fromRect:CGRectMake(0.0f,0.0f,CGImageGetWidth(imageRef),CGImageGetHeight(imageRef))];
+                                         fromRect:CGRectMake(0.0f,0.0f,imageWidth,imageHeight)];
         
         
         
