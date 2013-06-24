@@ -109,9 +109,14 @@
     
     // for loading data
     
-    self.dataRequestRange = NSMakeRange(0, STANDARD_REQUEST_LENGTH);
+    [self resetDataRequestRange];
+    
 }
 
+- (void) resetDataRequestRange
+{
+    self.dataRequestRange = NSMakeRange(0, STANDARD_REQUEST_LENGTH);
+}
 
 - (void) viewDidScrollToFront
 {

@@ -542,6 +542,8 @@
     if (!coverArtUrl)
         return;
     
+    __weak SYNChannelDetailViewController *wself = self;
+    
     if ([coverArtUrl isEqualToString: @""])
     {
         self.channelCoverImageView.image = nil;
@@ -555,13 +557,14 @@
                           duration: 0.35f
                            options: UIViewAnimationOptionTransitionCrossDissolve | UIViewAnimationOptionAllowUserInteraction
                         animations: ^{
-                            self.channelCoverImageView.image = coverArtImage;
+                            wself.originalBackgroundImage = coverArtImage;
+                            wself.channelCoverImageView.image = [wself croppedImageForCurrentOrientation];
+
                         }
-                        completion: nil];
+                        completion:nil];
     }
     else
     {
-        __weak SYNChannelDetailViewController *wself = self;
         NSString* largeImageUrlString = [coverArtUrl stringByReplacingOccurrencesOfString:@"thumbnail_medium" withString:@"background"];
         
         [self.channelCoverImageView setImageWithURL: [NSURL URLWithString: largeImageUrlString]
@@ -2372,12 +2375,19 @@
                                                    [self.activityIndicator stopAnimating];
                                                    DebugLog(@"%@", [error debugDescription]);
                                                }];
+    
+    NSDictionary *userInfo =  @{kCoverArt: @"uploading" ,kCoverArtImage: imageToUpload} ;
+    
+    [[NSNotificationCenter defaultCenter] postNotificationName: kCoverArtChanged
+                                                        object: self
+                                                      userInfo: userInfo];
+    
 }
 
 
 #pragma mark - iPhone viewcontroller dismissal
 - (IBAction) backButtonTapped: (id) sender
-{    
+{
     CATransition *animation = [CATransition animation];
     
     [animation setType:kCATransitionReveal];
@@ -2491,9 +2501,7 @@
 
 - (void) imageSelector: (SYNChannelCoverImageSelectorViewController *) imageSelector
       didSelectUIImage: (UIImage *) image
-{
-    [self.channelCoverImageView setImage: image];
-    
+{    
     [self uploadChannelImage: image];
     [self closeImageSelector: imageSelector];
 }
@@ -2508,9 +2516,16 @@
     self.channel.channelCover.imageUrl = imageUrlString;
     
     NSString* largeImageUrlString = [imageUrlString stringByReplacingOccurrencesOfString:@"thumbnail_medium" withString:@"background"];
+    
+    __weak SYNChannelDetailViewController *wself = self;
+    
     [self.channelCoverImageView setImageWithURL: [NSURL URLWithString: largeImageUrlString]
                                placeholderImage: [UIImage imageNamed: @"PlaceholderChannelCreation.png"]
-                                        options: SDWebImageRetryFailed];
+                                        options:SDWebImageRetryFailed completed:^(UIImage *image, NSError *error, SDImageCacheType cacheType) {
+                                            wself.originalBackgroundImage = wself.channelCoverImageView.image;
+                                            
+                                            wself.channelCoverImageView.image = [wself croppedImageForCurrentOrientation];
+                                        }];
     [self closeImageSelector: imageSelector];
 }
 
@@ -2631,9 +2646,8 @@
         
         CIImage *outputImage = [filter outputImage];
         
-        CGRect croppingRect = [[SYNDeviceManager sharedInstance] isLandscape] ? CGRectMake(0.0, 0.0, 1024.0, 768.0) : CGRectMake(0.0, 0.0, 768.0, 1024.0);
         CGImageRef cgimg = [context createCGImage:outputImage
-                                         fromRect:croppingRect];
+                                         fromRect:CGRectMake(0.0f,0.0f,CGImageGetWidth(imageRef),CGImageGetHeight(imageRef))];
         
         
         
