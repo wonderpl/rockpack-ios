@@ -35,6 +35,7 @@
 @property (nonatomic, assign) BOOL notYetPlaying;
 @property (nonatomic, assign) BOOL playFlag;
 @property (nonatomic, assign) BOOL shuttledByUser;
+@property (nonatomic, assign) BOOL pausedByUser;
 @property (nonatomic, assign) BOOL recordedVideoView;
 @property (nonatomic, assign) CGRect originalShuttleBarFrame;
 @property (nonatomic, assign) CGRect requestedFrame;
@@ -386,7 +387,10 @@ static UIWebView* vimeoideoWebViewInstance;
 {
     if (self.isPaused == TRUE)
     {
-        [self playVideo];
+        if (self.pausedByUser == NO)
+        {
+            [self playVideo];
+        }
     }
     else
     {
@@ -925,6 +929,7 @@ static UIWebView* vimeoideoWebViewInstance;
 //    DebugLog(@"*** Playing: Load video command sent");
     self.notYetPlaying = TRUE;
     self.recordedVideoView = FALSE;
+    self.pausedByUser = NO;
     
     SYNAppDelegate* appDelegate = UIApplication.sharedApplication.delegate;
     // Check to see if our JS is loaded
@@ -978,6 +983,7 @@ static UIWebView* vimeoideoWebViewInstance;
 {
     if ([self.view superview])
     {
+        self.pausedByUser = NO;
         [self.currentVideoWebView stringByEvaluatingJavaScriptFromString: @"player.playVideo();"];
         self.playFlag = TRUE;
     }
@@ -1567,6 +1573,7 @@ static UIWebView* vimeoideoWebViewInstance;
     {
         // Reset our shuttling flag
         self.shuttledByUser = FALSE;
+        self.pausedByUser = YES;
         
         [self.shuttleBarPlayPauseButton setImage: [UIImage imageNamed: @"ButtonShuttleBarPlay.png"]
                                         forState: UIControlStateNormal];
@@ -1578,6 +1585,7 @@ static UIWebView* vimeoideoWebViewInstance;
         [self.shuttleBarPlayPauseButton setImage: [UIImage imageNamed: @"ButtonShuttleBarPause.png"]
                                         forState: UIControlStateNormal];
         
+        self.pausedByUser = NO;
         [self playVideo];
     }
 }
