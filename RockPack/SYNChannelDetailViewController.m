@@ -111,6 +111,7 @@
 @property (weak, nonatomic) IBOutlet UIButton *cancelTextInputButton;
 @property (nonatomic, weak) SYNVideoThumbnailRegularCell* selectedCell;
 @property (weak, nonatomic) IBOutlet UIImageView *textBackgroundImageView;
+@property (nonatomic, strong) NSString* selectedImageURL;
 
 @property (weak, nonatomic) IBOutlet UIImageView *logoImageView;
 
@@ -1391,6 +1392,11 @@
     {
         [self setEditControlsVisibility: NO];
         
+        if(_isIPhone)
+        {
+            self.selectedImageURL = nil;
+        }
+        
         self.selectedCategoryId = nil;
         self.selectedCoverId = nil;
         
@@ -1541,7 +1547,7 @@
     }
     else
     {
-        self.coverImageSelector = [[SYNChannelCoverImageSelectorViewController alloc] initWithSelectedImageURL: self.channel.channelCover.imageUrl];
+        self.coverImageSelector = [[SYNChannelCoverImageSelectorViewController alloc] initWithSelectedImageURL: (self.selectedImageURL) ? self.selectedImageURL:self.channel.channelCover.imageUrl];
         self.coverImageSelector.imageSelectorDelegate = self;
         CGRect startFrame = self.coverImageSelector.view.frame;
         startFrame.origin.y = self.view.frame.size.height;
@@ -2516,6 +2522,7 @@
 {    
     [self uploadChannelImage: image];
     [self closeImageSelector: imageSelector];
+    self.selectedImageURL = nil;
 }
 
 
@@ -2525,7 +2532,7 @@
 {
     self.selectedCoverId = remoteId;
     
-    //self.channel.channelCover.imageUrl = imageUrlString;
+    self.selectedImageURL = imageUrlString;
     
     NSString* largeImageUrlString = [imageUrlString stringByReplacingOccurrencesOfString:@"thumbnail_medium" withString:@"background"];
     
