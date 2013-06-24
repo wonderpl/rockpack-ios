@@ -35,14 +35,15 @@
     // background view
     
     CGSize screenSize = [[SYNDeviceManager sharedInstance] currentScreenSize];
-    CGRect screenFrame = CGRectMake(0.0, 0.0, screenSize.width, screenSize.height);
+    CGRect screenFrame = CGRectZero;
+    screenFrame.size = screenSize;
+    
+    
     
     self.backgroundView = [[UIView alloc] initWithFrame:screenFrame];
-    //self.backgroundView.backgroundColor = [UIColor blackColor];
+    // self.backgroundView.backgroundColor = [UIColor redColor];
     self.backgroundView.alpha = 0.0;
     self.backgroundView.userInteractionEnabled = YES;
-    self.backgroundView.autoresizingMask = UIViewAutoresizingFlexibleWidth | UIViewAutoresizingFlexibleHeight;
-    self.backgroundView.autoresizesSubviews = YES;
     
     UIView* mainView = [[UIView alloc] initWithFrame:screenFrame];
     mainView.backgroundColor = [UIColor clearColor];
@@ -313,61 +314,71 @@
 
 -(void)positionBGSlicesForPopover:(SYNOnBoardingPopoverView*)popover
 {
-    if(self.backgroundView.subviews.count != 9) // the creation was not done correctly
-        return;
-    
     CGSize screenSize = [[SYNDeviceManager sharedInstance] currentScreenSize];
     
-    float px[4] = {
-        0.0f, popover.pointRect.origin.x,
-        popover.pointRect.origin.x + popover.pointRect.size.width, screenSize.width
-    };
-    
-    float py[4] = {
-        0.0f, popover.pointRect.origin.y,
-        popover.pointRect.origin.y + popover.pointRect.size.height, screenSize.height
-    };
-    
-    
-    float current_x = 0.0f;
-    float current_y = 0.0f;
-    float current_w = 0.0f;
-    float current_h = 0.0f;
-    
-    UIView* currentSlice;
-    
-    for (int i = 0; i < 3; i++) {
+    if(self.backgroundView.subviews.count == 1)
+    {
+        UIView* subBGView = self.backgroundView.subviews[0];
+        subBGView.frame = CGRectMake(0.0, 0.0, screenSize.width, screenSize.height);
+    }
+    else if(self.backgroundView.subviews.count == 9)
+    {
         
         
-        current_y = py[i];
+        float px[4] = {
+            0.0f, popover.pointRect.origin.x,
+            popover.pointRect.origin.x + popover.pointRect.size.width, screenSize.width
+        };
         
-        for (int j = 0; j < 3; j++) {
+        float py[4] = {
+            0.0f, popover.pointRect.origin.y,
+            popover.pointRect.origin.y + popover.pointRect.size.height, screenSize.height
+        };
+        
+        
+        float current_x = 0.0f;
+        float current_y = 0.0f;
+        float current_w = 0.0f;
+        float current_h = 0.0f;
+        
+        UIView* currentSlice;
+        
+        for (int i = 0; i < 3; i++) {
             
-            current_x = px[j];
             
-            current_w = px[j+1] - current_x;
+            current_y = py[i];
             
-            current_h = py[i+1] - current_y;
-            
-            currentSlice = self.backgroundView.subviews[(i * 3) + j];
-            
-            currentSlice.frame = CGRectMake(current_x, current_y, current_w, current_h);
-            
-            if(i == 1 && j == 1) // special interest slice
-            {
+            for (int j = 0; j < 3; j++) {
                 
-                currentSlice.backgroundColor = [UIColor clearColor];
-                UITapGestureRecognizer* recogniser = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(doit:)];
-                [currentSlice addGestureRecognizer:recogniser];
+                current_x = px[j];
+                
+                current_w = px[j+1] - current_x;
+                
+                current_h = py[i+1] - current_y;
+                
+                currentSlice = self.backgroundView.subviews[(i * 3) + j];
+                
+                currentSlice.frame = CGRectMake(current_x, current_y, current_w, current_h);
+                
+                if(i == 1 && j == 1) // special interest slice
+                {
+                    
+                    currentSlice.backgroundColor = [UIColor clearColor];
+                    UITapGestureRecognizer* recogniser = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(doit:)];
+                    [currentSlice addGestureRecognizer:recogniser];
+                    
+                }
+                else
+                {
+                    currentSlice.backgroundColor = [UIColor blackColor];
+                }
                 
             }
-            else
-            {
-                currentSlice.backgroundColor = [UIColor blackColor];
-            }
-            
         }
     }
+
+    
+    
     
 }
 -(void)willRotateToInterfaceOrientation:(UIInterfaceOrientation)toInterfaceOrientation duration:(NSTimeInterval)duration
@@ -382,6 +393,16 @@
 -(void)willAnimateRotationToInterfaceOrientation:(UIInterfaceOrientation)toInterfaceOrientation duration:(NSTimeInterval)duration
 {
     [super willAnimateRotationToInterfaceOrientation:toInterfaceOrientation duration:duration];
+    
+   
+    CGRect newFrame = CGRectZero;
+    
+    
+    
+    newFrame.size = [[SYNDeviceManager sharedInstance] currentScreenSize];
+    
+    self.view.frame = newFrame;
+    self.backgroundView.frame = self.view.frame;
     
     [self positionBGSlicesForPopover:self.currentlyVisiblePopover];
 }
