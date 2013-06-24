@@ -480,7 +480,7 @@ typedef void(^AnimationCompletionBlock)(BOOL finished);
     
 }
 
--(void)resumeVideoIfShowing
+- (void) resumeVideoIfShowing
 {
     //Special case! If we have a videoViewerViewContoroller here it means we are returning from the add to channel selector.
     // try to resume playback.
