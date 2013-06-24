@@ -1400,6 +1400,8 @@
         
         [self displayChannelDetails];
         
+        self.currentWebImageOperation = [self loadBackgroundImage];
+        
         [self.videoThumbnailCollectionView reloadData];
     }
 
