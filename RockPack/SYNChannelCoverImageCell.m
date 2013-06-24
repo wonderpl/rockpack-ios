@@ -9,6 +9,7 @@
 #import "AppConstants.h"
 #import "SYNChannelCoverImageCell.h"
 #import "UIFont+SYNFont.h"
+#import "UIImageView+WebCache.h"
 #import <AVFoundation/AVFoundation.h>
 #import <AssetsLibrary/AssetsLibrary.h>
 
@@ -93,6 +94,15 @@
                              completion: nil];
         }
     }
+}
+
+// If this cell is going to be re-used, then clear the image and cancel any outstanding operations
+- (void) prepareForReuse
+{
+    // We need to clean up any asynchronous image uploads
+    [self.channelCoverImageView.layer removeAllAnimations];
+    [self.channelCoverImageView setImageWithURL: nil];
+    self.selectedOverlayImageView.alpha = 0.0f;
 }
 
 @end

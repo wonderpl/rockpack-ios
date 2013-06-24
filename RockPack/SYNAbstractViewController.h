@@ -99,6 +99,8 @@ andSelectedIndex: (int) selectedIndex center:(CGPoint) center;
 - (BOOL) needsAddButton;
 - (BOOL) toleratesSearchBar;
 
+- (void) resetDataRequestRange;
+
 - (void) incrementRangeForNextRequest;
 
 -(void)headerTapped;
@@ -122,6 +124,8 @@ andSelectedIndex: (int) selectedIndex center:(CGPoint) center;
 // Purchase
 
 - (void) initiatePurchaseAtURL: (NSURL *) purchaseURL;
+
+- (void) applicationWillEnterForeground: (UIApplication *) application;
 
 - (CGSize) footerSize;
 

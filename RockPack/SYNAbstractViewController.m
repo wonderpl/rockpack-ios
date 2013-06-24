@@ -75,6 +75,11 @@
     if ((self = [super init]))
     {
         viewId = vid;
+        
+        [[NSNotificationCenter defaultCenter] addObserver:self
+                                                 selector:@selector(applicationWillEnterForeground:)
+                                                     name:UIApplicationWillEnterForegroundNotification
+                                                   object:nil];
     }
     
     return self;
@@ -109,9 +114,14 @@
     
     // for loading data
     
-    self.dataRequestRange = NSMakeRange(0, STANDARD_REQUEST_LENGTH);
+    [self resetDataRequestRange];
+    
 }
 
+- (void) resetDataRequestRange
+{
+    self.dataRequestRange = NSMakeRange(0, STANDARD_REQUEST_LENGTH);
+}
 
 - (void) viewDidScrollToFront
 {
@@ -765,5 +775,13 @@
     return [SYNDeviceManager.sharedInstance isIPhone] ? CGSizeMake(320.0f, 64.0f) : CGSizeMake(1024.0, 64.0);
 }
 
+#pragma mark UIApplication Callback Notifications
+
+- (void) applicationWillEnterForeground: (UIApplication *) application
+{
+    [self resetDataRequestRange];
+    
+    // and then make a class appropriate data call
+}
 
 @end
