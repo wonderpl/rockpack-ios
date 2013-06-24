@@ -1391,6 +1391,9 @@
     {
         [self setEditControlsVisibility: NO];
         
+        self.selectedCategoryId = nil;
+        self.selectedCoverId = nil;
+        
         self.categoryTableViewController = nil;
         self.saveChannelButton.hidden = YES;
         self.cancelEditButton.hidden = YES;
