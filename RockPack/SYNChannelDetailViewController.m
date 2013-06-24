@@ -37,6 +37,7 @@
 #import "SYNOnBoardingPopoverQueueController.h"
 #import "SYNImagePickerController.h"
 #import "SYNReportConcernTableViewController.h"
+#import "SYNExistingChannelsViewController.h"
 
 @interface SYNChannelDetailViewController () <UITextViewDelegate,
                                               SYNImagePickerControllerDelegate,
@@ -2076,8 +2077,14 @@
             //After creation want to show it as if it is part of the master view hierarchy.
             //Thus we move the view there.
             
-            //This removes the "existing channels view controller"
-            [[[[master childViewControllers] lastObject] view] removeFromSuperview];
+            //Check for precense of existing channels view controller.
+            UIViewController* lastController = [[master childViewControllers] lastObject];
+            if([lastController isKindOfClass:[SYNExistingChannelsViewController class]])
+            {
+                //This removes the "existing channels view controller"
+                [lastController.view removeFromSuperview];
+                [lastController removeFromParentViewController];
+            }
             
             //Now dimiss self modally (not animated)
             [master dismissViewControllerAnimated:NO completion:nil];
