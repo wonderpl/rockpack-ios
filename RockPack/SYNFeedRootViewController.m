@@ -406,6 +406,10 @@
 - (void) loadAndUpdateFeedData
 {
     
+    if(!appDelegate.currentOAuth2Credentials.userId)
+        return;
+    
+    
     [self.refreshButton startRefreshCycle];
     
     [appDelegate.oAuthNetworkEngine subscriptionsUpdatesForUserId:  appDelegate.currentOAuth2Credentials.userId
