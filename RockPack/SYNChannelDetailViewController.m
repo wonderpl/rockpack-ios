@@ -111,6 +111,7 @@
 @property (weak, nonatomic) IBOutlet UIButton *cancelTextInputButton;
 @property (nonatomic, weak) SYNVideoThumbnailRegularCell* selectedCell;
 @property (weak, nonatomic) IBOutlet UIImageView *textBackgroundImageView;
+@property (nonatomic, strong) NSString* selectedImageURL;
 
 @property (weak, nonatomic) IBOutlet UIImageView *logoImageView;
 
@@ -1060,6 +1061,8 @@
 
 - (void) enterEditMode
 {
+    self.coverChooserController.selectedImageURL = self.channel.channelCover.imageUrl;
+    
     [UIView animateWithDuration: kChannelEditModeAnimationDuration
                      animations: ^{
                          [self setEditControlsVisibility: TRUE];
@@ -1365,6 +1368,12 @@
         self.selectedCategoryId = self.channel.categoryId;
     }
     
+    if (!_isIPhone)
+    {
+        self.coverChooserController.selectedImageURL = self.channel.channelCover.imageUrl;
+        
+        [self.coverChooserController.collectionView reloadData];
+    }
 }
 
 
@@ -1390,6 +1399,14 @@
     else
     {
         [self setEditControlsVisibility: NO];
+        
+        if(_isIPhone)
+        {
+            self.selectedImageURL = nil;
+        }
+        
+        self.selectedCategoryId = nil;
+        self.selectedCoverId = nil;
         
         self.categoryTableViewController = nil;
         self.saveChannelButton.hidden = YES;
@@ -1538,7 +1555,7 @@
     }
     else
     {
-        self.coverImageSelector = [[SYNChannelCoverImageSelectorViewController alloc] initWithSelectedImageURL: self.channel.channelCover.imageUrl];
+        self.coverImageSelector = [[SYNChannelCoverImageSelectorViewController alloc] initWithSelectedImageURL: (self.selectedImageURL) ? self.selectedImageURL:self.channel.channelCover.imageUrl];
         self.coverImageSelector.imageSelectorDelegate = self;
         CGRect startFrame = self.coverImageSelector.view.frame;
         startFrame.origin.y = self.view.frame.size.height;
@@ -2367,7 +2384,10 @@
 
                                               if (imageUrl && [imageUrl isKindOfClass:[NSString class]])
                                               {
-                                                  self.channel.channelCover.imageUrl = imageUrl;
+                                                 if (!self.selectedImageURL)
+                                                 {
+                                                     self.selectedImageURL = imageUrl;
+                                                 }
 //                                                  [self.coverChooserController updateUserArtWithURL: imageUrl];
 //                                                  DebugLog(@"Success");
                                               }
@@ -2513,6 +2533,7 @@
 {    
     [self uploadChannelImage: image];
     [self closeImageSelector: imageSelector];
+    self.selectedImageURL = nil;
 }
 
 
@@ -2522,7 +2543,7 @@
 {
     self.selectedCoverId = remoteId;
     
-    //self.channel.channelCover.imageUrl = imageUrlString;
+    self.selectedImageURL = imageUrlString;
     
     NSString* largeImageUrlString = [imageUrlString stringByReplacingOccurrencesOfString:@"thumbnail_medium" withString:@"background"];
     

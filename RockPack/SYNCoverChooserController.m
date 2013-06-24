@@ -38,7 +38,6 @@
 @property (nonatomic, strong) NSFetchedResultsController *rockpackCoverFetchedResultsController;
 @property (nonatomic, strong) NSFetchedResultsController *userCoverFetchedResultsController;
 @property (nonatomic, strong) NSIndexPath* indexPathSelected;
-@property (nonatomic, strong) NSString* selectedImageURL;
 @property (nonatomic, strong) SYNCoverRightMoreView* coverRightMoreView;
 @property (nonatomic, strong) UIImage *placeholderImage;
 @property (nonatomic, weak) SYNAppDelegate* appDelegate;
