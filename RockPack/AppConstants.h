@@ -200,6 +200,13 @@ typedef enum _Gender {
     
 } Gender;
 
+typedef enum _NavigationButtonsAppearence {
+    
+    NavigationButtonsAppearenceBlack = 0,
+    NavigationButtonsAppearenceWhite = 1,
+    
+} NavigationButtonsAppearence;
+
 //
 // Colours
 //

@@ -1387,7 +1387,7 @@
     else
     {
         [self setEditControlsVisibility: NO];
-        [self displayChannelDetails];
+        
         self.categoryTableViewController = nil;
         self.saveChannelButton.hidden = YES;
         self.cancelEditButton.hidden = YES;
@@ -1395,6 +1395,10 @@
         self.backButton.hidden= NO;
         
         self.channel = self.originalChannel;
+        
+        // display the BG as it was
+        
+        [self displayChannelDetails];
         
         [self.videoThumbnailCollectionView reloadData];
     }
