@@ -832,6 +832,13 @@
     [self.videoThumbnailCollectionView setContentOffset:CGPointZero animated:YES];
 }
 
+- (void) applicationWillEnterForeground: (UIApplication *) application
+{
+    // set the data request range back to 0, 48 and refresh
+    [super applicationWillEnterForeground: application];
+    
+    [self loadAndUpdateFeedData];
+}
 
 
 @end

@@ -42,6 +42,7 @@
     self.backgroundView.alpha = 0.0;
     self.backgroundView.userInteractionEnabled = YES;
     self.backgroundView.autoresizingMask = UIViewAutoresizingFlexibleWidth | UIViewAutoresizingFlexibleHeight;
+    self.backgroundView.autoresizesSubviews = YES;
     
     UIView* mainView = [[UIView alloc] initWithFrame:screenFrame];
     mainView.backgroundColor = [UIColor clearColor];
@@ -180,11 +181,12 @@
     for (UIView* view in self.backgroundView.subviews) // clean from existing
         [view removeFromSuperview];
     
-    
     if(_currentlyVisiblePopover.direction != PointingDirectionNone)
         [self createBGSlicesForPopover:_currentlyVisiblePopover];
     else
         [self createBGForPopover:_currentlyVisiblePopover];
+    
+    
 }
 -(void)placePopoverInView:(SYNOnBoardingPopoverView*)popover
 {
@@ -288,16 +290,32 @@
     
 }
 
--(void)createBGForPopover:(SYNOnBoardingPopoverView*)popover
+-(void)createBGForPopover:(SYNOnBoardingPopoverView*)popover // single BG for centered 
 {
-    UIView* bgView = [[UIView alloc] initWithFrame:self.backgroundView.frame];
-    bgView.backgroundColor = [UIColor blackColor];
-    [self.backgroundView addSubview:bgView];
+    UIView* centeredBGView = [[UIView alloc] initWithFrame:self.backgroundView.frame];
+    centeredBGView.backgroundColor = [UIColor blackColor];
+    [self.backgroundView addSubview:centeredBGView];
 }
 
 
 -(void)createBGSlicesForPopover:(SYNOnBoardingPopoverView*)popover
 {
+    UIView* slice;
+    for (int c = 0; c < 9; c++)
+    {
+        slice = [[UIView alloc] initWithFrame:CGRectZero];
+        [self.backgroundView addSubview:slice];
+        
+    }
+    
+    [self positionBGSlicesForPopover:popover];
+}
+
+-(void)positionBGSlicesForPopover:(SYNOnBoardingPopoverView*)popover
+{
+    if(self.backgroundView.subviews.count != 9) // the creation was not done correctly
+        return;
+    
     CGSize screenSize = [[SYNDeviceManager sharedInstance] currentScreenSize];
     
     float px[4] = {
@@ -310,9 +328,6 @@
         popover.pointRect.origin.y + popover.pointRect.size.height, screenSize.height
     };
     
-//    int test_colors[9] = {
-//        0x5786fd, 0xf2cd60, 0x7ac9bc, 0xc05bf5, 0x91ccb6, 0xf1c9d0, 0x622a23, 0xf6504d, 0x7db7e1
-//    };
     
     float current_x = 0.0f;
     float current_y = 0.0f;
@@ -334,7 +349,9 @@
             
             current_h = py[i+1] - current_y;
             
-            currentSlice = [[UIView alloc] initWithFrame:CGRectMake(current_x, current_y, current_w, current_h)];
+            currentSlice = self.backgroundView.subviews[(i * 3) + j];
+            
+            currentSlice.frame = CGRectMake(current_x, current_y, current_w, current_h);
             
             if(i == 1 && j == 1) // special interest slice
             {
@@ -349,26 +366,31 @@
                 currentSlice.backgroundColor = [UIColor blackColor];
             }
             
-            
-            currentSlice.autoresizingMask = UIViewAutoresizingFlexibleWidth | UIViewAutoresizingFlexibleHeight;
-            
-            [self.backgroundView addSubview:currentSlice];
         }
     }
+    
+}
+-(void)willRotateToInterfaceOrientation:(UIInterfaceOrientation)toInterfaceOrientation duration:(NSTimeInterval)duration
+{
+    [super willRotateToInterfaceOrientation:toInterfaceOrientation duration:duration];
+    
+    
+    
+    
 }
 
 -(void)willAnimateRotationToInterfaceOrientation:(UIInterfaceOrientation)toInterfaceOrientation duration:(NSTimeInterval)duration
 {
     [super willAnimateRotationToInterfaceOrientation:toInterfaceOrientation duration:duration];
     
-    
+    [self positionBGSlicesForPopover:self.currentlyVisiblePopover];
 }
 
 -(void)didRotateFromInterfaceOrientation:(UIInterfaceOrientation)fromInterfaceOrientation
 {
     [super didRotateFromInterfaceOrientation:fromInterfaceOrientation];
     
-    [self createBG];
+    
 }
 -(void)doit:(UIGestureRecognizer*)recogniser
 {

@@ -75,6 +75,11 @@
     if ((self = [super init]))
     {
         viewId = vid;
+        
+        [[NSNotificationCenter defaultCenter] addObserver:self
+                                                 selector:@selector(applicationWillEnterForeground:)
+                                                     name:UIApplicationWillEnterForegroundNotification
+                                                   object:nil];
     }
     
     return self;
@@ -770,5 +775,13 @@
     return [SYNDeviceManager.sharedInstance isIPhone] ? CGSizeMake(320.0f, 64.0f) : CGSizeMake(1024.0, 64.0);
 }
 
+#pragma mark UIApplication Callback Notifications
+
+- (void) applicationWillEnterForeground: (UIApplication *) application
+{
+    [self resetDataRequestRange];
+    
+    // and then make a class appropriate data call
+}
 
 @end
