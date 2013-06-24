@@ -2384,7 +2384,10 @@
 
                                               if (imageUrl && [imageUrl isKindOfClass:[NSString class]])
                                               {
-                                                  self.channel.channelCover.imageUrl = imageUrl;
+                                                 if (!self.selectedImageURL)
+                                                 {
+                                                     self.selectedImageURL = imageUrl;
+                                                 }
 //                                                  [self.coverChooserController updateUserArtWithURL: imageUrl];
 //                                                  DebugLog(@"Success");
                                               }
