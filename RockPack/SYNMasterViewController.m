@@ -1541,6 +1541,19 @@ typedef void(^AnimationCompletionBlock)(BOOL finished);
     
     if([object.viewId isEqualToString:kChannelDetailsViewId] && [[notification name] isEqualToString:kMainControlsChangeEnter]) // white buttons
     {
+        
+        [self changeControlButtonsTo:NavigationButtonsAppearenceWhite];
+    }
+    else // black buttons
+    {
+        [self changeControlButtonsTo:NavigationButtonsAppearenceBlack];
+    }
+}
+
+-(void)changeControlButtonsTo:(NavigationButtonsAppearence)appearence
+{
+    if(appearence == NavigationButtonsAppearenceWhite) // white buttons
+    {
         [self.searchButton setImage:[UIImage imageNamed:@"ButtonSearchCD"] forState:UIControlStateNormal];
         [self.searchButton setImage:[UIImage imageNamed:@"ButtonSearchHighlightedCD"] forState:UIControlStateHighlighted];
         
@@ -1555,7 +1568,7 @@ typedef void(^AnimationCompletionBlock)(BOOL finished);
         [self.sideNavigationButton setImage:[UIImage imageNamed:@"ButtonNavSelectedCD"] forState:UIControlStateSelected];
         
     }
-    else // black buttons
+    else if(appearence == NavigationButtonsAppearenceBlack) // black buttons
     {
         [self.searchButton setImage:[UIImage imageNamed:@"ButtonSearch"] forState:UIControlStateNormal];
         [self.searchButton setImage:[UIImage imageNamed:@"ButtonSearchHighlighted"] forState:UIControlStateHighlighted];
@@ -1571,11 +1584,6 @@ typedef void(^AnimationCompletionBlock)(BOOL finished);
         [self.sideNavigationButton setImage:[UIImage imageNamed:@"ButtonNavHighlighted"] forState:UIControlStateHighlighted];
         [self.sideNavigationButton setImage:[UIImage imageNamed:@"ButtonNavSelected"] forState:UIControlStateSelected];
     }
-}
-
--(void)changeControlButtonsTo:(NavigationButtonsAppearence)appearence
-{
-    
 }
 
 
