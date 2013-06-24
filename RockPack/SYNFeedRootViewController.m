@@ -134,7 +134,7 @@
     self.refreshControl.tintColor = [UIColor colorWithRed:(11.0/255.0) green:(166.0/255.0) blue:(171.0/255.0) alpha:(1.0)];
     
     [self.refreshControl addTarget: self
-                            action: @selector(loadAndUpdateFeedData)
+                            action: @selector(loadAndUpdateOriginalFeedData)
                   forControlEvents: UIControlEventValueChanged];
     
     
@@ -163,8 +163,8 @@
                           forSupplementaryViewOfKind: UICollectionElementKindSectionFooter
                                  withReuseIdentifier: @"SYNChannelFooterMoreView"];
     
-    NSLog(@"-- %@", NSStringFromCGRect(self.view.frame));
-    self.dataRequestRange = NSMakeRange(0, STANDARD_REQUEST_LENGTH);
+    
+    // the data request range has been reset by parent class
     
     
 }
@@ -203,12 +203,22 @@
 
 - (void) viewDidScrollToFront
 {
+    
     [self updateAnalytics];
+    
     self.videoThumbnailCollectionView.scrollsToTop = YES;
+    
+    // if the user has not pressed load more
     if(self.dataRequestRange.location == 0)
     {
-        [self refreshData];
+        [self resetDataRequestRange]; // just in case the length is less than standard
+        [self.refreshButton startRefreshCycle];
+        [self loadAndUpdateFeedData];
+       
     }
+        
+    
+    
 }
 
 -(void)viewDidScrollToBack
@@ -225,12 +235,6 @@
 
 
 
--(void)refreshData
-{
-    [self.refreshButton startRefreshCycle];
-    self.dataRequestRange = NSMakeRange(0, STANDARD_REQUEST_LENGTH);
-    [self loadAndUpdateFeedData];
-}
 
 
 - (void) willRotateToInterfaceOrientation: (UIInterfaceOrientation) toInterfaceOrientation
@@ -392,6 +396,12 @@
 
 #endif
 
+-(void) loadAndUpdateOriginalFeedData
+{
+    [self resetDataRequestRange];
+    [self loadAndUpdateFeedData];
+    
+}
 
 - (void) loadAndUpdateFeedData
 {
@@ -412,7 +422,7 @@
                                                     if(totalNumber && ![totalNumber isKindOfClass:[NSNull class]])
                                                         self.dataItemsAvailable = [totalNumber integerValue];
                                                     else
-                                                        self.dataItemsAvailable = self.dataRequestRange.length;
+                                                        self.dataItemsAvailable = self.dataRequestRange.length; // heuristic 
                                                     
                                                     if (!registryResultOk)
                                                     {
@@ -421,15 +431,10 @@
                                                         return;
                                                     }
                                                     
-                                                    
                                                     [self removeEmptyGenreMessage];
                                                     
                                                     if(self.fetchedResultsController.fetchedObjects.count == 0)
-                                                    {
                                                         [self displayEmptyGenreMessage:NSLocalizedString(@"feed_screen_empty_message", nil) andLoader:NO];
-                                                    }  
-                                                    
-//                                                    DebugLog(@"new fetched count : %i", self.fetchedResultsController.fetchedObjects.count);
                                                     
                                                     self.footerView.showsLoading = NO;
                                                     

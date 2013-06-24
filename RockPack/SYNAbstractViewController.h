@@ -99,6 +99,8 @@ andSelectedIndex: (int) selectedIndex center:(CGPoint) center;
 - (BOOL) needsAddButton;
 - (BOOL) toleratesSearchBar;
 
+- (void) resetDataRequestRange;
+
 - (void) incrementRangeForNextRequest;
 
 -(void)headerTapped;
