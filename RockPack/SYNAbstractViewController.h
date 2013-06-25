@@ -71,6 +71,8 @@ typedef void (^SYNShareCompletionBlock)(void);
 - (void) videoOverlayDidDissapear;
 - (void) displayVideoViewerFromView: (UIButton *) videoViewButton;
 
+- (void) videoAddButtonTapped: (UIButton *) _addButton;
+
 - (NSIndexPath *) indexPathFromVideoInstanceButton: (UIButton *) button;
 
 - (void) reloadCollectionViews;

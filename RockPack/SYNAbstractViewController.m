@@ -249,38 +249,38 @@
 
 - (void) videoAddButtonTapped: (UIButton *) _addButton
 {
-    NSString* noteName;
+    if(!self.videoThumbnailCollectionView) // not all sub classes will have this initialized so check to avoid errors
+        return;
+    
+    if(_addButton.selected)
+        return;
+    
     
     UIView *v = _addButton.superview.superview;
     NSIndexPath *indexPath = [self.videoThumbnailCollectionView indexPathForItemAtPoint: v.center];
     VideoInstance *videoInstance = [self.fetchedResultsController objectAtIndexPath: indexPath];
     
-    if (!_addButton.selected || [SYNDeviceManager.sharedInstance isIPhone]) // There is only ever one video in the queue on iPhone. Always fire the add action.
+    
+    
+    if(videoInstance)
     {
-        noteName = kVideoQueueAdd;
-        
         [appDelegate.oAuthNetworkEngine recordActivityForUserId: appDelegate.currentUser.uniqueId
                                                          action: @"select"
                                                 videoInstanceId: videoInstance.uniqueId
                                               completionHandler: ^(id response) {
                                                   
-//                                                  DebugLog (@"Acivity recorded: Select");
                                                   
                                               } errorHandler: ^(id error) {
                                                   
-//                                                  DebugLog (@"Acivity not recorded: Select");
+                                                  DebugLog(@"Could not record videoAddButtonTapped: activity");
                                                   
                                               }];
-    }
-    else
-    {
-        noteName = kVideoQueueRemove;
         
+        [[NSNotificationCenter defaultCenter] postNotificationName: kVideoQueueAdd
+                                                            object: self
+                                                          userInfo: @{@"VideoInstance" : videoInstance }];
     }
     
-    [[NSNotificationCenter defaultCenter] postNotificationName: noteName
-                                                        object: self
-                                                      userInfo: @{@"VideoInstance" : videoInstance }];
     
     
     
@@ -288,7 +288,7 @@
     [self.videoThumbnailCollectionView reloadData];
     
     
-
+    _addButton.selected = !_addButton.selected; // switch to on/off
 }
 
 - (void) incrementRangeForNextRequest

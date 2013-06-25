@@ -1192,9 +1192,20 @@
     NSIndexPath *indexPath = [self.videoThumbnailCollectionView indexPathForItemAtPoint: v.center];
     VideoInstance *videoInstance = self.channel.videoInstances [indexPath.row];
     
-    // Defensive programming
-    if (videoInstance != nil)
+    if (videoInstance)
     {
+        [appDelegate.oAuthNetworkEngine recordActivityForUserId: appDelegate.currentUser.uniqueId
+                                                         action: @"select"
+                                                videoInstanceId: videoInstance.uniqueId
+                                              completionHandler: ^(id response) {
+                                                  
+                                                  
+                                              } errorHandler: ^(id error) {
+                                                  
+                                                  DebugLog(@"Could not record videoAddButtonTapped: activity");
+                                                  
+                                              }];
+        
         [[NSNotificationCenter defaultCenter] postNotificationName: noteName
                                                             object: self
                                                           userInfo: @{@"VideoInstance" : videoInstance}];
@@ -1752,7 +1763,7 @@
 }
 
 
-- (IBAction) addItToChannelPresssed: (id) sender
+- (void) addItToChannelPresssed: (id) sender
 {
     [[NSNotificationCenter defaultCenter] postNotificationName: kNoteAddToChannelRequest
                                                         object: self];
@@ -2254,6 +2265,10 @@
                                                                                    andFontSize:fontSize
                                                                                     pointingTo:self.subscribeButton.frame
                                                                                  withDirection:direction];
+            __weak SYNChannelDetailViewController* wself = self;
+            subscribePopover.action = ^{
+                [wself subscribeButtonTapped:self.subscribeButton]; // simulate press
+            };
             [appDelegate.onBoardingQueue addPopover:subscribePopover];
             
             [defaults setBool:YES forKey:kUserDefaultsSubscribe];
@@ -2938,14 +2953,18 @@
             
             //NSLog(@"%f %f", rectToPointTo.origin.x, rectToPointTo.origin.y);
         }
-        SYNOnBoardingPopoverView* subscribePopover = [SYNOnBoardingPopoverView withMessage:message
-                                                                                  withSize:size
-                                                                               andFontSize:fontSize
-                                                                                pointingTo:rectToPointTo
-                                                                             withDirection:directionToPointTo];
+        SYNOnBoardingPopoverView* addToChannelPopover = [SYNOnBoardingPopoverView withMessage:message
+                                                                                     withSize:size
+                                                                                  andFontSize:fontSize
+                                                                                   pointingTo:rectToPointTo
+                                                                                withDirection:directionToPointTo];
         
         
-        [onBoardingQueue addPopover:subscribePopover];
+        __weak SYNChannelDetailViewController* wself = self;
+        addToChannelPopover.action = ^{
+            [wself addItToChannelPresssed:nil];
+        };
+        [onBoardingQueue addPopover:addToChannelPopover];
         
         [defaults setBool:YES forKey:kUserDefaultsAddVideo];
         

@@ -599,14 +599,18 @@
             
             //NSLog(@"%f %f", rectToPointTo.origin.x, rectToPointTo.origin.y);
         }
-        SYNOnBoardingPopoverView* subscribePopover = [SYNOnBoardingPopoverView withMessage:message
+        SYNOnBoardingPopoverView* addToChannelPopover = [SYNOnBoardingPopoverView withMessage:message
                                                                                   withSize:size
                                                                                andFontSize:fontSize
                                                                                 pointingTo:rectToPointTo
                                                                              withDirection:directionToPointTo];
         
         
-        [appDelegate.onBoardingQueue addPopover:subscribePopover];
+        __weak SYNFeedRootViewController* wself = self;
+        addToChannelPopover.action = ^{
+            [wself videoAddButtonTapped:wself.selectedCell.addItButton];
+        };
+        [appDelegate.onBoardingQueue addPopover:addToChannelPopover];
         
         [defaults setBool:YES forKey:kUserDefaultsAddVideo];
         
