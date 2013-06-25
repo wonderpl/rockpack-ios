@@ -1218,9 +1218,9 @@ typedef void(^AnimationCompletionBlock)(BOOL finished);
         navigationController.view.backgroundColor = [UIColor clearColor];
         navigationController.navigationBarHidden = YES;
         
-        
+        __weak SYNMasterViewController* weakSelf = self;
         self.modalAccountContainer = [[SYNAccountSettingsModalContainer alloc] initWithNavigationController:navigationController andCompletionBlock:^{
-            [self modalAccountContainerDismiss];
+            [weakSelf modalAccountContainerDismiss];
         }];
         
         CGRect modalFrame = self.modalAccountContainer.view.frame;
