@@ -521,8 +521,9 @@ didFinishLaunchingWithOptions: (NSDictionary *) launchOptions
         DebugLog(@"Error adding persistent store to coordinator %@\n%@", [error localizedDescription], [error userInfo]);
     }
     
-    _mainRegistry = [SYNMainRegistry registryWithImportContext:self.privateManagedObjectContext];
-    _searchRegistry = [SYNSearchRegistry registryWithImportContext:self.searchManagedObjectContext];
+    
+    _mainRegistry = [SYNMainRegistry registryWithParentContext:self.mainManagedObjectContext];
+    _searchRegistry = [SYNSearchRegistry registryWithParentContext:self.searchManagedObjectContext];
     
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(refreshMainContext:) name:NSManagedObjectContextDidSaveNotification object:self.privateManagedObjectContext];
 }
@@ -598,7 +599,13 @@ didFinishLaunchingWithOptions: (NSDictionary *) launchOptions
 
 -(void)refreshMainContext:(NSNotification*)note
 {
-    [self.mainManagedObjectContext mergeChangesFromContextDidSaveNotification:note];
+    NSManagedObjectContext* context = [note object];
+    if ( context.parentContext == self.mainManagedObjectContext )
+    [self.mainManagedObjectContext performBlock:^{
+        [self saveContext:NO];
+    }];
+
+    
 }
 
 

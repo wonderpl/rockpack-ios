@@ -20,8 +20,8 @@ typedef BOOL(^SYNRegistryActionBlock)(void);
 }
 
 
-- (id) initWithManagedObjectContext: (NSManagedObjectContext*) moc;
-+ (id) registryWithImportContext:(NSManagedObjectContext*)moc;
+- (id) initWithParentManagedObjectContext: (NSManagedObjectContext*) moc;
++ (id) registryWithParentContext:(NSManagedObjectContext*)moc;
 
 - (BOOL) saveImportContext;
 - (BOOL) clearImportContextFromEntityName: (NSString*) entityName;

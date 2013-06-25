@@ -11,9 +11,9 @@
 
 @implementation SYNRegistry
 
-+ (id) registryWithImportContext:(NSManagedObjectContext*)moc
++ (id) registryWithParentContext:(NSManagedObjectContext*)moc
 {
-    return [[self alloc] initWithManagedObjectContext:moc];
+    return [[self alloc] initWithParentManagedObjectContext:moc];
 }
 
 
@@ -28,17 +28,30 @@
 }
 
 
-- (id) initWithManagedObjectContext: (NSManagedObjectContext*) moc
+- (id) initWithParentManagedObjectContext: (NSManagedObjectContext*) moc
 {
     if (self = [self init])
     {
         if (moc)
         {
-            importManagedObjectContext = moc;
+            NSManagedObjectContext* workerContext = [[NSManagedObjectContext alloc] initWithConcurrencyType: NSPrivateQueueConcurrencyType];
+            workerContext.parentContext = moc;
+            importManagedObjectContext = workerContext;
+            [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(updateContext:) name:NSManagedObjectContextDidSaveNotification object:moc];
         }
     }
     
     return self;
+}
+
+-(void)updateContext:(NSNotification*)note
+{
+    if([note object] == importManagedObjectContext.parentContext )
+    {
+        [importManagedObjectContext performBlock:^{
+            [importManagedObjectContext mergeChangesFromContextDidSaveNotification:note];
+        }];
+    }
 }
 
 
@@ -104,7 +117,7 @@
         return NO;
     }
     
-    [appDelegate saveSearchContext];
+    [self saveImportContext];
     
     return YES;  
 }
