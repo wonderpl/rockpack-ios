@@ -88,14 +88,16 @@
     
     [networkOperation addJSONCompletionHandler: ^(NSDictionary *dictionary)
      {
-         BOOL registryResultOk = [self.registry registerCoverArtFromDictionary: dictionary
-                                                                 forUserUpload: NO];
          
-         if (!registryResultOk)
-             return;
-         
-         completionBlock(dictionary);
-         
+         [self.registry performInBackground:^BOOL{
+             return  [self.registry registerCoverArtFromDictionary: dictionary
+                                                     forUserUpload: NO];
+         } completionBlock:^(BOOL registryResultOk) {
+             if (!registryResultOk)
+                 return;
+             
+             completionBlock(dictionary);
+         }];         
      } errorHandler: ^(NSError* error) {
          if (error.code >=500 && error.code < 600)
          {
@@ -117,13 +119,15 @@
     
     [networkOperation addJSONCompletionHandler: ^(NSDictionary *dictionary)
     {
-        BOOL registryResultOk = [self.registry registerCoverArtFromDictionary: dictionary
-                                                                forUserUpload: NO];
-        
-        if (!registryResultOk)
-            return;
-        
-        completionBlock(dictionary);
+        [self.registry performInBackground:^BOOL{
+            return  [self.registry registerCoverArtFromDictionary: dictionary
+                                                     forUserUpload: NO];
+        } completionBlock:^(BOOL registryResultOk) {
+            if (!registryResultOk)
+                return;
+            
+            completionBlock(dictionary);
+        }];
         
     } errorHandler: ^(NSError* error) {
         if (error.code >=500 && error.code < 600)
@@ -274,12 +278,17 @@
         if (totalNumber && [totalNumber isKindOfClass: [NSNumber class]])
             itemsCount = totalNumber.intValue;
         
-        BOOL registryResultOk = [self.searchRegistry registerVideosFromDictionary:dictionary];
-        if (!registryResultOk)
-            return;
+        [self.registry performInBackground:^BOOL{
+            return  [self.searchRegistry registerVideosFromDictionary:dictionary];
+        } completionBlock:^(BOOL registryResultOk) {
+            if (!registryResultOk)
+                return;
+            
+            completeBlock(itemsCount);
+
+        }];
         
-        completeBlock(itemsCount);
-        
+                
     } errorHandler:^(NSError* error) {
         DebugLog(@"Update Videos Screens Request Failed");
         if (error.code >=500 && error.code < 600)
@@ -333,12 +342,14 @@
             itemsCount = totalNumber.intValue;
         }
         
-        BOOL registryResultOk = [self.searchRegistry registerChannelsFromDictionary: dictionary];
-        
-        if (!registryResultOk)
-            return;
-        
-        completeBlock(itemsCount);
+        [self.searchRegistry performInBackground:^BOOL{
+            return [self.searchRegistry registerChannelsFromDictionary: dictionary];
+        } completionBlock:^(BOOL registryResultOk) {
+            if (!registryResultOk)
+                return;
+            
+            completeBlock(itemsCount);  
+        }];
         
         
     } errorHandler:^(NSError* error) {

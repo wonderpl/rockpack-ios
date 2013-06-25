@@ -11,9 +11,9 @@
 
 @implementation SYNRegistry
 
-+ (id) registry
++ (id) registryWithImportContext:(NSManagedObjectContext*)moc
 {
-    return [[self alloc] init];
+    return [[self alloc] initWithManagedObjectContext:moc];
 }
 
 
@@ -22,8 +22,6 @@
     if (self = [super init])
     {
         appDelegate = UIApplication.sharedApplication.delegate;
-        importManagedObjectContext = [[NSManagedObjectContext alloc] initWithConcurrencyType: NSConfinementConcurrencyType];
-        importManagedObjectContext.parentContext = appDelegate.mainManagedObjectContext;
     }
     
     return self;
@@ -36,7 +34,7 @@
     {
         if (moc)
         {
-            importManagedObjectContext.parentContext = moc;
+            importManagedObjectContext = moc;
         }
     }
     
@@ -80,6 +78,8 @@
                                                          inManagedObjectContext: importManagedObjectContext];
     [fetchRequest setEntity: entityDescription];
     
+    fetchRequest.includesPropertyValues = NO;
+    
     NSError *error = nil;
     NSArray *result = [importManagedObjectContext executeFetchRequest: fetchRequest
                                                                  error: &error];
@@ -107,6 +107,24 @@
     [appDelegate saveSearchContext];
     
     return YES;  
+}
+
+-(void)performInBackground:(SYNRegistryActionBlock)actionBlock completionBlock:(SYNRegistryCompletionBlock)completionBlock
+{
+    [importManagedObjectContext performBlock:^{
+       BOOL result = actionBlock();
+        [self completeTransaction:result completionBlock:completionBlock];
+    }];
+}
+
+-(void)completeTransaction:(BOOL)success completionBlock:(SYNRegistryCompletionBlock)block
+{
+    if(block)
+    {
+        dispatch_async(dispatch_get_main_queue(), ^{
+            block(success);
+        });
+    }
 }
 
 @end

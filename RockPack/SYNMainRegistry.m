@@ -41,7 +41,7 @@
     // dictionary also contains the set of user channels
     
     User* newUser = [User instanceFromDictionary: dictionary
-                       usingManagedObjectContext: appDelegate.mainManagedObjectContext
+                       usingManagedObjectContext: importManagedObjectContext
                              ignoringObjectTypes: kIgnoreNothing];
     
     
@@ -98,7 +98,7 @@
     // Query for existing objects
     NSFetchRequest *categoriesFetchRequest = [[NSFetchRequest alloc] init];
     [categoriesFetchRequest setEntity: [NSEntityDescription entityForName: @"Genre"
-                                                   inManagedObjectContext: appDelegate.mainManagedObjectContext]];
+                                                   inManagedObjectContext: importManagedObjectContext]];
     
     
     // must not fetch SubGenres
@@ -106,7 +106,7 @@
     
     
     NSError* error;
-    NSArray *existingCategories = [appDelegate.mainManagedObjectContext executeFetchRequest: categoriesFetchRequest
+    NSArray *existingCategories = [importManagedObjectContext executeFetchRequest: categoriesFetchRequest
                                                                                           error: &error];
     
     NSMutableDictionary* existingCategoriesByIndex = [NSMutableDictionary dictionaryWithCapacity:existingCategories.count];
@@ -135,11 +135,11 @@
         if(!genre)
         {
             genre = [Genre instanceFromDictionary: categoryDictionary
-                        usingManagedObjectContext: appDelegate.mainManagedObjectContext];
+                        usingManagedObjectContext: importManagedObjectContext];
         }
         else
         {
-            [genre setAttributesFromDictionary:categoryDictionary withId:uniqueId usingManagedObjectContext:appDelegate.mainManagedObjectContext];
+            [genre setAttributesFromDictionary:categoryDictionary withId:uniqueId usingManagedObjectContext:importManagedObjectContext];
         }
         
         genre.markedForDeletionValue = NO;
@@ -155,7 +155,7 @@
    
     
     [self removeUnusedManagedObjects: existingCategories
-              inManagedObjectContext: appDelegate.mainManagedObjectContext];
+              inManagedObjectContext: importManagedObjectContext];
     
     
     

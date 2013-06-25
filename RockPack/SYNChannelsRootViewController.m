@@ -290,30 +290,35 @@
                                                       self.dataItemsAvailable = [totalNumber integerValue];
                                                       
                                                       
-                                                      BOOL registryResultOk = [appDelegate.mainRegistry registerChannelsFromDictionary: response
-                                                                                                                              forGenre: genre
-                                                                                                                           byAppending: append];
-                                                      self.footerView.showsLoading = NO;
-                                                      
-                                                      if (!registryResultOk)
-                                                      {
-                                                          DebugLog(@"Registration of Channel Failed for: %@", currentCategoryId);
-                                                          return;
-                                                      }
-                                                      
-                                                      [self displayChannelsForGenre:genre];
-                                                      
-                                                      if (self.emptyGenreMessageView)
-                                                      {
-                                                          [self.emptyGenreMessageView removeFromSuperview];
-                                                          self.emptyGenreMessageView = nil;
-                                                      }
-                                                      
-                                                      if (self.channels.count == 0)
-                                                      {
-                                                          [self displayEmptyGenreMessage:@"NO CHANNELS FOUND"];
-                                                      }
-                                                      
+                                                      [appDelegate.mainRegistry performInBackground:^BOOL{
+                                                          return [appDelegate.mainRegistry registerChannelsFromDictionary: response
+                                                                                                                 forGenre: genre
+                                                                                                              byAppending: append];
+                                                      } completionBlock:^(BOOL registryResultOk) {
+                                                          self.footerView.showsLoading = NO;
+                                                          
+                                                          if (!registryResultOk)
+                                                          {
+                                                              DebugLog(@"Registration of Channel Failed for: %@", currentCategoryId);
+                                                              return;
+                                                          }
+                                                          
+                                                          [self displayChannelsForGenre:genre];
+                                                          
+                                                          if (self.emptyGenreMessageView)
+                                                          {
+                                                              [self.emptyGenreMessageView removeFromSuperview];
+                                                              self.emptyGenreMessageView = nil;
+                                                          }
+                                                          
+                                                          if (self.channels.count == 0)
+                                                          {
+                                                              [self displayEmptyGenreMessage:@"NO CHANNELS FOUND"];
+                                                          }
+
+                                                      }];
+                                                                                     
+                                                                                     
                                                       
                                                       
                                                   } onError: ^(NSDictionary* errorInfo) {
@@ -340,6 +345,7 @@
     NSFetchRequest *request = [[NSFetchRequest alloc] init];
     [request setEntity:[NSEntityDescription entityForName: @"Channel"
                                    inManagedObjectContext: appDelegate.mainManagedObjectContext]];
+    request.fetchBatchSize = 20;
     
     NSPredicate* genrePredicate;
     

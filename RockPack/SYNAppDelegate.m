@@ -521,8 +521,8 @@ didFinishLaunchingWithOptions: (NSDictionary *) launchOptions
         DebugLog(@"Error adding persistent store to coordinator %@\n%@", [error localizedDescription], [error userInfo]);
     }
     
-    _mainRegistry = [SYNMainRegistry registry];
-    _searchRegistry = [SYNSearchRegistry registry];
+    _mainRegistry = [SYNMainRegistry registryWithImportContext:self.privateManagedObjectContext];
+    _searchRegistry = [SYNSearchRegistry registryWithImportContext:self.searchManagedObjectContext];
 }
 
 

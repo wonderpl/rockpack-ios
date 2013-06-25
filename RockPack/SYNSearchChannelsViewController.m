@@ -108,7 +108,7 @@
     NSFetchRequest *request = [[NSFetchRequest alloc] init];
     [request setEntity:[NSEntityDescription entityForName: @"Channel"
                                    inManagedObjectContext: appDelegate.searchManagedObjectContext]];
-    
+    request.fetchBatchSize = 20;
     
     NSSortDescriptor *positionDescriptor = [[NSSortDescriptor alloc] initWithKey: @"position"
                                                                        ascending: YES];
