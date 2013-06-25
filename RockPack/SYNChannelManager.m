@@ -396,7 +396,7 @@
                                   ignoringObjectTypes: kIgnoreVideoInstanceObjects | kIgnoreChannelOwnerObject];
                                                             
             [appDelegate.networkEngine channelOwnerSubscriptionsForOwner:channelOwner
-                                                                forRange:NSMakeRange(0, 48)
+                                                                forRange:NSMakeRange(0, kAPIInitialBatchSize)
                                                        completionHandler:^(id dictionary) {
                                                                                                            
             [channelOwner setSubscriptionsDictionary:dictionary];
@@ -414,12 +414,7 @@
             } errorHandler:errorBlock];
                                                             
         } onError:errorBlock];
-    
-    }
-    
-    
-    
-    
+    } 
 }
 
 

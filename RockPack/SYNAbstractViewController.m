@@ -275,35 +275,36 @@
     else
     {
         noteName = kVideoQueueRemove;
-        
     }
     
     [[NSNotificationCenter defaultCenter] postNotificationName: noteName
                                                         object: self
                                                       userInfo: @{@"VideoInstance" : videoInstance }];
-    
-    
-    
-    
-    [self.videoThumbnailCollectionView reloadData];
-    
-    
 
+    [self.videoThumbnailCollectionView reloadData];
 }
+
 
 - (void) incrementRangeForNextRequest
 {
+    NSLog (@"Before: Loc %d, Len %d, Avail %d", self.dataRequestRange.location, self.dataRequestRange.length, self.dataItemsAvailable);
     NSInteger nextStart = self.dataRequestRange.location + self.dataRequestRange.length; // one is subtracted when the call happens for 0 indexing
     
     if (nextStart >= self.dataItemsAvailable)
+    {
+        NSLog (@"Bailed: Loc %d, Len %d, Avail %d", self.dataRequestRange.location, self.dataRequestRange.length, self.dataItemsAvailable);
         return;
+    }
+
     
     self.loadingMoreContent = YES;
     
     NSInteger nextSize = (nextStart + STANDARD_REQUEST_LENGTH) >= self.dataItemsAvailable ? (self.dataItemsAvailable - nextStart) : STANDARD_REQUEST_LENGTH;
     
     self.dataRequestRange = NSMakeRange(nextStart, nextSize);
+    NSLog (@"After: Loc %d, Len %d, Avail %d", self.dataRequestRange.location, self.dataRequestRange.length, self.dataItemsAvailable);
 }
+
 
 - (NSIndexPath *) indexPathFromVideoInstanceButton: (UIButton *) button
 {

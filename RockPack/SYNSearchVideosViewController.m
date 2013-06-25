@@ -158,7 +158,7 @@
     if (!appDelegate)
         appDelegate = (SYNAppDelegate*)[[UIApplication sharedApplication] delegate];
     
-    self.dataRequestRange = NSMakeRange(0, 48);
+    self.dataRequestRange = NSMakeRange(0, kAPIInitialBatchSize);
     
     
 
@@ -363,7 +363,7 @@
 {
     if(dataRequestRange.length == 0)
     {
-        dataRequestRange = NSMakeRange(0, 48);
+        dataRequestRange = NSMakeRange(0, kAPIInitialBatchSize);
     }
         
     return dataRequestRange;

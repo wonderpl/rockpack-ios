@@ -190,7 +190,8 @@
     
     [self displayEmptyGenreMessage:NSLocalizedString(@"feed_screen_loading_message", nil) andLoader:YES];
     
-    [self loadAndUpdateFeedData];
+    // TODO: Remove this, as I believe that this is no longer needed
+//    [self loadAndUpdateFeedData];
 }
 
 -(void)videoQueueCleared
@@ -405,11 +406,11 @@
 
 - (void) loadAndUpdateFeedData
 {
+    NSLog (@"Loc %d, Len %d", self.dataRequestRange.location, self.dataRequestRange.length);
     
     if(!appDelegate.currentOAuth2Credentials.userId)
         return;
-    
-    
+
     [self.refreshButton startRefreshCycle];
     
     [appDelegate.oAuthNetworkEngine subscriptionsUpdatesForUserId:  appDelegate.currentOAuth2Credentials.userId

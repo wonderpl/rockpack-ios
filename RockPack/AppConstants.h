@@ -13,6 +13,8 @@
 
 #define ENABLE_USER_RATINGS__
 
+#define kAPIInitialBatchSize 48
+
 //
 // API
 //

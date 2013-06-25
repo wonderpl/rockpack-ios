@@ -40,31 +40,24 @@ typedef void (^SYNShareCompletionBlock)(void);
 }
 
 
-
 @property (nonatomic) BOOL isAnimating;
-@property (nonatomic, assign, getter = isLoadingMoreContent) BOOL loadingMoreContent;
 @property (nonatomic) BOOL isLocked;
+@property (nonatomic) NSInteger dataItemsAvailable;
+@property (nonatomic) NSRange dataRequestRange;
 @property (nonatomic, assign) BOOL inDrag;
 @property (nonatomic, assign) CGPoint initialDragCenter;
+@property (nonatomic, assign, getter = isLoadingMoreContent) BOOL loadingMoreContent;
 @property (nonatomic, readonly) NSString* viewId;
 @property (nonatomic, strong) IBOutlet UICollectionView *videoThumbnailCollectionView;
 @property (nonatomic, strong) NSFetchedResultsController* fetchedResultsController;
 @property (nonatomic, strong) NSIndexPath *draggedIndexPath;
+@property (nonatomic, strong) SYNAddButtonControl* addButton;
+@property (nonatomic, strong) SYNChannelFooterMoreView* footerView;
 @property (nonatomic, strong) SYNTabViewController* tabViewController;
 @property (nonatomic, strong) UIImageView *draggedView;
-@property (readonly) NSManagedObjectContext *mainManagedObjectContext;
 @property (nonatomic, weak) MKNetworkOperation* runningNetworkOperation;
+@property (readonly) NSManagedObjectContext *mainManagedObjectContext;
 @property (readonly, getter = isVideoQueueVisible) BOOL videoQueueVisible;
-
-// date related ivars
-
-@property (nonatomic) NSRange dataRequestRange;
-@property (nonatomic) NSInteger dataItemsAvailable;
-
-@property (nonatomic, strong) SYNAddButtonControl* addButton;
-
-
-@property (nonatomic, strong) SYNChannelFooterMoreView* footerView;
 
 - (void) handleNewTabSelectionWithId: (NSString*) selectionId;
 - (void) handleNewTabSelectionWithGenre: (Genre*) name;
@@ -87,7 +80,8 @@ typedef void (^SYNShareCompletionBlock)(void);
 - (BOOL) collectionView: (UICollectionView *) cv didSelectItemAtIndexPathAbstract: (NSIndexPath *) indexPath;
 
 - (void) displayVideoViewerWithVideoInstanceArray: (NSArray *) videoInstanceArray
-andSelectedIndex: (int) selectedIndex center:(CGPoint) center;
+                                 andSelectedIndex: (int) selectedIndex
+                                           center: (CGPoint) center;
 
 
 - (void) viewProfileDetails: (ChannelOwner *) channelOwner;
@@ -104,7 +98,7 @@ andSelectedIndex: (int) selectedIndex center:(CGPoint) center;
 
 - (void) incrementRangeForNextRequest;
 
--(void)headerTapped;
+- (void) headerTapped;
 
 // Share
 - (void) shareVideoInstance: (VideoInstance *) videoInstance

@@ -506,21 +506,39 @@
     
     if (kind == UICollectionElementKindSectionFooter)
     {
-        if (self.channels.count == 0 || (self.dataRequestRange.location + self.dataRequestRange.length) >= dataItemsAvailable)
+        if (self.channels.count == 0)
         {
             return supplementaryView;
         }
         
-        self.footerView = [self.channelThumbnailCollectionView dequeueReusableSupplementaryViewOfKind: kind
-                                                                                    withReuseIdentifier: @"SYNChannelFooterMoreView"
-                                                                                           forIndexPath: indexPath];
+        // Only display a footer if we have not loaded all channels
         
+        self.footerView = [self.channelThumbnailCollectionView dequeueReusableSupplementaryViewOfKind: kind
+                                                                                      withReuseIdentifier: @"SYNChannelFooterMoreView"
+                                                                                             forIndexPath: indexPath];
+
         //[self loadMoreChannels:self.footerView.loadMoreButton];
         
         supplementaryView = self.footerView;
     }
     
     return supplementaryView;
+}
+
+- (CGSize) collectionView: (UICollectionView *) collectionView
+                   layout: (UICollectionViewLayout*) collectionViewLayout
+                   referenceSizeForFooterInSection: (NSInteger) section
+{
+    CGFloat headerWidth = [SYNDeviceManager.sharedInstance isIPhone] ? 320.0f : 1024.0f;
+    
+    if (self.dataRequestRange.location < self.dataItemsAvailable)
+    {
+        return CGSizeMake(headerWidth, 60.0f);
+    }
+    else
+    {
+        return CGSizeZero;
+    }
 }
 
 
