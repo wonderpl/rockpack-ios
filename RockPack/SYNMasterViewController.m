@@ -229,6 +229,12 @@ typedef void(^AnimationCompletionBlock)(BOOL finished);
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(changeControlButtonsForControllerRequest:) name:kMainControlsChangeEnter object:nil];
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(changeControlButtonsForControllerRequest:) name:kMainControlsChangeLeave object:nil];
     
+    
+    // 
+    
+    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(profileRequested:) name:kProfileRequested object:nil];
+    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(channelDetailsRequested:) name:kChannelDetailsRequested object:nil];
+    
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(allNavControlsRequested:) name:kNoteAllNavControlsShow object:nil];
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(allNavControlsRequested:) name:kNoteAllNavControlsHide object:nil];
     
@@ -268,9 +274,36 @@ typedef void(^AnimationCompletionBlock)(BOOL finished);
     
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(popCurrentViewController:) name:kNotePopCurrentViewController object:nil];
     
+    
+    
     [self.navigationContainerView addSubview:self.sideNavigationViewController.view]; 
 }
 
+// this is triggered when a component requests a view at the base of the stack
+- (void) profileRequested: (NSNotification*) notification
+{
+    ChannelOwner* channelOwner = (ChannelOwner*)[[notification userInfo] objectForKey: kChannelOwner];
+    if (!channelOwner)
+        return;
+    
+    [self.showingBaseViewController viewProfileDetails:channelOwner];
+}
+
+
+- (void) channelDetailsRequested: (NSNotification*) notification
+{
+    
+    
+    Channel* channel = (Channel*)[[notification userInfo] objectForKey: kChannel];
+    if (!channel)
+        return;
+    
+    SYNChannelDetailViewController *channelVC = [[SYNChannelDetailViewController alloc] initWithChannel: channel
+                                                                                              usingMode: kChannelDetailsModeDisplay];
+    channelVC.autoplayVideoId = [[notification userInfo] objectForKey:kAutoPlayVideoId];
+    
+    [self.showingBaseViewController animatedPushViewController: channelVC];
+}
 
 -(void)headerSwiped:(UISwipeGestureRecognizer*)recogniser
 {
@@ -330,21 +363,6 @@ typedef void(^AnimationCompletionBlock)(BOOL finished);
 
 -(void)pageChanged:(NSInteger)pageNumber
 {
-//    int totalDots = self.dotsView.subviews.count;
-//    UIImageView* dotImageView;
-//    for (int i = 0; i < totalDots; i++)
-//    {
-//        dotImageView = (UIImageView*)self.dotsView.subviews[i];
-//        if (i == pageNumber) {
-//            dotImageView.image = [UIImage imageNamed:@"NavigationDotCurrent"];
-//        } else {
-//            dotImageView.image = [UIImage imageNamed:@"NavigationDot"];
-//        }
-//        
-//        
-//        
-//    }
-    
     
     self.pageTitleLabel.text = [self.containerViewController.showingBaseViewController.title uppercaseString];
     

@@ -226,6 +226,9 @@ didFinishLaunchingWithOptions: (NSDictionary *) launchOptions
 -(void)refreshExpiredToken
 {
     //Add imageview to the window as placeholder while we wait for the token refresh call.
+    
+    [self.tokenExpiryTimer invalidate];
+    
     UIImageView* startImageView = nil;
     CGPoint startImageCenter = self.window.center;
     if([[SYNDeviceManager sharedInstance] isIPad])
