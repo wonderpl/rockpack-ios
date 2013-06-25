@@ -523,6 +523,8 @@ didFinishLaunchingWithOptions: (NSDictionary *) launchOptions
     
     _mainRegistry = [SYNMainRegistry registryWithImportContext:self.privateManagedObjectContext];
     _searchRegistry = [SYNSearchRegistry registryWithImportContext:self.searchManagedObjectContext];
+    
+    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(refreshMainContext:) name:NSManagedObjectContextDidSaveNotification object:self.privateManagedObjectContext];
 }
 
 
@@ -594,6 +596,11 @@ didFinishLaunchingWithOptions: (NSDictionary *) launchOptions
     }
 }
 
+-(void)refreshMainContext:(NSNotification*)note
+{
+    [self.mainManagedObjectContext mergeChangesFromContextDidSaveNotification:note];
+}
+
 
 #pragma mark - Network engine suport
 
@@ -627,6 +634,7 @@ didFinishLaunchingWithOptions: (NSDictionary *) launchOptions
     
     [fetchRequest setEntity:[NSEntityDescription entityForName: @"VideoInstance"
                                         inManagedObjectContext: self.mainManagedObjectContext]];
+    fetchRequest.includesPropertyValues = NO;
     
     
     itemsToDelete = [self.mainManagedObjectContext executeFetchRequest: fetchRequest
@@ -641,7 +649,7 @@ didFinishLaunchingWithOptions: (NSDictionary *) launchOptions
     
     [fetchRequest setEntity:[NSEntityDescription entityForName: @"CoverArt"
                                         inManagedObjectContext: self.mainManagedObjectContext]];
-    
+    fetchRequest.includesPropertyValues = NO;
     
     itemsToDelete = [self.mainManagedObjectContext executeFetchRequest: fetchRequest
                                                                  error: &error];
@@ -662,6 +670,7 @@ didFinishLaunchingWithOptions: (NSDictionary *) launchOptions
     
     [fetchRequest setEntity:[NSEntityDescription entityForName: @"Channel"
                                         inManagedObjectContext: self.mainManagedObjectContext]];
+    fetchRequest.includesPropertyValues = NO;
     
     itemsToDelete = [self.mainManagedObjectContext executeFetchRequest: fetchRequest
                                                                  error: &error];
@@ -679,6 +688,7 @@ didFinishLaunchingWithOptions: (NSDictionary *) launchOptions
     
     [fetchRequest setEntity:[NSEntityDescription entityForName: @"Genre"
                                         inManagedObjectContext: self.mainManagedObjectContext]];
+    fetchRequest.includesPropertyValues = NO;
     
     fetchRequest.includesSubentities = YES; // to include SubGenre objecst
     

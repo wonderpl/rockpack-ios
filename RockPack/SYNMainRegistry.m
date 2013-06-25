@@ -57,9 +57,10 @@
     
     newUser.viewId = kProfileViewId;
     
-    [appDelegate saveContext: TRUE];
+    //[appDelegate saveContext: TRUE];
     
-    return YES;
+    
+    return [self saveImportContext];
 }
 
 
@@ -71,9 +72,12 @@
     
     [appDelegate.currentUser setSubscriptionsDictionary:dictionary];
     
-    [appDelegate saveContext:YES];
+    NSError* error = nil;
+    [importManagedObjectContext save:&error];
     
-    return YES;
+    //[appDelegate saveContext:YES];
+    
+    return [self saveImportContext];
     
 }
 
@@ -159,9 +163,9 @@
     
     
     
-    [appDelegate saveContext: TRUE];
+    //[appDelegate saveContext: TRUE];
     
-    return YES;
+    return [self saveImportContext];
 }
 
 
@@ -193,9 +197,9 @@
     if (!saveResult)
         return NO;
     
-    [appDelegate saveContext: TRUE];
+    //[appDelegate saveContext: TRUE];
     
-    return YES;
+    return [self saveImportContext];
 }
 
 #pragma mark - VideoInstances
@@ -311,10 +315,13 @@
     
     
     
-    if(![self saveImportContext])
-        return NO;
+    if([importManagedObjectContext hasChanges])
+    {
+        if(![self saveImportContext])
+            return NO;
+    }
     
-    [appDelegate saveContext: TRUE];
+    //[appDelegate saveContext: TRUE];
     
     return YES;
 }
@@ -474,7 +481,7 @@
     if(!saveResult)
         return NO;
     
-    [appDelegate saveContext: TRUE];
+    //[appDelegate saveContext: TRUE];
     
     
     

@@ -57,7 +57,7 @@
     if(!saveResult)
         return NO;
     
-    [appDelegate saveSearchContext];
+    //[appDelegate saveSearchContext];
     
     return YES;
 }
@@ -99,7 +99,7 @@
     if(!saveResult)
         return NO;
     
-    [appDelegate saveSearchContext];
+    //[appDelegate saveSearchContext];
     
     
     return YES;
