@@ -701,6 +701,7 @@ typedef void(^AnimationCompletionBlock)(BOOL finished);
                      } completion:^(BOOL finished) {
                          self.darkOverlayView.hidden = YES;
                      }];
+    
     CGRect sboxFrame = self.searchBoxController.view.frame;
     
     // place according to the position of the back button //
