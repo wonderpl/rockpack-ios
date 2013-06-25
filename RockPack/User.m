@@ -191,7 +191,14 @@
 
 -(NSString*) fullName
 {
-    return [NSString stringWithFormat:@"%@ %@", self.firstName, self.lastName];
+    NSMutableString* fullNameString = [[NSMutableString alloc] initWithCapacity:(self.firstName.length + 1 + self.lastName.length)];
+    
+    if(![self.firstName isEqualToString:@""])
+       [fullNameString appendString:self.firstName];
+    if(![self.lastName isEqualToString:@""])
+        [fullNameString appendFormat:@" %@", self.lastName];
+    
+    return [NSString stringWithString:(NSString*)fullNameString];
 }
 
 - (NSString *) description
