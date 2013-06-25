@@ -34,18 +34,15 @@
         self.messageType = data[@"message_type"];
         
         NSString* dateString = data[@"date_created"];
-        if(dateString)
+        
+        if (dateString)
         {
-            
-            
             ISO8601DateFormatter* formatter = [[ISO8601DateFormatter alloc] init];
             
             NSDate* date = [formatter dateFromString:dateString];
 
             if(date)
             {
-                self.dateCreated = date;
-                
                 // find difference from today
                 
                 NSTimeZone *timeZone = [NSTimeZone defaultTimeZone];
@@ -56,10 +53,10 @@
                 NSCalendar *calendar = [[NSCalendar alloc] initWithCalendarIdentifier:NSGregorianCalendar];
                 NSUInteger componentflags =
                 NSYearCalendarUnit | NSMonthCalendarUnit | NSDayCalendarUnit | NSMinuteCalendarUnit | NSHourCalendarUnit;
-                NSDateComponents *components = [calendar components:componentflags
-                                                           fromDate:self.dateCreated
-                                                             toDate:[NSDate date]
-                                                            options:0];
+                NSDateComponents *components = [calendar components: componentflags
+                                                           fromDate: date
+                                                             toDate: [NSDate date]
+                                                            options: 0];
                 
                 NSMutableString* dateDifferenceMutableString = [[NSMutableString alloc] init];
                 

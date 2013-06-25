@@ -99,6 +99,9 @@
     NSString* n_lastName = dictionary[@"last_name"];
     self.lastName = n_lastName ? n_lastName : self.lastName;
     
+    NSNumber* n_display_fullName = dictionary[@"display_fullname"];
+    self.fullNameIsPublicValue = n_display_fullName ? [n_display_fullName boolValue] : NO;
+    
     
     NSDictionary* activity_url_dict = dictionary[@"activity"];
     if(activity_url_dict)

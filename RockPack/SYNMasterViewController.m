@@ -226,8 +226,8 @@ typedef void(^AnimationCompletionBlock)(BOOL finished);
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(backButtonRequested:) name:kNoteBackButtonShow object:nil];
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(backButtonRequested:) name:kNoteBackButtonHide object:nil];
     
-    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(changeControlButtonsToMode:) name:kMainControlsChangeEnter object:nil];
-    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(changeControlButtonsToMode:) name:kMainControlsChangeLeave object:nil];
+    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(changeControlButtonsForControllerRequest:) name:kMainControlsChangeEnter object:nil];
+    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(changeControlButtonsForControllerRequest:) name:kMainControlsChangeLeave object:nil];
     
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(allNavControlsRequested:) name:kNoteAllNavControlsShow object:nil];
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(allNavControlsRequested:) name:kNoteAllNavControlsHide object:nil];
@@ -480,7 +480,7 @@ typedef void(^AnimationCompletionBlock)(BOOL finished);
     
 }
 
--(void)resumeVideoIfShowing
+- (void) resumeVideoIfShowing
 {
     //Special case! If we have a videoViewerViewContoroller here it means we are returning from the add to channel selector.
     // try to resume playback.
@@ -1144,7 +1144,6 @@ typedef void(^AnimationCompletionBlock)(BOOL finished);
             }
             self.overlayNavigationController = nil; // animate the overlay out using the setter method
 
-            NSLog(@"self.showingViewController = %@", self.showingViewController);
             [self.showingViewController viewDidAppear:YES];
         }
         
@@ -1219,9 +1218,9 @@ typedef void(^AnimationCompletionBlock)(BOOL finished);
         navigationController.view.backgroundColor = [UIColor clearColor];
         navigationController.navigationBarHidden = YES;
         
-        
+        __weak SYNMasterViewController* weakSelf = self;
         self.modalAccountContainer = [[SYNAccountSettingsModalContainer alloc] initWithNavigationController:navigationController andCompletionBlock:^{
-            [self modalAccountContainerDismiss];
+            [weakSelf modalAccountContainerDismiss];
         }];
         
         CGRect modalFrame = self.modalAccountContainer.view.frame;
@@ -1533,13 +1532,27 @@ typedef void(^AnimationCompletionBlock)(BOOL finished);
     return (BOOL)self.searchBoxController.view.superview;
 }
 
--(void)changeControlButtonsToMode:(NSNotification*)notification
+-(void)changeControlButtonsForControllerRequest:(NSNotification*)notification
 {
     SYNAbstractViewController* object = [notification object];
     if(!object)
         return;
     
-    if([object.viewId isEqualToString:kChannelDetailsViewId] && [[notification name] isEqualToString:kMainControlsChangeEnter])
+    
+    if([object.viewId isEqualToString:kChannelDetailsViewId] && [[notification name] isEqualToString:kMainControlsChangeEnter]) // white buttons
+    {
+        
+        [self changeControlButtonsTo:NavigationButtonsAppearenceWhite];
+    }
+    else // black buttons
+    {
+        [self changeControlButtonsTo:NavigationButtonsAppearenceBlack];
+    }
+}
+
+-(void)changeControlButtonsTo:(NavigationButtonsAppearence)appearence
+{
+    if(appearence == NavigationButtonsAppearenceWhite) // white buttons
     {
         [self.searchButton setImage:[UIImage imageNamed:@"ButtonSearchCD"] forState:UIControlStateNormal];
         [self.searchButton setImage:[UIImage imageNamed:@"ButtonSearchHighlightedCD"] forState:UIControlStateHighlighted];
@@ -1555,7 +1568,7 @@ typedef void(^AnimationCompletionBlock)(BOOL finished);
         [self.sideNavigationButton setImage:[UIImage imageNamed:@"ButtonNavSelectedCD"] forState:UIControlStateSelected];
         
     }
-    else
+    else if(appearence == NavigationButtonsAppearenceBlack) // black buttons
     {
         [self.searchButton setImage:[UIImage imageNamed:@"ButtonSearch"] forState:UIControlStateNormal];
         [self.searchButton setImage:[UIImage imageNamed:@"ButtonSearchHighlighted"] forState:UIControlStateHighlighted];
@@ -1572,4 +1585,6 @@ typedef void(^AnimationCompletionBlock)(BOOL finished);
         [self.sideNavigationButton setImage:[UIImage imageNamed:@"ButtonNavSelected"] forState:UIControlStateSelected];
     }
 }
+
+
 @end

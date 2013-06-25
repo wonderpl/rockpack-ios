@@ -37,6 +37,7 @@
 #import "SYNOnBoardingPopoverQueueController.h"
 #import "SYNImagePickerController.h"
 #import "SYNReportConcernTableViewController.h"
+#import "SYNExistingChannelsViewController.h"
 
 @interface SYNChannelDetailViewController () <UITextViewDelegate,
                                               SYNImagePickerControllerDelegate,
@@ -110,6 +111,7 @@
 @property (weak, nonatomic) IBOutlet UIButton *cancelTextInputButton;
 @property (nonatomic, weak) SYNVideoThumbnailRegularCell* selectedCell;
 @property (weak, nonatomic) IBOutlet UIImageView *textBackgroundImageView;
+@property (nonatomic, strong) NSString* selectedImageURL;
 
 @property (weak, nonatomic) IBOutlet UIImageView *logoImageView;
 
@@ -541,6 +543,8 @@
     if (!coverArtUrl)
         return;
     
+    __weak SYNChannelDetailViewController *wself = self;
+    
     if ([coverArtUrl isEqualToString: @""])
     {
         self.channelCoverImageView.image = nil;
@@ -550,17 +554,21 @@
     }
     else if ([coverArtUrl isEqualToString: @"uploading"])
     {
+        
+        wself.originalBackgroundImage = coverArtImage;
+        UIImage* newImage  = [wself croppedImageForCurrentOrientation];
+        
         [UIView transitionWithView: self.view
                           duration: 0.35f
                            options: UIViewAnimationOptionTransitionCrossDissolve | UIViewAnimationOptionAllowUserInteraction
                         animations: ^{
-                            self.channelCoverImageView.image = coverArtImage;
+                            wself.channelCoverImageView.image = newImage;
+
                         }
-                        completion: nil];
+                        completion:nil];
     }
     else
     {
-        __weak SYNChannelDetailViewController *wself = self;
         NSString* largeImageUrlString = [coverArtUrl stringByReplacingOccurrencesOfString:@"thumbnail_medium" withString:@"background"];
         
         [self.channelCoverImageView setImageWithURL: [NSURL URLWithString: largeImageUrlString]
@@ -1036,6 +1044,8 @@
 
 - (void) enterEditMode
 {
+    self.coverChooserController.selectedImageURL = self.channel.channelCover.imageUrl;
+    
     [UIView animateWithDuration: kChannelEditModeAnimationDuration
                      animations: ^{
                          [self setEditControlsVisibility: TRUE];
@@ -1341,6 +1351,12 @@
         self.selectedCategoryId = self.channel.categoryId;
     }
     
+    if (!_isIPhone)
+    {
+        self.coverChooserController.selectedImageURL = self.channel.channelCover.imageUrl;
+        
+        [self.coverChooserController.collectionView reloadData];
+    }
 }
 
 
@@ -1366,7 +1382,15 @@
     else
     {
         [self setEditControlsVisibility: NO];
-        [self displayChannelDetails];
+        
+        if(_isIPhone)
+        {
+            self.selectedImageURL = nil;
+        }
+        
+        self.selectedCategoryId = nil;
+        self.selectedCoverId = nil;
+        
         self.categoryTableViewController = nil;
         self.saveChannelButton.hidden = YES;
         self.cancelEditButton.hidden = YES;
@@ -1374,6 +1398,12 @@
         self.backButton.hidden= NO;
         
         self.channel = self.originalChannel;
+        
+        // display the BG as it was
+        
+        [self displayChannelDetails];
+        
+        self.currentWebImageOperation = [self loadBackgroundImage];
         
         [self.videoThumbnailCollectionView reloadData];
     }
@@ -1508,7 +1538,7 @@
     }
     else
     {
-        self.coverImageSelector = [[SYNChannelCoverImageSelectorViewController alloc] initWithSelectedImageURL: self.channel.channelCover.imageUrl];
+        self.coverImageSelector = [[SYNChannelCoverImageSelectorViewController alloc] initWithSelectedImageURL: (self.selectedImageURL) ? self.selectedImageURL:self.channel.channelCover.imageUrl];
         self.coverImageSelector.imageSelectorDelegate = self;
         CGRect startFrame = self.coverImageSelector.view.frame;
         startFrame.origin.y = self.view.frame.size.height;
@@ -2059,8 +2089,14 @@
             //After creation want to show it as if it is part of the master view hierarchy.
             //Thus we move the view there.
             
-            //This removes the "existing channels view controller"
-            [[[[master childViewControllers] lastObject] view] removeFromSuperview];
+            //Check for precense of existing channels view controller.
+            UIViewController* lastController = [[master childViewControllers] lastObject];
+            if([lastController isKindOfClass:[SYNExistingChannelsViewController class]])
+            {
+                //This removes the "existing channels view controller"
+                [lastController.view removeFromSuperview];
+                [lastController removeFromParentViewController];
+            }
             
             //Now dimiss self modally (not animated)
             [master dismissViewControllerAnimated:NO completion:nil];
@@ -2331,7 +2367,10 @@
 
                                               if (imageUrl && [imageUrl isKindOfClass:[NSString class]])
                                               {
-                                                  self.channel.channelCover.imageUrl = imageUrl;
+                                                 if (!self.selectedImageURL)
+                                                 {
+                                                     self.selectedImageURL = imageUrl;
+                                                 }
 //                                                  [self.coverChooserController updateUserArtWithURL: imageUrl];
 //                                                  DebugLog(@"Success");
                                               }
@@ -2348,12 +2387,19 @@
                                                    [self.activityIndicator stopAnimating];
                                                    DebugLog(@"%@", [error debugDescription]);
                                                }];
+    
+    NSDictionary *userInfo =  @{kCoverArt: @"uploading" ,kCoverArtImage: imageToUpload} ;
+    
+    [[NSNotificationCenter defaultCenter] postNotificationName: kCoverArtChanged
+                                                        object: self
+                                                      userInfo: userInfo];
+    
 }
 
 
 #pragma mark - iPhone viewcontroller dismissal
 - (IBAction) backButtonTapped: (id) sender
-{    
+{
     CATransition *animation = [CATransition animation];
     
     [animation setType:kCATransitionReveal];
@@ -2467,11 +2513,10 @@
 
 - (void) imageSelector: (SYNChannelCoverImageSelectorViewController *) imageSelector
       didSelectUIImage: (UIImage *) image
-{
-    [self.channelCoverImageView setImage: image];
-    
+{    
     [self uploadChannelImage: image];
     [self closeImageSelector: imageSelector];
+    self.selectedImageURL = nil;
 }
 
 
@@ -2481,12 +2526,19 @@
 {
     self.selectedCoverId = remoteId;
     
-    self.channel.channelCover.imageUrl = imageUrlString;
+    self.selectedImageURL = imageUrlString;
     
     NSString* largeImageUrlString = [imageUrlString stringByReplacingOccurrencesOfString:@"thumbnail_medium" withString:@"background"];
+    
+    __weak SYNChannelDetailViewController *wself = self;
+    
     [self.channelCoverImageView setImageWithURL: [NSURL URLWithString: largeImageUrlString]
                                placeholderImage: [UIImage imageNamed: @"PlaceholderChannelCreation.png"]
-                                        options: SDWebImageRetryFailed];
+                                        options:SDWebImageRetryFailed completed:^(UIImage *image, NSError *error, SDImageCacheType cacheType) {
+                                            wself.originalBackgroundImage = wself.channelCoverImageView.image;
+                                            
+                                            wself.channelCoverImageView.image = [wself croppedImageForCurrentOrientation];
+                                        }];
     [self closeImageSelector: imageSelector];
 }
 
@@ -2574,6 +2626,16 @@
         self.originalBackgroundImage = self.channelCoverImageView.image;
     }
     
+    if(self.originalBackgroundImage.size.height != 1024.0f)
+    {
+        // we expect square images 1024 x 1024 px
+        // scale the crop Rect
+        // should only happen when uploading new images.
+        CGFloat scaleX = self.originalBackgroundImage.size.width / 1024.0f;
+        CGFloat scaleY = self.originalBackgroundImage.size.height / 1024.0f;
+        croppingRect = CGRectApplyAffineTransform(croppingRect,CGAffineTransformMakeScale(scaleX, scaleY));
+    }
+    
     CGImageRef croppedImageRef = CGImageCreateWithImageInRect([self.originalBackgroundImage CGImage], croppingRect);
     
     UIImage* croppedImage = [UIImage imageWithCGImage: croppedImageRef];
@@ -2609,15 +2671,30 @@
         
         context = [CIContext contextWithOptions:nil];
         
+        
+        CGFloat imageWidth = CGImageGetWidth(imageRef);
+        CGFloat imageHeight = CGImageGetHeight(imageRef);
+        CGFloat largestDimension = MAX(imageWidth, imageHeight);
+        
+        CGFloat blurRadius = 7.0f;
+        if (largestDimension != 1024.0f)
+        {
+            //we expect one side to be 1024 px
+            //If not we are processing a cropped image for upload.
+            //Attempt to adjust the blur scale.
+            blurRadius *= largestDimension/1024.0f;
+            // Make min radius 1.0px if the image is really small so we do at least see some blurring
+            blurRadius = MAX(blurRadius,1.0f);
+        }
+        
         filter = [CIFilter filterWithName:@"CIGaussianBlur"];
         [filter setValue:backgroundCIImage forKey:@"inputImage"];
-        [filter setValue:[NSNumber numberWithFloat:7.0] forKey:@"inputRadius"];
+        [filter setValue:[NSNumber numberWithFloat:blurRadius] forKey:@"inputRadius"];
         
         CIImage *outputImage = [filter outputImage];
         
-        CGRect croppingRect = [[SYNDeviceManager sharedInstance] isLandscape] ? CGRectMake(0.0, 0.0, 1024.0, 768.0) : CGRectMake(0.0, 0.0, 768.0, 1024.0);
         CGImageRef cgimg = [context createCGImage:outputImage
-                                         fromRect:croppingRect];
+                                         fromRect:CGRectMake(0.0f,0.0f,imageWidth,imageHeight)];
         
         
         

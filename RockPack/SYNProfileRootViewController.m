@@ -1230,7 +1230,7 @@
     
     if(self.user) // if a user has been passed or found, monitor
     {
-        NSLog(@"self.user.uniqueId: %@ - appDelegate.currentUser.uniqueId: %@", self.user.uniqueId, appDelegate.currentUser);
+        
         
         if([self.user.uniqueId isEqualToString:appDelegate.currentUser.uniqueId])
             self.isUserProfile = YES;

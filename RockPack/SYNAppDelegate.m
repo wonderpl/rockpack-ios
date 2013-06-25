@@ -286,7 +286,10 @@ didFinishLaunchingWithOptions: (NSDictionary *) launchOptions
         return;
     
     
+    
     self.window.rootViewController = [self createAndReturnLoginViewController];
+    
+    self.masterViewController = nil;
     
     self.currentUser.currentValue = NO;
     
@@ -339,17 +342,26 @@ didFinishLaunchingWithOptions: (NSDictionary *) launchOptions
 
 - (void) applicationWillEnterForeground: (UIApplication *) application
 {
-    // Called as part of the transition from the background to the inactive state; here you can undo many of the changes made on entering the background.
-    if(self.loginViewController.state == kLoginScreenStateInitial)
+    if(self.loginViewController)
     {
-        [self.loginViewController setUpInitialState];
+        
+        // Called as part of the transition from the background to the inactive state; here you can undo many of the changes made on entering the background.
+        if(self.loginViewController.state == kLoginScreenStateInitial)
+        {
+            [self.loginViewController setUpInitialState];
+        }
+        else if(self.loginViewController.state == kLoginScreenStateLogin)
+        {
+            [self.loginViewController reEnableLoginControls];
+        }
     }
-    else if(self.loginViewController.state == kLoginScreenStateLogin)
+    else // in main site
     {
-        [self.loginViewController reEnableLoginControls];
+        
+        
     }
     
-    //accessTokenData.accessToken;
+    
 }
 
 

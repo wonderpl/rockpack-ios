@@ -18,10 +18,6 @@
 #import "SYNNetworkEngine.h"
 #import "SYNOAuth2Credential.h"
 #import "SYNOAuthNetworkEngine.h"
-#import "SYNOnboard1ViewController.h"
-#import "SYNOnboard2ViewController.h"
-#import "SYNOnboard3ViewController.h"
-#import "SYNOnboard4ViewController.h"
 #import "SYNPopoverBackgroundView.h"
 #import "SYNTextFieldLogin.h"
 #import "UIFont+SYNFont.h"
@@ -177,39 +173,26 @@
 
     }
     
+    CGRect signUpButtonFrame  = signUpButton.frame;
+    if([[SYNDeviceManager sharedInstance] isPortrait])
+        signUpButtonFrame.origin.x = 644.0f;
+    
+    signUpButton.frame = signUpButtonFrame;
+    
     self.state = kLoginScreenStateInitial;
     
     UITapGestureRecognizer* tapGesture = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(outerViewTapped:)];
     [self.view addGestureRecognizer:tapGesture];
     
-    self.pageViewController = [[UIPageViewController alloc] initWithTransitionStyle: UIPageViewControllerTransitionStyleScroll
-                                                              navigationOrientation: UIPageViewControllerNavigationOrientationHorizontal
-                                                                            options: nil];
+    self.onBoardingController = [[SYNLoginOnBoardingController alloc] init];
+    CGRect onBoardingViewFrame = self.onBoardingController.view.frame;
+    onBoardingViewFrame.origin.x = 0.0;
+    onBoardingViewFrame.origin.y = [[SYNDeviceManager sharedInstance] isLandscape] ? 300.0 : 560.0;
+    self.onBoardingController.view.frame = onBoardingViewFrame;
+    self.onBoardingController.scrollView.delegate = self;
+    [self.view addSubview:self.onBoardingController.view];
+    [self addChildViewController:self.onBoardingController];
     
-    self.pageViewController.dataSource = self;
-    self.pageViewController.delegate = self;
-    
-    // Setup the on-boarding controller
-    self.onboardingViewControllers = @[[SYNOnboard1ViewController new],
-                                       [SYNOnboard2ViewController new],
-                                       [SYNOnboard3ViewController new],
-                                       [SYNOnboard4ViewController new]];
-    
-    [self.pageViewController setViewControllers: @[self.onboardingViewControllers[0]]
-                                      direction: UIPageViewControllerNavigationDirectionForward
-                                       animated: NO
-                                     completion: nil];
-    
-    [self addChildViewController: self.pageViewController];
-    [self.view addSubview: self.pageViewController.view];
-    
-    // Set the page view controller's bounds using an inset rect so that self's view is visible around the edges of the pages.
-    // This is the amount by which to offset the bottom of the page view from the bottom of the screen
-    CGRect pageViewRect = self.view.bounds;
-    pageViewRect.size.height -= 160;
-    self.pageViewController.view.frame = pageViewRect;
-    
-    [self.pageViewController didMoveToParentViewController: self];
 }
 
 
@@ -399,6 +382,8 @@
 
 - (void) setUpInitialState
 {
+    [super setUpInitialState];
+    
     // controls to hide initially
     NSArray* controlsToHide = @[userNameInputField, passwordInputField, finalLoginButton, secondaryFacebookMessage,
                                 areYouNewLabel, registerButton, passwordForgottenLabel,
@@ -444,11 +429,7 @@
     signUpButton.alpha = 1.0;
     signUpButton.hidden = NO;
     
-    CGRect signUpButtonFrame  = signUpButton.frame;
-    if([[SYNDeviceManager sharedInstance] isPortrait])
-        signUpButtonFrame.origin.x = 644.0f;
     
-    signUpButton.frame = signUpButtonFrame;
     
     loginButton.enabled = YES;
     loginButton.hidden = NO;
@@ -458,7 +439,12 @@
     userNameInputField.enabled = YES;
     passwordInputField.enabled = YES;
     
-    [activityIndicator stopAnimating];  
+    [activityIndicator stopAnimating];
+    
+    
+    // on boarding
+    
+    
 }
 
 
@@ -506,6 +492,7 @@
 
 - (void) setUpLoginStateFromPreviousState: (kLoginScreenState) previousState
 {
+    [super setUpLoginStateFromPreviousState:previousState];
     //Fade out login background
     self.loginBackgroundImage.alpha = 1.0f;
     
@@ -514,9 +501,11 @@
                         options: UIViewAnimationCurveEaseInOut
                      animations:^{
                          self.loginBackgroundImage.alpha = 0.0f;
+                         self.loginBackgroundFrontImage.alpha = 0.0f;
                          
                      } completion:^(BOOL finished) {
                          self.loginBackgroundImage.hidden = YES;
+                         self.loginBackgroundFrontImage.hidden = YES;
                      }];
     
     secondaryFacebookMessage.alpha = 0.0;
@@ -736,6 +725,7 @@
 
 - (void) setUpRegisterStateFromState: (kLoginScreenState) previousState
 {
+    [super setUpRegisterStateFromState:previousState];
     //Fade out login background
     self.loginBackgroundImage.alpha = 1.0f;
     
@@ -744,9 +734,11 @@
                         options: UIViewAnimationCurveEaseInOut
                      animations:^{
                          self.loginBackgroundImage.alpha = 0.0f;
+                         self.loginBackgroundFrontImage.alpha = 0.0f;
                          
                      } completion:^(BOOL finished) {
                          self.loginBackgroundImage.hidden = YES;
+                         self.loginBackgroundFrontImage.hidden = YES;
                      }];
     
     //Make member label grey
@@ -1443,6 +1435,7 @@
                             options: UIViewAnimationCurveEaseInOut
                          animations:^{
                              self.loginBackgroundImage.alpha = 0.0f;
+                             self.loginBackgroundFrontImage.alpha = 0.0f;
                              
                          } completion:^(BOOL finished) {
                          }];
@@ -1640,6 +1633,7 @@
     
     [self clearAllErrorArrows];
     CGRect facebookButtonFrame = facebookSignInButton.frame;
+    CGRect onBoardingFrame = self.onBoardingController.view.frame;
     if (UIInterfaceOrientationIsPortrait(toInterfaceOrientation))
     {
         signUpButton.center = CGPointMake(524.0, signUpButton.center.y);
@@ -1650,7 +1644,7 @@
         termsAndConditionsLabel.center = CGPointMake(termsAndConditionsLabel.center.x, 714.0);
         termsAndConditionsLabelSide.center = CGPointMake(termsAndConditionsLabelSide.center.x, 714.0);        
         registerButton.center = CGPointMake(registerButton.center.x, 704.0);
-        
+        onBoardingFrame.origin.y = 560.0;
     }
     else
     {
@@ -1662,9 +1656,12 @@
         termsAndConditionsLabel.center = CGPointMake(termsAndConditionsLabel.center.x, 370.0);
         termsAndConditionsLabelSide.center = CGPointMake(termsAndConditionsLabelSide.center.x, 370.0);
         registerButton.center = CGPointMake(registerButton.center.x, 358.0);
+        onBoardingFrame.origin.y = 300.0;
     }
     
     
+    
+    self.onBoardingController.view.frame = onBoardingFrame;
     
     areYouNewLabel.center = CGPointMake(areYouNewLabel.center.x, registerButton.center.y - 44.0);
     

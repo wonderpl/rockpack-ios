@@ -410,6 +410,10 @@ enum ChannelCoverSelectorState {
                                   atIndexPath: (NSIndexPath *) indexPath
 {
     
+    if(self.currentState !=kChannelCoverDefault)
+    {
+        return nil;
+    }
     UICollectionReusableView *supplementaryView = nil;
 
     // TODO: We might want to optimise this instead of creating a new date formatter each time

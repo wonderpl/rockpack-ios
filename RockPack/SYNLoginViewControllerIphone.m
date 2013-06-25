@@ -13,10 +13,6 @@
 #import "SYNLoginViewController.h"
 #import "SYNLoginViewControllerIphone.h"
 #import "SYNOAuthNetworkEngine.h"
-#import "SYNOnboard1ViewController.h"
-#import "SYNOnboard2ViewController.h"
-#import "SYNOnboard3ViewController.h"
-#import "SYNOnboard4ViewController.h"
 #import "SYNTextFieldLoginiPhone.h"
 #import "UIFont+SYNFont.h"
 #import <FacebookSDK/FacebookSDK.h>
@@ -24,9 +20,7 @@
 #define kLoginAnimationTransitionDuration 0.3f
 
 @interface SYNLoginViewControllerIphone () <UITextFieldDelegate,
-                                            SYNImagePickerControllerDelegate,
-                                            UIPageViewControllerDataSource,
-                                            UIPageViewControllerDelegate>
+                                            SYNImagePickerControllerDelegate>
 
 @property (nonatomic, strong) IBOutlet SYNTextFieldLoginiPhone* ddInputField;
 @property (nonatomic, strong) IBOutlet SYNTextFieldLoginiPhone* emailInputField;
@@ -38,6 +32,7 @@
 @property (nonatomic, strong) IBOutlet SYNTextFieldLoginiPhone* userNameInputField;
 @property (nonatomic, strong) IBOutlet SYNTextFieldLoginiPhone* yyyyInputField;
 @property (nonatomic, strong) IBOutlet UIImageView* loginBackgroundImage;
+@property (nonatomic, strong) IBOutlet UIImageView* loginBackgroundFrontImage;
 @property (nonatomic, strong) IBOutlet UIImageView* rockpackLogoImage;
 @property (nonatomic, strong) IBOutlet UILabel* termsAndConditionsLabel;
 @property (nonatomic, strong) IBOutlet UILabel* wellSendYouLabel;
@@ -45,7 +40,6 @@
 @property (nonatomic, strong) IBOutlet UIView* dobView;
 @property (strong, nonatomic) NSArray *onboardingViewControllers;
 @property (strong, nonatomic) NSDateFormatter * dateFormatter;
-@property (strong, nonatomic) UIPageViewController *pageViewController;
 @property (weak, nonatomic) IBOutlet UIButton *backButton;
 @property (weak, nonatomic) IBOutlet UIButton *cancelButton;
 @property (weak, nonatomic) IBOutlet UIButton *confirmButton;
@@ -180,34 +174,21 @@
     self.formatter = [[NSDateFormatter alloc] init];
     self.formatter.dateFormat = @"dd/MM/yyyy";
     
-    self.pageViewController = [[UIPageViewController alloc] initWithTransitionStyle: UIPageViewControllerTransitionStyleScroll
-                                                              navigationOrientation: UIPageViewControllerNavigationOrientationHorizontal
-                                                                            options: nil];
     
-    self.pageViewController.dataSource = self;
-    self.pageViewController.delegate = self;
+    self.onBoardingController = [[SYNLoginOnBoardingController alloc] init];
+    CGRect onBoardingViewFrame = self.onBoardingController.view.frame;
+    onBoardingViewFrame.origin.x = 0.0;
+    onBoardingViewFrame.size.width = [[SYNDeviceManager sharedInstance] currentScreenWidth];
+    if(IS_IPHONE5)
+        onBoardingViewFrame.origin.y = 118.0;
+    else
+        onBoardingViewFrame.origin.y = self.facebookButton.frame.origin.y - onBoardingViewFrame.size.height - 16.0;
+    self.onBoardingController.view.frame = CGRectIntegral(onBoardingViewFrame);
+    self.onBoardingController.scrollView.delegate = self;
+    [self.view addSubview:self.onBoardingController.view];
+    [self addChildViewController:self.onBoardingController];
     
-    // Setup the on-boarding controller
-    self.onboardingViewControllers = @[[SYNOnboard1ViewController new],
-                                       [SYNOnboard2ViewController new],
-                                       [SYNOnboard3ViewController new],
-                                       [SYNOnboard4ViewController new]];
     
-    [self.pageViewController setViewControllers: @[self.onboardingViewControllers[0]]
-                                      direction: UIPageViewControllerNavigationDirectionForward
-                                       animated: NO
-                                     completion: nil];
-    
-    [self addChildViewController: self.pageViewController];
-    [self.view addSubview: self.pageViewController.view];
-    
-    // Set the page view controller's bounds using an inset rect so that self's view is visible around the edges of the pages.
-    // This is the amount by which to offset the bottom of the page view from the bottom of the screen
-    CGRect pageViewRect = self.view.bounds;
-    pageViewRect.size.height -= 130;
-    self.pageViewController.view.frame = pageViewRect;
-    
-    [self.pageViewController didMoveToParentViewController: self];
 
 }
 
@@ -304,117 +285,13 @@
 
 -(void)reEnableLoginControls
 {
+    
 }
 
 
 #pragma mark - Onboarding support
 
-- (void) hideOnboarding
-{
-    [UIView animateWithDuration: 0.3f
-                          delay: 0.1f
-                        options: UIViewAnimationOptionCurveEaseOut
-                     animations: ^{
-                         self.pageViewController.view.alpha = 0.0f;
-                     } completion:^(BOOL finished) {
-                         self.pageViewController.view.hidden = TRUE;
-                     }];
-}
 
-- (void) showOnboarding
-{
-    self.pageViewController.view.hidden = FALSE;
-    
-    [UIView animateWithDuration: 0.3f
-                          delay: 0.1f
-                        options: UIViewAnimationOptionCurveEaseOut
-                     animations: ^{
-                         self.pageViewController.view.alpha = 1.0f;
-                     } completion: nil];
-}
-
-#pragma mark - Page View Controller Data Source
-
-- (UIViewController *) pageViewController: (UIPageViewController *) pageViewController
-       viewControllerBeforeViewController: (UIViewController *) viewController
-{
-    NSUInteger numberOfOnboardViewControllers = self.onboardingViewControllers.count;
-    int index = 0;
-    for (UIViewController *vc in self.onboardingViewControllers)
-    {
-        if (vc == viewController)
-        {
-#ifdef WRAP_AROUND
-            if (index == 0)
-            {
-                return nil;
-            }
-            else
-            {
-                return self.onboardingViewControllers[index - 1];
-            }
-#else
-            if (index == 0)
-            {
-                return self.onboardingViewControllers [numberOfOnboardViewControllers - 1];
-            }
-            else
-            {
-                return self.onboardingViewControllers [index - 1];
-            }
-#endif
-        }
-        
-        index++;
-    }
-    
-    // If we got here then we didn't find the viewcontroller
-    return nil;
-}
-
-- (UIViewController *) pageViewController: (UIPageViewController *) pageViewController
-        viewControllerAfterViewController: (UIViewController *) viewController
-{
-    NSUInteger numberOfOnboardViewControllers = self.onboardingViewControllers.count;
-    int index = 0;
-    for (UIViewController *vc in self.onboardingViewControllers)
-    {
-        if (vc == viewController)
-        {
-#ifdef WRAP_AROUND
-            if (index == (self.onboardingViewControllers.count - 1))
-            {
-                return nil;
-            }
-            else
-            {
-                return self.onboardingViewControllers[(index + 1) % numberOfOnboardViewControllers];
-            }
-#else
-            return self.onboardingViewControllers [(index + 1) % numberOfOnboardViewControllers];
-#endif
-        }
-        
-        index++;
-    }
-    
-    // If we got here then we didn't find the viewcontroller
-    return nil;
-}
-
-
-
-- (NSInteger) presentationCountForPageViewController: (UIPageViewController *) pageViewController
-{
-    return self.onboardingViewControllers.count;
-}
-
-
-- (NSInteger) presentationIndexForPageViewController: (UIPageViewController *) pageViewController
-{
-    // Start off showing the first view controller
-    return 0;
-}
 
 
 #pragma mark - button IBActions
@@ -508,6 +385,7 @@
                         options: UIViewAnimationCurveEaseInOut
                      animations:^{
                          self.loginBackgroundImage.alpha = 0.0f;
+                         self.loginBackgroundFrontImage.alpha = 0.0f;
                          
                      } completion:^(BOOL finished) {
                      }];
@@ -556,8 +434,10 @@
                         options: UIViewAnimationCurveEaseInOut
                      animations:^{
                          self.loginBackgroundImage.alpha = 0.0f;
+                         self.loginBackgroundFrontImage.alpha = 0.0f;
                          
                      } completion:^(BOOL finished) {
+                         
                      }];
     
     self.state = kLoginScreenStateLogin;
@@ -671,6 +551,7 @@
                                 options: UIViewAnimationCurveEaseInOut
                              animations:^{
                                  self.loginBackgroundImage.alpha = 1.0f;
+                                 self.loginBackgroundFrontImage.alpha = 1.0f;
                                  
                              } completion:^(BOOL finished) {
                              }];
@@ -709,6 +590,7 @@
                                 options: UIViewAnimationCurveEaseInOut
                              animations:^{
                                  self.loginBackgroundImage.alpha = 1.0f;
+                                 self.loginBackgroundFrontImage.alpha = 1.0f;
                                  
                              } completion:^(BOOL finished) {
                              }];
@@ -1141,6 +1023,7 @@
                             options: UIViewAnimationCurveEaseInOut
                          animations:^{
                              self.loginBackgroundImage.alpha = 0.0f;
+                             self.loginBackgroundFrontImage.alpha = 0.0f;
                              
                          } completion:^(BOOL finished) {
                          }];

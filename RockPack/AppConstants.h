@@ -168,6 +168,8 @@
 // One the APIs imported some new data - we will need to be more specific at some stage.
 #define kCategoriesUpdated @"kCategoriesUpdated"
 
+#define kLoginOnBoardingMessagesNum 4
+
 // Observers
 #define kCollectionViewContentOffsetKey @"contentOffset"
 #define kTextViewContentSizeKey @"contentSize"
@@ -197,6 +199,13 @@ typedef enum _Gender {
     GenderUndecided = 2 // how post-modern
     
 } Gender;
+
+typedef enum _NavigationButtonsAppearence {
+    
+    NavigationButtonsAppearenceBlack = 0,
+    NavigationButtonsAppearenceWhite = 1,
+    
+} NavigationButtonsAppearence;
 
 //
 // Colours
@@ -328,6 +337,11 @@ typedef enum {
     
 } EntityType;
 
+typedef enum {
+    ScrollingDirectionNone = 0,
+    ScrollingDirectionLeft,
+    ScrollingDirectionRight,
+} ScrollingDirection;
 
 typedef enum {
     PointingDirectionNone = 0,
@@ -339,6 +353,8 @@ typedef enum {
 
 // Height of the bottom tab bar in pixels
 #define kBottomTabBarHeight 62
+
+#define IS_IPHONE5 (([[UIScreen mainScreen] bounds].size.height-568)?NO:YES)
 
 // Height of the header bar
 #define kHeaderBarHeight 44
