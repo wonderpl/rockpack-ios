@@ -61,6 +61,8 @@
 @property (nonatomic, assign) BOOL searchRefreshDisabled;
 @property (nonatomic, assign) BOOL playerUpdated;
 
+@property (nonatomic, strong) NSTimer* tokenExpiryTimer;
+
 - (void) deleteDataObject:(NSManagedObject*)managedObject;
 - (void) saveContext: (BOOL) wait;
 - (void) saveSearchContext;

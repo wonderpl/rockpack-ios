@@ -59,7 +59,7 @@ extern void instrumentObjcMessageSends(BOOL);
 @synthesize mainRegistry = _mainRegistry, searchRegistry = _searchRegistry;
 @synthesize currentUser = _currentUser, currentOAuth2Credentials = _currentOAuth2Credentials;
 @synthesize onBoardingQueue = _onBoardingQueue;
-
+@synthesize tokenExpiryTimer = _tokenExpiryTimer;
 
 - (BOOL) application:(UIApplication *) application
 didFinishLaunchingWithOptions: (NSDictionary *) launchOptions
@@ -180,65 +180,17 @@ didFinishLaunchingWithOptions: (NSDictionary *) launchOptions
         // If we have a user and a refresh token... //
         if ([self.currentOAuth2Credentials hasExpired])
         {
-            //Add imageview to the window as placeholder while we wait for the token refresh call.
-            UIImageView* startImageView = nil;
-            CGPoint startImageCenter = self.window.center;
-            if([[SYNDeviceManager sharedInstance] isIPad])
-            {
-                if(UIDeviceOrientationIsLandscape([[SYNDeviceManager sharedInstance] currentOrientation]))
-                {
-                    startImageView = [[UIImageView alloc] initWithImage:[UIImage imageNamed:@"Default-Landscape"]];
-                    if([[SYNDeviceManager sharedInstance] currentOrientation]== UIDeviceOrientationLandscapeLeft)
-                    {
-                        startImageView.transform = CGAffineTransformMakeRotation(M_PI_2);
-                        startImageCenter.x-=10;
-                    }
-                    else
-                    {
-                        startImageView.transform = CGAffineTransformMakeRotation(-M_PI_2);
-                        startImageCenter.x+=10;
-                    }
-                    
-                }
-                else
-                {
-                    startImageView = [[UIImageView alloc] initWithImage:[UIImage imageNamed:@"Default-Portrait"]];
-                    startImageCenter.y+=10;
-                }
-            }
-            else
-            {
-                if([SYNDeviceManager.sharedInstance currentScreenHeight]>480.0f)
-                {
-                    startImageView = [[UIImageView alloc] initWithImage:[UIImage imageNamed:@"Default-568h"]];
-                }
-                else
-                {
-                    startImageView = [[UIImageView alloc] initWithImage:[UIImage imageNamed:@"Default"]];
-                }
-            }
             
-            [self.window addSubview:startImageView];
-            startImageView.center = startImageCenter;
+            [self refreshExpiredToken];
             
-            
-            //refresh token
-            [self.oAuthNetworkEngine refreshOAuthTokenWithCompletionHandler: ^(id response) {
-                self.window.rootViewController = [self createAndReturnRootViewController];
-                [startImageView removeFromSuperview];
-            } errorHandler: ^(id response) {
-                [self logout];
-                if(!self.window.rootViewController)
-                {
-                    self.window.rootViewController = [self createAndReturnLoginViewController];
-                }
-                [startImageView removeFromSuperview];
-            }];
-            
-            // else if we have an access token //
         }
-        else
+        else // we have an access token //
         {
+            
+            // set timer for auto refresh //
+           
+            [self setupTokenExpiryTimer];
+            
             self.window.rootViewController = [self createAndReturnRootViewController];
         }
     }
@@ -254,13 +206,96 @@ didFinishLaunchingWithOptions: (NSDictionary *) launchOptions
     return YES;
 }
 
+-(void)setupTokenExpiryTimer
+{
+    if(self.tokenExpiryTimer)
+        [self.tokenExpiryTimer invalidate];
+    
+    NSTimeInterval intervalToExpiry = [self.currentOAuth2Credentials.expirationDate timeIntervalSinceNow];
+    
+    NSLog(@"Expires: %f", intervalToExpiry);
+    self.tokenExpiryTimer  = [NSTimer scheduledTimerWithTimeInterval:intervalToExpiry
+                                                              target:self
+                                                            selector:@selector(refreshExpiredToken)
+                                                            userInfo:nil
+                                                             repeats:NO];
+}
+
+
+
+-(void)refreshExpiredToken
+{
+    //Add imageview to the window as placeholder while we wait for the token refresh call.
+    UIImageView* startImageView = nil;
+    CGPoint startImageCenter = self.window.center;
+    if([[SYNDeviceManager sharedInstance] isIPad])
+    {
+        if(UIDeviceOrientationIsLandscape([[SYNDeviceManager sharedInstance] currentOrientation]))
+        {
+            startImageView = [[UIImageView alloc] initWithImage:[UIImage imageNamed:@"Default-Landscape"]];
+            if([[SYNDeviceManager sharedInstance] currentOrientation]== UIDeviceOrientationLandscapeLeft)
+            {
+                startImageView.transform = CGAffineTransformMakeRotation(M_PI_2);
+                startImageCenter.x-=10;
+            }
+            else
+            {
+                startImageView.transform = CGAffineTransformMakeRotation(-M_PI_2);
+                startImageCenter.x+=10;
+            }
+            
+        }
+        else
+        {
+            startImageView = [[UIImageView alloc] initWithImage:[UIImage imageNamed:@"Default-Portrait"]];
+            startImageCenter.y+=10;
+        }
+    }
+    else
+    {
+        if([SYNDeviceManager.sharedInstance currentScreenHeight]>480.0f)
+        {
+            startImageView = [[UIImageView alloc] initWithImage:[UIImage imageNamed:@"Default-568h"]];
+        }
+        else
+        {
+            startImageView = [[UIImageView alloc] initWithImage:[UIImage imageNamed:@"Default"]];
+        }
+    }
+    
+    [self.window addSubview:startImageView];
+    startImageView.center = startImageCenter;
+    
+    
+    //refresh token
+    [self.oAuthNetworkEngine refreshOAuthTokenWithCompletionHandler: ^(id response) {
+        
+        self.window.rootViewController = [self createAndReturnRootViewController];
+        
+        [startImageView removeFromSuperview];
+        
+        self.tokenExpiryTimer = nil;
+        
+    } errorHandler: ^(id response) {
+        
+        [self logout];
+        
+        self.tokenExpiryTimer = nil;
+        
+        if(!self.window.rootViewController)
+        {
+            self.window.rootViewController = [self createAndReturnLoginViewController];
+        }
+        
+        [startImageView removeFromSuperview];
+    }];
+}
 
 - (UIViewController*) createAndReturnRootViewController
 {
     SYNContainerViewController* containerViewController = [[SYNContainerViewController alloc] init];
     
     self.masterViewController = [[SYNMasterViewController alloc] initWithContainerViewController: containerViewController];
-    
     
     return self.masterViewController;
 }
@@ -295,6 +330,9 @@ didFinishLaunchingWithOptions: (NSDictionary *) launchOptions
     
     [self.mainManagedObjectContext deleteObject:self.currentUser];
     
+    [self.tokenExpiryTimer invalidate];
+    self.tokenExpiryTimer = nil;
+    
     [[SYNFacebookManager sharedFBManager] logoutOnSuccess:^{
     } onFailure:^(NSString *errorMessage) {
     }];
@@ -308,11 +346,15 @@ didFinishLaunchingWithOptions: (NSDictionary *) launchOptions
 }
 
 
+
+
 - (void) loginCompleted: (NSNotification*) notification
 {
     self.window.rootViewController = [self createAndReturnRootViewController];
     
     self.loginViewController = nil;
+    
+    [self setupTokenExpiryTimer];
 }
 
 
