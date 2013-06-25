@@ -783,7 +783,7 @@
     return [SYNDeviceManager.sharedInstance isIPhone] ? CGSizeMake(320.0f, 64.0f) : CGSizeMake(1024.0, 64.0);
 }
 
-<<<<<<< HEAD
+
 - (void) loadingMoreContent: (BOOL) loadingMoreContent
 {
     // First set the state of our footer spinner
@@ -791,7 +791,9 @@
     
     // Now set our actual variable
     _loadingMoreContent = loadingMoreContent;
-=======
+}
+
+
 #pragma mark UIApplication Callback Notifications
 
 - (void) applicationWillEnterForeground: (UIApplication *) application
@@ -799,7 +801,7 @@
     [self resetDataRequestRange];
     
     // and then make a class appropriate data call
->>>>>>> origin/develop
+
 }
 
 @end

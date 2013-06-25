@@ -825,7 +825,7 @@
     [self.videoThumbnailCollectionView setContentOffset:CGPointZero animated:YES];
 }
 
-<<<<<<< HEAD
+
 - (void) scrollViewDidScroll: (UIScrollView *) scrollView
 {
     // when reaching far right hand side, load a new page
@@ -837,7 +837,7 @@
     }
 }
 
-=======
+
 - (void) applicationWillEnterForeground: (UIApplication *) application
 {
     // set the data request range back to 0, 48 and refresh
@@ -845,7 +845,6 @@
     
     [self loadAndUpdateFeedData];
 }
->>>>>>> origin/develop
 
 
 @end
