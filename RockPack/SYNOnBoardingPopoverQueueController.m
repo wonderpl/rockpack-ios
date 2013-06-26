@@ -364,7 +364,7 @@
                 {
                     
                     currentSlice.backgroundColor = [UIColor clearColor];
-                    UITapGestureRecognizer* recogniser = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(doit:)];
+                    UITapGestureRecognizer* recogniser = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(performAction:)];
                     [currentSlice addGestureRecognizer:recogniser];
                     
                 }
@@ -413,9 +413,13 @@
     
     
 }
--(void)doit:(UIGestureRecognizer*)recogniser
+-(void)performAction:(UIGestureRecognizer*)recogniser
 {
+    if(self.currentlyVisiblePopover.action)
+        self.currentlyVisiblePopover.action();
     
+    if(self.queue.count == 0)
+        [self presentNextPopover];
 }
 
 
