@@ -156,6 +156,9 @@
 {
     [super viewDidLoad];
     
+    // Take the best guess about how many  videos we have
+//    self.dataItemsAvailable = self.channel.videoInstances.count;
+    self.dataRequestRange = NSMakeRange(0, kAPIInitialBatchSize);
     
     _isIPhone = [SYNDeviceManager.sharedInstance isIPhone];
 
@@ -238,11 +241,6 @@
     {
         self.currentWebImageOperation = [self loadBackgroundImage];
     }
-    
-    
-    // == Swipe to Exit == //
-    
-    
     
     // == Avatar Image == //
     
@@ -891,10 +889,6 @@
                                                                                     withReuseIdentifier: @"SYNChannelFooterMoreView"
                                                                                            forIndexPath: indexPath];
             
-            [self.footerView.loadMoreButton addTarget: self
-                                               action: @selector(loadMoreVideos:)
-                                     forControlEvents: UIControlEventTouchUpInside];
-            
             
             supplementaryView = self.footerView;
         }
@@ -904,59 +898,81 @@
     return supplementaryView;
 }
 
--(void)loadMoreVideos:(UIButton*)footerButton
+
+- (void) incrementRangeForNextRequest
 {
+    NSLog (@"Before: Loc %d, Len %d, Avail %d", self.dataRequestRange.location, self.dataRequestRange.length, self.dataItemsAvailable);
+    NSInteger nextStart = self.dataRequestRange.location + self.dataRequestRange.length; // one is subtracted when the call happens for 0 indexing
     
-    // define success block //
+    NSInteger nextSize = (nextStart + STANDARD_REQUEST_LENGTH) >= self.dataItemsAvailable ? MAX ((self.dataItemsAvailable - nextStart), 0) : STANDARD_REQUEST_LENGTH;
+    
+    self.dataRequestRange = NSMakeRange(nextStart, nextSize);
+    NSLog (@"After: Loc %d, Len %d, Avail %d", self.dataRequestRange.location, self.dataRequestRange.length, self.dataItemsAvailable);
+}
+
+
+- (void) loadMoreVideos:(UIButton*)footerButton
+{
+    self.loadingMoreContent = YES;
     
     [self incrementRangeForNextRequest];
     
-    
+    // define success block 
     MKNKUserSuccessBlock successBlock = ^(NSDictionary *dictionary) {
+
+        NSArray* items = dictionary[@"videos"][@"items"];
+        int numberLoaded = items.count;
+        NSLog (@"Number loaded %d", numberLoaded);
+        NSNumber* totalNumber = dictionary[@"videos"][@"total"];
         
+        if (totalNumber && ![totalNumber isKindOfClass: [NSNull class]])
+        {
+            self.dataItemsAvailable = [totalNumber integerValue];
+        }
+        else
+        {
+            self.dataItemsAvailable = self.dataRequestRange.length; // heuristic
+        }
         
         [self.channel addVideoInstancesFromDictionary:dictionary];
         
         NSError* error;
         [self.channel.managedObjectContext save:&error];
         
-        self.footerView.showsLoading = NO;
-        
-        
+        self.loadingMoreContent = NO;
     };
     
-        // define success block //
-        
+    // define success block //
+    
     MKNKUserErrorBlock errorBlock = ^(NSDictionary* errorDictionary) {
         DebugLog(@"Update action failed");
-        self.footerView.showsLoading = NO;
-            
+        self.loadingMoreContent = NO;
+        
     };
-        
-    if ([self.channel.resourceURL hasPrefix: @"https"]) // https does not cache so it is fresh
-    {
-            
-            
-            [appDelegate.oAuthNetworkEngine videosForChannelForUserId:appDelegate.currentUser.uniqueId
-                                                            channelId:self.channel.uniqueId
-                                                              inRange:self.dataRequestRange
-                                                    completionHandler:successBlock
-                                                         errorHandler:errorBlock];
-            
-        
-    }
-    else
-    {
-            
-            
-            [appDelegate.networkEngine videosForChannelForUserId:appDelegate.currentUser.uniqueId
-                                                       channelId:self.channel.uniqueId
-                                                         inRange:self.dataRequestRange
-                                               completionHandler:successBlock
-                                                    errorHandler:errorBlock];
-    }
     
+    NSLog (@"Loc = %d, Length = %d, Avail = %d", self.dataRequestRange.location, self.dataRequestRange.length, self.dataItemsAvailable);
+    
+    if (self.dataRequestRange.location < self.dataItemsAvailable)
+    {
+        if ([self.channel.resourceURL hasPrefix: @"https"]) // https does not cache so it is fresh
+        {
+                [appDelegate.oAuthNetworkEngine videosForChannelForUserId:appDelegate.currentUser.uniqueId
+                                                                channelId:self.channel.uniqueId
+                                                                  inRange:self.dataRequestRange
+                                                        completionHandler:successBlock
+                                                             errorHandler:errorBlock];
+        }
+        else
+        {
+                [appDelegate.networkEngine videosForChannelForUserId:appDelegate.currentUser.uniqueId
+                                                           channelId:self.channel.uniqueId
+                                                             inRange:self.dataRequestRange
+                                                   completionHandler:successBlock
+                                                    errorHandler:errorBlock];
+        }
+    }
 }
+
 
 - (void) collectionView: (UICollectionView *) collectionView
          didSelectItemAtIndexPath: (NSIndexPath *) indexPath
@@ -2653,6 +2669,14 @@
     {
         CGFloat fadeSpan = (_isIPhone) ? kChannelDetailsFadeSpaniPhone : kChannelDetailsFadeSpan;
         CGFloat blurOpacity;
+        
+        // Try this first
+        // when reaching far right hand side, load a new page
+        if (scrollView.contentSize.height > 0 && (scrollView.contentOffset.y >= scrollView.contentSize.height - scrollView.bounds.size.height - kLoadMoreFooterViewHeight)
+            && self.isLoadingMoreContent == NO)
+        {
+            [self loadMoreVideos: nil];
+        }
         
         if (scrollView.contentOffset.y <= self.originalContentOffset.y)
         {

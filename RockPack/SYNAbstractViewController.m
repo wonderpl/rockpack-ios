@@ -275,6 +275,7 @@
                                                   DebugLog(@"Could not record videoAddButtonTapped: activity");
                                                   
                                               }];
+
         
         [[NSNotificationCenter defaultCenter] postNotificationName: kVideoQueueAdd
                                                             object: self
@@ -291,20 +292,27 @@
     _addButton.selected = !_addButton.selected; // switch to on/off
 }
 
+
 - (void) incrementRangeForNextRequest
 {
-    // (UIButton*) sender can be nil when called directly //
-    self.footerView.showsLoading = YES;
-    
+    NSLog (@"Before: Loc %d, Len %d, Avail %d", self.dataRequestRange.location, self.dataRequestRange.length, self.dataItemsAvailable);
     NSInteger nextStart = self.dataRequestRange.location + self.dataRequestRange.length; // one is subtracted when the call happens for 0 indexing
     
     if (nextStart >= self.dataItemsAvailable)
+    {
+        NSLog (@"Bailed: Loc %d, Len %d, Avail %d", self.dataRequestRange.location, self.dataRequestRange.length, self.dataItemsAvailable);
         return;
+    }
+
+    
+    self.loadingMoreContent = YES;
     
     NSInteger nextSize = (nextStart + STANDARD_REQUEST_LENGTH) >= self.dataItemsAvailable ? (self.dataItemsAvailable - nextStart) : STANDARD_REQUEST_LENGTH;
     
     self.dataRequestRange = NSMakeRange(nextStart, nextSize);
+    NSLog (@"After: Loc %d, Len %d, Avail %d", self.dataRequestRange.location, self.dataRequestRange.length, self.dataItemsAvailable);
 }
+
 
 - (NSIndexPath *) indexPathFromVideoInstanceButton: (UIButton *) button
 {
@@ -764,15 +772,18 @@
 	}
 }
 
--(void)headerTapped
+- (void) headerTapped
 {
     
 }
 
--(void)viewDidScrollToBack
+- (void) viewDidScrollToBack
 {
     // to be implemented by subclass
 }
+
+
+#pragma mark - Load more footer
 
 // Load more footer
 
@@ -781,6 +792,17 @@
     return [SYNDeviceManager.sharedInstance isIPhone] ? CGSizeMake(320.0f, 64.0f) : CGSizeMake(1024.0, 64.0);
 }
 
+
+- (void) loadingMoreContent: (BOOL) loadingMoreContent
+{
+    // First set the state of our footer spinner
+    self.footerView.showsLoading = loadingMoreContent;
+    
+    // Now set our actual variable
+    _loadingMoreContent = loadingMoreContent;
+}
+
+
 #pragma mark UIApplication Callback Notifications
 
 - (void) applicationWillEnterForeground: (UIApplication *) application
@@ -788,6 +810,7 @@
     [self resetDataRequestRange];
     
     // and then make a class appropriate data call
+
 }
 
 @end

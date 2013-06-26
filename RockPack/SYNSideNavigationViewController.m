@@ -360,9 +360,13 @@ typedef enum {
             {
 
                 SYNSideNavigationIphoneCell* iPhoneCell = (SYNSideNavigationIphoneCell*)cell;
-                [iPhoneCell setAccessoryNumber:[NSString stringWithFormat:@"%i",self.unreadNotifications]];
-                iPhoneCell.accessoryNumberLabel.hidden = NO;
-                iPhoneCell.accessoryNumberBackground.hidden = NO;
+                
+                if (self.unreadNotifications > 0)
+                {
+                    [iPhoneCell setAccessoryNumber:[NSString stringWithFormat:@"%i",self.unreadNotifications]];
+                    iPhoneCell.accessoryNumberLabel.hidden = NO;
+                    iPhoneCell.accessoryNumberBackground.hidden = NO;
+                }
 
                 iPhoneCell.accessoryView = [[UIImageView alloc] initWithImage: [UIImage imageNamed: @"NavArrow"]];
                     
