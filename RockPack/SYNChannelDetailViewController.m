@@ -2104,7 +2104,7 @@
                                               
                                               
                                               
-                                              [self notifyForChannelCreation:createdChannel];
+                                              [self notifyForChannelCreation:self.channel];
                                               
                                               self.isLocked = NO;
                                               
@@ -2132,7 +2132,7 @@
                                           }];
 }
 
--(void)notifyForChannelCreation:(Channel*)channelCreated
+-(void)notifyForChannelCreation:(Channel*)channelCreated  
 {
     // == Decide on the success message type shown == //
     
@@ -2144,17 +2144,17 @@
     NSString* buttonString;
     int numberOfConditions = 0;
     __weak SYNChannelDetailViewController* wself = self;
-    if(channelCreated) // channel has been updated rather than created
+    if(channelCreated) // channelCreated will always be true in this implementation, change from self.channels to show message only on creation and not on update
     {
         
-        if([[self.channel.title substringToIndex:8] isEqualToString:@"UNTITLED"]) // no title
+        if(self.channel.title.length > 8 && [[self.channel.title substringToIndex:8] isEqualToString:@"UNTITLED"]) // no title
         {
             
             [conditionsArray addObject:NSLocalizedString(@"private_condition_title", nil)];
             buttonString = NSLocalizedString(@"enter_title", nil);
             actionBlock = ^{
-                wself.mode = kChannelDetailsModeEdit;
-                [wself setDisplayControlsVisibility:YES];
+                [wself setMode: kChannelDetailsModeEdit];
+                [wself editButtonTapped:wself.editButton];
                 [wself.channelTitleTextView becomeFirstResponder];
             };
             numberOfConditions++;
@@ -2166,8 +2166,8 @@
             buttonString = NSLocalizedString(@"select_category", nil);
             actionBlock = ^{
                 [wself setMode:kChannelDetailsModeEdit];
-                [wself setDisplayControlsVisibility:YES];
-                [wself selectCategoryButtonTapped:self.selectCategoryButton];
+                [wself editButtonTapped:wself.editButton];
+                [wself selectCategoryButtonTapped:wself.selectCategoryButton];
             };
             numberOfConditions++;
         }
@@ -2178,7 +2178,7 @@
             buttonString = NSLocalizedString(@"select_cover", nil);
             actionBlock = ^{
                 [wself setMode: kChannelDetailsModeEdit];
-                [wself setDisplayControlsVisibility:YES];
+                [wself editButtonTapped:wself.editButton];
                 [wself addCoverButtonTapped:wself.addCoverButton];
             };
             numberOfConditions++;
@@ -2218,7 +2218,7 @@
                 buttonString = @"EDIT";
                 actionBlock = ^{
                     [wself setMode: kChannelDetailsModeEdit];
-                    [wself setDisplayControlsVisibility:YES];
+                    [wself editButtonTapped:wself.editButton];
                 };
             }
             caution = [SYNCaution withMessage:(NSString*)conditionString
