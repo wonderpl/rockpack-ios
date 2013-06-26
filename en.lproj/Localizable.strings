@@ -52,9 +52,10 @@
 "select_cover" = "SELECT A COVER";
 
 "channel_created_succesfully" = "CHANNEL CREATED SUCCESFULLY";
-"channel_will_remain_private_category" = "HOWEVER IT WILL REMAIN PRIVATE UNTIL YOU SELECT A CATEGORY BASED ON IT'S CONTENT";
-"channel_will_remain_private_title" = "HOWEVER IT WILL REMAIN PRIVATE UNTIL YOU ENTER A TITLE";
-"channel_will_remain_private_cover" = "HOWEVER IT WILL REMAIN PRIVATE UNTIL YOU SELECT A COVER";
+"channel_will_remain_private_until" = "HOWEVER IT WILL REMAIN PRIVATE UNTIL";
+"private_condition_category" = "YOU SELECT A CATEGORY BASED ON IT'S CONTENT";
+"private_condition_title" = "YOU ENTER A TITLE";
+"private_condition_cover" = "YOU SELECT A COVER";
 
 "startscreen_onboard_2_title" = "Express Yourself";
 "startscreen_onboard_2" = "Create your own video channels and\npersonalize them with your own photos.";
