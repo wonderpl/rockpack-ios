@@ -5018,6 +5018,7 @@
 				010DEFCD1629BDC40080F26B /* Frameworks */,
 				010DEFCE1629BDC40080F26B /* Resources */,
 				3D694519866C43D0BEC8D1AD /* Copy Pods Resources */,
+				01BCFB65177B07B300057524 /* ShellScript */,
 			);
 			buildRules = (
 			);
@@ -6018,6 +6019,19 @@
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/sh;
 			shellScript = "# Run the unit tests in this test bundle.\n\"${SYSTEM_DEVELOPER_DIR}/Tools/RunUnitTests\"\n";
+		};
+		01BCFB65177B07B300057524 /* ShellScript */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputPaths = (
+			);
+			outputPaths = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "find ${CONFIGURATION_BUILD_DIR}/${UNLOCALIZED_RESOURCES_FOLDER_PATH} -name \"*.lproj\" -not -name \"en.lproj\" -print | xargs rm -r";
 		};
 		01E427EB1664ECB3009B941F /* ShellScript */ = {
 			isa = PBXShellScriptBuildPhase;
