@@ -275,19 +275,7 @@
                                                   DebugLog(@"Could not record videoAddButtonTapped: activity");
                                                   
                                               }];
-<<<<<<< HEAD
-    }
-    else
-    {
-        noteName = kVideoQueueRemove;
-    }
-    
-    [[NSNotificationCenter defaultCenter] postNotificationName: noteName
-                                                        object: self
-                                                      userInfo: @{@"VideoInstance" : videoInstance }];
 
-    [self.videoThumbnailCollectionView reloadData];
-=======
         
         [[NSNotificationCenter defaultCenter] postNotificationName: kVideoQueueAdd
                                                             object: self
@@ -302,7 +290,6 @@
     
     
     _addButton.selected = !_addButton.selected; // switch to on/off
->>>>>>> origin/develop
 }
 
 
