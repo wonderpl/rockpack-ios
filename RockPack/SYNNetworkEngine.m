@@ -151,12 +151,8 @@
     NSMutableDictionary* parameters = [NSMutableDictionary dictionary];
     
     parameters[@"start"] = @(range.location);
-    
     parameters[@"size"] = @(range.length);
-    
     parameters[@"locale"] = self.localeString;
-    
-    
     
     SYNNetworkOperationJsonObject *networkOperation = (SYNNetworkOperationJsonObject*)[self operationWithPath: apiString
                                                                                                        params: parameters
