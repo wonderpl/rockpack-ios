@@ -23,6 +23,7 @@
 #import "SYNOAuthNetworkEngine.h"
 #import "SYNObjectFactory.h"
 #import "SYNPageView.h"
+#import "SYNCautionMessageView.h"
 #import "SYNSearchBoxViewController.h"
 #import "SYNSearchRootViewController.h"
 #import "SYNSideNavigationViewController.h"
@@ -30,6 +31,7 @@
 #import "SYNVideoPlaybackViewController.h"
 #import "SYNVideoViewerViewController.h"
 #import "UIFont+SYNFont.h"
+#import "SYNCaution.h"
 #import "VideoInstance.h"
 #import <QuartzCore/QuartzCore.h>
 
@@ -267,6 +269,8 @@ typedef void(^AnimationCompletionBlock)(BOOL finished);
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(searchCancelledIPhone:) name:kSideNavigationSearchCloseNotification object:nil];
     
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(channelSuccessfullySaved:) name:kNoteChannelSaved object:nil];
+    
+    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(presentSuccessNotificationWithCaution:) name:kNoteSavingCaution object:nil];
     
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(hideOrShowNetworkMessages:) name:kNoteHideNetworkMessages object:nil];
     
@@ -999,8 +1003,8 @@ typedef void(^AnimationCompletionBlock)(BOOL finished);
 
 - (void) channelSuccessfullySaved: (NSNotification*) note
 {
-    NSString* message = [SYNDeviceManager.sharedInstance isIPhone]?
-    NSLocalizedString(@"CHANNEL SAVED",nil):
+    NSString* message =
+    [SYNDeviceManager.sharedInstance isIPhone] ? NSLocalizedString(@"CHANNEL SAVED",nil) :
     NSLocalizedString(@"YOUR CHANNEL HAS BEEN SAVED SUCCESSFULLY",nil);
     [self presentSuccessNotificationWithMessage:message];
 }
@@ -1343,8 +1347,9 @@ typedef void(^AnimationCompletionBlock)(BOOL finished);
 }
 
 
-- (void) presentSuccessNotificationWithMessage: (NSString*) message
+- (void) presentSuccessNotificationWithMessage : (NSString*) message
 {
+    
     __block SYNNetworkErrorView* successNotification = [[SYNNetworkErrorView alloc] init];
     successNotification.backgroundColor = [UIColor colorWithPatternImage: [UIImage imageNamed: @"BarSucess"]];
     [successNotification setText: message];
@@ -1359,6 +1364,7 @@ typedef void(^AnimationCompletionBlock)(BOOL finished);
                          successNotification.frame = newFrame;
                      }
                      completion: ^(BOOL finished) {
+                         
                          [UIView animateWithDuration: 0.3f
                                                delay: 4.0f
                                              options: UIViewAnimationOptionCurveEaseIn
@@ -1371,6 +1377,21 @@ typedef void(^AnimationCompletionBlock)(BOOL finished);
                                               [successNotification removeFromSuperview];
                                           }];
                      }];
+}
+
+- (void) presentSuccessNotificationWithCaution:(NSNotification*)notification
+{
+    SYNCaution* caution = [[notification userInfo] objectForKey:kCaution];
+    if(!caution)
+        return;
+    
+    SYNCautionMessageView* cautionMessageView = [SYNCautionMessageView withCaution:caution];
+    
+    [cautionMessageView presentInView:self.view];
+    
+    
+    
+    
 }
 
 
