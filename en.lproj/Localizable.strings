@@ -47,6 +47,14 @@
 "startscreen_onboard_1" = " \n ";
 
 "full_name" = "(full name)";
+"select_category" = "SELECT A CATEGORY";
+"enter_title" = "ENTER A TITLE";
+"select_cover" = "SELECT A COVER";
+
+"channel_created_succesfully" = "CHANNEL CREATED SUCCESFULLY";
+"channel_will_remain_private_category" = "HOWEVER IT WILL REMAIN PRIVATE UNTIL YOU SELECT A CATEGORY BASED ON IT'S CONTENT";
+"channel_will_remain_private_title" = "HOWEVER IT WILL REMAIN PRIVATE UNTIL YOU ENTER A TITLE";
+"channel_will_remain_private_cover" = "HOWEVER IT WILL REMAIN PRIVATE UNTIL YOU SELECT A COVER";
 
 "startscreen_onboard_2_title" = "Express Yourself";
 "startscreen_onboard_2" = "Create your own video channels and\npersonalize them with your own photos.";
