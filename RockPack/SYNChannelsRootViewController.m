@@ -958,6 +958,13 @@
 - (void) categoryTableController: (SYNChannelCategoryTableViewController *) tableController
                didSelectCategory: (Genre *) category
 {
+    
+    id<GAITracker> tracker = [GAI sharedInstance].defaultTracker;
+    
+    [tracker sendEventWithCategory: @"uiAction"
+                        withAction: @"categoryItemClick"
+                         withLabel: category.name
+                         withValue: nil];
     if (category)
     {
         self.categoryNameLabel.text = category.name;
@@ -980,6 +987,14 @@
 - (void) categoryTableController: (SYNChannelCategoryTableViewController *) tableController
             didSelectSubCategory: (SubGenre *) subCategory
 {
+    
+    id<GAITracker> tracker = [GAI sharedInstance].defaultTracker;
+    
+    [tracker sendEventWithCategory: @"uiAction"
+                        withAction: @"categoryItemClick"
+                         withLabel: subCategory.name
+                         withValue: nil];
+    
     self.categoryNameLabel.text = subCategory.genre.name;
     [self.categoryNameLabel sizeToFit];
     self.subCategoryNameLabel.text = subCategory.name;
