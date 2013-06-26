@@ -202,6 +202,9 @@
 - (void) viewDidAppear:(BOOL)animated
 {
     [super viewDidAppear:animated];
+    
+    [GAI.sharedInstance.defaultTracker sendView: @"Start"];
+    
     self.rockpackLogoImage.frame = self.rockpackLogoImage.frame;
     [UIView animateWithDuration:0.3f
                           delay:0.1f
@@ -307,10 +310,6 @@
                          withLabel: nil
                          withValue: nil];
     
-    [tracker sendEventWithCategory: @"goal"
-                        withAction: @"userLogin"
-                         withLabel: @"Facebook"
-                         withValue: nil];
     
     if(![self isNetworkAccessibleOtherwiseShowErrorAlert])
     {
@@ -327,6 +326,7 @@
                              withValue: nil];
         
         [self completeLoginProcess];
+        
     } errorHandler:^(id error) {
         [self doFacebookFailedAnimation];
         if([error isKindOfClass:[NSDictionary class]])
@@ -418,13 +418,6 @@
     [self hideOnboarding];
     
     [GAI.sharedInstance.defaultTracker sendView: @"Login"];
-    
-    id<GAITracker> tracker = [GAI sharedInstance].defaultTracker;
-    
-    [tracker sendEventWithCategory: @"goal"
-                        withAction: @"userLogin"
-                         withLabel: @"Rockpack"
-                         withValue: nil];
     
     //Fade out login background
     self.loginBackgroundImage.alpha = 1.0f;
@@ -676,6 +669,13 @@
                 [self.activityIndicator stopAnimating];
                 
                 [self completeLoginProcess];
+                
+                id<GAITracker> tracker = [GAI sharedInstance].defaultTracker;
+                
+                [tracker sendEventWithCategory: @"goal"
+                                    withAction: @"userLogin"
+                                     withLabel: @"Rockpack"
+                                     withValue: nil];
                 
             } errorHandler:^(NSDictionary* errorDictionary) {
                 
