@@ -29,6 +29,7 @@
 #import "UIImageView+WebCache.h"
 #import "Video.h"
 #import "VideoInstance.h"
+#import "SYNCaution.h"
 #import "SYNCoverChooserController.h"
 #import "SYNDeviceManager.h"
 #import <AVFoundation/AVFoundation.h>
@@ -1469,6 +1470,7 @@
                                                      cover: cover
                                                   isPublic: YES
                                          completionHandler: ^(NSDictionary* resourceCreated) {
+                                             
                                              id<GAITracker> tracker = [GAI sharedInstance].defaultTracker;
                                              
                                              [tracker sendEventWithCategory: @"goal"
@@ -1845,7 +1847,7 @@
     
     NSString* cover =  self.selectedCoverId;
     
-    if ([cover length]==0 || [cover isEqualToString:kCoverSetNoCover])
+    if ([cover length] == 0 || [cover isEqualToString:kCoverSetNoCover])
     {
         cover = @"";
     }
@@ -1857,6 +1859,11 @@
                                                      cover: cover
                                                   isPublic: YES
                                          completionHandler: ^(NSDictionary* resourceCreated) {
+                                             
+                                             
+                                             // shows the message label from the MasterViewController
+                                             
+                                             
                                              
                                              id<GAITracker> tracker = [GAI sharedInstance].defaultTracker;
                                              
@@ -1918,6 +1925,10 @@
                                              
                                               }];
 }
+
+// possible actions after waring for creating incomplete channel (such as not defining category)
+
+
 
 
 - (void) setVideosForChannelById: (NSString*) channelId isUpdated:(BOOL) isUpdated
@@ -2025,9 +2036,6 @@
                                                   NSError* error;
                                                   [oldChannel.managedObjectContext save:&error];
                                                   
-//                                                  DebugLog(@"Channel: %@", createdChannel);
-                                                  
-                                                  // (the channel that was under creation will be deleted from the kVideoQueueClear notification)
                                                   
                                                   
                                               }
@@ -2071,8 +2079,9 @@
                                               [[NSNotificationCenter defaultCenter] postNotificationName: kVideoQueueClear
                                                                                                   object: nil];
                                               
-                                              [[NSNotificationCenter defaultCenter] postNotificationName:kNoteChannelSaved
-                                                                                                  object:self];
+                                              
+                                              
+                                              [self notifyForChannelCreation:createdChannel];
                                               
                                               self.isLocked = NO;
                                               
@@ -2098,6 +2107,68 @@
                                               [[NSNotificationCenter defaultCenter] postNotificationName: kVideoQueueClear
                                                                                                   object: nil];
                                           }];
+}
+
+-(void)notifyForChannelCreation:(Channel*)channelCreated
+{
+    // == Decide on the success message type shown == //
+    
+    NSNotification* successNotification = [NSNotification notificationWithName:kNoteChannelSaved
+                                                                        object:self];
+    SYNCaution* caution;
+    
+    
+    if(channelCreated) // channel has been updated rather than created
+    {
+        
+        if([[self.channel.title substringToIndex:8] isEqualToString:@"UNTITLED"]) // no title
+        {
+            caution = [SYNCaution withMessage:NSLocalizedString(@"channel_will_remain_private_title", nil)
+                                  actionTitle:NSLocalizedString(@"enter_title", nil)
+                                  andCallback:^{
+                                      
+                                      NSLog(@"Pressed!");
+                                      
+                                  }];
+            
+            successNotification = [NSNotification notificationWithName:kNoteSavingCaution
+                                                                object:self
+                                                              userInfo:@{kCaution : caution}];
+            
+        }
+        else if([self.channel.categoryId isEqualToString:@""])
+        {
+            caution = [SYNCaution withMessage:NSLocalizedString(@"channel_will_remain_private_category", nil)
+                                  actionTitle:NSLocalizedString(@"select_category", nil)
+                                  andCallback:^{
+                                      
+                                      NSLog(@"Pressed!");
+                                      
+                                  }];
+            
+            successNotification = [NSNotification notificationWithName:kNoteSavingCaution
+                                                                object:self
+                                                              userInfo:@{kCaution : caution}];
+        }
+        else if([self.channel.channelCover.imageUrl isEqualToString:@""])
+        {
+            caution = [SYNCaution withMessage:NSLocalizedString(@"channel_will_remain_private_cover", nil)
+                                  actionTitle:NSLocalizedString(@"select_cover", nil)
+                                  andCallback:^{
+                                      
+                                      NSLog(@"Pressed!");
+                                      
+                                  }];
+            
+            successNotification = [NSNotification notificationWithName:kNoteSavingCaution
+                                                                object:self
+                                                              userInfo:@{kCaution : caution}];
+        }
+    }
+    
+    
+    
+    [[NSNotificationCenter defaultCenter] postNotification:successNotification];
 }
 
 -(void)finaliseViewStatusAfterCreateOrUpdate:(BOOL)isIPad
@@ -2152,7 +2223,7 @@
 {
     self.createChannelButton.hidden = NO;
     [self.activityIndicator stopAnimating];
-        
+    
     [[[UIAlertView alloc] initWithTitle: errorTitle
                                 message: errorMessage
                                delegate: nil

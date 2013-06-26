@@ -55,6 +55,7 @@
 #define kCoverArtChanged            @"kCoverArtChanged"
 #define kCoverSetNoCover            @"kCoverSetNoCover"
 
+#define kCaution                    @"kCaution"
 
 // == Main WS API == //
 
@@ -449,6 +450,7 @@ typedef enum {
 #define kHideSideNavigationView     @"kHideSideNavigationView"
 
 #define kNoteChannelSaved           @"kNoteChannelSaved"
+#define kNoteSavingCaution          @"kNoteSavingCaution"
 
 #define kNoteHideNetworkMessages    @"kNoteHideNetworkMessages"
 #define kNoteShowNetworkMessages    @"kNoteShowNetworkMessages"
