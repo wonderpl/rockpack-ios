@@ -11,6 +11,7 @@
 #import "NSDate+RFC1123.h"
 #import "ISO8601DateFormatter.h"
 #import "AppConstants.h"
+#import "Appirater.h"
 
 @implementation SYNRockpackNotification
 
@@ -32,6 +33,11 @@
         self.identifier = [identifierNumber integerValue];
         
         self.messageType = data[@"message_type"];
+        
+        if ([self.messageType isEqualToString: @"subscribed"])
+        {
+            [Appirater userDidSignificantEvent: FALSE];
+        }
         
         NSString* dateString = data[@"date_created"];
         

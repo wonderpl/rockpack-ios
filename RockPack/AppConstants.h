@@ -11,7 +11,7 @@
 
 // User ratings mechanism
 
-#define ENABLE_USER_RATINGS__
+#define ENABLE_USER_RATINGS
 
 #define kAPIInitialBatchSize 48
 

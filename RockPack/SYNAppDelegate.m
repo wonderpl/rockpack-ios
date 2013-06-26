@@ -66,10 +66,10 @@ didFinishLaunchingWithOptions: (NSDictionary *) launchOptions
 {
 #ifdef ENABLE_USER_RATINGS
     [Appirater setAppId: @"660697542"];
-    [Appirater setDaysUntilPrompt: 1];
-    [Appirater setUsesUntilPrompt: 10];
-    [Appirater setSignificantEventsUntilPrompt: -1];
-    [Appirater setTimeBeforeReminding: 10];
+    [Appirater setDaysUntilPrompt: 5];
+    [Appirater setUsesUntilPrompt: 5];
+    [Appirater setSignificantEventsUntilPrompt: 1];
+    [Appirater setTimeBeforeReminding: 15];
 //    [Appirater setDebug: YES];
 #endif
     
