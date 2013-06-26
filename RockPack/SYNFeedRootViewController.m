@@ -406,6 +406,8 @@
 
 - (void) loadAndUpdateFeedData
 {
+    self.loadingMoreContent = YES;
+    
     NSLog (@"Loc %d, Len %d", self.dataRequestRange.location, self.dataRequestRange.length);
     
     if(!appDelegate.currentOAuth2Credentials.userId)

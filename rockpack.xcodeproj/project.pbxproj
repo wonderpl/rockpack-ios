@@ -3426,8 +3426,8 @@
 				018919FF1672255F00AB07BB /* SYNHomeSectionHeaderView.xib */,
 				BE7D342F170DDB310085AB81 /* SYNChannelFooterMoreView.h */,
 				BE7D3430170DDB310085AB81 /* SYNChannelFooterMoreView.m */,
-				011BA5DB174D1EB700041A16 /* SYNCoverRightMoreView.h */,
 				BE7D342D170DD8C90085AB81 /* SYNChannelFooterMoreView.xib */,
+				011BA5DB174D1EB700041A16 /* SYNCoverRightMoreView.h */,
 				011BA5DC174D1EB700041A16 /* SYNCoverRightMoreView.m */,
 				011BA5DE174D1ECB00041A16 /* SYNCoverRightMoreView.xib */,
 			);
