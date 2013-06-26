@@ -10,7 +10,6 @@
 
 @interface SYNChannelFooterMoreView : UICollectionReusableView
 
-@property (nonatomic, strong) IBOutlet UIButton* loadMoreButton;
 @property (nonatomic, strong) IBOutlet UIActivityIndicatorView* activityIndicator;
 
 @property (nonatomic) BOOL showsLoading;

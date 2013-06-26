@@ -9,8 +9,11 @@
 #import <UIKit/UIKit.h>
 #import "AppConstants.h"
 
+typedef void(^PopoverAction)(void);
 
-@interface SYNOnBoardingPopoverView : UIView
+@interface SYNOnBoardingPopoverView : UIView {
+    PopoverAction a;
+}
 
 + (id)withMessage:(NSString*)message
          withSize:(CGSize)size
@@ -28,5 +31,6 @@
 @property (nonatomic) CGRect pointRect;
 @property (nonatomic, strong) UIButton* okButton;
 @property (nonatomic, strong) UIImageView* arrow;
+@property (nonatomic, copy) PopoverAction action;
 
 @end

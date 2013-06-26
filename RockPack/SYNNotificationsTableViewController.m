@@ -97,8 +97,6 @@
     
     SYNRockpackNotification* notification = (SYNRockpackNotification*)_notifications[indexPath.row];
     
-    // NSLog(@">> notification: %i", notification.identifier);
-    
     NSMutableString* constructedMessage = [[NSMutableString alloc] init];
     [constructedMessage appendFormat:@"%@", [notification.channelOwner.displayName uppercaseString]];
     [constructedMessage appendString:@" has "];

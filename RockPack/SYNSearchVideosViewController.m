@@ -158,7 +158,7 @@
     if (!appDelegate)
         appDelegate = (SYNAppDelegate*)[[UIApplication sharedApplication] delegate];
     
-    self.dataRequestRange = NSMakeRange(0, 48);
+    self.dataRequestRange = NSMakeRange(0, kAPIInitialBatchSize);
     
     
 
@@ -336,7 +336,7 @@
                                            inRange: self.dataRequestRange
                                         onComplete: ^(int itemsCount) {
                                             self.dataItemsAvailable = itemsCount;
-                                            self.footerView.showsLoading = NO;
+                                            self.loadingMoreContent = NO;
                                             [self.videoThumbnailCollectionView reloadData];
                                         }];
 }
@@ -363,7 +363,7 @@
 {
     if(dataRequestRange.length == 0)
     {
-        dataRequestRange = NSMakeRange(0, 48);
+        dataRequestRange = NSMakeRange(0, kAPIInitialBatchSize);
     }
         
     return dataRequestRange;

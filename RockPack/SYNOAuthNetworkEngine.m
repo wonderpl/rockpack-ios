@@ -922,7 +922,7 @@
     parameters[@"locale"] = self.localeString;
     
     SYNNetworkOperationJsonObject *networkOperation = (SYNNetworkOperationJsonObject*)[self operationWithPath: apiString
-                                                                                                       params: nil
+                                                                                                       params: parameters
                                                                                                    httpMethod: @"GET"
                                                                                                           ssl: TRUE];
     

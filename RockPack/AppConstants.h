@@ -13,6 +13,8 @@
 
 #define ENABLE_USER_RATINGS__
 
+#define kAPIInitialBatchSize 48
+
 //
 // API
 //
@@ -29,7 +31,7 @@
 #define kCoverArtImage              @"CoverArtImage"
 
 #define kForceRefreshValue          @"kForceRefreshValue"
-#define kAutoPlayVideoId          @"kAutoPlayVideoId"
+#define kAutoPlayVideoId            @"kAutoPlayVideoId"
 
 
 // viewId
@@ -264,6 +266,8 @@ typedef enum _NavigationButtonsAppearence {
 //
 // Dimensions
 //
+
+#define kLoadMoreFooterViewHeight   50.0f
 
 #define kMinorDimension 768.0f
 #define kMajorDimension 1024.0f

@@ -249,38 +249,39 @@
 
 - (void) videoAddButtonTapped: (UIButton *) _addButton
 {
-    NSString* noteName;
+    if(!self.videoThumbnailCollectionView) // not all sub classes will have this initialized so check to avoid errors
+        return;
+    
+    if(_addButton.selected)
+        return;
+    
     
     UIView *v = _addButton.superview.superview;
     NSIndexPath *indexPath = [self.videoThumbnailCollectionView indexPathForItemAtPoint: v.center];
     VideoInstance *videoInstance = [self.fetchedResultsController objectAtIndexPath: indexPath];
     
-    if (!_addButton.selected || [SYNDeviceManager.sharedInstance isIPhone]) // There is only ever one video in the queue on iPhone. Always fire the add action.
+    
+    
+    if(videoInstance)
     {
-        noteName = kVideoQueueAdd;
-        
         [appDelegate.oAuthNetworkEngine recordActivityForUserId: appDelegate.currentUser.uniqueId
                                                          action: @"select"
                                                 videoInstanceId: videoInstance.uniqueId
                                               completionHandler: ^(id response) {
                                                   
-//                                                  DebugLog (@"Acivity recorded: Select");
                                                   
                                               } errorHandler: ^(id error) {
                                                   
-//                                                  DebugLog (@"Acivity not recorded: Select");
+                                                  DebugLog(@"Could not record videoAddButtonTapped: activity");
                                                   
                                               }];
-    }
-    else
-    {
-        noteName = kVideoQueueRemove;
+
         
+        [[NSNotificationCenter defaultCenter] postNotificationName: kVideoQueueAdd
+                                                            object: self
+                                                          userInfo: @{@"VideoInstance" : videoInstance }];
     }
     
-    [[NSNotificationCenter defaultCenter] postNotificationName: noteName
-                                                        object: self
-                                                      userInfo: @{@"VideoInstance" : videoInstance }];
     
     
     
@@ -288,23 +289,30 @@
     [self.videoThumbnailCollectionView reloadData];
     
     
-
+    _addButton.selected = !_addButton.selected; // switch to on/off
 }
+
 
 - (void) incrementRangeForNextRequest
 {
-    // (UIButton*) sender can be nil when called directly //
-    self.footerView.showsLoading = YES;
-    
+    NSLog (@"Before: Loc %d, Len %d, Avail %d", self.dataRequestRange.location, self.dataRequestRange.length, self.dataItemsAvailable);
     NSInteger nextStart = self.dataRequestRange.location + self.dataRequestRange.length; // one is subtracted when the call happens for 0 indexing
     
     if (nextStart >= self.dataItemsAvailable)
+    {
+        NSLog (@"Bailed: Loc %d, Len %d, Avail %d", self.dataRequestRange.location, self.dataRequestRange.length, self.dataItemsAvailable);
         return;
+    }
+
+    
+    self.loadingMoreContent = YES;
     
     NSInteger nextSize = (nextStart + STANDARD_REQUEST_LENGTH) >= self.dataItemsAvailable ? (self.dataItemsAvailable - nextStart) : STANDARD_REQUEST_LENGTH;
     
     self.dataRequestRange = NSMakeRange(nextStart, nextSize);
+    NSLog (@"After: Loc %d, Len %d, Avail %d", self.dataRequestRange.location, self.dataRequestRange.length, self.dataItemsAvailable);
 }
+
 
 - (NSIndexPath *) indexPathFromVideoInstanceButton: (UIButton *) button
 {
@@ -764,15 +772,18 @@
 	}
 }
 
--(void)headerTapped
+- (void) headerTapped
 {
     
 }
 
--(void)viewDidScrollToBack
+- (void) viewDidScrollToBack
 {
     // to be implemented by subclass
 }
+
+
+#pragma mark - Load more footer
 
 // Load more footer
 
@@ -781,6 +792,17 @@
     return [SYNDeviceManager.sharedInstance isIPhone] ? CGSizeMake(320.0f, 64.0f) : CGSizeMake(1024.0, 64.0);
 }
 
+
+- (void) loadingMoreContent: (BOOL) loadingMoreContent
+{
+    // First set the state of our footer spinner
+    self.footerView.showsLoading = loadingMoreContent;
+    
+    // Now set our actual variable
+    _loadingMoreContent = loadingMoreContent;
+}
+
+
 #pragma mark UIApplication Callback Notifications
 
 - (void) applicationWillEnterForeground: (UIApplication *) application
@@ -788,6 +810,7 @@
     [self resetDataRequestRange];
     
     // and then make a class appropriate data call
+
 }
 
 @end
