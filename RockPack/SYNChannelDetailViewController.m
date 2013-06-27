@@ -934,12 +934,27 @@
             self.dataItemsAvailable = self.dataRequestRange.length; // heuristic
         }
         
-        [self.channel addVideoInstancesFromDictionary:dictionary];
+        [appDelegate.mainRegistry performInBackground:^BOOL(NSManagedObjectContext *backgroundContext) {
+            
+            Channel * channel = (Channel*)[backgroundContext objectWithID:self.channel.objectID];
+            [channel addVideoInstancesFromDictionary:dictionary];
+            
+            NSError* error;
+            [backgroundContext save:&error];
+            
+            if(error)
+                return NO;
+            
+            return YES;
+            
+        } completionBlock:^(BOOL success) {
+            self.loadingMoreContent = NO;
+//            if(success)
+//            {
+//                [self.channel.managedObjectContext refreshObject:self.channel mergeChanges:NO];
+//            }
+        }];
         
-        NSError* error;
-        [self.channel.managedObjectContext save:&error];
-        
-        self.loadingMoreContent = NO;
     };
     
     // define success block //

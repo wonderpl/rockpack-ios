@@ -889,6 +889,7 @@
         BOOL usernameAvailable = [availabilitynumber boolValue];
             if(usernameAvailable)
             {
+                [self.validUsernames addObject:self.registeringUserNameInputField.text];
                 [self showRegistrationStep2];
             }
             else
@@ -1169,30 +1170,19 @@
 
 - (void) turnOnButton: (UIButton*) button
 {
-    if(button.hidden == YES)
-    {
-        button.hidden = NO;
-        button.alpha = 0.0f;
-        [UIView animateWithDuration:kLoginAnimationTransitionDuration delay:0.0f options:UIViewAnimationOptionCurveEaseInOut animations:^{
-            button.alpha = 1.0f;
-        } completion:nil];
-    }
+    button.hidden = NO;
+    [UIView animateWithDuration:kLoginAnimationTransitionDuration delay:0.0f options:UIViewAnimationOptionCurveEaseInOut animations:^{
+        button.alpha = 1.0f;
+    } completion:nil];
+    
 }
 
 
 - (void) turnOffButton: (UIButton*) button
 {
-    if(button.hidden==NO)
-    {
-        [UIView animateWithDuration:kLoginAnimationTransitionDuration delay:0.0f options:UIViewAnimationOptionCurveEaseInOut animations:^{
-            button.alpha = 0.0f;
-        } completion:^(BOOL finished) {
-            if(finished)
-            {
-                button.hidden = YES;
-            }
-        }];
-    }
+    [UIView animateWithDuration:kLoginAnimationTransitionDuration delay:0.0f options:UIViewAnimationOptionCurveEaseInOut animations:^{
+        button.alpha = 0.0f;
+    } completion:nil];
 }
 
 
