@@ -83,6 +83,10 @@
     }
     self.backgroundImagesArray = [NSArray arrayWithArray:imagesArray];
     
+    
+    
+    
+    
 }
 
 
@@ -131,6 +135,23 @@
     
     
     self.loginBackgroundImage.image = [UIImage imageNamed:self.backgroundImagesArray[0]]; // get the first image
+    
+    // localise date format for US and UK
+    
+    NSString* localeFromDevice = [(NSString*)CFBridgingRelease(CFLocaleCreateCanonicalLanguageIdentifierFromString(NULL, (CFStringRef)[NSLocale.autoupdatingCurrentLocale objectForKey: NSLocaleIdentifier])) lowercaseString];
+    
+    if([localeFromDevice isEqualToString:@"en-us"])
+    {
+        NSInteger ddTag = self.ddInputField.tag;
+        CGRect ddRect = self.ddInputField.frame;
+        
+        self.ddInputField.frame = self.mmInputField.frame;
+        self.mmInputField.frame = ddRect;
+        
+        self.ddInputField.tag = self.mmInputField.tag;
+        self.mmInputField.tag = ddTag;
+
+    }
 }
 
 - (void) viewDidAppear: (BOOL) animated

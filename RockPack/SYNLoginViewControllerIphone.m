@@ -1057,9 +1057,7 @@
 
 #pragma mark - UITextField delegate
 
-- (BOOL) textField: (UITextField *) textField
-shouldChangeCharactersInRange: (NSRange) range
- replacementString: (NSString *) newCharacter
+- (BOOL) textField: (UITextField *) textField shouldChangeCharactersInRange: (NSRange) range replacementString: (NSString *) newCharacter
 {
     
     NSUInteger oldLength = textField.text.length;
@@ -1092,19 +1090,25 @@ shouldChangeCharactersInRange: (NSRange) range
     self.loginErrorLabel.text = @"";
     self.passwordResetErrorLabel.text = @"";
     self.registeringUserErrorLabel.text = @"";
-        
-    if(sender == self.ddInputField && [self.ddInputField.text length]==2)
+    
+    UIView* nextView = [self.view viewWithTag: ((UITextField*)sender).tag + 1];
+    
+    if(sender == self.ddInputField && [self.ddInputField.text length] == 2)
     {
-        [self.mmInputField becomeFirstResponder];
-        if([self.mmInputField.text length]>0 && [self.yyyyInputField.text length]>0 )
+        if(nextView && [nextView isKindOfClass:[UITextField class]])
+            [(UITextField*)nextView becomeFirstResponder];
+        
+        if([self.mmInputField.text length] > 0 && [self.yyyyInputField.text length]>0 )
         {
             [self dateValidForDd:self.ddInputField mm:self.mmInputField yyyy:self.yyyyInputField];
         }
     }
     else if(sender == self.mmInputField && [self.mmInputField.text length]==2)
     {
-        [self.yyyyInputField becomeFirstResponder];
-        if([self.ddInputField.text length]>0 && [self.yyyyInputField.text length]>0 )
+        if(nextView && [nextView isKindOfClass:[UITextField class]])
+            [(UITextField*)nextView becomeFirstResponder];
+        
+        if([self.ddInputField.text length] > 0 && [self.yyyyInputField.text length]>0 )
         {
             [self dateValidForDd:self.ddInputField mm:self.mmInputField yyyy:self.yyyyInputField];
         }

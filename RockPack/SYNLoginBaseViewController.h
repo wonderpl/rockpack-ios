@@ -15,6 +15,7 @@
 
 #import "SYNLoginOnBoardingController.h"
 #import "SYNOAuth2Credential.h"
+#import "SYNTextFieldLoginiPhone.h"
 
 
 #define kLoginTermsUrl @"http://rockpack.com/tos"
@@ -40,6 +41,9 @@ typedef enum {
 @property (nonatomic) NSInteger currentOnBoardingPage;
 @property (nonatomic, strong) IBOutlet UIImageView* loginBackgroundImage;
 @property (nonatomic, strong) IBOutlet UIImageView* loginBackgroundFrontImage;
+// used for localization
+@property (nonatomic, strong) IBOutlet UITextField* ddInputField;
+@property (nonatomic, strong) IBOutlet UITextField* mmInputField;
 @property (nonatomic) ScrollingDirection scrollingDirection;
 
 @property (nonatomic, strong) SYNLoginOnBoardingController* onBoardingController;
