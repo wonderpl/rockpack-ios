@@ -122,18 +122,6 @@ didFinishLaunchingWithOptions: (NSDictionary *) launchOptions
         self.userAgentString = bundleAndVersionString;
     }
     
-    // Automatically send uncaught exceptions to Google Analytics.
-    [GAI sharedInstance].trackUncaughtExceptions = YES;
-    
-    // Optional: set Google Analytics dispatch interval
-    [GAI sharedInstance].dispatchInterval = 30;
-    
-    // Set debug to YES to enable  extra debugging information.
-    [GAI sharedInstance].debug = NO;
-    
-    // Create tracker instance.
-    [[GAI sharedInstance] trackerWithTrackingId: kGoogleAnalyticsId];
-    
     // Se up CoreData //
     [self initializeCoreDataStack];
     
@@ -438,6 +426,18 @@ didFinishLaunchingWithOptions: (NSDictionary *) launchOptions
 	InstallUncaughtExceptionHandler();
     
     [TestFlight takeOff: kTestFlightAppToken];
+    
+    // Automatically send uncaught exceptions to Google Analytics.
+    [GAI sharedInstance].trackUncaughtExceptions = YES;
+    
+    // Optional: set Google Analytics dispatch interval
+    [GAI sharedInstance].dispatchInterval = 5; // was 30
+    
+    // Set debug to YES to enable  extra debugging information.
+    [GAI sharedInstance].debug = YES;
+    
+    // Create tracker instance.
+    [[GAI sharedInstance] trackerWithTrackingId: kGoogleAnalyticsId];
 }
 
 
