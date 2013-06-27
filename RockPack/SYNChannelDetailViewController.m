@@ -934,7 +934,9 @@
             self.dataItemsAvailable = self.dataRequestRange.length; // heuristic
         }
         
-        [appDelegate.mainRegistry performInBackground:^BOOL(NSManagedObjectContext *backgroundContext) {
+        SYNRegistry* registry = self.channel.managedObjectContext == appDelegate.mainManagedObjectContext ? appDelegate.mainRegistry : appDelegate.searchRegistry;
+        
+        [registry performInBackground:^BOOL(NSManagedObjectContext *backgroundContext) {
             
             Channel * channel = (Channel*)[backgroundContext objectWithID:self.channel.objectID];
             [channel addVideoInstancesFromDictionary:dictionary];
@@ -949,10 +951,10 @@
             
         } completionBlock:^(BOOL success) {
             self.loadingMoreContent = NO;
-//            if(success)
-//            {
-//                [self.channel.managedObjectContext refreshObject:self.channel mergeChanges:NO];
-//            }
+            if(self.channel.managedObjectContext == appDelegate.searchManagedObjectContext)
+            {
+                [self.channel.managedObjectContext save:nil];
+            }
         }];
         
     };

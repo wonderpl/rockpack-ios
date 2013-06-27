@@ -274,7 +274,7 @@
         if (totalNumber && [totalNumber isKindOfClass: [NSNumber class]])
             itemsCount = totalNumber.intValue;
         
-        [self.registry performInBackground:^BOOL(NSManagedObjectContext *backgroundContext) {
+        [self.searchRegistry performInBackground:^BOOL(NSManagedObjectContext *backgroundContext) {
             return  [self.searchRegistry registerVideosFromDictionary:dictionary];
         } completionBlock:^(BOOL registryResultOk) {
             if (!registryResultOk)
