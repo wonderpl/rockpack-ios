@@ -695,12 +695,12 @@
 - (void) reloadCollectionViews
 {
     
+    
     NSInteger totalChannels = self.user.channels.count;
     NSString* title = [self getHeaderTitleForChannels];
     
     [self.headerChannelsView setTitle: title
-                             andNumber: totalChannels];
-    
+                            andNumber: totalChannels];
     
     [self.subscriptionsViewController reloadCollectionViews];
     [self.channelThumbnailCollectionView reloadData];
@@ -708,9 +708,8 @@
     [self resizeScrollViews];
 }
 
+
 #pragma mark - Updating
-
-
 
 -(NSString*)getHeaderTitleForChannels
 {
@@ -760,11 +759,12 @@
     }
     else
     {
+        
+        
         Channel *channel = (Channel*)self.user.channels[indexPath.row - (self.isUserProfile ? 1 : 0)];
         
         SYNChannelMidCell *channelThumbnailCell = [collectionView dequeueReusableCellWithReuseIdentifier: @"SYNChannelMidCell"
                                                                                             forIndexPath: indexPath];
-        
         
         [channelThumbnailCell.imageView setImageWithURL: [NSURL URLWithString: channel.channelCover.imageLargeUrl]
                                        placeholderImage: [UIImage imageNamed: @"PlaceholderChannelMid.png"]

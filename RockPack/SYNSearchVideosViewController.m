@@ -131,6 +131,8 @@
                                       inManagedObjectContext: self.appDelegate.searchManagedObjectContext];
     
     
+    [fetchRequest setPredicate: [NSPredicate predicateWithFormat: @"viewId == %@", self.viewId]];
+    
     fetchRequest.sortDescriptors = @[[[NSSortDescriptor alloc] initWithKey: @"position" ascending: YES]];
     
     
