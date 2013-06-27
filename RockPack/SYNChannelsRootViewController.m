@@ -455,9 +455,27 @@
                                                                                               forIndexPath: indexPath];
     
     
-    channelThumbnailCell.imageUrlString = channel.channelCover.imageLargeUrl;
+    if(channel.favouritesValue)
+    {
+        if([appDelegate.currentUser.uniqueId isEqualToString:channel.channelOwner.uniqueId])
+        {
+            [channelThumbnailCell setChannelTitle: [NSString stringWithFormat:@"MY %@", NSLocalizedString(@"FAVOURITES", nil)] ];
+        }
+        else
+        {
+            [channelThumbnailCell setChannelTitle:
+             [NSString stringWithFormat:@"%@ %@", [channel.channelOwner.displayName uppercaseString], NSLocalizedString(@"FAVOURITES", nil)]];
+        }
+        
+    }
+    else
+    {
+        
+        [channelThumbnailCell setChannelTitle: channel.title];
+    }
     
-    [channelThumbnailCell setChannelTitle: channel.title];
+    
+    channelThumbnailCell.imageUrlString = channel.channelCover.imageLargeUrl;
     channelThumbnailCell.displayNameLabel.text = [NSString stringWithFormat: @"%@", channel.channelOwner.displayName];
     channelThumbnailCell.viewControllerDelegate = self;
     
