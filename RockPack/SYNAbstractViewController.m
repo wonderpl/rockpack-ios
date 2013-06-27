@@ -264,6 +264,13 @@
     
     if(videoInstance)
     {
+        id<GAITracker> tracker = [GAI sharedInstance].defaultTracker;
+        
+        [tracker sendEventWithCategory: @"uiAction"
+                            withAction: @"videoPlusButtonClick"
+                             withLabel: nil
+                             withValue: nil];
+        
         [appDelegate.oAuthNetworkEngine recordActivityForUserId: appDelegate.currentUser.uniqueId
                                                          action: @"select"
                                                 videoInstanceId: videoInstance.uniqueId

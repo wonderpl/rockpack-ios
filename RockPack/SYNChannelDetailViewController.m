@@ -1226,6 +1226,13 @@
     
     if (videoInstance)
     {
+        id<GAITracker> tracker = [GAI sharedInstance].defaultTracker;
+        
+        [tracker sendEventWithCategory: @"uiAction"
+                            withAction: @"videoPlusButtonClick"
+                             withLabel: nil
+                             withValue: nil];
+        
         [appDelegate.oAuthNetworkEngine recordActivityForUserId: appDelegate.currentUser.uniqueId
                                                          action: @"select"
                                                 videoInstanceId: videoInstance.uniqueId
@@ -2112,7 +2119,7 @@
                                               
                                               
                                               
-                                              [self notifyForChannelCreation:createdChannel];
+                                              [self notifyForChannelCreation:self.channel];
                                               
                                               self.isLocked = NO;
                                               
@@ -2140,61 +2147,104 @@
                                           }];
 }
 
--(void)notifyForChannelCreation:(Channel*)channelCreated
+-(void)notifyForChannelCreation:(Channel*)channelCreated  
 {
     // == Decide on the success message type shown == //
     
     NSNotification* successNotification = [NSNotification notificationWithName:kNoteChannelSaved
                                                                         object:self];
     SYNCaution* caution;
-    
-    
-    if(channelCreated) // channel has been updated rather than created
+    CautionCallbackBlock actionBlock;
+    NSMutableArray* conditionsArray = [NSMutableArray arrayWithCapacity:3];
+    NSString* buttonString;
+    int numberOfConditions = 0;
+    __weak SYNChannelDetailViewController* wself = self;
+    if(channelCreated) // channelCreated will always be true in this implementation, change from self.channels to show message only on creation and not on update
     {
         
-        if([[self.channel.title substringToIndex:8] isEqualToString:@"UNTITLED"]) // no title
+        if(self.channel.title.length > 8 && [[self.channel.title substringToIndex:8] isEqualToString:@"UNTITLED"]) // no title
         {
-            caution = [SYNCaution withMessage:NSLocalizedString(@"channel_will_remain_private_title", nil)
-                                  actionTitle:NSLocalizedString(@"enter_title", nil)
-                                  andCallback:^{
-                                      
-                                      NSLog(@"Pressed!");
-                                      
-                                  }];
+            
+            [conditionsArray addObject:NSLocalizedString(@"private_condition_title", nil)];
+            buttonString = NSLocalizedString(@"enter_title", nil);
+            actionBlock = ^{
+                [wself setMode: kChannelDetailsModeEdit];
+                [wself editButtonTapped:wself.editButton];
+                [wself.channelTitleTextView becomeFirstResponder];
+            };
+            numberOfConditions++;
+        }
+        if([self.channel.categoryId isEqualToString:@""])
+        {
+            
+            [conditionsArray addObject:NSLocalizedString(@"private_condition_category", nil)];
+            buttonString = NSLocalizedString(@"select_category", nil);
+            actionBlock = ^{
+                [wself setMode:kChannelDetailsModeEdit];
+                [wself editButtonTapped:wself.editButton];
+                [wself selectCategoryButtonTapped:wself.selectCategoryButton];
+            };
+            numberOfConditions++;
+        }
+        if([self.channel.channelCover.imageUrl isEqualToString:@""])
+        {
+            
+            [conditionsArray addObject:NSLocalizedString(@"private_condition_cover", nil)];
+            buttonString = NSLocalizedString(@"select_cover", nil);
+            actionBlock = ^{
+                [wself setMode: kChannelDetailsModeEdit];
+                [wself editButtonTapped:wself.editButton];
+                [wself addCoverButtonTapped:wself.addCoverButton];
+            };
+            numberOfConditions++;
+        }
+        
+        
+        
+        NSMutableString* conditionString;
+        switch (numberOfConditions) {
+            case 0:
+                
+                break;
+                
+            case 1:
+                conditionString = [NSMutableString stringWithString:NSLocalizedString(@"channel_will_remain_private_until", nil)];
+                [conditionString appendString:conditionsArray[0]];
+                break;
+            case 2:
+                conditionString = [NSMutableString stringWithString:NSLocalizedString(@"channel_will_remain_private_until", nil)];
+                [conditionString appendString:conditionsArray[0]];
+                [conditionString appendString:@" AND "];
+                [conditionString appendString:conditionsArray[1]];
+                break;
+            case 3:
+                conditionString = [NSMutableString stringWithString:NSLocalizedString(@"channel_will_remain_private_until", nil)];
+                [conditionString appendString:conditionsArray[0]];
+                [conditionString appendString:@", "];
+                [conditionString appendString:conditionsArray[1]];
+                [conditionString appendString:@" AND "];
+                [conditionString appendString:conditionsArray[2]];
+                break;
+        }
+        if(numberOfConditions > 0)
+        {
+            if(numberOfConditions > 1)
+            {
+                buttonString = @"EDIT";
+                actionBlock = ^{
+                    [wself setMode: kChannelDetailsModeEdit];
+                    [wself editButtonTapped:wself.editButton];
+                };
+            }
+            caution = [SYNCaution withMessage:(NSString*)conditionString
+                                  actionTitle:buttonString
+                                  andCallback:actionBlock];
             
             successNotification = [NSNotification notificationWithName:kNoteSavingCaution
                                                                 object:self
                                                               userInfo:@{kCaution : caution}];
-            
         }
-        else if([self.channel.categoryId isEqualToString:@""])
-        {
-            caution = [SYNCaution withMessage:NSLocalizedString(@"channel_will_remain_private_category", nil)
-                                  actionTitle:NSLocalizedString(@"select_category", nil)
-                                  andCallback:^{
-                                      
-                                      NSLog(@"Pressed!");
-                                      
-                                  }];
-            
-            successNotification = [NSNotification notificationWithName:kNoteSavingCaution
-                                                                object:self
-                                                              userInfo:@{kCaution : caution}];
-        }
-        else if([self.channel.channelCover.imageUrl isEqualToString:@""])
-        {
-            caution = [SYNCaution withMessage:NSLocalizedString(@"channel_will_remain_private_cover", nil)
-                                  actionTitle:NSLocalizedString(@"select_cover", nil)
-                                  andCallback:^{
-                                      
-                                      NSLog(@"Pressed!");
-                                      
-                                  }];
-            
-            successNotification = [NSNotification notificationWithName:kNoteSavingCaution
-                                                                object:self
-                                                              userInfo:@{kCaution : caution}];
-        }
+        
     }
     
     
