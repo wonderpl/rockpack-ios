@@ -49,7 +49,7 @@
     self.lastNameInputField.tag = 2;
     self.lastNameInputField.delegate = self;
     
-    [self.view addSubview:self.lastNameInputField];
+    [self.scrollView addSubview:self.lastNameInputField];
     
     self.tableView = [[UITableView alloc] initWithFrame: CGRectMake((isIpad ? 1.0 : 0.0),
                                                                     self.lastNameInputField.frame.origin.y + 42.0,
@@ -62,7 +62,7 @@
     self.tableView.backgroundView = nil;
     self.tableView.scrollEnabled = NO;
     self.tableView.separatorStyle = UITableViewCellSeparatorStyleSingleLine;
-    [self.view addSubview:self.tableView];
+    [self.scrollView addSubview:self.tableView];
     
     
     CGRect saveButtonRect = self.saveButton.frame;

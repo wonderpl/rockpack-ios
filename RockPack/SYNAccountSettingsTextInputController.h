@@ -30,7 +30,7 @@ typedef enum
 @property (nonatomic, strong) UILabel *errorLabel;
 @property (nonatomic, strong) SYNAppDelegate *appDelegate;
 @property (nonatomic, strong) UIActivityIndicatorView *spinner;
-
+@property (nonatomic, strong) UIScrollView* scrollView;
 @property (nonatomic, readonly) CGFloat sizeInContainer;
 
 - (id) initWithUserFieldType: (UserFieldType) userFieldType;

@@ -18,6 +18,8 @@
 
 @property (nonatomic) CGFloat sizeInContainer;
 
+@property (nonatomic, assign) CGRect selectedFrame;
+
 @end
 
 
@@ -46,17 +48,41 @@
 {
     [super viewWillAppear: animated];
     saveButton.enabled = YES;
+    CGFloat maxY;
+    for (UIView* view in self.scrollView.subviews)
+    {
+        maxY = MAX(maxY,view.frame.origin.y + view.frame.size.height);
+    }
+    self.scrollView.contentSize = CGSizeMake(self.scrollView.frame.size.width, maxY);
+    if(maxY < self.scrollView.frame.size.height)
+    {
+        CGRect newFrame = self.scrollView.frame;
+        newFrame.size = self.scrollView.contentSize;
+        self.scrollView.frame = newFrame;
+    }
 }
 
 - (void) viewDidLoad
 {
     [super viewDidLoad];
     
-    self.contentSizeForViewInPopover = CGSizeMake([SYNDeviceManager.sharedInstance isIPad]? 380 : [SYNDeviceManager.sharedInstance currentScreenWidth], 476);
+    [[NSNotificationCenter defaultCenter] addObserver:self
+                                             selector:@selector(keyboardWasShown:)
+                                                 name:UIKeyboardDidShowNotification object:nil];
+    [[NSNotificationCenter defaultCenter] addObserver:self
+                                             selector:@selector(keyboardWillBeHidden:)
+                                                 name:UIKeyboardWillHideNotification object:nil];
+    
+    self.contentSizeForViewInPopover = CGSizeMake([SYNDeviceManager.sharedInstance isIPad]? 380 : [SYNDeviceManager.sharedInstance currentScreenWidth], [SYNDeviceManager.sharedInstance isIPad]? 476 : [SYNDeviceManager.sharedInstance currentScreenHeight]);
     
     self.view.backgroundColor = [SYNDeviceManager.sharedInstance isIPad] ? [UIColor clearColor] : [UIColor whiteColor];
     
     self.sizeInContainer = self.contentSizeForViewInPopover.width - 20.0;
+    self.scrollView = [[UIScrollView alloc] initWithFrame:CGRectMake(0,0, self.contentSizeForViewInPopover.width, self.contentSizeForViewInPopover.height)];
+    self.scrollView.autoresizingMask = UIViewAutoresizingFlexibleWidth|UIViewAutoresizingFlexibleHeight;
+    self.scrollView.showsVerticalScrollIndicator = NO;
+    self.scrollView.bounces = NO;
+    [self.view addSubview:self.scrollView];
     
     lastTextFieldY = 10.0;
     
@@ -74,7 +100,7 @@
     [saveButton setImage: [UIImage imageNamed: @"ButtonAccountSaveHighlighted.png"]
                 forState: UIControlStateDisabled];
     
-    [self.view addSubview: saveButton];
+    [self.scrollView addSubview: saveButton];
     
     inputField = [self createInputField];
     
@@ -105,7 +131,7 @@
     }
     
     
-    [self.view addSubview: inputField];
+    [self.scrollView addSubview: inputField];
     
     self.spinner.center = self.saveButton.center;
     [self.view addSubview: self.spinner];
@@ -286,10 +312,63 @@
 
 #pragma mark - UITextFieldDelegate
 
+-(BOOL) textFieldShouldBeginEditing:(UITextField *)textField
+{
+    self.selectedFrame = textField.frame;
+    [self.scrollView scrollRectToVisible:self.selectedFrame animated:YES];
+    return YES;
+}
+
 -(BOOL)textField:(UITextField *)textField shouldChangeCharactersInRange:(NSRange)range replacementString:(NSString *)string
 {
     self.errorLabel.text = @"";
     return YES;
+}
+
+// Called when the UIKeyboardDidShowNotification is sent.
+- (void)keyboardWasShown:(NSNotification*)aNotification
+{
+    NSDictionary* info = [aNotification userInfo];
+    CGSize kbSize = [[info objectForKey:UIKeyboardFrameBeginUserInfoKey] CGRectValue].size;
+    CGFloat topOfKeyboard = [[SYNDeviceManager sharedInstance] currentScreenHeight] - kbSize.height;
+    CGPoint bottomOfScrollView = [self.view.window convertPoint:CGPointMake(0.0, self.scrollView.frame.size.height + self.scrollView.frame.origin.y) fromView:self.view];
+    CGFloat overlap = bottomOfScrollView.y - topOfKeyboard;
+    if(overlap > 0)
+    {
+        UIEdgeInsets contentInsets = UIEdgeInsetsMake(0.0, 0.0, overlap, 0.0);
+        self.scrollView.contentInset = contentInsets;
+        self.scrollView.scrollIndicatorInsets = contentInsets;
+        
+        [self.scrollView scrollRectToVisible:self.selectedFrame animated:YES];
+
+
+        
+        self.scrollView.bounces = YES;
+    }
+}
+
+-(BOOL)textFieldShouldReturn:(UITextField *)textField
+{
+    UIView* nextView = [self.scrollView viewWithTag: textField.tag + 1];
+    if (nextView)
+    {
+        [nextView becomeFirstResponder];
+        [self.scrollView scrollRectToVisible:self.selectedFrame animated:YES];
+    }
+    else
+    {
+        [textField resignFirstResponder];
+    }
+    return YES;
+}
+
+// Called when the UIKeyboardWillHideNotification is sent
+- (void)keyboardWillBeHidden:(NSNotification*)aNotification
+{
+    UIEdgeInsets contentInsets = UIEdgeInsetsZero;
+    self.scrollView.contentInset = contentInsets;
+    self.scrollView.scrollIndicatorInsets = contentInsets;
+    self.scrollView.bounces = NO;
 }
 
 @end
