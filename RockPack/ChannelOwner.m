@@ -116,9 +116,9 @@
     
     self.displayName = [dictionary upperCaseStringForKey: @"display_name"
                                              withDefault: @""];
-    NSString* n_username = dictionary[@"username"];
-    self.username = n_username ? n_username : self.username;
-    
+
+    self.username = [dictionary objectForKey: @"username"
+                                 withDefault: @""];
     
     BOOL hasChannels = YES;
     
