@@ -1556,7 +1556,8 @@ static UIWebView* vimeoideoWebViewInstance;
             [appDelegate.oAuthNetworkEngine recordActivityForUserId: appDelegate.currentOAuth2Credentials.userId
                                                              action: @"view"
                                                     videoInstanceId: self.currentVideoInstance.uniqueId
-                                                  completionHandler: nil
+                                                  completionHandler: ^{
+                                                  }
                                                        errorHandler: ^(NSDictionary* errorDictionary) {
                                                            DebugLog(@"View action failed");
                                                        }];
