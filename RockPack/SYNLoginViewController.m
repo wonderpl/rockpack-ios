@@ -1507,19 +1507,22 @@
 - (IBAction) textfieldDidChange: (id) sender
 {
 
-    if(sender == self.ddInputField && [self.ddInputField.text length]==2)
+    UIView* nextView = [self.view viewWithTag: ((UITextField*)sender).tag + 1];
+    if(sender == self.ddInputField && [self.ddInputField.text length] == 2)
     {
-        [self.mmInputField becomeFirstResponder];
+        if(nextView && [nextView isKindOfClass:[UITextField class]])
+            [(UITextField*)nextView becomeFirstResponder];
 
     }
-    else if(sender == self.mmInputField && [self.mmInputField.text length]==2)
+    else if(sender == self.mmInputField && [self.mmInputField.text length] == 2)
     {
-        [self.yyyyInputField becomeFirstResponder];
+        if(nextView && [nextView isKindOfClass:[UITextField class]])
+            [(UITextField*)nextView becomeFirstResponder];
 
     }
     else if(sender == self.yyyyInputField && [self.yyyyInputField.text length] == 4)
     {
-        //[sender resignFirstResponder];
+       
         
     }
 }

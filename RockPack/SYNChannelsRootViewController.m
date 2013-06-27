@@ -288,34 +288,34 @@
                                                           return;
                                                       
                                                       self.dataItemsAvailable = [totalNumber integerValue];
-                                                      
-                                                      
-                                                      BOOL registryResultOk = [appDelegate.mainRegistry registerChannelsFromDictionary: response
-                                                                                                                              forGenre: genre
-                                                                                                                           byAppending: append];
-                                                      self.loadingMoreContent = NO;
-                                                      
-                                                      if (!registryResultOk)
-                                                      {
-                                                          DebugLog(@"Registration of Channel Failed for: %@", currentCategoryId);
-                                                          return;
-                                                      }
-                                                      
-                                                      [self displayChannelsForGenre:genre];
-                                                      
-                                                      if (self.emptyGenreMessageView)
-                                                      {
-                                                          [self.emptyGenreMessageView removeFromSuperview];
-                                                          self.emptyGenreMessageView = nil;
-                                                      }
-                                                      
-                                                      if (self.channels.count == 0)
-                                                      {
-                                                          [self displayEmptyGenreMessage:@"NO CHANNELS FOUND"];
-                                                      }
-                                                      
-                                                      
-                                                      
+                                                      [appDelegate.mainRegistry performInBackground:^BOOL(NSManagedObjectContext *backgroundContext) {
+                                                          return [appDelegate.mainRegistry registerChannelsFromDictionary: response
+                                                                                                                 forGenre: genre
+                                                                                                              byAppending: append];
+                                                      } completionBlock:^(BOOL registryResultOk) {
+                                                          self.loadingMoreContent = NO;
+                                                          
+                                                          if (!registryResultOk)
+                                                          {
+                                                              DebugLog(@"Registration of Channel Failed for: %@", currentCategoryId);
+                                                              return;
+                                                          }
+                                                          
+                                                          [self displayChannelsForGenre:genre];
+                                                          
+                                                          if (self.emptyGenreMessageView)
+                                                          {
+                                                              [self.emptyGenreMessageView removeFromSuperview];
+                                                              self.emptyGenreMessageView = nil;
+                                                          }
+                                                          
+                                                          if (self.channels.count == 0)
+                                                          {
+                                                              [self displayEmptyGenreMessage:@"NO CHANNELS FOUND"];
+                                                          }
+
+                                                      }];
+   
                                                   } onError: ^(NSDictionary* errorInfo) {
                                                       DebugLog(@"Could not load channels: %@", errorInfo);
                                                         self.loadingMoreContent = NO;
@@ -349,6 +349,7 @@
     NSFetchRequest *request = [[NSFetchRequest alloc] init];
     [request setEntity:[NSEntityDescription entityForName: @"Channel"
                                    inManagedObjectContext: appDelegate.mainManagedObjectContext]];
+    request.fetchBatchSize = 20;
     
     NSPredicate* genrePredicate;
     
@@ -455,9 +456,27 @@
                                                                                               forIndexPath: indexPath];
     
     
-    channelThumbnailCell.imageUrlString = channel.channelCover.imageLargeUrl;
+    if(channel.favouritesValue)
+    {
+        if([appDelegate.currentUser.uniqueId isEqualToString:channel.channelOwner.uniqueId])
+        {
+            [channelThumbnailCell setChannelTitle: [NSString stringWithFormat:@"MY %@", NSLocalizedString(@"FAVOURITES", nil)] ];
+        }
+        else
+        {
+            [channelThumbnailCell setChannelTitle:
+             [NSString stringWithFormat:@"%@ %@", [channel.channelOwner.displayName uppercaseString], NSLocalizedString(@"FAVOURITES", nil)]];
+        }
+        
+    }
+    else
+    {
+        
+        [channelThumbnailCell setChannelTitle: channel.title];
+    }
     
-    [channelThumbnailCell setChannelTitle: channel.title];
+    
+    channelThumbnailCell.imageUrlString = channel.channelCover.imageLargeUrl;
     channelThumbnailCell.displayNameLabel.text = [NSString stringWithFormat: @"%@", channel.channelOwner.displayName];
     channelThumbnailCell.viewControllerDelegate = self;
     

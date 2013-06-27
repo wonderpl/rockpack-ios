@@ -312,18 +312,27 @@
 
 - (void) performSearchForCurrentSearchTerm
 {
-    if (![appDelegate.searchRegistry clearImportContextFromEntityName:@"Channel"])
-    {
-        DebugLog(@"Could not clean Channel from search context");
-    }
-    
-    if (![appDelegate.searchRegistry clearImportContextFromEntityName:@"VideoInstance"])
-    {
-        DebugLog(@"Could not clean VideoInstances from search context");
-    }
-
-    [self.searchVideosController performNewSearchWithTerm:searchTerm];
-    [self.searchChannelsController performNewSearchWithTerm:searchTerm];
+    [appDelegate.searchRegistry performInBackground:^BOOL(NSManagedObjectContext *backgroundContext) {
+        return [appDelegate.searchRegistry clearImportContextFromEntityName:@"Channel"];
+    } completionBlock:^(BOOL success) {
+        if (!success)
+        {
+            DebugLog(@"Could not clean Channel from search context");
+        }
+        
+        [appDelegate.searchRegistry performInBackground:^BOOL(NSManagedObjectContext *backgroundContext) {
+            return[appDelegate.searchRegistry clearImportContextFromEntityName:@"VideoInstance"];
+        } completionBlock:^(BOOL success) {
+            if (!success)
+            {
+                DebugLog(@"Could not clean VideoInstances from search context");
+            }
+            
+            [self.searchVideosController performNewSearchWithTerm:searchTerm];
+            [self.searchChannelsController performNewSearchWithTerm:searchTerm];
+            
+        }];
+    }];
 }
 
 
