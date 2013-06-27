@@ -164,8 +164,8 @@
     }
     
     [self.hostViewController presentViewController: self.imagePicker.imagePickerController
-                       animated: YES
-                     completion: nil];
+                                          animated: YES
+                                        completion: nil];
 }
 
 

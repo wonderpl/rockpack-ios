@@ -72,6 +72,8 @@
 
 @property (nonatomic) BOOL isPreIPhone5;
 
+@property (nonatomic) BOOL hasAnimated;
+
 @end
 
 @implementation SYNLoginViewControllerIphone 
@@ -196,7 +198,6 @@
 - (void) viewWillAppear:(BOOL)animated
 {
     [super viewWillAppear: animated];
-    
 }
 
 - (void) viewDidAppear:(BOOL)animated
@@ -205,6 +206,7 @@
     
     [GAI.sharedInstance.defaultTracker sendView: @"Start"];
     
+    if(!self.hasAnimated){
     self.rockpackLogoImage.frame = self.rockpackLogoImage.frame;
     [UIView animateWithDuration:0.3f
                           delay:0.1f
@@ -284,6 +286,8 @@
                          
                      } completion:^(BOOL finished) {
                      }];
+        self.hasAnimated=YES;
+    }
 }
 
 -(void)reEnableLoginControls
@@ -718,13 +722,15 @@
                 
                 if(self.avatarImage)
                 {
-                    [self uploadAvatarImage:self.avatarImage completionHandler:nil errorHandler:^(id dictionary) {
-                        [[[UIAlertView alloc] initWithTitle: NSLocalizedString(@"register_screen_form_avatar_upload_title", nil)
-                                                    message: NSLocalizedString(@"register_screen_form_avatar_upload_description.", nil)
-                                                   delegate: nil
-                                          cancelButtonTitle: NSLocalizedString(@"OK", nil)
-                                          otherButtonTitles: nil] show];
-                    }];
+                    [self uploadAvatarImage: self.avatarImage completionHandler: ^(id dummy){
+                    }
+                               errorHandler: ^(id dictionary) {
+                                   [[[UIAlertView alloc] initWithTitle: NSLocalizedString(@"register_screen_form_avatar_upload_title", nil)
+                                                               message: NSLocalizedString(@"register_screen_form_avatar_upload_description.", nil)
+                                                              delegate: nil
+                                                     cancelButtonTitle: NSLocalizedString(@"OK", nil)
+                                                     otherButtonTitles: nil] show];
+                               }];
                 }
                 [self completeLoginProcess];
                 

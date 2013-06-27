@@ -65,11 +65,6 @@
         collectionFrame.size.height -= 5.0;
         self.channelThumbnailCollectionView.frame = collectionFrame;
         
-//        UICollectionViewFlowLayout* layout = (UICollectionViewFlowLayout*)self.channelThumbnailCollectionView.collectionViewLayout;
-//        UIEdgeInsets insets= layout.sectionInset;
-////        insets.top = 0.0f;
-////        insets.bottom = -50.0f;
-////        layout.sectionInset = insets;
         
     }
 }
@@ -108,6 +103,10 @@
     NSFetchRequest *request = [[NSFetchRequest alloc] init];
     [request setEntity:[NSEntityDescription entityForName: @"Channel"
                                    inManagedObjectContext: appDelegate.searchManagedObjectContext]];
+    
+    
+    [request setPredicate: [NSPredicate predicateWithFormat: @"viewId == %@", self.viewId]];
+    
     request.fetchBatchSize = 20;
     
     NSSortDescriptor *positionDescriptor = [[NSSortDescriptor alloc] initWithKey: @"position"
@@ -171,13 +170,13 @@
         appDelegate = (SYNAppDelegate*)[[UIApplication sharedApplication] delegate];
     
     self.dataRequestRange = NSMakeRange(0, kAPIInitialBatchSize);
-        
-    
     
     
     [appDelegate.networkEngine searchChannelsForTerm: term
                                             andRange: self.dataRequestRange
                                           onComplete: ^(int itemsCount) {
+                                              
+                                              
                                               self.dataItemsAvailable = itemsCount;
                                               if (self.itemToUpdate)
                                                   [self.itemToUpdate setNumberOfItems: self.dataItemsAvailable

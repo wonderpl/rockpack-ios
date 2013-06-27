@@ -1549,18 +1549,23 @@ static UIWebView* vimeoideoWebViewInstance;
         
         SYNAppDelegate* appDelegate = UIApplication.sharedApplication.delegate;
         
-        // Update the star/unstar status on the server
-        [appDelegate.oAuthNetworkEngine recordActivityForUserId: appDelegate.currentOAuth2Credentials.userId
-                                                         action: @"view"
-                                                videoInstanceId: self.currentVideoInstance.uniqueId
-                                              completionHandler: ^(NSDictionary *responseDictionary)
-         {
-//             DebugLog(@"View action successful");
-         }
-                                                   errorHandler: ^(NSDictionary* errorDictionary)
-         {
-             DebugLog(@"View action failed");
-         }];
+        // Just double-check that we have both params required for
+        if (self.currentVideoInstance.uniqueId && appDelegate.currentOAuth2Credentials.userId)
+        {
+            // Update the star/unstar status on the server
+            [appDelegate.oAuthNetworkEngine recordActivityForUserId: appDelegate.currentOAuth2Credentials.userId
+                                                             action: @"view"
+                                                    videoInstanceId: self.currentVideoInstance.uniqueId
+                                                  completionHandler: ^(NSDictionary *responseDictionary) {
+                                                  }
+                                                       errorHandler: ^(NSDictionary* errorDictionary) {
+                                                           DebugLog(@"View action failed");
+                                                       }];
+        }
+        else
+        {
+            AssertOrLog(@"We seem to be missing one of the parameters for recording video play activity");
+        }
     }
 }
 
