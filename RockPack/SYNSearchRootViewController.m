@@ -312,7 +312,7 @@
 
 - (void) performSearchForCurrentSearchTerm
 {
-    [appDelegate.searchRegistry performInBackground:^BOOL{
+    [appDelegate.searchRegistry performInBackground:^BOOL(NSManagedObjectContext *backgroundContext) {
         return [appDelegate.searchRegistry clearImportContextFromEntityName:@"Channel"];
     } completionBlock:^(BOOL success) {
         if (!success)
@@ -320,7 +320,7 @@
             DebugLog(@"Could not clean Channel from search context");
         }
         
-        [appDelegate.searchRegistry performInBackground:^BOOL{
+        [appDelegate.searchRegistry performInBackground:^BOOL(NSManagedObjectContext *backgroundContext) {
             return[appDelegate.searchRegistry clearImportContextFromEntityName:@"VideoInstance"];
         } completionBlock:^(BOOL success) {
             if (!success)

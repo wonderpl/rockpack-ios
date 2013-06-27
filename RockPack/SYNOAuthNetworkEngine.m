@@ -491,7 +491,7 @@
         }
         
         // Register User
-        [self.registry performInBackground:^BOOL{
+        [self.registry performInBackground:^BOOL(NSManagedObjectContext *backgroundContext) {
             return [self.registry registerUserFromDictionary:responseDictionary];
         } completionBlock:^(BOOL userRegistered) {
             if(!userRegistered) {
@@ -520,7 +520,7 @@
                                       return;
                                   }
                                   
-                                  [self.registry performInBackground:^BOOL{
+                                  [self.registry performInBackground:^BOOL(NSManagedObjectContext *backgroundContext) {
                                       return [self.registry registerSubscriptionsForCurrentUserFromDictionary:subscriptionsDictionary];
                                   } completionBlock:^(BOOL userRegistered) {
                                       if(!userRegistered)
@@ -1093,7 +1093,7 @@
     [self addCommonHandlerToNetworkOperation: networkOperation
                            completionHandler: ^(NSDictionary *dictionary) {
                                
-                               [wself.registry performInBackground:^BOOL{
+                               [wself.registry performInBackground:^BOOL(NSManagedObjectContext *backgroundContext){
                                    return  [wself.registry registerCoverArtFromDictionary: dictionary
                                                                            forUserUpload: NO];
                                } completionBlock:^(BOOL registryResultOk) {

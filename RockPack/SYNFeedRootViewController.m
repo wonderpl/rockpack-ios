@@ -422,7 +422,7 @@
                                                     
                                                     BOOL toAppend = (self.dataRequestRange.location > 0);
                                                     
-                                                    [appDelegate.mainRegistry performInBackground:^BOOL{
+                                                    [appDelegate.mainRegistry performInBackground:^BOOL(NSManagedObjectContext *backgroundContext) {
                                                         return [appDelegate.mainRegistry registerDataForFeedFromDictionary: responseDictionary
                                                                                                         byAppending: toAppend];
                                                     } completionBlock:^(BOOL registryResultOk) {

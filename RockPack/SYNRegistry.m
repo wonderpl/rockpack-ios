@@ -125,7 +125,7 @@
 -(void)performInBackground:(SYNRegistryActionBlock)actionBlock completionBlock:(SYNRegistryCompletionBlock)completionBlock
 {
     [importManagedObjectContext performBlock:^{
-       BOOL result = actionBlock();
+       BOOL result = actionBlock(importManagedObjectContext);
         [self completeTransaction:result completionBlock:completionBlock];
     }];
 }

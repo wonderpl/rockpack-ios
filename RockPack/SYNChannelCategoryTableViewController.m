@@ -149,7 +149,7 @@
         
         [appDelegate.networkEngine updateCategoriesOnCompletion:^(NSDictionary* dictionary){
             
-            [appDelegate.mainRegistry performInBackground:^BOOL{
+            [appDelegate.mainRegistry performInBackground:^BOOL(NSManagedObjectContext *backgroundContext) {
                 return [appDelegate.mainRegistry registerCategoriesFromDictionary: dictionary];;
             } completionBlock:^(BOOL registryResultOk) {
                 if (!registryResultOk) {

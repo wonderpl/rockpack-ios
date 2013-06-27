@@ -12,7 +12,7 @@
 
 typedef void(^SYNRegistryCompletionBlock)(BOOL success);
 
-typedef BOOL(^SYNRegistryActionBlock)(void);
+typedef BOOL(^SYNRegistryActionBlock)(NSManagedObjectContext* backgroundContext);
 
 @interface SYNRegistry : NSObject {
     @protected __weak SYNAppDelegate *appDelegate;

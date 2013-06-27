@@ -89,7 +89,7 @@
     [networkOperation addJSONCompletionHandler: ^(NSDictionary *dictionary)
      {
          
-         [self.registry performInBackground:^BOOL{
+         [self.registry performInBackground:^BOOL(NSManagedObjectContext *backgroundContext) {
              return  [self.registry registerCoverArtFromDictionary: dictionary
                                                      forUserUpload: NO];
          } completionBlock:^(BOOL registryResultOk) {
@@ -119,7 +119,7 @@
     
     [networkOperation addJSONCompletionHandler: ^(NSDictionary *dictionary)
     {
-        [self.registry performInBackground:^BOOL{
+        [self.registry performInBackground:^BOOL(NSManagedObjectContext *backgroundContext) {
             return  [self.registry registerCoverArtFromDictionary: dictionary
                                                      forUserUpload: NO];
         } completionBlock:^(BOOL registryResultOk) {
@@ -274,7 +274,7 @@
         if (totalNumber && [totalNumber isKindOfClass: [NSNumber class]])
             itemsCount = totalNumber.intValue;
         
-        [self.registry performInBackground:^BOOL{
+        [self.registry performInBackground:^BOOL(NSManagedObjectContext *backgroundContext) {
             return  [self.searchRegistry registerVideosFromDictionary:dictionary];
         } completionBlock:^(BOOL registryResultOk) {
             if (!registryResultOk)
@@ -338,7 +338,7 @@
             itemsCount = totalNumber.intValue;
         }
         
-        [self.searchRegistry performInBackground:^BOOL{
+        [self.searchRegistry performInBackground:^BOOL(NSManagedObjectContext *backgroundContext) {
             return [self.searchRegistry registerChannelsFromDictionary: dictionary];
         } completionBlock:^(BOOL registryResultOk) {
             if (!registryResultOk)

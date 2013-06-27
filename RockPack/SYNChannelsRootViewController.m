@@ -288,7 +288,7 @@
                                                           return;
                                                       
                                                       self.dataItemsAvailable = [totalNumber integerValue];
-                                                      [appDelegate.mainRegistry performInBackground:^BOOL{
+                                                      [appDelegate.mainRegistry performInBackground:^BOOL(NSManagedObjectContext *backgroundContext) {
                                                           return [appDelegate.mainRegistry registerChannelsFromDictionary: response
                                                                                                                  forGenre: genre
                                                                                                               byAppending: append];

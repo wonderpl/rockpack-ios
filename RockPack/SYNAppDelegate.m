@@ -570,7 +570,7 @@ didFinishLaunchingWithOptions: (NSDictionary *) launchOptions
     _mainRegistry = [SYNMainRegistry registryWithParentContext:self.mainManagedObjectContext];
     _searchRegistry = [SYNSearchRegistry registryWithParentContext:self.searchManagedObjectContext];
     
-    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(refreshMainContext:) name:NSManagedObjectContextDidSaveNotification object:self.privateManagedObjectContext];
+    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(refreshMainContext:) name:NSManagedObjectContextDidSaveNotification object:nil];
 }
 
 
