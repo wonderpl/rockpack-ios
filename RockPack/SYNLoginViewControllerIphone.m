@@ -72,6 +72,8 @@
 
 @property (nonatomic) BOOL isPreIPhone5;
 
+@property (nonatomic) BOOL hasAnimated;
+
 @end
 
 @implementation SYNLoginViewControllerIphone 
@@ -196,7 +198,6 @@
 - (void) viewWillAppear:(BOOL)animated
 {
     [super viewWillAppear: animated];
-    
 }
 
 - (void) viewDidAppear:(BOOL)animated
@@ -205,6 +206,7 @@
     
     [GAI.sharedInstance.defaultTracker sendView: @"Start"];
     
+    if(!self.hasAnimated){
     self.rockpackLogoImage.frame = self.rockpackLogoImage.frame;
     [UIView animateWithDuration:0.3f
                           delay:0.1f
@@ -284,6 +286,8 @@
                          
                      } completion:^(BOOL finished) {
                      }];
+        self.hasAnimated=YES;
+    }
 }
 
 -(void)reEnableLoginControls

@@ -49,16 +49,19 @@
     self.inputField.text = @"";
     self.inputField.placeholder = NSLocalizedString (@"Old Password", nil);
     self.inputField.secureTextEntry = YES;
+    self.inputField.tag = 1;
     
     passwordField = [self createInputField];
     passwordField.placeholder = NSLocalizedString (@"New Password", nil);
     passwordField.secureTextEntry = YES;
-    [self.view addSubview:passwordField];
+    passwordField.tag = 2;
+    [self.scrollView addSubview:passwordField];
     
     passwordConfirmField = [self createInputField];
     passwordConfirmField.secureTextEntry = YES;
     passwordConfirmField.placeholder = NSLocalizedString (@"Confirm Password", nil);
-    [self.view addSubview:passwordConfirmField];
+    passwordConfirmField.tag = 3;
+    [self.scrollView addSubview:passwordConfirmField];
     
     UIButton *backButton = [UIButton buttonWithType:UIButtonTypeCustom];
     UIImage* backButtonImage = [UIImage imageNamed: @"ButtonAccountBackDefault.png"];
