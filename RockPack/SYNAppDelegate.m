@@ -431,7 +431,9 @@ didFinishLaunchingWithOptions: (NSDictionary *) launchOptions
     [GAI sharedInstance].trackUncaughtExceptions = YES;
     
     // Optional: set Google Analytics dispatch interval
-    [GAI sharedInstance].dispatchInterval = 30; // was 30
+    [GAI sharedInstance].dispatchInterval = 30;
+    
+    [GAI sharedInstance].defaultTracker.sessionTimeout = 300; // was 30
     
     // Set debug to YES to enable  extra debugging information.
     [GAI sharedInstance].debug = NO;
