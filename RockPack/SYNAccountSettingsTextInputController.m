@@ -53,6 +53,11 @@
     {
         maxY = MAX(maxY,view.frame.origin.y + view.frame.size.height);
     }
+
+    CGRect newFrame = self.scrollView.frame;
+    newFrame.size = self.contentSizeForViewInPopover;
+    self.scrollView.frame = newFrame;
+
     self.scrollView.contentSize = CGSizeMake(self.scrollView.frame.size.width, maxY);
     if(maxY < self.scrollView.frame.size.height)
     {
@@ -79,7 +84,6 @@
     
     self.sizeInContainer = self.contentSizeForViewInPopover.width - 20.0;
     self.scrollView = [[UIScrollView alloc] initWithFrame:CGRectMake(0,0, self.contentSizeForViewInPopover.width, self.contentSizeForViewInPopover.height)];
-    self.scrollView.autoresizingMask = UIViewAutoresizingFlexibleWidth|UIViewAutoresizingFlexibleHeight;
     self.scrollView.showsVerticalScrollIndicator = NO;
     self.scrollView.bounces = NO;
     [self.view addSubview:self.scrollView];
@@ -330,8 +334,9 @@
 {
     NSDictionary* info = [aNotification userInfo];
     CGSize kbSize = [[info objectForKey:UIKeyboardFrameBeginUserInfoKey] CGRectValue].size;
-    CGFloat topOfKeyboard = [[SYNDeviceManager sharedInstance] currentScreenHeight] - kbSize.height;
-    CGPoint bottomOfScrollView = [self.view.window convertPoint:CGPointMake(0.0, self.scrollView.frame.size.height + self.scrollView.frame.origin.y) fromView:self.view];
+    CGFloat topOfKeyboard = [[SYNDeviceManager sharedInstance] currentScreenHeight] - MIN(kbSize.height,kbSize.width); //Keyboard is relative to fixed orientation. Always use smallest dimension.
+    CGPoint bottomOfScrollView = [self.view.window.rootViewController.view convertPoint:CGPointMake(0.0, self.scrollView.frame.size.height + self.scrollView.frame.origin.y) fromView:self.view];
+    bottomOfScrollView.y +=20.0f; //statusbar
     CGFloat overlap = bottomOfScrollView.y - topOfKeyboard;
     if(overlap > 0)
     {
