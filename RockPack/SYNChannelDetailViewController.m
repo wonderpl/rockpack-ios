@@ -633,19 +633,9 @@
         if ([obj isKindOfClass:[Channel class]] && [((Channel*)obj).uniqueId isEqualToString:self.channel.uniqueId])
         {
             
-            if(self.channel.videoInstances.count == 0)
-            {
-                [self showNoVideosMessage: NSLocalizedString(@"channel_screen_no_videos",nil) withLoader:NO];
-            }
-            else
-            {
-                [self showNoVideosMessage:nil withLoader:NO];
-            }
             
             
             self.dataItemsAvailable = self.channel.totalVideosValue;
-            
-//            DebugLog(@"Total Videos on First Batch: %i", self.channel.totalVideosValue);
             
             self.subscribeButton.selected = self.channel.subscribedByUserValue;
             self.subscribeButton.enabled = YES;
@@ -667,7 +657,9 @@
             else
             {
                 [self showNoVideosMessage:nil withLoader:NO];
+                [self checkOnBoarding];
             }
+            
             
             return;
             
@@ -2401,40 +2393,74 @@
     
     [[NSNotificationCenter defaultCenter] postNotificationName:kMainControlsChangeEnter object:self];
     
+    [self checkOnBoarding];
 
-    if(![self.channel.channelOwner.uniqueId isEqualToString:appDelegate.currentUser.uniqueId] && !self.channel.subscribedByUserValue)
+}
+
+-(void)checkOnBoarding
+{
+    NSUserDefaults *defaults = [NSUserDefaults standardUserDefaults];
+    BOOL hasShownSubscribeOnBoarding = [defaults boolForKey:kUserDefaultsSubscribe];
+    
+    BOOL hasShownAddVideoOnBoarding = [defaults boolForKey:kUserDefaultsAddVideo];
+    
+    // do not show onboarding related to subscriptions in user's own channels and channels already subscribed
+    if(![self.channel.channelOwner.uniqueId isEqualToString:appDelegate.currentUser.uniqueId] &&
+       !self.channel.subscribedByUserValue && !hasShownSubscribeOnBoarding)
     {
-        // avoid showing the on boarding related to subscription to already subscribed channel or user's own channel
-        NSUserDefaults *defaults = [NSUserDefaults standardUserDefaults];
-        BOOL hasShownSubscribeOnBoarding = [defaults boolForKey:kUserDefaultsSubscribe];
-        if(!hasShownSubscribeOnBoarding)
-        {
-            BOOL isIpad = [[SYNDeviceManager sharedInstance] isIPad];
-            NSString* message = NSLocalizedString(@"onboarding_subscription", nil);
-            PointingDirection direction = isIpad ? PointingDirectionLeft : PointingDirectionUp;
-            CGFloat fontSize = isIpad ? 19.0 : 15.0 ;
-            CGSize size =  isIpad ? CGSizeMake(260.0, 164.0) : CGSizeMake(260.0, 148.0);
-            SYNOnBoardingPopoverView* subscribePopover = [SYNOnBoardingPopoverView withMessage:message
-                                                                                      withSize:size
-                                                                                   andFontSize:fontSize
-                                                                                    pointingTo:self.subscribeButton.frame
-                                                                                 withDirection:direction];
-            __weak SYNChannelDetailViewController* wself = self;
-            subscribePopover.action = ^{
-                [wself subscribeButtonTapped:self.subscribeButton]; // simulate press
-            };
-            [appDelegate.onBoardingQueue addPopover:subscribePopover];
-            
-            [defaults setBool:YES forKey:kUserDefaultsSubscribe];
-            
-            
-            [appDelegate.onBoardingQueue present];
-        }
+        BOOL isIpad = [[SYNDeviceManager sharedInstance] isIPad];
+        NSString* message = NSLocalizedString(@"onboarding_subscription", nil);
+        PointingDirection direction = isIpad ? PointingDirectionLeft : PointingDirectionUp;
+        CGFloat fontSize = isIpad ? 19.0 : 15.0 ;
+        CGSize size =  isIpad ? CGSizeMake(260.0, 164.0) : CGSizeMake(260.0, 148.0);
+        SYNOnBoardingPopoverView* subscribePopover = [SYNOnBoardingPopoverView withMessage:message
+                                                                                  withSize:size
+                                                                               andFontSize:fontSize
+                                                                                pointingTo:self.subscribeButton.frame
+                                                                             withDirection:direction];
+        
+        __weak SYNChannelDetailViewController* wself = self;
+        subscribePopover.action = ^{
+            [wself subscribeButtonTapped:self.subscribeButton]; // simulate press
+        };
+        
+        [appDelegate.onBoardingQueue addPopover:subscribePopover];
+        
+        [defaults setBool:YES forKey:kUserDefaultsSubscribe];
+    }
+    
+    NSLog(@"** Adding because count: %i - %@", self.channel.videoInstances.count, hasShownAddVideoOnBoarding ? @"YES" : @"NO");
+    if(!hasShownAddVideoOnBoarding && self.channel.videoInstances.count > 0)
+    {
+        NSString* message = NSLocalizedString(@"onboarding_video", nil);
+        
+        CGFloat fontSize = [[SYNDeviceManager sharedInstance] isIPad] ? 19.0 : 15.0 ;
+        CGSize size = [[SYNDeviceManager sharedInstance] isIPad] ? CGSizeMake(340.0, 164.0) : CGSizeMake(260.0, 144.0);
+        CGRect rectToPointTo = CGRectZero;
+        SYNVideoThumbnailRegularCell* randomCell = (SYNVideoThumbnailRegularCell*)[[self.videoThumbnailCollectionView visibleCells] objectAtIndex:0];
+        rectToPointTo = [self.view convertRect:randomCell.addItButton.frame fromView:self.selectedCell];
+        
+        SYNOnBoardingPopoverView* addToChannelPopover = [SYNOnBoardingPopoverView withMessage:message
+                                                                                     withSize:size
+                                                                                  andFontSize:fontSize
+                                                                                   pointingTo:rectToPointTo
+                                                                                withDirection:PointingDirectionDown];
+        
+        
+        __weak SYNChannelDetailViewController* wself = self;
+        addToChannelPopover.action = ^{
+            [wself addItToChannelPresssed:nil];
+        };
+        
+        NSLog(@"Adding because count: %i", self.channel.videoInstances.count);
+        [appDelegate.onBoardingQueue addPopover:addToChannelPopover];
+        
+        [defaults setBool:YES forKey:kUserDefaultsAddVideo];
+        
     }
     
     
-    
-    
+    [appDelegate.onBoardingQueue present];
 }
 
 
@@ -3093,48 +3119,7 @@
     return ([self.channel.channelOwner.uniqueId isEqualToString:appDelegate.currentUser.uniqueId] && self.channel.favouritesValue);
 }
 
-- (void) videoOverlayDidDissapear
-{
-    NSUserDefaults *defaults = [NSUserDefaults standardUserDefaults];
-    BOOL hasShownSubscribeOnBoarding = [defaults boolForKey:kUserDefaultsAddVideo];
-    if(!hasShownSubscribeOnBoarding)
-    {
-        SYNOnBoardingPopoverQueueController* onBoardingQueue = [[SYNOnBoardingPopoverQueueController alloc] init];
-        
-        NSString* message = NSLocalizedString(@"onboarding_video", nil);
-        
-        CGFloat fontSize = [[SYNDeviceManager sharedInstance] isIPad] ? 19.0 : 15.0 ;
-        CGSize size = [[SYNDeviceManager sharedInstance] isIPad] ? CGSizeMake(340.0, 164.0) : CGSizeMake(260.0, 144.0);
-        CGRect rectToPointTo = CGRectZero;
-        PointingDirection directionToPointTo = PointingDirectionDown;
-        if(self.selectedCell)
-        {
-            rectToPointTo = [self.view convertRect:self.selectedCell.addItButton.frame fromView:self.selectedCell];
-            if(rectToPointTo.origin.y < [[SYNDeviceManager sharedInstance] currentScreenHeight] * 0.5)
-                directionToPointTo = PointingDirectionUp;
-            
-            //NSLog(@"%f %f", rectToPointTo.origin.x, rectToPointTo.origin.y);
-        }
-        SYNOnBoardingPopoverView* addToChannelPopover = [SYNOnBoardingPopoverView withMessage:message
-                                                                                     withSize:size
-                                                                                  andFontSize:fontSize
-                                                                                   pointingTo:rectToPointTo
-                                                                                withDirection:directionToPointTo];
-        
-        
-        __weak SYNChannelDetailViewController* wself = self;
-        addToChannelPopover.action = ^{
-            [wself addItToChannelPresssed:nil];
-        };
-        [onBoardingQueue addPopover:addToChannelPopover];
-        
-        [defaults setBool:YES forKey:kUserDefaultsAddVideo];
-        
-        [self.view addSubview:onBoardingQueue.view];
-        [self addChildViewController:onBoardingQueue];
-        [onBoardingQueue present];
-    }
-}
+
 
 
 // since this is called when video overlay is being closed it is also used for the onboarding
