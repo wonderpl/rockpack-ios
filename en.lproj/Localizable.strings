@@ -140,7 +140,7 @@
 "select_cover" = "SELECT A COVER";
 "channel_created_succesfully" = "CHANNEL CREATED SUCCESSFULLY";
 "channel_will_remain_private_until" = "HOWEVER IT WILL REMAIN PRIVATE UNTIL YOU ";
-"private_condition_category" = "SELECT A CATEGORY BASED ON IT'S CONTENT";
+"private_condition_category" = "SELECT A RELEVANT CATEGORY";
 "private_condition_title" = "ENTER A TITLE";
 "private_condition_cover" = "SELECT A COVER";
 
