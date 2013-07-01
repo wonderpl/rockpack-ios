@@ -1261,7 +1261,7 @@ typedef void(^AnimationCompletionBlock)(BOOL finished);
         
         modalFrame.origin.y = 60.0;
         
-        [UIView animateWithDuration:0.5 animations:^{
+        [UIView animateWithDuration:0.3 animations:^{
            
             self.accountSettingsCoverView.alpha = 0.8;
             self.modalAccountContainer.view.frame = modalFrame;
