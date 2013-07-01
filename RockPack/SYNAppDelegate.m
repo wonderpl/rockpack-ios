@@ -201,7 +201,6 @@ didFinishLaunchingWithOptions: (NSDictionary *) launchOptions
     
     NSTimeInterval intervalToExpiry = [self.currentOAuth2Credentials.expirationDate timeIntervalSinceNow];
     
-    NSLog(@"Expires: %f", intervalToExpiry);
     self.tokenExpiryTimer  = [NSTimer scheduledTimerWithTimeInterval:intervalToExpiry
                                                               target:self
                                                             selector:@selector(refreshExpiredToken)

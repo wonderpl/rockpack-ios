@@ -141,7 +141,7 @@
     self.userNameLabel.text = [channelOwner.username uppercaseString];
     self.fullNameLabel.text = [userName uppercaseString];
     
-    UIImage* placeholderImage = self.profileImageView.image ? self.profileImageView.image : [UIImage imageNamed: @"PlaceholderAvatarProfile.png"];
+    UIImage* placeholderImage = [UIImage imageNamed: @"PlaceholderAvatarProfile"];
     
     if (![channelOwner.thumbnailURL isEqualToString:@""]) // there is a url string
     {
