@@ -315,7 +315,7 @@
 
 - (void) performSearchForCurrentSearchTerm
 {
-    BOOL success =   [appDelegate.searchRegistry clearImportContextFromEntityName:@"Channel"];
+    BOOL success = [appDelegate.searchRegistry clearImportContextFromEntityName:@"Channel"];
     if (!success)
     {
         DebugLog(@"Could not clean Channel from search context");

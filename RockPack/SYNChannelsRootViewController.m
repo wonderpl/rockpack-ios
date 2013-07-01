@@ -478,7 +478,7 @@
         else
         {
             [channelThumbnailCell setChannelTitle:
-             [NSString stringWithFormat:@"%@ %@", [channel.channelOwner.displayName uppercaseString], NSLocalizedString(@"FAVOURITES", nil)]];
+             [NSString stringWithFormat:@"%@'S %@", [channel.channelOwner.displayName uppercaseString], NSLocalizedString(@"FAVOURITES", nil)]];
         }
         
     }
