@@ -191,6 +191,20 @@
     [self loadChannelsForGenre:currentGenre];
 }
 
+- (void) viewWillAppear: (BOOL) animated
+{
+    [super viewWillAppear: animated];
+    
+    self.channelThumbnailCollectionView.delegate = self;
+}
+
+- (void) viewWillDisappear: (BOOL) animated
+{
+    self.channelThumbnailCollectionView.delegate = nil;
+    
+    [super viewWillDisappear: animated];
+}
+
 
 
 - (void) viewDidScrollToFront
