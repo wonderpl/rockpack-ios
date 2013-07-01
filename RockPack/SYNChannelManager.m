@@ -359,7 +359,6 @@
         
     };
     
-    
     if([channelOwner isMemberOfClass:[User class]]) // the user uses the oAuthEngine to avoid caching
     {
         [appDelegate.oAuthNetworkEngine userDataForUser:((User*)channelOwner) onCompletion:^(id dictionary) {
@@ -368,6 +367,7 @@
                                   ignoringObjectTypes: kIgnoreVideoInstanceObjects | kIgnoreChannelOwnerObject];
             
             [appDelegate.oAuthNetworkEngine userSubscriptionsForUser:((User*)channelOwner) onCompletion:^(id dictionary) {
+                
                 
                 // this will remove the old subscriptions
                 [channelOwner setSubscriptionsDictionary:dictionary];
@@ -396,7 +396,7 @@
                                   ignoringObjectTypes: kIgnoreVideoInstanceObjects | kIgnoreChannelOwnerObject];
                                                             
             [appDelegate.networkEngine channelOwnerSubscriptionsForOwner:channelOwner
-                                                                forRange:NSMakeRange(0, 48)
+                                                                forRange:NSMakeRange(0, 1000) // set to max for the moment
                                                        completionHandler:^(id dictionary) {
                                                                                                            
             [channelOwner setSubscriptionsDictionary:dictionary];
@@ -414,12 +414,7 @@
             } errorHandler:errorBlock];
                                                             
         } onError:errorBlock];
-    
-    }
-    
-    
-    
-    
+    } 
 }
 
 

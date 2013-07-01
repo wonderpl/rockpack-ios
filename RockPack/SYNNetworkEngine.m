@@ -151,12 +151,8 @@
     NSMutableDictionary* parameters = [NSMutableDictionary dictionary];
     
     parameters[@"start"] = @(range.location);
-    
     parameters[@"size"] = @(range.length);
-    
     parameters[@"locale"] = self.localeString;
-    
-    
     
     SYNNetworkOperationJsonObject *networkOperation = (SYNNetworkOperationJsonObject*)[self operationWithPath: apiString
                                                                                                        params: parameters
@@ -274,12 +270,16 @@
         if (totalNumber && [totalNumber isKindOfClass: [NSNumber class]])
             itemsCount = totalNumber.intValue;
         
-        BOOL registryResultOk = [self.searchRegistry registerVideosFromDictionary:dictionary];
-        if (!registryResultOk)
-            return;
+            BOOL registryResultOk = [self.searchRegistry registerVideosFromDictionary:dictionary];
         
-        completeBlock(itemsCount);
+            if (!registryResultOk)
+                return;
+            
+            completeBlock(itemsCount);
+
+
         
+                
     } errorHandler:^(NSError* error) {
         DebugLog(@"Update Videos Screens Request Failed");
         if (error.code >=500 && error.code < 600)

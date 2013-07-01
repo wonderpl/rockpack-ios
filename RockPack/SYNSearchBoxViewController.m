@@ -88,6 +88,9 @@
 
 - (void) clear
 {
+    if(self.autocompleteNetworkOperation)
+        [self.autocompleteNetworkOperation cancel];
+    
     [self.autoSuggestionController clearWords];
     [self resizeTableView:YES];
 }
@@ -117,9 +120,17 @@
     if ([newCharacter isEqualToString: @" "] && self.searchTextField.text.length == 0)
         return NO;
     
+    // 2. if there are less than 3 chars currently typed do not perform search
 
     if((range.location - range.length) < 2)
+    {
+        // close suggestion box
+        
+        
+        [self clear];
         return YES;
+    }
+        
 
     // == Restart Timer == //
     if (self.autocompleteTimer)
@@ -130,6 +141,7 @@
                                                             selector: @selector(performAutocompleteSearch:)
                                                             userInfo: nil
                                                              repeats: NO];
+    
     return YES;
 }
 
@@ -166,6 +178,8 @@
                                              self.autoSuggestionController.tableView.alpha = 1.0;
                                              
                                          } andError: ^(NSError* error) {
+                                             
+                                             
                                          }];
 }
 

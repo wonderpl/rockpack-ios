@@ -191,6 +191,20 @@
     [self loadChannelsForGenre:currentGenre];
 }
 
+- (void) viewWillAppear: (BOOL) animated
+{
+    [super viewWillAppear: animated];
+    
+    self.channelThumbnailCollectionView.delegate = self;
+}
+
+- (void) viewWillDisappear: (BOOL) animated
+{
+    self.channelThumbnailCollectionView.delegate = nil;
+    
+    [super viewWillDisappear: animated];
+}
+
 
 
 - (void) viewDidScrollToFront
@@ -318,20 +332,26 @@
                                                       
                                                   } onError: ^(NSDictionary* errorInfo) {
                                                       DebugLog(@"Could not load channels: %@", errorInfo);
-                                                      self.footerView.showsLoading = NO;
+                                                        self.footerView.showsLoading = NO;
                                                   }];
 }
 
 
 - (void) loadMoreChannels: (UIButton*) sender
 {
-    
-
     [self incrementRangeForNextRequest];
-    
     
     [self loadChannelsForGenre: currentGenre
                    byAppending: YES];
+    
+    self.footerView.showsLoading = YES;
+}
+
+
+- (void) scrollViewDidScroll: (UIScrollView *) scrollView
+{
+    // when reaching far right hand side, load a new page
+
 }
 
 
@@ -387,7 +407,6 @@
     self.channels = [NSMutableArray arrayWithArray:resultsArray];
     
     
-
     // We shouldn't wait until the animation is over, as this will result in crashes if the user is scrolling
     
     [self.channelThumbnailCollectionView reloadData];
@@ -446,9 +465,27 @@
                                                                                               forIndexPath: indexPath];
     
     
-    channelThumbnailCell.imageUrlString = channel.channelCover.imageLargeUrl;
+    if(channel.favouritesValue)
+    {
+        if([appDelegate.currentUser.uniqueId isEqualToString:channel.channelOwner.uniqueId])
+        {
+            [channelThumbnailCell setChannelTitle: [NSString stringWithFormat:@"MY %@", NSLocalizedString(@"FAVOURITES", nil)] ];
+        }
+        else
+        {
+            [channelThumbnailCell setChannelTitle:
+             [NSString stringWithFormat:@"%@'S %@", [channel.channelOwner.displayName uppercaseString], NSLocalizedString(@"FAVOURITES", nil)]];
+        }
+        
+    }
+    else
+    {
+        
+        [channelThumbnailCell setChannelTitle: channel.title];
+    }
     
-    [channelThumbnailCell setChannelTitle: channel.title];
+    
+    channelThumbnailCell.imageUrlString = channel.channelCover.imageLargeUrl;
     channelThumbnailCell.displayNameLabel.text = [NSString stringWithFormat: @"%@", channel.channelOwner.displayName];
     channelThumbnailCell.viewControllerDelegate = self;
     
@@ -503,8 +540,8 @@
         }
         
         self.footerView = [self.channelThumbnailCollectionView dequeueReusableSupplementaryViewOfKind: kind
-                                                                                    withReuseIdentifier: @"SYNChannelFooterMoreView"
-                                                                                           forIndexPath: indexPath];
+                                                                                  withReuseIdentifier: @"SYNChannelFooterMoreView"
+                                                                                         forIndexPath: indexPath];
         
         [self.footerView.loadMoreButton addTarget: self
                                            action: @selector(loadMoreChannels:)
@@ -516,6 +553,22 @@
     }
     
     return supplementaryView;
+}
+
+- (CGSize) collectionView: (UICollectionView *) collectionView
+                   layout: (UICollectionViewLayout*) collectionViewLayout
+                   referenceSizeForFooterInSection: (NSInteger) section
+{
+    CGFloat headerWidth = [SYNDeviceManager.sharedInstance isIPhone] ? 320.0f : 1024.0f;
+    
+    if (self.dataRequestRange.location < self.dataItemsAvailable)
+    {
+        return CGSizeMake(headerWidth, 60.0f);
+    }
+    else
+    {
+        return CGSizeZero;
+    }
 }
 
 
@@ -935,6 +988,13 @@
 - (void) categoryTableController: (SYNChannelCategoryTableViewController *) tableController
                didSelectCategory: (Genre *) category
 {
+    
+    id<GAITracker> tracker = [GAI sharedInstance].defaultTracker;
+    
+    [tracker sendEventWithCategory: @"uiAction"
+                        withAction: @"categoryItemClick"
+                         withLabel: category.name
+                         withValue: nil];
     if (category)
     {
         self.categoryNameLabel.text = category.name;
@@ -957,6 +1017,14 @@
 - (void) categoryTableController: (SYNChannelCategoryTableViewController *) tableController
             didSelectSubCategory: (SubGenre *) subCategory
 {
+    
+    id<GAITracker> tracker = [GAI sharedInstance].defaultTracker;
+    
+    [tracker sendEventWithCategory: @"uiAction"
+                        withAction: @"categoryItemClick"
+                         withLabel: subCategory.name
+                         withValue: nil];
+    
     self.categoryNameLabel.text = subCategory.genre.name;
     [self.categoryNameLabel sizeToFit];
     self.subCategoryNameLabel.text = subCategory.name;
@@ -1001,5 +1069,7 @@
 {
     [self.channelThumbnailCollectionView setContentOffset:CGPointZero animated:YES];
 }
+
+
 
 @end

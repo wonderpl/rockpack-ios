@@ -23,6 +23,7 @@
 #import "SYNOAuthNetworkEngine.h"
 #import "SYNObjectFactory.h"
 #import "SYNPageView.h"
+#import "SYNCautionMessageView.h"
 #import "SYNSearchBoxViewController.h"
 #import "SYNSearchRootViewController.h"
 #import "SYNSideNavigationViewController.h"
@@ -30,6 +31,7 @@
 #import "SYNVideoPlaybackViewController.h"
 #import "SYNVideoViewerViewController.h"
 #import "UIFont+SYNFont.h"
+#import "SYNCaution.h"
 #import "VideoInstance.h"
 #import <QuartzCore/QuartzCore.h>
 
@@ -229,6 +231,12 @@ typedef void(^AnimationCompletionBlock)(BOOL finished);
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(changeControlButtonsForControllerRequest:) name:kMainControlsChangeEnter object:nil];
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(changeControlButtonsForControllerRequest:) name:kMainControlsChangeLeave object:nil];
     
+    
+    // 
+    
+    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(profileRequested:) name:kProfileRequested object:nil];
+    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(channelDetailsRequested:) name:kChannelDetailsRequested object:nil];
+    
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(allNavControlsRequested:) name:kNoteAllNavControlsShow object:nil];
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(allNavControlsRequested:) name:kNoteAllNavControlsHide object:nil];
     
@@ -262,15 +270,44 @@ typedef void(^AnimationCompletionBlock)(BOOL finished);
     
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(channelSuccessfullySaved:) name:kNoteChannelSaved object:nil];
     
+    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(presentSuccessNotificationWithCaution:) name:kNoteSavingCaution object:nil];
+    
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(hideOrShowNetworkMessages:) name:kNoteHideNetworkMessages object:nil];
     
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(hideOrShowNetworkMessages:) name:kNoteShowNetworkMessages object:nil];
     
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(popCurrentViewController:) name:kNotePopCurrentViewController object:nil];
     
+    
+    
     [self.navigationContainerView addSubview:self.sideNavigationViewController.view]; 
 }
 
+// this is triggered when a component requests a view at the base of the stack
+- (void) profileRequested: (NSNotification*) notification
+{
+    ChannelOwner* channelOwner = (ChannelOwner*)[[notification userInfo] objectForKey: kChannelOwner];
+    if (!channelOwner)
+        return;
+    
+    [self.showingBaseViewController viewProfileDetails:channelOwner];
+}
+
+
+- (void) channelDetailsRequested: (NSNotification*) notification
+{
+    
+    
+    Channel* channel = (Channel*)[[notification userInfo] objectForKey: kChannel];
+    if (!channel)
+        return;
+    
+    SYNChannelDetailViewController *channelVC = [[SYNChannelDetailViewController alloc] initWithChannel: channel
+                                                                                              usingMode: kChannelDetailsModeDisplay];
+    channelVC.autoplayVideoId = [[notification userInfo] objectForKey:kAutoPlayVideoId];
+    
+    [self.showingBaseViewController animatedPushViewController: channelVC];
+}
 
 -(void)headerSwiped:(UISwipeGestureRecognizer*)recogniser
 {
@@ -330,21 +367,6 @@ typedef void(^AnimationCompletionBlock)(BOOL finished);
 
 -(void)pageChanged:(NSInteger)pageNumber
 {
-//    int totalDots = self.dotsView.subviews.count;
-//    UIImageView* dotImageView;
-//    for (int i = 0; i < totalDots; i++)
-//    {
-//        dotImageView = (UIImageView*)self.dotsView.subviews[i];
-//        if (i == pageNumber) {
-//            dotImageView.image = [UIImage imageNamed:@"NavigationDotCurrent"];
-//        } else {
-//            dotImageView.image = [UIImage imageNamed:@"NavigationDot"];
-//        }
-//        
-//        
-//        
-//    }
-    
     
     self.pageTitleLabel.text = [self.containerViewController.showingBaseViewController.title uppercaseString];
     
@@ -701,6 +723,7 @@ typedef void(^AnimationCompletionBlock)(BOOL finished);
                      } completion:^(BOOL finished) {
                          self.darkOverlayView.hidden = YES;
                      }];
+    
     CGRect sboxFrame = self.searchBoxController.view.frame;
     
     // place according to the position of the back button //
@@ -980,8 +1003,8 @@ typedef void(^AnimationCompletionBlock)(BOOL finished);
 
 - (void) channelSuccessfullySaved: (NSNotification*) note
 {
-    NSString* message = [SYNDeviceManager.sharedInstance isIPhone]?
-    NSLocalizedString(@"CHANNEL SAVED",nil):
+    NSString* message =
+    [SYNDeviceManager.sharedInstance isIPhone] ? NSLocalizedString(@"CHANNEL SAVED",nil) :
     NSLocalizedString(@"YOUR CHANNEL HAS BEEN SAVED SUCCESSFULLY",nil);
     [self presentSuccessNotificationWithMessage:message];
 }
@@ -1218,9 +1241,9 @@ typedef void(^AnimationCompletionBlock)(BOOL finished);
         navigationController.view.backgroundColor = [UIColor clearColor];
         navigationController.navigationBarHidden = YES;
         
-        
+        __weak SYNMasterViewController* weakSelf = self;
         self.modalAccountContainer = [[SYNAccountSettingsModalContainer alloc] initWithNavigationController:navigationController andCompletionBlock:^{
-            [self modalAccountContainerDismiss];
+            [weakSelf modalAccountContainerDismiss];
         }];
         
         CGRect modalFrame = self.modalAccountContainer.view.frame;
@@ -1238,7 +1261,7 @@ typedef void(^AnimationCompletionBlock)(BOOL finished);
         
         modalFrame.origin.y = 60.0;
         
-        [UIView animateWithDuration:0.5 animations:^{
+        [UIView animateWithDuration:0.3 animations:^{
            
             self.accountSettingsCoverView.alpha = 0.8;
             self.modalAccountContainer.view.frame = modalFrame;
@@ -1324,8 +1347,9 @@ typedef void(^AnimationCompletionBlock)(BOOL finished);
 }
 
 
-- (void) presentSuccessNotificationWithMessage: (NSString*) message
+- (void) presentSuccessNotificationWithMessage : (NSString*) message
 {
+    
     __block SYNNetworkErrorView* successNotification = [[SYNNetworkErrorView alloc] init];
     successNotification.backgroundColor = [UIColor colorWithPatternImage: [UIImage imageNamed: @"BarSucess"]];
     [successNotification setText: message];
@@ -1340,6 +1364,7 @@ typedef void(^AnimationCompletionBlock)(BOOL finished);
                          successNotification.frame = newFrame;
                      }
                      completion: ^(BOOL finished) {
+                         
                          [UIView animateWithDuration: 0.3f
                                                delay: 4.0f
                                              options: UIViewAnimationOptionCurveEaseIn
@@ -1352,6 +1377,21 @@ typedef void(^AnimationCompletionBlock)(BOOL finished);
                                               [successNotification removeFromSuperview];
                                           }];
                      }];
+}
+
+- (void) presentSuccessNotificationWithCaution:(NSNotification*)notification
+{
+    SYNCaution* caution = [[notification userInfo] objectForKey:kCaution];
+    if(!caution)
+        return;
+    
+    SYNCautionMessageView* cautionMessageView = [SYNCautionMessageView withCaution:caution];
+    
+    [cautionMessageView presentInView:self.view];
+    
+    
+    
+    
 }
 
 

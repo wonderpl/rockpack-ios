@@ -2,10 +2,10 @@
 <archive type="com.apple.InterfaceBuilder3.CocoaTouch.iPad.XIB" version="8.00">
 	<data>
 		<int key="IBDocument.SystemTarget">1552</int>
-		<string key="IBDocument.SystemVersion">12E55</string>
+		<string key="IBDocument.SystemVersion">12C3006</string>
 		<string key="IBDocument.InterfaceBuilderVersion">3084</string>
-		<string key="IBDocument.AppKitVersion">1187.39</string>
-		<string key="IBDocument.HIToolboxVersion">626.00</string>
+		<string key="IBDocument.AppKitVersion">1187.34</string>
+		<string key="IBDocument.HIToolboxVersion">625.00</string>
 		<object class="NSMutableDictionary" key="IBDocument.PluginVersions">
 			<string key="NS.key.0">com.apple.InterfaceBuilder.IBCocoaTouchPlugin</string>
 			<string key="NS.object.0">2083</string>
@@ -86,7 +86,7 @@
 								<string key="targetRuntimeIdentifier">IBIPadFramework</string>
 								<object class="NSCustomResource" key="IBUIImage">
 									<string key="NSClassName">NSImage</string>
-									<string key="NSResourceName">PlaceholderNotificationAvatar.png</string>
+									<string key="NSResourceName">PlaceholderSidebarAvatar.png</string>
 								</object>
 							</object>
 							<object class="IBUILabel" id="329439129">
@@ -94,7 +94,6 @@
 								<int key="NSvFlags">268</int>
 								<string key="NSFrame">{{59, 437}, {202, 28}}</string>
 								<reference key="NSSuperview" ref="96903541"/>
-								<reference key="NSNextKeyView"/>
 								<string key="NSReuseIdentifierKey">_NS:9</string>
 								<object class="NSColor" key="IBUIBackgroundColor">
 									<int key="NSColorSpace">1</int>
@@ -691,7 +690,7 @@
 			<string key="ButtonMenuBack~iphone.png">{44, 45}</string>
 			<string key="ButtonSettings.png">{169, 50}</string>
 			<string key="ButtonSettingsHighlighted.png">{169, 50}</string>
-			<string key="PlaceholderNotificationAvatar.png">{60, 60}</string>
+			<string key="PlaceholderSidebarAvatar.png">{60, 60}</string>
 		</dictionary>
 		<string key="IBCocoaTouchPluginVersion">2083</string>
 	</data>

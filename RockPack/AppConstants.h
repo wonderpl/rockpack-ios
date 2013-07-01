@@ -11,7 +11,9 @@
 
 // User ratings mechanism
 
-#define ENABLE_USER_RATINGS__
+#define ENABLE_USER_RATINGS
+
+#define kAPIInitialBatchSize 48
 
 //
 // API
@@ -29,7 +31,7 @@
 #define kCoverArtImage              @"CoverArtImage"
 
 #define kForceRefreshValue          @"kForceRefreshValue"
-#define kAutoPlayVideoId          @"kAutoPlayVideoId"
+#define kAutoPlayVideoId            @"kAutoPlayVideoId"
 
 
 // viewId
@@ -55,6 +57,7 @@
 #define kCoverArtChanged            @"kCoverArtChanged"
 #define kCoverSetNoCover            @"kCoverSetNoCover"
 
+#define kCaution                    @"kCaution"
 
 // == Main WS API == //
 
@@ -265,6 +268,8 @@ typedef enum _NavigationButtonsAppearence {
 // Dimensions
 //
 
+#define kLoadMoreFooterViewHeight   50.0f
+
 #define kMinorDimension 768.0f
 #define kMajorDimension 1024.0f
 #define kStatusBarHeight 20.0f
@@ -449,6 +454,7 @@ typedef enum {
 #define kHideSideNavigationView     @"kHideSideNavigationView"
 
 #define kNoteChannelSaved           @"kNoteChannelSaved"
+#define kNoteSavingCaution          @"kNoteSavingCaution"
 
 #define kNoteHideNetworkMessages    @"kNoteHideNetworkMessages"
 #define kNoteShowNetworkMessages    @"kNoteShowNetworkMessages"

@@ -132,18 +132,7 @@
     [self packViewControllersForInterfaceOrientation:UIDeviceOrientationLandscapeLeft];
     
     
-    // == Register Notifications == //
-    
-    [[NSNotificationCenter defaultCenter] addObserver: self
-                                             selector: @selector(profileRequested:)
-                                                 name: kProfileRequested
-                                               object: nil];
-    
-    // Fired from SideNavigation when the user clicks on a notification's channel icon 
-    [[NSNotificationCenter defaultCenter] addObserver: self
-                                             selector: @selector(channelDetailsRequested:)
-                                                 name: kChannelDetailsRequested
-                                               object: nil];
+   
     
     // == Set Firts Page == //
     
@@ -171,6 +160,12 @@
     [[NSNotificationCenter defaultCenter] postNotificationName: kScrollerPageChanged
                                                         object: self
                                                       userInfo: @{kCurrentPage:@(self.scrollView.page)}];
+}
+
+- (void) dealloc
+{
+    // Defensive programming
+    self.scrollView.delegate = nil;
 }
 
 -(void)swipedTo:(UISwipeGestureRecognizerDirection)direction
@@ -265,30 +260,7 @@
 
 #pragma mark - Notification Methods
 
-- (void) profileRequested: (NSNotification*) notification
-{
-    ChannelOwner* channelOwner = (ChannelOwner*)[[notification userInfo] objectForKey: kChannelOwner];
-    if (!channelOwner)
-        return;
-    
-    [self.showingBaseViewController viewProfileDetails:channelOwner];
-}
 
-
-- (void) channelDetailsRequested: (NSNotification*) notification
-{
-
-    
-    Channel* channel = (Channel*)[[notification userInfo] objectForKey: kChannel];
-    if (!channel)
-        return;
-    
-    SYNChannelDetailViewController *channelVC = [[SYNChannelDetailViewController alloc] initWithChannel: channel
-                                                                                              usingMode: kChannelDetailsModeDisplay];
-    channelVC.autoplayVideoId = [[notification userInfo] objectForKey:kAutoPlayVideoId];
-    
-    [self.showingBaseViewController animatedPushViewController: channelVC];
-}
 
 
 - (void) backButtonWillShow
@@ -358,7 +330,7 @@
         id<GAITracker> tracker = [GAI sharedInstance].defaultTracker;
         
         [tracker sendEventWithCategory: @"uiAction"
-                            withAction: @"videoSelectButtonClick"
+                            withAction: @"navigationSwipe"
                              withLabel: nil
                              withValue: nil];
         

@@ -189,6 +189,12 @@ static CGRect GKScaleRect(CGRect rect, CGFloat scale)
     return self;
 }
 
+- (void) dealloc
+{
+    // Defensive programming
+    self.scrollView.delegate = nil;
+}
+
 
 - (UIView *)hitTest:(CGPoint)point withEvent:(UIEvent *)event{
     if (!self.resizableCropArea)

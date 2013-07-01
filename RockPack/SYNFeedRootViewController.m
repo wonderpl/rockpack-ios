@@ -190,7 +190,8 @@
     
     [self displayEmptyGenreMessage:NSLocalizedString(@"feed_screen_loading_message", nil) andLoader:YES];
     
-    [self loadAndUpdateFeedData];
+    // TODO: Remove this, as I believe that this is no longer needed
+//    [self loadAndUpdateFeedData];
 }
 
 -(void)videoQueueCleared
@@ -405,11 +406,13 @@
 
 - (void) loadAndUpdateFeedData
 {
+    self.loadingMoreContent = YES;
+    
+    NSLog (@"Loc %d, Len %d", self.dataRequestRange.location, self.dataRequestRange.length);
     
     if(!appDelegate.currentOAuth2Credentials.userId)
         return;
-    
-    
+
     [self.refreshButton startRefreshCycle];
     
     [appDelegate.oAuthNetworkEngine subscriptionsUpdatesForUserId:  appDelegate.currentOAuth2Credentials.userId
@@ -440,6 +443,7 @@
                                                     if(self.fetchedResultsController.fetchedObjects.count == 0)
                                                         [self displayEmptyGenreMessage:NSLocalizedString(@"feed_screen_empty_message", nil) andLoader:NO];
                                                     
+                                                    
                                                     self.footerView.showsLoading = NO;
                                                     
                                                     [self handleRefreshComplete];
@@ -449,6 +453,9 @@
                                                     [self handleRefreshComplete];
                                                     
                                                     [self removeEmptyGenreMessage];
+                                                    
+                                                    
+                                                    self.footerView.showsLoading = NO;
                                                     
                                                     [self displayEmptyGenreMessage:NSLocalizedString(@"feed_screen_loading_error", nil) andLoader:NO];
                                                     
@@ -599,14 +606,18 @@
             
             //NSLog(@"%f %f", rectToPointTo.origin.x, rectToPointTo.origin.y);
         }
-        SYNOnBoardingPopoverView* subscribePopover = [SYNOnBoardingPopoverView withMessage:message
+        SYNOnBoardingPopoverView* addToChannelPopover = [SYNOnBoardingPopoverView withMessage:message
                                                                                   withSize:size
                                                                                andFontSize:fontSize
                                                                                 pointingTo:rectToPointTo
                                                                              withDirection:directionToPointTo];
         
         
-        [appDelegate.onBoardingQueue addPopover:subscribePopover];
+        __weak SYNFeedRootViewController* wself = self;
+        addToChannelPopover.action = ^{
+            [wself videoAddButtonTapped:wself.selectedCell.addItButton];
+        };
+        [appDelegate.onBoardingQueue addPopover:addToChannelPopover];
         
         [defaults setBool:YES forKey:kUserDefaultsAddVideo];
         
@@ -769,8 +780,6 @@
                                            action: @selector(loadMoreVideos:)
                                  forControlEvents: UIControlEventTouchUpInside];
         
-        //[self loadMoreChannels:self.footerView.loadMoreButton];
-        
         supplementaryView = self.footerView;
     }
 
@@ -812,17 +821,17 @@
 
 #pragma mark - Load More Footer
 
-
-
 - (void) loadMoreVideos: (UIButton*) sender
 {
-    
     [self incrementRangeForNextRequest];
+    
+    
+    self.footerView.showsLoading = YES;
     
     [self loadAndUpdateFeedData];
     
-    
 }
+
 
 - (BOOL) needsAddButton
 {
@@ -830,11 +839,17 @@
 }
 
 
-
--(void)headerTapped
+- (void) headerTapped
 {
     [self.videoThumbnailCollectionView setContentOffset:CGPointZero animated:YES];
 }
+
+
+- (void) scrollViewDidScroll: (UIScrollView *) scrollView
+{
+    
+}
+
 
 - (void) applicationWillEnterForeground: (UIApplication *) application
 {

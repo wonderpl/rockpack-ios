@@ -105,8 +105,24 @@
                                    placeholderImage: [UIImage imageNamed: @"PlaceholderChannelMid.png"]
                                             options: SDWebImageRetryFailed];
     
-    
-    [channelThumbnailCell setChannelTitle: channel.title];
+    if(channel.favouritesValue)
+    {
+        if([appDelegate.currentUser.uniqueId isEqualToString:channel.channelOwner.uniqueId])
+        {
+            [channelThumbnailCell setChannelTitle: [NSString stringWithFormat:@"MY %@", NSLocalizedString(@"FAVOURITES", nil)] ];
+        }
+        else
+        {
+            [channelThumbnailCell setChannelTitle:
+             [NSString stringWithFormat:@"%@'S %@", [channel.channelOwner.displayName uppercaseString], NSLocalizedString(@"FAVOURITES", nil)]];
+        }
+        
+    }
+    else
+    {
+        
+        [channelThumbnailCell setChannelTitle: channel.title];
+    }
     
     return channelThumbnailCell;
 }
@@ -156,6 +172,7 @@
 -(void)setUser:(ChannelOwner*)user
 {
     // no additional checks because it is done above
+    
     _user = user;
     
     [self.channelThumbnailCollectionView reloadData];

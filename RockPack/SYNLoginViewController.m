@@ -184,12 +184,11 @@
     UITapGestureRecognizer* tapGesture = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(outerViewTapped:)];
     [self.view addGestureRecognizer:tapGesture];
     
-    self.onBoardingController = [[SYNLoginOnBoardingController alloc] init];
+    self.onBoardingController = [[SYNLoginOnBoardingController alloc] initWithDelegate: self];
     CGRect onBoardingViewFrame = self.onBoardingController.view.frame;
     onBoardingViewFrame.origin.x = 0.0;
     onBoardingViewFrame.origin.y = [[SYNDeviceManager sharedInstance] isLandscape] ? 300.0 : 560.0;
     self.onBoardingController.view.frame = onBoardingViewFrame;
-    self.onBoardingController.scrollView.delegate = self;
     [self.view addSubview:self.onBoardingController.view];
     [self addChildViewController:self.onBoardingController];
     
@@ -1507,19 +1506,22 @@
 - (IBAction) textfieldDidChange: (id) sender
 {
 
-    if(sender == self.ddInputField && [self.ddInputField.text length]==2)
+    UIView* nextView = [self.view viewWithTag: ((UITextField*)sender).tag + 1];
+    if(sender == self.ddInputField && [self.ddInputField.text length] == 2)
     {
-        [self.mmInputField becomeFirstResponder];
+        if(nextView && [nextView isKindOfClass:[UITextField class]])
+            [(UITextField*)nextView becomeFirstResponder];
 
     }
-    else if(sender == self.mmInputField && [self.mmInputField.text length]==2)
+    else if(sender == self.mmInputField && [self.mmInputField.text length] == 2)
     {
-        [self.yyyyInputField becomeFirstResponder];
+        if(nextView && [nextView isKindOfClass:[UITextField class]])
+            [(UITextField*)nextView becomeFirstResponder];
 
     }
     else if(sender == self.yyyyInputField && [self.yyyyInputField.text length] == 4)
     {
-        //[sender resignFirstResponder];
+       
         
     }
 }

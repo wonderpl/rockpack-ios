@@ -65,11 +65,6 @@
         collectionFrame.size.height -= 5.0;
         self.channelThumbnailCollectionView.frame = collectionFrame;
         
-//        UICollectionViewFlowLayout* layout = (UICollectionViewFlowLayout*)self.channelThumbnailCollectionView.collectionViewLayout;
-//        UIEdgeInsets insets= layout.sectionInset;
-////        insets.top = 0.0f;
-////        insets.bottom = -50.0f;
-////        layout.sectionInset = insets;
         
     }
 }
@@ -77,7 +72,8 @@
 
 - (void) viewWillAppear: (BOOL) animated
 {
-    // override the data loading
+    [super viewWillAppear:animated];
+  
     [self displayChannelsForGenre];
     
     // Google analytics support
@@ -109,6 +105,10 @@
     [request setEntity:[NSEntityDescription entityForName: @"Channel"
                                    inManagedObjectContext: appDelegate.searchManagedObjectContext]];
     
+    
+    [request setPredicate: [NSPredicate predicateWithFormat: @"viewId == %@", self.viewId]];
+    
+    request.fetchBatchSize = 20;
     
     NSSortDescriptor *positionDescriptor = [[NSSortDescriptor alloc] initWithKey: @"position"
                                                                        ascending: YES];
@@ -142,13 +142,12 @@
 
 - (void) loadMoreChannels: (UIButton*) sender
 {
-    
-    self.footerView.showsLoading = YES;
-    
     NSInteger nextStart = self.dataRequestRange.location + self.dataRequestRange.length; // one is subtracted when the call happens for 0 indexing
     
     if(nextStart >= self.dataItemsAvailable)
         return;
+    
+    self.loadingMoreContent = YES;
     
     NSInteger nextSize = (nextStart + STANDARD_REQUEST_LENGTH) >= self.dataItemsAvailable ? (self.dataItemsAvailable - nextStart) : STANDARD_REQUEST_LENGTH;
     
@@ -158,7 +157,7 @@
                                             andRange: self.dataRequestRange
                                           onComplete: ^(int itemsCount) {
                                               self.dataItemsAvailable = itemsCount;
-                                              self.footerView.showsLoading = NO;
+                                              self.loadingMoreContent = NO;
                                           }];
 }
 
@@ -171,14 +170,14 @@
     if (!appDelegate)
         appDelegate = (SYNAppDelegate*)[[UIApplication sharedApplication] delegate];
     
-    self.dataRequestRange = NSMakeRange(0, 48);
-        
-    
+    self.dataRequestRange = NSMakeRange(0, kAPIInitialBatchSize);
     
     
     [appDelegate.networkEngine searchChannelsForTerm: term
                                             andRange: self.dataRequestRange
                                           onComplete: ^(int itemsCount) {
+                                              
+                                              
                                               self.dataItemsAvailable = itemsCount;
                                               if (self.itemToUpdate)
                                                   [self.itemToUpdate setNumberOfItems: self.dataItemsAvailable

@@ -18,7 +18,7 @@
 #import "User.h"
 #import <FacebookSDK/FacebookSDK.h>
 #import "RegexKitLite.h"
-
+#import <Accounts/Accounts.h>
 
 @interface SYNLoginBaseViewController () {
     
@@ -83,19 +83,14 @@
     }
     self.backgroundImagesArray = [NSArray arrayWithArray:imagesArray];
     
+    
+    
+    
+    
 }
 
 
-- (void) viewWillAppear: (BOOL) animated
-{
-    [super viewWillAppear:animated];
-    
-    
-    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(reachabilityChanged:) name:kReachabilityChangedNotification object:nil];
-
-}
-
--(void)viewDidLoad
+- (void) viewDidLoad
 {
     [super viewDidLoad];
     
@@ -131,7 +126,36 @@
     
     
     self.loginBackgroundImage.image = [UIImage imageNamed:self.backgroundImagesArray[0]]; // get the first image
+    
+    // localise date format for US and UK
+    
+    NSString* localeFromDevice = [(NSString*)CFBridgingRelease(CFLocaleCreateCanonicalLanguageIdentifierFromString(NULL, (CFStringRef)[NSLocale.autoupdatingCurrentLocale objectForKey: NSLocaleIdentifier])) lowercaseString];
+    
+    if([localeFromDevice isEqualToString:@"en-us"])
+    {
+        NSInteger ddTag = self.ddInputField.tag;
+        CGRect ddRect = self.ddInputField.frame;
+        
+        self.ddInputField.frame = self.mmInputField.frame;
+        self.mmInputField.frame = ddRect;
+        
+        self.ddInputField.tag = self.mmInputField.tag;
+        self.mmInputField.tag = ddTag;
+    }
 }
+
+
+- (void) viewWillAppear: (BOOL) animated
+{
+    [super viewWillAppear:animated];
+    
+    
+    [[NSNotificationCenter defaultCenter] addObserver: self
+                                             selector: @selector(reachabilityChanged:)
+                                                 name: kReachabilityChangedNotification
+                                               object: nil];
+}
+
 
 - (void) viewDidAppear: (BOOL) animated
 {
@@ -140,6 +164,7 @@
     [self performSelector: @selector(reachabilityChanged:)
                withObject: nil];
 }
+
 
 - (void) viewWillDisappear: (BOOL) animated
 {
@@ -303,9 +328,42 @@
 
 #pragma mark - login facebook
 
--(void) loginThroughFacebookWithCompletionHandler:(MKNKJSONCompleteBlock) completionBlock
+-(void) loginThroughFacebookWithCompletionHandler: (MKNKJSONCompleteBlock) completionBlock
                                      errorHandler: (MKNKUserErrorBlock) errorBlock
 {
+    
+    // figure out if it exists in account
+    
+//    ACAccountStore* accountStore = [[ACAccountStore alloc] init];
+//    ACAccountType* facebookAccountType = [accountStore accountTypeWithAccountTypeIdentifier:ACAccountTypeIdentifierFacebook];
+//    NSArray *facebookAccounts = [accountStore accountsWithAccountType:facebookAccountType];
+//    NSLog(@"Accounts:\n%@", facebookAccounts);
+//    
+//    NSDictionary *options = @{ACFacebookAppIdKey : @"217008995103822",
+//                              ACFacebookPermissionsKey : @[@"publish_stream"],
+//                              ACFacebookAudienceKey : ACFacebookAudienceEveryone};
+//    
+//    if(facebookAccountType.accessGranted)
+//    {
+//        NSLog(@"User had granted Facebook Access");
+//    }
+//    else
+//    {
+//        NSLog(@"User had revoked Facebook Access");
+//        [accountStore requestAccessToAccountsWithType:facebookAccountType options:options completion:^(BOOL granted, NSError *error) {
+//            if (granted)
+//            {
+//                NSLog(@"Granted!");
+//                
+//            }
+//            else
+//            {
+//                NSLog(@"NOT Granted (error: %@)", error);
+//            }
+//        }];
+//        return;
+//    }
+    
     SYNFacebookManager* facebookManager = [SYNFacebookManager sharedFBManager];
     
     [facebookManager loginOnSuccess: ^(NSDictionary<FBGraphUser> *dictionary) {

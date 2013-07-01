@@ -100,7 +100,7 @@
         }
         
 
-        
+        channel.viewId = kSearchViewId;
         
     }
     

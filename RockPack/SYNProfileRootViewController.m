@@ -185,9 +185,7 @@
     subColViewFrame.size.width = [SYNDeviceManager.sharedInstance currentScreenWidth] - subColViewFrame.origin.x - 10.0;
     [self.subscriptionsViewController setViewFrame: subColViewFrame];
     
-    
-    if (self.user)
-        self.subscriptionsViewController.user = self.user;
+        
     
     self.headerSubscriptionsView = [SYNYouHeaderView headerViewForWidth: 384];
     
@@ -325,15 +323,6 @@
 - (void) viewDidLoad
 {
     [super viewDidLoad];
-    
-    if (self.user == appDelegate.currentUser)
-    {
-        [GAI.sharedInstance.defaultTracker sendView: @"Own Profile"];
-    }
-    else
-    {
-        [GAI.sharedInstance.defaultTracker sendView: @"User Profile"];
-    }
 
     UINib *createCellNib = [UINib nibWithNibName: @"SYNChannelCreateNewCell"
                                           bundle: nil];
@@ -374,11 +363,12 @@
 {
     [super viewWillAppear: animated];
     
+    self.channelThumbnailCollectionView.delegate = self;
+    
     self.deletionModeActive = NO;
     
     self.subscriptionsViewController.collectionView.delegate = self;
     
-    [self.userProfileController setChannelOwner: self.user];
     
     self.subscriptionsViewController.user = self.user;
     
@@ -391,19 +381,20 @@
 
 - (void) viewWillDisappear: (BOOL) animated
 {
-    [super viewWillDisappear: animated];
-    
+    self.channelThumbnailCollectionView.delegate = nil;
     
     self.deletionModeActive = NO;
+    
+    [super viewWillDisappear: animated];
 }
 
 #pragma mark - Container Scroll Delegates
 
 - (void) viewDidScrollToFront
 {
-//    [self updateAnalytics];
+    [self updateAnalytics];
     
-    if([[SYNDeviceManager sharedInstance] isIPhone])
+    if ([[SYNDeviceManager sharedInstance] isIPhone])
     {
         self.channelThumbnailCollectionView.scrollsToTop = !self.subscriptionsTabActive;
     
@@ -415,9 +406,10 @@
         
         self.subscriptionsViewController.channelThumbnailCollectionView.scrollsToTop = YES;
     }
-    [[NSNotificationCenter defaultCenter] postNotificationName:kChannelOwnerUpdateRequest
-                                                        object:self
-                                                      userInfo:@{kChannelOwner:self.user}];
+    
+    [[NSNotificationCenter defaultCenter] postNotificationName: kChannelOwnerUpdateRequest
+                                                        object: self
+                                                      userInfo: @{kChannelOwner: self.user}];
 }
 
 -(void)viewDidScrollToBack
@@ -431,7 +423,14 @@
 - (void) updateAnalytics
 {
     // Google analytics support
-//    [GAI.sharedInstance.defaultTracker sendView: @"You - Root"];
+    if (self.user == appDelegate.currentUser)
+    {
+        [GAI.sharedInstance.defaultTracker sendView: @"Own Profile"];
+    }
+    else
+    {
+        [GAI.sharedInstance.defaultTracker sendView: @"User Profile"];
+    }
 }
 
 #pragma mark - Core Data Callbacks
@@ -695,12 +694,12 @@
 - (void) reloadCollectionViews
 {
     
+    
     NSInteger totalChannels = self.user.channels.count;
     NSString* title = [self getHeaderTitleForChannels];
     
     [self.headerChannelsView setTitle: title
-                             andNumber: totalChannels];
-    
+                            andNumber: totalChannels];
     
     [self.subscriptionsViewController reloadCollectionViews];
     [self.channelThumbnailCollectionView reloadData];
@@ -708,9 +707,8 @@
     [self resizeScrollViews];
 }
 
+
 #pragma mark - Updating
-
-
 
 -(NSString*)getHeaderTitleForChannels
 {
@@ -760,11 +758,12 @@
     }
     else
     {
+        
+        
         Channel *channel = (Channel*)self.user.channels[indexPath.row - (self.isUserProfile ? 1 : 0)];
         
         SYNChannelMidCell *channelThumbnailCell = [collectionView dequeueReusableCellWithReuseIdentifier: @"SYNChannelMidCell"
                                                                                             forIndexPath: indexPath];
-        
         
         [channelThumbnailCell.imageView setImageWithURL: [NSURL URLWithString: channel.channelCover.imageLargeUrl]
                                        placeholderImage: [UIImage imageNamed: @"PlaceholderChannelMid.png"]
@@ -1169,9 +1168,9 @@
     {
         // remove the listener, even if nil is passed
         
-        [[NSNotificationCenter defaultCenter] removeObserver:self
-                                                        name:NSManagedObjectContextObjectsDidChangeNotification
-                                                      object:self.user];
+        [[NSNotificationCenter defaultCenter] removeObserver: self
+                                                        name: NSManagedObjectContextDidSaveNotification
+                                                      object: self.user];
     }
     
     if(!appDelegate)
@@ -1236,6 +1235,11 @@
             self.isUserProfile = YES;
         else
             self.isUserProfile = NO;
+        
+        self.subscriptionsViewController.user = self.user;
+        
+        
+        self.userProfileController.channelOwner = self.user;
         
         [[NSNotificationCenter defaultCenter] addObserver: self
                                                  selector: @selector(handleDataModelChange:)

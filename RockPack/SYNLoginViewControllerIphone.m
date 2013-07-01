@@ -72,6 +72,8 @@
 
 @property (nonatomic) BOOL isPreIPhone5;
 
+@property (nonatomic) BOOL hasAnimated;
+
 @end
 
 @implementation SYNLoginViewControllerIphone 
@@ -175,7 +177,7 @@
     self.formatter.dateFormat = @"dd/MM/yyyy";
     
     
-    self.onBoardingController = [[SYNLoginOnBoardingController alloc] init];
+    self.onBoardingController = [[SYNLoginOnBoardingController alloc] initWithDelegate: self];
     CGRect onBoardingViewFrame = self.onBoardingController.view.frame;
     onBoardingViewFrame.origin.x = 0.0;
     onBoardingViewFrame.size.width = [[SYNDeviceManager sharedInstance] currentScreenWidth];
@@ -184,7 +186,6 @@
     else
         onBoardingViewFrame.origin.y = self.facebookButton.frame.origin.y - onBoardingViewFrame.size.height - 16.0;
     self.onBoardingController.view.frame = CGRectIntegral(onBoardingViewFrame);
-    self.onBoardingController.scrollView.delegate = self;
     [self.view addSubview:self.onBoardingController.view];
     [self addChildViewController:self.onBoardingController];
     
@@ -196,12 +197,15 @@
 - (void) viewWillAppear:(BOOL)animated
 {
     [super viewWillAppear: animated];
-    
 }
 
 - (void) viewDidAppear:(BOOL)animated
 {
     [super viewDidAppear:animated];
+    
+    [GAI.sharedInstance.defaultTracker sendView: @"Start"];
+    
+    if(!self.hasAnimated){
     self.rockpackLogoImage.frame = self.rockpackLogoImage.frame;
     [UIView animateWithDuration:0.3f
                           delay:0.1f
@@ -281,6 +285,8 @@
                          
                      } completion:^(BOOL finished) {
                      }];
+        self.hasAnimated=YES;
+    }
 }
 
 -(void)reEnableLoginControls
@@ -307,10 +313,6 @@
                          withLabel: nil
                          withValue: nil];
     
-    [tracker sendEventWithCategory: @"goal"
-                        withAction: @"userLogin"
-                         withLabel: @"Facebook"
-                         withValue: nil];
     
     if(![self isNetworkAccessibleOtherwiseShowErrorAlert])
     {
@@ -327,6 +329,7 @@
                              withValue: nil];
         
         [self completeLoginProcess];
+        
     } errorHandler:^(id error) {
         [self doFacebookFailedAnimation];
         if([error isKindOfClass:[NSDictionary class]])
@@ -418,13 +421,6 @@
     [self hideOnboarding];
     
     [GAI.sharedInstance.defaultTracker sendView: @"Login"];
-    
-    id<GAITracker> tracker = [GAI sharedInstance].defaultTracker;
-    
-    [tracker sendEventWithCategory: @"goal"
-                        withAction: @"userLogin"
-                         withLabel: @"Rockpack"
-                         withValue: nil];
     
     //Fade out login background
     self.loginBackgroundImage.alpha = 1.0f;
@@ -677,6 +673,13 @@
                 
                 [self completeLoginProcess];
                 
+                id<GAITracker> tracker = [GAI sharedInstance].defaultTracker;
+                
+                [tracker sendEventWithCategory: @"goal"
+                                    withAction: @"userLogin"
+                                     withLabel: @"Rockpack"
+                                     withValue: nil];
+                
             } errorHandler:^(NSDictionary* errorDictionary) {
                 
                 [self.activityIndicator stopAnimating];
@@ -718,13 +721,15 @@
                 
                 if(self.avatarImage)
                 {
-                    [self uploadAvatarImage:self.avatarImage completionHandler:nil errorHandler:^(id dictionary) {
-                        [[[UIAlertView alloc] initWithTitle: NSLocalizedString(@"register_screen_form_avatar_upload_title", nil)
-                                                    message: NSLocalizedString(@"register_screen_form_avatar_upload_description.", nil)
-                                                   delegate: nil
-                                          cancelButtonTitle: NSLocalizedString(@"OK", nil)
-                                          otherButtonTitles: nil] show];
-                    }];
+                    [self uploadAvatarImage: self.avatarImage completionHandler: ^(id dummy){
+                    }
+                               errorHandler: ^(id dictionary) {
+                                   [[[UIAlertView alloc] initWithTitle: NSLocalizedString(@"register_screen_form_avatar_upload_title", nil)
+                                                               message: NSLocalizedString(@"register_screen_form_avatar_upload_description.", nil)
+                                                              delegate: nil
+                                                     cancelButtonTitle: NSLocalizedString(@"OK", nil)
+                                                     otherButtonTitles: nil] show];
+                               }];
                 }
                 [self completeLoginProcess];
                 
@@ -889,6 +894,7 @@
         BOOL usernameAvailable = [availabilitynumber boolValue];
             if(usernameAvailable)
             {
+                [self.validUsernames addObject:self.registeringUserNameInputField.text];
                 [self showRegistrationStep2];
             }
             else
@@ -1057,9 +1063,7 @@
 
 #pragma mark - UITextField delegate
 
-- (BOOL) textField: (UITextField *) textField
-shouldChangeCharactersInRange: (NSRange) range
- replacementString: (NSString *) newCharacter
+- (BOOL) textField: (UITextField *) textField shouldChangeCharactersInRange: (NSRange) range replacementString: (NSString *) newCharacter
 {
     
     NSUInteger oldLength = textField.text.length;
@@ -1092,19 +1096,25 @@ shouldChangeCharactersInRange: (NSRange) range
     self.loginErrorLabel.text = @"";
     self.passwordResetErrorLabel.text = @"";
     self.registeringUserErrorLabel.text = @"";
-        
-    if(sender == self.ddInputField && [self.ddInputField.text length]==2)
+    
+    UIView* nextView = [self.view viewWithTag: ((UITextField*)sender).tag + 1];
+    
+    if(sender == self.ddInputField && [self.ddInputField.text length] == 2)
     {
-        [self.mmInputField becomeFirstResponder];
-        if([self.mmInputField.text length]>0 && [self.yyyyInputField.text length]>0 )
+        if(nextView && [nextView isKindOfClass:[UITextField class]])
+            [(UITextField*)nextView becomeFirstResponder];
+        
+        if([self.mmInputField.text length] > 0 && [self.yyyyInputField.text length]>0 )
         {
             [self dateValidForDd:self.ddInputField mm:self.mmInputField yyyy:self.yyyyInputField];
         }
     }
     else if(sender == self.mmInputField && [self.mmInputField.text length]==2)
     {
-        [self.yyyyInputField becomeFirstResponder];
-        if([self.ddInputField.text length]>0 && [self.yyyyInputField.text length]>0 )
+        if(nextView && [nextView isKindOfClass:[UITextField class]])
+            [(UITextField*)nextView becomeFirstResponder];
+        
+        if([self.ddInputField.text length] > 0 && [self.yyyyInputField.text length]>0 )
         {
             [self dateValidForDd:self.ddInputField mm:self.mmInputField yyyy:self.yyyyInputField];
         }
@@ -1165,30 +1175,18 @@ shouldChangeCharactersInRange: (NSRange) range
 
 - (void) turnOnButton: (UIButton*) button
 {
-    if(button.hidden == YES)
-    {
-        button.hidden = NO;
-        button.alpha = 0.0f;
-        [UIView animateWithDuration:kLoginAnimationTransitionDuration delay:0.0f options:UIViewAnimationOptionCurveEaseInOut animations:^{
-            button.alpha = 1.0f;
-        } completion:nil];
-    }
+    button.hidden = NO;
+    [UIView animateWithDuration:kLoginAnimationTransitionDuration delay:0.0f options:UIViewAnimationOptionCurveEaseInOut animations:^{
+        button.alpha = 1.0f;
+    } completion:nil];
 }
 
 
 - (void) turnOffButton: (UIButton*) button
 {
-    if(button.hidden==NO)
-    {
-        [UIView animateWithDuration:kLoginAnimationTransitionDuration delay:0.0f options:UIViewAnimationOptionCurveEaseInOut animations:^{
-            button.alpha = 0.0f;
-        } completion:^(BOOL finished) {
-            if(finished)
-            {
-                button.hidden = YES;
-            }
-        }];
-    }
+    [UIView animateWithDuration:kLoginAnimationTransitionDuration delay:0.0f options:UIViewAnimationOptionCurveEaseInOut animations:^{
+        button.alpha = 0.0f;
+    } completion:nil];
 }
 
 

@@ -29,6 +29,7 @@
 #import "UIImageView+WebCache.h"
 #import "Video.h"
 #import "VideoInstance.h"
+#import "SYNCaution.h"
 #import "SYNCoverChooserController.h"
 #import "SYNDeviceManager.h"
 #import <AVFoundation/AVFoundation.h>
@@ -155,6 +156,9 @@
 {
     [super viewDidLoad];
     
+    // Take the best guess about how many  videos we have
+//    self.dataItemsAvailable = self.channel.videoInstances.count;
+    self.dataRequestRange = NSMakeRange(0, kAPIInitialBatchSize);
     
     _isIPhone = [SYNDeviceManager.sharedInstance isIPhone];
 
@@ -237,11 +241,6 @@
     {
         self.currentWebImageOperation = [self loadBackgroundImage];
     }
-    
-    
-    // == Swipe to Exit == //
-    
-    
     
     // == Avatar Image == //
     
@@ -456,6 +455,7 @@
     [[NSNotificationCenter defaultCenter] postNotificationName: kNoteAllNavControlsShow
                                                         object: self
                                                       userInfo: nil];
+    
     [[NSNotificationCenter defaultCenter] removeObserver: self
                                                     name: kCoverArtChanged
                                                   object: nil];
@@ -634,19 +634,9 @@
         if ([obj isKindOfClass:[Channel class]] && [((Channel*)obj).uniqueId isEqualToString:self.channel.uniqueId])
         {
             
-            if(self.channel.videoInstances.count == 0)
-            {
-                [self showNoVideosMessage: NSLocalizedString(@"channel_screen_no_videos",nil) withLoader:NO];
-            }
-            else
-            {
-                [self showNoVideosMessage:nil withLoader:NO];
-            }
             
             
             self.dataItemsAvailable = self.channel.totalVideosValue;
-            
-//            DebugLog(@"Total Videos on First Batch: %i", self.channel.totalVideosValue);
             
             self.subscribeButton.selected = self.channel.subscribedByUserValue;
             self.subscribeButton.enabled = YES;
@@ -668,7 +658,9 @@
             else
             {
                 [self showNoVideosMessage:nil withLoader:NO];
+                
             }
+            
             
             return;
             
@@ -865,6 +857,14 @@
     
     cell = videoThumbnailCell;
     
+    BOOL isIpad = [[SYNDeviceManager sharedInstance] isIPad];
+    if((isIpad && indexPath.item == 2) ||
+       (!isIpad && indexPath.item == 0)) {
+        
+           [self checkOnBoarding];
+       }
+        
+    
     return cell;
 }
 
@@ -881,6 +881,7 @@
         if (self.channel.videoInstances.count == 0 ||
            (self.dataRequestRange.location + self.dataRequestRange.length) >= self.dataItemsAvailable)
         {
+            // empy footer (invisible)
             supplementaryView = [[UICollectionReusableView alloc] initWithFrame:CGRectMake(0.0, 0.0, [self footerSize].width, [self footerSize].height)];
             
         }
@@ -889,22 +890,36 @@
             self.footerView = [self.videoThumbnailCollectionView dequeueReusableSupplementaryViewOfKind: kind
                                                                                     withReuseIdentifier: @"SYNChannelFooterMoreView"
                                                                                            forIndexPath: indexPath];
-            
             [self.footerView.loadMoreButton addTarget: self
                                                action: @selector(loadMoreVideos:)
                                      forControlEvents: UIControlEventTouchUpInside];
             
-            
             supplementaryView = self.footerView;
         }
+        
         
     }
     
     return supplementaryView;
 }
 
+
+- (void) incrementRangeForNextRequest
+{
+    NSLog (@"Before: Loc %d, Len %d, Avail %d", self.dataRequestRange.location, self.dataRequestRange.length, self.dataItemsAvailable);
+    NSInteger nextStart = self.dataRequestRange.location + self.dataRequestRange.length; // one is subtracted when the call happens for 0 indexing
+    
+    NSInteger nextSize = (nextStart + STANDARD_REQUEST_LENGTH) >= self.dataItemsAvailable ? MAX ((self.dataItemsAvailable - nextStart), 0) : STANDARD_REQUEST_LENGTH;
+    
+    self.dataRequestRange = NSMakeRange(nextStart, nextSize);
+    NSLog (@"After: Loc %d, Len %d, Avail %d", self.dataRequestRange.location, self.dataRequestRange.length, self.dataItemsAvailable);
+}
+
+
 -(void)loadMoreVideos:(UIButton*)footerButton
 {
+    
+    self.footerView.showsLoading = YES;
     
     // define success block //
     
@@ -913,49 +928,47 @@
     
     MKNKUserSuccessBlock successBlock = ^(NSDictionary *dictionary) {
         
+        self.footerView.showsLoading = NO;
         
         [self.channel addVideoInstancesFromDictionary:dictionary];
         
         NSError* error;
         [self.channel.managedObjectContext save:&error];
         
-        self.footerView.showsLoading = NO;
-        
         
     };
     
-        // define success block //
-        
+    // define success block //
+    
     MKNKUserErrorBlock errorBlock = ^(NSDictionary* errorDictionary) {
-        DebugLog(@"Update action failed");
         self.footerView.showsLoading = NO;
-            
     };
-        
+    
     if ([self.channel.resourceURL hasPrefix: @"https"]) // https does not cache so it is fresh
     {
-            
-            
-            [appDelegate.oAuthNetworkEngine videosForChannelForUserId:appDelegate.currentUser.uniqueId
-                                                            channelId:self.channel.uniqueId
-                                                              inRange:self.dataRequestRange
-                                                    completionHandler:successBlock
-                                                         errorHandler:errorBlock];
-            
+        
+        
+        [appDelegate.oAuthNetworkEngine videosForChannelForUserId:appDelegate.currentUser.uniqueId
+                                                        channelId:self.channel.uniqueId
+                                                          inRange:self.dataRequestRange
+                                                completionHandler:successBlock
+                                                     errorHandler:errorBlock];
+        
         
     }
     else
     {
-            
-            
-            [appDelegate.networkEngine videosForChannelForUserId:appDelegate.currentUser.uniqueId
-                                                       channelId:self.channel.uniqueId
-                                                         inRange:self.dataRequestRange
-                                               completionHandler:successBlock
-                                                    errorHandler:errorBlock];
+        
+        
+        [appDelegate.networkEngine videosForChannelForUserId:appDelegate.currentUser.uniqueId
+                                                   channelId:self.channel.uniqueId
+                                                     inRange:self.dataRequestRange
+                                           completionHandler:successBlock
+                                                errorHandler:errorBlock];
     }
     
 }
+
 
 - (void) collectionView: (UICollectionView *) collectionView
          didSelectItemAtIndexPath: (NSIndexPath *) indexPath
@@ -1192,9 +1205,27 @@
     NSIndexPath *indexPath = [self.videoThumbnailCollectionView indexPathForItemAtPoint: v.center];
     VideoInstance *videoInstance = self.channel.videoInstances [indexPath.row];
     
-    // Defensive programming
-    if (videoInstance != nil)
+    if (videoInstance)
     {
+        id<GAITracker> tracker = [GAI sharedInstance].defaultTracker;
+        
+        [tracker sendEventWithCategory: @"uiAction"
+                            withAction: @"videoPlusButtonClick"
+                             withLabel: nil
+                             withValue: nil];
+        
+        [appDelegate.oAuthNetworkEngine recordActivityForUserId: appDelegate.currentUser.uniqueId
+                                                         action: @"select"
+                                                videoInstanceId: videoInstance.uniqueId
+                                              completionHandler: ^(id response) {
+                                                  
+                                                  
+                                              } errorHandler: ^(id error) {
+                                                  
+                                                  DebugLog(@"Could not record videoAddButtonTapped: activity");
+                                                  
+                                              }];
+        
         [[NSNotificationCenter defaultCenter] postNotificationName: noteName
                                                             object: self
                                                           userInfo: @{@"VideoInstance" : videoInstance}];
@@ -1458,6 +1489,7 @@
                                                      cover: cover
                                                   isPublic: YES
                                          completionHandler: ^(NSDictionary* resourceCreated) {
+                                             
                                              id<GAITracker> tracker = [GAI sharedInstance].defaultTracker;
                                              
                                              [tracker sendEventWithCategory: @"goal"
@@ -1752,7 +1784,7 @@
 }
 
 
-- (IBAction) addItToChannelPresssed: (id) sender
+- (void) addItToChannelPresssed: (id) sender
 {
     [[NSNotificationCenter defaultCenter] postNotificationName: kNoteAddToChannelRequest
                                                         object: self];
@@ -1786,7 +1818,6 @@
         [self updateCategoryButtonText: buttonText];
         self.selectedCategoryId = genre.uniqueId;
         
-    
         id<GAITracker> tracker = [GAI sharedInstance].defaultTracker;
         
         [tracker sendEventWithCategory: @"goal"
@@ -1834,7 +1865,7 @@
     
     NSString* cover =  self.selectedCoverId;
     
-    if ([cover length]==0 || [cover isEqualToString:kCoverSetNoCover])
+    if ([cover length] == 0 || [cover isEqualToString:kCoverSetNoCover])
     {
         cover = @"";
     }
@@ -1846,6 +1877,11 @@
                                                      cover: cover
                                                   isPublic: YES
                                          completionHandler: ^(NSDictionary* resourceCreated) {
+                                             
+                                             
+                                             // shows the message label from the MasterViewController
+                                             
+                                             
                                              
                                              id<GAITracker> tracker = [GAI sharedInstance].defaultTracker;
                                              
@@ -1907,6 +1943,10 @@
                                              
                                               }];
 }
+
+// possible actions after waring for creating incomplete channel (such as not defining category)
+
+
 
 
 - (void) setVideosForChannelById: (NSString*) channelId isUpdated:(BOOL) isUpdated
@@ -2014,9 +2054,6 @@
                                                   NSError* error;
                                                   [oldChannel.managedObjectContext save:&error];
                                                   
-//                                                  DebugLog(@"Channel: %@", createdChannel);
-                                                  
-                                                  // (the channel that was under creation will be deleted from the kVideoQueueClear notification)
                                                   
                                                   
                                               }
@@ -2060,8 +2097,9 @@
                                               [[NSNotificationCenter defaultCenter] postNotificationName: kVideoQueueClear
                                                                                                   object: nil];
                                               
-                                              [[NSNotificationCenter defaultCenter] postNotificationName:kNoteChannelSaved
-                                                                                                  object:self];
+                                              
+                                              
+                                              [self notifyForChannelCreation:self.channel];
                                               
                                               self.isLocked = NO;
                                               
@@ -2087,6 +2125,111 @@
                                               [[NSNotificationCenter defaultCenter] postNotificationName: kVideoQueueClear
                                                                                                   object: nil];
                                           }];
+}
+
+-(void)notifyForChannelCreation:(Channel*)channelCreated  
+{
+    // == Decide on the success message type shown == //
+    
+    NSNotification* successNotification = [NSNotification notificationWithName:kNoteChannelSaved
+                                                                        object:self];
+    SYNCaution* caution;
+    CautionCallbackBlock actionBlock;
+    NSMutableArray* conditionsArray = [NSMutableArray arrayWithCapacity:3];
+    NSString* buttonString;
+    int numberOfConditions = 0;
+    __weak SYNChannelDetailViewController* wself = self;
+    if(channelCreated) // channelCreated will always be true in this implementation, change from self.channels to show message only on creation and not on update
+    {
+        
+        if(self.channel.title.length > 8 && [[self.channel.title substringToIndex:8] isEqualToString:@"UNTITLED"]) // no title
+        {
+            
+            [conditionsArray addObject:NSLocalizedString(@"private_condition_title", nil)];
+            buttonString = NSLocalizedString(@"enter_title", nil);
+            actionBlock = ^{
+                [wself setMode: kChannelDetailsModeEdit];
+                [wself editButtonTapped:wself.editButton];
+                [wself.channelTitleTextView becomeFirstResponder];
+            };
+            numberOfConditions++;
+        }
+        if([self.channel.categoryId isEqualToString:@""])
+        {
+            
+            [conditionsArray addObject:NSLocalizedString(@"private_condition_category", nil)];
+            buttonString = NSLocalizedString(@"select_category", nil);
+            actionBlock = ^{
+                [wself setMode:kChannelDetailsModeEdit];
+                [wself editButtonTapped:wself.editButton];
+                [wself selectCategoryButtonTapped:wself.selectCategoryButton];
+            };
+            numberOfConditions++;
+        }
+        if([self.channel.channelCover.imageUrl isEqualToString:@""])
+        {
+            
+            [conditionsArray addObject:NSLocalizedString(@"private_condition_cover", nil)];
+            buttonString = NSLocalizedString(@"select_cover", nil);
+            actionBlock = ^{
+                [wself setMode: kChannelDetailsModeEdit];
+                [wself editButtonTapped:wself.editButton];
+                [wself addCoverButtonTapped:wself.addCoverButton];
+            };
+            numberOfConditions++;
+        }
+        
+        
+        
+        NSMutableString* conditionString;
+        switch (numberOfConditions) {
+            case 0:
+                
+                break;
+                
+            case 1:
+                conditionString = [NSMutableString stringWithString:NSLocalizedString(@"channel_will_remain_private_until", nil)];
+                [conditionString appendString:conditionsArray[0]];
+                break;
+            case 2:
+                conditionString = [NSMutableString stringWithString:NSLocalizedString(@"channel_will_remain_private_until", nil)];
+                [conditionString appendString:conditionsArray[0]];
+                [conditionString appendString:@" AND "];
+                [conditionString appendString:conditionsArray[1]];
+                break;
+            case 3:
+                conditionString = [NSMutableString stringWithString:NSLocalizedString(@"channel_will_remain_private_until", nil)];
+                [conditionString appendString:conditionsArray[0]];
+                [conditionString appendString:@", "];
+                [conditionString appendString:conditionsArray[1]];
+                [conditionString appendString:@" AND "];
+                [conditionString appendString:conditionsArray[2]];
+                break;
+        }
+        if(numberOfConditions > 0)
+        {
+            if(numberOfConditions > 1)
+            {
+                buttonString = @"EDIT";
+                actionBlock = ^{
+                    [wself setMode: kChannelDetailsModeEdit];
+                    [wself editButtonTapped:wself.editButton];
+                };
+            }
+            caution = [SYNCaution withMessage:(NSString*)conditionString
+                                  actionTitle:buttonString
+                                  andCallback:actionBlock];
+            
+            successNotification = [NSNotification notificationWithName:kNoteSavingCaution
+                                                                object:self
+                                                              userInfo:@{kCaution : caution}];
+        }
+        
+    }
+    
+    
+    
+    [[NSNotificationCenter defaultCenter] postNotification:successNotification];
 }
 
 -(void)finaliseViewStatusAfterCreateOrUpdate:(BOOL)isIPad
@@ -2141,7 +2284,7 @@
 {
     self.createChannelButton.hidden = NO;
     [self.activityIndicator stopAnimating];
-        
+    
     [[[UIAlertView alloc] initWithTitle: errorTitle
                                 message: errorMessage
                                delegate: nil
@@ -2236,36 +2379,82 @@
     
     [[NSNotificationCenter defaultCenter] postNotificationName:kMainControlsChangeEnter object:self];
     
+    [self checkOnBoarding];
 
-    if(![self.channel.channelOwner.uniqueId isEqualToString:appDelegate.currentUser.uniqueId] && !self.channel.subscribedByUserValue)
+}
+
+-(void)checkOnBoarding
+{
+    NSUserDefaults *defaults = [NSUserDefaults standardUserDefaults];
+    BOOL hasShownSubscribeOnBoarding = [defaults boolForKey:kUserDefaultsSubscribe];
+    
+    BOOL hasShownAddVideoOnBoarding = [defaults boolForKey:kUserDefaultsAddVideo];
+    
+    // do not show onboarding related to subscriptions in user's own channels and channels already subscribed
+    if(![self.channel.channelOwner.uniqueId isEqualToString:appDelegate.currentUser.uniqueId] &&
+       !self.channel.subscribedByUserValue && !hasShownSubscribeOnBoarding)
     {
-        // avoid showing the on boarding related to subscription to already subscribed channel or user's own channel
-        NSUserDefaults *defaults = [NSUserDefaults standardUserDefaults];
-        BOOL hasShownSubscribeOnBoarding = [defaults boolForKey:kUserDefaultsSubscribe];
-        if(!hasShownSubscribeOnBoarding)
-        {
-            BOOL isIpad = [[SYNDeviceManager sharedInstance] isIPad];
-            NSString* message = NSLocalizedString(@"onboarding_subscription", nil);
-            PointingDirection direction = isIpad ? PointingDirectionLeft : PointingDirectionUp;
-            CGFloat fontSize = isIpad ? 19.0 : 15.0 ;
-            CGSize size =  isIpad ? CGSizeMake(260.0, 164.0) : CGSizeMake(260.0, 148.0);
-            SYNOnBoardingPopoverView* subscribePopover = [SYNOnBoardingPopoverView withMessage:message
-                                                                                      withSize:size
-                                                                                   andFontSize:fontSize
-                                                                                    pointingTo:self.subscribeButton.frame
-                                                                                 withDirection:direction];
-            [appDelegate.onBoardingQueue addPopover:subscribePopover];
-            
-            [defaults setBool:YES forKey:kUserDefaultsSubscribe];
-            
-            
-            [appDelegate.onBoardingQueue present];
-        }
+        BOOL isIpad = [[SYNDeviceManager sharedInstance] isIPad];
+        NSString* message = NSLocalizedString(@"onboarding_subscription", nil);
+        PointingDirection direction = isIpad ? PointingDirectionLeft : PointingDirectionUp;
+        CGFloat fontSize = isIpad ? 19.0 : 15.0 ;
+        CGSize size =  isIpad ? CGSizeMake(260.0, 164.0) : CGSizeMake(260.0, 148.0);
+        CGRect rectToPointTo = self.subscribeButton.frame;
+        if(!isIpad)
+            rectToPointTo = CGRectInset(rectToPointTo, 0.0, 6.0);
+        SYNOnBoardingPopoverView* subscribePopover = [SYNOnBoardingPopoverView withMessage:message
+                                                                                  withSize:size
+                                                                               andFontSize:fontSize
+                                                                                pointingTo:rectToPointTo
+                                                                             withDirection:direction];
+        
+        
+        
+        __weak SYNChannelDetailViewController* wself = self;
+        subscribePopover.action = ^{
+            [wself subscribeButtonTapped:self.subscribeButton]; // simulate press
+        };
+        
+        [appDelegate.onBoardingQueue addPopover:subscribePopover];
+        
+        [defaults setBool:YES forKey:kUserDefaultsSubscribe];
+    }
+
+    
+    NSInteger cellNumber = [[SYNDeviceManager sharedInstance] isIPad] ? 1 : 0;
+    SYNVideoThumbnailRegularCell* randomCell =
+    (SYNVideoThumbnailRegularCell*)[self.videoThumbnailCollectionView cellForItemAtIndexPath:[NSIndexPath indexPathForItem:cellNumber inSection:0]];
+
+    if(!hasShownAddVideoOnBoarding && randomCell)
+    {
+        NSString* message = NSLocalizedString(@"onboarding_video", nil);
+        
+        CGFloat fontSize = [[SYNDeviceManager sharedInstance] isIPad] ? 19.0 : 15.0 ;
+        CGSize size = [[SYNDeviceManager sharedInstance] isIPad] ? CGSizeMake(340.0, 164.0) : CGSizeMake(260.0, 144.0);
+       
+                                        
+        CGRect rectToPointTo = [self.view convertRect:randomCell.addItButton.frame fromView:randomCell];
+        rectToPointTo = CGRectInset(rectToPointTo, 10.0, 10.0);
+        SYNOnBoardingPopoverView* addToChannelPopover = [SYNOnBoardingPopoverView withMessage:message
+                                                                                     withSize:size
+                                                                                  andFontSize:fontSize
+                                                                                   pointingTo:rectToPointTo
+                                                                                withDirection:PointingDirectionDown];
+        
+        
+        __weak SYNChannelDetailViewController* wself = self;
+        addToChannelPopover.action = ^{
+            [wself addItToChannelPresssed:nil];
+        };
+        
+        [appDelegate.onBoardingQueue addPopover:addToChannelPopover];
+        
+        [defaults setBool:YES forKey:kUserDefaultsAddVideo];
+        
     }
     
     
-    
-    
+    [appDelegate.onBoardingQueue present];
 }
 
 
@@ -2453,6 +2642,13 @@
 {
     if (category)
     {
+        id<GAITracker> tracker = [GAI sharedInstance].defaultTracker;
+        
+        [tracker sendEventWithCategory: @"goal"
+                            withAction: @"channelCategorised"
+                             withLabel: category.name
+                             withValue: nil];
+        
         NSArray* filteredSubcategories = [[category.subgenres array] filteredArrayUsingPredicate:[NSPredicate predicateWithFormat:@"isDefault == YES"]];
         if ([filteredSubcategories count] == 1)
         {
@@ -2476,6 +2672,13 @@
 
 - (void) categoryTableController:(SYNChannelCategoryTableViewController *)tableController didSelectSubCategory:(SubGenre *)subCategory
 {
+    id<GAITracker> tracker = [GAI sharedInstance].defaultTracker;
+    
+    [tracker sendEventWithCategory: @"goal"
+                        withAction: @"channelCategorised"
+                         withLabel: subCategory.name
+                         withValue: nil];
+    
     self.selectedCategoryId = subCategory.uniqueId;
     
     [self.selectCategoryButton setTitle: [NSString stringWithFormat:@"%@/\n%@", subCategory.genre.name, subCategory.name]
@@ -2567,6 +2770,8 @@
     {
         CGFloat fadeSpan = (_isIPhone) ? kChannelDetailsFadeSpaniPhone : kChannelDetailsFadeSpan;
         CGFloat blurOpacity;
+        
+
         
         if (scrollView.contentOffset.y <= self.originalContentOffset.y)
         {
@@ -2876,6 +3081,47 @@
     
 }
 
+- (void) videoOverlayDidDissapear
+{
+    NSUserDefaults *defaults = [NSUserDefaults standardUserDefaults];
+    BOOL hasShownAddVideoOnBoarding = [defaults boolForKey:kUserDefaultsAddVideo];
+    
+    if(!hasShownAddVideoOnBoarding &&
+       [[SYNDeviceManager sharedInstance] isIPhone]) {
+        
+        NSString* message = NSLocalizedString(@"onboarding_video", nil);
+        
+        CGFloat fontSize = [[SYNDeviceManager sharedInstance] isIPad] ? 19.0 : 15.0 ;
+        CGSize size = [[SYNDeviceManager sharedInstance] isIPad] ? CGSizeMake(340.0, 164.0) : CGSizeMake(260.0, 144.0);
+        
+        SYNVideoThumbnailRegularCell* randomCell =
+        (SYNVideoThumbnailRegularCell*)[self.videoThumbnailCollectionView cellForItemAtIndexPath:[NSIndexPath indexPathForItem:0 inSection:0]];
+        
+        
+        CGRect rectToPointTo = [self.view convertRect:randomCell.addItButton.frame fromView:randomCell];
+        rectToPointTo = CGRectInset(rectToPointTo, 10.0, 10.0);
+        SYNOnBoardingPopoverView* addToChannelPopover = [SYNOnBoardingPopoverView withMessage:message
+                                                                                     withSize:size
+                                                                                  andFontSize:fontSize
+                                                                                   pointingTo:rectToPointTo
+                                                                                withDirection:PointingDirectionDown];
+        
+        
+        __weak SYNChannelDetailViewController* wself = self;
+        addToChannelPopover.action = ^{
+            [wself addItToChannelPresssed:nil];
+        };
+        
+        [appDelegate.onBoardingQueue addPopover:addToChannelPopover];
+        
+        [defaults setBool:YES forKey:kUserDefaultsAddVideo];
+        
+    }
+    
+    
+    [appDelegate.onBoardingQueue present];
+}
+
 -(void)headerTapped
 {
     [self.videoThumbnailCollectionView setContentOffset:self.originalContentOffset animated:YES];
@@ -2916,44 +3162,7 @@
     return ([self.channel.channelOwner.uniqueId isEqualToString:appDelegate.currentUser.uniqueId] && self.channel.favouritesValue);
 }
 
-- (void) videoOverlayDidDissapear
-{
-    NSUserDefaults *defaults = [NSUserDefaults standardUserDefaults];
-    BOOL hasShownSubscribeOnBoarding = [defaults boolForKey:kUserDefaultsAddVideo];
-    if(!hasShownSubscribeOnBoarding)
-    {
-        SYNOnBoardingPopoverQueueController* onBoardingQueue = [[SYNOnBoardingPopoverQueueController alloc] init];
-        
-        NSString* message = NSLocalizedString(@"onboarding_video", nil);
-        
-        CGFloat fontSize = [[SYNDeviceManager sharedInstance] isIPad] ? 19.0 : 15.0 ;
-        CGSize size = [[SYNDeviceManager sharedInstance] isIPad] ? CGSizeMake(340.0, 164.0) : CGSizeMake(260.0, 144.0);
-        CGRect rectToPointTo = CGRectZero;
-        PointingDirection directionToPointTo = PointingDirectionDown;
-        if(self.selectedCell)
-        {
-            rectToPointTo = [self.view convertRect:self.selectedCell.addItButton.frame fromView:self.selectedCell];
-            if(rectToPointTo.origin.y < [[SYNDeviceManager sharedInstance] currentScreenHeight] * 0.5)
-                directionToPointTo = PointingDirectionUp;
-            
-            //NSLog(@"%f %f", rectToPointTo.origin.x, rectToPointTo.origin.y);
-        }
-        SYNOnBoardingPopoverView* subscribePopover = [SYNOnBoardingPopoverView withMessage:message
-                                                                                  withSize:size
-                                                                               andFontSize:fontSize
-                                                                                pointingTo:rectToPointTo
-                                                                             withDirection:directionToPointTo];
-        
-        
-        [onBoardingQueue addPopover:subscribePopover];
-        
-        [defaults setBool:YES forKey:kUserDefaultsAddVideo];
-        
-        [self.view addSubview:onBoardingQueue.view];
-        [self addChildViewController:onBoardingQueue];
-        [onBoardingQueue present];
-    }
-}
+
 
 
 // since this is called when video overlay is being closed it is also used for the onboarding

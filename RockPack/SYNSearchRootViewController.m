@@ -51,6 +51,8 @@
 
 - (void) viewDidLoad
 {
+    
+    
     [super viewDidLoad];
     
     self.videoSearchTabView = [SYNSearchTabView tabViewWithSearchType:SearchTabTypeVideos];
@@ -97,7 +99,7 @@
     
     if ([SYNDeviceManager.sharedInstance isIPhone])
     {
-        CGRect collectionViewFrame = CGRectMake(0,108.0f,320.0f,self.view.frame.size.height - 108.0f);
+        CGRect collectionViewFrame = CGRectMake(0, 108.0f, 320.0f,self.view.frame.size.height - 108.0f);
         self.searchVideosController.videoThumbnailCollectionView.frame = collectionViewFrame;
         self.searchVideosController.videoThumbnailCollectionView.backgroundColor = [UIColor colorWithWhite:0.97f alpha:1.0f];
         UICollectionViewFlowLayout* layout = (UICollectionViewFlowLayout*)self.currentController.videoThumbnailCollectionView.collectionViewLayout;
@@ -114,8 +116,7 @@
     }
     
     
-    
-    self.searchChannelsController = [[SYNSearchChannelsViewController alloc] initWithViewId:viewId];
+    self.searchChannelsController = [[SYNSearchChannelsViewController alloc] initWithViewId:viewId]; // this is "Search"
     self.searchChannelsController.itemToUpdate = self.channelsSearchTabView;
     self.searchChannelsController.parent = self;
     [self addChildViewController:self.searchChannelsController];
@@ -125,18 +126,20 @@
     
     if ([SYNDeviceManager.sharedInstance isIPhone])
     {
-        //FIXME: This magic number layout is not so good. self.view needs to be setup with the correct frame, and then we can start doing a relative layout.
-        CGRect collectionViewFrame = CGRectMake(0,48.0f,320.0f,self.view.frame.size.height - 103.0f);
+        
+        // FIXME: This magic number layout is not so good. self.view needs to be setup with the correct frame, and then we can start doing a relative layout.
+        CGRect collectionViewFrame = CGRectMake(0, 48.0f, 320.0f, self.view.frame.size.height - 103.0f);
         self.searchChannelsController.channelThumbnailCollectionView.frame = collectionViewFrame;
         self.searchChannelsController.channelThumbnailCollectionView.backgroundColor = [UIColor colorWithWhite:0.97f alpha:1.0f];
         UICollectionViewFlowLayout* layout = (UICollectionViewFlowLayout*)self.searchChannelsController.channelThumbnailCollectionView.collectionViewLayout;
-        UIEdgeInsets insets= layout.sectionInset;
+        UIEdgeInsets insets = layout.sectionInset;
         insets.top = 5.0f;
         insets.bottom = 10.0f;
         layout.sectionInset = insets;
+        
     }
     
-
+    
     
 
 }
@@ -312,16 +315,19 @@
 
 - (void) performSearchForCurrentSearchTerm
 {
-    if (![appDelegate.searchRegistry clearImportContextFromEntityName:@"Channel"])
+    BOOL success = [appDelegate.searchRegistry clearImportContextFromEntityName:@"Channel"];
+    if (!success)
     {
         DebugLog(@"Could not clean Channel from search context");
     }
     
-    if (![appDelegate.searchRegistry clearImportContextFromEntityName:@"VideoInstance"])
+    
+    success = [appDelegate.searchRegistry clearImportContextFromEntityName:@"VideoInstance"];
+    if (!success)
     {
         DebugLog(@"Could not clean VideoInstances from search context");
     }
-
+    
     [self.searchVideosController performNewSearchWithTerm:searchTerm];
     [self.searchChannelsController performNewSearchWithTerm:searchTerm];
 }

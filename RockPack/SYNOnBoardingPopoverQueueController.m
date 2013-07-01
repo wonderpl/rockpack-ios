@@ -57,38 +57,35 @@
 {
     if(!self.queue)
         self.queue = [[NSMutableArray alloc] init];
-    
+    NSLog(@"Adding in Q %@", popoverView);
     [self.queue addObject:popoverView];
 }
 
-- (void)viewDidLoad
-{
-    [super viewDidLoad];
-	
-}
 
--(void)viewDidAppear:(BOOL)animated
-{
-    [super viewDidAppear:animated];
-    
-}
 
 -(void)present
 {
+    if(queue.count == 0)
+        return;
+    
+    if(!self.view.superview) // if it is not on screen yet
+    {
+        SYNAppDelegate* appDelegate = (SYNAppDelegate*)[UIApplication sharedApplication].delegate;
+        
+        [appDelegate.masterViewController addChildViewController:self];
+        [appDelegate.masterViewController.view addSubview:self.view];
+        
+        [self presentNextPopover];
+    }
     
     
-    SYNAppDelegate* appDelegate = (SYNAppDelegate*)[UIApplication sharedApplication].delegate;
     
-    [appDelegate.masterViewController addChildViewController:self];
-    [appDelegate.masterViewController.view addSubview:self.view];
-    
-    [self presentNextPopover];
 }
 
 -(void)presentNextPopover
 {
     
-    
+   
     if(queue.count == 0) // renmove everything
     {
         [UIView animateWithDuration:0.3 animations:^{
@@ -364,7 +361,7 @@
                 {
                     
                     currentSlice.backgroundColor = [UIColor clearColor];
-                    UITapGestureRecognizer* recogniser = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(doit:)];
+                    UITapGestureRecognizer* recogniser = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(performAction:)];
                     [currentSlice addGestureRecognizer:recogniser];
                     
                 }
@@ -413,9 +410,13 @@
     
     
 }
--(void)doit:(UIGestureRecognizer*)recogniser
+-(void)performAction:(UIGestureRecognizer*)recogniser
 {
+    if(self.currentlyVisiblePopover.action)
+        self.currentlyVisiblePopover.action();
     
+    if(self.queue.count == 0)
+        [self presentNextPopover];
 }
 
 

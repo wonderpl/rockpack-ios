@@ -768,11 +768,21 @@
               completionHandler: (MKNKUserSuccessBlock) completionBlock
                    errorHandler: (MKNKUserErrorBlock) errorBlock
 {
-    NSDictionary *params = @{@"title" : title,
-                             @"description" : description,
-                             @"category" : category,
-                             @"cover" : cover,
-                             @"public" : @(isPublic)};
+    NSDictionary *params = nil;
+    
+    if (title && description && category && cover)
+    {
+        params = @{@"title" : title,
+                   @"description" : description,
+                   @"category" : category,
+                   @"cover" : cover,
+                   @"public" : @(isPublic)};
+    }
+    else
+    {
+        AssertOrLog(@"One or more of the required parameters is nil");
+    }
+
 
     apiString = [NSString stringWithFormat: @"%@?locale=%@", apiString, self.localeString];
     
@@ -920,7 +930,7 @@
     parameters[@"locale"] = self.localeString;
     
     SYNNetworkOperationJsonObject *networkOperation = (SYNNetworkOperationJsonObject*)[self operationWithPath: apiString
-                                                                                                       params: nil
+                                                                                                       params: parameters
                                                                                                    httpMethod: @"GET"
                                                                                                           ssl: TRUE];
     
@@ -1034,8 +1044,17 @@
     // We need to handle locale differently (so add the locale to the URL) as opposed to the other parameters which are in the POST body
     apiString = [NSString stringWithFormat: @"%@?locale=%@", apiString, self.localeString];
     
-    NSDictionary *params = @{@"action" : action,
+    NSDictionary *params = nil;
+    
+    if (action && videoInstanceId)
+    {
+    params = @{@"action" : action,
                              @"video_instance" : videoInstanceId};
+    }
+    else
+    {
+        AssertOrLog(@"One or more of the required parameters is nil");
+    }
 
     SYNNetworkOperationJsonObject *networkOperation = (SYNNetworkOperationJsonObject*)[self operationWithPath: apiString
                                                                                                        params: params
@@ -1323,8 +1342,18 @@
     // We need to handle locale differently (so add the locale to the URL) as opposed to the other parameters which are in the POST body
     NSString *apiString = [NSString stringWithFormat: @"%@?locale=%@", kAPIShareLink, self.localeString];
     
-    NSDictionary *params = @{@"object_type" : objectType,
-                             @"object_id" : objectId};
+    NSDictionary *params = nil;
+    
+    if (objectType && objectId)
+    {
+        params = @{@"object_type" : objectType,
+                   @"object_id" : objectId};
+    }
+    else
+    {
+        AssertOrLog(@"One or more of the required parameters is nil");
+    }
+
     
     SYNNetworkOperationJsonObject *networkOperation = (SYNNetworkOperationJsonObject*)[self operationWithPath: apiString
                                                                                                        params: params
@@ -1355,9 +1384,18 @@
     // We need to handle locale differently (so add the locale to the URL) as opposed to the other parameters which are in the POST body
     apiString = [NSString stringWithFormat: @"%@?locale=%@", apiString, self.localeString];
     
-    NSDictionary *params = @{@"object_type" : objectType,
-                             @"object_id" : objectId,
-                             @"reason" : reason};
+    NSDictionary *params = nil;
+    
+    if (objectType && objectId && reason)
+    {
+        params = @{@"object_type" : objectType,
+                   @"object_id" : objectId,
+                   @"reason" : reason};
+    }
+    else
+    {
+        AssertOrLog(@"One or more of the required parameters is nil");
+    }
     
     SYNNetworkOperationJsonObject *networkOperation = (SYNNetworkOperationJsonObject*)[self operationWithPath: apiString
                                                                                                        params: params
@@ -1382,8 +1420,18 @@
     // We need to handle locale differently (so add the locale to the URL) as opposed to the other parameters which are in the POST body
     NSString *apiString = [NSString stringWithFormat: @"%@?locale=%@", kAPIReportPlayerError, self.localeString];
     
-    NSDictionary *params = @{@"video_instance" : videoInstanceId,
-                             @"error" : errorDescription};
+    NSDictionary *params = nil;
+    
+    if (videoInstanceId && errorDescription)
+    {
+        params = @{@"video_instance" : videoInstanceId,
+                   @"error" : errorDescription};
+    }
+    else
+    {
+        AssertOrLog(@"One or more of the required parameters is nil");
+    }
+
     
     SYNNetworkOperationJsonObject *networkOperation = (SYNNetworkOperationJsonObject*)[self operationWithPath: apiString
                                                                                                        params: params
