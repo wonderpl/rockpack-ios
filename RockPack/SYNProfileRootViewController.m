@@ -378,7 +378,6 @@
     
     self.subscriptionsViewController.collectionView.delegate = self;
     
-    [self.userProfileController setChannelOwner: self.user];
     
     self.subscriptionsViewController.user = self.user;
     
@@ -1240,6 +1239,9 @@
             self.isUserProfile = NO;
         
         self.subscriptionsViewController.user = self.user;
+        
+        
+        self.userProfileController.channelOwner = self.user;
         
         [[NSNotificationCenter defaultCenter] addObserver: self
                                                  selector: @selector(handleDataModelChange:)
