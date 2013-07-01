@@ -658,7 +658,7 @@
             else
             {
                 [self showNoVideosMessage:nil withLoader:NO];
-                [self checkOnBoarding];
+                
             }
             
             
@@ -857,6 +857,9 @@
     
     cell = videoThumbnailCell;
     
+    if(indexPath.row == 2)
+        [self checkOnBoarding];
+    
     return cell;
 }
 
@@ -873,6 +876,7 @@
         if (self.channel.videoInstances.count == 0 ||
            (self.dataRequestRange.location + self.dataRequestRange.length) >= self.dataItemsAvailable)
         {
+            // empy footer (invisible)
             supplementaryView = [[UICollectionReusableView alloc] initWithFrame:CGRectMake(0.0, 0.0, [self footerSize].width, [self footerSize].height)];
             
         }
@@ -885,6 +889,7 @@
             
             supplementaryView = self.footerView;
         }
+        
         
     }
     
@@ -2403,16 +2408,15 @@
         [defaults setBool:YES forKey:kUserDefaultsSubscribe];
     }
     
-    NSLog(@"** Adding because count: %i - %@", self.channel.videoInstances.count, hasShownAddVideoOnBoarding ? @"YES" : @"NO");
-    if(!hasShownAddVideoOnBoarding && self.channel.videoInstances.count > 0)
+    if(!hasShownAddVideoOnBoarding && [self.videoThumbnailCollectionView visibleCells].count > 1)
     {
         NSString* message = NSLocalizedString(@"onboarding_video", nil);
         
         CGFloat fontSize = [[SYNDeviceManager sharedInstance] isIPad] ? 19.0 : 15.0 ;
         CGSize size = [[SYNDeviceManager sharedInstance] isIPad] ? CGSizeMake(340.0, 164.0) : CGSizeMake(260.0, 144.0);
-        CGRect rectToPointTo = CGRectZero;
-        SYNVideoThumbnailRegularCell* randomCell = (SYNVideoThumbnailRegularCell*)[[self.videoThumbnailCollectionView visibleCells] objectAtIndex:0];
-        rectToPointTo = [self.view convertRect:randomCell.addItButton.frame fromView:self.selectedCell];
+       
+        SYNVideoThumbnailRegularCell* randomCell = (SYNVideoThumbnailRegularCell*)[[self.videoThumbnailCollectionView visibleCells] objectAtIndex:1];
+        CGRect rectToPointTo = [self.view convertRect:randomCell.addItButton.frame fromView:randomCell];
         
         SYNOnBoardingPopoverView* addToChannelPopover = [SYNOnBoardingPopoverView withMessage:message
                                                                                      withSize:size
