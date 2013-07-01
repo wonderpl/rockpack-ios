@@ -323,15 +323,6 @@
 - (void) viewDidLoad
 {
     [super viewDidLoad];
-    
-    if (self.user == appDelegate.currentUser)
-    {
-        [GAI.sharedInstance.defaultTracker sendView: @"Own Profile"];
-    }
-    else
-    {
-        [GAI.sharedInstance.defaultTracker sendView: @"User Profile"];
-    }
 
     UINib *createCellNib = [UINib nibWithNibName: @"SYNChannelCreateNewCell"
                                           bundle: nil];
@@ -402,7 +393,7 @@
 
 - (void) viewDidScrollToFront
 {
-//    [self updateAnalytics];
+    [self updateAnalytics];
     
     if ([[SYNDeviceManager sharedInstance] isIPhone])
     {
@@ -433,7 +424,14 @@
 - (void) updateAnalytics
 {
     // Google analytics support
-//    [GAI.sharedInstance.defaultTracker sendView: @"You - Root"];
+    if (self.user == appDelegate.currentUser)
+    {
+        [GAI.sharedInstance.defaultTracker sendView: @"Own Profile"];
+    }
+    else
+    {
+        [GAI.sharedInstance.defaultTracker sendView: @"User Profile"];
+    }
 }
 
 #pragma mark - Core Data Callbacks
