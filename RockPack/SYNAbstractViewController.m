@@ -76,20 +76,20 @@
     {
         viewId = vid;
         
-        [[NSNotificationCenter defaultCenter] addObserver:self
-                                                 selector:@selector(applicationWillEnterForeground:)
-                                                     name:UIApplicationWillEnterForegroundNotification
-                                                   object:nil];
+        [[NSNotificationCenter defaultCenter] addObserver: self
+                                                 selector: @selector(applicationWillEnterForeground:)
+                                                     name: UIApplicationWillEnterForegroundNotification
+                                                   object: nil];
     }
     
     return self;
 }
 
--(void)dealloc
+- (void) dealloc
 {
-    [[NSNotificationCenter defaultCenter] removeObserver:self
-                                                    name:UIApplicationWillEnterForegroundNotification
-                                                  object:nil];
+    [[NSNotificationCenter defaultCenter] removeObserver: self
+                                                    name: UIApplicationWillEnterForegroundNotification
+                                                  object: nil];
 }
 
 #pragma mark - View lifecycle
@@ -99,11 +99,6 @@
     [super viewDidLoad];
     
     appDelegate = (SYNAppDelegate *)[[UIApplication sharedApplication] delegate];
-    
-    [[NSNotificationCenter defaultCenter] addObserver: self
-                                             selector: @selector(clearedLocationBoundData)
-                                                 name: kClearedLocationBoundData
-                                               object: nil];
 
     if (self.needsAddButton && [[SYNDeviceManager sharedInstance] isIPad])
     {
@@ -123,6 +118,28 @@
     [self resetDataRequestRange];
     
 }
+
+// Moved the notifications here, so that the remove gets called as well.
+- (void) viewWillAppear:(BOOL)animated
+{
+    [super viewWillAppear: animated];
+    
+    [[NSNotificationCenter defaultCenter] addObserver: self
+                                             selector: @selector(clearedLocationBoundData)
+                                                 name: kClearedLocationBoundData
+                                               object: nil];
+}
+
+- (void) viewWillDisappear:(BOOL)animated
+{
+    
+    [[NSNotificationCenter defaultCenter] removeObserver: self
+                                                    name: kClearedLocationBoundData
+                                                  object: nil];
+    
+    [super viewWillDisappear: animated];
+}
+
 
 - (void) resetDataRequestRange
 {

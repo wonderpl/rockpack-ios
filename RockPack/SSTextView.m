@@ -43,8 +43,11 @@
 
 #pragma mark - NSObject
 
-- (void)dealloc {
-	[[NSNotificationCenter defaultCenter] removeObserver:self name:UITextViewTextDidChangeNotification object:self];
+- (void) dealloc
+{
+	[[NSNotificationCenter defaultCenter] removeObserver: self
+                                                    name: UITextViewTextDidChangeNotification
+                                                  object: self];
 }
 
 
