@@ -76,20 +76,24 @@
     {
         viewId = vid;
         
-        [[NSNotificationCenter defaultCenter] addObserver:self
-                                                 selector:@selector(applicationWillEnterForeground:)
-                                                     name:UIApplicationWillEnterForegroundNotification
-                                                   object:nil];
+        [[NSNotificationCenter defaultCenter] addObserver: self
+                                                 selector: @selector(applicationWillEnterForeground:)
+                                                     name: UIApplicationWillEnterForegroundNotification
+                                                   object: nil];
     }
     
     return self;
 }
 
--(void)dealloc
+- (void) dealloc
 {
-    [[NSNotificationCenter defaultCenter] removeObserver:self
-                                                    name:UIApplicationWillEnterForegroundNotification
-                                                  object:nil];
+    [[NSNotificationCenter defaultCenter] removeObserver: self
+                                                    name: kClearedLocationBoundData
+                                                  object: nil];
+    
+    [[NSNotificationCenter defaultCenter] removeObserver: self
+                                                    name: UIApplicationWillEnterForegroundNotification
+                                                  object: nil];
 }
 
 #pragma mark - View lifecycle
@@ -98,12 +102,12 @@
 {
     [super viewDidLoad];
     
-    appDelegate = (SYNAppDelegate *)[[UIApplication sharedApplication] delegate];
-    
     [[NSNotificationCenter defaultCenter] addObserver: self
                                              selector: @selector(clearedLocationBoundData)
                                                  name: kClearedLocationBoundData
                                                object: nil];
+    
+    appDelegate = (SYNAppDelegate *)[[UIApplication sharedApplication] delegate];
 
     if (self.needsAddButton && [[SYNDeviceManager sharedInstance] isIPad])
     {
@@ -123,6 +127,7 @@
     [self resetDataRequestRange];
     
 }
+
 
 - (void) resetDataRequestRange
 {

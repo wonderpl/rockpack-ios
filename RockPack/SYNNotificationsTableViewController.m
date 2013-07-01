@@ -59,18 +59,24 @@
     
 }
 
--(void)viewWillAppear:(BOOL)animated
+
+- (void) viewWillAppear: (BOOL) animated
 {
-    [super viewWillAppear:animated];
+    [super viewWillAppear: animated];
     
-    [self.tableView addObserver:self forKeyPath:@"contentSize" options:NSKeyValueObservingOptionNew context:nil];
+    [self.tableView addObserver: self
+                     forKeyPath: @"contentSize"
+                        options: NSKeyValueObservingOptionNew
+                        context: nil];
 }
 
--(void)viewDidAppear:(BOOL)animated
+
+- (void) viewDidDisappear: (BOOL) animated
 {
-    [super viewDidAppear:animated];
+    [self.tableView removeObserver: self
+                        forKeyPath: @"contentSize"];
     
-    [self.tableView removeObserver:self forKeyPath:@"contentSize"];
+    [super viewDidDisappear: animated];
 }
 
 

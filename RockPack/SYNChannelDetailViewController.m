@@ -455,6 +455,7 @@
     [[NSNotificationCenter defaultCenter] postNotificationName: kNoteAllNavControlsShow
                                                         object: self
                                                       userInfo: nil];
+    
     [[NSNotificationCenter defaultCenter] removeObserver: self
                                                     name: kCoverArtChanged
                                                   object: nil];
@@ -1813,7 +1814,6 @@
         [self updateCategoryButtonText: buttonText];
         self.selectedCategoryId = genre.uniqueId;
         
-    
         id<GAITracker> tracker = [GAI sharedInstance].defaultTracker;
         
         [tracker sendEventWithCategory: @"goal"
@@ -2596,6 +2596,13 @@
 {
     if (category)
     {
+        id<GAITracker> tracker = [GAI sharedInstance].defaultTracker;
+        
+        [tracker sendEventWithCategory: @"goal"
+                            withAction: @"channelCategorised"
+                             withLabel: category.name
+                             withValue: nil];
+        
         NSArray* filteredSubcategories = [[category.subgenres array] filteredArrayUsingPredicate:[NSPredicate predicateWithFormat:@"isDefault == YES"]];
         if ([filteredSubcategories count] == 1)
         {
@@ -2619,6 +2626,13 @@
 
 - (void) categoryTableController:(SYNChannelCategoryTableViewController *)tableController didSelectSubCategory:(SubGenre *)subCategory
 {
+    id<GAITracker> tracker = [GAI sharedInstance].defaultTracker;
+    
+    [tracker sendEventWithCategory: @"goal"
+                        withAction: @"channelCategorised"
+                         withLabel: subCategory.name
+                         withValue: nil];
+    
     self.selectedCategoryId = subCategory.uniqueId;
     
     [self.selectCategoryButton setTitle: [NSString stringWithFormat:@"%@/\n%@", subCategory.genre.name, subCategory.name]
