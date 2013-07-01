@@ -12,7 +12,7 @@
 #import "SYNDeviceManager.h"
 
 #define CAUTION_VIEW_WIDTH 320.0
-#define CAUTION_TITLE_FONT_SIZE 19.0
+#define CAUTION_TITLE_FONT_SIZE 17.0
 #define CAUTION_MESSAGE_FONT_SIZE 13.0
 #define CAUTION_BUTTON_FONT_SIZE 14.0
 #define CAUTION_BUTTONS_Y 104.0
@@ -55,7 +55,7 @@
         titleLabel.layer.shadowColor = [[UIColor whiteColor] CGColor];
         titleLabel.layer.shadowOffset = CGSizeMake(0.0, 0.5);
         titleLabel.layer.shadowRadius = 0.5;
-        titleLabel.layer.shadowOpacity = 1.0;
+        titleLabel.layer.shadowOpacity = 0.5;
         titleLabel.layer.masksToBounds = NO;
         titleLabel.backgroundColor = [UIColor clearColor];
         
@@ -65,9 +65,9 @@
         
         NSLineBreakMode wordWrappingMode = NSLineBreakByWordWrapping;
         CGRect messageFrame = self.frame;
-        messageFrame.origin.x = 10.0;
-        messageFrame.origin.y = 50.0;
-        messageFrame.size.width -= 20.0;
+        messageFrame.origin.x = 20.0;
+        messageFrame.origin.y = 48.0;
+        messageFrame.size.width -= 40.0;
         messageFrame.size.height = [caution.message sizeWithFont:messageFontToUse
                                                constrainedToSize:self.frame.size
                                                    lineBreakMode:wordWrappingMode].height;
