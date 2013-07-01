@@ -205,19 +205,42 @@
     
     [GAI.sharedInstance.defaultTracker sendView: @"Start"];
     
-    if(!self.hasAnimated){
-    self.rockpackLogoImage.frame = self.rockpackLogoImage.frame;
-    [UIView animateWithDuration:0.3f
-                          delay:0.1f
-                        options: UIViewAnimationOptionCurveEaseOut
-                     animations:^{
-                         self.rockpackLogoImage.frame = CGRectMake(self.rockpackLogoImage.frame.origin.x, 35.0f,
-                                                                   self.rockpackLogoImage.frame.size.width,
-                                                                   self.rockpackLogoImage.frame.size.height);
-                         
-                     } completion:^(BOOL finished) {
-                     }];
+    self.isPreIPhone5 = [SYNDeviceManager.sharedInstance currentScreenHeight] < 500;
     
+    if(!self.hasAnimated){
+    
+        if (isPreIPhone5) {
+            
+            self.rockpackLogoImage.frame = CGRectMake(self.rockpackLogoImage.frame.origin.x, 126.0f, self.rockpackLogoImage.frame.size.width, self.rockpackLogoImage.frame.size.height);
+            [UIView animateWithDuration:0.3f
+                                  delay:0.1f
+                                options: UIViewAnimationOptionCurveEaseOut
+                             animations:^{
+                                 self.rockpackLogoImage.frame = CGRectMake(self.rockpackLogoImage.frame.origin.x, 35.0f,
+                                                                           self.rockpackLogoImage.frame.size.width,
+                                                                           self.rockpackLogoImage.frame.size.height);
+                                 
+                             } completion:^(BOOL finished) {
+                             }];
+        }
+        
+        if (!isPreIPhone5) {
+            
+            self.rockpackLogoImage.frame = self.rockpackLogoImage.frame;
+            [UIView animateWithDuration:0.3f
+                                  delay:0.1f
+                                options: UIViewAnimationOptionCurveEaseOut
+                             animations:^{
+                                 self.rockpackLogoImage.frame = CGRectMake(self.rockpackLogoImage.frame.origin.x, 35.0f,
+                                                                           self.rockpackLogoImage.frame.size.width,
+                                                                           self.rockpackLogoImage.frame.size.height);
+                         
+                             } completion:^(BOOL finished) {
+                            }];
+        }
+    
+        
+        
     self.whatsOnYourChannelLabel.frame = self.whatsOnYourChannelLabel.frame;
     self.whatsOnYourChannelLabel.alpha = 0.0f;
     
