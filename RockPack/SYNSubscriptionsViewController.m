@@ -156,6 +156,7 @@
 -(void)setUser:(ChannelOwner*)user
 {
     // no additional checks because it is done above
+    
     _user = user;
     
     [self.channelThumbnailCollectionView reloadData];

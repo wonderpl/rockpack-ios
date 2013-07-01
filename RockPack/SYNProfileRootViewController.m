@@ -185,9 +185,7 @@
     subColViewFrame.size.width = [SYNDeviceManager.sharedInstance currentScreenWidth] - subColViewFrame.origin.x - 10.0;
     [self.subscriptionsViewController setViewFrame: subColViewFrame];
     
-    
-    if (self.user)
-        self.subscriptionsViewController.user = self.user;
+        
     
     self.headerSubscriptionsView = [SYNYouHeaderView headerViewForWidth: 384];
     
@@ -1236,6 +1234,8 @@
             self.isUserProfile = YES;
         else
             self.isUserProfile = NO;
+        
+        self.subscriptionsViewController.user = self.user;
         
         [[NSNotificationCenter defaultCenter] addObserver: self
                                                  selector: @selector(handleDataModelChange:)
