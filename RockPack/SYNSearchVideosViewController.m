@@ -126,7 +126,7 @@
         
     NSFetchRequest *fetchRequest = [[NSFetchRequest alloc] init];
     
-    fetchRequest.fetchBatchSize = 20;
+    
     fetchRequest.entity = [NSEntityDescription entityForName: @"VideoInstance"
                                       inManagedObjectContext: self.appDelegate.searchManagedObjectContext];
     

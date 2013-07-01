@@ -422,29 +422,31 @@
                                                     
                                                     BOOL toAppend = (self.dataRequestRange.location > 0);
                                                     
-                                                    [appDelegate.mainRegistry performInBackground:^BOOL(NSManagedObjectContext *backgroundContext) {
-                                                        return [appDelegate.mainRegistry registerDataForFeedFromDictionary: responseDictionary
-                                                                                                        byAppending: toAppend];
-                                                    } completionBlock:^(BOOL registryResultOk) {
-                                                        NSNumber* totalNumber = [[responseDictionary objectForKey:@"videos"] objectForKey:@"total"];
-                                                        if(totalNumber && ![totalNumber isKindOfClass:[NSNull class]])
-                                                            self.dataItemsAvailable = [totalNumber integerValue];
-                                                        else
-                                                            self.dataItemsAvailable = self.dataRequestRange.length; // heuristic
-                                                        if (!registryResultOk)
-                                                        {
-                                                            DebugLog(@"Refresh subscription updates failed");
-                                                        }
+                                                    BOOL registryResultOk = [appDelegate.mainRegistry registerDataForFeedFromDictionary: responseDictionary
+                                                                                                                            byAppending: toAppend];
+                                                    
+                                                    NSNumber* totalNumber = [[responseDictionary objectForKey:@"videos"] objectForKey:@"total"];
+                                                    if(totalNumber && ![totalNumber isKindOfClass:[NSNull class]])
+                                                        self.dataItemsAvailable = [totalNumber integerValue];
+                                                    else
+                                                        self.dataItemsAvailable = self.dataRequestRange.length; // heuristic 
+                                                    
+                                                    if (!registryResultOk)
+                                                    {
+                                                        DebugLog(@"Refresh subscription updates failed");
                                                         
-                                                        [self removeEmptyGenreMessage];
-                                                        
-                                                        if(self.fetchedResultsController.fetchedObjects.count == 0)
-                                                            [self displayEmptyGenreMessage:NSLocalizedString(@"feed_screen_empty_message", nil) andLoader:NO];
-                                                        
-                                                        self.loadingMoreContent = NO;
-                                                        
-                                                        [self handleRefreshComplete];
-                                                    }];                                                    
+                                                        return;
+                                                    }
+                                                    
+                                                    [self removeEmptyGenreMessage];
+                                                    
+                                                    if(self.fetchedResultsController.fetchedObjects.count == 0)
+                                                        [self displayEmptyGenreMessage:NSLocalizedString(@"feed_screen_empty_message", nil) andLoader:NO];
+                                                    
+                                                    self.loadingMoreContent = NO;
+                                                    
+                                                    [self handleRefreshComplete];
+                                                    
                                                 } errorHandler: ^(NSDictionary* errorDictionary) {
                                                     
                                                     [self handleRefreshComplete];
@@ -515,7 +517,6 @@
     
     
     NSFetchRequest *fetchRequest = [[NSFetchRequest alloc] init];
-    fetchRequest.fetchBatchSize = 20;
     
     // Edit the entity name as appropriate.
     fetchRequest.entity = [NSEntityDescription entityForName: @"VideoInstance"

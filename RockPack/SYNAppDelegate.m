@@ -566,11 +566,8 @@ didFinishLaunchingWithOptions: (NSDictionary *) launchOptions
         DebugLog(@"Error adding persistent store to coordinator %@\n%@", [error localizedDescription], [error userInfo]);
     }
     
-    
-    _mainRegistry = [SYNMainRegistry registryWithParentContext:self.mainManagedObjectContext];
-    _searchRegistry = [SYNSearchRegistry registryWithParentContext:self.searchManagedObjectContext];
-    
-    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(refreshMainContext:) name:NSManagedObjectContextDidSaveNotification object:nil];
+    _mainRegistry = [SYNMainRegistry registry];
+    _searchRegistry = [SYNSearchRegistry registry];
 }
 
 
@@ -642,17 +639,6 @@ didFinishLaunchingWithOptions: (NSDictionary *) launchOptions
     }
 }
 
--(void)refreshMainContext:(NSNotification*)note
-{
-    NSManagedObjectContext* context = [note object];
-    if ( context.parentContext == self.mainManagedObjectContext )
-    [self.mainManagedObjectContext performBlock:^{
-        [self saveContext:NO];
-    }];
-
-    
-}
-
 
 #pragma mark - Network engine suport
 
@@ -686,7 +672,6 @@ didFinishLaunchingWithOptions: (NSDictionary *) launchOptions
     
     [fetchRequest setEntity:[NSEntityDescription entityForName: @"VideoInstance"
                                         inManagedObjectContext: self.mainManagedObjectContext]];
-    fetchRequest.includesPropertyValues = NO;
     
     
     itemsToDelete = [self.mainManagedObjectContext executeFetchRequest: fetchRequest
@@ -701,7 +686,7 @@ didFinishLaunchingWithOptions: (NSDictionary *) launchOptions
     
     [fetchRequest setEntity:[NSEntityDescription entityForName: @"CoverArt"
                                         inManagedObjectContext: self.mainManagedObjectContext]];
-    fetchRequest.includesPropertyValues = NO;
+    
     
     itemsToDelete = [self.mainManagedObjectContext executeFetchRequest: fetchRequest
                                                                  error: &error];
@@ -722,7 +707,6 @@ didFinishLaunchingWithOptions: (NSDictionary *) launchOptions
     
     [fetchRequest setEntity:[NSEntityDescription entityForName: @"Channel"
                                         inManagedObjectContext: self.mainManagedObjectContext]];
-    fetchRequest.includesPropertyValues = NO;
     
     itemsToDelete = [self.mainManagedObjectContext executeFetchRequest: fetchRequest
                                                                  error: &error];
@@ -740,7 +724,6 @@ didFinishLaunchingWithOptions: (NSDictionary *) launchOptions
     
     [fetchRequest setEntity:[NSEntityDescription entityForName: @"Genre"
                                         inManagedObjectContext: self.mainManagedObjectContext]];
-    fetchRequest.includesPropertyValues = NO;
     
     fetchRequest.includesSubentities = YES; // to include SubGenre objecst
     

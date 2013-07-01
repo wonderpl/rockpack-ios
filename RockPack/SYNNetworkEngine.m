@@ -88,16 +88,14 @@
     
     [networkOperation addJSONCompletionHandler: ^(NSDictionary *dictionary)
      {
+         BOOL registryResultOk = [self.registry registerCoverArtFromDictionary: dictionary
+                                                                 forUserUpload: NO];
          
-         [self.registry performInBackground:^BOOL(NSManagedObjectContext *backgroundContext) {
-             return  [self.registry registerCoverArtFromDictionary: dictionary
-                                                     forUserUpload: NO];
-         } completionBlock:^(BOOL registryResultOk) {
-             if (!registryResultOk)
-                 return;
-             
-             completionBlock(dictionary);
-         }];         
+         if (!registryResultOk)
+             return;
+         
+         completionBlock(dictionary);
+         
      } errorHandler: ^(NSError* error) {
          if (error.code >=500 && error.code < 600)
          {
@@ -119,15 +117,13 @@
     
     [networkOperation addJSONCompletionHandler: ^(NSDictionary *dictionary)
     {
-        [self.registry performInBackground:^BOOL(NSManagedObjectContext *backgroundContext) {
-            return  [self.registry registerCoverArtFromDictionary: dictionary
-                                                     forUserUpload: NO];
-        } completionBlock:^(BOOL registryResultOk) {
-            if (!registryResultOk)
-                return;
-            
-            completionBlock(dictionary);
-        }];
+        BOOL registryResultOk = [self.registry registerCoverArtFromDictionary: dictionary
+                                                                forUserUpload: NO];
+        
+        if (!registryResultOk)
+            return;
+        
+        completionBlock(dictionary);
         
     } errorHandler: ^(NSError* error) {
         if (error.code >=500 && error.code < 600)
@@ -274,15 +270,14 @@
         if (totalNumber && [totalNumber isKindOfClass: [NSNumber class]])
             itemsCount = totalNumber.intValue;
         
-        [self.searchRegistry performInBackground:^BOOL(NSManagedObjectContext *backgroundContext) {
-            return  [self.searchRegistry registerVideosFromDictionary:dictionary];
-        } completionBlock:^(BOOL registryResultOk) {
+            BOOL registryResultOk = [self.searchRegistry registerVideosFromDictionary:dictionary];
+        
             if (!registryResultOk)
                 return;
             
             completeBlock(itemsCount);
 
-        }];
+
         
                 
     } errorHandler:^(NSError* error) {
@@ -338,14 +333,12 @@
             itemsCount = totalNumber.intValue;
         }
         
-        [self.searchRegistry performInBackground:^BOOL(NSManagedObjectContext *backgroundContext) {
-            return [self.searchRegistry registerChannelsFromDictionary: dictionary];
-        } completionBlock:^(BOOL registryResultOk) {
-            if (!registryResultOk)
-                return;
-            
-            completeBlock(itemsCount);  
-        }];
+        BOOL registryResultOk = [self.searchRegistry registerChannelsFromDictionary: dictionary];
+        
+        if (!registryResultOk)
+            return;
+        
+        completeBlock(itemsCount);
         
         
     } errorHandler:^(NSError* error) {
