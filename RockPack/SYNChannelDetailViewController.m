@@ -634,19 +634,9 @@
         if ([obj isKindOfClass:[Channel class]] && [((Channel*)obj).uniqueId isEqualToString:self.channel.uniqueId])
         {
             
-            if(self.channel.videoInstances.count == 0)
-            {
-                [self showNoVideosMessage: NSLocalizedString(@"channel_screen_no_videos",nil) withLoader:NO];
-            }
-            else
-            {
-                [self showNoVideosMessage:nil withLoader:NO];
-            }
             
             
             self.dataItemsAvailable = self.channel.totalVideosValue;
-            
-//            DebugLog(@"Total Videos on First Batch: %i", self.channel.totalVideosValue);
             
             self.subscribeButton.selected = self.channel.subscribedByUserValue;
             self.subscribeButton.enabled = YES;
@@ -668,7 +658,9 @@
             else
             {
                 [self showNoVideosMessage:nil withLoader:NO];
+                
             }
+            
             
             return;
             
@@ -865,6 +857,9 @@
     
     cell = videoThumbnailCell;
     
+    if(indexPath.row == 2)
+        [self checkOnBoarding];
+    
     return cell;
 }
 
@@ -881,6 +876,7 @@
         if (self.channel.videoInstances.count == 0 ||
            (self.dataRequestRange.location + self.dataRequestRange.length) >= self.dataItemsAvailable)
         {
+            // empy footer (invisible)
             supplementaryView = [[UICollectionReusableView alloc] initWithFrame:CGRectMake(0.0, 0.0, [self footerSize].width, [self footerSize].height)];
             
         }
@@ -893,6 +889,7 @@
             
             supplementaryView = self.footerView;
         }
+        
         
     }
     
@@ -912,83 +909,57 @@
 }
 
 
-- (void) loadMoreVideos:(UIButton*)footerButton
+-(void)loadMoreVideos:(UIButton*)footerButton
 {
+    
     self.loadingMoreContent = YES;
+    
+    // define success block //
     
     [self incrementRangeForNextRequest];
     
-    // define success block 
+    
     MKNKUserSuccessBlock successBlock = ^(NSDictionary *dictionary) {
-
-        NSArray* items = dictionary[@"videos"][@"items"];
-        int numberLoaded = items.count;
-        NSLog (@"Number loaded %d", numberLoaded);
-        NSNumber* totalNumber = dictionary[@"videos"][@"total"];
+        self.loadingMoreContent = NO;
         
-        if (totalNumber && ![totalNumber isKindOfClass: [NSNull class]])
-        {
-            self.dataItemsAvailable = [totalNumber integerValue];
-        }
-        else
-        {
-            self.dataItemsAvailable = self.dataRequestRange.length; // heuristic
-        }
+        [self.channel addVideoInstancesFromDictionary:dictionary];
         
-        SYNRegistry* registry = self.channel.managedObjectContext == appDelegate.mainManagedObjectContext ? appDelegate.mainRegistry : appDelegate.searchRegistry;
+        NSError* error;
+        [self.channel.managedObjectContext save:&error];
         
-        [registry performInBackground:^BOOL(NSManagedObjectContext *backgroundContext) {
-            
-            Channel * channel = (Channel*)[backgroundContext objectWithID:self.channel.objectID];
-            [channel addVideoInstancesFromDictionary:dictionary];
-            
-            NSError* error;
-            [backgroundContext save:&error];
-            
-            if(error)
-                return NO;
-            
-            return YES;
-            
-        } completionBlock:^(BOOL success) {
-            self.loadingMoreContent = NO;
-            if(self.channel.managedObjectContext == appDelegate.searchManagedObjectContext)
-            {
-                [self.channel.managedObjectContext save:nil];
-            }
-        }];
         
     };
     
     // define success block //
     
     MKNKUserErrorBlock errorBlock = ^(NSDictionary* errorDictionary) {
-        DebugLog(@"Update action failed");
         self.loadingMoreContent = NO;
-        
+        DebugLog(@"Update action failed");        
     };
     
-    NSLog (@"Loc = %d, Length = %d, Avail = %d", self.dataRequestRange.location, self.dataRequestRange.length, self.dataItemsAvailable);
-    
-    if (self.dataRequestRange.location < self.dataItemsAvailable)
+    if ([self.channel.resourceURL hasPrefix: @"https"]) // https does not cache so it is fresh
     {
-        if ([self.channel.resourceURL hasPrefix: @"https"]) // https does not cache so it is fresh
-        {
-                [appDelegate.oAuthNetworkEngine videosForChannelForUserId:appDelegate.currentUser.uniqueId
-                                                                channelId:self.channel.uniqueId
-                                                                  inRange:self.dataRequestRange
-                                                        completionHandler:successBlock
-                                                             errorHandler:errorBlock];
-        }
-        else
-        {
-                [appDelegate.networkEngine videosForChannelForUserId:appDelegate.currentUser.uniqueId
-                                                           channelId:self.channel.uniqueId
-                                                             inRange:self.dataRequestRange
-                                                   completionHandler:successBlock
-                                                    errorHandler:errorBlock];
-        }
+        
+        
+        [appDelegate.oAuthNetworkEngine videosForChannelForUserId:appDelegate.currentUser.uniqueId
+                                                        channelId:self.channel.uniqueId
+                                                          inRange:self.dataRequestRange
+                                                completionHandler:successBlock
+                                                     errorHandler:errorBlock];
+        
+        
     }
+    else
+    {
+        
+        
+        [appDelegate.networkEngine videosForChannelForUserId:appDelegate.currentUser.uniqueId
+                                                   channelId:self.channel.uniqueId
+                                                     inRange:self.dataRequestRange
+                                           completionHandler:successBlock
+                                                errorHandler:errorBlock];
+    }
+    
 }
 
 
@@ -2401,40 +2372,73 @@
     
     [[NSNotificationCenter defaultCenter] postNotificationName:kMainControlsChangeEnter object:self];
     
+    [self checkOnBoarding];
 
-    if(![self.channel.channelOwner.uniqueId isEqualToString:appDelegate.currentUser.uniqueId] && !self.channel.subscribedByUserValue)
+}
+
+-(void)checkOnBoarding
+{
+    NSUserDefaults *defaults = [NSUserDefaults standardUserDefaults];
+    BOOL hasShownSubscribeOnBoarding = [defaults boolForKey:kUserDefaultsSubscribe];
+    
+    BOOL hasShownAddVideoOnBoarding = [defaults boolForKey:kUserDefaultsAddVideo];
+    
+    // do not show onboarding related to subscriptions in user's own channels and channels already subscribed
+    if(![self.channel.channelOwner.uniqueId isEqualToString:appDelegate.currentUser.uniqueId] &&
+       !self.channel.subscribedByUserValue && !hasShownSubscribeOnBoarding)
     {
-        // avoid showing the on boarding related to subscription to already subscribed channel or user's own channel
-        NSUserDefaults *defaults = [NSUserDefaults standardUserDefaults];
-        BOOL hasShownSubscribeOnBoarding = [defaults boolForKey:kUserDefaultsSubscribe];
-        if(!hasShownSubscribeOnBoarding)
-        {
-            BOOL isIpad = [[SYNDeviceManager sharedInstance] isIPad];
-            NSString* message = NSLocalizedString(@"onboarding_subscription", nil);
-            PointingDirection direction = isIpad ? PointingDirectionLeft : PointingDirectionUp;
-            CGFloat fontSize = isIpad ? 19.0 : 15.0 ;
-            CGSize size =  isIpad ? CGSizeMake(260.0, 164.0) : CGSizeMake(260.0, 148.0);
-            SYNOnBoardingPopoverView* subscribePopover = [SYNOnBoardingPopoverView withMessage:message
-                                                                                      withSize:size
-                                                                                   andFontSize:fontSize
-                                                                                    pointingTo:self.subscribeButton.frame
-                                                                                 withDirection:direction];
-            __weak SYNChannelDetailViewController* wself = self;
-            subscribePopover.action = ^{
-                [wself subscribeButtonTapped:self.subscribeButton]; // simulate press
-            };
-            [appDelegate.onBoardingQueue addPopover:subscribePopover];
-            
-            [defaults setBool:YES forKey:kUserDefaultsSubscribe];
-            
-            
-            [appDelegate.onBoardingQueue present];
-        }
+        BOOL isIpad = [[SYNDeviceManager sharedInstance] isIPad];
+        NSString* message = NSLocalizedString(@"onboarding_subscription", nil);
+        PointingDirection direction = isIpad ? PointingDirectionLeft : PointingDirectionUp;
+        CGFloat fontSize = isIpad ? 19.0 : 15.0 ;
+        CGSize size =  isIpad ? CGSizeMake(260.0, 164.0) : CGSizeMake(260.0, 148.0);
+        SYNOnBoardingPopoverView* subscribePopover = [SYNOnBoardingPopoverView withMessage:message
+                                                                                  withSize:size
+                                                                               andFontSize:fontSize
+                                                                                pointingTo:self.subscribeButton.frame
+                                                                             withDirection:direction];
+        
+        __weak SYNChannelDetailViewController* wself = self;
+        subscribePopover.action = ^{
+            [wself subscribeButtonTapped:self.subscribeButton]; // simulate press
+        };
+        
+        [appDelegate.onBoardingQueue addPopover:subscribePopover];
+        
+        [defaults setBool:YES forKey:kUserDefaultsSubscribe];
+    }
+    
+    if(!hasShownAddVideoOnBoarding && [self.videoThumbnailCollectionView visibleCells].count > 1)
+    {
+        NSString* message = NSLocalizedString(@"onboarding_video", nil);
+        
+        CGFloat fontSize = [[SYNDeviceManager sharedInstance] isIPad] ? 19.0 : 15.0 ;
+        CGSize size = [[SYNDeviceManager sharedInstance] isIPad] ? CGSizeMake(340.0, 164.0) : CGSizeMake(260.0, 144.0);
+       
+        SYNVideoThumbnailRegularCell* randomCell = (SYNVideoThumbnailRegularCell*)[[self.videoThumbnailCollectionView visibleCells] objectAtIndex:1];
+        CGRect rectToPointTo = [self.view convertRect:randomCell.addItButton.frame fromView:randomCell];
+        
+        SYNOnBoardingPopoverView* addToChannelPopover = [SYNOnBoardingPopoverView withMessage:message
+                                                                                     withSize:size
+                                                                                  andFontSize:fontSize
+                                                                                   pointingTo:rectToPointTo
+                                                                                withDirection:PointingDirectionDown];
+        
+        
+        __weak SYNChannelDetailViewController* wself = self;
+        addToChannelPopover.action = ^{
+            [wself addItToChannelPresssed:nil];
+        };
+        
+        NSLog(@"Adding because count: %i", self.channel.videoInstances.count);
+        [appDelegate.onBoardingQueue addPopover:addToChannelPopover];
+        
+        [defaults setBool:YES forKey:kUserDefaultsAddVideo];
+        
     }
     
     
-    
-    
+    [appDelegate.onBoardingQueue present];
 }
 
 
@@ -3107,48 +3111,7 @@
     return ([self.channel.channelOwner.uniqueId isEqualToString:appDelegate.currentUser.uniqueId] && self.channel.favouritesValue);
 }
 
-- (void) videoOverlayDidDissapear
-{
-    NSUserDefaults *defaults = [NSUserDefaults standardUserDefaults];
-    BOOL hasShownSubscribeOnBoarding = [defaults boolForKey:kUserDefaultsAddVideo];
-    if(!hasShownSubscribeOnBoarding)
-    {
-        SYNOnBoardingPopoverQueueController* onBoardingQueue = [[SYNOnBoardingPopoverQueueController alloc] init];
-        
-        NSString* message = NSLocalizedString(@"onboarding_video", nil);
-        
-        CGFloat fontSize = [[SYNDeviceManager sharedInstance] isIPad] ? 19.0 : 15.0 ;
-        CGSize size = [[SYNDeviceManager sharedInstance] isIPad] ? CGSizeMake(340.0, 164.0) : CGSizeMake(260.0, 144.0);
-        CGRect rectToPointTo = CGRectZero;
-        PointingDirection directionToPointTo = PointingDirectionDown;
-        if(self.selectedCell)
-        {
-            rectToPointTo = [self.view convertRect:self.selectedCell.addItButton.frame fromView:self.selectedCell];
-            if(rectToPointTo.origin.y < [[SYNDeviceManager sharedInstance] currentScreenHeight] * 0.5)
-                directionToPointTo = PointingDirectionUp;
-            
-            //NSLog(@"%f %f", rectToPointTo.origin.x, rectToPointTo.origin.y);
-        }
-        SYNOnBoardingPopoverView* addToChannelPopover = [SYNOnBoardingPopoverView withMessage:message
-                                                                                     withSize:size
-                                                                                  andFontSize:fontSize
-                                                                                   pointingTo:rectToPointTo
-                                                                                withDirection:directionToPointTo];
-        
-        
-        __weak SYNChannelDetailViewController* wself = self;
-        addToChannelPopover.action = ^{
-            [wself addItToChannelPresssed:nil];
-        };
-        [onBoardingQueue addPopover:addToChannelPopover];
-        
-        [defaults setBool:YES forKey:kUserDefaultsAddVideo];
-        
-        [self.view addSubview:onBoardingQueue.view];
-        [self addChildViewController:onBoardingQueue];
-        [onBoardingQueue present];
-    }
-}
+
 
 
 // since this is called when video overlay is being closed it is also used for the onboarding

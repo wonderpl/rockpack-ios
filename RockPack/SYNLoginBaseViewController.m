@@ -18,7 +18,7 @@
 #import "User.h"
 #import <FacebookSDK/FacebookSDK.h>
 #import "RegexKitLite.h"
-
+#import <Accounts/Accounts.h>
 
 @interface SYNLoginBaseViewController () {
     
@@ -328,9 +328,42 @@
 
 #pragma mark - login facebook
 
--(void) loginThroughFacebookWithCompletionHandler:(MKNKJSONCompleteBlock) completionBlock
+-(void) loginThroughFacebookWithCompletionHandler: (MKNKJSONCompleteBlock) completionBlock
                                      errorHandler: (MKNKUserErrorBlock) errorBlock
 {
+    
+    // figure out if it exists in account
+    
+//    ACAccountStore* accountStore = [[ACAccountStore alloc] init];
+//    ACAccountType* facebookAccountType = [accountStore accountTypeWithAccountTypeIdentifier:ACAccountTypeIdentifierFacebook];
+//    NSArray *facebookAccounts = [accountStore accountsWithAccountType:facebookAccountType];
+//    NSLog(@"Accounts:\n%@", facebookAccounts);
+//    
+//    NSDictionary *options = @{ACFacebookAppIdKey : @"217008995103822",
+//                              ACFacebookPermissionsKey : @[@"publish_stream"],
+//                              ACFacebookAudienceKey : ACFacebookAudienceEveryone};
+//    
+//    if(facebookAccountType.accessGranted)
+//    {
+//        NSLog(@"User had granted Facebook Access");
+//    }
+//    else
+//    {
+//        NSLog(@"User had revoked Facebook Access");
+//        [accountStore requestAccessToAccountsWithType:facebookAccountType options:options completion:^(BOOL granted, NSError *error) {
+//            if (granted)
+//            {
+//                NSLog(@"Granted!");
+//                
+//            }
+//            else
+//            {
+//                NSLog(@"NOT Granted (error: %@)", error);
+//            }
+//        }];
+//        return;
+//    }
+    
     SYNFacebookManager* facebookManager = [SYNFacebookManager sharedFBManager];
     
     [facebookManager loginOnSuccess: ^(NSDictionary<FBGraphUser> *dictionary) {
