@@ -88,6 +88,10 @@
 - (void) dealloc
 {
     [[NSNotificationCenter defaultCenter] removeObserver: self
+                                                    name: kClearedLocationBoundData
+                                                  object: nil];
+    
+    [[NSNotificationCenter defaultCenter] removeObserver: self
                                                     name: UIApplicationWillEnterForegroundNotification
                                                   object: nil];
 }
@@ -97,6 +101,11 @@
 - (void) viewDidLoad
 {
     [super viewDidLoad];
+    
+    [[NSNotificationCenter defaultCenter] addObserver: self
+                                             selector: @selector(clearedLocationBoundData)
+                                                 name: kClearedLocationBoundData
+                                               object: nil];
     
     appDelegate = (SYNAppDelegate *)[[UIApplication sharedApplication] delegate];
 
@@ -117,27 +126,6 @@
     
     [self resetDataRequestRange];
     
-}
-
-// Moved the notifications here, so that the remove gets called as well.
-- (void) viewWillAppear:(BOOL)animated
-{
-    [super viewWillAppear: animated];
-    
-    [[NSNotificationCenter defaultCenter] addObserver: self
-                                             selector: @selector(clearedLocationBoundData)
-                                                 name: kClearedLocationBoundData
-                                               object: nil];
-}
-
-- (void) viewWillDisappear:(BOOL)animated
-{
-    
-    [[NSNotificationCenter defaultCenter] removeObserver: self
-                                                    name: kClearedLocationBoundData
-                                                  object: nil];
-    
-    [super viewWillDisappear: animated];
 }
 
 

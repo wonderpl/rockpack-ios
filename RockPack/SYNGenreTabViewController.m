@@ -114,30 +114,29 @@
         
 }
 
--(void)viewWillAppear:(BOOL)animated
+- (void) viewWillAppear: (BOOL) animated
 {
-    [super viewWillAppear:animated];
+    [super viewWillAppear: animated];
     
-    [[NSNotificationCenter defaultCenter] addObserver:self
-                                             selector:@selector(clearedLocationBoundData)
-                                                 name:kClearedLocationBoundData
-                                               object:nil];
+    [[NSNotificationCenter defaultCenter] addObserver: self
+                                             selector: @selector(clearedLocationBoundData)
+                                                 name: kClearedLocationBoundData
+                                               object: nil];
 }
 
--(void)viewDidAppear:(BOOL)animated
+- (void) viewDidAppear: (BOOL) animated
 {
     [self updateCategories];
 }
 
 
-
--(void)viewWillDisappear:(BOOL)animated
+- (void) viewWillDisappear: (BOOL) animated
 {
-    [super viewWillDisappear:animated];
+    [[NSNotificationCenter defaultCenter] removeObserver: self
+                                                    name: kClearedLocationBoundData
+                                                  object: nil];
+    [super viewWillDisappear: animated];
     
-    [[NSNotificationCenter defaultCenter] removeObserver:self
-                                                    name:kClearedLocationBoundData
-                                                  object:nil];
 }
 
 -(void)clearedLocationBoundData
