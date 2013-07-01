@@ -177,7 +177,7 @@
     self.formatter.dateFormat = @"dd/MM/yyyy";
     
     
-    self.onBoardingController = [[SYNLoginOnBoardingController alloc] init];
+    self.onBoardingController = [[SYNLoginOnBoardingController alloc] initWithDelegate: self];
     CGRect onBoardingViewFrame = self.onBoardingController.view.frame;
     onBoardingViewFrame.origin.x = 0.0;
     onBoardingViewFrame.size.width = [[SYNDeviceManager sharedInstance] currentScreenWidth];
@@ -186,7 +186,6 @@
     else
         onBoardingViewFrame.origin.y = self.facebookButton.frame.origin.y - onBoardingViewFrame.size.height - 16.0;
     self.onBoardingController.view.frame = CGRectIntegral(onBoardingViewFrame);
-    self.onBoardingController.scrollView.delegate = self;
     [self.view addSubview:self.onBoardingController.view];
     [self addChildViewController:self.onBoardingController];
     

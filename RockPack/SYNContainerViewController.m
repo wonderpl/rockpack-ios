@@ -162,6 +162,12 @@
                                                       userInfo: @{kCurrentPage:@(self.scrollView.page)}];
 }
 
+- (void) dealloc
+{
+    // Defensive programming
+    self.scrollView.delegate = nil;
+}
+
 -(void)swipedTo:(UISwipeGestureRecognizerDirection)direction
 {
     NSInteger page = self.currentPage;

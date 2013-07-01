@@ -105,6 +105,12 @@
     return self;
 }
 
+- (void) dealloc
+{
+    // Defensive programming
+    _scrollView.delegate = nil;
+}
+
 - (UIView *)viewForActivity:(OWActivity *)activity index:(NSInteger)index x:(NSInteger)x y:(NSInteger)y
 {
     UIView *view = [[UIView alloc] initWithFrame:CGRectMake(x, y, 80, 80)];

@@ -8,10 +8,13 @@
 
 #import <UIKit/UIKit.h>
 
+@protocol UIScrollViewDelegate;
+
 @interface SYNLoginOnBoardingController : UIViewController
 
-@property (nonatomic, readonly) UIScrollView* scrollView;
+- (id) initWithDelegate: (id <UIScrollViewDelegate>) delegate;
 
+@property (nonatomic, readonly) UIScrollView* scrollView;
 @property (nonatomic, readonly) UIPageControl* pageControl;
 
 @end
