@@ -455,6 +455,7 @@
     [[NSNotificationCenter defaultCenter] postNotificationName: kNoteAllNavControlsShow
                                                         object: self
                                                       userInfo: nil];
+    
     [[NSNotificationCenter defaultCenter] removeObserver: self
                                                     name: kCoverArtChanged
                                                   object: nil];
@@ -903,83 +904,57 @@
 }
 
 
-- (void) loadMoreVideos:(UIButton*)footerButton
+-(void)loadMoreVideos:(UIButton*)footerButton
 {
+    
     self.loadingMoreContent = YES;
+    
+    // define success block //
     
     [self incrementRangeForNextRequest];
     
-    // define success block 
+    
     MKNKUserSuccessBlock successBlock = ^(NSDictionary *dictionary) {
-
-        NSArray* items = dictionary[@"videos"][@"items"];
-        int numberLoaded = items.count;
-        NSLog (@"Number loaded %d", numberLoaded);
-        NSNumber* totalNumber = dictionary[@"videos"][@"total"];
+        self.loadingMoreContent = NO;
         
-        if (totalNumber && ![totalNumber isKindOfClass: [NSNull class]])
-        {
-            self.dataItemsAvailable = [totalNumber integerValue];
-        }
-        else
-        {
-            self.dataItemsAvailable = self.dataRequestRange.length; // heuristic
-        }
+        [self.channel addVideoInstancesFromDictionary:dictionary];
         
-        SYNRegistry* registry = self.channel.managedObjectContext == appDelegate.mainManagedObjectContext ? appDelegate.mainRegistry : appDelegate.searchRegistry;
+        NSError* error;
+        [self.channel.managedObjectContext save:&error];
         
-        [registry performInBackground:^BOOL(NSManagedObjectContext *backgroundContext) {
-            
-            Channel * channel = (Channel*)[backgroundContext objectWithID:self.channel.objectID];
-            [channel addVideoInstancesFromDictionary:dictionary];
-            
-            NSError* error;
-            [backgroundContext save:&error];
-            
-            if(error)
-                return NO;
-            
-            return YES;
-            
-        } completionBlock:^(BOOL success) {
-            self.loadingMoreContent = NO;
-            if(self.channel.managedObjectContext == appDelegate.searchManagedObjectContext)
-            {
-                [self.channel.managedObjectContext save:nil];
-            }
-        }];
         
     };
     
     // define success block //
     
     MKNKUserErrorBlock errorBlock = ^(NSDictionary* errorDictionary) {
-        DebugLog(@"Update action failed");
         self.loadingMoreContent = NO;
-        
+        DebugLog(@"Update action failed");        
     };
     
-    NSLog (@"Loc = %d, Length = %d, Avail = %d", self.dataRequestRange.location, self.dataRequestRange.length, self.dataItemsAvailable);
-    
-    if (self.dataRequestRange.location < self.dataItemsAvailable)
+    if ([self.channel.resourceURL hasPrefix: @"https"]) // https does not cache so it is fresh
     {
-        if ([self.channel.resourceURL hasPrefix: @"https"]) // https does not cache so it is fresh
-        {
-                [appDelegate.oAuthNetworkEngine videosForChannelForUserId:appDelegate.currentUser.uniqueId
-                                                                channelId:self.channel.uniqueId
-                                                                  inRange:self.dataRequestRange
-                                                        completionHandler:successBlock
-                                                             errorHandler:errorBlock];
-        }
-        else
-        {
-                [appDelegate.networkEngine videosForChannelForUserId:appDelegate.currentUser.uniqueId
-                                                           channelId:self.channel.uniqueId
-                                                             inRange:self.dataRequestRange
-                                                   completionHandler:successBlock
-                                                    errorHandler:errorBlock];
-        }
+        
+        
+        [appDelegate.oAuthNetworkEngine videosForChannelForUserId:appDelegate.currentUser.uniqueId
+                                                        channelId:self.channel.uniqueId
+                                                          inRange:self.dataRequestRange
+                                                completionHandler:successBlock
+                                                     errorHandler:errorBlock];
+        
+        
     }
+    else
+    {
+        
+        
+        [appDelegate.networkEngine videosForChannelForUserId:appDelegate.currentUser.uniqueId
+                                                   channelId:self.channel.uniqueId
+                                                     inRange:self.dataRequestRange
+                                           completionHandler:successBlock
+                                                errorHandler:errorBlock];
+    }
+    
 }
 
 
@@ -1831,7 +1806,6 @@
         [self updateCategoryButtonText: buttonText];
         self.selectedCategoryId = genre.uniqueId;
         
-    
         id<GAITracker> tracker = [GAI sharedInstance].defaultTracker;
         
         [tracker sendEventWithCategory: @"goal"
@@ -2648,6 +2622,13 @@
 {
     if (category)
     {
+        id<GAITracker> tracker = [GAI sharedInstance].defaultTracker;
+        
+        [tracker sendEventWithCategory: @"goal"
+                            withAction: @"channelCategorised"
+                             withLabel: category.name
+                             withValue: nil];
+        
         NSArray* filteredSubcategories = [[category.subgenres array] filteredArrayUsingPredicate:[NSPredicate predicateWithFormat:@"isDefault == YES"]];
         if ([filteredSubcategories count] == 1)
         {
@@ -2671,6 +2652,13 @@
 
 - (void) categoryTableController:(SYNChannelCategoryTableViewController *)tableController didSelectSubCategory:(SubGenre *)subCategory
 {
+    id<GAITracker> tracker = [GAI sharedInstance].defaultTracker;
+    
+    [tracker sendEventWithCategory: @"goal"
+                        withAction: @"channelCategorised"
+                         withLabel: subCategory.name
+                         withValue: nil];
+    
     self.selectedCategoryId = subCategory.uniqueId;
     
     [self.selectCategoryButton setTitle: [NSString stringWithFormat:@"%@/\n%@", subCategory.genre.name, subCategory.name]

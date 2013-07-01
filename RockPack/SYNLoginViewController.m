@@ -184,12 +184,11 @@
     UITapGestureRecognizer* tapGesture = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(outerViewTapped:)];
     [self.view addGestureRecognizer:tapGesture];
     
-    self.onBoardingController = [[SYNLoginOnBoardingController alloc] init];
+    self.onBoardingController = [[SYNLoginOnBoardingController alloc] initWithDelegate: self];
     CGRect onBoardingViewFrame = self.onBoardingController.view.frame;
     onBoardingViewFrame.origin.x = 0.0;
     onBoardingViewFrame.origin.y = [[SYNDeviceManager sharedInstance] isLandscape] ? 300.0 : 560.0;
     self.onBoardingController.view.frame = onBoardingViewFrame;
-    self.onBoardingController.scrollView.delegate = self;
     [self.view addSubview:self.onBoardingController.view];
     [self addChildViewController:self.onBoardingController];
     

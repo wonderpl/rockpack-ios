@@ -406,7 +406,6 @@
     {
         SYNVideoThumbnailSmallCell *oldCell = (SYNVideoThumbnailSmallCell *)[self.videoThumbnailCollectionView cellForItemAtIndexPath: [NSIndexPath indexPathForItem: _currentSelectedIndex
                                                                                                                                                            inSection: 0]];
-        
         // This will colour the cell monochrome
         oldCell.colour = NO;
     }
@@ -424,6 +423,11 @@
     
     // Now set the channel thumbail for the new
     VideoInstance *videoInstance = self.videoInstanceArray [currentSelectedIndex];
+    
+    if (!videoInstance)
+    {
+        AssertOrLog(@"Non-nil video instance unexpected");
+    }
     
     if ([videoInstance.channel.channelOwner.displayName length] == 0)
     {
@@ -710,9 +714,16 @@
     // Get the video instance for the currently selected video
     VideoInstance *videoInstance = self.videoInstanceArray [self.currentSelectedIndex];
     
-    [[NSNotificationCenter defaultCenter] postNotificationName:kChannelDetailsRequested
-                                                        object:self
-                                                      userInfo:@{kChannel:videoInstance.channel}];
+    if (videoInstance.channel)
+    {
+        [[NSNotificationCenter defaultCenter] postNotificationName: kChannelDetailsRequested
+                                                            object: self
+                                                          userInfo: @{kChannel: videoInstance.channel}];
+    }
+    else
+    {
+        AssertOrLog(@"Non-null video instance expected");
+    }
     
 }
 

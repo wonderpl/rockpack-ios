@@ -114,30 +114,29 @@
         
 }
 
--(void)viewWillAppear:(BOOL)animated
+- (void) viewWillAppear: (BOOL) animated
 {
-    [super viewWillAppear:animated];
+    [super viewWillAppear: animated];
     
-    [[NSNotificationCenter defaultCenter] addObserver:self
-                                             selector:@selector(clearedLocationBoundData)
-                                                 name:kClearedLocationBoundData
-                                               object:nil];
+    [[NSNotificationCenter defaultCenter] addObserver: self
+                                             selector: @selector(clearedLocationBoundData)
+                                                 name: kClearedLocationBoundData
+                                               object: nil];
 }
 
--(void)viewDidAppear:(BOOL)animated
+- (void) viewDidAppear: (BOOL) animated
 {
     [self updateCategories];
 }
 
 
-
--(void)viewWillDisappear:(BOOL)animated
+- (void) viewWillDisappear: (BOOL) animated
 {
-    [super viewWillDisappear:animated];
+    [[NSNotificationCenter defaultCenter] removeObserver: self
+                                                    name: kClearedLocationBoundData
+                                                  object: nil];
+    [super viewWillDisappear: animated];
     
-    [[NSNotificationCenter defaultCenter] removeObserver:self
-                                                    name:kClearedLocationBoundData
-                                                  object:nil];
 }
 
 -(void)clearedLocationBoundData
@@ -156,20 +155,18 @@
     
     [appDelegate.networkEngine updateCategoriesOnCompletion: ^(NSDictionary* dictionary){
         
-        [appDelegate.mainRegistry performInBackground:^BOOL(NSManagedObjectContext *backgroundContext) {
-            return [appDelegate.mainRegistry registerCategoriesFromDictionary: dictionary];
-        } completionBlock:^(BOOL success) {
-            self.isLoadingCategories = NO;
-            
-            [self displayLoadedGenres];
-            
-            if(self.genresFetched.count == 0)
-            {
-                // keep calling recursively is
-                [self updateCategories];
-            }
-
-        }];
+        [appDelegate.mainRegistry registerCategoriesFromDictionary: dictionary];
+        
+        self.isLoadingCategories = NO;
+        
+        [self displayLoadedGenres];
+        
+        if(self.genresFetched.count == 0)
+        {
+            // keep calling recursively is 
+            [self updateCategories];
+        }
+        
         
     } onError:^(NSError* error) {
         DebugLog(@"%@", [error debugDescription]);

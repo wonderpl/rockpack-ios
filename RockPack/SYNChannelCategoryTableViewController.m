@@ -149,16 +149,14 @@
         
         [appDelegate.networkEngine updateCategoriesOnCompletion:^(NSDictionary* dictionary){
             
-            [appDelegate.mainRegistry performInBackground:^BOOL(NSManagedObjectContext *backgroundContext) {
-                return [appDelegate.mainRegistry registerCategoriesFromDictionary: dictionary];;
-            } completionBlock:^(BOOL registryResultOk) {
-                if (!registryResultOk) {
-                    DebugLog(@"*** Cannot Register Genre Objects! ***");
-                    return;
-                }
-                
-                [self loadCategories];
-            }];
+            BOOL registryResultOk = [appDelegate.mainRegistry registerCategoriesFromDictionary: dictionary];
+            if (!registryResultOk) {
+                DebugLog(@"*** Cannot Register Genre Objects! ***");
+                return;
+            }
+            
+            [self loadCategories];
+            
         } onError:^(NSError* error) {
             DebugLog(@"%@", [error debugDescription]);
         }];

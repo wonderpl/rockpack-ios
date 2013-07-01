@@ -90,16 +90,7 @@
 }
 
 
-- (void) viewWillAppear: (BOOL) animated
-{
-    [super viewWillAppear:animated];
-    
-    
-    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(reachabilityChanged:) name:kReachabilityChangedNotification object:nil];
-
-}
-
--(void)viewDidLoad
+- (void) viewDidLoad
 {
     [super viewDidLoad];
     
@@ -150,9 +141,21 @@
         
         self.ddInputField.tag = self.mmInputField.tag;
         self.mmInputField.tag = ddTag;
-
     }
 }
+
+
+- (void) viewWillAppear: (BOOL) animated
+{
+    [super viewWillAppear:animated];
+    
+    
+    [[NSNotificationCenter defaultCenter] addObserver: self
+                                             selector: @selector(reachabilityChanged:)
+                                                 name: kReachabilityChangedNotification
+                                               object: nil];
+}
+
 
 - (void) viewDidAppear: (BOOL) animated
 {
@@ -161,6 +164,7 @@
     [self performSelector: @selector(reachabilityChanged:)
                withObject: nil];
 }
+
 
 - (void) viewWillDisappear: (BOOL) animated
 {

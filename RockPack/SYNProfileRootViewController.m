@@ -1169,9 +1169,9 @@
     {
         // remove the listener, even if nil is passed
         
-        [[NSNotificationCenter defaultCenter] removeObserver:self
-                                                        name:NSManagedObjectContextObjectsDidChangeNotification
-                                                      object:self.user];
+        [[NSNotificationCenter defaultCenter] removeObserver: self
+                                                        name: NSManagedObjectContextDidSaveNotification
+                                                      object: self.user];
     }
     
     if(!appDelegate)

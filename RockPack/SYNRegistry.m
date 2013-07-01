@@ -11,9 +11,9 @@
 
 @implementation SYNRegistry
 
-+ (id) registryWithParentContext:(NSManagedObjectContext*)moc
++ (id) registry
 {
-    return [[self alloc] initWithParentManagedObjectContext:moc];
+    return [[self alloc] init];
 }
 
 
@@ -22,36 +22,25 @@
     if (self = [super init])
     {
         appDelegate = UIApplication.sharedApplication.delegate;
+        importManagedObjectContext = [[NSManagedObjectContext alloc] initWithConcurrencyType: NSConfinementConcurrencyType];
+        importManagedObjectContext.parentContext = appDelegate.mainManagedObjectContext;
     }
     
     return self;
 }
 
 
-- (id) initWithParentManagedObjectContext: (NSManagedObjectContext*) moc
+- (id) initWithManagedObjectContext: (NSManagedObjectContext*) moc
 {
     if (self = [self init])
     {
         if (moc)
         {
-            NSManagedObjectContext* workerContext = [[NSManagedObjectContext alloc] initWithConcurrencyType: NSPrivateQueueConcurrencyType];
-            workerContext.parentContext = moc;
-            importManagedObjectContext = workerContext;
-            [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(updateContext:) name:NSManagedObjectContextDidSaveNotification object:moc];
+            importManagedObjectContext.parentContext = moc;
         }
     }
     
     return self;
-}
-
--(void)updateContext:(NSNotification*)note
-{
-    if([note object] == importManagedObjectContext.parentContext )
-    {
-        [importManagedObjectContext performBlock:^{
-            [importManagedObjectContext mergeChangesFromContextDidSaveNotification:note];
-        }];
-    }
 }
 
 
@@ -91,8 +80,6 @@
                                                          inManagedObjectContext: importManagedObjectContext];
     [fetchRequest setEntity: entityDescription];
     
-    fetchRequest.includesPropertyValues = NO;
-    
     NSError *error = nil;
     NSArray *result = [importManagedObjectContext executeFetchRequest: fetchRequest
                                                                  error: &error];
@@ -117,27 +104,9 @@
         return NO;
     }
     
-    [self saveImportContext];
+    [appDelegate saveSearchContext];
     
     return YES;  
-}
-
--(void)performInBackground:(SYNRegistryActionBlock)actionBlock completionBlock:(SYNRegistryCompletionBlock)completionBlock
-{
-    [importManagedObjectContext performBlock:^{
-       BOOL result = actionBlock(importManagedObjectContext);
-        [self completeTransaction:result completionBlock:completionBlock];
-    }];
-}
-
--(void)completeTransaction:(BOOL)success completionBlock:(SYNRegistryCompletionBlock)block
-{
-    if(block)
-    {
-        dispatch_async(dispatch_get_main_queue(), ^{
-            block(success);
-        });
-    }
 }
 
 @end

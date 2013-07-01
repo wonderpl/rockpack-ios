@@ -41,7 +41,7 @@
     // dictionary also contains the set of user channels
     
     User* newUser = [User instanceFromDictionary: dictionary
-                       usingManagedObjectContext: importManagedObjectContext
+                       usingManagedObjectContext: appDelegate.mainManagedObjectContext
                              ignoringObjectTypes: kIgnoreNothing];
     
     
@@ -57,10 +57,9 @@
     
     newUser.viewId = kProfileViewId;
     
-    //[appDelegate saveContext: TRUE];
+    [appDelegate saveContext: TRUE];
     
-    
-    return [self saveImportContext];
+    return YES;
 }
 
 
@@ -72,12 +71,9 @@
     
     [appDelegate.currentUser setSubscriptionsDictionary:dictionary];
     
-    NSError* error = nil;
-    [importManagedObjectContext save:&error];
+    [appDelegate saveContext:YES];
     
-    //[appDelegate saveContext:YES];
-    
-    return [self saveImportContext];
+    return YES;
     
 }
 
@@ -102,7 +98,7 @@
     // Query for existing objects
     NSFetchRequest *categoriesFetchRequest = [[NSFetchRequest alloc] init];
     [categoriesFetchRequest setEntity: [NSEntityDescription entityForName: @"Genre"
-                                                   inManagedObjectContext: importManagedObjectContext]];
+                                                   inManagedObjectContext: appDelegate.mainManagedObjectContext]];
     
     
     // must not fetch SubGenres
@@ -110,7 +106,7 @@
     
     
     NSError* error;
-    NSArray *existingCategories = [importManagedObjectContext executeFetchRequest: categoriesFetchRequest
+    NSArray *existingCategories = [appDelegate.mainManagedObjectContext executeFetchRequest: categoriesFetchRequest
                                                                                           error: &error];
     
     NSMutableDictionary* existingCategoriesByIndex = [NSMutableDictionary dictionaryWithCapacity:existingCategories.count];
@@ -139,11 +135,11 @@
         if(!genre)
         {
             genre = [Genre instanceFromDictionary: categoryDictionary
-                        usingManagedObjectContext: importManagedObjectContext];
+                        usingManagedObjectContext: appDelegate.mainManagedObjectContext];
         }
         else
         {
-            [genre setAttributesFromDictionary:categoryDictionary withId:uniqueId usingManagedObjectContext:importManagedObjectContext];
+            [genre setAttributesFromDictionary:categoryDictionary withId:uniqueId usingManagedObjectContext:appDelegate.mainManagedObjectContext];
         }
         
         genre.markedForDeletionValue = NO;
@@ -159,13 +155,13 @@
    
     
     [self removeUnusedManagedObjects: existingCategories
-              inManagedObjectContext: importManagedObjectContext];
+              inManagedObjectContext: appDelegate.mainManagedObjectContext];
     
     
     
-    //[appDelegate saveContext: TRUE];
+    [appDelegate saveContext: TRUE];
     
-    return [self saveImportContext];
+    return YES;
 }
 
 
@@ -197,9 +193,9 @@
     if (!saveResult)
         return NO;
     
-    //[appDelegate saveContext: TRUE];
+    [appDelegate saveContext: TRUE];
     
-    return [self saveImportContext];
+    return YES;
 }
 
 #pragma mark - VideoInstances
@@ -315,13 +311,10 @@
     
     
     
-    if([importManagedObjectContext hasChanges])
-    {
-        if(![self saveImportContext])
-            return NO;
-    }
+    if(![self saveImportContext])
+        return NO;
     
-    //[appDelegate saveContext: TRUE];
+    [appDelegate saveContext: TRUE];
     
     return YES;
 }
@@ -481,7 +474,7 @@
     if(!saveResult)
         return NO;
     
-    //[appDelegate saveContext: TRUE];
+    [appDelegate saveContext: TRUE];
     
     
     
