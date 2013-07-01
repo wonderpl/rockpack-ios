@@ -307,7 +307,7 @@
                                                       BOOL registryResultOk = [appDelegate.mainRegistry registerChannelsFromDictionary: response
                                                                                                                               forGenre: genre
                                                                                                                            byAppending: append];
-                                                      self.loadingMoreContent = NO;
+                                                      self.footerView.showsLoading = NO;
                                                       
                                                       if (!registryResultOk)
                                                       {
@@ -332,7 +332,7 @@
                                                       
                                                   } onError: ^(NSDictionary* errorInfo) {
                                                       DebugLog(@"Could not load channels: %@", errorInfo);
-                                                        self.loadingMoreContent = NO;
+                                                        self.footerView.showsLoading = NO;
                                                   }];
 }
 
@@ -343,18 +343,15 @@
     
     [self loadChannelsForGenre: currentGenre
                    byAppending: YES];
+    
+    self.footerView.showsLoading = YES;
 }
 
 
 - (void) scrollViewDidScroll: (UIScrollView *) scrollView
 {
     // when reaching far right hand side, load a new page
-    if (scrollView.contentOffset.y >= scrollView.contentSize.height - scrollView.bounds.size.height - kLoadMoreFooterViewHeight
-        && self.isLoadingMoreContent == NO)
-    {
-        DebugLog (@"Scrolling more");
-        [self loadMoreChannels: nil];
-    }
+
 }
 
 
@@ -410,7 +407,6 @@
     self.channels = [NSMutableArray arrayWithArray:resultsArray];
     
     
-
     // We shouldn't wait until the animation is over, as this will result in crashes if the user is scrolling
     
     [self.channelThumbnailCollectionView reloadData];
@@ -538,17 +534,19 @@
     
     if (kind == UICollectionElementKindSectionFooter)
     {
-        if (self.channels.count == 0)
+        if (self.channels.count == 0 || (self.dataRequestRange.location + self.dataRequestRange.length) >= dataItemsAvailable)
         {
             return supplementaryView;
         }
         
-        // Only display a footer if we have not loaded all channels
-        
         self.footerView = [self.channelThumbnailCollectionView dequeueReusableSupplementaryViewOfKind: kind
-                                                                                      withReuseIdentifier: @"SYNChannelFooterMoreView"
-                                                                                             forIndexPath: indexPath];
-
+                                                                                  withReuseIdentifier: @"SYNChannelFooterMoreView"
+                                                                                         forIndexPath: indexPath];
+        
+        [self.footerView.loadMoreButton addTarget: self
+                                           action: @selector(loadMoreChannels:)
+                                 forControlEvents: UIControlEventTouchUpInside];
+        
         //[self loadMoreChannels:self.footerView.loadMoreButton];
         
         supplementaryView = self.footerView;

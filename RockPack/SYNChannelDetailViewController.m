@@ -890,7 +890,9 @@
             self.footerView = [self.videoThumbnailCollectionView dequeueReusableSupplementaryViewOfKind: kind
                                                                                     withReuseIdentifier: @"SYNChannelFooterMoreView"
                                                                                            forIndexPath: indexPath];
-            
+            [self.footerView.loadMoreButton addTarget: self
+                                               action: @selector(loadMoreVideos:)
+                                     forControlEvents: UIControlEventTouchUpInside];
             
             supplementaryView = self.footerView;
         }
@@ -917,7 +919,7 @@
 -(void)loadMoreVideos:(UIButton*)footerButton
 {
     
-    self.loadingMoreContent = YES;
+    self.footerView.showsLoading = YES;
     
     // define success block //
     
@@ -925,7 +927,8 @@
     
     
     MKNKUserSuccessBlock successBlock = ^(NSDictionary *dictionary) {
-        self.loadingMoreContent = NO;
+        
+        self.footerView.showsLoading = NO;
         
         [self.channel addVideoInstancesFromDictionary:dictionary];
         
@@ -938,8 +941,7 @@
     // define success block //
     
     MKNKUserErrorBlock errorBlock = ^(NSDictionary* errorDictionary) {
-        self.loadingMoreContent = NO;
-        DebugLog(@"Update action failed");        
+        self.footerView.showsLoading = NO;
     };
     
     if ([self.channel.resourceURL hasPrefix: @"https"]) // https does not cache so it is fresh
@@ -2769,13 +2771,7 @@
         CGFloat fadeSpan = (_isIPhone) ? kChannelDetailsFadeSpaniPhone : kChannelDetailsFadeSpan;
         CGFloat blurOpacity;
         
-        // Try this first
-        // when reaching far right hand side, load a new page
-        if (scrollView.contentSize.height > 0 && (scrollView.contentOffset.y >= scrollView.contentSize.height - scrollView.bounds.size.height - kLoadMoreFooterViewHeight)
-            && self.isLoadingMoreContent == NO)
-        {
-            [self loadMoreVideos: nil];
-        }
+
         
         if (scrollView.contentOffset.y <= self.originalContentOffset.y)
         {

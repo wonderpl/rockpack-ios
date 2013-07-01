@@ -443,7 +443,8 @@
                                                     if(self.fetchedResultsController.fetchedObjects.count == 0)
                                                         [self displayEmptyGenreMessage:NSLocalizedString(@"feed_screen_empty_message", nil) andLoader:NO];
                                                     
-                                                    self.loadingMoreContent = NO;
+                                                    
+                                                    self.footerView.showsLoading = NO;
                                                     
                                                     [self handleRefreshComplete];
                                                     
@@ -452,6 +453,9 @@
                                                     [self handleRefreshComplete];
                                                     
                                                     [self removeEmptyGenreMessage];
+                                                    
+                                                    
+                                                    self.footerView.showsLoading = NO;
                                                     
                                                     [self displayEmptyGenreMessage:NSLocalizedString(@"feed_screen_loading_error", nil) andLoader:NO];
                                                     
@@ -772,7 +776,9 @@
                                                                                 withReuseIdentifier: @"SYNChannelFooterMoreView"
                                                                                        forIndexPath: indexPath];
         
-        self.footerView.showsLoading = self.isLoadingMoreContent;
+        [self.footerView.loadMoreButton addTarget: self
+                                           action: @selector(loadMoreVideos:)
+                                 forControlEvents: UIControlEventTouchUpInside];
         
         supplementaryView = self.footerView;
     }
@@ -819,7 +825,11 @@
 {
     [self incrementRangeForNextRequest];
     
+    
+    self.footerView.showsLoading = YES;
+    
     [self loadAndUpdateFeedData];
+    
 }
 
 
@@ -837,13 +847,7 @@
 
 - (void) scrollViewDidScroll: (UIScrollView *) scrollView
 {
-    // when reaching far right hand side, load a new page
-    if (scrollView.contentOffset.y >= scrollView.contentSize.height - scrollView.bounds.size.height - kLoadMoreFooterViewHeight
-        && self.isLoadingMoreContent == NO)
-    {
-        DebugLog (@"Scrolling more");
-        [self loadMoreVideos: nil];
-    }
+    
 }
 
 
