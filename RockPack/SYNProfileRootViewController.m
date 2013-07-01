@@ -372,6 +372,8 @@
 {
     [super viewWillAppear: animated];
     
+    self.channelThumbnailCollectionView.delegate = self;
+    
     self.deletionModeActive = NO;
     
     self.subscriptionsViewController.collectionView.delegate = self;
@@ -389,10 +391,11 @@
 
 - (void) viewWillDisappear: (BOOL) animated
 {
-    [super viewWillDisappear: animated];
-    
+    self.channelThumbnailCollectionView.delegate = nil;
     
     self.deletionModeActive = NO;
+    
+    [super viewWillDisappear: animated];
 }
 
 #pragma mark - Container Scroll Delegates
@@ -401,7 +404,7 @@
 {
 //    [self updateAnalytics];
     
-    if([[SYNDeviceManager sharedInstance] isIPhone])
+    if ([[SYNDeviceManager sharedInstance] isIPhone])
     {
         self.channelThumbnailCollectionView.scrollsToTop = !self.subscriptionsTabActive;
     
@@ -413,9 +416,10 @@
         
         self.subscriptionsViewController.channelThumbnailCollectionView.scrollsToTop = YES;
     }
-    [[NSNotificationCenter defaultCenter] postNotificationName:kChannelOwnerUpdateRequest
-                                                        object:self
-                                                      userInfo:@{kChannelOwner:self.user}];
+    
+    [[NSNotificationCenter defaultCenter] postNotificationName: kChannelOwnerUpdateRequest
+                                                        object: self
+                                                      userInfo: @{kChannelOwner: self.user}];
 }
 
 -(void)viewDidScrollToBack

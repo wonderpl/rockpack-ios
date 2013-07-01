@@ -491,7 +491,7 @@ typedef enum {
     
     if(!self.profilePictureImageView.image)
     {
-        self.profilePictureImageView.image = [UIImage imageNamed:@"PlaceholderNotificationAvatar"];
+        self.profilePictureImageView.image = [UIImage imageNamed:@"PlaceholderSidebarAvatar"];
     }
     
     // We can't use our standard asynchronous loader due to cacheing    
@@ -801,7 +801,7 @@ typedef enum {
     
     if ([SYNDeviceManager.sharedInstance isIPad])
     {
-        [UIView animateWithDuration: 0.5f
+        [UIView animateWithDuration: 0.4f
                               delay: 0.0f
                             options: UIViewAnimationOptionCurveEaseInOut | UIViewAnimationOptionBeginFromCurrentState
                          animations: ^{
@@ -824,7 +824,7 @@ typedef enum {
         self.navigationContainerView.hidden = NO;
         [self.view insertSubview:self.navigationContainerView aboveSubview: self.searchViewController.view];
         
-        [UIView animateWithDuration: 0.5f
+        [UIView animateWithDuration: 0.3f
                               delay: 0.0f
                             options: UIViewAnimationOptionCurveEaseInOut
                          animations: ^{
@@ -922,7 +922,7 @@ typedef enum {
                                                   errorHandler: ^(id error)
      {
          [self.profilePictureImageView setImageWithURL: [NSURL URLWithString: self.user.thumbnailURL]
-                                      placeholderImage: [UIImage imageNamed: @"PlaceholderNotificationAvatar"]
+                                      placeholderImage: [UIImage imageNamed: @"PlaceholderSidebarAvatar"]
                                                options: SDWebImageRetryFailed];
          
          [self.activityIndicator stopAnimating];

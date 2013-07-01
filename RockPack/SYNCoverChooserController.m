@@ -87,6 +87,22 @@
 
 }
 
+// To ensure that scrollViewDidScroll is never called on
+- (void) viewWillAppear: (BOOL) animated
+{
+    [super viewWillAppear: animated];
+    
+    self.collectionView.delegate = self;
+}
+
+
+- (void) viewWillDisappear: (BOOL) animated
+{
+    self.collectionView.delegate = nil;
+    
+    [super viewWillDisappear: animated];
+}
+
 
 #pragma mark - Delegate
 
