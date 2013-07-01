@@ -18,13 +18,26 @@
 
 @property (nonatomic, strong) UIPageControl* pageControl;
 @property (nonatomic, strong) UIScrollView* scrollView;
+@property (nonatomic, weak) id <UIScrollViewDelegate> delegate;
 
 @end
 
 @implementation SYNLoginOnBoardingController
 @synthesize scrollView = scrollView;
 
--(void)loadView
+
+- (id) initWithDelegate: (id <UIScrollViewDelegate>) delegate
+{
+    if ((self = [super init]))
+    {
+        self.delegate = delegate;
+    }
+    
+    return self;
+}
+
+
+- (void) loadView
 {
     CGFloat totalWidth = 1024.0;
     
@@ -37,17 +50,15 @@
     scrollView.userInteractionEnabled = YES;
     scrollView.showsHorizontalScrollIndicator = NO;
     scrollView.showsVerticalScrollIndicator = NO;
-    scrollView.delegate = self;
     scrollView.autoresizingMask = UIViewAutoresizingFlexibleWidth;
-    
-    
+
     self.view = [[UIView alloc] initWithFrame:self.scrollView.frame];
     self.view.autoresizingMask = UIViewAutoresizingFlexibleWidth;
     
     [self.view addSubview:scrollView];
 }
 
-- (void)viewDidLoad
+- (void) viewDidLoad
 {
     [super viewDidLoad];
 	
@@ -94,7 +105,6 @@
     
     [self.scrollView setContentSize:totalScrollSize];
     
-    
     self.pageControl = [[UIPageControl alloc] initWithFrame:CGRectMake(0.0, 0.0, 100.0, 40.0)];
     self.pageControl.numberOfPages = kLoginOnBoardingMessagesNum;
     self.pageControl.center = CGPointMake(self.view.frame.size.width * 0.5, 270.0);
@@ -103,7 +113,23 @@
     self.pageControl.autoresizingMask = UIViewAutoresizingFlexibleLeftMargin | UIViewAutoresizingFlexibleRightMargin;
     
     [self.view addSubview:self.pageControl];
+}
+
+
+// Ensure our scroll view can't call us back when we have disappeared
+- (void) viewWillAppear: (BOOL) animated
+{
+    [super viewWillAppear: animated];
     
+    self.scrollView.delegate = self.delegate;
+}
+
+
+- (void) viewWillDisappear: (BOOL) animated
+{
+    self.scrollView.delegate = nil;
+    
+    [super viewWillDisappear: animated];
 }
 
 -(UIView*)createNewMessageViewWithMessage:(NSString*)message andTitle:(NSString*)title
