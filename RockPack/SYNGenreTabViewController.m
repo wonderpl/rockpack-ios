@@ -155,20 +155,18 @@
     
     [appDelegate.networkEngine updateCategoriesOnCompletion: ^(NSDictionary* dictionary){
         
-        [appDelegate.mainRegistry performInBackground:^BOOL(NSManagedObjectContext *backgroundContext) {
-            return [appDelegate.mainRegistry registerCategoriesFromDictionary: dictionary];
-        } completionBlock:^(BOOL success) {
-            self.isLoadingCategories = NO;
-            
-            [self displayLoadedGenres];
-            
-            if(self.genresFetched.count == 0)
-            {
-                // keep calling recursively is
-                [self updateCategories];
-            }
-
-        }];
+        [appDelegate.mainRegistry registerCategoriesFromDictionary: dictionary];
+        
+        self.isLoadingCategories = NO;
+        
+        [self displayLoadedGenres];
+        
+        if(self.genresFetched.count == 0)
+        {
+            // keep calling recursively is 
+            [self updateCategories];
+        }
+        
         
     } onError:^(NSError* error) {
         DebugLog(@"%@", [error debugDescription]);

@@ -1179,7 +1179,6 @@
     [UIView animateWithDuration:kLoginAnimationTransitionDuration delay:0.0f options:UIViewAnimationOptionCurveEaseInOut animations:^{
         button.alpha = 1.0f;
     } completion:nil];
-    
 }
 
 

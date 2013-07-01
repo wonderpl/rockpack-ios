@@ -81,7 +81,6 @@ enum ChannelCoverSelectorState {
     self.appDelegate = (SYNAppDelegate*)[[UIApplication sharedApplication] delegate];
     
     NSFetchRequest *fetchRequest = [[NSFetchRequest alloc] init];
-    fetchRequest.fetchBatchSize = 20;
     
     
     fetchRequest.entity = [NSEntityDescription entityForName: @"CoverArt"
