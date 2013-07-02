@@ -545,8 +545,8 @@
 - (void) coverImageChangedHandler: (NSNotification*) notification
 {
     NSDictionary * detailDictionary = [notification userInfo];
-    NSString* coverArtUrl = (NSString* )[detailDictionary objectForKey: kCoverArt];
-    UIImage* coverArtImage = (UIImage *)[detailDictionary objectForKey: kCoverArtImage];
+    NSString* coverArtUrl = (NSString* )detailDictionary[kCoverArt];
+    UIImage* coverArtImage = (UIImage *)detailDictionary[kCoverArtImage];
     
     if (!coverArtUrl)
         return;
@@ -592,7 +592,7 @@
                                           }];
     }
     
-    self.selectedCoverId = [detailDictionary objectForKey:kCoverImageReference];
+    self.selectedCoverId = detailDictionary[kCoverImageReference];
     
     
     
@@ -628,10 +628,10 @@
 {
 
     
-    NSArray* updatedObjects = [[notification userInfo] objectForKey: NSUpdatedObjectsKey];
+    NSArray* updatedObjects = [notification userInfo][NSUpdatedObjectsKey];
     
     
-    NSArray* deletedObjects = [[notification userInfo] objectForKey: NSDeletedObjectsKey]; // our channel has been deleted
+    NSArray* deletedObjects = [notification userInfo][NSDeletedObjectsKey]; // our channel has been deleted
     if([deletedObjects containsObject:self.channel])
         return;
     
@@ -998,7 +998,7 @@
     if([videoSubset count] ==1)
     {
         [self displayVideoViewerWithVideoInstanceArray: self.channel.videoInstances.array
-                                      andSelectedIndex: [self.channel.videoInstances indexOfObject:[videoSubset objectAtIndex:0]] center:self.view.center];
+                                      andSelectedIndex: [self.channel.videoInstances indexOfObject:videoSubset[0]] center:self.view.center];
         self.autoplayVideoId= nil;
     }
 }
@@ -1010,7 +1010,7 @@
         itemAtIndexPath: (NSIndexPath *) fromIndexPath
     willMoveToIndexPath: (NSIndexPath *) toIndexPath
 {
-    VideoInstance* viToSwap = [self.channel.videoInstancesSet objectAtIndex:fromIndexPath.item];
+    VideoInstance* viToSwap = (self.channel.videoInstancesSet)[fromIndexPath.item];
     [self.channel.videoInstancesSet removeObjectAtIndex:fromIndexPath.item];
     [self.channel.videoInstancesSet insertObject:viToSwap atIndex:toIndexPath.item];
     
@@ -1504,7 +1504,7 @@
                                                                   withLabel: category
                                                                   withValue: nil];
                                              
-                                             NSString* channelId = [resourceCreated objectForKey: @"id"];
+                                             NSString* channelId = resourceCreated[@"id"];
                                              
                                              [self setEditControlsVisibility: NO];
                                              self.saveChannelButton.enabled = YES;
@@ -1529,12 +1529,12 @@
                                                   NSString *errorTitle = NSLocalizedString(@"channel_creation_screen_error_unknown_title", nil);
                                                   NSString* errorMessage = NSLocalizedString(@"channel_creation_screen_error_unknown_save_description", nil);
                                                   
-                                                  NSArray *errorTitleArray =  [[error objectForKey: @"form_errors"] objectForKey :@"title"];
+                                                  NSArray *errorTitleArray =  error[@"form_errors"][@"title"];
                                                   
                                                   if ([errorTitleArray count] > 0)
                                                   {
                                                       
-                                                      NSString* errorType = [errorTitleArray objectAtIndex:0];
+                                                      NSString* errorType = errorTitleArray[0];
                                                       
                                                       if ([errorType isEqualToString:@"Duplicate title."])
                                                       {
@@ -1897,7 +1897,7 @@
                                                                   withLabel: category
                                                                   withValue: nil];
                                              
-                                             NSString* channelId = [resourceCreated objectForKey: @"id"];
+                                             NSString* channelId = resourceCreated[@"id"];
                                              
                                              self.createChannelButton.enabled = YES;
                                              self.createChannelButton.hidden = YES;
@@ -1914,12 +1914,12 @@
                                                   NSString *errorTitle = NSLocalizedString(@"channel_creation_screen_error_unknown_title", nil);
                                                   NSString* errorMessage = NSLocalizedString(@"channel_creation_screen_error_unknown_create_description", nil);
                                                   
-                                                  NSArray *errorTitleArray =  [[error objectForKey: @"form_errors"] objectForKey :@"title"];
+                                                  NSArray *errorTitleArray =  error[@"form_errors"][@"title"];
                                                   
                                                   if ([errorTitleArray count] > 0)
                                                   {
                                                       
-                                                      NSString* errorType = [errorTitleArray objectAtIndex:0];
+                                                      NSString* errorType = errorTitleArray[0];
                                                       
                                                       if ([errorType isEqualToString:@"Duplicate title."])
                                                       {
@@ -1979,10 +1979,10 @@
                                                       
                                                       if ([err isKindOfClass:[NSDictionary class]])
                                                       {
-                                                          errorMessage = [err objectForKey:@"message"];
+                                                          errorMessage = err[@"message"];
                                                           if (!errorMessage)
                                                           {
-                                                              errorMessage = [err objectForKey:@"error"];
+                                                              errorMessage = err[@"error"];
                                                           }
                                                       }
                                                       
@@ -2596,7 +2596,7 @@
                                                   DebugLog(@"Failed to upload wallpaper URL");
                                               }
                                               
-                                              self.selectedCoverId = [dictionary objectForKey:@"cover_ref"];
+                                              self.selectedCoverId = dictionary[@"cover_ref"];
                                           }
                                                errorHandler: ^(NSError* error) {
                                                    self.createChannelButton.enabled = TRUE;
@@ -2920,7 +2920,7 @@
         
         filter = [CIFilter filterWithName:@"CIGaussianBlur"];
         [filter setValue:backgroundCIImage forKey:@"inputImage"];
-        [filter setValue:[NSNumber numberWithFloat:blurRadius] forKey:@"inputRadius"];
+        [filter setValue:@(blurRadius) forKey:@"inputRadius"];
         
         CIImage *outputImage = [filter outputImage];
         

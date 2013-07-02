@@ -42,10 +42,10 @@
     __typeof(&*self) __weak weakSelf = self;
     self.actionBlock = ^(OWActivity *activity, OWActivityViewController *activityViewController) {
         NSDictionary *userInfo = weakSelf.userInfo ? weakSelf.userInfo : activityViewController.userInfo;
-        NSString *subject = [userInfo objectForKey:@"subject"];
-        NSString *text = [userInfo objectForKey:@"text"];
-        UIImage *image = [userInfo objectForKey:@"image"];
-        NSURL *url = [userInfo objectForKey:@"url"];
+        NSString *subject = userInfo[@"subject"];
+        NSString *text = userInfo[@"text"];
+        UIImage *image = userInfo[@"image"];
+        NSURL *url = userInfo[@"url"];
         
         [activityViewController dismissViewControllerAnimated:YES completion:^{
             MFMailComposeViewController *mailComposeViewController = [[MFMailComposeViewController alloc] init];

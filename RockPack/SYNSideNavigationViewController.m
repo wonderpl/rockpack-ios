@@ -210,19 +210,6 @@ typedef enum {
     [self getNotifications];
 }
 
-- (void) viewWillAppear:(BOOL)animated
-{
-    [super viewWillAppear: animated];
-    
-//    id<GAITracker> tracker = [GAI sharedInstance].defaultTracker;
-//    
-//    [tracker sendEventWithCategory: @"uiAction"
-//                        withAction: @"mainNavClick"
-//                         withLabel: nil
-//                         withValue: nil];
-}
-
-
 
 #pragma mark - Notifications
 
@@ -466,14 +453,6 @@ typedef enum {
         
         
     }
-    
-    // Google analytics
-//    id<GAITracker> tracker = [GAI sharedInstance].defaultTracker;
-//    
-//    [tracker sendEventWithCategory: @"uiAction"
-//                        withAction: @"mainNavClick"
-//                         withLabel: navigationAction
-//                         withValue: nil];
 }
 
 

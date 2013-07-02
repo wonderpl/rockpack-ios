@@ -43,11 +43,11 @@
         NSDictionary *userInfo = weakSelf.userInfo ? weakSelf.userInfo : activityViewController.userInfo;
         [activityViewController dismissViewControllerAnimated:YES completion:^{
             [weakSelf shareFromViewController:presenter
-                                         text:[userInfo objectForKey:@"text"]
-                                          url:[userInfo objectForKey:@"url"]
-                                        image:[userInfo objectForKey:@"image"]
-                                      isOwner:[userInfo objectForKey:@"owner"]
-                                      isVideo:[userInfo objectForKey:@"video"]];
+                                         text:userInfo[@"text"]
+                                          url:userInfo[@"url"]
+                                        image:userInfo[@"image"]
+                                      isOwner:userInfo[@"owner"]
+                                      isVideo:userInfo[@"video"]];
         }];
     };
     

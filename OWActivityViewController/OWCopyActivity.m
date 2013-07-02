@@ -43,19 +43,19 @@
         NSDictionary *userInfo = weakSelf.userInfo ? weakSelf.userInfo : activityViewController.userInfo;
         
         NSMutableDictionary * pasteboardDict = [NSMutableDictionary dictionary];        
-        NSString *text = [userInfo objectForKey:@"text"];
-        UIImage *image = [userInfo objectForKey:@"image"];
-        NSURL *url = [userInfo objectForKey:@"url"];
+        NSString *text = userInfo[@"text"];
+        UIImage *image = userInfo[@"image"];
+        NSURL *url = userInfo[@"url"];
         if (text)
             [pasteboardDict setValue:text forKey:@"public.utf8-plain-text"];
         if (url)
             [pasteboardDict setValue:url forKey:@"public.url"];
         if (image) {
             NSData *imageData = [NSData dataWithData:UIImagePNGRepresentation(image)];
-            [pasteboardDict setObject:imageData forKey:@"public.png"];
+            pasteboardDict[@"public.png"] = imageData;
         }
         
-        [UIPasteboard generalPasteboard].items = [NSArray arrayWithObject:pasteboardDict];
+        [UIPasteboard generalPasteboard].items = @[pasteboardDict];
     };
     
     return self;

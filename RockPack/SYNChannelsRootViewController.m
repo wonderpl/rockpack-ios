@@ -279,11 +279,11 @@
                                                                                 ignoringCache: NO
                                                                                  onCompletion: ^(NSDictionary* response) {
                                                       
-                                                      NSDictionary *channelsDictionary = [response objectForKey: @"channels"];
+                                                      NSDictionary *channelsDictionary = response[@"channels"];
                                                       if (!channelsDictionary || ![channelsDictionary isKindOfClass: [NSDictionary class]])
                                                           return;
                                                       
-                                                      NSArray *itemArray = [channelsDictionary objectForKey: @"items"];
+                                                      NSArray *itemArray = channelsDictionary[@"items"];
                                                       if (![itemArray isKindOfClass: [NSArray class]])
                                                           return;
                                                       
@@ -291,7 +291,7 @@
                                                       
                                                       
                                                       
-                                                      NSNumber *totalNumber = [channelsDictionary objectForKey: @"total"];
+                                                      NSNumber *totalNumber = channelsDictionary[@"total"];
                                                       if (![totalNumber isKindOfClass: [NSNumber class]])
                                                           return;
                                                       

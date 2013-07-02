@@ -68,7 +68,7 @@
 
 - (void) channelSubscribeRequest: (NSNotification*) notification
 {
-    Channel* channelToSubscribe = (Channel*)[[notification userInfo] objectForKey: kChannel];
+    Channel* channelToSubscribe = (Channel*)[notification userInfo][kChannel];
     
     if (!channelToSubscribe)
         return;
@@ -89,7 +89,7 @@
 
 - (void) channelOwnerUpdateRequest: (NSNotification*) notification
 {
-    ChannelOwner* channelOwner = (ChannelOwner*)[[notification userInfo] objectForKey: kChannelOwner];
+    ChannelOwner* channelOwner = (ChannelOwner*)[notification userInfo][kChannelOwner];
     if(!channelOwner)
         return;
     
@@ -99,7 +99,7 @@
 
 - (void) channelUpdateRequest: (NSNotification*) notification
 {
-    Channel* channelToUpdate = (Channel*)[[notification userInfo] objectForKey: kChannel];
+    Channel* channelToUpdate = (Channel*)[notification userInfo][kChannel];
     
     if (!channelToUpdate)
     {
@@ -144,7 +144,7 @@
 
 - (void) channelDeleteRequest: (NSNotification*) notification
 {
-    Channel* channelToUpdate = (Channel*)[[notification userInfo] objectForKey: kChannel];
+    Channel* channelToUpdate = (Channel*)[notification userInfo][kChannel];
     if (!channelToUpdate)
         return;
     
