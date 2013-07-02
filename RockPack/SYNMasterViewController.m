@@ -74,6 +74,8 @@ typedef void(^AnimationCompletionBlock)(BOOL finished);
 @property (strong, nonatomic) IBOutlet UIView *overlayContainerView;
 @property (nonatomic, strong) IBOutlet UIButton* headerButton;
 
+@property (nonatomic, strong) UINavigationController* mainNavigationController;
+
 @end
 
 @implementation SYNMasterViewController
@@ -81,6 +83,7 @@ typedef void(^AnimationCompletionBlock)(BOOL finished);
 @synthesize containerViewController;
 @synthesize pageTitleLabel;
 @synthesize showingBackButton;
+@synthesize mainNavigationController;
 
 @dynamic showingBaseViewController;
 @dynamic showingViewController;
@@ -97,8 +100,17 @@ typedef void(^AnimationCompletionBlock)(BOOL finished);
     {
         appDelegate = (SYNAppDelegate*)[[UIApplication sharedApplication] delegate];
 
-        self.containerViewController = root;
-        [self addChildViewController:root];
+        
+        
+        // == main navigation == //
+        
+        self.mainNavigationController = [[UINavigationController alloc] initWithRootViewController:self.containerViewController];
+        self.mainNavigationController.navigationBarHidden = YES;
+        self.mainNavigationController.view.autoresizesSubviews = YES;
+        self.mainNavigationController.view.autoresizingMask = UIViewAutoresizingFlexibleWidth|UIViewAutoresizingFlexibleHeight;
+        self.mainNavigationController.wantsFullScreenLayout = YES;
+        
+        [self addChildViewController:self.mainNavigationController];
 
         // == Side Navigation == //
         self.sideNavigationViewController = [[SYNSideNavigationViewController alloc] init];
@@ -179,10 +191,11 @@ typedef void(^AnimationCompletionBlock)(BOOL finished);
     
     self.navigationContainerView.userInteractionEnabled = YES;
     
-    // == Add the Root Controller which will contain all others (Tabs in our case) == //
+    // == Add the Root Navigation Controller == //
 
-    [self.containerView addSubview:containerViewController.view];
-    //self.containerViewController.view.autoresizingMask = UIViewAutoresizingFlexibleWidth | UIViewAutoresizingFlexibleHeight;
+    self.mainNavigationController.view.frame = self.view.frame;
+    [self.view addSubview:self.mainNavigationController.view];
+    
 
     self.existingChannelsController = [[SYNExistingChannelsViewController alloc] initWithViewId:kExistingChannelsViewId];
 
@@ -1624,6 +1637,11 @@ typedef void(^AnimationCompletionBlock)(BOOL finished);
         [self.sideNavigationButton setImage:[UIImage imageNamed:@"ButtonNavHighlighted"] forState:UIControlStateHighlighted];
         [self.sideNavigationButton setImage:[UIImage imageNamed:@"ButtonNavSelected"] forState:UIControlStateSelected];
     }
+}
+
+-(SYNContainerViewController*)containerViewController
+{
+    return (SYNContainerViewController*)self.mainNavigationController.viewControllers[0];
 }
 
 
