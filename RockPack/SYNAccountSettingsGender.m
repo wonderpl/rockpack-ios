@@ -26,6 +26,9 @@
 
 @implementation SYNAccountSettingsGender
 
+
+#pragma mark - Object lifecycle
+
 - (id) init
 {
     if ((self = [super init]))
@@ -58,6 +61,15 @@
     return self;
 }
 
+
+- (void) dealloc
+{
+    // Defensive programming
+    self.tableView.delegate = nil;
+}
+
+
+#pragma mark - View lifecycle
 
 - (void) viewDidLoad
 {

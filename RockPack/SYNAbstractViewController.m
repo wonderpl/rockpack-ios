@@ -62,7 +62,7 @@
 
 @synthesize viewId;
 
-#pragma mark - Custom accessor methods
+#pragma mark - Object lifecycle
 
 - (id) init
 {
@@ -85,8 +85,12 @@
     return self;
 }
 
+
 - (void) dealloc
 {
+    // Defensive programming
+    tabViewController.delegate = nil;
+    
     [[NSNotificationCenter defaultCenter] removeObserver: self
                                                     name: kClearedLocationBoundData
                                                   object: nil];
@@ -95,6 +99,7 @@
                                                     name: UIApplicationWillEnterForegroundNotification
                                                   object: nil];
 }
+
 
 #pragma mark - View lifecycle
 

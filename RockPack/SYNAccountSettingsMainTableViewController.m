@@ -45,6 +45,8 @@
 
 @synthesize dataItems2ndSection, appDelegate, user;
 
+#pragma mark - Object lifecycle
+
 - (id) init
 {
     if ((self = [super initWithStyle: UITableViewStyleGrouped]))
@@ -72,6 +74,15 @@
     return self;
 }
 
+
+- (void) dealloc
+{
+    // Defensive programming
+    self.dobPopover.delegate = nil;
+}
+
+
+#pragma mark - View lifecycle
 
 - (void) viewDidLoad
 {

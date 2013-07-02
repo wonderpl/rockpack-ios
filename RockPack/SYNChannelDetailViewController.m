@@ -126,6 +126,8 @@
 @synthesize channel = _channel;
 @synthesize backgroundCIImage = backgroundCIImage;
 
+#pragma mark - Object lifecyle
+
 - (id) initWithChannel: (Channel *) channel
              usingMode: (kChannelDetailsMode) mode
 {
@@ -140,8 +142,14 @@
 	return self;
 }
 
+
 - (void) dealloc
 {
+    // Defensive programming
+    self.channelTitleTextView.delegate = nil;
+    self.categoriesTabViewController.delegate = nil;
+    self.imagePicker.delegate = nil;
+
     if (_channelTitleTextView)
     {
         [_channelTitleTextView removeObserver: self

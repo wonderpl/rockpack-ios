@@ -9,6 +9,7 @@
 #import "Channel.h"
 #import "ChannelCover.h"
 #import "GAI.h"
+#import "SYNChannelCreateNewCell.h"
 #import "SYNChannelDetailViewController.h"
 #import "SYNChannelMidCell.h"
 #import "SYNChannelThumbnailCell.h"
@@ -18,13 +19,11 @@
 #import "SYNIntegralCollectionViewFlowLayout.h"
 #import "SYNOAuthNetworkEngine.h"
 #import "SYNPassthroughView.h"
-#import "SYNChannelCreateNewCell.h"
 #import "SYNProfileRootViewController.h"
 #import "SYNSubscriptionsViewController.h"
 #import "SYNUserProfileViewController.h"
 #import "SYNYouHeaderView.h"
 #import "UIFont+SYNFont.h"
-#import "SYNDeviceManager.h"
 #import "UIImageView+WebCache.h"
 #import "Video.h"
 #import <QuartzCore/QuartzCore.h>
@@ -53,6 +52,8 @@
 @property (nonatomic, assign) BOOL subscriptionsTabActive;
 @property (nonatomic, assign, getter = isDeletionModeActive) BOOL deletionModeActive;
 @property (nonatomic, strong) IBOutlet UICollectionView *channelThumbnailCollectionView;
+@property (nonatomic, strong) NSArray* sortDescriptors;
+@property (nonatomic, strong) NSIndexPath* indexPathToDelete;
 @property (nonatomic, strong) SYNDeletionWobbleLayout* channelsLandscapeLayout;
 @property (nonatomic, strong) SYNDeletionWobbleLayout* channelsPortraitLayout;
 @property (nonatomic, strong) SYNDeletionWobbleLayout* subscriptionsLandscapeLayout;
@@ -61,19 +62,15 @@
 @property (nonatomic, strong) SYNUserProfileViewController* userProfileController;
 @property (nonatomic, strong) SYNYouHeaderView* headerChannelsView;
 @property (nonatomic, strong) SYNYouHeaderView* headerSubscriptionsView;
+@property (nonatomic, strong) UILongPressGestureRecognizer *longPress;
+@property (nonatomic, strong) UITapGestureRecognizer *tap;
 @property (nonatomic, strong) UITapGestureRecognizer* tapGestureRecognizer;
 @property (nonatomic, strong) UIView* deletionCancelView;
+@property (nonatomic, strong) id orientationDesicionmaker;
 @property (nonatomic, weak) UIButton* channelsTabButton;
 @property (nonatomic, weak) UIButton* subscriptionsTabButton;
-@property (nonatomic, strong) NSIndexPath* indexPathToDelete;
-
-@property (nonatomic, strong) NSArray* sortDescriptors;
-
 @property (nonatomic,strong) NSIndexPath* channelsIndexPath;
 @property (nonatomic,strong) NSIndexPath* subscriptionsIndexPath;
-
-@property (nonatomic, strong) id orientationDesicionmaker;
-
 
 @end
 
@@ -81,6 +78,23 @@
 @implementation SYNProfileRootViewController
 
 @synthesize user = _user;
+
+#pragma mark - Object lifecycle
+
+- (void) dealloc
+{
+    self.user = nil;
+    
+    // Defensive programming
+    self.channelThumbnailCollectionView.delegate = nil;
+    self.subscriptionsViewController.collectionView.delegate = nil;
+    self.tapGestureRecognizer.delegate = nil;
+    self.longPress.delegate = nil;
+    self.tap.delegate = nil;
+}
+
+
+#pragma mark - View lifecycle
 
 - (void) loadView
 {
@@ -346,16 +360,16 @@
 #endif
     
     // Long press for entering delete mode
-    UILongPressGestureRecognizer *longPress = [[UILongPressGestureRecognizer alloc] initWithTarget: self
+    self.longPress = [[UILongPressGestureRecognizer alloc] initWithTarget: self
                                                                                             action: @selector(activateDeletionMode:)];
-    longPress.delegate = self;
-    [self.channelThumbnailCollectionView addGestureRecognizer: longPress];
+    self.longPress.delegate = self;
+    [self.channelThumbnailCollectionView addGestureRecognizer: self.longPress];
     
     // Tap for exiting delete mode
-    UITapGestureRecognizer *tap = [[UITapGestureRecognizer alloc] initWithTarget: self
+    self.tap = [[UITapGestureRecognizer alloc] initWithTarget: self
                                                                           action: @selector(endDeletionMode:)];
-    tap.delegate = self;
-    [self.channelThumbnailCollectionView addGestureRecognizer: tap];
+    self.tap.delegate = self;
+    [self.channelThumbnailCollectionView addGestureRecognizer: self.tap];
 }
 
 
@@ -1258,10 +1272,6 @@
     return _user;
 }
 
-- (void) dealloc
-{
-    self.user = nil;
-}
 
 #pragma mark - indexpath helper method
 

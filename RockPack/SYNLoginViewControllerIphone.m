@@ -79,6 +79,26 @@
 @implementation SYNLoginViewControllerIphone 
 @synthesize isPreIPhone5;
 
+#pragma mark - Object lifecycle
+
+- (void) dealloc
+{
+    // Defensive programming
+    self.userNameInputField.delegate = nil;
+    self.registeringUserEmailInputField.delegate = nil;
+    self.registeringUserNameInputField.delegate = nil;
+    self.registeringUserPasswordInputField.delegate = nil;
+    self.passwordInputField.delegate = nil;
+    self.ddInputField.delegate = nil;;
+    self.mmInputField.delegate = nil;
+    self.yyyyInputField.delegate = nil;
+    self.emailInputField.delegate = nil;
+    self.imagePicker.delegate = nil;
+}
+
+
+#pragma mark - View lifecycle
+
 - (void) viewDidLoad
 {
     [super viewDidLoad];

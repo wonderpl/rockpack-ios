@@ -28,24 +28,36 @@
 
 @implementation SYNShareOverlayViewController
 
--(id)init
+
+#pragma mark - Object lifecycle
+
+- (id) init
 {
     self = [super initWithNibName:@"SYNShareOverlayViewController" bundle:nil];
-    if (self) {
-        
-        
+    if (self)
+    {
+   
     }
     return self;
 }
 
-- (void)viewDidLoad
+
+- (void) dealloc
+{
+    // Defensive programming
+    self.messageTextView.delegate = nil;
+}
+
+
+#pragma mark - View lifecycle
+
+- (void) viewDidLoad
 {
     [super viewDidLoad];
     
     
     self.messageTextView.font = [UIFont rockpackFontOfSize: 15.0f];
     self.messageTextView.delegate = self;
-    
 }
 
 #pragma mark - Voice Recording Methods

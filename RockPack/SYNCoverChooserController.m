@@ -47,6 +47,8 @@
 
 @implementation SYNCoverChooserController
 
+#pragma mark - Object lifcycle
+
 - (id) initWithSelectedImageURL: (NSString *) selectedImageURL
 {
     if ((self = [super init]))
@@ -58,6 +60,14 @@
     return self;
 }
 
+- (void) dealloc
+{
+    // Defensive programming
+    self.collectionView.delegate = nil;
+}
+
+
+#pragma mark - View lifcycle
 
 - (void) viewDidLoad
 {
@@ -84,23 +94,7 @@
           forSupplementaryViewOfKind: UICollectionElementKindSectionFooter
                  withReuseIdentifier: @"SYNCoverRightMoreView"];
     
-
-}
-
-// To ensure that scrollViewDidScroll is never called on
-- (void) viewWillAppear: (BOOL) animated
-{
-    [super viewWillAppear: animated];
-    
     self.collectionView.delegate = self;
-}
-
-
-- (void) viewWillDisappear: (BOOL) animated
-{
-    self.collectionView.delegate = nil;
-    
-    [super viewWillDisappear: animated];
 }
 
 

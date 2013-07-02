@@ -38,6 +38,18 @@
 @synthesize initialPanelHeight;
 @synthesize searchBoxView;
 
+#pragma mark - Object lifecycle
+
+- (void) dealloc
+{
+    // Defensive programming
+    self.searchTextField.delegate = nil;
+    self.autoSuggestionController.tableView.delegate = nil;
+}
+
+
+#pragma mark - View lifecycle
+
 - (void) loadView
 {
     if ([SYNDeviceManager.sharedInstance isIPad])
