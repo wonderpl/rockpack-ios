@@ -860,8 +860,8 @@
     BOOL isIpad = [[SYNDeviceManager sharedInstance] isIPad];
     if((isIpad && indexPath.item == 2) ||
        (!isIpad && indexPath.item == 0)) {
-        
-           [self checkOnBoarding];
+            //perform after 0.0f delay to make sure the call is queued after the cell has been added to the view
+           [self performSelector:@selector(checkOnBoarding) withObject:nil afterDelay:0.0f];
        }
         
     
@@ -902,6 +902,7 @@
     
     return supplementaryView;
 }
+
 
 
 - (void) incrementRangeForNextRequest
@@ -2390,6 +2391,11 @@
     
     BOOL hasShownAddVideoOnBoarding = [defaults boolForKey:kUserDefaultsAddVideo];
     
+    if(hasShownAddVideoOnBoarding && hasShownSubscribeOnBoarding)
+    {
+        return;
+    }
+    
     // do not show onboarding related to subscriptions in user's own channels and channels already subscribed
     if(![self.channel.channelOwner.uniqueId isEqualToString:appDelegate.currentUser.uniqueId] &&
        !self.channel.subscribedByUserValue && !hasShownSubscribeOnBoarding)
@@ -2419,7 +2425,6 @@
         
         [defaults setBool:YES forKey:kUserDefaultsSubscribe];
     }
-
     
     NSInteger cellNumber = [[SYNDeviceManager sharedInstance] isIPad] ? 1 : 0;
     SYNVideoThumbnailRegularCell* randomCell =
