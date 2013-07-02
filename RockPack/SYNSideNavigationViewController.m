@@ -367,6 +367,11 @@ typedef enum {
                     iPhoneCell.accessoryNumberLabel.hidden = NO;
                     iPhoneCell.accessoryNumberBackground.hidden = NO;
                 }
+                else
+                {
+                    iPhoneCell.accessoryNumberLabel.hidden = YES;
+                    iPhoneCell.accessoryNumberBackground.hidden = YES;
+                }
 
                 iPhoneCell.accessoryView = [[UIImageView alloc] initWithImage: [UIImage imageNamed: @"NavArrow"]];
                     
