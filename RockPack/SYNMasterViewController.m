@@ -71,6 +71,7 @@ typedef void(^AnimationCompletionBlock)(BOOL finished);
 @property (nonatomic, strong) UIView* accountSettingsCoverView;
 @property (strong, nonatomic) IBOutlet UIView *overlayContainerView;
 @property (nonatomic, strong) IBOutlet UIButton* headerButton;
+@property (nonatomic) NavigationButtonsAppearence currentNavigationButtonsAppearence;
 
 @property (nonatomic, strong) UINavigationController* mainNavigationController;
 
@@ -83,6 +84,7 @@ typedef void(^AnimationCompletionBlock)(BOOL finished);
 @synthesize pageTitleLabel;
 @synthesize showingBackButton;
 @synthesize mainNavigationController;
+@synthesize currentNavigationButtonsAppearence;
 
 @dynamic showingBaseViewController;
 @dynamic showingViewController;
@@ -195,6 +197,8 @@ typedef void(^AnimationCompletionBlock)(BOOL finished);
     
     self.navigationContainerView.userInteractionEnabled = YES;
     
+    self.currentNavigationButtonsAppearence = NavigationButtonsAppearenceBlack;
+    
     // == Add the Root Navigation Controller == //
 
     self.mainNavigationController.view.frame = self.view.frame;
@@ -242,14 +246,6 @@ typedef void(^AnimationCompletionBlock)(BOOL finished);
     
     // == Set Up Notifications == //
     
-    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(backButtonRequested:) name:kNoteBackButtonShow object:nil];
-    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(backButtonRequested:) name:kNoteBackButtonHide object:nil];
-    
-    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(changeControlButtonsForControllerRequest:) name:kMainControlsChangeEnter object:nil];
-    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(changeControlButtonsForControllerRequest:) name:kMainControlsChangeLeave object:nil];
-    
-    
-    // 
     
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(profileRequested:) name:kProfileRequested object:nil];
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(channelDetailsRequested:) name:kChannelDetailsRequested object:nil];
@@ -905,30 +901,6 @@ typedef void(^AnimationCompletionBlock)(BOOL finished);
 
 
 
-- (void) backButtonRequested: (NSNotification*) notification
-{
-    NSString* notificationName = [notification name];
-    if(!notificationName)
-        return;
-    
-    SYNAbstractViewController* sender = (SYNAbstractViewController*)[notification object];
-    if(!sender)
-        return;
-    
-    // BOOL toleratesSearchBar = sender.toleratesSearchBar;
-    
-    if([notificationName isEqualToString:kNoteBackButtonShow])
-    {
-        [self showBackButton:YES];
-    }
-    else
-    {
-        [self showBackButton:NO];
-    }
-}
-
-
-
 - (void) allNavControlsRequested: (NSNotification*) notification
 {
     NSString* notificationName = [notification name];
@@ -1308,26 +1280,17 @@ typedef void(^AnimationCompletionBlock)(BOOL finished);
     return (BOOL)self.searchBoxController.view.superview;
 }
 
--(void)changeControlButtonsForControllerRequest:(NSNotification*)notification
-{
-    SYNAbstractViewController* object = [notification object];
-    if(!object)
-        return;
-    
-    
-    if([object.viewId isEqualToString:kChannelDetailsViewId] && [[notification name] isEqualToString:kMainControlsChangeEnter]) // white buttons
-    {
-        
-        [self changeControlButtonsTo:NavigationButtonsAppearenceWhite];
-    }
-    else // black buttons
-    {
-        [self changeControlButtonsTo:NavigationButtonsAppearenceBlack];
-    }
-}
+
 
 -(void)changeControlButtonsTo:(NavigationButtonsAppearence)appearence
 {
+    
+    
+    if(appearence == self.currentNavigationButtonsAppearence)
+        return;
+    
+    self.currentNavigationButtonsAppearence = appearence;
+    
     if(appearence == NavigationButtonsAppearenceWhite) // white buttons
     {
         [self.searchButton setImage:[UIImage imageNamed:@"ButtonSearchCD"] forState:UIControlStateNormal];
@@ -1521,15 +1484,24 @@ typedef void(^AnimationCompletionBlock)(BOOL finished);
 
 - (void)navigationController:(UINavigationController *)navigationController didShowViewController:(UIViewController *)viewController animated:(BOOL)animated
 {
-//    if(navigationController.viewControllers.count > 1)
-//    {
-//        [self showBackButton:YES];
-//    }
+    
     
 }
 
 - (void)navigationController:(UINavigationController *)navigationController willShowViewController:(UIViewController *)viewController animated:(BOOL)animated
 {
+    
+    
+    if([viewController isKindOfClass:[SYNContainerViewController class]]) // special case for the container which is not an abstract view controller
+    {
+        [self changeControlButtonsTo:NavigationButtonsAppearenceBlack];
+    }
+    else
+    {
+        [self changeControlButtonsTo:((SYNAbstractViewController*)viewController).navigationAppearence];
+    }
+    
+    
     if(navigationController.viewControllers.count > 1)
     {
         [self showBackButton:YES];

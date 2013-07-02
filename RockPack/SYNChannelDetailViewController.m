@@ -2376,7 +2376,6 @@
     
     self.videoThumbnailCollectionView.scrollsToTop = YES;
     
-    [[NSNotificationCenter defaultCenter] postNotificationName:kMainControlsChangeEnter object:self];
     
     [self checkOnBoarding];
 
@@ -3181,6 +3180,11 @@
     [[NSNotificationCenter defaultCenter] postNotificationName: kChannelUpdateRequest
                                                        object: self
                                                      userInfo: @{kChannel: self.channel}];
+}
+
+-(NavigationButtonsAppearence)navigationAppearence
+{
+    return NavigationButtonsAppearenceWhite;
 }
 
 @end

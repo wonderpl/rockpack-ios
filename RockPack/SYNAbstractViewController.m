@@ -161,14 +161,11 @@
 {
     
     [appDelegate.masterViewController pushController:controller];
-    
-    
 }
 
 
 - (void) animatedPopViewController
 {
-    
     [appDelegate.masterViewController popController];
     
 }
@@ -760,6 +757,12 @@
     
     // and then make a class appropriate data call
 
+}
+
+- (NavigationButtonsAppearence) navigationAppearence
+{
+    // return the standard and overide in subclass for special cases such as the ChannelDetails Section
+    return NavigationButtonsAppearenceBlack;
 }
 
 @end

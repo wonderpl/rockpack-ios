@@ -170,9 +170,6 @@
     
     [[NSNotificationCenter defaultCenter] postNotificationName: kNoteSearchBarRequestShow
                                                         object: self];
-    
-    [[NSNotificationCenter defaultCenter] postNotificationName: kMainControlsChangeEnter
-                                                        object: self];
         
     if([[SYNDeviceManager sharedInstance] isIPhone])
     {
