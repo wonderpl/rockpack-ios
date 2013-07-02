@@ -44,9 +44,9 @@ typedef enum
     {
         // Read and publish permissions must be requested separately in iOS 6,
         // so set appropriate permissions here
-        self.readPermissions = [NSArray arrayWithObjects: @"email", nil];
+        self.readPermissions = @[@"email"];
         
-        self.publishPermissions = [NSArray arrayWithObjects: @"publish_actions", nil];
+        self.publishPermissions = @[@"publish_actions"];
     }
     
     return self;
@@ -129,7 +129,7 @@ typedef enum
         {
             // Check to see that the publish permissions have been set by checking to see if the first publish permission has been set
             // if so, then all the other publish permissions will have been set
-            if ([FBSession.activeSession.permissions indexOfObject: [self.publishPermissions objectAtIndex: 0]] == NSNotFound)
+            if ([FBSession.activeSession.permissions indexOfObject: (self.publishPermissions)[0]] == NSNotFound)
             {
                 
                 // No, we don't already have extended publish permissions
@@ -329,10 +329,10 @@ typedef enum
 - (NSString *) parsedErrorMessage: (NSError *) facebookError
 {
     NSDictionary *outerDict = (NSMutableDictionary *) [facebookError userInfo];
-    NSDictionary *parsedJSONResponseKey = [outerDict isKindOfClass: [NSDictionary class]] ? [outerDict objectForKey: @"com.facebook.sdk:ParsedJSONResponseKey"] : nil;
-    NSDictionary *body = [parsedJSONResponseKey isKindOfClass: [NSDictionary class]] ? [parsedJSONResponseKey objectForKey: @"body"] : nil;
-    NSDictionary *error = [body isKindOfClass: [NSDictionary class]] ? [body objectForKey: @"error"] : nil;
-    NSString *message = [error objectForKey: @"message"];
+    NSDictionary *parsedJSONResponseKey = [outerDict isKindOfClass: [NSDictionary class]] ? outerDict[@"com.facebook.sdk:ParsedJSONResponseKey"] : nil;
+    NSDictionary *body = [parsedJSONResponseKey isKindOfClass: [NSDictionary class]] ? parsedJSONResponseKey[@"body"] : nil;
+    NSDictionary *error = [body isKindOfClass: [NSDictionary class]] ? body[@"error"] : nil;
+    NSString *message = error[@"message"];
     
     NSString *errorMessage = @"Unknown error";
     

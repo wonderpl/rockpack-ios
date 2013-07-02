@@ -683,7 +683,7 @@
     //    NSData *imageData = UIImageJPEGRepresentation(image, 0.70);
     //    NSData *imageData = [image jpegDataForResizedImageWithMaxDimension: 600];
     
-    NSString *lengthString = [NSString stringWithFormat: @"%@", [NSNumber numberWithUnsignedLong: imageData.length]];
+    NSString *lengthString = [NSString stringWithFormat: @"%@", @(imageData.length)];
     NSInputStream *inputStream = [NSInputStream inputStreamWithData: imageData];
     networkOperation.uploadStream = inputStream;
     
@@ -1173,7 +1173,7 @@
     
     NSData *imageData = UIImageJPEGRepresentation(newImage, 0.70);
 
-    NSString *lengthString = [NSString stringWithFormat: @"%@", [NSNumber numberWithUnsignedLong: imageData.length]];
+    NSString *lengthString = [NSString stringWithFormat: @"%@", @(imageData.length)];
     NSInputStream *inputStream = [NSInputStream inputStreamWithData: imageData];
     networkOperation.uploadStream = inputStream;
     

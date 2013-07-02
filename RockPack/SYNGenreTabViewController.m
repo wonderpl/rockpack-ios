@@ -75,7 +75,7 @@
                                                                                        error: &error];
         if(otherFetchArray.count > 0)
         {
-            self.otherGenre = [otherFetchArray objectAtIndex:0];
+            self.otherGenre = otherFetchArray[0];
             self.homeButtomString = [self.otherGenre.name uppercaseString];
             
             if(otherFetchArray.count > 1) // home cleaning
@@ -340,11 +340,11 @@
     
     NSIndexPath* indexPath = [self findIndexPathForGenreId:genre.uniqueId];
     
-    Genre* genreToSelect = (Genre*)[self.genresFetched objectAtIndex:indexPath.section];
+    Genre* genreToSelect = (Genre*)(self.genresFetched)[indexPath.section];
     
     if(indexPath.item != -1)
     {
-        genreToSelect = (SubGenre*)[genreToSelect.subgenres objectAtIndex:indexPath.item];
+        genreToSelect = (SubGenre*)(genreToSelect.subgenres)[indexPath.item];
         
     }
     
@@ -359,11 +359,11 @@
         return nil;
     
     
-    Genre* genreToSelect = (Genre*)[self.genresFetched objectAtIndex:indexPath.section];
+    Genre* genreToSelect = (Genre*)(self.genresFetched)[indexPath.section];
     
     if(subcats && genreToSelect.subgenres.count > indexPath.item && indexPath.item != -1)
     {
-        genreToSelect = (SubGenre*)[genreToSelect.subgenres objectAtIndex:indexPath.item];
+        genreToSelect = (SubGenre*)(genreToSelect.subgenres)[indexPath.item];
         [self handleMainGenreSelection:((SubGenre*)genreToSelect).genre];
     }
     

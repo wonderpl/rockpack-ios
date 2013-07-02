@@ -132,7 +132,7 @@
 {
     NSTimeInterval timeIntervalSeconds = [NSDate.date timeIntervalSinceDate: self.dateAdded];
     
-    return [NSNumber numberWithInt: timeIntervalSeconds/86400];
+    return @((int)(timeIntervalSeconds/86400.0f));
 }
 
 

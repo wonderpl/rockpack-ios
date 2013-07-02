@@ -83,11 +83,11 @@
 - (BOOL) registerCategoriesFromDictionary: (NSDictionary*) dictionary
 {
     // == Check for Validity == //
-    NSDictionary *categoriesDictionary = [dictionary objectForKey: @"categories"];
+    NSDictionary *categoriesDictionary = dictionary[@"categories"];
     if (!categoriesDictionary || ![categoriesDictionary isKindOfClass: [NSDictionary class]])
         return NO;
     
-    NSArray *itemArray = [categoriesDictionary objectForKey: @"items"];
+    NSArray *itemArray = categoriesDictionary[@"items"];
     if (![itemArray isKindOfClass: [NSArray class]])
         return NO;
     
@@ -114,7 +114,7 @@
     for (Genre* existingCategory in existingCategories)
     {
         
-        [existingCategoriesByIndex setObject:existingCategory forKey:existingCategory.uniqueId];
+        existingCategoriesByIndex[existingCategory.uniqueId] = existingCategory;
         
         existingCategory.markedForDeletionValue = YES; // if a real genre is passed - delete the old objects
     }
@@ -124,13 +124,13 @@
     {
         
         
-        NSString *uniqueId = [categoryDictionary objectForKey: @"id"];
+        NSString *uniqueId = categoryDictionary[@"id"];
         if (!uniqueId)
             continue;
         
         Genre* genre;
         
-        genre = [existingCategoriesByIndex objectForKey:uniqueId];
+        genre = existingCategoriesByIndex[uniqueId];
         
         if(!genre)
         {
@@ -145,7 +145,7 @@
         genre.markedForDeletionValue = NO;
         
         genre.priority = [categoryDictionary objectForKey: @"priority"
-                                              withDefault: [NSNumber numberWithInt: 0]];
+                                              withDefault: @0];
         
         
         
@@ -169,11 +169,11 @@
                           forUserUpload: (BOOL) userUpload
 {
     // == Check for Validity == //
-    NSDictionary *channelCoverDictionary = [dictionary objectForKey: @"cover_art"];
+    NSDictionary *channelCoverDictionary = dictionary[@"cover_art"];
     if (!channelCoverDictionary || ![channelCoverDictionary isKindOfClass: [NSDictionary class]])
         return NO;
     
-    NSArray *itemArray = [channelCoverDictionary objectForKey: @"items"];
+    NSArray *itemArray = channelCoverDictionary[@"items"];
     
     if (![itemArray isKindOfClass: [NSArray class]])
         return NO;
@@ -204,12 +204,12 @@
                                byAppending: (BOOL) append
 {
     // == Check for Validity == //
-    NSDictionary *videosDictionary = [dictionary objectForKey: @"videos"];
+    NSDictionary *videosDictionary = dictionary[@"videos"];
     if (!videosDictionary || ![videosDictionary isKindOfClass: [NSDictionary class]])
         return NO;
     
     
-    NSArray *itemArray = [videosDictionary objectForKey: @"items"];
+    NSArray *itemArray = videosDictionary[@"items"];
     if (![itemArray isKindOfClass: [NSArray class]])
         return NO;
     
@@ -232,7 +232,7 @@
     // Organise videos by Id
     for (VideoInstance* existingVideoInstance in existingFeedVideoInstances)
     {
-        [existingVideosByIndex setObject:existingVideoInstance forKey:existingVideoInstance.uniqueId];
+        existingVideosByIndex[existingVideoInstance.uniqueId] = existingVideoInstance;
         
         if(!append)
         {
@@ -252,12 +252,12 @@
     
     for (NSDictionary *itemDictionary in itemArray)
     {
-        NSString *uniqueId = [itemDictionary objectForKey: @"id"];
+        NSString *uniqueId = itemDictionary[@"id"];
         if(!uniqueId)
             continue; 
         
         VideoInstance* videoInstance;
-        videoInstance = [existingVideosByIndex objectForKey:uniqueId];
+        videoInstance = existingVideosByIndex[uniqueId];
         
         if (!videoInstance)
         {
@@ -331,14 +331,14 @@
                             byAppending: (BOOL) append
 {
     // == Check for Validity == //
-    NSDictionary *channelsDictionary = [dictionary objectForKey: @"channels"];
+    NSDictionary *channelsDictionary = dictionary[@"channels"];
     if (!channelsDictionary || ![channelsDictionary isKindOfClass: [NSDictionary class]])
     {
         AssertOrLog(@"registerChannelsFromDictionary: unexpected JSON format");
         return NO;
     }
     
-    NSArray *itemArray = [channelsDictionary objectForKey: @"items"];
+    NSArray *itemArray = channelsDictionary[@"items"];
     if (![itemArray isKindOfClass: [NSArray class]])
     {
         AssertOrLog(@"registerChannelsFromDictionary: unexpected JSON format");
@@ -388,8 +388,7 @@
     for (Channel* existingChannel in existingChannels)
     {
         
-        [existingChannelsByIndex setObject: existingChannel
-                                    forKey: existingChannel.uniqueId];
+        existingChannelsByIndex[existingChannel.uniqueId] = existingChannel;
         
         if(!append)
             existingChannel.popularValue = NO; // set all to NO
@@ -418,13 +417,13 @@
     for (NSDictionary *itemDictionary in itemArray)
     {
         items++;
-        NSString *uniqueId = [itemDictionary objectForKey: @"id"];
+        NSString *uniqueId = itemDictionary[@"id"];
         if(!uniqueId)
             continue;
         
         Channel* channel;
         
-        channel = [existingChannelsByIndex objectForKey: uniqueId];
+        channel = existingChannelsByIndex[uniqueId];
         
         if (!channel)
         {
@@ -443,7 +442,7 @@
         
         channel.freshValue = YES;
         
-        NSNumber* remotePosition = [itemDictionary objectForKey: @"position" withDefault: [NSNumber numberWithInt: 0]];
+        NSNumber* remotePosition = [itemDictionary objectForKey: @"position" withDefault: @0];
         if([remotePosition intValue] != channel.positionValue)
         {
             channel.position = remotePosition;
@@ -462,7 +461,7 @@
     
     for (id key in existingChannelsByIndex)
     {
-        Channel* deleteCandidate = (Channel*)[existingChannelsByIndex objectForKey:key];
+        Channel* deleteCandidate = (Channel*)existingChannelsByIndex[key];
         
         if(deleteCandidate && deleteCandidate.markedForDeletionValue)
             [deleteCandidate.managedObjectContext deleteObject:deleteCandidate];

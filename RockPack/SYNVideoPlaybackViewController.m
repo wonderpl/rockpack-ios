@@ -747,11 +747,11 @@ static UIWebView* vimeoideoWebViewInstance;
     if (clockwise)
     {
         animation.fromValue = @0.0f;
-        animation.toValue = [NSNumber numberWithFloat: 2 * M_PI];
+        animation.toValue = @((float)(2 * M_PI));
     }
     else
     {
-        animation.fromValue = [NSNumber numberWithFloat: 2 * M_PI];
+        animation.fromValue = @((float)(2 * M_PI));
         animation.toValue = @0.0f;
     }
 

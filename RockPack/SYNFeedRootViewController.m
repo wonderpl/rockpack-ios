@@ -432,7 +432,7 @@
                                                     BOOL registryResultOk = [appDelegate.mainRegistry registerDataForFeedFromDictionary: responseDictionary
                                                                                                                             byAppending: toAppend];
                                                     
-                                                    NSNumber* totalNumber = [[responseDictionary objectForKey:@"videos"] objectForKey:@"total"];
+                                                    NSNumber* totalNumber = responseDictionary[@"videos"][@"total"];
                                                     if(totalNumber && ![totalNumber isKindOfClass:[NSNull class]])
                                                         self.dataItemsAvailable = [totalNumber integerValue];
                                                     else
@@ -701,7 +701,7 @@
     UICollectionReusableView *supplementaryView = nil;
     
     // Work out the day
-    id<NSFetchedResultsSectionInfo> sectionInfo = [self.fetchedResultsController.sections objectAtIndex: indexPath.section];
+    id<NSFetchedResultsSectionInfo> sectionInfo = (self.fetchedResultsController.sections)[indexPath.section];
     
     // In the 'name' attribut of the sectionInfo we have actually the keypath data (i.e in this case Date without time)
     

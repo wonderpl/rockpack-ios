@@ -787,22 +787,22 @@
                     return;
                 }
                 
-                NSDictionary* formErrors = [errorDictionary objectForKey:@"form_errors"];
+                NSDictionary* formErrors = errorDictionary[@"form_errors"];
                 NSString* errorString;
                 BOOL append = NO;
                 if (formErrors)
                 {
-                    NSArray* usernameError = [formErrors objectForKey:@"username"];
+                    NSArray* usernameError = formErrors[@"username"];
                     if(usernameError)
                     {
-                        errorString = [NSString stringWithFormat:NSLocalizedString(@"%@: %@", nil), NSLocalizedString(@"Username", nil), [usernameError objectAtIndex:0]];
+                        errorString = [NSString stringWithFormat:NSLocalizedString(@"%@: %@", nil), NSLocalizedString(@"Username", nil), usernameError[0]];
                         append = YES;
                     }
                     
-                    NSArray* emailError = [formErrors objectForKey:@"email"];
+                    NSArray* emailError = formErrors[@"email"];
                     if (emailError)
                     {
-                        NSString* emailErrorString = [NSString stringWithFormat:NSLocalizedString(@"%@: %@", nil), NSLocalizedString(@"Email", nil),[emailError objectAtIndex:0]];
+                        NSString* emailErrorString = [NSString stringWithFormat:NSLocalizedString(@"%@: %@", nil), NSLocalizedString(@"Email", nil),emailError[0]];
                         if(append)
                         {
                             errorString = [NSString stringWithFormat:@"%@\n%@",errorString, emailErrorString];
@@ -813,10 +813,10 @@
                         }
                     }
                     
-                    NSArray* passwordError = [formErrors objectForKey:@"password"];
+                    NSArray* passwordError = formErrors[@"password"];
                     if (passwordError)
                     {
-                        NSString* passwordErrorString = [NSString stringWithFormat:NSLocalizedString(@"%@: %@", nil), NSLocalizedString(@"Password", nil),[passwordError objectAtIndex:0]];
+                        NSString* passwordErrorString = [NSString stringWithFormat:NSLocalizedString(@"%@: %@", nil), NSLocalizedString(@"Password", nil),passwordError[0]];
                         if(append)
                         {
                             errorString = [NSString stringWithFormat:@"%@\n%@",errorString, passwordErrorString];
@@ -827,10 +827,10 @@
                         }
                     }
                     
-                    NSArray* dateError = [formErrors objectForKey:@"date_of_birth"];
+                    NSArray* dateError = formErrors[@"date_of_birth"];
                     if (dateError)
                     {
-                        NSString* dateErrorString = [NSString stringWithFormat:NSLocalizedString(@"%@: %@", nil), NSLocalizedString(@"DOB", nil),[dateError objectAtIndex:0]];
+                        NSString* dateErrorString = [NSString stringWithFormat:NSLocalizedString(@"%@: %@", nil), NSLocalizedString(@"DOB", nil),dateError[0]];
                         if(append)
                         {
                             errorString = [NSString stringWithFormat:@"%@\n%@",errorString, dateErrorString];
@@ -931,7 +931,7 @@
         [self.activityIndicator stopAnimating];
         [self turnOnButton:self.cancelButton];
         
-        NSNumber* availabilitynumber = [result objectForKey:@"available"];
+        NSNumber* availabilitynumber = result[@"available"];
         if(availabilitynumber)
         {
         BOOL usernameAvailable = [availabilitynumber boolValue];
@@ -948,11 +948,11 @@
         }
         else
         {
-            NSArray* formErrors = [result objectForKey:@"message"];
+            NSArray* formErrors = result[@"message"];
             NSString* errorString = self.registeringUserErrorLabel.text = NSLocalizedString(@"unknown_error_message", nil);
             if (formErrors && [formErrors count]>0)
             {
-                errorString = [NSString stringWithFormat:NSLocalizedString(@"%@: %@", nil), NSLocalizedString(@"Username", nil), [formErrors objectAtIndex:0]];
+                errorString = [NSString stringWithFormat:NSLocalizedString(@"%@: %@", nil), NSLocalizedString(@"Username", nil), formErrors[0]];
             }
             
             self.registeringUserErrorLabel.text = errorString;

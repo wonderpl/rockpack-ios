@@ -92,7 +92,7 @@
 
     GKImageCropViewController *cropController = [[GKImageCropViewController alloc] init];
     cropController.contentSizeForViewInPopover = picker.contentSizeForViewInPopover;
-    UIImage* image = [info objectForKey:UIImagePickerControllerOriginalImage];
+    UIImage* image = info[UIImagePickerControllerOriginalImage];
 
 //    DebugLog(@"%f,%f",image.size.width, image.size.height);
     if(MAX(image.size.width, image.size.height)>kMaxSuportedImageSize)
