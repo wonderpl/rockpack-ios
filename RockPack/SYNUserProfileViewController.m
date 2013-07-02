@@ -10,22 +10,33 @@
 #import "SYNAppDelegate.h"
 #import "SYNDeviceManager.h"
 #import "SYNImagePickerController.h"
+#import "SYNOAuthNetworkEngine.h"
 #import "SYNUserProfileViewController.h"
 #import "UIFont+SYNFont.h"
 #import "UIImageView+WebCache.h"
 #import "User.h"
-#import "SYNOAuthNetworkEngine.h"
 
 @interface SYNUserProfileViewController () <SYNImagePickerControllerDelegate>
 
-@property (nonatomic, strong) SYNImagePickerController* imagePickerController;
-@property (nonatomic, strong) IBOutlet UIButton* avatarButton;
 @property (nonatomic, strong) IBOutlet UIActivityIndicatorView* activityIndicatorView;
+@property (nonatomic, strong) IBOutlet UIButton* avatarButton;
+@property (nonatomic, strong) SYNImagePickerController* imagePickerController;
 
 @end
 
 
 @implementation SYNUserProfileViewController
+
+#pragma mark - Object lifecycle
+
+- (void) dealloc
+{
+    // Defensive programming
+    self.imagePickerController.delegate = nil;
+}
+
+
+#pragma mark - View lifecycle
 
 - (void) viewDidLoad
 {

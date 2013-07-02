@@ -42,8 +42,15 @@
 
 @implementation SYNFeedRootViewController
 
-#pragma mark - View Lifecyclea
+#pragma mark - Object lifecycle
 
+- (void) dealloc
+{
+    // Defensive programming
+    self.videoThumbnailCollectionView.delegate = nil;
+}
+
+#pragma mark - View lifecycle
 
 - (void) loadView
 {

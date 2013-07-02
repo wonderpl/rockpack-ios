@@ -91,6 +91,16 @@
 @synthesize elementsOffsetY;
 @synthesize termsAndConditionsButton;
 
+#pragma mark - Object lifecycle
+
+- (void) dealloc
+{
+    self.imagePicker.delegate = nil;
+}
+
+
+#pragma mark - View lifecycle
+
 - (void) viewDidLoad
 {
     [super viewDidLoad];

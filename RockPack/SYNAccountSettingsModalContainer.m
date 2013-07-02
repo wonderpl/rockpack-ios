@@ -23,6 +23,7 @@
 
 @implementation SYNAccountSettingsModalContainer
 
+#pragma mark - Object lifecycle
 
 - (id) initWithNavigationController: (UINavigationController*) navigationController
                  andCompletionBlock: (DoneButtonBlock) block
@@ -39,6 +40,15 @@
     return self;
 }
 
+
+- (void) dealloc
+{
+    // Defensive programming
+    childNavigationController.delegate = nil;
+}
+
+
+#pragma mark - View lifecycle
 
 - (void) viewDidLoad
 {

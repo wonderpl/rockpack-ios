@@ -23,8 +23,10 @@
 @end
 
 @implementation SYNLoginOnBoardingController
+
 @synthesize scrollView = scrollView;
 
+#pragma mark - Object lifecycle
 
 - (id) initWithDelegate: (id <UIScrollViewDelegate>) delegate
 {
@@ -36,6 +38,13 @@
     return self;
 }
 
+- (void) dealloc
+{
+    self.scrollView.delegate = nil;
+}
+
+
+#pragma mark - View lifecycle
 
 - (void) loadView
 {
@@ -116,25 +125,9 @@
 }
 
 
-// Ensure our scroll view can't call us back when we have disappeared
-- (void) viewWillAppear: (BOOL) animated
+- (UIView*) createNewMessageViewWithMessage: (NSString*) message
+                                   andTitle: (NSString*)title
 {
-    [super viewWillAppear: animated];
-    
-    self.scrollView.delegate = self.delegate;
-}
-
-
-- (void) viewWillDisappear: (BOOL) animated
-{
-    self.scrollView.delegate = nil;
-    
-    [super viewWillDisappear: animated];
-}
-
--(UIView*)createNewMessageViewWithMessage:(NSString*)message andTitle:(NSString*)title
-{
-    
     // Set up onboard text
     CGRect viewFrame = CGRectZero;
     viewFrame.size.width = [[SYNDeviceManager sharedInstance] currentScreenWidth];

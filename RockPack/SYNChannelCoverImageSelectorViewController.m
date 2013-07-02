@@ -63,6 +63,8 @@ enum ChannelCoverSelectorState {
 
 @implementation SYNChannelCoverImageSelectorViewController
 
+#pragma mark - Object lifecycle
+
 - (id) initWithSelectedImageURL: (NSString *) selectedImageURL
 {
     if ((self = [super init]))
@@ -73,6 +75,16 @@ enum ChannelCoverSelectorState {
     return self;
 }
 
+
+- (void) dealloc
+{
+    // Defensive programming
+    self.fetchedResultsController.delegate = nil;
+    self.picker.delegate = nil;
+}
+
+
+#pragma mark - View lifecycle
 
 - (void) viewDidLoad
 {
@@ -342,7 +354,7 @@ enum ChannelCoverSelectorState {
                                      if (result)
                                      {
                                          ALAssetRepresentation* representation = [result defaultRepresentation];
-                                         GKImageCropViewController* cropViewController = [[GKImageCropViewController alloc]init];
+                                         GKImageCropViewController* cropViewController = [[GKImageCropViewController alloc] init];
                                          CGFloat scale = representation.scale;
                                          ALAssetOrientation orientation = representation.orientation;
                                          UIImage* selectedImage = nil;

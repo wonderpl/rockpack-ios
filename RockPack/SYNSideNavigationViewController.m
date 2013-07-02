@@ -77,6 +77,9 @@ typedef enum {
 @synthesize currentlyLoadedViewController = _currentlyLoadedViewController;
 @synthesize state = _state;
 
+
+#pragma mark - Object lifecycle
+
 - (id) init
 {
     if ((self = [super initWithNibName: @"SYNSideNavigationViewController"
@@ -104,6 +107,14 @@ typedef enum {
     }
         
     return self;
+}
+
+
+- (void) dealloc
+{
+    // Defensive programming
+    self.searchViewController.searchBoxView.searchTextField.delegate = nil;
+    self.imagePickerController.delegate = nil;
 }
 
 
