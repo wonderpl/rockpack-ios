@@ -926,7 +926,6 @@
     
     [self incrementRangeForNextRequest];
     
-    
     MKNKUserSuccessBlock successBlock = ^(NSDictionary *dictionary) {
         
         self.footerView.showsLoading = NO;
