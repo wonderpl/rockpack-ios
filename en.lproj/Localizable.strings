@@ -137,7 +137,7 @@
 "full_name" = "(full name)";
 "select_category" = "SELECT A CATEGORY";
 "enter_title" = "ENTER A TITLE";
-"select_cover" = "SELECT A COVER";
+"select_cover" = "SELECT A COVER.";
 "channel_created_succesfully" = "CHANNEL CREATED SUCCESSFULLY";
 "channel_will_remain_private_until" = "HOWEVER IT WILL REMAIN PRIVATE UNTIL YOU ";
 "private_condition_category" = "SELECT A RELEVANT CATEGORY";
