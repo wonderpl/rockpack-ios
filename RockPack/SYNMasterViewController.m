@@ -1136,7 +1136,10 @@ typedef void(^AnimationCompletionBlock)(BOOL finished);
                      }
                      completion:^(BOOL finished)
                      {
-                         
+                         if(self.isInSearchMode)
+                         {
+                             self.closeSearchButton.hidden = NO;
+                         }
                      }];
     
     
