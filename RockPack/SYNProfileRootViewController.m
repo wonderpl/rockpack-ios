@@ -1282,13 +1282,13 @@
     NSArray* indexPaths = [[collectionView indexPathsForVisibleItems] sortedArrayUsingDescriptors:self.sortDescriptors];
     if([indexPaths count]>0)
     {
-        result = [indexPaths objectAtIndex:0];
+        result = indexPaths[0];
         UICollectionViewCell * cell = [collectionView cellForItemAtIndexPath:result];
         if(cell.center.y < collectionView.contentOffset.y)
         {
             if([indexPaths count] > 3)
             {
-                result = [indexPaths objectAtIndex:3];
+                result = indexPaths[3];
             }
         }
     }

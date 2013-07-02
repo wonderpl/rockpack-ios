@@ -380,7 +380,7 @@ static UIWebView* vimeoideoWebViewInstance;
         [tracker sendEventWithCategory: @"goal"
                             withAction: @"videoViewed"
                              withLabel: self.previousSourceId
-                             withValue: [NSNumber numberWithInt: (int) (self.percentageViewed  * 100.0f)]];
+                             withValue: @((int) (self.percentageViewed  * 100.0f))];
     }
     
     // Just pause the video, as we might come back to this view again (if we have pushed any views on top)
@@ -1147,7 +1147,7 @@ static UIWebView* vimeoideoWebViewInstance;
         [tracker sendEventWithCategory: @"goal"
                             withAction: @"videoViewed"
                              withLabel: self.previousSourceId
-                             withValue: [NSNumber numberWithInt: (int) (self.percentageViewed  * 100.0f)]];
+                             withValue: @((int) (self.percentageViewed  * 100.0f))];
     }
     
     self.currentVideoViewedFlag = FALSE;

@@ -291,7 +291,7 @@ typedef void(^AnimationCompletionBlock)(BOOL finished);
 // this is triggered when a component requests a view at the base of the stack
 - (void) profileRequested: (NSNotification*) notification
 {
-    ChannelOwner* channelOwner = (ChannelOwner*)[[notification userInfo] objectForKey: kChannelOwner];
+    ChannelOwner* channelOwner = (ChannelOwner*)[notification userInfo][kChannelOwner];
     if (!channelOwner)
         return;
     
@@ -303,13 +303,13 @@ typedef void(^AnimationCompletionBlock)(BOOL finished);
 {
     
     
-    Channel* channel = (Channel*)[[notification userInfo] objectForKey: kChannel];
+    Channel* channel = (Channel*)[notification userInfo][kChannel];
     if (!channel)
         return;
     
     SYNChannelDetailViewController *channelVC = [[SYNChannelDetailViewController alloc] initWithChannel: channel
                                                                                               usingMode: kChannelDetailsModeDisplay];
-    channelVC.autoplayVideoId = [[notification userInfo] objectForKey:kAutoPlayVideoId];
+    channelVC.autoplayVideoId = [notification userInfo][kAutoPlayVideoId];
     
     [self.showingBaseViewController animatedPushViewController: channelVC];
 }
@@ -361,7 +361,7 @@ typedef void(^AnimationCompletionBlock)(BOOL finished);
 
 -(void)scrollerPageChanged:(NSNotification*)notification
 {
-    NSNumber* pageNumber = [[notification userInfo] objectForKey:kCurrentPage];
+    NSNumber* pageNumber = [notification userInfo][kCurrentPage];
     if(!pageNumber)
         return;
     
@@ -454,7 +454,7 @@ typedef void(^AnimationCompletionBlock)(BOOL finished);
 -(void)addedToChannelAction:(NSNotification*)notification
 {
     
-    Channel* selectedChannel = (Channel*)[[notification userInfo] objectForKey:kChannel];
+    Channel* selectedChannel = (Channel*)[notification userInfo][kChannel];
     if(!selectedChannel)
     {
         //Channel select was cancelled.
@@ -758,7 +758,7 @@ typedef void(^AnimationCompletionBlock)(BOOL finished);
 - (void) searchTyped: (NSNotification*) notification
 {
     
-    NSString* termString = (NSString*)[[notification userInfo] objectForKey: kSearchTerm];
+    NSString* termString = (NSString*)[notification userInfo][kSearchTerm];
     
     if(!termString)
         return;
@@ -976,7 +976,7 @@ typedef void(^AnimationCompletionBlock)(BOOL finished);
 - (void) navigateToPage: (NSNotification*) notification
 {
     
-    NSString* pageName = [[notification userInfo] objectForKey: @"pageName"];
+    NSString* pageName = [notification userInfo][@"pageName"];
     if(!pageName)
         return;
     
@@ -1386,7 +1386,7 @@ typedef void(^AnimationCompletionBlock)(BOOL finished);
 
 - (void) presentSuccessNotificationWithCaution:(NSNotification*)notification
 {
-    SYNCaution* caution = [[notification userInfo] objectForKey:kCaution];
+    SYNCaution* caution = [notification userInfo][kCaution];
     if(!caution)
         return;
     
@@ -1485,7 +1485,7 @@ typedef void(^AnimationCompletionBlock)(BOOL finished);
                                                   if ([SYNDeviceManager.sharedInstance isIPhone])
                                                   {
                                                       // The search overlay sits on the side navigation on iPhone, move it into the overlay temporarily
-                                                     [[[self.overlayNavigationController.viewControllers objectAtIndex:0] view] addSubview: self.sideNavigationViewController.searchViewController.searchBoxView];
+                                                     [[(self.overlayNavigationController.viewControllers)[0] view] addSubview: self.sideNavigationViewController.searchViewController.searchBoxView];
                                                   }
                                               }];
                          }];
