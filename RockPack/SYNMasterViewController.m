@@ -1646,22 +1646,22 @@ typedef void(^AnimationCompletionBlock)(BOOL finished);
 
 -(void)pushController:(SYNAbstractViewController*)controller
 {
-    self.view.alpha = 1.0f;
-    controller.view.alpha = 0.0f;
-    
-    //self.isAnimating = YES;
-    
-    [UIView animateWithDuration: 0.5f
-                          delay: 0.0f
-                        options: UIViewAnimationOptionCurveEaseInOut | UIViewAnimationOptionBeginFromCurrentState
-                     animations: ^ {
-                         // Contract thumbnail view
-                         self.view.alpha = 0.0f;
-                         controller.view.alpha = 1.0f;
-                     }
-                     completion:^(BOOL finished) {
-                         //controllerself.isAnimating = NO;
-                     }];
+//    self.view.alpha = 1.0f;
+//    controller.view.alpha = 0.0f;
+//    
+//    //self.isAnimating = YES;
+//    
+//    [UIView animateWithDuration: 0.5f
+//                          delay: 0.0f
+//                        options: UIViewAnimationOptionCurveEaseInOut | UIViewAnimationOptionBeginFromCurrentState
+//                     animations: ^ {
+//                         // Contract thumbnail view
+//                         self.view.alpha = 0.0f;
+//                         controller.view.alpha = 1.0f;
+//                     }
+//                     completion:^(BOOL finished) {
+//                         //controllerself.isAnimating = NO;
+//                     }];
     
     [self.mainNavigationController pushViewController:controller animated: NO];
 }
