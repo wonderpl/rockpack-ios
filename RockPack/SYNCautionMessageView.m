@@ -65,14 +65,12 @@
         
         NSLineBreakMode wordWrappingMode = NSLineBreakByWordWrapping;
         CGRect messageFrame = self.frame;
-        messageFrame.origin.x = 20.0;
+        messageFrame.origin.x = 30.0;
         messageFrame.origin.y = 48.0;
-        messageFrame.size.width -= 40.0;
-        messageFrame.size.height = [caution.message sizeWithFont:messageFontToUse
-                                               constrainedToSize:self.frame.size
-                                                   lineBreakMode:wordWrappingMode].height;
+        messageFrame.size.width -= 60.0;
+        messageFrame.size.height = 52.0f;
         
-        NSLog(@"%f", messageFrame.size.height);
+        
         
         self.messageLabel = [[UILabel alloc] initWithFrame:messageFrame];
         messageLabel.textColor = [UIColor whiteColor];

@@ -121,7 +121,7 @@
 
 "onboarding_channels" = "To start, browse channels created\nby other people. A channel is a\ncollection of videos.";
 "onboarding_subscription" = "Tap this button to subscribe to a channel and get new videos in your feed. It's free!";
-"onboarding_video" = "Tap the + button to add it to one of your channels.";
+"onboarding_video" = "Tap the + button to add this video to one of your channels.";
 
 
 
@@ -137,7 +137,7 @@
 "full_name" = "(full name)";
 "select_category" = "SELECT A CATEGORY";
 "enter_title" = "ENTER A TITLE";
-"select_cover" = "SELECT A COVER";
+"select_cover" = "SELECT A COVER.";
 "channel_created_succesfully" = "CHANNEL CREATED SUCCESSFULLY";
 "channel_will_remain_private_until" = "HOWEVER IT WILL REMAIN PRIVATE UNTIL YOU ";
 "private_condition_category" = "SELECT A RELEVANT CATEGORY";
