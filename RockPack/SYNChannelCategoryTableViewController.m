@@ -55,6 +55,12 @@
     _showAllCategoriesHeader = YES;
 }
 
+-(void)dealloc
+{
+    [[NSNotificationCenter defaultCenter] removeObserver: self];
+}
+
+
 - (void)viewDidLoad
 {
     [super viewDidLoad];
@@ -111,7 +117,22 @@
     }
     
     [self loadCategories];
+    [[NSNotificationCenter defaultCenter] addObserver: self
+                                             selector: @selector(clearedLocationBoundData)
+                                                 name: kClearedLocationBoundData
+                                               object: nil];
+    [[NSNotificationCenter defaultCenter] addObserver:self
+                                             selector:@selector(forceRefreshCategories:)
+                                                 name:UIApplicationDidBecomeActiveNotification object:nil];
 }
+
+
+-(void)clearedLocationBoundData
+{
+    hasRetried = NO;
+    [self loadCategories];
+}
+
 
 - (void)didReceiveMemoryWarning
 {
@@ -176,6 +197,24 @@
     
 }
 
+-(void)forceRefreshCategories:(NSNotification*)note
+{
+    SYNAppDelegate* appDelegate = (SYNAppDelegate *)[[UIApplication sharedApplication] delegate];
+    
+    [appDelegate.networkEngine updateCategoriesOnCompletion:^(NSDictionary* dictionary){
+        
+        BOOL registryResultOk = [appDelegate.mainRegistry registerCategoriesFromDictionary: dictionary];
+        if (!registryResultOk) {
+            DebugLog(@"*** Cannot Register Genre Objects! ***");
+            return;
+        }
+        
+        [self loadCategories];
+        
+    } onError:^(NSError* error) {
+        DebugLog(@"%@", [error debugDescription]);
+    }];
+}
 
 #pragma mark - Table view data source
 

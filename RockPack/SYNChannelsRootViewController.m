@@ -885,6 +885,7 @@
     newFrame.size.width = self.categoryTableViewController.view.frame.size.width;
     self.categoryTableViewController.view.frame = newFrame;
     [self.view addSubview:self.categoryTableViewController.view];
+    [self addChildViewController:self.categoryTableViewController];
     self.categoryTableViewController.categoryTableControllerDelegate= self;
     self.categoryTableViewController.view.hidden = YES;
     
