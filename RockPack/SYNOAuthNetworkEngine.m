@@ -1103,7 +1103,7 @@
     NSString *apiString = [kAPIGetUserCoverArt stringByReplacingOccurrencesOfStrings: apiSubstitutionDictionary];
     
     SYNNetworkOperationJsonObject *networkOperation = (SYNNetworkOperationJsonObject*)[self operationWithPath: apiString
-                                                                                                       params: [self getLocalParam]
+                                                                                                       params: [self getLocaleParam]
                                                                                                    httpMethod: @"GET"
                                                                                                           ssl: TRUE];
     __weak SYNOAuthNetworkEngine* wself = self;

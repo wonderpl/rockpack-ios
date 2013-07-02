@@ -51,7 +51,7 @@
 {
     SYNNetworkOperationJsonObject *networkOperation =
     (SYNNetworkOperationJsonObject*)[self operationWithPath: kAPICategories
-                                                     params: [self getLocalParam]
+                                                     params: [self getLocaleParam]
                                                  httpMethod: @"GET"];
 
     //networkOperation.ignoreCachedResponse = YES;
@@ -113,7 +113,7 @@
                             onError: (MKNKErrorBlock) errorBlock
 {
     SYNNetworkOperationJsonObject *networkOperation = (SYNNetworkOperationJsonObject*)[self operationWithPath: kAPIGetCoverArt
-                                                                                                       params: [self getLocalParam]];
+                                                                                                       params: [self getLocaleParam]];
     
     [networkOperation addJSONCompletionHandler: ^(NSDictionary *dictionary)
     {
@@ -209,7 +209,7 @@
         tempParameters[@"category"] = categoryId;
     }
 
-    NSDictionary* parameters = [self getLocalParamWithParams: tempParameters];
+    NSDictionary* parameters = [self getLocaleParamWithParams: tempParameters];
 
     SYNNetworkOperationJsonObject *networkOperation =
     (SYNNetworkOperationJsonObject*)[self operationWithPath: kAPIPopularChannels
@@ -250,7 +250,7 @@
     
     tempParameters[@"size"] = [NSString stringWithFormat: @"%i", range.length];
     
-    [tempParameters addEntriesFromDictionary: [self getLocalParam]];
+    [tempParameters addEntriesFromDictionary: [self getLocaleParam]];
     
     NSDictionary* parameters = [NSDictionary dictionaryWithDictionary: tempParameters];
     
@@ -309,7 +309,7 @@
     
     tempParameters[@"size"] = [NSString stringWithFormat: @"%i", range.length];
     
-    [tempParameters addEntriesFromDictionary: [self getLocalParam]];
+    [tempParameters addEntriesFromDictionary: [self getLocaleParam]];
     
     
     NSDictionary* parameters = [NSDictionary dictionaryWithDictionary: tempParameters];
@@ -370,7 +370,7 @@
     
     [self registerOperationSubclass: [SYNNetworkOperationJsonObjectParse class]];
     
-    NSDictionary* parameters = [self getLocalParamWithParams: @{@"q": hint}];
+    NSDictionary* parameters = [self getLocaleParamWithParams: @{@"q": hint}];
     
     NSString* apiForEntity;
     if(entityType == EntityTypeChannel)
@@ -491,7 +491,7 @@
 {
     SYNNetworkOperationJsonObject *networkOperation =
     (SYNNetworkOperationJsonObject*)[self operationWithPath: kYouTubePlayerSource
-                                                     params: [self getLocalParam]
+                                                     params: [self getLocaleParam]
                                                  httpMethod: @"GET"];
     
     networkOperation.ignoreCachedResponse = YES;
