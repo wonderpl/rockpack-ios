@@ -203,12 +203,12 @@ typedef enum {
 {
     [super viewWillAppear: animated];
     
-    id<GAITracker> tracker = [GAI sharedInstance].defaultTracker;
-    
-    [tracker sendEventWithCategory: @"uiAction"
-                        withAction: @"mainNavClick"
-                         withLabel: nil
-                         withValue: nil];
+//    id<GAITracker> tracker = [GAI sharedInstance].defaultTracker;
+//    
+//    [tracker sendEventWithCategory: @"uiAction"
+//                        withAction: @"mainNavClick"
+//                         withLabel: nil
+//                         withValue: nil];
 }
 
 
@@ -457,12 +457,12 @@ typedef enum {
     }
     
     // Google analytics
-    id<GAITracker> tracker = [GAI sharedInstance].defaultTracker;
-    
-    [tracker sendEventWithCategory: @"uiAction"
-                        withAction: @"mainNavClick"
-                         withLabel: navigationAction
-                         withValue: nil];
+//    id<GAITracker> tracker = [GAI sharedInstance].defaultTracker;
+//    
+//    [tracker sendEventWithCategory: @"uiAction"
+//                        withAction: @"mainNavClick"
+//                         withLabel: navigationAction
+//                         withValue: nil];
 }
 
 
