@@ -755,6 +755,9 @@ typedef void(^AnimationCompletionBlock)(BOOL finished);
     {
         [self.searchBoxController.searchTextField becomeFirstResponder];
     }
+    
+    self.closeSearchButton.hidden = NO;
+    self.sideNavigationButton.hidden = YES;
 }
 
 - (void) searchTyped: (NSNotification*) notification
@@ -785,7 +788,6 @@ typedef void(^AnimationCompletionBlock)(BOOL finished);
         [self.searchViewController.view addSubview:self.sideNavigationViewController.searchViewController.searchBoxView];
         self.searchViewController.searchBoxViewController = self.sideNavigationViewController.searchViewController;
     }
-    
     
     
     [self.searchViewController showSearchResultsForTerm: termString];
@@ -1258,6 +1260,8 @@ typedef void(^AnimationCompletionBlock)(BOOL finished);
                                                      inView: self.view
                                    permittedArrowDirections: 0
                                                    animated: YES];
+        
+        
     }
     
 }
@@ -1349,6 +1353,8 @@ typedef void(^AnimationCompletionBlock)(BOOL finished);
                          //controllerself.isAnimating = NO;
                          
                      }];
+    
+    NSLog(@"Pushing Controller: %@", controller);
     
     [self.mainNavigationController pushViewController:controller animated: NO];
     
@@ -1499,11 +1505,7 @@ typedef void(^AnimationCompletionBlock)(BOOL finished);
         [self changeControlButtonsTo:((SYNAbstractViewController*)viewController).navigationAppearence];
     }
     
-    
-    if(navigationController.viewControllers.count > 1)
-    {
-        [self showBackButton:YES];
-    }
+    [self showBackButton:(navigationController.viewControllers.count > 1)];
 }
 
 @end
