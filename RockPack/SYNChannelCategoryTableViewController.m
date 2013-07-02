@@ -55,6 +55,12 @@
     _showAllCategoriesHeader = YES;
 }
 
+-(void)dealloc
+{
+    [[NSNotificationCenter defaultCenter] removeObserver: self];
+}
+
+
 - (void)viewDidLoad
 {
     [super viewDidLoad];
@@ -111,7 +117,22 @@
     }
     
     [self loadCategories];
+    [[NSNotificationCenter defaultCenter] addObserver: self
+                                             selector: @selector(clearedLocationBoundData)
+                                                 name: kClearedLocationBoundData
+                                               object: nil];
+    [[NSNotificationCenter defaultCenter] addObserver:self
+                                             selector:@selector(forceRefreshCategories:)
+                                                 name:UIApplicationDidBecomeActiveNotification object:nil];
 }
+
+
+-(void)clearedLocationBoundData
+{
+    hasRetried = NO;
+    [self loadCategories];
+}
+
 
 - (void)didReceiveMemoryWarning
 {
@@ -176,6 +197,24 @@
     
 }
 
+-(void)forceRefreshCategories:(NSNotification*)note
+{
+    SYNAppDelegate* appDelegate = (SYNAppDelegate *)[[UIApplication sharedApplication] delegate];
+    
+    [appDelegate.networkEngine updateCategoriesOnCompletion:^(NSDictionary* dictionary){
+        
+        BOOL registryResultOk = [appDelegate.mainRegistry registerCategoriesFromDictionary: dictionary];
+        if (!registryResultOk) {
+            DebugLog(@"*** Cannot Register Genre Objects! ***");
+            return;
+        }
+        
+        [self loadCategories];
+        
+    } onError:^(NSError* error) {
+        DebugLog(@"%@", [error debugDescription]);
+    }];
+}
 
 #pragma mark - Table view data source
 
@@ -218,14 +257,14 @@
 -(UIView*)tableView:(UITableView *)tableView viewForHeaderInSection:(NSInteger)section
 {
     NSDictionary* dictionary = self.transientDatasource[section];
-    SYNChannelCategoryTableHeader *header = [self.headerRegister objectForKey:@(section)];
+    SYNChannelCategoryTableHeader *header = (self.headerRegister)[@(section)];
     if(!header)
     {
         header = [[SYNChannelCategoryTableHeader alloc] init];
-        [self.headerRegister setObject:header forKey:@(section)];
+        (self.headerRegister)[@(section)] = header;
     }
     [header layoutSubviews];
-    header.titleLabel.text = [dictionary objectForKey:kCategoryNameKey];
+    header.titleLabel.text = dictionary[kCategoryNameKey];
     if([dictionary valueForKey:kSubCategoriesKey])
     {
         header.backgroundImage.image = [UIImage imageNamed:@"CategorySlideSelected"];
@@ -291,7 +330,7 @@
 
 -(void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath
 {
-    SubGenre* subCategory = [[self.transientDatasource objectAtIndex:indexPath.section] objectForKey:kSubCategoriesKey][indexPath.row];
+    SubGenre* subCategory = (self.transientDatasource)[indexPath.section][kSubCategoriesKey][indexPath.row];
     //Callback to update content
     if(!self.confirmButton)
     {
@@ -309,15 +348,15 @@
 
 -(void)pressedHeader:(UIButton*)header;
 {
-    SYNChannelCategoryTableHeader* headerView = [self.headerRegister objectForKey:@(header.tag)];
+    SYNChannelCategoryTableHeader* headerView = (self.headerRegister)[@(header.tag)];
     headerView.backgroundImage.image = [UIImage imageNamed:@"CategorySlideHighlighted"];
 }
 
 -(void)releasedHeader:(UIButton*)header
 {
-    SYNChannelCategoryTableHeader* headerView = [self.headerRegister objectForKey:@(header.tag)];
+    SYNChannelCategoryTableHeader* headerView = (self.headerRegister)[@(header.tag)];
     NSMutableDictionary* sectionDictionary = self.transientDatasource[header.tag];
-    NSArray* subCategories = [sectionDictionary objectForKey:kSubCategoriesKey];
+    NSArray* subCategories = sectionDictionary[kSubCategoriesKey];
     if(subCategories)
     {
         headerView.backgroundImage.image = [UIImage imageNamed:@"CategorySlideSelected"];
@@ -404,8 +443,8 @@
     NSSortDescriptor* idSortDescriptor = [[NSSortDescriptor alloc] initWithKey: @"priority"
                                                                      ascending: NO];
     newSubCategories = [newSubCategories sortedArrayUsingDescriptors:@[idSortDescriptor]];
-    [sectionDictionary setObject:newSubCategories forKey:kSubCategoriesKey];
-    [self.transientDatasource replaceObjectAtIndex:section withObject:sectionDictionary];
+    sectionDictionary[kSubCategoriesKey] = newSubCategories;
+    (self.transientDatasource)[section] = sectionDictionary;
     
     NSMutableArray* indexPaths = [NSMutableArray arrayWithCapacity:[newSubCategories count]];
     for(int i=0; i< [newSubCategories count]; i++)
@@ -414,7 +453,7 @@
     }
     [self.tableView insertRowsAtIndexPaths:indexPaths withRowAnimation:UITableViewRowAnimationTop];
     
-    SYNChannelCategoryTableHeader* headerView = [self.headerRegister objectForKey:@(section)];
+    SYNChannelCategoryTableHeader* headerView = (self.headerRegister)[@(section)];
     [UIView transitionWithView:headerView duration:0.25 options:UIViewAnimationOptionTransitionCrossDissolve animations:^{
         headerView.titleLabel.textColor = [UIColor whiteColor];
         headerView.titleLabel.shadowColor = [UIColor colorWithWhite:1.0f alpha:0.15f];
@@ -437,16 +476,16 @@
 -(void)closeSection:(NSInteger)section
 {
     NSMutableDictionary* sectionDictionary = self.transientDatasource[section];
-    NSArray* subCategories = [sectionDictionary objectForKey:kSubCategoriesKey];
+    NSArray* subCategories = sectionDictionary[kSubCategoriesKey];
     [sectionDictionary removeObjectForKey:kSubCategoriesKey];
-    [self.transientDatasource replaceObjectAtIndex:section withObject:sectionDictionary];
+    (self.transientDatasource)[section] = sectionDictionary;
     NSMutableArray* indexPaths = [NSMutableArray arrayWithCapacity:[subCategories count]];
     for(int i=0; i< [subCategories count]; i++)
     {
         [indexPaths addObject:[NSIndexPath indexPathForRow:i inSection:section]];
     }
     [self.tableView deleteRowsAtIndexPaths:indexPaths withRowAnimation:UITableViewRowAnimationTop];
-    SYNChannelCategoryTableHeader* headerView = [self.headerRegister objectForKey:@(section)];
+    SYNChannelCategoryTableHeader* headerView = (self.headerRegister)[@(section)];
     [UIView transitionWithView:headerView duration:0.25 options:UIViewAnimationOptionTransitionCrossDissolve animations:^{
         headerView.titleLabel.textColor = [UIColor colorWithRed:106.0f/255.0f green:114.0f/255.0f blue:122.0f/255.0f alpha:1.0f];
         headerView.titleLabel.shadowColor = [UIColor colorWithWhite:1.0f alpha:0.75f];
@@ -564,7 +603,7 @@
                 [self tappedHeader:header.headerButton];
                 //Now try to get the index of the subGenre
                 NSMutableDictionary* sectionDictionary = self.transientDatasource[index];
-                NSArray* subGenres = [sectionDictionary objectForKey:kSubCategoriesKey];
+                NSArray* subGenres = sectionDictionary[kSubCategoriesKey];
                 if(subGenres)
                 {
                     int subCategoryIndex = [subGenres indexOfObject:subGenre];
@@ -602,7 +641,7 @@
             {
                 if([self.categoryTableControllerDelegate respondsToSelector:@selector(categoryTableController:didSelectSubCategory:)])
                 {
-                    SubGenre* subCategory = [self.transientDatasource[self.lastSelectedIndexpath.section] objectForKey:kSubCategoriesKey][self.lastSelectedIndexpath.row];
+                    SubGenre* subCategory = (self.transientDatasource[self.lastSelectedIndexpath.section])[kSubCategoriesKey][self.lastSelectedIndexpath.row];
                     [self.categoryTableControllerDelegate categoryTableController:self
                                                              didSelectSubCategory:subCategory];
                 }

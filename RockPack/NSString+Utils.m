@@ -17,7 +17,7 @@
     for (NSString *key in dictionary.allKeys)
     {
         newString = [newString stringByReplacingOccurrencesOfString: key
-                                                         withString: [dictionary objectForKey: key]];
+                                                         withString: dictionary[key]];
     }
     
     return newString;

@@ -215,7 +215,7 @@
             if(self.nameIsPublic != self.appDelegate.currentUser.fullNameIsPublicValue)
             {
                 
-                [self updateField:@"display_fullname" forValue:[NSNumber numberWithBool: self.nameIsPublic] withCompletionHandler:^{
+                [self updateField:@"display_fullname" forValue:@(self.nameIsPublic) withCompletionHandler:^{
                     
                     self.appDelegate.currentUser.fullNameIsPublicValue = self.nameIsPublic;
                     
