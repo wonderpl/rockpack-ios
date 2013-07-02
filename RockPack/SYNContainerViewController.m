@@ -243,20 +243,6 @@
 #pragma mark - Notification Methods
 
 
-
-
-- (void) backButtonWillShow
-{
-    self.scrollView.scrollEnabled = NO;
-}
-
-
-- (void) backButtonwillHide
-{
-    self.scrollView.scrollEnabled = YES;
-}
-
-
 - (void) navigateToPageByName: (NSString*) pageName
 {
     int page = 0;

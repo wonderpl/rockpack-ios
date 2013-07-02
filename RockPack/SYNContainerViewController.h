@@ -30,9 +30,6 @@
 -(void)refreshView;
 
 
-- (void) backButtonWillShow;
-- (void) backButtonwillHide;
-
 
 
 @end
