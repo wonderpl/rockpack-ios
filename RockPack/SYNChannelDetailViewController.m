@@ -2403,7 +2403,7 @@
         NSString* message = NSLocalizedString(@"onboarding_subscription", nil);
         PointingDirection direction = isIpad ? PointingDirectionLeft : PointingDirectionUp;
         CGFloat fontSize = isIpad ? 19.0 : 15.0 ;
-        CGSize size =  isIpad ? CGSizeMake(260.0, 164.0) : CGSizeMake(260.0, 148.0);
+        CGSize size =  isIpad ? CGSizeMake(290.0, 164.0) : CGSizeMake(260.0, 148.0);
         CGRect rectToPointTo = self.subscribeButton.frame;
         if(!isIpad)
             rectToPointTo = CGRectInset(rectToPointTo, 0.0, 6.0);
@@ -2434,7 +2434,7 @@
         NSString* message = NSLocalizedString(@"onboarding_video", nil);
         
         CGFloat fontSize = [[SYNDeviceManager sharedInstance] isIPad] ? 19.0 : 15.0 ;
-        CGSize size = [[SYNDeviceManager sharedInstance] isIPad] ? CGSizeMake(340.0, 164.0) : CGSizeMake(260.0, 144.0);
+        CGSize size = [[SYNDeviceManager sharedInstance] isIPad] ? CGSizeMake(320.0, 164.0) : CGSizeMake(250.0, 150.0);
        
                                         
         CGRect rectToPointTo = [self.view convertRect:randomCell.addItButton.frame fromView:randomCell];

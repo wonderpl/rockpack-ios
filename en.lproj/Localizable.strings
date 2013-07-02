@@ -120,8 +120,8 @@
 "your_video_object" = "your video";
 
 "onboarding_channels" = "To start, browse channels created\nby other people. A channel is a\ncollection of videos.";
-"onboarding_subscription" = "Tap this button to subscribe to a channel and get new videos in your feed.";
-"onboarding_video" = "Whenever you see a video you like tap the + button to add it to one of your channels.";
+"onboarding_subscription" = "Tap this button to subscribe to a channel and get new videos in your feed. It's free!";
+"onboarding_video" = "Tap the + button to add it to one of your channels.";
 
 
 
