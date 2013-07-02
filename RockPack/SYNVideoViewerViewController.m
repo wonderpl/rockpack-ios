@@ -36,36 +36,40 @@
 @interface SYNVideoViewerViewController () <UIGestureRecognizerDelegate>
 
 @property (nonatomic, assign) CGRect originalFrame;
+
 @property (nonatomic, assign) CGRect originalSwipeFrame;
 @property (nonatomic, assign) int currentSelectedIndex;
+@property (nonatomic, copy) NSArray *videoInstanceArray;
 @property (nonatomic, getter = isVideoExpanded) BOOL videoExpanded;
-@property (nonatomic, strong) IBOutlet SYNPassthroughView *blackPanelView;
-@property (nonatomic, strong) IBOutlet SYNPassthroughView *chromeView;
-@property (nonatomic, strong) IBOutlet SYNPassthroughView *passthroughView;
-@property (nonatomic, strong) IBOutlet SYNVideoPlaybackViewController *videoPlaybackViewController;
-@property (nonatomic, strong) IBOutlet UIButton *nextVideoButton;
-@property (nonatomic, strong) IBOutlet UIButton *previousVideoButton;
-@property (nonatomic, strong) IBOutlet UIButton *starButton;
-@property (nonatomic, strong) IBOutlet UICollectionView *videoThumbnailCollectionView;
-@property (nonatomic, strong) IBOutlet UIImageView *channelThumbnailImageView;
-@property (nonatomic, strong) IBOutlet UIImageView *panelImageView;
 @property (nonatomic, strong) IBOutlet BBCyclingLabel *channelCreatorLabel;
 @property (nonatomic, strong) IBOutlet BBCyclingLabel *channelTitleLabel;
 @property (nonatomic, strong) IBOutlet BBCyclingLabel *videoTitleLabel;
+@property (nonatomic, strong) IBOutlet SYNPassthroughView *blackPanelView;
+@property (nonatomic, strong) IBOutlet SYNPassthroughView *chromeView;
+@property (nonatomic, strong) IBOutlet SYNPassthroughView *passthroughView;
 @property (nonatomic, strong) IBOutlet SYNPassthroughView *placeholderView;
-@property (nonatomic, strong) IBOutlet UIView *swipeView;
+@property (nonatomic, strong) IBOutlet SYNVideoPlaybackViewController *videoPlaybackViewController;
 @property (nonatomic, strong) IBOutlet UIActivityIndicatorView *heartActivityIndicator;
 @property (nonatomic, strong) IBOutlet UIActivityIndicatorView *shareActivityIndicator;
-@property (nonatomic, copy) NSArray *videoInstanceArray;
+@property (nonatomic, strong) IBOutlet UIButton *nextVideoButton;
+@property (nonatomic, strong) IBOutlet UIButton *previousVideoButton;
+@property (nonatomic, strong) IBOutlet UIButton *starButton;
+@property (nonatomic, strong) IBOutlet UIButton* reportConcernButton;
+@property (nonatomic, strong) IBOutlet UICollectionView *videoThumbnailCollectionView;
+@property (nonatomic, strong) IBOutlet UIImageView *channelThumbnailImageView;
+@property (nonatomic, strong) IBOutlet UIImageView *panelImageView;
+@property (nonatomic, strong) IBOutlet UIView *swipeView;
 @property (nonatomic, strong) SYNReportConcernTableViewController *reportConcernTableViewController;
 @property (nonatomic, strong) SYNVideoViewerThumbnailLayout *layout;
-@property (nonatomic, strong) IBOutlet UIButton* reportConcernButton;
+@property (nonatomic, strong) UISwipeGestureRecognizer* leftSwipeRecogniser;
+@property (nonatomic, strong) UISwipeGestureRecognizer* rightSwipeRecogniser;
+@property (nonatomic, strong) UITapGestureRecognizer* tapRecogniser;
 @property (weak, nonatomic) IBOutlet UIButton *addVideoButton;
 @property (weak, nonatomic) IBOutlet UIButton *shareButton;
 
 //iPhone specific
-@property (nonatomic, assign) UIDeviceOrientation currentOrientation;
 
+@property (nonatomic, assign) UIDeviceOrientation currentOrientation;
 @property (nonatomic, strong) NSMutableArray* favouritesStatusArray;
 
 @end
@@ -73,7 +77,7 @@
 
 @implementation SYNVideoViewerViewController 
 
-#pragma mark - Initialisation
+#pragma mark - Object lifecycle
 
 - (id) initWithVideoInstanceArray: (NSArray *) videoInstanceArray
                     selectedIndex: (int) selectedIndex;
@@ -94,6 +98,18 @@
     
 	return self;
 }
+
+
+- (void) dealloc
+{
+    // Defensive programming
+    self.rightSwipeRecogniser.delegate = nil;
+    self.leftSwipeRecogniser.delegate = nil;
+    self.tapRecogniser.delegate = nil;
+}
+
+
+#pragma mark - View lifecycle
 
 
 #pragma mark - View lifecycle
@@ -226,25 +242,25 @@
     self.addButton.center = CGPointMake(self.videoPlaybackViewController.view.frame.origin.x + self.videoPlaybackViewController.view.frame.size.width - self.addButton.frame.size.width/2.0f, self.videoPlaybackViewController.view.frame.origin.y - self.addButton.frame.size.height/2.0f - 10.f);
     [videoView addSubview:self.addButton];
     
-    UISwipeGestureRecognizer* rightSwipeRecogniser = [[UISwipeGestureRecognizer alloc] initWithTarget: self
-                                                                                               action: @selector(userTouchedPreviousVideoButton:)];
+    self.rightSwipeRecogniser = [[UISwipeGestureRecognizer alloc] initWithTarget: self
+                                                                          action: @selector(userTouchedPreviousVideoButton:)];
     
-    rightSwipeRecogniser.delegate = self;
-    [rightSwipeRecogniser setDirection: UISwipeGestureRecognizerDirectionRight];
-    [self.swipeView addGestureRecognizer:rightSwipeRecogniser];
+    self.rightSwipeRecogniser.delegate = self;
+    [self.rightSwipeRecogniser setDirection: UISwipeGestureRecognizerDirectionRight];
+    [self.swipeView addGestureRecognizer: self.rightSwipeRecogniser];
     
-    UISwipeGestureRecognizer* leftSwipeRecogniser = [[UISwipeGestureRecognizer alloc] initWithTarget: self
-                                                                                              action: @selector(userTouchedNextVideoButton:)];
+    self.leftSwipeRecogniser = [[UISwipeGestureRecognizer alloc] initWithTarget: self
+                                                                         action: @selector(userTouchedNextVideoButton:)];
     
-    leftSwipeRecogniser.delegate = self;
-    [leftSwipeRecogniser setDirection: UISwipeGestureRecognizerDirectionLeft];
-    [self.swipeView addGestureRecognizer: leftSwipeRecogniser];
+    self.leftSwipeRecogniser.delegate = self;
+    [self.leftSwipeRecogniser setDirection: UISwipeGestureRecognizerDirectionLeft];
+    [self.swipeView addGestureRecognizer: self.leftSwipeRecogniser];
     
-    UITapGestureRecognizer* tapRecogniser = [[UITapGestureRecognizer alloc] initWithTarget: self
-                                                                                    action: @selector(userTappedVideo)];
+    self.tapRecogniser = [[UITapGestureRecognizer alloc] initWithTarget: self
+                                                                 action: @selector(userTappedVideo)];
     
-    tapRecogniser.delegate = self;
-    [self.swipeView addGestureRecognizer: tapRecogniser];
+    self.tapRecogniser.delegate = self;
+    [self.swipeView addGestureRecognizer: self.tapRecogniser];
     
     if ([videoInstance.channel.channelOwner.displayName length] == 0)
     {

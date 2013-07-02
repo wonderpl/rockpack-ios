@@ -31,6 +31,8 @@
 @synthesize spinner;
 @synthesize sizeInContainer;
 
+#pragma mark - Object lifecycle
+
 - (id) initWithUserFieldType: (UserFieldType) userFieldType
 {
     if (self = [super init])
@@ -43,6 +45,15 @@
     return self;
 }
 
+
+- (void) dealloc
+{
+    // Defensive programming
+    self.inputField.delegate = nil;
+}
+
+
+#pragma mark - View lifecycle
 
 - (void) viewWillAppear: (BOOL) animated
 {

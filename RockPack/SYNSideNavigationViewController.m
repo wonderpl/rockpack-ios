@@ -77,6 +77,9 @@ typedef enum {
 @synthesize currentlyLoadedViewController = _currentlyLoadedViewController;
 @synthesize state = _state;
 
+
+#pragma mark - Object lifecycle
+
 - (id) init
 {
     if ((self = [super initWithNibName: @"SYNSideNavigationViewController"
@@ -104,6 +107,14 @@ typedef enum {
     }
         
     return self;
+}
+
+
+- (void) dealloc
+{
+    // Defensive programming
+    self.searchViewController.searchBoxView.searchTextField.delegate = nil;
+    self.imagePickerController.delegate = nil;
 }
 
 
@@ -203,12 +214,12 @@ typedef enum {
 {
     [super viewWillAppear: animated];
     
-    id<GAITracker> tracker = [GAI sharedInstance].defaultTracker;
-    
-    [tracker sendEventWithCategory: @"uiAction"
-                        withAction: @"mainNavClick"
-                         withLabel: nil
-                         withValue: nil];
+//    id<GAITracker> tracker = [GAI sharedInstance].defaultTracker;
+//    
+//    [tracker sendEventWithCategory: @"uiAction"
+//                        withAction: @"mainNavClick"
+//                         withLabel: nil
+//                         withValue: nil];
 }
 
 
@@ -457,12 +468,12 @@ typedef enum {
     }
     
     // Google analytics
-    id<GAITracker> tracker = [GAI sharedInstance].defaultTracker;
-    
-    [tracker sendEventWithCategory: @"uiAction"
-                        withAction: @"mainNavClick"
-                         withLabel: navigationAction
-                         withValue: nil];
+//    id<GAITracker> tracker = [GAI sharedInstance].defaultTracker;
+//    
+//    [tracker sendEventWithCategory: @"uiAction"
+//                        withAction: @"mainNavClick"
+//                         withLabel: navigationAction
+//                         withValue: nil];
 }
 
 

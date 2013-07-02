@@ -89,7 +89,7 @@ typedef void(^AnimationCompletionBlock)(BOOL finished);
 @synthesize isDragging, buttonLocked;
 @synthesize overlayNavigationController = _overlayNavigationController;
 
-#pragma mark - Initialise
+#pragma mark - Object lifecycle
 
 - (id) initWithContainerViewController: (SYNContainerViewController*) root
 {
@@ -130,9 +130,14 @@ typedef void(^AnimationCompletionBlock)(BOOL finished);
 }
 
 
+- (void) dealloc
+{
+    // Defensive programming
+    self.accountSettingsPopover.delegate = nil;
+}
 
 
-#pragma mark - Life Cycle
+#pragma mark - View lifecycle
 
 
 - (void) viewDidLoad

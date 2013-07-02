@@ -104,6 +104,15 @@ static UIWebView* vimeoideoWebViewInstance;
     return _sharedInstance;
 }
 
+#pragma mark - Object lifecycle
+
+- (void) dealloc
+{
+    // Defensive programming
+    self.currentVideoWebView.delegate = nil;
+    self.placeholderBottomLayerAnimation.delegate = nil;
+    self.placeholderMiddleLayerAnimation.delegate = nil;
+}
 
 
 // Common setup for all video web views

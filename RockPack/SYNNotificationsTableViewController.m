@@ -104,13 +104,11 @@
     SYNRockpackNotification* notification = (SYNRockpackNotification*)_notifications[indexPath.row];
     
     NSMutableString* constructedMessage = [[NSMutableString alloc] init];
-    [constructedMessage appendFormat:@"%@", [notification.channelOwner.displayName uppercaseString]];
-    [constructedMessage appendString:@" has "];
-    [constructedMessage appendFormat:@"%@", notification.messageType];
+    [constructedMessage appendFormat:@"%@ ", [notification.channelOwner.displayName uppercaseString]];
     if([notification.messageType isEqualToString:@"subscribed"])
-        [constructedMessage appendString:@" to your channel"];
+        [constructedMessage appendString: NSLocalizedString(@"notification_subscribed_action", nil)];
     else
-        [constructedMessage appendString:@" your video"];
+        [constructedMessage appendString: NSLocalizedString(@"notification_liked_action", nil)];
     
     
     
