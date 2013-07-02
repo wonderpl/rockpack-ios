@@ -72,7 +72,8 @@
 
 - (void) viewWillAppear: (BOOL) animated
 {
-    // override the data loading
+    [super viewWillAppear:animated];
+  
     [self displayChannelsForGenre];
     
     // Google analytics support
