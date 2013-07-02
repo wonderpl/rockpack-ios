@@ -309,13 +309,13 @@
                                                     return;
                                                 }
                                                 
-                                                NSString *message = [errorInfo objectForKey: @"message"];
+                                                NSString *message = errorInfo[@"message"];
                                                 
                                                 if (message)
                                                 {
                                                     if ([message isKindOfClass: [NSArray class]])
                                                     {
-                                                        self.errorLabel.text = (NSString *) [((NSArray *) message)objectAtIndex : 0];
+                                                        self.errorLabel.text = (NSString *) ((NSArray *) message)[0];
                                                     }
                                                     else if ([message isKindOfClass: [NSString class]])
                                                     {
@@ -344,7 +344,7 @@
 - (void)keyboardWasShown:(NSNotification*)aNotification
 {
     NSDictionary* info = [aNotification userInfo];
-    CGSize kbSize = [[info objectForKey:UIKeyboardFrameBeginUserInfoKey] CGRectValue].size;
+    CGSize kbSize = [info[UIKeyboardFrameBeginUserInfoKey] CGRectValue].size;
     CGFloat topOfKeyboard = [[SYNDeviceManager sharedInstance] currentScreenHeight] - MIN(kbSize.height,kbSize.width); //Keyboard is relative to fixed orientation. Always use smallest dimension.
     CGPoint bottomOfScrollView = [self.view.window.rootViewController.view convertPoint:CGPointMake(0.0, self.scrollView.frame.size.height + self.scrollView.frame.origin.y) fromView:self.view];
     bottomOfScrollView.y +=20.0f; //statusbar
