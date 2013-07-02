@@ -21,7 +21,6 @@
 #import "SYNMasterViewController.h"
 #import "SYNNetworkErrorView.h"
 #import "SYNOAuthNetworkEngine.h"
-#import "SYNObjectFactory.h"
 #import "SYNPageView.h"
 #import "SYNCautionMessageView.h"
 #import "SYNSearchBoxViewController.h"
@@ -382,7 +381,7 @@ typedef void(^AnimationCompletionBlock)(BOOL finished);
 -(void)pageChanged:(NSInteger)pageNumber
 {
     
-    self.pageTitleLabel.text = [self.containerViewController.showingBaseViewController.title uppercaseString];
+    self.pageTitleLabel.text = [self.containerViewController.showingViewController.title uppercaseString];
     
     
     if(self.sideNavigationViewController.state == SideNavigationStateFull)
@@ -392,7 +391,7 @@ typedef void(^AnimationCompletionBlock)(BOOL finished);
     }
     else
     {
-        NSString* controllerTitle = self.containerViewController.showingBaseViewController.title;
+        NSString* controllerTitle = self.containerViewController.showingViewController.title;
         
         [self.sideNavigationViewController setSelectedCellByPageName:controllerTitle];
 
@@ -575,7 +574,7 @@ typedef void(^AnimationCompletionBlock)(BOOL finished);
 
 - (void) showSideNavigation
 {
-    NSString* controllerTitle = self.containerViewController.showingBaseViewController.title;
+    NSString* controllerTitle = self.containerViewController.showingViewController.title;
     
     [self.sideNavigationViewController setSelectedCellByPageName: controllerTitle];
     
@@ -783,7 +782,7 @@ typedef void(^AnimationCompletionBlock)(BOOL finished);
     if(!self.overlayNavigationController)
     {        
         self.searchViewController = [[SYNSearchRootViewController alloc] initWithViewId: kSearchViewId];
-        self.overlayNavigationController = [SYNObjectFactory wrapInNavigationController: self.searchViewController];
+        self.overlayNavigationController = self.searchViewController;
     }
     else if([[SYNDeviceManager sharedInstance] isIPhone])
     {
@@ -999,7 +998,7 @@ typedef void(^AnimationCompletionBlock)(BOOL finished);
     if (showingBackButton)
     {
         //pop the current section navcontroller to the root controller
-        SYNAbstractViewController* abstractVC = (SYNAbstractViewController *)self.containerViewController.showingBaseViewController;
+        SYNAbstractViewController* abstractVC = self.containerViewController.showingViewController;
         [abstractVC animatedPopToRootViewController];
         
         [self showBackButton:NO];
@@ -1187,7 +1186,7 @@ typedef void(^AnimationCompletionBlock)(BOOL finished);
     }
     else
     {
-        abstractVC = (SYNAbstractViewController *)self.containerViewController.showingBaseViewController;
+        abstractVC = (SYNAbstractViewController *)self.containerViewController.showingViewController;
         
         [abstractVC animatedPopViewController];
         
@@ -1511,7 +1510,7 @@ typedef void(^AnimationCompletionBlock)(BOOL finished);
 
             // if the controller underneath has not popped controllers to its stack, hide back button //
 
-            if(self.containerViewController.showingBaseViewController.navigationController.viewControllers.count == 1)
+            if(self.containerViewController.showingViewController.navigationController.viewControllers.count == 1)
             {
                 [self showBackButton:NO];
             }
@@ -1576,7 +1575,7 @@ typedef void(^AnimationCompletionBlock)(BOOL finished);
     if (self.overlayNavigationController)
         absctractVc = (SYNAbstractViewController*)self.overlayNavigationController.viewControllers[0];
     else
-        absctractVc = self.containerViewController.showingBaseViewController;
+        absctractVc = self.containerViewController.showingViewController;
     
     return absctractVc;
 }

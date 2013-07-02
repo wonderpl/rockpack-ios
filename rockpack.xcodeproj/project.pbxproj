@@ -1141,7 +1141,6 @@
 		BED4312B16F20CD70051465B /* RegexKitLite.m in Sources */ = {isa = PBXBuildFile; fileRef = BED4312A16F20CD70051465B /* RegexKitLite.m */; settings = {COMPILER_FLAGS = "-fno-objc-arc"; }; };
 		BEE4A6C2170B5640008F9D05 /* SYNAccountSettingsEmail.m in Sources */ = {isa = PBXBuildFile; fileRef = BEE4A6C1170B563E008F9D05 /* SYNAccountSettingsEmail.m */; };
 		BEE4A6C5170B56B5008F9D05 /* SYNAccountSettingsUsername.m in Sources */ = {isa = PBXBuildFile; fileRef = BEE4A6C4170B56B4008F9D05 /* SYNAccountSettingsUsername.m */; };
-		BEE732B71727D81A0083E1B9 /* SYNObjectFactory.m in Sources */ = {isa = PBXBuildFile; fileRef = BEE732B61727D81A0083E1B9 /* SYNObjectFactory.m */; };
 		BEE732BA1727D99E0083E1B9 /* SYNContainerScrollView.m in Sources */ = {isa = PBXBuildFile; fileRef = BEE732B91727D99E0083E1B9 /* SYNContainerScrollView.m */; };
 		BEEB6F1C1721713500FEFA43 /* PanelMenuBottom.png in Resources */ = {isa = PBXBuildFile; fileRef = BEEB6F1A1721713500FEFA43 /* PanelMenuBottom.png */; };
 		BEEB6F1D1721713500FEFA43 /* PanelMenuBottom@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = BEEB6F1B1721713500FEFA43 /* PanelMenuBottom@2x.png */; };
@@ -2495,8 +2494,6 @@
 		BEE4A6C1170B563E008F9D05 /* SYNAccountSettingsEmail.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SYNAccountSettingsEmail.m; sourceTree = "<group>"; };
 		BEE4A6C3170B56B3008F9D05 /* SYNAccountSettingsUsername.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SYNAccountSettingsUsername.h; sourceTree = "<group>"; };
 		BEE4A6C4170B56B4008F9D05 /* SYNAccountSettingsUsername.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SYNAccountSettingsUsername.m; sourceTree = "<group>"; };
-		BEE732B51727D81A0083E1B9 /* SYNObjectFactory.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SYNObjectFactory.h; sourceTree = "<group>"; };
-		BEE732B61727D81A0083E1B9 /* SYNObjectFactory.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SYNObjectFactory.m; sourceTree = "<group>"; };
 		BEE732B81727D99E0083E1B9 /* SYNContainerScrollView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SYNContainerScrollView.h; sourceTree = "<group>"; };
 		BEE732B91727D99E0083E1B9 /* SYNContainerScrollView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SYNContainerScrollView.m; sourceTree = "<group>"; };
 		BEEB6F1A1721713500FEFA43 /* PanelMenuBottom.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = PanelMenuBottom.png; path = Assets/Images/PanelMenuBottom.png; sourceTree = "<group>"; };
@@ -3235,7 +3232,6 @@
 			children = (
 				0154E8451768E25B001C7B75 /* Timers */,
 				012BD2C7173BE84C00BE28B6 /* Async Image load and cache */,
-				BEE732B41727D7FD0083E1B9 /* Object Factory */,
 				BE285DB91726826800D995AB /* Channels Manager */,
 				0173E6C5171822BF00EEE76B /* Google Analytics */,
 				BE7D34CB171443330085AB81 /* Device */,
@@ -4991,15 +4987,6 @@
 			name = RegexKitLite;
 			sourceTree = "<group>";
 		};
-		BEE732B41727D7FD0083E1B9 /* Object Factory */ = {
-			isa = PBXGroup;
-			children = (
-				BEE732B51727D81A0083E1B9 /* SYNObjectFactory.h */,
-				BEE732B61727D81A0083E1B9 /* SYNObjectFactory.m */,
-			);
-			name = "Object Factory";
-			sourceTree = "<group>";
-		};
 		BEF9E5A516DBCDEF00286113 /* Components */ = {
 			isa = PBXGroup;
 			children = (
@@ -6274,7 +6261,6 @@
 				BE285D9F172584E200D995AB /* SYNChannelCreateNewCell.m in Sources */,
 				BE285DB01725A23300D995AB /* SYNNetworkErrorView.m in Sources */,
 				BE285DBC1726828F00D995AB /* SYNChannelManager.m in Sources */,
-				BEE732B71727D81A0083E1B9 /* SYNObjectFactory.m in Sources */,
 				BEE732BA1727D99E0083E1B9 /* SYNContainerScrollView.m in Sources */,
 				0111CDFC1729314E00612186 /* SYNCoverThumbnailCell.m in Sources */,
 				01F1B85D17297471005735AF /* CoverArt.m in Sources */,
