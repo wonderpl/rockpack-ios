@@ -17,6 +17,7 @@
 #import "OWActivityViewController.h"
 #import "SYNAbstractViewController.h"
 #import "SYNAppDelegate.h"
+#import "SYNMasterViewController.h"
 #import "SYNChannelDetailViewController.h"
 #import "SYNContainerViewController.h"
 #import "SYNDeviceManager.h"
@@ -156,86 +157,22 @@
 #pragma mark - Animation support
 
 // Special animation of pushing new view controller onto UINavigationController's stack
-- (void) animatedPushViewController: (UIViewController *) vc
+- (void) animatedPushViewController: (SYNAbstractViewController *) controller
 {
-    self.view.alpha = 1.0f;
-    vc.view.alpha = 0.0f;
     
-    self.isAnimating = YES;
+    [appDelegate.masterViewController pushController:controller];
     
-    [UIView animateWithDuration: 0.5f
-                          delay: 0.0f
-                        options: UIViewAnimationOptionCurveEaseInOut | UIViewAnimationOptionBeginFromCurrentState
-                     animations: ^ {
-                         // Contract thumbnail view
-                         self.view.alpha = 0.0f;
-                         vc.view.alpha = 1.0f;
-                     }
-                     completion:^(BOOL finished) {
-                         self.isAnimating = NO;
-                     }];
     
-    [self.navigationController pushViewController: vc
-                                         animated: NO];
-    
-    [[NSNotificationCenter defaultCenter] postNotificationName: kNoteBackButtonShow
-                                                        object: self];
 }
 
 
 - (void) animatedPopViewController
 {
-    NSInteger viewControllersCount = self.navigationController.viewControllers.count;
     
-    if (viewControllersCount < 2) // we must have at least two to pop one
-        return;
-
-    UIViewController *parentVC = self.navigationController.viewControllers[viewControllersCount - 2];
-    parentVC.view.alpha = 0.0f;
+    [appDelegate.masterViewController popController];
     
-    UIViewController *currentVC = self.navigationController.viewControllers[viewControllersCount - 1];
-
-    [UIView animateWithDuration: 0.5f
-                          delay: 0.0f
-                        options: UIViewAnimationOptionCurveEaseInOut
-                     animations: ^{
-         
-         currentVC.view.alpha = 0.0f;
-         parentVC.view.alpha = 1.0f;
-         
-     } completion: ^(BOOL finished) {
-//         DebugLog(@"");
-     }];
-    
-    [self.navigationController popViewControllerAnimated:NO];
 }
 
-- (void) animatedPopToRootViewController
-{
-    NSInteger viewControllersCount = self.navigationController.viewControllers.count;
-    
-    if (viewControllersCount < 2) // we must have at least two to pop one
-        return;
-    
-    UIViewController *targetVC = self.navigationController.viewControllers[0];
-    targetVC.view.alpha = 0.0f;
-    
-    UIViewController *currentVC =self.navigationController.viewControllers[viewControllersCount - 1];
-    
-    [UIView animateWithDuration: 0.5f
-                          delay: 0.0f
-                        options: UIViewAnimationOptionCurveEaseInOut
-                     animations: ^{
-                         
-                         currentVC.view.alpha = 0.0f;
-                         targetVC.view.alpha = 1.0f;
-                         
-                     } completion: ^(BOOL finished) {
-//                         DebugLog(@"");
-                     }];
-    
-    [self.navigationController popToViewController:targetVC animated:NO];
-}
 
 
 // This can be overridden if updating star may cause the videoFetchedResults

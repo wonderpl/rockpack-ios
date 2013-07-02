@@ -786,8 +786,7 @@ typedef void(^AnimationCompletionBlock)(BOOL finished);
     }
     else if([[SYNDeviceManager sharedInstance] isIPhone])
     {
-        SYNAbstractViewController* topController = (SYNAbstractViewController*)self.searchViewController.navigationController.topViewController;
-        [topController animatedPopToRootViewController];
+        [self popToRootController];
     }
     
     if([[SYNDeviceManager sharedInstance] isIPhone])
@@ -998,8 +997,7 @@ typedef void(^AnimationCompletionBlock)(BOOL finished);
     if (showingBackButton)
     {
         //pop the current section navcontroller to the root controller
-        SYNAbstractViewController* abstractVC = self.containerViewController.showingViewController;
-        [abstractVC animatedPopToRootViewController];
+        [self popToRootController];
         
         [self showBackButton:NO];
         
@@ -1642,6 +1640,82 @@ typedef void(^AnimationCompletionBlock)(BOOL finished);
 -(SYNContainerViewController*)containerViewController
 {
     return (SYNContainerViewController*)self.mainNavigationController.viewControllers[0];
+}
+
+#pragma mark - NavigationController Methods
+
+-(void)pushController:(SYNAbstractViewController*)controller
+{
+    self.view.alpha = 1.0f;
+    controller.view.alpha = 0.0f;
+    
+    //self.isAnimating = YES;
+    
+    [UIView animateWithDuration: 0.5f
+                          delay: 0.0f
+                        options: UIViewAnimationOptionCurveEaseInOut | UIViewAnimationOptionBeginFromCurrentState
+                     animations: ^ {
+                         // Contract thumbnail view
+                         self.view.alpha = 0.0f;
+                         controller.view.alpha = 1.0f;
+                     }
+                     completion:^(BOOL finished) {
+                         //controllerself.isAnimating = NO;
+                     }];
+    
+    [self.mainNavigationController pushViewController:controller animated: NO];
+}
+-(void)popController
+{
+    NSInteger viewControllersCount = self.mainNavigationController.viewControllers.count;
+    
+    if (viewControllersCount < 2) // we must have at least two to pop one
+        return;
+    
+    UIViewController *parentVC = self.mainNavigationController.viewControllers[viewControllersCount - 2];
+    parentVC.view.alpha = 0.0f;
+    
+    UIViewController *currentVC = self.mainNavigationController.viewControllers[viewControllersCount - 1];
+    
+    [UIView animateWithDuration: 0.5f
+                          delay: 0.0f
+                        options: UIViewAnimationOptionCurveEaseInOut
+                     animations: ^{
+                         
+                         currentVC.view.alpha = 0.0f;
+                         parentVC.view.alpha = 1.0f;
+                         
+                     } completion: ^(BOOL finished) {
+                         
+                     }];
+    
+    [self.mainNavigationController popViewControllerAnimated:NO];
+}
+-(void)popToRootController
+{
+    NSInteger viewControllersCount = self.mainNavigationController.viewControllers.count;
+    
+    if (viewControllersCount < 2) // we must have at least two to pop one
+        return;
+    
+    UIViewController *targetVC = self.mainNavigationController.viewControllers[0];
+    targetVC.view.alpha = 0.0f;
+    
+    UIViewController *currentVC =self.mainNavigationController.viewControllers[viewControllersCount - 1];
+    
+    [UIView animateWithDuration: 0.5f
+                          delay: 0.0f
+                        options: UIViewAnimationOptionCurveEaseInOut
+                     animations: ^{
+                         
+                         currentVC.view.alpha = 0.0f;
+                         targetVC.view.alpha = 1.0f;
+                         
+                     } completion: ^(BOOL finished) {
+                         
+                     }];
+    
+    [self.mainNavigationController popViewControllerAnimated:NO];
 }
 
 

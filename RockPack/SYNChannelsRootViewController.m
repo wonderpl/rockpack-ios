@@ -256,7 +256,7 @@
 }
 
 
-- (void) animatedPushViewController: (UIViewController *) vc
+- (void) animatedPushViewController: (SYNAbstractViewController *) vc
 {
     [super animatedPushViewController:vc];
     

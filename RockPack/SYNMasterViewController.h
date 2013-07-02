@@ -17,7 +17,7 @@
 typedef void (^VideoOverlayDismissBlock)(void);
 
 @interface SYNMasterViewController : GAITrackedViewController <UIPopoverControllerDelegate,
-                                                                UIGestureRecognizerDelegate>
+                                                                UIGestureRecognizerDelegate, UINavigationControllerDelegate>
 
 {
     SYNAppDelegate* appDelegate;
@@ -43,6 +43,9 @@ typedef void (^VideoOverlayDismissBlock)(void);
 
 - (void) removeVideoOverlayController;
 
+-(void)pushController:(SYNAbstractViewController*)controller;
+-(void)popController;
+-(void)popToRootController;
 
 
 @end
