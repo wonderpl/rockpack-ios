@@ -80,7 +80,8 @@ typedef void(^AnimationCompletionBlock)(BOOL finished);
 
 @implementation SYNMasterViewController
 
-@synthesize containerViewController;
+@dynamic containerViewController;
+
 @synthesize pageTitleLabel;
 @synthesize showingBackButton;
 @synthesize mainNavigationController;
@@ -104,7 +105,7 @@ typedef void(^AnimationCompletionBlock)(BOOL finished);
         
         // == main navigation == //
         
-        self.mainNavigationController = [[UINavigationController alloc] initWithRootViewController:self.containerViewController];
+        self.mainNavigationController = [[UINavigationController alloc] initWithRootViewController:root];
         self.mainNavigationController.navigationBarHidden = YES;
         self.mainNavigationController.view.autoresizesSubviews = YES;
         self.mainNavigationController.view.autoresizingMask = UIViewAutoresizingFlexibleWidth|UIViewAutoresizingFlexibleHeight;
@@ -194,7 +195,7 @@ typedef void(^AnimationCompletionBlock)(BOOL finished);
     // == Add the Root Navigation Controller == //
 
     self.mainNavigationController.view.frame = self.view.frame;
-    [self.view addSubview:self.mainNavigationController.view];
+    [self.view insertSubview:self.mainNavigationController.view atIndex:0];
     
 
     self.existingChannelsController = [[SYNExistingChannelsViewController alloc] initWithViewId:kExistingChannelsViewId];
