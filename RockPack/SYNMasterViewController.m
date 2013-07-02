@@ -776,12 +776,14 @@ typedef void(^AnimationCompletionBlock)(BOOL finished);
         
     }
     
-    [self pushController:self.searchViewController];
     
     if([[SYNDeviceManager sharedInstance] isIPhone])
     {
         [self popToRootController];
     }
+    
+    
+    [self pushController:self.searchViewController];
     
     if([[SYNDeviceManager sharedInstance] isIPhone])
     {
@@ -1499,6 +1501,7 @@ typedef void(^AnimationCompletionBlock)(BOOL finished);
     if([viewController isKindOfClass:[SYNContainerViewController class]]) // special case for the container which is not an abstract view controller
     {
         [self changeControlButtonsTo:NavigationButtonsAppearenceBlack];
+        [self cancelButtonPressed:nil];
     }
     else
     {
