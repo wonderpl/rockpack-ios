@@ -159,6 +159,7 @@
 		015CB01616AE039900FEB8E7 /* User.m in Sources */ = {isa = PBXBuildFile; fileRef = 015CB01516AE039900FEB8E7 /* User.m */; };
 		015CB01916AE03B200FEB8E7 /* _User.m in Sources */ = {isa = PBXBuildFile; fileRef = 015CB01816AE03B200FEB8E7 /* _User.m */; };
 		015CEE3F16B9E7DB004BC7A0 /* SYNIntegralCollectionViewFlowLayout.m in Sources */ = {isa = PBXBuildFile; fileRef = 015CEE3E16B9E7DB004BC7A0 /* SYNIntegralCollectionViewFlowLayout.m */; };
+		016191711782DECD0016BD23 /* PSPDFUIKitMainThreadGuard.m in Sources */ = {isa = PBXBuildFile; fileRef = 016191701782DECD0016BD23 /* PSPDFUIKitMainThreadGuard.m */; settings = {COMPILER_FLAGS = "-fno-objc-arc"; }; };
 		0166A51217688AA100A75B9D /* FacebookSDK.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 0166A51117688AA100A75B9D /* FacebookSDK.framework */; };
 		0166A51517688AD600A75B9D /* FacebookSDKResources.bundle in Resources */ = {isa = PBXBuildFile; fileRef = 0166A51317688AD600A75B9D /* FacebookSDKResources.bundle */; };
 		0166A51617688AD600A75B9D /* FBUserSettingsViewResources.bundle in Resources */ = {isa = PBXBuildFile; fileRef = 0166A51417688AD600A75B9D /* FBUserSettingsViewResources.bundle */; };
@@ -1367,6 +1368,7 @@
 		015CB01816AE03B200FEB8E7 /* _User.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = _User.m; sourceTree = "<group>"; };
 		015CEE3D16B9E7DB004BC7A0 /* SYNIntegralCollectionViewFlowLayout.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SYNIntegralCollectionViewFlowLayout.h; sourceTree = "<group>"; };
 		015CEE3E16B9E7DB004BC7A0 /* SYNIntegralCollectionViewFlowLayout.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SYNIntegralCollectionViewFlowLayout.m; sourceTree = "<group>"; };
+		016191701782DECD0016BD23 /* PSPDFUIKitMainThreadGuard.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = PSPDFUIKitMainThreadGuard.m; sourceTree = "<group>"; };
 		0166A51117688AA100A75B9D /* FacebookSDK.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; path = FacebookSDK.framework; sourceTree = "<group>"; };
 		0166A51317688AD600A75B9D /* FacebookSDKResources.bundle */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.plug-in"; path = FacebookSDKResources.bundle; sourceTree = "<group>"; };
 		0166A51417688AD600A75B9D /* FBUserSettingsViewResources.bundle */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.plug-in"; path = FBUserSettingsViewResources.bundle; sourceTree = "<group>"; };
@@ -3365,6 +3367,7 @@
 		019825EE162C948000216900 /* Categories */ = {
 			isa = PBXGroup;
 			children = (
+				016191701782DECD0016BD23 /* PSPDFUIKitMainThreadGuard.m */,
 				01C9CFA41697496400C42479 /* NSDate-Utilities.h */,
 				01C9CFA51697496400C42479 /* NSDate-Utilities.m */,
 				01C6FD0D169DDEDB00E01AA3 /* NSDictionary+Validation.h */,
@@ -6331,6 +6334,7 @@
 				BEB8300C17745A0400AAA8D5 /* SYNLoginOnBoardingController.m in Sources */,
 				BEBFD0921779F0F800C90544 /* SYNCaution.m in Sources */,
 				BEBFD0951779F25800C90544 /* SYNCautionMessageView.m in Sources */,
+				016191711782DECD0016BD23 /* PSPDFUIKitMainThreadGuard.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
