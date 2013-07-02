@@ -194,8 +194,10 @@
 - (void) viewWillAppear: (BOOL) animated
 {
     [super viewWillAppear: animated];
-    
-    self.channelThumbnailCollectionView.delegate = self;
+    if(!self.channelThumbnailCollectionView.delegate)
+    {
+        self.channelThumbnailCollectionView.delegate = self;
+    }
 }
 
 - (void) viewWillDisappear: (BOOL) animated
