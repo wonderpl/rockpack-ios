@@ -897,7 +897,7 @@
                                                                                     withReuseIdentifier: @"SYNChannelFooterMoreView"
                                                                                            forIndexPath: indexPath];
             
-            
+            self.footerView.showsLoading = self.isLoadingMoreContent;
             supplementaryView = self.footerView;
         }
     }
@@ -2779,7 +2779,6 @@
             self.masterControlsView.frame = frame;
             
             blurOpacity = 0.0;
-            
         }
         else
         {
