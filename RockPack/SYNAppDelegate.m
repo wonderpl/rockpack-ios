@@ -61,8 +61,9 @@ extern void instrumentObjcMessageSends(BOOL);
 @synthesize onBoardingQueue = _onBoardingQueue;
 @synthesize tokenExpiryTimer = _tokenExpiryTimer;
 
+
 - (BOOL) application:(UIApplication *) application
-didFinishLaunchingWithOptions: (NSDictionary *) launchOptions
+         didFinishLaunchingWithOptions: (NSDictionary *) launchOptions
 {
 #ifdef ENABLE_USER_RATINGS
     [Appirater setAppId: @"660697542"];

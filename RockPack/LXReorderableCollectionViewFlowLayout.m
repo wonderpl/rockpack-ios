@@ -104,7 +104,10 @@ static NSString *const kLXCollectionViewKeyPath = @"collectionView";
     if (self)
     {
         [self setDefaults];
-        [self addObserver: self forKeyPath: kLXCollectionViewKeyPath options: NSKeyValueObservingOptionNew context: nil];
+        [self addObserver: self
+               forKeyPath: kLXCollectionViewKeyPath
+                  options: NSKeyValueObservingOptionNew
+                  context: nil];
     }
     
     return self;
@@ -117,7 +120,10 @@ static NSString *const kLXCollectionViewKeyPath = @"collectionView";
     if (self)
     {
         [self setDefaults];
-        [self addObserver: self forKeyPath: kLXCollectionViewKeyPath options: NSKeyValueObservingOptionNew context: nil];
+        [self addObserver: self
+               forKeyPath: kLXCollectionViewKeyPath
+                  options: NSKeyValueObservingOptionNew
+                  context: nil];
     }
     
     return self;

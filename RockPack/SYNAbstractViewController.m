@@ -91,13 +91,8 @@
     // Defensive programming
     tabViewController.delegate = nil;
     
-    [[NSNotificationCenter defaultCenter] removeObserver: self
-                                                    name: kClearedLocationBoundData
-                                                  object: nil];
-    
-    [[NSNotificationCenter defaultCenter] removeObserver: self
-                                                    name: UIApplicationWillEnterForegroundNotification
-                                                  object: nil];
+    // Stop observing everything
+    [[NSNotificationCenter defaultCenter] removeObserver: self];
 }
 
 

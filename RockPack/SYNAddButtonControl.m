@@ -14,41 +14,37 @@
 
 @synthesize active = _active;
 
-+(id)button
+
+#pragma mark - Object lifecycle
+
++ (id) button
 {
-    return [[self alloc] initWithFrame:CGRectZero];
+    return [[self alloc] initWithFrame: CGRectZero];
 }
 
-- (id)initWithFrame:(CGRect)frame
+
+- (id) initWithFrame: (CGRect) frame
 {
-    self = [super initWithFrame:frame];
-    if (self) {
-        
+    if ((self = [super initWithFrame: frame]))
+    { 
         appDelegate = (SYNAppDelegate*)[[UIApplication sharedApplication] delegate];
         
         button = [UIButton buttonWithType:UIButtonTypeCustom];
-        
-        buttonImageInactive = [UIImage imageNamed:@"ButtonAddToChannelInactive"];
-        
-        buttonImageInactiveHighlighted = [UIImage imageNamed:@"ButtonAddToChannelInactiveHighlighted"];
-        
-        buttonImageActive = [UIImage imageNamed:@"ButtonAddToChannelActive"];
-        
-        buttonImageActiveHighlighted = [UIImage imageNamed:@"ButtonAddToChannelActiveHighlighted"];
-        
-        
-        
+        buttonImageInactive = [UIImage imageNamed: @"ButtonAddToChannelInactive"];
+        buttonImageInactiveHighlighted = [UIImage imageNamed: @"ButtonAddToChannelInactiveHighlighted"];
+        buttonImageActive = [UIImage imageNamed: @"ButtonAddToChannelActive"];
+        buttonImageActiveHighlighted = [UIImage imageNamed: @"ButtonAddToChannelActiveHighlighted"];
+
         button.frame = CGRectMake(0.0, 0.0, buttonImageInactive.size.width, buttonImageInactive.size.height);
+
+        [button addTarget: self
+                   action: @selector(buttonPressed:)
+         forControlEvents: UIControlEventTouchUpInside];
         
-        
-        [button addTarget:self
-                   action:@selector(buttonPressed:)
-         forControlEvents:UIControlEventTouchUpInside];
-        
-        [appDelegate.videoQueue addObserver:self
-                                 forKeyPath:@"isEmpty"
-                                    options:NSKeyValueObservingOptionNew
-                                    context:nil];
+        [appDelegate.videoQueue addObserver: self
+                                 forKeyPath: @"isEmpty"
+                                    options: NSKeyValueObservingOptionNew
+                                    context: nil];
         
         self.frame = button.frame;
         
@@ -56,107 +52,128 @@
         
         // set the first time active or incative //
         
-        if(appDelegate.videoQueue.isEmpty)
+        if (appDelegate.videoQueue.isEmpty)
         {
             self.active = NO;
         }
         else
         {
             self.active = YES;
-        }
-        
-        
+        } 
     }
     return self;
 }
 
+
+- (void) dealloc
+{
+    [appDelegate.videoQueue removeObserver: self
+                                forKeyPath: @"isEmpty"
+                                   context: nil];
+}
+
+
 #pragma Active/Inactive
 
-
--(void)setActive:(BOOL)active
+- (void) setActive: (BOOL) active
 {
-    
     _active = active;
     
-    if(!_active)
+    if (!_active)
     {
-        [button setImage:buttonImageInactive forState:UIControlStateNormal];
-        [button setImage:buttonImageInactive forState:UIControlStateDisabled];
-        [button setImage:buttonImageInactiveHighlighted forState:UIControlStateHighlighted];
+        [button setImage: buttonImageInactive
+                forState: UIControlStateNormal];
+        
+        [button setImage: buttonImageInactive
+                forState: UIControlStateDisabled];
+        
+        [button setImage: buttonImageInactiveHighlighted
+                forState: UIControlStateHighlighted];
+        
         button.enabled = NO;
     }
     else
     {
-        [button setImage:buttonImageActive forState:UIControlStateNormal];
-        [button setImage:buttonImageActive forState:UIControlStateDisabled];
-        [button setImage:buttonImageActiveHighlighted forState:UIControlStateHighlighted];
+        [button setImage: buttonImageActive
+                forState: UIControlStateNormal];
+        
+        [button setImage: buttonImageActive
+                forState: UIControlStateDisabled];
+        
+        [button setImage: buttonImageActiveHighlighted
+                forState: UIControlStateHighlighted];
+        
         button.enabled = YES;
     }
 }
 
--(void)setSelected:(BOOL)selected
+
+- (void) setSelected: (BOOL) selected
 {
-    [super setSelected:selected];
+    [super setSelected: selected];
     
     button.selected = selected;
-    
 }
 
--(BOOL)selected
+
+- (BOOL) selected
 {
     return button.selected;
 }
+
 
 - (void) observeValueForKeyPath: (NSString *) keyPath
                        ofObject: (id) object
                          change: (NSDictionary *) change
                         context: (void *) context
 {
-    
-    if(object == appDelegate.videoQueue)
+    if (object == appDelegate.videoQueue)
     {
         self.active = !appDelegate.videoQueue.isEmpty;
         button.enabled = self.active;
     }
-    
-    
 }
+
 
 #pragma mark - Click Listener
 
--(void)buttonPressed:(UIButton*)buttonPressed
+- (void) buttonPressed: (UIButton*) buttonPressed
 {
-    [[NSNotificationCenter defaultCenter] postNotificationName:kNoteAddToChannelRequest
-                                                        object:self];
+    [[NSNotificationCenter defaultCenter] postNotificationName: kNoteAddToChannelRequest
+                                                        object: self];
 }
 
 
 #pragma mark - UIControl Methods
 
-- (void)addTarget:(id)target action:(SEL)action forControlEvents:(UIControlEvents)controlEvents
+- (void) addTarget: (id) target
+            action: (SEL) action
+  forControlEvents: (UIControlEvents) controlEvents
 {
-    [button addTarget:target action:action forControlEvents:controlEvents];
+    [button addTarget: target
+               action: action
+     forControlEvents: controlEvents];
     
 }
 
-- (void)removeTarget:(id)target action:(SEL)action forControlEvents:(UIControlEvents)controlEvents
+
+- (void) removeTarget: (id) target
+               action: (SEL) action
+     forControlEvents: (UIControlEvents) controlEvents
 {
-    [button removeTarget:target action:action forControlEvents:controlEvents];
-    
+    [button removeTarget: target
+                  action: action
+        forControlEvents: controlEvents];
 }
 
-- (NSArray *)actionsForTarget:(id)target forControlEvent:(UIControlEvents)controlEvent
+
+- (NSArray *) actionsForTarget: (id) target
+               forControlEvent: (UIControlEvents) controlEvent
 {
-    return [button actionsForTarget:target forControlEvent:controlEvent];
+    return [button actionsForTarget: target
+                    forControlEvent: controlEvent];
 }
 
-#pragma mark - Dealloc
 
--(void)dealloc
-{
-    [appDelegate.videoQueue removeObserver:self
-                                forKeyPath:@"isEmpty"
-                                   context:nil];
-}
 
 @end

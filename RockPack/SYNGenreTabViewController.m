@@ -6,25 +6,25 @@
 //  Copyright (c) Rockpack Ltd. All rights reserved.
 //
 
-#import "Genre.h"
 #import "GAI.h"
+#import "Genre.h"
 #import "SYNAppDelegate.h"
-#import "SYNGenreTabViewController.h"
+#import "SYNDeviceManager.h"
 #import "SYNGenreItemView.h"
+#import "SYNGenreTabViewController.h"
 #import "SYNNetworkEngine.h"
 #import "SubGenre.h"
 #import <CoreData/CoreData.h>
-#import "SYNDeviceManager.h"
 
 @interface SYNGenreTabViewController ()
 
-
-@property (nonatomic, strong) NSString* homeButtomString;
+@property (nonatomic) BOOL isLoadingCategories;
 @property (nonatomic, readonly) SYNGenreTabView* categoriesTabView;
 @property (nonatomic, strong) NSArray* genresFetched;
-@property (nonatomic, weak) SYNAppDelegate* appDelegate;
-@property (nonatomic) BOOL isLoadingCategories;
+@property (nonatomic, strong) NSString* homeButtomString;
 @property (nonatomic, weak) Genre* currentlySelectedGenre;
+@property (nonatomic, weak) SYNAppDelegate* appDelegate;
+
 @end
 
 

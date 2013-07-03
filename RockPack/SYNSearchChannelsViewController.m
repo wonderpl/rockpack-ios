@@ -7,13 +7,12 @@
 //
 
 #import "GAI.h"
+#import "MKNetworkOperation.h"
+#import "SYNChannelDetailViewController.h"
+#import "SYNDeviceManager.h"
 #import "SYNSearchChannelsViewController.h"
 #import "SYNSearchRootViewController.h"
 #import "SYNSearchTabView.h"
-#import "SYNDeviceManager.h"
-#import "SYNDeviceManager.h"
-#import "SYNChannelDetailViewController.h"
-#import "MKNetworkOperation.h"
 
 @interface SYNSearchChannelsViewController ()
 
@@ -29,13 +28,21 @@
 @synthesize itemToUpdate;
 @synthesize runningNetworkOperation = _runningNetworkOperation;
 
+#pragma mark - Object lifecycle
+
+- (void) dealloc
+{
+    // Stop observing everything (less error-prone than trying to remove observers individually
+    [[NSNotificationCenter defaultCenter] removeObserver: self];
+}
+
+
 #pragma mark - View lifecycle
 
 - (id) initWithViewId: (NSString *) vid
 {
     if ((self = [super initWithViewId: vid]))
     {
-        
         appDelegate = (SYNAppDelegate*)[[UIApplication sharedApplication] delegate];
         
         [[NSNotificationCenter defaultCenter] addObserver: self
@@ -43,6 +50,7 @@
                                                      name: NSManagedObjectContextObjectsDidChangeNotification
                                                    object: appDelegate.searchManagedObjectContext];
     }
+    
     return self;
 }
 
@@ -187,15 +195,6 @@
     
     self.searchTerm = term;
 }   
-
-
-- (void) dealloc
-{
-    [[NSNotificationCenter defaultCenter] removeObserver: self
-                                                    name: NSManagedObjectContextObjectsDidChangeNotification
-                                                  object: appDelegate.searchManagedObjectContext];
-    
-}
 
 
 - (void) animatedPushViewController: (UIViewController *) vc

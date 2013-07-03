@@ -31,46 +31,60 @@
 
 @implementation SYNChannelCategoryTableViewController
 
--(id)initWithCoder:(NSCoder *)aDecoder
+#pragma mark - Object Lifecycle
+
+- (id) initWithCoder: (NSCoder *) aDecoder
 {
-    self = [super initWithCoder:aDecoder];
-    if (self) {
-        [self commonSetup];
-    }
-    return self;
-}
--(id)initWithNibName:(NSString *)nibNameOrNil bundle:(NSBundle *)nibBundleOrNil
-{
-    self = [super initWithNibName:nibNameOrNil bundle:nibBundleOrNil];
-    if(self)
+    if ((self = [super initWithCoder: aDecoder]))
     {
         [self commonSetup];
     }
+    
     return self;
 }
 
--(void)commonSetup
+
+- (id) initWithNibName: (NSString *) nibNameOrNil
+                bundle: (NSBundle *) nibBundleOrNil
+{
+    if ((self = [super initWithNibName: nibNameOrNil
+                                bundle: nibBundleOrNil]))
+    {
+        [self commonSetup];
+    }
+    
+    return self;
+}
+
+
+- (void) commonSetup
 {
     _headerRegister = [NSMutableDictionary dictionary];
     _showAllCategoriesHeader = YES;
 }
 
--(void)dealloc
+
+- (void) dealloc
 {
+    // Stop observing everything
     [[NSNotificationCenter defaultCenter] removeObserver: self];
 }
 
 
-- (void)viewDidLoad
+#pragma mark - View lifecycle
+
+- (void) viewDidLoad
 {
     [super viewDidLoad];
     
-    [self.tableView registerNib:[UINib nibWithNibName:@"SYNChannelCategoryTableCell" bundle:[NSBundle mainBundle]] forCellReuseIdentifier:@"SYNChannelCategoryTableCell"];
+    [self.tableView registerNib: [UINib nibWithNibName: @"SYNChannelCategoryTableCell" bundle: [NSBundle mainBundle]]
+         forCellReuseIdentifier:@"SYNChannelCategoryTableCell"];
+    
     self.tableView.scrollsToTop = NO;
     
     self.titleLabel.font = [UIFont boldRockpackFontOfSize: self.titleLabel.font.pointSize];
     
-    if(self.showAllCategoriesHeader)
+    if (self.showAllCategoriesHeader)
     {
         // Show all category
         SYNChannelCategoryTableHeader* topHeader = [[SYNChannelCategoryTableHeader alloc] init];
@@ -78,18 +92,21 @@
         [topHeader layoutSubviews];
         topHeader.titleLabel.text = NSLocalizedString(@"ALL CATEGORIES",nil);
         topHeader.headerButton.tag = -1;
-        topHeader.backgroundImage.image = [UIImage imageNamed:@"CategorySlide"];
-        [topHeader.headerButton addTarget:self action:@selector(tappedAllCategories:) forControlEvents:UIControlEventTouchUpInside];
-        [topHeader.headerButton addTarget:self action:@selector(pressedAllCategories:) forControlEvents:UIControlEventTouchDown];
-        [topHeader.headerButton addTarget:self action:@selector(releasedAllCategories:) forControlEvents:UIControlEventTouchUpOutside];
+        topHeader.backgroundImage.image = [UIImage imageNamed: @"CategorySlide"];
+        [topHeader.headerButton addTarget: self action: @selector(tappedAllCategories:) forControlEvents: UIControlEventTouchUpInside];
+        [topHeader.headerButton addTarget:self action:@selector(pressedAllCategories:) forControlEvents: UIControlEventTouchDown];
+        [topHeader.headerButton addTarget:self action:@selector(releasedAllCategories:) forControlEvents: UIControlEventTouchUpOutside];
         [topHeader.arrowImage removeFromSuperview];
         self.tableView.tableHeaderView = topHeader;
     }
     else
     {
         NSPredicate* predicate = [NSPredicate predicateWithFormat:@"priority == -1"];
-        self.otherGenre = [self fetchGenreWithPredicate:predicate includeSubGenres:NO];
-        if(self.otherGenre)
+        
+        self.otherGenre = [self fetchGenreWithPredicate: predicate
+                                       includeSubGenres: NO];
+        
+        if (self.otherGenre)
         {
             SYNChannelCategoryTableHeader* topHeader = [[SYNChannelCategoryTableHeader alloc] init];
             topHeader.frame = CGRectMake(0.0f, 0.0f, self.tableView.frame.size.width, 45.0f);
@@ -97,50 +114,46 @@
             topHeader.titleLabel.text = [self.otherGenre.name uppercaseString];
             topHeader.headerButton.tag = -1;
             topHeader.backgroundImage.image = [UIImage imageNamed:@"CategorySlide"];
-            [topHeader.headerButton addTarget:self action:@selector(tappedOtherCategory:) forControlEvents:UIControlEventTouchUpInside];
-            [topHeader.headerButton addTarget:self action:@selector(pressedOtherCategory:) forControlEvents:UIControlEventTouchDown];
-            [topHeader.headerButton addTarget:self action:@selector(releasedOtherCategorys:) forControlEvents:UIControlEventTouchUpOutside];
+            [topHeader.headerButton addTarget: self action: @selector(tappedOtherCategory:) forControlEvents: UIControlEventTouchUpInside];
+            [topHeader.headerButton addTarget: self action: @selector(pressedOtherCategory:) forControlEvents: UIControlEventTouchDown];
+            [topHeader.headerButton addTarget: self action: @selector(releasedOtherCategorys:) forControlEvents: UIControlEventTouchUpOutside];
             [topHeader.arrowImage removeFromSuperview];
             self.tableView.tableHeaderView = topHeader;
         }
-
     }
     
-    if(self.closeButton)
+    if (self.closeButton)
     {
-        [self.closeButton addTarget:self action:@selector(closeButtonTapped:) forControlEvents:UIControlEventTouchUpInside];
+        [self.closeButton addTarget: self action :@selector(closeButtonTapped:) forControlEvents: UIControlEventTouchUpInside];
     }
     
-    if(self.confirmButton)
+    if (self.confirmButton)
     {
-        [self.confirmButton addTarget:self action:@selector(confirmButtonTapped:) forControlEvents:UIControlEventTouchUpInside];
+        [self.confirmButton addTarget: self action: @selector(confirmButtonTapped:) forControlEvents: UIControlEventTouchUpInside];
     }
     
     [self loadCategories];
+    
     [[NSNotificationCenter defaultCenter] addObserver: self
                                              selector: @selector(clearedLocationBoundData)
                                                  name: kClearedLocationBoundData
                                                object: nil];
-    [[NSNotificationCenter defaultCenter] addObserver:self
-                                             selector:@selector(forceRefreshCategories:)
-                                                 name:UIApplicationDidBecomeActiveNotification object:nil];
+    
+    [[NSNotificationCenter defaultCenter] addObserver: self
+                                             selector: @selector(forceRefreshCategories:)
+                                                 name: UIApplicationDidBecomeActiveNotification object:nil];
 }
 
 
--(void)clearedLocationBoundData
+#pragma mark - load data
+
+- (void) clearedLocationBoundData
 {
     hasRetried = NO;
     [self loadCategories];
 }
 
 
-- (void)didReceiveMemoryWarning
-{
-    [super didReceiveMemoryWarning];
-    // Dispose of any resources that can be recreated.
-}
-
-#pragma mark - load data
 - (void) loadCategories
 {
     SYNAppDelegate* appDelegate = (SYNAppDelegate *)[[UIApplication sharedApplication] delegate];
@@ -151,15 +164,16 @@
     NSFetchRequest *categoriesFetchRequest = [[NSFetchRequest alloc] init];
     [categoriesFetchRequest setEntity:categoryEntity];
     
-    NSPredicate* predicate = [NSPredicate predicateWithFormat:@"priority >= 0"];
-    [categoriesFetchRequest setPredicate:predicate];
+    NSPredicate* predicate = [NSPredicate predicateWithFormat: @"priority >= 0"];
+    [categoriesFetchRequest setPredicate: predicate];
     
-    NSSortDescriptor *sortDescriptor = [[NSSortDescriptor alloc] initWithKey: @"priority" ascending:NO];
-    [categoriesFetchRequest setSortDescriptors:@[sortDescriptor]];
+    NSSortDescriptor *sortDescriptor = [[NSSortDescriptor alloc] initWithKey: @"priority"
+                                                                   ascending: NO];
+    
+    [categoriesFetchRequest setSortDescriptors: @[sortDescriptor]];
     
     categoriesFetchRequest.includesSubentities = NO;
-    
-    
+
     NSError* error;
     
     self.categoriesDatasource = [appDelegate.mainManagedObjectContext executeFetchRequest: categoriesFetchRequest
@@ -287,44 +301,6 @@
     return header;
 }
 
-/*
- // Override to support conditional editing of the table view.
- - (BOOL)tableView:(UITableView *)tableView canEditRowAtIndexPath:(NSIndexPath *)indexPath
- {
- // Return NO if you do not want the specified item to be editable.
- return YES;
- }
- */
-
-/*
- // Override to support editing the table view.
- - (void)tableView:(UITableView *)tableView commitEditingStyle:(UITableViewCellEditingStyle)editingStyle forRowAtIndexPath:(NSIndexPath *)indexPath
- {
- if (editingStyle == UITableViewCellEditingStyleDelete) {
- // Delete the row from the data source
- [tableView deleteRowsAtIndexPaths:@[indexPath] withRowAnimation:UITableViewRowAnimationFade];
- }
- else if (editingStyle == UITableViewCellEditingStyleInsert) {
- // Create a new instance of the appropriate class, insert it into the array, and add a new row to the table view
- }
- }
- */
-
-/*
- // Override to support rearranging the table view.
- - (void)tableView:(UITableView *)tableView moveRowAtIndexPath:(NSIndexPath *)fromIndexPath toIndexPath:(NSIndexPath *)toIndexPath
- {
- }
- */
-
-/*
- // Override to support conditional rearranging of the table view.
- - (BOOL)tableView:(UITableView *)tableView canMoveRowAtIndexPath:(NSIndexPath *)indexPath
- {
- // Return NO if you do not want the item to be re-orderable.
- return YES;
- }
- */
 
 #pragma mark - Table view delegate
 
