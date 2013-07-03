@@ -45,55 +45,183 @@
 
 - (void) dealloc
 {
+    // No harm in removing all notifications, as we are being de-alloced after all..
+    [[NSNotificationCenter defaultCenter] removeObserver: self];
+    
     // Defensive programming
     self.videoThumbnailCollectionView.delegate = nil;
 }
 
 #pragma mark - View lifecycle
+//- (void) loadView
+//{
+//    SYNIntegralCollectionViewFlowLayout *standardFlowLayout;
+//    UIEdgeInsets insets;
+//    CGRect videoCollectionViewFrame, selfFrame;
+//    CGSize screenSize;
+//    
+//    BOOL isIPhone = [SYNDeviceManager.sharedInstance isIPhone];
+//    
+//    if (isIPhone)
+//    {
+//        insets = UIEdgeInsetsMake(10.0f, 10.0f, 15.0f, 10.0f);
+//        
+//        standardFlowLayout = [SYNIntegralCollectionViewFlowLayout layoutWithItemSize: CGSizeMake(497.0f , 141.0f)
+//                                                             minimumInterItemSpacing: 0.0f
+//                                                                  minimumLineSpacing: 10.0f
+//                                                                     scrollDirection: UICollectionViewScrollDirectionVertical
+//                                                                        sectionInset: insets];
+//        
+//        screenSize = CGSizeMake([SYNDeviceManager.sharedInstance currentScreenWidth], [SYNDeviceManager.sharedInstance currentScreenHeight]);
+//        
+//        videoCollectionViewFrame = CGRectMake(0.0, kStandardCollectionViewOffsetYiPhone, screenSize.width, screenSize.height - 20.0f - kStandardCollectionViewOffsetYiPhone);
+//        
+//        selfFrame = CGRectMake(0.0, 0.0, screenSize.width, screenSize.height - 20.0f);
+//    }
+//    
+//    else
+//    {
+//        insets = UIEdgeInsetsMake(10.0f, 10.0f, 15.0f, 10.0f);
+//        
+//        standardFlowLayout = [SYNIntegralCollectionViewFlowLayout layoutWithItemSize: CGSizeMake(497.0f , 141.0f)
+//                                                             minimumInterItemSpacing: 0.0f
+//                                                                  minimumLineSpacing: 30.0f
+//                                                                     scrollDirection: UICollectionViewScrollDirectionVertical
+//                                                                        sectionInset: insets];
+//        
+//        videoCollectionViewFrame = CGRectMake(0.0, kStandardCollectionViewOffsetY, kFullScreenWidthLandscape, kFullScreenHeightLandscapeMinusStatusBar - kStandardCollectionViewOffsetY);
+//        
+//        selfFrame = CGRectMake(0.0, 0.0, kFullScreenWidthLandscape, kFullScreenHeightLandscapeMinusStatusBar);
+//    }
+//    
+//    standardFlowLayout.footerReferenceSize = [self footerSize];
+//    
+//    self.videoThumbnailCollectionView = [[UICollectionView alloc] initWithFrame: videoCollectionViewFrame
+//                                                           collectionViewLayout: standardFlowLayout];
+//    
+//    self.videoThumbnailCollectionView.delegate = self;
+//    self.videoThumbnailCollectionView.dataSource = self;
+//    self.videoThumbnailCollectionView.backgroundColor = [UIColor clearColor];
+//    self.videoThumbnailCollectionView.scrollsToTop = NO;
+//    
+//    if (isIPhone)
+//    {
+//        self.videoThumbnailCollectionView.contentInset = UIEdgeInsetsMake(4, 0, 0, 0);
+//    }
+//    
+//    else
+//    {
+//        self.videoThumbnailCollectionView.contentInset = UIEdgeInsetsMake(0, 0, 0, 0);
+//    }
+//    
+//    self.view = [[UIView alloc] initWithFrame: selfFrame];
+//    
+//    [self.view addSubview: self.videoThumbnailCollectionView];
+//    self.view.backgroundColor = [UIColor clearColor];
+//    self.videoThumbnailCollectionView.autoresizingMask = UIViewAutoresizingFlexibleWidth| UIViewAutoresizingFlexibleHeight;
+//}
+//
+//- (void) viewDidLoad
+//{
+//    [super viewDidLoad];
+//    
+//    [self removeEmptyGenreMessage];
+//    
+//    self.refreshControl = [[UIRefreshControl alloc] initWithFrame: CGRectMake(0, -44, 320, 44)];
+//    
+//    self.refreshControl.tintColor = [UIColor colorWithRed:(11.0/255.0) green:(166.0/255.0) blue:(171.0/255.0) alpha:(1.0)];
+//    
+//    [self.refreshControl addTarget: self
+//                            action: @selector(loadAndUpdateOriginalFeedData)
+//                  forControlEvents: UIControlEventValueChanged];
+//    
+//    
+//    [self.videoThumbnailCollectionView addSubview: self.refreshControl];
+//    
+//    // Init collection view
+//    UINib *videoThumbnailCellNib = [UINib nibWithNibName: @"SYNVideoThumbnailWideCell"
+//                                                  bundle: nil];
+//    
+//    [self.videoThumbnailCollectionView registerNib: videoThumbnailCellNib
+//                        forCellWithReuseIdentifier: @"SYNVideoThumbnailWideCell"];
+//    
+//    // Register collection view header view
+//    UINib *headerViewNib = [UINib nibWithNibName: @"SYNHomeSectionHeaderView"
+//                                          bundle: nil];
+//    
+//    [self.videoThumbnailCollectionView registerNib: headerViewNib
+//                        forSupplementaryViewOfKind: UICollectionElementKindSectionHeader
+//                               withReuseIdentifier: @"SYNHomeSectionHeaderView"];
+//    
+//    // Register Footer
+//    UINib *footerViewNib = [UINib nibWithNibName: @"SYNChannelFooterMoreView"
+//                                          bundle: nil];
+//    
+//    [self.videoThumbnailCollectionView registerNib: footerViewNib
+//                        forSupplementaryViewOfKind: UICollectionElementKindSectionFooter
+//                               withReuseIdentifier: @"SYNChannelFooterMoreView"];
+//    
+//    // We should only setup our date formatter once
+//    self.dateFormatter = [[NSDateFormatter alloc] init];
+//    self.dateFormatter.dateFormat = @"yyyy-MM-dd HH:mm:ss Z";
+//}
 
-- (void) loadView
+
+- (void) viewDidLoad
 {
-    SYNIntegralCollectionViewFlowLayout *standardFlowLayout;
-    UIEdgeInsets insets;
-    CGRect videoCollectionViewFrame, selfFrame;
-    CGSize screenSize;
+    [super viewDidLoad];
     
+    SYNIntegralCollectionViewFlowLayout *standardFlowLayout;
+    UIEdgeInsets sectionInset, contentInset;
+    CGRect videoCollectionViewFrame, calculatedViewFrame;
+    CGSize screenSize;
+    CGFloat minimumLineSpacing;
+    
+    // Setup device dependent parametes/dimensions
     BOOL isIPhone = [SYNDeviceManager.sharedInstance isIPhone];
-
+    
     if (isIPhone)
     {
-        insets = UIEdgeInsetsMake(10.0f, 10.0f, 15.0f, 10.0f);
-        
-        standardFlowLayout = [SYNIntegralCollectionViewFlowLayout layoutWithItemSize: CGSizeMake(497.0f , 141.0f)
-                                                             minimumInterItemSpacing: 0.0f
-                                                                  minimumLineSpacing: 10.0f
-                                                                     scrollDirection: UICollectionViewScrollDirectionVertical
-                                                                        sectionInset: insets];
-        
+        // Calculate frame size
         screenSize = CGSizeMake([SYNDeviceManager.sharedInstance currentScreenWidth], [SYNDeviceManager.sharedInstance currentScreenHeight]);
+        
+        calculatedViewFrame = CGRectMake(0.0, 0.0, screenSize.width, screenSize.height - 20.0f);
         
         videoCollectionViewFrame = CGRectMake(0.0, kStandardCollectionViewOffsetYiPhone, screenSize.width, screenSize.height - 20.0f - kStandardCollectionViewOffsetYiPhone);
         
-        selfFrame = CGRectMake(0.0, 0.0, screenSize.width, screenSize.height - 20.0f);
+        // Collection view parameters
+        contentInset = UIEdgeInsetsMake(4, 0, 0, 0);
+        sectionInset = UIEdgeInsetsMake(10.0f, 10.0f, 15.0f, 10.0f);
+        minimumLineSpacing = 10.0f;
+        
     }
-    
     else
     {
-        insets = UIEdgeInsetsMake(10.0f, 10.0f, 15.0f, 10.0f);
-        
-        standardFlowLayout = [SYNIntegralCollectionViewFlowLayout layoutWithItemSize: CGSizeMake(497.0f , 141.0f)
-                                                             minimumInterItemSpacing: 0.0f
-                                                                  minimumLineSpacing: 30.0f
-                                                                     scrollDirection: UICollectionViewScrollDirectionVertical
-                                                                        sectionInset: insets];
+        calculatedViewFrame = CGRectMake(0.0, 0.0, kFullScreenWidthLandscape, kFullScreenHeightLandscapeMinusStatusBar);
         
         videoCollectionViewFrame = CGRectMake(0.0, kStandardCollectionViewOffsetY, kFullScreenWidthLandscape, kFullScreenHeightLandscapeMinusStatusBar - kStandardCollectionViewOffsetY);
         
-        selfFrame = CGRectMake(0.0, 0.0, kFullScreenWidthLandscape, kFullScreenHeightLandscapeMinusStatusBar);
+        // Collection view parameters
+        contentInset = UIEdgeInsetsMake(0, 0, 0, 0);
+        sectionInset = UIEdgeInsetsMake(10.0f, 10.0f, 15.0f, 10.0f);
+        minimumLineSpacing = 30.0f;
     }
     
+    // Set our view frame and attributes
+    self.view.frame = calculatedViewFrame;
+    self.view.backgroundColor = [UIColor clearColor];
+    
+    [self removeEmptyGenreMessage];
+    
+    // Setup out collection view layout
+    standardFlowLayout = [SYNIntegralCollectionViewFlowLayout layoutWithItemSize: CGSizeMake(497.0f , 141.0f)
+                                                         minimumInterItemSpacing: 0.0f
+                                                              minimumLineSpacing: minimumLineSpacing
+                                                                 scrollDirection: UICollectionViewScrollDirectionVertical
+                                                                    sectionInset: sectionInset];
     standardFlowLayout.footerReferenceSize = [self footerSize];
     
+    // Setup the collection view itself
     self.videoThumbnailCollectionView = [[UICollectionView alloc] initWithFrame: videoCollectionViewFrame
                                                            collectionViewLayout: standardFlowLayout];
     
@@ -101,43 +229,14 @@
     self.videoThumbnailCollectionView.dataSource = self;
     self.videoThumbnailCollectionView.backgroundColor = [UIColor clearColor];
     self.videoThumbnailCollectionView.scrollsToTop = NO;
-    
-    if (isIPhone)
-    {
-        self.videoThumbnailCollectionView.contentInset = UIEdgeInsetsMake(4, 0, 0, 0);
-    }
-    
-    else
-    {
-        self.videoThumbnailCollectionView.contentInset = UIEdgeInsetsMake(0, 0, 0, 0);
-    }
+    self.videoThumbnailCollectionView.contentInset = contentInset;
+    [self.view addSubview:self.videoThumbnailCollectionView];
 
-    self.view = [[UIView alloc] initWithFrame: selfFrame];
-    
-    [self.view addSubview: self.videoThumbnailCollectionView];
-    self.view.backgroundColor = [UIColor clearColor];
     self.videoThumbnailCollectionView.autoresizingMask = UIViewAutoresizingFlexibleWidth| UIViewAutoresizingFlexibleHeight;
-}
-
-
-- (void) viewDidLoad
-{
-    [super viewDidLoad];
-    
-    [self removeEmptyGenreMessage];
-    
-    self.refreshControl = [[UIRefreshControl alloc] initWithFrame: CGRectMake(0, -44, 320, 44)];
-    
-    self.refreshControl.tintColor = [UIColor colorWithRed:(11.0/255.0) green:(166.0/255.0) blue:(171.0/255.0) alpha:(1.0)];
-    
-    [self.refreshControl addTarget: self
-                            action: @selector(loadAndUpdateOriginalFeedData)
-                  forControlEvents: UIControlEventValueChanged];
-    
     
     [self.videoThumbnailCollectionView addSubview: self.refreshControl];
 
-    // Init collection view
+    // Register collection view cells
     UINib *videoThumbnailCellNib = [UINib nibWithNibName: @"SYNVideoThumbnailWideCell"
                                                   bundle: nil];
     
@@ -160,9 +259,27 @@
                           forSupplementaryViewOfKind: UICollectionElementKindSectionFooter
                                  withReuseIdentifier: @"SYNChannelFooterMoreView"];
     
+    // Refresh control
+    self.refreshControl = [[UIRefreshControl alloc] initWithFrame: CGRectMake(0, -44, 320, 44)];
+    
+    self.refreshControl.tintColor = [UIColor colorWithRed: (11.0/255.0)
+                                                    green: (166.0/255.0)
+                                                     blue: (171.0/255.0)
+                                                    alpha: (1.0)];
+    
+    [self.refreshControl addTarget: self
+                            action: @selector(loadAndUpdateOriginalFeedData)
+                  forControlEvents: UIControlEventValueChanged];
+    
     // We should only setup our date formatter once
     self.dateFormatter = [[NSDateFormatter alloc] init];
     self.dateFormatter.dateFormat = @"yyyy-MM-dd HH:mm:ss Z";
+    
+    // Log
+    [[NSNotificationCenter defaultCenter] addObserver: self
+                                             selector: @selector(videoQueueCleared)
+                                                 name: kVideoQueueClear
+                                               object: nil];
 }
 
 
@@ -172,11 +289,6 @@
     
     // Google analytics support
     [self updateAnalytics];
-    
-    [[NSNotificationCenter defaultCenter] addObserver: self
-                                             selector: @selector(videoQueueCleared)
-                                                 name: kVideoQueueClear
-                                               object: nil];
 }
 
 
@@ -318,13 +430,16 @@
     
 }
 
+#pragma mark - Empty genre message handling
+
 - (void) removeEmptyGenreMessage
 {
-    if(!self.emptyGenreMessageView)
+    if (!self.emptyGenreMessageView)
         return;
     
     [self.emptyGenreMessageView removeFromSuperview];
 }
+
 
 - (void) displayEmptyGenreMessage: (NSString*) messageKey
                         andLoader: (BOOL) isLoader
@@ -347,11 +462,11 @@
     self.emptyGenreMessageView.autoresizingMask =
     UIViewAutoresizingFlexibleTopMargin | UIViewAutoresizingFlexibleRightMargin | UIViewAutoresizingFlexibleLeftMargin;
     
-    [self.view addSubview:self.emptyGenreMessageView];
+    [self.view addSubview: self.emptyGenreMessageView];
 }
 
 
-#pragma mark - Fetched results
+#pragma mark - Fetched results controller
 
 - (NSFetchedResultsController *) fetchedResultsController
 {
@@ -386,6 +501,13 @@
     }
     
     return fetchedResultsController;
+}
+    
+
+- (void) controllerDidChangeContent: (NSFetchedResultsController *) controller
+{
+    
+    [self.videoThumbnailCollectionView reloadData];
 }
 
 

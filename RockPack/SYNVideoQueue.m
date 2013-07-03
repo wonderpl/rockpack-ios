@@ -6,70 +6,71 @@
 //  Copyright (c) Rockpack Ltd. All rights reserved.
 //
 
-#import "SYNVideoQueue.h"
 #import "AppConstants.h"
-#import "VideoInstance.h"
-#import "Video.h"
 #import "SYNAppDelegate.h"
 #import "SYNDeviceManager.h"
+#import "SYNVideoQueue.h"
+#import "Video.h"
+#import "VideoInstance.h"
 
 @interface SYNVideoQueue ()
 
-
-
-@property (nonatomic, strong) NSTimer *videoQueueAnimationTimer;
-
-@property (nonatomic, weak) SYNAppDelegate* appDelegate;
-
 @property (nonatomic, assign) BOOL isEmpty;
+@property (nonatomic, strong) NSTimer *videoQueueAnimationTimer;
+@property (nonatomic, weak) SYNAppDelegate* appDelegate;
 
 @end
 
-@implementation SYNVideoQueue
+@implementation SYNVideoQueue;
 
-@synthesize isEmpty;
+#pragma mark - Object lifecycle
 
--(id)init
-{
-    if (self = [super init])
-    {
-        
-        self.appDelegate = (SYNAppDelegate*)UIApplication.sharedApplication.delegate;
-    
-        [self setup];
-    }
-    return self;
-}
-
-+(id)queue
++ (id) queue
 {
     return [[self alloc] init];
 }
 
--(BOOL)videoInstanceIsAddedToChannel:(VideoInstance*)videoInstance
+- (id) init
+{
+    if (self = [super init])
+    {
+        self.appDelegate = (SYNAppDelegate*)UIApplication.sharedApplication.delegate;
+    
+        [self setup];
+    }
+    
+    return self;
+}
+
+- (void) dealloc
+{
+    // Stop observing everything (less error-prone than trying to remove observers individually
+    [[NSNotificationCenter defaultCenter] removeObserver: self];
+}
+
+
+- (BOOL) videoInstanceIsAddedToChannel: (VideoInstance*) videoInstance
 {
     
     for (VideoInstance* channelInstance in self.currentlyCreatingChannel.videoInstances)
     {
-        
-        if([channelInstance.uniqueId isEqualToString:videoInstance.uniqueId])
+        if ([channelInstance.uniqueId isEqualToString: videoInstance.uniqueId])
         {
             return YES;
-        }
-        
+        }   
     }
-    
-    
-    
+ 
     return NO;
 }
--(void)setup
+
+
+- (void) setup
 {
+    // Removed in dealloc
     [[NSNotificationCenter defaultCenter] addObserver: self
                                              selector: @selector(handleVideoQueueAddRequest:)
                                                  name: kVideoQueueAdd
                                                object: nil];
-    
     
     [[NSNotificationCenter defaultCenter] addObserver: self
                                              selector: @selector(handleVideoQueueRemoveRequest:)
@@ -80,7 +81,6 @@
                                              selector: @selector(handleVideoQueueClearRequest:)
                                                  name: kVideoQueueClear
                                                object: nil];
-    
 }
 
 
@@ -95,15 +95,15 @@
 }
 
 
-- (void) handleVideoQueueRemoveRequest:(NSNotification*)notification
+- (void) handleVideoQueueRemoveRequest: (NSNotification*) notification
 {
-    
     VideoInstance* videoInstanceToAdd = (VideoInstance*) notification.userInfo[kVideoInstance];
     [self removeFromVideoQueue: videoInstanceToAdd];
     videoInstanceToAdd.selectedForVideoQueue = NO;
 }
 
--(void)handleVideoQueueClearRequest:(NSNotification*)notification
+
+- (void) handleVideoQueueClearRequest: (NSNotification*) notification
 {
     
     if(self.currentlyCreatingChannel.videoInstances.count == 0)
@@ -149,35 +149,31 @@
     
 }
 
--(void)removeFromVideoQueue:(VideoInstance*)videoInstance
+- (void) removeFromVideoQueue: (VideoInstance*) videoInstance
 {
-    
     // clear objects from core data
-    
-    for (VideoInstance* currentVideoInstance in self.currentlyCreatingChannel.videoInstances) {
-        
-        if([currentVideoInstance.uniqueId isEqualToString:videoInstance.uniqueId]) {
-            
-            [self.appDelegate.channelsManagedObjectContext deleteObject:currentVideoInstance];
+    for (VideoInstance* currentVideoInstance in self.currentlyCreatingChannel.videoInstances)
+    {
+        if ([currentVideoInstance.uniqueId isEqualToString: videoInstance.uniqueId])
+        { 
+            [self.appDelegate.channelsManagedObjectContext deleteObject: currentVideoInstance];
             
             [self.appDelegate saveChannelsContext];
             
             break;
         }
     }
-    
 }
 
 
-
--(Channel*)currentlyCreatingChannel // lazy loading
+- (Channel*) currentlyCreatingChannel // lazy loading
 {
     if (!_currentlyCreatingChannel) // create channel if there is none
     {
         self.currentlyCreatingChannel = [Channel insertInManagedObjectContext: self.appDelegate.channelsManagedObjectContext];
         
-        User* meOnAnotherContext = [User instanceFromUser:self.appDelegate.currentUser
-                                usingManagedObjectContext:self.currentlyCreatingChannel.managedObjectContext];
+        User* meOnAnotherContext = [User instanceFromUser: self.appDelegate.currentUser
+                                usingManagedObjectContext: self.currentlyCreatingChannel.managedObjectContext];
         
         self.currentlyCreatingChannel.channelOwner = (ChannelOwner*)meOnAnotherContext;
         self.currentlyCreatingChannel.title = @"";
@@ -185,22 +181,25 @@
         
         // Set the channel's unique Id to something temporary so that we can perform queries for the videoinstances it contains
         self.currentlyCreatingChannel.uniqueId = kNewChannelPlaceholderId;
-        
-        
+
         NSError *error = nil; // if we cannot save, bail
+        
         if (![self.appDelegate.channelsManagedObjectContext save: &error])
         {
             DebugLog(@"Cannot save channel to context!");
-            
         }
     }
+    
     return _currentlyCreatingChannel;
 }
 
--(BOOL)isEmpty
+
+- (BOOL) isEmpty
 {
-    if(!_currentlyCreatingChannel)
+    if (!_currentlyCreatingChannel)
+    {
         return YES;
+    }
     
     return (_currentlyCreatingChannel.videoInstances.count == 0);
 }

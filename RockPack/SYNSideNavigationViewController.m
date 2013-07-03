@@ -23,7 +23,6 @@
 #import "UIImageView+ImageProcessing.h"
 #import "UIImageView+WebCache.h"
 #import <QuartzCore/QuartzCore.h>
-#import "SYNDeviceManager.h"
 
 
 #define kSideNavTitle @"kSideNavTitle"
@@ -115,6 +114,9 @@ typedef enum {
     // Defensive programming
     self.searchViewController.searchBoxView.searchTextField.delegate = nil;
     self.imagePickerController.delegate = nil;
+    
+    // Stop observing everything (less error-prone than trying to remove observers individually
+    [[NSNotificationCenter defaultCenter] removeObserver: self];
 }
 
 

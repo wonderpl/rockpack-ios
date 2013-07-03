@@ -12,7 +12,6 @@
 
 @interface SYNFeedRootViewController : SYNAbstractViewController
 
-
 @property (nonatomic, strong) SYNRefreshButton* refreshButton;
 
 @end

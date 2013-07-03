@@ -31,7 +31,6 @@
 #import "Video.h"
 #import "VideoInstance.h"
 #import <MediaPlayer/MediaPlayer.h>
-#import "SYNDeviceManager.h"
 
 @interface SYNVideoViewerViewController () <UIGestureRecognizerDelegate>
 
@@ -107,9 +106,6 @@
     self.leftSwipeRecogniser.delegate = nil;
     self.tapRecogniser.delegate = nil;
 }
-
-
-#pragma mark - View lifecycle
 
 
 #pragma mark - View lifecycle
@@ -338,18 +334,12 @@
     // Let's make sure that we stop playing the current video
     if ([SYNDeviceManager.sharedInstance isIPhone])
     {
-        [[NSNotificationCenter defaultCenter] removeObserver: self
-                                                        name: UIDeviceOrientationDidChangeNotification
-                                                      object: nil];
         //Stop generating notifications
         [[UIDevice currentDevice] endGeneratingDeviceOrientationNotifications];
     }
-    else
-    {
-        [[NSNotificationCenter defaultCenter] removeObserver: self
-                                                        name: kVideoQueueClear
-                                                      object: nil];
-    }
+
+    // Stop observing everything (less error-prone than trying to remove observers individually
+    [[NSNotificationCenter defaultCenter] removeObserver: self];
     
     // Remember to remove the target, as we may be drilling down deeper to another vc (and then returning, which would mean multiple
     // targets were added

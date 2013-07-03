@@ -29,7 +29,7 @@
     NSUInteger a = 2;
     NSUInteger b = 2;
 
-    STAssertTrue((a + b) == 4, @"A + B = 4");
+    STAssertTrue((a + b) == 2, @"A + B = 4");
 }
 
 
