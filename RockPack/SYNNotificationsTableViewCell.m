@@ -49,12 +49,13 @@
         self.textLabel.frame = CGRectMake(74.0, 10.0, 0.0, 0.0); // width, height will be set below
         self.textLabel.font = [UIFont rockpackFontOfSize:14.0];
         self.textLabel.textAlignment = NSTextAlignmentLeft;
-        self.textLabel.numberOfLines = 2;
+        self.textLabel.numberOfLines = 3;
         self.textLabel.lineBreakMode = NSLineBreakByWordWrapping;
         self.textLabel.textColor = [UIColor colorWithRed:(40.0/255.0)
                                                    green:(45.0/255.0)
                                                     blue:(51.0/255.0)
                                                    alpha:(1.0)];
+        
         // == Subtitle == //
         
         
@@ -102,15 +103,18 @@
     
     [super layoutSubviews];
     
-    // image view //
+    // Image Vsiew //
     
     self.imageView.frame = mainImageButton.frame = imageViewRect;
     
     
-    self.textLabel.frame = CGRectMake(76.0, 12.0, mainTextSize.width, mainTextSize.height);
+    self.textLabel.frame = CGRectMake(76.0,
+                                      (mainTextSize.height > 40.0 ? 6.0 : 12.0),
+                                      mainTextSize.width,
+                                      mainTextSize.height);
     
     
-    // place at the end
+    // Thumbnail - Place at the end
     
     CGRect thumbnailImageViewFrame = self.imageView.frame;
     thumbnailImageViewFrame.origin.x = self.frame.size.width - 68.0;
@@ -118,10 +122,11 @@
     
     self.thumbnailImageView.frame = secondaryImageButton.frame = thumbnailImageViewFrame;
     
-    // details
+    
+    // Details
     
     CGRect detailsFrame = CGRectMake(76.0, 12.0, mainTextSize.width, 20.0f);
-    detailsFrame.origin.y = self.textLabel.frame.origin.y + self.textLabel.frame.size.height;
+    detailsFrame.origin.y = self.textLabel.frame.origin.y + self.textLabel.frame.size.height - (mainTextSize.height > 40.0 ? 4.0 : 0.0);
     self.detailTextLabel.frame = detailsFrame;
     
     dividerImageView.center = CGPointMake(self.center.x, self.frame.size.height);
@@ -172,8 +177,15 @@
 
 -(void)setMessageTitle:(NSString *)messageTitle
 {
-    
+        
     // == main text label == //
+    
+    
+    NSMutableParagraphStyle *paragrahStyle = [[NSMutableParagraphStyle alloc] init];
+    [paragrahStyle setLineSpacing:2];
+    NSMutableAttributedString* attributedString = [[NSMutableAttributedString alloc] initWithString:messageTitle];
+    [attributedString addAttribute:NSParagraphStyleAttributeName value:paragrahStyle range:NSMakeRange(0, [messageTitle length])];
+    
     
     CGRect textLabelFrame = self.textLabel.frame;
     CGFloat maxWidth = [SYNDeviceManager.sharedInstance isIPad] ? 200.0 : 170.0 ;
@@ -187,7 +199,8 @@
     
     self.textLabel.frame = textLabelFrame;
     
-    self.textLabel.text = messageTitle;
+    //self.textLabel.text = messageTitle;
+    self.textLabel.attributedText = attributedString;
     
 }
 
