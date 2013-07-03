@@ -250,6 +250,8 @@
 
 - (void) channelTabPressed: (UIControl*) control
 {
+    [GAI.sharedInstance.defaultTracker sendView: @"Search - Channels"];
+    
     if (self.channelsSearchTabView.selected)
         return;
     

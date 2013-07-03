@@ -101,7 +101,7 @@
     _isIPhone =  [SYNDeviceManager.sharedInstance isIPhone];
     
     // User Profile
-    if(!self.hideUserProfile)
+    if (!self.hideUserProfile)
     {
         self.userProfileController = [[SYNUserProfileViewController alloc] init];
     }
@@ -496,7 +496,7 @@
 
 - (void) activateDeletionMode: (UILongPressGestureRecognizer *) recognizer
 {
-    if(![self.user.uniqueId isEqualToString:appDelegate.currentUser.uniqueId]) // cannot delete channels of another user
+    if (![self.user.uniqueId isEqualToString:appDelegate.currentUser.uniqueId]) // cannot delete channels of another user
         return;
     
     if (recognizer.state == UIGestureRecognizerStateBegan)
@@ -557,7 +557,7 @@
 -(void)willRotateToInterfaceOrientation:(UIInterfaceOrientation)toInterfaceOrientation duration:(NSTimeInterval)duration
 {
     //Decide which collection view should be in control of the scroll offset on orientaiton change. The tallest one wins...
-    if(self.channelThumbnailCollectionView.collectionViewLayout.collectionViewContentSize.height > self.subscriptionsViewController.channelThumbnailCollectionView.collectionViewLayout.collectionViewContentSize.height)
+    if (self.channelThumbnailCollectionView.collectionViewLayout.collectionViewContentSize.height > self.subscriptionsViewController.channelThumbnailCollectionView.collectionViewLayout.collectionViewContentSize.height)
     {
         
         self.channelsIndexPath = [self topIndexPathForCollectionView:self.channelThumbnailCollectionView];
@@ -726,9 +726,9 @@
 
 -(NSString*)getHeaderTitleForChannels
 {
-    if(_isIPhone)
+    if (_isIPhone)
     {
-        if(self.user == appDelegate.currentUser)
+        if (self.user == appDelegate.currentUser)
             return NSLocalizedString(@"profile_screen_section_owner_created_title",nil);
         else
             return NSLocalizedString(@"profile_screen_section_user_created_title",nil);
@@ -736,7 +736,7 @@
     }
     else
     {
-        if(self.user == appDelegate.currentUser)
+        if (self.user == appDelegate.currentUser)
             return NSLocalizedString(@"profile_screen_section_owner_created_title",nil);
         else
             return NSLocalizedString(@"profile_screen_section_user_created_title",nil);
@@ -818,9 +818,9 @@
     
     if (collectionView == self.channelThumbnailCollectionView)
     {
-        if(self.isUserProfile && indexPath.row == 0)
+        if (self.isUserProfile && indexPath.row == 0)
         {
-            if([[SYNDeviceManager sharedInstance] isIPad])
+            if ([[SYNDeviceManager sharedInstance] isIPad])
             {
                 [[NSNotificationCenter defaultCenter] postNotificationName: kNoteCreateNewChannel
                                                                     object: self];
@@ -881,7 +881,7 @@
 {
     if (!_isIPhone)
     {
-        if(self.orientationDesicionmaker && scrollView != self.orientationDesicionmaker)
+        if (self.orientationDesicionmaker && scrollView != self.orientationDesicionmaker)
         {
             scrollView.contentOffset = [self.orientationDesicionmaker contentOffset];
             return;
@@ -1022,7 +1022,7 @@
 
 - (void) resizeScrollViews
 {
-    if(_isIPhone)
+    if (_isIPhone)
     {
         return;
     }
@@ -1035,7 +1035,7 @@
     {
         self.channelThumbnailCollectionView.contentInset = UIEdgeInsetsMake(0.0f, 0.0f, subscriptionsViewSize.height - channelViewSize.height, 0.0f);
     }
-    else if(channelViewSize.height > subscriptionsViewSize.height)
+    else if (channelViewSize.height > subscriptionsViewSize.height)
     {
         self.subscriptionsViewController.collectionView.contentInset = UIEdgeInsetsMake(0.0f, 0.0f, channelViewSize.height - subscriptionsViewSize.height, 0.0f);
     }
@@ -1087,14 +1087,14 @@
 
 - (void) channelDeleteButtonTapped: (UIButton*) sender
 {
-    if(_deleteCellModeOn)
+    if (_deleteCellModeOn)
         return;
     
     UIView * v = sender.superview.superview;
     self.indexPathToDelete = [self.channelThumbnailCollectionView indexPathForItemAtPoint: v.center];
     
     Channel* channelToDelete = (Channel*)self.user.channels[self.indexPathToDelete.row - (self.isUserProfile ? 1 : 0)];
-    if(!channelToDelete)
+    if (!channelToDelete)
         return;
     
     NSString* message = [NSString stringWithFormat: NSLocalizedString(@"profile_screen_channel_delete_dialog_description", nil), channelToDelete.title];
@@ -1125,7 +1125,7 @@
 - (void) deleteChannel
 {
     Channel* channelToDelete = (Channel*)self.user.channels[self.indexPathToDelete.row - (self.isUserProfile ? 1 : 0)];
-    if(!channelToDelete)
+    if (!channelToDelete)
         return;
     
     [appDelegate.oAuthNetworkEngine deleteChannelForUserId: appDelegate.currentUser.uniqueId
@@ -1133,46 +1133,38 @@
                                          completionHandler: ^(id response) {
                                              
                                              UICollectionViewCell* cell =
-                                             [self.channelThumbnailCollectionView cellForItemAtIndexPath:self.indexPathToDelete];
+                                             [self.channelThumbnailCollectionView cellForItemAtIndexPath: self.indexPathToDelete];
                                              
-                                             [UIView animateWithDuration:0.2 animations:^{
-                                                 
+                                             [UIView animateWithDuration: 0.2 animations: ^{
                                                  cell.alpha = 0.0;
+                                             } completion: ^(BOOL finished) {
                                                  
-                                             } completion:^(BOOL finished) {
                                                  
+                                                 [appDelegate.currentUser.channelsSet removeObject: channelToDelete];
                                                  
-                                                 [appDelegate.currentUser.channelsSet removeObject:channelToDelete];
+                                                 [channelToDelete.managedObjectContext deleteObject: channelToDelete];
                                                  
-                                                 [channelToDelete.managedObjectContext deleteObject:channelToDelete];
-                                                 
-                                                 [self.channelThumbnailCollectionView deleteItemsAtIndexPaths:@[self.indexPathToDelete]];
+                                                 [self.channelThumbnailCollectionView deleteItemsAtIndexPaths: @[self.indexPathToDelete]];
                                                  
                                                  [appDelegate saveContext:YES];
                                                  
-                                                 _deleteCellModeOn = NO;
-                                                 
-                                                 
-                                                 
-                                             }];
-                                             
-                                             
-                                             
-                                             
+                                                 _deleteCellModeOn = NO; 
+                                             }];   
                                          } errorHandler: ^(id error) {
-                                             
-                                             
                                                     DebugLog(@"Delete channel NOT succeed");
                                              
                                                     _deleteCellModeOn = NO;
                                               }];
 }
 
+
 - (void) headerTapped
 {
-    [self.channelThumbnailCollectionView setContentOffset:CGPointZero animated:YES];
     // no need to animate the subscriptions part since it observes the channels thumbnails scroll view
+    [self.channelThumbnailCollectionView setContentOffset: CGPointZero
+                                                 animated: YES];
 }
+
 
 #pragma mark - Accessors
 
@@ -1187,13 +1179,13 @@
                                                       object: self.user];
     }
     
-    if(!appDelegate)
+    if (!appDelegate)
         appDelegate = (SYNAppDelegate*)[[UIApplication sharedApplication] delegate];
     
-    if(!user) // if no user has been passed, set to nil and then return
+    if (!user) // if no user has been passed, set to nil and then return
         return;
     
-    if(![user isMemberOfClass:[User class]]) // is a User has been passsed dont copy him OR his channels as there can be only one.
+    if (![user isMemberOfClass:[User class]]) // is a User has been passsed dont copy him OR his channels as there can be only one.
     {
         NSFetchRequest *channelOwnerFetchRequest = [[NSFetchRequest alloc] init];
         
@@ -1213,7 +1205,7 @@
             _user = (ChannelOwner*)matchingChannelOwnerEntries[0];
             _user.markedForDeletionValue = NO;
             
-            if(matchingChannelOwnerEntries.count > 1) // housekeeping, there can be only one!
+            if (matchingChannelOwnerEntries.count > 1) // housekeeping, there can be only one!
                 for (int i = 1; i < matchingChannelOwnerEntries.count; i++)
                     [user.managedObjectContext deleteObject:(matchingChannelOwnerEntries[i])]; 
         }
@@ -1226,12 +1218,11 @@
                                  usingManagedObjectContext: user.managedObjectContext
                                        ignoringObjectTypes: flags];
             
-            if(self.user)
+            if (self.user)
             {
                 [self.user.managedObjectContext save:&error];
-                if(error)
+                if (error)
                     _user = nil; // further error code
-                
             }
         } 
     }
@@ -1241,11 +1232,9 @@
         
     }
     
-    if(self.user) // if a user has been passed or found, monitor
+    if (self.user) // if a user has been passed or found, monitor
     {
-        
-        
-        if([self.user.uniqueId isEqualToString:appDelegate.currentUser.uniqueId])
+        if ([self.user.uniqueId isEqualToString:appDelegate.currentUser.uniqueId])
             self.isUserProfile = YES;
         else
             self.isUserProfile = NO;
@@ -1260,9 +1249,9 @@
                                                      name: NSManagedObjectContextDidSaveNotification
                                                    object: self.user.managedObjectContext];
         
-        [[NSNotificationCenter defaultCenter] postNotificationName:kChannelOwnerUpdateRequest
-                                                            object:self
-                                                          userInfo:@{kChannelOwner:self.user}];
+        [[NSNotificationCenter defaultCenter] postNotificationName: kChannelOwnerUpdateRequest
+                                                            object: self
+                                                          userInfo: @{kChannelOwner:self.user}];
     }  
 }
 
@@ -1275,23 +1264,24 @@
 
 #pragma mark - indexpath helper method
 
--(NSIndexPath*)topIndexPathForCollectionView:(UICollectionView*)collectionView
+- (NSIndexPath*) topIndexPathForCollectionView: (UICollectionView*) collectionView
 {
     //This method finds a cell that is in the first row of the collection view that is showing at least half the height of its cell.
     NSIndexPath* result = nil;
     NSArray* indexPaths = [[collectionView indexPathsForVisibleItems] sortedArrayUsingDescriptors:self.sortDescriptors];
-    if([indexPaths count]>0)
+    if ([indexPaths count]>0)
     {
         result = indexPaths[0];
         UICollectionViewCell * cell = [collectionView cellForItemAtIndexPath:result];
-        if(cell.center.y < collectionView.contentOffset.y)
+        if (cell.center.y < collectionView.contentOffset.y)
         {
-            if([indexPaths count] > 3)
+            if ([indexPaths count] > 3)
             {
                 result = indexPaths[3];
             }
         }
     }
+    
     return result;
 }
 

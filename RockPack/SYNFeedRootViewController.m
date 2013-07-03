@@ -8,34 +8,33 @@
 
 #import "AppConstants.h"
 #import "Channel.h"
-#import "ChannelOwner.h"
 #import "ChannelCover.h"
+#import "ChannelOwner.h"
 #import "GAI.h"
 #import "NSDate-Utilities.h"
 #import "SYNAppDelegate.h"
+#import "SYNDeviceManager.h"
+#import "SYNFeedMessagesView.h"
 #import "SYNFeedRootViewController.h"
 #import "SYNHomeSectionHeaderView.h"
 #import "SYNIntegralCollectionViewFlowLayout.h"
 #import "SYNNetworkEngine.h"
 #import "SYNOAuthNetworkEngine.h"
 #import "SYNVideoThumbnailWideCell.h"
+#import "UIImageView+WebCache.h"
 #import "Video.h"
 #import "VideoInstance.h"
-#import "SYNDeviceManager.h"
-#import "UIImageView+WebCache.h"
-#import "SYNFeedMessagesView.h"
 
 @interface SYNFeedRootViewController ()
 
 @property (nonatomic, assign) BOOL refreshing;
+@property (nonatomic, assign) BOOL shouldReloadCollectionView;
+@property (nonatomic, strong) NSBlockOperation *blockOperation;
 @property (nonatomic, strong) NSDateFormatter *dateFormatter;
 @property (nonatomic, strong) NSTimer *timer;
-@property (nonatomic, strong) SYNHomeSectionHeaderView *supplementaryViewWithRefreshButton;
-@property (nonatomic, strong) UIRefreshControl *refreshControl;
 @property (nonatomic, strong) SYNFeedMessagesView* emptyGenreMessageView;
-@property (nonatomic, strong) NSBlockOperation *blockOperation;
-@property (nonatomic, assign) BOOL shouldReloadCollectionView;
-@property (nonatomic, weak) SYNVideoThumbnailWideCell* selectedCell;
+@property (nonatomic, strong) UIRefreshControl *refreshControl;
+@property (nonatomic, weak) SYNVideoThumbnailWideCell* selectedCell; 
 
 @end
 
@@ -46,108 +45,86 @@
 
 - (void) dealloc
 {
+    // No harm in removing all notifications, as we are being de-alloced after all..
+    [[NSNotificationCenter defaultCenter] removeObserver: self];
+    
     // Defensive programming
     self.videoThumbnailCollectionView.delegate = nil;
 }
 
+
 #pragma mark - View lifecycle
-
-- (void) loadView
-{
-    BOOL isIPhone = [SYNDeviceManager.sharedInstance isIPhone];
-    UIEdgeInsets insets;
-    
-    if (isIPhone)
-    {
-        insets = UIEdgeInsetsMake(10.0f, 10.0f, 15.0f, 10.0f);
-    }
-    else
-    {
-        insets = UIEdgeInsetsMake(10.0f, 10.0f, 15.0f, 10.0f);
-    }
-    
-    
-    SYNIntegralCollectionViewFlowLayout *standardFlowLayout;
-    if (isIPhone)
-        standardFlowLayout = [SYNIntegralCollectionViewFlowLayout
-                              layoutWithItemSize:CGSizeMake(497.0f , 141.0f)
-                              minimumInterItemSpacing:0.0f
-                              minimumLineSpacing:10.0f
-                              scrollDirection:UICollectionViewScrollDirectionVertical
-                              sectionInset:insets];
-    
-    else
-        standardFlowLayout = [SYNIntegralCollectionViewFlowLayout
-                              layoutWithItemSize:CGSizeMake(497.0f , 141.0f)
-                              minimumInterItemSpacing:0.0f
-                              minimumLineSpacing:30.0f
-                              scrollDirection:UICollectionViewScrollDirectionVertical
-                              sectionInset:insets];
-    
-    
-    standardFlowLayout.footerReferenceSize = [self footerSize];
-    
-    CGRect videoCollectionViewFrame, selfFrame;
-    
-    if (isIPhone)
-    {
-        CGSize screenSize= CGSizeMake([SYNDeviceManager.sharedInstance currentScreenWidth],[SYNDeviceManager.sharedInstance currentScreenHeight]);
-        videoCollectionViewFrame = CGRectMake(0.0, kStandardCollectionViewOffsetYiPhone, screenSize.width, screenSize.height - 20.0f - kStandardCollectionViewOffsetYiPhone);
-        selfFrame = CGRectMake(0.0, 0.0, screenSize.width, screenSize.height - 20.0f);
-    }
-    else
-    {
-        videoCollectionViewFrame = CGRectMake(0.0, kStandardCollectionViewOffsetY, kFullScreenWidthLandscape, kFullScreenHeightLandscapeMinusStatusBar - kStandardCollectionViewOffsetY);
-        selfFrame = CGRectMake(0.0, 0.0, kFullScreenWidthLandscape, kFullScreenHeightLandscapeMinusStatusBar);
-    }
-    
-    self.videoThumbnailCollectionView = [[UICollectionView alloc] initWithFrame: videoCollectionViewFrame
-                                                           collectionViewLayout:standardFlowLayout];
-    
-    self.videoThumbnailCollectionView.delegate = self;
-    self.videoThumbnailCollectionView.dataSource = self;
-    self.videoThumbnailCollectionView.backgroundColor = [UIColor clearColor];
-    self.videoThumbnailCollectionView.scrollsToTop = NO;
-    if (isIPhone)
-    {
-        self.videoThumbnailCollectionView.contentInset = UIEdgeInsetsMake(4, 0, 0, 0);
-    }
-    
-    else
-    {
-        self.videoThumbnailCollectionView.contentInset = UIEdgeInsetsMake(0, 0, 0, 0);
-    }
-
-    self.view = [[UIView alloc] initWithFrame:selfFrame];
-    
-    [self.view addSubview:self.videoThumbnailCollectionView];
-    self.view.backgroundColor = [UIColor clearColor];
-    self.videoThumbnailCollectionView.autoresizingMask = UIViewAutoresizingFlexibleWidth| UIViewAutoresizingFlexibleHeight;
-    
-    // We should only setup our date formatter once
-    self.dateFormatter = [[NSDateFormatter alloc] init];
-    self.dateFormatter.dateFormat = @"yyyy-MM-dd HH:mm:ss Z";
-}
-
 
 - (void) viewDidLoad
 {
     [super viewDidLoad];
     
+    SYNIntegralCollectionViewFlowLayout *standardFlowLayout;
+    UIEdgeInsets sectionInset, contentInset;
+    CGRect videoCollectionViewFrame, calculatedViewFrame;
+    CGSize screenSize;
+    CGFloat minimumLineSpacing;
+    
+    // Setup device dependent parametes/dimensions
+    BOOL isIPhone = [SYNDeviceManager.sharedInstance isIPhone];
+    
+    if (isIPhone)
+    {
+        // Calculate frame size
+        screenSize = CGSizeMake([SYNDeviceManager.sharedInstance currentScreenWidth], [SYNDeviceManager.sharedInstance currentScreenHeight]);
+        
+        calculatedViewFrame = CGRectMake(0.0, 0.0, screenSize.width, screenSize.height - 20.0f);
+        
+        videoCollectionViewFrame = CGRectMake(0.0, kStandardCollectionViewOffsetYiPhone, screenSize.width, screenSize.height - 20.0f - kStandardCollectionViewOffsetYiPhone);
+        
+        // Collection view parameters
+        contentInset = UIEdgeInsetsMake(4, 0, 0, 0);
+        sectionInset = UIEdgeInsetsMake(10.0f, 10.0f, 15.0f, 10.0f);
+        minimumLineSpacing = 10.0f;
+        
+    }
+    else
+    {
+        calculatedViewFrame = CGRectMake(0.0, 0.0, kFullScreenWidthLandscape, kFullScreenHeightLandscapeMinusStatusBar);
+        
+        videoCollectionViewFrame = CGRectMake(0.0, kStandardCollectionViewOffsetY, kFullScreenWidthLandscape, kFullScreenHeightLandscapeMinusStatusBar - kStandardCollectionViewOffsetY);
+        
+        // Collection view parameters
+        contentInset = UIEdgeInsetsMake(0, 0, 0, 0);
+        sectionInset = UIEdgeInsetsMake(10.0f, 10.0f, 15.0f, 10.0f);
+        minimumLineSpacing = 30.0f;
+    }
+    
+    // Set our view frame and attributes
+    self.view.frame = calculatedViewFrame;
+    self.view.backgroundColor = [UIColor clearColor];
+    
     [self removeEmptyGenreMessage];
     
-    self.refreshControl = [[UIRefreshControl alloc] initWithFrame: CGRectMake(0, -44, 320, 44)];
+    // Setup out collection view layout
+    standardFlowLayout = [SYNIntegralCollectionViewFlowLayout layoutWithItemSize: CGSizeMake(497.0f , 141.0f)
+                                                         minimumInterItemSpacing: 0.0f
+                                                              minimumLineSpacing: minimumLineSpacing
+                                                                 scrollDirection: UICollectionViewScrollDirectionVertical
+                                                                    sectionInset: sectionInset];
+    standardFlowLayout.footerReferenceSize = [self footerSize];
     
-    self.refreshControl.tintColor = [UIColor colorWithRed:(11.0/255.0) green:(166.0/255.0) blue:(171.0/255.0) alpha:(1.0)];
+    // Setup the collection view itself
+    self.videoThumbnailCollectionView = [[UICollectionView alloc] initWithFrame: videoCollectionViewFrame
+                                                           collectionViewLayout: standardFlowLayout];
     
-    [self.refreshControl addTarget: self
-                            action: @selector(loadAndUpdateOriginalFeedData)
-                  forControlEvents: UIControlEventValueChanged];
-    
+    self.videoThumbnailCollectionView.delegate = self;
+    self.videoThumbnailCollectionView.dataSource = self;
+    self.videoThumbnailCollectionView.backgroundColor = [UIColor clearColor];
+    self.videoThumbnailCollectionView.scrollsToTop = NO;
+    self.videoThumbnailCollectionView.contentInset = contentInset;
+    [self.view addSubview:self.videoThumbnailCollectionView];
+
+    self.videoThumbnailCollectionView.autoresizingMask = UIViewAutoresizingFlexibleWidth| UIViewAutoresizingFlexibleHeight;
     
     [self.videoThumbnailCollectionView addSubview: self.refreshControl];
 
-    // Init collection view
+    // Register collection view cells
     UINib *videoThumbnailCellNib = [UINib nibWithNibName: @"SYNVideoThumbnailWideCell"
                                                   bundle: nil];
     
@@ -170,38 +147,51 @@
                           forSupplementaryViewOfKind: UICollectionElementKindSectionFooter
                                  withReuseIdentifier: @"SYNChannelFooterMoreView"];
     
+    // Refresh control
+    self.refreshControl = [[UIRefreshControl alloc] initWithFrame: CGRectMake(0, -44, 320, 44)];
     
-    // the data request range has been reset by parent class
+    self.refreshControl.tintColor = [UIColor colorWithRed: (11.0/255.0)
+                                                    green: (166.0/255.0)
+                                                     blue: (171.0/255.0)
+                                                    alpha: (1.0)];
     
+    [self.refreshControl addTarget: self
+                            action: @selector(loadAndUpdateOriginalFeedData)
+                  forControlEvents: UIControlEventValueChanged];
     
+    // We should only setup our date formatter once
+    self.dateFormatter = [[NSDateFormatter alloc] init];
+    self.dateFormatter.dateFormat = @"yyyy-MM-dd HH:mm:ss Z";
+    
+    // Log
+    [[NSNotificationCenter defaultCenter] addObserver: self
+                                             selector: @selector(videoQueueCleared)
+                                                 name: kVideoQueueClear
+                                               object: nil];
 }
 
 
 - (void) viewWillAppear: (BOOL) animated
 {
-    [super viewWillAppear:animated];
+    [super viewWillAppear: animated];
     
     // Google analytics support
     [self updateAnalytics];
-    
-    [[NSNotificationCenter defaultCenter] addObserver:self
-                                             selector:@selector(videoQueueCleared)
-                                                 name:kVideoQueueClear
-                                               object:nil];
-    
 }
 
--(void)viewDidAppear:(BOOL)animated
+
+- (void) viewDidAppear: (BOOL) animated
 {
-    [super viewDidAppear:animated];
+    [super viewDidAppear: animated];
     
-    [self displayEmptyGenreMessage:NSLocalizedString(@"feed_screen_loading_message", nil) andLoader:YES];
+    [self displayEmptyGenreMessage: NSLocalizedString(@"feed_screen_loading_message", nil)
+                         andLoader: YES];
     
-    // TODO: Remove this, as I believe that this is no longer needed
-//    [self loadAndUpdateFeedData];
+    [self loadAndUpdateFeedData];
 }
 
--(void)videoQueueCleared
+
+- (void) videoQueueCleared
 {
     // this will remove the '+' from the videos that where selected
     [self.videoThumbnailCollectionView reloadData];
@@ -211,7 +201,6 @@
 
 - (void) viewDidScrollToFront
 {
-    
     [self updateAnalytics];
     
     self.videoThumbnailCollectionView.scrollsToTop = YES;
@@ -224,12 +213,10 @@
         [self loadAndUpdateFeedData];
        
     }
-        
-    
-    
 }
 
--(void)viewDidScrollToBack
+
+- (void) viewDidScrollToBack
 {
     self.videoThumbnailCollectionView.scrollsToTop = NO;
 }
@@ -242,9 +229,6 @@
 }
 
 
-
-
-
 - (void) willRotateToInterfaceOrientation: (UIInterfaceOrientation) toInterfaceOrientation
                                  duration: (NSTimeInterval) duration
 {
@@ -255,161 +239,13 @@
 }
 
 
-#ifdef SMART_RELOAD
-
-- (void) controllerWillChangeContent: (NSFetchedResultsController *) controller
-{
-    self.shouldReloadCollectionView = NO;
-    self.blockOperation = [NSBlockOperation new];
-}
-
-// We need to serialise all of the updates, and we could either use performBatchUpdates or put then on 
-
-// Add all our section changes to our block queue
-- (void) controller: (NSFetchedResultsController *) controller
-   didChangeSection: (id<NSFetchedResultsSectionInfo>) sectionInfo
-            atIndex: (NSUInteger) sectionIndex
-      forChangeType: (NSFetchedResultsChangeType) type
-{
-    __weak UICollectionView *collectionView = self.videoThumbnailCollectionView;
-    
-    switch (type)
-    {
-        case NSFetchedResultsChangeInsert:
-        {
-            [self.blockOperation addExecutionBlock: ^{
-                [collectionView insertSections: [NSIndexSet indexSetWithIndex: sectionIndex]];
-            }];
-            break;
-        }
-            
-        case NSFetchedResultsChangeDelete:
-        {
-            [self.blockOperation addExecutionBlock: ^{
-                [collectionView deleteSections: [NSIndexSet indexSetWithIndex: sectionIndex]];
-            }];
-            break;
-        }
-            
-        case NSFetchedResultsChangeUpdate:
-        {
-            [self.blockOperation addExecutionBlock: ^{
-                [collectionView reloadSections: [NSIndexSet indexSetWithIndex: sectionIndex]];
-            }];
-            break;
-        }
-            
-        default:
-            break;
-    }
-}
-
-
-//  Add all the object changes to our block queue
-- (void) controller: (NSFetchedResultsController *) controller
-    didChangeObject: (id) changeObject
-        atIndexPath: (NSIndexPath *) indexPath
-      forChangeType: (NSFetchedResultsChangeType) type
-       newIndexPath: (NSIndexPath *) newIndexPath
-{
-    __weak UICollectionView *collectionView = self.videoThumbnailCollectionView;
-    
-    switch (type)
-    {
-        case NSFetchedResultsChangeInsert:
-        {
-            if ([self.videoThumbnailCollectionView numberOfSections] > 0)
-            {
-                if ([self.videoThumbnailCollectionView numberOfItemsInSection: indexPath.section] == 0)
-                {
-                    self.shouldReloadCollectionView = YES;
-                }
-                else
-                {
-                    [self.blockOperation addExecutionBlock: ^{
-                        [collectionView insertItemsAtIndexPaths: @[newIndexPath]];
-                    }];
-                }
-            }
-            else
-            {
-                self.shouldReloadCollectionView = YES;
-            }
-            break;
-        }
-            
-        case NSFetchedResultsChangeDelete:
-        {
-            if ([self.videoThumbnailCollectionView numberOfItemsInSection: indexPath.section] == 1)
-            {
-                self.shouldReloadCollectionView = YES;
-            }
-            else
-            {
-                [self.blockOperation addExecutionBlock: ^{
-                    [collectionView deleteItemsAtIndexPaths:@[indexPath]];
-                }];
-            }
-            break;
-        }
-            
-        case NSFetchedResultsChangeUpdate:
-        {
-            [self.blockOperation addExecutionBlock: ^{
-                [collectionView reloadItemsAtIndexPaths: @[indexPath]];
-            }];
-            break;
-        }
-            
-        case NSFetchedResultsChangeMove:
-        {
-            [self.blockOperation addExecutionBlock: ^{
-                [collectionView moveItemAtIndexPath: indexPath
-                                        toIndexPath: newIndexPath];
-            }];
-            break;
-        }
-            
-        default:
-            break;
-    }
-}
-
-
-// Nasty hack to work around know problems with UICollectionView (http://openradar.appspot.com/12954582)
-- (void) controllerDidChangeContent: (NSFetchedResultsController *) controller
-{
-    if (self.shouldReloadCollectionView)
-    {
-        // Oh dear, we need to work around the bug, so just reload the collection view
-        [self.videoThumbnailCollectionView reloadData];
-    }
-    else
-    {
-        // Luckily we can use the nice UICollectionView animations, (within our batch update)
-        [self.videoThumbnailCollectionView performBatchUpdates: ^{
-            [self.blockOperation start];
-        } completion: nil];
-    }
-}
-
-#else
-
-
-- (void) controllerDidChangeContent: (NSFetchedResultsController *) controller
-{
-    
-    [self.videoThumbnailCollectionView reloadData];
-}
-
-#endif
-
 -(void) loadAndUpdateOriginalFeedData
 {
     [self resetDataRequestRange];
     [self loadAndUpdateFeedData];
     
 }
+
 
 - (void) loadAndUpdateFeedData
 {
@@ -422,7 +258,7 @@
 
     [self.refreshButton startRefreshCycle];
     
-    [appDelegate.oAuthNetworkEngine subscriptionsUpdatesForUserId:  appDelegate.currentOAuth2Credentials.userId
+    [appDelegate.oAuthNetworkEngine subscriptionsUpdatesForUserId: appDelegate.currentOAuth2Credentials.userId
                                                             start: self.dataRequestRange.location
                                                              size: self.dataRequestRange.length
                                                 completionHandler: ^(NSDictionary *responseDictionary) {
@@ -482,15 +318,19 @@
     
 }
 
--(void)removeEmptyGenreMessage
+#pragma mark - Empty genre message handling
+
+- (void) removeEmptyGenreMessage
 {
-    if(!self.emptyGenreMessageView)
+    if (!self.emptyGenreMessageView)
         return;
     
     [self.emptyGenreMessageView removeFromSuperview];
 }
 
-- (void) displayEmptyGenreMessage:(NSString*)messageKey andLoader:(BOOL)isLoader
+
+- (void) displayEmptyGenreMessage: (NSString*) messageKey
+                        andLoader: (BOOL) isLoader
 {
     
     if (self.emptyGenreMessageView)
@@ -510,10 +350,11 @@
     self.emptyGenreMessageView.autoresizingMask =
     UIViewAutoresizingFlexibleTopMargin | UIViewAutoresizingFlexibleRightMargin | UIViewAutoresizingFlexibleLeftMargin;
     
-    [self.view addSubview:self.emptyGenreMessageView];
+    [self.view addSubview: self.emptyGenreMessageView];
 }
 
-#pragma mark - Fetched results
+
+#pragma mark - Fetched results controller
 
 - (NSFetchedResultsController *) fetchedResultsController
 {
@@ -549,6 +390,13 @@
     }
     
     return fetchedResultsController;
+}
+    
+
+- (void) controllerDidChangeContent: (NSFetchedResultsController *) controller
+{
+    
+    [self.videoThumbnailCollectionView reloadData];
 }
 
 
@@ -714,16 +562,6 @@
                                                                                                withReuseIdentifier: @"SYNHomeSectionHeaderView"
                                                                                                       forIndexPath: indexPath];
         NSString *sectionText;
-        BOOL focus = FALSE;
-        
-        if (indexPath.section == 0)
-        {
-            // When highlighting is required again, then set to TRUE
-            focus = FALSE;
-            
-            // We need to store this away, so can control animations (but must nil when goes out of scope)
-            self.supplementaryViewWithRefreshButton = headerSupplementaryView;
-        }
         
         // Unavoidably long if-then-else
         if ([date isToday])
@@ -749,7 +587,6 @@
         
         // Special case, remember the first section view
         headerSupplementaryView.viewControllerDelegate = self;
-        headerSupplementaryView.focus = focus;
         headerSupplementaryView.sectionTitleLabel.text = sectionText.uppercaseString;
         if ([SYNDeviceManager.sharedInstance isLandscape])
         {
@@ -779,33 +616,12 @@
                                                                                        forIndexPath: indexPath];
         
         self.footerView.showsLoading = self.isLoadingMoreContent;
-        
         supplementaryView = self.footerView;
     }
 
     return supplementaryView;
 }
 
-- (void) collectionView: (UICollectionView *) collectionView
-       didEndDisplayingSupplementaryView: (UICollectionReusableView *) view
-       forElementOfKind: (NSString *) elementKind
-            atIndexPath: (NSIndexPath *) indexPath
-{
-    if (collectionView == self.videoThumbnailCollectionView)
-    {
-        if (indexPath.section == 0)
-        {
-            // If out first section header leave the screen, then we need to ensure that we don't try and manipulate it
-            //  in future (as it will no longer exist)
-            self.supplementaryViewWithRefreshButton = nil;
-        }
-    }
-    else
-    {
-        // We should not be expecting any other supplementary views
-        AssertOrLog(@"No valid collection view found");
-    }
-}
 
 - (void) displayVideoViewerFromView: (UIButton *) videoViewButton
 {
@@ -843,7 +659,6 @@
 
 - (void) scrollViewDidScroll: (UIScrollView *) scrollView
 {
-    // when reaching far right hand side, load a new page
     if (scrollView.contentOffset.y >= scrollView.contentSize.height - scrollView.bounds.size.height - kLoadMoreFooterViewHeight
         && self.isLoadingMoreContent == NO)
     {

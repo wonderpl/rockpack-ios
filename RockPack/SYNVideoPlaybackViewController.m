@@ -364,14 +364,8 @@ static UIWebView* vimeoideoWebViewInstance;
 
 - (void) viewDidDisappear: (BOOL) animated
 {
-    // Handle pausing animations when losing focus
-    [[NSNotificationCenter defaultCenter] removeObserver: self
-                                                    name: UIApplicationDidBecomeActiveNotification
-                                                  object: nil];
-    
-    [[NSNotificationCenter defaultCenter] removeObserver: self
-                                                    name: UIApplicationWillResignActiveNotification
-                                                  object: nil];
+    // Stop observing everything (less error-prone than trying to remove observers individually
+    [[NSNotificationCenter defaultCenter] removeObserver: self];
     
     if (self.currentVideoViewedFlag == TRUE && self.previousSourceId != nil)
     {

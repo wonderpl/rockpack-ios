@@ -8,6 +8,7 @@
 
 #import "GAI.h"
 #import "NSString+Utils.h"
+#import "RegexKitLite.h"
 #import "SYNActivityManager.h"
 #import "SYNAppDelegate.h"
 #import "SYNDeviceManager.h"
@@ -16,18 +17,15 @@
 #import "SYNNetworkEngine.h"
 #import "SYNOAuthNetworkEngine.h"
 #import "User.h"
-#import <FacebookSDK/FacebookSDK.h>
-#import "RegexKitLite.h"
 #import <Accounts/Accounts.h>
+#import <FacebookSDK/FacebookSDK.h>
 
-@interface SYNLoginBaseViewController () {
-    
-}
+@interface SYNLoginBaseViewController ()
 
 @property (nonatomic, strong) NSArray* backgroundImagesArray;
 
-
 @end
+
 
 @implementation SYNLoginBaseViewController
 

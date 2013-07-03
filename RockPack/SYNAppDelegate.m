@@ -61,8 +61,9 @@ extern void instrumentObjcMessageSends(BOOL);
 @synthesize onBoardingQueue = _onBoardingQueue;
 @synthesize tokenExpiryTimer = _tokenExpiryTimer;
 
+
 - (BOOL) application:(UIApplication *) application
-didFinishLaunchingWithOptions: (NSDictionary *) launchOptions
+         didFinishLaunchingWithOptions: (NSDictionary *) launchOptions
 {
 #ifdef ENABLE_USER_RATINGS
     [Appirater setAppId: @"660697542"];
@@ -727,6 +728,7 @@ didFinishLaunchingWithOptions: (NSDictionary *) launchOptions
     
     if (!userBound)
     {
+        // do not delete data relating to the user such as subscriptions and channels
         NSPredicate* notUserChannels = [NSPredicate predicateWithFormat: @"channelOwner.uniqueId != %@ AND subscribedByUser != YES", self.currentUser.uniqueId];
         [fetchRequest setPredicate: notUserChannels];
     }
@@ -752,6 +754,21 @@ didFinishLaunchingWithOptions: (NSDictionary *) launchOptions
                                         inManagedObjectContext: self.mainManagedObjectContext]];
     
     fetchRequest.includesSubentities = YES; // to include SubGenre objecst
+    
+    itemsToDelete = [self.mainManagedObjectContext executeFetchRequest:fetchRequest error:&error];
+    
+    for (NSManagedObject* objectToDelete in itemsToDelete)
+    {
+        [self.mainManagedObjectContext deleteObject:objectToDelete];
+    }
+    
+    
+    // == Clear ChannelOwner == //
+    
+    [fetchRequest setEntity:[NSEntityDescription entityForName: @"ChannelOwner"
+                                        inManagedObjectContext: self.mainManagedObjectContext]];
+    
+    fetchRequest.includesSubentities = NO; // do not include User objects as these are handled elsewhere
     
     itemsToDelete = [self.mainManagedObjectContext executeFetchRequest:fetchRequest error:&error];
     

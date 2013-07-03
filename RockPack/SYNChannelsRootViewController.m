@@ -521,9 +521,7 @@
 {
     if (collectionView != self.channelThumbnailCollectionView)
         return nil;
-    
-    
-    
+
     UICollectionReusableView* supplementaryView;
     
     if (kind == UICollectionElementKindSectionHeader)
@@ -541,16 +539,15 @@
         // Only display a footer if we have not loaded all channels
         
         self.footerView = [self.channelThumbnailCollectionView dequeueReusableSupplementaryViewOfKind: kind
-                                                                                      withReuseIdentifier: @"SYNChannelFooterMoreView"
-                                                                                             forIndexPath: indexPath];
-
-        //[self loadMoreChannels:self.footerView.loadMoreButton];
-        
+                                                                                  withReuseIdentifier: @"SYNChannelFooterMoreView"
+                                                                                         forIndexPath: indexPath];
+        self.footerView.showsLoading = self.isLoadingMoreContent;
         supplementaryView = self.footerView;
     }
     
     return supplementaryView;
 }
+
 
 - (CGSize) collectionView: (UICollectionView *) collectionView
                    layout: (UICollectionViewLayout*) collectionViewLayout

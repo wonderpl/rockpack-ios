@@ -48,6 +48,9 @@
 
 - (void) dealloc
 {
+    // Stop observing everything
+    [[NSNotificationCenter defaultCenter] removeObserver: self];
+    
     // Defensive programming
     self.inputField.delegate = nil;
 }
@@ -55,39 +58,20 @@
 
 #pragma mark - View lifecycle
 
-- (void) viewWillAppear: (BOOL) animated
-{
-    [super viewWillAppear: animated];
-    saveButton.enabled = YES;
-    CGFloat maxY;
-    for (UIView* view in self.scrollView.subviews)
-    {
-        maxY = MAX(maxY,view.frame.origin.y + view.frame.size.height);
-    }
-
-    CGRect newFrame = self.scrollView.frame;
-    newFrame.size = self.contentSizeForViewInPopover;
-    self.scrollView.frame = newFrame;
-
-    self.scrollView.contentSize = CGSizeMake(self.scrollView.frame.size.width, maxY);
-    if(maxY < self.scrollView.frame.size.height)
-    {
-        CGRect newFrame = self.scrollView.frame;
-        newFrame.size = self.scrollView.contentSize;
-        self.scrollView.frame = newFrame;
-    }
-}
-
 - (void) viewDidLoad
 {
     [super viewDidLoad];
     
-    [[NSNotificationCenter defaultCenter] addObserver:self
-                                             selector:@selector(keyboardWasShown:)
-                                                 name:UIKeyboardDidShowNotification object:nil];
-    [[NSNotificationCenter defaultCenter] addObserver:self
-                                             selector:@selector(keyboardWillBeHidden:)
-                                                 name:UIKeyboardWillHideNotification object:nil];
+    // Removed in dealloc
+    [[NSNotificationCenter defaultCenter] addObserver: self
+                                             selector: @selector(keyboardWasShown:)
+                                                 name: UIKeyboardDidShowNotification
+                                               object: nil];
+    
+    [[NSNotificationCenter defaultCenter] addObserver: self
+                                             selector: @selector(keyboardWillBeHidden:)
+                                                 name: UIKeyboardWillHideNotification
+                                               object: nil];
     
     self.contentSizeForViewInPopover = CGSizeMake([SYNDeviceManager.sharedInstance isIPad]? 380 : [SYNDeviceManager.sharedInstance currentScreenWidth], [SYNDeviceManager.sharedInstance isIPad]? 476 : [SYNDeviceManager.sharedInstance currentScreenHeight]);
     
@@ -127,8 +111,6 @@
             self.inputField.leftView = [[UIImageView alloc] initWithImage: [UIImage imageNamed: @"IconFullname.png"]];
             break;
             
-        
-            
         case UserFieldTypeUsername:
             self.inputField.text = appDelegate.currentUser.username;
             self.inputField.leftViewMode = UITextFieldViewModeAlways;
@@ -145,20 +127,16 @@
             break;
     }
     
-    
     [self.scrollView addSubview: inputField];
     
     self.spinner.center = self.saveButton.center;
     [self.view addSubview: self.spinner];
-    
-    
     
     [saveButton addTarget: self
                    action: @selector(saveButtonPressed:)
          forControlEvents: UIControlEventTouchUpInside];
     
     // navigation back button
-    
     UIButton *backButton = [UIButton buttonWithType: UIButtonTypeCustom];
     UIImage *backButtonImage = [UIImage imageNamed: @"ButtonAccountBackDefault.png"];
     [backButton setImage: backButtonImage forState: UIControlStateNormal];
@@ -168,20 +146,45 @@
     
     self.navigationItem.leftBarButtonItem = backButtonItem;
     
-    
     errorLabel = [[UILabel alloc] initWithFrame: CGRectMake(10.0,
-                                                                saveButton.frame.origin.y + saveButton.frame.size.height + 10.0,
-                                                                self.contentSizeForViewInPopover.width - 20.0,
-                                                                50)];
+                                                            saveButton.frame.origin.y + saveButton.frame.size.height + 10.0,
+                                                            self.contentSizeForViewInPopover.width - 20.0,
+                                                            50)];
     
-    errorLabel.textColor = [UIColor colorWithRed:(11.0/255.0) green:(166.0/255.0) blue:(171.0/255.0) alpha:(1.0)];
+    errorLabel.textColor = [UIColor colorWithRed: (11.0/255.0)
+                                           green: (166.0/255.0)
+                                            blue: (171.0/255.0)
+                                           alpha: (1.0)];
+    
     errorLabel.font = [UIFont rockpackFontOfSize: 18];
     errorLabel.numberOfLines = 0;
     errorLabel.textAlignment = NSTextAlignmentCenter;
     
-    
-    
     [self.view addSubview: errorLabel];
+}
+
+
+- (void) viewWillAppear: (BOOL) animated
+{
+    [super viewWillAppear: animated];
+    saveButton.enabled = YES;
+    CGFloat maxY;
+    for (UIView* view in self.scrollView.subviews)
+    {
+        maxY = MAX(maxY,view.frame.origin.y + view.frame.size.height);
+    }
+    
+    CGRect newFrame = self.scrollView.frame;
+    newFrame.size = self.contentSizeForViewInPopover;
+    self.scrollView.frame = newFrame;
+    
+    self.scrollView.contentSize = CGSizeMake(self.scrollView.frame.size.width, maxY);
+    if(maxY < self.scrollView.frame.size.height)
+    {
+        CGRect newFrame = self.scrollView.frame;
+        newFrame.size = self.scrollView.contentSize;
+        self.scrollView.frame = newFrame;
+    }
 }
 
 

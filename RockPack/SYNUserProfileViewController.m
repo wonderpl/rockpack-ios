@@ -33,6 +33,9 @@
 {
     // Defensive programming
     self.imagePickerController.delegate = nil;
+    
+    // Stop observing everything (less error-prone than trying to remove observers individually
+    [[NSNotificationCenter defaultCenter] removeObserver: self];
 }
 
 
@@ -44,7 +47,6 @@
     
     self.fullNameLabel.font = [UIFont boldRockpackFontOfSize:30];
     self.userNameLabel.font = [UIFont rockpackFontOfSize:12.0];
-    
     
     [[NSNotificationCenter defaultCenter] addObserver: self
                                              selector: @selector(userDataChanged:)
@@ -73,12 +75,13 @@
     {
         
         NSMutableParagraphStyle *style = [[NSMutableParagraphStyle alloc] init];
-        [style setLineHeightMultiple:1.0f];
+        [style setLineHeightMultiple: 1.0f];
         style.lineBreakMode = NSLineBreakByTruncatingTail;
-        NSMutableAttributedString *attString = [[NSMutableAttributedString alloc] initWithString:self.fullNameLabel.text];
-        [attString addAttribute:NSParagraphStyleAttributeName
-                          value:style
-                          range:NSMakeRange(0, self.fullNameLabel.text.length)];
+        NSMutableAttributedString *attString = [[NSMutableAttributedString alloc] initWithString: self.fullNameLabel.text];
+        
+        [attString addAttribute: NSParagraphStyleAttributeName
+                          value: style
+                          range: NSMakeRange(0, self.fullNameLabel.text.length)];
         
         self.fullNameLabel.font = [UIFont rockpackFontOfSize:17.0f];
         [self.fullNameLabel removeFromSuperview];
@@ -104,7 +107,7 @@
         }
         
         CGRect textRect = CGRectZero;
-        textRect.size = [self.fullNameLabel.text sizeWithFont:self.fullNameLabel.font];
+        textRect.size = [self.fullNameLabel.text sizeWithFont: self.fullNameLabel.font];
         CGRect referenceRect = self.profileImageView.frame;
         textRect.origin = CGPointMake(referenceRect.origin.x + referenceRect.size.width + 10.0,
                                       referenceRect.origin.y + 10.0);
@@ -112,7 +115,7 @@
         
         textRect.origin = CGPointMake(textRect.origin.x,
                                       textRect.origin.y + textRect.size.height - 5.0);
-        textRect.size = [self.userNameLabel.text sizeWithFont:self.userNameLabel.font];
+        textRect.size = [self.userNameLabel.text sizeWithFont: self.userNameLabel.font];
         
         self.userNameLabel.frame = textRect;
     }
@@ -127,17 +130,16 @@
     if ([channelOwner isKindOfClass:[User class]])
     {
         User* ownerAsUser = (User*)channelOwner;
-        if(ownerAsUser.fullNameIsPublicValue)
+        if (ownerAsUser.fullNameIsPublicValue)
         {
             userName = ownerAsUser.fullName;
         }
         
-        if(userName.length < 1)
+        if (userName.length < 1)
         {
             userName = ownerAsUser.username;
         }
 
-        
         // Enable change avatar button
         self.avatarButton.enabled = TRUE;
     }
@@ -159,17 +161,14 @@
         NSArray *thumbnailURLItems = [channelOwner.thumbnailURL componentsSeparatedByString:@"/"];
         
         // whatever is set to be the default size by the server (ex. 'thumbnail_small') //
-        if(thumbnailURLItems.count >= 5)
+        if (thumbnailURLItems.count >= 5)
         {
             NSString* thumbnailSizeString = thumbnailURLItems[5];
             
             
             NSString* thumbnailUrlString = [channelOwner.thumbnailURL stringByReplacingOccurrencesOfString:thumbnailSizeString withString:@"thumbnail_medium"];
-            
 
-            
             // We can't use our standard asynchronous loader due to cacheing
-            
             dispatch_queue_t downloadQueue = dispatch_queue_create("com.rockpack.avatarloadingqueue", NULL);
             dispatch_async(downloadQueue, ^{
                 
@@ -194,7 +193,6 @@
 }
 
 
-
 - (IBAction) userTouchedAvatarButton: (UIButton *) avatarButton
 {
     self.imagePickerController = [[SYNImagePickerController alloc] initWithHostViewController: self];
@@ -203,6 +201,7 @@
     [self.imagePickerController presentImagePickerAsPopupFromView: avatarButton
                                                    arrowDirection: UIPopoverArrowDirectionRight];
 }
+
 
 #pragma mark - image picker delegate
 
@@ -240,7 +239,6 @@
      }];
     
     self.imagePickerController = nil;
-    
 }
 
 @end
