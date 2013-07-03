@@ -780,7 +780,6 @@
                                                                                        forIndexPath: indexPath];
         
         self.footerView.showsLoading = self.isLoadingMoreContent;
-        
         supplementaryView = self.footerView;
     }
 
