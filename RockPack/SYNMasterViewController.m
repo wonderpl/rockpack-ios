@@ -294,7 +294,6 @@ typedef void(^AnimationCompletionBlock)(BOOL finished);
     
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(hideOrShowNetworkMessages:) name:kNoteShowNetworkMessages object:nil];
     
-    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(popCurrentViewController:) name:kNotePopCurrentViewController object:nil];
     
     
     

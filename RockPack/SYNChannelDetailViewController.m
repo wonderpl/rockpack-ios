@@ -388,7 +388,7 @@
 
 -(void)swipedToExit:(UISwipeGestureRecognizer*)recogniser
 {
-    [[NSNotificationCenter defaultCenter] postNotificationName:kNotePopCurrentViewController object:self];
+    [self animatedPopViewController];
 }
 
 
@@ -1429,9 +1429,7 @@
         }
         else
         {
-            [[NSNotificationCenter defaultCenter] postNotificationName: kNotePopCurrentViewController
-                                                                object: self
-                                                              userInfo: nil];
+            [self animatedPopViewController];
         }
     }
     else
