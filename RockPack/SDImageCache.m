@@ -324,7 +324,7 @@ static const NSInteger kDefaultCacheMaxCacheAge = 60 * 60 * 24 * 7; // 1 week
             // Store a reference to this file and account for its total size.
             NSNumber *totalAllocatedSize = resourceValues[NSURLTotalFileAllocatedSizeKey];
             currentCacheSize += [totalAllocatedSize unsignedLongLongValue];
-            [cacheFiles setObject:resourceValues forKey:fileURL];
+            cacheFiles[fileURL] = resourceValues;
         }
 
         // If our remaining disk cache exceeds a configured maximum size, perform a second

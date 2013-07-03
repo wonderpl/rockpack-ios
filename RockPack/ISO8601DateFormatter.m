@@ -554,12 +554,12 @@ static BOOL is_leap_year(NSUInteger year);
 							}
 
 							NSTimeInterval timeZoneOffset = (tz_hour * 3600) + (tz_minute * 60);
-							NSNumber *offsetNum = [NSNumber numberWithDouble:timeZoneOffset];
-							timeZone = [timeZonesByOffset objectForKey:offsetNum];
+							NSNumber *offsetNum = @(timeZoneOffset);
+							timeZone = timeZonesByOffset[offsetNum];
 							if (!timeZone) {
 								timeZone = [NSTimeZone timeZoneForSecondsFromGMT:timeZoneOffset];
 								if (timeZone)
-									[timeZonesByOffset setObject:timeZone forKey:offsetNum];
+									timeZonesByOffset[offsetNum] = timeZone;
 							}
 						}
 				}

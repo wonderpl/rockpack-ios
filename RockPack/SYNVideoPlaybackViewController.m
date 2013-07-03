@@ -104,6 +104,15 @@ static UIWebView* vimeoideoWebViewInstance;
     return _sharedInstance;
 }
 
+#pragma mark - Object lifecycle
+
+- (void) dealloc
+{
+    // Defensive programming
+    self.currentVideoWebView.delegate = nil;
+    self.placeholderBottomLayerAnimation.delegate = nil;
+    self.placeholderMiddleLayerAnimation.delegate = nil;
+}
 
 
 // Common setup for all video web views
@@ -371,7 +380,7 @@ static UIWebView* vimeoideoWebViewInstance;
         [tracker sendEventWithCategory: @"goal"
                             withAction: @"videoViewed"
                              withLabel: self.previousSourceId
-                             withValue: [NSNumber numberWithInt: (int) (self.percentageViewed  * 100.0f)]];
+                             withValue: @((int) (self.percentageViewed  * 100.0f))];
     }
     
     // Just pause the video, as we might come back to this view again (if we have pushed any views on top)
@@ -738,11 +747,11 @@ static UIWebView* vimeoideoWebViewInstance;
     if (clockwise)
     {
         animation.fromValue = @0.0f;
-        animation.toValue = [NSNumber numberWithFloat: 2 * M_PI];
+        animation.toValue = @((float)(2 * M_PI));
     }
     else
     {
-        animation.fromValue = [NSNumber numberWithFloat: 2 * M_PI];
+        animation.fromValue = @((float)(2 * M_PI));
         animation.toValue = @0.0f;
     }
 
@@ -1138,7 +1147,7 @@ static UIWebView* vimeoideoWebViewInstance;
         [tracker sendEventWithCategory: @"goal"
                             withAction: @"videoViewed"
                              withLabel: self.previousSourceId
-                             withValue: [NSNumber numberWithInt: (int) (self.percentageViewed  * 100.0f)]];
+                             withValue: @((int) (self.percentageViewed  * 100.0f))];
     }
     
     self.currentVideoViewedFlag = FALSE;

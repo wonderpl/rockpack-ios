@@ -125,6 +125,10 @@ static NSString *const kLXCollectionViewKeyPath = @"collectionView";
 
 - (void) dealloc
 {
+    // Defensive coding
+    _longPressGestureRecognizer.delegate = self;
+    _panGestureRecognizer.delegate = self;
+    
     [self invalidatesScrollTimer];
     [self removeObserver: self forKeyPath: kLXCollectionViewKeyPath];
 }

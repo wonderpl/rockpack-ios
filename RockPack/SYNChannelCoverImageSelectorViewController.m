@@ -63,6 +63,8 @@ enum ChannelCoverSelectorState {
 
 @implementation SYNChannelCoverImageSelectorViewController
 
+#pragma mark - Object lifecycle
+
 - (id) initWithSelectedImageURL: (NSString *) selectedImageURL
 {
     if ((self = [super init]))
@@ -73,6 +75,16 @@ enum ChannelCoverSelectorState {
     return self;
 }
 
+
+- (void) dealloc
+{
+    // Defensive programming
+    self.fetchedResultsController.delegate = nil;
+    self.picker.delegate = nil;
+}
+
+
+#pragma mark - View lifecycle
 
 - (void) viewDidLoad
 {
@@ -148,15 +160,13 @@ enum ChannelCoverSelectorState {
                                      usingBlock: ^(ALAsset *result, NSUInteger index, BOOL *stop) {
                     if (result)
                     {
-                        [self.userAssetGroups setObject: @{@"group":group, @"coverAsset":result}
-                                                 forKey: groupName];
+                        (self.userAssetGroups)[groupName] = @{@"group":group, @"coverAsset":result};
                     }
                 }];
             }
             else
             {
-                [self.userAssetGroups setObject: @{@"group":group}
-                                         forKey: groupName];
+                (self.userAssetGroups)[groupName] = @{@"group":group};
             }
         } failureBlock: ^(NSError *error) {
         }];
@@ -203,7 +213,7 @@ enum ChannelCoverSelectorState {
             
         case kChannelCoverLocalAlbum:
         {
-            ALAssetsGroup* group = [[self.userAssetGroups objectForKey: self.selectedAlbumKey] objectForKey: @"group"];
+            ALAssetsGroup* group = (self.userAssetGroups)[self.selectedAlbumKey][@"group"];
             return [group numberOfAssets];
         }
             
@@ -264,14 +274,14 @@ enum ChannelCoverSelectorState {
                 indexPath = [NSIndexPath indexPathForRow: indexPath.row - 1 inSection:0];
             }
             title = self.sortedKeys[indexPath.row];
-            ALAsset* imageAsset = [[self.userAssetGroups objectForKey: title] objectForKey: @"coverAsset"];
+            ALAsset* imageAsset = (self.userAssetGroups)[title][@"coverAsset"];
             [cell setimageFromAsset:imageAsset];
             cell.glossImage.hidden = NO;
         }
     }
     else
     {
-        ALAssetsGroup* group = [[self.userAssetGroups objectForKey: self.selectedAlbumKey] objectForKey: @"group"];
+        ALAssetsGroup* group = (self.userAssetGroups)[self.selectedAlbumKey][@"group"];
         
         [group enumerateAssetsAtIndexes: [NSIndexSet indexSetWithIndex:indexPath.row]
                                 options: 0
@@ -313,7 +323,7 @@ enum ChannelCoverSelectorState {
             else
             {
                 int row = (self.supportsCamera ? indexPath.row-1 : indexPath.row);
-                self.selectedAlbumKey = [self.sortedKeys objectAtIndex :row];
+                self.selectedAlbumKey = (self.sortedKeys)[row];
                 
                 CATransition *animation = [CATransition animation];
                 [animation setType: kCATransitionPush];
@@ -334,7 +344,7 @@ enum ChannelCoverSelectorState {
             
         case kChannelCoverLocalAlbum:
         {
-            ALAssetsGroup* group = [[self.userAssetGroups objectForKey: self.selectedAlbumKey] objectForKey :@"group"];
+            ALAssetsGroup* group = (self.userAssetGroups)[self.selectedAlbumKey][@"group"];
             
             [group enumerateAssetsAtIndexes: [NSIndexSet indexSetWithIndex: indexPath.row]
                                     options: 0
@@ -342,7 +352,7 @@ enum ChannelCoverSelectorState {
                                      if (result)
                                      {
                                          ALAssetRepresentation* representation = [result defaultRepresentation];
-                                         GKImageCropViewController* cropViewController = [[GKImageCropViewController alloc]init];
+                                         GKImageCropViewController* cropViewController = [[GKImageCropViewController alloc] init];
                                          CGFloat scale = representation.scale;
                                          ALAssetOrientation orientation = representation.orientation;
                                          UIImage* selectedImage = nil;

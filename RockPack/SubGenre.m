@@ -83,10 +83,10 @@ static NSEntityDescription *subcategoryEntity = nil;
     self.name = [dictionary upperCaseStringForKey: @"name" withDefault: @"-?-"];
     
     
-    NSNumber* priorityString = (NSNumber*)[dictionary objectForKey:@"priority"];
-    self.priority = [NSNumber numberWithInteger:[priorityString integerValue]];
+    NSNumber* priorityString = (NSNumber*)dictionary[@"priority"];
+    self.priority = @([priorityString integerValue]);
     
-    NSNumber* isDefault = [dictionary objectForKey:@"default"];
+    NSNumber* isDefault = dictionary[@"default"];
     self.isDefaultValue = [isDefault boolValue];
     
     

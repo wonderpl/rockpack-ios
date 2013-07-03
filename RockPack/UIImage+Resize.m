@@ -32,11 +32,9 @@
     if (!imageSource)
         return nil;
     
-    CFDictionaryRef options = (CFDictionaryRef)CFBridgingRetain([NSDictionary dictionaryWithObjectsAndKeys:
-                                                                 (id)kCFBooleanTrue, (id)kCGImageSourceCreateThumbnailWithTransform,
-                                                                 (id)kCFBooleanTrue, (id)kCGImageSourceCreateThumbnailFromImageIfAbsent,
-                                                                 (id)[NSNumber numberWithFloat: maxDimension], (id)kCGImageSourceThumbnailMaxPixelSize,
-                                                                 nil]);
+    CFDictionaryRef options = (CFDictionaryRef)CFBridgingRetain(@{(id)kCGImageSourceCreateThumbnailWithTransform: (id)kCFBooleanTrue,
+                                                                 (id)kCGImageSourceCreateThumbnailFromImageIfAbsent: (id)kCFBooleanTrue,
+                                                                 (id)kCGImageSourceThumbnailMaxPixelSize: (id)@(maxDimension)});
     
     
     CGImageRef imgRef = CGImageSourceCreateThumbnailAtIndex(imageSource, 0, options);

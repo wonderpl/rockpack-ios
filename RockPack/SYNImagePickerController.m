@@ -24,7 +24,17 @@
 @property (nonatomic, assign) UIPopoverArrowDirection direction;
 @end
 
-@implementation SYNImagePickerController 
+@implementation SYNImagePickerController
+
+#pragma mark - Object lifecycle
+
+- (void) dealloc
+{
+    // Defensive programming
+    self.cameraMenuPopoverController.delegate = nil;
+    self.imagePicker.delegate = nil;
+    self.cameraPopoverController.delegate = nil;
+}
 
 -(id)initWithHostViewController:(UIViewController*)host
 {

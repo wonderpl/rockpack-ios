@@ -24,6 +24,19 @@
 
 @implementation SYNAccountSettingsFullNameInput
 
+#pragma mark - Object lifecycle
+
+- (void) dealloc
+{
+    // Defensive programming
+    self.inputField.delegate = nil;
+    self.lastNameInputField.delegate = nil;
+    self.tableView.delegate = nil;
+}
+
+
+#pragma mark - View lifecycle
+
 - (void) viewDidLoad
 {
     [super viewDidLoad];
@@ -202,7 +215,7 @@
             if(self.nameIsPublic != self.appDelegate.currentUser.fullNameIsPublicValue)
             {
                 
-                [self updateField:@"display_fullname" forValue:[NSNumber numberWithBool: self.nameIsPublic] withCompletionHandler:^{
+                [self updateField:@"display_fullname" forValue:@(self.nameIsPublic) withCompletionHandler:^{
                     
                     self.appDelegate.currentUser.fullNameIsPublicValue = self.nameIsPublic;
                     

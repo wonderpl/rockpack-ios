@@ -16,7 +16,7 @@ static NSDateFormatter *dateFormatter = nil;
 - (id) objectForKey: (id) key
         withDefault: (id) defaultValue
 {
-	id value = [self objectForKey: key];
+	id value = self[key];
     
     // Crafty, check to see that we are a valid object AND that the object is of the same type as the default value
     // this is a bit of an assumption, but I think that it makes sense
@@ -50,7 +50,7 @@ static NSDateFormatter *dateFormatter = nil;
 - (NSDate *) dateFromISO6801StringForKey: (id) key
                              withDefault: (NSDate *) defaultDate
 {
-	NSString *dateString = [self objectForKey: key];
+	NSString *dateString = self[key];
     NSDate *date;
     
     // Check to see that we have a valid string object from which 

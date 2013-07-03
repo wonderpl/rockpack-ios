@@ -73,8 +73,17 @@
 @synthesize channels;
 @synthesize runningNetworkOperation = _runningNetworkOperation;
 
-#pragma mark - View lifecycle
 
+#pragma mark - Object lifecycle
+
+- (void) dealloc
+{
+    // Defensive programming
+    self.channelThumbnailCollectionView.delegate = nil;
+}
+
+
+#pragma mark - View lifecycle
 
 - (void) loadView
 {
@@ -191,21 +200,6 @@
     [self loadChannelsForGenre:currentGenre];
 }
 
-- (void) viewWillAppear: (BOOL) animated
-{
-    [super viewWillAppear: animated];
-    
-    self.channelThumbnailCollectionView.delegate = self;
-}
-
-- (void) viewWillDisappear: (BOOL) animated
-{
-    self.channelThumbnailCollectionView.delegate = nil;
-    
-    [super viewWillDisappear: animated];
-}
-
-
 
 - (void) viewDidScrollToFront
 {
@@ -285,11 +279,11 @@
                                                                                 ignoringCache: NO
                                                                                  onCompletion: ^(NSDictionary* response) {
                                                       
-                                                      NSDictionary *channelsDictionary = [response objectForKey: @"channels"];
+                                                      NSDictionary *channelsDictionary = response[@"channels"];
                                                       if (!channelsDictionary || ![channelsDictionary isKindOfClass: [NSDictionary class]])
                                                           return;
                                                       
-                                                      NSArray *itemArray = [channelsDictionary objectForKey: @"items"];
+                                                      NSArray *itemArray = channelsDictionary[@"items"];
                                                       if (![itemArray isKindOfClass: [NSArray class]])
                                                           return;
                                                       
@@ -297,7 +291,7 @@
                                                       
                                                       
                                                       
-                                                      NSNumber *totalNumber = [channelsDictionary objectForKey: @"total"];
+                                                      NSNumber *totalNumber = channelsDictionary[@"total"];
                                                       if (![totalNumber isKindOfClass: [NSNumber class]])
                                                           return;
                                                       
@@ -473,12 +467,12 @@
     {
         if([appDelegate.currentUser.uniqueId isEqualToString:channel.channelOwner.uniqueId])
         {
-            [channelThumbnailCell setChannelTitle: [NSString stringWithFormat:@"MY %@", NSLocalizedString(@"FAVOURITES", nil)] ];
+            [channelThumbnailCell setChannelTitle: [NSString stringWithFormat:@"MY %@", NSLocalizedString(@"FAVORITES", nil)] ];
         }
         else
         {
             [channelThumbnailCell setChannelTitle:
-             [NSString stringWithFormat:@"%@'S %@", [channel.channelOwner.displayName uppercaseString], NSLocalizedString(@"FAVOURITES", nil)]];
+             [NSString stringWithFormat:@"%@'S %@", [channel.channelOwner.displayName uppercaseString], NSLocalizedString(@"FAVORITES", nil)]];
         }
         
     }
@@ -885,6 +879,7 @@
     newFrame.size.width = self.categoryTableViewController.view.frame.size.width;
     self.categoryTableViewController.view.frame = newFrame;
     [self.view addSubview:self.categoryTableViewController.view];
+    [self addChildViewController:self.categoryTableViewController];
     self.categoryTableViewController.categoryTableControllerDelegate= self;
     self.categoryTableViewController.view.hidden = YES;
     

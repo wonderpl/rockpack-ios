@@ -152,11 +152,11 @@
                                 return;
                             
                             
-                            NSString* errorType = [error objectForKey:@"error"];
+                            NSString* errorType = error[@"error"];
                             
                             if([errorType isEqualToString:@"invalid_request"])
                             {
-                                NSArray* errorMessage = [error objectForKey:@"message"];
+                                NSArray* errorMessage = error[@"message"];
                                 
                                 if(errorMessage.count > 0)
                                 {

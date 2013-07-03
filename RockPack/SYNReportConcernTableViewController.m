@@ -38,7 +38,9 @@
 
 @implementation SYNReportConcernTableViewController
 
--(id)init
+#pragma mark - Object lifecycle
+
+- (id) init
 {
     self = [super init];
     if(self)
@@ -48,6 +50,16 @@
     
     return self;
 }
+
+
+- (void) dealloc
+{
+    // Defensive programming
+    self.reportConcernPopoverController.delegate = nil;
+}
+
+
+#pragma mark - View lifecycle
 
 - (void) viewDidLoad
 {

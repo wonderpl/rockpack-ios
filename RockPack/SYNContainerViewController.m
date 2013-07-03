@@ -280,16 +280,8 @@
     // These are the things we need to do if the page has actually changed    
     if (self.currentPage != self.lastSelectedPageIndex)
     {        
-        // Update google analytics
-        id<GAITracker> tracker = [GAI sharedInstance].defaultTracker;
-        
-        [tracker sendEventWithCategory: @"uiAction"
-                            withAction: @"navigationSwipe"
-                             withLabel: nil
-                             withValue: nil];
-        
         // Now let the page know that it has the focus
-        if(self.lastSelectedPageIndex >=0 && self.lastSelectedPageIndex <3)
+        if (self.lastSelectedPageIndex >=0 && self.lastSelectedPageIndex <3)
         {
             SYNAbstractViewController* lastSelectedViewController = (SYNAbstractViewController*)self.childViewControllers[self.lastSelectedPageIndex];
             [lastSelectedViewController viewDidScrollToBack];

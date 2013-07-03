@@ -103,8 +103,8 @@
     float stopAngle = -startAngle;
     
     // Setup animation
-    quiverAnim.fromValue = [NSNumber numberWithFloat: startAngle];
-    quiverAnim.toValue = [NSNumber numberWithFloat: stopAngle];
+    quiverAnim.fromValue = @(startAngle);
+    quiverAnim.toValue = @(stopAngle);
     quiverAnim.autoreverses = YES;
     quiverAnim.duration = 0.2;
     quiverAnim.repeatCount = HUGE_VALF;

@@ -295,16 +295,19 @@
 
 #pragma mark - Utility Methods
 
--(NSDictionary*)getLocalParam
+- (NSDictionary*) getLocaleParam
 {
-    return [NSDictionary dictionaryWithObject:self.localeString forKey:@"locale"];
+    return [NSDictionary dictionaryWithObject: self.localeString forKey:@"locale"];
 }
 
--(NSDictionary*)getLocalParamWithParams:(NSDictionary*)parameters
+
+
+-(NSDictionary*)getLocaleParamWithParams: (NSDictionary*) parameters
 {
     
-    NSMutableDictionary* dictionaryWithLocale = [NSMutableDictionary dictionaryWithDictionary:parameters];
-    [dictionaryWithLocale addEntriesFromDictionary:[self getLocalParam]];
+    NSMutableDictionary* dictionaryWithLocale = [NSMutableDictionary dictionaryWithDictionary: parameters];
+    [dictionaryWithLocale addEntriesFromDictionary: [self getLocaleParam]];
+    
     return dictionaryWithLocale;
 }
 

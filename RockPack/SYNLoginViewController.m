@@ -91,6 +91,16 @@
 @synthesize elementsOffsetY;
 @synthesize termsAndConditionsButton;
 
+#pragma mark - Object lifecycle
+
+- (void) dealloc
+{
+    self.imagePicker.delegate = nil;
+}
+
+
+#pragma mark - View lifecycle
+
 - (void) viewDidLoad
 {
     [super viewDidLoad];
@@ -947,7 +957,7 @@
                forPassword: passwordInputField.text
          completionHandler: ^(NSDictionary* dictionary) {
             
-             DebugLog(@"User Registerd: %@", [dictionary objectForKey: @"username"]);
+             DebugLog(@"User Registerd: %@", dictionary[@"username"]);
              
              // by this time the currentUser is set in the DB //
              
@@ -1285,7 +1295,7 @@
                       [activityIndicator stopAnimating];
                       registerNewUserButton.alpha = 1.0;
                       
-                      NSDictionary* formErrors = [errorDictionary objectForKey: @"form_errors"];
+                      NSDictionary* formErrors = errorDictionary[@"form_errors"];
                       
                       if (formErrors)
                       {
@@ -1315,23 +1325,23 @@
 - (void) showRegistrationError: (NSDictionary*) errorDictionary
 {
     // form errors
-    NSArray* usernameError = [errorDictionary objectForKey: @"username"];
+    NSArray* usernameError = errorDictionary[@"username"];
     //NSArray* localeError = [errorDictionary objectForKey:@"locale"];
-    NSArray* passwordError = [errorDictionary objectForKey :@"password"];
-    NSArray* emailError = [errorDictionary objectForKey: @"email"];
+    NSArray* passwordError = errorDictionary[@"password"];
+    NSArray* emailError = errorDictionary[@"email"];
     
     if (usernameError)
-        [self placeErrorLabel: (NSString*)[usernameError objectAtIndex: 0]
+        [self placeErrorLabel: (NSString*)usernameError[0]
                    nextToView: userNameInputField];
     
     // TODO: deal with locale
     
     if (passwordError)
-        [self placeErrorLabel: (NSString*)[passwordError objectAtIndex: 0]
+        [self placeErrorLabel: (NSString*)passwordError[0]
                    nextToView: passwordInputField];
     
     if (emailError)
-        [self placeErrorLabel: (NSString*)[emailError objectAtIndex: 0]
+        [self placeErrorLabel: (NSString*)emailError[0]
                    nextToView: emailInputField];
     
 }
@@ -1342,7 +1352,7 @@
 - (void) placeErrorLabel: (NSString*) errorText
               nextToView: (UIView*) targetView
 {
-    SYNLoginErrorArrow* errorArrow = [labelsToErrorArrows objectForKey:[NSValue valueWithPointer:(__bridge const void *)(targetView)]];
+    SYNLoginErrorArrow* errorArrow = labelsToErrorArrows[[NSValue valueWithPointer:(__bridge const void *)(targetView)]];
     if (errorArrow)
     {
         [errorArrow setMessage:errorText];
@@ -1367,7 +1377,7 @@
                          errorArrow.alpha = 1.0;
                      }];
     
-    [labelsToErrorArrows setObject:errorArrow forKey:[NSValue valueWithPointer:(__bridge const void *)(targetView)]];
+    labelsToErrorArrows[[NSValue valueWithPointer:(__bridge const void *)(targetView)]] = errorArrow;
     [self.view addSubview:errorArrow];
 }
 
@@ -1487,7 +1497,7 @@
     
     NSValue* key = [NSValue valueWithPointer:(__bridge const void *)(textField)];
     SYNLoginErrorArrow* possibleErrorArrow =
-    (SYNLoginErrorArrow*)[labelsToErrorArrows objectForKey: key];
+    (SYNLoginErrorArrow*)labelsToErrorArrows[key];
     
     if (possibleErrorArrow)
     {

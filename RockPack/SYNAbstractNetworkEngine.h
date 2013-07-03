@@ -48,9 +48,9 @@
 - (NSDictionary *) paramsAndLocaleForStart: (int) start
                                       size: (int) size;
 
--(NSDictionary*) getLocalParam;
+-(NSDictionary*) getLocaleParam;
 
--(NSDictionary*) getLocalParamWithParams:(NSDictionary*)parameters;
+-(NSDictionary*) getLocaleParamWithParams: (NSDictionary*) parameters;
 
 - (void) enqueueSignedOperation: (MKNetworkOperation *) request;
 

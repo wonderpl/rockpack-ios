@@ -92,7 +92,7 @@ typedef void(^AnimationCompletionBlock)(BOOL finished);
 @synthesize sideNavigationOriginCenterX;
 @synthesize isDragging, buttonLocked;
 
-#pragma mark - Initialise
+#pragma mark - Object lifecycle
 
 - (id) initWithContainerViewController: (SYNContainerViewController*) root
 {
@@ -148,9 +148,14 @@ typedef void(^AnimationCompletionBlock)(BOOL finished);
 }
 
 
+- (void) dealloc
+{
+    // Defensive programming
+    self.accountSettingsPopover.delegate = nil;
+}
 
 
-#pragma mark - Life Cycle
+#pragma mark - View lifecycle
 
 
 - (void) viewDidLoad
@@ -299,7 +304,7 @@ typedef void(^AnimationCompletionBlock)(BOOL finished);
 // this is triggered when a component requests a view at the base of the stack
 - (void) profileRequested: (NSNotification*) notification
 {
-    ChannelOwner* channelOwner = (ChannelOwner*)[[notification userInfo] objectForKey: kChannelOwner];
+    ChannelOwner* channelOwner = (ChannelOwner*)[notification userInfo][kChannelOwner];
     if (!channelOwner)
         return;
     
@@ -311,13 +316,13 @@ typedef void(^AnimationCompletionBlock)(BOOL finished);
 {
     
     
-    Channel* channel = (Channel*)[[notification userInfo] objectForKey: kChannel];
+    Channel* channel = (Channel*)[notification userInfo][kChannel];
     if (!channel)
         return;
     
     SYNChannelDetailViewController *channelVC = [[SYNChannelDetailViewController alloc] initWithChannel: channel
                                                                                               usingMode: kChannelDetailsModeDisplay];
-    channelVC.autoplayVideoId = [[notification userInfo] objectForKey:kAutoPlayVideoId];
+    channelVC.autoplayVideoId = [notification userInfo][kAutoPlayVideoId];
     
     [self pushController:channelVC];
 }
@@ -369,7 +374,7 @@ typedef void(^AnimationCompletionBlock)(BOOL finished);
 
 -(void)scrollerPageChanged:(NSNotification*)notification
 {
-    NSNumber* pageNumber = [[notification userInfo] objectForKey:kCurrentPage];
+    NSNumber* pageNumber = [notification userInfo][kCurrentPage];
     if(!pageNumber)
         return;
     
@@ -462,7 +467,7 @@ typedef void(^AnimationCompletionBlock)(BOOL finished);
 -(void)addedToChannelAction:(NSNotification*)notification
 {
     
-    Channel* selectedChannel = (Channel*)[[notification userInfo] objectForKey:kChannel];
+    Channel* selectedChannel = (Channel*)[notification userInfo][kChannel];
     if(!selectedChannel)
     {
         //Channel select was cancelled.
@@ -763,7 +768,7 @@ typedef void(^AnimationCompletionBlock)(BOOL finished);
 - (void) searchTyped: (NSNotification*) notification
 {
     
-    NSString* termString = (NSString*)[[notification userInfo] objectForKey: kSearchTerm];
+    NSString* termString = (NSString*)[notification userInfo][kSearchTerm];
     
     if(!termString)
         return;
@@ -954,7 +959,7 @@ typedef void(^AnimationCompletionBlock)(BOOL finished);
 - (void) navigateToPage: (NSNotification*) notification
 {
     
-    NSString* pageName = [[notification userInfo] objectForKey: @"pageName"];
+    NSString* pageName = [notification userInfo][@"pageName"];
     if(!pageName)
         return;
     
@@ -1218,7 +1223,7 @@ typedef void(^AnimationCompletionBlock)(BOOL finished);
 
 - (void) presentSuccessNotificationWithCaution:(NSNotification*)notification
 {
-    SYNCaution* caution = [[notification userInfo] objectForKey:kCaution];
+    SYNCaution* caution = [notification userInfo][kCaution];
     if(!caution)
         return;
     

@@ -42,7 +42,7 @@
     self.actionBlock = ^(OWActivity *activity, OWActivityViewController *activityViewController) {
         [activityViewController dismissViewControllerAnimated:YES completion:nil];
         NSDictionary *userInfo = weakSelf.userInfo ? weakSelf.userInfo : activityViewController.userInfo;
-        UIImage *image = [userInfo objectForKey:@"image"];
+        UIImage *image = userInfo[@"image"];
         
         ALAssetsLibrary *library = [[ALAssetsLibrary alloc] init];
         [library writeImageToSavedPhotosAlbum:image.CGImage

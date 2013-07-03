@@ -44,10 +44,10 @@
         NSDictionary *userInfo = weakSelf.userInfo ? weakSelf.userInfo : activityViewController.userInfo;
         NSString *url;
         
-        if ([userInfo objectForKey:@"coordinate"]) {
-            url = [NSString stringWithFormat:@"http://maps.apple.com/?q=%@,%@", [[userInfo objectForKey:@"coordinate"] objectForKey:@"latitude"], [[userInfo objectForKey:@"coordinate"] objectForKey:@"longitude"]];
+        if (userInfo[@"coordinate"]) {
+            url = [NSString stringWithFormat:@"http://maps.apple.com/?q=%@,%@", userInfo[@"coordinate"][@"latitude"], userInfo[@"coordinate"][@"longitude"]];
         } else {
-            url = [NSString stringWithFormat:@"http://maps.apple.com/?q=%@", [userInfo objectForKey:@"text"]];
+            url = [NSString stringWithFormat:@"http://maps.apple.com/?q=%@", userInfo[@"text"]];
         }
         
         [[UIApplication sharedApplication] openURL:[NSURL URLWithString:url]];

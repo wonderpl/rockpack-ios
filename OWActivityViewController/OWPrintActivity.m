@@ -45,10 +45,10 @@
             
             UIPrintInfo *printInfo = [UIPrintInfo printInfo];
             printInfo.outputType = UIPrintInfoOutputGeneral;
-            printInfo.jobName = [userInfo objectForKey:@"text"];
+            printInfo.jobName = userInfo[@"text"];
             pc.printInfo = printInfo;
             
-            pc.printingItem = [userInfo objectForKey:@"image"];
+            pc.printingItem = userInfo[@"image"];
             
             void (^completionHandler)(UIPrintInteractionController *, BOOL, NSError *) =
             ^(UIPrintInteractionController *printController, BOOL completed, NSError *error) {

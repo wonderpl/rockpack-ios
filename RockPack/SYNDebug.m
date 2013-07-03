@@ -30,7 +30,7 @@ void SYNDebug (const char *fileName, int lineNumber, NSString *format, ...)
     fprintf(stdout, "%s %s -%s[%s:%d]\n",
             [timestamp UTF8String],
             [logmsg UTF8String],
-            [[infoDict objectForKey:(NSString *)kCFBundleNameKey] UTF8String],
+            [infoDict[(NSString *)kCFBundleNameKey] UTF8String],
             [[filePath lastPathComponent] UTF8String],
             lineNumber
             );

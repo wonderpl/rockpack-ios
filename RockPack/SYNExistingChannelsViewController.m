@@ -104,7 +104,7 @@
         int selectedIndex = [self.channels indexOfObject:self.selectedChannel];
         if( selectedIndex != NSNotFound)
         {
-            self.selectedChannel = [self.channels objectAtIndex:selectedIndex];
+            self.selectedChannel = (self.channels)[selectedIndex];
             self.previouslySelectedPath = [NSIndexPath indexPathForRow:selectedIndex + 1 inSection:0];
             self.confirmButtom.enabled = YES;
         }

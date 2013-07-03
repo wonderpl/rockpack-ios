@@ -30,7 +30,7 @@
         CGImageRef image = CGImageSourceCreateImageAtIndex(source, i, NULL);
         
         NSDictionary *frameProperties = CFBridgingRelease(CGImageSourceCopyPropertiesAtIndex(source, i, NULL));
-        duration += [[[frameProperties objectForKey:(NSString*)kCGImagePropertyGIFDictionary] objectForKey:(NSString*)kCGImagePropertyGIFDelayTime] doubleValue];
+        duration += [frameProperties[(NSString*)kCGImagePropertyGIFDictionary][(NSString*)kCGImagePropertyGIFDelayTime] doubleValue];
         
         [images addObject:[UIImage imageWithCGImage:image scale:[UIScreen mainScreen].scale orientation:UIImageOrientationUp]];
         

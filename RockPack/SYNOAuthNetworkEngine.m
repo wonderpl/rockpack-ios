@@ -683,7 +683,7 @@
     //    NSData *imageData = UIImageJPEGRepresentation(image, 0.70);
     //    NSData *imageData = [image jpegDataForResizedImageWithMaxDimension: 600];
     
-    NSString *lengthString = [NSString stringWithFormat: @"%@", [NSNumber numberWithUnsignedLong: imageData.length]];
+    NSString *lengthString = [NSString stringWithFormat: @"%@", @(imageData.length)];
     NSInputStream *inputStream = [NSInputStream inputStreamWithData: imageData];
     networkOperation.uploadStream = inputStream;
     
@@ -1103,7 +1103,7 @@
     NSString *apiString = [kAPIGetUserCoverArt stringByReplacingOccurrencesOfStrings: apiSubstitutionDictionary];
     
     SYNNetworkOperationJsonObject *networkOperation = (SYNNetworkOperationJsonObject*)[self operationWithPath: apiString
-                                                                                                       params: [self getLocalParam]
+                                                                                                       params: [self getLocaleParam]
                                                                                                    httpMethod: @"GET"
                                                                                                           ssl: TRUE];
     __weak SYNOAuthNetworkEngine* wself = self;
@@ -1173,7 +1173,7 @@
     
     NSData *imageData = UIImageJPEGRepresentation(newImage, 0.70);
 
-    NSString *lengthString = [NSString stringWithFormat: @"%@", [NSNumber numberWithUnsignedLong: imageData.length]];
+    NSString *lengthString = [NSString stringWithFormat: @"%@", @(imageData.length)];
     NSInputStream *inputStream = [NSInputStream inputStreamWithData: imageData];
     networkOperation.uploadStream = inputStream;
     

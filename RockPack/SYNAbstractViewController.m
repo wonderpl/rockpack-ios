@@ -63,7 +63,7 @@
 
 @synthesize viewId;
 
-#pragma mark - Custom accessor methods
+#pragma mark - Object lifecycle
 
 - (id) init
 {
@@ -86,8 +86,12 @@
     return self;
 }
 
+
 - (void) dealloc
 {
+    // Defensive programming
+    tabViewController.delegate = nil;
+    
     [[NSNotificationCenter defaultCenter] removeObserver: self
                                                     name: kClearedLocationBoundData
                                                   object: nil];
@@ -96,6 +100,7 @@
                                                     name: UIApplicationWillEnterForegroundNotification
                                                   object: nil];
 }
+
 
 #pragma mark - View lifecycle
 
@@ -250,9 +255,8 @@
         return;
     }
 
-    
     self.loadingMoreContent = YES;
-    
+
     NSInteger nextSize = (nextStart + STANDARD_REQUEST_LENGTH) >= self.dataItemsAvailable ? (self.dataItemsAvailable - nextStart) : STANDARD_REQUEST_LENGTH;
     
     self.dataRequestRange = NSMakeRange(nextStart, nextSize);
@@ -739,7 +743,7 @@
 }
 
 
-- (void) loadingMoreContent: (BOOL) loadingMoreContent
+- (void) setLoadingMoreContent: (BOOL) loadingMoreContent
 {
     // First set the state of our footer spinner
     self.footerView.showsLoading = loadingMoreContent;
@@ -764,5 +768,6 @@
     // return the standard and overide in subclass for special cases such as the ChannelDetails Section
     return NavigationButtonsAppearenceBlack;
 }
+
 
 @end
