@@ -1468,7 +1468,7 @@ typedef void(^AnimationCompletionBlock)(BOOL finished);
     }
     
     [UIView animateWithDuration: 0.6f
-                          delay: 0.4f
+                          delay: (show && self.isInSearchMode ? 0.4f : 0.0f)
                         options: UIViewAnimationOptionCurveEaseInOut
                      animations: ^{
                          self.movableButtonsContainer.frame = targetFrame;
@@ -1477,19 +1477,15 @@ typedef void(^AnimationCompletionBlock)(BOOL finished);
                          self.pagePositionIndicatorView.alpha = !targetAlpha;
                      } completion:nil];
     
-    if(self.isInSearchMode)
-    {
-        [UIView animateWithDuration: 0.6f
-                              delay: 0.0f
-                            options: UIViewAnimationOptionCurveEaseInOut
-                         animations: ^{
-                             CGRect sboxFrame = self.searchBoxController.view.frame;
-                             sboxFrame.origin.x = newSearchBoxOrigin;
-                             sboxFrame.size.width = self.closeSearchButton.frame.origin.x - sboxFrame.origin.x - 8.0;
-                             self.searchBoxController.view.frame = sboxFrame;
-                         } completion:nil];
-        
-    }
+    [UIView animateWithDuration: 0.6f
+                          delay: (show ? 0.0f : 0.4f)
+                        options: UIViewAnimationOptionCurveEaseInOut
+                     animations: ^{
+                         CGRect sboxFrame = self.searchBoxController.view.frame;
+                         sboxFrame.origin.x = newSearchBoxOrigin;
+                         sboxFrame.size.width = self.closeSearchButton.frame.origin.x - sboxFrame.origin.x - 8.0;
+                         self.searchBoxController.view.frame = sboxFrame;
+                     } completion:nil];
     
 }
 
