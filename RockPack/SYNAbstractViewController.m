@@ -769,5 +769,10 @@
     return NavigationButtonsAppearenceBlack;
 }
 
+-(BOOL)alwaysDisplaysSearchBox
+{
+    return NO;
+}
+
 
 @end

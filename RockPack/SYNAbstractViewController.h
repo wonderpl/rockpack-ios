@@ -58,6 +58,7 @@ typedef void (^SYNShareCompletionBlock)(void);
 @property (nonatomic, weak) MKNetworkOperation* runningNetworkOperation;
 @property (readonly) NSManagedObjectContext *mainManagedObjectContext;
 @property (readonly, getter = isVideoQueueVisible) BOOL videoQueueVisible;
+@property (readonly) BOOL alwaysDisplaysSearchBox;
 
 - (void) handleNewTabSelectionWithId: (NSString*) selectionId;
 - (void) handleNewTabSelectionWithGenre: (Genre*) name;
@@ -126,5 +127,6 @@ typedef void (^SYNShareCompletionBlock)(void);
 - (CGSize) footerSize;
 
 - (NavigationButtonsAppearence) navigationAppearence;
+
 
 @end

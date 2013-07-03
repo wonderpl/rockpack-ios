@@ -167,9 +167,6 @@
     if (!self.currentController)
         [self videoTabPressed:nil];
     
-    
-    [[NSNotificationCenter defaultCenter] postNotificationName: kNoteSearchBarRequestShow
-                                                        object: self];
         
     if([[SYNDeviceManager sharedInstance] isIPhone])
     {
@@ -337,6 +334,11 @@
 - (BOOL) needsAddButton
 {
     return NO;
+}
+
+- (BOOL) alwaysDisplaysSearchBox
+{
+    return YES;
 }
 
 @end

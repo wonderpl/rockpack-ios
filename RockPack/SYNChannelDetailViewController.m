@@ -460,9 +460,6 @@
     
     [super viewWillDisappear: animated];
     
-    [[NSNotificationCenter defaultCenter] postNotificationName: kNoteAllNavControlsShow
-                                                        object: self
-                                                      userInfo: nil];
     
     [[NSNotificationCenter defaultCenter] removeObserver: self
                                                     name: kCoverArtChanged

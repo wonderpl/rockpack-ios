@@ -73,6 +73,8 @@ typedef void(^AnimationCompletionBlock)(BOOL finished);
 @property (nonatomic, strong) IBOutlet UIButton* headerButton;
 @property (nonatomic) NavigationButtonsAppearence currentNavigationButtonsAppearence;
 
+@property (nonatomic) BOOL searchIsInProgress;
+
 @property (nonatomic, strong) UINavigationController* mainNavigationController;
 
 @end
@@ -99,8 +101,6 @@ typedef void(^AnimationCompletionBlock)(BOOL finished);
     if ((self = [super initWithNibName: @"SYNMasterViewController" bundle: nil]))
     {
         appDelegate = (SYNAppDelegate*)[[UIApplication sharedApplication] delegate];
-
-        
         
         // == main navigation == //
         
@@ -258,14 +258,9 @@ typedef void(^AnimationCompletionBlock)(BOOL finished);
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(allNavControlsRequested:) name:kNoteAllNavControlsShow object:nil];
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(allNavControlsRequested:) name:kNoteAllNavControlsHide object:nil];
     
-    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(hideSomeNavControlsRequested:) name:kChannelsNavControlsHide object:nil];
-    
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(hideTitleAndDots:) name:kNoteHideTitleAndDots object:nil];
     
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(addToChannelRequested:) name:kNoteAddToChannelRequest object:nil];
-    
-    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(searchBarRequested:) name:kNoteSearchBarRequestHide object:nil];
-    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(searchBarRequested:) name:kNoteSearchBarRequestShow object:nil];
     
     
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(scrollerPageChanged:) name:kScrollerPageChanged object:nil];
@@ -786,8 +781,10 @@ typedef void(^AnimationCompletionBlock)(BOOL finished);
         [self popToRootController];
     }
     
-    
-    [self pushController:self.searchViewController];
+    if(!self.searchIsInProgress)
+        [self pushController:self.searchViewController];
+    else
+        [self popToController:self.searchViewController];
     
     if([[SYNDeviceManager sharedInstance] isIPhone])
     {
@@ -839,15 +836,7 @@ typedef void(^AnimationCompletionBlock)(BOOL finished);
     [appDelegate logout];
 }
 
--(void) searchBarRequested:(NSNotification*)notification
-{
-    NSString* notifcationName = [notification name];
-    if([notifcationName isEqualToString:kNoteSearchBarRequestHide])
-        [self cancelButtonPressed:nil];
-    else
-        [self showSearchBoxField:nil];
-        
-}
+
 
 - (void) reachabilityChanged: (NSNotification*) notification
 {
@@ -945,14 +934,7 @@ typedef void(^AnimationCompletionBlock)(BOOL finished);
     }
 }
 
-- (void) hideSomeNavControlsRequested: (NSNotification*) notification
-{
-    self.searchButton.hidden = YES;
-    self.closeSearchButton.hidden = YES;
-    self.sideNavigationButton.hidden = YES;
-    self.backButtonControl.hidden = YES;
-    self.sideNavigationViewController.state = SideNavigationStateHidden;
-}
+
 
 
 - (void) navigateToPage: (NSNotification*) notification
@@ -1390,6 +1372,31 @@ typedef void(^AnimationCompletionBlock)(BOOL finished);
     
     [self.containerViewController refreshView];
 }
+-(void)popToController:(UIViewController*)controller
+{
+    NSInteger viewControllersCount = self.mainNavigationController.viewControllers.count;
+    
+    // we must have at least two to pop one and the controller must be contained in the navigation view stack
+    if (viewControllersCount < 2 || ![self.mainNavigationController.viewControllers containsObject:controller]) 
+        return;
+    
+    [UIView animateWithDuration: 0.5f
+                          delay: 0.0f
+                        options: UIViewAnimationOptionCurveEaseInOut
+                     animations: ^{
+                         
+                         self.mainNavigationController.topViewController.view.alpha = 0.0f;
+                         
+                         controller.view.alpha = 1.0f;
+                         
+                     } completion: ^(BOOL finished) {
+                         
+                     }];
+    
+    [self.mainNavigationController popToViewController:controller animated:NO];
+}
+
+
 -(void)popToRootController
 {
     NSInteger viewControllersCount = self.mainNavigationController.viewControllers.count;
@@ -1509,10 +1516,36 @@ typedef void(^AnimationCompletionBlock)(BOOL finished);
     }
     else
     {
-        [self changeControlButtonsTo:((SYNAbstractViewController*)viewController).navigationAppearence];
+        SYNAbstractViewController* abstractController = (SYNAbstractViewController*)viewController;
+        [self changeControlButtonsTo:abstractController.navigationAppearence];
+        
+        if(abstractController.alwaysDisplaysSearchBox)
+        {
+            [self showSearchBoxField:nil];
+            self.closeSearchButton.hidden = YES;
+            self.sideNavigationButton.hidden = NO;
+        }
+        else
+        {
+            if(self.isInSearchMode)
+            {
+                self.closeSearchButton.hidden = NO;
+                self.sideNavigationButton.hidden = YES;
+            }
+        }
     }
     
+    
+    
     [self showBackButton:(navigationController.viewControllers.count > 1)];
+    
+    
+}
+
+// returns whether the searchViewController has been pushed to the stack previously
+-(BOOL)searchIsInProgress
+{
+    return [self.mainNavigationController.viewControllers containsObject:self.searchViewController];
 }
 
 @end
