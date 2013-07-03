@@ -321,9 +321,8 @@
         return;
     }
 
-    
     self.loadingMoreContent = YES;
-    
+
     NSInteger nextSize = (nextStart + STANDARD_REQUEST_LENGTH) >= self.dataItemsAvailable ? (self.dataItemsAvailable - nextStart) : STANDARD_REQUEST_LENGTH;
     
     self.dataRequestRange = NSMakeRange(nextStart, nextSize);
@@ -810,7 +809,7 @@
 }
 
 
-- (void) loadingMoreContent: (BOOL) loadingMoreContent
+- (void) setLoadingMoreContent: (BOOL) loadingMoreContent
 {
     // First set the state of our footer spinner
     self.footerView.showsLoading = loadingMoreContent;

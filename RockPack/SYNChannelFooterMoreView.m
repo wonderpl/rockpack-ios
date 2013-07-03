@@ -9,17 +9,17 @@
 #import "SYNChannelFooterMoreView.h"
 
 @implementation SYNChannelFooterMoreView
-@synthesize showsLoading = _showsLoading;
 
--(void)awakeFromNib
+- (void) awakeFromNib
 {
     self.activityIndicator.hidden = YES;
     self.backgroundColor = [UIColor colorWithPatternImage: [UIImage imageNamed: @"BackgroundLoadMore"]];
 }
 
--(void)setShowsLoading:(BOOL)showsLoading
+
+- (void) setShowsLoading: (BOOL)showsLoading
 {
-    if(_showsLoading == showsLoading)
+    if (_showsLoading == showsLoading)
         return;
     
     _showsLoading = showsLoading;
@@ -35,11 +35,7 @@
         [self.activityIndicator stopAnimating];
         self.activityIndicator.hidden = YES;
     }
-    
 }
--(BOOL)showsLoading
-{
-    return _showsLoading;
-}
+
 
 @end
