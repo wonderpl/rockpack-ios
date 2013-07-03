@@ -877,8 +877,6 @@
             viewForSupplementaryElementOfKind: (NSString *) kind
                                   atIndexPath: (NSIndexPath *) indexPath
 {
-    
-    
     UICollectionReusableView* supplementaryView;
     
     if (kind == UICollectionElementKindSectionFooter)
@@ -896,49 +894,39 @@
                                                                                     withReuseIdentifier: @"SYNChannelFooterMoreView"
                                                                                            forIndexPath: indexPath];
             
-            
+            self.footerView.showsLoading = self.isLoadingMoreContent;
             supplementaryView = self.footerView;
         }
-        
-        
     }
     
     return supplementaryView;
 }
 
 
-
 - (void) incrementRangeForNextRequest
 {
-    NSLog (@"Before: Loc %d, Len %d, Avail %d", self.dataRequestRange.location, self.dataRequestRange.length, self.dataItemsAvailable);
     NSInteger nextStart = self.dataRequestRange.location + self.dataRequestRange.length; // one is subtracted when the call happens for 0 indexing
     
     NSInteger nextSize = (nextStart + STANDARD_REQUEST_LENGTH) >= self.dataItemsAvailable ? MAX ((self.dataItemsAvailable - nextStart), 0) : STANDARD_REQUEST_LENGTH;
     
     self.dataRequestRange = NSMakeRange(nextStart, nextSize);
-    NSLog (@"After: Loc %d, Len %d, Avail %d", self.dataRequestRange.location, self.dataRequestRange.length, self.dataItemsAvailable);
 }
 
 
--(void)loadMoreVideos:(UIButton*)footerButton
+- (void) loadMoreVideos
 {
-    
     self.loadingMoreContent = YES;
     
     // define success block //
-    
     [self incrementRangeForNextRequest];
-    
     
     MKNKUserSuccessBlock successBlock = ^(NSDictionary *dictionary) {
         self.loadingMoreContent = NO;
         
-        [self.channel addVideoInstancesFromDictionary:dictionary];
+        [self.channel addVideoInstancesFromDictionary: dictionary];
         
         NSError* error;
-        [self.channel.managedObjectContext save:&error];
-        
-        
+        [self.channel.managedObjectContext save: &error];
     };
     
     // define success block //
@@ -950,27 +938,20 @@
     
     if ([self.channel.resourceURL hasPrefix: @"https"]) // https does not cache so it is fresh
     {
-        
-        
-        [appDelegate.oAuthNetworkEngine videosForChannelForUserId:appDelegate.currentUser.uniqueId
-                                                        channelId:self.channel.uniqueId
-                                                          inRange:self.dataRequestRange
-                                                completionHandler:successBlock
-                                                     errorHandler:errorBlock];
-        
-        
+        [appDelegate.oAuthNetworkEngine videosForChannelForUserId: appDelegate.currentUser.uniqueId
+                                                        channelId: self.channel.uniqueId
+                                                          inRange: self.dataRequestRange
+                                                completionHandler: successBlock
+                                                     errorHandler: errorBlock];   
     }
     else
     {
-        
-        
-        [appDelegate.networkEngine videosForChannelForUserId:appDelegate.currentUser.uniqueId
-                                                   channelId:self.channel.uniqueId
-                                                     inRange:self.dataRequestRange
-                                           completionHandler:successBlock
-                                                errorHandler:errorBlock];
+        [appDelegate.networkEngine videosForChannelForUserId: appDelegate.currentUser.uniqueId
+                                                   channelId: self.channel.uniqueId
+                                                     inRange: self.dataRequestRange
+                                           completionHandler: successBlock
+                                                errorHandler: errorBlock];
     }
-    
 }
 
 
@@ -2781,7 +2762,7 @@
         if (scrollView.contentSize.height > 0 && (scrollView.contentOffset.y >= scrollView.contentSize.height - scrollView.bounds.size.height - kLoadMoreFooterViewHeight)
             && self.isLoadingMoreContent == NO)
         {
-            [self loadMoreVideos: nil];
+            [self loadMoreVideos];
         }
         
         if (scrollView.contentOffset.y <= self.originalContentOffset.y)
@@ -2792,7 +2773,6 @@
             self.masterControlsView.frame = frame;
             
             blurOpacity = 0.0;
-            
         }
         else
         {
