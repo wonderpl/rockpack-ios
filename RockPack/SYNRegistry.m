@@ -54,6 +54,26 @@
     }
 }
 
+- (id) initWithManagedObjectContext: (NSManagedObjectContext*) moc
+{
+    {
+        if (self = [self init])
+        {
+            if (moc)
+            {
+                importManagedObjectContext=moc;
+            }
+        }
+        
+        return self;
+    }
+}
+
++ (id) registryWithManagedContext:(NSManagedObjectContext*)moc
+{
+    return [[self alloc] initWithManagedObjectContext:moc];
+}
+
 
 #pragma mark - Import Context Management
 
