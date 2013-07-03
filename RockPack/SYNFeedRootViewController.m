@@ -387,6 +387,13 @@
     
     return fetchedResultsController;
 }
+    
+
+- (void) controllerDidChangeContent: (NSFetchedResultsController *) controller
+{
+    
+    [self.videoThumbnailCollectionView reloadData];
+}
 
 
 #pragma mark - UICollectionView Delegate
