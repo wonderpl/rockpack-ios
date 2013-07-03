@@ -651,25 +651,25 @@ didFinishLaunchingWithOptions: (NSDictionary *) launchOptions
     NSManagedObjectContext* context = [note object];
     if ( context.parentContext == self.mainManagedObjectContext )
     {
-//        [self.privateManagedObjectContext performBlock:^{
-//            [self.privateManagedObjectContext mergeChangesFromContextDidSaveNotification:note];
-//            NSError* error = nil;
-//            [self.privateManagedObjectContext save:&error];
-//            if(error)
-//            {
-//                AssertOrLog(@"Error saving Private moc: %@\n%@", [error localizedDescription], [error userInfo]);
-//
-//            }
-//        }];
-//        dispatch_async(dispatch_get_main_queue(), ^{
-//            [[NSNotificationCenter defaultCenter] postNotificationName:NSManagedObjectContextDidSaveNotification object:self.mainManagedObjectContext userInfo:note.userInfo];
-//        });
+        [self.privateManagedObjectContext performBlock:^{
+            [self.privateManagedObjectContext mergeChangesFromContextDidSaveNotification:note];
+            NSError* error = nil;
+            [self.privateManagedObjectContext save:&error];
+            if(error)
+            {
+                AssertOrLog(@"Error saving Private moc: %@\n%@", [error localizedDescription], [error userInfo]);
+
+            }
+        }];
+        dispatch_async(dispatch_get_main_queue(), ^{
+            [[NSNotificationCenter defaultCenter] postNotificationName:NSManagedObjectContextDidSaveNotification object:self.mainManagedObjectContext userInfo:note.userInfo];
+        });
         
         
     
-    [self.mainManagedObjectContext performBlock:^{
-        [self saveContext:NO];
-    }];
+//    [self.mainManagedObjectContext performBlock:^{
+//        [self saveContext:NO];
+//    }];
     }
     
 }
