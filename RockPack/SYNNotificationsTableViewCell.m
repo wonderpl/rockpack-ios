@@ -177,10 +177,8 @@
 
 -(void)setMessageTitle:(NSString *)messageTitle
 {
-    
+        
     // == main text label == //
-    
-    messageTitle = @"ALLAN has liked on of your videos although he";
     
     
     NSMutableParagraphStyle *paragrahStyle = [[NSMutableParagraphStyle alloc] init];
