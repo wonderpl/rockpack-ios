@@ -35,7 +35,6 @@ typedef void (^SYNShareCompletionBlock)(void);
     SYNTabViewController* tabViewController;
     NSString* viewId;
     NSFetchedResultsController* fetchedResultsController;
-    CGFloat startAnimationDelay;
     NSString* abstractTitle;
 }
 
@@ -93,8 +92,6 @@ typedef void (^SYNShareCompletionBlock)(void);
 - (id) initWithViewId: (NSString*) vid;
 - (void) viewDidScrollToFront;
 - (void) viewDidScrollToBack;
-- (BOOL) needsAddButton;
-- (BOOL) toleratesSearchBar;
 
 - (void) resetDataRequestRange;
 

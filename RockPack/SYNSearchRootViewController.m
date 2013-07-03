@@ -331,10 +331,7 @@
 
 #pragma mark - Accessor
 
-- (BOOL) needsAddButton
-{
-    return NO;
-}
+
 
 - (BOOL) alwaysDisplaysSearchBox
 {

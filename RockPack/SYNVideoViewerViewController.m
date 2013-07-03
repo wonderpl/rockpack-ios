@@ -929,10 +929,6 @@
 
 }
 
-- (BOOL) needsAddButton
-{
-    return NO;
-}
 
 #pragma mark - orientation change iPhone
 - (void) deviceOrientationChange: (NSNotification*) note

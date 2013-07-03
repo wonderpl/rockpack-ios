@@ -1018,12 +1018,6 @@ typedef void(^AnimationCompletionBlock)(BOOL finished);
 }
 
 
-#pragma mark - View Stack Navigation
-
-// when a view is pushed, this gets called
-
-
-
 
 #pragma mark - Account Settings
 
@@ -1342,7 +1336,6 @@ typedef void(^AnimationCompletionBlock)(BOOL finished);
                          
                      }];
     
-    NSLog(@"Pushing Controller: %@", controller);
     
     [self.mainNavigationController pushViewController:controller animated: NO];
     
@@ -1475,25 +1468,28 @@ typedef void(^AnimationCompletionBlock)(BOOL finished);
     }
     
     [UIView animateWithDuration: 0.6f
-                          delay: 0.0f
+                          delay: 0.4f
                         options: UIViewAnimationOptionCurveEaseInOut
                      animations: ^{
                          self.movableButtonsContainer.frame = targetFrame;
                          self.backButtonControl.alpha = targetAlpha;
                          self.pageTitleLabel.alpha = !targetAlpha;
                          self.pagePositionIndicatorView.alpha = !targetAlpha;
-                         
-                         // Re-Asjust the Search Box when the back arrow comes on/off screen //
-                         
-                         if(self.isInSearchMode)
-                         {
+                     } completion:nil];
+    
+    if(self.isInSearchMode)
+    {
+        [UIView animateWithDuration: 0.6f
+                              delay: 0.0f
+                            options: UIViewAnimationOptionCurveEaseInOut
+                         animations: ^{
                              CGRect sboxFrame = self.searchBoxController.view.frame;
                              sboxFrame.origin.x = newSearchBoxOrigin;
                              sboxFrame.size.width = self.closeSearchButton.frame.origin.x - sboxFrame.origin.x - 8.0;
                              self.searchBoxController.view.frame = sboxFrame;
-                         }
-                     }
-                     completion:nil];
+                         } completion:nil];
+        
+    }
     
 }
 

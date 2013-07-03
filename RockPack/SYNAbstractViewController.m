@@ -114,19 +114,6 @@
                                                object: nil];
     
     appDelegate = (SYNAppDelegate *)[[UIApplication sharedApplication] delegate];
-
-    if (self.needsAddButton && [[SYNDeviceManager sharedInstance] isIPad])
-    {
-        self.addButton = [SYNAddButtonControl button];
-        CGRect addButtonFrame = self.addButton.frame;
-        addButtonFrame.origin.x = self.view.frame.size.width - 140.0f; // 884.0f
-        addButtonFrame.origin.y = 80.0f;
-        self.addButton.frame = addButtonFrame;
-
-        self.addButton.autoresizingMask = UIViewAutoresizingFlexibleLeftMargin | UIViewAutoresizingFlexibleBottomMargin;
-        
-        [self.view addSubview: addButton];
-    }
     
     // for loading data
     
@@ -148,7 +135,6 @@
 
 - (void) controllerDidChangeContent: (NSFetchedResultsController *) controller
 {
-    startAnimationDelay = 0.0;
     [self reloadCollectionViews];
 }
 
@@ -246,12 +232,11 @@
 
 - (void) incrementRangeForNextRequest
 {
-    NSLog (@"Before: Loc %d, Len %d, Avail %d", self.dataRequestRange.location, self.dataRequestRange.length, self.dataItemsAvailable);
+    
     NSInteger nextStart = self.dataRequestRange.location + self.dataRequestRange.length; // one is subtracted when the call happens for 0 indexing
     
     if (nextStart >= self.dataItemsAvailable)
     {
-        NSLog (@"Bailed: Loc %d, Len %d, Avail %d", self.dataRequestRange.location, self.dataRequestRange.length, self.dataItemsAvailable);
         return;
     }
 
@@ -260,7 +245,6 @@
     NSInteger nextSize = (nextStart + STANDARD_REQUEST_LENGTH) >= self.dataItemsAvailable ? (self.dataItemsAvailable - nextStart) : STANDARD_REQUEST_LENGTH;
     
     self.dataRequestRange = NSMakeRange(nextStart, nextSize);
-    NSLog (@"After: Loc %d, Len %d, Avail %d", self.dataRequestRange.location, self.dataRequestRange.length, self.dataItemsAvailable);
 }
 
 
@@ -428,7 +412,7 @@
 
 - (NSString*) description
 {
-    return [NSString stringWithFormat: @"ViewController: %@", viewId];
+    return [NSString stringWithFormat: @"SYNAbstractViewController '%@'", viewId];
 }
 
 
@@ -480,15 +464,7 @@
     return YES;
 }
 
-- (BOOL) needsAddButton
-{
-    return NO;
-}
 
-- (BOOL) toleratesSearchBar
-{
-    return NO;
-}
 
 -(void)setTitle:(NSString *)title
 {

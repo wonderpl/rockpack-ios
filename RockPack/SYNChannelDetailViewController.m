@@ -3119,12 +3119,6 @@
 }
 
 
-- (BOOL) needsAddButton
-{
-    return NO;
-}
-
-
 #pragma mark - user avatar image update
 
 - (void) reloadUserImage: (NSNotification*) note
