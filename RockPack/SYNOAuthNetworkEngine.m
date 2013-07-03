@@ -491,68 +491,70 @@
         }
         
         // Register User
-        
-        BOOL userRegistered = [self.registry registerUserFromDictionary:responseDictionary];
-        if(!userRegistered) {
-            errorBlock(@{@"saving_error":@"Main Registry Could Not Save the User"});
-            return;
-        }
+        [self.registry performInBackground:^BOOL(NSManagedObjectContext *backgroundContext) {
+            return [self.registry registerUserFromDictionary:responseDictionary];
+        } completionBlock:^(BOOL userRegistered) {
+            if(!userRegistered) {
+                errorBlock(@{@"saving_error":@"Main Registry Could Not Save the User"});
+                return;
+            }
             
-        
-        // Get subscriptions
-        
-        NSString* userId = responseDictionary[@"id"];
-        
-        
-        [self channelSubscriptionsForUserId:userId
-                                 credential:credentials
-                                      start:0
-                                       size:50
-                          completionHandler:^(id subscriptionsDictionary) {
-                              
-                              
-                              NSString* possibleError = responseDictionary[@"error"];
-                              
-                              if (possibleError)
-                              {
-                                  errorBlock(responseDictionary);
-                                  return;
-                              }
-                              
-                              BOOL userRegistered = [self.registry registerSubscriptionsForCurrentUserFromDictionary:subscriptionsDictionary];
-                              if(!userRegistered)
-                                  return;
-                              
-                              completionBlock(responseDictionary);
-                              
-        
-                            } errorHandler:^(id errorObject) {
-                                if([errorObject isKindOfClass:[NSDictionary class]])
-                                {
-                                    errorBlock(errorObject);
-                                }
-                                else if([errorObject isKindOfClass:[NSError class]])
-                                {
-                                    NSError* error = (NSError*) errorObject;
-                                    
-                                    if (error.code >=500 && error.code < 600)
-                                    {
-                                        [self showErrorPopUpForError:error];
-                                    }
-                                    
-                                    DebugLog(@"API Call failed");
-                                    NSDictionary* customErrorDictionary = @{@"network_error" : [NSString stringWithFormat: @"%@, Server responded with %i", error.domain, error.code] , @"nserror" : error };
-                                    errorBlock(customErrorDictionary);
-                                }
-                                else
-                                {
-                                    errorBlock(nil);
-                                }
-        
-                            }];
-        
-        
-        
+            
+            // Get subscriptions
+            
+            NSString* userId = responseDictionary[@"id"];
+            
+            
+            [self channelSubscriptionsForUserId:userId
+                                     credential:credentials
+                                          start:0
+                                           size:50
+                              completionHandler:^(id subscriptionsDictionary) {
+                                  
+                                  
+                                  NSString* possibleError = responseDictionary[@"error"];
+                                  
+                                  if (possibleError)
+                                  {
+                                      errorBlock(responseDictionary);
+                                      return;
+                                  }
+                                  
+                                  [self.registry performInBackground:^BOOL(NSManagedObjectContext *backgroundContext) {
+                                      return [self.registry registerSubscriptionsForCurrentUserFromDictionary:subscriptionsDictionary];
+                                  } completionBlock:^(BOOL userRegistered) {
+                                      if(!userRegistered)
+                                          return;
+                                      
+                                      completionBlock(responseDictionary);
+                                  }];
+                                  
+                              } errorHandler:^(id errorObject) {
+                                  if([errorObject isKindOfClass:[NSDictionary class]])
+                                  {
+                                      errorBlock(errorObject);
+                                  }
+                                  else if([errorObject isKindOfClass:[NSError class]])
+                                  {
+                                      NSError* error = (NSError*) errorObject;
+                                      
+                                      if (error.code >=500 && error.code < 600)
+                                      {
+                                          [self showErrorPopUpForError:error];
+                                      }
+                                      
+                                      DebugLog(@"API Call failed");
+                                      NSDictionary* customErrorDictionary = @{@"network_error" : [NSString stringWithFormat: @"%@, Server responded with %i", error.domain, error.code] , @"nserror" : error };
+                                      errorBlock(customErrorDictionary);
+                                  }
+                                  else
+                                  {
+                                      errorBlock(nil);
+                                  }
+                                  
+                              }];
+
+        }];
      }
      errorHandler: ^(NSError* error)
      {
@@ -1109,12 +1111,15 @@
     __weak SYNOAuthNetworkEngine* wself = self;
     [self addCommonHandlerToNetworkOperation: networkOperation
                            completionHandler: ^(NSDictionary *dictionary) {
-                               BOOL registryResultOk = [wself.registry registerCoverArtFromDictionary: dictionary
-                                                                                           forUserUpload: YES];
-                               if (!registryResultOk)
-                                   return;
                                
-                               completionBlock();
+                               [wself.registry performInBackground:^BOOL(NSManagedObjectContext *backgroundContext){
+                                   return  [wself.registry registerCoverArtFromDictionary: dictionary
+                                                                           forUserUpload: NO];
+                               } completionBlock:^(BOOL registryResultOk) {
+                                   if (!registryResultOk)
+                                       return;                                  
+                                   completionBlock();
+                               }];
                            }
                                 errorHandler: errorBlock];
     

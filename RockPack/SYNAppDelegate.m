@@ -310,7 +310,7 @@ didFinishLaunchingWithOptions: (NSDictionary *) launchOptions
     if (!self.currentUser || !self.currentUser.current)
         return;
     
-    
+    [self saveContext:YES];
     
     self.window.rootViewController = [self createAndReturnLoginViewController];
     
@@ -567,8 +567,11 @@ didFinishLaunchingWithOptions: (NSDictionary *) launchOptions
         DebugLog(@"Error adding persistent store to coordinator %@\n%@", [error localizedDescription], [error userInfo]);
     }
     
-    _mainRegistry = [SYNMainRegistry registry];
-    _searchRegistry = [SYNSearchRegistry registry];
+    
+    _mainRegistry = [SYNMainRegistry registryWithParentContext:self.mainManagedObjectContext];
+    _searchRegistry = [SYNSearchRegistry registryWithParentContext:self.searchManagedObjectContext];
+    
+    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(refreshMainContext:) name:NSManagedObjectContextDidSaveNotification object:nil];
 }
 
 
@@ -578,35 +581,38 @@ didFinishLaunchingWithOptions: (NSDictionary *) launchOptions
     
     if ([self.mainManagedObjectContext hasChanges])
     {
-        [self.mainManagedObjectContext performBlockAndWait:^
+        [self.mainManagedObjectContext performBlock:^
          {
              NSError *error = nil;
              if (![self.mainManagedObjectContext save: &error])
              {
                  AssertOrLog(@"Error saving Main moc: %@\n%@", [error localizedDescription], [error userInfo]);
              }
+             else
+             {
+                 void (^savePrivate) (void) = ^
+                 {
+                     NSError *error = nil;
+                     if (![self.privateManagedObjectContext save: &error])
+                     {
+                         AssertOrLog(@"Error saving Private moc: %@\n%@", [error localizedDescription], [error userInfo]);
+                     }
+                 };
+                 
+                 if ([self.privateManagedObjectContext hasChanges])
+                 {
+                     if (wait)
+                     {
+                         [self.privateManagedObjectContext performBlockAndWait: savePrivate];
+                     }
+                     else
+                     {
+                         [self.privateManagedObjectContext performBlock: savePrivate];
+                     }
+                 }
+             }
+             
          }];
-    }
-    
-    void (^savePrivate) (void) = ^
-    {
-        NSError *error = nil;
-        if (![self.privateManagedObjectContext save: &error])
-        {
-            AssertOrLog(@"Error saving Private moc: %@\n%@", [error localizedDescription], [error userInfo]);
-        }
-    };
-    
-    if ([self.privateManagedObjectContext hasChanges])
-    {
-        if (wait)
-        {
-            [self.privateManagedObjectContext performBlockAndWait: savePrivate];
-        }
-        else
-        {
-            [self.privateManagedObjectContext performBlock: savePrivate];
-        }
     }
 }
 
@@ -638,6 +644,34 @@ didFinishLaunchingWithOptions: (NSDictionary *) launchOptions
             AssertOrLog(@"Error saving Channels moc: %@\n%@", [error localizedDescription], [error userInfo]);
         }
     }
+}
+
+-(void)refreshMainContext:(NSNotification*)note
+{
+    NSManagedObjectContext* context = [note object];
+    if ( context.parentContext == self.mainManagedObjectContext )
+    {
+//        [self.privateManagedObjectContext performBlock:^{
+//            [self.privateManagedObjectContext mergeChangesFromContextDidSaveNotification:note];
+//            NSError* error = nil;
+//            [self.privateManagedObjectContext save:&error];
+//            if(error)
+//            {
+//                AssertOrLog(@"Error saving Private moc: %@\n%@", [error localizedDescription], [error userInfo]);
+//
+//            }
+//        }];
+//        dispatch_async(dispatch_get_main_queue(), ^{
+//            [[NSNotificationCenter defaultCenter] postNotificationName:NSManagedObjectContextDidSaveNotification object:self.mainManagedObjectContext userInfo:note.userInfo];
+//        });
+        
+        
+    
+    [self.mainManagedObjectContext performBlock:^{
+        [self saveContext:NO];
+    }];
+    }
+    
 }
 
 
@@ -687,8 +721,7 @@ didFinishLaunchingWithOptions: (NSDictionary *) launchOptions
     
     [fetchRequest setEntity:[NSEntityDescription entityForName: @"CoverArt"
                                         inManagedObjectContext: self.mainManagedObjectContext]];
-    
-    
+   
     itemsToDelete = [self.mainManagedObjectContext executeFetchRequest: fetchRequest
                                                                  error: &error];
     

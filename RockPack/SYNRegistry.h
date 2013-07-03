@@ -10,16 +10,23 @@
 
 @class SYNAppDelegate;
 
+typedef void(^SYNRegistryCompletionBlock)(BOOL success);
+
+typedef BOOL(^SYNRegistryActionBlock)(NSManagedObjectContext* backgroundContext);
+
 @interface SYNRegistry : NSObject {
     @protected __weak SYNAppDelegate *appDelegate;
     @protected NSManagedObjectContext* importManagedObjectContext;
 }
 
 
-- (id) initWithManagedObjectContext: (NSManagedObjectContext*) moc;
-+ (id) registry;
+- (id) initWithParentManagedObjectContext: (NSManagedObjectContext*) moc;
++ (id) registryWithParentContext:(NSManagedObjectContext*)moc;
 
 - (BOOL) saveImportContext;
 - (BOOL) clearImportContextFromEntityName: (NSString*) entityName;
+
+
+-(void)performInBackground:(SYNRegistryActionBlock)actionBlock completionBlock:(SYNRegistryCompletionBlock)completionBlock;
 
 @end

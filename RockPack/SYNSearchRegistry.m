@@ -15,17 +15,6 @@
 
 @implementation SYNSearchRegistry
 
--(id)init
-{
-    if (self = [super init])
-    {
-        appDelegate = UIApplication.sharedApplication.delegate;
-        importManagedObjectContext = [[NSManagedObjectContext alloc] initWithConcurrencyType: NSConfinementConcurrencyType];
-        importManagedObjectContext.parentContext = appDelegate.searchManagedObjectContext;
-    }
-    return self;
-}
-
 
 -(BOOL)registerVideosFromDictionary:(NSDictionary *)dictionary
 {
@@ -68,7 +57,7 @@
     if(!saveResult)
         return NO;
     
-    [appDelegate saveSearchContext];
+    //[appDelegate saveSearchContext];
     
     return YES;
 }
@@ -110,7 +99,7 @@
     if(!saveResult)
         return NO;
     
-    [appDelegate saveSearchContext];
+    //[appDelegate saveSearchContext];
     
     
     return YES;
