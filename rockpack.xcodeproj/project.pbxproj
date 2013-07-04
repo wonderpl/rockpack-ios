@@ -984,6 +984,7 @@
 		BE2D2155171D5BD500B4B755 /* ButtonCancelHighlighted@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = BE2D2151171D5BD500B4B755 /* ButtonCancelHighlighted@2x.png */; };
 		BE2D2158171D8A4500B4B755 /* AvatarProfile.png in Resources */ = {isa = PBXBuildFile; fileRef = BE2D2156171D8A4500B4B755 /* AvatarProfile.png */; };
 		BE2D2159171D8A4500B4B755 /* AvatarProfile@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = BE2D2157171D8A4500B4B755 /* AvatarProfile@2x.png */; };
+		BE2D762D1785BBB100546BFD /* SYNViewStackManager.m in Sources */ = {isa = PBXBuildFile; fileRef = BE2D762C1785BBB100546BFD /* SYNViewStackManager.m */; };
 		BE3983D11768A4AA00EE9C7B /* SYNOnBoardingPopoverView.m in Sources */ = {isa = PBXBuildFile; fileRef = BE3983D01768A4AA00EE9C7B /* SYNOnBoardingPopoverView.m */; };
 		BE3983D41768B6D800EE9C7B /* SYNOnBoardingPopoverQueueController.m in Sources */ = {isa = PBXBuildFile; fileRef = BE3983D31768B6D800EE9C7B /* SYNOnBoardingPopoverQueueController.m */; };
 		BE3983DA176A0CD200EE9C7B /* onboarding_button_ok.png in Resources */ = {isa = PBXBuildFile; fileRef = BE3983D6176A0CD200EE9C7B /* onboarding_button_ok.png */; };
@@ -2297,6 +2298,8 @@
 		BE2D2151171D5BD500B4B755 /* ButtonCancelHighlighted@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = "ButtonCancelHighlighted@2x.png"; path = "Assets/Images/ButtonCancelHighlighted@2x.png"; sourceTree = "<group>"; };
 		BE2D2156171D8A4500B4B755 /* AvatarProfile.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = AvatarProfile.png; path = Assets/Images/AvatarProfile.png; sourceTree = "<group>"; };
 		BE2D2157171D8A4500B4B755 /* AvatarProfile@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = "AvatarProfile@2x.png"; path = "Assets/Images/AvatarProfile@2x.png"; sourceTree = "<group>"; };
+		BE2D762B1785BBB100546BFD /* SYNViewStackManager.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SYNViewStackManager.h; sourceTree = "<group>"; };
+		BE2D762C1785BBB100546BFD /* SYNViewStackManager.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SYNViewStackManager.m; sourceTree = "<group>"; };
 		BE3983CF1768A4AA00EE9C7B /* SYNOnBoardingPopoverView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SYNOnBoardingPopoverView.h; sourceTree = "<group>"; };
 		BE3983D01768A4AA00EE9C7B /* SYNOnBoardingPopoverView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SYNOnBoardingPopoverView.m; sourceTree = "<group>"; };
 		BE3983D21768B6D800EE9C7B /* SYNOnBoardingPopoverQueueController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SYNOnBoardingPopoverQueueController.h; sourceTree = "<group>"; };
@@ -3232,6 +3235,7 @@
 		019824E41629CAF500216900 /* Helpers */ = {
 			isa = PBXGroup;
 			children = (
+				BE2D762A1785BB9C00546BFD /* View Stack Manager */,
 				0154E8451768E25B001C7B75 /* Timers */,
 				012BD2C7173BE84C00BE28B6 /* Async Image load and cache */,
 				BE285DB91726826800D995AB /* Channels Manager */,
@@ -4719,6 +4723,15 @@
 				BEBFD0AB177A03D200C90544 /* PanelPrivateAlert@2x.png */,
 			);
 			name = "Error Messages";
+			sourceTree = "<group>";
+		};
+		BE2D762A1785BB9C00546BFD /* View Stack Manager */ = {
+			isa = PBXGroup;
+			children = (
+				BE2D762B1785BBB100546BFD /* SYNViewStackManager.h */,
+				BE2D762C1785BBB100546BFD /* SYNViewStackManager.m */,
+			);
+			name = "View Stack Manager";
 			sourceTree = "<group>";
 		};
 		BE3983CB1768A34700EE9C7B /* OnBoarding Messages */ = {
@@ -6335,6 +6348,7 @@
 				BEBFD0921779F0F800C90544 /* SYNCaution.m in Sources */,
 				BEBFD0951779F25800C90544 /* SYNCautionMessageView.m in Sources */,
 				016191711782DECD0016BD23 /* PSPDFUIKitMainThreadGuard.m in Sources */,
+				BE2D762D1785BBB100546BFD /* SYNViewStackManager.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
