@@ -110,6 +110,8 @@ typedef void(^AnimationCompletionBlock)(BOOL finished);
         self.mainNavigationController.view.autoresizingMask = UIViewAutoresizingFlexibleWidth|UIViewAutoresizingFlexibleHeight;
         self.mainNavigationController.wantsFullScreenLayout = YES;
         
+        appDelegate.viewStackManager.navigationController = self.mainNavigationController;
+        
         [self addChildViewController:self.mainNavigationController];
 
         // == Side Navigation == //
@@ -1325,79 +1327,24 @@ typedef void(^AnimationCompletionBlock)(BOOL finished);
 
 -(void)pushController:(SYNAbstractViewController*)controller
 {
-   
-    controller.view.alpha = 0.0f;
-    
-    [UIView animateWithDuration: 0.5f
-                          delay: 0.0f
-                        options: UIViewAnimationOptionCurveEaseInOut | UIViewAnimationOptionBeginFromCurrentState
-                     animations: ^ {
-                         // Contract thumbnail view
-                         self.mainNavigationController.topViewController.view.alpha = 0.0;
-                         controller.view.alpha = 1.0f;
-                     }
-                     completion:^(BOOL finished) {
-                         //controllerself.isAnimating = NO;
-                         
-                     }];
-    
-    
-    [self.mainNavigationController pushViewController:controller animated: NO];
+    [appDelegate.viewStackManager pushController:controller];
     
 }
 -(void)popController
 {
-    NSInteger viewControllersCount = self.mainNavigationController.viewControllers.count;
-    
-    if (viewControllersCount < 2) // we must have at least two to pop one
-        return;
-    
-    
-    [UIView animateWithDuration: 0.5f
-                          delay: 0.0f
-                        options: UIViewAnimationOptionCurveEaseInOut
-                     animations: ^{
-                         
-                         self.mainNavigationController.topViewController.view.alpha = 0.0f;
-                         // pick the previous view controller
-                         ((UIViewController*)self.mainNavigationController.viewControllers[viewControllersCount - 2]).view.alpha = 1.0f;
-                         
-                     } completion: ^(BOOL finished) {
-                         
-                     }];
-    
-    [self.mainNavigationController popViewControllerAnimated:NO];
+    [appDelegate.viewStackManager popController];
     
     [self.containerViewController refreshView];
 }
 -(void)popToController:(UIViewController*)controller
 {
-    NSInteger viewControllersCount = self.mainNavigationController.viewControllers.count;
-    
-    // we must have at least two to pop one and the controller must be contained in the navigation view stack
-    if (viewControllersCount < 2 || ![self.mainNavigationController.viewControllers containsObject:controller]) 
-        return;
-    
-    [UIView animateWithDuration: 0.5f
-                          delay: 0.0f
-                        options: UIViewAnimationOptionCurveEaseInOut
-                     animations: ^{
-                         
-                         self.mainNavigationController.topViewController.view.alpha = 0.0f;
-                         
-                         controller.view.alpha = 1.0f;
-                         
-                     } completion: ^(BOOL finished) {
-                         
-                     }];
-    
-    [self.mainNavigationController popToViewController:controller animated:NO];
+    [appDelegate.viewStackManager popToController:controller];
 }
 
 
 -(void)popToRootController
 {
-    [self popToController:self.mainNavigationController.viewControllers[0]];
+    [appDelegate.viewStackManager popToRootController];
 }
 
 - (void) showBackButton: (BOOL) show // popping

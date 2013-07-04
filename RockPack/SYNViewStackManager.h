@@ -8,6 +8,19 @@
 
 #import <Foundation/Foundation.h>
 
+@class SYNAbstractViewController;
+
 @interface SYNViewStackManager : NSObject
+
+
+@property (nonatomic, weak) UINavigationController* navigationController;
+
++(id)manager;
+
+
+-(void)popToRootController;
+-(void)popToController:(UIViewController*)controller;
+-(void)popController;
+-(void)pushController:(SYNAbstractViewController*)controller;
 
 @end

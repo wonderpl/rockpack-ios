@@ -51,6 +51,7 @@ extern void instrumentObjcMessageSends(BOOL);
 @property (nonatomic, strong) SYNVideoQueue* videoQueue;
 @property (nonatomic, strong) SYNOnBoardingPopoverQueueController* onBoardingQueue;
 @property (nonatomic, strong) SYNMasterViewController* masterViewController;
+@property (nonatomic, strong) SYNViewStackManager* viewStackManager;
 
 @end
 
@@ -135,6 +136,8 @@ extern void instrumentObjcMessageSends(BOOL);
     
     self.onBoardingQueue = [SYNOnBoardingPopoverQueueController queueController];
     
+    // ViewStack Manager //
+    self.viewStackManager = [SYNViewStackManager manager];
     
     
     // Network Engine //

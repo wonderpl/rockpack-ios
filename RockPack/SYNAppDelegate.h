@@ -16,6 +16,7 @@
 #import "SYNVideoQueue.h"
 #import "SYNOnBoardingPopoverQueueController.h"
 #import "SYNChannelManager.h"
+#import "SYNViewStackManager.h"
 
 #define kShowLoginPhase YES
 #define kUsingProductionAPI YES
@@ -59,6 +60,8 @@
 @property (readonly, nonatomic, strong) SYNSearchRegistry* searchRegistry;
 
 @property (nonatomic, readonly) SYNOnBoardingPopoverQueueController* onBoardingQueue;
+
+@property (nonatomic, readonly) SYNViewStackManager* viewStackManager;
 
 @property (nonatomic, assign) BOOL searchRefreshDisabled;
 @property (nonatomic, assign) BOOL playerUpdated;
