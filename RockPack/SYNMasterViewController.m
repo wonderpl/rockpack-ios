@@ -1392,29 +1392,7 @@ typedef void(^AnimationCompletionBlock)(BOOL finished);
 
 -(void)popToRootController
 {
-    NSInteger viewControllersCount = self.mainNavigationController.viewControllers.count;
-    
-    if (viewControllersCount < 2) // we must have at least two to pop one
-        return;
-    
-    
-    
-    
-    [UIView animateWithDuration: 0.5f
-                          delay: 0.0f
-                        options: UIViewAnimationOptionCurveEaseInOut
-                     animations: ^{
-                         
-                         
-                         self.mainNavigationController.topViewController.view.alpha = 0.0f;
-                         // pick the previous view controller
-                         ((UIViewController*)self.mainNavigationController.viewControllers[viewControllersCount - 2]).view.alpha = 1.0f;
-                         
-                     } completion: ^(BOOL finished) {
-                         
-                     }];
-    
-    [self.mainNavigationController popToRootViewControllerAnimated:NO];
+    [self popToController:self.mainNavigationController.viewControllers[0]];
 }
 
 - (void) showBackButton: (BOOL) show // popping
