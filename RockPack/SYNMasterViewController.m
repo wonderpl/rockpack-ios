@@ -217,7 +217,7 @@ typedef void(^AnimationCompletionBlock)(BOOL finished);
     CGRect backButtonFrame = self.backButtonControl.frame;
     backButtonFrame.origin.y = 10.0f;
     self.backButtonControl.frame = backButtonFrame;
-    [self.view addSubview:self.backButtonControl];
+    [self.view insertSubview:self.backButtonControl belowSubview:self.overlayContainerView];
     self.backButtonControl.alpha = 0.0;
     
     
@@ -776,12 +776,7 @@ typedef void(^AnimationCompletionBlock)(BOOL finished);
         
     }
     
-    
-    if([[SYNDeviceManager sharedInstance] isIPhone])
-    {
-        [self popToRootController];
-    }
-    
+        
     if(!self.searchIsInProgress)
         [self pushController:self.searchViewController];
     else
@@ -791,6 +786,7 @@ typedef void(^AnimationCompletionBlock)(BOOL finished);
     {
         //[self.searchViewController.view addSubview:self.sideNavigationViewController.searchViewController.searchBoxView];
         self.searchViewController.searchBoxViewController = self.sideNavigationViewController.searchViewController;
+        [self hideNavigation:nil];
     }
     
     
@@ -804,7 +800,7 @@ typedef void(^AnimationCompletionBlock)(BOOL finished);
     if(self.searchViewController.navigationController.topViewController == self.searchViewController)
     {
         [self cancelButtonPressed: nil];
-        
+        [self popController];
     }
     self.closeSearchButton.hidden = YES;
     self.sideNavigationButton.hidden = NO;
@@ -816,7 +812,7 @@ typedef void(^AnimationCompletionBlock)(BOOL finished);
                        }];
 
     [self.sideNavigationViewController.searchViewController removeFromParentViewController];
-    [self.view addSubview: self.sideNavigationViewController.searchViewController.searchBoxView];
+    [self.view insertSubview:self.sideNavigationViewController.searchViewController.searchBoxView belowSubview:self.overlayView];
 }
 
 
@@ -1493,12 +1489,14 @@ typedef void(^AnimationCompletionBlock)(BOOL finished);
             {
                 [self.sideNavigationViewController.searchViewController removeFromParentViewController];
                 UIView* searchBar = self.sideNavigationViewController.searchViewController.searchBoxView;
-                [self.view addSubview:searchBar];
+                [self.view insertSubview:searchBar belowSubview:self.overlayView];
             }
-            
-            [self showSearchBoxField:nil];
-            self.closeSearchButton.hidden = YES;
-            self.sideNavigationButton.hidden = NO;
+            else
+            {
+                [self showSearchBoxField:nil];
+                self.closeSearchButton.hidden = YES;
+                self.sideNavigationButton.hidden = NO;
+            }
         }
         else
         {
