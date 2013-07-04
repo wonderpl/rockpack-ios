@@ -167,19 +167,13 @@
     if (!self.currentController)
         [self videoTabPressed:nil];
     
-    
-    [[NSNotificationCenter defaultCenter] postNotificationName: kNoteSearchBarRequestShow
-                                                        object: self];
-    
-    [[NSNotificationCenter defaultCenter] postNotificationName: kMainControlsChangeEnter
-                                                        object: self];
         
     if([[SYNDeviceManager sharedInstance] isIPhone])
     {
-        [[NSNotificationCenter defaultCenter] postNotificationName: kNoteAllNavControlsHide
-                                                        object: self];
-        
-        [self.view addSubview:self.searchBoxViewController.searchBoxView];
+//        [[NSNotificationCenter defaultCenter] postNotificationName: kNoteAllNavControlsHide
+//                                                        object: self];
+//        
+//        [self.view addSubview:self.searchBoxViewController.searchBoxView];
         [self.searchBoxViewController.searchBoxView revealCloseButton];
     }
     
@@ -228,7 +222,7 @@
 }
 
 
-- (void) animatedPushViewController: (UIViewController *) vc
+- (void) animatedPushViewController: (SYNAbstractViewController *) vc
 {
     [super animatedPushViewController: vc];
 }
@@ -339,9 +333,11 @@
 
 #pragma mark - Accessor
 
-- (BOOL) needsAddButton
+
+
+- (BOOL) alwaysDisplaysSearchBox
 {
-    return NO;
+    return YES;
 }
 
 @end

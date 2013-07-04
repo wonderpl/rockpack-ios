@@ -152,8 +152,6 @@
     
     [self.view addSubview:self.channelThumbnailCollectionView];
     
-    startAnimationDelay = 0.0;
-    
     if (self.enableCategoryTable)
     {
         [self layoutChannelsCategoryTable];
@@ -250,7 +248,7 @@
 }
 
 
-- (void) animatedPushViewController: (UIViewController *) vc
+- (void) animatedPushViewController: (SYNAbstractViewController *) vc
 {
     [super animatedPushViewController:vc];
     

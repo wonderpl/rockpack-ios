@@ -198,7 +198,9 @@
 }   
 
 
-- (void) animatedPushViewController: (UIViewController *) vc
+
+
+- (void) animatedPushViewController: (SYNAbstractViewController *) vc
 {
     // we push to the parent
     [((SYNSearchRootViewController*)self.parentViewController) animatedPushViewController: vc];

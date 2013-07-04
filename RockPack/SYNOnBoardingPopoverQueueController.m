@@ -10,6 +10,7 @@
 #import "SYNDeviceManager.h"
 #import "UIColor+SYNColor.h"
 #import "SYNAppDelegate.h"
+#import "SYNMasterViewController.h"
 
 #define STD_PADDING_DISTANCE 18.0
 

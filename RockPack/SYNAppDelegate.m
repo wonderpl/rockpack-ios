@@ -50,6 +50,7 @@ extern void instrumentObjcMessageSends(BOOL);
 @property (nonatomic, strong) SYNOAuthNetworkEngine *oAuthNetworkEngine;
 @property (nonatomic, strong) SYNVideoQueue* videoQueue;
 @property (nonatomic, strong) SYNOnBoardingPopoverQueueController* onBoardingQueue;
+@property (nonatomic, strong) SYNMasterViewController* masterViewController;
 
 @end
 

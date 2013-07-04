@@ -35,7 +35,6 @@ typedef void (^SYNShareCompletionBlock)(void);
     SYNTabViewController* tabViewController;
     NSString* viewId;
     NSFetchedResultsController* fetchedResultsController;
-    CGFloat startAnimationDelay;
     NSString* abstractTitle;
 }
 
@@ -58,6 +57,7 @@ typedef void (^SYNShareCompletionBlock)(void);
 @property (nonatomic, weak) MKNetworkOperation* runningNetworkOperation;
 @property (readonly) NSManagedObjectContext *mainManagedObjectContext;
 @property (readonly, getter = isVideoQueueVisible) BOOL videoQueueVisible;
+@property (readonly) BOOL alwaysDisplaysSearchBox;
 
 - (void) handleNewTabSelectionWithId: (NSString*) selectionId;
 - (void) handleNewTabSelectionWithGenre: (Genre*) name;
@@ -75,9 +75,8 @@ typedef void (^SYNShareCompletionBlock)(void);
 
 // Push new view controller onto UINavigationController stack using a custom animation
 // Fade old VC out, fade new VC in (as opposed to regular push animation)
-- (void) animatedPushViewController: (UIViewController *) vc;
-- (IBAction) animatedPopViewController;
-- (void) animatedPopToRootViewController;
+- (void) animatedPushViewController: (SYNAbstractViewController *) vc;
+- (void) animatedPopViewController;
 
 - (BOOL) collectionView: (UICollectionView *) cv didSelectItemAtIndexPathAbstract: (NSIndexPath *) indexPath;
 
@@ -93,8 +92,6 @@ typedef void (^SYNShareCompletionBlock)(void);
 - (id) initWithViewId: (NSString*) vid;
 - (void) viewDidScrollToFront;
 - (void) viewDidScrollToBack;
-- (BOOL) needsAddButton;
-- (BOOL) toleratesSearchBar;
 
 - (void) resetDataRequestRange;
 
@@ -125,6 +122,8 @@ typedef void (^SYNShareCompletionBlock)(void);
 - (void) applicationWillEnterForeground: (UIApplication *) application;
 
 - (CGSize) footerSize;
+
+- (NavigationButtonsAppearence) navigationAppearence;
 
 
 @end
