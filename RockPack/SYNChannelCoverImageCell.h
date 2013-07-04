@@ -18,4 +18,8 @@
 - (void) setTitleText: (NSString*) titleText;
 - (void) setimageFromAsset: (ALAsset*) asset;
 
+-(void)selectWithoutAnimation;
+
+-(void)deselectWithoutAnimation;
+
 @end
