@@ -701,7 +701,8 @@ typedef void(^AnimationCompletionBlock)(BOOL finished);
     
     
     [self.originViewController videoOverlayDidDissapear];
-    //FIXME: Nick to rework
+    
+    // FIXME: This doesn't look right
     [self.containerViewController viewWillAppear:NO];
 }
 
@@ -1182,6 +1183,7 @@ typedef void(^AnimationCompletionBlock)(BOOL finished);
             }
             self.overlayNavigationController = nil; // animate the overlay out using the setter method
 
+            // FIXME: This doesn't look right!
             [self.showingViewController viewDidAppear:YES];
         }
         
