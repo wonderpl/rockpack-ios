@@ -457,8 +457,8 @@ typedef void(^AnimationCompletionBlock)(BOOL finished);
     [[SYNChannelDetailViewController alloc] initWithChannel: appDelegate.videoQueue.currentlyCreatingChannel
                                                   usingMode: kChannelDetailsModeCreate] ;
     
-    // either the current view on the container scroll view or the overlay navigation controller as in search mode
     [appDelegate.viewStackManager pushController:channelCreationVC];
+
 }
 
 -(void)addedToChannelAction:(NSNotification*)notification
@@ -791,7 +791,7 @@ typedef void(^AnimationCompletionBlock)(BOOL finished);
     else
         [appDelegate.viewStackManager popToController:self.searchViewController];
     
-    if([[SYNDeviceManager sharedInstance] isIPhone])
+    if(!isIPad)
     {
         //[self.searchViewController.view addSubview:self.sideNavigationViewController.searchViewController.searchBoxView];
         self.searchViewController.searchBoxViewController = self.sideNavigationViewController.searchViewController;
@@ -806,6 +806,8 @@ typedef void(^AnimationCompletionBlock)(BOOL finished);
 
 - (void) searchCancelledIPhone: (NSNotification*) notification
 {
+    self.sideNavigationButton.selected = YES;
+    
     if(self.searchViewController.navigationController.topViewController == self.searchViewController)
     {
         [self cancelButtonPressed: nil];
