@@ -321,7 +321,7 @@ typedef void(^AnimationCompletionBlock)(BOOL finished);
                                                                                               usingMode: kChannelDetailsModeDisplay];
     channelVC.autoplayVideoId = [notification userInfo][kAutoPlayVideoId];
     
-    [self pushController:channelVC];
+    [appDelegate.viewStackManager pushController:channelVC];
 }
 
 -(void)headerSwiped:(UISwipeGestureRecognizer*)recogniser
@@ -787,9 +787,9 @@ typedef void(^AnimationCompletionBlock)(BOOL finished);
     
         
     if(!self.searchIsInProgress)
-        [self pushController:self.searchViewController];
+        [appDelegate.viewStackManager pushController:self.searchViewController];
     else
-        [self popToController:self.searchViewController];
+        [appDelegate.viewStackManager popToController:self.searchViewController];
     
     if([[SYNDeviceManager sharedInstance] isIPhone])
     {
@@ -809,7 +809,7 @@ typedef void(^AnimationCompletionBlock)(BOOL finished);
     if(self.searchViewController.navigationController.topViewController == self.searchViewController)
     {
         [self cancelButtonPressed: nil];
-        [self popController];
+        [appDelegate.viewStackManager popController];
     }
     self.closeSearchButton.hidden = YES;
     self.sideNavigationButton.hidden = NO;
@@ -960,7 +960,7 @@ typedef void(^AnimationCompletionBlock)(BOOL finished);
     if (showingBackButton)
     {
         //pop the current section navcontroller to the root controller
-        [self popToRootController];
+        [appDelegate.viewStackManager popToRootController];
         
         [self showBackButton:NO];
         
@@ -1323,31 +1323,8 @@ typedef void(^AnimationCompletionBlock)(BOOL finished);
     return (SYNContainerViewController*)self.mainNavigationController.viewControllers[0];
 }
 
-#pragma mark - NavigationController Methods
 
--(void)pushController:(SYNAbstractViewController*)controller
-{
-    [appDelegate.viewStackManager pushController:controller];
-    
-}
--(void)popController
-{
-    [appDelegate.viewStackManager popController];
-    
-    [self.containerViewController refreshView];
-}
--(void)popToController:(UIViewController*)controller
-{
-    [appDelegate.viewStackManager popToController:controller];
-}
-
-
--(void)popToRootController
-{
-    [appDelegate.viewStackManager popToRootController];
-}
-
-- (void) showBackButton: (BOOL) show // popping
+- (void) showBackButton: (BOOL) show 
 {
     CGRect targetFrame;
     CGFloat targetAlpha;
@@ -1359,7 +1336,7 @@ typedef void(^AnimationCompletionBlock)(BOOL finished);
     
     if (show)
     {
-        [self.backButtonControl addTarget: self
+        [self.backButtonControl addTarget: appDelegate.viewStackManager
                                    action: @selector(popController)
                          forControlEvents:UIControlEventTouchUpInside];
         
@@ -1381,7 +1358,7 @@ typedef void(^AnimationCompletionBlock)(BOOL finished);
     }
     else
     {
-        [self.backButtonControl removeTarget: self
+        [self.backButtonControl removeTarget: appDelegate.viewStackManager
                                       action: @selector(popController)
                             forControlEvents: UIControlEventTouchUpInside];
         

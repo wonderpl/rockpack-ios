@@ -146,13 +146,13 @@
 - (void) animatedPushViewController: (SYNAbstractViewController *) controller
 {
     
-    [appDelegate.masterViewController pushController:controller];
+    [appDelegate.viewStackManager pushController:controller];
 }
 
 
 - (void) animatedPopViewController
 {
-    [appDelegate.masterViewController popController];
+    [appDelegate.viewStackManager popController];
     
 }
 

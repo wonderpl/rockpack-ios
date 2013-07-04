@@ -2216,7 +2216,7 @@
                                                               userInfo: nil];
             
             //And show as if displayed from the normal master view hierarchy
-            [master pushController:self];
+            [appDelegate.viewStackManager pushController:self];
         }
         
         [self setDisplayControlsVisibility:YES];

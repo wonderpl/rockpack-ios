@@ -43,9 +43,6 @@ typedef void (^VideoOverlayDismissBlock)(void);
 
 - (void) removeVideoOverlayController;
 
--(void)pushController:(SYNAbstractViewController*)controller;
--(void)popController;
--(void)popToRootController;
 
 
 @end
