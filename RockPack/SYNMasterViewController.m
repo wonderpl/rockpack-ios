@@ -788,7 +788,7 @@ typedef void(^AnimationCompletionBlock)(BOOL finished);
     
     if([[SYNDeviceManager sharedInstance] isIPhone])
     {
-        [self.searchViewController.view addSubview:self.sideNavigationViewController.searchViewController.searchBoxView];
+        //[self.searchViewController.view addSubview:self.sideNavigationViewController.searchViewController.searchBoxView];
         self.searchViewController.searchBoxViewController = self.sideNavigationViewController.searchViewController;
     }
     
@@ -814,6 +814,7 @@ typedef void(^AnimationCompletionBlock)(BOOL finished);
                             self.darkOverlayView.hidden = NO;
                        }];
 
+    [self.sideNavigationViewController.searchViewController removeFromParentViewController];
     [self.view addSubview: self.sideNavigationViewController.searchViewController.searchBoxView];
 }
 
@@ -1513,12 +1514,26 @@ typedef void(^AnimationCompletionBlock)(BOOL finished);
         
         if(abstractController.alwaysDisplaysSearchBox)
         {
+            if([[SYNDeviceManager sharedInstance] isIPhone])
+            {
+                [self.sideNavigationViewController.searchViewController removeFromParentViewController];
+                UIView* searchBar = self.sideNavigationViewController.searchViewController.searchBoxView;
+                [self.view addSubview:searchBar];
+            }
+            
             [self showSearchBoxField:nil];
             self.closeSearchButton.hidden = YES;
             self.sideNavigationButton.hidden = NO;
         }
         else
         {
+            if([[SYNDeviceManager sharedInstance] isIPhone])
+            {
+                if ([[self.view subviews] containsObject:self.sideNavigationViewController.searchViewController.searchBoxView])
+                {
+                    [self.sideNavigationViewController.searchViewController.searchBoxView removeFromSuperview];
+                }
+            }
             if(self.isInSearchMode)
             {
                 self.closeSearchButton.hidden = NO;

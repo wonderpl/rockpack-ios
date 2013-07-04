@@ -2216,8 +2216,7 @@
                                                               userInfo: nil];
             
             //And show as if displayed from the normal master view hierarchy
-            SYNAbstractViewController *currentRootViewcontroller = [master showingBaseViewController];
-            [currentRootViewcontroller animatedPushViewController:self];
+            [master pushController:self];
         }
         
         [self setDisplayControlsVisibility:YES];

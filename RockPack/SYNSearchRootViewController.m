@@ -170,10 +170,10 @@
         
     if([[SYNDeviceManager sharedInstance] isIPhone])
     {
-        [[NSNotificationCenter defaultCenter] postNotificationName: kNoteAllNavControlsHide
-                                                        object: self];
-        
-        [self.view addSubview:self.searchBoxViewController.searchBoxView];
+//        [[NSNotificationCenter defaultCenter] postNotificationName: kNoteAllNavControlsHide
+//                                                        object: self];
+//        
+//        [self.view addSubview:self.searchBoxViewController.searchBoxView];
         [self.searchBoxViewController.searchBoxView revealCloseButton];
     }
     

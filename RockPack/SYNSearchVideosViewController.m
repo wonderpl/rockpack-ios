@@ -45,7 +45,7 @@
 
 - (void) viewDidLoad
 {
-    
+    [super viewDidLoad];
     self.currentCalendar = [NSCalendar currentCalendar];
     isIphone = [SYNDeviceManager.sharedInstance isIPhone];
     

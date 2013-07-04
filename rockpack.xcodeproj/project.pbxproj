@@ -2646,7 +2646,6 @@
 				01D0996F1742C29100351C82 /* Table Cells */,
 				012632C7162DF4C40009FF9C /* Layout Engine Support */,
 				019824E31629CADE00216900 /* Custom Views */,
-				019824E11629CAB600216900 /* View Controllers */,
 				01677DDA1655491100B1B1D8 /* Networking */,
 				012502BA16CA8FCE0029C7C8 /* Social Media */,
 				01E427D01664C701009B941F /* Data Model */,
@@ -3222,6 +3221,7 @@
 		019824E31629CADE00216900 /* Custom Views */ = {
 			isa = PBXGroup;
 			children = (
+				019824E11629CAB600216900 /* View Controllers */,
 				0111CDFF1729321500612186 /* Utility */,
 				0199F12D166F95C000E479C6 /* Collections */,
 				0199F127166F94C400E479C6 /* Controls */,
