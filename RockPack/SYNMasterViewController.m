@@ -55,7 +55,6 @@ typedef void(^AnimationCompletionBlock)(BOOL finished);
 @property (nonatomic, strong) IBOutlet UILabel* pageTitleLabel;
 @property (nonatomic, strong) IBOutlet SYNPageView* pagePositionIndicatorView;
 @property (nonatomic, strong) IBOutlet UIView* errorContainerView;
-@property (nonatomic, strong) IBOutlet UIView* movableButtonsContainer;
 @property (nonatomic, strong) IBOutlet UIView* navigationContainerView;
 @property (nonatomic, strong) IBOutlet UIView* overlayView;
 @property (nonatomic, strong) IBOutlet UIView* darkOverlayView;
@@ -215,10 +214,12 @@ typedef void(^AnimationCompletionBlock)(BOOL finished);
     // == Back Button == //
     
     self.backButtonControl = [SYNBackButtonControl backButton];
-    [self.movableButtonsContainer addSubview: self.backButtonControl];
+    CGRect backButtonFrame = self.backButtonControl.frame;
+    backButtonFrame.origin.y = 10.0f;
+    self.backButtonControl.frame = backButtonFrame;
+    [self.view addSubview:self.backButtonControl];
     self.backButtonControl.alpha = 0.0;
     
-    self.movableButtonsContainer.userInteractionEnabled = YES;
     
     UITapGestureRecognizer* tapGesture = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(headerTapped:)];
     UISwipeGestureRecognizer* leftSwipeGesture = [[UISwipeGestureRecognizer alloc] initWithTarget:self action:@selector(headerSwiped:)];
@@ -735,7 +736,7 @@ typedef void(^AnimationCompletionBlock)(BOOL finished);
     // place according to the position of the back button //
     if (showingBackButton)
     {
-        sboxFrame.origin.x = self.backButtonControl.frame.origin.x + self.backButtonControl.frame.size.width + 16.0;
+        sboxFrame.origin.x = 76.0f;
     }
     else
     {
@@ -921,7 +922,7 @@ typedef void(^AnimationCompletionBlock)(BOOL finished);
         self.pageTitleLabel.hidden = NO;
         
         self.pagePositionIndicatorView.hidden = NO;
-        self.movableButtonsContainer.hidden = NO;
+        self.backButtonControl.hidden = NO;
     }
     else
     {
@@ -930,7 +931,7 @@ typedef void(^AnimationCompletionBlock)(BOOL finished);
         self.closeSearchButton.hidden = YES;
         self.pageTitleLabel.hidden = YES;
         self.pagePositionIndicatorView.hidden = YES;
-        self.movableButtonsContainer.hidden = YES;
+        self.backButtonControl.hidden = YES;
         self.sideNavigationViewController.state = SideNavigationStateHidden;
     }
 }
@@ -1405,8 +1406,6 @@ typedef void(^AnimationCompletionBlock)(BOOL finished);
     if(!(show ^ showingBackButton))
         return;
     
-    CGFloat newSearchBoxOrigin;
-    
     
     if (show)
     {
@@ -1415,10 +1414,9 @@ typedef void(^AnimationCompletionBlock)(BOOL finished);
                          forControlEvents:UIControlEventTouchUpInside];
         
         
-        newSearchBoxOrigin = self.backButtonControl.frame.origin.x + self.backButtonControl.frame.size.width + 16.0;
         
         showingBackButton = YES;
-        targetFrame = self.movableButtonsContainer.frame;
+        targetFrame = self.backButtonControl.frame;
         targetAlpha = 1.0;
         
         if ([SYNDeviceManager.sharedInstance isIPad])
@@ -1437,11 +1435,10 @@ typedef void(^AnimationCompletionBlock)(BOOL finished);
                                       action: @selector(popController)
                             forControlEvents: UIControlEventTouchUpInside];
         
-        newSearchBoxOrigin = 10.0;
         
         
         showingBackButton = NO;
-        targetFrame = self.movableButtonsContainer.frame;
+        targetFrame = self.backButtonControl.frame;
         targetFrame.origin.x = kMovableViewOffX;
         targetAlpha = 0.0;
     }
@@ -1450,7 +1447,7 @@ typedef void(^AnimationCompletionBlock)(BOOL finished);
                           delay: (show && self.isInSearchMode ? 0.4f : 0.0f)
                         options: UIViewAnimationOptionCurveEaseInOut
                      animations: ^{
-                         self.movableButtonsContainer.frame = targetFrame;
+                         self.backButtonControl.frame = targetFrame;
                          self.backButtonControl.alpha = targetAlpha;
                          self.pageTitleLabel.alpha = !targetAlpha;
                          self.pagePositionIndicatorView.alpha = !targetAlpha;
@@ -1461,7 +1458,7 @@ typedef void(^AnimationCompletionBlock)(BOOL finished);
                         options: UIViewAnimationOptionCurveEaseInOut
                      animations: ^{
                          CGRect sboxFrame = self.searchBoxController.view.frame;
-                         sboxFrame.origin.x = newSearchBoxOrigin;
+                         sboxFrame.origin.x = (show ? 76.0f : 10.0f);
                          sboxFrame.size.width = self.closeSearchButton.frame.origin.x - sboxFrame.origin.x - 8.0;
                          self.searchBoxController.view.frame = sboxFrame;
                      } completion:nil];
