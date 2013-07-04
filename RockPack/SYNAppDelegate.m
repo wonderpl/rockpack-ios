@@ -703,6 +703,7 @@ extern void instrumentObjcMessageSends(BOOL);
     
     if (!userBound)
     {
+        // do not delete data relating to the user such as subscriptions and channels
         NSPredicate* notUserChannels = [NSPredicate predicateWithFormat: @"channelOwner.uniqueId != %@ AND subscribedByUser != YES", self.currentUser.uniqueId];
         [fetchRequest setPredicate: notUserChannels];
     }
@@ -728,6 +729,21 @@ extern void instrumentObjcMessageSends(BOOL);
                                         inManagedObjectContext: self.mainManagedObjectContext]];
     
     fetchRequest.includesSubentities = YES; // to include SubGenre objecst
+    
+    itemsToDelete = [self.mainManagedObjectContext executeFetchRequest:fetchRequest error:&error];
+    
+    for (NSManagedObject* objectToDelete in itemsToDelete)
+    {
+        [self.mainManagedObjectContext deleteObject:objectToDelete];
+    }
+    
+    
+    // == Clear ChannelOwner == //
+    
+    [fetchRequest setEntity:[NSEntityDescription entityForName: @"ChannelOwner"
+                                        inManagedObjectContext: self.mainManagedObjectContext]];
+    
+    fetchRequest.includesSubentities = NO; // do not include User objects as these are handled elsewhere
     
     itemsToDelete = [self.mainManagedObjectContext executeFetchRequest:fetchRequest error:&error];
     
