@@ -498,7 +498,7 @@
     
     Channel *channel = (Channel*)self.channels[indexPath.row];
     
-    [self viewProfileDetails:channel.channelOwner];
+    [appDelegate.viewStackManager viewProfileDetails:channel.channelOwner];
     
 }
 

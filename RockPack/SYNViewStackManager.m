@@ -8,6 +8,8 @@
 
 #import "SYNViewStackManager.h"
 #import "SYNAbstractViewController.h"
+#import "SYNProfileRootViewController.h"
+#import "ChannelOwner.h"
 
 @implementation SYNViewStackManager
 
@@ -17,6 +19,45 @@
 {
     return [[self alloc] init];
 }
+
+- (UIViewController*) topControllerMatchingTypeString:(NSString*)classString
+{
+    UIViewController* lastControllerOfClass;
+    for (UIViewController* viewControllerOnStack in self.navigationController.viewControllers)
+    {
+        if ([viewControllerOnStack isKindOfClass:NSClassFromString(classString)])
+        {
+            lastControllerOfClass = viewControllerOnStack;
+        }
+    }
+    return lastControllerOfClass;
+}
+
+- (void) viewProfileDetails: (ChannelOwner *) channelOwner
+{
+    
+    SYNProfileRootViewController *profileVC =
+    (SYNProfileRootViewController*)[self topControllerMatchingTypeString:NSStringFromClass([SYNProfileRootViewController class])];
+    
+    if(profileVC)
+    {
+        
+        [self popToController:profileVC];
+        
+    }
+    else
+    {
+        profileVC = [[SYNProfileRootViewController alloc] initWithViewId:kProfileViewId];
+        
+        [self pushController:profileVC];
+        
+    }
+    
+    
+    profileVC.user = channelOwner;
+    
+}
+
 
 -(void)pushController:(SYNAbstractViewController*)controller
 {

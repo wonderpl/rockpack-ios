@@ -79,7 +79,6 @@ typedef void (^SYNShareCompletionBlock)(void);
                                            center: (CGPoint) center;
 
 
-- (void) viewProfileDetails: (ChannelOwner *) channelOwner;
 - (void) refresh;
 
 

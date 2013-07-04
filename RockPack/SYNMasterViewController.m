@@ -305,7 +305,7 @@ typedef void(^AnimationCompletionBlock)(BOOL finished);
     if (!channelOwner)
         return;
     
-    [self.showingBaseViewController viewProfileDetails:channelOwner];
+    [appDelegate.viewStackManager viewProfileDetails:channelOwner];
 }
 
 

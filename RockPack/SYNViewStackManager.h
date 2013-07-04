@@ -9,6 +9,7 @@
 #import <Foundation/Foundation.h>
 
 @class SYNAbstractViewController;
+@class ChannelOwner;
 
 @interface SYNViewStackManager : NSObject
 
@@ -22,5 +23,7 @@
 -(void)popToController:(UIViewController*)controller;
 -(void)popController;
 -(void)pushController:(SYNAbstractViewController*)controller;
+
+- (void) viewProfileDetails: (ChannelOwner *) channelOwner;
 
 @end

@@ -355,36 +355,12 @@
     {
         VideoInstance *videoInstance = [self.fetchedResultsController objectAtIndexPath: indexPath];
         
-        [self viewProfileDetails: videoInstance.channel.channelOwner];
+        [appDelegate.viewStackManager viewProfileDetails: videoInstance.channel.channelOwner];
     }
 }
 
 
-- (void) viewProfileDetails: (ChannelOwner *) channelOwner
-{
-    SYNProfileRootViewController *profileVC = [[SYNProfileRootViewController alloc] initWithViewId:kProfileViewId];
-    
-    profileVC.user = channelOwner;
-    
-    // if there is a profile already there just pass the new user if is different
-    if(self.navigationController.viewControllers.count > 1)
-    {
-        SYNAbstractViewController* currentlyVisibleVC = (SYNAbstractViewController*)self.navigationController.visibleViewController;
-        if([currentlyVisibleVC isKindOfClass:[SYNProfileRootViewController class]])
-        {
-            SYNProfileRootViewController* currentlyVisibleProfile = (SYNProfileRootViewController*)currentlyVisibleVC;
-            if([currentlyVisibleProfile.user.uniqueId isEqualToString:channelOwner.uniqueId])
-                return;
-            
-            currentlyVisibleProfile.user = channelOwner;
-            
-            return;
-        }
-    }
-   
-    
-    [appDelegate.viewStackManager pushController:profileVC];
-}
+
 
 
 #pragma mark - Trace

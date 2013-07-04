@@ -1147,7 +1147,7 @@
         return;
     }
     
-    [self viewProfileDetails: self.channel.channelOwner];
+    [appDelegate.viewStackManager viewProfileDetails: self.channel.channelOwner];
 }
 
 
