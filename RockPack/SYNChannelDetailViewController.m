@@ -381,12 +381,6 @@
 }
 
 
-- (void) swipedToExit: (UISwipeGestureRecognizer*) recogniser
-{
-    [self animatedPopViewController];
-
-}
-
 
 - (void) viewWillAppear: (BOOL) animated
 {
@@ -1392,7 +1386,7 @@
         }
         else
         {
-            [self animatedPopViewController];
+            [appDelegate.viewStackManager popController];
         }
     }
     else

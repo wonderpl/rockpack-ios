@@ -71,12 +71,6 @@ typedef void (^SYNShareCompletionBlock)(void);
 
 - (void) reloadCollectionViews;
 
-// Animation support
-
-// Push new view controller onto UINavigationController stack using a custom animation
-// Fade old VC out, fade new VC in (as opposed to regular push animation)
-- (void) animatedPushViewController: (SYNAbstractViewController *) vc;
-- (void) animatedPopViewController;
 
 - (BOOL) collectionView: (UICollectionView *) cv didSelectItemAtIndexPathAbstract: (NSIndexPath *) indexPath;
 

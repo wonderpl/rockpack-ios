@@ -21,6 +21,7 @@
 -(void)pushController:(SYNAbstractViewController*)controller
 {
     
+    
     controller.view.alpha = 0.0f;
     
     [UIView animateWithDuration: 0.5f

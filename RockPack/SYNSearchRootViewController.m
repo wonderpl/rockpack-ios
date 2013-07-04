@@ -222,11 +222,6 @@
 }
 
 
-- (void) animatedPushViewController: (SYNAbstractViewController *) vc
-{
-    [super animatedPushViewController: vc];
-}
-
 
 
 - (void) videoTabPressed: (UIControl*) control

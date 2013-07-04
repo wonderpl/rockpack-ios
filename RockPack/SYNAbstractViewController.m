@@ -140,22 +140,6 @@
 }
 
 
-#pragma mark - Animation support
-
-// Special animation of pushing new view controller onto UINavigationController's stack
-- (void) animatedPushViewController: (SYNAbstractViewController *) controller
-{
-    
-    [appDelegate.viewStackManager pushController:controller];
-}
-
-
-- (void) animatedPopViewController
-{
-    [appDelegate.viewStackManager popController];
-    
-}
-
 
 
 // This can be overridden if updating star may cause the videoFetchedResults
@@ -399,7 +383,7 @@
     }
    
     
-    [self animatedPushViewController: profileVC];
+    [appDelegate.viewStackManager pushController:profileVC];
 }
 
 

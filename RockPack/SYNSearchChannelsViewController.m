@@ -199,13 +199,6 @@
 
 
 
-
-- (void) animatedPushViewController: (SYNAbstractViewController *) vc
-{
-    // we push to the parent
-    [((SYNSearchRootViewController*)self.parentViewController) animatedPushViewController: vc];
-}
-
 #pragma mark - UICollectionView Delegate
 
 -(void)collectionView:(UICollectionView *)collectionView didSelectItemAtIndexPath:(NSIndexPath *)indexPath
@@ -219,7 +212,7 @@
     SYNChannelDetailViewController *channelVC = [[SYNChannelDetailViewController alloc] initWithChannel: channel
                                                                                               usingMode: kChannelDetailsModeDisplay];
     
-    [self animatedPushViewController: channelVC];
+    [appDelegate.viewStackManager pushController:channelVC];
 }
 
 -(void)setRunningSearchOperation:(MKNetworkOperation *)runningSearchOperation

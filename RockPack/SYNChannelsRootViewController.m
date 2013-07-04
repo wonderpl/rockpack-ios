@@ -248,14 +248,6 @@
 }
 
 
-- (void) animatedPushViewController: (SYNAbstractViewController *) vc
-{
-    [super animatedPushViewController:vc];
-    
-    [[NSNotificationCenter defaultCenter] postNotificationName: kNoteSearchBarRequestHide
-                                                        object: self];
-}
-
 
 #pragma mark - Loading of Channels
 
