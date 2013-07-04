@@ -155,6 +155,8 @@
 
 - (void) viewWillAppear: (BOOL) animated
 {
+    [super viewWillAppear: animated];
+    
     [self packViewControllersForInterfaceOrientation: [SYNDeviceManager.sharedInstance orientation]];
     
     [[NSNotificationCenter defaultCenter] postNotificationName: kScrollerPageChanged
