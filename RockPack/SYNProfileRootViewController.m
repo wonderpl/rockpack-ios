@@ -1,5 +1,5 @@
 //
-//  SYNYouRootViewController.m
+//  SYNProfileRootViewController.m
 //  rockpack
 //
 //  Created by Nick Banks on 24/01/2013.
@@ -28,18 +28,13 @@
 #import "Video.h"
 #import <QuartzCore/QuartzCore.h>
 
-#define kInterChannelSpacing 150.0
 #define kInterRowMargin 8.0f
 
 @interface SYNProfileRootViewController () <SYNDeletionWobbleLayoutDelegate,
                                             UIGestureRecognizerDelegate,
                                             SYNImagePickerControllerDelegate>
-{
-    BOOL _isIPhone;
-}
 
-
-
+@property (nonatomic) BOOL isIPhone;
 @property (nonatomic) BOOL deleteCellModeOn;
 @property (nonatomic) BOOL isUserProfile;
 @property (nonatomic, assign) BOOL subscriptionsTabActive;
@@ -70,8 +65,6 @@
 
 @implementation SYNProfileRootViewController
 
-@synthesize user = _user;
-
 #pragma mark - Object lifecycle
 
 - (void) dealloc
@@ -91,7 +84,7 @@
 
 - (void) loadView
 {
-    _isIPhone =  [SYNDeviceManager.sharedInstance isIPhone];
+    self.isIPhone =  [SYNDeviceManager.sharedInstance isIPhone];
     
     // User Profile
     if (!self.hideUserProfile)
@@ -113,7 +106,7 @@
                                                                                 scrollDirection: UICollectionViewScrollDirectionVertical
                                                                                    sectionInset: UIEdgeInsetsMake(kInterRowMargin - 8.0, 12.0, kInterRowMargin, 11.0)];
 
-    if (_isIPhone)
+    if (self.isIPhone)
     {
         self.channelsPortraitLayout = [SYNDeletionWobbleLayout layoutWithItemSize: CGSizeMake(158.0f, 158.0f)
                                                           minimumInterItemSpacing: 0.0f
@@ -147,7 +140,7 @@
     
     self.headerChannelsView = [SYNYouHeaderView headerViewForWidth: correctWidth];
     
-    if (_isIPhone)
+    if (self.isIPhone)
     {
         CGRect newFrame = self.headerChannelsView.frame;
         newFrame.origin.y = 59.0f;
@@ -186,7 +179,7 @@
     // Subscriptions Collection View
     self.subscriptionsViewController = [[SYNSubscriptionsViewController alloc] initWithViewId: kProfileViewId];
     CGRect subColViewFrame = self.subscriptionsViewController.view.frame;
-    subColViewFrame.origin.x = _isIPhone ? 0.0f : collectionViewFrame.origin.x + collectionViewFrame.size.width + 10.0;
+    subColViewFrame.origin.x = self.isIPhone ? 0.0f : collectionViewFrame.origin.x + collectionViewFrame.size.width + 10.0;
     subColViewFrame.origin.y = collectionViewFrame.origin.y;
     subColViewFrame.size.height = collectionViewFrame.size.height;
     subColViewFrame.size.width = [SYNDeviceManager.sharedInstance currentScreenWidth] - subColViewFrame.origin.x - 10.0;
@@ -196,7 +189,7 @@
     
     self.headerSubscriptionsView = [SYNYouHeaderView headerViewForWidth: 384];
     
-    if (_isIPhone)
+    if (self.isIPhone)
     {
         CGRect newFrame = self.headerSubscriptionsView.frame;
         newFrame.origin.y = 59.0f;
@@ -249,7 +242,7 @@
     [self.view addSubview: self.userProfileController.view];
 
     
-    if (_isIPhone)
+    if (self.isIPhone)
     {
         self.userProfileController.view.center = CGPointMake(160.0f, 28.0f);
     }
@@ -265,7 +258,7 @@
     [self.view addSubview: self.channelThumbnailCollectionView];
     [self.view addSubview: self.subscriptionsViewController.view];
     
-    if (_isIPhone)
+    if (self.isIPhone)
     {
         UIImage* tabButtonImage = [UIImage imageNamed: @"ButtonProfileChannels"];
         
@@ -321,7 +314,6 @@
     
     self.subscriptionsViewController.channelThumbnailCollectionView.scrollsToTop = NO;
     self.channelThumbnailCollectionView.scrollsToTop = NO;
-    
 }
 
 
@@ -394,7 +386,7 @@
 {
     [self updateAnalytics];
     
-    if ([[SYNDeviceManager sharedInstance] isIPhone])
+    if (self.isIPhone)
     {
         self.channelThumbnailCollectionView.scrollsToTop = !self.subscriptionsTabActive;
     
@@ -607,10 +599,9 @@
     CGFloat viewHeight;
     SYNDeletionWobbleLayout* channelsLayout;
     SYNDeletionWobbleLayout* subscriptionsLayout;
-    BOOL isIPhone = [SYNDeviceManager.sharedInstance isIPhone];
     //Setup the headers
     
-    if (isIPhone)
+    if (self.isIPhone)
     {
         newFrame = self.headerChannelsView.frame;
         newFrame.size.width = 160.0f;
@@ -669,7 +660,7 @@
     
     // Setup Channel feed collection view
     newFrame = self.channelThumbnailCollectionView.frame;
-    newFrame.size.width = isIPhone ? 320.0f : self.headerChannelsView.frame.size.width;
+    newFrame.size.width = self.isIPhone ? 320.0f : self.headerChannelsView.frame.size.width;
     newFrame.size.height = viewHeight - newFrame.origin.y;
     self.channelThumbnailCollectionView.collectionViewLayout = channelsLayout;
     self.channelThumbnailCollectionView.frame = newFrame;
@@ -677,9 +668,9 @@
     
     //Setup subscription feed collection view
     newFrame = self.subscriptionsViewController.view.frame;
-    newFrame.size.width = isIPhone ? 320.0f : self.headerSubscriptionsView.frame.size.width;
+    newFrame.size.width = self.isIPhone ? 320.0f : self.headerSubscriptionsView.frame.size.width;
     newFrame.size.height = viewHeight - newFrame.origin.y;
-    newFrame.origin.x = isIPhone ? 0.0f : self.headerSubscriptionsView.frame.origin.x;
+    newFrame.origin.x = self.isIPhone ? 0.0f : self.headerSubscriptionsView.frame.origin.x;
     self.subscriptionsViewController.channelThumbnailCollectionView.collectionViewLayout = subscriptionsLayout;
     self.subscriptionsViewController.view.frame = newFrame;
 
@@ -712,7 +703,7 @@
 
 -(NSString*)getHeaderTitleForChannels
 {
-    if (_isIPhone)
+    if (self.isIPhone)
     {
         if (self.user == appDelegate.currentUser)
             return NSLocalizedString(@"profile_screen_section_owner_created_title",nil);
@@ -862,7 +853,7 @@
 
 - (void) scrollViewDidScroll: (UIScrollView *) scrollView
 {
-    if (!_isIPhone)
+    if (!self.isIPhone)
     {
         if (self.orientationDesicionmaker && scrollView != self.orientationDesicionmaker)
         {
@@ -890,7 +881,7 @@
 
 - (void) resizeScrollViews
 {
-    if (_isIPhone)
+    if (self.isIPhone)
     {
         return;
     }
@@ -1121,12 +1112,6 @@
                                                             object: self
                                                           userInfo: @{kChannelOwner:self.user}];
     }  
-}
-
-
-- (ChannelOwner*) user
-{
-    return _user;
 }
 
 
