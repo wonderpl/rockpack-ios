@@ -649,6 +649,7 @@ typedef enum {
 
 - (BOOL)textFieldShouldBeginEditing:(UITextField *)textField
 {
+    [self.searchViewController removeFromParentViewController];
     [[self.parentViewController view] addSubview:self.searchViewController.searchBoxView];
     CGRect newFrame = self.searchViewController.searchBoxView.frame;
     newFrame.origin = CGPointMake(0,58.0f);
@@ -723,6 +724,7 @@ typedef enum {
                               CGRect newFrame = self.searchViewController.searchBoxView.frame;
                               newFrame.origin = CGPointMake(0,0.0f);
                               self.searchViewController.searchBoxView.frame = newFrame;
+                              [self.searchViewController removeFromParentViewController];
                               [self.view addSubview:self.searchViewController.searchBoxView];
                         }];
                          

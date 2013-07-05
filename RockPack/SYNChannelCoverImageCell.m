@@ -66,6 +66,17 @@
     }
 }
 
+-(void)selectWithoutAnimation
+{
+    [super setSelected:YES];
+    self.selectedOverlayImageView.alpha = 1.0f;
+}
+
+-(void)deselectWithoutAnimation
+{
+    [super setSelected:NO];
+    self.selectedOverlayImageView.alpha = 0.0f;
+}
 
 - (void) setSelected: (BOOL) selected
 {

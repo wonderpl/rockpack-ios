@@ -152,8 +152,6 @@
     
     [self.view addSubview:self.channelThumbnailCollectionView];
     
-    startAnimationDelay = 0.0;
-    
     if (self.enableCategoryTable)
     {
         [self layoutChannelsCategoryTable];
@@ -249,14 +247,6 @@
     [GAI.sharedInstance.defaultTracker sendView: @"Channels - Root"];
 }
 
-
-- (void) animatedPushViewController: (UIViewController *) vc
-{
-    [super animatedPushViewController:vc];
-    
-    [[NSNotificationCenter defaultCenter] postNotificationName: kNoteSearchBarRequestHide
-                                                        object: self];
-}
 
 
 #pragma mark - Loading of Channels
@@ -508,7 +498,7 @@
     
     Channel *channel = (Channel*)self.channels[indexPath.row];
     
-    [self viewProfileDetails:channel.channelOwner];
+    [appDelegate.viewStackManager viewProfileDetails:channel.channelOwner];
     
 }
 

@@ -742,7 +742,7 @@
     // Get the video instance for the currently selected video
     VideoInstance *videoInstance = self.videoInstanceArray [self.currentSelectedIndex];
     
-    [(SYNAbstractViewController *)self.overlayParent.originViewController viewProfileDetails: videoInstance.channel.channelOwner];
+    [appDelegate.viewStackManager viewProfileDetails: videoInstance.channel.channelOwner];
 }
 
 
@@ -919,10 +919,6 @@
 
 }
 
-- (BOOL) needsAddButton
-{
-    return NO;
-}
 
 #pragma mark - orientation change iPhone
 - (void) deviceOrientationChange: (NSNotification*) note

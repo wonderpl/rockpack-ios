@@ -646,10 +646,6 @@
 }
 
 
-- (BOOL) needsAddButton
-{
-    return NO;
-}
 
 
 - (void) headerTapped

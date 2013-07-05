@@ -17,7 +17,7 @@
 typedef void (^VideoOverlayDismissBlock)(void);
 
 @interface SYNMasterViewController : GAITrackedViewController <UIPopoverControllerDelegate,
-                                                                UIGestureRecognizerDelegate>
+                                                                UIGestureRecognizerDelegate, UINavigationControllerDelegate>
 
 {
     SYNAppDelegate* appDelegate;
@@ -26,7 +26,7 @@ typedef void (^VideoOverlayDismissBlock)(void);
 
 
 @property (nonatomic, strong) IBOutlet UIView* containerView;
-@property (nonatomic, strong) SYNContainerViewController* containerViewController;
+@property (nonatomic, readonly) SYNContainerViewController* containerViewController;
 @property (nonatomic, strong) SYNAbstractViewController* originViewController;
 @property (strong, nonatomic) Reachability *reachability;
 @property (nonatomic, readonly) BOOL isInSearchMode;

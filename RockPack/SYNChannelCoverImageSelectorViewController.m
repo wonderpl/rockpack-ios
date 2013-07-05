@@ -254,7 +254,7 @@ enum ChannelCoverSelectorState {
             // And we are not on the 'no cover' placeholder
             if ([coverArt.thumbnailURL isEqualToString: self.selectedImageURL])
             {
-                cell.selected = TRUE;
+                [cell selectWithoutAnimation];
             }
 
             cell.glossImage.hidden = NO;

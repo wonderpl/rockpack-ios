@@ -381,12 +381,6 @@
 }
 
 
-- (void) swipedToExit: (UISwipeGestureRecognizer*) recogniser
-{
-    [[NSNotificationCenter defaultCenter] postNotificationName: kNotePopCurrentViewController
-                                                        object: self];
-}
-
 
 - (void) viewWillAppear: (BOOL) animated
 {
@@ -456,9 +450,6 @@
     
     [super viewWillDisappear: animated];
     
-    [[NSNotificationCenter defaultCenter] postNotificationName: kNoteAllNavControlsShow
-                                                        object: self
-                                                      userInfo: nil];
     
     // Stop observing everything (less error-prone than trying to remove observers individually
     [[NSNotificationCenter defaultCenter] removeObserver: self];
@@ -1156,7 +1147,7 @@
         return;
     }
     
-    [self viewProfileDetails: self.channel.channelOwner];
+    [appDelegate.viewStackManager viewProfileDetails: self.channel.channelOwner];
 }
 
 
@@ -1395,9 +1386,7 @@
         }
         else
         {
-            [[NSNotificationCenter defaultCenter] postNotificationName: kNotePopCurrentViewController
-                                                                object: self
-                                                              userInfo: nil];
+            [appDelegate.viewStackManager popController];
         }
     }
     else
@@ -2221,8 +2210,7 @@
                                                               userInfo: nil];
             
             //And show as if displayed from the normal master view hierarchy
-            SYNAbstractViewController *currentRootViewcontroller = [master showingBaseViewController];
-            [currentRootViewcontroller animatedPushViewController:self];
+            [appDelegate.viewStackManager pushController:self];
         }
         
         [self setDisplayControlsVisibility:YES];
@@ -2329,7 +2317,6 @@
     
     self.videoThumbnailCollectionView.scrollsToTop = YES;
     
-    [[NSNotificationCenter defaultCenter] postNotificationName: kMainControlsChangeEnter object:self];
     
     [self checkOnBoarding];
 
@@ -3085,12 +3072,6 @@
 }
 
 
-- (BOOL) needsAddButton
-{
-    return NO;
-}
-
-
 #pragma mark - user avatar image update
 
 - (void) reloadUserImage: (NSNotification*) note
@@ -3127,6 +3108,11 @@
     [[NSNotificationCenter defaultCenter] postNotificationName: kChannelUpdateRequest
                                                         object: self
                                                       userInfo: @{kChannel : self.channel}];
+}
+
+-(NavigationButtonsAppearence)navigationAppearence
+{
+    return NavigationButtonsAppearenceWhite;
 }
 
 @end

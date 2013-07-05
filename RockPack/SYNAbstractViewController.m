@@ -17,6 +17,7 @@
 #import "OWActivityViewController.h"
 #import "SYNAbstractViewController.h"
 #import "SYNAppDelegate.h"
+#import "SYNMasterViewController.h"
 #import "SYNChannelDetailViewController.h"
 #import "SYNContainerViewController.h"
 #import "SYNDeviceManager.h"
@@ -108,19 +109,6 @@
                                                object: nil];
     
     appDelegate = (SYNAppDelegate *)[[UIApplication sharedApplication] delegate];
-
-    if (self.needsAddButton && [[SYNDeviceManager sharedInstance] isIPad])
-    {
-        self.addButton = [SYNAddButtonControl button];
-        CGRect addButtonFrame = self.addButton.frame;
-        addButtonFrame.origin.x = self.view.frame.size.width - 140.0f; // 884.0f
-        addButtonFrame.origin.y = 80.0f;
-        self.addButton.frame = addButtonFrame;
-
-        self.addButton.autoresizingMask = UIViewAutoresizingFlexibleLeftMargin | UIViewAutoresizingFlexibleBottomMargin;
-        
-        [self.view addSubview: addButton];
-    }
     
     // for loading data
     
@@ -142,7 +130,6 @@
 
 - (void) controllerDidChangeContent: (NSFetchedResultsController *) controller
 {
-    startAnimationDelay = 0.0;
     [self reloadCollectionViews];
 }
 
@@ -153,89 +140,6 @@
 }
 
 
-#pragma mark - Animation support
-
-// Special animation of pushing new view controller onto UINavigationController's stack
-- (void) animatedPushViewController: (UIViewController *) vc
-{
-    self.view.alpha = 1.0f;
-    vc.view.alpha = 0.0f;
-    
-    self.isAnimating = YES;
-    
-    [UIView animateWithDuration: 0.5f
-                          delay: 0.0f
-                        options: UIViewAnimationOptionCurveEaseInOut | UIViewAnimationOptionBeginFromCurrentState
-                     animations: ^ {
-                         // Contract thumbnail view
-                         self.view.alpha = 0.0f;
-                         vc.view.alpha = 1.0f;
-                     }
-                     completion:^(BOOL finished) {
-                         self.isAnimating = NO;
-                     }];
-    
-    [self.navigationController pushViewController: vc
-                                         animated: NO];
-    
-    [[NSNotificationCenter defaultCenter] postNotificationName: kNoteBackButtonShow
-                                                        object: self];
-}
-
-
-- (void) animatedPopViewController
-{
-    NSInteger viewControllersCount = self.navigationController.viewControllers.count;
-    
-    if (viewControllersCount < 2) // we must have at least two to pop one
-        return;
-
-    UIViewController *parentVC = self.navigationController.viewControllers[viewControllersCount - 2];
-    parentVC.view.alpha = 0.0f;
-    
-    UIViewController *currentVC = self.navigationController.viewControllers[viewControllersCount - 1];
-
-    [UIView animateWithDuration: 0.5f
-                          delay: 0.0f
-                        options: UIViewAnimationOptionCurveEaseInOut
-                     animations: ^{
-         
-         currentVC.view.alpha = 0.0f;
-         parentVC.view.alpha = 1.0f;
-         
-     } completion: ^(BOOL finished) {
-//         DebugLog(@"");
-     }];
-    
-    [self.navigationController popViewControllerAnimated:NO];
-}
-
-- (void) animatedPopToRootViewController
-{
-    NSInteger viewControllersCount = self.navigationController.viewControllers.count;
-    
-    if (viewControllersCount < 2) // we must have at least two to pop one
-        return;
-    
-    UIViewController *targetVC = self.navigationController.viewControllers[0];
-    targetVC.view.alpha = 0.0f;
-    
-    UIViewController *currentVC =self.navigationController.viewControllers[viewControllersCount - 1];
-    
-    [UIView animateWithDuration: 0.5f
-                          delay: 0.0f
-                        options: UIViewAnimationOptionCurveEaseInOut
-                     animations: ^{
-                         
-                         currentVC.view.alpha = 0.0f;
-                         targetVC.view.alpha = 1.0f;
-                         
-                     } completion: ^(BOOL finished) {
-//                         DebugLog(@"");
-                     }];
-    
-    [self.navigationController popToViewController:targetVC animated:NO];
-}
 
 
 // This can be overridden if updating star may cause the videoFetchedResults
@@ -307,12 +211,11 @@
 
 - (void) incrementRangeForNextRequest
 {
-    NSLog (@"Before: Loc %d, Len %d, Avail %d", self.dataRequestRange.location, self.dataRequestRange.length, self.dataItemsAvailable);
+    
     NSInteger nextStart = self.dataRequestRange.location + self.dataRequestRange.length; // one is subtracted when the call happens for 0 indexing
     
     if (nextStart >= self.dataItemsAvailable)
     {
-        NSLog (@"Bailed: Loc %d, Len %d, Avail %d", self.dataRequestRange.location, self.dataRequestRange.length, self.dataItemsAvailable);
         return;
     }
 
@@ -321,7 +224,6 @@
     NSInteger nextSize = (nextStart + STANDARD_REQUEST_LENGTH) >= self.dataItemsAvailable ? (self.dataItemsAvailable - nextStart) : STANDARD_REQUEST_LENGTH;
     
     self.dataRequestRange = NSMakeRange(nextStart, nextSize);
-    NSLog (@"After: Loc %d, Len %d, Avail %d", self.dataRequestRange.location, self.dataRequestRange.length, self.dataItemsAvailable);
 }
 
 
@@ -453,43 +355,19 @@
     {
         VideoInstance *videoInstance = [self.fetchedResultsController objectAtIndexPath: indexPath];
         
-        [self viewProfileDetails: videoInstance.channel.channelOwner];
+        [appDelegate.viewStackManager viewProfileDetails: videoInstance.channel.channelOwner];
     }
 }
 
 
-- (void) viewProfileDetails: (ChannelOwner *) channelOwner
-{
-    SYNProfileRootViewController *profileVC = [[SYNProfileRootViewController alloc] initWithViewId:kProfileViewId];
-    
-    profileVC.user = channelOwner;
-    
-    // if there is a profile already there just pass the new user if is different
-    if(self.navigationController.viewControllers.count > 1)
-    {
-        SYNAbstractViewController* currentlyVisibleVC = (SYNAbstractViewController*)self.navigationController.visibleViewController;
-        if([currentlyVisibleVC isKindOfClass:[SYNProfileRootViewController class]])
-        {
-            SYNProfileRootViewController* currentlyVisibleProfile = (SYNProfileRootViewController*)currentlyVisibleVC;
-            if([currentlyVisibleProfile.user.uniqueId isEqualToString:channelOwner.uniqueId])
-                return;
-            
-            currentlyVisibleProfile.user = channelOwner;
-            
-            return;
-        }
-    }
-   
-    
-    [self animatedPushViewController: profileVC];
-}
+
 
 
 #pragma mark - Trace
 
 - (NSString*) description
 {
-    return [NSString stringWithFormat: @"ViewController: %@", viewId];
+    return [NSString stringWithFormat: @"SYNAbstractViewController '%@'", viewId];
 }
 
 
@@ -541,15 +419,7 @@
     return YES;
 }
 
-- (BOOL) needsAddButton
-{
-    return NO;
-}
 
-- (BOOL) toleratesSearchBar
-{
-    return NO;
-}
 
 -(void)setTitle:(NSString *)title
 {
@@ -824,6 +694,16 @@
 
 }
 
+- (NavigationButtonsAppearence) navigationAppearence
+{
+    // return the standard and overide in subclass for special cases such as the ChannelDetails Section
+    return NavigationButtonsAppearenceBlack;
+}
+
+-(BOOL)alwaysDisplaysSearchBox
+{
+    return NO;
+}
 
 
 @end

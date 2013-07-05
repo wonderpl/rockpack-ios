@@ -21,7 +21,6 @@
 #import "SYNMasterViewController.h"
 #import "SYNNetworkErrorView.h"
 #import "SYNOAuthNetworkEngine.h"
-#import "SYNObjectFactory.h"
 #import "SYNPageView.h"
 #import "SYNCautionMessageView.h"
 #import "SYNSearchBoxViewController.h"
@@ -56,7 +55,6 @@ typedef void(^AnimationCompletionBlock)(BOOL finished);
 @property (nonatomic, strong) IBOutlet UILabel* pageTitleLabel;
 @property (nonatomic, strong) IBOutlet SYNPageView* pagePositionIndicatorView;
 @property (nonatomic, strong) IBOutlet UIView* errorContainerView;
-@property (nonatomic, strong) IBOutlet UIView* movableButtonsContainer;
 @property (nonatomic, strong) IBOutlet UIView* navigationContainerView;
 @property (nonatomic, strong) IBOutlet UIView* overlayView;
 @property (nonatomic, strong) IBOutlet UIView* darkOverlayView;
@@ -68,26 +66,32 @@ typedef void(^AnimationCompletionBlock)(BOOL finished);
 @property (nonatomic, strong) SYNSearchRootViewController* searchViewController;
 @property (nonatomic, strong) SYNSideNavigationViewController* sideNavigationViewController;
 @property (nonatomic, strong) SYNVideoViewerViewController *videoViewerViewController;
-@property (nonatomic, strong) UINavigationController* overlayNavigationController;
 @property (nonatomic, strong) UIPopoverController* accountSettingsPopover;
 @property (nonatomic, strong) UIView* accountSettingsCoverView;
 @property (strong, nonatomic) IBOutlet UIView *overlayContainerView;
 @property (nonatomic, strong) IBOutlet UIButton* headerButton;
+@property (nonatomic) NavigationButtonsAppearence currentNavigationButtonsAppearence;
+
+@property (nonatomic) BOOL searchIsInProgress;
+
+@property (nonatomic, strong) UINavigationController* mainNavigationController;
 
 @end
 
 @implementation SYNMasterViewController
 
-@synthesize containerViewController;
+@dynamic containerViewController;
+
 @synthesize pageTitleLabel;
 @synthesize showingBackButton;
+@synthesize mainNavigationController;
+@synthesize currentNavigationButtonsAppearence;
 
 @dynamic showingBaseViewController;
 @dynamic showingViewController;
 
 @synthesize sideNavigationOriginCenterX;
 @synthesize isDragging, buttonLocked;
-@synthesize overlayNavigationController = _overlayNavigationController;
 
 #pragma mark - Object lifecycle
 
@@ -96,9 +100,19 @@ typedef void(^AnimationCompletionBlock)(BOOL finished);
     if ((self = [super initWithNibName: @"SYNMasterViewController" bundle: nil]))
     {
         appDelegate = (SYNAppDelegate*)[[UIApplication sharedApplication] delegate];
-
-        self.containerViewController = root;
-        [self addChildViewController:root];
+        
+        // == main navigation == //
+        
+        self.mainNavigationController = [[UINavigationController alloc] initWithRootViewController:root];
+        self.mainNavigationController.navigationBarHidden = YES;
+        self.mainNavigationController.delegate = self;
+        self.mainNavigationController.view.autoresizesSubviews = YES;
+        self.mainNavigationController.view.autoresizingMask = UIViewAutoresizingFlexibleWidth|UIViewAutoresizingFlexibleHeight;
+        self.mainNavigationController.wantsFullScreenLayout = YES;
+        
+        appDelegate.viewStackManager.navigationController = self.mainNavigationController;
+        
+        [self addChildViewController:self.mainNavigationController];
 
         // == Side Navigation == //
         self.sideNavigationViewController = [[SYNSideNavigationViewController alloc] init];
@@ -113,6 +127,11 @@ typedef void(^AnimationCompletionBlock)(BOOL finished);
         self.sideNavigationViewController.user = appDelegate.currentUser;
         
         [self addChildViewController:self.sideNavigationViewController];
+        
+        // == Search Controller == //
+        
+        
+        self.searchViewController = [[SYNSearchRootViewController alloc] initWithViewId: kSearchViewId];
 
         // == Search Box == //
     
@@ -184,20 +203,25 @@ typedef void(^AnimationCompletionBlock)(BOOL finished);
     
     self.navigationContainerView.userInteractionEnabled = YES;
     
-    // == Add the Root Controller which will contain all others (Tabs in our case) == //
+    self.currentNavigationButtonsAppearence = NavigationButtonsAppearenceBlack;
+    
+    // == Add the Root Navigation Controller == //
 
-    [self.containerView addSubview:containerViewController.view];
-    //self.containerViewController.view.autoresizingMask = UIViewAutoresizingFlexibleWidth | UIViewAutoresizingFlexibleHeight;
+    self.mainNavigationController.view.frame = self.view.frame;
+    [self.view insertSubview:self.mainNavigationController.view atIndex:0];
+    
 
     self.existingChannelsController = [[SYNExistingChannelsViewController alloc] initWithViewId:kExistingChannelsViewId];
 
     // == Back Button == //
     
     self.backButtonControl = [SYNBackButtonControl backButton];
-    [self.movableButtonsContainer addSubview: self.backButtonControl];
+    CGRect backButtonFrame = self.backButtonControl.frame;
+    backButtonFrame.origin.y = 10.0f;
+    self.backButtonControl.frame = backButtonFrame;
+    [self.view insertSubview:self.backButtonControl belowSubview:self.overlayContainerView];
     self.backButtonControl.alpha = 0.0;
     
-    self.movableButtonsContainer.userInteractionEnabled = YES;
     
     UITapGestureRecognizer* tapGesture = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(headerTapped:)];
     UISwipeGestureRecognizer* leftSwipeGesture = [[UISwipeGestureRecognizer alloc] initWithTarget:self action:@selector(headerSwiped:)];
@@ -230,14 +254,6 @@ typedef void(^AnimationCompletionBlock)(BOOL finished);
     
     // == Set Up Notifications == //
     
-    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(backButtonRequested:) name:kNoteBackButtonShow object:nil];
-    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(backButtonRequested:) name:kNoteBackButtonHide object:nil];
-    
-    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(changeControlButtonsForControllerRequest:) name:kMainControlsChangeEnter object:nil];
-    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(changeControlButtonsForControllerRequest:) name:kMainControlsChangeLeave object:nil];
-    
-    
-    // 
     
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(profileRequested:) name:kProfileRequested object:nil];
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(channelDetailsRequested:) name:kChannelDetailsRequested object:nil];
@@ -245,14 +261,9 @@ typedef void(^AnimationCompletionBlock)(BOOL finished);
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(allNavControlsRequested:) name:kNoteAllNavControlsShow object:nil];
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(allNavControlsRequested:) name:kNoteAllNavControlsHide object:nil];
     
-    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(hideSomeNavControlsRequested:) name:kChannelsNavControlsHide object:nil];
-    
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(hideTitleAndDots:) name:kNoteHideTitleAndDots object:nil];
     
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(addToChannelRequested:) name:kNoteAddToChannelRequest object:nil];
-    
-    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(searchBarRequested:) name:kNoteSearchBarRequestHide object:nil];
-    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(searchBarRequested:) name:kNoteSearchBarRequestShow object:nil];
     
     
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(scrollerPageChanged:) name:kScrollerPageChanged object:nil];
@@ -281,7 +292,6 @@ typedef void(^AnimationCompletionBlock)(BOOL finished);
     
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(hideOrShowNetworkMessages:) name:kNoteShowNetworkMessages object:nil];
     
-    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(popCurrentViewController:) name:kNotePopCurrentViewController object:nil];
     
     
     
@@ -295,7 +305,7 @@ typedef void(^AnimationCompletionBlock)(BOOL finished);
     if (!channelOwner)
         return;
     
-    [self.showingBaseViewController viewProfileDetails:channelOwner];
+    [appDelegate.viewStackManager viewProfileDetails:channelOwner];
 }
 
 
@@ -311,7 +321,7 @@ typedef void(^AnimationCompletionBlock)(BOOL finished);
                                                                                               usingMode: kChannelDetailsModeDisplay];
     channelVC.autoplayVideoId = [notification userInfo][kAutoPlayVideoId];
     
-    [self.showingBaseViewController animatedPushViewController: channelVC];
+    [appDelegate.viewStackManager pushController:channelVC];
 }
 
 -(void)headerSwiped:(UISwipeGestureRecognizer*)recogniser
@@ -373,7 +383,7 @@ typedef void(^AnimationCompletionBlock)(BOOL finished);
 -(void)pageChanged:(NSInteger)pageNumber
 {
     
-    self.pageTitleLabel.text = [self.containerViewController.showingBaseViewController.title uppercaseString];
+    self.pageTitleLabel.text = [self.containerViewController.showingViewController.title uppercaseString];
     
     
     if(self.sideNavigationViewController.state == SideNavigationStateFull)
@@ -383,7 +393,7 @@ typedef void(^AnimationCompletionBlock)(BOOL finished);
     }
     else
     {
-        NSString* controllerTitle = self.containerViewController.showingBaseViewController.title;
+        NSString* controllerTitle = self.containerViewController.showingViewController.title;
         
         [self.sideNavigationViewController setSelectedCellByPageName:controllerTitle];
 
@@ -447,8 +457,8 @@ typedef void(^AnimationCompletionBlock)(BOOL finished);
     [[SYNChannelDetailViewController alloc] initWithChannel: appDelegate.videoQueue.currentlyCreatingChannel
                                                   usingMode: kChannelDetailsModeCreate] ;
     
-    // either the current view on the container scroll view or the overlay navigation controller as in search mode
-    [self.showingBaseViewController animatedPushViewController: channelCreationVC];
+    [appDelegate.viewStackManager pushController:channelCreationVC];
+
 }
 
 -(void)addedToChannelAction:(NSNotification*)notification
@@ -566,7 +576,7 @@ typedef void(^AnimationCompletionBlock)(BOOL finished);
 
 - (void) showSideNavigation
 {
-    NSString* controllerTitle = self.containerViewController.showingBaseViewController.title;
+    NSString* controllerTitle = self.containerViewController.showingViewController.title;
     
     [self.sideNavigationViewController setSelectedCellByPageName: controllerTitle];
     
@@ -701,8 +711,7 @@ typedef void(^AnimationCompletionBlock)(BOOL finished);
     
     
     [self.originViewController videoOverlayDidDissapear];
-    
-    // FIXME: This doesn't look right
+    //FIXME: Nick to rework
     [self.containerViewController viewWillAppear:NO];
 }
 
@@ -714,12 +723,6 @@ typedef void(^AnimationCompletionBlock)(BOOL finished);
     
     if (self.isInSearchMode) // if it is on stage already
         return;
-    
-
-    if(!self.overlayNavigationController) {// we are on the main stage and the X button should appear
-        self.sideNavigationButton.hidden = YES;
-        self.closeSearchButton.hidden = NO;
-    }
     
     self.darkOverlayView.alpha = 1.0;
     
@@ -735,7 +738,7 @@ typedef void(^AnimationCompletionBlock)(BOOL finished);
     // place according to the position of the back button //
     if (showingBackButton)
     {
-        sboxFrame.origin.x = self.backButtonControl.frame.origin.x + self.backButtonControl.frame.size.width + 16.0;
+        sboxFrame.origin.x = 76.0f;
     }
     else
     {
@@ -754,6 +757,9 @@ typedef void(^AnimationCompletionBlock)(BOOL finished);
     {
         [self.searchBoxController.searchTextField becomeFirstResponder];
     }
+    
+    self.closeSearchButton.hidden = NO;
+    self.sideNavigationButton.hidden = YES;
 }
 
 - (void) searchTyped: (NSNotification*) notification
@@ -779,23 +785,18 @@ typedef void(^AnimationCompletionBlock)(BOOL finished);
         
     }
     
-    if(!self.overlayNavigationController)
-    {        
-        self.searchViewController = [[SYNSearchRootViewController alloc] initWithViewId: kSearchViewId];
-        self.overlayNavigationController = [SYNObjectFactory wrapInNavigationController: self.searchViewController];
-    }
-    else if([[SYNDeviceManager sharedInstance] isIPhone])
-    {
-        SYNAbstractViewController* topController = (SYNAbstractViewController*)self.searchViewController.navigationController.topViewController;
-        [topController animatedPopToRootViewController];
-    }
+        
+    if(!self.searchIsInProgress)
+        [appDelegate.viewStackManager pushController:self.searchViewController];
+    else
+        [appDelegate.viewStackManager popToController:self.searchViewController];
     
-    if([[SYNDeviceManager sharedInstance] isIPhone])
+    if(!isIPad)
     {
-        [self.searchViewController.view addSubview:self.sideNavigationViewController.searchViewController.searchBoxView];
+        //[self.searchViewController.view addSubview:self.sideNavigationViewController.searchViewController.searchBoxView];
         self.searchViewController.searchBoxViewController = self.sideNavigationViewController.searchViewController;
+        [self hideNavigation:nil];
     }
-    
     
     
     [self.searchViewController showSearchResultsForTerm: termString];
@@ -805,10 +806,12 @@ typedef void(^AnimationCompletionBlock)(BOOL finished);
 
 - (void) searchCancelledIPhone: (NSNotification*) notification
 {
+    self.sideNavigationButton.selected = YES;
+    
     if(self.searchViewController.navigationController.topViewController == self.searchViewController)
     {
         [self cancelButtonPressed: nil];
-        self.overlayNavigationController = nil;
+        [appDelegate.viewStackManager popController];
     }
     self.closeSearchButton.hidden = YES;
     self.sideNavigationButton.hidden = NO;
@@ -819,7 +822,8 @@ typedef void(^AnimationCompletionBlock)(BOOL finished);
                             self.darkOverlayView.hidden = NO;
                        }];
 
-    [self.view addSubview: self.sideNavigationViewController.searchViewController.searchBoxView];
+    [self.sideNavigationViewController.searchViewController removeFromParentViewController];
+    [self.view insertSubview:self.sideNavigationViewController.searchViewController.searchBoxView belowSubview:self.overlayView];
 }
 
 
@@ -841,15 +845,7 @@ typedef void(^AnimationCompletionBlock)(BOOL finished);
     [appDelegate logout];
 }
 
--(void) searchBarRequested:(NSNotification*)notification
-{
-    NSString* notifcationName = [notification name];
-    if([notifcationName isEqualToString:kNoteSearchBarRequestHide])
-        [self cancelButtonPressed:nil];
-    else
-        [self showSearchBoxField:nil];
-        
-}
+
 
 - (void) reachabilityChanged: (NSNotification*) notification
 {
@@ -911,30 +907,6 @@ typedef void(^AnimationCompletionBlock)(BOOL finished);
 
 
 
-- (void) backButtonRequested: (NSNotification*) notification
-{
-    NSString* notificationName = [notification name];
-    if(!notificationName)
-        return;
-    
-    SYNAbstractViewController* sender = (SYNAbstractViewController*)[notification object];
-    if(!sender)
-        return;
-    
-    // BOOL toleratesSearchBar = sender.toleratesSearchBar;
-    
-    if([notificationName isEqualToString:kNoteBackButtonShow])
-    {
-        [self showBackButton:YES];
-    }
-    else
-    {
-        [self showBackButton:NO];
-    }
-}
-
-
-
 - (void) allNavControlsRequested: (NSNotification*) notification
 {
     NSString* notificationName = [notification name];
@@ -957,7 +929,7 @@ typedef void(^AnimationCompletionBlock)(BOOL finished);
         self.pageTitleLabel.hidden = NO;
         
         self.pagePositionIndicatorView.hidden = NO;
-        self.movableButtonsContainer.hidden = NO;
+        self.backButtonControl.hidden = NO;
     }
     else
     {
@@ -966,19 +938,12 @@ typedef void(^AnimationCompletionBlock)(BOOL finished);
         self.closeSearchButton.hidden = YES;
         self.pageTitleLabel.hidden = YES;
         self.pagePositionIndicatorView.hidden = YES;
-        self.movableButtonsContainer.hidden = YES;
+        self.backButtonControl.hidden = YES;
         self.sideNavigationViewController.state = SideNavigationStateHidden;
     }
 }
 
-- (void) hideSomeNavControlsRequested: (NSNotification*) notification
-{
-    self.searchButton.hidden = YES;
-    self.closeSearchButton.hidden = YES;
-    self.sideNavigationButton.hidden = YES;
-    self.backButtonControl.hidden = YES;
-    self.sideNavigationViewController.state = SideNavigationStateHidden;
-}
+
 
 
 - (void) navigateToPage: (NSNotification*) notification
@@ -993,13 +958,11 @@ typedef void(^AnimationCompletionBlock)(BOOL finished);
     {
         [self cancelButtonPressed:nil];
     }
-    self.overlayNavigationController = nil; // animate the overlay out using the setter method
 
     if (showingBackButton)
     {
         //pop the current section navcontroller to the root controller
-        SYNAbstractViewController* abstractVC = (SYNAbstractViewController *)self.containerViewController.showingBaseViewController;
-        [abstractVC animatedPopToRootViewController];
+        [appDelegate.viewStackManager popToRootController];
         
         [self showBackButton:NO];
         
@@ -1063,160 +1026,6 @@ typedef void(^AnimationCompletionBlock)(BOOL finished);
     self.pageTitleLabel.alpha = 0.0f;
 }
 
-
-#pragma mark - View Stack Navigation
-
-// when a view is pushed, this gets called
-
-- (void) showBackButton: (BOOL) show // popping
-{
-    CGRect targetFrame;
-    CGFloat targetAlpha;
-    
-    // XOR '^' the values so that they return 0 if they are both YES or both NO
-    if(!(show ^ showingBackButton))
-        return;
-    
-    CGFloat newSearchBoxOrigin;
-    
-    
-    if (show)
-    {
-        [self.backButtonControl addTarget: self
-                                   action: @selector(popCurrentViewController:)
-                         forControlEvents:UIControlEventTouchUpInside];
-        
-        //No More Back Title (For Now)
-        // [self.backButtonControl setBackTitle: self.pageTitleLabel.text];
-        
-        
-        newSearchBoxOrigin = self.backButtonControl.frame.origin.x + self.backButtonControl.frame.size.width + 16.0;
-        
-        showingBackButton = YES;
-        targetFrame = self.movableButtonsContainer.frame;
-        targetAlpha = 1.0;
-        
-        if ([SYNDeviceManager.sharedInstance isIPad])
-        {
-            targetFrame.origin.x = 10.0;
-        }
-        
-        else
-        {
-            targetFrame.origin.x = 5.0;
-        }
-        [self.containerViewController backButtonWillShow];
-    }
-    else
-    {
-        [self.backButtonControl removeTarget: self
-                                      action: @selector(popCurrentViewController:)
-                            forControlEvents: UIControlEventTouchUpInside];
-        
-        newSearchBoxOrigin = 10.0;
-        
-        
-        showingBackButton = NO;
-        targetFrame = self.movableButtonsContainer.frame;
-        targetFrame.origin.x = kMovableViewOffX;
-        targetAlpha = 0.0;
-        [self.containerViewController backButtonwillHide];
-    }
-    
-    [UIView animateWithDuration: 0.6f
-                          delay: 0.0f
-                        options: UIViewAnimationOptionCurveEaseInOut
-                     animations: ^{
-                         self.movableButtonsContainer.frame = targetFrame;
-                         self.backButtonControl.alpha = targetAlpha;
-                         self.pageTitleLabel.alpha = !targetAlpha;
-                         self.pagePositionIndicatorView.alpha = !targetAlpha;
-                         
-                         // Re-Asjust the Search Box when the back arrow comes on/off screen //
-                         
-                         if(self.isInSearchMode)
-                         {
-                             CGRect sboxFrame = self.searchBoxController.view.frame;
-                             sboxFrame.origin.x = newSearchBoxOrigin;
-                             sboxFrame.size.width = self.closeSearchButton.frame.origin.x - sboxFrame.origin.x - 8.0;
-                             self.searchBoxController.view.frame = sboxFrame;
-                         }
-                     }
-                     completion:^(BOOL finished)
-                     {
-                         if(self.isInSearchMode && !show)
-                         {
-                             self.closeSearchButton.hidden = NO;
-                         }
-                     }];
-    
-    
-
-}
-
-- (void) popCurrentViewController: (id) sender
-{
-    
-    
-    if(self.showingViewController.isLocked)
-        return;
-    
-    SYNAbstractViewController *abstractVC;
-    
-    if(_overlayNavigationController)
-    {
-        if(_overlayNavigationController.viewControllers.count > 1) // if the overlayController has itself pushed views, pop one of them
-        {
-            abstractVC = (SYNAbstractViewController *)_overlayNavigationController.topViewController;
-            
-            
-            [abstractVC animatedPopViewController];
-            
-
-        }
-        else // go back to containerView
-        {
-            
-            if(self.isInSearchMode)
-            {
-                [self cancelButtonPressed:nil];
-            }
-            self.overlayNavigationController = nil; // animate the overlay out using the setter method
-
-            // FIXME: This doesn't look right!
-            [self.showingViewController viewDidAppear:YES];
-        }
-        
-    }
-    else
-    {
-        abstractVC = (SYNAbstractViewController *)self.containerViewController.showingBaseViewController;
-        
-        [abstractVC animatedPopViewController];
-        
-        if(abstractVC.navigationController.viewControllers.count < 2) {
-            
-            self.containerViewController.scrollView.scrollEnabled = YES;
-            
-            if(self.isInSearchMode)
-            {
-                self.closeSearchButton.hidden = NO;
-                self.sideNavigationButton.hidden = YES;
-            }
-            
-            [self showBackButton:NO];
-        }
-            
-        
-       
-    }
-    
-    
-    
-    [self.containerViewController refreshView];
-    
-    
-}
 
 
 #pragma mark - Account Settings
@@ -1442,173 +1251,41 @@ typedef void(^AnimationCompletionBlock)(BOOL finished);
                                                      inView: self.view
                                    permittedArrowDirections: 0
                                                    animated: YES];
+        
+        
     }
     
 }
 
 
-#pragma mark - Overlay Accessor Methods
-
--(void) setOverlayNavigationController: (UINavigationController *) overlayNavigationController
-{
-    if (_overlayNavigationController && overlayNavigationController) // there can be only one overlay at a time
-        return;
-    
-    UINavigationController* oldOverlayNavigationController = _overlayNavigationController;
-    _overlayNavigationController = overlayNavigationController;
-
-    if (overlayNavigationController) // if we did not pass nil
-    {
-        [self.overlayContainerView addSubview:overlayNavigationController.view];
-        
-
-        if ([SYNDeviceManager.sharedInstance isIPhone])
-        {
-            overlayNavigationController.view.frame = self.overlayContainerView.bounds;
-        }
-        else
-        {
-            [self showBackButton: YES];
-        }
-        
-        self.overlayContainerView.userInteractionEnabled = YES;
-        self.overlayContainerView.alpha = 0.0;
-
-        [UIView animateWithDuration: 0.5f
-                              delay: 0.0f
-                            options: UIViewAnimationOptionCurveEaseIn
-                         animations: ^{
-                             self.containerView.alpha = 0.0;
-                         }
-                         completion: ^(BOOL finished) {
-                             
-                             self.containerView.hidden = YES;
-
-                             [oldOverlayNavigationController removeFromParentViewController];
-                             [self addChildViewController: overlayNavigationController];
-                             
-                             [UIView animateWithDuration: 0.7f
-                                                   delay: 0.2f
-                                                 options: UIViewAnimationOptionCurveEaseOut
-                                              animations: ^{
-                                                  self.overlayContainerView.alpha = 1.0;
-                                              }
-                                              completion:^(BOOL finished) {
-                                                  if ([SYNDeviceManager.sharedInstance isIPhone])
-                                                  {
-                                                      // The search overlay sits on the side navigation on iPhone, move it into the overlay temporarily
-                                                     [[(self.overlayNavigationController.viewControllers)[0] view] addSubview: self.sideNavigationViewController.searchViewController.searchBoxView];
-                                                  }
-                                              }];
-                         }];
-    }
-    else
-    {
-        if(oldOverlayNavigationController) // nil was passed and there was another on screen (remove)
-        {
-            NSTimeInterval animationDuration = 0.5f;
-            if([SYNDeviceManager.sharedInstance isIPhone])
-            {
-                animationDuration = 0.1f;
-            }
-
-            // if the controller underneath has not popped controllers to its stack, hide back button //
-
-            if(self.containerViewController.showingBaseViewController.navigationController.viewControllers.count == 1)
-            {
-                [self showBackButton:NO];
-            }
-            
-             self.overlayContainerView.userInteractionEnabled = NO;
-            [UIView animateWithDuration: animationDuration
-                                  delay: 0.0f
-                                options: UIViewAnimationOptionCurveEaseIn
-                             animations: ^{
-                                 self.overlayContainerView.alpha = 0.0;
-                             }
-                             completion: ^(BOOL finished) {
-                                 
-                                 [oldOverlayNavigationController.view removeFromSuperview];
-                                 [oldOverlayNavigationController removeFromParentViewController];
-                                 
-                                 
-                                 self.containerView.hidden = NO;
-                                 self.overlayContainerView.userInteractionEnabled = YES;
-                                 
-                                 [UIView animateWithDuration: 0.7f
-                                                       delay: 0.2f
-                                                     options: UIViewAnimationOptionCurveEaseOut
-                                                  animations: ^{
-                                                      self.containerView.alpha = 1.0;
-                                                      
-                                                  }
-                                                  completion: nil];
-                             }];
-        }
-        else // nil was passed while there was nothing on screen (it is already nil)
-        {
-            _overlayNavigationController = nil;
-        }
-    }
-}
-
-
-- (UINavigationController*) overlayNavigationController
-{
-    return _overlayNavigationController;
-}
-
-
-
-// this always gets the BOTTOM of the showing navigation controller
 
 - (SYNAbstractViewController*) showingViewController
 {
-    SYNAbstractViewController* absctractVc;
-    if (self.overlayNavigationController)
-        absctractVc = (SYNAbstractViewController*)self.overlayNavigationController.topViewController;
+    if([self.mainNavigationController.topViewController isKindOfClass:[SYNContainerViewController class]])
+        return self.containerViewController.showingViewController;
     else
-        absctractVc = self.containerViewController.showingViewController;
+        return (SYNAbstractViewController*)self.mainNavigationController.topViewController;
     
-    return absctractVc;
 }
 
-- (SYNAbstractViewController*) showingBaseViewController
-{
-    SYNAbstractViewController* absctractVc;
-    if (self.overlayNavigationController)
-        absctractVc = (SYNAbstractViewController*)self.overlayNavigationController.viewControllers[0];
-    else
-        absctractVc = self.containerViewController.showingBaseViewController;
-    
-    return absctractVc;
-}
+
 
 -(BOOL)isInSearchMode
 {
     return (BOOL)self.searchBoxController.view.superview;
 }
 
--(void)changeControlButtonsForControllerRequest:(NSNotification*)notification
-{
-    SYNAbstractViewController* object = [notification object];
-    if(!object)
-        return;
-    
-    
-    if([object.viewId isEqualToString:kChannelDetailsViewId] && [[notification name] isEqualToString:kMainControlsChangeEnter]) // white buttons
-    {
-        
-        [self changeControlButtonsTo:NavigationButtonsAppearenceWhite];
-    }
-    else // black buttons
-    {
-        [self changeControlButtonsTo:NavigationButtonsAppearenceBlack];
-    }
-}
+
 
 -(void)changeControlButtonsTo:(NavigationButtonsAppearence)appearence
 {
+    
+    
+    if(appearence == self.currentNavigationButtonsAppearence)
+        return;
+    
+    self.currentNavigationButtonsAppearence = appearence;
+    
     if(appearence == NavigationButtonsAppearenceWhite) // white buttons
     {
         [self.searchButton setImage:[UIImage imageNamed:@"ButtonSearchCD"] forState:UIControlStateNormal];
@@ -1643,5 +1320,145 @@ typedef void(^AnimationCompletionBlock)(BOOL finished);
     }
 }
 
+-(SYNContainerViewController*)containerViewController
+{
+    return (SYNContainerViewController*)self.mainNavigationController.viewControllers[0];
+}
+
+
+- (void) showBackButton: (BOOL) show 
+{
+    CGRect targetFrame;
+    CGFloat targetAlpha;
+    
+    // XOR '^' the values so that they return 0 if they are both YES or both NO
+    if(!(show ^ showingBackButton))
+        return;
+    
+    
+    if (show)
+    {
+        [self.backButtonControl addTarget: appDelegate.viewStackManager
+                                   action: @selector(popController)
+                         forControlEvents:UIControlEventTouchUpInside];
+        
+        
+        
+        showingBackButton = YES;
+        targetFrame = self.backButtonControl.frame;
+        targetAlpha = 1.0;
+        
+        if ([SYNDeviceManager.sharedInstance isIPad])
+        {
+            targetFrame.origin.x = 10.0;
+        }
+        
+        else
+        {
+            targetFrame.origin.x = 5.0;
+        }
+    }
+    else
+    {
+        [self.backButtonControl removeTarget: appDelegate.viewStackManager
+                                      action: @selector(popController)
+                            forControlEvents: UIControlEventTouchUpInside];
+        
+        
+        
+        showingBackButton = NO;
+        targetFrame = self.backButtonControl.frame;
+        targetFrame.origin.x = kMovableViewOffX;
+        targetAlpha = 0.0;
+    }
+    
+    [UIView animateWithDuration: 0.6f
+                          delay: (show && self.isInSearchMode ? 0.4f : 0.0f)
+                        options: UIViewAnimationOptionCurveEaseInOut
+                     animations: ^{
+                         self.backButtonControl.frame = targetFrame;
+                         self.backButtonControl.alpha = targetAlpha;
+                         self.pageTitleLabel.alpha = !targetAlpha;
+                         self.pagePositionIndicatorView.alpha = !targetAlpha;
+                     } completion:nil];
+    
+    [UIView animateWithDuration: 0.6f
+                          delay: (show ? 0.0f : 0.4f)
+                        options: UIViewAnimationOptionCurveEaseInOut
+                     animations: ^{
+                         CGRect sboxFrame = self.searchBoxController.view.frame;
+                         sboxFrame.origin.x = (show ? 76.0f : 10.0f);
+                         sboxFrame.size.width = self.closeSearchButton.frame.origin.x - sboxFrame.origin.x - 8.0;
+                         self.searchBoxController.view.frame = sboxFrame;
+                     } completion:nil];
+    
+}
+
+#pragma mark - Delegate
+
+- (void)navigationController:(UINavigationController *)navigationController didShowViewController:(UIViewController *)viewController animated:(BOOL)animated
+{
+    
+    
+}
+
+- (void)navigationController:(UINavigationController *)navigationController willShowViewController:(UIViewController *)viewController animated:(BOOL)animated
+{
+    
+    
+    if([viewController isKindOfClass:[SYNContainerViewController class]]) // special case for the container which is not an abstract view controller
+    {
+        [self changeControlButtonsTo:NavigationButtonsAppearenceBlack];
+        [self cancelButtonPressed:nil];
+    }
+    else
+    {
+        SYNAbstractViewController* abstractController = (SYNAbstractViewController*)viewController;
+        [self changeControlButtonsTo:abstractController.navigationAppearence];
+        
+        if(abstractController.alwaysDisplaysSearchBox)
+        {
+            if([[SYNDeviceManager sharedInstance] isIPhone])
+            {
+                [self.sideNavigationViewController.searchViewController removeFromParentViewController];
+                UIView* searchBar = self.sideNavigationViewController.searchViewController.searchBoxView;
+                [self.view insertSubview:searchBar belowSubview:self.overlayView];
+            }
+            else
+            {
+                [self showSearchBoxField:nil];
+                self.closeSearchButton.hidden = YES;
+                self.sideNavigationButton.hidden = NO;
+            }
+        }
+        else
+        {
+            if([[SYNDeviceManager sharedInstance] isIPhone])
+            {
+                if ([[self.view subviews] containsObject:self.sideNavigationViewController.searchViewController.searchBoxView])
+                {
+                    [self.sideNavigationViewController.searchViewController.searchBoxView removeFromSuperview];
+                }
+            }
+            if(self.isInSearchMode)
+            {
+                self.closeSearchButton.hidden = NO;
+                self.sideNavigationButton.hidden = YES;
+            }
+        }
+    }
+    
+    
+    
+    [self showBackButton:(navigationController.viewControllers.count > 1)];
+    
+    
+}
+
+// returns whether the searchViewController has been pushed to the stack previously
+-(BOOL)searchIsInProgress
+{
+    return [self.mainNavigationController.viewControllers containsObject:self.searchViewController];
+}
 
 @end
