@@ -195,7 +195,7 @@
     
     self.videoThumbnailCollectionView.collectionViewLayout = layout;
     
-    if (_isIPhone)
+    if (self.isIPhone)
     {
         layout.sectionInset = UIEdgeInsetsMake(0.0f, 0.0f, 0.0f, 0.0f);
         self.videoThumbnailCollectionView.contentInset = UIEdgeInsetsMake([SYNDeviceManager.sharedInstance currentScreenHeight] - 168.0f, 0.0f, 0.0f, 0.0f);
@@ -249,7 +249,7 @@
         self.avatarImageView.image = placeholderImage;
     }
 
-    if (!_isIPhone)
+    if (!self.isIPhone)
     {
         // Create categories tab, but make invisible (alpha = 0) for now
         self.categoriesTabViewController = [[SYNGenreTabViewController alloc] initWithHomeButton: @"other"];
@@ -289,7 +289,7 @@
     //Remove the save button. It is added back again if the edit button is tapped.
     [self.saveChannelButton removeFromSuperview];
     
-    if (!_isIPhone)
+    if (!self.isIPhone)
     {
         // Set text on add cover and select category buttons
         NSString *coverString = NSLocalizedString (@"channel_creation_screen_button_selectcover_label", nil);
@@ -428,7 +428,7 @@
     // Stop observing everything (less error-prone than trying to remove observers individually
     [[NSNotificationCenter defaultCenter] removeObserver: self];
 
-    if (!_isIPhone)
+    if (!self.isIPhone)
     {
         [[NSNotificationCenter defaultCenter] postNotificationName: kVideoQueueClear
                                                         object: self
@@ -621,8 +621,8 @@
     if (!message)
         return;
     
-    CGSize viewFrameSize = _isIPhone ? CGSizeMake(300.0, 50.0) : CGSizeMake(360.0, 50.0);
-    if (withLoader && !_isIPhone)
+    CGSize viewFrameSize = self.isIPhone ? CGSizeMake(300.0, 50.0) : CGSizeMake(360.0, 50.0);
+    if (withLoader && !self.isIPhone)
     {
         viewFrameSize.width = 380.0;
     }
@@ -1364,7 +1364,7 @@
     
     if (self.mode == kChannelDetailsModeCreate)
     {
-        if (_isIPhone)
+        if (self.isIPhone)
         {
             [self backButtonTapped:nil];
         }
@@ -1377,7 +1377,7 @@
     {
         [self setEditControlsVisibility: NO];
         
-        if (_isIPhone)
+        if (self.isIPhone)
         {
             self.selectedImageURL = nil;
         }
@@ -1505,7 +1505,7 @@
 
 - (void) showCoverChooser
 {
-    if (!_isIPhone)
+    if (!self.isIPhone)
     {
         // Check to see if we are already display the cover chooser
         if (self.coverChooserMasterView.alpha == 0.0f)
@@ -1568,7 +1568,7 @@
 
 - (void) showCategoryChooser
 {
-    if (!_isIPhone)
+    if (!self.isIPhone)
     {
         [self.view addSubview: self.categoriesTabViewController.view];
         
@@ -2010,7 +2010,7 @@
                                                                                                   object: self
                                                                                                 userInfo: nil];
                                               
-                                              [self finaliseViewStatusAfterCreateOrUpdate:!_isIPhone];
+                                              [self finaliseViewStatusAfterCreateOrUpdate:!self.isIPhone];
                                               
                                               [[NSNotificationCenter defaultCenter] postNotificationName: kVideoQueueClear
                                                                                                   object: nil];
@@ -2037,7 +2037,7 @@
                                                                                                   object: self
                                                                                                 userInfo: nil];
                                               
-                                              [self finaliseViewStatusAfterCreateOrUpdate:!_isIPhone];
+                                              [self finaliseViewStatusAfterCreateOrUpdate:!self.isIPhone];
                                             
                                               
                                               [[NSNotificationCenter defaultCenter] postNotificationName: kVideoQueueClear
@@ -2275,7 +2275,7 @@
 
 - (void) textViewDidBeginEditing: (UITextView *) textView
 {
-    if (_isIPhone)
+    if (self.isIPhone)
     {
         
         self.createChannelButton.hidden = YES;
@@ -2384,7 +2384,7 @@
 
 - (void) textViewDidEndEditing: (UITextView *) textView
 {
-    if (_isIPhone)
+    if (self.isIPhone)
     {
         self.createChannelButton.hidden = NO;
         self.saveChannelButton.hidden = NO;
@@ -2688,7 +2688,7 @@
 {
     if (scrollView == self.videoThumbnailCollectionView)
     {
-        CGFloat fadeSpan = (_isIPhone) ? kChannelDetailsFadeSpaniPhone : kChannelDetailsFadeSpan;
+        CGFloat fadeSpan = (self.isIPhone) ? kChannelDetailsFadeSpaniPhone : kChannelDetailsFadeSpan;
         CGFloat blurOpacity;
         
         // Try this first
