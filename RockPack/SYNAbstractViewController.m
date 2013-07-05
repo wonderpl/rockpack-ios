@@ -214,6 +214,7 @@
     
     NSInteger nextStart = self.dataRequestRange.location + self.dataRequestRange.length; // one is subtracted when the call happens for 0 indexing
     
+    // FIXME: Is this comparison correct?  Should it just be self.dataRequestRange.location >= self.dataItemsAvailable?
     if (nextStart >= self.dataItemsAvailable)
     {
         return;
@@ -692,10 +693,10 @@
 
 }
 
-- (NavigationButtonsAppearence) navigationAppearence
+- (NavigationButtonsAppearance) navigationAppearance
 {
     // return the standard and overide in subclass for special cases such as the ChannelDetails Section
-    return NavigationButtonsAppearenceBlack;
+    return NavigationButtonsAppearanceBlack;
 }
 
 -(BOOL)alwaysDisplaysSearchBox

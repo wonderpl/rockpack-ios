@@ -46,30 +46,8 @@
 - (void) viewDidLoad
 {
     [super viewDidLoad];
-    
-    self.currentCalendar = [NSCalendar currentCalendar];
+
     isIphone = [SYNDeviceManager.sharedInstance isIPhone];
-    
-    // Init collection view
-    UINib *videoThumbnailCellNib = [UINib nibWithNibName: @"SYNVideoThumbnailWideCell"
-                                                  bundle: nil];
-    
-    [self.videoThumbnailCollectionView registerNib: videoThumbnailCellNib
-                        forCellWithReuseIdentifier: @"SYNVideoThumbnailWideCell"];
-    
-    // Register Footer
-    UINib *footerViewNib = [UINib nibWithNibName: @"SYNChannelFooterMoreView"
-                                          bundle: nil];
-    
-    [self.videoThumbnailCollectionView registerNib: footerViewNib
-                          forSupplementaryViewOfKind: UICollectionElementKindSectionFooter
-                                 withReuseIdentifier: @"SYNChannelFooterMoreView"];
-    
-    SYNIntegralCollectionViewFlowLayout* flotLayout = (SYNIntegralCollectionViewFlowLayout*)self.videoThumbnailCollectionView.collectionViewLayout;
-    
-    flotLayout.footerReferenceSize = [self footerSize];
-    
-    // override the data loading
     
     if (isIphone)
     {
@@ -79,7 +57,6 @@
         collectionFrame.size.height = [SYNDeviceManager.sharedInstance currentScreenHeight] - 190.0;
         self.videoThumbnailCollectionView.frame = collectionFrame;
     }
-    
     else
     {
         CGRect collectionFrame = self.videoThumbnailCollectionView.frame;
@@ -94,15 +71,13 @@
         layout.sectionInset = insets;
     }
     
-    self.videoThumbnailCollectionView.autoresizingMask = UIViewAutoresizingFlexibleWidth| UIViewAutoresizingFlexibleHeight;
-    self.videoThumbnailCollectionView.backgroundColor = [UIColor clearColor];
-    
     CGRect videoThumbFrame = self.videoThumbnailCollectionView.frame;
     videoThumbFrame.size.height -= 4.0;
     self.videoThumbnailCollectionView.frame = videoThumbFrame;
     
-    
     self.view.autoresizingMask = UIViewAutoresizingFlexibleWidth | UIViewAutoresizingFlexibleHeight;
+    
+    self.currentCalendar = [NSCalendar currentCalendar];
 }
 
 
@@ -112,9 +87,7 @@
 
     // Google analytics support
     [GAI.sharedInstance.defaultTracker sendView: @"Search - Videos"];
-    
 }
-
 
 
 - (NSFetchedResultsController *) fetchedResultsController

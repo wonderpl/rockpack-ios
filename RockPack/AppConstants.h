@@ -203,12 +203,12 @@ typedef enum _Gender {
     
 } Gender;
 
-typedef enum _NavigationButtonsAppearence {
+typedef enum _NavigationButtonsAppearance {
     
-    NavigationButtonsAppearenceBlack = 0,
-    NavigationButtonsAppearenceWhite = 1,
+    NavigationButtonsAppearanceBlack = 0,
+    NavigationButtonsAppearanceWhite = 1,
     
-} NavigationButtonsAppearence;
+} NavigationButtonsAppearance;
 
 //
 // Colours

@@ -3110,9 +3110,9 @@
                                                       userInfo: @{kChannel : self.channel}];
 }
 
--(NavigationButtonsAppearence)navigationAppearence
+-(NavigationButtonsAppearance)navigationAppearance
 {
-    return NavigationButtonsAppearenceWhite;
+    return NavigationButtonsAppearanceWhite;
 }
 
 @end

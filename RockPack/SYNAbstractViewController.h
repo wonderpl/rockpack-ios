@@ -116,7 +116,7 @@ typedef void (^SYNShareCompletionBlock)(void);
 
 - (CGSize) footerSize;
 
-- (NavigationButtonsAppearence) navigationAppearence;
+- (NavigationButtonsAppearance) navigationAppearance;
 
 
 @end

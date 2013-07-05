@@ -51,8 +51,6 @@
 
 - (void) viewDidLoad
 {
-    
-    
     [super viewDidLoad];
     
     self.videoSearchTabView = [SYNSearchTabView tabViewWithSearchType:SearchTabTypeVideos];
