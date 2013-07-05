@@ -562,9 +562,7 @@
     
     Channel *channel = (Channel*)self.channels[indexPath.row];
     
-    [[NSNotificationCenter defaultCenter] postNotificationName:kChannelDetailsRequested
-                                                        object:self
-                                                      userInfo:@{kChannel:channel}];
+    [appDelegate.viewStackManager viewChannelDetails:channel];
 }
 
 

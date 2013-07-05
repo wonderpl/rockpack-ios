@@ -10,11 +10,14 @@
 
 @class SYNAbstractViewController;
 @class ChannelOwner;
+@class Channel;
+@class SYNSideNavigatorViewController;
 
 @interface SYNViewStackManager : NSObject
 
 
 @property (nonatomic, weak) UINavigationController* navigationController;
+@property (nonatomic, weak) SYNSideNavigatorViewController* sideNavigatorController;
 
 +(id)manager;
 
@@ -25,5 +28,7 @@
 -(void)pushController:(SYNAbstractViewController*)controller;
 
 - (void) viewProfileDetails: (ChannelOwner *) channelOwner;
+-(void) viewChannelDetails: (Channel*) channel withAutoplayId:(NSString*)autoplayId;
+- (void) viewChannelDetails: (Channel*) channel;
 
 @end

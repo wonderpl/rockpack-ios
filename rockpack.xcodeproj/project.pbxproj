@@ -555,7 +555,7 @@
 		3862E8BA1729797F0066E8E7 /* SYNMasterViewController~iphone.xib in Resources */ = {isa = PBXBuildFile; fileRef = 3862E8B91729797F0066E8E7 /* SYNMasterViewController~iphone.xib */; };
 		3862E8BC172979A40066E8E7 /* SYNVideoViewerViewController~iphone.xib in Resources */ = {isa = PBXBuildFile; fileRef = 3862E8BB172979A40066E8E7 /* SYNVideoViewerViewController~iphone.xib */; };
 		3864D2DC1743DB3000A90ED3 /* SYNImagePickerController.m in Sources */ = {isa = PBXBuildFile; fileRef = 3864D2DB1743DB3000A90ED3 /* SYNImagePickerController.m */; };
-		388CAF25172E8F0C00721372 /* SYNSideNavigationViewController~iphone.xib in Resources */ = {isa = PBXBuildFile; fileRef = 388CAF24172E8F0C00721372 /* SYNSideNavigationViewController~iphone.xib */; };
+		388CAF25172E8F0C00721372 /* SYNSideNavigatorViewController~iphone.xib in Resources */ = {isa = PBXBuildFile; fileRef = 388CAF24172E8F0C00721372 /* SYNSideNavigatorViewController~iphone.xib */; };
 		388CAF67172EBDC100721372 /* SYNSideNavigationIphoneCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 388CAF66172EBDC100721372 /* SYNSideNavigationIphoneCell.m */; };
 		38A200161731607F00FB9F57 /* AvatarChannel@2x~iphone.png in Resources */ = {isa = PBXBuildFile; fileRef = 38A2FF1E1731607F00FB9F57 /* AvatarChannel@2x~iphone.png */; };
 		38A200171731607F00FB9F57 /* AvatarChannel~iphone.png in Resources */ = {isa = PBXBuildFile; fileRef = 38A2FF1F1731607F00FB9F57 /* AvatarChannel~iphone.png */; };
@@ -867,8 +867,8 @@
 		BE0815C716D5389C00ADB1DC /* SYNMasterViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = BE0815C516D5389C00ADB1DC /* SYNMasterViewController.xib */; };
 		BE0815CA16D5478B00ADB1DC /* SYNRegistry.m in Sources */ = {isa = PBXBuildFile; fileRef = BE0815C916D5478A00ADB1DC /* SYNRegistry.m */; };
 		BE0815CD16D5487B00ADB1DC /* SYNSearchRegistry.m in Sources */ = {isa = PBXBuildFile; fileRef = BE0815CC16D5487B00ADB1DC /* SYNSearchRegistry.m */; };
-		BE0815D216D6448200ADB1DC /* SYNSideNavigationViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = BE0815D016D6448200ADB1DC /* SYNSideNavigationViewController.m */; };
-		BE0815D316D6448200ADB1DC /* SYNSideNavigationViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = BE0815D116D6448200ADB1DC /* SYNSideNavigationViewController.xib */; };
+		BE0815D216D6448200ADB1DC /* SYNSideNavigatorViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = BE0815D016D6448200ADB1DC /* SYNSideNavigatorViewController.m */; };
+		BE0815D316D6448200ADB1DC /* SYNSideNavigatorViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = BE0815D116D6448200ADB1DC /* SYNSideNavigatorViewController.xib */; };
 		BE0815D716D645F600ADB1DC /* SYNShareOverlayViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = BE0815D516D645F600ADB1DC /* SYNShareOverlayViewController.m */; };
 		BE0815D816D645F600ADB1DC /* SYNShareOverlayViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = BE0815D616D645F600ADB1DC /* SYNShareOverlayViewController.xib */; };
 		BE0AAD2916E6534300DA958E /* SYNAutocompleteSuggestionsController.m in Sources */ = {isa = PBXBuildFile; fileRef = BE0AAD2816E6534300DA958E /* SYNAutocompleteSuggestionsController.m */; };
@@ -1831,7 +1831,7 @@
 		3864D2DA1743DB3000A90ED3 /* SYNImagePickerController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SYNImagePickerController.h; sourceTree = "<group>"; };
 		3864D2DB1743DB3000A90ED3 /* SYNImagePickerController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SYNImagePickerController.m; sourceTree = "<group>"; };
 		3885165B17579086001A9FD4 /* Rockpack 2.xcdatamodel */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcdatamodel; path = "Rockpack 2.xcdatamodel"; sourceTree = "<group>"; };
-		388CAF24172E8F0C00721372 /* SYNSideNavigationViewController~iphone.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = "SYNSideNavigationViewController~iphone.xib"; sourceTree = "<group>"; };
+		388CAF24172E8F0C00721372 /* SYNSideNavigatorViewController~iphone.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = "SYNSideNavigatorViewController~iphone.xib"; sourceTree = "<group>"; };
 		388CAF65172EBDC100721372 /* SYNSideNavigationIphoneCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SYNSideNavigationIphoneCell.h; sourceTree = "<group>"; };
 		388CAF66172EBDC100721372 /* SYNSideNavigationIphoneCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SYNSideNavigationIphoneCell.m; sourceTree = "<group>"; };
 		38A200001731607F00FB9F57 /* ButtonVideoOverlayAddHighlighted~iphone.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "ButtonVideoOverlayAddHighlighted~iphone.png"; sourceTree = "<group>"; };
@@ -2157,9 +2157,9 @@
 		BE0815C916D5478A00ADB1DC /* SYNRegistry.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SYNRegistry.m; sourceTree = "<group>"; };
 		BE0815CB16D5487B00ADB1DC /* SYNSearchRegistry.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SYNSearchRegistry.h; sourceTree = "<group>"; };
 		BE0815CC16D5487B00ADB1DC /* SYNSearchRegistry.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SYNSearchRegistry.m; sourceTree = "<group>"; };
-		BE0815CF16D6448200ADB1DC /* SYNSideNavigationViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SYNSideNavigationViewController.h; sourceTree = "<group>"; };
-		BE0815D016D6448200ADB1DC /* SYNSideNavigationViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SYNSideNavigationViewController.m; sourceTree = "<group>"; };
-		BE0815D116D6448200ADB1DC /* SYNSideNavigationViewController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = SYNSideNavigationViewController.xib; sourceTree = "<group>"; };
+		BE0815CF16D6448200ADB1DC /* SYNSideNavigatorViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SYNSideNavigatorViewController.h; sourceTree = "<group>"; };
+		BE0815D016D6448200ADB1DC /* SYNSideNavigatorViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SYNSideNavigatorViewController.m; sourceTree = "<group>"; };
+		BE0815D116D6448200ADB1DC /* SYNSideNavigatorViewController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = SYNSideNavigatorViewController.xib; sourceTree = "<group>"; };
 		BE0815D416D645F600ADB1DC /* SYNShareOverlayViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SYNShareOverlayViewController.h; sourceTree = "<group>"; };
 		BE0815D516D645F600ADB1DC /* SYNShareOverlayViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SYNShareOverlayViewController.m; sourceTree = "<group>"; };
 		BE0815D616D645F600ADB1DC /* SYNShareOverlayViewController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = SYNShareOverlayViewController.xib; sourceTree = "<group>"; };
@@ -4786,10 +4786,10 @@
 			children = (
 				388CAF64172EBD8E00721372 /* iPhoneCell */,
 				BE7D34D017159DF20085AB81 /* Notifications */,
-				BE0815CF16D6448200ADB1DC /* SYNSideNavigationViewController.h */,
-				BE0815D016D6448200ADB1DC /* SYNSideNavigationViewController.m */,
-				BE0815D116D6448200ADB1DC /* SYNSideNavigationViewController.xib */,
-				388CAF24172E8F0C00721372 /* SYNSideNavigationViewController~iphone.xib */,
+				BE0815CF16D6448200ADB1DC /* SYNSideNavigatorViewController.h */,
+				BE0815D016D6448200ADB1DC /* SYNSideNavigatorViewController.m */,
+				BE0815D116D6448200ADB1DC /* SYNSideNavigatorViewController.xib */,
+				388CAF24172E8F0C00721372 /* SYNSideNavigatorViewController~iphone.xib */,
 			);
 			name = "Side Navigation";
 			sourceTree = "<group>";
@@ -5191,7 +5191,7 @@
 				01EA81BF16B8AA110069AFF9 /* ButtonLargeVideoPanelPlay.png in Resources */,
 				01EA81C016B8AA110069AFF9 /* ButtonLargeVideoPanelPlay@2x.png in Resources */,
 				BE0815C716D5389C00ADB1DC /* SYNMasterViewController.xib in Resources */,
-				BE0815D316D6448200ADB1DC /* SYNSideNavigationViewController.xib in Resources */,
+				BE0815D316D6448200ADB1DC /* SYNSideNavigatorViewController.xib in Resources */,
 				BE0815D816D645F600ADB1DC /* SYNShareOverlayViewController.xib in Resources */,
 				0194FD2216DE6FE40058A7C2 /* SYNVideoThumbnailSmallCell.xib in Resources */,
 				0173F6FB16E028E4005B3ECA /* BackgroundVideoThumbnailSmall.png in Resources */,
@@ -5502,7 +5502,7 @@
 				01F1B898172AC2F1005735AF /* ButtonCreateHighlighted.png in Resources */,
 				01F1B899172AC2F1005735AF /* ButtonCreateHighlighted@2x.png in Resources */,
 				38FD4421172AC9B30086B524 /* SYNVideoThumbnailRegularCell~iphone.xib in Resources */,
-				388CAF25172E8F0C00721372 /* SYNSideNavigationViewController~iphone.xib in Resources */,
+				388CAF25172E8F0C00721372 /* SYNSideNavigatorViewController~iphone.xib in Resources */,
 				011C1675173003E800CF50B9 /* OWActivityViewController.strings in Resources */,
 				011C1679173003E800CF50B9 /* OWActivityViewController.bundle in Resources */,
 				38A2FF171730828100FB9F57 /* SYNSearchBoxIphoneView.xib in Resources */,
@@ -6213,7 +6213,7 @@
 				BE0815C616D5389C00ADB1DC /* SYNMasterViewController.m in Sources */,
 				BE0815CA16D5478B00ADB1DC /* SYNRegistry.m in Sources */,
 				BE0815CD16D5487B00ADB1DC /* SYNSearchRegistry.m in Sources */,
-				BE0815D216D6448200ADB1DC /* SYNSideNavigationViewController.m in Sources */,
+				BE0815D216D6448200ADB1DC /* SYNSideNavigatorViewController.m in Sources */,
 				BE0815D716D645F600ADB1DC /* SYNShareOverlayViewController.m in Sources */,
 				BEF9E5B016DCBAC800286113 /* SYNSoundPlayer.m in Sources */,
 				015487CF16DCD2A1002A41A2 /* SYNVideoPlaybackViewController.m in Sources */,

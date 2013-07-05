@@ -332,9 +332,7 @@
     {
         VideoInstance *videoInstance = [self.fetchedResultsController objectAtIndexPath: indexPath];
         
-        [[NSNotificationCenter defaultCenter] postNotificationName:kChannelDetailsRequested
-                                                            object:self
-                                                          userInfo:@{kChannel:videoInstance.channel}];
+        [appDelegate.viewStackManager viewChannelDetails:videoInstance.channel];
     }
 }
 

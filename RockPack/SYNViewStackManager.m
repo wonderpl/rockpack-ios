@@ -9,6 +9,8 @@
 #import "SYNViewStackManager.h"
 #import "SYNAbstractViewController.h"
 #import "SYNProfileRootViewController.h"
+#import "SYNChannelDetailViewController.h"
+#import "SYNSideNavigatorViewController.h"
 #import "ChannelOwner.h"
 
 @implementation SYNViewStackManager
@@ -35,6 +37,8 @@
 
 - (void) viewProfileDetails: (ChannelOwner *) channelOwner
 {
+    if(!channelOwner)
+        return;
     
     SYNProfileRootViewController *profileVC =
     (SYNProfileRootViewController*)[self topControllerMatchingTypeString:NSStringFromClass([SYNProfileRootViewController class])];
@@ -55,6 +59,45 @@
     
     
     profileVC.user = channelOwner;
+    
+    self.sideNavigatorController.state = SideNavigationStateHidden;
+    
+}
+
+- (void) viewChannelDetails: (Channel*) channel
+{
+    
+    [self viewChannelDetails:channel withAutoplayId:nil];
+    
+}
+
+-(void)viewChannelDetails: (Channel*) channel withAutoplayId:(NSString*)autoplayId
+{
+    
+    if(!channel)
+        return;
+    
+    SYNChannelDetailViewController *channelVC =
+    (SYNChannelDetailViewController*)[self topControllerMatchingTypeString:NSStringFromClass([SYNChannelDetailViewController class])];
+    
+    
+    if(channelVC)
+    {
+        channelVC.autoplayVideoId = autoplayId;
+        [self popToController:channelVC];
+        
+    }
+    else
+    {
+        channelVC = [[SYNChannelDetailViewController alloc] initWithChannel: channel
+                                                                  usingMode: kChannelDetailsModeDisplay];
+        
+        channelVC.autoplayVideoId = autoplayId;
+        [self pushController:channelVC];
+        
+    }
+    
+    self.sideNavigatorController.state = SideNavigationStateHidden;
     
 }
 
