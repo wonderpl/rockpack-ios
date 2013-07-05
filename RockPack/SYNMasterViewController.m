@@ -44,8 +44,6 @@ typedef void(^AnimationCompletionBlock)(BOOL finished);
 
 @interface SYNMasterViewController ()
 
-
-@property (nonatomic) BOOL buttonLocked;
 @property (nonatomic) BOOL searchIsInProgress;
 @property (nonatomic) BOOL showingBackButton;
 @property (nonatomic) NavigationButtonsAppearance currentNavigationButtonsAppearance;
@@ -74,6 +72,7 @@ typedef void(^AnimationCompletionBlock)(BOOL finished);
 @property (strong, nonatomic) IBOutlet UIView *overlayContainerView;
 
 @end
+
 
 @implementation SYNMasterViewController
 
@@ -492,10 +491,6 @@ typedef void(^AnimationCompletionBlock)(BOOL finished);
 
 - (IBAction) showAndHideSideNavigation: (UIButton*) sender
 {
-    // FIXME: Not sure buttonLocked is actually set anywhere, if redundant then delete
-    if (self.buttonLocked)
-        return;
-    
     if (self.sideNavigationViewController.state == SideNavigationStateFull
        || self.sideNavigationViewController.state == SideNavigationStateHalf)
     {
