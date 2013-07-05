@@ -27,6 +27,7 @@
     UIViewController* lastControllerOfClass;
     for (UIViewController* viewControllerOnStack in self.navigationController.viewControllers)
     {
+        NSLog(@"Has on stack: %@", viewControllerOnStack);
         if ([viewControllerOnStack isKindOfClass:NSClassFromString(classString)])
         {
             lastControllerOfClass = viewControllerOnStack;
