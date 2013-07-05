@@ -34,14 +34,6 @@
 
 @interface SYNChannelsRootViewController () <UIScrollViewDelegate, SYNChannelCategoryTableViewDelegate>
 
-#ifdef ALLOWS_PINCH_GESTURES
-
-@property (nonatomic, assign) BOOL userPinchedOut;
-@property (nonatomic, strong) NSIndexPath *pinchedIndexPath;
-@property (nonatomic, strong) UIImageView *pinchedView;
-
-#endif
-
 
 @property (nonatomic, assign) BOOL ignoreRefresh;
 @property (nonatomic, strong) NSString* currentCategoryId;
@@ -184,12 +176,6 @@
                           forSupplementaryViewOfKind: UICollectionElementKindSectionFooter
                                  withReuseIdentifier: @"SYNChannelFooterMoreView"];
 
-#ifdef ALLOWS_PINCH_GESTURES
-    UIPinchGestureRecognizer *pinchOnChannelView = [[UIPinchGestureRecognizer alloc] initWithTarget: self
-                                                                                             action: @selector(handlePinchGesture:)];
-    
-    [self.view addGestureRecognizer: pinchOnChannelView];
-#endif
     
     currentGenre = nil;
     
@@ -585,131 +571,9 @@
     
     Channel *channel = (Channel*)self.channels[indexPath.row];
     
-    [[NSNotificationCenter defaultCenter] postNotificationName:kChannelDetailsRequested
-                                                        object:self
-                                                      userInfo:@{kChannel:channel}];
+    [appDelegate.viewStackManager viewChannelDetails:channel];
 }
 
-
-#ifdef ALLOWS_PINCH_GESTURES
-
-- (void) handlePinchGesture: (UIPinchGestureRecognizer *) sender
-{
-    if (sender.state == UIGestureRecognizerStateBegan)
-    {
-        
-        
-        // At this stage, we don't know whether the user is pinching in or out
-        self.userPinchedOut = FALSE;
-        
-//        DebugLog (@"UIGestureRecognizerStateBegan");
-        // figure out which item in the table was selected
-        NSIndexPath *indexPath = [self.channelThumbnailCollectionView indexPathForItemAtPoint: [sender locationInView: self.channelThumbnailCollectionView]];
-        
-        if (!indexPath)
-        {
-            return;
-        }
-        
-        self.pinchedIndexPath = indexPath;
-        
-        Channel *channel = (Channel*)self.channels[indexPath.row];
-        SYNChannelThumbnailCell *channelCell = (SYNChannelThumbnailCell *)[self.channelThumbnailCollectionView cellForItemAtIndexPath: indexPath];
-        
-        // Get the various frames we need to calculate the actual position
-        CGRect imageViewFrame = channelCell.imageView.frame;
-        CGRect viewFrame = channelCell.superview.frame;
-        CGRect cellFrame = channelCell.frame;
-        
-        CGPoint offset = self.channelThumbnailCollectionView.contentOffset;
-        
-        // Now add them together to get the real pos in the top view
-        imageViewFrame.origin.x += cellFrame.origin.x + viewFrame.origin.x - offset.x;
-        imageViewFrame.origin.y += cellFrame.origin.y + viewFrame.origin.y - offset.y;
-        
-        
-        self.pinchedView = [[UIImageView alloc] initWithFrame: imageViewFrame];
-        self.pinchedView.alpha = 0.7f;
-        
-        [self.pinchedView setImageWithURL: [NSURL URLWithString: channel.coverThumbnailLargeURL]
-                         placeholderImage: nil
-                                  options: SDWebImageRetryFailed];
-        
-        // now add the item to the view
-        [self.view addSubview: self.pinchedView];
-    }
-    else if (sender.state == UIGestureRecognizerStateChanged)
-    {
-//        DebugLog (@"UIGestureRecognizerStateChanged");
-        float scale = sender.scale;
-        
-        if (scale < 1.0)
-        {
-            return;
-        }
-        else
-        {
-            self.userPinchedOut = TRUE;
-            
-            // we zoomed it, so let's update the coordinates of the dragged view
-            self.pinchedView.transform = CGAffineTransformMakeScale(scale, scale);
-        }
-    }
-    else if (sender.state == UIGestureRecognizerStateEnded)
-    {
-//        DebugLog (@"UIGestureRecognizerStateEnded");
-        
-        if (self.userPinchedOut == TRUE)
-        {
-            [self transitionToItemAtIndexPath: self.pinchedIndexPath];
-        }
-    }
-    else if (sender.state == UIGestureRecognizerStateCancelled)
-    {
-//        DebugLog (@"UIGestureRecognizerStateCancelled");
-        [self.pinchedView removeFromSuperview];
-    }
-}
-
-
-// Custom zoom out transition
-- (void) transitionToItemAtIndexPath: (NSIndexPath *) indexPath
-{
-    Channel *channel = (Channel*)self.channels[indexPath.row];
-    
-    SYNChannelDetailViewController *channelVC = [[SYNChannelDetailViewController alloc] initWithChannel: channel
-                                                                                              usingMode: kChannelDetailsModeDisplay];
-    
-    channelVC.view.alpha = 0.0f;
-    
-    [self.navigationController pushViewController: channelVC
-                                         animated: NO];
-    
-    [UIView animateWithDuration: 0.5f
-                          delay: 0.0f
-                        options: UIViewAnimationOptionCurveEaseInOut
-                     animations: ^
-     {
-         // Contract thumbnail view
-         self.view.alpha = 0.0f;
-         channelVC.view.alpha = 1.0f;
-         
-         // TODO: Put the correct code to hide the top bar (was removed when the implementation started)
-         
-         self.pinchedView.alpha = 0.0f;
-         self.pinchedView.transform = CGAffineTransformMakeScale(10.0f, 10.0f);
-         
-     }
-                     completion: ^(BOOL finished)
-     {
-         [self.pinchedView removeFromSuperview];
-     }];
-    
-    [[NSNotificationCenter defaultCenter] postNotificationName: kNoteBackButtonShow
-                                                        object: self];
-}
-
-#endif
 
 
 - (void) handleMainTap: (UIView *) tab
@@ -809,6 +673,8 @@
 
 - (void) handleNewTabSelectionWithGenre: (Genre *) genre
 {
+    [appDelegate.viewStackManager hideSideNavigator];
+    
     if ([currentGenre.uniqueId isEqualToString: genre.uniqueId])
     {
         return;

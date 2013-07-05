@@ -26,7 +26,7 @@
 #import "SYNPageView.h"
 #import "SYNSearchBoxViewController.h"
 #import "SYNSearchRootViewController.h"
-#import "SYNSideNavigationViewController.h"
+#import "SYNSideNavigatorViewController.h"
 #import "SYNSoundPlayer.h"
 #import "SYNVideoPlaybackViewController.h"
 #import "SYNVideoViewerViewController.h"
@@ -64,7 +64,7 @@ typedef void(^AnimationCompletionBlock)(BOOL finished);
 @property (nonatomic, strong) SYNNetworkErrorView* networkErrorView;
 @property (nonatomic, strong) SYNSearchBoxViewController* searchBoxController;
 @property (nonatomic, strong) SYNSearchRootViewController* searchViewController;
-@property (nonatomic, strong) SYNSideNavigationViewController* sideNavigationViewController;
+@property (nonatomic, strong) SYNSideNavigatorViewController* sideNavigatorViewController;
 @property (nonatomic, strong) SYNVideoViewerViewController *videoViewerViewController;
 @property (nonatomic, strong) UINavigationController* mainNavigationController;
 @property (nonatomic, strong) UIPopoverController* accountSettingsPopover;
@@ -98,18 +98,19 @@ typedef void(^AnimationCompletionBlock)(BOOL finished);
         [self addChildViewController:self.mainNavigationController];
 
         // == Side Navigation == //
-        self.sideNavigationViewController = [[SYNSideNavigationViewController alloc] init];
+        self.sideNavigatorViewController = [[SYNSideNavigatorViewController alloc] init];
         
-        self.sideNavigationViewController.view.frame = CGRectMake(1024.0,
-                                                                  ([SYNDeviceManager.sharedInstance isIPad] ? 0.0 : 58.0f),
-                                                                  self.sideNavigationViewController.view.frame.size.width,
-                                                                  self.sideNavigationViewController.view.frame.size.height);
+        self.sideNavigatorViewController.view.frame = CGRectMake(1024.0, ([SYNDeviceManager.sharedInstance isIPad] ? 0.0 : 58.0f),
+                                                                  self.sideNavigatorViewController.view.frame.size.width,
+                                                                  self.sideNavigatorViewController.view.frame.size.height);
 
-        self.sideNavigationViewController.view.autoresizingMask = UIViewAutoresizingFlexibleRightMargin;
+        self.sideNavigatorViewController.view.autoresizingMask = UIViewAutoresizingFlexibleRightMargin;
         
-        self.sideNavigationViewController.user = appDelegate.currentUser;
+        self.sideNavigatorViewController.user = appDelegate.currentUser;
         
-        [self addChildViewController:self.sideNavigationViewController];
+        appDelegate.viewStackManager.sideNavigatorController = self.sideNavigatorViewController;
+        
+        [self addChildViewController:self.sideNavigatorViewController];
         
         // == Search Controller == //
         
@@ -149,8 +150,8 @@ typedef void(^AnimationCompletionBlock)(BOOL finished);
     // Setup the dependency between nav controller and button
     // Not super-elegant, but as the nav controller is controlled from multiple places
     // it is the only way to guarantee it will work nicely
-    self.sideNavigationViewController.captiveButton = self.sideNavigationButton;
-    self.sideNavigationViewController.darkOverlay = self.darkOverlayView;
+    self.sideNavigatorViewController.captiveButton = self.sideNavigationButton;
+    self.sideNavigatorViewController.darkOverlay = self.darkOverlayView;
         
     // == Fade in from splash screen (not in AppDelegate so that the Orientation is known) == //
     
@@ -234,12 +235,14 @@ typedef void(^AnimationCompletionBlock)(BOOL finished);
     self.darkOverlayView.hidden = YES;
     
     // == Set Up Notifications == //
+    
+
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(accountSettingsLogout) name:kAccountSettingsLogout object:nil];
+
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(addToChannelRequested:) name:kNoteAddToChannelRequest object:nil];
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(addedToChannelAction:) name:kNoteVideoAddedToExistingChannel object:nil];
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(allNavControlsRequested:) name:kNoteAllNavControlsHide object:nil];
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(allNavControlsRequested:) name:kNoteAllNavControlsShow object:nil];
-    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(channelDetailsRequested:) name:kChannelDetailsRequested object:nil];
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(channelSuccessfullySaved:) name:kNoteChannelSaved object:nil];
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(createNewChannelAction:) name:kNoteCreateNewChannel object:nil];
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(hideOrShowNetworkMessages:) name:kNoteHideNetworkMessages object:nil];
@@ -254,7 +257,7 @@ typedef void(^AnimationCompletionBlock)(BOOL finished);
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(searchTyped:) name:kSearchTyped object:nil];
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(showAccountSettingsPopover) name:kAccountSettingsPressed object:nil];
     
-    [self.navigationContainerView addSubview:self.sideNavigationViewController.view]; 
+    [self.navigationContainerView addSubview:self.sideNavigatorViewController.view];
 }
 
 
@@ -269,20 +272,6 @@ typedef void(^AnimationCompletionBlock)(BOOL finished);
 }
 
 
-- (void) channelDetailsRequested: (NSNotification*) notification
-{
-    
-    
-    Channel* channel = (Channel*)[notification userInfo][kChannel];
-    if (!channel)
-        return;
-    
-    SYNChannelDetailViewController *channelVC = [[SYNChannelDetailViewController alloc] initWithChannel: channel
-                                                                                              usingMode: kChannelDetailsModeDisplay];
-    channelVC.autoplayVideoId = [notification userInfo][kAutoPlayVideoId];
-    
-    [appDelegate.viewStackManager pushController:channelVC];
-}
 
 
 - (void) headerSwiped:(UISwipeGestureRecognizer*) recogniser
@@ -349,17 +338,16 @@ typedef void(^AnimationCompletionBlock)(BOOL finished);
     
     self.pageTitleLabel.text = [self.containerViewController.showingViewController.title uppercaseString];
     
-    
-    if (self.sideNavigationViewController.state == SideNavigationStateFull)
+    if(self.sideNavigatorViewController.state == SideNavigationStateFull)
     {
-        [self.sideNavigationViewController deselectAllCells];
+        [self.sideNavigatorViewController deselectAllCells];
         [self showSideNavigation];
     }
     else
     {
         NSString* controllerTitle = self.containerViewController.showingViewController.title;
         
-        [self.sideNavigationViewController setSelectedCellByPageName:controllerTitle];
+        [self.sideNavigatorViewController setSelectedCellByPageName:controllerTitle];
 
     }
 }
@@ -410,7 +398,7 @@ typedef void(^AnimationCompletionBlock)(BOOL finished);
     
     if ([[SYNDeviceManager sharedInstance] isIPhone])
     {
-        //On iPhone the create workflow is presented modally on the existing channels page. Therefore return after closing the video player.
+        // On iPhone the create workflow is presented modally on the existing channels page. Therefore return after closing the video player.
         return;
     }
     
@@ -491,10 +479,11 @@ typedef void(^AnimationCompletionBlock)(BOOL finished);
 
 - (IBAction) showAndHideSideNavigation: (UIButton*) sender
 {
-    if (self.sideNavigationViewController.state == SideNavigationStateFull
-       || self.sideNavigationViewController.state == SideNavigationStateHalf)
+
+    if (self.sideNavigatorViewController.state == SideNavigationStateFull ||
+        self.sideNavigatorViewController.state == SideNavigationStateHalf)
     {
-        self.sideNavigationViewController.state = SideNavigationStateHidden;
+        self.sideNavigatorViewController.state = SideNavigationStateHidden;
         self.darkOverlayView.alpha = 1.0;
         
         [UIView animateWithDuration:0.3
@@ -532,7 +521,7 @@ typedef void(^AnimationCompletionBlock)(BOOL finished);
 {
     NSString* controllerTitle = self.containerViewController.showingViewController.title;
     
-    [self.sideNavigationViewController setSelectedCellByPageName: controllerTitle];
+    [self.sideNavigatorViewController setSelectedCellByPageName: controllerTitle];
     
     self.darkOverlayView.alpha = 0.0;
     
@@ -542,12 +531,12 @@ typedef void(^AnimationCompletionBlock)(BOOL finished);
                      } completion:^(BOOL finished) {
                          self.darkOverlayView.hidden = NO;
                      }];
-    self.sideNavigationViewController.state = SideNavigationStateHalf;
+    self.sideNavigatorViewController.state = SideNavigationStateHalf;
     
 }
 
 - (IBAction)hideNavigation:(UIButton*)sender{
-    self.sideNavigationViewController.state = SideNavigationStateHidden;
+    self.sideNavigatorViewController.state = SideNavigationStateHidden;
     self.darkOverlayView.alpha = 1.0;
     
     [UIView animateWithDuration:0.3
@@ -622,7 +611,7 @@ typedef void(^AnimationCompletionBlock)(BOOL finished);
     
     //video overlay bug - keyboard needs to be dismissed if a video is played;
     [self.searchBoxController.searchBoxView.searchTextField resignFirstResponder];
-    [self.sideNavigationViewController.searchViewController.searchBoxView.searchTextField resignFirstResponder];
+    [self.sideNavigatorViewController.searchViewController.searchBoxView.searchTextField resignFirstResponder];
 }
 
 
@@ -748,7 +737,7 @@ typedef void(^AnimationCompletionBlock)(BOOL finished);
     if (!isIPad)
     {
         //[self.searchViewController.view addSubview:self.sideNavigationViewController.searchViewController.searchBoxView];
-        self.searchViewController.searchBoxViewController = self.sideNavigationViewController.searchViewController;
+        self.searchViewController.searchBoxViewController = self.sideNavigatorViewController.searchViewController;
         [self hideNavigation:nil];
     }
     
@@ -774,8 +763,8 @@ typedef void(^AnimationCompletionBlock)(BOOL finished);
                             self.darkOverlayView.hidden = NO;
                        }];
 
-    [self.sideNavigationViewController.searchViewController removeFromParentViewController];
-    [self.view insertSubview:self.sideNavigationViewController.searchViewController.searchBoxView belowSubview:self.overlayView];
+    [self.sideNavigatorViewController.searchViewController removeFromParentViewController];
+    [self.view insertSubview:self.sideNavigatorViewController.searchViewController.searchBoxView belowSubview:self.overlayView];
 }
 
 
@@ -888,7 +877,7 @@ typedef void(^AnimationCompletionBlock)(BOOL finished);
         self.pageTitleLabel.hidden = YES;
         self.pagePositionIndicatorView.hidden = YES;
         self.backButtonControl.hidden = YES;
-        self.sideNavigationViewController.state = SideNavigationStateHidden;
+        self.sideNavigatorViewController.state = SideNavigationStateHidden;
     }
 }
 
@@ -917,7 +906,8 @@ typedef void(^AnimationCompletionBlock)(BOOL finished);
     //Scroll to the requested page
     [self.containerViewController navigateToPageByName: pageName];
     
-    self.sideNavigationViewController.state = SideNavigationStateHidden;
+    self.sideNavigatorViewController.state = SideNavigationStateHidden;
+        
 }
 
 
@@ -1345,8 +1335,8 @@ typedef void(^AnimationCompletionBlock)(BOOL finished);
         {
             if ([[SYNDeviceManager sharedInstance] isIPhone])
             {
-                [self.sideNavigationViewController.searchViewController removeFromParentViewController];
-                UIView* searchBar = self.sideNavigationViewController.searchViewController.searchBoxView;
+                [self.sideNavigatorViewController.searchViewController removeFromParentViewController];
+                UIView* searchBar = self.sideNavigatorViewController.searchViewController.searchBoxView;
                 [self.view insertSubview:searchBar belowSubview:self.overlayView];
             }
             else
@@ -1360,9 +1350,9 @@ typedef void(^AnimationCompletionBlock)(BOOL finished);
         {
             if ([[SYNDeviceManager sharedInstance] isIPhone])
             {
-                if ([[self.view subviews] containsObject:self.sideNavigationViewController.searchViewController.searchBoxView])
+                if ([[self.view subviews] containsObject:self.sideNavigatorViewController.searchViewController.searchBoxView])
                 {
-                    [self.sideNavigationViewController.searchViewController.searchBoxView removeFromSuperview];
+                    [self.sideNavigatorViewController.searchViewController.searchBoxView removeFromSuperview];
                 }
             }
             if (self.isInSearchMode)

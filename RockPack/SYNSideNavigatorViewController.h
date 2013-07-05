@@ -21,7 +21,7 @@ typedef enum {
 
 } SideNavigationState;
 
-@interface SYNSideNavigationViewController : GAITrackedViewController <UITableViewDataSource, UITableViewDelegate> {
+@interface SYNSideNavigatorViewController : GAITrackedViewController <UITableViewDataSource, UITableViewDelegate> {
    
 }
 

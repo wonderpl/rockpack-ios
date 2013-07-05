@@ -17,7 +17,7 @@
 #import "SYNRockpackNotification.h"
 #import "SYNSearchBoxViewController.h"
 #import "SYNSideNavigationIphoneCell.h"
-#import "SYNSideNavigationViewController.h"
+#import "SYNSideNavigatorViewController.h"
 #import "SYNSoundPlayer.h"
 #import "UIFont+SYNFont.h"
 #import "UIImageView+ImageProcessing.h"
@@ -37,7 +37,7 @@ typedef enum {
 
 } kSideNavigationType;
 
-@interface SYNSideNavigationViewController ()<UITextFieldDelegate, SYNImagePickerControllerDelegate>
+@interface SYNSideNavigatorViewController ()<UITextFieldDelegate, SYNImagePickerControllerDelegate>
 
 @property (nonatomic) NSInteger unreadNotifications;
 @property (nonatomic, strong) IBOutlet UIButton* settingsButton;
@@ -69,7 +69,7 @@ typedef enum {
 @end
 
 
-@implementation SYNSideNavigationViewController
+@implementation SYNSideNavigatorViewController
 
 // Only need synthesize for custom setters, use latest ObjC naming convention
 @synthesize user = _user;
@@ -81,7 +81,7 @@ typedef enum {
 
 - (id) init
 {
-    if ((self = [super initWithNibName: @"SYNSideNavigationViewController"
+    if ((self = [super initWithNibName: @"SYNSideNavigatorViewController"
                                 bundle: nil]))
     {
         self.navigationData = @[
@@ -187,21 +187,6 @@ typedef enum {
                                                  name: kNotificationMarkedRead
                                                object: nil];
     
-    [[NSNotificationCenter defaultCenter] addObserver: self
-                                             selector: @selector(changeOfViewRequested:)
-                                                 name: kProfileRequested
-                                               object: nil];
-    
-    
-    [[NSNotificationCenter defaultCenter] addObserver: self
-                                             selector: @selector(changeOfViewRequested:)
-                                                 name: kChannelDetailsRequested
-                                               object: nil];
-    
-    [[NSNotificationCenter defaultCenter] addObserver: self
-                                             selector: @selector(changeOfViewRequested:)
-                                                 name: kHideSideNavigationView
-                                               object: nil];
     
     [[NSNotificationCenter defaultCenter] addObserver: self
                                              selector: @selector(userDataChanged:)
@@ -870,10 +855,6 @@ typedef enum {
 
 #pragma mark - Notification Handlers
 
--(void)changeOfViewRequested:(NSNotification*)notification
-{
-    self.state = SideNavigationStateHidden;
-}
 
 
 - (void) userDataChanged: (NSNotification*) notification

@@ -720,16 +720,7 @@
     // Get the video instance for the currently selected video
     VideoInstance *videoInstance = self.videoInstanceArray [self.currentSelectedIndex];
     
-    if (videoInstance.channel)
-    {
-        [[NSNotificationCenter defaultCenter] postNotificationName: kChannelDetailsRequested
-                                                            object: self
-                                                          userInfo: @{kChannel: videoInstance.channel}];
-    }
-    else
-    {
-        AssertOrLog(@"Non-null video instance expected");
-    }
+    [appDelegate.viewStackManager viewChannelDetails:videoInstance.channel];
     
 }
 

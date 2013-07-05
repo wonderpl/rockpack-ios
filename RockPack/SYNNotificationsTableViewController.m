@@ -193,9 +193,9 @@
     
     SYNRockpackNotification* notification = self.notifications[indexPathForCellPressed.row];
     
-    [[NSNotificationCenter defaultCenter] postNotificationName: kProfileRequested
-                                                        object: self
-                                                      userInfo: @{kChannelOwner : notification.channelOwner}];
+    SYNAppDelegate* appDelegate = (SYNAppDelegate*)[[UIApplication sharedApplication] delegate];
+    
+    [appDelegate.viewStackManager viewProfileDetails:notification.channelOwner];
     
     [self markAsReadForNotification:notification];
     
@@ -213,7 +213,9 @@
     if (!notification)
         return;
     
-    // keep the duplicate code to remind of a change that is in the process
+    
+    SYNAppDelegate* appDelegate = (SYNAppDelegate*)[[UIApplication sharedApplication] delegate];
+    
     if (notification.objectType == kNotificationObjectTypeVideo)
     {
         Channel* channel = [self channelFromChannelId: notification.channelId];
@@ -221,9 +223,9 @@
         if (!channel)
             return;
         
-        [[NSNotificationCenter defaultCenter] postNotificationName: kChannelDetailsRequested
-                                                            object: self
-                                                          userInfo: @{kChannel : channel, kAutoPlayVideoId : notification.videoId}];
+        
+        [appDelegate.viewStackManager viewChannelDetails:channel withAutoplayId:notification.videoId];
+        
     }
     else
     {
@@ -232,9 +234,7 @@
         if (!channel)
             return;
         
-        [[NSNotificationCenter defaultCenter] postNotificationName: kChannelDetailsRequested
-                                                            object: self
-                                                          userInfo: @{kChannel : channel}];
+        [appDelegate.viewStackManager viewChannelDetails:channel];
     }
 
     [self markAsReadForNotification: notification];
