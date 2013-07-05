@@ -389,7 +389,6 @@
     [self updateLayoutForOrientation: [SYNDeviceManager.sharedInstance orientation]];
     
     [self.channelThumbnailCollectionView reloadData];
-
 }
 
 
