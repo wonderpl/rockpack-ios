@@ -69,7 +69,6 @@ typedef void(^AnimationCompletionBlock)(BOOL finished);
 @property (nonatomic, strong) UINavigationController* mainNavigationController;
 @property (nonatomic, strong) UIPopoverController* accountSettingsPopover;
 @property (nonatomic, strong) UIView* accountSettingsCoverView;
-@property (strong, nonatomic) IBOutlet UIView *overlayContainerView;
 
 @end
 
@@ -202,7 +201,7 @@ typedef void(^AnimationCompletionBlock)(BOOL finished);
     CGRect backButtonFrame = self.backButtonControl.frame;
     backButtonFrame.origin.y = 10.0f;
     self.backButtonControl.frame = backButtonFrame;
-    [self.view insertSubview:self.backButtonControl belowSubview:self.overlayContainerView];
+    [self.view insertSubview:self.backButtonControl belowSubview:self.sideNavigationButton];
     self.backButtonControl.alpha = 0.0;
     
     
@@ -692,7 +691,7 @@ typedef void(^AnimationCompletionBlock)(BOOL finished);
     sboxFrame.origin.y = 10.0;
     self.searchBoxController.view.frame = sboxFrame;
     
-    [self.view insertSubview:self.searchBoxController.view aboveSubview:self.overlayContainerView];
+    [self.view insertSubview:self.searchBoxController.view aboveSubview:self.sideNavigationButton];
     
     self.searchBoxController.searchTextField.text = @"";
     
