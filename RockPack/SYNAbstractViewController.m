@@ -209,19 +209,33 @@
 }
 
 
-- (void) incrementRangeForNextRequest
+- (BOOL) moreItemsToLoad
 {
-    
     NSInteger nextStart = self.dataRequestRange.location + self.dataRequestRange.length; // one is subtracted when the call happens for 0 indexing
     
     // FIXME: Is this comparison correct?  Should it just be self.dataRequestRange.location >= self.dataItemsAvailable?
     if (nextStart >= self.dataItemsAvailable)
+    {
+        return FALSE;
+    }
+    else
+    {
+        return TRUE;
+    }
+}
+
+
+- (void) incrementRangeForNextRequest
+{
+    if (self.moreItemsToLoad == FALSE)
     {
         return;
     }
 
     self.loadingMoreContent = YES;
 
+    NSInteger nextStart = self.dataRequestRange.location + self.dataRequestRange.length;
+    
     NSInteger nextSize = (nextStart + STANDARD_REQUEST_LENGTH) >= self.dataItemsAvailable ? (self.dataItemsAvailable - nextStart) : STANDARD_REQUEST_LENGTH;
     
     self.dataRequestRange = NSMakeRange(nextStart, nextSize);

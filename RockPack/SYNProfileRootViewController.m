@@ -902,8 +902,6 @@
 }
 
 
-
-
 #ifdef ALLOWS_PINCH_GESTURES
 // TODO: Decide whether to keep pinch in or out
 
