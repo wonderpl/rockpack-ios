@@ -73,6 +73,8 @@
     self.currentOnBoardingPage = 0;
     
     self.loginBackgroundFrontImage.alpha = 0.0;
+    
+    
     // create image array
     NSMutableArray* imagesArray = [[NSMutableArray alloc] initWithCapacity:kLoginOnBoardingMessagesNum];
     for (int i = 0; i < kLoginOnBoardingMessagesNum; i++)
