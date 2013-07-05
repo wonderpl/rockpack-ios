@@ -650,6 +650,8 @@
 
 - (void) handleNewTabSelectionWithGenre: (Genre *) genre
 {
+    [appDelegate.viewStackManager hideSideNavigator];
+    
     if ([currentGenre.uniqueId isEqualToString: genre.uniqueId])
     {
         return;

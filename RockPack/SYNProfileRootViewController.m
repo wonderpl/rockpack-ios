@@ -869,6 +869,8 @@
             scrollView.contentOffset = [self.orientationDesicionmaker contentOffset];
             return;
         }
+        
+        
         CGPoint offset;
         if ([scrollView isEqual: self.channelThumbnailCollectionView])
         {

@@ -436,6 +436,9 @@
     
     [self displayChannelDetails];
     
+    [self.masterControlsView addGestureRecognizer:[[UITapGestureRecognizer alloc] initWithTarget: appDelegate.viewStackManager
+                                                                                          action: @selector(hideSideNavigator)]];
+    
     if (_hasAppeared)
     {
         AssertOrLog(@"Detail View controller had viewWillAppear called twice!!!!");
@@ -445,11 +448,14 @@
 }
 
 
+
 - (void) viewWillDisappear: (BOOL) animated
 {
     
     [super viewWillDisappear: animated];
     
+    
+    [self.masterControlsView removeGestureRecognizer:self.channelCoverImageView.gestureRecognizers[0]];
     
     // Stop observing everything (less error-prone than trying to remove observers individually
     [[NSNotificationCenter defaultCenter] removeObserver: self];

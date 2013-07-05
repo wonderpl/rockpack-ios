@@ -15,26 +15,14 @@
 
 @implementation SYNViewStackManager
 
-#pragma mark - NavigationController Methods
+
 
 +(id)manager
 {
     return [[self alloc] init];
 }
 
-- (UIViewController*) topControllerMatchingTypeString:(NSString*)classString
-{
-    UIViewController* lastControllerOfClass;
-    for (UIViewController* viewControllerOnStack in self.navigationController.viewControllers)
-    {
-        NSLog(@"Has on stack: %@", viewControllerOnStack);
-        if ([viewControllerOnStack isKindOfClass:NSClassFromString(classString)])
-        {
-            lastControllerOfClass = viewControllerOnStack;
-        }
-    }
-    return lastControllerOfClass;
-}
+#pragma mark - Specific Views Methods
 
 - (void) viewProfileDetails: (ChannelOwner *) channelOwner
 {
@@ -61,7 +49,7 @@
     
     profileVC.user = channelOwner;
     
-    self.sideNavigatorController.state = SideNavigationStateHidden;
+    [self hideSideNavigator];
     
 }
 
@@ -98,10 +86,11 @@
         
     }
     
-    self.sideNavigatorController.state = SideNavigationStateHidden;
+    [self hideSideNavigator];
     
 }
 
+#pragma mark - Navigation Controller Methods
 
 -(void)pushController:(SYNAbstractViewController*)controller
 {
@@ -117,13 +106,12 @@
                          self.navigationController.topViewController.view.alpha = 0.0;
                          controller.view.alpha = 1.0f;
                      }
-                     completion:^(BOOL finished) {
-                         //controllerself.isAnimating = NO;
-                         
-                     }];
+                     completion:nil];
     
     
     [self.navigationController pushViewController:controller animated: NO];
+    
+    [self hideSideNavigator];
     
 }
 -(void)popController
@@ -143,13 +131,19 @@
                          // pick the previous view controller
                          ((UIViewController*)self.navigationController.viewControllers[viewControllersCount - 2]).view.alpha = 1.0f;
                          
-                     } completion: ^(BOOL finished) {
-                         
-                     }];
+                     } completion:nil];
     
     [self.navigationController popViewControllerAnimated:NO];
     
+    [self hideSideNavigator];
+    
 }
+
+-(void)popToRootController
+{
+    [self popToController:self.navigationController.viewControllers[0]];
+}
+
 -(void)popToController:(UIViewController*)controller
 {
     NSInteger viewControllersCount = self.navigationController.viewControllers.count;
@@ -167,17 +161,29 @@
                          
                          controller.view.alpha = 1.0f;
                          
-                     } completion: ^(BOOL finished) {
-                         
-                     }];
+                     } completion:nil];
     
     [self.navigationController popToViewController:controller animated:NO];
+    
+    [self hideSideNavigator];
+}
+
+-(void)hideSideNavigator
+{
+    self.sideNavigatorController.state = SideNavigationStateHidden;
 }
 
 
--(void)popToRootController
+#pragma mark - Helper
+
+- (UIViewController*) topControllerMatchingTypeString:(NSString*)classString
 {
-    [self popToController:self.navigationController.viewControllers[0]];
+    UIViewController* lastControllerOfClass;
+    for (UIViewController* viewControllerOnStack in self.navigationController.viewControllers)
+        if ([viewControllerOnStack isKindOfClass:NSClassFromString(classString)])
+            lastControllerOfClass = viewControllerOnStack;
+    
+    return lastControllerOfClass;
 }
 
 @end

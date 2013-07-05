@@ -31,4 +31,6 @@
 -(void) viewChannelDetails: (Channel*) channel withAutoplayId:(NSString*)autoplayId;
 - (void) viewChannelDetails: (Channel*) channel;
 
+-(void)hideSideNavigator;
+
 @end
