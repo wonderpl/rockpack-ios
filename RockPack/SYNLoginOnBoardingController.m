@@ -22,6 +22,7 @@
 
 @end
 
+
 @implementation SYNLoginOnBoardingController
 
 @synthesize scrollView = scrollView;
@@ -37,6 +38,7 @@
     
     return self;
 }
+
 
 - (void) dealloc
 {
@@ -68,6 +70,7 @@
     [self.view addSubview:scrollView];
 }
 
+
 - (void) viewDidLoad
 {
     [super viewDidLoad];
@@ -82,9 +85,9 @@
     NSString* localisedDefault;
     
     CGSize totalScrollSize;
-    
 
     totalScrollSize.height = self.scrollView.frame.size.height;
+    
     for (int i = 0; i < kLoginOnBoardingMessagesNum; i++)
     {
         localisedKey = [NSString stringWithFormat:@"startscreen_onboard_%i", i + 1];
@@ -103,9 +106,7 @@
         messageViewFrame.origin.x = i * messageViewFrame.size.width;
         
         messageView.frame = CGRectIntegral(messageViewFrame);
-        
-        
-        
+
         [self.scrollView addSubview:messageView];
         
         totalScrollSize.width += messageView.frame.size.width;
@@ -142,8 +143,7 @@
     {
         fontToUse = [UIFont rockpackFontOfSize: 16.0];
     }
-    
-    
+
     UILabel* onboardMessageLabel = [[UILabel alloc] init];
     onboardMessageLabel.lineBreakMode = NSLineBreakByWordWrapping;
     onboardMessageLabel.textAlignment = NSTextAlignmentCenter;
@@ -153,18 +153,15 @@
     
     onboardMessageLabelFrame.origin.x = viewFrame.size.width * 0.5 - onboardMessageLabelFrame.size.width * 0.5;
     onboardMessageLabelFrame.origin.y = 130.0;
+    
     if (UI_USER_INTERFACE_IDIOM() == UIUserInterfaceIdiomPhone)
         onboardMessageLabelFrame.origin.y = 150.0;
     
     onboardMessageLabel.frame = CGRectIntegral(onboardMessageLabelFrame);
-    
-    
+
     onboardMessageLabel.numberOfLines = 2;
     onboardMessageLabel.text = message;
-    
-    // Set font
-    
-    
+
     // Colour of onboard text
     onboardMessageLabel.textColor = [UIColor whiteColor];
     
@@ -173,6 +170,7 @@
                                                       green: 0.0f
                                                        blue: 0.0f
                                                       alpha:0.5f];
+    // Set font
     onboardMessageLabel.font = fontToUse;
     // Offset of small DropShadow's
     
@@ -183,9 +181,7 @@
                                                             green: 0.0f
                                                              blue: 0.0f
                                                             alpha: 1.0f].CGColor;
-    
-    
-    
+
     messageView.layer.shadowOffset = CGSizeMake(0.0, 1.0);
     messageView.layer.shadowRadius = 10.0f;
     messageView.layer.shadowOpacity = 0.3f;
@@ -195,11 +191,8 @@
     [messageView addSubview:onboardMessageLabel];
     
     // TITLES
-    
-    if(![title isEqualToString:@""])
+    if (![title isEqualToString: @""])
     {
-        
-      
         UIFont* fontTitleToUse;
         if (UI_USER_INTERFACE_IDIOM() == UIUserInterfaceIdiomPad)
         {
@@ -215,10 +208,11 @@
         onboardTitleLabelFrame.size = [title sizeWithFont:fontTitleToUse];
         onboardTitleLabelFrame.origin.x = viewFrame.size.width * 0.5 - onboardTitleLabelFrame.size.width * 0.5;
         onboardTitleLabelFrame.origin.y = 140.0;
+        
         if (UI_USER_INTERFACE_IDIOM() == UIUserInterfaceIdiomPhone)
             onboardTitleLabelFrame.origin.y = 180.0;
         
-        UILabel* onboardTitleLabel = [[UILabel alloc] initWithFrame:CGRectIntegral(onboardTitleLabelFrame)];
+        UILabel* onboardTitleLabel = [[UILabel alloc] initWithFrame: CGRectIntegral(onboardTitleLabelFrame)];
      
         onboardTitleLabel.text = title;
         onboardTitleLabel.backgroundColor = [UIColor clearColor];
@@ -236,33 +230,31 @@
         
         onboardTitleLabel.shadowOffset = CGSizeMake(0.0f, 1.0f);
         
-        [messageView addSubview:onboardTitleLabel];
+        [messageView addSubview: onboardTitleLabel];
     }
-    
-    
+
     return messageView;
 }
 
 
-
--(void)willAnimateRotationToInterfaceOrientation:(UIInterfaceOrientation)toInterfaceOrientation duration:(NSTimeInterval)duration
+-( void) willAnimateRotationToInterfaceOrientation: (UIInterfaceOrientation) toInterfaceOrientation
+                                          duration: (NSTimeInterval) duration
 {
-    [super willAnimateRotationToInterfaceOrientation:toInterfaceOrientation duration:duration];
-    
-    
-    
-    
+    [super willAnimateRotationToInterfaceOrientation: toInterfaceOrientation
+                                            duration: duration];   
 }
 
--(void)didRotateFromInterfaceOrientation:(UIInterfaceOrientation)fromInterfaceOrientation
+
+- (void) didRotateFromInterfaceOrientation: (UIInterfaceOrientation) fromInterfaceOrientation
 {
-    [super didRotateFromInterfaceOrientation:fromInterfaceOrientation];
+    [super didRotateFromInterfaceOrientation: fromInterfaceOrientation];
     
     CGRect currenChildFrame;
     CGFloat newX = 0.0;
     
     CGSize totalScrollSize;
     totalScrollSize.height = self.scrollView.frame.size.height;
+    
     for (UIView* childView in self.scrollView.subviews)
     {
         currenChildFrame = childView.frame;
@@ -284,11 +276,11 @@
         }
     }
     
-    [self.scrollView setContentSize:totalScrollSize];
+    [self.scrollView setContentSize: totalScrollSize];
     
     CGPoint newCOffset = CGPointMake(self.pageControl.currentPage * currenChildFrame.size.width, self.scrollView.contentOffset.y);
     
-    [self.scrollView setContentOffset:newCOffset];
+    [self.scrollView setContentOffset: newCOffset];
 }
 
 @end
