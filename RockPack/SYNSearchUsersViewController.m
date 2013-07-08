@@ -10,8 +10,9 @@
 #import "SYNSearchTabView.h"
 #import "SYNDeviceManager.h"
 #import "SYNIntegralCollectionViewFlowLayout.h"
+#import "SYNUserThumbnailCell.h"
 
-@interface SYNSearchUsersViewController ()
+@interface SYNSearchUsersViewController () <UICollectionViewDataSource, UICollectionViewDelegate>
 
 @property (nonatomic, strong) UICollectionView* usersThumbnailCollectionView;
 @property (nonatomic, weak) NSString* searchTerm;
@@ -39,6 +40,8 @@
     
     return self;
 }
+
+
 
 - (void) loadView
 {
@@ -69,7 +72,9 @@
     CGRect channelCollectionViewFrame;
     if (isIPhone)
     {
-        channelCollectionViewFrame = CGRectMake(0.0f, 103.0f, [SYNDeviceManager.sharedInstance currentScreenWidth], [SYNDeviceManager.sharedInstance currentScreenHeight] - 123.0f);
+        channelCollectionViewFrame = CGRectMake(0.0f, 103.0f,
+                                                [SYNDeviceManager.sharedInstance currentScreenWidth],
+                                                [SYNDeviceManager.sharedInstance currentScreenHeight] - 123.0f);
     }
     else
     {
@@ -79,7 +84,8 @@
     }
     
     self.usersThumbnailCollectionView = [[UICollectionView alloc] initWithFrame: channelCollectionViewFrame
-                                                             collectionViewLayout: flowLayout];
+                                                           collectionViewLayout: flowLayout];
+    
     self.usersThumbnailCollectionView.dataSource = self;
     self.usersThumbnailCollectionView.delegate = self;
     self.usersThumbnailCollectionView.backgroundColor = [UIColor clearColor];
@@ -101,7 +107,6 @@
         CGRectMake(0.0f, 0.0f, kFullScreenWidthPortrait, kFullScreenHeightPortraitMinusStatusBar);
     }
     
-    
     self.view = [[UIView alloc] initWithFrame:newFrame];
     
     self.view.autoresizingMask = UIViewAutoresizingFlexibleWidth | UIViewAutoresizingFlexibleHeight;
@@ -115,13 +120,13 @@
 - (void) handleDataModelChange: (NSNotification*) dataNotification
 {
     
-    
     [self displayUsers];
     
 }
 
 - (void) displayUsers
 {
+    
     NSFetchRequest *request = [[NSFetchRequest alloc] init];
     [request setEntity:[NSEntityDescription entityForName: @"ChannelOwner"
                                    inManagedObjectContext: appDelegate.searchManagedObjectContext]];
@@ -193,10 +198,45 @@
                                           }];
 }
 
+#pragma mark - UICollectionView Delegate
+
+- (NSInteger) numberOfSectionsInCollectionView: (UICollectionView *) collectionView
+{
+    return 1;
+}
+
+- (NSInteger) collectionView: (UICollectionView *) view
+      numberOfItemsInSection: (NSInteger) section
+{
+    return self.users.count;
+    
+}
+
+
+
+- (UICollectionViewCell *) collectionView: (UICollectionView *) collectionView
+                   cellForItemAtIndexPath: (NSIndexPath *) indexPath
+{
+    
+    ChannelOwner *user = self.users[indexPath.row];
+    
+    SYNUserThumbnailCell *userThumbnailCell = [collectionView dequeueReusableCellWithReuseIdentifier: @"SYNUserThumbnailCell"
+                                                                                           forIndexPath: indexPath];
+    
+    userThumbnailCell.nameLabel.text = user.displayName;
+    
+    userThumbnailCell.imageUrlString = user.thumbnailLargeUrl;
+    
+    
+    return userThumbnailCell;
+}
+
 - (CGSize) itemSize
 {
     return [SYNDeviceManager.sharedInstance isIPhone] ? CGSizeMake(152.0f, 152.0f) : CGSizeMake(251.0, 274.0);
 }
+
+
 
 - (void) dealloc
 {

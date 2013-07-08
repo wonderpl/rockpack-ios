@@ -13,6 +13,7 @@
 #import "SYNSearchRootViewController.h"
 #import "SYNSearchTabView.h"
 #import "SYNSearchVideosViewController.h"
+#import "SYNSearchUsersViewController.h"
 #import "SYNSearchBoxViewController.h"
 
 @interface SYNSearchRootViewController ()
@@ -23,17 +24,23 @@
 @property (nonatomic, strong) SYNSearchChannelsViewController* searchChannelsController;
 @property (nonatomic, strong) SYNSearchTabView* channelsSearchTabView;
 @property (nonatomic, strong) SYNSearchTabView* videoSearchTabView;
+@property (nonatomic, strong) SYNSearchTabView* usersSearchTabView;
 @property (nonatomic, strong) SYNSearchVideosViewController* searchVideosController;
+@property (nonatomic, strong) SYNSearchUsersViewController* searchUsersController;
 @property (nonatomic, strong) UIView* tabsContainer;
 @property (nonatomic, weak) SYNAbstractViewController* currentController;
 @property (nonatomic, weak) UIView* currentOverlayView;
+@property (nonatomic, strong) NSArray* controllers;
 
 @end
 
 
 @implementation SYNSearchRootViewController
 
-@synthesize videoSearchTabView, channelsSearchTabView;
+@synthesize tabsContainer;
+@synthesize videoSearchTabView, channelsSearchTabView, usersSearchTabView;
+@synthesize controllers;
+@synthesize searchUsersController, searchChannelsController, searchVideosController;
 
 - (void) loadView
 {
@@ -49,49 +56,66 @@
 {
     [super viewDidLoad];
     
+    
     self.videoSearchTabView = [SYNSearchTabView tabViewWithSearchType:SearchTabTypeVideos];
     self.channelsSearchTabView = [SYNSearchTabView tabViewWithSearchType:SearchTabTypeChannels];
+    self.usersSearchTabView = [SYNSearchTabView tabViewWithSearchType:SearchTabTypeUsers];
     
-    CGRect channelTabRect = self.channelsSearchTabView.frame;
-    channelTabRect.origin.x = self.videoSearchTabView.frame.size.width; // place at the middle of the 2 tabs (where the first ends)
-    self.channelsSearchTabView.frame = channelTabRect;
+    NSArray* tabsArray = @[self.videoSearchTabView, self.channelsSearchTabView, self.usersSearchTabView];
     
-    self.tabsContainer = [[UIView alloc] initWithFrame:CGRectMake(0.0, 0.0,
-                                                            self.channelsSearchTabView.frame.size.width * 2.0,
-                                                            self.channelsSearchTabView.frame.size.height)];
+    tabsContainer = [[UIView alloc] initWithFrame:CGRectMake(0.0, 0.0,
+                                                             self.channelsSearchTabView.frame.size.width * tabsArray.count,
+                                                             self.channelsSearchTabView.frame.size.height)];
     
-    self.tabsContainer.autoresizingMask = UIViewAutoresizingFlexibleLeftMargin | UIViewAutoresizingFlexibleRightMargin;
+    tabsContainer.autoresizingMask = UIViewAutoresizingFlexibleLeftMargin | UIViewAutoresizingFlexibleRightMargin;
     
-    [self.tabsContainer addSubview:self.channelsSearchTabView];
-    [self.tabsContainer addSubview:self.videoSearchTabView];
+    // position tabs correctly
+    CGFloat offsetX = 0.0;
+    CGRect tabRect;
+    SYNSearchTabView* searchTab;
+    for (int t = 0 ; t < tabsArray.count; t++)
+    {
+        
+        searchTab = (SYNSearchTabView*)[tabsArray objectAtIndex:t];
+        
+        tabRect = searchTab.frame;
+        
+        tabRect.origin.x += offsetX;
+        
+        searchTab.frame = tabRect;
+        
+        offsetX += tabRect.size.width;
+        
+        [searchTab addTarget: self
+                      action: @selector(searchTabPressed:)
+            forControlEvents: UIControlEventTouchUpInside];
+        
+        
+        [tabsContainer addSubview:searchTab];
+        
+    }
     
-    [self.videoSearchTabView addTarget: self
-                                action: @selector(videoTabPressed:)
-                      forControlEvents: UIControlEventTouchUpInside];
     
-    [self.channelsSearchTabView addTarget: self
-                                   action: @selector(channelTabPressed:)
-                         forControlEvents:UIControlEventTouchUpInside];
     
-    CGFloat correctTabsY = IS_IPAD ? 104.0 : self.channelsSearchTabView.frame.size.height/2 + 65.0f;
-    self.tabsContainer.center = CGPointMake(self.view.center.x, correctTabsY);
-    self.tabsContainer.frame = CGRectIntegral(self.tabsContainer.frame);
+    CGFloat correctTabsY = [SYNDeviceManager.sharedInstance isIPad] ? 104.0 : self.channelsSearchTabView.frame.size.height/2 + 65.0f;
+    tabsContainer.center = CGPointMake(self.view.center.x, correctTabsY);
+    tabsContainer.frame = CGRectIntegral(tabsContainer.frame);
     
-    [self.view addSubview: self.tabsContainer];
+    [self.view addSubview:tabsContainer];
     
-    [self.view bringSubviewToFront:self.addButton];
+    //[self.view bringSubviewToFront:self.addButton];
     
     // == Adding the main subviews == //
     
     self.searchVideosController = [[SYNSearchVideosViewController alloc] initWithViewId:viewId];
-    self.searchVideosController.itemToUpdate = self.videoSearchTabView;
-    self.searchVideosController.parent = self;
-    [self addChildViewController:self.searchVideosController];
-    [self.view insertSubview:self.searchVideosController.view belowSubview: self.tabsContainer];
+    searchVideosController.itemToUpdate = self.videoSearchTabView;
+    searchVideosController.parent = self;
+    [self addChildViewController:searchVideosController];
+    [self.view insertSubview:searchVideosController.view belowSubview:tabsContainer];
     
     self.searchVideosController.view.autoresizingMask = UIViewAutoresizingFlexibleWidth | UIViewAutoresizingFlexibleHeight;
     
-    if (IS_IPHONE)
+    if ([SYNDeviceManager.sharedInstance isIPhone])
     {
         CGRect collectionViewFrame = CGRectMake(0, 108.0f, 320.0f,self.view.frame.size.height - 108.0f);
         self.searchVideosController.videoThumbnailCollectionView.frame = collectionViewFrame;
@@ -108,16 +132,20 @@
         collectionViewFrame.size = self.view.frame.size;
         self.searchVideosController.view.frame = collectionViewFrame;
     }
-
+    
+    
     self.searchChannelsController = [[SYNSearchChannelsViewController alloc] initWithViewId:viewId]; // this is "Search"
-    self.searchChannelsController.itemToUpdate = self.channelsSearchTabView;
-    self.searchChannelsController.parent = self;
-    [self addChildViewController:self.searchChannelsController];
-    [self.view insertSubview:self.searchChannelsController.view belowSubview: self.tabsContainer];
-    self.searchChannelsController.view.autoresizingMask = UIViewAutoresizingFlexibleWidth | UIViewAutoresizingFlexibleHeight;
+    searchChannelsController.itemToUpdate = self.channelsSearchTabView;
+    searchChannelsController.parent = self;
+    [self addChildViewController:searchChannelsController];
+    [self.view insertSubview:searchChannelsController.view belowSubview:tabsContainer];
+    
+    searchChannelsController.view.autoresizingMask = UIViewAutoresizingFlexibleWidth | UIViewAutoresizingFlexibleHeight;
 
-    if (IS_IPHONE)
+    
+    if ([SYNDeviceManager.sharedInstance isIPhone])
     {
+        
         // FIXME: This magic number layout is not so good. self.view needs to be setup with the correct frame, and then we can start doing a relative layout.
         CGRect collectionViewFrame = CGRectMake(0, 48.0f, 320.0f, self.view.frame.size.height - 103.0f);
         self.searchChannelsController.channelThumbnailCollectionView.frame = collectionViewFrame;
@@ -129,8 +157,21 @@
         layout.sectionInset = insets;
         
     }
-}
+    
+    
+    self.searchUsersController = [[SYNSearchUsersViewController alloc] initWithViewId:viewId];
+    searchUsersController.itemToUpdate = self.usersSearchTabView;
+    searchUsersController.parent = self;
+    [self addChildViewController:searchUsersController];
+    [self.view insertSubview:searchUsersController.view belowSubview:tabsContainer];
+    
+    
+    controllers = @[searchVideosController,
+                    searchChannelsController,
+                    searchUsersController];
+    
 
+}
 
 - (void) viewWillAppear: (BOOL) animated
 {
@@ -139,13 +180,9 @@
     [super viewWillAppear: animated];
     
     // FIXME: Replace with something more elegant (i.e. anything else)
-    if (appDelegate.searchRefreshDisabled == TRUE)
-    {
+    if (appDelegate.searchRefreshDisabled == YES)
         return;
-    }
     
-    // Google analytics support
-//    [GAI.sharedInstance.defaultTracker sendView: @"Search - Root"];
     
     viewIsOnScreen = YES;
     
@@ -153,16 +190,15 @@
         [self performSearchForCurrentSearchTerm];
     
     if (!self.currentController)
-        [self videoTabPressed:nil];
-
-    if (IS_IPHONE)
+        [self searchTabPressed:nil];
+    
+        
+    if([[SYNDeviceManager sharedInstance] isIPhone])
     {
-//        [[NSNotificationCenter defaultCenter] postNotificationName: kNoteAllNavControlsHide
-//                                                        object: self];
-//        
-//        [self.view addSubview:self.searchBoxViewController.searchBoxView];
+
         [self.searchBoxViewController.searchBoxView revealCloseButton];
     }
+    
 }
 
 
@@ -177,12 +213,14 @@
     {
         return;
     }
-
-    if (IS_IPHONE)
+    
+    
+    if([[SYNDeviceManager sharedInstance] isIPhone])
     {
         [[NSNotificationCenter defaultCenter] postNotificationName: kNoteAllNavControlsShow
                                                         object: self];
     }
+    
 }
 
 
@@ -206,54 +244,38 @@
 }
 
 
-- (void) videoTabPressed: (UIControl*) control
+- (void) searchTabPressed: (UIButton*) control
 {
-   if (self.videoSearchTabView.selected)
-       return;
+    // nil means select the first
     
-    self.videoSearchTabView.selected = YES;
-    self.channelsSearchTabView.selected = NO;
+    if(!control)
+    {
+        self.videoSearchTabView.selected = YES;
+        
+        self.currentController = searchVideosController;
+        return;
+    }
     
-    [self showVideoSearchResults];
     
-}
-
-
-- (void) channelTabPressed: (UIControl*) control
-{
-    [GAI.sharedInstance.defaultTracker sendView: @"Search - Channels"];
-    
-    if (self.channelsSearchTabView.selected)
+    if(control.selected)
         return;
     
-    self.channelsSearchTabView.selected = YES;
-    self.videoSearchTabView.selected = NO;
-    
-    [self showChannelsSearchResult];
-}
-
-
-- (void) showVideoSearchResults
-{
-    if (self.currentController == self.searchVideosController)
-        return;
-
-    [self.searchVideosController.view setHidden:NO];
-    [self.searchChannelsController.view setHidden:YES];
-    
-    self.currentController = self.searchVideosController; 
-}
-
-
-- (void) showChannelsSearchResult
-{
-    if (self.currentController == self.searchChannelsController)
-        return;
-
-    [self.searchVideosController.view setHidden:YES];
-    [self.searchChannelsController.view setHidden:NO];
-    
-    self.currentController = self.searchChannelsController;
+    [self.controllers enumerateObjectsUsingBlock:^(SYNAbstractViewController* controller, NSUInteger idx, BOOL *stop) {
+        
+        SYNSearchTabView* tabView = (SYNSearchTabView*)[controller valueForKey:@"itemToUpdate"];
+        
+        
+        if([tabView isClicked:control]) {
+            tabView.selected = YES;
+            self.currentController = controller;
+        }
+        else {
+            tabView.selected = NO;
+            controller.view.hidden = YES;
+        }
+        
+        
+    }];
 }
 
 
@@ -291,8 +313,26 @@
         DebugLog(@"Could not clean VideoInstances from search context");
     }
     
+    success = [appDelegate.searchRegistry clearImportContextFromEntityName:@"ChannelOwner"];
+    if (!success)
+    {
+        DebugLog(@"Could not clean ChannelOwner from search context");
+    }
+    
     [self.searchVideosController performNewSearchWithTerm:searchTerm];
     [self.searchChannelsController performNewSearchWithTerm:searchTerm];
+}
+
+-(void)setCurrentController:(SYNAbstractViewController *)currentController
+{
+    _currentController = currentController;
+    [self.controllers enumerateObjectsUsingBlock:^(SYNAbstractViewController* controller, NSUInteger idx, BOOL *stop) {
+        controller.view.hidden = YES;
+    }];
+    _currentController.view.hidden = NO;
+    
+    
+    
 }
 
 

@@ -13,11 +13,13 @@
 
 @property (nonatomic,strong) UIColor* parenthesesColor;
 @property (nonatomic,strong) UIColor* numberColor;
+@property (nonatomic,strong) UIButton* overButton;
 
 @end
 
 @implementation SYNSearchTabView
 @synthesize selected;
+@synthesize overButton;
 
 - (id) initWithSearchType: (SearchTabType) itsType
 {
@@ -35,6 +37,10 @@
                 
             case SearchTabTypeChannels:
                 typeTitle = NSLocalizedString(@"CHANNELS", nil);
+                break;
+                
+            case SearchTabTypeUsers:
+                typeTitle = NSLocalizedString(@"USERS", nil);
                 break;
         }
 
@@ -103,6 +109,11 @@
     [overButton removeTarget:target action:action forControlEvents:controlEvents];
 }
 
+-(BOOL)isClicked:(UIButton*)button
+{
+    return self.overButton == button;
+}
+
 -(void)setSelected:(BOOL)value
 {
     selected = value;
@@ -117,6 +128,12 @@
         titleLabel.textColor = offColor;
     }
     [self refreshLabelWithString:titleLabel.attributedText.string];
+}
+
+-(BOOL)selected
+{
+    return selected;
+    
 }
 
 -(void)refreshLabelWithString:(NSString*)originalString
