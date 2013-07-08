@@ -45,7 +45,7 @@
 
 - (void) loadView
 {
-    BOOL isIPhone = [SYNDeviceManager.sharedInstance isIPhone];
+    BOOL isIPhone = IS_IPHONE;
     
     SYNIntegralCollectionViewFlowLayout* flowLayout;
     

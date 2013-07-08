@@ -33,15 +33,16 @@
     return deviceManager;
 }
 
--(id)init
+
+- (id) init
 {
-    self = [super init];
-    if(self)
+    if ((self = [super init]))
     {
         idiom = UI_USER_INTERFACE_IDIOM();
     }
     return self;
 }
+
 
 -(BOOL)isIPad
 {

@@ -1,0 +1,1 @@
+This text file is here to ensure that git creates the results folder.

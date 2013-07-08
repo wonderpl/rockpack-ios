@@ -223,7 +223,8 @@ extern void instrumentObjcMessageSends(BOOL);
     
     UIImageView* startImageView = nil;
     CGPoint startImageCenter = self.window.center;
-    if([[SYNDeviceManager sharedInstance] isIPad])
+    
+    if (IS_IPAD)
     {
         if(UIDeviceOrientationIsLandscape([[SYNDeviceManager sharedInstance] currentOrientation]))
         {
@@ -297,7 +298,7 @@ extern void instrumentObjcMessageSends(BOOL);
 
 - (UIViewController*) createAndReturnLoginViewController
 {
-    if ([SYNDeviceManager.sharedInstance isIPad])
+    if (IS_IPAD)
     {
         self.loginViewController = [[SYNLoginViewController alloc] init];
     }

@@ -358,8 +358,6 @@ typedef enum {
 // Height of the bottom tab bar in pixels
 #define kBottomTabBarHeight 62
 
-#define IS_IPHONE5 (([[UIScreen mainScreen] bounds].size.height-568)?NO:YES)
-
 // Height of the header bar
 #define kHeaderBarHeight 44
 

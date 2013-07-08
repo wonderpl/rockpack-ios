@@ -8,8 +8,8 @@
 
 #import "RegexKitLite.h"
 #import "SYNAccountSettingsTextInputController.h"
-#import "UIFont+SYNFont.h"
 #import "SYNDeviceManager.h"
+#import "UIFont+SYNFont.h"
 #import <QuartzCore/QuartzCore.h>
 
 @interface SYNAccountSettingsTextInputController ()
@@ -73,9 +73,9 @@
                                                  name: UIKeyboardWillHideNotification
                                                object: nil];
     
-    self.contentSizeForViewInPopover = CGSizeMake([SYNDeviceManager.sharedInstance isIPad]? 380 : [SYNDeviceManager.sharedInstance currentScreenWidth], [SYNDeviceManager.sharedInstance isIPad]? 476 : [SYNDeviceManager.sharedInstance currentScreenHeight]);
+    self.contentSizeForViewInPopover = CGSizeMake(IS_IPAD ? 380 : [SYNDeviceManager.sharedInstance currentScreenWidth], IS_IPAD ? 476 : [SYNDeviceManager.sharedInstance currentScreenHeight]);
     
-    self.view.backgroundColor = [SYNDeviceManager.sharedInstance isIPad] ? [UIColor clearColor] : [UIColor whiteColor];
+    self.view.backgroundColor = IS_IPAD ? [UIColor clearColor] : [UIColor whiteColor];
     
     self.sizeInContainer = self.contentSizeForViewInPopover.width - 20.0;
     self.scrollView = [[UIScrollView alloc] initWithFrame:CGRectMake(0,0, self.contentSizeForViewInPopover.width, self.contentSizeForViewInPopover.height)];
@@ -88,7 +88,7 @@
     UIImage* buttonImage = [UIImage imageNamed: @"ButtonAccountSaveDefault.png"];
     saveButton = [UIButton buttonWithType: UIButtonTypeCustom];
     saveButton.frame = CGRectMake(0.0, 0.0, buttonImage.size.width, buttonImage.size.height);
-    saveButton.center = CGPointMake(([SYNDeviceManager.sharedInstance isIPad] ? 190.0 : 160.0), saveButton.center.y);
+    saveButton.center = CGPointMake((IS_IPAD ? 190.0 : 160.0), saveButton.center.y);
     
     [saveButton setImage: buttonImage
                 forState: UIControlStateNormal];
