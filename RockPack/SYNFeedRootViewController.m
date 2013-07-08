@@ -286,7 +286,8 @@
                                                     if(self.fetchedResultsController.fetchedObjects.count == 0)
                                                         [self displayEmptyGenreMessage:NSLocalizedString(@"feed_screen_empty_message", nil) andLoader:NO];
                                                     
-                                                    self.loadingMoreContent = NO;
+                                                    
+                                                    self.footerView.showsLoading = NO;
                                                     
                                                     [self handleRefreshComplete];
                                                     
@@ -295,6 +296,9 @@
                                                     [self handleRefreshComplete];
                                                     
                                                     [self removeEmptyGenreMessage];
+                                                    
+                                                    
+                                                    self.footerView.showsLoading = NO;
                                                     
                                                     [self displayEmptyGenreMessage:NSLocalizedString(@"feed_screen_loading_error", nil) andLoader:NO];
                                                     
@@ -652,6 +656,7 @@
                                                                                        forIndexPath: indexPath];
         
         self.footerView.showsLoading = self.isLoadingMoreContent;
+
         supplementaryView = self.footerView;
     }
 
@@ -696,6 +701,7 @@
     {
         [self loadMoreVideos: nil];
     }
+
 }
 
 

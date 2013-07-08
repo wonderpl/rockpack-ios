@@ -277,7 +277,7 @@
                                                       BOOL registryResultOk = [appDelegate.mainRegistry registerChannelsFromDictionary: response
                                                                                                                               forGenre: genre
                                                                                                                            byAppending: append];
-                                                      self.loadingMoreContent = NO;
+                                                      self.footerView.showsLoading = NO;
                                                       
                                                       if (!registryResultOk)
                                                       {
@@ -302,7 +302,7 @@
                                                       
                                                   } onError: ^(NSDictionary* errorInfo) {
                                                       DebugLog(@"Could not load channels: %@", errorInfo);
-                                                        self.loadingMoreContent = NO;
+                                                        self.footerView.showsLoading = NO;
                                                   }];
 }
 
@@ -385,7 +385,6 @@
     self.channels = [NSMutableArray arrayWithArray:resultsArray];
     
     
-
     // We shouldn't wait until the animation is over, as this will result in crashes if the user is scrolling
     
     [self.channelThumbnailCollectionView reloadData];
@@ -511,17 +510,16 @@
     
     if (kind == UICollectionElementKindSectionFooter)
     {
-        if (self.channels.count == 0)
+        if (self.channels.count == 0 || (self.dataRequestRange.location + self.dataRequestRange.length) >= dataItemsAvailable)
         {
             return supplementaryView;
         }
-        
-        // Only display a footer if we have not loaded all channels
         
         self.footerView = [self.channelThumbnailCollectionView dequeueReusableSupplementaryViewOfKind: kind
                                                                                   withReuseIdentifier: @"SYNChannelFooterMoreView"
                                                                                          forIndexPath: indexPath];
         self.footerView.showsLoading = self.isLoadingMoreContent;
+
         supplementaryView = self.footerView;
     }
     

@@ -960,7 +960,6 @@ typedef void(^AnimationCompletionBlock)(BOOL finished);
     self.pageTitleLabel.alpha = 0.0f;
 }
 
-
 #pragma mark - Account Settings
 
 - (void) showAccountSettingsPopover
