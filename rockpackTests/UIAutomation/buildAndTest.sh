@@ -5,11 +5,11 @@ ONLY_ACTIVE_ARCH=NO \
 -scheme "rockpack" \
 -sdk iphonesimulator6.1 \
 -configuration Debug \
-SYMROOT="/Users/$USER/Documents/TestExample/build" \
-DSTROOT="/Users/$USER/Documents/TestExample/build" \
+SYMROOT="/Users/$USER/Documents/UIAutomationBuild/build" \
+DSTROOT="/Users/$USER/Documents/UIAutomationBuild/build" \
 TARGETED_DEVICE_FAMILY="2" \
 install
 
 osascript ./SimulatorReset.txt
 
-instruments -t BasicTest "/Users/$USER/Documents/TestExample/build/Applications/rockpack.app" -e UIASCRIPT "./BasicTest.js" -e UIARESULTSPATH "./result"
+instruments -t BasicTest "/Users/$USER/Documents/UIAutomationBuild/build/Applications/rockpack.app" -e UIASCRIPT "./BasicTest.js" -e UIARESULTSPATH "./result"
