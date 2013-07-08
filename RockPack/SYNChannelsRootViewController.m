@@ -307,12 +307,18 @@
 }
 
 
-- (void) loadMoreChannels: (UIButton*) sender
+- (void) loadMoreChannels
 {
-    [self incrementRangeForNextRequest];
-    
-    [self loadChannelsForGenre: currentGenre
-                   byAppending: YES];
+    // Check to see if we have loaded all items already
+    if (self.moreItemsToLoad == TRUE)
+    {
+        self.loadingMoreContent = YES;
+        
+        [self incrementRangeForNextRequest];
+        
+        [self loadChannelsForGenre: currentGenre
+                       byAppending: YES];
+    }
 }
 
 
@@ -322,8 +328,7 @@
     if (scrollView.contentOffset.y >= scrollView.contentSize.height - scrollView.bounds.size.height - kLoadMoreFooterViewHeight
         && self.isLoadingMoreContent == NO)
     {
-        DebugLog (@"Scrolling more");
-        [self loadMoreChannels: nil];
+        [self loadMoreChannels];
     }
 }
 
@@ -526,18 +531,36 @@
 
 - (CGSize) collectionView: (UICollectionView *) collectionView
                    layout: (UICollectionViewLayout*) collectionViewLayout
-                   referenceSizeForFooterInSection: (NSInteger) section
+                  referenceSizeForFooterInSection: (NSInteger) section
 {
-    CGFloat headerWidth = [SYNDeviceManager.sharedInstance isIPhone] ? 320.0f : 1024.0f;
+    CGSize footerSize;
     
-    if (self.dataRequestRange.location < self.dataItemsAvailable)
+    if (collectionView == self.channelThumbnailCollectionView)
     {
-        return CGSizeMake(headerWidth, 60.0f);
+        footerSize = [self footerSize];
+        
+        DebugLog(@"Location %d, size %d", self.dataRequestRange.location, self.dataItemsAvailable);
+        
+        // Now set to zero anyway if we have already read in all the items
+        NSInteger nextStart = self.dataRequestRange.location + self.dataRequestRange.length; // one is subtracted when the call happens for 0 indexing
+        
+        // FIXME: Is this comparison correct?  Should it just be self.dataRequestRange.location >= self.dataItemsAvailable?
+        if (nextStart >= self.dataItemsAvailable)
+        {
+            DebugLog(@"Set footer size to border");
+            footerSize = CGSizeMake(1.0f, 5.0f);
+        }
+        else
+        {
+            DebugLog(@"Normal footer size");
+        }
     }
     else
     {
-        return CGSizeZero;
+        footerSize = CGSizeZero;
     }
+    
+    return footerSize;
 }
 
 

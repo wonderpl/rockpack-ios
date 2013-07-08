@@ -16,11 +16,8 @@ typedef enum {
 } kChannelDetailsMode;
 
 @interface SYNChannelDetailViewController : SYNAbstractViewController <LXReorderableCollectionViewDelegateFlowLayout,
-                                                                     UICollectionViewDataSource,
-                                                                     UICollectionViewDelegateFlowLayout>
-
-- (id) initWithChannel: (Channel *) channel
-             usingMode: (kChannelDetailsMode) mode;
+                                                                       UICollectionViewDataSource,
+                                                                       UICollectionViewDelegateFlowLayout>
 
 @property (nonatomic, assign) kChannelDetailsMode mode;
 
@@ -30,7 +27,12 @@ typedef enum {
 */
 @property (nonatomic, strong) NSString* autoplayVideoId;
 
+
+- (id) initWithChannel: (Channel *) channel
+             usingMode: (kChannelDetailsMode) mode;
+
 //FIXME: FAVOURITES Part of workaound for missing favourites functionality. Remove once final solution implemented.
--(BOOL) isFavouritesChannel;
--(void)refreshFavouritesChannel;
+- (BOOL) isFavouritesChannel;
+- (void) refreshFavouritesChannel;
+
 @end

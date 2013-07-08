@@ -89,6 +89,7 @@ typedef void (^SYNShareCompletionBlock)(void);
 - (void) resetDataRequestRange;
 
 - (void) incrementRangeForNextRequest;
+- (BOOL) moreItemsToLoad;
 
 - (void) headerTapped;
 

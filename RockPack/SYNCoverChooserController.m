@@ -527,7 +527,6 @@
     // when reaching far right hand side, load a new page
     if (scrollView.contentOffset.x == scrollView.contentSize.width - scrollView.bounds.size.width)
     {
-//        DebugLog (@"Scrolling more");
         [self loadMoreCovers];
     }
 }
