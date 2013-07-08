@@ -1005,6 +1005,7 @@
 		BE4180F0176B35D800FCF994 /* onboarding_button_ok_highlighted@2x~iphone.png in Resources */ = {isa = PBXBuildFile; fileRef = BE4180EE176B35D800FCF994 /* onboarding_button_ok_highlighted@2x~iphone.png */; };
 		BE4180F1176B35D800FCF994 /* onboarding_button_ok_highlighted~iphone.png in Resources */ = {isa = PBXBuildFile; fileRef = BE4180EF176B35D800FCF994 /* onboarding_button_ok_highlighted~iphone.png */; };
 		BE5D29EB17577E2800C00486 /* SYNFeedMessagesView.m in Sources */ = {isa = PBXBuildFile; fileRef = BE5D29EA17577E2800C00486 /* SYNFeedMessagesView.m */; };
+		BE7D02E5178AF310008053DC /* SYNSearchUsersViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = BE7D02E4178AF310008053DC /* SYNSearchUsersViewController.m */; };
 		BE7D342E170DD8C90085AB81 /* SYNChannelFooterMoreView.xib in Resources */ = {isa = PBXBuildFile; fileRef = BE7D342D170DD8C90085AB81 /* SYNChannelFooterMoreView.xib */; };
 		BE7D3431170DDB310085AB81 /* SYNChannelFooterMoreView.m in Sources */ = {isa = PBXBuildFile; fileRef = BE7D3430170DDB310085AB81 /* SYNChannelFooterMoreView.m */; };
 		BE7D34CE1714434D0085AB81 /* SYNDeviceManager.m in Sources */ = {isa = PBXBuildFile; fileRef = BE7D34CD1714434D0085AB81 /* SYNDeviceManager.m */; };
@@ -2325,6 +2326,8 @@
 		BE53EE6017609587008360D2 /* Rockpack 4.xcdatamodel */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcdatamodel; path = "Rockpack 4.xcdatamodel"; sourceTree = "<group>"; };
 		BE5D29E917577E2800C00486 /* SYNFeedMessagesView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SYNFeedMessagesView.h; sourceTree = "<group>"; };
 		BE5D29EA17577E2800C00486 /* SYNFeedMessagesView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SYNFeedMessagesView.m; sourceTree = "<group>"; };
+		BE7D02E3178AF310008053DC /* SYNSearchUsersViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SYNSearchUsersViewController.h; sourceTree = "<group>"; };
+		BE7D02E4178AF310008053DC /* SYNSearchUsersViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SYNSearchUsersViewController.m; sourceTree = "<group>"; };
 		BE7D342D170DD8C90085AB81 /* SYNChannelFooterMoreView.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = SYNChannelFooterMoreView.xib; sourceTree = "<group>"; };
 		BE7D342F170DDB310085AB81 /* SYNChannelFooterMoreView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SYNChannelFooterMoreView.h; sourceTree = "<group>"; };
 		BE7D3430170DDB310085AB81 /* SYNChannelFooterMoreView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SYNChannelFooterMoreView.m; sourceTree = "<group>"; };
@@ -4464,6 +4467,8 @@
 				BE29A32B16DE56AB00C00F92 /* SYNSearchVideosViewController.m */,
 				BE29A33016DE8CAE00C00F92 /* SYNSearchChannelsViewController.h */,
 				BE29A33116DE8CAE00C00F92 /* SYNSearchChannelsViewController.m */,
+				BE7D02E3178AF310008053DC /* SYNSearchUsersViewController.h */,
+				BE7D02E4178AF310008053DC /* SYNSearchUsersViewController.m */,
 				BEEB6F1E1721807100FEFA43 /* SYNSearchTabView.h */,
 				BEEB6F1F1721807100FEFA43 /* SYNSearchTabView.m */,
 			);
@@ -6349,6 +6354,7 @@
 				BEBFD0951779F25800C90544 /* SYNCautionMessageView.m in Sources */,
 				016191711782DECD0016BD23 /* PSPDFUIKitMainThreadGuard.m in Sources */,
 				BE2D762D1785BBB100546BFD /* SYNViewStackManager.m in Sources */,
+				BE7D02E5178AF310008053DC /* SYNSearchUsersViewController.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

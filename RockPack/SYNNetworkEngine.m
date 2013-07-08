@@ -294,6 +294,67 @@
 }
 
 
+- (MKNetworkOperation*) searchUsersForTerm: (NSString*)searchTerm
+                                  andRange: (NSRange)range
+                                onComplete: (MKNKSearchSuccessBlock)completeBlock
+{
+    if (searchTerm == nil || [searchTerm isEqualToString:@""])
+        return nil;
+    
+    NSMutableDictionary* tempParameters = [NSMutableDictionary dictionary];
+    
+    tempParameters[@"q"] = searchTerm;
+    
+    tempParameters[@"start"] = [NSString stringWithFormat: @"%i", range.location];
+    
+    tempParameters[@"size"] = [NSString stringWithFormat: @"%i", range.length];
+    
+    [tempParameters addEntriesFromDictionary: [self getLocaleParam]];
+    
+    NSDictionary* parameters = [NSDictionary dictionaryWithDictionary: tempParameters];
+    
+    SYNNetworkOperationJsonObject *networkOperation =
+    (SYNNetworkOperationJsonObject*)[self operationWithPath:kAPISearchChannels params:parameters];
+    networkOperation.shouldNotCacheResponse = YES;
+    
+    [networkOperation addJSONCompletionHandler: ^(NSDictionary *dictionary) {
+        
+        
+        int itemsCount = 0;
+        
+        if (!dictionary)
+            return;
+        
+        NSNumber *totalNumber = (NSNumber*)dictionary[@"channels"][@"total"];
+        
+        if (totalNumber && [totalNumber isKindOfClass: [NSNumber class]])
+        {
+            itemsCount = totalNumber.intValue;
+        }
+        
+        BOOL registryResultOk = [self.searchRegistry registerChannelsFromDictionary: dictionary];
+        
+        if (!registryResultOk)
+            return;
+        
+        completeBlock(itemsCount);
+        
+        
+    } errorHandler:^(NSError* error) {
+        DebugLog(@"Update Videos Screens Request Failed");
+        if (error.code >=500 && error.code < 600)
+        {
+            [self showErrorPopUpForError:error];
+        }
+    }];
+    
+    
+    [self enqueueOperation: networkOperation];
+    
+    return networkOperation;
+}
+
+
 - (MKNetworkOperation*) searchChannelsForTerm: (NSString*)searchTerm
                                      andRange: (NSRange)range
                                    onComplete: (MKNKSearchSuccessBlock)completeBlock

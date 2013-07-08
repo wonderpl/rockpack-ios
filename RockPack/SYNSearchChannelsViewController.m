@@ -84,9 +84,6 @@
   
     [self displayChannelsForGenre];
     
-    // Google analytics support
-    // Moved to button press
-//    [GAI.sharedInstance.defaultTracker sendView: @"Search - Channels"];
     
     
 }

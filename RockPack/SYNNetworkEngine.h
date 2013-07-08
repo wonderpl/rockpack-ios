@@ -36,6 +36,10 @@
                                      andRange:(NSRange)range
                                    onComplete:(MKNKSearchSuccessBlock)completeBlock;
 
+- (MKNetworkOperation*) searchUsersForTerm: (NSString*)searchTerm
+                                  andRange: (NSRange)range
+                                onComplete: (MKNKSearchSuccessBlock)completeBlock;
+
 - (MKNetworkOperation*) getAutocompleteForHint: (NSString*)hint
                                    forResource: (EntityType)entityType
                                   withComplete: (MKNKAutocompleteProcessBlock) completionBlock
