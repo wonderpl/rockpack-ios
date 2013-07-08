@@ -13,7 +13,7 @@
 - (void) awakeFromNib
 {
     self.activityIndicator.hidden = YES;
-    self.backgroundColor = [UIColor colorWithPatternImage:[UIImage imageNamed:@"BackgroundLoadMore"]];
+    self.backgroundColor = [UIColor colorWithPatternImage: [UIImage imageNamed: @"BackgroundLoadMore"]];
 }
 
 
@@ -26,14 +26,12 @@
     
     if(_showsLoading)
     {
-        self.loadMoreButton.hidden = YES;
         self.activityIndicator.hidden = NO;
         [self.activityIndicator startAnimating];
         
     }
     else
     {
-        self.loadMoreButton.hidden = NO;
         [self.activityIndicator stopAnimating];
         self.activityIndicator.hidden = YES;
     }

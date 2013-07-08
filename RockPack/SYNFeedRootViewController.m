@@ -286,7 +286,6 @@
                                                     if(self.fetchedResultsController.fetchedObjects.count == 0)
                                                         [self displayEmptyGenreMessage:NSLocalizedString(@"feed_screen_empty_message", nil) andLoader:NO];
                                                     
-                                                    
                                                     self.loadingMoreContent = NO;
                                                     
                                                     [self handleRefreshComplete];
@@ -296,8 +295,7 @@
                                                     [self handleRefreshComplete];
                                                     
                                                     [self removeEmptyGenreMessage];
-                                                    
-                                                    
+
                                                     self.loadingMoreContent = NO;
                                                     
                                                     [self displayEmptyGenreMessage:NSLocalizedString(@"feed_screen_loading_error", nil) andLoader:NO];
