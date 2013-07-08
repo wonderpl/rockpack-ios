@@ -869,8 +869,6 @@
 		BE0815CD16D5487B00ADB1DC /* SYNSearchRegistry.m in Sources */ = {isa = PBXBuildFile; fileRef = BE0815CC16D5487B00ADB1DC /* SYNSearchRegistry.m */; };
 		BE0815D216D6448200ADB1DC /* SYNSideNavigatorViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = BE0815D016D6448200ADB1DC /* SYNSideNavigatorViewController.m */; };
 		BE0815D316D6448200ADB1DC /* SYNSideNavigatorViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = BE0815D116D6448200ADB1DC /* SYNSideNavigatorViewController.xib */; };
-		BE0815D716D645F600ADB1DC /* SYNShareOverlayViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = BE0815D516D645F600ADB1DC /* SYNShareOverlayViewController.m */; };
-		BE0815D816D645F600ADB1DC /* SYNShareOverlayViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = BE0815D616D645F600ADB1DC /* SYNShareOverlayViewController.xib */; };
 		BE0AAD2916E6534300DA958E /* SYNAutocompleteSuggestionsController.m in Sources */ = {isa = PBXBuildFile; fileRef = BE0AAD2816E6534300DA958E /* SYNAutocompleteSuggestionsController.m */; };
 		BE0FF0321754C39D0088294F /* ISO8601DateFormatter.m in Sources */ = {isa = PBXBuildFile; fileRef = BE0FF0311754C39D0088294F /* ISO8601DateFormatter.m */; settings = {COMPILER_FLAGS = "-fno-objc-arc"; }; };
 		BE0FF03B175639A40088294F /* Icon-Dev-72.png in Resources */ = {isa = PBXBuildFile; fileRef = BE0FF033175639A40088294F /* Icon-Dev-72.png */; };
@@ -2161,9 +2159,6 @@
 		BE0815CF16D6448200ADB1DC /* SYNSideNavigatorViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SYNSideNavigatorViewController.h; sourceTree = "<group>"; };
 		BE0815D016D6448200ADB1DC /* SYNSideNavigatorViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SYNSideNavigatorViewController.m; sourceTree = "<group>"; };
 		BE0815D116D6448200ADB1DC /* SYNSideNavigatorViewController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = SYNSideNavigatorViewController.xib; sourceTree = "<group>"; };
-		BE0815D416D645F600ADB1DC /* SYNShareOverlayViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SYNShareOverlayViewController.h; sourceTree = "<group>"; };
-		BE0815D516D645F600ADB1DC /* SYNShareOverlayViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SYNShareOverlayViewController.m; sourceTree = "<group>"; };
-		BE0815D616D645F600ADB1DC /* SYNShareOverlayViewController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = SYNShareOverlayViewController.xib; sourceTree = "<group>"; };
 		BE0AAD2716E6534300DA958E /* SYNAutocompleteSuggestionsController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SYNAutocompleteSuggestionsController.h; sourceTree = "<group>"; };
 		BE0AAD2816E6534300DA958E /* SYNAutocompleteSuggestionsController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SYNAutocompleteSuggestionsController.m; sourceTree = "<group>"; };
 		BE0FF0301754C39D0088294F /* ISO8601DateFormatter.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ISO8601DateFormatter.h; sourceTree = "<group>"; };
@@ -2585,8 +2580,8 @@
 		010DEFC51629BDC40080F26B = {
 			isa = PBXGroup;
 			children = (
-				01901A9A1771CCBA007DBEAC /* rockpackTests */,
 				010DEFDA1629BDC40080F26B /* rockpack */,
+				01901A9A1771CCBA007DBEAC /* Tests */,
 				019824DD1629CA3700216900 /* Resources */,
 				010DEFD31629BDC40080F26B /* Frameworks */,
 				010DEFD11629BDC40080F26B /* Products */,
@@ -2645,18 +2640,18 @@
 		010DEFDA1629BDC40080F26B /* rockpack */ = {
 			isa = PBXGroup;
 			children = (
-				01982525162A02DD00216900 /* Constants */,
-				019825EE162C948000216900 /* Categories */,
 				019824E21629CAC000216900 /* App Delegate */,
-				012632CC162DF7B30009FF9C /* Collection Cells */,
-				01D0996F1742C29100351C82 /* Table Cells */,
-				012632C7162DF4C40009FF9C /* Layout Engine Support */,
-				019824E31629CADE00216900 /* Custom Views */,
-				01677DDA1655491100B1B1D8 /* Networking */,
-				012502BA16CA8FCE0029C7C8 /* Social Media */,
+				019825EE162C948000216900 /* Categories */,
+				012632CC162DF7B30009FF9C /* Collection Assets */,
+				01982525162A02DD00216900 /* Constants */,
+				0199F127166F94C400E479C6 /* Controls */,
 				01E427D01664C701009B941F /* Data Model */,
 				019824E41629CAF500216900 /* Helpers */,
+				01677DDA1655491100B1B1D8 /* Networking */,
 				010DEFDB1629BDC40080F26B /* Supporting Files */,
+				01D0996F1742C29100351C82 /* Table Assets */,
+				019824E11629CAB600216900 /* View Controllers */,
+				019824E31629CADE00216900 /* Views */,
 			);
 			name = rockpack;
 			path = RockPack;
@@ -2679,21 +2674,6 @@
 				0111CDFD1729317100612186 /* SYNCoverThumbnailCell.xib */,
 			);
 			name = "Cover cells";
-			sourceTree = "<group>";
-		};
-		0111CDFF1729321500612186 /* Utility */ = {
-			isa = PBXGroup;
-			children = (
-				012B4C9B17393A080019DA4C /* SYNPopoverBackgroundView.h */,
-				012B4C9C17393A080019DA4C /* SYNPopoverBackgroundView.m */,
-				011CC6A7164D19D800F02B6D /* SYNPassthroughView.h */,
-				011CC6A8164D19D800F02B6D /* SYNPassthroughView.m */,
-				01BE7B70173413CF00EFE0EF /* SSTextView.h */,
-				01BE7B71173413CF00EFE0EF /* SSTextView.m */,
-				0198E468176F0AEC00AFBE2F /* SYNPageView.h */,
-				0198E469176F0AEC00AFBE2F /* SYNPageView.m */,
-			);
-			name = Utility;
 			sourceTree = "<group>";
 		};
 		0111CE091729537300612186 /* Cover Thumbnail */ = {
@@ -2737,6 +2717,8 @@
 		011A162016EF5E96008CF25E /* Image Picker */ = {
 			isa = PBXGroup;
 			children = (
+				3864D2DA1743DB3000A90ED3 /* SYNImagePickerController.h */,
+				3864D2DB1743DB3000A90ED3 /* SYNImagePickerController.m */,
 				011A162116EF5EC5008CF25E /* GKCropBorderView.h */,
 				011A162216EF5EC5008CF25E /* GKCropBorderView.m */,
 				011A162316EF5EC5008CF25E /* GKImageCropOverlayView.h */,
@@ -2827,14 +2809,16 @@
 			name = "Layout Engine Support";
 			sourceTree = "<group>";
 		};
-		012632CC162DF7B30009FF9C /* Collection Cells */ = {
+		012632CC162DF7B30009FF9C /* Collection Assets */ = {
 			isa = PBXGroup;
 			children = (
+				0199F12D166F95C000E479C6 /* Collections */,
+				012632C7162DF4C40009FF9C /* Layout Engine Support */,
 				0111CDF91729312000612186 /* Cover cells */,
 				01B7CD9D166E1616001F4AF0 /* Video cells */,
 				01B7CD9E166E163D001F4AF0 /* Channel cells */,
 			);
-			name = "Collection Cells";
+			name = "Collection Assets";
 			sourceTree = "<group>";
 		};
 		012632F6162E18310009FF9C /* Buttons */ = {
@@ -3112,7 +3096,7 @@
 			name = Feed;
 			sourceTree = "<group>";
 		};
-		01901A9A1771CCBA007DBEAC /* rockpackTests */ = {
+		01901A9A1771CCBA007DBEAC /* Tests */ = {
 			isa = PBXGroup;
 			children = (
 				01901AA01771CCBA007DBEAC /* rockpackTests.h */,
@@ -3120,6 +3104,7 @@
 				0141CC6F1771DA4A00B617A7 /* SampleSpec.m */,
 				01901A9B1771CCBA007DBEAC /* Supporting Files */,
 			);
+			name = Tests;
 			path = rockpackTests;
 			sourceTree = "<group>";
 		};
@@ -3200,17 +3185,20 @@
 		019824E11629CAB600216900 /* View Controllers */ = {
 			isa = PBXGroup;
 			children = (
-				BEF9E5A516DBCDEF00286113 /* Components */,
-				BE270B7B16EDE0A500CDDA6D /* Login */,
-				BE0815C216D5386B00ADB1DC /* Master View Controller */,
-				01982562162ADE5200216900 /* Container View Controller */,
-				BE7D3496171412EC0085AB81 /* Side Navigation */,
 				01982563162ADEAD00216900 /* Abstract */,
-				01F8E77B16B039E6000D44B9 /* Video viewer */,
-				0199F1371672199F00E479C6 /* Feed */,
 				01B7F75B164FB7A7009C5CCD /* Channels */,
+				BEF9E5A516DBCDEF00286113 /* Components */,
+				01982562162ADE5200216900 /* Container */,
+				01D9196A178B08B400D980A7 /* Cover Art */,
+				0199F1371672199F00E479C6 /* Feed */,
+				38015B4F174CCE1A005D3F18 /* Genres */,
+				BE270B7B16EDE0A500CDDA6D /* Login */,
+				BE0815C216D5386B00ADB1DC /* Master */,
 				01982560162ADE3300216900 /* Profile */,
+				BE7D3496171412EC0085AB81 /* Side Navigator */,
 				BE08158F16D3C46800ADB1DC /* Search */,
+				BE0AAD2616E6521300DA958E /* Search Box */,
+				01F8E77B16B039E6000D44B9 /* Video viewer */,
 			);
 			name = "View Controllers";
 			sourceTree = "<group>";
@@ -3224,35 +3212,42 @@
 			name = "App Delegate";
 			sourceTree = "<group>";
 		};
-		019824E31629CADE00216900 /* Custom Views */ = {
+		019824E31629CADE00216900 /* Views */ = {
 			isa = PBXGroup;
 			children = (
-				019824E11629CAB600216900 /* View Controllers */,
-				0111CDFF1729321500612186 /* Utility */,
-				0199F12D166F95C000E479C6 /* Collections */,
-				0199F127166F94C400E479C6 /* Controls */,
+				BE285DAD1725A20B00D995AB /* Slide In Messages */,
+				0198E468176F0AEC00AFBE2F /* SYNPageView.h */,
+				0198E469176F0AEC00AFBE2F /* SYNPageView.m */,
+				011CC6A7164D19D800F02B6D /* SYNPassthroughView.h */,
+				011CC6A8164D19D800F02B6D /* SYNPassthroughView.m */,
+				012B4C9B17393A080019DA4C /* SYNPopoverBackgroundView.h */,
+				012B4C9C17393A080019DA4C /* SYNPopoverBackgroundView.m */,
+				01BE7B70173413CF00EFE0EF /* SSTextView.h */,
+				01BE7B71173413CF00EFE0EF /* SSTextView.m */,
 			);
-			name = "Custom Views";
+			name = Views;
 			sourceTree = "<group>";
 		};
 		019824E41629CAF500216900 /* Helpers */ = {
 			isa = PBXGroup;
 			children = (
-				BE2D762A1785BB9C00546BFD /* View Stack Manager */,
-				0154E8451768E25B001C7B75 /* Timers */,
-				012BD2C7173BE84C00BE28B6 /* Async Image load and cache */,
-				BE285DB91726826800D995AB /* Channels Manager */,
-				0173E6C5171822BF00EEE76B /* Google Analytics */,
-				BE7D34CB171443330085AB81 /* Device */,
 				01AEFBCA1701AC270060467A /* Activity Manager */,
-				BED4312816F20CC50051465B /* RegexKitLite */,
-				011A162016EF5E96008CF25E /* Image Picker */,
-				BEF9E5AD16DCBAA300286113 /* Sound */,
-				019E6A5E165FD958002B312A /* OAuth2 */,
+				012BD2C7173BE84C00BE28B6 /* Async Image load and cache */,
 				011CC679164A9E9C00F02B6D /* Camera Overlay */,
-				019824ED1629CC6600216900 /* TestFlight */,
-				019824E91629CBD000216900 /* Exception Handler */,
+				BE285DB91726826800D995AB /* Channels Manager */,
 				019824E51629CB1D00216900 /* Debug */,
+				BE7D34CB171443330085AB81 /* Device */,
+				019824E91629CBD000216900 /* Exception Handler */,
+				0173E6C5171822BF00EEE76B /* Google Analytics */,
+				011A162016EF5E96008CF25E /* Image Picker */,
+				019E6A5E165FD958002B312A /* OAuth2 */,
+				BED4312816F20CC50051465B /* RegexKitLite */,
+				012502BA16CA8FCE0029C7C8 /* Social Media */,
+				BEF9E5AD16DCBAA300286113 /* Sound */,
+				0154E8451768E25B001C7B75 /* Timers */,
+				019824ED1629CC6600216900 /* TestFlight */,
+				BEF9E5B416DD23F000286113 /* Video Queue */,
+				BE2D762A1785BB9C00546BFD /* View Stack Manager */,
 			);
 			name = Helpers;
 			sourceTree = "<group>";
@@ -3341,6 +3336,10 @@
 		01982560162ADE3300216900 /* Profile */ = {
 			isa = PBXGroup;
 			children = (
+				BE7D35491718667F0085AB81 /* SYNUserProfileViewController.h */,
+				BE7D354A1718667F0085AB81 /* SYNUserProfileViewController.m */,
+				BE7D354B1718667F0085AB81 /* SYNUserProfileViewController.xib */,
+				38015B4D174CC51A005D3F18 /* SYNUserProfileViewController~iphone.xib */,
 				0142ED8716B19FBE008694DA /* SYNProfileRootViewController.h */,
 				0142ED8816B19FBE008694DA /* SYNProfileRootViewController.m */,
 				BE86BF15171F001E0006DC8A /* SYNSubscriptionsViewController.h */,
@@ -3351,7 +3350,7 @@
 			name = Profile;
 			sourceTree = "<group>";
 		};
-		01982562162ADE5200216900 /* Container View Controller */ = {
+		01982562162ADE5200216900 /* Container */ = {
 			isa = PBXGroup;
 			children = (
 				0198250A1629DCF100216900 /* SYNContainerViewController.h */,
@@ -3359,7 +3358,7 @@
 				BEE732B81727D99E0083E1B9 /* SYNContainerScrollView.h */,
 				BEE732B91727D99E0083E1B9 /* SYNContainerScrollView.m */,
 			);
-			name = "Container View Controller";
+			name = Container;
 			sourceTree = "<group>";
 		};
 		01982563162ADEAD00216900 /* Abstract */ = {
@@ -3374,23 +3373,25 @@
 		019825EE162C948000216900 /* Categories */ = {
 			isa = PBXGroup;
 			children = (
-				016191701782DECD0016BD23 /* PSPDFUIKitMainThreadGuard.m */,
 				01C9CFA41697496400C42479 /* NSDate-Utilities.h */,
 				01C9CFA51697496400C42479 /* NSDate-Utilities.m */,
 				01C6FD0D169DDEDB00E01AA3 /* NSDictionary+Validation.h */,
 				01C6FD0E169DDEDB00E01AA3 /* NSDictionary+Validation.m */,
-				01363EB3162FDEA600FFAA09 /* NSObject+Blocks.h */,
-				01363EB4162FDEA600FFAA09 /* NSObject+Blocks.m */,
 				0129690916E024DF00895469 /* NSIndexPath+Arithmetic.h */,
 				0129690A16E024DF00895469 /* NSIndexPath+Arithmetic.m */,
+				01363EB3162FDEA600FFAA09 /* NSObject+Blocks.h */,
+				01363EB4162FDEA600FFAA09 /* NSObject+Blocks.m */,
 				01A79BA016F32C6900B05084 /* NSString+Timecode.h */,
 				01A79BA116F32C6900B05084 /* NSString+Timecode.m */,
 				01A79BA316F34BBF00B05084 /* NSString+Utils.h */,
 				01A79BA416F34BBF00B05084 /* NSString+Utils.m */,
+				016191701782DECD0016BD23 /* PSPDFUIKitMainThreadGuard.m */,
 				019825EF162C94A300216900 /* UIColor+SYNColor.h */,
 				019825F0162C94A300216900 /* UIColor+SYNColor.m */,
 				019825F2162C94B500216900 /* UIFont+SYNFont.h */,
 				019825F3162C94B500216900 /* UIFont+SYNFont.m */,
+				01A02E74176E1EA5001F14BD /* UIImage+Monochrome.h */,
+				01A02E75176E1EA5001F14BD /* UIImage+Monochrome.m */,
 				011A160C16EE53A0008CF25E /* UIImage+Resize.h */,
 				011A160D16EE53A0008CF25E /* UIImage+Resize.m */,
 				01E2E7DF16E11E67009999D2 /* UIImageView+ImageProcessing.h */,
@@ -3399,8 +3400,6 @@
 				017A9EF916E77E6600AA5B18 /* UIView+Subviews.m */,
 				012502AF16C958FA0029C7C8 /* UIView+Toast.h */,
 				012502B016C958FA0029C7C8 /* UIView+Toast.m */,
-				01A02E74176E1EA5001F14BD /* UIImage+Monochrome.h */,
-				01A02E75176E1EA5001F14BD /* UIImage+Monochrome.m */,
 			);
 			name = Categories;
 			sourceTree = "<group>";
@@ -3410,6 +3409,12 @@
 			children = (
 				01D0998917452A4000351C82 /* BBCyclingLabel.h */,
 				01D0998A17452A4000351C82 /* BBCyclingLabel.m */,
+				BEBD097F1744ECD50092F527 /* SYNAddButtonControl.h */,
+				BEBD09801744ECD50092F527 /* SYNAddButtonControl.m */,
+				BE7D354F171870780085AB81 /* SYNBackButtonControl.h */,
+				BE7D3550171870780085AB81 /* SYNBackButtonControl.m */,
+				BE7D3539171708F60085AB81 /* SYNRefreshButton.h */,
+				BE7D353A171708F60085AB81 /* SYNRefreshButton.m */,
 				01982587162B605A00216900 /* SYNTabImageView.h */,
 				01982588162B605A00216900 /* SYNTabImageView.m */,
 				01F94F0B17608396006C024D /* SYNTextField.h */,
@@ -3649,7 +3654,7 @@
 			name = "Report Concern";
 			sourceTree = "<group>";
 		};
-		01D0996F1742C29100351C82 /* Table Cells */ = {
+		01D0996F1742C29100351C82 /* Table Assets */ = {
 			isa = PBXGroup;
 			children = (
 				3862E8A6172979410066E8E7 /* SYNChannelCategoryTableCell.h */,
@@ -3662,7 +3667,7 @@
 				01D099711742C31000351C82 /* SYNReportConcernTableCell.m */,
 				01D099731742C32B00351C82 /* SYNReportConcernTableCell.xib */,
 			);
-			name = "Table Cells";
+			name = "Table Assets";
 			sourceTree = "<group>";
 		};
 		01D8C6AC16820AB1000059D1 /* VideoThumbnailWide */ = {
@@ -3680,6 +3685,26 @@
 				01946B541683209600354601 /* PanelVideoGlow@2x.png */,
 			);
 			name = VideoThumbnailWide;
+			sourceTree = "<group>";
+		};
+		01D91969178B085D00D980A7 /* iPhone */ = {
+			isa = PBXGroup;
+			children = (
+				3862E8AC172979410066E8E7 /* SYNChannelCategoryTableViewController.h */,
+				3862E8AD172979410066E8E7 /* SYNChannelCategoryTableViewController.m */,
+				3862E8AE172979410066E8E7 /* SYNChannelCategoryTableViewController~iphone.xib */,
+				38BACE89173AB4B500406597 /* SYNChannelCategoryTableViewControllerFullscreen~iphone.xib */,
+			);
+			name = iPhone;
+			sourceTree = "<group>";
+		};
+		01D9196A178B08B400D980A7 /* Cover Art */ = {
+			isa = PBXGroup;
+			children = (
+				38BACE8B173AB4C300406597 /* ChannelCoverImageSelector */,
+				BEBD09781743A1700092F527 /* CoverArt Chooser View */,
+			);
+			name = "Cover Art";
 			sourceTree = "<group>";
 		};
 		01E427D01664C701009B941F /* Data Model */ = {
@@ -3723,26 +3748,26 @@
 		01E427F31664F346009B941F /* Editable files */ = {
 			isa = PBXGroup;
 			children = (
-				01F1B85B17297471005735AF /* CoverArt.h */,
-				01F1B85C17297471005735AF /* CoverArt.m */,
-				BEB1578F173D061700DAFA2F /* ChannelCover.h */,
-				BEB15790173D061700DAFA2F /* ChannelCover.m */,
 				01C6FD12169E11B000E01AA3 /* AbstractCommon.h */,
 				01C6FD13169E11B000E01AA3 /* AbstractCommon.m */,
+				01E427E31664DF21009B941F /* Channel.h */,
+				01E427E41664DF21009B941F /* Channel.m */,
+				BEB1578F173D061700DAFA2F /* ChannelCover.h */,
+				BEB15790173D061700DAFA2F /* ChannelCover.m */,
+				01946B931683339F00354601 /* ChannelOwner.h */,
+				01946B941683339F00354601 /* ChannelOwner.m */,
+				01F1B85B17297471005735AF /* CoverArt.h */,
+				01F1B85C17297471005735AF /* CoverArt.m */,
 				BEA043E316CAA8E1005406E7 /* Genre.h */,
 				BEA043E416CAA8E1005406E7 /* Genre.m */,
 				BEA043E516CAA8E1005406E7 /* SubGenre.h */,
 				BEA043E616CAA8E1005406E7 /* SubGenre.m */,
-				01E427E31664DF21009B941F /* Channel.h */,
-				01E427E41664DF21009B941F /* Channel.m */,
-				01946B931683339F00354601 /* ChannelOwner.h */,
-				01946B941683339F00354601 /* ChannelOwner.m */,
+				015CB01416AE039900FEB8E7 /* User.h */,
+				015CB01516AE039900FEB8E7 /* User.m */,
 				01E427E01664DF21009B941F /* Video.h */,
 				01E427E11664DF21009B941F /* Video.m */,
 				01946B951683339F00354601 /* VideoInstance.h */,
 				01946B961683339F00354601 /* VideoInstance.m */,
-				015CB01416AE039900FEB8E7 /* User.h */,
-				015CB01516AE039900FEB8E7 /* User.m */,
 			);
 			name = "Editable files";
 			sourceTree = "<group>";
@@ -3836,6 +3861,8 @@
 		01F8E77B16B039E6000D44B9 /* Video viewer */ = {
 			isa = PBXGroup;
 			children = (
+				015487CD16DCD2A1002A41A2 /* SYNVideoPlaybackViewController.h */,
+				015487CE16DCD2A1002A41A2 /* SYNVideoPlaybackViewController.m */,
 				01F8E77C16B03A7C000D44B9 /* SYNVideoViewerViewController.h */,
 				01F8E77D16B03A7C000D44B9 /* SYNVideoViewerViewController.m */,
 				01F8E77E16B03A7C000D44B9 /* SYNVideoViewerViewController.xib */,
@@ -3957,24 +3984,13 @@
 			name = About;
 			sourceTree = "<group>";
 		};
-		38015B4F174CCE1A005D3F18 /* CategoryTableViewController (iPhone) */ = {
+		38015B4F174CCE1A005D3F18 /* Genres */ = {
 			isa = PBXGroup;
 			children = (
-				3862E8AC172979410066E8E7 /* SYNChannelCategoryTableViewController.h */,
-				3862E8AD172979410066E8E7 /* SYNChannelCategoryTableViewController.m */,
-				3862E8AE172979410066E8E7 /* SYNChannelCategoryTableViewController~iphone.xib */,
-				38BACE89173AB4B500406597 /* SYNChannelCategoryTableViewControllerFullscreen~iphone.xib */,
+				BE08159C16D3D7E300ADB1DC /* iPad */,
+				01D91969178B085D00D980A7 /* iPhone */,
 			);
-			name = "CategoryTableViewController (iPhone)";
-			sourceTree = "<group>";
-		};
-		3864D2D91743DB1B00A90ED3 /* SYNImagePicker */ = {
-			isa = PBXGroup;
-			children = (
-				3864D2DA1743DB3000A90ED3 /* SYNImagePickerController.h */,
-				3864D2DB1743DB3000A90ED3 /* SYNImagePickerController.m */,
-			);
-			name = SYNImagePicker;
+			name = Genres;
 			sourceTree = "<group>";
 		};
 		388CAF64172EBD8E00721372 /* iPhoneCell */ = {
@@ -4475,7 +4491,7 @@
 			name = Search;
 			sourceTree = "<group>";
 		};
-		BE08159C16D3D7E300ADB1DC /* Tab Bars */ = {
+		BE08159C16D3D7E300ADB1DC /* iPad */ = {
 			isa = PBXGroup;
 			children = (
 				BEA043EC16CAC684005406E7 /* SYNTabViewDelegate.h */,
@@ -4485,7 +4501,7 @@
 				BE0815A116D4DADA00ADB1DC /* SYNTabView.m */,
 				0142ED9216B1C914008694DA /* Genre Tab */,
 			);
-			name = "Tab Bars";
+			name = iPad;
 			sourceTree = "<group>";
 		};
 		BE0815B016D4FB9A00ADB1DC /* Categories */ = {
@@ -4518,7 +4534,7 @@
 			name = Search;
 			sourceTree = "<group>";
 		};
-		BE0815C216D5386B00ADB1DC /* Master View Controller */ = {
+		BE0815C216D5386B00ADB1DC /* Master */ = {
 			isa = PBXGroup;
 			children = (
 				BE0815C316D5389C00ADB1DC /* SYNMasterViewController.h */,
@@ -4526,17 +4542,7 @@
 				BE0815C516D5389C00ADB1DC /* SYNMasterViewController.xib */,
 				3862E8B91729797F0066E8E7 /* SYNMasterViewController~iphone.xib */,
 			);
-			name = "Master View Controller";
-			sourceTree = "<group>";
-		};
-		BE0815CE16D6444200ADB1DC /* Overlays */ = {
-			isa = PBXGroup;
-			children = (
-				BE0815D416D645F600ADB1DC /* SYNShareOverlayViewController.h */,
-				BE0815D516D645F600ADB1DC /* SYNShareOverlayViewController.m */,
-				BE0815D616D645F600ADB1DC /* SYNShareOverlayViewController.xib */,
-			);
-			name = Overlays;
+			name = Master;
 			sourceTree = "<group>";
 		};
 		BE0AAD2616E6521300DA958E /* Search Box */ = {
@@ -4683,19 +4689,19 @@
 			name = Login;
 			sourceTree = "<group>";
 		};
-		BE285DAD1725A20B00D995AB /* Error Views */ = {
+		BE285DAD1725A20B00D995AB /* Slide In Messages */ = {
 			isa = PBXGroup;
 			children = (
-				BE285DAE1725A23300D995AB /* SYNNetworkErrorView.h */,
-				BE285DAF1725A23300D995AB /* SYNNetworkErrorView.m */,
-				BE5D29E917577E2800C00486 /* SYNFeedMessagesView.h */,
-				BE5D29EA17577E2800C00486 /* SYNFeedMessagesView.m */,
 				BEBFD0901779F0F800C90544 /* SYNCaution.h */,
 				BEBFD0911779F0F800C90544 /* SYNCaution.m */,
 				BEBFD0931779F25700C90544 /* SYNCautionMessageView.h */,
 				BEBFD0941779F25800C90544 /* SYNCautionMessageView.m */,
+				BE5D29E917577E2800C00486 /* SYNFeedMessagesView.h */,
+				BE5D29EA17577E2800C00486 /* SYNFeedMessagesView.m */,
+				BE285DAE1725A23300D995AB /* SYNNetworkErrorView.h */,
+				BE285DAF1725A23300D995AB /* SYNNetworkErrorView.m */,
 			);
-			name = "Error Views";
+			name = "Slide In Messages";
 			sourceTree = "<group>";
 		};
 		BE285DB91726826800D995AB /* Channels Manager */ = {
@@ -4786,7 +4792,7 @@
 			name = Search;
 			sourceTree = "<group>";
 		};
-		BE7D3496171412EC0085AB81 /* Side Navigation */ = {
+		BE7D3496171412EC0085AB81 /* Side Navigator */ = {
 			isa = PBXGroup;
 			children = (
 				388CAF64172EBD8E00721372 /* iPhoneCell */,
@@ -4796,7 +4802,7 @@
 				BE0815D116D6448200ADB1DC /* SYNSideNavigatorViewController.xib */,
 				388CAF24172E8F0C00721372 /* SYNSideNavigatorViewController~iphone.xib */,
 			);
-			name = "Side Navigation";
+			name = "Side Navigator";
 			sourceTree = "<group>";
 		};
 		BE7D34CB171443330085AB81 /* Device */ = {
@@ -4905,35 +4911,6 @@
 			name = "Master Panel";
 			sourceTree = "<group>";
 		};
-		BE7D3538171708E20085AB81 /* Refresh Button */ = {
-			isa = PBXGroup;
-			children = (
-				BE7D3539171708F60085AB81 /* SYNRefreshButton.h */,
-				BE7D353A171708F60085AB81 /* SYNRefreshButton.m */,
-			);
-			name = "Refresh Button";
-			sourceTree = "<group>";
-		};
-		BE7D3548171866550085AB81 /* User Profile Panel */ = {
-			isa = PBXGroup;
-			children = (
-				BE7D35491718667F0085AB81 /* SYNUserProfileViewController.h */,
-				BE7D354A1718667F0085AB81 /* SYNUserProfileViewController.m */,
-				BE7D354B1718667F0085AB81 /* SYNUserProfileViewController.xib */,
-				38015B4D174CC51A005D3F18 /* SYNUserProfileViewController~iphone.xib */,
-			);
-			name = "User Profile Panel";
-			sourceTree = "<group>";
-		};
-		BE7D354E1718704C0085AB81 /* Back Button */ = {
-			isa = PBXGroup;
-			children = (
-				BE7D354F171870780085AB81 /* SYNBackButtonControl.h */,
-				BE7D3550171870780085AB81 /* SYNBackButtonControl.m */,
-			);
-			name = "Back Button";
-			sourceTree = "<group>";
-		};
 		BE95B90016CBAAD500EC2E72 /* Tabs */ = {
 			isa = PBXGroup;
 			children = (
@@ -4990,15 +4967,6 @@
 			name = "CoverArt Chooser View";
 			sourceTree = "<group>";
 		};
-		BEBD097E1744EC920092F527 /* Add Button Control */ = {
-			isa = PBXGroup;
-			children = (
-				BEBD097F1744ECD50092F527 /* SYNAddButtonControl.h */,
-				BEBD09801744ECD50092F527 /* SYNAddButtonControl.m */,
-			);
-			name = "Add Button Control";
-			sourceTree = "<group>";
-		};
 		BED4312816F20CC50051465B /* RegexKitLite */ = {
 			isa = PBXGroup;
 			children = (
@@ -5012,24 +4980,10 @@
 			isa = PBXGroup;
 			children = (
 				BE3983CB1768A34700EE9C7B /* OnBoarding Messages */,
-				38015B4F174CCE1A005D3F18 /* CategoryTableViewController (iPhone) */,
-				BEBD097E1744EC920092F527 /* Add Button Control */,
-				3864D2D91743DB1B00A90ED3 /* SYNImagePicker */,
-				BEBD09781743A1700092F527 /* CoverArt Chooser View */,
 				015C13BE173B02D8001569FE /* Report Concerns */,
-				38BACE8B173AB4C300406597 /* ChannelCoverImageSelector */,
 				BE03A69016F7457900245314 /* Account Settings */,
 				011C1650173002D000CF50B9 /* Activity controller */,
-				BE7D354E1718704C0085AB81 /* Back Button */,
-				BE285DAD1725A20B00D995AB /* Error Views */,
-				BE0815CE16D6444200ADB1DC /* Overlays */,
 				01A3EC2A16AECE0F008DCE08 /* Popover */,
-				BE7D3538171708E20085AB81 /* Refresh Button */,
-				BE0AAD2616E6521300DA958E /* Search Box */,
-				BE08159C16D3D7E300ADB1DC /* Tab Bars */,
-				BE7D3548171866550085AB81 /* User Profile Panel */,
-				BEF9E5B516DD242A00286113 /* VideoPlayback */,
-				BEF9E5B416DD23F000286113 /* VideoQueue */,
 			);
 			name = Components;
 			sourceTree = "<group>";
@@ -5043,22 +4997,13 @@
 			name = Sound;
 			sourceTree = "<group>";
 		};
-		BEF9E5B416DD23F000286113 /* VideoQueue */ = {
+		BEF9E5B416DD23F000286113 /* Video Queue */ = {
 			isa = PBXGroup;
 			children = (
 				BEFAE89A1725485B009B2F66 /* SYNVideoQueue.h */,
 				BEFAE89B1725485B009B2F66 /* SYNVideoQueue.m */,
 			);
-			name = VideoQueue;
-			sourceTree = "<group>";
-		};
-		BEF9E5B516DD242A00286113 /* VideoPlayback */ = {
-			isa = PBXGroup;
-			children = (
-				015487CD16DCD2A1002A41A2 /* SYNVideoPlaybackViewController.h */,
-				015487CE16DCD2A1002A41A2 /* SYNVideoPlaybackViewController.m */,
-			);
-			name = VideoPlayback;
+			name = "Video Queue";
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -5197,7 +5142,6 @@
 				01EA81C016B8AA110069AFF9 /* ButtonLargeVideoPanelPlay@2x.png in Resources */,
 				BE0815C716D5389C00ADB1DC /* SYNMasterViewController.xib in Resources */,
 				BE0815D316D6448200ADB1DC /* SYNSideNavigatorViewController.xib in Resources */,
-				BE0815D816D645F600ADB1DC /* SYNShareOverlayViewController.xib in Resources */,
 				0194FD2216DE6FE40058A7C2 /* SYNVideoThumbnailSmallCell.xib in Resources */,
 				0173F6FB16E028E4005B3ECA /* BackgroundVideoThumbnailSmall.png in Resources */,
 				0173F6FC16E028E4005B3ECA /* BackgroundVideoThumbnailSmall@2x.png in Resources */,
@@ -6219,7 +6163,6 @@
 				BE0815CA16D5478B00ADB1DC /* SYNRegistry.m in Sources */,
 				BE0815CD16D5487B00ADB1DC /* SYNSearchRegistry.m in Sources */,
 				BE0815D216D6448200ADB1DC /* SYNSideNavigatorViewController.m in Sources */,
-				BE0815D716D645F600ADB1DC /* SYNShareOverlayViewController.m in Sources */,
 				BEF9E5B016DCBAC800286113 /* SYNSoundPlayer.m in Sources */,
 				015487CF16DCD2A1002A41A2 /* SYNVideoPlaybackViewController.m in Sources */,
 				0194FD2316DE6FE90058A7C2 /* SYNVideoThumbnailSmallCell.m in Sources */,
