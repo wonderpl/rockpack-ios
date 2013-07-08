@@ -249,7 +249,9 @@
     
     userThumbnailCell.nameLabel.text = user.displayName;
     
-    userThumbnailCell.imageUrlString = user.thumbnailLargeUrl;
+    userThumbnailCell.imageUrlString = user.thumbnailURL;
+    
+    [userThumbnailCell setDisplayName:user.displayName andUsername:user.username];
     
     
     return userThumbnailCell;

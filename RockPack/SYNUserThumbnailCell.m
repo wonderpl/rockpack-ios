@@ -27,13 +27,15 @@
     
 }
 
--(void)setName:(NSString*)name andUsername:(NSString*)username
+-(void)setDisplayName:(NSString*)name andUsername:(NSString*)username
 {
-    
+    self.nameLabel.text = name;
+    self.usernameLabel.text = username;
 }
 
 -(void)setImageUrlString:(NSString *)imageUrlString
 {
+    NSLog(@"imageUrl: %@", imageUrlString);
     if(!imageUrlString) // cancel the existing network operation
     {
         [self.imageView setImageWithURL: nil
