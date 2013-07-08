@@ -14,15 +14,8 @@
 #import "SYNSubscriptionsViewController.h"
 #import "UIImageView+WebCache.h"
 
-@interface SYNSubscriptionsViewController ()
-
-
-@end
-
 
 @implementation SYNSubscriptionsViewController
-
-@synthesize user = _user;
 
 - (void) loadView
 {
@@ -51,9 +44,7 @@
     //[super viewDidLoad];
     
     appDelegate = (SYNAppDelegate*)[[UIApplication sharedApplication] delegate];
-    
-    
-    
+
     // Register Footer
     UINib *footerViewNib = [UINib nibWithNibName: @"SYNChannelFooterMoreView"
                                           bundle: nil];
@@ -68,8 +59,7 @@
     
     [self.channelThumbnailCollectionView registerNib: thumbnailCellNib
                           forCellWithReuseIdentifier: @"SYNChannelMidCell"];
-    
-    
+
     CGRect correntFrame = self.channelThumbnailCollectionView.frame;
     correntFrame.size.width = 20.0;
     self.channelThumbnailCollectionView.frame = correntFrame;
@@ -92,10 +82,8 @@
 
 
 - (UICollectionViewCell *) collectionView: (UICollectionView *) cv
-                   cellForItemAtIndexPath: (NSIndexPath *) indexPath {
-    
-    
-    
+                   cellForItemAtIndexPath: (NSIndexPath *) indexPath
+{
     Channel *channel = self.user.subscriptions[indexPath.item];
     
     SYNChannelMidCell *channelThumbnailCell = [cv dequeueReusableCellWithReuseIdentifier: @"SYNChannelMidCell"
@@ -105,9 +93,9 @@
                                    placeholderImage: [UIImage imageNamed: @"PlaceholderChannelMid.png"]
                                             options: SDWebImageRetryFailed];
     
-    if(channel.favouritesValue)
+    if (channel.favouritesValue)
     {
-        if([appDelegate.currentUser.uniqueId isEqualToString:channel.channelOwner.uniqueId])
+        if ([appDelegate.currentUser.uniqueId isEqualToString:channel.channelOwner.uniqueId])
         {
             [channelThumbnailCell setChannelTitle: [NSString stringWithFormat:@"MY %@", NSLocalizedString(@"FAVORITES", nil)] ];
         }
@@ -115,12 +103,10 @@
         {
             [channelThumbnailCell setChannelTitle:
              [NSString stringWithFormat:@"%@'S %@", [channel.channelOwner.displayName uppercaseString], NSLocalizedString(@"FAVORITES", nil)]];
-        }
-        
+        }  
     }
     else
     {
-        
         [channelThumbnailCell setChannelTitle: channel.title];
     }
     
@@ -152,10 +138,10 @@
 
 - (void) setViewFrame: (CGRect) frame
 {
-//    DebugLog(@"Width: %f", frame.size.width);
     self.view.frame = frame;
     self.channelThumbnailCollectionView.frame = CGRectMake(0.0, 0.0, frame.size.width, frame.size.height);
 }
+
 
 #pragma mark - Accessors
 
@@ -164,22 +150,19 @@
     return self.channelThumbnailCollectionView;
 }
 
--(void)headerTapped
+
+- (void) headerTapped
 {
     [self.channelThumbnailCollectionView setContentOffset:CGPointZero animated:YES];
 }
 
--(void)setUser:(ChannelOwner*)user
+
+- (void) setUser: (ChannelOwner*) user
 {
     // no additional checks because it is done above
-    
     _user = user;
     
     [self.channelThumbnailCollectionView reloadData];
-}
--(ChannelOwner*)user
-{
-    return (ChannelOwner*)_user;
 }
 
 
