@@ -240,6 +240,13 @@
     videoThumbnailCell.addItButton.highlighted = NO;
     videoThumbnailCell.addItButton.selected = [appDelegate.videoQueue videoInstanceIsAddedToChannel:videoInstance];
     
+    
+    if((!isIphone && indexPath.item == 2) ||
+       (isIphone && indexPath.item == 0)) {
+        //perform after 0.0f delay to make sure the call is queued after the cell has been added to the view
+        [self performSelector:@selector(showVideoOnboardingForCell:) withObject:videoThumbnailCell afterDelay:0.0f];
+    }
+    
     return videoThumbnailCell;
 }
 
@@ -348,6 +355,49 @@
         [_runningNetworkOperation cancel];
     
     _runningNetworkOperation = runningSearchOperation;
+}
+
+#pragma mark - onboarding
+
+-(void)showVideoOnboardingForCell:(SYNVideoThumbnailWideCell*)cell
+{
+    
+    NSUserDefaults *defaults = [NSUserDefaults standardUserDefaults];
+    BOOL hasShownVideoOnBoarding = [defaults boolForKey:kUserDefaultsAddVideo];
+    if(!hasShownVideoOnBoarding)
+    {
+        
+        NSString* message = NSLocalizedString(@"onboarding_video", nil);
+        
+        CGFloat fontSize = [[SYNDeviceManager sharedInstance] isIPad] ? 19.0 : 15.0 ;
+        CGSize size = [[SYNDeviceManager sharedInstance] isIPad] ? CGSizeMake(340.0, 164.0) : CGSizeMake(260.0, 144.0);
+        CGRect rectToPointTo = CGRectZero;
+        PointingDirection directionToPointTo = PointingDirectionDown;
+        if(cell)
+        {
+            rectToPointTo = [self.view convertRect:cell.addItButton.frame fromView:cell];
+            if(rectToPointTo.origin.y < [[SYNDeviceManager sharedInstance] currentScreenHeight] * 0.5)
+                directionToPointTo = PointingDirectionUp;
+            
+            //NSLog(@"%f %f", rectToPointTo.origin.x, rectToPointTo.origin.y);
+        }
+        SYNOnBoardingPopoverView* addToChannelPopover = [SYNOnBoardingPopoverView withMessage:message
+                                                                                     withSize:size
+                                                                                  andFontSize:fontSize
+                                                                                   pointingTo:rectToPointTo
+                                                                                withDirection:directionToPointTo];
+        
+        
+        __weak SYNFeedRootViewController* wself = self;
+        addToChannelPopover.action = ^{
+            [wself videoAddButtonTapped:cell.addItButton];
+        };
+        [appDelegate.onBoardingQueue addPopover:addToChannelPopover];
+        
+        [defaults setBool:YES forKey:kUserDefaultsAddVideo];
+        
+        [appDelegate.onBoardingQueue present];
+    }
 }
 
 @end
