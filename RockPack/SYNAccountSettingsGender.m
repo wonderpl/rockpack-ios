@@ -11,7 +11,6 @@
 #import "SYNAccountSettingsGender.h"
 #import "SYNAppDelegate.h"
 #import "SYNOAuthNetworkEngine.h"
-#import "SYNDeviceManager.h"
 #import "SYNAccountSettingOtherTableViewCell.h"
 #import "UIFont+SYNFont.h"
 
@@ -35,11 +34,9 @@
     {        
         self.contentSizeForViewInPopover = CGSizeMake(380, 476);
         
-        BOOL isIpad = [SYNDeviceManager.sharedInstance isIPad];
-        
         self.appDelegate = (SYNAppDelegate*)[[UIApplication sharedApplication] delegate];
         
-        self.tableView = [[UITableView alloc] initWithFrame: CGRectMake((isIpad ? 1.0 : 0.0), 0.0, (isIpad ? 378 : 320.0), 100.0) style: UITableViewStyleGrouped];
+        self.tableView = [[UITableView alloc] initWithFrame: CGRectMake((IS_IPAD ? 1.0 : 0.0), 0.0, (IS_IPAD ? 378 : 320.0), 100.0) style: UITableViewStyleGrouped];
         self.tableView.backgroundColor = [UIColor clearColor];
         self.tableView.opaque = NO;
         self.tableView.delegate = self;

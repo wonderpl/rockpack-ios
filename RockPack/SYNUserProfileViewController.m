@@ -8,7 +8,6 @@
 
 #import "AppConstants.h"
 #import "SYNAppDelegate.h"
-#import "SYNDeviceManager.h"
 #import "SYNImagePickerController.h"
 #import "SYNOAuthNetworkEngine.h"
 #import "SYNUserProfileViewController.h"
@@ -71,9 +70,8 @@
 
 - (void) pack
 {
-    if ([SYNDeviceManager.sharedInstance isIPhone])
+    if (IS_IPHONE)
     {
-        
         NSMutableParagraphStyle *style = [[NSMutableParagraphStyle alloc] init];
         [style setLineHeightMultiple: 1.0f];
         style.lineBreakMode = NSLineBreakByTruncatingTail;

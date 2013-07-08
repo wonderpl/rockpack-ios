@@ -53,7 +53,6 @@
 @synthesize currentScreenOffset;
 
 // Initialise all the elements common to all 4 tabs
-
 #pragma mark - View lifecycle
 
 - (void) loadView
@@ -87,8 +86,8 @@
     
     // == Channels Page == //
     SYNChannelsRootViewController *channelsRootViewController = [[SYNChannelsRootViewController alloc] initWithViewId: kChannelsViewId];
-    BOOL isIPad = [SYNDeviceManager.sharedInstance isIPad];
-    if (isIPad)
+
+    if (IS_IPAD)
     {
         channelsRootViewController.tabViewController = [[SYNGenreTabViewController alloc] initWithHomeButton: @"ALL"];
         [channelsRootViewController addChildViewController: channelsRootViewController.tabViewController];
@@ -100,7 +99,7 @@
     
     // == Profile Page == //
     SYNProfileRootViewController *profileViewController = [[SYNProfileRootViewController alloc] initWithViewId: kProfileViewId];
-    if (!isIPad)
+    if (!IS_IPAD)
     {
         profileViewController.hideUserProfile = YES;
     }
@@ -192,7 +191,8 @@
 - (void) packViewControllersForInterfaceOrientation: (UIInterfaceOrientation) orientation
 {
     CGRect newFrame;
-    if ([SYNDeviceManager.sharedInstance isIPhone])
+    
+    if (IS_IPHONE)
     {
         // The full screen video player can interfere with reading the screen dimensions on viewWillAppear.
         // Use MAX and MIN to determine which one is width and which one is height

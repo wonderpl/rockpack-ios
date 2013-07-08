@@ -9,7 +9,6 @@
 #import "GAI.h"
 #import "SYNAccountSettingOtherTableViewCell.h"
 #import "SYNAccountSettingsFullNameInput.h"
-#import "SYNDeviceManager.h"
 #import "SYNOAuthNetworkEngine.h"
 #import "UIFont+SYNFont.h"
 
@@ -48,8 +47,6 @@
                          withLabel: @"Full name"
                          withValue: nil];
     
-    BOOL isIpad = [SYNDeviceManager.sharedInstance isIPad];
-    
     self.view.backgroundColor = [UIColor whiteColor];
 
     self.inputField.tag =1 ;
@@ -64,9 +61,9 @@
     
     [self.scrollView addSubview:self.lastNameInputField];
     
-    self.tableView = [[UITableView alloc] initWithFrame: CGRectMake((isIpad ? 1.0 : 0.0),
+    self.tableView = [[UITableView alloc] initWithFrame: CGRectMake((IS_IPAD ? 1.0 : 0.0),
                                                                     self.lastNameInputField.frame.origin.y + 42.0,
-                                                                    (isIpad ? 378.0 : 320.0),
+                                                                    (IS_IPAD ? 378.0 : 320.0),
                                                                     100.0) style: UITableViewStyleGrouped];
     self.tableView.backgroundColor = [UIColor clearColor];
     self.tableView.opaque = NO;

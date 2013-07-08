@@ -9,7 +9,6 @@
 #import "SYNReportConcernTableCell.h"
 #import "SYNReportConcernTableViewController.h"
 #import "UIFont+SYNFont.h"
-#import "SYNDeviceManager.h"
 #import "SYNAppDelegate.h"
 #import "SYNOAuthNetworkEngine.h"
 #import "SYNPopoverBackgroundView.h"
@@ -185,7 +184,7 @@
 - (void) tableView: (UITableView *) tableView
 didSelectRowAtIndexPath: (NSIndexPath *) indexPath
 {
-    if ([SYNDeviceManager.sharedInstance isIPhone])
+    if (IS_IPHONE)
     {
         self.reportButton.enabled = TRUE;
     }

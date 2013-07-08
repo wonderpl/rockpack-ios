@@ -12,9 +12,8 @@
 
 @interface SYNAccountSettingTableViewCell ()
 
-
-
 @end
+
 
 @implementation SYNAccountSettingTableViewCell
 @synthesize timeLabel;
@@ -72,7 +71,7 @@
 - (void) layoutSubviews {
     [super layoutSubviews];
     
-    if ([SYNDeviceManager.sharedInstance isIPad])
+    if (IS_IPAD)
     {
         CGRect tableCellFrame = self.textLabel.frame;
         tableCellFrame.size.width += 30.0;

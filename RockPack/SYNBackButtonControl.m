@@ -8,19 +8,17 @@
 
 #import "SYNBackButtonControl.h"
 #import "UIFont+SYNFont.h"
-#import "SYNDeviceManager.h"
 
 #define USE_TITLE_STRING__
 
 @implementation SYNBackButtonControl
 @synthesize button;
 
--(id)init
+- (id) init
 {
     if (self = [super init])
     {
         // == Over Button == //
-        
         UIImage* normalImage = [UIImage imageNamed:@"ButtonBack"];
         UIImage* highImage = [UIImage imageNamed:@"ButtonBackHighlighted"];
         
@@ -32,7 +30,7 @@
         [self addSubview:button];
         
 #ifdef USE_TITLE_STRING
-        if([SYNDeviceManager.sharedInstance isIPad])
+        if (IS_IPAD)
         {
             // == UIView == //
             

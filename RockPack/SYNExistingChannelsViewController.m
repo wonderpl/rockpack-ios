@@ -42,7 +42,7 @@
     [super viewDidLoad];
     
     // We need to use a custom layout (as due to the deletion/wobble logic used elsewhere)
-    if ([SYNDeviceManager.sharedInstance isIPad])
+    if (IS_IPAD)
     {
         // iPad layout & size
         self.channelThumbnailCollectionView.collectionViewLayout =
@@ -102,7 +102,7 @@
     if (self.selectedChannel)
     {
         int selectedIndex = [self.channels indexOfObject:self.selectedChannel];
-        if( selectedIndex != NSNotFound)
+        if ( selectedIndex != NSNotFound)
         {
             self.selectedChannel = (self.channels)[selectedIndex];
             self.previouslySelectedPath = [NSIndexPath indexPathForRow:selectedIndex + 1 inSection:0];
@@ -182,7 +182,7 @@
         cell = channelThumbnailCell;
     }
     
-    if(hideCells)
+    if (hideCells)
     {
         cell.contentView.alpha = 0.0f;
     }
@@ -257,7 +257,7 @@
         self.selectedChannel = nil;
         self.confirmButtom.enabled = NO;
         
-        if([SYNDeviceManager.sharedInstance isIPad])
+        if (IS_IPAD)
         {
         
             self.selectedChannel = nil;
@@ -316,7 +316,7 @@
                              withLabel: @"Existing"
                              withValue: nil];
         
-        if(self.previouslySelectedPath)
+        if (self.previouslySelectedPath)
         {
             SYNChannelMidCell* cellToDeselect = (SYNChannelMidCell*)[self.channelThumbnailCollectionView cellForItemAtIndexPath:self.previouslySelectedPath];
             cellToDeselect.specialSelected = NO;
@@ -346,9 +346,9 @@
 {
     CGRect collectionFrame = self.channelThumbnailCollectionView.frame;
     
-    if ([SYNDeviceManager.sharedInstance isIPad])
+    if (IS_IPAD)
     {
-        if(UIInterfaceOrientationIsPortrait(interfaceOrientation))
+        if (UIInterfaceOrientationIsPortrait(interfaceOrientation))
         {
             collectionFrame.size.width = 580.0;
         }

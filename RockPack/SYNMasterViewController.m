@@ -99,7 +99,7 @@ typedef void(^AnimationCompletionBlock)(BOOL finished);
         // == Side Navigation == //
         self.sideNavigatorViewController = [[SYNSideNavigatorViewController alloc] init];
         
-        self.sideNavigatorViewController.view.frame = CGRectMake(1024.0, ([SYNDeviceManager.sharedInstance isIPad] ? 0.0 : 58.0f),
+        self.sideNavigatorViewController.view.frame = CGRectMake(1024.0, (IS_IPAD ? 0.0 : 58.0f),
                                                                   self.sideNavigatorViewController.view.frame.size.width,
                                                                   self.sideNavigatorViewController.view.frame.size.height);
 
@@ -118,7 +118,7 @@ typedef void(^AnimationCompletionBlock)(BOOL finished);
 
         // == Search Box == //
     
-        if ([SYNDeviceManager.sharedInstance isIPad])
+        if (IS_IPAD)
         {
             self.searchBoxController = [[SYNSearchBoxViewController alloc] init];
             CGRect autocompleteControllerFrame = self.searchBoxController.view.frame;
@@ -155,7 +155,7 @@ typedef void(^AnimationCompletionBlock)(BOOL finished);
     // == Fade in from splash screen (not in AppDelegate so that the Orientation is known) == //
     
     UIImageView *splashView;
-    if ([SYNDeviceManager.sharedInstance isIPhone])
+    if (IS_IPHONE)
     {
         if ([SYNDeviceManager.sharedInstance currentScreenHeight]>480.0f)
         {
@@ -395,7 +395,7 @@ typedef void(^AnimationCompletionBlock)(BOOL finished);
         [self removeVideoOverlayController];
     }
     
-    if ([[SYNDeviceManager sharedInstance] isIPhone])
+    if (IS_IPHONE)
     {
         // On iPhone the create workflow is presented modally on the existing channels page. Therefore return after closing the video player.
         return;
@@ -423,9 +423,8 @@ typedef void(^AnimationCompletionBlock)(BOOL finished);
         return;
     }
     
-    NSString* message = [SYNDeviceManager.sharedInstance isIPhone]?
-    NSLocalizedString(@"VIDEO SUCCESSFULLY ADDED",nil):
-    NSLocalizedString(@"YOUR VIDEOS HAVE BEEN SUCCESSFULLY ADDED INTO YOUR CHANNEL",nil);
+    NSString* message = IS_IPHONE ? NSLocalizedString(@"VIDEO SUCCESSFULLY ADDED",nil)
+                                  : NSLocalizedString(@"YOUR VIDEOS HAVE BEEN SUCCESSFULLY ADDED INTO YOUR CHANNEL",nil);
     
     Channel* currentlyCreating = appDelegate.videoQueue.currentlyCreatingChannel;
 
@@ -695,7 +694,7 @@ typedef void(^AnimationCompletionBlock)(BOOL finished);
     
     self.searchBoxController.searchTextField.text = @"";
     
-    if ([SYNDeviceManager.sharedInstance isIPad] && sender != nil)
+    if (IS_IPAD && sender != nil)
     {
         [self.searchBoxController.searchTextField becomeFirstResponder];
     }
@@ -720,8 +719,7 @@ typedef void(^AnimationCompletionBlock)(BOOL finished);
     if (!termString)
         return;
     
-    BOOL isIPad = [SYNDeviceManager.sharedInstance isIPad];
-    if (isIPad)
+    if (IS_IPAD)
     {
         self.closeSearchButton.hidden = YES;
         self.sideNavigationButton.hidden = NO;
@@ -733,7 +731,7 @@ typedef void(^AnimationCompletionBlock)(BOOL finished);
     else
         [appDelegate.viewStackManager popToController:self.searchViewController];
     
-    if (!isIPad)
+    if (!IS_IPAD)
     {
         //[self.searchViewController.view addSubview:self.sideNavigationViewController.searchViewController.searchBoxView];
         self.searchViewController.searchBoxViewController = self.sideNavigatorViewController.searchViewController;
@@ -817,7 +815,7 @@ typedef void(^AnimationCompletionBlock)(BOOL finished);
     }
     else if ([self.reachability currentReachabilityStatus] == NotReachable)
     {
-        NSString* message = [SYNDeviceManager.sharedInstance isIPad] ? NSLocalizedString(@"No_Network_iPad", nil)
+        NSString* message = IS_IPAD ? NSLocalizedString(@"No_Network_iPad", nil)
                                                                        : NSLocalizedString(@"No_Network_iPhone", nil);
         [self presentNetworkErrorViewWithMesssage: message];
     }
@@ -858,7 +856,7 @@ typedef void(^AnimationCompletionBlock)(BOOL finished);
         self.closeSearchButton.hidden = YES;
         self.backButtonControl.hidden = NO;
         
-        if (self.isInSearchMode && [[SYNDeviceManager sharedInstance] isIPad])
+        if (self.isInSearchMode && IS_IPAD)
         {
             self.sideNavigationButton.hidden = YES;
         }
@@ -912,10 +910,9 @@ typedef void(^AnimationCompletionBlock)(BOOL finished);
 
 - (void) channelSuccessfullySaved: (NSNotification*) note
 {
-    NSString* message =
-    [SYNDeviceManager.sharedInstance isIPhone] ? NSLocalizedString(@"CHANNEL SAVED",nil) :
-    NSLocalizedString(@"YOUR CHANNEL HAS BEEN SAVED SUCCESSFULLY",nil);
-    [self presentSuccessNotificationWithMessage:message];
+    NSString* message = IS_IPHONE ? NSLocalizedString(@"CHANNEL SAVED", nil) : NSLocalizedString(@"YOUR CHANNEL HAS BEEN SAVED SUCCESSFULLY", nil);
+    
+    [self presentSuccessNotificationWithMessage: message];
 }
 
 
@@ -970,7 +967,7 @@ typedef void(^AnimationCompletionBlock)(BOOL finished);
     SYNAccountSettingsMainTableViewController* accountsTableController = [[SYNAccountSettingsMainTableViewController alloc] init];
     accountsTableController.view.backgroundColor = [UIColor clearColor];
 
-    if ([SYNDeviceManager.sharedInstance isIPad])
+    if (IS_IPAD)
     {
         
         UINavigationController* navigationController = [[UINavigationController alloc] initWithRootViewController: accountsTableController];
@@ -1146,7 +1143,7 @@ typedef void(^AnimationCompletionBlock)(BOOL finished);
 
 - (NSUInteger) supportedInterfaceOrientations
 {
-    if ([SYNDeviceManager.sharedInstance isIPhone])
+    if (IS_IPHONE)
     {
         return UIInterfaceOrientationMaskPortrait;
     }
@@ -1260,7 +1257,7 @@ typedef void(^AnimationCompletionBlock)(BOOL finished);
         targetFrame = self.backButtonControl.frame;
         targetAlpha = 1.0;
         
-        if ([SYNDeviceManager.sharedInstance isIPad])
+        if (IS_IPAD)
         {
             targetFrame.origin.x = 10.0;
         }
@@ -1331,7 +1328,7 @@ typedef void(^AnimationCompletionBlock)(BOOL finished);
         
         if (abstractController.alwaysDisplaysSearchBox)
         {
-            if ([[SYNDeviceManager sharedInstance] isIPhone])
+            if (IS_IPHONE)
             {
                 [self.sideNavigatorViewController.searchViewController removeFromParentViewController];
                 UIView* searchBar = self.sideNavigatorViewController.searchViewController.searchBoxView;
@@ -1346,7 +1343,7 @@ typedef void(^AnimationCompletionBlock)(BOOL finished);
         }
         else
         {
-            if ([[SYNDeviceManager sharedInstance] isIPhone])
+            if (IS_IPHONE)
             {
                 if ([[self.view subviews] containsObject:self.sideNavigatorViewController.searchViewController.searchBoxView])
                 {

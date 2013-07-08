@@ -9,7 +9,6 @@
 #import "GAI.h"
 #import "MKNetworkOperation.h"
 #import "SYNChannelDetailViewController.h"
-#import "SYNDeviceManager.h"
 #import "SYNSearchChannelsViewController.h"
 #import "SYNSearchRootViewController.h"
 #import "SYNSearchTabView.h"
@@ -59,21 +58,19 @@
 {
     [super viewDidLoad];
     
-    if ([SYNDeviceManager.sharedInstance isIPhone]) {
+    if (IS_IPHONE)
+    {
         CGRect collectionFrame = self.channelThumbnailCollectionView.frame;
         collectionFrame.origin.y += 60.0;
         collectionFrame.size.height -= 60.0;
         self.channelThumbnailCollectionView.frame = collectionFrame;
     }
-    
-    else {
-        
+    else
+    {
         CGRect collectionFrame = self.channelThumbnailCollectionView.frame;
         collectionFrame.origin.y += 5.0;
         collectionFrame.size.height -= 5.0;
         self.channelThumbnailCollectionView.frame = collectionFrame;
-        
-        
     }
 }
 
@@ -225,7 +222,7 @@
 
 - (CGSize) itemSize
 {
-    return [SYNDeviceManager.sharedInstance isIPhone] ? CGSizeMake(152.0f, 152.0f) : CGSizeMake(251.0, 274.0);
+    return IS_IPHONE ? CGSizeMake(152.0f, 152.0f) : CGSizeMake(251.0, 274.0);
 }
 
 @end

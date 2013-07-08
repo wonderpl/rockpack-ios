@@ -9,6 +9,7 @@
 #import "Channel.h"
 #import "ChannelOwner.h"
 #import "GAI.h"
+#import "MKNetworkOperation.h"
 #import "NSDate-Utilities.h"
 #import "SYNAppDelegate.h"
 #import "SYNDeviceManager.h"
@@ -20,17 +21,12 @@
 #import "UIImageView+WebCache.h"
 #import "Video.h"
 #import "VideoInstance.h"
-#import "MKNetworkOperation.h"
 
 @interface SYNSearchVideosViewController ()
-{
-    BOOL isIphone;
-}
 
+@property (nonatomic, assign) BOOL isIPhone;
+@property (nonatomic, strong) NSCalendar* currentCalendar;
 @property (nonatomic, weak) MKNetworkOperation* runningSearchOperation;
-
-
-@property (nonatomic, strong)NSCalendar* currentCalendar;
 @property (nonatomic, weak) NSString* searchTerm;
 
 @end
@@ -38,18 +34,16 @@
 
 @implementation SYNSearchVideosViewController
 
-@synthesize itemToUpdate;
+// FIXME: NOT QUITE SURE WHY THESE ARE REQUIRED
 @synthesize dataRequestRange;
-@synthesize dataItemsAvailable;
-@synthesize runningNetworkOperation = _runningNetworkOperation;
 
 - (void) viewDidLoad
 {
     [super viewDidLoad];
 
-    isIphone = [SYNDeviceManager.sharedInstance isIPhone];
+    self.isIPhone = IS_IPHONE;
     
-    if (isIphone)
+    if (self.isIPhone)
     {
         CGRect collectionFrame = self.videoThumbnailCollectionView.frame;
         collectionFrame.origin.y += 40.0;
@@ -162,6 +156,7 @@
     return 1;
 }
 
+
 - (NSInteger) collectionView: (UICollectionView *) collectionView numberOfItemsInSection: (NSInteger) section
 {
     return self.fetchedResultsController.fetchedObjects.count;
@@ -169,13 +164,9 @@
 }
 
 
-
 - (UICollectionViewCell *) collectionView: (UICollectionView *) cv
                    cellForItemAtIndexPath: (NSIndexPath *) indexPath
 {
-    
-    
-    
     VideoInstance *videoInstance = [self.fetchedResultsController objectAtIndexPath: indexPath];
     
     SYNVideoThumbnailWideCell *videoThumbnailCell = [cv dequeueReusableCellWithReuseIdentifier: @"SYNVideoThumbnailWideCell"
@@ -214,7 +205,7 @@
     else
         [format appendString: NSLocalizedString(@"Today", nil)];
     
-    if (isIphone)
+    if (self.isIPhone)
     {
         //On iPhone, append You Tube User name to the date label
         videoThumbnailCell.dateAddedLabel.text = [NSString stringWithFormat:@"%@ BY %@",[format uppercaseString], [video.sourceUsername uppercaseString]];
@@ -241,8 +232,8 @@
     videoThumbnailCell.addItButton.selected = [appDelegate.videoQueue videoInstanceIsAddedToChannel:videoInstance];
     
     
-    if((!isIphone && indexPath.item == 2) ||
-       (isIphone && indexPath.item == 0)) {
+    if ((!self.isIPhone && indexPath.item == 2) ||
+       (self.isIPhone && indexPath.item == 0)) {
         //perform after 0.0f delay to make sure the call is queued after the cell has been added to the view
         [self performSelector:@selector(showVideoOnboardingForCell:) withObject:videoThumbnailCell afterDelay:0.0f];
     }
@@ -262,9 +253,9 @@
 
 - (CGSize)collectionView:(UICollectionView *)collectionView
                   layout:(UICollectionViewLayout*)collectionViewLayout
-  sizeForItemAtIndexPath:(NSIndexPath *)indexPath {
-    
-    if([SYNDeviceManager.sharedInstance isIPad])
+  sizeForItemAtIndexPath:(NSIndexPath *)indexPath
+{
+    if (IS_IPAD)
     {
         if([SYNDeviceManager.sharedInstance isLandscape])
         {
@@ -322,11 +313,9 @@
 }
 
 
-
-
 - (CGSize) footerSize
 {
-    return [SYNDeviceManager.sharedInstance isIPhone]? CGSizeMake(320.0f, 64.0f) : CGSizeMake(1024.0, 64.0);
+    return [SYNDeviceManager.sharedInstance isIPhone] ? CGSizeMake(320.0f, 64.0f) : CGSizeMake(1024.0, 64.0);
 }
 
 
@@ -341,7 +330,7 @@
 
 - (NSRange) dataRequestRange
 {
-    if(dataRequestRange.length == 0)
+    if (dataRequestRange.length == 0)
     {
         dataRequestRange = NSMakeRange(0, kAPIInitialBatchSize);
     }
@@ -349,17 +338,19 @@
     return dataRequestRange;
 }
 
--(void)setRunningSearchOperation:(MKNetworkOperation *)runningSearchOperation
+
+- (void) setRunningSearchOperation: (MKNetworkOperation *) runningSearchOperation
 {
-    if(_runningNetworkOperation)
-        [_runningNetworkOperation cancel];
+    if(_runningSearchOperation)
+        [_runningSearchOperation cancel];
     
-    _runningNetworkOperation = runningSearchOperation;
+    _runningSearchOperation = runningSearchOperation;
 }
+
 
 #pragma mark - onboarding
 
--(void)showVideoOnboardingForCell:(SYNVideoThumbnailWideCell*)cell
+- (void) showVideoOnboardingForCell: (SYNVideoThumbnailWideCell*) cell
 {
     
     NSUserDefaults *defaults = [NSUserDefaults standardUserDefaults];
@@ -369,8 +360,8 @@
         
         NSString* message = NSLocalizedString(@"onboarding_video", nil);
         
-        CGFloat fontSize = [[SYNDeviceManager sharedInstance] isIPad] ? 19.0 : 15.0 ;
-        CGSize size = [[SYNDeviceManager sharedInstance] isIPad] ? CGSizeMake(340.0, 164.0) : CGSizeMake(260.0, 144.0);
+        CGFloat fontSize = IS_IPAD ? 19.0 : 15.0 ;
+        CGSize size = IS_IPAD ? CGSizeMake(340.0, 164.0) : CGSizeMake(260.0, 144.0);
         CGRect rectToPointTo = CGRectZero;
         PointingDirection directionToPointTo = PointingDirectionDown;
         if(cell)
@@ -386,8 +377,7 @@
                                                                                   andFontSize:fontSize
                                                                                    pointingTo:rectToPointTo
                                                                                 withDirection:directionToPointTo];
-        
-        
+
         __weak SYNFeedRootViewController* wself = self;
         addToChannelPopover.action = ^{
             [wself videoAddButtonTapped:cell.addItButton];

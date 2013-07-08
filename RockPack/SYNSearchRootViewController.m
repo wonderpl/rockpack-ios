@@ -33,11 +33,7 @@
 
 @implementation SYNSearchRootViewController
 
-@synthesize tabsContainer;
 @synthesize videoSearchTabView, channelsSearchTabView;
-
-
-
 
 - (void) loadView
 {
@@ -60,14 +56,14 @@
     channelTabRect.origin.x = self.videoSearchTabView.frame.size.width; // place at the middle of the 2 tabs (where the first ends)
     self.channelsSearchTabView.frame = channelTabRect;
     
-    tabsContainer = [[UIView alloc] initWithFrame:CGRectMake(0.0, 0.0,
+    self.tabsContainer = [[UIView alloc] initWithFrame:CGRectMake(0.0, 0.0,
                                                             self.channelsSearchTabView.frame.size.width * 2.0,
                                                             self.channelsSearchTabView.frame.size.height)];
     
-    tabsContainer.autoresizingMask = UIViewAutoresizingFlexibleLeftMargin | UIViewAutoresizingFlexibleRightMargin;
+    self.tabsContainer.autoresizingMask = UIViewAutoresizingFlexibleLeftMargin | UIViewAutoresizingFlexibleRightMargin;
     
-    [tabsContainer addSubview:self.channelsSearchTabView];
-    [tabsContainer addSubview:self.videoSearchTabView];
+    [self.tabsContainer addSubview:self.channelsSearchTabView];
+    [self.tabsContainer addSubview:self.videoSearchTabView];
     
     [self.videoSearchTabView addTarget: self
                                 action: @selector(videoTabPressed:)
@@ -77,11 +73,11 @@
                                    action: @selector(channelTabPressed:)
                          forControlEvents:UIControlEventTouchUpInside];
     
-    CGFloat correctTabsY = [SYNDeviceManager.sharedInstance isIPad] ? 104.0 : self.channelsSearchTabView.frame.size.height/2 + 65.0f;
-    tabsContainer.center = CGPointMake(self.view.center.x, correctTabsY);
-    tabsContainer.frame = CGRectIntegral(tabsContainer.frame);
+    CGFloat correctTabsY = IS_IPAD ? 104.0 : self.channelsSearchTabView.frame.size.height/2 + 65.0f;
+    self.tabsContainer.center = CGPointMake(self.view.center.x, correctTabsY);
+    self.tabsContainer.frame = CGRectIntegral(self.tabsContainer.frame);
     
-    [self.view addSubview:tabsContainer];
+    [self.view addSubview: self.tabsContainer];
     
     [self.view bringSubviewToFront:self.addButton];
     
@@ -91,11 +87,11 @@
     self.searchVideosController.itemToUpdate = self.videoSearchTabView;
     self.searchVideosController.parent = self;
     [self addChildViewController:self.searchVideosController];
-    [self.view insertSubview:self.searchVideosController.view belowSubview:tabsContainer];
+    [self.view insertSubview:self.searchVideosController.view belowSubview: self.tabsContainer];
     
     self.searchVideosController.view.autoresizingMask = UIViewAutoresizingFlexibleWidth | UIViewAutoresizingFlexibleHeight;
     
-    if ([SYNDeviceManager.sharedInstance isIPhone])
+    if (IS_IPHONE)
     {
         CGRect collectionViewFrame = CGRectMake(0, 108.0f, 320.0f,self.view.frame.size.height - 108.0f);
         self.searchVideosController.videoThumbnailCollectionView.frame = collectionViewFrame;
@@ -112,19 +108,16 @@
         collectionViewFrame.size = self.view.frame.size;
         self.searchVideosController.view.frame = collectionViewFrame;
     }
-    
-    
+
     self.searchChannelsController = [[SYNSearchChannelsViewController alloc] initWithViewId:viewId]; // this is "Search"
     self.searchChannelsController.itemToUpdate = self.channelsSearchTabView;
     self.searchChannelsController.parent = self;
     [self addChildViewController:self.searchChannelsController];
-    [self.view insertSubview:self.searchChannelsController.view belowSubview:tabsContainer];
+    [self.view insertSubview:self.searchChannelsController.view belowSubview: self.tabsContainer];
     self.searchChannelsController.view.autoresizingMask = UIViewAutoresizingFlexibleWidth | UIViewAutoresizingFlexibleHeight;
 
-    
-    if ([SYNDeviceManager.sharedInstance isIPhone])
+    if (IS_IPHONE)
     {
-        
         // FIXME: This magic number layout is not so good. self.view needs to be setup with the correct frame, and then we can start doing a relative layout.
         CGRect collectionViewFrame = CGRectMake(0, 48.0f, 320.0f, self.view.frame.size.height - 103.0f);
         self.searchChannelsController.channelThumbnailCollectionView.frame = collectionViewFrame;
@@ -136,11 +129,8 @@
         layout.sectionInset = insets;
         
     }
-    
-    
-    
-
 }
+
 
 - (void) viewWillAppear: (BOOL) animated
 {
@@ -164,9 +154,8 @@
     
     if (!self.currentController)
         [self videoTabPressed:nil];
-    
-        
-    if([[SYNDeviceManager sharedInstance] isIPhone])
+
+    if (IS_IPHONE)
     {
 //        [[NSNotificationCenter defaultCenter] postNotificationName: kNoteAllNavControlsHide
 //                                                        object: self];
@@ -174,7 +163,6 @@
 //        [self.view addSubview:self.searchBoxViewController.searchBoxView];
         [self.searchBoxViewController.searchBoxView revealCloseButton];
     }
-    
 }
 
 
@@ -189,14 +177,12 @@
     {
         return;
     }
-    
-    
-    if([[SYNDeviceManager sharedInstance] isIPhone])
+
+    if (IS_IPHONE)
     {
         [[NSNotificationCenter defaultCenter] postNotificationName: kNoteAllNavControlsShow
                                                         object: self];
     }
-    
 }
 
 
@@ -218,8 +204,6 @@
     self.searchVideosController = nil;
     self.searchChannelsController = nil;
 }
-
-
 
 
 - (void) videoTabPressed: (UIControl*) control
@@ -253,16 +237,11 @@
 {
     if (self.currentController == self.searchVideosController)
         return;
-    
-    
-    
+
     [self.searchVideosController.view setHidden:NO];
     [self.searchChannelsController.view setHidden:YES];
     
-    self.currentController = self.searchVideosController;
-    
-    
-    
+    self.currentController = self.searchVideosController; 
 }
 
 
@@ -270,16 +249,11 @@
 {
     if (self.currentController == self.searchChannelsController)
         return;
-    
-    
-    
+
     [self.searchVideosController.view setHidden:YES];
     [self.searchChannelsController.view setHidden:NO];
     
     self.currentController = self.searchChannelsController;
-    
-    
-    
 }
 
 
@@ -322,11 +296,7 @@
 }
 
 
-
-
 #pragma mark - Accessor
-
-
 
 - (BOOL) alwaysDisplaysSearchBox
 {

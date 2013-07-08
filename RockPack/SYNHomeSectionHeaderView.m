@@ -9,7 +9,6 @@
 #import "SYNHomeSectionHeaderView.h"
 #import "UIFont+SYNFont.h"
 #import <QuartzCore/CoreAnimation.h>
-#import "SYNDeviceManager.h"
 
 
 @interface SYNHomeSectionHeaderView ()
@@ -18,26 +17,27 @@
 
 @end
 
+
 @implementation SYNHomeSectionHeaderView
-
-
 
 - (void) awakeFromNib
 {
     [super awakeFromNib];
     
     
-    if([SYNDeviceManager.sharedInstance isIPad]){
+    if (IS_IPAD)
+    {
         self.sectionTitleLabel.font = [UIFont rockpackFontOfSize: 20.0f];
     }
-    
-    else{
+    else
+    {
         self.sectionTitleLabel.font = [UIFont rockpackFontOfSize: 14.0f];
     }
     
     self.highlightedSectionView.hidden = TRUE;
     self.sectionView.hidden = FALSE;
 }
+
 
 // Need to do this outside awakeFromNib as the delegate is not set at that point
 - (void) setViewControllerDelegate: (UIViewController *) viewControllerDelegate

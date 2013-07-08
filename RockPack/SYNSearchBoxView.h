@@ -14,6 +14,7 @@
     UIView* grayPanel;
     CGFloat initialPanelHeight;
 }
+
 @property (nonatomic, strong) IBOutlet SYNTextField* searchTextField;
 
 //iPhone specific
@@ -21,7 +22,7 @@
 
 -(void)resizeForHeight:(CGFloat)height;
 
-+(id)searchBoxView;
++ (id) searchBoxView;
 
 //iPhone specific
 /**
@@ -29,13 +30,13 @@
  
     not animated, wrap in UIView animaiton call to animate
  */
--(void)revealCloseButton;
+- (void) revealCloseButton;
 
 /**
  move the close button offscreen and resize the text box.
  
  not animated, wrap in UIView animaiton call to animate
  */
--(void)hideCloseButton;
+- (void) hideCloseButton;
 
 @end

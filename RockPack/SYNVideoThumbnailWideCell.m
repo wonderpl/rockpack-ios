@@ -7,8 +7,8 @@
 //
 
 #import "AppConstants.h"
-#import "SYNAppDelegate.h"
 #import "SYNDeviceManager.h"
+#import "SYNAppDelegate.h"
 #import "SYNNetworkEngine.h"
 #import "SYNVideoThumbnailWideCell.h"
 #import "UIFont+SYNFont.h"
@@ -111,7 +111,7 @@
 
 - (void) setUsernameText: (NSString *) text
 {
-    if ([SYNDeviceManager.sharedInstance isIPad])
+    if (IS_IPAD)
     {
         //CGRect byFrame = self.byLabel.frame;
         CGRect usernameFrame = self.usernameLabel.frame;
@@ -150,7 +150,7 @@
 
 - (void) setChannelNameText:(NSString *)channelNameText
 {
-    if ([SYNDeviceManager.sharedInstance isIPad])
+    if (IS_IPAD)
     {
         CGRect currentFrame = self.channelName.frame;
         CGFloat defaultWidth = currentFrame.size.width;

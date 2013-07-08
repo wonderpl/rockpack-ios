@@ -9,7 +9,6 @@
 #import "AppConstants.h"
 #import "GAI.h"
 #import "SYNAccountSettingsAbout.h"
-#import "SYNDeviceManager.h"
 #import "UIFont+SYNFont.h"
 #import <QuartzCore/QuartzCore.h>
 
@@ -33,12 +32,10 @@
                 bundle: (NSBundle *) nibBundleOrNil
 {
     self = [super initWithNibName: nibNameOrNil bundle: nibBundleOrNil];
-    
-    BOOL isIpad = [SYNDeviceManager.sharedInstance isIPad];
-    
+
     if (self)
     {
-        if (isIpad)
+        if (IS_IPAD)
         {
             self.contentSizeForViewInPopover = CGSizeMake(380, 476);
         }
@@ -192,10 +189,8 @@
 
 - (void) rockpackLogoImage
 {
-    BOOL isIpad = [SYNDeviceManager.sharedInstance isIPad];
-    
     self.logoImageView = [[UIImageView alloc] initWithImage:[UIImage imageNamed:@"IconRockpackAbout"]];
-    self.logoImageView.frame = CGRectMake((self.contentSizeForViewInPopover.width * 0.5) - 38.0, (isIpad ? 40.0 : 30.0), 76.0, 77.0);
+    self.logoImageView.frame = CGRectMake((self.contentSizeForViewInPopover.width * 0.5) - 38.0, (IS_IPAD ? 40.0 : 30.0), 76.0, 77.0);
     self.logoImageView.backgroundColor = [UIColor clearColor];
     [self.scrollView addSubview: self.logoImageView];
     
@@ -268,11 +263,9 @@
 {
     self.attributionTextView = [[UITextView alloc] init];
     
-    BOOL isIpad = [SYNDeviceManager.sharedInstance isIPad];
-    
     NSMutableParagraphStyle *paragraphStyle = [[NSMutableParagraphStyle alloc] init];
-    paragraphStyle.minimumLineHeight = (isIpad ? 10.0f : 15.0f);
-    paragraphStyle.maximumLineHeight = (isIpad ? 10.0f : 15.0f);
+    paragraphStyle.minimumLineHeight = (IS_IPAD ? 10.0f : 15.0f);
+    paragraphStyle.maximumLineHeight = (IS_IPAD ? 10.0f : 15.0f);
     
     NSDictionary *attributes = @{
                                   NSParagraphStyleAttributeName : paragraphStyle,

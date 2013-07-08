@@ -8,7 +8,6 @@
 
 #import "SYNNotificationsTableViewCell.h"
 #import "UIFont+SYNFont.h"
-#import "SYNDeviceManager.h"
 #import "SYNNotificationsTableViewController.h"
 
 
@@ -188,7 +187,7 @@
     
     
     CGRect textLabelFrame = self.textLabel.frame;
-    CGFloat maxWidth = [SYNDeviceManager.sharedInstance isIPad] ? 200.0 : 170.0 ;
+    CGFloat maxWidth = IS_IPAD ? 200.0 : 170.0 ;
     mainTextSize = [messageTitle sizeWithFont:self.textLabel.font
                             constrainedToSize:CGSizeMake(maxWidth, 500.0)
                                 lineBreakMode:self.textLabel.lineBreakMode];
