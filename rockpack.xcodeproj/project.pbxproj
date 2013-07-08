@@ -1006,6 +1006,8 @@
 		BE4180F1176B35D800FCF994 /* onboarding_button_ok_highlighted~iphone.png in Resources */ = {isa = PBXBuildFile; fileRef = BE4180EF176B35D800FCF994 /* onboarding_button_ok_highlighted~iphone.png */; };
 		BE5D29EB17577E2800C00486 /* SYNFeedMessagesView.m in Sources */ = {isa = PBXBuildFile; fileRef = BE5D29EA17577E2800C00486 /* SYNFeedMessagesView.m */; };
 		BE7D02E5178AF310008053DC /* SYNSearchUsersViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = BE7D02E4178AF310008053DC /* SYNSearchUsersViewController.m */; };
+		BE7D02EA178B138B008053DC /* SYNUserThumbnailCell.m in Sources */ = {isa = PBXBuildFile; fileRef = BE7D02E9178B138B008053DC /* SYNUserThumbnailCell.m */; };
+		BE7D02EC178B13C3008053DC /* SYNUserThumbnailCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = BE7D02EB178B13C3008053DC /* SYNUserThumbnailCell.xib */; };
 		BE7D342E170DD8C90085AB81 /* SYNChannelFooterMoreView.xib in Resources */ = {isa = PBXBuildFile; fileRef = BE7D342D170DD8C90085AB81 /* SYNChannelFooterMoreView.xib */; };
 		BE7D3431170DDB310085AB81 /* SYNChannelFooterMoreView.m in Sources */ = {isa = PBXBuildFile; fileRef = BE7D3430170DDB310085AB81 /* SYNChannelFooterMoreView.m */; };
 		BE7D34CE1714434D0085AB81 /* SYNDeviceManager.m in Sources */ = {isa = PBXBuildFile; fileRef = BE7D34CD1714434D0085AB81 /* SYNDeviceManager.m */; };
@@ -2328,6 +2330,9 @@
 		BE5D29EA17577E2800C00486 /* SYNFeedMessagesView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SYNFeedMessagesView.m; sourceTree = "<group>"; };
 		BE7D02E3178AF310008053DC /* SYNSearchUsersViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SYNSearchUsersViewController.h; sourceTree = "<group>"; };
 		BE7D02E4178AF310008053DC /* SYNSearchUsersViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SYNSearchUsersViewController.m; sourceTree = "<group>"; };
+		BE7D02E8178B138B008053DC /* SYNUserThumbnailCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SYNUserThumbnailCell.h; sourceTree = "<group>"; };
+		BE7D02E9178B138B008053DC /* SYNUserThumbnailCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SYNUserThumbnailCell.m; sourceTree = "<group>"; };
+		BE7D02EB178B13C3008053DC /* SYNUserThumbnailCell.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = SYNUserThumbnailCell.xib; sourceTree = "<group>"; };
 		BE7D342D170DD8C90085AB81 /* SYNChannelFooterMoreView.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = SYNChannelFooterMoreView.xib; sourceTree = "<group>"; };
 		BE7D342F170DDB310085AB81 /* SYNChannelFooterMoreView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SYNChannelFooterMoreView.h; sourceTree = "<group>"; };
 		BE7D3430170DDB310085AB81 /* SYNChannelFooterMoreView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SYNChannelFooterMoreView.m; sourceTree = "<group>"; };
@@ -3582,6 +3587,9 @@
 				BE285D9E172584E200D995AB /* SYNChannelCreateNewCell.m */,
 				BE285DA0172584FF00D995AB /* SYNChannelCreateNewCell~iphone.xib */,
 				38BACE021734151A00406597 /* SYNChannelCreateNewCell.xib */,
+				BE7D02E8178B138B008053DC /* SYNUserThumbnailCell.h */,
+				BE7D02E9178B138B008053DC /* SYNUserThumbnailCell.m */,
+				BE7D02EB178B13C3008053DC /* SYNUserThumbnailCell.xib */,
 			);
 			name = "Channel cells";
 			sourceTree = "<group>";
@@ -6059,6 +6067,7 @@
 				BEBFD0AD177A03D200C90544 /* PanelPrivateAlert@2x.png in Resources */,
 				1F4DAEE01781AA2500E0DB81 /* PlaceholderSidebarAvatar.png in Resources */,
 				1F4DAEE11781AA2500E0DB81 /* PlaceholderSidebarAvatar@2x.png in Resources */,
+				BE7D02EC178B13C3008053DC /* SYNUserThumbnailCell.xib in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -6355,6 +6364,7 @@
 				016191711782DECD0016BD23 /* PSPDFUIKitMainThreadGuard.m in Sources */,
 				BE2D762D1785BBB100546BFD /* SYNViewStackManager.m in Sources */,
 				BE7D02E5178AF310008053DC /* SYNSearchUsersViewController.m in Sources */,
+				BE7D02EA178B138B008053DC /* SYNUserThumbnailCell.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
