@@ -180,13 +180,9 @@
     [super viewWillAppear: animated];
     
     // FIXME: Replace with something more elegant (i.e. anything else)
-    if (appDelegate.searchRefreshDisabled == TRUE)
-    {
+    if (appDelegate.searchRefreshDisabled == YES)
         return;
-    }
     
-    // Google analytics support
-//    [GAI.sharedInstance.defaultTracker sendView: @"Search - Root"];
     
     viewIsOnScreen = YES;
     
@@ -194,15 +190,12 @@
         [self performSearchForCurrentSearchTerm];
     
     if (!self.currentController)
-        [self videoTabPressed:nil];
+        [self searchTabPressed:nil];
     
         
     if([[SYNDeviceManager sharedInstance] isIPhone])
     {
-//        [[NSNotificationCenter defaultCenter] postNotificationName: kNoteAllNavControlsHide
-//                                                        object: self];
-//        
-//        [self.view addSubview:self.searchBoxViewController.searchBoxView];
+
         [self.searchBoxViewController.searchBoxView revealCloseButton];
     }
     
@@ -253,6 +246,17 @@
 
 - (void) searchTabPressed: (UIButton*) control
 {
+    // nil means select the first
+    
+    if(!control)
+    {
+        self.videoSearchTabView.selected = YES;
+        
+        self.currentController = searchVideosController;
+        return;
+    }
+    
+    
     if(control.selected)
         return;
     
@@ -261,69 +265,17 @@
         SYNSearchTabView* tabView = (SYNSearchTabView*)[controller valueForKey:@"itemToUpdate"];
         
         
-        if([tabView isClicked:control])
+        if([tabView isClicked:control]) {
             tabView.selected = YES;
-        else
+            self.currentController = controller;
+        }
+        else {
             tabView.selected = NO;
+            controller.view.hidden = YES;
+        }
+        
         
     }];
-}
-
-- (void) videoTabPressed: (UIControl*) control
-{
-   if (self.videoSearchTabView.selected)
-       return;
-    
-    self.videoSearchTabView.selected = YES;
-    self.channelsSearchTabView.selected = NO;
-    
-    [self showVideoSearchResults];
-    
-}
-
-
-- (void) channelTabPressed: (UIControl*) control
-{
-    [GAI.sharedInstance.defaultTracker sendView: @"Search - Channels"];
-    
-    if (self.channelsSearchTabView.selected)
-        return;
-    
-    self.channelsSearchTabView.selected = YES;
-    self.videoSearchTabView.selected = NO;
-    
-    [self showChannelsSearchResult];
-}
-
-
-- (void) showVideoSearchResults
-{
-    if (self.currentController == self.searchVideosController)
-        return;
-    
-    
-    [self.searchVideosController.view setHidden:NO];
-    [self.searchChannelsController.view setHidden:YES];
-    
-    self.currentController = self.searchVideosController;
-    
-    
-    
-}
-
-
-- (void) showChannelsSearchResult
-{
-    if (self.currentController == self.searchChannelsController)
-        return;
-    
-    [self.searchVideosController.view setHidden:YES];
-    [self.searchChannelsController.view setHidden:NO];
-    
-    self.currentController = self.searchChannelsController;
-    
-    
-    
 }
 
 
@@ -361,11 +313,27 @@
         DebugLog(@"Could not clean VideoInstances from search context");
     }
     
+    success = [appDelegate.searchRegistry clearImportContextFromEntityName:@"ChannelOwner"];
+    if (!success)
+    {
+        DebugLog(@"Could not clean ChannelOwner from search context");
+    }
+    
     [self.searchVideosController performNewSearchWithTerm:searchTerm];
     [self.searchChannelsController performNewSearchWithTerm:searchTerm];
 }
 
-
+-(void)setCurrentController:(SYNAbstractViewController *)currentController
+{
+    _currentController = currentController;
+    [self.controllers enumerateObjectsUsingBlock:^(SYNAbstractViewController* controller, NSUInteger idx, BOOL *stop) {
+        controller.view.hidden = YES;
+    }];
+    _currentController.view.hidden = NO;
+    
+    
+    
+}
 
 
 #pragma mark - Accessor
