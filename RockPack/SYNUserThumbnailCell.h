@@ -8,11 +8,13 @@
 
 #import <UIKit/UIKit.h>
 
+
 @interface SYNUserThumbnailCell : UICollectionViewCell
 
 @property (nonatomic, strong) NSString* imageUrlString;
 
 @property (nonatomic, strong) IBOutlet UIImageView *imageView;
 @property (nonatomic, strong) IBOutlet UILabel* nameLabel;
+@property (nonatomic, strong) IBOutlet UILabel* usernameLabel;
 
 @end

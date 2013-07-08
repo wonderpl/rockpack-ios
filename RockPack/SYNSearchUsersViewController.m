@@ -124,6 +124,29 @@
     
 }
 
+- (void) viewDidLoad
+{
+    [super viewDidLoad];
+    
+    self.users = [NSMutableArray array];
+    
+    // Register Cells
+    UINib *thumbnailCellNib = [UINib nibWithNibName: @"SYNUserThumbnailCell"
+                                             bundle: nil];
+    
+    [self.usersThumbnailCollectionView registerNib: thumbnailCellNib
+                        forCellWithReuseIdentifier: @"SYNUserThumbnailCell"];
+    
+    // Register Footer
+    UINib *footerViewNib = [UINib nibWithNibName: @"SYNChannelFooterMoreView"
+                                          bundle: nil];
+    
+    [self.usersThumbnailCollectionView registerNib: footerViewNib
+                          forSupplementaryViewOfKind: UICollectionElementKindSectionFooter
+                                 withReuseIdentifier: @"SYNChannelFooterMoreView"];
+    
+}
+
 - (void) displayUsers
 {
     
@@ -136,10 +159,10 @@
     
     request.fetchBatchSize = 20;
     
-    NSSortDescriptor *positionDescriptor = [[NSSortDescriptor alloc] initWithKey: @"position"
-                                                                       ascending: YES];
-    
-    [request setSortDescriptors:@[positionDescriptor]];
+//    NSSortDescriptor *positionDescriptor = [[NSSortDescriptor alloc] initWithKey: @"position"
+//                                                                       ascending: YES];
+//    
+//    [request setSortDescriptors:@[positionDescriptor]];
     
     NSError *error = nil;
     NSArray *resultsArray = [appDelegate.searchManagedObjectContext executeFetchRequest: request
@@ -167,6 +190,7 @@
     [appDelegate.networkEngine searchUsersForTerm: term
                                          andRange: self.dataRequestRange
                                        onComplete: ^(int itemsCount) {
+                                           NSLog(@"%i", itemsCount);
                                               self.dataItemsAvailable = itemsCount;
                                               if (self.itemToUpdate)
                                                   [self.itemToUpdate setNumberOfItems: self.dataItemsAvailable

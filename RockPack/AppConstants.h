@@ -65,6 +65,7 @@
 #define kAPISearchVideos            @"/ws/search/videos/"
 #define kAPICompleteVideos          @"/ws/complete/videos/"
 #define kAPISearchChannels          @"/ws/search/channels/"
+#define kAPISearchUsers             @"/ws/search/users/"
 #define kAPICompleteChannels        @"/ws/complete/channels/"
 
 // User details

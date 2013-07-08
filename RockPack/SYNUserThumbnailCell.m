@@ -17,15 +17,20 @@
 {
     [super awakeFromNib];
     
-    self.nameLabel.font = [UIFont boldRockpackFontOfSize: self.nameLabel.font.pointSize];
+    self.nameLabel.font = [UIFont rockpackFontOfSize: self.nameLabel.font.pointSize];
+    
+    self.usernameLabel.font = [UIFont rockpackFontOfSize: self.usernameLabel.font.pointSize];
     
     
-    // Required to make cells look good when wobbling (delete)
     self.layer.shouldRasterize = YES;
     self.layer.rasterizationScale = UIScreen.mainScreen.scale;
     
 }
 
+-(void)setName:(NSString*)name andUsername:(NSString*)username
+{
+    
+}
 
 -(void)setImageUrlString:(NSString *)imageUrlString
 {
