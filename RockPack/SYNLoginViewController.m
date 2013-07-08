@@ -1314,7 +1314,7 @@
                errorHandler:^(NSDictionary* errorDictionary) {
                    DebugLog(@"Avatar upload failed");
                    [[[UIAlertView alloc] initWithTitle: NSLocalizedString(@"register_screen_form_avatar_upload_title", nil)
-                                               message: NSLocalizedString(@"register_screen_form_avatar_upload_description.", nil)
+                                               message: NSLocalizedString(@"register_screen_form_avatar_upload_description", nil)
                                               delegate: nil
                                      cancelButtonTitle: NSLocalizedString(@"OK", nil)
                                      otherButtonTitles: nil] show];

@@ -108,6 +108,14 @@
              // == Now check to see if we need to refresh the token == //
              NSDictionary *responseDictionary = (NSDictionary *) response;
              NSString *reason = responseDictionary[@"error"];
+             if([reason isEqualToString:@"invalid_token"])
+             {
+                //  log the user out
+                [[NSNotificationCenter defaultCenter] postNotificationName: kAccountSettingsLogout
+                                                                        object: nil];
+                errorBlock(response);
+                return;
+             }
              if ([reason isEqualToString: @"expired_token"] == FALSE)
              {
                  // Normal (?) error, we don't need to try refreshing the token
@@ -136,7 +144,8 @@
                                if ([reason isEqualToString: @"expired_token"]
                                    || [reason isEqualToString: @"invalid_request"]
                                    || [reason isEqualToString: @"invalid_grant"]
-                                   || [reason isEqualToString: @"unsupported_grant_type"])
+                                   || [reason isEqualToString: @"unsupported_grant_type"]
+                                   || [reason isEqualToString:@"invalid_token"])
                                {
                                    // Just log the user out
                                    [[NSNotificationCenter defaultCenter] postNotificationName: kAccountSettingsLogout
