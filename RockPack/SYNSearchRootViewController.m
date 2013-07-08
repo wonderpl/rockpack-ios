@@ -19,18 +19,18 @@
 @interface SYNSearchRootViewController ()
 
 @property (nonatomic) NSInteger tabSelected;
+@property (nonatomic, strong) NSArray* controllers;
 @property (nonatomic, strong) NSString* currentSelectionId;
 @property (nonatomic, strong) NSString* lastSearchTerm;
 @property (nonatomic, strong) SYNSearchChannelsViewController* searchChannelsController;
 @property (nonatomic, strong) SYNSearchTabView* channelsSearchTabView;
-@property (nonatomic, strong) SYNSearchTabView* videoSearchTabView;
 @property (nonatomic, strong) SYNSearchTabView* usersSearchTabView;
-@property (nonatomic, strong) SYNSearchVideosViewController* searchVideosController;
+@property (nonatomic, strong) SYNSearchTabView* videoSearchTabView;
 @property (nonatomic, strong) SYNSearchUsersViewController* searchUsersController;
+@property (nonatomic, strong) SYNSearchVideosViewController* searchVideosController;
 @property (nonatomic, strong) UIView* tabsContainer;
 @property (nonatomic, weak) SYNAbstractViewController* currentController;
 @property (nonatomic, weak) UIView* currentOverlayView;
-@property (nonatomic, strong) NSArray* controllers;
 
 @end
 
@@ -55,8 +55,7 @@
 - (void) viewDidLoad
 {
     [super viewDidLoad];
-    
-    
+
     self.videoSearchTabView = [SYNSearchTabView tabViewWithSearchType:SearchTabTypeVideos];
     self.channelsSearchTabView = [SYNSearchTabView tabViewWithSearchType:SearchTabTypeChannels];
     self.usersSearchTabView = [SYNSearchTabView tabViewWithSearchType:SearchTabTypeUsers];
@@ -94,10 +93,8 @@
         [tabsContainer addSubview:searchTab];
         
     }
-    
-    
-    
-    CGFloat correctTabsY = [SYNDeviceManager.sharedInstance isIPad] ? 104.0 : self.channelsSearchTabView.frame.size.height/2 + 65.0f;
+
+    CGFloat correctTabsY = IS_IPAD ? 104.0 : self.channelsSearchTabView.frame.size.height/2 + 65.0f;
     tabsContainer.center = CGPointMake(self.view.center.x, correctTabsY);
     tabsContainer.frame = CGRectIntegral(tabsContainer.frame);
     
@@ -115,7 +112,7 @@
     
     self.searchVideosController.view.autoresizingMask = UIViewAutoresizingFlexibleWidth | UIViewAutoresizingFlexibleHeight;
     
-    if ([SYNDeviceManager.sharedInstance isIPhone])
+    if (IS_IPHONE)
     {
         CGRect collectionViewFrame = CGRectMake(0, 108.0f, 320.0f,self.view.frame.size.height - 108.0f);
         self.searchVideosController.videoThumbnailCollectionView.frame = collectionViewFrame;
@@ -143,7 +140,7 @@
     searchChannelsController.view.autoresizingMask = UIViewAutoresizingFlexibleWidth | UIViewAutoresizingFlexibleHeight;
 
     
-    if ([SYNDeviceManager.sharedInstance isIPhone])
+    if (IS_IPHONE)
     {
         
         // FIXME: This magic number layout is not so good. self.view needs to be setup with the correct frame, and then we can start doing a relative layout.
@@ -193,12 +190,11 @@
         [self searchTabPressed:nil];
     
         
-    if([[SYNDeviceManager sharedInstance] isIPhone])
+    if (IS_IPHONE)
     {
 
         [self.searchBoxViewController.searchBoxView revealCloseButton];
     }
-    
 }
 
 
@@ -215,7 +211,7 @@
     }
     
     
-    if([[SYNDeviceManager sharedInstance] isIPhone])
+    if (IS_IPHONE)
     {
         [[NSNotificationCenter defaultCenter] postNotificationName: kNoteAllNavControlsShow
                                                         object: self];
@@ -248,7 +244,7 @@
 {
     // nil means select the first
     
-    if(!control)
+    if (!control)
     {
         self.videoSearchTabView.selected = YES;
         
@@ -257,7 +253,7 @@
     }
     
     
-    if(control.selected)
+    if (control.selected)
         return;
     
     [self.controllers enumerateObjectsUsingBlock:^(SYNAbstractViewController* controller, NSUInteger idx, BOOL *stop) {
@@ -265,7 +261,7 @@
         SYNSearchTabView* tabView = (SYNSearchTabView*)[controller valueForKey:@"itemToUpdate"];
         
         
-        if([tabView isClicked:control]) {
+        if ([tabView isClicked:control]) {
             tabView.selected = YES;
             self.currentController = controller;
         }
@@ -323,16 +319,13 @@
     [self.searchChannelsController performNewSearchWithTerm:searchTerm];
 }
 
--(void)setCurrentController:(SYNAbstractViewController *)currentController
+- (void) setCurrentController: (SYNAbstractViewController *) currentController
 {
     _currentController = currentController;
     [self.controllers enumerateObjectsUsingBlock:^(SYNAbstractViewController* controller, NSUInteger idx, BOOL *stop) {
         controller.view.hidden = YES;
     }];
     _currentController.view.hidden = NO;
-    
-    
-    
 }
 
 
