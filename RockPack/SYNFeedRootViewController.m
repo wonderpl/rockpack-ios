@@ -287,7 +287,7 @@
                                                         [self displayEmptyGenreMessage:NSLocalizedString(@"feed_screen_empty_message", nil) andLoader:NO];
                                                     
                                                     
-                                                    self.footerView.showsLoading = NO;
+                                                    self.loadingMoreContent = NO;
                                                     
                                                     [self handleRefreshComplete];
                                                     
@@ -298,7 +298,7 @@
                                                     [self removeEmptyGenreMessage];
                                                     
                                                     
-                                                    self.footerView.showsLoading = NO;
+                                                    self.loadingMoreContent = NO;
                                                     
                                                     [self displayEmptyGenreMessage:NSLocalizedString(@"feed_screen_loading_error", nil) andLoader:NO];
                                                     
@@ -701,7 +701,6 @@
     {
         [self loadMoreVideos: nil];
     }
-
 }
 
 

@@ -277,7 +277,7 @@
                                                       BOOL registryResultOk = [appDelegate.mainRegistry registerChannelsFromDictionary: response
                                                                                                                               forGenre: genre
                                                                                                                            byAppending: append];
-                                                      self.footerView.showsLoading = NO;
+                                                       self.loadingMoreContent = NO;
                                                       
                                                       if (!registryResultOk)
                                                       {
@@ -302,7 +302,8 @@
                                                       
                                                   } onError: ^(NSDictionary* errorInfo) {
                                                       DebugLog(@"Could not load channels: %@", errorInfo);
-                                                        self.footerView.showsLoading = NO;
+                                                      self.loadingMoreContent = NO;
+
                                                   }];
 }
 
@@ -383,7 +384,6 @@
 //    DebugLog(@"resultsArray: %i", resultsArray.count);
     
     self.channels = [NSMutableArray arrayWithArray:resultsArray];
-    
     
     // We shouldn't wait until the animation is over, as this will result in crashes if the user is scrolling
     
@@ -510,7 +510,7 @@
     
     if (kind == UICollectionElementKindSectionFooter)
     {
-        if (self.channels.count == 0 || (self.dataRequestRange.location + self.dataRequestRange.length) >= dataItemsAvailable)
+        if (self.channels.count == 0)
         {
             return supplementaryView;
         }
