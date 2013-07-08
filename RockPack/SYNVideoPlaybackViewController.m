@@ -367,7 +367,7 @@ static UIWebView* vimeoideoWebViewInstance;
     // Stop observing everything (less error-prone than trying to remove observers individually
     [[NSNotificationCenter defaultCenter] removeObserver: self];
     
-    if (self.currentVideoViewedFlag == TRUE && self.previousSourceId != nil)
+    if (self.previousSourceId != nil && self.percentageViewed > 0.0f)
     {
         id<GAITracker> tracker = [GAI sharedInstance].defaultTracker;
         
@@ -1133,8 +1133,7 @@ static UIWebView* vimeoideoWebViewInstance;
 {
     [self resetPlayerAttributes];
     
-    
-    if (self.currentVideoViewedFlag == TRUE && self.previousSourceId != nil)
+    if (self.previousSourceId != nil && self.percentageViewed > 0.0f)
     {
         id<GAITracker> tracker = [GAI sharedInstance].defaultTracker;
 
