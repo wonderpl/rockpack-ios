@@ -380,13 +380,10 @@
     NSArray *resultsArray = [appDelegate.mainManagedObjectContext executeFetchRequest: request error: &error];
     if (!resultsArray)
         return;
-    
-//    DebugLog(@"resultsArray: %i", resultsArray.count);
-    
-    self.channels = [NSMutableArray arrayWithArray:resultsArray];
+
+    self.channels = [NSMutableArray arrayWithArray: resultsArray];
     
     // We shouldn't wait until the animation is over, as this will result in crashes if the user is scrolling
-    
     [self.channelThumbnailCollectionView reloadData];
 }
 

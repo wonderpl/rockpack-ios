@@ -799,8 +799,11 @@
     if ((isIpad && indexPath.item == 2) || (!isIpad && indexPath.item == 0))
     {
         //perform after 0.0f delay to make sure the call is queued after the cell has been added to the view
-        [self performSelector:@selector(checkOnBoarding) withObject:nil afterDelay:0.0f];
+        [self performSelector: @selector(checkOnBoarding)
+                   withObject: nil
+                   afterDelay: 0.0f];
     }
+    
     return cell;
 }
 
