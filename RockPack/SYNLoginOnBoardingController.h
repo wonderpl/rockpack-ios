@@ -12,9 +12,9 @@
 
 @interface SYNLoginOnBoardingController : UIViewController
 
-- (id) initWithDelegate: (id <UIScrollViewDelegate>) delegate;
-
-@property (nonatomic, readonly) UIScrollView* scrollView;
 @property (nonatomic, readonly) UIPageControl* pageControl;
+@property (nonatomic, readonly) UIScrollView* scrollView;
+
+- (id) initWithDelegate: (id <UIScrollViewDelegate>) delegate;
 
 @end

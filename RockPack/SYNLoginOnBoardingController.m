@@ -6,13 +6,13 @@
 //  Copyright (c) 2013 Nick Banks. All rights reserved.
 //
 
-#import "SYNLoginOnBoardingController.h"
-#import "UIFont+SYNFont.h"
-#import <QuartzCore/QuartzCore.h>
-#import "UIColor+SYNColor.h"
-#import "SYNDeviceManager.h"
 
 #import "AppConstants.h"
+#import "SYNDeviceManager.h"
+#import "SYNLoginOnBoardingController.h"
+#import "UIColor+SYNColor.h"
+#import "UIFont+SYNFont.h"
+#import <QuartzCore/QuartzCore.h>
 
 @interface SYNLoginOnBoardingController () <UIScrollViewDelegate>
 
@@ -24,8 +24,6 @@
 
 
 @implementation SYNLoginOnBoardingController
-
-@synthesize scrollView = scrollView;
 
 #pragma mark - Object lifecycle
 
@@ -55,19 +53,19 @@
     self.scrollView = [[UIScrollView alloc] initWithFrame:CGRectMake(0.0, 0.0, totalWidth, 300.0)];
     self.scrollView.autoresizingMask = UIViewAutoresizingFlexibleWidth;
     
-    scrollView.pagingEnabled = YES;
-    scrollView.scrollEnabled = YES;
-    scrollView.bounces = YES;
-    scrollView.userInteractionEnabled = YES;
-    scrollView.showsHorizontalScrollIndicator = NO;
-    scrollView.showsVerticalScrollIndicator = NO;
-    scrollView.autoresizingMask = UIViewAutoresizingFlexibleWidth;
-    scrollView.delegate = self.delegate;
+    self.scrollView.pagingEnabled = YES;
+    self.scrollView.scrollEnabled = YES;
+    self.scrollView.bounces = YES;
+    self.scrollView.userInteractionEnabled = YES;
+    self.scrollView.showsHorizontalScrollIndicator = NO;
+    self.scrollView.showsVerticalScrollIndicator = NO;
+    self.scrollView.autoresizingMask = UIViewAutoresizingFlexibleWidth;
+    self.scrollView.delegate = self.delegate;
 
-    self.view = [[UIView alloc] initWithFrame:self.scrollView.frame];
+    self.view = [[UIView alloc] initWithFrame: self.scrollView.frame];
     self.view.autoresizingMask = UIViewAutoresizingFlexibleWidth;
     
-    [self.view addSubview:scrollView];
+    [self.view addSubview: self.scrollView];
 }
 
 
@@ -237,7 +235,7 @@
 }
 
 
--( void) willAnimateRotationToInterfaceOrientation: (UIInterfaceOrientation) toInterfaceOrientation
+- (void) willAnimateRotationToInterfaceOrientation: (UIInterfaceOrientation) toInterfaceOrientation
                                           duration: (NSTimeInterval) duration
 {
     [super willAnimateRotationToInterfaceOrientation: toInterfaceOrientation
