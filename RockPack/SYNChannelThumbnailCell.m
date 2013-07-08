@@ -65,9 +65,9 @@
     
     CGRect titleFrame = self.titleLabel.frame;
     
-    CGSize expectedSize = [titleString sizeWithFont:self.titleLabel.font
-                          constrainedToSize:CGSizeMake(titleFrame.size.width, 500.0)
-                              lineBreakMode:self.titleLabel.lineBreakMode];
+    CGSize expectedSize = [titleString sizeWithFont: self.titleLabel.font
+                                  constrainedToSize: CGSizeMake(titleFrame.size.width, 500.0)
+                                      lineBreakMode: self.titleLabel.lineBreakMode];
     
     titleFrame.size.height = expectedSize.height;
     titleFrame.origin.y = self.imageView.frame.size.height - titleFrame.size.height - 4.0;

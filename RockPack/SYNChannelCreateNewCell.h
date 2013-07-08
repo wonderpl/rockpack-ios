@@ -10,6 +10,4 @@
 
 @interface SYNChannelCreateNewCell : UICollectionViewCell
 
-@property (nonatomic, strong) IBOutlet UILabel* titleLabel;
-
 @end

@@ -11,7 +11,8 @@
 typedef enum {
 
     SearchTabTypeVideos = 0,
-    SearchTabTypeChannels
+    SearchTabTypeChannels = 1,
+    SearchTabTypeUsers = 2
 
 } SearchTabType;
 
@@ -28,7 +29,7 @@ typedef enum {
     BOOL selected;
 }
 
-
+-(BOOL)isClicked:(UIButton*)button;
 
 -(void)setNumberOfItems:(NSInteger)numberOfItems animated:(BOOL)animated;
 
