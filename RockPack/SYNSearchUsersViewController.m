@@ -50,13 +50,13 @@
     SYNIntegralCollectionViewFlowLayout* flowLayout;
     
     if (isIPhone)
-        flowLayout = [SYNIntegralCollectionViewFlowLayout layoutWithItemSize: CGSizeMake(158.0f, 169.0f)
+        flowLayout = [SYNIntegralCollectionViewFlowLayout layoutWithItemSize: CGSizeMake(320.0f, 169.0f)
                                                      minimumInterItemSpacing: 0.0
                                                           minimumLineSpacing: 6.0
                                                              scrollDirection: UICollectionViewScrollDirectionVertical
                                                                 sectionInset: UIEdgeInsetsMake(2.0, 2.0, 46.0, 2.0)];
     else
-        flowLayout = [SYNIntegralCollectionViewFlowLayout layoutWithItemSize: [self itemSize]
+        flowLayout = [SYNIntegralCollectionViewFlowLayout layoutWithItemSize: CGSizeMake(120.0f, 180.0f)
                                                      minimumInterItemSpacing: 0.0
                                                           minimumLineSpacing: 2.0
                                                              scrollDirection: UICollectionViewScrollDirectionVertical
@@ -124,6 +124,29 @@
     
 }
 
+- (void) viewDidLoad
+{
+    [super viewDidLoad];
+    
+    self.users = [NSMutableArray array];
+    
+    // Register Cells
+    UINib *thumbnailCellNib = [UINib nibWithNibName: @"SYNUserThumbnailCell"
+                                             bundle: nil];
+    
+    [self.usersThumbnailCollectionView registerNib: thumbnailCellNib
+                        forCellWithReuseIdentifier: @"SYNUserThumbnailCell"];
+    
+    // Register Footer
+    UINib *footerViewNib = [UINib nibWithNibName: @"SYNChannelFooterMoreView"
+                                          bundle: nil];
+    
+    [self.usersThumbnailCollectionView registerNib: footerViewNib
+                          forSupplementaryViewOfKind: UICollectionElementKindSectionFooter
+                                 withReuseIdentifier: @"SYNChannelFooterMoreView"];
+    
+}
+
 - (void) displayUsers
 {
     
@@ -135,11 +158,6 @@
     [request setPredicate: [NSPredicate predicateWithFormat: @"viewId == %@", self.viewId]];
     
     request.fetchBatchSize = 20;
-    
-    NSSortDescriptor *positionDescriptor = [[NSSortDescriptor alloc] initWithKey: @"position"
-                                                                       ascending: YES];
-    
-    [request setSortDescriptors:@[positionDescriptor]];
     
     NSError *error = nil;
     NSArray *resultsArray = [appDelegate.searchManagedObjectContext executeFetchRequest: request
@@ -190,9 +208,9 @@
     
     self.dataRequestRange = NSMakeRange(nextStart, nextSize);
     
-    [appDelegate.networkEngine searchChannelsForTerm: self.searchTerm
-                                            andRange: self.dataRequestRange
-                                          onComplete: ^(int itemsCount) {
+    [appDelegate.networkEngine searchUsersForTerm: self.searchTerm
+                                         andRange: self.dataRequestRange
+                                       onComplete: ^(int itemsCount) {
                                               self.dataItemsAvailable = itemsCount;
                                               self.loadingMoreContent = NO;
                                           }];
@@ -227,13 +245,23 @@
     
     userThumbnailCell.imageUrlString = user.thumbnailLargeUrl;
     
+    [userThumbnailCell setDisplayName:user.displayName andUsername:user.username];
+    
     
     return userThumbnailCell;
 }
 
+- (void) collectionView: (UICollectionView *) collectionView didSelectItemAtIndexPath: (NSIndexPath *) indexPath
+{
+    
+    ChannelOwner *channelOwner = (ChannelOwner*)self.users[indexPath.row];
+    
+    [appDelegate.viewStackManager viewProfileDetails:channelOwner];
+}
+
 - (CGSize) itemSize
 {
-    return [SYNDeviceManager.sharedInstance isIPhone] ? CGSizeMake(152.0f, 152.0f) : CGSizeMake(251.0, 274.0);
+    return [SYNDeviceManager.sharedInstance isIPhone] ? CGSizeMake(120.0f, 152.0f) : CGSizeMake(251.0, 274.0);
 }
 
 

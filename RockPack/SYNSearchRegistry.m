@@ -118,7 +118,50 @@
 }
 
 
-
+-(BOOL)registerUsersFromDictionary:(NSDictionary *)dictionary
+{
+    NSDictionary *channelsDictionary = dictionary[@"users"];
+    if (!channelsDictionary || ![channelsDictionary isKindOfClass: [NSDictionary class]])
+        return NO;
+    
+    NSArray *itemArray = channelsDictionary[@"items"];
+    if (![itemArray isKindOfClass: [NSArray class]])
+        return NO;
+    
+    
+    
+    
+    for (NSDictionary *itemDictionary in itemArray)
+    {
+        
+        
+        ChannelOwner* user = [ChannelOwner instanceFromDictionary:itemDictionary
+                                        usingManagedObjectContext:appDelegate.searchManagedObjectContext
+                                              ignoringObjectTypes:kIgnoreChannelObjects];
+        
+        if(!user)
+        {
+            DebugLog(@"Could not instantiate channel with data:\n%@", itemDictionary);
+            continue;
+        }
+        
+        
+        user.viewId = kSearchViewId;
+        
+    }
+    
+    
+    
+    BOOL saveResult = [self saveImportContext];
+    if(!saveResult)
+        return NO;
+    
+    [appDelegate saveSearchContext];
+    
+    
+    return YES;
+    
+}
 
 
 

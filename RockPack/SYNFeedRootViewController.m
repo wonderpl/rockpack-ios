@@ -250,8 +250,6 @@
 {
     self.loadingMoreContent = YES;
     
-    NSLog (@"Loc %d, Len %d", self.dataRequestRange.location, self.dataRequestRange.length);
-    
     if (!appDelegate.currentOAuth2Credentials.userId)
         return;
 
@@ -549,7 +547,6 @@
     {
         footerSize = [self footerSize];
         
-        DebugLog(@"Location %d, size %d", self.dataRequestRange.location, self.dataItemsAvailable);
         
         // Now set to zero anyway if we have already read in all the items
         NSInteger nextStart = self.dataRequestRange.location + self.dataRequestRange.length; // one is subtracted when the call happens for 0 indexing

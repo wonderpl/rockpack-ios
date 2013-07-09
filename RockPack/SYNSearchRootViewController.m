@@ -317,6 +317,7 @@
     
     [self.searchVideosController performNewSearchWithTerm:searchTerm];
     [self.searchChannelsController performNewSearchWithTerm:searchTerm];
+    [self.searchUsersController performNewSearchWithTerm:searchTerm];
 }
 
 - (void) setCurrentController: (SYNAbstractViewController *) currentController
