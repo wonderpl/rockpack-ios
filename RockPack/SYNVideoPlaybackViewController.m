@@ -72,15 +72,11 @@
 
 @implementation SYNVideoPlaybackViewController
 
-@synthesize currentVideoInstance;
 
 #pragma mark - Initialization
 
 static UIWebView* youTubeVideoWebViewInstance;
-
-#ifdef ENABLE_VIMEO_PLAYER
-static UIWebView* vimeoideoWebViewInstance;
-#endif
+static UIWebView* vimeoVideoWebViewInstance;
 
 + (SYNVideoPlaybackViewController*) sharedInstance
 {
@@ -94,10 +90,7 @@ static UIWebView* vimeoideoWebViewInstance;
             _sharedInstance = [[super allocWithZone: nil] init];
             // Create the static instances of our webviews
             youTubeVideoWebViewInstance = [SYNVideoPlaybackViewController createNewYouTubeWebView];
-            
-#ifdef ENABLE_VIMEO_PLAYER
-            vimeoideoWebViewInstance = [SYNVideoPlaybackViewController createNewVimeoWebView];
-#endif
+//            vimeoVideoWebViewInstance = [SYNVideoPlaybackViewController createNewVimeoWebView];
         });
     }
     
@@ -187,8 +180,6 @@ static UIWebView* vimeoideoWebViewInstance;
 {
     UIWebView *newVimeoVideoWebView = [SYNVideoPlaybackViewController createNewVideoWebView];
     
-    NSString *parameterString = @"";
-    
     NSError *error = nil;
     NSString *fullPath = [[NSBundle mainBundle] pathForResource: @"VimeoIFramePlayer"
                                                          ofType: @"html"];
@@ -198,12 +189,19 @@ static UIWebView* vimeoideoWebViewInstance;
                                                                 error: &error];
     
     NSString *iFrameHTML = [NSString stringWithFormat: templateHTMLString,
-                                                       parameterString,
                                                        (int) [SYNVideoPlaybackViewController videoWidth],
                                                        (int) [SYNVideoPlaybackViewController videoHeight]];
     
     [newVimeoVideoWebView loadHTMLString: iFrameHTML
                                  baseURL: nil];
+    
+#ifdef USE_HIRES_PLAYER
+    // If we are on the iPad then we need to super-size the webview so that we can scale down again
+    if (IS_IPAD)
+    {
+        newYouTubeWebView.transform = CGAffineTransformMakeScale(739.0f/1280.0f, 739.0f/1280.0f);
+    }
+#endif
     
     return newVimeoVideoWebView;
 }
@@ -221,6 +219,7 @@ static UIWebView* vimeoideoWebViewInstance;
         width = 739.0f;
 #endif
     }
+    
     return width;
 }
 
@@ -324,20 +323,22 @@ static UIWebView* vimeoideoWebViewInstance;
     // Set the webview delegate so that we can received events from the JavaScript
     youTubeVideoWebViewInstance.delegate = self;
     
-#ifdef ENABLE_VIMEO_PLAYER
     // Now we know our frame size, update the pre-created webview with size and colour
     vimeoVideoWebViewInstance.frame = self.view.bounds;
     vimeoVideoWebViewInstance.backgroundColor = self.view.backgroundColor;
     
     // Set the webview delegate so that we can received events from the JavaScript
     vimeoVideoWebViewInstance.delegate = self;
-#endif
+
+    // Add both the views to the master view
+    [self.view insertSubview: youTubeVideoWebViewInstance
+                belowSubview: self.shuttleBarView];
+    
+    [self.view insertSubview: youTubeVideoWebViewInstance
+                belowSubview: self.shuttleBarView];
     
     // Default to using YouTube player for now
     self.currentVideoWebView = youTubeVideoWebViewInstance;
-    
-    [self.view insertSubview: self.currentVideoWebView
-                belowSubview: self.shuttleBarView];
 }
 
 
@@ -382,39 +383,6 @@ static UIWebView* vimeoideoWebViewInstance;
     [self stopShuttleBarUpdateTimer];
     [self stopVideoStallDetectionTimer];
     [super viewDidDisappear: animated];
-}
-
-
-- (void) playIfVideoActive
-{
-    if (self.isPaused == TRUE)
-    {
-        if (self.pausedByUser == NO)
-        {
-            [self playVideo];
-        }
-    }
-    else
-    {
-        // Make sure we are displaying the spinner and not the video at this stage
-        self.currentVideoWebView.alpha = 0.0f;
-        self.videoPlaceholderView.alpha = 1.0f;
-    }
-    
-    // Start animation
-    [self animateVideoPlaceholder: YES];
-}
-
-
-- (void) pauseIfVideoActive
-{
-    if (self.isPlayingOrBuffering == TRUE)
-    {
-        [self pauseVideo];
-    }
-    
-    // Start animation
-    [self animateVideoPlaceholder: NO];
 }
 
 
@@ -665,191 +633,6 @@ static UIWebView* vimeoideoWebViewInstance;
     return imageView;
 }
 
-
-#pragma mark - Placeholder Animation
-
-- (void) animateVideoPlaceholder: (BOOL) animate
-{
-    if (animate == TRUE)
-    {
-        // Start the animations
-        [self spinBottomPlaceholderImageView];
-        [self spinMiddlePlaceholderImageView];
-    }
-    else
-    {
-        // Stop the animations
-        [self.videoPlaceholderBottomImageView.layer removeAllAnimations];
-        [self.videoPlaceholderMiddleImageView.layer removeAllAnimations];
-    }
-}
-
-
-- (void) spinMiddlePlaceholderImageView
-{
-    self.placeholderMiddleLayerAnimation = [self spinView: self.videoPlaceholderMiddleImageView
-                                                 duration: kMiddlePlaceholderCycleTime
-                                                clockwise: TRUE
-                                                     name: kMiddlePlaceholderIdentifier];
-}
-
-
-- (void) spinBottomPlaceholderImageView
-{
-    self.placeholderBottomLayerAnimation = [self spinView: self.videoPlaceholderBottomImageView
-                                                 duration: kBottomPlaceholderCycleTime
-                                                clockwise: FALSE
-                                                     name: kBottomPlaceholderIdentifier];
-}
-
-
-// Setup the placeholder spinning animation
-- (CABasicAnimation *) spinView: (UIView *) placeholderView
-                       duration: (float) cycleTime
-                      clockwise: (BOOL) clockwise
-                           name: (NSString *) name
-{
-    CABasicAnimation *animation;
-    
-	[CATransaction begin];
-    
-	[CATransaction setValue: (id) kCFBooleanTrue
-					 forKey: kCATransactionDisableActions];
-	
-	CGRect frame = [placeholderView frame];
-	placeholderView.layer.anchorPoint = CGPointMake(0.5, 0.5);
-	placeholderView.layer.position = CGPointMake(frame.origin.x + 0.5 * frame.size.width, frame.origin.y + 0.5 * frame.size.height);
-	[CATransaction commit];
-	
-	[CATransaction begin];
-    
-	[CATransaction setValue: (id)kCFBooleanFalse
-					 forKey: kCATransactionDisableActions];
-	
-    // Set duration of spin
-	[CATransaction setValue: @(cycleTime)
-                     forKey: kCATransactionAnimationDuration];
-	
-	animation = [CABasicAnimation animationWithKeyPath: @"transform.rotation.z"];
-    
-    // We need to use set an explict key, as the animation is copied and not the same in the callback
-    [animation setValue: name
-                 forKey: @"name"];
-    
-    // Alter to/from to change spin direction
-    if (clockwise)
-    {
-        animation.fromValue = @0.0f;
-        animation.toValue = @((float)(2 * M_PI));
-    }
-    else
-    {
-        animation.fromValue = @((float)(2 * M_PI));
-        animation.toValue = @0.0f;
-    }
-
-	animation.timingFunction = [CAMediaTimingFunction functionWithName: kCAMediaTimingFunctionLinear];
-	animation.delegate = self;
-    
-	[placeholderView.layer addAnimation: animation
-                                 forKey: @"rotationAnimation"];
-	
-	[CATransaction commit];
-    
-    return animation;
-}
-
-
-// Restarts the spin animation on the button when it ends. Again, this is
-// largely irrelevant now that the audio is loaded from a local file.
-
-- (void) animationDidStop: (CAAnimation *) animation
-                 finished: (BOOL) finished
-{
-	if (finished)
-	{
-        if ([[animation valueForKey: @"name"] isEqualToString: kMiddlePlaceholderIdentifier])
-        {
-            [self spinMiddlePlaceholderImageView];
-        }
-        else
-        {
-            [self spinBottomPlaceholderImageView];
-        }
-	}
-}
-
-
-- (void) applicationWillResignActive: (id) application
-{
-#ifndef SMART_REANIMATION
-    [self animateVideoPlaceholder: FALSE];
-#else
-    self.bottomPlacholderAnimationViewPosition = [[self.videoPlaceholderBottomImageView.layer animationForKey: @"position"] copy];
-    
-    // Apple method from QA1673
-    [self pauseLayer: self.videoPlaceholderBottomImageView.layer]; // Apple method from QA1673
-    
-    self.middlePlacholderAnimationViewPosition = [[self.videoPlaceholderMiddleImageView.layer animationForKey: @"position"] copy];
-    
-    [self pauseLayer: self.videoPlaceholderBottomImageView.layer];
-#endif
-}
-
-
-- (void) applicationDidBecomeActive: (id) application
-{
-#ifndef SMART_REANIMATION
-    [self animateVideoPlaceholder: TRUE];
-#else
-    // Re-animate bottom layer
-    if (self.bottomPlacholderAnimationViewPosition != nil)
-    {
-        // re-add the core animation to the view
-        [self.videoPlaceholderBottomImageView.layer addAnimation: self.bottomPlacholderAnimationViewPosition
-                                                          forKey: @"position"]; 
-        self.bottomPlacholderAnimationViewPosition = nil;
-    }
-    
-    // Apple method from QA1673
-    [self resumeLayer: self.videoPlaceholderBottomImageView.layer];
-    
-    
-    // re-animate middle layer
-    if (self.middlePlacholderAnimationViewPosition != nil)
-    {
-        // re-add the core animation to the view
-        [self.videoPlaceholderMiddleImageView.layer addAnimation: self.middlePlacholderAnimationViewPosition
-                                                          forKey: @"position"];
-        self.middlePlacholderAnimationViewPosition = nil;
-    }
-    
-    // Apple method from QA1673
-    [self resumeLayer: self.videoPlaceholderMiddleImageView.layer];
-#endif
-}
-
-
-- (void) pauseLayer: (CALayer*) layer
-{
-    CFTimeInterval pausedTime = [layer convertTime: CACurrentMediaTime()
-                                         fromLayer: nil];
-    layer.speed = 0.0;
-    layer.timeOffset = pausedTime;
-}
-
-
-- (void) resumeLayer: (CALayer*) layer
-{
-    CFTimeInterval pausedTime = [layer timeOffset];
-    layer.speed = 1.0;
-    layer.timeOffset = 0.0;
-    layer.beginTime = 0.0;
-    
-    CFTimeInterval timeSincePause = [layer convertTime: CACurrentMediaTime()
-                                             fromLayer: nil] - pausedTime;
-    layer.beginTime = timeSincePause;
-}
 
 #pragma mark - Timer accessors
 
@@ -1665,6 +1448,226 @@ static UIWebView* vimeoideoWebViewInstance;
 	{
 		[[UIApplication sharedApplication] openURL: youTubeURL];
 	}
+}
+
+#pragma mark - Placeholder Animation
+
+- (void) animateVideoPlaceholder: (BOOL) animate
+{
+    if (animate == TRUE)
+    {
+        // Start the animations
+        [self spinBottomPlaceholderImageView];
+        [self spinMiddlePlaceholderImageView];
+    }
+    else
+    {
+        // Stop the animations
+        [self.videoPlaceholderBottomImageView.layer removeAllAnimations];
+        [self.videoPlaceholderMiddleImageView.layer removeAllAnimations];
+    }
+}
+
+
+- (void) spinMiddlePlaceholderImageView
+{
+    self.placeholderMiddleLayerAnimation = [self spinView: self.videoPlaceholderMiddleImageView
+                                                 duration: kMiddlePlaceholderCycleTime
+                                                clockwise: TRUE
+                                                     name: kMiddlePlaceholderIdentifier];
+}
+
+
+- (void) spinBottomPlaceholderImageView
+{
+    self.placeholderBottomLayerAnimation = [self spinView: self.videoPlaceholderBottomImageView
+                                                 duration: kBottomPlaceholderCycleTime
+                                                clockwise: FALSE
+                                                     name: kBottomPlaceholderIdentifier];
+}
+
+
+// Setup the placeholder spinning animation
+- (CABasicAnimation *) spinView: (UIView *) placeholderView
+                       duration: (float) cycleTime
+                      clockwise: (BOOL) clockwise
+                           name: (NSString *) name
+{
+    CABasicAnimation *animation;
+    
+	[CATransaction begin];
+    
+	[CATransaction setValue: (id) kCFBooleanTrue
+					 forKey: kCATransactionDisableActions];
+	
+	CGRect frame = [placeholderView frame];
+	placeholderView.layer.anchorPoint = CGPointMake(0.5, 0.5);
+	placeholderView.layer.position = CGPointMake(frame.origin.x + 0.5 * frame.size.width, frame.origin.y + 0.5 * frame.size.height);
+	[CATransaction commit];
+	
+	[CATransaction begin];
+    
+	[CATransaction setValue: (id)kCFBooleanFalse
+					 forKey: kCATransactionDisableActions];
+	
+    // Set duration of spin
+	[CATransaction setValue: @(cycleTime)
+                     forKey: kCATransactionAnimationDuration];
+	
+	animation = [CABasicAnimation animationWithKeyPath: @"transform.rotation.z"];
+    
+    // We need to use set an explict key, as the animation is copied and not the same in the callback
+    [animation setValue: name
+                 forKey: @"name"];
+    
+    // Alter to/from to change spin direction
+    if (clockwise)
+    {
+        animation.fromValue = @0.0f;
+        animation.toValue = @((float)(2 * M_PI));
+    }
+    else
+    {
+        animation.fromValue = @((float)(2 * M_PI));
+        animation.toValue = @0.0f;
+    }
+    
+	animation.timingFunction = [CAMediaTimingFunction functionWithName: kCAMediaTimingFunctionLinear];
+	animation.delegate = self;
+    
+	[placeholderView.layer addAnimation: animation
+                                 forKey: @"rotationAnimation"];
+	
+	[CATransaction commit];
+    
+    return animation;
+}
+
+
+// Restarts the spin animation on the button when it ends. Again, this is
+// largely irrelevant now that the audio is loaded from a local file.
+
+- (void) animationDidStop: (CAAnimation *) animation
+                 finished: (BOOL) finished
+{
+	if (finished)
+	{
+        if ([[animation valueForKey: @"name"] isEqualToString: kMiddlePlaceholderIdentifier])
+        {
+            [self spinMiddlePlaceholderImageView];
+        }
+        else
+        {
+            [self spinBottomPlaceholderImageView];
+        }
+	}
+}
+
+
+- (void) applicationWillResignActive: (id) application
+{
+#ifndef SMART_REANIMATION
+    [self animateVideoPlaceholder: FALSE];
+#else
+    self.bottomPlacholderAnimationViewPosition = [[self.videoPlaceholderBottomImageView.layer animationForKey: @"position"] copy];
+    
+    // Apple method from QA1673
+    [self pauseLayer: self.videoPlaceholderBottomImageView.layer]; // Apple method from QA1673
+    
+    self.middlePlacholderAnimationViewPosition = [[self.videoPlaceholderMiddleImageView.layer animationForKey: @"position"] copy];
+    
+    [self pauseLayer: self.videoPlaceholderBottomImageView.layer];
+#endif
+}
+
+
+- (void) applicationDidBecomeActive: (id) application
+{
+#ifndef SMART_REANIMATION
+    [self animateVideoPlaceholder: TRUE];
+#else
+    // Re-animate bottom layer
+    if (self.bottomPlacholderAnimationViewPosition != nil)
+    {
+        // re-add the core animation to the view
+        [self.videoPlaceholderBottomImageView.layer addAnimation: self.bottomPlacholderAnimationViewPosition
+                                                          forKey: @"position"];
+        self.bottomPlacholderAnimationViewPosition = nil;
+    }
+    
+    // Apple method from QA1673
+    [self resumeLayer: self.videoPlaceholderBottomImageView.layer];
+    
+    
+    // re-animate middle layer
+    if (self.middlePlacholderAnimationViewPosition != nil)
+    {
+        // re-add the core animation to the view
+        [self.videoPlaceholderMiddleImageView.layer addAnimation: self.middlePlacholderAnimationViewPosition
+                                                          forKey: @"position"];
+        self.middlePlacholderAnimationViewPosition = nil;
+    }
+    
+    // Apple method from QA1673
+    [self resumeLayer: self.videoPlaceholderMiddleImageView.layer];
+#endif
+}
+
+
+- (void) pauseLayer: (CALayer*) layer
+{
+    CFTimeInterval pausedTime = [layer convertTime: CACurrentMediaTime()
+                                         fromLayer: nil];
+    layer.speed = 0.0;
+    layer.timeOffset = pausedTime;
+}
+
+
+- (void) resumeLayer: (CALayer*) layer
+{
+    CFTimeInterval pausedTime = [layer timeOffset];
+    layer.speed = 1.0;
+    layer.timeOffset = 0.0;
+    layer.beginTime = 0.0;
+    
+    CFTimeInterval timeSincePause = [layer convertTime: CACurrentMediaTime()
+                                             fromLayer: nil] - pausedTime;
+    layer.beginTime = timeSincePause;
+}
+
+
+#pragma mark - Smart pausing
+
+- (void) playIfVideoActive
+{
+    if (self.isPaused == TRUE)
+    {
+        if (self.pausedByUser == NO)
+        {
+            [self playVideo];
+        }
+    }
+    else
+    {
+        // Make sure we are displaying the spinner and not the video at this stage
+        self.currentVideoWebView.alpha = 0.0f;
+        self.videoPlaceholderView.alpha = 1.0f;
+    }
+    
+    // Start animation
+    [self animateVideoPlaceholder: YES];
+}
+
+
+- (void) pauseIfVideoActive
+{
+    if (self.isPlayingOrBuffering == TRUE)
+    {
+        [self pauseVideo];
+    }
+    
+    // Start animation
+    [self animateVideoPlaceholder: NO];
 }
 
 @end
