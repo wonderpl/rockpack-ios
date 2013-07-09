@@ -46,23 +46,21 @@ extern void instrumentObjcMessageSends(BOOL);
 @property (nonatomic, strong) NSString *userAgentString;
 @property (nonatomic, strong) SYNChannelManager* channelManager;
 @property (nonatomic, strong) SYNLoginBaseViewController* loginViewController;
+@property (nonatomic, strong) SYNMasterViewController* masterViewController;
 @property (nonatomic, strong) SYNNetworkEngine *networkEngine;
 @property (nonatomic, strong) SYNOAuthNetworkEngine *oAuthNetworkEngine;
-@property (nonatomic, strong) SYNVideoQueue* videoQueue;
 @property (nonatomic, strong) SYNOnBoardingPopoverQueueController* onBoardingQueue;
-@property (nonatomic, strong) SYNMasterViewController* masterViewController;
+@property (nonatomic, strong) SYNVideoQueue* videoQueue;
 @property (nonatomic, strong) SYNViewStackManager* viewStackManager;
+@property (nonatomic, strong) User* currentUser;
 
 @end
 
 
 @implementation SYNAppDelegate
 
-@synthesize mainRegistry = _mainRegistry, searchRegistry = _searchRegistry;
-@synthesize currentUser = _currentUser, currentOAuth2Credentials = _currentOAuth2Credentials;
-@synthesize onBoardingQueue = _onBoardingQueue;
-@synthesize tokenExpiryTimer = _tokenExpiryTimer;
-
+// Required, as we are providing both getter and setter
+@synthesize  currentOAuth2Credentials = _currentOAuth2Credentials;
 
 - (BOOL) application:(UIApplication *) application
          didFinishLaunchingWithOptions: (NSDictionary *) launchOptions
@@ -199,26 +197,27 @@ extern void instrumentObjcMessageSends(BOOL);
     return YES;
 }
 
--(void)setupTokenExpiryTimer
+- (void) setupTokenExpiryTimer
 {
-    if(self.tokenExpiryTimer)
+    if (self.tokenExpiryTimer)
+    {
         [self.tokenExpiryTimer invalidate];
+    }
     
     NSTimeInterval intervalToExpiry = [self.currentOAuth2Credentials.expirationDate timeIntervalSinceNow];
     
-    self.tokenExpiryTimer  = [NSTimer scheduledTimerWithTimeInterval:intervalToExpiry
-                                                              target:self
-                                                            selector:@selector(refreshExpiredToken)
-                                                            userInfo:nil
-                                                             repeats:NO];
+    self.tokenExpiryTimer  = [NSTimer scheduledTimerWithTimeInterval: intervalToExpiry
+                                                              target: self
+                                                            selector: @selector(refreshExpiredToken)
+                                                            userInfo: nil
+                                                             repeats: NO];
 }
 
 
 
--(void)refreshExpiredToken
+- (void) refreshExpiredToken
 {
     //Add imageview to the window as placeholder while we wait for the token refresh call.
-    
     [self.tokenExpiryTimer invalidate];
     
     UIImageView* startImageView = nil;
@@ -226,10 +225,10 @@ extern void instrumentObjcMessageSends(BOOL);
     
     if (IS_IPAD)
     {
-        if(UIDeviceOrientationIsLandscape([[SYNDeviceManager sharedInstance] currentOrientation]))
+        if (UIDeviceOrientationIsLandscape([[SYNDeviceManager sharedInstance] currentOrientation]))
         {
-            startImageView = [[UIImageView alloc] initWithImage:[UIImage imageNamed:@"Default-Landscape"]];
-            if([[SYNDeviceManager sharedInstance] currentOrientation]== UIDeviceOrientationLandscapeLeft)
+            startImageView = [[UIImageView alloc] initWithImage: [UIImage imageNamed: @"Default-Landscape"]];
+            if ([[SYNDeviceManager sharedInstance] currentOrientation]== UIDeviceOrientationLandscapeLeft)
             {
                 startImageView.transform = CGAffineTransformMakeRotation(M_PI_2);
                 startImageCenter.x-=10;
@@ -239,7 +238,6 @@ extern void instrumentObjcMessageSends(BOOL);
                 startImageView.transform = CGAffineTransformMakeRotation(-M_PI_2);
                 startImageCenter.x+=10;
             }
-            
         }
         else
         {
@@ -249,7 +247,7 @@ extern void instrumentObjcMessageSends(BOOL);
     }
     else
     {
-        if([SYNDeviceManager.sharedInstance currentScreenHeight]>480.0f)
+        if ([SYNDeviceManager.sharedInstance currentScreenHeight]>480.0f)
         {
             startImageView = [[UIImageView alloc] initWithImage:[UIImage imageNamed:@"Default-568h"]];
         }
@@ -278,7 +276,7 @@ extern void instrumentObjcMessageSends(BOOL);
         
         self.tokenExpiryTimer = nil;
         
-        if(!self.window.rootViewController)
+        if (!self.window.rootViewController)
         {
             self.window.rootViewController = [self createAndReturnLoginViewController];
         }
@@ -286,6 +284,7 @@ extern void instrumentObjcMessageSends(BOOL);
         [startImageView removeFromSuperview];
     }];
 }
+
 
 - (UIViewController*) createAndReturnRootViewController
 {
@@ -295,6 +294,7 @@ extern void instrumentObjcMessageSends(BOOL);
     
     return self.masterViewController;
 }
+
 
 - (UIViewController*) createAndReturnLoginViewController
 {
@@ -315,9 +315,7 @@ extern void instrumentObjcMessageSends(BOOL);
 {
     if (!self.currentUser || !self.currentUser.current)
         return;
-    
-    
-    
+
     self.window.rootViewController = [self createAndReturnLoginViewController];
     
     self.masterViewController = nil;
@@ -338,7 +336,6 @@ extern void instrumentObjcMessageSends(BOOL);
     self.currentOAuth2Credentials = nil;
     
     _currentUser = nil;
-    
 }
 
 
@@ -380,15 +377,15 @@ extern void instrumentObjcMessageSends(BOOL);
 
 - (void) applicationWillEnterForeground: (UIApplication *) application
 {
-    if(self.loginViewController)
+    if (self.loginViewController)
     {
         
         // Called as part of the transition from the background to the inactive state; here you can undo many of the changes made on entering the background.
-        if(self.loginViewController.state == kLoginScreenStateInitial)
+        if (self.loginViewController.state == kLoginScreenStateInitial)
         {
             [self.loginViewController setUpInitialState];
         }
-        else if(self.loginViewController.state == kLoginScreenStateLogin)
+        else if (self.loginViewController.state == kLoginScreenStateLogin)
         {
             [self.loginViewController reEnableLoginControls];
         }
@@ -406,7 +403,7 @@ extern void instrumentObjcMessageSends(BOOL);
 - (void) applicationDidBecomeActive: (UIApplication *) application
 {
     // Restart any tasks that were paused (or not yet started) while the application was inactive. If the application was previously in the background, optionally refresh the user interface.
-    if(self.loginViewController)
+    if (self.loginViewController)
     {
         [self.loginViewController checkReachability];
     }
@@ -633,10 +630,10 @@ extern void instrumentObjcMessageSends(BOOL);
 
 - (void) saveChannelsContext
 {
-    if(!self.channelsManagedObjectContext)
+    if (!self.channelsManagedObjectContext)
         return;
     
-    if([self.channelsManagedObjectContext hasChanges])
+    if ([self.channelsManagedObjectContext hasChanges])
     {
         NSError *error = nil;
         if (![self.channelsManagedObjectContext save: &error])
@@ -760,7 +757,7 @@ extern void instrumentObjcMessageSends(BOOL);
     // == Save == //
     [self saveContext:YES];
     
-    if(!userBound)
+    if (!userBound)
     {
         [[NSNotificationCenter defaultCenter] postNotificationName: kClearedLocationBoundData
                                                             object: self];
@@ -780,7 +777,7 @@ extern void instrumentObjcMessageSends(BOOL);
 
 - (User*) currentUser
 {
-    if(!_currentUser)
+    if (!_currentUser)
     {
         NSError *error = nil;
         NSEntityDescription *userEntity = [NSEntityDescription entityForName: @"User"
@@ -797,11 +794,11 @@ extern void instrumentObjcMessageSends(BOOL);
         NSArray *userEntries = [self.mainManagedObjectContext executeFetchRequest: userFetchRequest
                                                                             error: &error];
         
-        if(userEntries.count > 0)
+        if (userEntries.count > 0)
         {
             _currentUser = (User*)userEntries[0];
             
-            if(userEntries.count > 1) // housekeeping, clear duplicate user entries
+            if (userEntries.count > 1) // housekeeping, clear duplicate user entries
                 for (int u = 1; u < userEntries.count; u++)
                     [self.mainManagedObjectContext deleteObject:((User*)userEntries[u])];
             
@@ -822,7 +819,7 @@ extern void instrumentObjcMessageSends(BOOL);
 {
     [_currentOAuth2Credentials removeFromKeychain];
     
-    if(!self.currentUser)
+    if (!self.currentUser)
     {
         _currentOAuth2Credentials = nil;
         DebugLog(@"Tried to save credentials without an active user");
@@ -831,7 +828,7 @@ extern void instrumentObjcMessageSends(BOOL);
     
     _currentOAuth2Credentials = nCurrentOAuth2Credentials;
     
-    if(_currentOAuth2Credentials != nil)
+    if (_currentOAuth2Credentials != nil)
     {
         [_currentOAuth2Credentials saveToKeychainForService: kOAuth2Service
                                                     account: self.currentUser.uniqueId];
@@ -841,10 +838,10 @@ extern void instrumentObjcMessageSends(BOOL);
 
 - (SYNOAuth2Credential*) currentOAuth2Credentials
 {
-    if(!self.currentUser)
+    if (!self.currentUser)
         return nil;
     
-    if(!_currentOAuth2Credentials)
+    if (!_currentOAuth2Credentials)
     {
         
         _currentOAuth2Credentials = [SYNOAuth2Credential credentialFromKeychainForService: kOAuth2Service
@@ -945,11 +942,27 @@ extern void instrumentObjcMessageSends(BOOL);
     [self.networkEngine updatePlayerSourceWithCompletionHandler: ^ (NSDictionary *dictionary) {
         if (dictionary && [dictionary isKindOfClass: [NSDictionary class]])
         {
+            // Handle YouTube player updates
             NSString *youTubePlayerURLString = dictionary[@"youtube"];
+
+            // Only update if we have valid HTML
+            if (youTubePlayerURLString)
+            {
+                [self saveAsFileToDocumentsDirectory: @"YouTubeIFramePlayer"
+                                              asType: @"html"
+                                         usingSource: youTubePlayerURLString];
+            }
+
+            // Handle Vimeo player updates
+            NSString *vimeoPlayerURLString = dictionary[@"vimeo"];
             
-            [self saveAsFileToDocumentsDirectory: @"YouTubeIFramePlayer"
-                                          asType: @"html"
-                                     usingSource: youTubePlayerURLString];
+            // Only update if we have valid HTML
+            if (vimeoPlayerURLString)
+            {
+                [self saveAsFileToDocumentsDirectory: @"VimeoIFramePlayer"
+                                              asType: @"html"
+                                         usingSource: vimeoPlayerURLString];
+            }
             
             self.playerUpdated = TRUE;
         }
