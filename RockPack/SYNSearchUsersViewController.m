@@ -132,49 +132,7 @@
                                           }];
 }
 
-#pragma mark - UICollectionView Delegate
 
-- (NSInteger) numberOfSectionsInCollectionView: (UICollectionView *) collectionView
-{
-    return 1;
-}
-
-- (NSInteger) collectionView: (UICollectionView *) view
-      numberOfItemsInSection: (NSInteger) section
-{
-    return self.users.count;
-    
-}
-
-
-
-- (UICollectionViewCell *) collectionView: (UICollectionView *) collectionView
-                   cellForItemAtIndexPath: (NSIndexPath *) indexPath
-{
-    
-    ChannelOwner *user = self.users[indexPath.row];
-    
-    SYNUserThumbnailCell *userThumbnailCell = [collectionView dequeueReusableCellWithReuseIdentifier: @"SYNUserThumbnailCell"
-                                                                                        forIndexPath: indexPath];
-    
-    
-    userThumbnailCell.nameLabel.text = user.displayName;
-    
-    userThumbnailCell.imageUrlString = user.thumbnailLargeUrl;
-    
-    [userThumbnailCell setDisplayName:user.displayName andUsername:user.username];
-    
-    
-    return userThumbnailCell;
-}
-
-- (void) collectionView: (UICollectionView *) collectionView didSelectItemAtIndexPath: (NSIndexPath *) indexPath
-{
-    
-    ChannelOwner *channelOwner = (ChannelOwner*)self.users[indexPath.row];
-    
-    [appDelegate.viewStackManager viewProfileDetails:channelOwner];
-}
 
 - (CGSize) itemSize
 {
