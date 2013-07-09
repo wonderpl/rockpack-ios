@@ -13,6 +13,7 @@
 @interface SYNSubscribersViewController : SYNUsersViewController
 
 @property (nonatomic, weak) Channel* channel;
+@property (nonatomic, weak) UIPopoverController* parentPopover;
 
 -(id)initWithChannel:(Channel*)channel;
 

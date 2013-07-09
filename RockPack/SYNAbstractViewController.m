@@ -626,7 +626,7 @@
                                                                                   @"subject" : subject};
                                               
                                               // The activity controller needs to be presented from a popup on iPad, but normally on iPhone
-                                              if (UI_USER_INTERFACE_IDIOM() == UIUserInterfaceIdiomPad)
+                                              if (IS_IPAD)
                                               {
                                                   self.activityPopoverController = [[UIPopoverController alloc] initWithContentViewController: activityViewController];
                                                   self.activityPopoverController.popoverBackgroundViewClass = [SYNPopoverBackgroundView class];
