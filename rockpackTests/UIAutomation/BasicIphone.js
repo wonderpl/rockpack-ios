@@ -24,6 +24,7 @@ target.frontMostApp().mainWindow().scrollViews()[0].staticTexts()["ALL CATEGORIE
 window.scrollViews()[0].tableViews()["Genre Table"].withValueForKey(1,"isVisible");
 window.scrollViews()[0].tableViews()["Genre Table"].groups()["MUSIC"].withValueForKey(1,"isVisible");
 target.frontMostApp().mainWindow().scrollViews()[0].tableViews()["Genre Table"].groups()["MUSIC"].buttons()[0].tap();
+target.frontMostApp().mainWindow().scrollViews()[0].tableViews()["Genre Table"].cells()["POP"].withValueForKey(1,"isVisible");
 target.frontMostApp().mainWindow().scrollViews()[0].tableViews()["Genre Table"].cells()["POP"].tap();
 target.frontMostApp().mainWindow().scrollViews()[0].collectionViews()[1].cells()[0].tap();
 target.frontMostApp().mainWindow().buttons()["onboarding button ok"].tap();
