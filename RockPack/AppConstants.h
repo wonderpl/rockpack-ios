@@ -283,7 +283,7 @@ typedef enum _NavigationButtonsAppearance {
 #define kFullScreenHeightLandscapeMinusStatusBar (kFullScreenHeightLandscape - kStatusBarHeight)
 #define kFullScreenWidthLandscape kMajorDimension
 
-#define kStandardCollectionViewOffsetY 80.0f
+#define kStandardCollectionViewOffsetY 90.0f
 #define kStandardCollectionViewOffsetYiPhone 60.0f
 #define kYouCollectionViewOffsetY 160.0f
 #define kChannelDetailsCollectionViewOffsetY 500.0f

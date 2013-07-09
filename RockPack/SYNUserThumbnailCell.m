@@ -36,6 +36,7 @@
 -(void)setImageUrlString:(NSString *)imageUrlString
 {
     
+    NSLog(@"imageUrlString: %@", imageUrlString);
     if(!imageUrlString) // cancel the existing network operation
     {
         [self.imageView setImageWithURL: nil

@@ -9,6 +9,7 @@
 #import "SYNSearchTabView.h"
 #import "UIFont+SYNFont.h"
 
+
 @interface SYNSearchTabView ()
 
 @property (nonatomic,strong) UIColor* parenthesesColor;
@@ -28,7 +29,8 @@
         backgroundImageOff = [UIImage imageNamed:@"SearchTab"];
         backgroundImageOn = [UIImage imageNamed:@"SearchTabSelected"];
         
-        self.frame = CGRectMake(0.0, 0.0, backgroundImageOn.size.width, backgroundImageOn.size.height);
+        CGSize correctSize = IS_IPAD ? CGSizeMake(130, 45) : CGSizeMake(108, 45);
+        self.frame = CGRectMake(0.0, 0.0, correctSize.width, correctSize.height);
         
         switch (itsType) {
             case SearchTabTypeVideos:

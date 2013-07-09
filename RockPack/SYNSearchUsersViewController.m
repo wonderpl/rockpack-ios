@@ -50,7 +50,7 @@
     SYNIntegralCollectionViewFlowLayout* flowLayout;
     
     if (isIPhone)
-        flowLayout = [SYNIntegralCollectionViewFlowLayout layoutWithItemSize: CGSizeMake(158.0f, 169.0f)
+        flowLayout = [SYNIntegralCollectionViewFlowLayout layoutWithItemSize: CGSizeMake(120.0f, 169.0f)
                                                      minimumInterItemSpacing: 0.0
                                                           minimumLineSpacing: 6.0
                                                              scrollDirection: UICollectionViewScrollDirectionVertical
@@ -159,11 +159,6 @@
     
     request.fetchBatchSize = 20;
     
-//    NSSortDescriptor *positionDescriptor = [[NSSortDescriptor alloc] initWithKey: @"position"
-//                                                                       ascending: YES];
-//    
-//    [request setSortDescriptors:@[positionDescriptor]];
-    
     NSError *error = nil;
     NSArray *resultsArray = [appDelegate.searchManagedObjectContext executeFetchRequest: request
                                                                                   error: &error];
@@ -248,9 +243,7 @@
     
     userThumbnailCell.nameLabel.text = user.displayName;
     
-    userThumbnailCell.imageUrlString = user.thumbnailURL;
-    
-    
+    userThumbnailCell.imageUrlString = user.thumbnailLargeUrl;
     
     [userThumbnailCell setDisplayName:user.displayName andUsername:user.username];
     
@@ -260,7 +253,7 @@
 
 - (CGSize) itemSize
 {
-    return [SYNDeviceManager.sharedInstance isIPhone] ? CGSizeMake(152.0f, 152.0f) : CGSizeMake(251.0, 274.0);
+    return [SYNDeviceManager.sharedInstance isIPhone] ? CGSizeMake(120.0f, 152.0f) : CGSizeMake(251.0, 274.0);
 }
 
 
