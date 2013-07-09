@@ -1007,6 +1007,7 @@
 		BE7D02EA178B138B008053DC /* SYNUserThumbnailCell.m in Sources */ = {isa = PBXBuildFile; fileRef = BE7D02E9178B138B008053DC /* SYNUserThumbnailCell.m */; };
 		BE7D02EC178B13C3008053DC /* SYNUserThumbnailCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = BE7D02EB178B13C3008053DC /* SYNUserThumbnailCell.xib */; };
 		BE7D02F0178C0FEC008053DC /* SYNUserThumbnailCell~iphone.xib in Resources */ = {isa = PBXBuildFile; fileRef = BE7D02EF178C0FEC008053DC /* SYNUserThumbnailCell~iphone.xib */; };
+		BE7D02F4178C1D3B008053DC /* SYNUsersViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = BE7D02F3178C1D3B008053DC /* SYNUsersViewController.m */; };
 		BE7D342E170DD8C90085AB81 /* SYNChannelFooterMoreView.xib in Resources */ = {isa = PBXBuildFile; fileRef = BE7D342D170DD8C90085AB81 /* SYNChannelFooterMoreView.xib */; };
 		BE7D3431170DDB310085AB81 /* SYNChannelFooterMoreView.m in Sources */ = {isa = PBXBuildFile; fileRef = BE7D3430170DDB310085AB81 /* SYNChannelFooterMoreView.m */; };
 		BE7D34CE1714434D0085AB81 /* SYNDeviceManager.m in Sources */ = {isa = PBXBuildFile; fileRef = BE7D34CD1714434D0085AB81 /* SYNDeviceManager.m */; };
@@ -2330,6 +2331,8 @@
 		BE7D02E9178B138B008053DC /* SYNUserThumbnailCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SYNUserThumbnailCell.m; sourceTree = "<group>"; };
 		BE7D02EB178B13C3008053DC /* SYNUserThumbnailCell.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = SYNUserThumbnailCell.xib; sourceTree = "<group>"; };
 		BE7D02EF178C0FEC008053DC /* SYNUserThumbnailCell~iphone.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = "SYNUserThumbnailCell~iphone.xib"; sourceTree = "<group>"; };
+		BE7D02F2178C1D3B008053DC /* SYNUsersViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SYNUsersViewController.h; sourceTree = "<group>"; };
+		BE7D02F3178C1D3B008053DC /* SYNUsersViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SYNUsersViewController.m; sourceTree = "<group>"; };
 		BE7D342D170DD8C90085AB81 /* SYNChannelFooterMoreView.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = SYNChannelFooterMoreView.xib; sourceTree = "<group>"; };
 		BE7D342F170DDB310085AB81 /* SYNChannelFooterMoreView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SYNChannelFooterMoreView.h; sourceTree = "<group>"; };
 		BE7D3430170DDB310085AB81 /* SYNChannelFooterMoreView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SYNChannelFooterMoreView.m; sourceTree = "<group>"; };
@@ -3192,6 +3195,7 @@
 		019824E11629CAB600216900 /* View Controllers */ = {
 			isa = PBXGroup;
 			children = (
+				BE7D02F1178C1D13008053DC /* Users */,
 				01982563162ADEAD00216900 /* Abstract */,
 				01B7F75B164FB7A7009C5CCD /* Channels */,
 				BEF9E5A516DBCDEF00286113 /* Components */,
@@ -4803,6 +4807,15 @@
 			name = Search;
 			sourceTree = "<group>";
 		};
+		BE7D02F1178C1D13008053DC /* Users */ = {
+			isa = PBXGroup;
+			children = (
+				BE7D02F2178C1D3B008053DC /* SYNUsersViewController.h */,
+				BE7D02F3178C1D3B008053DC /* SYNUsersViewController.m */,
+			);
+			name = Users;
+			sourceTree = "<group>";
+		};
 		BE7D3496171412EC0085AB81 /* Side Navigator */ = {
 			isa = PBXGroup;
 			children = (
@@ -6312,6 +6325,7 @@
 				BE2D762D1785BBB100546BFD /* SYNViewStackManager.m in Sources */,
 				BE7D02E5178AF310008053DC /* SYNSearchUsersViewController.m in Sources */,
 				BE7D02EA178B138B008053DC /* SYNUserThumbnailCell.m in Sources */,
+				BE7D02F4178C1D3B008053DC /* SYNUsersViewController.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
