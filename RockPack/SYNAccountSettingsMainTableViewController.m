@@ -94,6 +94,7 @@
 
     self.tableView.scrollEnabled = [SYNDeviceManager.sharedInstance isIPhone];
     self.tableView.scrollsToTop = NO;
+    self.tableView.accessibilityLabel = @"Settings Table";
     
     UILabel* titleLabel = [[UILabel alloc] initWithFrame: CGRectMake( -(self.contentSizeForViewInPopover.width * 0.5), -15.0, self.contentSizeForViewInPopover.width, 40.0)];
     titleLabel.backgroundColor = [UIColor clearColor];

@@ -26,15 +26,15 @@ target.frontMostApp().mainWindow().buttons()["onboarding button ok"].tap();
 target.frontMostApp().mainWindow().buttons()["ButtonSubscribe"].tap();
 target.frontMostApp().mainWindow().buttons()["ButtonBackCD"].tap();
 target.frontMostApp().mainWindow().buttons()["ButtonNav"].tap();
-target.frontMostApp().mainWindow().tableViews()["Empty list"].cells()["PROFILE"].tap();
+target.frontMostApp().mainWindow().tableViews()["Navigation Table"].cells()["PROFILE"].tap();
 target.frontMostApp().mainWindow().scrollViews()[0].collectionViews()[3].cells()[0].tap();
 target.frontMostApp().mainWindow().buttons()["ButtonSubscribe"].tap();
 target.frontMostApp().mainWindow().buttons()["ButtonBackCD"].tap();
 target.frontMostApp().mainWindow().buttons()["ButtonNav"].tap();
 target.frontMostApp().mainWindow().buttons()["ButtonSettings"].tap();
-target.frontMostApp().mainWindow().popover().tableViews()["Empty list"].cells()["Logout"].tap();
+target.frontMostApp().mainWindow().popover().tableViews()["Settings Table"].cells()["Logout"].tap();
 // Alert detected. Expressions for handling alerts should be moved into the UIATarget.onAlert function definition.
 target.frontMostApp().alert();
 
-UIALogger.logPass("Login->Subscribe->Unsubscribe->Logout")
+UIALogger.logPass("Login->Subscribe->Unsubscribe->Logout");
 

@@ -194,6 +194,7 @@ typedef enum {
                                                object: nil];
     
     self.tableView.scrollsToTop = NO;
+    self.tableView.accessibilityLabel = @"Navigation Table";
     [self getNotifications];
 }
 
