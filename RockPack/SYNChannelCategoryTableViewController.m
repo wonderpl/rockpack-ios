@@ -77,6 +77,8 @@
 {
     [super viewDidLoad];
     
+    self.tableView.accessibilityLabel = @"Genre Table";
+    
     [self.tableView registerNib: [UINib nibWithNibName: @"SYNChannelCategoryTableCell" bundle: [NSBundle mainBundle]]
          forCellReuseIdentifier:@"SYNChannelCategoryTableCell"];
     
