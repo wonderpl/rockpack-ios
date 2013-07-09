@@ -5,8 +5,8 @@ ONLY_ACTIVE_ARCH=NO \
 -scheme "rockpack" \
 -sdk iphonesimulator6.1 \
 -configuration Debug \
-SYMROOT="$WORKSPACE/UIAutomationBuild/build" \
-DSTROOT="$Workspace/UIAutomationBuild/build" \
+SYMROOT="/Users/$USER/Documents/UIAutomationBuild/build" \
+DSTROOT="/Users/$USER/Documents/UIAutomationBuild/build" \
 TARGETED_DEVICE_FAMILY="2" \
 install
 
