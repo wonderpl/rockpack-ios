@@ -117,8 +117,18 @@
     
 }
 
+-(BOOL)registerSubscribersFromDictionary:(NSDictionary *)dictionary
+{
+    return [self registerChannelOwnersFromDictionary:dictionary forViewId:kChannelDetailsViewId];
+}
 
 -(BOOL)registerUsersFromDictionary:(NSDictionary *)dictionary
+{
+    return [self registerChannelOwnersFromDictionary:dictionary forViewId:kSearchViewId];
+    
+}
+
+-(BOOL)registerChannelOwnersFromDictionary:(NSDictionary*)dictionary forViewId:(NSString*)viewId
 {
     NSDictionary *channelsDictionary = dictionary[@"users"];
     if (!channelsDictionary || ![channelsDictionary isKindOfClass: [NSDictionary class]])
@@ -127,8 +137,6 @@
     NSArray *itemArray = channelsDictionary[@"items"];
     if (![itemArray isKindOfClass: [NSArray class]])
         return NO;
-    
-    
     
     
     for (NSDictionary *itemDictionary in itemArray)
@@ -146,7 +154,7 @@
         }
         
         
-        user.viewId = kSearchViewId;
+        user.viewId = viewId;
         
     }
     
@@ -160,10 +168,7 @@
     
     
     return YES;
-    
 }
-
-
 
 
 @end
