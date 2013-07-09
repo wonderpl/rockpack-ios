@@ -37,6 +37,7 @@ target.frontMostApp().mainWindow().scrollViews()[0].collectionViews()[1].cells()
 target.delay(2); //Allow videos to load
 target.frontMostApp().mainWindow().buttons()["onboarding button ok"].tap();
 window.logElementTree();
+target.delay(1);
 target.frontMostApp().mainWindow().buttons()["onboarding button ok"].tap();
 
 //Subscribe
