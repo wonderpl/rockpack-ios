@@ -36,13 +36,24 @@
     
     // name label //
     
-    CGSize correctSize = [name sizeWithFont:self.nameLabel.font
-                          constrainedToSize:CGSizeMake(self.frame.size.width, 200.0)
-                              lineBreakMode:self.nameLabel.lineBreakMode];
-    
-    
     CGRect nameLabelFrame = self.nameLabel.frame;
-    nameLabelFrame.size = correctSize;
+    CGRect usernameLabelFrame = self.usernameLabel.frame;
+    
+    if(IS_IPAD)
+    {
+        CGSize correctSize = [name sizeWithFont:self.nameLabel.font
+                              constrainedToSize:CGSizeMake(self.frame.size.width, 200.0)
+                                  lineBreakMode:self.nameLabel.lineBreakMode];
+        
+        
+        
+        nameLabelFrame.size = correctSize;
+        
+        
+        usernameLabelFrame.origin.y = nameLabelFrame.origin.y + nameLabelFrame.size.height;
+    }
+    
+    
     
     self.nameLabel.frame = nameLabelFrame;
     
@@ -54,8 +65,7 @@
     self.usernameLabel.text = username;
     [self.usernameLabel sizeToFit];
     
-    CGRect usernameLabelFrame = self.usernameLabel.frame;
-    usernameLabelFrame.origin.y = nameLabelFrame.origin.y + nameLabelFrame.size.height;
+    
     self.usernameLabel.frame = usernameLabelFrame;
     
 }

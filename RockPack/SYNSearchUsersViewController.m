@@ -50,7 +50,7 @@
     SYNIntegralCollectionViewFlowLayout* flowLayout;
     
     if (isIPhone)
-        flowLayout = [SYNIntegralCollectionViewFlowLayout layoutWithItemSize: CGSizeMake(320.0f, 169.0f)
+        flowLayout = [SYNIntegralCollectionViewFlowLayout layoutWithItemSize: CGSizeMake(320.0f, 72.0f)
                                                      minimumInterItemSpacing: 0.0
                                                           minimumLineSpacing: 6.0
                                                              scrollDirection: UICollectionViewScrollDirectionVertical
@@ -72,7 +72,7 @@
     CGRect channelCollectionViewFrame;
     if (isIPhone)
     {
-        channelCollectionViewFrame = CGRectMake(0.0f, 103.0f,
+        channelCollectionViewFrame = CGRectMake(0.0f, 52.0f,
                                                 [SYNDeviceManager.sharedInstance currentScreenWidth],
                                                 [SYNDeviceManager.sharedInstance currentScreenHeight] - 123.0f);
     }
@@ -239,7 +239,8 @@
     ChannelOwner *user = self.users[indexPath.row];
     
     SYNUserThumbnailCell *userThumbnailCell = [collectionView dequeueReusableCellWithReuseIdentifier: @"SYNUserThumbnailCell"
-                                                                                           forIndexPath: indexPath];
+                                                                                        forIndexPath: indexPath];
+    
     
     userThumbnailCell.nameLabel.text = user.displayName;
     
