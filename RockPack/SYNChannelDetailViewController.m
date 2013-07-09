@@ -392,6 +392,7 @@
                                permittedArrowDirections: 0
                                                animated: YES];
         
+        subscribersViewController.parentPopover = self.subscribersPopover;
         
     }
     else
