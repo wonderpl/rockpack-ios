@@ -135,7 +135,7 @@
     {
         
         
-        ChannelOwner* user = [ChannelOwner instanceFromDictionary:dictionary
+        ChannelOwner* user = [ChannelOwner instanceFromDictionary:itemDictionary
                                         usingManagedObjectContext:appDelegate.searchManagedObjectContext
                                               ignoringObjectTypes:kIgnoreChannelObjects];
         

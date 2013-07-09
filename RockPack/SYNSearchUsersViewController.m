@@ -190,7 +190,6 @@
     [appDelegate.networkEngine searchUsersForTerm: term
                                          andRange: self.dataRequestRange
                                        onComplete: ^(int itemsCount) {
-                                           NSLog(@"%i", itemsCount);
                                               self.dataItemsAvailable = itemsCount;
                                               if (self.itemToUpdate)
                                                   [self.itemToUpdate setNumberOfItems: self.dataItemsAvailable
@@ -214,9 +213,9 @@
     
     self.dataRequestRange = NSMakeRange(nextStart, nextSize);
     
-    [appDelegate.networkEngine searchChannelsForTerm: self.searchTerm
-                                            andRange: self.dataRequestRange
-                                          onComplete: ^(int itemsCount) {
+    [appDelegate.networkEngine searchUsersForTerm: self.searchTerm
+                                         andRange: self.dataRequestRange
+                                       onComplete: ^(int itemsCount) {
                                               self.dataItemsAvailable = itemsCount;
                                               self.loadingMoreContent = NO;
                                           }];
@@ -250,6 +249,8 @@
     userThumbnailCell.nameLabel.text = user.displayName;
     
     userThumbnailCell.imageUrlString = user.thumbnailURL;
+    
+    
     
     [userThumbnailCell setDisplayName:user.displayName andUsername:user.username];
     
