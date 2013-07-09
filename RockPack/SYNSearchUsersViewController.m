@@ -251,6 +251,14 @@
     return userThumbnailCell;
 }
 
+- (void) collectionView: (UICollectionView *) collectionView didSelectItemAtIndexPath: (NSIndexPath *) indexPath
+{
+    
+    ChannelOwner *channelOwner = (ChannelOwner*)self.users[indexPath.row];
+    
+    [appDelegate.viewStackManager viewProfileDetails:channelOwner];
+}
+
 - (CGSize) itemSize
 {
     return [SYNDeviceManager.sharedInstance isIPhone] ? CGSizeMake(120.0f, 152.0f) : CGSizeMake(251.0, 274.0);
