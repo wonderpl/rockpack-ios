@@ -18,78 +18,56 @@
 
 @implementation SYNUsersViewController
 
+@synthesize usersThumbnailCollectionView = _usersThumbnailCollectionView;
+
 - (void) loadView
 {
-    BOOL isIPhone = IS_IPHONE;
+    
     
     SYNIntegralCollectionViewFlowLayout* flowLayout;
     
-    if (isIPhone)
+    if (IS_IPHONE)
+    {
         flowLayout = [SYNIntegralCollectionViewFlowLayout layoutWithItemSize: CGSizeMake(320.0f, 72.0f)
                                                      minimumInterItemSpacing: 0.0
                                                           minimumLineSpacing: 6.0
                                                              scrollDirection: UICollectionViewScrollDirectionVertical
                                                                 sectionInset: UIEdgeInsetsMake(2.0, 2.0, 46.0, 2.0)];
+    }
     else
+    {
         flowLayout = [SYNIntegralCollectionViewFlowLayout layoutWithItemSize: CGSizeMake(120.0f, 180.0f)
                                                      minimumInterItemSpacing: 0.0
                                                           minimumLineSpacing: 2.0
                                                              scrollDirection: UICollectionViewScrollDirectionVertical
                                                                 sectionInset: UIEdgeInsetsMake(6.0, 6.0, 5.0, 6.0)];
+    }
+        
     
     
     
     flowLayout.footerReferenceSize = [self footerSize];
     
-    // Work out how hight the inital tab bar is
-    CGFloat topTabBarHeight = [UIImage imageNamed: @"CategoryBar"].size.height;
     
-    CGRect channelCollectionViewFrame;
-    if (isIPhone)
-    {
-        channelCollectionViewFrame = CGRectMake(0.0f, 52.0f,
-                                                [SYNDeviceManager.sharedInstance currentScreenWidth],
-                                                [SYNDeviceManager.sharedInstance currentScreenHeight] - 123.0f);
-    }
-    else
-    {
-        channelCollectionViewFrame = [SYNDeviceManager.sharedInstance isLandscape] ?
-        CGRectMake(0.0, kStandardCollectionViewOffsetY + topTabBarHeight, kFullScreenWidthLandscape, kFullScreenHeightLandscapeMinusStatusBar - kStandardCollectionViewOffsetY - topTabBarHeight) :
-        CGRectMake(0.0f, kStandardCollectionViewOffsetY + topTabBarHeight, kFullScreenWidthPortrait, kFullScreenHeightPortraitMinusStatusBar  - kStandardCollectionViewOffsetY - topTabBarHeight);
-    }
-    
-    self.usersThumbnailCollectionView = [[UICollectionView alloc] initWithFrame: channelCollectionViewFrame
+    _usersThumbnailCollectionView = [[UICollectionView alloc] initWithFrame: CGRectZero
                                                            collectionViewLayout: flowLayout];
     
-    self.usersThumbnailCollectionView.dataSource = self;
-    self.usersThumbnailCollectionView.delegate = self;
-    self.usersThumbnailCollectionView.backgroundColor = [UIColor clearColor];
-    self.usersThumbnailCollectionView.showsVerticalScrollIndicator = NO;
+    _usersThumbnailCollectionView.dataSource = self;
+    _usersThumbnailCollectionView.delegate = self;
+    _usersThumbnailCollectionView.backgroundColor = [UIColor clearColor];
+    _usersThumbnailCollectionView.showsVerticalScrollIndicator = NO;
     
-    self.usersThumbnailCollectionView.autoresizingMask = UIViewAutoresizingFlexibleWidth | UIViewAutoresizingFlexibleHeight;
-    self.usersThumbnailCollectionView.scrollsToTop = NO;
+    _usersThumbnailCollectionView.autoresizingMask = UIViewAutoresizingFlexibleWidth | UIViewAutoresizingFlexibleHeight;
+    _usersThumbnailCollectionView.scrollsToTop = NO;
     
-    CGRect newFrame;
-    if (isIPhone)
-    {
-        newFrame = CGRectMake(0.0f, 59.0f, [SYNDeviceManager.sharedInstance currentScreenWidth],
-                              [SYNDeviceManager.sharedInstance currentScreenHeight] - 20.0f);
-    }
-    else
-    {
-        newFrame = [SYNDeviceManager.sharedInstance isLandscape] ?
-        CGRectMake(0.0, 0.0, kFullScreenWidthLandscape, kFullScreenHeightLandscapeMinusStatusBar) :
-        CGRectMake(0.0f, 0.0f, kFullScreenWidthPortrait, kFullScreenHeightPortraitMinusStatusBar);
-    }
     
-    self.view = [[UIView alloc] initWithFrame:newFrame];
+    
+    self.view = _usersThumbnailCollectionView;
     
     self.view.autoresizingMask = UIViewAutoresizingFlexibleWidth | UIViewAutoresizingFlexibleHeight;
     
-    [self.view addSubview:self.usersThumbnailCollectionView];
     
-    
-    self.usersThumbnailCollectionView.showsVerticalScrollIndicator = YES;
+    _usersThumbnailCollectionView.showsVerticalScrollIndicator = YES;
     
     
     
@@ -104,9 +82,11 @@
     UINib *footerViewNib = [UINib nibWithNibName: @"SYNChannelFooterMoreView"
                                           bundle: nil];
     
-    [self.usersThumbnailCollectionView registerNib: footerViewNib
-                        forSupplementaryViewOfKind: UICollectionElementKindSectionFooter
-                               withReuseIdentifier: @"SYNChannelFooterMoreView"];
+    [_usersThumbnailCollectionView registerNib: footerViewNib
+                    forSupplementaryViewOfKind: UICollectionElementKindSectionFooter
+                           withReuseIdentifier: @"SYNChannelFooterMoreView"];
+    
+    
 }
 
 
@@ -118,6 +98,32 @@
     
 }
 
+-(void)viewWillAppear:(BOOL)animated
+{
+    [super viewWillAppear:animated];
+    
+    [self setOffsetTop:0.0f];
+    
+    
+    
 
+}
+
+#pragma mark - Getters/Setters
+
+-(UICollectionView*)usersThumbnailCollectionView
+{
+    return (UICollectionView*)self.view;
+}
+
+-(void)setOffsetTop:(CGFloat)offsetTop
+{
+    CGRect collectionViewFrame = CGRectMake(0.0f, offsetTop,
+                                            self.view.superview.frame.size.width,
+                                            [SYNDeviceManager.sharedInstance currentScreenHeight] - offsetTop);
+    
+    
+    self.usersThumbnailCollectionView.frame = collectionViewFrame;
+}
 
 @end

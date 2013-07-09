@@ -41,7 +41,19 @@
 }
 
 
-
+-(void)viewWillAppear:(BOOL)animated
+{
+    [super viewWillAppear:animated];
+    
+    // resize
+    
+    if(IS_IPAD)
+        [self setOffsetTop:140.0f];
+    else
+        [self setOffsetTop:120.0f];
+    
+    
+}
 
 - (void) handleDataModelChange: (NSNotification*) dataNotification
 {
@@ -50,13 +62,6 @@
     
 }
 
-- (void) viewDidLoad
-{
-    [super viewDidLoad];
-    
-    
-    
-}
 
 - (void) displayUsers
 {
