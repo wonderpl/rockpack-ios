@@ -14,4 +14,6 @@
 
 @property (nonatomic, strong) NSArray* users;
 
+@property (nonatomic) CGFloat offsetTop;
+
 @end
