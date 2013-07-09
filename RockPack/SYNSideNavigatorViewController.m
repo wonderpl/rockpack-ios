@@ -65,14 +65,12 @@ typedef enum {
 @property (weak, nonatomic) IBOutlet UIView *mainContentView;
 @property (weak, nonatomic) IBOutlet UIView *navigationContainerView;
 
-
 @end
 
 
 @implementation SYNSideNavigatorViewController
 
 // Only need synthesize for custom setters, use latest ObjC naming convention
-@synthesize user = _user;
 @synthesize currentlyLoadedViewController = _currentlyLoadedViewController;
 @synthesize state = _state;
 
@@ -138,7 +136,7 @@ typedef enum {
     
     CGRect newFrame = self.view.frame;
     
-    if ([SYNDeviceManager.sharedInstance isIPhone])
+    if (IS_IPHONE)
     {
         newFrame.size.height = [SYNDeviceManager.sharedInstance currentScreenHeight] - 78.0f;
         self.view.frame = newFrame;
@@ -243,7 +241,7 @@ typedef enum {
                                                        
                 SYNRockpackNotification* notification = [SYNRockpackNotification notificationWithData:itemData];
                 
-                if(!notification)
+                if (!notification)
                 {
                     continue;
                 }
@@ -258,7 +256,7 @@ typedef enum {
                                                    
             [self.tableView reloadData];
         
-        if(self.currentlyLoadedViewController && [self.currentlyLoadedViewController isKindOfClass:[SYNNotificationsTableViewController class]])
+        if (self.currentlyLoadedViewController && [self.currentlyLoadedViewController isKindOfClass:[SYNNotificationsTableViewController class]])
         {
             ((SYNNotificationsTableViewController*)self.currentlyLoadedViewController).notifications = self.notifications;
         }
@@ -412,7 +410,7 @@ typedef enum {
         
 
         
-        if ([SYNDeviceManager.sharedInstance isIPad])
+        if (IS_IPAD)
         {
             CGRect frameThatFits = self.currentlyLoadedViewController.view.frame;
             frameThatFits.size.width = self.containerView.frame.size.width;
@@ -420,7 +418,7 @@ typedef enum {
             self.currentlyLoadedViewController.view.frame = frameThatFits;
         }
         
-        else if ([SYNDeviceManager.sharedInstance isIPhone])
+        else if (IS_IPHONE)
         {
             CGRect frameThatFits = self.currentlyLoadedViewController.view.frame;
             frameThatFits.size.width = self.containerView.frame.size.width;
@@ -462,7 +460,8 @@ typedef enum {
 {
     _user = user;
     NSString* fullname = user.fullName;
-    if([fullname length]>1)
+    
+    if ([fullname length]>1)
     {
         self.userNameLabel.text = [self.user.fullName uppercaseString];
         self.nicknameLabel.text = self.user.username;
@@ -473,7 +472,7 @@ typedef enum {
         self.nicknameLabel.text = @"";
     }
     
-    if(!self.profilePictureImageView.image)
+    if (!self.profilePictureImageView.image)
     {
         self.profilePictureImageView.image = [UIImage imageNamed:@"PlaceholderSidebarAvatar"];
     }
@@ -550,7 +549,7 @@ typedef enum {
     if (!self.currentlyLoadedViewController)
         return;
     
-    if ([SYNDeviceManager.sharedInstance isIPhone])
+    if (IS_IPHONE)
     {
         CGSize containerSize = self.containerView.frame.size;
         CGRect vcRect = self.currentlyLoadedViewController.view.frame;
@@ -561,7 +560,8 @@ typedef enum {
 
     }
     
-    if ([SYNDeviceManager.sharedInstance isIPad]) {
+    if (IS_IPAD)
+    {
         CGRect screenRect = [[UIScreen mainScreen] bounds];
         CGFloat screenHeight = screenRect.size.height;
         
@@ -581,7 +581,8 @@ typedef enum {
 - (void) reset
 {
     self.currentlySelectedIndexPath = nil;
-    if([[SYNDeviceManager sharedInstance] isIPhone])
+    
+    if (IS_IPHONE)
     {
         CGRect startFrame = self.navigationContainerView.frame;
         startFrame.origin.x = self.view.frame.size.width;
@@ -593,8 +594,6 @@ typedef enum {
 
 
 #pragma mark - Orientation Change
-
-
 
 - (void) willAnimateRotationToInterfaceOrientation: (UIInterfaceOrientation) toInterfaceOrientation
                                           duration: (NSTimeInterval) duration
@@ -634,7 +633,7 @@ typedef enum {
 
 #pragma mark - UITextFieldDelegate - iphone specific
 
-- (BOOL)textFieldShouldBeginEditing:(UITextField *)textField
+- (BOOL) textFieldShouldBeginEditing: (UITextField *) textField
 {
     [self.searchViewController removeFromParentViewController];
     [[self.parentViewController view] addSubview:self.searchViewController.searchBoxView];
@@ -764,7 +763,7 @@ typedef enum {
                         options: UIViewAnimationOptionCurveEaseInOut | UIViewAnimationOptionBeginFromCurrentState
                      animations: ^{
                          CGRect sideNavigationFrame = self.view.frame;
-                         if ([SYNDeviceManager.sharedInstance isIPad])
+                         if (IS_IPAD)
                          {
                              sideNavigationFrame.origin.x = 1024.0 - 192.0;
                              self.userNameLabel.alpha = 0.0;
@@ -785,7 +784,7 @@ typedef enum {
     // Light up navigation button
     self.captiveButton.selected = TRUE;
     
-    if ([SYNDeviceManager.sharedInstance isIPad])
+    if (IS_IPAD)
     {
         [UIView animateWithDuration: 0.4f
                               delay: 0.0f

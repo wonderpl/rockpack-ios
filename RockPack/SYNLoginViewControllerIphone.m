@@ -201,7 +201,7 @@
     CGRect onBoardingViewFrame = self.onBoardingController.view.frame;
     onBoardingViewFrame.origin.x = 0.0;
     onBoardingViewFrame.size.width = [[SYNDeviceManager sharedInstance] currentScreenWidth];
-    if(IS_IPHONE5)
+    if(IS_IPHONE_5)
         onBoardingViewFrame.origin.y = 118.0;
     else
         onBoardingViewFrame.origin.y = self.facebookButton.frame.origin.y - onBoardingViewFrame.size.height - 16.0;

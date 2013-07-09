@@ -314,25 +314,24 @@
     NSDictionary* parameters = [NSDictionary dictionaryWithDictionary: tempParameters];
     
     SYNNetworkOperationJsonObject *networkOperation =
-    (SYNNetworkOperationJsonObject*)[self operationWithPath:kAPISearchChannels params:parameters];
+    (SYNNetworkOperationJsonObject*)[self operationWithPath:kAPISearchUsers params:parameters];
     networkOperation.shouldNotCacheResponse = YES;
     
     [networkOperation addJSONCompletionHandler: ^(NSDictionary *dictionary) {
-        
         
         int itemsCount = 0;
         
         if (!dictionary)
             return;
         
-        NSNumber *totalNumber = (NSNumber*)dictionary[@"channels"][@"total"];
+        NSNumber *totalNumber = (NSNumber*)dictionary[@"users"][@"total"];
         
         if (totalNumber && [totalNumber isKindOfClass: [NSNumber class]])
         {
             itemsCount = totalNumber.intValue;
         }
         
-        BOOL registryResultOk = [self.searchRegistry registerChannelsFromDictionary: dictionary];
+        BOOL registryResultOk = [self.searchRegistry registerUsersFromDictionary: dictionary];
         
         if (!registryResultOk)
             return;

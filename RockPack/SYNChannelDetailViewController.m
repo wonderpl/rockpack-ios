@@ -150,7 +150,7 @@
 //    self.dataItemsAvailable = self.channel.videoInstances.count;
     self.dataRequestRange = NSMakeRange(0, kAPIInitialBatchSize);
     
-    self.isIPhone = [SYNDeviceManager.sharedInstance isIPhone];
+    self.isIPhone = IS_IPHONE;
 
     // Originally the opacity was required to be 0.25f, but this appears less visible on the actual screen
     // Set custom fonts and shadows for labels
@@ -795,7 +795,7 @@
     
     cell = videoThumbnailCell;
     
-    BOOL isIpad = [[SYNDeviceManager sharedInstance] isIPad];
+    BOOL isIpad = IS_IPAD;
     if ((isIpad && indexPath.item == 2) || (!isIpad && indexPath.item == 0))
     {
         //perform after 0.0f delay to make sure the call is queued after the cell has been added to the view
@@ -2316,13 +2316,12 @@
     if (![self.channel.channelOwner.uniqueId isEqualToString:appDelegate.currentUser.uniqueId] &&
        !self.channel.subscribedByUserValue && !hasShownSubscribeOnBoarding)
     {
-        BOOL isIpad = [[SYNDeviceManager sharedInstance] isIPad];
         NSString* message = NSLocalizedString(@"onboarding_subscription", nil);
-        PointingDirection direction = isIpad ? PointingDirectionLeft : PointingDirectionUp;
-        CGFloat fontSize = isIpad ? 19.0 : 15.0 ;
-        CGSize size =  isIpad ? CGSizeMake(290.0, 164.0) : CGSizeMake(260.0, 148.0);
+        PointingDirection direction = IS_IPAD ? PointingDirectionLeft : PointingDirectionUp;
+        CGFloat fontSize = IS_IPAD ? 19.0 : 15.0 ;
+        CGSize size =  IS_IPAD ? CGSizeMake(290.0, 164.0) : CGSizeMake(260.0, 148.0);
         CGRect rectToPointTo = self.subscribeButton.frame;
-        if (!isIpad)
+        if (!IS_IPAD)
             rectToPointTo = CGRectInset(rectToPointTo, 0.0, 6.0);
         SYNOnBoardingPopoverView* subscribePopover = [SYNOnBoardingPopoverView withMessage:message
                                                                                   withSize:size
@@ -2340,7 +2339,7 @@
         [defaults setBool:YES forKey:kUserDefaultsSubscribe];
     }
     
-    NSInteger cellNumber = [[SYNDeviceManager sharedInstance] isIPad] ? 1 : 0;
+    NSInteger cellNumber = IS_IPAD ? 1 : 0;
     SYNVideoThumbnailRegularCell* randomCell =
     (SYNVideoThumbnailRegularCell*)[self.videoThumbnailCollectionView cellForItemAtIndexPath:[NSIndexPath indexPathForItem:cellNumber inSection:0]];
 
@@ -2348,9 +2347,9 @@
     {
         NSString* message = NSLocalizedString(@"onboarding_video", nil);
         
-        CGFloat fontSize = [[SYNDeviceManager sharedInstance] isIPad] ? 19.0 : 15.0 ;
-        CGSize size = [[SYNDeviceManager sharedInstance] isIPad] ? CGSizeMake(320.0, 164.0) : CGSizeMake(250.0, 150.0);
-       
+        CGFloat fontSize = IS_IPAD ? 19.0 : 15.0 ;
+        CGSize size = IS_IPAD ? CGSizeMake(320.0, 164.0) : CGSizeMake(250.0, 150.0);
+
                                         
         CGRect rectToPointTo = [self.view convertRect:randomCell.addItButton.frame fromView:randomCell];
         rectToPointTo = CGRectInset(rectToPointTo, 10.0, 10.0);
@@ -3005,31 +3004,34 @@
 - (void) videoOverlayDidDissapear
 {
     NSUserDefaults *defaults = [NSUserDefaults standardUserDefaults];
-    BOOL hasShownAddVideoOnBoarding = [defaults boolForKey:kUserDefaultsAddVideo];
+    BOOL hasShownAddVideoOnBoarding = [defaults boolForKey: kUserDefaultsAddVideo];
     
-    if (!hasShownAddVideoOnBoarding &&
-       [[SYNDeviceManager sharedInstance] isIPhone]) {
-        
+    if (!hasShownAddVideoOnBoarding && IS_IPHONE)
+    {
         NSString* message = NSLocalizedString(@"onboarding_video", nil);
         
-        CGFloat fontSize = [[SYNDeviceManager sharedInstance] isIPad] ? 19.0 : 15.0 ;
-        CGSize size = [[SYNDeviceManager sharedInstance] isIPad] ? CGSizeMake(340.0, 164.0) : CGSizeMake(260.0, 144.0);
+        // FIXME: Surely these iPad checks are not required (see above)
+        CGFloat fontSize = IS_IPAD ? 19.0 : 15.0 ;
+        CGSize size = IS_IPAD ? CGSizeMake(340.0, 164.0) : CGSizeMake(260.0, 144.0);
         
         SYNVideoThumbnailRegularCell* randomCell =
-        (SYNVideoThumbnailRegularCell*)[self.videoThumbnailCollectionView cellForItemAtIndexPath:[NSIndexPath indexPathForItem:0 inSection:0]];
+        (SYNVideoThumbnailRegularCell*)[self.videoThumbnailCollectionView cellForItemAtIndexPath: [NSIndexPath indexPathForItem: 0 inSection: 0]];
         
         
-        CGRect rectToPointTo = [self.view convertRect:randomCell.addItButton.frame fromView:randomCell];
+        CGRect rectToPointTo = [self.view convertRect: randomCell.addItButton.frame
+                                             fromView: randomCell];
+        
         rectToPointTo = CGRectInset(rectToPointTo, 10.0, 10.0);
-        SYNOnBoardingPopoverView* addToChannelPopover = [SYNOnBoardingPopoverView withMessage:message
-                                                                                     withSize:size
-                                                                                  andFontSize:fontSize
-                                                                                   pointingTo:rectToPointTo
-                                                                                withDirection:PointingDirectionDown];
+        
+        SYNOnBoardingPopoverView* addToChannelPopover = [SYNOnBoardingPopoverView withMessage: message
+                                                                                     withSize: size
+                                                                                  andFontSize: fontSize
+                                                                                   pointingTo: rectToPointTo
+                                                                                withDirection: PointingDirectionDown];
 
         __weak SYNChannelDetailViewController* wself = self;
         addToChannelPopover.action = ^{
-            [wself addItToChannelPresssed:nil];
+            [wself addItToChannelPresssed: nil];
         };
         
         [appDelegate.onBoardingQueue addPopover:addToChannelPopover];
@@ -3043,7 +3045,8 @@
 
 - (void) headerTapped
 {
-    [self.videoThumbnailCollectionView setContentOffset:self.originalContentOffset animated:YES];
+    [self.videoThumbnailCollectionView setContentOffset: self.originalContentOffset
+                                               animated: YES];
 }
 
 

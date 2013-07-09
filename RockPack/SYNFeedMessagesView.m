@@ -8,64 +8,73 @@
 
 #import "SYNFeedMessagesView.h"
 #import "UIFont+SYNFont.h"
-#import "SYNDeviceManager.h"
 
 #define kSpinnerTextDistance 12.0
 
-@interface SYNFeedMessagesView () {
-    BOOL _isIPhone;
-    BOOL _isLoader;
-    UIActivityIndicatorView* _activityIndicatorView;
-}
+@interface SYNFeedMessagesView () 
 
-@property UILabel* messageLabel;
+@property (nonatomic) BOOL isLoader;
+@property (nonatomic, strong) UIActivityIndicatorView* activityIndicatorView;
+@property (nonatomic, strong) UILabel* messageLabel;
 
 @end
 
+
 @implementation SYNFeedMessagesView
 
-
-- (id) initWithMessage:(NSString*)message
++ (id) withMessage: (NSString*) message
 {
-    
-    
-    if (self = [super init]) {
-        
-        _isIPhone = [[SYNDeviceManager sharedInstance] isIPhone];
-        // Label
-        
-        UIFont* fontToUse = [UIFont rockpackFontOfSize: _isIPhone? 14.0f : 18.0f ];
+    return [[self alloc] initWithMessage: message];
+}
+
+
++ (id) withMessage: (NSString *) message
+         andLoader: (BOOL) isLoader
+{
+    SYNFeedMessagesView* instance = [self withMessage: message];
+    instance.isLoader = isLoader;
+    return instance;
+}
+
+
+- (id) initWithMessage: (NSString*) message
+{
+    if (self = [super init])
+    {
+        UIFont* fontToUse = [UIFont rockpackFontOfSize: IS_IPHONE ? 14.0f : 18.0f ];
         
         CGRect labelFrame = CGRectZero;
         
-        UILabel* label = [[UILabel alloc] initWithFrame:labelFrame];
+        UILabel* label = [[UILabel alloc] initWithFrame: labelFrame];
         label.font = fontToUse;
         label.backgroundColor = [UIColor clearColor];
         label.textColor = [UIColor whiteColor];
         label.textAlignment = NSTextAlignmentCenter;
         
-        if(_isIPhone)
+        if (IS_IPHONE)
         {
             label.numberOfLines = 0;
         }
-        _messageLabel = label;
+        self.messageLabel = label;
         
         // BG
-        self.backgroundColor = [UIColor colorWithWhite:0.333f alpha:0.8f];
+        self.backgroundColor = [UIColor colorWithWhite: 0.333f
+                                                 alpha: 0.8f];
 
-        
         // Add
-        [self addSubview:label];
+        [self addSubview: label];
         
-        [self setMessage:message];
+        [self setMessage: message];
         
     }
+    
     return self;
 }
 
--(void)setMessage:(NSString*)newMessage
+
+- (void) setMessage: (NSString*) newMessage
 {
-    if (_isIPhone)
+    if (IS_IPHONE)
     {
         self.messageLabel.frame = CGRectMake(0.0f, 0.0f, 260.0f, 300.0f);
     }
@@ -73,71 +82,52 @@
     self.messageLabel.text = [newMessage uppercaseString];
     [self.messageLabel sizeToFit];
 
-    
     self.frame = [self returnMainFrame];
     
     self.messageLabel.center = CGPointMake(self.frame.size.width * 0.5, self.frame.size.height * 0.5 + 4.0);
     self.messageLabel.frame = CGRectIntegral(self.messageLabel.frame);
-    
-    
-    
-
 }
 
-+ (id) withMessage: (NSString*) message
-{
-    return [[self alloc] initWithMessage: message];
-}
 
-+ (id) withMessage:(NSString *)message andLoader:(BOOL)isLoader
+- (void) setIsLoader: (BOOL) isLoader
 {
-    SYNFeedMessagesView* instance = [self withMessage:message];
-    instance.isLoader = isLoader;
-    return instance;
-}
-
--(void)setIsLoader:(BOOL)isLoader
-{
-    if(_isLoader == isLoader)
+    if (_isLoader == isLoader)
         return;
     
-    if(_isLoader) // remove existing no matter what
+    if (_isLoader) // remove existing no matter what
     {
-        [_activityIndicatorView stopAnimating];
-        [_activityIndicatorView removeFromSuperview];
-        _activityIndicatorView = nil;
+        [self.activityIndicatorView stopAnimating];
+        [self.activityIndicatorView removeFromSuperview];
+        self.activityIndicatorView = nil;
     }
     
     _isLoader = isLoader;
     
-    if(_isLoader)
+    if (_isLoader)
     {
-        _activityIndicatorView = [[UIActivityIndicatorView alloc] initWithActivityIndicatorStyle:UIActivityIndicatorViewStyleWhite];
-        _activityIndicatorView.hidesWhenStopped = YES;
-        CGRect activityFrame = _activityIndicatorView.frame;
+        self.activityIndicatorView = [[UIActivityIndicatorView alloc] initWithActivityIndicatorStyle: UIActivityIndicatorViewStyleWhite];
+        self.activityIndicatorView.hidesWhenStopped = YES;
+        CGRect activityFrame = self.activityIndicatorView.frame;
         activityFrame.origin.x = kSpinnerTextDistance + self.messageLabel.frame.origin.x + self.messageLabel.frame.size.width;
-        _activityIndicatorView.frame = activityFrame;
-        _activityIndicatorView.center = CGPointMake(_activityIndicatorView.center.x, self.frame.size.height * 0.5);
-        _activityIndicatorView.frame = CGRectIntegral(_activityIndicatorView.frame);
-        [self addSubview:_activityIndicatorView];
-        [_activityIndicatorView startAnimating];
+        self.activityIndicatorView.frame = activityFrame;
+        self.activityIndicatorView.center = CGPointMake(self.activityIndicatorView.center.x, self.frame.size.height * 0.5);
+        self.activityIndicatorView.frame = CGRectIntegral(self.activityIndicatorView.frame);
+        [self addSubview: self.activityIndicatorView];
+        [self.activityIndicatorView startAnimating];
         
         // set frame
-        
         self.frame = [self returnMainFrame];
     }
-    
 }
 
 
-
--(CGRect)returnMainFrame
+- (CGRect) returnMainFrame
 {
     CGRect mainFrame = CGRectMake(0.0, 0.0, self.messageLabel.frame.size.width + 40.0, self.messageLabel.frame.size.height + 30.0);
     
-    if(_isLoader)
+    if (self.isLoader)
     {
-        mainFrame.size.width += _activityIndicatorView.frame.size.width + kSpinnerTextDistance;
+        mainFrame.size.width += self.activityIndicatorView.frame.size.width + kSpinnerTextDistance;
     }
     
     return mainFrame;

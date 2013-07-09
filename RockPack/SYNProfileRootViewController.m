@@ -84,7 +84,7 @@
 
 - (void) loadView
 {
-    self.isIPhone =  [SYNDeviceManager.sharedInstance isIPhone];
+    self.isIPhone = IS_IPHONE;
     
     // User Profile
     if (!self.hideUserProfile)
@@ -797,7 +797,7 @@
     {
         if (self.isUserProfile && indexPath.row == 0)
         {
-            if ([[SYNDeviceManager sharedInstance] isIPad])
+            if (IS_IPAD)
             {
                 [[NSNotificationCenter defaultCenter] postNotificationName: kNoteCreateNewChannel
                                                                     object: self];

@@ -66,9 +66,8 @@
     CGFloat minimumLineSpacing;
     
     // Setup device dependent parametes/dimensions
-    BOOL isIPhone = [SYNDeviceManager.sharedInstance isIPhone];
     
-    if (isIPhone)
+    if (IS_IPHONE)
     {
         // Calculate frame size
         screenSize = CGSizeMake([SYNDeviceManager.sharedInstance currentScreenWidth], [SYNDeviceManager.sharedInstance currentScreenHeight]);
@@ -206,7 +205,7 @@
     self.videoThumbnailCollectionView.scrollsToTop = YES;
     
     // if the user has not pressed load more
-    if(self.dataRequestRange.location == 0)
+    if (self.dataRequestRange.location == 0)
     {
         [self resetDataRequestRange]; // just in case the length is less than standard
         [self.refreshButton startRefreshCycle];
@@ -251,9 +250,7 @@
 {
     self.loadingMoreContent = YES;
     
-    NSLog (@"Loc %d, Len %d", self.dataRequestRange.location, self.dataRequestRange.length);
-    
-    if(!appDelegate.currentOAuth2Credentials.userId)
+    if (!appDelegate.currentOAuth2Credentials.userId)
         return;
 
     [self.refreshButton startRefreshCycle];
@@ -269,7 +266,7 @@
                                                                                                                             byAppending: toAppend];
                                                     
                                                     NSNumber* totalNumber = responseDictionary[@"videos"][@"total"];
-                                                    if(totalNumber && ![totalNumber isKindOfClass:[NSNull class]])
+                                                    if (totalNumber && ![totalNumber isKindOfClass:[NSNull class]])
                                                         self.dataItemsAvailable = [totalNumber integerValue];
                                                     else
                                                         self.dataItemsAvailable = self.dataRequestRange.length; // heuristic 
@@ -283,7 +280,7 @@
                                                     
                                                     [self removeEmptyGenreMessage];
                                                     
-                                                    if(self.fetchedResultsController.fetchedObjects.count == 0)
+                                                    if (self.fetchedResultsController.fetchedObjects.count == 0)
                                                         [self displayEmptyGenreMessage:NSLocalizedString(@"feed_screen_empty_message", nil) andLoader:NO];
                                                     
                                                     self.loadingMoreContent = NO;
@@ -424,11 +421,11 @@
                    layout: (UICollectionViewLayout*) collectionViewLayout
    sizeForItemAtIndexPath: (NSIndexPath *) indexPath
 {
-    if([SYNDeviceManager.sharedInstance isIPhone])
+    if (IS_IPHONE)
     {
         return CGSizeMake(310,221);
     }
-    else if([SYNDeviceManager.sharedInstance isLandscape])
+    else if ([SYNDeviceManager.sharedInstance isLandscape])
     {
         return CGSizeMake(497, 140);
     }
@@ -442,19 +439,19 @@
 {
     NSUserDefaults *defaults = [NSUserDefaults standardUserDefaults];
     BOOL hasShownSubscribeOnBoarding = [defaults boolForKey:kUserDefaultsAddVideo];
-    if(!hasShownSubscribeOnBoarding)
+    if (!hasShownSubscribeOnBoarding)
     {
         
         NSString* message = NSLocalizedString(@"onboarding_video", nil);
         
-        CGFloat fontSize = [[SYNDeviceManager sharedInstance] isIPad] ? 19.0 : 15.0 ;
-        CGSize size = [[SYNDeviceManager sharedInstance] isIPad] ? CGSizeMake(340.0, 164.0) : CGSizeMake(260.0, 144.0);
+        CGFloat fontSize = IS_IPAD ? 19.0 : 15.0 ;
+        CGSize size = IS_IPAD ? CGSizeMake(340.0, 164.0) : CGSizeMake(260.0, 144.0);
         CGRect rectToPointTo = CGRectZero;
         PointingDirection directionToPointTo = PointingDirectionDown;
-        if(self.selectedCell)
+        if (self.selectedCell)
         {
             rectToPointTo = [self.view convertRect:self.selectedCell.addItButton.frame fromView:self.selectedCell];
-            if(rectToPointTo.origin.y < [[SYNDeviceManager sharedInstance] currentScreenHeight] * 0.5)
+            if (rectToPointTo.origin.y < [[SYNDeviceManager sharedInstance] currentScreenHeight] * 0.5)
                 directionToPointTo = PointingDirectionUp;
             
             //NSLog(@"%f %f", rectToPointTo.origin.x, rectToPointTo.origin.y);
@@ -497,11 +494,9 @@
                                         placeholderImage: [UIImage imageNamed: @"PlaceholderChannelSmall.png"]
                                                  options: SDWebImageRetryFailed];
     
-    videoThumbnailCell.channelImageView.hidden = [SYNDeviceManager.sharedInstance isPortrait]
-                                                 && [SYNDeviceManager.sharedInstance isIPad];
+    videoThumbnailCell.channelImageView.hidden = [SYNDeviceManager.sharedInstance isPortrait] && IS_IPAD;
     
-    videoThumbnailCell.channelShadowView.hidden = [SYNDeviceManager.sharedInstance isPortrait]
-                                                  && [SYNDeviceManager.sharedInstance isIPad];
+    videoThumbnailCell.channelShadowView.hidden = [SYNDeviceManager.sharedInstance isPortrait] && IS_IPAD;
     
     videoThumbnailCell.videoTitle.text = videoInstance.title;
     
@@ -529,7 +524,7 @@
 {
     if (collectionView == self.videoThumbnailCollectionView)
     {
-        if([SYNDeviceManager.sharedInstance isIPad])
+        if (IS_IPAD)
         {
             return CGSizeMake(1024, 65);   
         }
@@ -552,7 +547,6 @@
     {
         footerSize = [self footerSize];
         
-        DebugLog(@"Location %d, size %d", self.dataRequestRange.location, self.dataItemsAvailable);
         
         // Now set to zero anyway if we have already read in all the items
         NSInteger nextStart = self.dataRequestRange.location + self.dataRequestRange.length; // one is subtracted when the call happens for 0 indexing
@@ -640,10 +634,10 @@
     
     else if (kind == UICollectionElementKindSectionFooter)
     {
-        if(indexPath.section < self.fetchedResultsController.sections.count - 1)
+        if (indexPath.section < self.fetchedResultsController.sections.count - 1)
             return supplementaryView;
         
-        if(self.fetchedResultsController.fetchedObjects.count == 0 ||
+        if (self.fetchedResultsController.fetchedObjects.count == 0 ||
            (self.dataRequestRange.location + self.dataRequestRange.length) >= self.dataItemsAvailable)
         {
             return supplementaryView;

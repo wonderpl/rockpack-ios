@@ -6,15 +6,14 @@
 //  Copyright (c) Rockpack Ltd. All rights reserved.
 //
 
-#import "SYNSearchBoxViewController.h"
-#import "UIFont+SYNFont.h"
-#import "SYNAutocompleteSuggestionsController.h"
-#import "SYNAppDelegate.h"
 #import "AppConstants.h"
-#import "SYNNetworkEngine.h"
-#import "SYNDeviceManager.h"
-#import "SYNTextField.h"
 #import "MKNetworkOperation.h"
+#import "SYNAppDelegate.h"
+#import "SYNAutocompleteSuggestionsController.h"
+#import "SYNNetworkEngine.h"
+#import "SYNSearchBoxViewController.h"
+#import "SYNTextField.h"
+#import "UIFont+SYNFont.h"
 
 #define kGrayPanelBorderWidth 2.0
 
@@ -52,7 +51,7 @@
 
 - (void) loadView
 {
-    if ([SYNDeviceManager.sharedInstance isIPad])
+    if (IS_IPAD)
     {
         self.view = [SYNSearchBoxView searchBoxView];
     }
@@ -71,14 +70,17 @@
     
     self.searchTextField = self.searchBoxView.searchTextField;
     self.searchTextField.delegate = self;
-    [self.searchTextField addTarget:self action:@selector(textFieldDidChange:) forControlEvents:UIControlEventEditingChanged];
+    
+    [self.searchTextField addTarget: self
+                             action: @selector(textFieldDidChange:)
+                   forControlEvents: UIControlEventEditingChanged];
 	
     self.autoSuggestionController = [[SYNAutocompleteSuggestionsController alloc] init];
     self.autoSuggestionController.tableView.delegate = self;
     
     CGRect tableViewFrame = self.autoSuggestionController.tableView.frame;
     
-    if ([SYNDeviceManager.sharedInstance isIPad])
+    if (IS_IPAD)
     {
         tableViewFrame.origin.x = self.searchTextField.frame.origin.x - 10.0;
         tableViewFrame.origin.y = 66.0;
@@ -94,8 +96,6 @@
 }
 
 
-
-
 #pragma mark - Text Field Delegate
 
 - (void) clear
@@ -104,7 +104,7 @@
         [self.autocompleteNetworkOperation cancel];
     
     [self.autoSuggestionController clearWords];
-    [self resizeTableView:YES];
+    [self resizeTableView: YES];
 }
 
 
@@ -128,17 +128,13 @@
          replacementString: (NSString *) newCharacter
 {
     // 1. Do not accept blank characters at the beggining of the field
-    
     if ([newCharacter isEqualToString: @" "] && self.searchTextField.text.length == 0)
         return NO;
     
     // 2. if there are less than 3 chars currently typed do not perform search
-
-    if((range.location - range.length) < 2)
+    if ((range.location - range.length) < 2)
     {
         // close suggestion box
-        
-        
         [self clear];
         return YES;
     }
@@ -153,7 +149,6 @@
                                                             selector: @selector(performAutocompleteSearch:)
                                                             userInfo: nil
                                                              repeats: NO];
-    
     return YES;
 }
 
@@ -167,7 +162,6 @@
     self.autocompleteNetworkOperation = [appDelegate.networkEngine getAutocompleteForHint: self.searchTextField.text
                                                                               forResource: EntityTypeVideo
                                                                              withComplete: ^(NSArray* array) {
-                                             
                                              NSArray* suggestionsReturned = array[1];
                                              
                                              NSMutableArray* wordsReturned = [NSMutableArray array];
@@ -189,9 +183,7 @@
                                              
                                              self.autoSuggestionController.tableView.alpha = 1.0;
                                              
-                                         } andError: ^(NSError* error) {
-                                             
-                                             
+                                         } andError: ^(NSError* error) {  
                                          }];
 }
 
@@ -224,15 +216,15 @@
     [self clear];
     
     // calls the MasterViewController
-    
     [NSNotificationCenter.defaultCenter postNotificationName: kSearchTyped
                                                       object: self
-                                                    userInfo :@{kSearchTerm : currentSearchTerm}];
+                                                    userInfo: @{kSearchTerm : currentSearchTerm}];
     
     [self.searchTextField resignFirstResponder];
     
     return YES;
 }
+
 
 #pragma mark - TableView Delegate
 

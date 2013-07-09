@@ -169,7 +169,7 @@ static UIWebView* vimeoideoWebViewInstance;
     
 #ifdef USE_HIRES_PLAYER
     // If we are on the iPad then we need to super-size the webview so that we can scale down again
-    if ([SYNDeviceManager.sharedInstance isIPad])
+    if (IS_IPAD)
     {
         newYouTubeWebView.transform = CGAffineTransformMakeScale(739.0f/1280.0f, 739.0f/1280.0f);
     }
@@ -213,7 +213,7 @@ static UIWebView* vimeoideoWebViewInstance;
 {
     CGFloat width = 320.0f;
     
-    if ([SYNDeviceManager.sharedInstance isIPad])
+    if (IS_IPAD)
     {
 #ifdef USE_HIRES_PLAYER
         width = 1280.0f;
@@ -229,7 +229,7 @@ static UIWebView* vimeoideoWebViewInstance;
 {
     CGFloat height = 180.0f;
     
-    if ([SYNDeviceManager.sharedInstance isIPad])
+    if (IS_IPAD)
     {
 #ifdef USE_HIRES_PLAYER
         height = 768.0f;
@@ -246,14 +246,13 @@ static UIWebView* vimeoideoWebViewInstance;
 - (NSString *) videoQuality
 {
     // Based on empirical evidence (Youtube app), determine the appropriate quality level based on device and connectivity
-    BOOL isIpad = [SYNDeviceManager.sharedInstance isIPad];
     SYNAppDelegate* appDelegate = UIApplication.sharedApplication.delegate;
     SYNMasterViewController *masterViewController = (SYNMasterViewController*)appDelegate.masterViewController;
     NSString *suggestedQuality = @"default";
     
     if ([masterViewController.reachability currentReachabilityStatus] == ReachableViaWiFi)
     {
-        if (isIpad)
+        if (IS_IPAD)
         {
             suggestedQuality = @"hd720";
         }
@@ -265,7 +264,7 @@ static UIWebView* vimeoideoWebViewInstance;
     else 
     {
         // Connected via cellular network
-        if (isIpad)
+        if (IS_IPAD)
         {
             suggestedQuality = @"medium";
         }
@@ -425,7 +424,7 @@ static UIWebView* vimeoideoWebViewInstance;
     CGFloat shuttleBarButtonWidth = kShuttleBarButtonWidthiPhone;
     CGFloat airplayOffset = 0;
     
-    if ([SYNDeviceManager.sharedInstance isIPad])
+    if (IS_IPAD)
     {
         shuttleBarButtonOffset = kShuttleBarButtonWidthiPad;
         shuttleBarButtonWidth = kShuttleBarButtonWidthiPad;
@@ -532,7 +531,7 @@ static UIWebView* vimeoideoWebViewInstance;
     // Add max/min button
     self.shuttleBarMaxMinButton = [UIButton buttonWithType: UIButtonTypeCustom];
     
-    if ([SYNDeviceManager.sharedInstance isIPhone])
+    if (IS_IPHONE)
     {
         // Set this subview to appear slightly offset from the left-hand side
         self.shuttleBarMaxMinButton.frame = CGRectMake(300 - shuttleBarButtonOffset, 0, shuttleBarButtonOffset, kShuttleBarHeight);
@@ -612,7 +611,7 @@ static UIWebView* vimeoideoWebViewInstance;
     
     UIImage *youTubeImage = [UIImage imageNamed: @"ButtonYouTubeDefault"];
     
-    if ([SYNDeviceManager.sharedInstance isIPad])
+    if (IS_IPAD)
     {
         youTubeButtonOffsetX = 320;
         youTubeButtonOffsetY = 328;

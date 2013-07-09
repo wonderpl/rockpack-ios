@@ -33,20 +33,18 @@ typedef enum {
 
 @interface SYNLoginBaseViewController : GAITrackedViewController <UIScrollViewDelegate>
 
-@property (nonatomic, assign) kLoginScreenState state;
-@property (nonatomic, strong) Reachability *reachability;
-@property (nonatomic, strong) SYNImagePickerController* imagePicker;
-@property (nonatomic, strong) SYNNetworkErrorView* networkErrorView;
-@property (nonatomic,assign) SYNAppDelegate* appDelegate;
 @property (nonatomic) NSInteger currentOnBoardingPage;
-@property (nonatomic, strong) IBOutlet UIImageView* loginBackgroundImage;
+@property (nonatomic) ScrollingDirection scrollingDirection;
+@property (nonatomic, assign) kLoginScreenState state;
 @property (nonatomic, strong) IBOutlet UIImageView* loginBackgroundFrontImage;
-// used for localization
+@property (nonatomic, strong) IBOutlet UIImageView* loginBackgroundImage;
 @property (nonatomic, strong) IBOutlet UITextField* ddInputField;
 @property (nonatomic, strong) IBOutlet UITextField* mmInputField;
-@property (nonatomic) ScrollingDirection scrollingDirection;
-
+@property (nonatomic, strong) Reachability *reachability;
+@property (nonatomic, strong) SYNImagePickerController* imagePicker;
 @property (nonatomic, strong) SYNLoginOnBoardingController* onBoardingController;
+@property (nonatomic, strong) SYNNetworkErrorView* networkErrorView;
+@property (nonatomic,assign) SYNAppDelegate* appDelegate;
 
 - (BOOL) checkAndSaveRegisteredUser: (SYNOAuth2Credential*) credential;
 
@@ -71,15 +69,15 @@ typedef enum {
          completionHandler: (MKNKUserSuccessBlock) completionBlock
               errorHandler: (MKNKUserErrorBlock) errorBlock;
 
--(void) loginThroughFacebookWithCompletionHandler:(MKNKJSONCompleteBlock) completionBlock
-                                     errorHandler: (MKNKUserErrorBlock) errorBlock;
+- (void) loginThroughFacebookWithCompletionHandler: (MKNKJSONCompleteBlock) completionBlock
+                                      errorHandler: (MKNKUserErrorBlock) errorBlock;
 
 
 - (void) setUpInitialState;
 - (void) setUpLoginStateFromPreviousState: (kLoginScreenState) previousState;
 - (void) setUpRegisterStateFromState: (kLoginScreenState) previousState;
 
--(void)reEnableLoginControls;
+- (void) reEnableLoginControls;
 
 - (BOOL) isNetworkAccessibleOtherwiseShowErrorAlert;
 
@@ -90,22 +88,30 @@ typedef enum {
 
 // Form validation
 
--(BOOL) registrationFormPartOneIsValidForUserName:(UITextField*)userNameInputField;
+- (BOOL) registrationFormPartOneIsValidForUserName: (UITextField*) userNameInputField;
 
-- (BOOL) registrationFormIsValidForEmail:(UITextField*)emailInputField userName:(UITextField*)userNameInputField password:(UITextField*)passwordInputField dd:(UITextField*)ddInputField mm:(UITextField*)mmInputField yyyy:(UITextField*)yyyyInputField;
+- (BOOL) registrationFormIsValidForEmail: (UITextField*) emailInputField
+                                userName: (UITextField*) userNameInputField
+                                password: (UITextField*) passwordInputField
+                                      dd: (UITextField*) ddInputField
+                                      mm: (UITextField*) mmInputField
+                                    yyyy: (UITextField*) yyyyInputField;
 
--(BOOL)dateValidForDd:(UITextField*)ddInputField mm:(UITextField*)mmInputField yyyy:(UITextField*)yyyyInputField;
+- (BOOL) dateValidForDd: (UITextField*) ddInputField
+                     mm: (UITextField*) mmInputField
+                   yyyy: (UITextField*) yyyyInputField;
 
-- (BOOL) loginFormIsValidForUsername:(UITextField*)userNameInputField password:(UITextField*)passwordInputField;
+- (BOOL) loginFormIsValidForUsername: (UITextField*) userNameInputField
+                            password: (UITextField*) passwordInputField;
 
-- (BOOL) resetPasswordFormIsValidForUsername:(UITextField*)userNameInputField;
+- (BOOL) resetPasswordFormIsValidForUsername: (UITextField*) userNameInputField;
 
 - (void) placeErrorLabel: (NSString*) errorText
               nextToView: (UIView*) view;
 
--(NSString*)zeroPadIfOneCharacter:(NSString*)inputString;
+- (NSString*) zeroPadIfOneCharacter: (NSString*) inputString;
 
 // Additional reachability enablig for resume from background scenario
--(void)checkReachability;
+- (void) checkReachability;
 
 @end

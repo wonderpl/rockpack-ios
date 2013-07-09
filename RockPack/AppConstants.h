@@ -65,6 +65,7 @@
 #define kAPISearchVideos            @"/ws/search/videos/"
 #define kAPICompleteVideos          @"/ws/complete/videos/"
 #define kAPISearchChannels          @"/ws/search/channels/"
+#define kAPISearchUsers             @"/ws/search/users/"
 #define kAPICompleteChannels        @"/ws/complete/channels/"
 
 // User details
@@ -282,7 +283,7 @@ typedef enum _NavigationButtonsAppearance {
 #define kFullScreenHeightLandscapeMinusStatusBar (kFullScreenHeightLandscape - kStatusBarHeight)
 #define kFullScreenWidthLandscape kMajorDimension
 
-#define kStandardCollectionViewOffsetY 80.0f
+#define kStandardCollectionViewOffsetY 90.0f
 #define kStandardCollectionViewOffsetYiPhone 60.0f
 #define kYouCollectionViewOffsetY 160.0f
 #define kChannelDetailsCollectionViewOffsetY 500.0f
@@ -356,8 +357,6 @@ typedef enum {
 
 // Height of the bottom tab bar in pixels
 #define kBottomTabBarHeight 62
-
-#define IS_IPHONE5 (([[UIScreen mainScreen] bounds].size.height-568)?NO:YES)
 
 // Height of the header bar
 #define kHeaderBarHeight 44

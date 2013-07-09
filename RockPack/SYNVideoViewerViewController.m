@@ -114,10 +114,9 @@
 {
     [super viewDidLoad];
     
-    BOOL isIPhone = [SYNDeviceManager.sharedInstance isIPhone];
-        BOOL isLandscape = [SYNDeviceManager.sharedInstance isLandscape];
+    BOOL isLandscape = [SYNDeviceManager.sharedInstance isLandscape];
     
-    if (isIPhone)
+    if (IS_IPHONE)
     {
         // Set custom fonts
         self.channelTitleLabel.font = [UIFont rockpackFontOfSize: 12.0f];
@@ -163,7 +162,7 @@
     
     // Set custom flow layout to handle the chroma highlighting
     self.layout = [[SYNVideoViewerThumbnailLayout alloc] init];
-    self.layout.itemSize = isIPhone?CGSizeMake(162.0f , 114.0f):CGSizeMake(147.0f , 106.0f);
+    self.layout.itemSize = IS_IPHONE ? CGSizeMake(162.0f , 114.0f):CGSizeMake(147.0f , 106.0f);
     self.layout.minimumInteritemSpacing = 2.0f;
     self.layout.minimumLineSpacing = 0.0f;
     self.layout.scrollDirection =  UICollectionViewScrollDirectionHorizontal;
@@ -178,7 +177,7 @@
     CGRect videoFrame, blackPanelFrame;
     UIView *videoView;
     
-    if (isIPhone)
+    if (IS_IPHONE)
     {
         // iPhone
         videoView = self.view;
@@ -284,7 +283,7 @@
 {
     [super viewWillAppear: animated];
     
-    if ([SYNDeviceManager.sharedInstance isIPhone])
+    if (IS_IPHONE)
     {
         CGRect videoFrame = self.videoPlaybackViewController.view.frame;
         videoFrame.origin = self.placeholderView.frame.origin;
@@ -332,7 +331,7 @@
 - (void) viewWillDisappear: (BOOL) animated
 {
     // Let's make sure that we stop playing the current video
-    if ([SYNDeviceManager.sharedInstance isIPhone])
+    if (IS_IPHONE)
     {
         //Stop generating notifications
         [[UIDevice currentDevice] endGeneratingDeviceOrientationNotifications];
@@ -552,7 +551,7 @@
                          layout: (UICollectionViewLayout*) collectionViewLayout
          insetForSectionAtIndex: (NSInteger)section
 {
-    CGFloat insetWidth = [SYNDeviceManager.sharedInstance isIPhone] ? 81.0f : 438.0f;
+    CGFloat insetWidth = IS_IPHONE ? 81.0f : 438.0f;
     
     // We only have one section, so add both trailing and leading insets
     return UIEdgeInsetsMake (0, insetWidth, 0, insetWidth );
@@ -607,10 +606,9 @@
                          withLabel: nil
                          withValue: nil];
     
-    BOOL isIpad = [[SYNDeviceManager sharedInstance] isIPad];
     VideoInstance *videoInstance = self.videoInstanceArray [self.currentSelectedIndex];
     
-    if ([[SYNDeviceManager sharedInstance] isIPad] && [appDelegate.videoQueue videoInstanceIsAddedToChannel:videoInstance])
+    if (IS_IPAD && [appDelegate.videoQueue videoInstanceIsAddedToChannel:videoInstance])
     {
         [[NSNotificationCenter defaultCenter] postNotificationName: kVideoQueueRemove
                                                         object: self
@@ -628,17 +626,17 @@
                                                          action: @"select"
                                                 videoInstanceId: videoInstance.uniqueId
                                               completionHandler: ^(id response) {
-//                                                  DebugLog (@"Acivity recorded: Select");
                                               }
                                                    errorHandler: ^(id error) {
                                                        DebugLog (@"Acivity not recorded: Select");
-                                                   }];
-        
+                                                   }]; 
     }
-    if(!isIpad)
+    
+    if (!IS_IPAD)
     {
         addItButton.selected = NO;
     }
+    
     self.addButton.hidden = !addItButton.selected;
 }
 
@@ -739,7 +737,7 @@
 
 - (void) userTappedVideo
 {
-    if ([SYNDeviceManager.sharedInstance isIPad])
+    if (IS_IPAD)
     {
         // iPad
         if (self.isVideoExpanded)
@@ -832,7 +830,7 @@
 
 - (void) userTouchedMaxMinButton
 {    
-    if ([SYNDeviceManager.sharedInstance isIPhone])
+    if (IS_IPHONE)
     {
         if (self.currentOrientation == UIDeviceOrientationPortrait)
         {

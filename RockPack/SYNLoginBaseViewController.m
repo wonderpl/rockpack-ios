@@ -29,7 +29,6 @@
 
 @implementation SYNLoginBaseViewController
 
-        
 - (id) initWithCoder: (NSCoder *) aDecoder
 {
     self = [super initWithCoder: aDecoder];
@@ -57,7 +56,8 @@
     return self;
 }
 
--(void)reEnableLoginControls
+
+- (void) reEnableLoginControls
 {
     // implement in subclass
 }
@@ -73,20 +73,14 @@
     self.currentOnBoardingPage = 0;
     
     self.loginBackgroundFrontImage.alpha = 0.0;
-    
-    
+
     // create image array
     NSMutableArray* imagesArray = [[NSMutableArray alloc] initWithCapacity:kLoginOnBoardingMessagesNum];
     for (int i = 0; i < kLoginOnBoardingMessagesNum; i++)
     {
-        [imagesArray addObject:[NSString stringWithFormat:@"login_bg_%i.jpg", (i+1)]];
+        [imagesArray addObject: [NSString stringWithFormat: @"login_bg_%i.jpg", (i+1)]];
     }
-    self.backgroundImagesArray = [NSArray arrayWithArray:imagesArray];
-    
-    
-    
-    
-    
+    self.backgroundImagesArray = [NSArray arrayWithArray: imagesArray];
 }
 
 
@@ -97,27 +91,24 @@
     CGRect totalImageRect;
     
     CGPoint correctPoint;
-    if([[SYNDeviceManager sharedInstance] isIPad]) {
-        
+    if (IS_IPAD)
+    {
         totalImageRect = CGRectMake(0.0, 0.0, 1024.0, 1024.0);
         
-        correctPoint = self.view.center;
-        
+        correctPoint = self.view.center; 
     }
-        
-    else {
-        
+    else
+    {
         totalImageRect = CGRectMake(0.0, 0.0, [[SYNDeviceManager sharedInstance] currentScreenHeight], [[SYNDeviceManager sharedInstance] currentScreenHeight]);
         correctPoint = self.view.center;
-        
     }
     
     self.loginBackgroundImage.frame = totalImageRect;
     self.loginBackgroundFrontImage.frame = totalImageRect;
     
-    if([[SYNDeviceManager sharedInstance] isIPhone])
+    if (IS_IPHONE)
     {
-        correctPoint.y = IS_IPHONE5 ? 280.0 : 240.0;
+        correctPoint.y = IS_IPHONE_5 ? 280.0 : 240.0;
     }
     self.loginBackgroundImage.center = correctPoint;
     self.loginBackgroundFrontImage.center = correctPoint;
@@ -131,7 +122,7 @@
     
     NSString* localeFromDevice = [(NSString*)CFBridgingRelease(CFLocaleCreateCanonicalLanguageIdentifierFromString(NULL, (CFStringRef)[NSLocale.autoupdatingCurrentLocale objectForKey: NSLocaleIdentifier])) lowercaseString];
     
-    if([localeFromDevice isEqualToString:@"en-us"])
+    if ([localeFromDevice isEqualToString:@"en-us"])
     {
         NSInteger ddTag = self.ddInputField.tag;
         CGRect ddRect = self.ddInputField.frame;
@@ -229,7 +220,7 @@
             
             // by this time the currentUser is set in the DB //
             
-            if([self checkAndSaveRegisteredUser: credential])
+            if ([self checkAndSaveRegisteredUser: credential])
             {
                 
                 DebugLog(@"User Registerd: %@", [dictionary objectForKey: @"username"]);
@@ -403,7 +394,7 @@
             [_appDelegate.oAuthNetworkEngine retrieveAndRegisterUserFromCredentials: credential
                                                               completionHandler: ^(NSDictionary* dictionary) {
                                                                   
-                if([self checkAndSaveRegisteredUser: credential])
+                if ([self checkAndSaveRegisteredUser: credential])
                 {
                     _appDelegate.currentUser.loginOriginValue = LoginOriginFacebook;
                 }
@@ -434,9 +425,9 @@
     NSString* reachabilityString;
     if ([self.reachability currentReachabilityStatus] == ReachableViaWiFi)
         reachabilityString = @"WiFi";
-    else if([self.reachability currentReachabilityStatus] == ReachableViaWWAN)
+    else if ([self.reachability currentReachabilityStatus] == ReachableViaWWAN)
         reachabilityString = @"WWAN";
-    else if([self.reachability currentReachabilityStatus] == NotReachable)
+    else if ([self.reachability currentReachabilityStatus] == NotReachable)
         reachabilityString = @"None";
     
     //    DebugLog(@"Reachability == %@", reachabilityString);
@@ -449,7 +440,7 @@
             [self hideNetworkErrorView];
         }
     }
-    else if([self.reachability currentReachabilityStatus] == ReachableViaWWAN)
+    else if ([self.reachability currentReachabilityStatus] == ReachableViaWWAN)
     {
         if (self.networkErrorView)
         {
@@ -458,13 +449,14 @@
     }
     else if ([self.reachability currentReachabilityStatus] == NotReachable)
     {
-        NSString* message = [SYNDeviceManager.sharedInstance isIPad] ? NSLocalizedString(@"No_Network_iPad", nil)
+        NSString* message = IS_IPAD ? NSLocalizedString(@"No_Network_iPad", nil)
         : NSLocalizedString(@"No_Network_iPhone", nil);
         [self presentNetworkErrorViewWithMesssage: message];
     }
 }
 
--(void)checkReachability
+
+- (void) checkReachability
 {
     if (!self.reachability)
     {
@@ -473,9 +465,10 @@
     [self reachabilityChanged:nil];
 }
 
+
 - (void) presentNetworkErrorViewWithMesssage: (NSString*) message
 {
-    if(self.networkErrorView)
+    if (self.networkErrorView)
     {
         [self.networkErrorView setText:message];
         return;
@@ -500,7 +493,8 @@
     }];
 }
 
--(void)hideNetworkErrorView
+
+- (void) hideNetworkErrorView
 {
     [UIView animateWithDuration:0.3
                           delay:0.1 options:UIViewAnimationCurveEaseInOut
@@ -508,8 +502,8 @@
         CGRect errorViewFrame = self.networkErrorView.frame;
         errorViewFrame.origin.y = -(self.networkErrorView.height);
         self.networkErrorView.frame = errorViewFrame;
-    } completion:^(BOOL finished) {
-        if(finished)
+    } completion: ^(BOOL finished) {
+        if (finished)
         {
             [self.networkErrorView removeFromSuperview];
             self.networkErrorView = nil;
@@ -517,11 +511,12 @@
     }];
 }
 
+
 #pragma mark - check network before sending request
--(BOOL)isNetworkAccessibleOtherwiseShowErrorAlert
+- (BOOL) isNetworkAccessibleOtherwiseShowErrorAlert
 {
     BOOL isReachable = ![self.reachability currentReachabilityStatus] == NotReachable;
-    if(! isReachable)
+    if (! isReachable)
     {
         UIAlertView* alert = [[UIAlertView alloc] initWithTitle:NSLocalizedString(@"login_screen_form_no_connection_dialog_title",nil) message:NSLocalizedString(@"login_screen_form_no_connection_dialog_message",nil) delegate:nil cancelButtonTitle:nil otherButtonTitles:NSLocalizedString(@"OK",nil), nil];
         [alert show];
@@ -529,7 +524,8 @@
     return isReachable;
 }
 
--(void)doFacebookLoginAnimation
+
+- (void) doFacebookLoginAnimation
 {
     // to be implemented by subclass
 }
@@ -537,7 +533,7 @@
 
 #pragma mark - form validation
 
--(BOOL) registrationFormPartOneIsValidForUserName:(UITextField*)userNameInputField
+- (BOOL) registrationFormPartOneIsValidForUserName: (UITextField*) userNameInputField
 {
     
     if (userNameInputField.text.length < 1)
@@ -558,7 +554,7 @@
         
         return NO;
     }
-    if(userNameInputField.text.length > 20)
+    if (userNameInputField.text.length > 20)
     {
         [self placeErrorLabel: NSLocalizedString(@"register_screen_form_field_username_error_too_long", nil)
                    nextToView: userNameInputField];
@@ -572,7 +568,13 @@
     return YES;
 }
 
-- (BOOL) registrationFormIsValidForEmail:(UITextField*)emailInputField userName:(UITextField*)userNameInputField password:(UITextField*)passwordInputField dd:(UITextField*)ddInputField mm:(UITextField*)mmInputField yyyy:(UITextField*)yyyyInputField
+
+- (BOOL) registrationFormIsValidForEmail: (UITextField*) emailInputField
+                                userName: (UITextField*) userNameInputField
+                                password: (UITextField*) passwordInputField
+                                      dd: (UITextField*) ddInputField
+                                      mm: (UITextField*) mmInputField
+                                    yyyy: (UITextField*) yyyyInputField
 {
     if (emailInputField.text.length < 1)
     {
@@ -620,7 +622,7 @@
         return NO;
     }
     
-    if(userNameInputField.text.length > 20)
+    if (userNameInputField.text.length > 20)
     {
         [self placeErrorLabel: NSLocalizedString(@"register_screen_form_field_username_error_too_long", nil)
                    nextToView: userNameInputField];
@@ -642,24 +644,27 @@
         return NO;
     }
     
-    return [self dateValidForDd:ddInputField mm:mmInputField yyyy:yyyyInputField];
+    return [self dateValidForDd: ddInputField
+                             mm: mmInputField
+                           yyyy: yyyyInputField];
 }
 
 
--(BOOL)dateValidForDd:(UITextField*)ddInputField mm:(UITextField*)mmInputField yyyy:(UITextField*)yyyyInputField
+- (BOOL) dateValidForDd: (UITextField*) ddInputField
+                     mm: (UITextField*) mmInputField
+                   yyyy: (UITextField*) yyyyInputField
 {
     // == Check for date == //
     
     NSArray* dobTextFields = @[mmInputField, ddInputField, yyyyInputField];
-    
-    
+
     // == Check wether the DOB fields contain numbers == //
     
     NSNumberFormatter* numberFormatter = [[NSNumberFormatter alloc] init];
     
     for (UITextField* dobField in dobTextFields)
     {
-        if(dobField.text.length == 0)
+        if (dobField.text.length == 0)
         {
             [self placeErrorLabel: NSLocalizedString(@"register_screen_form_error_invalid_date", nil)
                        nextToView: yyyyInputField];
@@ -669,7 +674,7 @@
             return NO;
         }
         
-        if(dobField.text.length == 1)
+        if (dobField.text.length == 1)
         {
             dobField.text = [NSString stringWithFormat:@"0%@", dobField.text]; // add a trailing 0
         }
@@ -684,7 +689,8 @@
             return NO;
         }
     }
-    if(yyyyInputField.text.length < 4)
+    
+    if (yyyyInputField.text.length < 4)
     {
         [self placeErrorLabel: NSLocalizedString(@"register_screen_form_error_invalid_date", nil)
                    nextToView: yyyyInputField];
@@ -735,7 +741,9 @@
     return YES;
 }
 
-- (BOOL) loginFormIsValidForUsername:(UITextField*)userNameInputField password:(UITextField*)passwordInputField
+
+- (BOOL) loginFormIsValidForUsername: (UITextField*) userNameInputField
+                            password: (UITextField*) passwordInputField
 {
     if (userNameInputField.text.length < 1)
     {
@@ -760,7 +768,8 @@
     return YES;
 }
 
-- (BOOL) resetPasswordFormIsValidForUsername:(UITextField*)userNameInputField
+
+- (BOOL) resetPasswordFormIsValidForUsername: (UITextField*) userNameInputField
 {
     
     if (userNameInputField.text.length < 1)
@@ -777,15 +786,17 @@
     
 }
 
+
 - (void) placeErrorLabel: (NSString*) errorText
               nextToView: (UIView*) view
 {
     //Override in subclass
 }
 
--(NSString*)zeroPadIfOneCharacter:(NSString*)inputString
+
+- (NSString*) zeroPadIfOneCharacter: (NSString*) inputString
 {
-    if([inputString length]==1)
+    if ([inputString length]==1)
     {
         return [NSString stringWithFormat:@"0%@",inputString];
     }
@@ -793,12 +804,11 @@
     return inputString;
 }
 
+
 #pragma mark - ScrollView (on boarding) Delegate Methods
 
--(void)scrollViewDidScroll:(UIScrollView *)scrollView
+- (void) scrollViewDidScroll: (UIScrollView *) scrollView
 {
-    
-    
     CGFloat scrollerWidth = self.onBoardingController.scrollView.frame.size.width;
     
     CGFloat pinnedOffsetX = self.currentOnBoardingPage * scrollerWidth - self.onBoardingController.scrollView.contentOffset.x;
@@ -806,15 +816,15 @@
     
     BOOL shouldFade = YES;
     
-    if(pinnedOffsetX < 0.0) // scrolling towards right -->, pick next
+    if (pinnedOffsetX < 0.0) // scrolling towards right -->, pick next
     {
-        if(self.currentOnBoardingPage == 3)
+        if (self.currentOnBoardingPage == 3)
             shouldFade = NO;
         self.scrollingDirection = ScrollingDirectionRight;
     }
     else if(pinnedOffsetX > 0.0) // scrolling towards left <--, pick next
     {
-        if(self.currentOnBoardingPage == 0)
+        if (self.currentOnBoardingPage == 0)
             shouldFade = NO;
         self.scrollingDirection = ScrollingDirectionLeft;
     }
@@ -823,7 +833,7 @@
         self.scrollingDirection = ScrollingDirectionNone;
     }
     
-    if(shouldFade)
+    if (shouldFade)
     {
         self.loginBackgroundImage.alpha = 1 - ratio;
         self.loginBackgroundFrontImage.alpha = ratio;
@@ -832,42 +842,35 @@
     {
         self.loginBackgroundImage.alpha = 1.0;
         self.loginBackgroundFrontImage.alpha = 1.0;
-    }
-    
-    
-    
-    //NSLog(@"ratio: %f", ratio);
-    
-    
-    
+    }   
 }
 
--(void)setScrollingDirection:(ScrollingDirection)scrollingDirection
+
+- (void) setScrollingDirection: (ScrollingDirection) scrollingDirection
 {
-    if(_scrollingDirection == scrollingDirection)
+    if (_scrollingDirection == scrollingDirection)
         return;
     
     _scrollingDirection = scrollingDirection;
     NSString* nameOfNextImage;
-    
-    
-    if(self.currentOnBoardingPage < 0)
+
+    if (self.currentOnBoardingPage < 0)
         self.currentOnBoardingPage = 0;
-    else if(self.currentOnBoardingPage > kLoginOnBoardingMessagesNum - 1)
+    else if (self.currentOnBoardingPage > kLoginOnBoardingMessagesNum - 1)
         self.currentOnBoardingPage = kLoginOnBoardingMessagesNum - 1;
     
     nameOfNextImage = self.backgroundImagesArray[self.currentOnBoardingPage];
     self.loginBackgroundImage.image = [UIImage imageNamed:nameOfNextImage];
-    
-    
-    switch (scrollingDirection) {
+
+    switch (scrollingDirection)
+    {
         case ScrollingDirectionNone:
          
             nameOfNextImage = self.backgroundImagesArray[self.currentOnBoardingPage];
             break;
             
         case ScrollingDirectionRight:
-            if(self.currentOnBoardingPage + 1 >= self.backgroundImagesArray.count)
+            if (self.currentOnBoardingPage + 1 >= self.backgroundImagesArray.count)
             {
                 
                 nameOfNextImage = self.backgroundImagesArray[self.currentOnBoardingPage];
@@ -882,7 +885,7 @@
             break;
             
         case ScrollingDirectionLeft:
-            if(self.currentOnBoardingPage - 1 < 0)
+            if (self.currentOnBoardingPage - 1 < 0)
             {
                 
                 nameOfNextImage = self.backgroundImagesArray[self.currentOnBoardingPage];
@@ -895,23 +898,18 @@
             break;
     }
     
-    
-    self.loginBackgroundFrontImage.image = [UIImage imageNamed:nameOfNextImage];
-    
+    self.loginBackgroundFrontImage.image = [UIImage imageNamed: nameOfNextImage];
 }
 
--(void)scrollViewDidEndDecelerating:(UIScrollView *)scrollView
+
+- (void) scrollViewDidEndDecelerating: (UIScrollView *) scrollView
 {
-    
-    
     CGFloat contentOffsetX = self.onBoardingController.scrollView.contentOffset.x;
-    self.currentOnBoardingPage = (NSInteger)floorf(contentOffsetX / self.onBoardingController.scrollView.frame.size.width);
-    
-    
-    
+    self.currentOnBoardingPage = (NSInteger)floorf(contentOffsetX / self.onBoardingController.scrollView.frame.size.width); 
 }
 
--(void)setCurrentOnBoardingPage:(NSInteger)currentOnBoardingPage
+
+- (void) setCurrentOnBoardingPage: (NSInteger) currentOnBoardingPage
 {
     _currentOnBoardingPage = currentOnBoardingPage;
     self.onBoardingController.pageControl.currentPage = currentOnBoardingPage;

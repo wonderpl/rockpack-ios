@@ -8,7 +8,6 @@
 
 #import "SYNAutocompleteIphoneCell.h"
 #import "SYNAutocompleteSuggestionsController.h"
-#import "SYNDeviceManager.h"
 #import "UIColor+SYNColor.h"
 #import "UIFont+SYNFont.h"
 
@@ -27,7 +26,7 @@
     if ((self = [super initWithStyle:style]))
     {
         wordsArray = [[NSMutableArray alloc] init];
-        rockpackFont = [[SYNDeviceManager sharedInstance]isIPad] ?[UIFont rockpackFontOfSize: 26.0] : [UIFont rockpackFontOfSize: 18.0];
+        rockpackFont = IS_IPAD ? [UIFont rockpackFontOfSize: 26.0] : [UIFont rockpackFontOfSize: 18.0];
         
         textColor = [UIColor colorWithRed: (187.0f/255.0f)
                                     green: (187.0f/255.0f)
@@ -96,7 +95,7 @@
     
     if (!cell)
     {
-        if ([SYNDeviceManager.sharedInstance isIPad])
+        if (IS_IPAD)
         {
             cell = [[UITableViewCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier: CellIdentifier];
             

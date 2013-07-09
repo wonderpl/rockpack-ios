@@ -55,9 +55,9 @@ typedef void (^SYNShareCompletionBlock)(void);
 @property (nonatomic, strong) SYNTabViewController* tabViewController;
 @property (nonatomic, strong) UIImageView *draggedView;
 @property (nonatomic, weak) MKNetworkOperation* runningNetworkOperation;
+@property (readonly) BOOL alwaysDisplaysSearchBox;
 @property (readonly) NSManagedObjectContext *mainManagedObjectContext;
 @property (readonly, getter = isVideoQueueVisible) BOOL videoQueueVisible;
-@property (readonly) BOOL alwaysDisplaysSearchBox;
 
 - (void) handleNewTabSelectionWithId: (NSString*) selectionId;
 - (void) handleNewTabSelectionWithGenre: (Genre*) name;

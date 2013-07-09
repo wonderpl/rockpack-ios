@@ -8,7 +8,6 @@
 
 #import "SYNSideNavigationIphoneCell.h"
 #import "UIFont+SYNFont.h"
-#import "SYNDeviceManager.h"
 
 @interface SYNSideNavigationIphoneCell ()
 
@@ -21,12 +20,10 @@
 
 @implementation SYNSideNavigationIphoneCell
 
--(id)initWithStyle:(UITableViewCellStyle)style reuseIdentifier:(NSString *)reuseIdentifier
+- (id) initWithStyle: (UITableViewCellStyle) style
+     reuseIdentifier: (NSString *) reuseIdentifier
 {
-    BOOL isIPad = [SYNDeviceManager.sharedInstance isIPad];
-    
-    self = [super initWithStyle:style reuseIdentifier:reuseIdentifier];
-    if(self)
+    if ((self = [super initWithStyle:style reuseIdentifier:reuseIdentifier]))
     {
         self.defaultColor = [UIColor colorWithRed: (40.0/255.0)
                                             green: (45.0/255.0)
@@ -37,7 +34,7 @@
         self.selectedShadowColor = [UIColor colorWithWhite:1.0 alpha:0.2];
         self.selectionStyle = UITableViewCellSelectionStyleNone;
         
-        if (isIPad)
+        if (IS_IPAD)
         {
             self.textLabel.font = [UIFont rockpackFontOfSize:15];
         }
@@ -70,19 +67,17 @@
     return self;
 }
 
--(void)layoutSubviews
+
+- (void) layoutSubviews
 {
     [super layoutSubviews];
-    
-    BOOL isIPad = [SYNDeviceManager.sharedInstance isIPad];
 
     CGPoint center = self.textLabel.center;
 
-    if (isIPad)
+    if (IS_IPAD)
     {
         center.y += 3.0f;
     }
-    
     else
     {
         center.y += 4.0f;
@@ -91,10 +86,14 @@
     self.textLabel.center = center;
 }
 
-- (void)setSelected:(BOOL)selected animated:(BOOL)animated
+
+- (void)setSelected: (BOOL) selected
+           animated: (BOOL) animated
 {
-    [super setSelected:selected animated:animated];
-    if(selected)
+    [super setSelected: selected
+              animated: animated];
+    
+    if (selected)
     {
         self.backgroundImageView.image = [UIImage imageNamed:@"NavSelected"];
         self.textLabel.textColor = self.selectedColor;
@@ -118,9 +117,11 @@
     }
 }
 
--(void)setHighlighted:(BOOL)highlighted animated:(BOOL)animated
+
+- (void) setHighlighted: (BOOL) highlighted
+               animated: (BOOL) animated
 {
-    if(highlighted)
+    if (highlighted)
     {
         self.backgroundImageView.image = [UIImage imageNamed:@"NavHighlighted"];
         self.textLabel.textColor = self.defaultColor;
@@ -133,14 +134,13 @@
     }
 }
 
--(void)setAccessoryNumber:(NSString *)accessoryNumberString
+
+- (void) setAccessoryNumber: (NSString *) accessoryNumberString
 {
-    BOOL isIPad = [SYNDeviceManager.sharedInstance isIPad];
-    
     self.accessoryNumberLabel.text = accessoryNumberString;
     [self.accessoryNumberLabel sizeToFit];
     
-    if (isIPad)
+    if (IS_IPAD)
     {
         self.accessoryNumberLabel.center = CGPointMake(144.0f - self.accessoryNumberLabel.frame.size.width/2 , 25.0f );
         self.accessoryNumberBackground.center = CGPointMake(144.0f - self.accessoryNumberLabel.frame.size.width/2 , 22.0f );

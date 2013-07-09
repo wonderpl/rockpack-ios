@@ -25,7 +25,6 @@
 #import "SYNAccountSettingsTextInputController.h"
 #import "SYNAccountSettingsUsername.h"
 #import "SYNAppDelegate.h"
-#import "SYNDeviceManager.h"
 #import "UIFont+SYNFont.h"
 #import "User.h"
 
@@ -92,7 +91,7 @@
     
     self.contentSizeForViewInPopover = CGSizeMake(380, 476);
 
-    self.tableView.scrollEnabled = [SYNDeviceManager.sharedInstance isIPhone];
+    self.tableView.scrollEnabled = IS_IPHONE;
     self.tableView.scrollsToTop = NO;
     self.tableView.accessibilityLabel = @"Settings Table";
     
@@ -346,7 +345,7 @@
                 
                 [dobController.datePicker setDate:date];
                 
-                if ([SYNDeviceManager.sharedInstance isIPad])
+                if (IS_IPAD)
                 {
                     if(self.dobPopover)
                         return;

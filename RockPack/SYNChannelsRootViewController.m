@@ -34,24 +34,20 @@
 
 @interface SYNChannelsRootViewController () <UIScrollViewDelegate, SYNChannelCategoryTableViewDelegate>
 
-
 @property (nonatomic, assign) BOOL ignoreRefresh;
-@property (nonatomic, strong) NSString* currentCategoryId;
+@property (nonatomic, strong) Genre* allGenre;
 @property (nonatomic, strong) Genre* currentGenre;
-@property (nonatomic, weak) SYNMainRegistry* mainRegistry;
-
-@property (nonatomic, strong) SYNFeedMessagesView* emptyGenreMessageView;
-
+@property (nonatomic, strong) NSMutableArray* channels;
+@property (nonatomic, strong) NSString* currentCategoryId;
 @property (nonatomic, strong) SYNChannelCategoryTableViewController* categoryTableViewController;
+@property (nonatomic, strong) SYNFeedMessagesView* emptyGenreMessageView;
 @property (nonatomic, strong) UIButton* categorySelectButton;
 @property (nonatomic, strong) UIControl* categorySelectDismissControl;
+@property (nonatomic, strong) UIImageView* arrowImage;
 @property (nonatomic, strong) UILabel* categoryNameLabel;
 @property (nonatomic, strong) UILabel* subCategoryNameLabel;
-@property (nonatomic, strong) UIImageView* arrowImage;
-@property (nonatomic, strong) NSMutableArray* channels;
+@property (nonatomic, weak) SYNMainRegistry* mainRegistry;
 
-
-@property (nonatomic, strong) Genre* allGenre;
 @end
 
 @implementation SYNChannelsRootViewController
@@ -79,25 +75,27 @@
 
 - (void) loadView
 {
-    BOOL isIPhone = [SYNDeviceManager.sharedInstance isIPhone];
+    BOOL isIPhone = IS_IPHONE;
     
     SYNIntegralCollectionViewFlowLayout* flowLayout;
     
     if (isIPhone)
+    {
         flowLayout = [SYNIntegralCollectionViewFlowLayout layoutWithItemSize: CGSizeMake(158.0f, 169.0f)
                                                      minimumInterItemSpacing: 0.0
                                                           minimumLineSpacing: 6.0
                                                              scrollDirection: UICollectionViewScrollDirectionVertical
                                                                 sectionInset: UIEdgeInsetsMake(2.0, 2.0, 46.0, 2.0)];
+    }
     else
+    {
         flowLayout = [SYNIntegralCollectionViewFlowLayout layoutWithItemSize: [self itemSize]
                                                      minimumInterItemSpacing: 0.0
                                                           minimumLineSpacing: 2.0
                                                              scrollDirection: UICollectionViewScrollDirectionVertical
                                                                 sectionInset: UIEdgeInsetsMake(6.0, 6.0, 5.0, 6.0)];
-        
-    
-    
+    }
+
     flowLayout.footerReferenceSize = [self footerSize];
     
     // Work out how hight the inital tab bar is
@@ -126,6 +124,7 @@
     self.channelThumbnailCollectionView.scrollsToTop = NO;
     
     CGRect newFrame;
+    
     if (isIPhone)
     {
         newFrame = CGRectMake(0.0f, 59.0f, [SYNDeviceManager.sharedInstance currentScreenWidth], [SYNDeviceManager.sharedInstance currentScreenHeight] - 20.0f);
@@ -136,7 +135,6 @@
         CGRectMake(0.0, 0.0, kFullScreenWidthLandscape, kFullScreenHeightLandscapeMinusStatusBar) :
         CGRectMake(0.0f, 0.0f, kFullScreenWidthPortrait, kFullScreenHeightPortraitMinusStatusBar);
     }
-
     
     self.view = [[UIView alloc] initWithFrame:newFrame];
     
@@ -199,8 +197,8 @@
     {
         NSString* message = NSLocalizedString(@"onboarding_channels", nil);
         
-        CGFloat fontSize = [[SYNDeviceManager sharedInstance] isIPad] ? 19.0 : 15.0 ;
-        CGSize size = [[SYNDeviceManager sharedInstance] isIPad] ? CGSizeMake(340.0, 164.0) : CGSizeMake(260.0, 144.0);
+        CGFloat fontSize = IS_IPAD ? 19.0 : 15.0 ;
+        CGSize size = IS_IPAD ? CGSizeMake(340.0, 164.0) : CGSizeMake(260.0, 144.0);
         SYNOnBoardingPopoverView* subscribePopover = [SYNOnBoardingPopoverView withMessage:message
                                                                                   withSize:size
                                                                                andFontSize:fontSize
@@ -408,7 +406,7 @@
 
 - (CGSize) itemSize
 {
-    return [SYNDeviceManager.sharedInstance isIPhone] ? CGSizeMake(152.0f, 152.0f) : CGSizeMake(251.0, 274.0);
+    return IS_IPHONE ? CGSizeMake(152.0f, 152.0f) : CGSizeMake(251.0, 274.0);
 }
 
 
@@ -534,7 +532,6 @@
     {
         footerSize = [self footerSize];
         
-        DebugLog(@"Location %d, size %d", self.dataRequestRange.location, self.dataItemsAvailable);
         
         // Now set to zero anyway if we have already read in all the items
         NSInteger nextStart = self.dataRequestRange.location + self.dataRequestRange.length; // one is subtracted when the call happens for 0 indexing
