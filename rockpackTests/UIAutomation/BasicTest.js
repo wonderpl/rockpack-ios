@@ -26,6 +26,7 @@ target.frontMostApp().mainWindow().scrollViews()[0].staticTexts()["POP"].tapWith
 target.frontMostApp().mainWindow().scrollViews()[0].collectionViews()[1].cells()[0].tap();
 target.delay(2);
 target.frontMostApp().mainWindow().buttons()["onboarding button ok"].tap();
+target.delay(1);
 target.frontMostApp().mainWindow().buttons()["onboarding button ok"].tap();
 
 //Subscribe
