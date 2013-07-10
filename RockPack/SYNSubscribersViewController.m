@@ -13,6 +13,7 @@
 @interface SYNSubscribersViewController ()
 
 @property (nonatomic, strong) UIActivityIndicatorView* activityView;
+@property (nonatomic, strong) UILabel* infoLabel;
 
 @end
 
@@ -40,19 +41,50 @@
         [labelContentView addSubview:titleLabel];
         
         self.navigationItem.titleView = labelContentView;
+        
+        
+        self.infoLabel = [[UILabel alloc] initWithFrame: CGRectZero];
+        self.infoLabel.backgroundColor = [UIColor clearColor];
+        self.infoLabel.textColor = [UIColor colorWithRed: (28.0/255.0) green: (31.0/255.0) blue: (33.0/255.0) alpha: (1.0)];
+        self.infoLabel.font = [UIFont boldRockpackFontOfSize:15.0];
+        self.infoLabel.textAlignment = NSTextAlignmentCenter;
+        self.infoLabel.shadowColor = [UIColor whiteColor];
+        self.infoLabel.shadowOffset = CGSizeMake(0.0, 1.0);
     }
     return self;
 }
-
+-(void)setInfoLabelText:(NSString*)text
+{
+    if(!text) // clear
+    {
+        
+        [self.infoLabel removeFromSuperview];
+        return;
+        
+    }
+    self.infoLabel.text = text;
+    [self.infoLabel sizeToFit];
+    CGPoint position = CGPointMake(self.view.center.x, 200.0);
+    self.infoLabel.center = position;
+    self.infoLabel.frame = CGRectIntegral(self.infoLabel.frame);
+    
+    [self.view addSubview:self.infoLabel];
+    
+    position.y += 40.0;
+    self.activityView.center = position;
+    
+}
 -(void)viewDidAppear:(BOOL)animated
 {
-    self.activityView = [[UIActivityIndicatorView alloc] initWithActivityIndicatorStyle:UIActivityIndicatorViewStyleWhiteLarge];
+    self.activityView = [[UIActivityIndicatorView alloc] initWithActivityIndicatorStyle:UIActivityIndicatorViewStyleGray];
     
     self.activityView.center = CGPointMake(self.view.frame.size.width * 0.5, self.view.frame.size.height * 0.5);
     
     [self.activityView hidesWhenStopped];
     
     [self.activityView startAnimating];
+    
+    [self setInfoLabelText:@"LOADING"];
     
     [self.view addSubview:self.activityView];
     
@@ -104,6 +136,16 @@
         return;
     
     self.users = [NSMutableArray arrayWithArray: resultsArray];
+    
+    if(self.users.count == 0)
+    {
+        [self setInfoLabelText:@"NO USERS HAVE SUBSCRIBED TO THIS CHANNEL YET"];
+    }
+    else
+    {
+        [self setInfoLabelText:nil];
+    }
+    
     
     [self.usersThumbnailCollectionView reloadData];
 }
