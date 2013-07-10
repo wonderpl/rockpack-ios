@@ -119,6 +119,9 @@
 
 -(BOOL)registerSubscribersFromDictionary:(NSDictionary *)dictionary
 {
+    
+    
+    
     return [self registerChannelOwnersFromDictionary:dictionary forViewId:kChannelDetailsViewId];
 }
 
@@ -130,6 +133,28 @@
 
 -(BOOL)registerChannelOwnersFromDictionary:(NSDictionary*)dictionary forViewId:(NSString*)viewId
 {
+    NSError *error;
+    NSArray *itemsToDelete;
+    
+    NSFetchRequest *fetchRequest = [[NSFetchRequest alloc] init];
+    
+    // == Clear VideoInstances == //
+    
+    [fetchRequest setEntity:[NSEntityDescription entityForName: @"ChannelOwner"
+                                        inManagedObjectContext: appDelegate.searchManagedObjectContext]];
+    
+    [fetchRequest setPredicate:[NSPredicate predicateWithFormat: @"viewId == %@", viewId]];
+    
+    NSLog(@"%@", fetchRequest.predicate);
+    
+    itemsToDelete = [appDelegate.searchManagedObjectContext executeFetchRequest: fetchRequest
+                                                                          error: &error];
+    
+    for (NSManagedObject* objectToDelete in itemsToDelete) {
+        
+        [appDelegate.searchManagedObjectContext deleteObject: objectToDelete];
+    }
+    
     NSDictionary *channelsDictionary = dictionary[@"users"];
     if (!channelsDictionary || ![channelsDictionary isKindOfClass: [NSDictionary class]])
         return NO;
