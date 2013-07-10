@@ -135,6 +135,7 @@
                                                                                         forIndexPath: indexPath];
     
     
+    
     userThumbnailCell.nameLabel.text = user.displayName;
     
     userThumbnailCell.imageUrlString = user.thumbnailLargeUrl;

@@ -23,8 +23,8 @@
     self.nameLabel.lineBreakMode = NSLineBreakByWordWrapping;
     self.nameLabel.numberOfLines = 2;
     
-    
-    
+    float gray_ratio = (183.0f/255.0f);
+    self.usernameLabel.textColor = [UIColor colorWithRed:gray_ratio green:gray_ratio blue:gray_ratio alpha:1.0];
     
     self.layer.shouldRasterize = YES;
     self.layer.rasterizationScale = UIScreen.mainScreen.scale;
@@ -50,7 +50,7 @@
         nameLabelFrame.size = correctSize;
         
         
-        usernameLabelFrame.origin.y = nameLabelFrame.origin.y + nameLabelFrame.size.height;
+        usernameLabelFrame.origin.y = nameLabelFrame.origin.y + nameLabelFrame.size.height - 6.0;
     }
     
     
@@ -73,16 +73,16 @@
 -(void)setImageUrlString:(NSString *)imageUrlString
 {
     
-    if(!imageUrlString) // cancel the existing network operation
+    if(!imageUrlString || [imageUrlString isEqualToString:@""]) // cancel the existing network operation
     {
         [self.imageView setImageWithURL: nil
-                       placeholderImage: [UIImage imageNamed: @"PlaceholderChannel.png"]
+                       placeholderImage: [UIImage imageNamed: @"PlaceholderAvatarChannel"]
                                 options: SDWebImageRetryFailed];
     }
     
     
     [self.imageView setImageWithURL: [NSURL URLWithString: imageUrlString]
-                   placeholderImage: [UIImage imageNamed: @"PlaceholderChannel.png"]
+                   placeholderImage: [UIImage imageNamed: @"PlaceholderAvatarChannel"]
                             options: SDWebImageRetryFailed];
     
 }
