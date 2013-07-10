@@ -75,8 +75,8 @@
     UINib *thumbnailCellNib = [UINib nibWithNibName: @"SYNUserThumbnailCell"
                                              bundle: nil];
     
-    [self.usersThumbnailCollectionView registerNib: thumbnailCellNib
-                        forCellWithReuseIdentifier: @"SYNUserThumbnailCell"];
+    [_usersThumbnailCollectionView registerNib: thumbnailCellNib
+                    forCellWithReuseIdentifier: @"SYNUserThumbnailCell"];
     
     // Register Footer
     UINib *footerViewNib = [UINib nibWithNibName: @"SYNChannelFooterMoreView"

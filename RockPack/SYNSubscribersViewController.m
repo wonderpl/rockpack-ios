@@ -23,7 +23,7 @@
 {
     if (self = [super initWithViewId:kChannelDetailsViewId]) {
         
-        self.title = NSLocalizedString (@"SUBSCRIBERS", nil);
+        self.title = NSLocalizedString(@"SUBSCRIBERS", nil);
         self.channel = channel;
         
         UILabel* titleLabel = [[UILabel alloc] initWithFrame: CGRectMake( -(self.contentSizeForViewInPopover.width * 0.5), -15.0, self.contentSizeForViewInPopover.width, 40.0)];
@@ -48,6 +48,8 @@
 {
     self.activityView = [[UIActivityIndicatorView alloc] initWithActivityIndicatorStyle:UIActivityIndicatorViewStyleWhiteLarge];
     
+    self.activityView.center = CGPointMake(self.view.frame.size.width * 0.5, self.view.frame.size.height * 0.5);
+    
     [self.activityView hidesWhenStopped];
     
     [self.activityView startAnimating];
@@ -56,7 +58,7 @@
     
     [appDelegate.networkEngine subscribersForUserId:appDelegate.currentUser.uniqueId
                                           channelId:self.channel.uniqueId
-                                           forRange:self.dataRequestRange ompletionHandler:^{
+                                           forRange:self.dataRequestRange completionHandler:^{
                                                
                                                [self displayUsers];
                                                
@@ -68,6 +70,8 @@
                                                
                                            }];
 }
+
+
 
 - (void) collectionView: (UICollectionView *) collectionView didSelectItemAtIndexPath: (NSIndexPath *) indexPath
 {

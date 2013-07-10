@@ -27,6 +27,7 @@
 #import "SubGenre.h"
 #import "UIFont+SYNFont.h"
 #import "UIImageView+WebCache.h"
+#import "SYNModalSubscribersController.h"
 #import "Video.h"
 #import "VideoInstance.h"
 #import "SYNSubscribersViewController.h"
@@ -96,7 +97,7 @@
 @property (weak, nonatomic) IBOutlet UIActivityIndicatorView *activityIndicator;
 @property (weak, nonatomic) IBOutlet UIActivityIndicatorView *shareActivityIndicator;
 @property (nonatomic, strong) UIPopoverController* subscribersPopover;
-
+@property (nonatomic, strong) SYNModalSubscribersController* modalSubscriptionsContainer;
 //iPhone specific
 
 @property (nonatomic, strong) NSString* selectedImageURL;
@@ -371,6 +372,7 @@
     SYNSubscribersViewController* subscribersViewController = [[SYNSubscribersViewController alloc] initWithChannel:self.channel];
     subscribersViewController.view.backgroundColor = [UIColor clearColor];
     
+    
     if (IS_IPAD)
     {
         
@@ -392,42 +394,17 @@
                                permittedArrowDirections: 0
                                                animated: YES];
         
+        
         subscribersViewController.parentPopover = self.subscribersPopover;
         
     }
     else
     {
         
+        self.modalSubscriptionsContainer = [[SYNModalSubscribersController alloc] initWithContentViewController:subscribersViewController];
         
-//        UINavigationController* navigationController = [[UINavigationController alloc] initWithRootViewController: accountsTableController];
-//        navigationController.view.backgroundColor = [UIColor clearColor];
-//        navigationController.navigationBarHidden = YES;
-//        
-//        __weak SYNMasterViewController* weakSelf = self;
-//        self.modalAccountContainer = [[SYNAccountSettingsModalContainer alloc] initWithNavigationController:navigationController andCompletionBlock:^{
-//            [weakSelf modalAccountContainerDismiss];
-//        }];
-//        
-//        CGRect modalFrame = self.modalAccountContainer.view.frame;
-//        modalFrame.size.height = self.view.frame.size.height - 60.0f;
-//        [self.modalAccountContainer setModalViewFrame:modalFrame];
-//        
-//        modalFrame.origin.y = [SYNDeviceManager.sharedInstance currentScreenHeight];
-//        self.modalAccountContainer.view.frame = modalFrame;
-//        
-//        self.accountSettingsCoverView.alpha = 0.0;
-//        self.accountSettingsCoverView.hidden = NO;
-//        [self.view addSubview:self.accountSettingsCoverView];
-//        
-//        [self.view addSubview:self.modalAccountContainer.view];
-//        
-//        modalFrame.origin.y = 60.0;
-//        
-//        [UIView animateWithDuration:0.3 animations:^{
-//            
-//            self.accountSettingsCoverView.alpha = 0.8;
-//            self.modalAccountContainer.view.frame = modalFrame;
-//        }];
+        [appDelegate.viewStackManager presentModallyController:self.modalSubscriptionsContainer];
+        
         
         
     }
