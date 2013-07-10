@@ -49,7 +49,7 @@ window.staticTexts()["Page Title"].value() == "PROFILE";
 target.frontMostApp().mainWindow().scrollViews()[0].staticTexts()["MY SUBSCRIPTIONS (1)"].tap();
 
 //Select channel
-target.delay(1);
+target.delay(2);
 target.frontMostApp().mainWindow().scrollViews()[0].collectionViews()[2].cells()[0].tap();
 
 //Unsubscribe
