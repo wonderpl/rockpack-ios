@@ -12,12 +12,16 @@
 @class ChannelOwner;
 @class Channel;
 @class SYNSideNavigatorViewController;
+@class SYNMasterViewController;
 
-@interface SYNViewStackManager : NSObject
+@interface SYNViewStackManager : NSObject {
+    UIViewController* modalViewController;
+}
 
 
 @property (nonatomic, weak) UINavigationController* navigationController;
 @property (nonatomic, weak) SYNSideNavigatorViewController* sideNavigatorController;
+@property (nonatomic, weak) SYNMasterViewController* masterController;
 
 +(id)manager;
 
@@ -27,9 +31,13 @@
 -(void)popController;
 -(void)pushController:(SYNAbstractViewController*)controller;
 
+-(void)presentModallyController:(UIViewController*)controller;
+
 - (void) viewProfileDetails: (ChannelOwner *) channelOwner;
 -(void) viewChannelDetails: (Channel*) channel withAutoplayId:(NSString*)autoplayId;
 - (void) viewChannelDetails: (Channel*) channel;
+
+-(void)hideModallyController;
 
 -(void)hideSideNavigator;
 

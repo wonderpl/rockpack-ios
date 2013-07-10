@@ -2,9 +2,9 @@
 <archive type="com.apple.InterfaceBuilder3.CocoaTouch.iPad.XIB" version="8.00">
 	<data>
 		<int key="IBDocument.SystemTarget">1552</int>
-		<string key="IBDocument.SystemVersion">12D78</string>
+		<string key="IBDocument.SystemVersion">12E55</string>
 		<string key="IBDocument.InterfaceBuilderVersion">3084</string>
-		<string key="IBDocument.AppKitVersion">1187.37</string>
+		<string key="IBDocument.AppKitVersion">1187.39</string>
 		<string key="IBDocument.HIToolboxVersion">626.00</string>
 		<object class="NSMutableDictionary" key="IBDocument.PluginVersions">
 			<string key="NS.key.0">com.apple.InterfaceBuilder.IBCocoaTouchPlugin</string>
@@ -327,7 +327,7 @@
 										<string key="NSFrame">{{144, 274}, {170, 44}}</string>
 										<reference key="NSSuperview" ref="421928150"/>
 										<reference key="NSWindow"/>
-										<reference key="NSNextKeyView" ref="512270700"/>
+										<reference key="NSNextKeyView" ref="608264930"/>
 										<string key="NSReuseIdentifierKey">_NS:9</string>
 										<bool key="IBUIOpaque">NO</bool>
 										<bool key="IBUIClipsSubviews">YES</bool>
@@ -353,6 +353,27 @@
 											<int key="NSfFlags">16</int>
 										</object>
 										<bool key="IBUIAdjustsFontSizeToFit">NO</bool>
+									</object>
+									<object class="IBUIButton" id="608264930">
+										<reference key="NSNextResponder" ref="421928150"/>
+										<int key="NSvFlags">292</int>
+										<string key="NSFrame">{{144, 274}, {170, 44}}</string>
+										<reference key="NSSuperview" ref="421928150"/>
+										<reference key="NSWindow"/>
+										<reference key="NSNextKeyView" ref="512270700"/>
+										<string key="NSReuseIdentifierKey">_NS:9</string>
+										<bool key="IBUIOpaque">NO</bool>
+										<string key="targetRuntimeIdentifier">IBIPadFramework</string>
+										<int key="IBUIContentHorizontalAlignment">0</int>
+										<int key="IBUIContentVerticalAlignment">0</int>
+										<reference key="IBUIHighlightedTitleColor" ref="266444258"/>
+										<object class="NSColor" key="IBUINormalTitleColor">
+											<int key="NSColorSpace">1</int>
+											<bytes key="NSRGB">MC4xOTYwNzg0MzQ2IDAuMzA5ODAzOTMyOSAwLjUyMTU2ODY1NgA</bytes>
+										</object>
+										<reference key="IBUINormalTitleShadowColor" ref="271166090"/>
+										<reference key="IBUIFontDescription" ref="842263965"/>
+										<reference key="IBUIFont" ref="421131696"/>
 									</object>
 									<object class="IBUIButton" id="512270700">
 										<reference key="NSNextResponder" ref="421928150"/>
@@ -705,6 +726,7 @@
 						<string key="NSFrame">{{214, 1}, {106, 58}}</string>
 						<reference key="NSSuperview" ref="453930770"/>
 						<reference key="NSWindow"/>
+						<reference key="NSNextKeyView"/>
 						<string key="NSReuseIdentifierKey">_NS:9</string>
 						<bool key="IBUIOpaque">NO</bool>
 						<string key="targetRuntimeIdentifier">IBIPadFramework</string>
@@ -855,14 +877,6 @@
 				</object>
 				<object class="IBConnectionRecord">
 					<object class="IBCocoaTouchOutletConnection" key="connection">
-						<string key="label">channelDetailsLabel</string>
-						<reference key="source" ref="841351856"/>
-						<reference key="destination" ref="260226906"/>
-					</object>
-					<int key="connectionID">81</int>
-				</object>
-				<object class="IBConnectionRecord">
-					<object class="IBCocoaTouchOutletConnection" key="connection">
 						<string key="label">avatarBackgroundView</string>
 						<reference key="source" ref="841351856"/>
 						<reference key="destination" ref="859934816"/>
@@ -996,6 +1010,14 @@
 						<reference key="destination" ref="624001696"/>
 					</object>
 					<int key="connectionID">141</int>
+				</object>
+				<object class="IBConnectionRecord">
+					<object class="IBCocoaTouchOutletConnection" key="connection">
+						<string key="label">subscribersLabel</string>
+						<reference key="source" ref="841351856"/>
+						<reference key="destination" ref="260226906"/>
+					</object>
+					<int key="connectionID">142</int>
 				</object>
 				<object class="IBConnectionRecord">
 					<object class="IBCocoaTouchOutletConnection" key="connection">
@@ -1139,6 +1161,15 @@
 					</object>
 					<int key="connectionID">137</int>
 				</object>
+				<object class="IBConnectionRecord">
+					<object class="IBCocoaTouchEventConnection" key="connection">
+						<string key="label">subscribersLabelPressed:</string>
+						<reference key="source" ref="608264930"/>
+						<reference key="destination" ref="841351856"/>
+						<int key="IBEventType">7</int>
+					</object>
+					<int key="connectionID">144</int>
+				</object>
 			</array>
 			<object class="IBMutableOrderedSet" key="objectRecords">
 				<array key="orderedObjects">
@@ -1211,6 +1242,7 @@
 							<reference ref="226591683"/>
 							<reference ref="682383005"/>
 							<reference ref="104919480"/>
+							<reference ref="608264930"/>
 						</array>
 						<reference key="parent" ref="793593682"/>
 						<string key="objectName">Passthrough View - Display Controls</string>
@@ -1255,28 +1287,7 @@
 						<int key="objectID">69</int>
 						<reference key="object" ref="260226906"/>
 						<reference key="parent" ref="421928150"/>
-						<string key="objectName">Label - Channel details</string>
-					</object>
-					<object class="IBObjectRecord">
-						<int key="objectID">7</int>
-						<reference key="object" ref="574818441"/>
-						<array class="NSMutableArray" key="children">
-							<reference ref="999796781"/>
-							<reference ref="334620750"/>
-							<reference ref="912824049"/>
-							<reference ref="289460601"/>
-							<reference ref="57477992"/>
-							<reference ref="304262108"/>
-							<reference ref="641423214"/>
-						</array>
-						<reference key="parent" ref="793593682"/>
-						<string key="objectName">Passthrough View - Edit Controls</string>
-					</object>
-					<object class="IBObjectRecord">
-						<int key="objectID">10</int>
-						<reference key="object" ref="999796781"/>
-						<reference key="parent" ref="574818441"/>
-						<string key="objectName">Button - Select a cover</string>
+						<string key="objectName">Subscribers Label</string>
 					</object>
 					<object class="IBObjectRecord">
 						<int key="objectID">3</int>
@@ -1291,29 +1302,6 @@
 						<int key="objectID">13</int>
 						<reference key="object" ref="220942766"/>
 						<reference key="parent" ref="1042878543"/>
-					</object>
-					<object class="IBObjectRecord">
-						<int key="objectID">100</int>
-						<reference key="object" ref="912824049"/>
-						<reference key="parent" ref="574818441"/>
-						<string key="objectName">Button - Create</string>
-					</object>
-					<object class="IBObjectRecord">
-						<int key="objectID">108</int>
-						<reference key="object" ref="289460601"/>
-						<reference key="parent" ref="574818441"/>
-						<string key="objectName">Button - doneTyping</string>
-					</object>
-					<object class="IBObjectRecord">
-						<int key="objectID">113</int>
-						<reference key="object" ref="57477992"/>
-						<reference key="parent" ref="574818441"/>
-						<string key="objectName">backButton</string>
-					</object>
-					<object class="IBObjectRecord">
-						<int key="objectID">115</int>
-						<reference key="object" ref="304262108"/>
-						<reference key="parent" ref="574818441"/>
 					</object>
 					<object class="IBObjectRecord">
 						<int key="objectID">59</int>
@@ -1341,18 +1329,6 @@
 						<reference key="object" ref="226591683"/>
 						<reference key="parent" ref="421928150"/>
 						<string key="objectName">Button - Report Concern</string>
-					</object>
-					<object class="IBObjectRecord">
-						<int key="objectID">125</int>
-						<reference key="object" ref="641423214"/>
-						<reference key="parent" ref="574818441"/>
-						<string key="objectName">Button - dismiss text entry</string>
-					</object>
-					<object class="IBObjectRecord">
-						<int key="objectID">9</int>
-						<reference key="object" ref="334620750"/>
-						<reference key="parent" ref="574818441"/>
-						<string key="objectName">Button - Select a category</string>
 					</object>
 					<object class="IBObjectRecord">
 						<int key="objectID">129</int>
@@ -1384,6 +1360,68 @@
 						<reference key="parent" ref="453930770"/>
 						<string key="objectName">Image View - Rockpack Logo</string>
 					</object>
+					<object class="IBObjectRecord">
+						<int key="objectID">7</int>
+						<reference key="object" ref="574818441"/>
+						<array class="NSMutableArray" key="children">
+							<reference ref="999796781"/>
+							<reference ref="334620750"/>
+							<reference ref="912824049"/>
+							<reference ref="289460601"/>
+							<reference ref="57477992"/>
+							<reference ref="304262108"/>
+							<reference ref="641423214"/>
+						</array>
+						<reference key="parent" ref="793593682"/>
+						<string key="objectName">Passthrough View - Edit Controls</string>
+					</object>
+					<object class="IBObjectRecord">
+						<int key="objectID">115</int>
+						<reference key="object" ref="304262108"/>
+						<reference key="parent" ref="574818441"/>
+					</object>
+					<object class="IBObjectRecord">
+						<int key="objectID">113</int>
+						<reference key="object" ref="57477992"/>
+						<reference key="parent" ref="574818441"/>
+						<string key="objectName">backButton</string>
+					</object>
+					<object class="IBObjectRecord">
+						<int key="objectID">108</int>
+						<reference key="object" ref="289460601"/>
+						<reference key="parent" ref="574818441"/>
+						<string key="objectName">Button - doneTyping</string>
+					</object>
+					<object class="IBObjectRecord">
+						<int key="objectID">100</int>
+						<reference key="object" ref="912824049"/>
+						<reference key="parent" ref="574818441"/>
+						<string key="objectName">Button - Create</string>
+					</object>
+					<object class="IBObjectRecord">
+						<int key="objectID">125</int>
+						<reference key="object" ref="641423214"/>
+						<reference key="parent" ref="574818441"/>
+						<string key="objectName">Button - dismiss text entry</string>
+					</object>
+					<object class="IBObjectRecord">
+						<int key="objectID">10</int>
+						<reference key="object" ref="999796781"/>
+						<reference key="parent" ref="574818441"/>
+						<string key="objectName">Button - Select a cover</string>
+					</object>
+					<object class="IBObjectRecord">
+						<int key="objectID">9</int>
+						<reference key="object" ref="334620750"/>
+						<reference key="parent" ref="574818441"/>
+						<string key="objectName">Button - Select a category</string>
+					</object>
+					<object class="IBObjectRecord">
+						<int key="objectID">143</int>
+						<reference key="object" ref="608264930"/>
+						<reference key="parent" ref="421928150"/>
+						<string key="objectName">Button - Subscribers</string>
+					</object>
 				</array>
 			</object>
 			<dictionary class="NSMutableDictionary" key="flattenedProperties">
@@ -1413,6 +1451,8 @@
 				<string key="134.IBPluginDependency">com.apple.InterfaceBuilder.IBCocoaTouchPlugin</string>
 				<real value="3" key="134.IBUIButtonInspectorSelectedStateConfigurationMetadataKey"/>
 				<string key="139.IBPluginDependency">com.apple.InterfaceBuilder.IBCocoaTouchPlugin</string>
+				<string key="143.IBPluginDependency">com.apple.InterfaceBuilder.IBCocoaTouchPlugin</string>
+				<real value="1" key="143.IBUIButtonInspectorSelectedStateConfigurationMetadataKey"/>
 				<string key="2.IBPluginDependency">com.apple.InterfaceBuilder.IBCocoaTouchPlugin</string>
 				<string key="3.IBPluginDependency">com.apple.InterfaceBuilder.IBCocoaTouchPlugin</string>
 				<string key="4.CustomClassName">SYNPassthroughView</string>
@@ -1444,7 +1484,7 @@
 			<nil key="activeLocalization"/>
 			<dictionary class="NSMutableDictionary" key="localizations"/>
 			<nil key="sourceID"/>
-			<int key="maxID">141</int>
+			<int key="maxID">144</int>
 		</object>
 		<object class="IBClassDescriber" key="IBDocument.Classes">
 			<array class="NSMutableArray" key="referencedPartialClassDescriptions">
@@ -1459,17 +1499,6 @@
 				<object class="IBPartialClassDescription">
 					<string key="className">SYNAbstractViewController</string>
 					<string key="superclassName">UIViewController</string>
-					<object class="NSMutableDictionary" key="actions">
-						<string key="NS.key.0">animatedPopViewController</string>
-						<string key="NS.object.0">id</string>
-					</object>
-					<object class="NSMutableDictionary" key="actionInfosByName">
-						<string key="NS.key.0">animatedPopViewController</string>
-						<object class="IBActionInfo" key="NS.object.0">
-							<string key="name">animatedPopViewController</string>
-							<string key="candidateClassName">id</string>
-						</object>
-					</object>
 					<dictionary class="NSMutableDictionary" key="outlets">
 						<string key="channelNameTextField">UITextField</string>
 						<string key="channelOverlayView">UIImageView</string>
@@ -1497,75 +1526,6 @@
 				<object class="IBPartialClassDescription">
 					<string key="className">SYNChannelDetailViewController</string>
 					<string key="superclassName">SYNAbstractViewController</string>
-					<dictionary class="NSMutableDictionary" key="actions">
-						<string key="addCoverButtonTapped:">UIButton</string>
-						<string key="addItToChannelPresssed:">id</string>
-						<string key="backButtonTapped:">id</string>
-						<string key="buyButtonTapped:">id</string>
-						<string key="cancelEditTapped:">id</string>
-						<string key="createChannelPressed:">id</string>
-						<string key="editButtonTapped:">id</string>
-						<string key="profileImagePressed:">UIButton</string>
-						<string key="saveChannelTapped:">id</string>
-						<string key="selectCategoryButtonTapped:">UIButton</string>
-						<string key="shareChannelButtonTapped:">UIButton</string>
-						<string key="subscribeButtonTapped:">id</string>
-						<string key="userTouchedReportConcernButton:">UIButton</string>
-					</dictionary>
-					<dictionary class="NSMutableDictionary" key="actionInfosByName">
-						<object class="IBActionInfo" key="addCoverButtonTapped:">
-							<string key="name">addCoverButtonTapped:</string>
-							<string key="candidateClassName">UIButton</string>
-						</object>
-						<object class="IBActionInfo" key="addItToChannelPresssed:">
-							<string key="name">addItToChannelPresssed:</string>
-							<string key="candidateClassName">id</string>
-						</object>
-						<object class="IBActionInfo" key="backButtonTapped:">
-							<string key="name">backButtonTapped:</string>
-							<string key="candidateClassName">id</string>
-						</object>
-						<object class="IBActionInfo" key="buyButtonTapped:">
-							<string key="name">buyButtonTapped:</string>
-							<string key="candidateClassName">id</string>
-						</object>
-						<object class="IBActionInfo" key="cancelEditTapped:">
-							<string key="name">cancelEditTapped:</string>
-							<string key="candidateClassName">id</string>
-						</object>
-						<object class="IBActionInfo" key="createChannelPressed:">
-							<string key="name">createChannelPressed:</string>
-							<string key="candidateClassName">id</string>
-						</object>
-						<object class="IBActionInfo" key="editButtonTapped:">
-							<string key="name">editButtonTapped:</string>
-							<string key="candidateClassName">id</string>
-						</object>
-						<object class="IBActionInfo" key="profileImagePressed:">
-							<string key="name">profileImagePressed:</string>
-							<string key="candidateClassName">UIButton</string>
-						</object>
-						<object class="IBActionInfo" key="saveChannelTapped:">
-							<string key="name">saveChannelTapped:</string>
-							<string key="candidateClassName">id</string>
-						</object>
-						<object class="IBActionInfo" key="selectCategoryButtonTapped:">
-							<string key="name">selectCategoryButtonTapped:</string>
-							<string key="candidateClassName">UIButton</string>
-						</object>
-						<object class="IBActionInfo" key="shareChannelButtonTapped:">
-							<string key="name">shareChannelButtonTapped:</string>
-							<string key="candidateClassName">UIButton</string>
-						</object>
-						<object class="IBActionInfo" key="subscribeButtonTapped:">
-							<string key="name">subscribeButtonTapped:</string>
-							<string key="candidateClassName">id</string>
-						</object>
-						<object class="IBActionInfo" key="userTouchedReportConcernButton:">
-							<string key="name">userTouchedReportConcernButton:</string>
-							<string key="candidateClassName">UIButton</string>
-						</object>
-					</dictionary>
 					<dictionary class="NSMutableDictionary" key="outlets">
 						<string key="activityIndicator">UIActivityIndicatorView</string>
 						<string key="addCoverButton">UIButton</string>
@@ -1578,7 +1538,6 @@
 						<string key="cancelEditButton">UIButton</string>
 						<string key="cancelTextInputButton">UIButton</string>
 						<string key="channelCoverImageView">UIImageView</string>
-						<string key="channelDetailsLabel">UILabel</string>
 						<string key="channelOwnerLabel">UILabel</string>
 						<string key="channelTitleTextBackgroundView">UIView</string>
 						<string key="channelTitleTextView">SSTextView</string>
@@ -1595,6 +1554,7 @@
 						<string key="shareActivityIndicator">UIActivityIndicatorView</string>
 						<string key="shareButton">UIButton</string>
 						<string key="subscribeButton">UIButton</string>
+						<string key="subscribersLabel">UILabel</string>
 						<string key="textBackgroundImageView">UIImageView</string>
 					</dictionary>
 					<dictionary class="NSMutableDictionary" key="toOneOutletInfosByName">
@@ -1641,10 +1601,6 @@
 						<object class="IBToOneOutletInfo" key="channelCoverImageView">
 							<string key="name">channelCoverImageView</string>
 							<string key="candidateClassName">UIImageView</string>
-						</object>
-						<object class="IBToOneOutletInfo" key="channelDetailsLabel">
-							<string key="name">channelDetailsLabel</string>
-							<string key="candidateClassName">UILabel</string>
 						</object>
 						<object class="IBToOneOutletInfo" key="channelOwnerLabel">
 							<string key="name">channelOwnerLabel</string>
@@ -1709,6 +1665,10 @@
 						<object class="IBToOneOutletInfo" key="subscribeButton">
 							<string key="name">subscribeButton</string>
 							<string key="candidateClassName">UIButton</string>
+						</object>
+						<object class="IBToOneOutletInfo" key="subscribersLabel">
+							<string key="name">subscribersLabel</string>
+							<string key="candidateClassName">UILabel</string>
 						</object>
 						<object class="IBToOneOutletInfo" key="textBackgroundImageView">
 							<string key="name">textBackgroundImageView</string>

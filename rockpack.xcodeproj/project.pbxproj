@@ -388,10 +388,6 @@
 		01F1B895172A9B41005735AF /* ButtonCloseHighlighted@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 01F1B893172A9B41005735AF /* ButtonCloseHighlighted@2x.png */; };
 		01F1B898172AC2F1005735AF /* ButtonCreateHighlighted.png in Resources */ = {isa = PBXBuildFile; fileRef = 01F1B896172AC2F1005735AF /* ButtonCreateHighlighted.png */; };
 		01F1B899172AC2F1005735AF /* ButtonCreateHighlighted@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 01F1B897172AC2F1005735AF /* ButtonCreateHighlighted@2x.png */; };
-		01F60C1B178D8D0D00984C1F /* SYNYouTubeVideoPlayer.m in Sources */ = {isa = PBXBuildFile; fileRef = 01F60C1A178D8D0D00984C1F /* SYNYouTubeVideoPlayer.m */; };
-		01F60C1E178D8EC600984C1F /* SYNAbstractVideoPlayer.m in Sources */ = {isa = PBXBuildFile; fileRef = 01F60C1D178D8EC600984C1F /* SYNAbstractVideoPlayer.m */; };
-		01F60C21178D947E00984C1F /* SYNVimeoVideoPlayer.m in Sources */ = {isa = PBXBuildFile; fileRef = 01F60C20178D947E00984C1F /* SYNVimeoVideoPlayer.m */; };
-		01F60C24178D949600984C1F /* SYNNativeVideoPlayer.m in Sources */ = {isa = PBXBuildFile; fileRef = 01F60C23178D949600984C1F /* SYNNativeVideoPlayer.m */; };
 		01F7C9681748ED0B00E36994 /* libsqlite3.dylib in Frameworks */ = {isa = PBXBuildFile; fileRef = 01F7C9671748ED0B00E36994 /* libsqlite3.dylib */; };
 		01F8E73A16B010F3000D44B9 /* PanelVideoScreenVideoMainOverlay.png in Resources */ = {isa = PBXBuildFile; fileRef = 01F8E73816B010F3000D44B9 /* PanelVideoScreenVideoMainOverlay.png */; };
 		01F8E73B16B010F3000D44B9 /* PanelVideoScreenVideoMainOverlay@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 01F8E73916B010F3000D44B9 /* PanelVideoScreenVideoMainOverlay@2x.png */; };
@@ -1011,6 +1007,10 @@
 		BE7D02EA178B138B008053DC /* SYNUserThumbnailCell.m in Sources */ = {isa = PBXBuildFile; fileRef = BE7D02E9178B138B008053DC /* SYNUserThumbnailCell.m */; };
 		BE7D02EC178B13C3008053DC /* SYNUserThumbnailCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = BE7D02EB178B13C3008053DC /* SYNUserThumbnailCell.xib */; };
 		BE7D02F0178C0FEC008053DC /* SYNUserThumbnailCell~iphone.xib in Resources */ = {isa = PBXBuildFile; fileRef = BE7D02EF178C0FEC008053DC /* SYNUserThumbnailCell~iphone.xib */; };
+		BE7D02F4178C1D3B008053DC /* SYNUsersViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = BE7D02F3178C1D3B008053DC /* SYNUsersViewController.m */; };
+		BE7D02F7178C4354008053DC /* SYNSubscribersViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = BE7D02F6178C4354008053DC /* SYNSubscribersViewController.m */; };
+		BE7D02FB178C72DB008053DC /* SYNModalSubscribersController.m in Sources */ = {isa = PBXBuildFile; fileRef = BE7D02F9178C72DB008053DC /* SYNModalSubscribersController.m */; };
+		BE7D02FC178C72DB008053DC /* SYNModalSubscribersController.xib in Resources */ = {isa = PBXBuildFile; fileRef = BE7D02FA178C72DB008053DC /* SYNModalSubscribersController.xib */; };
 		BE7D342E170DD8C90085AB81 /* SYNChannelFooterMoreView.xib in Resources */ = {isa = PBXBuildFile; fileRef = BE7D342D170DD8C90085AB81 /* SYNChannelFooterMoreView.xib */; };
 		BE7D3431170DDB310085AB81 /* SYNChannelFooterMoreView.m in Sources */ = {isa = PBXBuildFile; fileRef = BE7D3430170DDB310085AB81 /* SYNChannelFooterMoreView.m */; };
 		BE7D34CE1714434D0085AB81 /* SYNDeviceManager.m in Sources */ = {isa = PBXBuildFile; fileRef = BE7D34CD1714434D0085AB81 /* SYNDeviceManager.m */; };
@@ -1656,14 +1656,6 @@
 		01F1B893172A9B41005735AF /* ButtonCloseHighlighted@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = "ButtonCloseHighlighted@2x.png"; path = "Assets/Images/ButtonCloseHighlighted@2x.png"; sourceTree = "<group>"; };
 		01F1B896172AC2F1005735AF /* ButtonCreateHighlighted.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = ButtonCreateHighlighted.png; path = Assets/Images/ButtonCreateHighlighted.png; sourceTree = "<group>"; };
 		01F1B897172AC2F1005735AF /* ButtonCreateHighlighted@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = "ButtonCreateHighlighted@2x.png"; path = "Assets/Images/ButtonCreateHighlighted@2x.png"; sourceTree = "<group>"; };
-		01F60C19178D8D0D00984C1F /* SYNYouTubeVideoPlayer.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SYNYouTubeVideoPlayer.h; sourceTree = "<group>"; };
-		01F60C1A178D8D0D00984C1F /* SYNYouTubeVideoPlayer.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SYNYouTubeVideoPlayer.m; sourceTree = "<group>"; };
-		01F60C1C178D8EC600984C1F /* SYNAbstractVideoPlayer.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SYNAbstractVideoPlayer.h; sourceTree = "<group>"; };
-		01F60C1D178D8EC600984C1F /* SYNAbstractVideoPlayer.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SYNAbstractVideoPlayer.m; sourceTree = "<group>"; };
-		01F60C1F178D947E00984C1F /* SYNVimeoVideoPlayer.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SYNVimeoVideoPlayer.h; sourceTree = "<group>"; };
-		01F60C20178D947E00984C1F /* SYNVimeoVideoPlayer.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SYNVimeoVideoPlayer.m; sourceTree = "<group>"; };
-		01F60C22178D949600984C1F /* SYNNativeVideoPlayer.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SYNNativeVideoPlayer.h; sourceTree = "<group>"; };
-		01F60C23178D949600984C1F /* SYNNativeVideoPlayer.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SYNNativeVideoPlayer.m; sourceTree = "<group>"; };
 		01F7C9671748ED0B00E36994 /* libsqlite3.dylib */ = {isa = PBXFileReference; lastKnownFileType = "compiled.mach-o.dylib"; name = libsqlite3.dylib; path = usr/lib/libsqlite3.dylib; sourceTree = SDKROOT; };
 		01F8E73816B010F3000D44B9 /* PanelVideoScreenVideoMainOverlay.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = PanelVideoScreenVideoMainOverlay.png; path = Assets/Images/PanelVideoScreenVideoMainOverlay.png; sourceTree = "<group>"; };
 		01F8E73916B010F3000D44B9 /* PanelVideoScreenVideoMainOverlay@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = "PanelVideoScreenVideoMainOverlay@2x.png"; path = "Assets/Images/PanelVideoScreenVideoMainOverlay@2x.png"; sourceTree = "<group>"; };
@@ -2342,6 +2334,13 @@
 		BE7D02E9178B138B008053DC /* SYNUserThumbnailCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SYNUserThumbnailCell.m; sourceTree = "<group>"; };
 		BE7D02EB178B13C3008053DC /* SYNUserThumbnailCell.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = SYNUserThumbnailCell.xib; sourceTree = "<group>"; };
 		BE7D02EF178C0FEC008053DC /* SYNUserThumbnailCell~iphone.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = "SYNUserThumbnailCell~iphone.xib"; sourceTree = "<group>"; };
+		BE7D02F2178C1D3B008053DC /* SYNUsersViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SYNUsersViewController.h; sourceTree = "<group>"; };
+		BE7D02F3178C1D3B008053DC /* SYNUsersViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SYNUsersViewController.m; sourceTree = "<group>"; };
+		BE7D02F5178C4354008053DC /* SYNSubscribersViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SYNSubscribersViewController.h; sourceTree = "<group>"; };
+		BE7D02F6178C4354008053DC /* SYNSubscribersViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SYNSubscribersViewController.m; sourceTree = "<group>"; };
+		BE7D02F8178C72DB008053DC /* SYNModalSubscribersController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SYNModalSubscribersController.h; sourceTree = "<group>"; };
+		BE7D02F9178C72DB008053DC /* SYNModalSubscribersController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SYNModalSubscribersController.m; sourceTree = "<group>"; };
+		BE7D02FA178C72DB008053DC /* SYNModalSubscribersController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = SYNModalSubscribersController.xib; sourceTree = "<group>"; };
 		BE7D342D170DD8C90085AB81 /* SYNChannelFooterMoreView.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = SYNChannelFooterMoreView.xib; sourceTree = "<group>"; };
 		BE7D342F170DDB310085AB81 /* SYNChannelFooterMoreView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SYNChannelFooterMoreView.h; sourceTree = "<group>"; };
 		BE7D3430170DDB310085AB81 /* SYNChannelFooterMoreView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SYNChannelFooterMoreView.m; sourceTree = "<group>"; };
@@ -3204,6 +3203,7 @@
 		019824E11629CAB600216900 /* View Controllers */ = {
 			isa = PBXGroup;
 			children = (
+				BE7D02F1178C1D13008053DC /* Users */,
 				01982563162ADEAD00216900 /* Abstract */,
 				01B7F75B164FB7A7009C5CCD /* Channels */,
 				BEF9E5A516DBCDEF00286113 /* Components */,
@@ -3890,14 +3890,6 @@
 				01F8E77D16B03A7C000D44B9 /* SYNVideoViewerViewController.m */,
 				01F8E77E16B03A7C000D44B9 /* SYNVideoViewerViewController.xib */,
 				3862E8BB172979A40066E8E7 /* SYNVideoViewerViewController~iphone.xib */,
-				01F60C1C178D8EC600984C1F /* SYNAbstractVideoPlayer.h */,
-				01F60C1D178D8EC600984C1F /* SYNAbstractVideoPlayer.m */,
-				01F60C19178D8D0D00984C1F /* SYNYouTubeVideoPlayer.h */,
-				01F60C1A178D8D0D00984C1F /* SYNYouTubeVideoPlayer.m */,
-				01F60C1F178D947E00984C1F /* SYNVimeoVideoPlayer.h */,
-				01F60C20178D947E00984C1F /* SYNVimeoVideoPlayer.m */,
-				01F60C22178D949600984C1F /* SYNNativeVideoPlayer.h */,
-				01F60C23178D949600984C1F /* SYNNativeVideoPlayer.m */,
 			);
 			name = "Video viewer";
 			sourceTree = "<group>";
@@ -4821,6 +4813,20 @@
 				BEFAE89717241FD5009B2F66 /* SearchTabSelected@2x.png */,
 			);
 			name = Search;
+			sourceTree = "<group>";
+		};
+		BE7D02F1178C1D13008053DC /* Users */ = {
+			isa = PBXGroup;
+			children = (
+				BE7D02F2178C1D3B008053DC /* SYNUsersViewController.h */,
+				BE7D02F3178C1D3B008053DC /* SYNUsersViewController.m */,
+				BE7D02F5178C4354008053DC /* SYNSubscribersViewController.h */,
+				BE7D02F6178C4354008053DC /* SYNSubscribersViewController.m */,
+				BE7D02F8178C72DB008053DC /* SYNModalSubscribersController.h */,
+				BE7D02F9178C72DB008053DC /* SYNModalSubscribersController.m */,
+				BE7D02FA178C72DB008053DC /* SYNModalSubscribersController.xib */,
+			);
+			name = Users;
 			sourceTree = "<group>";
 		};
 		BE7D3496171412EC0085AB81 /* Side Navigator */ = {
@@ -6036,6 +6042,7 @@
 				1F4DAEE11781AA2500E0DB81 /* PlaceholderSidebarAvatar@2x.png in Resources */,
 				BE7D02EC178B13C3008053DC /* SYNUserThumbnailCell.xib in Resources */,
 				BE7D02F0178C0FEC008053DC /* SYNUserThumbnailCell~iphone.xib in Resources */,
+				BE7D02FC178C72DB008053DC /* SYNModalSubscribersController.xib in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -6332,10 +6339,9 @@
 				BE2D762D1785BBB100546BFD /* SYNViewStackManager.m in Sources */,
 				BE7D02E5178AF310008053DC /* SYNSearchUsersViewController.m in Sources */,
 				BE7D02EA178B138B008053DC /* SYNUserThumbnailCell.m in Sources */,
-				01F60C1B178D8D0D00984C1F /* SYNYouTubeVideoPlayer.m in Sources */,
-				01F60C1E178D8EC600984C1F /* SYNAbstractVideoPlayer.m in Sources */,
-				01F60C21178D947E00984C1F /* SYNVimeoVideoPlayer.m in Sources */,
-				01F60C24178D949600984C1F /* SYNNativeVideoPlayer.m in Sources */,
+				BE7D02F4178C1D3B008053DC /* SYNUsersViewController.m in Sources */,
+				BE7D02F7178C4354008053DC /* SYNSubscribersViewController.m in Sources */,
+				BE7D02FB178C72DB008053DC /* SYNModalSubscribersController.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

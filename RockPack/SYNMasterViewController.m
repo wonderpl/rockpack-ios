@@ -83,6 +83,8 @@ typedef void(^AnimationCompletionBlock)(BOOL finished);
     {
         appDelegate = (SYNAppDelegate*)[[UIApplication sharedApplication] delegate];
         
+        appDelegate.viewStackManager.masterController = self;
+        
         // == main navigation == //
         
         self.mainNavigationController = [[UINavigationController alloc] initWithRootViewController:root];
@@ -989,6 +991,7 @@ typedef void(^AnimationCompletionBlock)(BOOL finished);
     }
     else
     {
+        
         UINavigationController* navigationController = [[UINavigationController alloc] initWithRootViewController: accountsTableController];
         navigationController.view.backgroundColor = [UIColor clearColor];
         navigationController.navigationBarHidden = YES;

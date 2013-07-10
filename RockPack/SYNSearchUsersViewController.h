@@ -7,11 +7,12 @@
 //
 
 #import "SYNAbstractViewController.h"
+#import "SYNUsersViewController.h"
 
 @class SYNSearchRootViewController;
 @class SYNSearchTabView;
 
-@interface SYNSearchUsersViewController : SYNAbstractViewController
+@interface SYNSearchUsersViewController : SYNUsersViewController
 
 
 @property (nonatomic, weak) SYNSearchRootViewController* parent;

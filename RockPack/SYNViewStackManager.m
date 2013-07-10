@@ -12,6 +12,8 @@
 #import "SYNChannelDetailViewController.h"
 #import "SYNSideNavigatorViewController.h"
 #import "ChannelOwner.h"
+#import "SYNDeviceManager.h"
+#import "SYNMasterViewController.h"
 
 @implementation SYNViewStackManager
 
@@ -173,6 +175,50 @@
     self.sideNavigatorController.state = SideNavigationStateHidden;
 }
 
+-(void)presentModallyController:(UIViewController*)controller
+{
+    modalViewController = controller;
+    
+    [self.masterController addChildViewController:controller];
+    [self.masterController.view addSubview:controller.view];
+    
+    CGRect controllerFrame = controller.view.frame;
+    
+    controllerFrame.origin.y = [[SYNDeviceManager sharedInstance] currentScreenHeight];
+    
+    
+    controller.view.frame = controllerFrame;
+    
+    controllerFrame.origin.y = 0.0f;
+    
+    [UIView animateWithDuration:0.4 delay:0.0
+                        options:UIViewAnimationCurveEaseIn
+                     animations:^{
+                         
+                         controller.view.frame = controllerFrame;
+                         
+                     } completion:nil];
+}
+
+-(void)hideModallyController
+{
+    
+    CGRect controllerFrame = modalViewController.view.frame;
+    controllerFrame.origin.y = [[SYNDeviceManager sharedInstance] currentScreenHeight];
+    
+    [UIView animateWithDuration:0.4 delay:0.0
+                        options:UIViewAnimationCurveEaseIn
+                     animations:^{
+                         
+                         modalViewController.view.frame = controllerFrame;
+                         
+                     } completion:^(BOOL finished) {
+                         
+                         [modalViewController.view removeFromSuperview];
+                         [modalViewController removeFromParentViewController];
+                         
+                     }];
+}
 
 #pragma mark - Helper
 

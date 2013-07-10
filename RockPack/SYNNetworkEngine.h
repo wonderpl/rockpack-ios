@@ -66,6 +66,14 @@
                          completionHandler: (MKNKUserSuccessBlock) completionBlock
                               errorHandler: (MKNKUserErrorBlock) errorBlock;
 
+- (void) subscribersForUserId: (NSString*) userId
+                    channelId: (NSString*)channelId
+                     forRange: (NSRange)range
+             completionHandler: (MKNKBasicSuccessBlock) completionBlock
+                 errorHandler: (MKNKBasicFailureBlock) errorBlock;
+
+
+
 - (void) videosForChannelForUserId: (NSString *) userId
                          channelId: (NSString *) channelId
                            inRange: (NSRange) range

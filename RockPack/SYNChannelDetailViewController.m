@@ -27,8 +27,10 @@
 #import "SubGenre.h"
 #import "UIFont+SYNFont.h"
 #import "UIImageView+WebCache.h"
+#import "SYNModalSubscribersController.h"
 #import "Video.h"
 #import "VideoInstance.h"
+#import "SYNSubscribersViewController.h"
 #import "SYNCaution.h"
 #import "SYNCoverChooserController.h"
 #import "SYNDeviceManager.h"
@@ -68,7 +70,7 @@
 @property (nonatomic, strong) IBOutlet UIButton* subscribeButton;
 @property (nonatomic, strong) IBOutlet UIImageView *avatarImageView;
 @property (nonatomic, strong) IBOutlet UIImageView *channelCoverImageView;
-@property (nonatomic, strong) IBOutlet UILabel *channelDetailsLabel;
+@property (nonatomic, strong) IBOutlet UILabel *subscribersLabel;
 @property (nonatomic, strong) IBOutlet UILabel *channelOwnerLabel;
 @property (nonatomic, strong) IBOutlet UIView *avatarBackgroundView;
 @property (nonatomic, strong) IBOutlet UIView *channelTitleTextBackgroundView;
@@ -94,7 +96,8 @@
 @property (nonatomic, weak) IBOutlet UILabel *byLabel;
 @property (weak, nonatomic) IBOutlet UIActivityIndicatorView *activityIndicator;
 @property (weak, nonatomic) IBOutlet UIActivityIndicatorView *shareActivityIndicator;
-
+@property (nonatomic, strong) UIPopoverController* subscribersPopover;
+@property (nonatomic, strong) SYNModalSubscribersController* modalSubscriptionsContainer;
 //iPhone specific
 
 @property (nonatomic, strong) NSString* selectedImageURL;
@@ -157,8 +160,8 @@
     self.channelOwnerLabel.font = [UIFont boldRockpackFontOfSize: self.channelOwnerLabel.font.pointSize];
     [self addShadowToLayer: self.channelOwnerLabel.layer];
     
-    self.channelDetailsLabel.font = [UIFont boldRockpackFontOfSize: self.channelDetailsLabel.font.pointSize];
-    [self addShadowToLayer: self.channelDetailsLabel.layer];
+    self.subscribersLabel.font = [UIFont boldRockpackFontOfSize: self.subscribersLabel.font.pointSize];
+    [self addShadowToLayer: self.subscribersLabel.layer];
     
     self.byLabel.font = [UIFont rockpackFontOfSize: self.byLabel.font.pointSize];
     [self addShadowToLayer: self.byLabel.layer];
@@ -286,6 +289,7 @@
                                                           userInfo: nil];
     }
     
+    
     //Remove the save button. It is added back again if the edit button is tapped.
     [self.saveChannelButton removeFromSuperview];
     
@@ -359,7 +363,53 @@
     self.originalContentOffset = self.videoThumbnailCollectionView.contentOffset;
 }
 
-
+-(IBAction)subscribersLabelPressed:(id)sender
+{
+    
+    if (self.subscribersPopover)
+        return;
+    
+    SYNSubscribersViewController* subscribersViewController = [[SYNSubscribersViewController alloc] initWithChannel:self.channel];
+    subscribersViewController.view.backgroundColor = [UIColor clearColor];
+    
+    
+    if (IS_IPAD)
+    {
+        
+        UINavigationController* navigationController = [[UINavigationController alloc] initWithRootViewController: subscribersViewController];
+        navigationController.view.backgroundColor = [UIColor clearColor];
+        
+        self.subscribersPopover = [[UIPopoverController alloc] initWithContentViewController: navigationController];
+        self.subscribersPopover.popoverContentSize = CGSizeMake(580, 626);
+        self.subscribersPopover.delegate = self;
+        
+        self.subscribersPopover.popoverBackgroundViewClass = [SYNAccountSettingsPopoverBackgroundView class];
+        
+        
+        CGRect rect = CGRectMake([SYNDeviceManager.sharedInstance currentScreenWidth] * 0.5,
+                                 480.0f, 1, 1);
+        
+        [self.subscribersPopover presentPopoverFromRect: rect
+                                                 inView: self.view
+                               permittedArrowDirections: 0
+                                               animated: YES];
+        
+        
+        subscribersViewController.parentPopover = self.subscribersPopover;
+        
+    }
+    else
+    {
+        
+        self.modalSubscriptionsContainer = [[SYNModalSubscribersController alloc] initWithContentViewController:subscribersViewController];
+        
+        [appDelegate.viewStackManager presentModallyController:self.modalSubscriptionsContainer];
+        
+        
+        
+    }
+    
+}
 
 - (void) viewWillAppear: (BOOL) animated
 {
@@ -473,7 +523,7 @@
         self.subscribingIndicator = nil;
     }
     
-    self.channelDetailsLabel.text = [NSString stringWithFormat:
+    self.subscribersLabel.text = [NSString stringWithFormat:
                                      NSLocalizedString(@"channel_screen_error_subscribe", nil)];
 }
 
@@ -706,7 +756,7 @@
         self.shareButton.hidden = TRUE;
     }
     
-    self.channelDetailsLabel.text = detailsString;
+    self.subscribersLabel.text = detailsString;
     
     // If we have a valid ecommerce URL, then display the button
     if (self.channel.eCommerceURL != nil && ![self.channel.eCommerceURL isEqualToString: @""])
@@ -1001,9 +1051,9 @@
             offset = 130;
         }
 
-        CGRect frame = self.channelDetailsLabel.frame;
+        CGRect frame = self.subscribersLabel.frame;
         frame.origin.x -= offset;
-        self.channelDetailsLabel.frame = frame;
+        self.subscribersLabel.frame = frame;
     }
     
     [(LXReorderableCollectionViewFlowLayout *)self.videoThumbnailCollectionView.collectionViewLayout longPressGestureRecognizer].enabled = (visible) ? FALSE : TRUE;
@@ -3088,6 +3138,10 @@
                                                       userInfo: @{kChannel : self.channel}];
 }
 
+- (void)popoverControllerDidDismissPopover:(UIPopoverController *)popoverController
+{
+    self.subscribersPopover = nil;
+}
 
 - (NavigationButtonsAppearance) navigationAppearance
 {

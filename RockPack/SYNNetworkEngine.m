@@ -523,6 +523,7 @@
     SYNNetworkOperationJsonObject *networkOperation = (SYNNetworkOperationJsonObject*)[self operationWithPath: apiString
                                                                                                        params: params];
     
+    
     [networkOperation addJSONCompletionHandler: ^(id dictionary) {
         
         if(!dictionary)
@@ -544,6 +545,61 @@
     [self enqueueOperation: networkOperation];
 }
 
+- (void) subscribersForUserId: (NSString*) userId
+                    channelId: (NSString*)channelId
+                     forRange: (NSRange)range
+             completionHandler: (MKNKBasicSuccessBlock) completionBlock
+                 errorHandler: (MKNKBasicFailureBlock) errorBlock
+{
+    
+    
+    if (!userId || !channelId)
+        return;
+    
+    NSMutableDictionary* tempParameters = [NSMutableDictionary dictionary];
+    
+    tempParameters[@"start"] = [NSString stringWithFormat: @"%i", range.location];
+    
+    tempParameters[@"size"] = [NSString stringWithFormat: @"%i", range.length];
+    
+    [tempParameters addEntriesFromDictionary: [self getLocaleParam]];
+    
+    NSDictionary *apiSubstitutionDictionary = @{@"USERID" : userId, @"CHANNELID" : channelId};
+    NSString *apiString = [kAPISubscribersForChannel stringByReplacingOccurrencesOfStrings: apiSubstitutionDictionary];
+    
+    NSDictionary* parameters = [NSDictionary dictionaryWithDictionary: tempParameters];
+    
+    SYNNetworkOperationJsonObject *networkOperation =
+    (SYNNetworkOperationJsonObject*)[self operationWithPath:apiString params:parameters];
+    networkOperation.shouldNotCacheResponse = YES;
+    
+    [networkOperation addJSONCompletionHandler: ^(NSDictionary *dictionary) {
+        
+        if (!dictionary)
+            return;
+        
+        BOOL registryResultOk = [self.searchRegistry registerSubscribersFromDictionary:dictionary];
+        
+        if (!registryResultOk) {
+            errorBlock();
+            return;
+        }
+        
+        
+        completionBlock();
+        
+        
+    } errorHandler:^(NSError* error) {
+        
+        
+        
+        
+        
+    }];
+    
+    
+    [self enqueueOperation: networkOperation];
+}
 
 
 - (void) updatePlayerSourceWithCompletionHandler: (MKNKUserErrorBlock) completionBlock

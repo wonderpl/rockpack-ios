@@ -91,6 +91,8 @@
 #define kAPIGetVideosForChannel     @"/ws/USERID/channels/CHANNELID/videos/"    /* GET */
 #define kAPIUpdateVideosForChannel  @"/ws/USERID/channels/CHANNELID/videos/"    /* PUT */ /* POST */
 
+#define kAPISubscribersForChannel   @"/ws/USERID/channels/CHANNELID/subscribers/" /* GET */
+
 // User activity
 #define kAPIRecordUserActivity      @"/ws/USERID/activity/"                     /* POST */
 #define kAPIGetUserActivity         @"/ws/USERID/activity/"                     /* GET */
