@@ -12,6 +12,7 @@
         <script>
             var player;
             
+            // If this returns true, then we haven't navigated away from this page
             function checkPlayerAvailability () {
                 return true;
             }
@@ -69,14 +70,7 @@
             {
                 onEvent("stateChange", playerStateToString(event.data));
             }
-            
-            // This event fires whenever the player"s state changes. The data property of the event object that the API
-            // passes to your event listener function will specify an integer that corresponds to the new player state
-            function onPlayerNearEnd(event)
-            {
-                onEvent("stateChange", "ending");
-            }
-            
+        
             // This event fires whenever the video playback quality changes. For example, if the setPlaybackQuality(suggestedQuality)
             // function is called, this event will fire if the playback quality actually changes
             function onPlayerPlaybackQualityChange(event)
@@ -119,7 +113,8 @@
                 // Now pass this back to the UIWebView
                 execute(url);
             }
-            
+        
+            // We need to do this so that events don't get lost when following in quick succession
             function execute(url)
             {
                 var iframe = document.createElement("IFRAME");
