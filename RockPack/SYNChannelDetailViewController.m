@@ -380,7 +380,7 @@
         navigationController.view.backgroundColor = [UIColor clearColor];
         
         self.subscribersPopover = [[UIPopoverController alloc] initWithContentViewController: navigationController];
-        self.subscribersPopover.popoverContentSize = CGSizeMake(580, 626);
+        self.subscribersPopover.popoverContentSize = CGSizeMake(512, 626);
         self.subscribersPopover.delegate = self;
         
         self.subscribersPopover.popoverBackgroundViewClass = [SYNAccountSettingsPopoverBackgroundView class];
