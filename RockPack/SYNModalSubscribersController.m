@@ -8,12 +8,14 @@
 
 #import "SYNModalSubscribersController.h"
 #import "UIFont+SYNFont.h"
+#import "SYNAppDelegate.h"
 
 @interface SYNModalSubscribersController ()
 
 @property (nonatomic, strong) UIViewController* viewController;
 @property (nonatomic, strong) IBOutlet UIView* containerView;
 @property (nonatomic, strong) IBOutlet UILabel* titleLabel;
+@property (nonatomic, strong) IBOutlet UIButton* backButton;
 
 @end
 
@@ -36,8 +38,21 @@
     [super viewDidLoad];
     
     self.titleLabel.font = [UIFont rockpackFontOfSize:self.titleLabel.font.pointSize];
+    [self.titleLabel sizeToFit];
+    
+    self.titleLabel.center = CGPointMake(self.view.center.x, 34.0);
+    
+    self.backButton.center = CGPointMake(self.backButton.center.x, 30.0);
+    
+    
     
     [self.containerView addSubview:self.viewController.view];
+}
+
+-(IBAction)backButtonPressed:(id)sender
+{
+    SYNAppDelegate* appDelegate = (SYNAppDelegate*)[[UIApplication sharedApplication] delegate];
+    [appDelegate.viewStackManager hideModallyController];
 }
 
 @end
