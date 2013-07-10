@@ -16,4 +16,7 @@
 - (CGFloat) videoWidth;
 - (CGFloat) videoHeight;
 
+- (void) handlePlayerEvent: (NSString *) actionName
+                 eventData: (NSString *) actionData;
+
 @end
