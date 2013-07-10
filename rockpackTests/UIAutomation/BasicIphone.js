@@ -46,6 +46,7 @@ target.frontMostApp().mainWindow().buttons()["ButtonNavCD"].tap();
 //Navigate to profile
 target.frontMostApp().mainWindow().tableViews()["Navigation Table"].cells()["PROFILE"].tap();
 window.staticTexts()["Page Title"].value() == "PROFILE";
+target.delay(2);
 target.frontMostApp().mainWindow().scrollViews()[0].staticTexts()["MY SUBSCRIPTIONS (1)"].tap();
 
 //Select channel
