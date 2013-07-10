@@ -23,6 +23,7 @@ target.frontMostApp().mainWindow().buttons()["onboarding button ok"].tap();
 //Navigate to channel
 target.frontMostApp().mainWindow().scrollViews()[0].staticTexts()["MUSIC"].tapWithOptions({tapOffset:{x:0.79, y:0.50}});
 target.frontMostApp().mainWindow().scrollViews()[0].staticTexts()["POP"].tapWithOptions({tapOffset:{x:0.61, y:0.50}});
+target.delay(1);
 target.frontMostApp().mainWindow().scrollViews()[0].collectionViews()[1].cells()[0].tap();
 target.delay(2);
 target.frontMostApp().mainWindow().buttons()["onboarding button ok"].tap();

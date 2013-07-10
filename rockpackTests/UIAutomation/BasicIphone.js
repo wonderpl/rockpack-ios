@@ -36,7 +36,6 @@ target.delay(2); //Allow cell data to be loaded (async call)
 target.frontMostApp().mainWindow().scrollViews()[0].collectionViews()[1].cells()[0].tap();
 target.delay(2); //Allow videos to load
 target.frontMostApp().mainWindow().buttons()["onboarding button ok"].tap();
-window.logElementTree();
 target.delay(1);
 target.frontMostApp().mainWindow().buttons()["onboarding button ok"].tap();
 
@@ -50,6 +49,7 @@ window.staticTexts()["Page Title"].value() == "PROFILE";
 target.frontMostApp().mainWindow().scrollViews()[0].staticTexts()["MY SUBSCRIPTIONS (1)"].tap();
 
 //Select channel
+target.delay(1);
 target.frontMostApp().mainWindow().scrollViews()[0].collectionViews()[2].cells()[0].tap();
 
 //Unsubscribe
