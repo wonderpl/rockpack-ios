@@ -27,11 +27,11 @@
         self.title = NSLocalizedString(@"SUBSCRIBERS", nil);
         self.channel = channel;
         
-        UILabel* titleLabel = [[UILabel alloc] initWithFrame: CGRectMake( -(self.contentSizeForViewInPopover.width * 0.5), -17.0, self.contentSizeForViewInPopover.width, 40.0)];
+        UILabel* titleLabel = [[UILabel alloc] initWithFrame: CGRectMake( -(self.contentSizeForViewInPopover.width * 0.5), -15.0, self.contentSizeForViewInPopover.width, 40.0)];
         titleLabel.backgroundColor = [UIColor clearColor];
         titleLabel.textColor = [UIColor colorWithRed: (28.0/255.0) green: (31.0/255.0) blue: (33.0/255.0) alpha: (1.0)];
         titleLabel.text = NSLocalizedString (@"SUBSCRIBERS", nil);
-        titleLabel.font = [UIFont boldRockpackFontOfSize:18.0];
+        titleLabel.font = [UIFont rockpackFontOfSize:19.0];
         titleLabel.textAlignment = NSTextAlignmentCenter;
         titleLabel.shadowColor = [UIColor whiteColor];
         titleLabel.shadowOffset = CGSizeMake(0.0, 1.0);
@@ -76,6 +76,9 @@
 }
 -(void)viewDidAppear:(BOOL)animated
 {
+    self.usersThumbnailCollectionView.backgroundColor = [UIColor whiteColor];
+    
+    
     self.activityView = [[UIActivityIndicatorView alloc] initWithActivityIndicatorStyle:UIActivityIndicatorViewStyleGray];
     
     self.activityView.center = CGPointMake(self.view.frame.size.width * 0.5, self.view.frame.size.height * 0.5);
