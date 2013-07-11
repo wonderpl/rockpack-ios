@@ -41,7 +41,7 @@ target.frontMostApp().mainWindow().buttons()["onboarding button ok"].tap();
 
 //Subscribe
 target.frontMostApp().mainWindow().buttons()["ButtonSubscribe"].tap();
-target.frontMostApp().mainWindow().buttons()["ButtonNavCD"].tap();
+target.frontMostApp().mainWindow().buttons()["Button Nav"].tap();
 
 //Navigate to profile
 target.frontMostApp().mainWindow().tableViews()["Navigation Table"].cells()["PROFILE"].tap();
@@ -58,7 +58,7 @@ target.frontMostApp().mainWindow().buttons()["ButtonSubscribe"].tap();
 target.frontMostApp().mainWindow().buttons()["ButtonBackCD"].tap();
 
 //Logout
-target.frontMostApp().mainWindow().buttons()["ButtonNav"].tap();
+target.frontMostApp().mainWindow().buttons()["Button Nav"].tap();
 target.frontMostApp().mainWindow().buttons()["ButtonSettings"].tap();
 target.frontMostApp().mainWindow().tableViews()["Settings Table"].scrollDown();
 target.frontMostApp().mainWindow().tableViews()["Settings Table"].scrollDown();
