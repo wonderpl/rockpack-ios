@@ -193,7 +193,7 @@
     
     NSMutableString* format = [[NSMutableString alloc] init];
     
-    // FIXME: Needs more intelligent localisation
+    
     if (differenceDateComponents.year > 0)
         [format appendFormat:@"%i Year%@ Ago", differenceDateComponents.year, (differenceDateComponents.year > 1 ? @"s" : @"")];
     else if (differenceDateComponents.month > 0)
@@ -217,13 +217,23 @@
         videoThumbnailCell.youTubeUserLabel.text = [NSString stringWithFormat:@"BY %@",[video.sourceUsername uppercaseString]];
     }
     
-    
+    NSUInteger hours = video.duration.integerValue / (60*60);
     NSUInteger minutes = ([video.duration integerValue] / 60) % 60;
     NSUInteger seconds = [video.duration integerValue] % 60;
     
+    
+    NSString* hoursString = [NSString stringWithFormat:@"%i", hours];
     NSString* minutesString = minutes > 9 ? [NSString stringWithFormat:@"%i", minutes] : [NSString stringWithFormat:@"0%i", minutes];
     NSString* secondsString = seconds > 9 ? [NSString stringWithFormat:@"%i", seconds] : [NSString stringWithFormat:@"0%i", seconds];
-    videoThumbnailCell.durationLabel.text = [NSString stringWithFormat: @"%@:%@", minutesString, secondsString];
+    if(hours > 0)
+    {
+        videoThumbnailCell.durationLabel.text = [NSString stringWithFormat: @"%@:%@:%@", hoursString, minutesString, secondsString];
+    }
+    else
+    {
+        videoThumbnailCell.durationLabel.text = [NSString stringWithFormat: @"%@:%@", minutesString, secondsString];
+    }
+    
     
     
     videoThumbnailCell.viewControllerDelegate = self;
