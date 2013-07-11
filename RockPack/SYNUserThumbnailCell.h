@@ -16,6 +16,7 @@
 @property (nonatomic, strong) IBOutlet UIImageView *imageView;
 @property (nonatomic, strong) IBOutlet UILabel* nameLabel;
 @property (nonatomic, strong) IBOutlet UILabel* usernameLabel;
+@property (nonatomic, strong) IBOutlet UIView* borderView;
 
 -(void)setDisplayName:(NSString*)name andUsername:(NSString*)username;
 

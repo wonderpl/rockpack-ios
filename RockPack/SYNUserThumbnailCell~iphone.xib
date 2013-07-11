@@ -139,7 +139,6 @@
 								<string key="NSFrame">{{10, 71}, {300, 1}}</string>
 								<reference key="NSSuperview" ref="274787431"/>
 								<reference key="NSWindow"/>
-								<reference key="NSNextKeyView"/>
 								<string key="NSReuseIdentifierKey">_NS:9</string>
 								<object class="NSColor" key="IBUIBackgroundColor">
 									<int key="NSColorSpace">1</int>
@@ -201,6 +200,14 @@
 					</object>
 					<int key="connectionID">9</int>
 				</object>
+				<object class="IBConnectionRecord">
+					<object class="IBCocoaTouchOutletConnection" key="connection">
+						<string key="label">borderView</string>
+						<reference key="source" ref="751428431"/>
+						<reference key="destination" ref="447118724"/>
+					</object>
+					<int key="connectionID">31</int>
+				</object>
 			</array>
 			<object class="IBMutableOrderedSet" key="objectRecords">
 				<array key="orderedObjects">
@@ -257,6 +264,7 @@
 						<int key="objectID">30</int>
 						<reference key="object" ref="447118724"/>
 						<reference key="parent" ref="751428431"/>
+						<string key="objectName">Border</string>
 					</object>
 				</array>
 			</object>
@@ -275,7 +283,7 @@
 			<nil key="activeLocalization"/>
 			<dictionary class="NSMutableDictionary" key="localizations"/>
 			<nil key="sourceID"/>
-			<int key="maxID">30</int>
+			<int key="maxID">31</int>
 		</object>
 		<object class="IBClassDescriber" key="IBDocument.Classes">
 			<array class="NSMutableArray" key="referencedPartialClassDescriptions">
@@ -283,11 +291,16 @@
 					<string key="className">SYNUserThumbnailCell</string>
 					<string key="superclassName">UICollectionViewCell</string>
 					<dictionary class="NSMutableDictionary" key="outlets">
+						<string key="borderView">UIView</string>
 						<string key="imageView">UIImageView</string>
 						<string key="nameLabel">UILabel</string>
 						<string key="usernameLabel">UILabel</string>
 					</dictionary>
 					<dictionary class="NSMutableDictionary" key="toOneOutletInfosByName">
+						<object class="IBToOneOutletInfo" key="borderView">
+							<string key="name">borderView</string>
+							<string key="candidateClassName">UIView</string>
+						</object>
 						<object class="IBToOneOutletInfo" key="imageView">
 							<string key="name">imageView</string>
 							<string key="candidateClassName">UIImageView</string>

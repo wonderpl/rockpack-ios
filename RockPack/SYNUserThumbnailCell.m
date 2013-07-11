@@ -29,6 +29,12 @@
     self.layer.shouldRasterize = YES;
     self.layer.rasterizationScale = UIScreen.mainScreen.scale;
     
+    if(self.borderView)
+    {
+        float color_ratio = (223.0/255.0);
+        self.borderView.backgroundColor = [UIColor colorWithRed:color_ratio green:color_ratio blue:color_ratio alpha:1.0];
+    }
+    
 }
 
 -(void)setDisplayName:(NSString*)name andUsername:(NSString*)username
@@ -43,12 +49,18 @@
     {
         CGSize correctSize = [name sizeWithFont:self.nameLabel.font
                               constrainedToSize:CGSizeMake(self.frame.size.width, 200.0)
-                                  lineBreakMode:self.nameLabel.lineBreakMode];
-        
+                                  lineBreakMode:NSLineBreakByWordWrapping];
         
         
         nameLabelFrame.size = correctSize;
         
+        // NSLog(@"height:%f, title:%@", correctSize.height, name);
+        
+        if(nameLabelFrame.size.height > 30.0)
+        {
+            nameLabelFrame.size.height = 30.0;
+            self.nameLabel.lineBreakMode = NSLineBreakByTruncatingTail;
+        }
         
         usernameLabelFrame.origin.y = nameLabelFrame.origin.y + nameLabelFrame.size.height - 6.0;
     }
