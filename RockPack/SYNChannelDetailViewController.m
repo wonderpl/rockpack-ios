@@ -196,6 +196,8 @@
     
     layout.footerReferenceSize = [self footerSize];
     
+    
+    
     self.videoThumbnailCollectionView.collectionViewLayout = layout;
     
     if (self.isIPhone)
@@ -280,6 +282,7 @@
         self.createChannelButton.hidden = NO;
         self.backButton.hidden = YES;
         self.cancelEditButton.hidden = NO;
+        
         [[NSNotificationCenter defaultCenter] postNotificationName: kNoteAllNavControlsHide
                                                             object: self
                                                           userInfo: nil];
@@ -1248,6 +1251,8 @@
                                delegate: self
                       cancelButtonTitle: NSLocalizedString (@"Cancel", nil)
                       otherButtonTitles: NSLocalizedString (@"Delete", nil), nil] show];
+    
+    
 }
 
 
@@ -1282,12 +1287,13 @@
                          cell.alpha = 0.0;
                      }
                      completion: ^(BOOL finished) {
+                         
                          [self.channel.videoInstancesSet removeObject:videoInstanceToDelete];
                          
                          [videoInstanceToDelete.managedObjectContext deleteObject:videoInstanceToDelete];
                          
                          
-                         [self.videoThumbnailCollectionView deleteItemsAtIndexPaths:@[self.indexPathToDelete]];
+                         [self.videoThumbnailCollectionView reloadData];
                          
                          [appDelegate saveContext:YES];
                      }];
@@ -2768,6 +2774,7 @@
             frame.origin.y = self.originalMasterControlsViewOrigin.y - (differenceInY / 1.5);
             
             self.masterControlsView.frame = frame;
+            
             
             if (differenceInY < fadeSpan)
             {
