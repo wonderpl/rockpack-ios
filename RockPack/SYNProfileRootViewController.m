@@ -793,6 +793,8 @@
     
     Channel *channel;
     
+    
+    
     if (collectionView == self.channelThumbnailCollectionView)
     {
         if (self.isUserProfile && indexPath.row == 0)
@@ -846,6 +848,7 @@
     {
         channel = self.user.subscriptions[indexPath.row];
     }
+    
     
     [appDelegate.viewStackManager viewChannelDetails:channel];
 }

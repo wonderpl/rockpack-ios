@@ -71,9 +71,9 @@
     SYNChannelDetailViewController *channelVC =
     (SYNChannelDetailViewController*)[self topControllerMatchingTypeString:NSStringFromClass([SYNChannelDetailViewController class])];
     
-    
     if(channelVC)
     {
+        channelVC.channel = channel;
         channelVC.autoplayVideoId = autoplayId;
         [self popToController:channelVC];
         

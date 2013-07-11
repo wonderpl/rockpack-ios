@@ -56,7 +56,7 @@
 @property (nonatomic, strong) CIContext *context;
 @property (nonatomic, strong) CIFilter *filter;
 @property (nonatomic, strong) CIImage* backgroundCIImage;
-@property (nonatomic, strong) Channel *channel;
+
 @property (nonatomic, strong) IBOutlet SSTextView *channelTitleTextView;
 @property (nonatomic, strong) IBOutlet UIButton *buyButton;
 @property (nonatomic, strong) IBOutlet UIButton *cameraButton;
@@ -224,11 +224,7 @@
                         forSupplementaryViewOfKind: UICollectionElementKindSectionFooter
                                withReuseIdentifier: @"SYNChannelFooterMoreView"];
     
-    // == Cover Image == //
-    if (self.mode == kChannelDetailsModeDisplay) // only load bg on display, creation will insert new bg
-    {
-        self.currentWebImageOperation = [self loadBackgroundImage];
-    }
+    
     
     // == Avatar Image == //
     UIImage* placeholderImage = [UIImage imageNamed: @"PlaceholderAvatarProfile.png"];
@@ -547,9 +543,7 @@
     
     if ([coverArtUrl isEqualToString: @""])
     {
-        self.channelCoverImageView.image = nil;
-        
-        self.blurredBGImageView.image = nil;
+        [self clearBackground];
         
     }
     else if ([coverArtUrl isEqualToString: @"uploading"])
@@ -2340,6 +2334,12 @@
     [super viewDidAppear: animated];
     
     self.videoThumbnailCollectionView.scrollsToTop = YES;
+    
+    // == Cover Image == //
+    if (self.mode == kChannelDetailsModeDisplay) // only load bg on display, creation will insert new bg
+    {
+        self.currentWebImageOperation = [self loadBackgroundImage];
+    }
 
     [self checkOnBoarding];
 }
@@ -2930,6 +2930,10 @@
 
 - (void) setChannel: (Channel *) channel
 {
+    
+    
+    
+    
     self.originalChannel = channel;
 
     NSError *error = nil;
@@ -3006,11 +3010,20 @@
 
         if (self.mode == kChannelDetailsModeDisplay)
         {
+            [self clearBackground];
+            
             [[NSNotificationCenter defaultCenter] postNotificationName: kChannelUpdateRequest
                                                                 object: self
                                                               userInfo: @{kChannel: self.channel}];
         }
     }
+}
+
+-(void)clearBackground
+{
+    self.channelCoverImageView.image = nil;
+    
+    self.blurredBGImageView.image = nil;
 }
 
 

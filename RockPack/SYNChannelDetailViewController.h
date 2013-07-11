@@ -21,6 +21,8 @@ typedef enum {
 
 @property (nonatomic, assign) kChannelDetailsMode mode;
 
+@property (nonatomic, strong) Channel *channel;
+
 /**
  If set the channel will automatically play the video on view did load, or when the collection is updated depending on if the video ID
  is present in the channels's video set. Once played, this variabel is set to nil.
