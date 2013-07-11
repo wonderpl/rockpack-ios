@@ -1153,6 +1153,7 @@
 // But check to see that it should open anyway
 - (IBAction) buyButtonTapped: (id) sender
 {
+    
     [self initiatePurchaseAtURL: [NSURL URLWithString: self.channel.eCommerceURL]];
 }
 
