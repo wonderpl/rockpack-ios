@@ -2754,11 +2754,13 @@
             CGRect frame = self.masterControlsView.frame;
             frame.origin.y = self.originalMasterControlsViewOrigin.y;
             self.masterControlsView.frame = frame;
+            self.shareButton.userInteractionEnabled = YES;
             
             blurOpacity = 0.0;
         }
         else
         {
+            self.shareButton.userInteractionEnabled = NO;
             CGFloat differenceInY = - (self.originalContentOffset.y - scrollView.contentOffset.y);
             
             CGRect frame = self.masterControlsView.frame;

@@ -72,6 +72,32 @@
 							<string key="NSResourceName">ChannelDetailOverlayBackground.png</string>
 						</object>
 					</object>
+					<object class="IBUICollectionView" id="1042878543">
+						<reference key="NSNextResponder" ref="453930770"/>
+						<int key="NSvFlags">274</int>
+						<array class="NSMutableArray" key="NSSubviews"/>
+						<string key="NSFrame">{{0, 80}, {1024, 668}}</string>
+						<reference key="NSSuperview" ref="453930770"/>
+						<reference key="NSWindow"/>
+						<string key="NSReuseIdentifierKey">_NS:9</string>
+						<reference key="IBUIBackgroundColor" ref="905238541"/>
+						<bool key="IBUIClipsSubviews">YES</bool>
+						<bool key="IBUIMultipleTouchEnabled">YES</bool>
+						<string key="targetRuntimeIdentifier">IBIPadFramework</string>
+						<bool key="IBUIAlwaysBounceVertical">YES</bool>
+						<bool key="IBUIShowsHorizontalScrollIndicator">NO</bool>
+						<float key="IBUIMinimumZoomScale">0.0</float>
+						<float key="IBUIMaximumZoomScale">0.0</float>
+						<object class="IBUICollectionViewFlowLayout" key="IBUICollectionViewLayout" id="220942766">
+							<reference key="IBUICollectionView" ref="1042878543"/>
+							<string key="IBUIItemSize">{249, 141}</string>
+							<double key="IBUISectionInset.top">0.0</double>
+							<double key="IBUISectionInset.bottom">0.0</double>
+							<double key="IBUISectionInset.left">5</double>
+							<double key="IBUISectionInset.right">5</double>
+						</object>
+						<array key="IBUICells" id="0"/>
+					</object>
 					<object class="IBUIView" id="793593682">
 						<reference key="NSNextResponder" ref="453930770"/>
 						<int key="NSvFlags">290</int>
@@ -201,7 +227,7 @@
 										<string key="NSFrame">{{60, 320.5}, {120, 45}}</string>
 										<reference key="NSSuperview" ref="421928150"/>
 										<reference key="NSWindow"/>
-										<reference key="NSNextKeyView" ref="940969168"/>
+										<reference key="NSNextKeyView" ref="260226906"/>
 										<string key="NSReuseIdentifierKey">_NS:9</string>
 										<bool key="IBUIOpaque">NO</bool>
 										<string key="targetRuntimeIdentifier">IBIPadFramework</string>
@@ -265,7 +291,7 @@
 										<string key="NSFrame">{{190, 322}, {204, 45}}</string>
 										<reference key="NSSuperview" ref="421928150"/>
 										<reference key="NSWindow"/>
-										<reference key="NSNextKeyView" ref="474614300"/>
+										<reference key="NSNextKeyView" ref="940969168"/>
 										<string key="NSReuseIdentifierKey">_NS:9</string>
 										<bool key="IBUIOpaque">NO</bool>
 										<bool key="IBUIClipsSubviews">YES</bool>
@@ -327,7 +353,7 @@
 										<string key="NSFrame">{{190, 322}, {204, 45}}</string>
 										<reference key="NSSuperview" ref="421928150"/>
 										<reference key="NSWindow"/>
-										<reference key="NSNextKeyView" ref="260226906"/>
+										<reference key="NSNextKeyView" ref="474614300"/>
 										<string key="NSReuseIdentifierKey">_NS:9</string>
 										<bool key="IBUIOpaque">NO</bool>
 										<string key="targetRuntimeIdentifier">IBIPadFramework</string>
@@ -540,32 +566,6 @@
 						<string key="NSReuseIdentifierKey">_NS:9</string>
 						<reference key="IBUIBackgroundColor" ref="905238541"/>
 						<string key="targetRuntimeIdentifier">IBIPadFramework</string>
-					</object>
-					<object class="IBUICollectionView" id="1042878543">
-						<reference key="NSNextResponder" ref="453930770"/>
-						<int key="NSvFlags">274</int>
-						<array class="NSMutableArray" key="NSSubviews"/>
-						<string key="NSFrame">{{0, 80}, {1024, 668}}</string>
-						<reference key="NSSuperview" ref="453930770"/>
-						<reference key="NSWindow"/>
-						<string key="NSReuseIdentifierKey">_NS:9</string>
-						<reference key="IBUIBackgroundColor" ref="905238541"/>
-						<bool key="IBUIClipsSubviews">YES</bool>
-						<bool key="IBUIMultipleTouchEnabled">YES</bool>
-						<string key="targetRuntimeIdentifier">IBIPadFramework</string>
-						<bool key="IBUIAlwaysBounceVertical">YES</bool>
-						<bool key="IBUIShowsHorizontalScrollIndicator">NO</bool>
-						<float key="IBUIMinimumZoomScale">0.0</float>
-						<float key="IBUIMaximumZoomScale">0.0</float>
-						<object class="IBUICollectionViewFlowLayout" key="IBUICollectionViewLayout" id="220942766">
-							<reference key="IBUICollectionView" ref="1042878543"/>
-							<string key="IBUIItemSize">{249, 141}</string>
-							<double key="IBUISectionInset.top">0.0</double>
-							<double key="IBUISectionInset.bottom">0.0</double>
-							<double key="IBUISectionInset.left">5</double>
-							<double key="IBUISectionInset.right">5</double>
-						</object>
-						<array key="IBUICells" id="0"/>
 					</object>
 					<object class="IBUIImageView" id="624001696">
 						<reference key="NSNextResponder" ref="453930770"/>
