@@ -442,6 +442,8 @@
     // We set up assets depending on whether we are in display or edit mode
     [self setDisplayControlsVisibility: (self.mode == kChannelDetailsModeDisplay)];
     
+    
+    
     // Refresh our view
     [self.videoThumbnailCollectionView reloadData];
     
@@ -1048,6 +1050,15 @@
         CGRect frame = self.subscribersLabel.frame;
         frame.origin.x -= offset;
         self.subscribersLabel.frame = frame;
+    }
+    
+    if(self.channel.eCommerceURL && ![self.channel.eCommerceURL isEqualToString:@""] && self.mode == kChannelDetailsModeDisplay)
+    {
+        self.buyButton.hidden = NO;
+    }
+    else
+    {
+        self.buyButton.hidden = YES;
     }
     
     [(LXReorderableCollectionViewFlowLayout *)self.videoThumbnailCollectionView.collectionViewLayout longPressGestureRecognizer].enabled = (visible) ? FALSE : TRUE;
