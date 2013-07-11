@@ -125,6 +125,9 @@
         self.mode = mode;
         
 		self.channel = channel;
+        
+        
+        
 	}
 
 	return self;
@@ -1854,6 +1857,9 @@
 
 - (IBAction) createChannelPressed: (id) sender
 {
+    
+    
+    
     self.isLocked = YES; // prevent back button from firing
     
     self.createChannelButton.enabled = NO;
@@ -1939,6 +1945,8 @@
                                              
                                                   [self showError: errorMessage
                                                    showErrorTitle:errorTitle];
+                                             
+                                             
                                               }];
 }
 
@@ -1960,6 +1968,8 @@
                                                       
                                                   } errorHandler: ^(id err) {
                                                       
+                                                      // this is also called when trying to save a video that has just been deleted
+                                                      
                                                       self.isLocked = NO;
                                                       
                                                       NSString* errorMessage = nil;
@@ -1977,6 +1987,8 @@
                                                       
                                                       self.addButton.hidden = YES;
                                                       
+                                                      [[NSNotificationCenter defaultCenter] postNotificationName:kVideoQueueClear object:self];
+                                                      
                                                       if (isUpdated)
                                                       {
                                                           [self.activityIndicator stopAnimating];
@@ -1993,19 +2005,27 @@
                                                           [self showError: errorMessage showErrorTitle:errorTitle];
                                                           
                                                       }
-                                                      else
+                                                      else // isCreated
                                                       {
                                                           [self.activityIndicator stopAnimating];
-                                                          self.cancelEditButton.hidden = NO;
-                                                          self.cancelEditButton.enabled = YES;
-                                                          self.saveChannelButton.enabled = YES;
-                                                          self.saveChannelButton.hidden = NO;
+                                                          
                                                           
                                                           if (!errorMessage)
                                                           {
                                                               errorMessage = NSLocalizedString(@"Could not add videos to channel. Please review and try again later.", nil);
                                                           }
-                                                          DebugLog(@"Error @ setVideosForChannelById:");
+                                                          
+                                                          // if we have an error at this stage then it means that we started a channel with a single invalid video
+                                                          // we want to still create that channel, but without that video while waring to the user.
+                                                          if(self.channel.videoInstances[0])
+                                                          {
+                                                              [self.channel.videoInstancesSet removeObject:self.channel.videoInstances[0]];
+                                                          }
+                                                          
+                                                          
+                                                          [self fetchAndStoreUpdatedChannelForId:channelId isUpdate:isUpdated];
+                                                          
+                                                          
                                                           [self showError: errorMessage showErrorTitle:errorTitle];
                                                       } 
                                                 }];
@@ -2745,6 +2765,8 @@
                                             
                                             wself.channelCoverImageView.image = [wself croppedImageForCurrentOrientation];
                                         }];
+    
+    
     [self closeImageSelector: imageSelector];
 }
 

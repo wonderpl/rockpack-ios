@@ -109,6 +109,8 @@
 
 - (void) channelUpdateRequest: (NSNotification*) notification
 {
+    
+    
     Channel* channelToUpdate = (Channel*)[notification userInfo][kChannel];
     
     if (!channelToUpdate)
@@ -287,6 +289,8 @@
     // define success block //
     
     MKNKUserSuccessBlock successBlock = ^(NSDictionary *channelDictionary) {
+        
+        
         NSNumber *savedPosition = channel.position;
         
         [channel setAttributesFromDictionary: channelDictionary
