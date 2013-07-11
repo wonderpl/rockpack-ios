@@ -196,6 +196,8 @@
     
     layout.footerReferenceSize = [self footerSize];
     
+    
+    
     self.videoThumbnailCollectionView.collectionViewLayout = layout;
     
     if (self.isIPhone)
@@ -280,6 +282,7 @@
         self.createChannelButton.hidden = NO;
         self.backButton.hidden = YES;
         self.cancelEditButton.hidden = NO;
+        
         [[NSNotificationCenter defaultCenter] postNotificationName: kNoteAllNavControlsHide
                                                             object: self
                                                           userInfo: nil];
@@ -438,6 +441,8 @@
     
     // We set up assets depending on whether we are in display or edit mode
     [self setDisplayControlsVisibility: (self.mode == kChannelDetailsModeDisplay)];
+    
+    
     
     // Refresh our view
     [self.videoThumbnailCollectionView reloadData];
@@ -1079,6 +1084,15 @@
         self.subscribersLabel.frame = frame;
     }
     
+    if(self.channel.eCommerceURL && ![self.channel.eCommerceURL isEqualToString:@""] && self.mode == kChannelDetailsModeDisplay)
+    {
+        self.buyButton.hidden = NO;
+    }
+    else
+    {
+        self.buyButton.hidden = YES;
+    }
+    
     [(LXReorderableCollectionViewFlowLayout *)self.videoThumbnailCollectionView.collectionViewLayout longPressGestureRecognizer].enabled = (visible) ? FALSE : TRUE;
     
     if (visible == NO)
@@ -1171,6 +1185,7 @@
 // But check to see that it should open anyway
 - (IBAction) buyButtonTapped: (id) sender
 {
+    
     [self initiatePurchaseAtURL: [NSURL URLWithString: self.channel.eCommerceURL]];
 }
 
@@ -1280,6 +1295,8 @@
                                delegate: self
                       cancelButtonTitle: NSLocalizedString (@"Cancel", nil)
                       otherButtonTitles: NSLocalizedString (@"Delete", nil), nil] show];
+    
+    
 }
 
 
@@ -1314,12 +1331,13 @@
                          cell.alpha = 0.0;
                      }
                      completion: ^(BOOL finished) {
+                         
                          [self.channel.videoInstancesSet removeObject:videoInstanceToDelete];
                          
                          [videoInstanceToDelete.managedObjectContext deleteObject:videoInstanceToDelete];
                          
                          
-                         [self.videoThumbnailCollectionView deleteItemsAtIndexPaths:@[self.indexPathToDelete]];
+                         [self.videoThumbnailCollectionView reloadData];
                          
                          [appDelegate saveContext:YES];
                      }];
@@ -2786,11 +2804,13 @@
             CGRect frame = self.masterControlsView.frame;
             frame.origin.y = self.originalMasterControlsViewOrigin.y;
             self.masterControlsView.frame = frame;
+            self.shareButton.userInteractionEnabled = YES;
             
             blurOpacity = 0.0;
         }
         else
         {
+            self.shareButton.userInteractionEnabled = NO;
             CGFloat differenceInY = - (self.originalContentOffset.y - scrollView.contentOffset.y);
             
             CGRect frame = self.masterControlsView.frame;
@@ -2798,6 +2818,7 @@
             frame.origin.y = self.originalMasterControlsViewOrigin.y - (differenceInY / 1.5);
             
             self.masterControlsView.frame = frame;
+            
             
             if (differenceInY < fadeSpan)
             {

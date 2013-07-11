@@ -399,7 +399,7 @@ typedef void(^AnimationCompletionBlock)(BOOL finished);
         // On iPhone the create workflow is presented modally on the existing channels page. Therefore return after closing the video player.
         return;
     }
-    
+  
     // this channel's managedObjectContext is the appDelegate.channelManagedObjectContext
     SYNChannelDetailViewController *channelCreationVC =
     [[SYNChannelDetailViewController alloc] initWithChannel: appDelegate.videoQueue.currentlyCreatingChannel
@@ -849,6 +849,8 @@ typedef void(^AnimationCompletionBlock)(BOOL finished);
 
 - (void) allNavControlsRequested: (NSNotification*) notification
 {
+    
+    
     NSString* notificationName = [notification name];
     if (!notificationName)
         return;
@@ -1329,6 +1331,8 @@ typedef void(^AnimationCompletionBlock)(BOOL finished);
     }
     else
     {
+        
+        
         SYNAbstractViewController* abstractController = (SYNAbstractViewController*)viewController;
         [self changeControlButtonsTo:abstractController.navigationAppearance];
         
@@ -1358,7 +1362,8 @@ typedef void(^AnimationCompletionBlock)(BOOL finished);
             }
             else
             {
-                [self cancelButtonPressed:self.closeSearchButton];
+                [self.searchBoxController clear];
+                [self.searchBoxController.view removeFromSuperview];
             }
         }
     }
