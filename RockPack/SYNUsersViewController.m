@@ -140,6 +140,7 @@
     
     userThumbnailCell.imageUrlString = user.thumbnailLargeUrl;
     
+    
     [userThumbnailCell setDisplayName:user.displayName andUsername:user.username];
     
     
