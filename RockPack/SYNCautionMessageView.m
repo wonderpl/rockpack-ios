@@ -10,6 +10,7 @@
 #import "UIFont+SYNFont.h"
 #import <QuartzCore/QuartzCore.h>
 #import "SYNDeviceManager.h"
+#import "AppConstants.h"
 
 #define CAUTION_VIEW_WIDTH 320.0
 #define CAUTION_TITLE_FONT_SIZE 17.0
@@ -30,6 +31,7 @@
         return nil;
     
     if (self = [super initWithFrame:CGRectMake(0.0, 0.0, CAUTION_VIEW_WIDTH, bgImage.size.height)]) {
+        
         
         
         self.caution = caution;
@@ -148,8 +150,25 @@
         self.layer.shadowOpacity = 0.4;
         
         
+        
     }
     return self;
+}
+
+-(void)hide
+{
+    [[NSNotificationCenter defaultCenter] removeObserver:self
+                                                    name:kNoteHideAllCautions
+                                                  object:nil];
+    // hide and remove the view in all cases
+    CGRect cautionMessageFrame = self.frame;
+    cautionMessageFrame.origin.y = -cautionMessageFrame.size.height; // hide it
+    
+    [UIView animateWithDuration:0.4 animations:^{
+        self.frame = cautionMessageFrame;
+    } completion:^(BOOL finished) {
+        [self removeFromSuperview];
+    }];
 }
 
 -(void)buttonPressed:(UIButton*)button
@@ -168,21 +187,17 @@
         
     }
     
-    // hide and remove the view in all cases
-    CGRect cautionMessageFrame = self.frame;
-    cautionMessageFrame.origin.y = -cautionMessageFrame.size.height; // hide it
-    
-    [UIView animateWithDuration:0.4 animations:^{
-        self.frame = cautionMessageFrame;
-    } completion:^(BOOL finished) {
-        [self removeFromSuperview];
-    }];
+    [self hide];
 }
 
 
 -(void) presentInView:(UIView*)containerView
 {
     
+    [[NSNotificationCenter defaultCenter] addObserver:self
+                                             selector:@selector(hide)
+                                                 name:kNoteHideAllCautions
+                                               object:nil];
     
     CGRect cautionMessageFrame = self.frame;
     cautionMessageFrame.origin.y = -cautionMessageFrame.size.height; // hide it
@@ -203,6 +218,7 @@
         self.frame = cautionMessageFrame;
     }];
 }
+
 
 
 + (id) withCaution:(SYNCaution*)caution

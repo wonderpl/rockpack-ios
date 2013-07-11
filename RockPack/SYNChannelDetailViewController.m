@@ -471,6 +471,9 @@
     [super viewWillDisappear: animated];
 
     // Stop observing everything (less error-prone than trying to remove observers individually
+    
+    [[NSNotificationCenter defaultCenter] postNotificationName:kNoteHideAllCautions object:self];
+    
     [[NSNotificationCenter defaultCenter] removeObserver: self];
 
     if (!self.isIPhone)
@@ -2128,7 +2131,7 @@
 }
 
 
-- (void) notifyForChannelCreation: (Channel*) channelCreated  
+- (void) notifyForChannelCreation: (Channel*) channelCreated
 {
     // == Decide on the success message type shown == //
     NSNotification* successNotification = [NSNotification notificationWithName:kNoteChannelSaved

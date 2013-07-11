@@ -453,6 +453,7 @@ typedef enum {
 
 #define kNoteChannelSaved           @"kNoteChannelSaved"
 #define kNoteSavingCaution          @"kNoteSavingCaution"
+#define kNoteHideAllCautions          @"kNoteHideAllCautions"
 
 #define kNoteHideNetworkMessages    @"kNoteHideNetworkMessages"
 #define kNoteShowNetworkMessages    @"kNoteShowNetworkMessages"
