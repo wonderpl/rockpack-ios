@@ -2,9 +2,9 @@
 <archive type="com.apple.InterfaceBuilder3.CocoaTouch.iPad.XIB" version="8.00">
 	<data>
 		<int key="IBDocument.SystemTarget">1552</int>
-		<string key="IBDocument.SystemVersion">12D78</string>
+		<string key="IBDocument.SystemVersion">12E55</string>
 		<string key="IBDocument.InterfaceBuilderVersion">3084</string>
-		<string key="IBDocument.AppKitVersion">1187.37</string>
+		<string key="IBDocument.AppKitVersion">1187.39</string>
 		<string key="IBDocument.HIToolboxVersion">626.00</string>
 		<object class="NSMutableDictionary" key="IBDocument.PluginVersions">
 			<string key="NS.key.0">com.apple.InterfaceBuilder.IBCocoaTouchPlugin</string>
@@ -72,37 +72,6 @@
 							<string key="NSClassName">NSImage</string>
 							<string key="NSResourceName">ChannelDetailOverlayBackground.png</string>
 						</object>
-					</object>
-					<object class="IBUICollectionView" id="1042878543">
-						<reference key="NSNextResponder" ref="453930770"/>
-						<int key="NSvFlags">276</int>
-						<array class="NSMutableArray" key="NSSubviews"/>
-						<string key="NSFrame">{{0, 58}, {320, 490}}</string>
-						<reference key="NSSuperview" ref="453930770"/>
-						<reference key="NSWindow"/>
-						<reference key="NSNextKeyView" ref="218804938"/>
-						<string key="NSReuseIdentifierKey">_NS:9</string>
-						<reference key="IBUIBackgroundColor" ref="905238541"/>
-						<bool key="IBUIClipsSubviews">YES</bool>
-						<bool key="IBUIMultipleTouchEnabled">YES</bool>
-						<string key="targetRuntimeIdentifier">IBIPadFramework</string>
-						<double key="IBUIContentInset.top">290</double>
-						<double key="IBUIContentInset.bottom">0.0</double>
-						<double key="IBUIContentInset.left">0.0</double>
-						<double key="IBUIContentInset.right">0.0</double>
-						<bool key="IBUIAlwaysBounceVertical">YES</bool>
-						<bool key="IBUIShowsHorizontalScrollIndicator">NO</bool>
-						<float key="IBUIMinimumZoomScale">0.0</float>
-						<float key="IBUIMaximumZoomScale">0.0</float>
-						<object class="IBUICollectionViewFlowLayout" key="IBUICollectionViewLayout" id="220942766">
-							<reference key="IBUICollectionView" ref="1042878543"/>
-							<string key="IBUIItemSize">{158, 86}</string>
-							<double key="IBUISectionInset.top">2</double>
-							<double key="IBUISectionInset.bottom">2</double>
-							<double key="IBUISectionInset.left">2</double>
-							<double key="IBUISectionInset.right">2</double>
-						</object>
-						<array key="IBUICells" id="0"/>
 					</object>
 					<object class="IBUIView" id="793593682">
 						<reference key="NSNextResponder" ref="453930770"/>
@@ -704,6 +673,37 @@
 						<reference key="IBUIBackgroundColor" ref="905238541"/>
 						<string key="targetRuntimeIdentifier">IBIPadFramework</string>
 					</object>
+					<object class="IBUICollectionView" id="1042878543">
+						<reference key="NSNextResponder" ref="453930770"/>
+						<int key="NSvFlags">276</int>
+						<array class="NSMutableArray" key="NSSubviews"/>
+						<string key="NSFrame">{{0, 58}, {320, 490}}</string>
+						<reference key="NSSuperview" ref="453930770"/>
+						<reference key="NSWindow"/>
+						<reference key="NSNextKeyView" ref="218804938"/>
+						<string key="NSReuseIdentifierKey">_NS:9</string>
+						<reference key="IBUIBackgroundColor" ref="905238541"/>
+						<bool key="IBUIClipsSubviews">YES</bool>
+						<bool key="IBUIMultipleTouchEnabled">YES</bool>
+						<string key="targetRuntimeIdentifier">IBIPadFramework</string>
+						<double key="IBUIContentInset.top">290</double>
+						<double key="IBUIContentInset.bottom">0.0</double>
+						<double key="IBUIContentInset.left">0.0</double>
+						<double key="IBUIContentInset.right">0.0</double>
+						<bool key="IBUIAlwaysBounceVertical">YES</bool>
+						<bool key="IBUIShowsHorizontalScrollIndicator">NO</bool>
+						<float key="IBUIMinimumZoomScale">0.0</float>
+						<float key="IBUIMaximumZoomScale">0.0</float>
+						<object class="IBUICollectionViewFlowLayout" key="IBUICollectionViewLayout" id="220942766">
+							<reference key="IBUICollectionView" ref="1042878543"/>
+							<string key="IBUIItemSize">{158, 86}</string>
+							<double key="IBUISectionInset.top">2</double>
+							<double key="IBUISectionInset.bottom">2</double>
+							<double key="IBUISectionInset.left">2</double>
+							<double key="IBUISectionInset.right">2</double>
+						</object>
+						<array key="IBUICells" id="0"/>
+					</object>
 					<object class="IBUIImageView" id="624001696">
 						<reference key="NSNextResponder" ref="453930770"/>
 						<int key="NSvFlags">293</int>
@@ -726,7 +726,6 @@
 						<string key="NSFrame">{{214, 1}, {106, 58}}</string>
 						<reference key="NSSuperview" ref="453930770"/>
 						<reference key="NSWindow"/>
-						<reference key="NSNextKeyView"/>
 						<string key="NSReuseIdentifierKey">_NS:9</string>
 						<bool key="IBUIOpaque">NO</bool>
 						<string key="targetRuntimeIdentifier">IBIPadFramework</string>
@@ -1196,10 +1195,10 @@
 						<array class="NSMutableArray" key="children">
 							<reference ref="793593682"/>
 							<reference ref="164681596"/>
-							<reference ref="1042878543"/>
 							<reference ref="1013209184"/>
 							<reference ref="84853107"/>
 							<reference ref="218804938"/>
+							<reference ref="1042878543"/>
 							<reference ref="624001696"/>
 						</array>
 						<reference key="parent" ref="0"/>
@@ -1526,75 +1525,6 @@
 				<object class="IBPartialClassDescription">
 					<string key="className">SYNChannelDetailViewController</string>
 					<string key="superclassName">SYNAbstractViewController</string>
-					<dictionary class="NSMutableDictionary" key="actions">
-						<string key="addCoverButtonTapped:">UIButton</string>
-						<string key="backButtonTapped:">id</string>
-						<string key="buyButtonTapped:">id</string>
-						<string key="cancelEditTapped:">id</string>
-						<string key="createChannelPressed:">id</string>
-						<string key="editButtonTapped:">id</string>
-						<string key="profileImagePressed:">UIButton</string>
-						<string key="saveChannelTapped:">id</string>
-						<string key="selectCategoryButtonTapped:">UIButton</string>
-						<string key="shareChannelButtonTapped:">UIButton</string>
-						<string key="subscribeButtonTapped:">id</string>
-						<string key="subscribersLabelPressed:">id</string>
-						<string key="userTouchedReportConcernButton:">UIButton</string>
-					</dictionary>
-					<dictionary class="NSMutableDictionary" key="actionInfosByName">
-						<object class="IBActionInfo" key="addCoverButtonTapped:">
-							<string key="name">addCoverButtonTapped:</string>
-							<string key="candidateClassName">UIButton</string>
-						</object>
-						<object class="IBActionInfo" key="backButtonTapped:">
-							<string key="name">backButtonTapped:</string>
-							<string key="candidateClassName">id</string>
-						</object>
-						<object class="IBActionInfo" key="buyButtonTapped:">
-							<string key="name">buyButtonTapped:</string>
-							<string key="candidateClassName">id</string>
-						</object>
-						<object class="IBActionInfo" key="cancelEditTapped:">
-							<string key="name">cancelEditTapped:</string>
-							<string key="candidateClassName">id</string>
-						</object>
-						<object class="IBActionInfo" key="createChannelPressed:">
-							<string key="name">createChannelPressed:</string>
-							<string key="candidateClassName">id</string>
-						</object>
-						<object class="IBActionInfo" key="editButtonTapped:">
-							<string key="name">editButtonTapped:</string>
-							<string key="candidateClassName">id</string>
-						</object>
-						<object class="IBActionInfo" key="profileImagePressed:">
-							<string key="name">profileImagePressed:</string>
-							<string key="candidateClassName">UIButton</string>
-						</object>
-						<object class="IBActionInfo" key="saveChannelTapped:">
-							<string key="name">saveChannelTapped:</string>
-							<string key="candidateClassName">id</string>
-						</object>
-						<object class="IBActionInfo" key="selectCategoryButtonTapped:">
-							<string key="name">selectCategoryButtonTapped:</string>
-							<string key="candidateClassName">UIButton</string>
-						</object>
-						<object class="IBActionInfo" key="shareChannelButtonTapped:">
-							<string key="name">shareChannelButtonTapped:</string>
-							<string key="candidateClassName">UIButton</string>
-						</object>
-						<object class="IBActionInfo" key="subscribeButtonTapped:">
-							<string key="name">subscribeButtonTapped:</string>
-							<string key="candidateClassName">id</string>
-						</object>
-						<object class="IBActionInfo" key="subscribersLabelPressed:">
-							<string key="name">subscribersLabelPressed:</string>
-							<string key="candidateClassName">id</string>
-						</object>
-						<object class="IBActionInfo" key="userTouchedReportConcernButton:">
-							<string key="name">userTouchedReportConcernButton:</string>
-							<string key="candidateClassName">UIButton</string>
-						</object>
-					</dictionary>
 					<dictionary class="NSMutableDictionary" key="outlets">
 						<string key="activityIndicator">UIActivityIndicatorView</string>
 						<string key="addCoverButton">UIButton</string>
