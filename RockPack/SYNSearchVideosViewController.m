@@ -83,7 +83,10 @@
     [GAI.sharedInstance.defaultTracker sendView: @"Search - Videos"];
 }
 
-
+-(void)viewDidAppear:(BOOL)animated
+{
+    
+}
 
 - (NSFetchedResultsController *) fetchedResultsController
 {
