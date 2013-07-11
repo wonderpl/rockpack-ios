@@ -59,6 +59,7 @@ target.frontMostApp().mainWindow().buttons()["ButtonBackCD"].tap();
 
 //Logout
 target.frontMostApp().mainWindow().buttons()["Button Nav"].tap();
+target.delay(1);
 target.frontMostApp().mainWindow().buttons()["ButtonSettings"].tap();
 target.frontMostApp().mainWindow().tableViews()["Settings Table"].scrollDown();
 target.frontMostApp().mainWindow().tableViews()["Settings Table"].scrollDown();
