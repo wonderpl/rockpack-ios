@@ -6512,7 +6512,7 @@
 			buildSettings = {
 				CODE_SIGN_ENTITLEMENTS = RockPack/RockPack.entitlements;
 				CODE_SIGN_IDENTITY = "iPhone Developer: Michael Michailidis (97299UW9E8)";
-				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer: Mats Trovik (NA692E4975)";
+				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer: Nick Banks (QWB4Z97ECZ)";
 				COMPRESS_PNG_FILES = NO;
 				FRAMEWORK_SEARCH_PATHS = (
 					"$(inherited)",
@@ -6543,7 +6543,7 @@
 				);
 				PRODUCT_NAME = rockpack;
 				PROVISIONING_PROFILE = "0C5528CF-135F-4D9B-BA28-134B012607DE";
-				"PROVISIONING_PROFILE[sdk=iphoneos*]" = "8F979183-CF71-4A83-8FD9-C74C2D19E50E";
+				"PROVISIONING_PROFILE[sdk=iphoneos*]" = "8EF16828-1575-4D40-B517-46D254E3681D";
 				TARGETED_DEVICE_FAMILY = "1,2";
 				WRAPPER_EXTENSION = app;
 			};

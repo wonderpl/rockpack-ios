@@ -477,8 +477,8 @@ extern void instrumentObjcMessageSends(BOOL);
     self.privateManagedObjectContext.persistentStoreCoordinator = persistentStoreCoordinator;
     
     self.mainManagedObjectContext = [[NSManagedObjectContext alloc] initWithConcurrencyType: NSMainQueueConcurrencyType];
-    self.mainManagedObjectContext.persistentStoreCoordinator = persistentStoreCoordinator;
-    
+    //self.mainManagedObjectContext.persistentStoreCoordinator = persistentStoreCoordinator;
+    self.mainManagedObjectContext.parentContext = self.privateManagedObjectContext;
     // == Search Context
     
     self.searchManagedObjectContext = [[NSManagedObjectContext alloc] initWithConcurrencyType: NSMainQueueConcurrencyType];
@@ -572,7 +572,7 @@ extern void instrumentObjcMessageSends(BOOL);
     }
     
     
-    _mainRegistry = [SYNMainRegistry registryWithManagedContext:self.privateManagedObjectContext];
+    _mainRegistry = [SYNMainRegistry registryWithParentContext:self.mainManagedObjectContext];
     _searchRegistry = [SYNSearchRegistry registryWithParentContext:self.searchManagedObjectContext];
     
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(refreshMainContext:) name:NSManagedObjectContextDidSaveNotification object:nil];
@@ -626,29 +626,29 @@ extern void instrumentObjcMessageSends(BOOL);
              {
                  AssertOrLog(@"Error saving Main moc: %@\n%@", [error localizedDescription], [error userInfo]);
              }
-//             else
-//             {
-//                 void (^savePrivate) (void) = ^
-//                 {
-//                     NSError *error = nil;
-//                     if (![self.privateManagedObjectContext save: &error])
-//                     {
-//                         AssertOrLog(@"Error saving Private moc: %@\n%@", [error localizedDescription], [error userInfo]);
-//                     }
-//                 };
-//                 
-//                 if ([self.privateManagedObjectContext hasChanges])
-//                 {
-//                     if (wait)
-//                     {
-//                         [self.privateManagedObjectContext performBlockAndWait: savePrivate];
-//                     }
-//                     else
-//                     {
-//                         [self.privateManagedObjectContext performBlock: savePrivate];
-//                     }
-//                 }
-//             }
+             else
+             {
+                 void (^savePrivate) (void) = ^
+                 {
+                     NSError *error = nil;
+                     if (![self.privateManagedObjectContext save: &error])
+                     {
+                         AssertOrLog(@"Error saving Private moc: %@\n%@", [error localizedDescription], [error userInfo]);
+                     }
+                 };
+                 
+                 if ([self.privateManagedObjectContext hasChanges])
+                 {
+                     if (wait)
+                     {
+                         [self.privateManagedObjectContext performBlockAndWait: savePrivate];
+                     }
+                     else
+                     {
+                         [self.privateManagedObjectContext performBlock: savePrivate];
+                     }
+                 }
+             }
              
          }];
     }
@@ -686,21 +686,23 @@ extern void instrumentObjcMessageSends(BOOL);
 
 -(void)refreshMainContext:(NSNotification*)note
 {
-    NSManagedObjectContext* context = [note object];
-    if ( context == self.mainManagedObjectContext )
-    {
-        [self.privateManagedObjectContext performBlock:^{
-            [self.privateManagedObjectContext mergeChangesFromContextDidSaveNotification:note];
-        }];
-    }
-    else if ( context == self.privateManagedObjectContext)
-    {
-        [self.mainManagedObjectContext performBlock:^{
-            [self.mainManagedObjectContext mergeChangesFromContextDidSaveNotification:note];
-            [[NSNotificationCenter defaultCenter] postNotificationName:NSManagedObjectContextDidSaveNotification object:self.mainManagedObjectContext userInfo:note.userInfo];
-        }];
-
-    }
+    
+    
+//    NSManagedObjectContext* context = [note object];
+//    if ( context == self.mainManagedObjectContext )
+//    {
+//        [self.privateManagedObjectContext performBlock:^{
+//            [self.privateManagedObjectContext mergeChangesFromContextDidSaveNotification:note];
+//        }];
+//    }
+//    else if ( context == self.privateManagedObjectContext)
+//    {
+//        [self.mainManagedObjectContext performBlock:^{
+//            [self.mainManagedObjectContext mergeChangesFromContextDidSaveNotification:note];
+//            [[NSNotificationCenter defaultCenter] postNotificationName:NSManagedObjectContextDidSaveNotification object:self.mainManagedObjectContext userInfo:note.userInfo];
+//        }];
+//
+//    }
     
 }
 
