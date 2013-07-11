@@ -725,7 +725,11 @@ typedef void(^AnimationCompletionBlock)(BOOL finished);
         
     }
     
-    self.searchViewController = [[SYNSearchRootViewController alloc] initWithViewId: kSearchViewId];
+    if(!self.searchViewController)
+    {
+       self.searchViewController = [[SYNSearchRootViewController alloc] initWithViewId: kSearchViewId]; 
+    }
+    
     
     if (!self.searchIsInProgress)
         [appDelegate.viewStackManager pushController:self.searchViewController];
@@ -1357,6 +1361,11 @@ typedef void(^AnimationCompletionBlock)(BOOL finished);
                 [self cancelButtonPressed:self.closeSearchButton];
             }
         }
+    }
+    
+    if( viewController == self.containerViewController)
+    {
+        self.searchViewController = nil;
     }
 
     [self showBackButton: (navigationController.viewControllers.count > 1)];

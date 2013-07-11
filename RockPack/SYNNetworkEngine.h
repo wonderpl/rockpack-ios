@@ -69,7 +69,7 @@
 - (void) subscribersForUserId: (NSString*) userId
                     channelId: (NSString*)channelId
                      forRange: (NSRange)range
-             completionHandler: (MKNKBasicSuccessBlock) completionBlock
+             completionHandler: (MKNKSearchSuccessBlock) completionBlock
                  errorHandler: (MKNKBasicFailureBlock) errorBlock;
 
 

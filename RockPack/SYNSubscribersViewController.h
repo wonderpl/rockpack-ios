@@ -9,11 +9,11 @@
 #import "SYNUsersViewController.h"
 
 @class Channel;
+@class SYNMasterViewController;
 
 @interface SYNSubscribersViewController : SYNUsersViewController
 
 @property (nonatomic, weak) Channel* channel;
-@property (nonatomic, weak) UIPopoverController* parentPopover;
 
 -(id)initWithChannel:(Channel*)channel;
 

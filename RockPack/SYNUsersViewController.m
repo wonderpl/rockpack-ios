@@ -10,7 +10,7 @@
 #import "SYNDeviceManager.h"
 #import "SYNIntegralCollectionViewFlowLayout.h"
 #import "SYNUserThumbnailCell.h"
-
+#import "SYNChannelFooterMoreView.h"
 
 @interface SYNUsersViewController ()
 
@@ -146,6 +146,8 @@
     
     return userThumbnailCell;
 }
+
+
 
 - (void) collectionView: (UICollectionView *) collectionView didSelectItemAtIndexPath: (NSIndexPath *) indexPath
 {

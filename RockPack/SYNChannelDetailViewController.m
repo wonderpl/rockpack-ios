@@ -366,8 +366,6 @@
         return;
     
     SYNSubscribersViewController* subscribersViewController = [[SYNSubscribersViewController alloc] initWithChannel:self.channel];
-   
-    
     
     if (IS_IPAD)
     {
@@ -378,6 +376,7 @@
         self.subscribersPopover = [[UIPopoverController alloc] initWithContentViewController: navigationController];
         self.subscribersPopover.popoverContentSize = CGSizeMake(512, 626);
         self.subscribersPopover.delegate = self;
+        
         
         self.subscribersPopover.popoverBackgroundViewClass = [SYNAccountSettingsPopoverBackgroundView class];
         
@@ -391,7 +390,6 @@
                                                animated: YES];
         
         
-        subscribersViewController.parentPopover = self.subscribersPopover;
         
     }
     else
@@ -400,8 +398,6 @@
         self.modalSubscriptionsContainer = [[SYNModalSubscribersController alloc] initWithContentViewController:subscribersViewController];
         
         [appDelegate.viewStackManager presentModallyController:self.modalSubscriptionsContainer];
-        
-        
         
     }
     
@@ -475,6 +471,9 @@
                                                         object: self
                                                       userInfo: nil];
     }
+    
+    [self.subscribersPopover dismissPopoverAnimated:NO];
+    self.subscribersPopover = nil;
 
     if (self.subscribingIndicator)
     {
@@ -527,6 +526,8 @@
     // Set text on add cover and select category buttons
     [self.selectCategoryButton setAttributedTitle: attributedCategoryString
                                          forState: UIControlStateNormal];
+    
+    
 }
 
 
@@ -977,6 +978,7 @@
         [self displayVideoViewerWithVideoInstanceArray: self.channel.videoInstances.array
                                       andSelectedIndex: indexPath.item center:[self.view convertPoint:[collectionView cellForItemAtIndexPath:indexPath].center fromView:collectionView]];
     }
+    
 }
 
 
@@ -3145,6 +3147,8 @@
                                                         object: self
                                                       userInfo: @{kChannel : self.channel}];
 }
+
+
 
 - (void)popoverControllerDidDismissPopover:(UIPopoverController *)popoverController
 {

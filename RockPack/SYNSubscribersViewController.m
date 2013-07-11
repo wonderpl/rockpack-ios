@@ -93,7 +93,9 @@
     
     [appDelegate.networkEngine subscribersForUserId:appDelegate.currentUser.uniqueId
                                           channelId:self.channel.uniqueId
-                                           forRange:self.dataRequestRange completionHandler:^{
+                                           forRange:self.dataRequestRange completionHandler:^(int count) {
+                                               
+                                               self.dataItemsAvailable = count;
                                                
                                                [self displayUsers];
                                                
@@ -107,14 +109,41 @@
 }
 
 
+- (UICollectionReusableView *) collectionView: (UICollectionView *) collectionView
+            viewForSupplementaryElementOfKind: (NSString *) kind
+                                  atIndexPath: (NSIndexPath *) indexPath
+{
+    
+    
+    UICollectionReusableView *supplementaryView;
+    
+    
+    if (kind == UICollectionElementKindSectionFooter)
+    {
+        
+        
+        if (self.users.count == 0 || (self.dataRequestRange.location + self.dataRequestRange.length) >= self.dataItemsAvailable)
+        {
+            return supplementaryView;
+        }
+        
+        self.footerView = [self.usersThumbnailCollectionView dequeueReusableSupplementaryViewOfKind: kind
+                                                                                withReuseIdentifier: @"SYNChannelFooterMoreView"
+                                                                                       forIndexPath: indexPath];
+        
+        
+        
+        //[self loadMoreChannels:self.footerView.loadMoreButton];
+        
+        supplementaryView = self.footerView;
+    }
+    
+    return supplementaryView;
+}
 
 - (void) collectionView: (UICollectionView *) collectionView didSelectItemAtIndexPath: (NSIndexPath *) indexPath
 {
     
-    if(self.parentPopover)
-    {
-        [self.parentPopover dismissPopoverAnimated:YES];
-    }
     
     [super collectionView:collectionView didSelectItemAtIndexPath:indexPath];
 }
@@ -153,6 +182,9 @@
     [self.usersThumbnailCollectionView reloadData];
 }
 
-
+-(CGSize)footerSize
+{
+    return CGSizeMake(100.0, 40.0);
+}
 
 @end

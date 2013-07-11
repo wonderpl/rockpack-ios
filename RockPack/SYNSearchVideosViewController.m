@@ -79,6 +79,7 @@
 {
     [super viewWillAppear: animated];
 
+    [super removeEmptyGenreMessage];
     // Google analytics support
     [GAI.sharedInstance.defaultTracker sendView: @"Search - Videos"];
 }

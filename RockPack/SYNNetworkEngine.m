@@ -548,7 +548,7 @@
 - (void) subscribersForUserId: (NSString*) userId
                     channelId: (NSString*)channelId
                      forRange: (NSRange)range
-             completionHandler: (MKNKBasicSuccessBlock) completionBlock
+             completionHandler: (MKNKSearchSuccessBlock) completionBlock
                  errorHandler: (MKNKBasicFailureBlock) errorBlock
 {
     
@@ -575,8 +575,17 @@
     
     [networkOperation addJSONCompletionHandler: ^(NSDictionary *dictionary) {
         
+        int itemsCount = 0;
+        
         if (!dictionary)
             return;
+        
+        NSNumber *totalNumber = (NSNumber*)dictionary[@"users"][@"total"];
+        
+        if (totalNumber && [totalNumber isKindOfClass: [NSNumber class]])
+        {
+            itemsCount = totalNumber.intValue;
+        }
         
         BOOL registryResultOk = [self.searchRegistry registerSubscribersFromDictionary:dictionary];
         
@@ -586,7 +595,7 @@
         }
         
         
-        completionBlock();
+        completionBlock(itemsCount);
         
         
     } errorHandler:^(NSError* error) {
