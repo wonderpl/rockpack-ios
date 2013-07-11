@@ -337,14 +337,14 @@
         {
             itemsCount = totalNumber.intValue;
         }
-        
-        BOOL registryResultOk = [self.searchRegistry registerUsersFromDictionary: dictionary];
-        
-        if (!registryResultOk)
-            return;
-        
-        completeBlock(itemsCount);
-        
+        [self.searchRegistry performInBackground:^BOOL(NSManagedObjectContext *backgroundContext) {
+            return [self.searchRegistry registerUsersFromDictionary: dictionary];
+        } completionBlock:^(BOOL registryResultOk) {
+            if (!registryResultOk)
+                return;
+            
+            completeBlock(itemsCount);
+        }];
         
     } errorHandler:^(NSError* error) {
         DebugLog(@"Update Videos Screens Request Failed");
@@ -596,15 +596,17 @@
             itemsCount = totalNumber.intValue;
         }
         
-        BOOL registryResultOk = [self.searchRegistry registerSubscribersFromDictionary:dictionary];
+        [self.searchRegistry performInBackground:^BOOL(NSManagedObjectContext *backgroundContext) {
+            return [self.searchRegistry registerSubscribersFromDictionary:dictionary];
+        } completionBlock:^(BOOL registryResultOk) {
+            if (!registryResultOk) {
+                errorBlock();
+                return;
+            }
+            completionBlock(itemsCount);
+        }];
         
-        if (!registryResultOk) {
-            errorBlock();
-            return;
-        }
         
-        
-        completionBlock(itemsCount);
         
         
     } errorHandler:^(NSError* error) {

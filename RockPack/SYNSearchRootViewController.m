@@ -315,19 +315,19 @@
             {
                 DebugLog(@"Could not clean VideoInstances from search context");
             }
-    
-    success = [appDelegate.searchRegistry clearImportContextFromEntityName:@"ChannelOwner"];
-    if (!success)
-    {
-        DebugLog(@"Could not clean ChannelOwner from search context");
-    }
-    
-            [self.searchChannelsController performNewSearchWithTerm:searchTerm];
-            
-    [self.searchChannelsController performNewSearchWithTerm:searchTerm];
-    [self.searchUsersController performNewSearchWithTerm:searchTerm];
-}];
-}];
+          [appDelegate.searchRegistry performInBackground:^BOOL(NSManagedObjectContext *backgroundContext) {
+              return [appDelegate.searchRegistry clearImportContextFromEntityName:@"ChannelOwner"];
+          } completionBlock:^(BOOL success) {
+              if (!success)
+              {
+                  DebugLog(@"Could not clean ChannelOwner from search context");
+              }
+              [self.searchVideosController performNewSearchWithTerm:searchTerm];
+              [self.searchChannelsController performNewSearchWithTerm:searchTerm];
+              [self.searchUsersController performNewSearchWithTerm:searchTerm];
+          }];
+        }];
+    }];
 }
 
 - (void) setCurrentController: (SYNAbstractViewController *) currentController
