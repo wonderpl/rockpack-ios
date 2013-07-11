@@ -270,12 +270,12 @@
                                                           return;
                                                       
                                                       self.dataItemsAvailable = [totalNumber integerValue];
-                                                      
-                                                      
-                                                      BOOL registryResultOk = [appDelegate.mainRegistry registerChannelsFromDictionary: response
-                                                                                                                              forGenre: genre
-                                                                                                                           byAppending: append];
-                                                       self.loadingMoreContent = NO;
+                                                      [appDelegate.mainRegistry performInBackground:^BOOL(NSManagedObjectContext *backgroundContext) {
+                                                          return [appDelegate.mainRegistry registerChannelsFromDictionary: response
+                                                                                                                 forGenre: genre
+                                                                                                              byAppending: append];
+                                                      } completionBlock:^(BOOL registryResultOk) {
+                                                          self.loadingMoreContent = NO;
                                                       
                                                       if (!registryResultOk)
                                                       {
@@ -293,11 +293,8 @@
                                                       
                                                       if (self.channels.count == 0)
                                                       {
-                                                          [self displayEmptyGenreMessage:@"NO CHANNELS FOUND"];
-                                                      }
-                                                      
-                                                      
-                                                      
+                                                          [self displayEmptyGenreMessage:@"NO CHANNELS FOUND"];                                                      }];
+   
                                                   } onError: ^(NSDictionary* errorInfo) {
                                                       DebugLog(@"Could not load channels: %@", errorInfo);
                                                       self.loadingMoreContent = NO;
@@ -337,6 +334,7 @@
     NSFetchRequest *request = [[NSFetchRequest alloc] init];
     [request setEntity:[NSEntityDescription entityForName: @"Channel"
                                    inManagedObjectContext: appDelegate.mainManagedObjectContext]];
+    request.fetchBatchSize = 20;
     
     NSPredicate* genrePredicate;
     

@@ -49,6 +49,7 @@ extern void instrumentObjcMessageSends(BOOL);
 @property (nonatomic, strong) SYNMasterViewController* masterViewController;
 @property (nonatomic, strong) SYNNetworkEngine *networkEngine;
 @property (nonatomic, strong) SYNOAuthNetworkEngine *oAuthNetworkEngine;
+@property (nonatomic, strong) SYNVideoQueue* videoQueue;
 @property (nonatomic, strong) SYNOnBoardingPopoverQueueController* onBoardingQueue;
 @property (nonatomic, strong) SYNVideoQueue* videoQueue;
 @property (nonatomic, strong) SYNViewStackManager* viewStackManager;
@@ -315,14 +316,16 @@ extern void instrumentObjcMessageSends(BOOL);
 {
     if (!self.currentUser || !self.currentUser.current)
         return;
+    
+    //[self saveContext:YES];
 
     self.window.rootViewController = [self createAndReturnLoginViewController];
     
     self.masterViewController = nil;
     
-    self.currentUser.currentValue = NO;
+    // self.currentUser.currentValue = NO;
     
-    [self.mainManagedObjectContext deleteObject:self.currentUser];
+    //[self.mainManagedObjectContext deleteObject:self.currentUser];
     
     [self.tokenExpiryTimer invalidate];
     self.tokenExpiryTimer = nil;
@@ -331,11 +334,15 @@ extern void instrumentObjcMessageSends(BOOL);
     } onFailure:^(NSString *errorMessage) {
     }];
     
-    [self clearCoreDataMainEntities:YES];
+    //[self clearCoreDataMainEntities:YES];
     
     self.currentOAuth2Credentials = nil;
     
     _currentUser = nil;
+    
+    [self nukeCoreData];
+
+    
 }
 
 
@@ -470,8 +477,8 @@ extern void instrumentObjcMessageSends(BOOL);
     self.privateManagedObjectContext.persistentStoreCoordinator = persistentStoreCoordinator;
     
     self.mainManagedObjectContext = [[NSManagedObjectContext alloc] initWithConcurrencyType: NSMainQueueConcurrencyType];
+    //self.mainManagedObjectContext.persistentStoreCoordinator = persistentStoreCoordinator;
     self.mainManagedObjectContext.parentContext = self.privateManagedObjectContext;
-    
     // == Search Context
     
     self.searchManagedObjectContext = [[NSManagedObjectContext alloc] initWithConcurrencyType: NSMainQueueConcurrencyType];
@@ -564,10 +571,47 @@ extern void instrumentObjcMessageSends(BOOL);
         DebugLog(@"Error adding persistent store to coordinator %@\n%@", [error localizedDescription], [error userInfo]);
     }
     
-    _mainRegistry = [SYNMainRegistry registry];
-    _searchRegistry = [SYNSearchRegistry registry];
+    
+    _mainRegistry = [SYNMainRegistry registryWithParentContext:self.mainManagedObjectContext];
+    _searchRegistry = [SYNSearchRegistry registryWithParentContext:self.searchManagedObjectContext];
+    
+    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(refreshMainContext:) name:NSManagedObjectContextDidSaveNotification object:nil];
 }
 
+-(void)nukeCoreData
+{
+    _mainRegistry = nil;
+    _searchRegistry = nil;
+    NSPersistentStoreCoordinator* persistentStore = self.mainManagedObjectContext.persistentStoreCoordinator;
+    self.mainManagedObjectContext = nil;
+    self.privateManagedObjectContext = nil;
+    self.searchManagedObjectContext = nil;
+    self.oAuthNetworkEngine = nil;
+    self.networkEngine = nil;
+    
+    [[NSNotificationCenter defaultCenter] removeObserver:self name:NSManagedObjectContextDidSaveNotification object:nil];
+    
+
+    
+    NSURL *storeURL = [[[NSFileManager defaultManager] URLsForDirectory: NSDocumentDirectory
+                                                              inDomains: NSUserDomainMask] lastObject];
+    
+    storeURL = [storeURL URLByAppendingPathComponent: @"Rockpack.sqlite"];
+    
+    NSError* error = nil;
+        if ([[NSFileManager defaultManager] removeItemAtURL: storeURL
+                                                      error: &error])
+        {
+            [self initializeCoreDataStack];
+            [self initializeNetworkEngines];
+        }
+        else
+        {
+            DebugLog(@"*** Could not delete persistent store, %@", error);
+        }
+
+    
+}
 
 // Save the main context first (propagating the changes to the private) and then the private
 - (void) saveContext: (BOOL) wait
@@ -575,35 +619,38 @@ extern void instrumentObjcMessageSends(BOOL);
     
     if ([self.mainManagedObjectContext hasChanges])
     {
-        [self.mainManagedObjectContext performBlockAndWait:^
+        [self.mainManagedObjectContext performBlock:^
          {
              NSError *error = nil;
              if (![self.mainManagedObjectContext save: &error])
              {
                  AssertOrLog(@"Error saving Main moc: %@\n%@", [error localizedDescription], [error userInfo]);
              }
+             else
+             {
+                 void (^savePrivate) (void) = ^
+                 {
+                     NSError *error = nil;
+                     if (![self.privateManagedObjectContext save: &error])
+                     {
+                         AssertOrLog(@"Error saving Private moc: %@\n%@", [error localizedDescription], [error userInfo]);
+                     }
+                 };
+                 
+                 if ([self.privateManagedObjectContext hasChanges])
+                 {
+                     if (wait)
+                     {
+                         [self.privateManagedObjectContext performBlockAndWait: savePrivate];
+                     }
+                     else
+                     {
+                         [self.privateManagedObjectContext performBlock: savePrivate];
+                     }
+                 }
+             }
+             
          }];
-    }
-    
-    void (^savePrivate) (void) = ^
-    {
-        NSError *error = nil;
-        if (![self.privateManagedObjectContext save: &error])
-        {
-            AssertOrLog(@"Error saving Private moc: %@\n%@", [error localizedDescription], [error userInfo]);
-        }
-    };
-    
-    if ([self.privateManagedObjectContext hasChanges])
-    {
-        if (wait)
-        {
-            [self.privateManagedObjectContext performBlockAndWait: savePrivate];
-        }
-        else
-        {
-            [self.privateManagedObjectContext performBlock: savePrivate];
-        }
     }
 }
 
@@ -635,6 +682,35 @@ extern void instrumentObjcMessageSends(BOOL);
             AssertOrLog(@"Error saving Channels moc: %@\n%@", [error localizedDescription], [error userInfo]);
         }
     }
+}
+
+-(void)refreshMainContext:(NSNotification*)note
+{
+    NSManagedObjectContext* context = [note object];
+        if ( context.parentContext == self.mainManagedObjectContext )
+        {
+            [self.mainManagedObjectContext performBlock:^{
+                    [self saveContext:NO];
+            }
+             ];
+        }
+    
+//    NSManagedObjectContext* context = [note object];
+//    if ( context == self.mainManagedObjectContext )
+//    {
+//        [self.privateManagedObjectContext performBlock:^{
+//            [self.privateManagedObjectContext mergeChangesFromContextDidSaveNotification:note];
+//        }];
+//    }
+//    else if ( context == self.privateManagedObjectContext)
+//    {
+//        [self.mainManagedObjectContext performBlock:^{
+//            [self.mainManagedObjectContext mergeChangesFromContextDidSaveNotification:note];
+//            [[NSNotificationCenter defaultCenter] postNotificationName:NSManagedObjectContextDidSaveNotification object:self.mainManagedObjectContext userInfo:note.userInfo];
+//        }];
+//
+//    }
+    
 }
 
 
@@ -684,8 +760,7 @@ extern void instrumentObjcMessageSends(BOOL);
     
     [fetchRequest setEntity:[NSEntityDescription entityForName: @"CoverArt"
                                         inManagedObjectContext: self.mainManagedObjectContext]];
-    
-    
+   
     itemsToDelete = [self.mainManagedObjectContext executeFetchRequest: fetchRequest
                                                                  error: &error];
     
