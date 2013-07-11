@@ -438,17 +438,12 @@
                                                 object: nil];
     }
     
-    [[NSNotificationCenter defaultCenter] postNotificationName: kNoteSearchBarRequestHide
-                                                        object: self];
 
     self.subscribeButton.enabled = YES;
     
     
     self.subscribeButton.selected = self.channel.subscribedByUserValue;
     
-    [[NSNotificationCenter defaultCenter] postNotificationName: kNoteSearchBarRequestHide
-                                                        object: self];
-
     // We set up assets depending on whether we are in display or edit mode
     [self setDisplayControlsVisibility: (self.mode == kChannelDetailsModeDisplay)];
     

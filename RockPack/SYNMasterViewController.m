@@ -1353,10 +1353,9 @@ typedef void(^AnimationCompletionBlock)(BOOL finished);
                     [self.sideNavigatorViewController.searchViewController.searchBoxView removeFromSuperview];
                 }
             }
-            if (self.isInSearchMode)
+            else
             {
-                self.closeSearchButton.hidden = NO;
-                self.sideNavigationButton.hidden = YES;
+                [self cancelButtonPressed:self.closeSearchButton];
             }
         }
     }
