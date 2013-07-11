@@ -692,7 +692,7 @@ typedef void(^AnimationCompletionBlock)(BOOL finished);
     sboxFrame.origin.y = 10.0;
     self.searchBoxController.view.frame = sboxFrame;
     
-    [self.view insertSubview:self.searchBoxController.view aboveSubview:self.sideNavigationButton];
+    [self.view insertSubview:self.searchBoxController.view belowSubview:self.navigationContainerView];
     
     self.searchBoxController.searchTextField.text = @"";
     
