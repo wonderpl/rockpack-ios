@@ -686,7 +686,14 @@ extern void instrumentObjcMessageSends(BOOL);
 
 -(void)refreshMainContext:(NSNotification*)note
 {
-    
+    NSManagedObjectContext* context = [note object];
+        if ( context.parentContext == self.mainManagedObjectContext )
+        {
+            [self.mainManagedObjectContext performBlock:^{
+                    [self saveContext:NO];
+            }
+             ];
+        }
     
 //    NSManagedObjectContext* context = [note object];
 //    if ( context == self.mainManagedObjectContext )
