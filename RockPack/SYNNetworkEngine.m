@@ -231,6 +231,8 @@
         }
     }];
     
+    networkOperation.shouldNotCacheResponse = YES;
+    
     [self enqueueOperation: networkOperation];
     
     return networkOperation;

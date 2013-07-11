@@ -311,15 +311,15 @@ extern void instrumentObjcMessageSends(BOOL);
     if (!self.currentUser || !self.currentUser.current)
         return;
     
-    [self saveContext:YES];
+    //[self saveContext:YES];
     
     self.window.rootViewController = [self createAndReturnLoginViewController];
     
     self.masterViewController = nil;
     
-    self.currentUser.currentValue = NO;
+    // self.currentUser.currentValue = NO;
     
-    [self.mainManagedObjectContext deleteObject:self.currentUser];
+    //[self.mainManagedObjectContext deleteObject:self.currentUser];
     
     [self.tokenExpiryTimer invalidate];
     self.tokenExpiryTimer = nil;
@@ -328,11 +328,14 @@ extern void instrumentObjcMessageSends(BOOL);
     } onFailure:^(NSString *errorMessage) {
     }];
     
-    [self clearCoreDataMainEntities:YES];
+    //[self clearCoreDataMainEntities:YES];
     
     self.currentOAuth2Credentials = nil;
     
     _currentUser = nil;
+    
+    [self nukeCoreData];
+
     
 }
 
@@ -575,6 +578,40 @@ extern void instrumentObjcMessageSends(BOOL);
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(refreshMainContext:) name:NSManagedObjectContextDidSaveNotification object:nil];
 }
 
+-(void)nukeCoreData
+{
+    _mainRegistry = nil;
+    _searchRegistry = nil;
+    NSPersistentStoreCoordinator* persistentStore = self.mainManagedObjectContext.persistentStoreCoordinator;
+    self.mainManagedObjectContext = nil;
+    self.privateManagedObjectContext = nil;
+    self.searchManagedObjectContext = nil;
+    self.oAuthNetworkEngine = nil;
+    self.networkEngine = nil;
+    
+    [[NSNotificationCenter defaultCenter] removeObserver:self name:NSManagedObjectContextDidSaveNotification object:nil];
+    
+
+    
+    NSURL *storeURL = [[[NSFileManager defaultManager] URLsForDirectory: NSDocumentDirectory
+                                                              inDomains: NSUserDomainMask] lastObject];
+    
+    storeURL = [storeURL URLByAppendingPathComponent: @"Rockpack.sqlite"];
+    
+    NSError* error = nil;
+        if ([[NSFileManager defaultManager] removeItemAtURL: storeURL
+                                                      error: &error])
+        {
+            [self initializeCoreDataStack];
+            [self initializeNetworkEngines];
+        }
+        else
+        {
+            DebugLog(@"*** Could not delete persistent store, %@", error);
+        }
+
+    
+}
 
 // Save the main context first (propagating the changes to the private) and then the private
 - (void) saveContext: (BOOL) wait

@@ -82,6 +82,7 @@
     NSError* error;
     if ([importManagedObjectContext save: &error])
     {
+        DebugLog(@"saving MOC from registry: %@", [[self class] description]);
         return YES;
     }
     else
