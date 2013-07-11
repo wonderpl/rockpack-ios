@@ -113,11 +113,7 @@ typedef void(^AnimationCompletionBlock)(BOOL finished);
         
         [self addChildViewController:self.sideNavigatorViewController];
         
-        // == Search Controller == //
-        
-        
-        self.searchViewController = [[SYNSearchRootViewController alloc] initWithViewId: kSearchViewId];
-
+    
         // == Search Box == //
     
         if (IS_IPAD)
@@ -228,6 +224,7 @@ typedef void(^AnimationCompletionBlock)(BOOL finished);
     self.accountSettingsCoverView.backgroundColor = [UIColor darkGrayColor];
     self.accountSettingsCoverView.alpha = 0.5;
     self.accountSettingsCoverView.hidden = YES;
+    
     
     self.closeSearchButton.hidden = YES;
     
@@ -727,6 +724,8 @@ typedef void(^AnimationCompletionBlock)(BOOL finished);
         self.sideNavigationButton.hidden = NO;
         
     }
+    
+    self.searchViewController = [[SYNSearchRootViewController alloc] initWithViewId: kSearchViewId];
     
     if (!self.searchIsInProgress)
         [appDelegate.viewStackManager pushController:self.searchViewController];

@@ -187,8 +187,8 @@
         [self performSearchForCurrentSearchTerm];
     
     
-    
-    [self searchTabPressed:nil];
+    if (!self.currentController)
+        [self searchTabPressed:nil];
         
     
         
