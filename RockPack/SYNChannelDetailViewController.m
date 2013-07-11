@@ -934,43 +934,50 @@
         [self incrementRangeForNextRequest];
         
         MKNKUserSuccessBlock successBlock = ^(NSDictionary *dictionary) {
-if(self.channel.managedObjectContext == appDelegate.channelsManagedObjectContext)
-{return;}
- SYNRegistry* registry = self.channel.managedObjectContext == appDelegate.mainManagedObjectContext ? appDelegate.mainRegistry : appDelegate.searchRegistry;
-[registry performInBackground:^BOOL(NSManagedObjectContext *backgroundContext){
-
-Channel * channel = (Channel*)[backgroundContext objectWithID:self.channel.objectID];
             
-            
-            [channel addVideoInstancesFromDictionary: dictionary];
-            
-            NSError* error;
-[backgroundContext save:&error];
-            
-            if(error)
-                return NO;
-            
-            return YES;
-            
-        }};
-        completionBlock:^(BOOL success) {
-self.loadingMoreContent = NO;
-if(self.channel.managedObjectContext == appDelegate.searchManagedObjectContext)
+            if (self.channel.managedObjectContext == appDelegate.channelsManagedObjectContext)
             {
-              [self.channel.managedObjectContext save:nil];
+                return;
             }
-        }];
-        // define error block //
+            
+            SYNRegistry* registry = self.channel.managedObjectContext == appDelegate.mainManagedObjectContext ? appDelegate.mainRegistry : appDelegate.searchRegistry;
+            
+            [registry performInBackground:^BOOL(NSManagedObjectContext *backgroundContext){
+                
+                Channel * channel = (Channel*)[backgroundContext objectWithID:self.channel.objectID];
+                
+                [channel addVideoInstancesFromDictionary: dictionary];
+                
+                NSError* error;
+                [backgroundContext save:&error];
+                
+                if (error)
+                {
+                    return NO;
+                }
+                
+                return YES;
+            }
+                          completionBlock: ^(BOOL success) {
+                              self.loadingMoreContent = NO;
+                              
+                              if (self.channel.managedObjectContext == appDelegate.searchManagedObjectContext)
+                              {
+                                  [self.channel.managedObjectContext save:nil];
+                              }
+                          } ];
+            
+            
+            // define error block //
+        };
+        
         MKNKUserErrorBlock errorBlock = ^(NSDictionary* errorDictionary) {
-        } completionBlock:^(BOOL success) {
             self.loadingMoreContent = NO;
             DebugLog(@"Update action failed");
             {
                 [self.channel.managedObjectContext save:nil];
+            };
         };
-        }];
-    };
-    
         
         if ([self.channel.resourceURL hasPrefix: @"https"]) // https does not cache so it is fresh
         {
@@ -988,6 +995,7 @@ if(self.channel.managedObjectContext == appDelegate.searchManagedObjectContext)
                                                completionHandler: successBlock
                                                     errorHandler: errorBlock];
         }
+        
     }
 }
 

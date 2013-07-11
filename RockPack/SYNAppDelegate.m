@@ -51,7 +51,6 @@ extern void instrumentObjcMessageSends(BOOL);
 @property (nonatomic, strong) SYNOAuthNetworkEngine *oAuthNetworkEngine;
 @property (nonatomic, strong) SYNVideoQueue* videoQueue;
 @property (nonatomic, strong) SYNOnBoardingPopoverQueueController* onBoardingQueue;
-@property (nonatomic, strong) SYNVideoQueue* videoQueue;
 @property (nonatomic, strong) SYNViewStackManager* viewStackManager;
 @property (nonatomic, strong) User* currentUser;
 
@@ -582,7 +581,6 @@ extern void instrumentObjcMessageSends(BOOL);
 {
     _mainRegistry = nil;
     _searchRegistry = nil;
-    NSPersistentStoreCoordinator* persistentStore = self.mainManagedObjectContext.persistentStoreCoordinator;
     self.mainManagedObjectContext = nil;
     self.privateManagedObjectContext = nil;
     self.searchManagedObjectContext = nil;

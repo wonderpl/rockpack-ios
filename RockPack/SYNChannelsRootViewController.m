@@ -252,54 +252,55 @@
                                                                                      forRange: self.dataRequestRange
                                                                                 ignoringCache: NO
                                                                                  onCompletion: ^(NSDictionary* response) {
-                                                      
-                                                      NSDictionary *channelsDictionary = response[@"channels"];
-                                                      if (!channelsDictionary || ![channelsDictionary isKindOfClass: [NSDictionary class]])
-                                                          return;
-                                                      
-                                                      NSArray *itemArray = channelsDictionary[@"items"];
-                                                      if (![itemArray isKindOfClass: [NSArray class]])
-                                                          return;
-                                                      
-                                                      dataRequestRange.length = itemArray.count;
-                                                      
-                                                      
-                                                      
-                                                      NSNumber *totalNumber = channelsDictionary[@"total"];
-                                                      if (![totalNumber isKindOfClass: [NSNumber class]])
-                                                          return;
-                                                      
-                                                      self.dataItemsAvailable = [totalNumber integerValue];
-                                                      [appDelegate.mainRegistry performInBackground:^BOOL(NSManagedObjectContext *backgroundContext) {
-                                                          return [appDelegate.mainRegistry registerChannelsFromDictionary: response
-                                                                                                                 forGenre: genre
-                                                                                                              byAppending: append];
-                                                      } completionBlock:^(BOOL registryResultOk) {
-                                                          self.loadingMoreContent = NO;
-                                                      
-                                                      if (!registryResultOk)
-                                                      {
-                                                          DebugLog(@"Registration of Channel Failed for: %@", currentCategoryId);
-                                                          return;
-                                                      }
-                                                      
-                                                      [self displayChannelsForGenre:genre];
-                                                      
-                                                      if (self.emptyGenreMessageView)
-                                                      {
-                                                          [self.emptyGenreMessageView removeFromSuperview];
-                                                          self.emptyGenreMessageView = nil;
-                                                      }
-                                                      
-                                                      if (self.channels.count == 0)
-                                                      {
-                                                          [self displayEmptyGenreMessage:@"NO CHANNELS FOUND"];                                                      }];
-   
-                                                  } onError: ^(NSDictionary* errorInfo) {
-                                                      DebugLog(@"Could not load channels: %@", errorInfo);
-                                                      self.loadingMoreContent = NO;
-
-                                                  }];
+                                                                                     
+                                                                                     NSDictionary *channelsDictionary = response[@"channels"];
+                                                                                     if (!channelsDictionary || ![channelsDictionary isKindOfClass: [NSDictionary class]])
+                                                                                         return;
+                                                                                     
+                                                                                     NSArray *itemArray = channelsDictionary[@"items"];
+                                                                                     if (![itemArray isKindOfClass: [NSArray class]])
+                                                                                         return;
+                                                                                     
+                                                                                     dataRequestRange.length = itemArray.count;
+                                                                                     
+                                                                                     
+                                                                                     
+                                                                                     NSNumber *totalNumber = channelsDictionary[@"total"];
+                                                                                     if (![totalNumber isKindOfClass: [NSNumber class]])
+                                                                                         return;
+                                                                                     
+                                                                                     self.dataItemsAvailable = [totalNumber integerValue];
+                                                                                     [appDelegate.mainRegistry performInBackground:^BOOL(NSManagedObjectContext *backgroundContext) {
+                                                                                         return [appDelegate.mainRegistry registerChannelsFromDictionary: response
+                                                                                                                                                forGenre: genre
+                                                                                                                                             byAppending: append];
+                                                                                     } completionBlock:^(BOOL registryResultOk) {
+                                                                                         self.loadingMoreContent = NO;
+                                                                                         
+                                                                                         if (!registryResultOk)
+                                                                                         {
+                                                                                             DebugLog(@"Registration of Channel Failed for: %@", currentCategoryId);
+                                                                                             return;
+                                                                                         }
+                                                                                         
+                                                                                         [self displayChannelsForGenre:genre];
+                                                                                         
+                                                                                         if (self.emptyGenreMessageView)
+                                                                                         {
+                                                                                             [self.emptyGenreMessageView removeFromSuperview];
+                                                                                             self.emptyGenreMessageView = nil;
+                                                                                         }
+                                                                                         
+                                                                                         if (self.channels.count == 0)
+                                                                                         {
+                                                                                             [self displayEmptyGenreMessage:@"NO CHANNELS FOUND"];
+                                                                                         }
+                                                                                     }];
+                                                                                 } onError: ^(NSDictionary* errorInfo) {
+                                                                                     DebugLog(@"Could not load channels: %@", errorInfo);
+                                                                                     self.loadingMoreContent = NO;
+                                                                                     
+                                                                                 }];
 }
 
 
