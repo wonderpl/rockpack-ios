@@ -120,8 +120,6 @@
     [self.view addSubview:self.videoThumbnailCollectionView];
 
     self.videoThumbnailCollectionView.autoresizingMask = UIViewAutoresizingFlexibleWidth| UIViewAutoresizingFlexibleHeight;
-    
-    [self.videoThumbnailCollectionView addSubview: self.refreshControl];
 
     // Register collection view cells
     UINib *videoThumbnailCellNib = [UINib nibWithNibName: @"SYNVideoThumbnailWideCell"
@@ -157,6 +155,8 @@
     [self.refreshControl addTarget: self
                             action: @selector(loadAndUpdateOriginalFeedData)
                   forControlEvents: UIControlEventValueChanged];
+    
+    [self.videoThumbnailCollectionView addSubview: self.refreshControl];
     
     // We should only setup our date formatter once
     self.dateFormatter = [[NSDateFormatter alloc] init];
