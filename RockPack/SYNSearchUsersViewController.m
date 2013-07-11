@@ -73,7 +73,9 @@
     
     [request setPredicate: [NSPredicate predicateWithFormat: @"viewId == %@", self.viewId]];
     
-    [request setSortDescriptors:@[[NSSortDescriptor sortDescriptorWithKey:@"displayName" ascending:YES]]];
+    NSArray* sortDescriptorsArray = @[[NSSortDescriptor sortDescriptorWithKey:@"displayName" ascending:YES],
+                                      [NSSortDescriptor sortDescriptorWithKey:@"username" ascending:YES]];
+    [request setSortDescriptors:sortDescriptorsArray];
     
     request.fetchBatchSize = 20;
     
