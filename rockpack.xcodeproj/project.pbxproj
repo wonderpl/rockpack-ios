@@ -388,10 +388,11 @@
 		01F1B895172A9B41005735AF /* ButtonCloseHighlighted@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 01F1B893172A9B41005735AF /* ButtonCloseHighlighted@2x.png */; };
 		01F1B898172AC2F1005735AF /* ButtonCreateHighlighted.png in Resources */ = {isa = PBXBuildFile; fileRef = 01F1B896172AC2F1005735AF /* ButtonCreateHighlighted.png */; };
 		01F1B899172AC2F1005735AF /* ButtonCreateHighlighted@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 01F1B897172AC2F1005735AF /* ButtonCreateHighlighted@2x.png */; };
-		01F60C2D178DA22500984C1F /* SYNAbstractVideoPlayer.m in Sources */ = {isa = PBXBuildFile; fileRef = 01F60C26178DA22500984C1F /* SYNAbstractVideoPlayer.m */; };
+		01F60C2D178DA22500984C1F /* SYNAbstractWebVideoPlayer.m in Sources */ = {isa = PBXBuildFile; fileRef = 01F60C26178DA22500984C1F /* SYNAbstractWebVideoPlayer.m */; };
 		01F60C2E178DA22500984C1F /* SYNNativeVideoPlayer.m in Sources */ = {isa = PBXBuildFile; fileRef = 01F60C28178DA22500984C1F /* SYNNativeVideoPlayer.m */; };
 		01F60C2F178DA22500984C1F /* SYNVimeoVideoPlayer.m in Sources */ = {isa = PBXBuildFile; fileRef = 01F60C2A178DA22500984C1F /* SYNVimeoVideoPlayer.m */; };
 		01F60C30178DA22500984C1F /* SYNYouTubeVideoPlayer.m in Sources */ = {isa = PBXBuildFile; fileRef = 01F60C2C178DA22500984C1F /* SYNYouTubeVideoPlayer.m */; };
+		01F60C33178EAEB700984C1F /* SYNAbstractVideoPlayer.m in Sources */ = {isa = PBXBuildFile; fileRef = 01F60C32178EAEB700984C1F /* SYNAbstractVideoPlayer.m */; };
 		01F7C9681748ED0B00E36994 /* libsqlite3.dylib in Frameworks */ = {isa = PBXBuildFile; fileRef = 01F7C9671748ED0B00E36994 /* libsqlite3.dylib */; };
 		01F8E73A16B010F3000D44B9 /* PanelVideoScreenVideoMainOverlay.png in Resources */ = {isa = PBXBuildFile; fileRef = 01F8E73816B010F3000D44B9 /* PanelVideoScreenVideoMainOverlay.png */; };
 		01F8E73B16B010F3000D44B9 /* PanelVideoScreenVideoMainOverlay@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 01F8E73916B010F3000D44B9 /* PanelVideoScreenVideoMainOverlay@2x.png */; };
@@ -1660,14 +1661,16 @@
 		01F1B893172A9B41005735AF /* ButtonCloseHighlighted@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = "ButtonCloseHighlighted@2x.png"; path = "Assets/Images/ButtonCloseHighlighted@2x.png"; sourceTree = "<group>"; };
 		01F1B896172AC2F1005735AF /* ButtonCreateHighlighted.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = ButtonCreateHighlighted.png; path = Assets/Images/ButtonCreateHighlighted.png; sourceTree = "<group>"; };
 		01F1B897172AC2F1005735AF /* ButtonCreateHighlighted@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = "ButtonCreateHighlighted@2x.png"; path = "Assets/Images/ButtonCreateHighlighted@2x.png"; sourceTree = "<group>"; };
-		01F60C25178DA22500984C1F /* SYNAbstractVideoPlayer.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SYNAbstractVideoPlayer.h; sourceTree = "<group>"; };
-		01F60C26178DA22500984C1F /* SYNAbstractVideoPlayer.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SYNAbstractVideoPlayer.m; sourceTree = "<group>"; };
+		01F60C25178DA22500984C1F /* SYNAbstractWebVideoPlayer.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SYNAbstractWebVideoPlayer.h; sourceTree = "<group>"; };
+		01F60C26178DA22500984C1F /* SYNAbstractWebVideoPlayer.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SYNAbstractWebVideoPlayer.m; sourceTree = "<group>"; };
 		01F60C27178DA22500984C1F /* SYNNativeVideoPlayer.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SYNNativeVideoPlayer.h; sourceTree = "<group>"; };
 		01F60C28178DA22500984C1F /* SYNNativeVideoPlayer.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SYNNativeVideoPlayer.m; sourceTree = "<group>"; };
 		01F60C29178DA22500984C1F /* SYNVimeoVideoPlayer.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SYNVimeoVideoPlayer.h; sourceTree = "<group>"; };
 		01F60C2A178DA22500984C1F /* SYNVimeoVideoPlayer.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SYNVimeoVideoPlayer.m; sourceTree = "<group>"; };
 		01F60C2B178DA22500984C1F /* SYNYouTubeVideoPlayer.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SYNYouTubeVideoPlayer.h; sourceTree = "<group>"; };
 		01F60C2C178DA22500984C1F /* SYNYouTubeVideoPlayer.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SYNYouTubeVideoPlayer.m; sourceTree = "<group>"; };
+		01F60C31178EAEB700984C1F /* SYNAbstractVideoPlayer.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SYNAbstractVideoPlayer.h; sourceTree = "<group>"; };
+		01F60C32178EAEB700984C1F /* SYNAbstractVideoPlayer.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SYNAbstractVideoPlayer.m; sourceTree = "<group>"; };
 		01F7C9671748ED0B00E36994 /* libsqlite3.dylib */ = {isa = PBXFileReference; lastKnownFileType = "compiled.mach-o.dylib"; name = libsqlite3.dylib; path = usr/lib/libsqlite3.dylib; sourceTree = SDKROOT; };
 		01F8E73816B010F3000D44B9 /* PanelVideoScreenVideoMainOverlay.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = PanelVideoScreenVideoMainOverlay.png; path = Assets/Images/PanelVideoScreenVideoMainOverlay.png; sourceTree = "<group>"; };
 		01F8E73916B010F3000D44B9 /* PanelVideoScreenVideoMainOverlay@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = "PanelVideoScreenVideoMainOverlay@2x.png"; path = "Assets/Images/PanelVideoScreenVideoMainOverlay@2x.png"; sourceTree = "<group>"; };
@@ -3896,8 +3899,10 @@
 		01F8E77B16B039E6000D44B9 /* Video viewer */ = {
 			isa = PBXGroup;
 			children = (
-				01F60C25178DA22500984C1F /* SYNAbstractVideoPlayer.h */,
-				01F60C26178DA22500984C1F /* SYNAbstractVideoPlayer.m */,
+				01F60C31178EAEB700984C1F /* SYNAbstractVideoPlayer.h */,
+				01F60C32178EAEB700984C1F /* SYNAbstractVideoPlayer.m */,
+				01F60C25178DA22500984C1F /* SYNAbstractWebVideoPlayer.h */,
+				01F60C26178DA22500984C1F /* SYNAbstractWebVideoPlayer.m */,
 				01F60C2B178DA22500984C1F /* SYNYouTubeVideoPlayer.h */,
 				01F60C2C178DA22500984C1F /* SYNYouTubeVideoPlayer.m */,
 				01F60C29178DA22500984C1F /* SYNVimeoVideoPlayer.h */,
@@ -6362,10 +6367,11 @@
 				BE7D02F4178C1D3B008053DC /* SYNUsersViewController.m in Sources */,
 				BE7D02F7178C4354008053DC /* SYNSubscribersViewController.m in Sources */,
 				BE7D02FB178C72DB008053DC /* SYNModalSubscribersController.m in Sources */,
-				01F60C2D178DA22500984C1F /* SYNAbstractVideoPlayer.m in Sources */,
+				01F60C2D178DA22500984C1F /* SYNAbstractWebVideoPlayer.m in Sources */,
 				01F60C2E178DA22500984C1F /* SYNNativeVideoPlayer.m in Sources */,
 				01F60C2F178DA22500984C1F /* SYNVimeoVideoPlayer.m in Sources */,
 				01F60C30178DA22500984C1F /* SYNYouTubeVideoPlayer.m in Sources */,
+				01F60C33178EAEB700984C1F /* SYNAbstractVideoPlayer.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

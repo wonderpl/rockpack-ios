@@ -66,7 +66,7 @@ extern void instrumentObjcMessageSends(BOOL);
          didFinishLaunchingWithOptions: (NSDictionary *) launchOptions
 {
 #ifdef ENABLE_USER_RATINGS
-    [Appirater setAppId: @"660697542"];
+    [Appirater setAppId: kAppIdString];
     [Appirater setDaysUntilPrompt: 5];
     [Appirater setUsesUntilPrompt: 5];
     [Appirater setSignificantEventsUntilPrompt: 1];
@@ -394,7 +394,7 @@ extern void instrumentObjcMessageSends(BOOL);
 
 - (void) applicationDidBecomeActive: (UIApplication *) application
 {
-    [FBSettings publishInstall: @"660697542"];
+    [FBSettings publishInstall: kAppIdString];
 
     // Restart any tasks that were paused (or not yet started) while the application was inactive. If the application was previously in the background, optionally refresh the user interface.
     if (self.loginViewController)

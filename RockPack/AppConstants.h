@@ -9,8 +9,10 @@
 #ifndef RockPack_AppContants_h
 #define RockPack_AppContants_h
 
-// User ratings mechanism
 
+// App ID (in the app store)
+#define kAppIdString @"660697542"
+// User ratings mechanism
 #define ENABLE_USER_RATINGS
 
 #define kAPIInitialBatchSize 48

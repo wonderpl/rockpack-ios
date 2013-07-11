@@ -23,9 +23,8 @@
 #define SHOW_SHUTTLE_DEBUG_COLOURS_
 #define SHOW_DEBUG_COLOURS_
 
-@interface SYNVideoPlaybackViewController () <UIWebViewDelegate>
+@interface SYNVideoPlaybackViewController () 
 
-@property (nonatomic, assign) float percentageViewed;
 @property (nonatomic, assign) BOOL autoPlay;
 @property (nonatomic, assign) BOOL currentVideoViewedFlag;
 @property (nonatomic, assign) BOOL disableTimeUpdating;
@@ -33,50 +32,50 @@
 @property (nonatomic, assign) BOOL fadeUpScheduled;
 @property (nonatomic, assign) BOOL hasReloadedWebView;
 @property (nonatomic, assign) BOOL notYetPlaying;
-@property (nonatomic, assign) BOOL playFlag;
-@property (nonatomic, assign) BOOL shuttledByUser;
 @property (nonatomic, assign) BOOL pausedByUser;
+@property (nonatomic, assign) BOOL playFlag;
 @property (nonatomic, assign) BOOL recordedVideoView;
+@property (nonatomic, assign) BOOL shuttledByUser;
 @property (nonatomic, assign) CGRect originalShuttleBarFrame;
 @property (nonatomic, assign) CGRect requestedFrame;
 @property (nonatomic, assign) NSTimeInterval currentDuration;
 @property (nonatomic, assign) NSTimeInterval lastTime;
+@property (nonatomic, assign) float percentageViewed;
 @property (nonatomic, assign) int currentSelectedIndex;
 @property (nonatomic, assign) int stallCount;
+@property (nonatomic, strong) CAAnimation *bottomPlacholderAnimationViewPosition;
+@property (nonatomic, strong) CAAnimation *middlePlacholderAnimationViewPosition;
 @property (nonatomic, strong) CABasicAnimation *placeholderBottomLayerAnimation;
 @property (nonatomic, strong) CABasicAnimation *placeholderMiddleLayerAnimation;
 @property (nonatomic, strong) NSArray *videoInstanceArray;
 @property (nonatomic, strong) NSString *channelCreator;
-@property (nonatomic, strong) NSString *sourceIdToReload;
 @property (nonatomic, strong) NSString *previousSourceId;
-@property (nonatomic, strong) NSTimer *shuttleBarUpdateTimer;
+@property (nonatomic, strong) NSString *sourceIdToReload;
 @property (nonatomic, strong) NSTimer *recordVideoViewTimer;
+@property (nonatomic, strong) NSTimer *shuttleBarUpdateTimer;
 @property (nonatomic, strong) NSTimer *videoStallDetectionTimer;
 @property (nonatomic, strong) SYNVideoIndexUpdater indexUpdater;
 @property (nonatomic, strong) UIButton *shuttleBarPlayPauseButton;
 @property (nonatomic, strong) UIImageView *videoPlaceholderBottomImageView;
 @property (nonatomic, strong) UIImageView *videoPlaceholderMiddleImageView;
 @property (nonatomic, strong) UIImageView *videoPlaceholderTopImageView;
+@property (nonatomic, strong) UILabel *creatorLabel;
 @property (nonatomic, strong) UILabel *currentTimeLabel;
 @property (nonatomic, strong) UILabel *durationLabel;
-@property (nonatomic, strong) UILabel *creatorLabel;
 @property (nonatomic, strong) UIProgressView *bufferingProgressView;
 @property (nonatomic, strong) UISlider *shuttleSlider;
 @property (nonatomic, strong) UIView *videoPlaceholderView;
 @property (nonatomic, strong) UIWebView *currentVideoWebView;
-@property (nonatomic, strong) CAAnimation *bottomPlacholderAnimationViewPosition;
-@property (nonatomic, strong) CAAnimation *middlePlacholderAnimationViewPosition;
+@property (nonatomic, strong) UIWebView* vimeoVideoWebView;
+@property (nonatomic, strong) UIWebView* youTubeVideoWebView;
+@property (nonatomic, strong) VideoInstance* currentVideoInstance;
 
 @end
 
 
 @implementation SYNVideoPlaybackViewController
 
-
 #pragma mark - Initialization
-
-static UIWebView* youTubeVideoWebViewInstance;
-static UIWebView* vimeoVideoWebViewInstance;
 
 + (SYNVideoPlaybackViewController*) sharedInstance
 {
@@ -283,11 +282,12 @@ static UIWebView* vimeoVideoWebViewInstance;
     self.shuttleBarView = [self createShuttleBarView];
     
     // Setup our web views
-    youTubeVideoWebViewInstance.frame = self.view.bounds;
-    youTubeVideoWebViewInstance.backgroundColor = self.view.backgroundColor;
+    self.youTubeVideoWebView.frame = self.view.bounds;
+    self.youTubeVideoWebViewInstance.backgroundColor = self.view.backgroundColor;
     
     // Set the webview delegate so that we can received events from the JavaScript
-    youTubeVideoWebViewInstance.delegate = self;
+    self.youTubeVideoWebView.delegate = self;
+    self.youTubeVideoWebViewInstance.backgroundColor = self.view.backgroundColor;
     
     // Now we know our frame size, update the pre-created webview with size and colour
     vimeoVideoWebViewInstance.frame = self.view.bounds;
@@ -675,8 +675,6 @@ static UIWebView* vimeoVideoWebViewInstance;
 
 #pragma mark - YouTube player support
 
-
-
 - (void) playVideoAtIndex: (int) index
 {
     // If we are already at this index, but not playing, then play
@@ -1026,7 +1024,6 @@ static UIWebView* vimeoVideoWebViewInstance;
     float newTime = slider.value * self.currentDuration;
     
     [self setCurrentTime: newTime];
-//    DebugLog (@"Setting time %f", newTime);
     
     self.currentTimeLabel.text = [NSString timecodeStringFromSeconds: newTime];
 }

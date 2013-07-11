@@ -22,13 +22,22 @@ static UIWebView* _youTubeVideoWebViewInstance;
     _youTubeVideoWebViewInstance = webView;
 }
 
+
 // Create YouTube specific webview, based on common setup
 - (UIWebView *) createVideoWebView
 {
-    NSError *error = nil;
-    
     // Create a new web view and set up common paramenters
     UIWebView *newYouTubeWebView = [self createWebView];
+    
+    // Now load the vimeo player into the view we have just set up
+    [self  loadVideoWebView: newYouTubeWebView];
+}
+
+
+// Actually load the YouTube player into the UIWebView
+- (void) loadVideoWebView: (UIWebView *) videoWebView
+{
+    NSError *error = nil;
     
     // Get HTML from documents directory (as opposed to the bundle), so that we can update it
     NSArray *paths = NSSearchPathForDirectoriesInDomains(NSDocumentDirectory, NSUserDomainMask, YES);
@@ -43,11 +52,12 @@ static UIWebView* _youTubeVideoWebViewInstance;
                             (int) self.videoWidth,
                             (int) self.videoHeight];
     
-    [newYouTubeWebView loadHTMLString: iFrameHTML
-                              baseURL: [NSURL URLWithString: @"http://www.youtube.com"]];
+    [videoWebView loadHTMLString: iFrameHTML
+                         baseURL: [NSURL URLWithString: @"http://www.youtube.com"]];
     
-    return newYouTubeWebView;
+    videoWebView.delegate = self;
 }
+
 
 - (void) playVideoWithSourceId: (NSString *) sourceId
 {
@@ -81,25 +91,8 @@ static UIWebView* _youTubeVideoWebViewInstance;
         self.sourceIdToReload = sourceId;
         appDelegate.playerUpdated = FALSE;
         
-        NSError *error = nil;
-        
-        // Get HTML from documents directory (as opposed to the bundle), so that we can update it
-        NSArray *paths = NSSearchPathForDirectoriesInDomains(NSDocumentDirectory, NSUserDomainMask, YES);
-        NSString *documentsDirectory = paths[0];
-        NSString *fullPath = [documentsDirectory stringByAppendingPathComponent: @"YouTubeIFramePlayer.html"];
-        
-        NSString *templateHTMLString = [NSString stringWithContentsOfFile: fullPath
-                                                                 encoding: NSUTF8StringEncoding
-                                                                    error: &error];
-        
-        NSString *iFrameHTML = [NSString stringWithFormat: templateHTMLString,
-                                (int) [SYNVideoPlaybackViewController videoWidth],
-                                (int) [SYNVideoPlaybackViewController videoHeight]];
-        
-        [self.currentVideoWebView loadHTMLString: iFrameHTML
-                                         baseURL: [NSURL URLWithString: @"http://www.youtube.com"]];
-        
-        self.currentVideoWebView.delegate = self;
+        // Now re-load the YouTube player into the existing web view
+        [self loadVideoWebView: newVimeoVideoWebView];
     }
 }
 

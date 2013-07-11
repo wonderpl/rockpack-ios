@@ -6,7 +6,7 @@
 //  Copyright (c) 2013 Nick Banks. All rights reserved.
 //
 
-#import "SYNAbstractVideoPlayer.h"
+#import "SYNAbstractWebVideoPlayer.h"
 #import "SYNNativeVideoPlayer.h"
 
 @implementation SYNNativeVideoPlayer

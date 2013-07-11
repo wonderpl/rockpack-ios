@@ -6,9 +6,9 @@
 //  Copyright (c) 2013 Nick Banks. All rights reserved.
 //
 
-#import "SYNAbstractVideoPlayer.h"
+#import "SYNAbstractWebVideoPlayer.h"
 #import <Foundation/Foundation.h>
 
-@interface SYNVimeoVideoPlayer : SYNAbstractVideoPlayer
+@interface SYNVimeoVideoPlayer : SYNAbstractWebVideoPlayer
 
 @end

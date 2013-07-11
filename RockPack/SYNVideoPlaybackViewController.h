@@ -18,12 +18,10 @@ typedef void (^SYNVideoIndexUpdater)(int);
 
 @interface SYNVideoPlaybackViewController : GAITrackedViewController
 
-@property (nonatomic, assign, readonly) NSTimeInterval currentTime;
-@property (nonatomic, assign, readonly) NSTimeInterval duration;
 @property (nonatomic, strong) UIView *shuttleBarView;
-@property (nonatomic, strong) VideoInstance* currentVideoInstance;
 @property (nonatomic, strong) UIButton *shuttleBarMaxMinButton;
 
+// Singleton
 + (SYNVideoPlaybackViewController*) sharedInstance;
 
 // Initialisation

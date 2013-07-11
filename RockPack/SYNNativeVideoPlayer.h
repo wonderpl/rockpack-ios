@@ -8,6 +8,6 @@
 
 #import <Foundation/Foundation.h>
 
-@interface SYNNativeVideoPlayer : SYNAbstractVideoPlayer
+@interface SYNNativeVideoPlayer : SYNAbstractWebVideoPlayer
 
 @end

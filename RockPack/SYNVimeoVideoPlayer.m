@@ -24,34 +24,44 @@ static UIWebView* _vimeoVideoWebViewInstance;
 }
 
 
-// Support for Vimeo player
-// TODO: We need to support http://player.vimeo.com/video/VIDEO_ID?api=1&player_id=vimeoplayer
+// Create a UIWebView with a Vimeo player loaded into it
 // See http://developer.vimeo.com/player/js-api
 - (UIWebView *) createVideoWebView
 {
-    NSError *error = nil;
-    
     // Create a new web view and set up common paramenters
     UIWebView *newVimeoVideoWebView = [self createWebView];
-    
-    NSString *parameterString = @"";
 
-    NSString *fullPath = [[NSBundle mainBundle] pathForResource: @"VimeoIFramePlayer"
-                                                         ofType: @"html"];
+    // Now load the vimeo player into the view we have just set up
+    [self  loadVideoWebView: newVimeoVideoWebView];
+    
+    return newVimeoVideoWebView;
+}
+
+
+// Actually load the Vimeo player into the UIWebView
+- (void) loadVideoWebView: (UIWebView *) videoWebView
+{
+    NSError *error = nil;
+    
+    // Get HTML from documents directory (as opposed to the bundle), so that we can update it
+    NSArray *paths = NSSearchPathForDirectoriesInDomains(NSDocumentDirectory, NSUserDomainMask, YES);
+    NSString *documentsDirectory = paths[0];
+    NSString *fullPath = [documentsDirectory stringByAppendingPathComponent: @"VimeoIFramePlayer.html"];
     
     NSString *templateHTMLString = [NSString stringWithContentsOfFile: fullPath
                                                              encoding: NSUTF8StringEncoding
                                                                 error: &error];
     
-    NSString *iFrameHTML = [NSString stringWithFormat: templateHTMLString,
-                            parameterString,
-                            (int) self.videoWidth,
-                            (int) self.videoHeight];
+    NSString *iFrameHTML = [NSString stringWithFormat: templateHTMLString, (int) self.videoWidth, (int) self.videoHeight];
     
-    [newVimeoVideoWebView loadHTMLString: iFrameHTML
-                                 baseURL: nil];
+    [videoWebView loadHTMLString: iFrameHTML
+                         baseURL: nil];
     
-    return newVimeoVideoWebView;
+    // FIXME: Do we need to do this
+//    [self.currentVideoWebView loadHTMLString: iFrameHTML
+//                                     baseURL: [NSURL URLWithString: @"http://www.youtube.com"]];
+    
+    videoWebView.delegate = self;
 }
 
 - (void) playVideoWithSourceId: (NSString *) sourceId
@@ -63,15 +73,15 @@ static UIWebView* _vimeoVideoWebViewInstance;
     
     SYNAppDelegate* appDelegate = UIApplication.sharedApplication.delegate;
     // Check to see if our JS is loaded
-    NSString *availability = [self.currentVideoWebView stringByEvaluatingJavaScriptFromString: @"checkPlayerAvailability();"];
+    NSString *availability = [self.videoWebViewInstance stringByEvaluatingJavaScriptFromString: @"checkPlayerAvailability();"];
     if ([availability isEqualToString: @"true"] && appDelegate.playerUpdated == FALSE)
     {
         // Our JS is loaded
-        NSString *loadString = [NSString stringWithFormat: @"player.loadVideoById('%@', '0', '%@');", sourceId, self.videoQuality];
+        NSString *loadString = [NSString stringWithFormat: @"player.loadVideoById('%@');", sourceId];
         
         [self startVideoStallDetectionTimer];
         
-        [self.currentVideoWebView stringByEvaluatingJavaScriptFromString: loadString];
+        [self.videoWebViewInstance stringByEvaluatingJavaScriptFromString: loadString];
         
         self.playFlag = TRUE;
         
@@ -86,25 +96,8 @@ static UIWebView* _vimeoVideoWebViewInstance;
         self.sourceIdToReload = sourceId;
         appDelegate.playerUpdated = FALSE;
         
-        NSError *error = nil;
-        
-        // Get HTML from documents directory (as opposed to the bundle), so that we can update it
-        NSArray *paths = NSSearchPathForDirectoriesInDomains(NSDocumentDirectory, NSUserDomainMask, YES);
-        NSString *documentsDirectory = paths[0];
-        NSString *fullPath = [documentsDirectory stringByAppendingPathComponent: @"YouTubeIFramePlayer.html"];
-        
-        NSString *templateHTMLString = [NSString stringWithContentsOfFile: fullPath
-                                                                 encoding: NSUTF8StringEncoding
-                                                                    error: &error];
-        
-        NSString *iFrameHTML = [NSString stringWithFormat: templateHTMLString,
-                                (int) [SYNVideoPlaybackViewController videoWidth],
-                                (int) [SYNVideoPlaybackViewController videoHeight]];
-        
-        [self.currentVideoWebView loadHTMLString: iFrameHTML
-                                         baseURL: [NSURL URLWithString: @"http://www.youtube.com"]];
-        
-        self.currentVideoWebView.delegate = self;
+        // Now re-load the vimeo player into the existing web view
+        [self loadVideoWebView: newVimeoVideoWebView];
     }
 }
 
