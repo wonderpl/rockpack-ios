@@ -441,8 +441,6 @@ typedef enum {
 #define kNoteStarButtonPressed      @"kNoteStarButtonPressed"
 #define kNoteAddToChannelRequest    @"kNoteAddToChannelRequest"
 
-#define kNoteSearchBarRequestHide   @"kNoteSearchBarRequestHide"
-#define kNoteSearchBarRequestShow   @"kNoteSearchBarRequestShow"
 
 #define kNoteVideoAddedToExistingChannel         @"kNoteAddedToChannel"
 #define kNoteCreateNewChannel                    @"kNoteCreateNewChannel"
