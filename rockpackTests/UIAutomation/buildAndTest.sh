@@ -11,6 +11,8 @@ ONLY_ACTIVE_ARCH=NO \
 SYMROOT="/Users/$USER/Documents/UIAutomationBuild/build" \
 DSTROOT="/Users/$USER/Documents/UIAutomationBuild/build" \
 TARGETED_DEVICE_FAMILY="2" \
+clean \
+build \
 install
 
 ./choose_sim_device "iPad"

@@ -370,7 +370,7 @@
         return;
     
     SYNSubscribersViewController* subscribersViewController = [[SYNSubscribersViewController alloc] initWithChannel:self.channel];
-    subscribersViewController.view.backgroundColor = [UIColor clearColor];
+   
     
     
     if (IS_IPAD)

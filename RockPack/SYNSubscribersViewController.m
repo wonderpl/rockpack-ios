@@ -31,7 +31,7 @@
         titleLabel.backgroundColor = [UIColor clearColor];
         titleLabel.textColor = [UIColor colorWithRed: (28.0/255.0) green: (31.0/255.0) blue: (33.0/255.0) alpha: (1.0)];
         titleLabel.text = NSLocalizedString (@"SUBSCRIBERS", nil);
-        titleLabel.font = [UIFont boldRockpackFontOfSize:18.0];
+        titleLabel.font = [UIFont rockpackFontOfSize:19.0];
         titleLabel.textAlignment = NSTextAlignmentCenter;
         titleLabel.shadowColor = [UIColor whiteColor];
         titleLabel.shadowOffset = CGSizeMake(0.0, 1.0);
@@ -51,16 +51,16 @@
         self.infoLabel.shadowColor = [UIColor whiteColor];
         self.infoLabel.shadowOffset = CGSizeMake(0.0, 1.0);
     }
+    
+    
     return self;
 }
 -(void)setInfoLabelText:(NSString*)text
 {
     if(!text) // clear
     {
-        
         [self.infoLabel removeFromSuperview];
         return;
-        
     }
     self.infoLabel.text = text;
     [self.infoLabel sizeToFit];
@@ -76,6 +76,9 @@
 }
 -(void)viewDidAppear:(BOOL)animated
 {
+    self.usersThumbnailCollectionView.backgroundColor = [UIColor whiteColor];
+    
+    
     self.activityView = [[UIActivityIndicatorView alloc] initWithActivityIndicatorStyle:UIActivityIndicatorViewStyleGray];
     
     self.activityView.center = CGPointMake(self.view.frame.size.width * 0.5, self.view.frame.size.height * 0.5);

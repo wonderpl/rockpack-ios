@@ -35,7 +35,7 @@ target.frontMostApp().mainWindow().buttons()["ButtonSubscribe"].tap();
 target.frontMostApp().mainWindow().buttons()["ButtonBackCD"].tap();
 
 //Navigate to profile
-target.frontMostApp().mainWindow().buttons()["ButtonNav"].tap();
+target.frontMostApp().mainWindow().buttons()["Button Nav"].tap();
 target.frontMostApp().mainWindow().tableViews()["Navigation Table"].cells()["PROFILE"].tap();
 target.delay(2);
 target.frontMostApp().mainWindow().scrollViews()[0].collectionViews()[3].cells()[0].tap();
@@ -45,7 +45,7 @@ target.frontMostApp().mainWindow().buttons()["ButtonSubscribe"].tap();
 target.frontMostApp().mainWindow().buttons()["ButtonBackCD"].tap();
 
 // Logout
-target.frontMostApp().mainWindow().buttons()["ButtonNav"].tap();
+target.frontMostApp().mainWindow().buttons()["Button Nav"].tap();
 target.frontMostApp().mainWindow().buttons()["ButtonSettings"].tap();
 target.frontMostApp().mainWindow().popover().tableViews()["Settings Table"].cells()["Logout"].tap();
 target.frontMostApp().alert();
