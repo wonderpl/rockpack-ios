@@ -910,6 +910,10 @@
     [self incrementRangeForNextRequest];
     
     MKNKUserSuccessBlock successBlock = ^(NSDictionary *dictionary) {
+        if(self.channel.managedObjectContext == appDelegate.channelsManagedObjectContext)
+        {
+            return;
+        }
         SYNRegistry* registry = self.channel.managedObjectContext == appDelegate.mainManagedObjectContext ? appDelegate.mainRegistry : appDelegate.searchRegistry;
         
         [registry performInBackground:^BOOL(NSManagedObjectContext *backgroundContext){
