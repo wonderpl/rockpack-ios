@@ -186,8 +186,10 @@
     if (searchTerm)
         [self performSearchForCurrentSearchTerm];
     
-    if (!self.currentController)
-        [self searchTabPressed:nil];
+    
+    
+    [self searchTabPressed:nil];
+        
     
         
     if (IS_IPHONE)
@@ -247,6 +249,8 @@
     if (!control)
     {
         self.videoSearchTabView.selected = YES;
+        self.channelsSearchTabView.selected = NO;
+        self.usersSearchTabView.selected = NO;
         
         self.currentController = searchVideosController;
         return;

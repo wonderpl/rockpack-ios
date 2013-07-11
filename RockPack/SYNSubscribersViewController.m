@@ -27,7 +27,7 @@
         self.title = NSLocalizedString(@"SUBSCRIBERS", nil);
         self.channel = channel;
         
-        UILabel* titleLabel = [[UILabel alloc] initWithFrame: CGRectMake( -(self.contentSizeForViewInPopover.width * 0.5), -15.0, self.contentSizeForViewInPopover.width, 40.0)];
+        UILabel* titleLabel = [[UILabel alloc] initWithFrame: CGRectMake( -(self.contentSizeForViewInPopover.width * 0.5), -17.0, self.contentSizeForViewInPopover.width, 40.0)];
         titleLabel.backgroundColor = [UIColor clearColor];
         titleLabel.textColor = [UIColor colorWithRed: (28.0/255.0) green: (31.0/255.0) blue: (33.0/255.0) alpha: (1.0)];
         titleLabel.text = NSLocalizedString (@"SUBSCRIBERS", nil);
@@ -51,16 +51,16 @@
         self.infoLabel.shadowColor = [UIColor whiteColor];
         self.infoLabel.shadowOffset = CGSizeMake(0.0, 1.0);
     }
+    
+    
     return self;
 }
 -(void)setInfoLabelText:(NSString*)text
 {
     if(!text) // clear
     {
-        
         [self.infoLabel removeFromSuperview];
         return;
-        
     }
     self.infoLabel.text = text;
     [self.infoLabel sizeToFit];
