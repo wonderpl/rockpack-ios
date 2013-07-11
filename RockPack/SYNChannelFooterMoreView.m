@@ -13,6 +13,12 @@
 - (void) awakeFromNib
 {
     self.activityIndicator.hidden = YES;
+    
+    self.activityIndicator.color = [UIColor colorWithRed: (11.0/255.0)
+                                                   green: (166.0/255.0)
+                                                    blue: (171.0/255.0)
+                                                   alpha: (1.0)];
+    
     self.backgroundColor = [UIColor colorWithPatternImage: [UIImage imageNamed: @"BackgroundLoadMore"]];
 }
 
