@@ -293,9 +293,11 @@
                                                     
                                                     [self removeEmptyGenreMessage];
 
-                                                    self.loadingMoreContent = NO;
                                                     
                                                     [self displayEmptyGenreMessage:NSLocalizedString(@"feed_screen_loading_error", nil) andLoader:NO];
+                                                
+                                                    
+                                                    self.loadingMoreContent = NO;
                                                     
                                                      DebugLog(@"Refresh subscription updates failed");
                                                     

@@ -14,4 +14,8 @@
 
 @property (nonatomic, strong) SYNRefreshButton* refreshButton;
 
+- (void) removeEmptyGenreMessage;
+- (void) displayEmptyGenreMessage: (NSString*) messageKey
+                        andLoader: (BOOL) isLoader;
+
 @end

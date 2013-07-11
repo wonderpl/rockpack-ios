@@ -84,6 +84,7 @@
 }
 
 
+
 - (NSFetchedResultsController *) fetchedResultsController
 {
     if (fetchedResultsController != nil)
@@ -127,7 +128,8 @@
     
     self.dataRequestRange = NSMakeRange(0, kAPIInitialBatchSize);
     
-    
+    [super displayEmptyGenreMessage:NSLocalizedString(@"search_screen_searching_videos", nil)
+                          andLoader:NO];
 
     self.runningSearchOperation =  [self.appDelegate.networkEngine searchVideosForTerm: term
                                                                                inRange: self.dataRequestRange
@@ -136,6 +138,11 @@
                                                                                 if(self.itemToUpdate)
                                                                                     [self.itemToUpdate setNumberOfItems: self.dataItemsAvailable
                                                                                                                animated: YES];
+                                                                                
+                                                                                [super removeEmptyGenreMessage];
+                                                                                if(itemsCount == 0)
+                                                                                    [super displayEmptyGenreMessage:NSLocalizedString(@"search_screen_no_videos", nil)
+                                                                                                          andLoader:NO];
                                                                             }];
     self.searchTerm = term;
 }
