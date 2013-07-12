@@ -470,7 +470,7 @@
 {
     [super viewWillDisappear: animated];
 
-    // Stop observing everything (less error-prone than trying to remove observers individually
+    // Stop observing everything (less error-prone than trying to remove observers individually)
     
     [[NSNotificationCenter defaultCenter] postNotificationName:kNoteHideAllCautions object:self];
     
@@ -479,8 +479,8 @@
     if (!self.isIPhone)
     {
         [[NSNotificationCenter defaultCenter] postNotificationName: kVideoQueueClear
-                                                        object: self
-                                                      userInfo: nil];
+                                                            object: self
+                                                          userInfo: nil];
     }
     
     [self.subscribersPopover dismissPopoverAnimated:NO];
