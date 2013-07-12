@@ -1334,6 +1334,7 @@
                            completionHandler: completionBlock
                                 errorHandler: errorBlock];
 
+    networkOperation.shouldNotCacheResponse = YES;
     [self enqueueSignedOperation: networkOperation];  
 }
 
