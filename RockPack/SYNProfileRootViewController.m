@@ -431,18 +431,18 @@
 {
     NSArray* updatedObjects = [notification userInfo][NSUpdatedObjectsKey];
     
-    [updatedObjects enumerateObjectsUsingBlock: ^(id obj, NSUInteger idx, BOOL *stop)
+    [updatedObjects enumerateObjectsUsingBlock: ^(NSManagedObject* obj, NSUInteger idx, BOOL *stop)
     {
         
-         if (obj == self.user)
+         if (obj.objectID == self.user.objectID)
          {
-             
-             [self.userProfileController setChannelOwner:(ChannelOwner*)obj];
-             
-             // Handle new insertions
-             
-             [self reloadCollectionViews];
-             
+             dispatch_async(dispatch_get_main_queue(), ^{
+                 [self.userProfileController setChannelOwner:self.user];
+                 
+                 // Handle new insertions
+                 
+                 [self reloadCollectionViews];
+             });
              
              
              return;
@@ -1038,7 +1038,7 @@
         
         [[NSNotificationCenter defaultCenter] removeObserver: self
                                                         name: NSManagedObjectContextDidSaveNotification
-                                                      object: self.user];
+                                                      object: nil];
     }
     
     if (!appDelegate)
@@ -1109,7 +1109,7 @@
         [[NSNotificationCenter defaultCenter] addObserver: self
                                                  selector: @selector(handleDataModelChange:)
                                                      name: NSManagedObjectContextDidSaveNotification
-                                                   object: self.user.managedObjectContext];
+                                                   object: nil];
         
         [[NSNotificationCenter defaultCenter] postNotificationName: kChannelOwnerUpdateRequest
                                                             object: self

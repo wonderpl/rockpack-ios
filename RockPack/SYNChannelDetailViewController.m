@@ -613,6 +613,11 @@
 
 - (void) handleDataModelChange: (NSNotification*) notification
 {
+    if(![NSThread isMainThread])
+    {
+        [self performSelectorOnMainThread:@selector(handleDataModelChange:) withObject:notification waitUntilDone:NO];
+        return;
+    }
     NSArray* updatedObjects = [notification userInfo][NSUpdatedObjectsKey];
     
     NSArray* deletedObjects = [notification userInfo][NSDeletedObjectsKey]; // our channel has been deleted
@@ -3001,7 +3006,7 @@
         
         [[NSNotificationCenter defaultCenter] removeObserver: self
                                                         name: NSManagedObjectContextDidSaveNotification
-                                                      object: self.channel.managedObjectContext];   
+                                                      object: nil];
     }
     
     _channel = channel;
@@ -3061,7 +3066,7 @@
         [[NSNotificationCenter defaultCenter] addObserver: self
                                                  selector: @selector(handleDataModelChange:)
                                                      name: NSManagedObjectContextDidSaveNotification
-                                                   object: self.channel.managedObjectContext];
+                                                   object: nil];
 
         if (self.mode == kChannelDetailsModeDisplay)
         {
