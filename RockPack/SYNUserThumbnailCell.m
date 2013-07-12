@@ -29,11 +29,7 @@
     self.layer.shouldRasterize = YES;
     self.layer.rasterizationScale = UIScreen.mainScreen.scale;
     
-    if(self.borderView)
-    {
-        float color_ratio = (223.0/255.0);
-        self.borderView.backgroundColor = [UIColor colorWithRed:color_ratio green:color_ratio blue:color_ratio alpha:1.0];
-    }
+    
     
 }
 

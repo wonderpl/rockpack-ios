@@ -38,11 +38,8 @@
     [super viewDidLoad];
     
     self.titleLabel.font = [UIFont rockpackFontOfSize:self.titleLabel.font.pointSize];
-    [self.titleLabel sizeToFit];
     
-    self.titleLabel.center = CGPointMake(self.view.center.x, 34.0);
     
-    self.backButton.center = CGPointMake(self.backButton.center.x, 30.0);
     
     
     

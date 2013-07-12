@@ -136,13 +136,13 @@
 							<object class="IBUIView" id="447118724">
 								<reference key="NSNextResponder" ref="274787431"/>
 								<int key="NSvFlags">292</int>
-								<string key="NSFrame">{{10, 71}, {300, 1}}</string>
+								<string key="NSFrame">{{0, 71}, {320, 1}}</string>
 								<reference key="NSSuperview" ref="274787431"/>
 								<reference key="NSWindow"/>
 								<string key="NSReuseIdentifierKey">_NS:9</string>
 								<object class="NSColor" key="IBUIBackgroundColor">
 									<int key="NSColorSpace">1</int>
-									<bytes key="NSRGB">MC45NDIxMDY4Mjc0IDAuOTQyMTA2ODI3NCAwLjk0MjEwNjgyNzQAA</bytes>
+									<bytes key="NSRGB">MC44NzQ1MDk4MDM5IDAuODc0NTA5ODAzOSAwLjg3NDUwOTgwMzkAA</bytes>
 								</object>
 								<string key="targetRuntimeIdentifier">IBCocoaTouchFramework</string>
 							</object>
