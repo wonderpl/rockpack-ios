@@ -433,7 +433,6 @@
     
     [updatedObjects enumerateObjectsUsingBlock: ^(NSManagedObject* obj, NSUInteger idx, BOOL *stop)
     {
-        
          if (obj.objectID == self.user.objectID)
          {
              dispatch_async(dispatch_get_main_queue(), ^{

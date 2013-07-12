@@ -45,6 +45,11 @@
     return self;
 }
 
+-(void)dealloc
+{
+    [[NSNotificationCenter defaultCenter] removeObserver: self];
+}
+
 
 - (void) loadView
 {
@@ -109,8 +114,12 @@
 {
     [super viewDidLoad];
     
+    [self updateCategories];
     [self displayLoadedGenres];
     
+    [[NSNotificationCenter defaultCenter] addObserver: self
+                                             selector: @selector(appCameToFront:)
+                                                 name: UIApplicationDidBecomeActiveNotification object:nil];
         
 }
 
@@ -124,8 +133,9 @@
                                                object: nil];
 }
 
-- (void) viewDidAppear: (BOOL) animated
+- (void)appCameToFront:(NSNotification*)note
 {
+    
     [self updateCategories];
 }
 

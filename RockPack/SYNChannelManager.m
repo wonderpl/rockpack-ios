@@ -289,29 +289,57 @@
     MKNKUserSuccessBlock successBlock = ^(NSDictionary *channelDictionary) {
         NSNumber *savedPosition = channel.position;
         
-        [channel setAttributesFromDictionary: channelDictionary
-                         ignoringObjectTypes: kIgnoreChannelOwnerObject];
+        SYNRegistry* registry;
+        if (channel.managedObjectContext==appDelegate.searchManagedObjectContext)
+        {
+            registry = appDelegate.searchRegistry;
+        }
+        else
+        {
+            registry = appDelegate.mainRegistry;
+        }
         
         // the channel that got updated was a copy inside the ChannelDetails, so we must find the original and update it.
+        Channel* foundUserChannel = nil;
         for (Channel* userChannel in appDelegate.currentUser.channels)
         {
             if([userChannel.uniqueId isEqualToString:channel.uniqueId])
             {
-                [userChannel setAttributesFromDictionary: channelDictionary
-                                     ignoringObjectTypes: kIgnoreChannelOwnerObject];
+                foundUserChannel = userChannel;
                 
                 break;
             }
         }
+        
+        
+        [registry performInBackground:^BOOL(NSManagedObjectContext *backgroundContext) {
+            Channel* blockChannel = (Channel*)[backgroundContext objectWithID:channel.objectID];
+            [blockChannel setAttributesFromDictionary:channelDictionary
+                                  ignoringObjectTypes: kIgnoreChannelOwnerObject];
+            
+            blockChannel.position = savedPosition;
+            
+            if(foundUserChannel)
+            {
+                Channel* blockUserChannel = (Channel*)[backgroundContext objectWithID:foundUserChannel.objectID];
+                [blockUserChannel setAttributesFromDictionary: channelDictionary
+                                 ignoringObjectTypes: kIgnoreChannelOwnerObject];
+                blockUserChannel.position = savedPosition;
+            }
+            
+            NSError *error = nil;
+            if (![backgroundContext save: &error])
+            {
+                AssertOrLog(@"Channels Details Failed: %@\n%@", [error localizedDescription], [error userInfo]);
+                return NO;
+            }
+            
+            return YES;
+        } completionBlock:^(BOOL success) {
+            
+        }];
+        
 
-        channel.position = savedPosition;
-        
-        
-        NSError *error = nil;        
-        if (![channel.managedObjectContext save: &error])
-        {
-            AssertOrLog(@"Channels Details Failed: %@\n%@", [error localizedDescription], [error userInfo]);
-        }
     };
     
     // define success block //

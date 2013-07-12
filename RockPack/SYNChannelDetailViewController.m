@@ -140,6 +140,12 @@
 
     // This will remove the observer (in the setter)
     self.channelTitleTextView = nil;
+    
+    self.videoThumbnailCollectionView.dataSource = nil;
+    self.videoThumbnailCollectionView.delegate = nil;
+    [self.videoThumbnailCollectionView removeFromSuperview];
+    self.videoThumbnailCollectionView=nil;
+
 }
 
 

@@ -704,7 +704,7 @@ extern void instrumentObjcMessageSends(BOOL);
     NSManagedObjectContext* context = [note object];
     if ( context == self.mainManagedObjectContext )
     {
-        [self.privateManagedObjectContext performBlockAndWait:^{
+        [self.privateManagedObjectContext performBlock:^{
             [self.privateManagedObjectContext mergeChangesFromContextDidSaveNotification:note];
         }];
     }
