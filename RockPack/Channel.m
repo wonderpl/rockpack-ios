@@ -171,6 +171,8 @@
         [videoFetchRequest setEntity: [NSEntityDescription entityForName: @"Video"
                                                   inManagedObjectContext: self.managedObjectContext]];
         
+        NSArray *existingVideos = nil;
+        
         NSMutableArray* videoIds = [NSMutableArray array];
         for (NSDictionary *itemDictionary in itemArray)
         {
@@ -181,12 +183,15 @@
             }
         }
         
-        NSPredicate* videoPredicate = [NSPredicate predicateWithFormat:@"uniqueId IN %@", videoIds];
+        if([videoIds count]>0)
+        {
+            NSPredicate* videoPredicate = [NSPredicate predicateWithFormat:@"uniqueId IN %@", videoIds];
         
-        videoFetchRequest.predicate = videoPredicate;
+            videoFetchRequest.predicate = videoPredicate;
         
-        NSArray *existingVideos = [self.managedObjectContext executeFetchRequest: videoFetchRequest
+            existingVideos = [self.managedObjectContext executeFetchRequest: videoFetchRequest
                                                                            error: nil];
+        }
         
         NSMutableArray* importArray = [[NSMutableArray alloc] initWithCapacity:itemArray.count];
         
@@ -352,6 +357,7 @@
     [videoFetchRequest setEntity: [NSEntityDescription entityForName: @"Video"
                                               inManagedObjectContext: self.managedObjectContext]];
     
+    NSArray *existingVideos=nil;
     NSMutableArray* videoIds = [NSMutableArray array];
     for (NSDictionary *itemDictionary in itemArray)
     {
@@ -362,12 +368,15 @@
         }
     }
     
-    NSPredicate* videoPredicate = [NSPredicate predicateWithFormat:@"uniqueId IN %@", videoIds];
+    if([videoIds count] > 0)
+    {
+        NSPredicate* videoPredicate = [NSPredicate predicateWithFormat:@"uniqueId IN %@", videoIds];
     
-    videoFetchRequest.predicate = videoPredicate;
+        videoFetchRequest.predicate = videoPredicate;
     
-    NSArray *existingVideos = [self.managedObjectContext executeFetchRequest: videoFetchRequest
+        existingVideos = [self.managedObjectContext executeFetchRequest: videoFetchRequest
                                                                        error: nil];
+    }
     
     
     for (NSDictionary *channelDictionary in itemArray)
