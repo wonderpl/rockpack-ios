@@ -16,6 +16,9 @@
 
 @synthesize selectedForVideoQueue;
 
+// Store our date formatter as a static for optimization purposes
+static NSDateFormatter *dateFormatter = nil;
+
 +(VideoInstance*) instanceFromVideoInstance:(VideoInstance*)existingInstance
                   usingManagedObjectContext: (NSManagedObjectContext *) managedObjectContext
                         ignoringObjectTypes: (IgnoringObjects) ignoringObjects {
@@ -27,6 +30,8 @@
     instance.position = existingInstance.position;
     
     instance.dateAdded = existingInstance.dateAdded;
+    
+    instance.dateOfDayAdded = existingInstance.dateOfDayAdded;
     
     instance.title = existingInstance.title;
     
@@ -113,6 +118,10 @@
     self.dateAdded = [dictionary dateFromISO6801StringForKey: @"date_added"
                                                  withDefault: [NSDate date]];
     
+    NSString* dateAdded = [dictionary objectForKey:@"date_added"];
+    NSString* dayAdded = [dateAdded substringToIndex:[dateAdded rangeOfString:@"T"].location];
+    self.dateOfDayAdded = [[VideoInstance DayOfDateFormatter] dateFromString:dayAdded];
+    
     self.title = [dictionary upperCaseStringForKey: @"title"
                                        withDefault: @""];
     
@@ -164,13 +173,32 @@
 
 - (NSDate *) dateAddedIgnoringTime
 {
-    return self.dateAdded.dateIgnoringTime;
+    return self.dateOfDayAdded;
 }
 
 
 - (NSString *) description
 {
     return [NSString stringWithFormat: @"VideoInstance: uniqueId(%@), dateAdded (%@), title(%@)", self.uniqueId, self.dateAdded, self.title];
+}
+
+// Used for dates in the following format "2012-12-14T09:59:46.000Z"
+// 2013-01-30T15:43:18.806454+00:00
++ (NSDateFormatter *) DayOfDateFormatter
+{
+    if (dateFormatter == nil)
+    {
+        // Do once, and only once
+        static dispatch_once_t oncePredicate;
+        dispatch_once(&oncePredicate, ^
+                      {
+                          dateFormatter = [[NSDateFormatter alloc] init];
+                          [dateFormatter setTimeZone: [NSTimeZone timeZoneWithName: @"UTC"]];
+                          [dateFormatter setDateFormat: @"yyyy-MM-dd"];
+                      });
+    }
+    
+    return dateFormatter;
 }
 
 @end

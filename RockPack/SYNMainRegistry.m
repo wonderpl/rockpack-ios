@@ -258,10 +258,25 @@
     NSFetchRequest *videoFetchRequest = [[NSFetchRequest alloc] init];
     [videoFetchRequest setEntity: [NSEntityDescription entityForName: @"Video"
                                                       inManagedObjectContext: importManagedObjectContext]];
+
+    NSMutableArray* videoIds = [NSMutableArray array];
+    for (NSDictionary *itemDictionary in itemArray)
+    {
+        id uniqueId = [itemDictionary[@"video"] objectForKey:@"id"];
+        if(uniqueId)
+        {
+            [videoIds addObject:uniqueId];
+        }
+    }
     
+    NSPredicate* videoPredicate = [NSPredicate predicateWithFormat:@"uniqueId IN %@", videoIds];
+    
+    videoFetchRequest.predicate = videoPredicate;
 
     NSArray *existingVideos = [importManagedObjectContext executeFetchRequest: videoFetchRequest
                                                                                     error: &error];
+    
+    
     
     for (NSDictionary *itemDictionary in itemArray)
     {
@@ -330,7 +345,7 @@
     if(![self saveImportContext])
         return NO;
     
-    [appDelegate saveContext: TRUE];
+    [appDelegate saveContext: NO];
     
     return YES;
 }

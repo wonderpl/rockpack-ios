@@ -1816,6 +1816,7 @@
 		38061BC0173D15BE00A7E349 /* SYNAccountSettingsModalContainer.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = SYNAccountSettingsModalContainer.xib; sourceTree = "<group>"; };
 		38281F1B17439B770024DC18 /* SYNLoginBaseViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SYNLoginBaseViewController.h; sourceTree = "<group>"; };
 		38281F1C17439B770024DC18 /* SYNLoginBaseViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SYNLoginBaseViewController.m; sourceTree = "<group>"; };
+		3854788017940F75006EB38B /* Rockpack 5.xcdatamodel */ = {isa = PBXFileReference; lastKnownFileType = file; path = "Rockpack 5.xcdatamodel"; sourceTree = "<group>"; };
 		3862E89C172978D10066E8E7 /* Default~iphone.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = "Default~iphone.png"; path = "Assets/Images/Default~iphone.png"; sourceTree = "<group>"; };
 		3862E89D172978D10066E8E7 /* Default-568h@2x~iphone.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = "Default-568h@2x~iphone.png"; path = "Assets/Images/Default-568h@2x~iphone.png"; sourceTree = "<group>"; };
 		3862E89E172978D10066E8E7 /* Default@2x~iphone.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = "Default@2x~iphone.png"; path = "Assets/Images/Default@2x~iphone.png"; sourceTree = "<group>"; };
@@ -6755,12 +6756,13 @@
 		01E427D11664C726009B941F /* Rockpack.xcdatamodeld */ = {
 			isa = XCVersionGroup;
 			children = (
+				3854788017940F75006EB38B /* Rockpack 5.xcdatamodel */,
 				BE53EE6017609587008360D2 /* Rockpack 4.xcdatamodel */,
 				38DC34B1175E42DF0048286C /* Rockpack 3.xcdatamodel */,
 				3885165B17579086001A9FD4 /* Rockpack 2.xcdatamodel */,
 				01E427D21664C726009B941F /* Rockpack.xcdatamodel */,
 			);
-			currentVersion = BE53EE6017609587008360D2 /* Rockpack 4.xcdatamodel */;
+			currentVersion = 3854788017940F75006EB38B /* Rockpack 5.xcdatamodel */;
 			path = Rockpack.xcdatamodeld;
 			sourceTree = "<group>";
 			versionGroupType = wrapper.xcdatamodel;
