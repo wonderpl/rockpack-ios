@@ -53,47 +53,10 @@ static NSEntityDescription *videoEntity = nil;
          usingManagedObjectContext: (NSManagedObjectContext *) managedObjectContext
                 ignoringObjectTypes: (IgnoringObjects) ignoringObjects
 {
-    NSError *error = nil;
-    
     // Get the unique id of this object from the dictionary that has been passed in
     NSString *uniqueId = [dictionary objectForKey: @"id"
-                                      withDefault: @"Uninitialized Id"];
-
-    
-    // Only create an entity description once, should increase performance
-    if (videoEntity == nil)
-    {
-        // Do once, and only once
-        static dispatch_once_t oncePredicate;
-        dispatch_once(&oncePredicate, ^
-                      {
-                          // Not entirely sure I shouldn't 'copy' this object before assigning it to the static variable
-                          videoEntity = [NSEntityDescription entityForName: @"Video"
-                                                      inManagedObjectContext: managedObjectContext];
-                          
-                      });
-    }
-    
-    // Now we need to see if this object already exists, and if so return it and if not create it
-    NSFetchRequest *channelFetchRequest = [[NSFetchRequest alloc] init];
-    [channelFetchRequest setEntity: videoEntity];
-    
-    // Search on the unique Id
-    NSPredicate *predicate = [NSPredicate predicateWithFormat: @"uniqueId == %@", uniqueId];
-    [channelFetchRequest setPredicate: predicate];
-    
-    NSArray *matchingVideoEntries = [managedObjectContext executeFetchRequest: channelFetchRequest
-                                                                          error: &error];
-    
-    Video *instance = nil;;
-    
-    if (matchingVideoEntries.count > 0)
-    {
-        instance = matchingVideoEntries[0];
-    }
-    else
-    {
-        instance = [Video insertInManagedObjectContext: managedObjectContext];
+                                      withDefault: @"Uninitialized Id"];    
+    Video *instance = [Video insertInManagedObjectContext: managedObjectContext];
         
         // As we have a new object, we need to set all the attributes (from the dictionary passed in)
         // We have already obtained the uniqueId, so pass it in as an optimisation
@@ -101,7 +64,7 @@ static NSEntityDescription *videoEntity = nil;
                                        withId: uniqueId
                     usingManagedObjectContext: managedObjectContext
                           ignoringObjectTypes: ignoringObjects];
-    }
+
     
     // Update video starred & viewed
     [SYNActivityManager.sharedInstance updateActivityForVideo: instance];

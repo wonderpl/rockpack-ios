@@ -59,7 +59,23 @@
 
 + (VideoInstance *) instanceFromDictionary: (NSDictionary *) dictionary
                  usingManagedObjectContext: (NSManagedObjectContext *) managedObjectContext
+                        existingVideos:(NSArray*)existingVideos
+{
+    return [VideoInstance instanceFromDictionary:dictionary usingManagedObjectContext:managedObjectContext ignoringObjectTypes:kIgnoreNothing existingVideos:existingVideos];
+}
+
++ (VideoInstance *) instanceFromDictionary: (NSDictionary *) dictionary
+                 usingManagedObjectContext: (NSManagedObjectContext *) managedObjectContext
                         ignoringObjectTypes: (IgnoringObjects) ignoringObjects
+{
+    return [VideoInstance instanceFromDictionary:dictionary usingManagedObjectContext:managedObjectContext ignoringObjectTypes:ignoringObjects existingVideos:nil];
+}
+
++ (VideoInstance *) instanceFromDictionary: (NSDictionary *) dictionary
+                 usingManagedObjectContext: (NSManagedObjectContext *) managedObjectContext
+                       ignoringObjectTypes: (IgnoringObjects) ignoringObjects
+                        existingVideos:(NSArray*)existingVideos
+
 {
     
     if (![dictionary isKindOfClass: [NSDictionary class]])
@@ -77,7 +93,8 @@
     
     [instance setAttributesFromDictionary: dictionary
                 usingManagedObjectContext: managedObjectContext
-                      ignoringObjectTypes: ignoringObjects];
+                      ignoringObjectTypes: ignoringObjects
+                        existingVideos:existingVideos];
     
     return instance;
 }
@@ -86,8 +103,8 @@
 - (void) setAttributesFromDictionary: (NSDictionary *) dictionary
            usingManagedObjectContext: (NSManagedObjectContext *) managedObjectContext
                  ignoringObjectTypes: (IgnoringObjects) ignoringObjects
-{
-    
+                 existingVideos:(NSArray*)existingVideos
+{    
     
     
     self.position = [dictionary objectForKey: @"position"
@@ -100,9 +117,18 @@
                                        withDefault: @""];
     
     // NSManagedObjects
-    self.video = [Video instanceFromDictionary: dictionary[@"video"]
+    NSString* videoId = [dictionary[@"video"] objectForKey:@"id"];
+    NSArray* filteredVideos = [existingVideos filteredArrayUsingPredicate:[NSPredicate predicateWithFormat:@"uniqueId = %@",videoId]];
+    if([filteredVideos count]>0)
+    {
+        self.video = filteredVideos[0];
+    }
+    else
+    {
+        self.video = [Video instanceFromDictionary: dictionary[@"video"]
                      usingManagedObjectContext: managedObjectContext
                            ignoringObjectTypes: ignoringObjects];
+    }
     
     if (!(ignoringObjects & kIgnoreChannelObjects))
     {

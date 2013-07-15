@@ -16,6 +16,7 @@
 #import "AppConstants.h"
 #import <CoreData/CoreData.h>
 #import "VideoInstance.h"
+#import "Video.h"
 
 
 @interface SYNMainRegistry ()
@@ -214,41 +215,53 @@
         return NO;
     
     
-    NSFetchRequest *videoInstanceFetchRequest = [[NSFetchRequest alloc] init];
-    [videoInstanceFetchRequest setEntity: [NSEntityDescription entityForName: @"VideoInstance"
-                                                      inManagedObjectContext: importManagedObjectContext]];
-    
-    NSPredicate* viewIdPredicate = [NSPredicate predicateWithFormat:@"viewId == %@ AND fresh == YES", kFeedViewId];
-    
-    
-    videoInstanceFetchRequest.predicate = viewIdPredicate;
+    NSMutableDictionary* existingVideoInstancesByIndex = nil;
+    NSArray *existingFeedVideoInstances = nil;
     
     NSError* error = nil;
-    NSArray *existingFeedVideoInstances = [importManagedObjectContext executeFetchRequest: videoInstanceFetchRequest
-                                                                                    error: &error];
     
-    NSMutableDictionary* existingVideosByIndex = [NSMutableDictionary dictionaryWithCapacity:existingFeedVideoInstances.count];
-    
-    // Organise videos by Id
-    for (VideoInstance* existingVideoInstance in existingFeedVideoInstances)
+    if(!append)
     {
-        existingVideosByIndex[existingVideoInstance.uniqueId] = existingVideoInstance;
         
-        if(!append)
+        NSFetchRequest *videoInstanceFetchRequest = [[NSFetchRequest alloc] init];
+        [videoInstanceFetchRequest setEntity: [NSEntityDescription entityForName: @"VideoInstance"
+                                                          inManagedObjectContext: importManagedObjectContext]];
+        
+        NSPredicate* viewIdPredicate = [NSPredicate predicateWithFormat:@"viewId == %@ AND fresh == YES", kFeedViewId];
+        
+        
+        videoInstanceFetchRequest.predicate = viewIdPredicate;
+        
+        existingFeedVideoInstances = [importManagedObjectContext executeFetchRequest: videoInstanceFetchRequest
+                                                                                        error: &error];
+        
+        existingVideoInstancesByIndex = [NSMutableDictionary dictionaryWithCapacity:existingFeedVideoInstances.count];
+        
+        // Organise videos by Id
+        for (VideoInstance* existingVideoInstance in existingFeedVideoInstances)
         {
+            existingVideoInstancesByIndex[existingVideoInstance.uniqueId] = existingVideoInstance;
+                
+                
+                existingVideoInstance.markedForDeletionValue = YES;
+                existingVideoInstance.freshValue = NO;
+                
+                existingVideoInstance.channel.markedForDeletionValue = YES;
+                existingVideoInstance.channel.freshValue = NO;
+                
+                existingVideoInstance.channel.channelOwner.markedForDeletionValue = YES;
             
-            
-            existingVideoInstance.markedForDeletionValue = YES;
-            existingVideoInstance.freshValue = NO;
-            
-            existingVideoInstance.channel.markedForDeletionValue = YES;
-            existingVideoInstance.channel.freshValue = NO;
-            
-            existingVideoInstance.channel.channelOwner.markedForDeletionValue = YES;
-            existingVideoInstance.channel.channelOwner.freshValue = NO;
         }
-        
     }
+    
+    
+    NSFetchRequest *videoFetchRequest = [[NSFetchRequest alloc] init];
+    [videoFetchRequest setEntity: [NSEntityDescription entityForName: @"Video"
+                                                      inManagedObjectContext: importManagedObjectContext]];
+    
+
+    NSArray *existingVideos = [importManagedObjectContext executeFetchRequest: videoFetchRequest
+                                                                                    error: &error];
     
     for (NSDictionary *itemDictionary in itemArray)
     {
@@ -257,14 +270,14 @@
             continue; 
         
         VideoInstance* videoInstance;
-        videoInstance = existingVideosByIndex[uniqueId];
+        videoInstance = existingVideoInstancesByIndex[uniqueId];
         
         if (!videoInstance)
         {
             // The video is not in the dictionary of existing videos
             // Create a new video object. kIgnoreStoredObjects makes sure no attempt is made to query first
             videoInstance = [VideoInstance instanceFromDictionary: itemDictionary
-                                        usingManagedObjectContext: importManagedObjectContext];
+                                        usingManagedObjectContext: importManagedObjectContext existingVideos:existingVideos];
             
         }
         
@@ -289,22 +302,25 @@
     
     int d = 0;
     
-    for (VideoInstance* oldVideoInstance in existingFeedVideoInstances)
+    if(!append)
     {
-        if(!oldVideoInstance.markedForDeletionValue)
-            continue;
-        
-        // delete channels owners that are not used in the feed anymore
-        if(!oldVideoInstance.channel.channelOwner.freshValue && oldVideoInstance.channel.channelOwner.markedForDeletionValue)
-            [oldVideoInstance.channel.channelOwner.managedObjectContext deleteObject:oldVideoInstance.channel];
-        
-        // delete channels that are not used in the feed anymore
-        if(!oldVideoInstance.channel.freshValue && oldVideoInstance.channel.markedForDeletionValue) 
-            [oldVideoInstance.channel.managedObjectContext deleteObject:oldVideoInstance.channel];
-        
-        [oldVideoInstance.managedObjectContext deleteObject:oldVideoInstance];
-        
-        d++;
+        for (VideoInstance* oldVideoInstance in existingFeedVideoInstances)
+        {
+            if(!oldVideoInstance.markedForDeletionValue)
+                continue;
+            
+            // delete channels owners that are not used in the feed anymore
+            if(!oldVideoInstance.channel.channelOwner.freshValue && oldVideoInstance.channel.channelOwner.markedForDeletionValue)
+                [oldVideoInstance.channel.channelOwner.managedObjectContext deleteObject:oldVideoInstance.channel];
+            
+            // delete channels that are not used in the feed anymore
+            if(!oldVideoInstance.channel.freshValue && oldVideoInstance.channel.markedForDeletionValue)
+                [oldVideoInstance.channel.managedObjectContext deleteObject:oldVideoInstance.channel];
+            
+            [oldVideoInstance.managedObjectContext deleteObject:oldVideoInstance];
+            
+            d++;
+        }
     }
     
     DebugLog(@"deleted feed objects: %i", d);
