@@ -539,7 +539,7 @@ extern void instrumentObjcMessageSends(BOOL);
     NSPersistentStore *store = [persistentStoreCoordinator addPersistentStoreWithType: NSSQLiteStoreType
                                                                         configuration: nil
                                                                                   URL: storeURL
-                                                                              options: @{NSMigratePersistentStoresAutomaticallyOption:@(YES)}
+                                                                              options: @{NSInferMappingModelAutomaticallyOption:@(YES),NSMigratePersistentStoresAutomaticallyOption:@(YES)}
                                                                                 error: &error];
     if (error)
     {

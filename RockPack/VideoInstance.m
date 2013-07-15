@@ -159,6 +159,10 @@ static NSDateFormatter *dateFormatter = nil;
 
 - (NSDate *) dateAddedIgnoringTime
 {
+    if(!self.dateOfDayAdded)
+    {
+        self.dateOfDayAdded = self.dateAdded.dateIgnoringTime;
+    }
     return self.dateOfDayAdded;
 }
 
