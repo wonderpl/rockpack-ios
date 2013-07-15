@@ -45,6 +45,27 @@
         return NO;
     
     
+    NSFetchRequest *videoFetchRequest = [[NSFetchRequest alloc] init];
+    [videoFetchRequest setEntity: [NSEntityDescription entityForName: @"Video"
+                                              inManagedObjectContext: importManagedObjectContext]];
+    
+    NSMutableArray* videoIds = [NSMutableArray array];
+    for (NSDictionary *itemDictionary in itemArray)
+    {
+        id uniqueId = [itemDictionary[@"video"] objectForKey:@"id"];
+        if(uniqueId)
+        {
+            [videoIds addObject:uniqueId];
+        }
+    }
+    
+    NSPredicate* videoPredicate = [NSPredicate predicateWithFormat:@"uniqueId IN %@", videoIds];
+    
+    videoFetchRequest.predicate = videoPredicate;
+    
+    NSArray *existingVideos = [importManagedObjectContext executeFetchRequest: videoFetchRequest
+                                                                        error: nil];
+    
     // === Main Processing === //
     
     for (NSDictionary *itemDictionary in itemArray) {
@@ -56,7 +77,7 @@
             // video instances on search do not have channels attached to them
             VideoInstance* videoInstance = [VideoInstance instanceFromDictionary: fullItemDictionary
                                                        usingManagedObjectContext: importManagedObjectContext
-                                                             ignoringObjectTypes: kIgnoreChannelObjects];
+                                                             ignoringObjectTypes: kIgnoreChannelObjects existingVideos:existingVideos];
             
             videoInstance.viewId = kSearchViewId;
         }

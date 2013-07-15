@@ -189,12 +189,12 @@
                            forUserUpload: userUpload]; 
     }
 
-    BOOL saveResult = [self saveImportContext];
+//    BOOL saveResult = [self saveImportContext];
+//    
+//    if (!saveResult)
+//        return NO;
     
-    if (!saveResult)
-        return NO;
-    
-    [appDelegate saveContext: TRUE];
+    [appDelegate saveContext:NO];
     
     return YES;
 }
@@ -342,8 +342,8 @@
     
     
     
-    if(![self saveImportContext])
-        return NO;
+//    if(![self saveImportContext])
+//        return NO;
     
     [appDelegate saveContext: NO];
     
@@ -500,11 +500,11 @@
 
     
     
-    BOOL saveResult = [self saveImportContext];
-    if(!saveResult)
-        return NO;
+//    BOOL saveResult = [self saveImportContext];
+//    if(!saveResult)
+//        return NO;
     
-    [appDelegate saveContext: TRUE];
+    [appDelegate saveContext:NO];
     
     
     

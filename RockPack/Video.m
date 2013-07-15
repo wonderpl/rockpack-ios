@@ -5,8 +5,6 @@
 #import <Foundation/Foundation.h>
 
 
-static NSEntityDescription *videoEntity = nil;
-
 @interface Video ()
 
 // Private interface goes here.

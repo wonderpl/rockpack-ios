@@ -5,18 +5,17 @@
 
 + (VideoInstance *) instanceFromDictionary: (NSDictionary *) dictionary
                  usingManagedObjectContext: (NSManagedObjectContext *) managedObjectContext
-                       ignoringObjectTypes: (IgnoringObjects) ignoringObjects;
-
-+ (VideoInstance *) instanceFromDictionary: (NSDictionary *) dictionary
-                 usingManagedObjectContext: (NSManagedObjectContext *) managedObjectContext;
+                       ignoringObjectTypes: (IgnoringObjects) ignoringObjects
+                            existingVideos:(NSArray*)existingVideos;
 
 + (VideoInstance *) instanceFromDictionary: (NSDictionary *) dictionary
                  usingManagedObjectContext: (NSManagedObjectContext *) managedObjectContext
-                        existingVideos:(NSArray*)exisitingVideos;
+                        existingVideos:(NSArray*)existingVideos;
 
 +(VideoInstance*) instanceFromVideoInstance:(VideoInstance*)existingInstance
                   usingManagedObjectContext: (NSManagedObjectContext *) managedObjectContext
                         ignoringObjectTypes: (IgnoringObjects) ignoringObjects;
+
 
 @property (nonatomic) BOOL selectedForVideoQueue;
 

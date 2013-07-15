@@ -167,6 +167,27 @@
         NSString* newUniqueId;
         VideoInstance* videoInstance;
         
+        NSFetchRequest *videoFetchRequest = [[NSFetchRequest alloc] init];
+        [videoFetchRequest setEntity: [NSEntityDescription entityForName: @"Video"
+                                                  inManagedObjectContext: self.managedObjectContext]];
+        
+        NSMutableArray* videoIds = [NSMutableArray array];
+        for (NSDictionary *itemDictionary in itemArray)
+        {
+            id uniqueId = [itemDictionary[@"video"] objectForKey:@"id"];
+            if(uniqueId)
+            {
+                [videoIds addObject:uniqueId];
+            }
+        }
+        
+        NSPredicate* videoPredicate = [NSPredicate predicateWithFormat:@"uniqueId IN %@", videoIds];
+        
+        videoFetchRequest.predicate = videoPredicate;
+        
+        NSArray *existingVideos = [self.managedObjectContext executeFetchRequest: videoFetchRequest
+                                                                           error: nil];
+        
         NSMutableArray* importArray = [[NSMutableArray alloc] initWithCapacity:itemArray.count];
         
         for (NSDictionary *channelDictionary in itemArray)
@@ -183,7 +204,7 @@
             {
                 videoInstance = [VideoInstance instanceFromDictionary: channelDictionary
                                             usingManagedObjectContext: self.managedObjectContext
-                                                  ignoringObjectTypes: kIgnoreChannelObjects];
+                                                  ignoringObjectTypes: kIgnoreChannelObjects existingVideos:existingVideos];
                 
             }
             else
@@ -327,13 +348,35 @@
     if(!hasVideoInstances)
         return;
     
+    NSFetchRequest *videoFetchRequest = [[NSFetchRequest alloc] init];
+    [videoFetchRequest setEntity: [NSEntityDescription entityForName: @"Video"
+                                              inManagedObjectContext: self.managedObjectContext]];
+    
+    NSMutableArray* videoIds = [NSMutableArray array];
+    for (NSDictionary *itemDictionary in itemArray)
+    {
+        id uniqueId = [itemDictionary[@"video"] objectForKey:@"id"];
+        if(uniqueId)
+        {
+            [videoIds addObject:uniqueId];
+        }
+    }
+    
+    NSPredicate* videoPredicate = [NSPredicate predicateWithFormat:@"uniqueId IN %@", videoIds];
+    
+    videoFetchRequest.predicate = videoPredicate;
+    
+    NSArray *existingVideos = [self.managedObjectContext executeFetchRequest: videoFetchRequest
+                                                                       error: nil];
+    
+    
     for (NSDictionary *channelDictionary in itemArray)
     {
         
         
         VideoInstance* videoInstance = videoInstance = [VideoInstance instanceFromDictionary: channelDictionary
                                                                    usingManagedObjectContext: self.managedObjectContext
-                                                                         ignoringObjectTypes: kIgnoreChannelObjects];
+                                                                         ignoringObjectTypes: kIgnoreChannelObjects existingVideos:existingVideos];
         
         if(!videoInstance)
             continue;

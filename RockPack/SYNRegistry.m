@@ -22,8 +22,9 @@
     if (self = [super init])
     {
         appDelegate = UIApplication.sharedApplication.delegate;
-        importManagedObjectContext = [[NSManagedObjectContext alloc] initWithConcurrencyType: NSConfinementConcurrencyType];
-        importManagedObjectContext.parentContext = appDelegate.mainManagedObjectContext;
+        importManagedObjectContext = appDelegate.mainManagedObjectContext;
+//        importManagedObjectContext = [[NSManagedObjectContext alloc] initWithConcurrencyType: NSConfinementConcurrencyType];
+//        importManagedObjectContext.parentContext = appDelegate.mainManagedObjectContext;
     }
     
     return self;

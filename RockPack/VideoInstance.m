@@ -56,25 +56,11 @@ static NSDateFormatter *dateFormatter = nil;
 
 + (VideoInstance *) instanceFromDictionary: (NSDictionary *) dictionary
                  usingManagedObjectContext: (NSManagedObjectContext *) managedObjectContext
-{
-    return [VideoInstance instanceFromDictionary:dictionary
-                       usingManagedObjectContext:managedObjectContext
-                             ignoringObjectTypes:kIgnoreNothing];
-}
-
-+ (VideoInstance *) instanceFromDictionary: (NSDictionary *) dictionary
-                 usingManagedObjectContext: (NSManagedObjectContext *) managedObjectContext
                         existingVideos:(NSArray*)existingVideos
 {
     return [VideoInstance instanceFromDictionary:dictionary usingManagedObjectContext:managedObjectContext ignoringObjectTypes:kIgnoreNothing existingVideos:existingVideos];
 }
 
-+ (VideoInstance *) instanceFromDictionary: (NSDictionary *) dictionary
-                 usingManagedObjectContext: (NSManagedObjectContext *) managedObjectContext
-                        ignoringObjectTypes: (IgnoringObjects) ignoringObjects
-{
-    return [VideoInstance instanceFromDictionary:dictionary usingManagedObjectContext:managedObjectContext ignoringObjectTypes:ignoringObjects existingVideos:nil];
-}
 
 + (VideoInstance *) instanceFromDictionary: (NSDictionary *) dictionary
                  usingManagedObjectContext: (NSManagedObjectContext *) managedObjectContext
