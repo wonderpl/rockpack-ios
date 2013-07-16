@@ -89,7 +89,7 @@
 					<object class="IBUIButton" id="469461421">
 						<reference key="NSNextResponder" ref="191373211"/>
 						<int key="NSvFlags">297</int>
-						<string key="NSFrame">{{264, 27}, {48, 49}}</string>
+						<string key="NSFrame">{{8, 27}, {48, 49}}</string>
 						<reference key="NSSuperview" ref="191373211"/>
 						<reference key="NSWindow"/>
 						<reference key="NSNextKeyView" ref="956847641"/>
@@ -108,13 +108,14 @@
 							<int key="NSColorSpace">3</int>
 							<bytes key="NSWhite">MC41AA</bytes>
 						</object>
-						<object class="NSCustomResource" key="IBUIHighlightedImage">
+						<object class="NSCustomResource" key="IBUIHighlightedImage" id="751880664">
 							<string key="NSClassName">NSImage</string>
-							<string key="NSResourceName">ButtonConfirmYellowHighlighted~iphone.png</string>
+							<string key="NSResourceName">ButtonCancelHighlighted.png</string>
 						</object>
+						<reference key="IBUISelectedImage" ref="751880664"/>
 						<object class="NSCustomResource" key="IBUINormalImage">
 							<string key="NSClassName">NSImage</string>
-							<string key="NSResourceName">ButtonConfirmYellow~iphone.png</string>
+							<string key="NSResourceName">ButtonCancel.png</string>
 						</object>
 						<object class="IBUIFontDescription" key="IBUIFontDescription">
 							<int key="type">2</int>
@@ -255,7 +256,7 @@
 				<string key="-2.IBPluginDependency">com.apple.InterfaceBuilder.IBCocoaTouchPlugin</string>
 				<string key="1.IBPluginDependency">com.apple.InterfaceBuilder.IBCocoaTouchPlugin</string>
 				<string key="15.IBPluginDependency">com.apple.InterfaceBuilder.IBCocoaTouchPlugin</string>
-				<real value="3" key="15.IBUIButtonInspectorSelectedStateConfigurationMetadataKey"/>
+				<real value="2" key="15.IBUIButtonInspectorSelectedStateConfigurationMetadataKey"/>
 				<string key="4.IBPluginDependency">com.apple.InterfaceBuilder.IBCocoaTouchPlugin</string>
 				<string key="9.IBPluginDependency">com.apple.InterfaceBuilder.IBCocoaTouchPlugin</string>
 			</dictionary>
@@ -301,8 +302,8 @@
 		<bool key="IBDocument.PluginDeclaredDependenciesTrackSystemTargetVersion">YES</bool>
 		<int key="IBDocument.defaultPropertyAccessControl">3</int>
 		<dictionary class="NSMutableDictionary" key="IBDocument.LastKnownImageSizes">
-			<string key="ButtonConfirmYellowHighlighted~iphone.png">{48, 49}</string>
-			<string key="ButtonConfirmYellow~iphone.png">{48, 49}</string>
+			<string key="ButtonCancel.png">{60, 60}</string>
+			<string key="ButtonCancelHighlighted.png">{60, 60}</string>
 		</dictionary>
 		<string key="IBCocoaTouchPluginVersion">2083</string>
 	</data>

@@ -94,7 +94,10 @@
         [topHeader layoutSubviews];
         topHeader.titleLabel.text = NSLocalizedString(@"POPULAR",nil);
         topHeader.headerButton.tag = -1;
-        topHeader.backgroundImage.image = [UIImage imageNamed: @"CategorySlide"];
+        topHeader.titleLabel.textColor = [UIColor whiteColor];
+        topHeader.titleLabel.shadowColor = [UIColor colorWithWhite:1.0f alpha:0.15f];
+        topHeader.backgroundImage.image = [UIImage imageNamed:@"CategorySlideSelected"];
+
         [topHeader.headerButton addTarget: self action: @selector(tappedAllCategories:) forControlEvents: UIControlEventTouchUpInside];
         [topHeader.headerButton addTarget:self action:@selector(pressedAllCategories:) forControlEvents: UIControlEventTouchDown];
         [topHeader.headerButton addTarget:self action:@selector(releasedAllCategories:) forControlEvents: UIControlEventTouchUpOutside];
@@ -490,7 +493,9 @@
 -(void)tappedAllCategories:(UIButton*)header
 {
     SYNChannelCategoryTableHeader* headerView = (SYNChannelCategoryTableHeader*)self.tableView.tableHeaderView;
-    headerView.backgroundImage.image = [UIImage imageNamed:@"CategorySlide"];
+    headerView.titleLabel.textColor = [UIColor whiteColor];
+    headerView.titleLabel.shadowColor = [UIColor colorWithWhite:1.0f alpha:0.15f];
+    headerView.backgroundImage.image = [UIImage imageNamed:@"CategorySlideSelected"];
     if(self.lastSelectedIndexpath)
     {
         [self closeSection:self.lastSelectedIndexpath.section];
