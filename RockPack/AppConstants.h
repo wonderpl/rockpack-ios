@@ -290,7 +290,7 @@ typedef enum _NavigationButtonsAppearance {
 #define kYouCollectionViewOffsetY 160.0f
 #define kChannelDetailsCollectionViewOffsetY 500.0f
 #define kChannelDetailsFadeSpan 250.0f
-#define kChannelDetailsFadeSpaniPhone 175.0f
+#define kChannelDetailsFadeSpaniPhone 135.0f
 
 #define kImageUploadWidth 1024
 #define kImageUploadHeight 768
