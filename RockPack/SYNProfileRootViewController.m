@@ -371,6 +371,18 @@
     }
     else
     {
+        if (self.isIPhone)
+        {
+            self.channelThumbnailCollectionView.scrollsToTop = !self.subscriptionsTabActive;
+            
+            self.subscriptionsViewController.channelThumbnailCollectionView.scrollsToTop = self.subscriptionsTabActive;
+        }
+        else
+        {
+            self.channelThumbnailCollectionView.scrollsToTop = YES;
+            
+            self.subscriptionsViewController.channelThumbnailCollectionView.scrollsToTop = NO;
+        }
         [GAI.sharedInstance.defaultTracker sendView: @"User Profile"];
     }
     
