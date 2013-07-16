@@ -778,7 +778,7 @@
     newLabel.textColor = [UIColor colorWithRed: 106.0f/255.0f green: 114.0f/255.0f blue: 122.0f/255.0f alpha: 1.0f];
     newLabel.shadowColor = [UIColor colorWithWhite: 1.0f alpha: 0.75f];
     newLabel.shadowOffset = CGSizeMake(0.0f, 1.0f);
-    newLabel.text = NSLocalizedString(@"ALL CATEGORIES",nil);
+    newLabel.text = NSLocalizedString(@"BROWSE CATEGORIES",nil);
     newLabel.backgroundColor = [UIColor clearColor];
     CGPoint center = newLabel.center;
     [newLabel sizeToFit];
@@ -870,7 +870,7 @@
     }
     else
     {
-        self.categoryNameLabel.text = @"ALL CATEGORIES";
+        self.categoryNameLabel.text = @"BROWSE CATEGORIES";
         [self.categoryNameLabel sizeToFit];
         self.subCategoryNameLabel.hidden = YES;
         self.arrowImage.hidden = YES;
@@ -920,7 +920,7 @@
 
 - (void) categoryTableControllerDeselectedAll: (SYNChannelCategoryTableViewController *) tableController
 {
-    self.categoryNameLabel.text = NSLocalizedString(@"ALL CATEGORIES",nil);
+    self.categoryNameLabel.text = NSLocalizedString(@"BROWSE CATEGORIES",nil);
     [self.categoryNameLabel sizeToFit];
     self.subCategoryNameLabel.hidden = YES;
     self.arrowImage.hidden = YES;

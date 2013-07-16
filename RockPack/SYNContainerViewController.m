@@ -89,7 +89,7 @@
 
     if (IS_IPAD)
     {
-        channelsRootViewController.tabViewController = [[SYNGenreTabViewController alloc] initWithHomeButton: @"ALL"];
+        channelsRootViewController.tabViewController = [[SYNGenreTabViewController alloc] initWithHomeButton: @"POPULAR"];
         [channelsRootViewController addChildViewController: channelsRootViewController.tabViewController];
     }
     else
