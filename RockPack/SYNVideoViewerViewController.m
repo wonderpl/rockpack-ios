@@ -438,7 +438,7 @@
     if ([videoInstance.channel.channelOwner.displayName length] == 0)
     {
         [self.channelThumbnailImageView setImageWithURL: nil
-                                       placeholderImage:nil];
+                                       placeholderImage: nil];
     }
     
     else if ([videoInstance.channel.channelOwner.displayName length] > 0)

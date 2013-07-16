@@ -20,8 +20,6 @@
 
 @property (nonatomic, strong) NSString* imageUrlString;
 
-@property (nonatomic) BOOL shouldAnimate;
-
 @property (nonatomic, weak) Channel* channel;
 
 - (void) setChannelTitle: (NSString*) titleString;
