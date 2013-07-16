@@ -41,6 +41,7 @@
 #import "SYNImagePickerController.h"
 #import "SYNReportConcernTableViewController.h"
 #import "SYNExistingChannelsViewController.h"
+#import "Appirater.h"
 
 @interface SYNChannelDetailViewController () <UITextViewDelegate,
                                               SYNImagePickerControllerDelegate,
@@ -2069,6 +2070,8 @@
                                               }
                                               else
                                               {
+                                                  [Appirater userDidSignificantEvent: FALSE];
+
                                                   [self.channel setAttributesFromDictionary:dictionary
                                                                         ignoringObjectTypes:kIgnoreChannelOwnerObject];
                                                   

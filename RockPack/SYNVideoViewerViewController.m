@@ -31,6 +31,7 @@
 #import "Video.h"
 #import "VideoInstance.h"
 #import <MediaPlayer/MediaPlayer.h>
+#import "Appirater.h"
 
 @interface SYNVideoViewerViewController () <UIGestureRecognizerDelegate>
 
@@ -677,6 +678,7 @@
                                                   // Currently highlighted, so increment
                                                   videoInstance.video.starredByUserValue = TRUE;
                                                   videoInstance.video.starCountValue += 1;
+                                                  [Appirater userDidSignificantEvent: FALSE];
                                               }
                                               
                                               (self.favouritesStatusArray)[starredIndex] = @(button.selected);
@@ -884,6 +886,8 @@
            activityIndicator: self.shareActivityIndicator
                   onComplete: ^{
                      videoShareButton.enabled = TRUE;
+                      [Appirater userDidSignificantEvent: FALSE];
+
              }];
 }
 
