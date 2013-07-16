@@ -456,8 +456,7 @@
 }
 
 
-- (void) checkReachability
-{
+- (void) applicationResume{
     if (!self.reachability)
     {
         self.reachability = [Reachability reachabilityWithHostname: _appDelegate.networkEngine.hostName];
@@ -526,6 +525,11 @@
 
 
 - (void) doFacebookLoginAnimation
+{
+    // to be implemented by subclass
+}
+
+- (void) doFacebookFailAnimation
 {
     // to be implemented by subclass
 }

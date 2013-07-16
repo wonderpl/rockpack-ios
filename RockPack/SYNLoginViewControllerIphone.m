@@ -374,7 +374,7 @@
         [self completeLoginProcess];
         
     } errorHandler:^(id error) {
-        [self doFacebookFailedAnimation];
+        [self doFacebookFailAnimation];
         if([error isKindOfClass:[NSDictionary class]])
         {
             NSDictionary* formErrors = error[@"form_errors"];
@@ -1037,7 +1037,7 @@
 }
 
 
-- (void) doFacebookFailedAnimation
+- (void) doFacebookFailAnimation
 {
     [self.activityIndicator stopAnimating];
     [UIView animateWithDuration:kLoginAnimationTransitionDuration delay:0.0f options:UIViewAnimationCurveEaseInOut animations:^{
@@ -1270,6 +1270,13 @@
     }
     
     errorLabel.text = errorText;
+}
+
+- (void) applicationResume
+{
+    [self doFacebookFailAnimation];
+    [super applicationResume];
+        
 }
 
 
