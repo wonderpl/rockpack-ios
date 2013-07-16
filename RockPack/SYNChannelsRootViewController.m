@@ -457,8 +457,10 @@
         [channelThumbnailCell setChannelTitle: channel.title];
     }
     
+    [channelThumbnailCell.imageView setImageWithURL: [NSURL URLWithString: channel.channelCover.imageLargeUrl]
+                                   placeholderImage: [UIImage imageNamed: @"PlaceholderChannel.png"]
+                                            options: SDWebImageRetryFailed];
     
-    channelThumbnailCell.imageUrlString = channel.channelCover.imageLargeUrl;
     channelThumbnailCell.displayNameLabel.text = [NSString stringWithFormat: @"%@", channel.channelOwner.displayName];
     channelThumbnailCell.viewControllerDelegate = self;
     

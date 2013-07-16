@@ -2775,9 +2775,9 @@
     
     [self.channelCoverImageView setImageWithURL: [NSURL URLWithString: largeImageUrlString]
                                placeholderImage: [UIImage imageNamed: @"PlaceholderChannelCreation.png"]
-                                        options:SDWebImageRetryFailed completed:^(UIImage *image, NSError *error, SDImageCacheType cacheType) {
+                                        options: SDWebImageRetryFailed
+                                      completed: ^(UIImage *image, NSError *error, SDImageCacheType cacheType) {
                                             wself.originalBackgroundImage = wself.channelCoverImageView.image;
-                                            
                                             wself.channelCoverImageView.image = [wself croppedImageForCurrentOrientation];
                                         }];
     
@@ -3185,7 +3185,9 @@
     
         NSString* imageUrlString = [appDelegate.currentUser.thumbnailURL stringByReplacingOccurrencesOfString:thumbnailSizeString withString:@"thumbnail_large"];
     
-        [self.avatarImageView setImageWithURL: [NSURL URLWithString:imageUrlString] placeholderImage: placeholder options: SDWebImageRetryFailed];
+        [self.avatarImageView setImageWithURL: [NSURL URLWithString: imageUrlString]
+                             placeholderImage: placeholder
+                                      options: SDWebImageRetryFailed];
     }
 }
 
