@@ -82,6 +82,7 @@ typedef enum {
 - (BOOL) isNetworkAccessibleOtherwiseShowErrorAlert;
 
 - (void) doFacebookLoginAnimation;
+- (void) doFacebookFailAnimation;
 
 - (void) hideOnboarding;
 - (void) showOnboarding;
@@ -112,6 +113,6 @@ typedef enum {
 - (NSString*) zeroPadIfOneCharacter: (NSString*) inputString;
 
 // Additional reachability enablig for resume from background scenario
-- (void) checkReachability;
+- (void) applicationResume;
 
 @end
