@@ -23,54 +23,72 @@
 // THE SOFTWARE.
 //
 
-#import "OWTwitterActivity.h"
 #import "OWActivityViewController.h"
+#import "OWTwitterActivity.h"
 #import <Twitter/Twitter.h>
 
 @implementation OWTwitterActivity
 
-- (id)init
+- (id) init
 {
-    self = [super initWithTitle:NSLocalizedStringFromTable(@"activity.Twitter.title", @"OWActivityViewController", @"Twitter")
-                          image:[UIImage imageNamed:@"OWActivityViewController.bundle/Icon_Twitter"]
-                    actionBlock:nil];
+    self = [super initWithTitle: NSLocalizedStringFromTable(@"activity.Twitter.title", @"OWActivityViewController", @"Twitter")
+                          image: [UIImage imageNamed: @"OWActivityViewController.bundle/Icon_Twitter"]
+                    actionBlock: nil];
     
     if (!self)
+    {
         return nil;
+    }
     
     __typeof(&*self) __weak weakSelf = self;
     self.actionBlock = ^(OWActivity *activity, OWActivityViewController *activityViewController) {
         UIViewController *presenter = activityViewController.presentingController;
         NSDictionary *userInfo = weakSelf.userInfo ? weakSelf.userInfo : activityViewController.userInfo;
         
-        [activityViewController dismissViewControllerAnimated:YES completion:^{
-            [weakSelf shareFromViewController:presenter
-                                           text:userInfo[@"text"]
-                                            url:userInfo[@"url"]
-                                          image:userInfo[@"image"]];
-            
-        }];
+        [activityViewController dismissViewControllerAnimated: YES
+                                                   completion: ^{
+                                                       [weakSelf  shareFromViewController: presenter
+                                                                                     text: userInfo[@"text"]
+                                                                                      url: userInfo[@"url"]
+                                                                                    image: userInfo[@"image"]];
+                                                   }];
     };
     
     return self;
 }
-
-
-- (void)shareFromViewController:(UIViewController *)viewController text:(NSString *)text url:(NSURL *)url image:(UIImage *)image
+- (void) shareFromViewController: (UIViewController *) viewController text: (NSString *) text url: (NSURL *) url image: (UIImage *) image
 {
-    id twitterViewComposer = nil;
-
-    twitterViewComposer = [SLComposeViewController composeViewControllerForServiceType:SLServiceTypeTwitter];
+    SLComposeViewController *twitterViewComposer = nil;
+    
+    twitterViewComposer = [SLComposeViewController composeViewControllerForServiceType: SLServiceTypeTwitter];
+    
+    // Add a completion handler so that we can check for completion
+    twitterViewComposer.completionHandler = ^(SLComposeViewControllerResult result) {
+        if (result == SLComposeViewControllerResultDone)
+        {
+            [self updateAPIRater];
+        }
+    };
     
     viewController.modalPresentationStyle = UIModalPresentationCurrentContext;
-    if (text)
-        [twitterViewComposer setInitialText:text];
-    if (image)
-        [twitterViewComposer addImage:image];
-    if (url)
-        [twitterViewComposer addURL:url];
     
-    [viewController presentViewController:twitterViewComposer animated:YES completion:nil];
+    if (text)
+    {
+        [twitterViewComposer setInitialText: text];
+    }
+    
+    if (image)
+    {
+        [twitterViewComposer addImage: image];
+    }
+    
+    if (url)
+    {
+        [twitterViewComposer addURL: url];
+    }
+    
+    [viewController presentViewController: twitterViewComposer
+                                 animated: YES
+                               completion: nil];
 }
-
 @end

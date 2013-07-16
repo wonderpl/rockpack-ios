@@ -6,13 +6,12 @@
 //  Copyright (c) Rockpack Ltd. All rights reserved.
 //
 
-#import "GAITrackedViewController.h"
 #import "SYNGenreTabView.h"
 #import "SYNTabView.h"
 #import "SYNTabViewDelegate.h"
 #import <UIKit/UIKit.h>
 
-@interface SYNTabViewController : GAITrackedViewController <SYNTabViewDelegate>
+@interface SYNTabViewController : UIViewController <SYNTabViewDelegate>
 
 @property (nonatomic, weak) id <SYNTabViewDelegate> delegate;
 @property (nonatomic, readonly) SYNTabView* tabView;

@@ -23,20 +23,24 @@
 // THE SOFTWARE.
 //
 
+#import "Appirater.h"
 #import "OWActivityDelegateObject.h"
 
 @implementation OWActivityDelegateObject
 
 static OWActivityDelegateObject *_sharedObject = nil;
 
-+ (OWActivityDelegateObject *)sharedObject
++ (OWActivityDelegateObject *) sharedObject
 {
-    if (_sharedObject != nil) {
+    if (_sharedObject != nil)
+    {
         return _sharedObject;
     }
     
-    @synchronized(self) {
-        if (_sharedObject == nil) {
+    @synchronized(self)
+    {
+        if (_sharedObject == nil)
+        {
             _sharedObject = [[self alloc] init];
         }
     }
@@ -44,14 +48,23 @@ static OWActivityDelegateObject *_sharedObject = nil;
     return _sharedObject;
 }
 
-- (void)messageComposeViewController:(MFMessageComposeViewController *)controller didFinishWithResult:(MessageComposeResult)result
+
+- (void) messageComposeViewController: (MFMessageComposeViewController *) controller didFinishWithResult: (MessageComposeResult) result
 {
-    [self.controller dismissViewControllerAnimated:YES completion:nil];
+    [Appirater userDidSignificantEvent: FALSE];
+    
+    [self.controller
+     dismissViewControllerAnimated: YES
+     completion: nil];
 }
 
-- (void)mailComposeController:(MFMailComposeViewController *)controller didFinishWithResult:(MFMailComposeResult)result error:(NSError *)error
-{
-    [self.controller dismissViewControllerAnimated:YES completion:nil];
-}
 
+- (void) mailComposeController: (MFMailComposeViewController *) controller didFinishWithResult: (MFMailComposeResult) result error: (NSError *) error
+{
+    [Appirater userDidSignificantEvent: FALSE];
+    
+    [self.controller
+     dismissViewControllerAnimated: YES
+     completion: nil];
+}
 @end

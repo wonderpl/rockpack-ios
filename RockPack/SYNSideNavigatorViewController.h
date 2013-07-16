@@ -6,7 +6,6 @@
 //  Copyright (c) Rockpack Ltd. All rights reserved.
 //
 
-#import "GAITrackedViewController.h"
 #import "User.h"
 #import <UIKit/UIKit.h>
 
@@ -21,7 +20,7 @@ typedef enum {
 
 } SideNavigationState;
 
-@interface SYNSideNavigatorViewController : GAITrackedViewController <UITableViewDataSource, UITableViewDelegate> {
+@interface SYNSideNavigatorViewController : UIViewController <UITableViewDataSource, UITableViewDelegate> {
    
 }
 
