@@ -6,13 +6,12 @@
 //  Copyright (c) 2012 Nick Banks. All rights reserved.
 //
 
-#import "GAITrackedViewController.h"
 #import "SYNAbstractViewController.h"
 #import "SYNContainerScrollView.h"
 #import <UIKit/UIKit.h>
 
 
-@interface SYNContainerViewController : GAITrackedViewController <UIScrollViewDelegate>
+@interface SYNContainerViewController : UIViewController <UIScrollViewDelegate>
 
 @property (nonatomic) CGPoint currentPageOffset;
 @property (nonatomic, readonly) NSInteger currentPage;

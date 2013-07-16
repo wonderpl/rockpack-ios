@@ -6,10 +6,9 @@
 //  Copyright (c) Rockpack Ltd. All rights reserved.
 //
 
-#import "GAITrackedViewController.h"
 #import <UIKit/UIKit.h>
 
-@interface SYNAccountSettingsDOB : GAITrackedViewController
+@interface SYNAccountSettingsDOB : UIViewController
 
 @property (nonatomic, strong) UIDatePicker* datePicker;
 

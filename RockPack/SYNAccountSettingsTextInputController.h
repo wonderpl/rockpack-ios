@@ -6,7 +6,6 @@
 //  Copyright (c) Rockpack Ltd. All rights reserved.
 //
 
-#import "GAITrackedViewController.h"
 #import "SYNAppDelegate.h"
 #import "SYNOAuthNetworkEngine.h"
 #import "SYNPaddedUITextField.h"
@@ -20,7 +19,7 @@ typedef enum
     UserFieldPassword
 } UserFieldType;
 
-@interface SYNAccountSettingsTextInputController : GAITrackedViewController <UITextFieldDelegate>
+@interface SYNAccountSettingsTextInputController : UIViewController <UITextFieldDelegate>
 {
     UserFieldType currentFieldType;
 }

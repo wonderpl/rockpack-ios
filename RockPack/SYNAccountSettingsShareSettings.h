@@ -6,10 +6,9 @@
 //  Copyright (c) Rockpack Ltd. All rights reserved.
 //
 
-#import "GAITrackedViewController.h"
 #import <UIKit/UIKit.h>
 
-@interface SYNAccountSettingsShareSettings : GAITrackedViewController
+@interface SYNAccountSettingsShareSettings : UIViewController
 
 
 @end
