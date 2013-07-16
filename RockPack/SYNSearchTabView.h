@@ -19,6 +19,7 @@ typedef enum {
 @interface SYNSearchTabView : UIControl {
     UIImage* backgroundImageOn;
     UIImage* backgroundImageOff;
+    UIImage* backgroundImageHighlighted;
     UIImageView* bgImageView;
     UILabel* titleLabel;
     NSString* typeTitle;
