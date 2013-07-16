@@ -109,6 +109,7 @@
 @property (weak, nonatomic) IBOutlet UIButton *cancelTextInputButton;
 @property (weak, nonatomic) IBOutlet UIImageView *logoImageView;
 @property (weak, nonatomic) IBOutlet UIImageView *textBackgroundImageView;
+@property (weak, nonatomic) IBOutlet UIButton *subscribersButton;
 
 @end
 
@@ -1088,6 +1089,7 @@
         CGRect frame = self.subscribersLabel.frame;
         frame.origin.x -= offset;
         self.subscribersLabel.frame = frame;
+        self.subscribersButton.center = self.subscribersLabel.center;
     }
     
     if(self.channel.eCommerceURL && ![self.channel.eCommerceURL isEqualToString:@""] && self.mode == kChannelDetailsModeDisplay)
