@@ -85,7 +85,7 @@ extern void instrumentObjcMessageSends(BOOL);
 #endif
     
     //Google Adwords conversion tracking. TODO: check parameters with Guy!!
-    //[GoogleConversionPing pingWithConversionId:@"983664386" label:@"Km3nCP6G-wQQgo6G1QM" value:@"0" isRepeatable:NO];
+    [GoogleConversionPing pingWithConversionId:@"983664386" label:@"Km3nCP6G-wQQgo6G1QM" value:@"0" isRepeatable:NO];
     
     // We need to set the audio session so that that app will continue to play audio even if the mute switch is on
     AVAudioSession *audioSession = [AVAudioSession sharedInstance];
