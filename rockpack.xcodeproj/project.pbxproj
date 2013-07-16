@@ -539,6 +539,7 @@
 		38015B4E174CC51A005D3F18 /* SYNUserProfileViewController~iphone.xib in Resources */ = {isa = PBXBuildFile; fileRef = 38015B4D174CC51A005D3F18 /* SYNUserProfileViewController~iphone.xib */; };
 		38061BC1173D15BE00A7E349 /* SYNAccountSettingsModalContainer.xib in Resources */ = {isa = PBXBuildFile; fileRef = 38061BC0173D15BE00A7E349 /* SYNAccountSettingsModalContainer.xib */; };
 		38281F1D17439B770024DC18 /* SYNLoginBaseViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 38281F1C17439B770024DC18 /* SYNLoginBaseViewController.m */; };
+		3854788417946630006EB38B /* libGoogleConversionTracking.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 3854788317946630006EB38B /* libGoogleConversionTracking.a */; };
 		3862E89F172978D10066E8E7 /* Default~iphone.png in Resources */ = {isa = PBXBuildFile; fileRef = 3862E89C172978D10066E8E7 /* Default~iphone.png */; };
 		3862E8A0172978D10066E8E7 /* Default-568h@2x~iphone.png in Resources */ = {isa = PBXBuildFile; fileRef = 3862E89D172978D10066E8E7 /* Default-568h@2x~iphone.png */; };
 		3862E8A1172978D10066E8E7 /* Default@2x~iphone.png in Resources */ = {isa = PBXBuildFile; fileRef = 3862E89E172978D10066E8E7 /* Default@2x~iphone.png */; };
@@ -1816,7 +1817,9 @@
 		38061BC0173D15BE00A7E349 /* SYNAccountSettingsModalContainer.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = SYNAccountSettingsModalContainer.xib; sourceTree = "<group>"; };
 		38281F1B17439B770024DC18 /* SYNLoginBaseViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SYNLoginBaseViewController.h; sourceTree = "<group>"; };
 		38281F1C17439B770024DC18 /* SYNLoginBaseViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SYNLoginBaseViewController.m; sourceTree = "<group>"; };
-		3854788017940F75006EB38B /* Rockpack 5.xcdatamodel */ = {isa = PBXFileReference; lastKnownFileType = file; path = "Rockpack 5.xcdatamodel"; sourceTree = "<group>"; };
+		3854788017940F75006EB38B /* Rockpack 5.xcdatamodel */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcdatamodel; path = "Rockpack 5.xcdatamodel"; sourceTree = "<group>"; };
+		3854788217946630006EB38B /* GoogleConversionPing.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = GoogleConversionPing.h; path = "GoogleConversionTrackingSDK-iOS-1.2.0/GoogleConversionPing.h"; sourceTree = "<group>"; };
+		3854788317946630006EB38B /* libGoogleConversionTracking.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; name = libGoogleConversionTracking.a; path = "GoogleConversionTrackingSDK-iOS-1.2.0/libGoogleConversionTracking.a"; sourceTree = "<group>"; };
 		3862E89C172978D10066E8E7 /* Default~iphone.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = "Default~iphone.png"; path = "Assets/Images/Default~iphone.png"; sourceTree = "<group>"; };
 		3862E89D172978D10066E8E7 /* Default-568h@2x~iphone.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = "Default-568h@2x~iphone.png"; path = "Assets/Images/Default-568h@2x~iphone.png"; sourceTree = "<group>"; };
 		3862E89E172978D10066E8E7 /* Default@2x~iphone.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = "Default@2x~iphone.png"; path = "Assets/Images/Default@2x~iphone.png"; sourceTree = "<group>"; };
@@ -2579,6 +2582,7 @@
 				011C16861730043000CF50B9 /* Twitter.framework in Frameworks */,
 				010DEFD51629BDC40080F26B /* UIKit.framework in Frameworks */,
 				0166A51217688AA100A75B9D /* FacebookSDK.framework in Frameworks */,
+				3854788417946630006EB38B /* libGoogleConversionTracking.a in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -3258,6 +3262,7 @@
 				019824E51629CB1D00216900 /* Debug */,
 				BE7D34CB171443330085AB81 /* Device */,
 				019824E91629CBD000216900 /* Exception Handler */,
+				3854788117946612006EB38B /* Google Adwords */,
 				0173E6C5171822BF00EEE76B /* Google Analytics */,
 				011A162016EF5E96008CF25E /* Image Picker */,
 				019E6A5E165FD958002B312A /* OAuth2 */,
@@ -4015,6 +4020,15 @@
 				01D91969178B085D00D980A7 /* iPhone */,
 			);
 			name = Genres;
+			sourceTree = "<group>";
+		};
+		3854788117946612006EB38B /* Google Adwords */ = {
+			isa = PBXGroup;
+			children = (
+				3854788217946630006EB38B /* GoogleConversionPing.h */,
+				3854788317946630006EB38B /* libGoogleConversionTracking.a */,
+			);
+			name = "Google Adwords";
 			sourceTree = "<group>";
 		};
 		388CAF64172EBD8E00721372 /* iPhoneCell */ = {
@@ -6476,6 +6490,7 @@
 					"$(inherited)",
 					"\"$(SRCROOT)/RockPack\"",
 					"\"$(SRCROOT)\"",
+					"\"$(SRCROOT)/RockPack/GoogleConversionTrackingSDK-iOS-1.2.0\"",
 				);
 				OTHER_LDFLAGS = (
 					"-ObjC",
@@ -6520,6 +6535,7 @@
 					"$(inherited)",
 					"\"$(SRCROOT)/RockPack\"",
 					"\"$(SRCROOT)\"",
+					"\"$(SRCROOT)/RockPack/GoogleConversionTrackingSDK-iOS-1.2.0\"",
 				);
 				OTHER_LDFLAGS = (
 					"-ObjC",
@@ -6663,6 +6679,7 @@
 					"$(inherited)",
 					"\"$(SRCROOT)/RockPack\"",
 					"\"$(SRCROOT)\"",
+					"\"$(SRCROOT)/RockPack/GoogleConversionTrackingSDK-iOS-1.2.0\"",
 				);
 				OTHER_LDFLAGS = (
 					"-ObjC",
