@@ -185,8 +185,10 @@
     
     [self displayEmptyGenreMessage: NSLocalizedString(@"feed_screen_loading_message", nil)
                          andLoader: YES];
-    
-    [self loadAndUpdateFeedData];
+    if([self class] == [SYNFeedRootViewController class])
+    {
+        [self loadAndUpdateFeedData];
+    }
 }
 
 

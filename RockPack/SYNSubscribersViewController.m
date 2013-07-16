@@ -43,13 +43,14 @@
         self.navigationItem.titleView = labelContentView;
         
         
-        self.infoLabel = [[UILabel alloc] initWithFrame: CGRectZero];
+        self.infoLabel = [[UILabel alloc] initWithFrame: CGRectMake(0.0f,0.0f,self.contentSizeForViewInPopover.width,0.0f)];
         self.infoLabel.backgroundColor = [UIColor clearColor];
         self.infoLabel.textColor = [UIColor colorWithRed: (28.0/255.0) green: (31.0/255.0) blue: (33.0/255.0) alpha: (1.0)];
         self.infoLabel.font = [UIFont boldRockpackFontOfSize:15.0];
         self.infoLabel.textAlignment = NSTextAlignmentCenter;
         self.infoLabel.shadowColor = [UIColor whiteColor];
         self.infoLabel.shadowOffset = CGSizeMake(0.0, 1.0);
+        self.infoLabel.numberOfLines = 0;
     }
     
     
@@ -57,6 +58,7 @@
 }
 -(void)setInfoLabelText:(NSString*)text
 {
+    CGFloat width = self.infoLabel.frame.size.width;
     if(!text) // clear
     {
         [self.infoLabel removeFromSuperview];
@@ -64,6 +66,9 @@
     }
     self.infoLabel.text = text;
     [self.infoLabel sizeToFit];
+    CGRect newFrame = self.infoLabel.frame;
+    newFrame.size.width = width;
+    self.infoLabel.frame = newFrame;
     CGPoint position = CGPointMake(self.view.center.x, 200.0);
     self.infoLabel.center = position;
     self.infoLabel.frame = CGRectIntegral(self.infoLabel.frame);
