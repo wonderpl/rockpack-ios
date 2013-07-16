@@ -365,10 +365,19 @@
     
     self.originalContentOffset = self.videoThumbnailCollectionView.contentOffset;
 }
+- (IBAction)touchedSubscribersLabel:(id)sender
+{
+    self.subscribersLabel.textColor = [UIColor colorWithRed:38.0f/255.0f green:41.0f/255.0f blue:43.0f/255.0f alpha:1.0f];
+}
+
+- (IBAction)releasedSubscribersLabel:(id)sender
+{
+    self.subscribersLabel.textColor = [UIColor whiteColor];
+}
 
 -(IBAction)subscribersLabelPressed:(id)sender
 {
-    
+    [self releasedSubscribersLabel:sender];
     if (self.subscribersPopover)
         return;
     

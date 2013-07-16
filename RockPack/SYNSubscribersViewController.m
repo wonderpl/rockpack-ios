@@ -144,7 +144,10 @@
 - (void) collectionView: (UICollectionView *) collectionView didSelectItemAtIndexPath: (NSIndexPath *) indexPath
 {
     
-    
+    if(IS_IPHONE)
+    {
+        [appDelegate.viewStackManager hideModallyController];
+    }
     [super collectionView:collectionView didSelectItemAtIndexPath:indexPath];
 }
 
