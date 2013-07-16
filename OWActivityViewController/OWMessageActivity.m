@@ -48,6 +48,8 @@
                 return;
             
             MFMessageComposeViewController *messageComposeViewController = [[MFMessageComposeViewController alloc] init];
+            
+            
             [OWActivityDelegateObject sharedObject].controller = activityViewController.presentingController;
             messageComposeViewController.messageComposeDelegate = [OWActivityDelegateObject sharedObject];
             

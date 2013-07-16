@@ -23,6 +23,7 @@
 // THE SOFTWARE.
 //
 
+#import "Appirater.h"
 #import <Foundation/Foundation.h>
 
 @class OWActivityViewController;
@@ -38,6 +39,10 @@ typedef void (^OWActivityActionBlock)(OWActivity *activity, OWActivityViewContro
 @property (strong, nonatomic) OWActivityViewController *activityViewController;
 @property (strong, nonatomic) NSDictionary *userInfo;
 
-- (id)initWithTitle:(NSString *)title image:(UIImage *)image actionBlock:(OWActivityActionBlock)actionBlock;
+- (id) initWithTitle: (NSString *) title
+               image: (UIImage *) image
+         actionBlock: (OWActivityActionBlock) actionBlock;
+
+- (void) updateAPIRater;
 
 @end

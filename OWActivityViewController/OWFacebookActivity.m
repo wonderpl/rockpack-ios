@@ -23,42 +23,47 @@
 // THE SOFTWARE.
 //
 
-#import "OWFacebookActivity.h"
 #import "OWActivityViewController.h"
+#import "OWFacebookActivity.h"
 
 
 @implementation OWFacebookActivity
 
-- (id)init
+- (id) init
 {
-    self = [super initWithTitle:NSLocalizedStringFromTable(@"activity.Facebook.title", @"OWActivityViewController", @"Facebook")
-                          image:[UIImage imageNamed:@"OWActivityViewController.bundle/Icon_Facebook"]
-                    actionBlock:nil];
+    self = [super initWithTitle: NSLocalizedStringFromTable(@"activity.Facebook.title", @"OWActivityViewController", @"Facebook")
+                          image: [UIImage imageNamed: @"OWActivityViewController.bundle/Icon_Facebook"]
+                    actionBlock: nil];
+    
     if (!self)
+    {
         return nil;
+    }
     
     __typeof(&*self) __weak weakSelf = self;
     self.actionBlock = ^(OWActivity *activity, OWActivityViewController *activityViewController) {
         UIViewController *presenter = activityViewController.presentingController;
         NSDictionary *userInfo = weakSelf.userInfo ? weakSelf.userInfo : activityViewController.userInfo;
-        [activityViewController dismissViewControllerAnimated:YES completion:^{
-            [weakSelf shareFromViewController:presenter
-                                         text:userInfo[@"text"]
-                                          url:userInfo[@"url"]
-                                        image:userInfo[@"image"]
-                                      isOwner:userInfo[@"owner"]
-                                      isVideo:userInfo[@"video"]];
-        }];
+        [activityViewController dismissViewControllerAnimated: YES
+                                                   completion: ^{
+                                                       [weakSelf  shareFromViewController: presenter
+                                                                                     text: userInfo[@"text"]
+                                                                                      url: userInfo[@"url"]
+                                                                                    image: userInfo[@"image"]
+                                                                                  isOwner: userInfo[@"owner"]
+                                                                                  isVideo: userInfo[@"video"]];
+                                                   }];
     };
     
     return self;
 }
 
+
 - (void) shareFromViewController: (UIViewController *) viewController
                             text: (NSString *) text url: (NSURL *) url
                            image: (UIImage *) image
-                           isOwner: (NSNumber *) isOwner
-                           isVideo: (NSNumber *) isVideo
+                         isOwner: (NSNumber *) isOwner
+                         isVideo: (NSNumber *) isVideo
 {
     FBAppCall *appCall = nil;
     
@@ -66,7 +71,8 @@
     
     id<FBOpenGraphAction> action = (id<FBOpenGraphAction>)[FBGraphObject graphObject];
     
-    FBOpenGraphActionShareDialogParams* params = [[FBOpenGraphActionShareDialogParams alloc] init];
+    FBOpenGraphActionShareDialogParams *params = [[FBOpenGraphActionShareDialogParams alloc] init];
+    
     if (isVideo.boolValue)
     {
         [action setObject: [url absoluteString]
@@ -87,60 +93,78 @@
         if (isOwner.boolValue == TRUE)
         {
             params.actionType = [NSString stringWithFormat: @"%@:create", facebookNamespace];
-//            params.actionType = @"rockpack-dev:create";
+            //            params.actionType = @"rockpack-dev:create";
         }
         else
         {
             params.actionType = [NSString stringWithFormat: @"%@:share", facebookNamespace];
-//            params.actionType = @"rockpack-dev:share";
+            //            params.actionType = @"rockpack-dev:share";
         }
     }
     
     // Show the Share dialog if available
     if (([FBDialogs canPresentShareDialogWithOpenGraphActionParams: params] == TRUE))
-    { 
+    {
         appCall = [FBDialogs presentShareDialogWithOpenGraphAction: [params action]
                                                         actionType: [params actionType]
                                                previewPropertyName: [params previewPropertyName]
                                                        clientState: nil
                                                            handler: ^(FBAppCall *call, NSDictionary *results, NSError *error) {
-                                                               if (error) {
+                                                               if (error)
+                                                               {
                                                                    NSLog(@"Error: %@", error.description);
-                                                               } else {
+                                                               }
+                                                               else
+                                                               {
                                                                    NSLog(@"Success!");
+                                                                   [self updateAPIRater];
                                                                }
                                                            }];
     }
-//    else 
-//    {
-//        // Try the Share dialog if available
-//        appCall = [FBDialogs presentShareDialogWithLink: url
-//                                                   name: nil
-//                                                caption: text
-//                                            description: nil
-//                                                picture: nil
-//                                            clientState: nil
-//                                                handler: ^(FBAppCall *call, NSDictionary *results, NSError *error) {
-//                                                    if (error) {
-//                                                        NSLog(@"Error: %@", error.description);
-//                                                    } else {
-//                                                        NSLog(@"Success!");
-//                                                    }
-//                                                }];
-//    }
+    
+    //    else
+    //    {
+    //        // Try the Share dialog if available
+    //        appCall = [FBDialogs presentShareDialogWithLink: url
+    //                                                   name: nil
+    //                                                caption: text
+    //                                            description: nil
+    //                                                picture: nil
+    //                                            clientState: nil
+    //                                                handler: ^(FBAppCall *call, NSDictionary *results, NSError *error) {
+    //                                                    if (error) {
+    //                                                        NSLog(@"Error: %@", error.description);
+    //                                                    } else {
+    //                                                        NSLog(@"Success!");
+    //                                                    }
+    //                                                }];
+    //    }
     
     // If neither of the above methods worked, then try the old way...
     if (appCall == nil)
     {
         // OK, just default to LCD
-        SLComposeViewController *facebookViewComposer = [SLComposeViewController composeViewControllerForServiceType:SLServiceTypeFacebook];
+        SLComposeViewController *facebookViewComposer = [SLComposeViewController composeViewControllerForServiceType: SLServiceTypeFacebook];
+        
+        // Add a completion handler so that we can check
+        facebookViewComposer.completionHandler = ^(SLComposeViewControllerResult result) {
+            if (result == SLComposeViewControllerResultDone)
+            {
+                [self updateAPIRater];
+            }
+        };
         
         viewController.modalPresentationStyle = UIModalPresentationCurrentContext;
         
         if (text)
-            [facebookViewComposer setInitialText:text];
+        {
+            [facebookViewComposer setInitialText: text];
+        }
+        
         if (url)
-            [facebookViewComposer addURL:url];
+        {
+            [facebookViewComposer addURL: url];
+        }
         
         [viewController presentViewController: facebookViewComposer
                                      animated: YES
