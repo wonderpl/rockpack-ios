@@ -4,68 +4,50 @@
 #import "Video.h"
 #import <Foundation/Foundation.h>
 
-
-@interface Video ()
-
-// Private interface goes here.
-
-@end
-
-
 @implementation Video
 
 #pragma mark - Object factory
 
-+(Video*)instanceFromVideo:(Video*)video
- usingManagedObjectContext: (NSManagedObjectContext *) managedObjectContext {
-    
-    Video* instance = instance = [Video insertInManagedObjectContext: managedObjectContext];
++ (Video *) instanceFromVideo: (Video *) video
+    usingManagedObjectContext: (NSManagedObjectContext *) managedObjectContext
+{
+    Video *instance = instance = [Video insertInManagedObjectContext: managedObjectContext];
     
     instance.uniqueId = video.uniqueId;
-    
     instance.categoryId = video.categoryId;
-    
     instance.viewCount = video.viewCount;
-    
     instance.dateUploaded = video.dateUploaded;
-    
     instance.duration = video.duration;
-    
     instance.source = video.source;
-    
     instance.sourceId = video.sourceId;
-    
     instance.sourceUsername = video.sourceUsername;
-    
     instance.starCount = video.starCount;
-    
     instance.starredByUser = video.starredByUser;
-    
     instance.thumbnailURL = video.thumbnailURL;
     
     return instance;
-    
 }
+
 
 + (Video *) instanceFromDictionary: (NSDictionary *) dictionary
          usingManagedObjectContext: (NSManagedObjectContext *) managedObjectContext
-                ignoringObjectTypes: (IgnoringObjects) ignoringObjects
+               ignoringObjectTypes: (IgnoringObjects) ignoringObjects
 {
     // Get the unique id of this object from the dictionary that has been passed in
     NSString *uniqueId = [dictionary objectForKey: @"id"
-                                      withDefault: @"Uninitialized Id"];    
+                                      withDefault: @"Uninitialized Id"];
     Video *instance = [Video insertInManagedObjectContext: managedObjectContext];
-        
-        // As we have a new object, we need to set all the attributes (from the dictionary passed in)
-        // We have already obtained the uniqueId, so pass it in as an optimisation
-        [instance setAttributesFromDictionary: dictionary
-                                       withId: uniqueId
-                    usingManagedObjectContext: managedObjectContext
-                          ignoringObjectTypes: ignoringObjects];
-
+    
+    // As we have a new object, we need to set all the attributes (from the dictionary passed in)
+    // We have already obtained the uniqueId, so pass it in as an optimisation
+    [instance setAttributesFromDictionary: dictionary
+                                   withId: uniqueId
+                usingManagedObjectContext: managedObjectContext
+                      ignoringObjectTypes: ignoringObjects];
     
     // Update video starred & viewed
-    [SYNActivityManager.sharedInstance updateActivityForVideo: instance];
+    [SYNActivityManager.sharedInstance
+     updateActivityForVideo: instance];
     
     return instance;
 }
@@ -75,12 +57,11 @@
                               withId: (NSString *) uniqueId
            usingManagedObjectContext: (NSManagedObjectContext *) managedObjectContext
                  ignoringObjectTypes: (IgnoringObjects) ignoringObjects
-
 {
     // Is we are not actually a dictionary, then bail
     if (![dictionary isKindOfClass: [NSDictionary class]])
     {
-        AssertOrLog (@"setAttributesFromDictionary: not a dictionary, unable to construct object");
+        AssertOrLog(@"setAttributesFromDictionary: not a dictionary, unable to construct object");
         return;
     }
     
@@ -91,10 +72,10 @@
                                    withDefault: @""];
     
     self.viewCount = [dictionary objectForKey: @"source_view_count"
-                                   withDefault: @0];
+                                  withDefault: @0];
     
-    self.dateUploaded = [dictionary dateFromISO6801StringForKey:@"source_date_uploaded"
-                                                    withDefault:[NSDate date]];
+    self.dateUploaded = [dictionary dateFromISO6801StringForKey: @"source_date_uploaded"
+                                                    withDefault: [NSDate date]];
     
     self.duration = [dictionary objectForKey: @"duration"
                                  withDefault: @0];
@@ -137,5 +118,6 @@
 {
     return [NSString stringWithFormat: @"uniqueId(%@), categoryId: %@, source: %@, sourceId: %@, sourceUsername: %@ starCount: %@, starredByUser: %@, thumbnailURL: %@", self.uniqueId, self.categoryId, self.source, self.sourceId, self.sourceUsername, self.starCount, self.starredByUser, self.thumbnailURL];
 }
+
 
 @end

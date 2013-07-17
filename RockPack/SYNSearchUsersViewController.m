@@ -48,6 +48,17 @@
 
 #pragma mark - View Lifecycle
 
+- (void) viewDidLoad
+{
+    // Register Footer
+    UINib *footerViewNib = [UINib nibWithNibName: @"SYNChannelFooterMoreView"
+                                          bundle: nil];
+    
+    [self.usersThumbnailCollectionView registerNib: footerViewNib
+                        forSupplementaryViewOfKind: UICollectionElementKindSectionFooter
+                               withReuseIdentifier: @"SYNChannelFooterMoreView"];
+}
+
 - (void) viewWillAppear: (BOOL) animated
 {
     [super viewWillAppear: animated];
@@ -172,6 +183,70 @@
                                                }
                                            }];
     }
+}
+
+
+#pragma mark - Footer support
+
+- (UICollectionReusableView *) collectionView: (UICollectionView *) collectionView
+            viewForSupplementaryElementOfKind: (NSString *) kind
+                                  atIndexPath: (NSIndexPath *) indexPath
+{
+    if (collectionView != self.usersThumbnailCollectionView)
+        return nil;
+    
+    UICollectionReusableView* supplementaryView;
+    
+    if (kind == UICollectionElementKindSectionFooter)
+    {
+        if (self.users.count == 0)
+        {
+            return supplementaryView;
+        }
+        
+        self.footerView = [self.usersThumbnailCollectionView dequeueReusableSupplementaryViewOfKind: kind
+                                                                                withReuseIdentifier: @"SYNChannelFooterMoreView"
+                                                                                       forIndexPath: indexPath];
+        self.footerView.showsLoading = self.isLoadingMoreContent;
+        
+        supplementaryView = self.footerView;
+    }
+    
+    return supplementaryView;
+}
+
+
+- (CGSize) collectionView: (UICollectionView *) collectionView
+                   layout: (UICollectionViewLayout*) collectionViewLayout
+           referenceSizeForFooterInSection: (NSInteger) section
+{
+    CGSize footerSize;
+    
+    if (collectionView == self.usersThumbnailCollectionView)
+    {
+        footerSize = [self footerSize];
+        
+        
+        // Now set to zero anyway if we have already read in all the items
+        NSInteger nextStart = self.dataRequestRange.location + self.dataRequestRange.length; // one is subtracted when the call happens for 0 indexing
+        
+        // FIXME: Is this comparison correct?  Should it just be self.dataRequestRange.location >= self.dataItemsAvailable?
+        if (nextStart >= self.dataItemsAvailable)
+        {
+            DebugLog(@"Set footer size to border");
+            footerSize = CGSizeMake(1.0f, 5.0f);
+        }
+        else
+        {
+            DebugLog(@"Normal footer size");
+        }
+    }
+    else
+    {
+        footerSize = CGSizeZero;
+    }
+    
+    return footerSize;
 }
 
 
