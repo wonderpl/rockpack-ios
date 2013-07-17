@@ -674,12 +674,6 @@
 		38A200871731607F00FB9F57 /* PanelSearchSuggestionHighlighted~iphone.png in Resources */ = {isa = PBXBuildFile; fileRef = 38A2FF931731607F00FB9F57 /* PanelSearchSuggestionHighlighted~iphone.png */; };
 		38A200881731607F00FB9F57 /* PanelSearchSuggestion~iphone.png in Resources */ = {isa = PBXBuildFile; fileRef = 38A2FF941731607F00FB9F57 /* PanelSearchSuggestion~iphone.png */; };
 		38A200891731607F00FB9F57 /* PanelSearch~iphone.png in Resources */ = {isa = PBXBuildFile; fileRef = 38A2FF951731607F00FB9F57 /* PanelSearch~iphone.png */; };
-		38A2008A1731607F00FB9F57 /* SearchTab@2x~iphone.png in Resources */ = {isa = PBXBuildFile; fileRef = 38A2FF961731607F00FB9F57 /* SearchTab@2x~iphone.png */; };
-		38A2008B1731607F00FB9F57 /* SearchTabHighlighted@2x~iphone.png in Resources */ = {isa = PBXBuildFile; fileRef = 38A2FF971731607F00FB9F57 /* SearchTabHighlighted@2x~iphone.png */; };
-		38A2008C1731607F00FB9F57 /* SearchTabHighlighted~iphone.png in Resources */ = {isa = PBXBuildFile; fileRef = 38A2FF981731607F00FB9F57 /* SearchTabHighlighted~iphone.png */; };
-		38A2008D1731607F00FB9F57 /* SearchTabSelected@2x~iphone.png in Resources */ = {isa = PBXBuildFile; fileRef = 38A2FF991731607F00FB9F57 /* SearchTabSelected@2x~iphone.png */; };
-		38A2008E1731607F00FB9F57 /* SearchTabSelected~iphone.png in Resources */ = {isa = PBXBuildFile; fileRef = 38A2FF9A1731607F00FB9F57 /* SearchTabSelected~iphone.png */; };
-		38A2008F1731607F00FB9F57 /* SearchTab~iphone.png in Resources */ = {isa = PBXBuildFile; fileRef = 38A2FF9B1731607F00FB9F57 /* SearchTab~iphone.png */; };
 		38A200901731607F00FB9F57 /* ArrowSettings@2x~iphone.png in Resources */ = {isa = PBXBuildFile; fileRef = 38A2FF9D1731607F00FB9F57 /* ArrowSettings@2x~iphone.png */; };
 		38A200911731607F00FB9F57 /* ArrowSettings~iphone.png in Resources */ = {isa = PBXBuildFile; fileRef = 38A2FF9E1731607F00FB9F57 /* ArrowSettings~iphone.png */; };
 		38A200921731607F00FB9F57 /* ButtonAccountSaveDefault@2x~iphone.png in Resources */ = {isa = PBXBuildFile; fileRef = 38A2FF9F1731607F00FB9F57 /* ButtonAccountSaveDefault@2x~iphone.png */; };
@@ -1986,12 +1980,6 @@
 		38A2FF931731607F00FB9F57 /* PanelSearchSuggestionHighlighted~iphone.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "PanelSearchSuggestionHighlighted~iphone.png"; sourceTree = "<group>"; };
 		38A2FF941731607F00FB9F57 /* PanelSearchSuggestion~iphone.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "PanelSearchSuggestion~iphone.png"; sourceTree = "<group>"; };
 		38A2FF951731607F00FB9F57 /* PanelSearch~iphone.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "PanelSearch~iphone.png"; sourceTree = "<group>"; };
-		38A2FF961731607F00FB9F57 /* SearchTab@2x~iphone.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "SearchTab@2x~iphone.png"; sourceTree = "<group>"; };
-		38A2FF971731607F00FB9F57 /* SearchTabHighlighted@2x~iphone.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "SearchTabHighlighted@2x~iphone.png"; sourceTree = "<group>"; };
-		38A2FF981731607F00FB9F57 /* SearchTabHighlighted~iphone.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "SearchTabHighlighted~iphone.png"; sourceTree = "<group>"; };
-		38A2FF991731607F00FB9F57 /* SearchTabSelected@2x~iphone.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "SearchTabSelected@2x~iphone.png"; sourceTree = "<group>"; };
-		38A2FF9A1731607F00FB9F57 /* SearchTabSelected~iphone.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "SearchTabSelected~iphone.png"; sourceTree = "<group>"; };
-		38A2FF9B1731607F00FB9F57 /* SearchTab~iphone.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "SearchTab~iphone.png"; sourceTree = "<group>"; };
 		38A2FF9D1731607F00FB9F57 /* ArrowSettings@2x~iphone.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "ArrowSettings@2x~iphone.png"; sourceTree = "<group>"; };
 		38A2FF9E1731607F00FB9F57 /* ArrowSettings~iphone.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "ArrowSettings~iphone.png"; sourceTree = "<group>"; };
 		38A2FF9F1731607F00FB9F57 /* ButtonAccountSaveDefault@2x~iphone.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "ButtonAccountSaveDefault@2x~iphone.png"; sourceTree = "<group>"; };
@@ -4244,12 +4232,6 @@
 				38A2FF931731607F00FB9F57 /* PanelSearchSuggestionHighlighted~iphone.png */,
 				38A2FF941731607F00FB9F57 /* PanelSearchSuggestion~iphone.png */,
 				38A2FF951731607F00FB9F57 /* PanelSearch~iphone.png */,
-				38A2FF961731607F00FB9F57 /* SearchTab@2x~iphone.png */,
-				38A2FF971731607F00FB9F57 /* SearchTabHighlighted@2x~iphone.png */,
-				38A2FF981731607F00FB9F57 /* SearchTabHighlighted~iphone.png */,
-				38A2FF991731607F00FB9F57 /* SearchTabSelected@2x~iphone.png */,
-				38A2FF9A1731607F00FB9F57 /* SearchTabSelected~iphone.png */,
-				38A2FF9B1731607F00FB9F57 /* SearchTab~iphone.png */,
 			);
 			path = search;
 			sourceTree = "<group>";
@@ -5623,12 +5605,6 @@
 				38A200871731607F00FB9F57 /* PanelSearchSuggestionHighlighted~iphone.png in Resources */,
 				38A200881731607F00FB9F57 /* PanelSearchSuggestion~iphone.png in Resources */,
 				38A200891731607F00FB9F57 /* PanelSearch~iphone.png in Resources */,
-				38A2008A1731607F00FB9F57 /* SearchTab@2x~iphone.png in Resources */,
-				38A2008B1731607F00FB9F57 /* SearchTabHighlighted@2x~iphone.png in Resources */,
-				38A2008C1731607F00FB9F57 /* SearchTabHighlighted~iphone.png in Resources */,
-				38A2008D1731607F00FB9F57 /* SearchTabSelected@2x~iphone.png in Resources */,
-				38A2008E1731607F00FB9F57 /* SearchTabSelected~iphone.png in Resources */,
-				38A2008F1731607F00FB9F57 /* SearchTab~iphone.png in Resources */,
 				38A200901731607F00FB9F57 /* ArrowSettings@2x~iphone.png in Resources */,
 				38A200911731607F00FB9F57 /* ArrowSettings~iphone.png in Resources */,
 				38A200921731607F00FB9F57 /* ButtonAccountSaveDefault@2x~iphone.png in Resources */,
@@ -6521,7 +6497,7 @@
 			buildSettings = {
 				CODE_SIGN_ENTITLEMENTS = RockPack/RockPack.entitlements;
 				CODE_SIGN_IDENTITY = "iPhone Developer: Michael Michailidis (97299UW9E8)";
-				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer: Michael Michailidis (97299UW9E8)";
+				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
 				COMPRESS_PNG_FILES = NO;
 				FRAMEWORK_SEARCH_PATHS = (
 					"$(inherited)",
@@ -6553,7 +6529,7 @@
 				);
 				PRODUCT_NAME = rockpack;
 				PROVISIONING_PROFILE = "0C5528CF-135F-4D9B-BA28-134B012607DE";
-				"PROVISIONING_PROFILE[sdk=iphoneos*]" = "0C5528CF-135F-4D9B-BA28-134B012607DE";
+				"PROVISIONING_PROFILE[sdk=iphoneos*]" = "";
 				TARGETED_DEVICE_FAMILY = "1,2";
 				WRAPPER_EXTENSION = app;
 			};
