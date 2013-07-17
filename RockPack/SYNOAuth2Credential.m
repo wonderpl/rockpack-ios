@@ -128,6 +128,7 @@
     
     // Invalidate any cached credentials we may have
     [appDelegate resetCurrentOAuth2Credentials];
+    [appDelegate setTokenExpiryTimer];
 }
 
 - (void) removeFromKeychainForService: (NSString *) service
