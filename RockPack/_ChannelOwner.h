@@ -6,6 +6,7 @@
 
 extern const struct ChannelOwnerAttributes {
 	__unsafe_unretained NSString *displayName;
+	__unsafe_unretained NSString *position;
 	__unsafe_unretained NSString *thumbnailURL;
 	__unsafe_unretained NSString *username;
 } ChannelOwnerAttributes;
@@ -20,6 +21,7 @@ extern const struct ChannelOwnerFetchedProperties {
 
 @class Channel;
 @class Channel;
+
 
 
 
@@ -43,6 +45,20 @@ extern const struct ChannelOwnerFetchedProperties {
 
 
 //- (BOOL)validateDisplayName:(id*)value_ error:(NSError**)error_;
+
+
+
+
+
+@property (nonatomic, strong) NSNumber* position;
+
+
+
+@property int64_t positionValue;
+- (int64_t)positionValue;
+- (void)setPositionValue:(int64_t)value_;
+
+//- (BOOL)validatePosition:(id*)value_ error:(NSError**)error_;
 
 
 
@@ -104,6 +120,15 @@ extern const struct ChannelOwnerFetchedProperties {
 
 - (NSString*)primitiveDisplayName;
 - (void)setPrimitiveDisplayName:(NSString*)value;
+
+
+
+
+- (NSNumber*)primitivePosition;
+- (void)setPrimitivePosition:(NSNumber*)value;
+
+- (int64_t)primitivePositionValue;
+- (void)setPrimitivePositionValue:(int64_t)value_;
 
 
 

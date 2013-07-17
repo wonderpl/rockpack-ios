@@ -3,7 +3,8 @@
 
 @interface AbstractCommon : _AbstractCommon
 
-typedef enum {
+typedef enum
+{
     kIgnoreNothing = 0,
     kIgnoreVideoInstanceObjects = 1 << 0,
     kIgnoreChannelObjects = 1 << 2,

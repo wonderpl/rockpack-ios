@@ -3,13 +3,6 @@
 
 static NSEntityDescription *coverArtEntity = nil;
 
-@interface CoverArt ()
-
-// Private interface goes here.
-
-@end
-
-
 @implementation CoverArt
 
 - (int) ordering
@@ -62,7 +55,7 @@ static NSEntityDescription *coverArtEntity = nil;
     else
     {
         instance = [CoverArt insertInManagedObjectContext: managedObjectContext];
-
+        
         [instance setAttributesFromDictionary: dictionary
                                        withId: uniqueId
                     usingManagedObjectContext: managedObjectContext];
@@ -79,22 +72,18 @@ static NSEntityDescription *coverArtEntity = nil;
                               withId: (NSString *) uniqueId
            usingManagedObjectContext: (NSManagedObjectContext *) managedObjectContext
 {
-    
-    
     if (![dictionary isKindOfClass: [NSDictionary class]])
     {
-        AssertOrLog (@"setAttributesFromDictionary: not a dictionary, unable to construct object");
+        AssertOrLog(@"setAttributesFromDictionary: not a dictionary, unable to construct object");
         return;
     }
-    
     
     self.uniqueId = uniqueId;
     
     self.thumbnailURL = [dictionary objectForKey: @"thumbnail_url"
                                      withDefault: @"http://localhost"];
     
-    
-	self.coverRef = [dictionary objectForKey: @"cover_ref"
+    self.coverRef = [dictionary objectForKey: @"cover_ref"
                                  withDefault: @"Uninitialized coverRef"];
     
     self.position = [dictionary objectForKey: @"position"

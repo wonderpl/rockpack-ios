@@ -13,22 +13,22 @@
 
 @interface SYNMainRegistry : SYNRegistry
 
-- (BOOL) registerCategoriesFromDictionary: (NSDictionary*) dictionary;
+- (BOOL) registerCategoriesFromDictionary: (NSDictionary *) dictionary;
 
 - (BOOL) registerDataForFeedFromDictionary: (NSDictionary *) dictionary
                                byAppending: (BOOL) append;
 
 
 - (BOOL) registerChannelsFromDictionary: (NSDictionary *) dictionary
-                                        forGenre: (Genre *) genre
-                                     byAppending: (BOOL) append;
+                               forGenre: (Genre *) genre
+                            byAppending: (BOOL) append;
 
 
-- (BOOL) registerUserFromDictionary: (NSDictionary*) dictionary;
+- (BOOL) registerUserFromDictionary: (NSDictionary *) dictionary;
 
-- (BOOL) registerSubscriptionsForCurrentUserFromDictionary: (NSDictionary*) dictionary;
+- (BOOL) registerSubscriptionsForCurrentUserFromDictionary: (NSDictionary *) dictionary;
 
-- (BOOL) registerCoverArtFromDictionary: (NSDictionary*) dictionary
+- (BOOL) registerCoverArtFromDictionary: (NSDictionary *) dictionary
                           forUserUpload: (BOOL) userUpload;
 
 

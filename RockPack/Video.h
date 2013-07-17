@@ -7,8 +7,8 @@
          usingManagedObjectContext: (NSManagedObjectContext *) managedObjectContext
                ignoringObjectTypes: (IgnoringObjects) ignoringObjects;
 
-+(Video*)instanceFromVideo:(Video*)video
- usingManagedObjectContext: (NSManagedObjectContext *) managedObjectContext;
++ (Video *) instanceFromVideo: (Video *) video
+    usingManagedObjectContext: (NSManagedObjectContext *) managedObjectContext;
 
 
 - (UIImage *) thumbnailImage;

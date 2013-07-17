@@ -1,15 +1,14 @@
+#import "AppConstants.h"
 #import "ChannelCover.h"
 #import "NSDictionary+Validation.h"
-#import "AppConstants.h"
-
-
 
 @implementation ChannelCover
 
-+ (ChannelCover *) instanceFromChannelCover:(ChannelCover *)channelCover
++ (ChannelCover *) instanceFromChannelCover: (ChannelCover *) channelCover
                   usingManagedObjectContext: (NSManagedObjectContext *) managedObjectContext
 {
-    ChannelCover* instance = [ChannelCover insertInManagedObjectContext: managedObjectContext];
+    ChannelCover *instance = [ChannelCover insertInManagedObjectContext: managedObjectContext];
+    
     instance.startU = channelCover.startU;
     instance.startV = channelCover.startV;
     instance.endU = channelCover.endU;
@@ -18,27 +17,29 @@
     return instance;
 }
 
+
 + (ChannelCover *) instanceFromDictionary: (NSDictionary *) dictionary
                 usingManagedObjectContext: (NSManagedObjectContext *) managedObjectContext
 {
     if (![dictionary isKindOfClass: [NSDictionary class]])
+    {
         return nil;
-
-    ChannelCover* instance = [ChannelCover insertInManagedObjectContext: managedObjectContext];
+    }
+    
+    ChannelCover *instance = [ChannelCover insertInManagedObjectContext: managedObjectContext];
     
     // example: protocol:http url:media.dev.rockpack.com/images/channel/thumbnail_medium/0f56V2vz5QpNotonBaRX2Q.jpg
     instance.imageUrl = [dictionary objectForKey: @"thumbnail_url"
                                      withDefault: @"http://localhost/no_thumb.jpg"];
-
-    NSArray* aoiArray = dictionary[@"aoi"];
     
-    if (aoiArray && [aoiArray isKindOfClass:[NSArray class]]) // can be nil
+    NSArray *aoiArray = dictionary[@"aoi"];
+    
+    if (aoiArray && [aoiArray isKindOfClass: [NSArray class]]) // can be nil
     {
-        
-        instance.startU = (NSNumber*)aoiArray[0];
-        instance.startV = (NSNumber*)aoiArray[1];
-        instance.endU = (NSNumber*)aoiArray[2];
-        instance.endV = (NSNumber*)aoiArray[3];
+        instance.startU = (NSNumber *) aoiArray[0];
+        instance.startV = (NSNumber *) aoiArray[1];
+        instance.endU = (NSNumber *) aoiArray[2];
+        instance.endV = (NSNumber *) aoiArray[3];
     }
     else
     {
@@ -53,37 +54,37 @@
 }
 
 
-- (NSString*) imageSmallUrl
+- (NSString *) imageSmallUrl
 {
     return [self.imageUrl stringByReplacingOccurrencesOfString: kImageSizeStringReplace
                                                     withString: @"thumbnail_small"];
 }
 
 
-- (NSString*) imageMediumUrl
+- (NSString *) imageMediumUrl
 {
     return self.imageUrl; // by default it is set for medium
 }
 
 
-- (NSString*) imageLargeUrl
+- (NSString *) imageLargeUrl
 {
     return [self.imageUrl stringByReplacingOccurrencesOfString: kImageSizeStringReplace
                                                     withString: @"thumbnail_large"];
 }
 
 
-- (NSString*) imageBackgroundUrl
+- (NSString *) imageBackgroundUrl
 {
     return [self.imageUrl stringByReplacingOccurrencesOfString: kImageSizeStringReplace
                                                     withString: @"background"];
 }
 
 
-- (NSString*) imageBackgroundPortraitUrl
+- (NSString *) imageBackgroundPortraitUrl
 {
     return [self.imageUrl stringByReplacingOccurrencesOfString: kImageSizeStringReplace
-                                                    withString:@"background_portrait"];
+                                                    withString: @"background_portrait"];
 }
 
 
@@ -103,5 +104,6 @@
 {
     return CGRectZero;
 }
+
 
 @end

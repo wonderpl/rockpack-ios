@@ -13,8 +13,8 @@
 
 @interface SYNSubscribersViewController : SYNUsersViewController
 
-@property (nonatomic, weak) Channel* channel;
+@property (nonatomic, weak) Channel *channel;
 
--(id)initWithChannel:(Channel*)channel;
+- (id) initWithChannel: (Channel *) channel;
 
 @end

@@ -294,14 +294,17 @@
 }
 
 
-- (MKNetworkOperation*) searchUsersForTerm: (NSString*)searchTerm
-                                  andRange: (NSRange)range
-                                onComplete: (MKNKSearchSuccessBlock)completeBlock
+- (MKNetworkOperation *) searchUsersForTerm: (NSString *) searchTerm
+                                   andRange: (NSRange) range
+                                byAppending: (BOOL) append
+                                 onComplete: (MKNKSearchSuccessBlock) completeBlock
 {
-    if (searchTerm == nil || [searchTerm isEqualToString:@""])
+    if (searchTerm == nil || [searchTerm isEqualToString: @""])
+    {
         return nil;
+    }
     
-    NSMutableDictionary* tempParameters = [NSMutableDictionary dictionary];
+    NSMutableDictionary *tempParameters = [NSMutableDictionary dictionary];
     
     tempParameters[@"q"] = searchTerm;
     
@@ -311,41 +314,46 @@
     
     [tempParameters addEntriesFromDictionary: [self getLocaleParam]];
     
-    NSDictionary* parameters = [NSDictionary dictionaryWithDictionary: tempParameters];
+    NSDictionary *parameters = [NSDictionary dictionaryWithDictionary: tempParameters];
     
     SYNNetworkOperationJsonObject *networkOperation =
-    (SYNNetworkOperationJsonObject*)[self operationWithPath:kAPISearchUsers params:parameters];
+    (SYNNetworkOperationJsonObject *) [self operationWithPath: kAPISearchUsers
+                                                       params: parameters];
     networkOperation.shouldNotCacheResponse = YES;
     
     [networkOperation addJSONCompletionHandler: ^(NSDictionary *dictionary) {
-        
         int itemsCount = 0;
         
         if (!dictionary)
+        {
             return;
+        }
         
-        NSNumber *totalNumber = (NSNumber*)dictionary[@"users"][@"total"];
+        NSNumber * totalNumber = (NSNumber *) dictionary[@"users"][@"total"];
         
         if (totalNumber && [totalNumber isKindOfClass: [NSNumber class]])
         {
             itemsCount = totalNumber.intValue;
         }
         
-        BOOL registryResultOk = [self.searchRegistry registerUsersFromDictionary: dictionary];
+        BOOL registryResultOk = [self.searchRegistry registerUsersFromDictionary: dictionary
+                                                                     byAppending: append];
         
         if (!registryResultOk)
+        {
             return;
+        }
         
         completeBlock(itemsCount);
-        
-        
-    } errorHandler:^(NSError* error) {
-        DebugLog(@"Update Videos Screens Request Failed");
-        if (error.code >=500 && error.code < 600)
-        {
-            [self showErrorPopUpForError:error];
-        }
-    }];
+    }
+                                  errorHandler: ^(NSError *error) {
+                                      DebugLog(@"Update Videos Screens Request Failed");
+                                      
+                                      if (error.code >= 500 && error.code < 600)
+                                      {
+                                          [self showErrorPopUpForError: error];
+                                      }
+                                  }];
     
     
     [self enqueueOperation: networkOperation];
