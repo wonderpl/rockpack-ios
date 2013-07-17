@@ -22,28 +22,29 @@
                               onError: (MKNKErrorBlock) errorBlock;
 
 
-- (MKNetworkOperation*) updateChannelsScreenForCategory: (NSString*) categoryId
-                                               forRange: (NSRange) range
-                                          ignoringCache: (BOOL) ignore
-                                           onCompletion: (MKNKJSONCompleteBlock) completeBlock
-                                                onError: (MKNKJSONErrorBlock) errorBlock;
+- (MKNetworkOperation *) updateChannelsScreenForCategory: (NSString *) categoryId
+                                                forRange: (NSRange) range
+                                           ignoringCache: (BOOL) ignore
+                                            onCompletion: (MKNKJSONCompleteBlock) completeBlock
+                                                 onError: (MKNKJSONErrorBlock) errorBlock;
 
-- (MKNetworkOperation*) searchVideosForTerm:(NSString*)searchTerm
-                                    inRange:(NSRange)range
-                                 onComplete:(MKNKSearchSuccessBlock)completeBlock;
+- (MKNetworkOperation *) searchVideosForTerm: (NSString *) searchTerm
+                                     inRange: (NSRange) range
+                                  onComplete: (MKNKSearchSuccessBlock) completeBlock;
 
-- (MKNetworkOperation*) searchChannelsForTerm:(NSString*)searchTerm
-                                     andRange:(NSRange)range
-                                   onComplete:(MKNKSearchSuccessBlock)completeBlock;
+- (MKNetworkOperation *) searchChannelsForTerm: (NSString *) searchTerm
+                                      andRange: (NSRange) range
+                                    onComplete: (MKNKSearchSuccessBlock) completeBlock;
 
-- (MKNetworkOperation*) searchUsersForTerm: (NSString*)searchTerm
-                                  andRange: (NSRange)range
-                                onComplete: (MKNKSearchSuccessBlock)completeBlock;
+- (MKNetworkOperation *) searchUsersForTerm: (NSString *) searchTerm
+                                   andRange: (NSRange) range
+                                byAppending: (BOOL) append
+                                 onComplete: (MKNKSearchSuccessBlock) completeBlock;
 
-- (MKNetworkOperation*) getAutocompleteForHint: (NSString*)hint
-                                   forResource: (EntityType)entityType
-                                  withComplete: (MKNKAutocompleteProcessBlock) completionBlock
-                                      andError: (MKNKErrorBlock) errorBlock;
+- (MKNetworkOperation *) getAutocompleteForHint: (NSString *) hint
+                                    forResource: (EntityType) entityType
+                                   withComplete: (MKNKAutocompleteProcessBlock) completionBlock
+                                       andError: (MKNKErrorBlock) errorBlock;
 
 - (void) updateCoverArtWithWithStart: (unsigned int) start
                                 size: (unsigned int) size
@@ -53,23 +54,23 @@
 - (void) updateCoverArtOnCompletion: (MKNKJSONCompleteBlock) completionBlock
                             onError: (MKNKErrorBlock) errorBlock;
 
-- (MKNetworkOperation*) updateChannel: (NSString *) resourceURL
-                    completionHandler: (MKNKUserSuccessBlock) completionBlock
-                         errorHandler: (MKNKUserErrorBlock) errorBlock;
+- (MKNetworkOperation *) updateChannel: (NSString *) resourceURL
+                     completionHandler: (MKNKUserSuccessBlock) completionBlock
+                          errorHandler: (MKNKUserErrorBlock) errorBlock;
 
--(void)channelOwnerDataForChannelOwner:(ChannelOwner*)channelOwner
-                            onComplete:(MKNKUserSuccessBlock)completeBlock
-                               onError:(MKNKUserErrorBlock)errorBlock;
+- (void) channelOwnerDataForChannelOwner: (ChannelOwner *) channelOwner
+                              onComplete: (MKNKUserSuccessBlock) completeBlock
+                                 onError: (MKNKUserErrorBlock) errorBlock;
 
-- (void) channelOwnerSubscriptionsForOwner: (ChannelOwner*) channelOwner
-                                  forRange: (NSRange)range
+- (void) channelOwnerSubscriptionsForOwner: (ChannelOwner *) channelOwner
+                                  forRange: (NSRange) range
                          completionHandler: (MKNKUserSuccessBlock) completionBlock
                               errorHandler: (MKNKUserErrorBlock) errorBlock;
 
-- (void) subscribersForUserId: (NSString*) userId
-                    channelId: (NSString*)channelId
-                     forRange: (NSRange)range
-             completionHandler: (MKNKSearchSuccessBlock) completionBlock
+- (void) subscribersForUserId: (NSString *) userId
+                    channelId: (NSString *) channelId
+                     forRange: (NSRange) range
+            completionHandler: (MKNKSearchSuccessBlock) completionBlock
                  errorHandler: (MKNKBasicFailureBlock) errorBlock;
 
 

@@ -10,10 +10,8 @@
 
 @interface SYNUsersViewController : SYNAbstractViewController
 
-@property (nonatomic, strong) UICollectionView* usersThumbnailCollectionView;
-
-@property (nonatomic, strong) NSArray* users;
-
+@property (nonatomic, strong) UICollectionView *usersThumbnailCollectionView;
+@property (nonatomic, strong) NSArray *users;
 @property (nonatomic) CGFloat offsetTop;
 
 @end

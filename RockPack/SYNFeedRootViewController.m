@@ -674,7 +674,7 @@
 
 #pragma mark - Load More Footer
 
-- (void) loadMoreVideos: (UIButton*) sender
+- (void) loadMoreVideos
 {
     if (self.moreItemsToLoad == TRUE)
     {
@@ -695,7 +695,7 @@
     if (scrollView.contentOffset.y >= scrollView.contentSize.height - scrollView.bounds.size.height - kLoadMoreFooterViewHeight
         && self.isLoadingMoreContent == NO)
     {
-        [self loadMoreVideos: nil];
+        [self loadMoreVideos];
     }
 }
 

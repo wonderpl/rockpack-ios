@@ -10,6 +10,6 @@
 
 @interface SYNModalSubscribersController : UIViewController
 
-- (id) initWithContentViewController:(UIViewController*)viewController;
+- (id) initWithContentViewController: (UIViewController *) viewController;
 
 @end

@@ -6,25 +6,23 @@
 //  Copyright (c) 2013 Nick Banks. All rights reserved.
 //
 
-#import "SYNUsersViewController.h"
+#import "SYNChannelFooterMoreView.h"
 #import "SYNDeviceManager.h"
 #import "SYNIntegralCollectionViewFlowLayout.h"
 #import "SYNUserThumbnailCell.h"
-#import "SYNChannelFooterMoreView.h"
+#import "SYNUsersViewController.h"
 
 @interface SYNUsersViewController ()
 
 @end
 
+
 @implementation SYNUsersViewController
 
-@synthesize usersThumbnailCollectionView = _usersThumbnailCollectionView;
 
 - (void) loadView
 {
-    
-    
-    SYNIntegralCollectionViewFlowLayout* flowLayout;
+    SYNIntegralCollectionViewFlowLayout *flowLayout;
     
     if (IS_IPHONE)
     {
@@ -42,15 +40,12 @@
                                                              scrollDirection: UICollectionViewScrollDirectionVertical
                                                                 sectionInset: UIEdgeInsetsMake(6.0, 6.0, 5.0, 6.0)];
     }
-        
-    
-    
     
     flowLayout.footerReferenceSize = [self footerSize];
     
     
     _usersThumbnailCollectionView = [[UICollectionView alloc] initWithFrame: CGRectZero
-                                                           collectionViewLayout: flowLayout];
+                                                       collectionViewLayout: flowLayout];
     
     _usersThumbnailCollectionView.dataSource = self;
     _usersThumbnailCollectionView.delegate = self;
@@ -59,18 +54,13 @@
     
     _usersThumbnailCollectionView.autoresizingMask = UIViewAutoresizingFlexibleWidth | UIViewAutoresizingFlexibleHeight;
     _usersThumbnailCollectionView.scrollsToTop = NO;
-    
-    
-    
+
     self.view = _usersThumbnailCollectionView;
     
     self.view.autoresizingMask = UIViewAutoresizingFlexibleWidth | UIViewAutoresizingFlexibleHeight;
     
-    
     _usersThumbnailCollectionView.showsVerticalScrollIndicator = YES;
-    
-    
-    
+
     // Register Cells
     UINib *thumbnailCellNib = [UINib nibWithNibName: @"SYNUserThumbnailCell"
                                              bundle: nil];
@@ -85,29 +75,24 @@
     [_usersThumbnailCollectionView registerNib: footerViewNib
                     forSupplementaryViewOfKind: UICollectionElementKindSectionFooter
                            withReuseIdentifier: @"SYNChannelFooterMoreView"];
-    
-    
 }
 
 
-- (void)viewDidLoad
+- (void) viewDidLoad
 {
     [super viewDidLoad];
     
     self.users = [NSMutableArray array];
-    
 }
 
--(void)viewWillAppear:(BOOL)animated
+
+- (void) viewWillAppear: (BOOL) animated
 {
-    [super viewWillAppear:animated];
+    [super viewWillAppear: animated];
     
-    [self setOffsetTop:0.0f];
-    
-    
-    
-
+    [self setOffsetTop: 0.0f];
 }
+
 
 #pragma mark - UICollectionView Delegate
 
@@ -116,61 +101,57 @@
     return 1;
 }
 
+
 - (NSInteger) collectionView: (UICollectionView *) view
       numberOfItemsInSection: (NSInteger) section
 {
     return self.users.count;
-    
 }
-
 
 
 - (UICollectionViewCell *) collectionView: (UICollectionView *) collectionView
                    cellForItemAtIndexPath: (NSIndexPath *) indexPath
 {
-    
     ChannelOwner *user = self.users[indexPath.row];
     
     SYNUserThumbnailCell *userThumbnailCell = [collectionView dequeueReusableCellWithReuseIdentifier: @"SYNUserThumbnailCell"
                                                                                         forIndexPath: indexPath];
-    
-    
-    
+
     userThumbnailCell.nameLabel.text = user.displayName;
     
     userThumbnailCell.imageUrlString = user.thumbnailLargeUrl;
     
     
-    [userThumbnailCell setDisplayName:user.displayName andUsername:user.username];
-    
-    
+    [userThumbnailCell setDisplayName: user.displayName
+                          andUsername: user.username];
+
     return userThumbnailCell;
 }
 
 
-
 - (void) collectionView: (UICollectionView *) collectionView didSelectItemAtIndexPath: (NSIndexPath *) indexPath
 {
+    ChannelOwner *channelOwner = (ChannelOwner *) self.users[indexPath.row];
     
-    ChannelOwner *channelOwner = (ChannelOwner*)self.users[indexPath.row];
-    
-    [appDelegate.viewStackManager viewProfileDetails:channelOwner];
+    [appDelegate.viewStackManager
+     viewProfileDetails: channelOwner];
 }
+
 
 #pragma mark - Getters/Setters
 
--(UICollectionView*)usersThumbnailCollectionView
+- (UICollectionView *) usersThumbnailCollectionView
 {
-    return (UICollectionView*)self.view;
+    return (UICollectionView *) self.view;
 }
 
--(void)setOffsetTop:(CGFloat)offsetTop
+
+- (void) setOffsetTop: (CGFloat) offsetTop
 {
     CGRect collectionViewFrame = CGRectMake(0.0f, offsetTop,
                                             self.view.superview.frame.size.width,
                                             [SYNDeviceManager.sharedInstance currentScreenHeight] - offsetTop);
-    
-    
+
     self.usersThumbnailCollectionView.frame = collectionViewFrame;
 }
 

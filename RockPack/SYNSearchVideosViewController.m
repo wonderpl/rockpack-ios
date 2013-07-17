@@ -315,18 +315,20 @@
 }
 
 
-- (void) loadMoreVideos: (UIButton*) sender
+- (void) loadMoreVideos
 {
-    
-    [self incrementRangeForNextRequest];
-    
-    [appDelegate.networkEngine searchVideosForTerm: self.searchTerm
-                                           inRange: self.dataRequestRange
-                                        onComplete: ^(int itemsCount) {
-                                            self.dataItemsAvailable = itemsCount;
-                                            self.loadingMoreContent = NO;
-                                            [self.videoThumbnailCollectionView reloadData];
-                                        }];
+    if (self.moreItemsToLoad == TRUE)
+    {
+        [self incrementRangeForNextRequest];
+        
+        [appDelegate.networkEngine searchVideosForTerm: self.searchTerm
+                                               inRange: self.dataRequestRange
+                                            onComplete: ^(int itemsCount) {
+                                                self.dataItemsAvailable = itemsCount;
+                                                self.loadingMoreContent = NO;
+                                                [self.videoThumbnailCollectionView reloadData];
+                                            }];
+    }
 }
 
 
