@@ -268,7 +268,10 @@ extern void instrumentObjcMessageSends(BOOL);
     //refresh token
     [self.oAuthNetworkEngine refreshOAuthTokenWithCompletionHandler: ^(id response) {
         
-        self.window.rootViewController = [self createAndReturnRootViewController];
+        if(!self.window.rootViewController)
+        {
+            self.window.rootViewController = [self createAndReturnRootViewController];
+        }
         
         [startImageView removeFromSuperview];
         
