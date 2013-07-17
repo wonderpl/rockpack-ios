@@ -6,6 +6,7 @@
 //  Copyright (c) 2013 Nick Banks. All rights reserved.
 //
 
+#import "GAI.h"
 #import "SYNDeviceManager.h"
 #import "SYNIntegralCollectionViewFlowLayout.h"
 #import "SYNSearchTabView.h"
@@ -58,6 +59,7 @@
                         forSupplementaryViewOfKind: UICollectionElementKindSectionFooter
                                withReuseIdentifier: @"SYNChannelFooterMoreView"];
 }
+
 
 - (void) viewWillAppear: (BOOL) animated
 {
