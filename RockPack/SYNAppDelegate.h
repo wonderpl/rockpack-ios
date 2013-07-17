@@ -56,5 +56,6 @@
 - (void) clearCoreDataMainEntities: (BOOL) userBound;
 - (void) logout;
 - (void) resetCurrentOAuth2Credentials;
+- (void) setTokenExpiryTimer;
 
 @end

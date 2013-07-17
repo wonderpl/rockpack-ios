@@ -176,7 +176,7 @@ extern void instrumentObjcMessageSends(BOOL);
         if ([self.currentOAuth2Credentials hasExpired])
         {
             
-            [self refreshExpiredToken];
+            [self refreshExpiredTokenOnStartup];
             
         }
         else // we have an access token //
@@ -184,7 +184,7 @@ extern void instrumentObjcMessageSends(BOOL);
             
             // set timer for auto refresh //
            
-            [self setupTokenExpiryTimer];
+            [self setTokenExpiryTimer];
             
             self.window.rootViewController = [self createAndReturnRootViewController];
         }
@@ -201,7 +201,7 @@ extern void instrumentObjcMessageSends(BOOL);
     return YES;
 }
 
-- (void) setupTokenExpiryTimer
+- (void) setTokenExpiryTimer
 {
     if (self.tokenExpiryTimer)
     {
@@ -219,7 +219,7 @@ extern void instrumentObjcMessageSends(BOOL);
 
 
 
-- (void) refreshExpiredToken
+- (void) refreshExpiredTokenOnStartup
 {
     //Add imageview to the window as placeholder while we wait for the token refresh call.
     [self.tokenExpiryTimer invalidate];
@@ -289,6 +289,20 @@ extern void instrumentObjcMessageSends(BOOL);
     }];
 }
 
+- (void) refreshExpiredToken
+{
+    [self.tokenExpiryTimer invalidate];
+    
+    self.tokenExpiryTimer = nil;
+    
+    [self.oAuthNetworkEngine refreshOAuthTokenWithCompletionHandler: ^(id response) {
+        
+    } errorHandler: ^(id response) {
+        
+        [self logout];
+        
+    }];
+}
 
 - (UIViewController*) createAndReturnRootViewController
 {
@@ -324,6 +338,8 @@ extern void instrumentObjcMessageSends(BOOL);
     
     self.masterViewController = nil;
     
+    [self.currentOAuth2Credentials removeFromKeychain];
+    
     self.currentUser.currentValue = NO;
     
     [self.mainManagedObjectContext deleteObject:self.currentUser];
@@ -350,8 +366,6 @@ extern void instrumentObjcMessageSends(BOOL);
     self.window.rootViewController = [self createAndReturnRootViewController];
     
     self.loginViewController = nil;
-    
-    [self setupTokenExpiryTimer];
 }
 
 
@@ -376,6 +390,8 @@ extern void instrumentObjcMessageSends(BOOL);
     
     
     [self saveContext: kSaveSynchronously];
+    [self.tokenExpiryTimer invalidate];
+    self.tokenExpiryTimer = nil;
 }
 
 
@@ -391,6 +407,17 @@ extern void instrumentObjcMessageSends(BOOL);
         else if (self.loginViewController.state == kLoginScreenStateLogin)
         {
             [self.loginViewController reEnableLoginControls];
+        }
+    }
+    else{
+        NSTimeInterval refreshTimeout = [self.currentOAuth2Credentials.expirationDate timeIntervalSinceNow];
+        if(refreshTimeout <kOAuthTokenExpiryMargin)
+        {
+            [self refreshExpiredTokenOnStartup];
+        }
+        else
+        {
+            [self setTokenExpiryTimer];
         }
     }
 }
