@@ -382,6 +382,8 @@
     if (self.subscribersPopover)
         return;
     
+    [GAI.sharedInstance.defaultTracker sendView: @"Subscribers List"];
+    
     SYNSubscribersViewController* subscribersViewController = [[SYNSubscribersViewController alloc] initWithChannel:self.channel];
     
     if (IS_IPAD)
