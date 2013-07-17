@@ -177,6 +177,10 @@
     
     [request setPredicate: [NSPredicate predicateWithFormat: @"viewId == %@", self.viewId]];
     
+    NSArray *sortDescriptorsArray = @[[NSSortDescriptor sortDescriptorWithKey: @"position"
+                                                                    ascending: YES]];
+    [request setSortDescriptors: sortDescriptorsArray];
+    
     request.fetchBatchSize = 20;
     
     NSError *error = nil;
