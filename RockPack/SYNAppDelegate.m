@@ -390,6 +390,8 @@ extern void instrumentObjcMessageSends(BOOL);
     
     
     [self saveContext: kSaveSynchronously];
+    [self.tokenExpiryTimer invalidate];
+    self.tokenExpiryTimer = nil;
 }
 
 
@@ -405,6 +407,17 @@ extern void instrumentObjcMessageSends(BOOL);
         else if (self.loginViewController.state == kLoginScreenStateLogin)
         {
             [self.loginViewController reEnableLoginControls];
+        }
+    }
+    else{
+        NSTimeInterval refreshTimeout = [self.currentOAuth2Credentials.expirationDate timeIntervalSinceNow];
+        if(refreshTimeout <kOAuthTokenExpiryMargin)
+        {
+            [self refreshExpiredTokenOnStartup];
+        }
+        else
+        {
+            [self setTokenExpiryTimer];
         }
     }
 }
