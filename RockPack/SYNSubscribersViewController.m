@@ -23,7 +23,7 @@
 
 - (id) initWithChannel: (Channel *) channel
 {
-    if (self = [super initWithViewId: kChannelDetailsViewId])
+    if (self = [super initWithViewId: kSubscribersListViewId])
     {
         self.title = NSLocalizedString(@"SUBSCRIBERS", nil);
         self.channel = channel;
