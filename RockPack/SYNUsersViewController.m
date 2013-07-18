@@ -30,7 +30,7 @@
                                                      minimumInterItemSpacing: 0.0
                                                           minimumLineSpacing: 6.0
                                                              scrollDirection: UICollectionViewScrollDirectionVertical
-                                                                sectionInset: UIEdgeInsetsMake(2.0, 2.0, 46.0, 2.0)];
+                                                                sectionInset: UIEdgeInsetsMake(5.0, 2.0, 0.0, 2.0)];
     }
     else
     {
