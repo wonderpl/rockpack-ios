@@ -763,11 +763,13 @@
     {
         detailsString = [NSString stringWithFormat: @"%lld %@", self.channel.subscribersCountValue, NSLocalizedString(@"SUBSCRIBERS", nil)];
         self.shareButton.hidden = FALSE;
+        self.subscribersButton.hidden = FALSE;
     }
     else
     {
         detailsString = @"PRIVATE";
         self.shareButton.hidden = TRUE;
+        self.subscribersButton.hidden = TRUE;
     }
     
     self.subscribersLabel.text = detailsString;
