@@ -533,6 +533,10 @@
 - (void) collectionView: (UICollectionView *) cv
          didSelectItemAtIndexPath: (NSIndexPath *) indexPath
 {
+    if(self.isVideoExpanded)
+    {
+        return;
+    }
     id<GAITracker> tracker = [GAI sharedInstance].defaultTracker;
     
     [tracker sendEventWithCategory: @"uiAction"
@@ -563,6 +567,10 @@
 
 - (IBAction) userTouchedNextVideoButton: (id) sender
 {
+    if(self.isVideoExpanded)
+    {
+        return;
+    }
     id<GAITracker> tracker = [GAI sharedInstance].defaultTracker;
     
     [tracker sendEventWithCategory: @"uiAction"
@@ -579,6 +587,10 @@
 
 - (IBAction) userTouchedPreviousVideoButton: (id) sender
 {
+    if(self.isVideoExpanded)
+    {
+        return;
+    }
     id<GAITracker> tracker = [GAI sharedInstance].defaultTracker;
     
     [tracker sendEventWithCategory: @"uiAction"
@@ -600,6 +612,10 @@
 
 - (IBAction) userTouchedVideoAddItButton: (UIButton *) addItButton
 {
+    if(self.isVideoExpanded)
+    {
+        return;
+    }
     id<GAITracker> tracker = [GAI sharedInstance].defaultTracker;
     
     [tracker sendEventWithCategory: @"uiAction"
@@ -644,6 +660,10 @@
 
 - (IBAction) toggleStarButton: (UIButton *) button
 {
+    if(self.isVideoExpanded)
+    {
+        return;
+    }
     id<GAITracker> tracker = [GAI sharedInstance].defaultTracker;
     
     [tracker sendEventWithCategory: @"uiAction"
@@ -701,6 +721,10 @@
 
 - (IBAction) userTouchedCloseButton: (id) sender
 {
+    if(self.isVideoExpanded)
+    {
+        return;
+    }
     // Call the close method on our parent
     [self.overlayParent removeVideoOverlayController];
 }
@@ -709,6 +733,10 @@
 // The user touched the invisible button above the channel thumbnail, taking the user to the channel page
 - (IBAction) userTouchedChannelButton: (id) sender
 {
+    if(self.isVideoExpanded)
+    {
+        return;
+    }
     if(self.shownFromChannelScreen)
     {
         //Don't navigate to the channel in a new view controller, instead just pop this video player
@@ -728,6 +756,10 @@
 // The user touched the invisible button above the user details, taking the user to the profile page
 - (IBAction) userTouchedProfileButton: (id) sender
 {
+    if(self.isVideoExpanded)
+    {
+        return;
+    }
     [self.overlayParent removeVideoOverlayController];
     
     // Get the video instance for the currently selected video
