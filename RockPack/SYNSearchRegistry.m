@@ -150,7 +150,7 @@
                                byAppending: (BOOL) append;
 {
     return [self registerChannelOwnersFromDictionary: dictionary
-                                           forViewId: kChannelDetailsViewId
+                                           forViewId: kSubscribersListViewId
                                          byAppending: append];
 }
 
