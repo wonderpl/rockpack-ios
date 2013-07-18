@@ -421,7 +421,7 @@
         else
         {
             
-            //Re-select a top level category
+            //Re-select a top level category after a subcategory has been selected previously.
             SYNChannelCategoryTableHeader* headerView = (self.headerRegister)[@(self.lastSelectedIndexpath.section)];
             headerView.backgroundImage.image = [UIImage imageNamed:@"CategorySlideSelected"];
             headerView.arrowImage.image = [UIImage imageNamed:@"IconCategorySlideChevronSelected"];
