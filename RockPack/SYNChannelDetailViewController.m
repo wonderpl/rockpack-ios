@@ -652,9 +652,10 @@
     [updatedObjects enumerateObjectsUsingBlock: ^(id obj, NSUInteger idx, BOOL *stop) {
         if ([obj isKindOfClass:[Channel class]] && [((Channel*)obj).uniqueId isEqualToString:self.channel.uniqueId])
         {
-            self.dataItemsAvailable = self.channel.totalVideosValue;
+            Channel* objectChannel = (Channel*) obj;
+            self.dataItemsAvailable = objectChannel.totalVideosValue;
             
-            self.subscribeButton.selected = self.channel.subscribedByUserValue;
+            self.subscribeButton.selected = objectChannel.subscribedByUserValue;
             self.subscribeButton.enabled = YES;
             
             if (self.subscribingIndicator)
