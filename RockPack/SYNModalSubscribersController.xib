@@ -38,9 +38,9 @@
 				<array class="NSMutableArray" key="NSSubviews">
 					<object class="IBUIView" id="956847641">
 						<reference key="NSNextResponder" ref="191373211"/>
-						<int key="NSvFlags">292</int>
+						<int key="NSvFlags">274</int>
 						<array class="NSMutableArray" key="NSSubviews"/>
-						<string key="NSFrame">{{0, 88}, {320, 506}}</string>
+						<string key="NSFrame">{{0, 88}, {320, 392}}</string>
 						<reference key="NSSuperview" ref="191373211"/>
 						<string key="NSReuseIdentifierKey">_NS:9</string>
 						<object class="NSColor" key="IBUIBackgroundColor">
@@ -86,7 +86,7 @@
 					<object class="IBUIButton" id="469461421">
 						<reference key="NSNextResponder" ref="191373211"/>
 						<int key="NSvFlags">297</int>
-						<string key="NSFrame">{{8, 27}, {48, 49}}</string>
+						<string key="NSFrame">{{8, 22}, {48, 49}}</string>
 						<reference key="NSSuperview" ref="191373211"/>
 						<reference key="NSNextKeyView" ref="956847641"/>
 						<string key="NSReuseIdentifierKey">_NS:9</string>
@@ -124,29 +124,12 @@
 						</object>
 					</object>
 				</array>
-				<string key="NSFrameSize">{320, 568}</string>
+				<string key="NSFrameSize">{320, 480}</string>
 				<reference key="NSSuperview"/>
 				<reference key="NSNextKeyView" ref="69323484"/>
 				<object class="NSColor" key="IBUIBackgroundColor">
 					<int key="NSColorSpace">3</int>
 					<bytes key="NSWhite">MAA</bytes>
-				</object>
-				<object class="IBUIScreenMetrics" key="IBUISimulatedDestinationMetrics">
-					<string key="IBUISimulatedSizeMetricsClass">IBUIScreenMetrics</string>
-					<object class="NSMutableDictionary" key="IBUINormalizedOrientationToSizeMap">
-						<bool key="EncodedWithXMLCoder">YES</bool>
-						<array key="dict.sortedKeys">
-							<integer value="1"/>
-							<integer value="3"/>
-						</array>
-						<array key="dict.values">
-							<string>{320, 568}</string>
-							<string>{568, 320}</string>
-						</array>
-					</object>
-					<string key="IBUITargetRuntime">IBCocoaTouchFramework</string>
-					<string key="IBUIDisplayName">Retina 4 Full Screen</string>
-					<int key="IBUIType">2</int>
 				</object>
 				<string key="targetRuntimeIdentifier">IBCocoaTouchFramework</string>
 			</object>

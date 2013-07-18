@@ -157,14 +157,13 @@
 
 - (CGSize) collectionView: (UICollectionView *) collectionView
                    layout: (UICollectionViewLayout*) collectionViewLayout
-          referenceSizeForFooterInSection: (NSInteger) section
+           referenceSizeForFooterInSection: (NSInteger) section
 {
     CGSize footerSize;
     
     if (collectionView == self.usersThumbnailCollectionView)
     {
         footerSize = [self footerSize];
-        
         
         // Now set to zero anyway if we have already read in all the items
         NSInteger nextStart = self.dataRequestRange.location + self.dataRequestRange.length; // one is subtracted when the call happens for 0 indexing
@@ -173,7 +172,7 @@
         if (nextStart >= self.dataItemsAvailable)
         {
             DebugLog(@"Set footer size to border");
-            footerSize = CGSizeMake(1.0f, 5.0f);
+            footerSize = CGSizeZero;
         }
         else
         {
