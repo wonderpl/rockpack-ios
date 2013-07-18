@@ -357,8 +357,6 @@
 }
 
 
-
-
 - (IBAction) profileButtonTapped: (UIButton *) profileButton
 {
     NSIndexPath *indexPath = [self indexPathFromVideoInstanceButton: profileButton];
@@ -515,143 +513,155 @@
     [activityIndicatorView startAnimating];
     
     // Update the star/unstar status on the server
-    [appDelegate.oAuthNetworkEngine shareLinkWithObjectType: objectType
-                                                   objectId: objectId
-                                          completionHandler: ^(NSDictionary *responseDictionary) {
-                                              [activityIndicatorView stopAnimating];
-//                                              DebugLog(@"Share link successful");
-                                              
-                                              UIWindow *keyWindow = [[UIApplication sharedApplication] keyWindow];
-                                              CGRect keyWindowRect = [keyWindow bounds];
-                                              UIGraphicsBeginImageContextWithOptions(keyWindowRect.size, YES, 0.0f);
-                                              CGContextRef context = UIGraphicsGetCurrentContext();
-                                              [keyWindow.layer renderInContext: context];
-                                              UIImage *capturedScreenImage = UIGraphicsGetImageFromCurrentImageContext();
-                                              UIGraphicsEndImageContext();
-                                              
-                                              UIInterfaceOrientation orientation = [SYNDeviceManager.sharedInstance orientation];
-                                              
-                                              switch (orientation)
-                                              {
-                                                  case UIDeviceOrientationPortrait:
-                                                      orientation = UIImageOrientationUp;
-                                                      break;
-                                                      
-                                                  case UIDeviceOrientationPortraitUpsideDown:
-                                                      orientation = UIImageOrientationDown;
-                                                      break;
-                                                      
-                                                  case UIDeviceOrientationLandscapeLeft:
-                                                      orientation = UIImageOrientationLeft;
-                                                      break;
-                                                      
-                                                  case UIDeviceOrientationLandscapeRight:
-                                                      orientation = UIImageOrientationRight;
-                                                      break;
-                                                      
-                                                  default:
-                                                      orientation = UIImageOrientationRight;
-                                                      DebugLog(@"Unknown orientation");
-                                                      break;
-                                              }
-                                              
-                                              UIImage *fixedOrientationImage = [UIImage imageWithCGImage: capturedScreenImage.CGImage
-                                                                                                   scale: capturedScreenImage.scale
-                                                                                             orientation: orientation];
-                                              capturedScreenImage = fixedOrientationImage;
-                                              
-                                              // Prepare activities
-                                              OWFacebookActivity *facebookActivity = [[OWFacebookActivity alloc] init];
-                                              OWTwitterActivity *twitterActivity = [[OWTwitterActivity alloc] init];
-                                              OWMessageActivity *messageActivity = [[OWMessageActivity alloc] init];
-                                              OWMailActivity *mailActivity = [[OWMailActivity alloc] init];
-                                              
-                                              // Compile activities into an array, we will pass that array to
-                                              // OWActivityViewController on the next step
-                                              
-                                              NSArray *activities = @[facebookActivity, twitterActivity, messageActivity, mailActivity];
-                                              
-                                              // Create OWActivityViewController controller and assign data source
-                                              //
-                                              OWActivityViewController *activityViewController = [[OWActivityViewController alloc] initWithViewController: self
-                                                                                                                                               activities: activities];
-                                              
-                                              NSString *resourceURLString = responseDictionary[@"resource_url"];
-                                              NSString *message = responseDictionary[@"message"];
-                                              
-                                              if (resourceURLString == nil || [resourceURLString isEqualToString: @""])
-                                              {
-                                                  resourceURLString = @"http://rockpack.com";
-                                              }
-                                              
-                                              if (message == nil || [message isKindOfClass: [NSNull class]])
-                                              {
-                                                  message = @"";
-                                              }
-                                              
-                                              NSString *userName = nil;
-                                              NSString *subject = nil;
-                                                                                            
-                                              
-                                              User* user = appDelegate.currentUser;
-                                              if (user.fullNameIsPublicValue)
-                                              {
-                                                  userName = user.fullName;
-                                              }
-                                              
-                                              if (userName.length < 1)
-                                              {
-                                                  userName = user.username;
-                                              }
-                                              
-                                              if (userName != nil)
-                                              {
-                                                  NSString *what = @"channel";
-                                                  
-                                                  if (isVideo.boolValue == TRUE)
-                                                  {
-                                                     what = @"video";
-                                                  }
-                                                  
-                                                  subject = [NSString stringWithFormat: @"%@ has shared a %@ with you", userName, what];
-                                              }
-
-                                              NSURL *resourceURL = [NSURL URLWithString: resourceURLString];
-                                              
-                                              activityViewController.userInfo = @{@"text": message,
-                                                                                  @"url": resourceURL,
-                                                                                  @"image" : capturedScreenImage,
-                                                                                  @"owner" : isOwner,
-                                                                                  @"video" : isVideo,
-                                                                                  @"subject" : subject};
-                                              
-                                              // The activity controller needs to be presented from a popup on iPad, but normally on iPhone
-                                              if (IS_IPAD)
-                                              {
-                                                  self.activityPopoverController = [[UIPopoverController alloc] initWithContentViewController: activityViewController];
-                                                  self.activityPopoverController.popoverBackgroundViewClass = [SYNPopoverBackgroundView class];
-                                                  
-                                                  activityViewController.presentingPopoverController = _activityPopoverController;
-                                                  
-                                                  [self.activityPopoverController presentPopoverFromRect: rect
-                                                                                                  inView: inView
-                                                                                permittedArrowDirections: arrowDirections
-                                                                                                animated: YES];
-                                              }
-                                              else
-                                              {
-                                                  [activityViewController presentFromRootViewController];
-                                              }
-                                              
-            
-                                              completionBlock();
-                                          }
-                                               errorHandler: ^(NSDictionary* errorDictionary) {
-                                                   [activityIndicatorView stopAnimating];
-//                                                   DebugLog(@"Share link failed");
-                                                   completionBlock();
-                                               }];
-
+    [appDelegate.oAuthNetworkEngine
+     shareLinkWithObjectType: objectType
+     objectId: objectId
+     completionHandler: ^(NSDictionary *responseDictionary) {
+         [activityIndicatorView stopAnimating];
+         //                                              DebugLog(@"Share link successful");
+         
+         UIWindow *keyWindow = [[UIApplication sharedApplication] keyWindow];
+         CGRect keyWindowRect = [keyWindow bounds];
+         UIGraphicsBeginImageContextWithOptions(keyWindowRect.size, YES, 0.0f);
+         CGContextRef context = UIGraphicsGetCurrentContext();
+         [keyWindow.layer
+          renderInContext: context];
+         UIImage *capturedScreenImage = UIGraphicsGetImageFromCurrentImageContext();
+         UIGraphicsEndImageContext();
+         
+         UIInterfaceOrientation orientation = [SYNDeviceManager.sharedInstance orientation];
+         
+         switch (orientation)
+         {
+             case UIDeviceOrientationPortrait:
+                 orientation = UIImageOrientationUp;
+                 break;
+                 
+             case UIDeviceOrientationPortraitUpsideDown:
+                 orientation = UIImageOrientationDown;
+                 break;
+                 
+             case UIDeviceOrientationLandscapeLeft:
+                 orientation = UIImageOrientationLeft;
+                 break;
+                 
+             case UIDeviceOrientationLandscapeRight:
+                 orientation = UIImageOrientationRight;
+                 break;
+                 
+             default:
+                 orientation = UIImageOrientationRight;
+                 DebugLog(@"Unknown orientation");
+                 break;
+         }
+         
+         UIImage *fixedOrientationImage = [UIImage  imageWithCGImage: capturedScreenImage.CGImage
+                                                               scale: capturedScreenImage.scale
+                                                         orientation: orientation];
+         capturedScreenImage = fixedOrientationImage;
+         
+         // Prepare activities
+         OWFacebookActivity *facebookActivity = [[OWFacebookActivity alloc] init];
+         OWTwitterActivity *twitterActivity = [[OWTwitterActivity alloc] init];
+         
+         // Compile activities into an array, we will pass that array to
+         // OWActivityViewController on the next step
+         NSMutableArray *activities = @[facebookActivity, twitterActivity].mutableCopy;
+         
+         if ([MFMessageComposeViewController canSendText])
+         {
+             OWMessageActivity *messageActivity = [[OWMessageActivity alloc] init];
+             [activities addObject: messageActivity];
+         }
+         
+         if ([MFMailComposeViewController canSendMail])
+         {
+             OWMailActivity *mailActivity = [[OWMailActivity alloc] init];
+             [activities addObject: mailActivity
+            ];
+         }
+         
+         // Create OWActivityViewController controller and assign data source
+         //
+         OWActivityViewController *activityViewController = [[OWActivityViewController alloc]	 initWithViewController: self
+                                                                                                           activities: activities];
+         
+         NSString *resourceURLString = responseDictionary[@"resource_url"];
+         NSString *message = responseDictionary[@"message"];
+         
+         if (resourceURLString == nil || [resourceURLString isEqualToString: @""])
+         {
+             resourceURLString = @"http://rockpack.com";
+         }
+         
+         if (message == nil || [message isKindOfClass: [NSNull class]])
+         {
+             message = @"";
+         }
+         
+         NSString *userName = nil;
+         NSString *subject = nil;
+         
+         
+         User *user = appDelegate.currentUser;
+         
+         if (user.fullNameIsPublicValue)
+         {
+             userName = user.fullName;
+         }
+         
+         if (userName.length < 1)
+         {
+             userName = user.username;
+         }
+         
+         if (userName != nil)
+         {
+             NSString *what = @"channel";
+             
+             if (isVideo.boolValue == TRUE)
+             {
+                 what = @"video";
+             }
+             
+             subject = [NSString stringWithFormat: @"%@ has shared a %@ with you", userName, what];
+         }
+         
+         NSURL *resourceURL = [NSURL URLWithString: resourceURLString];
+         
+         activityViewController.userInfo = @{@"text": message,
+                                             @"url": resourceURL,
+                                             @"image": capturedScreenImage,
+                                             @"owner": isOwner,
+                                             @"video": isVideo,
+                                             @"subject": subject};
+         
+         // The activity controller needs to be presented from a popup on iPad, but normally on iPhone
+         if (IS_IPAD)
+         {
+             self.activityPopoverController = [[UIPopoverController alloc] initWithContentViewController: activityViewController];
+             self.activityPopoverController.popoverBackgroundViewClass = [SYNPopoverBackgroundView class];
+             
+             activityViewController.presentingPopoverController = _activityPopoverController;
+             
+             [self.activityPopoverController
+              presentPopoverFromRect: rect
+              inView: inView
+              permittedArrowDirections: arrowDirections
+              animated: YES];
+         }
+         else
+         {
+             [activityViewController presentFromRootViewController];
+         }
+         
+         completionBlock();
+     }
+     errorHandler: ^(NSDictionary *errorDictionary) {
+         [activityIndicatorView stopAnimating];
+         //                                                   DebugLog(@"Share link failed");
+         completionBlock();
+     }];
 }
 
 

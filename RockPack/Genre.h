@@ -2,14 +2,15 @@
 
 @interface Genre : _Genre {}
 
++ (Genre *) instanceFromDictionary: (NSDictionary *) dictionary
+         usingManagedObjectContext: (NSManagedObjectContext *) managedObjectContext;
 
-+ (Genre *)instanceFromDictionary: (NSDictionary *) dictionary usingManagedObjectContext: (NSManagedObjectContext *) managedObjectContext;
 - (void) setAttributesFromDictionary: (NSDictionary *) dictionary
                               withId: (NSString *) uniqueId
            usingManagedObjectContext: (NSManagedObjectContext *) managedObjectContext;
 
--(NSString*)getSQLForSubGenresSelector;
--(NSArray*)getSubGenreIdArray;
+- (NSString *) getSQLForSubGenresSelector;
+- (NSArray *) getSubGenreIdArray;
 
 
 @end

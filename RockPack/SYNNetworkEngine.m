@@ -301,14 +301,17 @@
 }
 
 
-- (MKNetworkOperation*) searchUsersForTerm: (NSString*)searchTerm
-                                  andRange: (NSRange)range
-                                onComplete: (MKNKSearchSuccessBlock)completeBlock
+- (MKNetworkOperation *) searchUsersForTerm: (NSString *) searchTerm
+                                   andRange: (NSRange) range
+                                byAppending: (BOOL) append
+                                 onComplete: (MKNKSearchSuccessBlock) completeBlock
 {
-    if (searchTerm == nil || [searchTerm isEqualToString:@""])
+    if (searchTerm == nil || [searchTerm isEqualToString: @""])
+    {
         return nil;
+    }
     
-    NSMutableDictionary* tempParameters = [NSMutableDictionary dictionary];
+    NSMutableDictionary *tempParameters = [NSMutableDictionary dictionary];
     
     tempParameters[@"q"] = searchTerm;
     
@@ -318,27 +321,29 @@
     
     [tempParameters addEntriesFromDictionary: [self getLocaleParam]];
     
-    NSDictionary* parameters = [NSDictionary dictionaryWithDictionary: tempParameters];
+    NSDictionary *parameters = [NSDictionary dictionaryWithDictionary: tempParameters];
     
     SYNNetworkOperationJsonObject *networkOperation =
-    (SYNNetworkOperationJsonObject*)[self operationWithPath:kAPISearchUsers params:parameters];
+    (SYNNetworkOperationJsonObject *) [self operationWithPath: kAPISearchUsers
+                                                       params: parameters];
     networkOperation.shouldNotCacheResponse = YES;
     
     [networkOperation addJSONCompletionHandler: ^(NSDictionary *dictionary) {
-        
         int itemsCount = 0;
         
         if (!dictionary)
+        {
             return;
+        }
         
-        NSNumber *totalNumber = (NSNumber*)dictionary[@"users"][@"total"];
+        NSNumber * totalNumber = (NSNumber *) dictionary[@"users"][@"total"];
         
         if (totalNumber && [totalNumber isKindOfClass: [NSNumber class]])
         {
             itemsCount = totalNumber.intValue;
         }
         [self.searchRegistry performInBackground:^BOOL(NSManagedObjectContext *backgroundContext) {
-            return [self.searchRegistry registerUsersFromDictionary: dictionary];
+            return [self.searchRegistry registerUsersFromDictionary: dictionary byAppending:append];
         } completionBlock:^(BOOL registryResultOk) {
             if (!registryResultOk)
                 return;

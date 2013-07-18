@@ -2,13 +2,17 @@
 // Make changes to CoverArt.h instead.
 
 #import <CoreData/CoreData.h>
-#import "AbstractCommon.h"
+
 
 extern const struct CoverArtAttributes {
 	__unsafe_unretained NSString *coverRef;
+	__unsafe_unretained NSString *fresh;
+	__unsafe_unretained NSString *markedForDeletion;
 	__unsafe_unretained NSString *position;
 	__unsafe_unretained NSString *thumbnailURL;
+	__unsafe_unretained NSString *uniqueId;
 	__unsafe_unretained NSString *userUpload;
+	__unsafe_unretained NSString *viewId;
 } CoverArtAttributes;
 
 extern const struct CoverArtRelationships {
@@ -23,10 +27,14 @@ extern const struct CoverArtFetchedProperties {
 
 
 
+
+
+
+
 @interface CoverArtID : NSManagedObjectID {}
 @end
 
-@interface _CoverArt : AbstractCommon {}
+@interface _CoverArt : NSManagedObject {}
 + (id)insertInManagedObjectContext:(NSManagedObjectContext*)moc_;
 + (NSString*)entityName;
 + (NSEntityDescription*)entityInManagedObjectContext:(NSManagedObjectContext*)moc_;
@@ -41,6 +49,34 @@ extern const struct CoverArtFetchedProperties {
 
 
 //- (BOOL)validateCoverRef:(id*)value_ error:(NSError**)error_;
+
+
+
+
+
+@property (nonatomic, strong) NSNumber* fresh;
+
+
+
+@property BOOL freshValue;
+- (BOOL)freshValue;
+- (void)setFreshValue:(BOOL)value_;
+
+//- (BOOL)validateFresh:(id*)value_ error:(NSError**)error_;
+
+
+
+
+
+@property (nonatomic, strong) NSNumber* markedForDeletion;
+
+
+
+@property BOOL markedForDeletionValue;
+- (BOOL)markedForDeletionValue;
+- (void)setMarkedForDeletionValue:(BOOL)value_;
+
+//- (BOOL)validateMarkedForDeletion:(id*)value_ error:(NSError**)error_;
 
 
 
@@ -70,6 +106,16 @@ extern const struct CoverArtFetchedProperties {
 
 
 
+@property (nonatomic, strong) NSString* uniqueId;
+
+
+
+//- (BOOL)validateUniqueId:(id*)value_ error:(NSError**)error_;
+
+
+
+
+
 @property (nonatomic, strong) NSNumber* userUpload;
 
 
@@ -79,6 +125,16 @@ extern const struct CoverArtFetchedProperties {
 - (void)setUserUploadValue:(BOOL)value_;
 
 //- (BOOL)validateUserUpload:(id*)value_ error:(NSError**)error_;
+
+
+
+
+
+@property (nonatomic, strong) NSString* viewId;
+
+
+
+//- (BOOL)validateViewId:(id*)value_ error:(NSError**)error_;
 
 
 
@@ -100,6 +156,24 @@ extern const struct CoverArtFetchedProperties {
 
 
 
+- (NSNumber*)primitiveFresh;
+- (void)setPrimitiveFresh:(NSNumber*)value;
+
+- (BOOL)primitiveFreshValue;
+- (void)setPrimitiveFreshValue:(BOOL)value_;
+
+
+
+
+- (NSNumber*)primitiveMarkedForDeletion;
+- (void)setPrimitiveMarkedForDeletion:(NSNumber*)value;
+
+- (BOOL)primitiveMarkedForDeletionValue;
+- (void)setPrimitiveMarkedForDeletionValue:(BOOL)value_;
+
+
+
+
 - (NSNumber*)primitivePosition;
 - (void)setPrimitivePosition:(NSNumber*)value;
 
@@ -115,11 +189,23 @@ extern const struct CoverArtFetchedProperties {
 
 
 
+- (NSString*)primitiveUniqueId;
+- (void)setPrimitiveUniqueId:(NSString*)value;
+
+
+
+
 - (NSNumber*)primitiveUserUpload;
 - (void)setPrimitiveUserUpload:(NSNumber*)value;
 
 - (BOOL)primitiveUserUploadValue;
 - (void)setPrimitiveUserUploadValue:(BOOL)value_;
+
+
+
+
+- (NSString*)primitiveViewId;
+- (void)setPrimitiveViewId:(NSString*)value;
 
 
 

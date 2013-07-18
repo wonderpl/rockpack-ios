@@ -6,10 +6,9 @@
 //  Copyright (c) Rockpack Ltd. All rights reserved.
 //
 
-#import "GAITrackedViewController.h"
 #import <UIKit/UIKit.h>
 
-@interface SYNAccountSettingsPushNotifications : GAITrackedViewController
+@interface SYNAccountSettingsPushNotifications : UIViewController
 
 
 @end

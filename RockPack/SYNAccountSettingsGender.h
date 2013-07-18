@@ -6,10 +6,9 @@
 //  Copyright (c) Rockpack Ltd. All rights reserved.
 //
 
-#import "GAITrackedViewController.h"
 #import <UIKit/UIKit.h>
 
-@interface SYNAccountSettingsGender : GAITrackedViewController <UITableViewDataSource,
-                                                                UITableViewDelegate>
+@interface SYNAccountSettingsGender : UIViewController <UITableViewDataSource,
+                                                        UITableViewDelegate>
 
 @end

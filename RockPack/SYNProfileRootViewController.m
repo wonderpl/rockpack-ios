@@ -34,8 +34,9 @@
                                             UIGestureRecognizerDelegate,
                                             SYNImagePickerControllerDelegate>
 
-@property (nonatomic) BOOL isIPhone;
 @property (nonatomic) BOOL deleteCellModeOn;
+@property (nonatomic) BOOL trackView;
+@property (nonatomic) BOOL isIPhone;
 @property (nonatomic) BOOL isUserProfile;
 @property (nonatomic, assign) BOOL subscriptionsTabActive;
 @property (nonatomic, assign, getter = isDeletionModeActive) BOOL deletionModeActive;
@@ -355,6 +356,35 @@
 - (void) viewWillAppear: (BOOL) animated
 {
     [super viewWillAppear: animated];
+    
+    if (self.user == appDelegate.currentUser)
+    {
+        // Don't track the very first user view
+        if (self.trackView == false)
+        {
+            self.trackView = TRUE;
+        }
+        else
+        {
+            [GAI.sharedInstance.defaultTracker sendView: @"Own Profile"];
+        }
+    }
+    else
+    {
+        if (self.isIPhone)
+        {
+            self.channelThumbnailCollectionView.scrollsToTop = !self.subscriptionsTabActive;
+            
+            self.subscriptionsViewController.channelThumbnailCollectionView.scrollsToTop = self.subscriptionsTabActive;
+        }
+        else
+        {
+            self.channelThumbnailCollectionView.scrollsToTop = YES;
+            
+            self.subscriptionsViewController.channelThumbnailCollectionView.scrollsToTop = NO;
+        }
+        [GAI.sharedInstance.defaultTracker sendView: @"User Profile"];
+    }
     
     self.channelThumbnailCollectionView.delegate = self;
     

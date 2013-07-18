@@ -185,8 +185,10 @@
     
     [self displayEmptyGenreMessage: NSLocalizedString(@"feed_screen_loading_message", nil)
                          andLoader: YES];
-    
-    [self loadAndUpdateFeedData];
+    if([self class] == [SYNFeedRootViewController class])
+    {
+        [self loadAndUpdateFeedData];
+    }
 }
 
 
@@ -546,7 +548,6 @@
     {
         footerSize = [self footerSize];
         
-        
         // Now set to zero anyway if we have already read in all the items
         NSInteger nextStart = self.dataRequestRange.location + self.dataRequestRange.length; // one is subtracted when the call happens for 0 indexing
         
@@ -669,7 +670,7 @@
 
 #pragma mark - Load More Footer
 
-- (void) loadMoreVideos: (UIButton*) sender
+- (void) loadMoreVideos
 {
     if (self.moreItemsToLoad == TRUE)
     {
@@ -690,7 +691,7 @@
     if (scrollView.contentOffset.y >= scrollView.contentSize.height - scrollView.bounds.size.height - kLoadMoreFooterViewHeight
         && self.isLoadingMoreContent == NO)
     {
-        [self loadMoreVideos: nil];
+        [self loadMoreVideos];
     }
 }
 

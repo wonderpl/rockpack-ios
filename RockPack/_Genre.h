@@ -2,11 +2,15 @@
 // Make changes to Genre.h instead.
 
 #import <CoreData/CoreData.h>
-#import "AbstractCommon.h"
+
 
 extern const struct GenreAttributes {
+	__unsafe_unretained NSString *fresh;
+	__unsafe_unretained NSString *markedForDeletion;
 	__unsafe_unretained NSString *name;
 	__unsafe_unretained NSString *priority;
+	__unsafe_unretained NSString *uniqueId;
+	__unsafe_unretained NSString *viewId;
 } GenreAttributes;
 
 extern const struct GenreRelationships {
@@ -21,14 +25,46 @@ extern const struct GenreFetchedProperties {
 
 
 
+
+
+
+
 @interface GenreID : NSManagedObjectID {}
 @end
 
-@interface _Genre : AbstractCommon {}
+@interface _Genre : NSManagedObject {}
 + (id)insertInManagedObjectContext:(NSManagedObjectContext*)moc_;
 + (NSString*)entityName;
 + (NSEntityDescription*)entityInManagedObjectContext:(NSManagedObjectContext*)moc_;
 - (GenreID*)objectID;
+
+
+
+
+
+@property (nonatomic, strong) NSNumber* fresh;
+
+
+
+@property BOOL freshValue;
+- (BOOL)freshValue;
+- (void)setFreshValue:(BOOL)value_;
+
+//- (BOOL)validateFresh:(id*)value_ error:(NSError**)error_;
+
+
+
+
+
+@property (nonatomic, strong) NSNumber* markedForDeletion;
+
+
+
+@property BOOL markedForDeletionValue;
+- (BOOL)markedForDeletionValue;
+- (void)setMarkedForDeletionValue:(BOOL)value_;
+
+//- (BOOL)validateMarkedForDeletion:(id*)value_ error:(NSError**)error_;
 
 
 
@@ -58,6 +94,26 @@ extern const struct GenreFetchedProperties {
 
 
 
+@property (nonatomic, strong) NSString* uniqueId;
+
+
+
+//- (BOOL)validateUniqueId:(id*)value_ error:(NSError**)error_;
+
+
+
+
+
+@property (nonatomic, strong) NSString* viewId;
+
+
+
+//- (BOOL)validateViewId:(id*)value_ error:(NSError**)error_;
+
+
+
+
+
 @property (nonatomic, strong) NSOrderedSet *subgenres;
 
 - (NSMutableOrderedSet*)subgenresSet;
@@ -80,6 +136,24 @@ extern const struct GenreFetchedProperties {
 @interface _Genre (CoreDataGeneratedPrimitiveAccessors)
 
 
+- (NSNumber*)primitiveFresh;
+- (void)setPrimitiveFresh:(NSNumber*)value;
+
+- (BOOL)primitiveFreshValue;
+- (void)setPrimitiveFreshValue:(BOOL)value_;
+
+
+
+
+- (NSNumber*)primitiveMarkedForDeletion;
+- (void)setPrimitiveMarkedForDeletion:(NSNumber*)value;
+
+- (BOOL)primitiveMarkedForDeletionValue;
+- (void)setPrimitiveMarkedForDeletionValue:(BOOL)value_;
+
+
+
+
 - (NSString*)primitiveName;
 - (void)setPrimitiveName:(NSString*)value;
 
@@ -91,6 +165,18 @@ extern const struct GenreFetchedProperties {
 
 - (int32_t)primitivePriorityValue;
 - (void)setPrimitivePriorityValue:(int32_t)value_;
+
+
+
+
+- (NSString*)primitiveUniqueId;
+- (void)setPrimitiveUniqueId:(NSString*)value;
+
+
+
+
+- (NSString*)primitiveViewId;
+- (void)setPrimitiveViewId:(NSString*)value;
 
 
 

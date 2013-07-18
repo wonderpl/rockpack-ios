@@ -2,19 +2,23 @@
 // Make changes to Video.h instead.
 
 #import <CoreData/CoreData.h>
-#import "AbstractCommon.h"
+
 
 extern const struct VideoAttributes {
 	__unsafe_unretained NSString *categoryId;
 	__unsafe_unretained NSString *dateUploaded;
 	__unsafe_unretained NSString *duration;
+	__unsafe_unretained NSString *fresh;
+	__unsafe_unretained NSString *markedForDeletion;
 	__unsafe_unretained NSString *source;
 	__unsafe_unretained NSString *sourceId;
 	__unsafe_unretained NSString *sourceUsername;
 	__unsafe_unretained NSString *starCount;
 	__unsafe_unretained NSString *starredByUser;
 	__unsafe_unretained NSString *thumbnailURL;
+	__unsafe_unretained NSString *uniqueId;
 	__unsafe_unretained NSString *viewCount;
+	__unsafe_unretained NSString *viewId;
 	__unsafe_unretained NSString *viewedByUser;
 } VideoAttributes;
 
@@ -39,10 +43,14 @@ extern const struct VideoFetchedProperties {
 
 
 
+
+
+
+
 @interface VideoID : NSManagedObjectID {}
 @end
 
-@interface _Video : AbstractCommon {}
+@interface _Video : NSManagedObject {}
 + (id)insertInManagedObjectContext:(NSManagedObjectContext*)moc_;
 + (NSString*)entityName;
 + (NSEntityDescription*)entityInManagedObjectContext:(NSManagedObjectContext*)moc_;
@@ -81,6 +89,34 @@ extern const struct VideoFetchedProperties {
 - (void)setDurationValue:(int64_t)value_;
 
 //- (BOOL)validateDuration:(id*)value_ error:(NSError**)error_;
+
+
+
+
+
+@property (nonatomic, strong) NSNumber* fresh;
+
+
+
+@property BOOL freshValue;
+- (BOOL)freshValue;
+- (void)setFreshValue:(BOOL)value_;
+
+//- (BOOL)validateFresh:(id*)value_ error:(NSError**)error_;
+
+
+
+
+
+@property (nonatomic, strong) NSNumber* markedForDeletion;
+
+
+
+@property BOOL markedForDeletionValue;
+- (BOOL)markedForDeletionValue;
+- (void)setMarkedForDeletionValue:(BOOL)value_;
+
+//- (BOOL)validateMarkedForDeletion:(id*)value_ error:(NSError**)error_;
 
 
 
@@ -154,6 +190,16 @@ extern const struct VideoFetchedProperties {
 
 
 
+@property (nonatomic, strong) NSString* uniqueId;
+
+
+
+//- (BOOL)validateUniqueId:(id*)value_ error:(NSError**)error_;
+
+
+
+
+
 @property (nonatomic, strong) NSNumber* viewCount;
 
 
@@ -163,6 +209,16 @@ extern const struct VideoFetchedProperties {
 - (void)setViewCountValue:(int64_t)value_;
 
 //- (BOOL)validateViewCount:(id*)value_ error:(NSError**)error_;
+
+
+
+
+
+@property (nonatomic, strong) NSString* viewId;
+
+
+
+//- (BOOL)validateViewId:(id*)value_ error:(NSError**)error_;
 
 
 
@@ -225,6 +281,24 @@ extern const struct VideoFetchedProperties {
 
 
 
+- (NSNumber*)primitiveFresh;
+- (void)setPrimitiveFresh:(NSNumber*)value;
+
+- (BOOL)primitiveFreshValue;
+- (void)setPrimitiveFreshValue:(BOOL)value_;
+
+
+
+
+- (NSNumber*)primitiveMarkedForDeletion;
+- (void)setPrimitiveMarkedForDeletion:(NSNumber*)value;
+
+- (BOOL)primitiveMarkedForDeletionValue;
+- (void)setPrimitiveMarkedForDeletionValue:(BOOL)value_;
+
+
+
+
 - (NSString*)primitiveSource;
 - (void)setPrimitiveSource:(NSString*)value;
 
@@ -267,11 +341,23 @@ extern const struct VideoFetchedProperties {
 
 
 
+- (NSString*)primitiveUniqueId;
+- (void)setPrimitiveUniqueId:(NSString*)value;
+
+
+
+
 - (NSNumber*)primitiveViewCount;
 - (void)setPrimitiveViewCount:(NSNumber*)value;
 
 - (int64_t)primitiveViewCountValue;
 - (void)setPrimitiveViewCountValue:(int64_t)value_;
+
+
+
+
+- (NSString*)primitiveViewId;
+- (void)setPrimitiveViewId:(NSString*)value;
 
 
 

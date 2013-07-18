@@ -4,8 +4,12 @@
 #import "_Genre.h"
 
 const struct GenreAttributes GenreAttributes = {
+	.fresh = @"fresh",
+	.markedForDeletion = @"markedForDeletion",
 	.name = @"name",
 	.priority = @"priority",
+	.uniqueId = @"uniqueId",
+	.viewId = @"viewId",
 };
 
 const struct GenreRelationships GenreRelationships = {
@@ -41,6 +45,16 @@ const struct GenreFetchedProperties GenreFetchedProperties = {
 + (NSSet*)keyPathsForValuesAffectingValueForKey:(NSString*)key {
 	NSSet *keyPaths = [super keyPathsForValuesAffectingValueForKey:key];
 	
+	if ([key isEqualToString:@"freshValue"]) {
+		NSSet *affectingKey = [NSSet setWithObject:@"fresh"];
+		keyPaths = [keyPaths setByAddingObjectsFromSet:affectingKey];
+		return keyPaths;
+	}
+	if ([key isEqualToString:@"markedForDeletionValue"]) {
+		NSSet *affectingKey = [NSSet setWithObject:@"markedForDeletion"];
+		keyPaths = [keyPaths setByAddingObjectsFromSet:affectingKey];
+		return keyPaths;
+	}
 	if ([key isEqualToString:@"priorityValue"]) {
 		NSSet *affectingKey = [NSSet setWithObject:@"priority"];
 		keyPaths = [keyPaths setByAddingObjectsFromSet:affectingKey];
@@ -49,6 +63,58 @@ const struct GenreFetchedProperties GenreFetchedProperties = {
 
 	return keyPaths;
 }
+
+
+
+
+@dynamic fresh;
+
+
+
+- (BOOL)freshValue {
+	NSNumber *result = [self fresh];
+	return [result boolValue];
+}
+
+- (void)setFreshValue:(BOOL)value_ {
+	[self setFresh:[NSNumber numberWithBool:value_]];
+}
+
+- (BOOL)primitiveFreshValue {
+	NSNumber *result = [self primitiveFresh];
+	return [result boolValue];
+}
+
+- (void)setPrimitiveFreshValue:(BOOL)value_ {
+	[self setPrimitiveFresh:[NSNumber numberWithBool:value_]];
+}
+
+
+
+
+
+@dynamic markedForDeletion;
+
+
+
+- (BOOL)markedForDeletionValue {
+	NSNumber *result = [self markedForDeletion];
+	return [result boolValue];
+}
+
+- (void)setMarkedForDeletionValue:(BOOL)value_ {
+	[self setMarkedForDeletion:[NSNumber numberWithBool:value_]];
+}
+
+- (BOOL)primitiveMarkedForDeletionValue {
+	NSNumber *result = [self primitiveMarkedForDeletion];
+	return [result boolValue];
+}
+
+- (void)setPrimitiveMarkedForDeletionValue:(BOOL)value_ {
+	[self setPrimitiveMarkedForDeletion:[NSNumber numberWithBool:value_]];
+}
+
 
 
 
@@ -81,6 +147,20 @@ const struct GenreFetchedProperties GenreFetchedProperties = {
 - (void)setPrimitivePriorityValue:(int32_t)value_ {
 	[self setPrimitivePriority:[NSNumber numberWithInt:value_]];
 }
+
+
+
+
+
+@dynamic uniqueId;
+
+
+
+
+
+
+@dynamic viewId;
+
 
 
 

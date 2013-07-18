@@ -25,7 +25,8 @@
             //DebugLog(@"Ignoring Cached Response...");
             return;
         }
-            
+        
+        NSLog(@"completedOperation.HTTPStatusCode: %i", completedOperation.HTTPStatusCode);
         
         if (completedOperation.HTTPStatusCode == 204)
         {

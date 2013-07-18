@@ -41,6 +41,7 @@
 #import "SYNImagePickerController.h"
 #import "SYNReportConcernTableViewController.h"
 #import "SYNExistingChannelsViewController.h"
+#import "Appirater.h"
 
 @interface SYNChannelDetailViewController () <UITextViewDelegate,
                                               SYNImagePickerControllerDelegate,
@@ -108,6 +109,7 @@
 @property (weak, nonatomic) IBOutlet UIButton *cancelTextInputButton;
 @property (weak, nonatomic) IBOutlet UIImageView *logoImageView;
 @property (weak, nonatomic) IBOutlet UIImageView *textBackgroundImageView;
+@property (weak, nonatomic) IBOutlet UIButton *subscribersButton;
 
 @end
 
@@ -125,6 +127,9 @@
         self.mode = mode;
         
 		self.channel = channel;
+        
+        
+        
 	}
 
 	return self;
@@ -209,7 +214,7 @@
     if (self.isIPhone)
     {
         layout.sectionInset = UIEdgeInsetsMake(0.0f, 0.0f, 0.0f, 0.0f);
-        self.videoThumbnailCollectionView.contentInset = UIEdgeInsetsMake([SYNDeviceManager.sharedInstance currentScreenHeight] - 168.0f, 0.0f, 0.0f, 0.0f);
+        self.videoThumbnailCollectionView.contentInset = UIEdgeInsetsMake([SYNDeviceManager.sharedInstance currentScreenHeight] - 190.0f, 0.0f, 0.0f, 0.0f);
     }
     else
     {
@@ -367,12 +372,23 @@
     
     self.originalContentOffset = self.videoThumbnailCollectionView.contentOffset;
 }
+- (IBAction)touchedSubscribersLabel:(id)sender
+{
+    self.subscribersLabel.textColor = [UIColor colorWithRed:38.0f/255.0f green:41.0f/255.0f blue:43.0f/255.0f alpha:1.0f];
+}
+
+- (IBAction)releasedSubscribersLabel:(id)sender
+{
+    self.subscribersLabel.textColor = [UIColor whiteColor];
+}
 
 -(IBAction)subscribersLabelPressed:(id)sender
 {
-    
+    [self releasedSubscribersLabel:sender];
     if (self.subscribersPopover)
         return;
+    
+    [GAI.sharedInstance.defaultTracker sendView: @"Subscribers List"];
     
     SYNSubscribersViewController* subscribersViewController = [[SYNSubscribersViewController alloc] initWithChannel:self.channel];
     
@@ -473,14 +489,17 @@
 {
     [super viewWillDisappear: animated];
 
-    // Stop observing everything (less error-prone than trying to remove observers individually
+    // Stop observing everything (less error-prone than trying to remove observers individually)
+    
+    [[NSNotificationCenter defaultCenter] postNotificationName:kNoteHideAllCautions object:self];
+    
     [[NSNotificationCenter defaultCenter] removeObserver: self];
 
     if (!self.isIPhone)
     {
         [[NSNotificationCenter defaultCenter] postNotificationName: kVideoQueueClear
-                                                        object: self
-                                                      userInfo: nil];
+                                                            object: self
+                                                          userInfo: nil];
     }
     
     [self.subscribersPopover dismissPopoverAnimated:NO];
@@ -781,6 +800,28 @@
     }
 
     [self adjustTextView];
+    
+    UIImage* placeholderImage = [UIImage imageNamed: @"PlaceholderAvatarProfile.png"];
+    
+    NSArray *thumbnailURLItems = [self.channel.channelOwner.thumbnailURL componentsSeparatedByString:@"/"];
+    
+    if (thumbnailURLItems.count >= 6) // there is a url string with the proper format
+    {
+        // whatever is set to be the default size by the server (ex. 'thumbnail_small') //
+        NSString* thumbnailSizeString = thumbnailURLItems[5];
+        
+        
+        NSString* thumbnailUrlString = [self.channel.channelOwner.thumbnailURL stringByReplacingOccurrencesOfString:thumbnailSizeString withString:@"thumbnail_large"];
+        
+        [self.avatarImageView setImageWithURL: [NSURL URLWithString: thumbnailUrlString]
+                             placeholderImage: placeholderImage
+                                      options: SDWebImageRetryFailed];
+    }
+    else
+    {
+        self.avatarImageView.image = placeholderImage;
+    }
+
 }
 
 
@@ -1093,6 +1134,7 @@
         CGRect frame = self.subscribersLabel.frame;
         frame.origin.x -= offset;
         self.subscribersLabel.frame = frame;
+        self.subscribersButton.center = self.subscribersLabel.center;
     }
     
     if(self.channel.eCommerceURL && ![self.channel.eCommerceURL isEqualToString:@""] && self.mode == kChannelDetailsModeDisplay)
@@ -1897,6 +1939,9 @@
 
 - (IBAction) createChannelPressed: (id) sender
 {
+    
+    
+    
     self.isLocked = YES; // prevent back button from firing
     
     self.createChannelButton.enabled = NO;
@@ -1982,6 +2027,8 @@
                                              
                                                   [self showError: errorMessage
                                                    showErrorTitle:errorTitle];
+                                             
+                                             
                                               }];
 }
 
@@ -2003,6 +2050,8 @@
                                                       
                                                   } errorHandler: ^(id err) {
                                                       
+                                                      // this is also called when trying to save a video that has just been deleted
+                                                      
                                                       self.isLocked = NO;
                                                       
                                                       NSString* errorMessage = nil;
@@ -2020,6 +2069,8 @@
                                                       
                                                       self.addButton.hidden = YES;
                                                       
+                                                      [[NSNotificationCenter defaultCenter] postNotificationName:kVideoQueueClear object:self];
+                                                      
                                                       if (isUpdated)
                                                       {
                                                           [self.activityIndicator stopAnimating];
@@ -2036,19 +2087,27 @@
                                                           [self showError: errorMessage showErrorTitle:errorTitle];
                                                           
                                                       }
-                                                      else
+                                                      else // isCreated
                                                       {
                                                           [self.activityIndicator stopAnimating];
-                                                          self.cancelEditButton.hidden = NO;
-                                                          self.cancelEditButton.enabled = YES;
-                                                          self.saveChannelButton.enabled = YES;
-                                                          self.saveChannelButton.hidden = NO;
+                                                          
                                                           
                                                           if (!errorMessage)
                                                           {
                                                               errorMessage = NSLocalizedString(@"Could not add videos to channel. Please review and try again later.", nil);
                                                           }
-                                                          DebugLog(@"Error @ setVideosForChannelById:");
+                                                          
+                                                          // if we have an error at this stage then it means that we started a channel with a single invalid video
+                                                          // we want to still create that channel, but without that video while waring to the user.
+                                                          if(self.channel.videoInstances[0])
+                                                          {
+                                                              [self.channel.videoInstancesSet removeObject:self.channel.videoInstances[0]];
+                                                          }
+                                                          
+                                                          
+                                                          [self fetchAndStoreUpdatedChannelForId:channelId isUpdate:isUpdated];
+                                                          
+                                                          
                                                           [self showError: errorMessage showErrorTitle:errorTitle];
                                                       } 
                                                 }];
@@ -2089,6 +2148,8 @@
                                               }
                                               else
                                               {
+                                                  [Appirater userDidSignificantEvent: FALSE];
+
                                                   [self.channel setAttributesFromDictionary:dictionary
                                                                         ignoringObjectTypes:kIgnoreChannelOwnerObject];
                                                   
@@ -2151,7 +2212,7 @@
 }
 
 
-- (void) notifyForChannelCreation: (Channel*) channelCreated  
+- (void) notifyForChannelCreation: (Channel*) channelCreated
 {
     // == Decide on the success message type shown == //
     NSNotification* successNotification = [NSNotification notificationWithName:kNoteChannelSaved
@@ -2783,11 +2844,13 @@
     
     [self.channelCoverImageView setImageWithURL: [NSURL URLWithString: largeImageUrlString]
                                placeholderImage: [UIImage imageNamed: @"PlaceholderChannelCreation.png"]
-                                        options:SDWebImageRetryFailed completed:^(UIImage *image, NSError *error, SDImageCacheType cacheType) {
+                                        options: SDWebImageRetryFailed
+                                      completed: ^(UIImage *image, NSError *error, SDImageCacheType cacheType) {
                                             wself.originalBackgroundImage = wself.channelCoverImageView.image;
-                                            
                                             wself.channelCoverImageView.image = [wself croppedImageForCurrentOrientation];
                                         }];
+    
+    
     [self closeImageSelector: imageSelector];
 }
 
@@ -3012,7 +3075,7 @@
         
         [[NSNotificationCenter defaultCenter] removeObserver: self
                                                         name: NSManagedObjectContextDidSaveNotification
-                                                      object: nil];
+                                                      object: self.channel.managedObjectContext];
     }
     
     _channel = channel;
@@ -3072,7 +3135,7 @@
         [[NSNotificationCenter defaultCenter] addObserver: self
                                                  selector: @selector(handleDataModelChange:)
                                                      name: NSManagedObjectContextDidSaveNotification
-                                                   object: nil];
+                                                   object: self.channel.managedObjectContext];
 
         if (self.mode == kChannelDetailsModeDisplay)
         {
@@ -3191,7 +3254,9 @@
     
         NSString* imageUrlString = [appDelegate.currentUser.thumbnailURL stringByReplacingOccurrencesOfString:thumbnailSizeString withString:@"thumbnail_large"];
     
-        [self.avatarImageView setImageWithURL: [NSURL URLWithString:imageUrlString] placeholderImage: placeholder options: SDWebImageRetryFailed];
+        [self.avatarImageView setImageWithURL: [NSURL URLWithString: imageUrlString]
+                             placeholderImage: placeholder
+                                      options: SDWebImageRetryFailed];
     }
 }
 

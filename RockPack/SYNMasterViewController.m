@@ -532,7 +532,8 @@ typedef void(^AnimationCompletionBlock)(BOOL finished);
     
 }
 
-- (IBAction)hideNavigation:(UIButton*)sender{
+- (IBAction) hideNavigation: (UIButton*) sender
+{
     self.sideNavigatorViewController.state = SideNavigationStateHidden;
     self.darkOverlayView.alpha = 1.0;
     
@@ -893,7 +894,6 @@ typedef void(^AnimationCompletionBlock)(BOOL finished);
     if (!pageName)
         return;
     
-
     if (self.isInSearchMode)
     {
         [self cancelButtonPressed:nil];

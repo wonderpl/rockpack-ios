@@ -6,14 +6,13 @@
 //  Copyright (c) Rockpack Ltd. All rights reserved.
 //
 
-#import "GAITrackedViewController.h"
+
 #import "Reachability.h"
 #import "SYNAppDelegate.h"
 #import "SYNImagePickerController.h"
+#import "SYNLoginOnBoardingController.h"
 #import "SYNNetworkErrorView.h"
 #import "SYNNetworkOperationJsonObject.h"
-
-#import "SYNLoginOnBoardingController.h"
 #import "SYNOAuth2Credential.h"
 #import "SYNTextFieldLoginiPhone.h"
 
@@ -31,7 +30,7 @@ typedef enum {
 } kLoginScreenState;
 
 
-@interface SYNLoginBaseViewController : GAITrackedViewController <UIScrollViewDelegate>
+@interface SYNLoginBaseViewController : UIViewController <UIScrollViewDelegate>
 
 @property (nonatomic) NSInteger currentOnBoardingPage;
 @property (nonatomic) ScrollingDirection scrollingDirection;
@@ -82,6 +81,7 @@ typedef enum {
 - (BOOL) isNetworkAccessibleOtherwiseShowErrorAlert;
 
 - (void) doFacebookLoginAnimation;
+- (void) doFacebookFailAnimation;
 
 - (void) hideOnboarding;
 - (void) showOnboarding;
@@ -112,6 +112,6 @@ typedef enum {
 - (NSString*) zeroPadIfOneCharacter: (NSString*) inputString;
 
 // Additional reachability enablig for resume from background scenario
-- (void) checkReachability;
+- (void) applicationResume;
 
 @end

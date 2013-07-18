@@ -6,7 +6,6 @@
 //  Copyright (c) Rockpack Ltd. All rights reserved.
 //
 
-#import "GAITrackedViewController.h"
 #import "Video.h"
 #import "VideoInstance.h"
 #import <UIKit/UIKit.h>

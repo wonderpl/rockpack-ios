@@ -80,14 +80,8 @@
     [super viewWillAppear: animated];
 
     [super removeEmptyGenreMessage];
-    // Google analytics support
-    [GAI.sharedInstance.defaultTracker sendView: @"Search - Videos"];
 }
 
--(void)viewDidAppear:(BOOL)animated
-{
-    
-}
 
 - (NSFetchedResultsController *) fetchedResultsController
 {
@@ -319,18 +313,20 @@
 }
 
 
-- (void) loadMoreVideos: (UIButton*) sender
+- (void) loadMoreVideos
 {
-    
-    [self incrementRangeForNextRequest];
-    
-    [appDelegate.networkEngine searchVideosForTerm: self.searchTerm
-                                           inRange: self.dataRequestRange
-                                        onComplete: ^(int itemsCount) {
-                                            self.dataItemsAvailable = itemsCount;
-                                            self.loadingMoreContent = NO;
-                                            [self.videoThumbnailCollectionView reloadData];
-                                        }];
+    if (self.moreItemsToLoad == TRUE)
+    {
+        [self incrementRangeForNextRequest];
+        
+        [appDelegate.networkEngine searchVideosForTerm: self.searchTerm
+                                               inRange: self.dataRequestRange
+                                            onComplete: ^(int itemsCount) {
+                                                self.dataItemsAvailable = itemsCount;
+                                                self.loadingMoreContent = NO;
+                                                [self.videoThumbnailCollectionView reloadData];
+                                            }];
+    }
 }
 
 

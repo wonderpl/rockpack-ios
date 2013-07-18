@@ -2,14 +2,16 @@
 // Make changes to Channel.h instead.
 
 #import <CoreData/CoreData.h>
-#import "AbstractCommon.h"
+
 
 extern const struct ChannelAttributes {
 	__unsafe_unretained NSString *categoryId;
 	__unsafe_unretained NSString *channelDescription;
 	__unsafe_unretained NSString *eCommerceURL;
 	__unsafe_unretained NSString *favourites;
+	__unsafe_unretained NSString *fresh;
 	__unsafe_unretained NSString *lastUpdated;
+	__unsafe_unretained NSString *markedForDeletion;
 	__unsafe_unretained NSString *popular;
 	__unsafe_unretained NSString *position;
 	__unsafe_unretained NSString *public;
@@ -17,6 +19,8 @@ extern const struct ChannelAttributes {
 	__unsafe_unretained NSString *subscribedByUser;
 	__unsafe_unretained NSString *subscribersCount;
 	__unsafe_unretained NSString *title;
+	__unsafe_unretained NSString *uniqueId;
+	__unsafe_unretained NSString *viewId;
 } ChannelAttributes;
 
 extern const struct ChannelRelationships {
@@ -47,10 +51,14 @@ extern const struct ChannelFetchedProperties {
 
 
 
+
+
+
+
 @interface ChannelID : NSManagedObjectID {}
 @end
 
-@interface _Channel : AbstractCommon {}
+@interface _Channel : NSManagedObject {}
 + (id)insertInManagedObjectContext:(NSManagedObjectContext*)moc_;
 + (NSString*)entityName;
 + (NSEntityDescription*)entityInManagedObjectContext:(NSManagedObjectContext*)moc_;
@@ -104,11 +112,39 @@ extern const struct ChannelFetchedProperties {
 
 
 
+@property (nonatomic, strong) NSNumber* fresh;
+
+
+
+@property BOOL freshValue;
+- (BOOL)freshValue;
+- (void)setFreshValue:(BOOL)value_;
+
+//- (BOOL)validateFresh:(id*)value_ error:(NSError**)error_;
+
+
+
+
+
 @property (nonatomic, strong) NSDate* lastUpdated;
 
 
 
 //- (BOOL)validateLastUpdated:(id*)value_ error:(NSError**)error_;
+
+
+
+
+
+@property (nonatomic, strong) NSNumber* markedForDeletion;
+
+
+
+@property BOOL markedForDeletionValue;
+- (BOOL)markedForDeletionValue;
+- (void)setMarkedForDeletionValue:(BOOL)value_;
+
+//- (BOOL)validateMarkedForDeletion:(id*)value_ error:(NSError**)error_;
 
 
 
@@ -204,6 +240,26 @@ extern const struct ChannelFetchedProperties {
 
 
 
+@property (nonatomic, strong) NSString* uniqueId;
+
+
+
+//- (BOOL)validateUniqueId:(id*)value_ error:(NSError**)error_;
+
+
+
+
+
+@property (nonatomic, strong) NSString* viewId;
+
+
+
+//- (BOOL)validateViewId:(id*)value_ error:(NSError**)error_;
+
+
+
+
+
 @property (nonatomic, strong) ChannelCover *channelCover;
 
 //- (BOOL)validateChannelCover:(id*)value_ error:(NSError**)error_;
@@ -279,8 +335,26 @@ extern const struct ChannelFetchedProperties {
 
 
 
+- (NSNumber*)primitiveFresh;
+- (void)setPrimitiveFresh:(NSNumber*)value;
+
+- (BOOL)primitiveFreshValue;
+- (void)setPrimitiveFreshValue:(BOOL)value_;
+
+
+
+
 - (NSDate*)primitiveLastUpdated;
 - (void)setPrimitiveLastUpdated:(NSDate*)value;
+
+
+
+
+- (NSNumber*)primitiveMarkedForDeletion;
+- (void)setPrimitiveMarkedForDeletion:(NSNumber*)value;
+
+- (BOOL)primitiveMarkedForDeletionValue;
+- (void)setPrimitiveMarkedForDeletionValue:(BOOL)value_;
 
 
 
@@ -338,6 +412,18 @@ extern const struct ChannelFetchedProperties {
 
 - (NSString*)primitiveTitle;
 - (void)setPrimitiveTitle:(NSString*)value;
+
+
+
+
+- (NSString*)primitiveUniqueId;
+- (void)setPrimitiveUniqueId:(NSString*)value;
+
+
+
+
+- (NSString*)primitiveViewId;
+- (void)setPrimitiveViewId:(NSString*)value;
 
 
 

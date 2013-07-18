@@ -143,25 +143,23 @@
     // override superclass method as there are no genres here
 }
 
-- (void) loadMoreChannels: (UIButton*) sender
+
+- (void) loadMoreChannels
 {
-    NSInteger nextStart = self.dataRequestRange.location + self.dataRequestRange.length; // one is subtracted when the call happens for 0 indexing
-    
-    if(nextStart >= self.dataItemsAvailable)
-        return;
-    
-    self.loadingMoreContent = YES;
-    
-    NSInteger nextSize = (nextStart + STANDARD_REQUEST_LENGTH) >= self.dataItemsAvailable ? (self.dataItemsAvailable - nextStart) : STANDARD_REQUEST_LENGTH;
-    
-    self.dataRequestRange = NSMakeRange(nextStart, nextSize);
-    
-    [appDelegate.networkEngine searchChannelsForTerm: self.searchTerm
-                                            andRange: self.dataRequestRange
-                                          onComplete: ^(int itemsCount) {
-                                              self.dataItemsAvailable = itemsCount;
-                                              self.loadingMoreContent = NO;
-                                          }];
+    // Check to see if we have loaded all items already
+    if (self.moreItemsToLoad == TRUE)
+    {
+        self.loadingMoreContent = YES;
+        
+        [self incrementRangeForNextRequest];
+        
+        [appDelegate.networkEngine searchChannelsForTerm: self.searchTerm
+                                                andRange: self.dataRequestRange
+                                              onComplete: ^(int itemsCount) {
+                                                  self.dataItemsAvailable = itemsCount;
+                                                  self.loadingMoreContent = NO;
+                                              }];
+    }
 }
 
 #pragma mark - Perform Search

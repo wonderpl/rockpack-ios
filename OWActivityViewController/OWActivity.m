@@ -27,15 +27,25 @@
 
 @implementation OWActivity
 
-- (id)initWithTitle:(NSString *)title image:(UIImage *)image actionBlock:(OWActivityActionBlock)actionBlock
+- (id) initWithTitle: (NSString *) title image: (UIImage *) image actionBlock: (OWActivityActionBlock) actionBlock
 {
     self = [super init];
-    if (self) {
+    
+    if (self)
+    {
         _title = title;
         _image = image;
         _actionBlock = [actionBlock copy];
     }
+    
     return self;
 }
+
+
+- (void) updateAPIRater
+{
+    [Appirater userDidSignificantEvent: FALSE];
+}
+
 
 @end

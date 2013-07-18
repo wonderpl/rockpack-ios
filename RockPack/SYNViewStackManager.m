@@ -191,13 +191,15 @@
     
     controllerFrame.origin.y = 0.0f;
     
-    [UIView animateWithDuration:0.4 delay:0.0
-                        options:UIViewAnimationCurveEaseIn
+    [UIView animateWithDuration:0.3 delay:0.0
+                        options:UIViewAnimationOptionCurveEaseOut
                      animations:^{
-                         
+                         self.masterController.view.userInteractionEnabled = NO;
                          controller.view.frame = controllerFrame;
                          
-                     } completion:nil];
+                     } completion:^(BOOL finished) {
+                         self.masterController.view.userInteractionEnabled = YES;
+                     }];
 }
 
 -(void)hideModallyController
@@ -206,14 +208,18 @@
     CGRect controllerFrame = modalViewController.view.frame;
     controllerFrame.origin.y = [[SYNDeviceManager sharedInstance] currentScreenHeight];
     
-    [UIView animateWithDuration:0.4 delay:0.0
-                        options:UIViewAnimationCurveEaseIn
+    [UIView animateWithDuration:0.3 delay:0.0
+                        options:UIViewAnimationOptionCurveEaseIn
                      animations:^{
                          
                          modalViewController.view.frame = controllerFrame;
                          
+                         self.masterController.view.userInteractionEnabled = NO;
+
+                         
                      } completion:^(BOOL finished) {
                          
+                         self.masterController.view.userInteractionEnabled = YES;
                          [modalViewController.view removeFromSuperview];
                          [modalViewController removeFromParentViewController];
                          

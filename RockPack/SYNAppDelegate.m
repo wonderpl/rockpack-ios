@@ -32,6 +32,7 @@
 #import <AVFoundation/AVFoundation.h>
 #import <FacebookSDK/FacebookSDK.h>
 #import <objc/runtime.h>
+#import "GoogleConversionPing.h"
 
 
 extern void instrumentObjcMessageSends(BOOL);
@@ -67,10 +68,10 @@ extern void instrumentObjcMessageSends(BOOL);
 {
 #ifdef ENABLE_USER_RATINGS
     [Appirater setAppId: @"660697542"];
-    [Appirater setDaysUntilPrompt: 5];
-    [Appirater setUsesUntilPrompt: 5];
+    [Appirater setDaysUntilPrompt: 3];
+    [Appirater setUsesUntilPrompt: 3];
     [Appirater setSignificantEventsUntilPrompt: 1];
-    [Appirater setTimeBeforeReminding: 15];
+    [Appirater setTimeBeforeReminding: 20];
 //    [Appirater setDebug: YES];
 #endif
     
@@ -82,6 +83,9 @@ extern void instrumentObjcMessageSends(BOOL);
 #if USEUDID
 //    [TestFlight setDeviceIdentifier: [[UIDevice currentDevice] uniqueIdentifier]];
 #endif
+    
+    //Google Adwords conversion tracking. TODO: check parameters with Guy!!
+    [GoogleConversionPing pingWithConversionId:@"983664386" label:@"Km3nCP6G-wQQgo6G1QM" value:@"0" isRepeatable:NO];
     
     // We need to set the audio session so that that app will continue to play audio even if the mute switch is on
     AVAudioSession *audioSession = [AVAudioSession sharedInstance];
@@ -172,7 +176,7 @@ extern void instrumentObjcMessageSends(BOOL);
         if ([self.currentOAuth2Credentials hasExpired])
         {
             
-            [self refreshExpiredToken];
+            [self refreshExpiredTokenOnStartup];
             
         }
         else // we have an access token //
@@ -180,7 +184,7 @@ extern void instrumentObjcMessageSends(BOOL);
             
             // set timer for auto refresh //
            
-            [self setupTokenExpiryTimer];
+            [self setTokenExpiryTimer];
             
             self.window.rootViewController = [self createAndReturnRootViewController];
         }
@@ -197,7 +201,7 @@ extern void instrumentObjcMessageSends(BOOL);
     return YES;
 }
 
-- (void) setupTokenExpiryTimer
+- (void) setTokenExpiryTimer
 {
     if (self.tokenExpiryTimer)
     {
@@ -215,7 +219,7 @@ extern void instrumentObjcMessageSends(BOOL);
 
 
 
-- (void) refreshExpiredToken
+- (void) refreshExpiredTokenOnStartup
 {
     //Add imageview to the window as placeholder while we wait for the token refresh call.
     [self.tokenExpiryTimer invalidate];
@@ -264,7 +268,10 @@ extern void instrumentObjcMessageSends(BOOL);
     //refresh token
     [self.oAuthNetworkEngine refreshOAuthTokenWithCompletionHandler: ^(id response) {
         
-        self.window.rootViewController = [self createAndReturnRootViewController];
+        if(!self.window.rootViewController)
+        {
+            self.window.rootViewController = [self createAndReturnRootViewController];
+        }
         
         [startImageView removeFromSuperview];
         
@@ -285,6 +292,20 @@ extern void instrumentObjcMessageSends(BOOL);
     }];
 }
 
+- (void) refreshExpiredToken
+{
+    [self.tokenExpiryTimer invalidate];
+    
+    self.tokenExpiryTimer = nil;
+    
+    [self.oAuthNetworkEngine refreshOAuthTokenWithCompletionHandler: ^(id response) {
+        
+    } errorHandler: ^(id response) {
+        
+        [self logout];
+        
+    }];
+}
 
 - (UIViewController*) createAndReturnRootViewController
 {
@@ -322,7 +343,9 @@ extern void instrumentObjcMessageSends(BOOL);
     
     self.masterViewController = nil;
     
-    // self.currentUser.currentValue = NO;
+    [self.currentOAuth2Credentials removeFromKeychain];
+    
+    self.currentUser.currentValue = NO;
     
     //[self.mainManagedObjectContext deleteObject:self.currentUser];
     
@@ -352,8 +375,6 @@ extern void instrumentObjcMessageSends(BOOL);
     self.window.rootViewController = [self createAndReturnRootViewController];
     
     self.loginViewController = nil;
-    
-    [self setupTokenExpiryTimer];
 }
 
 
@@ -378,6 +399,8 @@ extern void instrumentObjcMessageSends(BOOL);
     
     
     [self saveContext: kSaveSynchronously];
+    [self.tokenExpiryTimer invalidate];
+    self.tokenExpiryTimer = nil;
 }
 
 
@@ -395,6 +418,17 @@ extern void instrumentObjcMessageSends(BOOL);
             [self.loginViewController reEnableLoginControls];
         }
     }
+    else{
+        NSTimeInterval refreshTimeout = [self.currentOAuth2Credentials.expirationDate timeIntervalSinceNow];
+        if(refreshTimeout <kOAuthTokenExpiryMargin)
+        {
+            [self refreshExpiredTokenOnStartup];
+        }
+        else
+        {
+            [self setTokenExpiryTimer];
+        }
+    }
 }
 
 
@@ -405,7 +439,7 @@ extern void instrumentObjcMessageSends(BOOL);
     // Restart any tasks that were paused (or not yet started) while the application was inactive. If the application was previously in the background, optionally refresh the user interface.
     if (self.loginViewController)
     {
-        [self.loginViewController checkReachability];
+        [self.loginViewController applicationResume];
     }
     
     [self checkForUpdatedPlayerCode];
@@ -545,7 +579,7 @@ extern void instrumentObjcMessageSends(BOOL);
     NSPersistentStore *store = [persistentStoreCoordinator addPersistentStoreWithType: NSSQLiteStoreType
                                                                         configuration: nil
                                                                                   URL: storeURL
-                                                                              options: @{NSMigratePersistentStoresAutomaticallyOption:@(YES)}
+                                                                              options: @{NSInferMappingModelAutomaticallyOption:@(YES),NSMigratePersistentStoresAutomaticallyOption:@(YES)}
                                                                                 error: &error];
     if (error)
     {
@@ -712,7 +746,7 @@ extern void instrumentObjcMessageSends(BOOL);
     {
         [self.mainManagedObjectContext performBlock:^{
             [self.mainManagedObjectContext mergeChangesFromContextDidSaveNotification:note];
-            //[[NSNotificationCenter defaultCenter] postNotificationName:NSManagedObjectContextDidSaveNotification object:self.mainManagedObjectContext userInfo:note.userInfo];
+            [[NSNotificationCenter defaultCenter] postNotificationName:NSManagedObjectContextDidSaveNotification object:self.mainManagedObjectContext userInfo:note.userInfo];
         }];
 
     }

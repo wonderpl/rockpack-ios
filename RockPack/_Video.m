@@ -7,13 +7,17 @@ const struct VideoAttributes VideoAttributes = {
 	.categoryId = @"categoryId",
 	.dateUploaded = @"dateUploaded",
 	.duration = @"duration",
+	.fresh = @"fresh",
+	.markedForDeletion = @"markedForDeletion",
 	.source = @"source",
 	.sourceId = @"sourceId",
 	.sourceUsername = @"sourceUsername",
 	.starCount = @"starCount",
 	.starredByUser = @"starredByUser",
 	.thumbnailURL = @"thumbnailURL",
+	.uniqueId = @"uniqueId",
 	.viewCount = @"viewCount",
+	.viewId = @"viewId",
 	.viewedByUser = @"viewedByUser",
 };
 
@@ -52,6 +56,16 @@ const struct VideoFetchedProperties VideoFetchedProperties = {
 	
 	if ([key isEqualToString:@"durationValue"]) {
 		NSSet *affectingKey = [NSSet setWithObject:@"duration"];
+		keyPaths = [keyPaths setByAddingObjectsFromSet:affectingKey];
+		return keyPaths;
+	}
+	if ([key isEqualToString:@"freshValue"]) {
+		NSSet *affectingKey = [NSSet setWithObject:@"fresh"];
+		keyPaths = [keyPaths setByAddingObjectsFromSet:affectingKey];
+		return keyPaths;
+	}
+	if ([key isEqualToString:@"markedForDeletionValue"]) {
+		NSSet *affectingKey = [NSSet setWithObject:@"markedForDeletion"];
 		keyPaths = [keyPaths setByAddingObjectsFromSet:affectingKey];
 		return keyPaths;
 	}
@@ -116,6 +130,58 @@ const struct VideoFetchedProperties VideoFetchedProperties = {
 
 - (void)setPrimitiveDurationValue:(int64_t)value_ {
 	[self setPrimitiveDuration:[NSNumber numberWithLongLong:value_]];
+}
+
+
+
+
+
+@dynamic fresh;
+
+
+
+- (BOOL)freshValue {
+	NSNumber *result = [self fresh];
+	return [result boolValue];
+}
+
+- (void)setFreshValue:(BOOL)value_ {
+	[self setFresh:[NSNumber numberWithBool:value_]];
+}
+
+- (BOOL)primitiveFreshValue {
+	NSNumber *result = [self primitiveFresh];
+	return [result boolValue];
+}
+
+- (void)setPrimitiveFreshValue:(BOOL)value_ {
+	[self setPrimitiveFresh:[NSNumber numberWithBool:value_]];
+}
+
+
+
+
+
+@dynamic markedForDeletion;
+
+
+
+- (BOOL)markedForDeletionValue {
+	NSNumber *result = [self markedForDeletion];
+	return [result boolValue];
+}
+
+- (void)setMarkedForDeletionValue:(BOOL)value_ {
+	[self setMarkedForDeletion:[NSNumber numberWithBool:value_]];
+}
+
+- (BOOL)primitiveMarkedForDeletionValue {
+	NSNumber *result = [self primitiveMarkedForDeletion];
+	return [result boolValue];
+}
+
+- (void)setPrimitiveMarkedForDeletionValue:(BOOL)value_ {
+	[self setPrimitiveMarkedForDeletion:[NSNumber numberWithBool:value_]];
 }
 
 
@@ -202,6 +268,13 @@ const struct VideoFetchedProperties VideoFetchedProperties = {
 
 
 
+@dynamic uniqueId;
+
+
+
+
+
+
 @dynamic viewCount;
 
 
@@ -223,6 +296,13 @@ const struct VideoFetchedProperties VideoFetchedProperties = {
 - (void)setPrimitiveViewCountValue:(int64_t)value_ {
 	[self setPrimitiveViewCount:[NSNumber numberWithLongLong:value_]];
 }
+
+
+
+
+
+@dynamic viewId;
+
 
 
 

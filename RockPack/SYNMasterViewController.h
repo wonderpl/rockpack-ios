@@ -6,18 +6,18 @@
 //  Copyright (c) Rockpack Ltd. All rights reserved.
 //
 
-#import "GAITrackedViewController.h"
-#import "SYNAppDelegate.h"
-#import "SYNContainerViewController.h"
 
 #import "SYNAccountSettingsMainTableViewController.h"
 #import "SYNAccountSettingsPopoverBackgroundView.h"
+#import "SYNAppDelegate.h"
+#import "SYNContainerViewController.h"
 #import <UIKit/UIKit.h>
 
 typedef void (^VideoOverlayDismissBlock)(void);
 
-@interface SYNMasterViewController : GAITrackedViewController <UIPopoverControllerDelegate,
-                                                                UIGestureRecognizerDelegate, UINavigationControllerDelegate>
+@interface SYNMasterViewController : UIViewController <UIPopoverControllerDelegate,
+                                                       UIGestureRecognizerDelegate,
+                                                       UINavigationControllerDelegate>
 
 {
     SYNAppDelegate* appDelegate;

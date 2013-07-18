@@ -22,6 +22,9 @@
 @interface SYNLoginViewControllerIphone () <UITextFieldDelegate,
                                             SYNImagePickerControllerDelegate>
 
+
+@property (nonatomic) BOOL hasAnimated;
+@property (nonatomic) BOOL isPreIPhone5;
 @property (nonatomic, strong) IBOutlet SYNTextFieldLoginiPhone* ddInputField;
 @property (nonatomic, strong) IBOutlet SYNTextFieldLoginiPhone* emailInputField;
 @property (nonatomic, strong) IBOutlet SYNTextFieldLoginiPhone* mmInputField;
@@ -31,13 +34,19 @@
 @property (nonatomic, strong) IBOutlet SYNTextFieldLoginiPhone* registeringUserPasswordInputField;
 @property (nonatomic, strong) IBOutlet SYNTextFieldLoginiPhone* userNameInputField;
 @property (nonatomic, strong) IBOutlet SYNTextFieldLoginiPhone* yyyyInputField;
-@property (nonatomic, strong) IBOutlet UIImageView* loginBackgroundImage;
+@property (nonatomic, strong) IBOutlet UIActivityIndicatorView* activityIndicator;
+@property (nonatomic, strong) IBOutlet UIButton* passwordForgottenButton;
+@property (nonatomic, strong) IBOutlet UIImage* avatarImage;
+@property (nonatomic, strong) IBOutlet UIImageView* avatarImageView;
 @property (nonatomic, strong) IBOutlet UIImageView* loginBackgroundFrontImage;
+@property (nonatomic, strong) IBOutlet UIImageView* loginBackgroundImage;
 @property (nonatomic, strong) IBOutlet UIImageView* rockpackLogoImage;
 @property (nonatomic, strong) IBOutlet UILabel* termsAndConditionsLabel;
 @property (nonatomic, strong) IBOutlet UILabel* wellSendYouLabel;
 @property (nonatomic, strong) IBOutlet UILabel* whatsOnYourChannelLabel;
 @property (nonatomic, strong) IBOutlet UIView* dobView;
+@property (nonatomic, strong) NSDateFormatter* formatter;
+@property (nonatomic, strong) NSMutableArray* validUsernames;
 @property (strong, nonatomic) NSArray *onboardingViewControllers;
 @property (strong, nonatomic) NSDateFormatter * dateFormatter;
 @property (weak, nonatomic) IBOutlet UIButton *backButton;
@@ -58,22 +67,6 @@
 @property (weak, nonatomic) IBOutlet UIView *secondSignupView;
 @property (weak, nonatomic) IBOutlet UIView *termsAndConditionsView;
 
-@property (nonatomic, strong) IBOutlet UIActivityIndicatorView* activityIndicator;
-
-@property (nonatomic, strong) IBOutlet UIButton* passwordForgottenButton;
-
-@property (nonatomic, strong) IBOutlet UIImage* avatarImage;
-
-@property (nonatomic, strong) IBOutlet UIImageView* avatarImageView;
-
-@property (nonatomic, strong) NSDateFormatter* formatter;
-
-@property (nonatomic, strong) NSMutableArray* validUsernames;
-
-@property (nonatomic) BOOL isPreIPhone5;
-
-@property (nonatomic) BOOL hasAnimated;
-
 @end
 
 @implementation SYNLoginViewControllerIphone 
@@ -84,16 +77,16 @@
 - (void) dealloc
 {
     // Defensive programming
-    self.userNameInputField.delegate = nil;
+    self.ddInputField.delegate = nil;;
+    self.emailInputField.delegate = nil;
+    self.imagePicker.delegate = nil;
+    self.mmInputField.delegate = nil;
+    self.passwordInputField.delegate = nil;
     self.registeringUserEmailInputField.delegate = nil;
     self.registeringUserNameInputField.delegate = nil;
     self.registeringUserPasswordInputField.delegate = nil;
-    self.passwordInputField.delegate = nil;
-    self.ddInputField.delegate = nil;;
-    self.mmInputField.delegate = nil;
+    self.userNameInputField.delegate = nil;
     self.yyyyInputField.delegate = nil;
-    self.emailInputField.delegate = nil;
-    self.imagePicker.delegate = nil;
 }
 
 
@@ -374,7 +367,7 @@
         [self completeLoginProcess];
         
     } errorHandler:^(id error) {
-        [self doFacebookFailedAnimation];
+        [self doFacebookFailAnimation];
         if([error isKindOfClass:[NSDictionary class]])
         {
             NSDictionary* formErrors = error[@"form_errors"];
@@ -1037,7 +1030,7 @@
 }
 
 
-- (void) doFacebookFailedAnimation
+- (void) doFacebookFailAnimation
 {
     [self.activityIndicator stopAnimating];
     [UIView animateWithDuration:kLoginAnimationTransitionDuration delay:0.0f options:UIViewAnimationCurveEaseInOut animations:^{
@@ -1271,6 +1264,13 @@
     }
     
     errorLabel.text = errorText;
+}
+
+- (void) applicationResume
+{
+    [self doFacebookFailAnimation];
+    [super applicationResume];
+        
 }
 
 

@@ -160,6 +160,8 @@ static NSString *const kCompletedCallbackKey = @"completed";
             [wself.lastAddedOperation addDependency:operation];
             wself.lastAddedOperation = operation;
         }
+        
+        operation = nil; // break retain cycle
     }];
 
     return operation;

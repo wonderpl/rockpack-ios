@@ -5,9 +5,13 @@
 
 const struct CoverArtAttributes CoverArtAttributes = {
 	.coverRef = @"coverRef",
+	.fresh = @"fresh",
+	.markedForDeletion = @"markedForDeletion",
 	.position = @"position",
 	.thumbnailURL = @"thumbnailURL",
+	.uniqueId = @"uniqueId",
 	.userUpload = @"userUpload",
+	.viewId = @"viewId",
 };
 
 const struct CoverArtRelationships CoverArtRelationships = {
@@ -42,6 +46,16 @@ const struct CoverArtFetchedProperties CoverArtFetchedProperties = {
 + (NSSet*)keyPathsForValuesAffectingValueForKey:(NSString*)key {
 	NSSet *keyPaths = [super keyPathsForValuesAffectingValueForKey:key];
 	
+	if ([key isEqualToString:@"freshValue"]) {
+		NSSet *affectingKey = [NSSet setWithObject:@"fresh"];
+		keyPaths = [keyPaths setByAddingObjectsFromSet:affectingKey];
+		return keyPaths;
+	}
+	if ([key isEqualToString:@"markedForDeletionValue"]) {
+		NSSet *affectingKey = [NSSet setWithObject:@"markedForDeletion"];
+		keyPaths = [keyPaths setByAddingObjectsFromSet:affectingKey];
+		return keyPaths;
+	}
 	if ([key isEqualToString:@"positionValue"]) {
 		NSSet *affectingKey = [NSSet setWithObject:@"position"];
 		keyPaths = [keyPaths setByAddingObjectsFromSet:affectingKey];
@@ -61,6 +75,58 @@ const struct CoverArtFetchedProperties CoverArtFetchedProperties = {
 
 @dynamic coverRef;
 
+
+
+
+
+
+@dynamic fresh;
+
+
+
+- (BOOL)freshValue {
+	NSNumber *result = [self fresh];
+	return [result boolValue];
+}
+
+- (void)setFreshValue:(BOOL)value_ {
+	[self setFresh:[NSNumber numberWithBool:value_]];
+}
+
+- (BOOL)primitiveFreshValue {
+	NSNumber *result = [self primitiveFresh];
+	return [result boolValue];
+}
+
+- (void)setPrimitiveFreshValue:(BOOL)value_ {
+	[self setPrimitiveFresh:[NSNumber numberWithBool:value_]];
+}
+
+
+
+
+
+@dynamic markedForDeletion;
+
+
+
+- (BOOL)markedForDeletionValue {
+	NSNumber *result = [self markedForDeletion];
+	return [result boolValue];
+}
+
+- (void)setMarkedForDeletionValue:(BOOL)value_ {
+	[self setMarkedForDeletion:[NSNumber numberWithBool:value_]];
+}
+
+- (BOOL)primitiveMarkedForDeletionValue {
+	NSNumber *result = [self primitiveMarkedForDeletion];
+	return [result boolValue];
+}
+
+- (void)setPrimitiveMarkedForDeletionValue:(BOOL)value_ {
+	[self setPrimitiveMarkedForDeletion:[NSNumber numberWithBool:value_]];
+}
 
 
 
@@ -99,6 +165,13 @@ const struct CoverArtFetchedProperties CoverArtFetchedProperties = {
 
 
 
+@dynamic uniqueId;
+
+
+
+
+
+
 @dynamic userUpload;
 
 
@@ -120,6 +193,13 @@ const struct CoverArtFetchedProperties CoverArtFetchedProperties = {
 - (void)setPrimitiveUserUploadValue:(BOOL)value_ {
 	[self setPrimitiveUserUpload:[NSNumber numberWithBool:value_]];
 }
+
+
+
+
+
+@dynamic viewId;
+
 
 
 

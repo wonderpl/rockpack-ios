@@ -8,22 +8,17 @@
 
 #import "SYNChannelThumbnailCell.h"
 #import "UIFont+SYNFont.h"
-#import <QuartzCore/QuartzCore.h>
 #import "UIImageView+WebCache.h"
+#import <QuartzCore/QuartzCore.h>
 
 @interface SYNChannelThumbnailCell ()
 
-@property (nonatomic, strong) IBOutlet UILabel* byLabel;
-
-
+@property (nonatomic, strong) IBOutlet UILabel *byLabel;
 
 @end
 
-@implementation SYNChannelThumbnailCell
 
-@synthesize viewControllerDelegate = _viewControllerDelegate;
-@synthesize shouldAnimate;
-@synthesize imageUrlString = _imageUrlString;
+@implementation SYNChannelThumbnailCell
 
 - (void) awakeFromNib
 {
@@ -34,8 +29,6 @@
     self.byLabel.font = [UIFont rockpackFontOfSize: self.byLabel.font.pointSize];
     
     self.deleteButton.hidden = YES;
-    
-    self.shouldAnimate = YES;
 }
 
 
@@ -50,9 +43,9 @@
     _viewControllerDelegate = viewControllerDelegate;
     
     
-    [self.displayNameButton addTarget:self.viewControllerDelegate
-                               action:@selector(displayNameButtonPressed:)
-                     forControlEvents:UIControlEventTouchUpInside];
+    [self.displayNameButton addTarget: self.viewControllerDelegate
+                               action: @selector(displayNameButtonPressed:)
+                     forControlEvents: UIControlEventTouchUpInside];
     
     [self.deleteButton addTarget: self.viewControllerDelegate
                           action: @selector(channelDeleteButtonTapped:)
@@ -60,9 +53,8 @@
 }
 
 
-- (void) setChannelTitle: (NSString*) titleString
+- (void) setChannelTitle: (NSString *) titleString
 {
-    
     CGRect titleFrame = self.titleLabel.frame;
     
     CGSize expectedSize = [titleString sizeWithFont: self.titleLabel.font
@@ -76,40 +68,18 @@
     
     
     self.titleLabel.text = titleString;
-    
 }
 
 
 // If this cell is going to be re-used, then clear the image and cancel any outstanding operations
 - (void) prepareForReuse
 {
-    [self.imageView cancelCurrentImageLoad];
     [self.imageView.layer removeAllAnimations];
     [self.layer removeAllAnimations];
     
-    [self.imageView setImageWithURL:nil];
+    [self.imageView setImageWithURL: nil];
     
     self.deleteButton.hidden = TRUE;
-    
 }
-
--(void)setImageUrlString:(NSString *)imageUrlString
-{
-    if(!imageUrlString) // cancel the existing network operation
-    {
-        [self.imageView setImageWithURL: nil
-                       placeholderImage: [UIImage imageNamed: @"PlaceholderChannel.png"]
-                                options: SDWebImageRetryFailed];
-    }
-    
-    _imageUrlString = imageUrlString;
-    
-    [self.imageView setImageWithURL: [NSURL URLWithString: _imageUrlString]
-                   placeholderImage: [UIImage imageNamed: @"PlaceholderChannel.png"]
-                            options: SDWebImageRetryFailed];
-    
-}
-
-
 
 @end
