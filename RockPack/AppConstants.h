@@ -42,6 +42,7 @@
 #define kExistingChannelsViewId     @"ExistingChannels"
 #define kChannelDetailsViewId       @"ChannelDetails"
 #define kSideNavigationViewId       @"kSideNavigationViewId"
+#define kSubscribersListViewId      @"kSubscribersListViewId"
 
 // OAuth2
 #define kAPIRefreshToken            @"/ws/token/"
