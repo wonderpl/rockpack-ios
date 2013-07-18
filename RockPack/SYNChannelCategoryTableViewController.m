@@ -288,8 +288,16 @@
     {
         header.backgroundImage.image = [UIImage imageNamed:@"CategorySlideSelected"];
         header.arrowImage.image = [UIImage imageNamed:@"IconCategorySlideChevronSelected"];
-        header.titleLabel.textColor = [UIColor whiteColor];
-        header.titleLabel.shadowColor = [UIColor colorWithWhite:1.0f alpha:0.15f];
+        if (self.lastSelectedIndexpath.row<0)
+        {
+            header.titleLabel.textColor = [UIColor whiteColor];
+            header.titleLabel.shadowColor = [UIColor colorWithWhite:1.0f alpha:0.15f];
+        }
+        else
+        {
+            header.titleLabel.textColor = [UIColor colorWithRed:14.0f/255.0f green:67.0f/255.0f blue:86.0f/255.0f alpha:1.0f];
+            header.titleLabel.shadowColor = [UIColor colorWithWhite:0.0f alpha:0.15f];
+        }
     }
     else
     {
@@ -322,6 +330,9 @@
         }
     }
     self.lastSelectedIndexpath = indexPath;
+    SYNChannelCategoryTableHeader* headerView = (self.headerRegister)[@(self.lastSelectedIndexpath.section)];
+    headerView.titleLabel.textColor = [UIColor colorWithRed:14.0f/255.0f green:67.0f/255.0f blue:86.0f/255.0f alpha:1.0f];
+    headerView.titleLabel.shadowColor = [UIColor colorWithWhite:0.0f alpha:0.15f];
 }
 
 
@@ -370,10 +381,10 @@
 
         }
     }
-    else if(self.confirmButton)
+    else
     {
         [CATransaction begin];
-        if(self.lastSelectedIndexpath.section == header.tag)
+        if(self.lastSelectedIndexpath.section == header.tag && self.lastSelectedIndexpath.row <0)
         {
             [CATransaction setCompletionBlock:^{
                 [self.tableView setContentOffset:CGPointZero animated:YES];
@@ -383,7 +394,7 @@
     
     [self.tableView beginUpdates];
     //close previously open section
-    if(self.lastSelectedIndexpath)
+    if(self.lastSelectedIndexpath && (needToOpen || self.lastSelectedIndexpath.row < 0) )
     {
         //close previously open section
         [self closeSection:self.lastSelectedIndexpath.section];
@@ -397,20 +408,40 @@
     }
     else
     {
-        self.lastSelectedIndexpath = nil;
-        if([self.categoryTableControllerDelegate respondsToSelector:@selector(categoryTableController:didSelectCategory:)])
+        if(self.lastSelectedIndexpath.row<0)
         {
-            [self.categoryTableControllerDelegate categoryTableController:self didSelectCategory:nil];
+            //Close an open cateogry and selecte the "all category" header
+            self.lastSelectedIndexpath = nil;
+            if([self.categoryTableControllerDelegate respondsToSelector:@selector(categoryTableController:didSelectCategory:)])
+            {
+                [self.categoryTableControllerDelegate categoryTableController:self didSelectCategory:nil];
+            }
+            [self tappedOtherCategory:nil];
         }
-        [self tappedOtherCategory:nil];
+        else
+        {
+            
+            //Re-select a top level category after a subcategory has been selected previously.
+            SYNChannelCategoryTableHeader* headerView = (self.headerRegister)[@(self.lastSelectedIndexpath.section)];
+            headerView.backgroundImage.image = [UIImage imageNamed:@"CategorySlideSelected"];
+            headerView.arrowImage.image = [UIImage imageNamed:@"IconCategorySlideChevronSelected"];
+            headerView.titleLabel.textColor = [UIColor whiteColor];
+            headerView.titleLabel.shadowColor = [UIColor colorWithWhite:1.0f alpha:0.15f];
+            
+            
+            [self.tableView reloadRowsAtIndexPaths:@[self.lastSelectedIndexpath] withRowAnimation:UITableViewRowAnimationNone];
+            Genre * category = self.categoriesDatasource[self.lastSelectedIndexpath.section];
+            self.lastSelectedIndexpath = [NSIndexPath indexPathForRow:-1 inSection:self.lastSelectedIndexpath.section];
+            if(!self.confirmButton && [self.categoryTableControllerDelegate respondsToSelector:@selector(categoryTableController:didSelectCategory:)])
+            {
+                [self.categoryTableControllerDelegate categoryTableController:self didSelectCategory:category];
+            }
+        }
+            
     }
     
     [self.tableView endUpdates];
-    
-    if(needToOpen || self.confirmButton)
-    {
-        [CATransaction commit];
-    }
+    [CATransaction commit];
 }
 
 -(void)expandSection:(NSInteger)section
@@ -596,6 +627,7 @@
                         
 
                         [self tableView:nil didSelectRowAtIndexPath:[NSIndexPath indexPathForRow:subCategoryIndex inSection:index]];
+                        [[self.tableView cellForRowAtIndexPath:self.lastSelectedIndexpath] setSelected:YES];
                     }
                 }
             }
