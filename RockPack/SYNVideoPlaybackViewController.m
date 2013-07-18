@@ -26,6 +26,7 @@
 @interface SYNVideoPlaybackViewController () <UIWebViewDelegate>
 
 @property (nonatomic, assign) float percentageViewed;
+@property (nonatomic, assign) float timeViewed;
 @property (nonatomic, assign) BOOL autoPlay;
 @property (nonatomic, assign) BOOL currentVideoViewedFlag;
 @property (nonatomic, assign) BOOL disableTimeUpdating;
@@ -366,15 +367,7 @@ static UIWebView* vimeoideoWebViewInstance;
     // Stop observing everything (less error-prone than trying to remove observers individually
     [[NSNotificationCenter defaultCenter] removeObserver: self];
     
-    if (self.previousSourceId != nil && self.percentageViewed > 0.0f)
-    {
-        id<GAITracker> tracker = [GAI sharedInstance].defaultTracker;
-        
-        [tracker sendEventWithCategory: @"goal"
-                            withAction: @"videoViewed"
-                             withLabel: self.previousSourceId
-                             withValue: @((int) (self.percentageViewed  * 100.0f))];
-    }
+    [self logViewingStatistics];
     
     // Just pause the video, as we might come back to this view again (if we have pushed any views on top)
     [self pauseIfVideoActive];
@@ -1132,18 +1125,11 @@ static UIWebView* vimeoideoWebViewInstance;
 {
     [self resetPlayerAttributes];
     
-    if (self.previousSourceId != nil && self.percentageViewed > 0.0f)
-    {
-        id<GAITracker> tracker = [GAI sharedInstance].defaultTracker;
-
-        [tracker sendEventWithCategory: @"goal"
-                            withAction: @"videoViewed"
-                             withLabel: self.previousSourceId
-                             withValue: @((int) (self.percentageViewed  * 100.0f))];
-    }
+    [self logViewingStatistics];
     
     self.currentVideoViewedFlag = FALSE;
     self.percentageViewed = 0.0f;
+    self.timeViewed = 0.0f;
 
     VideoInstance *videoInstance = self.videoInstanceArray [self.currentSelectedIndex];
     
@@ -1277,6 +1263,7 @@ static UIWebView* vimeoideoWebViewInstance;
         {
             DebugLog (@"*** Ended: Stopping - Fading out player & Loading next video");
             self.percentageViewed = 1.0f;
+            self.timeViewed = self.currentDuration;
             [self stopShuttleBarUpdateTimer];
             [self stopVideoStallDetectionTimer];
             [self stopVideo];
@@ -1508,6 +1495,7 @@ static UIWebView* vimeoideoWebViewInstance;
     float viewedPercentage = currentTime / self.currentDuration;
     
     self.percentageViewed = viewedPercentage;
+    self.timeViewed = currentTime;
     
     // and slider
     if (self.disableTimeUpdating == FALSE)
@@ -1665,6 +1653,24 @@ static UIWebView* vimeoideoWebViewInstance;
 	{
 		[[UIApplication sharedApplication] openURL: youTubeURL];
 	}
+}
+
+- (void) logViewingStatistics
+{
+    if (self.previousSourceId != nil && self.percentageViewed > 0.0f)
+    {
+        id<GAITracker> tracker = [GAI sharedInstance].defaultTracker;
+        
+        [tracker sendEventWithCategory: @"goal"
+                            withAction: @"videoViewed"
+                             withLabel: self.previousSourceId
+                             withValue: @((int) (self.percentageViewed  * 100.0f))];
+        
+        [tracker sendEventWithCategory: @"goal"
+                            withAction: @"videoViewedDuration"
+                             withLabel: self.previousSourceId
+                             withValue: @((int) (self.timeViewed))];
+    }
 }
 
 @end

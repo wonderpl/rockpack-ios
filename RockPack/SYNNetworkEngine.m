@@ -553,67 +553,60 @@
     [self enqueueOperation: networkOperation];
 }
 
-- (void) subscribersForUserId: (NSString*) userId
-                    channelId: (NSString*)channelId
-                     forRange: (NSRange)range
-             completionHandler: (MKNKSearchSuccessBlock) completionBlock
+- (void) subscribersForUserId: (NSString *) userId
+                    channelId: (NSString *) channelId
+                     forRange: (NSRange) range
+                  byAppending: (BOOL) append
+            completionHandler: (MKNKSearchSuccessBlock) completionBlock
                  errorHandler: (MKNKBasicFailureBlock) errorBlock
 {
-    
-    
     if (!userId || !channelId)
+    {
         return;
+    }
     
-    NSMutableDictionary* tempParameters = [NSMutableDictionary dictionary];
+    NSMutableDictionary *tempParameters = [NSMutableDictionary dictionary];
     
     tempParameters[@"start"] = [NSString stringWithFormat: @"%i", range.location];
-    
     tempParameters[@"size"] = [NSString stringWithFormat: @"%i", range.length];
-    
     [tempParameters addEntriesFromDictionary: [self getLocaleParam]];
     
-    NSDictionary *apiSubstitutionDictionary = @{@"USERID" : userId, @"CHANNELID" : channelId};
+    NSDictionary *apiSubstitutionDictionary = @{@"USERID": userId, @"CHANNELID": channelId};
     NSString *apiString = [kAPISubscribersForChannel stringByReplacingOccurrencesOfStrings: apiSubstitutionDictionary];
-    
-    NSDictionary* parameters = [NSDictionary dictionaryWithDictionary: tempParameters];
+    NSDictionary *parameters = [NSDictionary dictionaryWithDictionary: tempParameters];
     
     SYNNetworkOperationJsonObject *networkOperation =
-    (SYNNetworkOperationJsonObject*)[self operationWithPath:apiString params:parameters];
+    (SYNNetworkOperationJsonObject *) [self operationWithPath: apiString
+                                                       params: parameters];
     networkOperation.shouldNotCacheResponse = YES;
     
     [networkOperation addJSONCompletionHandler: ^(NSDictionary *dictionary) {
-        
         int itemsCount = 0;
         
         if (!dictionary)
+        {
             return;
+        }
         
-        NSNumber *totalNumber = (NSNumber*)dictionary[@"users"][@"total"];
+        NSNumber * totalNumber = (NSNumber *) dictionary[@"users"][@"total"];
         
         if (totalNumber && [totalNumber isKindOfClass: [NSNumber class]])
         {
             itemsCount = totalNumber.intValue;
         }
         
-        BOOL registryResultOk = [self.searchRegistry registerSubscribersFromDictionary:dictionary];
+        BOOL registryResultOk = [self.searchRegistry registerSubscribersFromDictionary: dictionary
+                                                                           byAppending: append];
         
-        if (!registryResultOk) {
+        if (!registryResultOk)
+        {
             errorBlock();
             return;
         }
         
-        
         completionBlock(itemsCount);
-        
-        
-    } errorHandler:^(NSError* error) {
-        
-        
-        
-        
-        
+    } errorHandler: ^(NSError *error) {
     }];
-    
     
     [self enqueueOperation: networkOperation];
 }
