@@ -416,7 +416,7 @@ extern void instrumentObjcMessageSends(BOOL);
         NSTimeInterval refreshTimeout = [self.currentOAuth2Credentials.expirationDate timeIntervalSinceNow];
         if(refreshTimeout <kOAuthTokenExpiryMargin)
         {
-            [self refreshExpiredTokenOnStartup];
+            [self refreshExpiredToken];
         }
         else
         {
