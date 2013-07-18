@@ -38,7 +38,7 @@
                                                      minimumInterItemSpacing: 0.0
                                                           minimumLineSpacing: 2.0
                                                              scrollDirection: UICollectionViewScrollDirectionVertical
-                                                                sectionInset: UIEdgeInsetsMake(6.0, 6.0, 5.0, 6.0)];
+                                                                sectionInset: UIEdgeInsetsMake(6.0, 6.0, 5.0, 8.0)];
     }
     
     flowLayout.footerReferenceSize = [self footerSize];
@@ -54,6 +54,7 @@
     
     _usersThumbnailCollectionView.autoresizingMask = UIViewAutoresizingFlexibleWidth | UIViewAutoresizingFlexibleHeight;
     _usersThumbnailCollectionView.scrollsToTop = NO;
+
 
     self.view = _usersThumbnailCollectionView;
     
@@ -153,6 +154,23 @@
                                             [SYNDeviceManager.sharedInstance currentScreenHeight] - offsetTop);
 
     self.usersThumbnailCollectionView.frame = collectionViewFrame;
+}
+
+#pragma mark - Footer support
+
+- (void) scrollViewDidScroll: (UIScrollView *) scrollView
+{
+    if (scrollView.contentOffset.y >= scrollView.contentSize.height - scrollView.bounds.size.height - kLoadMoreFooterViewHeight
+        && self.isLoadingMoreContent == NO)
+    {
+        [self loadMoreUsers];
+    }
+}
+
+
+- (void) loadMoreUsers
+{
+    AssertOrLog(@"Shouldn't be calling abstract view controller");
 }
 
 @end

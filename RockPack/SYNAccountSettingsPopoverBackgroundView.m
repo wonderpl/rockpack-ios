@@ -2,7 +2,7 @@
 
 // Predefined arrow image width and height
 #define ARROW_WIDTH 35.0 // will stretch the image
-#define ARROW_HEIGHT 20.0
+#define ARROW_HEIGHT 8.0
 
 // Predefined content insets
 #define TOP_CONTENT_INSET 8
@@ -48,7 +48,8 @@
 // The insets for the content portion of the popover.
 + (UIEdgeInsets) contentViewInsets
 {
-    return UIEdgeInsetsMake(TOP_CONTENT_INSET, LEFT_CONTENT_INSET, BOTTOM_CONTENT_INSET, RIGHT_CONTENT_INSET);
+//    return UIEdgeInsetsMake(TOP_CONTENT_INSET, LEFT_CONTENT_INSET, BOTTOM_CONTENT_INSET, RIGHT_CONTENT_INSET);
+        return UIEdgeInsetsMake(TOP_CONTENT_INSET, LEFT_CONTENT_INSET, BOTTOM_CONTENT_INSET, RIGHT_CONTENT_INSET);
 }
 
 
@@ -59,6 +60,7 @@
     if (self = [super initWithFrame: frame])
     {
         UIImage *popoverBackgroundImage = [[UIImage imageNamed: @"AccountSettingsView.png"] resizableImageWithCapInsets: UIEdgeInsetsMake(49, 46, 49, 45)];
+        
         self.popoverBackgroundImageView = [[UIImageView alloc] initWithImage: popoverBackgroundImage];
         [self addSubview: self.popoverBackgroundImageView];
     }

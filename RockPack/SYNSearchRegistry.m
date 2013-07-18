@@ -147,10 +147,11 @@
 
 
 - (BOOL) registerSubscribersFromDictionary: (NSDictionary *) dictionary
+                               byAppending: (BOOL) append;
 {
     return [self registerChannelOwnersFromDictionary: dictionary
                                            forViewId: kChannelDetailsViewId
-                                         byAppending: NO];
+                                         byAppending: append];
 }
 
 
