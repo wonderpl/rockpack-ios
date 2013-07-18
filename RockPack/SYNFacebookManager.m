@@ -21,6 +21,8 @@ typedef enum
 @property (nonatomic, strong) NSArray *readPermissions;
 @property (nonatomic, strong) NSArray *publishPermissions;
 
+@property (atomic,assign) int outstandingLoginRequests;
+
 @end
 
 
@@ -63,6 +65,7 @@ typedef enum
 - (void) loginOnSuccess: (FacebookLoginSuccessBlock) successBlock
               onFailure: (FacebookLoginFailureBlock) failureBlock
 {
+    self.outstandingLoginRequests++;
     [self openSessionWithPermissionType: kFacebookPermissionTypeRead
                               onSuccess: ^{
                                   
@@ -73,12 +76,18 @@ typedef enum
                                           // Graph query failed, so parse NSError userInfo to get description
                                           NSString *errorMessage = [self parsedErrorMessage: error];
                                           dispatch_async(dispatch_get_main_queue(), ^{
-                                              failureBlock(errorMessage);
+                                              self.outstandingLoginRequests--;
+                                              if(self.outstandingLoginRequests<=0)
+                                              {
+                                                  //Only report error if the very last login attempt failed.
+                                                  failureBlock(errorMessage);
+                                              }
                                           });
                                       } else {
                                           
                                           
                                           dispatch_async(dispatch_get_main_queue(), ^{
+                                              self.outstandingLoginRequests--;
                                               successBlock(userInfo);
                                           });
                                       }
@@ -86,9 +95,14 @@ typedef enum
                                   
                               }
                               onFailure: ^(NSString *errorMessage) {
-                                  
                                   dispatch_async(dispatch_get_main_queue(), ^{
-                                      failureBlock(errorMessage);
+                                      self.outstandingLoginRequests--;
+                                      if(self.outstandingLoginRequests<=0)
+                                      {
+                                          //Only report error if the very last login attempt failed.
+                                          failureBlock(errorMessage);
+                                          
+                                      }
                                   });
                               }];
 }
