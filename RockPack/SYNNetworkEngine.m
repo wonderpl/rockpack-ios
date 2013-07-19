@@ -6,10 +6,10 @@
 //  Copyright (c) Rockpack Ltd. All rights reserved.
 //
 
-#import "Genre.h"
-#import "SYNAppDelegate.h"
 #import "Channel.h"
+#import "Genre.h"
 #import "NSString+Utils.h"
+#import "SYNAppDelegate.h"
 #import "SYNAppDelegate.h"
 #import "SYNMainRegistry.h"
 #import "SYNNetworkEngine.h"
@@ -50,28 +50,27 @@
                               onError: (MKNKErrorBlock) errorBlock
 {
     SYNNetworkOperationJsonObject *networkOperation =
-    (SYNNetworkOperationJsonObject*)[self operationWithPath: kAPICategories
-                                                     params: [self getLocaleParam]
-                                                 httpMethod: @"GET"];
-
+    (SYNNetworkOperationJsonObject *) [self operationWithPath: kAPICategories
+                                                       params: [self getLocaleParam]
+                                                   httpMethod: @"GET"];
+    
     //networkOperation.ignoreCachedResponse = YES;
-    [networkOperation addJSONCompletionHandler:^(NSDictionary *dictionary) {
-        
-        
+    [networkOperation addJSONCompletionHandler: ^(NSDictionary *dictionary) {
         completionBlock(dictionary);
-        
-    } errorHandler:^(NSError* error) {
-        if (error.code >=500 && error.code < 600)
+    } errorHandler: ^(NSError *error) {
+        if (error.code >= 500 && error.code < 600)
         {
-            [self showErrorPopUpForError:error];
+            [self showErrorPopUpForError: error];
         }
-        DebugLog(@"API request failed");
         
+        DebugLog(@"API request failed");
     }];
-
-    [self enqueueOperation: networkOperation]; 
+    
+    [self enqueueOperation: networkOperation];
 }
 
+
+#pragma mark - Cover art
 
 - (void) updateCoverArtWithWithStart: (unsigned int) start
                                 size: (unsigned int) size
@@ -82,28 +81,29 @@
     NSDictionary *params = [self paramsAndLocaleForStart: start
                                                     size: size];
     
-    SYNNetworkOperationJsonObject *networkOperation = (SYNNetworkOperationJsonObject*)[self operationWithPath: kAPIGetCoverArt
-                                                                                                       params: params
-                                                                                                   httpMethod: @"GET"];
+    SYNNetworkOperationJsonObject *networkOperation = (SYNNetworkOperationJsonObject *) [self operationWithPath: kAPIGetCoverArt
+                                                                                                         params: params
+                                                                                                     httpMethod: @"GET"];
     
-    [networkOperation addJSONCompletionHandler: ^(NSDictionary *dictionary)
-     {
-         BOOL registryResultOk = [self.registry registerCoverArtFromDictionary: dictionary
-                                                                 forUserUpload: NO];
-         
-         if (!registryResultOk)
-             return;
-         
-         completionBlock(dictionary);
-         
-     } errorHandler: ^(NSError* error) {
-         if (error.code >=500 && error.code < 600)
-         {
-             [self showErrorPopUpForError:error];
-         }
-         DebugLog(@"API request failed");
-         
-     }];
+    [networkOperation addJSONCompletionHandler: ^(NSDictionary *dictionary){
+        BOOL registryResultOk = [self.registry
+                                 registerCoverArtFromDictionary: dictionary
+                                 forUserUpload: NO];
+        
+        if (!registryResultOk)
+        {
+            return;
+        }
+        
+        completionBlock(dictionary);
+    } errorHandler: ^(NSError *error) {
+        if (error.code >= 500 && error.code < 600)
+        {
+            [self showErrorPopUpForError: error];
+        }
+        
+        DebugLog(@"API request failed");
+    }];
     
     [self enqueueOperation: networkOperation];
 }
@@ -112,24 +112,26 @@
 - (void) updateCoverArtOnCompletion: (MKNKJSONCompleteBlock) completionBlock
                             onError: (MKNKErrorBlock) errorBlock
 {
-    SYNNetworkOperationJsonObject *networkOperation = (SYNNetworkOperationJsonObject*)[self operationWithPath: kAPIGetCoverArt
-                                                                                                       params: [self getLocaleParam]];
+    SYNNetworkOperationJsonObject *networkOperation = (SYNNetworkOperationJsonObject *) [self operationWithPath: kAPIGetCoverArt
+                                                                                                         params: [self getLocaleParam]];
     
-    [networkOperation addJSONCompletionHandler: ^(NSDictionary *dictionary)
-    {
-        BOOL registryResultOk = [self.registry registerCoverArtFromDictionary: dictionary
-                                                                forUserUpload: NO];
+    [networkOperation addJSONCompletionHandler: ^(NSDictionary *dictionary) {
+        BOOL registryResultOk = [self.registry
+                                 registerCoverArtFromDictionary: dictionary
+                                 forUserUpload: NO];
         
         if (!registryResultOk)
+        {
             return;
+        }
         
         completionBlock(dictionary);
-        
-    } errorHandler: ^(NSError* error) {
-        if (error.code >=500 && error.code < 600)
+    } errorHandler: ^(NSError *error) {
+        if (error.code >= 500 && error.code < 600)
         {
-            [self showErrorPopUpForError:error];
+            [self showErrorPopUpForError: error];
         }
+        
         DebugLog(@"API request failed");
     }];
     
@@ -143,21 +145,20 @@
                  completionHandler: (MKNKUserSuccessBlock) completionBlock
                       errorHandler: (MKNKUserErrorBlock) errorBlock
 {
-    NSDictionary *apiSubstitutionDictionary = @{@"USERID" : userId,
-                                                @"CHANNELID" : channelId};
+    NSDictionary *apiSubstitutionDictionary = @{@"USERID": userId, @"CHANNELID": channelId};
     
     NSString *apiString = [kAPIGetVideosForChannel stringByReplacingOccurrencesOfStrings: apiSubstitutionDictionary];
     
-    NSMutableDictionary* parameters = [NSMutableDictionary dictionary];
+    NSMutableDictionary *parameters = [NSMutableDictionary dictionary];
     
     parameters[@"start"] = @(range.location);
     parameters[@"size"] = @(range.length);
     parameters[@"locale"] = self.localeString;
     
-    SYNNetworkOperationJsonObject *networkOperation = (SYNNetworkOperationJsonObject*)[self operationWithPath: apiString
-                                                                                                       params: parameters
-                                                                                                   httpMethod: @"GET"
-                                                                                                          ssl: NO];
+    SYNNetworkOperationJsonObject *networkOperation = (SYNNetworkOperationJsonObject *) [self operationWithPath: apiString
+                                                                                                         params: parameters
+                                                                                                     httpMethod: @"GET"
+                                                                                                            ssl: NO];
     
     [self addCommonHandlerToNetworkOperation: networkOperation
                            completionHandler: completionBlock
@@ -166,20 +167,19 @@
     [self enqueueOperation: networkOperation];
 }
 
-- (MKNetworkOperation*) updateChannel: (NSString *) resourceURL
-                    completionHandler: (MKNKUserSuccessBlock) completionBlock
-                         errorHandler: (MKNKUserErrorBlock) errorBlock
+
+- (MKNetworkOperation *) updateChannel: (NSString *) resourceURL
+                     completionHandler: (MKNKUserSuccessBlock) completionBlock
+                          errorHandler: (MKNKUserErrorBlock) errorBlock
 {
-    NSMutableDictionary* parameters = [NSMutableDictionary dictionary];
+    NSMutableDictionary *parameters = [NSMutableDictionary dictionary];
     
     parameters[@"start"] = @(0);
-    
     parameters[@"size"] = @(STANDARD_REQUEST_LENGTH);
-    
     parameters[@"locale"] = self.localeString;
     
-    SYNNetworkOperationJsonObject *networkOperation = (SYNNetworkOperationJsonObject*)[self operationWithURLString: resourceURL
-                                                                                                            params: parameters];
+    SYNNetworkOperationJsonObject *networkOperation = (SYNNetworkOperationJsonObject *) [self operationWithURLString: resourceURL
+                                                                                                              params: parameters];
     
     [self addCommonHandlerToNetworkOperation: networkOperation
                            completionHandler: completionBlock
@@ -188,42 +188,41 @@
     [self enqueueOperation: networkOperation];
     
     return networkOperation;
-    
 }
 
 
-- (MKNetworkOperation*) updateChannelsScreenForCategory: (NSString*) categoryId
-                                forRange: (NSRange) range
-                           ignoringCache: (BOOL) ignore
-                            onCompletion: (MKNKJSONCompleteBlock) completeBlock
-                                 onError: (MKNKJSONErrorBlock) errorBlock
+- (MKNetworkOperation *) updateChannelsScreenForCategory: (NSString *) categoryId
+                                                forRange: (NSRange) range
+                                           ignoringCache: (BOOL) ignore
+                                            onCompletion: (MKNKJSONCompleteBlock) completeBlock
+                                                 onError: (MKNKJSONErrorBlock) errorBlock
 {
-    NSMutableDictionary* tempParameters = [NSMutableDictionary dictionary];
+    NSMutableDictionary *tempParameters = [NSMutableDictionary dictionary];
     
-    tempParameters[@"start"] = [NSString stringWithFormat: @"%i", range.location]; 
-    
+    tempParameters[@"start"] = [NSString stringWithFormat: @"%i", range.location];
     tempParameters[@"size"] = [NSString stringWithFormat: @"%i", range.length];
     
     if (![categoryId isEqualToString: @"all"])
     {
         tempParameters[@"category"] = categoryId;
     }
-
-    NSDictionary* parameters = [self getLocaleParamWithParams: tempParameters];
-
+    
+    NSDictionary *parameters = [self getLocaleParamWithParams: tempParameters];
+    
     SYNNetworkOperationJsonObject *networkOperation =
-    (SYNNetworkOperationJsonObject*)[self operationWithPath: kAPIPopularChannels
-                                                     params: parameters];
+    (SYNNetworkOperationJsonObject *) [self operationWithPath: kAPIPopularChannels
+                                                       params: parameters];
     
     networkOperation.ignoreCachedResponse = ignore;
     
-    [networkOperation addJSONCompletionHandler: ^(NSDictionary *dictionary){
+    [networkOperation addJSONCompletionHandler: ^(NSDictionary *dictionary) {
         completeBlock(dictionary);
-    } errorHandler: ^(NSError* error) {
-        errorBlock(@{@"network_error":@"Engine Failed to Load Channels"});
-        if (error.code >=500 && error.code < 600)
+    } errorHandler: ^(NSError *error) {
+        errorBlock(@{@"network_error": @"Engine Failed to Load Channels"});
+        
+        if (error.code >= 500 && error.code < 600)
         {
-            [self showErrorPopUpForError:error];
+            [self showErrorPopUpForError: error];
         }
     }];
     
@@ -235,56 +234,58 @@
 
 #pragma mark - Search
 
-- (MKNetworkOperation*) searchVideosForTerm: (NSString*)searchTerm
-                                    inRange: (NSRange)range
-                                 onComplete: (MKNKSearchSuccessBlock)completeBlock
+- (MKNetworkOperation *) searchVideosForTerm: (NSString *) searchTerm
+                                     inRange: (NSRange) range
+                                  onComplete: (MKNKSearchSuccessBlock) completeBlock
 {
-    if (searchTerm == nil || [searchTerm isEqualToString:@""])
+    if (searchTerm == nil || [searchTerm isEqualToString: @""])
+    {
         return nil;
+    }
     
-    NSMutableDictionary* tempParameters = [NSMutableDictionary dictionary];
+    NSMutableDictionary *tempParameters = [NSMutableDictionary dictionary];
     
     tempParameters[@"q"] = searchTerm;
-    
     tempParameters[@"start"] = [NSString stringWithFormat: @"%i", range.location];
-    
     tempParameters[@"size"] = [NSString stringWithFormat: @"%i", range.length];
-    
     [tempParameters addEntriesFromDictionary: [self getLocaleParam]];
     
-    NSDictionary* parameters = [NSDictionary dictionaryWithDictionary: tempParameters];
+    NSDictionary *parameters = [NSDictionary dictionaryWithDictionary: tempParameters];
     
     SYNNetworkOperationJsonObject *networkOperation =
-    (SYNNetworkOperationJsonObject*)[self operationWithPath: kAPISearchVideos
-                                                     params: parameters];
+    (SYNNetworkOperationJsonObject *) [self operationWithPath: kAPISearchVideos
+                                                       params: parameters];
     networkOperation.shouldNotCacheResponse = YES;
     
     [networkOperation addJSONCompletionHandler: ^(NSDictionary *dictionary) {
-        
         int itemsCount = 0;
         
-        if(!dictionary)
-            return;
-        
-        NSNumber *totalNumber = (NSNumber*)dictionary[@"videos"][@"total"];
-        if (totalNumber && [totalNumber isKindOfClass: [NSNumber class]])
-            itemsCount = totalNumber.intValue;
-        
-            BOOL registryResultOk = [self.searchRegistry registerVideosFromDictionary:dictionary];
-        
-            if (!registryResultOk)
-                return;
-            
-            completeBlock(itemsCount);
-
-
-        
-                
-    } errorHandler:^(NSError* error) {
-        DebugLog(@"Update Videos Screens Request Failed");
-        if (error.code >=500 && error.code < 600)
+        if (!dictionary)
         {
-            [self showErrorPopUpForError:error];
+            return;
+        }
+        
+        NSNumber * totalNumber = (NSNumber *) dictionary[@"videos"][@"total"];
+        
+        if (totalNumber && [totalNumber isKindOfClass: [NSNumber class]])
+        {
+            itemsCount = totalNumber.intValue;
+        }
+        
+        BOOL registryResultOk = [self.searchRegistry registerVideosFromDictionary: dictionary];
+        
+        if (!registryResultOk)
+        {
+            return;
+        }
+        
+        completeBlock(itemsCount);
+    } errorHandler: ^(NSError *error) {
+        DebugLog(@"Update Videos Screens Request Failed");
+        
+        if (error.code >= 500 && error.code < 600)
+        {
+            [self showErrorPopUpForError: error];
         }
     }];
     
@@ -307,11 +308,8 @@
     NSMutableDictionary *tempParameters = [NSMutableDictionary dictionary];
     
     tempParameters[@"q"] = searchTerm;
-    
     tempParameters[@"start"] = [NSString stringWithFormat: @"%i", range.location];
-    
     tempParameters[@"size"] = [NSString stringWithFormat: @"%i", range.length];
-    
     [tempParameters addEntriesFromDictionary: [self getLocaleParam]];
     
     NSDictionary *parameters = [NSDictionary dictionaryWithDictionary: tempParameters];
@@ -329,7 +327,7 @@
             return;
         }
         
-        NSNumber * totalNumber = (NSNumber *) dictionary[@"users"][@"total"];
+        NSNumber *totalNumber = (NSNumber *) dictionary[@"users"][@"total"];
         
         if (totalNumber && [totalNumber isKindOfClass: [NSNumber class]])
         {
@@ -345,15 +343,14 @@
         }
         
         completeBlock(itemsCount);
-    }
-                                  errorHandler: ^(NSError *error) {
-                                      DebugLog(@"Update Videos Screens Request Failed");
-                                      
-                                      if (error.code >= 500 && error.code < 600)
-                                      {
-                                          [self showErrorPopUpForError: error];
-                                      }
-                                  }];
+    } errorHandler: ^(NSError *error) {
+        DebugLog(@"Update Videos Screens Request Failed");
+        
+        if (error.code >= 500 && error.code < 600)
+        {
+            [self showErrorPopUpForError: error];
+        }
+    }];
     
     
     [self enqueueOperation: networkOperation];
@@ -362,39 +359,39 @@
 }
 
 
-- (MKNetworkOperation*) searchChannelsForTerm: (NSString*)searchTerm
-                                     andRange: (NSRange)range
-                                   onComplete: (MKNKSearchSuccessBlock)completeBlock
-{   
-    if (searchTerm == nil || [searchTerm isEqualToString:@""])
+- (MKNetworkOperation *) searchChannelsForTerm: (NSString *) searchTerm
+                                      andRange: (NSRange) range
+                                    onComplete: (MKNKSearchSuccessBlock) completeBlock
+{
+    if (searchTerm == nil || [searchTerm isEqualToString: @""])
+    {
         return nil;
-
-    NSMutableDictionary* tempParameters = [NSMutableDictionary dictionary];
+    }
+    
+    NSMutableDictionary *tempParameters = [NSMutableDictionary dictionary];
     
     tempParameters[@"q"] = searchTerm;
-    
     tempParameters[@"start"] = [NSString stringWithFormat: @"%i", range.location];
-    
     tempParameters[@"size"] = [NSString stringWithFormat: @"%i", range.length];
-    
     [tempParameters addEntriesFromDictionary: [self getLocaleParam]];
     
     
-    NSDictionary* parameters = [NSDictionary dictionaryWithDictionary: tempParameters];
+    NSDictionary *parameters = [NSDictionary dictionaryWithDictionary: tempParameters];
     
     SYNNetworkOperationJsonObject *networkOperation =
-    (SYNNetworkOperationJsonObject*)[self operationWithPath:kAPISearchChannels params:parameters];
+    (SYNNetworkOperationJsonObject *) [self operationWithPath: kAPISearchChannels
+                                                       params: parameters];
     networkOperation.shouldNotCacheResponse = YES;
     
     [networkOperation addJSONCompletionHandler: ^(NSDictionary *dictionary) {
-        
-        
         int itemsCount = 0;
         
         if (!dictionary)
+        {
             return;
+        }
         
-        NSNumber *totalNumber = (NSNumber*)dictionary[@"channels"][@"total"];
+        NSNumber * totalNumber = (NSNumber *) dictionary[@"channels"][@"total"];
         
         if (totalNumber && [totalNumber isKindOfClass: [NSNumber class]])
         {
@@ -404,16 +401,17 @@
         BOOL registryResultOk = [self.searchRegistry registerChannelsFromDictionary: dictionary];
         
         if (!registryResultOk)
+        {
             return;
+        }
         
         completeBlock(itemsCount);
-        
-        
-    } errorHandler:^(NSError* error) {
+    } errorHandler: ^(NSError *error) {
         DebugLog(@"Update Videos Screens Request Failed");
-        if (error.code >=500 && error.code < 600)
+        
+        if (error.code >= 500 && error.code < 600)
         {
-            [self showErrorPopUpForError:error];
+            [self showErrorPopUpForError: error];
         }
     }];
     
@@ -426,31 +424,39 @@
 
 #pragma mark - Autocomplete
 
-- (MKNetworkOperation*) getAutocompleteForHint: (NSString*)hint
-                                   forResource: (EntityType)entityType
-                                  withComplete: (MKNKAutocompleteProcessBlock) completionBlock
-                                      andError: (MKNKErrorBlock) errorBlock
+- (MKNetworkOperation *) getAutocompleteForHint: (NSString *) hint
+                                    forResource: (EntityType) entityType
+                                   withComplete: (MKNKAutocompleteProcessBlock) completionBlock
+                                       andError: (MKNKErrorBlock) errorBlock
 {
     if (!hint)
+    {
         return nil;
+    }
     
     // Register the class to be used for this operation only
-    
     [self registerOperationSubclass: [SYNNetworkOperationJsonObjectParse class]];
     
-    NSDictionary* parameters = [self getLocaleParamWithParams: @{@"q": hint}];
+    NSDictionary *parameters = [self getLocaleParamWithParams: @{@"q": hint}];
     
-    NSString* apiForEntity;
-    if(entityType == EntityTypeChannel)
+    NSString *apiForEntity;
+    
+    if (entityType == EntityTypeChannel)
+    {
         apiForEntity = kAPICompleteChannels;
-    else if(entityType == EntityTypeVideo)
+    }
+    else if (entityType == EntityTypeVideo)
+    {
         apiForEntity = kAPICompleteVideos;
+    }
     else
+    {
         return nil; // do not accept any unknown type
+    }
     
     SYNNetworkOperationJsonObjectParse *networkOperation =
-    (SYNNetworkOperationJsonObjectParse*)[self operationWithPath: apiForEntity
-                                                          params: parameters];
+    (SYNNetworkOperationJsonObjectParse *) [self operationWithPath: apiForEntity
+                                                            params: parameters];
     
     [networkOperation addJSONCompletionHandler: ^(NSArray *array) {
         completionBlock(array);
@@ -460,98 +466,95 @@
     
     // Go back to the original operation class
     
-    [self registerOperationSubclass:[SYNNetworkOperationJsonObject class]];
+    [self registerOperationSubclass: [SYNNetworkOperationJsonObject class]];
     
     return networkOperation;
-    
 }
 
 
-#pragma User Data
+#pragma mark - Channel owner
 
-
-- (void) channelOwnerDataForChannelOwner: (ChannelOwner*) channelOwner
+- (void) channelOwnerDataForChannelOwner: (ChannelOwner *) channelOwner
                               onComplete: (MKNKUserSuccessBlock) completeBlock
                                  onError: (MKNKUserErrorBlock) errorBlock
 {
-    NSDictionary *apiSubstitutionDictionary = @{@"USERID" : channelOwner.uniqueId};
+    NSDictionary *apiSubstitutionDictionary = @{@"USERID": channelOwner.uniqueId};
     
     // same as for User
     NSString *apiString = [kAPIGetUserDetails stringByReplacingOccurrencesOfStrings: apiSubstitutionDictionary];
     
-    NSMutableDictionary* parameters = [[NSMutableDictionary alloc] initWithCapacity:3];
+    NSMutableDictionary *parameters = [[NSMutableDictionary alloc] initWithCapacity: 3];
+    
     parameters[@"start"] = @(0);
-    
     parameters[@"size"] = @(1000);
-    
     parameters[@"locale"] = self.localeString;
     
-    SYNNetworkOperationJsonObject *networkOperation = (SYNNetworkOperationJsonObject*)[self operationWithPath: apiString
-                                                                                                       params: parameters];
+    SYNNetworkOperationJsonObject *networkOperation = (SYNNetworkOperationJsonObject *) [self operationWithPath: apiString
+                                                                                                         params: parameters];
     
     [networkOperation addJSONCompletionHandler: ^(id dictionary) {
+        NSString *possibleError = dictionary[@"error"];
         
-        NSString* possibleError = dictionary[@"error"];
-        if(possibleError)
+        if (possibleError)
         {
-            errorBlock(@{@"error":possibleError});
+            errorBlock(@{@"error": possibleError});
             return;
         }
-
+        
         completeBlock(dictionary);
-
-     } errorHandler: ^(NSError* error) {
-         if (error.code >=500 && error.code < 600)
-         {
-             [self showErrorPopUpForError:error];
-         }
-         errorBlock(error);
-     }];
+    } errorHandler: ^(NSError *error) {
+        if (error.code >= 500 && error.code < 600)
+        {
+            [self showErrorPopUpForError: error];
+        }
+        
+        errorBlock(error);
+    }];
     
     [self enqueueOperation: networkOperation];
 }
 
 
-- (void) channelOwnerSubscriptionsForOwner: (ChannelOwner*) channelOwner
-                                  forRange: (NSRange)range
+#pragma mark - Subscriber
+
+- (void) channelOwnerSubscriptionsForOwner: (ChannelOwner *) channelOwner
+                                  forRange: (NSRange) range
                          completionHandler: (MKNKUserSuccessBlock) completionBlock
                               errorHandler: (MKNKUserErrorBlock) errorBlock
 {
-    NSDictionary *apiSubstitutionDictionary = @{@"USERID" : channelOwner.uniqueId};
+    NSDictionary *apiSubstitutionDictionary = @{@"USERID": channelOwner.uniqueId};
     
     NSDictionary *params = [self paramsForStart: range.location
                                            size: range.length];
-    
-    
-    
+
     // we are not using the subscriptions_url returned from user info data but using a std one.
     NSString *apiString = [kAPIGetUserSubscriptions stringByReplacingOccurrencesOfStrings: apiSubstitutionDictionary];
     
     
-    SYNNetworkOperationJsonObject *networkOperation = (SYNNetworkOperationJsonObject*)[self operationWithPath: apiString
-                                                                                                       params: params];
+    SYNNetworkOperationJsonObject *networkOperation = (SYNNetworkOperationJsonObject *) [self operationWithPath: apiString
+                                                                                                         params: params];
     
     
     [networkOperation addJSONCompletionHandler: ^(id dictionary) {
-        
-        if(!dictionary)
+        if (!dictionary)
         {
             errorBlock(dictionary);
             return;
         }
         
         completionBlock(dictionary);
-        
-    } errorHandler:^(NSError *error) {
-        if (error.code >=500 && error.code < 600)
+    } errorHandler: ^(NSError *error) {
+        if (error.code >= 500 && error.code < 600)
         {
-            [self showErrorPopUpForError:error];
+            [self showErrorPopUpForError: error];
         }
+        
         errorBlock(error);
     }];
-
+    
     [self enqueueOperation: networkOperation];
 }
+
 
 - (void) subscribersForUserId: (NSString *) userId
                     channelId: (NSString *) channelId
@@ -571,7 +574,9 @@
     tempParameters[@"size"] = [NSString stringWithFormat: @"%i", range.length];
     [tempParameters addEntriesFromDictionary: [self getLocaleParam]];
     
-    NSDictionary *apiSubstitutionDictionary = @{@"USERID": userId, @"CHANNELID": channelId};
+    NSDictionary *apiSubstitutionDictionary = @{
+                                                @"USERID": userId, @"CHANNELID": channelId
+                                                };
     NSString *apiString = [kAPISubscribersForChannel stringByReplacingOccurrencesOfStrings: apiSubstitutionDictionary];
     NSDictionary *parameters = [NSDictionary dictionaryWithDictionary: tempParameters];
     
@@ -588,7 +593,7 @@
             return;
         }
         
-        NSNumber * totalNumber = (NSNumber *) dictionary[@"users"][@"total"];
+        NSNumber *totalNumber = (NSNumber *) dictionary[@"users"][@"total"];
         
         if (totalNumber && [totalNumber isKindOfClass: [NSNumber class]])
         {
@@ -612,26 +617,48 @@
 }
 
 
-- (void) updatePlayerSourceWithCompletionHandler: (MKNKUserErrorBlock) completionBlock
-                                    errorHandler: (MKNKUserSuccessBlock) errorBlock
+#pragma mark - Video player HTML update
+
+- (void) updatePlayerSourceWithCompletionHandler: (MKNKUserSuccessBlock) completionBlock
+                                    errorHandler: (MKNKUserErrorBlock) errorBlock
 {
     SYNNetworkOperationJsonObject *networkOperation =
-    (SYNNetworkOperationJsonObject*)[self operationWithPath: kYouTubePlayerSource
-                                                     params: [self getLocaleParam]
-                                                 httpMethod: @"GET"];
+    (SYNNetworkOperationJsonObject *) [self operationWithPath: kHTMLVideoPlayerSource
+                                                       params: [self getLocaleParam]
+                                                   httpMethod: @"GET"];
     
     networkOperation.ignoreCachedResponse = YES;
     
     [networkOperation addJSONCompletionHandler: ^(NSDictionary *dictionary) {
-
         completionBlock(dictionary);
-        
-    } errorHandler:^(NSError* error) {
+    } errorHandler: ^(NSError *error) {
         DebugLog(@"API request failed");
-        
     }];
     
     [self enqueueOperation: networkOperation];
+}
+
+
+#pragma mark - Push notification token update
+
+- (void) updateApplePushNotificationToken: (NSString *) token
+                    withCompletionHandler: (MKNKUserSuccessBlock) completionBlock
+                             errorHandler: (MKNKUserErrorBlock) errorBlock
+{
+    NSDictionary *parameters = @{@"token" : token};
+    
+    SYNNetworkOperationJsonObject *networkOperation =
+    (SYNNetworkOperationJsonObject *) [self operationWithPath: kApplePushNotificationToken
+                                                       params: parameters];
+    
+    [networkOperation addJSONCompletionHandler: ^(NSDictionary *dictionary) {
+        completionBlock(dictionary);
+    } errorHandler: ^(NSError *error) {
+        errorBlock(error);
+    }];
+    
+    [self enqueueOperation: networkOperation];
+
 }
 
 

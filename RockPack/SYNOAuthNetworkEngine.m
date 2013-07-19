@@ -524,37 +524,33 @@
                                   return;
                               
                               completionBlock(responseDictionary);
-                              
-        
-                            } errorHandler:^(id errorObject) {
-                                if([errorObject isKindOfClass:[NSDictionary class]])
-                                {
-                                    errorBlock(errorObject);
-                                }
-                                else if([errorObject isKindOfClass:[NSError class]])
-                                {
-                                    NSError* error = (NSError*) errorObject;
-                                    
-                                    if (error.code >=500 && error.code < 600)
-                                    {
-                                        [self showErrorPopUpForError:error];
-                                    }
-                                    
-                                    DebugLog(@"API Call failed");
-                                    NSDictionary* customErrorDictionary = @{@"network_error" : [NSString stringWithFormat: @"%@, Server responded with %i", error.domain, error.code] , @"nserror" : error };
-                                    errorBlock(customErrorDictionary);
-                                }
-                                else
-                                {
-                                    errorBlock(nil);
-                                }
-        
-                            }];
-        
-        
-        
-     }
-     errorHandler: ^(NSError* error)
+                          }
+                               errorHandler:^(id errorObject) {
+                                   if([errorObject isKindOfClass:[NSDictionary class]])
+                                   {
+                                       errorBlock(errorObject);
+                                   }
+                                   else if([errorObject isKindOfClass:[NSError class]])
+                                   {
+                                       NSError* error = (NSError*) errorObject;
+                                       
+                                       if (error.code >=500 && error.code < 600)
+                                       {
+                                           [self showErrorPopUpForError:error];
+                                       }
+                                       
+                                       DebugLog(@"API Call failed");
+                                       NSDictionary* customErrorDictionary = @{@"network_error" : [NSString stringWithFormat: @"%@, Server responded with %i", error.domain, error.code] , @"nserror" : error };
+                                       errorBlock(customErrorDictionary);
+                                   }
+                                   else
+                                   {
+                                       errorBlock(nil);
+                                   }
+                                   
+                               }];
+    }
+                                  errorHandler: ^(NSError* error)
      {
          DebugLog(@"API Call failed");
          

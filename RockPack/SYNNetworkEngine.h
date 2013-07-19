@@ -21,12 +21,13 @@
 - (void) updateCategoriesOnCompletion: (MKNKJSONCompleteBlock) completionBlock
                               onError: (MKNKErrorBlock) errorBlock;
 
-
 - (MKNetworkOperation *) updateChannelsScreenForCategory: (NSString *) categoryId
                                                 forRange: (NSRange) range
                                            ignoringCache: (BOOL) ignore
                                             onCompletion: (MKNKJSONCompleteBlock) completeBlock
                                                  onError: (MKNKJSONErrorBlock) errorBlock;
+
+#pragma mark - Search
 
 - (MKNetworkOperation *) searchVideosForTerm: (NSString *) searchTerm
                                      inRange: (NSRange) range
@@ -46,6 +47,8 @@
                                    withComplete: (MKNKAutocompleteProcessBlock) completionBlock
                                        andError: (MKNKErrorBlock) errorBlock;
 
+#pragma mark - Cover art
+
 - (void) updateCoverArtWithWithStart: (unsigned int) start
                                 size: (unsigned int) size
                    completionHandler: (MKNKJSONCompleteBlock) completionBlock
@@ -54,9 +57,15 @@
 - (void) updateCoverArtOnCompletion: (MKNKJSONCompleteBlock) completionBlock
                             onError: (MKNKErrorBlock) errorBlock;
 
+
+#pragma mark - Update channel
+
 - (MKNetworkOperation *) updateChannel: (NSString *) resourceURL
                      completionHandler: (MKNKUserSuccessBlock) completionBlock
                           errorHandler: (MKNKUserErrorBlock) errorBlock;
+
+
+#pragma mark - Channel owner
 
 - (void) channelOwnerDataForChannelOwner: (ChannelOwner *) channelOwner
                               onComplete: (MKNKUserSuccessBlock) completeBlock
@@ -67,6 +76,8 @@
                          completionHandler: (MKNKUserSuccessBlock) completionBlock
                               errorHandler: (MKNKUserErrorBlock) errorBlock;
 
+#pragma mark - Subscriber
+
 - (void) subscribersForUserId: (NSString *) userId
                     channelId: (NSString *) channelId
                      forRange: (NSRange) range
@@ -74,15 +85,22 @@
             completionHandler: (MKNKSearchSuccessBlock) completionBlock
                  errorHandler: (MKNKBasicFailureBlock) errorBlock;
 
-
-
 - (void) videosForChannelForUserId: (NSString *) userId
                          channelId: (NSString *) channelId
                            inRange: (NSRange) range
                  completionHandler: (MKNKUserSuccessBlock) completionBlock
                       errorHandler: (MKNKUserErrorBlock) errorBlock;
 
-- (void) updatePlayerSourceWithCompletionHandler: (MKNKUserErrorBlock) completionBlock
-                                    errorHandler: (MKNKUserSuccessBlock) errorBlock;
+
+#pragma mark - Video player HTML update
+
+- (void) updatePlayerSourceWithCompletionHandler: (MKNKUserSuccessBlock) completionBlock
+                                    errorHandler: (MKNKUserErrorBlock) errorBlock;
+
+#pragma mark - Push notification token update
+
+- (void) updateApplePushNotificationToken: (NSString *) token
+                    withCompletionHandler: (MKNKUserErrorBlock) completionBlock
+                             errorHandler: (MKNKUserSuccessBlock) errorBlock;
 
 @end

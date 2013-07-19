@@ -14,6 +14,7 @@
 #import "Appirater.h"
 #import "ChannelOwner.h"
 #import "GAI.h"
+#import "GoogleConversionPing.h"
 #import "SYNActivityManager.h"
 #import "SYNAppDelegate.h"
 #import "SYNContainerViewController.h"
@@ -31,12 +32,6 @@
 #import "UncaughtExceptionHandler.h"
 #import <AVFoundation/AVFoundation.h>
 #import <FacebookSDK/FacebookSDK.h>
-#import <objc/runtime.h>
-#import "GoogleConversionPing.h"
-
-
-extern void instrumentObjcMessageSends(BOOL);
-
 
 @interface SYNAppDelegate ()
 
@@ -45,15 +40,15 @@ extern void instrumentObjcMessageSends(BOOL);
 @property (nonatomic, strong) NSManagedObjectContext *privateManagedObjectContext;
 @property (nonatomic, strong) NSManagedObjectContext *searchManagedObjectContext;
 @property (nonatomic, strong) NSString *userAgentString;
-@property (nonatomic, strong) SYNChannelManager* channelManager;
-@property (nonatomic, strong) SYNLoginBaseViewController* loginViewController;
-@property (nonatomic, strong) SYNMasterViewController* masterViewController;
+@property (nonatomic, strong) SYNChannelManager *channelManager;
+@property (nonatomic, strong) SYNLoginBaseViewController *loginViewController;
+@property (nonatomic, strong) SYNMasterViewController *masterViewController;
 @property (nonatomic, strong) SYNNetworkEngine *networkEngine;
 @property (nonatomic, strong) SYNOAuthNetworkEngine *oAuthNetworkEngine;
-@property (nonatomic, strong) SYNOnBoardingPopoverQueueController* onBoardingQueue;
-@property (nonatomic, strong) SYNVideoQueue* videoQueue;
-@property (nonatomic, strong) SYNViewStackManager* viewStackManager;
-@property (nonatomic, strong) User* currentUser;
+@property (nonatomic, strong) SYNOnBoardingPopoverQueueController *onBoardingQueue;
+@property (nonatomic, strong) SYNVideoQueue *videoQueue;
+@property (nonatomic, strong) SYNViewStackManager *viewStackManager;
+@property (nonatomic, strong) User *currentUser;
 
 @end
 
@@ -63,7 +58,7 @@ extern void instrumentObjcMessageSends(BOOL);
 // Required, as we are providing both getter and setter
 @synthesize  currentOAuth2Credentials = _currentOAuth2Credentials;
 
-- (BOOL) application:(UIApplication *) application
+- (BOOL)	 application: (UIApplication *) application
          didFinishLaunchingWithOptions: (NSDictionary *) launchOptions
 {
 #ifdef ENABLE_USER_RATINGS
@@ -72,7 +67,7 @@ extern void instrumentObjcMessageSends(BOOL);
     [Appirater setUsesUntilPrompt: 3];
     [Appirater setSignificantEventsUntilPrompt: 1];
     [Appirater setTimeBeforeReminding: 20];
-//    [Appirater setDebug: YES];
+    //    [Appirater setDebug: YES];
 #endif
     
     // Enable the Spark Inspector
@@ -81,11 +76,16 @@ extern void instrumentObjcMessageSends(BOOL);
 #endif
     
 #if USEUDID
-//    [TestFlight setDeviceIdentifier: [[UIDevice currentDevice] uniqueIdentifier]];
+    //    [TestFlight setDeviceIdentifier: [[UIDevice currentDevice] uniqueIdentifier]];
 #endif
     
+    [[UIApplication sharedApplication] registerForRemoteNotificationTypes: (UIRemoteNotificationTypeBadge | UIRemoteNotificationTypeAlert)];
+    
     //Google Adwords conversion tracking. TODO: check parameters with Guy!!
-    [GoogleConversionPing pingWithConversionId:@"983664386" label:@"Km3nCP6G-wQQgo6G1QM" value:@"0" isRepeatable:NO];
+    [GoogleConversionPing pingWithConversionId: @"983664386"
+                                         label: @"Km3nCP6G-wQQgo6G1QM"
+                                         value: @"0"
+                                  isRepeatable: NO];
     
     // We need to set the audio session so that that app will continue to play audio even if the mute switch is on
     AVAudioSession *audioSession = [AVAudioSession sharedInstance];
@@ -95,8 +95,7 @@ extern void instrumentObjcMessageSends(BOOL);
                              error: &setCategoryError])
     {
         DebugLog(@"Error setting AVAudioSessionCategoryPlayback: %@", setCategoryError);
-    };
-    
+    }
     
     // Install our exception handler (must happen on the next turn through the event loop - as opposed to right now)
     [self performSelector: @selector(installUncaughtExceptionHandler)
@@ -108,9 +107,9 @@ extern void instrumentObjcMessageSends(BOOL);
     UIWebView *webView = [[UIWebView alloc]initWithFrame: CGRectZero];
     NSString *completeUserAgentString = [webView stringByEvaluatingJavaScriptFromString: @"navigator.userAgent"];
     
-    NSString *bundleAndVersionString = [NSString stringWithFormat:@"%@/%@",
-                                        [[NSBundle mainBundle] infoDictionary][(NSString *)kCFBundleNameKey],
-                                        [[NSBundle mainBundle] infoDictionary][(NSString *)kCFBundleVersionKey]];
+    NSString *bundleAndVersionString = [NSString stringWithFormat: @"%@/%@",
+                                        [[NSBundle mainBundle] infoDictionary][(NSString *) kCFBundleNameKey],
+                                        [[NSBundle mainBundle] infoDictionary][(NSString *) kCFBundleVersionKey]];
     
     // We just want the bit in-between the first set of brackets
     NSCharacterSet *separatorSet = [NSCharacterSet characterSetWithCharactersInString: @"()"];
@@ -141,7 +140,6 @@ extern void instrumentObjcMessageSends(BOOL);
     // ViewStack Manager //
     self.viewStackManager = [SYNViewStackManager manager];
     
-    
     // Network Engine //
     [self initializeNetworkEngines];
     
@@ -152,9 +150,10 @@ extern void instrumentObjcMessageSends(BOOL);
     
     NSUserDefaults *defaults = [NSUserDefaults standardUserDefaults];
     
-	// Create a dictionary of defaults to add and register them (if they have not already been set)
-	NSDictionary *initDefaults = @{kDownloadedVideoContentBool: @(NO)};
-	[defaults registerDefaults: initDefaults];
+    // Create a dictionary of defaults to add and register them (if they have not already been set)
+    NSDictionary *initDefaults = @{kDownloadedVideoContentBool: @(NO)};
+    
+    [defaults registerDefaults: initDefaults];
     
     self.window = [[UIWindow alloc] initWithFrame: [[UIScreen mainScreen] bounds]];
     [self.window makeKeyAndVisible];
@@ -175,15 +174,12 @@ extern void instrumentObjcMessageSends(BOOL);
         // If we have a user and a refresh token... //
         if ([self.currentOAuth2Credentials hasExpired])
         {
-            
             [self refreshExpiredTokenOnStartup];
-            
         }
         else // we have an access token //
         {
-            
             // set timer for auto refresh //
-           
+            
             [self setTokenExpiryTimer];
             
             self.window.rootViewController = [self createAndReturnRootViewController];
@@ -201,6 +197,7 @@ extern void instrumentObjcMessageSends(BOOL);
     return YES;
 }
 
+
 - (void) setTokenExpiryTimer
 {
     if (self.tokenExpiryTimer)
@@ -210,13 +207,12 @@ extern void instrumentObjcMessageSends(BOOL);
     
     NSTimeInterval intervalToExpiry = [self.currentOAuth2Credentials.expirationDate timeIntervalSinceNow];
     
-    self.tokenExpiryTimer  = [NSTimer scheduledTimerWithTimeInterval: intervalToExpiry
-                                                              target: self
-                                                            selector: @selector(refreshExpiredToken)
-                                                            userInfo: nil
-                                                             repeats: NO];
+    self.tokenExpiryTimer = [NSTimer scheduledTimerWithTimeInterval: intervalToExpiry
+                                                             target: self
+                                                           selector: @selector(refreshExpiredToken)
+                                                           userInfo: nil
+                                                            repeats: NO];
 }
-
 
 
 - (void) refreshExpiredTokenOnStartup
@@ -224,7 +220,7 @@ extern void instrumentObjcMessageSends(BOOL);
     //Add imageview to the window as placeholder while we wait for the token refresh call.
     [self.tokenExpiryTimer invalidate];
     
-    UIImageView* startImageView = nil;
+    UIImageView *startImageView = nil;
     CGPoint startImageCenter = self.window.center;
     
     if (IS_IPAD)
@@ -232,65 +228,67 @@ extern void instrumentObjcMessageSends(BOOL);
         if (UIDeviceOrientationIsLandscape([[SYNDeviceManager sharedInstance] currentOrientation]))
         {
             startImageView = [[UIImageView alloc] initWithImage: [UIImage imageNamed: @"Default-Landscape"]];
-            if ([[SYNDeviceManager sharedInstance] currentOrientation]== UIDeviceOrientationLandscapeLeft)
+            
+            if ([[SYNDeviceManager sharedInstance] currentOrientation] == UIDeviceOrientationLandscapeLeft)
             {
                 startImageView.transform = CGAffineTransformMakeRotation(M_PI_2);
-                startImageCenter.x-=10;
+                startImageCenter.x -= 10;
             }
             else
             {
                 startImageView.transform = CGAffineTransformMakeRotation(-M_PI_2);
-                startImageCenter.x+=10;
+                startImageCenter.x += 10;
             }
         }
         else
         {
-            startImageView = [[UIImageView alloc] initWithImage:[UIImage imageNamed:@"Default-Portrait"]];
-            startImageCenter.y+=10;
+            startImageView = [[UIImageView alloc] initWithImage: [UIImage imageNamed: @"Default-Portrait"]];
+            startImageCenter.y += 10;
         }
     }
     else
     {
-        if ([SYNDeviceManager.sharedInstance currentScreenHeight]>480.0f)
+        if ([SYNDeviceManager.sharedInstance currentScreenHeight] > 480.0f)
         {
-            startImageView = [[UIImageView alloc] initWithImage:[UIImage imageNamed:@"Default-568h"]];
+            startImageView = [[UIImageView alloc] initWithImage: [UIImage imageNamed: @"Default-568h"]];
         }
         else
         {
-            startImageView = [[UIImageView alloc] initWithImage:[UIImage imageNamed:@"Default"]];
+            startImageView = [[UIImageView alloc] initWithImage: [UIImage imageNamed: @"Default"]];
         }
     }
     
-    [self.window addSubview:startImageView];
+    [self.window
+     addSubview: startImageView];
     startImageView.center = startImageCenter;
     
     
     //refresh token
-    [self.oAuthNetworkEngine refreshOAuthTokenWithCompletionHandler: ^(id response) {
-        
-        if(!self.window.rootViewController)
-        {
-            self.window.rootViewController = [self createAndReturnRootViewController];
-        }
-        
-        [startImageView removeFromSuperview];
-        
-        self.tokenExpiryTimer = nil;
-        
-    } errorHandler: ^(id response) {
-        
-        [self logout];
-        
-        self.tokenExpiryTimer = nil;
-        
-        if (!self.window.rootViewController)
-        {
-            self.window.rootViewController = [self createAndReturnLoginViewController];
-        }
-        
-        [startImageView removeFromSuperview];
-    }];
+    [self.oAuthNetworkEngine
+     refreshOAuthTokenWithCompletionHandler: ^(id response) {
+         if (!self.window.rootViewController)
+         {
+             self.window.rootViewController = [self createAndReturnRootViewController];
+         }
+         
+         [startImageView removeFromSuperview];
+         
+         self.tokenExpiryTimer = nil;
+     }
+     errorHandler: ^(id response) {
+         [self logout];
+         
+         self.tokenExpiryTimer = nil;
+         
+         if (!self.window.rootViewController)
+         {
+             self.window.rootViewController = [self createAndReturnLoginViewController];
+         }
+         
+         [startImageView removeFromSuperview];
+     }];
 }
+
 
 - (void) refreshExpiredToken
 {
@@ -298,18 +296,18 @@ extern void instrumentObjcMessageSends(BOOL);
     
     self.tokenExpiryTimer = nil;
     
-    [self.oAuthNetworkEngine refreshOAuthTokenWithCompletionHandler: ^(id response) {
-        
-    } errorHandler: ^(id response) {
-        
-        [self logout];
-        
-    }];
+    [self.oAuthNetworkEngine
+     refreshOAuthTokenWithCompletionHandler: ^(id response) {
+     }
+     errorHandler: ^(id response) {
+         [self logout];
+     }];
 }
 
-- (UIViewController*) createAndReturnRootViewController
+
+- (UIViewController *) createAndReturnRootViewController
 {
-    SYNContainerViewController* containerViewController = [[SYNContainerViewController alloc] init];
+    SYNContainerViewController *containerViewController = [[SYNContainerViewController alloc] init];
     
     self.masterViewController = [[SYNMasterViewController alloc] initWithContainerViewController: containerViewController];
     
@@ -317,7 +315,7 @@ extern void instrumentObjcMessageSends(BOOL);
 }
 
 
-- (UIViewController*) createAndReturnLoginViewController
+- (UIViewController *) createAndReturnLoginViewController
 {
     if (IS_IPAD)
     {
@@ -335,8 +333,10 @@ extern void instrumentObjcMessageSends(BOOL);
 - (void) logout
 {
     if (!self.currentUser || !self.currentUser.current)
+    {
         return;
-
+    }
+    
     self.window.rootViewController = [self createAndReturnLoginViewController];
     
     self.masterViewController = nil;
@@ -345,16 +345,18 @@ extern void instrumentObjcMessageSends(BOOL);
     
     self.currentUser.currentValue = NO;
     
-    [self.mainManagedObjectContext deleteObject:self.currentUser];
+    [self.mainManagedObjectContext
+     deleteObject: self.currentUser];
     
     [self.tokenExpiryTimer invalidate];
     self.tokenExpiryTimer = nil;
     
-    [[SYNFacebookManager sharedFBManager] logoutOnSuccess:^{
-    } onFailure:^(NSString *errorMessage) {
-    }];
+    [[SYNFacebookManager sharedFBManager] logoutOnSuccess: ^{
+    }
+                                                onFailure: ^(NSString *errorMessage) {
+                                                }];
     
-    [self clearCoreDataMainEntities:YES];
+    [self clearCoreDataMainEntities: YES];
     
     self.currentOAuth2Credentials = nil;
     
@@ -362,9 +364,7 @@ extern void instrumentObjcMessageSends(BOOL);
 }
 
 
-
-
-- (void) loginCompleted: (NSNotification*) notification
+- (void) loginCompleted: (NSNotification *) notification
 {
     self.window.rootViewController = [self createAndReturnRootViewController];
     
@@ -412,9 +412,11 @@ extern void instrumentObjcMessageSends(BOOL);
             [self.loginViewController reEnableLoginControls];
         }
     }
-    else{
+    else
+    {
         NSTimeInterval refreshTimeout = [self.currentOAuth2Credentials.expirationDate timeIntervalSinceNow];
-        if(refreshTimeout <kOAuthTokenExpiryMargin)
+        
+        if (refreshTimeout < kOAuthTokenExpiryMargin)
         {
             [self refreshExpiredToken];
         }
@@ -429,7 +431,7 @@ extern void instrumentObjcMessageSends(BOOL);
 - (void) applicationDidBecomeActive: (UIApplication *) application
 {
     [FBSettings publishInstall: @"660697542"];
-
+    
     // Restart any tasks that were paused (or not yet started) while the application was inactive. If the application was previously in the background, optionally refresh the user interface.
     if (self.loginViewController)
     {
@@ -453,16 +455,13 @@ extern void instrumentObjcMessageSends(BOOL);
 
 - (void) installUncaughtExceptionHandler
 {
-	InstallUncaughtExceptionHandler();
+    InstallUncaughtExceptionHandler();
     
     [TestFlight takeOff: kTestFlightAppToken];
     
     // Automatically send uncaught exceptions to Google Analytics.
     [GAI sharedInstance].trackUncaughtExceptions = YES;
-    
-    // Optional: set Google Analytics dispatch interval
     [GAI sharedInstance].dispatchInterval = 30;
-    
     [GAI sharedInstance].defaultTracker.sessionTimeout = 300; // was 30
     
     // Set debug to YES to enable  extra debugging information.
@@ -477,16 +476,18 @@ extern void instrumentObjcMessageSends(BOOL);
 
 - (void) initializeCoreDataStack
 {
+    NSError *error;
     
-    NSError* error;
+    NSURL *modelURL = [[NSBundle mainBundle] URLForResource: @"Rockpack"
+                                              withExtension: @"momd"];
     
-    NSURL *modelURL = [[NSBundle mainBundle] URLForResource: @"Rockpack" withExtension: @"momd"];
     if (!modelURL)
     {
         AssertOrLog(@"Failed to find model URL");
     }
     
     NSManagedObjectModel *managedObjectModel = [[NSManagedObjectModel alloc] initWithContentsOfURL: modelURL];
+    
     if (!managedObjectModel)
     {
         AssertOrLog(@"Failed to initialize model");
@@ -494,12 +495,13 @@ extern void instrumentObjcMessageSends(BOOL);
     
     NSPersistentStoreCoordinator *persistentStoreCoordinator = nil;
     persistentStoreCoordinator = [[NSPersistentStoreCoordinator alloc] initWithManagedObjectModel: managedObjectModel];
+    
     if (!persistentStoreCoordinator)
     {
         AssertOrLog(@"Failed to initialize persistent store coordinator");
     }
-    // == Main Context
     
+    // == Main Context
     self.privateManagedObjectContext = [[NSManagedObjectContext alloc] initWithConcurrencyType: NSPrivateQueueConcurrencyType];
     self.privateManagedObjectContext.persistentStoreCoordinator = persistentStoreCoordinator;
     
@@ -507,35 +509,35 @@ extern void instrumentObjcMessageSends(BOOL);
     self.mainManagedObjectContext.parentContext = self.privateManagedObjectContext;
     
     // == Search Context
-    
     self.searchManagedObjectContext = [[NSManagedObjectContext alloc] initWithConcurrencyType: NSMainQueueConcurrencyType];
     NSPersistentStoreCoordinator *searchPersistentStoreCoordinator = [[NSPersistentStoreCoordinator alloc] initWithManagedObjectModel: managedObjectModel];
-    NSPersistentStore* searchStore = [searchPersistentStoreCoordinator addPersistentStoreWithType: NSInMemoryStoreType
+    NSPersistentStore *searchStore = [searchPersistentStoreCoordinator addPersistentStoreWithType: NSInMemoryStoreType
                                                                                     configuration: nil
                                                                                               URL: nil
                                                                                           options: nil
                                                                                             error: &error];
+    
     if (!searchStore)
     {
         AssertOrLog(@"Failed to initialize search managed context in app delegate");
     }
+    
     self.searchManagedObjectContext.persistentStoreCoordinator = searchPersistentStoreCoordinator;
-    
-    
-    
+
     // == Channel Context
-    
     self.channelsManagedObjectContext = [[NSManagedObjectContext alloc] initWithConcurrencyType: NSMainQueueConcurrencyType];
     NSPersistentStoreCoordinator *channelsPersistentStoreCoordinator = [[NSPersistentStoreCoordinator alloc] initWithManagedObjectModel: managedObjectModel];
-    NSPersistentStore* channelsStore = [channelsPersistentStoreCoordinator addPersistentStoreWithType: NSInMemoryStoreType
+    NSPersistentStore *channelsStore = [channelsPersistentStoreCoordinator addPersistentStoreWithType: NSInMemoryStoreType
                                                                                         configuration: nil
                                                                                                   URL: nil
                                                                                               options: nil
                                                                                                 error: &error];
+    
     if (!channelsStore)
     {
         AssertOrLog(@"Failed to initialize channels managed context in app delegate");
     }
+    
     self.channelsManagedObjectContext.persistentStoreCoordinator = channelsPersistentStoreCoordinator;
     
     NSURL *storeURL = [[[NSFileManager defaultManager] URLsForDirectory: NSDocumentDirectory
@@ -543,38 +545,13 @@ extern void instrumentObjcMessageSends(BOOL);
     
     storeURL = [storeURL URLByAppendingPathComponent: @"Rockpack.sqlite"];
     
-//    if ([[NSFileManager defaultManager] fileExistsAtPath: [storeURL path]])
-//    {
-//        NSDictionary *existingPersistentStoreMetadata = [NSPersistentStoreCoordinator metadataForPersistentStoreOfType: NSSQLiteStoreType
-//                                                                                                                   URL: storeURL
-//                                                                                                                 error: &error];
-//        if (!existingPersistentStoreMetadata)
-//        {
-//            // Something *really* bad has happened to the persistent store
-//            [NSException raise: NSInternalInconsistencyException
-//                        format: @"Failed to read metadata for persistent store %@: %@", storeURL, error];
-//        }
-//        
-//        if (![managedObjectModel isConfiguration: nil compatibleWithStoreMetadata: existingPersistentStoreMetadata])
-//        {
-//            if ([[NSFileManager defaultManager] removeItemAtURL: storeURL
-//                                                          error: &error])
-//            {
-//                DebugLog(@"Existing database - incompatible schema detected, so deleted");
-//            }
-//            else
-//            {
-//                DebugLog(@"*** Could not delete persistent store, %@", error);
-//            }
-//        } // else the existing persistent store is compatible with the current model - nice!
-//    } // else no database file yet
-    
     //Try to migrate
     NSPersistentStore *store = [persistentStoreCoordinator addPersistentStoreWithType: NSSQLiteStoreType
                                                                         configuration: nil
                                                                                   URL: storeURL
-                                                                              options: @{NSInferMappingModelAutomaticallyOption:@(YES),NSMigratePersistentStoresAutomaticallyOption:@(YES)}
+                                                                              options: @{NSInferMappingModelAutomaticallyOption: @(YES), NSMigratePersistentStoresAutomaticallyOption: @(YES)}
                                                                                 error: &error];
+    
     if (error)
     {
         if ([[NSFileManager defaultManager] removeItemAtURL: storeURL
@@ -590,9 +567,10 @@ extern void instrumentObjcMessageSends(BOOL);
         store = [persistentStoreCoordinator addPersistentStoreWithType: NSSQLiteStoreType
                                                          configuration: nil
                                                                    URL: storeURL
-                                                               options: @{NSMigratePersistentStoresAutomaticallyOption:@(YES)}
+                                                               options: @{NSMigratePersistentStoresAutomaticallyOption: @(YES)}
                                                                  error: &error];
     }
+    
     if (store == nil)
     {
         DebugLog(@"Error adding persistent store to coordinator %@\n%@", [error localizedDescription], [error userInfo]);
@@ -606,23 +584,27 @@ extern void instrumentObjcMessageSends(BOOL);
 // Save the main context first (propagating the changes to the private) and then the private
 - (void) saveContext: (BOOL) wait
 {
-    
     if ([self.mainManagedObjectContext hasChanges])
     {
-        [self.mainManagedObjectContext performBlockAndWait:^
+        [self.mainManagedObjectContext
+         performBlockAndWait: ^
          {
              NSError *error = nil;
-             if (![self.mainManagedObjectContext save: &error])
+             
+             if (![self.mainManagedObjectContext
+                   save: &error])
              {
                  AssertOrLog(@"Error saving Main moc: %@\n%@", [error localizedDescription], [error userInfo]);
              }
          }];
     }
     
-    void (^savePrivate) (void) = ^
+    void (^ savePrivate) (void) = ^
     {
         NSError *error = nil;
-        if (![self.privateManagedObjectContext save: &error])
+        
+        if (![self.privateManagedObjectContext
+              save: &error])
         {
             AssertOrLog(@"Error saving Private moc: %@\n%@", [error localizedDescription], [error userInfo]);
         }
@@ -632,11 +614,13 @@ extern void instrumentObjcMessageSends(BOOL);
     {
         if (wait)
         {
-            [self.privateManagedObjectContext performBlockAndWait: savePrivate];
+            [self.privateManagedObjectContext
+             performBlockAndWait: savePrivate];
         }
         else
         {
-            [self.privateManagedObjectContext performBlock: savePrivate];
+            [self.privateManagedObjectContext
+             performBlock: savePrivate];
         }
     }
 }
@@ -644,11 +628,12 @@ extern void instrumentObjcMessageSends(BOOL);
 
 - (void) saveSearchContext
 {
-    
     if ([self.searchManagedObjectContext hasChanges])
     {
         NSError *error = nil;
-        if (![self.searchManagedObjectContext save: &error])
+        
+        if (![self.searchManagedObjectContext
+              save: &error])
         {
             AssertOrLog(@"Error saving Search moc: %@\n%@", [error localizedDescription], [error userInfo]);
         }
@@ -659,12 +644,16 @@ extern void instrumentObjcMessageSends(BOOL);
 - (void) saveChannelsContext
 {
     if (!self.channelsManagedObjectContext)
+    {
         return;
+    }
     
     if ([self.channelsManagedObjectContext hasChanges])
     {
         NSError *error = nil;
-        if (![self.channelsManagedObjectContext save: &error])
+        
+        if (![self.channelsManagedObjectContext
+              save: &error])
         {
             AssertOrLog(@"Error saving Channels moc: %@\n%@", [error localizedDescription], [error userInfo]);
         }
@@ -688,8 +677,8 @@ extern void instrumentObjcMessageSends(BOOL);
     
     // TODO: Replace this shameful piece of hackery
     UIImageView.defaultEngine2 = self.networkEngine;
-    
 }
+
 
 #pragma mark - Clearing Data
 
@@ -702,88 +691,93 @@ extern void instrumentObjcMessageSends(BOOL);
     
     // == Clear VideoInstances == //
     
-    [fetchRequest setEntity:[NSEntityDescription entityForName: @"VideoInstance"
-                                        inManagedObjectContext: self.mainManagedObjectContext]];
+    [fetchRequest setEntity: [NSEntityDescription entityForName: @"VideoInstance"
+                                         inManagedObjectContext: self.mainManagedObjectContext]];
     
     
-    itemsToDelete = [self.mainManagedObjectContext executeFetchRequest: fetchRequest
-                                                                 error: &error];
+    itemsToDelete = [self.mainManagedObjectContext
+                     executeFetchRequest: fetchRequest
+                     error: &error];
     
-    for (NSManagedObject* objectToDelete in itemsToDelete) {
-        
-        [self.mainManagedObjectContext deleteObject: objectToDelete];
+    for (NSManagedObject *objectToDelete in itemsToDelete)
+    {
+        [self.mainManagedObjectContext
+         deleteObject: objectToDelete];
     }
     
     // == Clear Cover Art == //
+    [fetchRequest setEntity: [NSEntityDescription entityForName: @"CoverArt"
+                                         inManagedObjectContext: self.mainManagedObjectContext]];
     
-    [fetchRequest setEntity:[NSEntityDescription entityForName: @"CoverArt"
-                                        inManagedObjectContext: self.mainManagedObjectContext]];
     
+    itemsToDelete = [self.mainManagedObjectContext
+                     executeFetchRequest: fetchRequest
+                     error: &error];
     
-    itemsToDelete = [self.mainManagedObjectContext executeFetchRequest: fetchRequest
-                                                                 error: &error];
-    
-    for (NSManagedObject* objectToDelete in itemsToDelete) {
-        
-        [self.mainManagedObjectContext deleteObject: objectToDelete];
+    for (NSManagedObject *objectToDelete in itemsToDelete)
+    {
+        [self.mainManagedObjectContext
+         deleteObject: objectToDelete];
     }
     
-    
     // == Clear Channels == //
-    
     if (!userBound)
     {
         // do not delete data relating to the user such as subscriptions and channels
-        NSPredicate* notUserChannels = [NSPredicate predicateWithFormat: @"channelOwner.uniqueId != %@ AND subscribedByUser != YES", self.currentUser.uniqueId];
+        NSPredicate *notUserChannels = [NSPredicate predicateWithFormat: @"channelOwner.uniqueId != %@ AND subscribedByUser != YES", self.currentUser.uniqueId];
         [fetchRequest setPredicate: notUserChannels];
     }
     
-    [fetchRequest setEntity:[NSEntityDescription entityForName: @"Channel"
-                                        inManagedObjectContext: self.mainManagedObjectContext]];
+    [fetchRequest setEntity: [NSEntityDescription entityForName: @"Channel"
+                                         inManagedObjectContext: self.mainManagedObjectContext]];
     
-    itemsToDelete = [self.mainManagedObjectContext executeFetchRequest: fetchRequest
-                                                                 error: &error];
+    itemsToDelete = [self.mainManagedObjectContext
+                     executeFetchRequest: fetchRequest
+                     error: &error];
     
-    for (NSManagedObject* objectToDelete in itemsToDelete)
+    for (NSManagedObject *objectToDelete in itemsToDelete)
     {
-        [self.mainManagedObjectContext deleteObject: objectToDelete];
+        [self.mainManagedObjectContext
+         deleteObject: objectToDelete];
     }
     
     fetchRequest.predicate = nil;
-    
-    
-    
+
     // == Clear Categories (Genres) == //
-    
-    [fetchRequest setEntity:[NSEntityDescription entityForName: @"Genre"
-                                        inManagedObjectContext: self.mainManagedObjectContext]];
+    [fetchRequest setEntity: [NSEntityDescription entityForName: @"Genre"
+                                         inManagedObjectContext: self.mainManagedObjectContext]];
     
     fetchRequest.includesSubentities = YES; // to include SubGenre objecst
     
-    itemsToDelete = [self.mainManagedObjectContext executeFetchRequest:fetchRequest error:&error];
+    itemsToDelete = [self.mainManagedObjectContext
+                     executeFetchRequest: fetchRequest
+                     error: &error];
     
-    for (NSManagedObject* objectToDelete in itemsToDelete)
+    for (NSManagedObject *objectToDelete in itemsToDelete)
     {
-        [self.mainManagedObjectContext deleteObject:objectToDelete];
+        [self.mainManagedObjectContext
+         deleteObject: objectToDelete];
     }
-    
     
     // == Clear ChannelOwner == //
     
-    [fetchRequest setEntity:[NSEntityDescription entityForName: @"ChannelOwner"
-                                        inManagedObjectContext: self.mainManagedObjectContext]];
+    [fetchRequest setEntity: [NSEntityDescription entityForName: @"ChannelOwner"
+                                         inManagedObjectContext: self.mainManagedObjectContext]];
     
     fetchRequest.includesSubentities = NO; // do not include User objects as these are handled elsewhere
     
-    itemsToDelete = [self.mainManagedObjectContext executeFetchRequest:fetchRequest error:&error];
+    itemsToDelete = [self.mainManagedObjectContext
+                     executeFetchRequest: fetchRequest
+                     error: &error];
     
-    for (NSManagedObject* objectToDelete in itemsToDelete)
+    for (NSManagedObject *objectToDelete in itemsToDelete)
     {
-        [self.mainManagedObjectContext deleteObject:objectToDelete];
+        [self.mainManagedObjectContext
+         deleteObject: objectToDelete];
     }
     
     // == Save == //
-    [self saveContext:YES];
+    [self saveContext: YES];
     
     if (!userBound)
     {
@@ -793,17 +787,16 @@ extern void instrumentObjcMessageSends(BOOL);
 }
 
 
-
-
-- (void) deleteDataObject: (NSManagedObject*) managedObject
+- (void) deleteDataObject: (NSManagedObject *) managedObject
 {
-    [self.mainManagedObjectContext deleteObject: managedObject];
+    [self.mainManagedObjectContext
+     deleteObject: managedObject];
 }
 
 
 #pragma mark - User and Credentials
 
-- (User*) currentUser
+- (User *) currentUser
 {
     if (!_currentUser)
     {
@@ -819,18 +812,22 @@ extern void instrumentObjcMessageSends(BOOL);
         [userFetchRequest setPredicate: predicate];
         
         
-        NSArray *userEntries = [self.mainManagedObjectContext executeFetchRequest: userFetchRequest
-                                                                            error: &error];
+        NSArray *userEntries = [self.mainManagedObjectContext
+                                executeFetchRequest: userFetchRequest
+                                error: &error];
         
         if (userEntries.count > 0)
         {
-            _currentUser = (User*)userEntries[0];
+            _currentUser = (User *) userEntries[0];
             
             if (userEntries.count > 1) // housekeeping, clear duplicate user entries
+            {
                 for (int u = 1; u < userEntries.count; u++)
-                    [self.mainManagedObjectContext deleteObject:((User*)userEntries[u])];
-            
-            
+                {
+                    [self.mainManagedObjectContext
+                     deleteObject: ((User *) userEntries[u])];
+                }
+            }
         }
         else
         {
@@ -864,14 +861,15 @@ extern void instrumentObjcMessageSends(BOOL);
 }
 
 
-- (SYNOAuth2Credential*) currentOAuth2Credentials
+- (SYNOAuth2Credential *) currentOAuth2Credentials
 {
     if (!self.currentUser)
+    {
         return nil;
+    }
     
     if (!_currentOAuth2Credentials)
     {
-        
         _currentOAuth2Credentials = [SYNOAuth2Credential credentialFromKeychainForService: kOAuth2Service
                                                                                   account: self.currentUser.uniqueId];
     }
@@ -887,18 +885,16 @@ extern void instrumentObjcMessageSends(BOOL);
 }
 
 
-#pragma mark - Social Integration Delegate
+#pragma mark - Social deep linking
 
 - (BOOL) application: (UIApplication *) application
-       handleOpenURL:(NSURL *)url
+       handleOpenURL: (NSURL *) url
 {
-    
     return YES;
 }
 
 
-
-- (NSDictionary*) parseURLParams: (NSString *) query
+- (NSDictionary *) parseURLParams: (NSString *) query
 {
     NSArray *pairs = [query componentsSeparatedByString: @"&"];
     
@@ -907,7 +903,7 @@ extern void instrumentObjcMessageSends(BOOL);
     for (NSString *pair in pairs)
     {
         NSRange range = [pair rangeOfString: @"="];
-
+        
         NSString *key = [pair substringToIndex: range.location];
         NSString *value = [pair substringFromIndex: range.location + 1];
         
@@ -918,10 +914,10 @@ extern void instrumentObjcMessageSends(BOOL);
 }
 
 
-- (BOOL) application: (UIApplication *) application
-             openURL: (NSURL *) url
-   sourceApplication: (NSString *) sourceApplication
-          annotation: (id) annotation
+- (BOOL)  application: (UIApplication *) application
+              openURL: (NSURL *) url
+    sourceApplication: (NSString *) sourceApplication
+           annotation: (id) annotation
 {
     // To check for a deep link, first parse the incoming URL
     // to look for a target_url parameter
@@ -957,53 +953,52 @@ extern void instrumentObjcMessageSends(BOOL);
         }
     }
     
-    return [FBSession.activeSession handleOpenURL:url];
+    return [FBSession.activeSession
+            handleOpenURL: url];
 }
 
 
+#pragma mark - UIWebView-based video player HTML updater
+
 - (void) checkForUpdatedPlayerCode
 {
-//    "rockpack": "",
-//    "youtube": "<html><script>player def</script></html>"
-    
-    //refresh token
-    [self.networkEngine updatePlayerSourceWithCompletionHandler: ^ (NSDictionary *dictionary) {
-        if (dictionary && [dictionary isKindOfClass: [NSDictionary class]])
-        {
-            // Handle YouTube player updates
-            NSString *youTubePlayerURLString = dictionary[@"youtube"];
-
-            // Only update if we have valid HTML
-            if (youTubePlayerURLString)
-            {
-                [self saveAsFileToDocumentsDirectory: @"YouTubeIFramePlayer"
-                                              asType: @"html"
-                                         usingSource: youTubePlayerURLString];
-            }
-
-            // Handle Vimeo player updates
-            NSString *vimeoPlayerURLString = dictionary[@"vimeo"];
-            
-            // Only update if we have valid HTML
-            if (vimeoPlayerURLString)
-            {
-                [self saveAsFileToDocumentsDirectory: @"VimeoIFramePlayer"
-                                              asType: @"html"
-                                         usingSource: vimeoPlayerURLString];
-            }
-            
-            self.playerUpdated = TRUE;
-        }
-        else
-        {
-            DebugLog(@"Unexpected response from player source update");
-        }
-        
-    } errorHandler: ^(id response) {
-        DebugLog(@"Player source update failed");
-        // Don't worry, we'll try again next time the app comes to the foreground
-    }];
-    
+    [self.networkEngine
+     updatePlayerSourceWithCompletionHandler: ^(NSDictionary *dictionary) {
+         if (dictionary && [dictionary isKindOfClass: [NSDictionary class]])
+         {
+             // Handle YouTube player updates
+             NSString *youTubePlayerURLString = dictionary[@"youtube"];
+             
+             // Only update if we have valid HTML
+             if (youTubePlayerURLString)
+             {
+                 [self saveAsFileToDocumentsDirectory: @"YouTubeIFramePlayer"
+                                               asType: @"html"
+                                          usingSource: youTubePlayerURLString];
+             }
+             
+             // Handle Vimeo player updates
+             NSString *vimeoPlayerURLString = dictionary[@"vimeo"];
+             
+             // Only update if we have valid HTML
+             if (vimeoPlayerURLString)
+             {
+                 [self saveAsFileToDocumentsDirectory: @"VimeoIFramePlayer"
+                                               asType: @"html"
+                                          usingSource: vimeoPlayerURLString];
+             }
+             
+             self.playerUpdated = TRUE;
+         }
+         else
+         {
+             DebugLog(@"Unexpected response from player source update");
+         }
+     }
+     errorHandler: ^(id response) {
+         DebugLog(@"Player source update failed");
+         // Don't worry, we'll try again next time the app comes to the foreground
+     }];
 }
 
 
@@ -1036,7 +1031,7 @@ extern void instrumentObjcMessageSends(BOOL);
                             usingSource: (NSString *) source
 {
     NSError *error;
-    NSString *destinationPath = [self destinationPathInDocumentsDirectoryUsingFilename:fileName
+    NSString *destinationPath = [self destinationPathInDocumentsDirectoryUsingFilename: fileName
                                                                                andType: type];
     
     BOOL status = [source writeToFile: destinationPath
@@ -1062,6 +1057,37 @@ extern void instrumentObjcMessageSends(BOOL);
     NSString *destinationPath = [documentsDirectory stringByAppendingPathComponent: pathComponent];
     
     return destinationPath;
+}
+
+
+#pragma mark - Notification support
+
+- (void) application: (UIApplication *) application
+         didRegisterForRemoteNotificationsWithDeviceToken: (NSData *) deviceToken
+{
+    // Strip all the formatting from the token
+    NSString *newToken = [deviceToken description];
+    
+    newToken = [newToken stringByTrimmingCharactersInSet: [NSCharacterSet characterSetWithCharactersInString: @"<>"]];
+    newToken = [newToken stringByReplacingOccurrencesOfString: @" "
+                                                   withString: @""];
+    
+    NSLog(@"My token is: %@", newToken);
+    
+}
+
+
+- (void) application: (UIApplication *) application
+         didFailToRegisterForRemoteNotificationsWithError: (NSError *) error
+{
+    NSLog(@"Failed to get token, error: %@", error);
+}
+
+
+- (void) application: (UIApplication*) application
+         didReceiveRemoteNotification: (NSDictionary*) userInfo
+{
+	NSLog(@"Received notification: %@", userInfo);
 }
 
 

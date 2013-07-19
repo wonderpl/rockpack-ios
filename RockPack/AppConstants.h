@@ -77,14 +77,14 @@
 #define kAPIGetUserNotifications    @"/ws/USERID/notifications/"                /* GET */
 
 // Avatar
-#define kAPIUpdateAvatar           @"/ws/USERID/avatar/"                       /* PUT */
+#define kAPIUpdateAvatar           @"/ws/USERID/avatar/"                        /* PUT */
 
 // Channel manageent
 #define kAPIGetChannelDetails       @"/ws/USERID/channels/CHANNELID/"           /* GET */
 #define kAPICreateNewChannel        @"/ws/USERID/channels/"                     /* POST */
 #define kAPIUpdateExistingChannel   @"/ws/USERID/channels/CHANNELID/"           /* PUT */
-#define kAPIUpdateChannelPrivacy    @"/ws/USERID/channels/CHANNELID/public/"     /* PUT */
-#define kAPIDeleteChannel           @"/ws/USERID/channels/CHANNELID/"     /* PUT */
+#define kAPIUpdateChannelPrivacy    @"/ws/USERID/channels/CHANNELID/public/"    /* PUT */
+#define kAPIDeleteChannel           @"/ws/USERID/channels/CHANNELID/"           /* PUT */
 
 #define STANDARD_REQUEST_LENGTH 48
 
@@ -127,9 +127,16 @@
 
 #define kAPIReportConcern           @"/ws/USERID/content_reports/"               /* POST */
 
+// Player error
 #define kAPIReportPlayerError       @"/ws/videos/player_error/"                 /* POST */
 
-#define kYouTubePlayerSource        @"/ws/videos/players/"
+// HTML player source
+#define kHTMLVideoPlayerSource      @"/ws/videos/players/"                    /* GET */
+
+// Apple push notifications
+#define kApplePushNotificationToken @"/ws/push/token"                         /* POST */
+
+// Push notification
 
 #define kAccountSettingsPressed     @"kAccountSettingsPressed"
 #define kAccountSettingsLogout      @"kAccountSettingsLogout"
@@ -139,10 +146,9 @@
 #define kChannelOwnerUpdateRequest  @"kChannelOwnerUpdateRequest"
 #define kChannelDeleteRequest       @"kChannelDeleteRequest"
 
-#define kRefreshComplete           @"kRefreshComplete"
+#define kRefreshComplete            @"kRefreshComplete"
 
-#define kUpdateFailed              @"kUpdateFailed"
-
+#define kUpdateFailed               @"kUpdateFailed"
 
 #define kShowUserChannels           @"kShowUserChannels"
 
