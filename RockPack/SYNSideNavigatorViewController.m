@@ -20,7 +20,6 @@
 #import "SYNSideNavigatorViewController.h"
 #import "SYNSoundPlayer.h"
 #import "UIFont+SYNFont.h"
-#import "UIImageView+ImageProcessing.h"
 #import "UIImageView+WebCache.h"
 #import <QuartzCore/QuartzCore.h>
 

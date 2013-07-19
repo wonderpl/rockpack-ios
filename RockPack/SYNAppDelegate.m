@@ -27,7 +27,6 @@
 #import "SYNOAuthNetworkEngine.h"
 #import "SYNVideoPlaybackViewController.h"
 #import "TestFlight.h"
-#import "UIImageView+ImageProcessing.h"
 #import "UIImageView+MKNetworkKitAdditions.h"
 #import "UncaughtExceptionHandler.h"
 #import <AVFoundation/AVFoundation.h>
@@ -674,9 +673,6 @@
     
     // Use this engine as the default for the asynchronous image loading category on UIImageView
     UIImageView.defaultEngine = self.networkEngine;
-    
-    // TODO: Replace this shameful piece of hackery
-    UIImageView.defaultEngine2 = self.networkEngine;
 }
 
 
@@ -1094,7 +1090,5 @@
 {
 	NSLog(@"Received notification: %@", userInfo);
 }
-
-
 
 @end

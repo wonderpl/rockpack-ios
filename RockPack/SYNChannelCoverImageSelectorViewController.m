@@ -18,7 +18,6 @@
 #import "SYNNetworkEngine.h"
 #import "SYNOAuthNetworkEngine.h"
 #import "UIFont+SYNFont.h"
-#import "UIImageView+ImageProcessing.h"
 #import "UIImageView+WebCache.h"
 #import <AVFoundation/AVFoundation.h>
 #import <AssetsLibrary/AssetsLibrary.h>

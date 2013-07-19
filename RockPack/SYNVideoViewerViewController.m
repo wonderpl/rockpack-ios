@@ -12,7 +12,6 @@
 #import "ChannelOwner.h"
 #import "GAI.h"
 #import "LXReorderableCollectionViewFlowLayout.h"
-#import "NSIndexPath+Arithmetic.h"
 #import "NSObject+Blocks.h"
 #import "SYNAbstractViewController.h"
 #import "SYNChannelDetailViewController.h"
