@@ -962,8 +962,7 @@
 
 - (void) checkForUpdatedPlayerCode
 {
-    [self.networkEngine
-     updatePlayerSourceWithCompletionHandler: ^(NSDictionary *dictionary) {
+    [self.networkEngine updatePlayerSourceWithCompletionHandler: ^(NSDictionary *dictionary) {
          if (dictionary && [dictionary isKindOfClass: [NSDictionary class]])
          {
              // Handle YouTube player updates
@@ -995,7 +994,7 @@
              DebugLog(@"Unexpected response from player source update");
          }
      }
-     errorHandler: ^(id response) {
+     errorHandler: ^(NSError *error) {
          DebugLog(@"Player source update failed");
          // Don't worry, we'll try again next time the app comes to the foreground
      }];
@@ -1066,14 +1065,20 @@
          didRegisterForRemoteNotificationsWithDeviceToken: (NSData *) deviceToken
 {
     // Strip all the formatting from the token
-    NSString *newToken = [deviceToken description];
+    NSString *formattedToken = [deviceToken description];
     
-    newToken = [newToken stringByTrimmingCharactersInSet: [NSCharacterSet characterSetWithCharactersInString: @"<>"]];
-    newToken = [newToken stringByReplacingOccurrencesOfString: @" "
-                                                   withString: @""];
+    formattedToken = [formattedToken stringByTrimmingCharactersInSet: [NSCharacterSet characterSetWithCharactersInString: @"<>"]];
+    formattedToken = [formattedToken stringByReplacingOccurrencesOfString: @" "
+                                                               withString: @""];
     
-    NSLog(@"My token is: %@", newToken);
+    NSLog(@"My token is: %@", formattedToken);
     
+    [self.networkEngine updateApplePushNotificationToken: formattedToken
+                                    withCompletionHandler: ^(NSDictionary *dictionary) {
+                                        DebugLog(@"Apple push notification token update successful");
+                                    } errorHandler: ^(NSError *error) {
+                                        DebugLog(@"Apple push notification token update failed");
+                                    }]; 
 }
 
 

@@ -1428,7 +1428,6 @@
         AssertOrLog(@"One or more of the required parameters is nil");
     }
 
-    
     SYNNetworkOperationJsonObject *networkOperation = (SYNNetworkOperationJsonObject*)[self operationWithPath: apiString
                                                                                                        params: params
                                                                                                    httpMethod: @"POST"
