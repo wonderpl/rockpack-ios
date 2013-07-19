@@ -6072,7 +6072,7 @@
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/sh;
-			shellScript = "find ${CONFIGURATION_BUILD_DIR}/${UNLOCALIZED_RESOURCES_FOLDER_PATH} -name \"*.lproj\" -not -name \"en.lproj\" -print | xargs rm -r";
+			shellScript = "find \"${CONFIGURATION_BUILD_DIR}/${UNLOCALIZED_RESOURCES_FOLDER_PATH}/\" -name \"*.lproj\" -not -name \"en.lproj\" -print | xargs rm -r";
 		};
 		01E427EB1664ECB3009B941F /* ShellScript */ = {
 			isa = PBXShellScriptBuildPhase;
