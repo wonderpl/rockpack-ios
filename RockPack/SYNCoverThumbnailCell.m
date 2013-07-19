@@ -8,7 +8,6 @@
 
 #import "AppConstants.h"
 #import "SYNCoverThumbnailCell.h"
-#import "UIImageView+ImageProcessing.h"
 #import "UIImageView+WebCache.h"
 #import <QuartzCore/QuartzCore.h>
 

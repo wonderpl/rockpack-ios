@@ -27,7 +27,6 @@
 #import "SYNPopoverBackgroundView.h"
 #import "SYNVideoThumbnailWideCell.h"
 #import "UIFont+SYNFont.h"
-#import "UIImageView+ImageProcessing.h"
 #import "Video.h"
 #import "VideoInstance.h"
 #import "GAI.h"
