@@ -156,6 +156,7 @@
 {
     hasRetried = NO;
     [self loadCategories];
+    [self tappedAllCategories:nil];
 }
 
 
