@@ -928,7 +928,10 @@
     
     [self handleNewTabSelectionWithGenre: nil];
     
-    [self toggleChannelsCategoryTable: nil];
+    if(!self.categoryTableViewController.view.hidden)
+    {
+        [self toggleChannelsCategoryTable: nil];
+    }
 }
 
 -(void)headerTapped
