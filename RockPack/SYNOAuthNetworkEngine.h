@@ -220,4 +220,12 @@ typedef void (^SYNOAuth2RefreshCompletionBlock)(NSError *error);
                            completionHandler: (MKNKUserSuccessBlock) completionBlock
                                 errorHandler: (MKNKUserErrorBlock) errorBlock;
 
+
+#pragma mark - Push notification token update
+
+- (void) updateApplePushNotificationForUserId: (NSString *) userId
+                                        token: (NSString *) token
+                            completionHandler: (MKNKUserSuccessBlock) completionBlock
+                                 errorHandler: (MKNKUserErrorBlock) errorBlock;
+
 @end

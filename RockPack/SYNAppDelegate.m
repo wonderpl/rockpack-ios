@@ -15,6 +15,7 @@
 #import "ChannelOwner.h"
 #import "GAI.h"
 #import "GoogleConversionPing.h"
+#import "NSObject+Blocks.h"
 #import "SYNActivityManager.h"
 #import "SYNAppDelegate.h"
 #import "SYNContainerViewController.h"
@@ -38,6 +39,7 @@
 @property (nonatomic, strong) NSManagedObjectContext *mainManagedObjectContext;
 @property (nonatomic, strong) NSManagedObjectContext *privateManagedObjectContext;
 @property (nonatomic, strong) NSManagedObjectContext *searchManagedObjectContext;
+@property (nonatomic, strong) NSString *apnsToken;
 @property (nonatomic, strong) NSString *userAgentString;
 @property (nonatomic, strong) SYNChannelManager *channelManager;
 @property (nonatomic, strong) SYNLoginBaseViewController *loginViewController;
@@ -263,29 +265,27 @@
     
     
     //refresh token
-    [self.oAuthNetworkEngine
-     refreshOAuthTokenWithCompletionHandler: ^(id response) {
-         if (!self.window.rootViewController)
-         {
-             self.window.rootViewController = [self createAndReturnRootViewController];
-         }
-         
-         [startImageView removeFromSuperview];
-         
-         self.tokenExpiryTimer = nil;
-     }
-     errorHandler: ^(id response) {
-         [self logout];
-         
-         self.tokenExpiryTimer = nil;
-         
-         if (!self.window.rootViewController)
-         {
-             self.window.rootViewController = [self createAndReturnLoginViewController];
-         }
-         
-         [startImageView removeFromSuperview];
-     }];
+    [self.oAuthNetworkEngine refreshOAuthTokenWithCompletionHandler: ^(id response) {
+        if (!self.window.rootViewController)
+        {
+            self.window.rootViewController = [self createAndReturnRootViewController];
+        }
+        
+        [startImageView removeFromSuperview];
+        
+        self.tokenExpiryTimer = nil;
+    } errorHandler: ^(id response) {
+        [self logout];
+        
+        self.tokenExpiryTimer = nil;
+        
+        if (!self.window.rootViewController)
+        {
+            self.window.rootViewController = [self createAndReturnLoginViewController];
+        }
+        
+        [startImageView removeFromSuperview];
+    }];
 }
 
 
@@ -368,6 +368,19 @@
     self.window.rootViewController = [self createAndReturnRootViewController];
     
     self.loginViewController = nil;
+    
+    // At this point we should update out APNS token (if we actually have one)
+    if (self.currentUser && self.apnsToken)
+    {
+        [self.oAuthNetworkEngine updateApplePushNotificationForUserId: self.currentUser.uniqueId
+                                                                token: self.apnsToken
+                                                    completionHandler: ^(NSDictionary *dictionary) {
+                                                        DebugLog(@"Apple push notification token update successful");
+                                                    }
+                                                         errorHandler: ^(NSError *error) {
+                                                             DebugLog(@"Apple push notification token update failed");
+                                                         }];
+    }
 }
 
 
@@ -1069,12 +1082,22 @@
     
     NSLog(@"My token is: %@", formattedToken);
     
-    [self.networkEngine updateApplePushNotificationToken: formattedToken
-                                    withCompletionHandler: ^(NSDictionary *dictionary) {
-                                        DebugLog(@"Apple push notification token update successful");
-                                    } errorHandler: ^(NSError *error) {
-                                        DebugLog(@"Apple push notification token update failed");
-                                    }]; 
+    self.apnsToken = formattedToken;
+    
+    // If the user has already logged in then send the latest token to the server
+    if (self.currentUser)
+    {
+        [self performBlock: ^{
+            [self.oAuthNetworkEngine updateApplePushNotificationForUserId: self.currentUser.uniqueId
+                                                                    token: formattedToken
+                                                        completionHandler: ^(NSDictionary *dictionary) {
+                                                            DebugLog(@"Apple push notification token update successful");
+                                                        }
+                                                             errorHandler: ^(NSError *error) {
+                                                                 DebugLog(@"Apple push notification token update failed");
+                                                             }];
+        } afterDelay: 2.0f];       
+    }
 }
 
 
@@ -1082,6 +1105,9 @@
          didFailToRegisterForRemoteNotificationsWithError: (NSError *) error
 {
     NSLog(@"Failed to get token, error: %@", error);
+    self.apnsToken = nil;
+#warning "Remove this"
+    self.apnsToken = @"CompletelyFakeToken";
 }
 
 

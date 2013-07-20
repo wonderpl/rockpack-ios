@@ -131,13 +131,12 @@
 #define kAPIReportPlayerError       @"/ws/videos/player_error/"                 /* POST */
 
 // HTML player source
-#define kHTMLVideoPlayerSource      @"/ws/videos/players/"                    /* GET */
+#define kHTMLVideoPlayerSource      @"/ws/videos/players/"                      /* GET */
 
 // Apple push notifications
-#define kApplePushNotificationToken @"/ws/push/token"                         /* POST */
+#define kRegisterExternalAccount    @"/ws/USERID/external_accounts/"            /* POST */
 
 // Push notification
-
 #define kAccountSettingsPressed     @"kAccountSettingsPressed"
 #define kAccountSettingsLogout      @"kAccountSettingsLogout"
 #define kUserDataChanged            @"kUserDataChanged"

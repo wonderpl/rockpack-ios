@@ -40,6 +40,7 @@
 @property (nonatomic, readonly) SYNViewStackManager* viewStackManager;
 @property (nonatomic, strong) NSTimer* tokenExpiryTimer;
 @property (nonatomic, strong) SYNOAuth2Credential* currentOAuth2Credentials;
+@property (nonatomic, strong, readonly) NSString *apnsToken;
 @property (readonly, nonatomic, strong) NSString *userAgentString;
 @property (readonly, nonatomic, strong) SYNMainRegistry* mainRegistry;
 @property (readonly, nonatomic, strong) SYNNetworkEngine *networkEngine;
