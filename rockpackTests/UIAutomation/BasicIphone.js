@@ -25,7 +25,7 @@ target.frontMostApp().keyboard().typeString("banana\n");
 window.staticTexts()["Page Title"].value() == "CHANNELS";
 window.staticTexts()["Page Title"].withValueForKey(1, "isVisible");
 target.frontMostApp().mainWindow().buttons()["onboarding button ok"].tap();
-target.frontMostApp().mainWindow().scrollViews()[0].staticTexts()["ALL CATEGORIES"].tapWithOptions({tapOffset:{x:0.36, y:0.08}});
+target.frontMostApp().mainWindow().scrollViews()[0].staticTexts()["BROWSE CATEGORIES"].tapWithOptions({tapOffset:{x:0.36, y:0.08}});
 target.delay(2); // Give time for loading category data.
 window.scrollViews()[0].tableViews()["Genre Table"].withValueForKey(1,"isVisible");
 window.scrollViews()[0].tableViews()["Genre Table"].groups()["MUSIC"].checkIsValid();
