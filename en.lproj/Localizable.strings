@@ -111,6 +111,7 @@
 "core_nav_section_channels" = "CHANNELS";
 "core_nav_section_profile" = "PROFILE";
 "core_nav_section_notifications" = "NOTIFICATIONS";
+"core_nav_section_friends" = "FRIENDS";
 
 
 // == Notifications == //

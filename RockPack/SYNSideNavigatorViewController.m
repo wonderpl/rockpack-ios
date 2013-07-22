@@ -93,7 +93,10 @@ typedef enum {
                  kSideNavAction: kProfileViewId},
                 @{kSideNavTitle: NSLocalizedString(@"core_nav_section_notifications", nil),
                    kSideNavType: @(kSideNavigationTypeLoad),
-                 kSideNavAction: @"SYNNotificationsTableViewController"}];
+                 kSideNavAction: @"SYNNotificationsTableViewController"},
+                @{kSideNavTitle: NSLocalizedString(@"core_nav_section_friends", nil),
+                  kSideNavType: @(kSideNavigationTypeLoad),
+                  kSideNavAction: @"SYNFriendsViewController"}];
         
         _state = SideNavigationStateHidden;
         

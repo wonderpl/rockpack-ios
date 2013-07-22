@@ -50,7 +50,6 @@
         
         nameLabelFrame.size = correctSize;
         
-        // NSLog(@"height:%f, title:%@", correctSize.height, name);
         
         if(nameLabelFrame.size.height > 30.0)
         {
@@ -66,7 +65,6 @@
     self.nameLabel.frame = nameLabelFrame;
     
     self.nameLabel.text = name;
-    
     
     // username label //
     
