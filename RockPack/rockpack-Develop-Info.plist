@@ -41,6 +41,7 @@
 			<key>CFBundleURLSchemes</key>
 			<array>
 				<string>fb131721883664256</string>
+				<string>rockpack</string>
 			</array>
 		</dict>
 	</array>
