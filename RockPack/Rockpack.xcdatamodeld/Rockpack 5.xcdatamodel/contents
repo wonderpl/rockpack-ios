@@ -51,6 +51,12 @@
         <attribute name="thumbnailURL" optional="YES" attributeType="String" defaultValueString="http://localhost" syncable="YES"/>
         <attribute name="userUpload" optional="YES" attributeType="Boolean" syncable="YES"/>
     </entity>
+    <entity name="Friend" representedClassName="Friend" parentEntity="ChannelOwner" syncable="YES">
+        <attribute name="externalSystem" optional="YES" attributeType="String" syncable="YES"/>
+        <attribute name="externalUID" optional="YES" attributeType="String" syncable="YES"/>
+        <attribute name="hasIOSDevice" optional="YES" attributeType="Boolean" syncable="YES"/>
+        <attribute name="resourceURL" optional="YES" attributeType="String" syncable="YES"/>
+    </entity>
     <entity name="Genre" representedClassName="Genre" parentEntity="AbstractCommon" syncable="YES">
         <attribute name="name" optional="YES" attributeType="String" syncable="YES"/>
         <attribute name="priority" optional="YES" attributeType="Integer 32" defaultValueString="0" syncable="YES"/>
@@ -104,8 +110,9 @@
         <element name="CoverArt" positionX="189" positionY="-243" width="128" height="103"/>
         <element name="Genre" positionX="-270" positionY="-204" width="128" height="88"/>
         <element name="SubGenre" positionX="-468" positionY="-189" width="128" height="73"/>
-        <element name="User" positionX="-342" positionY="186" width="128" height="223"/>
+        <element name="User" positionX="-342" positionY="209" width="128" height="223"/>
         <element name="Video" positionX="250" positionY="18" width="128" height="223"/>
         <element name="VideoInstance" positionX="196" positionY="297" width="128" height="133"/>
+        <element name="Friend" positionX="-495" positionY="210" width="128" height="103"/>
     </elements>
 </model>
