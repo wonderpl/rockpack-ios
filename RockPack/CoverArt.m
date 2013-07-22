@@ -90,11 +90,4 @@ static NSEntityDescription *coverArtEntity = nil;
                                  withDefault: @0];
 }
 
-
-- (NSString *) description
-{
-    return [NSString stringWithFormat: @"ChannelCover: uniqueId(%@), backgroundURL(%@), coverRef(%@),  position(%@)", self.uniqueId, self.thumbnailURL, self.coverRef, self.position];
-}
-
-
 @end

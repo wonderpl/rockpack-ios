@@ -114,10 +114,4 @@
 }
 
 
-- (NSString *) description
-{
-    return [NSString stringWithFormat: @"uniqueId(%@), categoryId: %@, source: %@, sourceId: %@, sourceUsername: %@ starCount: %@, starredByUser: %@, thumbnailURL: %@", self.uniqueId, self.categoryId, self.source, self.sourceId, self.sourceUsername, self.starCount, self.starredByUser, self.thumbnailURL];
-}
-
-
 @end

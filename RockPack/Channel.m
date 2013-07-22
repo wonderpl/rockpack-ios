@@ -3,6 +3,7 @@
 #import "ChannelCover.h"
 #import "ChannelOwner.h"
 #import "NSDictionary+Validation.h"
+#import "NSObject+AutoDescribe.h"
 #import "SYNAppDelegate.h"
 #import "VideoInstance.h"
 
@@ -424,23 +425,5 @@
         [self.managedObjectContext deleteObject: videoInstance];
     }
 }
-
-
-#pragma mark - Helper methods
-
-- (NSString *) description
-{
-    NSString *channelOwnerName = self.channelOwner.displayName ? self.channelOwner.displayName : self.channelOwner.username;
-    
-    NSMutableString *initialDescription = [NSMutableString stringWithFormat: @"- Channel (title:'%@', category id:'%@' , owner name:'%@'), VI#(%i):", self.title, self.categoryId, channelOwnerName, self.videoInstances.count];
-    
-    for (VideoInstance *childrenVideoInstance in self.videoInstances)
-    {
-        [initialDescription appendFormat: @"\n\t-%@", childrenVideoInstance];
-    }
-    
-    return initialDescription;
-}
-
 
 @end
