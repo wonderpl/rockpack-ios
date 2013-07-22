@@ -2340,6 +2340,7 @@
 		BE7D0309179D8EEC008053DC /* Friend.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = Friend.m; sourceTree = "<group>"; };
 		BE7D030B179D8EFA008053DC /* _Friend.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = _Friend.h; sourceTree = "<group>"; };
 		BE7D030C179D8EFB008053DC /* _Friend.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = _Friend.m; sourceTree = "<group>"; };
+		BE7D030E179D9AF6008053DC /* Rockpack 6.xcdatamodel */ = {isa = PBXFileReference; lastKnownFileType = file; path = "Rockpack 6.xcdatamodel"; sourceTree = "<group>"; };
 		BE7D342D170DD8C90085AB81 /* SYNChannelFooterMoreView.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = SYNChannelFooterMoreView.xib; sourceTree = "<group>"; };
 		BE7D342F170DDB310085AB81 /* SYNChannelFooterMoreView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SYNChannelFooterMoreView.h; sourceTree = "<group>"; };
 		BE7D3430170DDB310085AB81 /* SYNChannelFooterMoreView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SYNChannelFooterMoreView.m; sourceTree = "<group>"; };
@@ -6772,12 +6773,13 @@
 			isa = XCVersionGroup;
 			children = (
 				3854788017940F75006EB38B /* Rockpack 5.xcdatamodel */,
+				BE7D030E179D9AF6008053DC /* Rockpack 6.xcdatamodel */,
 				BE53EE6017609587008360D2 /* Rockpack 4.xcdatamodel */,
 				38DC34B1175E42DF0048286C /* Rockpack 3.xcdatamodel */,
 				3885165B17579086001A9FD4 /* Rockpack 2.xcdatamodel */,
 				01E427D21664C726009B941F /* Rockpack.xcdatamodel */,
 			);
-			currentVersion = 3854788017940F75006EB38B /* Rockpack 5.xcdatamodel */;
+			currentVersion = BE7D030E179D9AF6008053DC /* Rockpack 6.xcdatamodel */;
 			path = Rockpack.xcdatamodeld;
 			sourceTree = "<group>";
 			versionGroupType = wrapper.xcdatamodel;
