@@ -15,17 +15,21 @@
 #import "SYNAppDelegate.h"
 #import <FacebookSDK/FacebookSDK.h>
 #import "SYNOAuthNetworkEngine.h"
+#import "Friend.h"
 
 @interface SYNFriendsViewController ()
 
-@property (nonatomic, strong) NSArray* friends;
+@property (nonatomic, strong) NSArray* iOSFriends;
 @property (nonatomic, weak) SYNAppDelegate* appDelegate;
+@property (nonatomic) BOOL onRockpackFilterOn;
+@property (nonatomic, strong) NSArray* rockpackFriends;
 
 @end
 
 @implementation SYNFriendsViewController
 
 @synthesize appDelegate;
+@synthesize onRockpackFilterOn;
 
 - (void)viewDidLoad
 {
@@ -33,7 +37,9 @@
     
     appDelegate = (SYNAppDelegate*)[[UIApplication sharedApplication] delegate];
     
-    self.friends = [NSArray array];
+    onRockpackFilterOn = NO;
+    
+    self.iOSFriends = [NSArray array];
     
     // Register Cells
     UINib *thumbnailCellNib = [UINib nibWithNibName: @"SYNFriendThumbnailCell"
@@ -82,21 +88,26 @@
         if(!itemsDictionary)
             return;
         
-        NSMutableArray* friendsMutableArray = [NSMutableArray arrayWithCapacity:itemsDictionary.count];
+        NSMutableArray* iOSFriendsMutableArray = [NSMutableArray arrayWithCapacity:itemsDictionary.count];
+        NSMutableArray* rockpackFriendsMutableArray = [NSMutableArray arrayWithCapacity:itemsDictionary.count];
+        
         for (NSDictionary* itemDictionary in itemsDictionary)
         {
-            ChannelOwner* channelOwner = [ChannelOwner instanceFromDictionary:itemDictionary
-                                                    usingManagedObjectContext:appDelegate.mainManagedObjectContext
-                                                          ignoringObjectTypes:kIgnoreChannelObjects];
+            Friend* friend = [Friend instanceFromDictionary:itemDictionary
+                                  usingManagedObjectContext:appDelegate.searchManagedObjectContext];
             
-            if(!channelOwner)
+            if(!friend || !friend.hasIOSDevice) // filter for users with iOS devices only
                 return;
             
-            [friendsMutableArray addObject:channelOwner];
+            [iOSFriendsMutableArray addObject:friend];
+            
+            if(friend.resourceURL)
+                [rockpackFriendsMutableArray addObject:friend];
             
         }
         
-        self.friends = [NSArray arrayWithArray:friendsMutableArray];
+        self.iOSFriends = [NSArray arrayWithArray:iOSFriendsMutableArray];
+        self.rockpackFriends = [NSArray arrayWithArray:rockpackFriendsMutableArray];
         
         [self.activityIndicator stopAnimating];
         
@@ -147,6 +158,9 @@
                                                         }];
         
     } onFailure: ^(NSString* errorString) {
+        
+        
+        
          
      }];
     
@@ -163,26 +177,25 @@
 - (NSInteger) collectionView: (UICollectionView *) view
       numberOfItemsInSection: (NSInteger) section
 {
-    return self.friends.count;
+    return self.onRockpackFilterOn ? self.iOSFriends.count : self.rockpackFriends.count;
 }
 
 
 - (UICollectionViewCell *) collectionView: (UICollectionView *) collectionView
                    cellForItemAtIndexPath: (NSIndexPath *) indexPath
 {
-    ChannelOwner *user = self.friends[indexPath.row];
+    ChannelOwner *friend = self.onRockpackFilterOn ? self.iOSFriends[indexPath.row] : self.rockpackFriends[indexPath.row];
     
     SYNFriendThumbnailCell *userThumbnailCell = [collectionView dequeueReusableCellWithReuseIdentifier: @"SYNFriendThumbnailCell"
                                                                                         forIndexPath: indexPath];
     
-    userThumbnailCell.nameLabel.text = user.displayName;
+    userThumbnailCell.nameLabel.text = friend.displayName;
     
-    [userThumbnailCell.imageView setImageWithURL: [NSURL URLWithString: user.thumbnailLargeUrl]
+    [userThumbnailCell.imageView setImageWithURL: [NSURL URLWithString: friend.thumbnailLargeUrl]
                                 placeholderImage: [UIImage imageNamed: @"PlaceholderAvatarChannel"]
                                          options: SDWebImageRetryFailed];
-        
     
-    [userThumbnailCell setDisplayName: user.displayName];
+    [userThumbnailCell setDisplayName: friend.displayName];
     
     return userThumbnailCell;
 }
