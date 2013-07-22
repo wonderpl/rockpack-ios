@@ -39,6 +39,8 @@
     
     onRockpackFilterOn = NO;
     
+    [self.searchField setAutocorrectionType:UITextAutocorrectionTypeNo];
+    
     self.iOSFriends = [NSArray array];
     
     // Register Cells
@@ -59,11 +61,16 @@
         self.friendsCollectionView.hidden = NO;
         self.activityIndicator.hidden = NO;
         
+        self.onRockpackButton.hidden = NO;
+        self.allFriendsButton.hidden = NO;
+        
         [self fetchAndDisplayFriends];
     }
     else
     {
         
+        self.onRockpackButton.hidden = YES;
+        self.allFriendsButton.hidden = YES;
         self.facebookLoginButton.hidden = NO;
         self.preLoginLabel.hidden = NO;
         self.friendsCollectionView.hidden = YES;
@@ -73,6 +80,27 @@
     
     
 }
+
+-(IBAction)switchClicked:(id)sender
+{
+    
+    if(sender == self.onRockpackButton)
+    {
+        NSPredicate* searchPredicate = [NSPredicate predicateWithBlock:^BOOL(id evaluatedObject, NSDictionary *bindings) {
+            
+            return ((Friend*)evaluatedObject).resourceURL != nil;
+        }];
+        
+        self.displayFriends = [self.iOSFriends filteredArrayUsingPredicate:searchPredicate];
+    }
+    else if (sender == self.allFriendsButton)
+    {
+        self.displayFriends = self.iOSFriends;
+    }
+    
+    
+}
+
 
 -(void)fetchAndDisplayFriends
 {
@@ -143,6 +171,9 @@
                                                             self.friendsCollectionView.hidden = NO;
                                                             self.preLoginLabel.hidden = YES;
                                                             self.facebookLoginButton.hidden = YES;
+                                                            
+                                                            self.onRockpackButton.hidden = NO;
+                                                            self.allFriendsButton.hidden = NO;
                                                             
                                                             [self fetchAndDisplayFriends];
                                                             

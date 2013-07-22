@@ -16,6 +16,9 @@
 @property (nonatomic, strong) IBOutlet UIActivityIndicatorView* activityIndicator;
 @property (nonatomic, strong) IBOutlet UITextField* searchField;
 
+@property (nonatomic, strong) IBOutlet UIButton* allFriendsButton;
+@property (nonatomic, strong) IBOutlet UIButton* onRockpackButton;
+
 -(IBAction)facebookLoginPressed:(id)sender;
 
 @end
