@@ -599,6 +599,7 @@
     self.mainManagedObjectContext = nil;
     self.privateManagedObjectContext = nil;
     self.searchManagedObjectContext = nil;
+    self.channelsManagedObjectContext = nil;
     self.oAuthNetworkEngine = nil;
     self.networkEngine = nil;
     
@@ -614,6 +615,11 @@
     {
         [self initializeCoreDataStack];
         [self initializeNetworkEngines];
+        // Video Queue //
+        self.videoQueue = [SYNVideoQueue queue];
+        
+        // Subscriptions Manager //
+        self.channelManager = [SYNChannelManager manager];
     }
     else
     {
