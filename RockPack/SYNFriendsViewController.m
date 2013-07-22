@@ -22,7 +22,7 @@
 @property (nonatomic, strong) NSArray* iOSFriends;
 @property (nonatomic, weak) SYNAppDelegate* appDelegate;
 @property (nonatomic) BOOL onRockpackFilterOn;
-@property (nonatomic, strong) NSArray* rockpackFriends;
+@property (nonatomic, strong) NSArray* displayFriends;
 
 @end
 
@@ -89,7 +89,6 @@
             return;
         
         NSMutableArray* iOSFriendsMutableArray = [NSMutableArray arrayWithCapacity:itemsDictionary.count];
-        NSMutableArray* rockpackFriendsMutableArray = [NSMutableArray arrayWithCapacity:itemsDictionary.count];
         
         for (NSDictionary* itemDictionary in itemsDictionary)
         {
@@ -101,13 +100,12 @@
             
             [iOSFriendsMutableArray addObject:friend];
             
-            if(friend.resourceURL)
-                [rockpackFriendsMutableArray addObject:friend];
+            
             
         }
         
         self.iOSFriends = [NSArray arrayWithArray:iOSFriendsMutableArray];
-        self.rockpackFriends = [NSArray arrayWithArray:rockpackFriendsMutableArray];
+        self.displayFriends = self.iOSFriends;
         
         [self.activityIndicator stopAnimating];
         
@@ -177,14 +175,14 @@
 - (NSInteger) collectionView: (UICollectionView *) view
       numberOfItemsInSection: (NSInteger) section
 {
-    return self.onRockpackFilterOn ? self.iOSFriends.count : self.rockpackFriends.count;
+    return self.displayFriends.count;
 }
 
 
 - (UICollectionViewCell *) collectionView: (UICollectionView *) collectionView
                    cellForItemAtIndexPath: (NSIndexPath *) indexPath
 {
-    ChannelOwner *friend = self.onRockpackFilterOn ? self.iOSFriends[indexPath.row] : self.rockpackFriends[indexPath.row];
+    ChannelOwner *friend = self.displayFriends[indexPath.row];
     
     SYNFriendThumbnailCell *userThumbnailCell = [collectionView dequeueReusableCellWithReuseIdentifier: @"SYNFriendThumbnailCell"
                                                                                         forIndexPath: indexPath];
@@ -200,6 +198,54 @@
     return userThumbnailCell;
 }
 
+#pragma mark - UITextViewDelegate
+
+- (BOOL) textField: (UITextField *) textField shouldChangeCharactersInRange: (NSRange) range replacementString: (NSString *) newCharacter
+{
+    NSUInteger oldLength = textField.text.length;
+    NSUInteger newCharacterLength = newCharacter.length;
+    NSUInteger rangeLength = range.length;
+    
+    NSUInteger newLength = (oldLength + newCharacterLength) - rangeLength;
+    
+    
+    NSMutableString* searchTerm = [NSMutableString stringWithString:[self.searchField.text uppercaseString]];
+    if(oldLength < newLength)
+        [searchTerm appendString:[newCharacter uppercaseString]];
+    else
+        [searchTerm deleteCharactersInRange:NSMakeRange(searchTerm.length - 1, 1)];
+    
+    if([searchTerm isEqualToString:@""])
+    {
+        self.displayFriends = self.iOSFriends;
+    }
+    else
+    {
+        
+        NSPredicate* searchPredicate = [NSPredicate predicateWithBlock:^BOOL(id evaluatedObject, NSDictionary *bindings) {
+            
+            NSString* nameToCompare = [((Friend*)evaluatedObject).displayName uppercaseString];
+            
+            BOOL result = [nameToCompare hasPrefix:searchTerm];
+            
+            
+            return result;
+        }];
+        
+        self.displayFriends = [self.iOSFriends filteredArrayUsingPredicate:searchPredicate];
+    }
+    
+    
+    [self.friendsCollectionView reloadData];
+    
+    return YES;
+}
+
+- (BOOL) textFieldShouldReturn: (UITextField *) textField
+{
+    
+    return YES;
+}
 
 - (void) collectionView: (UICollectionView *) collectionView didSelectItemAtIndexPath: (NSIndexPath *) indexPath
 {
