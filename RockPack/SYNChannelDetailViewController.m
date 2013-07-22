@@ -3025,10 +3025,6 @@
 
 - (void) setChannel: (Channel *) channel
 {
-    
-    
-    
-    
     self.originalChannel = channel;
 
     NSError *error = nil;

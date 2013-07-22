@@ -34,7 +34,7 @@
 @property (nonatomic, readonly) NSManagedObjectContext *channelsManagedObjectContext;
 @property (nonatomic, readonly) NSManagedObjectContext *mainManagedObjectContext;
 @property (nonatomic, readonly) NSManagedObjectContext *searchManagedObjectContext;
-@property (nonatomic, readonly) SYNChannelManager* channelManager;;
+@property (nonatomic, readonly) SYNChannelManager* channelManager;
 @property (nonatomic, readonly) SYNOnBoardingPopoverQueueController* onBoardingQueue;
 @property (nonatomic, readonly) SYNVideoQueue* videoQueue;
 @property (nonatomic, readonly) SYNViewStackManager* viewStackManager;

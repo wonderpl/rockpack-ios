@@ -13,6 +13,7 @@
 #import "AppConstants.h"
 #import "Appirater.h"
 #import "ChannelOwner.h"
+#import "Channel.h"
 #import "GAI.h"
 #import "GoogleConversionPing.h"
 #import "NSObject+Blocks.h"
@@ -930,6 +931,28 @@
 // rockpack://USERID/channels/CHANNELID/videos/VIDEOID/
 // (test) http://dev.rockpack.com/paulegan/deeplinktest/video.html
 
+
+//if (notification.objectType == kNotificationObjectTypeVideo)
+//{
+//    Channel* channel = [self channelFromChannelId: notification.channelId];
+//    
+//    if (!channel)
+//        return;
+//    
+//    
+//    [appDelegate.viewStackManager viewChannelDetails:channel withAutoplayId:notification.videoId];
+//    
+//}
+//else
+//{
+//    Channel* channel = [self channelFromChannelId: notification.channelId];
+//    
+//    if (!channel)
+//        return;
+//    
+//    [appDelegate.viewStackManager viewChannelDetails:channel];
+//}
+
 - (BOOL)  application: (UIApplication *) application
               openURL: (NSURL *) url
     sourceApplication: (NSString *) sourceApplication
@@ -943,6 +966,8 @@
         NSString *userId = url.host;
         NSArray *pathComponents = url.pathComponents;
         
+        NSString *hostName = [[NSBundle mainBundle] objectForInfoDictionaryKey: ([userId isEqualToString: self.currentUser.uniqueId])? @"SecureAPIHostName" : @"APIHostName"];
+        
         switch (pathComponents.count)
         {
             // User profile
@@ -955,8 +980,17 @@
             // Channel
             case 3:
             {
+                // Extract the channelId from the path
                 NSString *channelId = pathComponents[2];
-                success = TRUE;
+                NSString *resourceURL = [NSString stringWithFormat: @"http://%@/ws/%@/channels/%@/", hostName, userId, channelId];
+                Channel* channel = [Channel instanceFromDictionary: @{@"id" : channelId, @"resource_url" : resourceURL}
+                                         usingManagedObjectContext: self.mainManagedObjectContext];
+                
+                if (channel)
+                {
+                    [self.viewStackManager viewChannelDetails: channel];
+                    success = TRUE;
+                }
                 break;
             }
                
@@ -1019,6 +1053,34 @@
         // No idea what this scheme does so indicated failure
         return NO;
     }
+}
+
+
+- (Channel*) channelFromChannelId: (NSString*) channelId
+{
+    Channel* channel;
+    
+    NSEntityDescription* channelEntity = [NSEntityDescription entityForName: @"Channel"
+                                                     inManagedObjectContext: self.mainManagedObjectContext];
+    
+    NSFetchRequest *channelFetchRequest = [[NSFetchRequest alloc] init];
+    [channelFetchRequest setEntity: channelEntity];
+    
+    NSPredicate *predicate = [NSPredicate predicateWithFormat: @"uniqueId == %@", channelId];
+    
+    [channelFetchRequest setPredicate: predicate];
+    
+    NSError* error;
+    
+    NSArray *matchingChannelEntries = [self.mainManagedObjectContext executeFetchRequest: channelFetchRequest
+                                                                                   error: &error];
+    
+    if (matchingChannelEntries.count > 0)
+    {
+        channel = matchingChannelEntries[0];
+    }
+    
+    return channel;
 }
 
 
