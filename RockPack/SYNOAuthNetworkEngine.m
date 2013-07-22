@@ -1450,36 +1450,87 @@
                             completionHandler: (MKNKUserSuccessBlock) completionBlock
                                  errorHandler: (MKNKUserErrorBlock) errorBlock
 {
-    // Check if any nil parameters passed in (defensive)
-    if (token && userId)
-    {
-        NSDictionary *apiSubstitutionDictionary = @{@"USERID" : userId};
-        
-        NSString *apiString = [kRegisterExternalAccount stringByReplacingOccurrencesOfStrings: apiSubstitutionDictionary];
-        
-        
-        
-        NSDictionary *params = @{@"external_system": @"apns",
-                                 @"external_token" : token};
-        
-        SYNNetworkOperationJsonObject *networkOperation = (SYNNetworkOperationJsonObject*)[self operationWithPath: apiString
-                                                                                                           params: params
-                                                                                                       httpMethod: @"POST"
-                                                                                                              ssl: TRUE];
-        [networkOperation addHeaders: @{@"Content-Type" : @"application/json"}];
-        networkOperation.postDataEncoding = MKNKPostDataEncodingTypeJSON;
-        
-        [self addCommonHandlerToNetworkOperation: networkOperation
-                               completionHandler: completionBlock
-                                    errorHandler: errorBlock];
-        
-        [self enqueueSignedOperation: networkOperation];
-    }
-    else
-    {
-        AssertOrLog(@"One or more of the required parameters is nil");
-    }
+    [self connectToExtrnalAccoundForUserId:userId
+                                     token:token
+                                   service:@"apns"
+                         completionHandler:completionBlock
+                              errorHandler:errorBlock];
 }
 
+-(void)connectToFacebookAccoundForUserId:(NSString*) userId
+                                   token:(NSString*)token
+                       completionHandler: (MKNKUserSuccessBlock) completionBlock
+                            errorHandler: (MKNKUserErrorBlock) errorBlock
+{
+    [self connectToExtrnalAccoundForUserId:userId
+                                     token:token
+                                   service:@"facebook"
+                         completionHandler:completionBlock
+                              errorHandler:errorBlock];
+}
 
+- (void) connectToExtrnalAccoundForUserId:(NSString*) userId
+                                    token:(NSString*)token
+                                  service:(NSString*)service
+                        completionHandler: (MKNKUserSuccessBlock) completionBlock
+                             errorHandler: (MKNKUserErrorBlock) errorBlock
+{
+    // Check if any nil parameters passed in (defensive)
+    if (!token || !userId || !service)
+    {
+        AssertOrLog(@"connectToExtrnalAccoundForUserId error with: %@ %@ %@", token, userId, service);
+        return;
+    }
+   
+    
+    NSDictionary *apiSubstitutionDictionary = @{@"USERID" : userId};
+    
+    NSString *apiString = [kRegisterExternalAccount stringByReplacingOccurrencesOfStrings: apiSubstitutionDictionary];
+    
+    
+    
+    NSDictionary *params = @{@"external_system": service,
+                             @"external_token" : token};
+    
+    SYNNetworkOperationJsonObject *networkOperation = (SYNNetworkOperationJsonObject*)[self operationWithPath: apiString
+                                                                                                       params: params
+                                                                                                   httpMethod: @"POST"
+                                                                                                          ssl: YES];
+    [networkOperation addHeaders: @{@"Content-Type" : @"application/json"}];
+    networkOperation.postDataEncoding = MKNKPostDataEncodingTypeJSON;
+    
+    [self addCommonHandlerToNetworkOperation: networkOperation
+                           completionHandler: completionBlock
+                                errorHandler: errorBlock];
+    
+    [self enqueueSignedOperation: networkOperation];
+}
+
+- (void) friendsForUser: (User*)user
+      completionHandler: (MKNKUserSuccessBlock) completionBlock
+           errorHandler: (MKNKUserErrorBlock) errorBlock
+{
+    
+    if(!user)
+        return;
+    
+    NSDictionary *apiSubstitutionDictionary = @{@"USERID" : user.uniqueId};
+    
+    NSString *apiString = [kAPIFriends stringByReplacingOccurrencesOfStrings: apiSubstitutionDictionary];
+    
+    NSDictionary *params = @{@"DEVICE_TYPE": @"ios"};
+    
+    SYNNetworkOperationJsonObject *networkOperation = (SYNNetworkOperationJsonObject*)[self operationWithPath: apiString
+                                                                                                       params: params
+                                                                                                   httpMethod: @"GET"
+                                                                                                          ssl: YES];
+    
+    [self addCommonHandlerToNetworkOperation: networkOperation
+                           completionHandler: completionBlock
+                                errorHandler: errorBlock];
+    
+    [self enqueueSignedOperation: networkOperation];
+    
+    
+}
 @end
