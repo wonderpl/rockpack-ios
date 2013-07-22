@@ -221,21 +221,27 @@
     [networkOperation addCompletionHandler: ^(MKNetworkOperation *completedOperation)
      {
          NSDictionary *responseDictionary = [completedOperation responseJSON];
-         
-         // Parse the new OAuth details, creating a new credential object
-         SYNOAuth2Credential* newOAuth2Credentials = [SYNOAuth2Credential credentialWithAccessToken: responseDictionary[@"access_token"]
+         if([self.appDelegate.currentUser.uniqueId isEqualToString:responseDictionary[@"user_id"]])
+         {
+             // Parse the new OAuth details, creating a new credential object
+             SYNOAuth2Credential* newOAuth2Credentials = [SYNOAuth2Credential credentialWithAccessToken: responseDictionary[@"access_token"]
                                                                                           expiresIn: responseDictionary[@"expires_in"]
                                                                                        refreshToken: responseDictionary[@"refresh_token"]
                                                                                         resourceURL: responseDictionary[@"resource_url"]
                                                                                           tokenType: responseDictionary[@"token_type"]
                                                                                              userId: responseDictionary[@"user_id"]];
          
-         // Save the new credential object in the keychain
-         // The user passed back is assumed to be the current user
-         [newOAuth2Credentials saveToKeychainForService: kOAuth2Service
-                                                account: responseDictionary[@"user_id"]];
-         
-         completionBlock(responseDictionary);
+             // Save the new credential object in the keychain
+             // The user passed back is assumed to be the current user
+             [newOAuth2Credentials saveToKeychainForService: kOAuth2Service
+                                                    account: responseDictionary[@"user_id"]];
+             completionBlock(responseDictionary);
+        }
+        else
+        {
+            AssertOrLog(@"Refreshed OAuth2 credentials do not match the current user!!");
+            errorBlock(@{@"error": kUserIdInconsistencyError});
+        }
      }
      errorHandler: ^(MKNetworkOperation* completedOperation, NSError* error)
      {

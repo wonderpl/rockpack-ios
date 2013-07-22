@@ -514,3 +514,7 @@ typedef void (^JSONResponseBlock)(id jsonObject);
 #define SHOW_BRANDING 
 
 #endif
+
+//User token refresh error
+
+#define kUserIdInconsistencyError @"UserIdInconsistency"
