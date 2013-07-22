@@ -13,8 +13,10 @@
 #import "AppConstants.h"
 #import "Appirater.h"
 #import "ChannelOwner.h"
+#import "Channel.h"
 #import "GAI.h"
 #import "GoogleConversionPing.h"
+#import "NSObject+Blocks.h"
 #import "SYNActivityManager.h"
 #import "SYNAppDelegate.h"
 #import "SYNContainerViewController.h"
@@ -38,6 +40,7 @@
 @property (nonatomic, strong) NSManagedObjectContext *mainManagedObjectContext;
 @property (nonatomic, strong) NSManagedObjectContext *privateManagedObjectContext;
 @property (nonatomic, strong) NSManagedObjectContext *searchManagedObjectContext;
+@property (nonatomic, strong) NSString *apnsToken;
 @property (nonatomic, strong) NSString *userAgentString;
 @property (nonatomic, strong) SYNChannelManager *channelManager;
 @property (nonatomic, strong) SYNLoginBaseViewController *loginViewController;
@@ -267,29 +270,27 @@
     
     
     //refresh token
-    [self.oAuthNetworkEngine
-     refreshOAuthTokenWithCompletionHandler: ^(id response) {
-         if (!self.window.rootViewController)
-         {
-             self.window.rootViewController = [self createAndReturnRootViewController];
-         }
-         
-         [startImageView removeFromSuperview];
-         
-         self.tokenExpiryTimer = nil;
-     }
-     errorHandler: ^(id response) {
-         [self logout];
-         
-         self.tokenExpiryTimer = nil;
-         
-         if (!self.window.rootViewController)
-         {
-             self.window.rootViewController = [self createAndReturnLoginViewController];
-         }
-         
-         [startImageView removeFromSuperview];
-     }];
+    [self.oAuthNetworkEngine refreshOAuthTokenWithCompletionHandler: ^(id response) {
+        if (!self.window.rootViewController)
+        {
+            self.window.rootViewController = [self createAndReturnRootViewController];
+        }
+        
+        [startImageView removeFromSuperview];
+        
+        self.tokenExpiryTimer = nil;
+    } errorHandler: ^(id response) {
+        [self logout];
+        
+        self.tokenExpiryTimer = nil;
+        
+        if (!self.window.rootViewController)
+        {
+            self.window.rootViewController = [self createAndReturnLoginViewController];
+        }
+        
+        [startImageView removeFromSuperview];
+    }];
 }
 
 
@@ -363,6 +364,19 @@
     self.window.rootViewController = [self createAndReturnRootViewController];
     
     self.loginViewController = nil;
+    
+    // At this point we should update out APNS token (if we actually have one)
+    if (self.currentUser && self.apnsToken)
+    {
+        [self.oAuthNetworkEngine updateApplePushNotificationForUserId: self.currentUser.uniqueId
+                                                                token: self.apnsToken
+                                                    completionHandler: ^(NSDictionary *dictionary) {
+                                                        DebugLog(@"Apple push notification token update successful");
+                                                    }
+                                                         errorHandler: ^(NSError *error) {
+                                                             DebugLog(@"Apple push notification token update failed");
+                                                         }];
+    }
 }
 
 
@@ -943,47 +957,181 @@
 }
 
 
+// rockpack://USERID/
+// (test) http://dev.rockpack.com/paulegan/deeplinktest/user.html
+// rockpack://USERID/channels/CHANNELID/
+// (test) http://dev.rockpack.com/paulegan/deeplinktest/channel.html
+// rockpack://USERID/channels/CHANNELID/videos/VIDEOID/
+// (test) http://dev.rockpack.com/paulegan/deeplinktest/video.html
+
+
+//if (notification.objectType == kNotificationObjectTypeVideo)
+//{
+//    Channel* channel = [self channelFromChannelId: notification.channelId];
+//    
+//    if (!channel)
+//        return;
+//    
+//    
+//    [appDelegate.viewStackManager viewChannelDetails:channel withAutoplayId:notification.videoId];
+//    
+//}
+//else
+//{
+//    Channel* channel = [self channelFromChannelId: notification.channelId];
+//    
+//    if (!channel)
+//        return;
+//    
+//    [appDelegate.viewStackManager viewChannelDetails:channel];
+//}
+
 - (BOOL)  application: (UIApplication *) application
               openURL: (NSURL *) url
     sourceApplication: (NSString *) sourceApplication
            annotation: (id) annotation
 {
-    // To check for a deep link, first parse the incoming URL
-    // to look for a target_url parameter
-    NSString *query = [url fragment];
-    
-    if (!query)
+    // Is it one of our own custom 'rockpack' URL schemes
+    if ([url.scheme isEqualToString: @"rockpack"])
     {
-        query = [url query];
-    }
-    
-    NSDictionary *params = [self parseURLParams: query];
-    
-    // Check if target URL exists
-    NSString *targetURLString = [params valueForKey: @"target_url"];
-    
-    if (targetURLString)
-    {
-        NSURL *targetURL = [NSURL URLWithString: targetURLString];
-        NSString *query2 = [targetURL query];
-        NSDictionary *targetParams = [self parseURLParams: query2];
-        NSString *deeplink = [targetParams valueForKey: @"deeplink"];
+        BOOL success = FALSE;
         
-        // Check for the 'deeplink' parameter to check if this is one of
-        // our incoming news feed link
-        if (deeplink)
+        NSString *userId = url.host;
+        NSArray *pathComponents = url.pathComponents;
+        
+        NSString *hostName = [[NSBundle mainBundle] objectForInfoDictionaryKey: ([userId isEqualToString: self.currentUser.uniqueId])? @"SecureAPIHostName" : @"APIHostName"];
+        
+        switch (pathComponents.count)
         {
-            UIAlertView *alert = [[UIAlertView alloc] initWithTitle: @"News"
-                                                            message: [NSString stringWithFormat: @"Incoming: %@", deeplink]
-                                                           delegate: nil
-                                                  cancelButtonTitle: @"OK"
-                                                  otherButtonTitles: nil, nil];
-            [alert show];
+            // User profile
+            case 1:
+            {
+                if (userId)
+                {
+                    ChannelOwner *channelOwner = [ChannelOwner instanceFromDictionary: @{@"id" : userId}
+                                                            usingManagedObjectContext: self.mainManagedObjectContext
+                                                                  ignoringObjectTypes: kIgnoreChannelObjects];
+                    
+                    [self.viewStackManager viewProfileDetails: channelOwner];
+                    success = TRUE;
+                }
+
+                break;
+            }
+            
+            // Channel
+            case 3:
+            {
+                // Extract the channelId from the path
+                NSString *channelId = pathComponents[2];
+                NSString *resourceURL = [NSString stringWithFormat: @"http://%@/ws/%@/channels/%@/", hostName, userId, channelId];
+                Channel* channel = [Channel instanceFromDictionary: @{@"id" : channelId, @"resource_url" : resourceURL}
+                                         usingManagedObjectContext: self.mainManagedObjectContext];
+                
+                if (channel)
+                {
+                    [self.viewStackManager viewChannelDetails: channel];
+                    success = TRUE;
+                }
+                break;
+            }
+               
+            // Video Instance    
+            case 5:
+            {
+                NSString *channelId = pathComponents[2];
+                NSString *videoId = pathComponents[4];
+                NSString *resourceURL = [NSString stringWithFormat: @"http://%@/ws/%@/channels/%@/", hostName, userId, channelId];
+                Channel* channel = [Channel instanceFromDictionary: @{@"id" : channelId, @"resource_url" : resourceURL}
+                                         usingManagedObjectContext: self.mainManagedObjectContext];
+                
+                if (channel)
+                {
+                    [self.viewStackManager viewChannelDetails: channel
+                                               withAutoplayId: videoId];
+                    success = TRUE;
+                }
+                break;
+            }
+                
+            default:
+                // Not sure what this is so indicate failure
+                break;
         }
+
+        return success;
+    }
+    else if ([url.scheme hasPrefix: @"fb"])
+    {      
+        // It appears to be a Facebook URL scheme, so parse the incoming URL to look for a target_url parameter
+        NSString *query = [url fragment];
+        
+        if (!query)
+        {
+            query = [url query];
+        }
+        
+        NSDictionary *params = [self parseURLParams: query];
+        
+        // Check if target URL exists
+        NSString *targetURLString = [params valueForKey: @"target_url"];
+        
+        if (targetURLString)
+        {
+            NSURL *targetURL = [NSURL URLWithString: targetURLString];
+            NSString *query2 = [targetURL query];
+            NSDictionary *targetParams = [self parseURLParams: query2];
+            NSString *deeplink = [targetParams valueForKey: @"deeplink"];
+            
+            // Check for the 'deeplink' parameter to check if this is one of
+            // our incoming news feed link
+            if (deeplink)
+            {
+                UIAlertView *alert = [[UIAlertView alloc] initWithTitle: @"News"
+                                                                message: [NSString stringWithFormat: @"Incoming: %@", deeplink]
+                                                               delegate: nil
+                                                      cancelButtonTitle: @"OK"
+                                                      otherButtonTitles: nil, nil];
+                [alert show];
+            }
+        }
+        
+        return [FBSession.activeSession
+                handleOpenURL: url];
+    }
+    else
+    {
+        // No idea what this scheme does so indicated failure
+        return NO;
+    }
+}
+
+
+- (Channel*) channelFromChannelId: (NSString*) channelId
+{
+    Channel* channel;
+    
+    NSEntityDescription* channelEntity = [NSEntityDescription entityForName: @"Channel"
+                                                     inManagedObjectContext: self.mainManagedObjectContext];
+    
+    NSFetchRequest *channelFetchRequest = [[NSFetchRequest alloc] init];
+    [channelFetchRequest setEntity: channelEntity];
+    
+    NSPredicate *predicate = [NSPredicate predicateWithFormat: @"uniqueId == %@", channelId];
+    
+    [channelFetchRequest setPredicate: predicate];
+    
+    NSError* error;
+    
+    NSArray *matchingChannelEntries = [self.mainManagedObjectContext executeFetchRequest: channelFetchRequest
+                                                                                   error: &error];
+    
+    if (matchingChannelEntries.count > 0)
+    {
+        channel = matchingChannelEntries[0];
     }
     
-    return [FBSession.activeSession
-            handleOpenURL: url];
+    return channel;
 }
 
 
@@ -1102,12 +1250,22 @@
     
     NSLog(@"My token is: %@", formattedToken);
     
-    [self.networkEngine updateApplePushNotificationToken: formattedToken
-                                    withCompletionHandler: ^(NSDictionary *dictionary) {
-                                        DebugLog(@"Apple push notification token update successful");
-                                    } errorHandler: ^(NSError *error) {
-                                        DebugLog(@"Apple push notification token update failed");
-                                    }]; 
+    self.apnsToken = formattedToken;
+    
+    // If the user has already logged in then send the latest token to the server
+    if (self.currentUser)
+    {
+        [self performBlock: ^{
+            [self.oAuthNetworkEngine updateApplePushNotificationForUserId: self.currentUser.uniqueId
+                                                                    token: formattedToken
+                                                        completionHandler: ^(NSDictionary *dictionary) {
+                                                            DebugLog(@"Apple push notification token update successful");
+                                                        }
+                                                             errorHandler: ^(NSError *error) {
+                                                                 DebugLog(@"Apple push notification token update failed");
+                                                             }];
+        } afterDelay: 2.0f];       
+    }
 }
 
 
@@ -1115,6 +1273,7 @@
          didFailToRegisterForRemoteNotificationsWithError: (NSError *) error
 {
     NSLog(@"Failed to get token, error: %@", error);
+    self.apnsToken = nil;
 }
 
 

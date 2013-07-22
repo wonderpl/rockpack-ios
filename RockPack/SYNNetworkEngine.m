@@ -639,27 +639,6 @@
 }
 
 
-#pragma mark - Push notification token update
-
-- (void) updateApplePushNotificationToken: (NSString *) token
-                    withCompletionHandler: (MKNKUserSuccessBlock) completionBlock
-                             errorHandler: (MKNKUserErrorBlock) errorBlock
-{
-    NSDictionary *parameters = @{@"token" : token};
-    
-    SYNNetworkOperationJsonObject *networkOperation =
-    (SYNNetworkOperationJsonObject *) [self operationWithPath: kApplePushNotificationToken
-                                                       params: parameters];
-    
-    [networkOperation addJSONCompletionHandler: ^(NSDictionary *dictionary) {
-        completionBlock(dictionary);
-    } errorHandler: ^(NSError *error) {
-        errorBlock(error);
-    }];
-    
-    [self enqueueOperation: networkOperation];
-
-}
 
 
 @end

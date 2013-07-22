@@ -20,10 +20,11 @@
 
 @interface SYNNotificationsTableViewController ()
 
-@property (nonatomic, weak) SYNAppDelegate* appDelegate;
-@property (nonatomic, strong) UIImageView* logoImageView;
+@property (nonatomic, weak) SYNAppDelegate *appDelegate;
+@property (nonatomic, strong) UIImageView *logoImageView;
 
 @end
+
 
 @implementation SYNNotificationsTableViewController
 
@@ -33,13 +34,14 @@
 
 - (id) init
 {
-    if ((self = [super initWithStyle:UITableViewStylePlain]))
+    if ((self = [super initWithStyle: UITableViewStylePlain]))
     {
         // TODO: Get notifications
     }
-        
+    
     return self;
 }
+
 
 #pragma mark - View Life Cycle
 
@@ -49,15 +51,16 @@
     
     [GAI.sharedInstance.defaultTracker sendView: @"Notifications"];
     
-    self.appDelegate = (SYNAppDelegate*)[[UIApplication sharedApplication] delegate];
+    self.appDelegate = (SYNAppDelegate *) [[UIApplication sharedApplication] delegate];
     
-    self.logoImageView = [[UIImageView alloc] initWithImage:[UIImage imageNamed:@"LogoNotifications"]];
-    // self.logoImageView.backgroundColor = [UIColor greenColor];
-    [self.view addSubview:self.logoImageView];
+    self.logoImageView = [[UIImageView alloc] initWithImage: [UIImage imageNamed: @"LogoNotifications"]];
 
-    self.tableView.separatorStyle = UITableViewCellSeparatorStyleNone;
-    [self.tableView registerClass:[SYNNotificationsTableViewCell class] forCellReuseIdentifier:kNotificationsCellIdent];
+    [self.view addSubview: self.logoImageView];
     
+    self.tableView.separatorStyle = UITableViewCellSeparatorStyleNone;
+    
+    [self.tableView registerClass: [SYNNotificationsTableViewCell class]
+           forCellReuseIdentifier: kNotificationsCellIdent];
 }
 
 
@@ -89,54 +92,68 @@
 }
 
 
-- (NSInteger) tableView: (UITableView *) tableView
+- (NSInteger)	tableView: (UITableView *) tableView
   numberOfRowsInSection: (NSInteger) section
 {
-
     return _notifications ? _notifications.count : 0;
 }
 
 
 - (UITableViewCell *) tableView: (UITableView *) tableView
-                      cellForRowAtIndexPath: (NSIndexPath *) indexPath
+          cellForRowAtIndexPath: (NSIndexPath *) indexPath
 {
     SYNNotificationsTableViewCell *notificationCell = [tableView dequeueReusableCellWithIdentifier: kNotificationsCellIdent
                                                                                       forIndexPath: indexPath];
     
-    SYNRockpackNotification* notification = (SYNRockpackNotification*)_notifications[indexPath.row];
+    SYNRockpackNotification *notification = (SYNRockpackNotification *) _notifications[indexPath.row];
     
-    NSMutableString* constructedMessage = [[NSMutableString alloc] init];
-    [constructedMessage appendFormat:@"%@ ", [notification.channelOwner.displayName uppercaseString]];
+    NSMutableString *constructedMessage = [[NSMutableString alloc] init];
     
-    if ([notification.messageType isEqualToString:@"subscribed"])
+    [constructedMessage appendFormat: @"%@ ", [notification.channelOwner.displayName uppercaseString]];
+    
+    if ([notification.messageType isEqualToString: @"subscribed"])
+    {
         [constructedMessage appendString: NSLocalizedString(@"notification_subscribed_action", nil)];
+    }
     else
+    {
         [constructedMessage appendString: NSLocalizedString(@"notification_liked_action", nil)];
-
+    }
+    
     notificationCell.messageTitle = [NSString stringWithString: constructedMessage];
     
-    NSURL* userThumbnailUrl = [NSURL URLWithString: notification.channelOwner.thumbnailLargeUrl];
+    NSURL *userThumbnailUrl = [NSURL URLWithString: notification.channelOwner.thumbnailLargeUrl];
     
     [notificationCell.imageView setImageWithURL: userThumbnailUrl
-                     placeholderImage: [UIImage imageNamed: @"PlaceholderNotificationAvatar.png"]
-                              options: SDWebImageRetryFailed];
-
-    NSURL* thumbnaillUrl;
+                               placeholderImage: [UIImage imageNamed: @"PlaceholderNotificationAvatar.png"]
+                                        options: SDWebImageRetryFailed];
+    
+    NSURL *thumbnaillUrl;
+    
     if (notification.objectType == kNotificationObjectTypeVideo)
-        thumbnaillUrl = [NSURL URLWithString:notification.videoThumbnailUrl];
+    {
+        thumbnaillUrl = [NSURL URLWithString: notification.videoThumbnailUrl];
+    }
     else
-        thumbnaillUrl = [NSURL URLWithString:notification.channelThumbnailUrl];
-
-    UIImage* placeholder;
+    {
+        thumbnaillUrl = [NSURL URLWithString: notification.channelThumbnailUrl];
+    }
+    
+    UIImage *placeholder;
+    
     if (notification.objectType == kNotificationObjectTypeVideo)
-        placeholder = [UIImage imageNamed:@"PlaceholderNotificationVideo"];
+    {
+        placeholder = [UIImage imageNamed: @"PlaceholderNotificationVideo"];
+    }
     else
-        placeholder = [UIImage imageNamed:@"PlaceholderNotificationChannel"];
+    {
+        placeholder = [UIImage imageNamed: @"PlaceholderNotificationChannel"];
+    }
     
     [notificationCell.thumbnailImageView setImageWithURL: thumbnaillUrl
                                         placeholderImage: placeholder
                                                  options: SDWebImageRetryFailed];
-
+    
     notificationCell.delegate = self;
     
     notificationCell.read = notification.read;
@@ -159,7 +176,7 @@
 - (void) tableView: (UITableView *) tableView
          didSelectRowAtIndexPath: (NSIndexPath *) indexPath
 {
-    [self markAsReadForNotification:_notifications[indexPath.row]];
+    [self markAsReadForNotification: _notifications[indexPath.row]];
 }
 
 
@@ -179,74 +196,83 @@
     }
 }
 
+
 #pragma mark - Delegate Handler
 
 // this is the user who initialed the action, goes to is profile
-- (void) mainImageTableCellPressed: (UIButton*) button
+- (void) mainImageTableCellPressed: (UIButton *) button
 {
-    SYNNotificationsTableViewCell* cellPressed = (SYNNotificationsTableViewCell*)button.superview;
+    SYNNotificationsTableViewCell *cellPressed = (SYNNotificationsTableViewCell *) button.superview;
     
-    NSIndexPath* indexPathForCellPressed = [self.tableView indexPathForCell: cellPressed];
+    NSIndexPath *indexPathForCellPressed = [self.tableView indexPathForCell: cellPressed];
     
     if (indexPathForCellPressed.row > self.notifications.count)
-        return;
-    
-    SYNRockpackNotification* notification = self.notifications[indexPathForCellPressed.row];
-    
-    SYNAppDelegate* appDelegate = (SYNAppDelegate*)[[UIApplication sharedApplication] delegate];
-    
-    [appDelegate.viewStackManager viewProfileDetails:notification.channelOwner];
-    
-    [self markAsReadForNotification:notification];
-    
-}
-
-
-- (void) itemImageTableCellPressed: (UIButton*) button
-{
-    SYNNotificationsTableViewCell* cellPressed = (SYNNotificationsTableViewCell*)button.superview;
-    
-    NSIndexPath* indexPathForCellPressed = [self.tableView indexPathForCell: cellPressed];
-    
-    SYNRockpackNotification* notification = self.notifications[indexPathForCellPressed.row];
-    
-    if (!notification)
-        return;
-    
-    
-    SYNAppDelegate* appDelegate = (SYNAppDelegate*)[[UIApplication sharedApplication] delegate];
-    
-    if (notification.objectType == kNotificationObjectTypeVideo)
     {
-        Channel* channel = [self channelFromChannelId: notification.channelId];
-        
-        if (!channel)
-            return;
-        
-        
-        [appDelegate.viewStackManager viewChannelDetails:channel withAutoplayId:notification.videoId];
-        
+        return;
     }
-    else
-    {
-        Channel* channel = [self channelFromChannelId: notification.channelId];
-        
-        if (!channel)
-            return;
-        
-        [appDelegate.viewStackManager viewChannelDetails:channel];
-    }
-
+    
+    SYNRockpackNotification *notification = self.notifications[indexPathForCellPressed.row];
+    
+    SYNAppDelegate *appDelegate = (SYNAppDelegate *) [[UIApplication sharedApplication] delegate];
+    
+    [appDelegate.viewStackManager viewProfileDetails: notification.channelOwner];
+    
     [self markAsReadForNotification: notification];
 }
 
 
-- (void) markAsReadForNotification: (SYNRockpackNotification*) notification
+- (void) itemImageTableCellPressed: (UIButton *) button
+{
+    SYNNotificationsTableViewCell *cellPressed = (SYNNotificationsTableViewCell *) button.superview;
+    
+    NSIndexPath *indexPathForCellPressed = [self.tableView
+                                            indexPathForCell: cellPressed];
+    
+    SYNRockpackNotification *notification = self.notifications[indexPathForCellPressed.row];
+    
+    if (!notification)
+    {
+        return;
+    }
+    
+    SYNAppDelegate *appDelegate = (SYNAppDelegate *) [[UIApplication sharedApplication] delegate];
+    
+    if (notification.objectType == kNotificationObjectTypeVideo)
+    {
+        Channel *channel = [self channelFromChannelId: notification.channelId];
+        
+        if (!channel)
+        {
+            return;
+        }
+        
+        [appDelegate.viewStackManager viewChannelDetails: channel
+                                          withAutoplayId: notification.videoId];
+    }
+    else
+    {
+        Channel *channel = [self channelFromChannelId: notification.channelId];
+        
+        if (!channel)
+        {
+            return;
+        }
+        
+        [appDelegate.viewStackManager viewChannelDetails: channel];
+    }
+    
+    [self markAsReadForNotification: notification];
+}
+
+
+- (void) markAsReadForNotification: (SYNRockpackNotification *) notification
 {
     if (notification == nil || notification.read) // if already read or nil, don't bother...
+    {
         return;
+    }
     
-    NSArray* array = @[@(notification.identifier)];
+    NSArray *array = @[@(notification.identifier)];
     
     [self.appDelegate.oAuthNetworkEngine markAdReadForNotificationIndexes: array
                                                                fromUserId: self.appDelegate.currentUser.uniqueId
@@ -255,10 +281,11 @@
                                                             
                                                             [self.tableView reloadData];
                                                             
-                                                            [[NSNotificationCenter defaultCenter] postNotificationName:kNotificationMarkedRead
-                                                                                                                object:self];
-                                                        } errorHandler: ^(id error) {
-                                                        }];
+                                                            [[NSNotificationCenter defaultCenter]  postNotificationName: kNotificationMarkedRead
+                                                                                                                 object: self];
+                                                        }
+                                                             errorHandler: ^(id error) {
+                                                             }];
 }
 
 
@@ -271,66 +298,60 @@
 }
 
 
-- (NSArray*) notifications
+- (NSArray *) notifications
 {
     return _notifications;
 }
 
 
-- (Video*) videoFromVideoId: (NSString*) videoId
+- (Video *) videoFromVideoId: (NSString *) videoId
 {
-    Video* video;
-    
-    NSEntityDescription* channelEntity = [NSEntityDescription entityForName: @"Video"
-                                                     inManagedObjectContext: self.appDelegate.mainManagedObjectContext];
+    NSError *error;
+    Video *video;
     
     NSFetchRequest *channelFetchRequest = [[NSFetchRequest alloc] init];
-    [channelFetchRequest setEntity: channelEntity];
     
-    NSPredicate *predicate = [NSPredicate predicateWithFormat: @"uniqueId == %@", videoId];
+    channelFetchRequest.entity = [NSEntityDescription entityForName: @"Video"
+                                                     inManagedObjectContext: self.appDelegate.mainManagedObjectContext];
+
+    channelFetchRequest.predicate = [NSPredicate predicateWithFormat: @"uniqueId == %@", videoId];
     
-    [channelFetchRequest setPredicate: predicate];
-    
-    NSError* error;
-    
-    NSArray *matchingChannelEntries = [self.appDelegate.mainManagedObjectContext executeFetchRequest: channelFetchRequest
-                                                                                               error: &error];
+    NSArray *matchingChannelEntries = [self.appDelegate.mainManagedObjectContext
+                                       executeFetchRequest: channelFetchRequest
+                                       error: &error];
     
     if (matchingChannelEntries.count > 0)
     {
         video = matchingChannelEntries[0];
-        
     }
     
     return video;
 }
 
 
-- (Channel*) channelFromChannelId: (NSString*) channelId
+- (Channel *) channelFromChannelId: (NSString *) channelId
 {
-    Channel* channel;
+    NSError *error;
+    Channel *channel;
+
+    NSFetchRequest *channelFetchRequest = [[NSFetchRequest alloc] init];
     
-    NSEntityDescription* channelEntity = [NSEntityDescription entityForName: @"Channel"
+    channelFetchRequest.entity = [NSEntityDescription entityForName: @"Channel"
                                                      inManagedObjectContext: self.appDelegate.mainManagedObjectContext];
     
-    NSFetchRequest *channelFetchRequest = [[NSFetchRequest alloc] init];
-    [channelFetchRequest setEntity: channelEntity];
+    channelFetchRequest.predicate = [NSPredicate predicateWithFormat: @"uniqueId == %@", channelId];
 
-    NSPredicate *predicate = [NSPredicate predicateWithFormat: @"uniqueId == %@", channelId];
-    
-    [channelFetchRequest setPredicate: predicate];
-    
-    NSError* error;
-    
-    NSArray *matchingChannelEntries = [self.appDelegate.mainManagedObjectContext executeFetchRequest: channelFetchRequest
-                                                                                               error: &error];
+    NSArray *matchingChannelEntries = [self.appDelegate.mainManagedObjectContext
+                                       executeFetchRequest: channelFetchRequest
+                                       error: &error];
     
     if (matchingChannelEntries.count > 0)
     {
-        channel = matchingChannelEntries[0];     
+        channel = matchingChannelEntries[0];
     }
     
     return channel;
 }
+
 
 @end

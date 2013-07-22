@@ -158,12 +158,6 @@ static NSDateFormatter *dateFormatter = nil;
 }
 
 
-- (NSString *) description
-{
-    return [NSString stringWithFormat: @"VideoInstance: uniqueId(%@), dateAdded (%@), title(%@)", self.uniqueId, self.dateAdded, self.title];
-}
-
-
 // Used for dates in the following format "2012-12-14T09:59:46.000Z"
 // 2013-01-30T15:43:18.806454+00:00
 + (NSDateFormatter *) DayOfDateFormatter

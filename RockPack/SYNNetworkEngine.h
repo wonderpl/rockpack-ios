@@ -97,10 +97,4 @@
 - (void) updatePlayerSourceWithCompletionHandler: (MKNKUserSuccessBlock) completionBlock
                                     errorHandler: (MKNKUserErrorBlock) errorBlock;
 
-#pragma mark - Push notification token update
-
-- (void) updateApplePushNotificationToken: (NSString *) token
-                    withCompletionHandler: (MKNKUserErrorBlock) completionBlock
-                             errorHandler: (MKNKUserSuccessBlock) errorBlock;
-
 @end

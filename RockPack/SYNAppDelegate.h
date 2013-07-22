@@ -34,12 +34,13 @@
 @property (nonatomic, readonly) NSManagedObjectContext *channelsManagedObjectContext;
 @property (nonatomic, readonly) NSManagedObjectContext *mainManagedObjectContext;
 @property (nonatomic, readonly) NSManagedObjectContext *searchManagedObjectContext;
-@property (nonatomic, readonly) SYNChannelManager* channelManager;;
+@property (nonatomic, readonly) SYNChannelManager* channelManager;
 @property (nonatomic, readonly) SYNOnBoardingPopoverQueueController* onBoardingQueue;
 @property (nonatomic, readonly) SYNVideoQueue* videoQueue;
 @property (nonatomic, readonly) SYNViewStackManager* viewStackManager;
 @property (nonatomic, strong) NSTimer* tokenExpiryTimer;
 @property (nonatomic, strong) SYNOAuth2Credential* currentOAuth2Credentials;
+@property (nonatomic, strong, readonly) NSString *apnsToken;
 @property (readonly, nonatomic, strong) NSString *userAgentString;
 @property (readonly, nonatomic, strong) SYNMainRegistry* mainRegistry;
 @property (readonly, nonatomic, strong) SYNNetworkEngine *networkEngine;

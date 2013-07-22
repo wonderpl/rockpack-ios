@@ -366,4 +366,9 @@ typedef enum
     return [NSString stringWithFormat: NSLocalizedString(@"Facebook\n\n%@", nil), errorMessage];
 }
 
+-(BOOL)hasOpenSession
+{
+    return [[FBSession activeSession] isOpen];
+}
+
 @end

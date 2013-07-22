@@ -220,4 +220,21 @@ typedef void (^SYNOAuth2RefreshCompletionBlock)(NSError *error);
                            completionHandler: (MKNKUserSuccessBlock) completionBlock
                                 errorHandler: (MKNKUserErrorBlock) errorBlock;
 
+- (void) friendsForUser:(User*)user
+      completionHandler: (MKNKUserSuccessBlock) completionBlock
+           errorHandler: (MKNKUserErrorBlock) errorBlock;
+
+
+#pragma mark - Connect To Services
+
+- (void) updateApplePushNotificationForUserId: (NSString *) userId
+                                        token: (NSString *) token
+                            completionHandler: (MKNKUserSuccessBlock) completionBlock
+                                 errorHandler: (MKNKUserErrorBlock) errorBlock;
+
+-(void)connectToFacebookAccoundForUserId:(NSString*) userId
+                                   token:(NSString*)token
+                       completionHandler: (MKNKUserSuccessBlock) completionBlock
+                            errorHandler: (MKNKUserErrorBlock) errorBlock;
+
 @end
