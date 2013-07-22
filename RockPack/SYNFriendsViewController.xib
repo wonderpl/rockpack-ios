@@ -39,29 +39,29 @@
 				<reference key="NSNextResponder"/>
 				<int key="NSvFlags">274</int>
 				<array class="NSMutableArray" key="NSSubviews">
-					<object class="IBUICollectionView" id="405470649">
+					<object class="IBUICollectionView" id="248772670">
 						<reference key="NSNextResponder" ref="191373211"/>
 						<int key="NSvFlags">274</int>
 						<array class="NSMutableArray" key="NSSubviews"/>
 						<string key="NSFrame">{{0, 92}, {362, 396}}</string>
 						<reference key="NSSuperview" ref="191373211"/>
 						<reference key="NSWindow"/>
-						<reference key="NSNextKeyView" ref="997120251"/>
+						<reference key="NSNextKeyView" ref="965722901"/>
 						<string key="NSReuseIdentifierKey">_NS:9</string>
 						<bool key="IBUIClipsSubviews">YES</bool>
 						<bool key="IBUIMultipleTouchEnabled">YES</bool>
 						<string key="targetRuntimeIdentifier">IBCocoaTouchFramework</string>
 						<float key="IBUIMinimumZoomScale">0.0</float>
 						<float key="IBUIMaximumZoomScale">0.0</float>
-						<object class="IBUICollectionViewFlowLayout" key="IBUICollectionViewLayout" id="953629739">
-							<reference key="IBUICollectionView" ref="405470649"/>
+						<object class="IBUICollectionViewFlowLayout" key="IBUICollectionViewLayout" id="854555716">
+							<reference key="IBUICollectionView" ref="248772670"/>
 							<string key="IBUIItemSize">{50, 50}</string>
 							<float key="IBUIMinimumLineSpacing">10</float>
 							<float key="IBUIMinimumInteritemSpacing">10</float>
 						</object>
 						<array key="IBUICells" id="0"/>
 					</object>
-					<object class="IBUIButton" id="308808987">
+					<object class="IBUIButton" id="986843779">
 						<reference key="NSNextResponder" ref="191373211"/>
 						<int key="NSvFlags">269</int>
 						<string key="NSFrame">{{36, 257}, {290, 54}}</string>
@@ -103,13 +103,13 @@
 							<int key="NSfFlags">16</int>
 						</object>
 					</object>
-					<object class="IBUILabel" id="997120251">
+					<object class="IBUILabel" id="965722901">
 						<reference key="NSNextResponder" ref="191373211"/>
 						<int key="NSvFlags">293</int>
 						<string key="NSFrame">{{84, 172}, {195, 85}}</string>
 						<reference key="NSSuperview" ref="191373211"/>
 						<reference key="NSWindow"/>
-						<reference key="NSNextKeyView" ref="308808987"/>
+						<reference key="NSNextKeyView" ref="986843779"/>
 						<string key="NSReuseIdentifierKey">_NS:9</string>
 						<bool key="IBUIOpaque">NO</bool>
 						<bool key="IBUIClipsSubviews">YES</bool>
@@ -128,7 +128,7 @@
 						</object>
 						<string key="IBUIShadowOffset">{0, 1}</string>
 						<int key="IBUIBaselineAdjustment">0</int>
-						<int key="IBUINumberOfLines">2</int>
+						<int key="IBUINumberOfLines">4</int>
 						<int key="IBUITextAlignment">1</int>
 						<object class="IBUIFontDescription" key="IBUIFontDescription">
 							<int key="type">1</int>
@@ -142,7 +142,7 @@
 						<bool key="IBUIAdjustsFontSizeToFit">NO</bool>
 						<double key="preferredMaxLayoutWidth">195</double>
 					</object>
-					<object class="IBUIActivityIndicatorView" id="567033572">
+					<object class="IBUIActivityIndicatorView" id="894637129">
 						<reference key="NSNextResponder" ref="191373211"/>
 						<int key="NSvFlags">292</int>
 						<string key="NSFrame">{{171, 166}, {20, 20}}</string>
@@ -158,7 +158,7 @@
 				<string key="NSFrameSize">{362, 568}</string>
 				<reference key="NSSuperview"/>
 				<reference key="NSWindow"/>
-				<reference key="NSNextKeyView" ref="405470649"/>
+				<reference key="NSNextKeyView" ref="248772670"/>
 				<object class="NSColor" key="IBUIBackgroundColor">
 					<int key="NSColorSpace">3</int>
 					<bytes key="NSWhite">MQA</bytes>
@@ -187,7 +187,7 @@
 					<object class="IBCocoaTouchOutletConnection" key="connection">
 						<string key="label">facebookLoginButton</string>
 						<reference key="source" ref="372490531"/>
-						<reference key="destination" ref="308808987"/>
+						<reference key="destination" ref="986843779"/>
 					</object>
 					<int key="connectionID">9</int>
 				</object>
@@ -195,7 +195,7 @@
 					<object class="IBCocoaTouchOutletConnection" key="connection">
 						<string key="label">preLoginLabel</string>
 						<reference key="source" ref="372490531"/>
-						<reference key="destination" ref="997120251"/>
+						<reference key="destination" ref="965722901"/>
 					</object>
 					<int key="connectionID">10</int>
 				</object>
@@ -203,7 +203,7 @@
 					<object class="IBCocoaTouchOutletConnection" key="connection">
 						<string key="label">friendsCollectionView</string>
 						<reference key="source" ref="372490531"/>
-						<reference key="destination" ref="405470649"/>
+						<reference key="destination" ref="248772670"/>
 					</object>
 					<int key="connectionID">11</int>
 				</object>
@@ -211,14 +211,14 @@
 					<object class="IBCocoaTouchOutletConnection" key="connection">
 						<string key="label">activityIndicator</string>
 						<reference key="source" ref="372490531"/>
-						<reference key="destination" ref="567033572"/>
+						<reference key="destination" ref="894637129"/>
 					</object>
 					<int key="connectionID">15</int>
 				</object>
 				<object class="IBConnectionRecord">
 					<object class="IBCocoaTouchEventConnection" key="connection">
 						<string key="label">facebookLoginPressed:</string>
-						<reference key="source" ref="308808987"/>
+						<reference key="source" ref="986843779"/>
 						<reference key="destination" ref="372490531"/>
 						<int key="IBEventType">7</int>
 					</object>
@@ -227,7 +227,7 @@
 				<object class="IBConnectionRecord">
 					<object class="IBCocoaTouchOutletConnection" key="connection">
 						<string key="label">dataSource</string>
-						<reference key="source" ref="405470649"/>
+						<reference key="source" ref="248772670"/>
 						<reference key="destination" ref="372490531"/>
 					</object>
 					<int key="connectionID">12</int>
@@ -235,7 +235,7 @@
 				<object class="IBConnectionRecord">
 					<object class="IBCocoaTouchOutletConnection" key="connection">
 						<string key="label">delegate</string>
-						<reference key="source" ref="405470649"/>
+						<reference key="source" ref="248772670"/>
 						<reference key="destination" ref="372490531"/>
 					</object>
 					<int key="connectionID">13</int>
@@ -253,10 +253,10 @@
 						<int key="objectID">1</int>
 						<reference key="object" ref="191373211"/>
 						<array class="NSMutableArray" key="children">
-							<reference ref="308808987"/>
-							<reference ref="997120251"/>
-							<reference ref="405470649"/>
-							<reference ref="567033572"/>
+							<reference ref="986843779"/>
+							<reference ref="965722901"/>
+							<reference ref="248772670"/>
+							<reference ref="894637129"/>
 						</array>
 						<reference key="parent" ref="0"/>
 					</object>
@@ -273,32 +273,32 @@
 					</object>
 					<object class="IBObjectRecord">
 						<int key="objectID">4</int>
-						<reference key="object" ref="308808987"/>
+						<reference key="object" ref="986843779"/>
 						<reference key="parent" ref="191373211"/>
 						<string key="objectName">Button Facebook</string>
 					</object>
 					<object class="IBObjectRecord">
 						<int key="objectID">6</int>
-						<reference key="object" ref="997120251"/>
+						<reference key="object" ref="965722901"/>
 						<reference key="parent" ref="191373211"/>
 						<string key="objectName">We ll send...</string>
 					</object>
 					<object class="IBObjectRecord">
 						<int key="objectID">7</int>
-						<reference key="object" ref="405470649"/>
+						<reference key="object" ref="248772670"/>
 						<array class="NSMutableArray" key="children">
-							<reference ref="953629739"/>
+							<reference ref="854555716"/>
 						</array>
 						<reference key="parent" ref="191373211"/>
 					</object>
 					<object class="IBObjectRecord">
 						<int key="objectID">8</int>
-						<reference key="object" ref="953629739"/>
-						<reference key="parent" ref="405470649"/>
+						<reference key="object" ref="854555716"/>
+						<reference key="parent" ref="248772670"/>
 					</object>
 					<object class="IBObjectRecord">
 						<int key="objectID">14</int>
-						<reference key="object" ref="567033572"/>
+						<reference key="object" ref="894637129"/>
 						<reference key="parent" ref="191373211"/>
 					</object>
 				</array>

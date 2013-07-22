@@ -13,6 +13,7 @@
 #import "SYNFriendThumbnailCell.h"
 #import "UIImageView+WebCache.h"
 #import "SYNAppDelegate.h"
+#import <FacebookSDK/FacebookSDK.h>
 #import "SYNOAuthNetworkEngine.h"
 
 @interface SYNFriendsViewController ()
@@ -29,6 +30,8 @@
 - (void)viewDidLoad
 {
     [super viewDidLoad];
+    
+    appDelegate = (SYNAppDelegate*)[[UIApplication sharedApplication] delegate];
     
     // Register Cells
     UINib *thumbnailCellNib = [UINib nibWithNibName: @"SYNFriendThumbnailCell"
@@ -50,16 +53,7 @@
         
         // load data
         
-        [self.activityIndicator startAnimating];
-        
-        [appDelegate.oAuthNetworkEngine friendsForUser:appDelegate.currentUser completionHandler:^(id dictionary) {
-            
-            [self.activityIndicator stopAnimating];
-            
-        } errorHandler:^(id dictionary) {
-            
-            [self.activityIndicator stopAnimating];
-        }];
+        [self fetchAndDisplayFriends];
     }
     else
     {
@@ -76,15 +70,58 @@
     
 }
 
+-(void)fetchAndDisplayFriends
+{
+    [self.activityIndicator startAnimating];
+    
+    [appDelegate.oAuthNetworkEngine friendsForUser:appDelegate.currentUser completionHandler:^(id dictionary) {
+        
+        [self.activityIndicator stopAnimating];
+        
+    } errorHandler:^(id dictionary) {
+        
+        [self.activityIndicator stopAnimating];
+    }];
+}
+
 -(IBAction)facebookLoginPressed:(id)sender
 {
-    [appDelegate.oAuthNetworkEngine connectToFacebookAccoundForUserId:appDelegate.currentUser.uniqueId
-                                                                token:@""
-                                                    completionHandler:^(id response) {
-                                                        
-                                                    } errorHandler:^(id response) {
-                                                        
-                                                    }];
+    self.activityIndicator.center = self.facebookLoginButton.center;
+    
+    [self.activityIndicator startAnimating];
+    
+    self.facebookLoginButton.hidden = YES;
+    
+    self.preLoginLabel.text = @"Logging In";
+    
+    SYNFacebookManager* facebookManager = [SYNFacebookManager sharedFBManager];
+    
+    [facebookManager loginOnSuccess: ^(NSDictionary<FBGraphUser> *dictionary) {
+        
+        FBAccessTokenData* accessTokenData = [[FBSession activeSession] accessTokenData];
+        
+        
+        [appDelegate.oAuthNetworkEngine connectToFacebookAccoundForUserId:appDelegate.currentUser.uniqueId
+                                                                    token:accessTokenData.accessToken
+                                                        completionHandler:^(id response) {
+                                                            
+                                                            [self.activityIndicator stopAnimating];
+                                                            
+                                                            [self fetchAndDisplayFriends];
+                                                            
+                                                        } errorHandler:^(id response) {
+                                                            
+                                                            [self.activityIndicator stopAnimating];
+                                                            
+                                                            self.facebookLoginButton.hidden = NO;
+                                                            
+                                                            self.preLoginLabel.text = @"We could not Log you in becuase this FB account seems to be associated with a different User.";
+                                                        }];
+        
+    } onFailure: ^(NSString* errorString) {
+         
+     }];
+    
 }
 
 #pragma mark - UICollectionView Delegate
