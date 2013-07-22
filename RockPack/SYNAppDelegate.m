@@ -923,47 +923,102 @@
 }
 
 
+// rockpack://USERID/
+// (test) http://dev.rockpack.com/paulegan/deeplinktest/user.html
+// rockpack://USERID/channels/CHANNELID/
+// (test) http://dev.rockpack.com/paulegan/deeplinktest/channel.html
+// rockpack://USERID/channels/CHANNELID/videos/VIDEOID/
+// (test) http://dev.rockpack.com/paulegan/deeplinktest/video.html
+
 - (BOOL)  application: (UIApplication *) application
               openURL: (NSURL *) url
     sourceApplication: (NSString *) sourceApplication
            annotation: (id) annotation
 {
-    // To check for a deep link, first parse the incoming URL
-    // to look for a target_url parameter
-    NSString *query = [url fragment];
-    
-    if (!query)
+    // Is it one of our own custom 'rockpack' URL schemes
+    if ([url.scheme isEqualToString: @"rockpack"])
     {
-        query = [url query];
-    }
-    
-    NSDictionary *params = [self parseURLParams: query];
-    
-    // Check if target URL exists
-    NSString *targetURLString = [params valueForKey: @"target_url"];
-    
-    if (targetURLString)
-    {
-        NSURL *targetURL = [NSURL URLWithString: targetURLString];
-        NSString *query2 = [targetURL query];
-        NSDictionary *targetParams = [self parseURLParams: query2];
-        NSString *deeplink = [targetParams valueForKey: @"deeplink"];
+        BOOL success = FALSE;
         
-        // Check for the 'deeplink' parameter to check if this is one of
-        // our incoming news feed link
-        if (deeplink)
+        NSString *userId = url.host;
+        NSArray *pathComponents = url.pathComponents;
+        
+        switch (pathComponents.count)
         {
-            UIAlertView *alert = [[UIAlertView alloc] initWithTitle: @"News"
-                                                            message: [NSString stringWithFormat: @"Incoming: %@", deeplink]
-                                                           delegate: nil
-                                                  cancelButtonTitle: @"OK"
-                                                  otherButtonTitles: nil, nil];
-            [alert show];
+            // User profile
+            case 1:
+            {
+                success = TRUE;
+                break;
+            }
+            
+            // Channel
+            case 3:
+            {
+                NSString *channelId = pathComponents[2];
+                success = TRUE;
+                break;
+            }
+               
+            // Video Instance    
+            case 5:
+            {
+                NSString *channelId = pathComponents[2];
+                NSString *videoId = pathComponents[4];
+                success = TRUE;
+                break;
+            }
+                
+            default:
+                // Not sure what this is so indicate failure
+                break;
         }
+
+        return success;
     }
-    
-    return [FBSession.activeSession
-            handleOpenURL: url];
+    else if ([url.scheme hasPrefix: @"fb"])
+    {      
+        // It appears to be a Facebook URL scheme, so parse the incoming URL to look for a target_url parameter
+        NSString *query = [url fragment];
+        
+        if (!query)
+        {
+            query = [url query];
+        }
+        
+        NSDictionary *params = [self parseURLParams: query];
+        
+        // Check if target URL exists
+        NSString *targetURLString = [params valueForKey: @"target_url"];
+        
+        if (targetURLString)
+        {
+            NSURL *targetURL = [NSURL URLWithString: targetURLString];
+            NSString *query2 = [targetURL query];
+            NSDictionary *targetParams = [self parseURLParams: query2];
+            NSString *deeplink = [targetParams valueForKey: @"deeplink"];
+            
+            // Check for the 'deeplink' parameter to check if this is one of
+            // our incoming news feed link
+            if (deeplink)
+            {
+                UIAlertView *alert = [[UIAlertView alloc] initWithTitle: @"News"
+                                                                message: [NSString stringWithFormat: @"Incoming: %@", deeplink]
+                                                               delegate: nil
+                                                      cancelButtonTitle: @"OK"
+                                                      otherButtonTitles: nil, nil];
+                [alert show];
+            }
+        }
+        
+        return [FBSession.activeSession
+                handleOpenURL: url];
+    }
+    else
+    {
+        // No idea what this scheme does so indicated failure
+        return NO;
+    }
 }
 
 
