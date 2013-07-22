@@ -999,7 +999,16 @@
             {
                 NSString *channelId = pathComponents[2];
                 NSString *videoId = pathComponents[4];
-                success = TRUE;
+                NSString *resourceURL = [NSString stringWithFormat: @"http://%@/ws/%@/channels/%@/", hostName, userId, channelId];
+                Channel* channel = [Channel instanceFromDictionary: @{@"id" : channelId, @"resource_url" : resourceURL}
+                                         usingManagedObjectContext: self.mainManagedObjectContext];
+                
+                if (channel)
+                {
+                    [self.viewStackManager viewChannelDetails: channel
+                                               withAutoplayId: videoId];
+                    success = TRUE;
+                }
                 break;
             }
                 

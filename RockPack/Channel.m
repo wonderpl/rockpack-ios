@@ -111,8 +111,7 @@
     
     [instance setAttributesFromDictionary: dictionary
                       ignoringObjectTypes: ignoringObjects];
-    
-    
+
     return instance;
 }
 
