@@ -1106,8 +1106,6 @@
 {
     NSLog(@"Failed to get token, error: %@", error);
     self.apnsToken = nil;
-#warning "Remove this"
-    self.apnsToken = @"CompletelyFakeToken";
 }
 
 
