@@ -104,8 +104,8 @@
     self.thumbnailURL = [dictionary objectForKey: @"avatar_thumbnail_url"
                                      withDefault: @"http://localhost"];
     
-    self.displayName = [dictionary upperCaseStringForKey: @"display_name"
-                                             withDefault: @""];
+    self.displayName = [dictionary objectForKey: @"display_name"
+                                    withDefault: @""];
     
     self.username = [dictionary objectForKey: @"username"
                                  withDefault: @""];

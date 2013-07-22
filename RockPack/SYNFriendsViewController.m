@@ -33,6 +33,8 @@
     
     appDelegate = (SYNAppDelegate*)[[UIApplication sharedApplication] delegate];
     
+    self.friends = [NSArray array];
+    
     // Register Cells
     UINib *thumbnailCellNib = [UINib nibWithNibName: @"SYNFriendThumbnailCell"
                                              bundle: nil];
@@ -51,21 +53,17 @@
         self.friendsCollectionView.hidden = NO;
         self.activityIndicator.hidden = NO;
         
-        // load data
-        
         [self fetchAndDisplayFriends];
     }
     else
     {
+        
         self.facebookLoginButton.hidden = NO;
         self.preLoginLabel.hidden = NO;
         self.friendsCollectionView.hidden = YES;
         self.activityIndicator.hidden = YES;
         
-        
     }
-    
-    
     
     
 }
@@ -76,7 +74,33 @@
     
     [appDelegate.oAuthNetworkEngine friendsForUser:appDelegate.currentUser completionHandler:^(id dictionary) {
         
+        NSDictionary* usersDictionary = dictionary[@"users"];
+        if(!usersDictionary)
+            return;
+        
+        NSArray* itemsDictionary = usersDictionary[@"items"];
+        if(!itemsDictionary)
+            return;
+        
+        NSMutableArray* friendsMutableArray = [NSMutableArray arrayWithCapacity:itemsDictionary.count];
+        for (NSDictionary* itemDictionary in itemsDictionary)
+        {
+            ChannelOwner* channelOwner = [ChannelOwner instanceFromDictionary:itemDictionary
+                                                    usingManagedObjectContext:appDelegate.mainManagedObjectContext
+                                                          ignoringObjectTypes:kIgnoreChannelObjects];
+            
+            if(!channelOwner)
+                return;
+            
+            [friendsMutableArray addObject:channelOwner];
+            
+        }
+        
+        self.friends = [NSArray arrayWithArray:friendsMutableArray];
+        
         [self.activityIndicator stopAnimating];
+        
+        [self.friendsCollectionView reloadData];
         
     } errorHandler:^(id dictionary) {
         
@@ -106,6 +130,10 @@
                                                         completionHandler:^(id response) {
                                                             
                                                             [self.activityIndicator stopAnimating];
+                                                            
+                                                            self.friendsCollectionView.hidden = NO;
+                                                            self.preLoginLabel.hidden = YES;
+                                                            self.facebookLoginButton.hidden = YES;
                                                             
                                                             [self fetchAndDisplayFriends];
                                                             
