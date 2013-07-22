@@ -973,7 +973,16 @@
             // User profile
             case 1:
             {
-                success = TRUE;
+                if (userId)
+                {
+                    ChannelOwner *channelOwner = [ChannelOwner instanceFromDictionary: @{@"id" : userId}
+                                                            usingManagedObjectContext: self.mainManagedObjectContext
+                                                                  ignoringObjectTypes: kIgnoreChannelObjects];
+                    
+                    [self.viewStackManager viewProfileDetails: channelOwner];
+                    success = TRUE;
+                }
+
                 break;
             }
             
