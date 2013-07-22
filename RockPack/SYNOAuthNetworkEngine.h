@@ -220,6 +220,10 @@ typedef void (^SYNOAuth2RefreshCompletionBlock)(NSError *error);
                            completionHandler: (MKNKUserSuccessBlock) completionBlock
                                 errorHandler: (MKNKUserErrorBlock) errorBlock;
 
+- (void) friendsForUser:(User*)user
+      completionHandler: (MKNKUserSuccessBlock) completionBlock
+           errorHandler: (MKNKUserErrorBlock) errorBlock;
+
 
 #pragma mark - Push notification token update
 

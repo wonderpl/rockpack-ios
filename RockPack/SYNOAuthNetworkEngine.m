@@ -1481,5 +1481,33 @@
     }
 }
 
-
+- (void) friendsForUser: (User*)user
+      completionHandler: (MKNKUserSuccessBlock) completionBlock
+           errorHandler: (MKNKUserErrorBlock) errorBlock
+{
+    
+    if(!user)
+        return;
+    
+    NSDictionary *apiSubstitutionDictionary = @{@"USERID" : user.uniqueId};
+    
+    NSString *apiString = [kAPIFriends stringByReplacingOccurrencesOfStrings: apiSubstitutionDictionary];
+    
+    
+    
+    NSDictionary *params = @{@"DEVICE_TYPE": @"ios"};
+    
+    SYNNetworkOperationJsonObject *networkOperation = (SYNNetworkOperationJsonObject*)[self operationWithPath: apiString
+                                                                                                       params: params
+                                                                                                   httpMethod: @"GET"
+                                                                                                          ssl: YES];
+    
+    [self addCommonHandlerToNetworkOperation: networkOperation
+                           completionHandler: completionBlock
+                                errorHandler: errorBlock];
+    
+    [self enqueueSignedOperation: networkOperation];
+    
+    
+}
 @end
