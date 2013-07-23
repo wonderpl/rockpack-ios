@@ -246,6 +246,11 @@
 
 - (void) displaySideNavigatorFromPushNotification
 {
+    if(IS_IPHONE)
+    {
+        self.sideNavigatorController.state = SideNavigationStateHalf;
+    }
+    
     [self.sideNavigatorController displayFromPushNotification];
 }
 
@@ -310,7 +315,7 @@
     
     for (UIViewController *viewControllerOnStack in self.navigationController.viewControllers)
     {
-        if ([viewControllerOnStack isKindOfClass: NSClassFromString(classString)])
+        if ([viewControllerOnStack isKindOfClass: NSClassFromString(classString)] && viewControllerOnStack != self.navigationController.topViewController)
         {
             lastControllerOfClass = viewControllerOnStack;
         }
