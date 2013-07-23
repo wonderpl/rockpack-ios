@@ -29,7 +29,7 @@ static char* association_key = "SYNFriendThumbnailCell to Friend";
 @property (nonatomic) BOOL onRockpackFilterOn;
 @property (nonatomic, strong) NSArray* displayFriends;
 @property (nonatomic, strong) SYNInviteFriendView* currentInviteFriendView;
-@property (nonatomic, strong) Friend* currentlySelectedFriend;
+@property (nonatomic, weak) Friend* currentlySelectedFriend;
 
 @end
 
@@ -134,6 +134,11 @@ static char* association_key = "SYNFriendThumbnailCell to Friend";
             return;
         
         NSInteger friendsCount = itemsDictionary.count;
+        
+        [self.allFriendsButton setTitle:[NSString stringWithFormat:@"ALL FRIENDS (%i)", friendsCount] forState:UIControlStateNormal];
+        [self.allFriendsButton setTitle:[NSString stringWithFormat:@"ALL FRIENDS (%i)", friendsCount] forState:UIControlStateHighlighted];
+        [self.allFriendsButton setTitle:[NSString stringWithFormat:@"ALL FRIENDS (%i)", friendsCount] forState:UIControlStateSelected];
+        
         NSMutableArray* iOSFriendsMutableArray = [NSMutableArray arrayWithCapacity:friendsCount];
         
         for (NSDictionary* itemDictionary in itemsDictionary)
@@ -146,9 +151,14 @@ static char* association_key = "SYNFriendThumbnailCell to Friend";
             
             [iOSFriendsMutableArray addObject:friend];
             
-            
+            if(!friend.isOnRockpack)
+                friendsCount--;
             
         }
+        
+        [self.onRockpackButton setTitle:[NSString stringWithFormat:@"ON ROCKPACK (%i)", friendsCount] forState:UIControlStateNormal];
+        [self.onRockpackButton setTitle:[NSString stringWithFormat:@"ON ROCKPACK (%i)", friendsCount] forState:UIControlStateHighlighted];
+        [self.onRockpackButton setTitle:[NSString stringWithFormat:@"ON ROCKPACK (%i)", friendsCount] forState:UIControlStateSelected];
         
         self.iOSFriends = [NSArray arrayWithArray:iOSFriendsMutableArray];
         self.displayFriends = self.iOSFriends;
@@ -315,6 +325,9 @@ static char* association_key = "SYNFriendThumbnailCell to Friend";
     
     self.currentlySelectedFriend = objc_getAssociatedObject(cellClicked, association_key);
     
+    if(self.currentlySelectedFriend.isOnRockpack)
+        return;
+    
     // create view
     NSString* firstName = [self.currentlySelectedFriend.displayName componentsSeparatedByString:@" "][0];
     
@@ -324,7 +337,6 @@ static char* association_key = "SYNFriendThumbnailCell to Friend";
     
     self.currentInviteFriendView.profileImageView.image = cellClicked.imageView.image;
     self.currentInviteFriendView.titleLabel.text = [NSString stringWithFormat:@"%@ IS NOT ON ROCKPACK YET", firstName];
-    
     
     [appDelegate.viewStackManager presentPopoverView:self.currentInviteFriendView];
     

@@ -372,11 +372,13 @@ typedef enum
     if(!friend)
         return;
     
+    
+    
     FBFrictionlessRecipientCache *friendCache = [[FBFrictionlessRecipientCache alloc] init];
     [friendCache prefetchAndCacheForSession:nil];
     
     NSDictionary* params = nil;
-    if(![friend.externalUID isEqualToString:@""])
+    if(friend.externalUID && ![friend.externalUID isEqualToString:@""])
         params = @{@"to":friend.externalUID};
     else
         params = nil;
