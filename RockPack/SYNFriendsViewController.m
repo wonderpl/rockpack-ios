@@ -17,6 +17,7 @@
 #import "SYNOAuthNetworkEngine.h"
 #import "Friend.h"
 #import "SYNInviteFriendView.h"
+#import "SYNFacebookManager.h"
 #import <objc/runtime.h>
 
 static char* association_key = "SYNFriendThumbnailCell to Friend";
@@ -28,6 +29,8 @@ static char* association_key = "SYNFriendThumbnailCell to Friend";
 @property (nonatomic) BOOL onRockpackFilterOn;
 @property (nonatomic, strong) NSArray* displayFriends;
 @property (nonatomic, strong) SYNInviteFriendView* currentInviteFriendView;
+@property (nonatomic, strong) Friend* currentlySelectedFriend;
+
 @end
 
 @implementation SYNFriendsViewController
@@ -310,10 +313,10 @@ static char* association_key = "SYNFriendThumbnailCell to Friend";
     
     SYNFriendThumbnailCell* cellClicked = (SYNFriendThumbnailCell*)[collectionView cellForItemAtIndexPath:indexPath];
     
-    Friend* friend = objc_getAssociatedObject(cellClicked, association_key);
+    self.currentlySelectedFriend = objc_getAssociatedObject(cellClicked, association_key);
     
     // create view
-    NSString* firstName = [friend.displayName componentsSeparatedByString:@" "][0];
+    NSString* firstName = [self.currentlySelectedFriend.displayName componentsSeparatedByString:@" "][0];
     
     self.currentInviteFriendView = (SYNInviteFriendView*)[[[NSBundle mainBundle] loadNibNamed:@"SYNInviteFriendView"
                                                                                         owner:self
@@ -329,6 +332,7 @@ static char* association_key = "SYNFriendThumbnailCell to Friend";
 
 -(IBAction)inviteButtonPressed:(id)sender
 {
+    [[SYNFacebookManager sharedFBManager] sendAppRequestToFriend:self.currentlySelectedFriend];
     
 }
 
