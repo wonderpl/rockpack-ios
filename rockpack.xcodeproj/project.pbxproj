@@ -1033,6 +1033,13 @@
 		BE7D033D179E94D6008053DC /* ButtonInviteFriendHighlighted@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = BE7D0335179E94D4008053DC /* ButtonInviteFriendHighlighted@2x.png */; };
 		BE7D033E179E94D6008053DC /* ButtonInviteFriendHighlighted@2x~iphone.png in Resources */ = {isa = PBXBuildFile; fileRef = BE7D0336179E94D5008053DC /* ButtonInviteFriendHighlighted@2x~iphone.png */; };
 		BE7D033F179E94D6008053DC /* ButtonInviteFriendHighlighted~iphone.png in Resources */ = {isa = PBXBuildFile; fileRef = BE7D0337179E94D6008053DC /* ButtonInviteFriendHighlighted~iphone.png */; };
+		BE7D0343179E9E5D008053DC /* SYNInviteFriendView.m in Sources */ = {isa = PBXBuildFile; fileRef = BE7D0342179E9E5B008053DC /* SYNInviteFriendView.m */; };
+		BE7D0345179E9EA0008053DC /* SYNInviteFriendView.xib in Resources */ = {isa = PBXBuildFile; fileRef = BE7D0344179E9E9D008053DC /* SYNInviteFriendView.xib */; };
+		BE7D034A179EA04C008053DC /* ButtonInviteDefault@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = BE7D0346179EA04A008053DC /* ButtonInviteDefault@2x.png */; };
+		BE7D034C179EA04C008053DC /* ButtonInviteHighlighted.png in Resources */ = {isa = PBXBuildFile; fileRef = BE7D0348179EA04B008053DC /* ButtonInviteHighlighted.png */; };
+		BE7D034D179EA04C008053DC /* ButtonInviteHighlighted@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = BE7D0349179EA04C008053DC /* ButtonInviteHighlighted@2x.png */; };
+		BE7D034F179EA068008053DC /* ButtonInviteDefault.png in Resources */ = {isa = PBXBuildFile; fileRef = BE7D034E179EA068008053DC /* ButtonInviteDefault.png */; };
+		BE7D0351179EA07B008053DC /* ButtonInviteFriendDefault.png in Resources */ = {isa = PBXBuildFile; fileRef = BE7D0350179EA07A008053DC /* ButtonInviteFriendDefault.png */; };
 		BE7D342E170DD8C90085AB81 /* SYNChannelFooterMoreView.xib in Resources */ = {isa = PBXBuildFile; fileRef = BE7D342D170DD8C90085AB81 /* SYNChannelFooterMoreView.xib */; };
 		BE7D3431170DDB310085AB81 /* SYNChannelFooterMoreView.m in Sources */ = {isa = PBXBuildFile; fileRef = BE7D3430170DDB310085AB81 /* SYNChannelFooterMoreView.m */; };
 		BE7D34CE1714434D0085AB81 /* SYNDeviceManager.m in Sources */ = {isa = PBXBuildFile; fileRef = BE7D34CD1714434D0085AB81 /* SYNDeviceManager.m */; };
@@ -2389,6 +2396,14 @@
 		BE7D0335179E94D4008053DC /* ButtonInviteFriendHighlighted@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = "ButtonInviteFriendHighlighted@2x.png"; path = "Assets/Images/ButtonInviteFriendHighlighted@2x.png"; sourceTree = "<group>"; };
 		BE7D0336179E94D5008053DC /* ButtonInviteFriendHighlighted@2x~iphone.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = "ButtonInviteFriendHighlighted@2x~iphone.png"; path = "Assets/Images/ButtonInviteFriendHighlighted@2x~iphone.png"; sourceTree = "<group>"; };
 		BE7D0337179E94D6008053DC /* ButtonInviteFriendHighlighted~iphone.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = "ButtonInviteFriendHighlighted~iphone.png"; path = "Assets/Images/ButtonInviteFriendHighlighted~iphone.png"; sourceTree = "<group>"; };
+		BE7D0341179E9E59008053DC /* SYNInviteFriendView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SYNInviteFriendView.h; sourceTree = "<group>"; };
+		BE7D0342179E9E5B008053DC /* SYNInviteFriendView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SYNInviteFriendView.m; sourceTree = "<group>"; };
+		BE7D0344179E9E9D008053DC /* SYNInviteFriendView.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = SYNInviteFriendView.xib; sourceTree = "<group>"; };
+		BE7D0346179EA04A008053DC /* ButtonInviteDefault@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = "ButtonInviteDefault@2x.png"; path = "Assets/Images/ButtonInviteDefault@2x.png"; sourceTree = "<group>"; };
+		BE7D0348179EA04B008053DC /* ButtonInviteHighlighted.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = ButtonInviteHighlighted.png; path = Assets/Images/ButtonInviteHighlighted.png; sourceTree = "<group>"; };
+		BE7D0349179EA04C008053DC /* ButtonInviteHighlighted@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = "ButtonInviteHighlighted@2x.png"; path = "Assets/Images/ButtonInviteHighlighted@2x.png"; sourceTree = "<group>"; };
+		BE7D034E179EA068008053DC /* ButtonInviteDefault.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = ButtonInviteDefault.png; path = Assets/Images/ButtonInviteDefault.png; sourceTree = "<group>"; };
+		BE7D0350179EA07A008053DC /* ButtonInviteFriendDefault.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = ButtonInviteFriendDefault.png; path = Assets/Images/ButtonInviteFriendDefault.png; sourceTree = "<group>"; };
 		BE7D342D170DD8C90085AB81 /* SYNChannelFooterMoreView.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = SYNChannelFooterMoreView.xib; sourceTree = "<group>"; };
 		BE7D342F170DDB310085AB81 /* SYNChannelFooterMoreView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SYNChannelFooterMoreView.h; sourceTree = "<group>"; };
 		BE7D3430170DDB310085AB81 /* SYNChannelFooterMoreView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SYNChannelFooterMoreView.m; sourceTree = "<group>"; };
@@ -4890,6 +4905,9 @@
 				BE7D0303179D5A40008053DC /* SYNFriendThumbnailCell.h */,
 				BE7D0304179D5A41008053DC /* SYNFriendThumbnailCell.m */,
 				BE7D0306179D5ACE008053DC /* SYNFriendThumbnailCell.xib */,
+				BE7D0341179E9E59008053DC /* SYNInviteFriendView.h */,
+				BE7D0342179E9E5B008053DC /* SYNInviteFriendView.m */,
+				BE7D0344179E9E9D008053DC /* SYNInviteFriendView.xib */,
 			);
 			name = Friends;
 			sourceTree = "<group>";
@@ -4899,6 +4917,7 @@
 			children = (
 				BE7D0310179E85A6008053DC /* ButtonFacebookFriendsDefault.png */,
 				BE7D0311179E85A6008053DC /* ButtonFacebookFriendsDefault@2x.png */,
+				BE7D0350179EA07A008053DC /* ButtonInviteFriendDefault.png */,
 				BE7D0312179E85A6008053DC /* ButtonFacebookFriendsHighlighted.png */,
 				BE7D0313179E85A6008053DC /* ButtonFacebookFriendsHighlighted@2x.png */,
 				BE7D0318179E8693008053DC /* ButtonFacebookFriendsDefault@2x~iphone.png */,
@@ -4913,7 +4932,6 @@
 				BE7D0327179E87D3008053DC /* TabFriendsHighlighted@2x.png */,
 				BE7D0328179E87D3008053DC /* TabFriendsSelected.png */,
 				BE7D0329179E87D3008053DC /* TabFriendsSelected@2x.png */,
-				BE7D0330179E94D3008053DC /* ButtonInviteFriendDefault.png */,
 				BE7D0331179E94D3008053DC /* ButtonInviteFriendDefault@2x.png */,
 				BE7D0332179E94D3008053DC /* ButtonInviteFriendDefault@2x~iphone.png */,
 				BE7D0333179E94D4008053DC /* ButtonInviteFriendDefault~iphone.png */,
@@ -4921,6 +4939,10 @@
 				BE7D0335179E94D4008053DC /* ButtonInviteFriendHighlighted@2x.png */,
 				BE7D0336179E94D5008053DC /* ButtonInviteFriendHighlighted@2x~iphone.png */,
 				BE7D0337179E94D6008053DC /* ButtonInviteFriendHighlighted~iphone.png */,
+				BE7D0346179EA04A008053DC /* ButtonInviteDefault@2x.png */,
+				BE7D0348179EA04B008053DC /* ButtonInviteHighlighted.png */,
+				BE7D0349179EA04C008053DC /* ButtonInviteHighlighted@2x.png */,
+				BE7D034E179EA068008053DC /* ButtonInviteDefault.png */,
 			);
 			name = Friends;
 			sourceTree = "<group>";
@@ -6160,6 +6182,12 @@
 				BE7D033D179E94D6008053DC /* ButtonInviteFriendHighlighted@2x.png in Resources */,
 				BE7D033E179E94D6008053DC /* ButtonInviteFriendHighlighted@2x~iphone.png in Resources */,
 				BE7D033F179E94D6008053DC /* ButtonInviteFriendHighlighted~iphone.png in Resources */,
+				BE7D0345179E9EA0008053DC /* SYNInviteFriendView.xib in Resources */,
+				BE7D034A179EA04C008053DC /* ButtonInviteDefault@2x.png in Resources */,
+				BE7D034C179EA04C008053DC /* ButtonInviteHighlighted.png in Resources */,
+				BE7D034D179EA04C008053DC /* ButtonInviteHighlighted@2x.png in Resources */,
+				BE7D034F179EA068008053DC /* ButtonInviteDefault.png in Resources */,
+				BE7D0351179EA07B008053DC /* ButtonInviteFriendDefault.png in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -6460,6 +6488,7 @@
 				0199E486179D6ED900448C95 /* NSObject+AutoDescribe.m in Sources */,
 				BE7D030A179D8EEC008053DC /* Friend.m in Sources */,
 				BE7D030D179D8EFB008053DC /* _Friend.m in Sources */,
+				BE7D0343179E9E5D008053DC /* SYNInviteFriendView.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

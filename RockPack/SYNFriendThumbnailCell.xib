@@ -32,23 +32,23 @@
 				<string key="IBProxiedObjectIdentifier">IBFirstResponder</string>
 				<string key="targetRuntimeIdentifier">IBIPadFramework</string>
 			</object>
-			<object class="IBUICollectionViewCell" id="751298364">
+			<object class="IBUICollectionViewCell" id="847634419">
 				<reference key="NSNextResponder"/>
 				<int key="NSvFlags">268</int>
 				<array class="NSMutableArray" key="NSSubviews">
-					<object class="IBUIView" id="158600803">
-						<reference key="NSNextResponder" ref="751298364"/>
+					<object class="IBUIView" id="625360982">
+						<reference key="NSNextResponder" ref="847634419"/>
 						<int key="NSvFlags">256</int>
 						<array class="NSMutableArray" key="NSSubviews">
-							<object class="IBUIImageView" id="997310000">
-								<reference key="NSNextResponder" ref="158600803"/>
+							<object class="IBUIImageView" id="125849209">
+								<reference key="NSNextResponder" ref="625360982"/>
 								<int key="NSvFlags">274</int>
 								<string key="NSFrameSize">{114, 114}</string>
-								<reference key="NSSuperview" ref="158600803"/>
+								<reference key="NSSuperview" ref="625360982"/>
 								<reference key="NSWindow"/>
-								<reference key="NSNextKeyView" ref="564628924"/>
+								<reference key="NSNextKeyView" ref="272742348"/>
 								<string key="NSReuseIdentifierKey">_NS:9</string>
-								<object class="NSColor" key="IBUIBackgroundColor" id="925603069">
+								<object class="NSColor" key="IBUIBackgroundColor" id="3933131">
 									<int key="NSColorSpace">3</int>
 									<bytes key="NSWhite">MCAwAA</bytes>
 								</object>
@@ -57,14 +57,14 @@
 								<bool key="IBUIUserInteractionEnabled">NO</bool>
 								<string key="targetRuntimeIdentifier">IBIPadFramework</string>
 							</object>
-							<object class="IBUILabel" id="564262118">
-								<reference key="NSNextResponder" ref="158600803"/>
+							<object class="IBUILabel" id="786860782">
+								<reference key="NSNextResponder" ref="625360982"/>
 								<int key="NSvFlags">266</int>
 								<string key="NSFrame">{{5, 93}, {109, 21}}</string>
-								<reference key="NSSuperview" ref="158600803"/>
+								<reference key="NSSuperview" ref="625360982"/>
 								<reference key="NSWindow"/>
 								<string key="NSReuseIdentifierKey">_NS:9</string>
-								<reference key="IBUIBackgroundColor" ref="925603069"/>
+								<reference key="IBUIBackgroundColor" ref="3933131"/>
 								<bool key="IBUIAutoresizesSubviews">NO</bool>
 								<bool key="IBUIClearsContextBeforeDrawing">NO</bool>
 								<int key="IBUIContentMode">7</int>
@@ -97,13 +97,13 @@
 								<bool key="IBUIAdjustsFontSizeToFit">NO</bool>
 								<double key="preferredMaxLayoutWidth">109</double>
 							</object>
-							<object class="IBUIImageView" id="564628924">
-								<reference key="NSNextResponder" ref="158600803"/>
+							<object class="IBUIImageView" id="272742348">
+								<reference key="NSNextResponder" ref="625360982"/>
 								<int key="NSvFlags">274</int>
 								<string key="NSFrameSize">{114, 114}</string>
-								<reference key="NSSuperview" ref="158600803"/>
+								<reference key="NSSuperview" ref="625360982"/>
 								<reference key="NSWindow"/>
-								<reference key="NSNextKeyView" ref="564262118"/>
+								<reference key="NSNextKeyView" ref="786860782"/>
 								<string key="NSReuseIdentifierKey">_NS:9</string>
 								<bool key="IBUIUserInteractionEnabled">NO</bool>
 								<string key="targetRuntimeIdentifier">IBIPadFramework</string>
@@ -118,10 +118,10 @@
 							</object>
 						</array>
 						<string key="NSFrameSize">{114, 114}</string>
-						<reference key="NSSuperview" ref="751298364"/>
+						<reference key="NSSuperview" ref="847634419"/>
 						<reference key="NSWindow"/>
-						<reference key="NSNextKeyView" ref="997310000"/>
-						<reference key="IBUIBackgroundColor" ref="925603069"/>
+						<reference key="NSNextKeyView" ref="125849209"/>
+						<reference key="IBUIBackgroundColor" ref="3933131"/>
 						<bool key="IBUIOpaque">NO</bool>
 						<bool key="IBUIClipsSubviews">YES</bool>
 						<int key="IBUIContentMode">4</int>
@@ -132,16 +132,16 @@
 				<string key="NSFrameSize">{114, 114}</string>
 				<reference key="NSSuperview"/>
 				<reference key="NSWindow"/>
-				<reference key="NSNextKeyView" ref="158600803"/>
+				<reference key="NSNextKeyView" ref="625360982"/>
 				<string key="NSReuseIdentifierKey">_NS:9</string>
-				<reference key="IBUIBackgroundColor" ref="925603069"/>
+				<reference key="IBUIBackgroundColor" ref="3933131"/>
 				<bool key="IBUIAutoresizesSubviews">NO</bool>
 				<bool key="IBUIClearsContextBeforeDrawing">NO</bool>
 				<int key="IBUIContentMode">4</int>
 				<bool key="IBUIMultipleTouchEnabled">YES</bool>
 				<string key="targetRuntimeIdentifier">IBIPadFramework</string>
 				<string key="IBUIReuseIdentifier">SYNFriendThumbnailCell</string>
-				<reference key="IBUIContentView" ref="158600803"/>
+				<reference key="IBUIContentView" ref="625360982"/>
 			</object>
 		</array>
 		<object class="IBObjectContainer" key="IBDocument.Objects">
@@ -149,24 +149,24 @@
 				<object class="IBConnectionRecord">
 					<object class="IBCocoaTouchOutletConnection" key="connection">
 						<string key="label">imageView</string>
-						<reference key="source" ref="751298364"/>
-						<reference key="destination" ref="997310000"/>
+						<reference key="source" ref="847634419"/>
+						<reference key="destination" ref="125849209"/>
 					</object>
 					<int key="connectionID">22</int>
 				</object>
 				<object class="IBConnectionRecord">
 					<object class="IBCocoaTouchOutletConnection" key="connection">
 						<string key="label">nameLabel</string>
-						<reference key="source" ref="751298364"/>
-						<reference key="destination" ref="564262118"/>
+						<reference key="source" ref="847634419"/>
+						<reference key="destination" ref="786860782"/>
 					</object>
 					<int key="connectionID">23</int>
 				</object>
 				<object class="IBConnectionRecord">
 					<object class="IBCocoaTouchOutletConnection" key="connection">
 						<string key="label">plusSignView</string>
-						<reference key="source" ref="751298364"/>
-						<reference key="destination" ref="564628924"/>
+						<reference key="source" ref="847634419"/>
+						<reference key="destination" ref="272742348"/>
 					</object>
 					<int key="connectionID">26</int>
 				</object>
@@ -192,33 +192,33 @@
 					</object>
 					<object class="IBObjectRecord">
 						<int key="objectID">3</int>
-						<reference key="object" ref="751298364"/>
+						<reference key="object" ref="847634419"/>
 						<array class="NSMutableArray" key="children">
-							<reference ref="564262118"/>
-							<reference ref="997310000"/>
-							<reference ref="564628924"/>
+							<reference ref="786860782"/>
+							<reference ref="125849209"/>
+							<reference ref="272742348"/>
 						</array>
 						<reference key="parent" ref="0"/>
 						<string key="objectName">SYNFriendThumbnailCell</string>
 					</object>
 					<object class="IBObjectRecord">
 						<int key="objectID">5</int>
-						<reference key="object" ref="564262118"/>
+						<reference key="object" ref="786860782"/>
 						<array class="NSMutableArray" key="children"/>
-						<reference key="parent" ref="751298364"/>
+						<reference key="parent" ref="847634419"/>
 						<string key="objectName">Name UILabel</string>
 					</object>
 					<object class="IBObjectRecord">
 						<int key="objectID">6</int>
-						<reference key="object" ref="997310000"/>
+						<reference key="object" ref="125849209"/>
 						<array class="NSMutableArray" key="children"/>
-						<reference key="parent" ref="751298364"/>
+						<reference key="parent" ref="847634419"/>
 						<string key="objectName">User Thumbnail</string>
 					</object>
 					<object class="IBObjectRecord">
 						<int key="objectID">25</int>
-						<reference key="object" ref="564628924"/>
-						<reference key="parent" ref="751298364"/>
+						<reference key="object" ref="272742348"/>
+						<reference key="parent" ref="847634419"/>
 						<string key="objectName">Plus Sign</string>
 					</object>
 				</array>
