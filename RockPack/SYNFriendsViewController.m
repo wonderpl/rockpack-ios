@@ -113,7 +113,7 @@ static char* association_key = "SYNFriendThumbnailCell to Friend";
     
     [((UIButton*)sender) setSelected:YES];
     
-    
+    [self.friendsCollectionView reloadData];
 }
 
 
