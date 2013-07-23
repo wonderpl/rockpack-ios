@@ -9,42 +9,40 @@
 #import <Foundation/Foundation.h>
 #import "User.h"
 
-typedef enum {
+typedef enum
+{
     kNotificationObjectTypeVideo = 0,
-    kNotificationObjectTypeChannel = 1
-
+    kNotificationObjectTypeChannel = 1,
+    kNotificationObjectTypeUser = 2
 } kNotificationObjectType;
 
 @interface SYNRockpackNotification : NSObject
 
 @property (nonatomic) NSInteger identifier;
-@property (nonatomic, strong) NSString* messageType;
-@property (nonatomic, strong) NSDate* dateCreated;
-@property (nonatomic, strong) NSString* dateDifferenceString;
+@property (nonatomic, strong) NSString *messageType;
+@property (nonatomic, strong) NSDate *dateCreated;
+@property (nonatomic, strong) NSString *dateDifferenceString;
 @property (nonatomic) BOOL read;
-
 @property (nonatomic, readonly) kNotificationObjectType objectType;
 
-// Video Message
+// Video Notification
+@property (nonatomic, strong) NSString *videoId;
+@property (nonatomic, strong) NSString *videoThumbnailUrl;
 
-@property (nonatomic, strong) NSString* videoId;
-@property (nonatomic, strong) NSString* videoThumbnailUrl;
-
-@property (nonatomic, strong) NSString* channelId;
-@property (nonatomic, strong) NSString* channelResourceUrl;
-@property (nonatomic, strong) NSString* channelThumbnailUrl;
+// Channel notification
+@property (nonatomic, strong) NSString *channelId;
+@property (nonatomic, strong) NSString *channelResourceUrl;
+@property (nonatomic, strong) NSString *channelThumbnailUrl;
 
 // User Data
-
-@property (nonatomic, strong) ChannelOwner* channelOwner;
-
-@property (nonatomic, strong) Channel* channel;
+@property (nonatomic, strong) ChannelOwner *channelOwner;
+@property (nonatomic, strong) Channel *channel;
 
 
 
 @property (nonatomic) NSInteger timeElapsesd;
 
--(id)initWithNotificationData:(NSDictionary*)data;
-+(id)notificationWithData:(NSDictionary*)data;
+- (id) initWithNotificationData: (NSDictionary *) data;
++ (id) notificationWithData: (NSDictionary *) data;
 
 @end
