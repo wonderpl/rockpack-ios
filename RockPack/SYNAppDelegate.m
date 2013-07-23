@@ -1258,13 +1258,21 @@
 {
     NSLog(@"Failed to get token, error: %@", error);
     self.apnsToken = nil;
+    
+    // Test code
+//    [self performBlock: ^{
+//        [self.viewStackManager displaySideNavigatorFromPushNotification];
+//    }
+//            afterDelay: 3.0f];
 }
+
 
 
 - (void) application: (UIApplication*) application
          didReceiveRemoteNotification: (NSDictionary*) userInfo
 {
 	NSLog(@"Received notification: %@", userInfo);
+            [self.viewStackManager displaySideNavigatorFromPushNotification];
 }
 
 @end

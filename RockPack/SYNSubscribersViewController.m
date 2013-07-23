@@ -192,7 +192,7 @@
 {
     if (IS_IPHONE)
     {
-        [appDelegate.viewStackManager hideModallyController];
+        [appDelegate.viewStackManager hideModalController];
     }
     
     [super collectionView: collectionView
