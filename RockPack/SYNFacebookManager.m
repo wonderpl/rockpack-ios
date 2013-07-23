@@ -8,6 +8,7 @@
 
 #import "SYNFacebookManager.h"
 #import <FacebookSDK/FacebookSDK.h>
+#import "Friend.h"
 
 typedef enum
 {
@@ -364,6 +365,38 @@ typedef enum
     }
     
     return [NSString stringWithFormat: NSLocalizedString(@"Facebook\n\n%@", nil), errorMessage];
+}
+
+- (void) sendAppRequestToFriend:(Friend*)friend
+{
+    if(!friend)
+        return;
+    
+    FBFrictionlessRecipientCache *friendCache = [[FBFrictionlessRecipientCache alloc] init];
+    [friendCache prefetchAndCacheForSession:nil];
+    
+    NSDictionary* params = nil;
+    if(![friend.externalUID isEqualToString:@""])
+        params = @{@"to":friend.externalUID};
+    else
+        params = nil;
+    
+    [FBWebDialogs presentRequestsDialogModallyWithSession:nil
+                                                  message:@"Rockpack allows you to find and create the video channels you will love"
+                                                    title:@"Join Rockpack!"
+                                               parameters:params
+                                                  handler:^(FBWebDialogResult result, NSURL *resultURL, NSError *error) {
+                                                      if (error) {
+                                                          // Case A: Error launching the dialog or sending request.
+                                                          NSLog(@"Error sending request.");
+                                                      } else {
+                                                          if (result == FBWebDialogResultDialogNotCompleted) {
+                                                              // Case B: User clicked the "x" icon
+                                                              NSLog(@"User canceled request.");
+                                                          } else {
+                                                              NSLog(@"Request Sent.");
+                                                          }
+                                                      }}];
 }
 
 -(BOOL)hasOpenSession
