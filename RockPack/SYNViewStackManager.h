@@ -16,6 +16,8 @@
 
 @interface SYNViewStackManager : NSObject {
     UIViewController *modalViewController;
+    UIView* popoverView;
+    UIView* backgroundView;
 }
 
 
@@ -32,14 +34,16 @@
 - (void) pushController: (SYNAbstractViewController *) controller;
 
 - (void) presentModallyController: (UIViewController *) controller;
+- (void) presentPopoverView:(UIView*)view;
 
 - (void) viewProfileDetails: (ChannelOwner *) channelOwner;
 - (void) viewChannelDetails: (Channel *) channel withAutoplayId: (NSString *) autoplayId;
 - (void) viewChannelDetails: (Channel *) channel;
 
 
-- (void) hideModallyController;
+- (void) hideModalController;
 
 - (void) hideSideNavigator;
+- (void) displaySideNavigatorFromPushNotification;
 
 @end

@@ -53,7 +53,7 @@
 {
     SYNAppDelegate *appDelegate = (SYNAppDelegate *) [[UIApplication sharedApplication] delegate];
     
-    [appDelegate.viewStackManager hideModallyController];
+    [appDelegate.viewStackManager hideModalController];
 }
 
 @end

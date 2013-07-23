@@ -16,6 +16,7 @@
 #import <FacebookSDK/FacebookSDK.h>
 #import "SYNOAuthNetworkEngine.h"
 #import "Friend.h"
+#import "SYNInviteFriendView.h"
 #import <objc/runtime.h>
 
 static char* association_key = "SYNFriendThumbnailCell to Friend";
@@ -26,7 +27,7 @@ static char* association_key = "SYNFriendThumbnailCell to Friend";
 @property (nonatomic, weak) SYNAppDelegate* appDelegate;
 @property (nonatomic) BOOL onRockpackFilterOn;
 @property (nonatomic, strong) NSArray* displayFriends;
-
+@property (nonatomic, strong) SYNInviteFriendView* currentInviteFriendView;
 @end
 
 @implementation SYNFriendsViewController
@@ -307,12 +308,27 @@ static char* association_key = "SYNFriendThumbnailCell to Friend";
 - (void) collectionView: (UICollectionView *) collectionView didSelectItemAtIndexPath: (NSIndexPath *) indexPath
 {
     
-    UICollectionViewCell* cellClicked = [collectionView cellForItemAtIndexPath:indexPath];
+    SYNFriendThumbnailCell* cellClicked = (SYNFriendThumbnailCell*)[collectionView cellForItemAtIndexPath:indexPath];
     
     Friend* friend = objc_getAssociatedObject(cellClicked, association_key);
     
+    // create view
+    NSString* firstName = [friend.displayName componentsSeparatedByString:@" "][0];
+    
+    self.currentInviteFriendView = (SYNInviteFriendView*)[[[NSBundle mainBundle] loadNibNamed:@"SYNInviteFriendView"
+                                                                                        owner:self
+                                                                                      options:nil] objectAtIndex:0];
+    
+    self.currentInviteFriendView.profileImageView.image = cellClicked.imageView.image;
+    self.currentInviteFriendView.titleLabel.text = [NSString stringWithFormat:@"%@ IS NOT ON ROCKPACK YET", firstName];
     
     
+    [appDelegate.viewStackManager presentPopoverView:self.currentInviteFriendView];
+    
+}
+
+-(IBAction)inviteButtonPressed:(id)sender
+{
     
 }
 
