@@ -116,7 +116,8 @@
         if(!itemsDictionary)
             return;
         
-        NSMutableArray* iOSFriendsMutableArray = [NSMutableArray arrayWithCapacity:itemsDictionary.count];
+        NSInteger friendsCount = itemsDictionary.count;
+        NSMutableArray* iOSFriendsMutableArray = [NSMutableArray arrayWithCapacity:friendsCount];
         
         for (NSDictionary* itemDictionary in itemsDictionary)
         {
