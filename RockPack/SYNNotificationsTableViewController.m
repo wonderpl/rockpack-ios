@@ -115,9 +115,19 @@
     {
         [constructedMessage appendString: NSLocalizedString(@"notification_subscribed_action", nil)];
     }
-    else
+    else if ([notification.messageType isEqualToString: @"starred"])
     {
         [constructedMessage appendString: NSLocalizedString(@"notification_liked_action", nil)];
+    }
+    else if ([notification.messageType isEqualToString: @"joined"])
+    {
+        NSString *message = [NSString stringWithFormat: NSLocalizedString(@"notification_joined_action", @"Your Facebook friend (yxz) has joined Rockpack as (username)"), @"Name", @"Username"];
+        
+        [constructedMessage appendString: message];
+    }
+    else
+    {
+        AssertOrLog(@"Eek! Machine anomaly. Notification type unexpected")
     }
     
     notificationCell.messageTitle = [NSString stringWithString: constructedMessage];
@@ -129,25 +139,29 @@
                                         options: SDWebImageRetryFailed];
     
     NSURL *thumbnaillUrl;
-    
-    if (notification.objectType == kNotificationObjectTypeVideo)
-    {
-        thumbnaillUrl = [NSURL URLWithString: notification.videoThumbnailUrl];
-    }
-    else
-    {
-        thumbnaillUrl = [NSURL URLWithString: notification.channelThumbnailUrl];
-    }
-    
     UIImage *placeholder;
-    
-    if (notification.objectType == kNotificationObjectTypeVideo)
+
+    switch (notification.objectType)
     {
-        placeholder = [UIImage imageNamed: @"PlaceholderNotificationVideo"];
-    }
-    else
-    {
-        placeholder = [UIImage imageNamed: @"PlaceholderNotificationChannel"];
+        case kNotificationObjectTypeVideo:
+            thumbnaillUrl = [NSURL URLWithString: notification.videoThumbnailUrl];
+            placeholder = [UIImage imageNamed: @"PlaceholderNotificationVideo"];
+            break;
+            
+        case kNotificationObjectTypeChannel:
+            thumbnaillUrl = [NSURL URLWithString: notification.channelThumbnailUrl];
+            placeholder = [UIImage imageNamed: @"PlaceholderNotificationChannel"];
+            break;
+            
+        case kNotificationObjectTypeUser:
+            // TODO: Add friend notification support here
+            // thumbnaillUrl = [NSURL URLWithString: notification.userThumbnailUrl];
+            placeholder = [UIImage imageNamed: @"PlaceholderNotificationUser"];
+            break;
+            
+        default:
+            AssertOrLog(@"Unexpected notification type");
+            break;
     }
     
     [notificationCell.thumbnailImageView setImageWithURL: thumbnaillUrl
@@ -155,7 +169,6 @@
                                                  options: SDWebImageRetryFailed];
     
     notificationCell.delegate = self;
-    
     notificationCell.read = notification.read;
     
     notificationCell.detailTextLabel.text = notification.dateDifferenceString;
@@ -237,28 +250,51 @@
     
     SYNAppDelegate *appDelegate = (SYNAppDelegate *) [[UIApplication sharedApplication] delegate];
     
-    if (notification.objectType == kNotificationObjectTypeVideo)
+    switch (notification.objectType)
     {
-        Channel *channel = [self channelFromChannelId: notification.channelId];
-        
-        if (!channel)
+        case kNotificationObjectTypeVideo:
         {
-            return;
+            Channel *channel = [self channelFromChannelId: notification.channelId];
+            
+            if (!channel)
+            {
+                return;
+            }
+            
+            [appDelegate.viewStackManager viewChannelDetails: channel
+                                              withAutoplayId: notification.videoId];
+            break;
         }
-        
-        [appDelegate.viewStackManager viewChannelDetails: channel
-                                          withAutoplayId: notification.videoId];
-    }
-    else
-    {
-        Channel *channel = [self channelFromChannelId: notification.channelId];
-        
-        if (!channel)
+            
+        case kNotificationObjectTypeChannel:
         {
-            return;
+            Channel *channel = [self channelFromChannelId: notification.channelId];
+            
+            if (!channel)
+            {
+                return;
+            }
+            
+            [appDelegate.viewStackManager viewChannelDetails: channel];
+            break;
         }
-        
-        [appDelegate.viewStackManager viewChannelDetails: channel];
+            
+        case kNotificationObjectTypeUser:
+        {
+            ChannelOwner *channelOwner = notification.channelOwner;
+            
+            if (!channelOwner)
+            {
+                return;
+            }
+            
+            [appDelegate.viewStackManager viewProfileDetails: channelOwner];
+            break;
+        }
+            
+        default:
+            AssertOrLog(@"Unexpected notification type");
+            break;
     }
     
     [self markAsReadForNotification: notification];

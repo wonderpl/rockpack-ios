@@ -970,28 +970,6 @@
 // rockpack://USERID/channels/CHANNELID/videos/VIDEOID/
 // (test) http://dev.rockpack.com/paulegan/deeplinktest/video.html
 
-
-//if (notification.objectType == kNotificationObjectTypeVideo)
-//{
-//    Channel* channel = [self channelFromChannelId: notification.channelId];
-//    
-//    if (!channel)
-//        return;
-//    
-//    
-//    [appDelegate.viewStackManager viewChannelDetails:channel withAutoplayId:notification.videoId];
-//    
-//}
-//else
-//{
-//    Channel* channel = [self channelFromChannelId: notification.channelId];
-//    
-//    if (!channel)
-//        return;
-//    
-//    [appDelegate.viewStackManager viewChannelDetails:channel];
-//}
-
 - (BOOL)  application: (UIApplication *) application
               openURL: (NSURL *) url
     sourceApplication: (NSString *) sourceApplication
