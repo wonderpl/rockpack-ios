@@ -238,7 +238,7 @@
     
     for (UIViewController *viewControllerOnStack in self.navigationController.viewControllers)
     {
-        if ([viewControllerOnStack isKindOfClass: NSClassFromString(classString)])
+        if ([viewControllerOnStack isKindOfClass: NSClassFromString(classString)] && viewControllerOnStack != self.navigationController.topViewController)
         {
             lastControllerOfClass = viewControllerOnStack;
         }
