@@ -278,10 +278,10 @@
 		<bool key="IBDocument.PluginDeclaredDependenciesTrackSystemTargetVersion">YES</bool>
 		<int key="IBDocument.defaultPropertyAccessControl">3</int>
 		<dictionary class="NSMutableDictionary" key="IBDocument.LastKnownImageSizes">
-			<string key="ButtonCloseSearchHighlighted~iphone.png">{44, 45}</string>
-			<string key="ButtonCloseSearch~iphone.png">{44, 45}</string>
-			<string key="IconSearch~iphone.png">{34, 45}</string>
-			<string key="PanelSearch~iphone.png">{320, 65}</string>
+			<string key="ButtonCloseSearchHighlighted~iphone.png">{16, 16}</string>
+			<string key="ButtonCloseSearch~iphone.png">{16, 16}</string>
+			<string key="IconSearch~iphone.png">{16, 16}</string>
+			<string key="PanelSearch~iphone.png">{16, 16}</string>
 		</dictionary>
 		<string key="IBCocoaTouchPluginVersion">2083</string>
 	</data>

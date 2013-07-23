@@ -553,6 +553,7 @@ typedef enum {
     
     if (IS_IPHONE)
     {
+        // iPhone specific
         CGSize containerSize = self.containerView.frame.size;
         CGRect vcRect = self.currentlyLoadedViewController.view.frame;
         vcRect.origin.x = 0.0;
@@ -561,9 +562,9 @@ typedef enum {
         self.currentlyLoadedViewController.view.frame = vcRect;
 
     }
-    
-    if (IS_IPAD)
+    else
     {
+        // iPad
         CGRect screenRect = [[UIScreen mainScreen] bounds];
         CGFloat screenHeight = screenRect.size.height;
         

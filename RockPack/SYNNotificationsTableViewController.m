@@ -123,13 +123,13 @@
     }
     else if ([notification.messageType isEqualToString: @"joined"])
     {
-        NSString *message = [NSString stringWithFormat: NSLocalizedString(@"notification_joined_action", @"Your Facebook friend (yxz) has joined Rockpack as (username)"), @"Name", @"Username"];
+        NSString *message = [NSString stringWithFormat: NSLocalizedString(@"notification_joined_action", @"Your Facebook friendhas joined Rockpack as (username)"), notification.channelOwner.displayName];
         
         [constructedMessage appendString: message];
     }
     else
     {
-        AssertOrLog(@"Eek! Machine anomaly. Notification type unexpected");
+        AssertOrLog(@"Notification type unexpected")
     }
     
     notificationCell.messageTitle = [NSString stringWithString: constructedMessage];

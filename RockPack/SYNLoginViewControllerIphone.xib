@@ -996,7 +996,6 @@
 								<int key="NSvFlags">292</int>
 								<string key="NSFrame">{{166, 11}, {154, 44}}</string>
 								<reference key="NSSuperview" ref="179032073"/>
-								<reference key="NSNextKeyView"/>
 								<string key="NSReuseIdentifierKey">_NS:9</string>
 								<bool key="IBUIOpaque">NO</bool>
 								<string key="targetRuntimeIdentifier">IBCocoaTouchFramework</string>
@@ -1974,25 +1973,25 @@
 		<bool key="IBDocument.PluginDeclaredDependenciesTrackSystemTargetVersion">YES</bool>
 		<int key="IBDocument.defaultPropertyAccessControl">3</int>
 		<dictionary class="NSMutableDictionary" key="IBDocument.LastKnownImageSizes">
-			<string key="ButtonFacebookDefault~iphone.png">{290, 54}</string>
-			<string key="ButtonFacebookHighlighted~iphone.png">{290, 54}</string>
-			<string key="ButtonLoginBackHighlighted~iphone.png">{58, 58}</string>
-			<string key="ButtonLoginBack~iphone.png">{58, 58}</string>
-			<string key="ButtonLoginCancelHighlighted~iphone.png">{58, 58}</string>
-			<string key="ButtonLoginCancel~iphone.png">{58, 58}</string>
-			<string key="ButtonLoginConfirmHighlighted~iphone.png">{58, 58}</string>
-			<string key="ButtonLoginConfirm~iphone.png">{58, 58}</string>
-			<string key="ButtonLoginDefault~iphone.png">{145, 54}</string>
-			<string key="ButtonLoginHighlighted~iphone.png">{145, 54}</string>
-			<string key="ButtonLoginNextHighlighted~iphone.png">{58, 58}</string>
-			<string key="ButtonLoginNext~iphone.png">{58, 58}</string>
-			<string key="ButtonRegisterHighlighted~iphone.png">{145, 54}</string>
-			<string key="ButtonRegister~iphone.png">{145, 54}</string>
-			<string key="FieldDayMonth~iphone.png">{80, 54}</string>
-			<string key="FieldLogin~iphone.png">{290, 49}</string>
-			<string key="FieldPhoto~iphone.png">{108, 108}</string>
-			<string key="FieldYear~iphone.png">{130, 54}</string>
-			<string key="LogoSignup~iphone.png">{290, 83}</string>
+			<string key="ButtonFacebookDefault~iphone.png">{16, 16}</string>
+			<string key="ButtonFacebookHighlighted~iphone.png">{16, 16}</string>
+			<string key="ButtonLoginBackHighlighted~iphone.png">{16, 16}</string>
+			<string key="ButtonLoginBack~iphone.png">{16, 16}</string>
+			<string key="ButtonLoginCancelHighlighted~iphone.png">{16, 16}</string>
+			<string key="ButtonLoginCancel~iphone.png">{16, 16}</string>
+			<string key="ButtonLoginConfirmHighlighted~iphone.png">{16, 16}</string>
+			<string key="ButtonLoginConfirm~iphone.png">{16, 16}</string>
+			<string key="ButtonLoginDefault~iphone.png">{16, 16}</string>
+			<string key="ButtonLoginHighlighted~iphone.png">{16, 16}</string>
+			<string key="ButtonLoginNextHighlighted~iphone.png">{16, 16}</string>
+			<string key="ButtonLoginNext~iphone.png">{16, 16}</string>
+			<string key="ButtonRegisterHighlighted~iphone.png">{16, 16}</string>
+			<string key="ButtonRegister~iphone.png">{16, 16}</string>
+			<string key="FieldDayMonth~iphone.png">{16, 16}</string>
+			<string key="FieldLogin~iphone.png">{16, 16}</string>
+			<string key="FieldPhoto~iphone.png">{16, 16}</string>
+			<string key="FieldYear~iphone.png">{16, 16}</string>
+			<string key="LogoSignup~iphone.png">{16, 16}</string>
 		</dictionary>
 		<string key="IBCocoaTouchPluginVersion">2083</string>
 	</data>
