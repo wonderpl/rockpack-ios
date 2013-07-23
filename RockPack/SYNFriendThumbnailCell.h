@@ -13,6 +13,8 @@
 @property (nonatomic, strong) IBOutlet UIImageView *imageView;
 @property (nonatomic, strong) IBOutlet UILabel* nameLabel;
 
+@property (nonatomic, strong) IBOutlet UIImageView *plusSignView;
+
 
 -(void)setDisplayName:(NSString*)name;
 

@@ -16,6 +16,9 @@
 #import <FacebookSDK/FacebookSDK.h>
 #import "SYNOAuthNetworkEngine.h"
 #import "Friend.h"
+#import <objc/runtime.h>
+
+static char* association_key = "SYNFriendThumbnailCell to Friend";
 
 @interface SYNFriendsViewController ()
 
@@ -90,7 +93,7 @@
     {
         NSPredicate* searchPredicate = [NSPredicate predicateWithBlock:^BOOL(id evaluatedObject, NSDictionary *bindings) {
             
-            return ((Friend*)evaluatedObject).resourceURL != nil;
+            return ((Friend*)evaluatedObject).isOnRockpack; // resourceURL != nil; (derived property)
         }];
         
         self.displayFriends = [self.iOSFriends filteredArrayUsingPredicate:searchPredicate];
@@ -112,6 +115,8 @@
 
 -(void)fetchAndDisplayFriends
 {
+    
+    
     [self.activityIndicator startAnimating];
     
     [appDelegate.oAuthNetworkEngine friendsForUser:appDelegate.currentUser completionHandler:^(id dictionary) {
@@ -227,18 +232,25 @@
 - (UICollectionViewCell *) collectionView: (UICollectionView *) collectionView
                    cellForItemAtIndexPath: (NSIndexPath *) indexPath
 {
-    ChannelOwner *friend = self.displayFriends[indexPath.row];
+    
+    Friend *friend = self.displayFriends[indexPath.row];
     
     SYNFriendThumbnailCell *userThumbnailCell = [collectionView dequeueReusableCellWithReuseIdentifier: @"SYNFriendThumbnailCell"
                                                                                         forIndexPath: indexPath];
     
     userThumbnailCell.nameLabel.text = friend.displayName;
     
+    userThumbnailCell.plusSignView.hidden = friend.isOnRockpack; // if he is on rockpack dont display
+    
     [userThumbnailCell.imageView setImageWithURL: [NSURL URLWithString: friend.thumbnailLargeUrl]
                                 placeholderImage: [UIImage imageNamed: @"PlaceholderAvatarChannel"]
                                          options: SDWebImageRetryFailed];
     
     [userThumbnailCell setDisplayName: friend.displayName];
+    
+    
+    
+    objc_setAssociatedObject(userThumbnailCell, association_key, friend, OBJC_ASSOCIATION_ASSIGN);
     
     return userThumbnailCell;
 }
@@ -295,9 +307,21 @@
 - (void) collectionView: (UICollectionView *) collectionView didSelectItemAtIndexPath: (NSIndexPath *) indexPath
 {
     
+    UICollectionViewCell* cellClicked = [collectionView cellForItemAtIndexPath:indexPath];
+    
+    Friend* friend = objc_getAssociatedObject(cellClicked, association_key);
     
     
     
+    
+}
+
+-(void)dealloc
+{
+    // clean associations
+    for (UICollectionViewCell* visibleCell in self.friendsCollectionView.visibleCells) {
+        objc_removeAssociatedObjects(visibleCell);
+    }
 }
 
 @end

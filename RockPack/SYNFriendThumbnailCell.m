@@ -7,16 +7,16 @@
 //
 
 #import "SYNFriendThumbnailCell.h"
+#import "UIFont+SYNFont.h"
 
 @implementation SYNFriendThumbnailCell
 
-- (id)initWithFrame:(CGRect)frame
+-(void)awakeFromNib
 {
-    self = [super initWithFrame:frame];
-    if (self) {
-        // Initialization code
-    }
-    return self;
+    self.plusSignView.hidden = YES;
+    
+    self.nameLabel.font = [UIFont rockpackFontOfSize:self.nameLabel.font.pointSize];
+    
 }
 
 -(void)setDisplayName:(NSString*)name

@@ -10,6 +10,8 @@
 
 @implementation Friend
 
+@synthesize isOnRockpack;
+
 + (Friend *) instanceFromDictionary: (NSDictionary *) dictionary
                 usingManagedObjectContext: (NSManagedObjectContext *) managedObjectContext
 {
@@ -53,6 +55,11 @@
     self.hasIOSDevice = [dictionary objectForKey: @"has_ios_device"
                                      withDefault: @(NO)];
     
+}
+
+-(BOOL)isIsOnRockpack
+{
+    return (self.resourceURL != nil);
 }
 
 @end
