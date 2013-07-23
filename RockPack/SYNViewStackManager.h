@@ -41,8 +41,9 @@
 - (void) viewChannelDetails: (Channel *) channel;
 
 
-- (void) hideModallyController;
+- (void) hideModalController;
 
 - (void) hideSideNavigator;
+- (void) displaySideNavigatorFromPushNotification;
 
 @end

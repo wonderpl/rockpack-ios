@@ -192,6 +192,9 @@
          didSelectRowAtIndexPath: (NSIndexPath *) indexPath
 {
     [self markAsReadForNotification: _notifications[indexPath.row]];
+    
+    // Decrement the badge number (min zero)
+    UIApplication.sharedApplication.applicationIconBadgeNumber = MAX((UIApplication.sharedApplication.applicationIconBadgeNumber - 1) , 0);
 }
 
 

@@ -924,4 +924,19 @@ typedef enum {
 
 }
 
+
+#pragma mark - Push notification support
+
+- (void) displayFromPushNotification
+{
+    NSIndexPath *indexPath = [NSIndexPath indexPathForRow: 3
+                                                inSection: 0];
+    
+    [self.tableView selectRowAtIndexPath: indexPath
+                                animated: YES
+                          scrollPosition: UITableViewScrollPositionNone];
+    
+    [self tableView: self.tableView didSelectRowAtIndexPath: indexPath];
+}
+
 @end

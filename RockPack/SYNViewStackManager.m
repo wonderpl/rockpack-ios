@@ -244,6 +244,12 @@
 }
 
 
+- (void) displaySideNavigatorFromPushNotification
+{
+    [self.sideNavigatorController displayFromPushNotification];
+}
+
+
 
 - (void) presentModallyController: (UIViewController *) controller
 {
@@ -274,7 +280,7 @@
 }
 
 
-- (void) hideModallyController
+- (void) hideModalController
 {
     CGRect controllerFrame = modalViewController.view.frame;
     
