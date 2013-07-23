@@ -154,6 +154,8 @@ static char* association_key = "SYNFriendThumbnailCell to Friend";
             if(!friend.isOnRockpack)
                 friendsCount--;
             
+            NSLog(@"%@", friend);
+            
         }
         
         [self.onRockpackButton setTitle:[NSString stringWithFormat:@"ON ROCKPACK (%i)", friendsCount] forState:UIControlStateNormal];
@@ -344,7 +346,16 @@ static char* association_key = "SYNFriendThumbnailCell to Friend";
 
 -(IBAction)inviteButtonPressed:(id)sender
 {
-    [[SYNFacebookManager sharedFBManager] sendAppRequestToFriend:self.currentlySelectedFriend];
+    [[SYNFacebookManager sharedFBManager] sendAppRequestToFriend:self.currentlySelectedFriend
+                                                       onSuccess:^{
+                                                           
+                                                           [appDelegate.viewStackManager removePopoverView];
+        
+                                                       } onFailure:^(NSError *error) {
+                                                           
+                                                           [appDelegate.viewStackManager removePopoverView];
+        
+                                                       }];
     
 }
 

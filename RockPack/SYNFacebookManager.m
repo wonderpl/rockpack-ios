@@ -368,14 +368,13 @@ typedef enum
 }
 
 - (void) sendAppRequestToFriend:(Friend*)friend
+                      onSuccess:(FacebookPostSuccessBlock) successBlock
+                      onFailure:(FacebookPostFailureBlock) failureBlock
 {
     if(!friend)
         return;
     
     
-    
-    FBFrictionlessRecipientCache *friendCache = [[FBFrictionlessRecipientCache alloc] init];
-    [friendCache prefetchAndCacheForSession:nil];
     
     NSDictionary* params = nil;
     if(friend.externalUID && ![friend.externalUID isEqualToString:@""])
@@ -391,12 +390,14 @@ typedef enum
                                                       if (error) {
                                                           // Case A: Error launching the dialog or sending request.
                                                           NSLog(@"Error sending request.");
+                                                          failureBlock(error);
                                                       } else {
                                                           if (result == FBWebDialogResultDialogNotCompleted) {
                                                               // Case B: User clicked the "x" icon
                                                               NSLog(@"User canceled request.");
                                                           } else {
                                                               NSLog(@"Request Sent.");
+                                                              successBlock();
                                                           }
                                                       }}];
 }
