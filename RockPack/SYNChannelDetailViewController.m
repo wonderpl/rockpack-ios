@@ -490,11 +490,32 @@
 {
     [super viewWillDisappear: animated];
 
-    // Stop observing everything (less error-prone than trying to remove observers individually)
+
     
     [[NSNotificationCenter defaultCenter] postNotificationName:kNoteHideAllCautions object:self];
     
-    [[NSNotificationCenter defaultCenter] removeObserver: self];
+    
+    // Remove notifications individually
+    // Do this rather than plain RemoveObserver call as low memory handling is based on NSNotifications.
+    [[NSNotificationCenter defaultCenter] removeObserver: self
+                                             name: kCoverArtChanged
+                                                  object: nil];
+    
+    [[NSNotificationCenter defaultCenter] removeObserver:self
+                                                 name:kVideoQueueClear
+                                               object:nil];
+    
+    [[NSNotificationCenter defaultCenter] removeObserver:self
+                                                 name:kUpdateFailed
+                                               object:nil];
+    
+    if (self.channel.channelOwner.uniqueId == appDelegate.currentUser.uniqueId)
+    {
+        [[NSNotificationCenter defaultCenter] removeObserver: self
+                                                     name: kUserDataChanged
+                                                   object: nil];
+    }
+
 
     if (!self.isIPhone)
     {

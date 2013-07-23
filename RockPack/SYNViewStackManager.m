@@ -178,6 +178,71 @@
     self.sideNavigatorController.state = SideNavigationStateHidden;
 }
 
+- (void) presentPopoverView:(UIView*)view
+{
+    if(!view)
+        return;
+    
+    
+    CGRect screenRect = [[SYNDeviceManager sharedInstance] currentScreenRect];
+    backgroundView = [[UIView alloc] initWithFrame:screenRect];
+    backgroundView.alpha = 0.0;
+    backgroundView.backgroundColor = [UIColor blackColor];
+    backgroundView.autoresizingMask = UIViewAutoresizingFlexibleWidth | UIViewAutoresizingFlexibleHeight;
+    
+    popoverView = view;
+    
+    popoverView.alpha = 0.0;
+    popoverView.center = CGPointMake(screenRect.size.width * 0.5, screenRect.size.height * 0.5);
+    popoverView.frame = CGRectIntegral(view.frame);
+    popoverView.autoresizingMask = UIViewAutoresizingFlexibleLeftMargin | UIViewAutoresizingFlexibleRightMargin ;
+    [self.masterController.view addSubview:backgroundView];
+    [self.masterController.view addSubview:view];
+    
+    
+    
+    // fade in in order
+    [UIView animateWithDuration: 0.3
+                          delay: 0.0
+                        options: UIViewAnimationOptionCurveEaseOut
+                     animations: ^{
+                         backgroundView.alpha = 0.8f;
+                         
+                     }
+                     completion:^(BOOL finished) {
+                         UITapGestureRecognizer* tapToCloseGesture = [[UITapGestureRecognizer alloc] initWithTarget:self
+                                                                                                             action:@selector(removePopoverView)];
+                         [backgroundView addGestureRecognizer:tapToCloseGesture];
+                     }];
+    
+    [UIView animateWithDuration: 0.3
+                          delay: 0.2
+                        options: UIViewAnimationOptionCurveEaseOut
+                     animations: ^{
+                         
+                         view.alpha = 1.0f;
+                     }
+                     completion:nil];
+    
+}
+
+-(void)removePopoverView
+{
+    [UIView animateWithDuration: 0.3
+                          delay: 0.0
+                        options: UIViewAnimationOptionCurveEaseOut
+                     animations: ^{
+                         backgroundView.alpha = 0.0;
+                         popoverView.alpha = 0.0;
+                     }
+                     completion:^(BOOL finished) {
+                         [backgroundView removeFromSuperview];
+                         [popoverView removeFromSuperview];
+                         backgroundView = nil;
+                         popoverView = nil;
+                     }];
+}
+
 
 - (void) displaySideNavigatorFromPushNotification
 {
@@ -188,6 +253,7 @@
     
     [self.sideNavigatorController displayFromPushNotification];
 }
+
 
 
 - (void) presentModallyController: (UIViewController *) controller
@@ -249,7 +315,7 @@
     
     for (UIViewController *viewControllerOnStack in self.navigationController.viewControllers)
     {
-        if ([viewControllerOnStack isKindOfClass: NSClassFromString(classString)])
+        if ([viewControllerOnStack isKindOfClass: NSClassFromString(classString)] && viewControllerOnStack != self.navigationController.topViewController)
         {
             lastControllerOfClass = viewControllerOnStack;
         }
