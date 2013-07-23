@@ -129,7 +129,7 @@
     }
     else
     {
-        AssertOrLog(@"Notification type unexpected")
+        AssertOrLog(@"Notification type unexpected");
     }
     
     notificationCell.messageTitle = [NSString stringWithString: constructedMessage];

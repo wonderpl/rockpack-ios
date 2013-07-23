@@ -323,7 +323,7 @@ static char* association_key = "SYNFriendThumbnailCell to Friend";
     self.currentInviteFriendView.titleLabel.text = [NSString stringWithFormat:@"%@ IS NOT ON ROCKPACK YET", firstName];
     
     
-    [self.view addSubview:self.currentInviteFriendView];
+    [appDelegate.viewStackManager presentPopoverView:self.currentInviteFriendView];
     
 }
 
