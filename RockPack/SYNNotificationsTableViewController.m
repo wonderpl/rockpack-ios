@@ -123,9 +123,9 @@
     }
     else if ([notification.messageType isEqualToString: @"joined"])
     {
-        NSString *message = [NSString stringWithFormat: NSLocalizedString(@"notification_joined_action", @"Your Facebook friendhas joined Rockpack as (username)"), notification.channelOwner.displayName];
+        NSMutableString *message = [NSString stringWithFormat: NSLocalizedString(@"notification_joined_action", @"Your Facebook friend (name) has joined Rockpack"), [notification.channelOwner.displayName uppercaseString]];
         
-        [constructedMessage appendString: message];
+        constructedMessage = message;
     }
     else
     {
@@ -156,9 +156,6 @@
             break;
             
         case kNotificationObjectTypeUser:
-            // TODO: Add friend notification support here
-            // thumbnaillUrl = [NSURL URLWithString: notification.userThumbnailUrl];
-            placeholder = [UIImage imageNamed: @"PlaceholderNotificationUser"];
             break;
             
         default:
@@ -166,9 +163,20 @@
             break;
     }
     
-    [notificationCell.thumbnailImageView setImageWithURL: thumbnaillUrl
-                                        placeholderImage: placeholder
-                                                 options: SDWebImageRetryFailed];
+    // If we have a righthand image then load it
+    if (thumbnaillUrl && placeholder)
+    {
+        notificationCell.thumbnailImageView.hidden = FALSE;
+        
+        [notificationCell.thumbnailImageView setImageWithURL: thumbnaillUrl
+                                            placeholderImage: placeholder
+                                                     options: SDWebImageRetryFailed];
+    }
+    else
+    {
+        // Otherwse hide it
+        notificationCell.thumbnailImageView.hidden = TRUE;
+    }
     
     notificationCell.delegate = self;
     notificationCell.read = notification.read;
