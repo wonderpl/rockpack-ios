@@ -319,9 +319,10 @@
                                                             
                                                             [[NSNotificationCenter defaultCenter]  postNotificationName: kNotificationMarkedRead
                                                                                                                  object: self];
-                                                        }
-                                                             errorHandler: ^(id error) {
-                                                             }];
+                                                        } errorHandler: ^(id error) {
+                                                            
+                                                            
+                                                        }];
 }
 
 

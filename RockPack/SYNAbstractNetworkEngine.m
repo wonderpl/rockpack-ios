@@ -201,7 +201,7 @@
                                                          
                                                          NSString *errorString =  responseDictionary[@"error"];
                                                          
-                                                         if ([errorString isEqualToString: @"invalid_grant"])
+                                                         if ([errorString isEqualToString: @"invalid_grant"] || [errorString isEqualToString: kUserIdInconsistencyError] )
                                                          {
                                                              [[NSNotificationCenter defaultCenter] postNotificationName: kAccountSettingsLogout
                                                                                                                  object: nil];

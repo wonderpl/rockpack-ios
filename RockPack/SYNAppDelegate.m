@@ -189,6 +189,10 @@
     }
     else
     {
+        if(self.currentUser || self.currentOAuth2Credentials)
+        {
+            [self logout];
+        }
         self.window.rootViewController = [self createAndReturnLoginViewController];
     }
     
@@ -332,21 +336,10 @@
 
 - (void) logout
 {
-    if (!self.currentUser || !self.currentUser.current)
-    {
-        return;
-    }
-    
-    self.window.rootViewController = [self createAndReturnLoginViewController];
     
     self.masterViewController = nil;
     
     [self.currentOAuth2Credentials removeFromKeychain];
-    
-    self.currentUser.currentValue = NO;
-    
-    [self.mainManagedObjectContext
-     deleteObject: self.currentUser];
     
     [self.tokenExpiryTimer invalidate];
     self.tokenExpiryTimer = nil;
@@ -356,11 +349,13 @@
                                                 onFailure: ^(NSString *errorMessage) {
                                                 }];
     
-    [self clearCoreDataMainEntities: YES];
-    
     self.currentOAuth2Credentials = nil;
     
     _currentUser = nil;
+    
+    [self nukeCoreData];
+    
+    self.window.rootViewController = [self createAndReturnLoginViewController];
 }
 
 
@@ -427,16 +422,19 @@
     }
     else
     {
-        NSTimeInterval refreshTimeout = [self.currentOAuth2Credentials.expirationDate timeIntervalSinceNow];
+        if(self.currentOAuth2Credentials)
+        {
+            NSTimeInterval refreshTimeout = [self.currentOAuth2Credentials.expirationDate timeIntervalSinceNow];
         
-        if (refreshTimeout < kOAuthTokenExpiryMargin)
-        {
-            [self refreshExpiredToken];
-        }
-        else
-        {
-            [self setTokenExpiryTimer];
-        }
+            if (YES)//refreshTimeout < kOAuthTokenExpiryMargin)
+            {
+                [self refreshExpiredToken];
+            }
+            else
+            {
+                [self setTokenExpiryTimer];
+            }
+    }
     }
 }
 
@@ -593,6 +591,43 @@
     _searchRegistry = [SYNSearchRegistry registry];
 }
 
+
+-(void)nukeCoreData
+{
+    _mainRegistry = nil;
+    _searchRegistry = nil;
+    self.mainManagedObjectContext = nil;
+    self.privateManagedObjectContext = nil;
+    self.searchManagedObjectContext = nil;
+    self.channelsManagedObjectContext = nil;
+    self.oAuthNetworkEngine = nil;
+    self.networkEngine = nil;
+    
+    
+    NSURL *storeURL = [[[NSFileManager defaultManager] URLsForDirectory: NSDocumentDirectory
+                                                              inDomains: NSUserDomainMask] lastObject];
+    
+    storeURL = [storeURL URLByAppendingPathComponent: @"Rockpack.sqlite"];
+    
+    NSError* error = nil;
+    if ([[NSFileManager defaultManager] removeItemAtURL: storeURL
+                                                  error: &error])
+    {
+        [self initializeCoreDataStack];
+        [self initializeNetworkEngines];
+        // Video Queue //
+        self.videoQueue = [SYNVideoQueue queue];
+        
+        // Subscriptions Manager //
+        self.channelManager = [SYNChannelManager manager];
+    }
+    else
+    {
+        AssertOrLog(@"*** Could not delete persistent store, %@", error);
+    }
+    
+    
+}
 
 // Save the main context first (propagating the changes to the private) and then the private
 - (void) saveContext: (BOOL) wait
@@ -866,7 +901,7 @@
     if (_currentOAuth2Credentials != nil)
     {
         [_currentOAuth2Credentials saveToKeychainForService: kOAuth2Service
-                                                    account: self.currentUser.uniqueId];
+                                                    account: _currentOAuth2Credentials.userId];
     }
 }
 
@@ -882,6 +917,10 @@
     {
         _currentOAuth2Credentials = [SYNOAuth2Credential credentialFromKeychainForService: kOAuth2Service
                                                                                   account: self.currentUser.uniqueId];
+        if (!_currentOAuth2Credentials)
+        {
+            AssertOrLog(@"Detected currentUser data, but no matching OAuth2 credentials");
+        }
     }
     
     return _currentOAuth2Credentials;
