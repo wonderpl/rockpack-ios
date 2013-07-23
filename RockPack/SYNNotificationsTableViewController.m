@@ -314,7 +314,7 @@
     
     [self.appDelegate.oAuthNetworkEngine markAdReadForNotificationIndexes: array
                                                                fromUserId: self.appDelegate.currentUser.uniqueId
-                                                        completionHandler: ^(id responce) {
+                                                        completionHandler: ^(id response) {
                                                             notification.read = YES;
                                                             
                                                             [self.tableView reloadData];
@@ -343,31 +343,6 @@
 }
 
 
-- (Video *) videoFromVideoId: (NSString *) videoId
-{
-    NSError *error;
-    Video *video;
-    
-    NSFetchRequest *channelFetchRequest = [[NSFetchRequest alloc] init];
-    
-    channelFetchRequest.entity = [NSEntityDescription entityForName: @"Video"
-                                                     inManagedObjectContext: self.appDelegate.mainManagedObjectContext];
-
-    channelFetchRequest.predicate = [NSPredicate predicateWithFormat: @"uniqueId == %@", videoId];
-    
-    NSArray *matchingChannelEntries = [self.appDelegate.mainManagedObjectContext
-                                       executeFetchRequest: channelFetchRequest
-                                       error: &error];
-    
-    if (matchingChannelEntries.count > 0)
-    {
-        video = matchingChannelEntries[0];
-    }
-    
-    return video;
-}
-
-
 - (Channel *) channelFromChannelId: (NSString *) channelId
 {
     NSError *error;
@@ -376,13 +351,12 @@
     NSFetchRequest *channelFetchRequest = [[NSFetchRequest alloc] init];
     
     channelFetchRequest.entity = [NSEntityDescription entityForName: @"Channel"
-                                                     inManagedObjectContext: self.appDelegate.mainManagedObjectContext];
+                                             inManagedObjectContext: self.appDelegate.mainManagedObjectContext];
     
     channelFetchRequest.predicate = [NSPredicate predicateWithFormat: @"uniqueId == %@", channelId];
 
-    NSArray *matchingChannelEntries = [self.appDelegate.mainManagedObjectContext
-                                       executeFetchRequest: channelFetchRequest
-                                       error: &error];
+    NSArray *matchingChannelEntries = [self.appDelegate.mainManagedObjectContext executeFetchRequest: channelFetchRequest
+                                                                                               error: &error];
     
     if (matchingChannelEntries.count > 0)
     {
