@@ -102,6 +102,8 @@
 - (UITableViewCell *) tableView: (UITableView *) tableView
           cellForRowAtIndexPath: (NSIndexPath *) indexPath
 {
+    
+    
     SYNNotificationsTableViewCell *notificationCell = [tableView dequeueReusableCellWithIdentifier: kNotificationsCellIdent
                                                                                       forIndexPath: indexPath];
     
@@ -127,7 +129,7 @@
     }
     else
     {
-        AssertOrLog(@"Eek! Machine anomaly. Notification type unexpected")
+        AssertOrLog(@"Eek! Machine anomaly. Notification type unexpected");
     }
     
     notificationCell.messageTitle = [NSString stringWithString: constructedMessage];

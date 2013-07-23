@@ -83,6 +83,8 @@
 
 -(IBAction)switchClicked:(id)sender
 {
+    if( ((UIButton*)sender).selected ) // do not re-select
+        return;
     
     if(sender == self.onRockpackButton)
     {
@@ -92,11 +94,17 @@
         }];
         
         self.displayFriends = [self.iOSFriends filteredArrayUsingPredicate:searchPredicate];
+        
+        [self.allFriendsButton setSelected:NO];
+        
     }
     else if (sender == self.allFriendsButton)
     {
         self.displayFriends = self.iOSFriends;
+        [self.onRockpackButton setSelected:NO];
     }
+    
+    [((UIButton*)sender) setSelected:YES];
     
     
 }
@@ -137,6 +145,11 @@
         self.displayFriends = self.iOSFriends;
         
         [self.activityIndicator stopAnimating];
+        
+        self.allFriendsButton.enabled = YES;
+        self.onRockpackButton.enabled = YES;
+        
+        [self.allFriendsButton setSelected:YES];
         
         [self.friendsCollectionView reloadData];
         
