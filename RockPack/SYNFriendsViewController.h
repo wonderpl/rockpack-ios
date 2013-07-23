@@ -20,5 +20,6 @@
 @property (nonatomic, strong) IBOutlet UIButton* onRockpackButton;
 
 -(IBAction)facebookLoginPressed:(id)sender;
+-(IBAction)inviteButtonPressed:(id)sender;
 
 @end

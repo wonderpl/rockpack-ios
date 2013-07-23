@@ -748,7 +748,6 @@
 						<int key="NSvFlags">265</int>
 						<string key="NSFrame">{{851, 638}, {113, 54}}</string>
 						<reference key="NSSuperview" ref="766721923"/>
-						<reference key="NSNextKeyView"/>
 						<string key="NSReuseIdentifierKey">_NS:9</string>
 						<bool key="IBUIOpaque">NO</bool>
 						<object class="IBUIAccessibilityConfiguration" key="IBUIAccessibilityConfiguration">
@@ -1526,24 +1525,24 @@
 		<bool key="IBDocument.PluginDeclaredDependenciesTrackSystemTargetVersion">YES</bool>
 		<int key="IBDocument.defaultPropertyAccessControl">3</int>
 		<dictionary class="NSMutableDictionary" key="IBDocument.LastKnownImageSizes">
-			<string key="ButtonFacebookDefault.png">{316, 62}</string>
-			<string key="ButtonFacebookHighlighted.png">{316, 62}</string>
-			<string key="ButtonLoginBigDefault.png">{315, 62}</string>
-			<string key="ButtonLoginDefault.png">{113, 54}</string>
-			<string key="ButtonLoginHighlighted.png">{113, 54}</string>
-			<string key="ButtonRegister.png">{113, 54}</string>
-			<string key="ButtonRegisterBigDefault.png">{315, 62}</string>
-			<string key="ButtonRegisterHighlighted.png">{113, 54}</string>
-			<string key="ButtonResetPasswordDefault.png">{315, 62}</string>
-			<string key="ButtonResetPasswordHighlighted.png">{315, 62}</string>
-			<string key="ButtonSignupDefault.png">{123, 62}</string>
-			<string key="ButtonSignupHighlighted.png">{123, 62}</string>
-			<string key="DividerLogin.png">{306, 3}</string>
-			<string key="FieldDayMonth.png">{72, 57}</string>
-			<string key="FieldLogin.png">{308, 57}</string>
-			<string key="FieldPhoto.png">{187, 187}</string>
-			<string key="FieldYear.png">{138, 57}</string>
-			<string key="LogoSignup.png">{248, 54}</string>
+			<string key="ButtonFacebookDefault.png">{16, 16}</string>
+			<string key="ButtonFacebookHighlighted.png">{16, 16}</string>
+			<string key="ButtonLoginBigDefault.png">{16, 16}</string>
+			<string key="ButtonLoginDefault.png">{16, 16}</string>
+			<string key="ButtonLoginHighlighted.png">{16, 16}</string>
+			<string key="ButtonRegister.png">{16, 16}</string>
+			<string key="ButtonRegisterBigDefault.png">{16, 16}</string>
+			<string key="ButtonRegisterHighlighted.png">{16, 16}</string>
+			<string key="ButtonResetPasswordDefault.png">{16, 16}</string>
+			<string key="ButtonResetPasswordHighlighted.png">{16, 16}</string>
+			<string key="ButtonSignupDefault.png">{16, 16}</string>
+			<string key="ButtonSignupHighlighted.png">{16, 16}</string>
+			<string key="DividerLogin.png">{16, 16}</string>
+			<string key="FieldDayMonth.png">{16, 16}</string>
+			<string key="FieldLogin.png">{16, 16}</string>
+			<string key="FieldPhoto.png">{16, 16}</string>
+			<string key="FieldYear.png">{16, 16}</string>
+			<string key="LogoSignup.png">{16, 16}</string>
 		</dictionary>
 		<string key="IBCocoaTouchPluginVersion">2083</string>
 	</data>
