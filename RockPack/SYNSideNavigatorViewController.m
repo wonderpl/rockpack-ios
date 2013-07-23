@@ -400,18 +400,13 @@ typedef enum {
     
     if (navigationType == kSideNavigationTypeLoad)
     {
-        
         Class theClass = NSClassFromString(navigationAction);
         self.currentlyLoadedViewController = (UIViewController*)[[theClass alloc] init];
         
         // == NOTIFICATIONS == //
-        
         if (indexPath.row == kNotificationsRowIndex)
             ((SYNNotificationsTableViewController*)self.currentlyLoadedViewController).notifications = self.notifications;
-        
-        
 
-        
         if (IS_IPAD)
         {
             CGRect frameThatFits = self.currentlyLoadedViewController.view.frame;
@@ -810,6 +805,7 @@ typedef enum {
         startFrame.origin.x = self.view.frame.size.width;
         self.navigationContainerView.frame = startFrame;
         self.navigationContainerView.hidden = NO;
+        self.navigationContainerView.alpha = 1.0f;
         [self.view insertSubview:self.navigationContainerView aboveSubview: self.searchViewController.view];
         
         [UIView animateWithDuration: 0.3f

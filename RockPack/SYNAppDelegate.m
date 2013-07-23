@@ -1260,10 +1260,10 @@
     self.apnsToken = nil;
     
     // Test code, doesn't actually belong in here, but good way to test
-//    [self performBlock: ^{
-//        [self.viewStackManager displaySideNavigatorFromPushNotification];
-//    }
-//            afterDelay: 3.0f];
+    [self performBlock: ^{
+        [self.viewStackManager displaySideNavigatorFromPushNotification];
+    }
+            afterDelay: 10.0f];
 }
 
 

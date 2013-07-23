@@ -178,8 +178,14 @@
     self.sideNavigatorController.state = SideNavigationStateHidden;
 }
 
+
 - (void) displaySideNavigatorFromPushNotification
 {
+    if(IS_IPHONE)
+    {
+        self.sideNavigatorController.state = SideNavigationStateHalf;
+    }
+    
     [self.sideNavigatorController displayFromPushNotification];
 }
 
