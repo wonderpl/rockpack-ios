@@ -47,6 +47,8 @@ typedef void (^FacebookPostFailureBlock)(NSError *error);
 
 -(BOOL) hasOpenSession;
 
-- (void) sendAppRequestToFriend:(Friend*)friend;
+- (void) sendAppRequestToFriend:(Friend*)friend
+                        onSuccess:(FacebookPostSuccessBlock) successBlock
+                        onFailure:(FacebookPostFailureBlock) failureBlock;
 
 @end
