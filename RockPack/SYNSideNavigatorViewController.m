@@ -243,7 +243,7 @@ typedef enum {
                                                        
                 SYNRockpackNotification* notification = [SYNRockpackNotification notificationWithDictionary:itemData];
                 
-                if (!notification)
+                if (!notification || notification.objectType == kNotificationObjectTypeUnknown)
                 {
                     continue;
                 }
