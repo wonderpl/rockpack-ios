@@ -84,7 +84,7 @@
         
         
         NSArray* n_external_account_items = n_external_accounts[@"items"];
-        NSDictionary* n_facebook_account = n_external_account_items ? n_external_account_items[0] : nil;
+        NSDictionary* n_facebook_account = n_external_account_items && (n_external_account_items.count > 0) ? n_external_account_items[0] : nil;
         if(n_facebook_account)
         {
             NSString* n_external_system = n_facebook_account[@"external_system"];
