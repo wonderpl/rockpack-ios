@@ -346,19 +346,8 @@
 #pragma mark - Accessors
 
 - (void) setNotifications: (NSArray *) notifications
-{
-    // We need to make sure that we don't display any unknown notifications (for future compatibility)
-    NSMutableArray *validNotifications = [NSMutableArray new];
-    
-    for (SYNRockpackNotification *notification in notifications)
-    {
-        if (notification.objectType != kNotificationObjectTypeUnknown)
-        {
-            [validNotifications addObject: notification];
-        }
-    }
-    
-    _notifications = [validNotifications copy];
+{   
+    _notifications = notifications;
     
     [self.tableView reloadData];
 }

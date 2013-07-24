@@ -31,6 +31,12 @@ static char* association_key = "SYNFriendThumbnailCell to Friend";
 @property (nonatomic, strong) SYNInviteFriendView* currentInviteFriendView;
 @property (nonatomic, weak) Friend* currentlySelectedFriend;
 
+
+//iPhone specific
+@property (nonatomic, strong) IBOutlet UIView* searchContainer;
+@property (weak, nonatomic) IBOutlet UIImageView *searchFieldBackground;
+@property (weak, nonatomic) IBOutlet UIView *searchSlider;
+
 @end
 
 @implementation SYNFriendsViewController
@@ -60,6 +66,13 @@ static char* association_key = "SYNFriendThumbnailCell to Friend";
     self.preLoginLabel.font = [UIFont rockpackFontOfSize:self.preLoginLabel.font.pointSize];
     
     [self.activityIndicator hidesWhenStopped];
+    
+    self.allFriendsButton.titleLabel.font = [UIFont rockpackFontOfSize: IS_IPAD ? 14.0f : 12.0f];
+    self.allFriendsButton.contentEdgeInsets = UIEdgeInsetsMake(IS_IPAD ? 7.0f : 5.0, 0.0f, 0.0f, 0.0f);
+    self.onRockpackButton.titleLabel.font = [UIFont rockpackFontOfSize: IS_IPAD ? 14.0f : 12.0f];
+    self.onRockpackButton.contentEdgeInsets = UIEdgeInsetsMake(IS_IPAD ? 7.0f : 5.0, 0.0f, 0.0f, 0.0f);
+    
+    self.searchField.font = [UIFont rockpackFontOfSize: self.searchField.font.pointSize];
     
     if([[SYNFacebookManager sharedFBManager] hasOpenSession])
     {
@@ -91,6 +104,32 @@ static char* association_key = "SYNFriendThumbnailCell to Friend";
         }
         
         
+    }
+    
+    if(IS_IPHONE)
+    {
+        // iPhone specific setup
+        
+        //Resizing images
+        UIImage* backgroundImageOff = [[UIImage imageNamed:@"SearchTab"] resizableImageWithCapInsets:UIEdgeInsetsMake(0.0f, 1.0f, 0.0f, 1.0f)];
+        UIImage* backgroundImageOn = [[UIImage imageNamed:@"SearchTabSelected" ]resizableImageWithCapInsets:UIEdgeInsetsMake(0.0f, 1.0f, 0.0f, 1.0f)];
+        UIImage* backgroundImageHighlighted = [[UIImage imageNamed:@"SearchTabHighlighted"] resizableImageWithCapInsets:UIEdgeInsetsMake(0.0f, 1.0f, 0.0f, 1.0f)];
+        
+        [self.onRockpackButton setBackgroundImage:backgroundImageOff forState:UIControlStateNormal];
+        [self.onRockpackButton setBackgroundImage:backgroundImageOn forState:UIControlStateSelected];
+        [self.onRockpackButton setBackgroundImage:backgroundImageHighlighted forState:UIControlStateHighlighted];
+        
+        [self.allFriendsButton setBackgroundImage:backgroundImageOff forState:UIControlStateNormal];
+        [self.allFriendsButton setBackgroundImage:backgroundImageOn forState:UIControlStateSelected];
+        [self.allFriendsButton setBackgroundImage:backgroundImageHighlighted forState:UIControlStateHighlighted];
+        
+        self.searchFieldBackground.image = [[UIImage imageNamed: @"FieldSearch"]
+                                            resizableImageWithCapInsets: UIEdgeInsetsMake(0.0f,20.0f, 0.0f, 20.0f)];
+        
+        //Push the search slider out to the right.
+        CGRect searchSliderFrame = self.searchSlider.frame;
+        searchSliderFrame.origin.x = searchSliderFrame.size.width;
+        self.searchSlider.frame= searchSliderFrame;
     }
     
     
@@ -131,6 +170,8 @@ static char* association_key = "SYNFriendThumbnailCell to Friend";
     
     [self.activityIndicator startAnimating];
     
+    __weak SYNFriendsViewController* weakSelf = self;
+    
     [appDelegate.oAuthNetworkEngine friendsForUser:appDelegate.currentUser completionHandler:^(id dictionary) {
         
         NSDictionary* usersDictionary = dictionary[@"users"];
@@ -143,9 +184,9 @@ static char* association_key = "SYNFriendThumbnailCell to Friend";
         
         NSInteger friendsCount = itemsDictionary.count;
         
-        [self.allFriendsButton setTitle:[NSString stringWithFormat:@"ALL FRIENDS (%i)", friendsCount] forState:UIControlStateNormal];
-        [self.allFriendsButton setTitle:[NSString stringWithFormat:@"ALL FRIENDS (%i)", friendsCount] forState:UIControlStateHighlighted];
-        [self.allFriendsButton setTitle:[NSString stringWithFormat:@"ALL FRIENDS (%i)", friendsCount] forState:UIControlStateSelected];
+        [weakSelf.allFriendsButton setTitle:[NSString stringWithFormat:@"ALL FRIENDS (%i)", friendsCount] forState:UIControlStateNormal];
+        [weakSelf.allFriendsButton setTitle:[NSString stringWithFormat:@"ALL FRIENDS (%i)", friendsCount] forState:UIControlStateHighlighted];
+        [weakSelf.allFriendsButton setTitle:[NSString stringWithFormat:@"ALL FRIENDS (%i)", friendsCount] forState:UIControlStateSelected];
         
         NSMutableArray* iOSFriendsMutableArray = [NSMutableArray arrayWithCapacity:friendsCount];
         
@@ -164,26 +205,26 @@ static char* association_key = "SYNFriendThumbnailCell to Friend";
             
             
         }
+
+        [weakSelf.onRockpackButton setTitle:[NSString stringWithFormat:@"ON ROCKPACK (%i)", friendsCount] forState:UIControlStateNormal];
+        [weakSelf.onRockpackButton setTitle:[NSString stringWithFormat:@"ON ROCKPACK (%i)", friendsCount] forState:UIControlStateHighlighted];
+        [weakSelf.onRockpackButton setTitle:[NSString stringWithFormat:@"ON ROCKPACK (%i)", friendsCount] forState:UIControlStateSelected];
         
-        [self.onRockpackButton setTitle:[NSString stringWithFormat:@"ON ROCKPACK (%i)", friendsCount] forState:UIControlStateNormal];
-        [self.onRockpackButton setTitle:[NSString stringWithFormat:@"ON ROCKPACK (%i)", friendsCount] forState:UIControlStateHighlighted];
-        [self.onRockpackButton setTitle:[NSString stringWithFormat:@"ON ROCKPACK (%i)", friendsCount] forState:UIControlStateSelected];
+        weakSelf.iOSFriends = [NSArray arrayWithArray:iOSFriendsMutableArray];
+        weakSelf.displayFriends = weakSelf.iOSFriends;
         
-        self.iOSFriends = [NSArray arrayWithArray:iOSFriendsMutableArray];
-        self.displayFriends = self.iOSFriends;
+        [weakSelf.activityIndicator stopAnimating];
         
-        [self.activityIndicator stopAnimating];
+        weakSelf.allFriendsButton.enabled = YES;
+        weakSelf.onRockpackButton.enabled = YES;
         
-        self.allFriendsButton.enabled = YES;
-        self.onRockpackButton.enabled = YES;
+        [weakSelf.allFriendsButton setSelected:YES];
         
-        [self.allFriendsButton setSelected:YES];
-        
-        [self.friendsCollectionView reloadData];
+        [weakSelf.friendsCollectionView reloadData];
         
     } errorHandler:^(id dictionary) {
         
-        [self.activityIndicator stopAnimating];
+        [weakSelf.activityIndicator stopAnimating];
     }];
 }
 
@@ -197,6 +238,10 @@ static char* association_key = "SYNFriendThumbnailCell to Friend";
     
     self.preLoginLabel.text = @"Logging In";
     
+    //Weak variables to avoid block retain cycles
+    __weak SYNFriendsViewController* weakSelf = self;
+    __weak SYNAppDelegate* weakAppDelegate = appDelegate;
+    
     SYNFacebookManager* facebookManager = [SYNFacebookManager sharedFBManager];
     
     [facebookManager loginOnSuccess: ^(NSDictionary<FBGraphUser> *dictionary) {
@@ -204,28 +249,31 @@ static char* association_key = "SYNFriendThumbnailCell to Friend";
         FBAccessTokenData* accessTokenData = [[FBSession activeSession] accessTokenData];
         
         
-        [appDelegate.oAuthNetworkEngine connectToFacebookAccoundForUserId:appDelegate.currentUser.uniqueId
+        [weakAppDelegate.oAuthNetworkEngine connectToFacebookAccoundForUserId:weakAppDelegate.currentUser.uniqueId
                                                                     token:accessTokenData.accessToken
                                                         completionHandler:^(id response) {
                                                             
-                                                            [self.activityIndicator stopAnimating];
                                                             
-                                                            self.friendsCollectionView.hidden = NO;
-                                                            self.preLoginLabel.hidden = YES;
-                                                            self.facebookLoginButton.hidden = YES;
+                                                            [weakSelf.activityIndicator stopAnimating];
                                                             
-                                                            self.onRockpackButton.hidden = NO;
-                                                            self.allFriendsButton.hidden = NO;
+                                                            weakSelf.friendsCollectionView.hidden = NO;
+                                                            weakSelf.preLoginLabel.hidden = YES;
+                                                            weakSelf.facebookLoginButton.hidden = YES;
                                                             
-                                                            [self fetchAndDisplayFriends];
+                                                            weakSelf.onRockpackButton.hidden = NO;
+                                                            weakSelf.allFriendsButton.hidden = NO;
+                                                            
+                                                            [weakSelf fetchAndDisplayFriends];
+                                                             
                                                             
                                                         } errorHandler:^(id response) {
                                                             
-                                                            [self.activityIndicator stopAnimating];
+                                                            [weakSelf.activityIndicator stopAnimating];
                                                             
-                                                            self.facebookLoginButton.hidden = NO;
+                                                            weakSelf.facebookLoginButton.hidden = NO;
                                                             
-                                                            self.preLoginLabel.text = @"We could not Log you in becuase this FB account seems to be associated with a different User.";
+                                                            weakSelf.preLoginLabel.text = @"We could not Log you in becuase this FB account seems to be associated with a different User.";
+                                                            
                                                         }];
         
     } onFailure: ^(NSString* errorString) {
@@ -234,7 +282,7 @@ static char* association_key = "SYNFriendThumbnailCell to Friend";
         
          
      }];
-    
+
 }
 
 #pragma mark - UICollectionView Delegate
@@ -327,6 +375,15 @@ static char* association_key = "SYNFriendThumbnailCell to Friend";
     return YES;
 }
 
+-(BOOL)textFieldShouldClear:(UITextField *)textField
+{
+    self.displayFriends = self.iOSFriends;
+    [self.friendsCollectionView reloadData];
+    return YES;
+}
+
+
+
 - (void) collectionView: (UICollectionView *) collectionView didSelectItemAtIndexPath: (NSIndexPath *) indexPath
 {
     
@@ -368,10 +425,40 @@ static char* association_key = "SYNFriendThumbnailCell to Friend";
 
 -(void)dealloc
 {
+    [self.searchContainer removeFromSuperview];
     // clean associations
     for (UICollectionViewCell* visibleCell in self.friendsCollectionView.visibleCells) {
         objc_removeAssociatedObjects(visibleCell);
     }
+}
+
+#pragma mark - iPhone Search bar
+
+-(void)addSearchBarToView:(UIView*)view
+{
+    CGRect searchContainerFrame = self.searchContainer.frame;
+    searchContainerFrame.origin = CGPointMake(46.0f, 0.0f);
+    self.searchContainer.frame = searchContainerFrame;
+    [view addSubview:self.searchContainer];
+}
+
+- (IBAction)closeSearchBox:(id)sender {
+    [self.searchField resignFirstResponder];
+    [UIView animateWithDuration:0.3f delay:0.0f options:UIViewAnimationCurveEaseOut animations:^{
+        CGRect newFrame = self.searchSlider.frame;
+        newFrame.origin.x = newFrame.size.width;
+        self.searchSlider.frame = newFrame;
+    } completion:nil];
+}
+
+- (IBAction)revealSearchBox:(id)sender {
+    [UIView animateWithDuration:0.3f delay:0.0f options:UIViewAnimationCurveEaseIn animations:^{
+        CGRect newFrame = self.searchSlider.frame;
+        newFrame.origin.x = 0.0f;
+        self.searchSlider.frame = newFrame;
+    } completion:^(BOOL finished) {
+        [self.searchField becomeFirstResponder];
+    }];
 }
 
 @end

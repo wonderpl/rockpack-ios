@@ -1329,6 +1329,12 @@ static UIWebView* vimeoideoWebViewInstance;
     else if ([actionName isEqualToString: @"playbackQuality"])
     {
         DebugLog (@"!!!!!!!!!! Quality: %@", actionData);
+//        UIAlertView *alert = [[UIAlertView alloc] initWithTitle: @"Video Quality"
+//                                                        message: actionData
+//                                                       delegate: nil
+//                                              cancelButtonTitle: @"OK"
+//                                              otherButtonTitles: nil, nil];
+//        [alert show];
     }
     else if ([actionName isEqualToString: @"playbackRateChange"])
     {
