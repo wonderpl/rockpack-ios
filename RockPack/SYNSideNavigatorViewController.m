@@ -22,6 +22,7 @@
 #import "UIFont+SYNFont.h"
 #import "UIImageView+WebCache.h"
 #import <QuartzCore/QuartzCore.h>
+#import "SYNFriendsViewController.h"
 
 
 #define kSideNavTitle @"kSideNavTitle"
@@ -29,6 +30,7 @@
 #define kSideNavAction @"kSideNavAction"
 
 #define kNotificationsRowIndex 3
+#define kFriendsRowIndex 4
 
 typedef enum {
     kSideNavigationTypeLoad = 0,
@@ -405,7 +407,19 @@ typedef enum {
         
         // == NOTIFICATIONS == //
         if (indexPath.row == kNotificationsRowIndex)
+        {
             ((SYNNotificationsTableViewController*)self.currentlyLoadedViewController).notifications = self.notifications;
+            self.navigationContainerTitleLabel.text = NSLocalizedString(@"core_nav_section_notifications",nil);
+        }
+        else if (indexPath.row == kFriendsRowIndex)
+        {
+            self.navigationContainerTitleLabel.text = NSLocalizedString(@"core_nav_section_friends",nil);
+            if(IS_IPHONE)
+            {
+                SYNFriendsViewController* friendsController = (SYNFriendsViewController*) self.currentlyLoadedViewController;
+                [friendsController addSearchBarToView:self.navigationContainerView];
+            }
+        }
 
         if (IS_IPAD)
         {
@@ -422,7 +436,6 @@ typedef enum {
             frameThatFits.size.height = self.containerView.frame.size.height - 6.0;
             self.currentlyLoadedViewController.view.frame = frameThatFits;
         }
-        self.navigationContainerTitleLabel.text = NSLocalizedString(@"core_nav_section_notifications",nil);
         self.state = SideNavigationStateFull;
         
     }
@@ -750,11 +763,14 @@ typedef enum {
     
     [[SYNSoundPlayer sharedInstance] playSoundByName: kSoundNewSlideIn];
     self.mainContentView.alpha = 1.0f;
-    [self.view addSubview:self.searchViewController.searchBoxView];
-    self.searchViewController.searchBoxView.searchTextField.text = @"";
-    self.searchViewController.searchBoxView.searchTextField.delegate = self;
-    [self.searchViewController.searchBoxView resignFirstResponder];
-    [self.searchViewController.searchBoxView hideCloseButton];
+    if(IS_IPHONE)
+    {
+        [self.view insertSubview:self.searchViewController.searchBoxView belowSubview:self.navigationContainerView];
+        self.searchViewController.searchBoxView.searchTextField.text = @"";
+        self.searchViewController.searchBoxView.searchTextField.delegate = self;
+        [self.searchViewController.searchBoxView resignFirstResponder];
+        [self.searchViewController.searchBoxView hideCloseButton];
+    }
     
     [UIView animateWithDuration: kRockieTalkieAnimationDuration
                           delay: 0.0f

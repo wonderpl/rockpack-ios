@@ -792,6 +792,8 @@
 		38A201071731738F00FB9F57 /* SYNExistingChannelsViewController~iphone.xib in Resources */ = {isa = PBXBuildFile; fileRef = 38A201061731738F00FB9F57 /* SYNExistingChannelsViewController~iphone.xib */; };
 		38A2FF171730828100FB9F57 /* SYNSearchBoxIphoneView.xib in Resources */ = {isa = PBXBuildFile; fileRef = 38A2FF161730828100FB9F57 /* SYNSearchBoxIphoneView.xib */; };
 		38A2FF1B17314B3E00FB9F57 /* SYNAutocompleteIphoneCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 38A2FF1A17314B3E00FB9F57 /* SYNAutocompleteIphoneCell.m */; };
+		38A73D82179EDCFD00AD9E90 /* SYNFriendsViewController~iphone.xib in Resources */ = {isa = PBXBuildFile; fileRef = 38A73D81179EDCFD00AD9E90 /* SYNFriendsViewController~iphone.xib */; };
+		38A73D84179EE53400AD9E90 /* SYNFriendThumbnailCell~iphone.xib in Resources */ = {isa = PBXBuildFile; fileRef = 38A73D83179EE53400AD9E90 /* SYNFriendThumbnailCell~iphone.xib */; };
 		38BACE001732CCFB00406597 /* SYNLoginViewControllerIphone.m in Sources */ = {isa = PBXBuildFile; fileRef = 38BACDFE1732CCFB00406597 /* SYNLoginViewControllerIphone.m */; };
 		38BACE011732CCFB00406597 /* SYNLoginViewControllerIphone.xib in Resources */ = {isa = PBXBuildFile; fileRef = 38BACDFF1732CCFB00406597 /* SYNLoginViewControllerIphone.xib */; };
 		38BACE031734151A00406597 /* SYNChannelCreateNewCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 38BACE021734151A00406597 /* SYNChannelCreateNewCell.xib */; };
@@ -2103,6 +2105,8 @@
 		38A2FFFD1731607F00FB9F57 /* ButtonClose~iphone.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "ButtonClose~iphone.png"; sourceTree = "<group>"; };
 		38A2FFFE1731607F00FB9F57 /* ButtonVideoOverlayAdd@2x~iphone.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "ButtonVideoOverlayAdd@2x~iphone.png"; sourceTree = "<group>"; };
 		38A2FFFF1731607F00FB9F57 /* ButtonVideoOverlayAddHighlighted@2x~iphone.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "ButtonVideoOverlayAddHighlighted@2x~iphone.png"; sourceTree = "<group>"; };
+		38A73D81179EDCFD00AD9E90 /* SYNFriendsViewController~iphone.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = "SYNFriendsViewController~iphone.xib"; sourceTree = "<group>"; };
+		38A73D83179EE53400AD9E90 /* SYNFriendThumbnailCell~iphone.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = "SYNFriendThumbnailCell~iphone.xib"; sourceTree = "<group>"; };
 		38BACDFD1732CCFB00406597 /* SYNLoginViewControllerIphone.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SYNLoginViewControllerIphone.h; sourceTree = "<group>"; };
 		38BACDFE1732CCFB00406597 /* SYNLoginViewControllerIphone.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SYNLoginViewControllerIphone.m; sourceTree = "<group>"; };
 		38BACDFF1732CCFB00406597 /* SYNLoginViewControllerIphone.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = SYNLoginViewControllerIphone.xib; sourceTree = "<group>"; };
@@ -4900,9 +4904,11 @@
 				BE7D02FE179D5624008053DC /* SYNFriendsViewController.h */,
 				BE7D02FF179D5624008053DC /* SYNFriendsViewController.m */,
 				BE7D0300179D5624008053DC /* SYNFriendsViewController.xib */,
+				38A73D81179EDCFD00AD9E90 /* SYNFriendsViewController~iphone.xib */,
 				BE7D0303179D5A40008053DC /* SYNFriendThumbnailCell.h */,
 				BE7D0304179D5A41008053DC /* SYNFriendThumbnailCell.m */,
 				BE7D0306179D5ACE008053DC /* SYNFriendThumbnailCell.xib */,
+				38A73D83179EE53400AD9E90 /* SYNFriendThumbnailCell~iphone.xib */,
 				BE7D0341179E9E59008053DC /* SYNInviteFriendView.h */,
 				BE7D0342179E9E5B008053DC /* SYNInviteFriendView.m */,
 				BE7D0344179E9E9D008053DC /* SYNInviteFriendView.xib */,
@@ -6185,6 +6191,8 @@
 				018B0D9E179EA8A400F2D3CD /* IconReportConcernWhiteCheck.png in Resources */,
 				018B0D9F179EA8A400F2D3CD /* IconReportConcernWhiteCheck@2x.png in Resources */,
 				BE7D0353179EBDEA008053DC /* ButtonInviteFriendDefault.png in Resources */,
+				38A73D82179EDCFD00AD9E90 /* SYNFriendsViewController~iphone.xib in Resources */,
+				38A73D84179EE53400AD9E90 /* SYNFriendThumbnailCell~iphone.xib in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
