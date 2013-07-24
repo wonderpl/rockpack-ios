@@ -142,12 +142,16 @@
     
     NSURL *thumbnaillUrl;
     UIImage *placeholder;
+    
+    notificationCell.playSymbolImageView.hidden = TRUE;
 
     switch (notification.objectType)
     {
         case kNotificationObjectTypeVideo:
             thumbnaillUrl = [NSURL URLWithString: notification.videoThumbnailUrl];
             placeholder = [UIImage imageNamed: @"PlaceholderNotificationVideo"];
+//            notificationCell.playSymbolImageView.hidden = FALSE;
+
             break;
             
         case kNotificationObjectTypeChannel:
@@ -156,6 +160,7 @@
             break;
             
         case kNotificationObjectTypeUser:
+            notificationCell.playSymbolImageView.hidden = TRUE;
             break;
             
         default:

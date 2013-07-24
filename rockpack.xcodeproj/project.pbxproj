@@ -200,6 +200,8 @@
 		018B0D9D179EA8A400F2D3CD /* IconReportConcernBlackCheck@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 018B0D99179EA8A400F2D3CD /* IconReportConcernBlackCheck@2x.png */; };
 		018B0D9E179EA8A400F2D3CD /* IconReportConcernWhiteCheck.png in Resources */ = {isa = PBXBuildFile; fileRef = 018B0D9A179EA8A400F2D3CD /* IconReportConcernWhiteCheck.png */; };
 		018B0D9F179EA8A400F2D3CD /* IconReportConcernWhiteCheck@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 018B0D9B179EA8A400F2D3CD /* IconReportConcernWhiteCheck@2x.png */; };
+		018B0DA2179EDBD200F2D3CD /* OverlayNotificationVideo.png in Resources */ = {isa = PBXBuildFile; fileRef = 018B0DA0179EDBD200F2D3CD /* OverlayNotificationVideo.png */; };
+		018B0DA3179EDBD200F2D3CD /* OverlayNotificationVideo@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 018B0DA1179EDBD200F2D3CD /* OverlayNotificationVideo@2x.png */; };
 		01901A971771CCBA007DBEAC /* SenTestingKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 01901A961771CCBA007DBEAC /* SenTestingKit.framework */; };
 		01901A981771CCBA007DBEAC /* UIKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 010DEFD41629BDC40080F26B /* UIKit.framework */; };
 		01901A991771CCBA007DBEAC /* Foundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 010DEFD61629BDC40080F26B /* Foundation.framework */; };
@@ -1454,6 +1456,8 @@
 		018B0D99179EA8A400F2D3CD /* IconReportConcernBlackCheck@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = "IconReportConcernBlackCheck@2x.png"; path = "Assets/Images/IconReportConcernBlackCheck@2x.png"; sourceTree = "<group>"; };
 		018B0D9A179EA8A400F2D3CD /* IconReportConcernWhiteCheck.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = IconReportConcernWhiteCheck.png; path = Assets/Images/IconReportConcernWhiteCheck.png; sourceTree = "<group>"; };
 		018B0D9B179EA8A400F2D3CD /* IconReportConcernWhiteCheck@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = "IconReportConcernWhiteCheck@2x.png"; path = "Assets/Images/IconReportConcernWhiteCheck@2x.png"; sourceTree = "<group>"; };
+		018B0DA0179EDBD200F2D3CD /* OverlayNotificationVideo.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = OverlayNotificationVideo.png; path = Assets/Images/OverlayNotificationVideo.png; sourceTree = "<group>"; };
+		018B0DA1179EDBD200F2D3CD /* OverlayNotificationVideo@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = "OverlayNotificationVideo@2x.png"; path = "Assets/Images/OverlayNotificationVideo@2x.png"; sourceTree = "<group>"; };
 		01901A951771CCBA007DBEAC /* rockpackTests.octest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = rockpackTests.octest; sourceTree = BUILT_PRODUCTS_DIR; };
 		01901A961771CCBA007DBEAC /* SenTestingKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = SenTestingKit.framework; path = Library/Frameworks/SenTestingKit.framework; sourceTree = DEVELOPER_DIR; };
 		01901A9C1771CCBA007DBEAC /* rockpackTests-Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = "rockpackTests-Info.plist"; sourceTree = "<group>"; };
@@ -3868,6 +3872,8 @@
 		01E98D6E165C13610079FD7A /* Slider */ = {
 			isa = PBXGroup;
 			children = (
+				018B0DA0179EDBD200F2D3CD /* OverlayNotificationVideo.png */,
+				018B0DA1179EDBD200F2D3CD /* OverlayNotificationVideo@2x.png */,
 			);
 			name = Slider;
 			sourceTree = "<group>";
@@ -6201,6 +6207,8 @@
 				BE7D0359179ED752008053DC /* ButtonSearchFriendsDefault@2x.png in Resources */,
 				BE7D035A179ED752008053DC /* ButtonSearchFriendsHighlighted.png in Resources */,
 				BE7D035B179ED752008053DC /* ButtonSearchFriendsHighlighted@2x.png in Resources */,
+				018B0DA2179EDBD200F2D3CD /* OverlayNotificationVideo.png in Resources */,
+				018B0DA3179EDBD200F2D3CD /* OverlayNotificationVideo@2x.png in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

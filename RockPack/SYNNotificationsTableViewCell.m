@@ -65,6 +65,14 @@
         self.thumbnailImageView.clipsToBounds = TRUE;
         [self addSubview: self.thumbnailImageView];
         
+        self.playSymbolImageView = [[UIImageView alloc] initWithFrame: CGRectMake(0.0, 0.0, 60, 60.0)]; 
+        self.playSymbolImageView.contentMode = UIViewContentModeCenter;
+        self.playSymbolImageView.clipsToBounds = TRUE;
+        self.playSymbolImageView.hidden = TRUE;
+        self.playSymbolImageView.image = [UIImage imageNamed: @"OverlayNotificationVideo"];
+        
+        [self addSubview: self.playSymbolImageView];
+        
         // == Divider Image View == //
         self.dividerImageView = [[UIView alloc] initWithFrame: CGRectMake(0.0, 0.0, 362.0, 2.0)];
         self.dividerImageView.backgroundColor = [UIColor colorWithPatternImage: [UIImage imageNamed: @"NavDivider"]];
@@ -105,6 +113,9 @@
     thumbnailImageViewFrame.origin.y = self.imageView.frame.origin.y;
     
     self.thumbnailImageView.frame = self.secondaryImageButton.frame = thumbnailImageViewFrame;
+    
+    // Make this the same size as the other thumbnail
+    self.playSymbolImageView.frame = self.thumbnailImageView.frame;
     
     // Details
     CGRect detailsFrame = CGRectMake(76.0, 12.0, self.mainTextSize.width, 20.0f);
