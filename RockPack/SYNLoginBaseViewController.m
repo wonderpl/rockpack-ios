@@ -217,7 +217,7 @@
             // the dictionary contains a User dictionary //
             
           
-            // link to facebook account
+            
             
             
             
@@ -229,6 +229,8 @@
                 
                 DebugLog(@"User Registerd: %@", [dictionary objectForKey: @"username"]);
                 _appDelegate.currentUser.loginOriginValue = LoginOriginRockpack;
+                
+                // link to facebook account
                 
                 if(_appDelegate.currentUser.facebookToken)
                 {

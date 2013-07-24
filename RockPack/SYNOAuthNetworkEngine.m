@@ -1492,6 +1492,42 @@
                               errorHandler:errorBlock];
 }
 
+- (void) getExternalAccountForUserId:(NSString*)userId
+                           accountId:(NSString*)accountId
+                   completionHandler: (MKNKUserSuccessBlock) completionBlock
+                        errorHandler: (MKNKUserErrorBlock) errorBlock
+{
+    
+    NSString *apiString = [kGetExternalAccountId stringByReplacingOccurrencesOfStrings: @{@"USERID" : userId, @"ACCOUNTID" : accountId}];
+    
+    
+    SYNNetworkOperationJsonObject *networkOperation = (SYNNetworkOperationJsonObject*)[self operationWithPath: apiString
+                                                                                                       params: nil
+                                                                                                   httpMethod: @"GET"
+                                                                                                          ssl: YES];
+    
+    
+    [self addCommonHandlerToNetworkOperation: networkOperation
+                           completionHandler: completionBlock
+                                errorHandler: errorBlock];
+    
+    [self enqueueSignedOperation: networkOperation];
+}
+
+-(void)getExternalAccountForUrl: (NSString*)urlString
+              completionHandler: (MKNKUserSuccessBlock) completionBlock
+                   errorHandler: (MKNKUserErrorBlock) errorBlock
+{
+    SYNNetworkOperationJsonObject *networkOperation = (SYNNetworkOperationJsonObject*)[self operationWithURLString:urlString];
+    
+    
+    [self addCommonHandlerToNetworkOperation: networkOperation
+                           completionHandler: completionBlock
+                                errorHandler: errorBlock];
+    
+    [self enqueueSignedOperation: networkOperation];
+}
+
 - (void) connectToExtrnalAccoundForUserId:(NSString*) userId
                                     token:(NSString*)token
                                   service:(NSString*)service

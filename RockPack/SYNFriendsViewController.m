@@ -88,20 +88,12 @@ static char* association_key = "SYNFriendThumbnailCell to Friend";
     }
     else
     {
-        if(appDelegate.currentUser.facebookToken)
-        {
-            
-            
-        }
-        else
-        {
-            self.onRockpackButton.hidden = YES;
-            self.allFriendsButton.hidden = YES;
-            self.facebookLoginButton.hidden = NO;
-            self.preLoginLabel.hidden = NO;
-            self.friendsCollectionView.hidden = YES;
-            self.activityIndicator.hidden = YES;
-        }
+        self.onRockpackButton.hidden = YES;
+        self.allFriendsButton.hidden = YES;
+        self.facebookLoginButton.hidden = NO;
+        self.preLoginLabel.hidden = NO;
+        self.friendsCollectionView.hidden = YES;
+        self.activityIndicator.hidden = YES;
         
         
     }
