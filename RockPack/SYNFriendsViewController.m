@@ -67,6 +67,13 @@ static char* association_key = "SYNFriendThumbnailCell to Friend";
     
     [self.activityIndicator hidesWhenStopped];
     
+    self.allFriendsButton.titleLabel.font = [UIFont rockpackFontOfSize: IS_IPAD ? 14.0f : 12.0f];
+    self.allFriendsButton.contentEdgeInsets = UIEdgeInsetsMake(IS_IPAD ? 7.0f : 5.0, 0.0f, 0.0f, 0.0f);
+    self.onRockpackButton.titleLabel.font = [UIFont rockpackFontOfSize: IS_IPAD ? 14.0f : 12.0f];
+    self.onRockpackButton.contentEdgeInsets = UIEdgeInsetsMake(IS_IPAD ? 7.0f : 5.0, 0.0f, 0.0f, 0.0f);
+    
+    self.searchField.font = [UIFont rockpackFontOfSize: self.searchField.font.pointSize];
+    
     if([[SYNFacebookManager sharedFBManager] hasOpenSession])
     {
         self.facebookLoginButton.hidden = YES;
@@ -81,7 +88,6 @@ static char* association_key = "SYNFriendThumbnailCell to Friend";
     }
     else
     {
-        
         self.onRockpackButton.hidden = YES;
         self.allFriendsButton.hidden = YES;
         self.facebookLoginButton.hidden = NO;
@@ -89,10 +95,14 @@ static char* association_key = "SYNFriendThumbnailCell to Friend";
         self.friendsCollectionView.hidden = YES;
         self.activityIndicator.hidden = YES;
         
+        
     }
     
     if(IS_IPHONE)
     {
+        // iPhone specific setup
+        
+        //Resizing images
         UIImage* backgroundImageOff = [[UIImage imageNamed:@"SearchTab"] resizableImageWithCapInsets:UIEdgeInsetsMake(0.0f, 1.0f, 0.0f, 1.0f)];
         UIImage* backgroundImageOn = [[UIImage imageNamed:@"SearchTabSelected" ]resizableImageWithCapInsets:UIEdgeInsetsMake(0.0f, 1.0f, 0.0f, 1.0f)];
         UIImage* backgroundImageHighlighted = [[UIImage imageNamed:@"SearchTabHighlighted"] resizableImageWithCapInsets:UIEdgeInsetsMake(0.0f, 1.0f, 0.0f, 1.0f)];
@@ -107,6 +117,8 @@ static char* association_key = "SYNFriendThumbnailCell to Friend";
         
         self.searchFieldBackground.image = [[UIImage imageNamed: @"FieldSearch"]
                                             resizableImageWithCapInsets: UIEdgeInsetsMake(0.0f,20.0f, 0.0f, 20.0f)];
+        
+        //Push the search slider out to the right.
         CGRect searchSliderFrame = self.searchSlider.frame;
         searchSliderFrame.origin.x = searchSliderFrame.size.width;
         self.searchSlider.frame= searchSliderFrame;
@@ -417,7 +429,7 @@ static char* association_key = "SYNFriendThumbnailCell to Friend";
 -(void)addSearchBarToView:(UIView*)view
 {
     CGRect searchContainerFrame = self.searchContainer.frame;
-    searchContainerFrame.origin = CGPointMake(55.0f, 0.0f);
+    searchContainerFrame.origin = CGPointMake(46.0f, 0.0f);
     self.searchContainer.frame = searchContainerFrame;
     [view addSubview:self.searchContainer];
 }

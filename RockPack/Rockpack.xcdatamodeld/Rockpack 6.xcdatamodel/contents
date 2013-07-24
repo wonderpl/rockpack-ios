@@ -72,7 +72,7 @@
         <attribute name="current" optional="YES" attributeType="Boolean" syncable="YES"/>
         <attribute name="dateOfBirth" optional="YES" attributeType="Date" syncable="YES"/>
         <attribute name="emailAddress" optional="YES" attributeType="String" syncable="YES"/>
-        <attribute name="externalAccount" optional="YES" attributeType="String" syncable="YES"/>
+        <attribute name="facebookAccountUrl" optional="YES" attributeType="String" syncable="YES"/>
         <attribute name="firstName" optional="YES" attributeType="String" syncable="YES"/>
         <attribute name="fullNameIsPublic" optional="YES" attributeType="Boolean" syncable="YES"/>
         <attribute name="gender" optional="YES" attributeType="Integer 32" syncable="YES"/>

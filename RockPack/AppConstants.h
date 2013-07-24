@@ -135,6 +135,7 @@
 
 // Apple push notifications
 #define kRegisterExternalAccount    @"/ws/USERID/external_accounts/"            /* POST */
+#define kGetExternalAccountId       @"/ws/USERID/external_accounts/ACCOUNTID/"  /* GET */
 
 #define kAPIFriends                 @"/ws/USERID/friends/"  /* GET */
 

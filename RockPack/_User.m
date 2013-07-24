@@ -9,7 +9,7 @@ const struct UserAttributes UserAttributes = {
 	.current = @"current",
 	.dateOfBirth = @"dateOfBirth",
 	.emailAddress = @"emailAddress",
-	.externalAccount = @"externalAccount",
+	.facebookAccountUrl = @"facebookAccountUrl",
 	.firstName = @"firstName",
 	.fullNameIsPublic = @"fullNameIsPublic",
 	.gender = @"gender",
@@ -132,7 +132,7 @@ const struct UserFetchedProperties UserFetchedProperties = {
 
 
 
-@dynamic externalAccount;
+@dynamic facebookAccountUrl;
 
 
 

@@ -5,6 +5,8 @@
 
 @implementation User
 
+@synthesize facebookToken;
+
 #pragma mark - Object factory
 
 
@@ -76,9 +78,27 @@
     NSNumber *n_display_fullName = dictionary[@"display_fullname"];
     self.fullNameIsPublicValue = n_display_fullName ? [n_display_fullName boolValue] : NO;
     
-    NSDictionary *n_external_accounts = dictionary[@"external_accounts"];
-    NSString* n_external_accounts_url = n_external_accounts ? n_external_accounts[@"resource_url"] : nil;
-    self.externalAccount = n_external_accounts_url ? n_external_accounts_url : nil;
+    NSDictionary* n_external_accounts = dictionary[@"external_accounts"];
+    if(n_external_accounts)
+    {
+        
+        
+        NSArray* n_external_account_items = n_external_accounts[@"items"];
+        NSDictionary* n_facebook_account = n_external_account_items ? n_external_account_items[0] : nil;
+        if(n_facebook_account)
+        {
+            NSString* n_external_system = n_facebook_account[@"external_system"];
+            if([n_external_system isEqualToString:@"facebook"])
+            {
+                self.facebookAccountUrl = n_external_accounts[@"resource_url"];
+                self.facebookToken = n_facebook_account[@"external_token"];
+            }
+            
+        }
+    }
+    
+    
+    
     
     
     NSDictionary *activity_url_dict = dictionary[@"activity"];

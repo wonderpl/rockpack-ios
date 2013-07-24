@@ -29,8 +29,8 @@
 #define kSideNavType @"kSideNavType"
 #define kSideNavAction @"kSideNavAction"
 
-#define kNotificationsRowIndex 3
-#define kFriendsRowIndex 4
+#define kNotificationsRowIndex 4
+#define kFriendsRowIndex 3
 
 typedef enum {
     kSideNavigationTypeLoad = 0,
@@ -93,12 +93,12 @@ typedef enum {
                 @{kSideNavTitle: NSLocalizedString(@"core_nav_section_profile", nil),
                    kSideNavType: @(kSideNavigationTypePage),
                  kSideNavAction: kProfileViewId},
-                @{kSideNavTitle: NSLocalizedString(@"core_nav_section_notifications", nil),
-                   kSideNavType: @(kSideNavigationTypeLoad),
-                 kSideNavAction: @"SYNNotificationsTableViewController"},
                 @{kSideNavTitle: NSLocalizedString(@"core_nav_section_friends", nil),
                   kSideNavType: @(kSideNavigationTypeLoad),
-                  kSideNavAction: @"SYNFriendsViewController"}];
+                  kSideNavAction: @"SYNFriendsViewController"},
+                @{kSideNavTitle: NSLocalizedString(@"core_nav_section_notifications", nil),
+                   kSideNavType: @(kSideNavigationTypeLoad),
+                 kSideNavAction: @"SYNNotificationsTableViewController"}];
         
         _state = SideNavigationStateHidden;
         

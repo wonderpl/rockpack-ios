@@ -10,7 +10,7 @@ extern const struct UserAttributes {
 	__unsafe_unretained NSString *current;
 	__unsafe_unretained NSString *dateOfBirth;
 	__unsafe_unretained NSString *emailAddress;
-	__unsafe_unretained NSString *externalAccount;
+	__unsafe_unretained NSString *facebookAccountUrl;
 	__unsafe_unretained NSString *firstName;
 	__unsafe_unretained NSString *fullNameIsPublic;
 	__unsafe_unretained NSString *gender;
@@ -108,11 +108,11 @@ extern const struct UserFetchedProperties {
 
 
 
-@property (nonatomic, strong) NSString* externalAccount;
+@property (nonatomic, strong) NSString* facebookAccountUrl;
 
 
 
-//- (BOOL)validateExternalAccount:(id*)value_ error:(NSError**)error_;
+//- (BOOL)validateFacebookAccountUrl:(id*)value_ error:(NSError**)error_;
 
 
 
@@ -243,8 +243,8 @@ extern const struct UserFetchedProperties {
 
 
 
-- (NSString*)primitiveExternalAccount;
-- (void)setPrimitiveExternalAccount:(NSString*)value;
+- (NSString*)primitiveFacebookAccountUrl;
+- (void)setPrimitiveFacebookAccountUrl:(NSString*)value;
 
 
 
