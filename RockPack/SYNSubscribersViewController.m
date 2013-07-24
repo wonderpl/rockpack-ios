@@ -171,12 +171,7 @@
         // FIXME: Is this comparison correct?  Should it just be self.dataRequestRange.location >= self.dataItemsAvailable?
         if (nextStart >= self.dataItemsAvailable)
         {
-            DebugLog(@"Set footer size to border");
             footerSize = CGSizeZero;
-        }
-        else
-        {
-            DebugLog(@"Normal footer size");
         }
     }
     else
