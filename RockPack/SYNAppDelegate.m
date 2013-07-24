@@ -426,7 +426,7 @@
         {
             NSTimeInterval refreshTimeout = [self.currentOAuth2Credentials.expirationDate timeIntervalSinceNow];
         
-            if (YES)//refreshTimeout < kOAuthTokenExpiryMargin)
+            if (refreshTimeout < kOAuthTokenExpiryMargin)
             {
                 [self refreshExpiredToken];
             }
