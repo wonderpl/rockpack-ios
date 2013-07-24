@@ -178,6 +178,7 @@
         if ([self.currentOAuth2Credentials hasExpired])
         {
             [self refreshExpiredTokenOnStartup];
+            
         }
         else // we have an access token //
         {
@@ -185,49 +186,7 @@
             
             [self setTokenExpiryTimer];
             
-            // link to facebook
-            
-            if([FBSession.activeSession accessTokenData])
-            {
-                [FBSession.activeSession openWithCompletionHandler:^(FBSession *session, FBSessionState status, NSError *error) {
-                    
-                    
-                }];
-            }
-            else if(self.currentUser.facebookAccountUrl)
-            {
-                [self.oAuthNetworkEngine getExternalAccountForUrl:self.currentUser.facebookAccountUrl completionHandler:^(id response) {
-                    
-                    NSDictionary* external_accounts = response[@"external_accounts"];
-                    
-                    NSArray* accounts = external_accounts ? external_accounts[@"items"] : nil;
-                    
-                    if(accounts && accounts.count > 0)
-                    {
-                        NSDictionary* facebookAccount = (NSDictionary*)accounts[0];
-                        if(facebookAccount)
-                        {
-                            self.currentUser.facebookToken = facebookAccount[@"external_token"];
-                        }
-                        
-                    }
-                    
-                    if(self.currentUser.facebookToken)
-                    {
-                        [[SYNFacebookManager sharedFBManager] openSessionFromExistingToken:self.currentUser.facebookToken
-                                                                                 onSuccess:^{
-                                                                                     
-                                                                                     
-                                                                                     
-                                                                                 } onFailure:^(NSString *errorMessage) {
-                                                                                     
-                                                                                 }];
-                    }
-                    
-                } errorHandler:^(id error) {
-                    
-                }];
-            }
+            [self refreshFacebookSession];
             
             self.window.rootViewController = [self createAndReturnRootViewController];
             
@@ -250,6 +209,55 @@
     return YES;
 }
 
+-(void)refreshFacebookSession
+{
+    // link to facebook
+    
+    if(!FBSession.activeSession.isOpen)
+    {
+        [FBSession.activeSession openWithCompletionHandler:^(FBSession *session, FBSessionState status, NSError *error) {
+            
+            NSLog(@"*** Opened! %@", session);
+            
+            
+            
+        }];
+    }
+    else if(self.currentUser.facebookAccountUrl)
+    {
+        [self.oAuthNetworkEngine getExternalAccountForUrl:self.currentUser.facebookAccountUrl completionHandler:^(id response) {
+            
+            NSDictionary* external_accounts = response[@"external_accounts"];
+            
+            NSArray* accounts = external_accounts ? external_accounts[@"items"] : nil;
+            
+            if(accounts && accounts.count > 0)
+            {
+                NSDictionary* facebookAccount = (NSDictionary*)accounts[0];
+                if(facebookAccount)
+                {
+                    self.currentUser.facebookToken = facebookAccount[@"external_token"];
+                }
+                
+            }
+            
+            if(self.currentUser.facebookToken)
+            {
+                [[SYNFacebookManager sharedFBManager] openSessionFromExistingToken:self.currentUser.facebookToken
+                                                                         onSuccess:^{
+                                                                             
+                                                                             
+                                                                             
+                                                                         } onFailure:^(NSString *errorMessage) {
+                                                                             
+                                                                         }];
+            }
+            
+        } errorHandler:^(id error) {
+            
+        }];
+    }
+}
 
 - (void) setTokenExpiryTimer
 {
@@ -318,6 +326,7 @@
     
     //refresh token
     [self.oAuthNetworkEngine refreshOAuthTokenWithCompletionHandler: ^(id response) {
+        
         if (!self.window.rootViewController)
         {
             self.window.rootViewController = [self createAndReturnRootViewController];
@@ -326,6 +335,10 @@
         [startImageView removeFromSuperview];
         
         self.tokenExpiryTimer = nil;
+        
+        [self refreshFacebookSession];
+        
+        
     } errorHandler: ^(id response) {
         [self logout];
         
