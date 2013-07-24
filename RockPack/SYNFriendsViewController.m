@@ -154,7 +154,6 @@ static char* association_key = "SYNFriendThumbnailCell to Friend";
             if(!friend.isOnRockpack)
                 friendsCount--;
             
-            NSLog(@"%@", friend);
             
         }
         

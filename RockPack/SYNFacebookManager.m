@@ -371,10 +371,8 @@ typedef enum
                       onSuccess:(FacebookPostSuccessBlock) successBlock
                       onFailure:(FacebookPostFailureBlock) failureBlock
 {
-    if(!friend)
+    if(!friend || !self.hasOpenSession)
         return;
-    
-    
     
     NSDictionary* params = nil;
     if(friend.externalUID && ![friend.externalUID isEqualToString:@""])
@@ -383,8 +381,8 @@ typedef enum
         params = nil;
     
     [FBWebDialogs presentRequestsDialogModallyWithSession:nil
-                                                  message:@"Rockpack allows you to find and create the video channels you will love"
-                                                    title:@"Join Rockpack!"
+                                                  message:@"Join us on the video side"
+                                                    title:@"Hello from Rockpack!"
                                                parameters:params
                                                   handler:^(FBWebDialogResult result, NSURL *resultURL, NSError *error) {
                                                       if (error) {
