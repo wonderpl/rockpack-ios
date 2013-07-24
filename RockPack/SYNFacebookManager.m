@@ -129,6 +129,35 @@ typedef enum
     }
 }
 
+- (void) openSessionFromExistingToken: (NSString*)token
+                            onSuccess: (FacebookOpenSessionSuccessBlock) successBlock
+                            onFailure: (FacebookOpenSessionFailureBlock) failureBlock
+{
+    FBSession* session = [[FBSession alloc] initWithPermissions:self.publishPermissions];
+    FBAccessTokenData* tokenData = [FBAccessTokenData createTokenFromString:token
+                                                                permissions:self.publishPermissions
+                                                             expirationDate:nil
+                                                                  loginType:FBSessionLoginTypeNone
+                                                                refreshDate:nil];
+    
+    [session openFromAccessTokenData:tokenData completionHandler:^(FBSession *session, FBSessionState status, NSError *error) {
+        if(!error)
+        {
+            if(session.isOpen)
+            {
+                [FBSession setActiveSession:session];
+            }
+            successBlock();
+        }
+        else
+        {
+            failureBlock([error description]);
+        }
+       // NSLog(@"session = %@, status = %i, error = %@", session, status, error);
+    }];
+    
+    
+}
 
 // Helper method to open a session if required
 - (void) openSessionWithPermissionType: (PermissionType) permissionType
@@ -205,7 +234,10 @@ typedef enum
                                       completionHandler: ^(FBSession *session,
                                                            FBSessionState status,
                                                            NSError *error) {
+                                          
                                           NSString *errorMessage = nil;
+                                          
+                                          NSLog(@"%@", [session.accessTokenData dictionary]);
                                           
                                           //We only expect this completion handler to be called once. The FBSession seems to store it
                                           //and it gets called again on logout. the hasExecuted boolean flag prevents the block from being called unless it has been
@@ -314,31 +346,6 @@ typedef enum
 }
 
 
-// How to User
-
-//    [[SYNFacebookManager sharedFBManager] postMessageToWall:@"This is my second post"
-//                                                  onSuccess:^{
-//
-//
-//
-//                                                } onFailure:^(NSError* error) {
-//
-//
-//                                                    NSDictionary* errorRoot = [error.userInfo objectForKey:@"com.facebook.sdk:ParsedJSONResponseKey"];
-//                                                    NSDictionary* errorBody = [errorRoot objectForKey:@"body"];
-//                                                    NSDictionary* errorError = [errorBody objectForKey:@"error"];
-//                                                    NSNumber* errorCode = [errorError objectForKey:@"code"];
-//
-//                                                    switch ([errorCode integerValue]) {
-//                                                        case 2500: // An active access token must be used
-//                                                            DebugLog(@"Facebook Posting Needs an Active Session");
-//                                                            break;
-//
-//                                                        default:
-//                                                            break;
-//                                                    }
-//
-//                                                }];
 
 // Helper method to extract a user readable string from an NSError returned by a Facebook API call
 - (NSString *) parsedErrorMessage: (NSError *) facebookError

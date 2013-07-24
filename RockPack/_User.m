@@ -9,7 +9,6 @@ const struct UserAttributes UserAttributes = {
 	.current = @"current",
 	.dateOfBirth = @"dateOfBirth",
 	.emailAddress = @"emailAddress",
-	.externalAccount = @"externalAccount",
 	.firstName = @"firstName",
 	.fullNameIsPublic = @"fullNameIsPublic",
 	.gender = @"gender",
@@ -126,13 +125,6 @@ const struct UserFetchedProperties UserFetchedProperties = {
 
 
 @dynamic emailAddress;
-
-
-
-
-
-
-@dynamic externalAccount;
 
 
 

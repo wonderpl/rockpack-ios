@@ -12,6 +12,8 @@
 #import "SYNNetworkOperationJsonObject.h"
 #import "SYNOAuth2Credential.h"
 #import "SYNOAuthNetworkEngine.h"
+#import "NSDictionary+RequestEncoding.h"
+#import "SYNFacebookManager.h"
 #import "Video.h"
 #import "VideoInstance.h"
 #import "UIImage+Resize.h"
@@ -481,13 +483,18 @@
     
     NSString *apiString = [kAPIGetUserDetails stringByReplacingOccurrencesOfStrings: apiSubstitutionDictionary];
     
-    NSDictionary* params = @{@"locale" : self.localeString, @"data" : @"channels", @"data" : @"external_accounts"};
+    NSMutableString* apiMutString = [NSMutableString stringWithString:apiString];
+    [apiMutString appendFormat:@"?locale=%@&data=channels&data=external_accounts", self.localeString];
     
-    SYNNetworkOperationJsonObject *networkOperation = (SYNNetworkOperationJsonObject*)[self operationWithPath: apiString
-                                                                                                       params: params
+    
+    SYNNetworkOperationJsonObject *networkOperation = (SYNNetworkOperationJsonObject*)[self operationWithPath: [NSString stringWithString:apiMutString]
+                                                                                                       params: nil
                                                                                                    httpMethod: @"GET"
                                                                                                           ssl: YES];
     
+    
+    
+        
     [networkOperation addJSONCompletionHandler:^(NSDictionary *responseDictionary)
     {
         NSString* possibleError = responseDictionary[@"error"];
@@ -505,6 +512,11 @@
             errorBlock(@{@"saving_error":@"Main Registry Could Not Save the User"});
             return;
         }
+        
+        // link account
+        
+        
+        
             
         
         // Get subscriptions
