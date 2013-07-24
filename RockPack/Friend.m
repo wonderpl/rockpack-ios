@@ -46,20 +46,27 @@
     
     self.externalSystem = [dictionary objectForKey: @"external_system"];
     
-    if(self.externalSystem)
-        self.externalUID = [dictionary objectForKey: @"external_uid"];
+    
+    self.externalUID = [dictionary objectForKey: @"external_uid"];
+    
     
     
     self.resourceURL = [dictionary objectForKey: @"resource_url"];
+    
     
     self.hasIOSDevice = [dictionary objectForKey: @"has_ios_device"
                                      withDefault: @(NO)];
     
 }
 
--(BOOL)isIsOnRockpack
+-(BOOL)isOnRockpack
 {
     return (self.resourceURL != nil);
+}
+
+-(NSString*)description
+{
+    return [NSString stringWithFormat:@"[Friend (id:%@, name:%@)]", self.externalUID, self.displayName];
 }
 
 @end

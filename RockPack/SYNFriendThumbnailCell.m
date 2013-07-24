@@ -26,26 +26,19 @@
     
     CGRect nameLabelFrame = self.nameLabel.frame;
     
-    if(IS_IPAD)
-    {
-        CGSize correctSize = [name sizeWithFont:self.nameLabel.font
-                              constrainedToSize:CGSizeMake(self.frame.size.width, 200.0)
-                                  lineBreakMode:NSLineBreakByWordWrapping];
-        
-        
-        nameLabelFrame.size = correctSize;
-        
-        // NSLog(@"height:%f, title:%@", correctSize.height, name);
-        
-        if(nameLabelFrame.size.height > 30.0)
-        {
-            nameLabelFrame.size.height = 30.0;
-            self.nameLabel.lineBreakMode = NSLineBreakByTruncatingTail;
-        }
-        
-    }
+    CGSize correctSize = [name sizeWithFont:self.nameLabel.font
+                          constrainedToSize:CGSizeMake(self.frame.size.width, 200.0)
+                              lineBreakMode:NSLineBreakByWordWrapping];
     
     
+    nameLabelFrame.size = correctSize;
+    
+    // NSLog(@"height:%f, title:%@", correctSize.height, name);
+    
+    nameLabelFrame.size.height = correctSize.height;
+    
+    self.nameLabel.lineBreakMode = NSLineBreakByTruncatingTail;
+    nameLabelFrame.origin.y = self.frame.size.height - nameLabelFrame.size.height - 4.0;
     
     self.nameLabel.frame = nameLabelFrame;
     

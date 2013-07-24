@@ -35,6 +35,7 @@
 
 - (void) presentModallyController: (UIViewController *) controller;
 - (void) presentPopoverView:(UIView*)view;
+- (void)removePopoverView;
 
 - (void) viewProfileDetails: (ChannelOwner *) channelOwner;
 - (void) viewChannelDetails: (Channel *) channel withAutoplayId: (NSString *) autoplayId;

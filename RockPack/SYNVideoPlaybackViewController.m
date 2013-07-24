@@ -1329,6 +1329,12 @@ static UIWebView* vimeoideoWebViewInstance;
     else if ([actionName isEqualToString: @"playbackQuality"])
     {
         DebugLog (@"!!!!!!!!!! Quality: %@", actionData);
+        UIAlertView *alert = [[UIAlertView alloc] initWithTitle: @"Video Quality"
+                                                        message: actionData
+                                                       delegate: nil
+                                              cancelButtonTitle: @"OK"
+                                              otherButtonTitles: nil, nil];
+        [alert show];
     }
     else if ([actionName isEqualToString: @"playbackRateChange"])
     {
@@ -1400,11 +1406,20 @@ static UIWebView* vimeoideoWebViewInstance;
 {
     SYNAppDelegate* appDelegate = UIApplication.sharedApplication.delegate;
     VideoInstance *videoInstance = self.videoInstanceArray [self.currentSelectedIndex];
+
+    SYNMasterViewController *masterViewController = (SYNMasterViewController*)appDelegate.masterViewController;
+    
+    NSString *errorDescription =  @"Video stalled (Cellular)";
+
+    if ([masterViewController.reachability currentReachabilityStatus] == ReachableViaWiFi)
+    {
+        errorDescription = @"Video stalled (WiFi)";
+    }
     
     [appDelegate.oAuthNetworkEngine reportPlayerErrorForVideoInstanceId: videoInstance.uniqueId
-                                                       errorDescription: @"Video stalled"
+                                                       errorDescription: errorDescription
                                                       completionHandler: ^(NSDictionary * dictionary) {
-                                                          DebugLog(@"Reported video stall");
+                                                          DebugLog(@"Reported video stall: %@", errorDescription);
                                                       }
                                                            errorHandler: ^(NSError* error) {
                                                                DebugLog(@"Report video stall failed");

@@ -49,6 +49,8 @@
     if(!newUser)
         return NO;
     
+    NSLog(@"newUser: %@", newUser.externalAccount);
+    
     newUser.currentValue = YES;
     
     // Pass viewId s.

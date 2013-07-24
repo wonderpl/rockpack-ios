@@ -17,6 +17,7 @@
 #import "SYNOAuthNetworkEngine.h"
 #import "Friend.h"
 #import "SYNInviteFriendView.h"
+#import "SYNFacebookManager.h"
 #import <objc/runtime.h>
 
 static char* association_key = "SYNFriendThumbnailCell to Friend";
@@ -28,6 +29,8 @@ static char* association_key = "SYNFriendThumbnailCell to Friend";
 @property (nonatomic) BOOL onRockpackFilterOn;
 @property (nonatomic, strong) NSArray* displayFriends;
 @property (nonatomic, strong) SYNInviteFriendView* currentInviteFriendView;
+@property (nonatomic, weak) Friend* currentlySelectedFriend;
+
 
 //iPhone specific
 @property (nonatomic, strong) IBOutlet UIView* searchContainer;
@@ -137,7 +140,7 @@ static char* association_key = "SYNFriendThumbnailCell to Friend";
     
     [((UIButton*)sender) setSelected:YES];
     
-    
+    [self.friendsCollectionView reloadData];
 }
 
 
@@ -160,6 +163,11 @@ static char* association_key = "SYNFriendThumbnailCell to Friend";
             return;
         
         NSInteger friendsCount = itemsDictionary.count;
+        
+        [weakSelf.allFriendsButton setTitle:[NSString stringWithFormat:@"ALL FRIENDS (%i)", friendsCount] forState:UIControlStateNormal];
+        [weakSelf.allFriendsButton setTitle:[NSString stringWithFormat:@"ALL FRIENDS (%i)", friendsCount] forState:UIControlStateHighlighted];
+        [weakSelf.allFriendsButton setTitle:[NSString stringWithFormat:@"ALL FRIENDS (%i)", friendsCount] forState:UIControlStateSelected];
+        
         NSMutableArray* iOSFriendsMutableArray = [NSMutableArray arrayWithCapacity:friendsCount];
         
         for (NSDictionary* itemDictionary in itemsDictionary)
@@ -172,9 +180,15 @@ static char* association_key = "SYNFriendThumbnailCell to Friend";
             
             [iOSFriendsMutableArray addObject:friend];
             
+            if(!friend.isOnRockpack)
+                friendsCount--;
             
             
         }
+
+        [weakSelf.onRockpackButton setTitle:[NSString stringWithFormat:@"ON ROCKPACK (%i)", friendsCount] forState:UIControlStateNormal];
+        [weakSelf.onRockpackButton setTitle:[NSString stringWithFormat:@"ON ROCKPACK (%i)", friendsCount] forState:UIControlStateHighlighted];
+        [weakSelf.onRockpackButton setTitle:[NSString stringWithFormat:@"ON ROCKPACK (%i)", friendsCount] forState:UIControlStateSelected];
         
         weakSelf.iOSFriends = [NSArray arrayWithArray:iOSFriendsMutableArray];
         weakSelf.displayFriends = weakSelf.iOSFriends;
@@ -355,10 +369,13 @@ static char* association_key = "SYNFriendThumbnailCell to Friend";
     
     SYNFriendThumbnailCell* cellClicked = (SYNFriendThumbnailCell*)[collectionView cellForItemAtIndexPath:indexPath];
     
-    Friend* friend = objc_getAssociatedObject(cellClicked, association_key);
+    self.currentlySelectedFriend = objc_getAssociatedObject(cellClicked, association_key);
+    
+    if(self.currentlySelectedFriend.isOnRockpack)
+        return;
     
     // create view
-    NSString* firstName = [friend.displayName componentsSeparatedByString:@" "][0];
+    NSString* firstName = [self.currentlySelectedFriend.displayName componentsSeparatedByString:@" "][0];
     
     self.currentInviteFriendView = (SYNInviteFriendView*)[[[NSBundle mainBundle] loadNibNamed:@"SYNInviteFriendView"
                                                                                         owner:self
@@ -367,13 +384,22 @@ static char* association_key = "SYNFriendThumbnailCell to Friend";
     self.currentInviteFriendView.profileImageView.image = cellClicked.imageView.image;
     self.currentInviteFriendView.titleLabel.text = [NSString stringWithFormat:@"%@ IS NOT ON ROCKPACK YET", firstName];
     
-    
     [appDelegate.viewStackManager presentPopoverView:self.currentInviteFriendView];
     
 }
 
 -(IBAction)inviteButtonPressed:(id)sender
 {
+    [[SYNFacebookManager sharedFBManager] sendAppRequestToFriend:self.currentlySelectedFriend
+                                                       onSuccess:^{
+                                                           
+                                                           [appDelegate.viewStackManager removePopoverView];
+        
+                                                       } onFailure:^(NSError *error) {
+                                                           
+                                                           [appDelegate.viewStackManager removePopoverView];
+        
+                                                       }];
     
 }
 

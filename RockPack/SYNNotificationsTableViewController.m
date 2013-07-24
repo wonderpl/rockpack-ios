@@ -123,9 +123,9 @@
     }
     else if ([notification.messageType isEqualToString: @"joined"])
     {
-        NSString *message = [NSString stringWithFormat: NSLocalizedString(@"notification_joined_action", @"Your Facebook friendhas joined Rockpack as (username)"), notification.channelOwner.displayName];
+        NSMutableString *message = [NSString stringWithFormat: NSLocalizedString(@"notification_joined_action", @"Your Facebook friend (name) has joined Rockpack"), [notification.channelOwner.displayName uppercaseString]];
         
-        [constructedMessage appendString: message];
+        constructedMessage = message;
     }
     else
     {
@@ -142,23 +142,24 @@
     
     NSURL *thumbnaillUrl;
     UIImage *placeholder;
+    
+    notificationCell.playSymbolImageView.hidden = TRUE;
 
     switch (notification.objectType)
     {
-        case kNotificationObjectTypeVideo:
+        case kNotificationObjectTypeUserLikedYourVideo:
             thumbnaillUrl = [NSURL URLWithString: notification.videoThumbnailUrl];
             placeholder = [UIImage imageNamed: @"PlaceholderNotificationVideo"];
+            notificationCell.playSymbolImageView.hidden = FALSE;
+
             break;
             
-        case kNotificationObjectTypeChannel:
+        case kNotificationObjectTypeUserSubscibedToYourChannel:
             thumbnaillUrl = [NSURL URLWithString: notification.channelThumbnailUrl];
             placeholder = [UIImage imageNamed: @"PlaceholderNotificationChannel"];
             break;
             
-        case kNotificationObjectTypeUser:
-            // TODO: Add friend notification support here
-            // thumbnaillUrl = [NSURL URLWithString: notification.userThumbnailUrl];
-            placeholder = [UIImage imageNamed: @"PlaceholderNotificationUser"];
+        case kNotificationObjectTypeFacebookFriendJoined:
             break;
             
         default:
@@ -166,9 +167,20 @@
             break;
     }
     
-    [notificationCell.thumbnailImageView setImageWithURL: thumbnaillUrl
-                                        placeholderImage: placeholder
-                                                 options: SDWebImageRetryFailed];
+    // If we have a righthand image then load it
+    if (thumbnaillUrl && placeholder)
+    {
+        notificationCell.thumbnailImageView.hidden = FALSE;
+        
+        [notificationCell.thumbnailImageView setImageWithURL: thumbnaillUrl
+                                            placeholderImage: placeholder
+                                                     options: SDWebImageRetryFailed];
+    }
+    else
+    {
+        // Otherwse hide it
+        notificationCell.thumbnailImageView.hidden = TRUE;
+    }
     
     notificationCell.delegate = self;
     notificationCell.read = notification.read;
@@ -257,7 +269,7 @@
     
     switch (notification.objectType)
     {
-        case kNotificationObjectTypeVideo:
+        case kNotificationObjectTypeUserLikedYourVideo:
         {
             Channel *channel = [self channelFromChannelId: notification.channelId];
             
@@ -271,7 +283,7 @@
             break;
         }
             
-        case kNotificationObjectTypeChannel:
+        case kNotificationObjectTypeUserSubscibedToYourChannel:
         {
             Channel *channel = [self channelFromChannelId: notification.channelId];
             
@@ -284,7 +296,7 @@
             break;
         }
             
-        case kNotificationObjectTypeUser:
+        case kNotificationObjectTypeFacebookFriendJoined:
         {
             ChannelOwner *channelOwner = notification.channelOwner;
             
@@ -334,8 +346,9 @@
 #pragma mark - Accessors
 
 - (void) setNotifications: (NSArray *) notifications
-{
+{   
     _notifications = notifications;
+    
     [self.tableView reloadData];
 }
 
@@ -368,6 +381,5 @@
     
     return channel;
 }
-
 
 @end

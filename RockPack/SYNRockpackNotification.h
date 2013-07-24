@@ -11,19 +11,20 @@
 
 typedef enum
 {
-    kNotificationObjectTypeVideo = 0,
-    kNotificationObjectTypeChannel = 1,
-    kNotificationObjectTypeUser = 2
+    kNotificationObjectTypeUserLikedYourVideo = 0,
+    kNotificationObjectTypeUserSubscibedToYourChannel = 1,
+    kNotificationObjectTypeFacebookFriendJoined = 2,
+    kNotificationObjectTypeUnknown = 666
 } kNotificationObjectType;
 
 @interface SYNRockpackNotification : NSObject
 
+@property (nonatomic) BOOL read;
 @property (nonatomic) NSInteger identifier;
-@property (nonatomic, strong) NSString *messageType;
+@property (nonatomic, readonly) kNotificationObjectType objectType;
 @property (nonatomic, strong) NSDate *dateCreated;
 @property (nonatomic, strong) NSString *dateDifferenceString;
-@property (nonatomic) BOOL read;
-@property (nonatomic, readonly) kNotificationObjectType objectType;
+@property (nonatomic, strong) NSString *messageType;
 
 // Video Notification
 @property (nonatomic, strong) NSString *videoId;
@@ -43,6 +44,6 @@ typedef enum
 @property (nonatomic) NSInteger timeElapsesd;
 
 - (id) initWithNotificationData: (NSDictionary *) data;
-+ (id) notificationWithData: (NSDictionary *) data;
++ (id) notificationWithDictionary: (NSDictionary *) dictionary;
 
 @end

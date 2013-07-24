@@ -243,13 +243,12 @@ typedef enum {
             {
                 if (![itemData isKindOfClass:[NSDictionary class]]) continue;
                                                        
-                SYNRockpackNotification* notification = [SYNRockpackNotification notificationWithData:itemData];
+                SYNRockpackNotification* notification = [SYNRockpackNotification notificationWithDictionary:itemData];
                 
-                if (!notification)
+                if (!notification || notification.objectType == kNotificationObjectTypeUnknown)
                 {
                     continue;
                 }
-                    
                                                        
                 if (!notification.read)
                     self.unreadNotifications++;
@@ -263,11 +262,7 @@ typedef enum {
         if (self.currentlyLoadedViewController && [self.currentlyLoadedViewController isKindOfClass:[SYNNotificationsTableViewController class]])
         {
             ((SYNNotificationsTableViewController*)self.currentlyLoadedViewController).notifications = self.notifications;
-        }
-        
-        
-        
-        
+        } 
     } errorHandler:^(id error) {
         DebugLog(@"Could not load notifications");
     }];

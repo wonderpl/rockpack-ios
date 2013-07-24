@@ -24,7 +24,7 @@
             return;
         }
         
-        NSLog(@"completedOperation.HTTPStatusCode: %i", completedOperation.HTTPStatusCode);
+//        NSLog(@"completedOperation.HTTPStatusCode: %i", completedOperation.HTTPStatusCode);
         
         if (completedOperation.HTTPStatusCode == 204)
         {

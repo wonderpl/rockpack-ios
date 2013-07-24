@@ -547,7 +547,6 @@
 						<string key="friendsCollectionView">UICollectionView</string>
 						<string key="onRockpackButton">UIButton</string>
 						<string key="preLoginLabel">UILabel</string>
-						<string key="searchContainer">UIView</string>
 						<string key="searchField">UITextField</string>
 					</dictionary>
 					<dictionary class="NSMutableDictionary" key="toOneOutletInfosByName">
@@ -574,10 +573,6 @@
 						<object class="IBToOneOutletInfo" key="preLoginLabel">
 							<string key="name">preLoginLabel</string>
 							<string key="candidateClassName">UILabel</string>
-						</object>
-						<object class="IBToOneOutletInfo" key="searchContainer">
-							<string key="name">searchContainer</string>
-							<string key="candidateClassName">UIView</string>
 						</object>
 						<object class="IBToOneOutletInfo" key="searchField">
 							<string key="name">searchField</string>

@@ -1263,7 +1263,7 @@
 //    [self performBlock: ^{
 //        [self.viewStackManager displaySideNavigatorFromPushNotification];
 //    }
-//            afterDelay: 10.0f];
+//            afterDelay: 3.0f];
 }
 
 
