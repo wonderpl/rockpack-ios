@@ -481,8 +481,10 @@
     
     NSString *apiString = [kAPIGetUserDetails stringByReplacingOccurrencesOfStrings: apiSubstitutionDictionary];
     
+    NSDictionary* params = @{@"locale" : self.localeString, @"data" : @"channels", @"data" : @"external_accounts"};
+    
     SYNNetworkOperationJsonObject *networkOperation = (SYNNetworkOperationJsonObject*)[self operationWithPath: apiString
-                                                                                                       params: @{@"locale" : self.localeString}
+                                                                                                       params: params
                                                                                                    httpMethod: @"GET"
                                                                                                           ssl: YES];
     
@@ -508,6 +510,8 @@
         // Get subscriptions
         
         NSString* userId = responseDictionary[@"id"];
+        
+        
         
         
         [self channelSubscriptionsForUserId:userId
