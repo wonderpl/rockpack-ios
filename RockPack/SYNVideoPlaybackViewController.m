@@ -212,7 +212,7 @@ static UIWebView* vimeoideoWebViewInstance;
 
 + (CGFloat) videoWidth
 {
-    CGFloat width = 320.0f;
+    CGFloat width = 50.0f;
     
     if (IS_IPAD)
     {
