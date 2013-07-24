@@ -225,7 +225,9 @@ typedef void (^SYNOAuth2RefreshCompletionBlock)(NSError *error);
            errorHandler: (MKNKUserErrorBlock) errorBlock;
 
 
-#pragma mark - Connect To Services
+
+
+#pragma mark - External Accounts
 
 - (void) updateApplePushNotificationForUserId: (NSString *) userId
                                         token: (NSString *) token
@@ -236,5 +238,14 @@ typedef void (^SYNOAuth2RefreshCompletionBlock)(NSError *error);
                                    token:(NSString*)token
                        completionHandler: (MKNKUserSuccessBlock) completionBlock
                             errorHandler: (MKNKUserErrorBlock) errorBlock;
+
+- (void) getExternalAccountForUserId:(NSString*)userId
+                           accountId:(NSString*)accountId
+                   completionHandler: (MKNKUserSuccessBlock) completionBlock
+                        errorHandler: (MKNKUserErrorBlock) errorBlock;
+
+-(void)getExternalAccountForUrl: (NSString*)urlString
+              completionHandler: (MKNKUserSuccessBlock) completionBlock
+                   errorHandler: (MKNKUserErrorBlock) errorBlock;
 
 @end

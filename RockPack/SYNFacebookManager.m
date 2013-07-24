@@ -153,7 +153,12 @@ typedef enum
         {
             failureBlock([error description]);
         }
-       // NSLog(@"session = %@, status = %i, error = %@", session, status, error);
+        
+        
+        
+       NSLog(@"session = %@, status = %i, error = %@", session, status, error);
+        
+        
     }];
     
     
