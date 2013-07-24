@@ -518,6 +518,7 @@
             headerView.backgroundImage.image = [UIImage imageNamed: @"CategorySlideSelected"];
             headerView.arrowImage.image = [UIImage imageNamed: @"IconCategorySlideChevronSelected"];
             headerView.titleLabel.textColor = [UIColor whiteColor];
+            
             headerView.titleLabel.shadowColor = [UIColor colorWithWhite: 1.0f
                                                                   alpha: 0.15f];
             
@@ -525,11 +526,11 @@
                                   withRowAnimation: UITableViewRowAnimationNone];
             
             Genre *category = self.categoriesDatasource[self.lastSelectedIndexpath.section];
+            
             self.lastSelectedIndexpath = [NSIndexPath indexPathForRow: -1
                                                             inSection: self.lastSelectedIndexpath.section];
             
-            if (!self.confirmButton && [self.categoryTableControllerDelegate
-                                        respondsToSelector: @selector(categoryTableController:didSelectCategory:)])
+            if (!self.confirmButton && [self.categoryTableControllerDelegate respondsToSelector: @selector(categoryTableController:didSelectCategory:)])
             {
                 [self.categoryTableControllerDelegate categoryTableController: self
                                                             didSelectCategory: category];
