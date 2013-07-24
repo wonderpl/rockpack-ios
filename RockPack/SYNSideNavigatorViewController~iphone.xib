@@ -282,20 +282,6 @@
 										<reference key="IBUIFontDescription" ref="225040367"/>
 										<reference key="IBUIFont" ref="1009344192"/>
 									</object>
-									<object class="IBUIView" id="16211243">
-										<reference key="NSNextResponder" ref="592656400"/>
-										<int key="NSvFlags">274</int>
-										<array class="NSMutableArray" key="NSSubviews"/>
-										<string key="NSFrame">{{0, 63}, {320, 435}}</string>
-										<reference key="NSSuperview" ref="592656400"/>
-										<reference key="NSNextKeyView" ref="747146287"/>
-										<string key="NSReuseIdentifierKey">_NS:9</string>
-										<object class="NSColor" key="IBUIBackgroundColor">
-											<int key="NSColorSpace">3</int>
-											<bytes key="NSWhite">MSAwAA</bytes>
-										</object>
-										<string key="targetRuntimeIdentifier">IBIPadFramework</string>
-									</object>
 									<object class="IBUILabel" id="434379188">
 										<reference key="NSNextResponder" ref="592656400"/>
 										<int key="NSvFlags">292</int>
@@ -328,6 +314,20 @@
 											<int key="NSfFlags">16</int>
 										</object>
 										<bool key="IBUIAdjustsFontSizeToFit">NO</bool>
+									</object>
+									<object class="IBUIView" id="16211243">
+										<reference key="NSNextResponder" ref="592656400"/>
+										<int key="NSvFlags">274</int>
+										<array class="NSMutableArray" key="NSSubviews"/>
+										<string key="NSFrame">{{0, 63}, {320, 435}}</string>
+										<reference key="NSSuperview" ref="592656400"/>
+										<reference key="NSNextKeyView" ref="747146287"/>
+										<string key="NSReuseIdentifierKey">_NS:9</string>
+										<object class="NSColor" key="IBUIBackgroundColor">
+											<int key="NSColorSpace">3</int>
+											<bytes key="NSWhite">MSAwAA</bytes>
+										</object>
+										<string key="targetRuntimeIdentifier">IBIPadFramework</string>
 									</object>
 								</array>
 								<string key="NSFrameSize">{320, 493}</string>
@@ -607,8 +607,8 @@
 						<reference key="object" ref="592656400"/>
 						<array class="NSMutableArray" key="children">
 							<reference ref="629560875"/>
-							<reference ref="16211243"/>
 							<reference ref="979192635"/>
+							<reference ref="16211243"/>
 							<reference ref="434379188"/>
 						</array>
 						<reference key="parent" ref="96903541"/>

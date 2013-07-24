@@ -43,7 +43,7 @@
 							<object class="IBUIImageView" id="95605980">
 								<reference key="NSNextResponder" ref="324856766"/>
 								<int key="NSvFlags">274</int>
-								<string key="NSFrameSize">{114, 114}</string>
+								<string key="NSFrameSize">{107, 107}</string>
 								<reference key="NSSuperview" ref="324856766"/>
 								<reference key="NSWindow"/>
 								<reference key="NSNextKeyView" ref="707718282"/>
@@ -61,7 +61,7 @@
 							<object class="IBUILabel" id="921446605">
 								<reference key="NSNextResponder" ref="324856766"/>
 								<int key="NSvFlags">266</int>
-								<string key="NSFrame">{{5, 93}, {109, 21}}</string>
+								<string key="NSFrame">{{5, 86}, {102, 21}}</string>
 								<reference key="NSSuperview" ref="324856766"/>
 								<reference key="NSWindow"/>
 								<string key="NSReuseIdentifierKey">_NS:9</string>
@@ -96,12 +96,12 @@
 									<int key="NSfFlags">16</int>
 								</object>
 								<bool key="IBUIAdjustsFontSizeToFit">NO</bool>
-								<double key="preferredMaxLayoutWidth">109</double>
+								<double key="preferredMaxLayoutWidth">102</double>
 							</object>
 							<object class="IBUIImageView" id="707718282">
 								<reference key="NSNextResponder" ref="324856766"/>
 								<int key="NSvFlags">274</int>
-								<string key="NSFrameSize">{114, 114}</string>
+								<string key="NSFrameSize">{107, 107}</string>
 								<reference key="NSSuperview" ref="324856766"/>
 								<reference key="NSWindow"/>
 								<reference key="NSNextKeyView" ref="921446605"/>
@@ -118,7 +118,7 @@
 								</object>
 							</object>
 						</array>
-						<string key="NSFrameSize">{114, 114}</string>
+						<string key="NSFrameSize">{107, 107}</string>
 						<reference key="NSSuperview" ref="266723888"/>
 						<reference key="NSWindow"/>
 						<reference key="NSNextKeyView" ref="95605980"/>
@@ -130,7 +130,7 @@
 						<string key="targetRuntimeIdentifier">IBIPadFramework</string>
 					</object>
 				</array>
-				<string key="NSFrameSize">{114, 114}</string>
+				<string key="NSFrameSize">{107, 107}</string>
 				<reference key="NSSuperview"/>
 				<reference key="NSWindow"/>
 				<reference key="NSNextKeyView" ref="324856766"/>
