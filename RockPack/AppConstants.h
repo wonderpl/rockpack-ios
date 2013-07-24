@@ -519,3 +519,4 @@ typedef void (^JSONResponseBlock)(id jsonObject);
 //User token refresh error
 
 #define kUserIdInconsistencyError @"UserIdInconsistency"
+#define kStoredRefreshTokenNilError @"StoredRefreshTokenNil"

@@ -200,6 +200,13 @@
 - (IBAction) refreshOAuthTokenWithCompletionHandler: (MKNKUserErrorBlock) completionBlock
                                        errorHandler: (MKNKUserSuccessBlock) errorBlock
 {
+    // Check to see that our stored refresh token is not actually nil
+    if (self.oAuth2Credential.refreshToken == nil)
+    {
+        AssertOrLog(@"Stored refresh token is nil");
+        errorBlock(@{@"error": kStoredRefreshTokenNilError});
+        return;
+    }
     // We need to handle locale differently (so add the locale to the URL) as opposed to the other parameters which are in the POST body
     NSString *apiString = [NSString stringWithFormat: @"%@?locale=%@", kAPIRefreshToken, self.localeString];
     

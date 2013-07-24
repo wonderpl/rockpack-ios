@@ -12,12 +12,15 @@
 #import "SYNUserThumbnailCell.h"
 #import "SYNUsersViewController.h"
 
-@interface SYNUsersViewController ()
-
-@end
-
 
 @implementation SYNUsersViewController
+
+- (void) dealloc
+{
+    // Defensive programming
+    self.usersThumbnailCollectionView.delegate = nil;
+    self.usersThumbnailCollectionView.dataSource = nil;
+}
 
 
 - (void) loadView
@@ -44,38 +47,40 @@
     flowLayout.footerReferenceSize = [self footerSize];
     
     
-    _usersThumbnailCollectionView = [[UICollectionView alloc] initWithFrame: CGRectZero
-                                                       collectionViewLayout: flowLayout];
+    self.usersThumbnailCollectionView = [[UICollectionView alloc] initWithFrame: CGRectZero
+                                                           collectionViewLayout: flowLayout];
     
-    _usersThumbnailCollectionView.dataSource = self;
-    _usersThumbnailCollectionView.delegate = self;
-    _usersThumbnailCollectionView.backgroundColor = [UIColor clearColor];
-    _usersThumbnailCollectionView.showsVerticalScrollIndicator = NO;
+    self.usersThumbnailCollectionView.dataSource = self;
+    self.usersThumbnailCollectionView.delegate = self;
+    self.usersThumbnailCollectionView.backgroundColor = [UIColor clearColor];
+    self.usersThumbnailCollectionView.showsVerticalScrollIndicator = NO;
     
-    _usersThumbnailCollectionView.autoresizingMask = UIViewAutoresizingFlexibleWidth | UIViewAutoresizingFlexibleHeight;
-    _usersThumbnailCollectionView.scrollsToTop = NO;
-
-
-    self.view = _usersThumbnailCollectionView;
+    self.usersThumbnailCollectionView.autoresizingMask = UIViewAutoresizingFlexibleWidth | UIViewAutoresizingFlexibleHeight;
+    self.usersThumbnailCollectionView.scrollsToTop = NO;
+    
+    
+    self.view = self.usersThumbnailCollectionView;
     
     self.view.autoresizingMask = UIViewAutoresizingFlexibleWidth | UIViewAutoresizingFlexibleHeight;
     
-    _usersThumbnailCollectionView.showsVerticalScrollIndicator = YES;
-
+    self.usersThumbnailCollectionView.showsVerticalScrollIndicator = YES;
+    
     // Register Cells
     UINib *thumbnailCellNib = [UINib nibWithNibName: @"SYNUserThumbnailCell"
                                              bundle: nil];
     
-    [_usersThumbnailCollectionView registerNib: thumbnailCellNib
-                    forCellWithReuseIdentifier: @"SYNUserThumbnailCell"];
+    [self.usersThumbnailCollectionView
+     registerNib: thumbnailCellNib
+     forCellWithReuseIdentifier: @"SYNUserThumbnailCell"];
     
     // Register Footer
     UINib *footerViewNib = [UINib nibWithNibName: @"SYNChannelFooterMoreView"
                                           bundle: nil];
     
-    [_usersThumbnailCollectionView registerNib: footerViewNib
-                    forSupplementaryViewOfKind: UICollectionElementKindSectionFooter
-                           withReuseIdentifier: @"SYNChannelFooterMoreView"];
+    [self.usersThumbnailCollectionView
+     registerNib: footerViewNib
+     forSupplementaryViewOfKind: UICollectionElementKindSectionFooter
+     withReuseIdentifier: @"SYNChannelFooterMoreView"];
 }
 
 
@@ -117,7 +122,7 @@
     
     SYNUserThumbnailCell *userThumbnailCell = [collectionView dequeueReusableCellWithReuseIdentifier: @"SYNUserThumbnailCell"
                                                                                         forIndexPath: indexPath];
-
+    
     userThumbnailCell.nameLabel.text = user.displayName;
     
     userThumbnailCell.imageUrlString = user.thumbnailLargeUrl;
@@ -125,7 +130,7 @@
     
     [userThumbnailCell setDisplayName: user.displayName
                           andUsername: user.username];
-
+    
     return userThumbnailCell;
 }
 
@@ -152,9 +157,10 @@
     CGRect collectionViewFrame = CGRectMake(0.0f, offsetTop,
                                             self.view.superview.frame.size.width,
                                             [SYNDeviceManager.sharedInstance currentScreenHeight] - offsetTop);
-
+    
     self.usersThumbnailCollectionView.frame = collectionViewFrame;
 }
+
 
 #pragma mark - Footer support
 
@@ -172,5 +178,6 @@
 {
     AssertOrLog(@"Shouldn't be calling abstract view controller");
 }
+
 
 @end
