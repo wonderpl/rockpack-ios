@@ -13,9 +13,22 @@
 #import "SYNAppDelegate.h"
 #import "SYNRockpackNotification.h"
 
+@interface SYNRockpackNotification ()
+
+@property (nonatomic) kNotificationObjectType objectType;
+
+@end
+
+
 @implementation SYNRockpackNotification
 
-@synthesize objectType;
+#pragma mark - Object lifecycle
+
++ (id) notificationWithDictionary: (NSDictionary *) dictionary
+{
+    return [[self alloc] initWithNotificationData: dictionary];
+}
+
 
 - (id) initWithNotificationData: (NSDictionary *) data
 {
@@ -32,11 +45,26 @@
         
         self.identifier = [identifierNumber integerValue];
         
+        // Work out what type of object we are
         self.messageType = data[@"message_type"];
         
         if ([self.messageType isEqualToString: @"subscribed"])
         {
             [Appirater userDidSignificantEvent: FALSE];
+            self.objectType = kNotificationObjectTypeUserSubscibedToYourChannel;
+        }
+        else if ([self.messageType isEqualToString: @"starred"])
+        {
+            self.objectType = kNotificationObjectTypeUserLikedYourVideo;
+        }
+        else if ([self.messageType isEqualToString: @"joined"])
+        {
+            self.objectType = kNotificationObjectTypeFacebookFriendJoined;
+        }
+        else
+        {
+            // Unexpected object, this is used so that the message can be safely ignored by receipients
+            self.objectType = kNotificationObjectTypeUnknown;
         }
         
         NSString *dateString = data[@"date_created"];
@@ -127,7 +155,6 @@
             
             if (channelDictionary && [channelDictionary isKindOfClass: [NSDictionary class]])
             {
-                objectType = kNotificationObjectTypeChannel;
                 self.channelId = channelDictionary[@"id"];
                 self.channelResourceUrl = channelDictionary[@"resource_url"];
                 self.channelThumbnailUrl = channelDictionary[@"thumbnail_url"];
@@ -137,7 +164,6 @@
             
             if (videoDictionary && [videoDictionary isKindOfClass: [NSDictionary class]])
             {
-                objectType = kNotificationObjectTypeVideo;
                 self.videoId = videoDictionary[@"id"];
                 self.videoThumbnailUrl = videoDictionary[@"thumbnail_url"];
                 
@@ -165,12 +191,6 @@
     }
     
     return self;
-}
-
-
-+ (id) notificationWithData: (NSDictionary *) data
-{
-    return [[self alloc] initWithNotificationData: data];
 }
 
 

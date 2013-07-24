@@ -147,20 +147,19 @@
 
     switch (notification.objectType)
     {
-        case kNotificationObjectTypeVideo:
+        case kNotificationObjectTypeUserLikedYourVideo:
             thumbnaillUrl = [NSURL URLWithString: notification.videoThumbnailUrl];
             placeholder = [UIImage imageNamed: @"PlaceholderNotificationVideo"];
-//            notificationCell.playSymbolImageView.hidden = FALSE;
+            notificationCell.playSymbolImageView.hidden = FALSE;
 
             break;
             
-        case kNotificationObjectTypeChannel:
+        case kNotificationObjectTypeUserSubscibedToYourChannel:
             thumbnaillUrl = [NSURL URLWithString: notification.channelThumbnailUrl];
             placeholder = [UIImage imageNamed: @"PlaceholderNotificationChannel"];
             break;
             
-        case kNotificationObjectTypeUser:
-            notificationCell.playSymbolImageView.hidden = TRUE;
+        case kNotificationObjectTypeFacebookFriendJoined:
             break;
             
         default:
@@ -270,7 +269,7 @@
     
     switch (notification.objectType)
     {
-        case kNotificationObjectTypeVideo:
+        case kNotificationObjectTypeUserLikedYourVideo:
         {
             Channel *channel = [self channelFromChannelId: notification.channelId];
             
@@ -284,7 +283,7 @@
             break;
         }
             
-        case kNotificationObjectTypeChannel:
+        case kNotificationObjectTypeUserSubscibedToYourChannel:
         {
             Channel *channel = [self channelFromChannelId: notification.channelId];
             
@@ -297,7 +296,7 @@
             break;
         }
             
-        case kNotificationObjectTypeUser:
+        case kNotificationObjectTypeFacebookFriendJoined:
         {
             ChannelOwner *channelOwner = notification.channelOwner;
             
@@ -348,7 +347,19 @@
 
 - (void) setNotifications: (NSArray *) notifications
 {
-    _notifications = notifications;
+    // We need to make sure that we don't display any unknown notifications (for future compatibility)
+    NSMutableArray *validNotifications = [NSMutableArray new];
+    
+    for (SYNRockpackNotification *notification in notifications)
+    {
+        if (notification.objectType != kNotificationObjectTypeUnknown)
+        {
+            [validNotifications addObject: notification];
+        }
+    }
+    
+    _notifications = [validNotifications copy];
+    
     [self.tableView reloadData];
 }
 
@@ -381,6 +392,5 @@
     
     return channel;
 }
-
 
 @end
