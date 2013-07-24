@@ -385,10 +385,14 @@ typedef enum
                                                     title:@"Hello from Rockpack!"
                                                parameters:params
                                                   handler:^(FBWebDialogResult result, NSURL *resultURL, NSError *error) {
+                                                      
+                                                      
                                                       if (error) {
                                                           // Case A: Error launching the dialog or sending request.
                                                           NSLog(@"Error sending request.");
                                                           failureBlock(error);
+                                                          
+                                                          
                                                       } else {
                                                           if (result == FBWebDialogResultDialogNotCompleted) {
                                                               // Case B: User clicked the "x" icon

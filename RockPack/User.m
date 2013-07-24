@@ -76,6 +76,10 @@
     NSNumber *n_display_fullName = dictionary[@"display_fullname"];
     self.fullNameIsPublicValue = n_display_fullName ? [n_display_fullName boolValue] : NO;
     
+    NSDictionary *n_external_accounts = dictionary[@"external_accounts"];
+    NSString* n_external_accounts_url = n_external_accounts ? n_external_accounts[@"resource_url"] : nil;
+    self.externalAccount = n_external_accounts_url ? n_external_accounts_url : nil;
+    
     
     NSDictionary *activity_url_dict = dictionary[@"activity"];
     
