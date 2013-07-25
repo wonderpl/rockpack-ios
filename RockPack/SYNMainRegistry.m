@@ -266,7 +266,9 @@
         // else, create a new one
         if(!aggregation)
         {
+            
             aggregation = [FeedItem instanceFromDictionary:aggregationsDictionary[aggregationIndex]
+                                                    withId:aggregationIndex
                                  usingManagedObjectContext:importManagedObjectContext];
             
             if(!aggregation)
@@ -280,9 +282,10 @@
             
         [aggregation.feedItemsSet addObject:fi];
         
-        
-        
-        
+    }
+    
+    for (NSDictionary* d in aggregationItems) {
+        NSLog(@"%@", d);
     }
     
     return YES;

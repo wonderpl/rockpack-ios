@@ -34,19 +34,16 @@
 
 
 + (FeedItem *) instanceFromDictionary: (NSDictionary *) dictionary
+                               withId: (NSString*)aid
             usingManagedObjectContext: (NSManagedObjectContext *) managedObjectContext
 {
-    if(!dictionary || ![dictionary isKindOfClass:[NSDictionary class]])
+    if(!aid || !dictionary || ![dictionary isKindOfClass:[NSDictionary class]])
         return nil;
     
-    NSString *uniqueId = dictionary[@"id"];
-    
-    if (!uniqueId)
-        return nil;
     
     FeedItem *instance = [FeedItem insertInManagedObjectContext: managedObjectContext];
     
-    instance.uniqueId = uniqueId;
+    instance.uniqueId = aid;
     
     [instance setAttributesFromDictionary: dictionary];
     
@@ -55,11 +52,20 @@
 
 - (void) setAttributesFromDictionary: (NSDictionary *) dictionary
 {
-    self.title = dictionary[@"title"] ? dictionary[@"title"] : @"";
-    self.resourceType = dictionary[@"type"] ? dictionary[@"type"] : @"";
-    self.itemCountValue = dictionary[@"count"] ? ((NSNumber*)dictionary[@"count"]).integerValue : 0;
+    NSString* n_title = dictionary[@"title"];
+    if(n_title && [n_title isKindOfClass:[NSString class]])
+        self.title = n_title;
+    
+    NSString* n_type = dictionary[@"type"];
+    if(n_type && [n_type isKindOfClass:[NSString class]])
+        self.resourceType = n_type;
+    
+    NSNumber* n_count = dictionary[@"count"];
+    if(n_count && [n_count isKindOfClass:[NSNumber class]])
+        self.itemCountValue = n_count.integerValue;
+    
     NSArray* covers = dictionary[@"covers"];
-    if(covers && covers.count > 0)
+    if(covers && [covers isKindOfClass:[NSArray class]] && covers.count > 0)
     {
         NSMutableString* coverIndexesString = [[NSMutableString alloc] init];
         for (NSNumber* coverIndex in covers)

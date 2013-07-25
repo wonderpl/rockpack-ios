@@ -8,6 +8,7 @@
 @interface FeedItem : _FeedItem {}
 
 + (FeedItem *) instanceFromDictionary: (NSDictionary *) dictionary
+                               withId: (NSString*)aid
             usingManagedObjectContext: (NSManagedObjectContext *) managedObjectContext;
 
 + (FeedItem *) instanceFromResource: (AbstractCommon *) object;

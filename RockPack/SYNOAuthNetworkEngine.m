@@ -1377,7 +1377,6 @@
     
     
     
-    NSLog(@"Opening: %@", networkOperation.url);
     
     [self addCommonHandlerToNetworkOperation: networkOperation
                            completionHandler: completionBlock
