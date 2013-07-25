@@ -68,6 +68,7 @@
 {
     // Defensive programming
     self.channelThumbnailCollectionView.delegate = nil;
+    self.channelThumbnailCollectionView.dataSource = nil;
 }
 
 

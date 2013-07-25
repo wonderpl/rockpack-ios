@@ -50,6 +50,7 @@
     
     // Defensive programming
     self.videoThumbnailCollectionView.delegate = nil;
+    self.videoThumbnailCollectionView.dataSource = nil;
 }
 
 

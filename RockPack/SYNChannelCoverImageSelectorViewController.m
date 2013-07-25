@@ -419,7 +419,7 @@ enum ChannelCoverSelectorState {
                                   atIndexPath: (NSIndexPath *) indexPath
 {
     
-    if(self.currentState !=kChannelCoverDefault)
+    if (self.currentState !=kChannelCoverDefault)
     {
         return nil;
     }
