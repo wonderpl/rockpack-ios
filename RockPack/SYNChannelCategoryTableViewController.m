@@ -446,6 +446,8 @@
 
 - (void) tappedHeader: (UIButton *) header
 {
+    [CATransaction begin];
+    
     BOOL needToOpen = !self.lastSelectedIndexpath || self.lastSelectedIndexpath.section != header.tag;
     
     if (needToOpen)
@@ -457,21 +459,24 @@
             needToOpen = NO;
         }
         else
-        {
+        {            
             [CATransaction setCompletionBlock: ^{
                 NSIndexPath *topElement = [NSIndexPath indexPathForRow: 0
                                                              inSection: header.tag];
                 
-                [self.tableView scrollToRowAtIndexPath: topElement
-                                      atScrollPosition: UITableViewScrollPositionTop
-                                              animated: YES];
+                // Double-check that we can actually scroll to that row
+                if (!topElement || ([self tableView: self.tableView
+                                          numberOfRowsInSection: header.tag] > 0))
+                {
+                    [self.tableView scrollToRowAtIndexPath: topElement
+                                          atScrollPosition: UITableViewScrollPositionTop
+                                                  animated: YES];
+                }
             }];
         }
     }
     else
     {
-        [CATransaction begin];
-        
         if (self.lastSelectedIndexpath.section == header.tag && self.lastSelectedIndexpath.row < 0)
         {
             [CATransaction setCompletionBlock: ^{
@@ -539,6 +544,7 @@
     }
     
     [self.tableView endUpdates];
+    
     [CATransaction commit];
 }
 
