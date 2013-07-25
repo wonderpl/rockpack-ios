@@ -387,16 +387,16 @@ static char* association_key = "SYNFriendThumbnailCell to Friend";
     if(!self.currentlySelectedFriend.isOnRockpack) // facebook friend, invite to rockpack
     {
         
-        NSString* firstName = [self.currentlySelectedFriend.displayName componentsSeparatedByString:@" "][0];
-        
-        self.currentInviteFriendView = (SYNInviteFriendView*)[[[NSBundle mainBundle] loadNibNamed:@"SYNInviteFriendView"
-                                                                                            owner:self
-                                                                                          options:nil] objectAtIndex:0];
-        
-        self.currentInviteFriendView.profileImageView.image = cellClicked.imageView.image;
-        self.currentInviteFriendView.titleLabel.text = [NSString stringWithFormat:@"%@ IS NOT ON ROCKPACK YET", firstName];
-        
-        [appDelegate.viewStackManager presentPopoverView:self.currentInviteFriendView];
+        [[SYNFacebookManager sharedFBManager] sendAppRequestToFriend:self.currentlySelectedFriend
+                                                           onSuccess:^{
+                                                               
+                                                               [appDelegate.viewStackManager removePopoverView];
+                                                               
+                                                           } onFailure:^(NSError *error) {
+                                                               
+                                                               [appDelegate.viewStackManager removePopoverView];
+                                                               
+                                                           }];
     }
     else // on rockpack, go to profile
     {
@@ -412,16 +412,16 @@ static char* association_key = "SYNFriendThumbnailCell to Friend";
 
 -(IBAction)inviteButtonPressed:(id)sender
 {
-    [[SYNFacebookManager sharedFBManager] sendAppRequestToFriend:self.currentlySelectedFriend
-                                                       onSuccess:^{
-                                                           
-                                                           [appDelegate.viewStackManager removePopoverView];
-        
-                                                       } onFailure:^(NSError *error) {
-                                                           
-                                                           [appDelegate.viewStackManager removePopoverView];
-        
-                                                       }];
+//    [[SYNFacebookManager sharedFBManager] sendAppRequestToFriend:self.currentlySelectedFriend
+//                                                       onSuccess:^{
+//                                                           
+//                                                           [appDelegate.viewStackManager removePopoverView];
+//        
+//                                                       } onFailure:^(NSError *error) {
+//                                                           
+//                                                           [appDelegate.viewStackManager removePopoverView];
+//        
+//                                                       }];
     
 }
 
