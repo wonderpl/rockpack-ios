@@ -1577,7 +1577,7 @@
     
     NSString *apiString = [kAPIFriends stringByReplacingOccurrencesOfStrings: apiSubstitutionDictionary];
     
-    NSDictionary *params = @{@"DEVICE_TYPE": @"ios"};
+    NSDictionary *params = @{@"device_filter": @"ios"};
     
     SYNNetworkOperationJsonObject *networkOperation = (SYNNetworkOperationJsonObject*)[self operationWithPath: apiString
                                                                                                        params: params
