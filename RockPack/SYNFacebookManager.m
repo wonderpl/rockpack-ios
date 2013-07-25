@@ -394,7 +394,7 @@ typedef enum
     
     [FBWebDialogs presentRequestsDialogModallyWithSession:nil
                                                   message:@"Join me on Rockpack for iPhone & iPad"
-                                                    title:@"Rockpack"
+                                                    title:@"Invite Friend"
                                                parameters:params
                                                   handler:^(FBWebDialogResult result, NSURL *resultURL, NSError *error) {
                                                       
