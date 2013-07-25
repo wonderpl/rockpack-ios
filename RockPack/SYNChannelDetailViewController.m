@@ -1004,18 +1004,20 @@
         // define success block //
         [self incrementRangeForNextRequest];
         
+        __weak typeof(self) weakSelf = self;
+        
         MKNKUserSuccessBlock successBlock = ^(NSDictionary *dictionary) {
-            self.loadingMoreContent = NO;
+            weakSelf.loadingMoreContent = NO;
             
-            [self.channel addVideoInstancesFromDictionary: dictionary];
+            [weakSelf.channel addVideoInstancesFromDictionary: dictionary];
             
             NSError* error;
-            [self.channel.managedObjectContext save: &error];
+            [weakSelf.channel.managedObjectContext save: &error];
         };
         
         // define success block //
         MKNKUserErrorBlock errorBlock = ^(NSDictionary* errorDictionary) {
-            self.loadingMoreContent = NO;
+            weakSelf.loadingMoreContent = NO;
             DebugLog(@"Update action failed");
         };
         
