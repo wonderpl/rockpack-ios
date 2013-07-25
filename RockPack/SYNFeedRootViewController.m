@@ -397,6 +397,7 @@ typedef void(^FeedDataErrorBlock)(void);
                                                                         managedObjectContext: appDelegate.mainManagedObjectContext
                                                                           sectionNameKeyPath: @"dateAddedIgnoringTime"
                                                                                    cacheName: nil];
+    
     fetchedResultsController.delegate = self;
     
     NSError *error = nil;

@@ -277,6 +277,8 @@
             aggregation.viewId = kFeedViewId;
             
             aggregation.resourceType = NSStringFromClass([FeedItem class]);
+            
+            [aggregationItems setObject:aggregation forKey:aggregationIndex];
         }
         
             
@@ -284,9 +286,10 @@
         
     }
     
-    for (NSDictionary* d in aggregationItems) {
-        NSLog(@"%@", d);
-    }
+//    for (NSDictionary* d in aggregationItems) // traces keys
+//    {
+//        NSLog(@"%@", d);
+//    }
     
     return YES;
 }
