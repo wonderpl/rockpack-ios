@@ -643,11 +643,10 @@
              
              activityViewController.presentingPopoverController = _activityPopoverController;
              
-             [self.activityPopoverController
-              presentPopoverFromRect: rect
-              inView: inView
-              permittedArrowDirections: arrowDirections
-              animated: YES];
+             [self.activityPopoverController presentPopoverFromRect: rect
+                                                             inView: inView
+                                           permittedArrowDirections: arrowDirections
+                                                           animated: YES];
          }
          else
          {
