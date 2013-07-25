@@ -72,6 +72,16 @@
     self.view.autoresizingMask = UIViewAutoresizingFlexibleWidth | UIViewAutoresizingFlexibleHeight;
     
     self.currentCalendar = [NSCalendar currentCalendar];
+    
+    NSFetchRequest *fetchRequest = [[NSFetchRequest alloc] init];
+    
+    fetchRequest.fetchBatchSize = 20;
+    fetchRequest.entity = [NSEntityDescription entityForName: @"VideoInstance"
+                                     inManagedObjectContext: self.appDelegate.searchManagedObjectContext];
+    [fetchRequest setPredicate: [NSPredicate predicateWithFormat: @"viewId == %@", self.viewId]];
+    fetchRequest.sortDescriptors = @[[[NSSortDescriptor alloc] initWithKey: @"position" ascending: YES]];
+    self.fetchRequest = fetchRequest;
+    
 }
 
 
@@ -83,39 +93,39 @@
 }
 
 
-- (NSFetchedResultsController *) fetchedResultsController
-{
-    if (fetchedResultsController != nil)
-        return fetchedResultsController;
-        
-    NSFetchRequest *fetchRequest = [[NSFetchRequest alloc] init];
-    
-    fetchRequest.fetchBatchSize = 20;
-    fetchRequest.entity = [NSEntityDescription entityForName: @"VideoInstance"
-                                      inManagedObjectContext: self.appDelegate.searchManagedObjectContext];
-    
-    
-    [fetchRequest setPredicate: [NSPredicate predicateWithFormat: @"viewId == %@", self.viewId]];
-    
-    fetchRequest.sortDescriptors = @[[[NSSortDescriptor alloc] initWithKey: @"position" ascending: YES]];
-    
-    
-    self.fetchedResultsController = [[NSFetchedResultsController alloc] initWithFetchRequest: fetchRequest
-                                                                        managedObjectContext: appDelegate.searchManagedObjectContext
-                                                                          sectionNameKeyPath: nil
-                                                                                   cacheName: nil];
-    fetchedResultsController.delegate = self;
-    
-    
-    
-    NSError *error = nil;    
-    if (![fetchedResultsController performFetch: &error])
-    {
-        AssertOrLog(@"Search Videos Fetch Request Failed: %@\n%@", [error localizedDescription], [error userInfo]);
-    }
-    
-    return fetchedResultsController; 
-}
+//- (NSFetchedResultsController *) fetchedResultsController
+//{
+//    if (fetchedResultsController != nil)
+//        return fetchedResultsController;
+//        
+//    NSFetchRequest *fetchRequest = [[NSFetchRequest alloc] init];
+//    
+//    fetchRequest.fetchBatchSize = 20;
+//    fetchRequest.entity = [NSEntityDescription entityForName: @"VideoInstance"
+//                                      inManagedObjectContext: self.appDelegate.searchManagedObjectContext];
+//    
+//    
+//    [fetchRequest setPredicate: [NSPredicate predicateWithFormat: @"viewId == %@", self.viewId]];
+//    
+//    fetchRequest.sortDescriptors = @[[[NSSortDescriptor alloc] initWithKey: @"position" ascending: YES]];
+//    
+//    
+//    self.fetchedResultsController = [[NSFetchedResultsController alloc] initWithFetchRequest: fetchRequest
+//                                                                        managedObjectContext: appDelegate.searchManagedObjectContext
+//                                                                          sectionNameKeyPath: nil
+//                                                                                   cacheName: nil];
+//    fetchedResultsController.delegate = self;
+//    
+//    
+//    
+//    NSError *error = nil;    
+//    if (![fetchedResultsController performFetch: &error])
+//    {
+//        AssertOrLog(@"Search Videos Fetch Request Failed: %@\n%@", [error localizedDescription], [error userInfo]);
+//    }
+//    
+//    return fetchedResultsController; 
+//}
 
 
 - (void) performNewSearchWithTerm: (NSString*) term
@@ -141,6 +151,8 @@
                                                                                 if(itemsCount == 0)
                                                                                     [super displayEmptyGenreMessage:NSLocalizedString(@"search_screen_no_videos", nil)
                                                                                                           andLoader:NO];
+                                                                                self.resultArray = [appDelegate.searchManagedObjectContext executeFetchRequest:self.fetchRequest error:nil];
+                                                                                [self reloadCollectionViews];
                                                                             }];
     self.searchTerm = term;
 }
@@ -164,7 +176,7 @@
 
 - (NSInteger) collectionView: (UICollectionView *) collectionView numberOfItemsInSection: (NSInteger) section
 {
-    return self.fetchedResultsController.fetchedObjects.count;
+    return [self.resultArray count];
     
 }
 
@@ -172,7 +184,7 @@
 - (UICollectionViewCell *) collectionView: (UICollectionView *) cv
                    cellForItemAtIndexPath: (NSIndexPath *) indexPath
 {
-    VideoInstance *videoInstance = [self.fetchedResultsController objectAtIndexPath: indexPath];
+    VideoInstance *videoInstance = self.resultArray[indexPath.row];
     
     SYNVideoThumbnailWideCell *videoThumbnailCell = [cv dequeueReusableCellWithReuseIdentifier: @"SYNVideoThumbnailWideCell"
                                                                                   forIndexPath: indexPath];

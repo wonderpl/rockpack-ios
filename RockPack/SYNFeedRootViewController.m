@@ -34,7 +34,7 @@
 @property (nonatomic, strong) NSTimer *timer;
 @property (nonatomic, strong) SYNFeedMessagesView* emptyGenreMessageView;
 @property (nonatomic, strong) UIRefreshControl *refreshControl;
-@property (nonatomic, weak) SYNVideoThumbnailWideCell* selectedCell; 
+@property (nonatomic, weak) SYNVideoThumbnailWideCell* selectedCell;
 
 @end
 
@@ -167,6 +167,20 @@
                                              selector: @selector(videoQueueCleared)
                                                  name: kVideoQueueClear
                                                object: nil];
+    
+    NSFetchRequest *fetchRequest = [[NSFetchRequest alloc] init];
+    // Edit the entity name as appropriate.
+    fetchRequest.entity = [NSEntityDescription entityForName: @"VideoInstance"
+                                          inManagedObjectContext: appDelegate.mainManagedObjectContext];
+    
+    
+    NSPredicate* predicate = [NSPredicate predicateWithFormat:[NSString stringWithFormat:@"viewId == \"%@\" AND fresh == YES", kFeedViewId]];
+    
+    fetchRequest.predicate = predicate;
+    fetchRequest.sortDescriptors = @[[[NSSortDescriptor alloc] initWithKey: @"dateAdded" ascending: NO],[[NSSortDescriptor alloc] initWithKey: @"position" ascending: YES]];
+    fetchRequest.fetchBatchSize = 20;
+
+    self.fetchRequest = fetchRequest;
 }
 
 
@@ -280,7 +294,7 @@
                                                         
                                                         [self removeEmptyGenreMessage];
                                                         
-                                                        if(self.fetchedResultsController.fetchedObjects.count == 0)
+                                                        if(self.resultArray.count == 0)
                                                             [self displayEmptyGenreMessage:NSLocalizedString(@"feed_screen_empty_message", nil) andLoader:NO];
                                                         
                                                         self.loadingMoreContent = NO;
@@ -307,9 +321,16 @@
 
 - (void) handleRefreshComplete
 {
+    self.resultArray = [appDelegate.mainManagedObjectContext executeFetchRequest:self.fetchRequest error:nil];
+    [self reloadCollectionViews];
     self.refreshing = FALSE;
     [self.refreshControl endRefreshing];
     [self.refreshButton endRefreshCycle];
+}
+
+-(void)reloadCollectionViews
+{
+    [self.videoThumbnailCollectionView reloadData];
 }
 
 
@@ -359,40 +380,40 @@
 
 #pragma mark - Fetched results controller
 
-- (NSFetchedResultsController *) fetchedResultsController
-{
-    if (fetchedResultsController)
-        return fetchedResultsController;
-    
-    
-    NSFetchRequest *fetchRequest = [[NSFetchRequest alloc] init];    
-    // Edit the entity name as appropriate.
-    fetchRequest.entity = [NSEntityDescription entityForName: @"VideoInstance"
-                                      inManagedObjectContext: appDelegate.mainManagedObjectContext];
-    
-    
-    NSPredicate* predicate = [NSPredicate predicateWithFormat:[NSString stringWithFormat:@"viewId == \"%@\" AND fresh == YES", kFeedViewId]];
- 
-    fetchRequest.predicate = predicate;
+//- (NSFetchedResultsController *) fetchedResultsController
+//{
+//    if (fetchedResultsController)
+//        return fetchedResultsController;
+//    
+//    
+//    NSFetchRequest *fetchRequest = [[NSFetchRequest alloc] init];
+//    // Edit the entity name as appropriate.
+//    fetchRequest.entity = [NSEntityDescription entityForName: @"VideoInstance"
+//                                      inManagedObjectContext: appDelegate.mainManagedObjectContext];
+//    
+//    
+//    NSPredicate* predicate = [NSPredicate predicateWithFormat:[NSString stringWithFormat:@"viewId == \"%@\" AND fresh == YES", kFeedViewId]];
+// 
+//    fetchRequest.predicate = predicate;
+//
+//    fetchRequest.sortDescriptors = @[[[NSSortDescriptor alloc] initWithKey: @"dateAdded" ascending: NO],[[NSSortDescriptor alloc] initWithKey: @"position" ascending: YES]];
+//    
+//    
+//    self.fetchedResultsController = [[NSFetchedResultsController alloc] initWithFetchRequest: fetchRequest
+//                                                                        managedObjectContext: appDelegate.mainManagedObjectContext
+//                                                                          sectionNameKeyPath: @"dateAddedIgnoringTime"
+//                                                                                   cacheName: nil];
+//    fetchedResultsController.delegate = self;
+//    
+//    NSError *error = nil;
+//    if (![fetchedResultsController performFetch: &error])
+//    {
+//        AssertOrLog(@"videoInstanceFetchedResultsController:performFetch failed: %@\n%@", [error localizedDescription], [error userInfo]);
+//    }
+//    
+//    return fetchedResultsController;
+//}
 
-    fetchRequest.sortDescriptors = @[[[NSSortDescriptor alloc] initWithKey: @"dateAdded" ascending: NO],[[NSSortDescriptor alloc] initWithKey: @"position" ascending: YES]];
-    
-    
-    self.fetchedResultsController = [[NSFetchedResultsController alloc] initWithFetchRequest: fetchRequest
-                                                                        managedObjectContext: appDelegate.mainManagedObjectContext
-                                                                          sectionNameKeyPath: @"dateAddedIgnoringTime"
-                                                                                   cacheName: nil];
-    fetchedResultsController.delegate = self;
-    
-    NSError *error = nil;
-    if (![fetchedResultsController performFetch: &error])
-    {
-        AssertOrLog(@"videoInstanceFetchedResultsController:performFetch failed: %@\n%@", [error localizedDescription], [error userInfo]);
-    }
-    
-    return fetchedResultsController;
-}
-    
 
 - (void) controllerDidChangeContent: (NSFetchedResultsController *) controller
 {
@@ -405,15 +426,14 @@
 
 - (NSInteger) numberOfSectionsInCollectionView: (UICollectionView *) collectionView
 {
-    return self.fetchedResultsController.sections.count;
+    return 1;
 }
 
 
 - (NSInteger) collectionView: (UICollectionView *) collectionView
       numberOfItemsInSection: (NSInteger) section
 {
-    id <NSFetchedResultsSectionInfo> sectionInfo = self.fetchedResultsController.sections[section];
-    return sectionInfo.numberOfObjects;
+    return [self.resultArray count];
     
 }
 
@@ -482,7 +502,7 @@
 {
     UICollectionViewCell *cell = nil;
     
-    VideoInstance *videoInstance = [self.fetchedResultsController objectAtIndexPath: indexPath];
+    VideoInstance *videoInstance = self.resultArray[indexPath.row];
     
     SYNVideoThumbnailWideCell *videoThumbnailCell = [cv dequeueReusableCellWithReuseIdentifier: @"SYNVideoThumbnailWideCell"
                                                                                   forIndexPath: indexPath];
@@ -580,7 +600,7 @@
     UICollectionReusableView *supplementaryView = nil;
     
     // Work out the day
-    id<NSFetchedResultsSectionInfo> sectionInfo = (self.fetchedResultsController.sections)[indexPath.section];
+   // id<NSFetchedResultsSectionInfo> sectionInfo = (self.fetchedResultsController.sections)[indexPath.section];
     
     // In the 'name' attribut of the sectionInfo we have actually the keypath data (i.e in this case Date without time)
     
@@ -588,56 +608,58 @@
     
     if (kind == UICollectionElementKindSectionHeader)
     {
-        NSDate *date = [self.dateFormatter dateFromString: sectionInfo.name];
-        
-        SYNHomeSectionHeaderView *headerSupplementaryView = [collectionView dequeueReusableSupplementaryViewOfKind: kind
-                                                                                               withReuseIdentifier: @"SYNHomeSectionHeaderView"
-                                                                                                      forIndexPath: indexPath];
-        NSString *sectionText;
-        
-        // Unavoidably long if-then-else
-        if ([date isToday])
-        {
-            sectionText = NSLocalizedString(@"TODAY", nil);
-        }
-        else if ([date isYesterday])
-        {
-            sectionText = NSLocalizedString(@"YESTERDAY", nil);
-        }
-        else if ([date isLast7Days])
-        {
-            sectionText = date.weekdayString;
-        }
-        else if ([date isThisYear])
-        {
-            sectionText = date.shortDateWithOrdinalString;
-        }
-        else
-        {
-            sectionText = date.shortDateWithOrdinalStringAndYear;
-        }
-        
-        // Special case, remember the first section view
-        headerSupplementaryView.viewControllerDelegate = self;
-        headerSupplementaryView.sectionTitleLabel.text = sectionText.uppercaseString;
-        if ([SYNDeviceManager.sharedInstance isLandscape])
-        {
-            headerSupplementaryView.sectionView.image = [UIImage imageNamed:@"PanelDay"];
-        }
-        else
-        {
-            headerSupplementaryView.sectionView.image = [UIImage imageNamed:@"PanelDayPortrait"];
-        }
-        
-        supplementaryView = headerSupplementaryView;
+//        return supplementaryView;
+//        
+//        NSDate *date = [self.dateFormatter dateFromString: sectionInfo.name];
+//        
+//        SYNHomeSectionHeaderView *headerSupplementaryView = [collectionView dequeueReusableSupplementaryViewOfKind: kind
+//                                                                                               withReuseIdentifier: @"SYNHomeSectionHeaderView"
+//                                                                                                      forIndexPath: indexPath];
+//        NSString *sectionText;
+//        
+//        // Unavoidably long if-then-else
+//        if ([date isToday])
+//        {
+//            sectionText = NSLocalizedString(@"TODAY", nil);
+//        }
+//        else if ([date isYesterday])
+//        {
+//            sectionText = NSLocalizedString(@"YESTERDAY", nil);
+//        }
+//        else if ([date isLast7Days])
+//        {
+//            sectionText = date.weekdayString;
+//        }
+//        else if ([date isThisYear])
+//        {
+//            sectionText = date.shortDateWithOrdinalString;
+//        }
+//        else
+//        {
+//            sectionText = date.shortDateWithOrdinalStringAndYear;
+//        }
+//        
+//        // Special case, remember the first section view
+//        headerSupplementaryView.viewControllerDelegate = self;
+//        headerSupplementaryView.sectionTitleLabel.text = sectionText.uppercaseString;
+//        if ([SYNDeviceManager.sharedInstance isLandscape])
+//        {
+//            headerSupplementaryView.sectionView.image = [UIImage imageNamed:@"PanelDay"];
+//        }
+//        else
+//        {
+//            headerSupplementaryView.sectionView.image = [UIImage imageNamed:@"PanelDayPortrait"];
+//        }
+//        
+//        supplementaryView = headerSupplementaryView;
     }
     
     else if (kind == UICollectionElementKindSectionFooter)
     {
-        if (indexPath.section < self.fetchedResultsController.sections.count - 1)
-            return supplementaryView;
+//        if (indexPath.section < self.fetchedResultsController.sections.count - 1)
+//            return supplementaryView;
         
-        if (self.fetchedResultsController.fetchedObjects.count == 0 ||
+        if (self.resultArray.count == 0 ||
            (self.dataRequestRange.location + self.dataRequestRange.length) >= self.dataItemsAvailable)
         {
             return supplementaryView;

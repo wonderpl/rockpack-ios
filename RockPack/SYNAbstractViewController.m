@@ -55,7 +55,6 @@
 @implementation SYNAbstractViewController
 
 
-@synthesize fetchedResultsController = fetchedResultsController;
 @synthesize selectedIndex = _selectedIndex;
 
 @synthesize tabViewController;
@@ -128,12 +127,6 @@
 }
 
 
-- (void) controllerDidChangeContent: (NSFetchedResultsController *) controller
-{
-    [self reloadCollectionViews];
-}
-
-
 - (void) reloadCollectionViews
 {
     //AssertOrLog (@"Abstract class called 'reloadCollectionViews'");
@@ -158,54 +151,54 @@
 
 - (void) videoAddButtonTapped: (UIButton *) _addButton
 {
-    if(!self.videoThumbnailCollectionView) // not all sub classes will have this initialized so check to avoid errors
-        return;
-    
-    if(_addButton.selected)
-        return;
-    
-    
-    UIView *v = _addButton.superview.superview;
-    NSIndexPath *indexPath = [self.videoThumbnailCollectionView indexPathForItemAtPoint: v.center];
-    VideoInstance *videoInstance = [self.fetchedResultsController objectAtIndexPath: indexPath];
-    
-    
-    
-    if(videoInstance)
-    {
-        id<GAITracker> tracker = [GAI sharedInstance].defaultTracker;
-        
-        [tracker sendEventWithCategory: @"uiAction"
-                            withAction: @"videoPlusButtonClick"
-                             withLabel: nil
-                             withValue: nil];
-        
-        [appDelegate.oAuthNetworkEngine recordActivityForUserId: appDelegate.currentUser.uniqueId
-                                                         action: @"select"
-                                                videoInstanceId: videoInstance.uniqueId
-                                              completionHandler: ^(id response) {
-                                                  
-                                                  
-                                              } errorHandler: ^(id error) {
-                                                  
-                                                  DebugLog(@"Could not record videoAddButtonTapped: activity");
-                                                  
-                                              }];
-
-        
-        [[NSNotificationCenter defaultCenter] postNotificationName: kVideoQueueAdd
-                                                            object: self
-                                                          userInfo: @{@"VideoInstance" : videoInstance }];
-    }
-    
-    
-    
-    
-    
-    [self.videoThumbnailCollectionView reloadData];
-    
-    
-    _addButton.selected = !_addButton.selected; // switch to on/off
+//    if(!self.videoThumbnailCollectionView) // not all sub classes will have this initialized so check to avoid errors
+//        return;
+//    
+//    if(_addButton.selected)
+//        return;
+//    
+//    
+//    UIView *v = _addButton.superview.superview;
+//    NSIndexPath *indexPath = [self.videoThumbnailCollectionView indexPathForItemAtPoint: v.center];
+//    VideoInstance *videoInstance = [self.fetchedResultsController objectAtIndexPath: indexPath];
+//    
+//    
+//    
+//    if(videoInstance)
+//    {
+//        id<GAITracker> tracker = [GAI sharedInstance].defaultTracker;
+//        
+//        [tracker sendEventWithCategory: @"uiAction"
+//                            withAction: @"videoPlusButtonClick"
+//                             withLabel: nil
+//                             withValue: nil];
+//        
+//        [appDelegate.oAuthNetworkEngine recordActivityForUserId: appDelegate.currentUser.uniqueId
+//                                                         action: @"select"
+//                                                videoInstanceId: videoInstance.uniqueId
+//                                              completionHandler: ^(id response) {
+//                                                  
+//                                                  
+//                                              } errorHandler: ^(id error) {
+//                                                  
+//                                                  DebugLog(@"Could not record videoAddButtonTapped: activity");
+//                                                  
+//                                              }];
+//
+//        
+//        [[NSNotificationCenter defaultCenter] postNotificationName: kVideoQueueAdd
+//                                                            object: self
+//                                                          userInfo: @{@"VideoInstance" : videoInstance }];
+//    }
+//    
+//    
+//    
+//    
+//    
+//    [self.videoThumbnailCollectionView reloadData];
+//    
+//    
+//    _addButton.selected = !_addButton.selected; // switch to on/off
 }
 
 
@@ -256,41 +249,41 @@
 
 - (IBAction) userTouchedVideoShareButton: (UIButton *) videoShareButton
 {
-    NSIndexPath *indexPath = [self indexPathFromVideoInstanceButton: videoShareButton];
-    VideoInstance *videoInstance = [self.fetchedResultsController objectAtIndexPath: indexPath];
-    
-    // Stop multiple clicks by disabling button 
-    videoShareButton.enabled = FALSE;
-    
-    [self shareVideoInstance: videoInstance
-                      inView: self.view
-                    fromRect: videoShareButton.frame
-             arrowDirections: UIPopoverArrowDirectionDown
-           activityIndicator: nil
-                  onComplete: ^{
-                 // Re-enable button
-                 videoShareButton.enabled = TRUE;
-             }];
+//    NSIndexPath *indexPath = [self indexPathFromVideoInstanceButton: videoShareButton];
+//    VideoInstance *videoInstance = [self.fetchedResultsController objectAtIndexPath: indexPath];
+//    
+//    // Stop multiple clicks by disabling button 
+//    videoShareButton.enabled = FALSE;
+//    
+//    [self shareVideoInstance: videoInstance
+//                      inView: self.view
+//                    fromRect: videoShareButton.frame
+//             arrowDirections: UIPopoverArrowDirectionDown
+//           activityIndicator: nil
+//                  onComplete: ^{
+//                 // Re-enable button
+//                 videoShareButton.enabled = TRUE;
+//             }];
 }
 
 
 - (void) displayVideoViewerFromView: (UIButton *) videoViewButton
 {
-    NSIndexPath *indexPath = [self indexPathFromVideoInstanceButton: videoViewButton];
-    
-    id selectedVideo = [self.fetchedResultsController objectAtIndexPath:indexPath];
-    NSArray* videoArray =  self.fetchedResultsController.fetchedObjects;
-    CGPoint center;
-    if(videoViewButton)
-    {
-        center = [self.view convertPoint:videoViewButton.center fromView:videoViewButton.superview];
-    }
-    else
-    {
-        center = self.view.center;
-    }
-    [self displayVideoViewerWithVideoInstanceArray: videoArray
-                                  andSelectedIndex: [videoArray indexOfObject:selectedVideo] center:center];
+//    NSIndexPath *indexPath = [self indexPathFromVideoInstanceButton: videoViewButton];
+//    
+//    id selectedVideo = [self.fetchedResultsController objectAtIndexPath:indexPath];
+//    NSArray* videoArray =  self.fetchedResultsController.fetchedObjects;
+//    CGPoint center;
+//    if(videoViewButton)
+//    {
+//        center = [self.view convertPoint:videoViewButton.center fromView:videoViewButton.superview];
+//    }
+//    else
+//    {
+//        center = self.view.center;
+//    }
+//    [self displayVideoViewerWithVideoInstanceArray: videoArray
+//                                  andSelectedIndex: [videoArray indexOfObject:selectedVideo] center:center];
 }
 
 
@@ -341,14 +334,14 @@
 // User pressed the channel thumbnail in a VideoCell
 - (IBAction) channelButtonTapped: (UIButton *) channelButton
 {
-    NSIndexPath *indexPath = [self indexPathFromVideoInstanceButton: channelButton];
-    
-    if (indexPath)
-    {
-        VideoInstance *videoInstance = [self.fetchedResultsController objectAtIndexPath: indexPath];
-        
-        [appDelegate.viewStackManager viewChannelDetails:videoInstance.channel];
-    }
+//    NSIndexPath *indexPath = [self indexPathFromVideoInstanceButton: channelButton];
+//    
+//    if (indexPath)
+//    {
+//        VideoInstance *videoInstance = [self.fetchedResultsController objectAtIndexPath: indexPath];
+//        
+//        [appDelegate.viewStackManager viewChannelDetails:videoInstance.channel];
+//    }
 }
 
 - (void) videoOverlayDidDissapear
@@ -359,15 +352,15 @@
 
 - (IBAction) profileButtonTapped: (UIButton *) profileButton
 {
-    NSIndexPath *indexPath = [self indexPathFromVideoInstanceButton: profileButton];
-    
-    // Bail if we don't have an index path
-    if (indexPath)
-    {
-        VideoInstance *videoInstance = [self.fetchedResultsController objectAtIndexPath: indexPath];
-        
-        [appDelegate.viewStackManager viewProfileDetails: videoInstance.channel.channelOwner];
-    }
+//    NSIndexPath *indexPath = [self indexPathFromVideoInstanceButton: profileButton];
+//    
+//    // Bail if we don't have an index path
+//    if (indexPath)
+//    {
+//        VideoInstance *videoInstance = [self.fetchedResultsController objectAtIndexPath: indexPath];
+//        
+//        [appDelegate.viewStackManager viewProfileDetails: videoInstance.channel.channelOwner];
+//    }
 }
 
 

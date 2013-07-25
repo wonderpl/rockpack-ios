@@ -24,8 +24,7 @@ typedef void (^SYNShareCompletionBlock)(void);
 
 @class VideoInstance, Channel, ChannelOwner, Genre, SubGenre;
 
-@interface SYNAbstractViewController : UIViewController <NSFetchedResultsControllerDelegate,
-                                                                 UICollectionViewDataSource,
+@interface SYNAbstractViewController : UIViewController <UICollectionViewDataSource,
                                                                  UICollectionViewDelegate,
                                                                  SYNTabViewDelegate>
 {
@@ -34,7 +33,6 @@ typedef void (^SYNShareCompletionBlock)(void);
     BOOL tabExpanded;
     SYNTabViewController* tabViewController;
     NSString* viewId;
-    NSFetchedResultsController* fetchedResultsController;
     NSString* abstractTitle;
 }
 
@@ -48,7 +46,6 @@ typedef void (^SYNShareCompletionBlock)(void);
 @property (nonatomic, assign, getter = isLoadingMoreContent) BOOL loadingMoreContent;
 @property (nonatomic, readonly) NSString* viewId;
 @property (nonatomic, strong) IBOutlet UICollectionView *videoThumbnailCollectionView;
-@property (nonatomic, strong) NSFetchedResultsController* fetchedResultsController;
 @property (nonatomic, strong) NSIndexPath *draggedIndexPath;
 @property (nonatomic, strong) SYNAddButtonControl* addButton;
 @property (nonatomic, strong) SYNChannelFooterMoreView* footerView;

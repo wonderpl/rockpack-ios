@@ -13,9 +13,13 @@
 @interface SYNFeedRootViewController : SYNAbstractViewController
 
 @property (nonatomic, strong) SYNRefreshButton* refreshButton;
+@property (nonatomic, strong) NSFetchRequest* fetchRequest;
+@property (nonatomic, strong) NSArray* resultArray;
 
 - (void) removeEmptyGenreMessage;
 - (void) displayEmptyGenreMessage: (NSString*) messageKey
                         andLoader: (BOOL) isLoader;
+
+
 
 @end
