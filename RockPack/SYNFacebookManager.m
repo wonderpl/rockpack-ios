@@ -393,8 +393,8 @@ typedef enum
         params = nil;
     
     [FBWebDialogs presentRequestsDialogModallyWithSession:nil
-                                                  message:@"Join us on the video side"
-                                                    title:@"Hello from Rockpack!"
+                                                  message:@"Join me on Rockpack for iPhone & iPad"
+                                                    title:@"Rockpack"
                                                parameters:params
                                                   handler:^(FBWebDialogResult result, NSURL *resultURL, NSError *error) {
                                                       
