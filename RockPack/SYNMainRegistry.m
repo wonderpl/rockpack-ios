@@ -202,6 +202,50 @@
 
 #pragma mark - VideoInstances
 
+- (BOOL) registerDataForSocialFeedFromDictionary: (NSDictionary *) dictionary
+                                     byAppending: (BOOL) append
+{
+    
+    // == Check for Validity == //
+    
+    NSDictionary *contentDictionary = dictionary[@"content"];
+    if (!contentDictionary || ![contentDictionary isKindOfClass: [NSDictionary class]])
+        return NO;
+    
+    NSInteger totalCount = contentDictionary[@"total"] ? contentDictionary[@"total"] : 0 ;
+    
+    if(totalCount == 0)
+        return YES;
+    
+    NSArray *itemsArray = contentDictionary[@"items"];
+    if (!itemsArray || ![itemsArray isKindOfClass: [NSArray class]])
+        return NO;
+    
+    NSArray *aggregations = contentDictionary[@"aggregations"];
+    if (!aggregations || ![aggregations isKindOfClass: [NSArray class]])
+        return NO;
+    
+    // == Parse Items == //
+    
+    for (NSDictionary* itemDictionary in itemsArray)
+    {
+        // define type
+        
+        NSNumber* aggregationIndexNumber = itemDictionary[@"aggregation"];
+        if(aggregationIndexNumber && [aggregationIndexNumber isKindOfClass:[NSNumber class]]) // the item IS part of an aggregation
+        {
+            NSInteger aggregationIndex = [aggregationIndexNumber integerValue];
+            
+        }
+        
+        
+    }
+    
+    return YES;
+}
+
+// legacy parsing
+
 - (BOOL) registerDataForFeedFromDictionary: (NSDictionary *) dictionary
                                byAppending: (BOOL) append
 {
@@ -212,7 +256,7 @@
     
     
     NSArray *itemArray = videosDictionary[@"items"];
-    if (![itemArray isKindOfClass: [NSArray class]])
+    if (!itemArray || ![itemArray isKindOfClass: [NSArray class]])
         return NO;
     
     

@@ -2418,6 +2418,7 @@
 		BE7D0355179ED752008053DC /* ButtonSearchFriendsDefault@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = "ButtonSearchFriendsDefault@2x.png"; path = "Assets/Images/ButtonSearchFriendsDefault@2x.png"; sourceTree = "<group>"; };
 		BE7D0356179ED752008053DC /* ButtonSearchFriendsHighlighted.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = ButtonSearchFriendsHighlighted.png; path = Assets/Images/ButtonSearchFriendsHighlighted.png; sourceTree = "<group>"; };
 		BE7D0357179ED752008053DC /* ButtonSearchFriendsHighlighted@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = "ButtonSearchFriendsHighlighted@2x.png"; path = "Assets/Images/ButtonSearchFriendsHighlighted@2x.png"; sourceTree = "<group>"; };
+		BE7D035C17A13EF4008053DC /* Rockpack 7.xcdatamodel */ = {isa = PBXFileReference; lastKnownFileType = file; path = "Rockpack 7.xcdatamodel"; sourceTree = "<group>"; };
 		BE7D342D170DD8C90085AB81 /* SYNChannelFooterMoreView.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = SYNChannelFooterMoreView.xib; sourceTree = "<group>"; };
 		BE7D342F170DDB310085AB81 /* SYNChannelFooterMoreView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SYNChannelFooterMoreView.h; sourceTree = "<group>"; };
 		BE7D3430170DDB310085AB81 /* SYNChannelFooterMoreView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SYNChannelFooterMoreView.m; sourceTree = "<group>"; };
@@ -6934,6 +6935,7 @@
 		01E427D11664C726009B941F /* Rockpack.xcdatamodeld */ = {
 			isa = XCVersionGroup;
 			children = (
+				BE7D035C17A13EF4008053DC /* Rockpack 7.xcdatamodel */,
 				3854788017940F75006EB38B /* Rockpack 5.xcdatamodel */,
 				BE7D030E179D9AF6008053DC /* Rockpack 6.xcdatamodel */,
 				BE53EE6017609587008360D2 /* Rockpack 4.xcdatamodel */,
@@ -6941,7 +6943,7 @@
 				3885165B17579086001A9FD4 /* Rockpack 2.xcdatamodel */,
 				01E427D21664C726009B941F /* Rockpack.xcdatamodel */,
 			);
-			currentVersion = BE7D030E179D9AF6008053DC /* Rockpack 6.xcdatamodel */;
+			currentVersion = BE7D035C17A13EF4008053DC /* Rockpack 7.xcdatamodel */;
 			path = Rockpack.xcdatamodeld;
 			sourceTree = "<group>";
 			versionGroupType = wrapper.xcdatamodel;
