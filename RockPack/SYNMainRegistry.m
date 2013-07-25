@@ -203,59 +203,29 @@
 
 #pragma mark - VideoInstances
 
-- (BOOL) registerDataForSocialFeedFromDictionary: (NSDictionary *) dictionary
-                                     byAppending: (BOOL) append
+- (BOOL) registerDataForSocialFeedFromItemsDictionary: (NSDictionary *) dictionary
+                                          byAppending: (BOOL) append
 {
     
     // == Check for Validity == //
     
-    NSDictionary *contentDictionary = dictionary[@"content"];
-    if (!contentDictionary || ![contentDictionary isKindOfClass: [NSDictionary class]])
-        return NO;
-    
-    NSInteger totalCount = contentDictionary[@"total"] ? contentDictionary[@"total"] : 0 ;
-    
-    if(totalCount == 0)
-        return YES;
-    
-    NSArray *itemsArray = contentDictionary[@"items"];
+    NSArray *itemsArray = dictionary[@"items"];
     if (!itemsArray || ![itemsArray isKindOfClass: [NSArray class]])
         return NO;
     
-    NSArray *aggregationsArray = contentDictionary[@"aggregations"];
-    if (!aggregationsArray || ![aggregationsArray isKindOfClass: [NSArray class]])
+    NSDictionary *aggregationsDictionary = dictionary[@"aggregations"];
+    if (!aggregationsDictionary || ![aggregationsDictionary isKindOfClass: [NSDictionary class]])
         return NO;
     
-    // == Parse Aggregations == //
     
-    NSMutableArray *aggregations = [NSMutableArray arrayWithCapacity:aggregationsArray.count];
-    
-    for (NSDictionary* aggregationDictionary in aggregationsArray)
-    {
-        FeedItem* aggregation = [FeedItem instanceFromDictionary:aggregationDictionary
-                                    usingManagedObjectContext:importManagedObjectContext];
-        
-        if(!aggregation)
-            continue;
-        
-        aggregation.viewId = kFeedViewId;
-        
-        aggregation.resourceType = NSStringFromClass([FeedItem class]);
-        
-        [aggregations addObject:aggregation];
-    }
-    
-    
-    
-    
-    
+    NSMutableDictionary *aggregationItems = [NSMutableDictionary dictionaryWithCapacity:aggregationsDictionary.allKeys.count];
     
     
     // == Parse Items == //
     
     FeedItem* fi;
     AbstractCommon* object;
-    FeedItem* parent;
+    FeedItem* aggregation;
     for (NSDictionary* itemDictionary in itemsArray)
     {
         // define type
@@ -263,7 +233,7 @@
         if(itemDictionary[@"video"]) // videoInstance object
         {
             object = [VideoInstance instanceFromDictionary:itemDictionary
-                             usingManagedObjectContext:importManagedObjectContext];
+                                 usingManagedObjectContext:importManagedObjectContext];
             
             
         }
@@ -283,18 +253,34 @@
         if(!fi)
             continue;
         
+        // object has been created, see if it belongs to an aggregation
         
-        NSNumber* aggregationIndexNumber = itemDictionary[@"aggregation"];
-        if(!aggregationIndexNumber || ![aggregationIndexNumber isKindOfClass:[NSNumber class]]) // the item IS part of an aggregation
+        NSString* aggregationIndex = itemDictionary[@"aggregation"] ? itemDictionary[@"aggregation"] : nil;
+        if(!aggregationIndex || ![aggregationIndex isKindOfClass:[NSString class]]) // the item IS part of an aggregation
             continue;
         
-        if(aggregationIndexNumber.integerValue > aggregations.count)
-            continue;
+        
+        // if we have already created the FeedItem, use it
+        aggregation = aggregationItems[aggregationIndex];
+        
+        // else, create a new one
+        if(!aggregation)
+        {
+            aggregation = [FeedItem instanceFromDictionary:aggregationsDictionary[aggregationIndex]
+                                 usingManagedObjectContext:importManagedObjectContext];
+            
+            if(!aggregation)
+                continue;
+            
+            aggregation.viewId = kFeedViewId;
+            
+            aggregation.resourceType = NSStringFromClass([FeedItem class]);
+        }
         
             
-        parent = aggregations[aggregationIndexNumber.integerValue];
-            
-        [parent.feedItemsSet addObject:fi];
+        [aggregation.feedItemsSet addObject:fi];
+        
+        
         
         
     }

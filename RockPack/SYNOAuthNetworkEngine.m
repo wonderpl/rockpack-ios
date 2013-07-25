@@ -1357,6 +1357,35 @@
     [self enqueueSignedOperation: networkOperation];  
 }
 
+- (void) feedUpdatesForUserId: (NSString *) userId
+                        start: (unsigned int) start
+                         size: (unsigned int) size
+            completionHandler: (MKNKUserSuccessBlock) completionBlock
+                 errorHandler: (MKNKUserErrorBlock) errorBlock
+{
+    NSDictionary *apiSubstitutionDictionary = @{@"USERID" : userId};
+    
+    NSString *apiString = [kAPIContentFeedUpdates stringByReplacingOccurrencesOfStrings: apiSubstitutionDictionary];
+    
+    NSDictionary *params = [self paramsAndLocaleForStart: start
+                                                    size: size];
+    
+    SYNNetworkOperationJsonObject *networkOperation = (SYNNetworkOperationJsonObject*)[self operationWithPath: apiString
+                                                                                                       params: params
+                                                                                                   httpMethod: @"GET"
+                                                                                                          ssl: YES];
+    
+    
+    
+    NSLog(@"Opening: %@", networkOperation.url);
+    
+    [self addCommonHandlerToNetworkOperation: networkOperation
+                           completionHandler: completionBlock
+                                errorHandler: errorBlock];
+    
+    [self enqueueSignedOperation: networkOperation];
+}
+
 
 
 - (void) shareLinkWithObjectType: (NSString *) objectType

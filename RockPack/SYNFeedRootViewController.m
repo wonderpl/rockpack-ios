@@ -25,6 +25,8 @@
 #import "Video.h"
 #import "VideoInstance.h"
 
+typedef void(^FeedDataErrorBlock)(void);
+
 @interface SYNFeedRootViewController ()
 
 @property (nonatomic, assign) BOOL refreshing;
@@ -258,33 +260,52 @@
 
     [self.refreshButton startRefreshCycle];
     
-    [appDelegate.oAuthNetworkEngine subscriptionsUpdatesForUserId: appDelegate.currentOAuth2Credentials.userId
-                                                            start: self.dataRequestRange.location
-                                                             size: self.dataRequestRange.length
-                                                completionHandler: ^(NSDictionary *responseDictionary) {
+    FeedDataErrorBlock errorBlock = ^{
+        
+        [self handleRefreshComplete];
+        
+        [self removeEmptyGenreMessage];
+        
+        
+        [self displayEmptyGenreMessage:NSLocalizedString(@"feed_screen_loading_error", nil) andLoader:NO];
+        
+        
+        self.loadingMoreContent = NO;
+        
+        DebugLog(@"Refresh subscription updates failed");
+    };
+    
+    [appDelegate.oAuthNetworkEngine feedUpdatesForUserId: appDelegate.currentOAuth2Credentials.userId
+                                                   start: self.dataRequestRange.location
+                                                    size: self.dataRequestRange.length
+                                       completionHandler: ^(NSDictionary *responseDictionary) {
                                                     
                                                     BOOL toAppend = (self.dataRequestRange.location > 0);
                                                     
-                                                    BOOL registryResultOk = [appDelegate.mainRegistry registerDataForFeedFromDictionary: responseDictionary
-                                                                                                                            byAppending: toAppend];
-                                                    
-                                                    NSNumber* totalNumber = responseDictionary[@"videos"][@"total"];
-                                                    if (totalNumber && ![totalNumber isKindOfClass:[NSNull class]])
-                                                        self.dataItemsAvailable = [totalNumber integerValue];
-                                                    else
-                                                        self.dataItemsAvailable = self.dataRequestRange.length; // heuristic 
-                                                    
-                                                    if (!registryResultOk)
-                                                    {
-                                                        DebugLog(@"Refresh subscription updates failed");
+                                                    NSDictionary *contentItem = responseDictionary[@"content"];
+                                                    if (!contentItem || ![contentItem isKindOfClass: [NSDictionary class]]) {
+                                                        errorBlock();
+                                                        return;
+                                                    }
                                                         
+                                                    
+                                                    self.dataItemsAvailable = contentItem[@"total"] ? contentItem[@"total"] : 0 ;
+                                                    if(self.dataItemsAvailable == 0) {
+                                                        [self displayEmptyGenreMessage:NSLocalizedString(@"feed_screen_empty_message", nil) andLoader:NO];
+                                                        return;
+                                                    }
+                                                        
+                                                    
+                                                    
+                                                    if(![appDelegate.mainRegistry registerDataForSocialFeedFromItemsDictionary:contentItem
+                                                                                                                   byAppending:toAppend])
+                                                    {
+                                                        errorBlock();
                                                         return;
                                                     }
                                                     
                                                     [self removeEmptyGenreMessage];
                                                     
-                                                    if (self.fetchedResultsController.fetchedObjects.count == 0)
-                                                        [self displayEmptyGenreMessage:NSLocalizedString(@"feed_screen_empty_message", nil) andLoader:NO];
                                                     
                                                     self.loadingMoreContent = NO;
                                                     
@@ -292,17 +313,7 @@
                                                     
                                                 } errorHandler: ^(NSDictionary* errorDictionary) {
                                                     
-                                                    [self handleRefreshComplete];
-                                                    
-                                                    [self removeEmptyGenreMessage];
-
-                                                    
-                                                    [self displayEmptyGenreMessage:NSLocalizedString(@"feed_screen_loading_error", nil) andLoader:NO];
-                                                
-                                                    
-                                                    self.loadingMoreContent = NO;
-                                                    
-                                                     DebugLog(@"Refresh subscription updates failed");
+                                                    errorBlock();
                                                     
                                                 }];
 }

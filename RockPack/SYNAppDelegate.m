@@ -217,9 +217,7 @@
     {
         [FBSession.activeSession openWithCompletionHandler:^(FBSession *session, FBSessionState status, NSError *error) {
             
-            NSLog(@"*** Opened! %@", session);
-            
-            
+            DebugLog(@"Opened Facebook Session with server token");
             
         }];
     }

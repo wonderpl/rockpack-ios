@@ -111,7 +111,7 @@
 // Subscription updates
 
 #define kAPIUserSubscriptionUpdates @"/ws/USERID/subscriptions/recent_videos/"  /* GET */
-
+#define kAPIContentFeedUpdates      @"/ws/USERID/content_feed/"
 // Cover art
 #define kAPIGetCoverArt             @"/ws/cover_art/"                           /* GET */
 

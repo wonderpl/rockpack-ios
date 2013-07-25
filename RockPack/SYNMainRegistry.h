@@ -31,8 +31,8 @@
 - (BOOL) registerCoverArtFromDictionary: (NSDictionary *) dictionary
                           forUserUpload: (BOOL) userUpload;
 
-- (BOOL) registerDataForSocialFeedFromDictionary: (NSDictionary *) dictionary
-                                     byAppending: (BOOL) append;
+- (BOOL) registerDataForSocialFeedFromItemsDictionary: (NSDictionary *) dictionary
+                                          byAppending: (BOOL) append;
 
 
 @end

@@ -1,0 +1,15 @@
+#import "_FeedItem.h"
+
+@class VideoInstance;
+@class Channel;
+@class ChannelOwner;
+
+
+@interface FeedItem : _FeedItem {}
+
++ (FeedItem *) instanceFromDictionary: (NSDictionary *) dictionary
+            usingManagedObjectContext: (NSManagedObjectContext *) managedObjectContext;
+
++ (FeedItem *) instanceFromResource: (AbstractCommon *) object;
+
+@end
