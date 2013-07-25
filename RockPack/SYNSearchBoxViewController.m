@@ -84,12 +84,12 @@
     {
         tableViewFrame.origin.x = self.searchTextField.frame.origin.x - 10.0;
         tableViewFrame.origin.y = 66.0;
-        self.searchTextField.placeholder = @"Search for Videos, Channels & People";
+        self.searchTextField.placeholder = @"Search for videos, channels & people";
     }
     else
     {
         tableViewFrame.origin.y = self.searchBoxView.frame.size.height;
-        self.searchTextField.placeholder = @"Find Videos, Channels & People";
+        self.searchTextField.placeholder = @"Find videos, channels & people";
 
     }
     
