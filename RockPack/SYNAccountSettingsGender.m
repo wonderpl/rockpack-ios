@@ -63,7 +63,7 @@
 {
     // Defensive programming
     self.tableView.delegate = nil;
-    self.tableView.dataSource = self;
+    self.tableView.dataSource = nil;
 }
 
 
