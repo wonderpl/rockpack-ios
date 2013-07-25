@@ -32,6 +32,7 @@ static char* association_key = "SYNFriendThumbnailCell to Friend";
 @property (nonatomic, weak) Friend* currentlySelectedFriend;
 
 
+
 //iPhone specific
 @property (nonatomic, strong) IBOutlet UIView* searchContainer;
 @property (weak, nonatomic) IBOutlet UIImageView *searchFieldBackground;
@@ -383,20 +384,29 @@ static char* association_key = "SYNFriendThumbnailCell to Friend";
     
     self.currentlySelectedFriend = objc_getAssociatedObject(cellClicked, association_key);
     
-    if(self.currentlySelectedFriend.isOnRockpack)
-        return;
+    if(!self.currentlySelectedFriend.isOnRockpack) // facebook friend, invite to rockpack
+    {
+        
+        NSString* firstName = [self.currentlySelectedFriend.displayName componentsSeparatedByString:@" "][0];
+        
+        self.currentInviteFriendView = (SYNInviteFriendView*)[[[NSBundle mainBundle] loadNibNamed:@"SYNInviteFriendView"
+                                                                                            owner:self
+                                                                                          options:nil] objectAtIndex:0];
+        
+        self.currentInviteFriendView.profileImageView.image = cellClicked.imageView.image;
+        self.currentInviteFriendView.titleLabel.text = [NSString stringWithFormat:@"%@ IS NOT ON ROCKPACK YET", firstName];
+        
+        [appDelegate.viewStackManager presentPopoverView:self.currentInviteFriendView];
+    }
+    else // on rockpack, go to profile
+    {
+        ChannelOwner* friendAsChannelOwner = (ChannelOwner*)self.currentlySelectedFriend;
+        
+        [appDelegate.viewStackManager viewProfileDetails:friendAsChannelOwner];
+        
+    }
     
-    // create view
-    NSString* firstName = [self.currentlySelectedFriend.displayName componentsSeparatedByString:@" "][0];
     
-    self.currentInviteFriendView = (SYNInviteFriendView*)[[[NSBundle mainBundle] loadNibNamed:@"SYNInviteFriendView"
-                                                                                        owner:self
-                                                                                      options:nil] objectAtIndex:0];
-    
-    self.currentInviteFriendView.profileImageView.image = cellClicked.imageView.image;
-    self.currentInviteFriendView.titleLabel.text = [NSString stringWithFormat:@"%@ IS NOT ON ROCKPACK YET", firstName];
-    
-    [appDelegate.viewStackManager presentPopoverView:self.currentInviteFriendView];
     
 }
 

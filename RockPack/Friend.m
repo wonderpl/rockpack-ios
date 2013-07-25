@@ -20,16 +20,10 @@
         return nil;
     }
     
-    NSString *uniqueId = dictionary[@"id"];
-    
-    if ([uniqueId isKindOfClass: [NSNull class]])
-    {
-        return nil;
-    }
-    
     Friend *instance = [Friend insertInManagedObjectContext: managedObjectContext];
     
-    instance.uniqueId = uniqueId;
+    instance.uniqueId = [dictionary objectForKey:@"id"
+                                     withDefault:@""]; // we can instantiate a Friend with no id since they are not always on rockpack
     
     
     [instance setAttributesFromDictionary: dictionary];
