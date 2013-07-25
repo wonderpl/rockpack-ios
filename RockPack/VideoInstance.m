@@ -42,6 +42,14 @@ static NSDateFormatter *dateFormatter = nil;
 
 + (VideoInstance *) instanceFromDictionary: (NSDictionary *) dictionary
                  usingManagedObjectContext: (NSManagedObjectContext *) managedObjectContext
+{
+    return [VideoInstance instanceFromDictionary: dictionary
+                       usingManagedObjectContext: managedObjectContext
+                                  existingVideos: nil];
+}
+
++ (VideoInstance *) instanceFromDictionary: (NSDictionary *) dictionary
+                 usingManagedObjectContext: (NSManagedObjectContext *) managedObjectContext
                             existingVideos: (NSArray *) existingVideos
 {
     return [VideoInstance instanceFromDictionary: dictionary
@@ -99,12 +107,16 @@ static NSDateFormatter *dateFormatter = nil;
     self.title = [dictionary upperCaseStringForKey: @"title"
                                        withDefault: @""];
     
-    // NSManagedObjects
-    NSString *videoId = [dictionary[@"video"]
-                         objectForKey: @"id"];
-    NSArray *filteredVideos = [existingVideos filteredArrayUsingPredicate: [NSPredicate predicateWithFormat: @"uniqueId = %@", videoId]];
+    NSArray *filteredVideos;
+    if(existingVideos)
+    {
+        NSString *videoId = [dictionary[@"video"] objectForKey: @"id"];
+        filteredVideos = [existingVideos filteredArrayUsingPredicate: [NSPredicate predicateWithFormat: @"uniqueId = %@", videoId]];
+    }
     
-    if ([filteredVideos count] > 0)
+    
+    
+    if (filteredVideos && [filteredVideos count] > 0)
     {
         self.video = filteredVideos[0];
     }

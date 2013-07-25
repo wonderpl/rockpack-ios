@@ -18,6 +18,9 @@
                     usingManagedObjectContext: (NSManagedObjectContext *) managedObjectContext
                           ignoringObjectTypes: (IgnoringObjects) ignoringObjects;
 
++ (VideoInstance *) instanceFromDictionary: (NSDictionary *) dictionary
+                 usingManagedObjectContext: (NSManagedObjectContext *) managedObjectContext;
+
 - (NSNumber *) daysAgo;
 - (NSDate *) dateAddedIgnoringTime;
 

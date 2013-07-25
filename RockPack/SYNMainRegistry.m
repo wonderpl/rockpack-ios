@@ -16,6 +16,7 @@
 #import "AppConstants.h"
 #import <CoreData/CoreData.h>
 #import "VideoInstance.h"
+#import "FeedItem.h"
 #import "Video.h"
 
 
@@ -221,23 +222,79 @@
     if (!itemsArray || ![itemsArray isKindOfClass: [NSArray class]])
         return NO;
     
-    NSArray *aggregations = contentDictionary[@"aggregations"];
-    if (!aggregations || ![aggregations isKindOfClass: [NSArray class]])
+    NSArray *aggregationsArray = contentDictionary[@"aggregations"];
+    if (!aggregationsArray || ![aggregationsArray isKindOfClass: [NSArray class]])
         return NO;
+    
+    // == Parse Aggregations == //
+    
+    NSMutableArray *aggregations = [NSMutableArray arrayWithCapacity:aggregationsArray.count];
+    
+    for (NSDictionary* aggregationDictionary in aggregationsArray)
+    {
+        FeedItem* aggregation = [FeedItem instanceFromDictionary:aggregationDictionary
+                                    usingManagedObjectContext:importManagedObjectContext];
+        
+        if(!aggregation)
+            continue;
+        
+        aggregation.viewId = kFeedViewId;
+        
+        aggregation.resourceType = NSStringFromClass([FeedItem class]);
+        
+        [aggregations addObject:aggregation];
+    }
+    
+    
+    
+    
+    
+    
     
     // == Parse Items == //
     
+    FeedItem* fi;
+    AbstractCommon* object;
+    FeedItem* parent;
     for (NSDictionary* itemDictionary in itemsArray)
     {
         // define type
         
-        NSNumber* aggregationIndexNumber = itemDictionary[@"aggregation"];
-        if(aggregationIndexNumber && [aggregationIndexNumber isKindOfClass:[NSNumber class]]) // the item IS part of an aggregation
+        if(itemDictionary[@"video"]) // videoInstance object
         {
-            NSInteger aggregationIndex = [aggregationIndexNumber integerValue];
+            object = [VideoInstance instanceFromDictionary:itemDictionary
+                             usingManagedObjectContext:importManagedObjectContext];
             
             
         }
+        else if (itemDictionary[@"cover"]) // channel object
+        {
+            object = [Channel instanceFromDictionary:itemDictionary
+                           usingManagedObjectContext:importManagedObjectContext];
+        }
+        
+        if(!object)
+            continue;
+        
+        object.viewId = kFeedViewId;
+        
+        fi = [FeedItem instanceFromResource:object];
+        
+        if(!fi)
+            continue;
+        
+        
+        NSNumber* aggregationIndexNumber = itemDictionary[@"aggregation"];
+        if(!aggregationIndexNumber || ![aggregationIndexNumber isKindOfClass:[NSNumber class]]) // the item IS part of an aggregation
+            continue;
+        
+        if(aggregationIndexNumber.integerValue > aggregations.count)
+            continue;
+        
+            
+        parent = aggregations[aggregationIndexNumber.integerValue];
+            
+        [parent.feedItemsSet addObject:fi];
         
         
     }
@@ -320,7 +377,7 @@
     videoFetchRequest.predicate = videoPredicate;
 
     NSArray *existingVideos = [importManagedObjectContext executeFetchRequest: videoFetchRequest
-                                                                                    error: &error];
+                                                                        error: &error];
     
     
     
