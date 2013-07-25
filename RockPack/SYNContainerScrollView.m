@@ -13,9 +13,9 @@
 
 @dynamic page;
 
-- (id)initWithFrame:(CGRect)frame
+- (id) initWithFrame: (CGRect) frame
 {
-    if ((self = [super initWithFrame:frame]))
+    if ((self = [super initWithFrame: frame]))
     {
         // Initialization code
     }
@@ -26,11 +26,13 @@
 
 #pragma mark - Accessors
 
-- (void )setPage: (NSInteger) page
+- (void) setPage: (NSInteger) page
         animated: (BOOL) animated
 {
     if (!self.scrollEnabled)
+    {
         return;
+    }
     
     CGPoint newPoint = CGPointMake(page * [SYNDeviceManager.sharedInstance currentScreenWidth], 0.0);
     
@@ -51,9 +53,11 @@
 - (NSInteger) page
 {
     CGFloat currentScrollerOffset = self.contentOffset.x;
-    int pageWidth = (int)self.contentSize.width / self.subviews.count;
+    int pageWidth = (int) self.contentSize.width / self.subviews.count;
     NSInteger page = roundf((currentScrollerOffset / pageWidth)); // 0 indexed
+    
     return page;
 }
+
 
 @end
