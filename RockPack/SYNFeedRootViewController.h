@@ -9,12 +9,14 @@
 #import "SYNAbstractViewController.h"
 
 #import "SYNRefreshButton.h"
+#import "SYNVideoThumbnailWideCell.h"
 
 @interface SYNFeedRootViewController : SYNAbstractViewController
 
 @property (nonatomic, strong) SYNRefreshButton* refreshButton;
 @property (nonatomic, strong) NSFetchRequest* fetchRequest;
 @property (nonatomic, strong) NSArray* resultArray;
+@property (nonatomic, weak) SYNVideoThumbnailWideCell* selectedCell;
 
 - (void) removeEmptyGenreMessage;
 - (void) displayEmptyGenreMessage: (NSString*) messageKey

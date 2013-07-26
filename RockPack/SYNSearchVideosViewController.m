@@ -21,6 +21,7 @@
 #import "UIImageView+WebCache.h"
 #import "Video.h"
 #import "VideoInstance.h"
+#import "SYNOAuthNetworkEngine.h"
 
 @interface SYNSearchVideosViewController ()
 
@@ -419,5 +420,105 @@
         [appDelegate.onBoardingQueue present];
     }
 }
+
+- (void) videoAddButtonTapped: (UIButton *) _addButton
+{
+    if(!self.videoThumbnailCollectionView) // not all sub classes will have this initialized so check to avoid errors
+        return;
+    
+    if(_addButton.selected)
+        return;
+    
+    
+    UIView *v = _addButton.superview.superview;
+    NSIndexPath *indexPath = [self.videoThumbnailCollectionView indexPathForItemAtPoint: v.center];
+    VideoInstance *videoInstance = [self.resultArray objectAtIndex:indexPath.row];
+    
+    
+    
+    if(videoInstance)
+    {
+        id<GAITracker> tracker = [GAI sharedInstance].defaultTracker;
+        
+        [tracker sendEventWithCategory: @"uiAction"
+                            withAction: @"videoPlusButtonClick"
+                             withLabel: nil
+                             withValue: nil];
+        
+        [appDelegate.oAuthNetworkEngine recordActivityForUserId: appDelegate.currentUser.uniqueId
+                                                         action: @"select"
+                                                videoInstanceId: videoInstance.uniqueId
+                                              completionHandler: ^(id response) {
+                                                  
+                                                  
+                                              } errorHandler: ^(id error) {
+                                                  
+                                                  DebugLog(@"Could not record videoAddButtonTapped: activity");
+                                                  
+                                              }];
+        
+        
+        [[NSNotificationCenter defaultCenter] postNotificationName: kVideoQueueAdd
+                                                            object: self
+                                                          userInfo: @{@"VideoInstance" : videoInstance }];
+    }
+    
+    
+    
+    
+    
+    [self.videoThumbnailCollectionView reloadData];
+    
+    
+    _addButton.selected = !_addButton.selected;  //switch to on/off
+}
+
+- (IBAction) userTouchedVideoShareButton: (UIButton *) videoShareButton
+{
+    NSIndexPath *indexPath = [self indexPathFromVideoInstanceButton: videoShareButton];
+    VideoInstance *videoInstance = [self.resultArray objectAtIndex:indexPath.row];
+    
+    // Stop multiple clicks by disabling button
+    videoShareButton.enabled = FALSE;
+    
+    [self shareVideoInstance: videoInstance
+                      inView: self.view
+                    fromRect: videoShareButton.frame
+             arrowDirections: UIPopoverArrowDirectionDown
+           activityIndicator: nil
+                  onComplete: ^{
+                      //                  Re-enable button
+                      videoShareButton.enabled = TRUE;
+                  }];
+}
+
+- (void) displayVideoViewerFromView: (UIButton *) videoViewButton
+{
+    
+    
+    NSIndexPath *indexPath = [self indexPathFromVideoInstanceButton: videoViewButton];
+    self.selectedCell = (SYNVideoThumbnailWideCell*)[self.videoThumbnailCollectionView cellForItemAtIndexPath:indexPath];
+    
+    
+    
+    VideoInstance *videoInstance = [self.resultArray objectAtIndex:indexPath.row];
+    
+    
+    CGPoint center;
+    if(videoViewButton)
+    {
+        center = [self.view convertPoint:videoViewButton.center fromView:videoViewButton.superview];
+    }
+    else
+    {
+        center = self.view.center;
+    }
+    [self displayVideoViewerWithVideoInstanceArray: self.resultArray
+                                  andSelectedIndex: [self.resultArray indexOfObject:videoInstance] center:center];
+    
+}
+
+
+
 
 @end

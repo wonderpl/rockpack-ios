@@ -34,7 +34,6 @@
 @property (nonatomic, strong) NSTimer *timer;
 @property (nonatomic, strong) SYNFeedMessagesView* emptyGenreMessageView;
 @property (nonatomic, strong) UIRefreshControl *refreshControl;
-@property (nonatomic, weak) SYNVideoThumbnailWideCell* selectedCell;
 @property (strong) NSArray* bufferArray;
 
 @end
@@ -849,5 +848,31 @@
 
 
 
+// User pressed the channel thumbnail in a VideoCell
+- (IBAction) channelButtonTapped: (UIButton *) channelButton
+{
+    NSIndexPath *indexPath = [self indexPathFromVideoInstanceButton: channelButton];
+    
+    if (indexPath)
+    {
+           VideoInstance *videoInstance = [appDelegate.mainManagedObjectContext objectWithID:[self.resultArray objectAtIndex:indexPath.row]];
+           [appDelegate.viewStackManager viewChannelDetails:videoInstance.channel];
+    }
+}
+
+
+
+- (IBAction) profileButtonTapped: (UIButton *) profileButton
+{
+        NSIndexPath *indexPath = [self indexPathFromVideoInstanceButton: profileButton];
+    
+       // Bail if we don't have an index path
+        if (indexPath)
+        {
+            VideoInstance *videoInstance = [appDelegate.mainManagedObjectContext objectWithID:[self.resultArray objectAtIndex:indexPath.row]];
+    
+            [appDelegate.viewStackManager viewProfileDetails: videoInstance.channel.channelOwner];
+        }
+}
 
 @end
