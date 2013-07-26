@@ -213,47 +213,56 @@
 {
     // link to facebook
     
-    if(!FBSession.activeSession.isOpen)
+
+    
+    if(self.currentUser.facebookAccountUrl)
+
     {
-        [FBSession.activeSession openWithCompletionHandler:^(FBSession *session, FBSessionState status, NSError *error) {
-            
-            DebugLog(@"Opened Facebook Session with server token");
-            
-        }];
-    }
-    else if(self.currentUser.facebookAccountUrl)
-    {
-        [self.oAuthNetworkEngine getExternalAccountForUrl:self.currentUser.facebookAccountUrl completionHandler:^(id response) {
-            
-            NSDictionary* external_accounts = response[@"external_accounts"];
-            
-            NSArray* accounts = external_accounts ? external_accounts[@"items"] : nil;
-            
-            if(accounts && accounts.count > 0)
-            {
-                NSDictionary* facebookAccount = (NSDictionary*)accounts[0];
-                if(facebookAccount)
+        if(!FBSession.activeSession.isOpen)
+        {
+            [FBSession.activeSession openWithCompletionHandler:^(FBSession *session, FBSessionState status, NSError *error) {
+                
+                DebugLog(@"*** Complete! %@", session);
+                
+                
+                
+            }];
+        }
+        else
+        {
+            [self.oAuthNetworkEngine getExternalAccountForUrl:self.currentUser.facebookAccountUrl completionHandler:^(id response) {
+                
+                NSDictionary* external_accounts = response[@"external_accounts"];
+                
+                NSArray* accounts = external_accounts ? external_accounts[@"items"] : nil;
+                
+                if(accounts && accounts.count > 0)
                 {
-                    self.currentUser.facebookToken = facebookAccount[@"external_token"];
+                    NSDictionary* facebookAccount = (NSDictionary*)accounts[0];
+                    if(facebookAccount)
+                    {
+                        self.currentUser.facebookToken = facebookAccount[@"external_token"];
+                    }
+                    
                 }
                 
-            }
-            
-            if(self.currentUser.facebookToken)
-            {
-                [[SYNFacebookManager sharedFBManager] openSessionFromExistingToken:self.currentUser.facebookToken
-                                                                         onSuccess:^{
-                                                                             
-                                                                             
-                                                                             
-                                                                         } onFailure:^(NSString *errorMessage) {
-                                                                             
-                                                                         }];
-            }
-            
-        } errorHandler:^(id error) {
-            
-        }];
+                if(self.currentUser.facebookToken)
+                {
+                    [[SYNFacebookManager sharedFBManager] openSessionFromExistingToken:self.currentUser.facebookToken
+                                                                             onSuccess:^{
+                                                                                 
+                                                                                 
+                                                                                 
+                                                                             } onFailure:^(NSString *errorMessage) {
+                                                                                 
+                                                                             }];
+                }
+                
+            } errorHandler:^(id error) {
+                
+            }];
+        }
+        
     }
 }
 

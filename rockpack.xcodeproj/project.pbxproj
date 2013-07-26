@@ -1049,6 +1049,8 @@
 		BE7D035B179ED752008053DC /* ButtonSearchFriendsHighlighted@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = BE7D0357179ED752008053DC /* ButtonSearchFriendsHighlighted@2x.png */; };
 		BE7D035F17A1440A008053DC /* FeedItem.m in Sources */ = {isa = PBXBuildFile; fileRef = BE7D035E17A1440A008053DC /* FeedItem.m */; };
 		BE7D036217A14417008053DC /* _FeedItem.m in Sources */ = {isa = PBXBuildFile; fileRef = BE7D036117A14417008053DC /* _FeedItem.m */; };
+		BE7D036517A1904C008053DC /* OverlayFriends.png in Resources */ = {isa = PBXBuildFile; fileRef = BE7D036317A1904C008053DC /* OverlayFriends.png */; };
+		BE7D036617A1904C008053DC /* OverlayFriends@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = BE7D036417A1904C008053DC /* OverlayFriends@2x.png */; };
 		BE7D342E170DD8C90085AB81 /* SYNChannelFooterMoreView.xib in Resources */ = {isa = PBXBuildFile; fileRef = BE7D342D170DD8C90085AB81 /* SYNChannelFooterMoreView.xib */; };
 		BE7D3431170DDB310085AB81 /* SYNChannelFooterMoreView.m in Sources */ = {isa = PBXBuildFile; fileRef = BE7D3430170DDB310085AB81 /* SYNChannelFooterMoreView.m */; };
 		BE7D34CE1714434D0085AB81 /* SYNDeviceManager.m in Sources */ = {isa = PBXBuildFile; fileRef = BE7D34CD1714434D0085AB81 /* SYNDeviceManager.m */; };
@@ -2425,6 +2427,8 @@
 		BE7D035E17A1440A008053DC /* FeedItem.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = FeedItem.m; sourceTree = "<group>"; };
 		BE7D036017A14417008053DC /* _FeedItem.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = _FeedItem.h; sourceTree = "<group>"; };
 		BE7D036117A14417008053DC /* _FeedItem.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = _FeedItem.m; sourceTree = "<group>"; };
+		BE7D036317A1904C008053DC /* OverlayFriends.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = OverlayFriends.png; path = Assets/Images/OverlayFriends.png; sourceTree = "<group>"; };
+		BE7D036417A1904C008053DC /* OverlayFriends@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = "OverlayFriends@2x.png"; path = "Assets/Images/OverlayFriends@2x.png"; sourceTree = "<group>"; };
 		BE7D342D170DD8C90085AB81 /* SYNChannelFooterMoreView.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = SYNChannelFooterMoreView.xib; sourceTree = "<group>"; };
 		BE7D342F170DDB310085AB81 /* SYNChannelFooterMoreView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SYNChannelFooterMoreView.h; sourceTree = "<group>"; };
 		BE7D3430170DDB310085AB81 /* SYNChannelFooterMoreView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SYNChannelFooterMoreView.m; sourceTree = "<group>"; };
@@ -4960,6 +4964,8 @@
 				BE7D0327179E87D3008053DC /* TabFriendsHighlighted@2x.png */,
 				BE7D0328179E87D3008053DC /* TabFriendsSelected.png */,
 				BE7D0329179E87D3008053DC /* TabFriendsSelected@2x.png */,
+				BE7D036317A1904C008053DC /* OverlayFriends.png */,
+				BE7D036417A1904C008053DC /* OverlayFriends@2x.png */,
 				BE7D0352179EBDEA008053DC /* ButtonInviteFriendDefault.png */,
 				BE7D0331179E94D3008053DC /* ButtonInviteFriendDefault@2x.png */,
 				BE7D0332179E94D3008053DC /* ButtonInviteFriendDefault@2x~iphone.png */,
@@ -6228,6 +6234,8 @@
 				018B0DA3179EDBD200F2D3CD /* OverlayNotificationVideo@2x.png in Resources */,
 				38A73D8717A0086500AD9E90 /* SYNFriendsViewController~iphone.xib in Resources */,
 				38A73D8817A0086500AD9E90 /* SYNFriendThumbnailCell~iphone.xib in Resources */,
+				BE7D036517A1904C008053DC /* OverlayFriends.png in Resources */,
+				BE7D036617A1904C008053DC /* OverlayFriends@2x.png in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

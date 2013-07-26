@@ -90,7 +90,12 @@
 {
     // Defensive programming
     tabViewController.delegate = nil;
+    self.activityPopoverController.delegate = nil;
     
+    if (self.activityPopoverController)
+    {
+        [self.activityPopoverController dismissPopoverAnimated: NO];
+    }
     // Stop observing everything
     [[NSNotificationCenter defaultCenter] removeObserver: self];
 }
@@ -512,12 +517,11 @@
     [activityIndicatorView startAnimating];
     
     // Update the star/unstar status on the server
-    [appDelegate.oAuthNetworkEngine
-     shareLinkWithObjectType: objectType
-     objectId: objectId
-     completionHandler: ^(NSDictionary *responseDictionary) {
+    [appDelegate.oAuthNetworkEngine shareLinkWithObjectType: objectType
+                                                   objectId: objectId
+                                          completionHandler: ^(NSDictionary *responseDictionary)
+     {
          [activityIndicatorView stopAnimating];
-         //                                              DebugLog(@"Share link successful");
          
          UIWindow *keyWindow = [[UIApplication sharedApplication] keyWindow];
          CGRect keyWindowRect = [keyWindow bounds];
@@ -577,7 +581,7 @@
          {
              OWMailActivity *mailActivity = [[OWMailActivity alloc] init];
              [activities addObject: mailActivity
-            ];
+              ];
          }
          
          // Create OWActivityViewController controller and assign data source
@@ -635,33 +639,45 @@
                                              @"video": isVideo,
                                              @"subject": subject};
          
-         // The activity controller needs to be presented from a popup on iPad, but normally on iPhone
-         if (IS_IPAD)
+         // Check to see if the user has moved away from this window (by the time we got our link)
+         
+         if (inView.window)
          {
-             self.activityPopoverController = [[UIPopoverController alloc] initWithContentViewController: activityViewController];
-             self.activityPopoverController.popoverBackgroundViewClass = [SYNPopoverBackgroundView class];
-             
-             activityViewController.presentingPopoverController = _activityPopoverController;
-             
-             [self.activityPopoverController presentPopoverFromRect: rect
-                                                             inView: inView
-                                           permittedArrowDirections: arrowDirections
-                                                           animated: YES];
-         }
-         else
-         {
-             [activityViewController presentFromRootViewController];
+             // The activity controller needs to be presented from a popup on iPad, but normally on iPhone
+             if (IS_IPAD)
+             {
+                 self.activityPopoverController = [[UIPopoverController alloc] initWithContentViewController: activityViewController];
+                 self.activityPopoverController.popoverBackgroundViewClass = [SYNPopoverBackgroundView class];
+                 
+                 activityViewController.presentingPopoverController = _activityPopoverController;
+                 
+                 self.activityPopoverController.delegate = self;
+                 
+                 [self.activityPopoverController presentPopoverFromRect: rect
+                                                                 inView: inView
+                                               permittedArrowDirections: arrowDirections
+                                                               animated: YES];
+             }
+             else
+             {
+                 [activityViewController presentFromRootViewController];
+             }
          }
          
          completionBlock();
-     }
-     errorHandler: ^(NSDictionary *errorDictionary) {
+     } errorHandler: ^(NSDictionary *errorDictionary)
+     {
          [activityIndicatorView stopAnimating];
          //                                                   DebugLog(@"Share link failed");
          completionBlock();
      }];
 }
 
+
+- (void) popoverControllerDidDismissPopover: (UIPopoverController *) popoverController
+{
+    self.activityPopoverController = nil;
+}
 
 
 #pragma mark - Purchase
