@@ -17,7 +17,6 @@
 		38DCDC2217A01F5200F0942C /* Default@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 38DCDC2117A01F5200F0942C /* Default@2x.png */; };
 		38DCDC2417A01F5200F0942C /* Default-568h@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 38DCDC2317A01F5200F0942C /* Default-568h@2x.png */; };
 		38DCDC2717A01F5200F0942C /* CDAViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 38DCDC2617A01F5200F0942C /* CDAViewController.m */; };
-		38DCDC2A17A01F5200F0942C /* CDAViewController~iphone.xib in Resources */ = {isa = PBXBuildFile; fileRef = 38DCDC2817A01F5200F0942C /* CDAViewController~iphone.xib */; };
 		38DCDC2D17A01F5200F0942C /* CDAViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 38DCDC2B17A01F5200F0942C /* CDAViewController.xib */; };
 		38DCDC3B17A0202200F0942C /* Rockpack.xcdatamodeld in Sources */ = {isa = PBXBuildFile; fileRef = 38DCDC3417A0202200F0942C /* Rockpack.xcdatamodeld */; };
 		38DCDC3D17A027FF00F0942C /* CoreData.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 38DCDC3C17A027FF00F0942C /* CoreData.framework */; };
@@ -96,7 +95,6 @@
 		38DCDC2317A01F5200F0942C /* Default-568h@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "Default-568h@2x.png"; sourceTree = "<group>"; };
 		38DCDC2517A01F5200F0942C /* CDAViewController.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = CDAViewController.h; sourceTree = "<group>"; };
 		38DCDC2617A01F5200F0942C /* CDAViewController.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = CDAViewController.m; sourceTree = "<group>"; };
-		38DCDC2917A01F5200F0942C /* en */ = {isa = PBXFileReference; lastKnownFileType = file.xib; name = en; path = "en.lproj/CDAViewController~iphone.xib"; sourceTree = "<group>"; };
 		38DCDC2C17A01F5200F0942C /* en */ = {isa = PBXFileReference; lastKnownFileType = file.xib; name = en; path = en.lproj/CDAViewController.xib; sourceTree = "<group>"; };
 		38DCDC3517A0202200F0942C /* Rockpack 2.xcdatamodel */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcdatamodel; path = "Rockpack 2.xcdatamodel"; sourceTree = "<group>"; };
 		38DCDC3617A0202200F0942C /* Rockpack 3.xcdatamodel */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcdatamodel; path = "Rockpack 3.xcdatamodel"; sourceTree = "<group>"; };
@@ -283,7 +281,6 @@
 				38DCDC1D17A01F5200F0942C /* CDAAppDelegate.m */,
 				38DCDC2517A01F5200F0942C /* CDAViewController.h */,
 				38DCDC2617A01F5200F0942C /* CDAViewController.m */,
-				38DCDC2817A01F5200F0942C /* CDAViewController~iphone.xib */,
 				38DCDC2B17A01F5200F0942C /* CDAViewController.xib */,
 				38DCDC1417A01F5200F0942C /* Supporting Files */,
 			);
@@ -538,7 +535,6 @@
 				38DCDC2017A01F5200F0942C /* Default.png in Resources */,
 				38DCDC2217A01F5200F0942C /* Default@2x.png in Resources */,
 				38DCDC2417A01F5200F0942C /* Default-568h@2x.png in Resources */,
-				38DCDC2A17A01F5200F0942C /* CDAViewController~iphone.xib in Resources */,
 				38DCDC2D17A01F5200F0942C /* CDAViewController.xib in Resources */,
 				38DCDC9917A0306400F0942C /* SYNVideoThumbnailWideCell.xib in Resources */,
 				38DCDCE417A03C3C00F0942C /* LICENCE.txt in Resources */,
@@ -618,14 +614,6 @@
 				38DCDC1717A01F5200F0942C /* en */,
 			);
 			name = InfoPlist.strings;
-			sourceTree = "<group>";
-		};
-		38DCDC2817A01F5200F0942C /* CDAViewController~iphone.xib */ = {
-			isa = PBXVariantGroup;
-			children = (
-				38DCDC2917A01F5200F0942C /* en */,
-			);
-			name = "CDAViewController~iphone.xib";
 			sourceTree = "<group>";
 		};
 		38DCDC2B17A01F5200F0942C /* CDAViewController.xib */ = {
