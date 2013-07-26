@@ -505,8 +505,10 @@
 
 
 - (void) applicationDidBecomeActive: (UIApplication *) application
-{    
-    [FBSettings publishInstall: @"217008995103822"];
+{
+    NSString *facebookAppId = [[NSBundle mainBundle] objectForInfoDictionaryKey: @"FacebookAppID"];
+    
+    [FBSettings publishInstall: facebookAppId];
     
     // Restart any tasks that were paused (or not yet started) while the application was inactive. If the application was previously in the background, optionally refresh the user interface.
     if (self.loginViewController)
