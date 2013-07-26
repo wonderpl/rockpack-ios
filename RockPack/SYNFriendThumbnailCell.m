@@ -17,6 +17,10 @@
     
     self.nameLabel.font = [UIFont rockpackFontOfSize:self.nameLabel.font.pointSize];
     
+    self.pressedLayerView.hidden = YES;
+    
+    
+    
 }
 
 -(void)setDisplayName:(NSString*)name

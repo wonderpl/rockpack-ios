@@ -15,6 +15,8 @@
 
 @property (nonatomic, strong) IBOutlet UIImageView *plusSignView;
 
+@property (nonatomic, strong) IBOutlet UIView* pressedLayerView;
+
 
 -(void)setDisplayName:(NSString*)name;
 
