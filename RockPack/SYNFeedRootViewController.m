@@ -202,7 +202,10 @@
                          andLoader: YES];
     if([self class] == [SYNFeedRootViewController class])
     {
-        [self loadAndUpdateFeedData];
+        if(self.dataRequestRange.location ==0)
+        {
+            [self loadAndUpdateFeedData];
+        }
     }
 }
 
