@@ -11,12 +11,31 @@
 
 @implementation SYNFriendThumbnailCell
 
+@synthesize selected;
+
 -(void)awakeFromNib
 {
     self.plusSignView.hidden = YES;
     
     self.nameLabel.font = [UIFont rockpackFontOfSize:self.nameLabel.font.pointSize];
     
+    self.pressedLayerView.hidden = YES;
+    
+    
+    
+}
+
+-(void)setHighlighted:(BOOL)highlighted
+{
+    
+    if(highlighted)
+    {
+        self.pressedLayerView.hidden = NO;
+    }
+    else
+    {
+        self.pressedLayerView.hidden = YES;
+    }
 }
 
 -(void)setDisplayName:(NSString*)name
