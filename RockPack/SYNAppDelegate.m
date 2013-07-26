@@ -505,8 +505,8 @@
 
 
 - (void) applicationDidBecomeActive: (UIApplication *) application
-{
-    [FBSettings publishInstall: @"660697542"];
+{    
+    [FBSettings publishInstall: @"217008995103822"];
     
     // Restart any tasks that were paused (or not yet started) while the application was inactive. If the application was previously in the background, optionally refresh the user interface.
     if (self.loginViewController)
