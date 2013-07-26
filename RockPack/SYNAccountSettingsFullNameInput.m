@@ -31,6 +31,7 @@
     self.inputField.delegate = nil;
     self.lastNameInputField.delegate = nil;
     self.tableView.delegate = nil;
+    self.tableView.dataSource = nil;
 }
 
 

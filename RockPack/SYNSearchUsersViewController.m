@@ -97,16 +97,13 @@
 {
     NSFetchRequest *request = [[NSFetchRequest alloc] init];
     
-    [request setEntity: [NSEntityDescription entityForName: @"ChannelOwner"
-                                    inManagedObjectContext: appDelegate.searchManagedObjectContext]];
+    request.entity = [NSEntityDescription entityForName: @"ChannelOwner"
+                                 inManagedObjectContext: appDelegate.searchManagedObjectContext];
     
+    request.predicate = [NSPredicate predicateWithFormat: @"viewId == %@", self.viewId];
     
-    [request setPredicate: [NSPredicate predicateWithFormat: @"viewId == %@", self.viewId]];
-    
-    NSArray *sortDescriptorsArray = @[[NSSortDescriptor sortDescriptorWithKey: @"position"
-                                                                    ascending: YES]];
-    [request setSortDescriptors: sortDescriptorsArray];
-    
+    request.sortDescriptors = @[[NSSortDescriptor sortDescriptorWithKey: @"position"
+                                                              ascending: YES]];
     request.fetchBatchSize = 20;
     
     NSError *error = nil;
@@ -152,16 +149,6 @@
 
 #pragma mark - Paging support
 
-- (void) scrollViewDidScroll: (UIScrollView *) scrollView
-{
-    if (scrollView.contentOffset.y >= scrollView.contentSize.height - scrollView.bounds.size.height - kLoadMoreFooterViewHeight
-        && self.isLoadingMoreContent == NO)
-    {
-        [self loadMoreUsers];
-    }
-}
-
-
 - (void) loadMoreUsers
 {
     // Check to see if we have loaded all items already
@@ -186,70 +173,5 @@
                                            }];
     }
 }
-
-
-#pragma mark - Footer support
-
-- (UICollectionReusableView *) collectionView: (UICollectionView *) collectionView
-            viewForSupplementaryElementOfKind: (NSString *) kind
-                                  atIndexPath: (NSIndexPath *) indexPath
-{
-    if (collectionView != self.usersThumbnailCollectionView)
-        return nil;
-    
-    UICollectionReusableView* supplementaryView;
-    
-    if (kind == UICollectionElementKindSectionFooter)
-    {
-        if (self.users.count == 0)
-        {
-            return supplementaryView;
-        }
-        
-        self.footerView = [self.usersThumbnailCollectionView dequeueReusableSupplementaryViewOfKind: kind
-                                                                                withReuseIdentifier: @"SYNChannelFooterMoreView"
-                                                                                       forIndexPath: indexPath];
-        self.footerView.showsLoading = self.isLoadingMoreContent;
-        
-        supplementaryView = self.footerView;
-    }
-    
-    return supplementaryView;
-}
-
-
-- (CGSize) collectionView: (UICollectionView *) collectionView
-                   layout: (UICollectionViewLayout*) collectionViewLayout
-           referenceSizeForFooterInSection: (NSInteger) section
-{
-    CGSize footerSize;
-    
-    if (collectionView == self.usersThumbnailCollectionView)
-    {
-        footerSize = [self footerSize];
-        
-        
-        // Now set to zero anyway if we have already read in all the items
-        NSInteger nextStart = self.dataRequestRange.location + self.dataRequestRange.length; // one is subtracted when the call happens for 0 indexing
-        
-        // FIXME: Is this comparison correct?  Should it just be self.dataRequestRange.location >= self.dataItemsAvailable?
-        if (nextStart >= self.dataItemsAvailable)
-        {
-            DebugLog(@"Set footer size to border");
-            footerSize = CGSizeMake(1.0f, 5.0f);
-        }
-        else
-        {
-            DebugLog(@"Normal footer size");
-        }
-    }
-    else
-    {
-        footerSize = CGSizeZero;
-    }
-    
-    return footerSize;
-}
-
 
 @end

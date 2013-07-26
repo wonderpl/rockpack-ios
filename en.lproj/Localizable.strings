@@ -111,12 +111,16 @@
 "core_nav_section_channels" = "CHANNELS";
 "core_nav_section_profile" = "PROFILE";
 "core_nav_section_notifications" = "NOTIFICATIONS";
+"core_nav_section_friends" = "FRIENDS";
 
 
 // == Notifications == //
 
+// 
+
 "notification_liked_action" = "has liked your video";
 "notification_subscribed_action" = "has subscribed to your channel";
+"notification_joined_action" = "Your Facebook friend %@ has joined Rockpack";
 "your_channel_object" = "your channel";
 "your_video_object" = "your video";
 

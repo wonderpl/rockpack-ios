@@ -74,7 +74,7 @@
     [self.searchTextField addTarget: self
                              action: @selector(textFieldDidChange:)
                    forControlEvents: UIControlEventEditingChanged];
-	
+
     self.autoSuggestionController = [[SYNAutocompleteSuggestionsController alloc] init];
     self.autoSuggestionController.tableView.delegate = self;
     
@@ -84,10 +84,13 @@
     {
         tableViewFrame.origin.x = self.searchTextField.frame.origin.x - 10.0;
         tableViewFrame.origin.y = 66.0;
+        self.searchTextField.placeholder = @"Search for videos, channels & people";
     }
     else
     {
         tableViewFrame.origin.y = self.searchBoxView.frame.size.height;
+        self.searchTextField.placeholder = @"Find videos, channels & people";
+
     }
     
     self.autoSuggestionController.tableView.frame = tableViewFrame;

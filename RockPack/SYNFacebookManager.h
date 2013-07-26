@@ -9,6 +9,7 @@
 #import <Foundation/Foundation.h>
 
 @protocol FBGraphUser;
+@class Friend;
 
 // Localizable error messages
 
@@ -30,6 +31,8 @@ typedef void (^FacebookLogoutFailureBlock)(NSString *errorMessage);
 typedef void (^FacebookPostSuccessBlock)(void);
 typedef void (^FacebookPostFailureBlock)(NSError *error);
 
+
+
 @interface SYNFacebookManager : NSObject
 
 + (id) sharedFBManager;
@@ -40,8 +43,18 @@ typedef void (^FacebookPostFailureBlock)(NSError *error);
 - (void) logoutOnSuccess: (FacebookLogoutSuccessBlock) successBlock
                onFailure: (FacebookLogoutFailureBlock) failureBlock;
 
+- (void) openSessionFromExistingToken: (NSString*)token
+                            onSuccess: (FacebookOpenSessionSuccessBlock) successBlock
+                            onFailure: (FacebookOpenSessionFailureBlock) failureBlock;
+
 - (void) postMessageToWall: (NSString*)message
                  onSuccess: (FacebookPostSuccessBlock) successBlock
                  onFailure: (FacebookPostFailureBlock) failureBlock;
+
+-(BOOL) hasOpenSession;
+
+- (void) sendAppRequestToFriend:(Friend*)friend
+                        onSuccess:(FacebookPostSuccessBlock) successBlock
+                        onFailure:(FacebookPostFailureBlock) failureBlock;
 
 @end

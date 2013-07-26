@@ -15,30 +15,36 @@
 @class SYNMasterViewController;
 
 @interface SYNViewStackManager : NSObject {
-    UIViewController* modalViewController;
+    UIViewController *modalViewController;
+    UIView* popoverView;
+    UIView* backgroundView;
 }
 
 
-@property (nonatomic, weak) UINavigationController* navigationController;
-@property (nonatomic, weak) SYNSideNavigatorViewController* sideNavigatorController;
-@property (nonatomic, weak) SYNMasterViewController* masterController;
+@property (nonatomic, weak) UINavigationController *navigationController;
+@property (nonatomic, weak) SYNSideNavigatorViewController *sideNavigatorController;
+@property (nonatomic, weak) SYNMasterViewController *masterController;
 
-+(id)manager;
++ (id) manager;
 
 
--(void)popToRootController;
--(void)popToController:(UIViewController*)controller;
--(void)popController;
--(void)pushController:(SYNAbstractViewController*)controller;
+- (void) popToRootController;
+- (void) popToController: (UIViewController *) controller;
+- (void) popController;
+- (void) pushController: (SYNAbstractViewController *) controller;
 
--(void)presentModallyController:(UIViewController*)controller;
+- (void) presentModallyController: (UIViewController *) controller;
+- (void) presentPopoverView:(UIView*)view;
+- (void)removePopoverView;
 
 - (void) viewProfileDetails: (ChannelOwner *) channelOwner;
--(void) viewChannelDetails: (Channel*) channel withAutoplayId:(NSString*)autoplayId;
-- (void) viewChannelDetails: (Channel*) channel;
+- (void) viewChannelDetails: (Channel *) channel withAutoplayId: (NSString *) autoplayId;
+- (void) viewChannelDetails: (Channel *) channel;
 
--(void)hideModallyController;
 
--(void)hideSideNavigator;
+- (void) hideModalController;
+
+- (void) hideSideNavigator;
+- (void) displaySideNavigatorFromPushNotification;
 
 @end

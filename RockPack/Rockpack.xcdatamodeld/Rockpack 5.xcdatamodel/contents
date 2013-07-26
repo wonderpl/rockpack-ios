@@ -104,7 +104,7 @@
         <element name="CoverArt" positionX="189" positionY="-243" width="128" height="103"/>
         <element name="Genre" positionX="-270" positionY="-204" width="128" height="88"/>
         <element name="SubGenre" positionX="-468" positionY="-189" width="128" height="73"/>
-        <element name="User" positionX="-342" positionY="186" width="128" height="223"/>
+        <element name="User" positionX="-342" positionY="209" width="128" height="223"/>
         <element name="Video" positionX="250" positionY="18" width="128" height="223"/>
         <element name="VideoInstance" positionX="196" positionY="297" width="128" height="133"/>
     </elements>

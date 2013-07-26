@@ -49,6 +49,7 @@
     if(!newUser)
         return NO;
     
+    
     newUser.currentValue = YES;
     
     // Pass viewId s.

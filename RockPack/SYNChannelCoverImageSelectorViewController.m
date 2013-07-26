@@ -18,7 +18,6 @@
 #import "SYNNetworkEngine.h"
 #import "SYNOAuthNetworkEngine.h"
 #import "UIFont+SYNFont.h"
-#import "UIImageView+ImageProcessing.h"
 #import "UIImageView+WebCache.h"
 #import <AVFoundation/AVFoundation.h>
 #import <AssetsLibrary/AssetsLibrary.h>
@@ -421,7 +420,7 @@ enum ChannelCoverSelectorState {
                                   atIndexPath: (NSIndexPath *) indexPath
 {
     
-    if(self.currentState !=kChannelCoverDefault)
+    if (self.currentState !=kChannelCoverDefault)
     {
         return nil;
     }

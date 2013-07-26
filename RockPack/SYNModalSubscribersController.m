@@ -7,6 +7,7 @@
 //
 
 #import "SYNAppDelegate.h"
+#import "SYNDeviceManager.h"
 #import "SYNModalSubscribersController.h"
 #import "UIFont+SYNFont.h"
 
@@ -41,6 +42,9 @@
     
     self.titleLabel.font = [UIFont rockpackFontOfSize: self.titleLabel.font.pointSize];
 
+    CGRect containerViewFrame = self.containerView.frame;    
+    self.viewController.view.frame = containerViewFrame;
+    
     [self.containerView addSubview: self.viewController.view];
 }
 
@@ -49,7 +53,7 @@
 {
     SYNAppDelegate *appDelegate = (SYNAppDelegate *) [[UIApplication sharedApplication] delegate];
     
-    [appDelegate.viewStackManager hideModallyController];
+    [appDelegate.viewStackManager hideModalController];
 }
 
 @end

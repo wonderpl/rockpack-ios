@@ -331,12 +331,14 @@
     {
         [self incrementRangeForNextRequest];
         
+        __weak typeof(self) weakSelf = self;
+        
         [appDelegate.networkEngine searchVideosForTerm: self.searchTerm
                                                inRange: self.dataRequestRange
                                             onComplete: ^(int itemsCount) {
-                                                self.dataItemsAvailable = itemsCount;
-                                                self.loadingMoreContent = NO;
-                                                [self.videoThumbnailCollectionView reloadData];
+                                                weakSelf.dataItemsAvailable = itemsCount;
+                                                weakSelf.loadingMoreContent = NO;
+                                                [weakSelf.videoThumbnailCollectionView reloadData];
                                             }];
     }
 }

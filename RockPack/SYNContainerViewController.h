@@ -15,18 +15,18 @@
 
 @property (nonatomic) CGPoint currentPageOffset;
 @property (nonatomic, readonly) NSInteger currentPage;
-@property (nonatomic, readonly) SYNAbstractViewController* showingViewController;
-@property (nonatomic, readonly) SYNContainerScrollView* scrollView;
+@property (nonatomic, readonly) SYNAbstractViewController *showingViewController;
+@property (nonatomic, readonly) SYNContainerScrollView *scrollView;
 
 
--(void)swipedTo:(UISwipeGestureRecognizerDirection)direction;
+- (void) swipedTo: (UISwipeGestureRecognizerDirection) direction;
 
-- (void) navigateToPageByName: (NSString*) pageName;
+- (void) navigateToPageByName: (NSString *) pageName;
 
 /**
-	Method to re-layout view to maintain orientation. Specifically intended for when orientation may have changed during popover views.
+ Method to re-layout view to maintain orientation. Specifically intended for when orientation may have changed during popover views.
  */
--(void)refreshView;
+- (void) refreshView;
 
 
 

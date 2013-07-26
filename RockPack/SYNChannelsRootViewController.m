@@ -68,6 +68,7 @@
 {
     // Defensive programming
     self.channelThumbnailCollectionView.delegate = nil;
+    self.channelThumbnailCollectionView.dataSource = nil;
 }
 
 
@@ -539,12 +540,7 @@
         // FIXME: Is this comparison correct?  Should it just be self.dataRequestRange.location >= self.dataItemsAvailable?
         if (nextStart >= self.dataItemsAvailable)
         {
-            DebugLog(@"Set footer size to border");
             footerSize = CGSizeMake(1.0f, 5.0f);
-        }
-        else
-        {
-            DebugLog(@"Normal footer size");
         }
     }
     else
@@ -927,7 +923,10 @@
     
     [self handleNewTabSelectionWithGenre: nil];
     
-    [self toggleChannelsCategoryTable: nil];
+    if(!self.categoryTableViewController.view.hidden)
+    {
+        [self toggleChannelsCategoryTable: nil];
+    }
 }
 
 -(void)headerTapped

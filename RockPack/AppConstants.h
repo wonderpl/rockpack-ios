@@ -77,14 +77,14 @@
 #define kAPIGetUserNotifications    @"/ws/USERID/notifications/"                /* GET */
 
 // Avatar
-#define kAPIUpdateAvatar           @"/ws/USERID/avatar/"                       /* PUT */
+#define kAPIUpdateAvatar           @"/ws/USERID/avatar/"                        /* PUT */
 
 // Channel manageent
 #define kAPIGetChannelDetails       @"/ws/USERID/channels/CHANNELID/"           /* GET */
 #define kAPICreateNewChannel        @"/ws/USERID/channels/"                     /* POST */
 #define kAPIUpdateExistingChannel   @"/ws/USERID/channels/CHANNELID/"           /* PUT */
-#define kAPIUpdateChannelPrivacy    @"/ws/USERID/channels/CHANNELID/public/"     /* PUT */
-#define kAPIDeleteChannel           @"/ws/USERID/channels/CHANNELID/"     /* PUT */
+#define kAPIUpdateChannelPrivacy    @"/ws/USERID/channels/CHANNELID/public/"    /* PUT */
+#define kAPIDeleteChannel           @"/ws/USERID/channels/CHANNELID/"           /* PUT */
 
 #define STANDARD_REQUEST_LENGTH 48
 
@@ -127,10 +127,19 @@
 
 #define kAPIReportConcern           @"/ws/USERID/content_reports/"               /* POST */
 
+// Player error
 #define kAPIReportPlayerError       @"/ws/videos/player_error/"                 /* POST */
 
-#define kYouTubePlayerSource        @"/ws/videos/players/"
+// HTML player source
+#define kHTMLVideoPlayerSource      @"/ws/videos/players/"                      /* GET */
 
+// Apple push notifications
+#define kRegisterExternalAccount    @"/ws/USERID/external_accounts/"            /* POST */
+#define kGetExternalAccountId       @"/ws/USERID/external_accounts/ACCOUNTID/"  /* GET */
+
+#define kAPIFriends                 @"/ws/USERID/friends/"  /* GET */
+
+// Push notification
 #define kAccountSettingsPressed     @"kAccountSettingsPressed"
 #define kAccountSettingsLogout      @"kAccountSettingsLogout"
 #define kUserDataChanged            @"kUserDataChanged"
@@ -139,10 +148,9 @@
 #define kChannelOwnerUpdateRequest  @"kChannelOwnerUpdateRequest"
 #define kChannelDeleteRequest       @"kChannelDeleteRequest"
 
-#define kRefreshComplete           @"kRefreshComplete"
+#define kRefreshComplete            @"kRefreshComplete"
 
-#define kUpdateFailed              @"kUpdateFailed"
-
+#define kUpdateFailed               @"kUpdateFailed"
 
 #define kShowUserChannels           @"kShowUserChannels"
 
@@ -508,3 +516,8 @@ typedef void (^JSONResponseBlock)(id jsonObject);
 #define SHOW_BRANDING 
 
 #endif
+
+//User token refresh error
+
+#define kUserIdInconsistencyError @"UserIdInconsistency"
+#define kStoredRefreshTokenNilError @"StoredRefreshTokenNil"

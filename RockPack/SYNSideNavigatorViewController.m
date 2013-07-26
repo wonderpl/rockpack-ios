@@ -20,16 +20,17 @@
 #import "SYNSideNavigatorViewController.h"
 #import "SYNSoundPlayer.h"
 #import "UIFont+SYNFont.h"
-#import "UIImageView+ImageProcessing.h"
 #import "UIImageView+WebCache.h"
 #import <QuartzCore/QuartzCore.h>
+#import "SYNFriendsViewController.h"
 
 
 #define kSideNavTitle @"kSideNavTitle"
 #define kSideNavType @"kSideNavType"
 #define kSideNavAction @"kSideNavAction"
 
-#define kNotificationsRowIndex 3
+#define kNotificationsRowIndex 4
+#define kFriendsRowIndex 3
 
 typedef enum {
     kSideNavigationTypeLoad = 0,
@@ -92,6 +93,9 @@ typedef enum {
                 @{kSideNavTitle: NSLocalizedString(@"core_nav_section_profile", nil),
                    kSideNavType: @(kSideNavigationTypePage),
                  kSideNavAction: kProfileViewId},
+                @{kSideNavTitle: NSLocalizedString(@"core_nav_section_friends", nil),
+                  kSideNavType: @(kSideNavigationTypeLoad),
+                  kSideNavAction: @"SYNFriendsViewController"},
                 @{kSideNavTitle: NSLocalizedString(@"core_nav_section_notifications", nil),
                    kSideNavType: @(kSideNavigationTypeLoad),
                  kSideNavAction: @"SYNNotificationsTableViewController"}];
@@ -239,13 +243,12 @@ typedef enum {
             {
                 if (![itemData isKindOfClass:[NSDictionary class]]) continue;
                                                        
-                SYNRockpackNotification* notification = [SYNRockpackNotification notificationWithData:itemData];
+                SYNRockpackNotification* notification = [SYNRockpackNotification notificationWithDictionary:itemData];
                 
-                if (!notification)
+                if (!notification || notification.objectType == kNotificationObjectTypeUnknown)
                 {
                     continue;
                 }
-                    
                                                        
                 if (!notification.read)
                     self.unreadNotifications++;
@@ -259,11 +262,7 @@ typedef enum {
         if (self.currentlyLoadedViewController && [self.currentlyLoadedViewController isKindOfClass:[SYNNotificationsTableViewController class]])
         {
             ((SYNNotificationsTableViewController*)self.currentlyLoadedViewController).notifications = self.notifications;
-        }
-        
-        
-        
-        
+        } 
     } errorHandler:^(id error) {
         DebugLog(@"Could not load notifications");
     }];
@@ -398,18 +397,25 @@ typedef enum {
     
     if (navigationType == kSideNavigationTypeLoad)
     {
-        
         Class theClass = NSClassFromString(navigationAction);
         self.currentlyLoadedViewController = (UIViewController*)[[theClass alloc] init];
         
         // == NOTIFICATIONS == //
-        
         if (indexPath.row == kNotificationsRowIndex)
+        {
             ((SYNNotificationsTableViewController*)self.currentlyLoadedViewController).notifications = self.notifications;
-        
-        
+            self.navigationContainerTitleLabel.text = NSLocalizedString(@"core_nav_section_notifications",nil);
+        }
+        else if (indexPath.row == kFriendsRowIndex)
+        {
+            self.navigationContainerTitleLabel.text = NSLocalizedString(@"core_nav_section_friends",nil);
+            if(IS_IPHONE)
+            {
+                SYNFriendsViewController* friendsController = (SYNFriendsViewController*) self.currentlyLoadedViewController;
+                [friendsController addSearchBarToView:self.navigationContainerView];
+            }
+        }
 
-        
         if (IS_IPAD)
         {
             CGRect frameThatFits = self.currentlyLoadedViewController.view.frame;
@@ -425,7 +431,6 @@ typedef enum {
             frameThatFits.size.height = self.containerView.frame.size.height - 6.0;
             self.currentlyLoadedViewController.view.frame = frameThatFits;
         }
-        self.navigationContainerTitleLabel.text = NSLocalizedString(@"core_nav_section_notifications",nil);
         self.state = SideNavigationStateFull;
         
     }
@@ -551,6 +556,7 @@ typedef enum {
     
     if (IS_IPHONE)
     {
+        // iPhone specific
         CGSize containerSize = self.containerView.frame.size;
         CGRect vcRect = self.currentlyLoadedViewController.view.frame;
         vcRect.origin.x = 0.0;
@@ -559,9 +565,9 @@ typedef enum {
         self.currentlyLoadedViewController.view.frame = vcRect;
 
     }
-    
-    if (IS_IPAD)
+    else
     {
+        // iPad
         CGRect screenRect = [[UIScreen mainScreen] bounds];
         CGFloat screenHeight = screenRect.size.height;
         
@@ -752,11 +758,14 @@ typedef enum {
     
     [[SYNSoundPlayer sharedInstance] playSoundByName: kSoundNewSlideIn];
     self.mainContentView.alpha = 1.0f;
-    [self.view addSubview:self.searchViewController.searchBoxView];
-    self.searchViewController.searchBoxView.searchTextField.text = @"";
-    self.searchViewController.searchBoxView.searchTextField.delegate = self;
-    [self.searchViewController.searchBoxView resignFirstResponder];
-    [self.searchViewController.searchBoxView hideCloseButton];
+    if(IS_IPHONE)
+    {
+        [self.view insertSubview:self.searchViewController.searchBoxView belowSubview:self.navigationContainerView];
+        self.searchViewController.searchBoxView.searchTextField.text = @"";
+        self.searchViewController.searchBoxView.searchTextField.delegate = self;
+        [self.searchViewController.searchBoxView resignFirstResponder];
+        [self.searchViewController.searchBoxView hideCloseButton];
+    }
     
     [UIView animateWithDuration: kRockieTalkieAnimationDuration
                           delay: 0.0f
@@ -807,6 +816,7 @@ typedef enum {
         startFrame.origin.x = self.view.frame.size.width;
         self.navigationContainerView.frame = startFrame;
         self.navigationContainerView.hidden = NO;
+        self.navigationContainerView.alpha = 1.0f;
         [self.view insertSubview:self.navigationContainerView aboveSubview: self.searchViewController.view];
         
         [UIView animateWithDuration: 0.3f
@@ -919,6 +929,21 @@ typedef enum {
     
     self.imagePickerController = nil;
 
+}
+
+
+#pragma mark - Push notification support
+
+- (void) displayFromPushNotification
+{
+    NSIndexPath *indexPath = [NSIndexPath indexPathForRow: 3
+                                                inSection: 0];
+    
+    [self.tableView selectRowAtIndexPath: indexPath
+                                animated: YES
+                          scrollPosition: UITableViewScrollPositionNone];
+    
+    [self tableView: self.tableView didSelectRowAtIndexPath: indexPath];
 }
 
 @end

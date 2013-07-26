@@ -10,18 +10,12 @@
 
 @class SYNNotificationsTableViewController;
 
-@interface SYNNotificationsTableViewCell : UITableViewCell {
-    CGSize mainTextSize;
-    UIView* dividerImageView;
-    SYNNotificationsTableViewController* delegate;
-    CGRect imageViewRect;
-    UIButton* mainImageButton;
-    UIButton* secondaryImageButton;
-    
-}
+@interface SYNNotificationsTableViewCell : UITableViewCell
 
-@property (nonatomic, strong) UIImageView* thumbnailImageView;
-@property (nonatomic, weak) NSString* messageTitle;
-@property (nonatomic, weak) SYNNotificationsTableViewController* delegate;
 @property (nonatomic) BOOL read;
+@property (nonatomic, strong) UIImageView *playSymbolImageView;
+@property (nonatomic, strong) UIImageView *thumbnailImageView;
+@property (nonatomic, weak) NSString *messageTitle;
+@property (nonatomic, weak) SYNNotificationsTableViewController *delegate;
+
 @end

@@ -214,9 +214,13 @@
         
         [self.appDelegate.oAuthNetworkEngine retrieveAndRegisterUserFromCredentials: credential completionHandler: ^(NSDictionary* dictionary) {
 
-            // the dictionary contains a User dictionary (without subscriptions) //
+            // the dictionary contains a User dictionary //
             
           
+            
+            
+            
+            
             
             // by this time the currentUser is set in the DB //
             
@@ -225,6 +229,21 @@
                 
                 DebugLog(@"User Registerd: %@", [dictionary objectForKey: @"username"]);
                 _appDelegate.currentUser.loginOriginValue = LoginOriginRockpack;
+                
+                // link to facebook account
+                
+                if(_appDelegate.currentUser.facebookToken)
+                {
+                    [[SYNFacebookManager sharedFBManager] openSessionFromExistingToken:_appDelegate.currentUser.facebookToken
+                                                                             onSuccess:^{
+                                                                                 
+                                                                                 
+                                                                                 
+                                                                             } onFailure:^(NSString *errorMessage) {
+                                                                                 
+                                                                             }];
+                }
+                
                 completionBlock(dictionary);
             }
             else
@@ -391,6 +410,7 @@
         
         [_appDelegate.oAuthNetworkEngine doFacebookLoginWithAccessToken: accessTokenData.accessToken
                                                           completionHandler: ^(SYNOAuth2Credential* credential) {
+                                                              
             [_appDelegate.oAuthNetworkEngine retrieveAndRegisterUserFromCredentials: credential
                                                               completionHandler: ^(NSDictionary* dictionary) {
                                                                   

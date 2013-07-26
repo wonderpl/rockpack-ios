@@ -11,4 +11,6 @@
 + (User *)	 instanceFromUser: (User *) oldUser
    usingManagedObjectContext: (NSManagedObjectContext *) managedObjectContext;
 
+@property (nonatomic, strong) NSString* facebookToken;
+
 @end

@@ -390,21 +390,28 @@
     
     [GAI.sharedInstance.defaultTracker sendView: @"Subscribers List"];
     
-    SYNSubscribersViewController* subscribersViewController = [[SYNSubscribersViewController alloc] initWithChannel:self.channel];
+    SYNSubscribersViewController* subscribersViewController = [[SYNSubscribersViewController alloc] initWithChannel: self.channel];
     
     if (IS_IPAD)
     {
+        
+//        UINavigationController* navigationController = [[UINavigationController alloc] initWithRootViewController: subscribersViewController];
+//        navigationController.view.backgroundColor = [UIColor clearColor];
+//        
+//        self.subscribersPopover = [[UIPopoverController alloc] initWithContentViewController: navigationController];
+//        self.subscribersPopover.popoverContentSize = CGSizeMake(512, 626);
+//        self.subscribersPopover.delegate = self;
+//        
+//        self.subscribersPopover.popoverBackgroundViewClass = [SYNAccountSettingsPopoverBackgroundView class];
         
         UINavigationController* navigationController = [[UINavigationController alloc] initWithRootViewController: subscribersViewController];
         navigationController.view.backgroundColor = [UIColor clearColor];
         
         self.subscribersPopover = [[UIPopoverController alloc] initWithContentViewController: navigationController];
-        self.subscribersPopover.popoverContentSize = CGSizeMake(512, 626);
-        self.subscribersPopover.delegate = self;
-        
-        
         self.subscribersPopover.popoverBackgroundViewClass = [SYNAccountSettingsPopoverBackgroundView class];
-        
+        self.subscribersPopover.popoverContentSize = CGSizeMake(514, 626);
+        self.subscribersPopover.delegate = self;
+
         
         CGRect rect = CGRectMake([SYNDeviceManager.sharedInstance currentScreenWidth] * 0.5,
                                  480.0f, 1, 1);
@@ -489,11 +496,32 @@
 {
     [super viewWillDisappear: animated];
 
-    // Stop observing everything (less error-prone than trying to remove observers individually)
+
     
     [[NSNotificationCenter defaultCenter] postNotificationName:kNoteHideAllCautions object:self];
     
-    [[NSNotificationCenter defaultCenter] removeObserver: self];
+    
+    // Remove notifications individually
+    // Do this rather than plain RemoveObserver call as low memory handling is based on NSNotifications.
+    [[NSNotificationCenter defaultCenter] removeObserver: self
+                                             name: kCoverArtChanged
+                                                  object: nil];
+    
+    [[NSNotificationCenter defaultCenter] removeObserver:self
+                                                 name:kVideoQueueClear
+                                               object:nil];
+    
+    [[NSNotificationCenter defaultCenter] removeObserver:self
+                                                 name:kUpdateFailed
+                                               object:nil];
+    
+    if (self.channel.channelOwner.uniqueId == appDelegate.currentUser.uniqueId)
+    {
+        [[NSNotificationCenter defaultCenter] removeObserver: self
+                                                     name: kUserDataChanged
+                                                   object: nil];
+    }
+
 
     if (!self.isIPhone)
     {
@@ -775,11 +803,13 @@
     {
         detailsString = [NSString stringWithFormat: @"%lld %@", self.channel.subscribersCountValue, NSLocalizedString(@"SUBSCRIBERS", nil)];
         self.shareButton.hidden = FALSE;
+        self.subscribersButton.hidden = FALSE;
     }
     else
     {
         detailsString = @"PRIVATE";
         self.shareButton.hidden = TRUE;
+        self.subscribersButton.hidden = TRUE;
     }
     
     self.subscribersLabel.text = detailsString;
@@ -954,12 +984,7 @@
         // FIXME: Is this comparison correct?  Should it just be self.dataRequestRange.location >= self.dataItemsAvailable?
         if (nextStart >= self.dataItemsAvailable)
         {
-            DebugLog(@"Set footer size to border");
             footerSize = CGSizeMake(1.0f, 5.0f);
-        }
-        else
-        {
-            DebugLog(@"Normal footer size");
         }
     }
     else
@@ -990,6 +1015,8 @@
         
         // define success block //
         [self incrementRangeForNextRequest];
+        
+        __weak typeof(self) weakSelf = self;
         
         MKNKUserSuccessBlock successBlock = ^(NSDictionary *dictionary) {
             
@@ -1030,7 +1057,7 @@
         };
         
         MKNKUserErrorBlock errorBlock = ^(NSDictionary* errorDictionary) {
-            self.loadingMoreContent = NO;
+            weakSelf.loadingMoreContent = NO;
             DebugLog(@"Update action failed");
             {
                 [self.channel.managedObjectContext save:nil];
@@ -3060,10 +3087,6 @@
 
 - (void) setChannel: (Channel *) channel
 {
-    
-    
-    
-    
     self.originalChannel = channel;
 
     NSError *error = nil;

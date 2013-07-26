@@ -12,6 +12,8 @@
 #import "SYNNetworkOperationJsonObject.h"
 #import "SYNOAuth2Credential.h"
 #import "SYNOAuthNetworkEngine.h"
+#import "NSDictionary+RequestEncoding.h"
+#import "SYNFacebookManager.h"
 #import "Video.h"
 #import "VideoInstance.h"
 #import "UIImage+Resize.h"
@@ -200,6 +202,13 @@
 - (IBAction) refreshOAuthTokenWithCompletionHandler: (MKNKUserErrorBlock) completionBlock
                                        errorHandler: (MKNKUserSuccessBlock) errorBlock
 {
+    // Check to see that our stored refresh token is not actually nil
+    if (self.oAuth2Credential.refreshToken == nil)
+    {
+        AssertOrLog(@"Stored refresh token is nil");
+        errorBlock(@{@"error": kStoredRefreshTokenNilError});
+        return;
+    }
     // We need to handle locale differently (so add the locale to the URL) as opposed to the other parameters which are in the POST body
     NSString *apiString = [NSString stringWithFormat: @"%@?locale=%@", kAPIRefreshToken, self.localeString];
     
@@ -221,21 +230,27 @@
     [networkOperation addCompletionHandler: ^(MKNetworkOperation *completedOperation)
      {
          NSDictionary *responseDictionary = [completedOperation responseJSON];
-         
-         // Parse the new OAuth details, creating a new credential object
-         SYNOAuth2Credential* newOAuth2Credentials = [SYNOAuth2Credential credentialWithAccessToken: responseDictionary[@"access_token"]
+         if([self.appDelegate.currentUser.uniqueId isEqualToString:responseDictionary[@"user_id"]])
+         {
+             // Parse the new OAuth details, creating a new credential object
+             SYNOAuth2Credential* newOAuth2Credentials = [SYNOAuth2Credential credentialWithAccessToken: responseDictionary[@"access_token"]
                                                                                           expiresIn: responseDictionary[@"expires_in"]
                                                                                        refreshToken: responseDictionary[@"refresh_token"]
                                                                                         resourceURL: responseDictionary[@"resource_url"]
                                                                                           tokenType: responseDictionary[@"token_type"]
                                                                                              userId: responseDictionary[@"user_id"]];
          
-         // Save the new credential object in the keychain
-         // The user passed back is assumed to be the current user
-         [newOAuth2Credentials saveToKeychainForService: kOAuth2Service
-                                                account: responseDictionary[@"user_id"]];
-         
-         completionBlock(responseDictionary);
+             // Save the new credential object in the keychain
+             // The user passed back is assumed to be the current user
+             [newOAuth2Credentials saveToKeychainForService: kOAuth2Service
+                                                    account: responseDictionary[@"user_id"]];
+             completionBlock(responseDictionary);
+        }
+        else
+        {
+            AssertOrLog(@"Refreshed OAuth2 credentials do not match the current user!!");
+            errorBlock(@{@"error": kUserIdInconsistencyError});
+        }
      }
      errorHandler: ^(MKNetworkOperation* completedOperation, NSError* error)
      {
@@ -475,11 +490,18 @@
     
     NSString *apiString = [kAPIGetUserDetails stringByReplacingOccurrencesOfStrings: apiSubstitutionDictionary];
     
-    SYNNetworkOperationJsonObject *networkOperation = (SYNNetworkOperationJsonObject*)[self operationWithPath: apiString
-                                                                                                       params: @{@"locale" : self.localeString}
+    NSMutableString* apiMutString = [NSMutableString stringWithString:apiString];
+    [apiMutString appendFormat:@"?locale=%@&data=channels&data=external_accounts", self.localeString];
+    
+    
+    SYNNetworkOperationJsonObject *networkOperation = (SYNNetworkOperationJsonObject*)[self operationWithPath: [NSString stringWithString:apiMutString]
+                                                                                                       params: nil
                                                                                                    httpMethod: @"GET"
                                                                                                           ssl: YES];
     
+    
+    
+        
     [networkOperation addJSONCompletionHandler:^(NSDictionary *responseDictionary)
     {
         NSString* possibleError = responseDictionary[@"error"];
@@ -1438,7 +1460,6 @@
         AssertOrLog(@"One or more of the required parameters is nil");
     }
 
-    
     SYNNetworkOperationJsonObject *networkOperation = (SYNNetworkOperationJsonObject*)[self operationWithPath: apiString
                                                                                                        params: params
                                                                                                    httpMethod: @"POST"
@@ -1450,7 +1471,135 @@
                            completionHandler: completionBlock
                                 errorHandler: errorBlock];
     
-    [self enqueueSignedOperation: networkOperation];}
+    [self enqueueSignedOperation: networkOperation];
+}
 
 
+#pragma mark - Push notification token update
+
+- (void) updateApplePushNotificationForUserId: (NSString *) userId
+                                        token: (NSString *) token
+                            completionHandler: (MKNKUserSuccessBlock) completionBlock
+                                 errorHandler: (MKNKUserErrorBlock) errorBlock
+{
+    [self connectToExtrnalAccoundForUserId:userId
+                                     token:token
+                                   service:@"apns"
+                         completionHandler:completionBlock
+                              errorHandler:errorBlock];
+}
+
+-(void)connectToFacebookAccoundForUserId:(NSString*) userId
+                                   token:(NSString*)token
+                       completionHandler: (MKNKUserSuccessBlock) completionBlock
+                            errorHandler: (MKNKUserErrorBlock) errorBlock
+{
+    
+    [self connectToExtrnalAccoundForUserId:userId
+                                     token:token
+                                   service:@"facebook"
+                         completionHandler:completionBlock
+                              errorHandler:errorBlock];
+}
+
+- (void) getExternalAccountForUserId:(NSString*)userId
+                           accountId:(NSString*)accountId
+                   completionHandler: (MKNKUserSuccessBlock) completionBlock
+                        errorHandler: (MKNKUserErrorBlock) errorBlock
+{
+    
+    NSString *apiString = [kGetExternalAccountId stringByReplacingOccurrencesOfStrings: @{@"USERID" : userId, @"ACCOUNTID" : accountId}];
+    
+    
+    SYNNetworkOperationJsonObject *networkOperation = (SYNNetworkOperationJsonObject*)[self operationWithPath: apiString
+                                                                                                       params: nil
+                                                                                                   httpMethod: @"GET"
+                                                                                                          ssl: YES];
+    
+    
+    [self addCommonHandlerToNetworkOperation: networkOperation
+                           completionHandler: completionBlock
+                                errorHandler: errorBlock];
+    
+    [self enqueueSignedOperation: networkOperation];
+}
+
+-(void)getExternalAccountForUrl: (NSString*)urlString
+              completionHandler: (MKNKUserSuccessBlock) completionBlock
+                   errorHandler: (MKNKUserErrorBlock) errorBlock
+{
+    SYNNetworkOperationJsonObject *networkOperation = (SYNNetworkOperationJsonObject*)[self operationWithURLString:urlString];
+    
+    
+    [self addCommonHandlerToNetworkOperation: networkOperation
+                           completionHandler: completionBlock
+                                errorHandler: errorBlock];
+    
+    [self enqueueSignedOperation: networkOperation];
+}
+
+- (void) connectToExtrnalAccoundForUserId:(NSString*) userId
+                                    token:(NSString*)token
+                                  service:(NSString*)service
+                        completionHandler: (MKNKUserSuccessBlock) completionBlock
+                             errorHandler: (MKNKUserErrorBlock) errorBlock
+{
+    // Check if any nil parameters passed in (defensive)
+    if (!token || !userId || !service)
+    {
+        AssertOrLog(@"connectToExtrnalAccoundForUserId error with: %@ %@ %@", token, userId, service);
+        return;
+    }
+   
+    
+    NSDictionary *apiSubstitutionDictionary = @{@"USERID" : userId};
+    
+    NSString *apiString = [kRegisterExternalAccount stringByReplacingOccurrencesOfStrings: apiSubstitutionDictionary];
+    
+    
+    
+    NSDictionary *params = @{@"external_system": service,
+                             @"external_token" : token};
+    
+    SYNNetworkOperationJsonObject *networkOperation = (SYNNetworkOperationJsonObject*)[self operationWithPath: apiString
+                                                                                                       params: params
+                                                                                                   httpMethod: @"POST"
+                                                                                                          ssl: YES];
+    [networkOperation addHeaders: @{@"Content-Type" : @"application/json"}];
+    networkOperation.postDataEncoding = MKNKPostDataEncodingTypeJSON;
+    
+    [self addCommonHandlerToNetworkOperation: networkOperation
+                           completionHandler: completionBlock
+                                errorHandler: errorBlock];
+    
+    [self enqueueSignedOperation: networkOperation];
+}
+
+- (void) friendsForUser: (User*)user
+      completionHandler: (MKNKUserSuccessBlock) completionBlock
+           errorHandler: (MKNKUserErrorBlock) errorBlock
+{
+    
+    if(!user)
+        return;
+    
+    NSDictionary *apiSubstitutionDictionary = @{@"USERID" : user.uniqueId};
+    
+    NSString *apiString = [kAPIFriends stringByReplacingOccurrencesOfStrings: apiSubstitutionDictionary];
+    
+    NSDictionary *params = @{@"device_filter": @"ios"};
+    
+    SYNNetworkOperationJsonObject *networkOperation = (SYNNetworkOperationJsonObject*)[self operationWithPath: apiString
+                                                                                                       params: params
+                                                                                                   httpMethod: @"GET"
+                                                                                                          ssl: YES];
+    
+    [self addCommonHandlerToNetworkOperation: networkOperation
+                           completionHandler: completionBlock
+                                errorHandler: errorBlock];
+    
+    [self enqueueSignedOperation: networkOperation];
+    
+    
+}
 @end

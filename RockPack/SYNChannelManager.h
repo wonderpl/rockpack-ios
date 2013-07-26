@@ -12,8 +12,6 @@
 
 @interface SYNChannelManager : NSObject
 
-
-
-+(id)manager;
++ (id) manager;
 
 @end

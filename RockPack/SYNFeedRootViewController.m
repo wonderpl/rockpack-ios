@@ -50,6 +50,7 @@
     
     // Defensive programming
     self.videoThumbnailCollectionView.delegate = nil;
+    self.videoThumbnailCollectionView.dataSource = nil;
 }
 
 
@@ -78,7 +79,7 @@
         
         // Collection view parameters
         contentInset = UIEdgeInsetsMake(4, 0, 0, 0);
-        sectionInset = UIEdgeInsetsMake(10.0f, 10.0f, 15.0f, 10.0f);
+        sectionInset = UIEdgeInsetsMake(10.0f, 5.0f, 15.0f, 5.0f);
         minimumLineSpacing = 10.0f;
         
     }
@@ -101,7 +102,7 @@
     [self removeEmptyGenreMessage];
     
     // Setup out collection view layout
-    standardFlowLayout = [SYNIntegralCollectionViewFlowLayout layoutWithItemSize: CGSizeMake(497.0f , 141.0f)
+    standardFlowLayout = [SYNIntegralCollectionViewFlowLayout layoutWithItemSize: self.videoCellSize
                                                          minimumInterItemSpacing: 0.0f
                                                               minimumLineSpacing: minimumLineSpacing
                                                                  scrollDirection: UICollectionViewScrollDirectionVertical
@@ -438,9 +439,7 @@
 }
 
 
-- (CGSize) collectionView: (UICollectionView *) collectionView
-                   layout: (UICollectionViewLayout*) collectionViewLayout
-   sizeForItemAtIndexPath: (NSIndexPath *) indexPath
+- (CGSize) videoCellSize
 {
     if (IS_IPHONE)
     {
@@ -454,6 +453,14 @@
     {
         return CGSizeMake(370, 140);
     }
+}
+
+
+- (CGSize) collectionView: (UICollectionView *) collectionView
+                   layout: (UICollectionViewLayout*) collectionViewLayout
+   sizeForItemAtIndexPath: (NSIndexPath *) indexPath
+{
+    return self.videoCellSize;
 }
 
 - (void) videoOverlayDidDissapear
@@ -574,12 +581,7 @@
         // FIXME: Is this comparison correct?  Should it just be self.dataRequestRange.location >= self.dataItemsAvailable?
         if (nextStart >= self.dataItemsAvailable)
         {
-            DebugLog(@"Set footer size to border");
             footerSize = CGSizeMake(1.0f, 5.0f);
-        }
-        else
-        {
-            DebugLog(@"Normal footer size");
         }
     }
     else

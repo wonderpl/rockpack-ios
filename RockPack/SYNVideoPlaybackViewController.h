@@ -20,10 +20,10 @@ typedef void (^SYNVideoIndexUpdater)(int);
 @property (nonatomic, assign, readonly) NSTimeInterval currentTime;
 @property (nonatomic, assign, readonly) NSTimeInterval duration;
 @property (nonatomic, strong) UIView *shuttleBarView;
-@property (nonatomic, strong) VideoInstance* currentVideoInstance;
+@property (nonatomic, strong) VideoInstance *currentVideoInstance;
 @property (nonatomic, strong) UIButton *shuttleBarMaxMinButton;
 
-+ (SYNVideoPlaybackViewController*) sharedInstance;
++ (SYNVideoPlaybackViewController *) sharedInstance;
 
 // Initialisation
 - (void) updateWithFrame: (CGRect) frame

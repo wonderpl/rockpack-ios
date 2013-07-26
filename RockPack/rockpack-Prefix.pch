@@ -24,6 +24,23 @@
 #define AssertOrLog(...) NSLog(@"%s(%p) %@", __PRETTY_FUNCTION__, self, [NSString stringWithFormat:__VA_ARGS__])
 #endif
 
+
+// https://gist.github.com/bddckr/5922570
+// inspired by Mats
+
+#define AssertTrueOrRunBlock(condition, block, description, ...)\
+if (1) {\
+__PRAGMA_PUSH_NO_EXTRA_ARG_WARNINGS\
+BOOL check = !!(condition);\
+NSCAssert(check, (description), ##__VA_ARGS__);\
+if (!check) {\
+NSString *format = [NSString stringWithFormat:@"%@%@%@", @"Assertion failure in %s, %s:%d\nCondition not satisfied: %s, reason: '", description, @"'"];\
+NSLog(format, __PRETTY_FUNCTION__, __FILE__, __LINE__, #condition, ##__VA_ARGS__);\
+block\
+}\
+__PRAGMA_POP_NO_EXTRA_ARG_WARNINGS\
+}
+
 #define UIDeviceOrientationIsPortrait(orientation)  ((orientation) == UIDeviceOrientationPortrait || (orientation) == UIDeviceOrientationPortraitUpsideDown)
 #define UIDeviceOrientationIsLandscape(orientation) ((orientation) == UIDeviceOrientationLandscapeLeft || (orientation) == UIDeviceOrientationLandscapeRight)
 

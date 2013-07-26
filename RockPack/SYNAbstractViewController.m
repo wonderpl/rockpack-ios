@@ -27,7 +27,6 @@
 #import "SYNPopoverBackgroundView.h"
 #import "SYNVideoThumbnailWideCell.h"
 #import "UIFont+SYNFont.h"
-#import "UIImageView+ImageProcessing.h"
 #import "Video.h"
 #import "VideoInstance.h"
 #import "GAI.h"
@@ -637,11 +636,10 @@
              
              activityViewController.presentingPopoverController = _activityPopoverController;
              
-             [self.activityPopoverController
-              presentPopoverFromRect: rect
-              inView: inView
-              permittedArrowDirections: arrowDirections
-              animated: YES];
+             [self.activityPopoverController presentPopoverFromRect: rect
+                                                             inView: inView
+                                           permittedArrowDirections: arrowDirections
+                                                           animated: YES];
          }
          else
          {

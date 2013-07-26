@@ -108,12 +108,12 @@
     
     [self setInfoLabelText: @"LOADING"];
     
-    [self.view
-     addSubview: self.activityView];
+    [self.view addSubview: self.activityView];
     
     [appDelegate.networkEngine subscribersForUserId: appDelegate.currentUser.uniqueId
                                           channelId: self.channel.uniqueId
                                            forRange: self.dataRequestRange
+                                        byAppending: NO
                                   completionHandler: ^(int count) {
                                       self.dataItemsAvailable = count;
                                       
@@ -131,22 +131,22 @@
             viewForSupplementaryElementOfKind: (NSString *) kind
                                   atIndexPath: (NSIndexPath *) indexPath
 {
-    UICollectionReusableView *supplementaryView;
+    if (collectionView != self.usersThumbnailCollectionView)
+        return nil;
     
+    UICollectionReusableView* supplementaryView;
     
     if (kind == UICollectionElementKindSectionFooter)
     {
-        if (self.users.count == 0 || (self.dataRequestRange.location + self.dataRequestRange.length) >= self.dataItemsAvailable)
+        if (self.users.count == 0)
         {
             return supplementaryView;
         }
         
-        self.footerView = [self.usersThumbnailCollectionView
-                           dequeueReusableSupplementaryViewOfKind: kind
-                           withReuseIdentifier: @"SYNChannelFooterMoreView"
-                           forIndexPath: indexPath];
-
-        //[self loadMoreChannels:self.footerView.loadMoreButton];
+        self.footerView = [self.usersThumbnailCollectionView dequeueReusableSupplementaryViewOfKind: kind
+                                                                                withReuseIdentifier: @"SYNChannelFooterMoreView"
+                                                                                       forIndexPath: indexPath];
+        self.footerView.showsLoading = self.isLoadingMoreContent;
         
         supplementaryView = self.footerView;
     }
@@ -155,11 +155,39 @@
 }
 
 
+- (CGSize) collectionView: (UICollectionView *) collectionView
+                   layout: (UICollectionViewLayout*) collectionViewLayout
+           referenceSizeForFooterInSection: (NSInteger) section
+{
+    CGSize footerSize;
+    
+    if (collectionView == self.usersThumbnailCollectionView)
+    {
+        footerSize = [self footerSize];
+        
+        // Now set to zero anyway if we have already read in all the items
+        NSInteger nextStart = self.dataRequestRange.location + self.dataRequestRange.length; // one is subtracted when the call happens for 0 indexing
+        
+        // FIXME: Is this comparison correct?  Should it just be self.dataRequestRange.location >= self.dataItemsAvailable?
+        if (nextStart >= self.dataItemsAvailable)
+        {
+            footerSize = CGSizeZero;
+        }
+    }
+    else
+    {
+        footerSize = CGSizeZero;
+    }
+    
+    return footerSize;
+}
+
+
 - (void) collectionView: (UICollectionView *) collectionView didSelectItemAtIndexPath: (NSIndexPath *) indexPath
 {
     if (IS_IPHONE)
     {
-        [appDelegate.viewStackManager hideModallyController];
+        [appDelegate.viewStackManager hideModalController];
     }
     
     [super collectionView: collectionView
@@ -171,16 +199,13 @@
 {
     NSFetchRequest *request = [[NSFetchRequest alloc] init];
     
-    [request setEntity: [NSEntityDescription entityForName: @"ChannelOwner"
-                                    inManagedObjectContext: appDelegate.searchManagedObjectContext]];
+    request.entity = [NSEntityDescription entityForName: @"ChannelOwner"
+                                 inManagedObjectContext: appDelegate.searchManagedObjectContext];
     
+    request.predicate = [NSPredicate predicateWithFormat: @"viewId == %@", self.viewId];
     
-    [request setPredicate: [NSPredicate predicateWithFormat: @"viewId == %@", self.viewId]];
-    
-    NSArray *sortDescriptorsArray = @[[NSSortDescriptor sortDescriptorWithKey: @"position"
-                                                                    ascending: YES]];
-    [request setSortDescriptors: sortDescriptorsArray];
-    
+    request.sortDescriptors = @[[NSSortDescriptor sortDescriptorWithKey: @"position"
+                                                              ascending: YES]];
     request.fetchBatchSize = 20;
     
     NSError *error = nil;
@@ -211,6 +236,29 @@
 - (CGSize) footerSize
 {
     return CGSizeMake(100.0, 40.0);
+}
+
+- (void) loadMoreUsers
+{
+    // Check to see if we have loaded all items already
+    if (self.moreItemsToLoad == TRUE)
+    {
+        self.loadingMoreContent = YES;
+        
+        [self incrementRangeForNextRequest];
+        
+        [appDelegate.networkEngine subscribersForUserId: appDelegate.currentUser.uniqueId
+                                              channelId: self.channel.uniqueId
+                                               forRange: self.dataRequestRange
+                                            byAppending: YES
+                                      completionHandler: ^(int count) {
+                                          self.dataItemsAvailable = count;
+                                          self.loadingMoreContent = NO;
+                                          [self displayUsers];
+                                      }
+                                           errorHandler: ^{
+                                           }];
+    }
 }
 
 @end
