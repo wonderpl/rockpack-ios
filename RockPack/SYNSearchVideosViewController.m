@@ -77,7 +77,6 @@
     fetchRequest.entity = [NSEntityDescription entityForName: @"VideoInstance"
                                      inManagedObjectContext: self.appDelegate.searchManagedObjectContext];
     [fetchRequest setPredicate: [NSPredicate predicateWithFormat: @"viewId == %@", self.viewId]];
-    fetchRequest.resultType = NSManagedObjectIDResultType;
     fetchRequest.sortDescriptors = @[[[NSSortDescriptor alloc] initWithKey: @"position" ascending: YES]];
     self.fetchRequest = fetchRequest;
     
@@ -183,7 +182,7 @@
 - (UICollectionViewCell *) collectionView: (UICollectionView *) cv
                    cellForItemAtIndexPath: (NSIndexPath *) indexPath
 {
-    VideoInstance *videoInstance = (VideoInstance*)[appDelegate.searchManagedObjectContext objectWithID:self.resultArray[indexPath.row]];
+    VideoInstance *videoInstance = self.resultArray[indexPath.row];
     
     SYNVideoThumbnailWideCell *videoThumbnailCell = [cv dequeueReusableCellWithReuseIdentifier: @"SYNVideoThumbnailWideCell"
                                                                                   forIndexPath: indexPath];
@@ -337,6 +336,7 @@
                                             onComplete: ^(int itemsCount) {
                                                 weakSelf.dataItemsAvailable = itemsCount;
                                                 weakSelf.loadingMoreContent = NO;
+                                                self.resultArray = [appDelegate.searchManagedObjectContext executeFetchRequest:self.fetchRequest error:nil];
                                                 [weakSelf.videoThumbnailCollectionView reloadData];
                                             }];
     }
