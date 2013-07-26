@@ -128,6 +128,16 @@ static char* association_key = "SYNFriendThumbnailCell to Friend";
     
 }
 
+-(NSArray*)rockpackFriends
+{
+    NSPredicate* searchPredicate = [NSPredicate predicateWithBlock:^BOOL(Friend* friend, NSDictionary *bindings) {
+        
+        return friend.isOnRockpack; // resourceURL != nil; (derived property)
+    }];
+    
+    return [self.iOSFriends filteredArrayUsingPredicate:searchPredicate];
+}
+
 -(IBAction)switchClicked:(id)sender
 {
     if( ((UIButton*)sender).selected ) // do not re-select
@@ -135,12 +145,7 @@ static char* association_key = "SYNFriendThumbnailCell to Friend";
     
     if(sender == self.onRockpackButton)
     {
-        NSPredicate* searchPredicate = [NSPredicate predicateWithBlock:^BOOL(id evaluatedObject, NSDictionary *bindings) {
-            
-            return ((Friend*)evaluatedObject).isOnRockpack; // resourceURL != nil; (derived property)
-        }];
-        
-        self.displayFriends = [self.iOSFriends filteredArrayUsingPredicate:searchPredicate];
+        self.displayFriends = [self rockpackFriends];
         
         [self.allFriendsButton setSelected:NO];
         
@@ -338,16 +343,29 @@ static char* association_key = "SYNFriendThumbnailCell to Friend";
     
     if([searchTerm isEqualToString:@""])
     {
-        self.displayFriends = self.iOSFriends;
+        
+        if(self.onRockpackButton.selected) // is on the second tab
+        {
+            self.displayFriends = [self rockpackFriends];
+        }
+        else
+        {
+            self.displayFriends = self.iOSFriends;
+        }
     }
     else
     {
         
-        NSPredicate* searchPredicate = [NSPredicate predicateWithBlock:^BOOL(id evaluatedObject, NSDictionary *bindings) {
+        NSPredicate* searchPredicate = [NSPredicate predicateWithBlock:^BOOL(Friend* friend, NSDictionary *bindings) {
             
-            NSString* nameToCompare = [((Friend*)evaluatedObject).displayName uppercaseString];
+            NSString* nameToCompare = [friend.displayName uppercaseString];
             
             BOOL result = [nameToCompare hasPrefix:searchTerm];
+            
+            if(self.onRockpackButton.selected) // is on the second tab
+            {
+                result = result & friend.isOnRockpack;
+            }
             
             
             return result;
