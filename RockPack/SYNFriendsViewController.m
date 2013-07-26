@@ -276,9 +276,13 @@ static char* association_key = "SYNFriendThumbnailCell to Friend";
         
     } onFailure: ^(NSString* errorString) {
         
+        [weakSelf.activityIndicator stopAnimating];
+        
+        weakSelf.facebookLoginButton.hidden = NO;
+        
+        weakSelf.preLoginLabel.text = @"Log in with Facebook was cancelled.";
         
         
-         
      }];
 
 }
@@ -400,6 +404,8 @@ static char* association_key = "SYNFriendThumbnailCell to Friend";
     
     SYNFriendThumbnailCell* cellClicked = (SYNFriendThumbnailCell*)[collectionView cellForItemAtIndexPath:indexPath];
     
+    cellClicked.selected = YES;
+    
     self.currentlySelectedFriend = objc_getAssociatedObject(cellClicked, association_key);
     
     if(!self.currentlySelectedFriend.isOnRockpack) // facebook friend, invite to rockpack
@@ -424,7 +430,7 @@ static char* association_key = "SYNFriendThumbnailCell to Friend";
         
     }
     
-    
+    [self.searchField resignFirstResponder];
     
 }
 

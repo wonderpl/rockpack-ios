@@ -11,6 +11,8 @@
 
 @implementation SYNFriendThumbnailCell
 
+@synthesize selected;
+
 -(void)awakeFromNib
 {
     self.plusSignView.hidden = YES;
@@ -21,6 +23,19 @@
     
     
     
+}
+
+-(void)setHighlighted:(BOOL)highlighted
+{
+    
+    if(highlighted)
+    {
+        self.pressedLayerView.hidden = NO;
+    }
+    else
+    {
+        self.pressedLayerView.hidden = YES;
+    }
 }
 
 -(void)setDisplayName:(NSString*)name
