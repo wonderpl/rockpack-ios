@@ -146,12 +146,6 @@
 
 #pragma mark - Getters/Setters
 
-- (UICollectionView *) usersThumbnailCollectionView
-{
-    return (UICollectionView *) self.view;
-}
-
-
 - (void) setOffsetTop: (CGFloat) offsetTop
 {
     CGRect collectionViewFrame = CGRectMake(0.0f, offsetTop,
