@@ -35,6 +35,7 @@
 @property (nonatomic, strong) SYNFeedMessagesView* emptyGenreMessageView;
 @property (nonatomic, strong) UIRefreshControl *refreshControl;
 @property (nonatomic, weak) SYNVideoThumbnailWideCell* selectedCell;
+@property (strong) NSArray* bufferArray;
 
 @end
 
@@ -179,7 +180,7 @@
     
     fetchRequest.predicate = predicate;
     fetchRequest.sortDescriptors = @[[[NSSortDescriptor alloc] initWithKey: @"dateAdded" ascending: NO],[[NSSortDescriptor alloc] initWithKey: @"position" ascending: YES]];
-    fetchRequest.fetchBatchSize = 20;
+    fetchRequest.resultType = NSManagedObjectIDResultType;
 
     self.fetchRequest = fetchRequest;
 }
@@ -280,8 +281,13 @@
                                                     BOOL toAppend = (self.dataRequestRange.location > 0);
                                                     
                                                     [appDelegate.mainRegistry performInBackground:^BOOL(NSManagedObjectContext *backgroundContext) {
-                                                        return [appDelegate.mainRegistry registerDataForFeedFromDictionary: responseDictionary
+                                                        BOOL result = [appDelegate.mainRegistry registerDataForFeedFromDictionary: responseDictionary
                                                                                                                byAppending: toAppend];
+                                                        if(result)
+                                                        {
+                                                            self.bufferArray = [backgroundContext executeFetchRequest:self.fetchRequest error:nil];
+                                                        }
+                                                        return result;
                                                     } completionBlock:^(BOOL registryResultOk) {
                                                         NSNumber* totalNumber = responseDictionary[@"videos"][@"total"];
                                                     if (totalNumber && ![totalNumber isKindOfClass:[NSNull class]])
@@ -295,7 +301,7 @@
                                                         
                                                         [self removeEmptyGenreMessage];
                                                         
-                                                        if(self.resultArray.count == 0)
+                                                        if(self.bufferArray.count == 0)
                                                             [self displayEmptyGenreMessage:NSLocalizedString(@"feed_screen_empty_message", nil) andLoader:NO];
                                                         
                                                         self.loadingMoreContent = NO;
@@ -322,11 +328,35 @@
 
 - (void) handleRefreshComplete
 {
-    self.resultArray = [appDelegate.mainManagedObjectContext executeFetchRequest:self.fetchRequest error:nil];
-    [self reloadCollectionViews];
-    self.refreshing = FALSE;
-    [self.refreshControl endRefreshing];
-    [self.refreshButton endRefreshCycle];
+    int afterCount = [self.bufferArray count];
+    int beforeCount = [self.resultArray count];
+    int numberOfCells = afterCount - beforeCount;
+    
+    if(numberOfCells > 0 && self.dataRequestRange.location >0)
+    {
+        //assume append
+        NSMutableArray* newIndexes = [NSMutableArray arrayWithCapacity:numberOfCells];
+        for (int i = beforeCount; i< afterCount; i++)
+        {
+            [newIndexes addObject:[NSIndexPath indexPathForRow:i inSection:0]];
+        }
+        [self.videoThumbnailCollectionView performBatchUpdates:^{
+            self.resultArray = self.bufferArray;
+            [self.videoThumbnailCollectionView insertItemsAtIndexPaths:newIndexes];
+        } completion:^(BOOL finished) {
+            self.refreshing = FALSE;
+            [self.refreshControl endRefreshing];
+            [self.refreshButton endRefreshCycle];
+        }];
+    }
+    else
+    {
+        self.resultArray = self.bufferArray;
+        [self reloadCollectionViews];
+        self.refreshing = FALSE;
+        [self.refreshControl endRefreshing];
+        [self.refreshButton endRefreshCycle];
+    }
 }
 
 -(void)reloadCollectionViews
@@ -509,7 +539,7 @@
 {
     UICollectionViewCell *cell = nil;
     
-    VideoInstance *videoInstance = self.resultArray[indexPath.row];
+    VideoInstance *videoInstance = (VideoInstance*)[appDelegate.mainManagedObjectContext objectWithID:self.resultArray[indexPath.row]];
     
     SYNVideoThumbnailWideCell *videoThumbnailCell = [cv dequeueReusableCellWithReuseIdentifier: @"SYNVideoThumbnailWideCell"
                                                                                   forIndexPath: indexPath];
@@ -712,7 +742,7 @@
 
 - (void) scrollViewDidScroll: (UIScrollView *) scrollView
 {
-    if (scrollView.contentOffset.y >= scrollView.contentSize.height - scrollView.bounds.size.height - kLoadMoreFooterViewHeight
+    if (scrollView.contentOffset.y >= scrollView.contentSize.height - scrollView.bounds.size.height - 4000.0f //kLoadMoreFooterViewHeight
         && self.isLoadingMoreContent == NO)
     {
         [self loadMoreVideos];

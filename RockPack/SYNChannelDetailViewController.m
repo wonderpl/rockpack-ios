@@ -326,10 +326,17 @@
         // Set text on add cover and select category buttons
         [self.selectCategoryButton setAttributedTitle: attributedCategoryString
                                              forState: UIControlStateNormal];
-        
-        self.coverChooserController = [[SYNCoverChooserController alloc] initWithSelectedImageURL: self.channel.channelCover.imageUrl];
-        [self addChildViewController: self.coverChooserController];
-        self.coverChooserMasterView = self.coverChooserController.view;
+        if(self.mode != kChannelDetailsModeDisplay)
+        {
+            self.coverChooserController = [[SYNCoverChooserController alloc] initWithSelectedImageURL: self.channel.channelCover.imageUrl];
+            [self addChildViewController: self.coverChooserController];
+            self.coverChooserMasterView = self.coverChooserController.view;
+            CGRect correctRect = self.coverChooserMasterView.frame;
+            correctRect.origin.y = 404.0;
+            self.coverChooserMasterView.frame = correctRect;
+            
+            [self.editControlsView addSubview:self.coverChooserMasterView];
+        }
         
     }
     else
@@ -358,8 +365,6 @@
     CGRect correctRect = self.coverChooserMasterView.frame;
     correctRect.origin.y = 404.0;
     self.coverChooserMasterView.frame = correctRect;
-    
-    [self.editControlsView addSubview:self.coverChooserMasterView];
     
     self.cameraButton = self.coverChooserController.cameraButton;
     
@@ -1524,6 +1529,18 @@
     
     if (!self.isIPhone)
     {
+        if(!self.coverChooserController)
+        {
+            self.coverChooserController = [[SYNCoverChooserController alloc] initWithSelectedImageURL: self.channel.channelCover.imageUrl];
+            [self addChildViewController: self.coverChooserController];
+            self.coverChooserMasterView = self.coverChooserController.view;
+            CGRect correctRect = self.coverChooserMasterView.frame;
+            correctRect.origin.y = 404.0;
+            self.coverChooserMasterView.frame = correctRect;
+            
+            [self.editControlsView addSubview:self.coverChooserMasterView];
+        }
+
         self.coverChooserController.selectedImageURL = self.channel.channelCover.imageUrl;
         
         [self.coverChooserController.collectionView reloadData];

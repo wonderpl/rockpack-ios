@@ -74,11 +74,10 @@
     self.currentCalendar = [NSCalendar currentCalendar];
     
     NSFetchRequest *fetchRequest = [[NSFetchRequest alloc] init];
-    
-    fetchRequest.fetchBatchSize = 20;
     fetchRequest.entity = [NSEntityDescription entityForName: @"VideoInstance"
                                      inManagedObjectContext: self.appDelegate.searchManagedObjectContext];
     [fetchRequest setPredicate: [NSPredicate predicateWithFormat: @"viewId == %@", self.viewId]];
+    fetchRequest.resultType = NSManagedObjectIDResultType;
     fetchRequest.sortDescriptors = @[[[NSSortDescriptor alloc] initWithKey: @"position" ascending: YES]];
     self.fetchRequest = fetchRequest;
     
@@ -184,7 +183,7 @@
 - (UICollectionViewCell *) collectionView: (UICollectionView *) cv
                    cellForItemAtIndexPath: (NSIndexPath *) indexPath
 {
-    VideoInstance *videoInstance = self.resultArray[indexPath.row];
+    VideoInstance *videoInstance = (VideoInstance*)[appDelegate.searchManagedObjectContext objectWithID:self.resultArray[indexPath.row]];
     
     SYNVideoThumbnailWideCell *videoThumbnailCell = [cv dequeueReusableCellWithReuseIdentifier: @"SYNVideoThumbnailWideCell"
                                                                                   forIndexPath: indexPath];
