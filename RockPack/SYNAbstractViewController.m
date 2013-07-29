@@ -32,7 +32,8 @@
 #import "GAI.h"
 #import <QuartzCore/QuartzCore.h>
 
-@interface SYNAbstractViewController ()  <UITextFieldDelegate>
+@interface SYNAbstractViewController ()  <UITextFieldDelegate,
+                                          UIPopoverControllerDelegate>
 
 
 @property (getter = isVideoQueueVisible) BOOL videoQueueVisible;
@@ -676,7 +677,7 @@
 
 - (void) popoverControllerDidDismissPopover: (UIPopoverController *) popoverController
 {
-    self.activityPopoverController = nil;
+    self.activityPopoverController.delegate = nil;
 }
 
 

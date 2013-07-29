@@ -97,4 +97,10 @@
 - (void) updatePlayerSourceWithCompletionHandler: (MKNKUserSuccessBlock) completionBlock
                                     errorHandler: (MKNKUserErrorBlock) errorBlock;
 
+#pragma mark - Facebook deep linking
+
+- (void) resolveFacebookLink: (NSString *) facebookLink
+           completionHandler: (MKNKUserSuccessBlock) completionBlock
+                errorHandler: (MKNKUserErrorBlock) errorBlock;
+
 @end

@@ -208,6 +208,9 @@
         completionHandler: (MKNKUserSuccessBlock) completionBlock
              errorHandler: (MKNKUserErrorBlock) errorBlock
 {
+    
+    
+    
     [self.appDelegate.oAuthNetworkEngine doSimpleLoginForUsername: username forPassword: password completionHandler: ^(SYNOAuth2Credential* credential) {
 
         // Case where the user is a member of Rockpack but has not signing in this device
@@ -216,11 +219,6 @@
 
             // the dictionary contains a User dictionary //
             
-          
-            
-            
-            
-            
             
             // by this time the currentUser is set in the DB //
             
@@ -228,20 +226,25 @@
             {
                 
                 DebugLog(@"User Registerd: %@", [dictionary objectForKey: @"username"]);
+                
                 _appDelegate.currentUser.loginOriginValue = LoginOriginRockpack;
                 
                 // link to facebook account
                 
                 if(_appDelegate.currentUser.facebookToken)
                 {
-                    [[SYNFacebookManager sharedFBManager] openSessionFromExistingToken:_appDelegate.currentUser.facebookToken
-                                                                             onSuccess:^{
+                    
+                    
+                    [[SYNFacebookManager sharedFBManager] openSessionFromExistingToken: _appDelegate.currentUser.facebookToken
+                                                                             onSuccess: ^{
                                                                                  
                                                                                  
                                                                                  
-                                                                             } onFailure:^(NSString *errorMessage) {
+                                                                           } onFailure: ^(NSString *errorMessage) {
                                                                                  
-                                                                             }];
+                                                                                 
+                                                                                 
+                                                                           }];
                 }
                 
                 completionBlock(dictionary);
@@ -249,7 +252,7 @@
             else
             {
                 DebugLog(@"ERROR: User not registered (User: %@)", _appDelegate.currentUser);
-                // TODO: handle user not being registered propery
+               
             }
             
             

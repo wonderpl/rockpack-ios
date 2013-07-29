@@ -639,6 +639,30 @@
 }
 
 
+#pragma mark - Facebook deep linking
+
+- (void) resolveFacebookLink: (NSString *) facebookLink
+           completionHandler: (MKNKUserSuccessBlock) completionBlock
+                errorHandler: (MKNKUserErrorBlock) errorBlock
+{
+    SYNNetworkOperationJsonObject *networkOperation =
+    (SYNNetworkOperationJsonObject *) [self operationWithURLString: facebookLink
+                                                            params: nil //@{@"rockpack_redirect" : @"true"}
+                                                        httpMethod: @"GET"];
+    
+    networkOperation.ignoreCachedResponse = NO;
+    
+    [networkOperation addJSONCompletionHandler: ^(NSDictionary *dictionary) {
+        completionBlock(dictionary);
+    } errorHandler: ^(NSError *error) {
+        DebugLog(@"API request failed");
+        errorBlock(error);
+    }];
+    
+    [self enqueueOperation: networkOperation];
+}
+
+
 
 
 @end

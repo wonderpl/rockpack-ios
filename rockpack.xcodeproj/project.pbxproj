@@ -1051,6 +1051,7 @@
 		BE7D036217A14417008053DC /* _FeedItem.m in Sources */ = {isa = PBXBuildFile; fileRef = BE7D036117A14417008053DC /* _FeedItem.m */; };
 		BE7D036517A1904C008053DC /* OverlayFriends.png in Resources */ = {isa = PBXBuildFile; fileRef = BE7D036317A1904C008053DC /* OverlayFriends.png */; };
 		BE7D036617A1904C008053DC /* OverlayFriends@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = BE7D036417A1904C008053DC /* OverlayFriends@2x.png */; };
+		BE7D036917A2D238008053DC /* MyTokenCachingStrategy.m in Sources */ = {isa = PBXBuildFile; fileRef = BE7D036817A2D238008053DC /* MyTokenCachingStrategy.m */; };
 		BE7D342E170DD8C90085AB81 /* SYNChannelFooterMoreView.xib in Resources */ = {isa = PBXBuildFile; fileRef = BE7D342D170DD8C90085AB81 /* SYNChannelFooterMoreView.xib */; };
 		BE7D3431170DDB310085AB81 /* SYNChannelFooterMoreView.m in Sources */ = {isa = PBXBuildFile; fileRef = BE7D3430170DDB310085AB81 /* SYNChannelFooterMoreView.m */; };
 		BE7D34CE1714434D0085AB81 /* SYNDeviceManager.m in Sources */ = {isa = PBXBuildFile; fileRef = BE7D34CD1714434D0085AB81 /* SYNDeviceManager.m */; };
@@ -2429,6 +2430,8 @@
 		BE7D036117A14417008053DC /* _FeedItem.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = _FeedItem.m; sourceTree = "<group>"; };
 		BE7D036317A1904C008053DC /* OverlayFriends.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = OverlayFriends.png; path = Assets/Images/OverlayFriends.png; sourceTree = "<group>"; };
 		BE7D036417A1904C008053DC /* OverlayFriends@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = "OverlayFriends@2x.png"; path = "Assets/Images/OverlayFriends@2x.png"; sourceTree = "<group>"; };
+		BE7D036717A2D238008053DC /* MyTokenCachingStrategy.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MyTokenCachingStrategy.h; sourceTree = "<group>"; };
+		BE7D036817A2D238008053DC /* MyTokenCachingStrategy.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MyTokenCachingStrategy.m; sourceTree = "<group>"; };
 		BE7D342D170DD8C90085AB81 /* SYNChannelFooterMoreView.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = SYNChannelFooterMoreView.xib; sourceTree = "<group>"; };
 		BE7D342F170DDB310085AB81 /* SYNChannelFooterMoreView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SYNChannelFooterMoreView.h; sourceTree = "<group>"; };
 		BE7D3430170DDB310085AB81 /* SYNChannelFooterMoreView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SYNChannelFooterMoreView.m; sourceTree = "<group>"; };
@@ -2903,6 +2906,8 @@
 			children = (
 				012502BB16CA8FE30029C7C8 /* SYNFacebookManager.h */,
 				012502BC16CA8FE30029C7C8 /* SYNFacebookManager.m */,
+				BE7D036717A2D238008053DC /* MyTokenCachingStrategy.h */,
+				BE7D036817A2D238008053DC /* MyTokenCachingStrategy.m */,
 			);
 			name = "Social Media";
 			sourceTree = "<group>";
@@ -6539,6 +6544,7 @@
 				BE7D0343179E9E5D008053DC /* SYNInviteFriendView.m in Sources */,
 				BE7D035F17A1440A008053DC /* FeedItem.m in Sources */,
 				BE7D036217A14417008053DC /* _FeedItem.m in Sources */,
+				BE7D036917A2D238008053DC /* MyTokenCachingStrategy.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
