@@ -5,6 +5,7 @@
 
 const struct FeedItemAttributes FeedItemAttributes = {
 	.coverIndexes = @"coverIndexes",
+	.dateAdded = @"dateAdded",
 	.itemCount = @"itemCount",
 	.resourceId = @"resourceId",
 	.resourceType = @"resourceType",
@@ -58,6 +59,13 @@ const struct FeedItemFetchedProperties FeedItemFetchedProperties = {
 
 
 @dynamic coverIndexes;
+
+
+
+
+
+
+@dynamic dateAdded;
 
 
 

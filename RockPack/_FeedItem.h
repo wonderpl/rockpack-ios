@@ -6,6 +6,7 @@
 
 extern const struct FeedItemAttributes {
 	__unsafe_unretained NSString *coverIndexes;
+	__unsafe_unretained NSString *dateAdded;
 	__unsafe_unretained NSString *itemCount;
 	__unsafe_unretained NSString *resourceId;
 	__unsafe_unretained NSString *resourceType;
@@ -22,6 +23,7 @@ extern const struct FeedItemFetchedProperties {
 
 @class FeedItem;
 @class FeedItem;
+
 
 
 
@@ -47,6 +49,16 @@ extern const struct FeedItemFetchedProperties {
 
 
 //- (BOOL)validateCoverIndexes:(id*)value_ error:(NSError**)error_;
+
+
+
+
+
+@property (nonatomic, strong) NSDate* dateAdded;
+
+
+
+//- (BOOL)validateDateAdded:(id*)value_ error:(NSError**)error_;
 
 
 
@@ -127,6 +139,12 @@ extern const struct FeedItemFetchedProperties {
 
 - (NSString*)primitiveCoverIndexes;
 - (void)setPrimitiveCoverIndexes:(NSString*)value;
+
+
+
+
+- (NSDate*)primitiveDateAdded;
+- (void)setPrimitiveDateAdded:(NSDate*)value;
 
 
 
