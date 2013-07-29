@@ -23,6 +23,7 @@
 #import "SYNVideoThumbnailWideCell.h"
 #import "UIImageView+WebCache.h"
 #import "Video.h"
+#import "FeedItem.h"
 #import "VideoInstance.h"
 
 typedef void(^FeedDataErrorBlock)(void);
@@ -36,7 +37,8 @@ typedef void(^FeedDataErrorBlock)(void);
 @property (nonatomic, strong) NSTimer *timer;
 @property (nonatomic, strong) SYNFeedMessagesView* emptyGenreMessageView;
 @property (nonatomic, strong) UIRefreshControl *refreshControl;
-@property (nonatomic, weak) SYNVideoThumbnailWideCell* selectedCell; 
+@property (nonatomic, weak) SYNVideoThumbnailWideCell* selectedCell;
+@property (nonatomic, strong) NSArray* feedItemsData;
 
 @end
 
@@ -61,6 +63,8 @@ typedef void(^FeedDataErrorBlock)(void);
 - (void) viewDidLoad
 {
     [super viewDidLoad];
+    
+    self.feedItemsData = [NSArray array];
     
     SYNIntegralCollectionViewFlowLayout *standardFlowLayout;
     UIEdgeInsets sectionInset, contentInset;
@@ -373,63 +377,53 @@ typedef void(^FeedDataErrorBlock)(void);
 
 #pragma mark - Fetched results controller
 
-- (NSFetchedResultsController *) fetchedResultsController
+- (void) fetchedAnsDisplayFeedItems
 {
-    if (fetchedResultsController)
-        return fetchedResultsController;
-    
     
     NSFetchRequest *fetchRequest = [[NSFetchRequest alloc] init];
     
     // Edit the entity name as appropriate.
-    fetchRequest.entity = [NSEntityDescription entityForName: @"VideoInstance"
+    fetchRequest.entity = [NSEntityDescription entityForName: kFeedItem
                                       inManagedObjectContext: appDelegate.mainManagedObjectContext];
     
     
-    NSPredicate* predicate = [NSPredicate predicateWithFormat:[NSString stringWithFormat:@"viewId == \"%@\" AND fresh == YES", kFeedViewId]];
+    NSPredicate* predicate = [NSPredicate predicateWithFormat:[NSString stringWithFormat:@"viewId == \"%@\"", self.viewId]]; // kFeedViewId
  
     fetchRequest.predicate = predicate;
 
     fetchRequest.sortDescriptors = @[[[NSSortDescriptor alloc] initWithKey: @"dateAdded" ascending: NO],[[NSSortDescriptor alloc] initWithKey: @"position" ascending: YES]];
     
+    NSError* error;
     
-    self.fetchedResultsController = [[NSFetchedResultsController alloc] initWithFetchRequest: fetchRequest
-                                                                        managedObjectContext: appDelegate.mainManagedObjectContext
-                                                                          sectionNameKeyPath: @"dateAddedIgnoringTime"
-                                                                                   cacheName: nil];
+    NSArray *resultsArray = [appDelegate.mainManagedObjectContext executeFetchRequest: fetchRequest error: &error];
+    if (!resultsArray)
+        return;
     
-    fetchedResultsController.delegate = self;
+    // sort results in categories
     
-    NSError *error = nil;
-    if (![fetchedResultsController performFetch: &error])
-    {
-        AssertOrLog(@"videoInstanceFetchedResultsController:performFetch failed: %@\n%@", [error localizedDescription], [error userInfo]);
-    }
+    NSMutableArray* allItemsArray = [NSMutableArray array];
     
-    return fetchedResultsController;
+    [allItemsArray addObject:resultsArray];
+    
+    self.feedItemsData = [NSArray arrayWithArray:allItemsArray];
+    
 }
     
-
-- (void) controllerDidChangeContent: (NSFetchedResultsController *) controller
-{
-    
-    [self.videoThumbnailCollectionView reloadData];
-}
 
 
 #pragma mark - UICollectionView Delegate
 
 - (NSInteger) numberOfSectionsInCollectionView: (UICollectionView *) collectionView
 {
-    return self.fetchedResultsController.sections.count;
+    return self.feedItemsData.count; // the number of arrays included
 }
 
 
 - (NSInteger) collectionView: (UICollectionView *) collectionView
       numberOfItemsInSection: (NSInteger) section
 {
-    id <NSFetchedResultsSectionInfo> sectionInfo = self.fetchedResultsController.sections[section];
-    return sectionInfo.numberOfObjects;
+    NSArray* sectionInfo = self.feedItemsData[section];
+    return sectionInfo.count;
     
 }
 
@@ -477,7 +471,6 @@ typedef void(^FeedDataErrorBlock)(void);
             if (rectToPointTo.origin.y < [[SYNDeviceManager sharedInstance] currentScreenHeight] * 0.5)
                 directionToPointTo = PointingDirectionUp;
             
-            //NSLog(@"%f %f", rectToPointTo.origin.x, rectToPointTo.origin.y);
         }
         SYNOnBoardingPopoverView* addToChannelPopover = [SYNOnBoardingPopoverView withMessage:message
                                                                                   withSize:size
@@ -504,37 +497,10 @@ typedef void(^FeedDataErrorBlock)(void);
 {
     UICollectionViewCell *cell = nil;
     
-    VideoInstance *videoInstance = [self.fetchedResultsController objectAtIndexPath: indexPath];
-    
-    SYNVideoThumbnailWideCell *videoThumbnailCell = [cv dequeueReusableCellWithReuseIdentifier: @"SYNVideoThumbnailWideCell"
-                                                                                  forIndexPath: indexPath];
-
-    [videoThumbnailCell.videoImageView setImageWithURL: [NSURL URLWithString: videoInstance.video.thumbnailURL]
-                                      placeholderImage: [UIImage imageNamed: @"PlaceholderVideoWide.png"]
-                                               options: SDWebImageRetryFailed];
-
-    [videoThumbnailCell.channelImageView setImageWithURL: [NSURL URLWithString: videoInstance.channel.channelOwner.thumbnailLargeUrl]
-                                        placeholderImage: [UIImage imageNamed: @"PlaceholderChannelSmall.png"]
-                                                 options: SDWebImageRetryFailed];
-    
-    videoThumbnailCell.channelImageView.hidden = [SYNDeviceManager.sharedInstance isPortrait] && IS_IPAD;
-    
-    videoThumbnailCell.channelShadowView.hidden = [SYNDeviceManager.sharedInstance isPortrait] && IS_IPAD;
-    
-    videoThumbnailCell.videoTitle.text = videoInstance.title;
-    
-    videoThumbnailCell.channelNameText = videoInstance.channel.title;
-    
-    videoThumbnailCell.usernameText = [NSString stringWithFormat: @"%@", videoInstance.channel.channelOwner.displayName];
-    
-    videoThumbnailCell.addItButton.highlighted = NO;
-    videoThumbnailCell.addItButton.selected = [appDelegate.videoQueue videoInstanceIsAddedToChannel:videoInstance];;
+    NSArray* sectionArray = self.feedItemsData[indexPath.section];
+    FeedItem* feedItem = sectionArray[indexPath.row];
     
     
-    videoThumbnailCell.viewControllerDelegate = self;
-    
-    
-    cell = videoThumbnailCell;
     
     return cell;
 }

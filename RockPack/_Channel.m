@@ -6,6 +6,7 @@
 const struct ChannelAttributes ChannelAttributes = {
 	.categoryId = @"categoryId",
 	.channelDescription = @"channelDescription",
+	.datePublished = @"datePublished",
 	.eCommerceURL = @"eCommerceURL",
 	.favourites = @"favourites",
 	.lastUpdated = @"lastUpdated",
@@ -99,6 +100,13 @@ const struct ChannelFetchedProperties ChannelFetchedProperties = {
 
 
 @dynamic channelDescription;
+
+
+
+
+
+
+@dynamic datePublished;
 
 
 

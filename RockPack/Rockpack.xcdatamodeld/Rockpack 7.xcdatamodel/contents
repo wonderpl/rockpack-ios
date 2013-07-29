@@ -14,6 +14,7 @@
     <entity name="Channel" representedClassName="Channel" parentEntity="AbstractCommon" syncable="YES">
         <attribute name="categoryId" optional="YES" attributeType="String" indexed="YES" syncable="YES"/>
         <attribute name="channelDescription" optional="YES" attributeType="String" syncable="YES"/>
+        <attribute name="datePublished" optional="YES" attributeType="Date" syncable="YES"/>
         <attribute name="eCommerceURL" optional="YES" attributeType="String" syncable="YES"/>
         <attribute name="favourites" optional="YES" attributeType="Boolean" syncable="YES"/>
         <attribute name="lastUpdated" optional="YES" attributeType="Date" syncable="YES"/>
@@ -115,7 +116,7 @@
     </entity>
     <elements>
         <element name="AbstractCommon" positionX="-74" positionY="-333" width="128" height="103"/>
-        <element name="Channel" positionX="-2" positionY="72" width="128" height="283"/>
+        <element name="Channel" positionX="-2" positionY="72" width="128" height="298"/>
         <element name="ChannelCover" positionX="-164" positionY="-27" width="128" height="133"/>
         <element name="ChannelOwner" positionX="-344" positionY="48" width="128" height="135"/>
         <element name="CoverArt" positionX="-324" positionY="-180" width="128" height="103"/>

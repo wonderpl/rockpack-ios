@@ -20,6 +20,15 @@
     
     instance.resourceType = NSStringFromClass([object class]);
     
+    // pass date according to type
+    
+    if ([object isKindOfClass:[VideoInstance class]]) {
+        instance.dateAdded = ((VideoInstance*)object).dateAdded;
+    }
+    else if ([object isKindOfClass:[Channel class]]) {
+        instance.dateAdded = ((Channel*)object).datePublished;
+    }
+    
     instance.resourceId = object.uniqueId;
     
     instance.itemCountValue = 1;

@@ -7,6 +7,7 @@
 extern const struct ChannelAttributes {
 	__unsafe_unretained NSString *categoryId;
 	__unsafe_unretained NSString *channelDescription;
+	__unsafe_unretained NSString *datePublished;
 	__unsafe_unretained NSString *eCommerceURL;
 	__unsafe_unretained NSString *favourites;
 	__unsafe_unretained NSString *lastUpdated;
@@ -33,6 +34,7 @@ extern const struct ChannelFetchedProperties {
 @class ChannelOwner;
 @class ChannelOwner;
 @class VideoInstance;
+
 
 
 
@@ -75,6 +77,16 @@ extern const struct ChannelFetchedProperties {
 
 
 //- (BOOL)validateChannelDescription:(id*)value_ error:(NSError**)error_;
+
+
+
+
+
+@property (nonatomic, strong) NSDate* datePublished;
+
+
+
+//- (BOOL)validateDatePublished:(id*)value_ error:(NSError**)error_;
 
 
 
@@ -260,6 +272,12 @@ extern const struct ChannelFetchedProperties {
 
 - (NSString*)primitiveChannelDescription;
 - (void)setPrimitiveChannelDescription:(NSString*)value;
+
+
+
+
+- (NSDate*)primitiveDatePublished;
+- (void)setPrimitiveDatePublished:(NSDate*)value;
 
 
 

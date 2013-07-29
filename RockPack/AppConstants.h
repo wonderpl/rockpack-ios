@@ -21,6 +21,7 @@
 
 // Entities
 
+#define kFeedItem                   @"FeedItem"
 #define kChannel                    @"Channel"
 #define kVideo                      @"Video"
 #define kVideoInstance              @"VideoInstance"

@@ -294,6 +294,9 @@
     self.lastUpdated = [dictionary dateFromISO6801StringForKey: @"last_updated"
                                                    withDefault: [NSDate date]];
     
+    self.datePublished = [dictionary dateFromISO6801StringForKey: @"date_published"
+                                                     withDefault: [NSDate date]];
+    
     self.subscribersCount = [dictionary objectForKey: @"subscriber_count"
                                          withDefault: @0];
 

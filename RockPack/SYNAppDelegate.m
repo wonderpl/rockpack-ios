@@ -1226,7 +1226,7 @@
     if (redirectResponse) {
         newRequest = nil;
         
-        NSString *location = [(NSHTTPURLResponse *)redirectResponse allHeaderFields][@"Location"];
+        // NSString *location = [(NSHTTPURLResponse *)redirectResponse allHeaderFields][@"Location"];
         
 //        NSString *location = redirectResponse.
         
