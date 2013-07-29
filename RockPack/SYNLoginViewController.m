@@ -215,6 +215,8 @@
 {
     [super viewDidAppear:animated];
     
+    [GAI.sharedInstance.defaultTracker sendView: @"Start"];
+    
     memberLabel.center = CGPointMake(memberLabel.center.x, loginButton.center.y - 54.0);
     memberLabel.frame = CGRectIntegral(memberLabel.frame);
     
@@ -360,7 +362,8 @@
     
     if (newState == kLoginScreenStateInitial)
     {
-        [GAI.sharedInstance.defaultTracker sendView: @"Start"];
+        // This gets called before the GA is setup, so move to viewDidAppear
+//        [GAI.sharedInstance.defaultTracker sendView: @"Start"];
         [self setUpInitialState];
     }
     else if (newState == kLoginScreenStateLogin)
