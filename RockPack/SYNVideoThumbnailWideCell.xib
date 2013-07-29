@@ -247,7 +247,7 @@
 										<int key="NSvFlags">292</int>
 										<string key="NSFrame">{{10, 71}, {60, 60}}</string>
 										<reference key="NSSuperview" ref="76609695"/>
-										<reference key="NSNextKeyView" ref="939668471"/>
+										<reference key="NSNextKeyView" ref="469209956"/>
 										<string key="NSReuseIdentifierKey">_NS:9</string>
 										<object class="NSColor" key="IBUIBackgroundColor">
 											<int key="NSColorSpace">1</int>
@@ -275,7 +275,7 @@
 										<int key="NSvFlags">292</int>
 										<string key="NSFrame">{{10, 70}, {60, 60}}</string>
 										<reference key="NSSuperview" ref="76609695"/>
-										<reference key="NSNextKeyView" ref="757200317"/>
+										<reference key="NSNextKeyView" ref="1047662222"/>
 										<string key="NSReuseIdentifierKey">_NS:9</string>
 										<reference key="IBUIBackgroundColor" ref="67368057"/>
 										<bool key="IBUIAutoresizesSubviews">NO</bool>
@@ -293,7 +293,7 @@
 										<int key="NSvFlags">290</int>
 										<string key="NSFrame">{{10, 23}, {228, 35}}</string>
 										<reference key="NSSuperview" ref="76609695"/>
-										<reference key="NSNextKeyView" ref="260730617"/>
+										<reference key="NSNextKeyView" ref="757200317"/>
 										<string key="NSReuseIdentifierKey">_NS:9</string>
 										<reference key="IBUIBackgroundColor" ref="67368057"/>
 										<bool key="IBUIAutoresizesSubviews">NO</bool>
@@ -326,7 +326,7 @@
 										<int key="NSvFlags">290</int>
 										<string key="NSFrame">{{78, 57}, {160, 42}}</string>
 										<reference key="NSSuperview" ref="76609695"/>
-										<reference key="NSNextKeyView" ref="469209956"/>
+										<reference key="NSNextKeyView"/>
 										<string key="NSReuseIdentifierKey">_NS:9</string>
 										<reference key="IBUIBackgroundColor" ref="67368057"/>
 										<bool key="IBUIAutoresizesSubviews">NO</bool>
@@ -377,7 +377,7 @@
 										<int key="NSvFlags">292</int>
 										<string key="NSFrame">{{10, 23}, {228, 35}}</string>
 										<reference key="NSSuperview" ref="76609695"/>
-										<reference key="NSNextKeyView" ref="1047662222"/>
+										<reference key="NSNextKeyView" ref="260730617"/>
 										<string key="NSReuseIdentifierKey">_NS:9</string>
 										<reference key="IBUIBackgroundColor" ref="67368057"/>
 										<bool key="IBUIAutoresizesSubviews">NO</bool>
@@ -399,6 +399,7 @@
 										<int key="NSvFlags">292</int>
 										<string key="NSFrame">{{10, 71}, {228, 59}}</string>
 										<reference key="NSSuperview" ref="76609695"/>
+										<reference key="NSNextKeyView" ref="939668471"/>
 										<string key="NSReuseIdentifierKey">_NS:9</string>
 										<reference key="IBUIBackgroundColor" ref="67368057"/>
 										<bool key="IBUIAutoresizesSubviews">NO</bool>
@@ -707,12 +708,6 @@
 						<string key="objectName">Button - Add</string>
 					</object>
 					<object class="IBObjectRecord">
-						<int key="objectID">42</int>
-						<reference key="object" ref="886759980"/>
-						<reference key="parent" ref="182925985"/>
-						<string key="objectName">Image View - Video Thumbnail Gloss</string>
-					</object>
-					<object class="IBObjectRecord">
 						<int key="objectID">74</int>
 						<reference key="object" ref="239537915"/>
 						<array class="NSMutableArray" key="children">
@@ -795,12 +790,6 @@
 						<string key="objectName">FROM</string>
 					</object>
 					<object class="IBObjectRecord">
-						<int key="objectID">97</int>
-						<reference key="object" ref="556723432"/>
-						<reference key="parent" ref="182925985"/>
-						<string key="objectName">Button - Video</string>
-					</object>
-					<object class="IBObjectRecord">
 						<int key="objectID">51</int>
 						<reference key="object" ref="193032629"/>
 						<reference key="parent" ref="76609695"/>
@@ -822,6 +811,18 @@
 						<reference key="object" ref="693576759"/>
 						<reference key="parent" ref="239537915"/>
 						<string key="objectName">Number of views - Label</string>
+					</object>
+					<object class="IBObjectRecord">
+						<int key="objectID">42</int>
+						<reference key="object" ref="886759980"/>
+						<reference key="parent" ref="182925985"/>
+						<string key="objectName">Image View - Video Thumbnail Gloss</string>
+					</object>
+					<object class="IBObjectRecord">
+						<int key="objectID">97</int>
+						<reference key="object" ref="556723432"/>
+						<reference key="parent" ref="182925985"/>
+						<string key="objectName">Button - Video</string>
 					</object>
 				</array>
 			</object>

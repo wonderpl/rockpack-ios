@@ -217,15 +217,18 @@
     if (!aggregationsDictionary || ![aggregationsDictionary isKindOfClass: [NSDictionary class]])
         return NO;
     
+    FeedItem* aggregationFeedItem;
     
     NSMutableDictionary *aggregationItems = [NSMutableDictionary dictionaryWithCapacity:aggregationsDictionary.allKeys.count];
     
     
+    
     // == Parse Items == //
     
-    FeedItem* fi;
+    FeedItem* leafFeedItem;
     AbstractCommon* object;
-    FeedItem* aggregation;
+    
+    ChannelOwner* co;
     for (NSDictionary* itemDictionary in itemsArray)
     {
         // define type
@@ -235,22 +238,31 @@
             object = [VideoInstance instanceFromDictionary:itemDictionary
                                  usingManagedObjectContext:importManagedObjectContext];
             
+            if(!object)
+                continue;
+            
+            co = ((VideoInstance*)object).channel.channelOwner;
+            
             
         }
         else if (itemDictionary[@"cover"]) // channel object
         {
             object = [Channel instanceFromDictionary:itemDictionary
                            usingManagedObjectContext:importManagedObjectContext];
+            
+            if(!object)
+                continue;
+            
+            co = ((Channel*)object).channelOwner;
         }
         
-        if(!object)
-            continue;
+        
         
         object.viewId = kFeedViewId;
         
-        fi = [FeedItem instanceFromResource:object];
+        leafFeedItem = [FeedItem instanceFromResource:object];
         
-        if(!fi)
+        if(!leafFeedItem)
             continue;
         
         // object has been created, see if it belongs to an aggregation
@@ -261,28 +273,49 @@
         
         
         // if we have already created the FeedItem, use it
-        aggregation = aggregationItems[aggregationIndex];
+        aggregationFeedItem = aggregationItems[aggregationIndex];
         
         // else, create a new one
-        if(!aggregation)
+        if(!aggregationFeedItem)
         {
+            NSDictionary* aggregationItemDictionary = aggregationsDictionary[aggregationIndex];
+            aggregationFeedItem = [FeedItem instanceFromDictionary:aggregationItemDictionary
+                                                            withId:aggregationIndex
+                                         usingManagedObjectContext:importManagedObjectContext];
             
-            aggregation = [FeedItem instanceFromDictionary:aggregationsDictionary[aggregationIndex]
-                                                    withId:aggregationIndex
-                                 usingManagedObjectContext:importManagedObjectContext];
-            
-            if(!aggregation)
+            if(!aggregationFeedItem)
                 continue;
             
-            aggregation.viewId = kFeedViewId;
+            aggregationFeedItem.viewId = kFeedViewId;
             
-            aggregation.resourceType = NSStringFromClass([FeedItem class]);
             
-            [aggregationItems setObject:aggregation forKey:aggregationIndex];
+            [aggregationItems setObject:aggregationFeedItem forKey:aggregationIndex];
+            
+            // parse covers
+            
+            NSArray* coversArray = (NSArray*)(aggregationItemDictionary[@"covers"]);
+            NSMutableString* coverReferencesString = [[NSMutableString alloc] init];
+            NSDictionary* itemDictionaryReference;
+            
+            if(coversArray && [coversArray isKindOfClass:[NSArray class]] && coversArray.count > 0)
+                continue;
+            
+            for (NSNumber* coverIndex in coversArray)
+            {
+                itemDictionaryReference = itemsArray[coverIndex.integerValue];
+                [coverReferencesString appendFormat:@"%@:", itemDictionaryReference[@"id"]];
+            }
+                
+                
+            [coverReferencesString deleteCharactersInRange:NSMakeRange(coverReferencesString.length - 2, 1)]; // delete last ':'
+            
+            aggregationFeedItem.coverIndexes = [NSString stringWithString:coverReferencesString];
+            
         }
         
-            
-        [aggregation.feedItemsSet addObject:fi];
+        
+        
+        [aggregationFeedItem.feedItemsSet addObject:leafFeedItem];
         
     }
     

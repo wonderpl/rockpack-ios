@@ -22,6 +22,8 @@
 #import "SYNOAuthNetworkEngine.h"
 #import "SYNVideoThumbnailWideCell.h"
 #import "UIImageView+WebCache.h"
+#import "SYNAggregateCell.h"
+#import "UIImageView+WebCache.h"
 #import "Video.h"
 #import "FeedItem.h"
 #import "VideoInstance.h"
@@ -37,8 +39,12 @@ typedef void(^FeedDataErrorBlock)(void);
 @property (nonatomic, strong) NSTimer *timer;
 @property (nonatomic, strong) SYNFeedMessagesView* emptyGenreMessageView;
 @property (nonatomic, strong) UIRefreshControl *refreshControl;
-@property (nonatomic, weak) SYNVideoThumbnailWideCell* selectedCell;
+@property (nonatomic, weak)   SYNVideoThumbnailWideCell* selectedCell;
 @property (nonatomic, strong) NSArray* feedItemsData;
+@property (nonatomic, strong) NSDictionary* feedVideosById;
+@property (nonatomic, strong) NSDictionary* feedChannelsById;
+@property (nonatomic, strong) NSDictionary* feedItemByPosition;
+@property (nonatomic, strong) UICollectionView* feedCollectionView;
 
 @end
 
@@ -53,8 +59,8 @@ typedef void(^FeedDataErrorBlock)(void);
     [[NSNotificationCenter defaultCenter] removeObserver: self];
     
     // Defensive programming
-    self.videoThumbnailCollectionView.delegate = nil;
-    self.videoThumbnailCollectionView.dataSource = nil;
+    self.feedCollectionView.delegate = nil;
+    self.feedCollectionView.dataSource = nil;
 }
 
 
@@ -65,6 +71,7 @@ typedef void(^FeedDataErrorBlock)(void);
     [super viewDidLoad];
     
     self.feedItemsData = [NSArray array];
+    
     
     SYNIntegralCollectionViewFlowLayout *standardFlowLayout;
     UIEdgeInsets sectionInset, contentInset;
@@ -116,40 +123,27 @@ typedef void(^FeedDataErrorBlock)(void);
     standardFlowLayout.footerReferenceSize = [self footerSize];
     
     // Setup the collection view itself
-    self.videoThumbnailCollectionView = [[UICollectionView alloc] initWithFrame: videoCollectionViewFrame
+    self.feedCollectionView = [[UICollectionView alloc] initWithFrame: videoCollectionViewFrame
                                                            collectionViewLayout: standardFlowLayout];
     
-    self.videoThumbnailCollectionView.delegate = self;
-    self.videoThumbnailCollectionView.dataSource = self;
-    self.videoThumbnailCollectionView.backgroundColor = [UIColor clearColor];
-    self.videoThumbnailCollectionView.scrollsToTop = NO;
-    self.videoThumbnailCollectionView.contentInset = contentInset;
-    [self.view addSubview:self.videoThumbnailCollectionView];
+    self.feedCollectionView.delegate = self;
+    self.feedCollectionView.dataSource = self;
+    self.feedCollectionView.backgroundColor = [UIColor clearColor];
+    self.feedCollectionView.scrollsToTop = NO;
+    self.feedCollectionView.contentInset = contentInset;
+    [self.view addSubview:self.feedCollectionView];
 
-    self.videoThumbnailCollectionView.autoresizingMask = UIViewAutoresizingFlexibleWidth| UIViewAutoresizingFlexibleHeight;
+    self.feedCollectionView.autoresizingMask = UIViewAutoresizingFlexibleWidth| UIViewAutoresizingFlexibleHeight;
 
-    // Register collection view cells
-    UINib *videoThumbnailCellNib = [UINib nibWithNibName: @"SYNVideoThumbnailWideCell"
-                                                  bundle: nil];
     
-    [self.videoThumbnailCollectionView registerNib: videoThumbnailCellNib
-                        forCellWithReuseIdentifier: @"SYNVideoThumbnailWideCell"];
+    [self.feedCollectionView registerNib: [UINib nibWithNibName: @"SYNAggregateVideoCell" bundle: nil]
+                        forCellWithReuseIdentifier: @"SYNAggregateVideoCell"];
     
-    // Register collection view header view
-    UINib *headerViewNib = [UINib nibWithNibName: @"SYNHomeSectionHeaderView"
-                                          bundle: nil];
     
-    [self.videoThumbnailCollectionView registerNib: headerViewNib
+    [self.feedCollectionView registerNib: [UINib nibWithNibName: @"SYNHomeSectionHeaderView" bundle: nil]
                         forSupplementaryViewOfKind: UICollectionElementKindSectionHeader
                                withReuseIdentifier: @"SYNHomeSectionHeaderView"];
     
-    // Register Footer
-    UINib *footerViewNib = [UINib nibWithNibName: @"SYNChannelFooterMoreView"
-                                          bundle: nil];
-    
-    [self.videoThumbnailCollectionView registerNib: footerViewNib
-                          forSupplementaryViewOfKind: UICollectionElementKindSectionFooter
-                                 withReuseIdentifier: @"SYNChannelFooterMoreView"];
     
     // Refresh control
     self.refreshControl = [[UIRefreshControl alloc] initWithFrame: CGRectMake(0, -44, 320, 44)];
@@ -163,7 +157,7 @@ typedef void(^FeedDataErrorBlock)(void);
                             action: @selector(loadAndUpdateOriginalFeedData)
                   forControlEvents: UIControlEventValueChanged];
     
-    [self.videoThumbnailCollectionView addSubview: self.refreshControl];
+    [self.feedCollectionView addSubview: self.refreshControl];
     
     // We should only setup our date formatter once
     self.dateFormatter = [[NSDateFormatter alloc] init];
@@ -202,7 +196,7 @@ typedef void(^FeedDataErrorBlock)(void);
 - (void) videoQueueCleared
 {
     // this will remove the '+' from the videos that where selected
-    [self.videoThumbnailCollectionView reloadData];
+    [self.feedCollectionView reloadData];
 }
 
 #pragma mark - Container Scrol Delegates
@@ -211,7 +205,7 @@ typedef void(^FeedDataErrorBlock)(void);
 {
     [self updateAnalytics];
     
-    self.videoThumbnailCollectionView.scrollsToTop = YES;
+    self.feedCollectionView.scrollsToTop = YES;
     
     // if the user has not pressed load more
     if (self.dataRequestRange.location == 0)
@@ -226,7 +220,7 @@ typedef void(^FeedDataErrorBlock)(void);
 
 - (void) viewDidScrollToBack
 {
-    self.videoThumbnailCollectionView.scrollsToTop = NO;
+    self.feedCollectionView.scrollsToTop = NO;
 }
 
 
@@ -243,7 +237,7 @@ typedef void(^FeedDataErrorBlock)(void);
     [super willRotateToInterfaceOrientation: toInterfaceOrientation
                                    duration: duration];
     
-    [self.videoThumbnailCollectionView reloadData];
+    [self.feedCollectionView reloadData];
 }
 
 
@@ -309,8 +303,10 @@ typedef void(^FeedDataErrorBlock)(void);
                                                     }
                                                     
                                                     [self removeEmptyGenreMessage];
-                                                    
-                                                    
+                                           
+                                           
+                                                    [self fetchedAndDisplayFeedItems];
+                                           
                                                     self.loadingMoreContent = NO;
                                                     
                                                     [self handleRefreshComplete];
@@ -333,7 +329,7 @@ typedef void(^FeedDataErrorBlock)(void);
 
 - (void) clearedLocationBoundData
 {
-    [self.videoThumbnailCollectionView reloadData];
+    [self.feedCollectionView reloadData];
     
     [self loadAndUpdateFeedData];
     
@@ -375,10 +371,15 @@ typedef void(^FeedDataErrorBlock)(void);
 }
 
 
-#pragma mark - Fetched results controller
+#pragma mark - Fetch Feed Data
 
-- (void) fetchedAnsDisplayFeedItems
+- (void) fetchedAndDisplayFeedItems
 {
+    
+    
+    [self fetchVideoItems];
+    
+    [self fetchChannelItems];
     
     NSFetchRequest *fetchRequest = [[NSFetchRequest alloc] init];
     
@@ -391,7 +392,7 @@ typedef void(^FeedDataErrorBlock)(void);
  
     fetchRequest.predicate = predicate;
 
-    fetchRequest.sortDescriptors = @[[[NSSortDescriptor alloc] initWithKey: @"dateAdded" ascending: NO],[[NSSortDescriptor alloc] initWithKey: @"position" ascending: YES]];
+    fetchRequest.sortDescriptors = @[[[NSSortDescriptor alloc] initWithKey: @"dateAdded" ascending: NO]];
     
     NSError* error;
     
@@ -401,12 +402,70 @@ typedef void(^FeedDataErrorBlock)(void);
     
     // sort results in categories
     
-    NSMutableArray* allItemsArray = [NSMutableArray array];
+    NSMutableArray* feedItemsMutableArray = [NSMutableArray array];
     
-    [allItemsArray addObject:resultsArray];
+    [feedItemsMutableArray addObject:resultsArray];
     
-    self.feedItemsData = [NSArray arrayWithArray:allItemsArray];
+    self.feedItemsData = [NSArray arrayWithArray:feedItemsMutableArray];
     
+    [self.feedCollectionView reloadData];
+    
+}
+
+- (void) fetchVideoItems
+{
+    NSFetchRequest *fetchRequest = [[NSFetchRequest alloc] init];
+    
+    // Edit the entity name as appropriate.
+    fetchRequest.entity = [NSEntityDescription entityForName: kVideoInstance
+                                      inManagedObjectContext: appDelegate.mainManagedObjectContext];
+    
+    
+    NSPredicate* predicate = [NSPredicate predicateWithFormat:[NSString stringWithFormat:@"viewId == \"%@\"", self.viewId]]; // kFeedViewId
+    
+    fetchRequest.predicate = predicate;
+    
+    
+    NSError* error;
+    
+    NSArray *resultsArray = [appDelegate.mainManagedObjectContext executeFetchRequest: fetchRequest error: &error];
+    if (!resultsArray)
+        return;
+    
+    NSMutableDictionary* mutDictionary = [[NSMutableDictionary alloc] initWithCapacity:resultsArray.count];
+    for (VideoInstance* vi in resultsArray) {
+        [mutDictionary setObject:vi forKey:vi.uniqueId];
+    }
+    
+    self.feedVideosById = [NSDictionary dictionaryWithDictionary:mutDictionary];
+}
+
+- (void) fetchChannelItems
+{
+    NSFetchRequest *fetchRequest = [[NSFetchRequest alloc] init];
+    
+    // Edit the entity name as appropriate.
+    fetchRequest.entity = [NSEntityDescription entityForName: kChannel
+                                      inManagedObjectContext: appDelegate.mainManagedObjectContext];
+    
+    
+    NSPredicate* predicate = [NSPredicate predicateWithFormat:[NSString stringWithFormat:@"viewId == \"%@\"", self.viewId]]; // kFeedViewId
+    
+    fetchRequest.predicate = predicate;
+    
+    
+    NSError* error;
+    
+    NSArray *resultsArray = [appDelegate.mainManagedObjectContext executeFetchRequest: fetchRequest error: &error];
+    if (!resultsArray)
+        return;
+    
+    NSMutableDictionary* mutDictionary = [[NSMutableDictionary alloc] initWithCapacity:resultsArray.count];
+    for (Channel* ch in resultsArray) {
+        [mutDictionary setObject:ch forKey:ch.uniqueId];
+    }
+    
+    self.feedChannelsById = [NSDictionary dictionaryWithDictionary:mutDictionary];
 }
     
 
@@ -491,16 +550,64 @@ typedef void(^FeedDataErrorBlock)(void);
     }
 }
 
+- (void) videoAddButtonTapped: (UIButton *) _addButton
+{
+   
+}
 
 - (UICollectionViewCell *) collectionView: (UICollectionView *) cv
                    cellForItemAtIndexPath: (NSIndexPath *) indexPath
 {
-    UICollectionViewCell *cell = nil;
+    SYNAggregateCell *cell = nil;
     
     NSArray* sectionArray = self.feedItemsData[indexPath.section];
     FeedItem* feedItem = sectionArray[indexPath.row];
     
+    ChannelOwner* channelOwner;
+    Channel* channel;
+    NSArray* coverIndexIds = [feedItem.coverIndexes componentsSeparatedByString:@":"];
+
     
+    NSMutableArray* coverImages = [NSMutableArray arrayWithCapacity:coverIndexIds.count];
+    
+    if(feedItem.resourceTypeValue == FeedItemResourceTypeVideo)
+    {
+        cell = [cv dequeueReusableCellWithReuseIdentifier: @"SYNAggregateVideoCell"
+                                             forIndexPath: indexPath];
+        
+        
+        VideoInstance* vi;
+        for (NSString* resourceId in coverIndexIds) {
+            vi = (VideoInstance*)[self.feedVideosById objectForKey:resourceId];
+            [coverImages addObject:vi.channel.channelCover.imageUrl];
+        }
+        
+        channel = vi.channel; // heuristic, get the last video instance, all should have the same channelOwner however
+        
+    }
+    else if(feedItem.resourceTypeValue == FeedItemResourceTypeChannel)
+    {
+        cell = [cv dequeueReusableCellWithReuseIdentifier: @"SYNAggregateChannelCell"
+                                             forIndexPath: indexPath];
+        
+        
+        for (NSString* resourceId in coverIndexIds) {
+            channel = (Channel*)[self.feedVideosById objectForKey:resourceId];
+            [coverImages addObject:channel.channelCover.imageUrl];
+        }
+        
+        
+        
+    }
+    
+    
+    channelOwner = channel.channelOwner; // heuristic, get the last video instance, all should have the same channelOwner however
+    
+    [cell.userThumbnailImageView setImageWithURL: [NSURL URLWithString: channelOwner.thumbnailLargeUrl]
+                                placeholderImage: [UIImage imageNamed: @"PlaceholderChannelSmall.png"]
+                                         options: SDWebImageRetryFailed];
+    
+    // add common properties
     
     return cell;
 }
@@ -511,7 +618,7 @@ typedef void(^FeedDataErrorBlock)(void);
                    layout: (UICollectionViewLayout*) collectionViewLayout
                    referenceSizeForHeaderInSection: (NSInteger) section
 {
-    if (collectionView == self.videoThumbnailCollectionView)
+    if (collectionView == self.feedCollectionView)
     {
         if (IS_IPAD)
         {
@@ -532,7 +639,7 @@ typedef void(^FeedDataErrorBlock)(void);
 {
     CGSize footerSize;
     
-    if (collectionView == self.videoThumbnailCollectionView)
+    if (collectionView == self.feedCollectionView)
     {
         footerSize = [self footerSize];
         
@@ -626,7 +733,7 @@ typedef void(^FeedDataErrorBlock)(void);
             return supplementaryView;
         }
         
-        self.footerView = [self.videoThumbnailCollectionView dequeueReusableSupplementaryViewOfKind: kind
+        self.footerView = [self.feedCollectionView dequeueReusableSupplementaryViewOfKind: kind
                                                                                 withReuseIdentifier: @"SYNChannelFooterMoreView"
                                                                                        forIndexPath: indexPath];
         
@@ -644,7 +751,7 @@ typedef void(^FeedDataErrorBlock)(void);
     
     
     NSIndexPath *indexPath = [self indexPathFromVideoInstanceButton: videoViewButton];
-    self.selectedCell = (SYNVideoThumbnailWideCell*)[self.videoThumbnailCollectionView cellForItemAtIndexPath:indexPath];
+    self.selectedCell = (SYNVideoThumbnailWideCell*)[self.feedCollectionView cellForItemAtIndexPath:indexPath];
     
     
     [super displayVideoViewerFromView: videoViewButton];
@@ -665,7 +772,7 @@ typedef void(^FeedDataErrorBlock)(void);
 
 - (void) headerTapped
 {
-    [self.videoThumbnailCollectionView setContentOffset:CGPointZero animated:YES];
+    [self.feedCollectionView setContentOffset:CGPointZero animated:YES];
 }
 
 

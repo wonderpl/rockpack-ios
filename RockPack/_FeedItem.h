@@ -5,9 +5,11 @@
 #import "AbstractCommon.h"
 
 extern const struct FeedItemAttributes {
+	__unsafe_unretained NSString *channelOwnerId;
 	__unsafe_unretained NSString *coverIndexes;
 	__unsafe_unretained NSString *dateAdded;
 	__unsafe_unretained NSString *itemCount;
+	__unsafe_unretained NSString *itemType;
 	__unsafe_unretained NSString *resourceId;
 	__unsafe_unretained NSString *resourceType;
 	__unsafe_unretained NSString *title;
@@ -31,6 +33,8 @@ extern const struct FeedItemFetchedProperties {
 
 
 
+
+
 @interface FeedItemID : NSManagedObjectID {}
 @end
 
@@ -39,6 +43,16 @@ extern const struct FeedItemFetchedProperties {
 + (NSString*)entityName;
 + (NSEntityDescription*)entityInManagedObjectContext:(NSManagedObjectContext*)moc_;
 - (FeedItemID*)objectID;
+
+
+
+
+
+@property (nonatomic, strong) NSString* channelOwnerId;
+
+
+
+//- (BOOL)validateChannelOwnerId:(id*)value_ error:(NSError**)error_;
 
 
 
@@ -78,6 +92,20 @@ extern const struct FeedItemFetchedProperties {
 
 
 
+@property (nonatomic, strong) NSNumber* itemType;
+
+
+
+@property int32_t itemTypeValue;
+- (int32_t)itemTypeValue;
+- (void)setItemTypeValue:(int32_t)value_;
+
+//- (BOOL)validateItemType:(id*)value_ error:(NSError**)error_;
+
+
+
+
+
 @property (nonatomic, strong) NSString* resourceId;
 
 
@@ -88,9 +116,13 @@ extern const struct FeedItemFetchedProperties {
 
 
 
-@property (nonatomic, strong) NSString* resourceType;
+@property (nonatomic, strong) NSNumber* resourceType;
 
 
+
+@property int32_t resourceTypeValue;
+- (int32_t)resourceTypeValue;
+- (void)setResourceTypeValue:(int32_t)value_;
 
 //- (BOOL)validateResourceType:(id*)value_ error:(NSError**)error_;
 
@@ -137,6 +169,12 @@ extern const struct FeedItemFetchedProperties {
 @interface _FeedItem (CoreDataGeneratedPrimitiveAccessors)
 
 
+- (NSString*)primitiveChannelOwnerId;
+- (void)setPrimitiveChannelOwnerId:(NSString*)value;
+
+
+
+
 - (NSString*)primitiveCoverIndexes;
 - (void)setPrimitiveCoverIndexes:(NSString*)value;
 
@@ -158,14 +196,26 @@ extern const struct FeedItemFetchedProperties {
 
 
 
+- (NSNumber*)primitiveItemType;
+- (void)setPrimitiveItemType:(NSNumber*)value;
+
+- (int32_t)primitiveItemTypeValue;
+- (void)setPrimitiveItemTypeValue:(int32_t)value_;
+
+
+
+
 - (NSString*)primitiveResourceId;
 - (void)setPrimitiveResourceId:(NSString*)value;
 
 
 
 
-- (NSString*)primitiveResourceType;
-- (void)setPrimitiveResourceType:(NSString*)value;
+- (NSNumber*)primitiveResourceType;
+- (void)setPrimitiveResourceType:(NSNumber*)value;
+
+- (int32_t)primitiveResourceTypeValue;
+- (void)setPrimitiveResourceTypeValue:(int32_t)value_;
 
 
 

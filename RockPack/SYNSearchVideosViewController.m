@@ -19,6 +19,7 @@
 #import "SYNSearchVideosViewController.h"
 #import "SYNVideoThumbnailWideCell.h"
 #import "UIImageView+WebCache.h"
+#import "SYNOAuthNetworkEngine.h"
 #import "Video.h"
 #import "VideoInstance.h"
 
@@ -79,7 +80,17 @@
 {
     [super viewWillAppear: animated];
 
-    [super removeEmptyGenreMessage];
+    [self removeEmptyGenreMessage];
+}
+
+-(void)removeEmptyGenreMessage
+{
+    
+}
+
+-(void)displayMessage:(NSString*)message
+{
+    
 }
 
 
@@ -126,8 +137,6 @@
     
     self.dataRequestRange = NSMakeRange(0, kAPIInitialBatchSize);
     
-    [super displayEmptyGenreMessage:NSLocalizedString(@"search_screen_searching_videos", nil)
-                          andLoader:NO];
 
     self.runningSearchOperation =  [self.appDelegate.networkEngine searchVideosForTerm: term
                                                                                inRange: self.dataRequestRange
@@ -137,10 +146,8 @@
                                                                                     [self.itemToUpdate setNumberOfItems: self.dataItemsAvailable
                                                                                                                animated: YES];
                                                                                 
-                                                                                [super removeEmptyGenreMessage];
                                                                                 if(itemsCount == 0)
-                                                                                    [super displayEmptyGenreMessage:NSLocalizedString(@"search_screen_no_videos", nil)
-                                                                                                          andLoader:NO];
+                                                                                    [self displayMessage:@"NO VIDEOS FOUND"];
                                                                             }];
     self.searchTerm = term;
 }
@@ -397,7 +404,7 @@
                                                                                    pointingTo:rectToPointTo
                                                                                 withDirection:directionToPointTo];
 
-        __weak SYNFeedRootViewController* wself = self;
+        __weak SYNSearchVideosViewController* wself = self;
         addToChannelPopover.action = ^{
             [wself videoAddButtonTapped:cell.addItButton];
         };
@@ -407,6 +414,57 @@
         
         [appDelegate.onBoardingQueue present];
     }
+}
+
+
+- (void) videoAddButtonTapped: (UIButton *) _addButton
+{
+   
+    if(_addButton.selected)
+        return;
+    
+    
+    UIView *v = _addButton.superview.superview;
+    NSIndexPath *indexPath = [self.videoThumbnailCollectionView indexPathForItemAtPoint: v.center];
+    VideoInstance *videoInstance = [self.fetchedResultsController objectAtIndexPath: indexPath];
+    
+    
+    
+    if(videoInstance)
+    {
+        id<GAITracker> tracker = [GAI sharedInstance].defaultTracker;
+        
+        [tracker sendEventWithCategory: @"uiAction"
+                            withAction: @"videoPlusButtonClick"
+                             withLabel: nil
+                             withValue: nil];
+        
+        [appDelegate.oAuthNetworkEngine recordActivityForUserId: appDelegate.currentUser.uniqueId
+                                                         action: @"select"
+                                                videoInstanceId: videoInstance.uniqueId
+                                              completionHandler: ^(id response) {
+                                                  
+                                                  
+                                              } errorHandler: ^(id error) {
+                                                  
+                                                  DebugLog(@"Could not record videoAddButtonTapped: activity");
+                                                  
+                                              }];
+        
+        
+        [[NSNotificationCenter defaultCenter] postNotificationName: kVideoQueueAdd
+                                                            object: self
+                                                          userInfo: @{@"VideoInstance" : videoInstance }];
+    }
+    
+    
+    
+    
+    
+    [self.videoThumbnailCollectionView reloadData];
+    
+    
+    _addButton.selected = !_addButton.selected; // switch to on/off
 }
 
 @end

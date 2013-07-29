@@ -10,4 +10,6 @@
 
 @interface SYNAggregateVideoCell : SYNAggregateCell
 
+@property (nonatomic, strong) IBOutlet UIImageView *videoCoverImageView;
+
 @end

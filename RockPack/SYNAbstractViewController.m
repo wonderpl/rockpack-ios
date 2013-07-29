@@ -161,57 +161,7 @@
 }
 
 
-- (void) videoAddButtonTapped: (UIButton *) _addButton
-{
-    if(!self.videoThumbnailCollectionView) // not all sub classes will have this initialized so check to avoid errors
-        return;
-    
-    if(_addButton.selected)
-        return;
-    
-    
-    UIView *v = _addButton.superview.superview;
-    NSIndexPath *indexPath = [self.videoThumbnailCollectionView indexPathForItemAtPoint: v.center];
-    VideoInstance *videoInstance = [self.fetchedResultsController objectAtIndexPath: indexPath];
-    
-    
-    
-    if(videoInstance)
-    {
-        id<GAITracker> tracker = [GAI sharedInstance].defaultTracker;
-        
-        [tracker sendEventWithCategory: @"uiAction"
-                            withAction: @"videoPlusButtonClick"
-                             withLabel: nil
-                             withValue: nil];
-        
-        [appDelegate.oAuthNetworkEngine recordActivityForUserId: appDelegate.currentUser.uniqueId
-                                                         action: @"select"
-                                                videoInstanceId: videoInstance.uniqueId
-                                              completionHandler: ^(id response) {
-                                                  
-                                                  
-                                              } errorHandler: ^(id error) {
-                                                  
-                                                  DebugLog(@"Could not record videoAddButtonTapped: activity");
-                                                  
-                                              }];
 
-        
-        [[NSNotificationCenter defaultCenter] postNotificationName: kVideoQueueAdd
-                                                            object: self
-                                                          userInfo: @{@"VideoInstance" : videoInstance }];
-    }
-    
-    
-    
-    
-    
-    [self.videoThumbnailCollectionView reloadData];
-    
-    
-    _addButton.selected = !_addButton.selected; // switch to on/off
-}
 
 
 - (BOOL) moreItemsToLoad

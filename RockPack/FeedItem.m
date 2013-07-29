@@ -1,6 +1,7 @@
 #import "FeedItem.h"
 #import "VideoInstance.h"
 #import "Channel.h"
+#import "AppConstants.h"
 #import "ChannelOwner.h"
 
 @interface FeedItem ()
@@ -12,21 +13,26 @@
 
 @implementation FeedItem
 
+
 + (FeedItem *) instanceFromResource: (AbstractCommon *) object
 {
     FeedItem *instance = [FeedItem insertInManagedObjectContext: object.managedObjectContext];
     
     instance.uniqueId = object.uniqueId;
     
-    instance.resourceType = NSStringFromClass([object class]);
+    
     
     // pass date according to type
     
+    instance.itemTypeValue = FeedItemTypeLeaf;
+    
     if ([object isKindOfClass:[VideoInstance class]]) {
         instance.dateAdded = ((VideoInstance*)object).dateAdded;
+        instance.resourceType = FeedItemResourceTypeVideo;
     }
     else if ([object isKindOfClass:[Channel class]]) {
         instance.dateAdded = ((Channel*)object).datePublished;
+        instance.resourceTypeValue = FeedItemResourceTypeChannel;
     }
     
     instance.resourceId = object.uniqueId;
@@ -65,26 +71,24 @@
     if(n_title && [n_title isKindOfClass:[NSString class]])
         self.title = n_title;
     
-    NSString* n_type = dictionary[@"type"];
-    if(n_type && [n_type isKindOfClass:[NSString class]])
-        self.resourceType = n_type;
+    self.itemTypeValue = FeedItemTypeAggregate;
+    
+    NSString* n_type = dictionary[@"type"]; // "type": "video" | "channel"
+    if(n_type) {
+        if([n_type isEqualToString:@"video"]) {
+            self.resourceTypeValue = FeedItemResourceTypeVideo;
+        }
+        else if([n_type isEqualToString:@"channel"]) {
+            self.resourceTypeValue = FeedItemResourceTypeChannel;
+        }
+    }
+    
     
     NSNumber* n_count = dictionary[@"count"];
     if(n_count && [n_count isKindOfClass:[NSNumber class]])
         self.itemCountValue = n_count.integerValue;
     
-    NSArray* covers = dictionary[@"covers"];
-    if(covers && [covers isKindOfClass:[NSArray class]] && covers.count > 0)
-    {
-        NSMutableString* coverIndexesString = [[NSMutableString alloc] init];
-        for (NSNumber* coverIndex in covers)
-        {
-            [coverIndexesString appendFormat:@"%@:", [coverIndex stringValue]];
-            
-        }
-        [coverIndexesString deleteCharactersInRange:NSMakeRange(coverIndexesString.length - 2, 1)]; // delete last ':'
-        
-        self.coverIndexes = [NSString stringWithString:coverIndexesString];
-    }
+    
 }
+
 @end

@@ -4,9 +4,11 @@
 #import "_FeedItem.h"
 
 const struct FeedItemAttributes FeedItemAttributes = {
+	.channelOwnerId = @"channelOwnerId",
 	.coverIndexes = @"coverIndexes",
 	.dateAdded = @"dateAdded",
 	.itemCount = @"itemCount",
+	.itemType = @"itemType",
 	.resourceId = @"resourceId",
 	.resourceType = @"resourceType",
 	.title = @"title",
@@ -51,9 +53,26 @@ const struct FeedItemFetchedProperties FeedItemFetchedProperties = {
 		keyPaths = [keyPaths setByAddingObjectsFromSet:affectingKey];
 		return keyPaths;
 	}
+	if ([key isEqualToString:@"itemTypeValue"]) {
+		NSSet *affectingKey = [NSSet setWithObject:@"itemType"];
+		keyPaths = [keyPaths setByAddingObjectsFromSet:affectingKey];
+		return keyPaths;
+	}
+	if ([key isEqualToString:@"resourceTypeValue"]) {
+		NSSet *affectingKey = [NSSet setWithObject:@"resourceType"];
+		keyPaths = [keyPaths setByAddingObjectsFromSet:affectingKey];
+		return keyPaths;
+	}
 
 	return keyPaths;
 }
+
+
+
+
+@dynamic channelOwnerId;
+
+
 
 
 
@@ -98,6 +117,32 @@ const struct FeedItemFetchedProperties FeedItemFetchedProperties = {
 
 
 
+@dynamic itemType;
+
+
+
+- (int32_t)itemTypeValue {
+	NSNumber *result = [self itemType];
+	return [result intValue];
+}
+
+- (void)setItemTypeValue:(int32_t)value_ {
+	[self setItemType:[NSNumber numberWithInt:value_]];
+}
+
+- (int32_t)primitiveItemTypeValue {
+	NSNumber *result = [self primitiveItemType];
+	return [result intValue];
+}
+
+- (void)setPrimitiveItemTypeValue:(int32_t)value_ {
+	[self setPrimitiveItemType:[NSNumber numberWithInt:value_]];
+}
+
+
+
+
+
 @dynamic resourceId;
 
 
@@ -107,6 +152,25 @@ const struct FeedItemFetchedProperties FeedItemFetchedProperties = {
 
 @dynamic resourceType;
 
+
+
+- (int32_t)resourceTypeValue {
+	NSNumber *result = [self resourceType];
+	return [result intValue];
+}
+
+- (void)setResourceTypeValue:(int32_t)value_ {
+	[self setResourceType:[NSNumber numberWithInt:value_]];
+}
+
+- (int32_t)primitiveResourceTypeValue {
+	NSNumber *result = [self primitiveResourceType];
+	return [result intValue];
+}
+
+- (void)setPrimitiveResourceTypeValue:(int32_t)value_ {
+	[self setPrimitiveResourceType:[NSNumber numberWithInt:value_]];
+}
 
 
 

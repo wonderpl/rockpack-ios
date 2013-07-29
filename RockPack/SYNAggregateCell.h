@@ -15,4 +15,6 @@
 
 @property (nonatomic, weak) UIViewController *viewControllerDelegate;
 
+-(void)setCoverImagesFromArray:(NSArray*)array;
+
 @end

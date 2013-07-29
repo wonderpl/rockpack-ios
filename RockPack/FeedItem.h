@@ -13,4 +13,5 @@
 
 + (FeedItem *) instanceFromResource: (AbstractCommon *) object;
 
+
 @end

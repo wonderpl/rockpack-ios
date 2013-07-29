@@ -15,4 +15,9 @@
     
 }
 
+-(void)setCoverImagesFromArray:(NSArray*)array
+{
+    
+}
+
 @end

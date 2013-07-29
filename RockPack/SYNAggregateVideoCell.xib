@@ -30,17 +30,16 @@
 				<string key="IBProxiedObjectIdentifier">IBFirstResponder</string>
 				<string key="targetRuntimeIdentifier">IBIPadFramework</string>
 			</object>
-			<object class="IBUICollectionViewCell" id="92348623">
+			<object class="IBUICollectionViewCell" id="708749853">
 				<reference key="NSNextResponder"/>
 				<int key="NSvFlags">268</int>
 				<array class="NSMutableArray" key="NSSubviews">
-					<object class="IBUIView" id="672872306">
-						<reference key="NSNextResponder" ref="92348623"/>
+					<object class="IBUIView" id="884243571">
+						<reference key="NSNextResponder" ref="708749853"/>
 						<int key="NSvFlags">256</int>
 						<string key="NSFrameSize">{353, 231}</string>
-						<reference key="NSSuperview" ref="92348623"/>
+						<reference key="NSSuperview" ref="708749853"/>
 						<reference key="NSWindow"/>
-						<reference key="NSNextKeyView"/>
 						<object class="NSColor" key="IBUIBackgroundColor">
 							<int key="NSColorSpace">3</int>
 							<bytes key="NSWhite">MCAwAA</bytes>
@@ -55,8 +54,12 @@
 				<string key="NSFrameSize">{353, 231}</string>
 				<reference key="NSSuperview"/>
 				<reference key="NSWindow"/>
-				<reference key="NSNextKeyView" ref="672872306"/>
+				<reference key="NSNextKeyView" ref="884243571"/>
 				<string key="NSReuseIdentifierKey">_NS:9</string>
+				<object class="NSColor" key="IBUIBackgroundColor">
+					<int key="NSColorSpace">1</int>
+					<bytes key="NSRGB">MC41MDk4MDM5NTA4IDAuNTUyOTQxMjAzMSAwLjU2ODYyNzQ3NjcgMAA</bytes>
+				</object>
 				<bool key="IBUIOpaque">NO</bool>
 				<bool key="IBUIClipsSubviews">YES</bool>
 				<int key="IBUIContentMode">4</int>
@@ -67,7 +70,7 @@
 					<int key="NS.special">2</int>
 					<string key="NS.sizeval">{353, 231}</string>
 				</object>
-				<reference key="IBUIContentView" ref="672872306"/>
+				<reference key="IBUIContentView" ref="884243571"/>
 			</object>
 		</array>
 		<object class="IBObjectContainer" key="IBDocument.Objects">
@@ -93,7 +96,7 @@
 					</object>
 					<object class="IBObjectRecord">
 						<int key="objectID">2</int>
-						<reference key="object" ref="92348623"/>
+						<reference key="object" ref="708749853"/>
 						<reference key="parent" ref="0"/>
 						<string key="objectName">SYNAggregateVideoCell</string>
 					</object>

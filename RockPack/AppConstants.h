@@ -45,6 +45,22 @@
 #define kSideNavigationViewId       @"kSideNavigationViewId"
 #define kSubscribersListViewId      @"kSubscribersListViewId"
 
+// Feed
+
+typedef enum _FeedItemType {
+    
+    FeedItemTypeLeaf = 0,
+    FeedItemTypeAggregate = 1
+    
+} FeedItemType;
+
+typedef enum _FeedItemResourceType {
+    
+    FeedItemResourceTypeVideo = 0,
+    FeedItemResourceTypeChannel = 1
+    
+} FeedItemResourceType;
+
 // OAuth2
 #define kAPIRefreshToken            @"/ws/token/"
 
