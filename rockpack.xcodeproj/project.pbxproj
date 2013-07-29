@@ -1052,6 +1052,13 @@
 		BE7D036517A1904C008053DC /* OverlayFriends.png in Resources */ = {isa = PBXBuildFile; fileRef = BE7D036317A1904C008053DC /* OverlayFriends.png */; };
 		BE7D036617A1904C008053DC /* OverlayFriends@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = BE7D036417A1904C008053DC /* OverlayFriends@2x.png */; };
 		BE7D036917A2D238008053DC /* MyTokenCachingStrategy.m in Sources */ = {isa = PBXBuildFile; fileRef = BE7D036817A2D238008053DC /* MyTokenCachingStrategy.m */; };
+		BE7D036D17A69B67008053DC /* SYNAggregateCell.m in Sources */ = {isa = PBXBuildFile; fileRef = BE7D036C17A69B67008053DC /* SYNAggregateCell.m */; };
+		BE7D037317A69D87008053DC /* SYNAggregateVideoCell.m in Sources */ = {isa = PBXBuildFile; fileRef = BE7D037217A69D86008053DC /* SYNAggregateVideoCell.m */; };
+		BE7D037917A69DD4008053DC /* SYNAggregateChannelCell.m in Sources */ = {isa = PBXBuildFile; fileRef = BE7D037817A69DCF008053DC /* SYNAggregateChannelCell.m */; };
+		BE7D037B17A69E16008053DC /* SYNAggregateVideoCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = BE7D037A17A69E13008053DC /* SYNAggregateVideoCell.xib */; };
+		BE7D037D17A69E4C008053DC /* SYNAggregateVideoCell~iphone.xib in Resources */ = {isa = PBXBuildFile; fileRef = BE7D037C17A69E4A008053DC /* SYNAggregateVideoCell~iphone.xib */; };
+		BE7D037F17A69E6C008053DC /* SYNAggregateChannelCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = BE7D037E17A69E69008053DC /* SYNAggregateChannelCell.xib */; };
+		BE7D038117A69E89008053DC /* SYNAggregateChannelCell~iphone.xib in Resources */ = {isa = PBXBuildFile; fileRef = BE7D038017A69E86008053DC /* SYNAggregateChannelCell~iphone.xib */; };
 		BE7D342E170DD8C90085AB81 /* SYNChannelFooterMoreView.xib in Resources */ = {isa = PBXBuildFile; fileRef = BE7D342D170DD8C90085AB81 /* SYNChannelFooterMoreView.xib */; };
 		BE7D3431170DDB310085AB81 /* SYNChannelFooterMoreView.m in Sources */ = {isa = PBXBuildFile; fileRef = BE7D3430170DDB310085AB81 /* SYNChannelFooterMoreView.m */; };
 		BE7D34CE1714434D0085AB81 /* SYNDeviceManager.m in Sources */ = {isa = PBXBuildFile; fileRef = BE7D34CD1714434D0085AB81 /* SYNDeviceManager.m */; };
@@ -2423,7 +2430,7 @@
 		BE7D0355179ED752008053DC /* ButtonSearchFriendsDefault@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = "ButtonSearchFriendsDefault@2x.png"; path = "Assets/Images/ButtonSearchFriendsDefault@2x.png"; sourceTree = "<group>"; };
 		BE7D0356179ED752008053DC /* ButtonSearchFriendsHighlighted.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = ButtonSearchFriendsHighlighted.png; path = Assets/Images/ButtonSearchFriendsHighlighted.png; sourceTree = "<group>"; };
 		BE7D0357179ED752008053DC /* ButtonSearchFriendsHighlighted@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = "ButtonSearchFriendsHighlighted@2x.png"; path = "Assets/Images/ButtonSearchFriendsHighlighted@2x.png"; sourceTree = "<group>"; };
-		BE7D035C17A13EF4008053DC /* Rockpack 7.xcdatamodel */ = {isa = PBXFileReference; lastKnownFileType = file; path = "Rockpack 7.xcdatamodel"; sourceTree = "<group>"; };
+		BE7D035C17A13EF4008053DC /* Rockpack 7.xcdatamodel */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcdatamodel; path = "Rockpack 7.xcdatamodel"; sourceTree = "<group>"; };
 		BE7D035D17A14409008053DC /* FeedItem.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = FeedItem.h; sourceTree = "<group>"; };
 		BE7D035E17A1440A008053DC /* FeedItem.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = FeedItem.m; sourceTree = "<group>"; };
 		BE7D036017A14417008053DC /* _FeedItem.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = _FeedItem.h; sourceTree = "<group>"; };
@@ -2432,6 +2439,16 @@
 		BE7D036417A1904C008053DC /* OverlayFriends@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = "OverlayFriends@2x.png"; path = "Assets/Images/OverlayFriends@2x.png"; sourceTree = "<group>"; };
 		BE7D036717A2D238008053DC /* MyTokenCachingStrategy.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MyTokenCachingStrategy.h; sourceTree = "<group>"; };
 		BE7D036817A2D238008053DC /* MyTokenCachingStrategy.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MyTokenCachingStrategy.m; sourceTree = "<group>"; };
+		BE7D036B17A69B67008053DC /* SYNAggregateCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SYNAggregateCell.h; sourceTree = "<group>"; };
+		BE7D036C17A69B67008053DC /* SYNAggregateCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SYNAggregateCell.m; sourceTree = "<group>"; };
+		BE7D037117A69D85008053DC /* SYNAggregateVideoCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SYNAggregateVideoCell.h; sourceTree = "<group>"; };
+		BE7D037217A69D86008053DC /* SYNAggregateVideoCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SYNAggregateVideoCell.m; sourceTree = "<group>"; };
+		BE7D037717A69DCD008053DC /* SYNAggregateChannelCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SYNAggregateChannelCell.h; sourceTree = "<group>"; };
+		BE7D037817A69DCF008053DC /* SYNAggregateChannelCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SYNAggregateChannelCell.m; sourceTree = "<group>"; };
+		BE7D037A17A69E13008053DC /* SYNAggregateVideoCell.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = SYNAggregateVideoCell.xib; sourceTree = "<group>"; };
+		BE7D037C17A69E4A008053DC /* SYNAggregateVideoCell~iphone.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = "SYNAggregateVideoCell~iphone.xib"; sourceTree = "<group>"; };
+		BE7D037E17A69E69008053DC /* SYNAggregateChannelCell.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = SYNAggregateChannelCell.xib; sourceTree = "<group>"; };
+		BE7D038017A69E86008053DC /* SYNAggregateChannelCell~iphone.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = "SYNAggregateChannelCell~iphone.xib"; sourceTree = "<group>"; };
 		BE7D342D170DD8C90085AB81 /* SYNChannelFooterMoreView.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = SYNChannelFooterMoreView.xib; sourceTree = "<group>"; };
 		BE7D342F170DDB310085AB81 /* SYNChannelFooterMoreView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SYNChannelFooterMoreView.h; sourceTree = "<group>"; };
 		BE7D3430170DDB310085AB81 /* SYNChannelFooterMoreView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SYNChannelFooterMoreView.m; sourceTree = "<group>"; };
@@ -2924,6 +2941,7 @@
 		012632CC162DF7B30009FF9C /* Collection Assets */ = {
 			isa = PBXGroup;
 			children = (
+				BE7D036A17A69A99008053DC /* Aggregate Cells */,
 				0199F12D166F95C000E479C6 /* Collections */,
 				012632C7162DF4C40009FF9C /* Layout Engine Support */,
 				0111CDF91729312000612186 /* Cover cells */,
@@ -4991,6 +5009,23 @@
 			name = Friends;
 			sourceTree = "<group>";
 		};
+		BE7D036A17A69A99008053DC /* Aggregate Cells */ = {
+			isa = PBXGroup;
+			children = (
+				BE7D036B17A69B67008053DC /* SYNAggregateCell.h */,
+				BE7D036C17A69B67008053DC /* SYNAggregateCell.m */,
+				BE7D037117A69D85008053DC /* SYNAggregateVideoCell.h */,
+				BE7D037217A69D86008053DC /* SYNAggregateVideoCell.m */,
+				BE7D037A17A69E13008053DC /* SYNAggregateVideoCell.xib */,
+				BE7D037C17A69E4A008053DC /* SYNAggregateVideoCell~iphone.xib */,
+				BE7D037717A69DCD008053DC /* SYNAggregateChannelCell.h */,
+				BE7D037817A69DCF008053DC /* SYNAggregateChannelCell.m */,
+				BE7D037E17A69E69008053DC /* SYNAggregateChannelCell.xib */,
+				BE7D038017A69E86008053DC /* SYNAggregateChannelCell~iphone.xib */,
+			);
+			name = "Aggregate Cells";
+			sourceTree = "<group>";
+		};
 		BE7D3496171412EC0085AB81 /* Side Navigator */ = {
 			isa = PBXGroup;
 			children = (
@@ -6241,6 +6276,10 @@
 				38A73D8817A0086500AD9E90 /* SYNFriendThumbnailCell~iphone.xib in Resources */,
 				BE7D036517A1904C008053DC /* OverlayFriends.png in Resources */,
 				BE7D036617A1904C008053DC /* OverlayFriends@2x.png in Resources */,
+				BE7D037B17A69E16008053DC /* SYNAggregateVideoCell.xib in Resources */,
+				BE7D037D17A69E4C008053DC /* SYNAggregateVideoCell~iphone.xib in Resources */,
+				BE7D037F17A69E6C008053DC /* SYNAggregateChannelCell.xib in Resources */,
+				BE7D038117A69E89008053DC /* SYNAggregateChannelCell~iphone.xib in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -6545,6 +6584,9 @@
 				BE7D035F17A1440A008053DC /* FeedItem.m in Sources */,
 				BE7D036217A14417008053DC /* _FeedItem.m in Sources */,
 				BE7D036917A2D238008053DC /* MyTokenCachingStrategy.m in Sources */,
+				BE7D036D17A69B67008053DC /* SYNAggregateCell.m in Sources */,
+				BE7D037317A69D87008053DC /* SYNAggregateVideoCell.m in Sources */,
+				BE7D037917A69DD4008053DC /* SYNAggregateChannelCell.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
