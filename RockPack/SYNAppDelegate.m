@@ -51,7 +51,7 @@
 @property (nonatomic, strong) SYNVideoQueue *videoQueue;
 @property (nonatomic, strong) SYNViewStackManager *viewStackManager;
 @property (nonatomic, strong) User *currentUser;
-
+@property (nonatomic, strong) NSURLConnection *connection;
 
 @end
 
@@ -1036,6 +1036,7 @@
 // (test) http://dev.rockpack.com/paulegan/deeplinktest/channel.html
 // rockpack://USERID/channels/CHANNELID/videos/VIDEOID/
 // (test) http://dev.rockpack.com/paulegan/deeplinktest/video.html
+// http://share.demo.rockpack.com/s/SXL1kOk
 
 - (BOOL)  application: (UIApplication *) application
               openURL: (NSURL *) url
@@ -1129,22 +1130,52 @@
         
         if (targetURLString)
         {
-            NSURL *targetURL = [NSURL URLWithString: targetURLString];
-            NSString *query2 = [targetURL query];
-            NSDictionary *targetParams = [self parseURLParams: query2];
-            NSString *deeplink = [targetParams valueForKey: @"deeplink"];
             
-            // Check for the 'deeplink' parameter to check if this is one of
-            // our incoming news feed link
-            if (deeplink)
-            {
-                UIAlertView *alert = [[UIAlertView alloc] initWithTitle: @"News"
-                                                                message: [NSString stringWithFormat: @"Incoming: %@", deeplink]
-                                                               delegate: nil
-                                                      cancelButtonTitle: @"OK"
-                                                      otherButtonTitles: nil, nil];
-                [alert show];
-            }
+            targetURLString = [targetURLString stringByAppendingString: @"&rockpack_redirect=true"];
+//            NSURL *targetURL = [NSURL URLWithString: targetURLString];
+//            NSString *query2 = [targetURL query];
+//            NSDictionary *targetParams = [self parseURLParams: query2];
+//            NSString *deeplink = [targetParams valueForKey: @"deeplink"];
+//            
+//            // Check for the 'deeplink' parameter to check if this is one of
+//            // our incoming news feed link
+//            if (deeplink)
+//            {
+//                UIAlertView *alert = [[UIAlertView alloc] initWithTitle: @"News"
+//                                                                message: [NSString stringWithFormat: @"Incoming: %@", deeplink]
+//                                                               delegate: nil
+//                                                      cancelButtonTitle: @"OK"
+//                                                      otherButtonTitles: nil, nil];
+//                [alert show];
+//            }
+
+//            [NSURL URLWithString: @"rockpack://3-uaHqB1zdmfJfwbKX8Cug/channels/chlkFaa9SsYoxk4S4Kg5vBPQ/videos/viPOzGRLwURrPfZBJNYJ5asw/"]
+//            NSURL *targetURL = [NSURL URLWithString: targetURLString];
+//            
+//            [self performBlock: ^{
+//                if ([[UIApplication sharedApplication] canOpenURL: targetURL])
+//                {
+//                    [[UIApplication sharedApplication] openURL: targetURL];
+//                }
+//            } afterDelay: 0.1f];
+            
+            
+//            [self.networkEngine resolveFacebookLink:  targetURLString
+//                                  completionHandler: ^(NSDictionary *dictionary) {
+//                                      NSLog(@"%@",dictionary);
+//                                  }
+//                                       errorHandler: ^(NSError *error) {
+//                                           NSLog(@"%@", error);
+//                                       }];
+            
+            NSMutableURLRequest *request = [NSMutableURLRequest requestWithURL: [NSURL URLWithString: targetURLString]];
+            [request setHTTPMethod: @"GET"];
+
+            self.connection = [[NSURLConnection alloc] initWithRequest: request
+                                                              delegate: self];
+            
+
+
         }
         
         return [FBSession.activeSession
@@ -1157,6 +1188,50 @@
     }
 }
 
+
+#pragma mark -
+#pragma mark NSURLConnection delegates
+
+-(void) connection: (NSURLConnection *) connection
+        didReceiveResponse:(NSURLResponse *)response
+{
+}
+
+
+- (void) connection: (NSURLConnection *) connection
+     didReceiveData: (NSData *) data
+{
+}
+
+
+- (void) connection: (NSURLConnection *) connection
+        didFailWithError: (NSError *) error
+{
+    DebugLog (@"Failed");
+}
+
+
+- (void) connectionDidFinishLoading: (NSURLConnection *) connection
+{
+}
+
+- (NSURLRequest *) connection: (NSURLConnection *) connection
+              willSendRequest: (NSURLRequest *) request
+             redirectResponse: (NSURLResponse *) redirectResponse
+{
+    NSURLRequest *newRequest = request;
+    
+    if (redirectResponse) {
+        newRequest = nil;
+        
+        NSString *location = [(NSHTTPURLResponse *)redirectResponse allHeaderFields][@"Location"];
+        
+//        NSString *location = redirectResponse.
+        
+    }
+    
+    return newRequest;
+}
 
 - (Channel*) channelFromChannelId: (NSString*) channelId
 {
@@ -1331,6 +1406,10 @@
 //        [self.viewStackManager displaySideNavigatorFromPushNotification];
 //    }
 //            afterDelay: 3.0f];
+//    if ([[UIApplication sharedApplication] canOpenURL: [NSURL URLWithString: @"rockpack://www.rockpack.com"]])
+//	{
+//		[[UIApplication sharedApplication] openURL: [NSURL URLWithString: @"rockpack://www.rockpack.com"]];
+//	}
 }
 
 

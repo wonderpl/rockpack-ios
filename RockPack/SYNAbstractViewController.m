@@ -677,7 +677,7 @@
 
 - (void) popoverControllerDidDismissPopover: (UIPopoverController *) popoverController
 {
-    self.activityPopoverController = nil;
+    self.activityPopoverController.delegate = nil;
 }
 
 
