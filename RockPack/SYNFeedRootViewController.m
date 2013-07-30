@@ -91,9 +91,9 @@ typedef void(^FeedDataErrorBlock)(void);
         videoCollectionViewFrame = CGRectMake(0.0, kStandardCollectionViewOffsetYiPhone, screenSize.width, screenSize.height - 20.0f - kStandardCollectionViewOffsetYiPhone);
         
         // Collection view parameters
-        contentInset = UIEdgeInsetsMake(4, 0, 0, 0);
-        sectionInset = UIEdgeInsetsMake(10.0f, 5.0f, 15.0f, 5.0f);
-        minimumLineSpacing = 10.0f;
+        contentInset = UIEdgeInsetsMake(0, 0, 0, 0);
+        sectionInset = UIEdgeInsetsMake(0.0f, 0.0f, 0.0f, 0.0f);
+        minimumLineSpacing = 6.0f;
         
     }
     else
@@ -117,7 +117,7 @@ typedef void(^FeedDataErrorBlock)(void);
     CGSize itemSize;
     if (IS_IPHONE)
     {
-        itemSize = CGSizeMake(310,261);
+        itemSize = CGSizeMake(310.0f , 261.0f);
     }
     else if ([SYNDeviceManager.sharedInstance isLandscape])
     {
@@ -128,17 +128,17 @@ typedef void(^FeedDataErrorBlock)(void);
         itemSize = CGSizeMake(616, 168);
     }
     
-    // Setup out collection view layout
     standardFlowLayout = [SYNIntegralCollectionViewFlowLayout layoutWithItemSize: itemSize
                                                          minimumInterItemSpacing: 0.0f
                                                               minimumLineSpacing: minimumLineSpacing
                                                                  scrollDirection: UICollectionViewScrollDirectionVertical
                                                                     sectionInset: sectionInset];
-    standardFlowLayout.footerReferenceSize = [self footerSize];
+    
+    // standardFlowLayout.footerReferenceSize = [self footerSize];
     
     // Setup the collection view itself
     self.feedCollectionView = [[UICollectionView alloc] initWithFrame: videoCollectionViewFrame
-                                                           collectionViewLayout: standardFlowLayout];
+                                                 collectionViewLayout: standardFlowLayout];
     
     self.feedCollectionView.delegate = self;
     self.feedCollectionView.dataSource = self;
@@ -152,6 +152,9 @@ typedef void(^FeedDataErrorBlock)(void);
     
     [self.feedCollectionView registerNib: [UINib nibWithNibName: @"SYNAggregateVideoCell" bundle: nil]
                         forCellWithReuseIdentifier: @"SYNAggregateVideoCell"];
+    
+    [self.feedCollectionView registerNib: [UINib nibWithNibName: @"SYNAggregateChannelCell" bundle: nil]
+              forCellWithReuseIdentifier: @"SYNAggregateChannelCell"];
     
     
     [self.feedCollectionView registerNib: [UINib nibWithNibName: @"SYNHomeSectionHeaderView" bundle: nil]
@@ -182,6 +185,9 @@ typedef void(^FeedDataErrorBlock)(void);
                                              selector: @selector(videoQueueCleared)
                                                  name: kVideoQueueClear
                                                object: nil];
+    
+    CGFloat final = self.feedCollectionView.frame.size.width - (standardFlowLayout.sectionInset.left + standardFlowLayout.sectionInset.right);
+    
 }
 
 
@@ -533,13 +539,24 @@ typedef void(^FeedDataErrorBlock)(void);
    sizeForItemAtIndexPath: (NSIndexPath *) indexPath
 {
     FeedItem* feedItem = [self feedItemAtIndexPath:indexPath];
+    CGFloat cellWidth = 0.0;
+    //CGFloat cellHeight = 0.0;
+    if(IS_IPHONE)
+    {
+        cellWidth = 320.0f;
+    }
+    else
+    {
+        cellWidth = 616.0f;
+    }
+    
     if(feedItem.resourceTypeValue == FeedItemResourceTypeVideo)
     {
-        return CGSizeMake(616, 168);
+        return CGSizeMake(cellWidth, 168);
     }
     else // Channel
     {
-        return CGSizeMake(616, 298);
+        return CGSizeMake(cellWidth, 298);
     }
 }
 
