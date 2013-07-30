@@ -20,7 +20,7 @@
     [self addCompletionHandler: ^(MKNetworkOperation *completedOperation) {
         if (ignore && completedOperation.isCachedResponse)
         {
-            DebugLog(@"Ignoring Cached Response...");
+//            DebugLog(@"Ignoring Cached Response...");
             return;
         }
         

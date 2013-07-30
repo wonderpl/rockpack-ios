@@ -13,9 +13,9 @@
 
 // Localizable error messages
 
-#define kFacebookLoginCancelled     NSLocalizedString(@"Log in cancelled, or permission denied.  Check Facebook settings", nil)
-#define kFacebookPermissionDenied   NSLocalizedString(@"Permission denied", nil)
-#define kFacebookUnknownError       NSLocalizedString(@"Unknown error, nil", nil)
+#define kFacebookLoginCancelled	  NSLocalizedString(@"Log in cancelled, or permission denied.  Check Facebook settings", nil)
+#define kFacebookPermissionDenied NSLocalizedString(@"Permission denied", nil)
+#define kFacebookUnknownError	  NSLocalizedString(@"Unknown error, nil", nil)
 
 // Block typedefs
 
@@ -43,18 +43,18 @@ typedef void (^FacebookPostFailureBlock)(NSError *error);
 - (void) logoutOnSuccess: (FacebookLogoutSuccessBlock) successBlock
                onFailure: (FacebookLogoutFailureBlock) failureBlock;
 
-- (void) openSessionFromExistingToken: (NSString*)token
+- (void) openSessionFromExistingToken: (NSString *) token
                             onSuccess: (FacebookOpenSessionSuccessBlock) successBlock
                             onFailure: (FacebookOpenSessionFailureBlock) failureBlock;
 
-- (void) postMessageToWall: (NSString*)message
+- (void) postMessageToWall: (NSString *) message
                  onSuccess: (FacebookPostSuccessBlock) successBlock
                  onFailure: (FacebookPostFailureBlock) failureBlock;
 
--(BOOL) hasOpenSession;
+- (BOOL) hasOpenSession;
 
-- (void) sendAppRequestToFriend:(Friend*)friend
-                        onSuccess:(FacebookPostSuccessBlock) successBlock
-                        onFailure:(FacebookPostFailureBlock) failureBlock;
+- (void) sendAppRequestToFriend: (Friend *) friend
+                      onSuccess: (FacebookPostSuccessBlock) successBlock
+                      onFailure: (FacebookPostFailureBlock) failureBlock;
 
 @end
