@@ -12,7 +12,7 @@
 @class SYNSearchTabView;
 @class SYNSearchRootViewController;
 
-@interface SYNSearchVideosViewController : SYNFeedRootViewController
+@interface SYNSearchVideosViewController : SYNAbstractViewController
 
 @property (nonatomic, weak) SYNSearchRootViewController* parent;
 @property (nonatomic, weak) SYNSearchTabView* itemToUpdate;
