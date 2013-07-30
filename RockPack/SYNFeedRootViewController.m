@@ -604,8 +604,6 @@ typedef void(^FeedDataErrorBlock)(void);
     ChannelOwner* channelOwner;
     
     
-    
-    
     if(feedItem.resourceTypeValue == FeedItemResourceTypeVideo)
     {
         cell = [cv dequeueReusableCellWithReuseIdentifier: @"SYNAggregateVideoCell"
@@ -629,7 +627,6 @@ typedef void(^FeedDataErrorBlock)(void);
             }
             
             
-            
         }
         else
         {
@@ -638,6 +635,7 @@ typedef void(^FeedDataErrorBlock)(void);
             
         }
         
+        [cell setTitleMessage:feedItem.title];
         
         [cell setCoverImageWithString:videoInstance.video.thumbnailURL];
         
@@ -674,8 +672,7 @@ typedef void(^FeedDataErrorBlock)(void);
         
         channelOwner = channel.channelOwner;
         
-        
-        NSLog(@"%@", feedItem);
+        [cell setTitleMessage:feedItem.title];
         
     }
     

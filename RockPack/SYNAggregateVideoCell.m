@@ -38,8 +38,13 @@
 -(void)setCoverImageWithArray:(NSArray*)imageArray
 {
     
+    // not relevent yet for this cell (they all have a single image)
     
-    
+}
+
+-(void)setTitleMessage:(NSString*)message
+{
+    self.messageLabel.text = message;
 }
 
 @end

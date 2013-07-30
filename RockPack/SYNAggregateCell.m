@@ -26,5 +26,9 @@
     // to be implemented in subclass
 }
 
+-(void)setTitleMessage:(NSString*)message
+{
+    // to be implemented in subclass
+}
 
 @end

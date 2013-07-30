@@ -26,4 +26,9 @@
     
 }
 
+-(void)setTitleMessage:(NSString*)message
+{
+    self.messageLabel.text = message;
+}
+
 @end

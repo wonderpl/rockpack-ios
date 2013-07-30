@@ -21,5 +21,6 @@
 
 -(void)setCoverImageWithString:(NSString*)imageString;
 -(void)setCoverImageWithArray:(NSArray*)imageArray;
+-(void)setTitleMessage:(NSString*)message;
 
 @end

@@ -89,6 +89,7 @@
 								</object>
 								<nil key="IBUIHighlightedColor"/>
 								<int key="IBUIBaselineAdjustment">0</int>
+								<int key="IBUINumberOfLines">2</int>
 								<object class="IBUIFontDescription" key="IBUIFontDescription" id="600702064">
 									<int key="type">1</int>
 									<double key="pointSize">14</double>
@@ -99,6 +100,7 @@
 									<int key="NSfFlags">16</int>
 								</object>
 								<bool key="IBUIAdjustsFontSizeToFit">NO</bool>
+								<double key="preferredMaxLayoutWidth">198</double>
 							</object>
 							<object class="IBUIView" id="908317790">
 								<reference key="NSNextResponder" ref="79056506"/>

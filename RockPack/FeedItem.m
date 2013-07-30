@@ -27,16 +27,22 @@
     instance.itemTypeValue = FeedItemTypeLeaf;
     
     if ([object isKindOfClass:[VideoInstance class]]) {
-        instance.dateAdded = ((VideoInstance*)object).dateAdded;
+        
+        VideoInstance* videoInstance = (VideoInstance*)object;
+        instance.dateAdded = videoInstance.dateAdded;
         instance.resourceType = FeedItemResourceTypeVideo;
-        instance.positionValue = ((VideoInstance*)object).positionValue;
-        instance.title = ((VideoInstance*)object).title;
+        instance.positionValue = videoInstance.positionValue;
+        instance.title = [NSString stringWithFormat:@"%@ added 1 video to %@", videoInstance.channel.channelOwner.displayName, videoInstance.channel.title];
+        
     }
     else if ([object isKindOfClass:[Channel class]]) {
-        instance.dateAdded = ((Channel*)object).datePublished;
+        
+        Channel* channel = (Channel*)object;
+        instance.dateAdded = channel.datePublished;
         instance.resourceTypeValue = FeedItemResourceTypeChannel;
-        instance.positionValue = ((Channel*)object).positionValue;
-        instance.title = ((Channel*)object).title;
+        instance.positionValue = channel.positionValue;
+        instance.title = [NSString stringWithFormat:@"%@ has created 1 new channel", channel.channelOwner.displayName];
+        
     }
     
     instance.resourceId = object.uniqueId;
