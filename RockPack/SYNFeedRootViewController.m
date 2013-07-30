@@ -114,8 +114,22 @@ typedef void(^FeedDataErrorBlock)(void);
     
     [self removeEmptyGenreMessage];
     
+    CGSize itemSize;
+    if (IS_IPHONE)
+    {
+        itemSize = CGSizeMake(310,261);
+    }
+    else if ([SYNDeviceManager.sharedInstance isLandscape])
+    {
+        itemSize = CGSizeMake(616, 168);
+    }
+    else
+    {
+        itemSize = CGSizeMake(616, 168);
+    }
+    
     // Setup out collection view layout
-    standardFlowLayout = [SYNIntegralCollectionViewFlowLayout layoutWithItemSize: self.videoCellSize
+    standardFlowLayout = [SYNIntegralCollectionViewFlowLayout layoutWithItemSize: itemSize
                                                          minimumInterItemSpacing: 0.0f
                                                               minimumLineSpacing: minimumLineSpacing
                                                                  scrollDirection: UICollectionViewScrollDirectionVertical
@@ -487,28 +501,19 @@ typedef void(^FeedDataErrorBlock)(void);
 }
 
 
-- (CGSize) videoCellSize
-{
-    if (IS_IPHONE)
-    {
-        return CGSizeMake(310,221);
-    }
-    else if ([SYNDeviceManager.sharedInstance isLandscape])
-    {
-        return CGSizeMake(497, 140);
-    }
-    else
-    {
-        return CGSizeMake(370, 140);
-    }
-}
-
-
 - (CGSize) collectionView: (UICollectionView *) collectionView
                    layout: (UICollectionViewLayout*) collectionViewLayout
    sizeForItemAtIndexPath: (NSIndexPath *) indexPath
 {
-    return self.videoCellSize;
+    FeedItem* feedItem = [self feedItemAtIndexPath:indexPath];
+    if(feedItem.resourceTypeValue == FeedItemResourceTypeVideo)
+    {
+        return CGSizeMake(616, 168);
+    }
+    else // Channel
+    {
+        return CGSizeMake(616, 298);
+    }
 }
 
 - (void) videoOverlayDidDissapear
@@ -550,6 +555,13 @@ typedef void(^FeedDataErrorBlock)(void);
     }
 }
 
+-(FeedItem*)feedItemAtIndexPath:(NSIndexPath*)indexPath
+{
+    NSArray* sectionArray = self.feedItemsData[indexPath.section];
+    FeedItem* feedItem = sectionArray[indexPath.row];
+    return feedItem;
+}
+
 - (void) videoAddButtonTapped: (UIButton *) _addButton
 {
    
@@ -560,13 +572,12 @@ typedef void(^FeedDataErrorBlock)(void);
 {
     SYNAggregateCell *cell = nil;
     
-    NSArray* sectionArray = self.feedItemsData[indexPath.section];
-    FeedItem* feedItem = sectionArray[indexPath.row];
+    FeedItem* feedItem = [self feedItemAtIndexPath:indexPath];
     
     ChannelOwner* channelOwner;
     
     
-    NSLog(@"%@", feedItem);
+    // NSLog(@"%@", feedItem);
     
     
     if(feedItem.resourceTypeValue == FeedItemResourceTypeVideo)
@@ -575,7 +586,7 @@ typedef void(^FeedDataErrorBlock)(void);
                                              forIndexPath: indexPath];
         
         
-        VideoInstance* vi;
+        VideoInstance* videoInstance;
         
         if(feedItem.itemTypeValue == FeedItemTypeAggregate)
         {
@@ -587,14 +598,22 @@ typedef void(^FeedDataErrorBlock)(void);
             
             for (NSString* resourceId in coverIndexIds)
             {
-                vi = (VideoInstance*)[self.feedVideosById objectForKey:resourceId];
-                [coverImages addObject:vi.channel.channelCover.imageUrl];
+                videoInstance = (VideoInstance*)[self.feedVideosById objectForKey:resourceId];
+                [coverImages addObject:videoInstance.channel.channelCover.imageUrl];
             }
             
             
-            channelOwner = vi.channel.channelOwner; // heuristic, get the last video instance, all should have the same channelOwner however
             
         }
+        else
+        {
+            
+            videoInstance = (VideoInstance*)[self.feedVideosById objectForKey:feedItem.resourceId];
+            
+        }
+        
+        
+        channelOwner = videoInstance.channel.channelOwner; // heuristic, get the last video instance, all should have the same channelOwner however
         
     }
     else if(feedItem.resourceTypeValue == FeedItemResourceTypeChannel)
@@ -619,18 +638,21 @@ typedef void(^FeedDataErrorBlock)(void);
                 [coverImages addObject:channel.channelCover.imageUrl];
             }
             
-            
-            channelOwner = channel.channelOwner; 
-            
         }
+        else
+        {
+           channel = (Channel*)[self.feedVideosById objectForKey:feedItem.resourceId];
+        }
+        
+        channelOwner = channel.channelOwner; 
         
     }
     
+    NSLog(@"%@", channelOwner);
     
-    
-//    [cell.userThumbnailImageView setImageWithURL: [NSURL URLWithString: channelOwner.thumbnailLargeUrl]
-//                                placeholderImage: [UIImage imageNamed: @"PlaceholderChannelSmall.png"]
-//                                         options: SDWebImageRetryFailed];
+    [cell.userThumbnailImageView setImageWithURL: [NSURL URLWithString: channelOwner.thumbnailURL]
+                                placeholderImage: [UIImage imageNamed: @"PlaceholderChannelSmall.png"]
+                                         options: SDWebImageRetryFailed];
     
     // add common properties
     

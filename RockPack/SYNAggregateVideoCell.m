@@ -10,6 +10,10 @@
 
 @implementation SYNAggregateVideoCell
 
-
+-(void)awakeFromNib
+{
+    [super awakeFromNib];
+    self.likeLabel.font = [UIFont rockpackFontOfSize:self.likeLabel.font.pointSize];
+}
 
 @end

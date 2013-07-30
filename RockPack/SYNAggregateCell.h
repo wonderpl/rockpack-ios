@@ -7,6 +7,7 @@
 //
 
 #import <UIKit/UIKit.h>
+#import "UIFont+SYNFont.h"
 
 @interface SYNAggregateCell : UICollectionViewCell
 

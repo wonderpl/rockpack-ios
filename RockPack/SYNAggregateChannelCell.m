@@ -10,6 +10,9 @@
 
 @implementation SYNAggregateChannelCell
 
-
+-(void)awakeFromNib
+{
+    [super awakeFromNib];
+}
 
 @end

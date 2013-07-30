@@ -12,7 +12,7 @@
 
 -(void)awakeFromNib
 {
-    
+    self.messageLabel.font = [UIFont rockpackFontOfSize:self.messageLabel.font.pointSize];
 }
 
 -(void)setCoverImagesFromArray:(NSArray*)array
