@@ -186,7 +186,6 @@ typedef void(^FeedDataErrorBlock)(void);
                                                  name: kVideoQueueClear
                                                object: nil];
     
-    CGFloat final = self.feedCollectionView.frame.size.width - (standardFlowLayout.sectionInset.left + standardFlowLayout.sectionInset.right);
     
 }
 
