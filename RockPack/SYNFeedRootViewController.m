@@ -564,12 +564,10 @@ typedef void(^FeedDataErrorBlock)(void);
     FeedItem* feedItem = sectionArray[indexPath.row];
     
     ChannelOwner* channelOwner;
-    Channel* channel;
-    NSArray* coverIndexIds = [feedItem.coverIndexes componentsSeparatedByString:@":"];
-
-    NSLog(@"%@", coverIndexIds);
     
-    NSMutableArray* coverImages = [NSMutableArray arrayWithCapacity:coverIndexIds.count];
+    
+    
+    
     
     if(feedItem.resourceTypeValue == FeedItemResourceTypeVideo)
     {
@@ -578,12 +576,29 @@ typedef void(^FeedDataErrorBlock)(void);
         
         
         VideoInstance* vi;
-        for (NSString* resourceId in coverIndexIds) {
-            vi = (VideoInstance*)[self.feedVideosById objectForKey:resourceId];
-            [coverImages addObject:vi.channel.channelCover.imageUrl];
+        
+        if(feedItem.itemTypeValue == FeedItemTypeAggregate)
+        {
+            NSArray* coverIndexIds = [feedItem.coverIndexes componentsSeparatedByString:@":"];
+            
+            NSLog(@"original:'%@', array:%@", feedItem.coverIndexes, coverIndexIds);
+            
+            NSMutableArray* coverImages = [NSMutableArray arrayWithCapacity:coverIndexIds.count];
+            
+            for (NSString* resourceId in coverIndexIds)
+            {
+                vi = (VideoInstance*)[self.feedVideosById objectForKey:resourceId];
+                [coverImages addObject:vi.channel.channelCover.imageUrl];
+            }
+            
+            
+            channelOwner = vi.channel.channelOwner; // heuristic, get the last video instance, all should have the same channelOwner however
+            
         }
         
-        channel = vi.channel; // heuristic, get the last video instance, all should have the same channelOwner however
+        
+        
+        
         
     }
     else if(feedItem.resourceTypeValue == FeedItemResourceTypeChannel)
@@ -592,21 +607,34 @@ typedef void(^FeedDataErrorBlock)(void);
                                              forIndexPath: indexPath];
         
         
-        for (NSString* resourceId in coverIndexIds) {
-            channel = (Channel*)[self.feedVideosById objectForKey:resourceId];
-            [coverImages addObject:channel.channelCover.imageUrl];
+        Channel* channel;
+        
+        if(feedItem.itemTypeValue == FeedItemTypeAggregate)
+        {
+            NSArray* coverIndexIds = [feedItem.coverIndexes componentsSeparatedByString:@":"];
+            
+            NSLog(@"original:'%@', array:%@", feedItem.coverIndexes, coverIndexIds);
+            
+            NSMutableArray* coverImages = [NSMutableArray arrayWithCapacity:coverIndexIds.count];
+            
+            for (NSString* resourceId in coverIndexIds)
+            {
+                channel = (Channel*)[self.feedVideosById objectForKey:resourceId];
+                [coverImages addObject:channel.channelCover.imageUrl];
+            }
+            
+            
+            channelOwner = channel.channelOwner; 
+            
         }
-        
-        
         
     }
     
     
-    channelOwner = channel.channelOwner; // heuristic, get the last video instance, all should have the same channelOwner however
     
-    [cell.userThumbnailImageView setImageWithURL: [NSURL URLWithString: channelOwner.thumbnailLargeUrl]
-                                placeholderImage: [UIImage imageNamed: @"PlaceholderChannelSmall.png"]
-                                         options: SDWebImageRetryFailed];
+//    [cell.userThumbnailImageView setImageWithURL: [NSURL URLWithString: channelOwner.thumbnailLargeUrl]
+//                                placeholderImage: [UIImage imageNamed: @"PlaceholderChannelSmall.png"]
+//                                         options: SDWebImageRetryFailed];
     
     // add common properties
     

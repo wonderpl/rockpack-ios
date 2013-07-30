@@ -319,7 +319,7 @@
             
             aggregationFeedItem.coverIndexes = [NSString stringWithString:coverReferencesString];
             
-            // DebugLog(@"%@", aggregationFeedItem);
+            DebugLog(@"*** %@", aggregationFeedItem.coverIndexes);
             
         }
         
