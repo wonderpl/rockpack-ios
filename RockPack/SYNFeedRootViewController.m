@@ -614,7 +614,6 @@ typedef void(^FeedDataErrorBlock)(void);
             
         }
         
-        NSLog(@"%@", videoInstance.video.thumbnailURL);
         
         [cell setCoverImageWithString:videoInstance.video.thumbnailURL];
         

@@ -42,6 +42,21 @@
 						<reference key="NSNextResponder" ref="920592215"/>
 						<int key="NSvFlags">256</int>
 						<array class="NSMutableArray" key="NSSubviews">
+							<object class="IBUIImageView" id="466408823">
+								<reference key="NSNextResponder" ref="79056506"/>
+								<int key="NSvFlags">292</int>
+								<string key="NSFrame">{{313, 0}, {298, 128}}</string>
+								<reference key="NSSuperview" ref="79056506"/>
+								<reference key="NSWindow"/>
+								<reference key="NSNextKeyView" ref="268610225"/>
+								<string key="NSReuseIdentifierKey">_NS:9</string>
+								<bool key="IBUIUserInteractionEnabled">NO</bool>
+								<string key="targetRuntimeIdentifier">IBIPadFramework</string>
+								<object class="NSCustomResource" key="IBUIImage">
+									<string key="NSClassName">NSImage</string>
+									<string key="NSResourceName">PanelFeedLong.png</string>
+								</object>
+							</object>
 							<object class="IBUIImageView" id="268610225">
 								<reference key="NSNextResponder" ref="79056506"/>
 								<int key="NSvFlags">293</int>
@@ -74,11 +89,11 @@
 								</object>
 								<nil key="IBUIHighlightedColor"/>
 								<int key="IBUIBaselineAdjustment">0</int>
-								<object class="IBUIFontDescription" key="IBUIFontDescription" id="589446450">
+								<object class="IBUIFontDescription" key="IBUIFontDescription" id="600702064">
 									<int key="type">1</int>
 									<double key="pointSize">14</double>
 								</object>
-								<object class="NSFont" key="IBUIFont" id="230767678">
+								<object class="NSFont" key="IBUIFont" id="849397026">
 									<string key="NSName">Helvetica</string>
 									<double key="NSSize">14</double>
 									<int key="NSfFlags">16</int>
@@ -109,7 +124,7 @@
 								<string key="NSFrameSize">{57, 57}</string>
 								<reference key="NSSuperview" ref="79056506"/>
 								<reference key="NSWindow"/>
-								<reference key="NSNextKeyView" ref="268610225"/>
+								<reference key="NSNextKeyView" ref="466408823"/>
 								<string key="NSReuseIdentifierKey">_NS:9</string>
 								<object class="NSColor" key="IBUIBackgroundColor" id="785058291">
 									<int key="NSColorSpace">3</int>
@@ -155,7 +170,7 @@
 							<object class="IBUILabel" id="402542507">
 								<reference key="NSNextResponder" ref="79056506"/>
 								<int key="NSvFlags">292</int>
-								<string key="NSFrame">{{347, 78}, {246, 24}}</string>
+								<string key="NSFrame">{{365, 88}, {231, 24}}</string>
 								<reference key="NSSuperview" ref="79056506"/>
 								<reference key="NSWindow"/>
 								<reference key="NSNextKeyView"/>
@@ -169,20 +184,28 @@
 								<reference key="IBUITextColor" ref="989324452"/>
 								<nil key="IBUIHighlightedColor"/>
 								<int key="IBUIBaselineAdjustment">0</int>
-								<reference key="IBUIFontDescription" ref="589446450"/>
-								<reference key="IBUIFont" ref="230767678"/>
+								<reference key="IBUIFontDescription" ref="600702064"/>
+								<reference key="IBUIFont" ref="849397026"/>
 								<bool key="IBUIAdjustsFontSizeToFit">NO</bool>
 							</object>
 							<object class="IBUIImageView" id="874308651">
 								<reference key="NSNextResponder" ref="79056506"/>
 								<int key="NSvFlags">292</int>
-								<string key="NSFrame">{{313, 78}, {26, 24}}</string>
+								<string key="NSFrame">{{313, 78}, {44, 44}}</string>
 								<reference key="NSSuperview" ref="79056506"/>
 								<reference key="NSWindow"/>
 								<reference key="NSNextKeyView" ref="402542507"/>
 								<string key="NSReuseIdentifierKey">_NS:9</string>
 								<bool key="IBUIUserInteractionEnabled">NO</bool>
 								<string key="targetRuntimeIdentifier">IBIPadFramework</string>
+								<object class="NSCustomResource" key="IBUIImage">
+									<string key="NSClassName">NSImage</string>
+									<string key="NSResourceName">ButtonFeedLikeDefault.png</string>
+								</object>
+								<object class="NSCustomResource" key="IBUIHighlightedImage">
+									<string key="NSClassName">NSImage</string>
+									<string key="NSResourceName">ButtonFeedLikeSelected.png</string>
+								</object>
 							</object>
 						</array>
 						<string key="NSFrameSize">{616, 168}</string>
@@ -297,8 +320,9 @@
 							<reference ref="268610225"/>
 							<reference ref="789761132"/>
 							<reference ref="874308651"/>
-							<reference ref="402542507"/>
 							<reference ref="586887679"/>
+							<reference ref="402542507"/>
+							<reference ref="466408823"/>
 						</array>
 						<reference key="parent" ref="0"/>
 						<string key="objectName">SYNAggregateVideoCell</string>
@@ -339,6 +363,12 @@
 						<reference key="object" ref="874308651"/>
 						<reference key="parent" ref="920592215"/>
 					</object>
+					<object class="IBObjectRecord">
+						<int key="objectID">23</int>
+						<reference key="object" ref="466408823"/>
+						<reference key="parent" ref="920592215"/>
+						<string key="objectName">Panel ImageView</string>
+					</object>
 				</array>
 			</object>
 			<dictionary class="NSMutableDictionary" key="flattenedProperties">
@@ -352,6 +382,7 @@
 				<string key="2.CustomClassName">SYNAggregateVideoCell</string>
 				<string key="2.IBPluginDependency">com.apple.InterfaceBuilder.IBCocoaTouchPlugin</string>
 				<string key="20.IBPluginDependency">com.apple.InterfaceBuilder.IBCocoaTouchPlugin</string>
+				<string key="23.IBPluginDependency">com.apple.InterfaceBuilder.IBCocoaTouchPlugin</string>
 				<string key="3.IBPluginDependency">com.apple.InterfaceBuilder.IBCocoaTouchPlugin</string>
 				<string key="4.IBPluginDependency">com.apple.InterfaceBuilder.IBCocoaTouchPlugin</string>
 			</dictionary>
@@ -359,7 +390,7 @@
 			<nil key="activeLocalization"/>
 			<dictionary class="NSMutableDictionary" key="localizations"/>
 			<nil key="sourceID"/>
-			<int key="maxID">22</int>
+			<int key="maxID">23</int>
 		</object>
 		<object class="IBClassDescriber" key="IBDocument.Classes">
 			<array class="NSMutableArray" key="referencedPartialClassDescriptions">
@@ -442,6 +473,9 @@
 		<dictionary class="NSMutableDictionary" key="IBDocument.LastKnownImageSizes">
 			<string key="ButtonAdd.png">{57, 57}</string>
 			<string key="ButtonAddHighlighted.png">{57, 57}</string>
+			<string key="ButtonFeedLikeDefault.png">{44, 44}</string>
+			<string key="ButtonFeedLikeSelected.png">{44, 44}</string>
+			<string key="PanelFeedLong.png">{298, 128}</string>
 		</dictionary>
 		<string key="IBCocoaTouchPluginVersion">2083</string>
 	</data>

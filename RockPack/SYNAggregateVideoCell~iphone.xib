@@ -74,11 +74,11 @@
 								</object>
 								<nil key="IBUIHighlightedColor"/>
 								<int key="IBUIBaselineAdjustment">0</int>
-								<object class="IBUIFontDescription" key="IBUIFontDescription" id="846275352">
+								<object class="IBUIFontDescription" key="IBUIFontDescription" id="982092436">
 									<int key="type">1</int>
 									<double key="pointSize">14</double>
 								</object>
-								<object class="NSFont" key="IBUIFont" id="513132004">
+								<object class="NSFont" key="IBUIFont" id="382991201">
 									<string key="NSName">Helvetica</string>
 									<double key="NSSize">14</double>
 									<int key="NSfFlags">16</int>
@@ -88,7 +88,7 @@
 							<object class="IBUILabel" id="794401724">
 								<reference key="NSNextResponder" ref="901165756"/>
 								<int key="NSvFlags">292</int>
-								<string key="NSFrame">{{44, 228}, {246, 24}}</string>
+								<string key="NSFrame">{{62, 218}, {228, 24}}</string>
 								<reference key="NSSuperview" ref="901165756"/>
 								<reference key="NSWindow"/>
 								<string key="NSReuseIdentifierKey">_NS:9</string>
@@ -101,8 +101,8 @@
 								<reference key="IBUITextColor" ref="779685051"/>
 								<nil key="IBUIHighlightedColor"/>
 								<int key="IBUIBaselineAdjustment">0</int>
-								<reference key="IBUIFontDescription" ref="846275352"/>
-								<reference key="IBUIFont" ref="513132004"/>
+								<reference key="IBUIFontDescription" ref="982092436"/>
+								<reference key="IBUIFont" ref="382991201"/>
 								<bool key="IBUIAdjustsFontSizeToFit">NO</bool>
 							</object>
 							<object class="IBUIView" id="883476284">
@@ -139,24 +139,13 @@
 								</object>
 								<string key="targetRuntimeIdentifier">IBCocoaTouchFramework</string>
 							</object>
-							<object class="IBUIImageView" id="127855598">
-								<reference key="NSNextResponder" ref="901165756"/>
-								<int key="NSvFlags">300</int>
-								<string key="NSFrame">{{10, 228}, {26, 24}}</string>
-								<reference key="NSSuperview" ref="901165756"/>
-								<reference key="NSWindow"/>
-								<reference key="NSNextKeyView" ref="794401724"/>
-								<string key="NSReuseIdentifierKey">_NS:9</string>
-								<bool key="IBUIUserInteractionEnabled">NO</bool>
-								<string key="targetRuntimeIdentifier">IBCocoaTouchFramework</string>
-							</object>
 							<object class="IBUIButton" id="266156758">
 								<reference key="NSNextResponder" ref="901165756"/>
 								<int key="NSvFlags">292</int>
 								<string key="NSFrame">{{253, 44}, {57, 57}}</string>
 								<reference key="NSSuperview" ref="901165756"/>
 								<reference key="NSWindow"/>
-								<reference key="NSNextKeyView" ref="127855598"/>
+								<reference key="NSNextKeyView"/>
 								<string key="NSReuseIdentifierKey">_NS:9</string>
 								<object class="NSColor" key="IBUIBackgroundColor" id="100730725">
 									<int key="NSColorSpace">3</int>
@@ -197,6 +186,24 @@
 									<string key="NSName">Helvetica-Bold</string>
 									<double key="NSSize">15</double>
 									<int key="NSfFlags">16</int>
+								</object>
+							</object>
+							<object class="IBUIImageView" id="1015647007">
+								<reference key="NSNextResponder" ref="901165756"/>
+								<int key="NSvFlags">292</int>
+								<string key="NSFrame">{{10, 208}, {44, 44}}</string>
+								<reference key="NSSuperview" ref="901165756"/>
+								<reference key="NSWindow"/>
+								<string key="NSReuseIdentifierKey">_NS:9</string>
+								<bool key="IBUIUserInteractionEnabled">NO</bool>
+								<string key="targetRuntimeIdentifier">IBCocoaTouchFramework</string>
+								<object class="NSCustomResource" key="IBUIImage">
+									<string key="NSClassName">NSImage</string>
+									<string key="NSResourceName">ButtonFeedLikeDefault.png</string>
+								</object>
+								<object class="NSCustomResource" key="IBUIHighlightedImage">
+									<string key="NSClassName">NSImage</string>
+									<string key="NSResourceName">ButtonFeedLikeSelected.png</string>
 								</object>
 							</object>
 						</array>
@@ -254,14 +261,6 @@
 				</object>
 				<object class="IBConnectionRecord">
 					<object class="IBCocoaTouchOutletConnection" key="connection">
-						<string key="label">heartImageView</string>
-						<reference key="source" ref="377152669"/>
-						<reference key="destination" ref="127855598"/>
-					</object>
-					<int key="connectionID">17</int>
-				</object>
-				<object class="IBConnectionRecord">
-					<object class="IBCocoaTouchOutletConnection" key="connection">
 						<string key="label">imageContainer</string>
 						<reference key="source" ref="377152669"/>
 						<reference key="destination" ref="883476284"/>
@@ -283,6 +282,14 @@
 						<reference key="destination" ref="266156758"/>
 					</object>
 					<int key="connectionID">22</int>
+				</object>
+				<object class="IBConnectionRecord">
+					<object class="IBCocoaTouchOutletConnection" key="connection">
+						<string key="label">heartImageView</string>
+						<reference key="source" ref="377152669"/>
+						<reference key="destination" ref="1015647007"/>
+					</object>
+					<int key="connectionID">24</int>
 				</object>
 			</array>
 			<object class="IBMutableOrderedSet" key="objectRecords">
@@ -309,11 +316,11 @@
 						<reference key="object" ref="377152669"/>
 						<array class="NSMutableArray" key="children">
 							<reference ref="675217485"/>
-							<reference ref="127855598"/>
 							<reference ref="794401724"/>
 							<reference ref="266156758"/>
 							<reference ref="883476284"/>
 							<reference ref="418720652"/>
+							<reference ref="1015647007"/>
 						</array>
 						<reference key="parent" ref="0"/>
 						<string key="objectName">SYNAggregateVideoCell</string>
@@ -336,11 +343,6 @@
 						<string key="objectName">Container</string>
 					</object>
 					<object class="IBObjectRecord">
-						<int key="objectID">16</int>
-						<reference key="object" ref="127855598"/>
-						<reference key="parent" ref="377152669"/>
-					</object>
-					<object class="IBObjectRecord">
 						<int key="objectID">19</int>
 						<reference key="object" ref="794401724"/>
 						<reference key="parent" ref="377152669"/>
@@ -352,6 +354,11 @@
 						<reference key="parent" ref="377152669"/>
 						<string key="objectName">Add Button</string>
 					</object>
+					<object class="IBObjectRecord">
+						<int key="objectID">23</int>
+						<reference key="object" ref="1015647007"/>
+						<reference key="parent" ref="377152669"/>
+					</object>
 				</array>
 			</object>
 			<dictionary class="NSMutableDictionary" key="flattenedProperties">
@@ -359,12 +366,12 @@
 				<string key="-2.CustomClassName">UIResponder</string>
 				<string key="-2.IBPluginDependency">com.apple.InterfaceBuilder.IBCocoaTouchPlugin</string>
 				<string key="15.IBPluginDependency">com.apple.InterfaceBuilder.IBCocoaTouchPlugin</string>
-				<string key="16.IBPluginDependency">com.apple.InterfaceBuilder.IBCocoaTouchPlugin</string>
 				<string key="19.IBPluginDependency">com.apple.InterfaceBuilder.IBCocoaTouchPlugin</string>
 				<string key="2.CustomClassName">SYNAggregateVideoCell</string>
 				<string key="2.IBPluginDependency">com.apple.InterfaceBuilder.IBCocoaTouchPlugin</string>
 				<string key="21.IBPluginDependency">com.apple.InterfaceBuilder.IBCocoaTouchPlugin</string>
 				<real value="1" key="21.IBUIButtonInspectorSelectedStateConfigurationMetadataKey"/>
+				<string key="23.IBPluginDependency">com.apple.InterfaceBuilder.IBCocoaTouchPlugin</string>
 				<string key="8.IBPluginDependency">com.apple.InterfaceBuilder.IBCocoaTouchPlugin</string>
 				<string key="9.IBPluginDependency">com.apple.InterfaceBuilder.IBCocoaTouchPlugin</string>
 			</dictionary>
@@ -372,7 +379,7 @@
 			<nil key="activeLocalization"/>
 			<dictionary class="NSMutableDictionary" key="localizations"/>
 			<nil key="sourceID"/>
-			<int key="maxID">22</int>
+			<int key="maxID">24</int>
 		</object>
 		<object class="IBClassDescriber" key="IBDocument.Classes">
 			<array class="NSMutableArray" key="referencedPartialClassDescriptions">
@@ -455,6 +462,8 @@
 		<dictionary class="NSMutableDictionary" key="IBDocument.LastKnownImageSizes">
 			<string key="ButtonAdd.png">{57, 57}</string>
 			<string key="ButtonAddHighlighted.png">{57, 57}</string>
+			<string key="ButtonFeedLikeDefault.png">{44, 44}</string>
+			<string key="ButtonFeedLikeSelected.png">{44, 44}</string>
 		</dictionary>
 		<string key="IBCocoaTouchPluginVersion">2083</string>
 	</data>

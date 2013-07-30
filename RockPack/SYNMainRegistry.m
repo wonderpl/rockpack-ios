@@ -305,6 +305,8 @@
             
             NSMutableString* coverReferencesString = [[NSMutableString alloc] init];
             
+            aggregationFeedItem.positionValue = ((NSNumber*)coversArray[0]).integerValue; // heuristically create position
+            
             for (NSNumber* coverIndex in coversArray)
             {
                 NSDictionary* itemDictionaryReference = itemsArray[coverIndex.integerValue];
