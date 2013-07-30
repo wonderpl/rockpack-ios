@@ -91,4 +91,12 @@
     
 }
 
+-(NSString*)description
+{
+    NSString* typeString = self.itemTypeValue == FeedItemTypeAggregate ? @"Aggregate" : @"Wrapped";
+    NSString* resourceString = self.resourceTypeValue == FeedItemResourceTypeChannel ? @"Channel" : @"VideoInstance";
+    NSString* numberOfResources = self.feedItems.count > 0 ? [NSString stringWithFormat:@"s (%i)", self.feedItems.count] : @"" ;
+    return [NSString stringWithFormat:@"[FeedItem - %@ (title:%@) for %@%@]", typeString, resourceString, numberOfResources, self.title];
+}
+
 @end

@@ -13,6 +13,8 @@
 @property (nonatomic, strong) IBOutlet UIImageView* userThumbnailImageView;
 @property (nonatomic, strong) IBOutlet UILabel* messageLabel;
 
+@property (nonatomic, strong) IBOutlet UIView* imageContainer;
+
 @property (nonatomic, weak) UIViewController *viewControllerDelegate;
 
 -(void)setCoverImagesFromArray:(NSArray*)array;

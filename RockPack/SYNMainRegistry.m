@@ -283,6 +283,7 @@
                                                             withId:aggregationIndex
                                          usingManagedObjectContext:importManagedObjectContext];
             
+            
             if(!aggregationFeedItem)
                 continue;
             
@@ -310,6 +311,8 @@
             [coverReferencesString deleteCharactersInRange:NSMakeRange(coverReferencesString.length - 2, 1)]; // delete last ':'
             
             aggregationFeedItem.coverIndexes = [NSString stringWithString:coverReferencesString];
+            
+            DebugLog(@"%@", aggregationFeedItem);
             
         }
         
