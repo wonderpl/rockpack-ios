@@ -265,7 +265,6 @@
         if(!leafFeedItem)
             continue;
         
-        // DebugLog(@"%@", leafFeedItem);
         
         // object has been created, see if it belongs to an aggregation
         
@@ -305,7 +304,8 @@
             
             NSMutableString* coverReferencesString = [[NSMutableString alloc] init];
             
-            aggregationFeedItem.positionValue = ((NSNumber*)coversArray[0]).integerValue; // heuristically create position
+            aggregationFeedItem.positionValue = ((NSNumber*)coversArray[0]).integerValue; // heuristically create position from the first cover index
+            
             
             for (NSNumber* coverIndex in coversArray)
             {
@@ -325,6 +325,10 @@
             // DebugLog(@"*** %@", aggregationFeedItem.coverIndexes);
             
         }
+        
+        aggregationFeedItem.dateAdded = leafFeedItem.dateAdded;
+        
+        NSLog(@"dateAdded: %@", aggregationFeedItem.dateAdded);
         
         [aggregationFeedItem.feedItemsSet addObject:leafFeedItem];
         

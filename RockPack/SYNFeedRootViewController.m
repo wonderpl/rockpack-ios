@@ -390,7 +390,6 @@ typedef void(^FeedDataErrorBlock)(void);
 - (void) fetchedAndDisplayFeedItems
 {
     
-    
     [self fetchVideoItems];
     
     [self fetchChannelItems];
@@ -406,7 +405,8 @@ typedef void(^FeedDataErrorBlock)(void);
  
     fetchRequest.predicate = predicate;
 
-    fetchRequest.sortDescriptors = @[[[NSSortDescriptor alloc] initWithKey: @"dateAdded" ascending: NO],[[NSSortDescriptor alloc] initWithKey: @"position" ascending: NO]];
+    fetchRequest.sortDescriptors = @[[[NSSortDescriptor alloc] initWithKey: @"dateAdded" ascending: NO],
+                                     [[NSSortDescriptor alloc] initWithKey: @"position" ascending: NO]];
     
     NSError* error;
     
@@ -416,11 +416,38 @@ typedef void(^FeedDataErrorBlock)(void);
     
     // sort results in categories
     
-    NSMutableArray* feedItemsMutableArray = [NSMutableArray array];
     
-    [feedItemsMutableArray addObject:resultsArray];
+    NSMutableDictionary* buckets = [NSMutableDictionary dictionary];
+    NSDate* dateNoTime;
     
-    self.feedItemsData = [NSArray arrayWithArray:feedItemsMutableArray];
+    for (FeedItem* feedItem in resultsArray)
+    {
+        dateNoTime = [feedItem.dateAdded dateIgnoringTime];
+        
+        NSMutableArray* bucket = [buckets objectForKey:dateNoTime];
+        if(!bucket) {
+            bucket = [NSMutableArray array];
+            [buckets setObject:bucket forKey:dateNoTime];
+        }
+            
+        [bucket addObject:feedItem];
+        
+    }
+    
+    NSArray* sortedKeys = [[buckets allKeys] sortedArrayUsingComparator:^NSComparisonResult(NSDate* date1, NSDate* date2) {
+        
+        return [date2 compare:date1];
+        
+    }];
+    
+    NSMutableArray* sortedItemsArray = [NSMutableArray array];
+    for (NSDate* dateKey in sortedKeys)
+    {
+        [sortedItemsArray addObject:[buckets objectForKey:dateKey]];
+        
+    }
+    self.feedItemsData = sortedItemsArray;
+    
     
     [self.feedCollectionView reloadData];
     
@@ -577,7 +604,6 @@ typedef void(^FeedDataErrorBlock)(void);
     ChannelOwner* channelOwner;
     
     
-    // NSLog(@"%@", feedItem);
     
     
     if(feedItem.resourceTypeValue == FeedItemResourceTypeVideo)
@@ -609,8 +635,6 @@ typedef void(^FeedDataErrorBlock)(void);
         {
             
             videoInstance = (VideoInstance*)[self.feedVideosById objectForKey:feedItem.resourceId];
-            
-            
             
         }
         
@@ -648,11 +672,13 @@ typedef void(^FeedDataErrorBlock)(void);
            channel = (Channel*)[self.feedVideosById objectForKey:feedItem.resourceId];
         }
         
-        channelOwner = channel.channelOwner; 
+        channelOwner = channel.channelOwner;
+        
+        
+        NSLog(@"%@", feedItem);
         
     }
     
-    NSLog(@"%@", channelOwner);
     
     [cell.userThumbnailImageView setImageWithURL: [NSURL URLWithString: channelOwner.thumbnailURL]
                                 placeholderImage: [UIImage imageNamed: @"PlaceholderChannelSmall.png"]
@@ -721,7 +747,7 @@ typedef void(^FeedDataErrorBlock)(void);
     UICollectionReusableView *supplementaryView = nil;
     
     // Work out the day
-    id<NSFetchedResultsSectionInfo> sectionInfo = (self.fetchedResultsController.sections)[indexPath.section];
+    FeedItem* heuristicFeedItem = [self feedItemAtIndexPath:indexPath];
     
     // In the 'name' attribut of the sectionInfo we have actually the keypath data (i.e in this case Date without time)
     
@@ -729,7 +755,7 @@ typedef void(^FeedDataErrorBlock)(void);
     
     if (kind == UICollectionElementKindSectionHeader)
     {
-        NSDate *date = [self.dateFormatter dateFromString: sectionInfo.name];
+        NSDate* date = heuristicFeedItem.dateAdded;
         
         SYNHomeSectionHeaderView *headerSupplementaryView = [collectionView dequeueReusableSupplementaryViewOfKind: kind
                                                                                                withReuseIdentifier: @"SYNHomeSectionHeaderView"
