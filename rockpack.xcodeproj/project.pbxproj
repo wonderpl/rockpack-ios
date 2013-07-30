@@ -914,6 +914,10 @@
 		BE22A83E17A806490004BBF4 /* PanelFeedLong@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = BE22A83A17A806490004BBF4 /* PanelFeedLong@2x.png */; };
 		BE22A83F17A806490004BBF4 /* PanelFeedShort.png in Resources */ = {isa = PBXBuildFile; fileRef = BE22A83B17A806490004BBF4 /* PanelFeedShort.png */; };
 		BE22A84017A806490004BBF4 /* PanelFeedShort@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = BE22A83C17A806490004BBF4 /* PanelFeedShort@2x.png */; };
+		BE22A84317A826E10004BBF4 /* GlossFeedVideo.png in Resources */ = {isa = PBXBuildFile; fileRef = BE22A84117A826E10004BBF4 /* GlossFeedVideo.png */; };
+		BE22A84417A826E10004BBF4 /* GlossFeedVideo@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = BE22A84217A826E10004BBF4 /* GlossFeedVideo@2x.png */; };
+		BE22A84717A8270A0004BBF4 /* GlossFeedVideo@2x~iphone.png in Resources */ = {isa = PBXBuildFile; fileRef = BE22A84517A8270A0004BBF4 /* GlossFeedVideo@2x~iphone.png */; };
+		BE22A84817A8270A0004BBF4 /* GlossFeedVideo~iphone.png in Resources */ = {isa = PBXBuildFile; fileRef = BE22A84617A8270A0004BBF4 /* GlossFeedVideo~iphone.png */; };
 		BE270B7F16EDE0E800CDDA6D /* SYNLoginViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = BE270B7D16EDE0E800CDDA6D /* SYNLoginViewController.m */; };
 		BE270B8016EDE0E800CDDA6D /* SYNLoginViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = BE270B7E16EDE0E800CDDA6D /* SYNLoginViewController.xib */; };
 		BE270BB816EE493800CDDA6D /* ButtonFacebookDefault.png in Resources */ = {isa = PBXBuildFile; fileRef = BE270BA816EE493800CDDA6D /* ButtonFacebookDefault.png */; };
@@ -2279,6 +2283,10 @@
 		BE22A83A17A806490004BBF4 /* PanelFeedLong@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = "PanelFeedLong@2x.png"; path = "Assets/Images/PanelFeedLong@2x.png"; sourceTree = "<group>"; };
 		BE22A83B17A806490004BBF4 /* PanelFeedShort.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = PanelFeedShort.png; path = Assets/Images/PanelFeedShort.png; sourceTree = "<group>"; };
 		BE22A83C17A806490004BBF4 /* PanelFeedShort@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = "PanelFeedShort@2x.png"; path = "Assets/Images/PanelFeedShort@2x.png"; sourceTree = "<group>"; };
+		BE22A84117A826E10004BBF4 /* GlossFeedVideo.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = GlossFeedVideo.png; path = Assets/Images/GlossFeedVideo.png; sourceTree = "<group>"; };
+		BE22A84217A826E10004BBF4 /* GlossFeedVideo@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = "GlossFeedVideo@2x.png"; path = "Assets/Images/GlossFeedVideo@2x.png"; sourceTree = "<group>"; };
+		BE22A84517A8270A0004BBF4 /* GlossFeedVideo@2x~iphone.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = "GlossFeedVideo@2x~iphone.png"; path = "Assets/Images/GlossFeedVideo@2x~iphone.png"; sourceTree = "<group>"; };
+		BE22A84617A8270A0004BBF4 /* GlossFeedVideo~iphone.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = "GlossFeedVideo~iphone.png"; path = "Assets/Images/GlossFeedVideo~iphone.png"; sourceTree = "<group>"; };
 		BE270B7C16EDE0E800CDDA6D /* SYNLoginViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SYNLoginViewController.h; sourceTree = "<group>"; };
 		BE270B7D16EDE0E800CDDA6D /* SYNLoginViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SYNLoginViewController.m; sourceTree = "<group>"; };
 		BE270B7E16EDE0E800CDDA6D /* SYNLoginViewController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = SYNLoginViewController.xib; sourceTree = "<group>"; };
@@ -3246,6 +3254,10 @@
 				BE22A83A17A806490004BBF4 /* PanelFeedLong@2x.png */,
 				BE22A83B17A806490004BBF4 /* PanelFeedShort.png */,
 				BE22A83C17A806490004BBF4 /* PanelFeedShort@2x.png */,
+				BE22A84117A826E10004BBF4 /* GlossFeedVideo.png */,
+				BE22A84217A826E10004BBF4 /* GlossFeedVideo@2x.png */,
+				BE22A84517A8270A0004BBF4 /* GlossFeedVideo@2x~iphone.png */,
+				BE22A84617A8270A0004BBF4 /* GlossFeedVideo~iphone.png */,
 			);
 			name = Feed;
 			sourceTree = "<group>";
@@ -6312,6 +6324,10 @@
 				BE22A83E17A806490004BBF4 /* PanelFeedLong@2x.png in Resources */,
 				BE22A83F17A806490004BBF4 /* PanelFeedShort.png in Resources */,
 				BE22A84017A806490004BBF4 /* PanelFeedShort@2x.png in Resources */,
+				BE22A84317A826E10004BBF4 /* GlossFeedVideo.png in Resources */,
+				BE22A84417A826E10004BBF4 /* GlossFeedVideo@2x.png in Resources */,
+				BE22A84717A8270A0004BBF4 /* GlossFeedVideo@2x~iphone.png in Resources */,
+				BE22A84817A8270A0004BBF4 /* GlossFeedVideo~iphone.png in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

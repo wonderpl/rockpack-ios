@@ -326,7 +326,6 @@
 										<int key="NSvFlags">290</int>
 										<string key="NSFrame">{{78, 57}, {160, 42}}</string>
 										<reference key="NSSuperview" ref="76609695"/>
-										<reference key="NSNextKeyView"/>
 										<string key="NSReuseIdentifierKey">_NS:9</string>
 										<reference key="IBUIBackgroundColor" ref="67368057"/>
 										<bool key="IBUIAutoresizesSubviews">NO</bool>
