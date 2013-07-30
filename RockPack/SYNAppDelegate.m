@@ -209,62 +209,54 @@
     return YES;
 }
 
--(void)refreshFacebookSession
+
+- (void) refreshFacebookSession
 {
     // link to facebook
-    
 
-    
-    if(self.currentUser.facebookAccountUrl)
-
+    if (self.currentUser.facebookAccountUrl)
     {
-        if(!FBSession.activeSession.isOpen)
+        if (!FBSession.activeSession.isOpen)
         {
-            [FBSession.activeSession openWithCompletionHandler:^(FBSession *session, FBSessionState status, NSError *error) {
-                
-                DebugLog(@"*** Complete! %@", session);
-                
-                
-                
-            }];
+            [FBSession.activeSession
+             openWithCompletionHandler: ^(FBSession *session, FBSessionState status, NSError *error) {
+                 DebugLog(@"*** Complete! %@", session);
+             }];
         }
         else
         {
-            [self.oAuthNetworkEngine getExternalAccountForUrl:self.currentUser.facebookAccountUrl completionHandler:^(id response) {
-                
-                NSDictionary* external_accounts = response[@"external_accounts"];
-                
-                NSArray* accounts = external_accounts ? external_accounts[@"items"] : nil;
-                
-                if(accounts && accounts.count > 0)
-                {
-                    NSDictionary* facebookAccount = (NSDictionary*)accounts[0];
-                    if(facebookAccount)
-                    {
-                        self.currentUser.facebookToken = facebookAccount[@"external_token"];
-                    }
-                    
-                }
-                
-                if(self.currentUser.facebookToken)
-                {
-                    [[SYNFacebookManager sharedFBManager] openSessionFromExistingToken:self.currentUser.facebookToken
-                                                                             onSuccess:^{
-                                                                                 
-                                                                                 
-                                                                                 
-                                                                             } onFailure:^(NSString *errorMessage) {
-                                                                                 
-                                                                             }];
-                }
-                
-            } errorHandler:^(id error) {
-                
-            }];
+            [self.oAuthNetworkEngine getExternalAccountForUrl: self.currentUser.facebookAccountUrl
+                                            completionHandler: ^(id response)
+             {
+                 NSDictionary *external_accounts = response[@"external_accounts"];
+                 
+                 NSArray *accounts = external_accounts ? external_accounts[@"items"] : nil;
+                 
+                 if (accounts && accounts.count > 0)
+                 {
+                     NSDictionary *facebookAccount = (NSDictionary *)accounts[0];
+                     
+                     if (facebookAccount)
+                     {
+                         self.currentUser.facebookToken = facebookAccount[@"external_token"];
+                     }
+                 }
+                 
+                 if (self.currentUser.facebookToken)
+                 {
+                     [[SYNFacebookManager sharedFBManager] openSessionFromExistingToken: self.currentUser.facebookToken
+                                                                              onSuccess: ^{
+                                                                              }
+                                                                              onFailure: ^(NSString *errorMessage) {
+                                                                              }];
+                 }
+             }
+                                                 errorHandler: ^(id error) {
+                                                 }];
         }
-        
     }
 }
+
 
 - (void) setTokenExpiryTimer
 {

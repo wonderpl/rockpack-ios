@@ -29,6 +29,7 @@
 @property (nonatomic, strong) NSCalendar* currentCalendar;
 @property (nonatomic, weak) MKNetworkOperation* runningSearchOperation;
 @property (nonatomic, weak) NSString* searchTerm;
+@property (nonatomic, strong) NSDateFormatter *dateFormatter;
 
 @end
 
@@ -41,6 +42,106 @@
 - (void) viewDidLoad
 {
     [super viewDidLoad];
+    
+    // ==============================
+    
+    SYNIntegralCollectionViewFlowLayout *standardFlowLayout;
+    UIEdgeInsets sectionInset, contentInset;
+    CGRect videoCollectionViewFrame, calculatedViewFrame;
+    CGSize screenSize;
+    CGFloat minimumLineSpacing;
+    
+    // Setup device dependent parametes/dimensions
+    
+    if (IS_IPHONE)
+    {
+        // Calculate frame size
+        screenSize = CGSizeMake([SYNDeviceManager.sharedInstance currentScreenWidth], [SYNDeviceManager.sharedInstance currentScreenHeight]);
+        
+        calculatedViewFrame = CGRectMake(0.0, 0.0, screenSize.width, screenSize.height - 20.0f);
+        
+        videoCollectionViewFrame = CGRectMake(0.0, kStandardCollectionViewOffsetYiPhone, screenSize.width, screenSize.height - 20.0f - kStandardCollectionViewOffsetYiPhone);
+        
+        // Collection view parameters
+        contentInset = UIEdgeInsetsMake(4, 0, 0, 0);
+        sectionInset = UIEdgeInsetsMake(10.0f, 5.0f, 15.0f, 5.0f);
+        minimumLineSpacing = 10.0f;
+        
+    }
+    else
+    {
+        calculatedViewFrame = CGRectMake(0.0, 0.0, kFullScreenWidthLandscape, kFullScreenHeightLandscapeMinusStatusBar);
+        
+        videoCollectionViewFrame = CGRectMake(0.0, kStandardCollectionViewOffsetY, kFullScreenWidthLandscape, kFullScreenHeightLandscapeMinusStatusBar - kStandardCollectionViewOffsetY);
+        
+        // Collection view parameters
+        contentInset = UIEdgeInsetsMake(0, 0, 0, 0);
+        sectionInset = UIEdgeInsetsMake(10.0f, 10.0f, 15.0f, 10.0f);
+        minimumLineSpacing = 30.0f;
+    }
+    
+    // Set our view frame and attributes
+    self.view.frame = calculatedViewFrame;
+    self.view.backgroundColor = [UIColor clearColor];
+    
+    
+    // Setup out collection view layout
+    standardFlowLayout = [SYNIntegralCollectionViewFlowLayout layoutWithItemSize: self.videoCellSize
+                                                         minimumInterItemSpacing: 0.0f
+                                                              minimumLineSpacing: minimumLineSpacing
+                                                                 scrollDirection: UICollectionViewScrollDirectionVertical
+                                                                    sectionInset: sectionInset];
+    standardFlowLayout.footerReferenceSize = [self footerSize];
+    
+    // Setup the collection view itself
+    self.videoThumbnailCollectionView = [[UICollectionView alloc] initWithFrame: videoCollectionViewFrame
+                                                           collectionViewLayout: standardFlowLayout];
+    
+    self.videoThumbnailCollectionView.delegate = self;
+    self.videoThumbnailCollectionView.dataSource = self;
+    self.videoThumbnailCollectionView.backgroundColor = [UIColor clearColor];
+    self.videoThumbnailCollectionView.scrollsToTop = NO;
+    self.videoThumbnailCollectionView.contentInset = contentInset;
+    [self.view addSubview:self.videoThumbnailCollectionView];
+    
+    self.videoThumbnailCollectionView.autoresizingMask = UIViewAutoresizingFlexibleWidth| UIViewAutoresizingFlexibleHeight;
+    
+    // Register collection view cells
+    UINib *videoThumbnailCellNib = [UINib nibWithNibName: @"SYNVideoThumbnailWideCell"
+                                                  bundle: nil];
+    
+    [self.videoThumbnailCollectionView registerNib: videoThumbnailCellNib
+                        forCellWithReuseIdentifier: @"SYNVideoThumbnailWideCell"];
+    
+    // Register collection view header view
+    UINib *headerViewNib = [UINib nibWithNibName: @"SYNHomeSectionHeaderView"
+                                          bundle: nil];
+    
+    [self.videoThumbnailCollectionView registerNib: headerViewNib
+                        forSupplementaryViewOfKind: UICollectionElementKindSectionHeader
+                               withReuseIdentifier: @"SYNHomeSectionHeaderView"];
+    
+    // Register Footer
+    UINib *footerViewNib = [UINib nibWithNibName: @"SYNChannelFooterMoreView"
+                                          bundle: nil];
+    
+    [self.videoThumbnailCollectionView registerNib: footerViewNib
+                        forSupplementaryViewOfKind: UICollectionElementKindSectionFooter
+                               withReuseIdentifier: @"SYNChannelFooterMoreView"];
+    
+    
+    
+    // We should only setup our date formatter once
+    self.dateFormatter = [[NSDateFormatter alloc] init];
+    self.dateFormatter.dateFormat = @"yyyy-MM-dd HH:mm:ss Z";
+    
+    // Log
+    [[NSNotificationCenter defaultCenter] addObserver: self
+                                             selector: @selector(videoQueueCleared)
+                                                 name: kVideoQueueClear
+                                               object: nil];
+    
+    // =============================
 
     self.isIPhone = IS_IPHONE;
     
@@ -75,10 +176,25 @@
     self.currentCalendar = [NSCalendar currentCalendar];
 }
 
-
+- (CGSize) videoCellSize
+{
+    if (IS_IPHONE)
+    {
+        return CGSizeMake(310,221);
+    }
+    else if ([SYNDeviceManager.sharedInstance isLandscape])
+    {
+        return CGSizeMake(497, 140);
+    }
+    else
+    {
+        return CGSizeMake(370, 140);
+    }
+}
 - (void) viewWillAppear: (BOOL) animated
 {
     [super viewWillAppear: animated];
+
 
     [self removeEmptyGenreMessage];
 }
@@ -91,6 +207,7 @@
 -(void)displayMessage:(NSString*)message
 {
     
+
 }
 
 
@@ -145,9 +262,10 @@
                                                                                 if(self.itemToUpdate)
                                                                                     [self.itemToUpdate setNumberOfItems: self.dataItemsAvailable
                                                                                                                animated: YES];
-                                                                                
+
                                                                                 if(itemsCount == 0)
                                                                                     [self displayMessage:@"NO VIDEOS FOUND"];
+
                                                                             }];
     self.searchTerm = term;
 }
@@ -404,7 +522,9 @@
                                                                                    pointingTo:rectToPointTo
                                                                                 withDirection:directionToPointTo];
 
+
         __weak SYNSearchVideosViewController* wself = self;
+
         addToChannelPopover.action = ^{
             [wself videoAddButtonTapped:cell.addItButton];
         };
@@ -415,6 +535,7 @@
         [appDelegate.onBoardingQueue present];
     }
 }
+
 
 
 - (void) videoAddButtonTapped: (UIButton *) _addButton
@@ -465,6 +586,12 @@
     
     
     _addButton.selected = !_addButton.selected; // switch to on/off
+}
+
+- (void) videoQueueCleared
+{
+    // this will remove the '+' from the videos that where selected
+    [self.videoThumbnailCollectionView reloadData];
 }
 
 @end

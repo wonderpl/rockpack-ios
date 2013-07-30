@@ -6,9 +6,10 @@
 //  Copyright (c) Rockpack Ltd. All rights reserved.
 //
 
-#import "SYNFacebookManager.h"
-#import <FacebookSDK/FacebookSDK.h>
 #import "Friend.h"
+#import "SYNFacebookManager.h"
+#import "SYNSessionTokenCachingStrategy.h"
+#import <FacebookSDK/FacebookSDK.h>
 
 typedef enum
 {
@@ -19,19 +20,16 @@ typedef enum
 
 @interface SYNFacebookManager ()
 
-@property (nonatomic, strong) NSArray *readPermissions;
-@property (nonatomic, strong) NSArray *publishPermissions;
-
+@property (atomic, assign) int outstandingLoginRequests;
 @property (nonatomic, strong) NSArray *fullPermissions;
-
-@property (atomic,assign) int outstandingLoginRequests;
+@property (nonatomic, strong) NSArray *publishPermissions;
+@property (nonatomic, strong) NSArray *readPermissions;
+@property (nonatomic, strong) SYNSessionTokenCachingStrategy *tokenCachingStrategy;
 
 @end
 
 
 @implementation SYNFacebookManager
-
-
 
 // Singleton
 + (id) sharedFBManager
@@ -43,8 +41,8 @@ typedef enum
     return fBManager;
 }
 
-// Set up our permissions arrays (one for read, one for publish)
 
+// Set up our permissions arrays (one for read, one for publish)
 - (id) init
 {
     if ((self = [super init]))
@@ -52,14 +50,13 @@ typedef enum
         // Read and publish permissions must be requested separately in iOS 6,
         // so set appropriate permissions here
         self.readPermissions = @[@"email"];
-        
         self.publishPermissions = @[@"publish_actions"];
-        
         self.fullPermissions = @[@"email", @"publish_actions"];
     }
     
     return self;
 }
+
 
 // Log into Facebook (with read permissions)
 // This is done is a couple of stages...
@@ -68,7 +65,6 @@ typedef enum
 // 2. Check to see if we have extended read permissions to allow us to get the user's email address
 // 3. Once we have an email address, then call the suceess block, otherwise if anything else goes wrong
 //    call the failure block
-
 - (void) loginOnSuccess: (FacebookLoginSuccessBlock) successBlock
               onFailure: (FacebookLoginFailureBlock) failureBlock
 {
@@ -76,45 +72,46 @@ typedef enum
     
     [self openSessionWithPermissionType: kFacebookPermissionTypeRead
                               onSuccess: ^{
-                                  
                                   // request me information
                                   [FBRequestConnection startForMeWithCompletionHandler: ^(FBRequestConnection *connection,
                                                                                           NSDictionary < FBGraphUser > *userInfo,
                                                                                           NSError *error) {
-                                      if (error) {
+                                      if (error)
+                                      {
                                           // Graph query failed, so parse NSError userInfo to get description
                                           NSString *errorMessage = [self parsedErrorMessage: error];
                                           dispatch_async(dispatch_get_main_queue(), ^{
                                               self.outstandingLoginRequests--;
-                                              if(self.outstandingLoginRequests<=0)
+                                              
+                                              if (self.outstandingLoginRequests <= 0)
                                               {
                                                   //Only report error if the very last login attempt failed.
                                                   failureBlock(errorMessage);
                                               }
                                           });
-                                      } else {
-                                          
-                                          
+                                      }
+                                      else
+                                      {
                                           dispatch_async(dispatch_get_main_queue(), ^{
                                               self.outstandingLoginRequests--;
                                               successBlock(userInfo);
                                           });
                                       }
                                   }];
-                                  
                               }
                               onFailure: ^(NSString *errorMessage) {
                                   dispatch_async(dispatch_get_main_queue(), ^{
                                       self.outstandingLoginRequests--;
-                                      if(self.outstandingLoginRequests<=0)
+                                      
+                                      if (self.outstandingLoginRequests <= 0)
                                       {
                                           //Only report error if the very last login attempt failed.
                                           failureBlock(errorMessage);
-                                          
                                       }
                                   });
                               }];
 }
+
 
 // Logout
 
@@ -137,60 +134,56 @@ typedef enum
     }
 }
 
-- (void) openSessionFromExistingToken: (NSString*)token
+
+- (void) openSessionFromExistingToken: (NSString *) token
                             onSuccess: (FacebookOpenSessionSuccessBlock) successBlock
                             onFailure: (FacebookOpenSessionFailureBlock) failureBlock
 {
+    if (nil == self.tokenCachingStrategy)
+    {
+        self.tokenCachingStrategy = [[SYNSessionTokenCachingStrategy alloc] initWithToken: token
+                                                                           andPermissions: self.fullPermissions];
+        //        // Hard-code for demo purposes, should be set to
+        //        // a unique value that identifies the user of the app.
+        //        [self.tokenCaching setThirdPartySessionId: @"213465780"];
+    }
     
+    FBSession *session = [[FBSession alloc] initWithAppID: nil
+                                              permissions: self.fullPermissions
+                                          urlSchemeSuffix: nil
+                                       tokenCacheStrategy: self.tokenCachingStrategy];
     
-
-    
-    NSString* facebookAppId = [[NSBundle mainBundle] objectForInfoDictionaryKey:@"FacebookAppID"];
-    
-    FBSession* session = [[FBSession alloc] initWithAppID:facebookAppId
-                                              permissions:self.fullPermissions
-                                          defaultAudience:FBSessionDefaultAudienceNone
-                                          urlSchemeSuffix:nil
-                                       tokenCacheStrategy:[FBSessionTokenCachingStrategy nullCacheInstance]];
-    
-    [FBSession setActiveSession:session];
-    FBAccessTokenData* tokenData = [FBAccessTokenData createTokenFromString:token
-                                                                permissions:self.fullPermissions
-                                                             expirationDate:[NSDate dateWithTimeIntervalSinceNow:3600]
-                                                                  loginType:FBSessionLoginTypeNone
-                                                                refreshDate:[NSDate dateWithTimeIntervalSinceNow:3600]];
-    
-    BOOL result;
-    BOOL* resultPtr = &result;
-    result = [session openFromAccessTokenData:tokenData completionHandler:^(FBSession *session, FBSessionState status, NSError *error) {
+    if (session.state == FBSessionStateCreatedTokenLoaded)
+    {
+        NSLog(@"Cached token found.");
+        // Set the active session
+        [FBSession setActiveSession: session];
         
-        if(!error)
-        {
-            if(session.isOpen)
-            {
-                
-                
-                
-                successBlock();
-                
-                
-            }
-            
-        }
-        else
-        {
-            failureBlock([error description]);
-        }
-        
-        
-        
-       DebugLog(@"session = %@, status = %i, error = %@, result = %i", session, status, error, *resultPtr);
-        
-        
-    }];
-    
-    
+        // Open the session, but do not use iOS6 system acount login
+        // if the caching strategy does not store info locally on the
+        // device, otherwise you could use:
+        // FBSessionLoginBehaviorUseSystemAccountIfPresent
+        [session openWithBehavior: FBSessionLoginBehaviorWithFallbackToWebView
+                completionHandler: ^(FBSession *session,
+                                     FBSessionState state,
+                                     NSError *error) {
+                    if (!error)
+                    {
+                        if (session.isOpen)
+                        {
+                            successBlock();
+                        }
+                    }
+                    else
+                    {
+                        failureBlock([error description]);
+                    }
+                    
+                    DebugLog(@"session = %@,  error = %@, r", session, error);
+                }];
+    }
 }
+
 
 // Helper method to open a session if required
 - (void) openSessionWithPermissionType: (PermissionType) permissionType
@@ -202,17 +195,18 @@ typedef enum
     {
         // Session is open, so we already have read permissions
         // Check to see if the caller requires extended publish permissions and we actually have any
-        if (permissionType == kFacebookPermissionTypePublish  && self.publishPermissions.count > 0)
+        if (permissionType == kFacebookPermissionTypePublish && self.publishPermissions.count > 0)
         {
             // Check to see that the publish permissions have been set by checking to see if the first publish permission has been set
             // if so, then all the other publish permissions will have been set
-            if ([FBSession.activeSession.permissions indexOfObject: (self.publishPermissions)[0]] == NSNotFound)
+            if ([FBSession.activeSession.permissions
+                 indexOfObject: (self.publishPermissions)[0]] == NSNotFound)
             {
-                
                 // No, we don't already have extended publish permissions
-                [FBSession.activeSession requestNewPublishPermissions: self.publishPermissions
-                                                      defaultAudience: FBSessionDefaultAudienceEveryone
-                                                    completionHandler: ^(FBSession *session, NSError *error)
+                [FBSession.activeSession
+                 requestNewPublishPermissions: self.publishPermissions
+                 defaultAudience: FBSessionDefaultAudienceEveryone
+                 completionHandler: ^(FBSession *session, NSError *error)
                  {
                      // Permissission denied
                      if (error)
@@ -267,7 +261,6 @@ typedef enum
                                       completionHandler: ^(FBSession *session,
                                                            FBSessionState status,
                                                            NSError *error) {
-                                          
                                           NSString *errorMessage = nil;
                                           
                                           NSLog(@"%@", [session.accessTokenData dictionary]);
@@ -275,7 +268,7 @@ typedef enum
                                           //We only expect this completion handler to be called once. The FBSession seems to store it
                                           //and it gets called again on logout. the hasExecuted boolean flag prevents the block from being called unless it has been
                                           //recreated again during another login attempt.
-                                          if(hasExecuted)
+                                          if (hasExecuted)
                                           {
                                               return;
                                           }
@@ -283,6 +276,7 @@ typedef enum
                                           {
                                               hasExecuted = YES;
                                           }
+                                          
                                           // Check to see if the user cancelled the log in
                                           if (status == FBSessionStateClosedLoginFailed)
                                           {
@@ -324,7 +318,7 @@ typedef enum
                                                   {
                                                       DebugLog(@"++ openSession: Unknown error");
                                                       // For some reason, the session is not open
-                                                      dispatch_async(dispatch_get_main_queue(), ^ {
+                                                      dispatch_async(dispatch_get_main_queue(), ^{
                                                           failureBlock(kFacebookUnknownError);
                                                       });
                                                   }
@@ -337,54 +331,56 @@ typedef enum
 
 #pragma mark - Posting to Wall
 
-- (void) postMessageToWall:(NSString*)message
+- (void) postMessageToWall: (NSString *) message
                  onSuccess: (FacebookPostSuccessBlock) successBlock
                  onFailure: (FacebookPostFailureBlock) failureBlock
 {
-    
-    if( ![FBSession.activeSession isOpen] || [[[FBSession activeSession] permissions] indexOfObject:@"publish_actions"] == NSNotFound)
+    if (![FBSession.activeSession isOpen] || [[[FBSession activeSession] permissions] indexOfObject: @"publish_actions"] == NSNotFound)
     {
         // reopen session
         
         [self openSessionWithPermissionType: kFacebookPermissionTypeRead | kFacebookPermissionTypePublish
                                   onSuccess: ^{
-                                      [self postMessageToWall: message
-                                                    onSuccess: successBlock
-                                                    onFailure: failureBlock];
+                                      [self	 postMessageToWall: message
+                                                     onSuccess: successBlock
+                                                     onFailure: failureBlock];
                                   }
-                                  onFailure: ^(NSString* errorMessage) {
-                                      
+                                  onFailure: ^(NSString *errorMessage) {
                                   }];
         
         return;
-        
     }
     
-    NSDictionary* postParams = @{@"caption" : @"First Post",
-                                 @"message" : message,
-                                 @"description" : message};
+    NSDictionary *postParams = @{
+                                 @"caption": @"First Post",
+                                 @"message": message,
+                                 @"description": message
+                                 };
     
     [FBRequestConnection startWithGraphPath: @"me/feed"
                                  parameters: postParams
                                  HTTPMethod: @"POST"
                           completionHandler: ^(FBRequestConnection *connection, id result, NSError *error) {
-                              
                               DebugLog(@"result = %@", result);
+                              
                               if (error)
                               {
                                   DebugLog(@"%@", error);
-                                  if(failureBlock)
+                                  
+                                  if (failureBlock)
+                                  {
                                       failureBlock(error);
+                                  }
                                   
                                   return;
                               }
                               
-                              
-                              if(successBlock)
+                              if (successBlock)
+                              {
                                   successBlock();
+                              }
                           }];
 }
-
 
 
 // Helper method to extract a user readable string from an NSError returned by a Facebook API call
@@ -414,57 +410,63 @@ typedef enum
     return [NSString stringWithFormat: NSLocalizedString(@"Facebook\n\n%@", nil), errorMessage];
 }
 
-- (void) sendAppRequestToFriend:(Friend*)friend
-                      onSuccess:(FacebookPostSuccessBlock) successBlock
-                      onFailure:(FacebookPostFailureBlock) failureBlock
+
+- (void) sendAppRequestToFriend: (Friend *) friend
+                      onSuccess: (FacebookPostSuccessBlock) successBlock
+                      onFailure: (FacebookPostFailureBlock) failureBlock
 {
-    if(!friend || !self.hasOpenSession)
+    if (!friend || !self.hasOpenSession)
+    {
         return;
-    
+    }
     
     // Reads the value of the custom key I added to the Info.plist
-    NSString* facebookAppId = [[NSBundle mainBundle] objectForInfoDictionaryKey:@"FacebookAppID"];
+    NSString *facebookAppId = [[NSBundle mainBundle] objectForInfoDictionaryKey: @"FacebookAppID"];
     
-    // 
+    //
     
-    NSMutableDictionary* params = [NSMutableDictionary dictionary];
-    [params addEntriesFromDictionary:@{@"app_id":facebookAppId}];
+    NSMutableDictionary *params = [NSMutableDictionary dictionary];
+    [params addEntriesFromDictionary: @{@"app_id": facebookAppId}];
     
     // if the Friend's Id was passed correctly we can set it
-    if(friend.externalUID && ![friend.externalUID isEqualToString:@""])
-        [params addEntriesFromDictionary:@{@"to":friend.externalUID}];
+    if (friend.externalUID && ![friend.externalUID isEqualToString: @""])
+    {
+        [params addEntriesFromDictionary: @{@"to": friend.externalUID}];
+    }
     
-    
-    [FBWebDialogs presentRequestsDialogModallyWithSession:[FBSession activeSession]
-                                                  message:@"Join me on Rockpack for iPhone & iPad"
-                                                    title:@"Invite Friend"
-                                               parameters:params
-                                                  handler:^(FBWebDialogResult result, NSURL *resultURL, NSError *error) {
-                                                      
+    [FBWebDialogs presentRequestsDialogModallyWithSession: [FBSession activeSession]
+                                                  message: @"Join me on Rockpack for iPhone & iPad"
+                                                    title: @"Invite Friend"
+                                               parameters: params
+                                                  handler: ^(FBWebDialogResult result, NSURL *resultURL, NSError *error) {
                                                       DebugLog(@"FBWebDialogResult: %@\n%@", result == 0 ? @"Completed" : @"NOT Completed", resultURL);
-                                                      if (error) {
+                                                      
+                                                      if (error)
+                                                      {
                                                           // Case A: Error launching the dialog or sending request.
-                                                          
-                                                          
                                                           NSLog(@"Error sending request: %@", error);
                                                           failureBlock(error);
-                                                          
-                                                          
-                                                      } else {
-                                                          
-                                                          if (result == FBWebDialogResultDialogNotCompleted) {
-                                                              
+                                                      }
+                                                      else
+                                                      {
+                                                          if (result == FBWebDialogResultDialogNotCompleted)
+                                                          {
                                                               NSLog(@"User canceled request by clicking 'X'.");
-                                                          } else {
+                                                          }
+                                                          else
+                                                          {
                                                               NSLog(@"Request Sent of Ok Button Pressed");
                                                               successBlock();
                                                           }
-                                                      }}];
+                                                      }
+                                                  }];
 }
 
--(BOOL)hasOpenSession
+
+- (BOOL) hasOpenSession
 {
     return [[FBSession activeSession] isOpen];
 }
+
 
 @end
