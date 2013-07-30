@@ -29,10 +29,14 @@
     if ([object isKindOfClass:[VideoInstance class]]) {
         instance.dateAdded = ((VideoInstance*)object).dateAdded;
         instance.resourceType = FeedItemResourceTypeVideo;
+        instance.positionValue = ((VideoInstance*)object).positionValue;
+        instance.title = ((VideoInstance*)object).title;
     }
     else if ([object isKindOfClass:[Channel class]]) {
         instance.dateAdded = ((Channel*)object).datePublished;
         instance.resourceTypeValue = FeedItemResourceTypeChannel;
+        instance.positionValue = ((Channel*)object).positionValue;
+        instance.title = ((Channel*)object).title;
     }
     
     instance.resourceId = object.uniqueId;
@@ -87,6 +91,8 @@
     NSNumber* n_count = dictionary[@"count"];
     if(n_count && [n_count isKindOfClass:[NSNumber class]])
         self.itemCountValue = n_count.integerValue;
+    
+    self.positionValue = INT_MAX; // heuristic, place it at the end
     
     
 }

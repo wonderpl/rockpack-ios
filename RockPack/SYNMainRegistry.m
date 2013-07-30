@@ -311,6 +311,7 @@
                 NSString* itemReferenceIdentifier = itemDictionaryReference[@"id"];
                 if(!itemReferenceIdentifier)
                     continue;
+                
                 [coverReferencesString appendFormat:@"%@:", itemReferenceIdentifier];
             }
                 
@@ -319,11 +320,9 @@
             
             aggregationFeedItem.coverIndexes = [NSString stringWithString:coverReferencesString];
             
-            DebugLog(@"*** %@", aggregationFeedItem.coverIndexes);
+            // DebugLog(@"*** %@", aggregationFeedItem.coverIndexes);
             
         }
-        
-        
         
         [aggregationFeedItem.feedItemsSet addObject:leafFeedItem];
         

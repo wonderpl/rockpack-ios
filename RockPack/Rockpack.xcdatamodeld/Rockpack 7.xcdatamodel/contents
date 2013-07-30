@@ -58,6 +58,7 @@
         <attribute name="dateAdded" optional="YES" attributeType="Date" syncable="YES"/>
         <attribute name="itemCount" optional="YES" attributeType="Integer 32" defaultValueString="0" syncable="YES"/>
         <attribute name="itemType" optional="YES" attributeType="Integer 32" defaultValueString="0" syncable="YES"/>
+        <attribute name="position" optional="YES" attributeType="Integer 64" defaultValueString="0" syncable="YES"/>
         <attribute name="resourceId" optional="YES" attributeType="String" syncable="YES"/>
         <attribute name="resourceType" optional="YES" attributeType="Integer 32" defaultValueString="0" syncable="YES"/>
         <attribute name="title" optional="YES" attributeType="String" syncable="YES"/>
@@ -122,7 +123,7 @@
         <element name="ChannelCover" positionX="-164" positionY="-27" width="128" height="133"/>
         <element name="ChannelOwner" positionX="-344" positionY="48" width="128" height="135"/>
         <element name="CoverArt" positionX="-324" positionY="-180" width="128" height="103"/>
-        <element name="FeedItem" positionX="124" positionY="-304" width="128" height="193"/>
+        <element name="FeedItem" positionX="124" positionY="-304" width="128" height="208"/>
         <element name="Friend" positionX="-495" positionY="210" width="128" height="103"/>
         <element name="Genre" positionX="-290" positionY="-326" width="128" height="88"/>
         <element name="SubGenre" positionX="-461" positionY="-319" width="128" height="73"/>

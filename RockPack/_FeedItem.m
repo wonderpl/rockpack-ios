@@ -9,6 +9,7 @@ const struct FeedItemAttributes FeedItemAttributes = {
 	.dateAdded = @"dateAdded",
 	.itemCount = @"itemCount",
 	.itemType = @"itemType",
+	.position = @"position",
 	.resourceId = @"resourceId",
 	.resourceType = @"resourceType",
 	.title = @"title",
@@ -55,6 +56,11 @@ const struct FeedItemFetchedProperties FeedItemFetchedProperties = {
 	}
 	if ([key isEqualToString:@"itemTypeValue"]) {
 		NSSet *affectingKey = [NSSet setWithObject:@"itemType"];
+		keyPaths = [keyPaths setByAddingObjectsFromSet:affectingKey];
+		return keyPaths;
+	}
+	if ([key isEqualToString:@"positionValue"]) {
+		NSSet *affectingKey = [NSSet setWithObject:@"position"];
 		keyPaths = [keyPaths setByAddingObjectsFromSet:affectingKey];
 		return keyPaths;
 	}
@@ -137,6 +143,32 @@ const struct FeedItemFetchedProperties FeedItemFetchedProperties = {
 
 - (void)setPrimitiveItemTypeValue:(int32_t)value_ {
 	[self setPrimitiveItemType:[NSNumber numberWithInt:value_]];
+}
+
+
+
+
+
+@dynamic position;
+
+
+
+- (int64_t)positionValue {
+	NSNumber *result = [self position];
+	return [result longLongValue];
+}
+
+- (void)setPositionValue:(int64_t)value_ {
+	[self setPosition:[NSNumber numberWithLongLong:value_]];
+}
+
+- (int64_t)primitivePositionValue {
+	NSNumber *result = [self primitivePosition];
+	return [result longLongValue];
+}
+
+- (void)setPrimitivePositionValue:(int64_t)value_ {
+	[self setPrimitivePosition:[NSNumber numberWithLongLong:value_]];
 }
 
 

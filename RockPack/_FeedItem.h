@@ -10,6 +10,7 @@ extern const struct FeedItemAttributes {
 	__unsafe_unretained NSString *dateAdded;
 	__unsafe_unretained NSString *itemCount;
 	__unsafe_unretained NSString *itemType;
+	__unsafe_unretained NSString *position;
 	__unsafe_unretained NSString *resourceId;
 	__unsafe_unretained NSString *resourceType;
 	__unsafe_unretained NSString *title;
@@ -25,6 +26,7 @@ extern const struct FeedItemFetchedProperties {
 
 @class FeedItem;
 @class FeedItem;
+
 
 
 
@@ -101,6 +103,20 @@ extern const struct FeedItemFetchedProperties {
 - (void)setItemTypeValue:(int32_t)value_;
 
 //- (BOOL)validateItemType:(id*)value_ error:(NSError**)error_;
+
+
+
+
+
+@property (nonatomic, strong) NSNumber* position;
+
+
+
+@property int64_t positionValue;
+- (int64_t)positionValue;
+- (void)setPositionValue:(int64_t)value_;
+
+//- (BOOL)validatePosition:(id*)value_ error:(NSError**)error_;
 
 
 
@@ -201,6 +217,15 @@ extern const struct FeedItemFetchedProperties {
 
 - (int32_t)primitiveItemTypeValue;
 - (void)setPrimitiveItemTypeValue:(int32_t)value_;
+
+
+
+
+- (NSNumber*)primitivePosition;
+- (void)setPrimitivePosition:(NSNumber*)value;
+
+- (int64_t)primitivePositionValue;
+- (void)setPrimitivePositionValue:(int64_t)value_;
 
 
 

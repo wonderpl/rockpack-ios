@@ -392,7 +392,7 @@ typedef void(^FeedDataErrorBlock)(void);
  
     fetchRequest.predicate = predicate;
 
-    fetchRequest.sortDescriptors = @[[[NSSortDescriptor alloc] initWithKey: @"dateAdded" ascending: NO]];
+    fetchRequest.sortDescriptors = @[[[NSSortDescriptor alloc] initWithKey: @"dateAdded" ascending: NO],[[NSSortDescriptor alloc] initWithKey: @"position" ascending: NO]];
     
     NSError* error;
     
@@ -566,7 +566,7 @@ typedef void(^FeedDataErrorBlock)(void);
     ChannelOwner* channelOwner;
     
     
-    
+    NSLog(@"%@", feedItem);
     
     
     if(feedItem.resourceTypeValue == FeedItemResourceTypeVideo)
@@ -581,7 +581,7 @@ typedef void(^FeedDataErrorBlock)(void);
         {
             NSArray* coverIndexIds = [feedItem.coverIndexes componentsSeparatedByString:@":"];
             
-            NSLog(@"original:'%@', array:%@", feedItem.coverIndexes, coverIndexIds);
+            // NSLog(@"original:'%@', array:%@", feedItem.coverIndexes, coverIndexIds);
             
             NSMutableArray* coverImages = [NSMutableArray arrayWithCapacity:coverIndexIds.count];
             
@@ -596,10 +596,6 @@ typedef void(^FeedDataErrorBlock)(void);
             
         }
         
-        
-        
-        
-        
     }
     else if(feedItem.resourceTypeValue == FeedItemResourceTypeChannel)
     {
@@ -613,7 +609,7 @@ typedef void(^FeedDataErrorBlock)(void);
         {
             NSArray* coverIndexIds = [feedItem.coverIndexes componentsSeparatedByString:@":"];
             
-            NSLog(@"original:'%@', array:%@", feedItem.coverIndexes, coverIndexIds);
+            // NSLog(@"original:'%@', array:%@", feedItem.coverIndexes, coverIndexIds);
             
             NSMutableArray* coverImages = [NSMutableArray arrayWithCapacity:coverIndexIds.count];
             
