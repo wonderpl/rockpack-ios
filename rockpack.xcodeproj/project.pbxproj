@@ -906,6 +906,10 @@
 		BE21EEC016FB584C0067223B /* ButtonAccountSaveDefault@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = BE21EEB816FB584C0067223B /* ButtonAccountSaveDefault@2x.png */; };
 		BE21EEC116FB584C0067223B /* ButtonAccountSaveHighlighted.png in Resources */ = {isa = PBXBuildFile; fileRef = BE21EEB916FB584C0067223B /* ButtonAccountSaveHighlighted.png */; };
 		BE21EEC216FB584C0067223B /* ButtonAccountSaveHighlighted@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = BE21EEBA16FB584C0067223B /* ButtonAccountSaveHighlighted@2x.png */; };
+		BE22A83517A7FE020004BBF4 /* ButtonFeedLikeDefault.png in Resources */ = {isa = PBXBuildFile; fileRef = BE22A83117A7FE020004BBF4 /* ButtonFeedLikeDefault.png */; };
+		BE22A83617A7FE020004BBF4 /* ButtonFeedLikeDefault@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = BE22A83217A7FE020004BBF4 /* ButtonFeedLikeDefault@2x.png */; };
+		BE22A83717A7FE020004BBF4 /* ButtonFeedLikeSelected.png in Resources */ = {isa = PBXBuildFile; fileRef = BE22A83317A7FE020004BBF4 /* ButtonFeedLikeSelected.png */; };
+		BE22A83817A7FE020004BBF4 /* ButtonFeedLikeSelected@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = BE22A83417A7FE020004BBF4 /* ButtonFeedLikeSelected@2x.png */; };
 		BE270B7F16EDE0E800CDDA6D /* SYNLoginViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = BE270B7D16EDE0E800CDDA6D /* SYNLoginViewController.m */; };
 		BE270B8016EDE0E800CDDA6D /* SYNLoginViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = BE270B7E16EDE0E800CDDA6D /* SYNLoginViewController.xib */; };
 		BE270BB816EE493800CDDA6D /* ButtonFacebookDefault.png in Resources */ = {isa = PBXBuildFile; fileRef = BE270BA816EE493800CDDA6D /* ButtonFacebookDefault.png */; };
@@ -2263,6 +2267,10 @@
 		BE21EEB816FB584C0067223B /* ButtonAccountSaveDefault@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = "ButtonAccountSaveDefault@2x.png"; path = "Assets/Images/ButtonAccountSaveDefault@2x.png"; sourceTree = "<group>"; };
 		BE21EEB916FB584C0067223B /* ButtonAccountSaveHighlighted.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = ButtonAccountSaveHighlighted.png; path = Assets/Images/ButtonAccountSaveHighlighted.png; sourceTree = "<group>"; };
 		BE21EEBA16FB584C0067223B /* ButtonAccountSaveHighlighted@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = "ButtonAccountSaveHighlighted@2x.png"; path = "Assets/Images/ButtonAccountSaveHighlighted@2x.png"; sourceTree = "<group>"; };
+		BE22A83117A7FE020004BBF4 /* ButtonFeedLikeDefault.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = ButtonFeedLikeDefault.png; path = Assets/Images/ButtonFeedLikeDefault.png; sourceTree = "<group>"; };
+		BE22A83217A7FE020004BBF4 /* ButtonFeedLikeDefault@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = "ButtonFeedLikeDefault@2x.png"; path = "Assets/Images/ButtonFeedLikeDefault@2x.png"; sourceTree = "<group>"; };
+		BE22A83317A7FE020004BBF4 /* ButtonFeedLikeSelected.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = ButtonFeedLikeSelected.png; path = Assets/Images/ButtonFeedLikeSelected.png; sourceTree = "<group>"; };
+		BE22A83417A7FE020004BBF4 /* ButtonFeedLikeSelected@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = "ButtonFeedLikeSelected@2x.png"; path = "Assets/Images/ButtonFeedLikeSelected@2x.png"; sourceTree = "<group>"; };
 		BE270B7C16EDE0E800CDDA6D /* SYNLoginViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SYNLoginViewController.h; sourceTree = "<group>"; };
 		BE270B7D16EDE0E800CDDA6D /* SYNLoginViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SYNLoginViewController.m; sourceTree = "<group>"; };
 		BE270B7E16EDE0E800CDDA6D /* SYNLoginViewController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = SYNLoginViewController.xib; sourceTree = "<group>"; };
@@ -3222,6 +3230,10 @@
 				38C3FA7317203D6600F126B1 /* PanelDayPortrait@2x.png */,
 				01891A3916725A3400AB07BB /* PanelDay.png */,
 				01891A3A16725A3400AB07BB /* PanelDay@2x.png */,
+				BE22A83117A7FE020004BBF4 /* ButtonFeedLikeDefault.png */,
+				BE22A83217A7FE020004BBF4 /* ButtonFeedLikeDefault@2x.png */,
+				BE22A83317A7FE020004BBF4 /* ButtonFeedLikeSelected.png */,
+				BE22A83417A7FE020004BBF4 /* ButtonFeedLikeSelected@2x.png */,
 			);
 			name = Feed;
 			sourceTree = "<group>";
@@ -6280,6 +6292,10 @@
 				BE7D037D17A69E4C008053DC /* SYNAggregateVideoCell~iphone.xib in Resources */,
 				BE7D037F17A69E6C008053DC /* SYNAggregateChannelCell.xib in Resources */,
 				BE7D038117A69E89008053DC /* SYNAggregateChannelCell~iphone.xib in Resources */,
+				BE22A83517A7FE020004BBF4 /* ButtonFeedLikeDefault.png in Resources */,
+				BE22A83617A7FE020004BBF4 /* ButtonFeedLikeDefault@2x.png in Resources */,
+				BE22A83717A7FE020004BBF4 /* ButtonFeedLikeSelected.png in Resources */,
+				BE22A83817A7FE020004BBF4 /* ButtonFeedLikeSelected@2x.png in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

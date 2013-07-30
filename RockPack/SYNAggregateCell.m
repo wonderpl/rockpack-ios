@@ -15,9 +15,16 @@
     self.messageLabel.font = [UIFont rockpackFontOfSize:self.messageLabel.font.pointSize];
 }
 
--(void)setCoverImagesFromArray:(NSArray*)array
+-(void)setCoverImageWithString:(NSString*)imageString
 {
-    
+    // to be implemented in subclass
 }
+
+
+-(void)setCoverImageWithArray:(NSArray*)imageArray
+{
+    // to be implemented in subclass
+}
+
 
 @end

@@ -8,6 +8,7 @@
 
 #import <UIKit/UIKit.h>
 #import "UIFont+SYNFont.h"
+#import "UIImageView+WebCache.h"
 
 @interface SYNAggregateCell : UICollectionViewCell
 
@@ -18,6 +19,7 @@
 
 @property (nonatomic, weak) UIViewController *viewControllerDelegate;
 
--(void)setCoverImagesFromArray:(NSArray*)array;
+-(void)setCoverImageWithString:(NSString*)imageString;
+-(void)setCoverImageWithArray:(NSArray*)imageArray;
 
 @end

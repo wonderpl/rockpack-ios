@@ -610,8 +610,13 @@ typedef void(^FeedDataErrorBlock)(void);
             
             videoInstance = (VideoInstance*)[self.feedVideosById objectForKey:feedItem.resourceId];
             
+            
+            
         }
         
+        NSLog(@"%@", videoInstance.video.thumbnailURL);
+        
+        [cell setCoverImageWithString:videoInstance.video.thumbnailURL];
         
         channelOwner = videoInstance.channel.channelOwner; // heuristic, get the last video instance, all should have the same channelOwner however
         

@@ -16,4 +16,30 @@
     self.likeLabel.font = [UIFont rockpackFontOfSize:self.likeLabel.font.pointSize];
 }
 
+
+-(void)setCoverImageWithString:(NSString*)imageString
+{
+    if(!videoImageView) {
+        videoImageView = [[UIImageView alloc] initWithFrame:self.imageContainer.frame];
+        [self.imageContainer addSubview:videoImageView];
+    }
+        
+    
+    [videoImageView setImageWithURL: [NSURL URLWithString: imageString]
+                   placeholderImage: [UIImage imageNamed: @"PlaceholderChannelSmall.png"]
+                            options: SDWebImageRetryFailed];
+    
+    
+    
+    
+}
+
+
+-(void)setCoverImageWithArray:(NSArray*)imageArray
+{
+    
+    
+    
+}
+
 @end

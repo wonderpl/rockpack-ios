@@ -15,4 +15,15 @@
     [super awakeFromNib];
 }
 
+-(void)setCoverImageWithString:(NSString*)imageString
+{
+    
+}
+
+
+-(void)setCoverImageWithArray:(NSArray*)imageArray
+{
+    
+}
+
 @end
