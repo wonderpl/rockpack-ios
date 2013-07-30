@@ -567,6 +567,7 @@ typedef void(^FeedDataErrorBlock)(void);
     Channel* channel;
     NSArray* coverIndexIds = [feedItem.coverIndexes componentsSeparatedByString:@":"];
 
+    NSLog(@"%@", coverIndexIds);
     
     NSMutableArray* coverImages = [NSMutableArray arrayWithCapacity:coverIndexIds.count];
     

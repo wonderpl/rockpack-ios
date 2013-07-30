@@ -265,6 +265,8 @@
         if(!leafFeedItem)
             continue;
         
+        // DebugLog(@"%@", leafFeedItem);
+        
         // object has been created, see if it belongs to an aggregation
         
         NSString* aggregationIndex = itemDictionary[@"aggregation"] ? itemDictionary[@"aggregation"] : nil;
@@ -295,24 +297,29 @@
             // parse covers
             
             NSArray* coversArray = (NSArray*)(aggregationItemDictionary[@"covers"]);
-            NSMutableString* coverReferencesString = [[NSMutableString alloc] init];
-            NSDictionary* itemDictionaryReference;
             
-            if(coversArray && [coversArray isKindOfClass:[NSArray class]] && coversArray.count > 0)
+            
+            
+            if(![coversArray isKindOfClass:[NSArray class]] || coversArray.count == 0)
                 continue;
+            
+            NSMutableString* coverReferencesString = [[NSMutableString alloc] init];
             
             for (NSNumber* coverIndex in coversArray)
             {
-                itemDictionaryReference = itemsArray[coverIndex.integerValue];
-                [coverReferencesString appendFormat:@"%@:", itemDictionaryReference[@"id"]];
+                NSDictionary* itemDictionaryReference = itemsArray[coverIndex.integerValue];
+                NSString* itemReferenceIdentifier = itemDictionaryReference[@"id"];
+                if(!itemReferenceIdentifier)
+                    continue;
+                [coverReferencesString appendFormat:@"%@:", itemReferenceIdentifier];
             }
                 
                 
-            [coverReferencesString deleteCharactersInRange:NSMakeRange(coverReferencesString.length - 2, 1)]; // delete last ':'
+            [coverReferencesString deleteCharactersInRange:NSMakeRange(coverReferencesString.length - 1, 1)]; // delete last ':'
             
             aggregationFeedItem.coverIndexes = [NSString stringWithString:coverReferencesString];
             
-            DebugLog(@"%@", aggregationFeedItem);
+            // DebugLog(@"%@", aggregationFeedItem);
             
         }
         
