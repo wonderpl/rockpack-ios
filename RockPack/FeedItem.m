@@ -100,7 +100,11 @@
     
     
 }
-
+-(NSArray*)coverIndexArray
+{
+    return [self.coverIndexes componentsSeparatedByString:@":"];
+    
+}
 -(NSString*)description
 {
     NSString* typeString = self.itemTypeValue == FeedItemTypeAggregate ? @"AGR" : @"FDI";

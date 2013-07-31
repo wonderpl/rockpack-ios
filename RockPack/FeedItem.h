@@ -13,5 +13,7 @@
 
 + (FeedItem *) instanceFromResource: (AbstractCommon *) object;
 
+@property (nonatomic, weak) NSManagedObject* placeholder;
+@property (nonatomic, readonly) NSArray* coverIndexArray;
 
 @end

@@ -24,6 +24,7 @@
 #import "UIImageView+WebCache.h"
 #import "SYNAggregateCell.h"
 #import "UIImageView+WebCache.h"
+#import "SYNAggregateVideoCell.h"
 #import "Video.h"
 #import "FeedItem.h"
 #import "VideoInstance.h"
@@ -39,7 +40,7 @@ typedef void(^FeedDataErrorBlock)(void);
 @property (nonatomic, strong) NSTimer *timer;
 @property (nonatomic, strong) SYNFeedMessagesView* emptyGenreMessageView;
 @property (nonatomic, strong) UIRefreshControl *refreshControl;
-@property (nonatomic, weak)   SYNVideoThumbnailWideCell* selectedCell;
+@property (nonatomic, weak)   SYNAggregateVideoCell* selectedVideoCell;
 @property (nonatomic, strong) NSArray* feedItemsData;
 @property (nonatomic, strong) NSDictionary* feedVideosById;
 @property (nonatomic, strong) NSDictionary* feedChannelsById;
@@ -572,9 +573,10 @@ typedef void(^FeedDataErrorBlock)(void);
         CGSize size = IS_IPAD ? CGSizeMake(340.0, 164.0) : CGSizeMake(260.0, 144.0);
         CGRect rectToPointTo = CGRectZero;
         PointingDirection directionToPointTo = PointingDirectionDown;
-        if (self.selectedCell)
+        if (self.selectedVideoCell)
         {
-            rectToPointTo = [self.view convertRect:self.selectedCell.addItButton.frame fromView:self.selectedCell];
+           
+            rectToPointTo = [self.view convertRect:self.selectedVideoCell.addButton.frame fromView:self.selectedVideoCell];
             if (rectToPointTo.origin.y < [[SYNDeviceManager sharedInstance] currentScreenHeight] * 0.5)
                 directionToPointTo = PointingDirectionUp;
             
@@ -588,7 +590,7 @@ typedef void(^FeedDataErrorBlock)(void);
         
         __weak SYNFeedRootViewController* wself = self;
         addToChannelPopover.action = ^{
-            [wself videoAddButtonTapped:wself.selectedCell.addItButton];
+            [wself videoAddButtonTapped:wself.selectedVideoCell.addButton];
         };
         [appDelegate.onBoardingQueue addPopover:addToChannelPopover];
         
@@ -628,24 +630,8 @@ typedef void(^FeedDataErrorBlock)(void);
         
         
         VideoInstance* videoInstance;
-        
-        if(feedItem.itemTypeValue == FeedItemTypeAggregate)
-        {
-            NSArray* coverIndexIds = [feedItem.coverIndexes componentsSeparatedByString:@":"];
-            
-            videoInstance = (VideoInstance*)[self.feedVideosById objectForKey:coverIndexIds[0]]; // there should be only one
-            
-            
-            cell.mainTitleLabel.text = videoInstance.title;
-            
-        }
-        else
-        {
-            
-            videoInstance = (VideoInstance*)[self.feedVideosById objectForKey:feedItem.resourceId];
-            feedItemsAggregated = 1;
-            cell.mainTitleLabel.text = videoInstance.title;
-        }
+        videoInstance = (VideoInstance*)[self.feedVideosById objectForKey:feedItem.coverIndexArray[0]]; // there should be only one
+        cell.mainTitleLabel.text = videoInstance.title;
         
         
         if(feedItem.title)
@@ -711,6 +697,7 @@ typedef void(^FeedDataErrorBlock)(void);
         
     }
     
+    cell.viewControllerDelegate = self;
     
     [cell.userThumbnailImageView setImageWithURL: [NSURL URLWithString: channelOwner.thumbnailURL]
                                 placeholderImage: [UIImage imageNamed: @"PlaceholderChannelSmall.png"]
@@ -859,15 +846,36 @@ typedef void(^FeedDataErrorBlock)(void);
 }
 
 
-- (void) displayVideoViewerFromView: (UIButton *) videoViewButton
+- (void) pressedAggregateCellCoverButton: (UIButton *) coverButton
 {
     
-    
-    NSIndexPath *indexPath = [self indexPathFromVideoInstanceButton: videoViewButton];
-    self.selectedCell = (SYNVideoThumbnailWideCell*)[self.feedCollectionView cellForItemAtIndexPath:indexPath];
+    // copied from Abstract class
     
     
-    [super displayVideoViewerFromView: videoViewButton];
+    NSIndexPath *indexPath = [self.videoThumbnailCollectionView indexPathForItemAtPoint: coverButton.superview.center];
+    
+    // SYNAggregateCell* aggregateCellPressed = (SYNAggregateCell*)[self.feedCollectionView cellForItemAtIndexPath:indexPath];
+    
+    FeedItem* selectedFeedItem = [self feedItemAtIndexPath:indexPath];
+    
+    if(selectedFeedItem.itemTypeValue == FeedItemResourceTypeVideo)
+    {
+        VideoInstance* vi = [self.feedVideosById objectForKey:selectedFeedItem.resourceId];
+        
+        
+        SYNMasterViewController *masterViewController = (SYNMasterViewController*)appDelegate.masterViewController;
+        
+//        [masterViewController addVideoOverlayToViewController: self
+//                                       withVideoInstanceArray: videoInstanceArray
+//                                             andSelectedIndex: [videoArray indexOfObject:selectedFeedItem]
+//                                                   fromCenter:center];
+    }
+    
+    
+    
+    
+    
+    
     
 }
 
