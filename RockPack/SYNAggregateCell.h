@@ -19,6 +19,9 @@
 
 @property (nonatomic, weak) UIViewController *viewControllerDelegate;
 
+
+@property (nonatomic, strong) IBOutlet UILabel* mainTitleLabel;
+
 -(void)setCoverImageWithString:(NSString*)imageString;
 -(void)setCoverImageWithArray:(NSArray*)imageArray;
 -(void)setTitleMessageWithDictionary:(NSDictionary*)messageDictionary;

@@ -633,15 +633,10 @@ typedef void(^FeedDataErrorBlock)(void);
         {
             NSArray* coverIndexIds = [feedItem.coverIndexes componentsSeparatedByString:@":"];
             
+            videoInstance = (VideoInstance*)[self.feedVideosById objectForKey:coverIndexIds[0]]; // there should be only one
             
-            NSMutableArray* coverImages = [NSMutableArray arrayWithCapacity:coverIndexIds.count];
             
-            for (NSString* resourceId in coverIndexIds)
-            {
-                videoInstance = (VideoInstance*)[self.feedVideosById objectForKey:resourceId];
-                [coverImages addObject:videoInstance.channel.channelCover.imageUrl];
-            }
-            
+            cell.mainTitleLabel.text = videoInstance.title;
             
         }
         else
@@ -649,6 +644,7 @@ typedef void(^FeedDataErrorBlock)(void);
             
             videoInstance = (VideoInstance*)[self.feedVideosById objectForKey:feedItem.resourceId];
             feedItemsAggregated = 1;
+            cell.mainTitleLabel.text = videoInstance.title;
         }
         
         
@@ -661,7 +657,6 @@ typedef void(^FeedDataErrorBlock)(void);
             [cell setTitleMessageWithDictionary:@{@"display_name" : videoInstance.channel.channelOwner.displayName, @"item_count" : @(feedItemsAggregated), @"channel_name" : videoInstance.channel.title}];
 
         }
-        
         
         
         
