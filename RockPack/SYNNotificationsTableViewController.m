@@ -327,7 +327,7 @@
     
     NSArray *array = @[@(notification.identifier)];
     
-    [self.appDelegate.oAuthNetworkEngine markAdReadForNotificationIndexes: array
+    [self.appDelegate.oAuthNetworkEngine markAsReadForNotificationIndexes: array
                                                                fromUserId: self.appDelegate.currentUser.uniqueId
                                                         completionHandler: ^(id response) {
                                                             notification.read = YES;

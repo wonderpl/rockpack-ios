@@ -384,7 +384,7 @@
     [self enqueueSignedOperation: networkOperation];
 }
 
-- (void) markAdReadForNotificationIndexes: (NSArray*) indexes
+- (void) markAsReadForNotificationIndexes: (NSArray*) indexes
                                fromUserId: (NSString*)userId
                         completionHandler: (MKNKUserErrorBlock) completionBlock
                              errorHandler: (MKNKUserErrorBlock) errorBlock

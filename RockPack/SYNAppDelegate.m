@@ -1336,14 +1336,83 @@
     self.apnsToken = nil;
 }
 
+/*
+// Standard notification (opens notification center)
+// where "%@ has subscribed to your channel" is in the list of localised strings
+{
+    "aps" : {
+        "alert" : {
+            "loc-key" : "%@ has subscribed to your channel",
+            "loc-args" : [ "Synchromation"]
+        },
+        "badge" : 5,
+    }
+}
 
+
+// Enhanced notification
+// corresponding to rockpack://vACcGSVlSIKbkR9tNoi-Ag/channel/chjXG7BaAcR5qKFdeHkGgOEQ/video/viqUJNamm6j8puq1g2svvHGw/
+// that will open the asset directly
+{
+    "aps" : {
+        "alert" : {
+            "loc-key" : "%@ has liked your video",
+            "loc-args" : [ "Synchromation"]
+        },
+    "badge" : 5,
+    },
+    "rck" : {
+        "url" : "vACcGSVlSIKbkR9tNoi-Ag/channel/chjXG7BaAcR5qKFdeHkGgOEQ/video/viqUJNamm6j8puq1g2svvHGw/"
+        "id" : "xyz123"
+    }
+}
+
+
+// Unknown notification
+// where "%%@ and %@ have invited you to play Monopoly" is NOT in the list of localised strings
+{
+    "aps" : {
+        "alert" : {
+            "loc-key" : "%%@ and %@ have invited you to play Monopoly",
+            "loc-args" : [ "Nick", "Michael"]
+        },
+        "badge" : 5,
+    }
+}
+ */
 
 - (void) application: (UIApplication*) application
          didReceiveRemoteNotification: (NSDictionary*) userInfo
 {
 	NSLog(@"Received notification: %@", userInfo);
     
-    [self.viewStackManager displaySideNavigatorFromPushNotification];
+    NSNumber *notificationId = userInfo[@"id"];
+    NSString *urlString = userInfo[@"url"];
+    
+    // Parse optional data in the payload defensively
+    if (urlString == nil || notificationId == nil)
+    {
+        // No additionaly rockpack:// url, so just display the notifications panel
+        [self.viewStackManager displaySideNavigatorFromPushNotification];
+    }
+    else
+    {
+        NSArray *array = @[notificationId];
+        
+        // First, mark the notification as read (on the server)
+        [self.oAuthNetworkEngine markAsReadForNotificationIndexes: array
+                                                       fromUserId: self.currentUser.uniqueId
+                                                completionHandler: ^(id response) {
+                                                    DebugLog(@"Mark as read succeeded");
+                                                } errorHandler: ^(id error) {
+                                                    DebugLog(@"Mark as read failed");
+                                                }];
+        
+        // Now actually handle the rockpack:// url
+        NSURL *rockpackURL = [NSURL URLWithString: [@"rockpack://" stringByAppendingString: urlString]];
+        
+        [self parseAndActionRockpackURL: rockpackURL];
+    }
 }
 
 @end
