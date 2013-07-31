@@ -216,7 +216,7 @@
 
     if (self.currentUser.facebookAccountUrl)
     {
-        if (!FBSession.activeSession.isOpen)
+        if (!FBSession.activeSession.isOpen && FBSession.activeSession.accessTokenData)
         {
             [FBSession.activeSession
              openWithCompletionHandler: ^(FBSession *session, FBSessionState status, NSError *error) {
@@ -250,9 +250,8 @@
                                                                               onFailure: ^(NSString *errorMessage) {
                                                                               }];
                  }
-             }
-                                                 errorHandler: ^(id error) {
-                                                 }];
+             } errorHandler: ^(id error) {
+             }];
         }
     }
 }
@@ -322,7 +321,6 @@
      addSubview: startImageView];
     startImageView.center = startImageCenter;
     
-    
     //refresh token
     [self.oAuthNetworkEngine refreshOAuthTokenWithCompletionHandler: ^(id response) {
         
@@ -336,8 +334,6 @@
         self.tokenExpiryTimer = nil;
         
         [self refreshFacebookSession];
-        
-        
     } errorHandler: ^(id response) {
         [self logout];
         
@@ -395,7 +391,6 @@
 
 - (void) logout
 {
-    
     self.masterViewController = nil;
     
     [self.currentOAuth2Credentials removeFromKeychain];
@@ -441,24 +436,20 @@
 
 #pragma mark - App Delegate Methods
 
+// Sent when the application is about to move from active to inactive state. This can occur for certain types of temporary interruptions (such as an incoming phone call or SMS message) or when the user quits the application and it begins the transition to the background state.
+// Use this method to pause ongoing tasks, disable timers, and throttle down OpenGL ES frame rates. Games should use this method to pause the game.
 - (void) applicationWillResignActive: (UIApplication *) application
 {
-    // Sent when the application is about to move from active to inactive state. This can occur for certain types of temporary interruptions (such as an incoming phone call or SMS message) or when the user quits the application and it begins the transition to the background state.
-    // Use this method to pause ongoing tasks, disable timers, and throttle down OpenGL ES frame rates. Games should use this method to pause the game.
-    
     // We need to save out database here (not in background)
     [self saveContext: kSaveSynchronously];
 }
 
 
+// Use this method to release shared resources, save user data, invalidate timers, and store enough application state information to restore your application to its current state in case it is terminated later.
+// If your application supports background execution, this method is called instead of applicationWillTerminate: when the user quits.
 - (void) applicationDidEnterBackground: (UIApplication *) application
 {
-    // Use this method to release shared resources, save user data, invalidate timers, and store enough application state information to restore your application to its current state in case it is terminated later.
-    // If your application supports background execution, this method is called instead of applicationWillTerminate: when the user quits.
-    
     // We need to save out database here (not in background)
-    
-    
     [self saveContext: kSaveSynchronously];
     [self.tokenExpiryTimer invalidate];
     self.tokenExpiryTimer = nil;
@@ -493,7 +484,7 @@
             {
                 [self setTokenExpiryTimer];
             }
-    }
+        }
     }
 }
 
@@ -653,7 +644,7 @@
 }
 
 
--(void)nukeCoreData
+- (void) nukeCoreData
 {
     _mainRegistry = nil;
     _searchRegistry = nil;
@@ -663,8 +654,7 @@
     self.channelsManagedObjectContext = nil;
     self.oAuthNetworkEngine = nil;
     self.networkEngine = nil;
-    
-    
+
     NSURL *storeURL = [[[NSFileManager defaultManager] URLsForDirectory: NSDocumentDirectory
                                                               inDomains: NSUserDomainMask] lastObject];
     
@@ -686,9 +676,8 @@
     {
         AssertOrLog(@"*** Could not delete persistent store, %@", error);
     }
-    
-    
 }
+
 
 // Save the main context first (propagating the changes to the private) and then the private
 - (void) saveContext: (BOOL) wait
@@ -1167,9 +1156,6 @@
 
             self.connection = [[NSURLConnection alloc] initWithRequest: request
                                                               delegate: self];
-            
-
-
         }
         
         return [FBSession.activeSession
@@ -1226,6 +1212,7 @@
     
     return newRequest;
 }
+
 
 - (Channel*) channelFromChannelId: (NSString*) channelId
 {
@@ -1368,11 +1355,9 @@
     formattedToken = [formattedToken stringByReplacingOccurrencesOfString: @" "
                                                                withString: @""];
     
-    NSLog(@"My token is: %@", formattedToken);
-    
     self.apnsToken = formattedToken;
     
-    // If the user has already logged in then send the latest token to the server
+    // If the user has already logged in then send the latest token to the server, but wait a while until any token refreshes have occurred
     if (self.currentUser)
     {
         [self performBlock: ^{
@@ -1394,16 +1379,6 @@
 {
     NSLog(@"Failed to get token, error: %@", error);
     self.apnsToken = nil;
-    
-    // Test code, doesn't actually belong in here, but good way to test
-//    [self performBlock: ^{
-//        [self.viewStackManager displaySideNavigatorFromPushNotification];
-//    }
-//            afterDelay: 3.0f];
-//    if ([[UIApplication sharedApplication] canOpenURL: [NSURL URLWithString: @"rockpack://www.rockpack.com"]])
-//	{
-//		[[UIApplication sharedApplication] openURL: [NSURL URLWithString: @"rockpack://www.rockpack.com"]];
-//	}
 }
 
 

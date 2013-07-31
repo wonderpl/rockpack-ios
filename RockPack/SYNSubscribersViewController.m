@@ -131,24 +131,22 @@
             viewForSupplementaryElementOfKind: (NSString *) kind
                                   atIndexPath: (NSIndexPath *) indexPath
 {
-    if (collectionView != self.usersThumbnailCollectionView)
-        return nil;
-    
     UICollectionReusableView* supplementaryView;
     
-    if (kind == UICollectionElementKindSectionFooter)
+    if (collectionView == self.usersThumbnailCollectionView)
     {
-        if (self.users.count == 0)
+        if (kind == UICollectionElementKindSectionFooter)
         {
-            return supplementaryView;
+            self.footerView = [self.usersThumbnailCollectionView dequeueReusableSupplementaryViewOfKind: kind
+                                                                                    withReuseIdentifier: @"SYNChannelFooterMoreView"
+                                                                                           forIndexPath: indexPath];
+            supplementaryView = self.footerView;
+            
+            if (self.users.count > 0)
+            {
+                self.footerView.showsLoading = self.isLoadingMoreContent;
+            }
         }
-        
-        self.footerView = [self.usersThumbnailCollectionView dequeueReusableSupplementaryViewOfKind: kind
-                                                                                withReuseIdentifier: @"SYNChannelFooterMoreView"
-                                                                                       forIndexPath: indexPath];
-        self.footerView.showsLoading = self.isLoadingMoreContent;
-        
-        supplementaryView = self.footerView;
     }
     
     return supplementaryView;
@@ -161,7 +159,7 @@
 {
     CGSize footerSize;
     
-    if (collectionView == self.usersThumbnailCollectionView)
+    if (collectionView == self.usersThumbnailCollectionView && self.users.count != 0)
     {
         footerSize = [self footerSize];
         

@@ -495,29 +495,22 @@
             viewForSupplementaryElementOfKind: (NSString *) kind
                                   atIndexPath: (NSIndexPath *) indexPath
 {
-    if (collectionView != self.channelThumbnailCollectionView)
-        return nil;
-
     UICollectionReusableView* supplementaryView;
     
-    if (kind == UICollectionElementKindSectionHeader)
+    if (collectionView == self.channelThumbnailCollectionView)
     {
-        // nothing yet
-    }
-    
-    if (kind == UICollectionElementKindSectionFooter)
-    {
-        if (self.channels.count == 0)
+        if (kind == UICollectionElementKindSectionFooter)
         {
-            return supplementaryView;
+            self.footerView = [self.channelThumbnailCollectionView dequeueReusableSupplementaryViewOfKind: kind
+                                                                                      withReuseIdentifier: @"SYNChannelFooterMoreView"
+                                                                                             forIndexPath: indexPath];
+            supplementaryView = self.footerView;
+            
+            if (self.channels.count > 0)
+            {
+                self.footerView.showsLoading = self.isLoadingMoreContent;
+            }
         }
-        
-        self.footerView = [self.channelThumbnailCollectionView dequeueReusableSupplementaryViewOfKind: kind
-                                                                                  withReuseIdentifier: @"SYNChannelFooterMoreView"
-                                                                                         forIndexPath: indexPath];
-        self.footerView.showsLoading = self.isLoadingMoreContent;
-
-        supplementaryView = self.footerView;
     }
     
     return supplementaryView;
@@ -530,7 +523,7 @@
 {
     CGSize footerSize;
     
-    if (collectionView == self.channelThumbnailCollectionView)
+    if (collectionView == self.channelThumbnailCollectionView && self.channels.count != 0)
     {
         footerSize = [self footerSize];
         
@@ -564,11 +557,9 @@
 }
 
 
-
 - (void) handleMainTap: (UIView *) tab
 {
     [super handleMainTap:tab];
-    
     
     if (!tab || tab.tag == 0)
     {
@@ -583,9 +574,8 @@
         return;
     
     [self animateCollectionViewDown:YES];
-    
-    
 }
+
 
 #pragma mark - Pushing UICollectionView up and down
 

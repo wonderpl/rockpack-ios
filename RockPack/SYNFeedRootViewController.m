@@ -763,7 +763,14 @@ typedef void(^FeedDataErrorBlock)(void);
         // FIXME: Is this comparison correct?  Should it just be self.dataRequestRange.location >= self.dataItemsAvailable?
         if (nextStart >= self.dataItemsAvailable)
         {
-            footerSize = CGSizeMake(1.0f, 5.0f);
+            if (section < self.fetchedResultsController.sections.count - 1)
+            {
+                footerSize = CGSizeZero;
+            }
+            else
+            {
+                footerSize = CGSizeMake(1.0f, 5.0f);
+            }
         }
     }
     else
@@ -838,22 +845,19 @@ typedef void(^FeedDataErrorBlock)(void);
     
     else if (kind == UICollectionElementKindSectionFooter)
     {
-        if (indexPath.section < self.fetchedResultsController.sections.count - 1)
-            return supplementaryView;
-        
-        if (self.fetchedResultsController.fetchedObjects.count == 0 ||
-           (self.dataRequestRange.location + self.dataRequestRange.length) >= self.dataItemsAvailable)
-        {
-            return supplementaryView;
-        }
-        
-        self.footerView = [self.feedCollectionView dequeueReusableSupplementaryViewOfKind: kind
+
+        self.footerView = [self.videoThumbnailCollectionView dequeueReusableSupplementaryViewOfKind: kind
                                                                                 withReuseIdentifier: @"SYNChannelFooterMoreView"
                                                                                        forIndexPath: indexPath];
-        
-        self.footerView.showsLoading = self.isLoadingMoreContent;
-
         supplementaryView = self.footerView;
+        
+        // Show loading spinner if we have more data
+        if (self.fetchedResultsController.fetchedObjects.count > 0
+            && indexPath.section == self.fetchedResultsController.sections.count - 1
+            && (self.dataRequestRange.location + self.dataRequestRange.length) < self.dataItemsAvailable)
+        {
+            self.footerView.showsLoading = self.isLoadingMoreContent;
+        }
     }
 
     return supplementaryView;

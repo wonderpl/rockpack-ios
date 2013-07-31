@@ -155,7 +155,6 @@ typedef enum
     
     if (session.state == FBSessionStateCreatedTokenLoaded)
     {
-        NSLog(@"Cached token found.");
         // Set the active session
         [FBSession setActiveSession: session];
         
@@ -178,8 +177,6 @@ typedef enum
                     {
                         failureBlock([error description]);
                     }
-                    
-                    DebugLog(@"session = %@,  error = %@, r", session, error);
                 }];
     }
 }
