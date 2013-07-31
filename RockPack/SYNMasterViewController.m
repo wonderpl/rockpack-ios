@@ -333,10 +333,9 @@ typedef void(^AnimationCompletionBlock)(BOOL finished);
 
 - (void) pageChanged: (NSInteger) pageNumber
 {
-    
     self.pageTitleLabel.text = [self.containerViewController.showingViewController.title uppercaseString];
     
-    if(self.sideNavigatorViewController.state == SideNavigationStateFull)
+    if (self.sideNavigatorViewController.state == SideNavigationStateFull)
     {
         [self.sideNavigatorViewController deselectAllCells];
         [self showSideNavigation];
@@ -345,8 +344,7 @@ typedef void(^AnimationCompletionBlock)(BOOL finished);
     {
         NSString* controllerTitle = self.containerViewController.showingViewController.title;
         
-        [self.sideNavigatorViewController setSelectedCellByPageName:controllerTitle];
-
+        [self.sideNavigatorViewController setSelectedCellByPageName: controllerTitle];
     }
 }
 

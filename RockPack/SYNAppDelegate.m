@@ -249,9 +249,8 @@
                                                                               onFailure: ^(NSString *errorMessage) {
                                                                               }];
                  }
-             }
-                                                 errorHandler: ^(id error) {
-                                                 }];
+             } errorHandler: ^(id error) {
+             }];
         }
     }
 }

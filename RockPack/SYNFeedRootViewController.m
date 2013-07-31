@@ -554,7 +554,7 @@
 {
     CGSize footerSize;
     
-    if (collectionView == self.videoThumbnailCollectionView)
+    if (collectionView == self.videoThumbnailCollectionView && self.fetchedResultsController.sections.count != 0 )
     {
         footerSize = [self footerSize];
         
@@ -564,7 +564,14 @@
         // FIXME: Is this comparison correct?  Should it just be self.dataRequestRange.location >= self.dataItemsAvailable?
         if (nextStart >= self.dataItemsAvailable)
         {
-            footerSize = CGSizeMake(1.0f, 5.0f);
+            if (section < self.fetchedResultsController.sections.count - 1)
+            {
+                footerSize = CGSizeZero;
+            }
+            else
+            {
+                footerSize = CGSizeMake(1.0f, 5.0f);
+            }
         }
     }
     else
@@ -639,22 +646,18 @@
     
     else if (kind == UICollectionElementKindSectionFooter)
     {
-        if (indexPath.section < self.fetchedResultsController.sections.count - 1)
-            return supplementaryView;
-        
-        if (self.fetchedResultsController.fetchedObjects.count == 0 ||
-           (self.dataRequestRange.location + self.dataRequestRange.length) >= self.dataItemsAvailable)
-        {
-            return supplementaryView;
-        }
-        
         self.footerView = [self.videoThumbnailCollectionView dequeueReusableSupplementaryViewOfKind: kind
                                                                                 withReuseIdentifier: @"SYNChannelFooterMoreView"
                                                                                        forIndexPath: indexPath];
-        
-        self.footerView.showsLoading = self.isLoadingMoreContent;
-
         supplementaryView = self.footerView;
+        
+        // Show loading spinner if we have more data
+        if (self.fetchedResultsController.fetchedObjects.count > 0
+            && indexPath.section == self.fetchedResultsController.sections.count - 1
+            && (self.dataRequestRange.location + self.dataRequestRange.length) < self.dataItemsAvailable)
+        {
+            self.footerView.showsLoading = self.isLoadingMoreContent;
+        }
     }
 
     return supplementaryView;

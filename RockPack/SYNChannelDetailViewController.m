@@ -932,21 +932,15 @@
     
     if (kind == UICollectionElementKindSectionFooter)
     {
-        if (self.channel.videoInstances.count == 0 ||
-           (self.dataRequestRange.location + self.dataRequestRange.length) >= self.dataItemsAvailable)
+        self.footerView = [self.videoThumbnailCollectionView dequeueReusableSupplementaryViewOfKind: kind
+                                                                                withReuseIdentifier: @"SYNChannelFooterMoreView"
+                                                                                       forIndexPath: indexPath];
+        supplementaryView = self.footerView;
+        
+        if (self.channel.videoInstances.count > 0 &&
+           (self.dataRequestRange.location + self.dataRequestRange.length) < self.dataItemsAvailable)
         {
-            // empy footer (invisible)
-            supplementaryView = [[UICollectionReusableView alloc] initWithFrame:CGRectMake(0.0, 0.0, [self footerSize].width, [self footerSize].height)];
-        }
-        else
-        {
-            self.footerView = [self.videoThumbnailCollectionView dequeueReusableSupplementaryViewOfKind: kind
-                                                                                    withReuseIdentifier: @"SYNChannelFooterMoreView"
-                                                                                           forIndexPath: indexPath];
-            
             self.footerView.showsLoading = self.isLoadingMoreContent;
-
-            supplementaryView = self.footerView;
         }
     }
     
@@ -959,13 +953,11 @@
                    referenceSizeForFooterInSection: (NSInteger) section
 {
     CGSize footerSize;
-    
-    if (collectionView == self.videoThumbnailCollectionView)
+
+    if (collectionView == self.videoThumbnailCollectionView && self.channel.videoInstances.count != 0)
     {
         footerSize = [self footerSize];
-        
-        DebugLog(@"Location %d, size %d", self.dataRequestRange.location, self.dataItemsAvailable);
-        
+
         // Now set to zero anyway if we have already read in all the items
         NSInteger nextStart = self.dataRequestRange.location + self.dataRequestRange.length; // one is subtracted when the call happens for 0 indexing
         
@@ -982,7 +974,6 @@
     
     return footerSize;
 }
-
 
 
 - (void) incrementRangeForNextRequest
