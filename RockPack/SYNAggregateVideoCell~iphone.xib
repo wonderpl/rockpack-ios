@@ -189,7 +189,7 @@
 								<string key="NSFrame">{{253, 44}, {57, 57}}</string>
 								<reference key="NSSuperview" ref="901165756"/>
 								<reference key="NSWindow"/>
-								<reference key="NSNextKeyView" ref="681991393"/>
+								<reference key="NSNextKeyView" ref="660731031"/>
 								<string key="NSReuseIdentifierKey">_NS:9</string>
 								<reference key="IBUIBackgroundColor" ref="100730725"/>
 								<bool key="IBUIAutoresizesSubviews">NO</bool>
@@ -235,7 +235,7 @@
 									<string key="NSResourceName">ButtonFeedLikeSelected.png</string>
 								</object>
 							</object>
-							<object class="IBUILabel" id="681991393">
+							<object class="IBUILabel" id="660731031">
 								<reference key="NSNextResponder" ref="901165756"/>
 								<int key="NSvFlags">292</int>
 								<string key="NSFrame">{{10, 190}, {287, 18}}</string>
@@ -354,7 +354,7 @@
 					<object class="IBCocoaTouchOutletConnection" key="connection">
 						<string key="label">mainTitleLabel</string>
 						<reference key="source" ref="377152669"/>
-						<reference key="destination" ref="681991393"/>
+						<reference key="destination" ref="660731031"/>
 					</object>
 					<int key="connectionID">27</int>
 				</object>
@@ -389,7 +389,7 @@
 							<reference ref="418720652"/>
 							<reference ref="1015647007"/>
 							<reference ref="165793426"/>
-							<reference ref="681991393"/>
+							<reference ref="660731031"/>
 						</array>
 						<reference key="parent" ref="0"/>
 						<string key="objectName">SYNAggregateVideoCell</string>
@@ -436,7 +436,7 @@
 					</object>
 					<object class="IBObjectRecord">
 						<int key="objectID">26</int>
-						<reference key="object" ref="681991393"/>
+						<reference key="object" ref="660731031"/>
 						<reference key="parent" ref="377152669"/>
 						<string key="objectName">Video Title</string>
 					</object>

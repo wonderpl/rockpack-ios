@@ -273,14 +273,18 @@
     // == Get Existing Data == //
     
     
-    NSDictionary* videoInstancesByUniqueId = [self getDataObjectsByEntityName:kVideoInstance];
-    NSDictionary* channelInstacesByUniqueId = [self getDataObjectsByEntityName:kChannel];
-    NSDictionary* feedItemInstacesByUniqueId = [self getDataObjectsByEntityName:kFeedItem];
-    // NSDictionary* channelOwnerInstancesByUniqueId = [self getDataObjectsByEntityName:kChannelOwner];
+    NSDictionary *videoInstancesByUniqueId, *channelInstacesByUniqueId, *feedItemInstacesByUniqueId, *channelOwnerInstancesByUniqueId;
+    if(!append)
+    {
+        videoInstancesByUniqueId = [self getDataObjectsByEntityName:kVideoInstance];
+        channelInstacesByUniqueId = [self getDataObjectsByEntityName:kChannel];
+        feedItemInstacesByUniqueId = [self getDataObjectsByEntityName:kFeedItem];
+        channelOwnerInstancesByUniqueId = [self getDataObjectsByEntityName:kChannelOwner];
+    }
     
     // == Initialise Vars == //
     
-    FeedItem* aggregationFeedItem;
+    FeedItem *aggregationFeedItem;
     
     NSMutableDictionary *aggregationItems = [NSMutableDictionary dictionaryWithCapacity:aggregationsDictionary.allKeys.count];
     
@@ -399,21 +403,26 @@
         
     }
     
-    // delete objects
-    NSInteger totalObjectCount = (videoInstancesByUniqueId.count + channelInstacesByUniqueId.count + feedItemInstacesByUniqueId.count);
-    NSMutableArray* objectsToDelete = [NSMutableArray arrayWithCapacity:totalObjectCount];
-    [objectsToDelete addObjectsFromArray:[videoInstancesByUniqueId allValues]];
-    [objectsToDelete addObjectsFromArray:[channelInstacesByUniqueId allValues]];
-    [objectsToDelete addObjectsFromArray:[feedItemInstacesByUniqueId allValues]];
-    
-    for (AbstractCommon* objectToDelete in objectsToDelete) {
+    if(!append)
+    {
+        // delete objects
+        NSInteger totalObjectCount = (videoInstancesByUniqueId.count + channelInstacesByUniqueId.count + feedItemInstacesByUniqueId.count);
+        NSMutableArray* objectsToDelete = [NSMutableArray arrayWithCapacity:totalObjectCount];
+        [objectsToDelete addObjectsFromArray:[videoInstancesByUniqueId allValues]];
+        [objectsToDelete addObjectsFromArray:[channelInstacesByUniqueId allValues]];
+        [objectsToDelete addObjectsFromArray:[feedItemInstacesByUniqueId allValues]];
         
-        if(!objectToDelete.markedForDeletionValue)
-            continue;
-        
-        [objectToDelete.managedObjectContext deleteObject:objectToDelete];
-        
+        for (AbstractCommon* objectToDelete in objectsToDelete)
+        {
+            
+            if(!objectToDelete.markedForDeletionValue)
+                continue;
+            
+            [objectToDelete.managedObjectContext deleteObject:objectToDelete];
+            
+        }
     }
+    
     
     BOOL saveResult = [self saveImportContext];
     if(!saveResult)
@@ -458,17 +467,17 @@
         videoInstanceFetchRequest.predicate = viewIdPredicate;
         
         existingFeedVideoInstances = [importManagedObjectContext executeFetchRequest: videoInstanceFetchRequest
-                                                                                        error: &error];
+                                                                               error: &error];
         
         existingVideoInstancesByIndex = [NSMutableDictionary dictionaryWithCapacity:existingFeedVideoInstances.count];
         
         // Organise videos by Id
         for (VideoInstance* existingVideoInstance in existingFeedVideoInstances)
         {
-                existingVideoInstancesByIndex[existingVideoInstance.uniqueId] = existingVideoInstance;
-                
-                
-                existingVideoInstance.markedForDeletionValue = YES;
+            
+            existingVideoInstancesByIndex[existingVideoInstance.uniqueId] = existingVideoInstance;
+            
+            existingVideoInstance.markedForDeletionValue = YES;
                 
             
         }
@@ -477,7 +486,7 @@
     
     NSFetchRequest *videoFetchRequest = [[NSFetchRequest alloc] init];
     [videoFetchRequest setEntity: [NSEntityDescription entityForName: @"Video"
-                                                      inManagedObjectContext: importManagedObjectContext]];
+                                              inManagedObjectContext: importManagedObjectContext]];
 
     NSMutableArray* videoIds = [NSMutableArray array];
     for (NSDictionary *itemDictionary in itemArray)
@@ -525,13 +534,10 @@
                                                   withDefault: @(0)];
         
         videoInstance.viewId = kFeedViewId;
-        videoInstance.freshValue = YES;
         
         videoInstance.channel.viewId = kFeedViewId;
-        videoInstance.channel.freshValue = YES;
         
         videoInstance.channel.channelOwner.viewId = kFeedViewId;
-        videoInstance.channel.channelOwner.freshValue = YES;
         
     }    
     
