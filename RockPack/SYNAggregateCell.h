@@ -13,11 +13,14 @@
 @interface SYNAggregateCell : UICollectionViewCell
 
 @property (nonatomic, strong) IBOutlet UIImageView* userThumbnailImageView;
+@property (nonatomic, strong) IBOutlet UIButton* userThumbnailButton;
 @property (nonatomic, strong) IBOutlet UILabel* messageLabel;
 
 @property (nonatomic, strong) IBOutlet UIView* imageContainer;
 
 @property (nonatomic, weak) UIViewController *viewControllerDelegate;
+
+@property (nonatomic, strong) IBOutlet UIButton* coverButton;
 
 
 @property (nonatomic, strong) IBOutlet UILabel* mainTitleLabel;

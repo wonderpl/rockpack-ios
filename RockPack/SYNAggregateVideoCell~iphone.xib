@@ -183,13 +183,33 @@
 									<int key="NSfFlags">16</int>
 								</object>
 							</object>
+							<object class="IBUIButton" id="163046098">
+								<reference key="NSNextResponder" ref="901165756"/>
+								<int key="NSvFlags">292</int>
+								<string key="NSFrame">{{10, 10}, {287, 26}}</string>
+								<reference key="NSSuperview" ref="901165756"/>
+								<reference key="NSWindow"/>
+								<string key="NSReuseIdentifierKey">_NS:9</string>
+								<bool key="IBUIOpaque">NO</bool>
+								<string key="targetRuntimeIdentifier">IBCocoaTouchFramework</string>
+								<int key="IBUIContentHorizontalAlignment">0</int>
+								<int key="IBUIContentVerticalAlignment">0</int>
+								<reference key="IBUIHighlightedTitleColor" ref="119607441"/>
+								<object class="NSColor" key="IBUINormalTitleColor">
+									<int key="NSColorSpace">1</int>
+									<bytes key="NSRGB">MC4xOTYwNzg0MzQ2IDAuMzA5ODAzOTMyOSAwLjUyMTU2ODY1NgA</bytes>
+								</object>
+								<reference key="IBUINormalTitleShadowColor" ref="932420781"/>
+								<reference key="IBUIFontDescription" ref="1007686574"/>
+								<reference key="IBUIFont" ref="599970118"/>
+							</object>
 							<object class="IBUIButton" id="266156758">
 								<reference key="NSNextResponder" ref="901165756"/>
 								<int key="NSvFlags">292</int>
 								<string key="NSFrame">{{253, 44}, {57, 57}}</string>
 								<reference key="NSSuperview" ref="901165756"/>
 								<reference key="NSWindow"/>
-								<reference key="NSNextKeyView" ref="660731031"/>
+								<reference key="NSNextKeyView" ref="108447182"/>
 								<string key="NSReuseIdentifierKey">_NS:9</string>
 								<reference key="IBUIBackgroundColor" ref="100730725"/>
 								<bool key="IBUIAutoresizesSubviews">NO</bool>
@@ -235,7 +255,7 @@
 									<string key="NSResourceName">ButtonFeedLikeSelected.png</string>
 								</object>
 							</object>
-							<object class="IBUILabel" id="660731031">
+							<object class="IBUILabel" id="108447182">
 								<reference key="NSNextResponder" ref="901165756"/>
 								<int key="NSvFlags">292</int>
 								<string key="NSFrame">{{10, 190}, {287, 18}}</string>
@@ -354,9 +374,25 @@
 					<object class="IBCocoaTouchOutletConnection" key="connection">
 						<string key="label">mainTitleLabel</string>
 						<reference key="source" ref="377152669"/>
-						<reference key="destination" ref="660731031"/>
+						<reference key="destination" ref="108447182"/>
 					</object>
 					<int key="connectionID">27</int>
+				</object>
+				<object class="IBConnectionRecord">
+					<object class="IBCocoaTouchOutletConnection" key="connection">
+						<string key="label">userThumbnailButton</string>
+						<reference key="source" ref="377152669"/>
+						<reference key="destination" ref="163046098"/>
+					</object>
+					<int key="connectionID">29</int>
+				</object>
+				<object class="IBConnectionRecord">
+					<object class="IBCocoaTouchOutletConnection" key="connection">
+						<string key="label">coverButton</string>
+						<reference key="source" ref="377152669"/>
+						<reference key="destination" ref="165793426"/>
+					</object>
+					<int key="connectionID">30</int>
 				</object>
 			</array>
 			<object class="IBMutableOrderedSet" key="objectRecords">
@@ -389,7 +425,8 @@
 							<reference ref="418720652"/>
 							<reference ref="1015647007"/>
 							<reference ref="165793426"/>
-							<reference ref="660731031"/>
+							<reference ref="108447182"/>
+							<reference ref="163046098"/>
 						</array>
 						<reference key="parent" ref="0"/>
 						<string key="objectName">SYNAggregateVideoCell</string>
@@ -436,9 +473,15 @@
 					</object>
 					<object class="IBObjectRecord">
 						<int key="objectID">26</int>
-						<reference key="object" ref="660731031"/>
+						<reference key="object" ref="108447182"/>
 						<reference key="parent" ref="377152669"/>
 						<string key="objectName">Video Title</string>
+					</object>
+					<object class="IBObjectRecord">
+						<int key="objectID">28</int>
+						<reference key="object" ref="163046098"/>
+						<reference key="parent" ref="377152669"/>
+						<string key="objectName">User Thumbnail Button</string>
 					</object>
 				</array>
 			</object>
@@ -455,6 +498,7 @@
 				<string key="23.IBPluginDependency">com.apple.InterfaceBuilder.IBCocoaTouchPlugin</string>
 				<string key="25.IBPluginDependency">com.apple.InterfaceBuilder.IBCocoaTouchPlugin</string>
 				<string key="26.IBPluginDependency">com.apple.InterfaceBuilder.IBCocoaTouchPlugin</string>
+				<string key="28.IBPluginDependency">com.apple.InterfaceBuilder.IBCocoaTouchPlugin</string>
 				<string key="8.IBPluginDependency">com.apple.InterfaceBuilder.IBCocoaTouchPlugin</string>
 				<string key="9.IBPluginDependency">com.apple.InterfaceBuilder.IBCocoaTouchPlugin</string>
 			</dictionary>
@@ -462,7 +506,7 @@
 			<nil key="activeLocalization"/>
 			<dictionary class="NSMutableDictionary" key="localizations"/>
 			<nil key="sourceID"/>
-			<int key="maxID">27</int>
+			<int key="maxID">30</int>
 		</object>
 		<object class="IBClassDescriber" key="IBDocument.Classes">
 			<array class="NSMutableArray" key="referencedPartialClassDescriptions">
@@ -470,12 +514,18 @@
 					<string key="className">SYNAggregateCell</string>
 					<string key="superclassName">UICollectionViewCell</string>
 					<dictionary class="NSMutableDictionary" key="outlets">
+						<string key="coverButton">UIButton</string>
 						<string key="imageContainer">UIView</string>
 						<string key="mainTitleLabel">UILabel</string>
 						<string key="messageLabel">UILabel</string>
+						<string key="userThumbnailButton">UIButton</string>
 						<string key="userThumbnailImageView">UIImageView</string>
 					</dictionary>
 					<dictionary class="NSMutableDictionary" key="toOneOutletInfosByName">
+						<object class="IBToOneOutletInfo" key="coverButton">
+							<string key="name">coverButton</string>
+							<string key="candidateClassName">UIButton</string>
+						</object>
 						<object class="IBToOneOutletInfo" key="imageContainer">
 							<string key="name">imageContainer</string>
 							<string key="candidateClassName">UIView</string>
@@ -487,6 +537,10 @@
 						<object class="IBToOneOutletInfo" key="messageLabel">
 							<string key="name">messageLabel</string>
 							<string key="candidateClassName">UILabel</string>
+						</object>
+						<object class="IBToOneOutletInfo" key="userThumbnailButton">
+							<string key="name">userThumbnailButton</string>
+							<string key="candidateClassName">UIButton</string>
 						</object>
 						<object class="IBToOneOutletInfo" key="userThumbnailImageView">
 							<string key="name">userThumbnailImageView</string>

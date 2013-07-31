@@ -2557,6 +2557,7 @@
 		BE82099017A95F6E00472ADD /* channelFeedCoverFourth~iphone.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = "channelFeedCoverFourth~iphone.png"; path = "Assets/Images/channelFeedCoverFourth~iphone.png"; sourceTree = "<group>"; };
 		BE82099117A95F6E00472ADD /* channelFeedCoverFourth~iphone@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = "channelFeedCoverFourth~iphone@2x.png"; path = "Assets/Images/channelFeedCoverFourth~iphone@2x.png"; sourceTree = "<group>"; };
 		BE82099917A95F9900472ADD /* channelFeedCover.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = channelFeedCover.png; path = Assets/Images/channelFeedCover.png; sourceTree = "<group>"; };
+		BE82099B17A9651900472ADD /* Rockpack 8.xcdatamodel */ = {isa = PBXFileReference; lastKnownFileType = file; path = "Rockpack 8.xcdatamodel"; sourceTree = "<group>"; };
 		BE86BF15171F001E0006DC8A /* SYNSubscriptionsViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SYNSubscriptionsViewController.h; sourceTree = "<group>"; };
 		BE86BF16171F001E0006DC8A /* SYNSubscriptionsViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SYNSubscriptionsViewController.m; sourceTree = "<group>"; };
 		BE86BF18171F07B10006DC8A /* SYNChannelMidCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SYNChannelMidCell.h; sourceTree = "<group>"; };
@@ -7084,6 +7085,7 @@
 			isa = XCVersionGroup;
 			children = (
 				BE7D035C17A13EF4008053DC /* Rockpack 7.xcdatamodel */,
+				BE82099B17A9651900472ADD /* Rockpack 8.xcdatamodel */,
 				3854788017940F75006EB38B /* Rockpack 5.xcdatamodel */,
 				BE7D030E179D9AF6008053DC /* Rockpack 6.xcdatamodel */,
 				BE53EE6017609587008360D2 /* Rockpack 4.xcdatamodel */,
@@ -7091,7 +7093,7 @@
 				3885165B17579086001A9FD4 /* Rockpack 2.xcdatamodel */,
 				01E427D21664C726009B941F /* Rockpack.xcdatamodel */,
 			);
-			currentVersion = BE7D035C17A13EF4008053DC /* Rockpack 7.xcdatamodel */;
+			currentVersion = BE82099B17A9651900472ADD /* Rockpack 8.xcdatamodel */;
 			path = Rockpack.xcdatamodeld;
 			sourceTree = "<group>";
 			versionGroupType = wrapper.xcdatamodel;

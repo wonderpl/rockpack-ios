@@ -10,6 +10,8 @@
 
 @implementation SYNAggregateVideoCell
 
+@synthesize viewControllerDelegate = _viewControllerDelegate;
+
 -(void)awakeFromNib
 {
     [super awakeFromNib];
@@ -31,6 +33,33 @@
     
     
     
+    
+}
+
+- (void) setViewControllerDelegate: (UIViewController *) viewControllerDelegate
+{
+    
+    _viewControllerDelegate = viewControllerDelegate;
+    
+    // Add button targets
+    
+    [self.videoButton addTarget: self.viewControllerDelegate
+                         action: @selector(displayVideoViewerFromView:)
+               forControlEvents: UIControlEventTouchUpInside];
+    
+    [self.addButton addTarget: self.viewControllerDelegate
+                         action: @selector(videoAddButtonTapped:)
+               forControlEvents: UIControlEventTouchUpInside];
+    
+    // User touches channel thumbnail
+    [self.channelButton addTarget: self.viewControllerDelegate
+                           action: @selector(channelButtonTapped:)
+                 forControlEvents: UIControlEventTouchUpInside];
+    
+    // User touches user details
+    [self.profileButton addTarget: self.viewControllerDelegate
+                           action: @selector(profileButtonTapped:)
+                 forControlEvents: UIControlEventTouchUpInside];
     
 }
 

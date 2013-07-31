@@ -273,13 +273,12 @@
     // == Get Existing Data == //
     
     
-    NSDictionary *videoInstancesByUniqueId, *channelInstacesByUniqueId, *feedItemInstacesByUniqueId, *channelOwnerInstancesByUniqueId;
+    NSDictionary *videoInstancesByUniqueId, *channelInstacesByUniqueId, *feedItemInstacesByUniqueId;
     if(!append)
     {
         videoInstancesByUniqueId = [self getDataObjectsByEntityName:kVideoInstance];
         channelInstacesByUniqueId = [self getDataObjectsByEntityName:kChannel];
         feedItemInstacesByUniqueId = [self getDataObjectsByEntityName:kFeedItem];
-        channelOwnerInstancesByUniqueId = [self getDataObjectsByEntityName:kChannelOwner];
     }
     
     // == Initialise Vars == //
