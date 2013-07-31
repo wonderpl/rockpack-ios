@@ -619,6 +619,7 @@ typedef void(^FeedDataErrorBlock)(void);
     
     ChannelOwner* channelOwner;
     
+    NSInteger feedItemsAggregated = feedItem.itemTypeValue == FeedItemTypeAggregate ? feedItem.feedItems.count : 1;
     
     if(feedItem.resourceTypeValue == FeedItemResourceTypeVideo)
     {
@@ -647,10 +648,22 @@ typedef void(^FeedDataErrorBlock)(void);
         {
             
             videoInstance = (VideoInstance*)[self.feedVideosById objectForKey:feedItem.resourceId];
-            
+            feedItemsAggregated = 1;
         }
         
-        [cell setTitleMessage:feedItem.title];
+        
+        if(feedItem.title)
+        {
+            cell.messageLabel.text = feedItem.title;
+        }
+        else
+        {
+            [cell setTitleMessageWithDictionary:@{@"display_name" : videoInstance.channel.channelOwner.displayName, @"item_count" : @(feedItemsAggregated), @"channel_name" : videoInstance.channel.title}];
+
+        }
+        
+        
+        
         
         [cell setCoverImageWithString:videoInstance.video.thumbnailURL];
         
@@ -691,7 +704,15 @@ typedef void(^FeedDataErrorBlock)(void);
         
         channelOwner = channel.channelOwner;
         
-        [cell setTitleMessage:feedItem.title];
+        if(feedItem.title)
+        {
+            cell.messageLabel.text = feedItem.title;
+        }
+        else
+        {
+            [cell setTitleMessageWithDictionary:@{@"display_name" : channel.channelOwner.displayName, @"item_count" : @(feedItemsAggregated)}];
+            
+        }
         
     }
     

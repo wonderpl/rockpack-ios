@@ -26,7 +26,8 @@
     // to be implemented in subclass
 }
 
--(void)setTitleMessage:(NSString*)message
+
+-(void)setTitleMessageWithDictionary:(NSDictionary*)messageDictionary
 {
     // to be implemented in subclass
 }

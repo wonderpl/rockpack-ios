@@ -32,7 +32,6 @@
         instance.dateAdded = videoInstance.dateAdded;
         instance.resourceType = FeedItemResourceTypeVideo;
         instance.positionValue = videoInstance.positionValue;
-        instance.title = [NSString stringWithFormat:@"%@ added 1 video to %@", videoInstance.channel.channelOwner.displayName, videoInstance.channel.title];
         
     }
     else if ([object isKindOfClass:[Channel class]]) {
@@ -41,7 +40,6 @@
         instance.dateAdded = channel.datePublished;
         instance.resourceTypeValue = FeedItemResourceTypeChannel;
         instance.positionValue = channel.positionValue;
-        instance.title = [NSString stringWithFormat:@"%@ has created 1 new channel", channel.channelOwner.displayName];
         
     }
     

@@ -110,9 +110,38 @@
     
 }
 
--(void)setTitleMessage:(NSString*)message
+-(void)setTitleMessageWithDictionary:(NSDictionary*)messageDictionary
 {
-    self.messageLabel.text = message;
+    NSString* channelOwnerName = messageDictionary[@"display_name"] ? messageDictionary[@"display_name"] : @"User";
+    NSString* hasCreated = @"has created";
+    NSNumber* itemCountNumber = messageDictionary[@"item_count"] ? messageDictionary[@"item_count"] : @1;
+    NSString* actionString = [NSString stringWithFormat:@"%i new channel%@", itemCountNumber.integerValue, itemCountNumber.integerValue > 1 ? @"s" : @""];
+    
+    NSString* completeString = [NSString stringWithFormat:@"%@ %@ %@", channelOwnerName, hasCreated, actionString];
+    
+    // craete the attributed string //
+    
+    NSMutableAttributedString *attributedCompleteString = [[NSMutableAttributedString alloc] initWithString:completeString];
+    
+    NSRange indexRange = NSMakeRange(0, 0);
+    indexRange.length = channelOwnerName.length;
+    
+    [attributedCompleteString addAttribute:NSFontAttributeName value:[UIFont boldRockpackFontOfSize:12.0] range:indexRange];
+    [attributedCompleteString addAttribute:NSForegroundColorAttributeName value:[UIColor blackColor] range:indexRange];
+    
+    indexRange.location += indexRange.length + 1;
+    indexRange.length = hasCreated.length;
+    
+    [attributedCompleteString addAttribute:NSFontAttributeName value:[UIFont rockpackFontOfSize:12.0] range:indexRange];
+    [attributedCompleteString addAttribute:NSForegroundColorAttributeName value:[UIColor grayColor] range:indexRange];
+    
+    indexRange.location += indexRange.length + 1;
+    indexRange.length = actionString.length;
+    
+    [attributedCompleteString addAttribute:NSFontAttributeName value:[UIFont rockpackFontOfSize:12.0] range:indexRange];
+    [attributedCompleteString addAttribute:NSForegroundColorAttributeName value:[UIColor blackColor] range:indexRange];
+    
+    self.messageLabel.attributedText = attributedCompleteString;
 }
 
 @end
