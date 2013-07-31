@@ -3,6 +3,7 @@
 #import "NSDictionary+Validation.h"
 #import "Video.h"
 #import "VideoInstance.h"
+#import "ChannelOwner.h"
 
 @implementation VideoInstance
 
@@ -189,5 +190,11 @@ static NSDateFormatter *dateFormatter = nil;
     return dateFormatter;
 }
 
+-(void)setMarkedForDeletionValue:(BOOL)value_
+{
+    self.markedForDeletion = [NSNumber numberWithBool:value_];
+    self.channel.markedForDeletionValue = value_;
+    self.channel.channelOwner.markedForDeletionValue = value_;
+}
 
 @end

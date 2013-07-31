@@ -428,4 +428,10 @@
     }
 }
 
+-(void)setMarkedForDeletionValue:(BOOL)value_
+{
+    self.markedForDeletion = [NSNumber numberWithBool:value_];
+    self.channelOwner.markedForDeletionValue = value_;
+}
+
 @end

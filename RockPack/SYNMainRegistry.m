@@ -201,7 +201,60 @@
     return YES;
 }
 
-#pragma mark - VideoInstances
+#pragma mark - Retrieve Functions
+
+-(NSDictionary*)getDataObjectsByEntityName:(NSString*)entityName
+{
+    return [self getDataObjectsByEntityName:entityName forViewId:kFeedViewId];
+}
+
+-(NSDictionary*)getDataObjectsByEntityName:(NSString*)entityName forViewId:(NSString*)viewId
+{
+    return [self getDataObjectsByEntityName:entityName forViewId:viewId markedForDeletion:YES];
+}
+
+-(NSDictionary*)getDataObjectsByEntityName:(NSString*)entityName forViewId:(NSString*)viewId markedForDeletion:(BOOL)marked
+{
+    
+    
+    if(!entityName)
+        return [NSDictionary dictionary]; // return empty dictionary
+    
+    
+    NSError* error;
+    
+    NSFetchRequest *fetchRequest = [[NSFetchRequest alloc] init];
+    
+    [fetchRequest setEntity: [NSEntityDescription entityForName: entityName
+                                         inManagedObjectContext: importManagedObjectContext]];
+        
+    if(viewId)
+    {
+        fetchRequest.predicate = [NSPredicate predicateWithFormat:@"viewId == %@", viewId];
+    }
+        
+    NSArray *existingFeedVideoInstances = [importManagedObjectContext executeFetchRequest: fetchRequest
+                                                                                    error: &error];
+        
+    NSMutableDictionary* managedObjectsByUniqueId = [NSMutableDictionary dictionaryWithCapacity:existingFeedVideoInstances.count];
+        
+    for (AbstractCommon* existingVideoInstance in existingFeedVideoInstances)
+    {
+        managedObjectsByUniqueId[existingVideoInstance.uniqueId] = existingVideoInstance;
+        
+        
+        existingVideoInstance.markedForDeletionValue = marked; 
+        
+    }
+    
+    
+    return managedObjectsByUniqueId;
+    
+}
+
+
+
+#pragma mark - Feed Parsing
 
 - (BOOL) registerDataForSocialFeedFromItemsDictionary: (NSDictionary *) dictionary
                                           byAppending: (BOOL) append
@@ -216,6 +269,16 @@
     NSDictionary *aggregationsDictionary = dictionary[@"aggregations"];
     if (!aggregationsDictionary || ![aggregationsDictionary isKindOfClass: [NSDictionary class]])
         return NO;
+    
+    // == Get Existing Data == //
+    
+    
+    NSDictionary* videoInstancesByUniqueId = [self getDataObjectsByEntityName:kVideoInstance];
+    NSDictionary* channelInstacesByUniqueId = [self getDataObjectsByEntityName:kChannel];
+    NSDictionary* feedItemInstacesByUniqueId = [self getDataObjectsByEntityName:kFeedItem];
+    // NSDictionary* channelOwnerInstancesByUniqueId = [self getDataObjectsByEntityName:kChannelOwner];
+    
+    // == Initialise Vars == //
     
     FeedItem* aggregationFeedItem;
     
@@ -235,23 +298,24 @@
         
         if(itemDictionary[@"video"]) // videoInstance object
         {
-            object = [VideoInstance instanceFromDictionary:itemDictionary
-                                 usingManagedObjectContext:importManagedObjectContext];
             
-            if(!object)
-                continue;
-            
+            if(!(object = videoInstancesByUniqueId[itemDictionary[@"id"]]))
+                if(!(object = [VideoInstance instanceFromDictionary:itemDictionary usingManagedObjectContext:importManagedObjectContext]))
+                       continue;
+                   
+                
             co = ((VideoInstance*)object).channel.channelOwner;
             
             
         }
         else if (itemDictionary[@"cover"]) // channel object
         {
-            object = [Channel instanceFromDictionary:itemDictionary
-                           usingManagedObjectContext:importManagedObjectContext];
             
-            if(!object)
-                continue;
+            if(!(object = channelInstacesByUniqueId[itemDictionary[@"id"]]))
+                if(!(object = [Channel instanceFromDictionary:itemDictionary usingManagedObjectContext:importManagedObjectContext]))
+                    continue;
+            
+            
             
             co = ((Channel*)object).channelOwner;
         }
@@ -259,6 +323,8 @@
         
         
         object.viewId = kFeedViewId;
+        
+        object.markedForDeletionValue = NO;
         
         leafFeedItem = [FeedItem instanceFromResource:object];
         
@@ -280,16 +346,17 @@
         if(!aggregationFeedItem)
         {
             NSDictionary* aggregationItemDictionary = aggregationsDictionary[aggregationIndex];
-            aggregationFeedItem = [FeedItem instanceFromDictionary:aggregationItemDictionary
-                                                            withId:aggregationIndex
-                                         usingManagedObjectContext:importManagedObjectContext];
-            
-            
-            if(!aggregationFeedItem)
-                continue;
+            if(!(aggregationFeedItem = feedItemInstacesByUniqueId[aggregationIndex]))
+               if(!(aggregationFeedItem = [FeedItem instanceFromDictionary:aggregationItemDictionary
+                                                                    withId:aggregationIndex
+                                                 usingManagedObjectContext:importManagedObjectContext]))
+               {
+                   continue;
+               }
+                  
             
             aggregationFeedItem.viewId = kFeedViewId;
-            
+            aggregationFeedItem.markedForDeletionValue = NO;
             
             [aggregationItems setObject:aggregationFeedItem forKey:aggregationIndex];
             
@@ -322,22 +389,37 @@
             
             aggregationFeedItem.coverIndexes = [NSString stringWithString:coverReferencesString];
             
-            // DebugLog(@"*** %@", aggregationFeedItem.coverIndexes);
             
         }
         
         aggregationFeedItem.dateAdded = leafFeedItem.dateAdded;
         
-        NSLog(@"dateAdded: %@", aggregationFeedItem.dateAdded);
         
         [aggregationFeedItem.feedItemsSet addObject:leafFeedItem];
         
     }
     
-//    for (NSDictionary* d in aggregationItems) // traces keys
-//    {
-//        NSLog(@"%@", d);
-//    }
+    // delete objects
+    NSInteger totalObjectCount = (videoInstancesByUniqueId.count + channelInstacesByUniqueId.count + feedItemInstacesByUniqueId.count);
+    NSMutableArray* objectsToDelete = [NSMutableArray arrayWithCapacity:totalObjectCount];
+    [objectsToDelete addObjectsFromArray:[videoInstancesByUniqueId allValues]];
+    [objectsToDelete addObjectsFromArray:[channelInstacesByUniqueId allValues]];
+    [objectsToDelete addObjectsFromArray:[feedItemInstacesByUniqueId allValues]];
+    
+    for (AbstractCommon* objectToDelete in objectsToDelete) {
+        
+        if(!objectToDelete.markedForDeletionValue)
+            continue;
+        
+        [objectToDelete.managedObjectContext deleteObject:objectToDelete];
+        
+    }
+    
+    BOOL saveResult = [self saveImportContext];
+    if(!saveResult)
+        return NO;
+    
+    [appDelegate saveContext:NO];
     
     return YES;
 }
@@ -481,12 +563,7 @@
         }
     }
     
-    DebugLog(@"deleted feed objects: %i", d);
     
-    
-    
-//    if(![self saveImportContext])
-//        return NO;
     
     [appDelegate saveContext: NO];
     
