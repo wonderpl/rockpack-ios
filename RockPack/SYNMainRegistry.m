@@ -465,16 +465,11 @@
         // Organise videos by Id
         for (VideoInstance* existingVideoInstance in existingFeedVideoInstances)
         {
-            existingVideoInstancesByIndex[existingVideoInstance.uniqueId] = existingVideoInstance;
+                existingVideoInstancesByIndex[existingVideoInstance.uniqueId] = existingVideoInstance;
                 
                 
                 existingVideoInstance.markedForDeletionValue = YES;
-                existingVideoInstance.freshValue = NO;
                 
-                existingVideoInstance.channel.markedForDeletionValue = YES;
-                existingVideoInstance.channel.freshValue = NO;
-                
-                existingVideoInstance.channel.channelOwner.markedForDeletionValue = YES;
             
         }
     }

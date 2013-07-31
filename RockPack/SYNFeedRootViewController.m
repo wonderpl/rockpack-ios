@@ -632,7 +632,6 @@ typedef void(^FeedDataErrorBlock)(void);
         {
             NSArray* coverIndexIds = [feedItem.coverIndexes componentsSeparatedByString:@":"];
             
-            // NSLog(@"original:'%@', array:%@", feedItem.coverIndexes, coverIndexIds);
             
             NSMutableArray* coverImages = [NSMutableArray arrayWithCapacity:coverIndexIds.count];
             
@@ -670,9 +669,8 @@ typedef void(^FeedDataErrorBlock)(void);
         {
             NSArray* coverIndexIds = [feedItem.coverIndexes componentsSeparatedByString:@":"];
             
-            // NSLog(@"original:'%@', array:%@", feedItem.coverIndexes, coverIndexIds);
-            
             NSMutableArray* coverImages = [NSMutableArray arrayWithCapacity:coverIndexIds.count];
+            
             
             for (NSString* resourceId in coverIndexIds)
             {
@@ -680,10 +678,15 @@ typedef void(^FeedDataErrorBlock)(void);
                 [coverImages addObject:channel.channelCover.imageUrl];
             }
             
+            [cell setCoverImageWithArray:coverImages];
         }
         else
         {
-           channel = (Channel*)[self.feedVideosById objectForKey:feedItem.resourceId];
+            channel = (Channel*)[self.feedChannelsById objectForKey:feedItem.resourceId];
+            
+            [cell setCoverImageWithString:channel.channelCover.imageUrl];
+            
+            
         }
         
         channelOwner = channel.channelOwner;
