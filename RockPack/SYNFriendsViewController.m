@@ -16,7 +16,6 @@
 #import <FacebookSDK/FacebookSDK.h>
 #import "SYNOAuthNetworkEngine.h"
 #import "Friend.h"
-#import "SYNInviteFriendView.h"
 #import "SYNFacebookManager.h"
 #import <objc/runtime.h>
 
@@ -28,7 +27,6 @@ static char* association_key = "SYNFriendThumbnailCell to Friend";
 @property (nonatomic, weak) SYNAppDelegate* appDelegate;
 @property (nonatomic) BOOL onRockpackFilterOn;
 @property (nonatomic, strong) NSArray* displayFriends;
-@property (nonatomic, strong) SYNInviteFriendView* currentInviteFriendView;
 @property (nonatomic, weak) Friend* currentlySelectedFriend;
 
 
