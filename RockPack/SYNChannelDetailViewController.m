@@ -131,9 +131,6 @@
         self.mode = mode;
         
 		self.channel = channel;
-        
-        
-        
 	}
 
 	return self;
@@ -162,11 +159,11 @@
     self.originalSubscribersLabelRect = self.subscribersLabel.frame;
     
     // Take the best guess about how many  videos we have
-//    self.dataItemsAvailable = self.channel.videoInstances.count;
+    //    self.dataItemsAvailable = self.channel.videoInstances.count;
     self.dataRequestRange = NSMakeRange(0, kAPIInitialBatchSize);
     
     self.isIPhone = IS_IPHONE;
-
+    
     // Originally the opacity was required to be 0.25f, but this appears less visible on the actual screen
     // Set custom fonts and shadows for labels
     self.channelOwnerLabel.font = [UIFont boldRockpackFontOfSize: self.channelOwnerLabel.font.pointSize];
@@ -187,8 +184,8 @@
     
     // Needed for shadows to work
     self.channelTitleTextView.backgroundColor = [UIColor clearColor];
-
-    self.channelTitleTextView.placeholder = NSLocalizedString (@"channel_creation_screen_field_channeltitle_placeholder", nil);
+    
+    self.channelTitleTextView.placeholder = NSLocalizedString(@"channel_creation_screen_field_channeltitle_placeholder", nil);
     
     self.channelTitleTextView.placeholderTextColor = [UIColor colorWithRed: 0.909
                                                                      green: 0.909
@@ -196,13 +193,13 @@
                                                                      alpha: 1.0f];
     // Set delegate so that we can respond to events
     self.channelTitleTextView.delegate = self;
-
+    
     // Shadow for avatar background
     [self addShadowToLayer: self.avatarBackgroundView.layer];
     
     // Add a custom flow layout to our thumbail collection view (with the right size and spacing)
     LXReorderableCollectionViewFlowLayout *layout = [[LXReorderableCollectionViewFlowLayout alloc] init];
-    layout.itemSize = self.isIPhone ? CGSizeMake(310.0f , 175.0f):CGSizeMake(249.0f , 141.0f);
+    layout.itemSize = self.isIPhone ? CGSizeMake(310.0f, 175.0f) : CGSizeMake(249.0f, 141.0f);
     layout.minimumInteritemSpacing = self.isIPhone ? 0.0f : 4.0f;
     layout.minimumLineSpacing = self.isIPhone ? 4.0f : 4.0f;
     
@@ -222,7 +219,7 @@
         layout.sectionInset = UIEdgeInsetsMake(0.0f, 5.0f, 0.0f, 5.0f);
         self.videoThumbnailCollectionView.contentInset = UIEdgeInsetsMake(500.0f, 0.0f, 0.0f, 0.0f);
     }
-
+    
     // == Video Cells == //
     UINib *videoThumbnailCellNib = [UINib nibWithNibName: @"SYNVideoThumbnailRegularCell"
                                                   bundle: nil];
@@ -241,17 +238,19 @@
     
     
     // == Avatar Image == //
-    UIImage* placeholderImage = [UIImage imageNamed: @"PlaceholderAvatarProfile.png"];
+    UIImage *placeholderImage = [UIImage imageNamed: @"PlaceholderAvatarProfile.png"];
     
-    NSArray *thumbnailURLItems = [self.channel.channelOwner.thumbnailURL componentsSeparatedByString:@"/"];
+    NSArray *thumbnailURLItems = [self.channel.channelOwner.thumbnailURL componentsSeparatedByString: @"/"];
     
     if (thumbnailURLItems.count >= 6) // there is a url string with the proper format
     {
         // whatever is set to be the default size by the server (ex. 'thumbnail_small') //
-        NSString* thumbnailSizeString = thumbnailURLItems[5];
+        NSString *thumbnailSizeString = thumbnailURLItems[5];
         
         
-        NSString* thumbnailUrlString = [self.channel.channelOwner.thumbnailURL stringByReplacingOccurrencesOfString:thumbnailSizeString withString:@"thumbnail_large"];
+        NSString *thumbnailUrlString = [self.channel.channelOwner.thumbnailURL
+                                        stringByReplacingOccurrencesOfString: thumbnailSizeString
+                                        withString: @"thumbnail_large"];
         
         [self.avatarImageView setImageWithURL: [NSURL URLWithString: thumbnailUrlString]
                              placeholderImage: placeholderImage
@@ -261,7 +260,7 @@
     {
         self.avatarImageView.image = placeholderImage;
     }
-
+    
     if (!self.isIPhone)
     {
         // Create categories tab, but make invisible (alpha = 0) for now
@@ -276,13 +275,14 @@
         self.categoriesTabViewController.view.alpha = 0.0f;
         [self addChildViewController: self.categoriesTabViewController];
     }
-
+    
     self.originalMasterControlsViewOrigin = self.masterControlsView.frame.origin;
-
+    
     if (self.mode == kChannelDetailsModeDisplay)
     {
         // Google analytics support
         [GAI.sharedInstance.defaultTracker sendView: @"Channel details"];
+        
         self.addButton.hidden = NO;
         self.createChannelButton.hidden = YES;
     }
@@ -290,6 +290,7 @@
     {
         // Google analytics support
         [GAI.sharedInstance.defaultTracker sendView: @"Add to channel"];
+        
         self.addButton.hidden = YES;
         self.createChannelButton.hidden = NO;
         self.backButton.hidden = YES;
@@ -300,29 +301,34 @@
                                                           userInfo: nil];
     }
     
-    
     //Remove the save button. It is added back again if the edit button is tapped.
     [self.saveChannelButton removeFromSuperview];
     
     if (!self.isIPhone)
     {
         // Set text on add cover and select category buttons
-        NSString *coverString = NSLocalizedString (@"channel_creation_screen_button_selectcover_label", nil);
+        NSString *coverString = NSLocalizedString(@"channel_creation_screen_button_selectcover_label", nil);
         
-        NSMutableAttributedString* attributedCoverString = [[NSMutableAttributedString alloc] initWithString: coverString
-                                                                                                  attributes: @{NSForegroundColorAttributeName : [UIColor colorWithRed: 40.0f/255.0f green: 45.0f/255.0f blue: 51.0f/255.0f alpha: 1.0f],
-                                                                                        NSFontAttributeName : [UIFont boldRockpackFontOfSize: 18.0f]}];
+        NSMutableAttributedString *attributedCoverString = [[NSMutableAttributedString alloc] initWithString: coverString
+                                                                                                  attributes: @{NSForegroundColorAttributeName: [UIColor colorWithRed: 40.0f / 255.0f
+                                                                                                                                                                green: 45.0f / 255.0f
+                                                                                                                                                                 blue: 51.0f / 255.0f
+                                                                                                                                                                alpha: 1.0f],
+                                                                                         NSFontAttributeName: [UIFont boldRockpackFontOfSize: 18.0f]}];
         
         [self.addCoverButton setAttributedTitle: attributedCoverString
                                        forState: UIControlStateNormal];
         
         // Now do fancy attributed string
-        NSString *categoryString = NSLocalizedString (@"channel_creation_screen_button_selectcat_label", nil);
-
+        NSString *categoryString = NSLocalizedString(@"channel_creation_screen_button_selectcat_label", nil);
         
-        NSMutableAttributedString* attributedCategoryString = [[NSMutableAttributedString alloc] initWithString: categoryString
-                                                                                                     attributes: @{NSForegroundColorAttributeName : [UIColor colorWithRed: 40.0f/255.0f green: 45.0f/255.0f blue: 51.0f/255.0f alpha: 1.0f],
-                                                                                           NSFontAttributeName : [UIFont boldRockpackFontOfSize: 18.0f]}];
+        
+        NSMutableAttributedString *attributedCategoryString = [[NSMutableAttributedString alloc] initWithString: categoryString
+                                                                                                     attributes: @{NSForegroundColorAttributeName: [UIColor colorWithRed: 40.0f / 255.0f
+                                                                                                                                                                   green: 45.0f / 255.0f
+                                                                                                                                                                    blue: 51.0f / 255.0f
+                                                                                                                                                                   alpha: 1.0f],
+                                                                                            NSFontAttributeName: [UIFont boldRockpackFontOfSize: 18.0f]}];
         
         // Set text on add cover and select category buttons
         [self.selectCategoryButton setAttributedTitle: attributedCategoryString
@@ -331,40 +337,42 @@
         self.coverChooserController = [[SYNCoverChooserController alloc] initWithSelectedImageURL: self.channel.channelCover.imageUrl];
         [self addChildViewController: self.coverChooserController];
         self.coverChooserMasterView = self.coverChooserController.view;
-        
     }
     else
     {
-        self.textBackgroundImageView.image = [[UIImage imageNamed:@"FieldChannelTitle"] resizableImageWithCapInsets:UIEdgeInsetsMake(5, 5, 6, 6)];
+        self.textBackgroundImageView.image = [[UIImage imageNamed: @"FieldChannelTitle"] resizableImageWithCapInsets: UIEdgeInsetsMake(5, 5, 6, 6)];
         
-        self.addCoverButton.titleLabel.font = [UIFont boldRockpackFontOfSize:self.addCoverButton.titleLabel.font.pointSize];
+        self.addCoverButton.titleLabel.font = [UIFont boldRockpackFontOfSize: self.addCoverButton.titleLabel.font.pointSize];
         self.addCoverButton.titleLabel.numberOfLines = 2;
         self.addCoverButton.titleLabel.lineBreakMode = NSLineBreakByWordWrapping;
         self.addCoverButton.titleLabel.textAlignment = NSTextAlignmentCenter;
         
-        self.selectCategoryButton.titleLabel.font = [UIFont boldRockpackFontOfSize:self.selectCategoryButton.titleLabel.font.pointSize];
+        self.selectCategoryButton.titleLabel.font = [UIFont boldRockpackFontOfSize: self.selectCategoryButton.titleLabel.font.pointSize];
         self.selectCategoryButton.titleLabel.numberOfLines = 2;
         self.selectCategoryButton.titleLabel.lineBreakMode = NSLineBreakByWordWrapping;
         self.selectCategoryButton.titleLabel.textAlignment = NSTextAlignmentCenter;
         
         if (self.mode != kChannelDetailsModeDisplay)
         {
-            self.view.backgroundColor = [UIColor colorWithWhite:0.92f alpha:1.0f];
-        } 
+            self.view.backgroundColor = [UIColor colorWithWhite: 0.92f
+                                                          alpha: 1.0f];
+        }
     }
     
     self.selectedCategoryId = self.channel.categoryId;
     self.selectedCoverId = @"";
-
+    
     CGRect correctRect = self.coverChooserMasterView.frame;
     correctRect.origin.y = 404.0;
     self.coverChooserMasterView.frame = correctRect;
     
-    [self.editControlsView addSubview:self.coverChooserMasterView];
+    [self.editControlsView addSubview: self.coverChooserMasterView];
     
     self.cameraButton = self.coverChooserController.cameraButton;
     
-    [self.cameraButton addTarget:self action:@selector(userTouchedCameraButton:) forControlEvents:UIControlEventTouchUpInside];
+    [self.cameraButton addTarget: self
+                          action: @selector(userTouchedCameraButton:)
+                forControlEvents: UIControlEventTouchUpInside];
     
     if (self.autoplayVideoId)
     {
@@ -374,73 +382,6 @@
     self.originalContentOffset = self.videoThumbnailCollectionView.contentOffset;
 }
 
-- (IBAction) playChannelsButtonTouched: (id) sender
-{
-    //TODO: Add play all channels code here
-}
-
-- (IBAction)touchedSubscribersLabel:(id)sender
-{
-    self.subscribersLabel.textColor = [UIColor colorWithRed:38.0f/255.0f green:41.0f/255.0f blue:43.0f/255.0f alpha:1.0f];
-}
-
-- (IBAction)releasedSubscribersLabel:(id)sender
-{
-    self.subscribersLabel.textColor = [UIColor whiteColor];
-}
-
--(IBAction)subscribersLabelPressed:(id)sender
-{
-    [self releasedSubscribersLabel:sender];
-    if (self.subscribersPopover)
-        return;
-    
-    [GAI.sharedInstance.defaultTracker sendView: @"Subscribers List"];
-    
-    SYNSubscribersViewController* subscribersViewController = [[SYNSubscribersViewController alloc] initWithChannel: self.channel];
-    
-    if (IS_IPAD)
-    {
-        
-//        UINavigationController* navigationController = [[UINavigationController alloc] initWithRootViewController: subscribersViewController];
-//        navigationController.view.backgroundColor = [UIColor clearColor];
-//        
-//        self.subscribersPopover = [[UIPopoverController alloc] initWithContentViewController: navigationController];
-//        self.subscribersPopover.popoverContentSize = CGSizeMake(512, 626);
-//        self.subscribersPopover.delegate = self;
-//        
-//        self.subscribersPopover.popoverBackgroundViewClass = [SYNAccountSettingsPopoverBackgroundView class];
-        
-        UINavigationController* navigationController = [[UINavigationController alloc] initWithRootViewController: subscribersViewController];
-        navigationController.view.backgroundColor = [UIColor clearColor];
-        
-        self.subscribersPopover = [[UIPopoverController alloc] initWithContentViewController: navigationController];
-        self.subscribersPopover.popoverBackgroundViewClass = [SYNAccountSettingsPopoverBackgroundView class];
-        self.subscribersPopover.popoverContentSize = CGSizeMake(514, 626);
-        self.subscribersPopover.delegate = self;
-
-        
-        CGRect rect = CGRectMake([SYNDeviceManager.sharedInstance currentScreenWidth] * 0.5,
-                                 480.0f, 1, 1);
-        
-        [self.subscribersPopover presentPopoverFromRect: rect
-                                                 inView: self.view
-                               permittedArrowDirections: 0
-                                               animated: YES];
-        
-        
-        
-    }
-    else
-    {
-        
-        self.modalSubscriptionsContainer = [[SYNModalSubscribersController alloc] initWithContentViewController:subscribersViewController];
-        
-        [appDelegate.viewStackManager presentModallyController:self.modalSubscriptionsContainer];
-        
-    }
-    
-}
 
 - (void) viewWillAppear: (BOOL) animated
 {
@@ -451,25 +392,24 @@
                                                  name: kCoverArtChanged
                                                object: nil];
     
-    [[NSNotificationCenter defaultCenter] addObserver:self
-                                             selector:@selector(videoQueueCleared)
-                                                 name:kVideoQueueClear
-                                               object:nil];
+    [[NSNotificationCenter defaultCenter] addObserver: self
+                                             selector: @selector(videoQueueCleared)
+                                                 name: kVideoQueueClear
+                                               object: nil];
     
-    [[NSNotificationCenter defaultCenter] addObserver:self
-                                             selector:@selector(updateFailed:)
-                                                 name:kUpdateFailed
-                                               object:nil];
+    [[NSNotificationCenter defaultCenter] addObserver: self
+                                             selector: @selector(updateFailed:)
+                                                 name: kUpdateFailed
+                                               object: nil];
     
     if (self.channel.channelOwner.uniqueId == appDelegate.currentUser.uniqueId)
     {
         [[NSNotificationCenter defaultCenter] addObserver: self
-                                                selector: @selector(reloadUserImage:)
-                                                name: kUserDataChanged
-                                                object: nil];
+                                                 selector: @selector(reloadUserImage:)
+                                                     name: kUserDataChanged
+                                                   object: nil];
     }
     
-
     self.subscribeButton.enabled = YES;
     self.subscribeButton.selected = self.channel.subscribedByUserValue;
     
@@ -481,10 +421,11 @@
     // Refresh our view
     [self.videoThumbnailCollectionView reloadData];
     
-    
-    if (self.channel.videoInstances.count == 0 && ![self.channel.uniqueId isEqualToString:kNewChannelPlaceholderId])
+    if (self.channel.videoInstances.count == 0 && ![self.channel.uniqueId
+                                                    isEqualToString: kNewChannelPlaceholderId])
     {
-        [self showNoVideosMessage: NSLocalizedString(@"channel_screen_loading_videos", nil) withLoader:YES];
+        [self showNoVideosMessage: NSLocalizedString(@"channel_screen_loading_videos", nil)
+                       withLoader: YES];
     }
     
     [self displayChannelDetails];
@@ -493,6 +434,7 @@
     {
         AssertOrLog(@"Detail View controller had viewWillAppear called twice!!!!");
     }
+    
     self.hasAppeared = YES;
 }
 
@@ -557,6 +499,80 @@
     self.hasAppeared = NO;
 }
 
+- (IBAction) playChannelsButtonTouched: (id) sender
+{
+    [self displayVideoViewerWithVideoInstanceArray: self.channel.videoInstances.array
+                                  andSelectedIndex: 0
+                                            center: self.view.center];
+}
+
+
+- (IBAction) touchedSubscribersLabel: (id) sender
+{
+    self.subscribersLabel.textColor = [UIColor colorWithRed: 38.0f / 255.0f
+                                                      green: 41.0f / 255.0f
+                                                       blue: 43.0f / 255.0f
+                                                      alpha: 1.0f];
+}
+
+
+- (IBAction) releasedSubscribersLabel: (id) sender
+{
+    self.subscribersLabel.textColor = [UIColor whiteColor];
+}
+
+
+- (IBAction) subscribersLabelPressed: (id) sender
+{
+    [self releasedSubscribersLabel: sender];
+    
+    if (self.subscribersPopover)
+    {
+        return;
+    }
+    
+    [GAI.sharedInstance.defaultTracker
+     sendView: @"Subscribers List"];
+    
+    SYNSubscribersViewController *subscribersViewController = [[SYNSubscribersViewController alloc] initWithChannel: self.channel];
+    
+    if (IS_IPAD)
+    {
+        //        UINavigationController* navigationController = [[UINavigationController alloc] initWithRootViewController: subscribersViewController];
+        //        navigationController.view.backgroundColor = [UIColor clearColor];
+        //
+        //        self.subscribersPopover = [[UIPopoverController alloc] initWithContentViewController: navigationController];
+        //        self.subscribersPopover.popoverContentSize = CGSizeMake(512, 626);
+        //        self.subscribersPopover.delegate = self;
+        //
+        //        self.subscribersPopover.popoverBackgroundViewClass = [SYNAccountSettingsPopoverBackgroundView class];
+        
+        UINavigationController *navigationController = [[UINavigationController alloc] initWithRootViewController: subscribersViewController];
+        navigationController.view.backgroundColor = [UIColor clearColor];
+        
+        self.subscribersPopover = [[UIPopoverController alloc] initWithContentViewController: navigationController];
+        self.subscribersPopover.popoverBackgroundViewClass = [SYNAccountSettingsPopoverBackgroundView class];
+        self.subscribersPopover.popoverContentSize = CGSizeMake(514, 626);
+        self.subscribersPopover.delegate = self;
+        
+        
+        CGRect rect = CGRectMake([SYNDeviceManager.sharedInstance currentScreenWidth] * 0.5,
+                                 480.0f, 1, 1);
+        
+        [self.subscribersPopover
+         presentPopoverFromRect: rect
+         inView: self.view
+         permittedArrowDirections: 0
+         animated: YES];
+    }
+    else
+    {
+        self.modalSubscriptionsContainer = [[SYNModalSubscribersController alloc] initWithContentViewController: subscribersViewController];
+        
+        [appDelegate.viewStackManager
+         presentModallyController: self.modalSubscriptionsContainer];
+    }
+}
 
 
 - (void) videoQueueCleared
