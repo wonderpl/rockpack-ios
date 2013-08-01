@@ -148,7 +148,7 @@
 										<string key="NSFrame">{{214, 358}, {44, 44}}</string>
 										<reference key="NSSuperview" ref="421928150"/>
 										<reference key="NSWindow"/>
-										<reference key="NSNextKeyView" ref="964655544"/>
+										<reference key="NSNextKeyView" ref="104919480"/>
 										<string key="NSReuseIdentifierKey">_NS:9</string>
 										<bool key="IBUIOpaque">NO</bool>
 										<string key="targetRuntimeIdentifier">IBIPadFramework</string>
@@ -190,7 +190,7 @@
 										<string key="NSFrame">{{248, 370}, {20, 20}}</string>
 										<reference key="NSSuperview" ref="421928150"/>
 										<reference key="NSWindow"/>
-										<reference key="NSNextKeyView" ref="574818441"/>
+										<reference key="NSNextKeyView" ref="964655544"/>
 										<string key="NSReuseIdentifierKey">_NS:9</string>
 										<bool key="IBUIOpaque">NO</bool>
 										<string key="targetRuntimeIdentifier">IBIPadFramework</string>
@@ -201,7 +201,7 @@
 										<string key="NSFrame">{{268, 358}, {44, 44}}</string>
 										<reference key="NSSuperview" ref="421928150"/>
 										<reference key="NSWindow"/>
-										<reference key="NSNextKeyView" ref="104919480"/>
+										<reference key="NSNextKeyView" ref="574818441"/>
 										<string key="NSReuseIdentifierKey">_NS:9</string>
 										<bool key="IBUIOpaque">NO</bool>
 										<string key="targetRuntimeIdentifier">IBIPadFramework</string>
@@ -230,7 +230,7 @@
 										<string key="NSFrame">{{20, 272}, {110, 44}}</string>
 										<reference key="NSSuperview" ref="421928150"/>
 										<reference key="NSWindow"/>
-										<reference key="NSNextKeyView" ref="682383005"/>
+										<reference key="NSNextKeyView" ref="800211032"/>
 										<string key="NSReuseIdentifierKey">_NS:9</string>
 										<bool key="IBUIOpaque">NO</bool>
 										<string key="targetRuntimeIdentifier">IBIPadFramework</string>
@@ -253,6 +253,37 @@
 										<object class="NSCustomResource" key="IBUINormalImage">
 											<string key="NSClassName">NSImage</string>
 											<string key="NSResourceName">ButtonSubscribe.png</string>
+										</object>
+										<reference key="IBUIFontDescription" ref="842263965"/>
+										<reference key="IBUIFont" ref="421131696"/>
+									</object>
+									<object class="IBUIButton" id="800211032">
+										<reference key="NSNextResponder" ref="421928150"/>
+										<int key="NSvFlags">268</int>
+										<string key="NSFrame">{{20, 272}, {44, 44}}</string>
+										<reference key="NSSuperview" ref="421928150"/>
+										<reference key="NSWindow"/>
+										<reference key="NSNextKeyView" ref="682383005"/>
+										<string key="NSReuseIdentifierKey">_NS:9</string>
+										<bool key="IBUIOpaque">NO</bool>
+										<float key="IBUIAlpha">0.0</float>
+										<string key="targetRuntimeIdentifier">IBIPadFramework</string>
+										<int key="IBUIContentHorizontalAlignment">0</int>
+										<int key="IBUIContentVerticalAlignment">0</int>
+										<string key="IBUINormalTitle">Button</string>
+										<reference key="IBUIHighlightedTitleColor" ref="266444258"/>
+										<object class="NSColor" key="IBUINormalTitleColor">
+											<int key="NSColorSpace">1</int>
+											<bytes key="NSRGB">MC4xOTYwNzg0MzQ2IDAuMzA5ODAzOTMyOSAwLjUyMTU2ODY1NgA</bytes>
+										</object>
+										<reference key="IBUINormalTitleShadowColor" ref="271166090"/>
+										<object class="NSCustomResource" key="IBUIHighlightedImage">
+											<string key="NSClassName">NSImage</string>
+											<string key="NSResourceName">ButtonPlayChannelHighlighted.png</string>
+										</object>
+										<object class="NSCustomResource" key="IBUINormalImage">
+											<string key="NSClassName">NSImage</string>
+											<string key="NSResourceName">ButtonPlayChannel.png</string>
 										</object>
 										<reference key="IBUIFontDescription" ref="842263965"/>
 										<reference key="IBUIFont" ref="421131696"/>
@@ -726,6 +757,7 @@
 						<string key="NSFrame">{{214, 1}, {106, 58}}</string>
 						<reference key="NSSuperview" ref="453930770"/>
 						<reference key="NSWindow"/>
+						<reference key="NSNextKeyView"/>
 						<string key="NSReuseIdentifierKey">_NS:9</string>
 						<bool key="IBUIOpaque">NO</bool>
 						<string key="targetRuntimeIdentifier">IBIPadFramework</string>
@@ -1028,6 +1060,14 @@
 				</object>
 				<object class="IBConnectionRecord">
 					<object class="IBCocoaTouchOutletConnection" key="connection">
+						<string key="label">playChannelButton</string>
+						<reference key="source" ref="841351856"/>
+						<reference key="destination" ref="800211032"/>
+					</object>
+					<int key="connectionID">149</int>
+				</object>
+				<object class="IBConnectionRecord">
+					<object class="IBCocoaTouchOutletConnection" key="connection">
 						<string key="label">dataSource</string>
 						<reference key="source" ref="1042878543"/>
 						<reference key="destination" ref="841351856"/>
@@ -1195,6 +1235,15 @@
 					</object>
 					<int key="connectionID">146</int>
 				</object>
+				<object class="IBConnectionRecord">
+					<object class="IBCocoaTouchEventConnection" key="connection">
+						<string key="label">playChannelsButtonTouched:</string>
+						<reference key="source" ref="800211032"/>
+						<reference key="destination" ref="841351856"/>
+						<int key="IBEventType">7</int>
+					</object>
+					<int key="connectionID">150</int>
+				</object>
 			</array>
 			<object class="IBMutableOrderedSet" key="objectRecords">
 				<array key="orderedObjects">
@@ -1268,6 +1317,7 @@
 							<reference ref="682383005"/>
 							<reference ref="104919480"/>
 							<reference ref="608264930"/>
+							<reference ref="800211032"/>
 						</array>
 						<reference key="parent" ref="793593682"/>
 						<string key="objectName">Passthrough View - Display Controls</string>
@@ -1447,6 +1497,12 @@
 						<reference key="parent" ref="421928150"/>
 						<string key="objectName">Button - Subscribers</string>
 					</object>
+					<object class="IBObjectRecord">
+						<int key="objectID">148</int>
+						<reference key="object" ref="800211032"/>
+						<reference key="parent" ref="421928150"/>
+						<string key="objectName">Button - Play Channel</string>
+					</object>
 				</array>
 			</object>
 			<dictionary class="NSMutableDictionary" key="flattenedProperties">
@@ -1478,6 +1534,8 @@
 				<string key="139.IBPluginDependency">com.apple.InterfaceBuilder.IBCocoaTouchPlugin</string>
 				<string key="143.IBPluginDependency">com.apple.InterfaceBuilder.IBCocoaTouchPlugin</string>
 				<real value="1" key="143.IBUIButtonInspectorSelectedStateConfigurationMetadataKey"/>
+				<string key="148.IBPluginDependency">com.apple.InterfaceBuilder.IBCocoaTouchPlugin</string>
+				<real value="1" key="148.IBUIButtonInspectorSelectedStateConfigurationMetadataKey"/>
 				<string key="2.IBPluginDependency">com.apple.InterfaceBuilder.IBCocoaTouchPlugin</string>
 				<string key="3.IBPluginDependency">com.apple.InterfaceBuilder.IBCocoaTouchPlugin</string>
 				<string key="4.CustomClassName">SYNPassthroughView</string>
@@ -1509,7 +1567,7 @@
 			<nil key="activeLocalization"/>
 			<dictionary class="NSMutableDictionary" key="localizations"/>
 			<nil key="sourceID"/>
-			<int key="maxID">147</int>
+			<int key="maxID">150</int>
 		</object>
 		<object class="IBClassDescriber" key="IBDocument.Classes">
 			<array class="NSMutableArray" key="referencedPartialClassDescriptions">
@@ -1558,6 +1616,7 @@
 						<string key="cancelEditTapped:">id</string>
 						<string key="createChannelPressed:">id</string>
 						<string key="editButtonTapped:">id</string>
+						<string key="playChannelsButtonTouched:">id</string>
 						<string key="profileImagePressed:">UIButton</string>
 						<string key="releasedSubscribersLabel:">id</string>
 						<string key="saveChannelTapped:">id</string>
@@ -1591,6 +1650,10 @@
 						</object>
 						<object class="IBActionInfo" key="editButtonTapped:">
 							<string key="name">editButtonTapped:</string>
+							<string key="candidateClassName">id</string>
+						</object>
+						<object class="IBActionInfo" key="playChannelsButtonTouched:">
+							<string key="name">playChannelsButtonTouched:</string>
 							<string key="candidateClassName">id</string>
 						</object>
 						<object class="IBActionInfo" key="profileImagePressed:">
@@ -1651,6 +1714,7 @@
 						<string key="editControlsView">UIView</string>
 						<string key="logoImageView">UIImageView</string>
 						<string key="masterControlsView">UIView</string>
+						<string key="playChannelButton">UIButton</string>
 						<string key="profileImageButton">UIButton</string>
 						<string key="reportConcernButton">UIButton</string>
 						<string key="saveChannelButton">UIButton</string>
@@ -1742,6 +1806,10 @@
 						<object class="IBToOneOutletInfo" key="masterControlsView">
 							<string key="name">masterControlsView</string>
 							<string key="candidateClassName">UIView</string>
+						</object>
+						<object class="IBToOneOutletInfo" key="playChannelButton">
+							<string key="name">playChannelButton</string>
+							<string key="candidateClassName">UIButton</string>
 						</object>
 						<object class="IBToOneOutletInfo" key="profileImageButton">
 							<string key="name">profileImageButton</string>
@@ -1835,6 +1903,8 @@
 			<string key="ButtonCreateHighlighted.png">{130, 45}</string>
 			<string key="ButtonEdit.png">{120, 45}</string>
 			<string key="ButtonEditHighlighted.png">{120, 45}</string>
+			<string key="ButtonPlayChannel.png">{44, 45}</string>
+			<string key="ButtonPlayChannelHighlighted.png">{44, 45}</string>
 			<string key="ButtonReport@2x~iphone.png">{88, 88}</string>
 			<string key="ButtonReportHighlighted~iphone.png">{44, 44}</string>
 			<string key="ButtonReportSelected~iphone.png">{44, 44}</string>
