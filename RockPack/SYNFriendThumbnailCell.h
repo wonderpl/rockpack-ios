@@ -13,7 +13,6 @@
 @property (nonatomic, strong) IBOutlet UIImageView *imageView;
 @property (nonatomic, strong) IBOutlet UILabel* nameLabel;
 
-@property (nonatomic, strong) IBOutlet UIImageView *plusSignView;
 
 @property (nonatomic, strong) IBOutlet UIView* pressedLayerView;
 

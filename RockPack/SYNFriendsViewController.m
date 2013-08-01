@@ -311,7 +311,6 @@ static char* association_key = "SYNFriendThumbnailCell to Friend";
     
     userThumbnailCell.nameLabel.text = friend.displayName;
     
-    userThumbnailCell.plusSignView.hidden = friend.isOnRockpack; // if he is on rockpack dont display
     
     [userThumbnailCell.imageView setImageWithURL: [NSURL URLWithString: friend.thumbnailLargeUrl]
                                 placeholderImage: [UIImage imageNamed: @"PlaceholderAvatarChannel"]
