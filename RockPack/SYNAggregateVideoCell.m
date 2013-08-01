@@ -133,14 +133,19 @@
     
     if(users.count > 0)
     {
-        for (int i = 0; i < users.count - 1; i++)
+        if(users.count > 1)
         {
-            [namesString appendString:((ChannelOwner*)users[0]).displayName];
-            [namesString appendString:@", "];
+            for (int i = 0; i < users.count - 1; i++)
+            {
+                [namesString appendString:((ChannelOwner*)users[0]).displayName];
+                [namesString appendString:@", "];
+                
+            }
             
+            [namesString deleteCharactersInRange:NSMakeRange(namesString.length - 2, 2)];
+            [namesString appendString:@" & "];
         }
-        [namesString deleteCharactersInRange:NSMakeRange(namesString.length - 2, 2)];
-        [namesString appendString:@" & "];
+        
         [namesString appendString:((ChannelOwner*)users[(users.count - 1)]).displayName];
     }
     
