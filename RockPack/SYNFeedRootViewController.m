@@ -853,8 +853,13 @@ typedef void(^FeedDataErrorBlock)(void);
     
     // copied from Abstract class
     
+    UIView* candidateCell = coverButton;
+    while (![candidateCell isKindOfClass:[SYNAggregateCell class]])
+    {
+        candidateCell = candidateCell.superview;
+    }
     
-    NSIndexPath *indexPath = [self.feedCollectionView indexPathForItemAtPoint: coverButton.superview.center];
+    NSIndexPath *indexPath = [self.feedCollectionView indexPathForItemAtPoint: candidateCell.center];
     
     // SYNAggregateCell* aggregateCellPressed = (SYNAggregateCell*)[self.feedCollectionView cellForItemAtIndexPath:indexPath];
     
@@ -876,7 +881,21 @@ typedef void(^FeedDataErrorBlock)(void);
         
         NSArray* videoInstancesToPlayArray = [self.feedVideosById allValues];
         
-        NSInteger indexOfSelectedVideoInArray = [videoInstancesToPlayArray indexOfObject:videoInstance];
+        
+        __block NSInteger indexOfSelectedVideoInArray = 0;
+        [videoInstancesToPlayArray enumerateObjectsUsingBlock:^(VideoInstance* vi, NSUInteger idx, BOOL *stop) {
+            
+            
+            indexOfSelectedVideoInArray++;
+            
+            if([vi.uniqueId isEqualToString:videoInstance.uniqueId])
+                *stop = YES;
+            
+            
+        }];
+        
+        indexOfSelectedVideoInArray--; // zero index
+        
         
         [masterViewController addVideoOverlayToViewController: self
                                        withVideoInstanceArray: videoInstancesToPlayArray
