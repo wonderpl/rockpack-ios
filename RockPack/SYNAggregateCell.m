@@ -32,4 +32,14 @@
     // to be implemented in subclass
 }
 
+-(void)setViewControllerDelegate:(UIViewController *)viewControllerDelegate
+{
+    _viewControllerDelegate = viewControllerDelegate;
+    
+    
+    [self.coverButton addTarget: self.viewControllerDelegate
+                         action: @selector(pressedAggregateCellCoverButton:)
+               forControlEvents: UIControlEventTouchUpInside];
+}
+
 @end

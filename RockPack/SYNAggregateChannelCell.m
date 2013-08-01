@@ -10,7 +10,6 @@
 
 @implementation SYNAggregateChannelCell
 
-@synthesize viewControllerDelegate = _viewControllerDelegate;
 
 -(void)awakeFromNib
 {
@@ -116,13 +115,7 @@
 - (void) setViewControllerDelegate: (UIViewController *) viewControllerDelegate
 {
     
-    _viewControllerDelegate = viewControllerDelegate;
-    
-    
-    
-    [self.coverButton addTarget: self.viewControllerDelegate
-                         action: @selector(displayVideoViewerFromView:)
-               forControlEvents: UIControlEventTouchUpInside];
+    [super setViewControllerDelegate:viewControllerDelegate];
     
     
     

@@ -637,15 +637,14 @@ typedef void(^FeedDataErrorBlock)(void);
         cell.mainTitleLabel.text = videoInstance.title;
         
         
-        if(feedItem.title)
-        {
-            cell.messageLabel.text = feedItem.title;
-        }
-        else
+        if(!feedItem.title) // it should usually be nil
         {
             [cell setTitleMessageWithDictionary:@{@"display_name" : videoInstance.channel.channelOwner.displayName, @"item_count" : @(feedItemsAggregated), @"channel_name" : videoInstance.channel.title}];
-
+            
         }
+        else
+            cell.messageLabel.text = feedItem.title;
+        
         
         
         
@@ -688,15 +687,15 @@ typedef void(^FeedDataErrorBlock)(void);
         
         channelOwner = channel.channelOwner;
         
-        if(feedItem.title)
+        if(!feedItem.title)
         {
-            cell.messageLabel.text = feedItem.title;
-        }
-        else
-        {
+            
             [cell setTitleMessageWithDictionary:@{@"display_name" : channel.channelOwner.displayName, @"item_count" : @(feedItemsAggregated)}];
             
         }
+        else
+            cell.messageLabel.text = feedItem.title;
+        
         
     }
     
@@ -855,24 +854,33 @@ typedef void(^FeedDataErrorBlock)(void);
     // copied from Abstract class
     
     
-    NSIndexPath *indexPath = [self.videoThumbnailCollectionView indexPathForItemAtPoint: coverButton.superview.center];
+    NSIndexPath *indexPath = [self.feedCollectionView indexPathForItemAtPoint: coverButton.superview.center];
     
     // SYNAggregateCell* aggregateCellPressed = (SYNAggregateCell*)[self.feedCollectionView cellForItemAtIndexPath:indexPath];
     
     FeedItem* selectedFeedItem = [self feedItemAtIndexPath:indexPath];
     
-    if(selectedFeedItem.itemTypeValue == FeedItemResourceTypeVideo)
+    if(selectedFeedItem.resourceTypeValue == FeedItemResourceTypeVideo)
     {
-        VideoInstance* vi = [self.feedVideosById objectForKey:selectedFeedItem.resourceId];
+        
+        
+        VideoInstance* videoInstance;
+        
+        if(selectedFeedItem.itemTypeValue == FeedItemTypeLeaf)
+            videoInstance = [self.feedVideosById objectForKey:selectedFeedItem.resourceId];
+        else
+            videoInstance = [self.feedVideosById objectForKey:selectedFeedItem.coverIndexArray[0]];
         
         
         SYNMasterViewController *masterViewController = (SYNMasterViewController*)appDelegate.masterViewController;
         
         NSArray* videoInstancesToPlayArray = [self.feedVideosById allValues];
         
+        NSInteger indexOfSelectedVideoInArray = [videoInstancesToPlayArray indexOfObject:videoInstance];
+        
         [masterViewController addVideoOverlayToViewController: self
                                        withVideoInstanceArray: videoInstancesToPlayArray
-                                             andSelectedIndex: [videoInstancesToPlayArray indexOfObject:vi]
+                                             andSelectedIndex: indexOfSelectedVideoInArray
                                                    fromCenter: self.view.center];
     }
     

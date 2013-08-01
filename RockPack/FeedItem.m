@@ -41,7 +41,7 @@
         instance.dateAdded = videoInstance.dateAdded;
         instance.resourceTypeValue = FeedItemResourceTypeVideo;
         instance.positionValue = videoInstance.positionValue;
-        instance.title = videoInstance.title;
+        
         
     }
     else if ([object isKindOfClass:[Channel class]]) {
@@ -50,7 +50,7 @@
         instance.dateAdded = channel.datePublished;
         instance.resourceTypeValue = FeedItemResourceTypeChannel;
         instance.positionValue = channel.positionValue;
-        instance.title = channel.title;
+        
     }
     
     
@@ -116,6 +116,8 @@
     return [self.coverIndexes componentsSeparatedByString:@":"];
     
 }
+
+
 
 -(void)addFeedItemsObject:(FeedItem *)value_
 {

@@ -10,7 +10,6 @@
 
 @implementation SYNAggregateVideoCell
 
-@synthesize viewControllerDelegate = _viewControllerDelegate;
 
 -(void)awakeFromNib
 {
@@ -39,13 +38,8 @@
 - (void) setViewControllerDelegate: (UIViewController *) viewControllerDelegate
 {
     
-    _viewControllerDelegate = viewControllerDelegate;
+    [super setViewControllerDelegate:viewControllerDelegate];
     
-    
-    
-    [self.coverButton addTarget: self.viewControllerDelegate
-                         action: @selector(displayVideoViewerFromView:)
-               forControlEvents: UIControlEventTouchUpInside];
     
     [self.addButton addTarget: self.viewControllerDelegate
                          action: @selector(videoAddButtonTapped:)
