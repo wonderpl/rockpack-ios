@@ -52,6 +52,7 @@
 
 @property (nonatomic, assign)  CGPoint originalContentOffset;
 @property (nonatomic, assign)  CGRect originalSubscribeButtonRect;
+@property (nonatomic, assign)  CGRect originalSubscribersLabelRect;
 @property (nonatomic, assign)  CGPoint originalMasterControlsViewOrigin;
 @property (nonatomic, assign) BOOL hasAppeared;
 @property (nonatomic, assign) BOOL isIPhone;
@@ -158,6 +159,7 @@
     [super viewDidLoad];
     
     self.originalSubscribeButtonRect = self.playChannelButton.frame;
+    self.originalSubscribersLabelRect = self.subscribersLabel.frame;
     
     // Take the best guess about how many  videos we have
 //    self.dataItemsAvailable = self.channel.videoInstances.count;
@@ -779,6 +781,7 @@
     }
     
     CGRect buttonRect = self.originalSubscribeButtonRect;
+    CGRect labelRect = self.originalSubscribersLabelRect;
     
     // Whether to show play channel button
     if (self.channel.videoInstances.count > 0)
@@ -788,9 +791,12 @@
         [UIView animateWithDuration: kChannelEditModeAnimationDuration
                          animations: ^{
                              self.playChannelButton.alpha = 1;
-                             CGRect endFrame = self.subscribeButton.frame;
-                             endFrame.origin.x = buttonRect.origin.x + 54;
-                             self.subscribeButton.frame = endFrame;
+                             CGRect buttonFrame = self.subscribeButton.frame;
+                             buttonFrame.origin.x = buttonRect.origin.x + 54;
+                             self.subscribeButton.frame = buttonFrame;
+                             CGRect labelFrame = self.subscribersLabel.frame;
+                             labelFrame.origin.x = labelRect.origin.x + 54;
+                             self.subscribersLabel.frame = labelFrame;
                          }
                          completion: nil];
     }
@@ -799,9 +805,12 @@
         [UIView animateWithDuration: kChannelEditModeAnimationDuration
                          animations: ^{
                              self.playChannelButton.alpha = 0;
-                             CGRect endFrame = self.subscribeButton.frame;
-                             endFrame.origin.x = buttonRect.origin.x;
-                             self.subscribeButton.frame = endFrame;
+                             CGRect buttonFrame = self.subscribeButton.frame;
+                             buttonFrame.origin.x = buttonRect.origin.x;
+                             self.subscribeButton.frame = buttonFrame;
+                             CGRect labelFrame = self.subscribersLabel.frame;
+                             labelFrame.origin.x = labelRect.origin.x;
+                             self.subscribersLabel.frame = labelFrame;
                          }
                          completion: nil];
     }
