@@ -932,7 +932,7 @@ typedef enum {
 
 - (void) displayFromPushNotification
 {
-    NSIndexPath *indexPath = [NSIndexPath indexPathForRow: 3
+    NSIndexPath *indexPath = [NSIndexPath indexPathForRow: kNotificationsRowIndex
                                                 inSection: 0];
     
     [self.tableView selectRowAtIndexPath: indexPath
