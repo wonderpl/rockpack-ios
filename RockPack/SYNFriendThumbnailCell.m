@@ -15,7 +15,6 @@
 
 -(void)awakeFromNib
 {
-    self.plusSignView.hidden = YES;
     
     self.nameLabel.font = [UIFont rockpackFontOfSize:self.nameLabel.font.pointSize];
     

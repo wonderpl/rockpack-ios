@@ -16,20 +16,19 @@
 #import <FacebookSDK/FacebookSDK.h>
 #import "SYNOAuthNetworkEngine.h"
 #import "Friend.h"
-#import "SYNInviteFriendView.h"
 #import "SYNFacebookManager.h"
 #import <objc/runtime.h>
 
 static char* association_key = "SYNFriendThumbnailCell to Friend";
 
-@interface SYNFriendsViewController ()
+@interface SYNFriendsViewController () <UIScrollViewDelegate>
 
 @property (nonatomic, strong) NSArray* iOSFriends;
 @property (nonatomic, weak) SYNAppDelegate* appDelegate;
 @property (nonatomic) BOOL onRockpackFilterOn;
 @property (nonatomic, strong) NSArray* displayFriends;
-@property (nonatomic, strong) SYNInviteFriendView* currentInviteFriendView;
 @property (nonatomic, weak) Friend* currentlySelectedFriend;
+@property (nonatomic, strong) NSMutableString* currentSearchTerm;
 
 
 
@@ -44,6 +43,7 @@ static char* association_key = "SYNFriendThumbnailCell to Friend";
 
 @synthesize appDelegate;
 @synthesize onRockpackFilterOn;
+@synthesize displayFriends = _displayFriends;
 
 - (void)viewDidLoad
 {
@@ -52,6 +52,8 @@ static char* association_key = "SYNFriendThumbnailCell to Friend";
     appDelegate = (SYNAppDelegate*)[[UIApplication sharedApplication] delegate];
     
     onRockpackFilterOn = NO;
+    
+    self.currentSearchTerm = [[NSMutableString alloc] init];
     
     [self.searchField setAutocorrectionType:UITextAutocorrectionTypeNo];
     
@@ -138,25 +140,19 @@ static char* association_key = "SYNFriendThumbnailCell to Friend";
     return [self.iOSFriends filteredArrayUsingPredicate:searchPredicate];
 }
 
--(IBAction)switchClicked:(id)sender
+-(IBAction)switchClicked:(UIButton*)tab
 {
-    if( ((UIButton*)sender).selected ) // do not re-select
+    if( tab.selected ) // do not re-select
         return;
     
-    if(sender == self.onRockpackButton)
-    {
-        self.displayFriends = [self rockpackFriends];
-        
-        [self.allFriendsButton setSelected:NO];
-        
-    }
-    else if (sender == self.allFriendsButton)
-    {
-        self.displayFriends = self.iOSFriends;
-        [self.onRockpackButton setSelected:NO];
-    }
+    [self.searchField resignFirstResponder];
     
-    [((UIButton*)sender) setSelected:YES];
+    if(tab == self.onRockpackButton)
+        self.allFriendsButton.selected = NO;
+    else
+        self.onRockpackButton.selected = NO;
+    
+    tab.selected = YES;
     
     [self.friendsCollectionView reloadData];
 }
@@ -168,9 +164,15 @@ static char* association_key = "SYNFriendThumbnailCell to Friend";
     
     [self.activityIndicator startAnimating];
     
+    self.onRockpackButton.hidden = YES;
+    self.allFriendsButton.hidden = YES;
+    
     __weak SYNFriendsViewController* weakSelf = self;
     
     [appDelegate.oAuthNetworkEngine friendsForUser:appDelegate.currentUser completionHandler:^(id dictionary) {
+        
+        self.onRockpackButton.hidden = NO;
+        self.allFriendsButton.hidden = NO;
         
         NSDictionary* usersDictionary = dictionary[@"users"];
         if(!usersDictionary)
@@ -209,7 +211,7 @@ static char* association_key = "SYNFriendThumbnailCell to Friend";
         [weakSelf.onRockpackButton setTitle:[NSString stringWithFormat:@"ON ROCKPACK (%i)", friendsCount] forState:UIControlStateSelected];
         
         weakSelf.iOSFriends = [NSArray arrayWithArray:iOSFriendsMutableArray];
-        weakSelf.displayFriends = weakSelf.iOSFriends;
+     
         
         [weakSelf.activityIndicator stopAnimating];
         
@@ -222,6 +224,8 @@ static char* association_key = "SYNFriendThumbnailCell to Friend";
         
     } errorHandler:^(id dictionary) {
         
+        self.onRockpackButton.hidden = NO;
+        self.allFriendsButton.hidden = NO;
         [weakSelf.activityIndicator stopAnimating];
     }];
 }
@@ -287,7 +291,7 @@ static char* association_key = "SYNFriendThumbnailCell to Friend";
 
 }
 
-#pragma mark - UICollectionView Delegate
+#pragma mark - UICollectionView DataSource
 
 - (NSInteger) numberOfSectionsInCollectionView: (UICollectionView *) collectionView
 {
@@ -313,7 +317,6 @@ static char* association_key = "SYNFriendThumbnailCell to Friend";
     
     userThumbnailCell.nameLabel.text = friend.displayName;
     
-    userThumbnailCell.plusSignView.hidden = friend.isOnRockpack; // if he is on rockpack dont display
     
     [userThumbnailCell.imageView setImageWithURL: [NSURL URLWithString: friend.thumbnailLargeUrl]
                                 placeholderImage: [UIImage imageNamed: @"PlaceholderAvatarChannel"]
@@ -328,6 +331,13 @@ static char* association_key = "SYNFriendThumbnailCell to Friend";
     return userThumbnailCell;
 }
 
+#pragma mark - UICollectionView DataSource
+
+-(void)scrollViewDidScroll:(UIScrollView *)scrollView
+{
+    [self.searchField resignFirstResponder];
+}
+
 #pragma mark - UITextViewDelegate
 
 - (BOOL) textField: (UITextField *) textField shouldChangeCharactersInRange: (NSRange) range replacementString: (NSString *) newCharacter
@@ -339,32 +349,40 @@ static char* association_key = "SYNFriendThumbnailCell to Friend";
     NSUInteger newLength = (oldLength + newCharacterLength) - rangeLength;
     
     
-    NSMutableString* searchTerm = [NSMutableString stringWithString:[self.searchField.text uppercaseString]];
+    self.currentSearchTerm = [NSMutableString stringWithString:[self.searchField.text uppercaseString]];
     if(oldLength < newLength)
-        [searchTerm appendString:[newCharacter uppercaseString]];
+        [self.currentSearchTerm appendString:[newCharacter uppercaseString]];
     else
-        [searchTerm deleteCharactersInRange:NSMakeRange(searchTerm.length - 1, 1)];
+        [self.currentSearchTerm deleteCharactersInRange:NSMakeRange(self.currentSearchTerm.length - 1, 1)];
     
-    if([searchTerm isEqualToString:@""])
+    
+    [self.friendsCollectionView reloadData];
+    
+    return YES;
+}
+
+-(NSArray*)displayFriends
+{
+    
+    if(self.onRockpackButton.selected)
     {
+        _displayFriends = [self rockpackFriends];
         
-        if(self.onRockpackButton.selected) // is on the second tab
-        {
-            self.displayFriends = [self rockpackFriends];
-        }
-        else
-        {
-            self.displayFriends = self.iOSFriends;
-        }
+        
     }
     else
     {
+        _displayFriends = self.iOSFriends;
         
+    }
+    
+    if(self.currentSearchTerm.length > 0)
+    {
         NSPredicate* searchPredicate = [NSPredicate predicateWithBlock:^BOOL(Friend* friend, NSDictionary *bindings) {
             
             NSString* nameToCompare = [friend.displayName uppercaseString];
             
-            BOOL result = [nameToCompare hasPrefix:searchTerm];
+            BOOL result = [nameToCompare hasPrefix:self.currentSearchTerm];
             
             if(self.onRockpackButton.selected) // is on the second tab
             {
@@ -375,13 +393,12 @@ static char* association_key = "SYNFriendThumbnailCell to Friend";
             return result;
         }];
         
-        self.displayFriends = [self.iOSFriends filteredArrayUsingPredicate:searchPredicate];
+        _displayFriends = [_displayFriends filteredArrayUsingPredicate:searchPredicate];
     }
     
+    return _displayFriends;
     
-    [self.friendsCollectionView reloadData];
     
-    return YES;
 }
 
 - (BOOL) textFieldShouldReturn: (UITextField *) textField
@@ -392,7 +409,7 @@ static char* association_key = "SYNFriendThumbnailCell to Friend";
 
 -(BOOL)textFieldShouldClear:(UITextField *)textField
 {
-    self.displayFriends = self.iOSFriends;
+    [self.currentSearchTerm setString:@""];
     [self.friendsCollectionView reloadData];
     return YES;
 }
