@@ -20,7 +20,7 @@
 #import "SYNIntegralCollectionViewFlowLayout.h"
 #import "SYNNetworkEngine.h"
 #import "SYNOAuthNetworkEngine.h"
-#import "SYNVideoThumbnailWideCell.h"
+#import "SYNAggregateChannelCell.h"
 #import "UIImageView+WebCache.h"
 #import "SYNAggregateCell.h"
 #import "UIImageView+WebCache.h"
@@ -851,8 +851,9 @@ typedef void(^FeedDataErrorBlock)(void);
     
     // copied from Abstract class
     
-    
-    FeedItem* selectedFeedItem = [self feedItemAtIndexPath:[self indexPathFromCellControl:coverButton]];
+    SYNAggregateCell* aggregateCellSelected = [self cellFromControl:coverButton];
+    NSIndexPath *indexPath = [self.feedCollectionView indexPathForItemAtPoint: aggregateCellSelected.center];
+    FeedItem* selectedFeedItem = [self feedItemAtIndexPath:indexPath];
     
     if(selectedFeedItem.resourceTypeValue == FeedItemResourceTypeVideo)
     {
@@ -893,24 +894,41 @@ typedef void(^FeedDataErrorBlock)(void);
         
         
     }
-    
-    
-    
-    
-    
+    else
+    {
+        
+        Channel* channel;
+        
+        if(selectedFeedItem.itemTypeValue == FeedItemTypeLeaf)
+        {
+           channel = [self.feedChannelsById objectForKey:selectedFeedItem.resourceId]; 
+        }
+            
+        else
+        {
+        
+            SYNAggregateChannelCell* channelCellSelected = (SYNAggregateChannelCell*)aggregateCellSelected;
+           
+            NSInteger indexOfButton = [channelCellSelected indexForButtonPressed:coverButton];
+            channel = [self.feedChannelsById objectForKey:selectedFeedItem.coverIndexArray[indexOfButton]];
+        }
+        
+        if(channel)
+            [appDelegate.viewStackManager viewChannelDetails:channel];
+        
+    }
     
     
 }
 
--(NSIndexPath*)indexPathFromCellControl:(UIControl*)control
+-(SYNAggregateCell*)cellFromControl:(UIControl*)control
 {
     UIView* candidateCell = control;
     while (![candidateCell isKindOfClass:[SYNAggregateCell class]])
     {
         candidateCell = candidateCell.superview;
     }
-    NSIndexPath *indexPath = [self.feedCollectionView indexPathForItemAtPoint: candidateCell.center];
-    return indexPath;
+    return (SYNAggregateCell*)candidateCell;
 }
 
 - (void) videoAddButtonTapped: (UIButton *) _addButton
@@ -919,8 +937,9 @@ typedef void(^FeedDataErrorBlock)(void);
     if(_addButton.selected)
         return;
     
-    
-    FeedItem* selectedFeedItem = [self feedItemAtIndexPath:[self indexPathFromCellControl:_addButton]];
+    SYNAggregateCell* aggregateCellSelected = [self cellFromControl:_addButton];
+    NSIndexPath *indexPath = [self.feedCollectionView indexPathForItemAtPoint: aggregateCellSelected.center];
+    FeedItem* selectedFeedItem = [self feedItemAtIndexPath:indexPath];
     
     if(selectedFeedItem.resourceTypeValue == FeedItemResourceTypeVideo)
     {
