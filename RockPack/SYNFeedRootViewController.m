@@ -608,10 +608,7 @@ typedef void(^FeedDataErrorBlock)(void);
     return feedItem;
 }
 
-- (void) videoAddButtonTapped: (UIButton *) _addButton
-{
-   
-}
+
 
 - (UICollectionViewCell *) collectionView: (UICollectionView *) cv
                    cellForItemAtIndexPath: (NSIndexPath *) indexPath
@@ -847,23 +844,15 @@ typedef void(^FeedDataErrorBlock)(void);
     return supplementaryView;
 }
 
+#pragma mark - Click Cell Delegates
 
 - (void) pressedAggregateCellCoverButton: (UIButton *) coverButton
 {
     
     // copied from Abstract class
     
-    UIView* candidateCell = coverButton;
-    while (![candidateCell isKindOfClass:[SYNAggregateCell class]])
-    {
-        candidateCell = candidateCell.superview;
-    }
     
-    NSIndexPath *indexPath = [self.feedCollectionView indexPathForItemAtPoint: candidateCell.center];
-    
-    // SYNAggregateCell* aggregateCellPressed = (SYNAggregateCell*)[self.feedCollectionView cellForItemAtIndexPath:indexPath];
-    
-    FeedItem* selectedFeedItem = [self feedItemAtIndexPath:indexPath];
+    FeedItem* selectedFeedItem = [self feedItemAtIndexPath:[self indexPathFromCellControl:coverButton]];
     
     if(selectedFeedItem.resourceTypeValue == FeedItemResourceTypeVideo)
     {
@@ -901,10 +890,80 @@ typedef void(^FeedDataErrorBlock)(void);
                                        withVideoInstanceArray: videoInstancesToPlayArray
                                              andSelectedIndex: indexOfSelectedVideoInArray
                                                    fromCenter: self.view.center];
+        
+        
     }
     
     
     
+    
+    
+    
+    
+}
+
+-(NSIndexPath*)indexPathFromCellControl:(UIControl*)control
+{
+    UIView* candidateCell = control;
+    while (![candidateCell isKindOfClass:[SYNAggregateCell class]])
+    {
+        candidateCell = candidateCell.superview;
+    }
+    NSIndexPath *indexPath = [self.feedCollectionView indexPathForItemAtPoint: candidateCell.center];
+    return indexPath;
+}
+
+- (void) videoAddButtonTapped: (UIButton *) _addButton
+{
+    
+    if(_addButton.selected)
+        return;
+    
+    
+    FeedItem* selectedFeedItem = [self feedItemAtIndexPath:[self indexPathFromCellControl:_addButton]];
+    
+    if(selectedFeedItem.resourceTypeValue == FeedItemResourceTypeVideo)
+    {
+        VideoInstance* videoInstance;
+        
+        if(selectedFeedItem.itemTypeValue == FeedItemTypeLeaf)
+            videoInstance = [self.feedVideosById objectForKey:selectedFeedItem.resourceId];
+        else
+            videoInstance = [self.feedVideosById objectForKey:selectedFeedItem.coverIndexArray[0]];
+        
+        if(!videoInstance)
+            return;
+        
+        id<GAITracker> tracker = [GAI sharedInstance].defaultTracker;
+        
+        [tracker sendEventWithCategory: @"uiAction"
+                            withAction: @"videoPlusButtonClick"
+                             withLabel: nil
+                             withValue: nil];
+        
+        [appDelegate.oAuthNetworkEngine recordActivityForUserId: appDelegate.currentUser.uniqueId
+                                                         action: @"select"
+                                                videoInstanceId: videoInstance.uniqueId
+                                              completionHandler: ^(id response) {
+                                                  
+                                                  
+                                              } errorHandler: ^(id error) {
+                                                  
+                                                  DebugLog(@"Could not record videoAddButtonTapped: activity");
+                                                  
+                                              }];
+        
+        
+        [[NSNotificationCenter defaultCenter] postNotificationName: kVideoQueueAdd
+                                                            object: self
+                                                          userInfo: @{@"VideoInstance" : videoInstance }];
+        
+        [self.videoThumbnailCollectionView reloadData];
+        
+        
+        _addButton.selected = !_addButton.selected; // switch to on/off
+        
+    }
     
     
     
