@@ -65,7 +65,7 @@
 								<string key="NSFrameSize">{107, 107}</string>
 								<reference key="NSSuperview" ref="324856766"/>
 								<reference key="NSWindow"/>
-								<reference key="NSNextKeyView"/>
+								<reference key="NSNextKeyView" ref="911098884"/>
 								<string key="NSReuseIdentifierKey">_NS:9</string>
 								<bool key="IBUIUserInteractionEnabled">NO</bool>
 								<string key="targetRuntimeIdentifier">IBIPadFramework</string>
@@ -80,6 +80,7 @@
 								<string key="NSFrame">{{5, 86}, {102, 21}}</string>
 								<reference key="NSSuperview" ref="324856766"/>
 								<reference key="NSWindow"/>
+								<reference key="NSNextKeyView"/>
 								<string key="NSReuseIdentifierKey">_NS:9</string>
 								<reference key="IBUIBackgroundColor" ref="707867857"/>
 								<bool key="IBUIAutoresizesSubviews">NO</bool>
@@ -121,6 +122,7 @@
 								<string key="NSFrameSize">{107, 107}</string>
 								<reference key="NSSuperview" ref="324856766"/>
 								<reference key="NSWindow"/>
+								<reference key="NSNextKeyView" ref="921446605"/>
 								<string key="NSReuseIdentifierKey">_NS:9</string>
 								<object class="NSColor" key="IBUIBackgroundColor">
 									<int key="NSColorSpace">2</int>
@@ -269,7 +271,6 @@
 					<dictionary class="NSMutableDictionary" key="outlets">
 						<string key="imageView">UIImageView</string>
 						<string key="nameLabel">UILabel</string>
-						<string key="plusSignView">UIImageView</string>
 						<string key="pressedLayerView">UIView</string>
 					</dictionary>
 					<dictionary class="NSMutableDictionary" key="toOneOutletInfosByName">
@@ -280,10 +281,6 @@
 						<object class="IBToOneOutletInfo" key="nameLabel">
 							<string key="name">nameLabel</string>
 							<string key="candidateClassName">UILabel</string>
-						</object>
-						<object class="IBToOneOutletInfo" key="plusSignView">
-							<string key="name">plusSignView</string>
-							<string key="candidateClassName">UIImageView</string>
 						</object>
 						<object class="IBToOneOutletInfo" key="pressedLayerView">
 							<string key="name">pressedLayerView</string>

@@ -137,6 +137,7 @@ static NSDateFormatter *dateFormatter = nil;
     
     // kIgnoreStarringObjects
     
+    
     NSArray* starrersArray = dictionary[@"starring_users"];
     if (!(ignoringObjects & kIgnoreStarringObjects) && [starrersArray isKindOfClass:[NSArray class]])
     {
@@ -208,6 +209,7 @@ static NSDateFormatter *dateFormatter = nil;
     
     return dateFormatter;
 }
+
 
 -(void)setMarkedForDeletionValue:(BOOL)value_
 {

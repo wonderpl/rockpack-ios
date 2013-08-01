@@ -28,5 +28,6 @@
 -(void)setCoverImageWithString:(NSString*)imageString;
 -(void)setCoverImageWithArray:(NSArray*)imageArray;
 -(void)setTitleMessageWithDictionary:(NSDictionary*)messageDictionary;
+-(void)setSupplementaryMessageWithDictionary:(NSDictionary*)messageDictionary;
 
 @end

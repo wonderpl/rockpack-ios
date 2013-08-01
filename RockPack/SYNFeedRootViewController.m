@@ -643,7 +643,7 @@ typedef void(^FeedDataErrorBlock)(void);
             cell.messageLabel.text = feedItem.title;
         
         
-        
+        [cell setSupplementaryMessageWithDictionary:@{@"star_count":videoInstance.video.starCount, @"starrers":videoInstance.starrers}];
         
         [cell setCoverImageWithString:videoInstance.video.thumbnailURL];
         

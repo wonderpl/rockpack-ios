@@ -383,11 +383,7 @@ typedef enum {
     UITableViewCell* previousSelectedCell = [self.tableView cellForRowAtIndexPath: self.currentlySelectedIndexPath];
     [previousSelectedCell setSelected: NO];
     
-    if (self.currentlySelectedIndexPath.row > 3)
-    {
-        [self.tableView deselectRowAtIndexPath: indexPath
-                                      animated: YES];
-    }
+
     
     self.currentlySelectedIndexPath = indexPath;
     
