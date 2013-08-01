@@ -36,7 +36,15 @@
                        options: SDWebImageRetryFailed];
 }
 
-
+-(void)prepareForReuse
+{
+    if(buttonContainerView)
+    {
+        [buttonContainerView removeFromSuperview];
+        buttonContainerView = nil;
+    }
+    
+}
 -(void)setCoverImageWithArray:(NSArray*)imageArray
 {
     if(!imageArray)
@@ -46,12 +54,16 @@
     {
         [imageView removeFromSuperview];
     }
-    CGRect containerRect = self.imageContainer.frame;
+    CGRect containerRect;
     
     NSInteger imagesCount = imageArray.count;
     UIImageView* imageView;
+    
     if(imagesCount == 1)
     {
+        containerRect = self.imageContainer.frame;
+        self.coverButton.hidden = NO;
+        
         imageView = [[UIImageView alloc] initWithFrame:containerRect];
         [imageView setImageWithURL: [NSURL URLWithString: ((NSString*)imageArray[0])]
                   placeholderImage: [UIImage imageNamed: @"PlaceholderChannelSmall.png"]
@@ -63,22 +75,45 @@
         return;
     }
     
-    if(imagesCount == 2)
+    if(imagesCount == 2 || imagesCount == 3)
     {
+        
+        
+        CGRect shrinkingFrame = self.frame;
+        shrinkingFrame.size.height = 149.0f;
+        
+        self.frame = shrinkingFrame;
+        
+        containerRect = self.imageContainer.frame;
+        
+        buttonContainerView = [[UIView alloc] initWithFrame:containerRect];
+        [self addSubview:buttonContainerView];
+        
         containerRect.size.width = containerRect.size.width / 2.0;
         
+        self.coverButton.hidden = YES;
+        
+        UIButton* button;
         for (NSString* imageString in imageArray)
         {
-            imageView = [[UIImageView alloc] initWithFrame:containerRect];
-            [imageView setImageWithURL: [NSURL URLWithString: ((NSString*)imageArray[0])]
+            imageView = [[UIImageView alloc] initWithFrame: containerRect];
+            [imageView setImageWithURL: [NSURL URLWithString: imageString]
                       placeholderImage: [UIImage imageNamed: @"PlaceholderChannelSmall.png"]
                                options: SDWebImageRetryFailed];
             
             [self.imageContainer addSubview:imageView];
             
+            button = [UIButton buttonWithType:UIButtonTypeCustom];
+            button.backgroundColor = [UIColor clearColor];
+            button.frame = containerRect;
+            
+            [buttonContainerView addSubview:button];
+            
+            
             containerRect.origin.x += containerRect.size.width;
             
         }
+        
         
         
         return;
@@ -86,13 +121,24 @@
     
     if(imagesCount == 4)
     {
+        self.coverButton.hidden = YES;
+        
+        containerRect = self.imageContainer.frame;
+        
+        buttonContainerView = [[UIView alloc] initWithFrame:containerRect];
+        [self addSubview:buttonContainerView];
+        
+        
+        
         containerRect.size.width = containerRect.size.width / 2.0;
         containerRect.size.height = containerRect.size.width / 2.0;
+        
         NSInteger idx = 0;
+        UIButton* button;
         for (NSString* imageString in imageArray)
         {
             imageView = [[UIImageView alloc] initWithFrame:containerRect];
-            [imageView setImageWithURL: [NSURL URLWithString: ((NSString*)imageArray[0])]
+            [imageView setImageWithURL: [NSURL URLWithString: imageString]
                       placeholderImage: [UIImage imageNamed: @"PlaceholderChannelSmall.png"]
                                options: SDWebImageRetryFailed];
             
@@ -102,6 +148,12 @@
             
             if(++idx == 2)
                 containerRect.origin.y += containerRect.size.height;
+            
+            button = [UIButton buttonWithType:UIButtonTypeCustom];
+            button.backgroundColor = [UIColor clearColor];
+            button.frame = containerRect;
+            
+            [buttonContainerView addSubview:button];
             
             
         }
@@ -117,12 +169,28 @@
     
     [super setViewControllerDelegate:viewControllerDelegate];
     
-    
+    if(buttonContainerView)
+    {
+        for (UIButton* button in buttonContainerView.subviews)
+        {
+            [button addTarget: self.viewControllerDelegate
+                       action: @selector(pressedAggregateCellCoverButton:)
+             forControlEvents: UIControlEventTouchUpInside];
+        }
+    }
     
     [self.userThumbnailButton addTarget: self.viewControllerDelegate
                                  action: @selector(profileButtonTapped:)
                        forControlEvents: UIControlEventTouchUpInside];
     
+}
+
+-(NSInteger)indexForButtonPressed:(UIButton*)button
+{
+    if(!buttonContainerView)
+        return -1;
+    
+    return [buttonContainerView.subviews indexOfObject:button];
 }
 
 -(void)setTitleMessageWithDictionary:(NSDictionary*)messageDictionary

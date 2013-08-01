@@ -8,6 +8,8 @@
 
 #import "SYNAggregateCell.h"
 
-@interface SYNAggregateChannelCell : SYNAggregateCell
-
+@interface SYNAggregateChannelCell : SYNAggregateCell {
+    UIView* buttonContainerView;
+}
+-(NSInteger)indexForButtonPressed:(UIButton*)button;
 @end

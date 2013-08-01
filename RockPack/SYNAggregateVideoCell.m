@@ -31,8 +31,6 @@
                             options: SDWebImageRetryFailed];
     
     
-    
-    
 }
 
 - (void) setViewControllerDelegate: (UIViewController *) viewControllerDelegate
