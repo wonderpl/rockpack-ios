@@ -813,6 +813,7 @@
                              CGRect labelFrame = self.subscribersLabel.frame;
                              labelFrame.origin.x = labelRect.origin.x + 54;
                              self.subscribersLabel.frame = labelFrame;
+                             self.subscribersButton.frame = labelFrame;
                          }
                          completion: nil];
     }
@@ -827,6 +828,7 @@
                              CGRect labelFrame = self.subscribersLabel.frame;
                              labelFrame.origin.x = labelRect.origin.x;
                              self.subscribersLabel.frame = labelFrame;
+                             self.subscribersButton.frame = labelFrame;
                          }
                          completion: nil];
     }
