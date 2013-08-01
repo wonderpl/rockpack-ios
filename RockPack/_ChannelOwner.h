@@ -93,9 +93,9 @@ extern const struct ChannelOwnerFetchedProperties {
 
 
 
-@property (nonatomic, strong) NSSet *starred;
+@property (nonatomic, strong) NSOrderedSet *starred;
 
-- (NSMutableSet*)starredSet;
+- (NSMutableOrderedSet*)starredSet;
 
 
 
@@ -117,8 +117,8 @@ extern const struct ChannelOwnerFetchedProperties {
 - (void)addChannelsObject:(Channel*)value_;
 - (void)removeChannelsObject:(Channel*)value_;
 
-- (void)addStarred:(NSSet*)value_;
-- (void)removeStarred:(NSSet*)value_;
+- (void)addStarred:(NSOrderedSet*)value_;
+- (void)removeStarred:(NSOrderedSet*)value_;
 - (void)addStarredObject:(VideoInstance*)value_;
 - (void)removeStarredObject:(VideoInstance*)value_;
 
@@ -165,8 +165,8 @@ extern const struct ChannelOwnerFetchedProperties {
 
 
 
-- (NSMutableSet*)primitiveStarred;
-- (void)setPrimitiveStarred:(NSMutableSet*)value;
+- (NSMutableOrderedSet*)primitiveStarred;
+- (void)setPrimitiveStarred:(NSMutableOrderedSet*)value;
 
 
 

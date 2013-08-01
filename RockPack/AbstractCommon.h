@@ -15,6 +15,7 @@ typedef enum
     kIgnoreChannelCover = 1 << 7,
     kIgnoreFreshData = 1 << 8,
     kIgnoreSubscriptionObjects = 1 << 9,
+    kIgnoreStarringObjects = 1 << 10,
     kIgnoreAll = INT32_MAX
 } IgnoringObjects;
 

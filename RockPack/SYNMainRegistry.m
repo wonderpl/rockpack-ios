@@ -363,42 +363,19 @@
             
             [aggregationItems setObject:aggregationFeedItem forKey:aggregationIndex];
             
-            // parse covers
+            
+            // == Parse Covers == //
             
             NSArray* coversArray = (NSArray*)(aggregationItemDictionary[@"covers"]);
-            
-            
-            
-            if(![coversArray isKindOfClass:[NSArray class]] || coversArray.count == 0)
-                continue;
-            
-            NSMutableString* coverReferencesString = [[NSMutableString alloc] init];
-            
-            aggregationFeedItem.positionValue = ((NSNumber*)coversArray[0]).integerValue; // heuristically create position from the first cover index
-            
-            
-            for (NSNumber* coverIndex in coversArray)
-            {
-                NSDictionary* itemDictionaryReference = itemsArray[coverIndex.integerValue];
-                NSString* itemReferenceIdentifier = itemDictionaryReference[@"id"];
-                if(!itemReferenceIdentifier)
-                    continue;
-                
-                [coverReferencesString appendFormat:@"%@:", itemReferenceIdentifier];
-            }
-                
-                
-            [coverReferencesString deleteCharactersInRange:NSMakeRange(coverReferencesString.length - 1, 1)]; // delete last ':'
-            
-            aggregationFeedItem.coverIndexes = [NSString stringWithString:coverReferencesString];
+   
+            aggregationFeedItem.coverIndexes = [coversArray isKindOfClass:[NSArray class]] ? [coversArray componentsJoinedByString:@":"] : @"Mike";
             
             
         }
         
-        aggregationFeedItem.dateAdded = leafFeedItem.dateAdded;
         
         
-        [aggregationFeedItem.feedItemsSet addObject:leafFeedItem];
+        [aggregationFeedItem addFeedItemsObject:leafFeedItem]; // overriden in class
         
     }
     

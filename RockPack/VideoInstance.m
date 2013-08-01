@@ -134,6 +134,25 @@ static NSDateFormatter *dateFormatter = nil;
                              usingManagedObjectContext: managedObjectContext
                                    ignoringObjectTypes: ignoringObjects | kIgnoreVideoInstanceObjects];
     }
+    
+    // kIgnoreStarringObjects
+    
+    NSArray* starrersArray = dictionary[@"starring_users"];
+    if (!(ignoringObjects & kIgnoreStarringObjects) && [starrersArray isKindOfClass:[NSArray class]])
+    {
+        ChannelOwner* starringChannelOwner;
+        for (NSDictionary* starringDictionary in starrersArray)
+        {
+            starringChannelOwner = [ChannelOwner instanceFromDictionary:starringDictionary
+                                              usingManagedObjectContext:self.managedObjectContext
+                                                    ignoringObjectTypes:kIgnoreChannelObjects];
+            
+            [self.starrersSet addObject:starringChannelOwner];
+            
+        }
+        
+    }
+    
 }
 
 

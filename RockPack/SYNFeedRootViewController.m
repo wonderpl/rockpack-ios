@@ -27,6 +27,7 @@
 #import "SYNAggregateVideoCell.h"
 #import "Video.h"
 #import "FeedItem.h"
+#import "SYNMasterViewController.h"
 #import "VideoInstance.h"
 
 typedef void(^FeedDataErrorBlock)(void);
@@ -628,9 +629,11 @@ typedef void(^FeedDataErrorBlock)(void);
         cell = [cv dequeueReusableCellWithReuseIdentifier: @"SYNAggregateVideoCell"
                                              forIndexPath: indexPath];
         
-        
         VideoInstance* videoInstance;
+        
         videoInstance = (VideoInstance*)[self.feedVideosById objectForKey:feedItem.coverIndexArray[0]]; // there should be only one
+        
+        
         cell.mainTitleLabel.text = videoInstance.title;
         
         
@@ -865,10 +868,12 @@ typedef void(^FeedDataErrorBlock)(void);
         
         SYNMasterViewController *masterViewController = (SYNMasterViewController*)appDelegate.masterViewController;
         
-//        [masterViewController addVideoOverlayToViewController: self
-//                                       withVideoInstanceArray: videoInstanceArray
-//                                             andSelectedIndex: [videoArray indexOfObject:selectedFeedItem]
-//                                                   fromCenter:center];
+        NSArray* videoInstancesToPlayArray = [self.feedVideosById allValues];
+        
+        [masterViewController addVideoOverlayToViewController: self
+                                       withVideoInstanceArray: videoInstancesToPlayArray
+                                             andSelectedIndex: [videoInstancesToPlayArray indexOfObject:vi]
+                                                   fromCenter: self.view.center];
     }
     
     

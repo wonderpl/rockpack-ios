@@ -93,9 +93,9 @@ extern const struct VideoInstanceFetchedProperties {
 
 
 
-@property (nonatomic, strong) NSSet *starrers;
+@property (nonatomic, strong) NSOrderedSet *starrers;
 
-- (NSMutableSet*)starrersSet;
+- (NSMutableOrderedSet*)starrersSet;
 
 
 
@@ -112,8 +112,8 @@ extern const struct VideoInstanceFetchedProperties {
 
 @interface _VideoInstance (CoreDataGeneratedAccessors)
 
-- (void)addStarrers:(NSSet*)value_;
-- (void)removeStarrers:(NSSet*)value_;
+- (void)addStarrers:(NSOrderedSet*)value_;
+- (void)removeStarrers:(NSOrderedSet*)value_;
 - (void)addStarrersObject:(ChannelOwner*)value_;
 - (void)removeStarrersObject:(ChannelOwner*)value_;
 
@@ -155,8 +155,8 @@ extern const struct VideoInstanceFetchedProperties {
 
 
 
-- (NSMutableSet*)primitiveStarrers;
-- (void)setPrimitiveStarrers:(NSMutableSet*)value;
+- (NSMutableOrderedSet*)primitiveStarrers;
+- (void)setPrimitiveStarrers:(NSMutableOrderedSet*)value;
 
 
 

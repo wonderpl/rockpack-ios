@@ -13,12 +13,21 @@
 
 @implementation FeedItem
 
+@synthesize placeholder;
+
 
 + (FeedItem *) instanceFromResource: (AbstractCommon *) object
 {
     FeedItem *instance = [FeedItem insertInManagedObjectContext: object.managedObjectContext];
     
-    instance.uniqueId = object.uniqueId;
+    if(!instance)
+        return nil;
+    
+    instance.uniqueId = [NSString stringWithString:object.uniqueId];
+    
+    instance.resourceId = [NSString stringWithString:object.uniqueId];
+    
+    instance.coverIndexes = [NSString stringWithString:object.uniqueId];
     
     
     
@@ -30,8 +39,9 @@
         
         VideoInstance* videoInstance = (VideoInstance*)object;
         instance.dateAdded = videoInstance.dateAdded;
-        instance.resourceType = FeedItemResourceTypeVideo;
+        instance.resourceTypeValue = FeedItemResourceTypeVideo;
         instance.positionValue = videoInstance.positionValue;
+        instance.title = videoInstance.title;
         
     }
     else if ([object isKindOfClass:[Channel class]]) {
@@ -40,16 +50,14 @@
         instance.dateAdded = channel.datePublished;
         instance.resourceTypeValue = FeedItemResourceTypeChannel;
         instance.positionValue = channel.positionValue;
-        
+        instance.title = channel.title;
     }
     
-    instance.resourceId = object.uniqueId;
     
     instance.itemCountValue = 1;
     
     instance.viewId = object.viewId;
     
-    instance.coverIndexes = @"1";
     
     return instance;
 }
@@ -98,11 +106,22 @@
     
     self.positionValue = INT_MAX; // heuristic, place it at the end
     
+    self.dateAdded = [NSDate distantPast];
+    
     
 }
 -(NSArray*)coverIndexArray
 {
+    
     return [self.coverIndexes componentsSeparatedByString:@":"];
+    
+}
+
+-(void)addFeedItemsObject:(FeedItem *)value_
+{
+    [self.feedItemsSet addObject:value_];
+    self.positionValue = MIN(self.positionValue, value_.positionValue);
+    self.dateAdded = [self.dateAdded laterDate:value_.dateAdded];
     
 }
 -(NSString*)description

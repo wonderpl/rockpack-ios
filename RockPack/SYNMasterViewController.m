@@ -548,8 +548,11 @@ typedef void(^AnimationCompletionBlock)(BOOL finished);
 
 - (void) addVideoOverlayToViewController: (SYNAbstractViewController *) originViewController
                   withVideoInstanceArray: (NSArray*) videoInstanceArray
-                        andSelectedIndex: (int) selectedIndex fromCenter:(CGPoint)centerPoint
+                        andSelectedIndex: (int) selectedIndex
+                              fromCenter: (CGPoint)centerPoint
 {
+    
+    
     // FIXME: Replace with something more elegant (i.e. anything else)
     appDelegate.searchRefreshDisabled = TRUE;
     

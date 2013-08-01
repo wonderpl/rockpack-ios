@@ -111,10 +111,10 @@ const struct VideoInstanceFetchedProperties VideoInstanceFetchedProperties = {
 @dynamic starrers;
 
 	
-- (NSMutableSet*)starrersSet {
+- (NSMutableOrderedSet*)starrersSet {
 	[self willAccessValueForKey:@"starrers"];
   
-	NSMutableSet *result = (NSMutableSet*)[self mutableSetValueForKey:@"starrers"];
+	NSMutableOrderedSet *result = (NSMutableOrderedSet*)[self mutableOrderedSetValueForKey:@"starrers"];
   
 	[self didAccessValueForKey:@"starrers"];
 	return result;

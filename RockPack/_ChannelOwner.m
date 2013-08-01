@@ -120,10 +120,10 @@ const struct ChannelOwnerFetchedProperties ChannelOwnerFetchedProperties = {
 @dynamic starred;
 
 	
-- (NSMutableSet*)starredSet {
+- (NSMutableOrderedSet*)starredSet {
 	[self willAccessValueForKey:@"starred"];
   
-	NSMutableSet *result = (NSMutableSet*)[self mutableSetValueForKey:@"starred"];
+	NSMutableOrderedSet *result = (NSMutableOrderedSet*)[self mutableOrderedSetValueForKey:@"starred"];
   
 	[self didAccessValueForKey:@"starred"];
 	return result;
