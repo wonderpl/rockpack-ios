@@ -458,8 +458,6 @@
     
 
     self.subscribeButton.enabled = YES;
-    
-    
     self.subscribeButton.selected = self.channel.subscribedByUserValue;
     
     // We set up assets depending on whether we are in display or edit mode
@@ -667,9 +665,10 @@
         return;
     
     [updatedObjects enumerateObjectsUsingBlock: ^(id obj, NSUInteger idx, BOOL *stop) {
-        if ([obj isKindOfClass:[Channel class]] && [((Channel*)obj).uniqueId isEqualToString:self.channel.uniqueId])
+        if (obj == self.channel)
         {
             self.dataItemsAvailable = self.channel.totalVideosValue;
+            DebugLog(@"%d : %@", idx, obj);
             
             self.subscribeButton.selected = self.channel.subscribedByUserValue;
             self.subscribeButton.enabled = YES;
@@ -1229,7 +1228,8 @@
                          withValue: nil];
     
     self.subscribeButton.enabled = NO;
-    
+    self.subscribeButton.selected = FALSE;
+
     [self addSubscribeActivityIndicator];
     
     // Defensive programming
@@ -2689,10 +2689,7 @@
 - (void) addSubscribeActivityIndicator
 {
     self.subscribingIndicator = [[UIActivityIndicatorView alloc] initWithActivityIndicatorStyle: UIActivityIndicatorViewStyleWhite];
-    CGRect indicatorRect = self.subscribingIndicator.frame;
-    indicatorRect.origin.x = self.subscribeButton.frame.origin.x - 32.0;
-    indicatorRect.origin.y = self.subscribeButton.frame.origin.y + 10.0;
-    self.subscribingIndicator.frame = indicatorRect;
+    self.subscribingIndicator.center = self.subscribeButton.center;
     [self.subscribingIndicator startAnimating];
     [self.view addSubview: self.subscribingIndicator];
 }
