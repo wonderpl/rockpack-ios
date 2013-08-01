@@ -625,10 +625,10 @@
 }
 
 
-- (void) popoverControllerDidDismissPopover: (UIPopoverController *) popoverController
-{
-    self.activityPopoverController.delegate = nil;
-}
+//- (void) popoverControllerDidDismissPopover: (UIPopoverController *) popoverController
+//{
+//    self.activityPopoverController.delegate = nil;
+//}
 
 
 #pragma mark - Purchase
