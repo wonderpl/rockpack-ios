@@ -56,7 +56,7 @@
     nameLabelFrame.size.height = correctSize.height;
     
     self.nameLabel.lineBreakMode = NSLineBreakByTruncatingTail;
-    nameLabelFrame.origin.y = self.frame.size.height - nameLabelFrame.size.height - 4.0;
+    nameLabelFrame.origin.y = self.frame.size.height - nameLabelFrame.size.height - 2.0;
     
     self.nameLabel.frame = nameLabelFrame;
     
