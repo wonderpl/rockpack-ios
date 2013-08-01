@@ -24,4 +24,5 @@
 - (NSNumber *) daysAgo;
 - (NSDate *) dateAddedIgnoringTime;
 
+
 @end

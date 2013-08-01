@@ -42,4 +42,10 @@
                forControlEvents: UIControlEventTouchUpInside];
 }
 
+-(void)setSupplementaryMessageWithDictionary:(NSDictionary*)messageDictionary
+{
+    // to be implemented in subclass
+    
+}
+
 @end

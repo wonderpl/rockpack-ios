@@ -7,6 +7,7 @@
 //
 
 #import "SYNAggregateVideoCell.h"
+#import "ChannelOwner.h"
 
 @implementation SYNAggregateVideoCell
 
@@ -105,6 +106,72 @@
     [attributedCompleteString addAttribute:NSForegroundColorAttributeName value:[UIColor blackColor] range:indexRange];
     
     self.messageLabel.attributedText = attributedCompleteString;
+}
+
+-(void)setSupplementaryMessageWithDictionary:(NSDictionary*)messageDictionary
+{
+    
+    
+    
+    
+    NSNumber* likesNumber = messageDictionary[@"star_count"] ? messageDictionary[@"star_count"] : @(0);
+    NSString* likesString = [NSString stringWithFormat:@"%i likes", likesNumber.integerValue];
+    
+    if(likesNumber.integerValue == 0)
+    {
+        self.likeLabel.font = [UIFont boldRockpackFontOfSize:12.0];
+        self.likeLabel.textColor = [UIColor blackColor];
+        self.likeLabel.text = @"0 likes";
+        
+        return;
+    }
+    
+    NSString* including = @"including";
+    
+    NSMutableString* namesString = [[NSMutableString alloc] init];
+    NSOrderedSet* users = messageDictionary[@"starrers"] ? messageDictionary[@"starrers"] : [NSOrderedSet orderedSet];
+    
+    if(users.count > 0)
+    {
+        for (int i = 0; i < users.count - 1; i++)
+        {
+            [namesString appendString:((ChannelOwner*)users[0]).displayName];
+            [namesString appendString:@", "];
+            
+        }
+        [namesString deleteCharactersInRange:NSMakeRange(namesString.length - 2, 2)];
+        [namesString appendString:@" & "];
+        [namesString appendString:((ChannelOwner*)users[(users.count - 1)]).displayName];
+    }
+    
+    
+    
+    NSString* completeString = [NSString stringWithFormat:@"%@ %@ %@", likesString, including, namesString];
+    
+    // craete the attributed string //
+    
+    NSMutableAttributedString *attributedCompleteString = [[NSMutableAttributedString alloc] initWithString:completeString];
+    
+    NSRange indexRange = NSMakeRange(0, 0);
+    indexRange.length = likesString.length;
+    
+    [attributedCompleteString addAttribute:NSFontAttributeName value:[UIFont boldRockpackFontOfSize:12.0] range:indexRange];
+    [attributedCompleteString addAttribute:NSForegroundColorAttributeName value:[UIColor blackColor] range:indexRange];
+    
+    indexRange.location += indexRange.length + 1;
+    indexRange.length = including.length;
+    
+    [attributedCompleteString addAttribute:NSFontAttributeName value:[UIFont rockpackFontOfSize:12.0] range:indexRange];
+    [attributedCompleteString addAttribute:NSForegroundColorAttributeName value:[UIColor grayColor] range:indexRange];
+    
+    indexRange.location += indexRange.length + 1;
+    indexRange.length = namesString.length;
+    
+    [attributedCompleteString addAttribute:NSFontAttributeName value:[UIFont boldRockpackFontOfSize:12.0] range:indexRange];
+    [attributedCompleteString addAttribute:NSForegroundColorAttributeName value:[UIColor blackColor] range:indexRange];
+    
+    
+    self.likeLabel.attributedText = attributedCompleteString;
 }
 
 @end
