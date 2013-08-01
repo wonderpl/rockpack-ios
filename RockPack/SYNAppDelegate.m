@@ -41,7 +41,9 @@
 @property (nonatomic, strong) NSManagedObjectContext *privateManagedObjectContext;
 @property (nonatomic, strong) NSManagedObjectContext *searchManagedObjectContext;
 @property (nonatomic, strong) NSString *apnsToken;
+@property (nonatomic, strong) NSString *rockpackURL;
 @property (nonatomic, strong) NSString *userAgentString;
+@property (nonatomic, strong) NSURLConnection *connection;
 @property (nonatomic, strong) SYNChannelManager *channelManager;
 @property (nonatomic, strong) SYNLoginBaseViewController *loginViewController;
 @property (nonatomic, strong) SYNMasterViewController *masterViewController;
@@ -51,7 +53,6 @@
 @property (nonatomic, strong) SYNVideoQueue *videoQueue;
 @property (nonatomic, strong) SYNViewStackManager *viewStackManager;
 @property (nonatomic, strong) User *currentUser;
-@property (nonatomic, strong) NSURLConnection *connection;
 
 @end
 
@@ -1012,6 +1013,76 @@
     return params;
 }
 
+- (BOOL) parseAndActionRockpackURL: (NSURL *) url
+{
+    BOOL success = FALSE;
+    
+    NSString *userId = url.host;
+    NSArray *pathComponents = url.pathComponents;
+    
+    NSString *hostName = [[NSBundle mainBundle] objectForInfoDictionaryKey: ([userId isEqualToString: self.currentUser.uniqueId])? @"SecureAPIHostName" : @"APIHostName"];
+    
+    switch (pathComponents.count)
+    {
+        // User profile
+        case 1:
+        {
+            if (userId)
+            {
+                ChannelOwner *channelOwner = [ChannelOwner instanceFromDictionary: @{@"id" : userId}
+                                                        usingManagedObjectContext: self.mainManagedObjectContext
+                                                              ignoringObjectTypes: kIgnoreChannelObjects];
+                
+                [self.viewStackManager viewProfileDetails: channelOwner];
+                success = TRUE;
+            }
+            
+            break;
+        }
+            
+        // Channel
+        case 3:
+        {
+            // Extract the channelId from the path
+            NSString *channelId = pathComponents[2];
+            NSString *resourceURL = [NSString stringWithFormat: @"http://%@/ws/%@/channels/%@/", hostName, userId, channelId];
+            Channel* channel = [Channel instanceFromDictionary: @{@"id" : channelId, @"resource_url" : resourceURL}
+                                     usingManagedObjectContext: self.mainManagedObjectContext];
+            
+            if (channel)
+            {
+                [self.viewStackManager viewChannelDetails: channel];
+                success = TRUE;
+            }
+            break;
+        }
+            
+        // Video Instance
+        case 5:
+        {
+            NSString *channelId = pathComponents[2];
+            NSString *videoId = pathComponents[4];
+            NSString *resourceURL = [NSString stringWithFormat: @"http://%@/ws/%@/channels/%@/", hostName, userId, channelId];
+            Channel* channel = [Channel instanceFromDictionary: @{@"id" : channelId, @"resource_url" : resourceURL}
+                                     usingManagedObjectContext: self.mainManagedObjectContext];
+            
+            if (channel)
+            {
+                [self.viewStackManager viewChannelDetails: channel
+                                           withAutoplayId: videoId];
+                success = TRUE;
+            }
+            break;
+        }
+            
+        default:
+            // Not sure what this is so indicate failure
+            break;
+    }
+    
+    return success;
+}
+
 
 // rockpack://USERID/
 // (test) http://dev.rockpack.com/paulegan/deeplinktest/user.html
@@ -1029,131 +1100,27 @@
     // Is it one of our own custom 'rockpack' URL schemes
     if ([url.scheme isEqualToString: @"rockpack"])
     {
-        BOOL success = FALSE;
-        
-        NSString *userId = url.host;
-        NSArray *pathComponents = url.pathComponents;
-        
-        NSString *hostName = [[NSBundle mainBundle] objectForInfoDictionaryKey: ([userId isEqualToString: self.currentUser.uniqueId])? @"SecureAPIHostName" : @"APIHostName"];
-        
-        switch (pathComponents.count)
-        {
-            // User profile
-            case 1:
-            {
-                if (userId)
-                {
-                    ChannelOwner *channelOwner = [ChannelOwner instanceFromDictionary: @{@"id" : userId}
-                                                            usingManagedObjectContext: self.mainManagedObjectContext
-                                                                  ignoringObjectTypes: kIgnoreChannelObjects];
-                    
-                    [self.viewStackManager viewProfileDetails: channelOwner];
-                    success = TRUE;
-                }
-
-                break;
-            }
-            
-            // Channel
-            case 3:
-            {
-                // Extract the channelId from the path
-                NSString *channelId = pathComponents[2];
-                NSString *resourceURL = [NSString stringWithFormat: @"http://%@/ws/%@/channels/%@/", hostName, userId, channelId];
-                Channel* channel = [Channel instanceFromDictionary: @{@"id" : channelId, @"resource_url" : resourceURL}
-                                         usingManagedObjectContext: self.mainManagedObjectContext];
-                
-                if (channel)
-                {
-                    [self.viewStackManager viewChannelDetails: channel];
-                    success = TRUE;
-                }
-                break;
-            }
-               
-            // Video Instance    
-            case 5:
-            {
-                NSString *channelId = pathComponents[2];
-                NSString *videoId = pathComponents[4];
-                NSString *resourceURL = [NSString stringWithFormat: @"http://%@/ws/%@/channels/%@/", hostName, userId, channelId];
-                Channel* channel = [Channel instanceFromDictionary: @{@"id" : channelId, @"resource_url" : resourceURL}
-                                         usingManagedObjectContext: self.mainManagedObjectContext];
-                
-                if (channel)
-                {
-                    [self.viewStackManager viewChannelDetails: channel
-                                               withAutoplayId: videoId];
-                    success = TRUE;
-                }
-                break;
-            }
-                
-            default:
-                // Not sure what this is so indicate failure
-                break;
-        }
-
-        return success;
+        return [self parseAndActionRockpackURL: url];
     }
     else if ([url.scheme hasPrefix: @"fb"])
-    {      
-        // It appears to be a Facebook URL scheme, so parse the incoming URL to look for a target_url parameter
-        NSString *query = [url fragment];
-        
-        if (!query)
-        {
-            query = [url query];
-        }
-        
-        NSDictionary *params = [self parseURLParams: query];
+    {
+        // Parse the fragment of the URL (separated by &)
+        NSDictionary *params = [self parseURLParams: [url fragment]];
         
         // Check if target URL exists
         NSString *targetURLString = [params valueForKey: @"target_url"];
         
         if (targetURLString)
         {
-            
             targetURLString = [targetURLString stringByAppendingString: @"&rockpack_redirect=true"];
-//            NSURL *targetURL = [NSURL URLWithString: targetURLString];
-//            NSString *query2 = [targetURL query];
-//            NSDictionary *targetParams = [self parseURLParams: query2];
-//            NSString *deeplink = [targetParams valueForKey: @"deeplink"];
-//            
-//            // Check for the 'deeplink' parameter to check if this is one of
-//            // our incoming news feed link
-//            if (deeplink)
-//            {
-//                UIAlertView *alert = [[UIAlertView alloc] initWithTitle: @"News"
-//                                                                message: [NSString stringWithFormat: @"Incoming: %@", deeplink]
-//                                                               delegate: nil
-//                                                      cancelButtonTitle: @"OK"
-//                                                      otherButtonTitles: nil, nil];
-//                [alert show];
-//            }
 
-//            [NSURL URLWithString: @"rockpack://3-uaHqB1zdmfJfwbKX8Cug/channels/chlkFaa9SsYoxk4S4Kg5vBPQ/videos/viPOzGRLwURrPfZBJNYJ5asw/"]
-//            NSURL *targetURL = [NSURL URLWithString: targetURLString];
-//            
-//            [self performBlock: ^{
-//                if ([[UIApplication sharedApplication] canOpenURL: targetURL])
-//                {
-//                    [[UIApplication sharedApplication] openURL: targetURL];
-//                }
-//            } afterDelay: 0.1f];
-            
-            
-//            [self.networkEngine resolveFacebookLink:  targetURLString
-//                                  completionHandler: ^(NSDictionary *dictionary) {
-//                                      NSLog(@"%@",dictionary);
-//                                  }
-//                                       errorHandler: ^(NSError *error) {
-//                                           NSLog(@"%@", error);
-//                                       }];
-            
             NSMutableURLRequest *request = [NSMutableURLRequest requestWithURL: [NSURL URLWithString: targetURLString]];
             [request setHTTPMethod: @"GET"];
 
+            // Make sure we don't reuse old data
+            self.rockpackURL = nil;
+            
+            // Start asynchronous connection
             self.connection = [[NSURLConnection alloc] initWithRequest: request
                                                               delegate: self];
         }
@@ -1172,28 +1139,15 @@
 #pragma mark -
 #pragma mark NSURLConnection delegates
 
--(void) connection: (NSURLConnection *) connection
-        didReceiveResponse:(NSURLResponse *)response
-{
-}
-
-
-- (void) connection: (NSURLConnection *) connection
-     didReceiveData: (NSData *) data
-{
-}
-
-
-- (void) connection: (NSURLConnection *) connection
-        didFailWithError: (NSError *) error
-{
-    DebugLog (@"Failed");
-}
-
-
 - (void) connectionDidFinishLoading: (NSURLConnection *) connection
 {
+    if (self.rockpackURL)
+    {
+        NSURL *url = [NSURL URLWithString: self.rockpackURL];
+        [self parseAndActionRockpackURL: url];
+    }
 }
+
 
 - (NSURLRequest *) connection: (NSURLConnection *) connection
               willSendRequest: (NSURLRequest *) request
@@ -1201,13 +1155,16 @@
 {
     NSURLRequest *newRequest = request;
     
-    if (redirectResponse) {
-        newRequest = nil;
+
+    if (redirectResponse && !self.rockpackURL)
+    {
+         NSString *urlString = [(NSHTTPURLResponse *) redirectResponse allHeaderFields][@"Location"];
         
-        // NSString *location = [(NSHTTPURLResponse *)redirectResponse allHeaderFields][@"Location"];
-        
-//        NSString *location = redirectResponse.
-        
+        if ([urlString hasPrefix: @"rockpack"])
+        {
+            self.rockpackURL = urlString;
+            newRequest = nil;
+        }
     }
     
     return newRequest;
@@ -1381,14 +1338,83 @@
     self.apnsToken = nil;
 }
 
+/*
+// Standard notification (opens notification center)
+// where "%@ has subscribed to your channel" is in the list of localised strings
+{
+    "aps" : {
+        "alert" : {
+            "loc-key" : "%@ has subscribed to your channel",
+            "loc-args" : [ "Synchromation"]
+        },
+        "badge" : 5,
+    }
+}
 
+
+// Enhanced notification
+// corresponding to rockpack://vACcGSVlSIKbkR9tNoi-Ag/channel/chjXG7BaAcR5qKFdeHkGgOEQ/video/viqUJNamm6j8puq1g2svvHGw/
+// that will open the asset directly
+{
+    "aps" : {
+        "alert" : {
+            "loc-key" : "%@ has liked your video",
+            "loc-args" : [ "Synchromation"]
+        },
+    "badge" : 5,
+    },
+    "rck" : {
+        "url" : "vACcGSVlSIKbkR9tNoi-Ag/channel/chjXG7BaAcR5qKFdeHkGgOEQ/video/viqUJNamm6j8puq1g2svvHGw/"
+        "id" : "xyz123"
+    }
+}
+
+
+// Unknown notification
+// where "%%@ and %@ have invited you to play Monopoly" is NOT in the list of localised strings
+{
+    "aps" : {
+        "alert" : {
+            "loc-key" : "%%@ and %@ have invited you to play Monopoly",
+            "loc-args" : [ "Nick", "Michael"]
+        },
+        "badge" : 5,
+    }
+}
+ */
 
 - (void) application: (UIApplication*) application
          didReceiveRemoteNotification: (NSDictionary*) userInfo
 {
 	NSLog(@"Received notification: %@", userInfo);
     
-    [self.viewStackManager displaySideNavigatorFromPushNotification];
+    NSNumber *notificationId = userInfo[@"id"];
+    NSString *urlString = userInfo[@"url"];
+    
+    // Parse optional data in the payload defensively
+    if (urlString == nil || notificationId == nil)
+    {
+        // No additionaly rockpack:// url, so just display the notifications panel
+        [self.viewStackManager displaySideNavigatorFromPushNotification];
+    }
+    else
+    {
+        NSArray *array = @[notificationId];
+        
+        // First, mark the notification as read (on the server)
+        [self.oAuthNetworkEngine markAsReadForNotificationIndexes: array
+                                                       fromUserId: self.currentUser.uniqueId
+                                                completionHandler: ^(id response) {
+                                                    DebugLog(@"Mark as read succeeded");
+                                                } errorHandler: ^(id error) {
+                                                    DebugLog(@"Mark as read failed");
+                                                }];
+        
+        // Now actually handle the rockpack:// url
+        NSURL *rockpackURL = [NSURL URLWithString: [@"rockpack://" stringByAppendingString: urlString]];
+        
+        [self parseAndActionRockpackURL: rockpackURL];
+    }
 }
 
 @end
