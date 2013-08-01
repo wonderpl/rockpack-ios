@@ -60,18 +60,7 @@
     // Refresh date
     tokenInformationDictionary[@"com.facebook.sdk:TokenInformationRefreshDateKey"] = [NSDate date];
     
-    // Token key - WORKS
-//    tokenInformationDictionary[@"com.facebook.sdk:TokenInformationTokenKey"] = @"CAAB3zOQVv4ABADvfwOZCRNlZARpAzNRQl5likEZBZCZAQhFlVmImZCloFMSKPisnfy7wXHtWpf9cV5GDTeQLn4HLBo131OZA0cEGRSLuhwRZBFjJeCfADaJIPE8BpZCFR3ZBirh6ZCPBjyav6kZC0c58Pz3Qbc8q7bOzKISeargsI6IvSMpZADDgHZCZAPGCciTvx6Q9gMZD";
-    
-    // Token key - DOESN'T WORK
-//    tokenInformationDictionary[@"com.facebook.sdk:TokenInformationTokenKey"] = 
-//    @"CAAB3zOQVv4ABAPKEcJwcjmGpmI3YGCjoZBoWL6FhaVt42FLjZCpsZCZCncdZANFo1jkPZAoXL3qaePP13DNjwZCTkFk855yvZBDqrawonTpqFIm1rZBTQb0kqjcuNgSgMvRND5ThWtuv2nNTQPgSH1E3ytbZCckETRa3wZD";
-    
-    // Token key - NEW
-    tokenInformationDictionary[@"com.facebook.sdk:TokenInformationTokenKey"] =
-    @"CAAB3zOQVv4ABAM0ysQpjueqhgTTcR1pQq9T435DYgnmR3uDMvYGsUousuBCZAFUsu6xxRusDUwzhuFjXWkjPkZB9vGcOCMBjZBHoa3pVRhzpy3CTScZBewE74tjshj5eZAWeZAfeE0Q9dbmH7l6NHzdFg4Tt6zvSRhdThZA0wiy1CWUj5ZA9GC2K";
-    
-//    // Token key
+    // Token key
     tokenInformationDictionary[@"com.facebook.sdk:TokenInformationTokenKey"] = self.token;
     
     // Permissions
