@@ -49,7 +49,9 @@
                                               SYNChannelCategoryTableViewDelegate,
                                               SYNChannelCoverImageSelectorDelegate>
 
+
 @property (nonatomic, assign)  CGPoint originalContentOffset;
+@property (nonatomic, assign)  CGRect originalSubscribeButtonRect;
 @property (nonatomic, assign)  CGPoint originalMasterControlsViewOrigin;
 @property (nonatomic, assign) BOOL hasAppeared;
 @property (nonatomic, assign) BOOL isIPhone;
@@ -57,7 +59,6 @@
 @property (nonatomic, strong) CIContext *context;
 @property (nonatomic, strong) CIFilter *filter;
 @property (nonatomic, strong) CIImage* backgroundCIImage;
-
 @property (nonatomic, strong) IBOutlet SSTextView *channelTitleTextView;
 @property (nonatomic, strong) IBOutlet UIButton *buyButton;
 @property (nonatomic, strong) IBOutlet UIButton *cameraButton;
@@ -65,14 +66,15 @@
 @property (nonatomic, strong) IBOutlet UIButton *saveChannelButton;
 @property (nonatomic, strong) IBOutlet UIButton *shareButton;
 @property (nonatomic, strong) IBOutlet UIButton* addCoverButton;
+@property (nonatomic, strong) IBOutlet UIButton* playChannelButton;
 @property (nonatomic, strong) IBOutlet UIButton* profileImageButton;
 @property (nonatomic, strong) IBOutlet UIButton* reportConcernButton;
 @property (nonatomic, strong) IBOutlet UIButton* selectCategoryButton;
 @property (nonatomic, strong) IBOutlet UIButton* subscribeButton;
 @property (nonatomic, strong) IBOutlet UIImageView *avatarImageView;
 @property (nonatomic, strong) IBOutlet UIImageView *channelCoverImageView;
-@property (nonatomic, strong) IBOutlet UILabel *subscribersLabel;
 @property (nonatomic, strong) IBOutlet UILabel *channelOwnerLabel;
+@property (nonatomic, strong) IBOutlet UILabel *subscribersLabel;
 @property (nonatomic, strong) IBOutlet UIView *avatarBackgroundView;
 @property (nonatomic, strong) IBOutlet UIView *channelTitleTextBackgroundView;
 @property (nonatomic, strong) IBOutlet UIView *displayControlsView;
@@ -84,10 +86,12 @@
 @property (nonatomic, strong) SYNCoverChooserController* coverChooserController;
 @property (nonatomic, strong) SYNGenreTabViewController *categoriesTabViewController;
 @property (nonatomic, strong) SYNImagePickerController* imagePicker;
+@property (nonatomic, strong) SYNModalSubscribersController* modalSubscriptionsContainer;
 @property (nonatomic, strong) SYNReportConcernTableViewController* reportConcernController;
 @property (nonatomic, strong) UIActivityIndicatorView* subscribingIndicator;
 @property (nonatomic, strong) UIImage* originalBackgroundImage;
 @property (nonatomic, strong) UIImageView* blurredBGImageView;
+@property (nonatomic, strong) UIPopoverController* subscribersPopover;
 @property (nonatomic, strong) UIView *coverChooserMasterView;
 @property (nonatomic, strong) UIView* noVideosMessageView;
 @property (nonatomic, strong) id<SDWebImageOperation> currentWebImageOperation;
@@ -97,8 +101,7 @@
 @property (nonatomic, weak) IBOutlet UILabel *byLabel;
 @property (weak, nonatomic) IBOutlet UIActivityIndicatorView *activityIndicator;
 @property (weak, nonatomic) IBOutlet UIActivityIndicatorView *shareActivityIndicator;
-@property (nonatomic, strong) UIPopoverController* subscribersPopover;
-@property (nonatomic, strong) SYNModalSubscribersController* modalSubscriptionsContainer;
+
 //iPhone specific
 
 @property (nonatomic, strong) NSString* selectedImageURL;
@@ -153,6 +156,8 @@
 - (void) viewDidLoad
 {
     [super viewDidLoad];
+    
+    self.originalSubscribeButtonRect = self.playChannelButton.frame;
     
     // Take the best guess about how many  videos we have
 //    self.dataItemsAvailable = self.channel.videoInstances.count;
@@ -366,6 +371,12 @@
     
     self.originalContentOffset = self.videoThumbnailCollectionView.contentOffset;
 }
+
+- (IBAction) playChannelsButtonTouched: (id) sender
+{
+    //TODO: Add play all channels code here
+}
+
 - (IBAction)touchedSubscribersLabel:(id)sender
 {
     self.subscribersLabel.textColor = [UIColor colorWithRed:38.0f/255.0f green:41.0f/255.0f blue:43.0f/255.0f alpha:1.0f];
@@ -766,6 +777,34 @@
     {
         [self autoplayVideoIfAvailable];
     }
+    
+    CGRect buttonRect = self.originalSubscribeButtonRect;
+    
+    // Whether to show play channel button
+    if (self.channel.videoInstances.count > 0)
+    {
+
+        
+        [UIView animateWithDuration: kChannelEditModeAnimationDuration
+                         animations: ^{
+                             self.playChannelButton.alpha = 1;
+                             CGRect endFrame = self.subscribeButton.frame;
+                             endFrame.origin.x = buttonRect.origin.x + 54;
+                             self.subscribeButton.frame = endFrame;
+                         }
+                         completion: nil];
+    }
+    else
+    {
+        [UIView animateWithDuration: kChannelEditModeAnimationDuration
+                         animations: ^{
+                             self.playChannelButton.alpha = 0;
+                             CGRect endFrame = self.subscribeButton.frame;
+                             endFrame.origin.x = buttonRect.origin.x;
+                             self.subscribeButton.frame = endFrame;
+                         }
+                         completion: nil];
+    }
 }
 
 
@@ -1111,7 +1150,7 @@
         self.subscribersButton.center = self.subscribersLabel.center;
     }
     
-    if(self.channel.eCommerceURL && ![self.channel.eCommerceURL isEqualToString:@""] && self.mode == kChannelDetailsModeDisplay)
+    if (self.channel.eCommerceURL && ![self.channel.eCommerceURL isEqualToString:@""] && self.mode == kChannelDetailsModeDisplay)
     {
         self.buyButton.hidden = NO;
     }
