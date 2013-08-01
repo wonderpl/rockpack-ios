@@ -1507,7 +1507,7 @@
                             completionHandler: (MKNKUserSuccessBlock) completionBlock
                                  errorHandler: (MKNKUserErrorBlock) errorBlock
 {
-    [self connectToExtrnalAccoundForUserId:userId
+    [self connectToExternalAccoundForUserId:userId
                                      token:token
                                    service:@"apns"
                          completionHandler:completionBlock
@@ -1520,7 +1520,7 @@
                             errorHandler: (MKNKUserErrorBlock) errorBlock
 {
     
-    [self connectToExtrnalAccoundForUserId:userId
+    [self connectToExternalAccoundForUserId:userId
                                      token:token
                                    service:@"facebook"
                          completionHandler:completionBlock
@@ -1563,7 +1563,7 @@
     [self enqueueSignedOperation: networkOperation];
 }
 
-- (void) connectToExtrnalAccoundForUserId:(NSString*) userId
+- (void) connectToExternalAccoundForUserId:(NSString*) userId
                                     token:(NSString*)token
                                   service:(NSString*)service
                         completionHandler: (MKNKUserSuccessBlock) completionBlock
@@ -1580,9 +1580,7 @@
     NSDictionary *apiSubstitutionDictionary = @{@"USERID" : userId};
     
     NSString *apiString = [kRegisterExternalAccount stringByReplacingOccurrencesOfStrings: apiSubstitutionDictionary];
-    
-    
-    
+
     NSDictionary *params = @{@"external_system": service,
                              @"external_token" : token};
     

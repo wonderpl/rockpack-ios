@@ -356,6 +356,18 @@
 		01E427F11664EE52009B941F /* _Video.m in Sources */ = {isa = PBXBuildFile; fileRef = 01E427EF1664EE52009B941F /* _Video.m */; };
 		01EA81BF16B8AA110069AFF9 /* ButtonLargeVideoPanelPlay.png in Resources */ = {isa = PBXBuildFile; fileRef = 01EA81BD16B8AA110069AFF9 /* ButtonLargeVideoPanelPlay.png */; };
 		01EA81C016B8AA110069AFF9 /* ButtonLargeVideoPanelPlay@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 01EA81BE16B8AA110069AFF9 /* ButtonLargeVideoPanelPlay@2x.png */; };
+		01EC094317AAA37A00E1ACE1 /* ButtonSubscribeDisabled.png in Resources */ = {isa = PBXBuildFile; fileRef = 01EC094117AAA37900E1ACE1 /* ButtonSubscribeDisabled.png */; };
+		01EC094417AAA37A00E1ACE1 /* ButtonSubscribeDisabled@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 01EC094217AAA37900E1ACE1 /* ButtonSubscribeDisabled@2x.png */; };
+		01EC094717AAA40B00E1ACE1 /* ButtonSubscribeDisabled~iphone.png in Resources */ = {isa = PBXBuildFile; fileRef = 01EC094517AAA40B00E1ACE1 /* ButtonSubscribeDisabled~iphone.png */; };
+		01EC094817AAA40B00E1ACE1 /* ButtonSubscribeDisabled@2x~iphone.png in Resources */ = {isa = PBXBuildFile; fileRef = 01EC094617AAA40B00E1ACE1 /* ButtonSubscribeDisabled@2x~iphone.png */; };
+		01EC094D17AAA63100E1ACE1 /* ButtonPlayChannel@2x~iphone.png in Resources */ = {isa = PBXBuildFile; fileRef = 01EC094917AAA63100E1ACE1 /* ButtonPlayChannel@2x~iphone.png */; };
+		01EC094E17AAA63100E1ACE1 /* ButtonPlayChannel~iphone.png in Resources */ = {isa = PBXBuildFile; fileRef = 01EC094A17AAA63100E1ACE1 /* ButtonPlayChannel~iphone.png */; };
+		01EC094F17AAA63100E1ACE1 /* ButtonPlayChannelHighlighted@2x~iphone.png in Resources */ = {isa = PBXBuildFile; fileRef = 01EC094B17AAA63100E1ACE1 /* ButtonPlayChannelHighlighted@2x~iphone.png */; };
+		01EC095017AAA63100E1ACE1 /* ButtonPlayChannelHighlighted~iphone.png in Resources */ = {isa = PBXBuildFile; fileRef = 01EC094C17AAA63100E1ACE1 /* ButtonPlayChannelHighlighted~iphone.png */; };
+		01EC095517AAA64F00E1ACE1 /* ButtonPlayChannelHighlighted.png in Resources */ = {isa = PBXBuildFile; fileRef = 01EC095117AAA64F00E1ACE1 /* ButtonPlayChannelHighlighted.png */; };
+		01EC095617AAA64F00E1ACE1 /* ButtonPlayChannelHighlighted@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 01EC095217AAA64F00E1ACE1 /* ButtonPlayChannelHighlighted@2x.png */; };
+		01EC095717AAA64F00E1ACE1 /* ButtonPlayChannel.png in Resources */ = {isa = PBXBuildFile; fileRef = 01EC095317AAA64F00E1ACE1 /* ButtonPlayChannel.png */; };
+		01EC095817AAA64F00E1ACE1 /* ButtonPlayChannel@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 01EC095417AAA64F00E1ACE1 /* ButtonPlayChannel@2x.png */; };
 		01EC6237166EAAA6003154B1 /* SYNChannelDetailViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 01EC6235166EAAA6003154B1 /* SYNChannelDetailViewController.m */; };
 		01F1B85D17297471005735AF /* CoverArt.m in Sources */ = {isa = PBXBuildFile; fileRef = 01F1B85C17297471005735AF /* CoverArt.m */; };
 		01F1B878172A9ADF005735AF /* ButtonVideoOverlayAdd.png in Resources */ = {isa = PBXBuildFile; fileRef = 01F1B85E172A9ADF005735AF /* ButtonVideoOverlayAdd.png */; };
@@ -1686,6 +1698,18 @@
 		01EA81C316B9483D0069AFF9 /* SYNVideoThumbnailSmallCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SYNVideoThumbnailSmallCell.h; sourceTree = "<group>"; };
 		01EA81C416B9483D0069AFF9 /* SYNVideoThumbnailSmallCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SYNVideoThumbnailSmallCell.m; sourceTree = "<group>"; };
 		01EA81C616B9487A0069AFF9 /* SYNVideoThumbnailSmallCell.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = SYNVideoThumbnailSmallCell.xib; sourceTree = "<group>"; };
+		01EC094117AAA37900E1ACE1 /* ButtonSubscribeDisabled.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = ButtonSubscribeDisabled.png; path = Assets/Images/ButtonSubscribeDisabled.png; sourceTree = "<group>"; };
+		01EC094217AAA37900E1ACE1 /* ButtonSubscribeDisabled@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = "ButtonSubscribeDisabled@2x.png"; path = "Assets/Images/ButtonSubscribeDisabled@2x.png"; sourceTree = "<group>"; };
+		01EC094517AAA40B00E1ACE1 /* ButtonSubscribeDisabled~iphone.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "ButtonSubscribeDisabled~iphone.png"; sourceTree = "<group>"; };
+		01EC094617AAA40B00E1ACE1 /* ButtonSubscribeDisabled@2x~iphone.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "ButtonSubscribeDisabled@2x~iphone.png"; sourceTree = "<group>"; };
+		01EC094917AAA63100E1ACE1 /* ButtonPlayChannel@2x~iphone.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "ButtonPlayChannel@2x~iphone.png"; sourceTree = "<group>"; };
+		01EC094A17AAA63100E1ACE1 /* ButtonPlayChannel~iphone.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "ButtonPlayChannel~iphone.png"; sourceTree = "<group>"; };
+		01EC094B17AAA63100E1ACE1 /* ButtonPlayChannelHighlighted@2x~iphone.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "ButtonPlayChannelHighlighted@2x~iphone.png"; sourceTree = "<group>"; };
+		01EC094C17AAA63100E1ACE1 /* ButtonPlayChannelHighlighted~iphone.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "ButtonPlayChannelHighlighted~iphone.png"; sourceTree = "<group>"; };
+		01EC095117AAA64F00E1ACE1 /* ButtonPlayChannelHighlighted.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = ButtonPlayChannelHighlighted.png; path = Assets/Images/ButtonPlayChannelHighlighted.png; sourceTree = "<group>"; };
+		01EC095217AAA64F00E1ACE1 /* ButtonPlayChannelHighlighted@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = "ButtonPlayChannelHighlighted@2x.png"; path = "Assets/Images/ButtonPlayChannelHighlighted@2x.png"; sourceTree = "<group>"; };
+		01EC095317AAA64F00E1ACE1 /* ButtonPlayChannel.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = ButtonPlayChannel.png; path = Assets/Images/ButtonPlayChannel.png; sourceTree = "<group>"; };
+		01EC095417AAA64F00E1ACE1 /* ButtonPlayChannel@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = "ButtonPlayChannel@2x.png"; path = "Assets/Images/ButtonPlayChannel@2x.png"; sourceTree = "<group>"; };
 		01EC6234166EAAA5003154B1 /* SYNChannelDetailViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SYNChannelDetailViewController.h; sourceTree = "<group>"; };
 		01EC6235166EAAA6003154B1 /* SYNChannelDetailViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SYNChannelDetailViewController.m; sourceTree = "<group>"; };
 		01F1B85B17297471005735AF /* CoverArt.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CoverArt.h; sourceTree = "<group>"; };
@@ -3114,6 +3138,12 @@
 		0142EDB016B2E992008694DA /* Channel viewer */ = {
 			isa = PBXGroup;
 			children = (
+				01EC095117AAA64F00E1ACE1 /* ButtonPlayChannelHighlighted.png */,
+				01EC095217AAA64F00E1ACE1 /* ButtonPlayChannelHighlighted@2x.png */,
+				01EC095317AAA64F00E1ACE1 /* ButtonPlayChannel.png */,
+				01EC095417AAA64F00E1ACE1 /* ButtonPlayChannel@2x.png */,
+				01EC094117AAA37900E1ACE1 /* ButtonSubscribeDisabled.png */,
+				01EC094217AAA37900E1ACE1 /* ButtonSubscribeDisabled@2x.png */,
 				1F4CF614173A98F100988034 /* AvatarChannel.png */,
 				1F4CF615173A98F100988034 /* AvatarChannel@2x.png */,
 				0111CDED17292F3B00612186 /* ButtonCameraPadHighlighted.png */,
@@ -4240,6 +4270,12 @@
 		38A2FF1D1731607F00FB9F57 /* channelDetail */ = {
 			isa = PBXGroup;
 			children = (
+				01EC094917AAA63100E1ACE1 /* ButtonPlayChannel@2x~iphone.png */,
+				01EC094A17AAA63100E1ACE1 /* ButtonPlayChannel~iphone.png */,
+				01EC094B17AAA63100E1ACE1 /* ButtonPlayChannelHighlighted@2x~iphone.png */,
+				01EC094C17AAA63100E1ACE1 /* ButtonPlayChannelHighlighted~iphone.png */,
+				01EC094517AAA40B00E1ACE1 /* ButtonSubscribeDisabled~iphone.png */,
+				01EC094617AAA40B00E1ACE1 /* ButtonSubscribeDisabled@2x~iphone.png */,
 				BE2AE4CF176E689B00A753E3 /* ButtonBackCD@2x~iphone.png */,
 				BE2AE4D0176E689B00A753E3 /* ButtonBackCD~iphone.png */,
 				BE2AE4D1176E689B00A753E3 /* ButtonBackHighlightedCD@2x~iphone.png */,
@@ -6352,6 +6388,18 @@
 				BE82099717A95F6E00472ADD /* channelFeedCoverFourth~iphone.png in Resources */,
 				BE82099817A95F6E00472ADD /* channelFeedCoverFourth~iphone@2x.png in Resources */,
 				BE82099A17A95F9900472ADD /* channelFeedCover.png in Resources */,
+				01EC094317AAA37A00E1ACE1 /* ButtonSubscribeDisabled.png in Resources */,
+				01EC094417AAA37A00E1ACE1 /* ButtonSubscribeDisabled@2x.png in Resources */,
+				01EC094717AAA40B00E1ACE1 /* ButtonSubscribeDisabled~iphone.png in Resources */,
+				01EC094817AAA40B00E1ACE1 /* ButtonSubscribeDisabled@2x~iphone.png in Resources */,
+				01EC094D17AAA63100E1ACE1 /* ButtonPlayChannel@2x~iphone.png in Resources */,
+				01EC094E17AAA63100E1ACE1 /* ButtonPlayChannel~iphone.png in Resources */,
+				01EC094F17AAA63100E1ACE1 /* ButtonPlayChannelHighlighted@2x~iphone.png in Resources */,
+				01EC095017AAA63100E1ACE1 /* ButtonPlayChannelHighlighted~iphone.png in Resources */,
+				01EC095517AAA64F00E1ACE1 /* ButtonPlayChannelHighlighted.png in Resources */,
+				01EC095617AAA64F00E1ACE1 /* ButtonPlayChannelHighlighted@2x.png in Resources */,
+				01EC095717AAA64F00E1ACE1 /* ButtonPlayChannel.png in Resources */,
+				01EC095817AAA64F00E1ACE1 /* ButtonPlayChannel@2x.png in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
