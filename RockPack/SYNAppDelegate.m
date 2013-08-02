@@ -62,7 +62,7 @@
 // Required, as we are providing both getter and setter
 @synthesize  currentOAuth2Credentials = _currentOAuth2Credentials;
 
-- (BOOL)	 application: (UIApplication *) application
+- (BOOL) application: (UIApplication *) application
          didFinishLaunchingWithOptions: (NSDictionary *) launchOptions
 {
 #ifdef ENABLE_USER_RATINGS
@@ -155,7 +155,9 @@
     NSUserDefaults *defaults = [NSUserDefaults standardUserDefaults];
     
     // Create a dictionary of defaults to add and register them (if they have not already been set)
-    NSDictionary *initDefaults = @{kDownloadedVideoContentBool: @(NO)};
+    NSDictionary *initDefaults = @{
+                                   kDownloadedVideoContentBool: @(NO)
+                                   };
     
     [defaults registerDefaults: initDefaults];
     
@@ -179,7 +181,6 @@
         if ([self.currentOAuth2Credentials hasExpired])
         {
             [self refreshExpiredTokenOnStartup];
-            
         }
         else // we have an access token //
         {
@@ -190,22 +191,33 @@
             [self refreshFacebookSession];
             
             self.window.rootViewController = [self createAndReturnRootViewController];
-            
-            
         }
     }
     else
     {
-        if(self.currentUser || self.currentOAuth2Credentials)
+        if (self.currentUser || self.currentOAuth2Credentials)
         {
             [self logout];
         }
+        
         self.window.rootViewController = [self createAndReturnLoginViewController];
     }
     
 #ifdef ENABLE_USER_RATINGS
     [Appirater appLaunched: YES];
 #endif
+    
+    if (launchOptions != nil)
+    {
+        NSDictionary* userInfo = [launchOptions objectForKey: UIApplicationLaunchOptionsRemoteNotificationKey];
+        
+        if (userInfo != nil)
+        {
+            NSLog(@"Launched from push notification: %@", userInfo);
+            
+            [self handleRemoteNotification: userInfo];
+        }
+    }
     
     return YES;
 }
@@ -318,8 +330,8 @@
         }
     }
     
-    [self.window
-     addSubview: startImageView];
+    [self.window addSubview: startImageView];
+    
     startImageView.center = startImageCenter;
     
     //refresh token
@@ -1388,6 +1400,19 @@
 {
 	NSLog(@"Received notification: %@", userInfo);
     
+    UIApplicationState state = [application applicationState];
+    
+    if (state == UIApplicationStateBackground)
+    {
+        // The app is in the background, and the user has tapped on a notification
+        // so we do need to handle this case
+        [self handleRemoteNotification: userInfo];
+    }
+}
+
+
+- (void) handleRemoteNotification: (NSDictionary*) userInfo
+{
     NSNumber *notificationId = userInfo[@"id"];
     NSString *urlString = userInfo[@"url"];
     
