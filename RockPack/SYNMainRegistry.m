@@ -264,11 +264,11 @@
     // == Check for Validity == //
     
     NSArray *itemsArray = dictionary[@"items"];
-    if (!itemsArray || ![itemsArray isKindOfClass: [NSArray class]])
+    if (![itemsArray isKindOfClass: [NSArray class]])
         return NO;
     
     NSDictionary *aggregationsDictionary = dictionary[@"aggregations"];
-    if (!aggregationsDictionary || ![aggregationsDictionary isKindOfClass: [NSDictionary class]])
+    if (![aggregationsDictionary isKindOfClass: [NSDictionary class]])
         return NO;
     
     // == Mock data for testing pursposes == //
@@ -306,14 +306,14 @@
     
     NSMutableDictionary *aggregationItems = [NSMutableDictionary dictionaryWithCapacity:aggregationsDictionary.allKeys.count];
     
-    
-    
-    // == Parse Items == //
-    
     FeedItem* leafFeedItem;
     AbstractCommon* object;
     
     ChannelOwner* co;
+    
+    // == Parse Items == //
+    
+    
     for (NSDictionary* itemDictionary in itemsArray)
     {
         // define type
@@ -428,143 +428,7 @@
     return YES;
 }
 
-// legacy parsing
 
-- (BOOL) registerDataForFeedFromDictionary: (NSDictionary *) dictionary
-                               byAppending: (BOOL) append
-{
-    // == Check for Validity == //
-    NSDictionary *videosDictionary = dictionary[@"videos"];
-    if (!videosDictionary || ![videosDictionary isKindOfClass: [NSDictionary class]])
-        return NO;
-    
-    
-    NSArray *itemArray = videosDictionary[@"items"];
-    if (!itemArray || ![itemArray isKindOfClass: [NSArray class]])
-        return NO;
-    
-    
-    NSMutableDictionary* existingVideoInstancesByIndex = nil;
-    NSArray *existingFeedVideoInstances = nil;
-    
-    NSError* error = nil;
-    
-    if(!append)
-    {
-        
-        NSFetchRequest *videoInstanceFetchRequest = [[NSFetchRequest alloc] init];
-        [videoInstanceFetchRequest setEntity: [NSEntityDescription entityForName: @"VideoInstance"
-                                                          inManagedObjectContext: importManagedObjectContext]];
-        
-        NSPredicate* viewIdPredicate = [NSPredicate predicateWithFormat:@"viewId == %@ AND fresh == YES", kFeedViewId];
-        
-        
-        videoInstanceFetchRequest.predicate = viewIdPredicate;
-        
-        existingFeedVideoInstances = [importManagedObjectContext executeFetchRequest: videoInstanceFetchRequest
-                                                                               error: &error];
-        
-        existingVideoInstancesByIndex = [NSMutableDictionary dictionaryWithCapacity:existingFeedVideoInstances.count];
-        
-        // Organise videos by Id
-        for (VideoInstance* existingVideoInstance in existingFeedVideoInstances)
-        {
-            
-            existingVideoInstancesByIndex[existingVideoInstance.uniqueId] = existingVideoInstance;
-            
-            existingVideoInstance.markedForDeletionValue = YES;
-                
-            
-        }
-    }
-    
-    
-    NSFetchRequest *videoFetchRequest = [[NSFetchRequest alloc] init];
-    [videoFetchRequest setEntity: [NSEntityDescription entityForName: @"Video"
-                                              inManagedObjectContext: importManagedObjectContext]];
-
-    NSMutableArray* videoIds = [NSMutableArray array];
-    for (NSDictionary *itemDictionary in itemArray)
-    {
-        id uniqueId = [itemDictionary[@"video"] objectForKey:@"id"];
-        if(uniqueId)
-        {
-            [videoIds addObject:uniqueId];
-        }
-    }
-    
-    NSPredicate* videoPredicate = [NSPredicate predicateWithFormat:@"uniqueId IN %@", videoIds];
-    
-    videoFetchRequest.predicate = videoPredicate;
-
-    NSArray *existingVideos = [importManagedObjectContext executeFetchRequest: videoFetchRequest
-                                                                        error: &error];
-    
-    
-    
-    for (NSDictionary *itemDictionary in itemArray)
-    {
-        NSString *uniqueId = itemDictionary[@"id"];
-        if(!uniqueId)
-            continue; 
-        
-        VideoInstance* videoInstance;
-        videoInstance = existingVideoInstancesByIndex[uniqueId];
-        
-        if (!videoInstance)
-        {
-            // The video is not in the dictionary of existing videos
-            // Create a new video object. kIgnoreStoredObjects makes sure no attempt is made to query first
-            videoInstance = [VideoInstance instanceFromDictionary: itemDictionary
-                                        usingManagedObjectContext: importManagedObjectContext existingVideos:existingVideos];
-            
-        }
-        
-        
-        videoInstance.markedForDeletionValue = NO; // This video is in the dictionary and should not be deleted.
-        
-        
-        
-        videoInstance.position = [itemDictionary objectForKey: @"position"
-                                                  withDefault: @(0)];
-        
-        videoInstance.viewId = kFeedViewId;
-        
-        videoInstance.channel.viewId = kFeedViewId;
-        
-        videoInstance.channel.channelOwner.viewId = kFeedViewId;
-        
-    }    
-    
-    int d = 0;
-    
-    if(!append)
-    {
-        for (VideoInstance* oldVideoInstance in existingFeedVideoInstances)
-        {
-            if(!oldVideoInstance.markedForDeletionValue)
-                continue;
-            
-            // delete channels owners that are not used in the feed anymore
-            if(!oldVideoInstance.channel.channelOwner.freshValue && oldVideoInstance.channel.channelOwner.markedForDeletionValue)
-                [oldVideoInstance.channel.channelOwner.managedObjectContext deleteObject:oldVideoInstance.channel];
-            
-            // delete channels that are not used in the feed anymore
-            if(!oldVideoInstance.channel.freshValue && oldVideoInstance.channel.markedForDeletionValue)
-                [oldVideoInstance.channel.managedObjectContext deleteObject:oldVideoInstance.channel];
-            
-            [oldVideoInstance.managedObjectContext deleteObject:oldVideoInstance];
-            
-            d++;
-        }
-    }
-    
-    
-    
-    [appDelegate saveContext: NO];
-    
-    return YES;
-}
 
 #pragma mark - Channels
 
