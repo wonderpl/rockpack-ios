@@ -25,8 +25,9 @@
 
 @property (nonatomic, strong) IBOutlet UILabel* mainTitleLabel;
 
--(void)setCoverImageWithString:(NSString*)imageString;
--(void)setCoverImageWithArray:(NSArray*)imageArray;
+
+-(void)setCoverImagesAndTitlesWithArray:(NSArray*)imageString;
+
 -(void)setTitleMessageWithDictionary:(NSDictionary*)messageDictionary;
 -(void)setSupplementaryMessageWithDictionary:(NSDictionary*)messageDictionary;
 

@@ -19,15 +19,16 @@
 }
 
 
--(void)setCoverImageWithString:(NSString*)imageString
+-(void)setCoverImagesAndTitlesWithArray:(NSArray*)array
 {
     if(!videoImageView) {
         videoImageView = [[UIImageView alloc] initWithFrame:self.imageContainer.frame];
         [self.imageContainer addSubview:videoImageView];
     }
-        
     
-    [videoImageView setImageWithURL: [NSURL URLWithString: imageString]
+    NSDictionary* coverInfo = (NSDictionary*)array[0];
+    
+    [videoImageView setImageWithURL: [NSURL URLWithString: coverInfo[@"image"]]
                    placeholderImage: [UIImage imageNamed: @"PlaceholderChannelSmall.png"]
                             options: SDWebImageRetryFailed];
     
@@ -53,12 +54,7 @@
 }
 
 
--(void)setCoverImageWithArray:(NSArray*)imageArray
-{
-    
-    // not relevent yet for this cell (they all have a single image)
-    
-}
+
 
 -(void)setTitleMessageWithDictionary:(NSDictionary*)messageDictionary
 {
@@ -137,6 +133,8 @@
         {
             for (int i = 0; i < users.count - 1; i++)
             {
+                
+                
                 [namesString appendString:((ChannelOwner*)users[0]).displayName];
                 [namesString appendString:@", "];
                 
@@ -178,5 +176,11 @@
     
     self.likeLabel.attributedText = attributedCompleteString;
 }
+
+-(void)setCoverTitleWithString:(NSString*)coverTitle
+{
+    
+}
+
 
 @end

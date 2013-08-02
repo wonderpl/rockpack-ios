@@ -147,6 +147,8 @@ typedef void(^FeedDataErrorBlock)(void);
     self.feedCollectionView.backgroundColor = [UIColor clearColor];
     self.feedCollectionView.scrollsToTop = NO;
     self.feedCollectionView.contentInset = contentInset;
+    self.feedCollectionView.showsVerticalScrollIndicator = NO;
+    self.feedCollectionView.showsHorizontalScrollIndicator = NO;
     [self.view addSubview:self.feedCollectionView];
 
     self.feedCollectionView.autoresizingMask = UIViewAutoresizingFlexibleWidth| UIViewAutoresizingFlexibleHeight;
@@ -557,7 +559,12 @@ typedef void(^FeedDataErrorBlock)(void);
     }
     else // Channel
     {
-        return CGSizeMake(cellWidth, 298);
+        if(feedItem.itemTypeValue == FeedItemTypeAggregate)
+        {
+            if(feedItem.itemCountValue == 2)
+                return CGSizeMake(cellWidth, 149.0f);
+        }
+        return CGSizeMake(cellWidth, 298.0f);
     }
 }
 
@@ -645,7 +652,7 @@ typedef void(^FeedDataErrorBlock)(void);
         
         [cell setSupplementaryMessageWithDictionary:@{@"star_count":videoInstance.video.starCount, @"starrers":videoInstance.starrers}];
         
-        [cell setCoverImageWithString:videoInstance.video.thumbnailURL];
+        [cell setCoverImagesAndTitlesWithArray:@[@{@"image": videoInstance.video.thumbnailURL, @"title" : videoInstance.title}]];
         
         channelOwner = videoInstance.channel.channelOwner; // heuristic, get the last video instance, all should have the same channelOwner however
         
@@ -662,22 +669,22 @@ typedef void(^FeedDataErrorBlock)(void);
         {
             NSArray* coverIndexIds = [feedItem.coverIndexes componentsSeparatedByString:@":"];
             
-            NSMutableArray* coverImages = [NSMutableArray arrayWithCapacity:coverIndexIds.count];
+            NSMutableArray* coverImagesAndTitles = [NSMutableArray arrayWithCapacity:coverIndexIds.count];
             
             
             for (NSString* resourceId in coverIndexIds)
             {
-                channel = (Channel*)[self.feedVideosById objectForKey:resourceId];
-                [coverImages addObject:channel.channelCover.imageUrl];
+                channel = (Channel*)[self.feedChannelsById objectForKey:resourceId];
+                [coverImagesAndTitles addObject:@{@"image": channel.channelCover.imageUrl, @"title" : channel.title}];
             }
             
-            [cell setCoverImageWithArray:coverImages];
+            [cell setCoverImagesAndTitlesWithArray:coverImagesAndTitles];
         }
         else
         {
             channel = (Channel*)[self.feedChannelsById objectForKey:feedItem.resourceId];
             
-            [cell setCoverImageWithString:channel.channelCover.imageUrl];
+            [cell setCoverImagesAndTitlesWithArray:@[@{@"image": channel.channelCover.imageUrl, @"title" : channel.title}]];
             
             
         }

@@ -10,6 +10,7 @@
 
 @interface SYNAggregateChannelCell : SYNAggregateCell {
     UIView* buttonContainerView;
+    UIView* labelsContainerView;
 }
 -(NSInteger)indexForButtonPressed:(UIButton*)button;
 @end

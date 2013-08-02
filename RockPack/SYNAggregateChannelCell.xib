@@ -36,7 +36,7 @@
 			</object>
 			<object class="IBUICollectionViewCell" id="844326124">
 				<reference key="NSNextResponder"/>
-				<int key="NSvFlags">268</int>
+				<int key="NSvFlags">319</int>
 				<array class="NSMutableArray" key="NSSubviews">
 					<object class="IBUIView" id="597404405">
 						<reference key="NSNextResponder" ref="844326124"/>
@@ -63,7 +63,7 @@
 								<string key="NSFrame">{{318, 0}, {70, 70}}</string>
 								<reference key="NSSuperview" ref="597404405"/>
 								<reference key="NSWindow"/>
-								<reference key="NSNextKeyView" ref="799952381"/>
+								<reference key="NSNextKeyView" ref="579270883"/>
 								<string key="NSReuseIdentifierKey">_NS:9</string>
 								<bool key="IBUIUserInteractionEnabled">NO</bool>
 								<string key="targetRuntimeIdentifier">IBIPadFramework</string>
@@ -169,6 +169,7 @@
 								<string key="NSFrame">{{318, 0}, {70, 71}}</string>
 								<reference key="NSSuperview" ref="597404405"/>
 								<reference key="NSWindow"/>
+								<reference key="NSNextKeyView" ref="799952381"/>
 								<string key="NSReuseIdentifierKey">_NS:9</string>
 								<bool key="IBUIOpaque">NO</bool>
 								<string key="targetRuntimeIdentifier">IBIPadFramework</string>

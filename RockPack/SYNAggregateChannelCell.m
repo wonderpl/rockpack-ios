@@ -43,11 +43,18 @@
         [buttonContainerView removeFromSuperview];
         buttonContainerView = nil;
     }
+    if(labelsContainerView)
+    {
+        [labelsContainerView removeFromSuperview];
+        labelsContainerView = nil;
+    }
+    self.coverButton.hidden = NO;
+    self.mainTitleLabel.hidden = NO;
     
 }
--(void)setCoverImageWithArray:(NSArray*)imageArray
+-(void)setCoverImagesAndTitlesWithArray:(NSArray*)array
 {
-    if(!imageArray)
+    if(!array)
         return;
     
     for (UIImageView* imageView in self.imageContainer.subviews) // there should only be UIImageView instances
@@ -56,105 +63,177 @@
     }
     CGRect containerRect;
     
-    NSInteger imagesCount = imageArray.count;
+    NSInteger count = array.count;
     UIImageView* imageView;
     
-    if(imagesCount == 1)
+    UIButton* button;
+    UILabel* label;
+    NSString* channelTitle;
+    CGSize expectedLabelSize;
+    
+    if(count == 1)
     {
         containerRect = self.imageContainer.frame;
         self.coverButton.hidden = NO;
-        
+        self.mainTitleLabel.hidden = NO;
         imageView = [[UIImageView alloc] initWithFrame:containerRect];
-        [imageView setImageWithURL: [NSURL URLWithString: ((NSString*)imageArray[0])]
+        [imageView setImageWithURL: [NSURL URLWithString: ((NSString*)array[0][@"image"])]
                   placeholderImage: [UIImage imageNamed: @"PlaceholderChannelSmall.png"]
                            options: SDWebImageRetryFailed];
         
         [self.imageContainer addSubview:imageView];
         
+        self.mainTitleLabel.text = (NSString*)array[0][@"title"];
+        
         
         return;
     }
     
-    if(imagesCount == 2 || imagesCount == 3)
+    if(count == 2 || count == 3)
     {
         
         
-        CGRect shrinkingFrame = self.frame;
-        shrinkingFrame.size.height = 149.0f;
+        CGRect shrinkingSelfFrame = self.frame;
+        shrinkingSelfFrame.size.height = 149.0f;
         
-        self.frame = shrinkingFrame;
+        self.frame = shrinkingSelfFrame;
+        
+        CGRect shrinkingImageRect = self.imageContainer.frame;
+        shrinkingImageRect.size.height = 149.0f;
+        self.imageContainer.frame = shrinkingImageRect;
         
         containerRect = self.imageContainer.frame;
         
         buttonContainerView = [[UIView alloc] initWithFrame:containerRect];
-        [self addSubview:buttonContainerView];
+        [self insertSubview:buttonContainerView belowSubview:self.coverButton];
+        
+        labelsContainerView = [[UIView alloc] initWithFrame:containerRect];
+        labelsContainerView.userInteractionEnabled = NO;
+        labelsContainerView.backgroundColor = [UIColor clearColor];
+        [self insertSubview:labelsContainerView aboveSubview:buttonContainerView];
         
         containerRect.size.width = containerRect.size.width / 2.0;
         
         self.coverButton.hidden = YES;
-        
-        UIButton* button;
-        for (NSString* imageString in imageArray)
+        self.mainTitleLabel.hidden = YES;
+        for (NSDictionary* coverInfo in array)
         {
             imageView = [[UIImageView alloc] initWithFrame: containerRect];
-            [imageView setImageWithURL: [NSURL URLWithString: imageString]
-                      placeholderImage: [UIImage imageNamed: @"PlaceholderChannelSmall.png"]
-                               options: SDWebImageRetryFailed];
+            if(coverInfo[@"image"])
+            {
+                [imageView setImageWithURL: [NSURL URLWithString: coverInfo[@"image"]]
+                          placeholderImage: [UIImage imageNamed: @"PlaceholderChannelSmall.png"]
+                                   options: SDWebImageRetryFailed];
+            }
+            else
+            {
+                imageView.image = [UIImage imageNamed: @"PlaceholderChannelSmall.png"];
+            }
+            
             
             [self.imageContainer addSubview:imageView];
             
             button = [UIButton buttonWithType:UIButtonTypeCustom];
             button.backgroundColor = [UIColor clearColor];
             button.frame = containerRect;
+            [button setImage:[UIImage imageNamed:@"channelFeedCoverFourth"] forState:UIControlStateNormal];
             
             [buttonContainerView addSubview:button];
             
+            label = [[UILabel alloc] initWithFrame:CGRectZero];
+            label.backgroundColor = [UIColor clearColor];
+            label.font = [UIFont boldRockpackFontOfSize:14.0f];
+            label.lineBreakMode = NSLineBreakByWordWrapping;
+            label.textColor = [UIColor whiteColor];
+            channelTitle = coverInfo[@"title"];
+            expectedLabelSize = [channelTitle sizeWithFont: label.font
+                                         constrainedToSize: CGSizeMake(containerRect.size.width, 500.0)
+                                             lineBreakMode: label.lineBreakMode];
+            
+            
+            
+            label.frame = CGRectMake(containerRect.origin.x + 6.0, (containerRect.origin.y + containerRect.size.height) - (expectedLabelSize.height), expectedLabelSize.width, expectedLabelSize.height);
+            label.text = channelTitle;
+            
+            [labelsContainerView addSubview:label];
             
             containerRect.origin.x += containerRect.size.width;
             
         }
         
-        
-        
         return;
     }
     
-    if(imagesCount == 4)
+    if(count == 4)
     {
         self.coverButton.hidden = YES;
+        self.mainTitleLabel.hidden = YES;
         
         containerRect = self.imageContainer.frame;
         
         buttonContainerView = [[UIView alloc] initWithFrame:containerRect];
-        [self addSubview:buttonContainerView];
+        [self insertSubview:buttonContainerView belowSubview:self.coverButton];
         
+        labelsContainerView = [[UIView alloc] initWithFrame:containerRect];
+        labelsContainerView.userInteractionEnabled = NO;
+        labelsContainerView.backgroundColor = [UIColor clearColor];
+        [self insertSubview:labelsContainerView aboveSubview:buttonContainerView];
         
         
         containerRect.size.width = containerRect.size.width / 2.0;
-        containerRect.size.height = containerRect.size.width / 2.0;
+        containerRect.size.height = containerRect.size.height / 2.0;
         
         NSInteger idx = 0;
-        UIButton* button;
-        for (NSString* imageString in imageArray)
+        
+        for (NSDictionary* coverInfo in array)
         {
             imageView = [[UIImageView alloc] initWithFrame:containerRect];
-            [imageView setImageWithURL: [NSURL URLWithString: imageString]
-                      placeholderImage: [UIImage imageNamed: @"PlaceholderChannelSmall.png"]
-                               options: SDWebImageRetryFailed];
+            if(coverInfo[@"image"])
+            {
+                [imageView setImageWithURL: [NSURL URLWithString: coverInfo[@"image"]]
+                          placeholderImage: [UIImage imageNamed: @"PlaceholderChannelSmall.png"]
+                                   options: SDWebImageRetryFailed];
+            }
+            else
+            {
+                imageView.image = [UIImage imageNamed: @"PlaceholderChannelSmall.png"];
+            }
+            
             
             [self.imageContainer addSubview:imageView];
-            
-            containerRect.origin.x += containerRect.size.width;
-            
-            if(++idx == 2)
-                containerRect.origin.y += containerRect.size.height;
             
             button = [UIButton buttonWithType:UIButtonTypeCustom];
             button.backgroundColor = [UIColor clearColor];
             button.frame = containerRect;
+            [button setImage:[UIImage imageNamed:@"channelFeedCoverFourth"] forState:UIControlStateNormal];
             
             [buttonContainerView addSubview:button];
             
+            
+            label = [[UILabel alloc] initWithFrame:CGRectZero];
+            label.backgroundColor = [UIColor clearColor];
+            label.font = [UIFont boldRockpackFontOfSize:14.0f];
+            label.lineBreakMode = NSLineBreakByWordWrapping;
+            label.textColor = [UIColor whiteColor];
+            channelTitle = coverInfo[@"title"];
+            expectedLabelSize = [channelTitle sizeWithFont: label.font
+                                           constrainedToSize: CGSizeMake(containerRect.size.width, 500.0)
+                                               lineBreakMode: label.lineBreakMode];
+            
+            
+            
+            label.frame = CGRectMake(containerRect.origin.x + 6.0, (containerRect.origin.y + containerRect.size.height) - (expectedLabelSize.height), expectedLabelSize.width, expectedLabelSize.height);
+            label.text = channelTitle;
+            
+            [labelsContainerView addSubview:label];
+            // set rect
+            
+            containerRect.origin.x += containerRect.size.width;
+            
+            if(++idx == 2) {
+                containerRect.origin.x = 0.0f;
+                containerRect.origin.y += containerRect.size.height;
+            }
             
         }
         
@@ -226,5 +305,6 @@
     
     self.messageLabel.attributedText = attributedCompleteString;
 }
+
 
 @end
