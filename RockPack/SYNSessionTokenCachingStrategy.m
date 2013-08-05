@@ -77,7 +77,7 @@
  */
 - (void) clearToken
 {
-    AssertOrLog(@"Only for login, shouldn't be used");
+    NSLog(@"Token clear called");
 }
 
 
