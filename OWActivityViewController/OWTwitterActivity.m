@@ -77,10 +77,11 @@
         [twitterViewComposer setInitialText: text];
     }
     
-    if (image)
-    {
-        [twitterViewComposer addImage: image];
-    }
+    // Never show the image
+//    if (image)
+//    {
+//        [twitterViewComposer addImage: image];
+//    }
     
     if (url)
     {
