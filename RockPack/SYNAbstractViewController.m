@@ -250,7 +250,8 @@
 
 
 - (void) displayVideoViewerWithVideoInstanceArray: (NSArray *) videoInstanceArray
-                                andSelectedIndex: (int) selectedIndex center:(CGPoint)center
+                                andSelectedIndex: (int) selectedIndex
+                                           center:(CGPoint)center
 {
     SYNMasterViewController *masterViewController = (SYNMasterViewController*)appDelegate.masterViewController;
         

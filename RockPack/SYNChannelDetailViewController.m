@@ -1100,16 +1100,41 @@
 - (void) collectionView: (UICollectionView *) collectionView
          didSelectItemAtIndexPath: (NSIndexPath *) indexPath
 {
-    if (self.mode == kChannelDetailsModeDisplay)
-    {
-        self.selectedCell = (SYNVideoThumbnailRegularCell*)[self.videoThumbnailCollectionView cellForItemAtIndexPath:indexPath];
-        
-        [self displayVideoViewerWithVideoInstanceArray: self.channel.videoInstances.array
-                                      andSelectedIndex: indexPath.item center:[self.view convertPoint:[collectionView cellForItemAtIndexPath:indexPath].center fromView:collectionView]];
-    }
+//    if (self.mode == kChannelDetailsModeDisplay)
+//    {
+//        self.selectedCell = (SYNVideoThumbnailRegularCell*)[self.videoThumbnailCollectionView cellForItemAtIndexPath:indexPath];
+//        
+//        
+//        [self displayVideoViewerWithVideoInstanceArray: self.channel.videoInstances.array
+//                                      andSelectedIndex: indexPath.item
+//                                                center:[self.view convertPoint:[collectionView cellForItemAtIndexPath:indexPath].center fromView:collectionView]];
+//    }
     
 }
 
+-(void)videoButtonPressed:(UIButton*)videoButton
+{
+    UIView* candidateCell = videoButton;
+    while (![candidateCell isKindOfClass:[SYNVideoThumbnailRegularCell class]])
+        candidateCell = candidateCell.superview;
+    
+    self.selectedCell = (SYNVideoThumbnailRegularCell*)candidateCell;
+    NSIndexPath *indexPath = [self.videoThumbnailCollectionView indexPathForItemAtPoint: self.selectedCell.center];
+    
+    
+    
+    
+    
+    SYNMasterViewController *masterViewController = (SYNMasterViewController*)appDelegate.masterViewController;
+    
+    NSArray* videoInstancesToPlayArray = self.channel.videoInstances.array;
+    
+    
+    [masterViewController addVideoOverlayToViewController: self
+                                   withVideoInstanceArray: videoInstancesToPlayArray
+                                         andSelectedIndex: indexPath.item
+                                               fromCenter: self.view.center];
+}
 
 #pragma mark - Helper methods
 

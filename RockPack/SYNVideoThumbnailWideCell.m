@@ -90,7 +90,7 @@
     // Add button targets
     
     [self.videoButton addTarget: self.viewControllerDelegate
-                         action: @selector(displayVideoViewerFromView:)
+                         action: @selector(videoButtonPressed:)
                forControlEvents: UIControlEventTouchUpInside];
     
     [self.addItButton addTarget: self.viewControllerDelegate

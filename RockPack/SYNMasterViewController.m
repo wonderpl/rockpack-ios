@@ -554,7 +554,7 @@ typedef void(^AnimationCompletionBlock)(BOOL finished);
     
     
     // FIXME: Replace with something more elegant (i.e. anything else)
-    appDelegate.searchRefreshDisabled = TRUE;
+    appDelegate.searchRefreshDisabled = YES;
     
     if (self.videoViewerViewController)
     {
@@ -583,7 +583,11 @@ typedef void(^AnimationCompletionBlock)(BOOL finished);
     [self addChildViewController: self.videoViewerViewController];
     
     
+    NSLog(@"%@", self.videoViewerViewController.view);
+    NSLog(@"%@", self.overlayView);
+    
     self.videoViewerViewController.view.frame = self.overlayView.bounds;
+    
     [self.overlayView addSubview: self.videoViewerViewController.view];
     self.videoViewerViewController.overlayParent = self;
     [self.videoViewerViewController prepareForAppearAnimation];
@@ -600,13 +604,16 @@ typedef void(^AnimationCompletionBlock)(BOOL finished);
                         options: UIViewAnimationOptionCurveEaseInOut
                      animations: ^{
                                  self.videoViewerViewController.view.transform = CGAffineTransformMakeScale(1.0f, 1.0f);
-                         self.self.videoViewerViewController.view.center = originalCenter;
+                                self.videoViewerViewController.view.center = originalCenter;
                                 self.videoViewerViewController.view.alpha = 1.0f;
                      }
                      completion: ^(BOOL finished) {
                          [self.videoViewerViewController runAppearAnimation];
                          self.overlayView.userInteractionEnabled = YES;
     }];
+    
+    
+    
     
     //video overlay bug - keyboard needs to be dismissed if a video is played;
     [self.searchBoxController.searchBoxView.searchTextField resignFirstResponder];
