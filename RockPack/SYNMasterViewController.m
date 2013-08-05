@@ -583,9 +583,6 @@ typedef void(^AnimationCompletionBlock)(BOOL finished);
     [self addChildViewController: self.videoViewerViewController];
     
     
-    NSLog(@"%@", self.videoViewerViewController.view);
-    NSLog(@"%@", self.overlayView);
-    
     self.videoViewerViewController.view.frame = self.overlayView.bounds;
     
     [self.overlayView addSubview: self.videoViewerViewController.view];

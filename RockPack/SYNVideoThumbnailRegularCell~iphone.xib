@@ -2,9 +2,9 @@
 <archive type="com.apple.InterfaceBuilder3.CocoaTouch.iPad.XIB" version="8.00">
 	<data>
 		<int key="IBDocument.SystemTarget">1552</int>
-		<string key="IBDocument.SystemVersion">12D78</string>
+		<string key="IBDocument.SystemVersion">12E55</string>
 		<string key="IBDocument.InterfaceBuilderVersion">3084</string>
-		<string key="IBDocument.AppKitVersion">1187.37</string>
+		<string key="IBDocument.AppKitVersion">1187.39</string>
 		<string key="IBDocument.HIToolboxVersion">626.00</string>
 		<object class="NSMutableDictionary" key="IBDocument.PluginVersions">
 			<string key="NS.key.0">com.apple.InterfaceBuilder.IBCocoaTouchPlugin</string>
@@ -64,29 +64,12 @@
 								<string key="NSFrameSize">{310, 174}</string>
 								<reference key="NSSuperview" ref="301134111"/>
 								<reference key="NSWindow"/>
-								<reference key="NSNextKeyView" ref="508424044"/>
+								<reference key="NSNextKeyView" ref="865164628"/>
 								<string key="NSReuseIdentifierKey">_NS:9</string>
 								<bool key="IBUIClipsSubviews">YES</bool>
 								<bool key="IBUIClearsContextBeforeDrawing">NO</bool>
 								<bool key="IBUIUserInteractionEnabled">NO</bool>
 								<string key="targetRuntimeIdentifier">IBIPadFramework</string>
-							</object>
-							<object class="IBUIImageView" id="508424044">
-								<reference key="NSNextResponder" ref="301134111"/>
-								<int key="NSvFlags">289</int>
-								<string key="NSFrameSize">{310, 175}</string>
-								<reference key="NSSuperview" ref="301134111"/>
-								<reference key="NSWindow"/>
-								<reference key="NSNextKeyView" ref="865164628"/>
-								<string key="NSReuseIdentifierKey">_NS:9</string>
-								<bool key="IBUIAutoresizesSubviews">NO</bool>
-								<bool key="IBUIClearsContextBeforeDrawing">NO</bool>
-								<bool key="IBUIUserInteractionEnabled">NO</bool>
-								<string key="targetRuntimeIdentifier">IBIPadFramework</string>
-								<object class="NSCustomResource" key="IBUIImage">
-									<string key="NSClassName">NSImage</string>
-									<string key="NSResourceName">GlossVideo.png</string>
-								</object>
 							</object>
 							<object class="IBUILabel" id="429279700">
 								<reference key="NSNextResponder" ref="301134111"/>
@@ -94,6 +77,7 @@
 								<string key="NSFrame">{{9, 149}, {297, 26}}</string>
 								<reference key="NSSuperview" ref="301134111"/>
 								<reference key="NSWindow"/>
+								<reference key="NSNextKeyView"/>
 								<string key="NSReuseIdentifierKey">_NS:9</string>
 								<bool key="IBUIOpaque">NO</bool>
 								<bool key="IBUIAutoresizesSubviews">NO</bool>
@@ -128,7 +112,7 @@
 							</object>
 							<object class="IBUIButton" id="865164628">
 								<reference key="NSNextResponder" ref="301134111"/>
-								<int key="NSvFlags">-2147483356</int>
+								<int key="NSvFlags">292</int>
 								<string key="NSFrameSize">{310, 174}</string>
 								<reference key="NSSuperview" ref="301134111"/>
 								<reference key="NSWindow"/>
@@ -151,6 +135,10 @@
 								<object class="NSColor" key="IBUINormalTitleShadowColor" id="377196620">
 									<int key="NSColorSpace">3</int>
 									<bytes key="NSWhite">MC41AA</bytes>
+								</object>
+								<object class="NSCustomResource" key="IBUINormalImage">
+									<string key="NSClassName">NSImage</string>
+									<string key="NSResourceName">GlossVideo~iphone.png</string>
 								</object>
 								<object class="IBUIFontDescription" key="IBUIFontDescription" id="259640192">
 									<int key="type">2</int>
@@ -326,7 +314,6 @@
 						<array class="NSMutableArray" key="children">
 							<reference ref="108227339"/>
 							<reference ref="486650470"/>
-							<reference ref="508424044"/>
 							<reference ref="429279700"/>
 							<reference ref="716427388"/>
 							<reference ref="865164628"/>
@@ -342,11 +329,6 @@
 					<object class="IBObjectRecord">
 						<int key="objectID">53</int>
 						<reference key="object" ref="486650470"/>
-						<reference key="parent" ref="274337159"/>
-					</object>
-					<object class="IBObjectRecord">
-						<int key="objectID">54</int>
-						<reference key="object" ref="508424044"/>
 						<reference key="parent" ref="274337159"/>
 					</object>
 					<object class="IBObjectRecord">
@@ -383,7 +365,6 @@
 				<string key="40.IBPluginDependency">com.apple.InterfaceBuilder.IBCocoaTouchPlugin</string>
 				<string key="52.IBPluginDependency">com.apple.InterfaceBuilder.IBCocoaTouchPlugin</string>
 				<string key="53.IBPluginDependency">com.apple.InterfaceBuilder.IBCocoaTouchPlugin</string>
-				<string key="54.IBPluginDependency">com.apple.InterfaceBuilder.IBCocoaTouchPlugin</string>
 				<string key="55.IBPluginDependency">com.apple.InterfaceBuilder.IBCocoaTouchPlugin</string>
 				<string key="56.IBPluginDependency">com.apple.InterfaceBuilder.IBCocoaTouchPlugin</string>
 				<string key="63.IBPluginDependency">com.apple.InterfaceBuilder.IBCocoaTouchPlugin</string>
@@ -465,7 +446,7 @@
 			<string key="ButtonVideoDelete.png">{44, 45}</string>
 			<string key="ButtonVideoDeleteHighlighted.png">{44, 45}</string>
 			<string key="ButtonVideoDeleteSelected.png">{44, 45}</string>
-			<string key="GlossVideo.png">{249, 140}</string>
+			<string key="GlossVideo~iphone.png">{310, 175}</string>
 		</dictionary>
 		<string key="IBCocoaTouchPluginVersion">2083</string>
 	</data>

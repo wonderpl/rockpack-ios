@@ -1100,15 +1100,7 @@
 - (void) collectionView: (UICollectionView *) collectionView
          didSelectItemAtIndexPath: (NSIndexPath *) indexPath
 {
-//    if (self.mode == kChannelDetailsModeDisplay)
-//    {
-//        self.selectedCell = (SYNVideoThumbnailRegularCell*)[self.videoThumbnailCollectionView cellForItemAtIndexPath:indexPath];
-//        
-//        
-//        [self displayVideoViewerWithVideoInstanceArray: self.channel.videoInstances.array
-//                                      andSelectedIndex: indexPath.item
-//                                                center:[self.view convertPoint:[collectionView cellForItemAtIndexPath:indexPath].center fromView:collectionView]];
-//    }
+    // the method is being replaced by the 'videoButtonPressed' because other elements on the cell migth be interactive as well
     
 }
 
