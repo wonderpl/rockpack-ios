@@ -61,7 +61,7 @@
     {
         [imageView removeFromSuperview];
     }
-    CGRect containerRect;
+    CGRect containerRect = CGRectZero;
     
     NSInteger count = array.count;
     UIImageView* imageView;
@@ -73,15 +73,18 @@
     
     if(count == 1)
     {
-        containerRect = self.imageContainer.frame;
+        containerRect.size = self.imageContainer.frame.size;
         self.coverButton.hidden = NO;
         self.mainTitleLabel.hidden = NO;
+        
         imageView = [[UIImageView alloc] initWithFrame:containerRect];
         [imageView setImageWithURL: [NSURL URLWithString: ((NSString*)array[0][@"image"])]
                   placeholderImage: [UIImage imageNamed: @"PlaceholderChannelSmall.png"]
                            options: SDWebImageRetryFailed];
         
         [self.imageContainer addSubview:imageView];
+        
+        
         
         self.mainTitleLabel.text = (NSString*)array[0][@"title"];
         
@@ -92,17 +95,16 @@
     if(count == 2 || count == 3)
     {
         
-        
         CGRect shrinkingSelfFrame = self.frame;
         shrinkingSelfFrame.size.height = 149.0f;
         
         self.frame = shrinkingSelfFrame;
         
-        CGRect shrinkingImageRect = self.imageContainer.frame;
-        shrinkingImageRect.size.height = 149.0f;
-        self.imageContainer.frame = shrinkingImageRect;
+        CGRect smallerCellFrame = self.imageContainer.frame; // the 2 - 3 options have a smaller total frame
+        smallerCellFrame.size.height = 149.0f;
+        self.imageContainer.frame = smallerCellFrame;
         
-        containerRect = self.imageContainer.frame;
+        containerRect.size = self.imageContainer.frame.size;
         
         buttonContainerView = [[UIView alloc] initWithFrame:containerRect];
         [self insertSubview:buttonContainerView belowSubview:self.coverButton];
@@ -116,8 +118,9 @@
         
         self.coverButton.hidden = YES;
         self.mainTitleLabel.hidden = YES;
-        for (NSDictionary* coverInfo in array)
+        for (int i = 0; i < 2; i++)
         {
+            NSDictionary* coverInfo = (NSDictionary*)array[i];
             imageView = [[UIImageView alloc] initWithFrame: containerRect];
             if(coverInfo[@"image"])
             {
@@ -169,7 +172,7 @@
         self.coverButton.hidden = YES;
         self.mainTitleLabel.hidden = YES;
         
-        containerRect = self.imageContainer.frame;
+        containerRect.size = self.imageContainer.frame.size;
         
         buttonContainerView = [[UIView alloc] initWithFrame:containerRect];
         [self insertSubview:buttonContainerView belowSubview:self.coverButton];

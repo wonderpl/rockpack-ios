@@ -551,10 +551,9 @@ typedef void(^FeedDataErrorBlock)(void);
 {
     FeedItem* feedItem = [self feedItemAtIndexPath:indexPath];
     CGFloat cellWidth = 0.0;
-    //CGFloat cellHeight = 0.0;
     if(IS_IPHONE)
     {
-        cellWidth = 320.0f;
+        cellWidth = 310.0f;
     }
     else
     {
@@ -563,7 +562,7 @@ typedef void(^FeedDataErrorBlock)(void);
     
     if(feedItem.resourceTypeValue == FeedItemResourceTypeVideo)
     {
-        return CGSizeMake(cellWidth, 168);
+        return CGSizeMake(cellWidth, IS_IPHONE ? 261 : 168);
     }
     else // Channel
     {
