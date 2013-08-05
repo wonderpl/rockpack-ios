@@ -165,6 +165,14 @@ typedef void(^FeedDataErrorBlock)(void);
                         forSupplementaryViewOfKind: UICollectionElementKindSectionHeader
                                withReuseIdentifier: @"SYNHomeSectionHeaderView"];
     
+    // Register Footer
+    UINib *footerViewNib = [UINib nibWithNibName: @"SYNChannelFooterMoreView"
+                                          bundle: nil];
+    
+    [self.feedCollectionView registerNib: footerViewNib
+              forSupplementaryViewOfKind: UICollectionElementKindSectionFooter
+                     withReuseIdentifier: @"SYNChannelFooterMoreView"];
+    
     
     // Refresh control
     self.refreshControl = [[UIRefreshControl alloc] initWithFrame: CGRectMake(0, -44, 320, 44)];
@@ -833,10 +841,9 @@ typedef void(^FeedDataErrorBlock)(void);
     
     else if (kind == UICollectionElementKindSectionFooter)
     {
-
-        self.footerView = [self.videoThumbnailCollectionView dequeueReusableSupplementaryViewOfKind: kind
-                                                                                withReuseIdentifier: @"SYNChannelFooterMoreView"
-                                                                                       forIndexPath: indexPath];
+        self.footerView = [collectionView dequeueReusableSupplementaryViewOfKind: kind
+                                                             withReuseIdentifier: @"SYNChannelFooterMoreView"
+                                                                    forIndexPath: indexPath];
         supplementaryView = self.footerView;
         
         // Show loading spinner if we have more data
