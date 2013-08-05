@@ -154,6 +154,10 @@ typedef enum _FeedItemResourceType {
 #define kRegisterExternalAccount    @"/ws/USERID/external_accounts/"            /* POST */
 #define kGetExternalAccountId       @"/ws/USERID/external_accounts/ACCOUNTID/"  /* GET */
 
+// Set/Get Flags
+#define kFlagsGetAll                @"/ws/USERID/flags/"                      /* GET */
+#define kFlagsSet                   @"/ws/USERID/flags/FLAG/"                 /* PUT */ /* DELETE */
+
 #define kAPIFriends                 @"/ws/USERID/friends/"  /* GET */
 
 // Push notification

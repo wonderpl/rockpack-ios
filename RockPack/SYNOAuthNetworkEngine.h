@@ -180,6 +180,21 @@ typedef void (^SYNOAuth2RefreshCompletionBlock)(NSError *error);
             completionHandler: (MKNKUserSuccessBlock) completionBlock
                  errorHandler: (MKNKUserErrorBlock) errorBlock;
 
+// Flags
+
+-(void)getFlagsforUseId:(NSString*)userId
+      completionHandler: (MKNKUserSuccessBlock) completionBlock
+           errorHandler: (MKNKUserSuccessBlock) errorBlock;
+
+-(void)setFlag:(NSString*)flag
+      forUseId:(NSString*)userId
+    completionHandler: (MKNKUserSuccessBlock) completionBlock
+    errorHandler: (MKNKUserSuccessBlock) errorBlock;
+
+-(void)unsetFlag:(NSString*)flag forUseId:(NSString*)userId
+completionHandler: (MKNKUserSuccessBlock) completionBlock
+    errorHandler: (MKNKUserSuccessBlock) errorBlock;
+
 // Sunscriptions
 
 - (void) channelSubscriptionsForUserId: (NSString *) userId

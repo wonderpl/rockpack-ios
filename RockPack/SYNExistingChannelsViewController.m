@@ -16,6 +16,7 @@
 #import "SYNExistingChannelsViewController.h"
 #import "SYNIntegralCollectionViewFlowLayout.h"
 #import "UIFont+SYNFont.h"
+#import "SYNOAuthNetworkEngine.h"
 #import "UIImageView+WebCache.h"
 #import "ChannelCover.h"
 #import <QuartzCore/QuartzCore.h>
@@ -32,6 +33,9 @@
 @property (strong, nonatomic) IBOutlet UILabel *titleLabel;
 @property (nonatomic, strong) NSArray* channels;
 @property (nonatomic, strong) NSIndexPath* previouslySelectedPath;
+
+@property (strong, nonatomic) IBOutlet UIButton *autopostYesButton;
+@property (strong, nonatomic) IBOutlet UIButton *autopostNoButton;
 
 @end
 
@@ -81,10 +85,55 @@
     
     self.titleLabel.font = [UIFont boldRockpackFontOfSize:self.titleLabel.font.pointSize];
     
+    // get flags
+    
+    [appDelegate.oAuthNetworkEngine getFlagsforUseId:appDelegate.currentUser.uniqueId completionHandler:^(NSDictionary* flagsDictionary) {
+        
+        if(!flagsDictionary)
+            return;
+        
+        NSInteger total = [flagsDictionary[@"total"] isKindOfClass:[NSNumber class]] ? [flagsDictionary[@"total"] integerValue] : 0;
+        if(total == 0)
+            return;
+        
+        NSArray* items = [flagsDictionary[@"items"] isKindOfClass:[NSArray class]] ? flagsDictionary[@"items"] : [NSArray array];
+        NSString *flag, *r_url;
+        for (NSDictionary* item in items) {
+            flag = item[@"flag"];
+            r_url = item[@"resource_url"];
+            if([flag isEqualToString:@"facebook_autopost_add"])
+            {
+                // show the buttons
+                
+            }
+        }
+    } errorHandler:^(id error) {
+        
+    }];
+    
     
 }
 
-
+-(IBAction)autopostButtonPressed:(id)sender
+{
+    if(sender == self.autopostYesButton)
+    {
+        
+        [appDelegate.oAuthNetworkEngine setFlag:@"facebook_autopost_add" forUseId:appDelegate.currentUser.uniqueId completionHandler:^(id no_response) {
+            
+            NSLog(@"Can Post Automatically");
+            
+        } errorHandler:^(id error) {
+            
+        }];
+        
+        
+    }
+    else
+    {
+        
+    }
+}
 - (void) viewWillAppear: (BOOL) animated
 {
     [super viewWillAppear: animated];

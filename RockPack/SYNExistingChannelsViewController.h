@@ -10,6 +10,8 @@
 
 @interface SYNExistingChannelsViewController : SYNAbstractViewController
 
+
+
 -(void)prepareForAppearAnimation;
 -(void)runAppearAnimation;
 
