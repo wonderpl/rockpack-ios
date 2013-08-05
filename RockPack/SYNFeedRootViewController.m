@@ -417,8 +417,8 @@ typedef void(^FeedDataErrorBlock)(void);
     fetchRequest.entity = [NSEntityDescription entityForName: kFeedItem
                                       inManagedObjectContext: appDelegate.mainManagedObjectContext];
     
-    
-    NSPredicate* predicate = [NSPredicate predicateWithFormat:[NSString stringWithFormat:@"viewId == \"%@\"", self.viewId]]; // kFeedViewId
+    // if the aggregate has a parent FeedItem then it should NOT be displayed since it is going to be part of an aggregate...
+    NSPredicate* predicate = [NSPredicate predicateWithFormat:[NSString stringWithFormat:@"viewId == \"%@\" AND aggregate == nil", self.viewId]]; // kFeedViewId
  
     fetchRequest.predicate = predicate;
 
@@ -631,6 +631,8 @@ typedef void(^FeedDataErrorBlock)(void);
     SYNAggregateCell *cell = nil;
     
     FeedItem* feedItem = [self feedItemAtIndexPath:indexPath];
+    
+    
     
     ChannelOwner* channelOwner;
     

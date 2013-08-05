@@ -325,7 +325,6 @@
                 if(!(object = [VideoInstance instanceFromDictionary:itemDictionary usingManagedObjectContext:importManagedObjectContext]))
                        continue;
                    
-                
             co = ((VideoInstance*)object).channel.channelOwner;
             
             
@@ -336,7 +335,6 @@
             if(!(object = channelInstacesByUniqueId[itemDictionary[@"id"]]))
                 if(!(object = [Channel instanceFromDictionary:itemDictionary usingManagedObjectContext:importManagedObjectContext]))
                     continue;
-            
             
             
             co = ((Channel*)object).channelOwner;
@@ -352,6 +350,7 @@
         
         if(!leafFeedItem)
             continue;
+        
         
         
         // object has been created, see if it belongs to an aggregation
@@ -380,7 +379,7 @@
             aggregationFeedItem.viewId = kFeedViewId;
             aggregationFeedItem.markedForDeletionValue = NO;
             
-            [aggregationItems setObject:aggregationFeedItem forKey:aggregationIndex];
+            [aggregationItems setObject:aggregationFeedItem forKey:aggregationFeedItem.uniqueId];
             
             
             // == Parse Covers == //
