@@ -417,8 +417,8 @@ typedef void(^FeedDataErrorBlock)(void);
     fetchRequest.entity = [NSEntityDescription entityForName: kFeedItem
                                       inManagedObjectContext: appDelegate.mainManagedObjectContext];
     
-    
-    NSPredicate* predicate = [NSPredicate predicateWithFormat:[NSString stringWithFormat:@"viewId == \"%@\"", self.viewId]]; // kFeedViewId
+    // if the aggregate has a parent FeedItem then it should NOT be displayed since it is going to be part of an aggregate...
+    NSPredicate* predicate = [NSPredicate predicateWithFormat:[NSString stringWithFormat:@"viewId == \"%@\" AND aggregate == nil", self.viewId]]; // kFeedViewId
  
     fetchRequest.predicate = predicate;
 
@@ -551,10 +551,9 @@ typedef void(^FeedDataErrorBlock)(void);
 {
     FeedItem* feedItem = [self feedItemAtIndexPath:indexPath];
     CGFloat cellWidth = 0.0;
-    //CGFloat cellHeight = 0.0;
     if(IS_IPHONE)
     {
-        cellWidth = 320.0f;
+        cellWidth = 310.0f;
     }
     else
     {
@@ -563,7 +562,7 @@ typedef void(^FeedDataErrorBlock)(void);
     
     if(feedItem.resourceTypeValue == FeedItemResourceTypeVideo)
     {
-        return CGSizeMake(cellWidth, 168);
+        return CGSizeMake(cellWidth, IS_IPHONE ? 261 : 168);
     }
     else // Channel
     {
@@ -631,6 +630,8 @@ typedef void(^FeedDataErrorBlock)(void);
     SYNAggregateCell *cell = nil;
     
     FeedItem* feedItem = [self feedItemAtIndexPath:indexPath];
+    
+    
     
     ChannelOwner* channelOwner;
     
@@ -860,10 +861,24 @@ typedef void(^FeedDataErrorBlock)(void);
 
 #pragma mark - Click Cell Delegates
 
+-(VideoInstance*)videoInstanceAtCoverOfFeedItem:(FeedItem*)feedItem
+{
+    if(!feedItem || (feedItem.resourceTypeValue != FeedItemResourceTypeVideo))
+        return nil;
+    
+    VideoInstance* videoInstance;
+    
+    if(feedItem.itemTypeValue == FeedItemTypeLeaf)
+        videoInstance = [self.feedVideosById objectForKey:feedItem.resourceId];
+    else
+        videoInstance = [self.feedVideosById objectForKey:feedItem.coverIndexArray[0]];
+    
+    return videoInstance;
+}
+
 - (void) pressedAggregateCellCoverButton: (UIButton *) coverButton
 {
-    
-    // copied from Abstract class
+
     
     SYNAggregateCell* aggregateCellSelected = [self cellFromControl:coverButton];
     NSIndexPath *indexPath = [self.feedCollectionView indexPathForItemAtPoint: aggregateCellSelected.center];
@@ -873,13 +888,8 @@ typedef void(^FeedDataErrorBlock)(void);
     {
         
         
-        VideoInstance* videoInstance;
         
-        if(selectedFeedItem.itemTypeValue == FeedItemTypeLeaf)
-            videoInstance = [self.feedVideosById objectForKey:selectedFeedItem.resourceId];
-        else
-            videoInstance = [self.feedVideosById objectForKey:selectedFeedItem.coverIndexArray[0]];
-        
+        VideoInstance* videoInstance = [self videoInstanceAtCoverOfFeedItem:selectedFeedItem];
         
         SYNMasterViewController *masterViewController = (SYNMasterViewController*)appDelegate.masterViewController;
         
@@ -944,6 +954,20 @@ typedef void(^FeedDataErrorBlock)(void);
     }
     return (SYNAggregateCell*)candidateCell;
 }
+-(NSIndexPath*)indexPathFromControl:(UIButton *)button
+{
+    SYNAggregateCell* aggregateCellSelected = [self cellFromControl:button];
+    NSIndexPath *indexPath = [self.feedCollectionView indexPathForItemAtPoint: aggregateCellSelected.center];
+    return indexPath;
+}
+-(FeedItem*)feedItemFromControl:(UIButton *)button
+{
+    NSIndexPath* indexPath = [self indexPathFromControl:button];
+    FeedItem* selectedFeedItem = [self feedItemAtIndexPath:indexPath];
+    return selectedFeedItem;
+}
+
+#pragma mark - Cell Actions Delegate
 
 - (void) videoAddButtonTapped: (UIButton *) _addButton
 {
@@ -951,9 +975,7 @@ typedef void(^FeedDataErrorBlock)(void);
     if(_addButton.selected)
         return;
     
-    SYNAggregateCell* aggregateCellSelected = [self cellFromControl:_addButton];
-    NSIndexPath *indexPath = [self.feedCollectionView indexPathForItemAtPoint: aggregateCellSelected.center];
-    FeedItem* selectedFeedItem = [self feedItemAtIndexPath:indexPath];
+    FeedItem* selectedFeedItem = [self feedItemFromControl:_addButton];
     
     if(selectedFeedItem.resourceTypeValue == FeedItemResourceTypeVideo)
     {
@@ -998,9 +1020,72 @@ typedef void(^FeedDataErrorBlock)(void);
         
     }
     
+}
+
+-(void)profileButtonTapped:(UIButton*)sender
+{
     
+}
+
+-(void)likeButtonPressed:(UIButton*)button
+{
     
+    id<GAITracker> tracker = [GAI sharedInstance].defaultTracker;
     
+    [tracker sendEventWithCategory: @"uiAction"
+                        withAction: @"videoStarButtonClick"
+                         withLabel: nil
+                         withValue: nil];
+    
+    button.selected = !button.selected;
+    
+    NSString *starAction = (button.selected == TRUE) ? @"star" : @"unstar";
+    
+    button.enabled = NO;
+    
+    //[self.heartActivityIndicator startAnimating];
+    
+    VideoInstance* videoInstance = [self videoInstanceAtCoverOfFeedItem:[self feedItemFromControl:button]];
+    if(!videoInstance)
+        return;
+    
+    // int starredIndex = self.currentSelectedIndex;
+    [appDelegate.oAuthNetworkEngine recordActivityForUserId: appDelegate.currentUser.uniqueId
+                                                     action: starAction
+                                            videoInstanceId: videoInstance.uniqueId
+                                          completionHandler: ^(id response) {
+                                              //[self.heartActivityIndicator stopAnimating];
+                                              
+                                              if (videoInstance.video.starredByUserValue == TRUE)
+                                              {
+                                                  // Currently highlighted, so decrement
+                                                  videoInstance.video.starredByUserValue = FALSE;
+                                                  videoInstance.video.starCountValue -= 1;
+                                              }
+                                              else
+                                              {
+                                                  // Currently highlighted, so increment
+                                                  videoInstance.video.starredByUserValue = TRUE;
+                                                  videoInstance.video.starCountValue += 1;
+                                                  //[Appirater userDidSignificantEvent: FALSE];
+                                              }
+                                              
+                                              //(self.favouritesStatusArray)[starredIndex] = @(button.selected);
+                                              
+                                              //[self updateVideoDetailsForIndex: self.currentSelectedIndex];
+                                              
+                                              [appDelegate saveContext: YES];
+                                              
+                                              button.enabled = YES;
+                                              
+                                          }
+                                               errorHandler: ^(id error) {
+                                                   //[self.heartActivityIndicator stopAnimating];
+                                                   DebugLog(@"Could not star video");
+                                                   button.selected = ! button.selected;
+                                                   button.enabled = YES;
+                                                   //[self updateVideoDetailsForIndex: self.currentSelectedIndex];
+                                               }];
 }
 
 #pragma mark - Load More Footer

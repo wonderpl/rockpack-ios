@@ -22,7 +22,9 @@
 -(void)setCoverImagesAndTitlesWithArray:(NSArray*)array
 {
     if(!videoImageView) {
-        videoImageView = [[UIImageView alloc] initWithFrame:self.imageContainer.frame];
+        CGRect videoImageFrame = CGRectZero;
+        videoImageFrame.size = self.imageContainer.frame.size;
+        videoImageView = [[UIImageView alloc] initWithFrame:videoImageFrame];
         [self.imageContainer addSubview:videoImageView];
     }
     
@@ -50,6 +52,13 @@
     [self.userThumbnailButton addTarget: self.viewControllerDelegate
                                  action: @selector(profileButtonTapped:)
                        forControlEvents: UIControlEventTouchUpInside];
+    
+    
+    
+    [self.heartButton addTarget:self.viewControllerDelegate
+                         action:@selector(likeButtonPressed:)
+               forControlEvents:UIControlEventTouchUpInside];
+    
     
 }
 

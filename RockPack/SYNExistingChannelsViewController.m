@@ -33,6 +33,7 @@
 @property (strong, nonatomic) IBOutlet UILabel *titleLabel;
 @property (nonatomic, strong) NSArray* channels;
 @property (nonatomic, strong) NSIndexPath* previouslySelectedPath;
+@property (nonatomic, strong) IBOutlet UIView* autopostView;
 
 @property (strong, nonatomic) IBOutlet UIButton *autopostYesButton;
 @property (strong, nonatomic) IBOutlet UIButton *autopostNoButton;
@@ -44,6 +45,8 @@
 - (void) viewDidLoad
 {
     [super viewDidLoad];
+    
+    self.autopostView.hidden = YES;
     
     // We need to use a custom layout (as due to the deletion/wobble logic used elsewhere)
     if (IS_IPAD)
@@ -67,18 +70,17 @@
                                        sectionInset: UIEdgeInsetsMake(2.0f, 2.0f, 0.0f, 2.0f)];
     }
 
-    UINib *createCellNib = [UINib nibWithNibName: @"SYNChannelCreateNewCell"
-                                          bundle: nil];
+   
     
-    [self.channelThumbnailCollectionView registerNib: createCellNib
+    [self.channelThumbnailCollectionView registerNib: [UINib nibWithNibName: @"SYNChannelCreateNewCell" bundle: nil]
                           forCellWithReuseIdentifier: @"SYNChannelCreateNewCell"];
     
     
-    UINib *thumbnailCellNib = [UINib nibWithNibName: @"SYNChannelMidCell"
-                                             bundle: nil];
     
-    [self.channelThumbnailCollectionView registerNib: thumbnailCellNib
+    [self.channelThumbnailCollectionView registerNib: [UINib nibWithNibName: @"SYNChannelMidCell" bundle: nil]
                           forCellWithReuseIdentifier: @"SYNChannelMidCell"];
+    
+    
     self.channelThumbnailCollectionView.scrollsToTop = NO;
     
     
@@ -97,17 +99,18 @@
             return;
         
         NSArray* items = [flagsDictionary[@"items"] isKindOfClass:[NSArray class]] ? flagsDictionary[@"items"] : [NSArray array];
-        NSString *flag, *r_url;
+        NSString *flag, *unset_url;
         for (NSDictionary* item in items) {
             flag = item[@"flag"];
-            r_url = item[@"resource_url"];
+            unset_url = item[@"resource_url"];
             if([flag isEqualToString:@"facebook_autopost_add"])
-            {
-                // show the buttons
-                
-            }
+                self.autopostView.hidden = NO;
+            
         }
+        
     } errorHandler:^(id error) {
+        
+        
         
     }];
     
@@ -125,12 +128,18 @@
             
         } errorHandler:^(id error) {
             
+            
+            
         }];
         
         
     }
     else
     {
+        self.autopostView.userInteractionEnabled = NO;
+        [UIView animateWithDuration:0.3 animations:^{
+            self.autopostView.alpha = 0.0f;
+        }];
         
     }
 }
