@@ -37,6 +37,7 @@
 
 @property (strong, nonatomic) IBOutlet UIButton *autopostYesButton;
 @property (strong, nonatomic) IBOutlet UIButton *autopostNoButton;
+@property (nonatomic, strong) IBOutlet UILabel* autopostTitleLabel;
 
 @end
 
@@ -46,7 +47,7 @@
 {
     [super viewDidLoad];
     
-    self.autopostView.hidden = YES;
+    self.autopostTitleLabel.font = [UIFont rockpackFontOfSize:self.autopostTitleLabel.font.pointSize];
     
     // We need to use a custom layout (as due to the deletion/wobble logic used elsewhere)
     if (IS_IPAD)
@@ -94,9 +95,11 @@
         if(!flagsDictionary)
             return;
         
+        
         NSInteger total = [flagsDictionary[@"total"] isKindOfClass:[NSNumber class]] ? [flagsDictionary[@"total"] integerValue] : 0;
         if(total == 0)
             return;
+            
         
         NSArray* items = [flagsDictionary[@"items"] isKindOfClass:[NSArray class]] ? flagsDictionary[@"items"] : [NSArray array];
         NSString *flag, *unset_url;
@@ -104,45 +107,39 @@
             flag = item[@"flag"];
             unset_url = item[@"resource_url"];
             if([flag isEqualToString:@"facebook_autopost_add"])
-                self.autopostView.hidden = NO;
+                self.autopostView.hidden = YES;
             
         }
         
     } errorHandler:^(id error) {
         
-        
-        
+        DebugLog(@"There was an error getting the list of flags:\n%@", error);
+        self.autopostView.hidden = YES;
     }];
     
     
 }
 
--(IBAction)autopostButtonPressed:(id)sender
+-(IBAction)autopostButtonPressed:(UIButton*)sender
 {
-    if(sender == self.autopostYesButton)
-    {
-        
-        [appDelegate.oAuthNetworkEngine setFlag:@"facebook_autopost_add" forUseId:appDelegate.currentUser.uniqueId completionHandler:^(id no_response) {
-            
-            NSLog(@"Can Post Automatically");
-            
-        } errorHandler:^(id error) {
-            
-            
-            
-        }];
-        
-        
-    }
-    else
-    {
-        self.autopostView.userInteractionEnabled = NO;
-        [UIView animateWithDuration:0.3 animations:^{
-            self.autopostView.alpha = 0.0f;
-        }];
-        
-    }
+    sender.selected = YES;
+    
+     __weak SYNExistingChannelsViewController* wself = self;
+    BOOL isYesButton = (sender == self.autopostYesButton);
+    [appDelegate.oAuthNetworkEngine setFlag:@"facebook_autopost_add" withValue:isYesButton
+                                   forUseId:appDelegate.currentUser.uniqueId completionHandler:^(id no_response) {
+                                       
+                                       wself.autopostYesButton.selected = isYesButton;
+                                       wself.autopostNoButton.selected = !isYesButton;
+                                       
+                                   } errorHandler:^(id error) {
+                                       
+                                       
+                                       
+                                   }];
 }
+
+
 - (void) viewWillAppear: (BOOL) animated
 {
     [super viewWillAppear: animated];
