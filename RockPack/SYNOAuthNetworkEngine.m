@@ -518,7 +518,7 @@
     NSString *apiString = [kAPIGetUserDetails stringByReplacingOccurrencesOfStrings: apiSubstitutionDictionary];
     
     NSMutableString* apiMutString = [NSMutableString stringWithString:apiString];
-    [apiMutString appendFormat:@"?locale=%@&data=channels&data=external_accounts", self.localeString];
+    [apiMutString appendFormat:@"?locale=%@&data=channels&data=external_accounts&data=flags", self.localeString];
     
     
     SYNNetworkOperationJsonObject *networkOperation = (SYNNetworkOperationJsonObject*)[self operationWithPath: [NSString stringWithString:apiMutString]

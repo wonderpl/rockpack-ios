@@ -10,7 +10,6 @@ extern const struct UserAttributes {
 	__unsafe_unretained NSString *current;
 	__unsafe_unretained NSString *dateOfBirth;
 	__unsafe_unretained NSString *emailAddress;
-	__unsafe_unretained NSString *facebookAccountUrl;
 	__unsafe_unretained NSString *firstName;
 	__unsafe_unretained NSString *fullNameIsPublic;
 	__unsafe_unretained NSString *gender;
@@ -21,12 +20,13 @@ extern const struct UserAttributes {
 } UserAttributes;
 
 extern const struct UserRelationships {
+	__unsafe_unretained NSString *externalAccount;
 } UserRelationships;
 
 extern const struct UserFetchedProperties {
 } UserFetchedProperties;
 
-
+@class ExternalAccount;
 
 
 
@@ -103,16 +103,6 @@ extern const struct UserFetchedProperties {
 
 
 //- (BOOL)validateEmailAddress:(id*)value_ error:(NSError**)error_;
-
-
-
-
-
-@property (nonatomic, strong) NSString* facebookAccountUrl;
-
-
-
-//- (BOOL)validateFacebookAccountUrl:(id*)value_ error:(NSError**)error_;
 
 
 
@@ -200,10 +190,22 @@ extern const struct UserFetchedProperties {
 
 
 
+@property (nonatomic, strong) NSSet *externalAccount;
+
+- (NSMutableSet*)externalAccountSet;
+
+
+
+
 
 @end
 
 @interface _User (CoreDataGeneratedAccessors)
+
+- (void)addExternalAccount:(NSSet*)value_;
+- (void)removeExternalAccount:(NSSet*)value_;
+- (void)addExternalAccountObject:(ExternalAccount*)value_;
+- (void)removeExternalAccountObject:(ExternalAccount*)value_;
 
 @end
 
@@ -239,12 +241,6 @@ extern const struct UserFetchedProperties {
 
 - (NSString*)primitiveEmailAddress;
 - (void)setPrimitiveEmailAddress:(NSString*)value;
-
-
-
-
-- (NSString*)primitiveFacebookAccountUrl;
-- (void)setPrimitiveFacebookAccountUrl:(NSString*)value;
 
 
 
@@ -298,6 +294,11 @@ extern const struct UserFetchedProperties {
 - (void)setPrimitiveSubscriptionsUrl:(NSString*)value;
 
 
+
+
+
+- (NSMutableSet*)primitiveExternalAccount;
+- (void)setPrimitiveExternalAccount:(NSMutableSet*)value;
 
 
 @end

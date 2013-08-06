@@ -4,6 +4,7 @@
 #import "_AbstractCommon.h"
 
 const struct AbstractCommonAttributes AbstractCommonAttributes = {
+	.autopost = @"autopost",
 	.fresh = @"fresh",
 	.markedForDeletion = @"markedForDeletion",
 	.uniqueId = @"uniqueId",
@@ -42,6 +43,11 @@ const struct AbstractCommonFetchedProperties AbstractCommonFetchedProperties = {
 + (NSSet*)keyPathsForValuesAffectingValueForKey:(NSString*)key {
 	NSSet *keyPaths = [super keyPathsForValuesAffectingValueForKey:key];
 	
+	if ([key isEqualToString:@"autopostValue"]) {
+		NSSet *affectingKey = [NSSet setWithObject:@"autopost"];
+		keyPaths = [keyPaths setByAddingObjectsFromSet:affectingKey];
+		return keyPaths;
+	}
 	if ([key isEqualToString:@"freshValue"]) {
 		NSSet *affectingKey = [NSSet setWithObject:@"fresh"];
 		keyPaths = [keyPaths setByAddingObjectsFromSet:affectingKey];
@@ -55,6 +61,32 @@ const struct AbstractCommonFetchedProperties AbstractCommonFetchedProperties = {
 
 	return keyPaths;
 }
+
+
+
+
+@dynamic autopost;
+
+
+
+- (BOOL)autopostValue {
+	NSNumber *result = [self autopost];
+	return [result boolValue];
+}
+
+- (void)setAutopostValue:(BOOL)value_ {
+	[self setAutopost:[NSNumber numberWithBool:value_]];
+}
+
+- (BOOL)primitiveAutopostValue {
+	NSNumber *result = [self primitiveAutopost];
+	return [result boolValue];
+}
+
+- (void)setPrimitiveAutopostValue:(BOOL)value_ {
+	[self setPrimitiveAutopost:[NSNumber numberWithBool:value_]];
+}
+
 
 
 

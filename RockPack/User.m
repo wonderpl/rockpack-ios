@@ -2,10 +2,13 @@
 #import "Channel.h"
 #import "NSDictionary+Validation.h"
 #import "User.h"
+#import "ExternalAccount.h"
 
 @implementation User
 
-@synthesize facebookToken;
+@synthesize facebookAccount;
+@synthesize twitterAccount;
+@synthesize googlePlusAccount;
 
 #pragma mark - Object factory
 
@@ -78,27 +81,8 @@
     NSNumber *n_display_fullName = dictionary[@"display_fullname"];
     self.fullNameIsPublicValue = n_display_fullName ? [n_display_fullName boolValue] : NO;
     
-    NSDictionary* n_external_accounts = dictionary[@"external_accounts"];
-    if(n_external_accounts)
-    {
-        
-        
-        NSArray* n_external_account_items = n_external_accounts[@"items"];
-        NSDictionary* n_facebook_account = n_external_account_items && (n_external_account_items.count > 0) ? n_external_account_items[0] : nil;
-        if(n_facebook_account)
-        {
-            NSString* n_external_system = n_facebook_account[@"external_system"];
-            if([n_external_system isEqualToString:@"facebook"])
-            {
-                self.facebookAccountUrl = n_external_accounts[@"resource_url"];
-                self.facebookToken = n_facebook_account[@"external_token"];
-            }
-            
-        }
-    }
-    
-    
-    
+    if([dictionary[@"external_accounts"] isKindOfClass:[NSDictionary class]])
+        [self addExternalAccountsFromDictionary:dictionary[@"external_accounts"]];
     
     
     NSDictionary *activity_url_dict = dictionary[@"activity"];
@@ -233,5 +217,52 @@
     return userDescription;
 }
 
+-(void)addExternalAccountsFromDictionary:(NSDictionary*)dictionary
+{
+   
+    if(!dictionary)
+        return;
+    
+    NSArray* items = dictionary[@"items"];
+    if([items isKindOfClass:[NSArray class]])
+    {
+        for (NSDictionary* item in items)
+        {
+            ExternalAccount* externalAccount = [ExternalAccount instanceFromDictionary:item
+                                                             usingManagedObjectContext:self.managedObjectContext];
+            if(!externalAccount)
+                continue;
+            
+            [self.externalAccountSet addObject:externalAccount];
+            
+        }
+    }
+}
 
+-(ExternalAccount*)facebookAccount
+{
+    return [self externalAccountForSystem:@"facebook"];
+}
+
+
+-(ExternalAccount*)twitterAccount
+{
+    return [self externalAccountForSystem:@"twitter"];
+}
+
+-(ExternalAccount*)googlePlusAccount
+{
+    return [self externalAccountForSystem:@"google"];
+}
+
+-(ExternalAccount*)externalAccountForSystem:(NSString*)systemName
+{
+    for (ExternalAccount* externalAccount in self.externalAccount)
+    {
+        if([externalAccount.system isEqualToString:systemName])
+            return externalAccount;
+        
+    }
+    return nil;
+}
 @end

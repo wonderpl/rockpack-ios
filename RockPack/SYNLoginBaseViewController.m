@@ -17,6 +17,7 @@
 #import "SYNNetworkEngine.h"
 #import "SYNOAuthNetworkEngine.h"
 #import "User.h"
+#import "ExternalAccount.h"
 #import <Accounts/Accounts.h>
 #import <FacebookSDK/FacebookSDK.h>
 
@@ -231,11 +232,11 @@
                 
                 // link to facebook account
                 
-                if(_appDelegate.currentUser.facebookToken)
+                if(_appDelegate.currentUser.facebookAccount)
                 {
                     
                     
-                    [[SYNFacebookManager sharedFBManager] openSessionFromExistingToken: _appDelegate.currentUser.facebookToken
+                    [[SYNFacebookManager sharedFBManager] openSessionFromExistingToken: _appDelegate.currentUser.facebookAccount.token
                                                                              onSuccess: ^{
                                                                                  
                                                                                  

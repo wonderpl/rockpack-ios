@@ -1162,6 +1162,8 @@
 		BE86BF3317201BA70006DC8A /* ButtonResetPasswordHighlighted@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = BE86BF2F17201BA70006DC8A /* ButtonResetPasswordHighlighted@2x.png */; };
 		BE8F938517B1113600E7035F /* SYNImplicitSharingController.m in Sources */ = {isa = PBXBuildFile; fileRef = BE8F938317B1113600E7035F /* SYNImplicitSharingController.m */; };
 		BE8F938617B1113600E7035F /* SYNImplicitSharingController.xib in Resources */ = {isa = PBXBuildFile; fileRef = BE8F938417B1113600E7035F /* SYNImplicitSharingController.xib */; };
+		BE8F938A17B1267900E7035F /* _ExternalAccount.m in Sources */ = {isa = PBXBuildFile; fileRef = BE8F938917B1267900E7035F /* _ExternalAccount.m */; };
+		BE8F938D17B1268500E7035F /* ExternalAccount.m in Sources */ = {isa = PBXBuildFile; fileRef = BE8F938C17B1268500E7035F /* ExternalAccount.m */; };
 		BE92A87B16CA938200FED47B /* SYNGenreTabView.m in Sources */ = {isa = PBXBuildFile; fileRef = BE92A87A16CA938200FED47B /* SYNGenreTabView.m */; };
 		BEA043E716CAA8E1005406E7 /* Genre.m in Sources */ = {isa = PBXBuildFile; fileRef = BEA043E416CAA8E1005406E7 /* Genre.m */; };
 		BEA043E816CAA8E1005406E7 /* SubGenre.m in Sources */ = {isa = PBXBuildFile; fileRef = BEA043E616CAA8E1005406E7 /* SubGenre.m */; };
@@ -2598,6 +2600,11 @@
 		BE8F938217B1113600E7035F /* SYNImplicitSharingController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SYNImplicitSharingController.h; sourceTree = "<group>"; };
 		BE8F938317B1113600E7035F /* SYNImplicitSharingController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SYNImplicitSharingController.m; sourceTree = "<group>"; };
 		BE8F938417B1113600E7035F /* SYNImplicitSharingController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = SYNImplicitSharingController.xib; sourceTree = "<group>"; };
+		BE8F938717B1224900E7035F /* Rockpack 10.xcdatamodel */ = {isa = PBXFileReference; lastKnownFileType = file; path = "Rockpack 10.xcdatamodel"; sourceTree = "<group>"; };
+		BE8F938817B1267900E7035F /* _ExternalAccount.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = _ExternalAccount.h; sourceTree = "<group>"; };
+		BE8F938917B1267900E7035F /* _ExternalAccount.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = _ExternalAccount.m; sourceTree = "<group>"; };
+		BE8F938B17B1268500E7035F /* ExternalAccount.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ExternalAccount.h; sourceTree = "<group>"; };
+		BE8F938C17B1268500E7035F /* ExternalAccount.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ExternalAccount.m; sourceTree = "<group>"; };
 		BE905DF417AABCD3004B8BD2 /* Rockpack 9.xcdatamodel */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcdatamodel; path = "Rockpack 9.xcdatamodel"; sourceTree = "<group>"; };
 		BE92A87916CA938200FED47B /* SYNGenreTabView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SYNGenreTabView.h; sourceTree = "<group>"; };
 		BE92A87A16CA938200FED47B /* SYNGenreTabView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SYNGenreTabView.m; sourceTree = "<group>"; };
@@ -3955,6 +3962,8 @@
 				BE7D030C179D8EFB008053DC /* _Friend.m */,
 				015CB01716AE03B200FEB8E7 /* _User.h */,
 				015CB01816AE03B200FEB8E7 /* _User.m */,
+				BE8F938817B1267900E7035F /* _ExternalAccount.h */,
+				BE8F938917B1267900E7035F /* _ExternalAccount.m */,
 				01C6FD10169E11B000E01AA3 /* _AbstractCommon.h */,
 				01C6FD11169E11B000E01AA3 /* _AbstractCommon.m */,
 				01E427EC1664EE52009B941F /* _Channel.h */,
@@ -3982,6 +3991,8 @@
 				BEB15790173D061700DAFA2F /* ChannelCover.m */,
 				01946B931683339F00354601 /* ChannelOwner.h */,
 				01946B941683339F00354601 /* ChannelOwner.m */,
+				BE8F938B17B1268500E7035F /* ExternalAccount.h */,
+				BE8F938C17B1268500E7035F /* ExternalAccount.m */,
 				BE7D0308179D8EEC008053DC /* Friend.h */,
 				BE7D0309179D8EEC008053DC /* Friend.m */,
 				01F1B85B17297471005735AF /* CoverArt.h */,
@@ -6723,6 +6734,8 @@
 				BE7D037917A69DD4008053DC /* SYNAggregateChannelCell.m in Sources */,
 				0155FA2817A81D7600B04B51 /* SYNSessionTokenCachingStrategy.m in Sources */,
 				BE8F938517B1113600E7035F /* SYNImplicitSharingController.m in Sources */,
+				BE8F938A17B1267900E7035F /* _ExternalAccount.m in Sources */,
+				BE8F938D17B1268500E7035F /* ExternalAccount.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -7140,6 +7153,7 @@
 		01E427D11664C726009B941F /* Rockpack.xcdatamodeld */ = {
 			isa = XCVersionGroup;
 			children = (
+				BE8F938717B1224900E7035F /* Rockpack 10.xcdatamodel */,
 				BE7D035C17A13EF4008053DC /* Rockpack 7.xcdatamodel */,
 				BE82099B17A9651900472ADD /* Rockpack 8.xcdatamodel */,
 				BE905DF417AABCD3004B8BD2 /* Rockpack 9.xcdatamodel */,
@@ -7150,7 +7164,7 @@
 				3885165B17579086001A9FD4 /* Rockpack 2.xcdatamodel */,
 				01E427D21664C726009B941F /* Rockpack.xcdatamodel */,
 			);
-			currentVersion = BE905DF417AABCD3004B8BD2 /* Rockpack 9.xcdatamodel */;
+			currentVersion = BE8F938717B1224900E7035F /* Rockpack 10.xcdatamodel */;
 			path = Rockpack.xcdatamodeld;
 			sourceTree = "<group>";
 			versionGroupType = wrapper.xcdatamodel;

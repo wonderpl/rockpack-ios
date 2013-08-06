@@ -29,6 +29,7 @@
 #import "SYNOAuthNetworkEngine.h"
 #import "SYNVideoPlaybackViewController.h"
 #import "TestFlight.h"
+#import "ExternalAccount.h"
 #import "UIImageView+MKNetworkKitAdditions.h"
 #import "UncaughtExceptionHandler.h"
 #import <AVFoundation/AVFoundation.h>
@@ -227,7 +228,7 @@
 {
     // link to facebook
 
-    if (self.currentUser.facebookAccountUrl)
+    if (self.currentUser.facebookAccount)
     {
         if (!FBSession.activeSession.isOpen && FBSession.activeSession.accessTokenData)
         {
@@ -238,26 +239,19 @@
         }
         else
         {
-            [self.oAuthNetworkEngine getExternalAccountForUrl: self.currentUser.facebookAccountUrl
+            
+            [self.oAuthNetworkEngine getExternalAccountForUrl: self.currentUser.facebookAccount.url
                                             completionHandler: ^(id response)
              {
                  NSDictionary *external_accounts = response[@"external_accounts"];
+                 if(![external_accounts isKindOfClass:[NSDictionary class]])
+                     return;
                  
-                 NSArray *accounts = external_accounts ? external_accounts[@"items"] : nil;
+                 [self.currentUser addExternalAccountsFromDictionary:external_accounts];
                  
-                 if (accounts && accounts.count > 0)
+                 if (self.currentUser.facebookAccount)
                  {
-                     NSDictionary *facebookAccount = (NSDictionary *)accounts[0];
-                     
-                     if (facebookAccount)
-                     {
-                         self.currentUser.facebookToken = facebookAccount[@"external_token"];
-                     }
-                 }
-                 
-                 if (self.currentUser.facebookToken)
-                 {
-                     [[SYNFacebookManager sharedFBManager] openSessionFromExistingToken: self.currentUser.facebookToken
+                     [[SYNFacebookManager sharedFBManager] openSessionFromExistingToken: self.currentUser.facebookAccount.token
                                                                               onSuccess: ^{
                                                                               }
                                                                               onFailure: ^(NSString *errorMessage) {
