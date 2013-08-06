@@ -1435,7 +1435,7 @@
 }
 
 
--(void)setFlag:(NSString*)flag forUseId:(NSString*)userId
+-(void)setFlag:(NSString*)flag withValue:(BOOL)value forUseId:(NSString*)userId
     completionHandler: (MKNKUserSuccessBlock) completionBlock
     errorHandler: (MKNKUserSuccessBlock) errorBlock
 {
@@ -1446,29 +1446,7 @@
     
     SYNNetworkOperationJsonObject *networkOperation = (SYNNetworkOperationJsonObject*)[self operationWithPath: apiString
                                                                                                        params: nil
-                                                                                                   httpMethod: @"PUT"
-                                                                                                          ssl: YES];
-    
-    [self addCommonHandlerToNetworkOperation: networkOperation
-                           completionHandler: completionBlock
-                                errorHandler: errorBlock];
-    
-    [self enqueueSignedOperation: networkOperation];
-    
-}
-
--(void)unsetFlag:(NSString*)flag forUseId:(NSString*)userId
-completionHandler: (MKNKUserSuccessBlock) completionBlock
-  errorHandler: (MKNKUserSuccessBlock) errorBlock
-{
-    NSDictionary *apiSubstitutionDictionary = @{@"USERID" : userId, @"FLAG": flag};
-    
-    NSString *apiString = [kFlagsSet stringByReplacingOccurrencesOfStrings: apiSubstitutionDictionary];
-    
-    
-    SYNNetworkOperationJsonObject *networkOperation = (SYNNetworkOperationJsonObject*)[self operationWithPath: apiString
-                                                                                                       params: nil
-                                                                                                   httpMethod: @"DELETE"
+                                                                                                   httpMethod: (value ? @"PUT" : @"DELETE")
                                                                                                           ssl: YES];
     
     [self addCommonHandlerToNetworkOperation: networkOperation
