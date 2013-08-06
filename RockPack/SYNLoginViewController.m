@@ -1130,49 +1130,60 @@
     [self doFacebookLoginAnimation];
     
     [self loginThroughFacebookWithCompletionHandler: ^(NSDictionary * dictionary) {
+        // Is user registering for the first time
+        if (dictionary[@"registered"])
+        {
+            [tracker sendEventWithCategory: @"goal"
+                                withAction: @"userRegistration"
+                                 withLabel: @"Facebook"
+                                 withValue: nil];
+        }
+        else
+        {
+            // or just logging in to an existing account
+            [tracker sendEventWithCategory: @"goal"
+                                withAction: @"userLogin"
+                                 withLabel: @"Facebook"
+                                 withValue: nil];
+        }
         
-                                        [tracker sendEventWithCategory: @"goal"
-                                                            withAction: @"userLogin"
-                                                             withLabel: @"Facebook"
-                                                             withValue: nil];
+        [activityIndicator stopAnimating];
+        [self completeLoginProcess];
         
-                                        [activityIndicator stopAnimating];
-                                        [self completeLoginProcess];
+    }  errorHandler:^(id error) {
         
-                                    }  errorHandler:^(id error) {
-                                           
-                                           [self doFacebookFailAnimation];
-                                            facebookSignInButton.enabled = YES;
-                                           
-                                           if ([error isKindOfClass: [NSDictionary class]])
-                                           {
-                                               NSDictionary* formErrors = error[@"form_errors"];
-                                               
-                                               if (formErrors)
-                                               {
-                                                   secondaryFacebookMessage.text = NSLocalizedString(@"facebook_login_error_description", nil);
-                                                   secondaryFacebookMessage.alpha = 1.0;
-                                               }
-                                               
-                                           }
-                                           else if ([error isKindOfClass: [NSString class]])
-                                           {_facebookLoginIsInProcess = NO;
-                                               
-                                               // TODO: Use custom alert box here
-                                               [[[UIAlertView alloc] initWithTitle: NSLocalizedString(@"facebook_login_error_title", nil)
-                                                                           message: error
-                                                                          delegate: nil
-                                                                 cancelButtonTitle: NSLocalizedString(@"OK", nil)
-                                                                 otherButtonTitles: nil] show];
-                                               
-                                               DebugLog(@"Log in failed!");
-                                           }
-                                           else
-                                           {
-                                               //Should not happen!
-                                           }
-                                           
-                                       }];
+        [self doFacebookFailAnimation];
+        facebookSignInButton.enabled = YES;
+        
+        if ([error isKindOfClass: [NSDictionary class]])
+        {
+            NSDictionary* formErrors = error[@"form_errors"];
+            
+            if (formErrors)
+            {
+                secondaryFacebookMessage.text = NSLocalizedString(@"facebook_login_error_description", nil);
+                secondaryFacebookMessage.alpha = 1.0;
+            }
+            
+        }
+        else if ([error isKindOfClass: [NSString class]])
+        {_facebookLoginIsInProcess = NO;
+            
+            // TODO: Use custom alert box here
+            [[[UIAlertView alloc] initWithTitle: NSLocalizedString(@"facebook_login_error_title", nil)
+                                        message: error
+                                       delegate: nil
+                              cancelButtonTitle: NSLocalizedString(@"OK", nil)
+                              otherButtonTitles: nil] show];
+            
+            DebugLog(@"Log in failed!");
+        }
+        else
+        {
+            //Should not happen!
+        }
+        
+    }];
 }
 
 
