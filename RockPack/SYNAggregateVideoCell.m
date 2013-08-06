@@ -8,6 +8,7 @@
 
 #import "SYNAggregateVideoCell.h"
 #import "ChannelOwner.h"
+#import "SYNAppDelegate.h"
 
 @implementation SYNAggregateVideoCell
 
@@ -16,6 +17,11 @@
 {
     [super awakeFromNib];
     self.likeLabel.font = [UIFont rockpackFontOfSize:self.likeLabel.font.pointSize];
+    
+    if(!IS_IPAD)
+        self.likesNumberLabel.hidden = YES;
+    else
+        self.likesNumberLabel.font = [UIFont boldRockpackFontOfSize:self.likesNumberLabel.font.pointSize];
 }
 
 
@@ -121,71 +127,87 @@
     
     NSNumber* likesNumber = messageDictionary[@"star_count"] ? messageDictionary[@"star_count"] : @(0);
     NSString* likesString = [NSString stringWithFormat:@"%i likes", likesNumber.integerValue];
-    
     if(likesNumber.integerValue == 0)
     {
-        self.likeLabel.font = [UIFont boldRockpackFontOfSize:12.0];
-        self.likeLabel.textColor = [UIColor blackColor];
-        self.likeLabel.text = @"0 likes";
+        
+        self.likesNumberLabel.text = likesString;
+        self.mainTitleLabel.hidden = YES;
         
         return;
     }
     
+    
     NSString* including = @"including";
+    
+    
     
     NSMutableString* namesString = [[NSMutableString alloc] init];
     NSOrderedSet* users = messageDictionary[@"starrers"] ? messageDictionary[@"starrers"] : [NSOrderedSet orderedSet];
     
+    
+    
+    SYNAppDelegate* appDelegate = [[UIApplication sharedApplication] delegate];
     if(users.count > 0)
     {
-        if(users.count > 1)
+        ChannelOwner* co;
+        for (int i = 0; i < users.count; i++)
         {
-            for (int i = 0; i < users.count - 1; i++)
-            {
-                
-                
-                [namesString appendString:((ChannelOwner*)users[0]).displayName];
-                [namesString appendString:@", "];
-                
-            }
             
-            [namesString deleteCharactersInRange:NSMakeRange(namesString.length - 2, 2)];
-            [namesString appendString:@" & "];
+            co = (ChannelOwner*)users[0];
+            
+            if([co.uniqueId isEqualToString:appDelegate.currentUser.uniqueId])
+                [namesString appendString:@"You"];
+            else
+                [namesString appendString:co.displayName];
+            
+            if((users.count - i) == 2) // the one before last
+                [namesString appendString:@" & "];
+            else if((users.count - i) > 2)
+                [namesString appendString:@", "];
+            
         }
         
-        [namesString appendString:((ChannelOwner*)users[(users.count - 1)]).displayName];
+        
     }
     
     
     
-    NSString* completeString = [NSString stringWithFormat:@"%@ %@ %@", likesString, including, namesString];
+    NSMutableAttributedString *attributedCompleteString = [[NSMutableAttributedString alloc] init];
+ 
+    NSDictionary* lightTextAttributes = @{NSFontAttributeName:[UIFont rockpackFontOfSize:12.0],NSForegroundColorAttributeName:[UIColor grayColor]};
+    NSDictionary* boldTextAttributes = @{NSFontAttributeName:[UIFont boldRockpackFontOfSize:12.0],NSForegroundColorAttributeName:[UIColor blackColor]};
+    if(!IS_IPAD)
+    {
+        
+        [attributedCompleteString appendAttributedString:[[NSAttributedString alloc] initWithString:[NSString stringWithFormat:@"%@", likesString]
+                                                                                         attributes:boldTextAttributes]];
+    }
+    else
+    {
+        self.likesNumberLabel.text = [NSString stringWithFormat:@"%i", likesNumber.integerValue];
+    }
     
-    // craete the attributed string //
+    if(users.count > 1 && users.count < 4)
+    {
+      
+        [attributedCompleteString appendAttributedString:[[NSAttributedString alloc] initWithString:[NSString stringWithFormat:@"%@", including]
+                                                                                         attributes:lightTextAttributes]];
+        
+    }
     
-    NSMutableAttributedString *attributedCompleteString = [[NSMutableAttributedString alloc] initWithString:completeString];
+    [attributedCompleteString appendAttributedString:[[NSAttributedString alloc] initWithString:[NSString stringWithFormat:@"%@", namesString]
+                                                                                     attributes:boldTextAttributes]];
     
-    NSRange indexRange = NSMakeRange(0, 0);
-    indexRange.length = likesString.length;
-    
-    [attributedCompleteString addAttribute:NSFontAttributeName value:[UIFont boldRockpackFontOfSize:12.0] range:indexRange];
-    [attributedCompleteString addAttribute:NSForegroundColorAttributeName value:[UIColor blackColor] range:indexRange];
-    
-    indexRange.location += indexRange.length + 1;
-    indexRange.length = including.length;
-    
-    [attributedCompleteString addAttribute:NSFontAttributeName value:[UIFont rockpackFontOfSize:12.0] range:indexRange];
-    [attributedCompleteString addAttribute:NSForegroundColorAttributeName value:[UIColor grayColor] range:indexRange];
-    
-    indexRange.location += indexRange.length + 1;
-    indexRange.length = namesString.length;
-    
-    [attributedCompleteString addAttribute:NSFontAttributeName value:[UIFont boldRockpackFontOfSize:12.0] range:indexRange];
-    [attributedCompleteString addAttribute:NSForegroundColorAttributeName value:[UIColor blackColor] range:indexRange];
     
     
     self.likeLabel.attributedText = attributedCompleteString;
 }
-
+-(void)prepareForReuse
+{
+    [super prepareForReuse];
+    self.mainTitleLabel.hidden = NO;
+    
+}
 -(void)setCoverTitleWithString:(NSString*)coverTitle
 {
     

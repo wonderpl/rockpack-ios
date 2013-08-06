@@ -13,6 +13,7 @@
 }
 
 @property (nonatomic, strong) IBOutlet UILabel* likeLabel;
+@property (nonatomic, strong) IBOutlet UILabel* likesNumberLabel;
 @property (nonatomic, strong) IBOutlet UIButton* heartButton;
 @property (nonatomic, strong) IBOutlet UIButton* addButton;
 

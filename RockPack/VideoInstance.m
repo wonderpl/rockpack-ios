@@ -105,8 +105,8 @@ static NSDateFormatter *dateFormatter = nil;
     NSString *dayAdded = [dateAdded substringToIndex: [dateAdded rangeOfString: @"T"].location];
     self.dateOfDayAdded = [[VideoInstance DayOfDateFormatter] dateFromString: dayAdded];
     
-    self.title = [dictionary upperCaseStringForKey: @"title"
-                                       withDefault: @""];
+    self.title = [dictionary objectForKey: @"title"
+                              withDefault: @""];
     
     NSArray *filteredVideos;
     if(existingVideos)
