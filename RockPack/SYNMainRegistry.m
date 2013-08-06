@@ -263,6 +263,8 @@
     
     // == Check for Validity == //
     
+    NSLog(@"\n========= Feed Data: ===========\n%@\n\n", dictionary);
+    
     NSArray *itemsArray = dictionary[@"items"];
     if (![itemsArray isKindOfClass: [NSArray class]])
         return NO;
