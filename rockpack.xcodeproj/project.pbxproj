@@ -174,7 +174,6 @@
 		01677F0B16554CC700B1B1D8 /* Icon-Small@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 01677F0316554CC700B1B1D8 /* Icon-Small@2x.png */; };
 		01677F0C16554CC700B1B1D8 /* Icon.png in Resources */ = {isa = PBXBuildFile; fileRef = 01677F0416554CC700B1B1D8 /* Icon.png */; };
 		01677F0D16554CC700B1B1D8 /* Icon@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 01677F0516554CC700B1B1D8 /* Icon@2x.png */; };
-		01677F1316554CFD00B1B1D8 /* iTunesArtwork in Resources */ = {isa = PBXBuildFile; fileRef = 01677F1216554CFD00B1B1D8 /* iTunesArtwork */; };
 		01677F1616554D2700B1B1D8 /* DINNextLTPro-Bold.otf in Resources */ = {isa = PBXBuildFile; fileRef = 01677F1416554D2700B1B1D8 /* DINNextLTPro-Bold.otf */; };
 		01677F1716554D2700B1B1D8 /* DINNextLTPro-Regular.otf in Resources */ = {isa = PBXBuildFile; fileRef = 01677F1516554D2700B1B1D8 /* DINNextLTPro-Regular.otf */; };
 		016B97151770C3DE00892211 /* CFNetwork.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 016B97141770C3DE00892211 /* CFNetwork.framework */; };
@@ -2594,7 +2593,7 @@
 		BE86BF2D17201BA70006DC8A /* ButtonResetPasswordDefault@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = "ButtonResetPasswordDefault@2x.png"; path = "Assets/Images/ButtonResetPasswordDefault@2x.png"; sourceTree = "<group>"; };
 		BE86BF2E17201BA70006DC8A /* ButtonResetPasswordHighlighted.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = ButtonResetPasswordHighlighted.png; path = Assets/Images/ButtonResetPasswordHighlighted.png; sourceTree = "<group>"; };
 		BE86BF2F17201BA70006DC8A /* ButtonResetPasswordHighlighted@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = "ButtonResetPasswordHighlighted@2x.png"; path = "Assets/Images/ButtonResetPasswordHighlighted@2x.png"; sourceTree = "<group>"; };
-		BE905DF417AABCD3004B8BD2 /* Rockpack 9.xcdatamodel */ = {isa = PBXFileReference; lastKnownFileType = file; path = "Rockpack 9.xcdatamodel"; sourceTree = "<group>"; };
+		BE905DF417AABCD3004B8BD2 /* Rockpack 9.xcdatamodel */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcdatamodel; path = "Rockpack 9.xcdatamodel"; sourceTree = "<group>"; };
 		BE92A87916CA938200FED47B /* SYNGenreTabView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SYNGenreTabView.h; sourceTree = "<group>"; };
 		BE92A87A16CA938200FED47B /* SYNGenreTabView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SYNGenreTabView.m; sourceTree = "<group>"; };
 		BEA043E316CAA8E1005406E7 /* Genre.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Genre.h; sourceTree = "<group>"; };
@@ -5432,7 +5431,6 @@
 				01677F0B16554CC700B1B1D8 /* Icon-Small@2x.png in Resources */,
 				01677F0C16554CC700B1B1D8 /* Icon.png in Resources */,
 				01677F0D16554CC700B1B1D8 /* Icon@2x.png in Resources */,
-				01677F1316554CFD00B1B1D8 /* iTunesArtwork in Resources */,
 				01677F1616554D2700B1B1D8 /* DINNextLTPro-Bold.otf in Resources */,
 				01677F1716554D2700B1B1D8 /* DINNextLTPro-Regular.otf in Resources */,
 				01B0A968166CE22300CAA235 /* SYNVideoThumbnailRegularCell.xib in Resources */,
