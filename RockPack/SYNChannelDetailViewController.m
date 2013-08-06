@@ -832,6 +832,9 @@
                          }
                          completion: nil];
     }
+    
+    // Moved this here from viewWillAppear so that we have a known state for the subscribe button for onboarding
+    [self checkOnBoarding];
 }
 
 
@@ -1191,6 +1194,9 @@
         CGRect frame = self.subscribersLabel.frame;
         frame.origin.x -= offset;
         self.subscribersLabel.frame = frame;
+        ///
+        self.originalSubscribersLabelRect = frame;
+        ///
         self.subscribersButton.center = self.subscribersLabel.center;
     }
     
@@ -2522,8 +2528,6 @@
     {
         self.currentWebImageOperation = [self loadBackgroundImage];
     }
-
-    [self checkOnBoarding];
 }
 
 
