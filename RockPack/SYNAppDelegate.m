@@ -342,13 +342,25 @@
         
         [self refreshFacebookSession];
     } errorHandler: ^(id response) {
-        [self logout];
         
         self.tokenExpiryTimer = nil;
         
-        if (!self.window.rootViewController)
+        // If we didn't have network connectivity, then response is nil
+        if (response)
         {
-            self.window.rootViewController = [self createAndReturnLoginViewController];
+            [self logout];
+
+            if (!self.window.rootViewController)
+            {
+                self.window.rootViewController = [self createAndReturnLoginViewController];
+            }
+        }
+        else
+        {
+            if (!self.window.rootViewController)
+            {
+                self.window.rootViewController = [self createAndReturnRootViewController];
+            }
         }
         
         [startImageView removeFromSuperview];
@@ -366,7 +378,12 @@
      refreshOAuthTokenWithCompletionHandler: ^(id response) {
      }
      errorHandler: ^(id response) {
-         [self logout];
+         
+         // If we didn't have network connectivity, then response is nil
+         if (response)
+         {
+             [self logout];
+         }
      }];
 }
 
