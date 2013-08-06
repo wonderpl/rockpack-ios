@@ -18,6 +18,7 @@
 #import "UIFont+SYNFont.h"
 #import "SYNOAuthNetworkEngine.h"
 #import "UIImageView+WebCache.h"
+#import "ExternalAccount.h"
 #import "ChannelCover.h"
 #import <QuartzCore/QuartzCore.h>
 
@@ -95,29 +96,43 @@
         if(!flagsDictionary)
             return;
         
+        [appDelegate.currentUser setFlagsFromDictionary:flagsDictionary];
         
-        NSInteger total = [flagsDictionary[@"total"] isKindOfClass:[NSNumber class]] ? [flagsDictionary[@"total"] integerValue] : 0;
-        if(total == 0)
-            return;
-            
-        
-        NSArray* items = [flagsDictionary[@"items"] isKindOfClass:[NSArray class]] ? flagsDictionary[@"items"] : [NSArray array];
-        NSString *flag, *unset_url;
-        for (NSDictionary* item in items) {
-            flag = item[@"flag"];
-            unset_url = item[@"resource_url"];
-            if([flag isEqualToString:@"facebook_autopost_add"])
-                self.autopostView.hidden = YES;
-            
-        }
         
     } errorHandler:^(id error) {
         
         DebugLog(@"There was an error getting the list of flags:\n%@", error);
-        self.autopostView.hidden = YES;
+        
     }];
     
     
+}
+
+-(void)checkForPermissions
+{
+    ExternalAccount* facebookAccount = appDelegate.currentUser.facebookAccount;
+    if(!facebookAccount)
+    {
+        if(!(facebookAccount.flagsValue | ExternalAccountFlagAutopostStar))
+        {
+            [self switchAutopostViewToYes:YES];
+        }
+        else
+        {
+            [self switchAutopostViewToYes:NO];
+        }
+    }
+    else
+    {
+        [self switchAutopostViewToYes:NO];
+    }
+    
+}
+
+-(void)switchAutopostViewToYes:(BOOL)value
+{
+    self.autopostYesButton.selected = value;
+    self.autopostNoButton.selected = !value;
 }
 
 -(IBAction)autopostButtonPressed:(UIButton*)sender
@@ -129,12 +144,11 @@
     [appDelegate.oAuthNetworkEngine setFlag:@"facebook_autopost_add" withValue:isYesButton
                                    forUseId:appDelegate.currentUser.uniqueId completionHandler:^(id no_response) {
                                        
-                                       wself.autopostYesButton.selected = isYesButton;
-                                       wself.autopostNoButton.selected = !isYesButton;
+                                       [wself switchAutopostViewToYes:isYesButton];
                                        
                                    } errorHandler:^(id error) {
                                        
-                                       
+                                       [wself switchAutopostViewToYes:!isYesButton];
                                        
                                    }];
 }

@@ -1,5 +1,5 @@
 #import "ExternalAccount.h"
-
+#import "NSDictionary+Validation.h"
 
 @interface ExternalAccount ()
 
@@ -53,8 +53,12 @@
     if([dictionary[@"external_token"] isKindOfClass:[NSString class]])
         self.token = dictionary[@"external_token"];
     
-    if([dictionary[@"token_expires"] isKindOfClass:[NSDate class]])
-        self.expiration = dictionary[@"token_expires"];
+    if([dictionary[@"resource_url"] isKindOfClass:[NSString class]])
+        self.url = dictionary[@"resource_url"];
+    
+    if([dictionary[@"token_expires"] isKindOfClass:[NSString class]])
+        self.expiration = [dictionary dateFromISO6801StringForKey:@"token_expires"
+                                                      withDefault:[NSDate distantPast]];
     
     if([dictionary[@"token_permissions"] isKindOfClass:[NSString class]])
         self.permissions = dictionary[@"token_permissions"];

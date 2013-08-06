@@ -227,19 +227,64 @@
         return;
     
     NSArray* items = dictionary[@"items"];
-    if([items isKindOfClass:[NSArray class]])
+    if(![items isKindOfClass:[NSArray class]])
+        return;
+    
+    for (NSDictionary* item in items)
     {
-        for (NSDictionary* item in items)
-        {
-            ExternalAccount* externalAccount = [ExternalAccount instanceFromDictionary:item
-                                                             usingManagedObjectContext:self.managedObjectContext];
-            if(!externalAccount)
-                continue;
-            
-            [self.externalAccountSet addObject:externalAccount];
-            
-        }
+        ExternalAccount* externalAccount = [ExternalAccount instanceFromDictionary:item
+                                                         usingManagedObjectContext:self.managedObjectContext];
+        if(!externalAccount)
+            continue;
+        
+        [self.externalAccountSet addObject:externalAccount];
+        
     }
+}
+
+-(void)addPermissionFlag:(ExternalAccountFlag)flag toAccount:(NSString*)accountName
+{
+    ExternalAccount* accountToSetFlag = [self externalAccountForSystem:accountName];
+    
+    if(!accountToSetFlag)
+        return;
+    
+    accountToSetFlag.flagsValue |= flag;
+    
+}
+
+-(void)removePermissionFlag:(ExternalAccountFlag)flag toAccount:(NSString*)accountName
+{
+    ExternalAccount* accountToSetFlag = [self externalAccountForSystem:accountName];
+    
+    if(!accountToSetFlag)
+        return;
+    
+    accountToSetFlag.flagsValue &= !flag;
+    
+}
+
+-(void)setFlagsFromDictionary:(NSDictionary*)dictionary
+{
+    
+    if(!dictionary)
+        return;
+    
+    NSArray* items = dictionary[@"items"];
+    if(![items isKindOfClass:[NSArray class]])
+        return;
+    
+    for (NSDictionary* item in items)
+    {
+        if(![item[@"flag"] isKindOfClass:[NSString class]])
+            continue;
+        
+        if([item[@"flag"] isEqualToString:@"facebook_autopost_add"])
+            [self addPermissionFlag:ExternalAccountFlagAutopostAdd toAccount:@"facebook"];
+        else if([item[@"flag"] isEqualToString:@"facebook_autopost_star"])
+            [self addPermissionFlag:ExternalAccountFlagAutopostStar toAccount:@"facebook"];
+    }
+    
 }
 
 -(ExternalAccount*)facebookAccount
