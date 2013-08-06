@@ -11,6 +11,11 @@
 + (User *)	 instanceFromUser: (User *) oldUser
    usingManagedObjectContext: (NSManagedObjectContext *) managedObjectContext;
 
-@property (nonatomic, strong) NSString* facebookToken;
+@property (nonatomic, readonly) ExternalAccount* facebookAccount;
+@property (nonatomic, readonly) ExternalAccount* twitterAccount;
+@property (nonatomic, readonly) ExternalAccount* googlePlusAccount;
+
+-(ExternalAccount*)externalAccountForSystem:(NSString*)systemName;
+-(void)addExternalAccountsFromDictionary:(NSDictionary*)dictionary;
 
 @end

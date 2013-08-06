@@ -9,7 +9,6 @@ const struct UserAttributes UserAttributes = {
 	.current = @"current",
 	.dateOfBirth = @"dateOfBirth",
 	.emailAddress = @"emailAddress",
-	.facebookAccountUrl = @"facebookAccountUrl",
 	.firstName = @"firstName",
 	.fullNameIsPublic = @"fullNameIsPublic",
 	.gender = @"gender",
@@ -20,6 +19,7 @@ const struct UserAttributes UserAttributes = {
 };
 
 const struct UserRelationships UserRelationships = {
+	.externalAccount = @"externalAccount",
 };
 
 const struct UserFetchedProperties UserFetchedProperties = {
@@ -132,13 +132,6 @@ const struct UserFetchedProperties UserFetchedProperties = {
 
 
 
-@dynamic facebookAccountUrl;
-
-
-
-
-
-
 @dynamic firstName;
 
 
@@ -244,6 +237,19 @@ const struct UserFetchedProperties UserFetchedProperties = {
 
 
 
+
+@dynamic externalAccount;
+
+	
+- (NSMutableSet*)externalAccountSet {
+	[self willAccessValueForKey:@"externalAccount"];
+  
+	NSMutableSet *result = (NSMutableSet*)[self mutableSetValueForKey:@"externalAccount"];
+  
+	[self didAccessValueForKey:@"externalAccount"];
+	return result;
+}
+	
 
 
 
