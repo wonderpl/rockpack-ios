@@ -187,13 +187,11 @@ typedef void (^SYNOAuth2RefreshCompletionBlock)(NSError *error);
            errorHandler: (MKNKUserSuccessBlock) errorBlock;
 
 -(void)setFlag:(NSString*)flag
+     withValue:(BOOL)value
       forUseId:(NSString*)userId
     completionHandler: (MKNKUserSuccessBlock) completionBlock
-    errorHandler: (MKNKUserSuccessBlock) errorBlock;
+  errorHandler: (MKNKUserSuccessBlock) errorBlock;
 
--(void)unsetFlag:(NSString*)flag forUseId:(NSString*)userId
-completionHandler: (MKNKUserSuccessBlock) completionBlock
-    errorHandler: (MKNKUserSuccessBlock) errorBlock;
 
 // Sunscriptions
 
