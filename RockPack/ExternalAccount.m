@@ -54,10 +54,23 @@
         self.token = dictionary[@"external_token"];
     
     if([dictionary[@"token_expires"] isKindOfClass:[NSDate class]])
-        self.token = dictionary[@"token_expires"];
+        self.expiration = dictionary[@"token_expires"];
     
     if([dictionary[@"token_permissions"] isKindOfClass:[NSString class]])
-        self.token = dictionary[@"token_permissions"];
+        self.permissions = dictionary[@"token_permissions"];
+    
+    if(self.permissions)
+    {
+        // set flags
+        
+        NSArray* permissionsArray = [self.permissions componentsSeparatedByString:@","];
+        for (NSString* permission in permissionsArray) {
+            if([permission isEqualToString:@"read"])
+                self.flagsValue |= ExternalAccountFlagRead;
+            else if([permission isEqualToString:@"write"])
+                self.flagsValue |= ExternalAccountFlagWrite;
+        }
+    }
     
 }
 

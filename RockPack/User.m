@@ -84,6 +84,9 @@
     if([dictionary[@"external_accounts"] isKindOfClass:[NSDictionary class]])
         [self addExternalAccountsFromDictionary:dictionary[@"external_accounts"]];
     
+    if([dictionary[@"flags"] isKindOfClass:[NSDictionary class]])
+        [self addExternalAccountsFromDictionary:dictionary[@"external_accounts"]];
+    
     
     NSDictionary *activity_url_dict = dictionary[@"activity"];
     

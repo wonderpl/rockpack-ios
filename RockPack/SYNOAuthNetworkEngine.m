@@ -510,8 +510,8 @@
 
 
 - (void) retrieveAndRegisterUserFromCredentials: (SYNOAuth2Credential *) credentials
-                      completionHandler: (MKNKUserSuccessBlock) completionBlock
-                           errorHandler: (MKNKUserErrorBlock) errorBlock
+                              completionHandler: (MKNKUserSuccessBlock) completionBlock
+                                   errorHandler: (MKNKUserErrorBlock) errorBlock
 {
     NSDictionary *apiSubstitutionDictionary = @{@"USERID" : credentials.userId};
     
