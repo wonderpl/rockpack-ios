@@ -1160,6 +1160,8 @@
 		BE86BF3117201BA70006DC8A /* ButtonResetPasswordDefault@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = BE86BF2D17201BA70006DC8A /* ButtonResetPasswordDefault@2x.png */; };
 		BE86BF3217201BA70006DC8A /* ButtonResetPasswordHighlighted.png in Resources */ = {isa = PBXBuildFile; fileRef = BE86BF2E17201BA70006DC8A /* ButtonResetPasswordHighlighted.png */; };
 		BE86BF3317201BA70006DC8A /* ButtonResetPasswordHighlighted@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = BE86BF2F17201BA70006DC8A /* ButtonResetPasswordHighlighted@2x.png */; };
+		BE8F938517B1113600E7035F /* SYNImplicitSharingController.m in Sources */ = {isa = PBXBuildFile; fileRef = BE8F938317B1113600E7035F /* SYNImplicitSharingController.m */; };
+		BE8F938617B1113600E7035F /* SYNImplicitSharingController.xib in Resources */ = {isa = PBXBuildFile; fileRef = BE8F938417B1113600E7035F /* SYNImplicitSharingController.xib */; };
 		BE92A87B16CA938200FED47B /* SYNGenreTabView.m in Sources */ = {isa = PBXBuildFile; fileRef = BE92A87A16CA938200FED47B /* SYNGenreTabView.m */; };
 		BEA043E716CAA8E1005406E7 /* Genre.m in Sources */ = {isa = PBXBuildFile; fileRef = BEA043E416CAA8E1005406E7 /* Genre.m */; };
 		BEA043E816CAA8E1005406E7 /* SubGenre.m in Sources */ = {isa = PBXBuildFile; fileRef = BEA043E616CAA8E1005406E7 /* SubGenre.m */; };
@@ -2593,6 +2595,9 @@
 		BE86BF2D17201BA70006DC8A /* ButtonResetPasswordDefault@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = "ButtonResetPasswordDefault@2x.png"; path = "Assets/Images/ButtonResetPasswordDefault@2x.png"; sourceTree = "<group>"; };
 		BE86BF2E17201BA70006DC8A /* ButtonResetPasswordHighlighted.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = ButtonResetPasswordHighlighted.png; path = Assets/Images/ButtonResetPasswordHighlighted.png; sourceTree = "<group>"; };
 		BE86BF2F17201BA70006DC8A /* ButtonResetPasswordHighlighted@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = "ButtonResetPasswordHighlighted@2x.png"; path = "Assets/Images/ButtonResetPasswordHighlighted@2x.png"; sourceTree = "<group>"; };
+		BE8F938217B1113600E7035F /* SYNImplicitSharingController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SYNImplicitSharingController.h; sourceTree = "<group>"; };
+		BE8F938317B1113600E7035F /* SYNImplicitSharingController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SYNImplicitSharingController.m; sourceTree = "<group>"; };
+		BE8F938417B1113600E7035F /* SYNImplicitSharingController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = SYNImplicitSharingController.xib; sourceTree = "<group>"; };
 		BE905DF417AABCD3004B8BD2 /* Rockpack 9.xcdatamodel */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcdatamodel; path = "Rockpack 9.xcdatamodel"; sourceTree = "<group>"; };
 		BE92A87916CA938200FED47B /* SYNGenreTabView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SYNGenreTabView.h; sourceTree = "<group>"; };
 		BE92A87A16CA938200FED47B /* SYNGenreTabView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SYNGenreTabView.m; sourceTree = "<group>"; };
@@ -5235,6 +5240,16 @@
 			name = "Master Panel";
 			sourceTree = "<group>";
 		};
+		BE8F938117B1110A00E7035F /* Sharing Panel */ = {
+			isa = PBXGroup;
+			children = (
+				BE8F938217B1113600E7035F /* SYNImplicitSharingController.h */,
+				BE8F938317B1113600E7035F /* SYNImplicitSharingController.m */,
+				BE8F938417B1113600E7035F /* SYNImplicitSharingController.xib */,
+			);
+			name = "Sharing Panel";
+			sourceTree = "<group>";
+		};
 		BE95B90016CBAAD500EC2E72 /* Tabs */ = {
 			isa = PBXGroup;
 			children = (
@@ -5303,6 +5318,7 @@
 		BEF9E5A516DBCDEF00286113 /* Components */ = {
 			isa = PBXGroup;
 			children = (
+				BE8F938117B1110A00E7035F /* Sharing Panel */,
 				BE3983CB1768A34700EE9C7B /* OnBoarding Messages */,
 				015C13BE173B02D8001569FE /* Report Concerns */,
 				BE03A69016F7457900245314 /* Account Settings */,
@@ -6399,6 +6415,7 @@
 				01EC095617AAA64F00E1ACE1 /* ButtonPlayChannelHighlighted@2x.png in Resources */,
 				01EC095717AAA64F00E1ACE1 /* ButtonPlayChannel.png in Resources */,
 				01EC095817AAA64F00E1ACE1 /* ButtonPlayChannel@2x.png in Resources */,
+				BE8F938617B1113600E7035F /* SYNImplicitSharingController.xib in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -6705,6 +6722,7 @@
 				BE7D037317A69D87008053DC /* SYNAggregateVideoCell.m in Sources */,
 				BE7D037917A69DD4008053DC /* SYNAggregateChannelCell.m in Sources */,
 				0155FA2817A81D7600B04B51 /* SYNSessionTokenCachingStrategy.m in Sources */,
+				BE8F938517B1113600E7035F /* SYNImplicitSharingController.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
