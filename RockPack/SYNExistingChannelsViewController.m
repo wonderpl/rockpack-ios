@@ -94,9 +94,12 @@
         if(!flagsDictionary)
             return;
         
+        self.autopostView.hidden = NO;
+        
         NSInteger total = [flagsDictionary[@"total"] isKindOfClass:[NSNumber class]] ? [flagsDictionary[@"total"] integerValue] : 0;
         if(total == 0)
             return;
+            
         
         NSArray* items = [flagsDictionary[@"items"] isKindOfClass:[NSArray class]] ? flagsDictionary[@"items"] : [NSArray array];
         NSString *flag, *unset_url;
@@ -104,14 +107,14 @@
             flag = item[@"flag"];
             unset_url = item[@"resource_url"];
             if([flag isEqualToString:@"facebook_autopost_add"])
-                self.autopostView.hidden = NO;
+                self.autopostView.hidden = YES;
             
         }
         
     } errorHandler:^(id error) {
         
-        
-        
+        DebugLog(@"There was an error getting the list of flags:\n%@", error);
+        self.autopostView.hidden = YES;
     }];
     
     
