@@ -69,6 +69,7 @@
     NSString *n_username = dictionary[@"username"];
     self.username = n_username ? n_username : self.username;
     
+    
     NSString *n_emailAddress = dictionary[@"email"];
     self.emailAddress = n_emailAddress ? n_emailAddress : self.emailAddress;
     
@@ -85,7 +86,7 @@
         [self addExternalAccountsFromDictionary:dictionary[@"external_accounts"]];
     
     if([dictionary[@"flags"] isKindOfClass:[NSDictionary class]])
-        [self addExternalAccountsFromDictionary:dictionary[@"external_accounts"]];
+        [self setExternalAccountFlagsFromDictionary:dictionary[@"flags"]];
     
     
     NSDictionary *activity_url_dict = dictionary[@"activity"];
@@ -203,7 +204,8 @@
     
     [userDescription appendString: @":"];
     
-    for (Channel *channel in self.channels)
+    Channel *channel;
+    for (channel in self.channels)
     {
         [userDescription appendFormat: @"\n - %@ (%@)", channel.title, [channel.subscribedByUser boolValue] ? @"Subscribed": @"-"];
     }
@@ -212,9 +214,18 @@
     
     [userDescription appendString: @":"];
     
-    for (Channel *channel in self.subscriptions)
+    for (channel in self.subscriptions)
     {
         [userDescription appendFormat: @"\n - %@ (%@)", channel.title, [channel.subscribedByUser boolValue] ? @"Subscribed": @"-"];
+    }
+    
+    [userDescription appendFormat: @"\nUser External Accounts (%i)", self.externalAccounts.count];
+    
+    [userDescription appendString: @":"];
+    
+    for (ExternalAccount *account in self.externalAccounts)
+    {
+        [userDescription appendFormat: @"\n - %@ %@", account.system, account.permissionFlagsString];
     }
     
     return userDescription;
@@ -237,7 +248,7 @@
         if(!externalAccount)
             continue;
         
-        [self.externalAccountSet addObject:externalAccount];
+        [self.externalAccountsSet addObject:externalAccount];
         
     }
 }
@@ -264,7 +275,7 @@
     
 }
 
--(void)setFlagsFromDictionary:(NSDictionary*)dictionary
+-(void)setExternalAccountFlagsFromDictionary:(NSDictionary*)dictionary
 {
     
     if(!dictionary)
@@ -305,7 +316,7 @@
 
 -(ExternalAccount*)externalAccountForSystem:(NSString*)systemName
 {
-    for (ExternalAccount* externalAccount in self.externalAccount)
+    for (ExternalAccount* externalAccount in self.externalAccounts)
     {
         if([externalAccount.system isEqualToString:systemName])
             return externalAccount;

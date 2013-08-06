@@ -62,7 +62,7 @@
         <attribute name="token" optional="YES" attributeType="String" syncable="YES"/>
         <attribute name="uid" optional="YES" attributeType="String" syncable="YES"/>
         <attribute name="url" optional="YES" attributeType="String" syncable="YES"/>
-        <relationship name="accountOwner" optional="YES" minCount="1" maxCount="1" deletionRule="Nullify" destinationEntity="User" inverseName="externalAccount" inverseEntity="User" syncable="YES"/>
+        <relationship name="accountOwner" optional="YES" minCount="1" maxCount="1" deletionRule="Nullify" destinationEntity="User" inverseName="externalAccounts" inverseEntity="User" syncable="YES"/>
     </entity>
     <entity name="FeedItem" representedClassName="FeedItem" parentEntity="AbstractCommon" syncable="YES">
         <attribute name="channelOwnerId" optional="YES" attributeType="String" syncable="YES"/>
@@ -105,7 +105,7 @@
         <attribute name="locale" optional="YES" attributeType="String" syncable="YES"/>
         <attribute name="loginOrigin" optional="YES" attributeType="Integer 16" defaultValueString="0" syncable="YES"/>
         <attribute name="subscriptionsUrl" optional="YES" attributeType="String" syncable="YES"/>
-        <relationship name="externalAccount" optional="YES" toMany="YES" deletionRule="Nullify" destinationEntity="ExternalAccount" inverseName="accountOwner" inverseEntity="ExternalAccount" syncable="YES"/>
+        <relationship name="externalAccounts" optional="YES" toMany="YES" deletionRule="Nullify" destinationEntity="ExternalAccount" inverseName="accountOwner" inverseEntity="ExternalAccount" syncable="YES"/>
     </entity>
     <entity name="Video" representedClassName="Video" parentEntity="AbstractCommon" syncable="YES">
         <attribute name="categoryId" optional="YES" attributeType="String" syncable="YES"/>

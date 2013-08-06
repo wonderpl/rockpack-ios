@@ -17,6 +17,6 @@
 
 -(ExternalAccount*)externalAccountForSystem:(NSString*)systemName;
 -(void)addExternalAccountsFromDictionary:(NSDictionary*)dictionary;
--(void)setFlagsFromDictionary:(NSDictionary*)dictionary;
+-(void)setExternalAccountFlagsFromDictionary:(NSDictionary*)dictionary;
 
 @end

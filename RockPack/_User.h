@@ -20,7 +20,7 @@ extern const struct UserAttributes {
 } UserAttributes;
 
 extern const struct UserRelationships {
-	__unsafe_unretained NSString *externalAccount;
+	__unsafe_unretained NSString *externalAccounts;
 } UserRelationships;
 
 extern const struct UserFetchedProperties {
@@ -190,9 +190,9 @@ extern const struct UserFetchedProperties {
 
 
 
-@property (nonatomic, strong) NSSet *externalAccount;
+@property (nonatomic, strong) NSSet *externalAccounts;
 
-- (NSMutableSet*)externalAccountSet;
+- (NSMutableSet*)externalAccountsSet;
 
 
 
@@ -202,10 +202,10 @@ extern const struct UserFetchedProperties {
 
 @interface _User (CoreDataGeneratedAccessors)
 
-- (void)addExternalAccount:(NSSet*)value_;
-- (void)removeExternalAccount:(NSSet*)value_;
-- (void)addExternalAccountObject:(ExternalAccount*)value_;
-- (void)removeExternalAccountObject:(ExternalAccount*)value_;
+- (void)addExternalAccounts:(NSSet*)value_;
+- (void)removeExternalAccounts:(NSSet*)value_;
+- (void)addExternalAccountsObject:(ExternalAccount*)value_;
+- (void)removeExternalAccountsObject:(ExternalAccount*)value_;
 
 @end
 
@@ -297,8 +297,8 @@ extern const struct UserFetchedProperties {
 
 
 
-- (NSMutableSet*)primitiveExternalAccount;
-- (void)setPrimitiveExternalAccount:(NSMutableSet*)value;
+- (NSMutableSet*)primitiveExternalAccounts;
+- (void)setPrimitiveExternalAccounts:(NSMutableSet*)value;
 
 
 @end

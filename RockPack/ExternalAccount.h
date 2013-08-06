@@ -16,5 +16,5 @@ typedef enum {
 + (ExternalAccount*)instanceFromDictionary:(NSDictionary*)dictionary
                  usingManagedObjectContext: (NSManagedObjectContext *) managedObjectContext;
 
-
+@property (nonatomic, readonly) NSString* permissionFlagsString;
 @end

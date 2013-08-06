@@ -10,6 +10,8 @@
 
 @implementation ExternalAccount
 
+@synthesize permissionFlagsString;
+
 + (ExternalAccount*)instanceFromDictionary:(NSDictionary*)dictionary
                  usingManagedObjectContext: (NSManagedObjectContext *) managedObjectContext
 {
@@ -78,6 +80,27 @@
     
 }
 
+-(NSString*)permissionFlagsString
+{
+    NSMutableString* permissionsString = [[NSMutableString alloc] init];
+    if(self.flagsValue & ExternalAccountFlagRead)
+        [permissionsString appendString:@"-R"];
+    
+    if (self.flagsValue & ExternalAccountFlagWrite)
+        [permissionsString appendString:@"-W"];
+    
+    if (self.flagsValue & ExternalAccountFlagAutopostStar)
+        [permissionsString appendString:@"-aS"];
+    
+    if (self.flagsValue & ExternalAccountFlagAutopostAdd)
+        [permissionsString appendString:@"-aA"];
+    
+    return [NSString stringWithString:permissionsString];
+}
 
+-(NSString*)description
+{
+    return [NSString stringWithFormat:@"[ExternalAccount(system:'%@', flags:'%@')]", self.system, self.permissionFlagsString];
+}
 
 @end

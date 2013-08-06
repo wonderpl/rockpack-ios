@@ -19,7 +19,7 @@ const struct UserAttributes UserAttributes = {
 };
 
 const struct UserRelationships UserRelationships = {
-	.externalAccount = @"externalAccount",
+	.externalAccounts = @"externalAccounts",
 };
 
 const struct UserFetchedProperties UserFetchedProperties = {
@@ -238,15 +238,15 @@ const struct UserFetchedProperties UserFetchedProperties = {
 
 
 
-@dynamic externalAccount;
+@dynamic externalAccounts;
 
 	
-- (NSMutableSet*)externalAccountSet {
-	[self willAccessValueForKey:@"externalAccount"];
+- (NSMutableSet*)externalAccountsSet {
+	[self willAccessValueForKey:@"externalAccounts"];
   
-	NSMutableSet *result = (NSMutableSet*)[self mutableSetValueForKey:@"externalAccount"];
+	NSMutableSet *result = (NSMutableSet*)[self mutableSetValueForKey:@"externalAccounts"];
   
-	[self didAccessValueForKey:@"externalAccount"];
+	[self didAccessValueForKey:@"externalAccounts"];
 	return result;
 }
 	

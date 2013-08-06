@@ -89,21 +89,7 @@
     
     self.titleLabel.font = [UIFont boldRockpackFontOfSize:self.titleLabel.font.pointSize];
     
-    // get flags
-    
-    [appDelegate.oAuthNetworkEngine getFlagsforUseId:appDelegate.currentUser.uniqueId completionHandler:^(NSDictionary* flagsDictionary) {
-        
-        if(!flagsDictionary)
-            return;
-        
-        [appDelegate.currentUser setFlagsFromDictionary:flagsDictionary];
-        
-        
-    } errorHandler:^(id error) {
-        
-        DebugLog(@"There was an error getting the list of flags:\n%@", error);
-        
-    }];
+    [self checkForPermissions];
     
     
 }
@@ -111,9 +97,9 @@
 -(void)checkForPermissions
 {
     ExternalAccount* facebookAccount = appDelegate.currentUser.facebookAccount;
-    if(!facebookAccount)
+    if(facebookAccount)
     {
-        if(!(facebookAccount.flagsValue | ExternalAccountFlagAutopostStar))
+        if(facebookAccount.flagsValue & ExternalAccountFlagAutopostAdd)
         {
             [self switchAutopostViewToYes:YES];
         }
