@@ -70,18 +70,17 @@
                                        sectionInset: UIEdgeInsetsMake(2.0f, 2.0f, 0.0f, 2.0f)];
     }
 
-    UINib *createCellNib = [UINib nibWithNibName: @"SYNChannelCreateNewCell"
-                                          bundle: nil];
+   
     
-    [self.channelThumbnailCollectionView registerNib: createCellNib
+    [self.channelThumbnailCollectionView registerNib: [UINib nibWithNibName: @"SYNChannelCreateNewCell" bundle: nil]
                           forCellWithReuseIdentifier: @"SYNChannelCreateNewCell"];
     
     
-    UINib *thumbnailCellNib = [UINib nibWithNibName: @"SYNChannelMidCell"
-                                             bundle: nil];
     
-    [self.channelThumbnailCollectionView registerNib: thumbnailCellNib
+    [self.channelThumbnailCollectionView registerNib: [UINib nibWithNibName: @"SYNChannelMidCell" bundle: nil]
                           forCellWithReuseIdentifier: @"SYNChannelMidCell"];
+    
+    
     self.channelThumbnailCollectionView.scrollsToTop = NO;
     
     

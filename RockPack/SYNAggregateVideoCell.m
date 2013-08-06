@@ -53,6 +53,13 @@
                                  action: @selector(profileButtonTapped:)
                        forControlEvents: UIControlEventTouchUpInside];
     
+    
+    
+    [self.heartButton addTarget:self.viewControllerDelegate
+                         action:@selector(likeButtonPressed:)
+               forControlEvents:UIControlEventTouchUpInside];
+    
+    
 }
 
 
