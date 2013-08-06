@@ -74,7 +74,7 @@
 								<string key="NSFrame">{{403, 14}, {198, 56}}</string>
 								<reference key="NSSuperview" ref="79056506"/>
 								<reference key="NSWindow"/>
-								<reference key="NSNextKeyView" ref="857328791"/>
+								<reference key="NSNextKeyView" ref="778087083"/>
 								<string key="NSReuseIdentifierKey">_NS:9</string>
 								<bool key="IBUIOpaque">NO</bool>
 								<bool key="IBUIClipsSubviews">YES</bool>
@@ -199,7 +199,7 @@
 							<object class="IBUILabel" id="402542507">
 								<reference key="NSNextResponder" ref="79056506"/>
 								<int key="NSvFlags">292</int>
-								<string key="NSFrame">{{403, 91}, {198, 21}}</string>
+								<string key="NSFrame">{{403, 92}, {198, 21}}</string>
 								<reference key="NSSuperview" ref="79056506"/>
 								<reference key="NSWindow"/>
 								<reference key="NSNextKeyView" ref="418413788"/>
@@ -217,7 +217,7 @@
 								<reference key="IBUIFont" ref="849397026"/>
 								<bool key="IBUIAdjustsFontSizeToFit">NO</bool>
 							</object>
-							<object class="IBUILabel" id="935931367">
+							<object class="IBUILabel" id="561674049">
 								<reference key="NSNextResponder" ref="79056506"/>
 								<int key="NSvFlags">292</int>
 								<string key="NSFrame">{{361, 92}, {85, 21}}</string>
@@ -259,13 +259,13 @@
 								<reference key="IBUIFontDescription" ref="626614172"/>
 								<reference key="IBUIFont" ref="905035514"/>
 							</object>
-							<object class="IBUIButton" id="857328791">
+							<object class="IBUIButton" id="778087083">
 								<reference key="NSNextResponder" ref="79056506"/>
 								<int key="NSvFlags">292</int>
 								<string key="NSFrame">{{323, 78}, {44, 44}}</string>
 								<reference key="NSSuperview" ref="79056506"/>
 								<reference key="NSWindow"/>
-								<reference key="NSNextKeyView" ref="935931367"/>
+								<reference key="NSNextKeyView" ref="561674049"/>
 								<string key="NSReuseIdentifierKey">_NS:9</string>
 								<bool key="IBUIOpaque">NO</bool>
 								<string key="targetRuntimeIdentifier">IBIPadFramework</string>
@@ -278,11 +278,11 @@
 									<bytes key="NSRGB">MC4xOTYwNzg0MzQ2IDAuMzA5ODAzOTMyOSAwLjUyMTU2ODY1NgA</bytes>
 								</object>
 								<reference key="IBUINormalTitleShadowColor" ref="880907453"/>
-								<object class="NSCustomResource" key="IBUIHighlightedImage" id="158855750">
+								<object class="NSCustomResource" key="IBUIHighlightedImage" id="492821391">
 									<string key="NSClassName">NSImage</string>
 									<string key="NSResourceName">ButtonFeedLikeSelected.png</string>
 								</object>
-								<reference key="IBUISelectedImage" ref="158855750"/>
+								<reference key="IBUISelectedImage" ref="492821391"/>
 								<object class="NSCustomResource" key="IBUINormalImage">
 									<string key="NSClassName">NSImage</string>
 									<string key="NSResourceName">ButtonFeedLikeDefault.png</string>
@@ -431,7 +431,7 @@
 					<object class="IBCocoaTouchOutletConnection" key="connection">
 						<string key="label">heartButton</string>
 						<reference key="source" ref="920592215"/>
-						<reference key="destination" ref="857328791"/>
+						<reference key="destination" ref="778087083"/>
 					</object>
 					<int key="connectionID">32</int>
 				</object>
@@ -439,7 +439,7 @@
 					<object class="IBCocoaTouchOutletConnection" key="connection">
 						<string key="label">likesNumberLabel</string>
 						<reference key="source" ref="920592215"/>
-						<reference key="destination" ref="935931367"/>
+						<reference key="destination" ref="561674049"/>
 					</object>
 					<int key="connectionID">34</int>
 				</object>
@@ -476,8 +476,8 @@
 							<reference ref="789761132"/>
 							<reference ref="268610225"/>
 							<reference ref="473133778"/>
-							<reference ref="857328791"/>
-							<reference ref="935931367"/>
+							<reference ref="778087083"/>
+							<reference ref="561674049"/>
 						</array>
 						<reference key="parent" ref="0"/>
 						<string key="objectName">SYNAggregateVideoCell</string>
@@ -539,12 +539,12 @@
 					</object>
 					<object class="IBObjectRecord">
 						<int key="objectID">31</int>
-						<reference key="object" ref="857328791"/>
+						<reference key="object" ref="778087083"/>
 						<reference key="parent" ref="920592215"/>
 					</object>
 					<object class="IBObjectRecord">
 						<int key="objectID">33</int>
-						<reference key="object" ref="935931367"/>
+						<reference key="object" ref="561674049"/>
 						<reference key="parent" ref="920592215"/>
 						<string key="objectName">Likes Num Label</string>
 					</object>

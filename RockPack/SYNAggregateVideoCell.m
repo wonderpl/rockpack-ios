@@ -124,14 +124,28 @@
     
     
     
-    
     NSNumber* likesNumber = messageDictionary[@"star_count"] ? messageDictionary[@"star_count"] : @(0);
     NSString* likesString = [NSString stringWithFormat:@"%i likes", likesNumber.integerValue];
+    
+    
+    NSDictionary* lightTextAttributes = @{NSFontAttributeName:[UIFont rockpackFontOfSize:12.0],NSForegroundColorAttributeName:[UIColor grayColor]};
+    NSDictionary* boldTextAttributes = @{NSFontAttributeName:[UIFont boldRockpackFontOfSize:12.0],NSForegroundColorAttributeName:[UIColor blackColor]};
+    
+    NSAttributedString* likesAttributedString = [[NSAttributedString alloc] initWithString:[NSString stringWithFormat:@"%@ ", likesString]
+                                                                                attributes:boldTextAttributes];
+    
     if(likesNumber.integerValue == 0)
     {
+        if(IS_IPAD)
+        {
+            self.likesNumberLabel.text = likesString;
+            self.likeLabel.hidden = YES;
+        }
+        else
+        {
+            self.likeLabel.attributedText = likesAttributedString;
+        }
         
-        self.likesNumberLabel.text = likesString;
-        self.mainTitleLabel.hidden = YES;
         
         return;
     }
@@ -174,13 +188,12 @@
     
     NSMutableAttributedString *attributedCompleteString = [[NSMutableAttributedString alloc] init];
  
-    NSDictionary* lightTextAttributes = @{NSFontAttributeName:[UIFont rockpackFontOfSize:12.0],NSForegroundColorAttributeName:[UIColor grayColor]};
-    NSDictionary* boldTextAttributes = @{NSFontAttributeName:[UIFont boldRockpackFontOfSize:12.0],NSForegroundColorAttributeName:[UIColor blackColor]};
-    if(!IS_IPAD)
+    if(!IS_IPAD && users.count > 3)
     {
         
-        [attributedCompleteString appendAttributedString:[[NSAttributedString alloc] initWithString:[NSString stringWithFormat:@"%@", likesString]
-                                                                                         attributes:boldTextAttributes]];
+        [attributedCompleteString appendAttributedString:likesAttributedString];
+        
+        
     }
     else
     {
@@ -205,8 +218,7 @@
 -(void)prepareForReuse
 {
     [super prepareForReuse];
-    self.mainTitleLabel.hidden = NO;
-    
+    self.likeLabel.hidden = NO;
 }
 -(void)setCoverTitleWithString:(NSString*)coverTitle
 {
