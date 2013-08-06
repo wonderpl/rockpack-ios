@@ -26,6 +26,8 @@ typedef void (^SYNOAuth2RefreshCompletionBlock)(NSError *error);
                      errorHandler: (MKNKUserErrorBlock) errorBlock;
 
 - (void) doFacebookLoginWithAccessToken: (NSString*) facebookAccessToken
+                                expires: (NSDate *) expirationDate
+                            permissions: (NSArray *) permissions
                       completionHandler: (MKNKLoginCompleteBlock) completionBlock
                            errorHandler: (MKNKUserErrorBlock) errorBlock;
 

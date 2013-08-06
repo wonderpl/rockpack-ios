@@ -153,14 +153,41 @@
 
 // Get authentication token, by passing facebook access token to the API, and getting the authentication token in return
 - (void) doFacebookLoginWithAccessToken: (NSString*) facebookAccessToken
+                                expires: (NSDate *) expirationDate
+                            permissions: (NSArray *) permissions
                       completionHandler: (MKNKLoginCompleteBlock) completionBlock
                            errorHandler: (MKNKUserErrorBlock) errorBlock
 {
     // We need to handle locale differently (so add the locale to the URL) as opposed to the other parameters which are in the POST body
     NSString *apiString = [NSString stringWithFormat: @"%@?locale=%@", kAPISecureExternalLogin, self.localeString];
     
-    NSDictionary* postLoginParams = @{@"external_system" : @"facebook",
-                                      @"external_token" : facebookAccessToken};
+    NSMutableDictionary* postLoginParams = @{@"external_system" : @"facebook",
+                                             @"external_token" : facebookAccessToken}.mutableCopy;
+    
+    // Add optional information
+    if (expirationDate)
+    {
+        static NSDateFormatter *dateFormatter;
+        
+        if (dateFormatter == nil)
+        {
+            // Do once, and only once
+            static dispatch_once_t oncePredicate;
+            dispatch_once(&oncePredicate, ^
+                          {
+                              dateFormatter = [[NSDateFormatter alloc] init];
+                              [dateFormatter setTimeZone: [NSTimeZone timeZoneWithName: @"UTC"]];
+                              [dateFormatter setDateFormat: @"yyyy-MM-dd'T'HH:mm:ss"];
+                          });
+        }
+        
+        postLoginParams[@"token_expires"] = [dateFormatter stringFromDate: expirationDate];
+    }
+    
+    if (permissions)
+    {
+        postLoginParams[@"token_permissions"] = [permissions componentsJoinedByString: @","];
+    }
     
     SYNNetworkOperationJsonObject *networkOperation = (SYNNetworkOperationJsonObject*) [self operationWithPath: apiString
                                                                                                         params: postLoginParams
