@@ -69,7 +69,7 @@ typedef void (^FacebookPostFailureBlock)(NSError *error);
 
 - (BOOL) hasPermission:(NSString*)permissionString;
 
-- (void) sendAppRequestToFriend: (Friend *) friend
+- (void) sendAppRequestToFriend: (Friend *) toFriend
                       onSuccess: (FacebookPostSuccessBlock) successBlock
                       onFailure: (FacebookPostFailureBlock) failureBlock;
 

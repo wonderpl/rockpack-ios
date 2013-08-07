@@ -562,7 +562,7 @@ typedef void(^FeedDataErrorBlock)(void);
     
     if(feedItem.resourceTypeValue == FeedItemResourceTypeVideo)
     {
-        return CGSizeMake(cellWidth, IS_IPHONE ? 261 : 168);
+        return CGSizeMake(cellWidth, IS_IPHONE ? 279.0f : 168.0f);
     }
     else // Channel
     {
@@ -693,7 +693,7 @@ typedef void(^FeedDataErrorBlock)(void);
         {
             channel = (Channel*)[self.feedChannelsById objectForKey:feedItem.resourceId];
             
-            [cell setCoverImagesAndTitlesWithArray:@[@{@"image": channel.channelCover.imageUrl, @"title" : channel.title}]];
+            [cell setCoverImagesAndTitlesWithArray:@[@{@"image": channel.channelCover.imageLargeUrl, @"title" : channel.title}]];
             
             
         }
@@ -876,11 +876,26 @@ typedef void(^FeedDataErrorBlock)(void);
     return videoInstance;
 }
 
+-(Channel*)channelAtCoverOfFeedItem:(FeedItem*)feedItem
+{
+    if(!feedItem || (feedItem.resourceTypeValue != FeedItemResourceTypeChannel))
+        return nil;
+    
+    Channel* channel;
+    
+    if(feedItem.itemTypeValue == FeedItemTypeLeaf)
+        channel = [self.feedChannelsById objectForKey:feedItem.resourceId];
+    else
+        channel = [self.feedChannelsById objectForKey:feedItem.coverIndexArray[0]];
+    
+    return channel;
+}
+
 - (void) pressedAggregateCellCoverButton: (UIButton *) coverButton
 {
 
     
-    SYNAggregateCell* aggregateCellSelected = [self cellFromControl:coverButton];
+    SYNAggregateCell* aggregateCellSelected = [self aggregateCellFromControl:coverButton];
     NSIndexPath *indexPath = [self.feedCollectionView indexPathForItemAtPoint: aggregateCellSelected.center];
     FeedItem* selectedFeedItem = [self feedItemAtIndexPath:indexPath];
     
@@ -945,7 +960,7 @@ typedef void(^FeedDataErrorBlock)(void);
     
 }
 
--(SYNAggregateCell*)cellFromControl:(UIControl*)control
+-(SYNAggregateCell*)aggregateCellFromControl:(UIControl*)control
 {
     UIView* candidateCell = control;
     while (![candidateCell isKindOfClass:[SYNAggregateCell class]])
@@ -956,7 +971,7 @@ typedef void(^FeedDataErrorBlock)(void);
 }
 -(NSIndexPath*)indexPathFromControl:(UIButton *)button
 {
-    SYNAggregateCell* aggregateCellSelected = [self cellFromControl:button];
+    SYNAggregateCell* aggregateCellSelected = [self aggregateCellFromControl:button];
     NSIndexPath *indexPath = [self.feedCollectionView indexPathForItemAtPoint: aggregateCellSelected.center];
     return indexPath;
 }
@@ -1024,6 +1039,21 @@ typedef void(^FeedDataErrorBlock)(void);
 
 -(void)profileButtonTapped:(UIButton*)sender
 {
+    
+    
+    FeedItem* feedItem = [self feedItemFromControl:sender];
+    ChannelOwner* channelOwner;
+    if([self videoInstanceAtCoverOfFeedItem:feedItem])
+        channelOwner = [self videoInstanceAtCoverOfFeedItem:feedItem].channel.channelOwner;
+    else if ([self channelAtCoverOfFeedItem:feedItem])
+        channelOwner = [self channelAtCoverOfFeedItem:feedItem].channelOwner;
+    
+    if(!channelOwner)
+        return;
+    
+    [appDelegate.viewStackManager viewProfileDetails:channelOwner];
+    
+    
     
 }
 

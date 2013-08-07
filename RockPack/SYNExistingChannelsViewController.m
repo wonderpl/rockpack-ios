@@ -138,16 +138,7 @@ typedef void (^RemoteCallBlock) (void);
         return;
     
     sender.selected = YES;
-    
-//    ExternalAccount* facebookAccount = appDelegate.currentUser.facebookAccount;
-//    if(facebookAccount)
-//    {
-//        
-//    }
-//    else
-//    {
-//        
-//    }
+
     
     
     __weak SYNExistingChannelsViewController* wself = self;
@@ -193,9 +184,6 @@ typedef void (^RemoteCallBlock) (void);
     {
         setFlagBlock();
     }
-    
-    
-    
     
 }
 

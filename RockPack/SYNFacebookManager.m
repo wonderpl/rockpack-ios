@@ -393,11 +393,11 @@
 }
 
 
-- (void) sendAppRequestToFriend: (Friend *) friend
+- (void) sendAppRequestToFriend: (Friend *) toFriend
                       onSuccess: (FacebookPostSuccessBlock) successBlock
                       onFailure: (FacebookPostFailureBlock) failureBlock
 {
-    if (!friend || !self.hasOpenSession)
+    if (!toFriend || !self.hasOpenSession)
     {
         return;
     }
@@ -411,9 +411,9 @@
     [params addEntriesFromDictionary: @{@"app_id": facebookAppId}];
     
     // if the Friend's Id was passed correctly we can set it
-    if (friend.externalUID && ![friend.externalUID isEqualToString: @""])
+    if (toFriend.externalUID && ![toFriend.externalUID isEqualToString: @""])
     {
-        [params addEntriesFromDictionary: @{@"to": friend.externalUID}];
+        [params addEntriesFromDictionary: @{@"to": toFriend.externalUID}];
     }
     
     [FBWebDialogs presentRequestsDialogModallyWithSession: [FBSession activeSession]
