@@ -1140,11 +1140,11 @@
 		BE7D3551171870780085AB81 /* SYNBackButtonControl.m in Sources */ = {isa = PBXBuildFile; fileRef = BE7D3550171870780085AB81 /* SYNBackButtonControl.m */; };
 		BE82099217A95F6E00472ADD /* channelFeedCover@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = BE82098B17A95F6E00472ADD /* channelFeedCover@2x.png */; };
 		BE82099317A95F6E00472ADD /* channelFeedCover~iphone.png in Resources */ = {isa = PBXBuildFile; fileRef = BE82098C17A95F6E00472ADD /* channelFeedCover~iphone.png */; };
-		BE82099417A95F6E00472ADD /* channelFeedCover~iphone@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = BE82098D17A95F6E00472ADD /* channelFeedCover~iphone@2x.png */; };
+		BE82099417A95F6E00472ADD /* channelFeedCover@2x~iphone.png in Resources */ = {isa = PBXBuildFile; fileRef = BE82098D17A95F6E00472ADD /* channelFeedCover@2x~iphone.png */; };
 		BE82099517A95F6E00472ADD /* channelFeedCoverFourth.png in Resources */ = {isa = PBXBuildFile; fileRef = BE82098E17A95F6E00472ADD /* channelFeedCoverFourth.png */; };
 		BE82099617A95F6E00472ADD /* channelFeedCoverFourth@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = BE82098F17A95F6E00472ADD /* channelFeedCoverFourth@2x.png */; };
 		BE82099717A95F6E00472ADD /* channelFeedCoverFourth~iphone.png in Resources */ = {isa = PBXBuildFile; fileRef = BE82099017A95F6E00472ADD /* channelFeedCoverFourth~iphone.png */; };
-		BE82099817A95F6E00472ADD /* channelFeedCoverFourth~iphone@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = BE82099117A95F6E00472ADD /* channelFeedCoverFourth~iphone@2x.png */; };
+		BE82099817A95F6E00472ADD /* channelFeedCoverFourth@2x~iphone.png in Resources */ = {isa = PBXBuildFile; fileRef = BE82099117A95F6E00472ADD /* channelFeedCoverFourth@2x~iphone.png */; };
 		BE82099A17A95F9900472ADD /* channelFeedCover.png in Resources */ = {isa = PBXBuildFile; fileRef = BE82099917A95F9900472ADD /* channelFeedCover.png */; };
 		BE86BF17171F001E0006DC8A /* SYNSubscriptionsViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = BE86BF16171F001E0006DC8A /* SYNSubscriptionsViewController.m */; };
 		BE86BF1A171F07B10006DC8A /* SYNChannelMidCell.m in Sources */ = {isa = PBXBuildFile; fileRef = BE86BF19171F07B10006DC8A /* SYNChannelMidCell.m */; };
@@ -2573,11 +2573,11 @@
 		BE7D3550171870780085AB81 /* SYNBackButtonControl.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SYNBackButtonControl.m; sourceTree = "<group>"; };
 		BE82098B17A95F6E00472ADD /* channelFeedCover@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = "channelFeedCover@2x.png"; path = "Assets/Images/channelFeedCover@2x.png"; sourceTree = "<group>"; };
 		BE82098C17A95F6E00472ADD /* channelFeedCover~iphone.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = "channelFeedCover~iphone.png"; path = "Assets/Images/channelFeedCover~iphone.png"; sourceTree = "<group>"; };
-		BE82098D17A95F6E00472ADD /* channelFeedCover~iphone@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = "channelFeedCover~iphone@2x.png"; path = "Assets/Images/channelFeedCover~iphone@2x.png"; sourceTree = "<group>"; };
+		BE82098D17A95F6E00472ADD /* channelFeedCover@2x~iphone.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = "channelFeedCover@2x~iphone.png"; path = "Assets/Images/channelFeedCover@2x~iphone.png"; sourceTree = "<group>"; };
 		BE82098E17A95F6E00472ADD /* channelFeedCoverFourth.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = channelFeedCoverFourth.png; path = Assets/Images/channelFeedCoverFourth.png; sourceTree = "<group>"; };
 		BE82098F17A95F6E00472ADD /* channelFeedCoverFourth@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = "channelFeedCoverFourth@2x.png"; path = "Assets/Images/channelFeedCoverFourth@2x.png"; sourceTree = "<group>"; };
 		BE82099017A95F6E00472ADD /* channelFeedCoverFourth~iphone.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = "channelFeedCoverFourth~iphone.png"; path = "Assets/Images/channelFeedCoverFourth~iphone.png"; sourceTree = "<group>"; };
-		BE82099117A95F6E00472ADD /* channelFeedCoverFourth~iphone@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = "channelFeedCoverFourth~iphone@2x.png"; path = "Assets/Images/channelFeedCoverFourth~iphone@2x.png"; sourceTree = "<group>"; };
+		BE82099117A95F6E00472ADD /* channelFeedCoverFourth@2x~iphone.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = "channelFeedCoverFourth@2x~iphone.png"; path = "Assets/Images/channelFeedCoverFourth@2x~iphone.png"; sourceTree = "<group>"; };
 		BE82099917A95F9900472ADD /* channelFeedCover.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = channelFeedCover.png; path = Assets/Images/channelFeedCover.png; sourceTree = "<group>"; };
 		BE82099B17A9651900472ADD /* Rockpack 8.xcdatamodel */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcdatamodel; path = "Rockpack 8.xcdatamodel"; sourceTree = "<group>"; };
 		BE86BF15171F001E0006DC8A /* SYNSubscriptionsViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SYNSubscriptionsViewController.h; sourceTree = "<group>"; };
@@ -3315,11 +3315,11 @@
 				BE82099917A95F9900472ADD /* channelFeedCover.png */,
 				BE82098B17A95F6E00472ADD /* channelFeedCover@2x.png */,
 				BE82098C17A95F6E00472ADD /* channelFeedCover~iphone.png */,
-				BE82098D17A95F6E00472ADD /* channelFeedCover~iphone@2x.png */,
+				BE82098D17A95F6E00472ADD /* channelFeedCover@2x~iphone.png */,
 				BE82098E17A95F6E00472ADD /* channelFeedCoverFourth.png */,
 				BE82098F17A95F6E00472ADD /* channelFeedCoverFourth@2x.png */,
 				BE82099017A95F6E00472ADD /* channelFeedCoverFourth~iphone.png */,
-				BE82099117A95F6E00472ADD /* channelFeedCoverFourth~iphone@2x.png */,
+				BE82099117A95F6E00472ADD /* channelFeedCoverFourth@2x~iphone.png */,
 			);
 			name = Feed;
 			sourceTree = "<group>";
@@ -6408,11 +6408,11 @@
 				BE22A84817A8270A0004BBF4 /* GlossFeedVideo~iphone.png in Resources */,
 				BE82099217A95F6E00472ADD /* channelFeedCover@2x.png in Resources */,
 				BE82099317A95F6E00472ADD /* channelFeedCover~iphone.png in Resources */,
-				BE82099417A95F6E00472ADD /* channelFeedCover~iphone@2x.png in Resources */,
+				BE82099417A95F6E00472ADD /* channelFeedCover@2x~iphone.png in Resources */,
 				BE82099517A95F6E00472ADD /* channelFeedCoverFourth.png in Resources */,
 				BE82099617A95F6E00472ADD /* channelFeedCoverFourth@2x.png in Resources */,
 				BE82099717A95F6E00472ADD /* channelFeedCoverFourth~iphone.png in Resources */,
-				BE82099817A95F6E00472ADD /* channelFeedCoverFourth~iphone@2x.png in Resources */,
+				BE82099817A95F6E00472ADD /* channelFeedCoverFourth@2x~iphone.png in Resources */,
 				BE82099A17A95F9900472ADD /* channelFeedCover.png in Resources */,
 				01EC094317AAA37A00E1ACE1 /* ButtonSubscribeDisabled.png in Resources */,
 				01EC094417AAA37A00E1ACE1 /* ButtonSubscribeDisabled@2x.png in Resources */,

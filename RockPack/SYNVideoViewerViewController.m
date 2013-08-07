@@ -29,6 +29,7 @@
 #import "UIImageView+WebCache.h"
 #import "Video.h"
 #import "VideoInstance.h"
+#import "SYNImplicitSharingController.h"
 #import <MediaPlayer/MediaPlayer.h>
 #import "Appirater.h"
 
@@ -724,6 +725,47 @@
                                                    button.enabled = YES;
                                                    [self updateVideoDetailsForIndex: self.currentSelectedIndex];
                                                }];
+    
+    
+    // implicit sharing function
+    
+    [self askAboutAutopostingOption];
+    
+}
+
+-(void)askAboutAutopostingOption
+{
+    SYNImplicitSharingController* implicitSharingController = [[SYNImplicitSharingController alloc] init];
+    [self addChildViewController:implicitSharingController];
+    
+    implicitSharingController.view.alpha = 0.0f;
+    implicitSharingController.view.center = CGPointMake(self.view.center.x, self.view.center.y);
+    implicitSharingController.view.frame = CGRectIntegral(implicitSharingController.view.frame);
+    [self.view addSubview:implicitSharingController.view];
+    [UIView animateWithDuration:0.3 animations:^{
+        implicitSharingController.view.alpha = 1.0f;
+    }];
+    
+    UITapGestureRecognizer* tapGesture = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(viewTapped:)];
+    [self.view addGestureRecognizer:tapGesture];
+}
+
+-(void)viewTapped:(UITapGestureRecognizer*)recogniser
+{
+    SYNImplicitSharingController* implicitSharingController;
+    for (UIViewController* child in self.childViewControllers) {
+        if([child isKindOfClass:[SYNImplicitSharingController class]])
+            implicitSharingController = (SYNImplicitSharingController*)child;
+    }
+    if(!implicitSharingController)
+        return;
+    [UIView animateWithDuration:0.3f animations:^{
+        implicitSharingController.view.alpha = 0.0f;
+    } completion:^(BOOL finished) {
+        [implicitSharingController.view removeFromSuperview];
+        [implicitSharingController removeFromParentViewController];
+        
+    }];
 }
 
 - (IBAction) userTouchedCloseButton: (id) sender

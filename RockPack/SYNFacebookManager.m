@@ -11,22 +11,15 @@
 #import "SYNSessionTokenCachingStrategy.h"
 #import <FacebookSDK/FacebookSDK.h>
 
-typedef enum
-{
-    kFacebookPermissionTypeRead = 0,
-    kFacebookPermissionTypePublish = 1
-} PermissionType;
 
 
 @interface SYNFacebookManager ()
 
 @property (atomic, assign) int outstandingLoginRequests;
-@property (nonatomic, strong) NSArray *fullPermissions;
-@property (nonatomic, strong) NSArray *publishPermissions;
-@property (nonatomic, strong) NSArray *readPermissions;
 @property (nonatomic, strong) SYNSessionTokenCachingStrategy *tokenCachingStrategy;
 
 @end
+
 
 
 @implementation SYNFacebookManager
@@ -39,22 +32,6 @@ typedef enum
     
     dispatch_once(&onceQueue, ^{fBManager = [[self alloc] init]; });
     return fBManager;
-}
-
-
-// Set up our permissions arrays (one for read, one for publish)
-- (id) init
-{
-    if ((self = [super init]))
-    {
-        // Read and publish permissions must be requested separately in iOS 6,
-        // so set appropriate permissions here
-        self.readPermissions = @[@"email"];
-        self.publishPermissions = @[@"publish_actions"];
-        self.fullPermissions = @[@"email", @"publish_actions"];
-    }
-    
-    return self;
 }
 
 
@@ -134,6 +111,14 @@ typedef enum
     }
 }
 
+- (BOOL) hasPermission:(NSString*)permissionString
+{
+    if ([FBSession.activeSession.permissions indexOfObject:permissionString] == NSNotFound) 
+        return NO;
+    
+    
+    return YES;
+}
 
 - (void) openSessionFromExistingToken: (NSString *) token
                             onSuccess: (FacebookOpenSessionSuccessBlock) successBlock
@@ -142,14 +127,14 @@ typedef enum
     if (nil == self.tokenCachingStrategy)
     {
         self.tokenCachingStrategy = [[SYNSessionTokenCachingStrategy alloc] initWithToken: token
-                                                                           andPermissions: self.fullPermissions];
+                                                                           andPermissions: @[FacebookReadPermission]];
         //        // Hard-code for demo purposes, should be set to
         //        // a unique value that identifies the user of the app.
         //        [self.tokenCaching setThirdPartySessionId: @"213465780"];
     }
     
     FBSession *session = [[FBSession alloc] initWithAppID: nil
-                                              permissions: self.fullPermissions
+                                              permissions: @[FacebookReadPermission]
                                           urlSchemeSuffix: nil
                                        tokenCacheStrategy: self.tokenCachingStrategy];
     
@@ -182,6 +167,7 @@ typedef enum
 }
 
 
+
 // Helper method to open a session if required
 - (void) openSessionWithPermissionType: (PermissionType) permissionType
                              onSuccess: (FacebookOpenSessionSuccessBlock) successBlock
@@ -192,19 +178,16 @@ typedef enum
     {
         // Session is open, so we already have read permissions
         // Check to see if the caller requires extended publish permissions and we actually have any
-        if (permissionType == kFacebookPermissionTypePublish && self.publishPermissions.count > 0)
+        if (permissionType == kFacebookPermissionTypePublish)
         {
             // Check to see that the publish permissions have been set by checking to see if the first publish permission has been set
             // if so, then all the other publish permissions will have been set
-            if ([FBSession.activeSession.permissions
-                 indexOfObject: (self.publishPermissions)[0]] == NSNotFound)
+            if (![self hasPermission:FacebookPublishPermission])
             {
                 // No, we don't already have extended publish permissions
-                [FBSession.activeSession
-                 requestNewPublishPermissions: self.publishPermissions
-                 defaultAudience: FBSessionDefaultAudienceEveryone
-                 completionHandler: ^(FBSession *session, NSError *error)
-                 {
+                [FBSession.activeSession requestNewPublishPermissions: @[FacebookPublishPermission]
+                                                      defaultAudience: FBSessionDefaultAudienceEveryone
+                                                    completionHandler: ^(FBSession *session, NSError *error) {
                      // Permissission denied
                      if (error)
                      {
@@ -228,8 +211,9 @@ typedef enum
             }
             else
             {
-                DebugLog(@"** openSession: Permissions already granted");
+                
                 // We have already been granted the required extended permissions
+                DebugLog(@"** openSession: Permissions already granted");
                 dispatch_async(dispatch_get_main_queue(), ^{
                     successBlock();
                 });
@@ -253,7 +237,7 @@ typedef enum
         
         __block BOOL hasExecuted = NO; // Keep track of whether the completion handler has been called.
         
-        [FBSession openActiveSessionWithReadPermissions: self.readPermissions
+        [FBSession openActiveSessionWithReadPermissions: @[FacebookReadPermission]
                                            allowLoginUI: YES
                                       completionHandler: ^(FBSession *session,
                                                            FBSessionState status,
@@ -327,6 +311,7 @@ typedef enum
 
 
 #pragma mark - Posting to Wall
+
 
 - (void) postMessageToWall: (NSString *) message
                  onSuccess: (FacebookPostSuccessBlock) successBlock

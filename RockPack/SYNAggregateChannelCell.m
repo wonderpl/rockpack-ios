@@ -52,6 +52,8 @@
     self.mainTitleLabel.hidden = NO;
     
 }
+
+
 -(void)setCoverImagesAndTitlesWithArray:(NSArray*)array
 {
     if(!array)
@@ -74,6 +76,8 @@
     if(count == 1)
     {
         containerRect.size = self.imageContainer.frame.size;
+        
+        
         self.coverButton.hidden = NO;
         self.mainTitleLabel.hidden = NO;
         
@@ -82,8 +86,8 @@
                   placeholderImage: [UIImage imageNamed: @"PlaceholderChannelSmall.png"]
                            options: SDWebImageRetryFailed];
         
-        [self.imageContainer addSubview:imageView];
         
+        [self.imageContainer addSubview:imageView];
         
         
         self.mainTitleLabel.text = (NSString*)array[0][@"title"];

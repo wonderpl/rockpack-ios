@@ -8,6 +8,16 @@
 
 #import <Foundation/Foundation.h>
 
+typedef enum
+{
+    kFacebookPermissionTypeRead = 0,
+    kFacebookPermissionTypePublish = 1
+} PermissionType;
+
+static NSString* const FacebookEmailPermission = @"email";
+static NSString* const FacebookReadPermission = @"read_stream";
+static NSString* const FacebookPublishPermission = @"publish_actions";
+
 @protocol FBGraphUser;
 @class Friend;
 
@@ -51,7 +61,13 @@ typedef void (^FacebookPostFailureBlock)(NSError *error);
                  onSuccess: (FacebookPostSuccessBlock) successBlock
                  onFailure: (FacebookPostFailureBlock) failureBlock;
 
+- (void) openSessionWithPermissionType: (PermissionType) permissionType
+                             onSuccess: (FacebookOpenSessionSuccessBlock) successBlock
+                             onFailure: (FacebookOpenSessionFailureBlock) failureBlock;
+
 - (BOOL) hasOpenSession;
+
+- (BOOL) hasPermission:(NSString*)permissionString;
 
 - (void) sendAppRequestToFriend: (Friend *) friend
                       onSuccess: (FacebookPostSuccessBlock) successBlock

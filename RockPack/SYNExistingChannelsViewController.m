@@ -19,9 +19,12 @@
 #import "SYNOAuthNetworkEngine.h"
 #import "UIImageView+WebCache.h"
 #import "ExternalAccount.h"
+#import "SYNFacebookManager.h"
 #import "ChannelCover.h"
 #import "UIColor+SYNColor.h"
 #import <QuartzCore/QuartzCore.h>
+
+typedef void (^RemoteCallBlock) (void);
 
 @interface SYNExistingChannelsViewController ()
 {
@@ -55,10 +58,7 @@
     self.autopostYesButton.titleLabel.font = [UIFont boldRockpackFontOfSize:self.autopostYesButton.titleLabel.font.pointSize];
     
     
-    CGRect autopostViewFrame = self.autopostView.frame;
     
-    autopostViewFrame.origin.y = self.view.frame.size.height  - autopostViewFrame.size.height;
-    self.autopostView.frame = autopostViewFrame;
     
     // We need to use a custom layout (as due to the deletion/wobble logic used elsewhere)
     if (IS_IPAD)
@@ -134,37 +134,69 @@
 
 -(IBAction)autopostButtonPressed:(UIButton*)sender
 {
+    if(sender.selected) // button is pressed twice
+        return;
+    
     sender.selected = YES;
     
-    ExternalAccount* facebookAccount = appDelegate.currentUser.facebookAccount;
-    if(facebookAccount)
-    {
+//    ExternalAccount* facebookAccount = appDelegate.currentUser.facebookAccount;
+//    if(facebookAccount)
+//    {
+//        
+//    }
+//    else
+//    {
+//        
+//    }
+    
+    
+    __weak SYNExistingChannelsViewController* wself = self;
+    __weak SYNAppDelegate* wAppDelegate = appDelegate;
+    BOOL isYesButton = (sender == self.autopostYesButton);
+    
+    RemoteCallBlock setFlagBlock = ^{
         
+        [appDelegate.oAuthNetworkEngine setFlag:@"facebook_autopost_add" withValue:isYesButton
+                                       forUseId:appDelegate.currentUser.uniqueId completionHandler:^(id no_response) {
+                                           
+                                           [wself switchAutopostViewToYes:isYesButton];
+                                           
+                                           if(isYesButton)
+                                               [wAppDelegate.currentUser setFlag:ExternalAccountFlagAutopostAdd toExternalAccount:@"facebook"];
+                                           else
+                                               [wAppDelegate.currentUser unsetFlag:ExternalAccountFlagAutopostAdd toExternalAccount:@"facebook"];
+                                           
+                                           [wAppDelegate saveContext:YES];
+                                           
+                                       } errorHandler:^(id error) {
+                                           
+                                           [wself switchAutopostViewToYes:!isYesButton];
+                                           
+                                       }];
+        
+    };
+    
+    if(isYesButton)
+    {
+        [[SYNFacebookManager sharedFBManager] openSessionWithPermissionType:kFacebookPermissionTypePublish onSuccess:^{
+            
+            setFlagBlock();
+            
+            
+        } onFailure:^(NSString *errorMessage) {
+            
+            [wself switchAutopostViewToYes:!isYesButton];
+            
+        }];
     }
     else
     {
-        
+        setFlagBlock();
     }
-     __weak SYNExistingChannelsViewController* wself = self;
-    __weak SYNAppDelegate* wAppDelegate = appDelegate;
-    BOOL isYesButton = (sender == self.autopostYesButton);
-    [appDelegate.oAuthNetworkEngine setFlag:@"facebook_autopost_add" withValue:isYesButton
-                                   forUseId:appDelegate.currentUser.uniqueId completionHandler:^(id no_response) {
-                                       
-                                       [wself switchAutopostViewToYes:isYesButton];
-                                       
-                                       if(isYesButton)
-                                           [wAppDelegate.currentUser setFlag:ExternalAccountFlagAutopostAdd toExternalAccount:@"facebook"];
-                                       else
-                                           [wAppDelegate.currentUser unsetFlag:ExternalAccountFlagAutopostAdd toExternalAccount:@"facebook"];
-                                       
-                                       [wAppDelegate saveContext:YES];
-                                       
-                                   } errorHandler:^(id error) {
-                                       
-                                       [wself switchAutopostViewToYes:!isYesButton];
-                                       
-                                   }];
+    
+    
+    
+    
 }
 
 
@@ -173,6 +205,7 @@
     [super viewWillAppear: animated];
     
     self.channelThumbnailCollectionView.scrollsToTop = YES;
+    
     
     // Google analytics support
     [GAI.sharedInstance.defaultTracker sendView: @"Channels - Create - Select"];
@@ -453,6 +486,11 @@
     self.view.frame = selfFrame;
     
     
+    CGRect autopostViewFrame = self.autopostView.frame;
+    
+    autopostViewFrame.origin.y = self.view.frame.size.height  - autopostViewFrame.size.height;
+    self.autopostView.frame = autopostViewFrame;
+    
 }
 
 
@@ -482,5 +520,6 @@
     }
     hideCells = NO;
 }
+
 
 @end
