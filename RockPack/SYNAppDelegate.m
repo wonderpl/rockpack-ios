@@ -1442,7 +1442,8 @@
                                                        fromUserId: self.currentUser.uniqueId
                                                 completionHandler: ^(id response) {
                                                     DebugLog(@"Mark as read succeeded");
-                                                } errorHandler: ^(id error) {
+                                                }
+                                                     errorHandler: ^(id error) {
                                                     DebugLog(@"Mark as read failed");
                                                 }];
         

@@ -280,6 +280,10 @@
     [self.videoPlaybackViewController setPlaylist: self.videoInstanceArray
                                     selectedIndex: self.currentSelectedIndex
                                          autoPlay: TRUE];
+    
+    // Get share link pre-emptively
+    [self requestShareLinkWithObjectType: @"video_instance"
+                                objectId: [(VideoInstance *)self.videoInstanceArray[self.currentSelectedIndex] uniqueId]];
 }
 
 

@@ -129,8 +129,11 @@
     {
         // mode must be set first because setChannel relies on it...
         self.mode = mode;
-        
 		self.channel = channel;
+        
+        // Get share link pre-emptively
+        [self requestShareLinkWithObjectType: @"channel"
+                                    objectId: channel.uniqueId];
 	}
 
 	return self;
