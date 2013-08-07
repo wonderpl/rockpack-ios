@@ -571,7 +571,7 @@ typedef void(^FeedDataErrorBlock)(void);
             if(feedItem.itemCountValue == 2)
                 return CGSizeMake(cellWidth, 149.0f);
         }
-        return CGSizeMake(cellWidth, 298.0f);
+        return CGSizeMake(cellWidth, IS_IPHONE ? 354.0f : 298.0f);
     }
 }
 

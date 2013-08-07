@@ -52,6 +52,8 @@
     self.mainTitleLabel.hidden = NO;
     
 }
+
+
 -(void)setCoverImagesAndTitlesWithArray:(NSArray*)array
 {
     if(!array)
@@ -82,8 +84,8 @@
                   placeholderImage: [UIImage imageNamed: @"PlaceholderChannelSmall.png"]
                            options: SDWebImageRetryFailed];
         
-        [self.imageContainer addSubview:imageView];
         
+        [self.imageContainer addSubview:imageView];
         
         
         self.mainTitleLabel.text = (NSString*)array[0][@"title"];
