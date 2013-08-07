@@ -44,6 +44,17 @@
 }
 
 
++ (UIColor *) rockpacAggregateTextLight
+{
+    return [UIColor colorWithRed: 170.0f/255.0f green: 170.0f/255.0f blue: 170.0f/255.0f alpha: 1.0f];
+}
+
++ (UIColor *) rockpacAggregateTextBold
+{
+    return [UIColor colorWithRed: 144.0f/255.0f green: 144.0f/255.0f blue: 144.0f/255.0f alpha: 1.0f];
+}
+
+
 //For most text on Header bar on You Tab
 + (UIColor *) rockpackHeaderSubtitleColor
 {

@@ -8,6 +8,7 @@
 
 #import "SYNAggregateVideoCell.h"
 #import "ChannelOwner.h"
+#import "UIColor+SYNColor.h"
 #import "SYNAppDelegate.h"
 
 @implementation SYNAggregateVideoCell

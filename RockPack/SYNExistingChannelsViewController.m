@@ -55,10 +55,7 @@
     self.autopostYesButton.titleLabel.font = [UIFont boldRockpackFontOfSize:self.autopostYesButton.titleLabel.font.pointSize];
     
     
-    CGRect autopostViewFrame = self.autopostView.frame;
     
-    autopostViewFrame.origin.y = self.view.frame.size.height  - autopostViewFrame.size.height;
-    self.autopostView.frame = autopostViewFrame;
     
     // We need to use a custom layout (as due to the deletion/wobble logic used elsewhere)
     if (IS_IPAD)
@@ -176,6 +173,8 @@
     [super viewWillAppear: animated];
     
     self.channelThumbnailCollectionView.scrollsToTop = YES;
+    
+    NSLog(@"%@", NSStringFromCGRect(self.autopostView.frame));
     
     // Google analytics support
     [GAI.sharedInstance.defaultTracker sendView: @"Channels - Create - Select"];
@@ -456,6 +455,11 @@
     self.view.frame = selfFrame;
     
     
+    CGRect autopostViewFrame = self.autopostView.frame;
+    
+    autopostViewFrame.origin.y = self.view.frame.size.height  - autopostViewFrame.size.height;
+    self.autopostView.frame = autopostViewFrame;
+    
 }
 
 
@@ -485,5 +489,6 @@
     }
     hideCells = NO;
 }
+
 
 @end
