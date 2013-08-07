@@ -13,25 +13,25 @@
 #import "AudioToolbox/AudioToolbox.h"
 #import "Channel.h"
 #import "ChannelOwner.h"
+#import "GAI.h"
+#import "NSDictionary+Validation.h"
 #import "NSObject+Blocks.h"
 #import "OWActivityViewController.h"
+#import "SDWebImageManager.h"
 #import "SYNAbstractViewController.h"
 #import "SYNAppDelegate.h"
-#import "SYNMasterViewController.h"
 #import "SYNChannelDetailViewController.h"
 #import "SYNContainerViewController.h"
 #import "SYNDeviceManager.h"
 #import "SYNMasterViewController.h"
 #import "SYNOAuthNetworkEngine.h"
-#import "SYNProfileRootViewController.h"
 #import "SYNPopoverBackgroundView.h"
+#import "SYNProfileRootViewController.h"
 #import "SYNVideoThumbnailWideCell.h"
 #import "UIFont+SYNFont.h"
 #import "Video.h"
 #import "VideoInstance.h"
-#import "GAI.h"
 #import <QuartzCore/QuartzCore.h>
-#import "SDWebImageManager.h"
 
 @interface SYNAbstractViewController ()  <UITextFieldDelegate,
                                           UIPopoverControllerDelegate>
@@ -44,7 +44,7 @@
 @property (nonatomic, strong) IBOutlet UITextField *channelNameTextField;
 @property (nonatomic, strong) UIPopoverController *activityPopoverController;
 @property (nonatomic, strong) UIView *dropZoneView;
-@property (strong, nonatomic) NSDictionary *userInfo;
+@property (strong, nonatomic) NSMutableDictionary *mutableShareDictionary;
 @property (strong, nonatomic) OWActivityView *activityView;
 @property (strong, nonatomic) OWActivityViewController *activityViewController;
 @property (strong, readonly, nonatomic) NSArray *activities;
@@ -475,7 +475,7 @@
        activityIndicator: (UIActivityIndicatorView *) activityIndicatorView
               onComplete: (SYNShareCompletionBlock) completionBlock
 {
-    if (usingImage == nil)
+    if ([objectType isEqualToString: @"channel"])
     {
         // Capture screen image if we weren't passed an image in
         UIWindow *keyWindow = [[UIApplication sharedApplication] keyWindow];
@@ -519,74 +519,43 @@
         usingImage = fixedOrientationImage;
     }
     
-    [activityIndicatorView startAnimating];
+    NSString *userName = nil;
+    NSString *subject = @"";
     
-    // Get share link
-    [appDelegate.oAuthNetworkEngine shareLinkWithObjectType: objectType
-                                                   objectId: objectId
-                                          completionHandler: ^(NSDictionary *responseDictionary)
-     {
-         [activityIndicatorView stopAnimating];
-         
-         
-         NSString *resourceURLString = responseDictionary[@"resource_url"];
-         NSString *message = responseDictionary[@"message"];
-         
-         if (resourceURLString == nil || [resourceURLString isEqualToString: @""])
-         {
-             resourceURLString = @"http://rockpack.com";
-         }
-         
-         if (message == nil || [message isKindOfClass: [NSNull class]])
-         {
-             message = @"";
-         }
-         
-         NSString *userName = nil;
-         NSString *subject = nil;
-         
-         
-         User *user = appDelegate.currentUser;
-         
-         if (user.fullNameIsPublicValue)
-         {
-             userName = user.fullName;
-         }
-         
-         if (userName.length < 1)
-         {
-             userName = user.username;
-         }
-         
-         if (userName != nil)
-         {
-             NSString *what = @"channel";
-             
-             if (isVideo.boolValue == TRUE)
-             {
-                 what = @"video";
-             }
-             
-             subject = [NSString stringWithFormat: @"%@ has shared a %@ with you", userName, what];
-         }
-         
-         NSURL *resourceURL = [NSURL URLWithString: resourceURLString];
-         
-         self.activityViewController.userInfo = @{@"text": message,
-                                                  @"url": resourceURL,
-                                                  @"image": usingImage,
-                                                  @"owner": isOwner,
-                                                  @"video": isVideo,
-                                                  @"subject": subject};
-     
-         completionBlock();
-     } errorHandler: ^(NSDictionary *errorDictionary)
-     {
-         [activityIndicatorView stopAnimating];
-         //                                                   DebugLog(@"Share link failed");
-         completionBlock();
-     }];
+    User *user = appDelegate.currentUser;
     
+    if (user.fullNameIsPublicValue)
+    {
+        userName = user.fullName;
+    }
+    
+    if (userName.length < 1)
+    {
+        userName = user.username;
+    }
+    
+    if (userName != nil)
+    {
+        NSString *what = @"channel";
+        
+        if (isVideo.boolValue == TRUE)
+        {
+            what = @"video";
+        }
+        
+        subject = [NSString stringWithFormat: @"%@ has shared a %@ with you", userName, what];
+    }
+    
+    [self.mutableShareDictionary addEntriesFromDictionary: @{@"owner": isOwner,
+                                                             @"video": isVideo,
+                                                             @"subject": subject}];
+    
+    // Only add image if we have one
+    if (usingImage)
+    {
+        [self.mutableShareDictionary addEntriesFromDictionary: @{@"image": usingImage}];
+    }
+ 
     // Prepare activities
     OWFacebookActivity *facebookActivity = [[OWFacebookActivity alloc] init];
     OWTwitterActivity *twitterActivity = [[OWTwitterActivity alloc] init];
@@ -612,6 +581,8 @@
     //
     self.activityViewController = [[OWActivityViewController alloc]	 initWithViewController: self
                                                                                  activities: activities];
+    
+    self.activityViewController.userInfo = self.mutableShareDictionary;
 
     // Check to see if the user has moved away from this window (by the time we got our link)
     if (inView.window)
@@ -637,8 +608,44 @@
         }
     }
     
-
+    completionBlock();
 }
+
+- (void) requestShareLinkWithObjectType: (NSString *) objectType
+                               objectId: (NSString *) objectId
+{
+    // Get share link
+    [appDelegate.oAuthNetworkEngine shareLinkWithObjectType: objectType
+                                                   objectId: objectId
+                                          completionHandler: ^(NSDictionary *responseDictionary)
+     {
+         NSString *resourceURLString = [responseDictionary objectForKey: @"resource_url"
+                                                            withDefault: @"http://rockpack.com"];
+         
+         NSString *message = [responseDictionary objectForKey: @"message"
+                                                  withDefault: @""];
+         
+         NSString *messageEmail = [responseDictionary objectForKey: @"message_email"
+                                                       withDefault: @""];
+         
+         NSString *messageTwitter = [responseDictionary objectForKey: @"message_twitter"
+                                                         withDefault: @""];
+         
+         NSURL *resourceURL = [NSURL URLWithString: resourceURLString];
+         
+         self.mutableShareDictionary = @{@"text": message,
+                                         @"text_email": messageEmail,
+                                         @"text_twitter": messageTwitter,
+                                         @"url": resourceURL}.mutableCopy;
+         
+     } errorHandler: ^(NSDictionary *errorDictionary) {
+         self.mutableShareDictionary = @{@"text": @"",
+                                         @"text_email": @"",
+                                         @"text_twitter": @"",
+                                         @"url": @"http://rockpack.com"}.mutableCopy;
+     }];
+}
+
 
 
 //- (void) popoverControllerDidDismissPopover: (UIPopoverController *) popoverController

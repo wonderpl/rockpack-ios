@@ -45,10 +45,18 @@
         UIViewController *presenter = activityViewController.presentingController;
         NSDictionary *userInfo = weakSelf.userInfo ? weakSelf.userInfo : activityViewController.userInfo;
         
+        NSString *text = userInfo[@"text_twitter"];
+        
+        // Fallback to standard message if email specific message not available
+        if ([text isEqualToString: @""])
+        {
+            text = userInfo[@"text"];
+        }
+        
         [activityViewController dismissViewControllerAnimated: YES
                                                    completion: ^{
                                                        [weakSelf  shareFromViewController: presenter
-                                                                                     text: userInfo[@"text"]
+                                                                                     text: text
                                                                                       url: userInfo[@"url"]
                                                                                     image: userInfo[@"image"]];
                                                    }];
@@ -56,6 +64,8 @@
     
     return self;
 }
+
+
 - (void) shareFromViewController: (UIViewController *) viewController text: (NSString *) text url: (NSURL *) url image: (UIImage *) image
 {
     SLComposeViewController *twitterViewComposer = nil;

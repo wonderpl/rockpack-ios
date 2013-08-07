@@ -44,7 +44,14 @@
     self.actionBlock = ^(OWActivity *activity, OWActivityViewController *activityViewController) {
         NSDictionary *userInfo = weakSelf.userInfo ? weakSelf.userInfo : activityViewController.userInfo;
         NSString *subject = userInfo[@"subject"];
-        NSString *text = userInfo[@"text"];
+        NSString *text = userInfo[@"text_email"];
+        
+        // Fallback to standard message if email specific message not available
+        if ([text isEqualToString: @""])
+        {
+            text = userInfo[@"text"];
+        }
+        
         UIImage *image = userInfo[@"image"];
         NSURL *url = userInfo[@"url"];
         

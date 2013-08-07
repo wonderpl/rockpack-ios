@@ -93,6 +93,9 @@ typedef void (^SYNShareCompletionBlock)(void);
 - (void) headerTapped;
 
 // Share
+- (void) requestShareLinkWithObjectType: (NSString *) objectType
+                               objectId: (NSString *) objectId;
+
 - (void) shareVideoInstance: (VideoInstance *) videoInstance
                      inView: (UIView *) inView
                    fromRect: (CGRect) rect
