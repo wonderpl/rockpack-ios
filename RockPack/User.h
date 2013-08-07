@@ -1,4 +1,5 @@
 #import "_User.h"
+#import "ExternalAccount.h"
 
 @interface User : _User
 
@@ -18,5 +19,8 @@
 -(ExternalAccount*)externalAccountForSystem:(NSString*)systemName;
 -(void)addExternalAccountsFromDictionary:(NSDictionary*)dictionary;
 -(void)setExternalAccountFlagsFromDictionary:(NSDictionary*)dictionary;
+
+-(void)setFlag:(ExternalAccountFlag)flag toExternalAccount:(NSString*)accountName;
+-(void)unsetFlag:(ExternalAccountFlag)flag toExternalAccount:(NSString*)accountName;
 
 @end

@@ -20,6 +20,7 @@
 #import "UIImageView+WebCache.h"
 #import "ExternalAccount.h"
 #import "ChannelCover.h"
+#import "UIColor+SYNColor.h"
 #import <QuartzCore/QuartzCore.h>
 
 @interface SYNExistingChannelsViewController ()
@@ -49,6 +50,15 @@
     [super viewDidLoad];
     
     self.autopostTitleLabel.font = [UIFont rockpackFontOfSize:self.autopostTitleLabel.font.pointSize];
+    
+    self.autopostNoButton.titleLabel.font = [UIFont boldRockpackFontOfSize:self.autopostNoButton.titleLabel.font.pointSize];
+    self.autopostYesButton.titleLabel.font = [UIFont boldRockpackFontOfSize:self.autopostYesButton.titleLabel.font.pointSize];
+    
+    
+    CGRect autopostViewFrame = self.autopostView.frame;
+    
+    autopostViewFrame.origin.y = self.view.frame.size.height  - autopostViewFrame.size.height;
+    self.autopostView.frame = autopostViewFrame;
     
     // We need to use a custom layout (as due to the deletion/wobble logic used elsewhere)
     if (IS_IPAD)
@@ -107,10 +117,11 @@
         {
             [self switchAutopostViewToYes:NO];
         }
+        self.autopostView.hidden = NO;
     }
     else
     {
-        [self switchAutopostViewToYes:NO];
+        self.autopostView.hidden = YES;
     }
     
 }
@@ -125,12 +136,29 @@
 {
     sender.selected = YES;
     
+    ExternalAccount* facebookAccount = appDelegate.currentUser.facebookAccount;
+    if(facebookAccount)
+    {
+        
+    }
+    else
+    {
+        
+    }
      __weak SYNExistingChannelsViewController* wself = self;
+    __weak SYNAppDelegate* wAppDelegate = appDelegate;
     BOOL isYesButton = (sender == self.autopostYesButton);
     [appDelegate.oAuthNetworkEngine setFlag:@"facebook_autopost_add" withValue:isYesButton
                                    forUseId:appDelegate.currentUser.uniqueId completionHandler:^(id no_response) {
                                        
                                        [wself switchAutopostViewToYes:isYesButton];
+                                       
+                                       if(isYesButton)
+                                           [wAppDelegate.currentUser setFlag:ExternalAccountFlagAutopostAdd toExternalAccount:@"facebook"];
+                                       else
+                                           [wAppDelegate.currentUser unsetFlag:ExternalAccountFlagAutopostAdd toExternalAccount:@"facebook"];
+                                       
+                                       [wAppDelegate saveContext:YES];
                                        
                                    } errorHandler:^(id error) {
                                        

@@ -231,6 +231,8 @@
     return userDescription;
 }
 
+#pragma mark - External Accounts
+
 -(void)addExternalAccountsFromDictionary:(NSDictionary*)dictionary
 {
    
@@ -253,7 +255,7 @@
     }
 }
 
--(void)addPermissionFlag:(ExternalAccountFlag)flag toAccount:(NSString*)accountName
+-(void)setFlag:(ExternalAccountFlag)flag toExternalAccount:(NSString*)accountName
 {
     ExternalAccount* accountToSetFlag = [self externalAccountForSystem:accountName];
     
@@ -264,7 +266,7 @@
     
 }
 
--(void)removePermissionFlag:(ExternalAccountFlag)flag toAccount:(NSString*)accountName
+-(void)unsetFlag:(ExternalAccountFlag)flag toExternalAccount:(NSString*)accountName
 {
     ExternalAccount* accountToSetFlag = [self externalAccountForSystem:accountName];
     
@@ -291,9 +293,9 @@
             continue;
         
         if([item[@"flag"] isEqualToString:@"facebook_autopost_add"])
-            [self addPermissionFlag:ExternalAccountFlagAutopostAdd toAccount:@"facebook"];
+            [self setFlag:ExternalAccountFlagAutopostAdd toExternalAccount:@"facebook"];
         else if([item[@"flag"] isEqualToString:@"facebook_autopost_star"])
-            [self addPermissionFlag:ExternalAccountFlagAutopostStar toAccount:@"facebook"];
+            [self setFlag:ExternalAccountFlagAutopostStar toExternalAccount:@"facebook"];
     }
     
 }
@@ -312,6 +314,11 @@
 -(ExternalAccount*)googlePlusAccount
 {
     return [self externalAccountForSystem:@"google"];
+}
+
+-(ExternalAccount*)apnsAccount
+{
+    return [self externalAccountForSystem:@"apns"];
 }
 
 -(ExternalAccount*)externalAccountForSystem:(NSString*)systemName
