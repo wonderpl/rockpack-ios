@@ -121,7 +121,7 @@
     }
     else if ([notification.messageType isEqualToString: @"joined"])
     {
-        NSMutableString *message = [NSString stringWithFormat: NSLocalizedString(@"notification_joined_action", @"Your Facebook friend (name) has joined Rockpack"), [notification.channelOwner.displayName uppercaseString]];
+        NSMutableString *message = [NSMutableString stringWithFormat: NSLocalizedString(@"notification_joined_action", @"Your Facebook friend (name) has joined Rockpack"), [notification.channelOwner.displayName uppercaseString]];
         
         constructedMessage = message;
     }

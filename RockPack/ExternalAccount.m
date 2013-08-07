@@ -68,7 +68,7 @@
     if(self.permissions)
     {
         // set flags
-        
+        // just for FB fo now
         NSArray* permissionsArray = [self.permissions componentsSeparatedByString:@","];
         for (NSString* permission in permissionsArray) {
             if([permission isEqualToString:@"read"])

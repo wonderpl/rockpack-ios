@@ -2,7 +2,7 @@
 
 @interface ExternalAccount : _ExternalAccount {}
 
-typedef enum {
+typedef enum : NSInteger {
 
     ExternalAccountFlagRead = 1 << 0,
     ExternalAccountFlagWrite = 1 << 1,
