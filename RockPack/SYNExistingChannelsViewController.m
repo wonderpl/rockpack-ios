@@ -19,9 +19,12 @@
 #import "SYNOAuthNetworkEngine.h"
 #import "UIImageView+WebCache.h"
 #import "ExternalAccount.h"
+#import "SYNFacebookManager.h"
 #import "ChannelCover.h"
 #import "UIColor+SYNColor.h"
 #import <QuartzCore/QuartzCore.h>
+
+typedef void (^RemoteCallBlock) (void);
 
 @interface SYNExistingChannelsViewController ()
 {
@@ -145,26 +148,55 @@
 //    {
 //        
 //    }
-     __weak SYNExistingChannelsViewController* wself = self;
+    
+    
+    __weak SYNExistingChannelsViewController* wself = self;
     __weak SYNAppDelegate* wAppDelegate = appDelegate;
     BOOL isYesButton = (sender == self.autopostYesButton);
-    [appDelegate.oAuthNetworkEngine setFlag:@"facebook_autopost_add" withValue:isYesButton
-                                   forUseId:appDelegate.currentUser.uniqueId completionHandler:^(id no_response) {
-                                       
-                                       [wself switchAutopostViewToYes:isYesButton];
-                                       
-                                       if(isYesButton)
-                                           [wAppDelegate.currentUser setFlag:ExternalAccountFlagAutopostAdd toExternalAccount:@"facebook"];
-                                       else
-                                           [wAppDelegate.currentUser unsetFlag:ExternalAccountFlagAutopostAdd toExternalAccount:@"facebook"];
-                                       
-                                       [wAppDelegate saveContext:YES];
-                                       
-                                   } errorHandler:^(id error) {
-                                       
-                                       [wself switchAutopostViewToYes:!isYesButton];
-                                       
-                                   }];
+    
+    RemoteCallBlock setFlagBlock = ^{
+        
+        [appDelegate.oAuthNetworkEngine setFlag:@"facebook_autopost_add" withValue:isYesButton
+                                       forUseId:appDelegate.currentUser.uniqueId completionHandler:^(id no_response) {
+                                           
+                                           [wself switchAutopostViewToYes:isYesButton];
+                                           
+                                           if(isYesButton)
+                                               [wAppDelegate.currentUser setFlag:ExternalAccountFlagAutopostAdd toExternalAccount:@"facebook"];
+                                           else
+                                               [wAppDelegate.currentUser unsetFlag:ExternalAccountFlagAutopostAdd toExternalAccount:@"facebook"];
+                                           
+                                           [wAppDelegate saveContext:YES];
+                                           
+                                       } errorHandler:^(id error) {
+                                           
+                                           [wself switchAutopostViewToYes:!isYesButton];
+                                           
+                                       }];
+        
+    };
+    
+    if(isYesButton)
+    {
+        [[SYNFacebookManager sharedFBManager] openSessionWithPermissionType:kFacebookPermissionTypePublish onSuccess:^{
+            
+            setFlagBlock();
+            
+            
+        } onFailure:^(NSString *errorMessage) {
+            
+            [wself switchAutopostViewToYes:!isYesButton];
+            
+        }];
+    }
+    else
+    {
+        setFlagBlock();
+    }
+    
+    
+    
+    
 }
 
 
@@ -174,7 +206,6 @@
     
     self.channelThumbnailCollectionView.scrollsToTop = YES;
     
-    NSLog(@"%@", NSStringFromCGRect(self.autopostView.frame));
     
     // Google analytics support
     [GAI.sharedInstance.defaultTracker sendView: @"Channels - Create - Select"];
