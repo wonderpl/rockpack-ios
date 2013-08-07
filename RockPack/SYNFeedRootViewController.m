@@ -267,7 +267,7 @@ typedef void(^FeedDataErrorBlock)(void);
         
         [appDelegate.onBoardingQueue addPopover:subscribePopover];
         
-        [defaults setBool:YES forKey:kUserDefaultsChannels];
+        [defaults setBool:YES forKey:kUserDefaultsFeed];
         
         [appDelegate.onBoardingQueue present];
     }
