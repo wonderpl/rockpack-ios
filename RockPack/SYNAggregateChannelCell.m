@@ -76,6 +76,8 @@
     if(count == 1)
     {
         containerRect.size = self.imageContainer.frame.size;
+        
+        
         self.coverButton.hidden = NO;
         self.mainTitleLabel.hidden = NO;
         
