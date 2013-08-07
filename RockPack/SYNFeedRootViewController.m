@@ -246,6 +246,31 @@ typedef void(^FeedDataErrorBlock)(void);
         [self loadAndUpdateFeedData];
        
     }
+    
+    
+    // on boarding message
+    
+    NSUserDefaults *defaults = [NSUserDefaults standardUserDefaults];
+    BOOL hasShownFeedOnBoarding = [defaults boolForKey:kUserDefaultsFeed];
+    if(!hasShownFeedOnBoarding)
+    {
+        NSString* message = NSLocalizedString(@"onboarding_feed", nil);
+        
+        CGFloat fontSize = IS_IPAD ? 19.0 : 15.0 ;
+        CGSize size = IS_IPAD ? CGSizeMake(340.0, 164.0) : CGSizeMake(260.0, 144.0);
+        SYNOnBoardingPopoverView* subscribePopover = [SYNOnBoardingPopoverView withMessage:message
+                                                                                  withSize:size
+                                                                               andFontSize:fontSize
+                                                                                pointingTo:CGRectZero
+                                                                             withDirection:PointingDirectionNone];
+        
+        
+        [appDelegate.onBoardingQueue addPopover:subscribePopover];
+        
+        [defaults setBool:YES forKey:kUserDefaultsChannels];
+        
+        [appDelegate.onBoardingQueue present];
+    }
 }
 
 

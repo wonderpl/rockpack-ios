@@ -8,11 +8,17 @@
 
 #import "SYNAggregateCell.h"
 
+
+#define STANDARD_BUTTON_CAPACITY 10
+
+
 @implementation SYNAggregateCell
 
 -(void)awakeFromNib
 {
     self.messageLabel.font = [UIFont rockpackFontOfSize:self.messageLabel.font.pointSize];
+    
+    self.stringButtonsArray = [[NSMutableArray alloc] initWithCapacity:STANDARD_BUTTON_CAPACITY];
 }
 
 -(void)setCoverImagesAndTitlesWithArray:(NSArray*)imageString

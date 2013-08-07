@@ -353,6 +353,7 @@ typedef enum _NavigationButtonsAppearance {
 #define kUserDefaultsSubscribe @"UD_OnBoaring_Subscribe"
 #define kUserDefaultsAddVideo @"UD_OnBoaring_AddVideo"
 #define kUserDefaultsChannels @"UD_OnBoaring_Channels"
+#define kUserDefaultsFeed @"UD_OnBoaring_Feed"
 
 //Login Origin
 

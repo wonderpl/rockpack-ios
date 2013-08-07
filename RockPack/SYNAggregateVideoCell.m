@@ -92,6 +92,8 @@ static NSDictionary* boldTextAttributes = nil;
     [attributedCompleteString appendAttributedString:[[NSAttributedString alloc] initWithString:channelOwnerName
                                                                                      attributes:boldTextAttributes]];
     
+    // add buttons
+    
     [attributedCompleteString appendAttributedString:[[NSAttributedString alloc] initWithString:@"added"
                                                                                      attributes:lightTextAttributes]];
     
@@ -153,20 +155,23 @@ static NSDictionary* boldTextAttributes = nil;
     if(users.count > 0)
     {
         ChannelOwner* co;
+        NSString* name;
         for (int i = 0; i < users.count; i++)
         {
             
             co = (ChannelOwner*)users[0];
             
             if([co.uniqueId isEqualToString:appDelegate.currentUser.uniqueId])
-                [namesString appendString:@"You"];
+                name = @"You";
             else
                 [namesString appendString:co.displayName];
             
             if((users.count - i) == 2) // the one before last
-                [namesString appendString:@" & "];
+                name = @" & ";
             else if((users.count - i) > 2)
-                [namesString appendString:@", "];
+                name = @", ";
+            
+            [namesString appendString:name];
             
         }
         

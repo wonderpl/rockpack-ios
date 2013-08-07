@@ -25,6 +25,8 @@
 
 @property (nonatomic, strong) IBOutlet UILabel* mainTitleLabel;
 
+@property (nonatomic, strong) NSMutableArray* stringButtonsArray;
+
 
 -(void)setCoverImagesAndTitlesWithArray:(NSArray*)imageString;
 
