@@ -134,17 +134,20 @@
 
 -(IBAction)autopostButtonPressed:(UIButton*)sender
 {
+    if(sender.selected) // button is pressed twice
+        return;
+    
     sender.selected = YES;
     
-    ExternalAccount* facebookAccount = appDelegate.currentUser.facebookAccount;
-    if(facebookAccount)
-    {
-        
-    }
-    else
-    {
-        
-    }
+//    ExternalAccount* facebookAccount = appDelegate.currentUser.facebookAccount;
+//    if(facebookAccount)
+//    {
+//        
+//    }
+//    else
+//    {
+//        
+//    }
      __weak SYNExistingChannelsViewController* wself = self;
     __weak SYNAppDelegate* wAppDelegate = appDelegate;
     BOOL isYesButton = (sender == self.autopostYesButton);

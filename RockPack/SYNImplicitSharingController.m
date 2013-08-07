@@ -8,6 +8,8 @@
 
 #import "SYNImplicitSharingController.h"
 #import "UIFont+SYNFont.h"
+#import "SYNAppDelegate.h"
+#import "SYNOAuthNetworkEngine.h"
 
 @interface SYNImplicitSharingController ()
 
@@ -28,6 +30,49 @@
     
 }
 
+-(IBAction)autopostButtonPressed:(UIButton*)sender
+{
+    if(sender.selected) // button is pressed twice
+        return;
+    
+    sender.selected = YES;
+    
+    //    ExternalAccount* facebookAccount = appDelegate.currentUser.facebookAccount;
+    //    if(facebookAccount)
+    //    {
+    //
+    //    }
+    //    else
+    //    {
+    //
+    //    }
+    __weak SYNImplicitSharingController* wself = self;
+    SYNAppDelegate* appDelegate = (SYNAppDelegate*)[[UIApplication sharedApplication] delegate];
+    __weak SYNAppDelegate* wAppDelegate = appDelegate;
+    BOOL isYesButton = (sender == self.yesButton);
+    [appDelegate.oAuthNetworkEngine setFlag:@"facebook_autopost_star" withValue:isYesButton
+                                   forUseId:appDelegate.currentUser.uniqueId completionHandler:^(id no_response) {
+                                       
+                                       [wself switchAutopostViewToYes:isYesButton];
+                                       
+                                       if(isYesButton)
+                                           [wAppDelegate.currentUser setFlag:ExternalAccountFlagAutopostStar toExternalAccount:@"facebook"];
+                                       else
+                                           [wAppDelegate.currentUser unsetFlag:ExternalAccountFlagAutopostStar toExternalAccount:@"facebook"];
+                                       
+                                       [wAppDelegate saveContext:YES];
+                                       
+                                   } errorHandler:^(id error) {
+                                       
+                                       [wself switchAutopostViewToYes:!isYesButton];
+                                       
+                                   }];
+}
 
+-(void)switchAutopostViewToYes:(BOOL)value
+{
+    self.yesButton.selected = value;
+    self.notNowButton.selected = !value;
+}
 
 @end
