@@ -31,6 +31,7 @@
 #import "VideoInstance.h"
 #import "GAI.h"
 #import <QuartzCore/QuartzCore.h>
+#import "SDWebImageManager.h"
 
 @interface SYNAbstractViewController ()  <UITextFieldDelegate,
                                           UIPopoverControllerDelegate>
@@ -45,6 +46,7 @@
 @property (nonatomic, strong) UIView *dropZoneView;
 @property (strong, nonatomic) NSDictionary *userInfo;
 @property (strong, nonatomic) OWActivityView *activityView;
+@property (strong, nonatomic) OWActivityViewController *activityViewController;
 @property (strong, readonly, nonatomic) NSArray *activities;
 @property (weak, nonatomic) UIPopoverController *presentingPopoverController;
 @property (weak, nonatomic) UIViewController *presentingController;
@@ -208,6 +210,7 @@
     
     return indexPath;
 }
+
 
 - (IBAction) userTouchedVideoShareButton: (UIButton *) videoShareButton
 {
@@ -417,10 +420,14 @@
                          withLabel: nil
                          withValue: nil];
     
+    // At this point it is safe to assume that the video thumbnail image is in the cache
+    UIImage *thumbnailImage = [SDWebImageManager.sharedManager.imageCache imageFromMemoryCacheForKey: videoInstance.video.thumbnailURL];
+
     [self shareObjectType: @"video_instance"
                  objectId: videoInstance.uniqueId
                   isOwner: @FALSE
                   isVideo: @TRUE
+               usingImage: thumbnailImage
                    inView: inView
                  fromRect: rect
           arrowDirections: arrowDirections
@@ -448,6 +455,7 @@
                  objectId: channel.uniqueId
                   isOwner: isOwner
                   isVideo: @FALSE
+               usingImage: nil
                    inView: inView
                  fromRect: rect
           arrowDirections: arrowDirections
@@ -460,86 +468,66 @@
                 objectId: (NSString *) objectId
                  isOwner: (NSNumber *) isOwner
                  isVideo: (NSNumber *) isVideo
+              usingImage: (UIImage *) usingImage
                   inView: (UIView *) inView
                 fromRect: (CGRect) rect
          arrowDirections: (UIPopoverArrowDirection) arrowDirections
        activityIndicator: (UIActivityIndicatorView *) activityIndicatorView
               onComplete: (SYNShareCompletionBlock) completionBlock
 {
+    if (usingImage == nil)
+    {
+        // Capture screen image if we weren't passed an image in
+        UIWindow *keyWindow = [[UIApplication sharedApplication] keyWindow];
+        CGRect keyWindowRect = [keyWindow bounds];
+        UIGraphicsBeginImageContextWithOptions(keyWindowRect.size, YES, 0.0f);
+        CGContextRef context = UIGraphicsGetCurrentContext();
+        [keyWindow.layer
+         renderInContext: context];
+        UIImage *capturedScreenImage = UIGraphicsGetImageFromCurrentImageContext();
+        UIGraphicsEndImageContext();
+        
+        UIInterfaceOrientation orientation = [SYNDeviceManager.sharedInstance orientation];
+        
+        switch (orientation)
+        {
+            case UIDeviceOrientationPortrait:
+                orientation = UIImageOrientationUp;
+                break;
+                
+            case UIDeviceOrientationPortraitUpsideDown:
+                orientation = UIImageOrientationDown;
+                break;
+                
+            case UIDeviceOrientationLandscapeLeft:
+                orientation = UIImageOrientationLeft;
+                break;
+                
+            case UIDeviceOrientationLandscapeRight:
+                orientation = UIImageOrientationRight;
+                break;
+                
+            default:
+                orientation = UIImageOrientationRight;
+                DebugLog(@"Unknown orientation");
+                break;
+        }
+        
+        UIImage *fixedOrientationImage = [UIImage  imageWithCGImage: capturedScreenImage.CGImage
+                                                              scale: capturedScreenImage.scale
+                                                        orientation: orientation];
+        usingImage = fixedOrientationImage;
+    }
+    
     [activityIndicatorView startAnimating];
     
-    // Update the star/unstar status on the server
+    // Get share link
     [appDelegate.oAuthNetworkEngine shareLinkWithObjectType: objectType
                                                    objectId: objectId
                                           completionHandler: ^(NSDictionary *responseDictionary)
      {
          [activityIndicatorView stopAnimating];
          
-         UIWindow *keyWindow = [[UIApplication sharedApplication] keyWindow];
-         CGRect keyWindowRect = [keyWindow bounds];
-         UIGraphicsBeginImageContextWithOptions(keyWindowRect.size, YES, 0.0f);
-         CGContextRef context = UIGraphicsGetCurrentContext();
-         [keyWindow.layer
-          renderInContext: context];
-         UIImage *capturedScreenImage = UIGraphicsGetImageFromCurrentImageContext();
-         UIGraphicsEndImageContext();
-         
-         UIInterfaceOrientation orientation = [SYNDeviceManager.sharedInstance orientation];
-         
-         switch (orientation)
-         {
-             case UIDeviceOrientationPortrait:
-                 orientation = UIImageOrientationUp;
-                 break;
-                 
-             case UIDeviceOrientationPortraitUpsideDown:
-                 orientation = UIImageOrientationDown;
-                 break;
-                 
-             case UIDeviceOrientationLandscapeLeft:
-                 orientation = UIImageOrientationLeft;
-                 break;
-                 
-             case UIDeviceOrientationLandscapeRight:
-                 orientation = UIImageOrientationRight;
-                 break;
-                 
-             default:
-                 orientation = UIImageOrientationRight;
-                 DebugLog(@"Unknown orientation");
-                 break;
-         }
-         
-         UIImage *fixedOrientationImage = [UIImage  imageWithCGImage: capturedScreenImage.CGImage
-                                                               scale: capturedScreenImage.scale
-                                                         orientation: orientation];
-         capturedScreenImage = fixedOrientationImage;
-         
-         // Prepare activities
-         OWFacebookActivity *facebookActivity = [[OWFacebookActivity alloc] init];
-         OWTwitterActivity *twitterActivity = [[OWTwitterActivity alloc] init];
-         
-         // Compile activities into an array, we will pass that array to
-         // OWActivityViewController on the next step
-         NSMutableArray *activities = @[facebookActivity, twitterActivity].mutableCopy;
-         
-         if ([MFMessageComposeViewController canSendText])
-         {
-             OWMessageActivity *messageActivity = [[OWMessageActivity alloc] init];
-             [activities addObject: messageActivity];
-         }
-         
-         if ([MFMailComposeViewController canSendMail])
-         {
-             OWMailActivity *mailActivity = [[OWMailActivity alloc] init];
-             [activities addObject: mailActivity
-              ];
-         }
-         
-         // Create OWActivityViewController controller and assign data source
-         //
-         OWActivityViewController *activityViewController = [[OWActivityViewController alloc]	 initWithViewController: self
-                                                                                                           activities: activities];
          
          NSString *resourceURLString = responseDictionary[@"resource_url"];
          NSString *message = responseDictionary[@"message"];
@@ -584,38 +572,13 @@
          
          NSURL *resourceURL = [NSURL URLWithString: resourceURLString];
          
-         activityViewController.userInfo = @{@"text": message,
-                                             @"url": resourceURL,
-                                             @"image": capturedScreenImage,
-                                             @"owner": isOwner,
-                                             @"video": isVideo,
-                                             @"subject": subject};
-         
-         // Check to see if the user has moved away from this window (by the time we got our link)
-         
-         if (inView.window)
-         {
-             // The activity controller needs to be presented from a popup on iPad, but normally on iPhone
-             if (IS_IPAD)
-             {
-                 self.activityPopoverController = [[UIPopoverController alloc] initWithContentViewController: activityViewController];
-                 self.activityPopoverController.popoverBackgroundViewClass = [SYNPopoverBackgroundView class];
-                 
-                 activityViewController.presentingPopoverController = _activityPopoverController;
-                 
-                 self.activityPopoverController.delegate = self;
-                 
-                 [self.activityPopoverController presentPopoverFromRect: rect
-                                                                 inView: inView
-                                               permittedArrowDirections: arrowDirections
-                                                               animated: YES];
-             }
-             else
-             {
-                 [activityViewController presentFromRootViewController];
-             }
-         }
-         
+         self.activityViewController.userInfo = @{@"text": message,
+                                                  @"url": resourceURL,
+                                                  @"image": usingImage,
+                                                  @"owner": isOwner,
+                                                  @"video": isVideo,
+                                                  @"subject": subject};
+     
          completionBlock();
      } errorHandler: ^(NSDictionary *errorDictionary)
      {
@@ -623,6 +586,58 @@
          //                                                   DebugLog(@"Share link failed");
          completionBlock();
      }];
+    
+    // Prepare activities
+    OWFacebookActivity *facebookActivity = [[OWFacebookActivity alloc] init];
+    OWTwitterActivity *twitterActivity = [[OWTwitterActivity alloc] init];
+    
+    // Compile activities into an array, we will pass that array to
+    // OWActivityViewController on the next step
+    NSMutableArray *activities = @[facebookActivity, twitterActivity].mutableCopy;
+    
+    if ([MFMessageComposeViewController canSendText])
+    {
+        OWMessageActivity *messageActivity = [[OWMessageActivity alloc] init];
+        [activities addObject: messageActivity];
+    }
+    
+    if ([MFMailComposeViewController canSendMail])
+    {
+        OWMailActivity *mailActivity = [[OWMailActivity alloc] init];
+        [activities addObject: mailActivity
+         ];
+    }
+    
+    // Create OWActivityViewController controller and assign data source
+    //
+    self.activityViewController = [[OWActivityViewController alloc]	 initWithViewController: self
+                                                                                 activities: activities];
+
+    // Check to see if the user has moved away from this window (by the time we got our link)
+    if (inView.window)
+    {
+        // The activity controller needs to be presented from a popup on iPad, but normally on iPhone
+        if (IS_IPAD)
+        {
+            self.activityPopoverController = [[UIPopoverController alloc] initWithContentViewController: self.activityViewController];
+            self.activityPopoverController.popoverBackgroundViewClass = [SYNPopoverBackgroundView class];
+            
+            self.activityViewController.presentingPopoverController = _activityPopoverController;
+            
+            self.activityPopoverController.delegate = self;
+            
+            [self.activityPopoverController presentPopoverFromRect: rect
+                                                            inView: inView
+                                          permittedArrowDirections: arrowDirections
+                                                          animated: YES];
+        }
+        else
+        {
+            [self.activityViewController presentFromRootViewController];
+        }
+    }
+    
+
 }
 
 
