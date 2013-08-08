@@ -10,7 +10,7 @@
 #import "SYNFacebookManager.h"
 #import "SYNSessionTokenCachingStrategy.h"
 #import <FacebookSDK/FacebookSDK.h>
-
+#import "SYNAppDelegate.h"
 
 
 @interface SYNFacebookManager ()
@@ -202,7 +202,9 @@
                      else
                      {
                          DebugLog(@"** Reauthorize: Suceeded");
-                         // OK, the user has now granted required extended permissions
+                         // OK, the user has now granted required extended permissions, log it to the server
+                         //SYNAppDelegate* appDelegate = (SYNAppDelegate*)[[UIApplication sharedApplication] delegate];
+                         //[appDelegate ]
                          dispatch_async(dispatch_get_main_queue(), ^{
                              successBlock();
                          });

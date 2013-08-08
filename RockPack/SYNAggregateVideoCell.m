@@ -21,6 +21,7 @@ static NSDictionary* boldTextAttributes = nil;
 -(void)awakeFromNib
 {
     [super awakeFromNib];
+    self.mainTitleLabel.font = [UIFont rockpackFontOfSize:self.mainTitleLabel.font.pointSize];
     self.likeLabel.font = [UIFont rockpackFontOfSize:self.likeLabel.font.pointSize];
     
     if(!IS_IPAD)
@@ -29,8 +30,8 @@ static NSDictionary* boldTextAttributes = nil;
         self.likesNumberLabel.font = [UIFont boldRockpackFontOfSize:self.likesNumberLabel.font.pointSize];
     
     
-    lightTextAttributes = @{NSFontAttributeName:[UIFont rockpackFontOfSize:12.0],NSForegroundColorAttributeName:[UIColor rockpacAggregateTextLight]};
-    boldTextAttributes = @{NSFontAttributeName:[UIFont boldRockpackFontOfSize:12.0],NSForegroundColorAttributeName:[UIColor rockpacAggregateTextBold]};
+    lightTextAttributes = @{NSFontAttributeName:[UIFont rockpackFontOfSize:14.0],NSForegroundColorAttributeName:[UIColor rockpacAggregateTextLight]};
+    boldTextAttributes = @{NSFontAttributeName:[UIFont boldRockpackFontOfSize:14.0],NSForegroundColorAttributeName:[UIColor rockpacAggregateTextBold]};
 
 }
 
