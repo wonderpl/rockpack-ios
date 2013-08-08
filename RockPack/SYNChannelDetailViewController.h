@@ -9,10 +9,11 @@
 #import "LXReorderableCollectionViewFlowLayout.h"
 #import "SYNAbstractViewController.h"
 
-typedef enum {
+typedef enum : NSInteger
+{
     kChannelDetailsModeDisplay = 0,
     kChannelDetailsModeEdit = 1,
-    kChannelDetailsModeCreate =2
+    kChannelDetailsModeCreate = 2
 } kChannelDetailsMode;
 
 @interface SYNChannelDetailViewController : SYNAbstractViewController <LXReorderableCollectionViewDelegateFlowLayout,
@@ -26,8 +27,8 @@ typedef enum {
 /**
  If set the channel will automatically play the video on view did load, or when the collection is updated depending on if the video ID
  is present in the channels's video set. Once played, this variabel is set to nil.
-*/
-@property (nonatomic, strong) NSString* autoplayVideoId;
+ */
+@property (nonatomic, strong) NSString *autoplayVideoId;
 
 
 - (id) initWithChannel: (Channel *) channel
