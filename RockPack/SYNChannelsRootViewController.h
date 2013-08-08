@@ -9,7 +9,8 @@
 #import "SYNAbstractViewController.h"
 #import "SYNChannelFooterMoreView.h"
 
-@interface SYNChannelsRootViewController : SYNAbstractViewController {
+@interface SYNChannelsRootViewController : SYNAbstractViewController
+{
     @protected
     NSMutableArray* channels;
 }
