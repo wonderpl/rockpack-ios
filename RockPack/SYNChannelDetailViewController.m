@@ -806,6 +806,13 @@
     CGRect buttonRect = self.originalSubscribeButtonRect;
     CGRect labelRect = self.originalSubscribersLabelRect;
     
+    int offset = 48;
+    
+    if (IS_IPAD)
+    {
+        offset = 54;
+    }
+    
     // Whether to show play channel button
     if (self.channel.videoInstances.count > 0)
     {
@@ -813,10 +820,10 @@
                          animations: ^{
                              self.playChannelButton.alpha = 1;
                              CGRect buttonFrame = self.subscribeButton.frame;
-                             buttonFrame.origin.x = buttonRect.origin.x + 54;
+                             buttonFrame.origin.x = buttonRect.origin.x + offset;
                              self.subscribeButton.frame = buttonFrame;
                              CGRect labelFrame = self.subscribersLabel.frame;
-                             labelFrame.origin.x = labelRect.origin.x + 54;
+                             labelFrame.origin.x = labelRect.origin.x + offset;
                              self.subscribersLabel.frame = labelFrame;
                              self.subscribersButton.frame = labelFrame;
                          }
