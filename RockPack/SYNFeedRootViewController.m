@@ -246,9 +246,16 @@ typedef void(^FeedDataErrorBlock)(void);
         [self loadAndUpdateFeedData];
        
     }
+
+    [self checkForOnBoarding];
+
+}
+
+-(void)checkForOnBoarding
+{
     
-    
-    // on boarding message
+    if(self.feedItemsData.count == 0)
+        return;
     
     NSUserDefaults *defaults = [NSUserDefaults standardUserDefaults];
     BOOL hasShownFeedOnBoarding = [defaults boolForKey:kUserDefaultsFeed];
@@ -271,8 +278,9 @@ typedef void(^FeedDataErrorBlock)(void);
         
         [appDelegate.onBoardingQueue present];
     }
+    
+    
 }
-
 
 - (void) viewDidScrollToBack
 {
@@ -458,6 +466,12 @@ typedef void(^FeedDataErrorBlock)(void);
     
     // sort results in categories
     
+    if(resultsArray.count == 0)
+    {
+        self.feedItemsData = [NSArray array];
+        return;
+    }
+    
     
     NSMutableDictionary* buckets = [NSMutableDictionary dictionary];
     NSDate* dateNoTime;
@@ -492,6 +506,8 @@ typedef void(^FeedDataErrorBlock)(void);
     
     
     [self.feedCollectionView reloadData];
+    
+        
     
 }
 

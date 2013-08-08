@@ -178,7 +178,9 @@ typedef void(^AnimationCompletionBlock)(BOOL finished);
                      animations: ^{
                          splashView.alpha = 0.0f;
                      } completion: ^(BOOL finished) {
-                         splashView.alpha = 0.0f;
+                         
+                         [self.containerViewController firstFadedInto];
+                         
                          [splashView removeFromSuperview];
                      }];
     

@@ -126,7 +126,7 @@ UITextViewDelegate>
         self.scrollView.page = self.lastSelectedPageIndex = 1;
     }
     
-    [self.showingViewController viewDidScrollToFront];
+    
 }
 
 
@@ -170,6 +170,11 @@ UITextViewDelegate>
                     animated: YES];
 }
 
+-(void)firstFadedInto
+{
+    [self.showingViewController viewDidScrollToFront];
+    
+}
 
 #pragma mark - maintaion orientation
 
