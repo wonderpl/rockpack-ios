@@ -106,7 +106,6 @@
 //iPhone specific
 
 @property (nonatomic, strong) NSString* selectedImageURL;
-@property (nonatomic, weak) SYNVideoThumbnailRegularCell* selectedCell;
 @property (nonatomic,strong) SYNChannelCoverImageSelectorViewController* coverImageSelector;
 @property (strong,nonatomic) SYNChannelCategoryTableViewController *categoryTableViewController;
 @property (weak, nonatomic) IBOutlet UIButton *backButton;
@@ -1110,22 +1109,21 @@
     
 }
 
--(void)videoButtonPressed:(UIButton*)videoButton
+- (void) videoButtonPressed: (UIButton *) videoButton
 {
-    UIView* candidateCell = videoButton;
-    while (![candidateCell isKindOfClass:[SYNVideoThumbnailRegularCell class]])
+    UIView *candidateCell = videoButton;
+    
+    while (![candidateCell isKindOfClass: [SYNVideoThumbnailRegularCell class]])
+    {
         candidateCell = candidateCell.superview;
+    }
     
-    self.selectedCell = (SYNVideoThumbnailRegularCell*)candidateCell;
-    NSIndexPath *indexPath = [self.videoThumbnailCollectionView indexPathForItemAtPoint: self.selectedCell.center];
+    SYNVideoThumbnailRegularCell *selectedCell = (SYNVideoThumbnailRegularCell *) candidateCell;
+    NSIndexPath *indexPath = [self.videoThumbnailCollectionView indexPathForItemAtPoint: selectedCell.center];
     
+    SYNMasterViewController *masterViewController = (SYNMasterViewController *) appDelegate.masterViewController;
     
-    
-    
-    
-    SYNMasterViewController *masterViewController = (SYNMasterViewController*)appDelegate.masterViewController;
-    
-    NSArray* videoInstancesToPlayArray = self.channel.videoInstances.array;
+    NSArray *videoInstancesToPlayArray = self.channel.videoInstances.array;
     
     
     [masterViewController addVideoOverlayToViewController: self

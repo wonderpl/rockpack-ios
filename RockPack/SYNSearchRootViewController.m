@@ -37,6 +37,28 @@
 
 @implementation SYNSearchRootViewController
 
+#pragma mark - Object lifcyle
+
+- (void) dealloc
+{
+    viewIsOnScreen = NO;
+    
+    searchTerm = nil;
+    
+    self.videoSearchTabView.selected = NO;
+    self.channelsSearchTabView.selected = NO;
+    
+    [self.currentController.view removeFromSuperview];
+    
+    self.currentController = nil;
+    
+    self.searchVideosController = nil;
+    self.searchChannelsController = nil;
+}
+
+
+#pragma mark - View lifecyle
+
 - (void) loadView
 {
     CGRect frame = CGRectMake(0.0, 0.0, [SYNDeviceManager.sharedInstance currentScreenWidth],
@@ -58,8 +80,8 @@
     NSArray *tabsArray = @[self.videoSearchTabView, self.channelsSearchTabView, self.usersSearchTabView];
     
     self.tabsContainer = [[UIView alloc] initWithFrame: CGRectMake(0.0, 0.0,
-                                                              self.channelsSearchTabView.frame.size.width * tabsArray.count,
-                                                              self.channelsSearchTabView.frame.size.height)];
+                                                                   self.channelsSearchTabView.frame.size.width * tabsArray.count,
+                                                                   self.channelsSearchTabView.frame.size.height)];
     
     self.tabsContainer.autoresizingMask = UIViewAutoresizingFlexibleLeftMargin | UIViewAutoresizingFlexibleRightMargin;
     
@@ -89,7 +111,7 @@
     self.tabsContainer.frame = CGRectIntegral(self.tabsContainer.frame);
     
     [self.view addSubview: self.tabsContainer];
-
+    
     // == Adding the main subviews == //
     self.searchVideosController = [[SYNSearchVideosViewController alloc] initWithViewId: viewId];
     self.searchVideosController.itemToUpdate = self.videoSearchTabView;
@@ -209,24 +231,6 @@
 }
 
 
-- (void) dealloc
-{
-    viewIsOnScreen = NO;
-    
-    searchTerm = nil;
-    
-    self.videoSearchTabView.selected = NO;
-    self.channelsSearchTabView.selected = NO;
-    
-    [self.currentController.view removeFromSuperview];
-    
-    self.currentController = nil;
-    
-    self.searchVideosController = nil;
-    self.searchChannelsController = nil;
-}
-
-
 - (void) searchTabPressed: (UIButton *) control
 {
     // nil means select the first
@@ -249,7 +253,7 @@
     }
     
     [self.controllers enumerateObjectsUsingBlock: ^(SYNAbstractViewController *controller, NSUInteger idx, BOOL *stop) {
-         SYNSearchTabView *tabView = (SYNSearchTabView *) [controller valueForKey: @"itemToUpdate"];
+        SYNSearchTabView *tabView = (SYNSearchTabView *) [controller valueForKey: @"itemToUpdate"];
          
          if ([tabView isClicked: control])
          {
@@ -287,6 +291,7 @@
     
     [self performSearchForCurrentSearchTerm];
 }
+
 
 #pragma mark - GA support
 

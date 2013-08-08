@@ -7,6 +7,7 @@
 //
 
 #import "SYNAbstractViewController.h"
+
 @class SYNSearchBoxViewController;
 
 @interface SYNSearchRootViewController : SYNAbstractViewController

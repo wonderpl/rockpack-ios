@@ -14,22 +14,24 @@
 #import "SYNAppDelegate.h"
 #import "SYNDeviceManager.h"
 #import "SYNIntegralCollectionViewFlowLayout.h"
+#import "SYNMasterViewController.h"
+#import "SYNOAuthNetworkEngine.h"
 #import "SYNSearchRootViewController.h"
 #import "SYNSearchTabView.h"
 #import "SYNSearchVideosViewController.h"
+#import "SYNVideoThumbnailRegularCell.h"
 #import "SYNVideoThumbnailWideCell.h"
 #import "UIImageView+WebCache.h"
-#import "SYNOAuthNetworkEngine.h"
 #import "Video.h"
 #import "VideoInstance.h"
 
 @interface SYNSearchVideosViewController ()
 
 @property (nonatomic, assign) BOOL isIPhone;
-@property (nonatomic, strong) NSCalendar* currentCalendar;
-@property (nonatomic, weak) MKNetworkOperation* runningSearchOperation;
-@property (nonatomic, weak) NSString* searchTerm;
+@property (nonatomic, strong) NSCalendar *currentCalendar;
 @property (nonatomic, strong) NSDateFormatter *dateFormatter;
+@property (nonatomic, weak) MKNetworkOperation *runningSearchOperation;
+@property (nonatomic, weak) NSString *searchTerm;
 
 @end
 
@@ -52,7 +54,6 @@
     CGFloat minimumLineSpacing;
     
     // Setup device dependent parametes/dimensions
-    
     if (IS_IPHONE)
     {
         // Calculate frame size
@@ -66,7 +67,6 @@
         contentInset = UIEdgeInsetsMake(4, 0, 0, 0);
         sectionInset = UIEdgeInsetsMake(10.0f, 5.0f, 15.0f, 5.0f);
         minimumLineSpacing = 10.0f;
-        
     }
     else
     {
@@ -83,7 +83,6 @@
     // Set our view frame and attributes
     self.view.frame = calculatedViewFrame;
     self.view.backgroundColor = [UIColor clearColor];
-    
     
     // Setup out collection view layout
     standardFlowLayout = [SYNIntegralCollectionViewFlowLayout layoutWithItemSize: self.videoCellSize
@@ -102,9 +101,10 @@
     self.videoThumbnailCollectionView.backgroundColor = [UIColor clearColor];
     self.videoThumbnailCollectionView.scrollsToTop = NO;
     self.videoThumbnailCollectionView.contentInset = contentInset;
-    [self.view addSubview:self.videoThumbnailCollectionView];
+    [self.view
+     addSubview: self.videoThumbnailCollectionView];
     
-    self.videoThumbnailCollectionView.autoresizingMask = UIViewAutoresizingFlexibleWidth| UIViewAutoresizingFlexibleHeight;
+    self.videoThumbnailCollectionView.autoresizingMask = UIViewAutoresizingFlexibleWidth | UIViewAutoresizingFlexibleHeight;
     
     // Register collection view cells
     UINib *videoThumbnailCellNib = [UINib nibWithNibName: @"SYNVideoThumbnailWideCell"
@@ -142,7 +142,7 @@
                                                object: nil];
     
     // =============================
-
+    
     self.isIPhone = IS_IPHONE;
     
     if (self.isIPhone)
@@ -160,8 +160,8 @@
         collectionFrame.size.width = self.view.frame.size.width;
         collectionFrame.size.height = self.view.frame.size.height - 150.0;
         self.videoThumbnailCollectionView.frame = collectionFrame;
-        UICollectionViewFlowLayout* layout = (UICollectionViewFlowLayout*)self.videoThumbnailCollectionView.collectionViewLayout;
-        UIEdgeInsets insets= layout.sectionInset;
+        UICollectionViewFlowLayout *layout = (UICollectionViewFlowLayout *) self.videoThumbnailCollectionView.collectionViewLayout;
+        UIEdgeInsets insets = layout.sectionInset;
         insets.top = 0.0f;
         insets.bottom = 15.0f;
         layout.sectionInset = insets;
@@ -176,11 +176,12 @@
     self.currentCalendar = [NSCalendar currentCalendar];
 }
 
+
 - (CGSize) videoCellSize
 {
     if (IS_IPHONE)
     {
-        return CGSizeMake(310,221);
+        return CGSizeMake(310, 221);
     }
     else if ([SYNDeviceManager.sharedInstance isLandscape])
     {
@@ -191,31 +192,34 @@
         return CGSizeMake(370, 140);
     }
 }
+
+
 - (void) viewWillAppear: (BOOL) animated
 {
     [super viewWillAppear: animated];
-
-
+    
+    
     [self removeEmptyGenreMessage];
 }
 
--(void)removeEmptyGenreMessage
+
+- (void) removeEmptyGenreMessage
 {
-    
 }
 
--(void)displayMessage:(NSString*)message
-{
-    
 
+- (void) displayMessage: (NSString *) message
+{
 }
 
 
 - (NSFetchedResultsController *) fetchedResultsController
 {
     if (fetchedResultsController != nil)
+    {
         return fetchedResultsController;
-        
+    }
+    
     NSFetchRequest *fetchRequest = [[NSFetchRequest alloc] init];
     
     
@@ -225,7 +229,8 @@
     
     [fetchRequest setPredicate: [NSPredicate predicateWithFormat: @"viewId == %@", self.viewId]];
     
-    fetchRequest.sortDescriptors = @[[[NSSortDescriptor alloc] initWithKey: @"position" ascending: YES]];
+    fetchRequest.sortDescriptors = @[[[NSSortDescriptor alloc] initWithKey: @"position"
+                                                                 ascending: YES]];
     
     
     self.fetchedResultsController = [[NSFetchedResultsController alloc] initWithFetchRequest: fetchRequest
@@ -236,44 +241,51 @@
     
     
     
-    NSError *error = nil;    
+    NSError *error = nil;
+    
     if (![fetchedResultsController performFetch: &error])
     {
         AssertOrLog(@"Search Videos Fetch Request Failed: %@\n%@", [error localizedDescription], [error userInfo]);
     }
     
-    return fetchedResultsController; 
+    return fetchedResultsController;
 }
 
 
-- (void) performNewSearchWithTerm: (NSString*) term
+- (void) performNewSearchWithTerm: (NSString *) term
 {
-    
     if (!appDelegate)
-        appDelegate = (SYNAppDelegate*)[[UIApplication sharedApplication] delegate];
+    {
+        appDelegate = (SYNAppDelegate *) [[UIApplication sharedApplication] delegate];
+    }
     
     self.dataRequestRange = NSMakeRange(0, kAPIInitialBatchSize);
     
-
-    self.runningSearchOperation =  [self.appDelegate.networkEngine searchVideosForTerm: term
-                                                                               inRange: self.dataRequestRange
-                                                                            onComplete: ^(int itemsCount) {
-                                                                                self.dataItemsAvailable = itemsCount;
-                                                                                if(self.itemToUpdate)
-                                                                                    [self.itemToUpdate setNumberOfItems: self.dataItemsAvailable
-                                                                                                               animated: YES];
-
-                                                                                if(itemsCount == 0)
-                                                                                    [self displayMessage:@"NO VIDEOS FOUND"];
-
-                                                                            }];
+    
+    self.runningSearchOperation = [self.appDelegate.networkEngine searchVideosForTerm: term
+                                                                              inRange: self.dataRequestRange
+                                                                           onComplete: ^(int itemsCount) {
+                                                                               self.dataItemsAvailable = itemsCount;
+                                                                               
+                                                                               if (self.itemToUpdate)
+                                                                               {
+                                                                                   [self.itemToUpdate
+                                                                                    setNumberOfItems: self.dataItemsAvailable
+                                                                                    animated: YES];
+                                                                               }
+                                                                               
+                                                                               if (itemsCount == 0)
+                                                                               {
+                                                                                   [self displayMessage: @"NO VIDEOS FOUND"];
+                                                                               }
+                                                                           }];
     self.searchTerm = term;
 }
 
 
 - (void) controllerDidChangeContent: (NSFetchedResultsController *) controller
 {
-//    DebugLog(@"Total Search Items: %i", controller.fetchedObjects.count);
+    //    DebugLog(@"Total Search Items: %i", controller.fetchedObjects.count);
     
     [self.videoThumbnailCollectionView reloadData];
 }
@@ -290,72 +302,87 @@
 - (NSInteger) collectionView: (UICollectionView *) collectionView numberOfItemsInSection: (NSInteger) section
 {
     return self.fetchedResultsController.fetchedObjects.count;
-    
 }
 
 
 - (UICollectionViewCell *) collectionView: (UICollectionView *) cv
                    cellForItemAtIndexPath: (NSIndexPath *) indexPath
 {
-    VideoInstance *videoInstance = [self.fetchedResultsController objectAtIndexPath: indexPath];
+    VideoInstance *videoInstance = [self.fetchedResultsController
+                                    objectAtIndexPath: indexPath];
     
     SYNVideoThumbnailWideCell *videoThumbnailCell = [cv dequeueReusableCellWithReuseIdentifier: @"SYNVideoThumbnailWideCell"
                                                                                   forIndexPath: indexPath];
     
     videoThumbnailCell.displayMode = kVideoThumbnailDisplayModeYoutube;
     
-    [videoThumbnailCell.videoImageView setImageWithURL: [NSURL URLWithString: videoInstance.video.thumbnailURL]
-                                      placeholderImage: [UIImage imageNamed: @"PlaceholderVideoWide.png"]];
+    [videoThumbnailCell.videoImageView
+     setImageWithURL: [NSURL URLWithString: videoInstance.video.thumbnailURL]
+     placeholderImage: [UIImage imageNamed: @"PlaceholderVideoWide.png"]];
     
     videoThumbnailCell.videoTitle.text = videoInstance.title;
     videoThumbnailCell.videoInstance = videoInstance;
     
-    Video* video = videoInstance.video;
+    Video *video = videoInstance.video;
     
     NSNumberFormatter *numberFormatter = [[NSNumberFormatter alloc] init];
-    [numberFormatter setNumberStyle:NSNumberFormatterDecimalStyle];
-    NSString* viewsNumberString = [numberFormatter stringFromNumber:video.viewCount];
+    [numberFormatter setNumberStyle: NSNumberFormatterDecimalStyle];
+    NSString *viewsNumberString = [numberFormatter stringFromNumber: video.viewCount];
     
-    videoThumbnailCell.numberOfViewLabel.text = [[NSString stringWithFormat:@"%@ views", viewsNumberString] uppercaseString];
+    videoThumbnailCell.numberOfViewLabel.text = [[NSString stringWithFormat: @"%@ views", viewsNumberString] uppercaseString];
     
     
-    NSDateComponents* differenceDateComponents = [self.currentCalendar components:(NSYearCalendarUnit| NSMonthCalendarUnit | NSDayCalendarUnit) fromDate:video.dateUploaded toDate:[NSDate date] options:0];
+    NSDateComponents *differenceDateComponents = [self.currentCalendar
+                                                  components: (NSYearCalendarUnit | NSMonthCalendarUnit | NSDayCalendarUnit)
+                                                  fromDate: video.dateUploaded
+                                                  toDate: [NSDate date]
+                                                  options: 0];
     
-    NSMutableString* format = [[NSMutableString alloc] init];
-    
+    NSMutableString *format = [[NSMutableString alloc] init];
     
     if (differenceDateComponents.year > 0)
-        [format appendFormat:@"%i Year%@ Ago", differenceDateComponents.year, (differenceDateComponents.year > 1 ? @"s" : @"")];
+    {
+        [format appendFormat: @"%i Year%@ Ago", differenceDateComponents.year, (differenceDateComponents.year > 1 ? @"s" : @"")];
+    }
     else if (differenceDateComponents.month > 0)
-        [format appendFormat:@"%i Month%@ Ago", differenceDateComponents.month, (differenceDateComponents.month > 1 ? @"s" : @"")];
+    {
+        [format appendFormat: @"%i Month%@ Ago", differenceDateComponents.month, (differenceDateComponents.month > 1 ? @"s" : @"")];
+    }
     else if (differenceDateComponents.day > 1)
-        [format appendFormat:@"%i %@", differenceDateComponents.day, NSLocalizedString(@"Days Ago", nil)];
+    {
+        [format appendFormat: @"%i %@", differenceDateComponents.day, NSLocalizedString(@"Days Ago", nil)];
+    }
     else if (differenceDateComponents.day > 0)
+    {
         [format appendString: NSLocalizedString(@"Yesterday", nil)];
+    }
     else
+    {
         [format appendString: NSLocalizedString(@"Today", nil)];
+    }
     
     if (self.isIPhone)
     {
         //On iPhone, append You Tube User name to the date label
-        videoThumbnailCell.dateAddedLabel.text = [NSString stringWithFormat:@"%@ BY %@",[format uppercaseString], [video.sourceUsername uppercaseString]];
+        videoThumbnailCell.dateAddedLabel.text = [NSString stringWithFormat: @"%@ BY %@", [format uppercaseString], [video.sourceUsername uppercaseString]];
     }
     else
     {
         //On iPad a separate label is used for the youtube user name
         videoThumbnailCell.dateAddedLabel.text = [format uppercaseString];
-        videoThumbnailCell.youTubeUserLabel.text = [NSString stringWithFormat:@"BY %@",[video.sourceUsername uppercaseString]];
+        videoThumbnailCell.youTubeUserLabel.text = [NSString stringWithFormat: @"BY %@", [video.sourceUsername uppercaseString]];
     }
     
-    NSUInteger hours = video.duration.integerValue / (60*60);
+    NSUInteger hours = video.duration.integerValue / (60 * 60);
     NSUInteger minutes = ([video.duration integerValue] / 60) % 60;
     NSUInteger seconds = [video.duration integerValue] % 60;
     
     
-    NSString* hoursString = [NSString stringWithFormat:@"%i", hours];
-    NSString* minutesString = minutes > 9 ? [NSString stringWithFormat:@"%i", minutes] : [NSString stringWithFormat:@"0%i", minutes];
-    NSString* secondsString = seconds > 9 ? [NSString stringWithFormat:@"%i", seconds] : [NSString stringWithFormat:@"0%i", seconds];
-    if(hours > 0)
+    NSString *hoursString = [NSString stringWithFormat: @"%i", hours];
+    NSString *minutesString = minutes > 9 ? [NSString stringWithFormat: @"%i", minutes] : [NSString stringWithFormat: @"0%i", minutes];
+    NSString *secondsString = seconds > 9 ? [NSString stringWithFormat: @"%i", seconds] : [NSString stringWithFormat: @"0%i", seconds];
+    
+    if (hours > 0)
     {
         videoThumbnailCell.durationLabel.text = [NSString stringWithFormat: @"%@:%@:%@", hoursString, minutesString, secondsString];
     }
@@ -364,18 +391,18 @@
         videoThumbnailCell.durationLabel.text = [NSString stringWithFormat: @"%@:%@", minutesString, secondsString];
     }
     
-    
-    
     videoThumbnailCell.viewControllerDelegate = self;
     
     videoThumbnailCell.addItButton.highlighted = NO;
-    videoThumbnailCell.addItButton.selected = [appDelegate.videoQueue videoInstanceIsAddedToChannel:videoInstance];
-    
+    videoThumbnailCell.addItButton.selected = [appDelegate.videoQueue videoInstanceIsAddedToChannel: videoInstance];
     
     if ((!self.isIPhone && indexPath.item == 2) ||
-       (self.isIPhone && indexPath.item == 0)) {
+        (self.isIPhone && indexPath.item == 0))
+    {
         //perform after 0.0f delay to make sure the call is queued after the cell has been added to the view
-        [self performSelector:@selector(showVideoOnboardingForCell:) withObject:videoThumbnailCell afterDelay:0.0f];
+        [self performSelector: @selector(showVideoOnboardingForCell:)
+                   withObject: videoThumbnailCell
+                   afterDelay: 0.0f];
     }
     
     return videoThumbnailCell;
@@ -385,19 +412,20 @@
 #pragma mark - Override Header Related Methods
 
 - (CGSize) collectionView: (UICollectionView *) collectionView
-                   layout: (UICollectionViewLayout*) collectionViewLayout referenceSizeForHeaderInSection: (NSInteger) section
+                   layout: (UICollectionViewLayout *) collectionViewLayout
+           referenceSizeForHeaderInSection: (NSInteger) section
 {
     return CGSizeZero;
 }
 
 
-- (CGSize)collectionView:(UICollectionView *)collectionView
-                  layout:(UICollectionViewLayout*)collectionViewLayout
-  sizeForItemAtIndexPath:(NSIndexPath *)indexPath
+- (CGSize) collectionView: (UICollectionView *) collectionView
+                   layout: (UICollectionViewLayout *) collectionViewLayout
+   sizeForItemAtIndexPath: (NSIndexPath *) indexPath
 {
     if (IS_IPAD)
     {
-        if([SYNDeviceManager.sharedInstance isLandscape])
+        if ([SYNDeviceManager.sharedInstance isLandscape])
         {
             return CGSizeMake(497, 140);
         }
@@ -408,7 +436,7 @@
     }
     else
     {
-        return CGSizeMake(310,221);
+        return CGSizeMake(310, 221);
     }
 }
 
@@ -418,14 +446,12 @@
 {
     [super willAnimateRotationToInterfaceOrientation: toInterfaceOrientation
                                             duration: duration];
-    
 }
 
 
 - (void) didRotateFromInterfaceOrientation: (UIInterfaceOrientation) fromInterfaceOrientation
 {
     [super didRotateFromInterfaceOrientation: fromInterfaceOrientation];
-    
 }
 
 
@@ -463,10 +489,12 @@
 }
 
 
-- (SYNAppDelegate*) appDelegate
+- (SYNAppDelegate *) appDelegate
 {
     if (!appDelegate)
-        appDelegate = (SYNAppDelegate*)[[UIApplication sharedApplication] delegate];
+    {
+        appDelegate = (SYNAppDelegate *) [[UIApplication sharedApplication] delegate];
+    }
     
     return appDelegate;
 }
@@ -478,15 +506,17 @@
     {
         dataRequestRange = NSMakeRange(0, kAPIInitialBatchSize);
     }
-        
+    
     return dataRequestRange;
 }
 
 
 - (void) setRunningSearchOperation: (MKNetworkOperation *) runningSearchOperation
 {
-    if(_runningSearchOperation)
+    if (_runningSearchOperation)
+    {
         [_runningSearchOperation cancel];
+    }
     
     _runningSearchOperation = runningSearchOperation;
 }
@@ -494,64 +524,90 @@
 
 #pragma mark - onboarding
 
-- (void) showVideoOnboardingForCell: (SYNVideoThumbnailWideCell*) cell
+- (void) showVideoOnboardingForCell: (SYNVideoThumbnailWideCell *) cell
 {
-    
     NSUserDefaults *defaults = [NSUserDefaults standardUserDefaults];
-    BOOL hasShownVideoOnBoarding = [defaults boolForKey:kUserDefaultsAddVideo];
-    if(!hasShownVideoOnBoarding)
+    BOOL hasShownVideoOnBoarding = [defaults boolForKey: kUserDefaultsAddVideo];
+    
+    if (!hasShownVideoOnBoarding)
     {
+        NSString *message = NSLocalizedString(@"onboarding_video", nil);
         
-        NSString* message = NSLocalizedString(@"onboarding_video", nil);
-        
-        CGFloat fontSize = IS_IPAD ? 19.0 : 15.0 ;
+        CGFloat fontSize = IS_IPAD ? 19.0 : 15.0;
         CGSize size = IS_IPAD ? CGSizeMake(340.0, 164.0) : CGSizeMake(260.0, 144.0);
         CGRect rectToPointTo = CGRectZero;
         PointingDirection directionToPointTo = PointingDirectionDown;
-        if(cell)
+        
+        if (cell)
         {
-            rectToPointTo = [self.view convertRect:cell.addItButton.frame fromView:cell];
-            if(rectToPointTo.origin.y < [[SYNDeviceManager sharedInstance] currentScreenHeight] * 0.5)
+            rectToPointTo = [self.view convertRect: cell.addItButton.frame
+                                          fromView: cell];
+            
+            if (rectToPointTo.origin.y < [[SYNDeviceManager sharedInstance] currentScreenHeight] * 0.5)
+            {
                 directionToPointTo = PointingDirectionUp;
+            }
             
             //NSLog(@"%f %f", rectToPointTo.origin.x, rectToPointTo.origin.y);
         }
-        SYNOnBoardingPopoverView* addToChannelPopover = [SYNOnBoardingPopoverView withMessage:message
-                                                                                     withSize:size
-                                                                                  andFontSize:fontSize
-                                                                                   pointingTo:rectToPointTo
-                                                                                withDirection:directionToPointTo];
-
-
-        __weak SYNSearchVideosViewController* wself = self;
-
-        addToChannelPopover.action = ^{
-            [wself videoAddButtonTapped:cell.addItButton];
-        };
-        [appDelegate.onBoardingQueue addPopover:addToChannelPopover];
         
-        [defaults setBool:YES forKey:kUserDefaultsAddVideo];
+        SYNOnBoardingPopoverView *addToChannelPopover = [SYNOnBoardingPopoverView withMessage: message
+                                                                                     withSize: size
+                                                                                  andFontSize: fontSize
+                                                                                   pointingTo: rectToPointTo
+                                                                                withDirection: directionToPointTo];
+        
+        
+        __weak SYNSearchVideosViewController *wself = self;
+        
+        addToChannelPopover.action = ^{
+            [wself videoAddButtonTapped: cell.addItButton];
+        };
+        [appDelegate.onBoardingQueue addPopover: addToChannelPopover];
+        
+        [defaults setBool: YES
+                   forKey: kUserDefaultsAddVideo];
         
         [appDelegate.onBoardingQueue present];
     }
 }
 
 
+- (void) videoButtonPressed: (UIButton *) videoButton
+{
+    UIView *candidateCell = videoButton;
+    
+    while (![candidateCell isKindOfClass: [SYNVideoThumbnailWideCell class]])
+    {
+        candidateCell = candidateCell.superview;
+    }
+    
+    SYNVideoThumbnailWideCell *selectedCell = (SYNVideoThumbnailWideCell *) candidateCell;
+    NSIndexPath *indexPath = [self.videoThumbnailCollectionView indexPathForItemAtPoint: selectedCell.center];
+    
+    SYNMasterViewController *masterViewController = (SYNMasterViewController *) appDelegate.masterViewController;
+    
+    NSArray *videoInstancesToPlayArray = self.fetchedResultsController.fetchedObjects;
+    
+    [masterViewController addVideoOverlayToViewController: self
+                                   withVideoInstanceArray: videoInstancesToPlayArray
+                                         andSelectedIndex: indexPath.item
+                                               fromCenter: self.view.center];
+}
+
 
 - (void) videoAddButtonTapped: (UIButton *) _addButton
 {
-   
-    if(_addButton.selected)
+    if (_addButton.selected)
+    {
         return;
-    
+    }
     
     UIView *v = _addButton.superview.superview;
     NSIndexPath *indexPath = [self.videoThumbnailCollectionView indexPathForItemAtPoint: v.center];
     VideoInstance *videoInstance = [self.fetchedResultsController objectAtIndexPath: indexPath];
     
-    
-    
-    if(videoInstance)
+    if (videoInstance)
     {
         id<GAITracker> tracker = [GAI sharedInstance].defaultTracker;
         
@@ -564,23 +620,15 @@
                                                          action: @"select"
                                                 videoInstanceId: videoInstance.uniqueId
                                               completionHandler: ^(id response) {
-                                                  
-                                                  
-                                              } errorHandler: ^(id error) {
-                                                  
-                                                  DebugLog(@"Could not record videoAddButtonTapped: activity");
-                                                  
-                                              }];
-        
+                                              }
+                                                   errorHandler: ^(id error) {
+                                                       DebugLog(@"Could not record videoAddButtonTapped: activity");
+                                                   }];
         
         [[NSNotificationCenter defaultCenter] postNotificationName: kVideoQueueAdd
                                                             object: self
-                                                          userInfo: @{@"VideoInstance" : videoInstance }];
+                                                          userInfo: @{@"VideoInstance": videoInstance}];
     }
-    
-    
-    
-    
     
     [self.videoThumbnailCollectionView reloadData];
     
@@ -588,10 +636,12 @@
     _addButton.selected = !_addButton.selected; // switch to on/off
 }
 
+
 - (void) videoQueueCleared
 {
     // this will remove the '+' from the videos that where selected
     [self.videoThumbnailCollectionView reloadData];
 }
+
 
 @end

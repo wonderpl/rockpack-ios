@@ -8,32 +8,31 @@
 
 #import <UIKit/UIKit.h>
 
-typedef enum {
-
+typedef enum
+{
     SearchTabTypeVideos = 0,
     SearchTabTypeChannels = 1,
     SearchTabTypeUsers = 2
-
 } SearchTabType;
 
 @interface SYNSearchTabView : UIControl {
-    UIImage* backgroundImageOn;
-    UIImage* backgroundImageOff;
-    UIImage* backgroundImageHighlighted;
-    UIImageView* bgImageView;
-    UILabel* titleLabel;
-    NSString* typeTitle;
+    UIImage *backgroundImageOn;
+    UIImage *backgroundImageOff;
+    UIImage *backgroundImageHighlighted;
+    UIImageView *bgImageView;
+    UILabel *titleLabel;
+    NSString *typeTitle;
     SearchTabType type;
-    UIColor* onColor;
-    UIColor* offColor;
-    UIButton* overButton;
+    UIColor *onColor;
+    UIColor *offColor;
+    UIButton *overButton;
     BOOL selected;
 }
 
--(BOOL)isClicked:(UIButton*)button;
+- (BOOL) isClicked: (UIButton *) button;
 
--(void)setNumberOfItems:(NSInteger)numberOfItems animated:(BOOL)animated;
+- (void) setNumberOfItems: (NSInteger) numberOfItems animated: (BOOL) animated;
 
-+(id)tabViewWithSearchType:(SearchTabType)itsType;
++ (id) tabViewWithSearchType: (SearchTabType) itsType;
 
 @end
