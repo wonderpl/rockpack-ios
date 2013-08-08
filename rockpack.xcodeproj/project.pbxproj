@@ -1184,6 +1184,7 @@
 		BE8F93B517B3D00700E7035F /* ImageFacebookImplicit@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = BE8F93B117B3D00700E7035F /* ImageFacebookImplicit@2x.png */; };
 		BE8F93B617B3D00700E7035F /* ImageFacebookImplicit@2x~iphone.png in Resources */ = {isa = PBXBuildFile; fileRef = BE8F93B217B3D00700E7035F /* ImageFacebookImplicit@2x~iphone.png */; };
 		BE8F93B717B3D00700E7035F /* ImageFacebookImplicit~iphone.png in Resources */ = {isa = PBXBuildFile; fileRef = BE8F93B317B3D00700E7035F /* ImageFacebookImplicit~iphone.png */; };
+		BE8F93B917B3D22500E7035F /* SYNImplicitSharingController~iphone.xib in Resources */ = {isa = PBXBuildFile; fileRef = BE8F93B817B3D22500E7035F /* SYNImplicitSharingController~iphone.xib */; };
 		BE92A87B16CA938200FED47B /* SYNGenreTabView.m in Sources */ = {isa = PBXBuildFile; fileRef = BE92A87A16CA938200FED47B /* SYNGenreTabView.m */; };
 		BEA043E716CAA8E1005406E7 /* Genre.m in Sources */ = {isa = PBXBuildFile; fileRef = BEA043E416CAA8E1005406E7 /* Genre.m */; };
 		BEA043E816CAA8E1005406E7 /* SubGenre.m in Sources */ = {isa = PBXBuildFile; fileRef = BEA043E616CAA8E1005406E7 /* SubGenre.m */; };
@@ -2646,6 +2647,7 @@
 		BE8F93B117B3D00700E7035F /* ImageFacebookImplicit@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = "ImageFacebookImplicit@2x.png"; path = "Assets/Images/ImageFacebookImplicit@2x.png"; sourceTree = "<group>"; };
 		BE8F93B217B3D00700E7035F /* ImageFacebookImplicit@2x~iphone.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = "ImageFacebookImplicit@2x~iphone.png"; path = "Assets/Images/ImageFacebookImplicit@2x~iphone.png"; sourceTree = "<group>"; };
 		BE8F93B317B3D00700E7035F /* ImageFacebookImplicit~iphone.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = "ImageFacebookImplicit~iphone.png"; path = "Assets/Images/ImageFacebookImplicit~iphone.png"; sourceTree = "<group>"; };
+		BE8F93B817B3D22500E7035F /* SYNImplicitSharingController~iphone.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = "SYNImplicitSharingController~iphone.xib"; sourceTree = "<group>"; };
 		BE905DF417AABCD3004B8BD2 /* Rockpack 9.xcdatamodel */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcdatamodel; path = "Rockpack 9.xcdatamodel"; sourceTree = "<group>"; };
 		BE92A87916CA938200FED47B /* SYNGenreTabView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SYNGenreTabView.h; sourceTree = "<group>"; };
 		BE92A87A16CA938200FED47B /* SYNGenreTabView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SYNGenreTabView.m; sourceTree = "<group>"; };
@@ -5299,6 +5301,7 @@
 				BE8F938217B1113600E7035F /* SYNImplicitSharingController.h */,
 				BE8F938317B1113600E7035F /* SYNImplicitSharingController.m */,
 				BE8F938417B1113600E7035F /* SYNImplicitSharingController.xib */,
+				BE8F93B817B3D22500E7035F /* SYNImplicitSharingController~iphone.xib */,
 			);
 			name = "Sharing Panel";
 			sourceTree = "<group>";
@@ -6516,6 +6519,7 @@
 				BE8F93B517B3D00700E7035F /* ImageFacebookImplicit@2x.png in Resources */,
 				BE8F93B617B3D00700E7035F /* ImageFacebookImplicit@2x~iphone.png in Resources */,
 				BE8F93B717B3D00700E7035F /* ImageFacebookImplicit~iphone.png in Resources */,
+				BE8F93B917B3D22500E7035F /* SYNImplicitSharingController~iphone.xib in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
