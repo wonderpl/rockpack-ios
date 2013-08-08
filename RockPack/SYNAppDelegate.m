@@ -84,8 +84,8 @@
     //    [TestFlight setDeviceIdentifier: [[UIDevice currentDevice] uniqueIdentifier]];
 #endif
     
-    [[UIApplication sharedApplication] registerForRemoteNotificationTypes: (UIRemoteNotificationTypeBadge | UIRemoteNotificationTypeAlert)];
-    
+
+//    
     //Google Adwords conversion tracking. TODO: check parameters with Guy!!
     [GoogleConversionPing pingWithConversionId: @"983664386"
                                          label: @"Km3nCP6G-wQQgo6G1QM"
@@ -178,6 +178,9 @@
     
     if (self.currentUser && self.currentOAuth2Credentials)
     {
+        // If we already have a current user, then register/re-register for notifications
+        [[UIApplication sharedApplication] registerForRemoteNotificationTypes: (UIRemoteNotificationTypeBadge | UIRemoteNotificationTypeAlert)];
+        
         // If we have a user and a refresh token... //
         if ([self.currentOAuth2Credentials hasExpired])
         {
@@ -415,6 +418,9 @@
 
 - (void) logout
 {
+    // As we are logging out, we need to unregister the current user (the new user will be re-registered on login below)
+    [[UIApplication sharedApplication] unregisterForRemoteNotifications];
+     
     self.masterViewController = nil;
     
     [self.currentOAuth2Credentials removeFromKeychain];
@@ -443,17 +449,10 @@
     
     self.loginViewController = nil;
     
-    // At this point we should update out APNS token (if we actually have one)
-    if (self.currentUser && self.apnsToken)
+    // At this point we should register the new user for APNS
+    if (self.currentUser)
     {
-        [self.oAuthNetworkEngine updateApplePushNotificationForUserId: self.currentUser.uniqueId
-                                                                token: self.apnsToken
-                                                    completionHandler: ^(NSDictionary *dictionary) {
-                                                        DebugLog(@"Apple push notification token update successful");
-                                                    }
-                                                         errorHandler: ^(NSError *error) {
-                                                             DebugLog(@"Apple push notification token update failed");
-                                                         }];
+        [[UIApplication sharedApplication] registerForRemoteNotificationTypes: (UIRemoteNotificationTypeBadge | UIRemoteNotificationTypeAlert)];
     }
 }
 
