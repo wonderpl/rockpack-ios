@@ -8,26 +8,26 @@
 
 #import "AppConstants.h"
 #import "Channel.h"
-#import "Genre.h"
-#import "ChannelOwner.h"
-#import "SYNAppDelegate.h"
 #import "ChannelCover.h"
+#import "ChannelOwner.h"
 #import "GAI.h"
+#import "Genre.h"
+#import "SYNAppDelegate.h"
 #import "SYNChannelCategoryTableViewController.h"
 #import "SYNChannelDetailViewController.h"
 #import "SYNChannelThumbnailCell.h"
 #import "SYNChannelsRootViewController.h"
 #import "SYNDeviceManager.h"
+#import "SYNFeedMessagesView.h"
+#import "SYNGenreItemView.h"
 #import "SYNIntegralCollectionViewFlowLayout.h"
 #import "SYNMainRegistry.h"
 #import "SYNNetworkEngine.h"
 #import "SubGenre.h"
 #import "UIFont+SYNFont.h"
 #import "UIImageView+WebCache.h"
-#import "SYNGenreItemView.h"
 #import "Video.h"
 #import "VideoInstance.h"
-#import "SYNFeedMessagesView.h"
 
 
 #define kChannelsCache @"ChannelsCache"
@@ -35,32 +35,25 @@
 @interface SYNChannelsRootViewController () <UIScrollViewDelegate, SYNChannelCategoryTableViewDelegate>
 
 @property (nonatomic, assign) BOOL ignoreRefresh;
-@property (nonatomic, strong) Genre* allGenre;
-@property (nonatomic, strong) Genre* currentGenre;
-@property (nonatomic, strong) NSMutableArray* channels;
-@property (nonatomic, strong) NSString* currentCategoryId;
-@property (nonatomic, strong) SYNChannelCategoryTableViewController* categoryTableViewController;
-@property (nonatomic, strong) SYNFeedMessagesView* emptyGenreMessageView;
-@property (nonatomic, strong) UIButton* categorySelectButton;
-@property (nonatomic, strong) UIControl* categorySelectDismissControl;
-@property (nonatomic, strong) UIImageView* arrowImage;
-@property (nonatomic, strong) UILabel* categoryNameLabel;
-@property (nonatomic, strong) UILabel* subCategoryNameLabel;
-@property (nonatomic, weak) SYNMainRegistry* mainRegistry;
+@property (nonatomic, strong) Genre *allGenre;
+@property (nonatomic, strong) Genre *currentGenre;
+@property (nonatomic, strong) NSMutableArray *channels;
+@property (nonatomic, strong) NSString *currentCategoryId;
+@property (nonatomic, strong) SYNChannelCategoryTableViewController *categoryTableViewController;
+@property (nonatomic, strong) SYNFeedMessagesView *emptyGenreMessageView;
+@property (nonatomic, strong) UIButton *categorySelectButton;
+@property (nonatomic, strong) UIControl *categorySelectDismissControl;
+@property (nonatomic, strong) UIImageView *arrowImage;
+@property (nonatomic, strong) UILabel *categoryNameLabel;
+@property (nonatomic, strong) UILabel *subCategoryNameLabel;
+@property (nonatomic, weak) SYNMainRegistry *mainRegistry;
 
 @end
 
 @implementation SYNChannelsRootViewController
 
-@synthesize currentCategoryId;
-@synthesize currentGenre;
-@synthesize dataRequestRange;
-@synthesize dataItemsAvailable;
-@synthesize mainRegistry;
-@synthesize isAnimating;
-@synthesize channels;
+@synthesize channels = _channels;
 @synthesize runningNetworkOperation = _runningNetworkOperation;
-
 
 #pragma mark - Object lifecycle
 
@@ -78,7 +71,7 @@
 {
     BOOL isIPhone = IS_IPHONE;
     
-    SYNIntegralCollectionViewFlowLayout* flowLayout;
+    SYNIntegralCollectionViewFlowLayout *flowLayout;
     
     if (isIPhone)
     {
@@ -96,13 +89,14 @@
                                                              scrollDirection: UICollectionViewScrollDirectionVertical
                                                                 sectionInset: UIEdgeInsetsMake(6.0, 6.0, 5.0, 6.0)];
     }
-
+    
     flowLayout.footerReferenceSize = [self footerSize];
     
     // Work out how hight the inital tab bar is
     CGFloat topTabBarHeight = [UIImage imageNamed: @"CategoryBar"].size.height;
     
     CGRect channelCollectionViewFrame;
+    
     if (isIPhone)
     {
         channelCollectionViewFrame = CGRectMake(0.0f, 103.0f, [SYNDeviceManager.sharedInstance currentScreenWidth], [SYNDeviceManager.sharedInstance currentScreenHeight] - 123.0f);
@@ -111,7 +105,7 @@
     {
         channelCollectionViewFrame = [SYNDeviceManager.sharedInstance isLandscape] ?
         CGRectMake(0.0, kStandardCollectionViewOffsetY + topTabBarHeight, kFullScreenWidthLandscape, kFullScreenHeightLandscapeMinusStatusBar - kStandardCollectionViewOffsetY - topTabBarHeight) :
-        CGRectMake(0.0f, kStandardCollectionViewOffsetY + topTabBarHeight, kFullScreenWidthPortrait, kFullScreenHeightPortraitMinusStatusBar  - kStandardCollectionViewOffsetY - topTabBarHeight);
+        CGRectMake(0.0f, kStandardCollectionViewOffsetY + topTabBarHeight, kFullScreenWidthPortrait, kFullScreenHeightPortraitMinusStatusBar - kStandardCollectionViewOffsetY - topTabBarHeight);
     }
     
     self.channelThumbnailCollectionView = [[UICollectionView alloc] initWithFrame: channelCollectionViewFrame
@@ -137,11 +131,11 @@
         CGRectMake(0.0f, 0.0f, kFullScreenWidthPortrait, kFullScreenHeightPortraitMinusStatusBar);
     }
     
-    self.view = [[UIView alloc] initWithFrame:newFrame];
+    self.view = [[UIView alloc] initWithFrame: newFrame];
     
     self.view.autoresizingMask = UIViewAutoresizingFlexibleWidth | UIViewAutoresizingFlexibleHeight;
     
-    [self.view addSubview:self.channelThumbnailCollectionView];
+    [self.view addSubview: self.channelThumbnailCollectionView];
     
     if (self.enableCategoryTable)
     {
@@ -174,13 +168,12 @@
     [self.channelThumbnailCollectionView registerNib: footerViewNib
                           forSupplementaryViewOfKind: UICollectionElementKindSectionFooter
                                  withReuseIdentifier: @"SYNChannelFooterMoreView"];
-
     
-    currentGenre = nil;
+    self.currentGenre = nil;
     
-    [self displayChannelsForGenre:currentGenre];
+    [self displayChannelsForGenre: self.currentGenre];
     
-    [self loadChannelsForGenre:currentGenre];
+    [self loadChannelsForGenre: self.currentGenre];
 }
 
 
@@ -193,117 +186,124 @@
     self.channelThumbnailCollectionView.scrollsToTop = YES;
     
     NSUserDefaults *defaults = [NSUserDefaults standardUserDefaults];
-    BOOL hasShownSubscribeOnBoarding = [defaults boolForKey:kUserDefaultsChannels];
-    if(!hasShownSubscribeOnBoarding)
+    BOOL hasShownSubscribeOnBoarding = [defaults boolForKey: kUserDefaultsChannels];
+    
+    if (!hasShownSubscribeOnBoarding)
     {
-        NSString* message = NSLocalizedString(@"onboarding_channels", nil);
+        NSString *message = NSLocalizedString(@"onboarding_channels", nil);
         
-        CGFloat fontSize = IS_IPAD ? 19.0 : 15.0 ;
+        CGFloat fontSize = IS_IPAD ? 19.0 : 15.0;
         CGSize size = IS_IPAD ? CGSizeMake(340.0, 164.0) : CGSizeMake(260.0, 144.0);
-        SYNOnBoardingPopoverView* subscribePopover = [SYNOnBoardingPopoverView withMessage:message
-                                                                                  withSize:size
-                                                                               andFontSize:fontSize
-                                                                                pointingTo:CGRectZero
-                                                                             withDirection:PointingDirectionNone];
+        SYNOnBoardingPopoverView *subscribePopover = [SYNOnBoardingPopoverView withMessage: message
+                                                                                  withSize: size
+                                                                               andFontSize: fontSize
+                                                                                pointingTo: CGRectZero
+                                                                             withDirection: PointingDirectionNone];
+
+        [appDelegate.onBoardingQueue addPopover: subscribePopover];
         
-        
-        [appDelegate.onBoardingQueue addPopover:subscribePopover];
-        
-        [defaults setBool:YES forKey:kUserDefaultsChannels];
+        [defaults setBool: YES
+                   forKey: kUserDefaultsChannels];
         
         [appDelegate.onBoardingQueue present];
     }
     
-
-    
     // if the user has requested 'Load More' channels then dont refresh the page cause he is in the middle of a search
-    if(self.dataRequestRange.location == 0)
-        [self loadChannelsForGenre:currentGenre];
+    if (self.dataRequestRange.location == 0)
+    {
+        [self loadChannelsForGenre: self.currentGenre];
+    }
 }
 
--(void)viewDidScrollToBack
+
+- (void) viewDidScrollToBack
 {
     self.channelThumbnailCollectionView.scrollsToTop = NO;
 }
 
+
 - (void) updateAnalytics
 {
     // Google analytics support
-    [GAI.sharedInstance.defaultTracker sendView: @"Channels - Root"];
+    [GAI.sharedInstance.defaultTracker
+     sendView: @"Channels - Root"];
 }
-
 
 
 #pragma mark - Loading of Channels
 
-- (void) loadChannelsForGenre: (Genre*) genre
+- (void) loadChannelsForGenre: (Genre *) genre
 {
     [self loadChannelsForGenre: genre
                    byAppending: NO];
 }
 
 
-- (void) loadChannelsForGenre: (Genre*) genre
+- (void) loadChannelsForGenre: (Genre *) genre
                   byAppending: (BOOL) append
 {
-    
-//    DebugLog(@"Next request: %i - %i", self.dataRequestRange.location, self.dataRequestRange.length + self.dataRequestRange.location - 1);
+    //    DebugLog(@"Next request: %i - %i", self.dataRequestRange.location, self.dataRequestRange.length + self.dataRequestRange.location - 1);
     
     self.runningNetworkOperation = [appDelegate.networkEngine updateChannelsScreenForCategory: (genre ? genre.uniqueId : @"all")
                                                                                      forRange: self.dataRequestRange
                                                                                 ignoringCache: NO
-                                                                                 onCompletion: ^(NSDictionary* response) {
-                                                      
-                                                      NSDictionary *channelsDictionary = response[@"channels"];
-                                                      if (!channelsDictionary || ![channelsDictionary isKindOfClass: [NSDictionary class]])
-                                                          return;
-                                                      
-                                                      NSArray *itemArray = channelsDictionary[@"items"];
-                                                      if (![itemArray isKindOfClass: [NSArray class]])
-                                                          return;
-                                                      
-                                                      dataRequestRange.length = itemArray.count;
-                                                      
-                                                      
-                                                      
-                                                      NSNumber *totalNumber = channelsDictionary[@"total"];
-                                                      if (![totalNumber isKindOfClass: [NSNumber class]])
-                                                          return;
-                                                      
-                                                      self.dataItemsAvailable = [totalNumber integerValue];
-                                                      
-                                                      
-                                                      BOOL registryResultOk = [appDelegate.mainRegistry registerChannelsFromDictionary: response
-                                                                                                                              forGenre: genre
-                                                                                                                           byAppending: append];
-                                                       self.loadingMoreContent = NO;
-                                                      
-                                                      if (!registryResultOk)
-                                                      {
-                                                          DebugLog(@"Registration of Channel Failed for: %@", currentCategoryId);
-                                                          return;
-                                                      }
-                                                      
-                                                      [self displayChannelsForGenre:genre];
-                                                      
-                                                      if (self.emptyGenreMessageView)
-                                                      {
-                                                          [self.emptyGenreMessageView removeFromSuperview];
-                                                          self.emptyGenreMessageView = nil;
-                                                      }
-                                                      
-                                                      if (self.channels.count == 0)
-                                                      {
-                                                          [self displayEmptyGenreMessage:@"NO CHANNELS FOUND"];
-                                                      }
-                                                      
-                                                      
-                                                      
-                                                  } onError: ^(NSDictionary* errorInfo) {
-                                                      DebugLog(@"Could not load channels: %@", errorInfo);
-                                                      self.loadingMoreContent = NO;
-
-                                                  }];
+                                                                                 onCompletion: ^(NSDictionary *response)
+                                    {
+                                        NSDictionary *channelsDictionary = response[@"channels"];
+                                        
+                                        if (!channelsDictionary || ![channelsDictionary isKindOfClass: [NSDictionary class]])
+                                        {
+                                            return;
+                                        }
+                                        
+                                        NSArray *itemArray = channelsDictionary[@"items"];
+                                        
+                                        if (![itemArray isKindOfClass: [NSArray class]])
+                                        {
+                                            return;
+                                        }
+                                        
+                                        self.dataRequestRange = NSMakeRange(self.dataRequestRange.location, itemArray.count);
+                                        
+                                        NSNumber *totalNumber = channelsDictionary[@"total"];
+                                        
+                                        if (![totalNumber isKindOfClass: [NSNumber class]])
+                                        {
+                                            return;
+                                        }
+                                        
+                                        self.dataItemsAvailable = [totalNumber integerValue];
+                                        
+                                        
+                                        BOOL registryResultOk = [appDelegate.mainRegistry
+                                                                 registerChannelsFromDictionary: response
+                                                                 forGenre: genre
+                                                                 byAppending: append];
+                                        
+                                        self.loadingMoreContent = NO;
+                                        
+                                        if (!registryResultOk)
+                                        {
+                                            DebugLog(@"Registration of Channel Failed for: %@", self.currentCategoryId);
+                                            return;
+                                        }
+                                        
+                                        [self displayChannelsForGenre: genre];
+                                        
+                                        if (self.emptyGenreMessageView)
+                                        {
+                                            [self.emptyGenreMessageView removeFromSuperview];
+                                            self.emptyGenreMessageView = nil;
+                                        }
+                                        
+                                        if (self.channels.count == 0)
+                                        {
+                                            [self displayEmptyGenreMessage: @"NO CHANNELS FOUND"];
+                                        }
+                                    } onError: ^(NSDictionary *errorInfo) {
+                                        DebugLog(@"Could not load channels: %@", errorInfo);
+                                        self.loadingMoreContent = NO;
+                                    }];
 }
 
 
@@ -316,7 +316,7 @@
         
         [self incrementRangeForNextRequest];
         
-        [self loadChannelsForGenre: currentGenre
+        [self loadChannelsForGenre: self.currentGenre
                        byAppending: YES];
     }
 }
@@ -333,13 +333,14 @@
 }
 
 
-- (void) displayChannelsForGenre: (Genre*) genre
+- (void) displayChannelsForGenre: (Genre *) genre
 {
     NSFetchRequest *request = [[NSFetchRequest alloc] init];
-    [request setEntity:[NSEntityDescription entityForName: @"Channel"
-                                   inManagedObjectContext: appDelegate.mainManagedObjectContext]];
     
-    NSPredicate* genrePredicate;
+    [request setEntity: [NSEntityDescription entityForName: @"Channel"
+                                    inManagedObjectContext: appDelegate.mainManagedObjectContext]];
+    
+    NSPredicate *genrePredicate;
     
     if (!genre) // @"all" category
     {
@@ -347,7 +348,7 @@
     }
     else
     {
-        if ([genre isMemberOfClass:[Genre class]]) // no isKindOfClass: which will always return true in this case
+        if ([genre isMemberOfClass: [Genre class]]) // no isKindOfClass: which will always return true in this case
         {
             genrePredicate = [NSPredicate predicateWithFormat: @"categoryId IN %@", [genre getSubGenreIdArray]];
         }
@@ -357,29 +358,35 @@
         }
     }
     
-    NSPredicate* viewIdPredicate = [NSPredicate predicateWithFormat: @"viewId == %@", kChannelsViewId];
+    NSPredicate *viewIdPredicate = [NSPredicate predicateWithFormat: @"viewId == %@", kChannelsViewId];
     
     // only get the channels marked as fresh //
     
-    NSPredicate* isFreshPredicate = [NSPredicate predicateWithFormat: @"fresh == YES"];
+    NSPredicate *isFreshPredicate = [NSPredicate predicateWithFormat: @"fresh == YES"];
     
     
     
-    NSPredicate* finalPredicate = [NSCompoundPredicate andPredicateWithSubpredicates:
+    NSPredicate *finalPredicate = [NSCompoundPredicate andPredicateWithSubpredicates:
                                    @[genrePredicate, isFreshPredicate, viewIdPredicate]];
-
-    [request setPredicate:finalPredicate];
     
-    NSSortDescriptor *positionDescriptor = [[NSSortDescriptor alloc] initWithKey:@"position"  ascending:YES];
+    [request setPredicate: finalPredicate];
     
-    [request setSortDescriptors:@[positionDescriptor]];
+    NSSortDescriptor *positionDescriptor = [[NSSortDescriptor alloc] initWithKey: @"position"
+                                                                       ascending: YES];
+    
+    [request setSortDescriptors: @[positionDescriptor]];
     
     NSError *error = nil;
     
-    NSArray *resultsArray = [appDelegate.mainManagedObjectContext executeFetchRequest: request error: &error];
+    NSArray *resultsArray = [appDelegate.mainManagedObjectContext
+                             executeFetchRequest: request
+                             error: &error];
+    
     if (!resultsArray)
+    {
         return;
-
+    }
+    
     self.channels = [NSMutableArray arrayWithArray: resultsArray];
     
     // We shouldn't wait until the animation is over, as this will result in crashes if the user is scrolling
@@ -387,18 +394,20 @@
 }
 
 
-- (void) displayEmptyGenreMessage:(NSString*)message
+- (void) displayEmptyGenreMessage: (NSString *) message
 {
-    
     if (self.emptyGenreMessageView) // add no more than one
+    {
         return;
+    }
     
-    self.emptyGenreMessageView = [SYNFeedMessagesView withMessage:message];
+    self.emptyGenreMessageView = [SYNFeedMessagesView withMessage: message];
     
     self.emptyGenreMessageView.center = CGPointMake(self.view.center.x, 280.0);
     self.emptyGenreMessageView.frame = CGRectIntegral(self.emptyGenreMessageView.frame);
-   
-    [self.view insertSubview:self.emptyGenreMessageView belowSubview:self.categoryTableViewController.view];
+    
+    [self.view insertSubview: self.emptyGenreMessageView
+                belowSubview: self.categoryTableViewController.view];
 }
 
 
@@ -411,8 +420,6 @@
 }
 
 
-
-
 #pragma mark - CollectionView Delegate
 
 - (NSInteger) numberOfSectionsInCollectionView: (UICollectionView *) collectionView
@@ -420,41 +427,36 @@
     return 1;
 }
 
+
 - (NSInteger) collectionView: (UICollectionView *) view
       numberOfItemsInSection: (NSInteger) section
 {
     return self.channels.count;
-
 }
-
 
 
 - (UICollectionViewCell *) collectionView: (UICollectionView *) collectionView
                    cellForItemAtIndexPath: (NSIndexPath *) indexPath
 {
-    
     Channel *channel = self.channels[indexPath.row];
     
     SYNChannelThumbnailCell *channelThumbnailCell = [collectionView dequeueReusableCellWithReuseIdentifier: @"SYNChannelThumbnailCell"
                                                                                               forIndexPath: indexPath];
     
     
-    if(channel.favouritesValue)
+    if (channel.favouritesValue)
     {
-        if([appDelegate.currentUser.uniqueId isEqualToString:channel.channelOwner.uniqueId])
+        if ([appDelegate.currentUser.uniqueId isEqualToString: channel.channelOwner.uniqueId])
         {
-            [channelThumbnailCell setChannelTitle: [NSString stringWithFormat:@"MY %@", NSLocalizedString(@"FAVORITES", nil)] ];
+            [channelThumbnailCell setChannelTitle: [NSString stringWithFormat: @"MY %@", NSLocalizedString(@"FAVORITES", nil)] ];
         }
         else
         {
-            [channelThumbnailCell setChannelTitle:
-             [NSString stringWithFormat:@"%@'S %@", [channel.channelOwner.displayName uppercaseString], NSLocalizedString(@"FAVORITES", nil)]];
+            [channelThumbnailCell setChannelTitle: [NSString stringWithFormat: @"%@'S %@", [channel.channelOwner.displayName uppercaseString], NSLocalizedString(@"FAVORITES", nil)]];
         }
-        
     }
     else
     {
-        
         [channelThumbnailCell setChannelTitle: channel.title];
     }
     
@@ -469,25 +471,24 @@
     return channelThumbnailCell;
 }
 
-- (void)collectionView:(UICollectionView *)collectionView
-  didEndDisplayingCell:(UICollectionViewCell *)cell
-    forItemAtIndexPath:(NSIndexPath *)indexPath
+
+- (void)  collectionView: (UICollectionView *) collectionView
+    didEndDisplayingCell: (UICollectionViewCell *) cell
+      forItemAtIndexPath: (NSIndexPath *) indexPath
 {
-    [((SYNChannelThumbnailCell*)cell).imageView cancelCurrentImageLoad];
-    
+    [((SYNChannelThumbnailCell *) cell).imageView cancelCurrentImageLoad];
 }
-- (void) displayNameButtonPressed: (UIButton*) button
+
+
+- (void) displayNameButtonPressed: (UIButton *) button
 {
+    SYNChannelThumbnailCell *parent = (SYNChannelThumbnailCell *) [[button superview] superview];
     
+    NSIndexPath *indexPath = [self.channelThumbnailCollectionView indexPathForCell: parent];
     
-    SYNChannelThumbnailCell* parent = (SYNChannelThumbnailCell*)[[button superview] superview];
+    Channel *channel = (Channel *) self.channels[indexPath.row];
     
-    NSIndexPath* indexPath = [self.channelThumbnailCollectionView indexPathForCell: parent];
-    
-    Channel *channel = (Channel*)self.channels[indexPath.row];
-    
-    [appDelegate.viewStackManager viewProfileDetails:channel.channelOwner];
-    
+    [appDelegate.viewStackManager viewProfileDetails: channel.channelOwner];
 }
 
 
@@ -495,7 +496,7 @@
             viewForSupplementaryElementOfKind: (NSString *) kind
                                   atIndexPath: (NSIndexPath *) indexPath
 {
-    UICollectionReusableView* supplementaryView;
+    UICollectionReusableView *supplementaryView;
     
     if (collectionView == self.channelThumbnailCollectionView)
     {
@@ -504,6 +505,7 @@
             self.footerView = [self.channelThumbnailCollectionView dequeueReusableSupplementaryViewOfKind: kind
                                                                                       withReuseIdentifier: @"SYNChannelFooterMoreView"
                                                                                              forIndexPath: indexPath];
+            
             supplementaryView = self.footerView;
             
             if (self.channels.count > 0)
@@ -518,16 +520,15 @@
 
 
 - (CGSize) collectionView: (UICollectionView *) collectionView
-                   layout: (UICollectionViewLayout*) collectionViewLayout
-                  referenceSizeForFooterInSection: (NSInteger) section
+                   layout: (UICollectionViewLayout *) collectionViewLayout
+            referenceSizeForFooterInSection: (NSInteger) section
 {
     CGSize footerSize;
     
     if (collectionView == self.channelThumbnailCollectionView && self.channels.count != 0)
     {
         footerSize = [self footerSize];
-        
-        
+
         // Now set to zero anyway if we have already read in all the items
         NSInteger nextStart = self.dataRequestRange.location + self.dataRequestRange.length; // one is subtracted when the call happens for 0 indexing
         
@@ -546,47 +547,51 @@
 }
 
 
-- (void) collectionView: (UICollectionView *) collectionView didSelectItemAtIndexPath: (NSIndexPath *) indexPath
+- (void) collectionView: (UICollectionView *) collectionView
+         didSelectItemAtIndexPath: (NSIndexPath *) indexPath
 {
     if (self.isAnimating) // prevent double clicking
+    {
         return;
+    }
     
-    Channel *channel = (Channel*)self.channels[indexPath.row];
+    Channel *channel = (Channel *) self.channels[indexPath.row];
     
-    [appDelegate.viewStackManager viewChannelDetails:channel];
+    [appDelegate.viewStackManager viewChannelDetails: channel];
 }
 
 
 - (void) handleMainTap: (UIView *) tab
 {
-    [super handleMainTap:tab];
+    [super handleMainTap: tab];
     
     if (!tab || tab.tag == 0)
     {
         // then home button was pressed in either its icon or "all" mode respectively
-        if (tabExpanded && !isAnimating)
-            [self animateCollectionViewDown:NO];
+        if (tabExpanded && !self.isAnimating)
+        {
+            [self animateCollectionViewDown: NO];
+        }
         
         return;
     }
     
-    if (tabExpanded || isAnimating)
+    if (tabExpanded || self.isAnimating)
+    {
         return;
+    }
     
-    [self animateCollectionViewDown:YES];
+    [self animateCollectionViewDown: YES];
 }
 
 
 #pragma mark - Pushing UICollectionView up and down
 
--(void)animateCollectionViewDown:(BOOL)down
+- (void) animateCollectionViewDown: (BOOL) down
 {
-    
     if (down && !tabExpanded)
     {
-        
-        
-        isAnimating = YES;
+        self.isAnimating = YES;
         
         [UIView animateWithDuration: 0.4
                               delay: 0.0
@@ -598,9 +603,8 @@
                              self.channelThumbnailCollectionView.frame = currentCollectionViewFrame;
                          }
                          completion: ^(BOOL result) {
-                             
                              tabExpanded = YES;
-                             isAnimating = NO;
+                             self.isAnimating = NO;
                              [self.channelThumbnailCollectionView reloadData];
                              CGRect currentCollectionViewFrame = self.channelThumbnailCollectionView.frame;
                              currentCollectionViewFrame.size.height -= kCategorySecondRowHeight;
@@ -609,24 +613,20 @@
     }
     else if (tabExpanded)
     {
-        
-        isAnimating = YES;
+        self.isAnimating = YES;
         
         [UIView animateWithDuration: 0.4
                               delay: 0.1
                             options: UIViewAnimationCurveEaseInOut
                          animations: ^{
-                             
                              CGRect currentCollectionViewFrame = self.channelThumbnailCollectionView.frame;
                              currentCollectionViewFrame.origin.y -= kCategorySecondRowHeight;
                              //
                              self.channelThumbnailCollectionView.frame = currentCollectionViewFrame;
-                             
-                             
-                         }  completion: ^(BOOL result) {
-                             
+                         }
+                         completion: ^(BOOL result) {
                              tabExpanded = NO;
-                             isAnimating = NO;
+                             self.isAnimating = NO;
                              
                              [self.channelThumbnailCollectionView reloadData];
                              
@@ -637,42 +637,42 @@
     }
 }
 
--(void)collapseToParentCategory
+
+- (void) collapseToParentCategory
 {
-    [((SYNGenreTabView*)self.tabViewController.tabView) hideSecondaryTabs];
-    [self animateCollectionViewDown:NO];
+    [((SYNGenreTabView *) self.tabViewController.tabView)hideSecondaryTabs];
+    [self animateCollectionViewDown: NO];
 }
 
 
 - (void) handleNewTabSelectionWithId: (NSString *) selectionId
 {
-
-     
 }
+
 
 - (void) handleNewTabSelectionWithGenre: (Genre *) genre
 {
     [appDelegate.viewStackManager hideSideNavigator];
     
-    if ([currentGenre.uniqueId isEqualToString: genre.uniqueId])
+    if ([self.currentGenre.uniqueId isEqualToString: genre.uniqueId])
     {
         return;
     }
-
-    currentCategoryId = genre.uniqueId;
-
-    dataRequestRange = NSMakeRange(0, STANDARD_REQUEST_LENGTH);
-
+    
+    self.currentCategoryId = genre.uniqueId;
+    
+    self.dataRequestRange = NSMakeRange(0, STANDARD_REQUEST_LENGTH);
+    
     if (genre == nil)
     {
         // all category chosen
-        currentCategoryId = @"all";
-        currentGenre = nil;
+        self.currentCategoryId = @"all";
+        self.currentGenre = nil;
     }
     else
     {
-        currentCategoryId = genre.uniqueId;
-        currentGenre = genre; 
+        self.currentCategoryId = genre.uniqueId;
+        self.currentGenre = genre;
     }
     
     CGPoint currentOffset = self.channelThumbnailCollectionView.contentOffset;
@@ -685,7 +685,7 @@
     
     // display what is already in the DB and then load and display again
     
-    [self displayChannelsForGenre:genre];
+    [self displayChannelsForGenre: genre];
     
     if (self.channels.count > 0)
     {
@@ -697,15 +697,16 @@
     }
     else
     {
-        [self displayEmptyGenreMessage:@"LOADING CHANNELS"];
+        [self displayEmptyGenreMessage: @"LOADING CHANNELS"];
     }
     
     [self loadChannelsForGenre: genre];
 }
 
+
 - (void) clearedLocationBoundData
 {
-    [self animateCollectionViewDown:NO];
+    [self animateCollectionViewDown: NO];
     
     self.dataRequestRange = NSMakeRange(0, STANDARD_REQUEST_LENGTH);
     
@@ -733,15 +734,15 @@
     CGRect newFrame = self.channelThumbnailCollectionView.frame;
     newFrame.size.width = self.categoryTableViewController.view.frame.size.width;
     self.categoryTableViewController.view.frame = newFrame;
-    [self.view addSubview:self.categoryTableViewController.view];
-    [self addChildViewController:self.categoryTableViewController];
-    self.categoryTableViewController.categoryTableControllerDelegate= self;
+    [self.view addSubview: self.categoryTableViewController.view];
+    [self addChildViewController: self.categoryTableViewController];
+    self.categoryTableViewController.categoryTableControllerDelegate = self;
     self.categoryTableViewController.view.hidden = YES;
-    
     
     newFrame.origin.y -= 44.0f;
     newFrame.size.height = 44.0f;
     newFrame.size.width = 320.0f;
+    
     self.categorySelectButton = [[UIButton alloc] initWithFrame: newFrame];
     
     [self.categorySelectButton setBackgroundImage: [UIImage imageNamed: @"CategoryBar"]
@@ -760,12 +761,19 @@
     newFrame.origin.y += 3.0f;
     newFrame.size.width = 280.0f;
     
-    UILabel* newLabel = [[UILabel alloc] initWithFrame:newFrame];
-    newLabel.font = [UIFont boldRockpackFontOfSize:18.0f];
-    newLabel.textColor = [UIColor colorWithRed: 106.0f/255.0f green: 114.0f/255.0f blue: 122.0f/255.0f alpha: 1.0f];
-    newLabel.shadowColor = [UIColor colorWithWhite: 1.0f alpha: 0.75f];
+    UILabel *newLabel = [[UILabel alloc] initWithFrame: newFrame];
+    newLabel.font = [UIFont boldRockpackFontOfSize: 18.0f];
+    
+    newLabel.textColor = [UIColor colorWithRed: 106.0f / 255.0f
+                                         green: 114.0f / 255.0f
+                                          blue: 122.0f / 255.0f
+                                         alpha: 1.0f];
+    
+    newLabel.shadowColor = [UIColor colorWithWhite: 1.0f
+                                             alpha: 0.75f];
+    
     newLabel.shadowOffset = CGSizeMake(0.0f, 1.0f);
-    newLabel.text = NSLocalizedString(@"BROWSE CATEGORIES",nil);
+    newLabel.text = NSLocalizedString(@"BROWSE CATEGORIES", nil);
     newLabel.backgroundColor = [UIColor clearColor];
     CGPoint center = newLabel.center;
     [newLabel sizeToFit];
@@ -773,7 +781,6 @@
     newLabel.center = center;
     self.categoryNameLabel = newLabel;
     [self.view addSubview: self.categoryNameLabel];
-    
     
     newLabel = [[UILabel alloc] initWithFrame: self.categoryNameLabel.frame];
     newLabel.font = self.categoryNameLabel.font;
@@ -783,20 +790,17 @@
     newLabel.backgroundColor = self.categoryNameLabel.backgroundColor;
     newLabel.hidden = YES;
     newLabel.center = center;
-
-    self.subCategoryNameLabel = newLabel;
-    [self.view addSubview:self.subCategoryNameLabel];
     
-    self.arrowImage =[[UIImageView alloc] initWithImage: [UIImage imageNamed: @"IconCategoryBarChevron~iphone"]];
+    self.subCategoryNameLabel = newLabel;
+    [self.view addSubview: self.subCategoryNameLabel];
+    
+    self.arrowImage = [[UIImageView alloc] initWithImage: [UIImage imageNamed: @"IconCategoryBarChevron~iphone"]];
     center.y -= 4.0f;
     self.arrowImage.center = center;
     self.arrowImage.hidden = YES;
     [self.view addSubview: self.arrowImage];
-    
-    
-    
-    
 }
+
 
 - (void) toggleChannelsCategoryTable: (id) sender
 {
@@ -836,17 +840,16 @@
 }
 
 
-
 - (void) categoryTableController: (SYNChannelCategoryTableViewController *) tableController
                didSelectCategory: (Genre *) category
 {
-    
     id<GAITracker> tracker = [GAI sharedInstance].defaultTracker;
     
     [tracker sendEventWithCategory: @"uiAction"
                         withAction: @"categoryItemClick"
                          withLabel: category.name
                          withValue: nil];
+    
     if (category)
     {
         self.categoryNameLabel.text = category.name;
@@ -869,7 +872,6 @@
 - (void) categoryTableController: (SYNChannelCategoryTableViewController *) tableController
             didSelectSubCategory: (SubGenre *) subCategory
 {
-    
     id<GAITracker> tracker = [GAI sharedInstance].defaultTracker;
     
     [tracker sendEventWithCategory: @"uiAction"
@@ -893,38 +895,43 @@
     self.subCategoryNameLabel.frame = newFrame;
     
     [self handleNewTabSelectionWithGenre: subCategory];
-
-    [self toggleChannelsCategoryTable:nil];
+    
+    [self toggleChannelsCategoryTable: nil];
 }
 
--(void)setRunningNetworkOperation:(MKNetworkOperation *)runningNetworkOperation
+
+- (void) setRunningNetworkOperation: (MKNetworkOperation *) runningNetworkOperation
 {
-    if(_runningNetworkOperation)
+    if (_runningNetworkOperation)
+    {
         [_runningNetworkOperation cancel];
+    }
     
     _runningNetworkOperation = runningNetworkOperation;
 }
 
+
 - (void) categoryTableControllerDeselectedAll: (SYNChannelCategoryTableViewController *) tableController
 {
-    self.categoryNameLabel.text = NSLocalizedString(@"BROWSE CATEGORIES",nil);
+    self.categoryNameLabel.text = NSLocalizedString(@"BROWSE CATEGORIES", nil);
     [self.categoryNameLabel sizeToFit];
     self.subCategoryNameLabel.hidden = YES;
     self.arrowImage.hidden = YES;
     
     [self handleNewTabSelectionWithGenre: nil];
     
-    if(!self.categoryTableViewController.view.hidden)
+    if (!self.categoryTableViewController.view.hidden)
     {
         [self toggleChannelsCategoryTable: nil];
     }
 }
 
--(void)headerTapped
-{
-    [self.channelThumbnailCollectionView setContentOffset:CGPointZero animated:YES];
-}
 
+- (void) headerTapped
+{
+    [self.channelThumbnailCollectionView setContentOffset: CGPointZero
+                                                 animated: YES];
+}
 
 
 @end
