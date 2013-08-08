@@ -125,7 +125,7 @@ static NSString *const kCompletedCallbackKey = @"completed";
         {
             if (!wself) return;
             SDWebImageDownloader *sself = wself;
-            NSLog(@"aaa Using callbacks 1");
+//            NSLog(@"aaa Using callbacks 1");
             NSArray *callbacksForURL = [sself callbacksForURL:url];
             for (NSDictionary *callbacks in callbacksForURL)
             {
@@ -137,7 +137,7 @@ static NSString *const kCompletedCallbackKey = @"completed";
         {
             if (!wself) return;
             SDWebImageDownloader *sself = wself;
-            NSLog(@"aaa Using callbacks 2");
+//            NSLog(@"aaa Using callbacks 2");
             NSArray *callbacksForURL = [sself callbacksForURL:url];
             if (finished)
             {
@@ -186,7 +186,7 @@ static NSString *const kCompletedCallbackKey = @"completed";
         BOOL first = NO;
         if (!self.URLCallbacks[url])
         {
-            DebugLog(@"aaa Creating callbacks");
+//            DebugLog(@"aaa Creating callbacks");
             self.URLCallbacks[url] = NSMutableArray.new;
             first = YES;
         }
@@ -211,7 +211,7 @@ static NSString *const kCompletedCallbackKey = @"completed";
     __block NSArray *callbacksForURL;
     dispatch_sync(self.barrierQueue, ^
     {
-        DebugLog(@"aaa Getting callbacks");
+//        DebugLog(@"aaa Getting callbacks");
         callbacksForURL = self.URLCallbacks[url];
     });
     return callbacksForURL;
@@ -221,7 +221,7 @@ static NSString *const kCompletedCallbackKey = @"completed";
 {
     dispatch_barrier_async(self.barrierQueue, ^
     {
-        DebugLog(@"aaa Removing callbacks");
+//        DebugLog(@"aaa Removing callbacks");
         [self.URLCallbacks removeObjectForKey:url];
     });
 }
