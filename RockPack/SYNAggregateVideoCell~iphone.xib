@@ -59,7 +59,7 @@
 								<string key="NSFrame">{{44, 181}, {246, 26}}</string>
 								<reference key="NSSuperview" ref="901165756"/>
 								<reference key="NSWindow"/>
-								<reference key="NSNextKeyView" ref="113070131"/>
+								<reference key="NSNextKeyView" ref="516877497"/>
 								<string key="NSReuseIdentifierKey">_NS:9</string>
 								<bool key="IBUIOpaque">NO</bool>
 								<bool key="IBUIClipsSubviews">YES</bool>
@@ -93,7 +93,6 @@
 								<string key="NSFrame">{{44, 241}, {228, 24}}</string>
 								<reference key="NSSuperview" ref="901165756"/>
 								<reference key="NSWindow"/>
-								<reference key="NSNextKeyView"/>
 								<string key="NSReuseIdentifierKey">_NS:9</string>
 								<bool key="IBUIOpaque">NO</bool>
 								<bool key="IBUIClipsSubviews">YES</bool>
@@ -209,7 +208,7 @@
 							<object class="IBUIButton" id="266156758">
 								<reference key="NSNextResponder" ref="901165756"/>
 								<int key="NSvFlags">292</int>
-								<string key="NSFrame">{{253, 44}, {57, 57}}</string>
+								<string key="NSFrame">{{253, 0}, {57, 57}}</string>
 								<reference key="NSSuperview" ref="901165756"/>
 								<reference key="NSWindow"/>
 								<reference key="NSNextKeyView" ref="108447182"/>
@@ -239,7 +238,7 @@
 								<reference key="IBUIFontDescription" ref="1007686574"/>
 								<reference key="IBUIFont" ref="599970118"/>
 							</object>
-							<object class="IBUIButton" id="113070131">
+							<object class="IBUIButton" id="516877497">
 								<reference key="NSNextResponder" ref="901165756"/>
 								<int key="NSvFlags">292</int>
 								<string key="NSFrame">{{-1, 229}, {44, 44}}</string>
@@ -272,7 +271,7 @@
 							<object class="IBUILabel" id="108447182">
 								<reference key="NSNextResponder" ref="901165756"/>
 								<int key="NSvFlags">292</int>
-								<string key="NSFrame">{{10, 146}, {287, 18}}</string>
+								<string key="NSFrame">{{10, 148}, {287, 24}}</string>
 								<reference key="NSSuperview" ref="901165756"/>
 								<reference key="NSWindow"/>
 								<reference key="NSNextKeyView" ref="418720652"/>
@@ -287,7 +286,10 @@
 								<bool key="IBUIUserInteractionEnabled">NO</bool>
 								<string key="targetRuntimeIdentifier">IBCocoaTouchFramework</string>
 								<string key="IBUIText">BASEMENT JAXX</string>
-								<reference key="IBUITextColor" ref="119607441"/>
+								<object class="NSColor" key="IBUITextColor">
+									<int key="NSColorSpace">1</int>
+									<bytes key="NSRGB">MC45NDUwOTgwMzkyIDAuOTQ1MDk4MDM5MiAwLjk0NTA5ODAzOTIAA</bytes>
+								</object>
 								<nil key="IBUIHighlightedColor"/>
 								<object class="NSColor" key="IBUIShadowColor">
 									<int key="NSColorSpace">3</int>
@@ -297,11 +299,11 @@
 								<int key="IBUIBaselineAdjustment">0</int>
 								<object class="IBUIFontDescription" key="IBUIFontDescription">
 									<int key="type">2</int>
-									<double key="pointSize">18</double>
+									<double key="pointSize">16</double>
 								</object>
 								<object class="NSFont" key="IBUIFont">
 									<string key="NSName">Helvetica-Bold</string>
-									<double key="NSSize">18</double>
+									<double key="NSSize">16</double>
 									<int key="NSfFlags">16</int>
 								</object>
 								<bool key="IBUIAdjustsFontSizeToFit">NO</bool>
@@ -411,7 +413,7 @@
 					<object class="IBCocoaTouchOutletConnection" key="connection">
 						<string key="label">heartButton</string>
 						<reference key="source" ref="377152669"/>
-						<reference key="destination" ref="113070131"/>
+						<reference key="destination" ref="516877497"/>
 					</object>
 					<int key="connectionID">32</int>
 				</object>
@@ -446,7 +448,7 @@
 							<reference ref="165793426"/>
 							<reference ref="108447182"/>
 							<reference ref="163046098"/>
-							<reference ref="113070131"/>
+							<reference ref="516877497"/>
 							<reference ref="675217485"/>
 						</array>
 						<reference key="parent" ref="0"/>
@@ -501,7 +503,7 @@
 					</object>
 					<object class="IBObjectRecord">
 						<int key="objectID">31</int>
-						<reference key="object" ref="113070131"/>
+						<reference key="object" ref="516877497"/>
 						<reference key="parent" ref="377152669"/>
 					</object>
 				</array>

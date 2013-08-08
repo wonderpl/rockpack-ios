@@ -151,7 +151,8 @@ typedef enum _FeedItemResourceType {
 #define kHTMLVideoPlayerSource      @"/ws/videos/players/"                      /* GET */
 
 // Apple push notifications
-#define kRegisterExternalAccount    @"/ws/USERID/external_accounts/"            /* POST */
+#define kRegisterExternalAccount    @"/ws/login/external/"                      /* POST */
+#define kGetExternalAccounts       @"/ws/USERID/external_accounts/"             /* GET */
 #define kGetExternalAccountId       @"/ws/USERID/external_accounts/ACCOUNTID/"  /* GET */
 
 // Set/Get Flags
