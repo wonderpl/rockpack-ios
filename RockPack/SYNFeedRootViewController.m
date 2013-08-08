@@ -254,7 +254,7 @@ typedef void(^FeedDataErrorBlock)(void);
 -(void)checkForOnBoarding
 {
     
-    if(self.feedItemsData.count == 0)
+    if(self.feedItemsData.count > 0)
         return;
     
     NSUserDefaults *defaults = [NSUserDefaults standardUserDefaults];

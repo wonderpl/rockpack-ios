@@ -251,9 +251,14 @@
         [externalAccountBySystemName setObject:externalAccount forKey:externalAccount.system];
     }
     
+    NSString* systemKey;
     for (NSDictionary* item in items)
     {
-        if(!(externalAccount = externalAccountBySystemName[item[@""]]))
+      
+        if(!(systemKey = item[@"external_system"]))
+            continue;
+        
+        if(!(externalAccount = externalAccountBySystemName[systemKey]))
         {
             if(!(externalAccount = [ExternalAccount instanceFromDictionary:item
                                                 usingManagedObjectContext:self.managedObjectContext]))
@@ -267,12 +272,22 @@
         }
         else
         {
+            [externalAccountBySystemName removeObjectForKey:systemKey];
             [externalAccount setAttributesFromDictionary:item];
         }
         
+    }
+    
+    // delete old
+    for (systemKey in externalAccountBySystemName)
+    {
         
+        externalAccount = externalAccountBySystemName[systemKey];
         
+        if(!externalAccount)
+            continue;
         
+        [externalAccount.managedObjectContext deleteObject:externalAccount];
     }
 }
 
