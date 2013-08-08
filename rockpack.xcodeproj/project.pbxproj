@@ -1164,6 +1164,27 @@
 		BE8F938617B1113600E7035F /* SYNImplicitSharingController.xib in Resources */ = {isa = PBXBuildFile; fileRef = BE8F938417B1113600E7035F /* SYNImplicitSharingController.xib */; };
 		BE8F938A17B1267900E7035F /* _ExternalAccount.m in Sources */ = {isa = PBXBuildFile; fileRef = BE8F938917B1267900E7035F /* _ExternalAccount.m */; };
 		BE8F938D17B1268500E7035F /* ExternalAccount.m in Sources */ = {isa = PBXBuildFile; fileRef = BE8F938C17B1268500E7035F /* ExternalAccount.m */; };
+		BE8F939817B3CFD100E7035F /* ButtonNotNow.png in Resources */ = {isa = PBXBuildFile; fileRef = BE8F939017B3CFD100E7035F /* ButtonNotNow.png */; };
+		BE8F939917B3CFD100E7035F /* ButtonNotNow@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = BE8F939117B3CFD100E7035F /* ButtonNotNow@2x.png */; };
+		BE8F939A17B3CFD200E7035F /* ButtonNotNow@2x~iphone.png in Resources */ = {isa = PBXBuildFile; fileRef = BE8F939217B3CFD100E7035F /* ButtonNotNow@2x~iphone.png */; };
+		BE8F939B17B3CFD200E7035F /* ButtonNotNow~iphone.png in Resources */ = {isa = PBXBuildFile; fileRef = BE8F939317B3CFD100E7035F /* ButtonNotNow~iphone.png */; };
+		BE8F939C17B3CFD200E7035F /* ButtonNotNowHighlighted.png in Resources */ = {isa = PBXBuildFile; fileRef = BE8F939417B3CFD100E7035F /* ButtonNotNowHighlighted.png */; };
+		BE8F939D17B3CFD200E7035F /* ButtonNotNowHighlighted@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = BE8F939517B3CFD100E7035F /* ButtonNotNowHighlighted@2x.png */; };
+		BE8F939E17B3CFD200E7035F /* ButtonNotNowHighlighted@2x~iphone.png in Resources */ = {isa = PBXBuildFile; fileRef = BE8F939617B3CFD100E7035F /* ButtonNotNowHighlighted@2x~iphone.png */; };
+		BE8F939F17B3CFD200E7035F /* ButtonNotNowHighlighted~iphone.png in Resources */ = {isa = PBXBuildFile; fileRef = BE8F939717B3CFD100E7035F /* ButtonNotNowHighlighted~iphone.png */; };
+		BE8F93A817B3CFF400E7035F /* ButtonYes.png in Resources */ = {isa = PBXBuildFile; fileRef = BE8F93A017B3CFF400E7035F /* ButtonYes.png */; };
+		BE8F93A917B3CFF400E7035F /* ButtonYes@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = BE8F93A117B3CFF400E7035F /* ButtonYes@2x.png */; };
+		BE8F93AA17B3CFF400E7035F /* ButtonYes@2x~iphone.png in Resources */ = {isa = PBXBuildFile; fileRef = BE8F93A217B3CFF400E7035F /* ButtonYes@2x~iphone.png */; };
+		BE8F93AB17B3CFF400E7035F /* ButtonYes~iphone.png in Resources */ = {isa = PBXBuildFile; fileRef = BE8F93A317B3CFF400E7035F /* ButtonYes~iphone.png */; };
+		BE8F93AC17B3CFF400E7035F /* ButtonYesHighlighted.png in Resources */ = {isa = PBXBuildFile; fileRef = BE8F93A417B3CFF400E7035F /* ButtonYesHighlighted.png */; };
+		BE8F93AD17B3CFF400E7035F /* ButtonYesHighlighted@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = BE8F93A517B3CFF400E7035F /* ButtonYesHighlighted@2x.png */; };
+		BE8F93AE17B3CFF400E7035F /* ButtonYesHighlighted@2x~iphone.png in Resources */ = {isa = PBXBuildFile; fileRef = BE8F93A617B3CFF400E7035F /* ButtonYesHighlighted@2x~iphone.png */; };
+		BE8F93AF17B3CFF400E7035F /* ButtonYesHighlighted~iphone.png in Resources */ = {isa = PBXBuildFile; fileRef = BE8F93A717B3CFF400E7035F /* ButtonYesHighlighted~iphone.png */; };
+		BE8F93B417B3D00700E7035F /* ImageFacebookImplicit.png in Resources */ = {isa = PBXBuildFile; fileRef = BE8F93B017B3D00700E7035F /* ImageFacebookImplicit.png */; };
+		BE8F93B517B3D00700E7035F /* ImageFacebookImplicit@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = BE8F93B117B3D00700E7035F /* ImageFacebookImplicit@2x.png */; };
+		BE8F93B617B3D00700E7035F /* ImageFacebookImplicit@2x~iphone.png in Resources */ = {isa = PBXBuildFile; fileRef = BE8F93B217B3D00700E7035F /* ImageFacebookImplicit@2x~iphone.png */; };
+		BE8F93B717B3D00700E7035F /* ImageFacebookImplicit~iphone.png in Resources */ = {isa = PBXBuildFile; fileRef = BE8F93B317B3D00700E7035F /* ImageFacebookImplicit~iphone.png */; };
+		BE8F93B917B3D22500E7035F /* SYNImplicitSharingController~iphone.xib in Resources */ = {isa = PBXBuildFile; fileRef = BE8F93B817B3D22500E7035F /* SYNImplicitSharingController~iphone.xib */; };
 		BE92A87B16CA938200FED47B /* SYNGenreTabView.m in Sources */ = {isa = PBXBuildFile; fileRef = BE92A87A16CA938200FED47B /* SYNGenreTabView.m */; };
 		BEA043E716CAA8E1005406E7 /* Genre.m in Sources */ = {isa = PBXBuildFile; fileRef = BEA043E416CAA8E1005406E7 /* Genre.m */; };
 		BEA043E816CAA8E1005406E7 /* SubGenre.m in Sources */ = {isa = PBXBuildFile; fileRef = BEA043E616CAA8E1005406E7 /* SubGenre.m */; };
@@ -2605,6 +2626,28 @@
 		BE8F938917B1267900E7035F /* _ExternalAccount.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = _ExternalAccount.m; sourceTree = "<group>"; };
 		BE8F938B17B1268500E7035F /* ExternalAccount.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ExternalAccount.h; sourceTree = "<group>"; };
 		BE8F938C17B1268500E7035F /* ExternalAccount.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ExternalAccount.m; sourceTree = "<group>"; };
+		BE8F938E17B3C64E00E7035F /* Rockpack 11.xcdatamodel */ = {isa = PBXFileReference; lastKnownFileType = file; path = "Rockpack 11.xcdatamodel"; sourceTree = "<group>"; };
+		BE8F939017B3CFD100E7035F /* ButtonNotNow.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = ButtonNotNow.png; path = Assets/Images/ButtonNotNow.png; sourceTree = "<group>"; };
+		BE8F939117B3CFD100E7035F /* ButtonNotNow@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = "ButtonNotNow@2x.png"; path = "Assets/Images/ButtonNotNow@2x.png"; sourceTree = "<group>"; };
+		BE8F939217B3CFD100E7035F /* ButtonNotNow@2x~iphone.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = "ButtonNotNow@2x~iphone.png"; path = "Assets/Images/ButtonNotNow@2x~iphone.png"; sourceTree = "<group>"; };
+		BE8F939317B3CFD100E7035F /* ButtonNotNow~iphone.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = "ButtonNotNow~iphone.png"; path = "Assets/Images/ButtonNotNow~iphone.png"; sourceTree = "<group>"; };
+		BE8F939417B3CFD100E7035F /* ButtonNotNowHighlighted.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = ButtonNotNowHighlighted.png; path = Assets/Images/ButtonNotNowHighlighted.png; sourceTree = "<group>"; };
+		BE8F939517B3CFD100E7035F /* ButtonNotNowHighlighted@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = "ButtonNotNowHighlighted@2x.png"; path = "Assets/Images/ButtonNotNowHighlighted@2x.png"; sourceTree = "<group>"; };
+		BE8F939617B3CFD100E7035F /* ButtonNotNowHighlighted@2x~iphone.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = "ButtonNotNowHighlighted@2x~iphone.png"; path = "Assets/Images/ButtonNotNowHighlighted@2x~iphone.png"; sourceTree = "<group>"; };
+		BE8F939717B3CFD100E7035F /* ButtonNotNowHighlighted~iphone.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = "ButtonNotNowHighlighted~iphone.png"; path = "Assets/Images/ButtonNotNowHighlighted~iphone.png"; sourceTree = "<group>"; };
+		BE8F93A017B3CFF400E7035F /* ButtonYes.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = ButtonYes.png; path = Assets/Images/ButtonYes.png; sourceTree = "<group>"; };
+		BE8F93A117B3CFF400E7035F /* ButtonYes@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = "ButtonYes@2x.png"; path = "Assets/Images/ButtonYes@2x.png"; sourceTree = "<group>"; };
+		BE8F93A217B3CFF400E7035F /* ButtonYes@2x~iphone.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = "ButtonYes@2x~iphone.png"; path = "Assets/Images/ButtonYes@2x~iphone.png"; sourceTree = "<group>"; };
+		BE8F93A317B3CFF400E7035F /* ButtonYes~iphone.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = "ButtonYes~iphone.png"; path = "Assets/Images/ButtonYes~iphone.png"; sourceTree = "<group>"; };
+		BE8F93A417B3CFF400E7035F /* ButtonYesHighlighted.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = ButtonYesHighlighted.png; path = Assets/Images/ButtonYesHighlighted.png; sourceTree = "<group>"; };
+		BE8F93A517B3CFF400E7035F /* ButtonYesHighlighted@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = "ButtonYesHighlighted@2x.png"; path = "Assets/Images/ButtonYesHighlighted@2x.png"; sourceTree = "<group>"; };
+		BE8F93A617B3CFF400E7035F /* ButtonYesHighlighted@2x~iphone.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = "ButtonYesHighlighted@2x~iphone.png"; path = "Assets/Images/ButtonYesHighlighted@2x~iphone.png"; sourceTree = "<group>"; };
+		BE8F93A717B3CFF400E7035F /* ButtonYesHighlighted~iphone.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = "ButtonYesHighlighted~iphone.png"; path = "Assets/Images/ButtonYesHighlighted~iphone.png"; sourceTree = "<group>"; };
+		BE8F93B017B3D00700E7035F /* ImageFacebookImplicit.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = ImageFacebookImplicit.png; path = Assets/Images/ImageFacebookImplicit.png; sourceTree = "<group>"; };
+		BE8F93B117B3D00700E7035F /* ImageFacebookImplicit@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = "ImageFacebookImplicit@2x.png"; path = "Assets/Images/ImageFacebookImplicit@2x.png"; sourceTree = "<group>"; };
+		BE8F93B217B3D00700E7035F /* ImageFacebookImplicit@2x~iphone.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = "ImageFacebookImplicit@2x~iphone.png"; path = "Assets/Images/ImageFacebookImplicit@2x~iphone.png"; sourceTree = "<group>"; };
+		BE8F93B317B3D00700E7035F /* ImageFacebookImplicit~iphone.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = "ImageFacebookImplicit~iphone.png"; path = "Assets/Images/ImageFacebookImplicit~iphone.png"; sourceTree = "<group>"; };
+		BE8F93B817B3D22500E7035F /* SYNImplicitSharingController~iphone.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = "SYNImplicitSharingController~iphone.xib"; sourceTree = "<group>"; };
 		BE905DF417AABCD3004B8BD2 /* Rockpack 9.xcdatamodel */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcdatamodel; path = "Rockpack 9.xcdatamodel"; sourceTree = "<group>"; };
 		BE92A87916CA938200FED47B /* SYNGenreTabView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SYNGenreTabView.h; sourceTree = "<group>"; };
 		BE92A87A16CA938200FED47B /* SYNGenreTabView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SYNGenreTabView.m; sourceTree = "<group>"; };
@@ -3362,6 +3405,7 @@
 		019824DE1629CA5900216900 /* Images */ = {
 			isa = PBXGroup;
 			children = (
+				BE8F938F17B3CF9700E7035F /* Sharing */,
 				BE7D030F179E8563008053DC /* Friends */,
 				BE3983D5176A0CC600EE9C7B /* OnBoarding */,
 				01D0995D17429F2300351C82 /* Report Concern */,
@@ -5257,8 +5301,36 @@
 				BE8F938217B1113600E7035F /* SYNImplicitSharingController.h */,
 				BE8F938317B1113600E7035F /* SYNImplicitSharingController.m */,
 				BE8F938417B1113600E7035F /* SYNImplicitSharingController.xib */,
+				BE8F93B817B3D22500E7035F /* SYNImplicitSharingController~iphone.xib */,
 			);
 			name = "Sharing Panel";
+			sourceTree = "<group>";
+		};
+		BE8F938F17B3CF9700E7035F /* Sharing */ = {
+			isa = PBXGroup;
+			children = (
+				BE8F939017B3CFD100E7035F /* ButtonNotNow.png */,
+				BE8F939117B3CFD100E7035F /* ButtonNotNow@2x.png */,
+				BE8F939217B3CFD100E7035F /* ButtonNotNow@2x~iphone.png */,
+				BE8F939317B3CFD100E7035F /* ButtonNotNow~iphone.png */,
+				BE8F939417B3CFD100E7035F /* ButtonNotNowHighlighted.png */,
+				BE8F939517B3CFD100E7035F /* ButtonNotNowHighlighted@2x.png */,
+				BE8F939617B3CFD100E7035F /* ButtonNotNowHighlighted@2x~iphone.png */,
+				BE8F939717B3CFD100E7035F /* ButtonNotNowHighlighted~iphone.png */,
+				BE8F93A017B3CFF400E7035F /* ButtonYes.png */,
+				BE8F93A117B3CFF400E7035F /* ButtonYes@2x.png */,
+				BE8F93A217B3CFF400E7035F /* ButtonYes@2x~iphone.png */,
+				BE8F93A317B3CFF400E7035F /* ButtonYes~iphone.png */,
+				BE8F93A417B3CFF400E7035F /* ButtonYesHighlighted.png */,
+				BE8F93A517B3CFF400E7035F /* ButtonYesHighlighted@2x.png */,
+				BE8F93A617B3CFF400E7035F /* ButtonYesHighlighted@2x~iphone.png */,
+				BE8F93A717B3CFF400E7035F /* ButtonYesHighlighted~iphone.png */,
+				BE8F93B017B3D00700E7035F /* ImageFacebookImplicit.png */,
+				BE8F93B117B3D00700E7035F /* ImageFacebookImplicit@2x.png */,
+				BE8F93B217B3D00700E7035F /* ImageFacebookImplicit@2x~iphone.png */,
+				BE8F93B317B3D00700E7035F /* ImageFacebookImplicit~iphone.png */,
+			);
+			name = Sharing;
 			sourceTree = "<group>";
 		};
 		BE95B90016CBAAD500EC2E72 /* Tabs */ = {
@@ -6427,6 +6499,27 @@
 				01EC095717AAA64F00E1ACE1 /* ButtonPlayChannel.png in Resources */,
 				01EC095817AAA64F00E1ACE1 /* ButtonPlayChannel@2x.png in Resources */,
 				BE8F938617B1113600E7035F /* SYNImplicitSharingController.xib in Resources */,
+				BE8F939817B3CFD100E7035F /* ButtonNotNow.png in Resources */,
+				BE8F939917B3CFD100E7035F /* ButtonNotNow@2x.png in Resources */,
+				BE8F939A17B3CFD200E7035F /* ButtonNotNow@2x~iphone.png in Resources */,
+				BE8F939B17B3CFD200E7035F /* ButtonNotNow~iphone.png in Resources */,
+				BE8F939C17B3CFD200E7035F /* ButtonNotNowHighlighted.png in Resources */,
+				BE8F939D17B3CFD200E7035F /* ButtonNotNowHighlighted@2x.png in Resources */,
+				BE8F939E17B3CFD200E7035F /* ButtonNotNowHighlighted@2x~iphone.png in Resources */,
+				BE8F939F17B3CFD200E7035F /* ButtonNotNowHighlighted~iphone.png in Resources */,
+				BE8F93A817B3CFF400E7035F /* ButtonYes.png in Resources */,
+				BE8F93A917B3CFF400E7035F /* ButtonYes@2x.png in Resources */,
+				BE8F93AA17B3CFF400E7035F /* ButtonYes@2x~iphone.png in Resources */,
+				BE8F93AB17B3CFF400E7035F /* ButtonYes~iphone.png in Resources */,
+				BE8F93AC17B3CFF400E7035F /* ButtonYesHighlighted.png in Resources */,
+				BE8F93AD17B3CFF400E7035F /* ButtonYesHighlighted@2x.png in Resources */,
+				BE8F93AE17B3CFF400E7035F /* ButtonYesHighlighted@2x~iphone.png in Resources */,
+				BE8F93AF17B3CFF400E7035F /* ButtonYesHighlighted~iphone.png in Resources */,
+				BE8F93B417B3D00700E7035F /* ImageFacebookImplicit.png in Resources */,
+				BE8F93B517B3D00700E7035F /* ImageFacebookImplicit@2x.png in Resources */,
+				BE8F93B617B3D00700E7035F /* ImageFacebookImplicit@2x~iphone.png in Resources */,
+				BE8F93B717B3D00700E7035F /* ImageFacebookImplicit~iphone.png in Resources */,
+				BE8F93B917B3D22500E7035F /* SYNImplicitSharingController~iphone.xib in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -7153,6 +7246,7 @@
 		01E427D11664C726009B941F /* Rockpack.xcdatamodeld */ = {
 			isa = XCVersionGroup;
 			children = (
+				BE8F938E17B3C64E00E7035F /* Rockpack 11.xcdatamodel */,
 				BE8F938717B1224900E7035F /* Rockpack 10.xcdatamodel */,
 				BE7D035C17A13EF4008053DC /* Rockpack 7.xcdatamodel */,
 				BE82099B17A9651900472ADD /* Rockpack 8.xcdatamodel */,
@@ -7164,7 +7258,7 @@
 				3885165B17579086001A9FD4 /* Rockpack 2.xcdatamodel */,
 				01E427D21664C726009B941F /* Rockpack.xcdatamodel */,
 			);
-			currentVersion = BE8F938717B1224900E7035F /* Rockpack 10.xcdatamodel */;
+			currentVersion = BE8F938E17B3C64E00E7035F /* Rockpack 11.xcdatamodel */;
 			path = Rockpack.xcdatamodeld;
 			sourceTree = "<group>";
 			versionGroupType = wrapper.xcdatamodel;

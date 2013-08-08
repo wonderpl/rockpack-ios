@@ -7,6 +7,7 @@
 extern const struct ExternalAccountAttributes {
 	__unsafe_unretained NSString *expiration;
 	__unsafe_unretained NSString *flags;
+	__unsafe_unretained NSString *noautopost;
 	__unsafe_unretained NSString *permissions;
 	__unsafe_unretained NSString *system;
 	__unsafe_unretained NSString *token;
@@ -22,6 +23,7 @@ extern const struct ExternalAccountFetchedProperties {
 } ExternalAccountFetchedProperties;
 
 @class User;
+
 
 
 
@@ -63,6 +65,20 @@ extern const struct ExternalAccountFetchedProperties {
 - (void)setFlagsValue:(int32_t)value_;
 
 //- (BOOL)validateFlags:(id*)value_ error:(NSError**)error_;
+
+
+
+
+
+@property (nonatomic, strong) NSNumber* noautopost;
+
+
+
+@property BOOL noautopostValue;
+- (BOOL)noautopostValue;
+- (void)setNoautopostValue:(BOOL)value_;
+
+//- (BOOL)validateNoautopost:(id*)value_ error:(NSError**)error_;
 
 
 
@@ -146,6 +162,15 @@ extern const struct ExternalAccountFetchedProperties {
 
 - (int32_t)primitiveFlagsValue;
 - (void)setPrimitiveFlagsValue:(int32_t)value_;
+
+
+
+
+- (NSNumber*)primitiveNoautopost;
+- (void)setPrimitiveNoautopost:(NSNumber*)value;
+
+- (BOOL)primitiveNoautopostValue;
+- (void)setPrimitiveNoautopostValue:(BOOL)value_;
 
 
 

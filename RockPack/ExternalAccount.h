@@ -9,12 +9,16 @@ typedef enum : NSInteger {
     ExternalAccountFlagAutopostAdd = 1 << 2,
     ExternalAccountFlagAutopostStar = 1 << 3
     
+    
+    
 
 } ExternalAccountFlag;
 
 
 + (ExternalAccount*)instanceFromDictionary:(NSDictionary*)dictionary
                  usingManagedObjectContext: (NSManagedObjectContext *) managedObjectContext;
+
+-(void)setAttributesFromDictionary:(NSDictionary*)dictionary;
 
 @property (nonatomic, readonly) NSString* permissionFlagsString;
 @end

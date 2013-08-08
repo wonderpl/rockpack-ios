@@ -8,6 +8,8 @@
 
 #import <UIKit/UIKit.h>
 
+typedef void (^ImplicitSharingCompletionBlock) (void);
+
 @interface SYNImplicitSharingController : UIViewController
 
 @property (strong, nonatomic) IBOutlet UIButton *notNowButton;
@@ -15,6 +17,8 @@
 @property (strong, nonatomic) IBOutlet UILabel *titleLabel;
 @property (strong, nonatomic) IBOutlet UILabel *textLabel;
 @property (strong, nonatomic) IBOutlet UIImageView *imageView;
+@property (copy, readwrite) ImplicitSharingCompletionBlock completionBlock;
 
-
++(id)controllerWithBlock:(ImplicitSharingCompletionBlock)block;
+-(void)dismiss;
 @end

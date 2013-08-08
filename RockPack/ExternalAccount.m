@@ -25,6 +25,11 @@
     if(!(instance = [ExternalAccount insertInManagedObjectContext:managedObjectContext]))
         return nil;
     
+    if([dictionary[@"external_system"] isKindOfClass:[NSString class]])
+        instance.system = dictionary[@"external_system"];
+    
+    instance.noautopostValue = NO; // allow auto posting unless expilictely denied
+    
     [instance setAttributesFromDictionary:dictionary];
     
     return instance;
@@ -46,8 +51,7 @@
 
 -(void)setAttributesFromDictionary:(NSDictionary*)dictionary
 {
-    if([dictionary[@"external_system"] isKindOfClass:[NSString class]])
-        self.system = dictionary[@"external_system"];
+    
     
     if([dictionary[@"external_uid"] isKindOfClass:[NSString class]])
         self.uid = dictionary[@"external_uid"];
@@ -78,6 +82,14 @@
         }
     }
     
+}
+
+// if the autopost value is set to TRUE from anywhere, revert the noautopost flag if it was set
+-(void)setFlagsValue:(int32_t)value_
+{
+    self.flags = [NSNumber numberWithInt:value_];
+    if(value_ & ExternalAccountFlagAutopostStar)
+        self.noautopostValue = NO;
 }
 
 -(NSString*)permissionFlagsString

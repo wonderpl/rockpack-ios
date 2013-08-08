@@ -672,6 +672,35 @@
     {
         return;
     }
+    
+    
+    ExternalAccount* facebookAccount = appDelegate.currentUser.facebookAccount;
+    if(facebookAccount && // has a facebook account
+       !(facebookAccount.flagsValue & ExternalAccountFlagAutopostStar) && // has not already set the implicit sharing to ON
+       facebookAccount.noautopostValue == NO) // has not explicitely forbid the implicit sharing
+    {
+        // then show panel
+        __weak SYNVideoViewerViewController* wself = self;
+        SYNImplicitSharingController* implicitSharingController = [SYNImplicitSharingController controllerWithBlock:^{
+            [wself toggleStarButton:button];
+        }];
+        [self addChildViewController:implicitSharingController];
+        
+        implicitSharingController.view.alpha = 0.0f;
+        implicitSharingController.view.center = CGPointMake(self.view.center.x, self.view.center.y);
+        implicitSharingController.view.frame = CGRectIntegral(implicitSharingController.view.frame);
+        [self.view addSubview:implicitSharingController.view];
+        [UIView animateWithDuration:0.3 animations:^{
+            implicitSharingController.view.alpha = 1.0f;
+        }];
+        
+        UITapGestureRecognizer* tapGesture = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(dismissImplicitSharing)];
+        [self.view addGestureRecognizer:tapGesture];
+        
+        return;
+    }
+    
+    
     id<GAITracker> tracker = [GAI sharedInstance].defaultTracker;
     
     [tracker sendEventWithCategory: @"uiAction"
@@ -687,7 +716,7 @@
     
     [self.heartActivityIndicator startAnimating];
     
-    VideoInstance *videoInstance = self.videoInstanceArray [self.currentSelectedIndex];
+    __weak VideoInstance *videoInstance = self.videoInstanceArray [self.currentSelectedIndex];
     int starredIndex = self.currentSelectedIndex;
     [appDelegate.oAuthNetworkEngine recordActivityForUserId: appDelegate.currentUser.uniqueId
                                                      action: starAction
@@ -727,30 +756,13 @@
                                                }];
     
     
-    // implicit sharing function
-    
-    [self askAboutAutopostingOption];
+   
     
 }
 
--(void)askAboutAutopostingOption
-{
-    SYNImplicitSharingController* implicitSharingController = [[SYNImplicitSharingController alloc] init];
-    [self addChildViewController:implicitSharingController];
-    
-    implicitSharingController.view.alpha = 0.0f;
-    implicitSharingController.view.center = CGPointMake(self.view.center.x, self.view.center.y);
-    implicitSharingController.view.frame = CGRectIntegral(implicitSharingController.view.frame);
-    [self.view addSubview:implicitSharingController.view];
-    [UIView animateWithDuration:0.3 animations:^{
-        implicitSharingController.view.alpha = 1.0f;
-    }];
-    
-    UITapGestureRecognizer* tapGesture = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(viewTapped:)];
-    [self.view addGestureRecognizer:tapGesture];
-}
 
--(void)viewTapped:(UITapGestureRecognizer*)recogniser
+
+-(void)dismissImplicitSharing
 {
     SYNImplicitSharingController* implicitSharingController;
     for (UIViewController* child in self.childViewControllers) {
@@ -759,13 +771,8 @@
     }
     if(!implicitSharingController)
         return;
-    [UIView animateWithDuration:0.3f animations:^{
-        implicitSharingController.view.alpha = 0.0f;
-    } completion:^(BOOL finished) {
-        [implicitSharingController.view removeFromSuperview];
-        [implicitSharingController removeFromParentViewController];
-        
-    }];
+    
+    [implicitSharingController dismiss];
 }
 
 - (IBAction) userTouchedCloseButton: (id) sender
