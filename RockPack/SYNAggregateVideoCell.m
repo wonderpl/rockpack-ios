@@ -94,14 +94,14 @@ static NSDictionary* boldTextAttributes = nil;
     
     // add buttons
     
-    [attributedCompleteString appendAttributedString:[[NSAttributedString alloc] initWithString:@"added"
+    [attributedCompleteString appendAttributedString:[[NSAttributedString alloc] initWithString:@" added "
                                                                                      attributes:lightTextAttributes]];
     
     [attributedCompleteString appendAttributedString:[[NSAttributedString alloc] initWithString:actionString
                                                                                      attributes:boldTextAttributes]];
     
     
-    [attributedCompleteString appendAttributedString:[[NSAttributedString alloc] initWithString:@"to"
+    [attributedCompleteString appendAttributedString:[[NSAttributedString alloc] initWithString:@" to " 
                                                                                      attributes:lightTextAttributes]];
     
     [attributedCompleteString appendAttributedString:[[NSAttributedString alloc] initWithString:channelNameString

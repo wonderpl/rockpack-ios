@@ -107,9 +107,8 @@
     request.fetchBatchSize = 20;
     
     NSError *error = nil;
-    NSArray *resultsArray = [appDelegate.searchManagedObjectContext
-                             executeFetchRequest: request
-                             error: &error];
+    NSArray *resultsArray = [appDelegate.searchManagedObjectContext executeFetchRequest: request
+                                                                                  error: &error];
     
     if (!resultsArray)
     {
@@ -130,7 +129,7 @@
     }
     
     self.dataRequestRange = NSMakeRange(0, kAPIInitialBatchSize);
-
+    
     [appDelegate.networkEngine searchUsersForTerm: term
                                          andRange: self.dataRequestRange
                                       byAppending: NO
@@ -139,10 +138,12 @@
                                            
                                            if (self.itemToUpdate)
                                            {
-                                               [self.itemToUpdate setNumberOfItems: self.dataItemsAvailable
-                                                                          animated: YES];
+                                               [self.itemToUpdate
+                                                setNumberOfItems: self.dataItemsAvailable
+                                                animated: YES];
                                            }
                                        }];
+    
     self.searchTerm = term;
 }
 
@@ -167,8 +168,9 @@
                                                
                                                if (self.itemToUpdate)
                                                {
-                                                   [self.itemToUpdate setNumberOfItems: self.dataItemsAvailable
-                                                                              animated: YES];
+                                                   [self.itemToUpdate
+                                                    setNumberOfItems: self.dataItemsAvailable
+                                                    animated: YES];
                                                }
                                            }];
     }

@@ -14,9 +14,9 @@
 
 @interface SYNSearchVideosViewController : SYNAbstractViewController
 
-@property (nonatomic, weak) SYNSearchRootViewController* parent;
-@property (nonatomic, weak) SYNSearchTabView* itemToUpdate;
+@property (nonatomic, weak) SYNSearchRootViewController *parent;
+@property (nonatomic, weak) SYNSearchTabView *itemToUpdate;
 
-- (void) performNewSearchWithTerm: (NSString*) term;
+- (void) performNewSearchWithTerm: (NSString *) term;
 
 @end

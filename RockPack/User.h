@@ -17,7 +17,7 @@
 @property (nonatomic, readonly) ExternalAccount* googlePlusAccount;
 
 -(ExternalAccount*)externalAccountForSystem:(NSString*)systemName;
--(void)addExternalAccountsFromDictionary:(NSDictionary*)dictionary;
+-(void)setExternalAccountsFromDictionary:(NSDictionary*)dictionary;
 -(void)setExternalAccountFlagsFromDictionary:(NSDictionary*)dictionary;
 
 -(void)setFlag:(ExternalAccountFlag)flag toExternalAccount:(NSString*)accountName;

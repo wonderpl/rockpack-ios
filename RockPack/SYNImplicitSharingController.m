@@ -9,6 +9,7 @@
 #import "SYNImplicitSharingController.h"
 #import "UIFont+SYNFont.h"
 #import "SYNAppDelegate.h"
+#import "SYNFacebookManager.h"
 #import "SYNOAuthNetworkEngine.h"
 
 @interface SYNImplicitSharingController ()
@@ -17,7 +18,12 @@
 
 @implementation SYNImplicitSharingController
 
-
++(id)controllerWithBlock:(ImplicitSharingCompletionBlock)block
+{
+    SYNImplicitSharingController* instance = [[self alloc] init];
+    instance.completionBlock = block;
+    return instance;
+}
 
 - (void)viewDidLoad
 {
@@ -37,36 +43,75 @@
     
     sender.selected = YES;
     
-    //    ExternalAccount* facebookAccount = appDelegate.currentUser.facebookAccount;
-    //    if(facebookAccount)
-    //    {
-    //
-    //    }
-    //    else
-    //    {
-    //
-    //    }
+    
     __weak SYNImplicitSharingController* wself = self;
     SYNAppDelegate* appDelegate = (SYNAppDelegate*)[[UIApplication sharedApplication] delegate];
     __weak SYNAppDelegate* wAppDelegate = appDelegate;
+    
+    
+   
+    
     BOOL isYesButton = (sender == self.yesButton);
-    [appDelegate.oAuthNetworkEngine setFlag:@"facebook_autopost_star" withValue:isYesButton
-                                   forUseId:appDelegate.currentUser.uniqueId completionHandler:^(id no_response) {
-                                       
-                                       [wself switchAutopostViewToYes:isYesButton];
-                                       
-                                       if(isYesButton)
-                                           [wAppDelegate.currentUser setFlag:ExternalAccountFlagAutopostStar toExternalAccount:@"facebook"];
-                                       else
-                                           [wAppDelegate.currentUser unsetFlag:ExternalAccountFlagAutopostStar toExternalAccount:@"facebook"];
-                                       
-                                       [wAppDelegate saveContext:YES];
-                                       
-                                   } errorHandler:^(id error) {
-                                       
-                                       [wself switchAutopostViewToYes:!isYesButton];
-                                       
-                                   }];
+    if(!isYesButton) // if no button is pressed, dismiss
+    {
+        // dismiss
+        wAppDelegate.currentUser.facebookAccount.noautopostValue = YES; // consider the dismissal as a NO and log it
+        [wAppDelegate saveContext: YES];
+        return;
+    }
+    else
+    {
+        [[SYNFacebookManager sharedFBManager] openSessionWithPermissionType:kFacebookPermissionTypePublish onSuccess:^{
+            
+            [appDelegate.oAuthNetworkEngine setFlag:@"facebook_autopost_star" withValue:isYesButton
+                                           forUseId:appDelegate.currentUser.uniqueId completionHandler:^(id no_response) {
+                                               
+                                               [wself switchAutopostViewToYes:isYesButton];
+                                               
+                                               if(isYesButton)
+                                                   [wAppDelegate.currentUser setFlag:ExternalAccountFlagAutopostStar toExternalAccount:@"facebook"];
+                                               else
+                                                   [wAppDelegate.currentUser unsetFlag:ExternalAccountFlagAutopostStar toExternalAccount:@"facebook"];
+                                               
+                                               [wAppDelegate saveContext:YES];
+                                               
+                                               if(self.completionBlock)
+                                                   self.completionBlock();
+                                               
+                                               [self dismiss];
+                                               
+                                           } errorHandler:^(id error) {
+                                               
+                                               [wself switchAutopostViewToYes:!isYesButton];
+                                               
+                                           }];
+            
+        } onFailure:^(NSString *errorMessage) {
+            
+            [wself switchAutopostViewToYes:!isYesButton];
+            
+        }];
+    }
+    
+    
+    
+    
+    
+    
+    
+    
+    
+}
+
+-(void)dismiss
+{
+    [UIView animateWithDuration:0.3f animations:^{
+        self.view.alpha = 0.0f;
+    } completion:^(BOOL finished) {
+        [self.view removeFromSuperview];
+        [self removeFromParentViewController];
+        
+    }];
 }
 
 -(void)switchAutopostViewToYes:(BOOL)value

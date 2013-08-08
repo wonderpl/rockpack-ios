@@ -16,7 +16,6 @@
 @interface SYNSearchChannelsViewController ()
 
 @property (nonatomic, weak) NSString* searchTerm;
-
 @property (nonatomic, weak) MKNetworkOperation* runningSearchOperation;
 
 @end
@@ -24,7 +23,6 @@
 
 @implementation SYNSearchChannelsViewController
 
-@synthesize itemToUpdate;
 @synthesize runningNetworkOperation = _runningNetworkOperation;
 
 #pragma mark - Object lifecycle
@@ -80,9 +78,6 @@
     [super viewWillAppear:animated];
   
     [self displayChannelsForGenre];
-    
-    
-    
 }
 
 
@@ -91,12 +86,12 @@
         
     // this is mainly for the number refresh at the tabs
     [self displayChannelsForGenre];
-    
 }
 
-#pragma mark - Overloading Methods
-// override the loading of channels form superclass, genre is NOT used in this class but is passed for the overloading to work //
 
+#pragma mark - Overloading Methods
+
+// override the loading of channels form superclass, genre is NOT used in this class but is passed for the overloading to work //
 -(void)displayChannelsForGenre
 {
     [self displayChannelsForGenre:nil];
@@ -162,14 +157,15 @@
     }
 }
 
+
 #pragma mark - Perform Search
 
-- (void) performNewSearchWithTerm: (NSString*) term
+- (void) performNewSearchWithTerm: (NSString *) term
 {
-    
-    
     if (!appDelegate)
-        appDelegate = (SYNAppDelegate*)[[UIApplication sharedApplication] delegate];
+    {
+        appDelegate = (SYNAppDelegate *) [[UIApplication sharedApplication] delegate];
+    }
     
     self.dataRequestRange = NSMakeRange(0, kAPIInitialBatchSize);
     
@@ -177,46 +173,51 @@
     [appDelegate.networkEngine searchChannelsForTerm: term
                                             andRange: self.dataRequestRange
                                           onComplete: ^(int itemsCount) {
-                                              
-                                              
                                               self.dataItemsAvailable = itemsCount;
+                                              
                                               if (self.itemToUpdate)
-                                                  [self.itemToUpdate setNumberOfItems: self.dataItemsAvailable
-                                                                             animated: YES];
-
+                                              {
+                                                  [self.itemToUpdate
+                                                   setNumberOfItems: self.dataItemsAvailable
+                                                   animated: YES];
+                                              }
                                           }];
     
     self.searchTerm = term;
-}   
-
+}
 
 
 #pragma mark - UICollectionView Delegate
 
--(void)collectionView:(UICollectionView *)collectionView didSelectItemAtIndexPath:(NSIndexPath *)indexPath
+- (void) collectionView: (UICollectionView *) collectionView didSelectItemAtIndexPath: (NSIndexPath *) indexPath
 {
     if (self.isAnimating) // prevent double clicking
+    {
         return;
+    }
     
-    
-    Channel *channel = (Channel*)(self->channels[indexPath.row]);
+    Channel *channel = (Channel *) (self->channels[indexPath.row]);
     
     SYNChannelDetailViewController *channelVC = [[SYNChannelDetailViewController alloc] initWithChannel: channel
                                                                                               usingMode: kChannelDetailsModeDisplay];
     
-    [appDelegate.viewStackManager pushController:channelVC];
+    [appDelegate.viewStackManager
+     pushController: channelVC];
 }
 
--(void)setRunningSearchOperation:(MKNetworkOperation *)runningSearchOperation
+
+- (void) setRunningSearchOperation: (MKNetworkOperation *) runningSearchOperation
 {
-    if(_runningNetworkOperation)
+    if (_runningNetworkOperation)
+    {
         [_runningNetworkOperation cancel];
+    }
     
     _runningNetworkOperation = runningSearchOperation;
 }
 
-#pragma mark - Helper Methods
 
+#pragma mark - Helper Methods
 
 - (CGSize) itemSize
 {

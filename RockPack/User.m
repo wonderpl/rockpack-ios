@@ -83,7 +83,7 @@
     self.fullNameIsPublicValue = n_display_fullName ? [n_display_fullName boolValue] : NO;
     
     if([dictionary[@"external_accounts"] isKindOfClass:[NSDictionary class]])
-        [self addExternalAccountsFromDictionary:dictionary[@"external_accounts"]];
+        [self setExternalAccountsFromDictionary:dictionary[@"external_accounts"]];
     
     if([dictionary[@"flags"] isKindOfClass:[NSDictionary class]])
         [self setExternalAccountFlagsFromDictionary:dictionary[@"flags"]];
@@ -233,7 +233,7 @@
 
 #pragma mark - External Accounts
 
--(void)addExternalAccountsFromDictionary:(NSDictionary*)dictionary
+-(void)setExternalAccountsFromDictionary:(NSDictionary*)dictionary
 {
    
     if(!dictionary)
@@ -243,14 +243,35 @@
     if(![items isKindOfClass:[NSArray class]])
         return;
     
+    ExternalAccount* externalAccount;
+    
+    NSMutableDictionary* externalAccountBySystemName = [NSMutableDictionary dictionaryWithCapacity:self.externalAccounts.count];
+    for (externalAccount in self.externalAccounts)
+    {
+        [externalAccountBySystemName setObject:externalAccount forKey:externalAccount.system];
+    }
+    
     for (NSDictionary* item in items)
     {
-        ExternalAccount* externalAccount = [ExternalAccount instanceFromDictionary:item
-                                                         usingManagedObjectContext:self.managedObjectContext];
-        if(!externalAccount)
-            continue;
+        if(!(externalAccount = externalAccountBySystemName[item[@""]]))
+        {
+            if(!(externalAccount = [ExternalAccount instanceFromDictionary:item
+                                                usingManagedObjectContext:self.managedObjectContext]))
+            {
+                continue;
+            }
+            else
+            {
+                [self.externalAccountsSet addObject:externalAccount];
+            }
+        }
+        else
+        {
+            [externalAccount setAttributesFromDictionary:item];
+        }
         
-        [self.externalAccountsSet addObject:externalAccount];
+        
+        
         
     }
 }
