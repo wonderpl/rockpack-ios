@@ -6,6 +6,7 @@
 const struct ExternalAccountAttributes ExternalAccountAttributes = {
 	.expiration = @"expiration",
 	.flags = @"flags",
+	.noautopost = @"noautopost",
 	.permissions = @"permissions",
 	.system = @"system",
 	.token = @"token",
@@ -51,6 +52,11 @@ const struct ExternalAccountFetchedProperties ExternalAccountFetchedProperties =
 		keyPaths = [keyPaths setByAddingObjectsFromSet:affectingKey];
 		return keyPaths;
 	}
+	if ([key isEqualToString:@"noautopostValue"]) {
+		NSSet *affectingKey = [NSSet setWithObject:@"noautopost"];
+		keyPaths = [keyPaths setByAddingObjectsFromSet:affectingKey];
+		return keyPaths;
+	}
 
 	return keyPaths;
 }
@@ -85,6 +91,32 @@ const struct ExternalAccountFetchedProperties ExternalAccountFetchedProperties =
 
 - (void)setPrimitiveFlagsValue:(int32_t)value_ {
 	[self setPrimitiveFlags:[NSNumber numberWithInt:value_]];
+}
+
+
+
+
+
+@dynamic noautopost;
+
+
+
+- (BOOL)noautopostValue {
+	NSNumber *result = [self noautopost];
+	return [result boolValue];
+}
+
+- (void)setNoautopostValue:(BOOL)value_ {
+	[self setNoautopost:[NSNumber numberWithBool:value_]];
+}
+
+- (BOOL)primitiveNoautopostValue {
+	NSNumber *result = [self primitiveNoautopost];
+	return [result boolValue];
+}
+
+- (void)setPrimitiveNoautopostValue:(BOOL)value_ {
+	[self setPrimitiveNoautopost:[NSNumber numberWithBool:value_]];
 }
 
 

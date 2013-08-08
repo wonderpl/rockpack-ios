@@ -247,7 +247,7 @@
                  if(![external_accounts isKindOfClass:[NSDictionary class]])
                      return;
                  
-                 [self.currentUser addExternalAccountsFromDictionary:external_accounts];
+                 [self.currentUser setExternalAccountsFromDictionary:external_accounts];
                  
                  if (self.currentUser.facebookAccount)
                  {

@@ -29,4 +29,5 @@
 
 -(void)prepareForAppearAnimation;
 -(void)runAppearAnimation;
+
 @end
