@@ -130,7 +130,7 @@ static NSDictionary* boldTextAttributes = nil;
     {
         if(IS_IPAD)
         {
-            self.likesNumberLabel.text = likesString;
+            self.likesNumberLabel.text = likesString; // @"0 likes"
             self.likeLabel.hidden = YES;
         }
         else
@@ -224,6 +224,7 @@ static NSDictionary* boldTextAttributes = nil;
 {
     [super prepareForReuse];
     self.likeLabel.hidden = NO;
+    self.heartButton.selected = NO;
 }
 -(void)setCoverTitleWithString:(NSString*)coverTitle
 {

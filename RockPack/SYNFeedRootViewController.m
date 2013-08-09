@@ -1125,12 +1125,8 @@ typedef void(^FeedDataErrorBlock)(void);
                                             videoInstanceId: videoInstance.uniqueId
                                           completionHandler: ^(id response) {
                                               
-//                                              for (ChannelOwner* co in videoInstance.starrers) {
-//                                                  if([co.uniqueId isEqualToString:appDelegate.currentUser.uniqueId])
-//                                                      NSLog(@"User*");
-//                                                  else
-//                                                      NSLog(@"%@", co.displayName);
-//                                              }
+                                              
+                                              
                                               
                                               
                                               if (didStar)
@@ -1154,6 +1150,20 @@ typedef void(^FeedDataErrorBlock)(void);
                                               
                                               
                                               [appDelegate saveContext: YES];
+                                              
+                                              if(videoInstance.starrers.count == 0)
+                                              {
+                                                  NSLog(@"No Starrers");
+                                              }
+                                              else
+                                              {
+                                                  for (ChannelOwner* co in videoInstance.starrers) {
+                                                      if([co.uniqueId isEqualToString:appDelegate.currentUser.uniqueId])
+                                                          NSLog(@"Starrer: User*");
+                                                      else
+                                                          NSLog(@"Starrer: %@", co.displayName);
+                                                  }
+                                              }
                                               
                                               [self.feedCollectionView reloadData];
                                               
