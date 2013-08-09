@@ -1198,7 +1198,7 @@
     
     UIApplicationState state = [application applicationState];
     
-//    if (state == UIApplicationStateBackground)
+    if (state == UIApplicationStateBackground)
     {
         // The app is in the background, and the user has tapped on a notification
         // so we do need to handle this case
