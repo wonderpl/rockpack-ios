@@ -1580,10 +1580,21 @@
                        completionHandler: (MKNKUserSuccessBlock) completionBlock
                             errorHandler: (MKNKUserErrorBlock) errorBlock
 {
-    NSDictionary* accountData = @{@"external_system": @"facebook",
-                                  @"external_token" : data.accessToken,
-                                  @"token_expires" : data.expirationDate,
-                                  @"token_permissions" : data.permissions};
+    
+    
+    NSMutableDictionary* accountData = @{@"external_system": @"facebook",
+                                         @"external_token" : data.accessToken,
+                                         @"token_permissions" : [data.permissions componentsJoinedByString:@","]}.mutableCopy;
+    
+    if (data.expirationDate)
+    {
+        NSDateFormatter *dateFormatter = [[NSDateFormatter alloc] init];
+        [dateFormatter setTimeZone: [NSTimeZone timeZoneWithName: @"UTC"]];
+        [dateFormatter setDateFormat: @"yyyy-MM-dd'T'HH:mm:ss"];
+        
+        accountData[@"token_expires"] = [dateFormatter stringFromDate: data.expirationDate];
+    }
+    
     
     [self connectExternalAccoundForUserId:userId
                               accountData:accountData
@@ -1663,6 +1674,7 @@
     [networkOperation addHeaders: @{@"Content-Type" : @"application/json"}];
     networkOperation.postDataEncoding = MKNKPostDataEncodingTypeJSON;
     __weak SYNOAuthNetworkEngine* wself = self;
+    
     [self addCommonHandlerToNetworkOperation: networkOperation
                            completionHandler:^(id responce) {
                                

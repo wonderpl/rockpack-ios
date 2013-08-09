@@ -1108,13 +1108,12 @@ typedef void(^FeedDataErrorBlock)(void);
                          withLabel: nil
                          withValue: nil];
     
-    button.selected = !button.selected;
+    button.selected = !button.selected; // toggle on/off
     
-    NSString *starAction = (button.selected == TRUE) ? @"star" : @"unstar";
+    BOOL didStar = (button.selected == YES);
     
     button.enabled = NO;
     
-    //[self.heartActivityIndicator startAnimating];
     
     VideoInstance* videoInstance = [self videoInstanceAtCoverOfFeedItem:[self feedItemFromControl:button]];
     if(!videoInstance)
@@ -1122,40 +1121,50 @@ typedef void(^FeedDataErrorBlock)(void);
     
     // int starredIndex = self.currentSelectedIndex;
     [appDelegate.oAuthNetworkEngine recordActivityForUserId: appDelegate.currentUser.uniqueId
-                                                     action: starAction
+                                                     action: (didStar ? @"star" : @"unstar")
                                             videoInstanceId: videoInstance.uniqueId
                                           completionHandler: ^(id response) {
-                                              //[self.heartActivityIndicator stopAnimating];
                                               
-                                              if (videoInstance.video.starredByUserValue == TRUE)
+//                                              for (ChannelOwner* co in videoInstance.starrers) {
+//                                                  if([co.uniqueId isEqualToString:appDelegate.currentUser.uniqueId])
+//                                                      NSLog(@"User*");
+//                                                  else
+//                                                      NSLog(@"%@", co.displayName);
+//                                              }
+                                              
+                                              
+                                              if (didStar)
                                               {
-                                                  // Currently highlighted, so decrement
-                                                  videoInstance.video.starredByUserValue = FALSE;
-                                                  videoInstance.video.starCountValue -= 1;
+                                                  // Currently highlighted, so increment
+                                                  videoInstance.video.starredByUserValue = YES;
+                                                  videoInstance.video.starCountValue += 1;
+                                                  
+                                                  [videoInstance addStarrersObject:appDelegate.currentUser];
                                               }
                                               else
                                               {
-                                                  // Currently highlighted, so increment
-                                                  videoInstance.video.starredByUserValue = TRUE;
-                                                  videoInstance.video.starCountValue += 1;
-                                                  //[Appirater userDidSignificantEvent: FALSE];
+                                                  // Currently highlighted, so decrement
+                                                  videoInstance.video.starredByUserValue = NO;
+                                                  videoInstance.video.starCountValue -= 1;
+                                                  
+                                                  
+                                                  [videoInstance removeStarrersObject:appDelegate.currentUser];
+                                                  
                                               }
                                               
-                                              //(self.favouritesStatusArray)[starredIndex] = @(button.selected);
-                                              
-                                              //[self updateVideoDetailsForIndex: self.currentSelectedIndex];
                                               
                                               [appDelegate saveContext: YES];
                                               
+                                              [self.feedCollectionView reloadData];
+                                              
                                               button.enabled = YES;
                                               
-                                          }
-                                               errorHandler: ^(id error) {
-                                                   //[self.heartActivityIndicator stopAnimating];
+                                          } errorHandler: ^(id error) {
+                                              
                                                    DebugLog(@"Could not star video");
-                                                   button.selected = ! button.selected;
+                                                   button.selected = !button.selected;
                                                    button.enabled = YES;
-                                                   //[self updateVideoDetailsForIndex: self.currentSelectedIndex];
+                                              
                                                }];
 }
 

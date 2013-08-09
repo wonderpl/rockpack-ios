@@ -148,6 +148,8 @@ static NSDateFormatter *dateFormatter = nil;
                                               usingManagedObjectContext:self.managedObjectContext
                                                     ignoringObjectTypes:kIgnoreChannelObjects];
             
+            // the method addStarrersObject has been overriden so as to copy the CO, do not use unless in need of a copy
+            // ex. when passing the currentUser to the video instance
             [self.starrersSet addObject:starringChannelOwner];
             
         }
@@ -209,6 +211,41 @@ static NSDateFormatter *dateFormatter = nil;
     
     return dateFormatter;
 }
+
+#pragma mark - Starrers
+
+-(void)addStarrersObject:(ChannelOwner *)value_
+{
+    ChannelOwner* copyOfChannelOwner = [ChannelOwner instanceFromChannelOwner:value_
+                                                                    andViewId:self.viewId
+                                                    usingManagedObjectContext:self.managedObjectContext
+                                                          ignoringObjectTypes:kIgnoreAll];
+    
+    if(!copyOfChannelOwner)
+        return;
+    
+    [self.starrersSet addObject:copyOfChannelOwner];
+}
+
+-(void)removeStarrersObject:(ChannelOwner *)value_
+{
+    if(!value_)
+        return;
+    
+    for (ChannelOwner* starrer in self.starrers)
+    {
+        if([starrer.uniqueId isEqualToString:value_.uniqueId])
+        {
+            [self.starrersSet removeObject:starrer];
+            [starrer.managedObjectContext deleteObject:starrer];
+            
+            break;
+        }
+            
+        
+    }
+}
+
 
 
 -(void)setMarkedForDeletionValue:(BOOL)value_

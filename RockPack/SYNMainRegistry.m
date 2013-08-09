@@ -548,9 +548,6 @@
             existingChannel.markedForDeletionValue = YES;
         
         
-        // set the old channels to not fresh and refresh on demand //
-        if(!append)
-            existingChannel.freshValue = NO;
            
     }
 
@@ -589,7 +586,6 @@
 
         channel.markedForDeletionValue = NO;
         
-        channel.freshValue = YES;
         
         NSNumber* remotePosition = [itemDictionary objectForKey: @"position" withDefault: @0];
         if([remotePosition intValue] != channel.positionValue)

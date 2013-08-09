@@ -14,9 +14,7 @@
                         ignoringObjectTypes: (IgnoringObjects) ignoringObjects
 {
     if (!existingChannelOwner)
-    {
         return nil;
-    }
     
     ChannelOwner *copyChannelOwner = [ChannelOwner insertInManagedObjectContext: managedObjectContext];
     

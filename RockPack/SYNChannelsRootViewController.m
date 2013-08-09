@@ -367,12 +367,11 @@
     
     // only get the channels marked as fresh //
     
-    NSPredicate *isFreshPredicate = [NSPredicate predicateWithFormat: @"fresh == YES"];
     
     
     
     NSPredicate *finalPredicate = [NSCompoundPredicate andPredicateWithSubpredicates:
-                                   @[genrePredicate, isFreshPredicate, viewIdPredicate]];
+                                   @[genrePredicate, viewIdPredicate]];
     
     [request setPredicate: finalPredicate];
     
