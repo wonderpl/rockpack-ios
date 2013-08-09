@@ -418,9 +418,7 @@
     
     // We set up assets depending on whether we are in display or edit mode
     [self setDisplayControlsVisibility: (self.mode == kChannelDetailsModeDisplay)];
-    
-    
-    
+
     // Refresh our view
     [self.videoThumbnailCollectionView reloadData];
     
@@ -687,6 +685,8 @@
 
 - (void) handleDataModelChange: (NSNotification *) notification
 {
+//    [self displayChannelDetails];
+    
     NSArray *updatedObjects = [notification userInfo][NSUpdatedObjectsKey];
     
     NSArray *deletedObjects = [notification userInfo][NSDeletedObjectsKey]; // our channel has been deleted
@@ -715,13 +715,13 @@
             
             if (self.channel.videoInstances.count == 0)
             {
-                [self		  showNoVideosMessage: NSLocalizedString(@"channel_screen_no_videos", nil)
-                                  withLoader: NO];
+                [self showNoVideosMessage: NSLocalizedString(@"channel_screen_no_videos", nil)
+                               withLoader: NO];
             }
             else
             {
-                [self		  showNoVideosMessage: nil
-                                  withLoader: NO];
+                [self showNoVideosMessage: nil
+                               withLoader: NO];
             }
             
             return;
@@ -822,6 +822,7 @@
                              CGRect buttonFrame = self.subscribeButton.frame;
                              buttonFrame.origin.x = buttonRect.origin.x + offset;
                              self.subscribeButton.frame = buttonFrame;
+                             self.editButton.frame = buttonFrame;
                              CGRect labelFrame = self.subscribersLabel.frame;
                              labelFrame.origin.x = labelRect.origin.x + offset;
                              self.subscribersLabel.frame = labelFrame;
@@ -837,6 +838,7 @@
                              CGRect buttonFrame = self.subscribeButton.frame;
                              buttonFrame.origin.x = buttonRect.origin.x;
                              self.subscribeButton.frame = buttonFrame;
+                             self.editButton.frame = buttonFrame;
                              CGRect labelFrame = self.subscribersLabel.frame;
                              labelFrame.origin.x = labelRect.origin.x;
                              self.subscribersLabel.frame = labelFrame;

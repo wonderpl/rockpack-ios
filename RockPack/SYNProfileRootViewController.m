@@ -188,10 +188,7 @@ SYNImagePickerControllerDelegate>
     subColViewFrame.origin.y = collectionViewFrame.origin.y;
     subColViewFrame.size.height = collectionViewFrame.size.height;
     subColViewFrame.size.width = [SYNDeviceManager.sharedInstance currentScreenWidth] - subColViewFrame.origin.x - 10.0;
-    [self.subscriptionsViewController
-     setViewFrame: subColViewFrame];
-    
-    
+    [self.subscriptionsViewController setViewFrame: subColViewFrame];
     
     self.headerSubscriptionsView = [SYNYouHeaderView headerViewForWidth: 384];
     
@@ -280,9 +277,8 @@ SYNImagePickerControllerDelegate>
         [tabButton setImage: [UIImage imageNamed: @"ButtonProfileChannelsSelected"]
                    forState: UIControlStateSelected];
         
-        [self.view
-         insertSubview: tabButton
-         belowSubview: self.headerChannelsView];
+        [self.view insertSubview: tabButton
+                    belowSubview: self.headerChannelsView];
         
         [tabButton addTarget: self
                       action: @selector(channelsTabTapped:)
@@ -305,7 +301,7 @@ SYNImagePickerControllerDelegate>
                    forState: UIControlStateSelected];
         
         [self.view insertSubview: tabButton
-         belowSubview: self.headerChannelsView];
+                    belowSubview: self.headerChannelsView];
         
         tabButton.showsTouchWhenHighlighted = NO;
         
@@ -348,8 +344,7 @@ SYNImagePickerControllerDelegate>
     self.longPress = [[UILongPressGestureRecognizer alloc] initWithTarget: self
                                                                    action: @selector(activateDeletionMode:)];
     self.longPress.delegate = self;
-    [self.channelThumbnailCollectionView
-     addGestureRecognizer: self.longPress];
+    [self.channelThumbnailCollectionView addGestureRecognizer: self.longPress];
     
     // Tap for exiting delete mode
     self.tap = [[UITapGestureRecognizer alloc] initWithTarget: self
@@ -496,8 +491,7 @@ SYNImagePickerControllerDelegate>
         shouldReceiveTouch: (UITouch *) touch
 {
     CGPoint touchPoint = [touch locationInView: self.channelThumbnailCollectionView];
-    NSIndexPath *indexPath = [self.channelThumbnailCollectionView
-                              indexPathForItemAtPoint: touchPoint];
+    NSIndexPath *indexPath = [self.channelThumbnailCollectionView indexPathForItemAtPoint: touchPoint];
     
     if (indexPath && [gestureRecognizer isKindOfClass: [UITapGestureRecognizer class]])
     {
@@ -909,15 +903,13 @@ SYNImagePickerControllerDelegate>
         {
             offset = self.channelThumbnailCollectionView.contentOffset;
             offset.y = self.channelThumbnailCollectionView.contentOffset.y;
-            [self.subscriptionsViewController.collectionView
-             setContentOffset: offset];
+            [self.subscriptionsViewController.collectionView setContentOffset: offset];
         }
         else if ([scrollView isEqual: self.subscriptionsViewController.collectionView])
         {
             offset = self.subscriptionsViewController.collectionView.contentOffset;
             offset.y = self.subscriptionsViewController.collectionView.contentOffset.y;
-            [self.channelThumbnailCollectionView
-             setContentOffset: offset];
+            [self.channelThumbnailCollectionView setContentOffset: offset];
         }
     }
 }
@@ -1042,8 +1034,7 @@ SYNImagePickerControllerDelegate>
     }
     
     UIView *v = sender.superview.superview;
-    self.indexPathToDelete = [self.channelThumbnailCollectionView
-                              indexPathForItemAtPoint: v.center];
+    self.indexPathToDelete = [self.channelThumbnailCollectionView indexPathForItemAtPoint: v.center];
     
     Channel *channelToDelete = (Channel *) self.user.channels[self.indexPathToDelete.row - (self.isUserProfile ? 1 : 0)];
     
@@ -1103,8 +1094,7 @@ SYNImagePickerControllerDelegate>
                                [channelToDelete.managedObjectContext
                                 deleteObject: channelToDelete];
                                
-                               [self.channelThumbnailCollectionView
-                                deleteItemsAtIndexPaths: @[self.indexPathToDelete]];
+                               [self.channelThumbnailCollectionView deleteItemsAtIndexPaths: @[self.indexPathToDelete]];
                                
                                [appDelegate saveContext: YES];
                                
@@ -1122,9 +1112,8 @@ SYNImagePickerControllerDelegate>
 - (void) headerTapped
 {
     // no need to animate the subscriptions part since it observes the channels thumbnails scroll view
-    [self.channelThumbnailCollectionView
-     setContentOffset: CGPointZero
-     animated: YES];
+    [self.channelThumbnailCollectionView setContentOffset: CGPointZero
+                                                 animated: YES];
 }
 
 
@@ -1208,8 +1197,7 @@ SYNImagePickerControllerDelegate>
     
     if (self.user) // if a user has been passed or found, monitor
     {
-        if ([self.user.uniqueId
-             isEqualToString: appDelegate.currentUser.uniqueId])
+        if ([self.user.uniqueId isEqualToString: appDelegate.currentUser.uniqueId])
         {
             self.isUserProfile = YES;
         }
