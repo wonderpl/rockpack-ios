@@ -777,7 +777,7 @@
     newLabel.shadowColor = [UIColor colorWithWhite: 1.0f
                                              alpha: 0.75f];
     
-    newLabel.shadowOffset = CGSizeMake(0.0f, 1.0f);
+    newLabel.shadowOffset = CGSizeMake(0.0f, 2.0f);
     newLabel.text = StartingCategoryText;
     newLabel.backgroundColor = [UIColor clearColor];
     CGPoint center = newLabel.center;
@@ -918,7 +918,7 @@
 
 - (void) categoryTableControllerDeselectedAll: (SYNChannelCategoryTableViewController *) tableController
 {
-    self.categoryNameLabel.text = NSLocalizedString(@"BROWSE CATEGORIES", nil);
+    self.categoryNameLabel.text = StartingCategoryText;
     [self.categoryNameLabel sizeToFit];
     self.subCategoryNameLabel.hidden = YES;
     self.arrowImage.hidden = YES;
