@@ -514,9 +514,10 @@
 
 - (void) applicationDidBecomeActive: (UIApplication *) application
 {
-    NSString *facebookAppId = [[NSBundle mainBundle] objectForInfoDictionaryKey: @"FacebookAppID"];
-    
-    [FBSettings publishInstall: facebookAppId];
+    // Publish 
+//    NSString *facebookAppId = [[NSBundle mainBundle] objectForInfoDictionaryKey: @"FacebookAppID"];
+//    [FBSettings publishInstall: facebookAppId];
+    [FBAppEvents activateApp];
     
     // Restart any tasks that were paused (or not yet started) while the application was inactive. If the application was previously in the background, optionally refresh the user interface.
     if (self.loginViewController)
@@ -1198,7 +1199,7 @@
     
     UIApplicationState state = [application applicationState];
     
-    if (state == UIApplicationStateBackground)
+    if (state != UIApplicationStateActive)
     {
         // The app is in the background, and the user has tapped on a notification
         // so we do need to handle this case
@@ -1239,6 +1240,7 @@
     }
 }
 
+
 #pragma mark - Social deep linking
 
 - (BOOL) application: (UIApplication *) application
@@ -1271,7 +1273,6 @@
 {
     BOOL success = FALSE;
 
-    
     NSString *userId = url.host;
     NSArray *pathComponents = url.pathComponents;
     
