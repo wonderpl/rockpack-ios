@@ -188,6 +188,7 @@ static NSDictionary* boldTextAttributes = nil;
         
     }
     
+    // componentsJoinedByString
     
     
     NSMutableAttributedString *attributedCompleteString = [[NSMutableAttributedString alloc] init];
