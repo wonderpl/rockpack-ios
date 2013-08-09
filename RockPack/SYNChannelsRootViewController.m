@@ -52,12 +52,8 @@
 
 @implementation SYNChannelsRootViewController
 
-@synthesize currentCategoryId;
-@synthesize currentGenre;
 @synthesize dataRequestRange;
 @synthesize dataItemsAvailable;
-@synthesize mainRegistry;
-@synthesize isAnimating;
 @synthesize channels;
 @synthesize runningNetworkOperation = _runningNetworkOperation;
 
@@ -177,11 +173,11 @@
                                  withReuseIdentifier: @"SYNChannelFooterMoreView"];
     
     
-    currentGenre = nil;
+    self.currentGenre = nil;
     
-    [self displayChannelsForGenre: currentGenre];
+    [self displayChannelsForGenre: self.currentGenre];
     
-    [self loadChannelsForGenre: currentGenre];
+    [self loadChannelsForGenre: self.currentGenre];
 }
 
 
@@ -221,7 +217,7 @@
     // if the user has requested 'Load More' channels then dont refresh the page cause he is in the middle of a search
     if (self.dataRequestRange.location == 0)
     {
-        [self loadChannelsForGenre: currentGenre];
+        [self loadChannelsForGenre: self.currentGenre];
     }
 }
 
@@ -295,7 +291,7 @@
                                         
                                         if (!registryResultOk)
                                         {
-                                            DebugLog(@"Registration of Channel Failed for: %@", currentCategoryId);
+                                            DebugLog(@"Registration of Channel Failed for: %@", self.currentCategoryId);
                                             return;
                                         }
                                         
@@ -330,7 +326,7 @@
         
         [self incrementRangeForNextRequest];
         
-        [self loadChannelsForGenre: currentGenre
+        [self loadChannelsForGenre: self.currentGenre
                        byAppending: YES];
     }
 }
@@ -587,7 +583,7 @@ referenceSizeForFooterInSection: (NSInteger) section
     if (!tab || tab.tag == 0)
     {
         // then home button was pressed in either its icon or "all" mode respectively
-        if (tabExpanded && !isAnimating)
+        if (tabExpanded && !self.isAnimating)
         {
             [self animateCollectionViewDown: NO];
         }
@@ -595,7 +591,7 @@ referenceSizeForFooterInSection: (NSInteger) section
         return;
     }
     
-    if (tabExpanded || isAnimating)
+    if (tabExpanded || self.isAnimating)
     {
         return;
     }
@@ -610,7 +606,7 @@ referenceSizeForFooterInSection: (NSInteger) section
 {
     if (down && !tabExpanded)
     {
-        isAnimating = YES;
+        self.isAnimating = YES;
         
         [UIView animateWithDuration: 0.4
                               delay: 0.0
@@ -625,7 +621,7 @@ referenceSizeForFooterInSection: (NSInteger) section
          
                          completion: ^(BOOL result) {
                              tabExpanded = YES;
-                             isAnimating = NO;
+                             self.isAnimating = NO;
                              [self.channelThumbnailCollectionView reloadData];
                              CGRect currentCollectionViewFrame = self.channelThumbnailCollectionView.frame;
                              currentCollectionViewFrame.size.height -= kCategorySecondRowHeight;
@@ -634,7 +630,7 @@ referenceSizeForFooterInSection: (NSInteger) section
     }
     else if (tabExpanded)
     {
-        isAnimating = YES;
+        self.isAnimating = YES;
         
         [UIView animateWithDuration: 0.4
                               delay: 0.1
@@ -649,7 +645,7 @@ referenceSizeForFooterInSection: (NSInteger) section
          
                          completion: ^(BOOL result) {
                              tabExpanded = NO;
-                             isAnimating = NO;
+                             self.isAnimating = NO;
                              
                              [self.channelThumbnailCollectionView reloadData];
                              
@@ -677,26 +673,26 @@ referenceSizeForFooterInSection: (NSInteger) section
 {
     [appDelegate.viewStackManager hideSideNavigator];
     
-    if ([currentGenre.uniqueId
+    if ([self.currentGenre.uniqueId
          isEqualToString: genre.uniqueId])
     {
         return;
     }
     
-    currentCategoryId = genre.uniqueId;
+    self.currentCategoryId = genre.uniqueId;
     
     dataRequestRange = NSMakeRange(0, STANDARD_REQUEST_LENGTH);
     
     if (genre == nil)
     {
         // all category chosen
-        currentCategoryId = @"all";
-        currentGenre = nil;
+        self.currentCategoryId = @"all";
+        self.currentGenre = nil;
     }
     else
     {
-        currentCategoryId = genre.uniqueId;
-        currentGenre = genre;
+        self.currentCategoryId = genre.uniqueId;
+        self.currentGenre = genre;
     }
     
     CGPoint currentOffset = self.channelThumbnailCollectionView.contentOffset;
