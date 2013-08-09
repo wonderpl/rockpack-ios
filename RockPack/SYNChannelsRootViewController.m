@@ -32,7 +32,11 @@
 
 #define kChannelsCache @"ChannelsCache"
 
-@interface SYNChannelsRootViewController () <UIScrollViewDelegate, SYNChannelCategoryTableViewDelegate>
+
+
+@interface SYNChannelsRootViewController () <UIScrollViewDelegate, SYNChannelCategoryTableViewDelegate> {
+    NSString* StartingCategoryText;
+}
 
 @property (nonatomic, assign) BOOL ignoreRefresh;
 @property (nonatomic, strong) Genre *allGenre;
@@ -71,6 +75,7 @@
 {
     BOOL isIPhone = IS_IPHONE;
     
+    StartingCategoryText  = NSLocalizedString(@"ALL CHANNELS", nil);
     SYNIntegralCollectionViewFlowLayout *flowLayout;
     
     if (isIPhone)
@@ -225,8 +230,7 @@
 - (void) updateAnalytics
 {
     // Google analytics support
-    [GAI.sharedInstance.defaultTracker
-     sendView: @"Channels - Root"];
+    [GAI.sharedInstance.defaultTracker sendView: @"Channels - Root"];
 }
 
 
@@ -242,7 +246,8 @@
 - (void) loadChannelsForGenre: (Genre *) genre
                   byAppending: (BOOL) append
 {
-    //    DebugLog(@"Next request: %i - %i", self.dataRequestRange.location, self.dataRequestRange.length + self.dataRequestRange.location - 1);
+    
+    // DebugLog(@"Next request: %i - %i", self.dataRequestRange.location, self.dataRequestRange.length + self.dataRequestRange.location - 1);
     
     self.runningNetworkOperation = [appDelegate.networkEngine updateChannelsScreenForCategory: (genre ? genre.uniqueId : @"all")
                                                                                      forRange: self.dataRequestRange
@@ -757,23 +762,23 @@
     
     [self.view addSubview: self.categorySelectButton];
     
-    newFrame.origin.x = 40.0f;
-    newFrame.origin.y += 3.0f;
+    newFrame.origin.x = 42.0f;
+    newFrame.origin.y += 4.0f;
     newFrame.size.width = 280.0f;
     
     UILabel *newLabel = [[UILabel alloc] initWithFrame: newFrame];
-    newLabel.font = [UIFont boldRockpackFontOfSize: 18.0f];
+    newLabel.font = [UIFont boldRockpackFontOfSize: 14.0f];
     
-    newLabel.textColor = [UIColor colorWithRed: 106.0f / 255.0f
-                                         green: 114.0f / 255.0f
-                                          blue: 122.0f / 255.0f
+    newLabel.textColor = [UIColor colorWithRed: 40.0f / 255.0f
+                                         green: 45.0f / 255.0f
+                                          blue: 51.0f / 255.0f
                                          alpha: 1.0f];
     
     newLabel.shadowColor = [UIColor colorWithWhite: 1.0f
                                              alpha: 0.75f];
     
     newLabel.shadowOffset = CGSizeMake(0.0f, 1.0f);
-    newLabel.text = NSLocalizedString(@"BROWSE CATEGORIES", nil);
+    newLabel.text = StartingCategoryText;
     newLabel.backgroundColor = [UIColor clearColor];
     CGPoint center = newLabel.center;
     [newLabel sizeToFit];
@@ -860,7 +865,7 @@
     }
     else
     {
-        self.categoryNameLabel.text = @"BROWSE CATEGORIES";
+        self.categoryNameLabel.text = StartingCategoryText;
         [self.categoryNameLabel sizeToFit];
         self.subCategoryNameLabel.hidden = YES;
         self.arrowImage.hidden = YES;

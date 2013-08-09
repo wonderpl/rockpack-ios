@@ -412,10 +412,10 @@
         
         [self doFacebookLoginAnimation];
         
-        [_appDelegate.oAuthNetworkEngine doFacebookLoginWithAccessToken: accessTokenData.accessToken
+        [_appDelegate.oAuthNetworkEngine connectFacebookAccountWithAccessToken: accessTokenData.accessToken
                                                                 expires: accessTokenData.expirationDate
                                                             permissions: accessTokenData.permissions
-                                                          completionHandler: ^(SYNOAuth2Credential* credential) {
+                                                      completionHandler: ^(SYNOAuth2Credential* credential) {
                                                               
             [_appDelegate.oAuthNetworkEngine retrieveAndRegisterUserFromCredentials: credential
                                                               completionHandler: ^(NSDictionary* dictionary) {

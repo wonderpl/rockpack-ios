@@ -11,7 +11,7 @@
 #import "SYNSessionTokenCachingStrategy.h"
 #import <FacebookSDK/FacebookSDK.h>
 #import "SYNAppDelegate.h"
-
+#import "SYNOAuthNetworkEngine.h"
 
 @interface SYNFacebookManager ()
 
@@ -202,12 +202,28 @@
                      else
                      {
                          DebugLog(@"** Reauthorize: Suceeded");
-                         // OK, the user has now granted required extended permissions, log it to the server
-                         //SYNAppDelegate* appDelegate = (SYNAppDelegate*)[[UIApplication sharedApplication] delegate];
-                         //[appDelegate ]
-                         dispatch_async(dispatch_get_main_queue(), ^{
-                             successBlock();
-                         });
+                         
+                         // OK, the user has now granted required extended permissions...
+                         
+                         // Log it to the server
+                         
+                         SYNAppDelegate* appDelegate = (SYNAppDelegate*)[[UIApplication sharedApplication] delegate];
+                         FBAccessTokenData* accessTokenData = [[FBSession activeSession] accessTokenData];
+                         [appDelegate.oAuthNetworkEngine connectFacebookAccountWithAccessToken: accessTokenData.accessToken
+                                                                                           expires: accessTokenData.expirationDate
+                                                                                       permissions: accessTokenData.permissions
+                                                                                 completionHandler: ^(SYNOAuth2Credential* credential) {
+                                                                                     DebugLog(@"** Token Sent to the Server");
+                                                                                     dispatch_async(dispatch_get_main_queue(), ^{
+                                                                                         successBlock();
+                                                                                     });
+                                                                                     
+                                                                                 }  errorHandler:^(id errorMessage) {
+                                                                                     
+                                                                                     failureBlock(errorMessage);
+                                                                                     
+                                                                                 }];
+                         
                      }
                  }];
             }

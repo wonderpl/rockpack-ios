@@ -152,11 +152,11 @@
 
 
 // Get authentication token, by passing facebook access token to the API, and getting the authentication token in return
-- (void) doFacebookLoginWithAccessToken: (NSString*) facebookAccessToken
-                                expires: (NSDate *) expirationDate
-                            permissions: (NSArray *) permissions
-                      completionHandler: (MKNKLoginCompleteBlock) completionBlock
-                           errorHandler: (MKNKUserErrorBlock) errorBlock
+- (void) connectFacebookAccountWithAccessToken: (NSString*) facebookAccessToken
+                                       expires: (NSDate *) expirationDate
+                                   permissions: (NSArray *) permissions
+                             completionHandler: (MKNKLoginCompleteBlock) completionBlock
+                                  errorHandler: (MKNKUserErrorBlock) errorBlock
 {
     // We need to handle locale differently (so add the locale to the URL) as opposed to the other parameters which are in the POST body
     NSString *apiString = [NSString stringWithFormat: @"%@?locale=%@", kAPISecureExternalLogin, self.localeString];
@@ -167,19 +167,9 @@
     // Add optional information
     if (expirationDate)
     {
-        static NSDateFormatter *dateFormatter;
-        
-        if (dateFormatter == nil)
-        {
-            // Do once, and only once
-            static dispatch_once_t oncePredicate;
-            dispatch_once(&oncePredicate, ^
-                          {
-                              dateFormatter = [[NSDateFormatter alloc] init];
-                              [dateFormatter setTimeZone: [NSTimeZone timeZoneWithName: @"UTC"]];
-                              [dateFormatter setDateFormat: @"yyyy-MM-dd'T'HH:mm:ss"];
-                          });
-        }
+        NSDateFormatter *dateFormatter = [[NSDateFormatter alloc] init];
+        [dateFormatter setTimeZone: [NSTimeZone timeZoneWithName: @"UTC"]];
+        [dateFormatter setDateFormat: @"yyyy-MM-dd'T'HH:mm:ss"];
         
         postLoginParams[@"token_expires"] = [dateFormatter stringFromDate: expirationDate];
     }
@@ -1579,24 +1569,12 @@
                                  errorHandler: (MKNKUserErrorBlock) errorBlock
 {
     [self connectToExternalAccoundForUserId:userId
-                                     token:token
-                                   service:@"apns"
-                         completionHandler:completionBlock
-                              errorHandler:errorBlock];
+                                accountData:@{@"external_system": @"apns", @"external_token" : token}
+                          completionHandler:completionBlock
+                               errorHandler:errorBlock];
 }
 
--(void)connectToFacebookAccoundForUserId:(NSString*) userId
-                                   token:(NSString*)token
-                       completionHandler: (MKNKUserSuccessBlock) completionBlock
-                            errorHandler: (MKNKUserErrorBlock) errorBlock
-{
-    
-    [self connectToExternalAccoundForUserId:userId
-                                     token:token
-                                   service:@"facebook"
-                         completionHandler:completionBlock
-                              errorHandler:errorBlock];
-}
+
 
 - (void) getExternalAccountForUserId:(NSString*)userId
                            accountId:(NSString*)accountId
@@ -1634,16 +1612,26 @@
     [self enqueueSignedOperation: networkOperation];
 }
 
+/*
+ {
+ "external_system": "facebook",
+ "external_token": "xxx",
+ "token_expires": "2013-03-28T19:16:13",
+ "token_permissions": "read,write",
+ "meta": {
+ "key": "value"
+ }
+ }
+ */
 - (void) connectToExternalAccoundForUserId:(NSString*) userId
-                                    token:(NSString*)token
-                                  service:(NSString*)service
-                        completionHandler: (MKNKUserSuccessBlock) completionBlock
-                             errorHandler: (MKNKUserErrorBlock) errorBlock
+                               accountData:(NSDictionary*)accountData
+                         completionHandler: (MKNKUserSuccessBlock) completionBlock
+                              errorHandler: (MKNKUserErrorBlock) errorBlock
 {
     // Check if any nil parameters passed in (defensive)
-    if (!token || !userId || !service)
+    if (!accountData || !userId)
     {
-        AssertOrLog(@"connectToExtrnalAccoundForUserId error with: %@ %@ %@", token, userId, service);
+        AssertOrLog(@"connectToExtrnalAccoundForUserId error with: %@ %@", accountData, userId);
         return;
     }
    
@@ -1652,8 +1640,7 @@
     
     NSString *apiString = [kRegisterExternalAccount stringByReplacingOccurrencesOfStrings: apiSubstitutionDictionary];
 
-    NSDictionary *params = @{@"external_system": service,
-                             @"external_token" : token};
+    NSDictionary *params = accountData;
     
     SYNNetworkOperationJsonObject *networkOperation = (SYNNetworkOperationJsonObject*)[self operationWithPath: apiString
                                                                                                        params: params

@@ -251,9 +251,10 @@ static char* association_key = "SYNFriendThumbnailCell to Friend";
         FBAccessTokenData* accessTokenData = [[FBSession activeSession] accessTokenData];
         
         
-        [weakAppDelegate.oAuthNetworkEngine connectToFacebookAccoundForUserId:weakAppDelegate.currentUser.uniqueId
-                                                                    token:accessTokenData.accessToken
-                                                        completionHandler:^(id response) {
+        [weakAppDelegate.oAuthNetworkEngine connectFacebookAccountWithAccessToken: accessTokenData.accessToken
+                                                                       expires: accessTokenData.expirationDate
+                                                                   permissions: accessTokenData.permissions
+                                                             completionHandler: ^(SYNOAuth2Credential* credential) {
                                                             
                                                             
                                                             [weakSelf.activityIndicator stopAnimating];

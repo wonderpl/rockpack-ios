@@ -25,7 +25,7 @@ typedef void (^SYNOAuth2RefreshCompletionBlock)(NSError *error);
                 completionHandler: (MKNKLoginCompleteBlock) completionBlock
                      errorHandler: (MKNKUserErrorBlock) errorBlock;
 
-- (void) doFacebookLoginWithAccessToken: (NSString*) facebookAccessToken
+- (void) connectFacebookAccountWithAccessToken: (NSString*) facebookAccessToken
                                 expires: (NSDate *) expirationDate
                             permissions: (NSArray *) permissions
                       completionHandler: (MKNKLoginCompleteBlock) completionBlock
@@ -255,10 +255,10 @@ typedef void (^SYNOAuth2RefreshCompletionBlock)(NSError *error);
                             completionHandler: (MKNKUserSuccessBlock) completionBlock
                                  errorHandler: (MKNKUserErrorBlock) errorBlock;
 
--(void)connectToFacebookAccoundForUserId:(NSString*) userId
-                                   token:(NSString*)token
-                       completionHandler: (MKNKUserSuccessBlock) completionBlock
-                            errorHandler: (MKNKUserErrorBlock) errorBlock;
+- (void) connectToExternalAccoundForUserId:(NSString*) userId
+                               accountData:(NSDictionary*)accountData
+                         completionHandler: (MKNKUserSuccessBlock) completionBlock
+                              errorHandler: (MKNKUserErrorBlock) errorBlock;
 
 - (void) getExternalAccountForUserId:(NSString*)userId
                            accountId:(NSString*)accountId

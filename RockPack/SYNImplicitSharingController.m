@@ -61,6 +61,7 @@
     }
     else
     {
+        
         [[SYNFacebookManager sharedFBManager] openSessionWithPermissionType:kFacebookPermissionTypePublish onSuccess:^{
             
             [appDelegate.oAuthNetworkEngine setFlag:@"facebook_autopost_star" withValue:isYesButton
