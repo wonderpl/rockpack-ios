@@ -1007,220 +1007,6 @@
 }
 
 
-#pragma mark - Social deep linking
-
-- (BOOL) application: (UIApplication *) application
-       handleOpenURL: (NSURL *) url
-{
-    return YES;
-}
-
-
-- (NSDictionary *) parseURLParams: (NSString *) query
-{
-    NSArray *pairs = [query componentsSeparatedByString: @"&"];
-    
-    NSMutableDictionary *params = [[NSMutableDictionary alloc] init];
-    
-    for (NSString *pair in pairs)
-    {
-        NSRange range = [pair rangeOfString: @"="];
-        
-        NSString *key = [pair substringToIndex: range.location];
-        NSString *value = [pair substringFromIndex: range.location + 1];
-        
-        params[key] = value;
-    }
-    
-    return params;
-}
-
-- (BOOL) parseAndActionRockpackURL: (NSURL *) url
-{
-    BOOL success = FALSE;
-    
-    NSString *userId = url.host;
-    NSArray *pathComponents = url.pathComponents;
-    
-    NSString *hostName = [[NSBundle mainBundle] objectForInfoDictionaryKey: ([userId isEqualToString: self.currentUser.uniqueId])? @"SecureAPIHostName" : @"APIHostName"];
-    
-    switch (pathComponents.count)
-    {
-        // User profile
-        case 1:
-        {
-            if (userId)
-            {
-                ChannelOwner *channelOwner = [ChannelOwner instanceFromDictionary: @{@"id" : userId}
-                                                        usingManagedObjectContext: self.mainManagedObjectContext
-                                                              ignoringObjectTypes: kIgnoreChannelObjects];
-                
-                [self.viewStackManager viewProfileDetails: channelOwner];
-                success = TRUE;
-            }
-            
-            break;
-        }
-            
-        // Channel
-        case 3:
-        {
-            // Extract the channelId from the path
-            NSString *channelId = pathComponents[2];
-            NSString *resourceURL = [NSString stringWithFormat: @"http://%@/ws/%@/channels/%@/", hostName, userId, channelId];
-            Channel* channel = [Channel instanceFromDictionary: @{@"id" : channelId, @"resource_url" : resourceURL}
-                                     usingManagedObjectContext: self.mainManagedObjectContext];
-            
-            if (channel)
-            {
-                [self.viewStackManager viewChannelDetails: channel];
-                success = TRUE;
-            }
-            break;
-        }
-            
-        // Video Instance
-        case 5:
-        {
-            NSString *channelId = pathComponents[2];
-            NSString *videoId = pathComponents[4];
-            NSString *resourceURL = [NSString stringWithFormat: @"http://%@/ws/%@/channels/%@/", hostName, userId, channelId];
-            Channel* channel = [Channel instanceFromDictionary: @{@"id" : channelId, @"resource_url" : resourceURL}
-                                     usingManagedObjectContext: self.mainManagedObjectContext];
-            
-            if (channel)
-            {
-                [self.viewStackManager viewChannelDetails: channel
-                                           withAutoplayId: videoId];
-                success = TRUE;
-            }
-            break;
-        }
-            
-        default:
-            // Not sure what this is so indicate failure
-            break;
-    }
-    
-    return success;
-}
-
-
-// rockpack://USERID/
-// (test) http://dev.rockpack.com/paulegan/deeplinktest/user.html
-// rockpack://USERID/channels/CHANNELID/
-// (test) http://dev.rockpack.com/paulegan/deeplinktest/channel.html
-// rockpack://USERID/channels/CHANNELID/videos/VIDEOID/
-// (test) http://dev.rockpack.com/paulegan/deeplinktest/video.html
-// http://share.demo.rockpack.com/s/SXL1kOk
-
-- (BOOL)  application: (UIApplication *) application
-              openURL: (NSURL *) url
-    sourceApplication: (NSString *) sourceApplication
-           annotation: (id) annotation
-{
-    // Is it one of our own custom 'rockpack' URL schemes
-    if ([url.scheme isEqualToString: @"rockpack"])
-    {
-        return [self parseAndActionRockpackURL: url];
-    }
-    else if ([url.scheme hasPrefix: @"fb"])
-    {
-        // Parse the fragment of the URL (separated by &)
-        NSDictionary *params = [self parseURLParams: [url fragment]];
-        
-        // Check if target URL exists
-        NSString *targetURLString = [params valueForKey: @"target_url"];
-        
-        if (targetURLString)
-        {
-            targetURLString = [targetURLString stringByAppendingString: @"&rockpack_redirect=true"];
-
-            NSMutableURLRequest *request = [NSMutableURLRequest requestWithURL: [NSURL URLWithString: targetURLString]];
-            [request setHTTPMethod: @"GET"];
-
-            // Make sure we don't reuse old data
-            self.rockpackURL = nil;
-            
-            // Start asynchronous connection
-            self.connection = [[NSURLConnection alloc] initWithRequest: request
-                                                              delegate: self];
-        }
-        
-        return [FBSession.activeSession
-                handleOpenURL: url];
-    }
-    else
-    {
-        // No idea what this scheme does so indicated failure
-        return NO;
-    }
-}
-
-
-#pragma mark -
-#pragma mark NSURLConnection delegates
-
-- (void) connectionDidFinishLoading: (NSURLConnection *) connection
-{
-    if (self.rockpackURL)
-    {
-        NSURL *url = [NSURL URLWithString: self.rockpackURL];
-        [self parseAndActionRockpackURL: url];
-    }
-}
-
-
-- (NSURLRequest *) connection: (NSURLConnection *) connection
-              willSendRequest: (NSURLRequest *) request
-             redirectResponse: (NSURLResponse *) redirectResponse
-{
-    NSURLRequest *newRequest = request;
-    
-
-    if (redirectResponse && !self.rockpackURL)
-    {
-         NSString *urlString = [(NSHTTPURLResponse *) redirectResponse allHeaderFields][@"Location"];
-        
-        if ([urlString hasPrefix: @"rockpack"])
-        {
-            self.rockpackURL = urlString;
-            newRequest = nil;
-        }
-    }
-    
-    return newRequest;
-}
-
-
-- (Channel*) channelFromChannelId: (NSString*) channelId
-{
-    Channel* channel;
-    
-    NSEntityDescription* channelEntity = [NSEntityDescription entityForName: @"Channel"
-                                                     inManagedObjectContext: self.mainManagedObjectContext];
-    
-    NSFetchRequest *channelFetchRequest = [[NSFetchRequest alloc] init];
-    [channelFetchRequest setEntity: channelEntity];
-    
-    NSPredicate *predicate = [NSPredicate predicateWithFormat: @"uniqueId == %@", channelId];
-    
-    [channelFetchRequest setPredicate: predicate];
-    
-    NSError* error;
-    
-    NSArray *matchingChannelEntries = [self.mainManagedObjectContext executeFetchRequest: channelFetchRequest
-                                                                                   error: &error];
-    
-    if (matchingChannelEntries.count > 0)
-    {
-        channel = matchingChannelEntries[0];
-    }
-    
-    return channel;
-}
-
-
 #pragma mark - UIWebView-based video player HTML updater
 
 - (void) checkForUpdatedPlayerCode
@@ -1412,7 +1198,7 @@
     
     UIApplicationState state = [application applicationState];
     
-    if (state == UIApplicationStateBackground)
+//    if (state == UIApplicationStateBackground)
     {
         // The app is in the background, and the user has tapped on a notification
         // so we do need to handle this case
@@ -1452,5 +1238,229 @@
         [self parseAndActionRockpackURL: rockpackURL];
     }
 }
+
+#pragma mark - Social deep linking
+
+- (BOOL) application: (UIApplication *) application
+       handleOpenURL: (NSURL *) url
+{
+    return YES;
+}
+
+
+- (NSDictionary *) parseURLParams: (NSString *) query
+{
+    NSArray *pairs = [query componentsSeparatedByString: @"&"];
+    
+    NSMutableDictionary *params = [[NSMutableDictionary alloc] init];
+    
+    for (NSString *pair in pairs)
+    {
+        NSRange range = [pair rangeOfString: @"="];
+        
+        NSString *key = [pair substringToIndex: range.location];
+        NSString *value = [pair substringFromIndex: range.location + 1];
+        
+        params[key] = value;
+    }
+    
+    return params;
+}
+
+- (BOOL) parseAndActionRockpackURL: (NSURL *) url
+{
+    BOOL success = FALSE;
+
+    
+    NSString *userId = url.host;
+    NSArray *pathComponents = url.pathComponents;
+    
+    // Default to other user's deep link
+    NSString *httpScheme = @"http:";
+    
+    // Vary schema dependent on whether the deep link is from current user or a different user
+    if ([userId isEqualToString: self.currentUser.uniqueId])
+    {
+        httpScheme = @"https:";
+    }
+    
+    NSString *hostName = [[NSBundle mainBundle] objectForInfoDictionaryKey: ([userId isEqualToString: self.currentUser.uniqueId])? @"SecureAPIHostName" : @"APIHostName"];
+    
+    switch (pathComponents.count)
+    {
+            // User profile
+        case 1:
+        {
+            if (userId)
+            {
+                ChannelOwner *channelOwner = [ChannelOwner instanceFromDictionary: @{@"id" : userId}
+                                                        usingManagedObjectContext: self.mainManagedObjectContext
+                                                              ignoringObjectTypes: kIgnoreChannelObjects];
+                
+                [self.viewStackManager viewProfileDetails: channelOwner];
+                success = TRUE;
+            }
+            
+            break;
+        }
+            
+            // Channel
+        case 3:
+        {
+            // Extract the channelId from the path
+            NSString *channelId = pathComponents[2];
+            NSString *resourceURL = [NSString stringWithFormat: @"%@//%@/ws/%@/channels/%@/", httpScheme, hostName, userId, channelId];
+            Channel* channel = [Channel instanceFromDictionary: @{@"id" : channelId, @"resource_url" : resourceURL}
+                                     usingManagedObjectContext: self.mainManagedObjectContext];
+            
+            if (channel)
+            {
+                [self.viewStackManager viewChannelDetails: channel];
+                success = TRUE;
+            }
+            break;
+        }
+            
+            // Video Instance
+        case 5:
+        {
+            NSString *channelId = pathComponents[2];
+            NSString *videoId = pathComponents[4];
+            NSString *resourceURL = [NSString stringWithFormat: @"%@//%@/ws/%@/channels/%@/", httpScheme, hostName, userId, channelId];
+            Channel* channel = [Channel instanceFromDictionary: @{@"id" : channelId, @"resource_url" : resourceURL}
+                                     usingManagedObjectContext: self.mainManagedObjectContext];
+            
+            if (channel)
+            {
+                [self.viewStackManager viewChannelDetails: channel
+                                           withAutoplayId: videoId];
+                success = TRUE;
+            }
+            break;
+        }
+            
+        default:
+            // Not sure what this is so indicate failure
+            break;
+    }
+    
+    return success;
+}
+
+
+// rockpack://USERID/
+// (test) http://dev.rockpack.com/paulegan/deeplinktest/user.html
+// rockpack://USERID/channels/CHANNELID/
+// (test) http://dev.rockpack.com/paulegan/deeplinktest/channel.html
+// rockpack://USERID/channels/CHANNELID/videos/VIDEOID/
+// (test) http://dev.rockpack.com/paulegan/deeplinktest/video.html
+// http://share.demo.rockpack.com/s/SXL1kOk
+
+- (BOOL)  application: (UIApplication *) application
+              openURL: (NSURL *) url
+    sourceApplication: (NSString *) sourceApplication
+           annotation: (id) annotation
+{
+    // Is it one of our own custom 'rockpack' URL schemes
+    if ([url.scheme isEqualToString: @"rockpack"])
+    {
+        return [self parseAndActionRockpackURL: url];
+    }
+    else if ([url.scheme hasPrefix: @"fb"])
+    {
+        // Parse the fragment of the URL (separated by &)
+        NSDictionary *params = [self parseURLParams: [url fragment]];
+        
+        // Check if target URL exists
+        NSString *targetURLString = [params valueForKey: @"target_url"];
+        
+        if (targetURLString)
+        {
+            targetURLString = [targetURLString stringByAppendingString: @"&rockpack_redirect=true"];
+            
+            NSMutableURLRequest *request = [NSMutableURLRequest requestWithURL: [NSURL URLWithString: targetURLString]];
+            [request setHTTPMethod: @"GET"];
+            
+            // Make sure we don't reuse old data
+            self.rockpackURL = nil;
+            
+            // Start asynchronous connection
+            self.connection = [[NSURLConnection alloc] initWithRequest: request
+                                                              delegate: self];
+        }
+        
+        return [FBSession.activeSession
+                handleOpenURL: url];
+    }
+    else
+    {
+        // No idea what this scheme does so indicated failure
+        return NO;
+    }
+}
+
+
+#pragma mark -
+#pragma mark NSURLConnection delegates for deep linking
+
+- (void) connectionDidFinishLoading: (NSURLConnection *) connection
+{
+    if (self.rockpackURL)
+    {
+        NSURL *url = [NSURL URLWithString: self.rockpackURL];
+        [self parseAndActionRockpackURL: url];
+    }
+}
+
+
+- (NSURLRequest *) connection: (NSURLConnection *) connection
+              willSendRequest: (NSURLRequest *) request
+             redirectResponse: (NSURLResponse *) redirectResponse
+{
+    NSURLRequest *newRequest = request;
+    
+    
+    if (redirectResponse && !self.rockpackURL)
+    {
+        NSString *urlString = [(NSHTTPURLResponse *) redirectResponse allHeaderFields][@"Location"];
+        
+        if ([urlString hasPrefix: @"rockpack"])
+        {
+            self.rockpackURL = urlString;
+            newRequest = nil;
+        }
+    }
+    
+    return newRequest;
+}
+
+
+- (Channel*) channelFromChannelId: (NSString*) channelId
+{
+    Channel* channel;
+    
+    NSEntityDescription* channelEntity = [NSEntityDescription entityForName: @"Channel"
+                                                     inManagedObjectContext: self.mainManagedObjectContext];
+    
+    NSFetchRequest *channelFetchRequest = [[NSFetchRequest alloc] init];
+    [channelFetchRequest setEntity: channelEntity];
+    
+    NSPredicate *predicate = [NSPredicate predicateWithFormat: @"uniqueId == %@", channelId];
+    
+    [channelFetchRequest setPredicate: predicate];
+    
+    NSError* error;
+    
+    NSArray *matchingChannelEntries = [self.mainManagedObjectContext executeFetchRequest: channelFetchRequest
+                                                                                   error: &error];
+    
+    if (matchingChannelEntries.count > 0)
+    {
+        channel = matchingChannelEntries[0];
+    }
+    
+    return channel;
+}
+
 
 @end
