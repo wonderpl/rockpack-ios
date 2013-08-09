@@ -41,6 +41,8 @@
     if(sender.selected) // button is pressed twice
         return;
     
+    // at this point we should be guaranteed to have a FB account
+    
     sender.selected = YES;
     
     

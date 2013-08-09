@@ -28,6 +28,8 @@
 - (BOOL) registerCoverArtFromDictionary: (NSDictionary *) dictionary
                           forUserUpload: (BOOL) userUpload;
 
+-(BOOL)registerExternalAccountWithCurrentUserFromDictionary:(NSDictionary*)dictionary;
+
 - (BOOL) registerDataForSocialFeedFromItemsDictionary: (NSDictionary *) dictionary
                                           byAppending: (BOOL) append;
 

@@ -250,34 +250,31 @@ static char* association_key = "SYNFriendThumbnailCell to Friend";
         
         FBAccessTokenData* accessTokenData = [[FBSession activeSession] accessTokenData];
         
+        [weakAppDelegate.oAuthNetworkEngine connectFacebookAccountForUserId:appDelegate.currentUser.uniqueId
+                                                         andAccessTokenData:accessTokenData
+                                                          completionHandler:^(id no_responce) {
+                                                              
+                                                              [weakSelf.activityIndicator stopAnimating];
+                                                              
+                                                              weakSelf.friendsCollectionView.hidden = NO;
+                                                              weakSelf.preLoginLabel.hidden = YES;
+                                                              weakSelf.facebookLoginButton.hidden = YES;
+                                                              
+                                                              weakSelf.onRockpackButton.hidden = NO;
+                                                              weakSelf.allFriendsButton.hidden = NO;
+                                                              
+                                                              [weakSelf fetchAndDisplayFriends];
+            
+                                                          } errorHandler:^(id error) {
+                                                              
+                                                              [weakSelf.activityIndicator stopAnimating];
+                                                              
+                                                              weakSelf.facebookLoginButton.hidden = NO;
+                                                              
+                                                              weakSelf.preLoginLabel.text = @"We could not Log you in becuase this FB account seems to be associated with a different User.";
+            
+                                                          }];
         
-        [weakAppDelegate.oAuthNetworkEngine connectFacebookAccountWithAccessToken: accessTokenData.accessToken
-                                                                       expires: accessTokenData.expirationDate
-                                                                   permissions: accessTokenData.permissions
-                                                             completionHandler: ^(SYNOAuth2Credential* credential) {
-                                                            
-                                                            
-                                                            [weakSelf.activityIndicator stopAnimating];
-                                                            
-                                                            weakSelf.friendsCollectionView.hidden = NO;
-                                                            weakSelf.preLoginLabel.hidden = YES;
-                                                            weakSelf.facebookLoginButton.hidden = YES;
-                                                            
-                                                            weakSelf.onRockpackButton.hidden = NO;
-                                                            weakSelf.allFriendsButton.hidden = NO;
-                                                            
-                                                            [weakSelf fetchAndDisplayFriends];
-                                                             
-                                                            
-                                                        } errorHandler:^(id response) {
-                                                            
-                                                            [weakSelf.activityIndicator stopAnimating];
-                                                            
-                                                            weakSelf.facebookLoginButton.hidden = NO;
-                                                            
-                                                            weakSelf.preLoginLabel.text = @"We could not Log you in becuase this FB account seems to be associated with a different User.";
-                                                            
-                                                        }];
         
     } onFailure: ^(NSString* errorString) {
         

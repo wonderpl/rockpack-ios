@@ -85,7 +85,7 @@
 }
 
 
-#pragma mark - Sign-up & Sign-in (inc. Facebook)
+#pragma mark - Loggin-In and Signing-Up
 
 // This code block is common to all of the signup/signin methods
 - (void) addCommonOAuthPropertiesToUnsignedNetworkOperation: (SYNNetworkOperationJsonObject *) networkOperation
@@ -151,12 +151,12 @@
 }
 
 
-// Get authentication token, by passing facebook access token to the API, and getting the authentication token in return
-- (void) connectFacebookAccountWithAccessToken: (NSString*) facebookAccessToken
-                                       expires: (NSDate *) expirationDate
-                                   permissions: (NSArray *) permissions
-                             completionHandler: (MKNKLoginCompleteBlock) completionBlock
-                                  errorHandler: (MKNKUserErrorBlock) errorBlock
+// Send the token data back to the server
+- (void) doFacebookLoginWithAccessToken: (NSString*) facebookAccessToken
+                                expires: (NSDate *) expirationDate
+                            permissions: (NSArray *) permissions
+                      completionHandler: (MKNKLoginCompleteBlock) completionBlock
+                           errorHandler: (MKNKUserErrorBlock) errorBlock
 {
     // We need to handle locale differently (so add the locale to the URL) as opposed to the other parameters which are in the POST body
     NSString *apiString = [NSString stringWithFormat: @"%@?locale=%@", kAPISecureExternalLogin, self.localeString];
@@ -183,9 +183,10 @@
                                                                                                         params: postLoginParams
                                                                                                     httpMethod: @"POST"
                                                                                                            ssl: TRUE];
+    
     [self addCommonOAuthPropertiesToUnsignedNetworkOperation: networkOperation
-                                           completionHandler: completionBlock
-                                                errorHandler: errorBlock];
+                                           completionHandler:completionBlock
+                                                errorHandler:errorBlock];
     
     [self enqueueOperation: networkOperation];
 }
@@ -1568,13 +1569,27 @@
                             completionHandler: (MKNKUserSuccessBlock) completionBlock
                                  errorHandler: (MKNKUserErrorBlock) errorBlock
 {
-    [self connectToExternalAccoundForUserId:userId
-                                accountData:@{@"external_system": @"apns", @"external_token" : token}
-                          completionHandler:completionBlock
-                               errorHandler:errorBlock];
+    [self connectExternalAccoundForUserId:userId
+                              accountData:@{@"external_system": @"apns", @"external_token" : token}
+                        completionHandler:completionBlock
+                             errorHandler:errorBlock];
 }
 
-
+- (void) connectFacebookAccountForUserId: (NSString*)userId
+                      andAccessTokenData: (FBAccessTokenData*)data
+                       completionHandler: (MKNKUserSuccessBlock) completionBlock
+                            errorHandler: (MKNKUserErrorBlock) errorBlock
+{
+    NSDictionary* accountData = @{@"external_system": @"facebook",
+                                  @"external_token" : data.accessToken,
+                                  @"token_expires" : data.expirationDate,
+                                  @"token_permissions" : data.permissions};
+    
+    [self connectExternalAccoundForUserId:userId
+                              accountData:accountData
+                        completionHandler:completionBlock
+                             errorHandler:errorBlock];
+}
 
 - (void) getExternalAccountForUserId:(NSString*)userId
                            accountId:(NSString*)accountId
@@ -1623,10 +1638,10 @@
  }
  }
  */
-- (void) connectToExternalAccoundForUserId:(NSString*) userId
-                               accountData:(NSDictionary*)accountData
-                         completionHandler: (MKNKUserSuccessBlock) completionBlock
-                              errorHandler: (MKNKUserErrorBlock) errorBlock
+- (void) connectExternalAccoundForUserId: (NSString*) userId
+                             accountData: (NSDictionary*)accountData
+                        completionHandler: (MKNKUserSuccessBlock) completionBlock
+                            errorHandler: (MKNKUserErrorBlock) errorBlock
 {
     // Check if any nil parameters passed in (defensive)
     if (!accountData || !userId)
@@ -1640,18 +1655,28 @@
     
     NSString *apiString = [kRegisterExternalAccount stringByReplacingOccurrencesOfStrings: apiSubstitutionDictionary];
 
-    NSDictionary *params = accountData;
     
     SYNNetworkOperationJsonObject *networkOperation = (SYNNetworkOperationJsonObject*)[self operationWithPath: apiString
-                                                                                                       params: params
+                                                                                                       params: accountData
                                                                                                    httpMethod: @"POST"
                                                                                                           ssl: YES];
     [networkOperation addHeaders: @{@"Content-Type" : @"application/json"}];
     networkOperation.postDataEncoding = MKNKPostDataEncodingTypeJSON;
-    
+    __weak SYNOAuthNetworkEngine* wself = self;
     [self addCommonHandlerToNetworkOperation: networkOperation
-                           completionHandler: completionBlock
-                                errorHandler: errorBlock];
+                           completionHandler:^(id responce) {
+                               
+                               BOOL didRegister = [wself.registry registerExternalAccountWithCurrentUserFromDictionary:accountData];
+                               if(!didRegister) {
+                                   errorBlock(@{@"registry_error" : @"could not register external account"});
+                                   return;
+                               }
+                                   
+                               
+                               completionBlock(responce);
+                               
+                               
+                           } errorHandler: errorBlock];
     
     [self enqueueSignedOperation: networkOperation];
 }

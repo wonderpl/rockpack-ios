@@ -9,6 +9,8 @@
 #import "MKNetworkEngine.h"
 #import "SYNAbstractNetworkEngine.h"
 
+#import <FacebookSDK/FacebookSDK.h>
+
 typedef void (^SYNOAuth2CompletionBlock)(NSError *error);
 typedef void (^SYNOAuth2RefreshCompletionBlock)(NSError *error);
 
@@ -25,7 +27,7 @@ typedef void (^SYNOAuth2RefreshCompletionBlock)(NSError *error);
                 completionHandler: (MKNKLoginCompleteBlock) completionBlock
                      errorHandler: (MKNKUserErrorBlock) errorBlock;
 
-- (void) connectFacebookAccountWithAccessToken: (NSString*) facebookAccessToken
+- (void) doFacebookLoginWithAccessToken: (NSString*) facebookAccessToken
                                 expires: (NSDate *) expirationDate
                             permissions: (NSArray *) permissions
                       completionHandler: (MKNKLoginCompleteBlock) completionBlock
@@ -255,10 +257,15 @@ typedef void (^SYNOAuth2RefreshCompletionBlock)(NSError *error);
                             completionHandler: (MKNKUserSuccessBlock) completionBlock
                                  errorHandler: (MKNKUserErrorBlock) errorBlock;
 
-- (void) connectToExternalAccoundForUserId:(NSString*) userId
-                               accountData:(NSDictionary*)accountData
-                         completionHandler: (MKNKUserSuccessBlock) completionBlock
-                              errorHandler: (MKNKUserErrorBlock) errorBlock;
+- (void) connectFacebookAccountForUserId: (NSString*)userId
+                      andAccessTokenData: (FBAccessTokenData*)data
+                       completionHandler: (MKNKUserSuccessBlock) completionBlock
+                            errorHandler: (MKNKUserErrorBlock) errorBlock;
+
+- (void) connectExternalAccoundForUserId:(NSString*) userId
+                            accountData:(NSDictionary*)accountData
+                       completionHandler: (MKNKUserSuccessBlock) completionBlock
+                            errorHandler: (MKNKUserErrorBlock) errorBlock;
 
 - (void) getExternalAccountForUserId:(NSString*)userId
                            accountId:(NSString*)accountId

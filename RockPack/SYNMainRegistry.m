@@ -80,7 +80,44 @@
     
 }
 
-
+-(BOOL)registerExternalAccountWithCurrentUserFromDictionary:(NSDictionary*)dictionary
+{
+    NSString* systemName = dictionary[@"external_system"];
+    if(!systemName)
+        return NO;
+    
+    ExternalAccount* externalAccount;
+    
+    for (ExternalAccount* candidateExternalAccount in appDelegate.currentUser.externalAccounts)
+    {
+        if ([externalAccount.system isEqualToString:systemName]) {
+            externalAccount = candidateExternalAccount;
+            break;
+        }
+    }
+    if(!externalAccount)
+    {
+        if(!(externalAccount = [ExternalAccount instanceFromDictionary:dictionary
+                                        usingManagedObjectContext:appDelegate.currentUser.managedObjectContext]))
+        {
+            return NO;
+        }
+        else
+        {
+            [appDelegate.currentUser.externalAccountsSet addObject:externalAccount];
+        }
+    }
+    else
+    {
+        [externalAccount setAttributesFromDictionary:dictionary];
+    }
+    
+    
+    [appDelegate saveContext:YES];
+    
+    return YES;
+    
+}
 
 
 - (BOOL) registerCategoriesFromDictionary: (NSDictionary*) dictionary
