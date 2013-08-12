@@ -24,6 +24,7 @@
 @property (nonatomic, weak) UINavigationController *navigationController;
 @property (nonatomic, weak) SYNSideNavigatorViewController *sideNavigatorController;
 @property (nonatomic, weak) SYNMasterViewController *masterController;
+@property (nonatomic) BOOL searchBarOriginSideNavigation;
 
 + (id) manager;
 
@@ -41,6 +42,7 @@
 - (void) viewChannelDetails: (Channel *) channel withAutoplayId: (NSString *) autoplayId;
 - (void) viewChannelDetails: (Channel *) channel;
 
+-(void)dismissSearchBar;
 -(void)presentSearchBar;
 
 

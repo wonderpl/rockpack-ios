@@ -48,16 +48,12 @@ typedef void(^AnimationCompletionBlock)(BOOL finished);
 @property (nonatomic) BOOL showingBackButton;
 @property (nonatomic) NavigationButtonsAppearance currentNavigationButtonsAppearance;
 @property (nonatomic, strong) IBOutlet SYNPageView* pagePositionIndicatorView;
-@property (nonatomic, strong) IBOutlet UIButton* closeSearchButton;
 @property (nonatomic, strong) IBOutlet UIButton* headerButton;
 @property (nonatomic, strong) IBOutlet UIButton* hideNavigationButton;
 @property (nonatomic, strong) IBOutlet UIButton* searchButton;
-@property (nonatomic, strong) IBOutlet UIButton* sideNavigationButton;
 @property (nonatomic, strong) IBOutlet UILabel* pageTitleLabel;
-@property (nonatomic, strong) IBOutlet UIView* darkOverlayView;
 @property (nonatomic, strong) IBOutlet UIView* errorContainerView;
 @property (nonatomic, strong) IBOutlet UIView* navigationContainerView;
-@property (nonatomic, strong) IBOutlet UIView* overlayView;
 @property (nonatomic, strong) SYNAccountSettingsModalContainer* modalAccountContainer;
 @property (nonatomic, strong) SYNBackButtonControl* backButtonControl;
 @property (nonatomic, strong) SYNExistingChannelsViewController* existingChannelsController;
@@ -252,7 +248,6 @@ typedef void(^AnimationCompletionBlock)(BOOL finished);
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(presentSuccessNotificationWithCaution:) name:kNoteSavingCaution object:nil];
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(reachabilityChanged:) name:kReachabilityChangedNotification object:nil];
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(scrollerPageChanged:) name:kScrollerPageChanged object:nil];
-    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(searchCancelledIPhone:) name:kSideNavigationSearchCloseNotification object:nil];
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(searchTyped:) name:kSearchTyped object:nil];
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(showAccountSettingsPopover) name:kAccountSettingsPressed object:nil];
     
@@ -740,33 +735,19 @@ typedef void(^AnimationCompletionBlock)(BOOL finished);
     [self.searchViewController showSearchResultsForTerm: termString];
 }
 
-// when the 'X' is pressed while on search
-- (void) searchCancelledIPhone: (NSNotification*) notification
-{
-    self.sideNavigationButton.selected = YES;
-    
-    if (self.searchViewController.navigationController.topViewController == self.searchViewController)
-    {
-        [self cancelButtonPressed: nil];
-        [appDelegate.viewStackManager popController];
-    }
-    self.closeSearchButton.hidden = YES;
-    self.sideNavigationButton.hidden = NO;
-    [UIView animateWithDuration:0.3
-                        animations:^{
-                self.darkOverlayView.alpha = 1.0;
-                        } completion:^(BOOL finished) {
-                            self.darkOverlayView.hidden = NO;
-                       }];
 
-    [self.sideNavigatorViewController.searchViewController removeFromParentViewController];
-    [self.view insertSubview:self.sideNavigatorViewController.searchViewController.searchBoxView belowSubview:self.overlayView];
-}
 
 
 - (IBAction) cancelButtonPressed: (id) sender
 {
+    [self clearSearchBoxController];
+}
+
+-(void)clearSearchBoxController
+{
+    
     [self.searchBoxController clear];
+    
     [self.searchBoxController.view removeFromSuperview];
     
     self.sideNavigationButton.hidden = NO;
@@ -1186,11 +1167,16 @@ typedef void(^AnimationCompletionBlock)(BOOL finished);
 }
 
 
-- (BOOL) isInSearchMode
+- (BOOL) hasSearchBarOn
 {
     return (BOOL)self.searchBoxController.view.superview;
 }
 
+
+- (BOOL) isInSearchMode
+{
+    return (BOOL)(self.searchViewController.navigationController.topViewController == self.searchViewController);
+}
 
 - (void) changeControlButtonsTo: (NavigationButtonsAppearance) appearance
 {

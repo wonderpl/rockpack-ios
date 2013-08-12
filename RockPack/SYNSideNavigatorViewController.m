@@ -38,7 +38,7 @@ typedef enum {
 
 } kSideNavigationType;
 
-@interface SYNSideNavigatorViewController ()<UITextFieldDelegate, SYNImagePickerControllerDelegate>
+@interface SYNSideNavigatorViewController () <SYNImagePickerControllerDelegate>
 
 @property (nonatomic) NSInteger unreadNotifications;
 @property (nonatomic, strong) IBOutlet UIButton* settingsButton;
@@ -649,51 +649,9 @@ typedef enum {
 
 - (void) closeSearch: (id) sender
 {
-    [[NSNotificationCenter defaultCenter] postNotificationName: kSideNavigationSearchCloseNotification
-                                                        object: self
-                                                      userInfo: nil];
     
-    [self.searchViewController.searchBoxView.searchTextField resignFirstResponder];
-    self.searchViewController.searchBoxView.searchTextField.text = @"";
+    [self.appDelegate.viewStackManager dismissSearchBar];
     
-    [self.searchViewController clear];
-    self.searchViewController.searchBoxView.searchTextField.delegate = self;
-    
-    
-    [UIView animateWithDuration: 0.1f
-                          delay: 0.0f
-                        options: UIViewAnimationOptionCurveEaseIn
-                     animations: ^{
-                         [self.searchViewController.searchBoxView hideCloseButton];
-                         _state = SideNavigationStateHalf;
-                     }
-                     completion: ^(BOOL finished) {
-                         
-                         self.mainContentView.hidden = NO;
-                         CGRect sideNavigationFrame = self.view.frame;
-                         sideNavigationFrame.origin.x = 704.0f;
-                         self.view.frame = sideNavigationFrame;
-                         [UIView animateWithDuration: 0.2f
-                                               delay: 0.0f
-                                             options: UIViewAnimationOptionCurveEaseInOut
-                                          animations: ^{
-                                              self.mainContentView.alpha = 1.0f;
-                                              
-                                              
-                                              CGRect newFrame = self.searchViewController.searchBoxView.frame;
-                                              newFrame.origin = CGPointMake(0,58.0f);
-                                              self.searchViewController.searchBoxView.frame = newFrame;
-                                          }
-                                          completion:^(BOOL finished)
-                          {
-                              CGRect newFrame = self.searchViewController.searchBoxView.frame;
-                              newFrame.origin = CGPointMake(0,0.0f);
-                              self.searchViewController.searchBoxView.frame = newFrame;
-                              [self.searchViewController removeFromParentViewController];
-                              [self.view addSubview:self.searchViewController.searchBoxView];
-                        }];
-                         
-                     }];
 }
 
 

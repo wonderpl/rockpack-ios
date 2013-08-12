@@ -20,7 +20,7 @@ typedef enum {
 
 } SideNavigationState;
 
-@interface SYNSideNavigatorViewController : UIViewController <UITableViewDataSource, UITableViewDelegate> {
+@interface SYNSideNavigatorViewController : UIViewController <UITableViewDataSource, UITableViewDelegate, UITextFieldDelegate> {
    
 }
 

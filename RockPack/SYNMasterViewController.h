@@ -29,8 +29,13 @@ typedef void (^VideoOverlayDismissBlock)(void);
 @property (nonatomic, readonly) SYNContainerViewController* containerViewController;
 @property (nonatomic, strong) SYNAbstractViewController* originViewController;
 @property (strong, nonatomic) Reachability *reachability;
+@property (nonatomic, readonly) BOOL hasSearchBarOn;
 @property (nonatomic, readonly) BOOL isInSearchMode;
 
+@property (nonatomic, strong) IBOutlet UIView* darkOverlayView;
+@property (nonatomic, strong) IBOutlet UIButton* closeSearchButton;
+@property (nonatomic, strong) IBOutlet UIView* overlayView;
+@property (nonatomic, strong) IBOutlet UIButton* sideNavigationButton;
 
 @property (nonatomic, weak, readonly) SYNAbstractViewController* showingBaseViewController;
 @property (nonatomic, weak, readonly) SYNAbstractViewController* showingViewController;
@@ -43,6 +48,7 @@ typedef void (^VideoOverlayDismissBlock)(void);
 
 - (void) removeVideoOverlayController;
 
+-(void)clearSearchBoxController;
 
 
 @end
