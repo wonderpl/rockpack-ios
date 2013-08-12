@@ -865,7 +865,7 @@
 
 - (void) displayChannelDetails
 {
-    self.channelOwnerLabel.text = [self.channel.channelOwner.displayName uppercaseString];
+    self.channelOwnerLabel.text = self.channel.channelOwner.displayName;
     
     NSString *detailsString;
     
