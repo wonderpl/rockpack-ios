@@ -9,6 +9,8 @@
 #import "MKNetworkEngine.h"
 #import "SYNAbstractNetworkEngine.h"
 
+#import <FacebookSDK/FacebookSDK.h>
+
 typedef void (^SYNOAuth2CompletionBlock)(NSError *error);
 typedef void (^SYNOAuth2RefreshCompletionBlock)(NSError *error);
 
@@ -255,8 +257,13 @@ typedef void (^SYNOAuth2RefreshCompletionBlock)(NSError *error);
                             completionHandler: (MKNKUserSuccessBlock) completionBlock
                                  errorHandler: (MKNKUserErrorBlock) errorBlock;
 
--(void)connectToFacebookAccoundForUserId:(NSString*) userId
-                                   token:(NSString*)token
+- (void) connectFacebookAccountForUserId: (NSString*)userId
+                      andAccessTokenData: (FBAccessTokenData*)data
+                       completionHandler: (MKNKUserSuccessBlock) completionBlock
+                            errorHandler: (MKNKUserErrorBlock) errorBlock;
+
+- (void) connectExternalAccoundForUserId:(NSString*) userId
+                            accountData:(NSDictionary*)accountData
                        completionHandler: (MKNKUserSuccessBlock) completionBlock
                             errorHandler: (MKNKUserErrorBlock) errorBlock;
 

@@ -673,8 +673,10 @@
         return;
     }
     
+    // if the user does NOT have a FB account linked, no prompt
     
     ExternalAccount* facebookAccount = appDelegate.currentUser.facebookAccount;
+    
     if(facebookAccount && // has a facebook account
        !(facebookAccount.flagsValue & ExternalAccountFlagAutopostStar) && // has not already set the implicit sharing to ON
        facebookAccount.noautopostValue == NO) // has not explicitely forbid the implicit sharing

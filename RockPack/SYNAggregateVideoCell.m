@@ -130,7 +130,7 @@ static NSDictionary* boldTextAttributes = nil;
     {
         if(IS_IPAD)
         {
-            self.likesNumberLabel.text = likesString;
+            self.likesNumberLabel.text = likesString; // @"0 likes"
             self.likeLabel.hidden = YES;
         }
         else
@@ -146,13 +146,13 @@ static NSDictionary* boldTextAttributes = nil;
     NSString* including = @"including";
     
     
+    SYNAppDelegate* appDelegate = [[UIApplication sharedApplication] delegate];
     
-    NSMutableString* namesString = [[NSMutableString alloc] init];
+    
     NSOrderedSet* users = messageDictionary[@"starrers"] ? messageDictionary[@"starrers"] : [NSOrderedSet orderedSet];
     
     
-    
-    SYNAppDelegate* appDelegate = [[UIApplication sharedApplication] delegate];
+    NSMutableString* namesString = [[NSMutableString alloc] init];
     if(users.count > 0)
     {
         ChannelOwner* co;
@@ -162,17 +162,26 @@ static NSDictionary* boldTextAttributes = nil;
             
             co = (ChannelOwner*)users[0];
             
-            if([co.uniqueId isEqualToString:appDelegate.currentUser.uniqueId])
-                name = @"You";
-            else
-                [namesString appendString:co.displayName];
+            if(!co)
+                continue;
             
-            if((users.count - i) == 2) // the one before last
-                name = @" & ";
-            else if((users.count - i) > 2)
-                name = @", ";
+            if([co.uniqueId isEqualToString:appDelegate.currentUser.uniqueId]) {
+                name = @"You";
+                self.heartButton.selected = YES;
+            }
+                
+            else {
+                name = co.displayName;
+            }
+                
             
             [namesString appendString:name];
+            
+            if((users.count - i) == 2) // the one before last
+                [namesString appendString:@" & "];
+            else if((users.count - i) > 2)
+                [namesString appendString:@", "];
+            
             
         }
         
@@ -215,6 +224,7 @@ static NSDictionary* boldTextAttributes = nil;
 {
     [super prepareForReuse];
     self.likeLabel.hidden = NO;
+    self.heartButton.selected = NO;
 }
 -(void)setCoverTitleWithString:(NSString*)coverTitle
 {

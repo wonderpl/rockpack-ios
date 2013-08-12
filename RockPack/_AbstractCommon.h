@@ -5,8 +5,6 @@
 
 
 extern const struct AbstractCommonAttributes {
-	__unsafe_unretained NSString *autopost;
-	__unsafe_unretained NSString *fresh;
 	__unsafe_unretained NSString *markedForDeletion;
 	__unsafe_unretained NSString *uniqueId;
 	__unsafe_unretained NSString *viewId;
@@ -23,8 +21,6 @@ extern const struct AbstractCommonFetchedProperties {
 
 
 
-
-
 @interface AbstractCommonID : NSManagedObjectID {}
 @end
 
@@ -33,34 +29,6 @@ extern const struct AbstractCommonFetchedProperties {
 + (NSString*)entityName;
 + (NSEntityDescription*)entityInManagedObjectContext:(NSManagedObjectContext*)moc_;
 - (AbstractCommonID*)objectID;
-
-
-
-
-
-@property (nonatomic, strong) NSNumber* autopost;
-
-
-
-@property BOOL autopostValue;
-- (BOOL)autopostValue;
-- (void)setAutopostValue:(BOOL)value_;
-
-//- (BOOL)validateAutopost:(id*)value_ error:(NSError**)error_;
-
-
-
-
-
-@property (nonatomic, strong) NSNumber* fresh;
-
-
-
-@property BOOL freshValue;
-- (BOOL)freshValue;
-- (void)setFreshValue:(BOOL)value_;
-
-//- (BOOL)validateFresh:(id*)value_ error:(NSError**)error_;
 
 
 
@@ -108,24 +76,6 @@ extern const struct AbstractCommonFetchedProperties {
 @end
 
 @interface _AbstractCommon (CoreDataGeneratedPrimitiveAccessors)
-
-
-- (NSNumber*)primitiveAutopost;
-- (void)setPrimitiveAutopost:(NSNumber*)value;
-
-- (BOOL)primitiveAutopostValue;
-- (void)setPrimitiveAutopostValue:(BOOL)value_;
-
-
-
-
-- (NSNumber*)primitiveFresh;
-- (void)setPrimitiveFresh:(NSNumber*)value;
-
-- (BOOL)primitiveFreshValue;
-- (void)setPrimitiveFreshValue:(BOOL)value_;
-
-
 
 
 - (NSNumber*)primitiveMarkedForDeletion;

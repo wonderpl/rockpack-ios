@@ -15,6 +15,7 @@
 #import "NSDictionary+RequestEncoding.h"
 #import "SYNFacebookManager.h"
 #import "Video.h"
+#import "GAI.h"
 #import "VideoInstance.h"
 #import "UIImage+Resize.h"
 
@@ -85,7 +86,7 @@
 }
 
 
-#pragma mark - Sign-up & Sign-in (inc. Facebook)
+#pragma mark - Loggin-In and Signing-Up
 
 // This code block is common to all of the signup/signin methods
 - (void) addCommonOAuthPropertiesToUnsignedNetworkOperation: (SYNNetworkOperationJsonObject *) networkOperation
@@ -112,6 +113,19 @@
              {
                  errorBlock(responseDictionary);
                  return;
+             }
+             
+             // if the user loggin in with an external account is not yet registered, a record is created on the fly and 'registered' is sent back
+             
+             BOOL hasJustBeenRegistered = responseDictionary[@"registered"] ? YES : NO;
+             if(hasJustBeenRegistered)
+             {
+                 id<GAITracker> tracker = [GAI sharedInstance].defaultTracker;
+                 
+                 [tracker sendEventWithCategory: @"goal"
+                                     withAction: @"userRegistration"
+                                      withLabel: @"Rockpack"
+                                      withValue: nil];
              }
              
              SYNOAuth2Credential* newOAuth2Credentials = [SYNOAuth2Credential credentialWithAccessToken: responseDictionary[@"access_token"]
@@ -151,7 +165,7 @@
 }
 
 
-// Get authentication token, by passing facebook access token to the API, and getting the authentication token in return
+// Send the token data back to the server
 - (void) doFacebookLoginWithAccessToken: (NSString*) facebookAccessToken
                                 expires: (NSDate *) expirationDate
                             permissions: (NSArray *) permissions
@@ -167,19 +181,9 @@
     // Add optional information
     if (expirationDate)
     {
-        static NSDateFormatter *dateFormatter;
-        
-        if (dateFormatter == nil)
-        {
-            // Do once, and only once
-            static dispatch_once_t oncePredicate;
-            dispatch_once(&oncePredicate, ^
-                          {
-                              dateFormatter = [[NSDateFormatter alloc] init];
-                              [dateFormatter setTimeZone: [NSTimeZone timeZoneWithName: @"UTC"]];
-                              [dateFormatter setDateFormat: @"yyyy-MM-dd'T'HH:mm:ss"];
-                          });
-        }
+        NSDateFormatter *dateFormatter = [[NSDateFormatter alloc] init];
+        [dateFormatter setTimeZone: [NSTimeZone timeZoneWithName: @"UTC"]];
+        [dateFormatter setDateFormat: @"yyyy-MM-dd'T'HH:mm:ss"];
         
         postLoginParams[@"token_expires"] = [dateFormatter stringFromDate: expirationDate];
     }
@@ -193,6 +197,7 @@
                                                                                                         params: postLoginParams
                                                                                                     httpMethod: @"POST"
                                                                                                            ssl: TRUE];
+    
     [self addCommonOAuthPropertiesToUnsignedNetworkOperation: networkOperation
                                            completionHandler: completionBlock
                                                 errorHandler: errorBlock];
@@ -1578,24 +1583,37 @@
                             completionHandler: (MKNKUserSuccessBlock) completionBlock
                                  errorHandler: (MKNKUserErrorBlock) errorBlock
 {
-    [self connectToExternalAccoundForUserId:userId
-                                     token:token
-                                   service:@"apns"
-                         completionHandler:completionBlock
-                              errorHandler:errorBlock];
+    [self connectExternalAccoundForUserId:userId
+                              accountData:@{@"external_system": @"apns", @"external_token" : token}
+                        completionHandler:completionBlock
+                             errorHandler:errorBlock];
 }
 
--(void)connectToFacebookAccoundForUserId:(NSString*) userId
-                                   token:(NSString*)token
+- (void) connectFacebookAccountForUserId: (NSString*)userId
+                      andAccessTokenData: (FBAccessTokenData*)data
                        completionHandler: (MKNKUserSuccessBlock) completionBlock
                             errorHandler: (MKNKUserErrorBlock) errorBlock
 {
     
-    [self connectToExternalAccoundForUserId:userId
-                                     token:token
-                                   service:@"facebook"
-                         completionHandler:completionBlock
-                              errorHandler:errorBlock];
+    
+    NSMutableDictionary* accountData = @{@"external_system": @"facebook",
+                                         @"external_token" : data.accessToken,
+                                         @"token_permissions" : [data.permissions componentsJoinedByString:@","]}.mutableCopy;
+    
+    if (data.expirationDate)
+    {
+        NSDateFormatter *dateFormatter = [[NSDateFormatter alloc] init];
+        [dateFormatter setTimeZone: [NSTimeZone timeZoneWithName: @"UTC"]];
+        [dateFormatter setDateFormat: @"yyyy-MM-dd'T'HH:mm:ss"];
+        
+        accountData[@"token_expires"] = [dateFormatter stringFromDate: data.expirationDate];
+    }
+    
+    
+    [self connectExternalAccoundForUserId:userId
+                              accountData:accountData
+                        completionHandler:completionBlock
+                             errorHandler:errorBlock];
 }
 
 - (void) getExternalAccountForUserId:(NSString*)userId
@@ -1634,16 +1652,26 @@
     [self enqueueSignedOperation: networkOperation];
 }
 
-- (void) connectToExternalAccoundForUserId:(NSString*) userId
-                                    token:(NSString*)token
-                                  service:(NSString*)service
+/*
+ {
+ "external_system": "facebook",
+ "external_token": "xxx",
+ "token_expires": "2013-03-28T19:16:13",
+ "token_permissions": "read,write",
+ "meta": {
+ "key": "value"
+ }
+ }
+ */
+- (void) connectExternalAccoundForUserId: (NSString*) userId
+                             accountData: (NSDictionary*)accountData
                         completionHandler: (MKNKUserSuccessBlock) completionBlock
-                             errorHandler: (MKNKUserErrorBlock) errorBlock
+                            errorHandler: (MKNKUserErrorBlock) errorBlock
 {
     // Check if any nil parameters passed in (defensive)
-    if (!token || !userId || !service)
+    if (!accountData || !userId)
     {
-        AssertOrLog(@"connectToExtrnalAccoundForUserId error with: %@ %@ %@", token, userId, service);
+        AssertOrLog(@"connectToExtrnalAccoundForUserId error with: %@ %@", accountData, userId);
         return;
     }
    
@@ -1652,19 +1680,29 @@
     
     NSString *apiString = [kRegisterExternalAccount stringByReplacingOccurrencesOfStrings: apiSubstitutionDictionary];
 
-    NSDictionary *params = @{@"external_system": service,
-                             @"external_token" : token};
     
     SYNNetworkOperationJsonObject *networkOperation = (SYNNetworkOperationJsonObject*)[self operationWithPath: apiString
-                                                                                                       params: params
+                                                                                                       params: accountData
                                                                                                    httpMethod: @"POST"
                                                                                                           ssl: YES];
     [networkOperation addHeaders: @{@"Content-Type" : @"application/json"}];
     networkOperation.postDataEncoding = MKNKPostDataEncodingTypeJSON;
+    __weak SYNOAuthNetworkEngine* wself = self;
     
     [self addCommonHandlerToNetworkOperation: networkOperation
-                           completionHandler: completionBlock
-                                errorHandler: errorBlock];
+                           completionHandler:^(id responce) {
+                               
+                               BOOL didRegister = [wself.registry registerExternalAccountWithCurrentUserFromDictionary:accountData];
+                               if(!didRegister) {
+                                   errorBlock(@{@"registry_error" : @"could not register external account"});
+                                   return;
+                               }
+                                   
+                               
+                               completionBlock(responce);
+                               
+                               
+                           } errorHandler: errorBlock];
     
     [self enqueueSignedOperation: networkOperation];
 }

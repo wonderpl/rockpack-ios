@@ -185,9 +185,9 @@
 
 - (BOOL) checkAndSaveRegisteredUser: (SYNOAuth2Credential*) credential
 {
-    User* newUser = self.appDelegate.currentUser;
+    // at this point the user should have been registered
     
-    if (!newUser)
+    if (!self.appDelegate.currentUser)
     {
         // problem
         DebugLog(@"The user was not registered correctly...");
@@ -230,20 +230,19 @@
                 
                 _appDelegate.currentUser.loginOriginValue = LoginOriginRockpack;
                 
-                // link to facebook account
                 
+                // if the user has an External Account with "facebook"
                 if(_appDelegate.currentUser.facebookAccount)
                 {
-                    
-                    
+                    // Link it with the FB SDK
                     [[SYNFacebookManager sharedFBManager] openSessionFromExistingToken: _appDelegate.currentUser.facebookAccount.token
                                                                              onSuccess: ^{
                                                                                  
-                                                                                 
+                                                                                 DebugLog(@"Linked FB Account");
                                                                                  
                                                                            } onFailure: ^(NSString *errorMessage) {
                                                                                  
-                                                                                 
+                                                                                 DebugLog(@"");
                                                                                  
                                                                            }];
                 }
@@ -412,13 +411,15 @@
         
         [self doFacebookLoginAnimation];
         
+        // after loggin in with FB SDK log in with the server hitting "/ws/login/external/"
+        
         [_appDelegate.oAuthNetworkEngine doFacebookLoginWithAccessToken: accessTokenData.accessToken
                                                                 expires: accessTokenData.expirationDate
-                                                            permissions: accessTokenData.permissions
-                                                          completionHandler: ^(SYNOAuth2Credential* credential) {
+                                                            permissions: accessTokenData.permissions // @"read" at this time
+                                                      completionHandler: ^(SYNOAuth2Credential* credential) {
                                                               
             [_appDelegate.oAuthNetworkEngine retrieveAndRegisterUserFromCredentials: credential
-                                                              completionHandler: ^(NSDictionary* dictionary) {
+                                                                  completionHandler: ^(NSDictionary* dictionary) {
                                                                   
                 if ([self checkAndSaveRegisteredUser: credential])
                 {

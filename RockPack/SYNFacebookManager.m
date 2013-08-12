@@ -11,7 +11,7 @@
 #import "SYNSessionTokenCachingStrategy.h"
 #import <FacebookSDK/FacebookSDK.h>
 #import "SYNAppDelegate.h"
-
+#import "SYNOAuthNetworkEngine.h"
 
 @interface SYNFacebookManager ()
 
@@ -51,7 +51,7 @@
                               onSuccess: ^{
                                   // request me information
                                   [FBRequestConnection startForMeWithCompletionHandler: ^(FBRequestConnection *connection,
-                                                                                          NSDictionary < FBGraphUser > *userInfo,
+                                                                                          NSDictionary<FBGraphUser> *userInfo,
                                                                                           NSError *error) {
                                       if (error)
                                       {
@@ -173,7 +173,10 @@
                              onSuccess: (FacebookOpenSessionSuccessBlock) successBlock
                              onFailure: (FacebookOpenSessionFailureBlock) failureBlock
 {
-    // Is the Facebook session already open, so execute our success block
+    
+    
+    
+    // Is the Facebook session already open ?
     if ([FBSession.activeSession isOpen])
     {
         // Session is open, so we already have read permissions
@@ -202,12 +205,13 @@
                      else
                      {
                          DebugLog(@"** Reauthorize: Suceeded");
-                         // OK, the user has now granted required extended permissions, log it to the server
-                         //SYNAppDelegate* appDelegate = (SYNAppDelegate*)[[UIApplication sharedApplication] delegate];
-                         //[appDelegate ]
+                         
+                         // OK, the user has now granted required extended permissions...
                          dispatch_async(dispatch_get_main_queue(), ^{
                              successBlock();
                          });
+                         
+                         
                      }
                  }];
             }
@@ -215,7 +219,7 @@
             {
                 
                 // We have already been granted the required extended permissions
-                DebugLog(@"** openSession: Permissions already granted");
+                DebugLog(@"** openSession: Read Permissions already granted");
                 dispatch_async(dispatch_get_main_queue(), ^{
                     successBlock();
                 });
@@ -223,7 +227,7 @@
         }
         else
         {
-            DebugLog(@"** openSession: Only read permissions requested");
+            DebugLog(@"** openSession: Only read permissions requested, already authorized");
             // Only read permissions were requested (which will already have been granted on openActiveSessionWithReadPermissions)
             dispatch_async(dispatch_get_main_queue(), ^{
                 successBlock();
@@ -287,9 +291,9 @@
                                                       {
                                                           DebugLog(@"++ openSession: Calling recursive");
                                                           // Now here's the clever bit,
-                                                          // Now we have an open session, call ourselves recursively
+                                                          // Now we have an open session, call ourselves recursively so as to possibly extend the permissions
                                                           [self openSessionWithPermissionType: permissionType
-                                                                                    onSuccess: successBlock
+                                                                                    onSuccess: successBlock // pass original to avoid double wrapping
                                                                                     onFailure: failureBlock];
                                                       }
                                                       else
