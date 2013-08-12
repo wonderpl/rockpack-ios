@@ -7,7 +7,8 @@
 //
 
 #import "SYNAggregateCell.h"
-
+#import "UIFont+SYNFont.h"
+#import "UIColor+SYNColor.h"
 
 #define STANDARD_BUTTON_CAPACITY 10
 
@@ -19,6 +20,11 @@
     self.messageLabel.font = [UIFont rockpackFontOfSize:self.messageLabel.font.pointSize];
     
     self.stringButtonsArray = [[NSMutableArray alloc] initWithCapacity:STANDARD_BUTTON_CAPACITY];
+    
+    self.lightTextAttributes = @{NSFontAttributeName:[UIFont rockpackFontOfSize:14.0],
+                                 NSForegroundColorAttributeName:[UIColor rockpacAggregateTextLight]};
+    self.boldTextAttributes = @{NSFontAttributeName:[UIFont boldRockpackFontOfSize:14.0],
+                                NSForegroundColorAttributeName:[UIColor rockpacAggregateTextBold]};
 }
 
 -(void)setCoverImagesAndTitlesWithArray:(NSArray*)imageString

@@ -12,11 +12,11 @@
 #import "SYNAppDelegate.h"
 
 
-static NSDictionary* lightTextAttributes = nil;
-static NSDictionary* boldTextAttributes = nil;
+
 
 @implementation SYNAggregateVideoCell
-
+@synthesize boldTextAttributes;
+@synthesize lightTextAttributes;
 
 -(void)awakeFromNib
 {
@@ -30,8 +30,7 @@ static NSDictionary* boldTextAttributes = nil;
         self.likesNumberLabel.font = [UIFont boldRockpackFontOfSize:self.likesNumberLabel.font.pointSize];
     
     
-    lightTextAttributes = @{NSFontAttributeName:[UIFont rockpackFontOfSize:14.0],NSForegroundColorAttributeName:[UIColor rockpacAggregateTextLight]};
-    boldTextAttributes = @{NSFontAttributeName:[UIFont boldRockpackFontOfSize:14.0],NSForegroundColorAttributeName:[UIColor rockpacAggregateTextBold]};
+    
 
 }
 
