@@ -464,7 +464,7 @@ typedef enum {
     
     if ([fullname length]>1)
     {
-        self.userNameLabel.text = [self.user.fullName uppercaseString];
+        self.userNameLabel.text = self.user.fullName;
         self.nicknameLabel.text = self.user.username;
     }
     else
