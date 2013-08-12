@@ -14,6 +14,7 @@
 #import "SYNProfileRootViewController.h"
 #import "SYNSideNavigatorViewController.h"
 #import "SYNViewStackManager.h"
+#import "SYNSearchBoxViewController.h"
 
 @implementation SYNViewStackManager
 
@@ -174,7 +175,45 @@
 
 -(void)presentSearchBar
 {
-    [self.sideNavigatorController presentSearchBarToFront];
+    SYNSearchBoxViewController* searchBoxVC = self.sideNavigatorController.searchViewController;
+    [searchBoxVC removeFromParentViewController];
+    
+    [self.masterController.view addSubview:searchBoxVC.searchBoxView];
+    
+    
+    CGRect newFrame = searchBoxVC.searchBoxView.frame;
+    
+    newFrame.origin = CGPointMake(0.0f, 58.0f);
+    searchBoxVC.searchBoxView.frame = newFrame;
+    
+    
+    [UIView animateWithDuration: 0.2f
+                         delay :0.0f
+                        options: UIViewAnimationOptionCurveEaseInOut
+                     animations: ^{
+                         
+                         self.sideNavigatorController.mainContentView.alpha = 0.0f;
+                         
+                         CGRect endFrame = searchBoxVC.searchBoxView.frame;
+                         
+                         endFrame.origin.y -= 58.0f;
+                         
+                         searchBoxVC.searchBoxView.frame = endFrame;
+                         
+                     } completion: ^(BOOL finished) {
+                         
+                         [UIView animateWithDuration: 0.2
+                                               delay:0.0
+                                             options: UIViewAnimationOptionCurveEaseOut
+                                          animations: ^{
+                                              
+                                              [searchBoxVC.searchBoxView revealCloseButton];
+                                              
+                                          } completion: nil];
+                         
+                     }];
+    
+    searchBoxVC.searchBoxView.searchTextField.delegate = searchBoxVC;
 }
 
 - (void) hideSideNavigator

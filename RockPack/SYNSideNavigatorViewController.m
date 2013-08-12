@@ -63,7 +63,7 @@ typedef enum {
 //iPhone specific
 @property (weak, nonatomic) IBOutlet UIImageView *navigationContainerBackgroundImage;
 @property (weak, nonatomic) IBOutlet UILabel *navigationContainerTitleLabel;
-@property (weak, nonatomic) IBOutlet UIView *mainContentView;
+
 @property (weak, nonatomic) IBOutlet UIView *navigationContainerView;
 
 @end
@@ -638,46 +638,11 @@ typedef enum {
 - (BOOL) textFieldShouldBeginEditing: (UITextField *) textField
 {
     
-    [self presentSearchBarToFront];
+    [self.appDelegate.viewStackManager presentSearchBar];
     
     return YES;
 }
 
--(void)presentSearchBarToFront
-{
-    [self.searchViewController removeFromParentViewController];
-    [[self.parentViewController view] addSubview:self.searchViewController.searchBoxView];
-    
-    CGRect newFrame = self.searchViewController.searchBoxView.frame;
-    newFrame.origin = CGPointMake(0.0f, 58.0f);
-    self.searchViewController.searchBoxView.frame = newFrame;
-    [UIView animateWithDuration: 0.2f
-                         delay :0.0f
-                        options: UIViewAnimationOptionCurveEaseInOut
-                     animations: ^{
-                         self.mainContentView.alpha = 0.0f;
-                         
-                         CGRect endFrame = self.searchViewController.searchBoxView.frame;
-                         endFrame.origin.y -=58;
-                         self.searchViewController.searchBoxView.frame = endFrame;
-                         
-                     }
-                     completion: ^(BOOL finished) {
-                         [UIView animateWithDuration: 0.2
-                                               delay:0.0
-                                             options: UIViewAnimationOptionCurveEaseOut
-                                          animations: ^{
-                                              [self.searchViewController.searchBoxView revealCloseButton];
-                                              
-                                          }
-                                          completion: nil];
-                         
-                         
-                         
-                     }];
-    
-    self.searchViewController.searchBoxView.searchTextField.delegate = self.searchViewController;
-}
 
 
 #pragma mark - close search callback iPhone specific

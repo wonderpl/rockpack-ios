@@ -30,13 +30,14 @@ typedef enum {
 @property (nonatomic, strong) UIButton* captiveButton;
 @property (nonatomic, strong) UIView* darkOverlay;
 
+@property (weak, nonatomic) IBOutlet UIView *mainContentView;
+
 //iPhone specific
 @property (nonatomic, strong) SYNSearchBoxViewController* searchViewController;
 
 -(void)reset;
 -(void)deselectAllCells;
 -(void)setSelectedCellByPageName:(NSString*)pageName;
--(void)presentSearchBarToFront;
 
 - (void) displayFromPushNotification;
 
