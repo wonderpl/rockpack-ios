@@ -324,7 +324,9 @@ static CGPoint RotateCGPointAroundCenter(CGPoint point, CGPoint center, float an
     [CATransaction begin];
     
     for (SYNArcMenuItem *item in self.menusArray)
-    {            
+    {
+        item.alpha = 1.0f;
+        
         CAKeyframeAnimation *positionAnimation = [CAKeyframeAnimation animationWithKeyPath: @"position"];
         positionAnimation.duration = self.animationDuration;
         CGMutablePathRef path = CGPathCreateMutable();
@@ -335,21 +337,8 @@ static CGPoint RotateCGPointAroundCenter(CGPoint point, CGPoint center, float an
         positionAnimation.path = path;
         CGPathRelease(path);
         
-        CAAnimationGroup *animationgroup = [CAAnimationGroup animation];
-        animationgroup.animations = @[positionAnimation];
-        animationgroup.duration = self.animationDuration;
-        animationgroup.fillMode = kCAFillModeForwards;
-        animationgroup.timingFunction = [CAMediaTimingFunction functionWithName: kCAMediaTimingFunctionEaseIn];
-        animationgroup.delegate = self;
-        
-        [item.layer addAnimation: animationgroup
+        [item.layer addAnimation: positionAnimation
                           forKey: @"Expand"];
-        
-        if (item == self.menusArray[self.menusArray.count - 1])
-        {
-            [animationgroup setValue: @"firstAnimation"
-                              forKey: @"id"];
-        }
         
         item.center = item.endPoint;
     }
@@ -360,61 +349,10 @@ static CGPoint RotateCGPointAroundCenter(CGPoint point, CGPoint center, float an
 
 - (void) closeMenu
 {
-    
-//    int tag = 1000 + self.flag;
-//    SYNArcMenuItem *item = (SYNArcMenuItem *) [self viewWithTag: tag];
-//    
-//    
-//    // Position animation
-//    CAKeyframeAnimation *positionAnimation = [CAKeyframeAnimation animationWithKeyPath: @"position"];
-//    
-//    positionAnimation.duration = self.animationDuration;
-//    CGMutablePathRef path = CGPathCreateMutable();
-//    CGPathMoveToPoint(path, NULL, item.endPoint.x, item.endPoint.y);
-//    CGPathAddLineToPoint(path, NULL, item.farPoint.x, item.farPoint.y);
-//    CGPathAddLineToPoint(path, NULL, item.startPoint.x, item.startPoint.y);
-//    positionAnimation.path = path;
-//    CGPathRelease(path);
-//    
-//    // Animation
-//    CAAnimationGroup *animationgroup = [CAAnimationGroup animation];
-//    animationgroup.animations = @[positionAnimation];
-//    animationgroup.duration = 0;
-//    animationgroup.fillMode = kCAFillModeForwards;
-//    animationgroup.timingFunction = [CAMediaTimingFunction functionWithName: kCAMediaTimingFunctionEaseIn];
-//    animationgroup.delegate = self;
-//    
-//    if (self.flag == 0)
-//    {
-//        [animationgroup setValue: @"lastAnimation"
-//                          forKey: @"id"];
-//    }
-//    
-//    [item.layer addAnimation: animationgroup
-//     forKey: @"Close"];
-//    item.center = item.startPoint;
-//    
-//    self.flag--;
-}
-
-
-- (void) animationDidStop: (CAAnimation *) animation
-                 finished: (BOOL) hasFinished
-{
-    if ([[animation valueForKey: @"id"] isEqual: @"lastAnimation"])
+    for (SYNArcMenuItem *item in self.menusArray)
     {
-        if (self.delegate && [self.delegate respondsToSelector: @selector(arcMenuDidFinishAnimationClose:)])
-        {
-            [self.delegate arcMenuDidFinishAnimationClose: self];
-        }
-    }
-    
-    if ([[animation valueForKey: @"id"] isEqual: @"firstAnimation"])
-    {
-        if (self.delegate && [self.delegate respondsToSelector: @selector(arcMenuDidFinishAnimationOpen:)])
-        {
-            [self.delegate arcMenuDidFinishAnimationOpen: self];
-        }
+        item.alpha = 0.0f;
+        item.center = item.startPoint;
     }
 }
 

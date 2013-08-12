@@ -20,11 +20,6 @@
 - (void) arcMenu: (SYNArcMenuView *) menu
          didSelectIndex: (NSInteger) idx;
 
-@optional
-
-- (void) arcMenuDidFinishAnimationClose: (SYNArcMenuView *) menu;
-- (void) arcMenuDidFinishAnimationOpen: (SYNArcMenuView *) menu;
-
 @end
 
 @interface SYNArcMenuView : UIView <SYNArcMenuItemDelegate>
