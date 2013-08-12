@@ -51,6 +51,7 @@
 @property (nonatomic, strong) UILabel *categoryNameLabel;
 @property (nonatomic, strong) UILabel *subCategoryNameLabel;
 @property (nonatomic, weak) SYNMainRegistry *mainRegistry;
+@property (nonatomic, strong) UIButton* searchButtonIPhone;
 
 @end
 
@@ -150,7 +151,24 @@
         [self layoutChannelsCategoryTable];
     }
     
+    if(isIPhone)
+    {
+        UIImage* searchIcon = [UIImage imageNamed:@"IconSearch~iphone.png"];
+        self.searchButtonIPhone = [UIButton buttonWithType:UIButtonTypeCustom];
+        self.searchButtonIPhone.frame = CGRectMake(8.0f, 8.0f, searchIcon.size.width, searchIcon.size.height);
+        [self.searchButtonIPhone setImage:searchIcon forState:UIControlStateNormal];
+        [self.searchButtonIPhone setImage:searchIcon forState:UIControlStateHighlighted];
+        [self.searchButtonIPhone addTarget:self action:@selector(searchButtonIPhonePressed:) forControlEvents:UIControlEventTouchUpInside];
+        [self.view addSubview:self.searchButtonIPhone];
+    }
+    
     self.channelThumbnailCollectionView.showsVerticalScrollIndicator = YES;
+}
+
+-(void)searchButtonIPhonePressed:(UIButton*)sender
+{
+    
+    
 }
 
 

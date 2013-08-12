@@ -692,6 +692,7 @@ typedef enum {
                          _state = SideNavigationStateHalf;
                      }
                      completion: ^(BOOL finished) {
+                         
                          self.mainContentView.hidden = NO;
                          CGRect sideNavigationFrame = self.view.frame;
                          sideNavigationFrame.origin.x = 704.0f;

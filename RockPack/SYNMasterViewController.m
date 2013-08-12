@@ -250,7 +250,6 @@ typedef void(^AnimationCompletionBlock)(BOOL finished);
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(hideTitleAndDots:) name:kNoteHideTitleAndDots object:nil];
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(navigateToPage:) name:kNavigateToPage object:nil];
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(presentSuccessNotificationWithCaution:) name:kNoteSavingCaution object:nil];
-    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(profileRequested:) name:kProfileRequested object:nil];
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(reachabilityChanged:) name:kReachabilityChangedNotification object:nil];
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(scrollerPageChanged:) name:kScrollerPageChanged object:nil];
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(searchCancelledIPhone:) name:kSideNavigationSearchCloseNotification object:nil];
@@ -259,19 +258,6 @@ typedef void(^AnimationCompletionBlock)(BOOL finished);
     
     [self.navigationContainerView addSubview:self.sideNavigatorViewController.view];
 }
-
-
-// this is triggered when a component requests a view at the base of the stack
-- (void) profileRequested: (NSNotification*) notification
-{
-    ChannelOwner* channelOwner = (ChannelOwner*)[notification userInfo][kChannelOwner];
-    if (!channelOwner)
-        return;
-    
-    [appDelegate.viewStackManager viewProfileDetails:channelOwner];
-}
-
-
 
 
 - (void) headerSwiped:(UISwipeGestureRecognizer*) recogniser
@@ -754,7 +740,7 @@ typedef void(^AnimationCompletionBlock)(BOOL finished);
     [self.searchViewController showSearchResultsForTerm: termString];
 }
 
-
+// when the 'X' is pressed while on search
 - (void) searchCancelledIPhone: (NSNotification*) notification
 {
     self.sideNavigationButton.selected = YES;
