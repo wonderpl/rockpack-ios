@@ -15,6 +15,7 @@
 #import "NSDictionary+RequestEncoding.h"
 #import "SYNFacebookManager.h"
 #import "Video.h"
+#import "GAI.h"
 #import "VideoInstance.h"
 #import "UIImage+Resize.h"
 
@@ -114,6 +115,19 @@
                  return;
              }
              
+             // if the user loggin in with an external account is not yet registered, a record is created on the fly and 'registered' is sent back
+             
+             BOOL hasJustBeenRegistered = responseDictionary[@"registered"] ? YES : NO;
+             if(hasJustBeenRegistered)
+             {
+                 id<GAITracker> tracker = [GAI sharedInstance].defaultTracker;
+                 
+                 [tracker sendEventWithCategory: @"goal"
+                                     withAction: @"userRegistration"
+                                      withLabel: @"Rockpack"
+                                      withValue: nil];
+             }
+             
              SYNOAuth2Credential* newOAuth2Credentials = [SYNOAuth2Credential credentialWithAccessToken: responseDictionary[@"access_token"]
                                                                                               expiresIn: responseDictionary[@"expires_in"]
                                                                                            refreshToken: responseDictionary[@"refresh_token"]
@@ -185,8 +199,8 @@
                                                                                                            ssl: TRUE];
     
     [self addCommonOAuthPropertiesToUnsignedNetworkOperation: networkOperation
-                                           completionHandler:completionBlock
-                                                errorHandler:errorBlock];
+                                           completionHandler: completionBlock
+                                                errorHandler: errorBlock];
     
     [self enqueueOperation: networkOperation];
 }

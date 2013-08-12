@@ -411,7 +411,7 @@
         
         [self doFacebookLoginAnimation];
         
-        // after loggin in with FB SDK log in with the server
+        // after loggin in with FB SDK log in with the server hitting "/ws/login/external/"
         
         [_appDelegate.oAuthNetworkEngine doFacebookLoginWithAccessToken: accessTokenData.accessToken
                                                                 expires: accessTokenData.expirationDate
