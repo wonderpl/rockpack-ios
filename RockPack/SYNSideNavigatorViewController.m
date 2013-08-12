@@ -637,10 +637,19 @@ typedef enum {
 
 - (BOOL) textFieldShouldBeginEditing: (UITextField *) textField
 {
+    
+    [self presentSearchBarToFront];
+    
+    return YES;
+}
+
+-(void)presentSearchBarToFront
+{
     [self.searchViewController removeFromParentViewController];
     [[self.parentViewController view] addSubview:self.searchViewController.searchBoxView];
+    
     CGRect newFrame = self.searchViewController.searchBoxView.frame;
-    newFrame.origin = CGPointMake(0,58.0f);
+    newFrame.origin = CGPointMake(0.0f, 58.0f);
     self.searchViewController.searchBoxView.frame = newFrame;
     [UIView animateWithDuration: 0.2f
                          delay :0.0f
@@ -659,7 +668,7 @@ typedef enum {
                                              options: UIViewAnimationOptionCurveEaseOut
                                           animations: ^{
                                               [self.searchViewController.searchBoxView revealCloseButton];
-
+                                              
                                           }
                                           completion: nil];
                          
@@ -668,7 +677,6 @@ typedef enum {
                      }];
     
     self.searchViewController.searchBoxView.searchTextField.delegate = self.searchViewController;
-    return YES;
 }
 
 

@@ -172,6 +172,10 @@
     [self hideSideNavigator];
 }
 
+-(void)presentSearchBar
+{
+    [self.sideNavigatorController presentSearchBarToFront];
+}
 
 - (void) hideSideNavigator
 {

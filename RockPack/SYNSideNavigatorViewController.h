@@ -36,6 +36,7 @@ typedef enum {
 -(void)reset;
 -(void)deselectAllCells;
 -(void)setSelectedCellByPageName:(NSString*)pageName;
+-(void)presentSearchBarToFront;
 
 - (void) displayFromPushNotification;
 

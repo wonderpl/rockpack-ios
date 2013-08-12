@@ -147,9 +147,10 @@
     [self.view addSubview: self.channelThumbnailCollectionView];
     
     if (self.enableCategoryTable)
-    {
-        [self layoutChannelsCategoryTable];
-    }
+
+    {[self layoutChannelsCategoryTable];}
+    
+    
     
     if(isIPhone)
     {
@@ -167,7 +168,7 @@
 
 -(void)searchButtonIPhonePressed:(UIButton*)sender
 {
-    
+    [appDelegate.viewStackManager presentSearchBar];
     
 }
 
