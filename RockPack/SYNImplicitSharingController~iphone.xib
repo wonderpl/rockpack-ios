@@ -57,6 +57,11 @@
 							<string key="IBUIColorCocoaTouchKeyPath">darkTextColor</string>
 						</object>
 						<nil key="IBUIHighlightedColor"/>
+						<object class="NSColor" key="IBUIShadowColor">
+							<int key="NSColorSpace">1</int>
+							<bytes key="NSRGB">MSAxIDEgMC4zAA</bytes>
+						</object>
+						<string key="IBUIShadowOffset">{0, 1}</string>
 						<int key="IBUIBaselineAdjustment">0</int>
 						<int key="IBUITextAlignment">1</int>
 						<object class="IBUIFontDescription" key="IBUIFontDescription">
@@ -73,7 +78,7 @@
 					<object class="IBUILabel" id="506762550">
 						<reference key="NSNextResponder" ref="282171637"/>
 						<int key="NSvFlags">292</int>
-						<string key="NSFrame">{{14, 38}, {212, 66}}</string>
+						<string key="NSFrame">{{14, 38}, {212, 48}}</string>
 						<reference key="NSSuperview" ref="282171637"/>
 						<reference key="NSWindow"/>
 						<reference key="NSNextKeyView" ref="149501730"/>
@@ -89,6 +94,11 @@
 							<bytes key="NSRGB">MSAxIDEAA</bytes>
 						</object>
 						<nil key="IBUIHighlightedColor"/>
+						<object class="NSColor" key="IBUIShadowColor">
+							<int key="NSColorSpace">1</int>
+							<bytes key="NSRGB">MSAxIDEgMC4xOAA</bytes>
+						</object>
+						<string key="IBUIShadowOffset">{0, 1}</string>
 						<int key="IBUIBaselineAdjustment">0</int>
 						<int key="IBUINumberOfLines">2</int>
 						<int key="IBUITextAlignment">1</int>
@@ -168,7 +178,6 @@
 						<string key="NSFrame">{{128, 245}, {98, 41}}</string>
 						<reference key="NSSuperview" ref="282171637"/>
 						<reference key="NSWindow"/>
-						<reference key="NSNextKeyView"/>
 						<string key="NSReuseIdentifierKey">_NS:9</string>
 						<bool key="IBUIOpaque">NO</bool>
 						<string key="targetRuntimeIdentifier">IBIPadFramework</string>
@@ -302,10 +311,10 @@
 						<reference key="object" ref="282171637"/>
 						<array class="NSMutableArray" key="children">
 							<reference ref="207931738"/>
-							<reference ref="149501730"/>
 							<reference ref="170456234"/>
 							<reference ref="506762550"/>
 							<reference ref="390920886"/>
+							<reference ref="149501730"/>
 						</array>
 						<reference key="parent" ref="0"/>
 					</object>
