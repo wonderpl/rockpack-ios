@@ -222,14 +222,6 @@ static CGPoint RotateCGPointAroundCenter(CGPoint point, CGPoint center, float an
     
     self.expanding = NO;
     
-//    // rotate start button
-//    float angle = self.isExpanding ? -M_PI_4 : 0.0f;
-//    
-//    [UIView animateWithDuration: self.animationDuration
-//                     animations: ^{
-//                         self.startButton.transform = CGAffineTransformMakeRotation(angle);
-//                     }];
-    
     if ([self.delegate respondsToSelector: @selector(arcMenu:didSelectIndex:)])
     {
         [self.delegate arcMenu: self didSelectIndex: item.tag - 1000];
@@ -288,6 +280,9 @@ static CGPoint RotateCGPointAroundCenter(CGPoint point, CGPoint center, float an
         item.farPoint = RotateCGPointAroundCenter(farPoint, self.startPoint, self.rotateAngle);
         item.center = item.startPoint;
         
+        // The images are actually double-size, so scale them down
+        item.transform = CGAffineTransformMakeScale(0.5, 0.5);
+        
         item.delegate = (id<SYNArcMenuItemDelegate>) self;
         
         [self insertSubview: item
@@ -310,13 +305,6 @@ static CGPoint RotateCGPointAroundCenter(CGPoint point, CGPoint center, float an
     }
     
     _expanding = expanding;
-    
-    // rotate add button
-//    float angle = self.isExpanding ? -M_PI_4 : 0.0f;
-//    [UIView animateWithDuration: kSYNArcMenuStartMenuDefaultAnimationDuration
-//                     animations: ^{
-//                         self.startButton.transform = CGAffineTransformMakeRotation(angle);
-//                     }];
     
     // expand or close animation
     if (!self.timer)
