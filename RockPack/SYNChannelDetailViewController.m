@@ -14,6 +14,7 @@
 #import "GAI.h"
 #import "Genre.h"
 #import "SSTextView.h"
+#import "SYNArcMenuView.h"
 #import "SYNCaution.h"
 #import "SYNChannelCategoryTableViewController.h"
 #import "SYNChannelCoverImageSelectorViewController.h"
@@ -21,7 +22,6 @@
 #import "SYNChannelDetailViewController.h"
 #import "SYNCoverChooserController.h"
 #import "SYNCoverThumbnailCell.h"
-#import "SYNDeviceManager.h"
 #import "SYNDeviceManager.h"
 #import "SYNExistingChannelsViewController.h"
 #import "SYNGenreTabViewController.h"
@@ -47,7 +47,9 @@
                                               SYNImagePickerControllerDelegate,
                                               UIPopoverControllerDelegate,
                                               SYNChannelCategoryTableViewDelegate,
-                                              SYNChannelCoverImageSelectorDelegate>
+                                              SYNChannelCoverImageSelectorDelegate,
+                                              SYNVideoThumbnailRegularCellDelegate,
+                                              SYNArcMenuViewDelegate>
 
 
 @property (nonatomic, assign)  CGPoint originalContentOffset;
@@ -987,8 +989,6 @@
     videoThumbnailCell.titleLabel.text = videoInstance.title;
     videoThumbnailCell.viewControllerDelegate = self;
     
-    videoThumbnailCell.dataIndetifier = videoInstance.uniqueId;
-    
     videoThumbnailCell.addItButton.highlighted = NO;
     videoThumbnailCell.addItButton.selected = [appDelegate.videoQueue videoInstanceIsAddedToChannel: videoInstance];
     
@@ -1033,9 +1033,9 @@
 }
 
 
-- (CGSize)			 collectionView: (UICollectionView *) collectionView
-                      layout: (UICollectionViewLayout *) collectionViewLayout
-referenceSizeForFooterInSection: (NSInteger) section
+- (CGSize) collectionView: (UICollectionView *) collectionView
+                   layout: (UICollectionViewLayout *) collectionViewLayout
+           referenceSizeForFooterInSection: (NSInteger) section
 {
     CGSize footerSize;
     
@@ -1411,6 +1411,53 @@ referenceSizeForFooterInSection: (NSInteger) section
     }
     
     addButton.selected = !addButton.selected;
+}
+
+- (void) showMenuTapped: (UICollectionViewCell *) cell
+{
+    NSLog (@"Share menu tapped");
+
+    SYNArcMenuItem *arcMenuItem1 = [[SYNArcMenuItem alloc] initWithImage: [UIImage imageNamed: @"ActionLike"]
+                                                        highlightedImage: [UIImage imageNamed: @"ActionLikeHighlighted"]
+                                                            contentImage: nil
+                                                 highlightedContentImage: nil];
+     
+    SYNArcMenuItem *arcMenuItem2 = [[SYNArcMenuItem alloc] initWithImage: [UIImage imageNamed: @"ActionAdd"]
+                                                        highlightedImage: [UIImage imageNamed: @"ActionAddHighlighted"]
+                                                            contentImage: nil
+                                                 highlightedContentImage: nil];
+     
+    SYNArcMenuItem *arcMenuItem3 = [[SYNArcMenuItem alloc] initWithImage: [UIImage imageNamed: @"ActionShare"]
+                                                        highlightedImage: [UIImage imageNamed: @"ActionShareHighlighted"]
+                                                            contentImage: nil
+                                                 highlightedContentImage: nil];
+     
+    SYNArcMenuItem *mainMenuItem = [[SYNArcMenuItem alloc] initWithImage: [UIImage imageNamed: @"ActionRingNoTouch"]
+                                                        highlightedImage: [UIImage imageNamed: @"ActionRingTouchg"]
+                                                            contentImage: nil
+                                                 highlightedContentImage: nil];
+     
+    SYNArcMenuView *menu = [[SYNArcMenuView alloc] initWithFrame: self.view.bounds
+                                                       startItem: mainMenuItem
+                                                     optionMenus: @[arcMenuItem1, arcMenuItem2, arcMenuItem3]];
+     menu.delegate = self;
+     menu.startPoint = CGPointMake(160.0, 240.0);
+     menu.rotateAngle = 0.0;
+     menu.menuWholeAngle = M_PI / 2;
+     menu.timeOffset = 0.036f;
+     menu.farRadius = 140.0f;
+     menu.nearRadius = 110.0f;
+     menu.endRadius = 120.0f;
+     
+     [self.view addSubview: menu];
+     
+}
+
+
+- (void) arcMenu: (SYNArcMenuView *) menu
+  didSelectIndex: (NSInteger) idx
+{
+    NSLog (@"Selected");
 }
 
 
@@ -3335,7 +3382,7 @@ shouldChangeTextInRange: (NSRange) range
                                                                                                                         inSection: 0]];
         
         
-        CGRect rectToPointTo = [self.view  convertRect: randomCell.addItButton.frame
+        CGRect rectToPointTo = [self.view  convertRect: randomCell.frame
                                               fromView: randomCell];
         
         rectToPointTo = CGRectInset(rectToPointTo, 10.0, 10.0);

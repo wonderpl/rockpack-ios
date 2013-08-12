@@ -12,7 +12,6 @@
 //  Copyright (c) 2011 Levey & Other Contributors. All rights reserved.
 
 #import "SYNArcMenuView.h"
-#import "SYNArcMenuItem.h"
 #import <QuartzCore/QuartzCore.h>
 
 static CGFloat const kSYNArcMenuDefaultNearRadius = 110.0f;
@@ -42,7 +41,6 @@ static CGPoint RotateCGPointAroundCenter(CGPoint point, CGPoint center, float an
 @property (nonatomic, copy) NSArray *menusArray;
 @property (nonatomic, getter = isExpanding) BOOL expanding;
 @property (nonatomic, getter = isAnimating) BOOL animating;
-@property (nonatomic, weak) id<SYNArcMenuViewDelegate> delegate;
 @property (nonatomic, strong) SYNArcMenuItem *startButton;
 @property (nonatomic, strong) NSTimer *timer;
 @property (nonatomic, assign) int flag;
@@ -91,7 +89,7 @@ static CGPoint RotateCGPointAroundCenter(CGPoint point, CGPoint center, float an
 
 - (void) setStartPoint: (CGPoint) point
 {
-    self.startPoint = point;
+    _startPoint = point;
     self.startButton.center = point;
 }
 
@@ -224,13 +222,13 @@ static CGPoint RotateCGPointAroundCenter(CGPoint point, CGPoint center, float an
     
     self.expanding = NO;
     
-    // rotate start button
-    float angle = self.isExpanding ? -M_PI_4 : 0.0f;
-    
-    [UIView animateWithDuration: self.animationDuration
-                     animations: ^{
-                         self.startButton.transform = CGAffineTransformMakeRotation(angle);
-                     }];
+//    // rotate start button
+//    float angle = self.isExpanding ? -M_PI_4 : 0.0f;
+//    
+//    [UIView animateWithDuration: self.animationDuration
+//                     animations: ^{
+//                         self.startButton.transform = CGAffineTransformMakeRotation(angle);
+//                     }];
     
     if ([self.delegate respondsToSelector: @selector(arcMenu:didSelectIndex:)])
     {
@@ -248,7 +246,7 @@ static CGPoint RotateCGPointAroundCenter(CGPoint point, CGPoint center, float an
         return;
     }
     
-    self.menusArray = [menusArray copy];
+    _menusArray = [menusArray copy];
     
     // clean subviews
     for (UIView *v in self.subviews)
@@ -311,14 +309,14 @@ static CGPoint RotateCGPointAroundCenter(CGPoint point, CGPoint center, float an
         [self setMenu];
     }
     
-    self.expanding = expanding;
+    _expanding = expanding;
     
     // rotate add button
-    float angle = self.isExpanding ? -M_PI_4 : 0.0f;
-    [UIView animateWithDuration: kSYNArcMenuStartMenuDefaultAnimationDuration
-                     animations: ^{
-                         self.startButton.transform = CGAffineTransformMakeRotation(angle);
-                     }];
+//    float angle = self.isExpanding ? -M_PI_4 : 0.0f;
+//    [UIView animateWithDuration: kSYNArcMenuStartMenuDefaultAnimationDuration
+//                     animations: ^{
+//                         self.startButton.transform = CGAffineTransformMakeRotation(angle);
+//                     }];
     
     // expand or close animation
     if (!self.timer)
@@ -359,9 +357,7 @@ static CGPoint RotateCGPointAroundCenter(CGPoint point, CGPoint center, float an
     CAKeyframeAnimation *rotateAnimation = [CAKeyframeAnimation animationWithKeyPath: @"transform.rotation.z"];
     
     rotateAnimation.values = @[@(self.expandRotation), @(0.0f)];
-    
     rotateAnimation.duration = self.animationDuration;
-    
     rotateAnimation.keyTimes = @[@(0.3f), @(0.4f)];
     
     CAKeyframeAnimation *positionAnimation = [CAKeyframeAnimation animationWithKeyPath: @"position"];

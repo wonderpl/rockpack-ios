@@ -8,22 +8,26 @@
 
 #import <UIKit/UIKit.h>
 
-typedef enum {
+typedef enum : NSInteger
+{
     kChannelThumbnailDisplayModeDisplay = 0,
     kChannelThumbnailDisplayModeEdit = 1,
     kChannelThumbnailDisplayModeDisplayFavourite = 2
 } kChannelThumbnailDisplayMode;
 
+@protocol SYNVideoThumbnailRegularCellDelegate <NSObject>
+
+- (void) videoButtonPressed: (UIButton *) videoButton;
+- (void) showMenuTapped: (UICollectionViewCell *) cell;
+
+@end
+
 @interface SYNVideoThumbnailRegularCell : UICollectionViewCell
 
+@property (nonatomic) kChannelThumbnailDisplayMode displayMode;
+@property (nonatomic, strong) IBOutlet UIButton *addItButton;
 @property (nonatomic, strong) IBOutlet UIImageView *imageView;
 @property (nonatomic, strong) IBOutlet UILabel *titleLabel;
-@property (nonatomic, strong) NSString* dataIndetifier;
-@property (nonatomic, weak) UIViewController *viewControllerDelegate;
-
-
-@property (nonatomic, strong) IBOutlet UIButton *addItButton;
-
-@property (nonatomic) kChannelThumbnailDisplayMode displayMode;
+@property (nonatomic, weak) id<SYNVideoThumbnailRegularCellDelegate> viewControllerDelegate;
 
 @end

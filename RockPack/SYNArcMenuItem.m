@@ -35,6 +35,7 @@ static inline CGRect ScaleRect(CGRect rect, float n)
         self.userInteractionEnabled = YES;
         _contentImageView = [[UIImageView alloc] initWithImage: cimg];
         _contentImageView.highlightedImage = hcimg;
+//        _contentImageView.frame.size =
         [self addSubview: _contentImageView];
     }
     
