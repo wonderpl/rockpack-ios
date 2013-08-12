@@ -42,6 +42,7 @@ static inline CGRect ScaleRect(CGRect rect, float n)
 }
 
 #pragma mark - UIView's methods
+
 - (void) layoutSubviews
 {
     [super layoutSubviews];

@@ -1440,17 +1440,11 @@
     SYNArcMenuView *menu = [[SYNArcMenuView alloc] initWithFrame: self.view.bounds
                                                        startItem: mainMenuItem
                                                      optionMenus: @[arcMenuItem1, arcMenuItem2, arcMenuItem3]];
-     menu.delegate = self;
-     menu.startPoint = CGPointMake(160.0, 240.0);
-     menu.rotateAngle = -M_PI / 4;
-     menu.menuWholeAngle = M_PI / 2;
-     menu.timeOffset = 0.036f;
-//     menu.farRadius = 140.0f;
-//     menu.nearRadius = 110.0f;
-//     menu.endRadius = 120.0f;
-    menu.farRadius = 100.0f;
-    menu.nearRadius = 90.0f;
-    menu.endRadius = 83;
+    menu.delegate = self;
+    menu.startPoint = CGPointMake(160.0, 240.0);
+    menu.rotateAngle = -M_PI / 4;
+    menu.menuWholeAngle = M_PI / 2;
+
     
      [self.view addSubview: menu];
 }
