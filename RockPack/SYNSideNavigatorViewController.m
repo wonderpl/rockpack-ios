@@ -655,8 +655,11 @@ typedef enum {
     
     [self.searchViewController.searchBoxView.searchTextField resignFirstResponder];
     self.searchViewController.searchBoxView.searchTextField.text = @"";
+    
     [self.searchViewController clear];
     self.searchViewController.searchBoxView.searchTextField.delegate = self;
+    
+    
     [UIView animateWithDuration: 0.1f
                           delay: 0.0f
                         options: UIViewAnimationOptionCurveEaseIn

@@ -95,6 +95,7 @@
     
     self.autoSuggestionController.tableView.frame = tableViewFrame;
     self.autoSuggestionController.tableView.alpha = 0.0;
+    
     [self.view addSubview:self.autoSuggestionController.tableView];
 }
 

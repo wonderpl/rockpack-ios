@@ -159,20 +159,18 @@
         self.searchButtonIPhone.frame = CGRectMake(8.0f, 8.0f, searchIcon.size.width, searchIcon.size.height);
         [self.searchButtonIPhone setImage:searchIcon forState:UIControlStateNormal];
         [self.searchButtonIPhone setImage:searchIcon forState:UIControlStateHighlighted];
-        [self.searchButtonIPhone addTarget:self action:@selector(searchButtonIPhonePressed:) forControlEvents:UIControlEventTouchUpInside];
+        [self.searchButtonIPhone addTarget:self action:@selector(presentSearchBar) forControlEvents:UIControlEventTouchUpInside];
         [self.view addSubview:self.searchButtonIPhone];
     }
     
     self.channelThumbnailCollectionView.showsVerticalScrollIndicator = YES;
 }
 
--(void)searchButtonIPhonePressed:(UIButton*)sender
+
+-(void)presentSearchBar
 {
     [appDelegate.viewStackManager presentSearchBar];
-    
 }
-
-
 - (void) viewDidLoad
 {
     [super viewDidLoad];

@@ -175,15 +175,31 @@
 
 -(void)presentSearchBar
 {
+    
     SYNSearchBoxViewController* searchBoxVC = self.sideNavigatorController.searchViewController;
+    
+    BOOL comesFromSideNavigation = (self.sideNavigatorController.state != SideNavigationStateHidden);
+    
+    
+    // do the swap...
+    
+    [searchBoxVC.searchBoxView removeFromSuperview];
+    
     [searchBoxVC removeFromParentViewController];
+    
+    [self.masterController addChildViewController:searchBoxVC];
     
     [self.masterController.view addSubview:searchBoxVC.searchBoxView];
     
     
+    
     CGRect newFrame = searchBoxVC.searchBoxView.frame;
     
-    newFrame.origin = CGPointMake(0.0f, 58.0f);
+    if(comesFromSideNavigation)
+        newFrame.origin = CGPointMake(0.0f, 58.0f);
+    else
+        newFrame.origin = CGPointMake(0.0f, -58.0f);
+    
     searchBoxVC.searchBoxView.frame = newFrame;
     
     
@@ -196,7 +212,12 @@
                          
                          CGRect endFrame = searchBoxVC.searchBoxView.frame;
                          
-                         endFrame.origin.y -= 58.0f;
+                         if(comesFromSideNavigation)
+                             endFrame.origin.y -= 58.0f;
+                         else
+                             endFrame.origin.y += 58.0f;
+                         
+                         
                          
                          searchBoxVC.searchBoxView.frame = endFrame;
                          
