@@ -40,7 +40,7 @@ typedef enum {
 -(void)reset;
 -(void)deselectAllCells;
 -(void)setSelectedCellByPageName:(NSString*)pageName;
-
+-(void) setState:(SideNavigationState)state animated:(BOOL)animated;
 - (void) displayFromPushNotification;
 
 @end

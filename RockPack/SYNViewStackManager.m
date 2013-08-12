@@ -189,7 +189,7 @@
     
     if(self.searchBarOriginSideNavigation) // open up the side navigation
     {
-        self.sideNavigatorController.state = SideNavigationStateHalf;
+        [self.sideNavigatorController setState:SideNavigationStateHalf animated:NO];
         
         self.masterController.sideNavigationButton.selected = YES;
         

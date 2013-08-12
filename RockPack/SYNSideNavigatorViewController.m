@@ -32,6 +32,8 @@
 #define kNotificationsRowIndex 4
 #define kFriendsRowIndex 3
 
+typedef void (^SideNavigationMotionBlock)(void);
+
 typedef enum {
     kSideNavigationTypeLoad = 0,
     kSideNavigationTypePage
@@ -657,7 +659,7 @@ typedef enum {
 
 #pragma mark - Accessor & Animation
 
-- (void) setState: (SideNavigationState) state
+-(void) setState:(SideNavigationState)state animated:(BOOL)animated
 {
     if (state == _state)
         return;
@@ -667,11 +669,11 @@ typedef enum {
     switch (_state)
     {
         case SideNavigationStateHidden:
-            [self showHiddenNavigation];
+            [self showHiddenNavigationAnimated:animated];
             break;
             
         case SideNavigationStateHalf:
-            [self showHalfNavigation];
+            [self showHalfNavigationAnimated:animated];
             [self getNotifications];
             break;
             
@@ -679,10 +681,16 @@ typedef enum {
             [self showFullNavigation];
             break;
     }
+    
+}
+
+- (void) setState: (SideNavigationState) state
+{
+    [self setState:state animated:YES];
 }
 
 
-- (void) showHalfNavigation
+- (void) showHalfNavigationAnimated:(BOOL)animated
 {
     // Light up navigation button
     self.captiveButton.selected = TRUE;
@@ -698,24 +706,33 @@ typedef enum {
         [self.searchViewController.searchBoxView hideCloseButton];
     }
     
-    [UIView animateWithDuration: kRockieTalkieAnimationDuration
-                          delay: 0.0f
-                        options: UIViewAnimationOptionCurveEaseInOut | UIViewAnimationOptionBeginFromCurrentState
-                     animations: ^{
-                         CGRect sideNavigationFrame = self.view.frame;
-                         if (IS_IPAD)
-                         {
-                             sideNavigationFrame.origin.x = 1024.0 - 192.0;
-                             self.userNameLabel.alpha = 0.0;
-                         }
-                         else
-                         {
-                             sideNavigationFrame.origin.x = 704.0f;
-                         }
-                         self.view.frame = sideNavigationFrame;
-                     }
-                     completion: ^(BOOL finished) {
-                     }];
+    SideNavigationMotionBlock motionBlock = ^{
+        CGRect sideNavigationFrame = self.view.frame;
+        if (IS_IPAD)
+        {
+            sideNavigationFrame.origin.x = 1024.0 - 192.0;
+            self.userNameLabel.alpha = 0.0;
+        }
+        else
+        {
+            sideNavigationFrame.origin.x = 704.0f;
+        }
+        self.view.frame = sideNavigationFrame;
+    };
+    
+    if(animated)
+    {
+        [UIView animateWithDuration: kRockieTalkieAnimationDuration
+                              delay: 0.0f
+                            options: UIViewAnimationOptionCurveEaseInOut | UIViewAnimationOptionBeginFromCurrentState
+                         animations: motionBlock
+                         completion: nil];
+    }
+    else
+    {
+        motionBlock();
+    }
+    
 }
 
 
@@ -764,34 +781,48 @@ typedef enum {
 }
 
 
-- (void) showHiddenNavigation
+- (void) showHiddenNavigationAnimated:(BOOL)animated
 {
     // Turn off button highlighting
     self.captiveButton.selected = FALSE;
     
     self.darkOverlay.alpha = 1.0;
     
-    [UIView animateWithDuration:0.3
-                     animations:^{
-                         self.darkOverlay.alpha = 0.0;
-                     } completion:^(BOOL finished) {
-                         self.darkOverlay.hidden = TRUE;
-                     }];
+    SideNavigationMotionBlock motionBlock = ^{
+        
+        self.darkOverlay.alpha = 0.0;
+        
+        CGRect sideNavigationFrame = self.view.frame;
+        sideNavigationFrame.origin.x = 1024;
+        self.view.frame =  sideNavigationFrame;
+        
+    };
     
-    [[SYNSoundPlayer sharedInstance] playSoundByName: kSoundNewSlideOut];
+    void(^completionBlock)(BOOL) = ^(BOOL finished) {
+      
+        self.darkOverlay.hidden = YES;
+        [self reset];
+        [self deselectAllCells];
+        
+    };
     
-    [UIView animateWithDuration: 0.2f
-                          delay: 0.0f
-                        options: UIViewAnimationOptionCurveEaseInOut | UIViewAnimationOptionBeginFromCurrentState
-                     animations: ^ {
-                         CGRect sideNavigationFrame = self.view.frame;
-                         sideNavigationFrame.origin.x = 1024;
-                         self.view.frame =  sideNavigationFrame;
-                     }
-                     completion: ^(BOOL finished) {
-                         [self reset];
-                         [self deselectAllCells];
-                     }];
+    
+    if(animated)
+    {
+        [[SYNSoundPlayer sharedInstance] playSoundByName: kSoundNewSlideOut];
+        
+        [UIView animateWithDuration: 0.2f
+                              delay: 0.0f
+                            options: UIViewAnimationOptionCurveEaseInOut | UIViewAnimationOptionBeginFromCurrentState
+                         animations: motionBlock
+                         completion:completionBlock];
+    }
+    else
+    {
+        motionBlock();
+        completionBlock(YES);
+    }
+    
 
 }
 
