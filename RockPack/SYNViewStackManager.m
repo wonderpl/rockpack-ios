@@ -136,7 +136,11 @@
     
     [self.navigationController popViewControllerAnimated: NO];
     
-    [self hideSideNavigator];
+    if(!self.searchBarOriginSideNavigation) {
+        [self hideSideNavigator];
+        self.searchBarOriginSideNavigation = NO;
+    }
+        
 }
 
 
@@ -180,27 +184,15 @@
     
     if(IS_IPAD) // this function is only for iPhone
         return;
-    
+   
     SYNSearchBoxViewController* searchBoxVC = self.sideNavigatorController.searchViewController;
     
     if(self.searchBarOriginSideNavigation) // open up the side navigation
     {
         self.sideNavigatorController.state = SideNavigationStateHalf;
+        
         self.masterController.sideNavigationButton.selected = YES;
-    }
-    
-    
-    if (self.masterController.isInSearchMode)
-    {
-        [self.masterController clearSearchBoxController];
-        [self popController];
-    }
-    
-    self.masterController.closeSearchButton.hidden = YES;
-    self.masterController.sideNavigationButton.hidden = NO;
-    
-    if(self.searchBarOriginSideNavigation)
-    {
+        
         self.masterController.darkOverlayView.hidden = NO;
         
         [UIView animateWithDuration:0.3
@@ -210,6 +202,19 @@
                              
                          } completion:nil];
     }
+    
+    
+    
+    if (self.masterController.isInSearchMode)
+    {
+        
+        [self popController];
+    }
+    
+    self.masterController.closeSearchButton.hidden = YES;
+    
+    self.masterController.sideNavigationButton.hidden = NO;
+    
     
     
     [searchBoxVC removeFromParentViewController];
@@ -224,7 +229,8 @@
     
     searchBoxVC.searchBoxView.searchTextField.delegate = self.sideNavigatorController;
     
-    // 
+    //
+    
     
     [UIView animateWithDuration: 0.1f
                           delay: 0.0f
