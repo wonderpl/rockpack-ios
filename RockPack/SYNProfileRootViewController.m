@@ -31,8 +31,8 @@
 #define kInterRowMargin 8.0f
 
 @interface SYNProfileRootViewController () <SYNDeletionWobbleLayoutDelegate,
-UIGestureRecognizerDelegate,
-SYNImagePickerControllerDelegate>
+                                            UIGestureRecognizerDelegate,
+                                            SYNImagePickerControllerDelegate>
 
 @property (nonatomic) BOOL deleteCellModeOn;
 @property (nonatomic) BOOL isIPhone;
