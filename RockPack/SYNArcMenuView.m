@@ -6,7 +6,7 @@
 //  Copyright (c) 2013 Nick Banks. All rights reserved.
 //
 //
-//  Based on https://github.com/levey/AwesomeMenu
+//  Inspired by https://github.com/levey/AwesomeMenu
 //
 //  Created by Levey on 11/30/11.
 //  Copyright (c) 2011 Levey & Other Contributors. All rights reserved.
@@ -19,7 +19,6 @@ static CGFloat const kSYNArcMenuDefaultEndRadius = 90.0f;
 static CGFloat const kSYNArcMenuDefaultFarRadius = 97.0f;
 static CGFloat const kSYNArcMenuDefaultStartPointX = 160.0;
 static CGFloat const kSYNArcMenuDefaultStartPointY = 240.0;
-static CGFloat const kSYNArcMenuDefaultTimeOffset = 0.036f;
 static CGFloat const kSYNArcMenuDefaultRotateAngle = 0.0;
 static CGFloat const kSYNArcMenuDefaultMenuWholeAngle = M_PI * 2;
 static CGFloat const kSYNArcMenuDefaultExpandRotation = M_PI;
@@ -43,7 +42,6 @@ static CGPoint RotateCGPointAroundCenter(CGPoint point, CGPoint center, float an
 @property (nonatomic, getter = isExpanding) BOOL expanding;
 @property (nonatomic, getter = isAnimating) BOOL animating;
 @property (nonatomic, strong) SYNArcMenuItem *startButton;
-@property (nonatomic, strong) NSTimer *timer;
 
 @end
 
@@ -64,7 +62,6 @@ static CGPoint RotateCGPointAroundCenter(CGPoint point, CGPoint center, float an
         self.nearRadius = kSYNArcMenuDefaultNearRadius;
         self.endRadius = kSYNArcMenuDefaultEndRadius;
         self.farRadius = kSYNArcMenuDefaultFarRadius;
-        self.timeOffset = kSYNArcMenuDefaultTimeOffset;
         self.rotateAngle = kSYNArcMenuDefaultRotateAngle;
         self.menuWholeAngle = kSYNArcMenuDefaultMenuWholeAngle;
         self.startPoint = CGPointMake(kSYNArcMenuDefaultStartPointX, kSYNArcMenuDefaultStartPointY);

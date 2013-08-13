@@ -5,13 +5,16 @@
 //  Created by Nick Banks on 12/08/2013.
 //  Copyright (c) 2013 Nick Banks. All rights reserved.
 //
-//  Based on https://github.com/levey/AwesomeMenu
+//  Inspired by https://github.com/levey/AwesomeMenu
 //
 //  Created by Levey on 11/30/11.
 //  Copyright (c) 2011 Levey & Other Contributors. All rights reserved.
 
 #import <UIKit/UIKit.h>
 #import "SYNArcMenuItem.h"
+
+#define kShadeViewTag 123
+#define kShadeViewAnimationDuration 0.25f
 
 @class SYNArcMenuView;
 
@@ -39,7 +42,6 @@
 @property (nonatomic, assign) CGFloat menuWholeAngle;
 @property (nonatomic, assign) CGFloat nearRadius;
 @property (nonatomic, assign) CGFloat rotateAngle;
-@property (nonatomic, assign) CGFloat timeOffset;
 @property (nonatomic, assign) CGPoint startPoint;
 @property (nonatomic, strong) UIImage *contentImage;
 @property (nonatomic, strong) UIImage *highlightedContentImage;
