@@ -127,7 +127,7 @@ static CGPoint RotateAndScaleCGPointAroundCenter(CGPoint point, CGPoint center, 
             
             CGPoint farPoint = CGPointMake(self.startPoint.x + self.endRadius * sinf(currentIndex * self.menuWholeAngle / (count - 1)), self.startPoint.y - self.endRadius * cosf(currentIndex * self.menuWholeAngle / (count - 1)));
             
-            item.center = RotateAndScaleCGPointAroundCenter(farPoint, self.startPoint, self.rotateAngle, 1 + (scaleFactor * 0.25));
+            item.center = RotateAndScaleCGPointAroundCenter(farPoint, self.startPoint, self.rotateAngle, 1 + (scaleFactor * 0.4));
             
             item.transform = CGAffineTransformMakeScale(0.5 + zoomFactor, 0.5 + zoomFactor);
         }
@@ -150,6 +150,8 @@ static CGPoint RotateAndScaleCGPointAroundCenter(CGPoint point, CGPoint center, 
 }
 
 
+// Find the nearest menu item that is within the minimum activation distance
+
 - (int) nearestMenuItemToPoint: (CGPoint) point
 {
     CGFloat foundDistance = 99999.0f; // Arbitraily large distance
@@ -158,9 +160,7 @@ static CGPoint RotateAndScaleCGPointAroundCenter(CGPoint point, CGPoint center, 
     for (int index = 0; index < self.menusArray.count; index++)
     {
         SYNArcMenuItem *item = self.menusArray[index];
-        
-//        NSLog (@"item pos: %f, %f", item.endPoint.x, item.endPoint.y);
-        
+    
         CGFloat distance = [self distanceBetweenPoint: point
                                              andPoint: item.endPoint];
         
@@ -171,13 +171,12 @@ static CGPoint RotateAndScaleCGPointAroundCenter(CGPoint point, CGPoint center, 
             foundIndex = index;
         }
     }
-    
-//    NSLog (@"Found index %d, distance %f", foundIndex, foundDistance);
-    
+
     return foundIndex;
 }
 
 
+// Simple distance between two points
 - (CGFloat) distanceBetweenPoint: (CGPoint) point1
                         andPoint: (CGPoint) point2
 {
@@ -188,6 +187,7 @@ static CGPoint RotateAndScaleCGPointAroundCenter(CGPoint point, CGPoint center, 
     
     return distance;
 }
+
 
 #pragma mark - Getters & Setters
 
