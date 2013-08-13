@@ -320,7 +320,13 @@ static CGPoint RotateCGPointAroundCenter(CGPoint point, CGPoint center, float an
 #pragma mark - Private methods
 
 - (void) expandMenu
-{    
+{
+    // Notify our delegate that we are about to expand
+    if (self.delegate && [self.delegate respondsToSelector: @selector(arcMenuDidFinishAnimationClose:)])
+    {
+        [self.delegate arcMenuWillBeginAnimationOpen: self];
+    }
+
     [CATransaction begin];
     
     for (SYNArcMenuItem *item in self.menusArray)
@@ -354,6 +360,13 @@ static CGPoint RotateCGPointAroundCenter(CGPoint point, CGPoint center, float an
         item.alpha = 0.0f;
         item.center = item.startPoint;
     }
+    
+    // Notify our delegate that we had hidden
+    if (self.delegate && [self.delegate respondsToSelector: @selector(arcMenuDidFinishAnimationClose:)])
+    {
+        [self.delegate arcMenuDidFinishAnimationClose: self];
+    }
+
 }
 
 
