@@ -1426,24 +1426,16 @@
         NSLog (@"IndexPath %@", indexPath);
         
         SYNArcMenuItem *arcMenuItem1 = [[SYNArcMenuItem alloc] initWithImage: [UIImage imageNamed: @"ActionLike"]
-                                                            highlightedImage: [UIImage imageNamed: @"ActionLikeHighlighted"]
-                                                                contentImage: nil
-                                                     highlightedContentImage: nil];
+                                                            highlightedImage: [UIImage imageNamed: @"ActionLikeHighlighted"]];
         
         SYNArcMenuItem *arcMenuItem2 = [[SYNArcMenuItem alloc] initWithImage: [UIImage imageNamed: @"ActionAdd"]
-                                                            highlightedImage: [UIImage imageNamed: @"ActionAddHighlighted"]
-                                                                contentImage: nil
-                                                     highlightedContentImage: nil];
+                                                            highlightedImage: [UIImage imageNamed: @"ActionAddHighlighted"]];
         
         SYNArcMenuItem *arcMenuItem3 = [[SYNArcMenuItem alloc] initWithImage: [UIImage imageNamed: @"ActionShare"]
-                                                            highlightedImage: [UIImage imageNamed: @"ActionShareHighlighted"]
-                                                                contentImage: nil
-                                                     highlightedContentImage: nil];
+                                                            highlightedImage: [UIImage imageNamed: @"ActionShareHighlighted"]];
         
         SYNArcMenuItem *mainMenuItem = [[SYNArcMenuItem alloc] initWithImage: [UIImage imageNamed: @"ActionRingNoTouch"]
-                                                            highlightedImage: [UIImage imageNamed: @"ActionRingTouch"]
-                                                                contentImage: nil
-                                                     highlightedContentImage: nil];
+                                                            highlightedImage: [UIImage imageNamed: @"ActionRingTouch"]];
         
         self.arcMenu = [[SYNArcMenuView alloc] initWithFrame: self.view.bounds
                                                    startItem: mainMenuItem

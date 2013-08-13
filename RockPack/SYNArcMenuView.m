@@ -24,8 +24,8 @@ static CGFloat const kSYNArcMenuDefaultRotateAngle = 0.0;
 static CGFloat const kSYNArcMenuDefaultMenuWholeAngle = M_PI * 2;
 static CGFloat const kSYNArcMenuDefaultExpandRotation = M_PI;
 static CGFloat const kSYNArcMenuDefaultCloseRotation = M_PI * 2;
-static CGFloat const kSYNArcMenuDefaultAnimationDuration = 0.4f;
-static CGFloat const kSYNArcMenuStartMenuDefaultAnimationDuration = 0.3f;
+static CGFloat const kSYNArcMenuDefaultAnimationDuration = 0.25f;
+static CGFloat const kSYNArcMenuStartMenuDefaultAnimationDuration = 0.25f;
 static CGFloat const kSYNMinimumActivationDistance = 70.0f; // Pixels
 
 
@@ -86,9 +86,8 @@ static CGPoint RotateAndScaleCGPointAroundCenter(CGPoint point, CGPoint center, 
         
         // assign startItem to "Add" Button.
         self.startButton = startItem;
-        self.startButton.delegate = (id<SYNArcMenuItemDelegate>) self;
         self.startButton.center = self.startPoint;
-        [self addSubview: _startButton];
+        [self addSubview: self.startButton];
     }
     
     return self;
@@ -117,11 +116,13 @@ static CGPoint RotateAndScaleCGPointAroundCenter(CGPoint point, CGPoint center, 
                                 options: UIViewAnimationOptionBeginFromCurrentState
                              animations: ^{
                                  item.center = item.endPoint;
+                                 item.highlighted = FALSE;
                              }
                              completion: ^(BOOL finished){
                              }
              ];
 
+            lastIndex = -1;
         }
         
         if (currentIndex != -1)
@@ -141,10 +142,10 @@ static CGPoint RotateAndScaleCGPointAroundCenter(CGPoint point, CGPoint center, 
             
             [UIView animateWithDuration: kSYNArcMenuDefaultAnimationDuration
                                   delay: 0.0f
-                                options: UIViewAnimationOptionBeginFromCurrentState
+                                options: UIViewAnimationOptionBeginFromCurrentState | UIViewAnimationOptionTransitionCrossDissolve
                              animations: ^{
                                  item.center = RotateAndScaleCGPointAroundCenter(farPoint, self.startPoint, self.rotateAngle, 1.5f);
-                                 
+                                 item.highlighted = TRUE;
                              }
                              completion: ^(BOOL finished){
                              }];
@@ -331,8 +332,6 @@ static CGPoint RotateAndScaleCGPointAroundCenter(CGPoint point, CGPoint center, 
         
         // The images are actually double-size, so scale them down
         item.transform = CGAffineTransformMakeScale(0.5, 0.5);
-        
-        item.delegate = (id<SYNArcMenuItemDelegate>) self;
         
         [self insertSubview: item
                belowSubview: self.startButton];
