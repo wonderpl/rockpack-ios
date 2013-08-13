@@ -322,15 +322,28 @@ typedef void(^FeedDataErrorBlock)(void);
 
     [self.refreshButton startRefreshCycle];
     
+    __weak SYNFeedRootViewController* wself = self;
     FeedDataErrorBlock errorBlock = ^{
         
-        [self handleRefreshComplete];
+        [wself handleRefreshComplete];
         
-        [self removeEmptyGenreMessage];
+        [wself removeEmptyGenreMessage];
         
-        
-        [self displayEmptyGenreMessage:NSLocalizedString(@"feed_screen_loading_error", nil) andLoader:NO];
-        
+        if(wself.feedItemsData.count == 0)
+        {
+            [wself displayEmptyGenreMessage:NSLocalizedString(@"feed_screen_loading_error", nil) andLoader:NO]; 
+        }
+            
+        else
+        {
+            [wself displayEmptyGenreMessage:NSLocalizedString(@"feed_screen_updating_error", nil) andLoader:NO];
+            [NSTimer scheduledTimerWithTimeInterval:3.0f
+                                             target:self
+                                           selector:@selector(removeEmptyGenreMessage)
+                                           userInfo:nil
+                                            repeats:NO];
+        }
+            
         
         self.loadingMoreContent = NO;
         
@@ -351,9 +364,9 @@ typedef void(^FeedDataErrorBlock)(void);
                                                     }
                                                         
                                                     
-                                                    self.dataItemsAvailable = contentItem[@"total"] ? contentItem[@"total"] : 0 ;
-                                                    if(self.dataItemsAvailable == 0) {
-                                                        [self displayEmptyGenreMessage:NSLocalizedString(@"feed_screen_empty_message", nil) andLoader:NO];
+                                                    wself.dataItemsAvailable = contentItem[@"total"] ? contentItem[@"total"] : 0 ;
+                                                    if(wself.dataItemsAvailable == 0) {
+                                                        [wself displayEmptyGenreMessage:NSLocalizedString(@"feed_screen_empty_message", nil) andLoader:NO];
                                                         return;
                                                     }
                                                         
@@ -366,14 +379,14 @@ typedef void(^FeedDataErrorBlock)(void);
                                                         return;
                                                     }
                                                     
-                                                    [self removeEmptyGenreMessage];
+                                                    [wself removeEmptyGenreMessage];
                                            
                                            
-                                                    [self fetchedAndDisplayFeedItems];
+                                                    [wself fetchedAndDisplayFeedItems];
                                            
-                                                    self.loadingMoreContent = NO;
+                                                    wself.loadingMoreContent = NO;
                                                     
-                                                    [self handleRefreshComplete];
+                                                    [wself handleRefreshComplete];
                                                     
                                                 } errorHandler: ^(NSDictionary* errorDictionary) {
                                                     
@@ -789,34 +802,26 @@ typedef void(^FeedDataErrorBlock)(void);
                    layout: (UICollectionViewLayout*) collectionViewLayout
                    referenceSizeForFooterInSection: (NSInteger) section
 {
-    CGSize footerSize;
+    CGSize footerSize = CGSizeZero;
     
-    if (collectionView == self.feedCollectionView)
+    NSLog(@"section: %i from %i", section, self.feedItemsData.count);
+    
+    if ((collectionView == self.feedCollectionView) &&
+        (section == (self.feedItemsData.count - 1))) // only the last section can have a loader
     {
+        
+        
         footerSize = [self footerSize];
         
-        // Now set to zero anyway if we have already read in all the items
-        NSInteger nextStart = self.dataRequestRange.location + self.dataRequestRange.length; // one is subtracted when the call happens for 0 indexing
-        
-        // FIXME: Is this comparison correct?  Should it just be self.dataRequestRange.location >= self.dataItemsAvailable?
-        if (nextStart >= self.dataItemsAvailable)
+       
+        if (self.dataRequestRange.location + self.dataRequestRange.length < self.dataItemsAvailable)
         {
-            if (section < self.fetchedResultsController.sections.count - 1)
-            {
-                footerSize = CGSizeZero;
-            }
-            else
-            {
-                footerSize = CGSizeMake(1.0f, 5.0f);
-            }
+            footerSize = CGSizeMake(1.0f, 5.0f);
         }
-    }
-    else
-    {
-        footerSize = CGSizeZero;
     }
     
     return footerSize;
+    
 }
 
 
@@ -888,10 +893,9 @@ typedef void(^FeedDataErrorBlock)(void);
                                                                     forIndexPath: indexPath];
         supplementaryView = self.footerView;
         
-        // Show loading spinner if we have more data
-        if (self.fetchedResultsController.fetchedObjects.count > 0
-            && indexPath.section == self.fetchedResultsController.sections.count - 1
-            && (self.dataRequestRange.location + self.dataRequestRange.length) < self.dataItemsAvailable)
+        // Show loading spinner if we have more datasection == )
+        if ((indexPath.section == (self.feedItemsData.count - 1)) && // last item
+            (self.dataRequestRange.location + self.dataRequestRange.length) < self.dataItemsAvailable)
         {
             self.footerView.showsLoading = self.isLoadingMoreContent;
         }
