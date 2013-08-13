@@ -1413,10 +1413,15 @@
     addButton.selected = !addButton.selected;
 }
 
-- (void) showMenuTapped: (UICollectionViewCell *) cell
+- (void) showMenuTapped: (UIGestureRecognizer *) recognizer
 {
-    NSLog (@"Share menu tapped");
+    
+    CGPoint tapPoint = [recognizer locationInView: self.view];
+    
+    NSIndexPath *indexPath = [self.videoThumbnailCollectionView indexPathForItemAtPoint:tapPoint];
 
+    NSLog (@"IndexPath %@", indexPath);
+    
     SYNArcMenuItem *arcMenuItem1 = [[SYNArcMenuItem alloc] initWithImage: [UIImage imageNamed: @"ActionLike"]
                                                         highlightedImage: [UIImage imageNamed: @"ActionLikeHighlighted"]
                                                             contentImage: nil
@@ -1441,20 +1446,34 @@
                                                        startItem: mainMenuItem
                                                      optionMenus: @[arcMenuItem1, arcMenuItem2, arcMenuItem3]];
     menu.delegate = self;
-    menu.startPoint = CGPointMake(160.0, 240.0);
+    menu.startPoint = tapPoint;
     menu.rotateAngle = -M_PI / 4;
     menu.menuWholeAngle = M_PI / 2;
-
     
      [self.view addSubview: menu];
 }
 
 
 - (void) arcMenu: (SYNArcMenuView *) menu
-  didSelectIndex: (NSInteger) idx
+  didSelectIndex: (NSInteger) selectedIndex
 {
-    NSLog (@"Selected");
+    switch (selectedIndex)
+    {
+        case kArcMenuButtonLike:
+            break;
+            
+        case kArcMenuButtonAdd:
+            break;
+            
+        case kArcMenuButtonShare:
+            break;
+            
+        default:
+            AssertOrLog(@"Invalid Arc Menu index selected");
+            break;
+    }
 }
+
 
 - (void) arcMenuWillBeginAnimationOpen: (SYNArcMenuView *) menu
 {

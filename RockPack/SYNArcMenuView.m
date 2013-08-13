@@ -91,56 +91,6 @@ static CGPoint RotateCGPointAroundCenter(CGPoint point, CGPoint center, float an
 }
 
 
-#pragma mark - images
-
-- (void) setImage: (UIImage *) image
-{
-    self.startButton.image = image;
-}
-
-
-- (UIImage *) image
-{
-    return self.startButton.image;
-}
-
-
-- (void) setHighlightedImage: (UIImage *) highlightedImage
-{
-    self.startButton.highlightedImage = highlightedImage;
-}
-
-
-- (UIImage *) highlightedImage
-{
-    return self.startButton.highlightedImage;
-}
-
-
-- (void) setContentImage: (UIImage *) contentImage
-{
-    self.startButton.contentImageView.image = contentImage;
-}
-
-
-- (UIImage *) contentImage
-{
-    return self.startButton.contentImageView.image;
-}
-
-
-- (void) setHighlightedContentImage: (UIImage *) highlightedContentImage
-{
-    self.startButton.contentImageView.highlightedImage = highlightedContentImage;
-}
-
-
-- (UIImage *) highlightedContentImage
-{
-    return self.startButton.contentImageView.highlightedImage;
-}
-
-
 #pragma mark - UIView's methods
 
 - (BOOL) pointInside: (CGPoint) point
@@ -357,6 +307,8 @@ static CGPoint RotateCGPointAroundCenter(CGPoint point, CGPoint center, float an
         item.alpha = 0.0f;
         item.center = item.startPoint;
     }
+    
+    self.startButton.alpha = 0.0f;
     
     // Notify our delegate that we had hidden
     if (self.delegate && [self.delegate respondsToSelector: @selector(arcMenuDidFinishAnimationClose:)])

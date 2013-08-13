@@ -16,6 +16,12 @@
 #define kShadeViewTag 123
 #define kShadeViewAnimationDuration 0.25f
 
+typedef enum {
+    kArcMenuButtonLike = 0,
+    kArcMenuButtonAdd = 1,
+    kArcMenuButtonShare = 2
+} kArcMenuButtonType;
+
 @class SYNArcMenuView;
 
 @protocol SYNArcMenuViewDelegate <NSObject>
