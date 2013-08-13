@@ -110,14 +110,19 @@
             // Text
             cell.textLabel.font = rockpackFont;
             cell.textLabel.textColor = textColor;
+            
+            
+            cell.textLabel.text = [((NSString*)wordsArray[indexPath.row]) uppercaseString];
         }
         else
         {
             cell = [[SYNAutocompleteIphoneCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:CellIdentifier];
+            
+            
+            cell.textLabel.text = [((NSString*)wordsArray[indexPath.row]) capitalizedString];
         } 
     }
 
-    cell.textLabel.text = [((NSString*)wordsArray[indexPath.row]) uppercaseString];
 
     return cell;
 }

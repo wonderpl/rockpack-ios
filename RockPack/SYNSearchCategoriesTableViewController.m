@@ -135,7 +135,7 @@ static NSString *SearchGenresTableCellIdentifier = @"SYNSearchCategoriesIphoneCe
     
     Genre* genre = self.searchCategories[indexPath.item];
     
-    cell.textLabel.text = genre.name;
+    cell.textLabel.text = [genre.name capitalizedString];
     
     
     

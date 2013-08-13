@@ -255,31 +255,34 @@
     self.autocompleteTimer = nil;
     
     self.autocompleteNetworkOperation = [appDelegate.networkEngine getAutocompleteForHint: self.searchTextField.text
-                                                                              forResource: EntityTypeVideo
-                                                                             withComplete: ^(NSArray* array) {
-                                             NSArray* suggestionsReturned = array[1];
+                                                                              forResource: EntityTypeVideo withComplete: ^(NSArray* array) {
+                                                                                 
+                                            NSArray* suggestionsReturned = array[1];
                                              
-                                             NSMutableArray* wordsReturned = [NSMutableArray array];
+                                            
                                              
-                                             if (suggestionsReturned.count == 0)
-                                             {
-                                                 [self.autoSuggestionController clearWords];
-                                                 return;
-                                             }
+                                            if (suggestionsReturned.count == 0)
+                                            {
+                                                [self.autoSuggestionController clearWords];
+                                                return;
+                                            }
+                                                                                  
+                                            NSMutableArray* wordsReturned = [NSMutableArray array];
                                              
-                                             for (NSArray* suggestion in suggestionsReturned)
-                                             {
-                                                 [wordsReturned addObject: suggestion[0]];
-                                             }
+                                            for (NSArray* suggestion in suggestionsReturned)
+                                            {
+                                                [wordsReturned addObject: suggestion[0]];
+                                            }
                                              
-                                             [self.autoSuggestionController addWords:wordsReturned];
+                                            [self.autoSuggestionController addWords:wordsReturned];
                                              
-                                             [self resizeTableView:NO];
+                                            [self resizeTableView:NO];
                                              
-                                             self.autoSuggestionController.tableView.alpha = 1.0;
+                                            self.autoSuggestionController.tableView.alpha = 1.0;
                                              
-                                         } andError: ^(NSError* error) {  
-                                         }];
+                                        } andError: ^(NSError* error) {
+                                        
+                                        }];
 }
 
 

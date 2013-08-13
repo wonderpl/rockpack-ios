@@ -23,13 +23,17 @@
 
 -(id)initWithStyle:(UITableViewCellStyle)style reuseIdentifier:(NSString *)reuseIdentifier
 {
+    
+    
     self = [super initWithStyle:style reuseIdentifier:reuseIdentifier];
+    
+    
     if(self)
     {
         
-        self.defaultColor = [UIColor colorWithRed: (40.0/255.0)
-                                            green: (45.0/255.0)
-                                             blue: (51.0/255.0)
+        self.defaultColor = [UIColor colorWithRed: (106.0f / 255.0)
+                                            green: (114.0f / 255.0)
+                                             blue: (122.0f / 255.0)
                                             alpha: (1.0)];
         
         
@@ -37,7 +41,7 @@
         self.selectedColor = [UIColor colorWithWhite:1.0 alpha:1.0f];
         self.selectedShadowColor = [UIColor colorWithWhite:1.0 alpha:0.2];
         self.selectionStyle = UITableViewCellSelectionStyleNone;
-        self.textLabel.font = [UIFont rockpackFontOfSize:18];
+        self.textLabel.font = [UIFont rockpackFontOfSize:14.0f];
         self.textLabel.textColor = self.defaultColor;
         self.textLabel.shadowColor = self.defaultShadowColor;
         self.textLabel.shadowOffset = CGSizeMake(0.0f,1.0f);
@@ -77,17 +81,7 @@
     }
 }
 
--(void)setHighlighted:(BOOL)highlighted animated:(BOOL)animated
-{
-    if(highlighted)
-    {
-        self.backgroundImageView.image = [UIImage imageNamed:@"PanelSearchSuggestionHighlighted~iphone"];
-    }
-    else
-    {
-        self.backgroundImageView.image = [UIImage imageNamed:@"PanelSearchSuggestion~iphone"];
-    }
-}
+
 
 
 @end
