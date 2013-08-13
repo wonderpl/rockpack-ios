@@ -12,16 +12,16 @@
 #import "SYNAppDelegate.h"
 
 
-static NSDictionary* lightTextAttributes = nil;
-static NSDictionary* boldTextAttributes = nil;
+
 
 @implementation SYNAggregateVideoCell
-
+@synthesize boldTextAttributes;
+@synthesize lightTextAttributes;
 
 -(void)awakeFromNib
 {
     [super awakeFromNib];
-    self.mainTitleLabel.font = [UIFont rockpackFontOfSize:self.mainTitleLabel.font.pointSize];
+    self.mainTitleLabel.font = [UIFont boldRockpackFontOfSize:self.mainTitleLabel.font.pointSize];
     self.likeLabel.font = [UIFont rockpackFontOfSize:self.likeLabel.font.pointSize];
     
     if(!IS_IPAD)
@@ -30,8 +30,7 @@ static NSDictionary* boldTextAttributes = nil;
         self.likesNumberLabel.font = [UIFont boldRockpackFontOfSize:self.likesNumberLabel.font.pointSize];
     
     
-    lightTextAttributes = @{NSFontAttributeName:[UIFont rockpackFontOfSize:14.0],NSForegroundColorAttributeName:[UIColor rockpacAggregateTextLight]};
-    boldTextAttributes = @{NSFontAttributeName:[UIFont boldRockpackFontOfSize:14.0],NSForegroundColorAttributeName:[UIColor rockpacAggregateTextBold]};
+    
 
 }
 
@@ -93,7 +92,8 @@ static NSDictionary* boldTextAttributes = nil;
     [attributedCompleteString appendAttributedString:[[NSAttributedString alloc] initWithString:channelOwnerName
                                                                                      attributes:boldTextAttributes]];
     
-    // add buttons
+    
+    
     
     [attributedCompleteString appendAttributedString:[[NSAttributedString alloc] initWithString:@" added "
                                                                                      attributes:lightTextAttributes]];
@@ -102,7 +102,7 @@ static NSDictionary* boldTextAttributes = nil;
                                                                                      attributes:boldTextAttributes]];
     
     
-    [attributedCompleteString appendAttributedString:[[NSAttributedString alloc] initWithString:@" to " 
+    [attributedCompleteString appendAttributedString:[[NSAttributedString alloc] initWithString:@" to "
                                                                                      attributes:lightTextAttributes]];
     
     [attributedCompleteString appendAttributedString:[[NSAttributedString alloc] initWithString:channelNameString
@@ -111,6 +111,12 @@ static NSDictionary* boldTextAttributes = nil;
     
     
     self.messageLabel.attributedText = attributedCompleteString;
+    
+    [self.messageLabel sizeToFit];
+    
+    self.messageLabel.center = CGPointMake(self.messageLabel.center.x, self.userThumbnailImageView.center.y + 2.0f);
+    
+    self.messageLabel.frame = CGRectIntegral(self.messageLabel.frame);
 }
 
 -(void)setSupplementaryMessageWithDictionary:(NSDictionary*)messageDictionary
@@ -151,6 +157,27 @@ static NSDictionary* boldTextAttributes = nil;
     
     NSOrderedSet* users = messageDictionary[@"starrers"] ? messageDictionary[@"starrers"] : [NSOrderedSet orderedSet];
     
+    // initial setup
+    NSMutableAttributedString *attributedCompleteString = [[NSMutableAttributedString alloc] init];
+    if(!IS_IPAD && users.count > 3)
+    {
+        
+        [attributedCompleteString appendAttributedString:likesAttributedString];
+        
+        
+    }
+    else
+    {
+        self.likesNumberLabel.text = [NSString stringWithFormat:@"%i", likesNumber.integerValue];
+    }
+    
+    if(users.count > 1 && users.count < 4)
+    {
+        
+        [attributedCompleteString appendAttributedString:[[NSAttributedString alloc] initWithString:[NSString stringWithFormat:@"%@", including]
+                                                                                         attributes:lightTextAttributes]];
+        
+    }
     
     NSMutableString* namesString = [[NSMutableString alloc] init];
     if(users.count > 0)
@@ -177,6 +204,10 @@ static NSDictionary* boldTextAttributes = nil;
             
             [namesString appendString:name];
             
+            
+            [attributedCompleteString appendAttributedString:[[NSAttributedString alloc] initWithString:[NSString stringWithFormat:@"%@", namesString]
+                                                                                             attributes:boldTextAttributes]];
+            
             if((users.count - i) == 2) // the one before last
                 [namesString appendString:@" & "];
             else if((users.count - i) > 2)
@@ -185,37 +216,7 @@ static NSDictionary* boldTextAttributes = nil;
             
         }
         
-        
     }
-    
-    // componentsJoinedByString
-    
-    
-    NSMutableAttributedString *attributedCompleteString = [[NSMutableAttributedString alloc] init];
- 
-    if(!IS_IPAD && users.count > 3)
-    {
-        
-        [attributedCompleteString appendAttributedString:likesAttributedString];
-        
-        
-    }
-    else
-    {
-        self.likesNumberLabel.text = [NSString stringWithFormat:@"%i", likesNumber.integerValue];
-    }
-    
-    if(users.count > 1 && users.count < 4)
-    {
-      
-        [attributedCompleteString appendAttributedString:[[NSAttributedString alloc] initWithString:[NSString stringWithFormat:@"%@", including]
-                                                                                         attributes:lightTextAttributes]];
-        
-    }
-    
-    [attributedCompleteString appendAttributedString:[[NSAttributedString alloc] initWithString:[NSString stringWithFormat:@"%@", namesString]
-                                                                                     attributes:boldTextAttributes]];
-    
     
     
     self.likeLabel.attributedText = attributedCompleteString;

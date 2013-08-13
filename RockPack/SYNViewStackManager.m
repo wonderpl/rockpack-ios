@@ -14,6 +14,7 @@
 #import "SYNProfileRootViewController.h"
 #import "SYNSideNavigatorViewController.h"
 #import "SYNViewStackManager.h"
+#import "SYNSearchBoxViewController.h"
 
 @implementation SYNViewStackManager
 
@@ -135,7 +136,11 @@
     
     [self.navigationController popViewControllerAnimated: NO];
     
-    [self hideSideNavigator];
+    if(!self.searchBarOriginSideNavigation) {
+        [self hideSideNavigator];
+        self.searchBarOriginSideNavigation = NO;
+    }
+        
 }
 
 
@@ -172,21 +177,191 @@
     [self hideSideNavigator];
 }
 
+#pragma mark - Search Bar Animations
+
+-(void)dismissSearchBar
+{
+    
+    if(IS_IPAD) // this function is only for iPhone
+        return;
+   
+    SYNSearchBoxViewController* searchBoxVC = self.sideNavigatorController.searchViewController;
+    
+    if(self.searchBarOriginSideNavigation) // open up the side navigation
+    {
+        [self.sideNavigatorController setState:SideNavigationStateHalf animated:NO];
+        
+        self.masterController.sideNavigationButton.selected = YES;
+        
+        self.masterController.darkOverlayView.hidden = NO;
+        
+        [UIView animateWithDuration:0.3
+                         animations:^{
+                             
+                             self.masterController.darkOverlayView.alpha = 1.0;
+                             
+                         } completion:nil];
+    }
+    
+    
+    
+    if (self.masterController.isInSearchMode)
+    {
+        
+        [self popController];
+    }
+    
+    self.masterController.closeSearchButton.hidden = YES;
+    
+    self.masterController.sideNavigationButton.hidden = NO;
+    
+    
+    
+    [searchBoxVC removeFromParentViewController];
+    [self.masterController.view insertSubview:searchBoxVC.searchBoxView belowSubview:self.masterController.overlayView];
+    
+    
+    
+    [searchBoxVC.searchBoxView.searchTextField resignFirstResponder];
+    searchBoxVC.searchBoxView.searchTextField.text = @"";
+    
+    [searchBoxVC clear];
+    
+    searchBoxVC.searchBoxView.searchTextField.delegate = self.sideNavigatorController;
+    
+    //
+    
+    
+    [UIView animateWithDuration: 0.1f
+                          delay: 0.0f
+                        options: UIViewAnimationOptionCurveEaseIn
+                     animations: ^{
+                         
+                         [searchBoxVC.searchBoxView hideCloseButton];
+                         
+                     }
+                     completion: ^(BOOL finished) {
+                         
+                         self.sideNavigatorController.mainContentView.hidden = NO;
+                         
+                         
+                         
+                         [UIView animateWithDuration: 0.2f
+                                               delay: 0.0f
+                                             options: UIViewAnimationOptionCurveEaseInOut
+                                          animations: ^{
+                                              
+                                              self.sideNavigatorController.mainContentView.alpha = 1.0f;
+                                              
+                                              
+                                              CGRect newFrame = searchBoxVC.searchBoxView.frame;
+                                              
+                                              if(self.searchBarOriginSideNavigation)
+                                                  newFrame.origin = CGPointMake(0.0f, 58.0f);
+                                              else
+                                                  newFrame.origin = CGPointMake(0.0f, -58.0f);
+                                              
+                                              searchBoxVC.searchBoxView.frame = newFrame;
+                                              
+                                          } completion:^(BOOL finished) {
+                                              
+                                              CGRect newFrame = searchBoxVC.searchBoxView.frame;
+                                              newFrame.origin = CGPointMake(0.0f, 0.0f);
+                                              searchBoxVC.searchBoxView.frame = newFrame;
+                                              
+                                              [searchBoxVC.searchBoxView removeFromSuperview];
+                                              [searchBoxVC removeFromParentViewController];
+                                              
+                                              [self.sideNavigatorController addChildViewController:searchBoxVC];
+                                              [self.sideNavigatorController.view addSubview:searchBoxVC.searchBoxView];
+                                              
+                                          }];
+                         
+                     }];
+}
+
+-(void)presentSearchBar
+{
+    
+    SYNSearchBoxViewController* searchBoxVC = self.sideNavigatorController.searchViewController;
+    
+    self.searchBarOriginSideNavigation = (self.sideNavigatorController.state != SideNavigationStateHidden);
+    
+    
+    // do the swap...
+    
+    [searchBoxVC.searchBoxView removeFromSuperview];
+    
+    [searchBoxVC removeFromParentViewController];
+    
+    [self.masterController addChildViewController:searchBoxVC];
+    
+    [self.masterController.view addSubview:searchBoxVC.searchBoxView];
+    
+    
+    
+    CGRect newFrame = searchBoxVC.searchBoxView.frame;
+    
+    if(self.searchBarOriginSideNavigation)
+        newFrame.origin = CGPointMake(0.0f, 58.0f);
+    else
+        newFrame.origin = CGPointMake(0.0f, -58.0f);
+    
+    searchBoxVC.searchBoxView.frame = newFrame;
+    
+    
+    [UIView animateWithDuration: 0.2f
+                         delay :0.0f
+                        options: UIViewAnimationOptionCurveEaseInOut
+                     animations: ^{
+                         
+                         self.sideNavigatorController.mainContentView.alpha = 0.0f;
+                         
+                         CGRect endFrame = searchBoxVC.searchBoxView.frame;
+                         
+                         if(self.searchBarOriginSideNavigation)
+                             endFrame.origin.y -= 58.0f;
+                         else
+                             endFrame.origin.y += 58.0f;
+                         
+                         
+                         
+                         searchBoxVC.searchBoxView.frame = endFrame;
+                         
+                     } completion: ^(BOOL finished) {
+                         
+                         [UIView animateWithDuration: 0.2
+                                               delay:0.0
+                                             options: UIViewAnimationOptionCurveEaseOut
+                                          animations: ^{
+                                              
+                                              [searchBoxVC.searchBoxView revealCloseButton];
+                                              
+                                              if(!IS_IPAD)
+                                                  [searchBoxVC presentSearchCategoriesIPhone];
+                                              
+                                          } completion: nil];
+                         
+                     }];
+    
+    searchBoxVC.searchBoxView.searchTextField.delegate = searchBoxVC;
+}
 
 - (void) hideSideNavigator
 {
     self.sideNavigatorController.state = SideNavigationStateHidden;
 }
 
+#pragma mark - Popover Managment
+
 - (void) presentPopoverView:(UIView*)view
 {
     if(!view)
         return;
     
-    
     CGRect screenRect = [[SYNDeviceManager sharedInstance] currentScreenRect];
     backgroundView = [[UIView alloc] initWithFrame:screenRect];
-    backgroundView.alpha = 0.0;
+    backgroundView.alpha = 0.0f;
     backgroundView.backgroundColor = [UIColor blackColor];
     backgroundView.autoresizingMask = UIViewAutoresizingFlexibleWidth | UIViewAutoresizingFlexibleHeight;
     

@@ -51,6 +51,7 @@
 @property (nonatomic, strong) UILabel *categoryNameLabel;
 @property (nonatomic, strong) UILabel *subCategoryNameLabel;
 @property (nonatomic, weak) SYNMainRegistry *mainRegistry;
+@property (nonatomic, strong) UIButton* searchButtonIPhone;
 
 @end
 
@@ -146,14 +147,30 @@
     [self.view addSubview: self.channelThumbnailCollectionView];
     
     if (self.enableCategoryTable)
+
+    {[self layoutChannelsCategoryTable];}
+    
+    
+    
+    if(isIPhone)
     {
-        [self layoutChannelsCategoryTable];
+        UIImage* searchIcon = [UIImage imageNamed:@"IconSearch~iphone.png"];
+        self.searchButtonIPhone = [UIButton buttonWithType:UIButtonTypeCustom];
+        self.searchButtonIPhone.frame = CGRectMake(8.0f, 8.0f, searchIcon.size.width, searchIcon.size.height);
+        [self.searchButtonIPhone setImage:searchIcon forState:UIControlStateNormal];
+        [self.searchButtonIPhone setImage:searchIcon forState:UIControlStateHighlighted];
+        [self.searchButtonIPhone addTarget:self action:@selector(presentSearchBar) forControlEvents:UIControlEventTouchUpInside];
+        [self.view addSubview:self.searchButtonIPhone];
     }
     
     self.channelThumbnailCollectionView.showsVerticalScrollIndicator = YES;
 }
 
 
+-(void)presentSearchBar
+{
+    [appDelegate.viewStackManager presentSearchBar];
+}
 - (void) viewDidLoad
 {
     [super viewDidLoad];
@@ -787,7 +804,7 @@ referenceSizeForFooterInSection: (NSInteger) section
     
     UILabel *newLabel = [[UILabel alloc] initWithFrame: newFrame];
 
-    newLabel.font = [UIFont boldRockpackFontOfSize: 14.0f];
+    newLabel.font = [UIFont boldRockpackFontOfSize: 15.0f];
     
     newLabel.textColor = [UIColor colorWithRed: 40.0f / 255.0f
                                          green: 45.0f / 255.0f

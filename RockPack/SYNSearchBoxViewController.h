@@ -17,5 +17,5 @@
 @property (nonatomic, weak, readonly) SYNTextField* searchTextField;
 
 - (void) clear;
-
+-(void)presentSearchCategoriesIPhone;
 @end

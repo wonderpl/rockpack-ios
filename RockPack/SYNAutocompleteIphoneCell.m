@@ -26,10 +26,13 @@
     self = [super initWithStyle:style reuseIdentifier:reuseIdentifier];
     if(self)
     {
+        
         self.defaultColor = [UIColor colorWithRed: (40.0/255.0)
                                             green: (45.0/255.0)
                                              blue: (51.0/255.0)
                                             alpha: (1.0)];
+        
+        
         self.defaultShadowColor = [UIColor colorWithWhite:1.0 alpha:1.0f];
         self.selectedColor = [UIColor colorWithWhite:1.0 alpha:1.0f];
         self.selectedShadowColor = [UIColor colorWithWhite:1.0 alpha:0.2];

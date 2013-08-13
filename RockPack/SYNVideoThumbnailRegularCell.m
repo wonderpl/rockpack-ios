@@ -25,9 +25,7 @@
 - (void) awakeFromNib
 {
     [super awakeFromNib];
-    
-    self.titleLabel.font = [UIFont boldRockpackFontOfSize: 14.0f];
-    
+
         // Add long-press and tap recognizers (once only per cell)
     self.longPress = [[UILongPressGestureRecognizer alloc] initWithTarget: self
                                                                    action: @selector(showMenu:)];
@@ -40,6 +38,8 @@
                                                        action: @selector(showVideo:)];
     self.tap.delegate = self;
     [self addGestureRecognizer: self.tap];
+
+    self.titleLabel.font = [UIFont boldRockpackFontOfSize: self.titleLabel.font.pointSize];
 }
 
 

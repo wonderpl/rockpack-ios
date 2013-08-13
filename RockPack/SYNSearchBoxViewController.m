@@ -14,6 +14,8 @@
 #import "SYNSearchBoxViewController.h"
 #import "SYNTextField.h"
 #import "UIFont+SYNFont.h"
+#import "SYNSearchCategoriesTableViewController.h"
+#import "SYNDeviceManager.h"
 
 #define kGrayPanelBorderWidth 2.0
 
@@ -27,6 +29,7 @@
 @property (nonatomic, weak) SYNAppDelegate* appDelegate;
 @property (nonatomic, weak) SYNTextField* searchTextField;
 @property (nonatomic, weak) MKNetworkOperation* autocompleteNetworkOperation;
+@property (nonatomic, strong) SYNSearchCategoriesTableViewController* searchCategoriesController;
 
 @end
 
@@ -90,14 +93,34 @@
     {
         tableViewFrame.origin.y = self.searchBoxView.frame.size.height;
         self.searchTextField.placeholder = @"Find videos, channels & people";
-
+        
+        
+        self.searchCategoriesController = [[SYNSearchCategoriesTableViewController alloc] initWithStyle:UITableViewStylePlain];
+        
     }
     
     self.autoSuggestionController.tableView.frame = tableViewFrame;
     self.autoSuggestionController.tableView.alpha = 0.0;
+    
     [self.view addSubview:self.autoSuggestionController.tableView];
+    
+    
 }
 
+-(void)presentSearchCategoriesIPhone
+{
+    
+    if(IS_IPAD) return;
+    
+    CGRect searchTBVFrame = self.searchCategoriesController.tableView.frame;
+    searchTBVFrame.origin = CGPointMake(0.0f, self.searchBoxView.frame.size.height);
+    self.searchCategoriesController.tableView.frame = searchTBVFrame;
+    
+    [self.view insertSubview:self.searchCategoriesController.tableView belowSubview:self.autoSuggestionController.tableView];
+    
+    
+    self.view.frame = [[SYNDeviceManager sharedInstance] currentScreenRect];
+}
 
 #pragma mark - Text Field Delegate
 

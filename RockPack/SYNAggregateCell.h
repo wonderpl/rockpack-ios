@@ -10,6 +10,7 @@
 #import "UIFont+SYNFont.h"
 #import "UIImageView+WebCache.h"
 
+
 @interface SYNAggregateCell : UICollectionViewCell
 
 @property (nonatomic, strong) IBOutlet UIImageView* userThumbnailImageView;
@@ -27,6 +28,8 @@
 
 @property (nonatomic, strong) NSMutableArray* stringButtonsArray;
 
+@property (nonatomic, strong) NSDictionary* lightTextAttributes;
+@property (nonatomic, strong) NSDictionary* boldTextAttributes;
 
 -(void)setCoverImagesAndTitlesWithArray:(NSArray*)imageString;
 

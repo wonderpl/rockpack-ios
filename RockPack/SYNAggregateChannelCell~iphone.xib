@@ -46,7 +46,7 @@
 								<reference key="NSNextResponder" ref="801482279"/>
 								<int key="NSvFlags">319</int>
 								<array class="NSMutableArray" key="NSSubviews"/>
-								<string key="NSFrameSize">{310, 310}</string>
+								<string key="NSFrame">{{0, 44}, {310, 310}}</string>
 								<reference key="NSSuperview" ref="801482279"/>
 								<reference key="NSWindow"/>
 								<reference key="NSNextKeyView" ref="214027531"/>
@@ -60,7 +60,7 @@
 							<object class="IBUIButton" id="214027531">
 								<reference key="NSNextResponder" ref="801482279"/>
 								<int key="NSvFlags">319</int>
-								<string key="NSFrameSize">{310, 310}</string>
+								<string key="NSFrame">{{0, 44}, {310, 310}}</string>
 								<reference key="NSSuperview" ref="801482279"/>
 								<reference key="NSWindow"/>
 								<reference key="NSNextKeyView" ref="1037577099"/>
@@ -103,10 +103,10 @@
 							<object class="IBUIImageView" id="963344992">
 								<reference key="NSNextResponder" ref="801482279"/>
 								<int key="NSvFlags">292</int>
-								<string key="NSFrame">{{5, 316}, {33, 33}}</string>
+								<string key="NSFrame">{{5, 7}, {26, 26}}</string>
 								<reference key="NSSuperview" ref="801482279"/>
 								<reference key="NSWindow"/>
-								<reference key="NSNextKeyView" ref="424154181"/>
+								<reference key="NSNextKeyView" ref="371077070"/>
 								<string key="NSReuseIdentifierKey">_NS:9</string>
 								<bool key="IBUIUserInteractionEnabled">NO</bool>
 								<string key="targetRuntimeIdentifier">IBIPadFramework</string>
@@ -114,10 +114,10 @@
 							<object class="IBUIButton" id="371077070">
 								<reference key="NSNextResponder" ref="801482279"/>
 								<int key="NSvFlags">292</int>
-								<string key="NSFrame">{{5, 318}, {296, 31}}</string>
+								<string key="NSFrame">{{5, 7}, {296, 26}}</string>
 								<reference key="NSSuperview" ref="801482279"/>
 								<reference key="NSWindow"/>
-								<reference key="NSNextKeyView" ref="963344992"/>
+								<reference key="NSNextKeyView" ref="424154181"/>
 								<string key="NSReuseIdentifierKey">_NS:9</string>
 								<bool key="IBUIOpaque">NO</bool>
 								<string key="targetRuntimeIdentifier">IBIPadFramework</string>
@@ -135,9 +135,10 @@
 							<object class="IBUILabel" id="424154181">
 								<reference key="NSNextResponder" ref="801482279"/>
 								<int key="NSvFlags">292</int>
-								<string key="NSFrame">{{45, 316}, {256, 33}}</string>
+								<string key="NSFrame">{{45, 7}, {256, 26}}</string>
 								<reference key="NSSuperview" ref="801482279"/>
 								<reference key="NSWindow"/>
+								<reference key="NSNextKeyView" ref="233886642"/>
 								<string key="NSReuseIdentifierKey">_NS:9</string>
 								<bool key="IBUIOpaque">NO</bool>
 								<bool key="IBUIClipsSubviews">YES</bool>
@@ -166,10 +167,10 @@
 							<object class="IBUILabel" id="1037577099">
 								<reference key="NSNextResponder" ref="801482279"/>
 								<int key="NSvFlags">292</int>
-								<string key="NSFrame">{{10, 286}, {291, 18}}</string>
+								<string key="NSFrame">{{10, 325}, {291, 18}}</string>
 								<reference key="NSSuperview" ref="801482279"/>
 								<reference key="NSWindow"/>
-								<reference key="NSNextKeyView" ref="371077070"/>
+								<reference key="NSNextKeyView"/>
 								<string key="NSReuseIdentifierKey">_NS:9</string>
 								<object class="NSColor" key="IBUIBackgroundColor">
 									<int key="NSColorSpace">1</int>
@@ -197,7 +198,7 @@
 						<string key="NSFrameSize">{310, 354}</string>
 						<reference key="NSSuperview" ref="330439028"/>
 						<reference key="NSWindow"/>
-						<reference key="NSNextKeyView" ref="233886642"/>
+						<reference key="NSNextKeyView" ref="963344992"/>
 						<reference key="IBUIBackgroundColor" ref="336287510"/>
 						<bool key="IBUIOpaque">NO</bool>
 						<bool key="IBUIClipsSubviews">YES</bool>
@@ -303,11 +304,11 @@
 						<reference key="object" ref="330439028"/>
 						<array class="NSMutableArray" key="children">
 							<reference ref="233886642"/>
-							<reference ref="1037577099"/>
 							<reference ref="214027531"/>
 							<reference ref="424154181"/>
 							<reference ref="963344992"/>
 							<reference ref="371077070"/>
+							<reference ref="1037577099"/>
 						</array>
 						<reference key="parent" ref="0"/>
 						<string key="objectName">SYNAggregateChannelCell</string>
@@ -339,6 +340,7 @@
 					<object class="IBObjectRecord">
 						<int key="objectID">17</int>
 						<reference key="object" ref="233886642"/>
+						<array class="NSMutableArray" key="children"/>
 						<reference key="parent" ref="330439028"/>
 						<string key="objectName">Image Container</string>
 					</object>
