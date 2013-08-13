@@ -288,6 +288,8 @@
     
     self.searchBarOriginSideNavigation = (self.sideNavigatorController.state != SideNavigationStateHidden);
     
+    NSLog(@"Comes from top? %i", self.sideNavigatorController.state);
+    
     
     // do the swap...
     
