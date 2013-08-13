@@ -97,10 +97,7 @@
 {
     controller.view.alpha = 0.0f;
     
-    if(!IS_IPAD)
-    {
-        self.masterController.searchButton.hidden = YES;
-    }
+    
     
     [UIView animateWithDuration: 0.5f
                           delay: 0.0f
@@ -129,10 +126,7 @@
         return;
     }
     
-    if(!IS_IPAD && viewControllersCount == 2)
-    {
-        self.masterController.searchButton.hidden = NO;
-    }
+    
     
     [UIView animateWithDuration: 0.5f
                           delay: 0.0f

@@ -1273,15 +1273,36 @@ typedef void(^AnimationCompletionBlock)(BOOL finished);
         targetAlpha = 0.0;
     }
     
+    
+    if(!IS_IPAD && show)
+    {
+        self.searchButton.hidden = YES;
+    }
+    
+    self.pageTitleLabel.alpha = !targetAlpha;
+    self.pagePositionIndicatorView.alpha = !targetAlpha;
+    
+    
+    
     [UIView animateWithDuration: 0.6f
                           delay: (show && self.isInSearchMode ? 0.4f : 0.0f)
                         options: UIViewAnimationOptionCurveEaseInOut
                      animations: ^{
                          self.backButtonControl.frame = targetFrame;
                          self.backButtonControl.alpha = targetAlpha;
-                         self.pageTitleLabel.alpha = !targetAlpha;
-                         self.pagePositionIndicatorView.alpha = !targetAlpha;
-                     } completion:nil];
+                         
+                     } completion:^(BOOL finished) {
+                         
+                         if(!IS_IPAD && !show)
+                         {
+                             self.searchButton.alpha = 0.0f;
+                             self.searchButton.hidden = NO;
+                             [UIView animateWithDuration:0.3f animations:^{
+                                 self.searchButton.alpha = 1.0f;
+                             }];
+                             
+                         }
+                     }];
     
     [UIView animateWithDuration: 0.6f
                           delay: (show ? 0.0f : 0.4f)
