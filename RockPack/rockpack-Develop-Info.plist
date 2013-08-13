@@ -3,7 +3,7 @@
 <plist version="1.0">
 <dict>
 	<key>APIHostName</key>
-	<string>demo.rockpack.com</string>
+	<string>api.demo.rockpack.com</string>
 	<key>BuildTarget</key>
 	<string>Develop</string>
 	<key>CFBundleDevelopmentRegion</key>
