@@ -511,6 +511,7 @@
 						<string key="cancelButtonPressed:">id</string>
 						<string key="hideNavigation:">UIButton</string>
 						<string key="showAndHideSideNavigation:">UIButton</string>
+						<string key="showSearchBoxField:">id</string>
 					</dictionary>
 					<dictionary class="NSMutableDictionary" key="actionInfosByName">
 						<object class="IBActionInfo" key="cancelButtonPressed:">
@@ -524,6 +525,10 @@
 						<object class="IBActionInfo" key="showAndHideSideNavigation:">
 							<string key="name">showAndHideSideNavigation:</string>
 							<string key="candidateClassName">UIButton</string>
+						</object>
+						<object class="IBActionInfo" key="showSearchBoxField:">
+							<string key="name">showSearchBoxField:</string>
+							<string key="candidateClassName">id</string>
 						</object>
 					</dictionary>
 					<dictionary class="NSMutableDictionary" key="outlets">
