@@ -40,6 +40,7 @@ typedef enum {
 
 @interface SYNArcMenuView : UIView <SYNArcMenuItemDelegate>
 
+@property (nonatomic, assign) CGFloat activeRadius;
 @property (nonatomic, assign) CGFloat animationDuration;
 @property (nonatomic, assign) CGFloat closeRotation;
 @property (nonatomic, assign) CGFloat endRadius;
@@ -60,6 +61,8 @@ typedef enum {
          optionMenus: (NSArray *) aMenusArray;
 
 - (void) show: (BOOL) show;
+
+- (void) positionUpdate: (CGPoint) tapPoint;
 
 @end
 

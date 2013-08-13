@@ -1414,53 +1414,61 @@
     addButton.selected = !addButton.selected;
 }
 
-- (void) showMenuTriggered: (UIGestureRecognizer *) recognizer
+- (void) handleArcMenuState:(UIGestureRecognizer *)recognizer
 {
     
     CGPoint tapPoint = [recognizer locationInView: self.view];
     
-    NSIndexPath *indexPath = [self.videoThumbnailCollectionView indexPathForItemAtPoint:tapPoint];
+    if (recognizer.state == UIGestureRecognizerStateBegan)
+    {
+        NSIndexPath *indexPath = [self.videoThumbnailCollectionView indexPathForItemAtPoint:tapPoint];
+        
+        NSLog (@"IndexPath %@", indexPath);
+        
+        SYNArcMenuItem *arcMenuItem1 = [[SYNArcMenuItem alloc] initWithImage: [UIImage imageNamed: @"ActionLike"]
+                                                            highlightedImage: [UIImage imageNamed: @"ActionLikeHighlighted"]
+                                                                contentImage: nil
+                                                     highlightedContentImage: nil];
+        
+        SYNArcMenuItem *arcMenuItem2 = [[SYNArcMenuItem alloc] initWithImage: [UIImage imageNamed: @"ActionAdd"]
+                                                            highlightedImage: [UIImage imageNamed: @"ActionAddHighlighted"]
+                                                                contentImage: nil
+                                                     highlightedContentImage: nil];
+        
+        SYNArcMenuItem *arcMenuItem3 = [[SYNArcMenuItem alloc] initWithImage: [UIImage imageNamed: @"ActionShare"]
+                                                            highlightedImage: [UIImage imageNamed: @"ActionShareHighlighted"]
+                                                                contentImage: nil
+                                                     highlightedContentImage: nil];
+        
+        SYNArcMenuItem *mainMenuItem = [[SYNArcMenuItem alloc] initWithImage: [UIImage imageNamed: @"ActionRingNoTouch"]
+                                                            highlightedImage: [UIImage imageNamed: @"ActionRingTouch"]
+                                                                contentImage: nil
+                                                     highlightedContentImage: nil];
+        
+        self.arcMenu = [[SYNArcMenuView alloc] initWithFrame: self.view.bounds
+                                                   startItem: mainMenuItem
+                                                 optionMenus: @[arcMenuItem1, arcMenuItem2, arcMenuItem3]];
+        self.arcMenu.delegate = self;
+        self.arcMenu.startPoint = tapPoint;
+        self.arcMenu.rotateAngle = -M_PI / 4;
+        self.arcMenu.menuWholeAngle = M_PI / 2;
+        
+        [self.view addSubview: self.arcMenu];
+        
+        [self.arcMenu show: YES];
 
-    NSLog (@"IndexPath %@", indexPath);
-    
-    SYNArcMenuItem *arcMenuItem1 = [[SYNArcMenuItem alloc] initWithImage: [UIImage imageNamed: @"ActionLike"]
-                                                        highlightedImage: [UIImage imageNamed: @"ActionLikeHighlighted"]
-                                                            contentImage: nil
-                                                 highlightedContentImage: nil];
-     
-    SYNArcMenuItem *arcMenuItem2 = [[SYNArcMenuItem alloc] initWithImage: [UIImage imageNamed: @"ActionAdd"]
-                                                        highlightedImage: [UIImage imageNamed: @"ActionAddHighlighted"]
-                                                            contentImage: nil
-                                                 highlightedContentImage: nil];
-     
-    SYNArcMenuItem *arcMenuItem3 = [[SYNArcMenuItem alloc] initWithImage: [UIImage imageNamed: @"ActionShare"]
-                                                        highlightedImage: [UIImage imageNamed: @"ActionShareHighlighted"]
-                                                            contentImage: nil
-                                                 highlightedContentImage: nil];
-     
-    SYNArcMenuItem *mainMenuItem = [[SYNArcMenuItem alloc] initWithImage: [UIImage imageNamed: @"ActionRingNoTouch"]
-                                                        highlightedImage: [UIImage imageNamed: @"ActionRingTouch"]
-                                                            contentImage: nil
-                                                 highlightedContentImage: nil];
-     
-    self.arcMenu = [[SYNArcMenuView alloc] initWithFrame: self.view.bounds
-                                                       startItem: mainMenuItem
-                                                     optionMenus: @[arcMenuItem1, arcMenuItem2, arcMenuItem3]];
-    self.arcMenu.delegate = self;
-    self.arcMenu.startPoint = tapPoint;
-    self.arcMenu.rotateAngle = -M_PI / 4;
-    self.arcMenu.menuWholeAngle = M_PI / 2;
-    
-    [self.view addSubview: self.arcMenu];
-    
-    [self.arcMenu show: YES];
-}
+    }
+    else if (recognizer.state == UIGestureRecognizerStateEnded)
+    {
+        [self.arcMenu show: NO];
+        self.arcMenu = nil;
+    }
+    else if (recognizer.state == UIGestureRecognizerStateChanged)
+    {
+        NSLog (@"Changed");
+        [self.arcMenu positionUpdate: tapPoint];
 
-
-- (void) showMenuDismissed: (UIGestureRecognizer *) recognizer
-{
-    [self.arcMenu show: NO];
-    self.arcMenu = nil;
+    }
 }
 
 

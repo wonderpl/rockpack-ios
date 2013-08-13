@@ -17,6 +17,7 @@
 static CGFloat const kSYNArcMenuDefaultNearRadius = 88.0f;
 static CGFloat const kSYNArcMenuDefaultEndRadius = 90.0f;
 static CGFloat const kSYNArcMenuDefaultFarRadius = 97.0f;
+static CGFloat const kSYNArcMenuDefaultActiveRadius = 110.0f;
 static CGFloat const kSYNArcMenuDefaultStartPointX = 160.0;
 static CGFloat const kSYNArcMenuDefaultStartPointY = 240.0;
 static CGFloat const kSYNArcMenuDefaultRotateAngle = 0.0;
@@ -25,6 +26,7 @@ static CGFloat const kSYNArcMenuDefaultExpandRotation = M_PI;
 static CGFloat const kSYNArcMenuDefaultCloseRotation = M_PI * 2;
 static CGFloat const kSYNArcMenuDefaultAnimationDuration = 0.4f;
 static CGFloat const kSYNArcMenuStartMenuDefaultAnimationDuration = 0.3f;
+static CGFloat const kSYNMinimumActivationDistance = 70.0f; // Pixels
 
 
 static CGPoint RotateCGPointAroundCenter(CGPoint point, CGPoint center, float angle)
@@ -36,11 +38,21 @@ static CGPoint RotateCGPointAroundCenter(CGPoint point, CGPoint center, float an
     return CGPointApplyAffineTransform(point, transformGroup);
 }
 
+static CGPoint RotateAndScaleCGPointAroundCenter(CGPoint point, CGPoint center, float angle, float scaleFactor)
+{
+    CGAffineTransform translation = CGAffineTransformMakeTranslation(center.x, center.y);
+    CGAffineTransform rotation = CGAffineTransformMakeRotation(angle);
+    CGAffineTransform scale = CGAffineTransformMakeScale(scaleFactor, scaleFactor);
+    CGAffineTransform transformGroup = CGAffineTransformConcat(CGAffineTransformConcat(CGAffineTransformConcat(CGAffineTransformInvert(translation), rotation), scale), translation);
+    
+    return CGPointApplyAffineTransform(point, transformGroup);
+}
+
+
 @interface SYNArcMenuView ()
 
 @property (nonatomic, copy) NSArray *menusArray;
 @property (nonatomic, getter = isExpanding) BOOL expanding;
-@property (nonatomic, getter = isAnimating) BOOL animating;
 @property (nonatomic, strong) SYNArcMenuItem *startButton;
 
 @end
@@ -62,6 +74,7 @@ static CGPoint RotateCGPointAroundCenter(CGPoint point, CGPoint center, float an
         self.nearRadius = kSYNArcMenuDefaultNearRadius;
         self.endRadius = kSYNArcMenuDefaultEndRadius;
         self.farRadius = kSYNArcMenuDefaultFarRadius;
+        self.activeRadius = kSYNArcMenuDefaultActiveRadius;
         self.rotateAngle = kSYNArcMenuDefaultRotateAngle;
         self.menuWholeAngle = kSYNArcMenuDefaultMenuWholeAngle;
         self.startPoint = CGPointMake(kSYNArcMenuDefaultStartPointX, kSYNArcMenuDefaultStartPointY);
@@ -87,6 +100,101 @@ static CGPoint RotateCGPointAroundCenter(CGPoint point, CGPoint center, float an
     self.expanding = show;
 }
 
+
+- (void) positionUpdate: (CGPoint) tapPoint
+{
+    static int lastIndex = -1;
+
+    int currentIndex = [self nearestMenuItemToPoint: tapPoint];
+    
+    if (currentIndex != lastIndex)
+    {
+        if (lastIndex != -1)
+        {
+            SYNArcMenuItem *item = self.menusArray[lastIndex];
+            [UIView animateWithDuration: kSYNArcMenuDefaultAnimationDuration
+                                  delay: 0.0f
+                                options: UIViewAnimationOptionBeginFromCurrentState
+                             animations: ^{
+                                 item.center = item.endPoint;
+                             }
+                             completion: ^(BOOL finished){
+                             }
+             ];
+
+        }
+        
+        if (currentIndex != -1)
+        {
+            lastIndex = currentIndex;
+            
+            SYNArcMenuItem *item = self.menusArray[currentIndex];
+            
+            int count = self.menusArray.count;
+            
+            CGFloat distance = [self distanceBetweenPoint: tapPoint
+                                                 andPoint: item.endPoint];
+            
+            CGFloat scaleFactor = 1 + distance - kSYNMinimumActivationDistance / (kSYNArcMenuDefaultFarRadius - kSYNMinimumActivationDistance);
+            
+            CGPoint farPoint = CGPointMake(self.startPoint.x + self.endRadius * sinf(currentIndex * self.menuWholeAngle / (count - 1)), self.startPoint.y - self.endRadius * cosf(currentIndex * self.menuWholeAngle / (count - 1)));
+            
+            [UIView animateWithDuration: kSYNArcMenuDefaultAnimationDuration
+                                  delay: 0.0f
+                                options: UIViewAnimationOptionBeginFromCurrentState
+                             animations: ^{
+                                 item.center = RotateAndScaleCGPointAroundCenter(farPoint, self.startPoint, self.rotateAngle, 1.5f);
+                                 
+                             }
+                             completion: ^(BOOL finished){
+                             }];
+            
+        }
+    }
+    
+    NSLog (@"Found index %d", currentIndex);
+}
+
+
+- (int) nearestMenuItemToPoint: (CGPoint) point
+{
+    CGFloat foundDistance = 99999.0f; // Arbitraily large distance
+    int foundIndex = -1; // Inidcate not found or too far away
+
+    for (int index = 0; index < self.menusArray.count; index++)
+    {
+        SYNArcMenuItem *item = self.menusArray[index];
+        
+        NSLog (@"item pos: %f, %f", item.endPoint.x, item.endPoint.y);
+        
+        CGFloat distance = [self distanceBetweenPoint: point
+                                             andPoint: item.endPoint];
+        
+        // If nearer and within range, then store as nearest so far
+        if (distance < foundDistance && distance < kSYNMinimumActivationDistance)
+        {
+            foundDistance = distance;
+            foundIndex = index;
+        }
+    }
+    
+    NSLog (@"Found index %d, distance %f", foundIndex, foundDistance);
+    
+    return foundIndex;
+}
+
+
+- (CGFloat) distanceBetweenPoint: (CGPoint) point1
+                        andPoint: (CGPoint) point2
+{
+    CGFloat absoluteX = abs (point1.x - point2.x);
+    CGFloat absoluteY = abs (point1.y - point2.y);
+    
+    CGFloat distance = sqrt(absoluteX*absoluteX + absoluteY*absoluteY);
+    
+    return distance;
+}
+
 #pragma mark - Getters & Setters
 
 - (void) setStartPoint: (CGPoint) point
@@ -101,12 +209,7 @@ static CGPoint RotateCGPointAroundCenter(CGPoint point, CGPoint center, float an
 - (BOOL) pointInside: (CGPoint) point
            withEvent: (UIEvent *) event
 {
-    // if the menu is animating, prevent touches
-    if (self.isAnimating)
-    {
-        return NO;
-    }
-    
+    NSLog (@"Point");
     // if the menu state is expanding, everywhere can be touch
     // otherwise, only the add button are can be touch
     if (self.isExpanding == YES)
@@ -117,19 +220,6 @@ static CGPoint RotateCGPointAroundCenter(CGPoint point, CGPoint center, float an
     {
         return CGRectContainsPoint(self.startButton.frame, point);
     }
-}
-
-
-- (void) touchesBegan: (NSSet *) touches
-            withEvent: (UIEvent *) event
-{
-    self.expanding = !self.isExpanding;
-}
-
-- (void) touchesEnded: (NSSet *) touches
-            withEvent: (UIEvent *) event
-{
-    self.expanding = !self.isExpanding;
 }
 
 
@@ -236,6 +326,7 @@ static CGPoint RotateCGPointAroundCenter(CGPoint point, CGPoint center, float an
         CGPoint farPoint = CGPointMake(self.startPoint.x + self.farRadius * sinf(i * self.menuWholeAngle / (count - 1)), self.startPoint.y - self.farRadius * cosf(i * self.menuWholeAngle / (count - 1)));
         
         item.farPoint = RotateCGPointAroundCenter(farPoint, self.startPoint, self.rotateAngle);
+        
         item.center = item.startPoint;
         
         // The images are actually double-size, so scale them down
