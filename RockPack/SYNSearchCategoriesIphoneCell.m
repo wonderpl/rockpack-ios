@@ -44,6 +44,11 @@
         [self.separatorView addSubview:viewWhiteLine];
         [self addSubview:self.separatorView];
         
+        self.accessoryType = UITableViewCellAccessoryDisclosureIndicator;
+        
+        UIImageView* arrow = (UIImageView*)self.accessoryView;
+        arrow.image =[UIImage imageNamed: @"NavArrowSelected"];
+        
     }
     
     
@@ -60,7 +65,7 @@
     
     newFrame.size.width = 250.0f;
     newFrame.origin.x = 20.0f;
-    newFrame.origin.y += 4.0f;
+    newFrame.origin.y += 6.0f;
     
     self.textLabel.frame = newFrame;
     
