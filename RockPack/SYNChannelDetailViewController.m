@@ -53,9 +53,9 @@
 
 
 @property (nonatomic, assign)  CGPoint originalContentOffset;
+@property (nonatomic, assign)  CGPoint originalMasterControlsViewOrigin;
 @property (nonatomic, assign)  CGRect originalSubscribeButtonRect;
 @property (nonatomic, assign)  CGRect originalSubscribersLabelRect;
-@property (nonatomic, assign)  CGPoint originalMasterControlsViewOrigin;
 @property (nonatomic, assign) BOOL hasAppeared;
 @property (nonatomic, assign) BOOL isIPhone;
 @property (nonatomic, assign, getter = isImageSelectorOpen) BOOL imageSelectorOpen;
@@ -63,16 +63,16 @@
 @property (nonatomic, strong) CIFilter *filter;
 @property (nonatomic, strong) CIImage *backgroundCIImage;
 @property (nonatomic, strong) IBOutlet SSTextView *channelTitleTextView;
+@property (nonatomic, strong) IBOutlet UIButton *addCoverButton;
 @property (nonatomic, strong) IBOutlet UIButton *buyButton;
 @property (nonatomic, strong) IBOutlet UIButton *cameraButton;
 @property (nonatomic, strong) IBOutlet UIButton *createChannelButton;
-@property (nonatomic, strong) IBOutlet UIButton *saveChannelButton;
-@property (nonatomic, strong) IBOutlet UIButton *shareButton;
-@property (nonatomic, strong) IBOutlet UIButton *addCoverButton;
 @property (nonatomic, strong) IBOutlet UIButton *playChannelButton;
 @property (nonatomic, strong) IBOutlet UIButton *profileImageButton;
 @property (nonatomic, strong) IBOutlet UIButton *reportConcernButton;
+@property (nonatomic, strong) IBOutlet UIButton *saveChannelButton;
 @property (nonatomic, strong) IBOutlet UIButton *selectCategoryButton;
+@property (nonatomic, strong) IBOutlet UIButton *shareButton;
 @property (nonatomic, strong) IBOutlet UIButton *subscribeButton;
 @property (nonatomic, strong) IBOutlet UIImageView *avatarImageView;
 @property (nonatomic, strong) IBOutlet UIImageView *channelCoverImageView;
@@ -86,6 +86,7 @@
 @property (nonatomic, strong) NSIndexPath *indexPathToDelete;
 @property (nonatomic, strong) NSString *selectedCategoryId;
 @property (nonatomic, strong) NSString *selectedCoverId;
+@property (nonatomic, strong) SYNArcMenuView *arcMenu;
 @property (nonatomic, strong) SYNCoverChooserController *coverChooserController;
 @property (nonatomic, strong) SYNGenreTabViewController *categoriesTabViewController;
 @property (nonatomic, strong) SYNImagePickerController *imagePicker;
@@ -1413,7 +1414,7 @@
     addButton.selected = !addButton.selected;
 }
 
-- (void) showMenuTapped: (UIGestureRecognizer *) recognizer
+- (void) showMenuTriggered: (UIGestureRecognizer *) recognizer
 {
     
     CGPoint tapPoint = [recognizer locationInView: self.view];
@@ -1442,15 +1443,24 @@
                                                             contentImage: nil
                                                  highlightedContentImage: nil];
      
-    SYNArcMenuView *menu = [[SYNArcMenuView alloc] initWithFrame: self.view.bounds
+    self.arcMenu = [[SYNArcMenuView alloc] initWithFrame: self.view.bounds
                                                        startItem: mainMenuItem
                                                      optionMenus: @[arcMenuItem1, arcMenuItem2, arcMenuItem3]];
-    menu.delegate = self;
-    menu.startPoint = tapPoint;
-    menu.rotateAngle = -M_PI / 4;
-    menu.menuWholeAngle = M_PI / 2;
+    self.arcMenu.delegate = self;
+    self.arcMenu.startPoint = tapPoint;
+    self.arcMenu.rotateAngle = -M_PI / 4;
+    self.arcMenu.menuWholeAngle = M_PI / 2;
     
-     [self.view addSubview: menu];
+    [self.view addSubview: self.arcMenu];
+    
+    [self.arcMenu show: YES];
+}
+
+
+- (void) showMenuDismissed: (UIGestureRecognizer *) recognizer
+{
+    [self.arcMenu show: NO];
+    self.arcMenu = nil;
 }
 
 

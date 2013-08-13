@@ -82,6 +82,11 @@ static CGPoint RotateCGPointAroundCenter(CGPoint point, CGPoint center, float an
 }
 
 
+- (void) show: (BOOL) show
+{
+    self.expanding = show;
+}
+
 #pragma mark - Getters & Setters
 
 - (void) setStartPoint: (CGPoint) point
@@ -116,6 +121,12 @@ static CGPoint RotateCGPointAroundCenter(CGPoint point, CGPoint center, float an
 
 
 - (void) touchesBegan: (NSSet *) touches
+            withEvent: (UIEvent *) event
+{
+    self.expanding = !self.isExpanding;
+}
+
+- (void) touchesEnded: (NSSet *) touches
             withEvent: (UIEvent *) event
 {
     self.expanding = !self.isExpanding;

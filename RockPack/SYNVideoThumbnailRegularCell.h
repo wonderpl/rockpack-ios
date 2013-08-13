@@ -18,7 +18,8 @@ typedef enum : NSInteger
 @protocol SYNVideoThumbnailRegularCellDelegate <NSObject>
 
 - (void) videoButtonPressed: (UIButton *) videoButton;
-- (void) showMenuTapped: (UIGestureRecognizer *) recognizer;
+- (void) showMenuTriggered: (UIGestureRecognizer *) recognizer;
+- (void) showMenuDismissed: (UIGestureRecognizer *) recognizer;
 
 @end
 

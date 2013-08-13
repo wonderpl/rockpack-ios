@@ -59,6 +59,8 @@ typedef enum {
            startItem: (SYNArcMenuItem *) startItem
          optionMenus: (NSArray *) aMenusArray;
 
+- (void) show: (BOOL) show;
+
 @end
 
 /*

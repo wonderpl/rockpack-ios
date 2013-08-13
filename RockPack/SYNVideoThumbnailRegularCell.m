@@ -113,7 +113,11 @@
 {
     if (recognizer.state == UIGestureRecognizerStateBegan)
     {
-        [self.viewControllerDelegate showMenuTapped: recognizer];
+        [self.viewControllerDelegate showMenuTriggered: recognizer];
+    }
+    else if (recognizer.state == UIGestureRecognizerStateEnded)
+    {
+        [self.viewControllerDelegate showMenuDismissed: recognizer];
     }
 }
 
