@@ -1419,7 +1419,6 @@
     
     CGPoint tapPoint = [recognizer locationInView: self.view];
     
-    
     if (recognizer.state == UIGestureRecognizerStateBegan)
     {
         NSIndexPath *indexPath = [self.videoThumbnailCollectionView indexPathForItemAtPoint:tapPoint];
@@ -1454,7 +1453,8 @@
     else if (recognizer.state == UIGestureRecognizerStateEnded)
     {
         [self.arcMenu show: NO];
-//        self.arcMenu = nil;
+//        [self.arcMenu removeFromSuperview];
+        self.arcMenu = nil;
     }
     else if (recognizer.state == UIGestureRecognizerStateChanged)
     {

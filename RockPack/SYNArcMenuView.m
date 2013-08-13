@@ -52,7 +52,6 @@ static CGPoint RotateAndScaleCGPointAroundCenter(CGPoint point, CGPoint center, 
 @interface SYNArcMenuView ()
 
 @property (nonatomic, copy) NSArray *menusArray;
-@property (nonatomic, getter = isExpanding) BOOL expanding;
 @property (nonatomic, strong) SYNArcMenuItem *startButton;
 
 @end
@@ -60,9 +59,8 @@ static CGPoint RotateAndScaleCGPointAroundCenter(CGPoint point, CGPoint center, 
 
 @implementation SYNArcMenuView
 
-@synthesize expanding = _expanding;
+#pragma mark - Object lifecycle
 
-#pragma mark - Initialization & Cleaning up
 - (id) initWithFrame: (CGRect) frame
            startItem: (SYNArcMenuItem *) startItem
          optionMenus: (NSArray *) menuArray
@@ -96,11 +94,15 @@ static CGPoint RotateAndScaleCGPointAroundCenter(CGPoint point, CGPoint center, 
 
 - (void) show: (BOOL) show
 {
-    self.expanding = show;
-    
     if (show)
     {
         self.startButton.highlighted = TRUE;
+        [self setMenu];
+        [self expandMenu];
+    }
+    else
+    {
+        [self closeMenu];
     }
 }
 
@@ -307,32 +309,6 @@ static CGPoint RotateAndScaleCGPointAroundCenter(CGPoint point, CGPoint center, 
 }
 
 
-- (BOOL) isExpanding
-{
-    return _expanding;
-}
-
-
-- (void) setExpanding: (BOOL) expanding
-{
-    if (expanding)
-    {
-        [self setMenu];
-    }
-    
-    _expanding = expanding;
-    
-    if (self.isExpanding)
-    {
-        [self expandMenu];
-    }
-    else
-    {
-        [self closeMenu];
-    }
-}
-
-
 #pragma mark - Private methods
 
 - (void) expandMenu
@@ -438,6 +414,9 @@ static CGPoint RotateAndScaleCGPointAroundCenter(CGPoint point, CGPoint center, 
             }
         }
     }
+    
+    [self removeFromSuperview];
+
 }
 
 @end
