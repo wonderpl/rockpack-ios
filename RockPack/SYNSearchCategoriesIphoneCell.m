@@ -35,7 +35,7 @@
         self.contentView.backgroundColor = [UIColor clearColor];
         
         self.separatorView = [[UIView alloc] initWithFrame:CGRectMake(0.0f, self.frame.size.height - 2.0f, self.frame.size.width, 2.0f)];
-        self.separatorView.backgroundColor = [UIColor greenColor];
+        
         UIView* viewGrayLine = [[UIView alloc] initWithFrame:CGRectMake(0.0f, 0.0f, self.separatorView.frame.size.width, 1.0f)];
         viewGrayLine.backgroundColor = [UIColor colorWithRed:(241.0f/255.0f) green:(241.0f/255.0f) blue:(241.0f/255.0f) alpha:1.0f];
         [self.separatorView addSubview:viewGrayLine];

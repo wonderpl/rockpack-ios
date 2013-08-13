@@ -231,6 +231,7 @@
     
     //
     
+    [searchBoxVC dismissSearchCategoriesIPhone];
     
     [UIView animateWithDuration: 0.1f
                           delay: 0.0f
@@ -337,10 +338,12 @@
                                               
                                               [searchBoxVC.searchBoxView revealCloseButton];
                                               
-                                              if(!IS_IPAD)
-                                                  [searchBoxVC presentSearchCategoriesIPhone];
                                               
-                                          } completion: nil];
+                                              
+                                          } completion:^(BOOL finished) {
+                                              if(!IS_IPAD)
+                                                  [searchBoxVC presentSearchCategoriesIPhone]; // already animating
+                                          }];
                          
                      }];
     

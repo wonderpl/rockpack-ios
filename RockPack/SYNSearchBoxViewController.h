@@ -18,4 +18,5 @@
 
 - (void) clear;
 -(void)presentSearchCategoriesIPhone;
+-(void)dismissSearchCategoriesIPhone;
 @end
