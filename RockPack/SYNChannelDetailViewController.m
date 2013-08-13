@@ -1419,6 +1419,7 @@
     
     CGPoint tapPoint = [recognizer locationInView: self.view];
     
+    
     if (recognizer.state == UIGestureRecognizerStateBegan)
     {
         NSIndexPath *indexPath = [self.videoThumbnailCollectionView indexPathForItemAtPoint:tapPoint];

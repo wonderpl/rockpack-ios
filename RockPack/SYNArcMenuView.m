@@ -97,6 +97,8 @@ static CGPoint RotateAndScaleCGPointAroundCenter(CGPoint point, CGPoint center, 
 - (void) show: (BOOL) show
 {
     self.expanding = show;
+    
+    self.startButton.highlighted = TRUE;
 }
 
 
@@ -111,14 +113,18 @@ static CGPoint RotateAndScaleCGPointAroundCenter(CGPoint point, CGPoint center, 
         if (lastIndex != -1)
         {
             SYNArcMenuItem *item = self.menusArray[lastIndex];
+            
+            [self highlightMenuItem: item
+                        highlighted: FALSE];
+            
             [UIView animateWithDuration: kSYNArcMenuDefaultAnimationDuration
                                   delay: 0.0f
                                 options: 0
                              animations: ^{
                                  item.center = item.endPoint;
-                                 item.highlighted = FALSE;
                              }
                              completion: ^(BOOL finished){
+//                                 item.transform = CGAffineTransformMakeScale(0.5, 0.5);
                              }
              ];
             
@@ -146,10 +152,21 @@ static CGPoint RotateAndScaleCGPointAroundCenter(CGPoint point, CGPoint center, 
             CGPoint farPoint = CGPointMake(self.startPoint.x + self.endRadius * sinf(currentIndex * self.menuWholeAngle / (count - 1)), self.startPoint.y - self.endRadius * cosf(currentIndex * self.menuWholeAngle / (count - 1)));
             
             item.center = RotateAndScaleCGPointAroundCenter(farPoint, self.startPoint, self.rotateAngle, 1 + (scaleFactor * 0.25));
-            item.highlighted = TRUE;
+            
+            [self highlightMenuItem: item
+                        highlighted: TRUE];
+            
             item.transform = CGAffineTransformMakeScale(0.5 + zoomFactor, 0.5 + zoomFactor);
         }
     }
+}
+
+- (void) highlightMenuItem: (SYNArcMenuItem *) item
+               highlighted: (BOOL) highlighted
+{
+    item.highlighted = highlighted;
+    
+    self.startButton.highlighted = !highlighted;
 }
 
 
@@ -221,15 +238,6 @@ static CGPoint RotateAndScaleCGPointAroundCenter(CGPoint point, CGPoint center, 
 
 
 #pragma mark - SYNArcMenuItem delegates
-
-- (void) arcMenuItemTouchesBegan: (SYNArcMenuItem *) item
-{
-    if (self.startButton == item)
-    {
-        self.expanding = !self.isExpanding;
-    }
-}
-
 
 - (void) arcMenuItemTouchesEnd: (SYNArcMenuItem *) item
 {
