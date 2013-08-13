@@ -612,7 +612,7 @@ typedef void(^FeedDataErrorBlock)(void);
             if(feedItem.itemCountValue == 2)
                 return CGSizeMake(cellWidth, 149.0f);
         }
-        return CGSizeMake(cellWidth, IS_IPHONE ? 354.0f : 298.0f);
+        return CGSizeMake(cellWidth, IS_IPHONE ? 356.0f : 298.0f);
     }
 }
 
@@ -1108,9 +1108,8 @@ typedef void(^FeedDataErrorBlock)(void);
                          withLabel: nil
                          withValue: nil];
     
-    button.selected = !button.selected; // toggle on/off
     
-    BOOL didStar = (button.selected == YES);
+    BOOL didStar = (button.selected == NO);
     
     button.enabled = NO;
     
@@ -1135,6 +1134,8 @@ typedef void(^FeedDataErrorBlock)(void);
                                                   videoInstance.video.starredByUserValue = YES;
                                                   videoInstance.video.starCountValue += 1;
                                                   
+                                                  button.selected = YES;
+                                                  
                                                   [videoInstance addStarrersObject:appDelegate.currentUser];
                                               }
                                               else
@@ -1143,7 +1144,7 @@ typedef void(^FeedDataErrorBlock)(void);
                                                   videoInstance.video.starredByUserValue = NO;
                                                   videoInstance.video.starCountValue -= 1;
                                                   
-                                                  
+                                                  button.selected = NO;
                                                   [videoInstance removeStarrersObject:appDelegate.currentUser];
                                                   
                                               }
@@ -1172,7 +1173,7 @@ typedef void(^FeedDataErrorBlock)(void);
                                           } errorHandler: ^(id error) {
                                               
                                                    DebugLog(@"Could not star video");
-                                                   button.selected = !button.selected;
+                                              
                                                    button.enabled = YES;
                                               
                                                }];

@@ -99,7 +99,7 @@
                                                                                      attributes:lightTextAttributes]];
     
     [attributedCompleteString appendAttributedString:[[NSAttributedString alloc] initWithString:actionString
-                                                                                     attributes:boldTextAttributes]];
+                                                                                     attributes:lightTextAttributes]];
     
     
     [attributedCompleteString appendAttributedString:[[NSAttributedString alloc] initWithString:@" to "
@@ -180,6 +180,9 @@
     }
     
     NSMutableString* namesString = [[NSMutableString alloc] init];
+    
+    self.heartButton.selected = NO;
+    
     if(users.count > 0)
     {
         ChannelOwner* co;
