@@ -98,7 +98,10 @@ static CGPoint RotateAndScaleCGPointAroundCenter(CGPoint point, CGPoint center, 
 {
     self.expanding = show;
     
-    self.startButton.highlighted = TRUE;
+    if (show)
+    {
+        self.startButton.highlighted = TRUE;
+    }
 }
 
 
@@ -198,68 +201,49 @@ static CGPoint RotateAndScaleCGPointAroundCenter(CGPoint point, CGPoint center, 
 }
 
 
-#pragma mark - UIView's methods
-
-- (BOOL) pointInside: (CGPoint) point
-           withEvent: (UIEvent *) event
-{
-    NSLog (@"Point");
-    // if the menu state is expanding, everywhere can be touch
-    // otherwise, only the add button are can be touch
-    if (self.isExpanding == YES)
-    {
-        return YES;
-    }
-    else
-    {
-        return CGRectContainsPoint(self.startButton.frame, point);
-    }
-}
-
-
 #pragma mark - SYNArcMenuItem delegates
 
-- (void) arcMenuItemTouchesEnd: (SYNArcMenuItem *) item
-{
-    // exclude the "add" button
-    if (self.startButton == item)
-    {
-        return;
-    }
-    
-    // blowup the selected menu button
-    CAAnimationGroup *blowup = [self blowupAnimationAtPoint: item.center];
-    
-    [item.layer addAnimation: blowup
-                      forKey: @"blowup"];
-    
-    item.center = item.startPoint;
-    
-    // shrink other menu buttons
-    for (int i = 0; i < self.menusArray.count; i++)
-    {
-        SYNArcMenuItem *otherItem = self.menusArray [i];
-        
-        CAAnimationGroup *shrink = [self shrinkAnimationAtPoint: otherItem.center];
-        
-        if (otherItem.tag == item.tag)
-        {
-            continue;
-        }
-        
-        [otherItem.layer addAnimation: shrink
-                               forKey: @"shrink"];
-        
-        otherItem.center = otherItem.startPoint;
-    }
-    
-    self.expanding = NO;
-    
-    if ([self.delegate respondsToSelector: @selector(arcMenu:didSelectIndex:)])
-    {
-        [self.delegate arcMenu: self didSelectIndex: item.tag - 1000];
-    }
-}
+//- (void) arcMenuItemTouchesEnd: (SYNArcMenuItem *) item
+//{
+//    // exclude the "add" button
+//    if (self.startButton == item)
+//    {
+//        return;
+//    }
+//    
+//    // blowup the selected menu button
+//    CAAnimationGroup *blowup = [self blowupAnimationAtPoint: item.center];
+//    
+//    [item.layer addAnimation: blowup
+//                      forKey: @"blowup"];
+//    
+//    item.center = item.startPoint;
+//    
+//    // shrink other menu buttons
+//    for (int i = 0; i < self.menusArray.count; i++)
+//    {
+//        SYNArcMenuItem *otherItem = self.menusArray [i];
+//        
+//        CAAnimationGroup *shrink = [self shrinkAnimationAtPoint: otherItem.center];
+//        
+//        if (otherItem.tag == item.tag)
+//        {
+//            continue;
+//        }
+//        
+//        [otherItem.layer addAnimation: shrink
+//                               forKey: @"shrink"];
+//        
+//        otherItem.center = otherItem.startPoint;
+//    }
+//    
+//    self.expanding = NO;
+//    
+//    if ([self.delegate respondsToSelector: @selector(arcMenu:didSelectIndex:)])
+//    {
+//        [self.delegate arcMenu: self didSelectIndex: item.tag - 1000];
+//    }
+//}
 
 
 #pragma mark - Instant methods
@@ -389,8 +373,19 @@ static CGPoint RotateAndScaleCGPointAroundCenter(CGPoint point, CGPoint center, 
 {
     for (SYNArcMenuItem *item in self.menusArray)
     {
-        item.alpha = 0.0f;
-        item.center = item.startPoint;
+        if (item.highlighted == TRUE)
+        {
+            // blowup the selected menu button
+            CAAnimationGroup *blowup = [self blowupAnimationAtPoint: item.center];
+            
+            [item.layer addAnimation: blowup
+                              forKey: @"blowup"];
+        }
+        else
+        {
+            item.alpha = 0.0f;
+            item.center = item.startPoint;
+        }
     }
     
     self.startButton.alpha = 0.0f;
@@ -409,7 +404,6 @@ static CGPoint RotateAndScaleCGPointAroundCenter(CGPoint point, CGPoint center, 
     CAKeyframeAnimation *positionAnimation = [CAKeyframeAnimation animationWithKeyPath: @"position"];
     
     positionAnimation.values = [NSArray arrayWithObjects: [NSValue valueWithCGPoint: point], nil];
-    
     positionAnimation.keyTimes = @[@(0.3f)];
     
     CABasicAnimation *scaleAnimation = [CABasicAnimation animationWithKeyPath: @"transform"];
@@ -419,38 +413,31 @@ static CGPoint RotateAndScaleCGPointAroundCenter(CGPoint point, CGPoint center, 
     opacityAnimation.toValue = @(0.0f);
     
     CAAnimationGroup *animationgroup = [CAAnimationGroup animation];
-    
+    animationgroup.delegate = self;
+    [animationgroup setValue: @"blowupAnimationAtPoint" forKey:@"animationName"];
     animationgroup.animations = @[positionAnimation, scaleAnimation, opacityAnimation];
-    
     animationgroup.duration = self.animationDuration;
     animationgroup.fillMode = kCAFillModeForwards;
-    
+
     return animationgroup;
 }
 
 
-- (CAAnimationGroup *) shrinkAnimationAtPoint: (CGPoint) point
+- (void) animationDidStop: (CAAnimation *) animation
+                 finished: (BOOL) finished
 {
-    CAKeyframeAnimation *positionAnimation = [CAKeyframeAnimation animationWithKeyPath: @"position"];
-    
-    positionAnimation.values = [NSArray arrayWithObjects: [NSValue valueWithCGPoint: point], nil];
-    positionAnimation.keyTimes = @[@(0.3f)];
-    
-    CABasicAnimation *scaleAnimation = [CABasicAnimation animationWithKeyPath: @"transform"];
-    scaleAnimation.toValue = [NSValue valueWithCATransform3D: CATransform3DMakeScale(.01, .01, 1)];
-    
-    CABasicAnimation *opacityAnimation = [CABasicAnimation animationWithKeyPath: @"opacity"];
-    opacityAnimation.toValue = @(0.0f);
-    
-    CAAnimationGroup *animationgroup = [CAAnimationGroup animation];
-    
-    animationgroup.animations = @[positionAnimation, scaleAnimation, opacityAnimation];
-    
-    animationgroup.duration = self.animationDuration;
-    animationgroup.fillMode = kCAFillModeForwards;
-    
-    return animationgroup;
+    if (finished)
+    {
+        NSString *animationName = [animation valueForKey: @"animationName"];
+        if ([animationName isEqualToString: @"blowupAnimationAtPoint"])
+        {
+            for (SYNArcMenuItem *item in self.menusArray)
+            {
+                item.alpha = 0.0f;
+                item.center = item.startPoint;
+            }
+        }
+    }
 }
-
 
 @end

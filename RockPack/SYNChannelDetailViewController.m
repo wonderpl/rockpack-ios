@@ -1454,7 +1454,7 @@
     else if (recognizer.state == UIGestureRecognizerStateEnded)
     {
         [self.arcMenu show: NO];
-        self.arcMenu = nil;
+//        self.arcMenu = nil;
     }
     else if (recognizer.state == UIGestureRecognizerStateChanged)
     {
