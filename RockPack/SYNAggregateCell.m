@@ -21,9 +21,9 @@
     
     self.stringButtonsArray = [[NSMutableArray alloc] initWithCapacity:STANDARD_BUTTON_CAPACITY];
     
-    self.lightTextAttributes = @{NSFontAttributeName:[UIFont rockpackFontOfSize:14.0],
+    self.lightTextAttributes = @{NSFontAttributeName:[UIFont rockpackFontOfSize:13.0f],
                                  NSForegroundColorAttributeName:[UIColor rockpacAggregateTextLight]};
-    self.boldTextAttributes = @{NSFontAttributeName:[UIFont boldRockpackFontOfSize:14.0],
+    self.boldTextAttributes = @{NSFontAttributeName:[UIFont boldRockpackFontOfSize:13.0f],
                                 NSForegroundColorAttributeName:[UIColor rockpacAggregateTextBold]};
 }
 

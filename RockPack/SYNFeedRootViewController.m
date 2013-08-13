@@ -603,7 +603,7 @@ typedef void(^FeedDataErrorBlock)(void);
     
     if(feedItem.resourceTypeValue == FeedItemResourceTypeVideo)
     {
-        return CGSizeMake(cellWidth, IS_IPHONE ? 279.0f : 168.0f);
+        return CGSizeMake(cellWidth, IS_IPHONE ? 266.0f : 168.0f);
     }
     else // Channel
     {

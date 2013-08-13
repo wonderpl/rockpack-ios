@@ -71,45 +71,6 @@
 								<bool key="IBUIUserInteractionEnabled">NO</bool>
 								<string key="targetRuntimeIdentifier">IBIPadFramework</string>
 							</object>
-							<object class="IBUILabel" id="429279700">
-								<reference key="NSNextResponder" ref="301134111"/>
-								<int key="NSvFlags">292</int>
-								<string key="NSFrame">{{9, 149}, {297, 26}}</string>
-								<reference key="NSSuperview" ref="301134111"/>
-								<reference key="NSWindow"/>
-								<reference key="NSNextKeyView"/>
-								<string key="NSReuseIdentifierKey">_NS:9</string>
-								<bool key="IBUIOpaque">NO</bool>
-								<bool key="IBUIAutoresizesSubviews">NO</bool>
-								<int key="IBUIContentMode">7</int>
-								<bool key="IBUIUserInteractionEnabled">NO</bool>
-								<string key="targetRuntimeIdentifier">IBIPadFramework</string>
-								<string key="IBUIText">HARRY POTTER: MAGIC WANDS</string>
-								<object class="NSColor" key="IBUITextColor" id="309290553">
-									<int key="NSColorSpace">3</int>
-									<bytes key="NSWhite">MQA</bytes>
-								</object>
-								<object class="NSColor" key="IBUIHighlightedColor">
-									<int key="NSColorSpace">1</int>
-									<bytes key="NSRGB">MSAxIDEAA</bytes>
-								</object>
-								<object class="NSColor" key="IBUIShadowColor">
-									<int key="NSColorSpace">1</int>
-									<bytes key="NSRGB">MSAxIDEgMC4xNQA</bytes>
-								</object>
-								<string key="IBUIShadowOffset">{0, 1}</string>
-								<int key="IBUIBaselineAdjustment">0</int>
-								<object class="IBUIFontDescription" key="IBUIFontDescription">
-									<int key="type">2</int>
-									<double key="pointSize">16</double>
-								</object>
-								<object class="NSFont" key="IBUIFont">
-									<string key="NSName">Helvetica-Bold</string>
-									<double key="NSSize">16</double>
-									<int key="NSfFlags">16</int>
-								</object>
-								<bool key="IBUIAdjustsFontSizeToFit">NO</bool>
-							</object>
 							<object class="IBUIButton" id="865164628">
 								<reference key="NSNextResponder" ref="301134111"/>
 								<int key="NSvFlags">292</int>
@@ -127,7 +88,10 @@
 								<string key="targetRuntimeIdentifier">IBIPadFramework</string>
 								<int key="IBUIContentHorizontalAlignment">0</int>
 								<int key="IBUIContentVerticalAlignment">0</int>
-								<reference key="IBUIHighlightedTitleColor" ref="309290553"/>
+								<object class="NSColor" key="IBUIHighlightedTitleColor" id="309290553">
+									<int key="NSColorSpace">3</int>
+									<bytes key="NSWhite">MQA</bytes>
+								</object>
 								<object class="NSColor" key="IBUINormalTitleColor">
 									<int key="NSColorSpace">1</int>
 									<bytes key="NSRGB">MC4xOTYwNzg0MzQ2IDAuMzA5ODAzOTMyOSAwLjUyMTU2ODY1NgA</bytes>
@@ -217,6 +181,34 @@
 								</object>
 								<reference key="IBUIFontDescription" ref="259640192"/>
 								<reference key="IBUIFont" ref="887648909"/>
+							</object>
+							<object class="IBUILabel" id="429279700">
+								<reference key="NSNextResponder" ref="301134111"/>
+								<int key="NSvFlags">292</int>
+								<string key="NSFrame">{{9, 146}, {297, 26}}</string>
+								<reference key="NSSuperview" ref="301134111"/>
+								<reference key="NSWindow"/>
+								<string key="NSReuseIdentifierKey">_NS:9</string>
+								<bool key="IBUIOpaque">NO</bool>
+								<bool key="IBUIAutoresizesSubviews">NO</bool>
+								<int key="IBUIContentMode">7</int>
+								<bool key="IBUIUserInteractionEnabled">NO</bool>
+								<string key="targetRuntimeIdentifier">IBIPadFramework</string>
+								<string key="IBUIText">HARRY POTTER: MAGIC WANDS</string>
+								<reference key="IBUITextColor" ref="309290553"/>
+								<object class="NSColor" key="IBUIHighlightedColor">
+									<int key="NSColorSpace">1</int>
+									<bytes key="NSRGB">MSAxIDEAA</bytes>
+								</object>
+								<object class="NSColor" key="IBUIShadowColor">
+									<int key="NSColorSpace">1</int>
+									<bytes key="NSRGB">MSAxIDEgMC4xNQA</bytes>
+								</object>
+								<string key="IBUIShadowOffset">{0, 1}</string>
+								<int key="IBUIBaselineAdjustment">0</int>
+								<reference key="IBUIFontDescription" ref="259640192"/>
+								<reference key="IBUIFont" ref="887648909"/>
+								<bool key="IBUIAdjustsFontSizeToFit">NO</bool>
 							</object>
 						</array>
 						<string key="NSFrameSize">{310, 175}</string>
@@ -314,9 +306,9 @@
 						<array class="NSMutableArray" key="children">
 							<reference ref="108227339"/>
 							<reference ref="486650470"/>
-							<reference ref="429279700"/>
 							<reference ref="716427388"/>
 							<reference ref="865164628"/>
+							<reference ref="429279700"/>
 							<reference ref="847382299"/>
 						</array>
 						<reference key="parent" ref="0"/>

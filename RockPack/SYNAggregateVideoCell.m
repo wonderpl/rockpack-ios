@@ -21,7 +21,7 @@
 -(void)awakeFromNib
 {
     [super awakeFromNib];
-    self.mainTitleLabel.font = [UIFont rockpackFontOfSize:self.mainTitleLabel.font.pointSize];
+    self.mainTitleLabel.font = [UIFont boldRockpackFontOfSize:self.mainTitleLabel.font.pointSize];
     self.likeLabel.font = [UIFont rockpackFontOfSize:self.likeLabel.font.pointSize];
     
     if(!IS_IPAD)
@@ -111,6 +111,12 @@
     
     
     self.messageLabel.attributedText = attributedCompleteString;
+    
+    [self.messageLabel sizeToFit];
+    
+    self.messageLabel.center = CGPointMake(self.messageLabel.center.x, self.userThumbnailImageView.center.y);
+    
+    self.messageLabel.frame = CGRectIntegral(self.messageLabel.frame);
 }
 
 -(void)setSupplementaryMessageWithDictionary:(NSDictionary*)messageDictionary
