@@ -114,7 +114,7 @@
     
     [self.messageLabel sizeToFit];
     
-    self.messageLabel.center = CGPointMake(self.messageLabel.center.x, self.userThumbnailImageView.center.y);
+    self.messageLabel.center = CGPointMake(self.messageLabel.center.x, self.userThumbnailImageView.center.y + 2.0f);
     
     self.messageLabel.frame = CGRectIntegral(self.messageLabel.frame);
 }

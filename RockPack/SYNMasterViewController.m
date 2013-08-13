@@ -727,7 +727,6 @@ typedef void(^AnimationCompletionBlock)(BOOL finished);
     
     if (!IS_IPAD)
     {
-        //[self.searchViewController.view addSubview:self.sideNavigationViewController.searchViewController.searchBoxView];
         self.searchViewController.searchBoxViewController = self.sideNavigatorViewController.searchViewController;
         [self hideNavigation:nil];
     }
