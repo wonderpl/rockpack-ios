@@ -12,15 +12,17 @@
 #import "SYNAppDelegate.h"
 #import "UIColor+SYNColor.h"
 #import "UIFont+SYNFont.h"
+#import "SYNSearchCategoriesIphoneCell.h"
 #import "SYNDeviceManager.h"
 
-static NSString *SearchGenresTableCellIdentifier = @"Cell";
+static NSString *SearchGenresTableCellIdentifier = @"SYNSearchCategoriesIphoneCell";
 
 @interface SYNSearchCategoriesTableViewController ()
 
 @property (nonatomic, strong) NSArray* searchCategories;
 @property (nonatomic) BOOL hasRetried;
 @property (nonatomic, strong) UIFont* cellFont;
+@property (nonatomic, strong) UIColor* cellTextColor;
 
 @end
 
@@ -33,8 +35,9 @@ static NSString *SearchGenresTableCellIdentifier = @"Cell";
     
     
     self.cellFont = [UIFont rockpackFontOfSize: 16.0];
+    self.cellTextColor = [UIColor colorWithRed:(106.0f/255.0f) green:(114.0f/255.0f) blue:(122.0f/255.0f) alpha:1.0f];
     
-    [self.tableView registerClass:[UITableViewCell class] forCellReuseIdentifier:SearchGenresTableCellIdentifier];
+    [self.tableView registerClass:[SYNSearchCategoriesIphoneCell class] forCellReuseIdentifier:SearchGenresTableCellIdentifier];
     
     self.tableView.separatorStyle = UITableViewCellSeparatorStyleNone;
     self.tableView.separatorColor = [UIColor rockpacLedColor];
@@ -132,22 +135,17 @@ static NSString *SearchGenresTableCellIdentifier = @"Cell";
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath
 {
     
-    UITableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:SearchGenresTableCellIdentifier forIndexPath:indexPath];
+    SYNSearchCategoriesIphoneCell *cell = [tableView dequeueReusableCellWithIdentifier:SearchGenresTableCellIdentifier forIndexPath:indexPath];
     
     Genre* genre = self.searchCategories[indexPath.item];
     
     cell.textLabel.text = genre.name;
     
-    cell.accessoryType = UITableViewCellAccessoryNone;
     
-    cell.contentView.backgroundColor = [UIColor clearColor];
     
-    cell.selectionStyle = UITableViewCellSelectionStyleNone;
-    
-    cell.backgroundColor = [UIColor clearColor];
     
     cell.textLabel.font = self.cellFont;
-    
+    cell.textLabel.textColor = self.cellTextColor;
     
     return cell;
 }
