@@ -898,6 +898,7 @@
 		BE0815D216D6448200ADB1DC /* SYNSideNavigatorViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = BE0815D016D6448200ADB1DC /* SYNSideNavigatorViewController.m */; };
 		BE0815D316D6448200ADB1DC /* SYNSideNavigatorViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = BE0815D116D6448200ADB1DC /* SYNSideNavigatorViewController.xib */; };
 		BE0AAD2916E6534300DA958E /* SYNAutocompleteSuggestionsController.m in Sources */ = {isa = PBXBuildFile; fileRef = BE0AAD2816E6534300DA958E /* SYNAutocompleteSuggestionsController.m */; };
+		BE0B150B17BA3B400053E551 /* SYNSearchCategoriesTableViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = BE0B150A17BA3B400053E551 /* SYNSearchCategoriesTableViewController.m */; };
 		BE0FF0321754C39D0088294F /* ISO8601DateFormatter.m in Sources */ = {isa = PBXBuildFile; fileRef = BE0FF0311754C39D0088294F /* ISO8601DateFormatter.m */; settings = {COMPILER_FLAGS = "-fno-objc-arc"; }; };
 		BE0FF03B175639A40088294F /* Icon-Dev-72.png in Resources */ = {isa = PBXBuildFile; fileRef = BE0FF033175639A40088294F /* Icon-Dev-72.png */; };
 		BE0FF03C175639A40088294F /* Icon-Dev-72@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = BE0FF034175639A40088294F /* Icon-Dev-72@2x.png */; };
@@ -2321,6 +2322,8 @@
 		BE0815D116D6448200ADB1DC /* SYNSideNavigatorViewController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = SYNSideNavigatorViewController.xib; sourceTree = "<group>"; };
 		BE0AAD2716E6534300DA958E /* SYNAutocompleteSuggestionsController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SYNAutocompleteSuggestionsController.h; sourceTree = "<group>"; };
 		BE0AAD2816E6534300DA958E /* SYNAutocompleteSuggestionsController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SYNAutocompleteSuggestionsController.m; sourceTree = "<group>"; };
+		BE0B150917BA3B3F0053E551 /* SYNSearchCategoriesTableViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SYNSearchCategoriesTableViewController.h; sourceTree = "<group>"; };
+		BE0B150A17BA3B400053E551 /* SYNSearchCategoriesTableViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SYNSearchCategoriesTableViewController.m; sourceTree = "<group>"; };
 		BE0FF0301754C39D0088294F /* ISO8601DateFormatter.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ISO8601DateFormatter.h; sourceTree = "<group>"; };
 		BE0FF0311754C39D0088294F /* ISO8601DateFormatter.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ISO8601DateFormatter.m; sourceTree = "<group>"; };
 		BE0FF033175639A40088294F /* Icon-Dev-72.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = "Icon-Dev-72.png"; path = "Assets/Images/Icon-Dev-72.png"; sourceTree = "<group>"; };
@@ -4929,6 +4932,8 @@
 				BE2D2144171C5A0600B4B755 /* SYNSearchBoxViewController.m */,
 				BE0AAD2716E6534300DA958E /* SYNAutocompleteSuggestionsController.h */,
 				BE0AAD2816E6534300DA958E /* SYNAutocompleteSuggestionsController.m */,
+				BE0B150917BA3B3F0053E551 /* SYNSearchCategoriesTableViewController.h */,
+				BE0B150A17BA3B400053E551 /* SYNSearchCategoriesTableViewController.m */,
 				BEF3448C172FCB78008F98FF /* SYNSearchBoxView.h */,
 				BEF3448D172FCB79008F98FF /* SYNSearchBoxView.m */,
 				38A2FF161730828100FB9F57 /* SYNSearchBoxIphoneView.xib */,
@@ -6929,6 +6934,7 @@
 				BE8F938D17B1268500E7035F /* ExternalAccount.m in Sources */,
 				019CE3F717B8EF740059822C /* SYNArcMenuView.m in Sources */,
 				019CE3F817B8EF740059822C /* SYNArcMenuItem.m in Sources */,
+				BE0B150B17BA3B400053E551 /* SYNSearchCategoriesTableViewController.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

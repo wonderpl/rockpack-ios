@@ -337,6 +337,9 @@
                                               
                                               [searchBoxVC.searchBoxView revealCloseButton];
                                               
+                                              if(!IS_IPAD)
+                                                  [searchBoxVC presentSearchCategoriesIPhone];
+                                              
                                           } completion: nil];
                          
                      }];
