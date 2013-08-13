@@ -116,7 +116,8 @@
     searchTBVFrame.origin = CGPointMake(0.0f, self.searchBoxView.frame.size.height);
     self.searchCategoriesController.tableView.frame = searchTBVFrame;
     
-    [self.view addSubview:self.searchCategoriesController.tableView];
+    [self.view insertSubview:self.searchCategoriesController.tableView belowSubview:self.autoSuggestionController.tableView];
+    
     
     self.view.frame = [[SYNDeviceManager sharedInstance] currentScreenRect];
 }
