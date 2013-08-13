@@ -106,14 +106,14 @@ static CGPoint RotateAndScaleCGPointAroundCenter(CGPoint point, CGPoint center, 
 
     int currentIndex = [self nearestMenuItemToPoint: tapPoint];
     
-    if (currentIndex != lastIndex)
+//    if (currentIndex != lastIndex)
     {
         if (lastIndex != -1)
         {
             SYNArcMenuItem *item = self.menusArray[lastIndex];
             [UIView animateWithDuration: kSYNArcMenuDefaultAnimationDuration
                                   delay: 0.0f
-                                options: UIViewAnimationOptionBeginFromCurrentState
+                                options: 0
                              animations: ^{
                                  item.center = item.endPoint;
                                  item.highlighted = FALSE;
@@ -121,6 +121,8 @@ static CGPoint RotateAndScaleCGPointAroundCenter(CGPoint point, CGPoint center, 
                              completion: ^(BOOL finished){
                              }
              ];
+            
+
 
             lastIndex = -1;
         }
@@ -136,24 +138,18 @@ static CGPoint RotateAndScaleCGPointAroundCenter(CGPoint point, CGPoint center, 
             CGFloat distance = [self distanceBetweenPoint: tapPoint
                                                  andPoint: item.endPoint];
             
-            CGFloat scaleFactor = 1 + distance - kSYNMinimumActivationDistance / (kSYNArcMenuDefaultFarRadius - kSYNMinimumActivationDistance);
+            CGFloat scaleFactor = ((kSYNMinimumActivationDistance - distance) / kSYNMinimumActivationDistance);
+            CGFloat zoomFactor = scaleFactor * 0.25;
+            
+//            NSLog (@"Scalefactor %f", scaleFactor);
             
             CGPoint farPoint = CGPointMake(self.startPoint.x + self.endRadius * sinf(currentIndex * self.menuWholeAngle / (count - 1)), self.startPoint.y - self.endRadius * cosf(currentIndex * self.menuWholeAngle / (count - 1)));
             
-            [UIView animateWithDuration: kSYNArcMenuDefaultAnimationDuration
-                                  delay: 0.0f
-                                options: UIViewAnimationOptionBeginFromCurrentState | UIViewAnimationOptionTransitionCrossDissolve
-                             animations: ^{
-                                 item.center = RotateAndScaleCGPointAroundCenter(farPoint, self.startPoint, self.rotateAngle, 1.5f);
-                                 item.highlighted = TRUE;
-                             }
-                             completion: ^(BOOL finished){
-                             }];
-            
+            item.center = RotateAndScaleCGPointAroundCenter(farPoint, self.startPoint, self.rotateAngle, 1 + (scaleFactor * 0.25));
+            item.highlighted = TRUE;
+            item.transform = CGAffineTransformMakeScale(0.5 + zoomFactor, 0.5 + zoomFactor);
         }
     }
-    
-    NSLog (@"Found index %d", currentIndex);
 }
 
 
@@ -166,7 +162,7 @@ static CGPoint RotateAndScaleCGPointAroundCenter(CGPoint point, CGPoint center, 
     {
         SYNArcMenuItem *item = self.menusArray[index];
         
-        NSLog (@"item pos: %f, %f", item.endPoint.x, item.endPoint.y);
+//        NSLog (@"item pos: %f, %f", item.endPoint.x, item.endPoint.y);
         
         CGFloat distance = [self distanceBetweenPoint: point
                                              andPoint: item.endPoint];
@@ -179,7 +175,7 @@ static CGPoint RotateAndScaleCGPointAroundCenter(CGPoint point, CGPoint center, 
         }
     }
     
-    NSLog (@"Found index %d, distance %f", foundIndex, foundDistance);
+//    NSLog (@"Found index %d, distance %f", foundIndex, foundDistance);
     
     return foundIndex;
 }

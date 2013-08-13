@@ -1457,7 +1457,6 @@
     }
     else if (recognizer.state == UIGestureRecognizerStateChanged)
     {
-        NSLog (@"Changed");
         [self.arcMenu positionUpdate: tapPoint];
 
     }
