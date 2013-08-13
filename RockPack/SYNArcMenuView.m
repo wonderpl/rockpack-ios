@@ -104,69 +104,49 @@ static CGPoint RotateAndScaleCGPointAroundCenter(CGPoint point, CGPoint center, 
 
 - (void) positionUpdate: (CGPoint) tapPoint
 {
-    static int lastIndex = -1;
-
     int currentIndex = [self nearestMenuItemToPoint: tapPoint];
+    int count = self.menusArray.count;
     
-//    if (currentIndex != lastIndex)
+    // If we don't have anu menu items highlighted, then ensure that the main button is highlighted instead
+    self.startButton.highlighted = (currentIndex == -1) ? TRUE : FALSE;
+    
+    for (int index = 0; index < count; index++)
     {
-        if (lastIndex != -1)
-        {
-            SYNArcMenuItem *item = self.menusArray[lastIndex];
-            
-            [self highlightMenuItem: item
-                        highlighted: FALSE];
-            
-            [UIView animateWithDuration: kSYNArcMenuDefaultAnimationDuration
-                                  delay: 0.0f
-                                options: 0
-                             animations: ^{
-                                 item.center = item.endPoint;
-                             }
-                             completion: ^(BOOL finished){
-//                                 item.transform = CGAffineTransformMakeScale(0.5, 0.5);
-                             }
-             ];
-            
-
-
-            lastIndex = -1;
-        }
+        SYNArcMenuItem *item = self.menusArray[index];
         
-        if (currentIndex != -1)
+        if (index == currentIndex)
         {
-            lastIndex = currentIndex;
-            
-            SYNArcMenuItem *item = self.menusArray[currentIndex];
-            
-            int count = self.menusArray.count;
+            item.highlighted = TRUE;
             
             CGFloat distance = [self distanceBetweenPoint: tapPoint
                                                  andPoint: item.endPoint];
             
             CGFloat scaleFactor = ((kSYNMinimumActivationDistance - distance) / kSYNMinimumActivationDistance);
             CGFloat zoomFactor = scaleFactor * 0.25;
-            
 //            NSLog (@"Scalefactor %f", scaleFactor);
             
             CGPoint farPoint = CGPointMake(self.startPoint.x + self.endRadius * sinf(currentIndex * self.menuWholeAngle / (count - 1)), self.startPoint.y - self.endRadius * cosf(currentIndex * self.menuWholeAngle / (count - 1)));
             
             item.center = RotateAndScaleCGPointAroundCenter(farPoint, self.startPoint, self.rotateAngle, 1 + (scaleFactor * 0.25));
             
-            [self highlightMenuItem: item
-                        highlighted: TRUE];
-            
             item.transform = CGAffineTransformMakeScale(0.5 + zoomFactor, 0.5 + zoomFactor);
         }
+        else if (item.highlighted == TRUE)
+        {
+            item.highlighted = FALSE;
+            
+            [UIView animateWithDuration: kSYNArcMenuDefaultAnimationDuration
+                                  delay: 0.0f
+                                options: 0
+                             animations: ^{
+                                 item.center = item.endPoint;
+                                 item.transform = CGAffineTransformMakeScale(0.5, 0.5);
+                             }
+                             completion: ^(BOOL finished){
+                             }
+             ];
+        }
     }
-}
-
-- (void) highlightMenuItem: (SYNArcMenuItem *) item
-               highlighted: (BOOL) highlighted
-{
-    item.highlighted = highlighted;
-    
-    self.startButton.highlighted = !highlighted;
 }
 
 
