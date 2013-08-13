@@ -59,6 +59,7 @@
 
 -(void)layoutSubviews
 {
+    
     [super layoutSubviews];
     
     CGRect newFrame = self.textLabel.frame;
