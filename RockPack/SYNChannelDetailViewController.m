@@ -1540,8 +1540,8 @@
 }
 
 #define kRotateThresholdX 100
-#define kRotateThresholdY 110
-#define kRRotateBorderX 25
+#define kRotateThresholdY 180
+#define kRotateBorderX 25
 #define kRotateBorderY 25
 
 - (void) arcMenuUpdateState: (UIGestureRecognizer *) recognizer
@@ -1578,10 +1578,12 @@
         // Assume for now that the menus is not near sides or top
         self.arcMenu.rotateAngle = -M_PI / 4;
         
-        float proportion = 1 - (tapPoint.x / kRotateThresholdX);
+        CGFloat screenWidth = self.view.frame.size.width;
         
         if (tapPoint.x < kRotateThresholdX)
         {
+            float proportion = 1 - MAX(tapPoint.x - kRotateBorderX, 0) / kRotateThresholdX;
+            
             // The touch is near the left hand size, so rotate the menu angle clockwise proportionally
             if (tapPoint.y > kRotateThresholdY)
             {
@@ -1592,10 +1594,23 @@
                 self.arcMenu.rotateAngle += M_PI - (M_PI / 4) * proportion;
             }
         }
-        else if (tapPoint.x > (SYNDeviceManager.sharedInstance.currentScreenWidth - kRotateThresholdX))
+        else if (tapPoint.x > (screenWidth - kRotateThresholdX))
         {
+            float proportion = 1 - MAX((screenWidth - tapPoint.x - kRotateBorderX), 0) / kRotateThresholdX;
+
             // The touch is near the left hand size, so rotate the menu angle anti-clockwise proportionally
-            
+            if (tapPoint.y > kRotateThresholdY)
+            {
+                self.arcMenu.rotateAngle -= (M_PI / 4) * proportion;
+            }
+            else
+            {
+                self.arcMenu.rotateAngle -= M_PI - (M_PI / 4) * proportion;
+            }
+        }
+        else if (tapPoint.y < kRotateThresholdY)
+        {
+            self.arcMenu.rotateAngle += M_PI;
         }
         
         [self.view addSubview: self.arcMenu];
