@@ -90,6 +90,7 @@
 
 // This code block is common to all of the signup/signin methods
 - (void) addCommonOAuthPropertiesToUnsignedNetworkOperation: (SYNNetworkOperationJsonObject *) networkOperation
+                                                  forOrigin: (NSString*)origin // @"Facebook" | @"Rockpack"
                                           completionHandler: (MKNKLoginCompleteBlock) completionBlock
                                                errorHandler: (MKNKUserErrorBlock) errorBlock
 {
@@ -124,7 +125,7 @@
                  
                  [tracker sendEventWithCategory: @"goal"
                                      withAction: @"userRegistration"
-                                      withLabel: @"Rockpack"
+                                      withLabel: origin
                                       withValue: nil];
              }
              
@@ -199,6 +200,7 @@
                                                                                                            ssl: TRUE];
     
     [self addCommonOAuthPropertiesToUnsignedNetworkOperation: networkOperation
+                                                   forOrigin: kOriginFacebook
                                            completionHandler: completionBlock
                                                 errorHandler: errorBlock];
     
@@ -224,6 +226,7 @@
                                                                                                     httpMethod: @"POST"
                                                                                                            ssl: TRUE];
     [self addCommonOAuthPropertiesToUnsignedNetworkOperation: networkOperation
+                                                   forOrigin: kOriginRockpack
                                            completionHandler: completionBlock
                                                 errorHandler: errorBlock];
     
@@ -317,6 +320,7 @@
     networkOperation.postDataEncoding = MKNKPostDataEncodingTypeJSON;
     
     [self addCommonOAuthPropertiesToUnsignedNetworkOperation: networkOperation
+                                                   forOrigin: kOriginRockpack
                                            completionHandler: completionBlock
                                                 errorHandler: errorBlock];
     
