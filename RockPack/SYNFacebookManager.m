@@ -188,15 +188,15 @@
             break;
             
         default:
+            failureBlock([NSString stringWithFormat:@"permissionType '%d' was not recognised", permissionType]);
             return;
-            break;
     }
     
     // Is the Facebook session already open ?
     if ([FBSession.activeSession isOpen])
     {
         // Check to see that the permissions asked are not already granted...
-        if (!([FBSession.activeSession.permissions indexOfObject:permissionString] == NSNotFound))
+        if ([FBSession.activeSession.permissions indexOfObject:permissionString] == NSNotFound)
         {
             
             [FBSession.activeSession requestNewPublishPermissions: @[permissionString]
@@ -230,7 +230,7 @@
         {
             
             // We have already been granted the required extended permissions
-            DebugLog(@"** Reauthorization Result: Permission '%@' already granted", permissionString);
+            DebugLog(@"** Reauthorization Result: Permission '%@' is already granted", permissionString);
             dispatch_async(dispatch_get_main_queue(), ^{
                 successBlock();
             });
