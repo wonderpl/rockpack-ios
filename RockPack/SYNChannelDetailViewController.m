@@ -503,6 +503,13 @@
 
 - (IBAction) playChannelsButtonTouched: (id) sender
 {
+    id<GAITracker> tracker = [GAI sharedInstance].defaultTracker;
+    
+    [tracker sendEventWithCategory: @"uiAction"
+                        withAction: @"playAll"
+                         withLabel: nil
+                         withValue: nil];
+    
     [self displayVideoViewerWithVideoInstanceArray: self.channel.videoInstances.array
                                   andSelectedIndex: 0
                                             center: self.view.center];
