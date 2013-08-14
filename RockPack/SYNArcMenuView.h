@@ -27,7 +27,11 @@ typedef enum {
 @protocol SYNArcMenuViewDelegate <NSObject>
 
 - (void) arcMenu: (SYNArcMenuView *) menu
-         didSelectIndex: (NSInteger) idx;
+         didSelectMenuAtIndex: (NSInteger) menuIndex
+         forCellAtIndex: (NSIndexPath *) cellIndexPath;
+
+- (void) arcMenuUpdateState: (UIGestureRecognizer *) recognizer
+                    forCell: (UICollectionViewCell *) cell;
 
 
 @optional
@@ -38,7 +42,7 @@ typedef enum {
 
 @end
 
-@interface SYNArcMenuView : UIView <SYNArcMenuItemDelegate>
+@interface SYNArcMenuView : UIView 
 
 @property (nonatomic, assign) CGFloat activeRadius;
 @property (nonatomic, assign) CGFloat animationDuration;
@@ -58,7 +62,8 @@ typedef enum {
 
 - (id) initWithFrame: (CGRect) frame
            startItem: (SYNArcMenuItem *) startItem
-         optionMenus: (NSArray *) aMenusArray;
+         optionMenus: (NSArray *) menuItemArray
+       cellIndexPath: (NSIndexPath *) cellIndexPath;
 
 - (void) show: (BOOL) show;
 

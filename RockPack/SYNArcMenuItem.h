@@ -14,13 +14,6 @@
 
 @class SYNArcMenuItem;
 
-@protocol SYNArcMenuItemDelegate <NSObject>
-
-- (void) arcMenuItemTouchesBegan: (SYNArcMenuItem *) item;
-- (void) arcMenuItemTouchesEnd: (SYNArcMenuItem *) item;
-
-@end
-
 
 @interface SYNArcMenuItem : UIImageView
 

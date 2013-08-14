@@ -53,6 +53,7 @@ static CGPoint RotateAndScaleCGPointAroundCenter(CGPoint point, CGPoint center, 
 
 @property (nonatomic, copy) NSArray *menusArray;
 @property (nonatomic, strong) SYNArcMenuItem *startButton;
+@property (nonatomic, strong) NSIndexPath *cellIndexPath;
 
 @end
 
@@ -63,7 +64,8 @@ static CGPoint RotateAndScaleCGPointAroundCenter(CGPoint point, CGPoint center, 
 
 - (id) initWithFrame: (CGRect) frame
            startItem: (SYNArcMenuItem *) startItem
-         optionMenus: (NSArray *) menuArray
+         optionMenus: (NSArray *) menuItemArray
+       cellIndexPath: (NSIndexPath *) cellIndexPath
 {
     if ((self = [super initWithFrame: frame]))
     {
@@ -80,7 +82,8 @@ static CGPoint RotateAndScaleCGPointAroundCenter(CGPoint point, CGPoint center, 
         self.closeRotation = kSYNArcMenuDefaultCloseRotation;
         self.animationDuration = kSYNArcMenuDefaultAnimationDuration;
         
-        self.menusArray = menuArray;
+        self.menusArray = menuItemArray;
+        self.cellIndexPath = cellIndexPath;
         
         // assign startItem to "Add" Button.
         self.startButton = startItem;
@@ -203,51 +206,6 @@ static CGPoint RotateAndScaleCGPointAroundCenter(CGPoint point, CGPoint center, 
 }
 
 
-#pragma mark - SYNArcMenuItem delegates
-
-//- (void) arcMenuItemTouchesEnd: (SYNArcMenuItem *) item
-//{
-//    // exclude the "add" button
-//    if (self.startButton == item)
-//    {
-//        return;
-//    }
-//    
-//    // blowup the selected menu button
-//    CAAnimationGroup *blowup = [self blowupAnimationAtPoint: item.center];
-//    
-//    [item.layer addAnimation: blowup
-//                      forKey: @"blowup"];
-//    
-//    item.center = item.startPoint;
-//    
-//    // shrink other menu buttons
-//    for (int i = 0; i < self.menusArray.count; i++)
-//    {
-//        SYNArcMenuItem *otherItem = self.menusArray [i];
-//        
-//        CAAnimationGroup *shrink = [self shrinkAnimationAtPoint: otherItem.center];
-//        
-//        if (otherItem.tag == item.tag)
-//        {
-//            continue;
-//        }
-//        
-//        [otherItem.layer addAnimation: shrink
-//                               forKey: @"shrink"];
-//        
-//        otherItem.center = otherItem.startPoint;
-//    }
-//    
-//    self.expanding = NO;
-//    
-//    if ([self.delegate respondsToSelector: @selector(arcMenu:didSelectIndex:)])
-//    {
-//        [self.delegate arcMenu: self didSelectIndex: item.tag - 1000];
-//    }
-//}
-
-
 #pragma mark - Instant methods
 
 - (void) setMenusArray: (NSArray *) menusArray
@@ -356,6 +314,14 @@ static CGPoint RotateAndScaleCGPointAroundCenter(CGPoint point, CGPoint center, 
             
             [item.layer addAnimation: blowup
                               forKey: @"blowup"];
+            
+            // Notify out delegate with out choice of menu i
+            if ([self.delegate respondsToSelector: @selector(arcMenu:didSelectMenuAtIndex:forCellAtIndex:)])
+            {
+                [self.delegate arcMenu: self
+                  didSelectMenuAtIndex: item.tag - 1000
+                        forCellAtIndex: self.cellIndexPath];
+            }
         }
         else
         {
@@ -371,6 +337,9 @@ static CGPoint RotateAndScaleCGPointAroundCenter(CGPoint point, CGPoint center, 
     {
         [self.delegate arcMenuDidFinishAnimationClose: self];
     }
+    
+    
+
 
 }
 

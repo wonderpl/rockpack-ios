@@ -1386,6 +1386,17 @@
     
     UIView *v = addButton.superview.superview;
     NSIndexPath *indexPath = [self.videoThumbnailCollectionView indexPathForItemAtPoint: v.center];
+
+    [self addVideoAtIndexPath: indexPath
+                withOperation: noteName];
+    
+    addButton.selected = !addButton.selected;
+}
+
+
+- (void) addVideoAtIndexPath: (NSIndexPath *) indexPath
+               withOperation: (NSString *) operation
+{
     VideoInstance *videoInstance = self.channel.videoInstances [indexPath.row];
     
     if (videoInstance)
@@ -1406,18 +1417,18 @@
                                                        DebugLog(@"Could not record videoAddButtonTapped: activity");
                                                    }];
         
-        [[NSNotificationCenter defaultCenter] postNotificationName: noteName
+        [[NSNotificationCenter defaultCenter] postNotificationName: operation
                                                             object: self
                                                           userInfo: @{@"VideoInstance": videoInstance}];
     }
-    
-    addButton.selected = !addButton.selected;
 }
 
-- (void) handleArcMenuState:(UIGestureRecognizer *)recognizer
+- (void) arcMenuUpdateState: (UIGestureRecognizer *) recognizer
+                    forCell: cell
 {
-    
     CGPoint tapPoint = [recognizer locationInView: self.view];
+    
+    NSIndexPath *cellIndexPath = [self.videoThumbnailCollectionView indexPathForCell: cell];
     
     if (recognizer.state == UIGestureRecognizerStateBegan)
     {
@@ -1439,7 +1450,8 @@
         
         self.arcMenu = [[SYNArcMenuView alloc] initWithFrame: self.view.bounds
                                                    startItem: mainMenuItem
-                                                 optionMenus: @[arcMenuItem1, arcMenuItem2, arcMenuItem3]];
+                                                 optionMenus: @[arcMenuItem1, arcMenuItem2, arcMenuItem3]
+                                               cellIndexPath: cellIndexPath];
         self.arcMenu.delegate = self;
         self.arcMenu.startPoint = tapPoint;
         self.arcMenu.rotateAngle = -M_PI / 4;
@@ -1453,7 +1465,6 @@
     else if (recognizer.state == UIGestureRecognizerStateEnded)
     {
         [self.arcMenu show: NO];
-//        [self.arcMenu removeFromSuperview];
         self.arcMenu = nil;
     }
     else if (recognizer.state == UIGestureRecognizerStateChanged)
@@ -1465,17 +1476,23 @@
 
 
 - (void) arcMenu: (SYNArcMenuView *) menu
-  didSelectIndex: (NSInteger) selectedIndex
+         didSelectMenuAtIndex: (NSInteger) menuIndex
+         forCellAtIndex: (NSIndexPath *) cellIndexPath
 {
-    switch (selectedIndex)
+    switch (menuIndex)
     {
         case kArcMenuButtonLike:
+            NSLog (@"Like");
             break;
             
         case kArcMenuButtonAdd:
+            NSLog (@"Add");
+            [self addVideoAtIndexPath: cellIndexPath
+                        withOperation: kVideoQueueAdd];
             break;
             
         case kArcMenuButtonShare:
+            NSLog (@"Share");
             break;
             
         default:
