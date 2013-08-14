@@ -133,6 +133,39 @@
 							<int key="NSfFlags">16</int>
 						</object>
 					</object>
+					<object class="IBUIButton" id="748200105">
+						<reference key="NSNextResponder" ref="191373211"/>
+						<int key="NSvFlags">289</int>
+						<string key="NSFrame">{{0, 5}, {48, 49}}</string>
+						<reference key="NSSuperview" ref="191373211"/>
+						<reference key="NSWindow"/>
+						<reference key="NSNextKeyView" ref="151070673"/>
+						<string key="NSReuseIdentifierKey">_NS:9</string>
+						<bool key="IBUIOpaque">NO</bool>
+						<object class="IBUIAccessibilityConfiguration" key="IBUIAccessibilityConfiguration">
+							<string key="IBUIAccessibilityLabel">Button Nav</string>
+						</object>
+						<string key="targetRuntimeIdentifier">IBCocoaTouchFramework</string>
+						<int key="IBUIContentHorizontalAlignment">0</int>
+						<int key="IBUIContentVerticalAlignment">0</int>
+						<reference key="IBUIHighlightedTitleColor" ref="1037528082"/>
+						<object class="NSColor" key="IBUINormalTitleColor">
+							<int key="NSColorSpace">1</int>
+							<bytes key="NSRGB">MC4xOTYwNzg0MzQ2IDAuMzA5ODAzOTMyOSAwLjUyMTU2ODY1NgA</bytes>
+						</object>
+						<reference key="IBUINormalTitleShadowColor" ref="84679067"/>
+						<object class="NSCustomResource" key="IBUIHighlightedImage" id="695451892">
+							<string key="NSClassName">NSImage</string>
+							<string key="NSResourceName">IconSearch~iphone.png</string>
+						</object>
+						<object class="NSCustomResource" key="IBUISelectedImage">
+							<string key="NSClassName">NSImage</string>
+							<string key="NSResourceName">ButtonSearch~iphone.png</string>
+						</object>
+						<reference key="IBUINormalImage" ref="695451892"/>
+						<reference key="IBUIFontDescription" ref="282272504"/>
+						<reference key="IBUIFont" ref="569270985"/>
+					</object>
 					<object class="IBUIView" id="682744638">
 						<reference key="NSNextResponder" ref="191373211"/>
 						<int key="NSvFlags">292</int>
@@ -215,39 +248,6 @@
 							<string key="NSClassName">NSImage</string>
 							<string key="NSResourceName">ButtonNav.png</string>
 						</object>
-						<reference key="IBUIFontDescription" ref="282272504"/>
-						<reference key="IBUIFont" ref="569270985"/>
-					</object>
-					<object class="IBUIButton" id="748200105">
-						<reference key="NSNextResponder" ref="191373211"/>
-						<int key="NSvFlags">289</int>
-						<string key="NSFrame">{{0, 5}, {48, 49}}</string>
-						<reference key="NSSuperview" ref="191373211"/>
-						<reference key="NSWindow"/>
-						<reference key="NSNextKeyView" ref="151070673"/>
-						<string key="NSReuseIdentifierKey">_NS:9</string>
-						<bool key="IBUIOpaque">NO</bool>
-						<object class="IBUIAccessibilityConfiguration" key="IBUIAccessibilityConfiguration">
-							<string key="IBUIAccessibilityLabel">Button Nav</string>
-						</object>
-						<string key="targetRuntimeIdentifier">IBCocoaTouchFramework</string>
-						<int key="IBUIContentHorizontalAlignment">0</int>
-						<int key="IBUIContentVerticalAlignment">0</int>
-						<reference key="IBUIHighlightedTitleColor" ref="1037528082"/>
-						<object class="NSColor" key="IBUINormalTitleColor">
-							<int key="NSColorSpace">1</int>
-							<bytes key="NSRGB">MC4xOTYwNzg0MzQ2IDAuMzA5ODAzOTMyOSAwLjUyMTU2ODY1NgA</bytes>
-						</object>
-						<reference key="IBUINormalTitleShadowColor" ref="84679067"/>
-						<object class="NSCustomResource" key="IBUIHighlightedImage" id="695451892">
-							<string key="NSClassName">NSImage</string>
-							<string key="NSResourceName">IconSearch~iphone.png</string>
-						</object>
-						<object class="NSCustomResource" key="IBUISelectedImage">
-							<string key="NSClassName">NSImage</string>
-							<string key="NSResourceName">ButtonSearch~iphone.png</string>
-						</object>
-						<reference key="IBUINormalImage" ref="695451892"/>
 						<reference key="IBUIFontDescription" ref="282272504"/>
 						<reference key="IBUIFont" ref="569270985"/>
 					</object>
@@ -442,10 +442,10 @@
 							<reference ref="163453737"/>
 							<reference ref="683922938"/>
 							<reference ref="680903335"/>
-							<reference ref="1048790499"/>
 							<reference ref="682744638"/>
 							<reference ref="151070673"/>
 							<reference ref="809275684"/>
+							<reference ref="1048790499"/>
 							<reference ref="748200105"/>
 						</array>
 						<reference key="parent" ref="0"/>
