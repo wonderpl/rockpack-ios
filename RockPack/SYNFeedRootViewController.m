@@ -639,7 +639,7 @@ typedef void(^FeedDataErrorBlock)(void);
     
     if(feedItem.resourceTypeValue == FeedItemResourceTypeVideo)
     {
-        return CGSizeMake(cellWidth, IS_IPHONE ? 266.0f : 168.0f);
+        return CGSizeMake(cellWidth, IS_IPHONE ? 280.0f : 168.0f);
     }
     else // Channel
     {
@@ -648,7 +648,7 @@ typedef void(^FeedDataErrorBlock)(void);
             if(feedItem.itemCountValue == 2)
                 return CGSizeMake(cellWidth, 149.0f);
         }
-        return CGSizeMake(cellWidth, IS_IPHONE ? 356.0f : 298.0f);
+        return CGSizeMake(cellWidth, IS_IPHONE ? 363.0f : 298.0f);
     }
 }
 
