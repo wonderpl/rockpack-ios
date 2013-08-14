@@ -1042,8 +1042,7 @@ typedef void(^FeedDataErrorBlock)(void);
 - (void) videoAddButtonTapped: (UIButton *) _addButton
 {
     
-    if(_addButton.selected)
-        return;
+    
     
     FeedItem* selectedFeedItem = [self feedItemFromControl:_addButton];
     
@@ -1086,7 +1085,6 @@ typedef void(^FeedDataErrorBlock)(void);
         [self.videoThumbnailCollectionView reloadData];
         
         
-        _addButton.selected = !_addButton.selected; // switch to on/off
         
     }
     
