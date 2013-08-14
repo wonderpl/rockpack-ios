@@ -980,7 +980,7 @@ typedef void(^FeedDataErrorBlock)(void);
                 for (FeedItem* cfi in fi.feedItems)
                 {
                     // assumes that FeedItems are one level deep at the present moment (probably will not change for a while)
-                    if(cfi.resourceTypeValue != FeedItemResourceTypeVideo || fi.itemTypeValue != FeedItemTypeLeaf)
+                    if(cfi.resourceTypeValue != FeedItemResourceTypeVideo || cfi.itemTypeValue != FeedItemTypeLeaf)
                         continue;
                     
                     [ma addObject:[self.feedVideosById objectForKey:cfi.resourceId]];
@@ -1008,6 +1008,7 @@ typedef void(^FeedDataErrorBlock)(void);
         if(self.videosInOrderArray.count == 0)
             return;
         
+        NSLog(@"%@", self.videosInOrderArray);
         
         VideoInstance* videoInstance = [self videoInstanceAtCoverOfFeedItem:selectedFeedItem];
         
