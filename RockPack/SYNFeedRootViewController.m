@@ -95,7 +95,7 @@ typedef void(^FeedDataErrorBlock)(void);
         // Collection view parameters
         contentInset = UIEdgeInsetsMake(0, 0, 0, 0);
         sectionInset = UIEdgeInsetsMake(0.0f, 0.0f, 0.0f, 0.0f);
-        minimumLineSpacing = 6.0f;
+        minimumLineSpacing = 12.0f;
         
     }
     else
