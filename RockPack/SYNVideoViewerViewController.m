@@ -673,6 +673,8 @@
         return;
     }
     
+    
+    
     // if the user does NOT have a FB account linked, no prompt
     
     ExternalAccount* facebookAccount = appDelegate.currentUser.facebookAccount;
@@ -715,7 +717,7 @@
     
     [tracker sendEventWithCategory: @"uiAction"
                         withAction: @"videoStarButtonClick"
-                         withLabel: nil
+                         withLabel: @"Viewer"
                          withValue: nil];
     
     button.selected = !button.selected;

@@ -1169,7 +1169,7 @@ typedef void(^FeedDataErrorBlock)(void);
     
     [tracker sendEventWithCategory: @"uiAction"
                         withAction: @"videoStarButtonClick"
-                         withLabel: nil
+                         withLabel: @"feed"
                          withValue: nil];
     
     
