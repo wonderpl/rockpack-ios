@@ -14,6 +14,14 @@ typedef enum {
     kVideoThumbnailDisplayModeYoutube = 1
 } kVideoThumbnailDisplayMode;
 
+@protocol SYNVideoThumbnailWideCellDelegate <NSObject>
+
+- (void) videoAddButtonTapped: (UIButton *) videoButton;
+- (void) arcMenuUpdateState: (UIGestureRecognizer *) recognizer
+                    forCell: (UICollectionViewCell *) cell;
+
+@end
+
 @interface SYNVideoThumbnailWideCell : UICollectionViewCell
 
 @property (nonatomic, strong) IBOutlet UIImageView *videoImageView;
@@ -40,6 +48,6 @@ typedef enum {
 @property (nonatomic) kVideoThumbnailDisplayMode displayMode;
 
 // This is used to indicate the UIViewController that 
-@property (nonatomic, weak) UIViewController *viewControllerDelegate;
+@property (nonatomic, weak) id<SYNVideoThumbnailWideCellDelegate> viewControllerDelegate;
 
 @end

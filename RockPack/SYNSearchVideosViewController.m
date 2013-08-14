@@ -390,7 +390,9 @@
         videoThumbnailCell.durationLabel.text = [NSString stringWithFormat: @"%@:%@", minutesString, secondsString];
     }
     
-    videoThumbnailCell.viewControllerDelegate = self;
+    videoThumbnailCell.viewControllerDelegate = (id<SYNVideoThumbnailWideCellDelegate>) self;
+    
+    
     
     videoThumbnailCell.addItButton.highlighted = NO;
     videoThumbnailCell.addItButton.selected = [appDelegate.videoQueue videoInstanceIsAddedToChannel: videoInstance];
@@ -437,6 +439,11 @@
     {
         return CGSizeMake(310, 221);
     }
+}
+
+- (VideoInstance *) videoInstanceForIndexPath: (NSIndexPath *) indexPath
+{
+    return [self.fetchedResultsController objectAtIndexPath: indexPath];
 }
 
 
