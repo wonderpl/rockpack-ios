@@ -1345,6 +1345,16 @@
             break;
     }
     
+    
+    // track
+    
+    id<GAITracker> tracker = [GAI sharedInstance].defaultTracker;
+    
+    [tracker sendEventWithCategory: @"goal"
+                        withAction: @"openDeepLink"
+                         withLabel: url
+                         withValue: nil];
+    
     return success;
 }
 

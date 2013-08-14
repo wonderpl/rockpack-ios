@@ -138,7 +138,7 @@
 - (UIView*) createNewMessageViewWithMessage: (NSString*) message
                                    andTitle: (NSString*)title
 {
-    CGRect newFrame = self.scrollView.frame;
+    CGRect newFrame = CGRectZero;
     
     
     // Limit label width to fit on portrait iPad, or iPhone screen
@@ -169,17 +169,15 @@
         titleLabel.shadowColor = shadowColor;
         
         [titleLabel sizeToFit];
+        // add the newly created height to the frame
         newFrame.size.height = titleLabel.frame.size.height;
         
         [container addSubview:titleLabel];
     }
     
+    //Text label, laid out under title, if there is one
     
-    
-    
-    //Text label, laid out under title
-    
-    newFrame.origin.y = newFrame.origin.y + newFrame.size.height;
+    newFrame.origin.y += newFrame.size.height;
     
     UILabel* textLabel = [[UILabel alloc] initWithFrame:newFrame];
     UIFont* fontToUse = [UIFont rockpackFontOfSize:  IS_IPHONE ? 16.0f : 22.0f];
