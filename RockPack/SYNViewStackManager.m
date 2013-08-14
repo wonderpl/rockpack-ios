@@ -238,7 +238,7 @@
     [searchBoxVC dismissSearchCategoriesIPhone];
     
     [UIView animateWithDuration: 0.1f
-                          delay: 0.0f
+                          delay: 0.3f
                         options: UIViewAnimationOptionCurveEaseIn
                      animations: ^{
                          
@@ -348,7 +348,7 @@
                                               
                                           } completion:^(BOOL finished) {
                                               if(!IS_IPAD)
-                                                  [searchBoxVC presentSearchCategoriesIPhone]; // already animating
+                                                  [searchBoxVC presentSearchCategoriesIPhone]; // already animated
                                           }];
                          
                      }];
