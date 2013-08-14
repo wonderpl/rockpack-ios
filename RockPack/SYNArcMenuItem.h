@@ -14,13 +14,6 @@
 
 @class SYNArcMenuItem;
 
-@protocol SYNArcMenuItemDelegate <NSObject>
-
-- (void) arcMenuItemTouchesBegan: (SYNArcMenuItem *) item;
-- (void) arcMenuItemTouchesEnd: (SYNArcMenuItem *) item;
-
-@end
-
 
 @interface SYNArcMenuItem : UIImageView
 
@@ -28,14 +21,10 @@
 @property (nonatomic) CGPoint farPoint;
 @property (nonatomic) CGPoint nearPoint;
 @property (nonatomic) CGPoint startPoint;
-@property (nonatomic, strong, readonly) UIImageView *contentImageView;
-@property (nonatomic, weak) id<SYNArcMenuItemDelegate> delegate;
 
 
-- (id) initWithImage: (UIImage *) img
-    highlightedImage: (UIImage *) himg
-        contentImage: (UIImage *) cimg
-        highlightedContentImage: (UIImage *) hcimg;
+- (id) initWithImage: (UIImage *) image
+    highlightedImage: (UIImage *) highlightedImage;
 
 
 @end
