@@ -64,6 +64,26 @@
     }    
 }
 
+-(void)viewDidAppear:(BOOL)animated
+{
+    [super viewDidAppear:animated];
+    
+    [[NSNotificationCenter defaultCenter] addObserver:self
+                                             selector:@selector(searchTyped:)
+                                                 name:kSearchTyped object:nil];
+}
+-(void)viewDidDisappear:(BOOL)animated
+{
+    [super viewDidDisappear:animated];
+    
+    [[NSNotificationCenter defaultCenter] removeObserver:self
+                                                    name:kSearchTyped object:nil];
+}
+
+-(void)searchTyped:(NSNotification*)notification
+{
+    [self dismissSearchCategoriesIPhone];
+}
 
 - (void) viewDidLoad
 {
@@ -97,6 +117,8 @@
         
         self.searchCategoriesController = [[SYNSearchCategoriesTableViewController alloc] initWithStyle:UITableViewStylePlain];
         
+        
+        
     }
     
     self.autoSuggestionController.tableView.frame = tableViewFrame;
@@ -106,20 +128,65 @@
     
     
 }
-
+-(void)dismissSearchCategoriesIPhone
+{
+    if(IS_IPAD) return;
+    
+    __weak SYNSearchBoxViewController* wself = self;
+    [UIView animateWithDuration:0.3f animations:^{
+        
+        
+        
+        wself.searchCategoriesController.tableView.alpha = 0.0f;
+        
+    } completion:^(BOOL finished) {
+        
+        [self.searchCategoriesController.tableView removeFromSuperview];
+        [self.searchBoxView resizeForHeight: 0.0f];
+        
+    }];
+    
+    
+    
+    
+}
 -(void)presentSearchCategoriesIPhone
 {
     
     if(IS_IPAD) return;
     
+    
+    [self.view insertSubview:self.searchCategoriesController.tableView atIndex:0];
+    
+    self.searchCategoriesController.tableView.alpha = 1.0f;
+    
+    
+    [self.searchBoxView resizeForHeight: 548.0f]; // 548.0f max
+    
     CGRect searchTBVFrame = self.searchCategoriesController.tableView.frame;
-    searchTBVFrame.origin = CGPointMake(0.0f, self.searchBoxView.frame.size.height);
+    searchTBVFrame.origin = CGPointMake(0.0f, 65.0f);
+    searchTBVFrame.size = CGSizeMake(self.view.frame.size.width,
+                                     [[SYNDeviceManager sharedInstance] currentScreenHeight] - searchTBVFrame.origin.y);
+    
     self.searchCategoriesController.tableView.frame = searchTBVFrame;
     
-    [self.view insertSubview:self.searchCategoriesController.tableView belowSubview:self.autoSuggestionController.tableView];
+    __weak SYNSearchBoxViewController* wself = self;
+    
+     self.searchCategoriesController.tableView.alpha = 0.0f;
+    [UIView animateWithDuration:0.3f delay:0.0f options:UIViewAnimationCurveEaseIn animations:^{
+        wself.searchCategoriesController.tableView.alpha = 1.0f;
+        
+        
+    } completion:^(BOOL finished) {
+        
+    }];
+    
+
     
     
-    self.view.frame = [[SYNDeviceManager sharedInstance] currentScreenRect];
+    
+    
+    
 }
 
 #pragma mark - Text Field Delegate
@@ -130,7 +197,9 @@
         [self.autocompleteNetworkOperation cancel];
     
     [self.autoSuggestionController clearWords];
-    [self resizeTableView: YES];
+    
+    if(IS_IPAD)
+        [self resizeTableView: YES];
 }
 
 
@@ -186,31 +255,34 @@
     self.autocompleteTimer = nil;
     
     self.autocompleteNetworkOperation = [appDelegate.networkEngine getAutocompleteForHint: self.searchTextField.text
-                                                                              forResource: EntityTypeVideo
-                                                                             withComplete: ^(NSArray* array) {
-                                             NSArray* suggestionsReturned = array[1];
+                                                                              forResource: EntityTypeVideo withComplete: ^(NSArray* array) {
+                                                                                 
+                                            NSArray* suggestionsReturned = array[1];
                                              
-                                             NSMutableArray* wordsReturned = [NSMutableArray array];
+                                            
                                              
-                                             if (suggestionsReturned.count == 0)
-                                             {
-                                                 [self.autoSuggestionController clearWords];
-                                                 return;
-                                             }
+                                            if (suggestionsReturned.count == 0)
+                                            {
+                                                [self.autoSuggestionController clearWords];
+                                                return;
+                                            }
+                                                                                  
+                                            NSMutableArray* wordsReturned = [NSMutableArray array];
                                              
-                                             for (NSArray* suggestion in suggestionsReturned)
-                                             {
-                                                 [wordsReturned addObject: suggestion[0]];
-                                             }
+                                            for (NSArray* suggestion in suggestionsReturned)
+                                            {
+                                                [wordsReturned addObject: suggestion[0]];
+                                            }
                                              
-                                             [self.autoSuggestionController addWords:wordsReturned];
+                                            [self.autoSuggestionController addWords:wordsReturned];
                                              
-                                             [self resizeTableView:NO];
+                                            [self resizeTableView:NO];
                                              
-                                             self.autoSuggestionController.tableView.alpha = 1.0;
+                                            self.autoSuggestionController.tableView.alpha = 1.0;
                                              
-                                         } andError: ^(NSError* error) {  
-                                         }];
+                                        } andError: ^(NSError* error) {
+                                        
+                                        }];
 }
 
 

@@ -15,8 +15,8 @@
 
 typedef enum {
     SideNavigationStateHidden = 0,
-    SideNavigationStateHalf,
-    SideNavigationStateFull
+    SideNavigationStateHalf = 1,
+    SideNavigationStateFull = 2
 
 } SideNavigationState;
 

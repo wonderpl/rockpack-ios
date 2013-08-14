@@ -278,15 +278,15 @@
 									<bytes key="NSRGB">MC4xOTYwNzg0MzQ2IDAuMzA5ODAzOTMyOSAwLjUyMTU2ODY1NgA</bytes>
 								</object>
 								<reference key="IBUINormalTitleShadowColor" ref="880907453"/>
-								<object class="NSCustomResource" key="IBUIHighlightedImage" id="492821391">
-									<string key="NSClassName">NSImage</string>
-									<string key="NSResourceName">ButtonFeedLikeSelected.png</string>
-								</object>
-								<reference key="IBUISelectedImage" ref="492821391"/>
-								<object class="NSCustomResource" key="IBUINormalImage">
+								<object class="NSCustomResource" key="IBUIHighlightedImage" id="815437095">
 									<string key="NSClassName">NSImage</string>
 									<string key="NSResourceName">ButtonFeedLikeDefault.png</string>
 								</object>
+								<object class="NSCustomResource" key="IBUISelectedImage">
+									<string key="NSClassName">NSImage</string>
+									<string key="NSResourceName">ButtonFeedLikeSelected.png</string>
+								</object>
+								<reference key="IBUINormalImage" ref="815437095"/>
 								<reference key="IBUIFontDescription" ref="626614172"/>
 								<reference key="IBUIFont" ref="905035514"/>
 							</object>

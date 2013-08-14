@@ -8,10 +8,11 @@
 
 #import <Foundation/Foundation.h>
 
-typedef enum
+typedef enum _PermissionType : NSInteger
 {
-    kFacebookPermissionTypeRead = 0,
-    kFacebookPermissionTypePublish = 1
+    kFacebookPermissionTypeEmail = 0,
+    kFacebookPermissionTypeRead = 1,
+    kFacebookPermissionTypePublish = 2
 } PermissionType;
 
 static NSString* const FacebookEmailPermission = @"email";

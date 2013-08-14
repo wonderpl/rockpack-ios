@@ -24,7 +24,7 @@
     self.lightTextAttributes = @{NSFontAttributeName:[UIFont rockpackFontOfSize:13.0f],
                                  NSForegroundColorAttributeName:[UIColor rockpacAggregateTextLight]};
     self.boldTextAttributes = @{NSFontAttributeName:[UIFont boldRockpackFontOfSize:13.0f],
-                                NSForegroundColorAttributeName:[UIColor rockpacAggregateTextBold]};
+                                NSForegroundColorAttributeName:[UIColor rockpacAggregateTextLight]};
 }
 
 -(void)setCoverImagesAndTitlesWithArray:(NSArray*)imageString

@@ -47,7 +47,7 @@
 {
     self.outstandingLoginRequests++;
     
-    [self openSessionWithPermissionType: kFacebookPermissionTypeRead
+    [self openSessionWithPermissionType: kFacebookPermissionTypeEmail
                               onSuccess: ^{
                                   // request me information
                                   [FBRequestConnection startForMeWithCompletionHandler: ^(FBRequestConnection *connection,
@@ -174,76 +174,80 @@
                              onFailure: (FacebookOpenSessionFailureBlock) failureBlock
 {
     
-    
+    NSString* permissionString;
+    switch (permissionType) {
+            
+        case kFacebookPermissionTypeEmail:
+            permissionString = FacebookEmailPermission;
+            break;
+            
+        case kFacebookPermissionTypeRead:
+            permissionString = FacebookReadPermission;
+            break;
+            
+        case kFacebookPermissionTypePublish:
+            permissionString = FacebookPublishPermission;
+            break;
+            
+        default:
+            return;
+            break;
+    }
     
     // Is the Facebook session already open ?
     if ([FBSession.activeSession isOpen])
     {
-        // Session is open, so we already have read permissions
-        // Check to see if the caller requires extended publish permissions and we actually have any
-        if (permissionType == kFacebookPermissionTypePublish)
+        // Check to see that the permissions asked are not already granted...
+        if (![self hasPermission:permissionString])
         {
-            // Check to see that the publish permissions have been set by checking to see if the first publish permission has been set
-            // if so, then all the other publish permissions will have been set
-            if (![self hasPermission:FacebookPublishPermission])
-            {
-                // No, we don't already have extended publish permissions
-                [FBSession.activeSession requestNewPublishPermissions: @[FacebookPublishPermission]
-                                                      defaultAudience: FBSessionDefaultAudienceEveryone
-                                                    completionHandler: ^(FBSession *session, NSError *error) {
-                     // Permissission denied
-                     if (error)
-                     {
-                         NSString *errorMessage = kFacebookPermissionDenied;
-                         
-                         DebugLog(@"** Reauthorize: Permission denied");
-                         // Something went wrong or the user refused permission to access email address
-                         dispatch_async(dispatch_get_main_queue(), ^{
-                             failureBlock(errorMessage);
-                         });
-                     }
-                     else
-                     {
-                         DebugLog(@"** Reauthorize: Suceeded");
-                         
-                         // OK, the user has now granted required extended permissions...
-                         dispatch_async(dispatch_get_main_queue(), ^{
-                             successBlock();
-                         });
-                         
-                         
-                     }
-                 }];
-            }
-            else
-            {
-                
-                // We have already been granted the required extended permissions
-                DebugLog(@"** openSession: Read Permissions already granted");
-                dispatch_async(dispatch_get_main_queue(), ^{
-                    successBlock();
-                });
-            }
+            
+            [FBSession.activeSession requestNewPublishPermissions: @[permissionString]
+                                                  defaultAudience: FBSessionDefaultAudienceEveryone
+                                                completionHandler: ^(FBSession *session, NSError *error) {
+                                                    // Permissission denied
+                                                    if (error)
+                                                    {
+                                                        NSString *errorMessage = kFacebookPermissionDenied;
+                                                        
+                                                        DebugLog(@"** Reauthorize Result: Permission '%@' denied", permissionString);
+                                                        // Something went wrong or the user refused permission to access email address
+                                                        dispatch_async(dispatch_get_main_queue(), ^{
+                                                            failureBlock(errorMessage);
+                                                        });
+                                                    }
+                                                    else
+                                                    {
+                                                        DebugLog(@"** Reauthorization Result: Suceeded '%@' granted", permissionString);
+                                                        
+                                                        // OK, the user has now granted required extended permissions...
+                                                        dispatch_async(dispatch_get_main_queue(), ^{
+                                                            successBlock();
+                                                        });
+                                                        
+                                                        
+                                                    }
+                                                }];
         }
         else
         {
-            DebugLog(@"** openSession: Only read permissions requested, already authorized");
-            // Only read permissions were requested (which will already have been granted on openActiveSessionWithReadPermissions)
+            
+            // We have already been granted the required extended permissions
+            DebugLog(@"** Reauthorization Result: Permission '%@' already granted", permissionString);
             dispatch_async(dispatch_get_main_queue(), ^{
                 successBlock();
             });
         }
+        
+        
     }
     else
     {
-        // Session not yet open, so open it with read permissions
-        // We need to be very careful here as the completionHandler will be called
-        // EVERY time the session state changes (not just on successful opening of
-        // an active session
-        
+        // Session not yet open, so open it with 'email' permissions
+    
         __block BOOL hasExecuted = NO; // Keep track of whether the completion handler has been called.
         
-        [FBSession openActiveSessionWithReadPermissions: @[FacebookReadPermission]
+        
+        [FBSession openActiveSessionWithReadPermissions: @[FacebookEmailPermission] // start with 'email' permissions
                                            allowLoginUI: YES
                                       completionHandler: ^(FBSession *session,
                                                            FBSessionState status,

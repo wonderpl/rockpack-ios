@@ -294,11 +294,11 @@
                                                                                      attributes:boldTextAttributes]];
     
     
-    [attributedCompleteString appendAttributedString:[[NSAttributedString alloc] initWithString:@" has created "
+    [attributedCompleteString appendAttributedString:[[NSAttributedString alloc] initWithString:@" created "
                                                                                      attributes:lightTextAttributes]];
     
     [attributedCompleteString appendAttributedString:[[NSAttributedString alloc] initWithString:actionString
-                                                                                     attributes:boldTextAttributes]];
+                                                                                     attributes:lightTextAttributes]];
     
     
     

@@ -9,5 +9,5 @@
 #import <UIKit/UIKit.h>
 
 @interface SYNAutocompleteIphoneCell : UITableViewCell
-
+@property (nonatomic, strong) UIView* separatorView;
 @end

@@ -661,8 +661,9 @@ typedef enum {
 
 -(void) setState:(SideNavigationState)state animated:(BOOL)animated
 {
-    if (state == _state)
-        return;
+    
+    
+    if (state == _state) return;
     
     _state = state;
     

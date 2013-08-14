@@ -97,6 +97,8 @@
 {
     controller.view.alpha = 0.0f;
     
+    
+    
     [UIView animateWithDuration: 0.5f
                           delay: 0.0f
                         options: UIViewAnimationOptionCurveEaseInOut | UIViewAnimationOptionBeginFromCurrentState
@@ -123,6 +125,8 @@
     {
         return;
     }
+    
+    
     
     [UIView animateWithDuration: 0.5f
                           delay: 0.0f
@@ -231,6 +235,7 @@
     
     //
     
+    [searchBoxVC dismissSearchCategoriesIPhone];
     
     [UIView animateWithDuration: 0.1f
                           delay: 0.0f
@@ -287,6 +292,8 @@
     
     self.searchBarOriginSideNavigation = (self.sideNavigatorController.state != SideNavigationStateHidden);
     
+    NSLog(@"Comes from top? %i", self.sideNavigatorController.state);
+    
     
     // do the swap...
     
@@ -337,10 +344,12 @@
                                               
                                               [searchBoxVC.searchBoxView revealCloseButton];
                                               
-                                              if(!IS_IPAD)
-                                                  [searchBoxVC presentSearchCategoriesIPhone];
                                               
-                                          } completion: nil];
+                                              
+                                          } completion:^(BOOL finished) {
+                                              if(!IS_IPAD)
+                                                  [searchBoxVC presentSearchCategoriesIPhone]; // already animating
+                                          }];
                          
                      }];
     

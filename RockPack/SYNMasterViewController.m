@@ -50,7 +50,6 @@ typedef void(^AnimationCompletionBlock)(BOOL finished);
 @property (nonatomic, strong) IBOutlet SYNPageView* pagePositionIndicatorView;
 @property (nonatomic, strong) IBOutlet UIButton* headerButton;
 @property (nonatomic, strong) IBOutlet UIButton* hideNavigationButton;
-@property (nonatomic, strong) IBOutlet UIButton* searchButton;
 @property (nonatomic, strong) IBOutlet UILabel* pageTitleLabel;
 @property (nonatomic, strong) IBOutlet UIView* errorContainerView;
 @property (nonatomic, strong) IBOutlet UIView* navigationContainerView;
@@ -250,6 +249,7 @@ typedef void(^AnimationCompletionBlock)(BOOL finished);
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(scrollerPageChanged:) name:kScrollerPageChanged object:nil];
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(searchTyped:) name:kSearchTyped object:nil];
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(showAccountSettingsPopover) name:kAccountSettingsPressed object:nil];
+    
     
     [self.navigationContainerView addSubview:self.sideNavigatorViewController.view];
 }
@@ -650,45 +650,53 @@ typedef void(^AnimationCompletionBlock)(BOOL finished);
 - (IBAction) showSearchBoxField: (id) sender
 {
     
-    if (self.isInSearchMode) // if it is on stage already
-        return;
-    
-    self.darkOverlayView.alpha = 1.0;
-    
-    [UIView animateWithDuration:0.3
-                     animations:^{
-                         self.darkOverlayView.alpha = 0.0;
-                     } completion:^(BOOL finished) {
-                         self.darkOverlayView.hidden = YES;
-                     }];
-    
-    CGRect sboxFrame = self.searchBoxController.view.frame;
-    
-    // place according to the position of the back button //
-    if (self.showingBackButton)
+    if(IS_IPAD)
     {
-        sboxFrame.origin.x = 76.0f;
+        if (self.hasSearchBarOn) // if it is on stage already
+            return;
+        
+        self.darkOverlayView.alpha = 1.0;
+        
+        [UIView animateWithDuration:0.3
+                         animations:^{
+                             self.darkOverlayView.alpha = 0.0;
+                         } completion:^(BOOL finished) {
+                             self.darkOverlayView.hidden = YES;
+                         }];
+        
+        CGRect sboxFrame = self.searchBoxController.view.frame;
+        
+        // place according to the position of the back button //
+        if (self.showingBackButton)
+        {
+            sboxFrame.origin.x = 76.0f;
+        }
+        else
+        {
+            sboxFrame.origin.x = 10.0;
+        }
+        
+        sboxFrame.size.width = self.closeSearchButton.frame.origin.x - sboxFrame.origin.x - 8.0;
+        sboxFrame.origin.y = 10.0;
+        self.searchBoxController.view.frame = sboxFrame;
+        
+        [self.view insertSubview:self.searchBoxController.view belowSubview:self.navigationContainerView];
+        
+        self.searchBoxController.searchTextField.text = @"";
+        
+        if (IS_IPAD && sender != nil)
+        {
+            [self.searchBoxController.searchTextField becomeFirstResponder];
+        }
+        
+        self.closeSearchButton.hidden = NO;
+        self.sideNavigationButton.hidden = YES;
     }
     else
     {
-        sboxFrame.origin.x = 10.0;
+       [appDelegate.viewStackManager presentSearchBar];
     }
-    
-    sboxFrame.size.width = self.closeSearchButton.frame.origin.x - sboxFrame.origin.x - 8.0;
-    sboxFrame.origin.y = 10.0;
-    self.searchBoxController.view.frame = sboxFrame;
-    
-    [self.view insertSubview:self.searchBoxController.view belowSubview:self.navigationContainerView];
-    
-    self.searchBoxController.searchTextField.text = @"";
-    
-    if (IS_IPAD && sender != nil)
-    {
-        [self.searchBoxController.searchTextField becomeFirstResponder];
-    }
-    
-    self.closeSearchButton.hidden = NO;
-    self.sideNavigationButton.hidden = YES;
+   
 }
 
 
@@ -1265,15 +1273,36 @@ typedef void(^AnimationCompletionBlock)(BOOL finished);
         targetAlpha = 0.0;
     }
     
+    
+    if(!IS_IPAD && show)
+    {
+        self.searchButton.hidden = YES;
+    }
+    
+    self.pageTitleLabel.alpha = !targetAlpha;
+    self.pagePositionIndicatorView.alpha = !targetAlpha;
+    
+    
+    
     [UIView animateWithDuration: 0.6f
                           delay: (show && self.isInSearchMode ? 0.4f : 0.0f)
                         options: UIViewAnimationOptionCurveEaseInOut
                      animations: ^{
                          self.backButtonControl.frame = targetFrame;
                          self.backButtonControl.alpha = targetAlpha;
-                         self.pageTitleLabel.alpha = !targetAlpha;
-                         self.pagePositionIndicatorView.alpha = !targetAlpha;
-                     } completion:nil];
+                         
+                     } completion:^(BOOL finished) {
+                         
+                         if(!IS_IPAD && !show)
+                         {
+                             self.searchButton.alpha = 0.0f;
+                             self.searchButton.hidden = NO;
+                             [UIView animateWithDuration:0.3f animations:^{
+                                 self.searchButton.alpha = 1.0f;
+                             }];
+                             
+                         }
+                     }];
     
     [UIView animateWithDuration: 0.6f
                           delay: (show ? 0.0f : 0.4f)

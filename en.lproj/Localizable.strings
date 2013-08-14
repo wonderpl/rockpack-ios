@@ -188,6 +188,7 @@
 "feed_screen_section_title" = "FEED";
 "feed_screen_empty_message" = "Your feed looks pretty empty! Subscribe to more channels";
 "feed_screen_loading_error" = "There was a problem while loading your feed, please try again";
+"feed_screen_updating_error" = "There was a problem while refreshing your feed, please try again";
 "feed_screen_loading_message" = "Your Video Feed is Being Refreshed, Please Wait...";
 "search_screen_no_videos" = "No Videos where found for this Search";
 "search_screen_searching_videos" = "Searching for Videos";

@@ -52,11 +52,7 @@ static NSString *SearchGenresTableCellIdentifier = @"SYNSearchCategoriesIphoneCe
 
 -(void)viewDidAppear:(BOOL)animated
 {
-    // by this time the x and y should be set
-    CGRect tableViewFrame = self.tableView.frame;
-    tableViewFrame.size = CGSizeMake(320.0, [[SYNDeviceManager sharedInstance] currentScreenHeight] - tableViewFrame.origin.y);
     
-    self.tableView.frame = tableViewFrame;
 }
 
 -(void)loadData
@@ -139,7 +135,7 @@ static NSString *SearchGenresTableCellIdentifier = @"SYNSearchCategoriesIphoneCe
     
     Genre* genre = self.searchCategories[indexPath.item];
     
-    cell.textLabel.text = genre.name;
+    cell.textLabel.text = [genre.name capitalizedString];
     
     
     
@@ -158,9 +154,13 @@ static NSString *SearchGenresTableCellIdentifier = @"SYNSearchCategoriesIphoneCe
 {
     Genre* genreSelected = self.searchCategories[indexPath.item];
     
-    // go to search
     
-    NSLog(@"Selected %@", genreSelected.name);
+    
+    [NSNotificationCenter.defaultCenter postNotificationName: kSearchTyped
+                                                      object: self
+                                                    userInfo: @{kSearchTerm : genreSelected.name}];
+    
+   
 }
 
 @end
