@@ -618,6 +618,13 @@ typedef void(^FeedDataErrorBlock)(void);
     return self.feedItemsData.count; // the number of arrays included
 }
 
+- (UIEdgeInsets)collectionView: (UICollectionView *)collectionView
+                        layout: (UICollectionViewLayout*)collectionViewLayout
+        insetForSectionAtIndex: (NSInteger)section
+{
+    
+    return UIEdgeInsetsMake(0.0, 0.0, 40.0, 0.0);
+}
 
 - (NSInteger) collectionView: (UICollectionView *) collectionView
       numberOfItemsInSection: (NSInteger) section
