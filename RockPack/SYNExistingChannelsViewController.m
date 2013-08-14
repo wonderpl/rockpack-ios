@@ -24,7 +24,6 @@
 #import "UIColor+SYNColor.h"
 #import <QuartzCore/QuartzCore.h>
 
-typedef void (^RemoteCallBlock) (void);
 
 @interface SYNExistingChannelsViewController ()
 {
@@ -145,45 +144,51 @@ typedef void (^RemoteCallBlock) (void);
     __weak SYNAppDelegate* wAppDelegate = appDelegate;
     BOOL isYesButton = (sender == self.autopostYesButton);
     
-    RemoteCallBlock setFlagBlock = ^{
+    // steps
+    
+    void(^ErrorBlock)(id) = ^(id error) {
         
-        [appDelegate.oAuthNetworkEngine setFlag:@"facebook_autopost_add" withValue:isYesButton
-                                       forUseId:appDelegate.currentUser.uniqueId completionHandler:^(id no_response) {
-                                           
-                                           [wself switchAutopostViewToYes:isYesButton];
-                                           
-                                           if(isYesButton)
-                                               [wAppDelegate.currentUser setFlag:ExternalAccountFlagAutopostAdd toExternalAccount:@"facebook"];
-                                           else
-                                               [wAppDelegate.currentUser unsetFlag:ExternalAccountFlagAutopostAdd toExternalAccount:@"facebook"];
-                                           
-                                           [wAppDelegate saveContext:YES];
-                                           
-                                       } errorHandler:^(id error) {
-                                           
-                                           [wself switchAutopostViewToYes:!isYesButton];
-                                           
-                                       }];
+        [wself switchAutopostViewToYes:!isYesButton];
         
     };
     
+    void(^CompletionBlock)(id) = ^(id no_responce) {
+        
+        [wself switchAutopostViewToYes:isYesButton];
+        
+        if(isYesButton)
+            [wAppDelegate.currentUser setFlag:ExternalAccountFlagAutopostAdd toExternalAccount:@"facebook"];
+        else
+            [wAppDelegate.currentUser unsetFlag:ExternalAccountFlagAutopostAdd toExternalAccount:@"facebook"];
+        
+        [wAppDelegate saveContext:YES];
+        
+    };
+    
+    
+    
     if(isYesButton)
     {
+        // if the SDK has already the 'publish' options on, it will just call the return function()
         [[SYNFacebookManager sharedFBManager] openSessionWithPermissionType:kFacebookPermissionTypePublish onSuccess:^{
             
-            setFlagBlock();
+            // connect to external account so as to register the new access token with extended priviledges
+            [wAppDelegate.oAuthNetworkEngine connectFacebookAccountForUserId: wAppDelegate.currentUser.uniqueId
+                                                          andAccessTokenData: [[FBSession activeSession] accessTokenData]
+                                                           completionHandler: ^(id no_responce) {
+                                                               
+                            // set the flag on the server
+                            [wAppDelegate.oAuthNetworkEngine setFlag:@"facebook_autopost_add"
+                                                           withValue:isYesButton
+                                                            forUseId:appDelegate.currentUser.uniqueId
+                                                   completionHandler:CompletionBlock errorHandler:ErrorBlock];
+                                                               
+                                                               
+                                                           } errorHandler:ErrorBlock];
             
-            
-        } onFailure:^(NSString *errorMessage) {
-            
-            [wself switchAutopostViewToYes:!isYesButton];
-            
-        }];
+                                            } onFailure:ErrorBlock];
     }
-    else
-    {
-        setFlagBlock();
-    }
+    
     
 }
 

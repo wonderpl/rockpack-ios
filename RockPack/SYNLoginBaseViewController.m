@@ -432,6 +432,8 @@
                     DebugLog(@"ERROR: User not registered (User: %@)", _appDelegate.currentUser);
                     // TODO: handle user not being registered propery
                 }
+                                                                      
+                                                         
                     
                 completionBlock(dictionary);
                                                                   

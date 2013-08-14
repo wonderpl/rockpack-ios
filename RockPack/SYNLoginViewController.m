@@ -1130,22 +1130,7 @@
     [self doFacebookLoginAnimation];
     
     [self loginThroughFacebookWithCompletionHandler: ^(NSDictionary * dictionary) {
-        // Is user registering for the first time
-        if (dictionary[@"registered"])
-        {
-            [tracker sendEventWithCategory: @"goal"
-                                withAction: @"userRegistration"
-                                 withLabel: @"Facebook"
-                                 withValue: nil];
-        }
-        else
-        {
-            // or just logging in to an existing account
-            [tracker sendEventWithCategory: @"goal"
-                                withAction: @"userLogin"
-                                 withLabel: @"Facebook"
-                                 withValue: nil];
-        }
+        
         
         [activityIndicator stopAnimating];
         [self completeLoginProcess];
