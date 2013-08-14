@@ -547,6 +547,7 @@ typedef void(^FeedDataErrorBlock)(void);
     
     // put the videos in order
     
+    self.videosInOrderArray = [NSArray array];
     dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_HIGH, 0), ^{
         [self sortVideosForPlaylist];
     });
