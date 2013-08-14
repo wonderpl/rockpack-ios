@@ -683,7 +683,10 @@
     if( facebookAccount && (facebookAccount.noautopostValue == NO) && (doesNotHavePublishPermissions || doesNotHaveAutopostStarFlagSet) ) 
     {
         
-        // then show panel
+        // then show panel, the newtork code will check for permissions in the FB Engine, is they exist then the code is triggered automatically and the flag is set,
+        // if not then the flag is set after the net call
+        
+        
         __weak SYNVideoViewerViewController* wself = self;
         SYNImplicitSharingController* implicitSharingController = [SYNImplicitSharingController controllerWithBlock:^{
             [wself toggleStarButton:button];
