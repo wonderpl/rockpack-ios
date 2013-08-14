@@ -665,6 +665,116 @@
     self.addButton.hidden = !addItButton.selected;
 }
 
+- (IBAction) toggleStarButton: (UIButton *) button
+{
+    if(self.isVideoExpanded)
+    {
+        return;
+    }
+    
+    // if the user does NOT have a FB account linked, no prompt
+    
+    ExternalAccount* facebookAccount = appDelegate.currentUser.facebookAccount;
+    
+    if(facebookAccount && // has a facebook account
+       !(facebookAccount.flagsValue & ExternalAccountFlagAutopostStar) && // has not already set the implicit sharing to ON
+       facebookAccount.noautopostValue == NO) // has not explicitely forbid the implicit sharing
+    {
+        // then show panel
+        __weak SYNVideoViewerViewController* wself = self;
+        SYNImplicitSharingController* implicitSharingController = [SYNImplicitSharingController controllerWithBlock:^{
+            [wself toggleStarButton:button];
+        }];
+        [self addChildViewController:implicitSharingController];
+        
+        implicitSharingController.view.alpha = 0.0f;
+        implicitSharingController.view.center = CGPointMake(self.view.center.x, self.view.center.y);
+        implicitSharingController.view.frame = CGRectIntegral(implicitSharingController.view.frame);
+        [self.view addSubview:implicitSharingController.view];
+        [UIView animateWithDuration:0.3 animations:^{
+            implicitSharingController.view.alpha = 1.0f;
+        }];
+        
+        UITapGestureRecognizer* tapGesture = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(dismissImplicitSharing)];
+        [self.view addGestureRecognizer:tapGesture];
+        
+        return;
+    }
+    
+    
+    id<GAITracker> tracker = [GAI sharedInstance].defaultTracker;
+    
+    [tracker sendEventWithCategory: @"uiAction"
+                        withAction: @"videoStarButtonClick"
+                         withLabel: nil
+                         withValue: nil];
+    
+    button.selected = !button.selected;
+    
+    NSString *starAction = (button.selected == TRUE) ? @"star" : @"unstar";
+    
+    button.enabled = NO;
+    
+    [self.heartActivityIndicator startAnimating];
+    
+    __weak VideoInstance *videoInstance = self.videoInstanceArray [self.currentSelectedIndex];
+    int starredIndex = self.currentSelectedIndex;
+    [appDelegate.oAuthNetworkEngine recordActivityForUserId: appDelegate.currentUser.uniqueId
+                                                     action: starAction
+                                            videoInstanceId: videoInstance.uniqueId
+                                          completionHandler: ^(id response) {
+                                              [self.heartActivityIndicator stopAnimating];
+                                              
+                                              if (videoInstance.video.starredByUserValue == TRUE)
+                                              {
+                                                  // Currently highlighted, so decrement
+                                                  videoInstance.video.starredByUserValue = FALSE;
+                                                  videoInstance.video.starCountValue -= 1;
+                                              }
+                                              else
+                                              {
+                                                  // Currently highlighted, so increment
+                                                  videoInstance.video.starredByUserValue = TRUE;
+                                                  videoInstance.video.starCountValue += 1;
+                                                  [Appirater userDidSignificantEvent: FALSE];
+                                              }
+                                              
+                                              (self.favouritesStatusArray)[starredIndex] = @(button.selected);
+                                              
+                                              [self updateVideoDetailsForIndex: self.currentSelectedIndex];
+                                              
+                                              [appDelegate saveContext: YES];
+                                              
+                                              button.enabled = YES;
+                                              
+                                          }
+                                               errorHandler: ^(id error) {
+                                                   [self.heartActivityIndicator stopAnimating];
+                                                   DebugLog(@"Could not star video");
+                                                   button.selected = ! button.selected;
+                                                   button.enabled = YES;
+                                                   [self updateVideoDetailsForIndex: self.currentSelectedIndex];
+                                               }];
+    
+    
+    
+    
+}
+
+
+
+-(void)dismissImplicitSharing
+{
+    SYNImplicitSharingController* implicitSharingController;
+    for (UIViewController* child in self.childViewControllers) {
+        if([child isKindOfClass:[SYNImplicitSharingController class]])
+            implicitSharingController = (SYNImplicitSharingController*)child;
+    }
+    if(!implicitSharingController)
+        return;
+    
+    [implicitSharingController dismiss];
+}
 
 
 - (IBAction) userTouchedCloseButton: (id) sender
