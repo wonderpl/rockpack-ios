@@ -873,6 +873,14 @@ referenceSizeForFooterInSection: (NSInteger) section
     }
 }
 
+-(void)performAction:(NSString*)action withObject:(id)object
+{
+    if([action isEqualToString:@"open"] && [object isKindOfClass:[Genre class]])
+    {
+        [self categoryTableController:nil didSelectCategory:object];
+        
+    }
+}
 
 - (void) categoryTableController: (SYNChannelCategoryTableViewController *) tableController
                didSelectCategory: (Genre *) category
@@ -901,6 +909,7 @@ referenceSizeForFooterInSection: (NSInteger) section
         [self handleNewTabSelectionWithGenre: nil];
     }
 }
+
 
 
 - (void) categoryTableController: (SYNChannelCategoryTableViewController *) tableController

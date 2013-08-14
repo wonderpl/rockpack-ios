@@ -59,6 +59,8 @@ typedef void (^SYNShareCompletionBlock)(void);
 @property (readonly) NSManagedObjectContext *mainManagedObjectContext;
 @property (readonly, getter = isVideoQueueVisible) BOOL videoQueueVisible;
 
+-(void)performAction:(NSString*)action withObject:(id)object;
+
 - (void) handleNewTabSelectionWithId: (NSString*) selectionId;
 - (void) handleNewTabSelectionWithGenre: (Genre*) name;
 
