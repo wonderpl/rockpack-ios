@@ -316,9 +316,8 @@
     
     videoThumbnailCell.displayMode = kVideoThumbnailDisplayModeYoutube;
     
-    [videoThumbnailCell.videoImageView
-     setImageWithURL: [NSURL URLWithString: videoInstance.video.thumbnailURL]
-     placeholderImage: [UIImage imageNamed: @"PlaceholderVideoWide.png"]];
+    [videoThumbnailCell.videoImageView setImageWithURL: [NSURL URLWithString: videoInstance.video.thumbnailURL]
+                                      placeholderImage: [UIImage imageNamed: @"PlaceholderVideoWide.png"]];
     
     videoThumbnailCell.videoTitle.text = videoInstance.title;
     videoThumbnailCell.videoInstance = videoInstance;
