@@ -623,7 +623,7 @@ typedef void(^FeedDataErrorBlock)(void);
         insetForSectionAtIndex: (NSInteger)section
 {
     
-    return UIEdgeInsetsMake(0.0, 0.0, 40.0, 0.0);
+    return UIEdgeInsetsMake(10.0, 0.0, 40.0, 0.0);
 }
 
 - (NSInteger) collectionView: (UICollectionView *) collectionView

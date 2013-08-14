@@ -98,17 +98,11 @@
     
     self.titleLabel.font = [UIFont boldRockpackFontOfSize:self.titleLabel.font.pointSize];
     
-    [self checkForPermissions];
-    
-    
-}
-
--(void)checkForPermissions
-{
     ExternalAccount* facebookAccount = appDelegate.currentUser.facebookAccount;
     if(facebookAccount)
     {
-        if(facebookAccount.flagsValue & ExternalAccountFlagAutopostAdd)
+        if([[SYNFacebookManager sharedFBManager] hasActiveSessionWithPermissionType:FacebookPublishPermission] &&
+           (facebookAccount.flagsValue & ExternalAccountFlagAutopostAdd))
         {
             [self switchAutopostViewToYes:YES];
         }
@@ -123,7 +117,10 @@
         self.autopostView.hidden = YES;
     }
     
+    
 }
+
+
 
 -(void)switchAutopostViewToYes:(BOOL)value
 {
@@ -139,7 +136,7 @@
     sender.selected = YES;
 
     
-    
+    ExternalAccount* facebookAccount = appDelegate.currentUser.facebookAccount;
     __weak SYNExistingChannelsViewController* wself = self;
     __weak SYNAppDelegate* wAppDelegate = appDelegate;
     BOOL isYesButton = (sender == self.autopostYesButton);
@@ -175,11 +172,20 @@
                                                           andAccessTokenData: [[FBSession activeSession] accessTokenData]
                                                            completionHandler: ^(id no_responce) {
                                                                
-                            // set the flag on the server...
-                            [wAppDelegate.oAuthNetworkEngine setFlag:@"facebook_autopost_add"
-                                                           withValue:isYesButton
-                                                            forUseId:appDelegate.currentUser.uniqueId
-                                                   completionHandler:CompletionBlock errorHandler:ErrorBlock];
+                                                               if (facebookAccount.flagsValue & ExternalAccountFlagAutopostAdd)
+                                                               {
+                                                                   CompletionBlock(no_responce);
+                                                               }
+                                                               else
+                                                               {
+                                                                   // set the flag on the server...
+                                                                   [wAppDelegate.oAuthNetworkEngine setFlag:@"facebook_autopost_add"
+                                                                                                  withValue:isYesButton
+                                                                                                   forUseId:appDelegate.currentUser.uniqueId
+                                                                                          completionHandler:CompletionBlock errorHandler:ErrorBlock];
+                                                               }
+                                                               
+                            
                                                                
                                                                
                                                            } errorHandler:ErrorBlock];
