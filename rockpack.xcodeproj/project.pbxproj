@@ -549,6 +549,16 @@
 		1FD12373174CD76700144374 /* NavDefault@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 1FD1236F174CD76700144374 /* NavDefault@2x.png */; };
 		1FD12374174CD76700144374 /* NavHighlighted.png in Resources */ = {isa = PBXBuildFile; fileRef = 1FD12370174CD76700144374 /* NavHighlighted.png */; };
 		1FD12375174CD76700144374 /* NavHighlighted@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 1FD12371174CD76700144374 /* NavHighlighted@2x.png */; };
+		1FD2856D17BBA18A0094F488 /* ButtonEmail.png in Resources */ = {isa = PBXBuildFile; fileRef = 1FD2856517BBA18A0094F488 /* ButtonEmail.png */; };
+		1FD2856E17BBA18A0094F488 /* ButtonEmail@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 1FD2856617BBA18A0094F488 /* ButtonEmail@2x.png */; };
+		1FD2856F17BBA18A0094F488 /* ButtonFacebook.png in Resources */ = {isa = PBXBuildFile; fileRef = 1FD2856717BBA18A0094F488 /* ButtonFacebook.png */; };
+		1FD2857017BBA18A0094F488 /* ButtonFacebook@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 1FD2856817BBA18A0094F488 /* ButtonFacebook@2x.png */; };
+		1FD2857117BBA18A0094F488 /* ButtonSMS.png in Resources */ = {isa = PBXBuildFile; fileRef = 1FD2856917BBA18A0094F488 /* ButtonSMS.png */; };
+		1FD2857217BBA18A0094F488 /* ButtonSMS@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 1FD2856A17BBA18A0094F488 /* ButtonSMS@2x.png */; };
+		1FD2857317BBA18A0094F488 /* ButtonTwitter.png in Resources */ = {isa = PBXBuildFile; fileRef = 1FD2856B17BBA18A0094F488 /* ButtonTwitter.png */; };
+		1FD2857417BBA18A0094F488 /* ButtonTwitter@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 1FD2856C17BBA18A0094F488 /* ButtonTwitter@2x.png */; };
+		1FD2857717BBAD6A0094F488 /* PanelShare.png in Resources */ = {isa = PBXBuildFile; fileRef = 1FD2857517BBAD6A0094F488 /* PanelShare.png */; };
+		1FD2857817BBAD6A0094F488 /* PanelShare@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 1FD2857617BBAD6A0094F488 /* PanelShare@2x.png */; };
 		1FD8720F176F7F26009F4746 /* LoginErrorPortrait.png in Resources */ = {isa = PBXBuildFile; fileRef = 1FD8720D176F7F26009F4746 /* LoginErrorPortrait.png */; };
 		1FD87210176F7F26009F4746 /* LoginErrorPortrait@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 1FD8720E176F7F26009F4746 /* LoginErrorPortrait@2x.png */; };
 		1FE1C6601761FFFF00EDFC0E /* IconRockpackAbout.png in Resources */ = {isa = PBXBuildFile; fileRef = 1FE1C65E1761FFFF00EDFC0E /* IconRockpackAbout.png */; };
@@ -1948,6 +1958,16 @@
 		1FD1236F174CD76700144374 /* NavDefault@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = "NavDefault@2x.png"; path = "Assets/Images/NavDefault@2x.png"; sourceTree = "<group>"; };
 		1FD12370174CD76700144374 /* NavHighlighted.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = NavHighlighted.png; path = Assets/Images/NavHighlighted.png; sourceTree = "<group>"; };
 		1FD12371174CD76700144374 /* NavHighlighted@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = "NavHighlighted@2x.png"; path = "Assets/Images/NavHighlighted@2x.png"; sourceTree = "<group>"; };
+		1FD2856517BBA18A0094F488 /* ButtonEmail.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = ButtonEmail.png; path = Assets/Images/ButtonEmail.png; sourceTree = "<group>"; };
+		1FD2856617BBA18A0094F488 /* ButtonEmail@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = "ButtonEmail@2x.png"; path = "Assets/Images/ButtonEmail@2x.png"; sourceTree = "<group>"; };
+		1FD2856717BBA18A0094F488 /* ButtonFacebook.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = ButtonFacebook.png; path = Assets/Images/ButtonFacebook.png; sourceTree = "<group>"; };
+		1FD2856817BBA18A0094F488 /* ButtonFacebook@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = "ButtonFacebook@2x.png"; path = "Assets/Images/ButtonFacebook@2x.png"; sourceTree = "<group>"; };
+		1FD2856917BBA18A0094F488 /* ButtonSMS.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = ButtonSMS.png; path = Assets/Images/ButtonSMS.png; sourceTree = "<group>"; };
+		1FD2856A17BBA18A0094F488 /* ButtonSMS@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = "ButtonSMS@2x.png"; path = "Assets/Images/ButtonSMS@2x.png"; sourceTree = "<group>"; };
+		1FD2856B17BBA18A0094F488 /* ButtonTwitter.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = ButtonTwitter.png; path = Assets/Images/ButtonTwitter.png; sourceTree = "<group>"; };
+		1FD2856C17BBA18A0094F488 /* ButtonTwitter@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = "ButtonTwitter@2x.png"; path = "Assets/Images/ButtonTwitter@2x.png"; sourceTree = "<group>"; };
+		1FD2857517BBAD6A0094F488 /* PanelShare.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = PanelShare.png; path = Assets/Images/PanelShare.png; sourceTree = "<group>"; };
+		1FD2857617BBAD6A0094F488 /* PanelShare@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = "PanelShare@2x.png"; path = "Assets/Images/PanelShare@2x.png"; sourceTree = "<group>"; };
 		1FD8720D176F7F26009F4746 /* LoginErrorPortrait.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = LoginErrorPortrait.png; path = Assets/Images/LoginErrorPortrait.png; sourceTree = "<group>"; };
 		1FD8720E176F7F26009F4746 /* LoginErrorPortrait@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = "LoginErrorPortrait@2x.png"; path = "Assets/Images/LoginErrorPortrait@2x.png"; sourceTree = "<group>"; };
 		1FE1C65E1761FFFF00EDFC0E /* IconRockpackAbout.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = IconRockpackAbout.png; path = Assets/Images/IconRockpackAbout.png; sourceTree = "<group>"; };
@@ -3452,6 +3472,7 @@
 			isa = PBXGroup;
 			children = (
 				01F24AC117B8F27900FC8820 /* Arc menu */,
+				1FD2856417BBA1640094F488 /* Share Panel */,
 				BE8F938F17B3CF9700E7035F /* Sharing */,
 				BE7D030F179E8563008053DC /* Friends */,
 				BE3983D5176A0CC600EE9C7B /* OnBoarding */,
@@ -4337,6 +4358,23 @@
 				1F46C86A1743C2FD00C6089D /* ButtonReportSelected~iphone.png */,
 			);
 			name = reportConcern;
+			sourceTree = "<group>";
+		};
+		1FD2856417BBA1640094F488 /* Share Panel */ = {
+			isa = PBXGroup;
+			children = (
+				1FD2857517BBAD6A0094F488 /* PanelShare.png */,
+				1FD2857617BBAD6A0094F488 /* PanelShare@2x.png */,
+				1FD2856517BBA18A0094F488 /* ButtonEmail.png */,
+				1FD2856617BBA18A0094F488 /* ButtonEmail@2x.png */,
+				1FD2856717BBA18A0094F488 /* ButtonFacebook.png */,
+				1FD2856817BBA18A0094F488 /* ButtonFacebook@2x.png */,
+				1FD2856917BBA18A0094F488 /* ButtonSMS.png */,
+				1FD2856A17BBA18A0094F488 /* ButtonSMS@2x.png */,
+				1FD2856B17BBA18A0094F488 /* ButtonTwitter.png */,
+				1FD2856C17BBA18A0094F488 /* ButtonTwitter@2x.png */,
+			);
+			name = "Share Panel";
 			sourceTree = "<group>";
 		};
 		1FE1C66A17621F7900EDFC0E /* About */ = {
@@ -6628,6 +6666,16 @@
 				01F24AE717B8F2C000FC8820 /* ActionShare@2x.png in Resources */,
 				01F24AE817B8F2C000FC8820 /* ActionShareHighlighted.png in Resources */,
 				01F24AE917B8F2C000FC8820 /* ActionShareHighlighted@2x.png in Resources */,
+				1FD2856D17BBA18A0094F488 /* ButtonEmail.png in Resources */,
+				1FD2856E17BBA18A0094F488 /* ButtonEmail@2x.png in Resources */,
+				1FD2856F17BBA18A0094F488 /* ButtonFacebook.png in Resources */,
+				1FD2857017BBA18A0094F488 /* ButtonFacebook@2x.png in Resources */,
+				1FD2857117BBA18A0094F488 /* ButtonSMS.png in Resources */,
+				1FD2857217BBA18A0094F488 /* ButtonSMS@2x.png in Resources */,
+				1FD2857317BBA18A0094F488 /* ButtonTwitter.png in Resources */,
+				1FD2857417BBA18A0094F488 /* ButtonTwitter@2x.png in Resources */,
+				1FD2857717BBAD6A0094F488 /* PanelShare.png in Resources */,
+				1FD2857817BBAD6A0094F488 /* PanelShare@2x.png in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

@@ -566,18 +566,19 @@
     // OWActivityViewController on the next step
     NSMutableArray *activities = @[facebookActivity, twitterActivity].mutableCopy;
     
-    if ([MFMessageComposeViewController canSendText])
-    {
-        OWMessageActivity *messageActivity = [[OWMessageActivity alloc] init];
-        [activities addObject: messageActivity];
-    }
-    
     if ([MFMailComposeViewController canSendMail])
     {
         OWMailActivity *mailActivity = [[OWMailActivity alloc] init];
         [activities addObject: mailActivity
          ];
     }
+    
+    if ([MFMessageComposeViewController canSendText])
+    {
+        OWMessageActivity *messageActivity = [[OWMessageActivity alloc] init];
+        [activities addObject: messageActivity];
+    }
+    
     
     // Create OWActivityViewController controller and assign data source
     //
