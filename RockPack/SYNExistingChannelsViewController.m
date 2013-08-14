@@ -133,9 +133,6 @@
     if(sender.selected) // button is pressed twice
         return;
     
-    sender.selected = YES;
-
-    
     ExternalAccount* facebookAccount = appDelegate.currentUser.facebookAccount;
     __weak SYNExistingChannelsViewController* wself = self;
     __weak SYNAppDelegate* wAppDelegate = appDelegate;
@@ -151,14 +148,20 @@
     
     void(^CompletionBlock)(id) = ^(id no_responce) {
         
-        [wself switchAutopostViewToYes:isYesButton];
         
-        if(isYesButton)
-            [wAppDelegate.currentUser setFlag:ExternalAccountFlagAutopostAdd toExternalAccount:@"facebook"];
-        else
-            [wAppDelegate.currentUser unsetFlag:ExternalAccountFlagAutopostAdd toExternalAccount:@"facebook"];
+        
+        if(isYesButton) {
+           [wAppDelegate.currentUser setFlag:ExternalAccountFlagAutopostAdd toExternalAccount:@"facebook"]; 
+        }
+            
+        else {
+           [wAppDelegate.currentUser unsetFlag:ExternalAccountFlagAutopostAdd toExternalAccount:@"facebook"]; 
+        }
+            
         
         [wAppDelegate saveContext:YES];
+        
+        [wself switchAutopostViewToYes:isYesButton];
         
     };
     
