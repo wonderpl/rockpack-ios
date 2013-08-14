@@ -111,7 +111,10 @@
     }
 }
 
-
+- (BOOL) hasActiveSession
+{
+    return [[FBSession activeSession] isOpen];
+}
 
 - (BOOL) hasActiveSessionWithPermissionType:(NSString*)permissionString
 {

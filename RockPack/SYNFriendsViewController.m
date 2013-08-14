@@ -78,7 +78,7 @@ static char* association_key = "SYNFriendThumbnailCell to Friend";
     
     self.searchField.font = [UIFont rockpackFontOfSize: self.searchField.font.pointSize];
     
-    if([[SYNFacebookManager sharedFBManager] hasActiveSessionWithPermissionType:FacebookPublishPermission])
+    if([[SYNFacebookManager sharedFBManager] hasActiveSession])
     {
         self.facebookLoginButton.hidden = YES;
         self.preLoginLabel.hidden = YES;
@@ -155,6 +155,7 @@ static char* association_key = "SYNFriendThumbnailCell to Friend";
         [GAI.sharedInstance.defaultTracker sendView: @"Friends RP"];
     } else {
         self.onRockpackButton.selected = NO;
+        [GAI.sharedInstance.defaultTracker sendView: @"Friends All"];
     }
         
     
