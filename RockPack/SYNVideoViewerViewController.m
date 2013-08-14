@@ -677,9 +677,10 @@
     
     ExternalAccount* facebookAccount = appDelegate.currentUser.facebookAccount;
     
-    if(facebookAccount && (facebookAccount.noautopostValue == NO) &&
-       (![[SYNFacebookManager sharedFBManager] hasActiveSessionWithPermissionType:FacebookPublishPermission] ||
-        !(facebookAccount.flagsValue & ExternalAccountFlagAutopostStar))) // has FB account and has not explicitely forbiden autoshare stars
+    BOOL doesNotHavePublishPermissions = ![[SYNFacebookManager sharedFBManager] hasActiveSessionWithPermissionType:FacebookPublishPermission];
+    BOOL doesNotHaveAutopostStarFlagSet = !(facebookAccount.flagsValue & ExternalAccountFlagAutopostStar);
+    
+    if( facebookAccount && (facebookAccount.noautopostValue == NO) && (doesNotHavePublishPermissions || doesNotHaveAutopostStarFlagSet) ) 
     {
         
         // then show panel
