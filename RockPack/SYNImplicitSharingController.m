@@ -110,6 +110,8 @@
                                                                    
                             if(self.completionBlock)
                                 self.completionBlock();
+                            
+                            [self dismiss];
                                                                    
                             return;
                         }
