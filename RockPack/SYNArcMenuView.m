@@ -305,10 +305,14 @@ static CGPoint RotateAndScaleCGPointAroundCenter(CGPoint point, CGPoint center, 
 
 - (void) closeMenu
 {
+    BOOL userDidSelectMenuItem = FALSE;
+    
     for (SYNArcMenuItem *item in self.menusArray)
     {
         if (item.highlighted == TRUE)
         {
+             userDidSelectMenuItem = TRUE;
+            
             // blowup the selected menu button
             CAAnimationGroup *blowup = [self blowupAnimationAtPoint: item.center];
             
@@ -338,7 +342,10 @@ static CGPoint RotateAndScaleCGPointAroundCenter(CGPoint point, CGPoint center, 
         [self.delegate arcMenuDidFinishAnimationClose: self];
     }
     
-    
+    if (!userDidSelectMenuItem)
+    {
+        [self removeFromSuperview];
+    }
 
 
 }
@@ -367,7 +374,7 @@ static CGPoint RotateAndScaleCGPointAroundCenter(CGPoint point, CGPoint center, 
     return animationgroup;
 }
 
-
+// Wait until the blowUpAnimation is finished before removing ourselves from the superview
 - (void) animationDidStop: (CAAnimation *) animation
                  finished: (BOOL) finished
 {
@@ -385,7 +392,6 @@ static CGPoint RotateAndScaleCGPointAroundCenter(CGPoint point, CGPoint center, 
     }
     
     [self removeFromSuperview];
-
 }
 
 @end
