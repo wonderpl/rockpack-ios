@@ -704,6 +704,8 @@
         UITapGestureRecognizer* tapGesture = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(dismissImplicitSharing)];
         [self.view addGestureRecognizer:tapGesture];
         
+        
+        
         return;
     }
     
