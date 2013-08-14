@@ -382,11 +382,7 @@ typedef void(^FeedDataErrorBlock)(void);
                                                return;
                                                
                                            }
-                                           
-                                           
-                                           
-                                           
-                                                    
+                                               
                                            
                                            if(![appDelegate.mainRegistry registerDataForSocialFeedFromItemsDictionary:contentItem
                                                                                                           byAppending:toAppend])
@@ -643,7 +639,7 @@ typedef void(^FeedDataErrorBlock)(void);
     
     if(feedItem.resourceTypeValue == FeedItemResourceTypeVideo)
     {
-        return CGSizeMake(cellWidth, IS_IPHONE ? 266.0f : 168.0f);
+        return CGSizeMake(cellWidth, IS_IPHONE ? 280.0f : 168.0f);
     }
     else // Channel
     {
@@ -652,7 +648,7 @@ typedef void(^FeedDataErrorBlock)(void);
             if(feedItem.itemCountValue == 2)
                 return CGSizeMake(cellWidth, 149.0f);
         }
-        return CGSizeMake(cellWidth, IS_IPHONE ? 356.0f : 298.0f);
+        return CGSizeMake(cellWidth, IS_IPHONE ? 363.0f : 298.0f);
     }
 }
 
@@ -810,18 +806,10 @@ typedef void(^FeedDataErrorBlock)(void);
                    layout: (UICollectionViewLayout*) collectionViewLayout
                    referenceSizeForHeaderInSection: (NSInteger) section
 {
-    if (collectionView == self.feedCollectionView)
-    {
-        if (IS_IPAD)
-        {
-            return CGSizeMake(1024, 65);   
-        }
-        return CGSizeMake(320, 34);
-    }
-    else
-    {
-        return CGSizeMake(0, 0);
-    }
+    if (IS_IPAD)
+        return CGSizeMake(1024, 65);
+    
+    return CGSizeMake(320, 34);
 }
 
 
@@ -833,18 +821,13 @@ typedef void(^FeedDataErrorBlock)(void);
     
     NSLog(@"section: %i from %i", section, self.feedItemsData.count);
     
-    if ((collectionView == self.feedCollectionView) &&
-        (section == (self.feedItemsData.count - 1))) // only the last section can have a loader
+    if  (section == (self.feedItemsData.count - 1) && // only the last section can have a loader
+        (self.dataRequestRange.location + self.dataRequestRange.length < self.dataItemsAvailable)) 
     {
-        
         
         footerSize = [self footerSize];
         
        
-        if (self.dataRequestRange.location + self.dataRequestRange.length < self.dataItemsAvailable)
-        {
-            footerSize = CGSizeMake(1.0f, 5.0f);
-        }
     }
     
     return footerSize;
