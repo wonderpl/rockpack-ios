@@ -252,7 +252,7 @@ UITextViewDelegate>
 {
     int page = 0;
     
-    for (UINavigationController *nvc in self.childViewControllers)
+    for (SYNAbstractViewController *nvc in self.childViewControllers)
     {
         if ([pageName isEqualToString: nvc.title])
         {
@@ -265,6 +265,17 @@ UITextViewDelegate>
     }
 }
 
+-(SYNAbstractViewController*)viewControllerByPageName: (NSString *) pageName
+{
+    SYNAbstractViewController* child;
+    for (child in self.childViewControllers)
+    {
+        if ([pageName isEqualToString: child.title])
+            break;
+           
+    }
+    return child;
+}
 
 #pragma mark - UIScrollViewDelegate
 

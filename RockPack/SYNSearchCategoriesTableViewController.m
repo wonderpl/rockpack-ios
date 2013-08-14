@@ -154,11 +154,18 @@ static NSString *SearchGenresTableCellIdentifier = @"SYNSearchCategoriesIphoneCe
 {
     Genre* genreSelected = self.searchCategories[indexPath.item];
     
+    SYNAppDelegate* appDelegate = (SYNAppDelegate*)[[UIApplication sharedApplication] delegate];
+    
+    NSNotification* navigationNotification = [NSNotification notificationWithName: kNavigateToPage
+                                                                           object: self
+                                                                         userInfo: @{@"pageName":kChannelsViewId,
+                                                                                     @"action":@"open", @"object":genreSelected}];
+    
+    [[NSNotificationCenter defaultCenter] postNotification: navigationNotification];
+    
+    [appDelegate.viewStackManager dismissSearchBar];
     
     
-    [NSNotificationCenter.defaultCenter postNotificationName: kSearchTyped
-                                                      object: self
-                                                    userInfo: @{kSearchTerm : genreSelected.name}];
     
    
 }

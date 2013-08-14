@@ -875,6 +875,10 @@ typedef void(^AnimationCompletionBlock)(BOOL finished);
     if (!pageName)
         return;
     
+    SYNAbstractViewController* controllerToGo = [self.containerViewController viewControllerByPageName:pageName];
+    if(!controllerToGo)
+        return;
+    
     if (self.isInSearchMode)
     {
         [self cancelButtonPressed:nil];
@@ -892,7 +896,17 @@ typedef void(^AnimationCompletionBlock)(BOOL finished);
     [self.containerViewController navigateToPageByName: pageName];
     
     self.sideNavigatorViewController.state = SideNavigationStateHidden;
+    
+    // post open actions
+    
+    if ([notification userInfo][@"action"])
+    {
         
+        [controllerToGo performAction:[notification userInfo][@"action"]
+                           withObject:[notification userInfo][@"object"]];
+    }
+    
+    
 }
 
 

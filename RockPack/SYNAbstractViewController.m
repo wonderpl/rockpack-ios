@@ -668,7 +668,7 @@
 
 - (void) headerTapped
 {
-    
+    // to be implemented by subclass
 }
 
 - (void) viewDidScrollToBack
@@ -676,7 +676,10 @@
     // to be implemented by subclass
 }
 
-
+-(void)performAction:(NSString*)action withObject:(id)object
+{
+    // to be implemented by subclass 
+}
 #pragma mark - Load more footer
 
 // Load more footer
