@@ -10,6 +10,7 @@
 #import "UIFont+SYNFont.h"
 #import <QuartzCore/QuartzCore.h>
 #import "UIImageView+WebCache.h"
+#import "AppConstants.h"
 
 @interface SYNVideoThumbnailRegularCell () <UIGestureRecognizerDelegate>
 
@@ -26,14 +27,17 @@
 {
     [super awakeFromNib];
 
-        // Add long-press and tap recognizers (once only per cell)
+#ifdef ENABLE_ARC_MENU
+    
+    // Add long-press and tap recognizers (once only per cell)
     self.longPress = [[UILongPressGestureRecognizer alloc] initWithTarget: self
                                                                    action: @selector(showMenu:)];
     self.longPress.delegate = self;
     [self addGestureRecognizer: self.longPress];
+#endif
 
     
-    // Tap for exiting delete mode
+    // Tap for showing video
     self.tap = [[UITapGestureRecognizer alloc] initWithTarget: self
                                                        action: @selector(showVideo:)];
     self.tap.delegate = self;

@@ -411,13 +411,15 @@
         
         [self doFacebookLoginAnimation];
         
-        // after loggin in with FB SDK log in with the server hitting "/ws/login/external/"
+        // after the log-in with FB through its SDK, log in with the server hitting "/ws/login/external/"
         
         [_appDelegate.oAuthNetworkEngine doFacebookLoginWithAccessToken: accessTokenData.accessToken
                                                                 expires: accessTokenData.expirationDate
                                                             permissions: accessTokenData.permissions // @"read" at this time
                                                       completionHandler: ^(SYNOAuth2Credential* credential) {
-                                                              
+                                                          
+            // get the user data
+                                                          
             [_appDelegate.oAuthNetworkEngine retrieveAndRegisterUserFromCredentials: credential
                                                                   completionHandler: ^(NSDictionary* dictionary) {
                                                                   

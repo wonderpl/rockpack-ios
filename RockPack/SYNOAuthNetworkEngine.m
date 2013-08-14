@@ -1609,6 +1609,7 @@
         accountData[@"token_expires"] = [dateFormatter stringFromDate: data.expirationDate];
     }
     
+    // this will also register the external account returned in CoreData with using the same JSON it sends in the request
     
     [self connectExternalAccoundForUserId:userId
                               accountData:accountData
@@ -1691,6 +1692,9 @@
     
     [self addCommonHandlerToNetworkOperation: networkOperation
                            completionHandler:^(id responce) {
+                               
+                               // use the same JSON that is sent in the request , some fields might be missing but they can
+                               // always be retrieved later
                                
                                BOOL didRegister = [wself.registry registerExternalAccountWithCurrentUserFromDictionary:accountData];
                                if(!didRegister) {

@@ -174,8 +174,8 @@
     if(users.count > 1 && users.count < 4)
     {
         
-        [attributedCompleteString appendAttributedString:[[NSAttributedString alloc] initWithString:[NSString stringWithFormat:@"%@", including]
-                                                                                         attributes:lightTextAttributes]];
+        [attributedCompleteString appendAttributedString:[[NSAttributedString alloc] initWithString: [NSString stringWithFormat:@"%@", including]
+                                                                                         attributes: lightTextAttributes]];
         
     }
     
