@@ -111,13 +111,11 @@
     }
 }
 
-- (BOOL) hasPermission:(NSString*)permissionString
+
+
+- (BOOL) hasActiveSessionWithPermissionType:(NSString*)permissionString
 {
-    if ([FBSession.activeSession.permissions indexOfObject:permissionString] == NSNotFound) 
-        return NO;
-    
-    
-    return YES;
+    return [[FBSession activeSession] isOpen] && !([FBSession.activeSession.permissions indexOfObject:permissionString] == NSNotFound);
 }
 
 - (void) openSessionFromExistingToken: (NSString *) token
@@ -198,7 +196,7 @@
     if ([FBSession.activeSession isOpen])
     {
         // Check to see that the permissions asked are not already granted...
-        if (![self hasPermission:permissionString])
+        if (!([FBSession.activeSession.permissions indexOfObject:permissionString] == NSNotFound))
         {
             
             [FBSession.activeSession requestNewPublishPermissions: @[permissionString]
@@ -407,10 +405,10 @@
                       onSuccess: (FacebookPostSuccessBlock) successBlock
                       onFailure: (FacebookPostFailureBlock) failureBlock
 {
-    if (!toFriend || !self.hasOpenSession)
-    {
+    
+    
+    if (!toFriend || ![[FBSession activeSession] isOpen])
         return;
-    }
     
     // Reads the value of the custom key I added to the Info.plist
     NSString *facebookAppId = [[NSBundle mainBundle] objectForInfoDictionaryKey: @"FacebookAppID"];
@@ -455,10 +453,7 @@
 }
 
 
-- (BOOL) hasOpenSession
-{
-    return [[FBSession activeSession] isOpen];
-}
+
 
 
 @end

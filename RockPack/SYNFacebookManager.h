@@ -66,9 +66,9 @@ typedef void (^FacebookPostFailureBlock)(NSError *error);
                              onSuccess: (FacebookOpenSessionSuccessBlock) successBlock
                              onFailure: (FacebookOpenSessionFailureBlock) failureBlock;
 
-- (BOOL) hasOpenSession;
 
-- (BOOL) hasPermission:(NSString*)permissionString;
+
+- (BOOL) hasActiveSessionWithPermissionType:(NSString*)permissionString;
 
 - (void) sendAppRequestToFriend: (Friend *) toFriend
                       onSuccess: (FacebookPostSuccessBlock) successBlock

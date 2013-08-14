@@ -5235,8 +5235,8 @@
 			children = (
 				BE7D02FE179D5624008053DC /* SYNFriendsViewController.h */,
 				BE7D02FF179D5624008053DC /* SYNFriendsViewController.m */,
-				38A73D8517A0086400AD9E90 /* SYNFriendsViewController~iphone.xib */,
 				BE7D0300179D5624008053DC /* SYNFriendsViewController.xib */,
+				38A73D8517A0086400AD9E90 /* SYNFriendsViewController~iphone.xib */,
 				BE7D0303179D5A40008053DC /* SYNFriendThumbnailCell.h */,
 				BE7D0304179D5A41008053DC /* SYNFriendThumbnailCell.m */,
 				BE7D0306179D5ACE008053DC /* SYNFriendThumbnailCell.xib */,

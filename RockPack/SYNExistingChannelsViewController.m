@@ -165,8 +165,6 @@
         
     };
     
-    
-    
     if(isYesButton)
     {
         // if the SDK has already the 'publish' options on, it will just call the return function()
@@ -177,7 +175,7 @@
                                                           andAccessTokenData: [[FBSession activeSession] accessTokenData]
                                                            completionHandler: ^(id no_responce) {
                                                                
-                            // set the flag on the server
+                            // set the flag on the server...
                             [wAppDelegate.oAuthNetworkEngine setFlag:@"facebook_autopost_add"
                                                            withValue:isYesButton
                                                             forUseId:appDelegate.currentUser.uniqueId

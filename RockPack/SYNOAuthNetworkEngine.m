@@ -536,6 +536,7 @@
         
     [networkOperation addJSONCompletionHandler:^(NSDictionary *responseDictionary)
     {
+        
         NSString* possibleError = responseDictionary[@"error"];
          
         if (possibleError)

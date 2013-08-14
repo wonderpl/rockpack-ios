@@ -100,10 +100,15 @@
                                                           andAccessTokenData:accessTokenData
                                                            completionHandler:^(id no_responce) {
                                                                
+                                                               //NSLog(@"Connected FB acount");
+                                                               
                         [appDelegate.oAuthNetworkEngine setFlag:@"facebook_autopost_star"
                                                       withValue:isYesButton
                                                        forUseId:appDelegate.currentUser.uniqueId
                                               completionHandler:^(id no_response) {
+                                                  
+                                                  
+                                                                //NSLog(@"Flag sent");
                                                                                                   
                                             [wself switchAutopostViewToYes:isYesButton];
                                                                                                   

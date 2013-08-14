@@ -367,8 +367,7 @@
         }
         else
         {
-            [GAI.sharedInstance.defaultTracker
-             sendView: @"Own Profile"];
+            [GAI.sharedInstance.defaultTracker sendView: @"Own Profile"];
         }
     }
     else

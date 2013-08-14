@@ -28,6 +28,7 @@
 #import "UIFont+SYNFont.h"
 #import "UIImageView+WebCache.h"
 #import "Video.h"
+#import "SYNFacebookManager.h"
 #import "VideoInstance.h"
 #import "SYNImplicitSharingController.h"
 #import <MediaPlayer/MediaPlayer.h>
@@ -676,10 +677,11 @@
     
     ExternalAccount* facebookAccount = appDelegate.currentUser.facebookAccount;
     
-    if(facebookAccount && // has a facebook account
-       !(facebookAccount.flagsValue & ExternalAccountFlagAutopostStar) && // has not already set the implicit sharing to ON
-       facebookAccount.noautopostValue == NO) // has not explicitely forbid the implicit sharing
+    if(facebookAccount && (facebookAccount.noautopostValue == NO) &&
+       (![[SYNFacebookManager sharedFBManager] hasActiveSessionWithPermissionType:FacebookPublishPermission] ||
+        !(facebookAccount.flagsValue & ExternalAccountFlagAutopostStar))) // has FB account and has not explicitely forbiden autoshare stars
     {
+        
         // then show panel
         __weak SYNVideoViewerViewController* wself = self;
         SYNImplicitSharingController* implicitSharingController = [SYNImplicitSharingController controllerWithBlock:^{
@@ -700,6 +702,7 @@
         
         return;
     }
+    
     
     
     id<GAITracker> tracker = [GAI sharedInstance].defaultTracker;
