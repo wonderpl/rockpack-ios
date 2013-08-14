@@ -887,6 +887,9 @@
     if (recognizer.state == UIGestureRecognizerStateBegan)
     {        
         VideoInstance *videoInstance = [self videoInstanceForIndexPath: cellIndexPath];
+        
+        [self requestShareLinkWithObjectType: @"video_instance"
+                                    objectId: videoInstance.uniqueId];
 
         
         SYNArcMenuItem *arcMenuItem1 = [[SYNArcMenuItem alloc] initWithImage: [UIImage imageNamed: (videoInstance.video.starredByUserValue == FALSE) ? @"ActionLike" : @"ActionUnlike"]
