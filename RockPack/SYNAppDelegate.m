@@ -1352,7 +1352,7 @@
     
     [tracker sendEventWithCategory: @"goal"
                         withAction: @"openDeepLink"
-                         withLabel: url
+                         withLabel: url.absoluteString
                          withValue: nil];
     
     return success;
