@@ -310,26 +310,6 @@
     if (![aggregationsDictionary isKindOfClass: [NSDictionary class]])
         return NO;
     
-    // == Mock data for testing pursposes == //
-    
-//    NSMutableDictionary *fakeAggregations = [NSMutableDictionary dictionaryWithDictionary:aggregationsDictionary];
-//    [fakeAggregations addEntriesFromDictionary:@{@"1":@{@"count":@(2), @"covers":@[@"ch9HaxNJur3YMGUqcEB3mVSw", @"ch9HaxNJur3YMGUqcEB3mVSw", @"ch9HaxNJur3YMGUqcEB3mVSw", @"ch9HaxNJur3YMGUqcEB3mVSw"], @"type":@"channel"}}];
-//    
-//    aggregationsDictionary = [NSDictionary dictionaryWithDictionary:fakeAggregations];
-//    
-//    
-//    NSMutableArray* fakeItemsArray = [NSMutableArray arrayWithArray:itemsArray];
-//    NSMutableDictionary* fakeFirstChannel = [NSMutableDictionary dictionaryWithDictionary:itemsArray[0]];
-//    [fakeFirstChannel setObject:@"1" forKey:@"aggregation"];
-//    
-//    [fakeItemsArray removeObjectAtIndex:0];
-//    [fakeItemsArray addObject:[fakeFirstChannel copy]];
-//    [fakeItemsArray addObject:[fakeFirstChannel copy]];
-//    
-//    itemsArray = [NSArray arrayWithArray:fakeItemsArray];
-    
-    // == Get Existing Data == //
-    
     
     NSDictionary *videoInstancesByUniqueId, *channelInstacesByUniqueId, *feedItemInstacesByUniqueId;
     if(!append)
