@@ -26,6 +26,7 @@
 #import "SYNExistingChannelsViewController.h"
 #import "SYNGenreTabViewController.h"
 #import "SYNImagePickerController.h"
+#import "SYNImplicitSharingController.h"
 #import "SYNMasterViewController.h"
 #import "SYNModalSubscribersController.h"
 #import "SYNOAuthNetworkEngine.h"
@@ -1423,6 +1424,104 @@
     }
 }
 
+
+- (IBAction) toggleStarAtIndexPath: (NSIndexPath *) indexPath
+{
+    // if the user does NOT have a FB account linked, no prompt
+    ExternalAccount *facebookAccount = appDelegate.currentUser.facebookAccount;
+    
+    if (facebookAccount && // has a facebook account
+        !(facebookAccount.flagsValue & ExternalAccountFlagAutopostStar) && // has not already set the implicit sharing to ON
+        facebookAccount.noautopostValue == NO) // has not explicitely forbid the implicit sharing
+    {
+        // then show panel
+        __weak typeof(self) weakSelf = self;
+        
+        SYNImplicitSharingController *implicitSharingController = [SYNImplicitSharingController controllerWithBlock: ^{
+            [weakSelf toggleStarAtIndexPath: indexPath];
+        }];
+        
+        [self addChildViewController: implicitSharingController];
+        
+        implicitSharingController.view.alpha = 0.0f;
+        implicitSharingController.view.center = CGPointMake(self.view.center.x, self.view.center.y);
+        implicitSharingController.view.frame = CGRectIntegral(implicitSharingController.view.frame);
+        [self.view addSubview: implicitSharingController.view];
+        
+        [UIView animateWithDuration: 0.3
+                         animations: ^{
+                             implicitSharingController.view.alpha = 1.0f;
+                         }];
+        
+        UITapGestureRecognizer *tapGesture = [[UITapGestureRecognizer alloc] initWithTarget: self
+                                                                                     action: @selector(dismissImplicitSharing)];
+        [self.view addGestureRecognizer: tapGesture];
+        
+        return;
+    }
+    
+    id<GAITracker> tracker = [GAI sharedInstance].defaultTracker;
+    
+    [tracker sendEventWithCategory: @"uiAction"
+                        withAction: @"videoStarButtonClick"
+                         withLabel: nil
+                         withValue: nil];
+    
+    __weak VideoInstance *videoInstance = self.channel.videoInstances [indexPath.row];
+    
+    // TODO: I've seen elsewhere in the code that the favourites have been bodged, so check to see if the following line is valid
+    NSString *starAction = (videoInstance.video.starredByUserValue == FALSE) ? @"star" : @"unstar";
+    
+//    int starredIndex = self.currentSelectedIndex;
+    
+    [appDelegate.oAuthNetworkEngine recordActivityForUserId: appDelegate.currentUser.uniqueId
+                                                     action: starAction
+                                            videoInstanceId: videoInstance.uniqueId
+                                          completionHandler: ^(id response) {
+                                              if (videoInstance.video.starredByUserValue == TRUE)
+                                              {
+                                                  // Currently highlighted, so decrement
+                                                  videoInstance.video.starredByUserValue = FALSE;
+                                                  videoInstance.video.starCountValue -= 1;
+                                              }
+                                              else
+                                              {
+                                                  // Currently highlighted, so increment
+                                                  videoInstance.video.starredByUserValue = TRUE;
+                                                  videoInstance.video.starCountValue += 1;
+                                                  [Appirater userDidSignificantEvent: FALSE];
+                                              }
+                                              
+                                              // Looks like some sort of bodge
+                                              //                                               (self.favouritesStatusArray)[starredIndex] = @(button.selected);
+                                              
+                                              [appDelegate saveContext: YES];
+                                          } errorHandler: ^(id error) {
+                                              DebugLog(@"Could not star video");
+                                          }];
+}
+
+
+- (void) dismissImplicitSharing
+{
+    SYNImplicitSharingController *implicitSharingController;
+    
+    for (UIViewController *child in self.childViewControllers)
+    {
+        if ([child isKindOfClass: [SYNImplicitSharingController class]])
+        {
+            implicitSharingController = (SYNImplicitSharingController *) child;
+        }
+    }
+    
+    if (!implicitSharingController)
+    {
+        return;
+    }
+    
+    [implicitSharingController dismiss];
+}
+
 - (void) arcMenuUpdateState: (UIGestureRecognizer *) recognizer
                     forCell: cell
 {
@@ -1432,12 +1531,10 @@
     
     if (recognizer.state == UIGestureRecognizerStateBegan)
     {
-        NSIndexPath *indexPath = [self.videoThumbnailCollectionView indexPathForItemAtPoint:tapPoint];
-        
-        NSLog (@"IndexPath %@", indexPath);
-        
-        SYNArcMenuItem *arcMenuItem1 = [[SYNArcMenuItem alloc] initWithImage: [UIImage imageNamed: @"ActionLike"]
-                                                            highlightedImage: [UIImage imageNamed: @"ActionLikeHighlighted"]];
+        VideoInstance *videoInstance = self.channel.videoInstances [cellIndexPath.row];
+
+        SYNArcMenuItem *arcMenuItem1 = [[SYNArcMenuItem alloc] initWithImage: [UIImage imageNamed: (videoInstance.video.starredByUserValue == FALSE) ? @"ActionLike" : @"ActionUnlike"]
+                                                            highlightedImage: [UIImage imageNamed: (videoInstance.video.starredByUserValue == FALSE) ? @"ActionLikeHighlighted" : @"ActionUnlikeHighlighted"]];
         
         SYNArcMenuItem *arcMenuItem2 = [[SYNArcMenuItem alloc] initWithImage: [UIImage imageNamed: @"ActionAdd"]
                                                             highlightedImage: [UIImage imageNamed: @"ActionAddHighlighted"]];
@@ -1482,6 +1579,7 @@
     switch (menuIndex)
     {
         case kArcMenuButtonLike:
+            [self toggleStarAtIndexPath: cellIndexPath];
             NSLog (@"Like");
             break;
             
