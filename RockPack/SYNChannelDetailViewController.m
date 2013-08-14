@@ -1522,6 +1522,24 @@
     [implicitSharingController dismiss];
 }
 
+- (void) shareVideoAtIndexPath: (NSIndexPath *) indexPath
+{
+    VideoInstance *videoInstance = self.channel.videoInstances [indexPath.row];
+    
+    CGRect rect = CGRectMake([SYNDeviceManager.sharedInstance currentScreenWidth] * 0.5,
+                             480.0f, 1, 1);
+    
+    [self shareVideoInstance: videoInstance
+                      inView: self.view
+                    fromRect: rect
+             arrowDirections: 0
+           activityIndicator: self.shareActivityIndicator
+                  onComplete: ^{
+                      [Appirater userDidSignificantEvent: FALSE];
+                  }];
+}
+
+
 - (void) arcMenuUpdateState: (UIGestureRecognizer *) recognizer
                     forCell: cell
 {
@@ -1579,8 +1597,8 @@
     switch (menuIndex)
     {
         case kArcMenuButtonLike:
-            [self toggleStarAtIndexPath: cellIndexPath];
             NSLog (@"Like");
+            [self toggleStarAtIndexPath: cellIndexPath];
             break;
             
         case kArcMenuButtonAdd:
@@ -1591,6 +1609,7 @@
             
         case kArcMenuButtonShare:
             NSLog (@"Share");
+            [self shareVideoAtIndexPath: cellIndexPath];
             break;
             
         default:
