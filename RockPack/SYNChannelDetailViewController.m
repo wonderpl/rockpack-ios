@@ -14,6 +14,7 @@
 #import "GAI.h"
 #import "Genre.h"
 #import "SSTextView.h"
+#import "SYNArcMenuView.h"
 #import "SYNCaution.h"
 #import "SYNChannelCategoryTableViewController.h"
 #import "SYNChannelCoverImageSelectorViewController.h"
@@ -22,10 +23,10 @@
 #import "SYNCoverChooserController.h"
 #import "SYNCoverThumbnailCell.h"
 #import "SYNDeviceManager.h"
-#import "SYNDeviceManager.h"
 #import "SYNExistingChannelsViewController.h"
 #import "SYNGenreTabViewController.h"
 #import "SYNImagePickerController.h"
+#import "SYNImplicitSharingController.h"
 #import "SYNMasterViewController.h"
 #import "SYNModalSubscribersController.h"
 #import "SYNOAuthNetworkEngine.h"
@@ -47,13 +48,15 @@
                                               SYNImagePickerControllerDelegate,
                                               UIPopoverControllerDelegate,
                                               SYNChannelCategoryTableViewDelegate,
-                                              SYNChannelCoverImageSelectorDelegate>
+                                              SYNChannelCoverImageSelectorDelegate,
+                                              SYNVideoThumbnailRegularCellDelegate,
+                                              SYNArcMenuViewDelegate>
 
 
 @property (nonatomic, assign)  CGPoint originalContentOffset;
+@property (nonatomic, assign)  CGPoint originalMasterControlsViewOrigin;
 @property (nonatomic, assign)  CGRect originalSubscribeButtonRect;
 @property (nonatomic, assign)  CGRect originalSubscribersLabelRect;
-@property (nonatomic, assign)  CGPoint originalMasterControlsViewOrigin;
 @property (nonatomic, assign) BOOL hasAppeared;
 @property (nonatomic, assign) BOOL isIPhone;
 @property (nonatomic, assign, getter = isImageSelectorOpen) BOOL imageSelectorOpen;
@@ -61,16 +64,16 @@
 @property (nonatomic, strong) CIFilter *filter;
 @property (nonatomic, strong) CIImage *backgroundCIImage;
 @property (nonatomic, strong) IBOutlet SSTextView *channelTitleTextView;
+@property (nonatomic, strong) IBOutlet UIButton *addCoverButton;
 @property (nonatomic, strong) IBOutlet UIButton *buyButton;
 @property (nonatomic, strong) IBOutlet UIButton *cameraButton;
 @property (nonatomic, strong) IBOutlet UIButton *createChannelButton;
-@property (nonatomic, strong) IBOutlet UIButton *saveChannelButton;
-@property (nonatomic, strong) IBOutlet UIButton *shareButton;
-@property (nonatomic, strong) IBOutlet UIButton *addCoverButton;
 @property (nonatomic, strong) IBOutlet UIButton *playChannelButton;
 @property (nonatomic, strong) IBOutlet UIButton *profileImageButton;
 @property (nonatomic, strong) IBOutlet UIButton *reportConcernButton;
+@property (nonatomic, strong) IBOutlet UIButton *saveChannelButton;
 @property (nonatomic, strong) IBOutlet UIButton *selectCategoryButton;
+@property (nonatomic, strong) IBOutlet UIButton *shareButton;
 @property (nonatomic, strong) IBOutlet UIButton *subscribeButton;
 @property (nonatomic, strong) IBOutlet UIImageView *avatarImageView;
 @property (nonatomic, strong) IBOutlet UIImageView *channelCoverImageView;
@@ -84,6 +87,7 @@
 @property (nonatomic, strong) NSIndexPath *indexPathToDelete;
 @property (nonatomic, strong) NSString *selectedCategoryId;
 @property (nonatomic, strong) NSString *selectedCoverId;
+@property (nonatomic, strong) SYNArcMenuView *arcMenu;
 @property (nonatomic, strong) SYNCoverChooserController *coverChooserController;
 @property (nonatomic, strong) SYNGenreTabViewController *categoriesTabViewController;
 @property (nonatomic, strong) SYNImagePickerController *imagePicker;
@@ -987,8 +991,6 @@
     videoThumbnailCell.titleLabel.text = videoInstance.title;
     videoThumbnailCell.viewControllerDelegate = self;
     
-    videoThumbnailCell.dataIndetifier = videoInstance.uniqueId;
-    
     videoThumbnailCell.addItButton.highlighted = NO;
     videoThumbnailCell.addItButton.selected = [appDelegate.videoQueue videoInstanceIsAddedToChannel: videoInstance];
     
@@ -1033,9 +1035,9 @@
 }
 
 
-- (CGSize)			 collectionView: (UICollectionView *) collectionView
-                      layout: (UICollectionViewLayout *) collectionViewLayout
-referenceSizeForFooterInSection: (NSInteger) section
+- (CGSize) collectionView: (UICollectionView *) collectionView
+                   layout: (UICollectionViewLayout *) collectionViewLayout
+           referenceSizeForFooterInSection: (NSInteger) section
 {
     CGSize footerSize;
     
@@ -1385,6 +1387,17 @@ referenceSizeForFooterInSection: (NSInteger) section
     
     UIView *v = addButton.superview.superview;
     NSIndexPath *indexPath = [self.videoThumbnailCollectionView indexPathForItemAtPoint: v.center];
+
+    [self addVideoAtIndexPath: indexPath
+                withOperation: noteName];
+    
+    addButton.selected = !addButton.selected;
+}
+
+
+- (void) addVideoAtIndexPath: (NSIndexPath *) indexPath
+               withOperation: (NSString *) operation
+{
     VideoInstance *videoInstance = self.channel.videoInstances [indexPath.row];
     
     if (videoInstance)
@@ -1405,12 +1418,266 @@ referenceSizeForFooterInSection: (NSInteger) section
                                                        DebugLog(@"Could not record videoAddButtonTapped: activity");
                                                    }];
         
-        [[NSNotificationCenter defaultCenter] postNotificationName: noteName
+        [[NSNotificationCenter defaultCenter] postNotificationName: operation
                                                             object: self
                                                           userInfo: @{@"VideoInstance": videoInstance}];
     }
+}
+
+
+- (IBAction) toggleStarAtIndexPath: (NSIndexPath *) indexPath
+{
+    // if the user does NOT have a FB account linked, no prompt
+    ExternalAccount *facebookAccount = appDelegate.currentUser.facebookAccount;
     
-    addButton.selected = !addButton.selected;
+    if (facebookAccount && // has a facebook account
+        !(facebookAccount.flagsValue & ExternalAccountFlagAutopostStar) && // has not already set the implicit sharing to ON
+        facebookAccount.noautopostValue == NO) // has not explicitely forbid the implicit sharing
+    {
+        // then show panel
+        __weak typeof(self) weakSelf = self;
+        
+        SYNImplicitSharingController *implicitSharingController = [SYNImplicitSharingController controllerWithBlock: ^{
+            [weakSelf toggleStarAtIndexPath: indexPath];
+        }];
+        
+        [self addChildViewController: implicitSharingController];
+        
+        implicitSharingController.view.alpha = 0.0f;
+        implicitSharingController.view.center = CGPointMake(self.view.center.x, self.view.center.y);
+        implicitSharingController.view.frame = CGRectIntegral(implicitSharingController.view.frame);
+        [self.view addSubview: implicitSharingController.view];
+        
+        [UIView animateWithDuration: 0.3
+                         animations: ^{
+                             implicitSharingController.view.alpha = 1.0f;
+                         }];
+        
+        UITapGestureRecognizer *tapGesture = [[UITapGestureRecognizer alloc] initWithTarget: self
+                                                                                     action: @selector(dismissImplicitSharing)];
+        [self.view addGestureRecognizer: tapGesture];
+        
+        return;
+    }
+    
+    id<GAITracker> tracker = [GAI sharedInstance].defaultTracker;
+    
+    [tracker sendEventWithCategory: @"uiAction"
+                        withAction: @"videoStarButtonClick"
+                         withLabel: nil
+                         withValue: nil];
+    
+    __weak VideoInstance *videoInstance = self.channel.videoInstances [indexPath.row];
+    
+    // TODO: I've seen elsewhere in the code that the favourites have been bodged, so check to see if the following line is valid
+    NSString *starAction = (videoInstance.video.starredByUserValue == FALSE) ? @"star" : @"unstar";
+    
+//    int starredIndex = self.currentSelectedIndex;
+    
+    [appDelegate.oAuthNetworkEngine recordActivityForUserId: appDelegate.currentUser.uniqueId
+                                                     action: starAction
+                                            videoInstanceId: videoInstance.uniqueId
+                                          completionHandler: ^(id response) {
+                                              if (videoInstance.video.starredByUserValue == TRUE)
+                                              {
+                                                  // Currently highlighted, so decrement
+                                                  videoInstance.video.starredByUserValue = FALSE;
+                                                  videoInstance.video.starCountValue -= 1;
+                                              }
+                                              else
+                                              {
+                                                  // Currently highlighted, so increment
+                                                  videoInstance.video.starredByUserValue = TRUE;
+                                                  videoInstance.video.starCountValue += 1;
+                                                  [Appirater userDidSignificantEvent: FALSE];
+                                              }
+                                              
+                                              // Looks like some sort of bodge
+                                              //                                               (self.favouritesStatusArray)[starredIndex] = @(button.selected);
+                                              
+                                              [appDelegate saveContext: YES];
+                                          } errorHandler: ^(id error) {
+                                              DebugLog(@"Could not star video");
+                                          }];
+}
+
+
+- (void) dismissImplicitSharing
+{
+    SYNImplicitSharingController *implicitSharingController;
+    
+    for (UIViewController *child in self.childViewControllers)
+    {
+        if ([child isKindOfClass: [SYNImplicitSharingController class]])
+        {
+            implicitSharingController = (SYNImplicitSharingController *) child;
+        }
+    }
+    
+    if (!implicitSharingController)
+    {
+        return;
+    }
+    
+    [implicitSharingController dismiss];
+}
+
+- (void) shareVideoAtIndexPath: (NSIndexPath *) indexPath
+{
+    VideoInstance *videoInstance = self.channel.videoInstances [indexPath.row];
+    
+    CGRect rect = CGRectMake([SYNDeviceManager.sharedInstance currentScreenWidth] * 0.5,
+                             480.0f, 1, 1);
+    
+    [self shareVideoInstance: videoInstance
+                      inView: self.view
+                    fromRect: rect
+             arrowDirections: 0
+           activityIndicator: self.shareActivityIndicator
+                  onComplete: ^{
+                      [Appirater userDidSignificantEvent: FALSE];
+                  }];
+}
+
+#define kRotateThresholdX 100
+#define kRotateThresholdY 110
+#define kRRotateBorderX 25
+#define kRotateBorderY 25
+
+- (void) arcMenuUpdateState: (UIGestureRecognizer *) recognizer
+                    forCell: cell
+{
+    CGPoint tapPoint = [recognizer locationInView: self.view];
+    
+    NSIndexPath *cellIndexPath = [self.videoThumbnailCollectionView indexPathForCell: cell];
+    
+    if (recognizer.state == UIGestureRecognizerStateBegan)
+    {
+        VideoInstance *videoInstance = self.channel.videoInstances [cellIndexPath.row];
+
+        SYNArcMenuItem *arcMenuItem1 = [[SYNArcMenuItem alloc] initWithImage: [UIImage imageNamed: (videoInstance.video.starredByUserValue == FALSE) ? @"ActionLike" : @"ActionUnlike"]
+                                                            highlightedImage: [UIImage imageNamed: (videoInstance.video.starredByUserValue == FALSE) ? @"ActionLikeHighlighted" : @"ActionUnlikeHighlighted"]];
+        
+        SYNArcMenuItem *arcMenuItem2 = [[SYNArcMenuItem alloc] initWithImage: [UIImage imageNamed: @"ActionAdd"]
+                                                            highlightedImage: [UIImage imageNamed: @"ActionAddHighlighted"]];
+        
+        SYNArcMenuItem *arcMenuItem3 = [[SYNArcMenuItem alloc] initWithImage: [UIImage imageNamed: @"ActionShare"]
+                                                            highlightedImage: [UIImage imageNamed: @"ActionShareHighlighted"]];
+        
+        SYNArcMenuItem *mainMenuItem = [[SYNArcMenuItem alloc] initWithImage: [UIImage imageNamed: @"ActionRingNoTouch"]
+                                                            highlightedImage: [UIImage imageNamed: @"ActionRingTouch"]];
+        
+        self.arcMenu = [[SYNArcMenuView alloc] initWithFrame: self.view.bounds
+                                                   startItem: mainMenuItem
+                                                 optionMenus: @[arcMenuItem1, arcMenuItem2, arcMenuItem3]
+                                               cellIndexPath: cellIndexPath];
+        self.arcMenu.delegate = self;
+        self.arcMenu.startPoint = tapPoint;
+        self.arcMenu.menuWholeAngle = M_PI / 2;
+        
+        // Assume for now that the menus is not near sides or top
+        self.arcMenu.rotateAngle = -M_PI / 4;
+        
+        float proportion = 1 - (tapPoint.x / kRotateThresholdX);
+        
+        if (tapPoint.x < kRotateThresholdX)
+        {
+            // The touch is near the left hand size, so rotate the menu angle clockwise proportionally
+            if (tapPoint.y > kRotateThresholdY)
+            {
+                self.arcMenu.rotateAngle += (M_PI / 4) * proportion;
+            }
+            else
+            {
+                self.arcMenu.rotateAngle += M_PI - (M_PI / 4) * proportion;
+            }
+        }
+        else if (tapPoint.x > (SYNDeviceManager.sharedInstance.currentScreenWidth - kRotateThresholdX))
+        {
+            // The touch is near the left hand size, so rotate the menu angle anti-clockwise proportionally
+            
+        }
+        
+        [self.view addSubview: self.arcMenu];
+        
+        [self.arcMenu show: YES];
+
+    }
+    else if (recognizer.state == UIGestureRecognizerStateEnded)
+    {
+        [self.arcMenu show: NO];
+        self.arcMenu = nil;
+    }
+    else if (recognizer.state == UIGestureRecognizerStateChanged)
+    {
+        [self.arcMenu positionUpdate: tapPoint];
+
+    }
+}
+
+
+- (void) arcMenu: (SYNArcMenuView *) menu
+         didSelectMenuAtIndex: (NSInteger) menuIndex
+         forCellAtIndex: (NSIndexPath *) cellIndexPath
+{
+    switch (menuIndex)
+    {
+        case kArcMenuButtonLike:
+            NSLog (@"Like");
+            [self toggleStarAtIndexPath: cellIndexPath];
+            break;
+            
+        case kArcMenuButtonAdd:
+            NSLog (@"Add");
+            [self addVideoAtIndexPath: cellIndexPath
+                        withOperation: kVideoQueueAdd];
+            break;
+            
+        case kArcMenuButtonShare:
+            NSLog (@"Share");
+            [self shareVideoAtIndexPath: cellIndexPath];
+            break;
+            
+        default:
+            AssertOrLog(@"Invalid Arc Menu index selected");
+            break;
+    }
+}
+
+
+- (void) arcMenuWillBeginAnimationOpen: (SYNArcMenuView *) menu
+{
+    // The user opened a menu, so dim the screen
+    UIView *shadeView = [[UIView alloc] initWithFrame: self.view.frame];
+    shadeView.tag = kShadeViewTag;
+    shadeView.backgroundColor = [UIColor blackColor];
+    shadeView.alpha = 0.0f;
+    
+    [self.view insertSubview: shadeView
+                aboveSubview: self.videoThumbnailCollectionView];
+    
+    [UIView animateWithDuration:  kShadeViewAnimationDuration
+                     animations: ^{
+                         // Fade in the view slightly
+                         shadeView.alpha = 0.2f;
+
+                     }];
+}
+
+- (void) arcMenuDidFinishAnimationClose: (SYNArcMenuView *) menu
+{
+    // The user closed the menu so remove the shading from the screen
+    UIView *shadeView = [self.view viewWithTag: kShadeViewTag];
+    
+    [UIView animateWithDuration:  kShadeViewAnimationDuration
+                     animations: ^{
+                         shadeView.alpha = 0.0f;
+                     }
+                     completion:^(BOOL finished){
+                         // remove the view altogether
+                         [shadeView removeFromSuperview];
+                     }
+      ];
 }
 
 
@@ -3335,7 +3602,7 @@ shouldChangeTextInRange: (NSRange) range
                                                                                                                         inSection: 0]];
         
         
-        CGRect rectToPointTo = [self.view  convertRect: randomCell.addItButton.frame
+        CGRect rectToPointTo = [self.view  convertRect: randomCell.frame
                                               fromView: randomCell];
         
         rectToPointTo = CGRectInset(rectToPointTo, 10.0, 10.0);

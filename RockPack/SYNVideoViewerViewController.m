@@ -665,7 +665,6 @@
     self.addButton.hidden = !addItButton.selected;
 }
 
-
 - (IBAction) toggleStarButton: (UIButton *) button
 {
     if(self.isVideoExpanded)
@@ -725,7 +724,7 @@
                                             videoInstanceId: videoInstance.uniqueId
                                           completionHandler: ^(id response) {
                                               [self.heartActivityIndicator stopAnimating];
-
+                                              
                                               if (videoInstance.video.starredByUserValue == TRUE)
                                               {
                                                   // Currently highlighted, so decrement
@@ -758,7 +757,7 @@
                                                }];
     
     
-   
+    
     
 }
 
@@ -776,6 +775,7 @@
     
     [implicitSharingController dismiss];
 }
+
 
 - (IBAction) userTouchedCloseButton: (id) sender
 {
