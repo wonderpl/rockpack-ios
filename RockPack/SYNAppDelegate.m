@@ -1400,6 +1400,13 @@
                                                               delegate: self];
         }
         
+        id<GAITracker> tracker = [GAI sharedInstance].defaultTracker;
+        
+        [tracker sendEventWithCategory: @"goal"
+                            withAction: @"openDeepLink"
+                             withLabel: targetURLString
+                             withValue: nil];
+        
         return [FBSession.activeSession
                 handleOpenURL: url];
     }
