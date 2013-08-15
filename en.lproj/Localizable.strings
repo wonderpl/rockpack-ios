@@ -131,9 +131,9 @@
 
 // == Channel Detail == //
 
-"channel_screen_no_videos" = "THERE ARE NO VIDEOS IN THIS PACK";
-"channel_screen_error_subscribe" = "SOMETHING WENT WRONG. PLEASE TRY AGAIN.";
-"channel_screen_loading_videos" = "LOADING VIDEOS...";
+"channel_screen_no_videos" = "There are no videos in this pack.";
+"channel_screen_error_subscribe" = "Something went wrong. Please try again.";
+"channel_screen_loading_videos" = "Loading videos...";
 
 // == Messages for creating a private channel == //
 
