@@ -69,6 +69,7 @@
     sender.selected = YES;
     
     
+    
     __weak SYNImplicitSharingController* wself = self;
     SYNAppDelegate* appDelegate = (SYNAppDelegate*)[[UIApplication sharedApplication] delegate];
     
@@ -79,14 +80,19 @@
     
     if(!isYesButton) // NO button pressed, dismiss and save the setting
     {
-        // dismiss but do the 'like'
-        if(self.completionBlock)
-            self.completionBlock();
+        
+        
+        
         
         appDelegate.currentUser.facebookAccount.noautopostValue = YES;
         [appDelegate saveContext: YES];
         
         [self dismiss];
+        
+        // the completion block is a recursive call that will check again for the need to display this panel,
+        // the noautopostValue needs to be set to YES first so as to not be called again.
+        if(self.completionBlock)
+            self.completionBlock();
         
         return;
     }
