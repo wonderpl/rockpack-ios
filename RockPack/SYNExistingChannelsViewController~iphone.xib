@@ -2,9 +2,9 @@
 <archive type="com.apple.InterfaceBuilder3.CocoaTouch.iPad.XIB" version="8.00">
 	<data>
 		<int key="IBDocument.SystemTarget">1552</int>
-		<string key="IBDocument.SystemVersion">12E55</string>
+		<string key="IBDocument.SystemVersion">12D78</string>
 		<string key="IBDocument.InterfaceBuilderVersion">3084</string>
-		<string key="IBDocument.AppKitVersion">1187.39</string>
+		<string key="IBDocument.AppKitVersion">1187.37</string>
 		<string key="IBDocument.HIToolboxVersion">626.00</string>
 		<object class="NSMutableDictionary" key="IBDocument.PluginVersions">
 			<string key="NS.key.0">com.apple.InterfaceBuilder.IBCocoaTouchPlugin</string>
@@ -193,7 +193,7 @@
 							<object class="IBUILabel" id="30669440">
 								<reference key="NSNextResponder" ref="258738601"/>
 								<int key="NSvFlags">292</int>
-								<string key="NSFrame">{{0, 9}, {201, 30}}</string>
+								<string key="NSFrame">{{0, 11}, {201, 30}}</string>
 								<reference key="NSSuperview" ref="258738601"/>
 								<reference key="NSNextKeyView" ref="360077529"/>
 								<string key="NSReuseIdentifierKey">_NS:9</string>
@@ -203,7 +203,7 @@
 								<bool key="IBUIUserInteractionEnabled">NO</bool>
 								<string key="targetRuntimeIdentifier">IBIPadFramework</string>
 								<string key="IBUIText">Share Video on Facebook</string>
-								<object class="NSColor" key="IBUITextColor" id="178051703">
+								<object class="NSColor" key="IBUITextColor">
 									<int key="NSColorSpace">1</int>
 									<bytes key="NSRGB">MSAxIDEAA</bytes>
 								</object>
@@ -229,7 +229,7 @@
 							<object class="IBUIButton" id="822182042">
 								<reference key="NSNextResponder" ref="258738601"/>
 								<int key="NSvFlags">292</int>
-								<string key="NSFrame">{{268, 9}, {47, 30}}</string>
+								<string key="NSFrame">{{268, 12}, {47, 30}}</string>
 								<reference key="NSSuperview" ref="258738601"/>
 								<string key="NSReuseIdentifierKey">_NS:9</string>
 								<bool key="IBUIOpaque">NO</bool>
@@ -239,11 +239,14 @@
 								<string key="IBUITitleShadowOffset">{0, 1}</string>
 								<string key="IBUINormalTitle">NO</string>
 								<reference key="IBUIHighlightedTitleColor" ref="119344041"/>
-								<object class="NSColor" key="IBUISelectedTitleColor" id="445207314">
-									<int key="NSColorSpace">1</int>
-									<bytes key="NSRGB">MC4xMjk0MTE3NzE5IDAuNzE3NjQ3MDc1NyAwLjgzMTM3MjU1OTEAA</bytes>
+								<object class="NSColor" key="IBUISelectedTitleColor">
+									<int key="NSColorSpace">2</int>
+									<bytes key="NSRGB">MC4xMDk4MDM5Mjk5IDAuNjk0MTE3NjY1MyAwLjcwOTgwMzkzODkAA</bytes>
 								</object>
-								<reference key="IBUINormalTitleColor" ref="178051703"/>
+								<object class="NSColor" key="IBUINormalTitleColor">
+									<int key="NSColorSpace">2</int>
+									<bytes key="NSRGB">MC44OTgwMzkyODE0IDAuODk4MDM5MjgxNCAwLjg5ODAzOTI4MTQAA</bytes>
+								</object>
 								<reference key="IBUISelectedTitleShadowColor" ref="699402585"/>
 								<reference key="IBUINormalTitleShadowColor" ref="699402585"/>
 								<object class="IBUIFontDescription" key="IBUIFontDescription" id="671652668">
@@ -259,7 +262,7 @@
 							<object class="IBUIButton" id="360077529">
 								<reference key="NSNextResponder" ref="258738601"/>
 								<int key="NSvFlags">292</int>
-								<string key="NSFrame">{{208, 9}, {55, 30}}</string>
+								<string key="NSFrame">{{208, 12}, {55, 30}}</string>
 								<reference key="NSSuperview" ref="258738601"/>
 								<reference key="NSNextKeyView" ref="822182042"/>
 								<string key="NSReuseIdentifierKey">_NS:9</string>
@@ -270,8 +273,14 @@
 								<string key="IBUITitleShadowOffset">{0, 1}</string>
 								<string key="IBUINormalTitle">YES</string>
 								<reference key="IBUIHighlightedTitleColor" ref="119344041"/>
-								<reference key="IBUISelectedTitleColor" ref="445207314"/>
-								<reference key="IBUINormalTitleColor" ref="178051703"/>
+								<object class="NSColor" key="IBUISelectedTitleColor">
+									<int key="NSColorSpace">2</int>
+									<bytes key="NSRGB">MC4xMDk4MDM5Mjk5IDAuNjk0MTE3NjY1MyAwLjcwOTgwMzkzODkAA</bytes>
+								</object>
+								<object class="NSColor" key="IBUINormalTitleColor">
+									<int key="NSColorSpace">2</int>
+									<bytes key="NSRGB">MC44OTgwMzkyODE0IDAuODk4MDM5MjgxNCAwLjg5ODAzOTI4MTQAA</bytes>
+								</object>
 								<reference key="IBUISelectedTitleShadowColor" ref="699402585"/>
 								<reference key="IBUINormalTitleShadowColor" ref="699402585"/>
 								<reference key="IBUIFontDescription" ref="671652668"/>
@@ -542,9 +551,9 @@
 				<string key="2.IBPluginDependency">com.apple.InterfaceBuilder.IBCocoaTouchPlugin</string>
 				<string key="20.IBPluginDependency">com.apple.InterfaceBuilder.IBCocoaTouchPlugin</string>
 				<string key="21.IBPluginDependency">com.apple.InterfaceBuilder.IBCocoaTouchPlugin</string>
-				<real value="0.0" key="21.IBUIButtonInspectorSelectedStateConfigurationMetadataKey"/>
+				<real value="2" key="21.IBUIButtonInspectorSelectedStateConfigurationMetadataKey"/>
 				<string key="22.IBPluginDependency">com.apple.InterfaceBuilder.IBCocoaTouchPlugin</string>
-				<real value="0.0" key="22.IBUIButtonInspectorSelectedStateConfigurationMetadataKey"/>
+				<real value="2" key="22.IBUIButtonInspectorSelectedStateConfigurationMetadataKey"/>
 				<string key="26.IBPluginDependency">com.apple.InterfaceBuilder.IBCocoaTouchPlugin</string>
 				<string key="27.IBPluginDependency">com.apple.InterfaceBuilder.IBCocoaTouchPlugin</string>
 				<string key="4.IBPluginDependency">com.apple.InterfaceBuilder.IBCocoaTouchPlugin</string>

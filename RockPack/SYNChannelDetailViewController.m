@@ -2575,8 +2575,8 @@ shouldChangeTextInRange: (NSRange) range
     {
         NSString *message = NSLocalizedString(@"onboarding_subscription", nil);
         PointingDirection direction = IS_IPAD ? PointingDirectionLeft : PointingDirectionUp;
-        CGFloat fontSize = IS_IPAD ? 19.0 : 15.0;
-        CGSize size = IS_IPAD ? CGSizeMake(290.0, 164.0) : CGSizeMake(260.0, 148.0);
+        CGFloat fontSize = IS_IPAD ? 16.0 : 14.0;
+        CGSize size = IS_IPAD ? CGSizeMake(290.0, 68.0) : CGSizeMake(250.0, 60.0);
         CGRect rectToPointTo = self.subscribeButton.frame;
         
         if (!IS_IPAD)
@@ -2610,8 +2610,8 @@ shouldChangeTextInRange: (NSRange) range
     {
         NSString *message = NSLocalizedString(@"onboarding_video", nil);
         
-        CGFloat fontSize = IS_IPAD ? 19.0 : 15.0;
-        CGSize size = IS_IPAD ? CGSizeMake(320.0, 164.0) : CGSizeMake(250.0, 150.0);
+        CGFloat fontSize = IS_IPAD ? 16.0 : 14.0;
+        CGSize size = IS_IPAD ? CGSizeMake(220.0, 48.0) : CGSizeMake(200.0, 44.0);
         
         
         CGRect rectToPointTo = [self.view convertRect: randomCell.addItButton.frame
@@ -3329,8 +3329,8 @@ shouldChangeTextInRange: (NSRange) range
         NSString *message = NSLocalizedString(@"onboarding_video", nil);
         
         // FIXME: Surely these iPad checks are not required (see above)
-        CGFloat fontSize = IS_IPAD ? 19.0 : 15.0;
-        CGSize size = IS_IPAD ? CGSizeMake(340.0, 164.0) : CGSizeMake(260.0, 144.0);
+        CGFloat fontSize = IS_IPAD ? 16.0 : 14.0;
+        CGSize size = IS_IPAD ? CGSizeMake(220.0, 48.0) : CGSizeMake(200.0, 44.0);
         
         SYNVideoThumbnailRegularCell *randomCell =
         (SYNVideoThumbnailRegularCell *) [self.videoThumbnailCollectionView cellForItemAtIndexPath: [NSIndexPath indexPathForItem: 0
