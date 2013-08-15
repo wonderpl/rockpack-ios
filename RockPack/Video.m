@@ -96,7 +96,7 @@
                                   withDefault: @0];
     
     self.thumbnailURL = [dictionary objectForKey: @"thumbnail_url"
-                                     withDefault: @"http://"];
+                                     withDefault: @""];
 }
 
 
