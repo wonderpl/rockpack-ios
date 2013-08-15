@@ -135,11 +135,16 @@ static NSString *SearchGenresTableCellIdentifier = @"SYNSearchCategoriesIphoneCe
     
     Genre* genre = self.searchCategories[indexPath.item];
     
-    cell.textLabel.text = [genre.name capitalizedString];
+    if ([genre.name isEqual: @"TV & NEWS"])
+    {
+        cell.textLabel.text = @"TV & News";
+    }
     
-    
-    
-    
+    else
+    {
+        cell.textLabel.text = [genre.name capitalizedString];
+    }
+        
     cell.textLabel.font = self.cellFont;
     cell.textLabel.textColor = self.cellTextColor;
     

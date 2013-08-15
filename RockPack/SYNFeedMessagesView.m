@@ -79,7 +79,7 @@
         self.messageLabel.frame = CGRectMake(0.0f, 0.0f, 260.0f, 300.0f);
     }
     
-    self.messageLabel.text = [newMessage uppercaseString];
+    self.messageLabel.text = newMessage;
     [self.messageLabel sizeToFit];
 
     self.frame = [self returnMainFrame];

@@ -76,7 +76,7 @@
         self.searchTextField.backgroundColor = [UIColor clearColor];
         self.searchTextField.textAlignment = NSTextAlignmentLeft;
         self.searchTextField.autocorrectionType = UITextAutocorrectionTypeNo;
-        self.searchTextField.autocapitalizationType = UITextAutocapitalizationTypeAllCharacters;
+        self.searchTextField.autocapitalizationType = UITextAutocapitalizationTypeSentences;
         self.searchTextField.autoresizingMask = UIViewAutoresizingFlexibleWidth;
         self.searchTextField.clearButtonMode = UITextFieldViewModeWhileEditing;
         

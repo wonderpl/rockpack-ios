@@ -26,7 +26,7 @@
     if ((self = [super initWithStyle:style]))
     {
         wordsArray = [[NSMutableArray alloc] init];
-        rockpackFont = IS_IPAD ? [UIFont rockpackFontOfSize: 26.0] : [UIFont rockpackFontOfSize: 18.0];
+        rockpackFont = IS_IPAD ? [UIFont rockpackFontOfSize: 26.0] : [UIFont rockpackFontOfSize: 14.0];
         
         textColor = [UIColor colorWithRed: (187.0f/255.0f)
                                     green: (187.0f/255.0f)
@@ -112,12 +112,15 @@
             cell.textLabel.textColor = textColor;
             
             
-            cell.textLabel.text = [((NSString*)wordsArray[indexPath.row]) uppercaseString];
+            cell.textLabel.text = [((NSString*)wordsArray[indexPath.row]) capitalizedString];
         }
         else
         {
             cell = [[SYNAutocompleteIphoneCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:CellIdentifier];
             
+            //Text
+            cell.textLabel.font = rockpackFont;
+            cell.textLabel.textColor = textColor;
             
             cell.textLabel.text = [((NSString*)wordsArray[indexPath.row]) capitalizedString];
         } 
