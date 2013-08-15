@@ -109,10 +109,10 @@
         
         containerRect.size = self.imageContainer.frame.size;
         
-        buttonContainerView = [[UIView alloc] initWithFrame:containerRect];
+        buttonContainerView = [[UIView alloc] initWithFrame:self.imageContainer.frame];
         [self insertSubview:buttonContainerView belowSubview:self.coverButton];
         
-        labelsContainerView = [[UIView alloc] initWithFrame:containerRect];
+        labelsContainerView = [[UIView alloc] initWithFrame:self.imageContainer.frame];
         labelsContainerView.userInteractionEnabled = NO;
         labelsContainerView.backgroundColor = [UIColor clearColor];
         [self insertSubview:labelsContainerView aboveSubview:buttonContainerView];
@@ -175,12 +175,16 @@
         self.coverButton.hidden = YES;
         self.mainTitleLabel.hidden = YES;
         
+        
+        
         containerRect.size = self.imageContainer.frame.size;
         
-        buttonContainerView = [[UIView alloc] initWithFrame:containerRect];
+        // container.origin = CGPointZero from above -> {{0, 0}, {310, 310}}
+        
+        buttonContainerView = [[UIView alloc] initWithFrame:self.imageContainer.frame];
         [self insertSubview:buttonContainerView belowSubview:self.coverButton];
         
-        labelsContainerView = [[UIView alloc] initWithFrame:containerRect];
+        labelsContainerView = [[UIView alloc] initWithFrame:self.imageContainer.frame];
         labelsContainerView.userInteractionEnabled = NO;
         labelsContainerView.backgroundColor = [UIColor clearColor];
         [self insertSubview:labelsContainerView aboveSubview:buttonContainerView];
@@ -188,6 +192,7 @@
         
         containerRect.size.width = containerRect.size.width / 2.0;
         containerRect.size.height = containerRect.size.height / 2.0;
+        
         
         NSInteger idx = 0;
         
