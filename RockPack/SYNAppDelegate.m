@@ -179,7 +179,7 @@
     if (self.currentUser && self.currentOAuth2Credentials)
     {
         // If we already have a current user, then register/re-register for notifications
-        [[UIApplication sharedApplication] registerForRemoteNotificationTypes: (UIRemoteNotificationTypeBadge | UIRemoteNotificationTypeAlert)];
+        
         
         // If we have a user and a refresh token... //
         if ([self.currentOAuth2Credentials hasExpired])
@@ -195,6 +195,7 @@
             [self refreshFacebookSession];
             
             self.window.rootViewController = [self createAndReturnRootViewController];
+            
         }
     }
     else
@@ -344,6 +345,8 @@
         self.tokenExpiryTimer = nil;
         
         [self refreshFacebookSession];
+        
+        
     } errorHandler: ^(id response) {
         
         self.tokenExpiryTimer = nil;
@@ -397,6 +400,9 @@
     
     self.masterViewController = [[SYNMasterViewController alloc] initWithContainerViewController: containerViewController];
     
+    // whenever you pass the login screen you must reregister
+    [[UIApplication sharedApplication] registerForRemoteNotificationTypes: (UIRemoteNotificationTypeBadge | UIRemoteNotificationTypeAlert)];
+    
     return self.masterViewController;
 }
 
@@ -449,11 +455,6 @@
     
     self.loginViewController = nil;
     
-    // At this point we should register the new user for APNS
-    if (self.currentUser)
-    {
-        [[UIApplication sharedApplication] registerForRemoteNotificationTypes: (UIRemoteNotificationTypeBadge | UIRemoteNotificationTypeAlert)];
-    }
 }
 
 

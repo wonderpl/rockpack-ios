@@ -839,7 +839,8 @@ typedef void(^AnimationCompletionBlock)(BOOL finished);
     
     if ([notificationName isEqualToString: kNoteAllNavControlsShow])
     {
-        self.searchButton.hidden = NO;
+        if(IS_IPAD)
+            self.searchButton.hidden = NO;
         
         self.sideNavigationButton.hidden = NO;
         self.closeSearchButton.hidden = YES;
