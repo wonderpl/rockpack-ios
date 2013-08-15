@@ -543,6 +543,12 @@
 		1FABF7A61753DA1500AE5CCB /* ShadowChannelMidThumb@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 1FABF7A41753DA1500AE5CCB /* ShadowChannelMidThumb@2x.png */; };
 		1FABF7A91753EAEA00AE5CCB /* ShadowChannelThumb@2x~iphone.png in Resources */ = {isa = PBXBuildFile; fileRef = 1FABF7A71753EAEA00AE5CCB /* ShadowChannelThumb@2x~iphone.png */; };
 		1FABF7AA1753EAEA00AE5CCB /* ShadowChannelThumb~iphone.png in Resources */ = {isa = PBXBuildFile; fileRef = 1FABF7A81753EAEA00AE5CCB /* ShadowChannelThumb~iphone.png */; };
+		1FBF54EB17BD526000B4074E /* login_bg_5.jpg in Resources */ = {isa = PBXBuildFile; fileRef = 1FBF54EA17BD526000B4074E /* login_bg_5.jpg */; };
+		1FBF54F217BD728B00B4074E /* login_onboard_1.png in Resources */ = {isa = PBXBuildFile; fileRef = 1FBF54ED17BD728B00B4074E /* login_onboard_1.png */; };
+		1FBF54FC17BD74C100B4074E /* login_onboard_2.png in Resources */ = {isa = PBXBuildFile; fileRef = 1FBF54F817BD74C100B4074E /* login_onboard_2.png */; };
+		1FBF54FD17BD74C100B4074E /* login_onboard_3.png in Resources */ = {isa = PBXBuildFile; fileRef = 1FBF54F917BD74C100B4074E /* login_onboard_3.png */; };
+		1FBF54FE17BD74C100B4074E /* login_onboard_4.png in Resources */ = {isa = PBXBuildFile; fileRef = 1FBF54FA17BD74C100B4074E /* login_onboard_4.png */; };
+		1FBF54FF17BD74C100B4074E /* login_onboard_5.png in Resources */ = {isa = PBXBuildFile; fileRef = 1FBF54FB17BD74C100B4074E /* login_onboard_5.png */; };
 		1FC8FEA817340708000FF0B2 /* ShadowCategorySlide@2x~iphone.png in Resources */ = {isa = PBXBuildFile; fileRef = 1FC8FEA617340708000FF0B2 /* ShadowCategorySlide@2x~iphone.png */; };
 		1FC8FEA917340708000FF0B2 /* ShadowCategorySlide~iphone.png in Resources */ = {isa = PBXBuildFile; fileRef = 1FC8FEA717340708000FF0B2 /* ShadowCategorySlide~iphone.png */; };
 		1FD12372174CD76700144374 /* NavDefault.png in Resources */ = {isa = PBXBuildFile; fileRef = 1FD1236E174CD76700144374 /* NavDefault.png */; };
@@ -1954,6 +1960,12 @@
 		1FABF7A41753DA1500AE5CCB /* ShadowChannelMidThumb@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = "ShadowChannelMidThumb@2x.png"; path = "Assets/Images/ShadowChannelMidThumb@2x.png"; sourceTree = "<group>"; };
 		1FABF7A71753EAEA00AE5CCB /* ShadowChannelThumb@2x~iphone.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "ShadowChannelThumb@2x~iphone.png"; sourceTree = "<group>"; };
 		1FABF7A81753EAEA00AE5CCB /* ShadowChannelThumb~iphone.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "ShadowChannelThumb~iphone.png"; sourceTree = "<group>"; };
+		1FBF54EA17BD526000B4074E /* login_bg_5.jpg */ = {isa = PBXFileReference; lastKnownFileType = image.jpeg; name = login_bg_5.jpg; path = Assets/Images/login_bg_5.jpg; sourceTree = "<group>"; };
+		1FBF54ED17BD728B00B4074E /* login_onboard_1.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = login_onboard_1.png; path = Assets/Images/login_onboard_1.png; sourceTree = "<group>"; };
+		1FBF54F817BD74C100B4074E /* login_onboard_2.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = login_onboard_2.png; path = Assets/Images/login_onboard_2.png; sourceTree = "<group>"; };
+		1FBF54F917BD74C100B4074E /* login_onboard_3.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = login_onboard_3.png; path = Assets/Images/login_onboard_3.png; sourceTree = "<group>"; };
+		1FBF54FA17BD74C100B4074E /* login_onboard_4.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = login_onboard_4.png; path = Assets/Images/login_onboard_4.png; sourceTree = "<group>"; };
+		1FBF54FB17BD74C100B4074E /* login_onboard_5.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = login_onboard_5.png; path = Assets/Images/login_onboard_5.png; sourceTree = "<group>"; };
 		1FC8FEA617340708000FF0B2 /* ShadowCategorySlide@2x~iphone.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "ShadowCategorySlide@2x~iphone.png"; sourceTree = "<group>"; };
 		1FC8FEA717340708000FF0B2 /* ShadowCategorySlide~iphone.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "ShadowCategorySlide~iphone.png"; sourceTree = "<group>"; };
 		1FD1236E174CD76700144374 /* NavDefault.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = NavDefault.png; path = Assets/Images/NavDefault.png; sourceTree = "<group>"; };
@@ -4347,6 +4359,7 @@
 				BEB8300E177491ED00AAA8D5 /* login_bg_2.jpg */,
 				BEB8300F177491ED00AAA8D5 /* login_bg_3.jpg */,
 				BEB83010177491ED00AAA8D5 /* login_bg_4.jpg */,
+				1FBF54EA17BD526000B4074E /* login_bg_5.jpg */,
 			);
 			name = Background;
 			sourceTree = "<group>";
@@ -4362,6 +4375,18 @@
 				1F46C86A1743C2FD00C6089D /* ButtonReportSelected~iphone.png */,
 			);
 			name = reportConcern;
+			sourceTree = "<group>";
+		};
+		1FBF54EC17BD71B300B4074E /* Onboarding Images */ = {
+			isa = PBXGroup;
+			children = (
+				1FBF54ED17BD728B00B4074E /* login_onboard_1.png */,
+				1FBF54F817BD74C100B4074E /* login_onboard_2.png */,
+				1FBF54F917BD74C100B4074E /* login_onboard_3.png */,
+				1FBF54FA17BD74C100B4074E /* login_onboard_4.png */,
+				1FBF54FB17BD74C100B4074E /* login_onboard_5.png */,
+			);
+			name = "Onboarding Images";
 			sourceTree = "<group>";
 		};
 		1FD2856417BBA1640094F488 /* Share Panel */ = {
@@ -5070,6 +5095,7 @@
 		BE270B8516EE485200CDDA6D /* Login */ = {
 			isa = PBXGroup;
 			children = (
+				1FBF54EC17BD71B300B4074E /* Onboarding Images */,
 				1F320031175DED7A00310EB5 /* Background */,
 				BED4311816F1F0CF0051465B /* FieldPhoto.png */,
 				BED4311916F1F0CF0051465B /* FieldPhoto@2x.png */,
@@ -6684,6 +6710,12 @@
 				1FD2857817BBAD6A0094F488 /* PanelShare@2x.png in Resources */,
 				BE0B151217BC16240053E551 /* ButtonSearch@2x~iphone.png in Resources */,
 				BE0B151317BC16240053E551 /* ButtonSearch~iphone.png in Resources */,
+				1FBF54EB17BD526000B4074E /* login_bg_5.jpg in Resources */,
+				1FBF54F217BD728B00B4074E /* login_onboard_1.png in Resources */,
+				1FBF54FC17BD74C100B4074E /* login_onboard_2.png in Resources */,
+				1FBF54FD17BD74C100B4074E /* login_onboard_3.png in Resources */,
+				1FBF54FE17BD74C100B4074E /* login_onboard_4.png in Resources */,
+				1FBF54FF17BD74C100B4074E /* login_onboard_5.png in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

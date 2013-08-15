@@ -211,7 +211,7 @@ typedef enum _FeedItemResourceType {
 // One the APIs imported some new data - we will need to be more specific at some stage.
 #define kCategoriesUpdated @"kCategoriesUpdated"
 
-#define kLoginOnBoardingMessagesNum 4
+#define kLoginOnBoardingMessagesNum 5
 
 // Observers
 #define kCollectionViewContentOffsetKey @"contentOffset"

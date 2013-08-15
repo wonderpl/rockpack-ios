@@ -80,6 +80,7 @@
     for (int i = 0; i < kLoginOnBoardingMessagesNum; i++)
     {
         [imagesArray addObject: [NSString stringWithFormat: @"login_bg_%i.jpg", (i+1)]];
+        
     }
     self.backgroundImagesArray = [NSArray arrayWithArray: imagesArray];
 }
@@ -90,7 +91,7 @@
     [super viewDidLoad];
     
     self.onBoardingController = [[SYNLoginOnBoardingController alloc] initWithDelegate: self];
-    
+            
     CGRect totalImageRect;
     
     CGPoint correctPoint;
@@ -936,6 +937,7 @@
     }
     
     self.loginBackgroundFrontImage.image = [UIImage imageNamed: nameOfNextImage];
+        
 }
 
 
