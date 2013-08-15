@@ -13,6 +13,10 @@
 
 #define ENABLE_USER_RATINGS
 
+
+// Use this to remove arc menus for cells
+#define ENABLE_ARC_MENU
+
 #define kAPIInitialBatchSize 48
 
 //
@@ -358,6 +362,8 @@ typedef enum _NavigationButtonsAppearance {
 
 //Login Origin
 
+#define kOriginFacebook @"Facebook"
+#define kOriginRockpack @"Rockpack"
 
 typedef enum {
     LoginOriginRockpack = 0,

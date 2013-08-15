@@ -28,6 +28,7 @@
 #import "UIFont+SYNFont.h"
 #import "UIImageView+WebCache.h"
 #import "Video.h"
+#import "SYNFacebookManager.h"
 #import "VideoInstance.h"
 #import "SYNImplicitSharingController.h"
 #import <MediaPlayer/MediaPlayer.h>
@@ -665,7 +666,6 @@
     self.addButton.hidden = !addItButton.selected;
 }
 
-
 - (IBAction) toggleStarButton: (UIButton *) button
 {
     if(self.isVideoExpanded)
@@ -673,15 +673,22 @@
         return;
     }
     
+    
+    
     // if the user does NOT have a FB account linked, no prompt
     
     ExternalAccount* facebookAccount = appDelegate.currentUser.facebookAccount;
     
-    if(facebookAccount && // has a facebook account
-       !(facebookAccount.flagsValue & ExternalAccountFlagAutopostStar) && // has not already set the implicit sharing to ON
-       facebookAccount.noautopostValue == NO) // has not explicitely forbid the implicit sharing
+    BOOL doesNotHavePublishPermissions = ![[SYNFacebookManager sharedFBManager] hasActiveSessionWithPermissionType:FacebookPublishPermission];
+    BOOL doesNotHaveAutopostStarFlagSet = !(facebookAccount.flagsValue & ExternalAccountFlagAutopostStar);
+    
+    if( facebookAccount && (facebookAccount.noautopostValue == NO) && (doesNotHavePublishPermissions || doesNotHaveAutopostStarFlagSet) ) 
     {
-        // then show panel
+        
+        // then show panel, the newtork code will check for permissions in the FB Engine, is they exist then the code is triggered automatically and the flag is set,
+        // if not then the flag is set after the net call
+        
+        
         __weak SYNVideoViewerViewController* wself = self;
         SYNImplicitSharingController* implicitSharingController = [SYNImplicitSharingController controllerWithBlock:^{
             [wself toggleStarButton:button];
@@ -699,15 +706,18 @@
         UITapGestureRecognizer* tapGesture = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(dismissImplicitSharing)];
         [self.view addGestureRecognizer:tapGesture];
         
+        
+        
         return;
     }
+    
     
     
     id<GAITracker> tracker = [GAI sharedInstance].defaultTracker;
     
     [tracker sendEventWithCategory: @"uiAction"
                         withAction: @"videoStarButtonClick"
-                         withLabel: nil
+                         withLabel: @"Viewer"
                          withValue: nil];
     
     button.selected = !button.selected;
@@ -725,7 +735,7 @@
                                             videoInstanceId: videoInstance.uniqueId
                                           completionHandler: ^(id response) {
                                               [self.heartActivityIndicator stopAnimating];
-
+                                              
                                               if (videoInstance.video.starredByUserValue == TRUE)
                                               {
                                                   // Currently highlighted, so decrement
@@ -758,7 +768,7 @@
                                                }];
     
     
-   
+    
     
 }
 
@@ -776,6 +786,7 @@
     
     [implicitSharingController dismiss];
 }
+
 
 - (IBAction) userTouchedCloseButton: (id) sender
 {

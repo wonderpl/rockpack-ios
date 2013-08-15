@@ -15,20 +15,21 @@
 #import <QuartzCore/QuartzCore.h>
 #import "UIImageView+WebCache.h"
 
-@interface SYNVideoThumbnailWideCell ()
+@interface SYNVideoThumbnailWideCell () <UIGestureRecognizerDelegate>
 
 @property (nonatomic, strong) IBOutlet UIButton *channelButton;
 @property (nonatomic, strong) IBOutlet UIButton *profileButton;
-@property (nonatomic, strong) IBOutlet UIButton *videoButton;
+@property (nonatomic, strong) IBOutlet UIView *videoPlaceholder;
 @property (nonatomic, strong) IBOutlet UIImageView *highlightedBackgroundView;
 @property (nonatomic, strong) IBOutlet UILabel* byLabel;
 @property (nonatomic, strong) IBOutlet UILabel* fromLabel;
+@property (nonatomic, strong) UILongPressGestureRecognizer *longPress;
+@property (nonatomic, strong) UITapGestureRecognizer *tap;
 
 @end
 
 @implementation SYNVideoThumbnailWideCell
 
-@synthesize viewControllerDelegate = _viewControllerDelegate;
 @synthesize displayMode = _displayMode;
 @synthesize usernameText;
 
@@ -52,7 +53,21 @@
     
     self.displayMode = kVideoThumbnailDisplayModeChannel; // default is channel
     
+#ifdef ENABLE_ARC_MENU
     
+    // Add long-press and tap recognizers (once only per cell)
+    self.longPress = [[UILongPressGestureRecognizer alloc] initWithTarget: self
+                                                                   action: @selector(showMenu:)];
+    self.longPress.delegate = self;
+    [self.videoPlaceholder addGestureRecognizer: self.longPress];
+#endif
+    
+    
+    // Tap for showing video
+    self.tap = [[UITapGestureRecognizer alloc] initWithTarget: self
+                                                       action: @selector(showVideo:)];
+    self.tap.delegate = self;
+    [self.videoPlaceholder addGestureRecognizer: self.tap];
 }
 
 
@@ -83,15 +98,11 @@
 #pragma mark - Asynchronous image loading support
 
 // Need to do this outside awakeFromNib as the delegate is not set at that point
-- (void) setViewControllerDelegate: (UIViewController *) viewControllerDelegate
+- (void) setViewControllerDelegate: (id<SYNVideoThumbnailWideCellDelegate>) delegate
 {
-    _viewControllerDelegate = viewControllerDelegate;
+    _viewControllerDelegate = delegate;
 
     // Add button targets
-    
-    [self.videoButton addTarget: self.viewControllerDelegate
-                         action: @selector(videoButtonPressed:)
-               forControlEvents: UIControlEventTouchUpInside];
     
     [self.addItButton addTarget: self.viewControllerDelegate
                          action: @selector(videoAddButtonTapped:)
@@ -181,6 +192,21 @@
     
     [self.channelImageView.layer removeAllAnimations];
     [self.channelImageView setImageWithURL:nil];
+}
+
+
+#pragma mark - Gesture regognizer callbacks
+
+- (void) showVideo: (UILongPressGestureRecognizer *) recognizer
+{
+    [self.viewControllerDelegate videoAddButtonTapped: self.addItButton];
+}
+
+
+- (void) showMenu: (UILongPressGestureRecognizer *) recognizer
+{
+    [self.viewControllerDelegate arcMenuUpdateState: recognizer
+                                            forCell: self];
 }
 
 @end

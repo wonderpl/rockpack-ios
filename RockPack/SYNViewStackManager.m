@@ -16,6 +16,8 @@
 #import "SYNViewStackManager.h"
 #import "SYNSearchBoxViewController.h"
 
+#define STACK_LIMIT 6
+
 @implementation SYNViewStackManager
 
 
@@ -238,7 +240,7 @@
     [searchBoxVC dismissSearchCategoriesIPhone];
     
     [UIView animateWithDuration: 0.1f
-                          delay: 0.0f
+                          delay: 0.3f
                         options: UIViewAnimationOptionCurveEaseIn
                      animations: ^{
                          
@@ -348,7 +350,7 @@
                                               
                                           } completion:^(BOOL finished) {
                                               if(!IS_IPAD)
-                                                  [searchBoxVC presentSearchCategoriesIPhone]; // already animating
+                                                  [searchBoxVC presentSearchCategoriesIPhone]; // already animated
                                           }];
                          
                      }];
@@ -498,11 +500,14 @@
 {
     UIViewController *lastControllerOfClass;
     
-    for (UIViewController *viewControllerOnStack in self.navigationController.viewControllers)
+    if(self.navigationController.viewControllers.count >= STACK_LIMIT)
     {
-        if ([viewControllerOnStack isKindOfClass: NSClassFromString(classString)] && viewControllerOnStack != self.navigationController.topViewController)
+        for (UIViewController *viewControllerOnStack in self.navigationController.viewControllers)
         {
-            lastControllerOfClass = viewControllerOnStack;
+            if ([viewControllerOnStack isKindOfClass: NSClassFromString(classString)] && viewControllerOnStack != self.navigationController.topViewController)
+            {
+                lastControllerOfClass = viewControllerOnStack;
+            }
         }
     }
     

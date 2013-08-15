@@ -51,14 +51,23 @@
     if (self) {
         self.presentingController = viewController;
         
+
+        
         if (UI_USER_INTERFACE_IDIOM() == UIUserInterfaceIdiomPhone) {
             _backgroundView = [[UIView alloc] initWithFrame:self.view.bounds];
             _backgroundView.autoresizingMask = UIViewAutoresizingFlexibleWidth | UIViewAutoresizingFlexibleHeight;
             _backgroundView.backgroundColor = [UIColor blackColor];
             _backgroundView.alpha = 0;
+            
+            // Tap outside of view to close share
+            UITapGestureRecognizer *tapOutside =
+            [[UITapGestureRecognizer alloc] initWithTarget:self
+                                                    action:@selector(dismissViewControllerOnTouch)];
+            [_backgroundView addGestureRecognizer:tapOutside];
+            
             [self.view addSubview:_backgroundView];
         } else {
-            self.view.frame = CGRectMake(0, 0, 320, 417);
+            self.view.frame = CGRectMake(0, 0, 320, 96);
         }
         
         _activities = activities;
@@ -71,7 +80,7 @@
         _activityView.activityViewController = self;
         [self.view addSubview:_activityView];
         
-        self.contentSizeForViewInPopover = CGSizeMake(320, self.height - 60);
+        self.contentSizeForViewInPopover = CGSizeMake(320 + 8, self.height);
     }
     return self;
 }
@@ -80,7 +89,7 @@
 {
     if (UI_USER_INTERFACE_IDIOM() == UIUserInterfaceIdiomPhone) {
         __typeof (&*self) __weak weakSelf = self;
-        [UIView animateWithDuration:0.4 animations:^{
+        [UIView animateWithDuration:0.2 animations:^{
             _backgroundView.alpha = 0;
             CGRect frame = _activityView.frame;
             frame.origin.y = [UIScreen mainScreen].bounds.size.height;
@@ -100,6 +109,12 @@
     }
 }
 
+//This handles the tap outside
+- (void)dismissViewControllerOnTouch
+{
+    [self dismissViewControllerAnimated:YES completion:nil];
+}
+
 - (void)presentFromRootViewController
 {
     UIViewController *rootViewController = [UIApplication sharedApplication].delegate.window.rootViewController;
@@ -112,7 +127,7 @@
 {
     [super didMoveToParentViewController:parent];
     if (UI_USER_INTERFACE_IDIOM() == UIUserInterfaceIdiomPhone) {
-        [UIView animateWithDuration:0.4 animations:^{
+        [UIView animateWithDuration:0.2 animations:^{
             _backgroundView.alpha = 0.4;
             
             CGRect frame = _activityView.frame;
@@ -124,8 +139,8 @@
 
 - (NSInteger)height
 {   
-    if (_activities.count <= 3) return 214;
-    if (_activities.count <= 6) return 317;
+    if (_activities.count <= 4) return 96;
+    if (_activities.count <= 8) return 192;
     return 417;
 }
 

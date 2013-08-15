@@ -37,18 +37,18 @@
         
         if (UI_USER_INTERFACE_IDIOM() == UIUserInterfaceIdiomPhone)
         {
-            _backgroundImageView = [[UIImageView alloc] initWithFrame:CGRectMake(0, 0, frame.size.width, 417)];
-            _backgroundImageView.image = [UIImage imageNamed:@"OWActivityViewController.bundle/Background"];
+            _backgroundImageView = [[UIImageView alloc] initWithFrame:CGRectMake(0, 0, frame.size.width, 96)];
+            _backgroundImageView.image = [UIImage imageNamed:@"PanelShare.png"];
             _backgroundImageView.autoresizingMask = UIViewAutoresizingFlexibleWidth;
             [self addSubview:_backgroundImageView];
         }
         else
         {
-            self.backgroundColor = [UIColor whiteColor];
+            self.backgroundColor = [UIColor clearColor];
         }
     
         
-        _scrollView = [[UIScrollView alloc] initWithFrame:CGRectMake(0, 39, frame.size.width, self.frame.size.height - 104)];
+        _scrollView = [[UIScrollView alloc] initWithFrame:CGRectMake(0, 8, frame.size.width, 96)];
         _scrollView.showsHorizontalScrollIndicator = NO;
         _scrollView.showsVerticalScrollIndicator = NO;
         _scrollView.delegate = self;
@@ -61,16 +61,18 @@
         for (OWActivity *activity in _activities) {
             NSInteger col;
             
-            col = index%3;
-            if (index % 3 == 0) row++;
-            if (index % 9 == 0) {
+            //4 on a line now
+            col = index%4;
+            if (index % 4 == 0) row++;
+            if (index % 12 == 0) {
                 row = 0;
                 page++;
             }
-
+            
+            //No spacing inbetween Buttons
             UIView *view = [self viewForActivity:activity
                                            index:index
-                                               x:(20 + col*80 + col*20) + page * frame.size.width
+                                               x:(0 + col*80 + col*0) + page * frame.size.width
                                                y:row*80 + row*20];
             [_scrollView addSubview:view];
             index++;
@@ -88,19 +90,21 @@
             _scrollView.scrollEnabled = NO;
         }
         
-        if (UI_USER_INTERFACE_IDIOM() == UIUserInterfaceIdiomPhone)
-        {
-            _cancelButton = [UIButton buttonWithType:UIButtonTypeCustom];
-            [_cancelButton setBackgroundImage:[[UIImage imageNamed:@"OWActivityViewController.bundle/Button"] stretchableImageWithLeftCapWidth:22 topCapHeight:47] forState:UIControlStateNormal];
-            _cancelButton.frame = CGRectMake(22, 352, 276, 47);
-            [_cancelButton setTitle:NSLocalizedStringFromTable(@"button.cancel", @"OWActivityViewController", @"Cancel") forState:UIControlStateNormal];
-            [_cancelButton setTitleColor:[UIColor whiteColor] forState:UIControlStateNormal];
-            [_cancelButton setTitleShadowColor:[UIColor colorWithRed:0 green:0 blue:0 alpha:0.4] forState:UIControlStateNormal];
-            [_cancelButton.titleLabel setShadowOffset:CGSizeMake(0, -1)];
-            [_cancelButton.titleLabel setFont:[UIFont boldSystemFontOfSize:19]];
-            [_cancelButton addTarget:self action:@selector(cancelButtonPressed) forControlEvents:UIControlEventTouchUpInside];
-            [self addSubview:_cancelButton];
-        }
+        //No More Cancel Button
+        
+//        if (UI_USER_INTERFACE_IDIOM() == UIUserInterfaceIdiomPhone)
+//        {
+//            _cancelButton = [UIButton buttonWithType:UIButtonTypeCustom];
+//            [_cancelButton setBackgroundImage:[[UIImage imageNamed:@"OWActivityViewController.bundle/Button"] stretchableImageWithLeftCapWidth:22 topCapHeight:47] forState:UIControlStateNormal];
+//            _cancelButton.frame = CGRectMake(22, 352, 276, 47);
+//            [_cancelButton setTitle:NSLocalizedStringFromTable(@"button.cancel", @"OWActivityViewController", @"Cancel") forState:UIControlStateNormal];
+//            [_cancelButton setTitleColor:[UIColor whiteColor] forState:UIControlStateNormal];
+//            [_cancelButton setTitleShadowColor:[UIColor colorWithRed:0 green:0 blue:0 alpha:0.4] forState:UIControlStateNormal];
+//            [_cancelButton.titleLabel setShadowOffset:CGSizeMake(0, -1)];
+//            [_cancelButton.titleLabel setFont:[UIFont boldSystemFontOfSize:19]];
+//            [_cancelButton addTarget:self action:@selector(cancelButtonPressed) forControlEvents:UIControlEventTouchUpInside];
+//            [self addSubview:_cancelButton];
+//        }
     }
     return self;
 }
@@ -116,35 +120,37 @@
     UIView *view = [[UIView alloc] initWithFrame:CGRectMake(x, y, 80, 80)];
     
     UIButton *button = [UIButton buttonWithType:UIButtonTypeCustom];
-    button.frame = CGRectMake(10, 0, 59, 59);
+    button.frame = CGRectMake(0, 0, 80, 80);
     button.tag = index;
     [button addTarget:self action:@selector(buttonPressed:) forControlEvents:UIControlEventTouchUpInside];
     [button setBackgroundImage:activity.image forState:UIControlStateNormal];
     button.accessibilityLabel = activity.title;
     [view addSubview:button];
     
-    UILabel *label = [[UILabel alloc] initWithFrame:CGRectMake(0, 59, 80, 30)];
-    label.textAlignment = NSTextAlignmentCenter;
-    label.backgroundColor = [UIColor clearColor];
-    if (UI_USER_INTERFACE_IDIOM() == UIUserInterfaceIdiomPhone)
-    {
-        label.textColor = [UIColor whiteColor];
-    }
-    else
-    {
-        label.textColor = [UIColor blackColor];
-    }
+    // No Labels - Leave this here incase they come back
+    
+//    UILabel *label = [[UILabel alloc] initWithFrame:CGRectMake(0, 60, 80, 30)];
+//    label.textAlignment = NSTextAlignmentCenter;
+//    label.backgroundColor = [UIColor clearColor];
+//    if (UI_USER_INTERFACE_IDIOM() == UIUserInterfaceIdiomPhone)
+//    {
+//        label.textColor = [UIColor whiteColor];
+//    }
+//    else
+//    {
+//        label.textColor = [UIColor blackColor];
+//    }
 //    label.shadowColor = [UIColor colorWithRed:0 green:0 blue:0 alpha:0.75];
 //    label.shadowOffset = CGSizeMake(0, 1);
-    label.text = activity.title;
-    label.font = [UIFont boldSystemFontOfSize:12];
-    label.numberOfLines = 0;
-    [label setNumberOfLines:0];
-    [label sizeToFit];
-    CGRect frame = label.frame;
-    frame.origin.x = round((view.frame.size.width - frame.size.width) / 2.0f);
-    label.frame = frame;
-    [view addSubview:label];
+//    label.text = activity.title;
+//    label.font = [UIFont boldSystemFontOfSize:12];
+//    label.numberOfLines = 0;
+//    [label setNumberOfLines:0];
+//    [label sizeToFit];
+//    CGRect frame = label.frame;
+//    frame.origin.x = round((view.frame.size.width - frame.size.width) / 2.0f);
+//    label.frame = frame;
+//    [view addSubview:label];
     
     return view;
 }
@@ -153,10 +159,11 @@
 {
     [super layoutSubviews];
     
-    CGRect frame = _cancelButton.frame;
-    frame.origin.y = self.frame.size.height - 47 - 16;
-    frame.origin.x = (self.frame.size.width - frame.size.width) / 2.0f;
-    _cancelButton.frame = frame;
+    //No more cancel Button - it may come back
+//    CGRect frame = _cancelButton.frame;
+//    frame.origin.y = self.frame.size.height - 47 - 16;
+//    frame.origin.x = (self.frame.size.width - frame.size.width) / 2.0f;
+//    _cancelButton.frame = frame;
 }
 
 #pragma mark -

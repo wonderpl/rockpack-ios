@@ -89,6 +89,8 @@
 {
     [super viewDidLoad];
     
+    self.onBoardingController = [[SYNLoginOnBoardingController alloc] initWithDelegate: self];
+    
     CGRect totalImageRect;
     
     CGPoint correctPoint;
@@ -411,13 +413,15 @@
         
         [self doFacebookLoginAnimation];
         
-        // after loggin in with FB SDK log in with the server hitting "/ws/login/external/"
+        // after the log-in with FB through its SDK, log in with the server hitting "/ws/login/external/"
         
         [_appDelegate.oAuthNetworkEngine doFacebookLoginWithAccessToken: accessTokenData.accessToken
                                                                 expires: accessTokenData.expirationDate
                                                             permissions: accessTokenData.permissions // @"read" at this time
                                                       completionHandler: ^(SYNOAuth2Credential* credential) {
-                                                              
+                                                          
+            // get the user data
+                                                          
             [_appDelegate.oAuthNetworkEngine retrieveAndRegisterUserFromCredentials: credential
                                                                   completionHandler: ^(NSDictionary* dictionary) {
                                                                   
@@ -430,6 +434,8 @@
                     DebugLog(@"ERROR: User not registered (User: %@)", _appDelegate.currentUser);
                     // TODO: handle user not being registered propery
                 }
+                                                                      
+                                                         
                     
                 completionBlock(dictionary);
                                                                   
@@ -936,7 +942,14 @@
 - (void) scrollViewDidEndDecelerating: (UIScrollView *) scrollView
 {
     CGFloat contentOffsetX = self.onBoardingController.scrollView.contentOffset.x;
-    self.currentOnBoardingPage = (NSInteger)floorf(contentOffsetX / self.onBoardingController.scrollView.frame.size.width); 
+    self.currentOnBoardingPage = (NSInteger)floorf(contentOffsetX / self.onBoardingController.scrollView.frame.size.width);
+    
+    id<GAITracker> tracker = [GAI sharedInstance].defaultTracker;
+    
+    [tracker sendEventWithCategory: @"uiAction"
+                        withAction: @"cardSlide"
+                         withLabel: [NSString stringWithFormat:@"%i", (_currentOnBoardingPage + 1)]
+                         withValue: nil];
 }
 
 

@@ -220,7 +220,7 @@
     
     if (self.users.count == 0)
     {
-        [self setInfoLabelText: @"NO USERS HAVE SUBSCRIBED TO THIS CHANNEL YET"];
+        [self setInfoLabelText: @"No one has subscribed\nto this pack yet"];
     }
     else
     {

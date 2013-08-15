@@ -90,6 +90,7 @@
 
 // This code block is common to all of the signup/signin methods
 - (void) addCommonOAuthPropertiesToUnsignedNetworkOperation: (SYNNetworkOperationJsonObject *) networkOperation
+                                                  forOrigin: (NSString*)origin // @"Facebook" | @"Rockpack"
                                           completionHandler: (MKNKLoginCompleteBlock) completionBlock
                                                errorHandler: (MKNKUserErrorBlock) errorBlock
 {
@@ -124,7 +125,7 @@
                  
                  [tracker sendEventWithCategory: @"goal"
                                      withAction: @"userRegistration"
-                                      withLabel: @"Rockpack"
+                                      withLabel: origin
                                       withValue: nil];
              }
              
@@ -199,6 +200,7 @@
                                                                                                            ssl: TRUE];
     
     [self addCommonOAuthPropertiesToUnsignedNetworkOperation: networkOperation
+                                                   forOrigin: kOriginFacebook
                                            completionHandler: completionBlock
                                                 errorHandler: errorBlock];
     
@@ -224,6 +226,7 @@
                                                                                                     httpMethod: @"POST"
                                                                                                            ssl: TRUE];
     [self addCommonOAuthPropertiesToUnsignedNetworkOperation: networkOperation
+                                                   forOrigin: kOriginRockpack
                                            completionHandler: completionBlock
                                                 errorHandler: errorBlock];
     
@@ -317,6 +320,7 @@
     networkOperation.postDataEncoding = MKNKPostDataEncodingTypeJSON;
     
     [self addCommonOAuthPropertiesToUnsignedNetworkOperation: networkOperation
+                                                   forOrigin: kOriginRockpack
                                            completionHandler: completionBlock
                                                 errorHandler: errorBlock];
     
@@ -536,6 +540,7 @@
         
     [networkOperation addJSONCompletionHandler:^(NSDictionary *responseDictionary)
     {
+        
         NSString* possibleError = responseDictionary[@"error"];
          
         if (possibleError)
@@ -1609,6 +1614,7 @@
         accountData[@"token_expires"] = [dateFormatter stringFromDate: data.expirationDate];
     }
     
+    // this will also register the external account returned in CoreData with using the same JSON it sends in the request
     
     [self connectExternalAccoundForUserId:userId
                               accountData:accountData
@@ -1691,6 +1697,9 @@
     
     [self addCommonHandlerToNetworkOperation: networkOperation
                            completionHandler:^(id responce) {
+                               
+                               // use the same JSON that is sent in the request , some fields might be missing but they can
+                               // always be retrieved later
                                
                                BOOL didRegister = [wself.registry registerExternalAccountWithCurrentUserFromDictionary:accountData];
                                if(!didRegister) {

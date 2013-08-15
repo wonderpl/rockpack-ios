@@ -32,7 +32,7 @@
 - (id)init
 {
     self = [super initWithTitle:NSLocalizedStringFromTable(@"activity.Message.title", @"OWActivityViewController", @"Message")
-                          image:[UIImage imageNamed:@"OWActivityViewController.bundle/Icon_Message"]
+                          image:[UIImage imageNamed:@"ButtonSMS.png"]
                     actionBlock:nil];
     
     if (!self)

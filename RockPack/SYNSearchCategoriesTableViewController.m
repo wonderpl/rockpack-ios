@@ -135,11 +135,16 @@ static NSString *SearchGenresTableCellIdentifier = @"SYNSearchCategoriesIphoneCe
     
     Genre* genre = self.searchCategories[indexPath.item];
     
-    cell.textLabel.text = [genre.name capitalizedString];
+    if ([genre.name isEqual: @"TV & NEWS"])
+    {
+        cell.textLabel.text = @"TV & News";
+    }
     
-    
-    
-    
+    else
+    {
+        cell.textLabel.text = [genre.name capitalizedString];
+    }
+        
     cell.textLabel.font = self.cellFont;
     cell.textLabel.textColor = self.cellTextColor;
     
@@ -154,11 +159,18 @@ static NSString *SearchGenresTableCellIdentifier = @"SYNSearchCategoriesIphoneCe
 {
     Genre* genreSelected = self.searchCategories[indexPath.item];
     
+    SYNAppDelegate* appDelegate = (SYNAppDelegate*)[[UIApplication sharedApplication] delegate];
+    
+    NSNotification* navigationNotification = [NSNotification notificationWithName: kNavigateToPage
+                                                                           object: self
+                                                                         userInfo: @{@"pageName":kChannelsViewId,
+                                                                                     @"action":@"open", @"object":genreSelected}];
+    
+    [[NSNotificationCenter defaultCenter] postNotification: navigationNotification];
+    
+    [appDelegate.viewStackManager dismissSearchBar];
     
     
-    [NSNotificationCenter.defaultCenter postNotificationName: kSearchTyped
-                                                      object: self
-                                                    userInfo: @{kSearchTerm : genreSelected.name}];
     
    
 }

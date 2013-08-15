@@ -118,10 +118,7 @@
     termsAndConditionsLabel.font = [UIFont rockpackFontOfSize: 14.0];
     termsAndConditionsLabelSide.font = termsAndConditionsLabel.font;
     wellSendYouLabel.font = [UIFont rockpackFontOfSize: 16.0];
-    
-    self.whatsOnYourChannelLabel.font = [UIFont rockpackFontOfSize:self.whatsOnYourChannelLabel.font.pointSize];
-    self.whatsOnYourChannelLabel.text = NSLocalizedString(@"rockpack_strapline", nil);
-    
+         
     NSMutableAttributedString* termsString = [[NSMutableAttributedString alloc] initWithString: NSLocalizedString(@"register_screen_legal", nil)];
     
     
@@ -194,7 +191,7 @@
     UITapGestureRecognizer* tapGesture = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(outerViewTapped:)];
     [self.view addGestureRecognizer:tapGesture];
     
-    self.onBoardingController = [[SYNLoginOnBoardingController alloc] initWithDelegate: self];
+    
     CGRect onBoardingViewFrame = self.onBoardingController.view.frame;
     onBoardingViewFrame.origin.x = 0.0;
     onBoardingViewFrame.origin.y = [[SYNDeviceManager sharedInstance] isLandscape] ? 300.0 : 560.0;
@@ -1130,22 +1127,7 @@
     [self doFacebookLoginAnimation];
     
     [self loginThroughFacebookWithCompletionHandler: ^(NSDictionary * dictionary) {
-        // Is user registering for the first time
-        if (dictionary[@"registered"])
-        {
-            [tracker sendEventWithCategory: @"goal"
-                                withAction: @"userRegistration"
-                                 withLabel: @"Facebook"
-                                 withValue: nil];
-        }
-        else
-        {
-            // or just logging in to an existing account
-            [tracker sendEventWithCategory: @"goal"
-                                withAction: @"userLogin"
-                                 withLabel: @"Facebook"
-                                 withValue: nil];
-        }
+        
         
         [activityIndicator stopAnimating];
         [self completeLoginProcess];

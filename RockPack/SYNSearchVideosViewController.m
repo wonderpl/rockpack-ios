@@ -315,10 +315,8 @@
                                                                                   forIndexPath: indexPath];
     
     videoThumbnailCell.displayMode = kVideoThumbnailDisplayModeYoutube;
-    
-    [videoThumbnailCell.videoImageView
-     setImageWithURL: [NSURL URLWithString: videoInstance.video.thumbnailURL]
-     placeholderImage: [UIImage imageNamed: @"PlaceholderVideoWide.png"]];
+    [videoThumbnailCell.videoImageView setImageWithURL: [NSURL URLWithString: videoInstance.video.thumbnailURL]
+                                      placeholderImage: [UIImage imageNamed: @"PlaceholderVideoWide.png"]];
     
     videoThumbnailCell.videoTitle.text = videoInstance.title;
     videoThumbnailCell.videoInstance = videoInstance;
@@ -391,7 +389,9 @@
         videoThumbnailCell.durationLabel.text = [NSString stringWithFormat: @"%@:%@", minutesString, secondsString];
     }
     
-    videoThumbnailCell.viewControllerDelegate = self;
+    videoThumbnailCell.viewControllerDelegate = (id<SYNVideoThumbnailWideCellDelegate>) self;
+    
+    
     
     videoThumbnailCell.addItButton.highlighted = NO;
     videoThumbnailCell.addItButton.selected = [appDelegate.videoQueue videoInstanceIsAddedToChannel: videoInstance];
@@ -438,6 +438,11 @@
     {
         return CGSizeMake(310, 221);
     }
+}
+
+- (VideoInstance *) videoInstanceForIndexPath: (NSIndexPath *) indexPath
+{
+    return [self.fetchedResultsController objectAtIndexPath: indexPath];
 }
 
 

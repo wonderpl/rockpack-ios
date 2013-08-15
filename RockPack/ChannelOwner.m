@@ -311,7 +311,7 @@
 {
     NSMutableString *ownerDescription = [NSMutableString stringWithFormat: @"ChannelOwner id:%i, username: '%@'", [self.uniqueId intValue], self.displayName];
     
-    [ownerDescription appendFormat: @"\nhas %i channels owned", self.channels.count];
+    [ownerDescription appendFormat: @"has %i channels owned", self.channels.count];
     
     if (self.channels.count == 0)
     {

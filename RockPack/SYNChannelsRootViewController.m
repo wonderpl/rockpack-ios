@@ -78,7 +78,7 @@
 {
     BOOL isIPhone = IS_IPHONE;
     
-    StartingCategoryText  = NSLocalizedString(@"ALL CHANNELS", nil);
+    StartingCategoryText  = NSLocalizedString(@"ALL PACKS", nil);
     SYNIntegralCollectionViewFlowLayout *flowLayout;
     
     if (isIPhone)
@@ -311,7 +311,7 @@
                                         
                                         if (self.channels.count == 0)
                                         {
-                                            [self displayEmptyGenreMessage: @"NO CHANNELS FOUND"];
+                                            [self displayEmptyGenreMessage: @"No Channels Found"];
                                         }
                                     }
                                     
@@ -722,7 +722,7 @@ referenceSizeForFooterInSection: (NSInteger) section
     }
     else
     {
-        [self displayEmptyGenreMessage: @"LOADING CHANNELS"];
+        [self displayEmptyGenreMessage: @"Loading Channels"];
     }
     
     [self loadChannelsForGenre: genre];
@@ -873,6 +873,14 @@ referenceSizeForFooterInSection: (NSInteger) section
     }
 }
 
+-(void)performAction:(NSString*)action withObject:(id)object
+{
+    if([action isEqualToString:@"open"] && [object isKindOfClass:[Genre class]])
+    {
+        [self categoryTableController:nil didSelectCategory:object];
+        
+    }
+}
 
 - (void) categoryTableController: (SYNChannelCategoryTableViewController *) tableController
                didSelectCategory: (Genre *) category
@@ -901,6 +909,7 @@ referenceSizeForFooterInSection: (NSInteger) section
         [self handleNewTabSelectionWithGenre: nil];
     }
 }
+
 
 
 - (void) categoryTableController: (SYNChannelCategoryTableViewController *) tableController

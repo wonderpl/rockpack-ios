@@ -10,6 +10,7 @@
 
 #import "SYNAddButtonControl.h"
 #import "SYNAppDelegate.h"
+#import "SYNArcMenuView.h"
 #import "SYNNetworkEngine.h"
 #import "SYNTabViewController.h"
 #import "SYNTabViewDelegate.h"
@@ -27,7 +28,8 @@ typedef void (^SYNShareCompletionBlock)(void);
 @interface SYNAbstractViewController : UIViewController <NSFetchedResultsControllerDelegate,
                                                                  UICollectionViewDataSource,
                                                                  UICollectionViewDelegate,
-                                                                 SYNTabViewDelegate>
+                                                                 SYNTabViewDelegate,
+                                                                 SYNArcMenuViewDelegate>
 {
 @protected
     SYNAppDelegate* appDelegate;
@@ -58,6 +60,8 @@ typedef void (^SYNShareCompletionBlock)(void);
 @property (readonly) BOOL alwaysDisplaysSearchBox;
 @property (readonly) NSManagedObjectContext *mainManagedObjectContext;
 @property (readonly, getter = isVideoQueueVisible) BOOL videoQueueVisible;
+
+-(void)performAction:(NSString*)action withObject:(id)object;
 
 - (void) handleNewTabSelectionWithId: (NSString*) selectionId;
 - (void) handleNewTabSelectionWithGenre: (Genre*) name;
@@ -110,6 +114,9 @@ typedef void (^SYNShareCompletionBlock)(void);
       arrowDirections: (UIPopoverArrowDirection) arrowDirections
     activityIndicator: (UIActivityIndicatorView *) activityIndicatorView
            onComplete: (SYNShareCompletionBlock) completionBlock;
+
+- (void) addVideoAtIndexPath: (NSIndexPath *) indexPath
+               withOperation: (NSString *) operation;
 
 // Purchase
 

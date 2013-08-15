@@ -71,60 +71,81 @@
     
     __weak SYNImplicitSharingController* wself = self;
     SYNAppDelegate* appDelegate = (SYNAppDelegate*)[[UIApplication sharedApplication] delegate];
-    __weak SYNAppDelegate* wAppDelegate = appDelegate;
     
-    
-   
+    ExternalAccount* facebookAccount = appDelegate.currentUser.facebookAccount;
+    BOOL doesHaveAutopostStarFlagSet = (facebookAccount.flagsValue & ExternalAccountFlagAutopostStar);
     
     BOOL isYesButton = (sender == self.yesButton);
-    if(!isYesButton) // if no button is pressed, dismiss
+    
+    if(!isYesButton) // NO button pressed, dismiss and save the setting
     {
         // dismiss
-        wAppDelegate.currentUser.facebookAccount.noautopostValue = YES; // consider the dismissal as a NO and log it
-        [wAppDelegate saveContext: YES];
+        appDelegate.currentUser.facebookAccount.noautopostValue = YES; 
+        [appDelegate saveContext: YES];
         return;
     }
     else
     {
+        void(^ErrorBlock)(id) = ^(id error){
+            
+            [wself switchAutopostViewToYes:!isYesButton];
+        };
+        
+        
         
         [[SYNFacebookManager sharedFBManager] openSessionWithPermissionType:kFacebookPermissionTypePublish onSuccess:^{
             
-            [appDelegate.oAuthNetworkEngine setFlag:@"facebook_autopost_star" withValue:isYesButton
-                                           forUseId:appDelegate.currentUser.uniqueId completionHandler:^(id no_response) {
-                                               
-                                               [wself switchAutopostViewToYes:isYesButton];
-                                               
-                                               if(isYesButton)
-                                                   [wAppDelegate.currentUser setFlag:ExternalAccountFlagAutopostStar toExternalAccount:@"facebook"];
-                                               else
-                                                   [wAppDelegate.currentUser unsetFlag:ExternalAccountFlagAutopostStar toExternalAccount:@"facebook"];
-                                               
-                                               [wAppDelegate saveContext:YES];
-                                               
-                                               if(self.completionBlock)
-                                                   self.completionBlock();
-                                               
-                                               [self dismiss];
-                                               
-                                           } errorHandler:^(id error) {
-                                               
-                                               [wself switchAutopostViewToYes:!isYesButton];
-                                               
-                                           }];
+            __weak SYNAppDelegate* wAppDelegate = appDelegate;
             
-        } onFailure:^(NSString *errorMessage) {
             
-            [wself switchAutopostViewToYes:!isYesButton];
+            FBAccessTokenData* accessTokenData = [[FBSession activeSession] accessTokenData];
             
-        }];
+            [wAppDelegate.oAuthNetworkEngine connectFacebookAccountForUserId:appDelegate.currentUser.uniqueId
+                                                          andAccessTokenData:accessTokenData
+                                                           completionHandler:^(id no_responce) {
+                                                               
+                        // Shortcut for not reposting an existing value
+                                                               
+                        if(doesHaveAutopostStarFlagSet) {
+                                                                   
+                            if(self.completionBlock)
+                                self.completionBlock();
+                            
+                            [self dismiss];
+                                                                   
+                            return;
+                        }
+                                                               
+                        [appDelegate.oAuthNetworkEngine setFlag:@"facebook_autopost_star"
+                                                      withValue:isYesButton
+                                                       forUseId:appDelegate.currentUser.uniqueId
+                                              completionHandler:^(id no_response) {
+                                                  
+                                                  
+                                                                //NSLog(@"Flag sent");
+                                                                                                  
+                                            [wself switchAutopostViewToYes:isYesButton];
+                                                                                                  
+                                            if(isYesButton)
+                                                [wAppDelegate.currentUser setFlag:ExternalAccountFlagAutopostStar toExternalAccount:@"facebook"];
+                                            else
+                                                [wAppDelegate.currentUser unsetFlag:ExternalAccountFlagAutopostStar toExternalAccount:@"facebook"];
+                                                                                                  
+                                                [wAppDelegate saveContext:YES];
+                                                                                                  
+                                                if(self.completionBlock)
+                                                    self.completionBlock();
+                                                                                                  
+                                                [self dismiss];
+                                                                                                  
+                                        } errorHandler:ErrorBlock];
+                                                                  
+                                                                  
+                    } errorHandler:ErrorBlock];
+            
+            
+        } onFailure:ErrorBlock];
     }
-    
-    
-    
-    
-    
-    
-    
     
     
 }

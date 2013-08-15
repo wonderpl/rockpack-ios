@@ -839,13 +839,14 @@ typedef void(^AnimationCompletionBlock)(BOOL finished);
     
     if ([notificationName isEqualToString: kNoteAllNavControlsShow])
     {
-        self.searchButton.hidden = NO;
+        if(IS_IPAD)
+            self.searchButton.hidden = NO;
         
         self.sideNavigationButton.hidden = NO;
         self.closeSearchButton.hidden = YES;
         self.backButtonControl.hidden = NO;
         
-        if (self.isInSearchMode && IS_IPAD)
+        if (self.hasSearchBarOn && IS_IPAD)
         {
             self.sideNavigationButton.hidden = YES;
         }
@@ -857,6 +858,7 @@ typedef void(^AnimationCompletionBlock)(BOOL finished);
     }
     else
     {
+        // ex. when clicking on 'EDIT' in channel details
         self.searchButton.hidden = YES;
         self.sideNavigationButton.hidden = YES;
         self.closeSearchButton.hidden = YES;
@@ -873,6 +875,10 @@ typedef void(^AnimationCompletionBlock)(BOOL finished);
     
     NSString* pageName = [notification userInfo][@"pageName"];
     if (!pageName)
+        return;
+    
+    SYNAbstractViewController* controllerToGo = [self.containerViewController viewControllerByPageName:pageName];
+    if(!controllerToGo)
         return;
     
     if (self.isInSearchMode)
@@ -892,13 +898,23 @@ typedef void(^AnimationCompletionBlock)(BOOL finished);
     [self.containerViewController navigateToPageByName: pageName];
     
     self.sideNavigatorViewController.state = SideNavigationStateHidden;
+    
+    // post open actions
+    
+    if ([notification userInfo][@"action"])
+    {
         
+        [controllerToGo performAction:[notification userInfo][@"action"]
+                           withObject:[notification userInfo][@"object"]];
+    }
+    
+    
 }
 
 
 - (void) channelSuccessfullySaved: (NSNotification*) note
 {
-    NSString* message = IS_IPHONE ? NSLocalizedString(@"CHANNEL SAVED", nil) : NSLocalizedString(@"YOUR CHANNEL HAS BEEN SAVED SUCCESSFULLY", nil);
+    NSString* message = IS_IPHONE ? NSLocalizedString(@"PACK SAVED", nil) : NSLocalizedString(@"YOUR PACK HAS BEEN SAVED SUCCESSFULLY", nil);
     
     [self presentSuccessNotificationWithMessage: message];
 }

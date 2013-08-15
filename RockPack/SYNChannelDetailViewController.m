@@ -22,7 +22,6 @@
 #import "SYNCoverChooserController.h"
 #import "SYNCoverThumbnailCell.h"
 #import "SYNDeviceManager.h"
-#import "SYNDeviceManager.h"
 #import "SYNExistingChannelsViewController.h"
 #import "SYNGenreTabViewController.h"
 #import "SYNImagePickerController.h"
@@ -47,13 +46,14 @@
                                               SYNImagePickerControllerDelegate,
                                               UIPopoverControllerDelegate,
                                               SYNChannelCategoryTableViewDelegate,
-                                              SYNChannelCoverImageSelectorDelegate>
+                                              SYNChannelCoverImageSelectorDelegate,
+                                              SYNVideoThumbnailRegularCellDelegate>
 
 
 @property (nonatomic, assign)  CGPoint originalContentOffset;
+@property (nonatomic, assign)  CGPoint originalMasterControlsViewOrigin;
 @property (nonatomic, assign)  CGRect originalSubscribeButtonRect;
 @property (nonatomic, assign)  CGRect originalSubscribersLabelRect;
-@property (nonatomic, assign)  CGPoint originalMasterControlsViewOrigin;
 @property (nonatomic, assign) BOOL hasAppeared;
 @property (nonatomic, assign) BOOL isIPhone;
 @property (nonatomic, assign, getter = isImageSelectorOpen) BOOL imageSelectorOpen;
@@ -61,16 +61,16 @@
 @property (nonatomic, strong) CIFilter *filter;
 @property (nonatomic, strong) CIImage *backgroundCIImage;
 @property (nonatomic, strong) IBOutlet SSTextView *channelTitleTextView;
+@property (nonatomic, strong) IBOutlet UIButton *addCoverButton;
 @property (nonatomic, strong) IBOutlet UIButton *buyButton;
 @property (nonatomic, strong) IBOutlet UIButton *cameraButton;
 @property (nonatomic, strong) IBOutlet UIButton *createChannelButton;
-@property (nonatomic, strong) IBOutlet UIButton *saveChannelButton;
-@property (nonatomic, strong) IBOutlet UIButton *shareButton;
-@property (nonatomic, strong) IBOutlet UIButton *addCoverButton;
 @property (nonatomic, strong) IBOutlet UIButton *playChannelButton;
 @property (nonatomic, strong) IBOutlet UIButton *profileImageButton;
 @property (nonatomic, strong) IBOutlet UIButton *reportConcernButton;
+@property (nonatomic, strong) IBOutlet UIButton *saveChannelButton;
 @property (nonatomic, strong) IBOutlet UIButton *selectCategoryButton;
+@property (nonatomic, strong) IBOutlet UIButton *shareButton;
 @property (nonatomic, strong) IBOutlet UIButton *subscribeButton;
 @property (nonatomic, strong) IBOutlet UIImageView *avatarImageView;
 @property (nonatomic, strong) IBOutlet UIImageView *channelCoverImageView;
@@ -503,6 +503,13 @@
 
 - (IBAction) playChannelsButtonTouched: (id) sender
 {
+    id<GAITracker> tracker = [GAI sharedInstance].defaultTracker;
+    
+    [tracker sendEventWithCategory: @"uiAction"
+                        withAction: @"playAll"
+                         withLabel: nil
+                         withValue: nil];
+    
     [self displayVideoViewerWithVideoInstanceArray: self.channel.videoInstances.array
                                   andSelectedIndex: 0
                                             center: self.view.center];
@@ -987,8 +994,6 @@
     videoThumbnailCell.titleLabel.text = videoInstance.title;
     videoThumbnailCell.viewControllerDelegate = self;
     
-    videoThumbnailCell.dataIndetifier = videoInstance.uniqueId;
-    
     videoThumbnailCell.addItButton.highlighted = NO;
     videoThumbnailCell.addItButton.selected = [appDelegate.videoQueue videoInstanceIsAddedToChannel: videoInstance];
     
@@ -1033,9 +1038,9 @@
 }
 
 
-- (CGSize)			 collectionView: (UICollectionView *) collectionView
-                      layout: (UICollectionViewLayout *) collectionViewLayout
-referenceSizeForFooterInSection: (NSInteger) section
+- (CGSize) collectionView: (UICollectionView *) collectionView
+                   layout: (UICollectionViewLayout *) collectionViewLayout
+           referenceSizeForFooterInSection: (NSInteger) section
 {
     CGSize footerSize;
     
@@ -1385,32 +1390,17 @@ referenceSizeForFooterInSection: (NSInteger) section
     
     UIView *v = addButton.superview.superview;
     NSIndexPath *indexPath = [self.videoThumbnailCollectionView indexPathForItemAtPoint: v.center];
-    VideoInstance *videoInstance = self.channel.videoInstances [indexPath.row];
-    
-    if (videoInstance)
-    {
-        id<GAITracker> tracker = [GAI sharedInstance].defaultTracker;
-        
-        [tracker sendEventWithCategory: @"uiAction"
-                            withAction: @"videoPlusButtonClick"
-                             withLabel: nil
-                             withValue: nil];
-        
-        [appDelegate.oAuthNetworkEngine recordActivityForUserId: appDelegate.currentUser.uniqueId
-                                                         action: @"select"
-                                                videoInstanceId: videoInstance.uniqueId
-                                              completionHandler: ^(id response) {
-                                              }
-                                                   errorHandler: ^(id error) {
-                                                       DebugLog(@"Could not record videoAddButtonTapped: activity");
-                                                   }];
-        
-        [[NSNotificationCenter defaultCenter] postNotificationName: noteName
-                                                            object: self
-                                                          userInfo: @{@"VideoInstance": videoInstance}];
-    }
+
+    [self addVideoAtIndexPath: indexPath
+                withOperation: noteName];
     
     addButton.selected = !addButton.selected;
+}
+
+
+- (VideoInstance *) videoInstanceForIndexPath: (NSIndexPath *) indexPath
+{
+    return  self.channel.videoInstances [indexPath.row];
 }
 
 
@@ -3335,7 +3325,7 @@ shouldChangeTextInRange: (NSRange) range
                                                                                                                         inSection: 0]];
         
         
-        CGRect rectToPointTo = [self.view  convertRect: randomCell.addItButton.frame
+        CGRect rectToPointTo = [self.view  convertRect: randomCell.frame
                                               fromView: randomCell];
         
         rectToPointTo = CGRectInset(rectToPointTo, 10.0, 10.0);

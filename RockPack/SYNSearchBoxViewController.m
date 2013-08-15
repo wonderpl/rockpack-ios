@@ -107,12 +107,12 @@
     {
         tableViewFrame.origin.x = self.searchTextField.frame.origin.x - 10.0;
         tableViewFrame.origin.y = 66.0;
-        self.searchTextField.placeholder = @"Search for videos, channels & people";
+        self.searchTextField.placeholder = @"Search for videos, packs & people";
     }
     else
     {
         tableViewFrame.origin.y = self.searchBoxView.frame.size.height;
-        self.searchTextField.placeholder = @"Find videos, channels & people";
+        self.searchTextField.placeholder = @"Find videos, packs & people";
         
         
         self.searchCategoriesController = [[SYNSearchCategoriesTableViewController alloc] initWithStyle:UITableViewStylePlain];
@@ -160,8 +160,8 @@
     
     self.searchCategoriesController.tableView.alpha = 1.0f;
     
-    
     [self.searchBoxView resizeForHeight: 548.0f]; // 548.0f max
+    
     
     CGRect searchTBVFrame = self.searchCategoriesController.tableView.frame;
     searchTBVFrame.origin = CGPointMake(0.0f, 65.0f);
@@ -173,7 +173,7 @@
     __weak SYNSearchBoxViewController* wself = self;
     
      self.searchCategoriesController.tableView.alpha = 0.0f;
-    [UIView animateWithDuration:0.3f delay:0.0f options:UIViewAnimationCurveEaseIn animations:^{
+    [UIView animateWithDuration:0.3f delay:0.0f options:UIViewAnimationCurveEaseOut animations:^{
         wself.searchCategoriesController.tableView.alpha = 1.0f;
         
         

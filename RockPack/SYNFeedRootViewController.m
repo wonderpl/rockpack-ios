@@ -47,6 +47,7 @@ typedef void(^FeedDataErrorBlock)(void);
 @property (nonatomic, strong) NSDictionary* feedChannelsById;
 @property (nonatomic, strong) NSDictionary* feedItemByPosition;
 @property (nonatomic, strong) UICollectionView* feedCollectionView;
+@property (nonatomic, strong) NSArray* videosInOrderArray;
 
 @end
 
@@ -74,6 +75,7 @@ typedef void(^FeedDataErrorBlock)(void);
     
     self.feedItemsData = [NSArray array];
     
+    self.videosInOrderArray = [NSArray array];
     
     SYNIntegralCollectionViewFlowLayout *standardFlowLayout;
     UIEdgeInsets sectionInset, contentInset;
@@ -355,44 +357,67 @@ typedef void(^FeedDataErrorBlock)(void);
                                                     size: self.dataRequestRange.length
                                        completionHandler: ^(NSDictionary *responseDictionary) {
                                                     
-                                                    BOOL toAppend = (self.dataRequestRange.location > 0);
+                                           
+                                           BOOL toAppend = (self.dataRequestRange.location > 0);
                                                     
-                                                    NSDictionary *contentItem = responseDictionary[@"content"];
-                                                    if (!contentItem || ![contentItem isKindOfClass: [NSDictionary class]]) {
-                                                        errorBlock();
-                                                        return;
-                                                    }
+                                           
+                                           NSDictionary *contentItem = responseDictionary[@"content"];
+                                           
+                                           if (!contentItem || ![contentItem isKindOfClass: [NSDictionary class]]) {
+                                               
+                                               errorBlock();
+                                               
+                                               return;
+                                               
+                                           }
                                                         
+                                           
+                                           NSNumber* totalNumber = [contentItem[@"total"] isKindOfClass:[NSNumber class]] ? contentItem[@"total"] : @0 ;
+                                           wself.dataItemsAvailable = [totalNumber integerValue];
+                                           
+                                           //NSLog(@"%i from %i", ((NSArray*)contentItem[@"items"]).count, wself.dataItemsAvailable);
+                                           
+                                           if(wself.dataItemsAvailable == 0) {
+                                               
+                                               [wself displayEmptyGenreMessage:NSLocalizedString(@"feed_screen_empty_message", nil) andLoader:NO];
+                                               
+                                               return;
+                                               
+                                           }
+                                               
+                                           
+                                           if(![appDelegate.mainRegistry registerDataForSocialFeedFromItemsDictionary:contentItem
+                                                                                                          byAppending:toAppend])
+                                               
+                                           {
+                                               
+                                               errorBlock();
+                                               
+                                               return;
+                                               
+                                           }
                                                     
-                                                    wself.dataItemsAvailable = contentItem[@"total"] ? contentItem[@"total"] : 0 ;
-                                                    if(wself.dataItemsAvailable == 0) {
-                                                        [wself displayEmptyGenreMessage:NSLocalizedString(@"feed_screen_empty_message", nil) andLoader:NO];
-                                                        return;
-                                                    }
-                                                        
-                                                    
-                                                    
-                                                    if(![appDelegate.mainRegistry registerDataForSocialFeedFromItemsDictionary:contentItem
-                                                                                                                   byAppending:toAppend])
-                                                    {
-                                                        errorBlock();
-                                                        return;
-                                                    }
-                                                    
-                                                    [wself removeEmptyGenreMessage];
+                                           
+                                           [wself removeEmptyGenreMessage];
                                            
                                            
-                                                    [wself fetchedAndDisplayFeedItems];
                                            
-                                                    wself.loadingMoreContent = NO;
+                                           [wself fetchedAndDisplayFeedItems];
+                                           
+                                           
+                                           wself.loadingMoreContent = NO;
                                                     
-                                                    [wself handleRefreshComplete];
+                                           
+                                           [wself handleRefreshComplete];
                                                     
-                                                } errorHandler: ^(NSDictionary* errorDictionary) {
+                                           
+                                       } errorHandler: ^(NSDictionary* errorDictionary) {
                                                     
-                                                    errorBlock();
+                                           
+                                           errorBlock();
                                                     
-                                                }];
+                                           
+                                       }];
 }
 
 
@@ -494,7 +519,7 @@ typedef void(^FeedDataErrorBlock)(void);
         dateNoTime = [feedItem.dateAdded dateIgnoringTime];
         
         NSMutableArray* bucket = [buckets objectForKey:dateNoTime];
-        if(!bucket) {
+        if(!bucket) { // if the bucket has not been created already, create it
             bucket = [NSMutableArray array];
             [buckets setObject:bucket forKey:dateNoTime];
         }
@@ -503,14 +528,14 @@ typedef void(^FeedDataErrorBlock)(void);
         
     }
     
-    NSArray* sortedKeys = [[buckets allKeys] sortedArrayUsingComparator:^NSComparisonResult(NSDate* date1, NSDate* date2) {
+    NSArray* sortedDateKeys = [[buckets allKeys] sortedArrayUsingComparator:^NSComparisonResult(NSDate* date1, NSDate* date2) {
         
         return [date2 compare:date1];
         
     }];
     
     NSMutableArray* sortedItemsArray = [NSMutableArray array];
-    for (NSDate* dateKey in sortedKeys)
+    for (NSDate* dateKey in sortedDateKeys)
     {
         [sortedItemsArray addObject:[buckets objectForKey:dateKey]];
         
@@ -520,7 +545,12 @@ typedef void(^FeedDataErrorBlock)(void);
     
     [self.feedCollectionView reloadData];
     
-        
+    // put the videos in order
+    
+    self.videosInOrderArray = [NSArray array];
+    dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_HIGH, 0), ^{
+        [self sortVideosForPlaylist];
+    });
     
 }
 
@@ -589,6 +619,13 @@ typedef void(^FeedDataErrorBlock)(void);
     return self.feedItemsData.count; // the number of arrays included
 }
 
+- (UIEdgeInsets)collectionView: (UICollectionView *)collectionView
+                        layout: (UICollectionViewLayout*)collectionViewLayout
+        insetForSectionAtIndex: (NSInteger)section
+{
+    
+    return UIEdgeInsetsMake(10.0, 0.0, 40.0, 0.0);
+}
 
 - (NSInteger) collectionView: (UICollectionView *) collectionView
       numberOfItemsInSection: (NSInteger) section
@@ -616,7 +653,7 @@ typedef void(^FeedDataErrorBlock)(void);
     
     if(feedItem.resourceTypeValue == FeedItemResourceTypeVideo)
     {
-        return CGSizeMake(cellWidth, IS_IPHONE ? 266.0f : 168.0f);
+        return CGSizeMake(cellWidth, IS_IPHONE ? 280.0f : 168.0f);
     }
     else // Channel
     {
@@ -625,7 +662,7 @@ typedef void(^FeedDataErrorBlock)(void);
             if(feedItem.itemCountValue == 2)
                 return CGSizeMake(cellWidth, 149.0f);
         }
-        return CGSizeMake(cellWidth, IS_IPHONE ? 356.0f : 298.0f);
+        return CGSizeMake(cellWidth, IS_IPHONE ? 363.0f : 298.0f);
     }
 }
 
@@ -713,7 +750,7 @@ typedef void(^FeedDataErrorBlock)(void);
             cell.messageLabel.text = feedItem.title;
         
         
-        [cell setSupplementaryMessageWithDictionary:@{@"star_count":videoInstance.video.starCount, @"starrers":videoInstance.starrers}];
+        [cell setSupplementaryMessageWithDictionary:@{@"star_count":videoInstance.video.starCount, @"starrers":[videoInstance.starrers array]}];
         
         [cell setCoverImagesAndTitlesWithArray:@[@{@"image": videoInstance.video.thumbnailURL, @"title" : videoInstance.title}]];
         
@@ -783,18 +820,10 @@ typedef void(^FeedDataErrorBlock)(void);
                    layout: (UICollectionViewLayout*) collectionViewLayout
                    referenceSizeForHeaderInSection: (NSInteger) section
 {
-    if (collectionView == self.feedCollectionView)
-    {
-        if (IS_IPAD)
-        {
-            return CGSizeMake(1024, 65);   
-        }
-        return CGSizeMake(320, 34);
-    }
-    else
-    {
-        return CGSizeMake(0, 0);
-    }
+    if (IS_IPAD)
+        return CGSizeMake(1024, 65);
+    
+    return CGSizeMake(320, 34);
 }
 
 
@@ -804,20 +833,14 @@ typedef void(^FeedDataErrorBlock)(void);
 {
     CGSize footerSize = CGSizeZero;
     
-    NSLog(@"section: %i from %i", section, self.feedItemsData.count);
     
-    if ((collectionView == self.feedCollectionView) &&
-        (section == (self.feedItemsData.count - 1))) // only the last section can have a loader
+    if  (section == (self.feedItemsData.count - 1) && // only the last section can have a loader
+        (self.dataRequestRange.location + self.dataRequestRange.length < self.dataItemsAvailable)) 
     {
-        
         
         footerSize = [self footerSize];
         
        
-        if (self.dataRequestRange.location + self.dataRequestRange.length < self.dataItemsAvailable)
-        {
-            footerSize = CGSizeMake(1.0f, 5.0f);
-        }
     }
     
     return footerSize;
@@ -936,6 +959,42 @@ typedef void(^FeedDataErrorBlock)(void);
     return channel;
 }
 
+-(void)sortVideosForPlaylist
+{
+    NSMutableArray* ma = [NSMutableArray array]; // max should be the existing videos
+    
+    for (NSArray* section in self.feedItemsData)
+    {
+        for (FeedItem* fi in section)
+        {
+            
+            if(fi.resourceTypeValue != FeedItemResourceTypeVideo)
+                continue;
+                
+            
+            if(fi.itemTypeValue == FeedItemTypeLeaf)
+            {
+                [ma addObject:[self.feedVideosById objectForKey:fi.resourceId]];
+            }
+            else
+            {
+                for (FeedItem* cfi in fi.feedItems)
+                {
+                    // assumes that FeedItems are one level deep at the present moment (probably will not change for a while)
+                    if(cfi.resourceTypeValue != FeedItemResourceTypeVideo || cfi.itemTypeValue != FeedItemTypeLeaf)
+                        continue;
+                    
+                    [ma addObject:[self.feedVideosById objectForKey:cfi.resourceId]];
+                    
+                }
+            }
+            
+        }
+    }
+    
+    self.videosInOrderArray = [NSArray arrayWithArray:ma];
+}
+
 - (void) pressedAggregateCellCoverButton: (UIButton *) coverButton
 {
 
@@ -947,17 +1006,20 @@ typedef void(^FeedDataErrorBlock)(void);
     if(selectedFeedItem.resourceTypeValue == FeedItemResourceTypeVideo)
     {
         
+        if(self.videosInOrderArray.count == 0)
+            return;
         
+        NSLog(@"%@", self.videosInOrderArray);
         
         VideoInstance* videoInstance = [self videoInstanceAtCoverOfFeedItem:selectedFeedItem];
         
         SYNMasterViewController *masterViewController = (SYNMasterViewController*)appDelegate.masterViewController;
         
-        NSArray* videoInstancesToPlayArray = [self.feedVideosById allValues];
+        
         
         
         __block NSInteger indexOfSelectedVideoInArray = 0;
-        [videoInstancesToPlayArray enumerateObjectsUsingBlock:^(VideoInstance* vi, NSUInteger idx, BOOL *stop) {
+        [self.videosInOrderArray enumerateObjectsUsingBlock:^(VideoInstance* vi, NSUInteger idx, BOOL *stop) {
             
             
             indexOfSelectedVideoInArray++;
@@ -972,7 +1034,7 @@ typedef void(^FeedDataErrorBlock)(void);
         
         
         [masterViewController addVideoOverlayToViewController: self
-                                       withVideoInstanceArray: videoInstancesToPlayArray
+                                       withVideoInstanceArray: self.videosInOrderArray
                                              andSelectedIndex: indexOfSelectedVideoInArray
                                                    fromCenter: self.view.center];
         
@@ -1032,8 +1094,7 @@ typedef void(^FeedDataErrorBlock)(void);
 - (void) videoAddButtonTapped: (UIButton *) _addButton
 {
     
-    if(_addButton.selected)
-        return;
+    
     
     FeedItem* selectedFeedItem = [self feedItemFromControl:_addButton];
     
@@ -1076,7 +1137,6 @@ typedef void(^FeedDataErrorBlock)(void);
         [self.videoThumbnailCollectionView reloadData];
         
         
-        _addButton.selected = !_addButton.selected; // switch to on/off
         
     }
     
@@ -1109,7 +1169,7 @@ typedef void(^FeedDataErrorBlock)(void);
     
     [tracker sendEventWithCategory: @"uiAction"
                         withAction: @"videoStarButtonClick"
-                         withLabel: nil
+                         withLabel: @"feed"
                          withValue: nil];
     
     

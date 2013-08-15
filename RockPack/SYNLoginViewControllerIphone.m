@@ -163,8 +163,6 @@
     self.loginErrorLabel.font = [UIFont rockpackFontOfSize:self.loginErrorLabel.font.pointSize];
     self.passwordResetErrorLabel.font = [UIFont rockpackFontOfSize:self.passwordResetErrorLabel.font.pointSize];
     self.signupErrorLabel.font = [UIFont rockpackFontOfSize:self.signupErrorLabel.font.pointSize];
-    self.whatsOnYourChannelLabel.font = [UIFont rockpackFontOfSize:self.whatsOnYourChannelLabel.font.pointSize];
-    self.whatsOnYourChannelLabel.text = NSLocalizedString(@"rockpack_strapline", nil);
 
     
     NSMutableAttributedString* termsString = [[NSMutableAttributedString alloc] initWithString: NSLocalizedString(@"register_screen_legal" , nil)];
@@ -189,8 +187,7 @@
     self.formatter = [[NSDateFormatter alloc] init];
     self.formatter.dateFormat = @"dd/MM/yyyy";
     
-    
-    self.onBoardingController = [[SYNLoginOnBoardingController alloc] initWithDelegate: self];
+     
     CGRect onBoardingViewFrame = self.onBoardingController.view.frame;
     onBoardingViewFrame.origin.x = 0.0;
     onBoardingViewFrame.size.width = [[SYNDeviceManager sharedInstance] currentScreenWidth];
@@ -358,22 +355,7 @@
     [self doFacebookLoginAnimation];
     
     [self loginThroughFacebookWithCompletionHandler:^(NSDictionary * dictionary) {
-        // Is user registering for the first time
-        if (dictionary[@"registered"])
-        {
-            [tracker sendEventWithCategory: @"goal"
-                                withAction: @"userRegistration"
-                                 withLabel: @"Facebook"
-                                 withValue: nil];
-        }
-        else
-        {
-            // or just logging in to an existing account
-            [tracker sendEventWithCategory: @"goal"
-                                withAction: @"userLogin"
-                                 withLabel: @"Facebook"
-                                 withValue: nil];
-        }
+        
         
         [self completeLoginProcess];
         

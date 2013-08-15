@@ -24,11 +24,9 @@
 "Email" = "Email";
 
 "VIDEOS" = "VIDEOS";
-"CHANNELS" = "CHANNELS";
+"CHANNELS" = "PACKS";
 "USERS" = "USERS";
 "SUBSCRIBERS" = "Subscribers";
-
-"rockpack_strapline" = "WHAT'S ON YOUR CHANNEL?";
 
 //Camera
 "channel_creation_screen_select_upload_photo_label" = "Select Source";
@@ -108,7 +106,7 @@
 // == Core Navigation == //
 
 "core_nav_section_feed" = "FEED";
-"core_nav_section_channels" = "CHANNELS";
+"core_nav_section_channels" = "PACKS";
 "core_nav_section_profile" = "PROFILE";
 "core_nav_section_notifications" = "NOTIFICATIONS";
 "core_nav_section_friends" = "FRIENDS";
@@ -118,10 +116,12 @@
 
 // 
 
+"%@ has subscribed to your channel" = "%@ has subscribed to your pack";
+
 "notification_liked_action" = "has liked your video";
-"notification_subscribed_action" = "has subscribed to your channel";
+"notification_subscribed_action" = "has subscribed to your pack";
 "notification_joined_action" = "Your Facebook friend %@ has joined Rockpack";
-"your_channel_object" = "your channel";
+"your_channel_object" = "your pack";
 "your_video_object" = "your video";
 
 "onboarding_channels" = "To start, browse channels created\nby other people. A channel is a\ncollection of videos.";
@@ -133,9 +133,9 @@
 
 // == Channel Detail == //
 
-"channel_screen_no_videos" = "THERE ARE NO VIDEOS IN THIS CHANNEL";
-"channel_screen_error_subscribe" = "SOMETHING WENT WRONG. PLEASE TRY AGAIN.";
-"channel_screen_loading_videos" = "LOADING VIDEOS...";
+"channel_screen_no_videos" = "There are no videos in this pack.";
+"channel_screen_error_subscribe" = "Something went wrong. Please try again.";
+"channel_screen_loading_videos" = "Loading videos...";
 
 // == Messages for creating a private channel == //
 
@@ -143,7 +143,7 @@
 "select_category" = "SELECT A CATEGORY";
 "enter_title" = "ENTER A TITLE";
 "select_cover" = "SELECT A COVER.";
-"channel_created_succesfully" = "CHANNEL CREATED SUCCESSFULLY";
+"channel_created_succesfully" = "PACK CREATED SUCCESSFULLY";
 "channel_will_remain_private_until" = "HOWEVER IT WILL REMAIN PRIVATE UNTIL YOU ";
 "private_condition_category" = "SELECT A RELEVANT CATEGORY";
 "private_condition_title" = "ENTER A TITLE";
@@ -152,7 +152,7 @@
 // == Channel Creation/Editing == //
 
 // Channel Title text view placeholder
-"channel_creation_screen_field_channeltitle_placeholder" = "CHANNEL NAME";
+"channel_creation_screen_field_channeltitle_placeholder" = "PACK NAME";
 
 // Select Cover / Category
 "channel_creation_screen_button_selectcover_label" = "SELECT A COVER";
@@ -164,14 +164,14 @@
 
 // Error AlertViews 
 "channel_creation_screen_error_existing_dialog_title" = "Title Already Exists";
-"channel_creation_screen_error_existing_dialog_description" = "You've already created a channel with this title. Please choose another.";
+"channel_creation_screen_error_existing_dialog_description" = "You've already created a pack with this title. Please choose another.";
 
 "channel_creation_screen_error_inappropriate_dialog_title" = "Mind your language!";
-"channel_creation_screen_error_inappropriate_dialog_description" = "This channel title may include inappropriate words.";
+"channel_creation_screen_error_inappropriate_dialog_description" = "This pack title may include inappropriate words.";
 
 "channel_creation_screen_error_unknown_title" = "Oops";
-"channel_creation_screen_error_unknown_create_description" = "We couldn't create your channel. Please try again.";
-"channel_creation_screen_error_unknown_save_description" = "We couldn't save your channel. Please try again.";
+"channel_creation_screen_error_unknown_create_description" = "We couldn't create your pack. Please try again.";
+"channel_creation_screen_error_unknown_save_description" = "We couldn't save your pack. Please try again.";
 
 "500_error_message" = "Something went wrong with Rockpack. Please try again.";
 "503_error_message" = "Something went wrong with Rockpack. Please try again.";
@@ -186,18 +186,18 @@
 // == Feed == //
 
 "feed_screen_section_title" = "FEED";
-"feed_screen_empty_message" = "Your feed looks pretty empty! Subscribe to more channels";
-"feed_screen_loading_error" = "There was a problem while loading your feed, please try again";
-"feed_screen_updating_error" = "There was a problem while refreshing your feed, please try again";
+"feed_screen_empty_message" = "Your feed looks pretty empty! Subscribe to more packs.";
+"feed_screen_loading_error" = "There was a problem while loading your feed, please try again.";
+"feed_screen_updating_error" = "There was a problem while refreshing your feed, please try again.";
 "feed_screen_loading_message" = "Your Video Feed is Being Refreshed, Please Wait...";
 "search_screen_no_videos" = "No Videos where found for this Search";
 "search_screen_searching_videos" = "Searching for Videos";
 
 // == Channels == //
 
-"channels_screen_section_title" = "CHANNELS";
+"channels_screen_section_title" = "PACKS";
 
-"channels_screen_loading_categories" = "Loading Channel Categories...";
+"channels_screen_loading_categories" = "Loading Pack Categories...";
 
 "FAVORITES" = "FAVORITES";
 
@@ -206,11 +206,11 @@
 "profile_screen_section_title" = "PROFILE";
 
 "profile_screen_channel_delete_dialog_title" = "Delete %@";
-"profile_screen_channel_delete_dialog_description" = "Are you sure you want to delete this channel?";
+"profile_screen_channel_delete_dialog_description" = "Are you sure you want to delete this pack?";
 
-"profile_screen_section_owner_created_title" = "MY CHANNELS";
+"profile_screen_section_owner_created_title" = "MY PACKS";
 "profile_screen_section_owner_subscription_title" = "MY SUBSCRIPTIONS";
-"profile_screen_section_user_created_title" = "CHANNELS";
+"profile_screen_section_user_created_title" = "PACKS";
 "profile_screen_section_user_subscription_title" = "SUBSCRIPTIONS";
 
 
