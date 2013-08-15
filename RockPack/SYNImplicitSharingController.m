@@ -85,6 +85,9 @@
         
         appDelegate.currentUser.facebookAccount.noautopostValue = YES;
         [appDelegate saveContext: YES];
+        
+        [self dismiss];
+        
         return;
     }
     else
