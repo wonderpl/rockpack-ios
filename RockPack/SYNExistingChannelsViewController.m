@@ -149,7 +149,6 @@
     void(^CompletionBlock)(id) = ^(id no_responce) {
         
         
-        
         if(isYesButton) {
            [wAppDelegate.currentUser setFlag:ExternalAccountFlagAutopostAdd toExternalAccount:@"facebook"]; 
         }
@@ -162,6 +161,18 @@
         [wAppDelegate saveContext:YES];
         
         [wself switchAutopostViewToYes:isYesButton];
+        
+        if(isYesButton)
+        {
+            // this is a replacement for the sharing granularity
+            
+            id<GAITracker> tracker = [GAI sharedInstance].defaultTracker;
+            
+            [tracker sendEventWithCategory: @"goal"
+                                withAction: @"videoShared"
+                                 withLabel: @"fbe"
+                                 withValue: nil];
+        }
         
     };
     

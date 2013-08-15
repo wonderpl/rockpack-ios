@@ -690,8 +690,20 @@
         
         
         __weak SYNVideoViewerViewController* wself = self;
-        SYNImplicitSharingController* implicitSharingController = [SYNImplicitSharingController controllerWithBlock:^{
+        SYNImplicitSharingController* implicitSharingController = [SYNImplicitSharingController controllerWithBlock:^(BOOL allowedAutoSharing){
             [wself toggleStarButton:button];
+            if(allowedAutoSharing)
+            {
+                // track
+                
+                id<GAITracker> tracker = [GAI sharedInstance].defaultTracker;
+                
+                [tracker sendEventWithCategory: @"goal"
+                                    withAction: @"videoShared"
+                                     withLabel: @"fbi"
+                                     withValue: nil];
+            }
+            
         }];
         [self addChildViewController:implicitSharingController];
         

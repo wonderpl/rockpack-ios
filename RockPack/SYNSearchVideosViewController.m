@@ -23,6 +23,7 @@
 #import "SYNVideoThumbnailWideCell.h"
 #import "UIImageView+WebCache.h"
 #import "Video.h"
+#import "SYNFeedMessagesView.h"
 #import "VideoInstance.h"
 
 @interface SYNSearchVideosViewController ()
@@ -32,7 +33,7 @@
 @property (nonatomic, strong) NSDateFormatter *dateFormatter;
 @property (nonatomic, weak) MKNetworkOperation *runningSearchOperation;
 @property (nonatomic, weak) NSString *searchTerm;
-
+@property (nonatomic, strong) SYNFeedMessagesView* emptyGenreMessageView;
 @end
 
 
@@ -205,11 +206,35 @@
 
 - (void) removeEmptyGenreMessage
 {
+    if (!self.emptyGenreMessageView)
+        return;
+    
+    [self.emptyGenreMessageView removeFromSuperview];
 }
 
 
-- (void) displayMessage: (NSString *) message
+- (void) displayEmptyGenreMessage: (NSString*) messageKey
+                        andLoader: (BOOL) isLoader
 {
+    
+    if (self.emptyGenreMessageView)
+    {
+        [self.emptyGenreMessageView removeFromSuperview];
+        self.emptyGenreMessageView = nil;
+    }
+    
+    self.emptyGenreMessageView = [SYNFeedMessagesView withMessage:NSLocalizedString(messageKey ,nil) andLoader:isLoader];
+    
+    CGRect messageFrame = self.emptyGenreMessageView.frame;
+    messageFrame.origin.y = ([[SYNDeviceManager sharedInstance] currentScreenHeight] * 0.5) - (messageFrame.size.height * 0.5);
+    messageFrame.origin.x = ([[SYNDeviceManager sharedInstance] currentScreenWidth] * 0.5) - (messageFrame.size.width * 0.5);
+    
+    messageFrame = CGRectIntegral(messageFrame);
+    self.emptyGenreMessageView.frame = messageFrame;
+    self.emptyGenreMessageView.autoresizingMask =
+    UIViewAutoresizingFlexibleTopMargin | UIViewAutoresizingFlexibleRightMargin | UIViewAutoresizingFlexibleLeftMargin;
+    
+    [self.view addSubview: self.emptyGenreMessageView];
 }
 
 
@@ -259,6 +284,10 @@
         appDelegate = (SYNAppDelegate *) [[UIApplication sharedApplication] delegate];
     }
     
+    [self removeEmptyGenreMessage];
+    
+    [self displayEmptyGenreMessage:@"SEARCHING FOR VIDEOS" andLoader:YES];
+    
     self.dataRequestRange = NSMakeRange(0, kAPIInitialBatchSize);
     
     
@@ -274,9 +303,11 @@
                                                                                     animated: YES];
                                                                                }
                                                                                
+                                                                               [self removeEmptyGenreMessage];
+                                                                               
                                                                                if (itemsCount == 0)
                                                                                {
-                                                                                   [self displayMessage: @"NO VIDEOS FOUND"];
+                                                                                   [self displayEmptyGenreMessage:@"NO VIDEOS FOUND" andLoader:NO];
                                                                                }
                                                                            }];
     self.searchTerm = term;

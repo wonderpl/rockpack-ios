@@ -345,8 +345,7 @@
         
         NSError *error = nil;
         
-        if (![channel.managedObjectContext
-              save: &error])
+        if (![channel.managedObjectContext save: &error])
         {
             AssertOrLog(@"Channels Details Failed: %@\n%@", [error localizedDescription], [error userInfo]);
         }
@@ -358,19 +357,20 @@
         DebugLog(@"Update action failed");
     };
     
-    if (refresh == YES || [channel.resourceURL hasPrefix: @"https"] || [channel.channelOwner.uniqueId isEqualToString: appDelegate.currentUser.uniqueId])                              // https does not cache so it is fresh
+    BOOL isUser = [channel.channelOwner.uniqueId isEqualToString: appDelegate.currentUser.uniqueId];
+    if (refresh == YES || [channel.resourceURL hasPrefix: @"https"] || isUser) // https does not cache so it is fresh
     {
-        self.channelUpdateOperation = [appDelegate.oAuthNetworkEngine
-                                       updateChannel: channel.resourceURL
-                                       completionHandler: successBlock
-                                       errorHandler: errorBlock];
+        self.channelUpdateOperation = [appDelegate.oAuthNetworkEngine updateChannel: channel.resourceURL
+                                                                    forVideosLength: isUser ? MAXIMUM_REQUEST_LENGTH : STANDARD_REQUEST_LENGTH
+                                                                  completionHandler: successBlock
+                                                                       errorHandler: errorBlock];
     }
     else
     {
-        self.channelUpdateOperation = [appDelegate.networkEngine
-                                       updateChannel: channel.resourceURL
-                                       completionHandler: successBlock
-                                       errorHandler: errorBlock];
+        self.channelUpdateOperation = [appDelegate.networkEngine updateChannel: channel.resourceURL
+                                                               forVideosLength: STANDARD_REQUEST_LENGTH
+                                                             completionHandler: successBlock
+                                                                  errorHandler: errorBlock];
     }
 }
 

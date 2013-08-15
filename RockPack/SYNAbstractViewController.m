@@ -767,8 +767,19 @@
         // then show panel
         __weak typeof(self) weakSelf = self;
         
-        SYNImplicitSharingController *implicitSharingController = [SYNImplicitSharingController controllerWithBlock: ^{
+        SYNImplicitSharingController *implicitSharingController = [SYNImplicitSharingController controllerWithBlock: ^(BOOL approvedAutoSharing){
             [weakSelf toggleStarAtIndexPath: indexPath];
+            if(approvedAutoSharing)
+            {
+                // track
+                
+                id<GAITracker> tracker = [GAI sharedInstance].defaultTracker;
+                
+                [tracker sendEventWithCategory: @"goal"
+                                    withAction: @"videoShared"
+                                     withLabel: @"fbi"
+                                     withValue: nil];
+            }
         }];
         
         [self addChildViewController: implicitSharingController];
@@ -882,7 +893,7 @@
 }
 
 - (void) arcMenuUpdateState: (UIGestureRecognizer *) recognizer
-                    forCell: cell
+                    forCell: (UICollectionViewCell *) cell
 {
     CGPoint tapPoint = [recognizer locationInView: self.view];
     
@@ -969,6 +980,17 @@
         [self.arcMenu positionUpdate: tapPoint];
         
     }
+    
+    // track
+    
+    id<GAITracker> tracker = [GAI sharedInstance].defaultTracker;
+    
+  
+    
+    [tracker sendEventWithCategory: @"uiAction"
+                        withAction: @"pressHold"
+                         withLabel: ([NSStringFromClass(cell.class) rangeOfString:@"Channel"].location == NSNotFound ? @"channel" : @"video")
+                         withValue: nil];
 }
 
 
