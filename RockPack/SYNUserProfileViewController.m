@@ -149,8 +149,8 @@
         self.avatarButton.enabled = FALSE;
     }
     
-    self.userNameLabel.text = [channelOwner.username uppercaseString];
-    self.fullNameLabel.text = [userName uppercaseString];
+    self.userNameLabel.text = channelOwner.username;
+    self.fullNameLabel.text = userName;
     
     UIImage* placeholderImage = [UIImage imageNamed: @"PlaceholderAvatarProfile"];
     
