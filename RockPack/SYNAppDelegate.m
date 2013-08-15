@@ -708,16 +708,13 @@
 {
     if ([self.mainManagedObjectContext hasChanges])
     {
-        [self.mainManagedObjectContext
-         performBlockAndWait: ^
-         {
+        [self.mainManagedObjectContext performBlockAndWait: ^{
+            
              NSError *error = nil;
              
-             if (![self.mainManagedObjectContext
-                   save: &error])
-             {
-                 AssertOrLog(@"Error saving Main moc: %@\n%@", [error localizedDescription], [error userInfo]);
-             }
+             if (![self.mainManagedObjectContext save: &error])
+                AssertOrLog(@"Error saving Main moc: %@\n%@", [error localizedDescription], [error userInfo]);
+              
          }];
     }
     
@@ -725,25 +722,17 @@
     {
         NSError *error = nil;
         
-        if (![self.privateManagedObjectContext
-              save: &error])
-        {
+        if (![self.privateManagedObjectContext save: &error])
             AssertOrLog(@"Error saving Private moc: %@\n%@", [error localizedDescription], [error userInfo]);
-        }
+         
     };
     
     if ([self.privateManagedObjectContext hasChanges])
     {
         if (wait)
-        {
-            [self.privateManagedObjectContext
-             performBlockAndWait: savePrivate];
-        }
+            [self.privateManagedObjectContext performBlockAndWait: savePrivate];
         else
-        {
-            [self.privateManagedObjectContext
-             performBlock: savePrivate];
-        }
+            [self.privateManagedObjectContext performBlock: savePrivate];
     }
 }
 
@@ -1127,6 +1116,7 @@
     if (self.currentUser)
     {
         [self performBlock: ^{
+            
             [self.oAuthNetworkEngine updateApplePushNotificationForUserId: self.currentUser.uniqueId
                                                                     token: formattedToken
                                                         completionHandler: ^(NSDictionary *dictionary) {
