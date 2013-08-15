@@ -113,9 +113,7 @@
     self.messageLabel.attributedText = attributedCompleteString;
     
     
-    
     self.messageLabel.center = CGPointMake(self.messageLabel.center.x, self.userThumbnailImageView.center.y + 2.0f);
-    
     
     
     self.messageLabel.frame = CGRectIntegral(self.messageLabel.frame);
