@@ -79,8 +79,11 @@
     
     if(!isYesButton) // NO button pressed, dismiss and save the setting
     {
-        // dismiss
-        appDelegate.currentUser.facebookAccount.noautopostValue = YES; 
+        // dismiss but do the 'like'
+        if(self.completionBlock)
+            self.completionBlock();
+        
+        appDelegate.currentUser.facebookAccount.noautopostValue = YES;
         [appDelegate saveContext: YES];
         return;
     }
