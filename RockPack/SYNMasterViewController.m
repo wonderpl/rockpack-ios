@@ -912,7 +912,7 @@ typedef void(^AnimationCompletionBlock)(BOOL finished);
 
 - (void) channelSuccessfullySaved: (NSNotification*) note
 {
-    NSString* message = IS_IPHONE ? NSLocalizedString(@"CHANNEL SAVED", nil) : NSLocalizedString(@"YOUR CHANNEL HAS BEEN SAVED SUCCESSFULLY", nil);
+    NSString* message = IS_IPHONE ? NSLocalizedString(@"PACK SAVED", nil) : NSLocalizedString(@"YOUR PACK HAS BEEN SAVED SUCCESSFULLY", nil);
     
     [self presentSuccessNotificationWithMessage: message];
 }

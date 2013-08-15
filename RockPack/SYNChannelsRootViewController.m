@@ -78,7 +78,7 @@
 {
     BOOL isIPhone = IS_IPHONE;
     
-    StartingCategoryText  = NSLocalizedString(@"ALL CHANNELS", nil);
+    StartingCategoryText  = NSLocalizedString(@"ALL PACKS", nil);
     SYNIntegralCollectionViewFlowLayout *flowLayout;
     
     if (isIPhone)

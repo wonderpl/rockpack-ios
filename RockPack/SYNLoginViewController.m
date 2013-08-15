@@ -118,10 +118,7 @@
     termsAndConditionsLabel.font = [UIFont rockpackFontOfSize: 14.0];
     termsAndConditionsLabelSide.font = termsAndConditionsLabel.font;
     wellSendYouLabel.font = [UIFont rockpackFontOfSize: 16.0];
-    
-    self.whatsOnYourChannelLabel.font = [UIFont rockpackFontOfSize:self.whatsOnYourChannelLabel.font.pointSize];
-    self.whatsOnYourChannelLabel.text = NSLocalizedString(@"rockpack_strapline", nil);
-    
+         
     NSMutableAttributedString* termsString = [[NSMutableAttributedString alloc] initWithString: NSLocalizedString(@"register_screen_legal", nil)];
     
     
