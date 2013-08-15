@@ -199,7 +199,7 @@
 
 - (void) showVideo: (UILongPressGestureRecognizer *) recognizer
 {
-    [self.viewControllerDelegate videoAddButtonTapped: self.addItButton];
+    [self.viewControllerDelegate performSelector:@selector(videoButtonPressed:) withObject:self.videoPlaceholder];
 }
 
 

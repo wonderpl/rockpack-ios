@@ -578,9 +578,9 @@
 }
 
 
-- (void) videoButtonPressed: (UIButton *) videoButton
+- (void) videoButtonPressed: (UIView *) surfacePressed
 {
-    UIView *candidateCell = videoButton;
+    UIView *candidateCell = surfacePressed;
     
     while (![candidateCell isKindOfClass: [SYNVideoThumbnailWideCell class]])
     {
