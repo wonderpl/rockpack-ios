@@ -283,7 +283,7 @@
     NSString* channelOwnerName = messageDictionary[@"display_name"] ? messageDictionary[@"display_name"] : @"User";
 
     NSNumber* itemCountNumber = messageDictionary[@"item_count"] ? messageDictionary[@"item_count"] : @1;
-    NSString* actionString = [NSString stringWithFormat:@"%i channel%@", itemCountNumber.integerValue, itemCountNumber.integerValue > 1 ? @"s" : @""];
+    NSString* actionString = [NSString stringWithFormat:@"%i pack%@", itemCountNumber.integerValue, itemCountNumber.integerValue > 1 ? @"s" : @""];
     
     
     // craete the attributed string //
