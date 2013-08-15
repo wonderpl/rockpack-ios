@@ -16,6 +16,8 @@
 #import "SYNViewStackManager.h"
 #import "SYNSearchBoxViewController.h"
 
+#define STACK_LIMIT 6
+
 @implementation SYNViewStackManager
 
 
@@ -498,11 +500,14 @@
 {
     UIViewController *lastControllerOfClass;
     
-    for (UIViewController *viewControllerOnStack in self.navigationController.viewControllers)
+    if(self.navigationController.viewControllers.count >= STACK_LIMIT)
     {
-        if ([viewControllerOnStack isKindOfClass: NSClassFromString(classString)] && viewControllerOnStack != self.navigationController.topViewController)
+        for (UIViewController *viewControllerOnStack in self.navigationController.viewControllers)
         {
-            lastControllerOfClass = viewControllerOnStack;
+            if ([viewControllerOnStack isKindOfClass: NSClassFromString(classString)] && viewControllerOnStack != self.navigationController.topViewController)
+            {
+                lastControllerOfClass = viewControllerOnStack;
+            }
         }
     }
     
