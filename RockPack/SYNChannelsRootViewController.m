@@ -311,7 +311,7 @@
                                         
                                         if (self.channels.count == 0)
                                         {
-                                            [self displayEmptyGenreMessage: @"NO CHANNELS FOUND"];
+                                            [self displayEmptyGenreMessage: @"No Channels Found"];
                                         }
                                     }
                                     
@@ -722,7 +722,7 @@ referenceSizeForFooterInSection: (NSInteger) section
     }
     else
     {
-        [self displayEmptyGenreMessage: @"LOADING CHANNELS"];
+        [self displayEmptyGenreMessage: @"Loading Channels"];
     }
     
     [self loadChannelsForGenre: genre];
