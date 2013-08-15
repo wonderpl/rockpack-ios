@@ -47,6 +47,7 @@ typedef void(^FeedDataErrorBlock)(void);
 @property (nonatomic, strong) NSDictionary* feedChannelsById;
 @property (nonatomic, strong) NSDictionary* feedItemByPosition;
 @property (nonatomic, strong) UICollectionView* feedCollectionView;
+@property (nonatomic, strong) NSArray* videosInOrderArray;
 
 @end
 
@@ -74,6 +75,7 @@ typedef void(^FeedDataErrorBlock)(void);
     
     self.feedItemsData = [NSArray array];
     
+    self.videosInOrderArray = [NSArray array];
     
     SYNIntegralCollectionViewFlowLayout *standardFlowLayout;
     UIEdgeInsets sectionInset, contentInset;
@@ -517,7 +519,7 @@ typedef void(^FeedDataErrorBlock)(void);
         dateNoTime = [feedItem.dateAdded dateIgnoringTime];
         
         NSMutableArray* bucket = [buckets objectForKey:dateNoTime];
-        if(!bucket) {
+        if(!bucket) { // if the bucket has not been created already, create it
             bucket = [NSMutableArray array];
             [buckets setObject:bucket forKey:dateNoTime];
         }
@@ -526,14 +528,14 @@ typedef void(^FeedDataErrorBlock)(void);
         
     }
     
-    NSArray* sortedKeys = [[buckets allKeys] sortedArrayUsingComparator:^NSComparisonResult(NSDate* date1, NSDate* date2) {
+    NSArray* sortedDateKeys = [[buckets allKeys] sortedArrayUsingComparator:^NSComparisonResult(NSDate* date1, NSDate* date2) {
         
         return [date2 compare:date1];
         
     }];
     
     NSMutableArray* sortedItemsArray = [NSMutableArray array];
-    for (NSDate* dateKey in sortedKeys)
+    for (NSDate* dateKey in sortedDateKeys)
     {
         [sortedItemsArray addObject:[buckets objectForKey:dateKey]];
         
@@ -543,7 +545,12 @@ typedef void(^FeedDataErrorBlock)(void);
     
     [self.feedCollectionView reloadData];
     
-        
+    // put the videos in order
+    
+    self.videosInOrderArray = [NSArray array];
+    dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_HIGH, 0), ^{
+        [self sortVideosForPlaylist];
+    });
     
 }
 
@@ -612,6 +619,13 @@ typedef void(^FeedDataErrorBlock)(void);
     return self.feedItemsData.count; // the number of arrays included
 }
 
+- (UIEdgeInsets)collectionView: (UICollectionView *)collectionView
+                        layout: (UICollectionViewLayout*)collectionViewLayout
+        insetForSectionAtIndex: (NSInteger)section
+{
+    
+    return UIEdgeInsetsMake(10.0, 0.0, 40.0, 0.0);
+}
 
 - (NSInteger) collectionView: (UICollectionView *) collectionView
       numberOfItemsInSection: (NSInteger) section
@@ -736,7 +750,7 @@ typedef void(^FeedDataErrorBlock)(void);
             cell.messageLabel.text = feedItem.title;
         
         
-        [cell setSupplementaryMessageWithDictionary:@{@"star_count":videoInstance.video.starCount, @"starrers":videoInstance.starrers}];
+        [cell setSupplementaryMessageWithDictionary:@{@"star_count":videoInstance.video.starCount, @"starrers":[videoInstance.starrers array]}];
         
         [cell setCoverImagesAndTitlesWithArray:@[@{@"image": videoInstance.video.thumbnailURL, @"title" : videoInstance.title}]];
         
@@ -819,7 +833,6 @@ typedef void(^FeedDataErrorBlock)(void);
 {
     CGSize footerSize = CGSizeZero;
     
-    NSLog(@"section: %i from %i", section, self.feedItemsData.count);
     
     if  (section == (self.feedItemsData.count - 1) && // only the last section can have a loader
         (self.dataRequestRange.location + self.dataRequestRange.length < self.dataItemsAvailable)) 
@@ -946,6 +959,42 @@ typedef void(^FeedDataErrorBlock)(void);
     return channel;
 }
 
+-(void)sortVideosForPlaylist
+{
+    NSMutableArray* ma = [NSMutableArray array]; // max should be the existing videos
+    
+    for (NSArray* section in self.feedItemsData)
+    {
+        for (FeedItem* fi in section)
+        {
+            
+            if(fi.resourceTypeValue != FeedItemResourceTypeVideo)
+                continue;
+                
+            
+            if(fi.itemTypeValue == FeedItemTypeLeaf)
+            {
+                [ma addObject:[self.feedVideosById objectForKey:fi.resourceId]];
+            }
+            else
+            {
+                for (FeedItem* cfi in fi.feedItems)
+                {
+                    // assumes that FeedItems are one level deep at the present moment (probably will not change for a while)
+                    if(cfi.resourceTypeValue != FeedItemResourceTypeVideo || cfi.itemTypeValue != FeedItemTypeLeaf)
+                        continue;
+                    
+                    [ma addObject:[self.feedVideosById objectForKey:cfi.resourceId]];
+                    
+                }
+            }
+            
+        }
+    }
+    
+    self.videosInOrderArray = [NSArray arrayWithArray:ma];
+}
+
 - (void) pressedAggregateCellCoverButton: (UIButton *) coverButton
 {
 
@@ -957,17 +1006,20 @@ typedef void(^FeedDataErrorBlock)(void);
     if(selectedFeedItem.resourceTypeValue == FeedItemResourceTypeVideo)
     {
         
+        if(self.videosInOrderArray.count == 0)
+            return;
         
+        NSLog(@"%@", self.videosInOrderArray);
         
         VideoInstance* videoInstance = [self videoInstanceAtCoverOfFeedItem:selectedFeedItem];
         
         SYNMasterViewController *masterViewController = (SYNMasterViewController*)appDelegate.masterViewController;
         
-        NSArray* videoInstancesToPlayArray = [self.feedVideosById allValues];
+        
         
         
         __block NSInteger indexOfSelectedVideoInArray = 0;
-        [videoInstancesToPlayArray enumerateObjectsUsingBlock:^(VideoInstance* vi, NSUInteger idx, BOOL *stop) {
+        [self.videosInOrderArray enumerateObjectsUsingBlock:^(VideoInstance* vi, NSUInteger idx, BOOL *stop) {
             
             
             indexOfSelectedVideoInArray++;
@@ -982,7 +1034,7 @@ typedef void(^FeedDataErrorBlock)(void);
         
         
         [masterViewController addVideoOverlayToViewController: self
-                                       withVideoInstanceArray: videoInstancesToPlayArray
+                                       withVideoInstanceArray: self.videosInOrderArray
                                              andSelectedIndex: indexOfSelectedVideoInArray
                                                    fromCenter: self.view.center];
         
@@ -1117,7 +1169,7 @@ typedef void(^FeedDataErrorBlock)(void);
     
     [tracker sendEventWithCategory: @"uiAction"
                         withAction: @"videoStarButtonClick"
-                         withLabel: nil
+                         withLabel: @"feed"
                          withValue: nil];
     
     

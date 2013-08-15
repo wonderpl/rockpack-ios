@@ -148,14 +148,13 @@
         return;
     }
     
-    
-    NSString* including = @"including";
+     
     
     
     SYNAppDelegate* appDelegate = [[UIApplication sharedApplication] delegate];
     
     
-    NSOrderedSet* users = messageDictionary[@"starrers"] ? messageDictionary[@"starrers"] : [NSOrderedSet orderedSet];
+    NSArray* users = messageDictionary[@"starrers"] ? messageDictionary[@"starrers"] : [NSArray array];
     
     // initial setup
     NSMutableAttributedString *attributedCompleteString = [[NSMutableAttributedString alloc] init];
@@ -163,7 +162,6 @@
     {
         
         [attributedCompleteString appendAttributedString:likesAttributedString];
-        
         
     }
     else
@@ -174,12 +172,11 @@
     if(users.count > 1 && users.count < 4)
     {
         
-        [attributedCompleteString appendAttributedString:[[NSAttributedString alloc] initWithString: [NSString stringWithFormat:@"%@", including]
+        [attributedCompleteString appendAttributedString:[[NSAttributedString alloc] initWithString: @"including "
                                                                                          attributes: lightTextAttributes]];
         
     }
     
-    NSMutableString* namesString = [[NSMutableString alloc] init];
     
     self.heartButton.selected = NO;
     
@@ -190,10 +187,12 @@
         for (int i = 0; i < users.count; i++)
         {
             
-            co = (ChannelOwner*)users[0];
+            co = (ChannelOwner*)users[i];
             
             if(!co)
                 continue;
+            
+            
             
             if([co.uniqueId isEqualToString:appDelegate.currentUser.uniqueId]) {
                 name = @"You";
@@ -203,21 +202,28 @@
             else {
                 name = co.displayName;
             }
-                
-            
-            [namesString appendString:name];
             
             
-            [attributedCompleteString appendAttributedString:[[NSAttributedString alloc] initWithString:[NSString stringWithFormat:@"%@", namesString]
+            
+            [attributedCompleteString appendAttributedString:[[NSAttributedString alloc] initWithString:name
                                                                                              attributes:boldTextAttributes]];
             
+            
             if((users.count - i) == 2) // the one before last
-                [namesString appendString:@" & "];
+                [attributedCompleteString appendAttributedString:[[NSAttributedString alloc] initWithString:@" & "
+                                                                                                 attributes:boldTextAttributes]];
+                 
             else if((users.count - i) > 2)
-                [namesString appendString:@", "];
+                [attributedCompleteString appendAttributedString:[[NSAttributedString alloc] initWithString:@", "
+                                                                                                 attributes:boldTextAttributes]];
+                 
             
             
         }
+        
+        
+        
+        NSLog(@"============");
         
     }
     

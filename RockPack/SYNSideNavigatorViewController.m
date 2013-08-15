@@ -412,6 +412,7 @@ typedef enum {
                 SYNFriendsViewController* friendsController = (SYNFriendsViewController*) self.currentlyLoadedViewController;
                 [friendsController addSearchBarToView:self.navigationContainerView];
             }
+            
         }
 
         if (IS_IPAD)

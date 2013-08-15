@@ -37,7 +37,8 @@
         CGFloat barWidth = [SYNDeviceManager.sharedInstance currentScreenWidth] - 90.0;
         
         backgroundPanel = [[UIView alloc] initWithFrame:CGRectMake(0.0, 0.0, barWidth, 61.0)];
-        backgroundPanel.backgroundColor = [UIColor whiteColor];
+        if(IS_IPAD)
+            backgroundPanel.backgroundColor = [UIColor whiteColor];
         
         backgroundPanel.autoresizesSubviews = YES;
         
@@ -52,6 +53,7 @@
         grayPanel.backgroundColor = [UIColor colorWithRed:(249.0/255.0) green:(249.0/255.0) blue:(249.0/255.0) alpha:(1.0)];
         grayPanel.autoresizingMask = UIViewAutoresizingFlexibleHeight;
         [backgroundPanel addSubview:grayPanel];
+        
         
         backgroundPanel.autoresizingMask = UIViewAutoresizingFlexibleBottomMargin | UIViewAutoresizingFlexibleWidth;
         

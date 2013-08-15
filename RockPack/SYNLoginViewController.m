@@ -191,7 +191,7 @@
     UITapGestureRecognizer* tapGesture = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(outerViewTapped:)];
     [self.view addGestureRecognizer:tapGesture];
     
-    self.onBoardingController = [[SYNLoginOnBoardingController alloc] initWithDelegate: self];
+    
     CGRect onBoardingViewFrame = self.onBoardingController.view.frame;
     onBoardingViewFrame.origin.x = 0.0;
     onBoardingViewFrame.origin.y = [[SYNDeviceManager sharedInstance] isLandscape] ? 300.0 : 560.0;
@@ -1127,22 +1127,7 @@
     [self doFacebookLoginAnimation];
     
     [self loginThroughFacebookWithCompletionHandler: ^(NSDictionary * dictionary) {
-        // Is user registering for the first time
-        if (dictionary[@"registered"])
-        {
-            [tracker sendEventWithCategory: @"goal"
-                                withAction: @"userRegistration"
-                                 withLabel: @"Facebook"
-                                 withValue: nil];
-        }
-        else
-        {
-            // or just logging in to an existing account
-            [tracker sendEventWithCategory: @"goal"
-                                withAction: @"userLogin"
-                                 withLabel: @"Facebook"
-                                 withValue: nil];
-        }
+        
         
         [activityIndicator stopAnimating];
         [self completeLoginProcess];

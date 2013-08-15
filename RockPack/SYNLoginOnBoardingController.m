@@ -91,17 +91,25 @@
     
     for (int i = 0; i < kLoginOnBoardingMessagesNum; i++)
     {
-        localisedKey = [NSString stringWithFormat:@"startscreen_onboard_%i", i + 1];
-        localisedDefault = [NSString stringWithFormat:@"Text for onboard screen %i", i + 1];
-        
-        messageText = NSLocalizedString(localisedKey, localisedDefault);
+        // Get the Title
         
         localisedKey = [NSString stringWithFormat:@"startscreen_onboard_%i_title", i + 1];
         localisedDefault = [NSString stringWithFormat:@"Text for onboard title %i", i + 1];
         
         titleText = NSLocalizedString(localisedKey, localisedDefault);
         
-        messageView = [self createNewMessageViewWithMessage:messageText andTitle:titleText];
+        
+        // Get the Message
+        
+        localisedKey = [NSString stringWithFormat:@"startscreen_onboard_%i", i + 1];
+        localisedDefault = [NSString stringWithFormat:@"Text for onboard screen %i", i + 1];
+        
+        messageText = NSLocalizedString(localisedKey, localisedDefault);
+        
+        
+        
+        messageView = [self createNewMessageViewWithMessage:messageText
+                                                   andTitle:titleText];
         
         messageViewCenter = messageView.center;
         messageViewCenter.x = (i + 0.5) * self.scrollView.frame.size.width;
@@ -130,33 +138,46 @@
 - (UIView*) createNewMessageViewWithMessage: (NSString*) message
                                    andTitle: (NSString*)title
 {
-    CGRect newFrame = self.scrollView.frame;
-    //Limit label width to fit on portrait iPad, or iPhone screen
-    newFrame.size.width = IS_IPHONE? 300.0f: 728.0f;
+    CGRect newFrame = CGRectZero;
+    
+    
+    // Limit label width to fit on portrait iPad, or iPhone screen
+    newFrame.size.width = IS_IPHONE ? 300.0f: 728.0f;
+    newFrame.size.height = 0.0f;
     
     UIView* container = [[UIView alloc] initWithFrame:newFrame];
     
     // Title label, Offset from the top of the scroll view;
-    newFrame.origin.y = IS_IPHONE? 180.0f : 140.0f;
-    UILabel* titleLabel = [[UILabel alloc] initWithFrame:newFrame];
-    UIFont* fontTitleToUse = [UIFont boldRockpackFontOfSize: IS_IPHONE ? 22.0f : 28.0f];    
-    titleLabel.font = fontTitleToUse;
-    titleLabel.numberOfLines = 0;
-    titleLabel.textAlignment = NSTextAlignmentCenter;
-    titleLabel.text = title;
-    titleLabel.backgroundColor = [UIColor clearColor];
-    titleLabel.textColor = [UIColor whiteColor];
+    newFrame.origin.y = IS_IPHONE ? 180.0f : 140.0f;
+    
     UIColor* shadowColor = [UIColor colorWithWhite:0.0f alpha:0.5f];
-    titleLabel.shadowOffset = CGSizeMake(0.0, 1.0);
-    titleLabel.shadowColor = shadowColor;
-    [titleLabel sizeToFit];
-    [container addSubview:titleLabel];
     
     
+    UILabel* titleLabel = [[UILabel alloc] initWithFrame:newFrame];
+    if(title)
+    {
+        
+        UIFont* fontTitleToUse = [UIFont boldRockpackFontOfSize: IS_IPHONE ? 22.0f : 28.0f];
+        titleLabel.font = fontTitleToUse;
+        titleLabel.numberOfLines = 0;
+        titleLabel.textAlignment = NSTextAlignmentCenter;
+        titleLabel.text = title;
+        titleLabel.backgroundColor = [UIColor clearColor];
+        titleLabel.textColor = [UIColor whiteColor];
+        
+        titleLabel.shadowOffset = CGSizeMake(0.0, 1.0);
+        titleLabel.shadowColor = shadowColor;
+        
+        [titleLabel sizeToFit];
+        // add the newly created height to the frame
+        newFrame.size.height = titleLabel.frame.size.height;
+        
+        [container addSubview:titleLabel];
+    }
     
-    //Text label, laid out under title
+    //Text label, laid out under title, if there is one
     
-    newFrame.origin.y = titleLabel.frame.origin.y + titleLabel.frame.size.height;
+    newFrame.origin.y += newFrame.size.height;
     
     UILabel* textLabel = [[UILabel alloc] initWithFrame:newFrame];
     UIFont* fontToUse = [UIFont rockpackFontOfSize:  IS_IPHONE ? 16.0f : 22.0f];

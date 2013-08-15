@@ -72,6 +72,8 @@
     __weak SYNImplicitSharingController* wself = self;
     SYNAppDelegate* appDelegate = (SYNAppDelegate*)[[UIApplication sharedApplication] delegate];
     
+    ExternalAccount* facebookAccount = appDelegate.currentUser.facebookAccount;
+    BOOL doesHaveAutopostStarFlagSet = (facebookAccount.flagsValue & ExternalAccountFlagAutopostStar);
     
     BOOL isYesButton = (sender == self.yesButton);
     
@@ -89,6 +91,8 @@
             [wself switchAutopostViewToYes:!isYesButton];
         };
         
+        
+        
         [[SYNFacebookManager sharedFBManager] openSessionWithPermissionType:kFacebookPermissionTypePublish onSuccess:^{
             
             __weak SYNAppDelegate* wAppDelegate = appDelegate;
@@ -100,10 +104,25 @@
                                                           andAccessTokenData:accessTokenData
                                                            completionHandler:^(id no_responce) {
                                                                
+                        // Shortcut for not reposting an existing value
+                                                               
+                        if(doesHaveAutopostStarFlagSet) {
+                                                                   
+                            if(self.completionBlock)
+                                self.completionBlock();
+                            
+                            [self dismiss];
+                                                                   
+                            return;
+                        }
+                                                               
                         [appDelegate.oAuthNetworkEngine setFlag:@"facebook_autopost_star"
                                                       withValue:isYesButton
                                                        forUseId:appDelegate.currentUser.uniqueId
                                               completionHandler:^(id no_response) {
+                                                  
+                                                  
+                                                                //NSLog(@"Flag sent");
                                                                                                   
                                             [wself switchAutopostViewToYes:isYesButton];
                                                                                                   
@@ -125,16 +144,8 @@
                     } errorHandler:ErrorBlock];
             
             
-            
         } onFailure:ErrorBlock];
     }
-    
-    
-    
-    
-    
-    
-    
     
     
 }

@@ -89,6 +89,8 @@
 {
     [super viewDidLoad];
     
+    self.onBoardingController = [[SYNLoginOnBoardingController alloc] initWithDelegate: self];
+    
     CGRect totalImageRect;
     
     CGPoint correctPoint;
@@ -432,6 +434,8 @@
                     DebugLog(@"ERROR: User not registered (User: %@)", _appDelegate.currentUser);
                     // TODO: handle user not being registered propery
                 }
+                                                                      
+                                                         
                     
                 completionBlock(dictionary);
                                                                   
@@ -938,7 +942,14 @@
 - (void) scrollViewDidEndDecelerating: (UIScrollView *) scrollView
 {
     CGFloat contentOffsetX = self.onBoardingController.scrollView.contentOffset.x;
-    self.currentOnBoardingPage = (NSInteger)floorf(contentOffsetX / self.onBoardingController.scrollView.frame.size.width); 
+    self.currentOnBoardingPage = (NSInteger)floorf(contentOffsetX / self.onBoardingController.scrollView.frame.size.width);
+    
+    id<GAITracker> tracker = [GAI sharedInstance].defaultTracker;
+    
+    [tracker sendEventWithCategory: @"uiAction"
+                        withAction: @"cardSlide"
+                         withLabel: [NSString stringWithFormat:@"%i", (_currentOnBoardingPage + 1)]
+                         withValue: nil];
 }
 
 

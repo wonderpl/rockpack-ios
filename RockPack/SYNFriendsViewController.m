@@ -16,6 +16,7 @@
 #import <FacebookSDK/FacebookSDK.h>
 #import "SYNOAuthNetworkEngine.h"
 #import "Friend.h"
+#import "GAI.h"
 #import "SYNFacebookManager.h"
 #import <objc/runtime.h>
 
@@ -77,7 +78,7 @@ static char* association_key = "SYNFriendThumbnailCell to Friend";
     
     self.searchField.font = [UIFont rockpackFontOfSize: self.searchField.font.pointSize];
     
-    if([[SYNFacebookManager sharedFBManager] hasOpenSession])
+    if([[SYNFacebookManager sharedFBManager] hasActiveSession])
     {
         self.facebookLoginButton.hidden = YES;
         self.preLoginLabel.hidden = YES;
@@ -88,6 +89,8 @@ static char* association_key = "SYNFriendThumbnailCell to Friend";
         self.allFriendsButton.hidden = NO;
         
         [self fetchAndDisplayFriends];
+        
+        [GAI.sharedInstance.defaultTracker sendView: @"Friends All"];
     }
     else
     {
@@ -98,7 +101,7 @@ static char* association_key = "SYNFriendThumbnailCell to Friend";
         self.friendsCollectionView.hidden = YES;
         self.activityIndicator.hidden = YES;
         
-        
+        [GAI.sharedInstance.defaultTracker sendView: @"Friends Fb Connect"];
     }
     
     if(IS_IPHONE)
@@ -147,10 +150,14 @@ static char* association_key = "SYNFriendThumbnailCell to Friend";
     
     [self.searchField resignFirstResponder];
     
-    if(tab == self.onRockpackButton)
+    if(tab == self.onRockpackButton) {
         self.allFriendsButton.selected = NO;
-    else
+        [GAI.sharedInstance.defaultTracker sendView: @"Friends RP"];
+    } else {
         self.onRockpackButton.selected = NO;
+        [GAI.sharedInstance.defaultTracker sendView: @"Friends All"];
+    }
+        
     
     tab.selected = YES;
     
@@ -425,6 +432,13 @@ static char* association_key = "SYNFriendThumbnailCell to Friend";
     
     if(!self.currentlySelectedFriend.isOnRockpack) // facebook friend, invite to rockpack
     {
+        
+        id<GAITracker> tracker = [GAI sharedInstance].defaultTracker;
+        
+        [tracker sendEventWithCategory: @"goal"
+                            withAction: @"friendInvite"
+                             withLabel: self.currentlySelectedFriend.displayName
+                             withValue: nil];
         
         [[SYNFacebookManager sharedFBManager] sendAppRequestToFriend:self.currentlySelectedFriend
                                                            onSuccess:^{

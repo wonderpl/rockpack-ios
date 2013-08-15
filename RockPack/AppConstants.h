@@ -362,6 +362,8 @@ typedef enum _NavigationButtonsAppearance {
 
 //Login Origin
 
+#define kOriginFacebook @"Facebook"
+#define kOriginRockpack @"Rockpack"
 
 typedef enum {
     LoginOriginRockpack = 0,

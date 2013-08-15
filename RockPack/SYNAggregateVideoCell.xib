@@ -71,7 +71,7 @@
 							<object class="IBUILabel" id="586887679">
 								<reference key="NSNextResponder" ref="79056506"/>
 								<int key="NSvFlags">292</int>
-								<string key="NSFrame">{{403, 14}, {198, 56}}</string>
+								<string key="NSFrame">{{398, 14}, {198, 56}}</string>
 								<reference key="NSSuperview" ref="79056506"/>
 								<reference key="NSWindow"/>
 								<reference key="NSNextKeyView" ref="778087083"/>
@@ -199,7 +199,7 @@
 							<object class="IBUILabel" id="402542507">
 								<reference key="NSNextResponder" ref="79056506"/>
 								<int key="NSvFlags">292</int>
-								<string key="NSFrame">{{403, 92}, {198, 21}}</string>
+								<string key="NSFrame">{{398, 91}, {198, 21}}</string>
 								<reference key="NSSuperview" ref="79056506"/>
 								<reference key="NSWindow"/>
 								<reference key="NSNextKeyView" ref="418413788"/>
@@ -220,7 +220,7 @@
 							<object class="IBUILabel" id="561674049">
 								<reference key="NSNextResponder" ref="79056506"/>
 								<int key="NSvFlags">292</int>
-								<string key="NSFrame">{{361, 92}, {85, 21}}</string>
+								<string key="NSFrame">{{363, 92}, {85, 21}}</string>
 								<reference key="NSSuperview" ref="79056506"/>
 								<reference key="NSWindow"/>
 								<reference key="NSNextKeyView" ref="402542507"/>
@@ -231,7 +231,10 @@
 								<bool key="IBUIUserInteractionEnabled">NO</bool>
 								<string key="targetRuntimeIdentifier">IBIPadFramework</string>
 								<string key="IBUIText">0</string>
-								<reference key="IBUITextColor" ref="989324452"/>
+								<object class="NSColor" key="IBUITextColor">
+									<int key="NSColorSpace">1</int>
+									<bytes key="NSRGB">MC41NjQ3MDU4ODI0IDAuNTY0NzA1ODgyNCAwLjU2NDcwNTg4MjQAA</bytes>
+								</object>
 								<nil key="IBUIHighlightedColor"/>
 								<int key="IBUIBaselineAdjustment">0</int>
 								<reference key="IBUIFontDescription" ref="600702064"/>
@@ -293,7 +296,7 @@
 							<object class="IBUILabel" id="418413788">
 								<reference key="NSNextResponder" ref="79056506"/>
 								<int key="NSvFlags">292</int>
-								<string key="NSFrame">{{10, 140}, {279, 18}}</string>
+								<string key="NSFrame">{{10, 144}, {279, 18}}</string>
 								<reference key="NSSuperview" ref="79056506"/>
 								<reference key="NSWindow"/>
 								<string key="NSReuseIdentifierKey">_NS:9</string>

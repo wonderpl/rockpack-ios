@@ -160,8 +160,8 @@
     
     self.searchCategoriesController.tableView.alpha = 1.0f;
     
-    
     [self.searchBoxView resizeForHeight: 548.0f]; // 548.0f max
+    
     
     CGRect searchTBVFrame = self.searchCategoriesController.tableView.frame;
     searchTBVFrame.origin = CGPointMake(0.0f, 65.0f);
@@ -173,7 +173,7 @@
     __weak SYNSearchBoxViewController* wself = self;
     
      self.searchCategoriesController.tableView.alpha = 0.0f;
-    [UIView animateWithDuration:0.3f delay:0.0f options:UIViewAnimationCurveEaseIn animations:^{
+    [UIView animateWithDuration:0.3f delay:0.0f options:UIViewAnimationCurveEaseOut animations:^{
         wself.searchCategoriesController.tableView.alpha = 1.0f;
         
         

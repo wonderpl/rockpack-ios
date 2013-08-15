@@ -179,7 +179,7 @@
     if (self.currentUser && self.currentOAuth2Credentials)
     {
         // If we already have a current user, then register/re-register for notifications
-        [[UIApplication sharedApplication] registerForRemoteNotificationTypes: (UIRemoteNotificationTypeBadge | UIRemoteNotificationTypeAlert)];
+        
         
         // If we have a user and a refresh token... //
         if ([self.currentOAuth2Credentials hasExpired])
@@ -195,6 +195,7 @@
             [self refreshFacebookSession];
             
             self.window.rootViewController = [self createAndReturnRootViewController];
+            
         }
     }
     else
@@ -344,6 +345,8 @@
         self.tokenExpiryTimer = nil;
         
         [self refreshFacebookSession];
+        
+        
     } errorHandler: ^(id response) {
         
         self.tokenExpiryTimer = nil;
@@ -397,6 +400,9 @@
     
     self.masterViewController = [[SYNMasterViewController alloc] initWithContainerViewController: containerViewController];
     
+    // whenever you pass the login screen you must reregister
+    [[UIApplication sharedApplication] registerForRemoteNotificationTypes: (UIRemoteNotificationTypeBadge | UIRemoteNotificationTypeAlert)];
+    
     return self.masterViewController;
 }
 
@@ -449,11 +455,6 @@
     
     self.loginViewController = nil;
     
-    // At this point we should register the new user for APNS
-    if (self.currentUser)
-    {
-        [[UIApplication sharedApplication] registerForRemoteNotificationTypes: (UIRemoteNotificationTypeBadge | UIRemoteNotificationTypeAlert)];
-    }
 }
 
 
@@ -708,16 +709,13 @@
 {
     if ([self.mainManagedObjectContext hasChanges])
     {
-        [self.mainManagedObjectContext
-         performBlockAndWait: ^
-         {
+        [self.mainManagedObjectContext performBlockAndWait: ^{
+            
              NSError *error = nil;
              
-             if (![self.mainManagedObjectContext
-                   save: &error])
-             {
-                 AssertOrLog(@"Error saving Main moc: %@\n%@", [error localizedDescription], [error userInfo]);
-             }
+             if (![self.mainManagedObjectContext save: &error])
+                AssertOrLog(@"Error saving Main moc: %@\n%@", [error localizedDescription], [error userInfo]);
+              
          }];
     }
     
@@ -725,25 +723,17 @@
     {
         NSError *error = nil;
         
-        if (![self.privateManagedObjectContext
-              save: &error])
-        {
+        if (![self.privateManagedObjectContext save: &error])
             AssertOrLog(@"Error saving Private moc: %@\n%@", [error localizedDescription], [error userInfo]);
-        }
+         
     };
     
     if ([self.privateManagedObjectContext hasChanges])
     {
         if (wait)
-        {
-            [self.privateManagedObjectContext
-             performBlockAndWait: savePrivate];
-        }
+            [self.privateManagedObjectContext performBlockAndWait: savePrivate];
         else
-        {
-            [self.privateManagedObjectContext
-             performBlock: savePrivate];
-        }
+            [self.privateManagedObjectContext performBlock: savePrivate];
     }
 }
 
@@ -1127,6 +1117,7 @@
     if (self.currentUser)
     {
         [self performBlock: ^{
+            
             [self.oAuthNetworkEngine updateApplePushNotificationForUserId: self.currentUser.uniqueId
                                                                     token: formattedToken
                                                         completionHandler: ^(NSDictionary *dictionary) {
@@ -1345,6 +1336,16 @@
             break;
     }
     
+    
+    // track
+    
+    id<GAITracker> tracker = [GAI sharedInstance].defaultTracker;
+    
+    [tracker sendEventWithCategory: @"goal"
+                        withAction: @"openDeepLink"
+                         withLabel: url.absoluteString
+                         withValue: nil];
+    
     return success;
 }
 
@@ -1389,6 +1390,13 @@
             self.connection = [[NSURLConnection alloc] initWithRequest: request
                                                               delegate: self];
         }
+        
+        id<GAITracker> tracker = [GAI sharedInstance].defaultTracker;
+        
+        [tracker sendEventWithCategory: @"goal"
+                            withAction: @"openDeepLink"
+                             withLabel: targetURLString
+                             withValue: nil];
         
         return [FBSession.activeSession
                 handleOpenURL: url];

@@ -133,6 +133,39 @@
 							<int key="NSfFlags">16</int>
 						</object>
 					</object>
+					<object class="IBUIButton" id="748200105">
+						<reference key="NSNextResponder" ref="191373211"/>
+						<int key="NSvFlags">289</int>
+						<string key="NSFrame">{{0, 5}, {48, 49}}</string>
+						<reference key="NSSuperview" ref="191373211"/>
+						<reference key="NSWindow"/>
+						<reference key="NSNextKeyView" ref="151070673"/>
+						<string key="NSReuseIdentifierKey">_NS:9</string>
+						<bool key="IBUIOpaque">NO</bool>
+						<object class="IBUIAccessibilityConfiguration" key="IBUIAccessibilityConfiguration">
+							<string key="IBUIAccessibilityLabel">Button Nav</string>
+						</object>
+						<string key="targetRuntimeIdentifier">IBCocoaTouchFramework</string>
+						<int key="IBUIContentHorizontalAlignment">0</int>
+						<int key="IBUIContentVerticalAlignment">0</int>
+						<reference key="IBUIHighlightedTitleColor" ref="1037528082"/>
+						<object class="NSColor" key="IBUINormalTitleColor">
+							<int key="NSColorSpace">1</int>
+							<bytes key="NSRGB">MC4xOTYwNzg0MzQ2IDAuMzA5ODAzOTMyOSAwLjUyMTU2ODY1NgA</bytes>
+						</object>
+						<reference key="IBUINormalTitleShadowColor" ref="84679067"/>
+						<object class="NSCustomResource" key="IBUIHighlightedImage" id="695451892">
+							<string key="NSClassName">NSImage</string>
+							<string key="NSResourceName">IconSearch~iphone.png</string>
+						</object>
+						<object class="NSCustomResource" key="IBUISelectedImage">
+							<string key="NSClassName">NSImage</string>
+							<string key="NSResourceName">ButtonSearch~iphone.png</string>
+						</object>
+						<reference key="IBUINormalImage" ref="695451892"/>
+						<reference key="IBUIFontDescription" ref="282272504"/>
+						<reference key="IBUIFont" ref="569270985"/>
+					</object>
 					<object class="IBUIView" id="682744638">
 						<reference key="NSNextResponder" ref="191373211"/>
 						<int key="NSvFlags">292</int>
@@ -215,36 +248,6 @@
 							<string key="NSClassName">NSImage</string>
 							<string key="NSResourceName">ButtonNav.png</string>
 						</object>
-						<reference key="IBUIFontDescription" ref="282272504"/>
-						<reference key="IBUIFont" ref="569270985"/>
-					</object>
-					<object class="IBUIButton" id="748200105">
-						<reference key="NSNextResponder" ref="191373211"/>
-						<int key="NSvFlags">289</int>
-						<string key="NSFrame">{{0, 5}, {48, 49}}</string>
-						<reference key="NSSuperview" ref="191373211"/>
-						<reference key="NSWindow"/>
-						<reference key="NSNextKeyView" ref="151070673"/>
-						<string key="NSReuseIdentifierKey">_NS:9</string>
-						<bool key="IBUIOpaque">NO</bool>
-						<object class="IBUIAccessibilityConfiguration" key="IBUIAccessibilityConfiguration">
-							<string key="IBUIAccessibilityLabel">Button Nav</string>
-						</object>
-						<string key="targetRuntimeIdentifier">IBCocoaTouchFramework</string>
-						<int key="IBUIContentHorizontalAlignment">0</int>
-						<int key="IBUIContentVerticalAlignment">0</int>
-						<reference key="IBUIHighlightedTitleColor" ref="1037528082"/>
-						<object class="NSColor" key="IBUINormalTitleColor">
-							<int key="NSColorSpace">1</int>
-							<bytes key="NSRGB">MC4xOTYwNzg0MzQ2IDAuMzA5ODAzOTMyOSAwLjUyMTU2ODY1NgA</bytes>
-						</object>
-						<reference key="IBUINormalTitleShadowColor" ref="84679067"/>
-						<object class="NSCustomResource" key="IBUIHighlightedImage" id="695451892">
-							<string key="NSClassName">NSImage</string>
-							<string key="NSResourceName">IconSearch~iphone.png</string>
-						</object>
-						<reference key="IBUISelectedImage" ref="695451892"/>
-						<reference key="IBUINormalImage" ref="695451892"/>
 						<reference key="IBUIFontDescription" ref="282272504"/>
 						<reference key="IBUIFont" ref="569270985"/>
 					</object>
@@ -439,10 +442,10 @@
 							<reference ref="163453737"/>
 							<reference ref="683922938"/>
 							<reference ref="680903335"/>
-							<reference ref="1048790499"/>
 							<reference ref="682744638"/>
 							<reference ref="151070673"/>
 							<reference ref="809275684"/>
+							<reference ref="1048790499"/>
 							<reference ref="748200105"/>
 						</array>
 						<reference key="parent" ref="0"/>
@@ -557,30 +560,6 @@
 				<object class="IBPartialClassDescription">
 					<string key="className">SYNMasterViewController</string>
 					<string key="superclassName">UIViewController</string>
-					<dictionary class="NSMutableDictionary" key="actions">
-						<string key="cancelButtonPressed:">id</string>
-						<string key="hideNavigation:">UIButton</string>
-						<string key="showAndHideSideNavigation:">UIButton</string>
-						<string key="showSearchBoxField:">id</string>
-					</dictionary>
-					<dictionary class="NSMutableDictionary" key="actionInfosByName">
-						<object class="IBActionInfo" key="cancelButtonPressed:">
-							<string key="name">cancelButtonPressed:</string>
-							<string key="candidateClassName">id</string>
-						</object>
-						<object class="IBActionInfo" key="hideNavigation:">
-							<string key="name">hideNavigation:</string>
-							<string key="candidateClassName">UIButton</string>
-						</object>
-						<object class="IBActionInfo" key="showAndHideSideNavigation:">
-							<string key="name">showAndHideSideNavigation:</string>
-							<string key="candidateClassName">UIButton</string>
-						</object>
-						<object class="IBActionInfo" key="showSearchBoxField:">
-							<string key="name">showSearchBoxField:</string>
-							<string key="candidateClassName">id</string>
-						</object>
-					</dictionary>
 					<dictionary class="NSMutableDictionary" key="outlets">
 						<string key="closeSearchButton">UIButton</string>
 						<string key="containerView">UIView</string>
@@ -676,6 +655,7 @@
 			<string key="ButtonNav.png">{60, 60}</string>
 			<string key="ButtonNavHighlighted.png">{60, 60}</string>
 			<string key="ButtonNavSelected.png">{60, 60}</string>
+			<string key="ButtonSearch~iphone.png">{48, 49}</string>
 			<string key="IconSearch~iphone.png">{34, 45}</string>
 		</dictionary>
 		<string key="IBCocoaTouchPluginVersion">2083</string>
