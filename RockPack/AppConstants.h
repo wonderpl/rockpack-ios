@@ -38,6 +38,8 @@
 #define kForceRefreshValue          @"kForceRefreshValue"
 #define kAutoPlayVideoId            @"kAutoPlayVideoId"
 
+#define kDataRequestRange           @"DataRequestRange"
+
 
 // viewId
 #define kFeedViewId                 NSLocalizedString(@"core_nav_section_feed", nil)

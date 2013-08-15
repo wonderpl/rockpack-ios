@@ -1424,7 +1424,7 @@
 
 - (void) connectionDidFinishLoading: (NSURLConnection *) connection
 {
-    if(self.currentUser.currentValue && self.currentOAuth2Credentials && ![self.currentOAuth2Credentials hasExpired])
+    if(self.currentUser.currentValue && self.currentOAuth2Credentials)
     {
         if (self.rockpackURL)
         {
