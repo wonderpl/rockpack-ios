@@ -46,6 +46,14 @@
     self.backgroundView.alpha = 0.0;
     self.backgroundView.userInteractionEnabled = YES;
     
+    
+    // Tap outside of view to close popover
+    UITapGestureRecognizer *tapOutside =
+    [[UITapGestureRecognizer alloc] initWithTarget:self
+                                            action:@selector(okButtonPressed:)];
+    [self.backgroundView addGestureRecognizer:tapOutside];
+    
+    
     UIView* mainView = [[UIView alloc] initWithFrame:screenFrame];
     mainView.backgroundColor = [UIColor clearColor];
     [mainView addSubview:self.backgroundView];
@@ -60,6 +68,11 @@
         self.queue = [[NSMutableArray alloc] init];
     NSLog(@"Adding in Q %@", popoverView);
     [self.queue addObject:popoverView];
+    
+    UITapGestureRecognizer *tapOutside =
+    [[UITapGestureRecognizer alloc] initWithTarget:self
+                                            action:@selector(okButtonPressed:)];
+    [popoverView addGestureRecognizer:tapOutside];
 }
 
 
@@ -184,8 +197,6 @@
         [self createBGSlicesForPopover:_currentlyVisiblePopover];
     else
         [self createBGForPopover:_currentlyVisiblePopover];
-    
-    
 }
 -(void)placePopoverInView:(SYNOnBoardingPopoverView*)popover
 {
@@ -213,8 +224,8 @@
             
             if(panelFrame.origin.x < STD_PADDING_DISTANCE)
                 panelFrame.origin.x = STD_PADDING_DISTANCE;
-            else if(panelFrame.origin.x + panelFrame.size.width > screenSize.width - STD_PADDING_DISTANCE)
-                panelFrame.origin.x = screenSize.width -  panelFrame.size.width - STD_PADDING_DISTANCE;
+            else if(panelFrame.origin.x + panelFrame.size.width > screenSize.width - 10.0)
+                panelFrame.origin.x = screenSize.width -  panelFrame.size.width - 10.0;
             
             arrowFrame.origin.x = midPointX - arrowFrame.size.width * 0.5;
             arrowFrame.origin.y = panelFrame.origin.y - arrowFrame.size.height;
@@ -229,8 +240,8 @@
             
             if(panelFrame.origin.x < STD_PADDING_DISTANCE)
                 panelFrame.origin.x = STD_PADDING_DISTANCE;
-            else if(panelFrame.origin.x + panelFrame.size.width > screenSize.width - 8.0)
-                panelFrame.origin.x = screenSize.width -  panelFrame.size.width - 8.0;
+            else if(panelFrame.origin.x + panelFrame.size.width > screenSize.width - 10.0)
+                panelFrame.origin.x = screenSize.width -  panelFrame.size.width - 10.0;
             
             arrowFrame.origin.x = midPointX - arrowFrame.size.width * 0.5;
             arrowFrame.origin.y = panelFrame.origin.y + panelFrame.size.height;
@@ -281,8 +292,9 @@
     
     popover.arrow.frame = arrowFrame;
     popover.arrow.alpha = 0.0;
-    [self.view addSubview:popover.arrow];
     [self.view addSubview:popover];
+    [self.view addSubview:popover.arrow];
+
     
     
         

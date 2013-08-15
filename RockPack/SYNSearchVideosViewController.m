@@ -539,7 +539,7 @@
         NSString *message = NSLocalizedString(@"onboarding_video", nil);
         
         CGFloat fontSize = IS_IPAD ? 16.0 : 14.0;
-        CGSize size = IS_IPAD ? CGSizeMake(220.0, 48.0) : CGSizeMake(260.0, 144.0);
+        CGSize size = IS_IPAD ? CGSizeMake(220.0, 48.0) : CGSizeMake(200.0, 44.0);
         CGRect rectToPointTo = CGRectZero;
         PointingDirection directionToPointTo = PointingDirectionDown;
         
