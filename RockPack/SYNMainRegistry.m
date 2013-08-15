@@ -320,6 +320,7 @@
     NSDictionary *videoInstancesByUniqueId, *channelInstacesByUniqueId, *feedItemInstacesByUniqueId;
     if(!append)
     {
+        // objects returned as markedForDeletion == YES
         videoInstancesByUniqueId = [self getDataObjectsByEntityName:kVideoInstance];
         channelInstacesByUniqueId = [self getDataObjectsByEntityName:kChannel];
         feedItemInstacesByUniqueId = [self getDataObjectsByEntityName:kFeedItem];

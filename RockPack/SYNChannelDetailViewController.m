@@ -128,6 +128,8 @@
 {
     if ((self = [super initWithViewId: kChannelDetailsViewId]))
     {
+        self.dataRequestRange = NSMakeRange(0, kAPIInitialBatchSize);
+        
         // mode must be set first because setChannel relies on it...
         self.mode = mode;
         self.channel = channel;
@@ -164,7 +166,7 @@
     
     // Take the best guess about how many  videos we have
     //    self.dataItemsAvailable = self.channel.videoInstances.count;
-    self.dataRequestRange = NSMakeRange(0, kAPIInitialBatchSize);
+    
     
     self.isIPhone = IS_IPHONE;
     
@@ -708,6 +710,7 @@
     }
     
     [updatedObjects enumerateObjectsUsingBlock: ^(id obj, NSUInteger idx, BOOL *stop) {
+        
         if (obj == self.channel)
         {
             self.dataItemsAvailable = self.channel.totalVideosValue;
@@ -1031,8 +1034,7 @@
         
         supplementaryView = self.footerView;
         
-        if (self.channel.videoInstances.count > 0 &&
-            (self.dataRequestRange.location + self.dataRequestRange.length) < self.dataItemsAvailable)
+        if (self.channel.videoInstances.count > 0 && self.moreItemsToLoad)
         {
             self.footerView.showsLoading = self.isLoadingMoreContent;
         }
@@ -1052,11 +1054,8 @@
     {
         footerSize = [self footerSize];
         
-        // Now set to zero anyway if we have already read in all the items
-        NSInteger nextStart = self.dataRequestRange.location + self.dataRequestRange.length; // one is subtracted when the call happens for 0 indexing
         
-        // FIXME: Is this comparison correct?  Should it just be self.dataRequestRange.location >= self.dataItemsAvailable?
-        if (nextStart >= self.dataItemsAvailable)
+        if (self.moreItemsToLoad)
         {
             footerSize = CGSizeMake(1.0f, 5.0f);
         }
@@ -1069,61 +1068,55 @@
     return footerSize;
 }
 
-
-- (void) incrementRangeForNextRequest
+- (void) resetDataRequestRange
 {
-    NSInteger nextStart = self.dataRequestRange.location + self.dataRequestRange.length; // one is subtracted when the call happens for 0 indexing
     
-    NSInteger nextSize = (nextStart + STANDARD_REQUEST_LENGTH) >= self.dataItemsAvailable ? MAX((self.dataItemsAvailable - nextStart), 0) : STANDARD_REQUEST_LENGTH;
-    
-    self.dataRequestRange = NSMakeRange(nextStart, nextSize);
 }
-
-
 - (void) loadMoreVideos
 {
-    if (self.moreItemsToLoad == TRUE)
+    if(!self.moreItemsToLoad)
+        return;
+    
+    
+    self.loadingMoreContent = YES;
+    
+    
+    [self incrementRangeForNextRequest];
+    
+    __weak typeof(self) weakSelf = self;
+    
+    MKNKUserSuccessBlock successBlock = ^(NSDictionary *dictionary) {
+        weakSelf.loadingMoreContent = NO;
+        
+        [weakSelf.channel
+         addVideoInstancesFromDictionary: dictionary];
+        
+        NSError *error;
+        [weakSelf.channel.managedObjectContext
+         save: &error];
+    };
+    
+    // define success block //
+    MKNKUserErrorBlock errorBlock = ^(NSDictionary *errorDictionary) {
+        weakSelf.loadingMoreContent = NO;
+        DebugLog(@"Update action failed");
+    };
+    
+    if ([self.channel.resourceURL hasPrefix: @"https"])                          // https does not cache so it is fresh
     {
-        self.loadingMoreContent = YES;
-        
-        // define success block //
-        [self incrementRangeForNextRequest];
-        
-        __weak typeof(self) weakSelf = self;
-        
-        MKNKUserSuccessBlock successBlock = ^(NSDictionary *dictionary) {
-            weakSelf.loadingMoreContent = NO;
-            
-            [weakSelf.channel
-             addVideoInstancesFromDictionary: dictionary];
-            
-            NSError *error;
-            [weakSelf.channel.managedObjectContext
-             save: &error];
-        };
-        
-        // define success block //
-        MKNKUserErrorBlock errorBlock = ^(NSDictionary *errorDictionary) {
-            weakSelf.loadingMoreContent = NO;
-            DebugLog(@"Update action failed");
-        };
-        
-        if ([self.channel.resourceURL hasPrefix: @"https"])                          // https does not cache so it is fresh
-        {
-            [appDelegate.oAuthNetworkEngine videosForChannelForUserId: appDelegate.currentUser.uniqueId
-                                                            channelId: self.channel.uniqueId
-                                                              inRange: self.dataRequestRange
-                                                    completionHandler: successBlock
-                                                         errorHandler: errorBlock];
-        }
-        else
-        {
-            [appDelegate.networkEngine videosForChannelForUserId: appDelegate.currentUser.uniqueId
-                                                       channelId: self.channel.uniqueId
-                                                         inRange: self.dataRequestRange
-                                               completionHandler: successBlock
-                                                    errorHandler: errorBlock];
-        }
+        [appDelegate.oAuthNetworkEngine videosForChannelForUserId: appDelegate.currentUser.uniqueId
+                                                        channelId: self.channel.uniqueId
+                                                          inRange: self.dataRequestRange
+                                                completionHandler: successBlock
+                                                     errorHandler: errorBlock];
+    }
+    else
+    {
+        [appDelegate.networkEngine videosForChannelForUserId: appDelegate.currentUser.uniqueId
+                                                   channelId: self.channel.uniqueId
+                                                     inRange: self.dataRequestRange
+                                           completionHandler: successBlock
+                                                errorHandler: errorBlock];
     }
 }
 
@@ -3270,6 +3263,10 @@ shouldChangeTextInRange: (NSRange) range
         if ([self.channel.channelOwner.uniqueId isEqualToString: appDelegate.currentUser.uniqueId])
         {
             [self updateChannelOwnerWithUser];
+            
+            // set the request to maximum
+            
+            self.dataRequestRange = NSMakeRange(0, MAXIMUM_REQUEST_LENGTH);
         }
         
         [[NSNotificationCenter defaultCenter] addObserver: self
