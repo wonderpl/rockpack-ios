@@ -141,6 +141,8 @@ typedef enum _FeedItemResourceType {
 #define kAPIPopularChannels         @"ws/channels/"
 #define kAPICategories              @"ws/categories/"
 
+#define kLocationService            @"/ws/location/"                            /* GET */
+
 // Share link
 #define kAPIShareLink               @"/ws/share/link/"                          /* POST */
 
@@ -277,6 +279,7 @@ typedef enum _NavigationButtonsAppearance {
 
 // Tabs
 #define kTabAnimationDuration 0.3f
+
 
 #define kChangedAccountSettingsValue        @"kChangedAccountSettingsValue"
 #define kClearedLocationBoundData           @"kClearedLocationBoundData"

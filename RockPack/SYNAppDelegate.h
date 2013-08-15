@@ -49,6 +49,7 @@
 @property (readonly, nonatomic, strong) User* currentUser;
 @property (strong, nonatomic) UIWindow *window;
 @property (strong, readonly) SYNMasterViewController *masterViewController;
+@property (strong, nonatomic) NSString* ipBasedLocation;
 
 - (void) deleteDataObject: (NSManagedObject*) managedObject;
 - (void) saveContext: (BOOL) wait;

@@ -455,6 +455,10 @@
     [super willAnimateRotationToInterfaceOrientation: toInterfaceOrientation
                                             duration: duration];
     
+    CGRect autopostTitleFrame = self.autopostTitleLabel.frame;
+    autopostTitleFrame.origin.x = self.autopostYesButton.frame.origin.x - 10.0f - self.autopostTitleLabel.frame.size.width;
+    self.autopostTitleLabel.frame = autopostTitleFrame;
+    
     [self packViewForInterfaceOrientation:toInterfaceOrientation];
 }
 

@@ -30,7 +30,7 @@
     
     // example: protocol:http url:media.dev.rockpack.com/images/channel/thumbnail_medium/0f56V2vz5QpNotonBaRX2Q.jpg
     instance.imageUrl = [dictionary objectForKey: @"thumbnail_url"
-                                     withDefault: @"http://localhost/no_thumb.jpg"];
+                                     withDefault: @""];
     
     NSArray *aoiArray = dictionary[@"aoi"];
     

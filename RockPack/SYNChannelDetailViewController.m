@@ -1589,12 +1589,21 @@
     
     if (self.mode == kChannelDetailsModeCreate)
     {
+        
+        [self.channel.managedObjectContext deleteObject: self.channel];
+        
+        NSError *error;
+        
+        [self.channel.managedObjectContext save: &error];
+        
         if (self.isIPhone)
         {
             [self backButtonTapped: nil];
         }
         else
         {
+            
+            
             [appDelegate.viewStackManager popController];
         }
     }
@@ -2216,11 +2225,11 @@
                                                   
                                                   self.originalChannel = self.channel;
                                                   
-                                                  [oldChannel.managedObjectContext
-                                                   deleteObject: oldChannel];
+                                                  [oldChannel.managedObjectContext deleteObject: oldChannel];
+                                                  
                                                   NSError *error;
-                                                  [oldChannel.managedObjectContext
-                                                   save: &error];
+                                                  
+                                                  [oldChannel.managedObjectContext save: &error];
                                               }
                                               else
                                               {
@@ -3141,14 +3150,16 @@ shouldChangeTextInRange: (NSRange) range
                                         UIImage *croppedImage = [wself croppedImageForCurrentOrientation];
                                         
                                         
-                                        [UIView					 transitionWithView: wself.view
-                                                               duration: 0.35f
-                                                                options: UIViewAnimationOptionTransitionCrossDissolve
-                                                             animations: ^{
+                                        [UIView transitionWithView: wself.view
+                                                          duration: 0.35f
+                                                           options: UIViewAnimationOptionTransitionCrossDissolve
+                                                        animations: ^{
+                                                            
                                                                  wself.channelCoverImageView.image = croppedImage;
-                                                             }
-                                                             completion: ^(BOOL finished) {
-                                                             }];
+                                                            
+                                                      } completion: ^(BOOL finished) {
+                                                            
+                                                       }];
                                         
                                         [wself.channelCoverImageView setNeedsLayout];
                                     }];
@@ -3160,6 +3171,7 @@ shouldChangeTextInRange: (NSRange) range
 - (void) setChannel: (Channel *) channel
 {
     self.originalChannel = channel;
+    
     
     NSError *error = nil;
     

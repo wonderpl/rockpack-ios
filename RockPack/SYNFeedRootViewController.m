@@ -743,16 +743,21 @@ typedef void(^FeedDataErrorBlock)(void);
         
         if(!feedItem.title) // it should usually be nil
         {
-            [cell setTitleMessageWithDictionary:@{@"display_name" : videoInstance.channel.channelOwner.displayName, @"item_count" : @(feedItemsAggregated), @"channel_name" : videoInstance.channel.title}];
+         
+            [cell setTitleMessageWithDictionary:@{  @"display_name" : videoInstance.channel.channelOwner ? videoInstance.channel.channelOwner.displayName : @"",
+                                                    @"item_count" : @(feedItemsAggregated),
+             @"channel_name" : videoInstance.channel ? videoInstance.channel.title : @"" }];
             
         }
         else
             cell.messageLabel.text = feedItem.title;
         
         
-        [cell setSupplementaryMessageWithDictionary:@{@"star_count":videoInstance.video.starCount, @"starrers":[videoInstance.starrers array]}];
+        [cell setSupplementaryMessageWithDictionary:@{  @"star_count": videoInstance.video ? videoInstance.video.starCount : @0,
+                                                        @"starrers": [videoInstance.starrers array]  }];
         
-        [cell setCoverImagesAndTitlesWithArray:@[@{@"image": videoInstance.video.thumbnailURL, @"title" : videoInstance.title}]];
+        [cell setCoverImagesAndTitlesWithArray:@[@{     @"image": videoInstance.video ? videoInstance.video.thumbnailURL : @"",
+                                                        @"title" : videoInstance.title  }]];
         
         channelOwner = videoInstance.channel.channelOwner; // heuristic, get the last video instance, all should have the same channelOwner however
         
@@ -775,7 +780,8 @@ typedef void(^FeedDataErrorBlock)(void);
             for (NSString* resourceId in coverIndexIds)
             {
                 channel = (Channel*)[self.feedChannelsById objectForKey:resourceId];
-                [coverImagesAndTitles addObject:@{@"image": channel.channelCover.imageUrl, @"title" : channel.title}];
+                [coverImagesAndTitles addObject:@{  @"image": channel.channelCover ? channel.channelCover.imageUrl : @"",
+                                                    @"title" : channel.title    }];
             }
             
             [cell setCoverImagesAndTitlesWithArray:coverImagesAndTitles];
@@ -784,7 +790,8 @@ typedef void(^FeedDataErrorBlock)(void);
         {
             channel = (Channel*)[self.feedChannelsById objectForKey:feedItem.resourceId];
             
-            [cell setCoverImagesAndTitlesWithArray:@[@{@"image": channel.channelCover.imageLargeUrl, @"title" : channel.title}]];
+            [cell setCoverImagesAndTitlesWithArray:@[@{ @"image": channel.channelCover ? channel.channelCover.imageLargeUrl : @"",
+                                                        @"title" : channel.title    }]];
             
             
         }
@@ -794,7 +801,8 @@ typedef void(^FeedDataErrorBlock)(void);
         if(!feedItem.title)
         {
             
-            [cell setTitleMessageWithDictionary:@{@"display_name" : channel.channelOwner.displayName, @"item_count" : @(feedItemsAggregated)}];
+            [cell setTitleMessageWithDictionary:@{  @"display_name" : channel.channelOwner ? channel.channelOwner.displayName : @"",
+                                                    @"item_count" : @(feedItemsAggregated)}];
             
         }
         else
