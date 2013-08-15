@@ -42,17 +42,20 @@
 // == Login / Registration / Forgot Password == //
 
 // Pre Sign-Up Onboarding
-"startscreen_onboard_1_title" = "A beautiful way to\nshare videos with friends";
+"startscreen_onboard_1_title" = "Watch it. Love it.\nPack it. Share it.";
 "startscreen_onboard_1" = "";
 
-"startscreen_onboard_2_title" = "Express Yourself";
-"startscreen_onboard_2" = "Create your own video channels and\npersonalize them with your own photos.";
+"startscreen_onboard_2_title" = "";
+"startscreen_onboard_2" = "Browse and subscribe to thousands of\npacks of videos from across the web.";
 
-"startscreen_onboard_3_title" = "Be Inspired";
-"startscreen_onboard_3" = "Subscribe to channels curated by family,\nfriends and experts.";
+"startscreen_onboard_3_title" = "";
+"startscreen_onboard_3" = "Watching a great video? Just press and\nhold to add to a pack, like or share with friends.";
 
-"startscreen_onboard_4_title" = "Share with Friends";
-"startscreen_onboard_4" = "Login with Facebook to instantly find\nand share with friends.";
+"startscreen_onboard_4_title" = "";
+"startscreen_onboard_4" = "Use your feed to see what’s new and\nwhat your friends are liking. ";
+
+"startscreen_onboard_5_title" = "";
+"startscreen_onboard_5" = "Invite Facebook friends to join, share\nvideos and make their own packs.";
 
 //By Using Rockpack... sentence
 "register_screen_legal" = "By using Rockpack, you agree to our\nTerms of Services and Privacy Policy";
