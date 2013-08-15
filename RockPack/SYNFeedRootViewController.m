@@ -375,15 +375,10 @@ typedef void(^FeedDataErrorBlock)(void);
                                            NSNumber* totalNumber = [contentItem[@"total"] isKindOfClass:[NSNumber class]] ? contentItem[@"total"] : @0 ;
                                            wself.dataItemsAvailable = [totalNumber integerValue];
                                            
-                                           //NSLog(@"%i from %i", ((NSArray*)contentItem[@"items"]).count, wself.dataItemsAvailable);
+                                           // NSLog(@"%i from %i", ((NSArray*)contentItem[@"items"]).count, wself.dataItemsAvailable);
                                            
-                                           if(wself.dataItemsAvailable == 0) {
-                                               
-                                               [wself displayEmptyGenreMessage:NSLocalizedString(@"feed_screen_empty_message", nil) andLoader:NO];
-                                               
-                                               return;
-                                               
-                                           }
+                                           
+                                           [wself removeEmptyGenreMessage];
                                                
                                            
                                            if(![appDelegate.mainRegistry registerDataForSocialFeedFromItemsDictionary:contentItem
@@ -396,10 +391,6 @@ typedef void(^FeedDataErrorBlock)(void);
                                                return;
                                                
                                            }
-                                                    
-                                           
-                                           [wself removeEmptyGenreMessage];
-                                           
                                            
                                            
                                            [wself fetchedAndDisplayFeedItems];
@@ -409,6 +400,13 @@ typedef void(^FeedDataErrorBlock)(void);
                                                     
                                            
                                            [wself handleRefreshComplete];
+                                           
+                                           if(wself.dataItemsAvailable == 0) {
+                                               
+                                               [wself displayEmptyGenreMessage:NSLocalizedString(@"feed_screen_empty_message", nil) andLoader:NO];
+                                               
+                                               
+                                           }
                                                     
                                            
                                        } errorHandler: ^(NSDictionary* errorDictionary) {
@@ -423,7 +421,7 @@ typedef void(^FeedDataErrorBlock)(void);
 
 - (void) handleRefreshComplete
 {
-    self.refreshing = FALSE;
+    self.refreshing = NO;
     [self.refreshControl endRefreshing];
     [self.refreshButton endRefreshCycle];
 }
@@ -507,6 +505,7 @@ typedef void(^FeedDataErrorBlock)(void);
     if(resultsArray.count == 0)
     {
         self.feedItemsData = [NSArray array];
+        [self.feedCollectionView reloadData];
         return;
     }
     
