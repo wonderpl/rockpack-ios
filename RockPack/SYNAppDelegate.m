@@ -1121,11 +1121,15 @@
             [self.oAuthNetworkEngine updateApplePushNotificationForUserId: self.currentUser.uniqueId
                                                                     token: formattedToken
                                                         completionHandler: ^(NSDictionary *dictionary) {
+                                                            
+                                                            
                                                             DebugLog(@"Apple push notification token update successful");
-                                                        }
-                                                             errorHandler: ^(NSError *error) {
-                                                                 DebugLog(@"Apple push notification token update failed");
-                                                             }];
+                                                            
+                                                        } errorHandler: ^(NSError *error) {
+                                                            
+                                                            DebugLog(@"Apple push notification token update failed");
+                                                            
+                                                        }];
         } afterDelay: 2.0f];       
     }
 }
