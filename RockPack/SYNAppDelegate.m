@@ -790,7 +790,11 @@
     UIImageView.defaultEngine = self.networkEngine;
 }
 
-
+-(void)setIpBasedLocation:(NSString *)ipBasedLocation
+{
+    self.networkEngine.locationString = ipBasedLocation;
+    self.oAuthNetworkEngine.locationString = ipBasedLocation;
+}
 #pragma mark - Clearing Data
 
 - (void) clearCoreDataMainEntities: (BOOL) userBound

@@ -498,13 +498,12 @@
     
     parameters[@"size"] = @(1000);
     
-    parameters[@"locale"] = self.localeString;
     
    
     NSString *apiString = [kAPIGetUserSubscriptions stringByReplacingOccurrencesOfStrings: apiSubstitutionDictionary];
     
     SYNNetworkOperationJsonObject *networkOperation = (SYNNetworkOperationJsonObject*)[self operationWithPath: apiString
-                                                                                                       params: parameters
+                                                                                                       params: [self getLocaleParamWithParams:parameters]
                                                                                                    httpMethod: @"GET"
                                                                                                           ssl: YES];
     [self addCommonHandlerToNetworkOperation: networkOperation
@@ -988,10 +987,9 @@
     
     parameters[@"size"] = @(range.length);
     
-    parameters[@"locale"] = self.localeString;
     
     SYNNetworkOperationJsonObject *networkOperation = (SYNNetworkOperationJsonObject*)[self operationWithPath: apiString
-                                                                                                       params: parameters
+                                                                                                       params: [self getLocaleParamWithParams:parameters]
                                                                                                    httpMethod: @"GET"
                                                                                                           ssl: TRUE];
     
@@ -1281,8 +1279,7 @@
 {
     NSDictionary *apiSubstitutionDictionary = @{@"USERID" : userId};
     
-    NSDictionary *params = [self paramsForStart: start
-                                           size: size];
+    NSDictionary *params = [self paramsAndLocaleForStart:start size:size];
     
     // we are not using the subscriptions_url returned from user info data but using a std one.
     NSString *apiString = [kAPIGetUserSubscriptions stringByReplacingOccurrencesOfStrings: apiSubstitutionDictionary];

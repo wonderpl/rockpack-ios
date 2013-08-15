@@ -37,6 +37,8 @@
         self.registry = appDelegate.mainRegistry;
         self.searchRegistry = appDelegate.searchRegistry;
         
+        self.locationString = @"";
+        
         // This engine is about requesting JSON objects and uses the appropriate operation type
         [self registerOperationSubclass: [SYNNetworkOperationJsonObject class]];
         
@@ -50,6 +52,7 @@
 }
 
 
+
 - (NSString*) localeString
 {
     SYNAppDelegate* appDelegate = UIApplication.sharedApplication.delegate;
@@ -57,7 +60,8 @@
     if (appDelegate.currentUser)
     {
         return appDelegate.currentUser.locale;
-    } else
+    }
+    else
     {
         return [(NSString*)CFBridgingRelease(CFLocaleCreateCanonicalLanguageIdentifierFromString(NULL, (CFStringRef)[NSLocale.autoupdatingCurrentLocale objectForKey: NSLocaleIdentifier])) lowercaseString];
     }
@@ -277,11 +281,12 @@
     
     if (size == 0)
     {
-        params = @{@"locale" : self.localeString};
+        params = [self getLocaleParam];
     }
     else
     {
-        params = @{@"locale" : self.localeString, @"start" : @(start), @"size" : @(size)};
+        
+        params = [self getLocaleParamWithParams:@{@"start" : @(start), @"size" : @(size)}];
     }
 
     return params;
@@ -306,18 +311,18 @@
 
 - (NSDictionary*) getLocaleParam
 {
-    return [NSDictionary dictionaryWithObject: self.localeString forKey:@"locale"];
+    return @{@"locale" : self.localeString, @"location" : self.locationString };
 }
 
 
 
 -(NSDictionary*)getLocaleParamWithParams: (NSDictionary*) parameters
 {
+
+    NSMutableDictionary* completeParams = parameters.mutableCopy;
+    [completeParams addEntriesFromDictionary:[self getLocaleParam]];
+    return completeParams;
     
-    NSMutableDictionary* dictionaryWithLocale = [NSMutableDictionary dictionaryWithDictionary: parameters];
-    [dictionaryWithLocale addEntriesFromDictionary: [self getLocaleParam]];
-    
-    return dictionaryWithLocale;
 }
 
 #pragma mark - HTTP status 5xx errors

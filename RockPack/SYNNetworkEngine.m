@@ -153,10 +153,9 @@
     
     parameters[@"start"] = @(range.location);
     parameters[@"size"] = @(range.length);
-    parameters[@"locale"] = self.localeString;
     
     SYNNetworkOperationJsonObject *networkOperation = (SYNNetworkOperationJsonObject *) [self operationWithPath: apiString
-                                                                                                         params: parameters
+                                                                                                         params: [self getLocaleParamWithParams: parameters]
                                                                                                      httpMethod: @"GET"
                                                                                                             ssl: NO];
     
@@ -176,10 +175,10 @@
     
     parameters[@"start"] = @(0);
     parameters[@"size"] = @(STANDARD_REQUEST_LENGTH);
-    parameters[@"locale"] = self.localeString;
     
-    SYNNetworkOperationJsonObject *networkOperation = (SYNNetworkOperationJsonObject *) [self operationWithURLString: resourceURL
-                                                                                                              params: parameters];
+    SYNNetworkOperationJsonObject *networkOperation =
+    (SYNNetworkOperationJsonObject *) [self operationWithURLString: resourceURL
+                                                            params: [self getLocaleParamWithParams: parameters]];
     
     [self addCommonHandlerToNetworkOperation: networkOperation
                            completionHandler: completionBlock
@@ -207,11 +206,11 @@
         tempParameters[@"category"] = categoryId;
     }
     
-    NSDictionary *parameters = [self getLocaleParamWithParams: tempParameters];
+    
     
     SYNNetworkOperationJsonObject *networkOperation =
     (SYNNetworkOperationJsonObject *) [self operationWithPath: kAPIPopularChannels
-                                                       params: parameters];
+                                                       params: [self getLocaleParamWithParams: tempParameters]];
     
     networkOperation.ignoreCachedResponse = ignore;
     
@@ -532,7 +531,7 @@
     
     
     SYNNetworkOperationJsonObject *networkOperation = (SYNNetworkOperationJsonObject *) [self operationWithPath: apiString
-                                                                                                         params: params];
+                                                                                                         params: [self getLocaleParamWithParams: params]];
     
     
     [networkOperation addJSONCompletionHandler: ^(id dictionary) {

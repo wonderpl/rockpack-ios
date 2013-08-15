@@ -22,6 +22,7 @@
 }
 
 @property (nonatomic, strong) NSString *localeString;
+@property (nonatomic, strong) NSString *locationString;
 @property (nonatomic, strong) SYNMainRegistry* registry;
 @property (nonatomic, strong) SYNSearchRegistry* searchRegistry;
 @property (nonatomic, readonly) NSString* hostName;
