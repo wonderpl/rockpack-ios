@@ -884,7 +884,7 @@
     }
     else
     {
-        detailsString = @"PRIVATE";
+        detailsString = @"Private";
         self.shareButton.hidden = TRUE;
         self.subscribersButton.hidden = TRUE;
     }

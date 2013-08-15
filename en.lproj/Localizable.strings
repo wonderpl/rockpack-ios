@@ -55,12 +55,12 @@
 "startscreen_onboard_4" = "Login with Facebook to instantly find\nand share with friends.";
 
 //By Using Rockpack... sentence
-"register_screen_legal" = "BY USING ROCKPACK, YOU AGREE TO OUR\nTERMS OF SERVICES AND PRIVACY POLICY";
+"register_screen_legal" = "By using Rockpack, you agree to our\nTerms of Services and Privacy Policy";
 
 
 //Placeholder for username textfield
-"login_screen_form_field_username_placeholder" = "USERNAME";
-"login_screen_form_field_password_placeholder" = "PASSWORD";
+"login_screen_form_field_username_placeholder" = "Username";
+"login_screen_form_field_password_placeholder" = "Password";
 
 //No Connection Error AlertView
 "login_screen_form_no_connection_dialog_title" = "Oops";
@@ -68,7 +68,7 @@
 
 
 // Errors - Login
-"login_screen_form_field_username_password_error_incorrect" = "YOUR USERNAME OR PASSWORD IS INCORRECT.";
+"login_screen_form_field_username_password_error_incorrect" = "Your username or password is incorrect";
 "login_screen_form_field_username_error_empty" = "Please enter your email or username";
 "login_screen_form_field_password_error_empty" = "Please enter your password";
 "login_screen_saving_error" = "Oops! Please try again.";
@@ -122,10 +122,10 @@
 "your_channel_object" = "your pack";
 "your_video_object" = "your video";
 
-"onboarding_channels" = "To start, browse channels created\nby other people. A channel is a\ncollection of videos.";
-"onboarding_subscription" = "Tap this button to subscribe to a channel and get new videos in your feed. It's free!";
-"onboarding_video" = "Tap the + button to add this video to one of your channels.";
-"onboarding_feed" = "Your feed is where you'll receive new videos added into channels you subscribed to.";
+"onboarding_channels" = "Browse packs of videos by category. Press and hold on a video or pack, see what happens!";
+"onboarding_subscription" = "Subscribe for free to get updates in your feed.";
+"onboarding_video" = "Tap the + to add to a pack.";
+"onboarding_feed" = "Discover new videos from packs you subscribe to. See what friends are liking too.";
 
 
 
@@ -184,7 +184,7 @@
 // == Feed == //
 
 "feed_screen_section_title" = "FEED";
-"feed_screen_empty_message" = "Your feed looks pretty empty! Subscribe to more packs.";
+"feed_screen_empty_message" = "Your feed is empty... subscribe to packs you like to discover new videos here.";
 "feed_screen_loading_error" = "There was a problem while loading your feed, please try again.";
 "feed_screen_updating_error" = "There was a problem while refreshing your feed, please try again.";
 "feed_screen_loading_message" = "Your Video Feed is Being Refreshed, Please Wait...";

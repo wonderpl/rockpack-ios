@@ -61,7 +61,7 @@
 
 -(void)setMessage:(NSString *)message
 {
-    messageLabel.text = [message uppercaseString];
+    messageLabel.text = message;
 }
 
 +(id)withMessage:(NSString*)message
