@@ -117,6 +117,7 @@
 						<string key="NSFrame">{{127, 110}, {769, 638}}</string>
 						<reference key="NSSuperview" ref="766721923"/>
 						<reference key="NSWindow"/>
+						<reference key="NSNextKeyView"/>
 						<string key="NSReuseIdentifierKey">_NS:9</string>
 						<object class="NSColor" key="IBUIBackgroundColor">
 							<int key="NSColorSpace">1</int>
@@ -187,14 +188,14 @@
 								<string key="NSReuseIdentifierKey">_NS:9</string>
 								<object class="NSColor" key="IBUIBackgroundColor">
 									<int key="NSColorSpace">1</int>
-									<bytes key="NSRGB">MC4xNTY4NjI3NTA2IDAuMTc2NDcwNTkyNiAwLjIwMDAwMDAwMyAwLjIyAA</bytes>
+									<bytes key="NSRGB">MC4xNTY4NjI3NTA2IDAuMTc2NDcwNTkyNiAwLjIwMDAwMDAwMyAwLjQyAA</bytes>
 								</object>
 								<string key="targetRuntimeIdentifier">IBIPadFramework</string>
 							</object>
 							<object class="IBUILabel" id="36239334">
 								<reference key="NSNextResponder" ref="517118385"/>
-								<int key="NSvFlags">268</int>
-								<string key="NSFrame">{{82, 0}, {232, 43}}</string>
+								<int key="NSvFlags">269</int>
+								<string key="NSFrame">{{224, 0}, {232, 43}}</string>
 								<reference key="NSSuperview" ref="517118385"/>
 								<reference key="NSWindow"/>
 								<reference key="NSNextKeyView" ref="348965838"/>
@@ -230,8 +231,8 @@
 							</object>
 							<object class="IBUIButton" id="814390343">
 								<reference key="NSNextResponder" ref="517118385"/>
-								<int key="NSvFlags">268</int>
-								<string key="NSFrame">{{381, 7}, {44, 30}}</string>
+								<int key="NSvFlags">269</int>
+								<string key="NSFrame">{{516, 7}, {44, 30}}</string>
 								<reference key="NSSuperview" ref="517118385"/>
 								<reference key="NSWindow"/>
 								<reference key="NSNextKeyView" ref="339448384"/>
@@ -262,8 +263,8 @@
 							</object>
 							<object class="IBUIButton" id="348965838">
 								<reference key="NSNextResponder" ref="517118385"/>
-								<int key="NSvFlags">268</int>
-								<string key="NSFrame">{{329, 7}, {44, 30}}</string>
+								<int key="NSvFlags">269</int>
+								<string key="NSFrame">{{464, 7}, {44, 30}}</string>
 								<reference key="NSSuperview" ref="517118385"/>
 								<reference key="NSWindow"/>
 								<reference key="NSNextKeyView" ref="814390343"/>
@@ -597,25 +598,6 @@
 				<object class="IBPartialClassDescription">
 					<string key="className">SYNExistingChannelsViewController</string>
 					<string key="superclassName">SYNAbstractViewController</string>
-					<dictionary class="NSMutableDictionary" key="actions">
-						<string key="autopostButtonPressed:">UIButton</string>
-						<string key="closeButtonPressed:">id</string>
-						<string key="confirmButtonPressed:">id</string>
-					</dictionary>
-					<dictionary class="NSMutableDictionary" key="actionInfosByName">
-						<object class="IBActionInfo" key="autopostButtonPressed:">
-							<string key="name">autopostButtonPressed:</string>
-							<string key="candidateClassName">UIButton</string>
-						</object>
-						<object class="IBActionInfo" key="closeButtonPressed:">
-							<string key="name">closeButtonPressed:</string>
-							<string key="candidateClassName">id</string>
-						</object>
-						<object class="IBActionInfo" key="confirmButtonPressed:">
-							<string key="name">confirmButtonPressed:</string>
-							<string key="candidateClassName">id</string>
-						</object>
-					</dictionary>
 					<dictionary class="NSMutableDictionary" key="outlets">
 						<string key="autopostNoButton">UIButton</string>
 						<string key="autopostTitleLabel">UILabel</string>

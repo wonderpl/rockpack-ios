@@ -537,6 +537,9 @@
     
     
     
+    
+    
+    networkOperation.ignoreCachedResponse = YES; // hack to get the operation read the headers
         
     [networkOperation addJSONCompletionHandler:^(NSDictionary *responseDictionary)
     {
@@ -549,19 +552,15 @@
             return;
         }
         
+        
         // Register User
         
         BOOL userRegistered = [self.registry registerUserFromDictionary:responseDictionary];
         if(!userRegistered) {
-            errorBlock(@{@"saving_error":@"Main Registry Could Not Save the User"});
+            errorBlock(@{@"saving_error" : @"Main Registry Could Not Save the User"});
             return;
         }
         
-        // link account
-        
-        
-        
-            
         
         // Get subscriptions
         
@@ -577,7 +576,7 @@
                           completionHandler:^(id subscriptionsDictionary) {
                               
                               
-                              NSString* possibleError = responseDictionary[@"error"];
+                              NSString* possibleError = subscriptionsDictionary[@"error"];
                               
                               if (possibleError)
                               {
@@ -1742,5 +1741,27 @@
     [self enqueueSignedOperation: networkOperation];
     
     
+}
+
+-(void)getClientIPBasedLocation
+{
+    SYNNetworkOperationJsonObject *networkOperation = (SYNNetworkOperationJsonObject*)[self operationWithPath: kLocationService
+                                                                                                       params: nil
+                                                                                                   httpMethod: @"GET"
+                                                                                                          ssl: YES];
+    __weak SYNOAuthNetworkEngine* wself = self;
+    [self addCommonHandlerToNetworkOperation: networkOperation
+                           completionHandler:^(id responce) {
+                               
+                               if(![responce isKindOfClass:[NSString class]])
+                                   return;
+                               
+                               [wself.registry registerIPBasedLocation:responce];
+                               
+                           } errorHandler:^(id error) {
+                               
+                           }];
+    
+    [self enqueueSignedOperation: networkOperation];
 }
 @end

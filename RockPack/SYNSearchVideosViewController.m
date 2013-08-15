@@ -362,13 +362,13 @@
     if (self.isIPhone)
     {
         //On iPhone, append You Tube User name to the date label
-        videoThumbnailCell.dateAddedLabel.text = [NSString stringWithFormat: @"%@ BY %@", [format uppercaseString], [video.sourceUsername uppercaseString]];
+        videoThumbnailCell.dateAddedLabel.text = [NSString stringWithFormat: @"%@ By %@", format , video.sourceUsername];
     }
     else
     {
         //On iPad a separate label is used for the youtube user name
-        videoThumbnailCell.dateAddedLabel.text = [format uppercaseString];
-        videoThumbnailCell.youTubeUserLabel.text = [NSString stringWithFormat: @"BY %@", [video.sourceUsername uppercaseString]];
+        videoThumbnailCell.dateAddedLabel.text = format;
+        videoThumbnailCell.youTubeUserLabel.text = [NSString stringWithFormat: @"By %@", video.sourceUsername];
     }
     
     NSUInteger hours = video.duration.integerValue / (60 * 60);
@@ -538,8 +538,8 @@
     {
         NSString *message = NSLocalizedString(@"onboarding_video", nil);
         
-        CGFloat fontSize = IS_IPAD ? 19.0 : 15.0;
-        CGSize size = IS_IPAD ? CGSizeMake(340.0, 164.0) : CGSizeMake(260.0, 144.0);
+        CGFloat fontSize = IS_IPAD ? 16.0 : 14.0;
+        CGSize size = IS_IPAD ? CGSizeMake(220.0, 48.0) : CGSizeMake(200.0, 44.0);
         CGRect rectToPointTo = CGRectZero;
         PointingDirection directionToPointTo = PointingDirectionDown;
         

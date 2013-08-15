@@ -784,6 +784,8 @@
     
     [self.oAuthNetworkEngine useCache];
     
+    [self.oAuthNetworkEngine getClientIPBasedLocation];
+    
     // Use this engine as the default for the asynchronous image loading category on UIImageView
     UIImageView.defaultEngine = self.networkEngine;
 }

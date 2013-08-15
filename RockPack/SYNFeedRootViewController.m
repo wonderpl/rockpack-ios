@@ -263,10 +263,10 @@ typedef void(^FeedDataErrorBlock)(void);
     BOOL hasShownFeedOnBoarding = [defaults boolForKey:kUserDefaultsFeed];
     if(!hasShownFeedOnBoarding)
     {
-        NSString* message = NSLocalizedString(@"onboarding_feed", nil);
+        NSString* message = IS_IPAD ? NSLocalizedString(@"onboarding_feed", nil) : NSLocalizedString(@"onboarding_feed_iphone", nil);
         
-        CGFloat fontSize = IS_IPAD ? 19.0 : 15.0 ;
-        CGSize size = IS_IPAD ? CGSizeMake(340.0, 164.0) : CGSizeMake(260.0, 144.0);
+        CGFloat fontSize = IS_IPAD ? 16.0 : 14.0 ;
+        CGSize size = IS_IPAD ? CGSizeMake(340.0, 70.0) : CGSizeMake(260.0, 80.0);
         SYNOnBoardingPopoverView* subscribePopover = [SYNOnBoardingPopoverView withMessage:message
                                                                                   withSize:size
                                                                                andFontSize:fontSize
@@ -675,8 +675,8 @@ typedef void(^FeedDataErrorBlock)(void);
         
         NSString* message = NSLocalizedString(@"onboarding_video", nil);
         
-        CGFloat fontSize = IS_IPAD ? 19.0 : 15.0 ;
-        CGSize size = IS_IPAD ? CGSizeMake(340.0, 164.0) : CGSizeMake(260.0, 144.0);
+        CGFloat fontSize = IS_IPAD ? 16.0 : 14.0 ;
+        CGSize size = IS_IPAD ? CGSizeMake(220.0, 48.0) : CGSizeMake(200.0, 44.0);
         CGRect rectToPointTo = CGRectZero;
         PointingDirection directionToPointTo = PointingDirectionDown;
         if (self.selectedVideoCell)

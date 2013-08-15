@@ -124,10 +124,12 @@
 "your_channel_object" = "your pack";
 "your_video_object" = "your video";
 
-"onboarding_channels" = "Browse packs of videos by category. Press and hold on a video or pack, see what happens!";
-"onboarding_subscription" = "Subscribe for free to get updates in your feed.";
-"onboarding_video" = "Tap the + to add to a pack.";
-"onboarding_feed" = "Discover new videos from packs you subscribe to. See what friends are liking too.";
+"onboarding_channels" = "Browse packs of videos by category.\nPress and hold on a video or pack, see what happens!";
+"onboarding_subscription" = "Subscribe for free to get updates in your feed.\n ";
+"onboarding_video" = "Tap the + to add to a pack.\n \n ";
+"onboarding_feed" = "Discover new videos from packs you subscribe to. See what friends are liking too.\n ";
+"onboarding_feed_iphone" = "Discover new videos from packs you subscribe to. See what friends are liking too.";
+
 
 
 
