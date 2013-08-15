@@ -309,7 +309,6 @@
     
     
     
-    
     self.messageLabel.attributedText = attributedCompleteString;
 }
 
