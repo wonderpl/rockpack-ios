@@ -92,7 +92,7 @@
         // the completion block is a recursive call that will check again for the need to display this panel,
         // the noautopostValue needs to be set to YES first so as to not be called again.
         if(self.completionBlock)
-            self.completionBlock();
+            self.completionBlock(NO);
         
         return;
     }
@@ -121,7 +121,7 @@
                         if(doesHaveAutopostStarFlagSet) {
                                                                    
                             if(self.completionBlock)
-                                self.completionBlock();
+                                self.completionBlock(YES);
                             
                             [self dismiss];
                                                                    
@@ -146,7 +146,7 @@
                                                 [wAppDelegate saveContext:YES];
                                                                                                   
                                                 if(self.completionBlock)
-                                                    self.completionBlock();
+                                                    self.completionBlock(YES);
                                                                                                   
                                                 [self dismiss];
                                                                                                   

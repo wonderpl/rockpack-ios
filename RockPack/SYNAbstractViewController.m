@@ -767,8 +767,19 @@
         // then show panel
         __weak typeof(self) weakSelf = self;
         
-        SYNImplicitSharingController *implicitSharingController = [SYNImplicitSharingController controllerWithBlock: ^{
+        SYNImplicitSharingController *implicitSharingController = [SYNImplicitSharingController controllerWithBlock: ^(BOOL approvedAutoSharing){
             [weakSelf toggleStarAtIndexPath: indexPath];
+            if(approvedAutoSharing)
+            {
+                // track
+                
+                id<GAITracker> tracker = [GAI sharedInstance].defaultTracker;
+                
+                [tracker sendEventWithCategory: @"goal"
+                                    withAction: @"videoShared"
+                                     withLabel: @"fbi"
+                                     withValue: nil];
+            }
         }];
         
         [self addChildViewController: implicitSharingController];

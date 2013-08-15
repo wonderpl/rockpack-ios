@@ -163,6 +163,18 @@
         
         [wself switchAutopostViewToYes:isYesButton];
         
+        if(isYesButton)
+        {
+            // this is a replacement for the sharing granularity
+            
+            id<GAITracker> tracker = [GAI sharedInstance].defaultTracker;
+            
+            [tracker sendEventWithCategory: @"goal"
+                                withAction: @"videoShared"
+                                 withLabel: @"fbe"
+                                 withValue: nil];
+        }
+        
     };
     
     if(isYesButton)
