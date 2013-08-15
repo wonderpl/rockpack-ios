@@ -177,7 +177,7 @@
 
 - (void) incrementRangeForNextRequest
 {
-    if(self.moreItemsToLoad)
+    if(!self.moreItemsToLoad)
         return;
     
     NSInteger nextStart = self.dataRequestRange.location + self.dataRequestRange.length; // one is subtracted when the call happens for 0 indexing

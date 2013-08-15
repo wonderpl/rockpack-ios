@@ -326,11 +326,13 @@
 - (void) loadMoreChannels
 {
     // Check to see if we have loaded all items already
-    if (self.moreItemsToLoad == TRUE)
+    if (self.moreItemsToLoad)
     {
         self.loadingMoreContent = YES;
         
+        
         [self incrementRangeForNextRequest];
+        
         
         [self loadChannelsForGenre: self.currentGenre
                        byAppending: YES];
