@@ -149,7 +149,6 @@
     void(^CompletionBlock)(id) = ^(id no_responce) {
         
         
-        
         if(isYesButton) {
            [wAppDelegate.currentUser setFlag:ExternalAccountFlagAutopostAdd toExternalAccount:@"facebook"]; 
         }
