@@ -650,7 +650,7 @@
                                                             params: nil //@{@"rockpack_redirect" : @"true"}
                                                         httpMethod: @"GET"];
     
-    networkOperation.ignoreCachedResponse = NO;
+    
     
     [networkOperation addJSONCompletionHandler: ^(NSDictionary *dictionary) {
         completionBlock(dictionary);
