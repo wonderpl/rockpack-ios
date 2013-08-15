@@ -1053,6 +1053,7 @@
 
 
 - (MKNetworkOperation*) updateChannel: (NSString *) resourceURL
+                      forVideosLength: (NSInteger) length
                     completionHandler: (MKNKUserSuccessBlock) completionBlock
                          errorHandler: (MKNKUserErrorBlock) errorBlock
 {
@@ -1065,7 +1066,7 @@
     
     parameters[@"start"] = @(0);
     
-    parameters[@"size"] = @(STANDARD_REQUEST_LENGTH);
+    parameters[@"size"] = @(length);
     
     parameters[@"locale"] = self.localeString;
     

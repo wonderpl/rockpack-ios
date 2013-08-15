@@ -53,6 +53,13 @@
 
 -(NSDictionary*) getLocaleParamWithParams: (NSDictionary*) parameters;
 
+// common operations for both engines
+
+- (MKNetworkOperation *) updateChannel: (NSString *) resourceURL
+                       forVideosLength: (NSInteger) length
+                     completionHandler: (MKNKUserSuccessBlock) completionBlock
+                          errorHandler: (MKNKUserErrorBlock) errorBlock;
+
 - (void) enqueueSignedOperation: (MKNetworkOperation *) request;
 
 #pragma mark - HTTP status 5xx errors

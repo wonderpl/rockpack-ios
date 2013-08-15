@@ -168,13 +168,14 @@
 
 
 - (MKNetworkOperation *) updateChannel: (NSString *) resourceURL
+                       forVideosLength: (NSInteger) length
                      completionHandler: (MKNKUserSuccessBlock) completionBlock
                           errorHandler: (MKNKUserErrorBlock) errorBlock
 {
     NSMutableDictionary *parameters = [NSMutableDictionary dictionary];
     
     parameters[@"start"] = @(0);
-    parameters[@"size"] = @(STANDARD_REQUEST_LENGTH);
+    parameters[@"size"] = @(length);
     
     SYNNetworkOperationJsonObject *networkOperation =
     (SYNNetworkOperationJsonObject *) [self operationWithURLString: resourceURL

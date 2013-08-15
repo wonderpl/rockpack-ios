@@ -108,6 +108,7 @@ typedef enum _FeedItemResourceType {
 #define kAPIDeleteChannel           @"/ws/USERID/channels/CHANNELID/"           /* PUT */
 
 #define STANDARD_REQUEST_LENGTH 48
+#define MAXIMUM_REQUEST_LENGTH 1000
 
 // Videos for channel
 #define kAPIGetVideosForChannel     @"/ws/USERID/channels/CHANNELID/videos/"    /* GET */

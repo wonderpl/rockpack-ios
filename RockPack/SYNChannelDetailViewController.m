@@ -114,6 +114,8 @@
 @property (weak, nonatomic) IBOutlet UIImageView *textBackgroundImageView;
 @property (weak, nonatomic) IBOutlet UIButton *subscribersButton;
 
+@property (nonatomic) BOOL editedVideos;
+
 @end
 
 
@@ -389,6 +391,8 @@
 - (void) viewWillAppear: (BOOL) animated
 {
     [super viewWillAppear: animated];
+    
+    self.editedVideos = NO;
     
     [[NSNotificationCenter defaultCenter] addObserver: self
                                              selector: @selector(coverImageChangedHandler:)
@@ -1184,6 +1188,8 @@
     [self.channel.videoInstancesSet insertObject: viToSwap
                                          atIndex: toIndexPath.item];
     
+    self.editedVideos = YES;
+    
     // set the new positions
     [self.channel.videoInstances enumerateObjectsUsingBlock: ^(id obj, NSUInteger index, BOOL *stop) {
         [(VideoInstance *) obj setPositionValue : index];
@@ -1452,6 +1458,8 @@
         return;
     }
     
+    self.editedVideos = YES;
+    
     UICollectionViewCell *cell = [self.videoThumbnailCollectionView cellForItemAtIndexPath: self.indexPathToDelete];
     
     [UIView animateWithDuration: 0.2
@@ -1666,6 +1674,7 @@
                                                      cover: cover
                                                   isPublic: YES
                                          completionHandler: ^(NSDictionary *resourceCreated) {
+                                             
                                              id<GAITracker> tracker = [GAI sharedInstance].defaultTracker;
                                              
                                              [tracker sendEventWithCategory: @"goal"
@@ -1682,8 +1691,11 @@
                                              self.cancelEditButton.hidden = YES;
                                              self.addButton.hidden = NO;
                                              
-                                             [self setVideosForChannelById: channelId
-                                                                 isUpdated: YES];
+                                             
+                                             
+                                             if(self.editedVideos)
+                                                 [self setVideosForChannelById: channelId //  2nd step of the creation process
+                                                                     isUpdated: YES];
                                              
                                              [[NSNotificationCenter defaultCenter] postNotificationName: kNoteAllNavControlsShow
                                                                                                  object: self

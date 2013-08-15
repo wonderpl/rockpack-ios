@@ -20,7 +20,8 @@
 
 @end
 
-@implementation SYNAbstractNetworkEngine 
+@implementation SYNAbstractNetworkEngine
+
 @synthesize hostName;
 
 - (id) initWithDefaultSettings
@@ -367,7 +368,17 @@
 {
     isShowingNetworkError = NO;
 }
-    
+
+
+#pragma mark - Abstract Methods
+
+- (MKNetworkOperation *) updateChannel: (NSString *) resourceURL
+                       forVideosLength: (NSInteger) length
+                     completionHandler: (MKNKUserSuccessBlock) completionBlock
+                          errorHandler: (MKNKUserErrorBlock) errorBlock
+{
+    return [[MKNetworkOperation alloc] init]; // to be implemented in subclass
+}
 
 
 @end
