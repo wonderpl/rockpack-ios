@@ -64,12 +64,27 @@
 								<string key="NSFrameSize">{310, 174}</string>
 								<reference key="NSSuperview" ref="301134111"/>
 								<reference key="NSWindow"/>
-								<reference key="NSNextKeyView"/>
+								<reference key="NSNextKeyView" ref="924424254"/>
 								<string key="NSReuseIdentifierKey">_NS:9</string>
 								<bool key="IBUIClipsSubviews">YES</bool>
 								<bool key="IBUIClearsContextBeforeDrawing">NO</bool>
 								<bool key="IBUIUserInteractionEnabled">NO</bool>
 								<string key="targetRuntimeIdentifier">IBIPadFramework</string>
+							</object>
+							<object class="IBUIImageView" id="924424254">
+								<reference key="NSNextResponder" ref="301134111"/>
+								<int key="NSvFlags">292</int>
+								<string key="NSFrameSize">{310, 174}</string>
+								<reference key="NSSuperview" ref="301134111"/>
+								<reference key="NSWindow"/>
+								<reference key="NSNextKeyView" ref="716427388"/>
+								<string key="NSReuseIdentifierKey">_NS:9</string>
+								<bool key="IBUIUserInteractionEnabled">NO</bool>
+								<string key="targetRuntimeIdentifier">IBIPadFramework</string>
+								<object class="NSCustomResource" key="IBUIImage">
+									<string key="NSClassName">NSImage</string>
+									<string key="NSResourceName">GlossVideo~iphone.png</string>
+								</object>
 							</object>
 							<object class="IBUIButton" id="847382299">
 								<reference key="NSNextResponder" ref="301134111"/>
@@ -158,6 +173,7 @@
 								<string key="NSFrame">{{9, 146}, {297, 26}}</string>
 								<reference key="NSSuperview" ref="301134111"/>
 								<reference key="NSWindow"/>
+								<reference key="NSNextKeyView"/>
 								<string key="NSReuseIdentifierKey">_NS:9</string>
 								<bool key="IBUIOpaque">NO</bool>
 								<bool key="IBUIAutoresizesSubviews">NO</bool>
@@ -274,6 +290,7 @@
 							<reference ref="716427388"/>
 							<reference ref="429279700"/>
 							<reference ref="847382299"/>
+							<reference ref="924424254"/>
 						</array>
 						<reference key="parent" ref="0"/>
 					</object>
@@ -305,6 +322,11 @@
 						<reference key="parent" ref="274337159"/>
 						<string key="objectName">Button - Add</string>
 					</object>
+					<object class="IBObjectRecord">
+						<int key="objectID">86</int>
+						<reference key="object" ref="924424254"/>
+						<reference key="parent" ref="274337159"/>
+					</object>
 				</array>
 			</object>
 			<dictionary class="NSMutableDictionary" key="flattenedProperties">
@@ -320,12 +342,13 @@
 				<real value="2" key="63.IBUIButtonInspectorSelectedStateConfigurationMetadataKey"/>
 				<string key="83.IBPluginDependency">com.apple.InterfaceBuilder.IBCocoaTouchPlugin</string>
 				<real value="0.0" key="83.IBUIButtonInspectorSelectedStateConfigurationMetadataKey"/>
+				<string key="86.IBPluginDependency">com.apple.InterfaceBuilder.IBCocoaTouchPlugin</string>
 			</dictionary>
 			<dictionary class="NSMutableDictionary" key="unlocalizedProperties"/>
 			<nil key="activeLocalization"/>
 			<dictionary class="NSMutableDictionary" key="localizations"/>
 			<nil key="sourceID"/>
-			<int key="maxID">85</int>
+			<int key="maxID">86</int>
 		</object>
 		<object class="IBClassDescriber" key="IBDocument.Classes">
 			<array class="NSMutableArray" key="referencedPartialClassDescriptions">
@@ -390,6 +413,7 @@
 			<string key="ButtonVideoDelete.png">{44, 45}</string>
 			<string key="ButtonVideoDeleteHighlighted.png">{44, 45}</string>
 			<string key="ButtonVideoDeleteSelected.png">{44, 45}</string>
+			<string key="GlossVideo~iphone.png">{310, 175}</string>
 		</dictionary>
 		<string key="IBCocoaTouchPluginVersion">2083</string>
 	</data>
