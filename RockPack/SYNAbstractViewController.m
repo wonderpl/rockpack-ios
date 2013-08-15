@@ -882,7 +882,7 @@
 }
 
 - (void) arcMenuUpdateState: (UIGestureRecognizer *) recognizer
-                    forCell: cell
+                    forCell: (UICollectionViewCell *) cell
 {
     CGPoint tapPoint = [recognizer locationInView: self.view];
     
@@ -969,6 +969,17 @@
         [self.arcMenu positionUpdate: tapPoint];
         
     }
+    
+    // track
+    
+    id<GAITracker> tracker = [GAI sharedInstance].defaultTracker;
+    
+  
+    
+    [tracker sendEventWithCategory: @"uiAction"
+                        withAction: @"pressHold"
+                         withLabel: ([NSStringFromClass(cell.class) rangeOfString:@"Channel"].location == NSNotFound ? @"channel" : @"video")
+                         withValue: nil];
 }
 
 
