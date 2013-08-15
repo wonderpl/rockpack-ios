@@ -846,7 +846,7 @@ typedef void(^AnimationCompletionBlock)(BOOL finished);
         self.closeSearchButton.hidden = YES;
         self.backButtonControl.hidden = NO;
         
-        if (self.isInSearchMode && IS_IPAD)
+        if (self.hasSearchBarOn && IS_IPAD)
         {
             self.sideNavigationButton.hidden = YES;
         }
@@ -858,6 +858,7 @@ typedef void(^AnimationCompletionBlock)(BOOL finished);
     }
     else
     {
+        // ex. when clicking on 'EDIT' in channel details
         self.searchButton.hidden = YES;
         self.sideNavigationButton.hidden = YES;
         self.closeSearchButton.hidden = YES;
