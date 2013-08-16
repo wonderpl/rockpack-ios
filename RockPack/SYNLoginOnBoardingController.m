@@ -51,8 +51,9 @@
 - (void) loadView
 {
     
-    self.scrollView = [[UIScrollView alloc] initWithFrame:CGRectMake(0.0, 0.0, 1024.0f, 300.0)];
+    self.scrollView = [[UIScrollView alloc] initWithFrame:CGRectMake(0.0, 0.0, 1024.0f, 500.0)];
     self.scrollView.autoresizingMask = UIViewAutoresizingFlexibleWidth;
+    
     
     self.scrollView.pagingEnabled = YES;
     self.scrollView.scrollEnabled = YES;
@@ -62,7 +63,7 @@
     self.scrollView.showsVerticalScrollIndicator = NO;
     self.scrollView.autoresizingMask = UIViewAutoresizingFlexibleWidth;
     self.scrollView.delegate = self.delegate;
-
+    
     self.view = [[UIView alloc] initWithFrame: self.scrollView.frame];
     self.view.autoresizingMask = UIViewAutoresizingFlexibleWidth;
     
@@ -104,29 +105,55 @@
         localisedKey = [NSString stringWithFormat:@"startscreen_onboard_%i", i + 1];
         localisedDefault = [NSString stringWithFormat:@"Text for onboard screen %i", i + 1];
         
-        messageText = NSLocalizedString(localisedKey, localisedDefault);
-        
-        
+        messageText = NSLocalizedString(localisedKey, localisedDefault);    
         
         messageView = [self createNewMessageViewWithMessage:messageText
                                                    andTitle:titleText];
         
         messageViewCenter = messageView.center;
         messageViewCenter.x = (i + 0.5) * self.scrollView.frame.size.width;
-        messageView.center = messageViewCenter;
+        //messageView.center = messageViewCenter;
         
-        messageView.frame = CGRectIntegral(messageView.frame);
+        CGRect integralFrame = CGRectIntegral(messageView.frame);
+        
+        //Text Frame
+        CGRect iPadMessageRect = CGRectMake((self.view.frame.size.width * 0.5) - (integralFrame.size.width * 0.5), self.view.frame.size.height - 350, integralFrame.size.width, integralFrame.size.height);
+        CGRect iPhoneMessageRect = CGRectMake((self.view.frame.size.width * 0.5) - (integralFrame.size.width * 0.5), self.view.frame.size.height - 300, integralFrame.size.width, integralFrame.size.height);
+        
+        messageView.frame = IS_IPAD ? iPadMessageRect : iPhoneMessageRect;
+        
+        
+//        //Get the Image
+//        UIImage * messageImage;
+//        messageImage = [UIImage imageNamed: [NSString stringWithFormat:@"login_onboard_%i", i+1]];
+        
+        //Image Frame
+        CGRect iPadImageRect = CGRectMake((messageView.frame.size.width * 0.5) - 140, messageView.frame.origin.y - 200, 280, 200);
+        CGRect iPhoneImageRect = CGRectMake((messageView.frame.size.width * 0.5) - 140, messageView.frame.origin.y - 220, 280, 200);
+        
+        UIImageView * messageImageView = [[UIImageView alloc]initWithFrame: IS_IPAD ? iPadImageRect : iPhoneImageRect];
+        
+        if (i == 0)
+        {
+            messageImageView.image = [UIImage imageNamed: [NSString stringWithFormat:@"login_onboard_%i.png", i+1]];
+        }
+        
+        else
+        {
+        messageImageView.image = [UIImage imageNamed: [NSString stringWithFormat:@"login_onboard_%i.jpg", i+1]];
+        }
 
         [self.scrollView addSubview:messageView];
+        [messageView addSubview:messageImageView];
         
         totalScrollSize.width += self.scrollView.frame.size.width;
     }
     
     [self.scrollView setContentSize:totalScrollSize];
     
-    self.pageControl = [[UIPageControl alloc] initWithFrame:CGRectMake(0.0, 0.0, 100.0, 40.0)];
+    self.pageControl = [[UIPageControl alloc] initWithFrame:CGRectMake((self.view.frame.size.width * 0.5) - 50, self.view.frame.size.height - 50, 100.0, 40.0)];
     self.pageControl.numberOfPages = kLoginOnBoardingMessagesNum;
-    self.pageControl.center = CGPointMake(self.view.frame.size.width * 0.5, 270.0);
+    //self.pageControl.center = CGPointMake(self.view.frame.size.width * 0.5, 270.0);
     self.pageControl.frame = CGRectIntegral(self.pageControl.frame);
     self.pageControl.userInteractionEnabled = NO; // dont block the screen
     self.pageControl.autoresizingMask = UIViewAutoresizingFlexibleLeftMargin | UIViewAutoresizingFlexibleRightMargin;
@@ -148,16 +175,16 @@
     UIView* container = [[UIView alloc] initWithFrame:newFrame];
     
     // Title label, Offset from the top of the scroll view;
-    newFrame.origin.y = IS_IPHONE ? 180.0f : 140.0f;
+    newFrame.origin.y = IS_IPHONE ? 205.0f : 170.0f;
     
-    UIColor* shadowColor = [UIColor colorWithWhite:0.0f alpha:0.5f];
+    UIColor* shadowColor = [UIColor colorWithWhite:0.0f alpha:0.3f];
     
     
     UILabel* titleLabel = [[UILabel alloc] initWithFrame:newFrame];
     if(title)
     {
         
-        UIFont* fontTitleToUse = [UIFont boldRockpackFontOfSize: IS_IPHONE ? 22.0f : 28.0f];
+        UIFont* fontTitleToUse = [UIFont boldRockpackFontOfSize: IS_IPHONE ? 19.0f : 28.0f];
         titleLabel.font = fontTitleToUse;
         titleLabel.numberOfLines = 0;
         titleLabel.textAlignment = NSTextAlignmentCenter;
@@ -186,8 +213,8 @@
     textLabel.textAlignment = NSTextAlignmentCenter;
     textLabel.text = message;
     textLabel.backgroundColor = [UIColor clearColor];
-    textLabel.textColor = [UIColor whiteColor];
-    textLabel.shadowColor = shadowColor;
+    textLabel.textColor = [UIColor colorWithRed:40.0/255.0 green:45.0/255.0 blue:51.0/255.0 alpha:1.0];
+    textLabel.shadowColor = [UIColor whiteColor];
     textLabel.shadowOffset = CGSizeMake(0.0, 1.0);
     [textLabel sizeToFit];
     [container addSubview:textLabel];

@@ -65,8 +65,11 @@
 
 - (void) addWords: (NSArray*) words
 {
+    
     [wordsArray removeAllObjects];
+    
     [wordsArray addObjectsFromArray: words];
+    
     [self.tableView reloadData];
 }
 
@@ -91,41 +94,40 @@
           cellForRowAtIndexPath: (NSIndexPath *) indexPath
 {
     static NSString *CellIdentifier = @"Cell";
-    UITableViewCell *cell = [tableView dequeueReusableCellWithIdentifier: CellIdentifier];
+    UITableViewCell *cell;
     
-    if (!cell)
-    {
-        if (IS_IPAD)
-        {
-            cell = [[UITableViewCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier: CellIdentifier];
-            
-            cell.accessoryType = UITableViewCellAccessoryNone;
-            
-            cell.contentView.backgroundColor = [UIColor clearColor];
-            
-            cell.selectionStyle = UITableViewCellSelectionStyleNone;
-            
-            cell.backgroundColor = [UIColor clearColor];
-            
-            // Text
-            cell.textLabel.font = rockpackFont;
-            cell.textLabel.textColor = textColor;
-            
-            
-            cell.textLabel.text = [((NSString*)wordsArray[indexPath.row]) capitalizedString];
-        }
-        else
-        {
-            cell = [[SYNAutocompleteIphoneCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:CellIdentifier];
-            
-            //Text
-            cell.textLabel.font = rockpackFont;
-            cell.textLabel.textColor = textColor;
-            
-            cell.textLabel.text = [((NSString*)wordsArray[indexPath.row]) capitalizedString];
-        } 
-    }
+    if (!(cell = [tableView dequeueReusableCellWithIdentifier: CellIdentifier]))
+        cell = [[UITableViewCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier: CellIdentifier];
 
+    if (IS_IPAD)
+    {
+        
+        
+        cell.accessoryType = UITableViewCellAccessoryNone;
+        
+        cell.contentView.backgroundColor = [UIColor clearColor];
+        
+        cell.selectionStyle = UITableViewCellSelectionStyleNone;
+        
+        cell.backgroundColor = [UIColor clearColor];
+        
+        // Text
+        cell.textLabel.font = rockpackFont;
+        cell.textLabel.textColor = textColor;
+        
+        
+        cell.textLabel.text = [((NSString*)wordsArray[indexPath.row]) capitalizedString];
+    }
+    else
+    {
+        cell = [[SYNAutocompleteIphoneCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:CellIdentifier];
+        
+        //Text
+        cell.textLabel.font = rockpackFont;
+        cell.textLabel.textColor = textColor;
+        
+        cell.textLabel.text = [((NSString*)wordsArray[indexPath.row]) capitalizedString];
+    }
 
     return cell;
 }

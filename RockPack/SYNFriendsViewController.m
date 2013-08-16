@@ -122,7 +122,7 @@ static char* association_key = "SYNFriendThumbnailCell to Friend";
         [self.allFriendsButton setBackgroundImage:backgroundImageHighlighted forState:UIControlStateHighlighted];
         
         self.searchFieldBackground.image = [[UIImage imageNamed: @"FieldSearch"]
-                                            resizableImageWithCapInsets: UIEdgeInsetsMake(0.0f,20.0f, 0.0f, 20.0f)];
+                                    resizableImageWithCapInsets: UIEdgeInsetsMake(0.0f,20.0f, 0.0f, 20.0f)];
         
         //Push the search slider out to the right.
         CGRect searchSliderFrame = self.searchSlider.frame;
@@ -433,19 +433,24 @@ static char* association_key = "SYNFriendThumbnailCell to Friend";
     if(!self.currentlySelectedFriend.isOnRockpack) // facebook friend, invite to rockpack
     {
         
-        id<GAITracker> tracker = [GAI sharedInstance].defaultTracker;
-        
-        [tracker sendEventWithCategory: @"goal"
-                            withAction: @"friendInvite"
-                             withLabel: self.currentlySelectedFriend.displayName
-                             withValue: nil];
+        [[GAI sharedInstance].defaultTracker sendEventWithCategory: @"uiAction"
+                                                        withAction: @"friendToInvite"
+                                                         withLabel: nil
+                                                         withValue: nil];
         
         [[SYNFacebookManager sharedFBManager] sendAppRequestToFriend:self.currentlySelectedFriend
                                                            onSuccess:^{
                                                                
+                                                               [[GAI sharedInstance].defaultTracker sendEventWithCategory: @"goal"
+                                                                                                               withAction: @"friendInvited"
+                                                                                                                withLabel: nil
+                                                                                                                withValue: nil];
+                                                               
                                                                [appDelegate.viewStackManager removePopoverView];
                                                                
                                                            } onFailure:^(NSError *error) {
+                                                               
+                                                               
                                                                
                                                                [appDelegate.viewStackManager removePopoverView];
                                                                

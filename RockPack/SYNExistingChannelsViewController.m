@@ -117,7 +117,7 @@
         self.autopostView.hidden = YES;
     }
     
-    
+
 }
 
 
@@ -149,7 +149,6 @@
     void(^CompletionBlock)(id) = ^(id no_responce) {
         
         
-        
         if(isYesButton) {
            [wAppDelegate.currentUser setFlag:ExternalAccountFlagAutopostAdd toExternalAccount:@"facebook"]; 
         }
@@ -162,6 +161,18 @@
         [wAppDelegate saveContext:YES];
         
         [wself switchAutopostViewToYes:isYesButton];
+        
+        if(isYesButton)
+        {
+            // this is a replacement for the sharing granularity
+            
+            id<GAITracker> tracker = [GAI sharedInstance].defaultTracker;
+            
+            [tracker sendEventWithCategory: @"goal"
+                                withAction: @"videoShared"
+                                 withLabel: @"fbe"
+                                 withValue: nil];
+        }
         
     };
     
@@ -455,6 +466,10 @@
     [super willAnimateRotationToInterfaceOrientation: toInterfaceOrientation
                                             duration: duration];
     
+    CGRect autopostTitleFrame = self.autopostTitleLabel.frame;
+    autopostTitleFrame.origin.x = self.autopostYesButton.frame.origin.x - self.autopostTitleLabel.frame.size.width -10;
+    self.autopostTitleLabel.frame = autopostTitleFrame;
+    
     [self packViewForInterfaceOrientation:toInterfaceOrientation];
 }
 
@@ -462,8 +477,14 @@
 {
     CGRect collectionFrame = self.channelThumbnailCollectionView.frame;
     
+    CGRect autopostViewFrame = self.autopostView.frame;
+    autopostViewFrame.origin.y = self.view.frame.size.height  - autopostViewFrame.size.height - 15;
+    self.autopostView.frame = autopostViewFrame;
+    
     if (IS_IPAD)
     {
+        
+        
         if (UIInterfaceOrientationIsPortrait(interfaceOrientation))
         {
             collectionFrame.size.width = 580.0;
@@ -484,12 +505,6 @@
     CGRect selfFrame = self.view.frame;
     selfFrame.size = [SYNDeviceManager.sharedInstance currentScreenSize];
     self.view.frame = selfFrame;
-    
-    
-    CGRect autopostViewFrame = self.autopostView.frame;
-    
-    autopostViewFrame.origin.y = self.view.frame.size.height  - autopostViewFrame.size.height;
-    self.autopostView.frame = autopostViewFrame;
     
 }
 

@@ -67,7 +67,7 @@
         self.tap.enabled = FALSE;
         self.deleteButton.hidden = NO;
     }
-    else if(displayMode == kChannelThumbnailDisplayModeDisplayFavourite)
+    else if (displayMode == kChannelThumbnailDisplayModeDisplayFavourite)
     {
         self.addItButton.hidden = NO;
         self.longPress.enabled = TRUE;
@@ -107,7 +107,7 @@
 
 #pragma mark - Gesture regognizer callbacks
 
-- (void) showVideo: (UILongPressGestureRecognizer *) recognizer
+- (void) showVideo: (UITapGestureRecognizer *) recognizer
 {
     [self.viewControllerDelegate videoButtonPressed: self.addItButton];
 }

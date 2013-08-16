@@ -784,11 +784,28 @@
     
     [self.oAuthNetworkEngine useCache];
     
+    [self.oAuthNetworkEngine getClientIPBasedLocation];
+    
     // Use this engine as the default for the asynchronous image loading category on UIImageView
     UIImageView.defaultEngine = self.networkEngine;
+    
+    // track first install
+    
+    NSUserDefaults *defaults = [NSUserDefaults standardUserDefaults];
+    BOOL isNotFirstInstall = [defaults boolForKey: kUserDefaultsNotFirstInstall];
+    if(!isNotFirstInstall) // IS first install
+    {
+        
+        [self.oAuthNetworkEngine trackSessionWithMessage:@"install"];
+    }
+    
 }
 
-
+-(void)setIpBasedLocation:(NSString *)ipBasedLocation
+{
+    self.networkEngine.locationString = ipBasedLocation;
+    self.oAuthNetworkEngine.locationString = ipBasedLocation;
+}
 #pragma mark - Clearing Data
 
 - (void) clearCoreDataMainEntities: (BOOL) userBound
@@ -800,18 +817,31 @@
     
     // == Clear VideoInstances == //
     
+    [fetchRequest setEntity: [NSEntityDescription entityForName: @"FeedItem"
+                                         inManagedObjectContext: self.mainManagedObjectContext]];
+    
+    
+    itemsToDelete = [self.mainManagedObjectContext executeFetchRequest: fetchRequest
+                                                                 error: &error];
+    
+    for (NSManagedObject *objectToDelete in itemsToDelete)
+    {
+        [self.mainManagedObjectContext deleteObject: objectToDelete];
+    }
+    
+    
+    // == Clear VideoInstances == //
+    
     [fetchRequest setEntity: [NSEntityDescription entityForName: @"VideoInstance"
                                          inManagedObjectContext: self.mainManagedObjectContext]];
     
     
-    itemsToDelete = [self.mainManagedObjectContext
-                     executeFetchRequest: fetchRequest
-                     error: &error];
+    itemsToDelete = [self.mainManagedObjectContext executeFetchRequest: fetchRequest
+                                                                 error: &error];
     
     for (NSManagedObject *objectToDelete in itemsToDelete)
     {
-        [self.mainManagedObjectContext
-         deleteObject: objectToDelete];
+        [self.mainManagedObjectContext deleteObject: objectToDelete];
     }
     
     // == Clear Cover Art == //
@@ -819,14 +849,12 @@
                                          inManagedObjectContext: self.mainManagedObjectContext]];
     
     
-    itemsToDelete = [self.mainManagedObjectContext
-                     executeFetchRequest: fetchRequest
-                     error: &error];
+    itemsToDelete = [self.mainManagedObjectContext executeFetchRequest: fetchRequest
+                                                                 error: &error];
     
     for (NSManagedObject *objectToDelete in itemsToDelete)
     {
-        [self.mainManagedObjectContext
-         deleteObject: objectToDelete];
+        [self.mainManagedObjectContext deleteObject: objectToDelete];
     }
     
     // == Clear Channels == //
@@ -840,14 +868,12 @@
     [fetchRequest setEntity: [NSEntityDescription entityForName: @"Channel"
                                          inManagedObjectContext: self.mainManagedObjectContext]];
     
-    itemsToDelete = [self.mainManagedObjectContext
-                     executeFetchRequest: fetchRequest
-                     error: &error];
+    itemsToDelete = [self.mainManagedObjectContext executeFetchRequest: fetchRequest
+                                                                 error: &error];
     
     for (NSManagedObject *objectToDelete in itemsToDelete)
     {
-        [self.mainManagedObjectContext
-         deleteObject: objectToDelete];
+        [self.mainManagedObjectContext deleteObject: objectToDelete];
     }
     
     fetchRequest.predicate = nil;
@@ -858,14 +884,12 @@
     
     fetchRequest.includesSubentities = YES; // to include SubGenre objecst
     
-    itemsToDelete = [self.mainManagedObjectContext
-                     executeFetchRequest: fetchRequest
-                     error: &error];
+    itemsToDelete = [self.mainManagedObjectContext executeFetchRequest: fetchRequest
+                                                                 error: &error];
     
     for (NSManagedObject *objectToDelete in itemsToDelete)
     {
-        [self.mainManagedObjectContext
-         deleteObject: objectToDelete];
+        [self.mainManagedObjectContext deleteObject: objectToDelete];
     }
     
     // == Clear ChannelOwner == //
@@ -881,8 +905,7 @@
     
     for (NSManagedObject *objectToDelete in itemsToDelete)
     {
-        [self.mainManagedObjectContext
-         deleteObject: objectToDelete];
+        [self.mainManagedObjectContext deleteObject: objectToDelete];
     }
     
     // == Save == //
@@ -1214,6 +1237,10 @@
         // No additionaly rockpack:// url, so just display the notifications panel
         [self.viewStackManager displaySideNavigatorFromPushNotification];
     }
+    else if(!self.currentUser)
+    {
+        // do nothing for the moment
+    }
     else
     {
         NSArray *array = @[notificationId];
@@ -1418,11 +1445,15 @@
 
 - (void) connectionDidFinishLoading: (NSURLConnection *) connection
 {
-    if (self.rockpackURL)
+    if(self.currentUser.currentValue && self.currentOAuth2Credentials)
     {
-        NSURL *url = [NSURL URLWithString: self.rockpackURL];
-        [self parseAndActionRockpackURL: url];
+        if (self.rockpackURL)
+        {
+            NSURL *url = [NSURL URLWithString: self.rockpackURL];
+            [self parseAndActionRockpackURL: url];
+        }
     }
+    
 }
 
 

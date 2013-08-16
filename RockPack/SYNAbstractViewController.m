@@ -170,32 +170,19 @@
 
 - (BOOL) moreItemsToLoad
 {
-    NSInteger nextStart = self.dataRequestRange.location + self.dataRequestRange.length; // one is subtracted when the call happens for 0 indexing
     
-    // FIXME: Is this comparison correct?  Should it just be self.dataRequestRange.location >= self.dataItemsAvailable?
-    if (nextStart >= self.dataItemsAvailable)
-    {
-        return FALSE;
-    }
-    else
-    {
-        return TRUE;
-    }
+    return (self.dataRequestRange.location + self.dataRequestRange.length < self.dataItemsAvailable);
 }
 
 
 - (void) incrementRangeForNextRequest
 {
-    if (self.moreItemsToLoad == FALSE)
-    {
+    if(!self.moreItemsToLoad)
         return;
-    }
-
-    self.loadingMoreContent = YES;
-
-    NSInteger nextStart = self.dataRequestRange.location + self.dataRequestRange.length;
     
-    NSInteger nextSize = (nextStart + STANDARD_REQUEST_LENGTH) >= self.dataItemsAvailable ? (self.dataItemsAvailable - nextStart) : STANDARD_REQUEST_LENGTH;
+    NSInteger nextStart = self.dataRequestRange.location + self.dataRequestRange.length; // one is subtracted when the call happens for 0 indexing
+    
+    NSInteger nextSize = MIN(STANDARD_REQUEST_LENGTH, self.dataItemsAvailable - nextStart);
     
     self.dataRequestRange = NSMakeRange(nextStart, nextSize);
 }
@@ -757,39 +744,6 @@
 
 - (IBAction) toggleStarAtIndexPath: (NSIndexPath *) indexPath
 {
-    // if the user does NOT have a FB account linked, no prompt
-    ExternalAccount *facebookAccount = appDelegate.currentUser.facebookAccount;
-    
-    if (facebookAccount && // has a facebook account
-        !(facebookAccount.flagsValue & ExternalAccountFlagAutopostStar) && // has not already set the implicit sharing to ON
-        facebookAccount.noautopostValue == NO) // has not explicitely forbid the implicit sharing
-    {
-        // then show panel
-        __weak typeof(self) weakSelf = self;
-        
-        SYNImplicitSharingController *implicitSharingController = [SYNImplicitSharingController controllerWithBlock: ^{
-            [weakSelf toggleStarAtIndexPath: indexPath];
-        }];
-        
-        [self addChildViewController: implicitSharingController];
-        
-        implicitSharingController.view.alpha = 0.0f;
-        implicitSharingController.view.center = CGPointMake(self.view.center.x, self.view.center.y);
-        implicitSharingController.view.frame = CGRectIntegral(implicitSharingController.view.frame);
-        [self.view addSubview: implicitSharingController.view];
-        
-        [UIView animateWithDuration: 0.3
-                         animations: ^{
-                             implicitSharingController.view.alpha = 1.0f;
-                         }];
-        
-        UITapGestureRecognizer *tapGesture = [[UITapGestureRecognizer alloc] initWithTarget: self
-                                                                                     action: @selector(dismissImplicitSharing)];
-        [self.view addGestureRecognizer: tapGesture];
-        
-        return;
-    }
-    
     id<GAITracker> tracker = [GAI sharedInstance].defaultTracker;
     
     [tracker sendEventWithCategory: @"uiAction"
@@ -808,6 +762,7 @@
                                                      action: starAction
                                             videoInstanceId: videoInstance.uniqueId
                                           completionHandler: ^(id response) {
+                                              
                                               if (videoInstance.video.starredByUserValue == TRUE)
                                               {
                                                   // Currently highlighted, so decrement
@@ -821,36 +776,18 @@
                                                   videoInstance.video.starCountValue += 1;
                                                   [Appirater userDidSignificantEvent: FALSE];
                                               }
+
                                               
-                                              // Looks like some sort of bodge
-                                              //                                               (self.favouritesStatusArray)[starredIndex] = @(button.selected);
                                               
                                               [appDelegate saveContext: YES];
+                                              
+                                              
+                                              
                                           } errorHandler: ^(id error) {
                                               DebugLog(@"Could not star video");
                                           }];
 }
 
-
-- (void) dismissImplicitSharing
-{
-    SYNImplicitSharingController *implicitSharingController;
-    
-    for (UIViewController *child in self.childViewControllers)
-    {
-        if ([child isKindOfClass: [SYNImplicitSharingController class]])
-        {
-            implicitSharingController = (SYNImplicitSharingController *) child;
-        }
-    }
-    
-    if (!implicitSharingController)
-    {
-        return;
-    }
-    
-    [implicitSharingController dismiss];
-}
 
 - (void) shareVideoAtIndexPath: (NSIndexPath *) indexPath
 {
@@ -881,12 +818,19 @@
     return  nil;
 }
 
+
+- (NSIndexPath *) indexPathForVideoIndexCell: (UICollectionViewCell *) cell
+{
+    return [self.videoThumbnailCollectionView indexPathForCell: cell];
+}
+
+
 - (void) arcMenuUpdateState: (UIGestureRecognizer *) recognizer
-                    forCell: cell
+                    forCell: (UICollectionViewCell *) cell
 {
     CGPoint tapPoint = [recognizer locationInView: self.view];
     
-    NSIndexPath *cellIndexPath = [self.videoThumbnailCollectionView indexPathForCell: cell];
+    NSIndexPath *cellIndexPath = [self indexPathForVideoIndexCell: cell];
     
     if (recognizer.state == UIGestureRecognizerStateBegan)
     {        
@@ -969,6 +913,17 @@
         [self.arcMenu positionUpdate: tapPoint];
         
     }
+    
+    // track
+    
+    id<GAITracker> tracker = [GAI sharedInstance].defaultTracker;
+    
+  
+    
+    [tracker sendEventWithCategory: @"uiAction"
+                        withAction: @"pressHold"
+                         withLabel: ([NSStringFromClass(cell.class) rangeOfString:@"Channel"].location == NSNotFound ? @"channel" : @"video")
+                         withValue: nil];
 }
 
 
@@ -1019,6 +974,7 @@
                          
                      }];
 }
+
 
 - (void) arcMenuDidFinishAnimationClose: (SYNArcMenuView *) menu
 {

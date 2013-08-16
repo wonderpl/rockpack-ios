@@ -895,6 +895,7 @@
 						<string key="fromLabel">UILabel</string>
 						<string key="highlightedBackgroundView">UIImageView</string>
 						<string key="numberOfViewLabel">UILabel</string>
+						<string key="playVideoButton">UIButton</string>
 						<string key="profileButton">UIButton</string>
 						<string key="usernameLabel">UILabel</string>
 						<string key="videoImageView">UIImageView</string>
@@ -951,6 +952,10 @@
 						<object class="IBToOneOutletInfo" key="numberOfViewLabel">
 							<string key="name">numberOfViewLabel</string>
 							<string key="candidateClassName">UILabel</string>
+						</object>
+						<object class="IBToOneOutletInfo" key="playVideoButton">
+							<string key="name">playVideoButton</string>
+							<string key="candidateClassName">UIButton</string>
 						</object>
 						<object class="IBToOneOutletInfo" key="profileButton">
 							<string key="name">profileButton</string>

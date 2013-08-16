@@ -8,16 +8,16 @@
 //  Abstract view controller to provide functionality common to all Rockpack view controllers
 
 
+#import "MKNetworkOperation.h"
 #import "SYNAddButtonControl.h"
 #import "SYNAppDelegate.h"
 #import "SYNArcMenuView.h"
+#import "SYNChannelFooterMoreView.h"
 #import "SYNNetworkEngine.h"
+#import "SYNOnBoardingPopoverQueueController.h"
+#import "SYNOnBoardingPopoverView.h"
 #import "SYNTabViewController.h"
 #import "SYNTabViewDelegate.h"
-#import "SYNChannelFooterMoreView.h"
-#import "MKNetworkOperation.h"
-#import "SYNOnBoardingPopoverView.h"
-#import "SYNOnBoardingPopoverQueueController.h"
 #import <CoreData/CoreData.h>
 #import <UIKit/UIKit.h>
 
@@ -26,20 +26,19 @@ typedef void (^SYNShareCompletionBlock)(void);
 @class VideoInstance, Channel, ChannelOwner, Genre, SubGenre;
 
 @interface SYNAbstractViewController : UIViewController <NSFetchedResultsControllerDelegate,
-                                                                 UICollectionViewDataSource,
-                                                                 UICollectionViewDelegate,
-                                                                 SYNTabViewDelegate,
-                                                                 SYNArcMenuViewDelegate>
+                                                         UICollectionViewDataSource,
+                                                         UICollectionViewDelegate,
+                                                         SYNTabViewDelegate,
+                                                         SYNArcMenuViewDelegate>
 {
 @protected
-    SYNAppDelegate* appDelegate;
+    SYNAppDelegate *appDelegate;
     BOOL tabExpanded;
-    SYNTabViewController* tabViewController;
-    NSString* viewId;
-    NSFetchedResultsController* fetchedResultsController;
-    NSString* abstractTitle;
+    SYNTabViewController *tabViewController;
+    NSString *viewId;
+    NSFetchedResultsController *fetchedResultsController;
+    NSString *abstractTitle;
 }
-
 
 @property (nonatomic) BOOL isAnimating;
 @property (nonatomic) BOOL isLocked;
@@ -48,44 +47,39 @@ typedef void (^SYNShareCompletionBlock)(void);
 @property (nonatomic, assign) BOOL inDrag;
 @property (nonatomic, assign) CGPoint initialDragCenter;
 @property (nonatomic, assign, getter = isLoadingMoreContent) BOOL loadingMoreContent;
-@property (nonatomic, readonly) NSString* viewId;
+@property (nonatomic, readonly) NSString *viewId;
 @property (nonatomic, strong) IBOutlet UICollectionView *videoThumbnailCollectionView;
-@property (nonatomic, strong) NSFetchedResultsController* fetchedResultsController;
+@property (nonatomic, strong) NSFetchedResultsController *fetchedResultsController;
 @property (nonatomic, strong) NSIndexPath *draggedIndexPath;
-@property (nonatomic, strong) SYNAddButtonControl* addButton;
-@property (nonatomic, strong) SYNChannelFooterMoreView* footerView;
-@property (nonatomic, strong) SYNTabViewController* tabViewController;
+@property (nonatomic, strong) SYNAddButtonControl *addButton;
+@property (nonatomic, strong) SYNChannelFooterMoreView *footerView;
+@property (nonatomic, strong) SYNTabViewController *tabViewController;
 @property (nonatomic, strong) UIImageView *draggedView;
-@property (nonatomic, weak) MKNetworkOperation* runningNetworkOperation;
+@property (nonatomic, weak) MKNetworkOperation *runningNetworkOperation;
 @property (readonly) BOOL alwaysDisplaysSearchBox;
 @property (readonly) NSManagedObjectContext *mainManagedObjectContext;
 @property (readonly, getter = isVideoQueueVisible) BOOL videoQueueVisible;
 
--(void)performAction:(NSString*)action withObject:(id)object;
+- (void) performAction: (NSString *) action withObject: (id) object;
 
-- (void) handleNewTabSelectionWithId: (NSString*) selectionId;
-- (void) handleNewTabSelectionWithGenre: (Genre*) name;
+- (void) handleNewTabSelectionWithId: (NSString *) selectionId;
+- (void) handleNewTabSelectionWithGenre: (Genre *) name;
 
 - (void) videoOverlayDidDissapear;
 - (void) displayVideoViewerFromView: (UIButton *) videoViewButton;
 
-
 - (NSIndexPath *) indexPathFromVideoInstanceButton: (UIButton *) button;
 
 - (void) reloadCollectionViews;
-
 
 - (BOOL) collectionView: (UICollectionView *) cv didSelectItemAtIndexPathAbstract: (NSIndexPath *) indexPath;
 
 - (void) displayVideoViewerWithVideoInstanceArray: (NSArray *) videoInstanceArray
                                  andSelectedIndex: (int) selectedIndex
                                            center: (CGPoint) center;
-
-
 - (void) refresh;
 
-
-- (id) initWithViewId: (NSString*) vid;
+- (id) initWithViewId: (NSString *) vid;
 - (void) viewDidScrollToFront;
 - (void) viewDidScrollToBack;
 
@@ -95,6 +89,8 @@ typedef void (^SYNShareCompletionBlock)(void);
 - (BOOL) moreItemsToLoad;
 
 - (void) headerTapped;
+
+- (IBAction) toggleStarAtIndexPath: (NSIndexPath *) indexPath;
 
 // Share
 - (void) requestShareLinkWithObjectType: (NSString *) objectType

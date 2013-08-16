@@ -22,6 +22,7 @@
 }
 
 @property (nonatomic, strong) NSString *localeString;
+@property (nonatomic, strong) NSString *locationString;
 @property (nonatomic, strong) SYNMainRegistry* registry;
 @property (nonatomic, strong) SYNSearchRegistry* searchRegistry;
 @property (nonatomic, readonly) NSString* hostName;
@@ -52,8 +53,18 @@
 
 -(NSDictionary*) getLocaleParamWithParams: (NSDictionary*) parameters;
 
+// common operations for both engines
+
+- (MKNetworkOperation *) updateChannel: (NSString *) resourceURL
+                       forVideosLength: (NSInteger) length
+                     completionHandler: (MKNKUserSuccessBlock) completionBlock
+                          errorHandler: (MKNKUserErrorBlock) errorBlock;
+
 - (void) enqueueSignedOperation: (MKNetworkOperation *) request;
 
 #pragma mark - HTTP status 5xx errors
 -(void)showErrorPopUpForError:(NSError*)error;
+
+-(void)trackSessionWithMessage:(NSString*)message;
+
 @end

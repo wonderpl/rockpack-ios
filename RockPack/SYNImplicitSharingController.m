@@ -69,6 +69,7 @@
     sender.selected = YES;
     
     
+    
     __weak SYNImplicitSharingController* wself = self;
     SYNAppDelegate* appDelegate = (SYNAppDelegate*)[[UIApplication sharedApplication] delegate];
     
@@ -79,9 +80,18 @@
     
     if(!isYesButton) // NO button pressed, dismiss and save the setting
     {
-        // dismiss
-        appDelegate.currentUser.facebookAccount.noautopostValue = YES; 
+        
+        appDelegate.currentUser.facebookAccount.noautopostValue = YES;
+        
         [appDelegate saveContext: YES];
+        
+        [self dismiss];
+        
+        // the completion block is a recursive call that will check again for the need to display this panel,
+        // the noautopostValue needs to be set to YES first so as to not be called again.
+        if(self.completionBlock)
+            self.completionBlock(NO);
+        
         return;
     }
     else
@@ -109,7 +119,7 @@
                         if(doesHaveAutopostStarFlagSet) {
                                                                    
                             if(self.completionBlock)
-                                self.completionBlock();
+                                self.completionBlock(YES);
                             
                             [self dismiss];
                                                                    
@@ -134,7 +144,7 @@
                                                 [wAppDelegate saveContext:YES];
                                                                                                   
                                                 if(self.completionBlock)
-                                                    self.completionBlock();
+                                                    self.completionBlock(YES);
                                                                                                   
                                                 [self dismiss];
                                                                                                   

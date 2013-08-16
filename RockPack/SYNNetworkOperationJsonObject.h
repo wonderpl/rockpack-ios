@@ -35,5 +35,6 @@ typedef void (^MKNKSearchFailureBlock) (int);
 - (void) addJSONCompletionHandler: (JSONResponseBlock) responseBlock errorHandler: (MKNKErrorBlock) errorBlock;
 
 @property (nonatomic) BOOL ignoreCachedResponse;
+@property (nonatomic) BOOL parseLocation;
 
 @end

@@ -42,25 +42,28 @@
 // == Login / Registration / Forgot Password == //
 
 // Pre Sign-Up Onboarding
-"startscreen_onboard_1_title" = "A beautiful way to\nshare videos with friends";
+"startscreen_onboard_1_title" = "Watch it. Love it. Pack it. Share it.";
 "startscreen_onboard_1" = "";
 
-"startscreen_onboard_2_title" = "Express Yourself";
-"startscreen_onboard_2" = "Create your own video channels and\npersonalize them with your own photos.";
+"startscreen_onboard_2_title" = "";
+"startscreen_onboard_2" = "Browse and subscribe to thousands of\npacks of videos from across the web.";
 
-"startscreen_onboard_3_title" = "Be Inspired";
-"startscreen_onboard_3" = "Subscribe to channels curated by family,\nfriends and experts.";
+"startscreen_onboard_3_title" = "";
+"startscreen_onboard_3" = "Watching a great video? Just press and\nhold to pack, like or share with friends.";
 
-"startscreen_onboard_4_title" = "Share with Friends";
-"startscreen_onboard_4" = "Login with Facebook to instantly find\nand share with friends.";
+"startscreen_onboard_4_title" = "";
+"startscreen_onboard_4" = "Use your feed to see what’s new and\nwhat your friends are liking. ";
+
+"startscreen_onboard_5_title" = "";
+"startscreen_onboard_5" = "Invite Facebook friends to join, share\nvideos and make their own packs.";
 
 //By Using Rockpack... sentence
-"register_screen_legal" = "BY USING ROCKPACK, YOU AGREE TO OUR\nTERMS OF SERVICES AND PRIVACY POLICY";
+"register_screen_legal" = "By using Rockpack, you agree to our\nTerms of Services and Privacy Policy";
 
 
 //Placeholder for username textfield
-"login_screen_form_field_username_placeholder" = "USERNAME";
-"login_screen_form_field_password_placeholder" = "PASSWORD";
+"login_screen_form_field_username_placeholder" = "Username";
+"login_screen_form_field_password_placeholder" = "Password";
 
 //No Connection Error AlertView
 "login_screen_form_no_connection_dialog_title" = "Oops";
@@ -68,7 +71,7 @@
 
 
 // Errors - Login
-"login_screen_form_field_username_password_error_incorrect" = "YOUR USERNAME OR PASSWORD IS INCORRECT.";
+"login_screen_form_field_username_password_error_incorrect" = "Your username or password is incorrect";
 "login_screen_form_field_username_error_empty" = "Please enter your email or username";
 "login_screen_form_field_password_error_empty" = "Please enter your password";
 "login_screen_saving_error" = "Oops! Please try again.";
@@ -124,11 +127,11 @@
 "your_channel_object" = "your pack";
 "your_video_object" = "your video";
 
-"onboarding_channels" = "To start, browse channels created\nby other people. A channel is a\ncollection of videos.";
-"onboarding_subscription" = "Tap this button to subscribe to a channel and get new videos in your feed. It's free!";
-"onboarding_video" = "Tap the + button to add this video to one of your channels.";
-"onboarding_feed" = "Your feed is where you'll receive new videos added into channels you subscribed to.";
-
+"onboarding_channels" = "Browse packs of videos by category or search for any video.\n ";
+"onboarding_subscription" = "Subscribe for free to get updates in your feed.\n ";
+"onboarding_video" = "Press and hold anywhere on the video and see what happens!";
+"onboarding_feed_iphone" = "Your feed will deliver the latest videos from packs you subscribe to, and new packs created by friends.";
+"onboarding_feed" = "Your feed will deliver the latest videos from packs you subscribe to, and new packs created by friends.";
 
 
 // == Channel Detail == //
@@ -186,7 +189,7 @@
 // == Feed == //
 
 "feed_screen_section_title" = "FEED";
-"feed_screen_empty_message" = "Your feed looks pretty empty! Subscribe to more packs.";
+"feed_screen_empty_message" = "Your feed is empty... subscribe to packs you like to discover new videos here.";
 "feed_screen_loading_error" = "There was a problem while loading your feed, please try again.";
 "feed_screen_updating_error" = "There was a problem while refreshing your feed, please try again.";
 "feed_screen_loading_message" = "Your Video Feed is Being Refreshed, Please Wait...";

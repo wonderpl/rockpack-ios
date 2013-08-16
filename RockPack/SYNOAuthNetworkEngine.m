@@ -498,13 +498,12 @@
     
     parameters[@"size"] = @(1000);
     
-    parameters[@"locale"] = self.localeString;
     
    
     NSString *apiString = [kAPIGetUserSubscriptions stringByReplacingOccurrencesOfStrings: apiSubstitutionDictionary];
     
     SYNNetworkOperationJsonObject *networkOperation = (SYNNetworkOperationJsonObject*)[self operationWithPath: apiString
-                                                                                                       params: parameters
+                                                                                                       params: [self getLocaleParamWithParams:parameters]
                                                                                                    httpMethod: @"GET"
                                                                                                           ssl: YES];
     [self addCommonHandlerToNetworkOperation: networkOperation
@@ -537,6 +536,9 @@
     
     
     
+    
+    
+    networkOperation.ignoreCachedResponse = YES; // hack to get the operation read the headers
         
     [networkOperation addJSONCompletionHandler:^(NSDictionary *responseDictionary)
     {
@@ -549,19 +551,15 @@
             return;
         }
         
+        
         // Register User
         
         BOOL userRegistered = [self.registry registerUserFromDictionary:responseDictionary];
         if(!userRegistered) {
-            errorBlock(@{@"saving_error":@"Main Registry Could Not Save the User"});
+            errorBlock(@{@"saving_error" : @"Main Registry Could Not Save the User"});
             return;
         }
         
-        // link account
-        
-        
-        
-            
         
         // Get subscriptions
         
@@ -577,7 +575,7 @@
                           completionHandler:^(id subscriptionsDictionary) {
                               
                               
-                              NSString* possibleError = responseDictionary[@"error"];
+                              NSString* possibleError = subscriptionsDictionary[@"error"];
                               
                               if (possibleError)
                               {
@@ -989,10 +987,9 @@
     
     parameters[@"size"] = @(range.length);
     
-    parameters[@"locale"] = self.localeString;
     
     SYNNetworkOperationJsonObject *networkOperation = (SYNNetworkOperationJsonObject*)[self operationWithPath: apiString
-                                                                                                       params: parameters
+                                                                                                       params: [self getLocaleParamWithParams:parameters]
                                                                                                    httpMethod: @"GET"
                                                                                                           ssl: TRUE];
     
@@ -1056,6 +1053,7 @@
 
 
 - (MKNetworkOperation*) updateChannel: (NSString *) resourceURL
+                      forVideosLength: (NSInteger) length
                     completionHandler: (MKNKUserSuccessBlock) completionBlock
                          errorHandler: (MKNKUserErrorBlock) errorBlock
 {
@@ -1068,7 +1066,7 @@
     
     parameters[@"start"] = @(0);
     
-    parameters[@"size"] = @(STANDARD_REQUEST_LENGTH);
+    parameters[@"size"] = @(length);
     
     parameters[@"locale"] = self.localeString;
     
@@ -1282,8 +1280,7 @@
 {
     NSDictionary *apiSubstitutionDictionary = @{@"USERID" : userId};
     
-    NSDictionary *params = [self paramsForStart: start
-                                           size: size];
+    NSDictionary *params = [self paramsAndLocaleForStart:start size:size];
     
     // we are not using the subscriptions_url returned from user info data but using a std one.
     NSString *apiString = [kAPIGetUserSubscriptions stringByReplacingOccurrencesOfStrings: apiSubstitutionDictionary];
@@ -1743,4 +1740,51 @@
     
     
 }
+
+-(void)getClientIPBasedLocation
+{
+    SYNNetworkOperationJsonObject *networkOperation = (SYNNetworkOperationJsonObject*)[self operationWithPath: kLocationService
+                                                                                                       params: nil
+                                                                                                   httpMethod: @"GET"
+                                                                                                          ssl: YES];
+    __weak SYNOAuthNetworkEngine* wself = self;
+    [self addCommonHandlerToNetworkOperation: networkOperation
+                           completionHandler:^(id responce) {
+                               
+                               if(![responce isKindOfClass:[NSString class]])
+                                   return;
+                               
+                               [wself.registry registerIPBasedLocation:responce];
+                               
+                           } errorHandler:^(id error) {
+                               
+                           }];
+    
+    [self enqueueOperation: networkOperation];
+}
+
+-(void)trackSessionWithMessage:(NSString*)message
+{
+    SYNNetworkOperationJsonObject *networkOperation =
+    (SYNNetworkOperationJsonObject *) [self operationWithPath: kAPIReportSession
+                                                       params: @{@"trigger":message}
+                                                   httpMethod: @"POST" ssl:YES];
+    
+    [networkOperation setPostDataEncoding:MKNKPostDataEncodingTypeJSON];
+    
+    
+    [networkOperation addJSONCompletionHandler: ^(NSDictionary *dictionary) {
+        
+        NSUserDefaults *defaults = [NSUserDefaults standardUserDefaults];
+        [defaults setBool: YES forKey: kUserDefaultsNotFirstInstall];
+        
+        
+        
+    } errorHandler: ^(NSError *error) {
+        DebugLog(@"API request failed");
+    }];
+    
+    [self enqueueOperation: networkOperation];
+}
+
 @end

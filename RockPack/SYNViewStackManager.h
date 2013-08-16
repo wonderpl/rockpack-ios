@@ -45,6 +45,7 @@
 -(void)dismissSearchBar;
 -(void)presentSearchBar;
 
+-(void)dismissSearchBarTotal:(BOOL)total;
 
 - (void) hideModalController;
 

@@ -51,12 +51,12 @@
 @property (nonatomic, strong) IBOutlet UIImageView* dividerImageView;
 @property (nonatomic, strong) IBOutlet UIImageView* loginBackgroundImage;
 @property (nonatomic, strong) IBOutlet UIImageView* titleImageView;
-@property (nonatomic, strong) IBOutlet UILabel* areYouNewLabel;
 @property (nonatomic, strong) IBOutlet UILabel* memberLabel;
 @property (nonatomic, strong) IBOutlet UILabel* passwordForgottenLabel;
 @property (nonatomic, strong) IBOutlet UILabel* secondaryFacebookMessage;
 @property (nonatomic, strong) IBOutlet UILabel* termsAndConditionsLabel;
 @property (nonatomic, strong) IBOutlet UILabel* termsAndConditionsLabelSide;
+@property (nonatomic, strong) IBOutlet UILabel* areYouNewLabel;
 @property (nonatomic, strong) IBOutlet UILabel* wellSendYouLabel;
 @property (nonatomic, strong) IBOutlet UILabel* whatsOnYourChannelLabel;
 @property (nonatomic, strong) IBOutlet UIView* dobView;
@@ -194,7 +194,7 @@
     
     CGRect onBoardingViewFrame = self.onBoardingController.view.frame;
     onBoardingViewFrame.origin.x = 0.0;
-    onBoardingViewFrame.origin.y = [[SYNDeviceManager sharedInstance] isLandscape] ? 300.0 : 560.0;
+    onBoardingViewFrame.origin.y = [[SYNDeviceManager sharedInstance] isLandscape] ? 100.0 : 280.0;
     self.onBoardingController.view.frame = onBoardingViewFrame;
     [self.view addSubview:self.onBoardingController.view];
     [self addChildViewController:self.onBoardingController];
@@ -1652,7 +1652,7 @@
         termsAndConditionsLabel.center = CGPointMake(termsAndConditionsLabel.center.x, 714.0);
         termsAndConditionsLabelSide.center = CGPointMake(termsAndConditionsLabelSide.center.x, 714.0);        
         registerButton.center = CGPointMake(registerButton.center.x, 704.0);
-        onBoardingFrame.origin.y = 560.0;
+        onBoardingFrame.origin.y = 280.0;
     }
     else
     {
@@ -1664,7 +1664,7 @@
         termsAndConditionsLabel.center = CGPointMake(termsAndConditionsLabel.center.x, 370.0);
         termsAndConditionsLabelSide.center = CGPointMake(termsAndConditionsLabelSide.center.x, 370.0);
         registerButton.center = CGPointMake(registerButton.center.x, 358.0);
-        onBoardingFrame.origin.y = 300.0;
+        onBoardingFrame.origin.y = 100.0;
     }
     
     

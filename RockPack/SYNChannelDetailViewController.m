@@ -114,6 +114,8 @@
 @property (weak, nonatomic) IBOutlet UIImageView *textBackgroundImageView;
 @property (weak, nonatomic) IBOutlet UIButton *subscribersButton;
 
+@property (nonatomic) BOOL editedVideos;
+
 @end
 
 
@@ -126,6 +128,8 @@
 {
     if ((self = [super initWithViewId: kChannelDetailsViewId]))
     {
+        self.dataRequestRange = NSMakeRange(0, kAPIInitialBatchSize);
+        
         // mode must be set first because setChannel relies on it...
         self.mode = mode;
         self.channel = channel;
@@ -162,7 +166,7 @@
     
     // Take the best guess about how many  videos we have
     //    self.dataItemsAvailable = self.channel.videoInstances.count;
-    self.dataRequestRange = NSMakeRange(0, kAPIInitialBatchSize);
+    
     
     self.isIPhone = IS_IPHONE;
     
@@ -389,6 +393,8 @@
 - (void) viewWillAppear: (BOOL) animated
 {
     [super viewWillAppear: animated];
+    
+    self.editedVideos = NO;
     
     [[NSNotificationCenter defaultCenter] addObserver: self
                                              selector: @selector(coverImageChangedHandler:)
@@ -704,6 +710,7 @@
     }
     
     [updatedObjects enumerateObjectsUsingBlock: ^(id obj, NSUInteger idx, BOOL *stop) {
+        
         if (obj == self.channel)
         {
             self.dataItemsAvailable = self.channel.totalVideosValue;
@@ -884,7 +891,7 @@
     }
     else
     {
-        detailsString = @"PRIVATE";
+        detailsString = @"Private";
         self.shareButton.hidden = TRUE;
         self.subscribersButton.hidden = TRUE;
     }
@@ -985,6 +992,7 @@
     
     VideoInstance *videoInstance = self.channel.videoInstances [indexPath.item];
     
+    videoInstance.video.starredByUserValue = self.channel.favouritesValue;
     
     [videoThumbnailCell.imageView
      setImageWithURL: [NSURL URLWithString: videoInstance.video.thumbnailURL]
@@ -1012,6 +1020,16 @@
     return cell;
 }
 
+- (IBAction) toggleStarAtIndexPath: (NSIndexPath *) indexPath
+{
+    [super toggleStarAtIndexPath:indexPath];
+    
+    VideoInstance *videoInstance = [self videoInstanceForIndexPath: indexPath];
+    
+    [self.channel.videoInstancesSet removeObject:videoInstance];
+    
+    [self.videoThumbnailCollectionView reloadData];
+}
 
 - (UICollectionReusableView *) collectionView: (UICollectionView *) collectionView
             viewForSupplementaryElementOfKind: (NSString *) kind
@@ -1027,8 +1045,7 @@
         
         supplementaryView = self.footerView;
         
-        if (self.channel.videoInstances.count > 0 &&
-            (self.dataRequestRange.location + self.dataRequestRange.length) < self.dataItemsAvailable)
+        if (self.channel.videoInstances.count > 0 && self.moreItemsToLoad)
         {
             self.footerView.showsLoading = self.isLoadingMoreContent;
         }
@@ -1048,11 +1065,8 @@
     {
         footerSize = [self footerSize];
         
-        // Now set to zero anyway if we have already read in all the items
-        NSInteger nextStart = self.dataRequestRange.location + self.dataRequestRange.length; // one is subtracted when the call happens for 0 indexing
         
-        // FIXME: Is this comparison correct?  Should it just be self.dataRequestRange.location >= self.dataItemsAvailable?
-        if (nextStart >= self.dataItemsAvailable)
+        if (self.moreItemsToLoad)
         {
             footerSize = CGSizeMake(1.0f, 5.0f);
         }
@@ -1065,61 +1079,55 @@
     return footerSize;
 }
 
-
-- (void) incrementRangeForNextRequest
+- (void) resetDataRequestRange
 {
-    NSInteger nextStart = self.dataRequestRange.location + self.dataRequestRange.length; // one is subtracted when the call happens for 0 indexing
     
-    NSInteger nextSize = (nextStart + STANDARD_REQUEST_LENGTH) >= self.dataItemsAvailable ? MAX((self.dataItemsAvailable - nextStart), 0) : STANDARD_REQUEST_LENGTH;
-    
-    self.dataRequestRange = NSMakeRange(nextStart, nextSize);
 }
-
-
 - (void) loadMoreVideos
 {
-    if (self.moreItemsToLoad == TRUE)
+    if(!self.moreItemsToLoad)
+        return;
+    
+    
+    self.loadingMoreContent = YES;
+    
+    
+    [self incrementRangeForNextRequest];
+    
+    __weak typeof(self) weakSelf = self;
+    
+    MKNKUserSuccessBlock successBlock = ^(NSDictionary *dictionary) {
+        weakSelf.loadingMoreContent = NO;
+        
+        [weakSelf.channel
+         addVideoInstancesFromDictionary: dictionary];
+        
+        NSError *error;
+        [weakSelf.channel.managedObjectContext
+         save: &error];
+    };
+    
+    // define success block //
+    MKNKUserErrorBlock errorBlock = ^(NSDictionary *errorDictionary) {
+        weakSelf.loadingMoreContent = NO;
+        DebugLog(@"Update action failed");
+    };
+    
+    if ([self.channel.resourceURL hasPrefix: @"https"])                          // https does not cache so it is fresh
     {
-        self.loadingMoreContent = YES;
-        
-        // define success block //
-        [self incrementRangeForNextRequest];
-        
-        __weak typeof(self) weakSelf = self;
-        
-        MKNKUserSuccessBlock successBlock = ^(NSDictionary *dictionary) {
-            weakSelf.loadingMoreContent = NO;
-            
-            [weakSelf.channel
-             addVideoInstancesFromDictionary: dictionary];
-            
-            NSError *error;
-            [weakSelf.channel.managedObjectContext
-             save: &error];
-        };
-        
-        // define success block //
-        MKNKUserErrorBlock errorBlock = ^(NSDictionary *errorDictionary) {
-            weakSelf.loadingMoreContent = NO;
-            DebugLog(@"Update action failed");
-        };
-        
-        if ([self.channel.resourceURL hasPrefix: @"https"])                          // https does not cache so it is fresh
-        {
-            [appDelegate.oAuthNetworkEngine videosForChannelForUserId: appDelegate.currentUser.uniqueId
-                                                            channelId: self.channel.uniqueId
-                                                              inRange: self.dataRequestRange
-                                                    completionHandler: successBlock
-                                                         errorHandler: errorBlock];
-        }
-        else
-        {
-            [appDelegate.networkEngine videosForChannelForUserId: appDelegate.currentUser.uniqueId
-                                                       channelId: self.channel.uniqueId
-                                                         inRange: self.dataRequestRange
-                                               completionHandler: successBlock
-                                                    errorHandler: errorBlock];
-        }
+        [appDelegate.oAuthNetworkEngine videosForChannelForUserId: appDelegate.currentUser.uniqueId
+                                                        channelId: self.channel.uniqueId
+                                                          inRange: self.dataRequestRange
+                                                completionHandler: successBlock
+                                                     errorHandler: errorBlock];
+    }
+    else
+    {
+        [appDelegate.networkEngine videosForChannelForUserId: appDelegate.currentUser.uniqueId
+                                                   channelId: self.channel.uniqueId
+                                                     inRange: self.dataRequestRange
+                                           completionHandler: successBlock
+                                                errorHandler: errorBlock];
     }
 }
 
@@ -1183,6 +1191,8 @@
     
     [self.channel.videoInstancesSet insertObject: viToSwap
                                          atIndex: toIndexPath.item];
+    
+    self.editedVideos = YES;
     
     // set the new positions
     [self.channel.videoInstances enumerateObjectsUsingBlock: ^(id obj, NSUInteger index, BOOL *stop) {
@@ -1452,6 +1462,8 @@
         return;
     }
     
+    self.editedVideos = YES;
+    
     UICollectionViewCell *cell = [self.videoThumbnailCollectionView cellForItemAtIndexPath: self.indexPathToDelete];
     
     [UIView animateWithDuration: 0.2
@@ -1589,12 +1601,21 @@
     
     if (self.mode == kChannelDetailsModeCreate)
     {
+        
+        [self.channel.managedObjectContext deleteObject: self.channel];
+        
+        NSError *error;
+        
+        [self.channel.managedObjectContext save: &error];
+        
         if (self.isIPhone)
         {
             [self backButtonTapped: nil];
         }
         else
         {
+            
+            
             [appDelegate.viewStackManager popController];
         }
     }
@@ -1657,6 +1678,7 @@
                                                      cover: cover
                                                   isPublic: YES
                                          completionHandler: ^(NSDictionary *resourceCreated) {
+                                             
                                              id<GAITracker> tracker = [GAI sharedInstance].defaultTracker;
                                              
                                              [tracker sendEventWithCategory: @"goal"
@@ -1673,8 +1695,11 @@
                                              self.cancelEditButton.hidden = YES;
                                              self.addButton.hidden = NO;
                                              
-                                             [self setVideosForChannelById: channelId
-                                                                 isUpdated: YES];
+                                             
+                                             
+                                             if(self.editedVideos)
+                                                 [self setVideosForChannelById: channelId //  2nd step of the creation process
+                                                                     isUpdated: YES];
                                              
                                              [[NSNotificationCenter defaultCenter] postNotificationName: kNoteAllNavControlsShow
                                                                                                  object: self
@@ -2216,11 +2241,11 @@
                                                   
                                                   self.originalChannel = self.channel;
                                                   
-                                                  [oldChannel.managedObjectContext
-                                                   deleteObject: oldChannel];
+                                                  [oldChannel.managedObjectContext deleteObject: oldChannel];
+                                                  
                                                   NSError *error;
-                                                  [oldChannel.managedObjectContext
-                                                   save: &error];
+                                                  
+                                                  [oldChannel.managedObjectContext save: &error];
                                               }
                                               else
                                               {
@@ -2566,8 +2591,8 @@ shouldChangeTextInRange: (NSRange) range
     {
         NSString *message = NSLocalizedString(@"onboarding_subscription", nil);
         PointingDirection direction = IS_IPAD ? PointingDirectionLeft : PointingDirectionUp;
-        CGFloat fontSize = IS_IPAD ? 19.0 : 15.0;
-        CGSize size = IS_IPAD ? CGSizeMake(290.0, 164.0) : CGSizeMake(260.0, 148.0);
+        CGFloat fontSize = IS_IPAD ? 16.0 : 14.0;
+        CGSize size = IS_IPAD ? CGSizeMake(290.0, 68.0) : CGSizeMake(250.0, 60.0);
         CGRect rectToPointTo = self.subscribeButton.frame;
         
         if (!IS_IPAD)
@@ -2582,7 +2607,7 @@ shouldChangeTextInRange: (NSRange) range
                                                                              withDirection: direction];
         
         __weak SYNChannelDetailViewController *wself = self;
-        subscribePopover.action = ^{
+        subscribePopover.action = ^(id obj){
             [wself subscribeButtonTapped: self.subscribeButton]; // simulate press
         };
         
@@ -2601,23 +2626,29 @@ shouldChangeTextInRange: (NSRange) range
     {
         NSString *message = NSLocalizedString(@"onboarding_video", nil);
         
-        CGFloat fontSize = IS_IPAD ? 19.0 : 15.0;
-        CGSize size = IS_IPAD ? CGSizeMake(320.0, 164.0) : CGSizeMake(250.0, 150.0);
+        CGFloat fontSize = IS_IPAD ? 16.0 : 14.0;
+        CGSize size = IS_IPAD ? CGSizeMake(240.0, 86.0) : CGSizeMake(200.0, 82.0);
         
         
-        CGRect rectToPointTo = [self.view convertRect: randomCell.addItButton.frame
+        CGRect rectToPointTo = [self.view convertRect: randomCell.frame
                                              fromView: randomCell];
         
-        rectToPointTo = CGRectInset(rectToPointTo, 10.0, 10.0);
+        rectToPointTo = CGRectOffset(rectToPointTo, -5, 0);
         SYNOnBoardingPopoverView *addToChannelPopover = [SYNOnBoardingPopoverView withMessage: message
                                                                                      withSize: size
                                                                                   andFontSize: fontSize
                                                                                    pointingTo: rectToPointTo
                                                                                 withDirection: PointingDirectionDown];
-        
-        __weak SYNChannelDetailViewController *wself = self;
-        addToChannelPopover.action = ^{
-            [wself addItToChannelPresssed: nil];
+      
+        //__weak SYNChannelDetailViewController *wself = self;
+        addToChannelPopover.action = ^(id obj){
+            
+            if([obj isKindOfClass:[UILongPressGestureRecognizer class]])
+            {
+                [self arcMenuUpdateState:obj forCell:randomCell];
+            }
+            
+            
         };
         
         [appDelegate.onBoardingQueue addPopover: addToChannelPopover];
@@ -3141,14 +3172,16 @@ shouldChangeTextInRange: (NSRange) range
                                         UIImage *croppedImage = [wself croppedImageForCurrentOrientation];
                                         
                                         
-                                        [UIView					 transitionWithView: wself.view
-                                                               duration: 0.35f
-                                                                options: UIViewAnimationOptionTransitionCrossDissolve
-                                                             animations: ^{
+                                        [UIView transitionWithView: wself.view
+                                                          duration: 0.35f
+                                                           options: UIViewAnimationOptionTransitionCrossDissolve
+                                                        animations: ^{
+                                                            
                                                                  wself.channelCoverImageView.image = croppedImage;
-                                                             }
-                                                             completion: ^(BOOL finished) {
-                                                             }];
+                                                            
+                                                      } completion: ^(BOOL finished) {
+                                                            
+                                                       }];
                                         
                                         [wself.channelCoverImageView setNeedsLayout];
                                     }];
@@ -3160,6 +3193,7 @@ shouldChangeTextInRange: (NSRange) range
 - (void) setChannel: (Channel *) channel
 {
     self.originalChannel = channel;
+    
     
     NSError *error = nil;
     
@@ -3246,6 +3280,10 @@ shouldChangeTextInRange: (NSRange) range
         if ([self.channel.channelOwner.uniqueId isEqualToString: appDelegate.currentUser.uniqueId])
         {
             [self updateChannelOwnerWithUser];
+            
+            // set the request to maximum
+            
+            self.dataRequestRange = NSMakeRange(0, MAXIMUM_REQUEST_LENGTH);
         }
         
         [[NSNotificationCenter defaultCenter] addObserver: self
@@ -3317,8 +3355,8 @@ shouldChangeTextInRange: (NSRange) range
         NSString *message = NSLocalizedString(@"onboarding_video", nil);
         
         // FIXME: Surely these iPad checks are not required (see above)
-        CGFloat fontSize = IS_IPAD ? 19.0 : 15.0;
-        CGSize size = IS_IPAD ? CGSizeMake(340.0, 164.0) : CGSizeMake(260.0, 144.0);
+        CGFloat fontSize = IS_IPAD ? 16.0 : 14.0;
+        CGSize size = IS_IPAD ? CGSizeMake(240.0, 86.0) : CGSizeMake(200.0, 82.0);
         
         SYNVideoThumbnailRegularCell *randomCell =
         (SYNVideoThumbnailRegularCell *) [self.videoThumbnailCollectionView cellForItemAtIndexPath: [NSIndexPath indexPathForItem: 0
@@ -3328,7 +3366,8 @@ shouldChangeTextInRange: (NSRange) range
         CGRect rectToPointTo = [self.view  convertRect: randomCell.frame
                                               fromView: randomCell];
         
-        rectToPointTo = CGRectInset(rectToPointTo, 10.0, 10.0);
+        rectToPointTo = CGRectOffset(rectToPointTo, -5, 0);
+        //randomCell.addItButton.hidden = YES;
         
         SYNOnBoardingPopoverView *addToChannelPopover = [SYNOnBoardingPopoverView withMessage: message
                                                                                      withSize: size
@@ -3336,9 +3375,9 @@ shouldChangeTextInRange: (NSRange) range
                                                                                    pointingTo: rectToPointTo
                                                                                 withDirection: PointingDirectionDown];
         
-        __weak SYNChannelDetailViewController *wself = self;
-        addToChannelPopover.action = ^{
-            [wself addItToChannelPresssed: nil];
+        //__weak SYNChannelDetailViewController *wself = self;
+        addToChannelPopover.action = ^(id obj){
+            //[wself addItToChannelPresssed: nil];
         };
         
         [appDelegate.onBoardingQueue addPopover: addToChannelPopover];

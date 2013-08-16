@@ -8,7 +8,7 @@
 
 #import <UIKit/UIKit.h>
 
-typedef void (^ImplicitSharingCompletionBlock) (void);
+typedef void (^ImplicitSharingCompletionBlock) (BOOL);
 
 @interface SYNImplicitSharingController : UIViewController
 

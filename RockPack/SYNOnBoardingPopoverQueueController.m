@@ -20,6 +20,7 @@
 @property (nonatomic, strong) NSMutableArray* queue;
 @property (nonatomic) NSInteger currentPopoverIndex;
 @property (nonatomic, weak) SYNOnBoardingPopoverView* currentlyVisiblePopover;
+@property (nonatomic, weak) UIView* specialSlice;
 
 @end
 
@@ -46,6 +47,14 @@
     self.backgroundView.alpha = 0.0;
     self.backgroundView.userInteractionEnabled = YES;
     
+    
+    // Tap outside of view to close popover
+    UITapGestureRecognizer *tapOutside =
+    [[UITapGestureRecognizer alloc] initWithTarget:self
+                                            action:@selector(okButtonPressed:)];
+    [self.backgroundView addGestureRecognizer:tapOutside];
+    
+    
     UIView* mainView = [[UIView alloc] initWithFrame:screenFrame];
     mainView.backgroundColor = [UIColor clearColor];
     [mainView addSubview:self.backgroundView];
@@ -58,8 +67,14 @@
 {
     if(!self.queue)
         self.queue = [[NSMutableArray alloc] init];
+    
     NSLog(@"Adding in Q %@", popoverView);
     [self.queue addObject:popoverView];
+    
+    UITapGestureRecognizer *tapOutside =
+    [[UITapGestureRecognizer alloc] initWithTarget:self
+                                            action:@selector(okButtonPressed:)];
+    [popoverView addGestureRecognizer:tapOutside];
 }
 
 
@@ -184,8 +199,6 @@
         [self createBGSlicesForPopover:_currentlyVisiblePopover];
     else
         [self createBGForPopover:_currentlyVisiblePopover];
-    
-    
 }
 -(void)placePopoverInView:(SYNOnBoardingPopoverView*)popover
 {
@@ -213,8 +226,8 @@
             
             if(panelFrame.origin.x < STD_PADDING_DISTANCE)
                 panelFrame.origin.x = STD_PADDING_DISTANCE;
-            else if(panelFrame.origin.x + panelFrame.size.width > screenSize.width - STD_PADDING_DISTANCE)
-                panelFrame.origin.x = screenSize.width -  panelFrame.size.width - STD_PADDING_DISTANCE;
+            else if(panelFrame.origin.x + panelFrame.size.width > screenSize.width - 10.0)
+                panelFrame.origin.x = screenSize.width -  panelFrame.size.width - 10.0;
             
             arrowFrame.origin.x = midPointX - arrowFrame.size.width * 0.5;
             arrowFrame.origin.y = panelFrame.origin.y - arrowFrame.size.height;
@@ -229,8 +242,8 @@
             
             if(panelFrame.origin.x < STD_PADDING_DISTANCE)
                 panelFrame.origin.x = STD_PADDING_DISTANCE;
-            else if(panelFrame.origin.x + panelFrame.size.width > screenSize.width - 8.0)
-                panelFrame.origin.x = screenSize.width -  panelFrame.size.width - 8.0;
+            else if(panelFrame.origin.x + panelFrame.size.width > screenSize.width - 10.0)
+                panelFrame.origin.x = screenSize.width -  panelFrame.size.width - 10.0;
             
             arrowFrame.origin.x = midPointX - arrowFrame.size.width * 0.5;
             arrowFrame.origin.y = panelFrame.origin.y + panelFrame.size.height;
@@ -281,8 +294,9 @@
     
     popover.arrow.frame = arrowFrame;
     popover.arrow.alpha = 0.0;
-    [self.view addSubview:popover.arrow];
     [self.view addSubview:popover];
+    [self.view addSubview:popover.arrow];
+
     
     
         
@@ -361,10 +375,16 @@
                 if(i == 1 && j == 1) // special interest slice
                 {
                     
+                    self.specialSlice = currentSlice;
                     currentSlice.backgroundColor = [UIColor clearColor];
-                    UITapGestureRecognizer* recogniser = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(performAction:)];
-                    [currentSlice addGestureRecognizer:recogniser];
                     
+                    UITapGestureRecognizer* tpRecogniser = [[UITapGestureRecognizer alloc] initWithTarget:self
+                                                                                                   action:@selector(performAction:)];
+                    
+                    UILongPressGestureRecognizer* lpRecogniser = [[UILongPressGestureRecognizer alloc] initWithTarget:self
+                                                                                                               action:@selector(performAction:)];
+                    [currentSlice addGestureRecognizer:tpRecogniser];
+                    [currentSlice addGestureRecognizer:lpRecogniser];
                 }
                 else
                 {
@@ -414,10 +434,18 @@
 -(void)performAction:(UIGestureRecognizer*)recogniser
 {
     if(self.currentlyVisiblePopover.action)
-        self.currentlyVisiblePopover.action();
+        self.currentlyVisiblePopover.action(recogniser);
     
-    if(self.queue.count == 0)
+    if([recogniser isKindOfClass:[UITapGestureRecognizer class]])
+    {
         [self presentNextPopover];
+    }
+    else if ([recogniser isKindOfClass:[UILongPressGestureRecognizer class]] &&
+             ((UILongPressGestureRecognizer*)recogniser).state == UIGestureRecognizerStateEnded)
+    {
+        [self presentNextPopover];
+    }
+    
 }
 
 

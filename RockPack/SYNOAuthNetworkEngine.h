@@ -228,6 +228,7 @@ typedef void (^SYNOAuth2RefreshCompletionBlock)(NSError *error);
                     errorHandler: (MKNKUserErrorBlock) errorBlock;
 
 - (MKNetworkOperation*) updateChannel: (NSString *) resourceURL
+                      forVideosLength: (NSInteger) length
                     completionHandler: (MKNKUserSuccessBlock) completionBlock
                          errorHandler: (MKNKUserErrorBlock) errorBlock;
 
@@ -275,5 +276,7 @@ typedef void (^SYNOAuth2RefreshCompletionBlock)(NSError *error);
 -(void)getExternalAccountForUrl: (NSString*)urlString
               completionHandler: (MKNKUserSuccessBlock) completionBlock
                    errorHandler: (MKNKUserErrorBlock) errorBlock;
+
+-(void)getClientIPBasedLocation;
 
 @end

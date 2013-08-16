@@ -42,7 +42,6 @@
 						<int key="NSvFlags">292</int>
 						<string key="NSFrame">{{16, 15}, {208, 21}}</string>
 						<reference key="NSSuperview" ref="282171637"/>
-						<reference key="NSWindow"/>
 						<reference key="NSNextKeyView" ref="506762550"/>
 						<string key="NSReuseIdentifierKey">_NS:9</string>
 						<bool key="IBUIOpaque">NO</bool>
@@ -80,7 +79,6 @@
 						<int key="NSvFlags">292</int>
 						<string key="NSFrame">{{14, 38}, {212, 48}}</string>
 						<reference key="NSSuperview" ref="282171637"/>
-						<reference key="NSWindow"/>
 						<reference key="NSNextKeyView" ref="149501730"/>
 						<string key="NSReuseIdentifierKey">_NS:9</string>
 						<bool key="IBUIOpaque">NO</bool>
@@ -119,7 +117,6 @@
 						<int key="NSvFlags">292</int>
 						<string key="NSFrame">{{20, 108}, {206, 117}}</string>
 						<reference key="NSSuperview" ref="282171637"/>
-						<reference key="NSWindow"/>
 						<reference key="NSNextKeyView" ref="170456234"/>
 						<string key="NSReuseIdentifierKey">_NS:9</string>
 						<bool key="IBUIUserInteractionEnabled">NO</bool>
@@ -134,7 +131,6 @@
 						<int key="NSvFlags">292</int>
 						<string key="NSFrame">{{20, 245}, {98, 41}}</string>
 						<reference key="NSSuperview" ref="282171637"/>
-						<reference key="NSWindow"/>
 						<reference key="NSNextKeyView" ref="207931738"/>
 						<string key="NSReuseIdentifierKey">_NS:9</string>
 						<bool key="IBUIOpaque">NO</bool>
@@ -177,7 +173,6 @@
 						<int key="NSvFlags">292</int>
 						<string key="NSFrame">{{128, 245}, {98, 41}}</string>
 						<reference key="NSSuperview" ref="282171637"/>
-						<reference key="NSWindow"/>
 						<string key="NSReuseIdentifierKey">_NS:9</string>
 						<bool key="IBUIOpaque">NO</bool>
 						<string key="targetRuntimeIdentifier">IBIPadFramework</string>
@@ -204,7 +199,6 @@
 				</array>
 				<string key="NSFrameSize">{246, 306}</string>
 				<reference key="NSSuperview"/>
-				<reference key="NSWindow"/>
 				<reference key="NSNextKeyView" ref="390920886"/>
 				<string key="NSReuseIdentifierKey">_NS:9</string>
 				<object class="NSColor" key="IBUIBackgroundColor">

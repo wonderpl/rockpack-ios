@@ -32,7 +32,7 @@
 
 typedef void(^FeedDataErrorBlock)(void);
 
-@interface SYNFeedRootViewController ()
+@interface SYNFeedRootViewController () <SYNAggregateCellDelegate>
 
 @property (nonatomic, assign) BOOL refreshing;
 @property (nonatomic, assign) BOOL shouldReloadCollectionView;
@@ -48,6 +48,7 @@ typedef void(^FeedDataErrorBlock)(void);
 @property (nonatomic, strong) NSDictionary* feedItemByPosition;
 @property (nonatomic, strong) UICollectionView* feedCollectionView;
 @property (nonatomic, strong) NSArray* videosInOrderArray;
+@property (nonatomic) BOOL togglingInProgress;
 
 @end
 
@@ -240,6 +241,8 @@ typedef void(^FeedDataErrorBlock)(void);
     
     self.feedCollectionView.scrollsToTop = YES;
     
+    self.togglingInProgress = NO;
+    
     // if the user has not pressed load more
     if (self.dataRequestRange.location == 0)
     {
@@ -263,10 +266,10 @@ typedef void(^FeedDataErrorBlock)(void);
     BOOL hasShownFeedOnBoarding = [defaults boolForKey:kUserDefaultsFeed];
     if(!hasShownFeedOnBoarding)
     {
-        NSString* message = NSLocalizedString(@"onboarding_feed", nil);
+        NSString* message = IS_IPAD ? NSLocalizedString(@"onboarding_feed", nil) : NSLocalizedString(@"onboarding_feed_iphone", nil);
         
-        CGFloat fontSize = IS_IPAD ? 19.0 : 15.0 ;
-        CGSize size = IS_IPAD ? CGSizeMake(340.0, 164.0) : CGSizeMake(260.0, 144.0);
+        CGFloat fontSize = IS_IPAD ? 16.0 : 14.0 ;
+        CGSize size = IS_IPAD ? CGSizeMake(340.0, 84.0) : CGSizeMake(260.0, 80.0);
         SYNOnBoardingPopoverView* subscribePopover = [SYNOnBoardingPopoverView withMessage:message
                                                                                   withSize:size
                                                                                andFontSize:fontSize
@@ -375,15 +378,10 @@ typedef void(^FeedDataErrorBlock)(void);
                                            NSNumber* totalNumber = [contentItem[@"total"] isKindOfClass:[NSNumber class]] ? contentItem[@"total"] : @0 ;
                                            wself.dataItemsAvailable = [totalNumber integerValue];
                                            
-                                           //NSLog(@"%i from %i", ((NSArray*)contentItem[@"items"]).count, wself.dataItemsAvailable);
+                                           // NSLog(@"%i from %i", ((NSArray*)contentItem[@"items"]).count, wself.dataItemsAvailable);
                                            
-                                           if(wself.dataItemsAvailable == 0) {
-                                               
-                                               [wself displayEmptyGenreMessage:NSLocalizedString(@"feed_screen_empty_message", nil) andLoader:NO];
-                                               
-                                               return;
-                                               
-                                           }
+                                           
+                                           [wself removeEmptyGenreMessage];
                                                
                                            
                                            if(![appDelegate.mainRegistry registerDataForSocialFeedFromItemsDictionary:contentItem
@@ -396,19 +394,22 @@ typedef void(^FeedDataErrorBlock)(void);
                                                return;
                                                
                                            }
-                                                    
-                                           
-                                           [wself removeEmptyGenreMessage];
                                            
                                            
-                                           
-                                           [wself fetchedAndDisplayFeedItems];
+                                           [wself fetchAndDisplayFeedItems];
                                            
                                            
                                            wself.loadingMoreContent = NO;
                                                     
                                            
                                            [wself handleRefreshComplete];
+                                           
+                                           if(wself.dataItemsAvailable == 0) {
+                                               
+                                               [wself displayEmptyGenreMessage:NSLocalizedString(@"feed_screen_empty_message", nil) andLoader:NO];
+                                               
+                                               
+                                           }
                                                     
                                            
                                        } errorHandler: ^(NSDictionary* errorDictionary) {
@@ -423,7 +424,7 @@ typedef void(^FeedDataErrorBlock)(void);
 
 - (void) handleRefreshComplete
 {
-    self.refreshing = FALSE;
+    self.refreshing = NO;
     [self.refreshControl endRefreshing];
     [self.refreshButton endRefreshCycle];
 }
@@ -431,6 +432,10 @@ typedef void(^FeedDataErrorBlock)(void);
 
 - (void) clearedLocationBoundData
 {
+    // to clear
+    
+    [self fetchAndDisplayFeedItems];
+    
     [self.feedCollectionView reloadData];
     
     [self loadAndUpdateFeedData];
@@ -475,7 +480,7 @@ typedef void(^FeedDataErrorBlock)(void);
 
 #pragma mark - Fetch Feed Data
 
-- (void) fetchedAndDisplayFeedItems
+- (void) fetchAndDisplayFeedItems
 {
     
     [self fetchVideoItems];
@@ -507,6 +512,7 @@ typedef void(^FeedDataErrorBlock)(void);
     if(resultsArray.count == 0)
     {
         self.feedItemsData = [NSArray array];
+        [self.feedCollectionView reloadData];
         return;
     }
     
@@ -609,7 +615,7 @@ typedef void(^FeedDataErrorBlock)(void);
     
     self.feedChannelsById = [NSDictionary dictionaryWithDictionary:mutDictionary];
 }
-    
+
 
 
 #pragma mark - UICollectionView Delegate
@@ -659,8 +665,9 @@ typedef void(^FeedDataErrorBlock)(void);
     {
         if(feedItem.itemTypeValue == FeedItemTypeAggregate)
         {
-            if(feedItem.itemCountValue == 2)
-                return CGSizeMake(cellWidth, 149.0f);
+           
+            if(feedItem.itemCountValue == 2 || feedItem.itemCountValue == 3)
+                return CGSizeMake(cellWidth, IS_IPHONE ? 182.0f : 149.0f);
         }
         return CGSizeMake(cellWidth, IS_IPHONE ? 363.0f : 298.0f);
     }
@@ -675,14 +682,14 @@ typedef void(^FeedDataErrorBlock)(void);
         
         NSString* message = NSLocalizedString(@"onboarding_video", nil);
         
-        CGFloat fontSize = IS_IPAD ? 19.0 : 15.0 ;
-        CGSize size = IS_IPAD ? CGSizeMake(340.0, 164.0) : CGSizeMake(260.0, 144.0);
+        CGFloat fontSize = IS_IPAD ? 16.0 : 14.0 ;
+        CGSize size = IS_IPAD ? CGSizeMake(240.0, 86.0) : CGSizeMake(200.0, 82.0);
         CGRect rectToPointTo = CGRectZero;
         PointingDirection directionToPointTo = PointingDirectionDown;
         if (self.selectedVideoCell)
         {
            
-            rectToPointTo = [self.view convertRect:self.selectedVideoCell.addButton.frame fromView:self.selectedVideoCell];
+            rectToPointTo = [self.view convertRect:self.selectedVideoCell.frame fromView:self.selectedVideoCell];
             if (rectToPointTo.origin.y < [[SYNDeviceManager sharedInstance] currentScreenHeight] * 0.5)
                 directionToPointTo = PointingDirectionUp;
             
@@ -694,9 +701,9 @@ typedef void(^FeedDataErrorBlock)(void);
                                                                              withDirection:directionToPointTo];
         
         
-        __weak SYNFeedRootViewController* wself = self;
-        addToChannelPopover.action = ^{
-            [wself videoAddButtonTapped:wself.selectedVideoCell.addButton];
+        //__weak SYNFeedRootViewController* wself = self;
+        addToChannelPopover.action = ^(id obj){
+           // [wself videoAddButtonTapped:wself.selectedVideoCell.addButton];
         };
         [appDelegate.onBoardingQueue addPopover:addToChannelPopover];
         
@@ -713,6 +720,32 @@ typedef void(^FeedDataErrorBlock)(void);
     return feedItem;
 }
 
+
+- (NSIndexPath *) indexPathForVideoIndexCell: (UICollectionViewCell *) cell
+{
+    NSIndexPath *indexPath = [self.feedCollectionView indexPathForItemAtPoint: cell.center];
+    return indexPath;
+}
+
+
+- (void) arcMenuWillBeginAnimationOpen: (SYNArcMenuView *) menu
+{
+    // The user opened a menu, so dim the screen
+    UIView *shadeView = [[UIView alloc] initWithFrame: self.view.frame];
+    shadeView.tag = kShadeViewTag;
+    shadeView.backgroundColor = [UIColor blackColor];
+    shadeView.alpha = 0.0f;
+    
+    [self.view insertSubview: shadeView
+                aboveSubview: self.feedCollectionView];
+    
+    [UIView animateWithDuration:  kShadeViewAnimationDuration
+                     animations: ^{
+                         // Fade in the view slightly
+                         shadeView.alpha = 0.2f;
+                         
+                     }];
+}
 
 
 - (UICollectionViewCell *) collectionView: (UICollectionView *) cv
@@ -743,16 +776,21 @@ typedef void(^FeedDataErrorBlock)(void);
         
         if(!feedItem.title) // it should usually be nil
         {
-            [cell setTitleMessageWithDictionary:@{@"display_name" : videoInstance.channel.channelOwner.displayName, @"item_count" : @(feedItemsAggregated), @"channel_name" : videoInstance.channel.title}];
+         
+            [cell setTitleMessageWithDictionary:@{  @"display_name" : videoInstance.channel.channelOwner ? videoInstance.channel.channelOwner.displayName : @"",
+                                                    @"item_count" : @(feedItemsAggregated),
+             @"channel_name" : videoInstance.channel ? videoInstance.channel.title : @"" }];
             
         }
         else
             cell.messageLabel.text = feedItem.title;
         
         
-        [cell setSupplementaryMessageWithDictionary:@{@"star_count":videoInstance.video.starCount, @"starrers":[videoInstance.starrers array]}];
+        [cell setSupplementaryMessageWithDictionary:@{  @"star_count": videoInstance.video ? videoInstance.video.starCount : @0,
+                                                        @"starrers": [videoInstance.starrers array]  }];
         
-        [cell setCoverImagesAndTitlesWithArray:@[@{@"image": videoInstance.video.thumbnailURL, @"title" : videoInstance.title}]];
+        [cell setCoverImagesAndTitlesWithArray:@[@{     @"image": videoInstance.video ? videoInstance.video.thumbnailURL : @"",
+                                                        @"title" : videoInstance.title  }]];
         
         channelOwner = videoInstance.channel.channelOwner; // heuristic, get the last video instance, all should have the same channelOwner however
         
@@ -775,7 +813,8 @@ typedef void(^FeedDataErrorBlock)(void);
             for (NSString* resourceId in coverIndexIds)
             {
                 channel = (Channel*)[self.feedChannelsById objectForKey:resourceId];
-                [coverImagesAndTitles addObject:@{@"image": channel.channelCover.imageUrl, @"title" : channel.title}];
+                [coverImagesAndTitles addObject:@{  @"image": channel.channelCover ? channel.channelCover.imageUrl : @"",
+                                                    @"title" : channel.title    }];
             }
             
             [cell setCoverImagesAndTitlesWithArray:coverImagesAndTitles];
@@ -784,7 +823,8 @@ typedef void(^FeedDataErrorBlock)(void);
         {
             channel = (Channel*)[self.feedChannelsById objectForKey:feedItem.resourceId];
             
-            [cell setCoverImagesAndTitlesWithArray:@[@{@"image": channel.channelCover.imageLargeUrl, @"title" : channel.title}]];
+            [cell setCoverImagesAndTitlesWithArray:@[@{ @"image": channel.channelCover ? channel.channelCover.imageLargeUrl : @"",
+                                                        @"title" : channel.title    }]];
             
             
         }
@@ -794,7 +834,8 @@ typedef void(^FeedDataErrorBlock)(void);
         if(!feedItem.title)
         {
             
-            [cell setTitleMessageWithDictionary:@{@"display_name" : channel.channelOwner.displayName, @"item_count" : @(feedItemsAggregated)}];
+            [cell setTitleMessageWithDictionary:@{  @"display_name" : channel.channelOwner ? channel.channelOwner.displayName : @"",
+                                                    @"item_count" : @(feedItemsAggregated)}];
             
         }
         else
@@ -929,6 +970,16 @@ typedef void(^FeedDataErrorBlock)(void);
 
 #pragma mark - Click Cell Delegates
 
+- (VideoInstance *) videoInstanceForIndexPath: (NSIndexPath *) indexPath
+{
+    FeedItem* feedItem = [self feedItemAtIndexPath:indexPath];
+    
+    VideoInstance* videoInstance = [self videoInstanceAtCoverOfFeedItem: feedItem];
+    
+    return videoInstance;
+}
+
+
 -(VideoInstance*)videoInstanceAtCoverOfFeedItem:(FeedItem*)feedItem
 {
     if(!feedItem || (feedItem.resourceTypeValue != FeedItemResourceTypeVideo))
@@ -943,6 +994,7 @@ typedef void(^FeedDataErrorBlock)(void);
     
     return videoInstance;
 }
+
 
 -(Channel*)channelAtCoverOfFeedItem:(FeedItem*)feedItem
 {
@@ -995,10 +1047,9 @@ typedef void(^FeedDataErrorBlock)(void);
     self.videosInOrderArray = [NSArray arrayWithArray:ma];
 }
 
+
 - (void) pressedAggregateCellCoverButton: (UIButton *) coverButton
 {
-
-    
     SYNAggregateCell* aggregateCellSelected = [self aggregateCellFromControl:coverButton];
     NSIndexPath *indexPath = [self.feedCollectionView indexPathForItemAtPoint: aggregateCellSelected.center];
     FeedItem* selectedFeedItem = [self feedItemAtIndexPath:indexPath];
@@ -1014,20 +1065,14 @@ typedef void(^FeedDataErrorBlock)(void);
         VideoInstance* videoInstance = [self videoInstanceAtCoverOfFeedItem:selectedFeedItem];
         
         SYNMasterViewController *masterViewController = (SYNMasterViewController*)appDelegate.masterViewController;
-        
-        
-        
-        
+
         __block NSInteger indexOfSelectedVideoInArray = 0;
         [self.videosInOrderArray enumerateObjectsUsingBlock:^(VideoInstance* vi, NSUInteger idx, BOOL *stop) {
-            
-            
+
             indexOfSelectedVideoInArray++;
             
             if([vi.uniqueId isEqualToString:videoInstance.uniqueId])
                 *stop = YES;
-            
-            
         }];
         
         indexOfSelectedVideoInArray--; // zero index
@@ -1036,9 +1081,7 @@ typedef void(^FeedDataErrorBlock)(void);
         [masterViewController addVideoOverlayToViewController: self
                                        withVideoInstanceArray: self.videosInOrderArray
                                              andSelectedIndex: indexOfSelectedVideoInArray
-                                                   fromCenter: self.view.center];
-        
-        
+                                                   fromCenter: self.view.center];    
     }
     else
     {
@@ -1061,10 +1104,7 @@ typedef void(^FeedDataErrorBlock)(void);
         
         if(channel)
             [appDelegate.viewStackManager viewChannelDetails:channel];
-        
     }
-    
-    
 }
 
 -(SYNAggregateCell*)aggregateCellFromControl:(UIControl*)control
@@ -1162,8 +1202,23 @@ typedef void(^FeedDataErrorBlock)(void);
     
 }
 
--(void)likeButtonPressed:(UIButton*)button
+- (IBAction) toggleStarAtIndexPath: (NSIndexPath *) indexPath
 {
+    // Bit of a hack, but find the button in the cell
+
+    
+    SYNAggregateVideoCell *cell = (SYNAggregateVideoCell *)[self.feedCollectionView cellForItemAtIndexPath: indexPath];
+    
+    UIButton *heartButton = cell.heartButton;
+    
+    [self likeButtonPressed: heartButton];
+}
+
+
+-(void) likeButtonPressed : (UIButton *) button
+{
+    if(self.togglingInProgress)
+        return;
     
     id<GAITracker> tracker = [GAI sharedInstance].defaultTracker;
     
@@ -1172,15 +1227,14 @@ typedef void(^FeedDataErrorBlock)(void);
                          withLabel: @"feed"
                          withValue: nil];
     
-    
     BOOL didStar = (button.selected == NO);
     
     button.enabled = NO;
     
-    
     VideoInstance* videoInstance = [self videoInstanceAtCoverOfFeedItem:[self feedItemFromControl:button]];
     if(!videoInstance)
         return;
+    self.togglingInProgress = YES;
     
     // int starredIndex = self.currentSelectedIndex;
     [appDelegate.oAuthNetworkEngine recordActivityForUserId: appDelegate.currentUser.uniqueId
@@ -1189,7 +1243,7 @@ typedef void(^FeedDataErrorBlock)(void);
                                           completionHandler: ^(id response) {
                                               
                                               
-                                              
+                                              self.togglingInProgress = NO;
                                               
                                               
                                               if (didStar)
@@ -1235,6 +1289,8 @@ typedef void(^FeedDataErrorBlock)(void);
                                               button.enabled = YES;
                                               
                                           } errorHandler: ^(id error) {
+                                              
+                                                    self.togglingInProgress = NO;
                                               
                                                    DebugLog(@"Could not star video");
                                               

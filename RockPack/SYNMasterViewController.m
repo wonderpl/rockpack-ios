@@ -194,7 +194,7 @@ typedef void(^AnimationCompletionBlock)(BOOL finished);
     
     self.backButtonControl = [SYNBackButtonControl backButton];
     CGRect backButtonFrame = self.backButtonControl.frame;
-    backButtonFrame.origin.y = 10.0f;
+    backButtonFrame.origin.y = IS_IPAD ? 10.0f : 5.0f;
     self.backButtonControl.frame = backButtonFrame;
     [self.view insertSubview:self.backButtonControl belowSubview:self.sideNavigationButton];
     self.backButtonControl.alpha = 0.0;
@@ -381,6 +381,7 @@ typedef void(^AnimationCompletionBlock)(BOOL finished);
         return;
     }
   
+    NSLog(@"Q Channel: %@", appDelegate.videoQueue.currentlyCreatingChannel);
     // this channel's managedObjectContext is the appDelegate.channelManagedObjectContext
     SYNChannelDetailViewController *channelCreationVC =
     [[SYNChannelDetailViewController alloc] initWithChannel: appDelegate.videoQueue.currentlyCreatingChannel

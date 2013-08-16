@@ -202,8 +202,8 @@
     {
         NSString *message = NSLocalizedString(@"onboarding_channels", nil);
         
-        CGFloat fontSize = IS_IPAD ? 19.0 : 15.0;
-        CGSize size = IS_IPAD ? CGSizeMake(340.0, 164.0) : CGSizeMake(260.0, 144.0);
+        CGFloat fontSize = IS_IPAD ? 16.0 : 14.0;
+        CGSize size = IS_IPAD ? CGSizeMake(310.0, 64.0) : CGSizeMake(240.0, 60.0);
         SYNOnBoardingPopoverView *subscribePopover = [SYNOnBoardingPopoverView withMessage: message
                                                                                   withSize: size
                                                                                andFontSize: fontSize
@@ -326,11 +326,13 @@
 - (void) loadMoreChannels
 {
     // Check to see if we have loaded all items already
-    if (self.moreItemsToLoad == TRUE)
+    if (self.moreItemsToLoad)
     {
         self.loadingMoreContent = YES;
         
+        
         [self incrementRangeForNextRequest];
+        
         
         [self loadChannelsForGenre: self.currentGenre
                        byAppending: YES];
