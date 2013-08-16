@@ -2619,19 +2619,21 @@ shouldChangeTextInRange: (NSRange) range
         CGSize size = IS_IPAD ? CGSizeMake(240.0, 86.0) : CGSizeMake(200.0, 82.0);
         
         
-        CGRect rectToPointTo = [self.view convertRect: randomCell.addItButton.frame
+        CGRect rectToPointTo = [self.view convertRect: randomCell.frame
                                              fromView: randomCell];
         
-        rectToPointTo = CGRectInset(rectToPointTo, 10.0, 10.0);
+        //rectToPointTo = CGRectInset(rectToPointTo, 10.0, 10.0);
         SYNOnBoardingPopoverView *addToChannelPopover = [SYNOnBoardingPopoverView withMessage: message
                                                                                      withSize: size
                                                                                   andFontSize: fontSize
                                                                                    pointingTo: rectToPointTo
                                                                                 withDirection: PointingDirectionDown];
-        
-        __weak SYNChannelDetailViewController *wself = self;
+      
+        //__weak SYNChannelDetailViewController *wself = self;
         addToChannelPopover.action = ^{
-            [wself addItToChannelPresssed: nil];
+            //[wself addItToChannelPresssed: nil];
+            
+            [self arcMenuWillBeginAnimationOpen:nil];
         };
         
         [appDelegate.onBoardingQueue addPopover: addToChannelPopover];
@@ -3349,7 +3351,8 @@ shouldChangeTextInRange: (NSRange) range
         CGRect rectToPointTo = [self.view  convertRect: randomCell.frame
                                               fromView: randomCell];
         
-        rectToPointTo = CGRectInset(rectToPointTo, 10.0, 10.0);
+        //rectToPointTo = CGRectInset(rectToPointTo, 10.0, 10.0);
+        //randomCell.addItButton.hidden = YES;
         
         SYNOnBoardingPopoverView *addToChannelPopover = [SYNOnBoardingPopoverView withMessage: message
                                                                                      withSize: size
@@ -3357,9 +3360,9 @@ shouldChangeTextInRange: (NSRange) range
                                                                                    pointingTo: rectToPointTo
                                                                                 withDirection: PointingDirectionDown];
         
-        __weak SYNChannelDetailViewController *wself = self;
+        //__weak SYNChannelDetailViewController *wself = self;
         addToChannelPopover.action = ^{
-            [wself addItToChannelPresssed: nil];
+            //[wself addItToChannelPresssed: nil];
         };
         
         [appDelegate.onBoardingQueue addPopover: addToChannelPopover];
