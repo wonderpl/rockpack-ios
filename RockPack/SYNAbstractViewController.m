@@ -777,10 +777,12 @@
                                                   [Appirater userDidSignificantEvent: FALSE];
                                               }
 
-                                              // Looks like some sort of bodge
-                                              //                                               (self.favouritesStatusArray)[starredIndex] = @(button.selected);
+                                              
                                               
                                               [appDelegate saveContext: YES];
+                                              
+                                              
+                                              
                                           } errorHandler: ^(id error) {
                                               DebugLog(@"Could not star video");
                                           }];

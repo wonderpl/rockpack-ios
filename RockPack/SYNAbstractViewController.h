@@ -90,6 +90,8 @@ typedef void (^SYNShareCompletionBlock)(void);
 
 - (void) headerTapped;
 
+- (IBAction) toggleStarAtIndexPath: (NSIndexPath *) indexPath;
+
 // Share
 - (void) requestShareLinkWithObjectType: (NSString *) objectType
                                objectId: (NSString *) objectId;
