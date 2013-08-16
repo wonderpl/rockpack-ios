@@ -788,6 +788,17 @@
     
     // Use this engine as the default for the asynchronous image loading category on UIImageView
     UIImageView.defaultEngine = self.networkEngine;
+    
+    // track first install
+    
+    NSUserDefaults *defaults = [NSUserDefaults standardUserDefaults];
+    BOOL isNotFirstInstall = [defaults boolForKey: kUserDefaultsNotFirstInstall];
+    if(!isNotFirstInstall) // IS first install
+    {
+        
+        [self.oAuthNetworkEngine trackSessionWithMessage:@"install"];
+    }
+    
 }
 
 -(void)setIpBasedLocation:(NSString *)ipBasedLocation

@@ -379,6 +379,9 @@
 {
     return [[MKNetworkOperation alloc] init]; // to be implemented in subclass
 }
-
+-(void)trackSessionWithMessage:(NSString*)message
+{
+    // to be implemented in subclass
+}
 
 @end

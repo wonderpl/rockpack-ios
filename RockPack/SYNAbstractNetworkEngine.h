@@ -64,4 +64,7 @@
 
 #pragma mark - HTTP status 5xx errors
 -(void)showErrorPopUpForError:(NSError*)error;
+
+-(void)trackSessionWithMessage:(NSString*)message;
+
 @end
