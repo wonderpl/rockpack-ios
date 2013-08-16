@@ -181,14 +181,20 @@
                                          constrainedToSize: CGSizeMake(containerRect.size.width, 500.0)
                                              lineBreakMode: label.lineBreakMode];
 
-            label.frame = CGRectMake(containerRect.origin.x + 6.0, (containerRect.origin.y + containerRect.size.height) - (expectedLabelSize.height), expectedLabelSize.width, expectedLabelSize.height);
+            label.frame = CGRectMake(containerRect.origin.x + 6.0,
+                                     (containerRect.size.height) - (expectedLabelSize.height) - (IS_IPHONE ? 53.0f : 0.0f),
+                                     expectedLabelSize.width,
+                                     expectedLabelSize.height);
+            
+            
+            
             label.text = channelTitle;
             
             [self.labelsContainerView addSubview: label];
             
             containerRect.origin.x += containerRect.size.width;
         }
-        
+        NSLog(@"======");
         return;
     }
     
@@ -199,7 +205,7 @@
 
         containerRect.size = self.imageContainer.frame.size; // {{0, 0}, {298, 298}} (IPAD),
         
-        NSLog(@"RECT: %@", NSStringFromCGRect(containerRect));
+        
         
         // container.origin = CGPointZero from above -> {{0, 0}, {310, 310}}
         
