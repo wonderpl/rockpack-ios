@@ -271,8 +271,12 @@
                                              
                                             for (NSArray* suggestion in suggestionsReturned)
                                             {
+                                                if(!suggestion)
+                                                    continue;
+                                                
                                                 [wordsReturned addObject: suggestion[0]];
                                             }
+                                                                                  
                                              
                                             [self.autoSuggestionController addWords:wordsReturned];
                                              
