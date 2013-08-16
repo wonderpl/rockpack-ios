@@ -719,11 +719,25 @@ typedef void(^FeedDataErrorBlock)(void);
     return indexPath;
 }
 
-- (void) updateVideoCellAtIndexPath: (NSIndexPath *) indexPath
-{
-    [self.feedCollectionView reloadItemsAtIndexPaths: @[indexPath]];
-}
 
+- (void) arcMenuWillBeginAnimationOpen: (SYNArcMenuView *) menu
+{
+    // The user opened a menu, so dim the screen
+    UIView *shadeView = [[UIView alloc] initWithFrame: self.view.frame];
+    shadeView.tag = kShadeViewTag;
+    shadeView.backgroundColor = [UIColor blackColor];
+    shadeView.alpha = 0.0f;
+    
+    [self.view insertSubview: shadeView
+                aboveSubview: self.feedCollectionView];
+    
+    [UIView animateWithDuration:  kShadeViewAnimationDuration
+                     animations: ^{
+                         // Fade in the view slightly
+                         shadeView.alpha = 0.2f;
+                         
+                     }];
+}
 
 - (UICollectionViewCell *) collectionView: (UICollectionView *) cv
                    cellForItemAtIndexPath: (NSIndexPath *) indexPath
@@ -1179,9 +1193,19 @@ typedef void(^FeedDataErrorBlock)(void);
     
 }
 
--(void)likeButtonPressed:(UIButton*)button
+- (IBAction) toggleStarAtIndexPath: (NSIndexPath *) indexPath
 {
+    // Bit of a hack, but find the button in the cell
+    SYNAggregateVideoCell *cell = (SYNAggregateVideoCell *)[self.feedCollectionView cellForItemAtIndexPath: indexPath];
     
+    UIButton *heartButton = cell.heartButton;
+    
+    [self likeButtonPressed: heartButton];
+}
+
+
+-(void) likeButtonPressed : (UIButton *) button
+{
     id<GAITracker> tracker = [GAI sharedInstance].defaultTracker;
     
     [tracker sendEventWithCategory: @"uiAction"
@@ -1189,11 +1213,9 @@ typedef void(^FeedDataErrorBlock)(void);
                          withLabel: @"feed"
                          withValue: nil];
     
-    
     BOOL didStar = (button.selected == NO);
     
     button.enabled = NO;
-    
     
     VideoInstance* videoInstance = [self videoInstanceAtCoverOfFeedItem:[self feedItemFromControl:button]];
     if(!videoInstance)

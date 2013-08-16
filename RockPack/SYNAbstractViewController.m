@@ -744,50 +744,6 @@
 
 - (IBAction) toggleStarAtIndexPath: (NSIndexPath *) indexPath
 {
-    // if the user does NOT have a FB account linked, no prompt
-    ExternalAccount *facebookAccount = appDelegate.currentUser.facebookAccount;
-    
-    if (facebookAccount && // has a facebook account
-        !(facebookAccount.flagsValue & ExternalAccountFlagAutopostStar) && // has not already set the implicit sharing to ON
-        facebookAccount.noautopostValue == NO) // has not explicitely forbid the implicit sharing
-    {
-        // then show panel
-        __weak typeof(self) weakSelf = self;
-        
-        SYNImplicitSharingController *implicitSharingController = [SYNImplicitSharingController controllerWithBlock: ^(BOOL approvedAutoSharing){
-            [weakSelf toggleStarAtIndexPath: indexPath];
-            if(approvedAutoSharing)
-            {
-                // track
-                
-                id<GAITracker> tracker = [GAI sharedInstance].defaultTracker;
-                
-                [tracker sendEventWithCategory: @"goal"
-                                    withAction: @"videoShared"
-                                     withLabel: @"fbi"
-                                     withValue: nil];
-            }
-        }];
-        
-        [self addChildViewController: implicitSharingController];
-        
-        implicitSharingController.view.alpha = 0.0f;
-        implicitSharingController.view.center = CGPointMake(self.view.center.x, self.view.center.y);
-        implicitSharingController.view.frame = CGRectIntegral(implicitSharingController.view.frame);
-        [self.view addSubview: implicitSharingController.view];
-        
-        [UIView animateWithDuration: 0.3
-                         animations: ^{
-                             implicitSharingController.view.alpha = 1.0f;
-                         }];
-        
-        UITapGestureRecognizer *tapGesture = [[UITapGestureRecognizer alloc] initWithTarget: self
-                                                                                     action: @selector(dismissImplicitSharing)];
-        [self.view addGestureRecognizer: tapGesture];
-        
-        return;
-    }
-    
     id<GAITracker> tracker = [GAI sharedInstance].defaultTracker;
     
     [tracker sendEventWithCategory: @"uiAction"
@@ -807,8 +763,6 @@
                                             videoInstanceId: videoInstance.uniqueId
                                           completionHandler: ^(id response) {
                                               
-                                              [self updateVideoCellAtIndexPath: indexPath];
-                                              
                                               if (videoInstance.video.starredByUserValue == TRUE)
                                               {
                                                   // Currently highlighted, so decrement
@@ -822,7 +776,7 @@
                                                   videoInstance.video.starCountValue += 1;
                                                   [Appirater userDidSignificantEvent: FALSE];
                                               }
-                                              
+
                                               // Looks like some sort of bodge
                                               //                                               (self.favouritesStatusArray)[starredIndex] = @(button.selected);
                                               
@@ -832,26 +786,6 @@
                                           }];
 }
 
-
-- (void) dismissImplicitSharing
-{
-    SYNImplicitSharingController *implicitSharingController;
-    
-    for (UIViewController *child in self.childViewControllers)
-    {
-        if ([child isKindOfClass: [SYNImplicitSharingController class]])
-        {
-            implicitSharingController = (SYNImplicitSharingController *) child;
-        }
-    }
-    
-    if (!implicitSharingController)
-    {
-        return;
-    }
-    
-    [implicitSharingController dismiss];
-}
 
 - (void) shareVideoAtIndexPath: (NSIndexPath *) indexPath
 {
@@ -880,11 +814,6 @@
 {
     AssertOrLog(@"Shouldn't be calling abstract function");
     return  nil;
-}
-
-- (void) updateVideoCellAtIndexPath: (NSIndexPath *) indexPath
-{
-    // By default do nothing
 }
 
 

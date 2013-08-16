@@ -1762,4 +1762,29 @@
     
     [self enqueueOperation: networkOperation];
 }
+
+-(void)trackSessionWithMessage:(NSString*)message
+{
+    SYNNetworkOperationJsonObject *networkOperation =
+    (SYNNetworkOperationJsonObject *) [self operationWithPath: kAPIReportSession
+                                                       params: @{@"trigger":message}
+                                                   httpMethod: @"POST" ssl:YES];
+    
+    [networkOperation setPostDataEncoding:MKNKPostDataEncodingTypeJSON];
+    
+    
+    [networkOperation addJSONCompletionHandler: ^(NSDictionary *dictionary) {
+        
+        NSUserDefaults *defaults = [NSUserDefaults standardUserDefaults];
+        [defaults setBool: YES forKey: kUserDefaultsNotFirstInstall];
+        
+        
+        
+    } errorHandler: ^(NSError *error) {
+        DebugLog(@"API request failed");
+    }];
+    
+    [self enqueueOperation: networkOperation];
+}
+
 @end

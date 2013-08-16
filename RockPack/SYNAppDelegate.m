@@ -788,6 +788,17 @@
     
     // Use this engine as the default for the asynchronous image loading category on UIImageView
     UIImageView.defaultEngine = self.networkEngine;
+    
+    // track first install
+    
+    NSUserDefaults *defaults = [NSUserDefaults standardUserDefaults];
+    BOOL isNotFirstInstall = [defaults boolForKey: kUserDefaultsNotFirstInstall];
+    if(!isNotFirstInstall) // IS first install
+    {
+        
+        [self.oAuthNetworkEngine trackSessionWithMessage:@"install"];
+    }
+    
 }
 
 -(void)setIpBasedLocation:(NSString *)ipBasedLocation
@@ -1219,6 +1230,10 @@
     {
         // No additionaly rockpack:// url, so just display the notifications panel
         [self.viewStackManager displaySideNavigatorFromPushNotification];
+    }
+    else if(!self.currentUser)
+    {
+        // do nothing for the moment
     }
     else
     {

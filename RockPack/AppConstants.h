@@ -156,6 +156,11 @@ typedef enum _FeedItemResourceType {
 // Player error
 #define kAPIReportPlayerError       @"/ws/videos/player_error/"                 /* POST */
 
+
+
+#define kAPIReportSession           @"/ws/session/"                             /* GET */
+
+
 // HTML player source
 #define kHTMLVideoPlayerSource      @"/ws/videos/players/"                      /* GET */
 
@@ -360,7 +365,7 @@ typedef enum _NavigationButtonsAppearance {
 #define kCurrentPage        @"kCurrentPage"
 
 // UserDefaults
-
+#define kUserDefaultsNotFirstInstall @"UD_Not_First_Install"
 #define kUserDefaultsSubscribe @"UD_OnBoaring_Subscribe"
 #define kUserDefaultsAddVideo @"UD_OnBoaring_AddVideo"
 #define kUserDefaultsChannels @"UD_OnBoaring_Channels"

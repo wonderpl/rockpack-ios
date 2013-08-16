@@ -81,10 +81,8 @@
     if(!isYesButton) // NO button pressed, dismiss and save the setting
     {
         
-        
-        
-        
         appDelegate.currentUser.facebookAccount.noautopostValue = YES;
+        
         [appDelegate saveContext: YES];
         
         [self dismiss];
