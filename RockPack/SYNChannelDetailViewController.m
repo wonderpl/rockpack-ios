@@ -2633,7 +2633,7 @@ shouldChangeTextInRange: (NSRange) range
         CGRect rectToPointTo = [self.view convertRect: randomCell.frame
                                              fromView: randomCell];
         
-        //rectToPointTo = CGRectInset(rectToPointTo, 10.0, 10.0);
+        rectToPointTo = CGRectOffset(rectToPointTo, -5, 0);
         SYNOnBoardingPopoverView *addToChannelPopover = [SYNOnBoardingPopoverView withMessage: message
                                                                                      withSize: size
                                                                                   andFontSize: fontSize
@@ -3366,7 +3366,7 @@ shouldChangeTextInRange: (NSRange) range
         CGRect rectToPointTo = [self.view  convertRect: randomCell.frame
                                               fromView: randomCell];
         
-        //rectToPointTo = CGRectInset(rectToPointTo, 10.0, 10.0);
+        rectToPointTo = CGRectOffset(rectToPointTo, -5, 0);
         //randomCell.addItButton.hidden = YES;
         
         SYNOnBoardingPopoverView *addToChannelPopover = [SYNOnBoardingPopoverView withMessage: message
