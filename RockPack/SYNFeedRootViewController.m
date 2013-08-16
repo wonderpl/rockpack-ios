@@ -719,17 +719,25 @@ typedef void(^FeedDataErrorBlock)(void);
     return indexPath;
 }
 
-// TODO: Remove, no longer needed
-- (void) updateVideoCellAtIndexPath: (NSIndexPath *) indexPath
-{
-////    [self.feedCollectionView reloadItemsAtIndexPaths: @[indexPath]];
-//    SYNAggregateVideoCell *cell = (SYNAggregateVideoCell *)[self.feedCollectionView cellForItemAtIndexPath: indexPath];
-//    VideoInstance *videoInstance = [self videoInstanceForIndexPath: indexPath];
-//    
-//    [cell setSupplementaryMessageWithDictionary:@{  @"star_count": videoInstance.video ? videoInstance.video.starCount : @0,
-//     @"starrers": messageDictionary array]  }];
-}
 
+- (void) arcMenuWillBeginAnimationOpen: (SYNArcMenuView *) menu
+{
+    // The user opened a menu, so dim the screen
+    UIView *shadeView = [[UIView alloc] initWithFrame: self.view.frame];
+    shadeView.tag = kShadeViewTag;
+    shadeView.backgroundColor = [UIColor blackColor];
+    shadeView.alpha = 0.0f;
+    
+    [self.view insertSubview: shadeView
+                aboveSubview: self.feedCollectionView];
+    
+    [UIView animateWithDuration:  kShadeViewAnimationDuration
+                     animations: ^{
+                         // Fade in the view slightly
+                         shadeView.alpha = 0.2f;
+                         
+                     }];
+}
 
 - (UICollectionViewCell *) collectionView: (UICollectionView *) cv
                    cellForItemAtIndexPath: (NSIndexPath *) indexPath

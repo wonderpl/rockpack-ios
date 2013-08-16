@@ -776,9 +776,7 @@
                                                   videoInstance.video.starCountValue += 1;
                                                   [Appirater userDidSignificantEvent: FALSE];
                                               }
-                                              
-                                              [self updateVideoCellAtIndexPath: indexPath];
-                                              
+
                                               // Looks like some sort of bodge
                                               //                                               (self.favouritesStatusArray)[starredIndex] = @(button.selected);
                                               
@@ -816,11 +814,6 @@
 {
     AssertOrLog(@"Shouldn't be calling abstract function");
     return  nil;
-}
-
-- (void) updateVideoCellAtIndexPath: (NSIndexPath *) indexPath
-{
-    // By default do nothing
 }
 
 
