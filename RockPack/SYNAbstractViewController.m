@@ -806,6 +806,9 @@
                                                      action: starAction
                                             videoInstanceId: videoInstance.uniqueId
                                           completionHandler: ^(id response) {
+                                              
+                                              [self updateVideoCellAtIndexPath: indexPath];
+                                              
                                               if (videoInstance.video.starredByUserValue == TRUE)
                                               {
                                                   // Currently highlighted, so decrement
@@ -877,6 +880,11 @@
 {
     AssertOrLog(@"Shouldn't be calling abstract function");
     return  nil;
+}
+
+- (void) updateVideoCellAtIndexPath: (NSIndexPath *) indexPath
+{
+    // By default do nothing
 }
 
 

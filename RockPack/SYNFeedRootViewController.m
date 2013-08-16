@@ -719,6 +719,11 @@ typedef void(^FeedDataErrorBlock)(void);
     return indexPath;
 }
 
+- (void) updateVideoCellAtIndexPath: (NSIndexPath *) indexPath
+{
+    [self.feedCollectionView reloadItemsAtIndexPaths: @[indexPath]];
+}
+
 
 - (UICollectionViewCell *) collectionView: (UICollectionView *) cv
                    cellForItemAtIndexPath: (NSIndexPath *) indexPath
