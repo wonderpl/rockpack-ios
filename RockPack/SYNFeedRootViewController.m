@@ -681,7 +681,7 @@ typedef void(^FeedDataErrorBlock)(void);
         if (self.selectedVideoCell)
         {
            
-            rectToPointTo = [self.view convertRect:self.selectedVideoCell.addButton.frame fromView:self.selectedVideoCell];
+            rectToPointTo = [self.view convertRect:self.selectedVideoCell.frame fromView:self.selectedVideoCell];
             if (rectToPointTo.origin.y < [[SYNDeviceManager sharedInstance] currentScreenHeight] * 0.5)
                 directionToPointTo = PointingDirectionUp;
             
@@ -693,9 +693,9 @@ typedef void(^FeedDataErrorBlock)(void);
                                                                              withDirection:directionToPointTo];
         
         
-        __weak SYNFeedRootViewController* wself = self;
+        //__weak SYNFeedRootViewController* wself = self;
         addToChannelPopover.action = ^{
-            [wself videoAddButtonTapped:wself.selectedVideoCell.addButton];
+           // [wself videoAddButtonTapped:wself.selectedVideoCell.addButton];
         };
         [appDelegate.onBoardingQueue addPopover:addToChannelPopover];
         

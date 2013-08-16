@@ -576,7 +576,7 @@
         
         if (cell)
         {
-            rectToPointTo = [self.view convertRect: cell.addItButton.frame
+            rectToPointTo = [self.view convertRect: cell.frame
                                           fromView: cell];
             
             if (rectToPointTo.origin.y < [[SYNDeviceManager sharedInstance] currentScreenHeight] * 0.5)
@@ -594,10 +594,10 @@
                                                                                 withDirection: directionToPointTo];
         
         
-        __weak SYNSearchVideosViewController *wself = self;
+        //__weak SYNSearchVideosViewController *wself = self;
         
         addToChannelPopover.action = ^{
-            [wself videoAddButtonTapped: cell.addItButton];
+           // [wself videoAddButtonTapped: cell.addItButton];
         };
         [appDelegate.onBoardingQueue addPopover: addToChannelPopover];
         
