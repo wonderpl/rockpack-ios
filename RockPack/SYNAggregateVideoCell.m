@@ -133,7 +133,8 @@
     {
         if (IS_IPAD)
         {
-            self.likesNumberLabel.text = likesString; // @"0 likes"
+//            self.likesNumberLabel.text = likesString; // @"0 likes"
+            self.likesNumberLabel.text = @"0";
             self.likeLabel.hidden = YES;
         }
         else
