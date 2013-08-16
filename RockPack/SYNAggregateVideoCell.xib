@@ -120,6 +120,24 @@
 								</object>
 								<string key="targetRuntimeIdentifier">IBIPadFramework</string>
 							</object>
+							<object class="IBUIImageView" id="411986071">
+								<reference key="NSNextResponder" ref="79056506"/>
+								<int key="NSvFlags">292</int>
+								<string key="NSFrameSize">{298, 168}</string>
+								<reference key="NSSuperview" ref="79056506"/>
+								<reference key="NSWindow"/>
+								<reference key="NSNextKeyView" ref="789761132"/>
+								<string key="NSReuseIdentifierKey">_NS:9</string>
+								<object class="NSColor" key="IBUIBackgroundColor" id="785058291">
+									<int key="NSColorSpace">3</int>
+									<bytes key="NSWhite">MCAwAA</bytes>
+								</object>
+								<string key="targetRuntimeIdentifier">IBIPadFramework</string>
+								<object class="NSCustomResource" key="IBUIImage">
+									<string key="NSClassName">NSImage</string>
+									<string key="NSResourceName">GlossFeedVideo.png</string>
+								</object>
+							</object>
 							<object class="IBUIButton" id="789761132">
 								<reference key="NSNextResponder" ref="79056506"/>
 								<int key="NSvFlags">292</int>
@@ -128,10 +146,7 @@
 								<reference key="NSWindow"/>
 								<reference key="NSNextKeyView" ref="466408823"/>
 								<string key="NSReuseIdentifierKey">_NS:9</string>
-								<object class="NSColor" key="IBUIBackgroundColor" id="785058291">
-									<int key="NSColorSpace">3</int>
-									<bytes key="NSWhite">MCAwAA</bytes>
-								</object>
+								<reference key="IBUIBackgroundColor" ref="785058291"/>
 								<bool key="IBUIAutoresizesSubviews">NO</bool>
 								<bool key="IBUIClearsContextBeforeDrawing">NO</bool>
 								<int key="IBUIContentMode">4</int>
@@ -272,7 +287,6 @@
 								<string key="NSFrame">{{10, 144}, {279, 18}}</string>
 								<reference key="NSSuperview" ref="79056506"/>
 								<reference key="NSWindow"/>
-								<reference key="NSNextKeyView"/>
 								<string key="NSReuseIdentifierKey">_NS:9</string>
 								<object class="NSColor" key="IBUIBackgroundColor">
 									<int key="NSColorSpace">1</int>
@@ -302,22 +316,6 @@
 									<int key="NSfFlags">16</int>
 								</object>
 								<bool key="IBUIAdjustsFontSizeToFit">NO</bool>
-							</object>
-							<object class="IBUIImageView" id="411986071">
-								<reference key="NSNextResponder" ref="79056506"/>
-								<int key="NSvFlags">292</int>
-								<string key="NSFrameSize">{298, 168}</string>
-								<reference key="NSSuperview" ref="79056506"/>
-								<reference key="NSWindow"/>
-								<reference key="NSNextKeyView" ref="789761132"/>
-								<string key="NSReuseIdentifierKey">_NS:9</string>
-								<reference key="IBUIBackgroundColor" ref="785058291"/>
-								<bool key="IBUIUserInteractionEnabled">NO</bool>
-								<string key="targetRuntimeIdentifier">IBIPadFramework</string>
-								<object class="NSCustomResource" key="IBUIImage">
-									<string key="NSClassName">NSImage</string>
-									<string key="NSResourceName">GlossFeedVideo.png</string>
-								</object>
 							</object>
 						</array>
 						<string key="NSFrameSize">{616, 168}</string>
@@ -430,11 +428,11 @@
 				</object>
 				<object class="IBConnectionRecord">
 					<object class="IBCocoaTouchOutletConnection" key="connection">
-						<string key="label">videoPlaceholder</string>
+						<string key="label">videoPlaceholderView</string>
 						<reference key="source" ref="920592215"/>
 						<reference key="destination" ref="411986071"/>
 					</object>
-					<int key="connectionID">36</int>
+					<int key="connectionID">37</int>
 				</object>
 			</array>
 			<object class="IBMutableOrderedSet" key="objectRecords">
@@ -567,7 +565,7 @@
 			<nil key="activeLocalization"/>
 			<dictionary class="NSMutableDictionary" key="localizations"/>
 			<nil key="sourceID"/>
-			<int key="maxID">36</int>
+			<int key="maxID">37</int>
 		</object>
 		<object class="IBClassDescriber" key="IBDocument.Classes">
 			<array class="NSMutableArray" key="referencedPartialClassDescriptions">
@@ -622,7 +620,7 @@
 						<string key="likeLabel">UILabel</string>
 						<string key="likesNumberLabel">UILabel</string>
 						<string key="videoImageView">UIImageView</string>
-						<string key="videoPlaceholder">UIView</string>
+						<string key="videoPlaceholderView">UIView</string>
 					</dictionary>
 					<dictionary class="NSMutableDictionary" key="toOneOutletInfosByName">
 						<object class="IBToOneOutletInfo" key="addButton">
@@ -645,8 +643,8 @@
 							<string key="name">videoImageView</string>
 							<string key="candidateClassName">UIImageView</string>
 						</object>
-						<object class="IBToOneOutletInfo" key="videoPlaceholder">
-							<string key="name">videoPlaceholder</string>
+						<object class="IBToOneOutletInfo" key="videoPlaceholderView">
+							<string key="name">videoPlaceholderView</string>
 							<string key="candidateClassName">UIView</string>
 						</object>
 					</dictionary>

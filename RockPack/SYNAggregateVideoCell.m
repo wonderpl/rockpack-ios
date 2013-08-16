@@ -15,7 +15,7 @@
 @interface SYNAggregateVideoCell () <UIGestureRecognizerDelegate>
 
 @property (nonatomic, strong) IBOutlet UILabel* likeLabel;
-@property (nonatomic, strong) IBOutlet UIView *videoPlaceholder;
+@property (nonatomic, strong) IBOutlet UIView *videoPlaceholderView;
 @property (nonatomic, strong) UILongPressGestureRecognizer *longPress;
 @property (nonatomic, strong) UITapGestureRecognizer *tap;
 
@@ -44,7 +44,7 @@
     self.longPress = [[UILongPressGestureRecognizer alloc] initWithTarget: self
                                                                    action: @selector(showMenu:)];
     self.longPress.delegate = self;
-    [self addGestureRecognizer: self.longPress];
+    [self.videoPlaceholderView addGestureRecognizer: self.longPress];
 #endif
     
     
@@ -52,7 +52,7 @@
     self.tap = [[UITapGestureRecognizer alloc] initWithTarget: self
                                                        action: @selector(showVideo:)];
     self.tap.delegate = self;
-    [self addGestureRecognizer: self.tap];
+    [self.videoPlaceholderView addGestureRecognizer: self.tap];
 }
 
 
