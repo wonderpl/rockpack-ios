@@ -20,6 +20,7 @@
 @property (nonatomic, strong) NSMutableArray* queue;
 @property (nonatomic) NSInteger currentPopoverIndex;
 @property (nonatomic, weak) SYNOnBoardingPopoverView* currentlyVisiblePopover;
+@property (nonatomic, weak) UIView* specialSlice;
 
 @end
 
@@ -66,6 +67,7 @@
 {
     if(!self.queue)
         self.queue = [[NSMutableArray alloc] init];
+    
     NSLog(@"Adding in Q %@", popoverView);
     [self.queue addObject:popoverView];
     
@@ -373,10 +375,16 @@
                 if(i == 1 && j == 1) // special interest slice
                 {
                     
+                    self.specialSlice = currentSlice;
                     currentSlice.backgroundColor = [UIColor clearColor];
-                    UITapGestureRecognizer* recogniser = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(performAction:)];
-                    [currentSlice addGestureRecognizer:recogniser];
                     
+                    UITapGestureRecognizer* tpRecogniser = [[UITapGestureRecognizer alloc] initWithTarget:self
+                                                                                                   action:@selector(performAction:)];
+                    
+                    UILongPressGestureRecognizer* lpRecogniser = [[UILongPressGestureRecognizer alloc] initWithTarget:self
+                                                                                                               action:@selector(performAction:)];
+                    [currentSlice addGestureRecognizer:tpRecogniser];
+                    [currentSlice addGestureRecognizer:lpRecogniser];
                 }
                 else
                 {
@@ -426,10 +434,18 @@
 -(void)performAction:(UIGestureRecognizer*)recogniser
 {
     if(self.currentlyVisiblePopover.action)
-        self.currentlyVisiblePopover.action();
+        self.currentlyVisiblePopover.action(recogniser);
     
-    if(self.queue.count == 0)
+    if([recogniser isKindOfClass:[UITapGestureRecognizer class]])
+    {
         [self presentNextPopover];
+    }
+    else if ([recogniser isKindOfClass:[UILongPressGestureRecognizer class]] &&
+             ((UILongPressGestureRecognizer*)recogniser).state == UIGestureRecognizerStateEnded)
+    {
+        [self presentNextPopover];
+    }
+    
 }
 
 

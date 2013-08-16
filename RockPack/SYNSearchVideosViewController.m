@@ -596,7 +596,7 @@
         
         //__weak SYNSearchVideosViewController *wself = self;
         
-        addToChannelPopover.action = ^{
+        addToChannelPopover.action = ^(id obj){
            // [wself videoAddButtonTapped: cell.addItButton];
         };
         [appDelegate.onBoardingQueue addPopover: addToChannelPopover];

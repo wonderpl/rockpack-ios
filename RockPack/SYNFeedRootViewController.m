@@ -702,7 +702,7 @@ typedef void(^FeedDataErrorBlock)(void);
         
         
         //__weak SYNFeedRootViewController* wself = self;
-        addToChannelPopover.action = ^{
+        addToChannelPopover.action = ^(id obj){
            // [wself videoAddButtonTapped:wself.selectedVideoCell.addButton];
         };
         [appDelegate.onBoardingQueue addPopover:addToChannelPopover];

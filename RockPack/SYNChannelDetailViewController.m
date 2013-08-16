@@ -2607,7 +2607,7 @@ shouldChangeTextInRange: (NSRange) range
                                                                              withDirection: direction];
         
         __weak SYNChannelDetailViewController *wself = self;
-        subscribePopover.action = ^{
+        subscribePopover.action = ^(id obj){
             [wself subscribeButtonTapped: self.subscribeButton]; // simulate press
         };
         
@@ -2641,10 +2641,14 @@ shouldChangeTextInRange: (NSRange) range
                                                                                 withDirection: PointingDirectionDown];
       
         //__weak SYNChannelDetailViewController *wself = self;
-        addToChannelPopover.action = ^{
-            //[wself addItToChannelPresssed: nil];
+        addToChannelPopover.action = ^(id obj){
             
-            [self arcMenuWillBeginAnimationOpen:nil];
+            if([obj isKindOfClass:[UILongPressGestureRecognizer class]])
+            {
+                [self arcMenuUpdateState:obj forCell:randomCell];
+            }
+            
+            
         };
         
         [appDelegate.onBoardingQueue addPopover: addToChannelPopover];
@@ -3372,7 +3376,7 @@ shouldChangeTextInRange: (NSRange) range
                                                                                 withDirection: PointingDirectionDown];
         
         //__weak SYNChannelDetailViewController *wself = self;
-        addToChannelPopover.action = ^{
+        addToChannelPopover.action = ^(id obj){
             //[wself addItToChannelPresssed: nil];
         };
         
