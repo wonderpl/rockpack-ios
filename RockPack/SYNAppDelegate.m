@@ -1220,6 +1220,10 @@
         // No additionaly rockpack:// url, so just display the notifications panel
         [self.viewStackManager displaySideNavigatorFromPushNotification];
     }
+    else if(!self.currentUser)
+    {
+        // do nothing for the moment
+    }
     else
     {
         NSArray *array = @[notificationId];

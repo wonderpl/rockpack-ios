@@ -264,7 +264,7 @@
 }
 
 
-- (void) setViewControllerDelegate: (UIViewController *) viewControllerDelegate
+- (void) setViewControllerDelegate: (id<SYNAggregateCellDelegate>) viewControllerDelegate
 {
     [super setViewControllerDelegate: viewControllerDelegate];
     
