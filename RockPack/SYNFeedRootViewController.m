@@ -658,8 +658,9 @@ typedef void(^FeedDataErrorBlock)(void);
     {
         if(feedItem.itemTypeValue == FeedItemTypeAggregate)
         {
-            if(feedItem.itemCountValue == 2)
-                return CGSizeMake(cellWidth, 149.0f);
+           
+            if(feedItem.itemCountValue == 2 || feedItem.itemCountValue == 3)
+                return CGSizeMake(cellWidth, IS_IPHONE ? 181.5f : 149.0f);
         }
         return CGSizeMake(cellWidth, IS_IPHONE ? 363.0f : 298.0f);
     }
