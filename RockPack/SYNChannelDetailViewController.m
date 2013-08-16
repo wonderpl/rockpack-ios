@@ -992,6 +992,7 @@
     
     VideoInstance *videoInstance = self.channel.videoInstances [indexPath.item];
     
+    videoInstance.video.starredByUserValue = self.channel.favouritesValue;
     
     [videoThumbnailCell.imageView
      setImageWithURL: [NSURL URLWithString: videoInstance.video.thumbnailURL]
@@ -1019,6 +1020,16 @@
     return cell;
 }
 
+- (IBAction) toggleStarAtIndexPath: (NSIndexPath *) indexPath
+{
+    [super toggleStarAtIndexPath:indexPath];
+    
+    VideoInstance *videoInstance = [self videoInstanceForIndexPath: indexPath];
+    
+    [self.channel.videoInstancesSet removeObject:videoInstance];
+    
+    [self.videoThumbnailCollectionView reloadData];
+}
 
 - (UICollectionReusableView *) collectionView: (UICollectionView *) collectionView
             viewForSupplementaryElementOfKind: (NSString *) kind

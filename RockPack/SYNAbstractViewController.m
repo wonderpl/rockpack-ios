@@ -182,7 +182,7 @@
     
     NSInteger nextStart = self.dataRequestRange.location + self.dataRequestRange.length; // one is subtracted when the call happens for 0 indexing
     
-    NSInteger nextSize = MIN((nextStart + STANDARD_REQUEST_LENGTH), self.dataItemsAvailable);
+    NSInteger nextSize = MIN(STANDARD_REQUEST_LENGTH, self.dataItemsAvailable - nextStart);
     
     self.dataRequestRange = NSMakeRange(nextStart, nextSize);
 }
@@ -777,10 +777,12 @@
                                                   [Appirater userDidSignificantEvent: FALSE];
                                               }
 
-                                              // Looks like some sort of bodge
-                                              //                                               (self.favouritesStatusArray)[starredIndex] = @(button.selected);
+                                              
                                               
                                               [appDelegate saveContext: YES];
+                                              
+                                              
+                                              
                                           } errorHandler: ^(id error) {
                                               DebugLog(@"Could not star video");
                                           }];

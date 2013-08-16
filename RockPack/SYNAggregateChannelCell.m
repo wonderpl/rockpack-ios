@@ -111,17 +111,15 @@
     if (count == 2 || count == 3)
     {
         CGRect shrinkingSelfFrame = self.frame;
-        shrinkingSelfFrame.size.height = IS_IPAD ? 149.0f : 181.5f;
+        shrinkingSelfFrame.size.height = IS_IPAD ? 149.0f : 182.0f;
         
         self.frame = shrinkingSelfFrame;
         
         CGRect smallerCellFrame = self.imageContainer.frame; // the 2 - 3 options have a smaller total frame
-        smallerCellFrame.size.height = shrinkingSelfFrame.size.height;
-        
-        
+        smallerCellFrame.size.height = IS_IPAD ? shrinkingSelfFrame.size.height : 155.0f;
         
         if(IS_IPHONE) {
-            smallerCellFrame.origin.y = 53.0f;
+            smallerCellFrame.origin.y = 54.0f;
         }
         self.imageContainer.frame = smallerCellFrame;
         
@@ -141,6 +139,7 @@
                aboveSubview: self.buttonContainerView];
         
         containerRect.size.width = containerRect.size.width / 2.0;
+        
         
         self.coverButton.hidden = YES;
         self.mainTitleLabel.hidden = YES;
@@ -182,7 +181,7 @@
                                              lineBreakMode: label.lineBreakMode];
 
             label.frame = CGRectMake(containerRect.origin.x + 6.0,
-                                     (containerRect.size.height) - (expectedLabelSize.height) - (IS_IPHONE ? 53.0f : 0.0f),
+                                     (containerRect.size.height) - (expectedLabelSize.height) - (IS_IPHONE ? 28.0f : 0.0f),
                                      expectedLabelSize.width,
                                      expectedLabelSize.height);
             

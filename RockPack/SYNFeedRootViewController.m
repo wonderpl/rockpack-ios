@@ -48,6 +48,7 @@ typedef void(^FeedDataErrorBlock)(void);
 @property (nonatomic, strong) NSDictionary* feedItemByPosition;
 @property (nonatomic, strong) UICollectionView* feedCollectionView;
 @property (nonatomic, strong) NSArray* videosInOrderArray;
+@property (nonatomic) BOOL togglingInProgress;
 
 @end
 
@@ -239,6 +240,8 @@ typedef void(^FeedDataErrorBlock)(void);
     [self updateAnalytics];
     
     self.feedCollectionView.scrollsToTop = YES;
+    
+    self.togglingInProgress = NO;
     
     // if the user has not pressed load more
     if (self.dataRequestRange.location == 0)
@@ -664,7 +667,7 @@ typedef void(^FeedDataErrorBlock)(void);
         {
            
             if(feedItem.itemCountValue == 2 || feedItem.itemCountValue == 3)
-                return CGSizeMake(cellWidth, IS_IPHONE ? 181.5f : 149.0f);
+                return CGSizeMake(cellWidth, IS_IPHONE ? 182.0f : 149.0f);
         }
         return CGSizeMake(cellWidth, IS_IPHONE ? 363.0f : 298.0f);
     }
@@ -743,6 +746,7 @@ typedef void(^FeedDataErrorBlock)(void);
                          
                      }];
 }
+
 
 - (UICollectionViewCell *) collectionView: (UICollectionView *) cv
                    cellForItemAtIndexPath: (NSIndexPath *) indexPath
@@ -1201,6 +1205,8 @@ typedef void(^FeedDataErrorBlock)(void);
 - (IBAction) toggleStarAtIndexPath: (NSIndexPath *) indexPath
 {
     // Bit of a hack, but find the button in the cell
+
+    
     SYNAggregateVideoCell *cell = (SYNAggregateVideoCell *)[self.feedCollectionView cellForItemAtIndexPath: indexPath];
     
     UIButton *heartButton = cell.heartButton;
@@ -1211,6 +1217,9 @@ typedef void(^FeedDataErrorBlock)(void);
 
 -(void) likeButtonPressed : (UIButton *) button
 {
+    if(self.togglingInProgress)
+        return;
+    
     id<GAITracker> tracker = [GAI sharedInstance].defaultTracker;
     
     [tracker sendEventWithCategory: @"uiAction"
@@ -1225,6 +1234,7 @@ typedef void(^FeedDataErrorBlock)(void);
     VideoInstance* videoInstance = [self videoInstanceAtCoverOfFeedItem:[self feedItemFromControl:button]];
     if(!videoInstance)
         return;
+    self.togglingInProgress = YES;
     
     // int starredIndex = self.currentSelectedIndex;
     [appDelegate.oAuthNetworkEngine recordActivityForUserId: appDelegate.currentUser.uniqueId
@@ -1233,7 +1243,7 @@ typedef void(^FeedDataErrorBlock)(void);
                                           completionHandler: ^(id response) {
                                               
                                               
-                                              
+                                              self.togglingInProgress = NO;
                                               
                                               
                                               if (didStar)
@@ -1279,6 +1289,8 @@ typedef void(^FeedDataErrorBlock)(void);
                                               button.enabled = YES;
                                               
                                           } errorHandler: ^(id error) {
+                                              
+                                                    self.togglingInProgress = NO;
                                               
                                                    DebugLog(@"Could not star video");
                                               
