@@ -393,7 +393,7 @@ typedef void(^FeedDataErrorBlock)(void);
                                            }
                                            
                                            
-                                           [wself fetchedAndDisplayFeedItems];
+                                           [wself fetchAndDisplayFeedItems];
                                            
                                            
                                            wself.loadingMoreContent = NO;
@@ -429,6 +429,10 @@ typedef void(^FeedDataErrorBlock)(void);
 
 - (void) clearedLocationBoundData
 {
+    // to clear
+    
+    [self fetchAndDisplayFeedItems];
+    
     [self.feedCollectionView reloadData];
     
     [self loadAndUpdateFeedData];
@@ -473,7 +477,7 @@ typedef void(^FeedDataErrorBlock)(void);
 
 #pragma mark - Fetch Feed Data
 
-- (void) fetchedAndDisplayFeedItems
+- (void) fetchAndDisplayFeedItems
 {
     
     [self fetchVideoItems];
