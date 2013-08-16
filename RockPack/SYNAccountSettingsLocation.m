@@ -221,7 +221,6 @@
                                            
                                            [appDelegate clearCoreDataMainEntities:NO];
                                            
-                                           [appDelegate saveContext:YES];
                                            
                                            [wself.navigationController popViewControllerAnimated:YES];
                                            

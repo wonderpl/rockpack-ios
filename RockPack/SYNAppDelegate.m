@@ -817,18 +817,31 @@
     
     // == Clear VideoInstances == //
     
+    [fetchRequest setEntity: [NSEntityDescription entityForName: @"FeedItem"
+                                         inManagedObjectContext: self.mainManagedObjectContext]];
+    
+    
+    itemsToDelete = [self.mainManagedObjectContext executeFetchRequest: fetchRequest
+                                                                 error: &error];
+    
+    for (NSManagedObject *objectToDelete in itemsToDelete)
+    {
+        [self.mainManagedObjectContext deleteObject: objectToDelete];
+    }
+    
+    
+    // == Clear VideoInstances == //
+    
     [fetchRequest setEntity: [NSEntityDescription entityForName: @"VideoInstance"
                                          inManagedObjectContext: self.mainManagedObjectContext]];
     
     
-    itemsToDelete = [self.mainManagedObjectContext
-                     executeFetchRequest: fetchRequest
-                     error: &error];
+    itemsToDelete = [self.mainManagedObjectContext executeFetchRequest: fetchRequest
+                                                                 error: &error];
     
     for (NSManagedObject *objectToDelete in itemsToDelete)
     {
-        [self.mainManagedObjectContext
-         deleteObject: objectToDelete];
+        [self.mainManagedObjectContext deleteObject: objectToDelete];
     }
     
     // == Clear Cover Art == //
@@ -836,14 +849,12 @@
                                          inManagedObjectContext: self.mainManagedObjectContext]];
     
     
-    itemsToDelete = [self.mainManagedObjectContext
-                     executeFetchRequest: fetchRequest
-                     error: &error];
+    itemsToDelete = [self.mainManagedObjectContext executeFetchRequest: fetchRequest
+                                                                 error: &error];
     
     for (NSManagedObject *objectToDelete in itemsToDelete)
     {
-        [self.mainManagedObjectContext
-         deleteObject: objectToDelete];
+        [self.mainManagedObjectContext deleteObject: objectToDelete];
     }
     
     // == Clear Channels == //
@@ -857,14 +868,12 @@
     [fetchRequest setEntity: [NSEntityDescription entityForName: @"Channel"
                                          inManagedObjectContext: self.mainManagedObjectContext]];
     
-    itemsToDelete = [self.mainManagedObjectContext
-                     executeFetchRequest: fetchRequest
-                     error: &error];
+    itemsToDelete = [self.mainManagedObjectContext executeFetchRequest: fetchRequest
+                                                                 error: &error];
     
     for (NSManagedObject *objectToDelete in itemsToDelete)
     {
-        [self.mainManagedObjectContext
-         deleteObject: objectToDelete];
+        [self.mainManagedObjectContext deleteObject: objectToDelete];
     }
     
     fetchRequest.predicate = nil;
@@ -875,14 +884,12 @@
     
     fetchRequest.includesSubentities = YES; // to include SubGenre objecst
     
-    itemsToDelete = [self.mainManagedObjectContext
-                     executeFetchRequest: fetchRequest
-                     error: &error];
+    itemsToDelete = [self.mainManagedObjectContext executeFetchRequest: fetchRequest
+                                                                 error: &error];
     
     for (NSManagedObject *objectToDelete in itemsToDelete)
     {
-        [self.mainManagedObjectContext
-         deleteObject: objectToDelete];
+        [self.mainManagedObjectContext deleteObject: objectToDelete];
     }
     
     // == Clear ChannelOwner == //
@@ -898,8 +905,7 @@
     
     for (NSManagedObject *objectToDelete in itemsToDelete)
     {
-        [self.mainManagedObjectContext
-         deleteObject: objectToDelete];
+        [self.mainManagedObjectContext deleteObject: objectToDelete];
     }
     
     // == Save == //
