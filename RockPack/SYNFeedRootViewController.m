@@ -719,9 +719,15 @@ typedef void(^FeedDataErrorBlock)(void);
     return indexPath;
 }
 
+// TODO: Remove, no longer needed
 - (void) updateVideoCellAtIndexPath: (NSIndexPath *) indexPath
 {
-    [self.feedCollectionView reloadItemsAtIndexPaths: @[indexPath]];
+////    [self.feedCollectionView reloadItemsAtIndexPaths: @[indexPath]];
+//    SYNAggregateVideoCell *cell = (SYNAggregateVideoCell *)[self.feedCollectionView cellForItemAtIndexPath: indexPath];
+//    VideoInstance *videoInstance = [self videoInstanceForIndexPath: indexPath];
+//    
+//    [cell setSupplementaryMessageWithDictionary:@{  @"star_count": videoInstance.video ? videoInstance.video.starCount : @0,
+//     @"starrers": messageDictionary array]  }];
 }
 
 
@@ -1179,9 +1185,19 @@ typedef void(^FeedDataErrorBlock)(void);
     
 }
 
--(void)likeButtonPressed:(UIButton*)button
+- (IBAction) toggleStarAtIndexPath: (NSIndexPath *) indexPath
 {
+    // Bit of a hack, but find the button in the cell
+    SYNAggregateVideoCell *cell = (SYNAggregateVideoCell *)[self.feedCollectionView cellForItemAtIndexPath: indexPath];
     
+    UIButton *heartButton = cell.heartButton;
+    
+    [self likeButtonPressed: heartButton];
+}
+
+
+-(void) likeButtonPressed : (UIButton *) button
+{
     id<GAITracker> tracker = [GAI sharedInstance].defaultTracker;
     
     [tracker sendEventWithCategory: @"uiAction"
@@ -1189,11 +1205,9 @@ typedef void(^FeedDataErrorBlock)(void);
                          withLabel: @"feed"
                          withValue: nil];
     
-    
     BOOL didStar = (button.selected == NO);
     
     button.enabled = NO;
-    
     
     VideoInstance* videoInstance = [self videoInstanceAtCoverOfFeedItem:[self feedItemFromControl:button]];
     if(!videoInstance)

@@ -807,8 +807,6 @@
                                             videoInstanceId: videoInstance.uniqueId
                                           completionHandler: ^(id response) {
                                               
-                                              [self updateVideoCellAtIndexPath: indexPath];
-                                              
                                               if (videoInstance.video.starredByUserValue == TRUE)
                                               {
                                                   // Currently highlighted, so decrement
@@ -822,6 +820,8 @@
                                                   videoInstance.video.starCountValue += 1;
                                                   [Appirater userDidSignificantEvent: FALSE];
                                               }
+                                              
+                                              [self updateVideoCellAtIndexPath: indexPath];
                                               
                                               // Looks like some sort of bodge
                                               //                                               (self.favouritesStatusArray)[starredIndex] = @(button.selected);
