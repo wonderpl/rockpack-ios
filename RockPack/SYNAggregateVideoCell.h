@@ -8,15 +8,12 @@
 
 #import "SYNAggregateCell.h"
 
-@interface SYNAggregateVideoCell : SYNAggregateCell {
-    UIImageView* videoImageView;
-}
+@interface SYNAggregateVideoCell : SYNAggregateCell
 
-@property (nonatomic, strong) IBOutlet UILabel* likeLabel;
-@property (nonatomic, strong) IBOutlet UILabel* likesNumberLabel;
-@property (nonatomic, strong) IBOutlet UIButton* heartButton;
 @property (nonatomic, strong) IBOutlet UIButton* addButton;
-
+@property (nonatomic, strong) IBOutlet UIButton* heartButton;
+@property (nonatomic, strong) IBOutlet UIImageView* videoImageView;
+@property (nonatomic, strong) IBOutlet UILabel* likesNumberLabel;
 
 
 @end

@@ -881,12 +881,19 @@
     return  nil;
 }
 
+
+- (NSIndexPath *) indexPathForVideoIndexCell: (UICollectionViewCell *) cell
+{
+    return [self.videoThumbnailCollectionView indexPathForCell: cell];
+}
+
+
 - (void) arcMenuUpdateState: (UIGestureRecognizer *) recognizer
-                    forCell: cell
+                    forCell: (UICollectionViewCell *) cell
 {
     CGPoint tapPoint = [recognizer locationInView: self.view];
     
-    NSIndexPath *cellIndexPath = [self.videoThumbnailCollectionView indexPathForCell: cell];
+    NSIndexPath *cellIndexPath = [self indexPathForVideoIndexCell: cell];
     
     if (recognizer.state == UIGestureRecognizerStateBegan)
     {        
