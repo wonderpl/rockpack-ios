@@ -149,7 +149,6 @@
     void(^CompletionBlock)(id) = ^(id no_responce) {
         
         
-        
         if(isYesButton) {
            [wAppDelegate.currentUser setFlag:ExternalAccountFlagAutopostAdd toExternalAccount:@"facebook"]; 
         }
@@ -162,6 +161,18 @@
         [wAppDelegate saveContext:YES];
         
         [wself switchAutopostViewToYes:isYesButton];
+        
+        if(isYesButton)
+        {
+            // this is a replacement for the sharing granularity
+            
+            id<GAITracker> tracker = [GAI sharedInstance].defaultTracker;
+            
+            [tracker sendEventWithCategory: @"goal"
+                                withAction: @"videoShared"
+                                 withLabel: @"fbe"
+                                 withValue: nil];
+        }
         
     };
     
@@ -454,6 +465,10 @@
 {
     [super willAnimateRotationToInterfaceOrientation: toInterfaceOrientation
                                             duration: duration];
+    
+    CGRect autopostTitleFrame = self.autopostTitleLabel.frame;
+    autopostTitleFrame.origin.x = self.autopostYesButton.frame.origin.x - 10.0f - self.autopostTitleLabel.frame.size.width;
+    self.autopostTitleLabel.frame = autopostTitleFrame;
     
     [self packViewForInterfaceOrientation:toInterfaceOrientation];
 }

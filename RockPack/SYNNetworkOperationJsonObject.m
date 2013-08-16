@@ -18,13 +18,14 @@
     BOOL ignore = self.ignoreCachedResponse;
     
     [self addCompletionHandler: ^(MKNetworkOperation *completedOperation) {
-        if (ignore && completedOperation.isCachedResponse)
+        if (ignore)
         {
-
-            return;
+            if(completedOperation.isCachedResponse)
+                return;
+            
         }
         
-//        NSLog(@"completedOperation.HTTPStatusCode: %i", completedOperation.HTTPStatusCode);
+        
         
         if (completedOperation.HTTPStatusCode == 204)
         {

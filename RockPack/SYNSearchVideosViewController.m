@@ -23,6 +23,7 @@
 #import "SYNVideoThumbnailWideCell.h"
 #import "UIImageView+WebCache.h"
 #import "Video.h"
+#import "SYNFeedMessagesView.h"
 #import "VideoInstance.h"
 
 @interface SYNSearchVideosViewController ()
@@ -32,7 +33,7 @@
 @property (nonatomic, strong) NSDateFormatter *dateFormatter;
 @property (nonatomic, weak) MKNetworkOperation *runningSearchOperation;
 @property (nonatomic, weak) NSString *searchTerm;
-
+@property (nonatomic, strong) SYNFeedMessagesView* emptyGenreMessageView;
 @end
 
 
@@ -205,11 +206,35 @@
 
 - (void) removeEmptyGenreMessage
 {
+    if (!self.emptyGenreMessageView)
+        return;
+    
+    [self.emptyGenreMessageView removeFromSuperview];
 }
 
 
-- (void) displayMessage: (NSString *) message
+- (void) displayEmptyGenreMessage: (NSString*) messageKey
+                        andLoader: (BOOL) isLoader
 {
+    
+    if (self.emptyGenreMessageView)
+    {
+        [self.emptyGenreMessageView removeFromSuperview];
+        self.emptyGenreMessageView = nil;
+    }
+    
+    self.emptyGenreMessageView = [SYNFeedMessagesView withMessage:NSLocalizedString(messageKey ,nil) andLoader:isLoader];
+    
+    CGRect messageFrame = self.emptyGenreMessageView.frame;
+    messageFrame.origin.y = ([[SYNDeviceManager sharedInstance] currentScreenHeight] * 0.5) - (messageFrame.size.height * 0.5);
+    messageFrame.origin.x = ([[SYNDeviceManager sharedInstance] currentScreenWidth] * 0.5) - (messageFrame.size.width * 0.5);
+    
+    messageFrame = CGRectIntegral(messageFrame);
+    self.emptyGenreMessageView.frame = messageFrame;
+    self.emptyGenreMessageView.autoresizingMask =
+    UIViewAutoresizingFlexibleTopMargin | UIViewAutoresizingFlexibleRightMargin | UIViewAutoresizingFlexibleLeftMargin;
+    
+    [self.view addSubview: self.emptyGenreMessageView];
 }
 
 
@@ -259,6 +284,10 @@
         appDelegate = (SYNAppDelegate *) [[UIApplication sharedApplication] delegate];
     }
     
+    [self removeEmptyGenreMessage];
+    
+    [self displayEmptyGenreMessage:@"SEARCHING FOR VIDEOS" andLoader:YES];
+    
     self.dataRequestRange = NSMakeRange(0, kAPIInitialBatchSize);
     
     
@@ -274,9 +303,11 @@
                                                                                     animated: YES];
                                                                                }
                                                                                
+                                                                               [self removeEmptyGenreMessage];
+                                                                               
                                                                                if (itemsCount == 0)
                                                                                {
-                                                                                   [self displayMessage: @"NO VIDEOS FOUND"];
+                                                                                   [self displayEmptyGenreMessage:@"NO VIDEOS FOUND" andLoader:NO];
                                                                                }
                                                                            }];
     self.searchTerm = term;
@@ -362,13 +393,13 @@
     if (self.isIPhone)
     {
         //On iPhone, append You Tube User name to the date label
-        videoThumbnailCell.dateAddedLabel.text = [NSString stringWithFormat: @"%@ BY %@", [format uppercaseString], [video.sourceUsername uppercaseString]];
+        videoThumbnailCell.dateAddedLabel.text = [NSString stringWithFormat: @"%@ By %@", format , video.sourceUsername];
     }
     else
     {
         //On iPad a separate label is used for the youtube user name
-        videoThumbnailCell.dateAddedLabel.text = [format uppercaseString];
-        videoThumbnailCell.youTubeUserLabel.text = [NSString stringWithFormat: @"BY %@", [video.sourceUsername uppercaseString]];
+        videoThumbnailCell.dateAddedLabel.text = format;
+        videoThumbnailCell.youTubeUserLabel.text = [NSString stringWithFormat: @"By %@", video.sourceUsername];
     }
     
     NSUInteger hours = video.duration.integerValue / (60 * 60);
@@ -538,8 +569,8 @@
     {
         NSString *message = NSLocalizedString(@"onboarding_video", nil);
         
-        CGFloat fontSize = IS_IPAD ? 19.0 : 15.0;
-        CGSize size = IS_IPAD ? CGSizeMake(340.0, 164.0) : CGSizeMake(260.0, 144.0);
+        CGFloat fontSize = IS_IPAD ? 16.0 : 14.0;
+        CGSize size = IS_IPAD ? CGSizeMake(220.0, 48.0) : CGSizeMake(200.0, 44.0);
         CGRect rectToPointTo = CGRectZero;
         PointingDirection directionToPointTo = PointingDirectionDown;
         

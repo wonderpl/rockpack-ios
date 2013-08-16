@@ -58,13 +58,6 @@
                             onError: (MKNKErrorBlock) errorBlock;
 
 
-#pragma mark - Update channel
-
-- (MKNetworkOperation *) updateChannel: (NSString *) resourceURL
-                     completionHandler: (MKNKUserSuccessBlock) completionBlock
-                          errorHandler: (MKNKUserErrorBlock) errorBlock;
-
-
 #pragma mark - Channel owner
 
 - (void) channelOwnerDataForChannelOwner: (ChannelOwner *) channelOwner

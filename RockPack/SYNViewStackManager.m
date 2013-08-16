@@ -187,13 +187,18 @@
 
 -(void)dismissSearchBar
 {
+    [self dismissSearchBarTotal:NO];
+}
+
+-(void)dismissSearchBarTotal:(BOOL)total
+{
     
     if(IS_IPAD) // this function is only for iPhone
         return;
    
     SYNSearchBoxViewController* searchBoxVC = self.sideNavigatorController.searchViewController;
     
-    if(self.searchBarOriginSideNavigation) // open up the side navigation
+    if(self.searchBarOriginSideNavigation && !total) // open up the side navigation
     {
         [self.sideNavigatorController setState:SideNavigationStateHalf animated:NO];
         
@@ -263,7 +268,7 @@
                                               
                                               CGRect newFrame = searchBoxVC.searchBoxView.frame;
                                               
-                                              if(self.searchBarOriginSideNavigation)
+                                              if(self.searchBarOriginSideNavigation && !total)
                                                   newFrame.origin = CGPointMake(0.0f, 58.0f);
                                               else
                                                   newFrame.origin = CGPointMake(0.0f, -58.0f);

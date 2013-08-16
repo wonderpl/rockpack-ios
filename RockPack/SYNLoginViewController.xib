@@ -61,21 +61,6 @@
 						<bool key="IBUIUserInteractionEnabled">NO</bool>
 						<string key="targetRuntimeIdentifier">IBIPadFramework</string>
 					</object>
-					<object class="IBUIImageView" id="720852655">
-						<reference key="NSNextResponder" ref="766721923"/>
-						<int key="NSvFlags">293</int>
-						<string key="NSFrame">{{388, 132}, {248, 54}}</string>
-						<reference key="NSSuperview" ref="766721923"/>
-						<reference key="NSWindow"/>
-						<reference key="NSNextKeyView" ref="9471206"/>
-						<string key="NSReuseIdentifierKey">_NS:9</string>
-						<bool key="IBUIUserInteractionEnabled">NO</bool>
-						<string key="targetRuntimeIdentifier">IBIPadFramework</string>
-						<object class="NSCustomResource" key="IBUIImage">
-							<string key="NSClassName">NSImage</string>
-							<string key="NSResourceName">LogoSignup.png</string>
-						</object>
-					</object>
 					<object class="IBUILabel" id="293207444">
 						<reference key="NSNextResponder" ref="766721923"/>
 						<int key="NSvFlags">-2147483355</int>
@@ -718,7 +703,7 @@
 						<string key="NSFrame">{{359, 99}, {307, 85}}</string>
 						<reference key="NSSuperview" ref="766721923"/>
 						<reference key="NSWindow"/>
-						<reference key="NSNextKeyView" ref="720852655"/>
+						<reference key="NSNextKeyView"/>
 						<string key="NSReuseIdentifierKey">_NS:9</string>
 						<bool key="IBUIOpaque">NO</bool>
 						<bool key="IBUIClipsSubviews">YES</bool>
@@ -993,14 +978,6 @@
 						<reference key="destination" ref="912080308"/>
 					</object>
 					<int key="connectionID">57</int>
-				</object>
-				<object class="IBConnectionRecord">
-					<object class="IBCocoaTouchOutletConnection" key="connection">
-						<string key="label">titleImageView</string>
-						<reference key="source" ref="841351856"/>
-						<reference key="destination" ref="720852655"/>
-					</object>
-					<int key="connectionID">59</int>
 				</object>
 				<object class="IBConnectionRecord">
 					<object class="IBCocoaTouchOutletConnection" key="connection">
@@ -1279,7 +1256,6 @@
 						<reference key="object" ref="766721923"/>
 						<array class="NSMutableArray" key="children">
 							<reference ref="516248663"/>
-							<reference ref="720852655"/>
 							<reference ref="755550972"/>
 							<reference ref="419821036"/>
 							<reference ref="912080308"/>
@@ -1367,12 +1343,6 @@
 						<reference key="object" ref="373837760"/>
 						<reference key="parent" ref="766721923"/>
 						<string key="objectName">Email TextField</string>
-					</object>
-					<object class="IBObjectRecord">
-						<int key="objectID">53</int>
-						<reference key="object" ref="720852655"/>
-						<reference key="parent" ref="766721923"/>
-						<string key="objectName">Rockpack Logo ImageView</string>
 					</object>
 					<object class="IBObjectRecord">
 						<int key="objectID">68</int>
@@ -1526,7 +1496,6 @@
 				<string key="48.IBPluginDependency">com.apple.InterfaceBuilder.IBCocoaTouchPlugin</string>
 				<string key="5.IBPluginDependency">com.apple.InterfaceBuilder.IBCocoaTouchPlugin</string>
 				<real value="0.0" key="5.IBUIButtonInspectorSelectedStateConfigurationMetadataKey"/>
-				<string key="53.IBPluginDependency">com.apple.InterfaceBuilder.IBCocoaTouchPlugin</string>
 				<string key="55.IBPluginDependency">com.apple.InterfaceBuilder.IBCocoaTouchPlugin</string>
 				<real value="0.0" key="55.IBUIButtonInspectorSelectedStateConfigurationMetadataKey"/>
 				<string key="6.IBPluginDependency">com.apple.InterfaceBuilder.IBCocoaTouchPlugin</string>
@@ -1778,7 +1747,6 @@
 			<string key="FieldLogin.png">{308, 57}</string>
 			<string key="FieldPhoto.png">{187, 187}</string>
 			<string key="FieldYear.png">{138, 57}</string>
-			<string key="LogoSignup.png">{248, 54}</string>
 		</dictionary>
 		<string key="IBCocoaTouchPluginVersion">2083</string>
 	</data>

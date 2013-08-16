@@ -38,6 +38,8 @@
 #define kForceRefreshValue          @"kForceRefreshValue"
 #define kAutoPlayVideoId            @"kAutoPlayVideoId"
 
+#define kDataRequestRange           @"DataRequestRange"
+
 
 // viewId
 #define kFeedViewId                 NSLocalizedString(@"core_nav_section_feed", nil)
@@ -108,6 +110,7 @@ typedef enum _FeedItemResourceType {
 #define kAPIDeleteChannel           @"/ws/USERID/channels/CHANNELID/"           /* PUT */
 
 #define STANDARD_REQUEST_LENGTH 48
+#define MAXIMUM_REQUEST_LENGTH 1000
 
 // Videos for channel
 #define kAPIGetVideosForChannel     @"/ws/USERID/channels/CHANNELID/videos/"    /* GET */
@@ -140,6 +143,8 @@ typedef enum _FeedItemResourceType {
 #define kAPIPopularVideos           @"ws/videos/"
 #define kAPIPopularChannels         @"ws/channels/"
 #define kAPICategories              @"ws/categories/"
+
+#define kLocationService            @"/ws/location/"                            /* GET */
 
 // Share link
 #define kAPIShareLink               @"/ws/share/link/"                          /* POST */
@@ -209,7 +214,7 @@ typedef enum _FeedItemResourceType {
 // One the APIs imported some new data - we will need to be more specific at some stage.
 #define kCategoriesUpdated @"kCategoriesUpdated"
 
-#define kLoginOnBoardingMessagesNum 4
+#define kLoginOnBoardingMessagesNum 5
 
 // Observers
 #define kCollectionViewContentOffsetKey @"contentOffset"
@@ -277,6 +282,7 @@ typedef enum _NavigationButtonsAppearance {
 
 // Tabs
 #define kTabAnimationDuration 0.3f
+
 
 #define kChangedAccountSettingsValue        @"kChangedAccountSettingsValue"
 #define kClearedLocationBoundData           @"kClearedLocationBoundData"

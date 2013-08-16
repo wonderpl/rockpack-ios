@@ -168,7 +168,7 @@ static NSString *SearchGenresTableCellIdentifier = @"SYNSearchCategoriesIphoneCe
     
     [[NSNotificationCenter defaultCenter] postNotification: navigationNotification];
     
-    [appDelegate.viewStackManager dismissSearchBar];
+    [appDelegate.viewStackManager dismissSearchBarTotal:YES];
     
     
     

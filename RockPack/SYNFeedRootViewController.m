@@ -263,10 +263,10 @@ typedef void(^FeedDataErrorBlock)(void);
     BOOL hasShownFeedOnBoarding = [defaults boolForKey:kUserDefaultsFeed];
     if(!hasShownFeedOnBoarding)
     {
-        NSString* message = NSLocalizedString(@"onboarding_feed", nil);
+        NSString* message = IS_IPAD ? NSLocalizedString(@"onboarding_feed", nil) : NSLocalizedString(@"onboarding_feed_iphone", nil);
         
-        CGFloat fontSize = IS_IPAD ? 19.0 : 15.0 ;
-        CGSize size = IS_IPAD ? CGSizeMake(340.0, 164.0) : CGSizeMake(260.0, 144.0);
+        CGFloat fontSize = IS_IPAD ? 16.0 : 14.0 ;
+        CGSize size = IS_IPAD ? CGSizeMake(340.0, 70.0) : CGSizeMake(260.0, 80.0);
         SYNOnBoardingPopoverView* subscribePopover = [SYNOnBoardingPopoverView withMessage:message
                                                                                   withSize:size
                                                                                andFontSize:fontSize
@@ -375,15 +375,10 @@ typedef void(^FeedDataErrorBlock)(void);
                                            NSNumber* totalNumber = [contentItem[@"total"] isKindOfClass:[NSNumber class]] ? contentItem[@"total"] : @0 ;
                                            wself.dataItemsAvailable = [totalNumber integerValue];
                                            
-                                           //NSLog(@"%i from %i", ((NSArray*)contentItem[@"items"]).count, wself.dataItemsAvailable);
+                                           // NSLog(@"%i from %i", ((NSArray*)contentItem[@"items"]).count, wself.dataItemsAvailable);
                                            
-                                           if(wself.dataItemsAvailable == 0) {
-                                               
-                                               [wself displayEmptyGenreMessage:NSLocalizedString(@"feed_screen_empty_message", nil) andLoader:NO];
-                                               
-                                               return;
-                                               
-                                           }
+                                           
+                                           [wself removeEmptyGenreMessage];
                                                
                                            
                                            if(![appDelegate.mainRegistry registerDataForSocialFeedFromItemsDictionary:contentItem
@@ -396,10 +391,6 @@ typedef void(^FeedDataErrorBlock)(void);
                                                return;
                                                
                                            }
-                                                    
-                                           
-                                           [wself removeEmptyGenreMessage];
-                                           
                                            
                                            
                                            [wself fetchedAndDisplayFeedItems];
@@ -409,6 +400,13 @@ typedef void(^FeedDataErrorBlock)(void);
                                                     
                                            
                                            [wself handleRefreshComplete];
+                                           
+                                           if(wself.dataItemsAvailable == 0) {
+                                               
+                                               [wself displayEmptyGenreMessage:NSLocalizedString(@"feed_screen_empty_message", nil) andLoader:NO];
+                                               
+                                               
+                                           }
                                                     
                                            
                                        } errorHandler: ^(NSDictionary* errorDictionary) {
@@ -423,7 +421,7 @@ typedef void(^FeedDataErrorBlock)(void);
 
 - (void) handleRefreshComplete
 {
-    self.refreshing = FALSE;
+    self.refreshing = NO;
     [self.refreshControl endRefreshing];
     [self.refreshButton endRefreshCycle];
 }
@@ -507,6 +505,7 @@ typedef void(^FeedDataErrorBlock)(void);
     if(resultsArray.count == 0)
     {
         self.feedItemsData = [NSArray array];
+        [self.feedCollectionView reloadData];
         return;
     }
     
@@ -675,8 +674,8 @@ typedef void(^FeedDataErrorBlock)(void);
         
         NSString* message = NSLocalizedString(@"onboarding_video", nil);
         
-        CGFloat fontSize = IS_IPAD ? 19.0 : 15.0 ;
-        CGSize size = IS_IPAD ? CGSizeMake(340.0, 164.0) : CGSizeMake(260.0, 144.0);
+        CGFloat fontSize = IS_IPAD ? 16.0 : 14.0 ;
+        CGSize size = IS_IPAD ? CGSizeMake(220.0, 48.0) : CGSizeMake(200.0, 44.0);
         CGRect rectToPointTo = CGRectZero;
         PointingDirection directionToPointTo = PointingDirectionDown;
         if (self.selectedVideoCell)

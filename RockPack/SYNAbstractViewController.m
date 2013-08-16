@@ -170,32 +170,19 @@
 
 - (BOOL) moreItemsToLoad
 {
-    NSInteger nextStart = self.dataRequestRange.location + self.dataRequestRange.length; // one is subtracted when the call happens for 0 indexing
     
-    // FIXME: Is this comparison correct?  Should it just be self.dataRequestRange.location >= self.dataItemsAvailable?
-    if (nextStart >= self.dataItemsAvailable)
-    {
-        return FALSE;
-    }
-    else
-    {
-        return TRUE;
-    }
+    return (self.dataRequestRange.location + self.dataRequestRange.length < self.dataItemsAvailable);
 }
 
 
 - (void) incrementRangeForNextRequest
 {
-    if (self.moreItemsToLoad == FALSE)
-    {
+    if(!self.moreItemsToLoad)
         return;
-    }
-
-    self.loadingMoreContent = YES;
-
-    NSInteger nextStart = self.dataRequestRange.location + self.dataRequestRange.length;
     
-    NSInteger nextSize = (nextStart + STANDARD_REQUEST_LENGTH) >= self.dataItemsAvailable ? (self.dataItemsAvailable - nextStart) : STANDARD_REQUEST_LENGTH;
+    NSInteger nextStart = self.dataRequestRange.location + self.dataRequestRange.length; // one is subtracted when the call happens for 0 indexing
+    
+    NSInteger nextSize = MIN((nextStart + STANDARD_REQUEST_LENGTH), self.dataItemsAvailable);
     
     self.dataRequestRange = NSMakeRange(nextStart, nextSize);
 }
@@ -767,8 +754,19 @@
         // then show panel
         __weak typeof(self) weakSelf = self;
         
-        SYNImplicitSharingController *implicitSharingController = [SYNImplicitSharingController controllerWithBlock: ^{
+        SYNImplicitSharingController *implicitSharingController = [SYNImplicitSharingController controllerWithBlock: ^(BOOL approvedAutoSharing){
             [weakSelf toggleStarAtIndexPath: indexPath];
+            if(approvedAutoSharing)
+            {
+                // track
+                
+                id<GAITracker> tracker = [GAI sharedInstance].defaultTracker;
+                
+                [tracker sendEventWithCategory: @"goal"
+                                    withAction: @"videoShared"
+                                     withLabel: @"fbi"
+                                     withValue: nil];
+            }
         }];
         
         [self addChildViewController: implicitSharingController];
@@ -976,6 +974,17 @@
         [self.arcMenu positionUpdate: tapPoint];
         
     }
+    
+    // track
+    
+    id<GAITracker> tracker = [GAI sharedInstance].defaultTracker;
+    
+  
+    
+    [tracker sendEventWithCategory: @"uiAction"
+                        withAction: @"pressHold"
+                         withLabel: ([NSStringFromClass(cell.class) rangeOfString:@"Channel"].location == NSNotFound ? @"channel" : @"video")
+                         withValue: nil];
 }
 
 
@@ -1026,6 +1035,7 @@
                          
                      }];
 }
+
 
 - (void) arcMenuDidFinishAnimationClose: (SYNArcMenuView *) menu
 {

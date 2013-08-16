@@ -53,14 +53,19 @@
         
        
         
-        self.backgroundColor = [UIColor colorWithRed:(11.0/255.0) green:(166.0/255.0) blue:(171.0/255.0) alpha:(1.0)];
+        self.backgroundColor = [UIColor colorWithWhite:255.0/255.0 alpha:0.90];
         
+        [self.layer setCornerRadius:5.0f];
+        self.layer.shadowRadius = 10.0f;
+        self.layer.shadowOpacity = 0.2f;
+        self.layer.shadowColor = [[UIColor blackColor]CGColor];
+        //self.layer.masksToBounds = YES;
         
         // text view
         
         CGRect labelRect = self.frame;
         labelRect.origin.x = 15.0;
-        labelRect.origin.y = 20.0;
+        labelRect.origin.y = 6.0;
         labelRect.size.width -= 30.0;
         
         
@@ -76,12 +81,11 @@
         
         label.textAlignment = NSTextAlignmentCenter;
         label.backgroundColor = [UIColor clearColor];
-        label.numberOfLines = 3;
-        label.textColor = [UIColor whiteColor];
+        label.numberOfLines = 4;
+        label.textColor = [UIColor colorWithRed:(40.0/255.0) green:(45.0/255.0) blue:(51.0/255.0) alpha:(1.0)];
         label.text = message;
         
-        label.layer.shadowColor = [[UIColor darkGrayColor] CGColor];
-        label.layer.shadowOffset = CGSizeMake(0.0, 2.0);
+        label.shadowColor = [UIColor colorWithWhite:0.0/255.0 alpha:0.15];
         
         CGSize textSize = [message sizeWithFont:label.font
                                        forWidth:labelRect.size.width
@@ -96,19 +100,19 @@
         
         
         // buttom
-        UIImage* okButtonImageNormal = [UIImage imageNamed:@"onboarding_button_ok"];
-        UIImage* okButtonImagePressed = [UIImage imageNamed:@"onboarding_button_ok_highlighted"];
-        self.okButton = [UIButton buttonWithType:UIButtonTypeCustom];
-        [self.okButton setImage:okButtonImageNormal forState:UIControlStateNormal];
-        [self.okButton setImage:okButtonImagePressed forState:UIControlStateHighlighted];
-        
-        CGRect buttonRect = self.okButton.frame;
-        buttonRect.size = okButtonImageNormal.size;
-        buttonRect.origin.x = self.frame.size.width * 0.5 - buttonRect.size.width * 0.5;
-        buttonRect.origin.y = labelRect.origin.y + labelRect.size.height + 10.0;
-        self.okButton.frame = CGRectIntegral(buttonRect);
-        
-        [self addSubview:self.okButton];
+//        UIImage* okButtonImageNormal = [UIImage imageNamed:@"onboarding_button_ok"];
+//        UIImage* okButtonImagePressed = [UIImage imageNamed:@"onboarding_button_ok_highlighted"];
+//        self.okButton = [UIButton buttonWithType:UIButtonTypeCustom];
+//        [self.okButton setImage:okButtonImageNormal forState:UIControlStateNormal];
+//        [self.okButton setImage:okButtonImagePressed forState:UIControlStateHighlighted];
+//        
+//        CGRect buttonRect = self.okButton.frame;
+//        buttonRect.size = okButtonImageNormal.size;
+//        buttonRect.origin.x = self.frame.size.width * 0.5 - buttonRect.size.width * 0.5;
+//        buttonRect.origin.y = labelRect.origin.y + labelRect.size.height + 10.0;
+//        self.okButton.frame = CGRectIntegral(buttonRect);
+//        
+//        [self addSubview:self.okButton];
         
         
         // arrow

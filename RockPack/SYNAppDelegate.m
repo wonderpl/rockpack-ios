@@ -784,11 +784,17 @@
     
     [self.oAuthNetworkEngine useCache];
     
+    [self.oAuthNetworkEngine getClientIPBasedLocation];
+    
     // Use this engine as the default for the asynchronous image loading category on UIImageView
     UIImageView.defaultEngine = self.networkEngine;
 }
 
-
+-(void)setIpBasedLocation:(NSString *)ipBasedLocation
+{
+    self.networkEngine.locationString = ipBasedLocation;
+    self.oAuthNetworkEngine.locationString = ipBasedLocation;
+}
 #pragma mark - Clearing Data
 
 - (void) clearCoreDataMainEntities: (BOOL) userBound
@@ -1418,11 +1424,15 @@
 
 - (void) connectionDidFinishLoading: (NSURLConnection *) connection
 {
-    if (self.rockpackURL)
+    if(self.currentUser.currentValue && self.currentOAuth2Credentials)
     {
-        NSURL *url = [NSURL URLWithString: self.rockpackURL];
-        [self parseAndActionRockpackURL: url];
+        if (self.rockpackURL)
+        {
+            NSURL *url = [NSURL URLWithString: self.rockpackURL];
+            [self parseAndActionRockpackURL: url];
+        }
     }
+    
 }
 
 

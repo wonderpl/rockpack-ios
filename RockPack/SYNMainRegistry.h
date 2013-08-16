@@ -20,6 +20,8 @@
                                forGenre: (Genre *) genre
                             byAppending: (BOOL) append;
 
+- (BOOL) registerIPBasedLocation:(NSString*)locationString;
+
 
 - (BOOL) registerUserFromDictionary: (NSDictionary *) dictionary;
 
