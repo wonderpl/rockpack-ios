@@ -806,6 +806,9 @@
                                                      action: starAction
                                             videoInstanceId: videoInstance.uniqueId
                                           completionHandler: ^(id response) {
+                                              
+                                              [self updateVideoCellAtIndexPath: indexPath];
+                                              
                                               if (videoInstance.video.starredByUserValue == TRUE)
                                               {
                                                   // Currently highlighted, so decrement
@@ -879,12 +882,24 @@
     return  nil;
 }
 
+- (void) updateVideoCellAtIndexPath: (NSIndexPath *) indexPath
+{
+    // By default do nothing
+}
+
+
+- (NSIndexPath *) indexPathForVideoIndexCell: (UICollectionViewCell *) cell
+{
+    return [self.videoThumbnailCollectionView indexPathForCell: cell];
+}
+
+
 - (void) arcMenuUpdateState: (UIGestureRecognizer *) recognizer
                     forCell: (UICollectionViewCell *) cell
 {
     CGPoint tapPoint = [recognizer locationInView: self.view];
     
-    NSIndexPath *cellIndexPath = [self.videoThumbnailCollectionView indexPathForCell: cell];
+    NSIndexPath *cellIndexPath = [self indexPathForVideoIndexCell: cell];
     
     if (recognizer.state == UIGestureRecognizerStateBegan)
     {        

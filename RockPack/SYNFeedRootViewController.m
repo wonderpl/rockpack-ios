@@ -32,7 +32,7 @@
 
 typedef void(^FeedDataErrorBlock)(void);
 
-@interface SYNFeedRootViewController ()
+@interface SYNFeedRootViewController () <SYNAggregateCellDelegate>
 
 @property (nonatomic, assign) BOOL refreshing;
 @property (nonatomic, assign) BOOL shouldReloadCollectionView;
@@ -608,7 +608,7 @@ typedef void(^FeedDataErrorBlock)(void);
     
     self.feedChannelsById = [NSDictionary dictionaryWithDictionary:mutDictionary];
 }
-    
+
 
 
 #pragma mark - UICollectionView Delegate
@@ -712,6 +712,17 @@ typedef void(^FeedDataErrorBlock)(void);
     return feedItem;
 }
 
+
+- (NSIndexPath *) indexPathForVideoIndexCell: (UICollectionViewCell *) cell
+{
+    NSIndexPath *indexPath = [self.feedCollectionView indexPathForItemAtPoint: cell.center];
+    return indexPath;
+}
+
+- (void) updateVideoCellAtIndexPath: (NSIndexPath *) indexPath
+{
+    [self.feedCollectionView reloadItemsAtIndexPaths: @[indexPath]];
+}
 
 
 - (UICollectionViewCell *) collectionView: (UICollectionView *) cv
@@ -936,6 +947,16 @@ typedef void(^FeedDataErrorBlock)(void);
 
 #pragma mark - Click Cell Delegates
 
+- (VideoInstance *) videoInstanceForIndexPath: (NSIndexPath *) indexPath
+{
+    FeedItem* feedItem = [self feedItemAtIndexPath:indexPath];
+    
+    VideoInstance* videoInstance = [self videoInstanceAtCoverOfFeedItem: feedItem];
+    
+    return videoInstance;
+}
+
+
 -(VideoInstance*)videoInstanceAtCoverOfFeedItem:(FeedItem*)feedItem
 {
     if(!feedItem || (feedItem.resourceTypeValue != FeedItemResourceTypeVideo))
@@ -950,6 +971,7 @@ typedef void(^FeedDataErrorBlock)(void);
     
     return videoInstance;
 }
+
 
 -(Channel*)channelAtCoverOfFeedItem:(FeedItem*)feedItem
 {
@@ -1002,10 +1024,9 @@ typedef void(^FeedDataErrorBlock)(void);
     self.videosInOrderArray = [NSArray arrayWithArray:ma];
 }
 
+
 - (void) pressedAggregateCellCoverButton: (UIButton *) coverButton
 {
-
-    
     SYNAggregateCell* aggregateCellSelected = [self aggregateCellFromControl:coverButton];
     NSIndexPath *indexPath = [self.feedCollectionView indexPathForItemAtPoint: aggregateCellSelected.center];
     FeedItem* selectedFeedItem = [self feedItemAtIndexPath:indexPath];
@@ -1021,20 +1042,14 @@ typedef void(^FeedDataErrorBlock)(void);
         VideoInstance* videoInstance = [self videoInstanceAtCoverOfFeedItem:selectedFeedItem];
         
         SYNMasterViewController *masterViewController = (SYNMasterViewController*)appDelegate.masterViewController;
-        
-        
-        
-        
+
         __block NSInteger indexOfSelectedVideoInArray = 0;
         [self.videosInOrderArray enumerateObjectsUsingBlock:^(VideoInstance* vi, NSUInteger idx, BOOL *stop) {
-            
-            
+
             indexOfSelectedVideoInArray++;
             
             if([vi.uniqueId isEqualToString:videoInstance.uniqueId])
                 *stop = YES;
-            
-            
         }];
         
         indexOfSelectedVideoInArray--; // zero index
@@ -1043,9 +1058,7 @@ typedef void(^FeedDataErrorBlock)(void);
         [masterViewController addVideoOverlayToViewController: self
                                        withVideoInstanceArray: self.videosInOrderArray
                                              andSelectedIndex: indexOfSelectedVideoInArray
-                                                   fromCenter: self.view.center];
-        
-        
+                                                   fromCenter: self.view.center];    
     }
     else
     {
@@ -1068,10 +1081,7 @@ typedef void(^FeedDataErrorBlock)(void);
         
         if(channel)
             [appDelegate.viewStackManager viewChannelDetails:channel];
-        
     }
-    
-    
 }
 
 -(SYNAggregateCell*)aggregateCellFromControl:(UIControl*)control

@@ -7,40 +7,44 @@
 //
 
 #import "SYNAggregateCell.h"
-#import "UIFont+SYNFont.h"
 #import "UIColor+SYNColor.h"
+#import "UIFont+SYNFont.h"
 
 #define STANDARD_BUTTON_CAPACITY 10
 
-
 @implementation SYNAggregateCell
 
--(void)awakeFromNib
+- (void) awakeFromNib
 {
-    self.messageLabel.font = [UIFont rockpackFontOfSize:self.messageLabel.font.pointSize];
+    self.messageLabel.font = [UIFont rockpackFontOfSize: self.messageLabel.font.pointSize];
     
-    self.stringButtonsArray = [[NSMutableArray alloc] initWithCapacity:STANDARD_BUTTON_CAPACITY];
+    self.stringButtonsArray = [[NSMutableArray alloc] initWithCapacity: STANDARD_BUTTON_CAPACITY];
     
-    self.lightTextAttributes = @{NSFontAttributeName:[UIFont rockpackFontOfSize:13.0f],
-                                 NSForegroundColorAttributeName:[UIColor rockpacAggregateTextLight]};
-    self.boldTextAttributes = @{NSFontAttributeName:[UIFont boldRockpackFontOfSize:13.0f],
-                                NSForegroundColorAttributeName:[UIColor rockpacAggregateTextLight]};
+    self.lightTextAttributes = @{NSFontAttributeName: [UIFont rockpackFontOfSize: 13.0f],
+                                 NSForegroundColorAttributeName: [UIColor rockpacAggregateTextLight]};
+    
+    self.boldTextAttributes = @{NSFontAttributeName: [UIFont boldRockpackFontOfSize: 13.0f],
+                                NSForegroundColorAttributeName: [UIColor rockpacAggregateTextLight]};
 }
 
--(void)setCoverImagesAndTitlesWithArray:(NSArray*)imageString
-{
-    
-}
 
--(void)setTitleMessageWithDictionary:(NSDictionary*)messageDictionary
+- (void) setCoverImagesAndTitlesWithArray: (NSArray *) imageString
 {
     // to be implemented in subclass
+    AssertOrLog(@"Not meant to be called, as should be overridden in derived class");
 }
 
--(void)setViewControllerDelegate:(UIViewController *)viewControllerDelegate
+
+- (void) setTitleMessageWithDictionary: (NSDictionary *) messageDictionary
+{
+    // to be implemented in subclass
+    AssertOrLog(@"Not meant to be called, as should be overridden in derived class");
+}
+
+
+- (void) setViewControllerDelegate: (id<SYNAggregateCellDelegate>) viewControllerDelegate
 {
     _viewControllerDelegate = viewControllerDelegate;
-    
     
     [self.userThumbnailButton addTarget: self.viewControllerDelegate
                                  action: @selector(profileButtonTapped:)
@@ -51,10 +55,11 @@
                forControlEvents: UIControlEventTouchUpInside];
 }
 
--(void)setSupplementaryMessageWithDictionary:(NSDictionary*)messageDictionary
+
+- (void) setSupplementaryMessageWithDictionary: (NSDictionary *) messageDictionary
 {
     // to be implemented in subclass
-    
+    AssertOrLog(@"Not meant to be called, as should be overridden in derived class");
 }
 
 
