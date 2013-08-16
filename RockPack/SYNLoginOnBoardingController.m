@@ -132,8 +132,16 @@
         CGRect iPhoneImageRect = CGRectMake((messageView.frame.size.width * 0.5) - 140, messageView.frame.origin.y - 220, 280, 200);
         
         UIImageView * messageImageView = [[UIImageView alloc]initWithFrame: IS_IPAD ? iPadImageRect : iPhoneImageRect];
-        messageImageView.image = [UIImage imageNamed: [NSString stringWithFormat:@"login_onboard_%i", i+1]];
         
+        if (i == 0)
+        {
+            messageImageView.image = [UIImage imageNamed: [NSString stringWithFormat:@"login_onboard_%i.png", i+1]];
+        }
+        
+        else
+        {
+        messageImageView.image = [UIImage imageNamed: [NSString stringWithFormat:@"login_onboard_%i.jpg", i+1]];
+        }
 
         [self.scrollView addSubview:messageView];
         [messageView addSubview:messageImageView];
@@ -167,7 +175,7 @@
     UIView* container = [[UIView alloc] initWithFrame:newFrame];
     
     // Title label, Offset from the top of the scroll view;
-    newFrame.origin.y = IS_IPHONE ? 200.0f : 170.0f;
+    newFrame.origin.y = IS_IPHONE ? 205.0f : 170.0f;
     
     UIColor* shadowColor = [UIColor colorWithWhite:0.0f alpha:0.3f];
     
@@ -176,7 +184,7 @@
     if(title)
     {
         
-        UIFont* fontTitleToUse = [UIFont boldRockpackFontOfSize: IS_IPHONE ? 22.0f : 28.0f];
+        UIFont* fontTitleToUse = [UIFont boldRockpackFontOfSize: IS_IPHONE ? 19.0f : 28.0f];
         titleLabel.font = fontTitleToUse;
         titleLabel.numberOfLines = 0;
         titleLabel.textAlignment = NSTextAlignmentCenter;
