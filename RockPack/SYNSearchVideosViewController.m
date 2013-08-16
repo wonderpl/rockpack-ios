@@ -504,6 +504,8 @@
 {
     if (self.moreItemsToLoad == TRUE)
     {
+        self.loadingMoreContent = YES;
+        
         [self incrementRangeForNextRequest];
         
         __weak typeof(self) weakSelf = self;
@@ -678,6 +680,20 @@
     // this will remove the '+' from the videos that where selected
     [self.videoThumbnailCollectionView reloadData];
 }
+
+
+#pragma mark - Infinite scrolling
+
+- (void) scrollViewDidScroll: (UIScrollView *) scrollView
+{
+    // when reaching far right hand side, load a new page
+    if (scrollView.contentOffset.y >= scrollView.contentSize.height - scrollView.bounds.size.height - kLoadMoreFooterViewHeight
+        && self.isLoadingMoreContent == NO)
+    {
+        [self loadMoreVideos];
+    }
+}
+
 
 
 @end
