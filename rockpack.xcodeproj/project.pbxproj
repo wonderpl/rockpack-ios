@@ -141,7 +141,6 @@
 		01363EB5162FDEA600FFAA09 /* NSObject+Blocks.m in Sources */ = {isa = PBXBuildFile; fileRef = 01363EB4162FDEA600FFAA09 /* NSObject+Blocks.m */; };
 		01363EC116300F3A00FFAA09 /* SYNVideoThumbnailWideCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 01363EC016300F3A00FFAA09 /* SYNVideoThumbnailWideCell.xib */; };
 		01363F241630B81400FFAA09 /* SYNVideoThumbnailWideCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 01363F231630B81400FFAA09 /* SYNVideoThumbnailWideCell.m */; };
-		013865AC17B4F9AD00936C2B /* FacebookSDK.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 013865AB17B4F9AD00936C2B /* FacebookSDK.framework */; };
 		0141CC701771DA4A00B617A7 /* SampleSpec.m in Sources */ = {isa = PBXBuildFile; fileRef = 0141CC6F1771DA4A00B617A7 /* SampleSpec.m */; };
 		0142ED8C16B1B39D008694DA /* SYNProfileRootViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 0142ED8816B19FBE008694DA /* SYNProfileRootViewController.m */; };
 		01450AF5171DB4B5009F54CD /* ButtonAddSelected.png in Resources */ = {isa = PBXBuildFile; fileRef = 01450AF3171DB4B5009F54CD /* ButtonAddSelected.png */; };
@@ -1031,6 +1030,7 @@
 		BE2AE4D4176E689C00A753E3 /* ButtonBackCD~iphone.png in Resources */ = {isa = PBXBuildFile; fileRef = BE2AE4D0176E689B00A753E3 /* ButtonBackCD~iphone.png */; };
 		BE2AE4D5176E689C00A753E3 /* ButtonBackHighlightedCD@2x~iphone.png in Resources */ = {isa = PBXBuildFile; fileRef = BE2AE4D1176E689B00A753E3 /* ButtonBackHighlightedCD@2x~iphone.png */; };
 		BE2AE4D6176E689C00A753E3 /* ButtonBackHighlightedCD~iphone.png in Resources */ = {isa = PBXBuildFile; fileRef = BE2AE4D2176E689B00A753E3 /* ButtonBackHighlightedCD~iphone.png */; };
+		BE2AF28817BE33C700A20127 /* FacebookSDK.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = BE2AF28717BE33C700A20127 /* FacebookSDK.framework */; };
 		BE2D213F171C527B00B4B755 /* ButtonBackLabel.png in Resources */ = {isa = PBXBuildFile; fileRef = BE2D213B171C527A00B4B755 /* ButtonBackLabel.png */; };
 		BE2D2140171C527B00B4B755 /* ButtonBackLabel@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = BE2D213C171C527B00B4B755 /* ButtonBackLabel@2x.png */; };
 		BE2D2145171C5A0600B4B755 /* SYNSearchBoxViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = BE2D2144171C5A0600B4B755 /* SYNSearchBoxViewController.m */; };
@@ -1487,7 +1487,6 @@
 		01363EC016300F3A00FFAA09 /* SYNVideoThumbnailWideCell.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = SYNVideoThumbnailWideCell.xib; sourceTree = "<group>"; };
 		01363F221630B81400FFAA09 /* SYNVideoThumbnailWideCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SYNVideoThumbnailWideCell.h; sourceTree = "<group>"; };
 		01363F231630B81400FFAA09 /* SYNVideoThumbnailWideCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SYNVideoThumbnailWideCell.m; sourceTree = "<group>"; };
-		013865AB17B4F9AD00936C2B /* FacebookSDK.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; path = FacebookSDK.framework; sourceTree = "<group>"; };
 		0141CC6F1771DA4A00B617A7 /* SampleSpec.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SampleSpec.m; sourceTree = "<group>"; };
 		0142ED8716B19FBE008694DA /* SYNProfileRootViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SYNProfileRootViewController.h; sourceTree = "<group>"; };
 		0142ED8816B19FBE008694DA /* SYNProfileRootViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SYNProfileRootViewController.m; sourceTree = "<group>"; };
@@ -2496,6 +2495,7 @@
 		BE2AE4D0176E689B00A753E3 /* ButtonBackCD~iphone.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "ButtonBackCD~iphone.png"; sourceTree = "<group>"; };
 		BE2AE4D1176E689B00A753E3 /* ButtonBackHighlightedCD@2x~iphone.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "ButtonBackHighlightedCD@2x~iphone.png"; sourceTree = "<group>"; };
 		BE2AE4D2176E689B00A753E3 /* ButtonBackHighlightedCD~iphone.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "ButtonBackHighlightedCD~iphone.png"; sourceTree = "<group>"; };
+		BE2AF28717BE33C700A20127 /* FacebookSDK.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; path = FacebookSDK.framework; sourceTree = "<group>"; };
 		BE2D213B171C527A00B4B755 /* ButtonBackLabel.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = ButtonBackLabel.png; path = Assets/Images/ButtonBackLabel.png; sourceTree = "<group>"; };
 		BE2D213C171C527B00B4B755 /* ButtonBackLabel@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = "ButtonBackLabel@2x.png"; path = "Assets/Images/ButtonBackLabel@2x.png"; sourceTree = "<group>"; };
 		BE2D2143171C5A0600B4B755 /* SYNSearchBoxViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SYNSearchBoxViewController.h; sourceTree = "<group>"; };
@@ -2885,7 +2885,7 @@
 				0170717E165550A900A3C7C4 /* SystemConfiguration.framework in Frameworks */,
 				011C16861730043000CF50B9 /* Twitter.framework in Frameworks */,
 				010DEFD51629BDC40080F26B /* UIKit.framework in Frameworks */,
-				013865AC17B4F9AD00936C2B /* FacebookSDK.framework in Frameworks */,
+				BE2AF28817BE33C700A20127 /* FacebookSDK.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -2932,11 +2932,11 @@
 				0173E6CB1718231F00EEE76B /* libGoogleAnalytics.a */,
 				019824EE1629CC7600216900 /* libTestFlight.a */,
 				019824F11629CE1600216900 /* libz.dylib */,
+				BE2AF28717BE33C700A20127 /* FacebookSDK.framework */,
 				012502C416CA99710029C7C8 /* Accounts.framework */,
 				012502C216CA99630029C7C8 /* AdSupport.framework */,
 				011C16891730047300CF50B9 /* AssetsLibrary.framework */,
 				01363EB1162F5C8A00FFAA09 /* AudioToolbox.framework */,
-				013865AB17B4F9AD00936C2B /* FacebookSDK.framework */,
 				011CC67F164AA42300F02B6D /* AVFoundation.framework */,
 				016B97141770C3DE00892211 /* CFNetwork.framework */,
 				01E427BB1664C5F1009B941F /* CoreData.framework */,
@@ -7089,8 +7089,8 @@
 				CLANG_ENABLE_OBJC_ARC = YES;
 				CLANG_WARN_EMPTY_BODY = YES;
 				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
-				CODE_SIGN_IDENTITY = "iPhone Developer";
-				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
+				CODE_SIGN_IDENTITY = "iPhone Developer: Michael Michailidis (97299UW9E8)";
+				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer: Michael Michailidis (97299UW9E8)";
 				COPY_PHASE_STRIP = NO;
 				GCC_C_LANGUAGE_STANDARD = gnu99;
 				GCC_DYNAMIC_NO_PIC = NO;
@@ -7105,8 +7105,8 @@
 				GCC_WARN_UNUSED_VARIABLE = YES;
 				IPHONEOS_DEPLOYMENT_TARGET = 6.0;
 				ONLY_ACTIVE_ARCH = YES;
-				PROVISIONING_PROFILE = "";
-				"PROVISIONING_PROFILE[sdk=iphoneos*]" = "";
+				PROVISIONING_PROFILE = "364A554D-7325-4822-A986-CCAEFEAA6606";
+				"PROVISIONING_PROFILE[sdk=iphoneos*]" = "364A554D-7325-4822-A986-CCAEFEAA6606";
 				SDKROOT = iphoneos;
 				TARGETED_DEVICE_FAMILY = 2;
 			};
