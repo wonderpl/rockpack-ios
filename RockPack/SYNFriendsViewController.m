@@ -122,7 +122,7 @@ static char* association_key = "SYNFriendThumbnailCell to Friend";
         [self.allFriendsButton setBackgroundImage:backgroundImageHighlighted forState:UIControlStateHighlighted];
         
         self.searchFieldBackground.image = [[UIImage imageNamed: @"FieldSearch"]
-                                            resizableImageWithCapInsets: UIEdgeInsetsMake(0.0f,20.0f, 0.0f, 20.0f)];
+                                    resizableImageWithCapInsets: UIEdgeInsetsMake(0.0f,20.0f, 0.0f, 20.0f)];
         
         //Push the search slider out to the right.
         CGRect searchSliderFrame = self.searchSlider.frame;
