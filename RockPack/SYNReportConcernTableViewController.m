@@ -328,6 +328,11 @@ didSelectRowAtIndexPath: (NSIndexPath *) indexPath
     }
 }
 
+- (void) popoverControllerDidDismissPopover: (UIPopoverController *) popoverController
+{
+    self.cancelReportBlock();
+}
+
 - (void) reportConcern: (NSString *) reportString
 {
     [self.appDelegate.oAuthNetworkEngine reportConcernForUserId: self.appDelegate.currentOAuth2Credentials.userId

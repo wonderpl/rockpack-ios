@@ -1004,25 +1004,31 @@
              }];
 }
 
-- (IBAction) userTouchedReportConcernButton: (UIButton*) button
+- (IBAction) userTouchedReportConcernButton: (UIButton *) button
 {
     button.selected = !button.selected;
     
     if (button.selected)
     {
-        if(!self.reportConcernTableViewController)
+        if (!self.reportConcernTableViewController)
         {
             // Create out concerns table view controller
             self.reportConcernTableViewController = [[SYNReportConcernTableViewController alloc]
                                                      init];
+            
             VideoInstance *videoInstance = self.videoInstanceArray [self.currentSelectedIndex];
-            [self.reportConcernTableViewController reportConcernFromView:button inViewController:self popOverArrowDirection:UIPopoverArrowDirectionDown objectType:@"video" objectId:videoInstance.video.uniqueId completedBlock:^{
-                    button.selected = NO;
-                self.reportConcernTableViewController = nil;
-                }];
+            
+            [self.reportConcernTableViewController reportConcernFromView: button
+                                                        inViewController: self
+                                                   popOverArrowDirection: UIPopoverArrowDirectionDown
+                                                              objectType: @"video"
+                                                                objectId: videoInstance.video.uniqueId
+                                                          completedBlock: ^{
+                                                              button.selected = NO;
+                                                              self.reportConcernTableViewController = nil;
+                                                          }];
         }
     }
-
 }
 
 
