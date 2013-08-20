@@ -7,22 +7,25 @@
 //
 
 #import "AppConstants.h"
-#import "SYNDeviceManager.h"
 #import "SYNAppDelegate.h"
+#import "SYNDeviceManager.h"
 #import "SYNNetworkEngine.h"
+#import "SYNTouchGestureRecognizer.h"
 #import "SYNVideoThumbnailWideCell.h"
 #import "UIFont+SYNFont.h"
-#import <QuartzCore/QuartzCore.h>
+#import "UIImage+Tint.h"
 #import "UIImageView+WebCache.h"
+#import <QuartzCore/QuartzCore.h>
 
 @interface SYNVideoThumbnailWideCell () <UIGestureRecognizerDelegate>
 
 @property (nonatomic, strong) IBOutlet UIButton *channelButton;
 @property (nonatomic, strong) IBOutlet UIButton *profileButton;
-@property (nonatomic, strong) IBOutlet UIView *videoPlaceholder;
-@property (nonatomic, strong) IBOutlet UIImageView *highlightedBackgroundView;
+@property (nonatomic, strong) IBOutlet UIImageView *lowlightImageView;
 @property (nonatomic, strong) IBOutlet UILabel* byLabel;
 @property (nonatomic, strong) IBOutlet UILabel* fromLabel;
+@property (nonatomic, strong) IBOutlet UIView *videoPlaceholder;
+@property (nonatomic, strong) SYNTouchGestureRecognizer *touch;
 @property (nonatomic, strong) UILongPressGestureRecognizer *longPress;
 @property (nonatomic, strong) UITapGestureRecognizer *tap;
 
@@ -49,7 +52,6 @@
     self.youTubeUserLabel.font = [UIFont rockpackFontOfSize: self.youTubeUserLabel.font.pointSize];
     self.dateAddedLabel.font = [UIFont rockpackFontOfSize: self.dateAddedLabel.font.pointSize];
     self.durationLabel.font = [UIFont rockpackFontOfSize: self.durationLabel.font.pointSize];
-    self.highlightedBackgroundView.hidden = TRUE;
     
     self.displayMode = kVideoThumbnailDisplayModeChannel; // default is channel
     
@@ -68,6 +70,13 @@
                                                        action: @selector(showVideo:)];
     self.tap.delegate = self;
     [self.videoPlaceholder addGestureRecognizer: self.tap];
+    
+    // Touch for highlighting cells when the user touches them (like UIButton)
+    self.touch = [[SYNTouchGestureRecognizer alloc] initWithTarget: self
+                                                            action: @selector(showGlossLowlight:)];
+    
+    self.touch.delegate = self;
+    [self addGestureRecognizer: self.touch];
 }
 
 
@@ -195,7 +204,32 @@
 }
 
 
-#pragma mark - Gesture regognizer callbacks
+#pragma mark - Gesture regognizer support
+
+// This is used to lowlight the gloss image on touch
+- (void) showGlossLowlight: (SYNTouchGestureRecognizer *) recognizer
+{
+    switch (recognizer.state)
+    {
+        case UIGestureRecognizerStateBegan:
+        {
+            // Set lowlight tint
+            UIImage *glossImage = [UIImage imageNamed: @"GlossVideo.png"];
+            UIImage *lowlightImage = [glossImage tintedImageUsingColor: [UIColor colorWithWhite: 0.0
+                                                                                          alpha: 0.3]];
+            self.lowlightImageView.image = lowlightImage;
+            break;
+        }
+            
+        case UIGestureRecognizerStateEnded:
+        case UIGestureRecognizerStateCancelled:
+        {
+            self.lowlightImageView.image = [UIImage imageNamed: @"GlossVideo.png"];
+        }
+        default:
+            break;
+    }
+}
 
 - (void) showVideo: (UILongPressGestureRecognizer *) recognizer
 {

@@ -67,7 +67,7 @@
 								<int key="NSvFlags">292</int>
 								<string key="NSFrameSize">{249, 140}</string>
 								<reference key="NSSuperview" ref="301134111"/>
-								<reference key="NSNextKeyView" ref="716427388"/>
+								<reference key="NSNextKeyView" ref="150038354"/>
 								<string key="NSReuseIdentifierKey">_NS:9</string>
 								<object class="NSColor" key="IBUIBackgroundColor" id="456240611">
 									<int key="NSColorSpace">3</int>
@@ -83,7 +83,7 @@
 								<int key="NSvFlags">292</int>
 								<string key="NSFrameSize">{249, 140}</string>
 								<reference key="NSSuperview" ref="301134111"/>
-								<reference key="NSNextKeyView" ref="596320206"/>
+								<reference key="NSNextKeyView" ref="716427388"/>
 								<string key="NSReuseIdentifierKey">_NS:9</string>
 								<reference key="IBUIBackgroundColor" ref="456240611"/>
 								<bool key="IBUIUserInteractionEnabled">NO</bool>
@@ -147,7 +147,7 @@
 								<int key="NSvFlags">-2147483356</int>
 								<string key="NSFrameSize">{64, 65}</string>
 								<reference key="NSSuperview" ref="301134111"/>
-								<reference key="NSNextKeyView" ref="150038354"/>
+								<reference key="NSNextKeyView" ref="596320206"/>
 								<string key="NSReuseIdentifierKey">_NS:9</string>
 								<reference key="IBUIBackgroundColor" ref="456240611"/>
 								<bool key="IBUIAutoresizesSubviews">NO</bool>
@@ -270,6 +270,14 @@
 					</object>
 					<int key="connectionID">66</int>
 				</object>
+				<object class="IBConnectionRecord">
+					<object class="IBCocoaTouchOutletConnection" key="connection">
+						<string key="label">lowlightImageView</string>
+						<reference key="source" ref="274337159"/>
+						<reference key="destination" ref="150038354"/>
+					</object>
+					<int key="connectionID">69</int>
+				</object>
 			</array>
 			<object class="IBMutableOrderedSet" key="objectRecords">
 				<array key="orderedObjects">
@@ -358,7 +366,7 @@
 			<nil key="activeLocalization"/>
 			<dictionary class="NSMutableDictionary" key="localizations"/>
 			<nil key="sourceID"/>
-			<int key="maxID">67</int>
+			<int key="maxID">69</int>
 		</object>
 		<object class="IBClassDescriber" key="IBDocument.Classes"/>
 		<int key="IBDocument.localizationMode">0</int>

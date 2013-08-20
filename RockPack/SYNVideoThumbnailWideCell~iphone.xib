@@ -2,10 +2,10 @@
 <archive type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="8.00">
 	<data>
 		<int key="IBDocument.SystemTarget">1552</int>
-		<string key="IBDocument.SystemVersion">12C3006</string>
+		<string key="IBDocument.SystemVersion">12E55</string>
 		<string key="IBDocument.InterfaceBuilderVersion">3084</string>
-		<string key="IBDocument.AppKitVersion">1187.34</string>
-		<string key="IBDocument.HIToolboxVersion">625.00</string>
+		<string key="IBDocument.AppKitVersion">1187.39</string>
+		<string key="IBDocument.HIToolboxVersion">626.00</string>
 		<object class="NSMutableDictionary" key="IBDocument.PluginVersions">
 			<string key="NS.key.0">com.apple.InterfaceBuilder.IBCocoaTouchPlugin</string>
 			<string key="NS.object.0">2083</string>
@@ -82,7 +82,7 @@
 								<string key="NSFrame">{{0, 47}, {310, 174}}</string>
 								<reference key="NSSuperview" ref="902865727"/>
 								<reference key="NSWindow"/>
-								<reference key="NSNextKeyView" ref="876796011"/>
+								<reference key="NSNextKeyView" ref="1006050436"/>
 								<string key="NSReuseIdentifierKey">_NS:9</string>
 								<reference key="IBUIBackgroundColor" ref="277646798"/>
 								<bool key="IBUIAutoresizesSubviews">NO</bool>
@@ -101,7 +101,7 @@
 								<string key="NSFrame">{{0, 47}, {310, 174}}</string>
 								<reference key="NSSuperview" ref="902865727"/>
 								<reference key="NSWindow"/>
-								<reference key="NSNextKeyView" ref="248549610"/>
+								<reference key="NSNextKeyView" ref="876796011"/>
 								<string key="NSReuseIdentifierKey">_NS:9</string>
 								<object class="NSColor" key="IBUIBackgroundColor">
 									<int key="NSColorSpace">1</int>
@@ -322,7 +322,7 @@
 										<string key="NSFrame">{{228, 13}, {72, 21}}</string>
 										<reference key="NSSuperview" ref="616018756"/>
 										<reference key="NSWindow"/>
-										<reference key="NSNextKeyView" ref="1006050436"/>
+										<reference key="NSNextKeyView" ref="248549610"/>
 										<string key="NSReuseIdentifierKey">_NS:9</string>
 										<reference key="IBUIBackgroundColor" ref="277646798"/>
 										<bool key="IBUIAutoresizesSubviews">NO</bool>
@@ -388,6 +388,7 @@
 								<string key="NSFrame">{{8, 198}, {292, 21}}</string>
 								<reference key="NSSuperview" ref="902865727"/>
 								<reference key="NSWindow"/>
+								<reference key="NSNextKeyView"/>
 								<string key="NSReuseIdentifierKey">_NS:9</string>
 								<object class="NSColor" key="IBUIBackgroundColor">
 									<int key="NSColorSpace">1</int>
@@ -564,6 +565,14 @@
 					</object>
 					<int key="connectionID">135</int>
 				</object>
+				<object class="IBConnectionRecord">
+					<object class="IBCocoaTouchOutletConnection" key="connection">
+						<string key="label">lowlightImageView</string>
+						<reference key="source" ref="362352250"/>
+						<reference key="destination" ref="170136905"/>
+					</object>
+					<int key="connectionID">136</int>
+				</object>
 			</array>
 			<object class="IBMutableOrderedSet" key="objectRecords">
 				<array key="orderedObjects">
@@ -628,7 +637,7 @@
 						<int key="objectID">9</int>
 						<reference key="object" ref="170136905"/>
 						<reference key="parent" ref="362352250"/>
-						<string key="objectName">Image View - Video Thumbnail Gloss</string>
+						<string key="objectName">Image View - Gloss</string>
 					</object>
 					<object class="IBObjectRecord">
 						<int key="objectID">10</int>
@@ -743,7 +752,7 @@
 			<nil key="activeLocalization"/>
 			<dictionary class="NSMutableDictionary" key="localizations"/>
 			<nil key="sourceID"/>
-			<int key="maxID">135</int>
+			<int key="maxID">136</int>
 		</object>
 		<object class="IBClassDescriber" key="IBDocument.Classes">
 			<array class="NSMutableArray" key="referencedPartialClassDescriptions">
@@ -762,6 +771,7 @@
 						<string key="durationLabel">UILabel</string>
 						<string key="fromLabel">UILabel</string>
 						<string key="highlightedBackgroundView">UIImageView</string>
+						<string key="lowlightImageView">UIImageView</string>
 						<string key="numberOfViewLabel">UILabel</string>
 						<string key="profileButton">UIButton</string>
 						<string key="usernameLabel">UILabel</string>
@@ -814,6 +824,10 @@
 						</object>
 						<object class="IBToOneOutletInfo" key="highlightedBackgroundView">
 							<string key="name">highlightedBackgroundView</string>
+							<string key="candidateClassName">UIImageView</string>
+						</object>
+						<object class="IBToOneOutletInfo" key="lowlightImageView">
+							<string key="name">lowlightImageView</string>
 							<string key="candidateClassName">UIImageView</string>
 						</object>
 						<object class="IBToOneOutletInfo" key="numberOfViewLabel">
