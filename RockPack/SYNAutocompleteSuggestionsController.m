@@ -33,6 +33,7 @@
                                      blue: (187.0f/255.0f)
                                     alpha: (1.0f)];
         
+        
         tableBGColor = [UIColor rockpacLedColor];
         
         self.title = @"Suggestions";
@@ -71,6 +72,8 @@
     [wordsArray addObjectsFromArray: words];
     
     [self.tableView reloadData];
+    
+    
 }
 
 
@@ -81,6 +84,7 @@
     [self.tableView layoutIfNeeded];
     return [self.tableView contentSize].height;
 }
+
 
 
 - (NSInteger) tableView: (UITableView *) tableView
