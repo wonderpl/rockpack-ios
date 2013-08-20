@@ -242,6 +242,8 @@
 
 #pragma mark - Gesture recognizers for arc menu and show video
 
+
+
 // This is used to lowlight the gloss image on touch
 - (void) showGlossLowlight: (SYNTouchGestureRecognizer *) recognizer
 {

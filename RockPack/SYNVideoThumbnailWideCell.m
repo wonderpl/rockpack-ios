@@ -206,6 +206,19 @@
 
 #pragma mark - Gesture regognizer support
 
+
+// Required to pass through events to controls overlaid on view with gesture recognizers
+- (BOOL) gestureRecognizer: (UIGestureRecognizer *) gestureRecognizer shouldReceiveTouch: (UITouch *) touch
+{
+    if ([touch.view isKindOfClass: [UIControl class]])
+    {
+        // we touched a button, slider, or other UIControl
+        return NO; // ignore the touch
+    }
+    
+    return YES; // handle the touch
+}
+
 // This is used to lowlight the gloss image on touch
 - (void) showGlossLowlight: (SYNTouchGestureRecognizer *) recognizer
 {
