@@ -785,12 +785,12 @@ typedef void(^FeedDataErrorBlock)(void);
         else
             cell.messageLabel.text = feedItem.title;
         
-        
+//        NSLog(@"videoInstance: \n\n============== \n\n%@ \n\n============== \n\n%@ \n\n============== \n\n%@ \n\n=============", videoInstance, videoInstance.video.starCount, videoInstance.starrers);
         [cell setSupplementaryMessageWithDictionary:@{  @"star_count": videoInstance.video ? videoInstance.video.starCount : @0,
-                                                        @"starrers": [videoInstance.starrers array]  }];
+         @"starrers": videoInstance ? [videoInstance.starrers array] : [NSArray array] }];
         
         [cell setCoverImagesAndTitlesWithArray:@[@{     @"image": videoInstance.video ? videoInstance.video.thumbnailURL : @"",
-                                                        @"title" : videoInstance.title  }]];
+         @"title" : videoInstance ? videoInstance.title : @"" }]];
         
         channelOwner = videoInstance.channel.channelOwner; // heuristic, get the last video instance, all should have the same channelOwner however
         
