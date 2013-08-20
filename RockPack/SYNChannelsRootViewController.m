@@ -203,7 +203,7 @@
         NSString *message = NSLocalizedString(@"onboarding_channels", nil);
         
         CGFloat fontSize = IS_IPAD ? 16.0 : 14.0;
-        CGSize size = IS_IPAD ? CGSizeMake(310.0, 64.0) : CGSizeMake(210.0, 60.0);
+        CGSize size = IS_IPAD ? CGSizeMake(310.0, 64.0) : CGSizeMake(240.0, 60.0);
         SYNOnBoardingPopoverView *subscribePopover = [SYNOnBoardingPopoverView withMessage: message
                                                                                   withSize: size
                                                                                andFontSize: fontSize

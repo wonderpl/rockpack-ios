@@ -117,7 +117,7 @@
         self.autopostView.hidden = YES;
     }
     
-    
+
 }
 
 
@@ -467,7 +467,7 @@
                                             duration: duration];
     
     CGRect autopostTitleFrame = self.autopostTitleLabel.frame;
-    autopostTitleFrame.origin.x = self.autopostYesButton.frame.origin.x - 10.0f - self.autopostTitleLabel.frame.size.width;
+    autopostTitleFrame.origin.x = self.autopostYesButton.frame.origin.x - self.autopostTitleLabel.frame.size.width -10;
     self.autopostTitleLabel.frame = autopostTitleFrame;
     
     [self packViewForInterfaceOrientation:toInterfaceOrientation];
@@ -477,8 +477,14 @@
 {
     CGRect collectionFrame = self.channelThumbnailCollectionView.frame;
     
+    CGRect autopostViewFrame = self.autopostView.frame;
+    autopostViewFrame.origin.y = self.view.frame.size.height  - autopostViewFrame.size.height - 15;
+    self.autopostView.frame = autopostViewFrame;
+    
     if (IS_IPAD)
     {
+        
+        
         if (UIInterfaceOrientationIsPortrait(interfaceOrientation))
         {
             collectionFrame.size.width = 580.0;
@@ -499,12 +505,6 @@
     CGRect selfFrame = self.view.frame;
     selfFrame.size = [SYNDeviceManager.sharedInstance currentScreenSize];
     self.view.frame = selfFrame;
-    
-    
-    CGRect autopostViewFrame = self.autopostView.frame;
-    
-    autopostViewFrame.origin.y = self.view.frame.size.height  - autopostViewFrame.size.height;
-    self.autopostView.frame = autopostViewFrame;
     
 }
 

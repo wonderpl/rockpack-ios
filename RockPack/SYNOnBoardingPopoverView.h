@@ -9,7 +9,7 @@
 #import <UIKit/UIKit.h>
 #import "AppConstants.h"
 
-typedef void(^PopoverAction)(void);
+typedef void(^PopoverAction)(id);
 
 @interface SYNOnBoardingPopoverView : UIView {
     PopoverAction a;

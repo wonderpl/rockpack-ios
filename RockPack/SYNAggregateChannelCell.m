@@ -13,6 +13,7 @@
 
 @property (nonatomic, strong) UIView *buttonContainerView;
 @property (nonatomic, strong) UIView *labelsContainerView;
+@property (nonatomic) CGRect originalImageContainerRect;
 
 @end
 
@@ -57,6 +58,7 @@
         self.labelsContainerView = nil;
     }
     
+    self.imageContainer.frame = self.originalImageContainerRect;
     self.coverButton.hidden = NO;
     self.mainTitleLabel.hidden = NO;
 }
@@ -68,6 +70,8 @@
     {
         return;
     }
+    
+    self.originalImageContainerRect = self.imageContainer.frame;
     
     for (UIImageView *imageView in self.imageContainer.subviews) // there should only be UIImageView instances
     {
@@ -107,15 +111,20 @@
     if (count == 2 || count == 3)
     {
         CGRect shrinkingSelfFrame = self.frame;
-        shrinkingSelfFrame.size.height = 149.0f;
+        shrinkingSelfFrame.size.height = IS_IPAD ? 149.0f : 182.0f;
         
         self.frame = shrinkingSelfFrame;
         
         CGRect smallerCellFrame = self.imageContainer.frame; // the 2 - 3 options have a smaller total frame
-        smallerCellFrame.size.height = 149.0f;
+        smallerCellFrame.size.height = IS_IPAD ? shrinkingSelfFrame.size.height : 155.0f;
+        
+        if(IS_IPHONE) {
+            smallerCellFrame.origin.y = 54.0f;
+        }
         self.imageContainer.frame = smallerCellFrame;
         
         containerRect.size = self.imageContainer.frame.size;
+        // container.origin = CGPointZero from above -> {{0, 0}, {310, 310}}
         
         self.buttonContainerView = [[UIView alloc] initWithFrame: self.imageContainer.frame];
         
@@ -130,6 +139,7 @@
                aboveSubview: self.buttonContainerView];
         
         containerRect.size.width = containerRect.size.width / 2.0;
+        
         
         self.coverButton.hidden = YES;
         self.mainTitleLabel.hidden = YES;
@@ -154,7 +164,7 @@
             
             button = [UIButton buttonWithType: UIButtonTypeCustom];
             button.backgroundColor = [UIColor clearColor];
-            button.frame = containerRect;
+            button.frame = CGRectMake(containerRect.origin.x, 0.0f, containerRect.size.width, containerRect.size.height);
             [button setImage: [UIImage imageNamed: @"channelFeedCoverFourth"]
                     forState: UIControlStateNormal];
             
@@ -170,7 +180,13 @@
                                          constrainedToSize: CGSizeMake(containerRect.size.width, 500.0)
                                              lineBreakMode: label.lineBreakMode];
 
-            label.frame = CGRectMake(containerRect.origin.x + 6.0, (containerRect.origin.y + containerRect.size.height) - (expectedLabelSize.height), expectedLabelSize.width, expectedLabelSize.height);
+            label.frame = CGRectMake(containerRect.origin.x + 6.0,
+                                     (containerRect.size.height) - (expectedLabelSize.height) - (IS_IPHONE ? 28.0f : 0.0f),
+                                     expectedLabelSize.width,
+                                     expectedLabelSize.height);
+            
+            
+            
             label.text = channelTitle;
             
             [self.labelsContainerView addSubview: label];
@@ -186,7 +202,9 @@
         self.coverButton.hidden = YES;
         self.mainTitleLabel.hidden = YES;
 
-        containerRect.size = self.imageContainer.frame.size;
+        containerRect.size = self.imageContainer.frame.size; // {{0, 0}, {298, 298}} (IPAD),
+        
+        
         
         // container.origin = CGPointZero from above -> {{0, 0}, {310, 310}}
         

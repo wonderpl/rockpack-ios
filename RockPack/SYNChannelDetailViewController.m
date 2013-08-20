@@ -992,6 +992,7 @@
     
     VideoInstance *videoInstance = self.channel.videoInstances [indexPath.item];
     
+    videoInstance.video.starredByUserValue = self.channel.favouritesValue;
     
     [videoThumbnailCell.imageView
      setImageWithURL: [NSURL URLWithString: videoInstance.video.thumbnailURL]
@@ -1019,6 +1020,16 @@
     return cell;
 }
 
+- (IBAction) toggleStarAtIndexPath: (NSIndexPath *) indexPath
+{
+    [super toggleStarAtIndexPath:indexPath];
+    
+    VideoInstance *videoInstance = [self videoInstanceForIndexPath: indexPath];
+    
+    [self.channel.videoInstancesSet removeObject:videoInstance];
+    
+    [self.videoThumbnailCollectionView reloadData];
+}
 
 - (UICollectionReusableView *) collectionView: (UICollectionView *) collectionView
             viewForSupplementaryElementOfKind: (NSString *) kind
@@ -2596,7 +2607,7 @@ shouldChangeTextInRange: (NSRange) range
                                                                              withDirection: direction];
         
         __weak SYNChannelDetailViewController *wself = self;
-        subscribePopover.action = ^{
+        subscribePopover.action = ^(id obj){
             [wself subscribeButtonTapped: self.subscribeButton]; // simulate press
         };
         
@@ -2619,19 +2630,25 @@ shouldChangeTextInRange: (NSRange) range
         CGSize size = IS_IPAD ? CGSizeMake(240.0, 86.0) : CGSizeMake(200.0, 82.0);
         
         
-        CGRect rectToPointTo = [self.view convertRect: randomCell.addItButton.frame
+        CGRect rectToPointTo = [self.view convertRect: randomCell.frame
                                              fromView: randomCell];
         
-        rectToPointTo = CGRectInset(rectToPointTo, 10.0, 10.0);
+        rectToPointTo = CGRectOffset(rectToPointTo, -5, 0);
         SYNOnBoardingPopoverView *addToChannelPopover = [SYNOnBoardingPopoverView withMessage: message
                                                                                      withSize: size
                                                                                   andFontSize: fontSize
                                                                                    pointingTo: rectToPointTo
                                                                                 withDirection: PointingDirectionDown];
-        
-        __weak SYNChannelDetailViewController *wself = self;
-        addToChannelPopover.action = ^{
-            [wself addItToChannelPresssed: nil];
+      
+        //__weak SYNChannelDetailViewController *wself = self;
+        addToChannelPopover.action = ^(id obj){
+            
+            if([obj isKindOfClass:[UILongPressGestureRecognizer class]])
+            {
+                [self arcMenuUpdateState:obj forCell:randomCell];
+            }
+            
+            
         };
         
         [appDelegate.onBoardingQueue addPopover: addToChannelPopover];
@@ -3349,7 +3366,8 @@ shouldChangeTextInRange: (NSRange) range
         CGRect rectToPointTo = [self.view  convertRect: randomCell.frame
                                               fromView: randomCell];
         
-        rectToPointTo = CGRectInset(rectToPointTo, 10.0, 10.0);
+        rectToPointTo = CGRectOffset(rectToPointTo, -5, 0);
+        //randomCell.addItButton.hidden = YES;
         
         SYNOnBoardingPopoverView *addToChannelPopover = [SYNOnBoardingPopoverView withMessage: message
                                                                                      withSize: size
@@ -3357,9 +3375,9 @@ shouldChangeTextInRange: (NSRange) range
                                                                                    pointingTo: rectToPointTo
                                                                                 withDirection: PointingDirectionDown];
         
-        __weak SYNChannelDetailViewController *wself = self;
-        addToChannelPopover.action = ^{
-            [wself addItToChannelPresssed: nil];
+        //__weak SYNChannelDetailViewController *wself = self;
+        addToChannelPopover.action = ^(id obj){
+            //[wself addItToChannelPresssed: nil];
         };
         
         [appDelegate.onBoardingQueue addPopover: addToChannelPopover];

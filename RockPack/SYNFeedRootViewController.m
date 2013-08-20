@@ -48,6 +48,7 @@ typedef void(^FeedDataErrorBlock)(void);
 @property (nonatomic, strong) NSDictionary* feedItemByPosition;
 @property (nonatomic, strong) UICollectionView* feedCollectionView;
 @property (nonatomic, strong) NSArray* videosInOrderArray;
+@property (nonatomic) BOOL togglingInProgress;
 
 @end
 
@@ -240,6 +241,8 @@ typedef void(^FeedDataErrorBlock)(void);
     
     self.feedCollectionView.scrollsToTop = YES;
     
+    self.togglingInProgress = NO;
+    
     // if the user has not pressed load more
     if (self.dataRequestRange.location == 0)
     {
@@ -266,7 +269,7 @@ typedef void(^FeedDataErrorBlock)(void);
         NSString* message = IS_IPAD ? NSLocalizedString(@"onboarding_feed", nil) : NSLocalizedString(@"onboarding_feed_iphone", nil);
         
         CGFloat fontSize = IS_IPAD ? 16.0 : 14.0 ;
-        CGSize size = IS_IPAD ? CGSizeMake(340.0, 70.0) : CGSizeMake(260.0, 80.0);
+        CGSize size = IS_IPAD ? CGSizeMake(340.0, 84.0) : CGSizeMake(260.0, 80.0);
         SYNOnBoardingPopoverView* subscribePopover = [SYNOnBoardingPopoverView withMessage:message
                                                                                   withSize:size
                                                                                andFontSize:fontSize
@@ -393,7 +396,7 @@ typedef void(^FeedDataErrorBlock)(void);
                                            }
                                            
                                            
-                                           [wself fetchedAndDisplayFeedItems];
+                                           [wself fetchAndDisplayFeedItems];
                                            
                                            
                                            wself.loadingMoreContent = NO;
@@ -429,6 +432,10 @@ typedef void(^FeedDataErrorBlock)(void);
 
 - (void) clearedLocationBoundData
 {
+    // to clear
+    
+    [self fetchAndDisplayFeedItems];
+    
     [self.feedCollectionView reloadData];
     
     [self loadAndUpdateFeedData];
@@ -473,7 +480,7 @@ typedef void(^FeedDataErrorBlock)(void);
 
 #pragma mark - Fetch Feed Data
 
-- (void) fetchedAndDisplayFeedItems
+- (void) fetchAndDisplayFeedItems
 {
     
     [self fetchVideoItems];
@@ -658,8 +665,9 @@ typedef void(^FeedDataErrorBlock)(void);
     {
         if(feedItem.itemTypeValue == FeedItemTypeAggregate)
         {
-            if(feedItem.itemCountValue == 2)
-                return CGSizeMake(cellWidth, 149.0f);
+           
+            if(feedItem.itemCountValue == 2 || feedItem.itemCountValue == 3)
+                return CGSizeMake(cellWidth, IS_IPHONE ? 182.0f : 149.0f);
         }
         return CGSizeMake(cellWidth, IS_IPHONE ? 363.0f : 298.0f);
     }
@@ -681,7 +689,7 @@ typedef void(^FeedDataErrorBlock)(void);
         if (self.selectedVideoCell)
         {
            
-            rectToPointTo = [self.view convertRect:self.selectedVideoCell.addButton.frame fromView:self.selectedVideoCell];
+            rectToPointTo = [self.view convertRect:self.selectedVideoCell.frame fromView:self.selectedVideoCell];
             if (rectToPointTo.origin.y < [[SYNDeviceManager sharedInstance] currentScreenHeight] * 0.5)
                 directionToPointTo = PointingDirectionUp;
             
@@ -693,9 +701,9 @@ typedef void(^FeedDataErrorBlock)(void);
                                                                              withDirection:directionToPointTo];
         
         
-        __weak SYNFeedRootViewController* wself = self;
-        addToChannelPopover.action = ^{
-            [wself videoAddButtonTapped:wself.selectedVideoCell.addButton];
+        //__weak SYNFeedRootViewController* wself = self;
+        addToChannelPopover.action = ^(id obj){
+           // [wself videoAddButtonTapped:wself.selectedVideoCell.addButton];
         };
         [appDelegate.onBoardingQueue addPopover:addToChannelPopover];
         
@@ -738,6 +746,7 @@ typedef void(^FeedDataErrorBlock)(void);
                          
                      }];
 }
+
 
 - (UICollectionViewCell *) collectionView: (UICollectionView *) cv
                    cellForItemAtIndexPath: (NSIndexPath *) indexPath
@@ -1196,6 +1205,8 @@ typedef void(^FeedDataErrorBlock)(void);
 - (IBAction) toggleStarAtIndexPath: (NSIndexPath *) indexPath
 {
     // Bit of a hack, but find the button in the cell
+
+    
     SYNAggregateVideoCell *cell = (SYNAggregateVideoCell *)[self.feedCollectionView cellForItemAtIndexPath: indexPath];
     
     UIButton *heartButton = cell.heartButton;
@@ -1206,6 +1217,9 @@ typedef void(^FeedDataErrorBlock)(void);
 
 -(void) likeButtonPressed : (UIButton *) button
 {
+    if(self.togglingInProgress)
+        return;
+    
     id<GAITracker> tracker = [GAI sharedInstance].defaultTracker;
     
     [tracker sendEventWithCategory: @"uiAction"
@@ -1220,6 +1234,7 @@ typedef void(^FeedDataErrorBlock)(void);
     VideoInstance* videoInstance = [self videoInstanceAtCoverOfFeedItem:[self feedItemFromControl:button]];
     if(!videoInstance)
         return;
+    self.togglingInProgress = YES;
     
     // int starredIndex = self.currentSelectedIndex;
     [appDelegate.oAuthNetworkEngine recordActivityForUserId: appDelegate.currentUser.uniqueId
@@ -1228,7 +1243,7 @@ typedef void(^FeedDataErrorBlock)(void);
                                           completionHandler: ^(id response) {
                                               
                                               
-                                              
+                                              self.togglingInProgress = NO;
                                               
                                               
                                               if (didStar)
@@ -1274,6 +1289,8 @@ typedef void(^FeedDataErrorBlock)(void);
                                               button.enabled = YES;
                                               
                                           } errorHandler: ^(id error) {
+                                              
+                                                    self.togglingInProgress = NO;
                                               
                                                    DebugLog(@"Could not star video");
                                               

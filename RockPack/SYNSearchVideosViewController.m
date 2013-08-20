@@ -504,6 +504,8 @@
 {
     if (self.moreItemsToLoad == TRUE)
     {
+        self.loadingMoreContent = YES;
+        
         [self incrementRangeForNextRequest];
         
         __weak typeof(self) weakSelf = self;
@@ -576,7 +578,7 @@
         
         if (cell)
         {
-            rectToPointTo = [self.view convertRect: cell.addItButton.frame
+            rectToPointTo = [self.view convertRect: cell.frame
                                           fromView: cell];
             
             if (rectToPointTo.origin.y < [[SYNDeviceManager sharedInstance] currentScreenHeight] * 0.5)
@@ -594,10 +596,10 @@
                                                                                 withDirection: directionToPointTo];
         
         
-        __weak SYNSearchVideosViewController *wself = self;
+        //__weak SYNSearchVideosViewController *wself = self;
         
-        addToChannelPopover.action = ^{
-            [wself videoAddButtonTapped: cell.addItButton];
+        addToChannelPopover.action = ^(id obj){
+           // [wself videoAddButtonTapped: cell.addItButton];
         };
         [appDelegate.onBoardingQueue addPopover: addToChannelPopover];
         
@@ -678,6 +680,20 @@
     // this will remove the '+' from the videos that where selected
     [self.videoThumbnailCollectionView reloadData];
 }
+
+
+#pragma mark - Infinite scrolling
+
+- (void) scrollViewDidScroll: (UIScrollView *) scrollView
+{
+    // when reaching far right hand side, load a new page
+    if (scrollView.contentOffset.y >= scrollView.contentSize.height - scrollView.bounds.size.height - kLoadMoreFooterViewHeight
+        && self.isLoadingMoreContent == NO)
+    {
+        [self loadMoreVideos];
+    }
+}
+
 
 
 @end
