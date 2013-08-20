@@ -76,7 +76,7 @@
                                                             action: @selector(showGlossLowlight:)];
     
     self.touch.delegate = self;
-    [self addGestureRecognizer: self.touch];
+    [self.videoPlaceholder addGestureRecognizer: self.touch];
 }
 
 

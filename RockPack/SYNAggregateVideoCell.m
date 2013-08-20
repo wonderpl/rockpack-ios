@@ -9,15 +9,18 @@
 #import "ChannelOwner.h"
 #import "SYNAggregateVideoCell.h"
 #import "SYNAppDelegate.h"
+#import "SYNTouchGestureRecognizer.h"
 #import "UIColor+SYNColor.h"
+#import "UIImage+Tint.h"
 
 
 @interface SYNAggregateVideoCell () <UIGestureRecognizerDelegate>
 
 @property (nonatomic, strong) IBOutlet UILabel* likeLabel;
-@property (nonatomic, strong) IBOutlet UIView *videoPlaceholderView;
+@property (nonatomic, strong) IBOutlet UIImageView *lowlightImageView;
 @property (nonatomic, strong) UILongPressGestureRecognizer *longPress;
 @property (nonatomic, strong) UITapGestureRecognizer *tap;
+@property (nonatomic, strong) SYNTouchGestureRecognizer *touch;
 
 @end
 
@@ -44,7 +47,7 @@
     self.longPress = [[UILongPressGestureRecognizer alloc] initWithTarget: self
                                                                    action: @selector(showMenu:)];
     self.longPress.delegate = self;
-    [self.videoPlaceholderView addGestureRecognizer: self.longPress];
+    [self.lowlightImageView addGestureRecognizer: self.longPress];
 #endif
     
     
@@ -52,7 +55,14 @@
     self.tap = [[UITapGestureRecognizer alloc] initWithTarget: self
                                                        action: @selector(showVideo:)];
     self.tap.delegate = self;
-    [self.videoPlaceholderView addGestureRecognizer: self.tap];
+    [self.lowlightImageView addGestureRecognizer: self.tap];
+    
+    // Touch for highlighting cells when the user touches them (like UIButton)
+    self.touch = [[SYNTouchGestureRecognizer alloc] initWithTarget: self
+                                                            action: @selector(showGlossLowlight:)];
+    
+    self.touch.delegate = self;
+    [self.lowlightImageView addGestureRecognizer: self.touch];
 }
 
 
@@ -133,7 +143,6 @@
     {
         if (IS_IPAD)
         {
-//            self.likesNumberLabel.text = likesString; // @"0 likes"
             self.likesNumberLabel.text = @"0";
             self.likeLabel.hidden = YES;
         }
@@ -232,6 +241,33 @@
 
 
 #pragma mark - Gesture recognizers for arc menu and show video
+
+// This is used to lowlight the gloss image on touch
+- (void) showGlossLowlight: (SYNTouchGestureRecognizer *) recognizer
+{
+    UIImage *glossImage = [UIImage imageNamed: @"GlossFeedVideo.png"];
+    
+    switch (recognizer.state)
+    {
+        case UIGestureRecognizerStateBegan:
+        {
+            // Set lowlight tint
+            UIImage *lowlightImage = [glossImage tintedImageUsingColor: [UIColor colorWithWhite: 0.0
+                                                                                          alpha: 0.3]];
+            self.lowlightImageView.image = lowlightImage;
+            break;
+        }
+            
+        case UIGestureRecognizerStateEnded:
+        case UIGestureRecognizerStateCancelled:
+        {
+            self.lowlightImageView.image = glossImage;
+        }
+        default:
+            break;
+    }
+}
+
 
 - (void) showVideo: (UITapGestureRecognizer *) recognizer
 {
