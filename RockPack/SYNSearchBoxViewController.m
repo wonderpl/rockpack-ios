@@ -122,7 +122,7 @@
     }
     
     self.autoSuggestionController.tableView.frame = tableViewFrame;
-    self.autoSuggestionController.tableView.alpha = 0.0;
+    self.autoSuggestionController.tableView.hidden = YES;
     
     [self.view addSubview:self.autoSuggestionController.tableView];
     
@@ -198,8 +198,11 @@
     
     [self.autoSuggestionController clearWords];
     
+    self.autoSuggestionController.tableView.hidden = YES;
+    
     if(IS_IPAD)
         [self resizeTableView: YES];
+    
 }
 
 
@@ -208,6 +211,7 @@
     if([textView.text length] == 0)
     {
         [self clear];
+        
     }
 }
 
@@ -231,6 +235,7 @@
     {
         // close suggestion box
         [self clear];
+        
         return YES;
     }
         
@@ -282,7 +287,7 @@
                                              
                                             [self resizeTableView:NO];
                                              
-                                            self.autoSuggestionController.tableView.alpha = 1.0;
+                                            self.autoSuggestionController.tableView.hidden = NO;
                                              
                                         } andError: ^(NSError* error) {
                                         
@@ -316,6 +321,8 @@
     }
     
     [self clear];
+    
+    
     
     // calls the MasterViewController
     [NSNotificationCenter.defaultCenter postNotificationName: kSearchTyped

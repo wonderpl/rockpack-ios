@@ -22,6 +22,7 @@
 
 -(CGFloat)tableHeight;
 
+
 -(NSString*)getWordAtIndex:(NSInteger)index;
 
 @end
