@@ -35,6 +35,10 @@
     return self;
 }
 
+
+#pragma mark - Co-operation
+
+// Required so that the other gesture recognizers act in parallel
 - (BOOL) canPreventGestureRecognizer: (UIGestureRecognizer *) preventedGestureRecognizer
 {
     return NO;
@@ -42,11 +46,6 @@
 
 
 #pragma mark - Subclassed methods (conforming to UIGestureRecognizerSubclass.h)
-
-- (void) reset
-{
-    [super reset];
-}
 
 
 - (void) touchesBegan: (NSSet *) touches
@@ -77,6 +76,5 @@
     
     self.state = UIGestureRecognizerStateCancelled;
 }
-
 
 @end

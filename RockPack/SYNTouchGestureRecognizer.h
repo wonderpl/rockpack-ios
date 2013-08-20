@@ -11,12 +11,7 @@
 
 @interface SYNTouchGestureRecognizer : UIGestureRecognizer
 
-- (void) reset;
-
 - (void) touchesBegan: (NSSet *) touches
-            withEvent: (UIEvent *) event;
-
-- (void) touchesMoved: (NSSet *) touches
             withEvent: (UIEvent *) event;
 
 - (void) touchesEnded: (NSSet *) touches
