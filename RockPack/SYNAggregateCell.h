@@ -12,7 +12,8 @@
 
 @protocol SYNAggregateCellDelegate <NSObject>
 
-- (void) pressedAggregateCellCoverButton: (UIButton *) button;
+- (void) pressedAggregateCellCoverView: (UIView *) view;
+
 - (void) arcMenuUpdateState: (UIGestureRecognizer *) recognizer
                     forCell: (UICollectionViewCell *) cell;
 

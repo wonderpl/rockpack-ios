@@ -1048,9 +1048,9 @@ typedef void(^FeedDataErrorBlock)(void);
 }
 
 
-- (void) pressedAggregateCellCoverButton: (UIButton *) coverButton
+- (void) pressedAggregateCellCoverView: (UIView *) view
 {
-    SYNAggregateCell *aggregateCellSelected = [self aggregateCellFromControl: coverButton];
+    SYNAggregateCell *aggregateCellSelected = [self aggregateCellFromView: view];
     NSIndexPath *indexPath = [self.feedCollectionView indexPathForItemAtPoint: aggregateCellSelected.center];
     FeedItem *selectedFeedItem = [self feedItemAtIndexPath: indexPath];
     
@@ -1096,7 +1096,7 @@ typedef void(^FeedDataErrorBlock)(void);
         {
             SYNAggregateChannelCell *channelCellSelected = (SYNAggregateChannelCell *) aggregateCellSelected;
             
-            NSInteger indexOfButton = [channelCellSelected indexForButtonPressed: coverButton];
+            NSInteger indexOfButton = [channelCellSelected indexForSimulatedButtonPressed: view];
             channel = [self.feedChannelsById objectForKey: selectedFeedItem.coverIndexArray[indexOfButton]];
         }
         
@@ -1108,48 +1108,59 @@ typedef void(^FeedDataErrorBlock)(void);
 }
 
 
--(SYNAggregateCell*)aggregateCellFromControl:(UIControl*)control
+- (SYNAggregateCell *) aggregateCellFromView: (UIView *) view
 {
-    UIView* candidateCell = control;
-    while (![candidateCell isKindOfClass:[SYNAggregateCell class]])
+    UIView *candidateCell = view;
+    
+    while (![candidateCell isKindOfClass: [SYNAggregateCell class]])
     {
         candidateCell = candidateCell.superview;
     }
-    return (SYNAggregateCell*)candidateCell;
+    
+    return (SYNAggregateCell *) candidateCell;
 }
--(NSIndexPath*)indexPathFromControl:(UIButton *)button
+
+
+- (NSIndexPath *) indexPathFromView: (UIView *) view
 {
-    SYNAggregateCell* aggregateCellSelected = [self aggregateCellFromControl:button];
+    SYNAggregateCell *aggregateCellSelected = [self aggregateCellFromView: view];
     NSIndexPath *indexPath = [self.feedCollectionView indexPathForItemAtPoint: aggregateCellSelected.center];
+    
     return indexPath;
 }
--(FeedItem*)feedItemFromControl:(UIButton *)button
+
+
+- (FeedItem *) feedItemFromView: (UIView *) view
 {
-    NSIndexPath* indexPath = [self indexPathFromControl:button];
-    FeedItem* selectedFeedItem = [self feedItemAtIndexPath:indexPath];
+    NSIndexPath *indexPath = [self indexPathFromView: view];
+    FeedItem *selectedFeedItem = [self feedItemAtIndexPath: indexPath];
+    
     return selectedFeedItem;
 }
 
 #pragma mark - Cell Actions Delegate
 
-- (void) videoAddButtonTapped: (UIButton *) _addButton
+- (void) videoAddButtonTapped: (UIButton *) addButton
 {
+    FeedItem *selectedFeedItem = [self feedItemFromView: addButton];
     
-    
-    
-    FeedItem* selectedFeedItem = [self feedItemFromControl:_addButton];
-    
-    if(selectedFeedItem.resourceTypeValue == FeedItemResourceTypeVideo)
+    if (selectedFeedItem.resourceTypeValue == FeedItemResourceTypeVideo)
     {
-        VideoInstance* videoInstance;
+        VideoInstance *videoInstance;
         
-        if(selectedFeedItem.itemTypeValue == FeedItemTypeLeaf)
-            videoInstance = [self.feedVideosById objectForKey:selectedFeedItem.resourceId];
+        if (selectedFeedItem.itemTypeValue == FeedItemTypeLeaf)
+        {
+            videoInstance = [self.feedVideosById objectForKey: selectedFeedItem.resourceId];
+        }
         else
-            videoInstance = [self.feedVideosById objectForKey:selectedFeedItem.coverIndexArray[0]];
+        {
+            videoInstance = [self.feedVideosById objectForKey: selectedFeedItem.coverIndexArray[0]];
+        }
         
-        if(!videoInstance)
+        if (!videoInstance)
+        {
             return;
+        }
         
         id<GAITracker> tracker = [GAI sharedInstance].defaultTracker;
         
@@ -1162,52 +1173,46 @@ typedef void(^FeedDataErrorBlock)(void);
                                                          action: @"select"
                                                 videoInstanceId: videoInstance.uniqueId
                                               completionHandler: ^(id response) {
-                                                  
-                                                  
                                               } errorHandler: ^(id error) {
-                                                  
                                                   DebugLog(@"Could not record videoAddButtonTapped: activity");
-                                                  
                                               }];
         
         
         [[NSNotificationCenter defaultCenter] postNotificationName: kVideoQueueAdd
                                                             object: self
-                                                          userInfo: @{@"VideoInstance" : videoInstance }];
+                                                          userInfo: @{@"VideoInstance": videoInstance}];
         
         [self.videoThumbnailCollectionView reloadData];
-        
-        
-        
     }
-    
 }
 
--(void)profileButtonTapped:(UIButton*)sender
+
+- (void) profileButtonTapped: (UIButton *) sender
 {
+    FeedItem *feedItem = [self feedItemFromView: sender];
+    ChannelOwner *channelOwner;
     
+    if ([self videoInstanceAtCoverOfFeedItem: feedItem])
+    {
+        channelOwner = [self videoInstanceAtCoverOfFeedItem: feedItem].channel.channelOwner;
+    }
+    else if ([self channelAtCoverOfFeedItem: feedItem])
+    {
+        channelOwner = [self channelAtCoverOfFeedItem: feedItem].channelOwner;
+    }
     
-    FeedItem* feedItem = [self feedItemFromControl:sender];
-    ChannelOwner* channelOwner;
-    if([self videoInstanceAtCoverOfFeedItem:feedItem])
-        channelOwner = [self videoInstanceAtCoverOfFeedItem:feedItem].channel.channelOwner;
-    else if ([self channelAtCoverOfFeedItem:feedItem])
-        channelOwner = [self channelAtCoverOfFeedItem:feedItem].channelOwner;
-    
-    if(!channelOwner)
+    if (!channelOwner)
+    {
         return;
+    }
     
-    [appDelegate.viewStackManager viewProfileDetails:channelOwner];
-    
-    
-    
+    [appDelegate.viewStackManager viewProfileDetails: channelOwner];
 }
+
 
 - (IBAction) toggleStarAtIndexPath: (NSIndexPath *) indexPath
 {
     // Bit of a hack, but find the button in the cell
-
-    
     SYNAggregateVideoCell *cell = (SYNAggregateVideoCell *)[self.feedCollectionView cellForItemAtIndexPath: indexPath];
     
     UIButton *heartButton = cell.heartButton;
@@ -1216,10 +1221,12 @@ typedef void(^FeedDataErrorBlock)(void);
 }
 
 
--(void) likeButtonPressed : (UIButton *) button
+- (void) likeButtonPressed: (UIButton *) button
 {
-    if(self.togglingInProgress)
+    if (self.togglingInProgress)
+    {
         return;
+    }
     
     id<GAITracker> tracker = [GAI sharedInstance].defaultTracker;
     
@@ -1232,9 +1239,13 @@ typedef void(^FeedDataErrorBlock)(void);
     
     button.enabled = NO;
     
-    VideoInstance* videoInstance = [self videoInstanceAtCoverOfFeedItem:[self feedItemFromControl:button]];
-    if(!videoInstance)
+    VideoInstance *videoInstance = [self videoInstanceAtCoverOfFeedItem: [self feedItemFromView: button]];
+    
+    if (!videoInstance)
+    {
         return;
+    }
+    
     self.togglingInProgress = YES;
     
     // int starredIndex = self.currentSelectedIndex;
@@ -1242,10 +1253,7 @@ typedef void(^FeedDataErrorBlock)(void);
                                                      action: (didStar ? @"star" : @"unstar")
                                             videoInstanceId: videoInstance.uniqueId
                                           completionHandler: ^(id response) {
-                                              
-                                              
                                               self.togglingInProgress = NO;
-                                              
                                               
                                               if (didStar)
                                               {
@@ -1255,7 +1263,7 @@ typedef void(^FeedDataErrorBlock)(void);
                                                   
                                                   button.selected = YES;
                                                   
-                                                  [videoInstance addStarrersObject:appDelegate.currentUser];
+                                                  [videoInstance addStarrersObject: appDelegate.currentUser];
                                               }
                                               else
                                               {
@@ -1264,39 +1272,41 @@ typedef void(^FeedDataErrorBlock)(void);
                                                   videoInstance.video.starCountValue -= 1;
                                                   
                                                   button.selected = NO;
-                                                  [videoInstance removeStarrersObject:appDelegate.currentUser];
-                                                  
+                                                  [videoInstance removeStarrersObject: appDelegate.currentUser];
                                               }
-                                              
                                               
                                               [appDelegate saveContext: YES];
                                               
-                                              if(videoInstance.starrers.count == 0)
+                                              if (videoInstance.starrers.count == 0)
                                               {
                                                   NSLog(@"No Starrers");
                                               }
                                               else
                                               {
-                                                  for (ChannelOwner* co in videoInstance.starrers) {
-                                                      if([co.uniqueId isEqualToString:appDelegate.currentUser.uniqueId])
+                                                  for (ChannelOwner * co in videoInstance.starrers)
+                                                  {
+                                                      if ([co.uniqueId
+                                                           isEqualToString: appDelegate.currentUser.uniqueId])
+                                                      {
                                                           NSLog(@"Starrer: User*");
+                                                      }
                                                       else
+                                                      {
                                                           NSLog(@"Starrer: %@", co.displayName);
+                                                      }
                                                   }
                                               }
                                               
                                               [self.feedCollectionView reloadData];
                                               
                                               button.enabled = YES;
-                                              
-                                          } errorHandler: ^(id error) {
-                                              
-                                                    self.togglingInProgress = NO;
-                                              
+                                          }
+                                               errorHandler: ^(id error) {
+                                                   self.togglingInProgress = NO;
+                                                   
                                                    DebugLog(@"Could not star video");
-                                              
+                                                   
                                                    button.enabled = YES;
-                                              
                                                }];
 }
 

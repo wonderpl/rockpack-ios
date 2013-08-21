@@ -346,14 +346,14 @@
 }
 
 
-- (NSInteger) indexForButtonPressed: (UIButton *) button
+- (NSInteger) indexForSimulatedButtonPressed: (UIView *) view
 {
     if (!self.buttonContainerView)
     {
         return -1;
     }
     
-    return [self.buttonContainerView.subviews indexOfObject: button];
+    return [self.buttonContainerView.subviews indexOfObject: view];
 }
 
 
@@ -411,7 +411,19 @@
 
 - (void) showChannel: (UITapGestureRecognizer *) recognizer
 {
-    [self.viewControllerDelegate pressedAggregateCellCoverButton: self.userThumbnailButton];
+    UIImageView *simulatedButton = self.lowlightImageView;
+    
+    if (self.buttonContainerView)
+    {
+        DebugLog (@"Multiple channels");
+        simulatedButton = (UIImageView *) recognizer.view;
+    }
+    else
+    {
+        DebugLog (@"One channel");
+    }
+    
+    [self.viewControllerDelegate pressedAggregateCellCoverView: simulatedButton];
 }
 
 

@@ -273,7 +273,7 @@
 
 - (void) showVideo: (UITapGestureRecognizer *) recognizer
 {
-    [self.viewControllerDelegate pressedAggregateCellCoverButton: self.userThumbnailButton];
+    [self.viewControllerDelegate pressedAggregateCellCoverView: self.userThumbnailButton];
 }
 
 

@@ -10,6 +10,6 @@
 
 @interface SYNAggregateChannelCell : SYNAggregateCell
 
-- (NSInteger) indexForButtonPressed: (UIButton *) button;
+- (NSInteger) indexForSimulatedButtonPressed: (UIView *) view;
 
 @end
