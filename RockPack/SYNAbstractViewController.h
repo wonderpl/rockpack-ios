@@ -92,6 +92,8 @@ typedef void (^SYNShareCompletionBlock)(void);
 
 - (IBAction) toggleStarAtIndexPath: (NSIndexPath *) indexPath;
 
+// Arc menu
+
 // Share
 - (void) requestShareLinkWithObjectType: (NSString *) objectType
                                objectId: (NSString *) objectId;

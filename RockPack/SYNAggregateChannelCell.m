@@ -6,6 +6,7 @@
 //  Copyright (c) 2013 Nick Banks. All rights reserved.
 //
 
+#import "AppConstants.h"
 #import "SYNAggregateChannelCell.h"
 #import "SYNTouchGestureRecognizer.h"
 #import "UIImage+Tint.h"

@@ -819,26 +819,69 @@
 }
 
 
-- (NSIndexPath *) indexPathForVideoIndexCell: (UICollectionViewCell *) cell
+- (NSIndexPath *) indexPathForVideoCell: (UICollectionViewCell *) cell
 {
     return [self.videoThumbnailCollectionView indexPathForCell: cell];
 }
 
 
+- (Channel *) channelInstanceForIndexPath: (NSIndexPath *) indexPath
+{
+    AssertOrLog(@"Shouldn't be calling abstract function");
+    return  nil;
+}
+
+
+- (NSIndexPath *) indexPathForChannelCell: (UICollectionViewCell *) cell
+{
+    AssertOrLog(@"Shouldn't be calling abstract function");
+    return  nil;
+}
+
 - (void) arcMenuUpdateState: (UIGestureRecognizer *) recognizer
                     forCell: (UICollectionViewCell *) cell
 {
-    CGPoint tapPoint = [recognizer locationInView: self.view];
+    NSArray *menuItems;
+    float menuArc, menuStartAngle;
+    NSString *analyticsLabel;
     
-    NSIndexPath *cellIndexPath = [self indexPathForVideoIndexCell: cell];
+    NSIndexPath *cellIndexPath = [self indexPathForChannelCell: cell];
     
-    if (recognizer.state == UIGestureRecognizerStateBegan)
-    {        
+    SYNArcMenuItem *arcMenuItem3 = [[SYNArcMenuItem alloc] initWithImage: [UIImage imageNamed: @"ActionShare"]
+                                                        highlightedImage: [UIImage imageNamed: @"ActionShareHighlighted"]];
+    
+    if ([self isChannelCell: cell])
+    {
+        // Channel cell
+        analyticsLabel = @"channel";
+
+        // Get resource URL in parallel
+        if (recognizer.state == UIGestureRecognizerStateBegan)
+        {
+            Channel *channel = [self channelInstanceForIndexPath: cellIndexPath];
+            
+            [self requestShareLinkWithObjectType: @"channel"
+                                        objectId: channel.uniqueId];
+        }
+        
+        menuItems = @[arcMenuItem3];
+
+        menuArc = M_PI / 4;
+        menuStartAngle = 0;
+    }
+    else
+    {
+        // Video cell
+        analyticsLabel = @"video";
+        
         VideoInstance *videoInstance = [self videoInstanceForIndexPath: cellIndexPath];
         
-        [self requestShareLinkWithObjectType: @"video_instance"
-                                    objectId: videoInstance.uniqueId];
-
+        // Get resource URL in parallel
+        if (recognizer.state == UIGestureRecognizerStateBegan)
+        {
+            [self requestShareLinkWithObjectType: @"video_instance"
+                                        objectId: videoInstance.uniqueId];
+        }
         
         SYNArcMenuItem *arcMenuItem1 = [[SYNArcMenuItem alloc] initWithImage: [UIImage imageNamed: (videoInstance.video.starredByUserValue == FALSE) ? @"ActionLike" : @"ActionUnlike"]
                                                             highlightedImage: [UIImage imageNamed: (videoInstance.video.starredByUserValue == FALSE) ? @"ActionLikeHighlighted" : @"ActionUnlikeHighlighted"]];
@@ -846,22 +889,49 @@
         SYNArcMenuItem *arcMenuItem2 = [[SYNArcMenuItem alloc] initWithImage: [UIImage imageNamed: @"ActionAdd"]
                                                             highlightedImage: [UIImage imageNamed: @"ActionAddHighlighted"]];
         
-        SYNArcMenuItem *arcMenuItem3 = [[SYNArcMenuItem alloc] initWithImage: [UIImage imageNamed: @"ActionShare"]
-                                                            highlightedImage: [UIImage imageNamed: @"ActionShareHighlighted"]];
+        menuItems = @[arcMenuItem1, arcMenuItem2, arcMenuItem3];
         
+        menuArc = M_PI / 2;
+        menuStartAngle = -M_PI / 4;
+    }
+    
+    [self arcMenuUpdateState: recognizer
+          forCellAtIndexPath: cellIndexPath
+                   menuItems: menuItems
+                     menuArc: menuArc
+              menuStartAngle: menuStartAngle];
+    
+    // track
+    id<GAITracker> tracker = [GAI sharedInstance].defaultTracker;
+    
+    [tracker sendEventWithCategory: @"uiAction"
+                        withAction: @"pressHold"
+                         withLabel: analyticsLabel  
+                         withValue: nil];
+}
+
+
+- (void) arcMenuUpdateState: (UIGestureRecognizer *) recognizer
+         forCellAtIndexPath: (NSIndexPath *) cellIndexPath
+                  menuItems: (NSArray *) menuItems
+                    menuArc: (float) menuArc
+             menuStartAngle: (float) menuStartAngle
+{
+    CGPoint tapPoint = [recognizer locationInView: self.view];
+    
+    if (recognizer.state == UIGestureRecognizerStateBegan)
+    {
         SYNArcMenuItem *mainMenuItem = [[SYNArcMenuItem alloc] initWithImage: [UIImage imageNamed: @"ActionRingNoTouch"]
                                                             highlightedImage: [UIImage imageNamed: @"ActionRingTouch"]];
         
         self.arcMenu = [[SYNArcMenuView alloc] initWithFrame: self.view.bounds
                                                    startItem: mainMenuItem
-                                                 optionMenus: @[arcMenuItem1, arcMenuItem2, arcMenuItem3]
+                                                 optionMenus: menuItems
                                                cellIndexPath: cellIndexPath];
         self.arcMenu.delegate = self;
         self.arcMenu.startPoint = tapPoint;
-        self.arcMenu.menuWholeAngle = M_PI / 2;
-        
-        // Assume for now that the menus is not near sides or top
-        self.arcMenu.rotateAngle = -M_PI / 4;
+        self.arcMenu.menuWholeAngle = menuArc;
+        self.arcMenu.rotateAngle = menuStartAngle;
         
         CGFloat screenWidth = self.view.frame.size.width;
         
@@ -872,11 +942,11 @@
             // The touch is near the left hand size, so rotate the menu angle clockwise proportionally
             if (tapPoint.y > kRotateThresholdY)
             {
-                self.arcMenu.rotateAngle += (M_PI / 4) * proportion;
+                self.arcMenu.rotateAngle += menuArc * proportion;
             }
             else
             {
-                self.arcMenu.rotateAngle += M_PI - (M_PI / 4) * proportion;
+                self.arcMenu.rotateAngle += M_PI - menuArc * proportion;
             }
         }
         else if (tapPoint.x > (screenWidth - kRotateThresholdX))
@@ -886,11 +956,11 @@
             // The touch is near the left hand size, so rotate the menu angle anti-clockwise proportionally
             if (tapPoint.y > kRotateThresholdY)
             {
-                self.arcMenu.rotateAngle -= (M_PI / 4) * proportion;
+                self.arcMenu.rotateAngle -= menuArc * proportion;
             }
             else
             {
-                self.arcMenu.rotateAngle -= M_PI - (M_PI / 4) * proportion;
+                self.arcMenu.rotateAngle -= M_PI - menuArc * proportion;
             }
         }
         else if (tapPoint.y < kRotateThresholdY)
@@ -901,7 +971,6 @@
         [self.view addSubview: self.arcMenu];
         
         [self.arcMenu show: YES];
-        
     }
     else if (recognizer.state == UIGestureRecognizerStateEnded)
     {
@@ -911,19 +980,14 @@
     else if (recognizer.state == UIGestureRecognizerStateChanged)
     {
         [self.arcMenu positionUpdate: tapPoint];
-        
     }
-    
-    // track
-    
-    id<GAITracker> tracker = [GAI sharedInstance].defaultTracker;
-    
-  
-    
-    [tracker sendEventWithCategory: @"uiAction"
-                        withAction: @"pressHold"
-                         withLabel: ([NSStringFromClass(cell.class) rangeOfString:@"Channel"].location == NSNotFound ? @"channel" : @"video")
-                         withValue: nil];
+}
+
+
+
+- (BOOL) isChannelCell: (UICollectionViewCell *) cell
+{
+    return ([NSStringFromClass(cell.class) rangeOfString: @"Channel"].location == NSNotFound ? FALSE : TRUE);
 }
 
 

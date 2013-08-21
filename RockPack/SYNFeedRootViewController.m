@@ -720,13 +720,75 @@ typedef void(^FeedDataErrorBlock)(void);
     return feedItem;
 }
 
+- (Channel *) channelInstanceForIndexPath: (NSIndexPath *) indexPath
+{
+    FeedItem *feedItem = [self feedItemAtIndexPath: indexPath];
+    
+#warning "Broken"
+    Channel *channel = nil;
+//    Channel *channel = [self.feedChannelsById objectForKey: feedItem.coverIndexArray[indexOfButton]
+    
+    return channel;
+}
 
-- (NSIndexPath *) indexPathForVideoIndexCell: (UICollectionViewCell *) cell
+- (NSIndexPath *) indexPathForChannelCell: (UICollectionViewCell *) cell
+{
+    // Same mechanism as for video cell
+    return  [self indexPathForVideoCell: cell];
+}
+
+
+- (NSIndexPath *) indexPathForVideoCell: (UICollectionViewCell *) cell
 {
     NSIndexPath *indexPath = [self.feedCollectionView indexPathForItemAtPoint: cell.center];
     return indexPath;
 }
+                        
+- (void) arcMenuUpdateState: (UIGestureRecognizer *) recognizer
+                    forCell: (UICollectionViewCell *) cell
+{
 
+    NSIndexPath *indexPath = [self.feedCollectionView indexPathForItemAtPoint: cell.center];
+    FeedItem *feedItem = [self feedItemAtIndexPath: indexPath];
+    
+    ChannelOwner *channelOwner;
+    
+    NSInteger feedItemsAggregated = feedItem.itemTypeValue == FeedItemTypeAggregate ? feedItem.feedItems.count : 1;
+    
+    if (feedItem.resourceTypeValue == FeedItemResourceTypeVideo)
+    {
+        // Use default method
+        [super arcMenuUpdateState: recognizer
+                         forCell: cell];
+    }
+    else if (feedItem.resourceTypeValue == FeedItemResourceTypeChannel)
+    {
+        Channel *channel;
+        
+        if (feedItem.itemTypeValue == FeedItemTypeAggregate)
+        {
+            NSArray *coverIndexIds = [feedItem.coverIndexes
+                                      componentsSeparatedByString: @":"];
+            
+            NSMutableArray *coverImagesAndTitles = [NSMutableArray arrayWithCapacity: coverIndexIds.count];
+            
+            for (NSString *resourceId in coverIndexIds)
+            {
+                channel = (Channel *) [self.feedChannelsById objectForKey: resourceId];
+                
+//                [coverImagesAndTitles addObject: @{@"image": channel.channelCover ? channel.channelCover.imageUrl : @"",
+//                 @"title": channel.title}];
+            }
+            
+        }
+        else
+        {
+            [super arcMenuUpdateState: recognizer
+                             forCell: cell];
+        }
+    }
+}
+ 
 
 - (void) arcMenuWillBeginAnimationOpen: (SYNArcMenuView *) menu
 {
@@ -761,7 +823,7 @@ typedef void(^FeedDataErrorBlock)(void);
     
     NSInteger feedItemsAggregated = feedItem.itemTypeValue == FeedItemTypeAggregate ? feedItem.feedItems.count : 1;
     
-    if(feedItem.resourceTypeValue == FeedItemResourceTypeVideo)
+    if (feedItem.resourceTypeValue == FeedItemResourceTypeVideo)
     {
         cell = [cv dequeueReusableCellWithReuseIdentifier: @"SYNAggregateVideoCell"
                                              forIndexPath: indexPath];
@@ -800,10 +862,9 @@ typedef void(^FeedDataErrorBlock)(void);
         cell = [cv dequeueReusableCellWithReuseIdentifier: @"SYNAggregateChannelCell"
                                              forIndexPath: indexPath];
         
-        
         Channel* channel;
         
-        if(feedItem.itemTypeValue == FeedItemTypeAggregate)
+        if (feedItem.itemTypeValue == FeedItemTypeAggregate)
         {
             NSArray* coverIndexIds = [feedItem.coverIndexes componentsSeparatedByString:@":"];
             
@@ -824,24 +885,18 @@ typedef void(^FeedDataErrorBlock)(void);
             channel = (Channel*)[self.feedChannelsById objectForKey:feedItem.resourceId];
             
             [cell setCoverImagesAndTitlesWithArray:@[@{ @"image": channel.channelCover ? channel.channelCover.imageLargeUrl : @"",
-                                                        @"title" : channel.title    }]];
-            
-            
+                                                        @"title" : channel.title    }]]; 
         }
         
         channelOwner = channel.channelOwner;
         
         if(!feedItem.title)
         {
-            
             [cell setTitleMessageWithDictionary:@{  @"display_name" : channel.channelOwner ? channel.channelOwner.displayName : @"",
                                                     @"item_count" : @(feedItemsAggregated)}];
-            
         }
         else
-            cell.messageLabel.text = feedItem.title;
-        
-        
+            cell.messageLabel.text = feedItem.title; 
     }
     
     cell.viewControllerDelegate = self;
