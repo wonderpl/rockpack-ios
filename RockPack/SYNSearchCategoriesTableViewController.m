@@ -42,10 +42,11 @@ static NSString *SearchGenresTableCellIdentifier = @"SYNSearchCategoriesIphoneCe
     self.tableView.separatorStyle = UITableViewCellSeparatorStyleNone;
     self.tableView.separatorColor = [UIColor rockpacLedColor];
     self.tableView.backgroundColor = [UIColor colorWithRed: 241.0f/255.0f green: 241.0f/255.0f blue: 241.0f/255.0f alpha: 1.0f];
-    self.tableView.scrollEnabled = NO;
+    self.tableView.scrollEnabled = !IS_IPHONE_5;
     self.tableView.scrollsToTop = NO;
-
-    
+    self.tableView.showsVerticalScrollIndicator = NO;
+    self.tableView.showsHorizontalScrollIndicator = NO;
+    self.tableView.contentInset = UIEdgeInsetsMake(0.0f, 0.0f, 10.0f, 0.0f);
     
     [self loadData];
 }
@@ -104,7 +105,6 @@ static NSString *SearchGenresTableCellIdentifier = @"SYNSearchCategoriesIphoneCe
             hasRetried = YES;
             return;
     }
-    
     
     [self.tableView reloadData];
 }
@@ -174,5 +174,14 @@ static NSString *SearchGenresTableCellIdentifier = @"SYNSearchCategoriesIphoneCe
     
    
 }
+
+-(void)setSize:(CGSize)size
+{
+    CGRect viewRect = self.tableView.frame;
+    viewRect.size = size;
+    self.tableView.frame = viewRect;
+    
+}
+
 
 @end
