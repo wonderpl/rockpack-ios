@@ -7,18 +7,53 @@
 //
 
 #import "SYNAggregateChannelCell.h"
+#import "SYNTouchGestureRecognizer.h"
+#import "UIImage+Tint.h"
 
 
-@interface SYNAggregateChannelCell ()
+@interface SYNAggregateChannelCell () <UIGestureRecognizerDelegate>
 
+@property (nonatomic) CGRect originalImageContainerRect;
+@property (nonatomic, strong) IBOutlet UIImageView *lowlightImageView;
+@property (nonatomic, strong) SYNTouchGestureRecognizer *touch;
+@property (nonatomic, strong) UILongPressGestureRecognizer *longPress;
+@property (nonatomic, strong) UITapGestureRecognizer *tap;
 @property (nonatomic, strong) UIView *buttonContainerView;
 @property (nonatomic, strong) UIView *labelsContainerView;
-@property (nonatomic) CGRect originalImageContainerRect;
 
 @end
 
 
-@implementation SYNAggregateChannelCell
+@implementation SYNAggregateChannelCell 
+
+- (void) awakeFromNib
+{
+    [super awakeFromNib];
+
+#ifdef ENABLE_ARC_MENU
+    
+    // Add long-press and tap recognizers (once only per cell)
+    self.longPress = [[UILongPressGestureRecognizer alloc] initWithTarget: self
+                                                                   action: @selector(showMenu:)];
+    self.longPress.delegate = self;
+    [self.lowlightImageView addGestureRecognizer: self.longPress];
+#endif
+    
+    
+    // Tap for showing video
+    self.tap = [[UITapGestureRecognizer alloc] initWithTarget: self
+                                                       action: @selector(showChannel:)];
+    self.tap.delegate = self;
+    [self.lowlightImageView addGestureRecognizer: self.tap];
+    
+    // Touch for highlighting cells when the user touches them (like UIButton)
+    self.touch = [[SYNTouchGestureRecognizer alloc] initWithTarget: self
+                                                            action: @selector(showGlossLowlight:)];
+    
+    self.touch.delegate = self;
+    [self.lowlightImageView addGestureRecognizer: self.touch];
+}
+
 
 - (void) setCoverImageWithString: (NSString *) imageString
 {
@@ -59,7 +94,7 @@
     }
     
     self.imageContainer.frame = self.originalImageContainerRect;
-    self.coverButton.hidden = NO;
+    self.lowlightImageView.hidden = NO;
     self.mainTitleLabel.hidden = NO;
 }
 
@@ -92,7 +127,7 @@
     {
         containerRect.size = self.imageContainer.frame.size;
 
-        self.coverButton.hidden = NO;
+        self.lowlightImageView.hidden = NO;
         self.mainTitleLabel.hidden = NO;
         
         imageView = [[UIImageView alloc] initWithFrame: containerRect];
@@ -141,7 +176,7 @@
         containerRect.size.width = containerRect.size.width / 2.0;
         
         
-        self.coverButton.hidden = YES;
+        self.lowlightImageView.hidden = YES;
         self.mainTitleLabel.hidden = YES;
         
         for (int i = 0; i < 2; i++)
@@ -199,7 +234,7 @@
     
     if (count == 4)
     {
-        self.coverButton.hidden = YES;
+        self.lowlightImageView.hidden = YES;
         self.mainTitleLabel.hidden = YES;
 
         containerRect.size = self.imageContainer.frame.size; // {{0, 0}, {298, 298}} (IPAD),
@@ -333,6 +368,48 @@
                                                                                       attributes: self.lightTextAttributes]];
 
     self.messageLabel.attributedText = attributedCompleteString;
+}
+
+
+#pragma mark - Gesture recognizers for arc menu and show video
+
+// This is used to lowlight the gloss image on touch
+- (void) showGlossLowlight: (SYNTouchGestureRecognizer *) recognizer
+{
+    UIImage *glossImage = [UIImage imageNamed: @"channelFeedCover"];
+    
+    switch (recognizer.state)
+    {
+        case UIGestureRecognizerStateBegan:
+        {
+            // Set lowlight tint
+            UIImage *lowlightImage = [glossImage tintedImageUsingColor: [UIColor colorWithWhite: 0.0
+                                                                                          alpha: 0.3]];
+            self.lowlightImageView.image = lowlightImage;
+            break;
+        }
+            
+        case UIGestureRecognizerStateEnded:
+        case UIGestureRecognizerStateCancelled:
+        {
+            self.lowlightImageView.image = glossImage;
+        }
+        default:
+            break;
+    }
+}
+
+
+- (void) showChannel: (UITapGestureRecognizer *) recognizer
+{
+    [self.viewControllerDelegate pressedAggregateCellCoverButton: self.userThumbnailButton];
+}
+
+
+- (void) showMenu: (UILongPressGestureRecognizer *) recognizer
+{
+    [self.viewControllerDelegate arcMenuUpdateState: recognizer
+                                            forCell: self];
 }
 
 
