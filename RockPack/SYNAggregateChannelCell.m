@@ -31,14 +31,12 @@
     [super awakeFromNib];
 
 #ifdef ENABLE_ARC_MENU
-    
     // Add long-press and tap recognizers (once only per cell)
     self.longPress = [[UILongPressGestureRecognizer alloc] initWithTarget: self
                                                                    action: @selector(showMenu:)];
     self.longPress.delegate = self;
     [self.lowlightImageView addGestureRecognizer: self.longPress];
 #endif
-    
     
     // Tap for showing video
     self.tap = [[UITapGestureRecognizer alloc] initWithTarget: self
@@ -118,7 +116,7 @@
     NSInteger count = array.count;
     UIImageView *imageView;
     
-    UIButton *button;
+    UIImageView *simultatedButton;
     UILabel *label;
     NSString *channelTitle;
     CGSize expectedLabelSize;
@@ -164,7 +162,7 @@
         self.buttonContainerView = [[UIView alloc] initWithFrame: self.imageContainer.frame];
         
         [self insertSubview: self.buttonContainerView
-               belowSubview: self.coverButton];
+               belowSubview: self.lowlightImageView];
         
         self.labelsContainerView = [[UIView alloc] initWithFrame: self.imageContainer.frame];
         self.labelsContainerView.userInteractionEnabled = NO;
@@ -174,7 +172,6 @@
                aboveSubview: self.buttonContainerView];
         
         containerRect.size.width = containerRect.size.width / 2.0;
-        
         
         self.lowlightImageView.hidden = YES;
         self.mainTitleLabel.hidden = YES;
@@ -197,13 +194,12 @@
             
             [self.imageContainer addSubview: imageView];
             
-            button = [UIButton buttonWithType: UIButtonTypeCustom];
-            button.backgroundColor = [UIColor clearColor];
-            button.frame = CGRectMake(containerRect.origin.x, 0.0f, containerRect.size.width, containerRect.size.height);
-            [button setImage: [UIImage imageNamed: @"channelFeedCoverFourth"]
-                    forState: UIControlStateNormal];
+            simultatedButton = [[UIImageView alloc] initWithImage: [UIImage imageNamed: @"channelFeedCoverFourth"]];
+            simultatedButton.backgroundColor = [UIColor clearColor];
+            simultatedButton.frame = CGRectMake(containerRect.origin.x, 0.0f, containerRect.size.width, containerRect.size.height);
+            simultatedButton.userInteractionEnabled = TRUE;
             
-            [self.buttonContainerView addSubview: button];
+            [self.buttonContainerView addSubview: simultatedButton];
             
             label = [[UILabel alloc] initWithFrame: CGRectZero];
             label.backgroundColor = [UIColor clearColor];
@@ -219,8 +215,6 @@
                                      (containerRect.size.height) - (expectedLabelSize.height) - (IS_IPHONE ? 28.0f : 0.0f),
                                      expectedLabelSize.width,
                                      expectedLabelSize.height);
-            
-            
             
             label.text = channelTitle;
             
@@ -246,7 +240,7 @@
         self.buttonContainerView = [[UIView alloc] initWithFrame: self.imageContainer.frame];
         
         [self insertSubview: self.buttonContainerView
-               belowSubview: self.coverButton];
+               belowSubview: self.lowlightImageView];
         
         self.labelsContainerView = [[UIView alloc] initWithFrame: self.imageContainer.frame];
         self.labelsContainerView.userInteractionEnabled = NO;
@@ -277,13 +271,12 @@
             
             [self.imageContainer addSubview: imageView];
             
-            button = [UIButton buttonWithType: UIButtonTypeCustom];
-            button.backgroundColor = [UIColor clearColor];
-            button.frame = containerRect;
-            [button setImage: [UIImage imageNamed: @"channelFeedCoverFourth"]
-                    forState: UIControlStateNormal];
+            simultatedButton = [[UIImageView alloc] initWithImage: [UIImage imageNamed: @"channelFeedCoverFourth"]];
+            simultatedButton.backgroundColor = [UIColor clearColor];
+            simultatedButton.frame = containerRect;
+            simultatedButton.userInteractionEnabled = TRUE;
             
-            [self.buttonContainerView addSubview: button];
+            [self.buttonContainerView addSubview: simultatedButton];
             
             label = [[UILabel alloc] initWithFrame: CGRectZero];
             label.backgroundColor = [UIColor clearColor];
@@ -323,11 +316,27 @@
     
     if (self.buttonContainerView)
     {
-        for (UIButton *button in self.buttonContainerView.subviews)
+        for (UIImageView *simulatedButtonView in self.buttonContainerView.subviews)
         {
-            [button	addTarget: self.viewControllerDelegate
-                       action: @selector(pressedAggregateCellCoverButton:)
-             forControlEvents: UIControlEventTouchUpInside];
+#ifdef ENABLE_ARC_MENU
+            UILongPressGestureRecognizer *buttonLongPress = [[UILongPressGestureRecognizer alloc] initWithTarget: self
+                                                                                                          action: @selector(showMenu:)];
+            buttonLongPress.delegate = self;
+            [simulatedButtonView addGestureRecognizer: buttonLongPress];
+#endif
+            
+            // Tap for showing video
+            UITapGestureRecognizer *buttonTap = [[UITapGestureRecognizer alloc] initWithTarget: self
+                                                                                        action: @selector(showChannel:)];
+            buttonTap.delegate = self;
+            [simulatedButtonView addGestureRecognizer: buttonTap];
+            
+            // Touch for highlighting cells when the user touches them (like UIButton)
+            SYNTouchGestureRecognizer *buttonTouch = [[SYNTouchGestureRecognizer alloc] initWithTarget: self
+                                                                                                action: @selector(showGlossLowlight:)];
+            
+            buttonTouch.delegate = self;
+            [simulatedButtonView addGestureRecognizer: buttonTouch];
         }
     }
     

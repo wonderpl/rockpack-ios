@@ -1050,62 +1050,63 @@ typedef void(^FeedDataErrorBlock)(void);
 
 - (void) pressedAggregateCellCoverButton: (UIButton *) coverButton
 {
-    SYNAggregateCell* aggregateCellSelected = [self aggregateCellFromControl:coverButton];
+    SYNAggregateCell *aggregateCellSelected = [self aggregateCellFromControl: coverButton];
     NSIndexPath *indexPath = [self.feedCollectionView indexPathForItemAtPoint: aggregateCellSelected.center];
-    FeedItem* selectedFeedItem = [self feedItemAtIndexPath:indexPath];
+    FeedItem *selectedFeedItem = [self feedItemAtIndexPath: indexPath];
     
-    if(selectedFeedItem.resourceTypeValue == FeedItemResourceTypeVideo)
+    if (selectedFeedItem.resourceTypeValue == FeedItemResourceTypeVideo)
     {
-        
-        if(self.videosInOrderArray.count == 0)
+        if (self.videosInOrderArray.count == 0)
+        {
             return;
+        }
         
         NSLog(@"%@", self.videosInOrderArray);
         
-        VideoInstance* videoInstance = [self videoInstanceAtCoverOfFeedItem:selectedFeedItem];
+        VideoInstance *videoInstance = [self videoInstanceAtCoverOfFeedItem: selectedFeedItem];
         
-        SYNMasterViewController *masterViewController = (SYNMasterViewController*)appDelegate.masterViewController;
-
+        SYNMasterViewController *masterViewController = (SYNMasterViewController *) appDelegate.masterViewController;
+        
         __block NSInteger indexOfSelectedVideoInArray = 0;
-        [self.videosInOrderArray enumerateObjectsUsingBlock:^(VideoInstance* vi, NSUInteger idx, BOOL *stop) {
-
-            indexOfSelectedVideoInArray++;
-            
-            if([vi.uniqueId isEqualToString:videoInstance.uniqueId])
-                *stop = YES;
-        }];
+        [self.videosInOrderArray enumerateObjectsUsingBlock: ^(VideoInstance *vi, NSUInteger idx, BOOL *stop) {
+             indexOfSelectedVideoInArray++;
+             
+             if ([vi.uniqueId isEqualToString: videoInstance.uniqueId])
+             {
+                 *stop = YES;
+             }
+         }];
         
         indexOfSelectedVideoInArray--; // zero index
-        
         
         [masterViewController addVideoOverlayToViewController: self
                                        withVideoInstanceArray: self.videosInOrderArray
                                              andSelectedIndex: indexOfSelectedVideoInArray
-                                                   fromCenter: self.view.center];    
+                                                   fromCenter: self.view.center];
     }
     else
     {
+        Channel *channel;
         
-        Channel* channel;
-        
-        if(selectedFeedItem.itemTypeValue == FeedItemTypeLeaf)
+        if (selectedFeedItem.itemTypeValue == FeedItemTypeLeaf)
         {
-           channel = [self.feedChannelsById objectForKey:selectedFeedItem.resourceId]; 
+            channel = [self.feedChannelsById objectForKey: selectedFeedItem.resourceId];
         }
-            
         else
         {
-        
-            SYNAggregateChannelCell* channelCellSelected = (SYNAggregateChannelCell*)aggregateCellSelected;
-           
-            NSInteger indexOfButton = [channelCellSelected indexForButtonPressed:coverButton];
-            channel = [self.feedChannelsById objectForKey:selectedFeedItem.coverIndexArray[indexOfButton]];
+            SYNAggregateChannelCell *channelCellSelected = (SYNAggregateChannelCell *) aggregateCellSelected;
+            
+            NSInteger indexOfButton = [channelCellSelected indexForButtonPressed: coverButton];
+            channel = [self.feedChannelsById objectForKey: selectedFeedItem.coverIndexArray[indexOfButton]];
         }
         
-        if(channel)
-            [appDelegate.viewStackManager viewChannelDetails:channel];
+        if (channel)
+        {
+            [appDelegate.viewStackManager viewChannelDetails: channel];
+        }
     }
 }
+
 
 -(SYNAggregateCell*)aggregateCellFromControl:(UIControl*)control
 {
