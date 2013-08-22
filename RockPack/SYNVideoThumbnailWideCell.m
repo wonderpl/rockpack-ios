@@ -89,11 +89,13 @@
     
     if (displayMode == kVideoThumbnailDisplayModeChannel)
     {
+        self.addItButton.hidden = NO;
         self.videoInfoView.hidden = YES;
         self.channelInfoView.hidden = NO;
     }
     else if (displayMode == kVideoThumbnailDisplayModeYoutube)
     {
+        self.addItButton.hidden = NO;
         self.channelInfoView.hidden = YES;
         self.videoInfoView.hidden = NO;
     }

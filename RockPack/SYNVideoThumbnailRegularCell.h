@@ -12,7 +12,8 @@ typedef enum : NSInteger
 {
     kChannelThumbnailDisplayModeDisplay = 0,
     kChannelThumbnailDisplayModeEdit = 1,
-    kChannelThumbnailDisplayModeDisplayFavourite = 2
+    kChannelThumbnailDisplayModeDisplayFavourite = 2,
+    kChannelThumbnailDisplayModeDisplaySearch = 3
 } kChannelThumbnailDisplayMode;
 
 // the arcMenu method is in the delegate defined here...

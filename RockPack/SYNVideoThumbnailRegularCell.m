@@ -65,6 +65,13 @@
     
     if (displayMode == kChannelThumbnailDisplayModeDisplay)
     {
+        self.addItButton.hidden = YES;
+        self.longPress.enabled = TRUE;
+        self.tap.enabled = TRUE;
+        self.deleteButton.hidden = YES;
+    }
+    else if (displayMode == kChannelThumbnailDisplayModeDisplaySearch)
+    {
         self.addItButton.hidden = NO;
         self.longPress.enabled = TRUE;
         self.tap.enabled = TRUE;
