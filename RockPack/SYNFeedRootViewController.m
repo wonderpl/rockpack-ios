@@ -755,25 +755,6 @@ typedef void(^FeedDataErrorBlock)(void);
     return indexPath;
 }
 
-- (void) shareChannelAtIndexPath: (NSIndexPath *) indexPath
-               andComponentIndex: (NSInteger) componentIndex
-{
-    Channel *channel = [self channelInstanceForIndexPath: indexPath
-                                       andComponentIndex: componentIndex];
-    
-    CGRect rect = CGRectMake([SYNDeviceManager.sharedInstance currentScreenWidth] * 0.5,
-                             480.0f, 1, 1);
-    
-    [self shareChannel: channel
-               isOwner: ([channel.channelOwner.uniqueId isEqualToString: appDelegate.currentUser.uniqueId]) ? @(TRUE): @(FALSE)
-                inView: self.view
-              fromRect: rect
-       arrowDirections: 0
-     activityIndicator: nil
-            onComplete: ^{
-                [Appirater userDidSignificantEvent: FALSE];
-            }];
-}
 
 - (void) arcMenuUpdateState: (UIGestureRecognizer *) recognizer
                     forCell: (UICollectionViewCell *) cell
@@ -814,7 +795,11 @@ typedef void(^FeedDataErrorBlock)(void);
          forCellAtIndex: (NSIndexPath *) cellIndexPath
          andComponentIndex: (NSInteger) componentIndex
 {
-    if ([menuName isEqualToString: kActionShare])
+    if ([menuName isEqualToString: kActionShareVideo])
+    {
+        [self shareVideoAtIndexPath: cellIndexPath];
+    }
+    else if ([menuName isEqualToString: kActionShareChannel])
     {
         [self shareChannelAtIndexPath: cellIndexPath
                     andComponentIndex: componentIndex];

@@ -806,6 +806,26 @@
                   }];
 }
 
+- (void) shareChannelAtIndexPath: (NSIndexPath *) indexPath
+               andComponentIndex: (NSInteger) componentIndex
+{
+    Channel *channel = [self channelInstanceForIndexPath: indexPath
+                                       andComponentIndex: componentIndex];
+    
+    CGRect rect = CGRectMake([SYNDeviceManager.sharedInstance currentScreenWidth] * 0.5,
+                             480.0f, 1, 1);
+    
+    [self shareChannel: channel
+               isOwner: ([channel.channelOwner.uniqueId isEqualToString: appDelegate.currentUser.uniqueId]) ? @(TRUE): @(FALSE)
+                inView: self.view
+              fromRect: rect
+       arrowDirections: 0
+     activityIndicator: nil
+            onComplete: ^{
+                [Appirater userDidSignificantEvent: FALSE];
+            }];
+}
+
 #define kRotateThresholdX 100
 #define kRotateThresholdY 180
 #define kRotateBorderX 25
@@ -847,10 +867,6 @@
     NSString *analyticsLabel;
     NSIndexPath *cellIndexPath;
     
-    SYNArcMenuItem *arcMenuItem3 = [[SYNArcMenuItem alloc] initWithImage: [UIImage imageNamed: @"ActionShare"]
-                                                        highlightedImage: [UIImage imageNamed: @"ActionShareHighlighted"]
-                                                                    name: kActionShare];
-    
     if ([self isChannelCell: cell])
     {
         // Channel cell
@@ -868,11 +884,10 @@
                                         objectId: channel.uniqueId];
         }
         
-//        SYNArcMenuItem *arcMenuItem2 = [[SYNArcMenuItem alloc] initWithImage: [UIImage imageNamed: @"ActionAdd"]
-//                                                            highlightedImage: [UIImage imageNamed: @"ActionAddHighlighted"]
-//                                                                        name: kActionAdd];
-        
-        menuItems = @[arcMenuItem3];
+        SYNArcMenuItem *arcMenuItem1 = [[SYNArcMenuItem alloc] initWithImage: [UIImage imageNamed: @"ActionShare"]
+                                                            highlightedImage: [UIImage imageNamed: @"ActionShareHighlighted"]
+                                                                        name: kActionShareChannel];
+        menuItems = @[arcMenuItem1];
 
         menuArc = M_PI / 4;
         menuStartAngle = 0;
@@ -900,6 +915,10 @@
         SYNArcMenuItem *arcMenuItem2 = [[SYNArcMenuItem alloc] initWithImage: [UIImage imageNamed: @"ActionAdd"]
                                                             highlightedImage: [UIImage imageNamed: @"ActionAddHighlighted"]
                                                                         name: kActionAdd];
+        
+        SYNArcMenuItem *arcMenuItem3 = [[SYNArcMenuItem alloc] initWithImage: [UIImage imageNamed: @"ActionShare"]
+                                                            highlightedImage: [UIImage imageNamed: @"ActionShareHighlighted"]
+                                                                        name: kActionShareVideo];
         
         menuItems = @[arcMenuItem1, arcMenuItem2, arcMenuItem3];
         
@@ -1017,9 +1036,14 @@
         [self addVideoAtIndexPath: cellIndexPath
                     withOperation: kVideoQueueAdd];
     }
-    else if ([menuName isEqualToString: kActionShare])
+    else if ([menuName isEqualToString: kActionShareVideo])
     {
         [self shareVideoAtIndexPath: cellIndexPath];
+    }
+    else if ([menuName isEqualToString: kActionShareChannel])
+    {
+        [self shareChannelAtIndexPath: cellIndexPath
+                    andComponentIndex: kArcMenuInvalidComponentIndex];
     }
     else
     {

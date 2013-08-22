@@ -563,6 +563,7 @@ typedef void (^JSONResponseBlock)(id jsonObject);
 #define kStoredRefreshTokenNilError @"StoredRefreshTokenNil"
 
 #define kActionNone @""
-#define kActionShare @"ActionShare"
+#define kActionShareVideo @"ActionShareVideo"
+#define kActionShareChannel @"ActionShareChannel"
 #define kActionLike @"ActionLike"
 #define kActionAdd @"ActionAdd"

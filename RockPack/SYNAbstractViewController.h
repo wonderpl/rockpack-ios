@@ -116,6 +116,11 @@ typedef void (^SYNShareCompletionBlock)(void);
 - (void) addVideoAtIndexPath: (NSIndexPath *) indexPath
                withOperation: (NSString *) operation;
 
+- (void) shareVideoAtIndexPath: (NSIndexPath *) indexPath;
+
+- (void) shareChannelAtIndexPath: (NSIndexPath *) indexPath
+               andComponentIndex: (NSInteger) componentIndex;
+
 // Purchase
 
 - (void) initiatePurchaseAtURL: (NSURL *) purchaseURL;
