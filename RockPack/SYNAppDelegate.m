@@ -857,7 +857,12 @@
         [self.mainManagedObjectContext deleteObject: objectToDelete];
     }
     
-    // == Clear Channels == //
+    
+    
+    
+    
+    // === Clear Channels === //
+    
     if (!userBound)
     {
         // do not delete data relating to the user such as subscriptions and channels
@@ -878,7 +883,10 @@
     
     fetchRequest.predicate = nil;
 
-    // == Clear Categories (Genres) == //
+    
+    
+    // === Clear Categories (Genres) === //
+    
     [fetchRequest setEntity: [NSEntityDescription entityForName: @"Genre"
                                          inManagedObjectContext: self.mainManagedObjectContext]];
     
@@ -899,21 +907,22 @@
     
     fetchRequest.includesSubentities = NO; // do not include User objects as these are handled elsewhere
     
-//    if (!userBound)
-//    {
-//        // do not delete data relating to the user such as subscriptions and channels
-//        NSPredicate *ownsUseSubscribedChannels = [NSPredicate predicateWithFormat: @"channels.subscribedByUser != YES"];
-//        [fetchRequest setPredicate: ownsUseSubscribedChannels];
-//    }
+    if (!userBound)
+    {
+        // do not delete data relating to the user such as subscriptions and channels
+        NSPredicate *ownsUseSubscribedChannels = [NSPredicate predicateWithFormat: @"ANY channels.subscribedByUser == NO"];
+        [fetchRequest setPredicate: ownsUseSubscribedChannels];
+    }
     
-    itemsToDelete = [self.mainManagedObjectContext
-                     executeFetchRequest: fetchRequest
-                     error: &error];
+    itemsToDelete = [self.mainManagedObjectContext executeFetchRequest: fetchRequest
+                                                                 error: &error];
     
     for (NSManagedObject *objectToDelete in itemsToDelete)
     {
         [self.mainManagedObjectContext deleteObject: objectToDelete];
     }
+    
+    fetchRequest.predicate = nil;
     
     // == Save == //
     [self saveContext: YES];
