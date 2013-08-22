@@ -779,7 +779,7 @@ typedef enum {
         [appDelegate.onBoardingQueue addPopover: addToChannelPopover];
         
         [defaults setBool: YES
-                   forKey: kUserDefaultsAddVideo];
+                   forKey: kUserDefaultsFriendsTab];
         
         
         [appDelegate.onBoardingQueue present];

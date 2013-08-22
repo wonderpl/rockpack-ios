@@ -377,6 +377,14 @@ typedef enum _NavigationButtonsAppearance {
 #define kOriginFacebook @"Facebook"
 #define kOriginRockpack @"Rockpack"
 
+// Accounts
+
+#define kFacebook @"facebook"
+#define kRockpack @"rockpack"
+#define kTwitter @"twitter"
+#define kGooglePlus @"google"
+#define kAPNS   @"apns"
+
 typedef enum {
     LoginOriginRockpack = 0,
     LoginOriginFacebook = 1

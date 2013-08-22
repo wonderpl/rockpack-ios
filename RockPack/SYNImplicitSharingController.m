@@ -11,6 +11,7 @@
 #import "SYNAppDelegate.h"
 #import "SYNFacebookManager.h"
 #import "SYNOAuthNetworkEngine.h"
+#import "AppConstants.h"
 
 @interface SYNImplicitSharingController ()
 
@@ -73,8 +74,6 @@
     __weak SYNImplicitSharingController* wself = self;
     SYNAppDelegate* appDelegate = (SYNAppDelegate*)[[UIApplication sharedApplication] delegate];
     
-    ExternalAccount* facebookAccount = appDelegate.currentUser.facebookAccount;
-    BOOL doesHaveAutopostStarFlagSet = (facebookAccount.flagsValue & ExternalAccountFlagAutopostStar);
     
     BOOL isYesButton = (sender == self.yesButton);
     
@@ -116,7 +115,7 @@
                                                                
                         // Shortcut for not reposting an existing value
                                                                
-                        if(doesHaveAutopostStarFlagSet) {
+                        if(appDelegate.currentUser.facebookAccount.flagsValue & ExternalAccountFlagAutopostStar) {
                                                                    
                             if(self.completionBlock)
                                 self.completionBlock(YES);
@@ -132,17 +131,19 @@
                                               completionHandler:^(id no_response) {
                                                   
                                                   
-                                                                //NSLog(@"Flag sent");
                                                                                                   
                                             [wself switchAutopostViewToYes:isYesButton];
                                                                                                   
                                             if(isYesButton)
-                                                [wAppDelegate.currentUser setFlag:ExternalAccountFlagAutopostStar toExternalAccount:@"facebook"];
+                                                [wAppDelegate.currentUser setFlag:ExternalAccountFlagAutopostStar toExternalAccount:kFacebook];
                                             else
-                                                [wAppDelegate.currentUser unsetFlag:ExternalAccountFlagAutopostStar toExternalAccount:@"facebook"];
+                                                [wAppDelegate.currentUser unsetFlag:ExternalAccountFlagAutopostStar toExternalAccount:kFacebook];
                                                                                                   
                                                 [wAppDelegate saveContext:YES];
-                                                                                                  
+                                                  
+                                                  
+                                                  ExternalAccount* facebookAccount = wAppDelegate.currentUser.facebookAccount;
+                                                  NSLog(@"%@", facebookAccount);
                                                 if(self.completionBlock)
                                                     self.completionBlock(YES);
                                                                                                   

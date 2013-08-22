@@ -102,10 +102,10 @@
         [permissionsString appendString:@"-W"];
     
     if (self.flagsValue & ExternalAccountFlagAutopostStar)
-        [permissionsString appendString:@"-aS"];
+        [permissionsString appendString:@"-aSt"];
     
     if (self.flagsValue & ExternalAccountFlagAutopostAdd)
-        [permissionsString appendString:@"-aA"];
+        [permissionsString appendString:@"-aAd"];
     
     return [NSString stringWithString:permissionsString];
 }

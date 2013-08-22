@@ -23,6 +23,7 @@
 #import "ChannelCover.h"
 #import "UIColor+SYNColor.h"
 #import <QuartzCore/QuartzCore.h>
+#import "AppConstants.h"
 
 
 @interface SYNExistingChannelsViewController ()
@@ -150,11 +151,11 @@
         
         
         if(isYesButton) {
-           [wAppDelegate.currentUser setFlag:ExternalAccountFlagAutopostAdd toExternalAccount:@"facebook"]; 
+           [wAppDelegate.currentUser setFlag:ExternalAccountFlagAutopostAdd toExternalAccount:kFacebook];
         }
             
         else {
-           [wAppDelegate.currentUser unsetFlag:ExternalAccountFlagAutopostAdd toExternalAccount:@"facebook"]; 
+           [wAppDelegate.currentUser unsetFlag:ExternalAccountFlagAutopostAdd toExternalAccount:kFacebook]; 
         }
             
         
