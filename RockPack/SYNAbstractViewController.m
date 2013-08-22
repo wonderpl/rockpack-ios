@@ -813,6 +813,7 @@
 - (void) shareChannelAtIndexPath: (NSIndexPath *) indexPath
                andComponentIndex: (NSInteger) componentIndex
 {
+    
     Channel *channel = [self channelInstanceForIndexPath: indexPath
                                        andComponentIndex: componentIndex];
     
@@ -885,12 +886,8 @@
     {
         // Channel cell
         analyticsLabel = @"channel";
-
-        // Get resource URL in parallel
-        if (recognizer.state == UIGestureRecognizerStateBegan)
-        {
-
-        }
+        
+        cellIndexPath = [self indexPathForChannelCell: cell];
         
         SYNArcMenuItem *arcMenuItem1 = [[SYNArcMenuItem alloc] initWithImage: [UIImage imageNamed: @"ActionShare"]
                                                             highlightedImage: [UIImage imageNamed: @"ActionShareHighlighted"]

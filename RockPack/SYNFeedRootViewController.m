@@ -724,6 +724,9 @@ typedef void(^FeedDataErrorBlock)(void);
 - (Channel *) channelInstanceForIndexPath: (NSIndexPath *) indexPath
                         andComponentIndex: (NSInteger) componentIndex
 {
+    if (!indexPath)
+        DebugLog(@"Nil index path");
+    DebugLog (@"indexPath %@", indexPath);
     Channel *channel;
     
     FeedItem *feedItem = [self feedItemAtIndexPath: indexPath];
@@ -740,6 +743,8 @@ typedef void(^FeedDataErrorBlock)(void);
 
     return channel;
 }
+
+
 
 
 - (NSIndexPath *) indexPathForChannelCell: (UICollectionViewCell *) cell
@@ -1057,6 +1062,7 @@ typedef void(^FeedDataErrorBlock)(void);
 
 -(Channel*)channelAtCoverOfFeedItem:(FeedItem*)feedItem
 {
+    DebugLog(@"Feed Item: %@", feedItem);
     if(!feedItem || (feedItem.resourceTypeValue != FeedItemResourceTypeChannel))
         return nil;
     
