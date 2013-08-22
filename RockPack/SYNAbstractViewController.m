@@ -848,7 +848,8 @@
     NSIndexPath *cellIndexPath = [self indexPathForChannelCell: cell];
     
     SYNArcMenuItem *arcMenuItem3 = [[SYNArcMenuItem alloc] initWithImage: [UIImage imageNamed: @"ActionShare"]
-                                                        highlightedImage: [UIImage imageNamed: @"ActionShareHighlighted"]];
+                                                        highlightedImage: [UIImage imageNamed: @"ActionShareHighlighted"]
+                                                                    name: kActionShare];
     
     if ([self isChannelCell: cell])
     {
@@ -884,10 +885,12 @@
         }
         
         SYNArcMenuItem *arcMenuItem1 = [[SYNArcMenuItem alloc] initWithImage: [UIImage imageNamed: (videoInstance.video.starredByUserValue == FALSE) ? @"ActionLike" : @"ActionUnlike"]
-                                                            highlightedImage: [UIImage imageNamed: (videoInstance.video.starredByUserValue == FALSE) ? @"ActionLikeHighlighted" : @"ActionUnlikeHighlighted"]];
+                                                            highlightedImage: [UIImage imageNamed: (videoInstance.video.starredByUserValue == FALSE) ? @"ActionLikeHighlighted" : @"ActionUnlikeHighlighted"]
+                                                                        name: kActionLike];
         
         SYNArcMenuItem *arcMenuItem2 = [[SYNArcMenuItem alloc] initWithImage: [UIImage imageNamed: @"ActionAdd"]
-                                                            highlightedImage: [UIImage imageNamed: @"ActionAddHighlighted"]];
+                                                            highlightedImage: [UIImage imageNamed: @"ActionAddHighlighted"]
+                                                                        name: kActionAdd];
         
         menuItems = @[arcMenuItem1, arcMenuItem2, arcMenuItem3];
         
@@ -922,7 +925,8 @@
     if (recognizer.state == UIGestureRecognizerStateBegan)
     {
         SYNArcMenuItem *mainMenuItem = [[SYNArcMenuItem alloc] initWithImage: [UIImage imageNamed: @"ActionRingNoTouch"]
-                                                            highlightedImage: [UIImage imageNamed: @"ActionRingTouch"]];
+                                                            highlightedImage: [UIImage imageNamed: @"ActionRingTouch"]
+                                                                        name: kActionNone];
         
         self.arcMenu = [[SYNArcMenuView alloc] initWithFrame: self.view.bounds
                                                    startItem: mainMenuItem
@@ -984,7 +988,6 @@
 }
 
 
-
 - (BOOL) isChannelCell: (UICollectionViewCell *) cell
 {
     return ([NSStringFromClass(cell.class) rangeOfString: @"Channel"].location == NSNotFound ? FALSE : TRUE);
@@ -992,30 +995,26 @@
 
 
 - (void) arcMenu: (SYNArcMenuView *) menu
-         didSelectMenuAtIndex: (NSInteger) menuIndex
+         didSelectMenuName: (NSString *) menuName
          forCellAtIndex: (NSIndexPath *) cellIndexPath
+         andComponentIndex: (NSInteger) componentIndex
 {
-    switch (menuIndex)
+    if ([menuName isEqualToString: kActionLike])
     {
-        case kArcMenuButtonLike:
-            NSLog (@"Like");
-            [self toggleStarAtIndexPath: cellIndexPath];
-            break;
-            
-        case kArcMenuButtonAdd:
-            NSLog (@"Add");
-            [self addVideoAtIndexPath: cellIndexPath
-                        withOperation: kVideoQueueAdd];
-            break;
-            
-        case kArcMenuButtonShare:
-            NSLog (@"Share");
-            [self shareVideoAtIndexPath: cellIndexPath];
-            break;
-            
-        default:
-            AssertOrLog(@"Invalid Arc Menu index selected");
-            break;
+        [self toggleStarAtIndexPath: cellIndexPath];
+    }
+    else if ([menuName isEqualToString: kActionAdd])
+    {
+        [self addVideoAtIndexPath: cellIndexPath
+                    withOperation: kVideoQueueAdd];
+    }
+    else if ([menuName isEqualToString: kActionShare])
+    {
+        [self shareVideoAtIndexPath: cellIndexPath];
+    }
+    else
+    {
+        AssertOrLog(@"Invalid Arc Menu index selected");
     }
 }
 

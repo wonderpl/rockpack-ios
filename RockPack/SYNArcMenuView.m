@@ -69,6 +69,9 @@ static CGPoint RotateAndScaleCGPointAroundCenter(CGPoint point, CGPoint center, 
 {
     if ((self = [super initWithFrame: frame]))
     {
+        // Assume no component index for now
+        self.componentIndex = kArcMenuInvalidComponentIndex;
+        
         self.backgroundColor = [UIColor clearColor];
         
         self.nearRadius = kSYNArcMenuDefaultNearRadius;
@@ -320,11 +323,12 @@ static CGPoint RotateAndScaleCGPointAroundCenter(CGPoint point, CGPoint center, 
                               forKey: @"blowup"];
             
             // Notify out delegate with out choice of menu i
-            if ([self.delegate respondsToSelector: @selector(arcMenu:didSelectMenuAtIndex:forCellAtIndex:)])
+            if ([self.delegate respondsToSelector: @selector(arcMenu:didSelectMenuAtIndex:forCellAtIndex:andComponentIndex:)])
             {
                 [self.delegate arcMenu: self
-                  didSelectMenuAtIndex: item.tag - 1000
-                        forCellAtIndex: self.cellIndexPath];
+                     didSelectMenuName: item.name
+                        forCellAtIndex: self.cellIndexPath
+                     andComponentIndex: self.componentIndex];
             }
         }
         else

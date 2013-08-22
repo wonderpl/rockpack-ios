@@ -29,6 +29,7 @@
 #import "FeedItem.h"
 #import "SYNMasterViewController.h"
 #import "VideoInstance.h"
+#import "Appirater.h"
 
 typedef void(^FeedDataErrorBlock)(void);
 
@@ -743,52 +744,70 @@ typedef void(^FeedDataErrorBlock)(void);
     NSIndexPath *indexPath = [self.feedCollectionView indexPathForItemAtPoint: cell.center];
     return indexPath;
 }
-                        
+
+- (void) shareChannelAtIndexPath: (NSIndexPath *) indexPath
+               andComponentIndex: (NSInteger) componentIndex
+{
+    Channel *channel = [self channelInstanceForIndexPath: indexPath];
+    
+    CGRect rect = CGRectMake([SYNDeviceManager.sharedInstance currentScreenWidth] * 0.5,
+                             480.0f, 1, 1);
+    
+    [self shareChannel: channel
+               isOwner: ([channel.channelOwner.uniqueId isEqualToString: appDelegate.currentUser.uniqueId]) ? @(TRUE): @(FALSE)
+                inView: self.view
+              fromRect: rect
+       arrowDirections: 0
+     activityIndicator: nil
+            onComplete: ^{
+                [Appirater userDidSignificantEvent: FALSE];
+            }];
+}
+
 - (void) arcMenuUpdateState: (UIGestureRecognizer *) recognizer
                     forCell: (UICollectionViewCell *) cell
 {
-
     NSIndexPath *indexPath = [self.feedCollectionView indexPathForItemAtPoint: cell.center];
     FeedItem *feedItem = [self feedItemAtIndexPath: indexPath];
+    Channel *channel;
     
-    ChannelOwner *channelOwner;
-    
-    NSInteger feedItemsAggregated = feedItem.itemTypeValue == FeedItemTypeAggregate ? feedItem.feedItems.count : 1;
-    
-    if (feedItem.resourceTypeValue == FeedItemResourceTypeVideo)
+    if (feedItem.resourceTypeValue == FeedItemResourceTypeChannel && feedItem.itemTypeValue == FeedItemTypeAggregate)
     {
-        // Use default method
-        [super arcMenuUpdateState: recognizer
-                         forCell: cell];
-    }
-    else if (feedItem.resourceTypeValue == FeedItemResourceTypeChannel)
-    {
-        Channel *channel;
-        
-        if (feedItem.itemTypeValue == FeedItemTypeAggregate)
-        {
-            NSArray *coverIndexIds = [feedItem.coverIndexes
-                                      componentsSeparatedByString: @":"];
+            UIImageView *simulatedButton = (UIImageView *) recognizer.view;
+
+            SYNAggregateChannelCell *channelCellSelected = (SYNAggregateChannelCell *) cell;
             
-            NSMutableArray *coverImagesAndTitles = [NSMutableArray arrayWithCapacity: coverIndexIds.count];
-            
-            for (NSString *resourceId in coverIndexIds)
-            {
-                channel = (Channel *) [self.feedChannelsById objectForKey: resourceId];
-                
-//                [coverImagesAndTitles addObject: @{@"image": channel.channelCover ? channel.channelCover.imageUrl : @"",
-//                 @"title": channel.title}];
-            }
-            
-        }
-        else
-        {
+            NSInteger indexOfButton = [channelCellSelected indexForSimulatedButtonPressed: simulatedButton];
+            channel = [self.feedChannelsById objectForKey: feedItem.coverIndexArray[indexOfButton]];
+
             [super arcMenuUpdateState: recognizer
-                             forCell: cell];
-        }
+                              forCell: cell];
+    }
+    else
+    {
+        // Handle video
+        [super arcMenuUpdateState: recognizer
+                          forCell: cell];
     }
 }
- 
+
+
+- (void) arcMenu: (SYNArcMenuView *) menu
+         didSelectMenuName: (NSString *) menuName
+         forCellAtIndex: (NSIndexPath *) cellIndexPath
+         andComponentIndex: (NSInteger) componentIndex
+{
+    if ([menuName isEqualToString: kActionShare])
+    {
+        [self shareChannelAtIndexPath: cellIndexPath
+                    andComponentIndex: componentIndex];
+    }
+    else
+    {
+        AssertOrLog(@"Invalid Arc Menu index selected");
+    }
+}
+
 
 - (void) arcMenuWillBeginAnimationOpen: (SYNArcMenuView *) menu
 {
@@ -814,11 +833,7 @@ typedef void(^FeedDataErrorBlock)(void);
                    cellForItemAtIndexPath: (NSIndexPath *) indexPath
 {
     SYNAggregateCell *cell = nil;
-    
     FeedItem* feedItem = [self feedItemAtIndexPath:indexPath];
-    
-    
-    
     ChannelOwner* channelOwner;
     
     NSInteger feedItemsAggregated = feedItem.itemTypeValue == FeedItemTypeAggregate ? feedItem.feedItems.count : 1;

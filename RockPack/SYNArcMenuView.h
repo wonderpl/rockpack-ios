@@ -16,19 +16,24 @@
 #define kShadeViewTag 123
 #define kShadeViewAnimationDuration 0.25f
 
-typedef enum {
+typedef enum : NSInteger {
     kArcMenuButtonLike = 0,
     kArcMenuButtonAdd = 1,
     kArcMenuButtonShare = 2
 } kArcMenuButtonType;
+
+typedef enum : NSInteger {
+    kArcMenuInvalidComponentIndex = -1
+} kArcMenuComponentIndex;
 
 @class SYNArcMenuView;
 
 @protocol SYNArcMenuViewDelegate <NSObject>
 
 - (void) arcMenu: (SYNArcMenuView *) menu
-         didSelectMenuAtIndex: (NSInteger) menuIndex
-         forCellAtIndex: (NSIndexPath *) cellIndexPath;
+         didSelectMenuName: (NSString *) menuName
+         forCellAtIndex: (NSIndexPath *) cellIndexPath
+         andComponentIndex: (NSInteger) componentIndex;
 
 - (void) arcMenuUpdateState: (UIGestureRecognizer *) recognizer
                     forCell: (UICollectionViewCell *) cell;
@@ -54,6 +59,7 @@ typedef enum {
 @property (nonatomic, assign) CGFloat nearRadius;
 @property (nonatomic, assign) CGFloat rotateAngle;
 @property (nonatomic, assign) CGPoint startPoint;
+@property (nonatomic, assign) NSInteger componentIndex;
 @property (nonatomic, strong) UIImage *contentImage;
 @property (nonatomic, strong) UIImage *highlightedContentImage;
 @property (nonatomic, strong) UIImage *highlightedImage;
@@ -70,45 +76,6 @@ typedef enum {
 - (void) positionUpdate: (CGPoint) tapPoint;
 
 @end
-
-/*
-
-SYNArcMenuItem *arcMenuItem1 = [[SYNArcMenuItem alloc] initWithImage: [UIImage imageNamed: @"ActionLike"]
-                                                    highlightedImage: [UIImage imageNamed: @"ActionLikeHighlighted"]
-                                                        contentImage: nil;
-                                             highlightedContentImage: nil];
-
-SYNArcMenuItem *arcMenuItem2 = [[SYNArcMenuItem alloc] initWithImage: [UIImage imageNamed: @"ActionAdd"]
-                                                    highlightedImage: [UIImage imageNamed: @"ActionAddHighlighted"]
-                                                        contentImage: nil;
-                                             highlightedContentImage: nil];
-
-SYNArcMenuItem *arcMenuItem3 = [[SYNArcMenuItem alloc] initWithImage: [UIImage imageNamed: @"ActionShare"]
-                                                    highlightedImage: [UIImage imageNamed: @"ActionShareHighlighted"]
-                                                        contentImage: nil;
-                                             highlightedContentImage: nil];
-
-SYNArcMenuItem *mainMenuItem = [[SYNArcMenuItem alloc] initWithImage: [UIImage imageNamed: @"ActionRingNoTouch"]
-                                                   highlightedImage: [UIImage imageNamed: @"ActionRingTouchg"]
-                                                       contentImage: nil
-                                             highlightedContentImage: nil];
-
-SYNArcMenuView *menu = [[SYNArcMenuView alloc] initWithFrame: self.window.bounds
-                                                   startItem: mainMenuItem
-                                                 optionMenus: @[arcMenuItem1, arcMenuItem2, arcMenuItem3]];
-menu.delegate = self;
-menu.startPoint = CGPointMake(160.0, 240.0);
-menu.rotateAngle = 0.0;
-menu.menuWholeAngle = M_PI / 2 2;
-menu.timeOffset = 0.036f;
-menu.farRadius = 140.0f;
-menu.nearRadius = 110.0f;
-menu.endRadius = 120.0f;
-
-[self.window addSubview: menu];
- 
-*/
-
 
 
 

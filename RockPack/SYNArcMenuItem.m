@@ -25,9 +25,11 @@ static inline CGRect ScaleRect(CGRect rect, float n)
 #pragma mark - initialization & cleaning up
 - (id) initWithImage: (UIImage *) image
        highlightedImage: (UIImage *) highlightedImage
+                name: (NSString *) name
 {
     if ((self = [super init]))
     {
+        self.name = name;
         self.image = image;
         self.highlightedImage = highlightedImage;
         self.userInteractionEnabled = YES;
