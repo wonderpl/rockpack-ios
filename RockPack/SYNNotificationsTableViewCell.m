@@ -17,6 +17,7 @@
 @property (nonatomic, assign) UIButton *secondaryImageButton;
 @property (nonatomic, strong) UIButton *mainImageButton;
 @property (nonatomic, strong) UIView *dividerImageView;
+@property (nonatomic, strong) UIView *cellBackgroundView;
 
 @end
 
@@ -31,6 +32,11 @@
     if (self)
     {
         self.selectionStyle = UITableViewCellSelectionStyleNone;
+        
+        // == Cell Background == //
+        self.cellBackgroundView = [[UIView alloc] init];
+        self.cellBackgroundView.frame = CGRectMake(0.0, 0.0, 362.0, 100.0);
+        [self addSubview:self.cellBackgroundView];
         
         // == frames == //
         self.imageViewRect = CGRectMake(8.0, 8.0, 60.0, 60.0);
@@ -87,7 +93,9 @@
         self.secondaryImageButton = [UIButton buttonWithType: UIButtonTypeCustom];
         self.secondaryImageButton.frame = self.imageViewRect;
         [self addSubview: self.secondaryImageButton];
-    }
+        
+        self.clipsToBounds = YES;
+}
     
     return self;
 }
@@ -106,7 +114,7 @@
                                       (self.mainTextSize.height > 40.0 ? 6.0 : 12.0),
                                       self.mainTextSize.width,
                                       self.mainTextSize.height);
-    
+
     // Thumbnail - Place at the end
     CGRect thumbnailImageViewFrame = self.imageView.frame;
     thumbnailImageViewFrame.origin.x = self.frame.size.width - 68.0;
@@ -124,16 +132,20 @@
     
     self.dividerImageView.center = CGPointMake(self.center.x, self.frame.size.height);
     
+    // Make the cells background clear
+    self.backgroundColor = [UIColor clearColor];
+    
+    // Set the colour of background view
     if (self.read)
     {
-        self.backgroundColor = [UIColor clearColor];
+        self.cellBackgroundView.backgroundColor = [UIColor clearColor];
     }
     else
     {
-        self.backgroundColor = [UIColor colorWithRed: (226.0 / 255.0)
-                                               green: (231.0 / 255.0)
-                                                blue: (231.0 / 255.0)
-                                               alpha: (1.0)];
+        self.cellBackgroundView.backgroundColor = [UIColor colorWithRed: (150.0 / 255.0)
+                                               green: (150.0 / 255.0)
+                                                blue: (150.0 / 255.0)
+                                               alpha: (0.2)];
     }
 }
 

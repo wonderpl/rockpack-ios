@@ -57,6 +57,8 @@
 
     [self.view addSubview: self.logoImageView];
     
+    [self.view setBackgroundColor:[UIColor clearColor]];
+    
     self.tableView.separatorStyle = UITableViewCellSeparatorStyleNone;
     
     [self.tableView registerClass: [SYNNotificationsTableViewCell class]
