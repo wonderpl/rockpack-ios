@@ -23,6 +23,7 @@
 #import "UIImageView+WebCache.h"
 #import <QuartzCore/QuartzCore.h>
 #import "SYNFriendsViewController.h"
+#import "SYNMasterViewController.h"
 
 
 #define kSideNavTitle @"kSideNavTitle"
@@ -482,12 +483,12 @@ typedef enum {
     }
     
     // We can't use our standard asynchronous loader due to cacheing    
-    dispatch_queue_t callerQueue = dispatch_get_main_queue();
+  
     dispatch_queue_t downloadQueue = dispatch_queue_create("com.rockpack.avatarloadingqueue", NULL);
     dispatch_async(downloadQueue, ^{
         NSData * imageData = [NSData dataWithContentsOfURL: [NSURL URLWithString: self.user.thumbnailURL]];
         
-        dispatch_async(callerQueue, ^{
+        dispatch_async(dispatch_get_main_queue(), ^{
             if (imageData)
             {
                 self.profilePictureImageView.image = [UIImage imageWithData: imageData];
@@ -624,7 +625,7 @@ typedef enum {
     settingsButtonFrame.origin.y = [SYNDeviceManager.sharedInstance currentScreenHeight] - 30.0 - settingsButtonFrame.size.height;
     self.settingsButton.frame = settingsButtonFrame;
     
-    // FIXME:???
+    // FIXME: ???
     if (UIInterfaceOrientationIsPortrait(toInterfaceOrientation))
     {
         
@@ -730,7 +731,10 @@ typedef enum {
                               delay: 0.0f
                             options: UIViewAnimationOptionCurveEaseInOut | UIViewAnimationOptionBeginFromCurrentState
                          animations: motionBlock
-                         completion: nil];
+                         completion:^(BOOL finished) {
+                             // check for on boarding
+                             [self checkAndDisplayOnBoarding];
+                         }];
     }
     else
     {
@@ -739,6 +743,49 @@ typedef enum {
     
 }
 
+- (void) checkAndDisplayOnBoarding
+{
+    NSUserDefaults *defaults = [NSUserDefaults standardUserDefaults];
+    BOOL hasShownFriendsTabOnBoarding = [defaults boolForKey: kUserDefaultsFriendsTab];
+    
+    if (!hasShownFriendsTabOnBoarding && IS_IPAD)
+    {
+        SYNAppDelegate* appDelegate = (SYNAppDelegate*)[[UIApplication sharedApplication] delegate];
+        NSString *message = NSLocalizedString(@"onboarding_friends", nil);
+        
+        // FIXME: Surely these iPad checks are not required (see above)
+        CGFloat fontSize = IS_IPAD ? 16.0 : 14.0;
+        CGSize size = IS_IPAD ? CGSizeMake(240.0, 86.0) : CGSizeMake(200.0, 82.0);
+        
+        UITableViewCell* friendsCell = [self.tableView cellForRowAtIndexPath:[NSIndexPath indexPathForRow:kFriendsRowIndex inSection:0]];
+        
+        CGRect rectToPointTo = [appDelegate.masterViewController.view convertRect: friendsCell.frame
+                                                                         fromView: self.tableView];
+        
+        
+        //randomCell.addItButton.hidden = YES;
+        
+        SYNOnBoardingPopoverView *addToChannelPopover = [SYNOnBoardingPopoverView withMessage: message
+                                                                                     withSize: size
+                                                                                  andFontSize: fontSize
+                                                                                   pointingTo: rectToPointTo
+                                                                                withDirection: PointingDirectionDown];
+        
+        //__weak SYNChannelDetailViewController *wself = self;
+        addToChannelPopover.action = ^(id obj){
+            //[wself addItToChannelPresssed: nil];
+        };
+        
+        [appDelegate.onBoardingQueue addPopover: addToChannelPopover];
+        
+        [defaults setBool: YES
+                   forKey: kUserDefaultsAddVideo];
+        
+        
+        [appDelegate.onBoardingQueue present];
+    }
+    
+}
 
 - (void) showFullNavigation
 {
