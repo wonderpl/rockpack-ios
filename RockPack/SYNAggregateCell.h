@@ -12,7 +12,8 @@
 
 @protocol SYNAggregateCellDelegate <NSObject>
 
-- (void) pressedAggregateCellCoverButton: (UIButton *) button;
+- (void) pressedAggregateCellCoverView: (UIView *) view;
+
 - (void) arcMenuUpdateState: (UIGestureRecognizer *) recognizer
                     forCell: (UICollectionViewCell *) cell;
 
@@ -20,7 +21,6 @@
 
 @interface SYNAggregateCell : UICollectionViewCell
 
-@property (nonatomic, strong) IBOutlet UIButton *coverButton;
 @property (nonatomic, strong) IBOutlet UIButton *userThumbnailButton;
 @property (nonatomic, strong) IBOutlet UIImageView *userThumbnailImageView;
 @property (nonatomic, strong) IBOutlet UILabel *mainTitleLabel;

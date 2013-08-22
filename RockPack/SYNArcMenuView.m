@@ -69,6 +69,9 @@ static CGPoint RotateAndScaleCGPointAroundCenter(CGPoint point, CGPoint center, 
 {
     if ((self = [super initWithFrame: frame]))
     {
+        // Assume no component index for now
+        self.componentIndex = kArcMenuInvalidComponentIndex;
+        
         self.backgroundColor = [UIColor clearColor];
         
         self.nearRadius = kSYNArcMenuDefaultNearRadius;
@@ -114,6 +117,7 @@ static CGPoint RotateAndScaleCGPointAroundCenter(CGPoint point, CGPoint center, 
 {
     int currentIndex = [self nearestMenuItemToPoint: tapPoint];
     int count = self.menusArray.count;
+    int adjustedCount = (count == 1) ? 1 : (count -1);
     
     // If we don't have anu menu items highlighted, then ensure that the main button is highlighted instead
     self.startButton.highlighted = (currentIndex == -1) ? TRUE : FALSE;
@@ -133,7 +137,7 @@ static CGPoint RotateAndScaleCGPointAroundCenter(CGPoint point, CGPoint center, 
             CGFloat zoomFactor = scaleFactor * 0.25;
 //            NSLog (@"Scalefactor %f", scaleFactor);
             
-            CGPoint farPoint = CGPointMake(self.startPoint.x + self.endRadius * sinf(currentIndex * self.menuWholeAngle / (count - 1)), self.startPoint.y - self.endRadius * cosf(currentIndex * self.menuWholeAngle / (count - 1)));
+            CGPoint farPoint = CGPointMake(self.startPoint.x + self.endRadius * sinf(currentIndex * self.menuWholeAngle / adjustedCount), self.startPoint.y - self.endRadius * cosf(currentIndex * self.menuWholeAngle / adjustedCount));
             
             item.center = RotateAndScaleCGPointAroundCenter(farPoint, self.startPoint, self.rotateAngle, 1 + (scaleFactor * 0.4));
             
@@ -244,15 +248,17 @@ static CGPoint RotateAndScaleCGPointAroundCenter(CGPoint point, CGPoint center, 
             self.menuWholeAngle = self.menuWholeAngle - self.menuWholeAngle / count;
         }
         
-        CGPoint endPoint = CGPointMake(self.startPoint.x + self.endRadius * sinf(i * self.menuWholeAngle / (count - 1)), self.startPoint.y - self.endRadius * cosf(i * self.menuWholeAngle / (count - 1)));
+        int adjustedCount = (count == 1) ? 1 : count -1;
+        
+        CGPoint endPoint = CGPointMake(self.startPoint.x + self.endRadius * sinf(i * self.menuWholeAngle / adjustedCount), self.startPoint.y - self.endRadius * cosf(i * self.menuWholeAngle / adjustedCount));
         
         item.endPoint = RotateCGPointAroundCenter(endPoint, self.startPoint, self.rotateAngle);
         
-        CGPoint nearPoint = CGPointMake(self.startPoint.x + self.nearRadius * sinf(i * self.menuWholeAngle / (count - 1)), self.startPoint.y - self.nearRadius * cosf(i * self.menuWholeAngle / (count - 1)));
+        CGPoint nearPoint = CGPointMake(self.startPoint.x + self.nearRadius * sinf(i * self.menuWholeAngle / adjustedCount), self.startPoint.y - self.nearRadius * cosf(i * self.menuWholeAngle / adjustedCount));
         
         item.nearPoint = RotateCGPointAroundCenter(nearPoint, self.startPoint, self.rotateAngle);
         
-        CGPoint farPoint = CGPointMake(self.startPoint.x + self.farRadius * sinf(i * self.menuWholeAngle / (count - 1)), self.startPoint.y - self.farRadius * cosf(i * self.menuWholeAngle / (count - 1)));
+        CGPoint farPoint = CGPointMake(self.startPoint.x + self.farRadius * sinf(i * self.menuWholeAngle / adjustedCount), self.startPoint.y - self.farRadius * cosf(i * self.menuWholeAngle / adjustedCount));
         
         item.farPoint = RotateCGPointAroundCenter(farPoint, self.startPoint, self.rotateAngle);
         
@@ -271,10 +277,10 @@ static CGPoint RotateAndScaleCGPointAroundCenter(CGPoint point, CGPoint center, 
 
 - (void) expandMenu
 {
-    // Notify our delegate that we are about to expand
-    if (self.delegate && [self.delegate respondsToSelector: @selector(arcMenuDidFinishAnimationClose:)])
+    // Shade appropriate view in viewController
+    if ([self.delegate respondsToSelector: @selector(arcMenuViewToShade)])
     {
-        [self.delegate arcMenuWillBeginAnimationOpen: self];
+        [self animateOpen: self.delegate.arcMenuViewToShade];
     }
 
     [CATransaction begin];
@@ -303,6 +309,25 @@ static CGPoint RotateAndScaleCGPointAroundCenter(CGPoint point, CGPoint center, 
 }
 
 
+- (void) animateOpen: (UIView *) shadedView
+{
+    // The user opened a menu, so dim the screen
+    UIView *shadeView = [[UIView alloc] initWithFrame: shadedView.superview.frame];
+    shadeView.tag = kShadeViewTag;
+    shadeView.backgroundColor = [UIColor blackColor];
+    shadeView.alpha = 0.0f;
+    
+    [shadedView.superview insertSubview: shadeView
+                           aboveSubview: shadedView];
+    
+    [UIView animateWithDuration:  kShadeViewAnimationDuration
+                     animations: ^{
+                         // Fade in the view slightly
+                         shadeView.alpha = 0.2f;
+                     }];
+}
+
+
 - (void) closeMenu
 {
     BOOL userDidSelectMenuItem = FALSE;
@@ -320,11 +345,12 @@ static CGPoint RotateAndScaleCGPointAroundCenter(CGPoint point, CGPoint center, 
                               forKey: @"blowup"];
             
             // Notify out delegate with out choice of menu i
-            if ([self.delegate respondsToSelector: @selector(arcMenu:didSelectMenuAtIndex:forCellAtIndex:)])
+            if ([self.delegate respondsToSelector: @selector(arcMenu:didSelectMenuName:forCellAtIndex:andComponentIndex:)])
             {
                 [self.delegate arcMenu: self
-                  didSelectMenuAtIndex: item.tag - 1000
-                        forCellAtIndex: self.cellIndexPath];
+                     didSelectMenuName: item.name
+                        forCellAtIndex: self.cellIndexPath
+                     andComponentIndex: self.componentIndex];
             }
         }
         else
@@ -336,18 +362,32 @@ static CGPoint RotateAndScaleCGPointAroundCenter(CGPoint point, CGPoint center, 
     
     self.startButton.alpha = 0.0f;
     
-    // Notify our delegate that we had hidden
-    if (self.delegate && [self.delegate respondsToSelector: @selector(arcMenuDidFinishAnimationClose:)])
+    // Shade appropriate view in viewController
+    if ([self.delegate respondsToSelector: @selector(arcMenuViewToShade)])
     {
-        [self.delegate arcMenuDidFinishAnimationClose: self];
+        [self animateClose: self.delegate.arcMenuViewToShade];
     }
     
     if (!userDidSelectMenuItem)
     {
         [self removeFromSuperview];
     }
+}
 
-
+- (void) animateClose: (UIView *) shadedView
+{
+    // The user closed the menu so remove the shading from the screen
+    UIView *shadeView = [shadedView.superview viewWithTag: kShadeViewTag];
+    
+    [UIView animateWithDuration:  kShadeViewAnimationDuration
+                     animations: ^{
+                         shadeView.alpha = 0.0f;
+                     }
+                     completion:^(BOOL finished){
+                         // remove the view altogether
+                         [shadeView removeFromSuperview];
+                     }
+     ];
 }
 
 
