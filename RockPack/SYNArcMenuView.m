@@ -277,10 +277,10 @@ static CGPoint RotateAndScaleCGPointAroundCenter(CGPoint point, CGPoint center, 
 
 - (void) expandMenu
 {
-    // Notify our delegate that we are about to expand
-    if (self.delegate && [self.delegate respondsToSelector: @selector(arcMenuDidFinishAnimationClose:)])
+    // Shade appropriate view in viewController
+    if ([self.delegate respondsToSelector: @selector(arcMenuViewToShade)])
     {
-        [self.delegate arcMenuWillBeginAnimationOpen: self];
+        [self animateOpen: self.delegate.arcMenuViewToShade];
     }
 
     [CATransaction begin];
@@ -306,6 +306,25 @@ static CGPoint RotateAndScaleCGPointAroundCenter(CGPoint point, CGPoint center, 
     }
     
     [CATransaction commit];
+}
+
+
+- (void) animateOpen: (UIView *) shadedView
+{
+    // The user opened a menu, so dim the screen
+    UIView *shadeView = [[UIView alloc] initWithFrame: shadedView.superview.frame];
+    shadeView.tag = kShadeViewTag;
+    shadeView.backgroundColor = [UIColor blackColor];
+    shadeView.alpha = 0.0f;
+    
+    [shadedView.superview insertSubview: shadeView
+                           aboveSubview: shadedView];
+    
+    [UIView animateWithDuration:  kShadeViewAnimationDuration
+                     animations: ^{
+                         // Fade in the view slightly
+                         shadeView.alpha = 0.2f;
+                     }];
 }
 
 
@@ -343,18 +362,32 @@ static CGPoint RotateAndScaleCGPointAroundCenter(CGPoint point, CGPoint center, 
     
     self.startButton.alpha = 0.0f;
     
-    // Notify our delegate that we had hidden
-    if (self.delegate && [self.delegate respondsToSelector: @selector(arcMenuDidFinishAnimationClose:)])
+    // Shade appropriate view in viewController
+    if ([self.delegate respondsToSelector: @selector(arcMenuViewToShade)])
     {
-        [self.delegate arcMenuDidFinishAnimationClose: self];
+        [self animateClose: self.delegate.arcMenuViewToShade];
     }
     
     if (!userDidSelectMenuItem)
     {
         [self removeFromSuperview];
     }
+}
 
-
+- (void) animateClose: (UIView *) shadedView
+{
+    // The user closed the menu so remove the shading from the screen
+    UIView *shadeView = [shadedView.superview viewWithTag: kShadeViewTag];
+    
+    [UIView animateWithDuration:  kShadeViewAnimationDuration
+                     animations: ^{
+                         shadeView.alpha = 0.0f;
+                     }
+                     completion:^(BOOL finished){
+                         // remove the view altogether
+                         [shadeView removeFromSuperview];
+                     }
+     ];
 }
 
 

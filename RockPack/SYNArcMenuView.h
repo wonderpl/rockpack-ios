@@ -38,12 +38,9 @@ typedef enum : NSInteger {
 - (void) arcMenuUpdateState: (UIGestureRecognizer *) recognizer
                     forCell: (UICollectionViewCell *) cell;
 
-
 @optional
 
-- (void) arcMenuWillBeginAnimationOpen: (SYNArcMenuView *) menu;
-- (void) arcMenuDidFinishAnimationClose: (SYNArcMenuView *) menu;
-
+- (UIView *) arcMenuViewToShade;
 
 @end
 

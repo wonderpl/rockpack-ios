@@ -1044,41 +1044,9 @@
     }
 }
 
-
-- (void) arcMenuWillBeginAnimationOpen: (SYNArcMenuView *) menu
+- (UIView *) arcMenuViewToShade
 {
-    // The user opened a menu, so dim the screen
-    UIView *shadeView = [[UIView alloc] initWithFrame: self.view.frame];
-    shadeView.tag = kShadeViewTag;
-    shadeView.backgroundColor = [UIColor blackColor];
-    shadeView.alpha = 0.0f;
-    
-    [self.view insertSubview: shadeView
-                aboveSubview: self.videoThumbnailCollectionView];
-    
-    [UIView animateWithDuration:  kShadeViewAnimationDuration
-                     animations: ^{
-                         // Fade in the view slightly
-                         shadeView.alpha = 0.2f;
-                         
-                     }];
-}
-
-
-- (void) arcMenuDidFinishAnimationClose: (SYNArcMenuView *) menu
-{
-    // The user closed the menu so remove the shading from the screen
-    UIView *shadeView = [self.view viewWithTag: kShadeViewTag];
-    
-    [UIView animateWithDuration:  kShadeViewAnimationDuration
-                     animations: ^{
-                         shadeView.alpha = 0.0f;
-                     }
-                     completion:^(BOOL finished){
-                         // remove the view altogether
-                         [shadeView removeFromSuperview];
-                     }
-     ];
+    return self.videoThumbnailCollectionView;
 }
 
 

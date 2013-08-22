@@ -812,23 +812,9 @@ typedef void(^FeedDataErrorBlock)(void);
 }
 
 
-- (void) arcMenuWillBeginAnimationOpen: (SYNArcMenuView *) menu
+- (UIView *) arcMenuViewToShade
 {
-    // The user opened a menu, so dim the screen
-    UIView *shadeView = [[UIView alloc] initWithFrame: self.view.frame];
-    shadeView.tag = kShadeViewTag;
-    shadeView.backgroundColor = [UIColor blackColor];
-    shadeView.alpha = 0.0f;
-    
-    [self.view insertSubview: shadeView
-                aboveSubview: self.feedCollectionView];
-    
-    [UIView animateWithDuration:  kShadeViewAnimationDuration
-                     animations: ^{
-                         // Fade in the view slightly
-                         shadeView.alpha = 0.2f;
-                         
-                     }];
+    return self.feedCollectionView;
 }
 
 
