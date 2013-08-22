@@ -138,14 +138,24 @@
                          // pick the previous view controller
                          ((UIViewController *) self.navigationController.viewControllers[viewControllersCount - 2]).view.alpha = 1.0f;
                      }
-                     completion: nil];
+                     completion:^(BOOL finished) {
+                         
+                         if(self.returnBlock)
+                             self.returnBlock();
+                         
+                         self.returnBlock = nil;
+                         
+                     }];
     
     [self.navigationController popViewControllerAnimated: NO];
     
-    if(!self.searchBarOriginSideNavigation) {
+    if(!self.searchBarOriginSideNavigation)
+    {
         [self hideSideNavigator];
         self.searchBarOriginSideNavigation = NO;
     }
+    
+    
         
 }
 

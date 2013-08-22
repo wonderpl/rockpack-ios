@@ -126,7 +126,9 @@ UITextViewDelegate>
         self.scrollView.page = self.lastSelectedPageIndex = 1;
     }
     
-    
+    [[NSNotificationCenter defaultCenter] postNotificationName: kScrollerPageChanged
+                                                        object: self
+                                                      userInfo: @{kCurrentPage: @(self.scrollView.page)}];
 }
 
 
@@ -136,9 +138,7 @@ UITextViewDelegate>
     
     [self packViewControllersForInterfaceOrientation: [SYNDeviceManager.sharedInstance orientation]];
     
-    [[NSNotificationCenter defaultCenter] postNotificationName: kScrollerPageChanged
-                                                        object: self
-                                                      userInfo: @{kCurrentPage: @(self.scrollView.page)}];
+    
 }
 
 

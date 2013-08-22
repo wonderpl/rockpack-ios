@@ -20,11 +20,15 @@
     UIView* backgroundView;
 }
 
+typedef void(^ViewStackReturnBlock)(void);
 
 @property (nonatomic, weak) UINavigationController *navigationController;
 @property (nonatomic, weak) SYNSideNavigatorViewController *sideNavigatorController;
 @property (nonatomic, weak) SYNMasterViewController *masterController;
 @property (nonatomic) BOOL searchBarOriginSideNavigation;
+@property (nonatomic, copy) ViewStackReturnBlock returnBlock;
+
+@property (nonatomic) NSInteger indexToOpenSide;
 
 + (id) manager;
 

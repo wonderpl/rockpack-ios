@@ -18,6 +18,7 @@
 #import "Friend.h"
 #import "GAI.h"
 #import "SYNFacebookManager.h"
+#import "SYNSideNavigatorViewController.h"
 #import <objc/runtime.h>
 
 static char* association_key = "SYNFriendThumbnailCell to Friend";
@@ -461,6 +462,9 @@ static char* association_key = "SYNFriendThumbnailCell to Friend";
     {
         ChannelOwner* friendAsChannelOwner = (ChannelOwner*)self.currentlySelectedFriend;
         
+        appDelegate.viewStackManager.returnBlock = ^{
+            ((SYNSideNavigatorViewController*)self.parentViewController).state = SideNavigationStateFull;
+        };
         [appDelegate.viewStackManager viewProfileDetails:friendAsChannelOwner];
         
     }
