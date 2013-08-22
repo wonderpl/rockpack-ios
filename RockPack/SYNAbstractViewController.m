@@ -994,7 +994,6 @@
             self.arcMenu.rotateAngle += M_PI;
         }
         
-        //[self.view addSubview: self.arcMenu];
         
         [appDelegate.viewStackManager addSubvievOnTopOfEverything:self.arcMenu];
         

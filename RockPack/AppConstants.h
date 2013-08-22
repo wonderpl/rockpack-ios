@@ -368,6 +368,7 @@ typedef enum _NavigationButtonsAppearance {
 #define kUserDefaultsNotFirstInstall @"UD_Not_First_Install"
 #define kUserDefaultsSubscribe @"UD_OnBoaring_Subscribe"
 #define kUserDefaultsAddVideo @"UD_OnBoaring_AddVideo"
+#define kUserDefaultsFriendsTab @"UD_OnBoaring_FriendsTab"
 #define kUserDefaultsChannels @"UD_OnBoaring_Channels"
 #define kUserDefaultsFeed @"UD_OnBoaring_Feed"
 
