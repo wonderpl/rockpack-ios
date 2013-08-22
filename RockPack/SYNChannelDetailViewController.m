@@ -1323,10 +1323,11 @@
     // Prevent multiple clicks
     shareButton.enabled = FALSE;
     
-    [self	 shareChannel: self.channel
+    [self shareChannel: self.channel
                 isOwner: ([self.channel.channelOwner.uniqueId isEqualToString: appDelegate.currentUser.uniqueId]) ? @(TRUE): @(FALSE)
-                 inView: self.view
+                inView: self.view
                fromRect: self.shareButton.frame
+            usingImage: nil
         arrowDirections: UIPopoverArrowDirectionRight
       activityIndicator: self.shareActivityIndicator
              onComplete: ^{
