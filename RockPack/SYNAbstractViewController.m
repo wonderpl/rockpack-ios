@@ -826,6 +826,7 @@
 
 
 - (Channel *) channelInstanceForIndexPath: (NSIndexPath *) indexPath
+                        andComponentIndex: (NSInteger) componentIndex
 {
     AssertOrLog(@"Shouldn't be calling abstract function");
     return  nil;
@@ -860,11 +861,16 @@
         {
             cellIndexPath = [self indexPathForChannelCell: cell];
             
-            Channel *channel = [self channelInstanceForIndexPath: cellIndexPath];
+            Channel *channel = [self channelInstanceForIndexPath: cellIndexPath
+                                               andComponentIndex: kArcMenuInvalidComponentIndex];
             
             [self requestShareLinkWithObjectType: @"channel"
                                         objectId: channel.uniqueId];
         }
+        
+//        SYNArcMenuItem *arcMenuItem2 = [[SYNArcMenuItem alloc] initWithImage: [UIImage imageNamed: @"ActionAdd"]
+//                                                            highlightedImage: [UIImage imageNamed: @"ActionAddHighlighted"]
+//                                                                        name: kActionAdd];
         
         menuItems = @[arcMenuItem3];
 

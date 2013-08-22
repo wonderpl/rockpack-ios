@@ -722,15 +722,25 @@ typedef void(^FeedDataErrorBlock)(void);
 }
 
 - (Channel *) channelInstanceForIndexPath: (NSIndexPath *) indexPath
+                        andComponentIndex: (NSInteger) componentIndex
 {
+    Channel *channel;
+    
     FeedItem *feedItem = [self feedItemAtIndexPath: indexPath];
     
-#warning "Broken"
-    Channel *channel = nil;
-//    Channel *channel = [self.feedChannelsById objectForKey: feedItem.coverIndexArray[indexOfButton]
-    
+    if (componentIndex == kArcMenuInvalidComponentIndex)
+    {
+        channel = [self channelAtCoverOfFeedItem: feedItem];
+    }
+    else
+    {
+        // Aggregate cell with multiple indices
+        channel = [self.feedChannelsById objectForKey: feedItem.coverIndexArray[componentIndex]];
+    }
+
     return channel;
 }
+
 
 - (NSIndexPath *) indexPathForChannelCell: (UICollectionViewCell *) cell
 {
@@ -748,7 +758,8 @@ typedef void(^FeedDataErrorBlock)(void);
 - (void) shareChannelAtIndexPath: (NSIndexPath *) indexPath
                andComponentIndex: (NSInteger) componentIndex
 {
-    Channel *channel = [self channelInstanceForIndexPath: indexPath];
+    Channel *channel = [self channelInstanceForIndexPath: indexPath
+                                       andComponentIndex: componentIndex];
     
     CGRect rect = CGRectMake([SYNDeviceManager.sharedInstance currentScreenWidth] * 0.5,
                              480.0f, 1, 1);
@@ -773,15 +784,21 @@ typedef void(^FeedDataErrorBlock)(void);
     
     if (feedItem.resourceTypeValue == FeedItemResourceTypeChannel && feedItem.itemTypeValue == FeedItemTypeAggregate)
     {
-            UIImageView *simulatedButton = (UIImageView *) recognizer.view;
+        UIImageView *simulatedButton = (UIImageView *) recognizer.view;
 
-            SYNAggregateChannelCell *channelCellSelected = (SYNAggregateChannelCell *) cell;
-            
-            NSInteger indexOfButton = [channelCellSelected indexForSimulatedButtonPressed: simulatedButton];
-            channel = [self.feedChannelsById objectForKey: feedItem.coverIndexArray[indexOfButton]];
-
+        SYNAggregateChannelCell *channelCellSelected = (SYNAggregateChannelCell *) cell;
+        
+        NSInteger indexOfButton = [channelCellSelected indexForSimulatedButtonPressed: simulatedButton];
+        
+        if (indexOfButton == kArcMenuInvalidComponentIndex)
+        {
+            channel = [self.feedChannelsById objectForKey: feedItem.coverIndexArray[indexOfButton]];  
+        }
+        else
+        {
             [super arcMenuUpdateState: recognizer
                               forCell: cell];
+        }
     }
     else
     {

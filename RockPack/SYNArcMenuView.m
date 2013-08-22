@@ -117,6 +117,7 @@ static CGPoint RotateAndScaleCGPointAroundCenter(CGPoint point, CGPoint center, 
 {
     int currentIndex = [self nearestMenuItemToPoint: tapPoint];
     int count = self.menusArray.count;
+    int adjustedCount = (count == 1) ? 1 : (count -1);
     
     // If we don't have anu menu items highlighted, then ensure that the main button is highlighted instead
     self.startButton.highlighted = (currentIndex == -1) ? TRUE : FALSE;
@@ -136,7 +137,7 @@ static CGPoint RotateAndScaleCGPointAroundCenter(CGPoint point, CGPoint center, 
             CGFloat zoomFactor = scaleFactor * 0.25;
 //            NSLog (@"Scalefactor %f", scaleFactor);
             
-            CGPoint farPoint = CGPointMake(self.startPoint.x + self.endRadius * sinf(currentIndex * self.menuWholeAngle / (count - 1)), self.startPoint.y - self.endRadius * cosf(currentIndex * self.menuWholeAngle / (count - 1)));
+            CGPoint farPoint = CGPointMake(self.startPoint.x + self.endRadius * sinf(currentIndex * self.menuWholeAngle / adjustedCount), self.startPoint.y - self.endRadius * cosf(currentIndex * self.menuWholeAngle / adjustedCount));
             
             item.center = RotateAndScaleCGPointAroundCenter(farPoint, self.startPoint, self.rotateAngle, 1 + (scaleFactor * 0.4));
             
@@ -247,15 +248,17 @@ static CGPoint RotateAndScaleCGPointAroundCenter(CGPoint point, CGPoint center, 
             self.menuWholeAngle = self.menuWholeAngle - self.menuWholeAngle / count;
         }
         
-        CGPoint endPoint = CGPointMake(self.startPoint.x + self.endRadius * sinf(i * self.menuWholeAngle / (count - 1)), self.startPoint.y - self.endRadius * cosf(i * self.menuWholeAngle / (count - 1)));
+        int adjustedCount = (count == 1) ? 1 : count -1;
+        
+        CGPoint endPoint = CGPointMake(self.startPoint.x + self.endRadius * sinf(i * self.menuWholeAngle / adjustedCount), self.startPoint.y - self.endRadius * cosf(i * self.menuWholeAngle / adjustedCount));
         
         item.endPoint = RotateCGPointAroundCenter(endPoint, self.startPoint, self.rotateAngle);
         
-        CGPoint nearPoint = CGPointMake(self.startPoint.x + self.nearRadius * sinf(i * self.menuWholeAngle / (count - 1)), self.startPoint.y - self.nearRadius * cosf(i * self.menuWholeAngle / (count - 1)));
+        CGPoint nearPoint = CGPointMake(self.startPoint.x + self.nearRadius * sinf(i * self.menuWholeAngle / adjustedCount), self.startPoint.y - self.nearRadius * cosf(i * self.menuWholeAngle / adjustedCount));
         
         item.nearPoint = RotateCGPointAroundCenter(nearPoint, self.startPoint, self.rotateAngle);
         
-        CGPoint farPoint = CGPointMake(self.startPoint.x + self.farRadius * sinf(i * self.menuWholeAngle / (count - 1)), self.startPoint.y - self.farRadius * cosf(i * self.menuWholeAngle / (count - 1)));
+        CGPoint farPoint = CGPointMake(self.startPoint.x + self.farRadius * sinf(i * self.menuWholeAngle / adjustedCount), self.startPoint.y - self.farRadius * cosf(i * self.menuWholeAngle / adjustedCount));
         
         item.farPoint = RotateCGPointAroundCenter(farPoint, self.startPoint, self.rotateAngle);
         
