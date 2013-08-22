@@ -68,7 +68,6 @@
     if(!self.queue)
         self.queue = [[NSMutableArray alloc] init];
     
-    NSLog(@"Adding in Q %@", popoverView);
     [self.queue addObject:popoverView];
     
     UITapGestureRecognizer *tapOutside =
@@ -376,6 +375,7 @@
                 {
                     
                     self.specialSlice = currentSlice;
+                    
                     currentSlice.backgroundColor = [UIColor clearColor];
                     
                     UITapGestureRecognizer* tpRecogniser = [[UITapGestureRecognizer alloc] initWithTarget:self
@@ -393,6 +393,11 @@
                 
             }
         }
+        
+        [self.specialSlice removeFromSuperview];
+        [self.backgroundView addSubview:self.specialSlice];
+        
+        
     }
 
     
@@ -433,6 +438,9 @@
 }
 -(void)performAction:(UIGestureRecognizer*)recogniser
 {
+    // swap
+    
+    
     if(self.currentlyVisiblePopover.action)
         self.currentlyVisiblePopover.action(recogniser);
     

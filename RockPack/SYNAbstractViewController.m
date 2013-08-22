@@ -828,6 +828,7 @@
 - (void) arcMenuUpdateState: (UIGestureRecognizer *) recognizer
                     forCell: (UICollectionViewCell *) cell
 {
+    
     CGPoint tapPoint = [recognizer locationInView: self.view];
     
     NSIndexPath *cellIndexPath = [self indexPathForVideoIndexCell: cell];
@@ -898,7 +899,9 @@
             self.arcMenu.rotateAngle += M_PI;
         }
         
-        [self.view addSubview: self.arcMenu];
+        //[self.view addSubview: self.arcMenu];
+        
+        [appDelegate.viewStackManager addSubvievOnTopOfEverything:self.arcMenu];
         
         [self.arcMenu show: YES];
         

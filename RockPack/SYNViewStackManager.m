@@ -508,6 +508,11 @@
                      }];
 }
 
+-(void)addSubvievOnTopOfEverything:(UIView*)view
+{
+    [self.masterController.view addSubview:view];
+}
+
 
 #pragma mark - Helper
 
