@@ -347,6 +347,7 @@ static char* association_key = "SYNFriendThumbnailCell to Friend";
 
 - (BOOL) textField: (UITextField *) textField shouldChangeCharactersInRange: (NSRange) range replacementString: (NSString *) newCharacter
 {
+    
     NSUInteger oldLength = textField.text.length;
     NSUInteger newCharacterLength = newCharacter.length;
     NSUInteger rangeLength = range.length;
@@ -408,7 +409,7 @@ static char* association_key = "SYNFriendThumbnailCell to Friend";
 
 - (BOOL) textFieldShouldReturn: (UITextField *) textField
 {
-    
+    [self.searchField resignFirstResponder];
     return YES;
 }
 
