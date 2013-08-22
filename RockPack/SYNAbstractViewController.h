@@ -108,6 +108,7 @@ typedef void (^SYNShareCompletionBlock)(void);
               isOwner: (NSNumber *) isOwner
                inView: (UIView *) inView
              fromRect: (CGRect) rect
+           usingImage: (UIImage *) image
       arrowDirections: (UIPopoverArrowDirection) arrowDirections
     activityIndicator: (UIActivityIndicatorView *) activityIndicatorView
            onComplete: (SYNShareCompletionBlock) completionBlock;

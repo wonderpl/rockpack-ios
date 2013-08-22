@@ -12,6 +12,7 @@
 #import "AppConstants.h"
 #import "AudioToolbox/AudioToolbox.h"
 #import "Channel.h"
+#import "ChannelCover.h"
 #import "ChannelOwner.h"
 #import "GAI.h"
 #import "NSDictionary+Validation.h"
@@ -428,6 +429,7 @@
               isOwner: (NSNumber *) isOwner
                inView: (UIView *) inView
              fromRect: (CGRect) rect
+           usingImage: (UIImage *) image
       arrowDirections: (UIPopoverArrowDirection) arrowDirections
     activityIndicator: (UIActivityIndicatorView *) activityIndicatorView
            onComplete: (SYNShareCompletionBlock) completionBlock
@@ -443,7 +445,7 @@
                  objectId: channel.uniqueId
                   isOwner: isOwner
                   isVideo: @FALSE
-               usingImage: nil
+               usingImage: image
                    inView: inView
                  fromRect: rect
           arrowDirections: arrowDirections
@@ -465,46 +467,49 @@
 {
     if ([objectType isEqualToString: @"channel"])
     {
-        // Capture screen image if we weren't passed an image in
-        UIWindow *keyWindow = [[UIApplication sharedApplication] keyWindow];
-        CGRect keyWindowRect = [keyWindow bounds];
-        UIGraphicsBeginImageContextWithOptions(keyWindowRect.size, YES, 0.0f);
-        CGContextRef context = UIGraphicsGetCurrentContext();
-        [keyWindow.layer
-         renderInContext: context];
-        UIImage *capturedScreenImage = UIGraphicsGetImageFromCurrentImageContext();
-        UIGraphicsEndImageContext();
-        
-        UIInterfaceOrientation orientation = [SYNDeviceManager.sharedInstance orientation];
-        
-        switch (orientation)
+        if (!usingImage)
         {
-            case UIDeviceOrientationPortrait:
-                orientation = UIImageOrientationUp;
-                break;
-                
-            case UIDeviceOrientationPortraitUpsideDown:
-                orientation = UIImageOrientationDown;
-                break;
-                
-            case UIDeviceOrientationLandscapeLeft:
-                orientation = UIImageOrientationLeft;
-                break;
-                
-            case UIDeviceOrientationLandscapeRight:
-                orientation = UIImageOrientationRight;
-                break;
-                
-            default:
-                orientation = UIImageOrientationRight;
-                DebugLog(@"Unknown orientation");
-                break;
+            // Capture screen image if we weren't passed an image in
+            UIWindow *keyWindow = [[UIApplication sharedApplication] keyWindow];
+            CGRect keyWindowRect = [keyWindow bounds];
+            UIGraphicsBeginImageContextWithOptions(keyWindowRect.size, YES, 0.0f);
+            CGContextRef context = UIGraphicsGetCurrentContext();
+            [keyWindow.layer
+             renderInContext: context];
+            UIImage *capturedScreenImage = UIGraphicsGetImageFromCurrentImageContext();
+            UIGraphicsEndImageContext();
+            
+            UIInterfaceOrientation orientation = [SYNDeviceManager.sharedInstance orientation];
+            
+            switch (orientation)
+            {
+                case UIDeviceOrientationPortrait:
+                    orientation = UIImageOrientationUp;
+                    break;
+                    
+                case UIDeviceOrientationPortraitUpsideDown:
+                    orientation = UIImageOrientationDown;
+                    break;
+                    
+                case UIDeviceOrientationLandscapeLeft:
+                    orientation = UIImageOrientationLeft;
+                    break;
+                    
+                case UIDeviceOrientationLandscapeRight:
+                    orientation = UIImageOrientationRight;
+                    break;
+                    
+                default:
+                    orientation = UIImageOrientationRight;
+                    DebugLog(@"Unknown orientation");
+                    break;
+            }
+            
+            UIImage *fixedOrientationImage = [UIImage  imageWithCGImage: capturedScreenImage.CGImage
+                                                                  scale: capturedScreenImage.scale
+                                                            orientation: orientation];
+            usingImage = fixedOrientationImage;
         }
-        
-        UIImage *fixedOrientationImage = [UIImage  imageWithCGImage: capturedScreenImage.CGImage
-                                                              scale: capturedScreenImage.scale
-                                                        orientation: orientation];
-        usingImage = fixedOrientationImage;
     }
     
     NSString *userName = nil;
@@ -811,6 +816,14 @@
     Channel *channel = [self channelInstanceForIndexPath: indexPath
                                        andComponentIndex: componentIndex];
     
+    // Try and find a suitable image
+    UIImage *thumbnailImage = [SDWebImageManager.sharedManager.imageCache imageFromMemoryCacheForKey: channel.channelCover.imageLargeUrl];
+    
+    if (!thumbnailImage)
+    {
+        thumbnailImage = [SDWebImageManager.sharedManager.imageCache imageFromMemoryCacheForKey: channel.channelCover.imageUrl];
+    }
+    
     CGRect rect = CGRectMake([SYNDeviceManager.sharedInstance currentScreenWidth] * 0.5,
                              480.0f, 1, 1);
     
@@ -818,6 +831,7 @@
                isOwner: ([channel.channelOwner.uniqueId isEqualToString: appDelegate.currentUser.uniqueId]) ? @(TRUE): @(FALSE)
                 inView: self.view
               fromRect: rect
+            usingImage: thumbnailImage
        arrowDirections: 0
      activityIndicator: nil
             onComplete: ^{
