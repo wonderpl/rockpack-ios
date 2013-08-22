@@ -899,6 +899,13 @@
     
     fetchRequest.includesSubentities = NO; // do not include User objects as these are handled elsewhere
     
+//    if (!userBound)
+//    {
+//        // do not delete data relating to the user such as subscriptions and channels
+//        NSPredicate *ownsUseSubscribedChannels = [NSPredicate predicateWithFormat: @"channels.subscribedByUser != YES"];
+//        [fetchRequest setPredicate: ownsUseSubscribedChannels];
+//    }
+    
     itemsToDelete = [self.mainManagedObjectContext
                      executeFetchRequest: fetchRequest
                      error: &error];

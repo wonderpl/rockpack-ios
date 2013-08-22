@@ -544,6 +544,7 @@ typedef enum {
 {
     if (self.currentlyLoadedViewController)
     {
+        [self.currentlyLoadedViewController removeFromParentViewController];
         [self.currentlyLoadedViewController.view removeFromSuperview];
     }
     
@@ -580,6 +581,7 @@ typedef enum {
 
     
     [self.containerView addSubview: self.currentlyLoadedViewController.view];
+    [self addChildViewController:self.currentlyLoadedViewController];
 }
 
 
