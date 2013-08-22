@@ -163,12 +163,13 @@
     [self.searchBoxView resizeForHeight: 548.0f]; // 548.0f max
     
     
+    
     CGRect searchTBVFrame = self.searchCategoriesController.tableView.frame;
     searchTBVFrame.origin = CGPointMake(0.0f, 64.0f);
-    searchTBVFrame.size = CGSizeMake(self.view.frame.size.width,
-                                     [[SYNDeviceManager sharedInstance] currentScreenHeight] - searchTBVFrame.origin.y);
-    
     self.searchCategoriesController.tableView.frame = searchTBVFrame;
+    [self.searchCategoriesController setSize:CGSizeMake(self.view.frame.size.width,
+                                                       [[SYNDeviceManager sharedInstance] currentScreenHeightWithStatusBar] - searchTBVFrame.origin.y)];
+    
     
     __weak SYNSearchBoxViewController* wself = self;
     
