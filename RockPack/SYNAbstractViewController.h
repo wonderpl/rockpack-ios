@@ -52,6 +52,7 @@ typedef void (^SYNShareCompletionBlock)(void);
 @property (nonatomic, strong) NSFetchedResultsController *fetchedResultsController;
 @property (nonatomic, strong) NSIndexPath *draggedIndexPath;
 @property (nonatomic, strong) SYNAddButtonControl *addButton;
+@property (nonatomic, strong) SYNArcMenuView *arcMenu;
 @property (nonatomic, strong) SYNChannelFooterMoreView *footerView;
 @property (nonatomic, strong) SYNTabViewController *tabViewController;
 @property (nonatomic, strong) UIImageView *draggedView;
@@ -113,6 +114,11 @@ typedef void (^SYNShareCompletionBlock)(void);
 
 - (void) addVideoAtIndexPath: (NSIndexPath *) indexPath
                withOperation: (NSString *) operation;
+
+- (void) shareVideoAtIndexPath: (NSIndexPath *) indexPath;
+
+- (void) shareChannelAtIndexPath: (NSIndexPath *) indexPath
+               andComponentIndex: (NSInteger) componentIndex;
 
 // Purchase
 

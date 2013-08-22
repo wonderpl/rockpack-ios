@@ -6,17 +6,21 @@
 //  Copyright (c) 2012 Nick Banks. All rights reserved.
 //
 
+#import "SYNTouchGestureRecognizer.h"
 #import "SYNVideoThumbnailRegularCell.h"
 #import "UIFont+SYNFont.h"
-#import <QuartzCore/QuartzCore.h>
+#import "UIImage+Tint.h"
 #import "UIImageView+WebCache.h"
+#import <QuartzCore/QuartzCore.h>
 #import "AppConstants.h"
 
 @interface SYNVideoThumbnailRegularCell () <UIGestureRecognizerDelegate>
 
-@property (nonatomic, strong) IBOutlet UIButton *deleteButton;
+@property (nonatomic, strong) IBOutlet UIImageView *lowlightImageView;
+@property (nonatomic, strong) SYNTouchGestureRecognizer *touch;
 @property (nonatomic, strong) UILongPressGestureRecognizer *longPress;
 @property (nonatomic, strong) UITapGestureRecognizer *tap;
+@property (nonatomic, strong) IBOutlet UIButton *deleteButton;
 
 @end
 
@@ -36,7 +40,6 @@
     [self addGestureRecognizer: self.longPress];
 #endif
 
-    
     // Tap for showing video
     self.tap = [[UITapGestureRecognizer alloc] initWithTarget: self
                                                        action: @selector(showVideo:)];
@@ -44,6 +47,13 @@
     [self addGestureRecognizer: self.tap];
 
     self.titleLabel.font = [UIFont boldRockpackFontOfSize: self.titleLabel.font.pointSize];
+    
+    // Touch for highlighting cells when the user touches them (like UIButton)
+    self.touch = [[SYNTouchGestureRecognizer alloc] initWithTarget: self
+                                                            action: @selector(showGlossLowlight:)];
+    
+    self.touch.delegate = self;
+    [self addGestureRecognizer: self.touch];
 }
 
 
@@ -105,7 +115,20 @@
     [self.imageView setImageWithURL:nil];
 }
 
-#pragma mark - Gesture regognizer callbacks
+#pragma mark - Gesture regognizer support
+
+// Required to pass through events to controls overlaid on view with gesture recognizers
+- (BOOL) gestureRecognizer: (UIGestureRecognizer *) gestureRecognizer shouldReceiveTouch: (UITouch *) touch
+{
+    if ([touch.view isKindOfClass: [UIControl class]])
+    {
+        // we touched a button, slider, or other UIControl
+        return NO; // ignore the touch
+    }
+    
+    return YES; // handle the touch
+}
+
 
 - (void) showVideo: (UITapGestureRecognizer *) recognizer
 {
@@ -117,6 +140,32 @@
 {
     [self.viewControllerDelegate arcMenuUpdateState: recognizer
                                             forCell: self];
+}
+
+
+// This is used to lowlight the gloss image on touch
+- (void) showGlossLowlight: (SYNTouchGestureRecognizer *) recognizer
+{
+    switch (recognizer.state)
+    {
+        case UIGestureRecognizerStateBegan:
+        {
+            // Set lowlight tint
+            UIImage *glossImage = [UIImage imageNamed: @"GlossVideo.png"];
+            UIImage *lowlightImage = [glossImage tintedImageUsingColor: [UIColor colorWithWhite: 0.0
+                                                                                          alpha: 0.3]];
+            self.lowlightImageView.image = lowlightImage;
+            break;
+        }
+
+        case UIGestureRecognizerStateEnded:
+        case UIGestureRecognizerStateCancelled:
+        {
+             self.lowlightImageView.image = [UIImage imageNamed: @"GlossVideo.png"];
+        }
+        default:
+            break;
+    }
 }
 
 @end

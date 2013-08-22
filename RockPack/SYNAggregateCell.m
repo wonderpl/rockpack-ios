@@ -49,10 +49,6 @@
     [self.userThumbnailButton addTarget: self.viewControllerDelegate
                                  action: @selector(profileButtonTapped:)
                        forControlEvents: UIControlEventTouchUpInside];
-    
-    [self.coverButton addTarget: self.viewControllerDelegate
-                         action: @selector(pressedAggregateCellCoverButton:)
-               forControlEvents: UIControlEventTouchUpInside];
 }
 
 

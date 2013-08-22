@@ -6,19 +6,53 @@
 //  Copyright (c) 2013 Nick Banks. All rights reserved.
 //
 
+#import "AppConstants.h"
 #import "SYNAggregateChannelCell.h"
+#import "SYNTouchGestureRecognizer.h"
+#import "UIImage+Tint.h"
 
 
-@interface SYNAggregateChannelCell ()
+@interface SYNAggregateChannelCell () <UIGestureRecognizerDelegate>
 
+@property (nonatomic) CGRect originalImageContainerRect;
+@property (nonatomic, strong) IBOutlet UIImageView *lowlightImageView;
+@property (nonatomic, strong) SYNTouchGestureRecognizer *touch;
+@property (nonatomic, strong) UILongPressGestureRecognizer *longPress;
+@property (nonatomic, strong) UITapGestureRecognizer *tap;
 @property (nonatomic, strong) UIView *buttonContainerView;
 @property (nonatomic, strong) UIView *labelsContainerView;
-@property (nonatomic) CGRect originalImageContainerRect;
 
 @end
 
 
-@implementation SYNAggregateChannelCell
+@implementation SYNAggregateChannelCell 
+
+- (void) awakeFromNib
+{
+    [super awakeFromNib];
+
+#ifdef ENABLE_ARC_MENU
+    // Add long-press and tap recognizers (once only per cell)
+    self.longPress = [[UILongPressGestureRecognizer alloc] initWithTarget: self
+                                                                   action: @selector(showMenu:)];
+    self.longPress.delegate = self;
+    [self.lowlightImageView addGestureRecognizer: self.longPress];
+#endif
+    
+    // Tap for showing video
+    self.tap = [[UITapGestureRecognizer alloc] initWithTarget: self
+                                                       action: @selector(showChannel:)];
+    self.tap.delegate = self;
+    [self.lowlightImageView addGestureRecognizer: self.tap];
+    
+    // Touch for highlighting cells when the user touches them (like UIButton)
+    self.touch = [[SYNTouchGestureRecognizer alloc] initWithTarget: self
+                                                            action: @selector(showGlossLowlight:)];
+    
+    self.touch.delegate = self;
+    [self.lowlightImageView addGestureRecognizer: self.touch];
+}
+
 
 - (void) setCoverImageWithString: (NSString *) imageString
 {
@@ -59,7 +93,7 @@
     }
     
     self.imageContainer.frame = self.originalImageContainerRect;
-    self.coverButton.hidden = NO;
+    self.lowlightImageView.hidden = NO;
     self.mainTitleLabel.hidden = NO;
 }
 
@@ -83,7 +117,7 @@
     NSInteger count = array.count;
     UIImageView *imageView;
     
-    UIButton *button;
+    UIImageView *simultatedButton;
     UILabel *label;
     NSString *channelTitle;
     CGSize expectedLabelSize;
@@ -92,7 +126,7 @@
     {
         containerRect.size = self.imageContainer.frame.size;
 
-        self.coverButton.hidden = NO;
+        self.lowlightImageView.hidden = NO;
         self.mainTitleLabel.hidden = NO;
         
         imageView = [[UIImageView alloc] initWithFrame: containerRect];
@@ -129,7 +163,7 @@
         self.buttonContainerView = [[UIView alloc] initWithFrame: self.imageContainer.frame];
         
         [self insertSubview: self.buttonContainerView
-               belowSubview: self.coverButton];
+               belowSubview: self.lowlightImageView];
         
         self.labelsContainerView = [[UIView alloc] initWithFrame: self.imageContainer.frame];
         self.labelsContainerView.userInteractionEnabled = NO;
@@ -140,8 +174,7 @@
         
         containerRect.size.width = containerRect.size.width / 2.0;
         
-        
-        self.coverButton.hidden = YES;
+        self.lowlightImageView.hidden = YES;
         self.mainTitleLabel.hidden = YES;
         
         for (int i = 0; i < 2; i++)
@@ -162,13 +195,12 @@
             
             [self.imageContainer addSubview: imageView];
             
-            button = [UIButton buttonWithType: UIButtonTypeCustom];
-            button.backgroundColor = [UIColor clearColor];
-            button.frame = CGRectMake(containerRect.origin.x, 0.0f, containerRect.size.width, containerRect.size.height);
-            [button setImage: [UIImage imageNamed: @"channelFeedCoverFourth"]
-                    forState: UIControlStateNormal];
+            simultatedButton = [[UIImageView alloc] initWithImage: [UIImage imageNamed: @"channelFeedCoverFourth"]];
+            simultatedButton.backgroundColor = [UIColor clearColor];
+            simultatedButton.frame = CGRectMake(containerRect.origin.x, 0.0f, containerRect.size.width, containerRect.size.height);
+            simultatedButton.userInteractionEnabled = TRUE;
             
-            [self.buttonContainerView addSubview: button];
+            [self.buttonContainerView addSubview: simultatedButton];
             
             label = [[UILabel alloc] initWithFrame: CGRectZero];
             label.backgroundColor = [UIColor clearColor];
@@ -185,8 +217,6 @@
                                      expectedLabelSize.width,
                                      expectedLabelSize.height);
             
-            
-            
             label.text = channelTitle;
             
             [self.labelsContainerView addSubview: label];
@@ -199,7 +229,7 @@
     
     if (count == 4)
     {
-        self.coverButton.hidden = YES;
+        self.lowlightImageView.hidden = YES;
         self.mainTitleLabel.hidden = YES;
 
         containerRect.size = self.imageContainer.frame.size; // {{0, 0}, {298, 298}} (IPAD),
@@ -211,7 +241,7 @@
         self.buttonContainerView = [[UIView alloc] initWithFrame: self.imageContainer.frame];
         
         [self insertSubview: self.buttonContainerView
-               belowSubview: self.coverButton];
+               belowSubview: self.lowlightImageView];
         
         self.labelsContainerView = [[UIView alloc] initWithFrame: self.imageContainer.frame];
         self.labelsContainerView.userInteractionEnabled = NO;
@@ -242,13 +272,12 @@
             
             [self.imageContainer addSubview: imageView];
             
-            button = [UIButton buttonWithType: UIButtonTypeCustom];
-            button.backgroundColor = [UIColor clearColor];
-            button.frame = containerRect;
-            [button setImage: [UIImage imageNamed: @"channelFeedCoverFourth"]
-                    forState: UIControlStateNormal];
+            simultatedButton = [[UIImageView alloc] initWithImage: [UIImage imageNamed: @"channelFeedCoverFourth"]];
+            simultatedButton.backgroundColor = [UIColor clearColor];
+            simultatedButton.frame = containerRect;
+            simultatedButton.userInteractionEnabled = TRUE;
             
-            [self.buttonContainerView addSubview: button];
+            [self.buttonContainerView addSubview: simultatedButton];
             
             label = [[UILabel alloc] initWithFrame: CGRectZero];
             label.backgroundColor = [UIColor clearColor];
@@ -288,11 +317,27 @@
     
     if (self.buttonContainerView)
     {
-        for (UIButton *button in self.buttonContainerView.subviews)
+        for (UIImageView *simulatedButtonView in self.buttonContainerView.subviews)
         {
-            [button	addTarget: self.viewControllerDelegate
-                       action: @selector(pressedAggregateCellCoverButton:)
-             forControlEvents: UIControlEventTouchUpInside];
+#ifdef ENABLE_ARC_MENU
+            UILongPressGestureRecognizer *buttonLongPress = [[UILongPressGestureRecognizer alloc] initWithTarget: self
+                                                                                                          action: @selector(showMenu:)];
+            buttonLongPress.delegate = self;
+            [simulatedButtonView addGestureRecognizer: buttonLongPress];
+#endif
+            
+            // Tap for showing video
+            UITapGestureRecognizer *buttonTap = [[UITapGestureRecognizer alloc] initWithTarget: self
+                                                                                        action: @selector(showChannel:)];
+            buttonTap.delegate = self;
+            [simulatedButtonView addGestureRecognizer: buttonTap];
+            
+            // Touch for highlighting cells when the user touches them (like UIButton)
+            SYNTouchGestureRecognizer *buttonTouch = [[SYNTouchGestureRecognizer alloc] initWithTarget: self
+                                                                                                action: @selector(showGlossLowlight:)];
+            
+            buttonTouch.delegate = self;
+            [simulatedButtonView addGestureRecognizer: buttonTouch];
         }
     }
     
@@ -302,14 +347,14 @@
 }
 
 
-- (NSInteger) indexForButtonPressed: (UIButton *) button
+- (NSInteger) indexForSimulatedButtonPressed: (UIView *) view
 {
     if (!self.buttonContainerView)
     {
         return -1;
     }
     
-    return [self.buttonContainerView.subviews indexOfObject: button];
+    return [self.buttonContainerView.subviews indexOfObject: view];
 }
 
 
@@ -333,6 +378,56 @@
                                                                                       attributes: self.lightTextAttributes]];
 
     self.messageLabel.attributedText = attributedCompleteString;
+}
+
+
+#pragma mark - Gesture recognizers for arc menu and show video
+
+// This is used to lowlight the gloss image on touch
+- (void) showGlossLowlight: (SYNTouchGestureRecognizer *) recognizer
+{
+    UIImage *glossImage = [UIImage imageNamed: @"channelFeedCover"];
+    
+    switch (recognizer.state)
+    {
+        case UIGestureRecognizerStateBegan:
+        {
+            // Set lowlight tint
+            UIImage *lowlightImage = [glossImage tintedImageUsingColor: [UIColor colorWithWhite: 0.0
+                                                                                          alpha: 0.3]];
+            self.lowlightImageView.image = lowlightImage;
+            break;
+        }
+            
+        case UIGestureRecognizerStateEnded:
+        case UIGestureRecognizerStateCancelled:
+        {
+            self.lowlightImageView.image = glossImage;
+        }
+        default:
+            break;
+    }
+}
+
+
+- (void) showChannel: (UITapGestureRecognizer *) recognizer
+{
+    UIImageView *simulatedButton = self.lowlightImageView;
+    
+    if (self.buttonContainerView)
+    {
+        DebugLog (@"Multiple channels");
+        simulatedButton = (UIImageView *) recognizer.view;
+    }
+    
+    [self.viewControllerDelegate pressedAggregateCellCoverView: simulatedButton];
+}
+
+
+- (void) showMenu: (UILongPressGestureRecognizer *) recognizer
+{
+    [self.viewControllerDelegate arcMenuUpdateState: recognizer
+                                            forCell: self];
 }
 
 

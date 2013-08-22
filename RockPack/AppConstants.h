@@ -561,3 +561,9 @@ typedef void (^JSONResponseBlock)(id jsonObject);
 
 #define kUserIdInconsistencyError @"UserIdInconsistency"
 #define kStoredRefreshTokenNilError @"StoredRefreshTokenNil"
+
+#define kActionNone @""
+#define kActionShareVideo @"ActionShareVideo"
+#define kActionShareChannel @"ActionShareChannel"
+#define kActionLike @"ActionLike"
+#define kActionAdd @"ActionAdd"
