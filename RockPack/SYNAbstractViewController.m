@@ -875,6 +875,7 @@
 - (void) arcMenuUpdateState: (UIGestureRecognizer *) recognizer
                     forCell: (UICollectionViewCell *) cell
 {
+
     NSArray *menuItems;
     float menuArc, menuStartAngle;
     NSString *analyticsLabel;
@@ -1007,7 +1008,9 @@
             self.arcMenu.rotateAngle += M_PI;
         }
         
-        [self.view addSubview: self.arcMenu];
+        //[self.view addSubview: self.arcMenu];
+        
+        [appDelegate.viewStackManager addSubvievOnTopOfEverything:self.arcMenu];
         
         [self.arcMenu show: YES];
     }

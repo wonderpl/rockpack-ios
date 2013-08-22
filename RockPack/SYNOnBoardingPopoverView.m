@@ -98,25 +98,6 @@
         [self addSubview:label];
         
         
-        
-        // buttom
-//        UIImage* okButtonImageNormal = [UIImage imageNamed:@"onboarding_button_ok"];
-//        UIImage* okButtonImagePressed = [UIImage imageNamed:@"onboarding_button_ok_highlighted"];
-//        self.okButton = [UIButton buttonWithType:UIButtonTypeCustom];
-//        [self.okButton setImage:okButtonImageNormal forState:UIControlStateNormal];
-//        [self.okButton setImage:okButtonImagePressed forState:UIControlStateHighlighted];
-//        
-//        CGRect buttonRect = self.okButton.frame;
-//        buttonRect.size = okButtonImageNormal.size;
-//        buttonRect.origin.x = self.frame.size.width * 0.5 - buttonRect.size.width * 0.5;
-//        buttonRect.origin.y = labelRect.origin.y + labelRect.size.height + 10.0;
-//        self.okButton.frame = CGRectIntegral(buttonRect);
-//        
-//        [self addSubview:self.okButton];
-        
-        
-        // arrow
-        
         UIImage* arrowImage;
         switch (direction) {
             case PointingDirectionDown:

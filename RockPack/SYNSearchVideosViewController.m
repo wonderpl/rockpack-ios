@@ -576,10 +576,14 @@
         CGRect rectToPointTo = CGRectZero;
         PointingDirection directionToPointTo = PointingDirectionDown;
         
+        
         if (cell)
         {
             rectToPointTo = [self.view convertRect: cell.frame
                                           fromView: cell];
+            
+            rectToPointTo.origin.x -= 10.0f;
+            
             
             if (rectToPointTo.origin.y < [[SYNDeviceManager sharedInstance] currentScreenHeight] * 0.5)
             {
