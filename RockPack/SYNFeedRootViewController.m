@@ -759,33 +759,34 @@ typedef void(^FeedDataErrorBlock)(void);
 - (void) arcMenuUpdateState: (UIGestureRecognizer *) recognizer
                     forCell: (UICollectionViewCell *) cell
 {
-    NSIndexPath *indexPath = [self.feedCollectionView indexPathForItemAtPoint: cell.center];
-    FeedItem *feedItem = [self feedItemAtIndexPath: indexPath];
-    Channel *channel;
+    [super arcMenuUpdateState: recognizer
+                      forCell: cell];
     
-    if (feedItem.resourceTypeValue == FeedItemResourceTypeChannel && feedItem.itemTypeValue == FeedItemTypeAggregate)
+    if (recognizer.state == UIGestureRecognizerStateBegan)
     {
-        UIImageView *simulatedButton = (UIImageView *) recognizer.view;
-
-        SYNAggregateChannelCell *channelCellSelected = (SYNAggregateChannelCell *) cell;
+        // Need to set the component index if aggregate celll
+        NSIndexPath *indexPath = [self.feedCollectionView indexPathForItemAtPoint: cell.center];
+        FeedItem *feedItem = [self feedItemAtIndexPath: indexPath];
+        NSInteger indexOfButton;
         
-        NSInteger indexOfButton = [channelCellSelected indexForSimulatedButtonPressed: simulatedButton];
-        
-        if (indexOfButton == kArcMenuInvalidComponentIndex)
+        if (feedItem.resourceTypeValue == FeedItemResourceTypeChannel && feedItem.itemTypeValue == FeedItemTypeAggregate)
         {
-            channel = [self.feedChannelsById objectForKey: feedItem.coverIndexArray[indexOfButton]];  
+            UIImageView *simulatedButton = (UIImageView *) recognizer.view;
+            indexOfButton = [(SYNAggregateChannelCell *) cell indexForSimulatedButtonPressed: simulatedButton];
         }
         else
         {
-            [super arcMenuUpdateState: recognizer
-                              forCell: cell];
+            indexOfButton = kArcMenuInvalidComponentIndex;
         }
-    }
-    else
-    {
-        // Handle video
-        [super arcMenuUpdateState: recognizer
-                          forCell: cell];
+        
+        Channel *channel = [self channelInstanceForIndexPath: indexPath
+                                           andComponentIndex: indexOfButton];
+        
+        [self requestShareLinkWithObjectType: @"channel"
+                                    objectId: channel.uniqueId];
+        
+        self.arcMenu.componentIndex = indexOfButton;
+        DebugLog(@"Set componentIndex to %d", indexOfButton);
     }
 }
 

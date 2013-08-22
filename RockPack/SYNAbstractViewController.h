@@ -52,6 +52,7 @@ typedef void (^SYNShareCompletionBlock)(void);
 @property (nonatomic, strong) NSFetchedResultsController *fetchedResultsController;
 @property (nonatomic, strong) NSIndexPath *draggedIndexPath;
 @property (nonatomic, strong) SYNAddButtonControl *addButton;
+@property (nonatomic, strong) SYNArcMenuView *arcMenu;
 @property (nonatomic, strong) SYNChannelFooterMoreView *footerView;
 @property (nonatomic, strong) SYNTabViewController *tabViewController;
 @property (nonatomic, strong) UIImageView *draggedView;
@@ -91,8 +92,6 @@ typedef void (^SYNShareCompletionBlock)(void);
 - (void) headerTapped;
 
 - (IBAction) toggleStarAtIndexPath: (NSIndexPath *) indexPath;
-
-// Arc menu
 
 // Share
 - (void) requestShareLinkWithObjectType: (NSString *) objectType

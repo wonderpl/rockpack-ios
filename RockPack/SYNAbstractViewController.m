@@ -43,7 +43,6 @@
 @property (nonatomic, assign) NSUInteger selectedIndex;
 @property (nonatomic, strong) IBOutlet UIImageView *channelOverlayView;
 @property (nonatomic, strong) IBOutlet UITextField *channelNameTextField;
-@property (nonatomic, strong) SYNArcMenuView *arcMenu;
 @property (nonatomic, strong) UIPopoverController *activityPopoverController;
 @property (nonatomic, strong) UIView *dropZoneView;
 @property (strong, nonatomic) NSMutableDictionary *mutableShareDictionary;
@@ -875,13 +874,7 @@
         // Get resource URL in parallel
         if (recognizer.state == UIGestureRecognizerStateBegan)
         {
-            cellIndexPath = [self indexPathForChannelCell: cell];
-            
-            Channel *channel = [self channelInstanceForIndexPath: cellIndexPath
-                                               andComponentIndex: kArcMenuInvalidComponentIndex];
-            
-            [self requestShareLinkWithObjectType: @"channel"
-                                        objectId: channel.uniqueId];
+
         }
         
         SYNArcMenuItem *arcMenuItem1 = [[SYNArcMenuItem alloc] initWithImage: [UIImage imageNamed: @"ActionShare"]
@@ -1087,9 +1080,6 @@
                      }
      ];
 }
-
-
-
 
 
 @end

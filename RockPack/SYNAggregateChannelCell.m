@@ -419,10 +419,6 @@
         DebugLog (@"Multiple channels");
         simulatedButton = (UIImageView *) recognizer.view;
     }
-    else
-    {
-        DebugLog (@"One channel");
-    }
     
     [self.viewControllerDelegate pressedAggregateCellCoverView: simulatedButton];
 }
