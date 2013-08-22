@@ -844,8 +844,7 @@
     NSArray *menuItems;
     float menuArc, menuStartAngle;
     NSString *analyticsLabel;
-    
-    NSIndexPath *cellIndexPath = [self indexPathForChannelCell: cell];
+    NSIndexPath *cellIndexPath;
     
     SYNArcMenuItem *arcMenuItem3 = [[SYNArcMenuItem alloc] initWithImage: [UIImage imageNamed: @"ActionShare"]
                                                         highlightedImage: [UIImage imageNamed: @"ActionShareHighlighted"]
@@ -859,6 +858,8 @@
         // Get resource URL in parallel
         if (recognizer.state == UIGestureRecognizerStateBegan)
         {
+            cellIndexPath = [self indexPathForChannelCell: cell];
+            
             Channel *channel = [self channelInstanceForIndexPath: cellIndexPath];
             
             [self requestShareLinkWithObjectType: @"channel"
@@ -874,6 +875,8 @@
     {
         // Video cell
         analyticsLabel = @"video";
+        
+        cellIndexPath = [self indexPathForVideoCell: cell];
         
         VideoInstance *videoInstance = [self videoInstanceForIndexPath: cellIndexPath];
         

@@ -323,7 +323,7 @@ static CGPoint RotateAndScaleCGPointAroundCenter(CGPoint point, CGPoint center, 
                               forKey: @"blowup"];
             
             // Notify out delegate with out choice of menu i
-            if ([self.delegate respondsToSelector: @selector(arcMenu:didSelectMenuAtIndex:forCellAtIndex:andComponentIndex:)])
+            if ([self.delegate respondsToSelector: @selector(arcMenu:didSelectMenuName:forCellAtIndex:andComponentIndex:)])
             {
                 [self.delegate arcMenu: self
                      didSelectMenuName: item.name
