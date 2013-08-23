@@ -452,8 +452,6 @@ static char* association_key = "SYNFriendThumbnailCell to Friend";
                                                                
                                                            } onFailure:^(NSError *error) {
                                                                
-                                                               
-                                                               
                                                                [appDelegate.viewStackManager removePopoverView];
                                                                
                                                            }];
@@ -462,8 +460,11 @@ static char* association_key = "SYNFriendThumbnailCell to Friend";
     {
         ChannelOwner* friendAsChannelOwner = (ChannelOwner*)self.currentlySelectedFriend;
         
+        
+        
+        
         appDelegate.viewStackManager.returnBlock = ^{
-            ((SYNSideNavigatorViewController*)self.parentViewController).state = SideNavigationStateFull;
+            [appDelegate.viewStackManager openSideNavigatorToIndex:kFriendsRowIndex];
         };
         [appDelegate.viewStackManager viewProfileDetails:friendAsChannelOwner];
         

@@ -11,6 +11,9 @@
 
 @class SYNSearchBoxViewController;
 
+#define kNotificationsRowIndex 4
+#define kFriendsRowIndex 3
+
 #define kSideNavigationSearchCloseNotification @"SideNavigationSearchCloseNotification"
 
 typedef enum {
@@ -42,5 +45,7 @@ typedef enum {
 -(void)setSelectedCellByPageName:(NSString*)pageName;
 -(void) setState:(SideNavigationState)state animated:(BOOL)animated;
 - (void) displayFromPushNotification;
+-(void)openToIndexPath:(NSIndexPath*)indexPath;
+- (void) tableView: (UITableView *) tableView didSelectRowAtIndexPath: (NSIndexPath *) indexPath;
 
 @end

@@ -40,6 +40,7 @@ typedef void (^VideoOverlayDismissBlock)(void);
 @property (nonatomic, strong) IBOutlet UIView* overlayView;
 @property (nonatomic, strong) IBOutlet UIButton* sideNavigationButton;
 
+
 @property (nonatomic, weak, readonly) SYNAbstractViewController* showingBaseViewController;
 @property (nonatomic, weak, readonly) SYNAbstractViewController* showingViewController;
 
@@ -50,7 +51,7 @@ typedef void (^VideoOverlayDismissBlock)(void);
                         andSelectedIndex: (int) selectedIndex fromCenter:(CGPoint)centerPoint;
 
 - (void) removeVideoOverlayController;
-
+- (void) showSideNavigation;
 -(void)clearSearchBoxController;
 
 

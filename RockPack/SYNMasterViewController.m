@@ -503,12 +503,12 @@ typedef void(^AnimationCompletionBlock)(BOOL finished);
     [self.sideNavigatorViewController setSelectedCellByPageName: controllerTitle];
     
     self.darkOverlayView.alpha = 0.0;
-    
+    self.darkOverlayView.hidden = NO;
     [UIView animateWithDuration:0.3
                      animations:^{
                          self.darkOverlayView.alpha = 1.0;
                      } completion:^(BOOL finished) {
-                         self.darkOverlayView.hidden = NO;
+                         
                      }];
     self.sideNavigatorViewController.state = SideNavigationStateHalf;
     
