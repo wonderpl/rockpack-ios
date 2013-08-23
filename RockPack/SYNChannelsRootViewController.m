@@ -34,7 +34,9 @@
 
 
 
-@interface SYNChannelsRootViewController () <UIScrollViewDelegate, SYNChannelCategoryTableViewDelegate> {
+@interface SYNChannelsRootViewController () <UIScrollViewDelegate,
+                                             SYNChannelCategoryTableViewDelegate,
+                                             SYNChannelThumbnailCellDelegate> {
     NSString* StartingCategoryText;
 }
 
@@ -485,7 +487,7 @@
      options: SDWebImageRetryFailed];
     
     channelThumbnailCell.displayNameLabel.text = [NSString stringWithFormat: @"%@", channel.channelOwner.displayName];
-    channelThumbnailCell.viewControllerDelegate = self;
+    channelThumbnailCell.viewControllerDelegate =  self;
     
     
     return channelThumbnailCell;
@@ -497,19 +499,6 @@
       forItemAtIndexPath: (NSIndexPath *) indexPath
 {
     [((SYNChannelThumbnailCell *) cell).imageView cancelCurrentImageLoad];
-}
-
-
-- (void) displayNameButtonPressed: (UIButton *) button
-{
-    SYNChannelThumbnailCell *parent = (SYNChannelThumbnailCell *) [[button superview] superview];
-    
-    NSIndexPath *indexPath = [self.channelThumbnailCollectionView indexPathForCell: parent];
-    
-    Channel *channel = (Channel *) self.channels[indexPath.row];
-    
-    [appDelegate.viewStackManager
-     viewProfileDetails: channel.channelOwner];
 }
 
 
@@ -569,17 +558,32 @@ referenceSizeForFooterInSection: (NSInteger) section
 }
 
 
-- (void) collectionView: (UICollectionView *) collectionView didSelectItemAtIndexPath: (NSIndexPath *) indexPath
+//- (void) collectionView: (UICollectionView *) collectionView didSelectItemAtIndexPath: (NSIndexPath *) indexPath
+//{
+//    if (self.isAnimating) // prevent double clicking
+//    {
+//        return;
+//    }
+//    
+//    Channel *channel = (Channel *) self.channels[indexPath.row];
+//    
+//    [appDelegate.viewStackManager
+//     viewChannelDetails: channel];
+//}
+
+- (void) channelTapped: (UICollectionViewCell *) cell
 {
+    SYNChannelThumbnailCell *selectedCell = (SYNChannelThumbnailCell *) cell;
+    NSIndexPath *indexPath = [self.videoThumbnailCollectionView indexPathForItemAtPoint: selectedCell.center];
+    
     if (self.isAnimating) // prevent double clicking
     {
         return;
     }
-    
+
     Channel *channel = (Channel *) self.channels[indexPath.row];
-    
-    [appDelegate.viewStackManager
-     viewChannelDetails: channel];
+
+    [appDelegate.viewStackManager viewChannelDetails: channel];
 }
 
 
@@ -978,5 +982,85 @@ referenceSizeForFooterInSection: (NSInteger) section
                                                  animated: YES];
 }
 
+#pragma mark - Arc menu support
+
+- (void) arcMenuUpdateState: (UIGestureRecognizer *) recognizer
+                    forCell: (UICollectionViewCell *) cell
+{
+    [super arcMenuUpdateState: recognizer
+                      forCell: cell];
+    
+    if (recognizer.state == UIGestureRecognizerStateBegan)
+    {
+        // Need to set the component index if aggregate celll
+        NSIndexPath *indexPath = [self indexPathForChannelCell: cell];
+        
+        Channel *channel = [self channelInstanceForIndexPath: indexPath
+                                           andComponentIndex: kArcMenuInvalidComponentIndex];
+        
+        [self requestShareLinkWithObjectType: @"channel"
+                                    objectId: channel.uniqueId];
+    }
+}
+
+- (void) arcMenu: (SYNArcMenuView *) menu
+         didSelectMenuName: (NSString *) menuName
+         forCellAtIndex: (NSIndexPath *) cellIndexPath
+         andComponentIndex: (NSInteger) componentIndex
+{
+    if ([menuName isEqualToString: kActionShareVideo])
+    {
+        [self shareVideoAtIndexPath: cellIndexPath];
+    }
+    else if ([menuName isEqualToString: kActionShareChannel])
+    {
+        [self shareChannelAtIndexPath: cellIndexPath
+                    andComponentIndex: componentIndex];
+    }
+    else
+    {
+        AssertOrLog(@"Invalid Arc Menu index selected");
+    }
+}
+
+
+- (UIView *) arcMenuViewToShade
+{
+    return self.channelThumbnailCollectionView;
+}
+
+
+- (Channel *) channelInstanceForIndexPath: (NSIndexPath *) indexPath
+                        andComponentIndex: (NSInteger) componentIndex
+{
+    if (componentIndex != kArcMenuInvalidComponentIndex)
+    {
+        AssertOrLog(@"Unexpectedly valid componentIndex");
+    }
+    
+    Channel *channel = (Channel *) self.channels[indexPath.row];
+    
+    return channel;
+}
+
+
+- (NSIndexPath *) indexPathForChannelCell: (UICollectionViewCell *) cell
+{
+    NSIndexPath *indexPath = [self.channelThumbnailCollectionView indexPathForCell: cell];
+    return  indexPath;
+}
+
+
+- (void) displayNameButtonPressed: (UIButton *) button
+{
+    SYNChannelThumbnailCell *parent = (SYNChannelThumbnailCell *) [[button superview] superview];
+    
+    NSIndexPath *indexPath = [self.channelThumbnailCollectionView indexPathForCell: parent];
+    
+    Channel *channel = (Channel *) self.channels[indexPath.row];
+    
+    [appDelegate.viewStackManager
+     viewProfileDetails: channel.channelOwner];
+}
 
 @end

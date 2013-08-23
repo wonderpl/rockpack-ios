@@ -6,14 +6,22 @@
 //  Copyright (c) 2012 Nick Banks. All rights reserved.
 //
 
+#import "AppConstants.h"
 #import "SYNChannelThumbnailCell.h"
+#import "SYNTouchGestureRecognizer.h"
 #import "UIFont+SYNFont.h"
+#import "UIImage+Tint.h"
 #import "UIImageView+WebCache.h"
 #import <QuartzCore/QuartzCore.h>
 
-@interface SYNChannelThumbnailCell ()
 
+@interface SYNChannelThumbnailCell () <UIGestureRecognizerDelegate>
+
+@property (nonatomic, strong) IBOutlet UIImageView *lowlightImageView;
 @property (nonatomic, strong) IBOutlet UILabel *byLabel;
+@property (nonatomic, strong) SYNTouchGestureRecognizer *touch;
+@property (nonatomic, strong) UILongPressGestureRecognizer *longPress;
+@property (nonatomic, strong) UITapGestureRecognizer *tap;
 
 @end
 
@@ -23,6 +31,30 @@
 - (void) awakeFromNib
 {
     [super awakeFromNib];
+    
+#ifdef ENABLE_ARC_MENU
+    
+    // Add long-press and tap recognizers (once only per cell)
+    self.longPress = [[UILongPressGestureRecognizer alloc] initWithTarget: self
+                                                                   action: @selector(showMenu:)];
+    self.longPress.delegate = self;
+    [self addGestureRecognizer: self.longPress];
+#endif
+    
+    // Tap for showing video
+    self.tap = [[UITapGestureRecognizer alloc] initWithTarget: self
+                                                       action: @selector(showVideo:)];
+    self.tap.delegate = self;
+    [self addGestureRecognizer: self.tap];
+    
+    self.titleLabel.font = [UIFont boldRockpackFontOfSize: self.titleLabel.font.pointSize];
+    
+    // Touch for highlighting cells when the user touches them (like UIButton)
+    self.touch = [[SYNTouchGestureRecognizer alloc] initWithTarget: self
+                                                            action: @selector(showGlossLowlight:)];
+    
+    self.touch.delegate = self;
+    [self addGestureRecognizer: self.touch];
     
     self.titleLabel.font = [UIFont boldRockpackFontOfSize: self.titleLabel.font.pointSize];
     self.displayNameLabel.font = [UIFont rockpackFontOfSize: self.displayNameLabel.font.pointSize];
@@ -38,7 +70,7 @@
 }
 
 
-- (void) setViewControllerDelegate: (UIViewController *) viewControllerDelegate
+- (void) setViewControllerDelegate: (id<SYNChannelThumbnailCellDelegate>) viewControllerDelegate
 {
     _viewControllerDelegate = viewControllerDelegate;
     
@@ -80,6 +112,69 @@
     [self.imageView setImageWithURL: nil];
     
     self.deleteButton.hidden = TRUE;
+}
+
+#pragma mark - Gesture regognizer support
+
+// Required to pass through events to controls overlaid on view with gesture recognizers
+- (BOOL) gestureRecognizer: (UIGestureRecognizer *) gestureRecognizer shouldReceiveTouch: (UITouch *) touch
+{
+    if ([touch.view isKindOfClass: [UIControl class]])
+    {
+        // we touched a button, slider, or other UIControl
+        return NO; // ignore the touch
+    }
+    
+    return YES; // handle the touch
+}
+
+
+- (void) showVideo: (UITapGestureRecognizer *) recognizer
+{
+    // Just need to reference any button in the cell (as there is no longer an actual video button)
+    [self.viewControllerDelegate channelTapped: self];
+}
+
+
+- (void) showMenu: (UILongPressGestureRecognizer *) recognizer
+{
+    [self.viewControllerDelegate arcMenuUpdateState: recognizer
+                                            forCell: self];
+}
+
+
+// This is used to lowlight the gloss image on touch
+- (void) showGlossLowlight: (SYNTouchGestureRecognizer *) recognizer
+{
+    // Default iPad gloss image
+    NSString *imageName = @"GlossChannelThumbnail";
+    
+    // Use different image for iPhone
+    if (IS_IPHONE)
+    {
+       imageName = @"GlossChannelProfile";
+    }
+
+    switch (recognizer.state)
+    {
+        case UIGestureRecognizerStateBegan:
+        {
+            // Set lowlight tint
+            UIImage *glossImage = [UIImage imageNamed: imageName];
+            UIImage *lowlightImage = [glossImage tintedImageUsingColor: [UIColor colorWithWhite: 0.0
+                                                                                          alpha: 0.3]];
+            self.lowlightImageView.image = lowlightImage;
+            break;
+        }
+            
+        case UIGestureRecognizerStateEnded:
+        case UIGestureRecognizerStateCancelled:
+        {
+            self.lowlightImageView.image = [UIImage imageNamed: imageName];
+        }
+        default:
+            break;
+    }
 }
 
 @end
