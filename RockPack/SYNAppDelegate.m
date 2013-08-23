@@ -1275,6 +1275,8 @@
         NSURL *rockpackURL = [NSURL URLWithString: [@"rockpack://" stringByAppendingString: urlString]];
         
         [self parseAndActionRockpackURL: rockpackURL];
+        
+        [self.oAuthNetworkEngine trackSessionWithMessage:[rockpackURL absoluteString]];
     }
 }
 
@@ -1392,6 +1394,9 @@
                         withAction: @"openDeepLink"
                          withLabel: url.absoluteString
                          withValue: nil];
+    
+    
+    [self.oAuthNetworkEngine trackSessionWithMessage:url.absoluteString];
     
     return success;
 }
