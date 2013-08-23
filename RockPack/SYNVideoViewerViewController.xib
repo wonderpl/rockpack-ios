@@ -17,6 +17,7 @@
 			<string>IBUICollectionView</string>
 			<string>IBUICollectionViewFlowLayout</string>
 			<string>IBUIImageView</string>
+			<string>IBUILabel</string>
 			<string>IBUIView</string>
 		</array>
 		<array key="IBDocument.PluginDependencies">
@@ -329,7 +330,7 @@
 										<string key="NSFrame">{{237, 494}, {70, 69}}</string>
 										<reference key="NSSuperview" ref="1041950190"/>
 										<reference key="NSWindow"/>
-										<reference key="NSNextKeyView" ref="111671221"/>
+										<reference key="NSNextKeyView" ref="583830984"/>
 										<string key="NSReuseIdentifierKey">_NS:9</string>
 										<bool key="IBUIOpaque">NO</bool>
 										<string key="targetRuntimeIdentifier">IBIPadFramework</string>
@@ -513,6 +514,40 @@
 										</object>
 										<reference key="IBUIFontDescription" ref="647382764"/>
 										<reference key="IBUIFont" ref="518050852"/>
+									</object>
+									<object class="IBUILabel" id="583830984">
+										<reference key="NSNextResponder" ref="1041950190"/>
+										<int key="NSvFlags">292</int>
+										<string key="NSFrame">{{293, 521}, {56, 21}}</string>
+										<reference key="NSSuperview" ref="1041950190"/>
+										<reference key="NSWindow"/>
+										<reference key="NSNextKeyView" ref="111671221"/>
+										<string key="NSReuseIdentifierKey">_NS:9</string>
+										<bool key="IBUIOpaque">NO</bool>
+										<bool key="IBUIClipsSubviews">YES</bool>
+										<int key="IBUIContentMode">7</int>
+										<bool key="IBUIUserInteractionEnabled">NO</bool>
+										<string key="targetRuntimeIdentifier">IBIPadFramework</string>
+										<string key="IBUIText">100</string>
+										<object class="NSColor" key="IBUITextColor">
+											<int key="NSColorSpace">1</int>
+											<bytes key="NSRGB">MSAxIDEAA</bytes>
+											<object class="NSColorSpace" key="NSCustomColorSpace">
+												<int key="NSID">1</int>
+											</object>
+										</object>
+										<nil key="IBUIHighlightedColor"/>
+										<int key="IBUIBaselineAdjustment">0</int>
+										<object class="IBUIFontDescription" key="IBUIFontDescription">
+											<int key="type">1</int>
+											<double key="pointSize">17</double>
+										</object>
+										<object class="NSFont" key="IBUIFont">
+											<string key="NSName">Helvetica</string>
+											<double key="NSSize">17</double>
+											<int key="NSfFlags">16</int>
+										</object>
+										<bool key="IBUIAdjustsFontSizeToFit">NO</bool>
 									</object>
 								</array>
 								<string key="NSFrame">{{143, 37}, {744, 568}}</string>
@@ -716,6 +751,14 @@
 						<reference key="destination" ref="652365752"/>
 					</object>
 					<int key="connectionID">159</int>
+				</object>
+				<object class="IBConnectionRecord">
+					<object class="IBCocoaTouchOutletConnection" key="connection">
+						<string key="label">likesCountLabel</string>
+						<reference key="source" ref="841351856"/>
+						<reference key="destination" ref="583830984"/>
+					</object>
+					<int key="connectionID">161</int>
 				</object>
 				<object class="IBConnectionRecord">
 					<object class="IBCocoaTouchEventConnection" key="connection">
@@ -985,6 +1028,7 @@
 							<reference ref="583567748"/>
 							<reference ref="353268784"/>
 							<reference ref="649622249"/>
+							<reference ref="583830984"/>
 						</array>
 						<reference key="parent" ref="410448812"/>
 					</object>
@@ -1054,6 +1098,12 @@
 						<reference key="parent" ref="1041950190"/>
 						<string key="objectName">Activity Indicator - Share</string>
 					</object>
+					<object class="IBObjectRecord">
+						<int key="objectID">160</int>
+						<reference key="object" ref="583830984"/>
+						<reference key="parent" ref="1041950190"/>
+						<string key="objectName">Like Count Label</string>
+					</object>
 				</array>
 			</object>
 			<dictionary class="NSMutableDictionary" key="flattenedProperties">
@@ -1093,6 +1143,7 @@
 				<string key="152.IBPluginDependency">com.apple.InterfaceBuilder.IBCocoaTouchPlugin</string>
 				<string key="155.IBPluginDependency">com.apple.InterfaceBuilder.IBCocoaTouchPlugin</string>
 				<string key="157.IBPluginDependency">com.apple.InterfaceBuilder.IBCocoaTouchPlugin</string>
+				<string key="160.IBPluginDependency">com.apple.InterfaceBuilder.IBCocoaTouchPlugin</string>
 				<string key="17.IBPluginDependency">com.apple.InterfaceBuilder.IBCocoaTouchPlugin</string>
 				<real value="1" key="17.IBUIButtonInspectorSelectedStateConfigurationMetadataKey"/>
 				<string key="18.IBPluginDependency">com.apple.InterfaceBuilder.IBCocoaTouchPlugin</string>
@@ -1108,7 +1159,7 @@
 			<nil key="activeLocalization"/>
 			<dictionary class="NSMutableDictionary" key="localizations"/>
 			<nil key="sourceID"/>
-			<int key="maxID">159</int>
+			<int key="maxID">161</int>
 		</object>
 		<object class="IBClassDescriber" key="IBDocument.Classes">
 			<array class="NSMutableArray" key="referencedPartialClassDescriptions">
@@ -1131,6 +1182,17 @@
 				<object class="IBPartialClassDescription">
 					<string key="className">SYNAbstractViewController</string>
 					<string key="superclassName">UIViewController</string>
+					<object class="NSMutableDictionary" key="actions">
+						<string key="NS.key.0">toggleStarAtIndexPath:</string>
+						<string key="NS.object.0">NSIndexPath</string>
+					</object>
+					<object class="NSMutableDictionary" key="actionInfosByName">
+						<string key="NS.key.0">toggleStarAtIndexPath:</string>
+						<object class="IBActionInfo" key="NS.object.0">
+							<string key="name">toggleStarAtIndexPath:</string>
+							<string key="candidateClassName">NSIndexPath</string>
+						</object>
+					</object>
 					<dictionary class="NSMutableDictionary" key="outlets">
 						<string key="channelNameTextField">UITextField</string>
 						<string key="channelOverlayView">UIImageView</string>
@@ -1174,25 +1236,17 @@
 				<object class="IBPartialClassDescription">
 					<string key="className">SYNVideoViewerViewController</string>
 					<string key="superclassName">SYNAbstractViewController</string>
-					<dictionary class="NSMutableDictionary" key="actions">
-						<string key="userTouchedChannelButton:">id</string>
-						<string key="userTouchedPreviousVideoButton:">id</string>
-						<string key="userTouchedVideoAddItButton:">UIButton</string>
-					</dictionary>
-					<dictionary class="NSMutableDictionary" key="actionInfosByName">
-						<object class="IBActionInfo" key="userTouchedChannelButton:">
-							<string key="name">userTouchedChannelButton:</string>
-							<string key="candidateClassName">id</string>
-						</object>
-						<object class="IBActionInfo" key="userTouchedPreviousVideoButton:">
+					<object class="NSMutableDictionary" key="actions">
+						<string key="NS.key.0">userTouchedPreviousVideoButton:</string>
+						<string key="NS.object.0">id</string>
+					</object>
+					<object class="NSMutableDictionary" key="actionInfosByName">
+						<string key="NS.key.0">userTouchedPreviousVideoButton:</string>
+						<object class="IBActionInfo" key="NS.object.0">
 							<string key="name">userTouchedPreviousVideoButton:</string>
 							<string key="candidateClassName">id</string>
 						</object>
-						<object class="IBActionInfo" key="userTouchedVideoAddItButton:">
-							<string key="name">userTouchedVideoAddItButton:</string>
-							<string key="candidateClassName">UIButton</string>
-						</object>
-					</dictionary>
+					</object>
 					<dictionary class="NSMutableDictionary" key="outlets">
 						<string key="addVideoButton">UIButton</string>
 						<string key="blackPanelView">SYNPassthroughView</string>
@@ -1203,6 +1257,7 @@
 						<string key="closeButton">UIButton</string>
 						<string key="heartActivityIndicator">UIActivityIndicatorView</string>
 						<string key="iPhonePanelImageView">UIImageView</string>
+						<string key="likesCountLabel">UILabel</string>
 						<string key="nextVideoButton">UIButton</string>
 						<string key="panelImageView">UIImageView</string>
 						<string key="passthroughView">SYNPassthroughView</string>
@@ -1253,6 +1308,10 @@
 						<object class="IBToOneOutletInfo" key="iPhonePanelImageView">
 							<string key="name">iPhonePanelImageView</string>
 							<string key="candidateClassName">UIImageView</string>
+						</object>
+						<object class="IBToOneOutletInfo" key="likesCountLabel">
+							<string key="name">likesCountLabel</string>
+							<string key="candidateClassName">UILabel</string>
 						</object>
 						<object class="IBToOneOutletInfo" key="nextVideoButton">
 							<string key="name">nextVideoButton</string>
