@@ -389,10 +389,10 @@
 								<reference key="IBUIFontDescription" ref="647382764"/>
 								<reference key="IBUIFont" ref="26539377"/>
 							</object>
-							<object class="IBUILabel" id="374922031">
+							<object class="IBUILabel" id="573700924">
 								<reference key="NSNextResponder" ref="1041950190"/>
 								<int key="NSvFlags">292</int>
-								<string key="NSFrame">{{118, 381}, {34, 21}}</string>
+								<string key="NSFrame">{{118, 382}, {42, 21}}</string>
 								<reference key="NSSuperview" ref="1041950190"/>
 								<reference key="NSWindow"/>
 								<string key="NSReuseIdentifierKey">_NS:9</string>
@@ -629,7 +629,7 @@
 					<object class="IBCocoaTouchOutletConnection" key="connection">
 						<string key="label">likesCountLabel</string>
 						<reference key="source" ref="841351856"/>
-						<reference key="destination" ref="374922031"/>
+						<reference key="destination" ref="573700924"/>
 					</object>
 					<int key="connectionID">162</int>
 				</object>
@@ -791,7 +791,7 @@
 							<reference ref="480475839"/>
 							<reference ref="1020949573"/>
 							<reference ref="160978130"/>
-							<reference ref="374922031"/>
+							<reference ref="573700924"/>
 						</array>
 						<reference key="parent" ref="753127512"/>
 					</object>
@@ -883,7 +883,7 @@
 					</object>
 					<object class="IBObjectRecord">
 						<int key="objectID">161</int>
-						<reference key="object" ref="374922031"/>
+						<reference key="object" ref="573700924"/>
 						<reference key="parent" ref="1041950190"/>
 						<string key="objectName">Like Count Label</string>
 					</object>
