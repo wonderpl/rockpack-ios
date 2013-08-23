@@ -881,8 +881,7 @@
         channel = self.user.subscriptions[indexPath.row];
     }
     
-    [appDelegate.viewStackManager
-     viewChannelDetails: channel];
+    [appDelegate.viewStackManager viewChannelDetails: channel];
 }
 
 
@@ -1393,7 +1392,6 @@
     
     [appDelegate.viewStackManager viewChannelDetails: channel];
 }
-
 
 
 @end

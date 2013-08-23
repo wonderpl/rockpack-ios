@@ -876,7 +876,6 @@
 - (void) arcMenuUpdateState: (UIGestureRecognizer *) recognizer
                     forCell: (UICollectionViewCell *) cell
 {
-
     NSArray *menuItems;
     float menuArc, menuStartAngle;
     NSString *analyticsLabel;
@@ -1056,6 +1055,7 @@
         AssertOrLog(@"Invalid Arc Menu index selected");
     }
 }
+
 
 - (UIView *) arcMenuViewToShade
 {
