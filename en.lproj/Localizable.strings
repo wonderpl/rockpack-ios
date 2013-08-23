@@ -119,10 +119,10 @@
 
 // 
 
-"%@ has subscribed to your channel" = "%@ has subscribed to your pack";
+"%@ has subscribed to your channel" = "%@ subscribed to your pack";
 
-"notification_liked_action" = "has liked your video";
-"notification_subscribed_action" = "has subscribed to your pack";
+"notification_liked_action" = "liked your video";
+"notification_subscribed_action" = "subscribed to your pack";
 "notification_joined_action" = "Your Facebook friend %@ has joined Rockpack";
 "your_channel_object" = "your pack";
 "your_video_object" = "your video";
