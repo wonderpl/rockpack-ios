@@ -529,7 +529,7 @@
     
     if (userName != nil)
     {
-        NSString *what = @"channel";
+        NSString *what = @"pack";
         
         if (isVideo.boolValue == TRUE)
         {
@@ -636,7 +636,7 @@
          self.mutableShareDictionary = @{@"text": @"",
                                          @"text_email": @"",
                                          @"text_twitter": @"",
-                                         @"url": @"http://rockpack.com"}.mutableCopy;
+                                         @"url": [NSURL URLWithString: @"http://rockpack.com"]}.mutableCopy;
      }];
 }
 
