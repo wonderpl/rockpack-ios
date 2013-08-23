@@ -750,7 +750,7 @@ typedef enum {
     NSUserDefaults *defaults = [NSUserDefaults standardUserDefaults];
     BOOL hasShownFriendsTabOnBoarding = [defaults boolForKey: kUserDefaultsFriendsTab];
     
-    if (!hasShownFriendsTabOnBoarding && IS_IPAD)
+    if (!hasShownFriendsTabOnBoarding)
     {
         SYNAppDelegate* appDelegate = (SYNAppDelegate*)[[UIApplication sharedApplication] delegate];
         NSString *message = NSLocalizedString(@"onboarding_friends", nil);
