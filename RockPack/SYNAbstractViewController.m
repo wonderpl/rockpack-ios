@@ -529,7 +529,7 @@
     
     if (userName != nil)
     {
-        NSString *what = @"channel";
+        NSString *what = @"pack";
         
         if (isVideo.boolValue == TRUE)
         {
