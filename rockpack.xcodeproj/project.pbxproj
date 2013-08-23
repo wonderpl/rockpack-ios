@@ -532,6 +532,7 @@
 		1F59ED171738F68800430C24 /* ButtonBackHighlighted~iphone.png in Resources */ = {isa = PBXBuildFile; fileRef = 1F59ED151738F68800430C24 /* ButtonBackHighlighted~iphone.png */; };
 		1F59ED1A17396E1D00430C24 /* GlossChannelMid.png in Resources */ = {isa = PBXBuildFile; fileRef = 1F59ED1817396E1D00430C24 /* GlossChannelMid.png */; };
 		1F59ED1B17396E1D00430C24 /* GlossChannelMid@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 1F59ED1917396E1D00430C24 /* GlossChannelMid@2x.png */; };
+		1F61820E17C6D95800CCEC55 /* AMBlurView.m in Sources */ = {isa = PBXBuildFile; fileRef = 1F61820D17C6D95800CCEC55 /* AMBlurView.m */; };
 		1F827809174BB7070012F9F5 /* ButtonNavSelected@2x~iphone.png in Resources */ = {isa = PBXBuildFile; fileRef = 1F827807174BB7070012F9F5 /* ButtonNavSelected@2x~iphone.png */; };
 		1F82780A174BB7070012F9F5 /* ButtonNavSelected~iphone.png in Resources */ = {isa = PBXBuildFile; fileRef = 1F827808174BB7070012F9F5 /* ButtonNavSelected~iphone.png */; };
 		1F82780D174BB7310012F9F5 /* ButtonNavSelected.png in Resources */ = {isa = PBXBuildFile; fileRef = 1F82780B174BB7310012F9F5 /* ButtonNavSelected.png */; };
@@ -1951,6 +1952,8 @@
 		1F59ED151738F68800430C24 /* ButtonBackHighlighted~iphone.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "ButtonBackHighlighted~iphone.png"; sourceTree = "<group>"; };
 		1F59ED1817396E1D00430C24 /* GlossChannelMid.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = GlossChannelMid.png; path = Assets/Images/GlossChannelMid.png; sourceTree = "<group>"; };
 		1F59ED1917396E1D00430C24 /* GlossChannelMid@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = "GlossChannelMid@2x.png"; path = "Assets/Images/GlossChannelMid@2x.png"; sourceTree = "<group>"; };
+		1F61820C17C6D95800CCEC55 /* AMBlurView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = AMBlurView.h; sourceTree = "<group>"; };
+		1F61820D17C6D95800CCEC55 /* AMBlurView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = AMBlurView.m; sourceTree = "<group>"; };
 		1F827807174BB7070012F9F5 /* ButtonNavSelected@2x~iphone.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "ButtonNavSelected@2x~iphone.png"; sourceTree = "<group>"; };
 		1F827808174BB7070012F9F5 /* ButtonNavSelected~iphone.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "ButtonNavSelected~iphone.png"; sourceTree = "<group>"; };
 		1F82780B174BB7310012F9F5 /* ButtonNavSelected.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = ButtonNavSelected.png; path = Assets/Images/ButtonNavSelected.png; sourceTree = "<group>"; };
@@ -3602,6 +3605,7 @@
 				3854788117946612006EB38B /* Google Adwords */,
 				0173E6C5171822BF00EEE76B /* Google Analytics */,
 				011A162016EF5E96008CF25E /* Image Picker */,
+				1F61820F17C6D96700CCEC55 /* iOS-Realtime Blur */,
 				019E6A5E165FD958002B312A /* OAuth2 */,
 				BED4312816F20CC50051465B /* RegexKitLite */,
 				012502BA16CA8FCE0029C7C8 /* Social Media */,
@@ -4379,6 +4383,15 @@
 				1F46C86A1743C2FD00C6089D /* ButtonReportSelected~iphone.png */,
 			);
 			name = reportConcern;
+			sourceTree = "<group>";
+		};
+		1F61820F17C6D96700CCEC55 /* iOS-Realtime Blur */ = {
+			isa = PBXGroup;
+			children = (
+				1F61820C17C6D95800CCEC55 /* AMBlurView.h */,
+				1F61820D17C6D95800CCEC55 /* AMBlurView.m */,
+			);
+			name = "iOS-Realtime Blur";
 			sourceTree = "<group>";
 		};
 		1FBF54EC17BD71B300B4074E /* Onboarding Images */ = {
@@ -6907,6 +6920,7 @@
 				BE03A6D916F787CB00245314 /* SYNAccountSettingTableViewCell.m in Sources */,
 				014D514F16F738C500B82B00 /* SYNAbstractNetworkEngine.m in Sources */,
 				BE21EE7C16F9FF520067223B /* SYNAccountSettingsTextInputController.m in Sources */,
+				1F61820E17C6D95800CCEC55 /* AMBlurView.m in Sources */,
 				BE21EE8316FA108E0067223B /* SYNAccountSettingsPopoverBackgroundView.m in Sources */,
 				BE21EE8716FA202F0067223B /* SYNAccountSettingsFullNameInput.m in Sources */,
 				BE21EEA316FB1E750067223B /* SYNAccountSettingsDOB.m in Sources */,

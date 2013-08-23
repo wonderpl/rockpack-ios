@@ -33,6 +33,7 @@
         self.selectedColor = [UIColor colorWithWhite:1.0 alpha:1.0f];
         self.selectedShadowColor = [UIColor colorWithWhite:1.0 alpha:0.2];
         self.selectionStyle = UITableViewCellSelectionStyleNone;
+        self.backgroundColor = [UIColor clearColor];
         
         if (IS_IPAD)
         {

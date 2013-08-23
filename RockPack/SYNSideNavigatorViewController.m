@@ -23,6 +23,7 @@
 #import "UIImageView+WebCache.h"
 #import <QuartzCore/QuartzCore.h>
 #import "SYNFriendsViewController.h"
+#import "AMBlurView.h"
 
 
 #define kSideNavTitle @"kSideNavTitle"
@@ -142,6 +143,7 @@ typedef enum {
     
     CGRect newFrame = self.view.frame;
     
+    
     if (IS_IPHONE)
     {
         newFrame.size.height = [SYNDeviceManager.sharedInstance currentScreenHeight] - 78.0f;
@@ -167,7 +169,17 @@ typedef enum {
                                                                         self.backgroundImageView.frame.size.width,
                                                                         [SYNDeviceManager.sharedInstance currentScreenHeight] - bgHeight)];
         
-        self.bottomExtraView.backgroundColor = [UIColor colorWithPatternImage:[UIImage imageNamed:@"PanelMenuBottom"]];
+        if (floor(NSFoundationVersionNumber) <= NSFoundationVersionNumber_iOS_6_1) {
+            self.bottomExtraView.backgroundColor = [UIColor colorWithPatternImage:[UIImage imageNamed:@"PanelMenuBottom"]];
+            
+        } else {
+            // Load resources for iOS 7 or later
+            AMBlurView *blurView = [AMBlurView new];
+            [blurView setFrame:CGRectMake(5, 0, self.view.frame.size.width, 1024.0)];
+            self.backgroundImageView.hidden = YES;
+            [self.view insertSubview:blurView atIndex:0];
+        }
+        
         
         [self.view insertSubview:self.bottomExtraView belowSubview:self.backgroundImageView];
         
