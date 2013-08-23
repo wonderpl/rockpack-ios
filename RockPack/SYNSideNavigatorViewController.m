@@ -168,9 +168,9 @@ typedef enum {
                                                                         bgHeight,
                                                                         self.backgroundImageView.frame.size.width,
                                                                         [SYNDeviceManager.sharedInstance currentScreenHeight] - bgHeight)];
-        
+       
         //iOS 7 Blur
-        if (floor(NSFoundationVersionNumber) <= NSFoundationVersionNumber_iOS_6_1)
+        if (IS_IOS7)
         {
             // Do iOS6 Tingz
             self.bottomExtraView.backgroundColor = [UIColor colorWithPatternImage:[UIImage imageNamed:@"PanelMenuBottom"]];

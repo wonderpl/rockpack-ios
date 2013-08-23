@@ -145,7 +145,7 @@
 		B2A03865C28B49358991C023 /* KWNull.m in Sources */ = {isa = PBXBuildFile; fileRef = 9544F622CD454F92BF128B32 /* KWNull.m */; };
 		B2A52638DEBC45F6AD57397B /* KWCaptureSpy.m in Sources */ = {isa = PBXBuildFile; fileRef = C7AA56974F6149F899BD72DE /* KWCaptureSpy.m */; };
 		B3008210637C441FADD368B0 /* UIAlertView+MKNetworkKitAdditions.m in Sources */ = {isa = PBXBuildFile; fileRef = 8CAD37C0C5CF4F848CE150B5 /* UIAlertView+MKNetworkKitAdditions.m */; settings = {COMPILER_FLAGS = "-fobjc-arc -DOS_OBJECT_USE_OBJC=0"; }; };
-		B3C2F02C7EE345D58629C762 /* MKNetworkOperation.m in Sources */ = {isa = PBXBuildFile; fileRef = 1C3CE9FC8EC34811B62D6CC1 /* MKNetworkOperation.m */; settings = {COMPILER_FLAGS = "-fobjc-arc -DOS_OBJECT_USE_OBJC=0"; }; };
+		B3C2F02C7EE345D58629C762 /* MKNetworkOperation.m in Sources */ = {isa = PBXBuildFile; fileRef = 1C3CE9FC8EC34811B62D6CC1 /* MKNetworkOperation.m */; settings = {COMPILER_FLAGS = "-fobjc-arc -DOS_OBJECT_USE_OBJC=0 -w"; }; };
 		B3E195EF07CA4114B149FD0B /* MKNetworkEngine.h in Headers */ = {isa = PBXBuildFile; fileRef = 07BC79912FC04E2BA239F53B /* MKNetworkEngine.h */; };
 		B6C069F7AD0A4594BE6E9711 /* KWAfterEachNode.h in Headers */ = {isa = PBXBuildFile; fileRef = C04EEC762F8643D8B0B11A71 /* KWAfterEachNode.h */; };
 		B7263E7A6B2E438C9B2241F6 /* KWContainStringMatcher.m in Sources */ = {isa = PBXBuildFile; fileRef = C02B01C6650E4E7AB8C21E32 /* KWContainStringMatcher.m */; };
