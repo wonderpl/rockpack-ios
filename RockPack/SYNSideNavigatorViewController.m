@@ -169,11 +169,16 @@ typedef enum {
                                                                         self.backgroundImageView.frame.size.width,
                                                                         [SYNDeviceManager.sharedInstance currentScreenHeight] - bgHeight)];
         
-        if (floor(NSFoundationVersionNumber) <= NSFoundationVersionNumber_iOS_6_1) {
+        //iOS 7 Blur
+        if (floor(NSFoundationVersionNumber) <= NSFoundationVersionNumber_iOS_6_1)
+        {
+            // Do iOS6 Tingz
             self.bottomExtraView.backgroundColor = [UIColor colorWithPatternImage:[UIImage imageNamed:@"PanelMenuBottom"]];
-            
-        } else {
-            // Load resources for iOS 7 or later
+        }
+
+        else
+        {
+            // Do iOS7 Tingz
             AMBlurView *blurView = [AMBlurView new];
             [blurView setFrame:CGRectMake(5, 0, self.view.frame.size.width, 1024.0)];
             self.backgroundImageView.hidden = YES;
