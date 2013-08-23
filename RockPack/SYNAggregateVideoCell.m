@@ -88,9 +88,7 @@
 {
     [super setViewControllerDelegate: (id<SYNAggregateCellDelegate>) viewControllerDelegate];
     
-    [self.addButton addTarget: self.viewControllerDelegate
-                       action: @selector(videoAddButtonTapped:)
-             forControlEvents: UIControlEventTouchUpInside];
+
     
     [self.heartButton addTarget: self.viewControllerDelegate
                          action: @selector(likeButtonPressed:)
