@@ -9,23 +9,28 @@
 #import <UIKit/UIKit.h>
 #import "Channel.h"
 
+@protocol SYNChannelThumbnailCellDelegate <NSObject>
+
+- (void) channelTapped: (UICollectionViewCell *) cell;
+- (void) arcMenuUpdateState: (UIGestureRecognizer *) recognizer
+                    forCell: (UICollectionViewCell *) cell;
+
+@end
+
+
 @interface SYNChannelThumbnailCell : UICollectionViewCell
 
-@property (nonatomic, strong) IBOutlet UIImageView *imageView;
-@property (nonatomic, strong) IBOutlet UILabel *titleLabel;
-@property (nonatomic, strong) IBOutlet UILabel *displayNameLabel;
 @property (nonatomic, strong) IBOutlet UIButton *displayNameButton;
 @property (nonatomic, strong) IBOutlet UIButton* deleteButton;
+@property (nonatomic, strong) IBOutlet UIImageView *imageView;
 @property (nonatomic, strong) IBOutlet UIImageView* shadowOverlayImageView;
-
+@property (nonatomic, strong) IBOutlet UILabel *displayNameLabel;
+@property (nonatomic, strong) IBOutlet UILabel *titleLabel;
 @property (nonatomic, strong) NSString* imageUrlString;
-
 @property (nonatomic, weak) Channel* channel;
+@property (nonatomic, weak) id<SYNChannelThumbnailCellDelegate> viewControllerDelegate;
 
 - (void) setChannelTitle: (NSString*) titleString;
 - (void) showDeleteButton: (BOOL) showDeleteButton;
-
-// This is used to indicate the UIViewController that
-@property (nonatomic, weak) UIViewController *viewControllerDelegate;
 
 @end

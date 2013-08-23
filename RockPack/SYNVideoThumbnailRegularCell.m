@@ -6,13 +6,13 @@
 //  Copyright (c) 2012 Nick Banks. All rights reserved.
 //
 
+#import "AppConstants.h"
 #import "SYNTouchGestureRecognizer.h"
 #import "SYNVideoThumbnailRegularCell.h"
 #import "UIFont+SYNFont.h"
 #import "UIImage+Tint.h"
 #import "UIImageView+WebCache.h"
 #import <QuartzCore/QuartzCore.h>
-#import "AppConstants.h"
 
 @interface SYNVideoThumbnailRegularCell () <UIGestureRecognizerDelegate>
 

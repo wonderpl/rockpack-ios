@@ -1155,7 +1155,6 @@
     
     NSArray *videoInstancesToPlayArray = self.channel.videoInstances.array;
     
-    
     [masterViewController addVideoOverlayToViewController: self
                                    withVideoInstanceArray: videoInstancesToPlayArray
                                          andSelectedIndex: indexPath.item
