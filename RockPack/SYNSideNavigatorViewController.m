@@ -30,8 +30,7 @@
 #define kSideNavType @"kSideNavType"
 #define kSideNavAction @"kSideNavAction"
 
-#define kNotificationsRowIndex 4
-#define kFriendsRowIndex 3
+
 
 typedef void (^SideNavigationMotionBlock)(void);
 
@@ -379,14 +378,10 @@ typedef enum {
     return cell;
 }
 
-
-- (void) tableView: (UITableView *) tableView
-        didSelectRowAtIndexPath: (NSIndexPath *) indexPath
+-(void)openToIndexPath:(NSIndexPath*)indexPath
 {
     UITableViewCell* previousSelectedCell = [self.tableView cellForRowAtIndexPath: self.currentlySelectedIndexPath];
     [previousSelectedCell setSelected: NO];
-    
-
     
     self.currentlySelectedIndexPath = indexPath;
     
@@ -415,7 +410,8 @@ typedef enum {
             }
             
         }
-
+        
+        
         if (IS_IPAD)
         {
             CGRect frameThatFits = self.currentlyLoadedViewController.view.frame;
@@ -423,7 +419,6 @@ typedef enum {
             frameThatFits.size.height = self.containerView.frame.size.height - 10.0;
             self.currentlyLoadedViewController.view.frame = frameThatFits;
         }
-        
         else if (IS_IPHONE)
         {
             CGRect frameThatFits = self.currentlyLoadedViewController.view.frame;
@@ -434,7 +429,7 @@ typedef enum {
         self.state = SideNavigationStateFull;
         
     }
-    else
+    else // the selection is a notification for the container to change pages
     {
         
         NSNotification* navigationNotification = [NSNotification notificationWithName: kNavigateToPage
@@ -445,6 +440,13 @@ typedef enum {
         
         
     }
+}
+
+
+- (void) tableView: (UITableView *) tableView
+        didSelectRowAtIndexPath: (NSIndexPath *) indexPath
+{
+    [self openToIndexPath:indexPath];
 }
 
 
@@ -748,7 +750,7 @@ typedef enum {
     NSUserDefaults *defaults = [NSUserDefaults standardUserDefaults];
     BOOL hasShownFriendsTabOnBoarding = [defaults boolForKey: kUserDefaultsFriendsTab];
     
-    if (!hasShownFriendsTabOnBoarding && IS_IPAD)
+    if (!hasShownFriendsTabOnBoarding)
     {
         SYNAppDelegate* appDelegate = (SYNAppDelegate*)[[UIApplication sharedApplication] delegate];
         NSString *message = NSLocalizedString(@"onboarding_friends", nil);

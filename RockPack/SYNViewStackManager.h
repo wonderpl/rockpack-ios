@@ -56,6 +56,10 @@ typedef void(^ViewStackReturnBlock)(void);
 - (void) hideModalController;
 
 - (void) hideSideNavigator;
+- (void) showSideNavigator;
+
+-(void) openSideNavigatorToIndex:(NSInteger)index;
+
 - (void) displaySideNavigatorFromPushNotification;
 
 @end

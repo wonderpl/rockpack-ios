@@ -149,11 +149,11 @@
     
     [self.navigationController popViewControllerAnimated: NO];
     
-    if(!self.searchBarOriginSideNavigation)
-    {
-        [self hideSideNavigator];
-        self.searchBarOriginSideNavigation = NO;
-    }
+//    if(!self.searchBarOriginSideNavigation)
+//    {
+//        [self hideSideNavigator];
+//        self.searchBarOriginSideNavigation = NO;
+//    }
     
     
         
@@ -309,7 +309,6 @@
     
     self.searchBarOriginSideNavigation = (self.sideNavigatorController.state != SideNavigationStateHidden);
     
-    NSLog(@"Comes from top? %i", self.sideNavigatorController.state);
     
     
     // do the swap...
@@ -378,6 +377,16 @@
     self.sideNavigatorController.state = SideNavigationStateHidden;
 }
 
+- (void) showSideNavigator
+{
+    [self.masterController showSideNavigation];
+}
+
+-(void) openSideNavigatorToIndex:(NSInteger)index
+{
+    [self showSideNavigator];
+    [self.sideNavigatorController openToIndexPath:[NSIndexPath indexPathForRow:index inSection:0]];
+}
 #pragma mark - Popover Managment
 
 - (void) presentPopoverView:(UIView*)view
