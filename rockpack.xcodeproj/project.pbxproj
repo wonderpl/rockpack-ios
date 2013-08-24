@@ -21,12 +21,14 @@
 /* End PBXAggregateTarget section */
 
 /* Begin PBXBuildFile section */
+		0101CF0717C8F31C00F487EE /* Accelerate.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 0101CF0617C8F31C00F487EE /* Accelerate.framework */; };
 		010DEFD51629BDC40080F26B /* UIKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 010DEFD41629BDC40080F26B /* UIKit.framework */; };
 		010DEFD71629BDC40080F26B /* Foundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 010DEFD61629BDC40080F26B /* Foundation.framework */; };
 		010DEFD91629BDC40080F26B /* CoreGraphics.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 010DEFD81629BDC40080F26B /* CoreGraphics.framework */; };
 		010DEFDF1629BDC40080F26B /* InfoPlist.strings in Resources */ = {isa = PBXBuildFile; fileRef = 010DEFDD1629BDC40080F26B /* InfoPlist.strings */; };
 		010DEFE11629BDC40080F26B /* main.m in Sources */ = {isa = PBXBuildFile; fileRef = 010DEFE01629BDC40080F26B /* main.m */; };
 		010DEFE51629BDC40080F26B /* SYNAppDelegate.m in Sources */ = {isa = PBXBuildFile; fileRef = 010DEFE41629BDC40080F26B /* SYNAppDelegate.m */; };
+		0110912717C8ECFC00E2FDFE /* UIImage+ImageEffects.m in Sources */ = {isa = PBXBuildFile; fileRef = 0110912617C8ECFC00E2FDFE /* UIImage+ImageEffects.m */; };
 		0111CDE717284DD700612186 /* ButtonVideoDelete.png in Resources */ = {isa = PBXBuildFile; fileRef = 0111CDE117284DD700612186 /* ButtonVideoDelete.png */; };
 		0111CDE817284DD700612186 /* ButtonVideoDelete@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 0111CDE217284DD700612186 /* ButtonVideoDelete@2x.png */; };
 		0111CDE917284DD700612186 /* ButtonVideoDeleteHighlighted.png in Resources */ = {isa = PBXBuildFile; fileRef = 0111CDE317284DD700612186 /* ButtonVideoDeleteHighlighted.png */; };
@@ -191,6 +193,8 @@
 		01811A5817576D2A00AFA926 /* ButtonShuttleBarMaximise.png in Resources */ = {isa = PBXBuildFile; fileRef = 01811A5417576D2A00AFA926 /* ButtonShuttleBarMaximise.png */; };
 		01811A5917576D2A00AFA926 /* ButtonShuttleBarMinimise.png in Resources */ = {isa = PBXBuildFile; fileRef = 01811A5517576D2A00AFA926 /* ButtonShuttleBarMinimise.png */; };
 		01811A5A17576D2A00AFA926 /* ButtonShuttleBarMinimise@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 01811A5617576D2A00AFA926 /* ButtonShuttleBarMinimise@2x.png */; };
+		0188A89B17C902FC00F93084 /* UIInterpolatingMotionEffect+DualAxis.m in Sources */ = {isa = PBXBuildFile; fileRef = 0188A89A17C902FC00F93084 /* UIInterpolatingMotionEffect+DualAxis.m */; };
+		0188A89F17C904E800F93084 /* SYNParallaxView.m in Sources */ = {isa = PBXBuildFile; fileRef = 0188A89E17C904E800F93084 /* SYNParallaxView.m */; };
 		018919FC1672253E00AB07BB /* SYNHomeSectionHeaderView.m in Sources */ = {isa = PBXBuildFile; fileRef = 018919FB1672253E00AB07BB /* SYNHomeSectionHeaderView.m */; };
 		01891A001672255F00AB07BB /* SYNHomeSectionHeaderView.xib in Resources */ = {isa = PBXBuildFile; fileRef = 018919FF1672255F00AB07BB /* SYNHomeSectionHeaderView.xib */; };
 		01891A3D16725A3400AB07BB /* PanelDay.png in Resources */ = {isa = PBXBuildFile; fileRef = 01891A3916725A3400AB07BB /* PanelDay.png */; };
@@ -1319,6 +1323,7 @@
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
+		0101CF0617C8F31C00F487EE /* Accelerate.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Accelerate.framework; path = System/Library/Frameworks/Accelerate.framework; sourceTree = SDKROOT; };
 		010DEFD01629BDC40080F26B /* rockpack.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = rockpack.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		010DEFD41629BDC40080F26B /* UIKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = UIKit.framework; path = System/Library/Frameworks/UIKit.framework; sourceTree = SDKROOT; };
 		010DEFD61629BDC40080F26B /* Foundation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Foundation.framework; path = System/Library/Frameworks/Foundation.framework; sourceTree = SDKROOT; };
@@ -1329,6 +1334,8 @@
 		010DEFE21629BDC40080F26B /* rockpack-Prefix.pch */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "rockpack-Prefix.pch"; sourceTree = "<group>"; };
 		010DEFE31629BDC40080F26B /* SYNAppDelegate.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = SYNAppDelegate.h; sourceTree = "<group>"; };
 		010DEFE41629BDC40080F26B /* SYNAppDelegate.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = SYNAppDelegate.m; sourceTree = "<group>"; };
+		0110912517C8ECFC00E2FDFE /* UIImage+ImageEffects.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "UIImage+ImageEffects.h"; sourceTree = "<group>"; };
+		0110912617C8ECFC00E2FDFE /* UIImage+ImageEffects.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "UIImage+ImageEffects.m"; sourceTree = "<group>"; };
 		0111CDE117284DD700612186 /* ButtonVideoDelete.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = ButtonVideoDelete.png; path = Assets/Images/ButtonVideoDelete.png; sourceTree = "<group>"; };
 		0111CDE217284DD700612186 /* ButtonVideoDelete@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = "ButtonVideoDelete@2x.png"; path = "Assets/Images/ButtonVideoDelete@2x.png"; sourceTree = "<group>"; };
 		0111CDE317284DD700612186 /* ButtonVideoDeleteHighlighted.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = ButtonVideoDeleteHighlighted.png; path = Assets/Images/ButtonVideoDeleteHighlighted.png; sourceTree = "<group>"; };
@@ -1562,6 +1569,10 @@
 		01811A5417576D2A00AFA926 /* ButtonShuttleBarMaximise.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = ButtonShuttleBarMaximise.png; path = Assets/Images/ButtonShuttleBarMaximise.png; sourceTree = "<group>"; };
 		01811A5517576D2A00AFA926 /* ButtonShuttleBarMinimise.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = ButtonShuttleBarMinimise.png; path = Assets/Images/ButtonShuttleBarMinimise.png; sourceTree = "<group>"; };
 		01811A5617576D2A00AFA926 /* ButtonShuttleBarMinimise@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = "ButtonShuttleBarMinimise@2x.png"; path = "Assets/Images/ButtonShuttleBarMinimise@2x.png"; sourceTree = "<group>"; };
+		0188A89917C902FC00F93084 /* UIInterpolatingMotionEffect+DualAxis.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "UIInterpolatingMotionEffect+DualAxis.h"; sourceTree = "<group>"; };
+		0188A89A17C902FC00F93084 /* UIInterpolatingMotionEffect+DualAxis.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "UIInterpolatingMotionEffect+DualAxis.m"; sourceTree = "<group>"; };
+		0188A89D17C904E800F93084 /* SYNParallaxView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SYNParallaxView.h; sourceTree = "<group>"; };
+		0188A89E17C904E800F93084 /* SYNParallaxView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SYNParallaxView.m; sourceTree = "<group>"; };
 		018919FA1672253E00AB07BB /* SYNHomeSectionHeaderView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SYNHomeSectionHeaderView.h; sourceTree = "<group>"; };
 		018919FB1672253E00AB07BB /* SYNHomeSectionHeaderView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SYNHomeSectionHeaderView.m; sourceTree = "<group>"; };
 		018919FF1672255F00AB07BB /* SYNHomeSectionHeaderView.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = SYNHomeSectionHeaderView.xib; sourceTree = "<group>"; };
@@ -2866,6 +2877,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				0101CF0717C8F31C00F487EE /* Accelerate.framework in Frameworks */,
 				016B97171770C42200892211 /* StoreKit.framework in Frameworks */,
 				01F7C9681748ED0B00E36994 /* libsqlite3.dylib in Frameworks */,
 				0173E6CC1718231F00EEE76B /* libGoogleAnalytics.a in Frameworks */,
@@ -2914,6 +2926,7 @@
 		010DEFC51629BDC40080F26B = {
 			isa = PBXGroup;
 			children = (
+				0101CF0617C8F31C00F487EE /* Accelerate.framework */,
 				010DEFDA1629BDC40080F26B /* rockpack */,
 				01901A9A1771CCBA007DBEAC /* Tests */,
 				019824DD1629CA3700216900 /* Resources */,
@@ -3436,6 +3449,15 @@
 			name = "Gesture Recognisers";
 			sourceTree = "<group>";
 		};
+		0188A89C17C904C900F93084 /* Parallax */ = {
+			isa = PBXGroup;
+			children = (
+				0188A89D17C904E800F93084 /* SYNParallaxView.h */,
+				0188A89E17C904E800F93084 /* SYNParallaxView.m */,
+			);
+			name = Parallax;
+			sourceTree = "<group>";
+		};
 		018919F51672235000AB07BB /* Feed */ = {
 			isa = PBXGroup;
 			children = (
@@ -3591,6 +3613,7 @@
 		019824E31629CADE00216900 /* Views */ = {
 			isa = PBXGroup;
 			children = (
+				0188A89C17C904C900F93084 /* Parallax */,
 				019CE3F217B8EF670059822C /* Arc menu */,
 				BE285DAD1725A20B00D995AB /* Slide In Messages */,
 				0198E468176F0AEC00AFBE2F /* SYNPageView.h */,
@@ -3753,6 +3776,8 @@
 		019825EE162C948000216900 /* Categories */ = {
 			isa = PBXGroup;
 			children = (
+				0110912517C8ECFC00E2FDFE /* UIImage+ImageEffects.h */,
+				0110912617C8ECFC00E2FDFE /* UIImage+ImageEffects.m */,
 				01C9CFA41697496400C42479 /* NSDate-Utilities.h */,
 				01C9CFA51697496400C42479 /* NSDate-Utilities.m */,
 				01C6FD0D169DDEDB00E01AA3 /* NSDictionary+Validation.h */,
@@ -3776,6 +3801,8 @@
 				011A160D16EE53A0008CF25E /* UIImage+Resize.m */,
 				0177002817C382C3006DE415 /* UIImage+Tint.h */,
 				0177002917C382C3006DE415 /* UIImage+Tint.m */,
+				0188A89917C902FC00F93084 /* UIInterpolatingMotionEffect+DualAxis.h */,
+				0188A89A17C902FC00F93084 /* UIInterpolatingMotionEffect+DualAxis.m */,
 			);
 			name = Categories;
 			sourceTree = "<group>";
@@ -7053,6 +7080,9 @@
 				BE0B150F17BA4BDA0053E551 /* SYNSearchCategoriesIphoneCell.m in Sources */,
 				0177002717C37AF6006DE415 /* SYNTouchGestureRecognizer.m in Sources */,
 				0177002A17C382C3006DE415 /* UIImage+Tint.m in Sources */,
+				0110912717C8ECFC00E2FDFE /* UIImage+ImageEffects.m in Sources */,
+				0188A89B17C902FC00F93084 /* UIInterpolatingMotionEffect+DualAxis.m in Sources */,
+				0188A89F17C904E800F93084 /* SYNParallaxView.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

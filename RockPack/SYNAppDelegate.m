@@ -66,6 +66,14 @@
 - (BOOL) application: (UIApplication *) application
          didFinishLaunchingWithOptions: (NSDictionary *) launchOptions
 {
+    if (IS_IOS_7_OR_GREATER)
+    {
+        NSLog (@"iOS 7+");
+    }
+    else
+    {
+        NSLog (@"iOS 6");
+    }
 #ifdef ENABLE_USER_RATINGS
     [Appirater setAppId: @"660697542"];
     [Appirater setDaysUntilPrompt: 3];
