@@ -855,8 +855,7 @@ typedef void(^FeedDataErrorBlock)(void);
         }
         else
             cell.messageLabel.text = feedItem.title;
-        
-//        NSLog(@"videoInstance: \n\n============== \n\n%@ \n\n============== \n\n%@ \n\n============== \n\n%@ \n\n=============", videoInstance, videoInstance.video.starCount, videoInstance.starrers);
+
         [cell setSupplementaryMessageWithDictionary:@{  @"star_count": videoInstance.video ? videoInstance.video.starCount : @0,
          @"starrers": videoInstance ? [videoInstance.starrers array] : [NSArray array] }];
         
@@ -1126,7 +1125,6 @@ typedef void(^FeedDataErrorBlock)(void);
             return;
         }
         
-        NSLog(@"%@", self.videosInOrderArray);
         
         VideoInstance *videoInstance = [self videoInstanceAtCoverOfFeedItem: selectedFeedItem];
         

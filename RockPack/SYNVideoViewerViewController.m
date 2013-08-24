@@ -65,6 +65,7 @@
 @property (nonatomic, strong) UISwipeGestureRecognizer* leftSwipeRecogniser;
 @property (nonatomic, strong) UISwipeGestureRecognizer* rightSwipeRecogniser;
 @property (nonatomic, strong) UITapGestureRecognizer* tapRecogniser;
+@property (nonatomic, strong) IBOutlet UILabel* likesCountLabel;
 @property (weak, nonatomic) IBOutlet UIButton *addVideoButton;
 @property (weak, nonatomic) IBOutlet UIButton *shareButton;
 
@@ -286,6 +287,11 @@
     // Get share link pre-emptively
     [self requestShareLinkWithObjectType: @"video_instance"
                                 objectId: [(VideoInstance *)self.videoInstanceArray[self.currentSelectedIndex] uniqueId]];
+    
+    
+    // likes count
+    self.likesCountLabel.font = [UIFont rockpackFontOfSize:self.likesCountLabel.font.pointSize];
+    self.likesCountLabel.text = @"0";
 }
 
 
@@ -477,6 +483,7 @@
     self.channelTitleLabel.text = videoInstance.channel.title;
     self.videoTitleLabel.text = videoInstance.title;
     self.starButton.selected = [self.favouritesStatusArray[index] boolValue];
+    self.likesCountLabel.text = [videoInstance.video.starCount stringValue];
     [self refreshAddbuttonStatus:nil];
 }
 
@@ -1225,6 +1232,9 @@
     self.starButton.alpha = 0.0f;
     self.starButton.transform = CGAffineTransformMakeTranslation(-self.shareButton.frame.size.width, 0.0f);
     
+    self.likesCountLabel.alpha = 0.0f;
+    self.likesCountLabel.transform = CGAffineTransformMakeTranslation(0.0f, 10.0f);
+    
     if(self.currentSelectedIndex>1 || [self.videoInstanceArray count] < 4)
     {
         [self scrollToCellAtIndex:MAX(0, self.currentSelectedIndex - 3) animated:NO];
@@ -1246,7 +1256,11 @@
         
         self.starButton.transform = CGAffineTransformIdentity;
         
+        self.likesCountLabel.transform = CGAffineTransformIdentity;
+        
         self.addVideoButton.alpha = 1.0f;
+        
+        self.likesCountLabel.alpha = 1.0f;
         
         self.shareButton.alpha = 1.0f;
         

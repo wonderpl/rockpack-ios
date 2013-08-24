@@ -574,7 +574,7 @@ referenceSizeForFooterInSection: (NSInteger) section
 - (void) channelTapped: (UICollectionViewCell *) cell
 {
     SYNChannelThumbnailCell *selectedCell = (SYNChannelThumbnailCell *) cell;
-    NSIndexPath *indexPath = [self.videoThumbnailCollectionView indexPathForItemAtPoint: selectedCell.center];
+    NSIndexPath *indexPath = [self.channelThumbnailCollectionView indexPathForItemAtPoint: selectedCell.center];
     
     if (self.isAnimating) // prevent double clicking
     {
