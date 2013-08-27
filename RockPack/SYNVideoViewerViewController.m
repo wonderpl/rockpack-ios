@@ -290,7 +290,7 @@
     
     
     // likes count
-    self.likesCountLabel.font = [UIFont rockpackFontOfSize:self.likesCountLabel.font.pointSize];
+    self.likesCountLabel.font = [UIFont boldRockpackFontOfSize:self.likesCountLabel.font.pointSize];
     self.likesCountLabel.text = @"0";
 }
 
