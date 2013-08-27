@@ -61,7 +61,7 @@
 }
 
 - (void) setBlurTintColor:(UIColor *)blurTintColor {
-    [self.toolbar setBarTintColor:blurTintColor];
+    [self.toolbar setValue:blurTintColor forKey:@"barTintColor"];
 }
 
 - (void)setFrame:(CGRect)frame {

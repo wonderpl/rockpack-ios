@@ -900,6 +900,17 @@
 				<object class="IBPartialClassDescription">
 					<string key="className">SYNAbstractViewController</string>
 					<string key="superclassName">UIViewController</string>
+					<object class="NSMutableDictionary" key="actions">
+						<string key="NS.key.0">toggleStarAtIndexPath:</string>
+						<string key="NS.object.0">NSIndexPath</string>
+					</object>
+					<object class="NSMutableDictionary" key="actionInfosByName">
+						<string key="NS.key.0">toggleStarAtIndexPath:</string>
+						<object class="IBActionInfo" key="NS.object.0">
+							<string key="name">toggleStarAtIndexPath:</string>
+							<string key="candidateClassName">NSIndexPath</string>
+						</object>
+					</object>
 					<dictionary class="NSMutableDictionary" key="outlets">
 						<string key="channelNameTextField">UITextField</string>
 						<string key="channelOverlayView">UIImageView</string>
@@ -943,50 +954,6 @@
 				<object class="IBPartialClassDescription">
 					<string key="className">SYNVideoViewerViewController</string>
 					<string key="superclassName">SYNAbstractViewController</string>
-					<dictionary class="NSMutableDictionary" key="actions">
-						<string key="toggleStarButton:">UIButton</string>
-						<string key="userTouchedChannelButton:">id</string>
-						<string key="userTouchedCloseButton:">id</string>
-						<string key="userTouchedNextVideoButton:">id</string>
-						<string key="userTouchedPreviousVideoButton:">id</string>
-						<string key="userTouchedProfileButton:">id</string>
-						<string key="userTouchedReportConcernButton:">UIButton</string>
-						<string key="userTouchedVideoShareButton:">UIButton</string>
-					</dictionary>
-					<dictionary class="NSMutableDictionary" key="actionInfosByName">
-						<object class="IBActionInfo" key="toggleStarButton:">
-							<string key="name">toggleStarButton:</string>
-							<string key="candidateClassName">UIButton</string>
-						</object>
-						<object class="IBActionInfo" key="userTouchedChannelButton:">
-							<string key="name">userTouchedChannelButton:</string>
-							<string key="candidateClassName">id</string>
-						</object>
-						<object class="IBActionInfo" key="userTouchedCloseButton:">
-							<string key="name">userTouchedCloseButton:</string>
-							<string key="candidateClassName">id</string>
-						</object>
-						<object class="IBActionInfo" key="userTouchedNextVideoButton:">
-							<string key="name">userTouchedNextVideoButton:</string>
-							<string key="candidateClassName">id</string>
-						</object>
-						<object class="IBActionInfo" key="userTouchedPreviousVideoButton:">
-							<string key="name">userTouchedPreviousVideoButton:</string>
-							<string key="candidateClassName">id</string>
-						</object>
-						<object class="IBActionInfo" key="userTouchedProfileButton:">
-							<string key="name">userTouchedProfileButton:</string>
-							<string key="candidateClassName">id</string>
-						</object>
-						<object class="IBActionInfo" key="userTouchedReportConcernButton:">
-							<string key="name">userTouchedReportConcernButton:</string>
-							<string key="candidateClassName">UIButton</string>
-						</object>
-						<object class="IBActionInfo" key="userTouchedVideoShareButton:">
-							<string key="name">userTouchedVideoShareButton:</string>
-							<string key="candidateClassName">UIButton</string>
-						</object>
-					</dictionary>
 					<dictionary class="NSMutableDictionary" key="outlets">
 						<string key="addVideoButton">UIButton</string>
 						<string key="blackPanelView">SYNPassthroughView</string>

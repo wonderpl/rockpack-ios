@@ -74,7 +74,7 @@ __PRAGMA_POP_NO_EXTRA_ARG_WARNINGS\
 #define IS_IPAD ( UI_USER_INTERFACE_IDIOM() == UIUserInterfaceIdiomPad )
 
 /** BOOL: Detect if device is on iOS 7 **/
-#define IS_IOS7 ( floor(NSFoundationVersionNumber) <= NSFoundationVersionNumber_iOS_6_1 )
+#define IS_BEFORE_IOS7 ( floor(NSFoundationVersionNumber) <= NSFoundationVersionNumber_iOS_6_1 )
 
 /** BOOL: Detect if device is an iPhone or iPod **/
 #define IS_IPHONE ( UI_USER_INTERFACE_IDIOM() == UIUserInterfaceIdiomPhone )
