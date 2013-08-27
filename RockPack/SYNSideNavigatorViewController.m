@@ -183,12 +183,13 @@ typedef enum {
             [self.view insertSubview:blurView atIndex:0];
         }
         
-        self.bottomExtraView.backgroundColor = [UIColor colorWithPatternImage:[UIImage imageNamed:@"PanelMenuBottom"]];
         
         [self.view insertSubview:self.bottomExtraView belowSubview:self.backgroundImageView];
         
         newFrame.size.height = [SYNDeviceManager.sharedInstance currentScreenHeight];
         self.view.frame = newFrame;
+        
+        
 
         // == Settings Button == //
         
