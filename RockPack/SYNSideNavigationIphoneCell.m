@@ -33,6 +33,7 @@
         self.selectedColor = [UIColor colorWithWhite:1.0 alpha:1.0f];
         self.selectedShadowColor = [UIColor colorWithWhite:1.0 alpha:0.2];
         self.selectionStyle = UITableViewCellSelectionStyleNone;
+        self.backgroundColor = [UIColor clearColor];
         
         if (IS_IPAD)
         {
@@ -41,7 +42,7 @@
         
         else
         {
-        self.textLabel.font = [UIFont rockpackFontOfSize:18];
+            self.textLabel.font = [UIFont rockpackFontOfSize:18];
         }
         
         self.textLabel.textColor = self.defaultColor;
@@ -71,9 +72,9 @@
 - (void) layoutSubviews
 {
     [super layoutSubviews];
-
+    
     CGPoint center = self.textLabel.center;
-
+    
     if (IS_IPAD)
     {
         center.y += 3.0f;
@@ -154,7 +155,7 @@
     
     CGRect newFrame = self.accessoryNumberBackground.frame;
     newFrame.size.width = MAX(33.0,self.accessoryNumberLabel.frame.size.width - 10.0f);
-    self.accessoryNumberBackground.frame = newFrame;    
+    self.accessoryNumberBackground.frame = newFrame;
 }
 
 @end
