@@ -167,15 +167,12 @@ typedef enum {
                                                                         self.backgroundImageView.frame.size.width,
                                                                         [SYNDeviceManager.sharedInstance currentScreenHeight] - bgHeight)];
         
-        //iOS 7 Blur
-        if (!IS_IOS_7_OR_GREATER)
-        {
-            // Do iOS6 Tingz
-            self.bottomExtraView.backgroundColor = [UIColor colorWithPatternImage:[UIImage imageNamed:@"PanelMenuBottom"]];
-        }
         
-        else
+        
+        //iOS 7 Blur
+        if (IS_IOS_7_OR_GREATER)
         {
+            
             // Do iOS7 Tingz
             AMBlurView *blurView = [AMBlurView new];
             [blurView setFrame:CGRectMake(5, 0, self.view.frame.size.width, 1024.0)];
@@ -183,11 +180,18 @@ typedef enum {
             [self.view insertSubview:blurView atIndex:0];
         }
         
+        else
+        {
+            // Do iOS6 Tingz
+            self.bottomExtraView.backgroundColor = [UIColor colorWithPatternImage:[UIImage imageNamed:@"PanelMenuBottom"]];
+        }
+        
         
         [self.view insertSubview:self.bottomExtraView belowSubview:self.backgroundImageView];
         
         newFrame.size.height = [SYNDeviceManager.sharedInstance currentScreenHeight];
         self.view.frame = newFrame;
+        
         
         
 
