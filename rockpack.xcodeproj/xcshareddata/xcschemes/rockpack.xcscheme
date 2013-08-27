@@ -90,8 +90,8 @@
       buildConfiguration = "Debug">
    </AnalyzeAction>
    <ArchiveAction
-      buildConfiguration = "Release"
-      customArchiveName = "rockpack.1.3.0"
+      buildConfiguration = "AdHoc"
+      customArchiveName = "rockpack.1.3.1"
       revealArchiveInOrganizer = "YES">
    </ArchiveAction>
 </Scheme>
