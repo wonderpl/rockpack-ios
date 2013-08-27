@@ -24,7 +24,7 @@
 #import <QuartzCore/QuartzCore.h>
 #import "SYNFriendsViewController.h"
 #import "SYNMasterViewController.h"
-
+#import "AMBlurView.h"
 
 #define kSideNavTitle @"kSideNavTitle"
 #define kSideNavType @"kSideNavType"
@@ -166,6 +166,22 @@ typedef enum {
                                                                         bgHeight,
                                                                         self.backgroundImageView.frame.size.width,
                                                                         [SYNDeviceManager.sharedInstance currentScreenHeight] - bgHeight)];
+        
+        //iOS 7 Blur
+        if (!IS_IOS_7_OR_GREATER)
+        {
+            // Do iOS6 Tingz
+            self.bottomExtraView.backgroundColor = [UIColor colorWithPatternImage:[UIImage imageNamed:@"PanelMenuBottom"]];
+        }
+        
+        else
+        {
+            // Do iOS7 Tingz
+            AMBlurView *blurView = [AMBlurView new];
+            [blurView setFrame:CGRectMake(5, 0, self.view.frame.size.width, 1024.0)];
+            self.backgroundImageView.hidden = YES;
+            [self.view insertSubview:blurView atIndex:0];
+        }
         
         self.bottomExtraView.backgroundColor = [UIColor colorWithPatternImage:[UIImage imageNamed:@"PanelMenuBottom"]];
         
