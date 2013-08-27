@@ -78,6 +78,7 @@
 
 - (void) loadView
 {
+    
     BOOL isIPhone = IS_IPHONE;
     
     StartingCategoryText  = NSLocalizedString(@"ALL PACKS", nil);
@@ -105,7 +106,7 @@
     // Work out how hight the inital tab bar is
     CGFloat topTabBarHeight = [UIImage imageNamed: @"CategoryBar"].size.height;
     
-    CGRect channelCollectionViewFrame;
+    CGRect channelCollectionViewFrame = CGRectZero;
     
     if (isIPhone)
     {
@@ -113,9 +114,28 @@
     }
     else
     {
-        channelCollectionViewFrame = [SYNDeviceManager.sharedInstance isLandscape] ?
-        CGRectMake(0.0, kStandardCollectionViewOffsetY + topTabBarHeight, kFullScreenWidthLandscape, kFullScreenHeightLandscapeMinusStatusBar - kStandardCollectionViewOffsetY - topTabBarHeight) :
-        CGRectMake(0.0f, kStandardCollectionViewOffsetY + topTabBarHeight, kFullScreenWidthPortrait, kFullScreenHeightPortraitMinusStatusBar - kStandardCollectionViewOffsetY - topTabBarHeight);
+        channelCollectionViewFrame.origin.x = 0.0f;
+        
+        channelCollectionViewFrame.size.height = [SYNDeviceManager.sharedInstance currentScreenHeightWithStatusBar];
+        
+        if(IS_IOS_7_OR_GREATER)
+        {
+            UIEdgeInsets currentInsets = flowLayout.sectionInset;
+            currentInsets.top = 146.0f;
+            flowLayout.sectionInset = currentInsets;
+            
+        }
+        else
+        {
+            // constraint the size
+            channelCollectionViewFrame.origin.y = kStandardCollectionViewOffsetY + topTabBarHeight;
+            channelCollectionViewFrame.size.height -= kStandardCollectionViewOffsetY;
+            channelCollectionViewFrame.size.height -= topTabBarHeight;
+        }
+        
+        
+        channelCollectionViewFrame.size.width = [SYNDeviceManager.sharedInstance currentScreenWidth];
+        
     }
     
     self.channelThumbnailCollectionView = [[UICollectionView alloc] initWithFrame: channelCollectionViewFrame
@@ -132,7 +152,9 @@
     
     if (isIPhone)
     {
-        newFrame = CGRectMake(0.0f, 59.0f, [SYNDeviceManager.sharedInstance currentScreenWidth], [SYNDeviceManager.sharedInstance currentScreenHeight] - 20.0f);
+        newFrame = CGRectMake(0.0f, 59.0f,
+                              [SYNDeviceManager.sharedInstance currentScreenWidth],
+                              [SYNDeviceManager.sharedInstance currentScreenHeight] - 20.0f);
     }
     else
     {
