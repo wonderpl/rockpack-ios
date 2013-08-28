@@ -59,7 +59,6 @@
 @implementation SYNAbstractViewController
 
 
-@synthesize fetchedResultsController = fetchedResultsController;
 @synthesize selectedIndex = _selectedIndex;
 
 @synthesize tabViewController;
@@ -165,7 +164,7 @@
 }
 
 
-
+#pragma mark - Data Request Index
 
 
 - (BOOL) moreItemsToLoad
@@ -188,57 +187,6 @@
 }
 
 
-- (NSIndexPath *) indexPathFromVideoInstanceButton: (UIButton *) button
-{
-    UIView* target = button;
-    while (target && ![target isKindOfClass:[UICollectionViewCell class]])
-    {
-        target = [target superview];
-    }
-    NSIndexPath *indexPath = [self.videoThumbnailCollectionView indexPathForItemAtPoint: target.center];
-    
-    return indexPath;
-}
-
-
-- (IBAction) userTouchedVideoShareButton: (UIButton *) videoShareButton
-{
-    NSIndexPath *indexPath = [self indexPathFromVideoInstanceButton: videoShareButton];
-    VideoInstance *videoInstance = [self.fetchedResultsController objectAtIndexPath: indexPath];
-    
-    // Stop multiple clicks by disabling button 
-    videoShareButton.enabled = FALSE;
-    
-    [self shareVideoInstance: videoInstance
-                      inView: self.view
-                    fromRect: videoShareButton.frame
-             arrowDirections: UIPopoverArrowDirectionDown
-           activityIndicator: nil
-                  onComplete: ^{
-                 // Re-enable button
-                 videoShareButton.enabled = TRUE;
-             }];
-}
-
-
-- (void) displayVideoViewerFromView: (UIButton *) videoViewButton
-{
-    NSIndexPath *indexPath = [self indexPathFromVideoInstanceButton: videoViewButton];
-    
-    id selectedVideo = [self.fetchedResultsController objectAtIndexPath:indexPath];
-    NSArray* videoArray =  self.fetchedResultsController.fetchedObjects;
-    CGPoint center;
-    if(videoViewButton)
-    {
-        center = [self.view convertPoint:videoViewButton.center fromView:videoViewButton.superview];
-    }
-    else
-    {
-        center = self.view.center;
-    }
-    [self displayVideoViewerWithVideoInstanceArray: videoArray
-                                  andSelectedIndex: [videoArray indexOfObject:selectedVideo] center:center];
-}
 
 
 - (void) displayVideoViewerWithVideoInstanceArray: (NSArray *) videoInstanceArray
@@ -255,7 +203,7 @@
 
 #pragma mark - UICollectionView Data Source Stubs
 
-// To be implemented by subclasses
+
 - (NSInteger) collectionView: (UICollectionView *) cv
       numberOfItemsInSection: (NSInteger) section
 {
@@ -271,33 +219,12 @@
     return nil;
 }
 
-
-- (BOOL) collectionView: (UICollectionView *) cv
-         didSelectItemAtIndexPathAbstract: (NSIndexPath *) indexPath
-{
-    AssertOrLog(@"Shouldn't be calling abstract class method");
-    return NO;
-}
-
-
 - (void) refresh
 {
     AssertOrLog(@"Shouldn't be calling abstract class method");
 }
 
 
-// User pressed the channel thumbnail in a VideoCell
-- (IBAction) channelButtonTapped: (UIButton *) channelButton
-{
-    NSIndexPath *indexPath = [self indexPathFromVideoInstanceButton: channelButton];
-    
-    if (indexPath)
-    {
-        VideoInstance *videoInstance = [self.fetchedResultsController objectAtIndexPath: indexPath];
-        
-        [appDelegate.viewStackManager viewChannelDetails:videoInstance.channel];
-    }
-}
 
 - (void) videoOverlayDidDissapear
 {
@@ -305,28 +232,11 @@
 }
 
 
-- (IBAction) profileButtonTapped: (UIButton *) profileButton
-{
-    NSIndexPath *indexPath = [self indexPathFromVideoInstanceButton: profileButton];
-    
-    // Bail if we don't have an index path
-    if (indexPath)
-    {
-        VideoInstance *videoInstance = [self.fetchedResultsController objectAtIndexPath: indexPath];
-        
-        [appDelegate.viewStackManager viewProfileDetails: videoInstance.channel.channelOwner];
-    }
-}
-
-
-
-
-
 #pragma mark - Trace
 
 - (NSString*) description
 {
-    return [NSString stringWithFormat: @"SYNAbstractViewController '%@'", viewId];
+    return [NSString stringWithFormat: @"SYNAbstractViewController: '%@'", viewId];
 }
 
 

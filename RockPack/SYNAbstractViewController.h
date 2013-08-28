@@ -36,7 +36,6 @@ typedef void (^SYNShareCompletionBlock)(void);
     BOOL tabExpanded;
     SYNTabViewController *tabViewController;
     NSString *viewId;
-    NSFetchedResultsController *fetchedResultsController;
     NSString *abstractTitle;
 }
 
@@ -49,7 +48,6 @@ typedef void (^SYNShareCompletionBlock)(void);
 @property (nonatomic, assign, getter = isLoadingMoreContent) BOOL loadingMoreContent;
 @property (nonatomic, readonly) NSString *viewId;
 @property (nonatomic, strong) IBOutlet UICollectionView *videoThumbnailCollectionView;
-@property (nonatomic, strong) NSFetchedResultsController *fetchedResultsController;
 @property (nonatomic, strong) NSIndexPath *draggedIndexPath;
 @property (nonatomic, strong) SYNAddButtonControl *addButton;
 @property (nonatomic, strong) SYNArcMenuView *arcMenu;
@@ -67,13 +65,10 @@ typedef void (^SYNShareCompletionBlock)(void);
 - (void) handleNewTabSelectionWithGenre: (Genre *) name;
 
 - (void) videoOverlayDidDissapear;
-- (void) displayVideoViewerFromView: (UIButton *) videoViewButton;
 
-- (NSIndexPath *) indexPathFromVideoInstanceButton: (UIButton *) button;
 
 - (void) reloadCollectionViews;
 
-- (BOOL) collectionView: (UICollectionView *) cv didSelectItemAtIndexPathAbstract: (NSIndexPath *) indexPath;
 
 - (void) displayVideoViewerWithVideoInstanceArray: (NSArray *) videoInstanceArray
                                  andSelectedIndex: (int) selectedIndex
