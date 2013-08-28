@@ -934,6 +934,10 @@
                 nameOfNextImage = self.backgroundImagesArray[self.currentOnBoardingPage - 1];
             }
             break;
+            
+            
+        default: // Up and Down are disregarded
+            break;
     }
     
     self.loginBackgroundFrontImage.image = [UIImage imageNamed: nameOfNextImage];

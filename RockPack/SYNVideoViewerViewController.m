@@ -62,6 +62,8 @@
 @property (nonatomic, strong) IBOutlet UIView *swipeView;
 @property (nonatomic, strong) SYNReportConcernTableViewController *reportConcernTableViewController;
 @property (nonatomic, strong) SYNVideoViewerThumbnailLayout *layout;
+
+@property (nonatomic, strong) SYNAddButtonControl *addButton;
 @property (nonatomic, strong) UISwipeGestureRecognizer* leftSwipeRecogniser;
 @property (nonatomic, strong) UISwipeGestureRecognizer* rightSwipeRecogniser;
 @property (nonatomic, strong) UITapGestureRecognizer* tapRecogniser;

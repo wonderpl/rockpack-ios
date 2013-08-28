@@ -37,27 +37,36 @@ typedef void (^SYNShareCompletionBlock)(void);
     SYNTabViewController *tabViewController;
     NSString *viewId;
     NSString *abstractTitle;
+    CGFloat _mainCollectionViewLastOffsetY;
+    ScrollingDirection _mainCollectionViewScrollingDirection;
+    CGFloat _mainCollectionViewOffsetDeltaY;
+    dispatch_once_t onceToken;
 }
 
 @property (nonatomic) BOOL isAnimating;
-@property (nonatomic) BOOL isLocked;
+@property (nonatomic) BOOL isLocked; // prevents the back button from firing (not yet implemented)
+
 @property (nonatomic) NSInteger dataItemsAvailable;
 @property (nonatomic) NSRange dataRequestRange;
+
 @property (nonatomic, assign) BOOL inDrag;
 @property (nonatomic, assign) CGPoint initialDragCenter;
 @property (nonatomic, assign, getter = isLoadingMoreContent) BOOL loadingMoreContent;
 @property (nonatomic, readonly) NSString *viewId;
 @property (nonatomic, strong) IBOutlet UICollectionView *videoThumbnailCollectionView;
 @property (nonatomic, strong) NSIndexPath *draggedIndexPath;
-@property (nonatomic, strong) SYNAddButtonControl *addButton;
 @property (nonatomic, strong) SYNArcMenuView *arcMenu;
 @property (nonatomic, strong) SYNChannelFooterMoreView *footerView;
 @property (nonatomic, strong) SYNTabViewController *tabViewController;
 @property (nonatomic, strong) UIImageView *draggedView;
 @property (nonatomic, weak) MKNetworkOperation *runningNetworkOperation;
 @property (readonly) BOOL alwaysDisplaysSearchBox;
-@property (readonly) NSManagedObjectContext *mainManagedObjectContext;
-@property (readonly, getter = isVideoQueueVisible) BOOL videoQueueVisible;
+ 
+
+@property (nonatomic) ScrollingDirection mainCollectionViewScrollingDirection;
+@property (nonatomic) CGFloat mainCollectionViewOffsetDeltaY;
+
+@property (nonatomic, readonly) UICollectionView* mainCollectionView;
 
 - (void) performAction: (NSString *) action withObject: (id) object;
 

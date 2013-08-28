@@ -56,6 +56,7 @@ typedef void(^FeedDataErrorBlock)(void);
 
 @implementation SYNFeedRootViewController
 
+
 #pragma mark - Object lifecycle
 
 - (void) dealloc
@@ -1393,10 +1394,51 @@ typedef void(^FeedDataErrorBlock)(void);
 
 - (void) scrollViewDidScroll: (UIScrollView *) scrollView
 {
-    if (scrollView.contentOffset.y >= scrollView.contentSize.height - scrollView.bounds.size.height - kLoadMoreFooterViewHeight
-        && self.isLoadingMoreContent == NO)
+    CGFloat currentContentOffsetY = scrollView.contentOffset.y;
+    
+    if (_mainCollectionViewLastOffsetY > currentContentOffsetY)
+        self.mainCollectionViewScrollingDirection = ScrollingDirectionDown;
+    else if (_mainCollectionViewLastOffsetY < currentContentOffsetY)
+        self.mainCollectionViewScrollingDirection = ScrollingDirectionUp;
+    
+    self.mainCollectionViewOffsetDeltaY += fabsf(_mainCollectionViewLastOffsetY - currentContentOffsetY);
+    
+    _mainCollectionViewLastOffsetY = currentContentOffsetY;
+    
+    if (currentContentOffsetY >= scrollView.contentSize.height - scrollView.bounds.size.height - kLoadMoreFooterViewHeight &&
+        self.isLoadingMoreContent == NO)
     {
         [self loadMoreVideos];
+    }
+}
+
+-(void)setMainCollectionViewScrollingDirection:(ScrollingDirection)mainCollectionViewScrollingDirection
+{
+    if(_mainCollectionViewScrollingDirection == mainCollectionViewScrollingDirection)
+        return;
+        
+    _mainCollectionViewScrollingDirection = mainCollectionViewScrollingDirection;
+    _mainCollectionViewOffsetDeltaY = 0.0f;
+    onceToken = 0;
+}
+
+
+
+-(void)setMainCollectionViewOffsetDeltaY:(CGFloat)mainCollectionViewOffsetDeltaY
+{
+   
+    _mainCollectionViewOffsetDeltaY = mainCollectionViewOffsetDeltaY;
+    if (_mainCollectionViewOffsetDeltaY > kNotableScrollThreshold)
+    {
+        _mainCollectionViewOffsetDeltaY = 0.0f;
+        
+        
+        
+        dispatch_once(&onceToken, ^{
+            [[NSNotificationCenter defaultCenter] postNotificationName:kNotableScrollEvent
+                                                                object:self
+                                                              userInfo:@{kNotableScrollDirection:@(_mainCollectionViewScrollingDirection)}];
+        });
     }
 }
 
@@ -1407,6 +1449,11 @@ typedef void(^FeedDataErrorBlock)(void);
     [super applicationWillEnterForeground: application];
     
     [self loadAndUpdateFeedData];
+}
+
+-(UICollectionView *)mainCollectionView
+{
+    return self.feedCollectionView;
 }
 
 

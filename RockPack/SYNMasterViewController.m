@@ -65,11 +65,16 @@ typedef void(^AnimationCompletionBlock)(BOOL finished);
 @property (nonatomic, strong) UINavigationController* mainNavigationController;
 @property (nonatomic, strong) UIPopoverController* accountSettingsPopover;
 @property (nonatomic, strong) UIView* accountSettingsCoverView;
+@property (nonatomic, weak) UICollectionView* currentlyObservigCollectionView;
+@property (nonatomic, strong) IBOutlet UIView* headerContainerView;
+@property (nonatomic) BOOL isAnimatingHeader;
 
 @end
 
 
 @implementation SYNMasterViewController
+
+@synthesize isAnimatingHeader;
 
 #pragma mark - Object lifecycle
 
@@ -250,7 +255,7 @@ typedef void(^AnimationCompletionBlock)(BOOL finished);
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(scrollerPageChanged:) name:kScrollerPageChanged object:nil];
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(searchTyped:) name:kSearchTyped object:nil];
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(showAccountSettingsPopover) name:kAccountSettingsPressed object:nil];
-    
+    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(notableScrollNotification:) name:kNotableScrollEvent object:nil];
     
     [self.navigationContainerView addSubview:self.sideNavigatorViewController.view];
 }
@@ -288,20 +293,66 @@ typedef void(^AnimationCompletionBlock)(BOOL finished);
 {
     if ([keyPath isEqualToString: kCollectionViewContentOffsetKey])
     {
-        CGRect scrollViewFrame = self.containerViewController.scrollView.frame;
-        CGSize scrollViewContentSize = self.containerViewController.scrollView.contentSize;
-        CGPoint scrollViewContentOffset = self.containerViewController.scrollView.contentOffset;
         
-        CGFloat frameWidth = scrollViewFrame.size.width;
-        CGFloat contentWidth = scrollViewContentSize.width;
-        CGFloat offset = scrollViewContentOffset.x;
+        if(object == self.containerViewController.scrollView) // move the scroll page indicator
+        {
+            CGRect scrollViewFrame = self.containerViewController.scrollView.frame;
+            CGSize scrollViewContentSize = self.containerViewController.scrollView.contentSize;
+            CGPoint scrollViewContentOffset = self.containerViewController.scrollView.contentOffset;
+            
+            CGFloat frameWidth = scrollViewFrame.size.width;
+            CGFloat contentWidth = scrollViewContentSize.width;
+            CGFloat offset = scrollViewContentOffset.x;
+            
+            self.pagePositionIndicatorView.position = offset / (contentWidth - frameWidth);
+        }
+    
         
-        self.pagePositionIndicatorView.position = offset / (contentWidth - frameWidth);
+    }
+}
+
+#pragma mark - Scroller Changes
+
+-(void)notableScrollNotification:(NSNotification*)notification
+{
+    NSNumber* directionNumber = (NSNumber*)[notification userInfo][kNotableScrollDirection];
+    if(!directionNumber)
+        return;
+    
+    ScrollingDirection direction = directionNumber.integerValue;
+    
+    __block CGRect headerRect = self.headerContainerView.frame;
+    
+    if(direction == ScrollingDirectionUp)
+    {
+        [UIView animateWithDuration:0.3f
+                              delay:0.0f
+                            options:UIViewAnimationOptionBeginFromCurrentState | UIViewAnimationOptionCurveEaseInOut
+                         animations:^{
+                             headerRect.origin.y = -headerRect.size.height;
+                             
+                             self.headerContainerView.frame = headerRect;
+                         } completion:^(BOOL finished) {
+                             isAnimatingHeader = NO;
+                         }];
+    }
+    else
+    {
+        [UIView animateWithDuration:0.3f
+                              delay:0.0f
+                            options:UIViewAnimationOptionBeginFromCurrentState | UIViewAnimationOptionCurveEaseInOut
+                         animations:^{
+                        
+                             headerRect.origin.y = 0.0f;
+                             self.headerContainerView.frame = headerRect;
+                         } completion:^(BOOL finished) {
+                             isAnimatingHeader = NO;
+                         }];
     }
 }
 
 
-#pragma mark - Scroller Changes
+
 
 - (void) scrollerPageChanged: (NSNotification*) notification
 {
@@ -311,7 +362,28 @@ typedef void(^AnimationCompletionBlock)(BOOL finished);
     
     [self pageChanged: [pageNumber integerValue]];
     
+    // self.currentlyObservigCollectionView = self.containerViewController.showingViewController.mainCollectionView;
     
+    
+    
+}
+
+-(void)setCurrentlyObservigCollectionView:(UICollectionView *)currentlyObservigCollectionView
+{
+    
+    [_currentlyObservigCollectionView removeObserver:self
+                                          forKeyPath:kCollectionViewContentOffsetKey];
+    
+    _currentlyObservigCollectionView = currentlyObservigCollectionView;
+    
+    
+    if(!_currentlyObservigCollectionView)
+        return;
+    
+    [_currentlyObservigCollectionView addObserver:self
+                                       forKeyPath:kCollectionViewContentOffsetKey
+                                          options:NSKeyValueObservingOptionNew
+                                          context:nil];
 }
 
 

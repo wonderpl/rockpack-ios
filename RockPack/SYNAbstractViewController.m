@@ -39,7 +39,6 @@
                                           UIPopoverControllerDelegate>
 
 
-@property (getter = isVideoQueueVisible) BOOL videoQueueVisible;
 @property (nonatomic, assign) BOOL shouldPlaySound;
 @property (nonatomic, assign) NSUInteger selectedIndex;
 @property (nonatomic, strong) IBOutlet UIImageView *channelOverlayView;
@@ -62,7 +61,6 @@
 @synthesize selectedIndex = _selectedIndex;
 
 @synthesize tabViewController;
-@synthesize addButton;
 
 @synthesize viewId;
 
@@ -972,5 +970,9 @@
     return self.videoThumbnailCollectionView;
 }
 
+-(UICollectionView *)mainCollectionView
+{
+    return nil; // to be implemented in subview
+}
 
 @end
