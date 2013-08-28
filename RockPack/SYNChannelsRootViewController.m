@@ -118,20 +118,9 @@
         
         channelCollectionViewFrame.size.height = [SYNDeviceManager.sharedInstance currentScreenHeightWithStatusBar];
         
-        if(IS_IOS_7_OR_GREATER)
-        {
-            UIEdgeInsets currentInsets = flowLayout.sectionInset;
-            currentInsets.top = 146.0f;
-            flowLayout.sectionInset = currentInsets;
-            
-        }
-        else
-        {
-            // constraint the size
-            channelCollectionViewFrame.origin.y = kStandardCollectionViewOffsetY + topTabBarHeight;
-            channelCollectionViewFrame.size.height -= kStandardCollectionViewOffsetY;
-            channelCollectionViewFrame.size.height -= topTabBarHeight;
-        }
+        channelCollectionViewFrame.origin.y = kStandardCollectionViewOffsetY + topTabBarHeight;
+        channelCollectionViewFrame.size.height -= kStandardCollectionViewOffsetY;
+        channelCollectionViewFrame.size.height -= topTabBarHeight;
         
         
         channelCollectionViewFrame.size.width = [SYNDeviceManager.sharedInstance currentScreenWidth];
