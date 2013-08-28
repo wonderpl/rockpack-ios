@@ -105,12 +105,14 @@ typedef void(^FeedDataErrorBlock)(void);
     }
     else
     {
-        calculatedViewFrame = CGRectMake(0.0, 0.0, kFullScreenWidthLandscape, kFullScreenHeightLandscapeMinusStatusBar);
+        calculatedViewFrame = CGRectMake(0.0f, 0.0f,
+                                         kFullScreenWidthLandscape, kFullScreenHeightLandscapeMinusStatusBar);
         
-        videoCollectionViewFrame = CGRectMake(0.0, kStandardCollectionViewOffsetY, kFullScreenWidthLandscape, kFullScreenHeightLandscapeMinusStatusBar - kStandardCollectionViewOffsetY);
+        videoCollectionViewFrame = CGRectMake(0.0f, 0.0f,
+                                              kFullScreenWidthLandscape, kFullScreenHeightLandscapeMinusStatusBar);
         
         // Collection view parameters
-        contentInset = UIEdgeInsetsMake(0, 0, 0, 0);
+        contentInset = UIEdgeInsetsMake(90, 0, 0, 0);
         sectionInset = UIEdgeInsetsMake(10.0f, 10.0f, 15.0f, 10.0f);
         minimumLineSpacing = 30.0f;
     }
@@ -1428,11 +1430,10 @@ typedef void(^FeedDataErrorBlock)(void);
 {
    
     _mainCollectionViewOffsetDeltaY = mainCollectionViewOffsetDeltaY;
-    if (_mainCollectionViewOffsetDeltaY > kNotableScrollThreshold)
+    if (_mainCollectionViewOffsetDeltaY > kNotableScrollThreshold && _mainCollectionViewOffsetDeltaY > 90.0f)
     {
+        
         _mainCollectionViewOffsetDeltaY = 0.0f;
-        
-        
         
         dispatch_once(&onceToken, ^{
             [[NSNotificationCenter defaultCenter] postNotificationName:kNotableScrollEvent
