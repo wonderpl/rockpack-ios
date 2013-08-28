@@ -32,6 +32,7 @@
 #import "SYNVideoViewerViewController.h"
 #import "UIFont+SYNFont.h"
 #import "VideoInstance.h"
+#import "AMBlurView.h"
 #import <QuartzCore/QuartzCore.h>
 
 #define kMovableViewOffX -58
@@ -189,6 +190,18 @@ typedef void(^AnimationCompletionBlock)(BOOL finished);
     [self.view insertSubview:self.mainNavigationController.view atIndex:0];
     
     self.existingChannelsController = [[SYNExistingChannelsViewController alloc] initWithViewId:kExistingChannelsViewId];
+    
+    
+    
+    // == Add conditional transparent BG to header == //
+    
+    if(IS_IOS_7_OR_GREATER)
+    {
+        AMBlurView *blurView = [AMBlurView new];
+        [blurView setFrame:CGRectMake(0.0f, 0.0f, [[SYNDeviceManager sharedInstance] currentScreenWidth], 112.0f)];
+        [blurView setBlurTintColor:[UIColor colorWithRed:(242.0f/255.0f) green:(242.0f/255.0f) blue:(242.0f/255.0f) alpha:1.0f]];
+        [self.view insertSubview:blurView aboveSubview:self.mainNavigationController.view];
+    }
 
     // == Back Button == //
     
