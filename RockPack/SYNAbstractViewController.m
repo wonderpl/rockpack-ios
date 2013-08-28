@@ -975,4 +975,14 @@
     return nil; // to be implemented in subview
 }
 
+-(void)setMainCollectionViewScrollingDirection:(ScrollingDirection)mainCollectionViewScrollingDirection
+{
+    if(_mainCollectionViewScrollingDirection == mainCollectionViewScrollingDirection)
+        return;
+    
+    _mainCollectionViewScrollingDirection = mainCollectionViewScrollingDirection;
+    _mainCollectionViewOffsetDeltaY = 0.0f;
+    onceToken = 0;
+}
+
 @end

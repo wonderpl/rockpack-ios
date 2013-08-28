@@ -104,7 +104,6 @@
     flowLayout.footerReferenceSize = [self footerSize];
     
     // Work out how hight the inital tab bar is
-    CGFloat topTabBarHeight = [UIImage imageNamed: @"CategoryBar"].size.height;
     
     CGRect channelCollectionViewFrame = CGRectZero;
     
@@ -118,9 +117,7 @@
         
         channelCollectionViewFrame.size.height = [SYNDeviceManager.sharedInstance currentScreenHeightWithStatusBar];
         
-        channelCollectionViewFrame.origin.y = kStandardCollectionViewOffsetY + topTabBarHeight;
-        channelCollectionViewFrame.size.height -= kStandardCollectionViewOffsetY;
-        channelCollectionViewFrame.size.height -= topTabBarHeight;
+        channelCollectionViewFrame.origin.y = 0.0f;
         
         
         channelCollectionViewFrame.size.width = [SYNDeviceManager.sharedInstance currentScreenWidth];
@@ -137,6 +134,11 @@
     self.channelThumbnailCollectionView.autoresizingMask = UIViewAutoresizingFlexibleWidth | UIViewAutoresizingFlexibleHeight;
     self.channelThumbnailCollectionView.scrollsToTop = NO;
     
+    UIEdgeInsets currentInset = self.channelThumbnailCollectionView.contentInset;
+    currentInset.top = 140.0f;
+    
+    self.channelThumbnailCollectionView.contentInset = currentInset;
+    
     CGRect newFrame;
     
     if (isIPhone)
@@ -150,6 +152,9 @@
         newFrame = [SYNDeviceManager.sharedInstance isLandscape] ?
         CGRectMake(0.0, 0.0, kFullScreenWidthLandscape, kFullScreenHeightLandscapeMinusStatusBar) :
         CGRectMake(0.0f, 0.0f, kFullScreenWidthPortrait, kFullScreenHeightPortraitMinusStatusBar);
+        
+        
+        
     }
     
     self.view = [[UIView alloc] initWithFrame: newFrame];
@@ -161,7 +166,6 @@
     if (self.enableCategoryTable)
 
     {[self layoutChannelsCategoryTable];}
-    
     
     
     self.channelThumbnailCollectionView.showsVerticalScrollIndicator = YES;
@@ -355,11 +359,49 @@
 
 - (void) scrollViewDidScroll: (UIScrollView *) scrollView
 {
+    CGFloat currentContentOffsetY = scrollView.contentOffset.y;
+    
+    if (_mainCollectionViewLastOffsetY > currentContentOffsetY)
+        self.mainCollectionViewScrollingDirection = ScrollingDirectionDown;
+    else if (_mainCollectionViewLastOffsetY < currentContentOffsetY)
+        self.mainCollectionViewScrollingDirection = ScrollingDirectionUp;
+    
+    self.mainCollectionViewOffsetDeltaY += fabsf(_mainCollectionViewLastOffsetY - currentContentOffsetY);
+    
+    _mainCollectionViewLastOffsetY = currentContentOffsetY;
+    
     // when reaching far right hand side, load a new page
     if (scrollView.contentOffset.y >= scrollView.contentSize.height - scrollView.bounds.size.height - kLoadMoreFooterViewHeight
         && self.isLoadingMoreContent == NO)
     {
         [self loadMoreChannels];
+    }
+}
+
+-(void)setMainCollectionViewOffsetDeltaY:(CGFloat)mainCollectionViewOffsetDeltaY
+{
+    
+    _mainCollectionViewOffsetDeltaY = mainCollectionViewOffsetDeltaY;
+    if (_mainCollectionViewOffsetDeltaY > kNotableScrollThreshold && _mainCollectionViewOffsetDeltaY > 90.0f)
+    {
+        
+        _mainCollectionViewOffsetDeltaY = 0.0f;
+        
+        dispatch_once(&onceToken, ^{
+            // move bar
+            __block CGRect tabFrame = self.tabViewController.tabView.frame;
+            
+            [UIView animateWithDuration:0.3f delay:0.0f options:UIViewAnimationOptionBeginFromCurrentState animations:^{
+                tabFrame.origin.y = _mainCollectionViewScrollingDirection == ScrollingDirectionUp ? 0.0f : 90.0f;
+                self.tabViewController.tabView.frame = tabFrame;
+            } completion:^(BOOL finished) {
+                
+            }];
+            
+            [[NSNotificationCenter defaultCenter] postNotificationName:kNotableScrollEvent
+                                                                object:self
+                                                              userInfo:@{kNotableScrollDirection:@(_mainCollectionViewScrollingDirection)}];
+        });
     }
 }
 
