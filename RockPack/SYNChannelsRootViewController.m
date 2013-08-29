@@ -688,6 +688,10 @@
     {
         self.isAnimating = YES;
         
+        CGRect currentCollectionViewFrame = self.channelThumbnailCollectionView.frame;
+        currentCollectionViewFrame.size.height += kCategorySecondRowHeight;
+        self.channelThumbnailCollectionView.frame = currentCollectionViewFrame;
+        
         [UIView animateWithDuration: 0.4
                               delay: 0.1
                             options: UIViewAnimationCurveEaseInOut
@@ -705,9 +709,7 @@
                              
                              [self.channelThumbnailCollectionView reloadData];
                              
-                             CGRect currentCollectionViewFrame = self.channelThumbnailCollectionView.frame;
-                             currentCollectionViewFrame.size.height += kCategorySecondRowHeight;
-                             self.channelThumbnailCollectionView.frame = currentCollectionViewFrame;
+                             
                          }];
     }
 }
