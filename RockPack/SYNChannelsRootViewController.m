@@ -388,7 +388,7 @@
     {
         
         _mainCollectionViewOffsetDeltaY = 0.0f;
-        
+        return;
         dispatch_once(&onceToken, ^{
             // move bar
             __block CGRect tabFrame = self.tabViewController.tabView.frame;
@@ -666,6 +666,8 @@
                               delay: 0.0
                             options: UIViewAnimationCurveEaseInOut
                          animations: ^{
+                             
+                             
                              CGRect currentCollectionViewFrame = self.channelThumbnailCollectionView.frame;
                              currentCollectionViewFrame.origin.y += kCategorySecondRowHeight;
                              //
@@ -750,12 +752,9 @@
     }
     
     CGPoint currentOffset = self.channelThumbnailCollectionView.contentOffset;
-    currentOffset.y = 0;
+    currentOffset.y = 0.0f;
     
-    // Need to do this immediately, as opposed to animated or we may get strange offsets //
-    
-    [self.channelThumbnailCollectionView setContentOffset: currentOffset
-                                                 animated: NO];
+
     
     // display what is already in the DB and then load and display again
     
