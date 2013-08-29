@@ -10,12 +10,7 @@
 #import "AppConstants.h"
 #import <QuartzCore/QuartzCore.h>
 
-@interface SYNRefreshButton ()
 
-@property (nonatomic, strong) UIImageView* image;
-@property (nonatomic, strong) UIButton* button;
-
-@end
 
 @implementation SYNRefreshButton
 
@@ -29,26 +24,21 @@
 {
     if (self = [super initWithFrame: CGRectZero])
     {
-        UIImageView* bg = [[UIImageView alloc] initWithImage: [UIImage imageNamed: @"ButtonRefresh"]];
-        [self addSubview: bg];
         
-        self.frame = bg.frame;
         
-        self.image = [[UIImageView alloc] initWithImage: [UIImage imageNamed: @"ButtonRefreshArrow"]];
-        self.image.center = bg.center;
-        self.image.frame = CGRectIntegral(self.image.frame);
-        [self addSubview: self.image];
         
-        self.self.button = [UIButton buttonWithType:UIButtonTypeCustom];
-        self.button.frame = bg.frame;
+        iconImageView = [[UIImageView alloc] initWithImage: [UIImage imageNamed: @"ButtonRefreshArrow"]];
+        [self addSubview: iconImageView];
+        
+        self.frame = iconImageView.frame;
+        
         
         self.spinner = [[UIActivityIndicatorView alloc] init];
         self.spinner.color = [UIColor colorWithRed:162.0/255.0 green:172.0/255.0 blue:176.0/255.0 alpha:1.0];
         
         
-        self.spinner.frame = bg.frame;
+        self.spinner.frame = self.frame;
         
-        [self addSubview: self.button];
         [self addSubview:self.spinner];
     }
     
@@ -56,33 +46,7 @@
 }
 
 
-#pragma mark - UIControl Methods
 
-- (void) addTarget: (id) target
-            action: (SEL) action
-  forControlEvents: (UIControlEvents) controlEvents
-{
-    [self.button addTarget: target
-               action: action
-     forControlEvents: controlEvents];
-}
-
-
-- (void) removeTarget: (id) target
-               action: (SEL) action
-     forControlEvents: (UIControlEvents) controlEvents
-{
-    [self.button removeTarget: target
-                  action: action
-        forControlEvents: controlEvents];
-}
-
-- (NSArray *) actionsForTarget: (id) target
-               forControlEvent: (UIControlEvents) controlEvent
-{
-    return [self.button actionsForTarget: target
-                    forControlEvent: controlEvent];
-}
 
 
 #pragma mark - Animation Methods
@@ -93,13 +57,13 @@
     if (spin)
     {
         [self.spinner startAnimating];
-        self.image.alpha = 0.0;
+        iconImageView.alpha = 0.0;
 
     }
     else
     {
         [self.spinner stopAnimating];
-        self.image.alpha = 1.0;
+        iconImageView.alpha = 1.0;
     }
 }
 
@@ -109,22 +73,22 @@
 {
 	if (finished)
 	{
-		[self spinRefreshButton: TRUE];
+		[self spinRefreshButton: YES];
 	}
 }
 
 
 #pragma mark - API
 
-- (void) startRefreshCycle
+- (void) start
 {
-    [self spinRefreshButton: TRUE];
+    [self spinRefreshButton: YES];
 }
 
 
-- (void) endRefreshCycle
+- (void) stop
 {
-    [self spinRefreshButton: FALSE];
+    [self spinRefreshButton: NO];
 }
 
 @end
