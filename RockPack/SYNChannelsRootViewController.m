@@ -379,12 +379,16 @@
         [self loadMoreChannels];
     }
 }
-
+static BOOL lock = NO;
 -(void)setMainCollectionViewOffsetDeltaY:(CGFloat)mainCollectionViewOffsetDeltaY
 {
     
     _mainCollectionViewOffsetDeltaY = mainCollectionViewOffsetDeltaY;
-    if (_mainCollectionViewOffsetDeltaY > kNotableScrollThreshold && _mainCollectionViewOffsetDeltaY > 90.0f &&!self.isAnimating)
+    
+    
+    if (_mainCollectionViewOffsetDeltaY > kNotableScrollThreshold + 12.0f && _mainCollectionViewOffsetDeltaY > 90.0f &&
+        !self.isAnimating &&
+        !self.isLoadingMoreContent && !lock)
     {
         
         _mainCollectionViewOffsetDeltaY = 0.0f;
@@ -393,11 +397,33 @@
             // move bar
             __block CGRect tabFrame = self.tabViewController.tabView.frame;
             
-            [UIView animateWithDuration:0.3f delay:0.0f options:UIViewAnimationOptionBeginFromCurrentState animations:^{
-                tabFrame.origin.y = _mainCollectionViewScrollingDirection == ScrollingDirectionUp ? 0.0f : 90.0f;
-                self.tabViewController.tabView.frame = tabFrame;
+            lock = YES;
+            
+            [UIView animateWithDuration:0.3f
+                                  delay:0.0f
+                                options:UIViewAnimationOptionBeginFromCurrentState animations:^{
+                                    
+                                    tabFrame.origin.y = _mainCollectionViewScrollingDirection == ScrollingDirectionUp ? 0.0f : 90.0f;
+                                    self.tabViewController.tabView.frame = tabFrame;
+                                    
+                                    
+                                    if(_mainCollectionViewScrollingDirection == ScrollingDirectionDown)
+                                    {
+                                        UIEdgeInsets ei = self.channelThumbnailCollectionView.contentInset;
+                                        ei.top = 140.0f + ( tabExpanded ? kCategorySecondRowHeight : 0.0f );
+                                        self.channelThumbnailCollectionView.contentInset = ei;
+                                    }
+                                    else
+                                    {
+                                        UIEdgeInsets ei = self.channelThumbnailCollectionView.contentInset;
+                                        ei.top = 48.0f;
+                                        self.channelThumbnailCollectionView.contentInset = ei;
+                                    }
+                                    
             } completion:^(BOOL finished) {
                 
+                lock = NO;
+                NSLog(@"Complete");
             }];
             
             [[NSNotificationCenter defaultCenter] postNotificationName:kNotableScrollEvent
@@ -658,28 +684,29 @@
 
 - (void) animateCollectionViewDown: (BOOL) down
 {
+    __block UIEdgeInsets ei = self.channelThumbnailCollectionView.contentInset;
+    
     if (down && !tabExpanded)
     {
         self.isAnimating = YES;
         
-        [UIView animateWithDuration: 0.4
-                              delay: 0.0
+        ei.top += kCategorySecondRowHeight;
+        
+        self.channelThumbnailCollectionView.contentInset = ei;
+        
+        [UIView animateWithDuration: 0.5f
+                              delay: 0.1f
                             options: UIViewAnimationCurveEaseInOut
                          animations: ^{
+                             CGPoint co = self.channelThumbnailCollectionView.contentOffset;
+                             co.y = -175.0f;
+                             self.channelThumbnailCollectionView.contentOffset = co;
                              
-                             
-                             CGRect currentCollectionViewFrame = self.channelThumbnailCollectionView.frame;
-                             currentCollectionViewFrame.origin.y += kCategorySecondRowHeight;
-                             //
-                             self.channelThumbnailCollectionView.frame = currentCollectionViewFrame;
                              
                          } completion: ^(BOOL result) {
                              tabExpanded = YES;
                              self.isAnimating = NO;
-                             [self.channelThumbnailCollectionView reloadData];
-                             CGRect currentCollectionViewFrame = self.channelThumbnailCollectionView.frame;
-                             currentCollectionViewFrame.size.height -= kCategorySecondRowHeight;
-                             self.channelThumbnailCollectionView.frame = currentCollectionViewFrame;
+                             
                          }];
     }
     else if (tabExpanded)
@@ -690,23 +717,19 @@
         currentCollectionViewFrame.size.height += kCategorySecondRowHeight;
         self.channelThumbnailCollectionView.frame = currentCollectionViewFrame;
         
+        ei.top -= kCategorySecondRowHeight;
+        
         [UIView animateWithDuration: 0.4
                               delay: 0.1
                             options: UIViewAnimationCurveEaseInOut
                          animations: ^{
-                             CGRect currentCollectionViewFrame = self.channelThumbnailCollectionView.frame;
-                             currentCollectionViewFrame.origin.y -= kCategorySecondRowHeight;
-                             //
-                             self.channelThumbnailCollectionView.frame = currentCollectionViewFrame;
+                             self.channelThumbnailCollectionView.contentInset = ei;
                          }
          
          
                          completion: ^(BOOL result) {
                              tabExpanded = NO;
                              self.isAnimating = NO;
-                             
-                             [self.channelThumbnailCollectionView reloadData];
-                             
                              
                          }];
     }
@@ -728,6 +751,7 @@
 - (void) handleNewTabSelectionWithGenre: (Genre *) genre
 {
     [appDelegate.viewStackManager hideSideNavigator];
+    
     
     if ([self.currentGenre.uniqueId
          isEqualToString: genre.uniqueId])
@@ -774,6 +798,7 @@
     }
     
     [self loadChannelsForGenre: genre];
+    
 }
 
 
