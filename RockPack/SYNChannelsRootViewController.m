@@ -388,7 +388,7 @@
     {
         
         _mainCollectionViewOffsetDeltaY = 0.0f;
-        return;
+        
         dispatch_once(&onceToken, ^{
             // move bar
             __block CGRect tabFrame = self.tabViewController.tabView.frame;
@@ -672,10 +672,8 @@
                              currentCollectionViewFrame.origin.y += kCategorySecondRowHeight;
                              //
                              self.channelThumbnailCollectionView.frame = currentCollectionViewFrame;
-                         }
-         
-         
-                         completion: ^(BOOL result) {
+                             
+                         } completion: ^(BOOL result) {
                              tabExpanded = YES;
                              self.isAnimating = NO;
                              [self.channelThumbnailCollectionView reloadData];
