@@ -30,6 +30,12 @@
 #import "SYNMasterViewController.h"
 #import "VideoInstance.h"
 #import "Appirater.h"
+#import "SYNRefreshControl.h"
+#import <QuartzCore/QuartzCore.h>
+
+
+#define REFRESH_HEADER_HEIGHT 40.0f
+#define COLLECTION_VIEW_INSET 90.0f
 
 typedef void(^FeedDataErrorBlock)(void);
 
@@ -41,7 +47,7 @@ typedef void(^FeedDataErrorBlock)(void);
 @property (nonatomic, strong) NSDateFormatter *dateFormatter;
 @property (nonatomic, strong) NSTimer *timer;
 @property (nonatomic, strong) SYNFeedMessagesView* emptyGenreMessageView;
-@property (nonatomic, strong) UIRefreshControl *refreshControl;
+@property (nonatomic, strong) SYNRefreshControl *refreshControl;
 @property (nonatomic, weak)   SYNAggregateVideoCell* selectedVideoCell;
 @property (nonatomic, strong) NSArray* feedItemsData;
 @property (nonatomic, strong) NSDictionary* feedVideosById;
@@ -112,7 +118,7 @@ typedef void(^FeedDataErrorBlock)(void);
                                               kFullScreenWidthLandscape, kFullScreenHeightLandscapeMinusStatusBar);
         
         // Collection view parameters
-        contentInset = UIEdgeInsetsMake(90, 0, 0, 0);
+        contentInset = UIEdgeInsetsMake(COLLECTION_VIEW_INSET, 0, 0, 0);
         sectionInset = UIEdgeInsetsMake(10.0f, 10.0f, 15.0f, 10.0f);
         minimumLineSpacing = 30.0f;
     }
@@ -181,19 +187,13 @@ typedef void(^FeedDataErrorBlock)(void);
                      withReuseIdentifier: @"SYNChannelFooterMoreView"];
     
     
-    // Refresh control
-    self.refreshControl = [[UIRefreshControl alloc] initWithFrame: CGRectMake(0, -44, 320, 44)];
+    // Refresh Control
     
-    self.refreshControl.tintColor = [UIColor colorWithRed: (11.0/255.0)
-                                                    green: (166.0/255.0)
-                                                     blue: (171.0/255.0)
-                                                    alpha: (1.0)];
+    self.refreshControl = [SYNRefreshControl refreshControl];
+    self.refreshControl.center = CGPointMake(self.view.center.x, -24.0f);
+    [self.feedCollectionView addSubview:self.refreshControl];
     
-    [self.refreshControl addTarget: self
-                            action: @selector(loadAndUpdateOriginalFeedData)
-                  forControlEvents: UIControlEventValueChanged];
     
-    [self.feedCollectionView addSubview: self.refreshControl];
     
     // We should only setup our date formatter once
     self.dateFormatter = [[NSDateFormatter alloc] init];
@@ -251,7 +251,6 @@ typedef void(^FeedDataErrorBlock)(void);
     if (self.dataRequestRange.location == 0)
     {
         [self resetDataRequestRange]; // just in case the length is less than standard
-        [self.refreshButton startRefreshCycle];
         [self loadAndUpdateFeedData];
        
     }
@@ -329,7 +328,6 @@ typedef void(^FeedDataErrorBlock)(void);
     if (!appDelegate.currentOAuth2Credentials.userId)
         return;
 
-    [self.refreshButton startRefreshCycle];
     
     __weak SYNFeedRootViewController* wself = self;
     FeedDataErrorBlock errorBlock = ^{
@@ -357,13 +355,19 @@ typedef void(^FeedDataErrorBlock)(void);
         self.loadingMoreContent = NO;
         
         DebugLog(@"Refresh subscription updates failed");
+        
+        [self hidePullToRefresh];
     };
+    
+    // top refresh control
+    
+    [self showPullToRefresh];
     
     [appDelegate.oAuthNetworkEngine feedUpdatesForUserId: appDelegate.currentOAuth2Credentials.userId
                                                    start: self.dataRequestRange.location
                                                     size: self.dataRequestRange.length
                                        completionHandler: ^(NSDictionary *responseDictionary) {
-                                                    
+                                           
                                            
                                            BOOL toAppend = (self.dataRequestRange.location > 0);
                                                     
@@ -414,7 +418,9 @@ typedef void(^FeedDataErrorBlock)(void);
                                                
                                                
                                            }
-                                                    
+
+                                           // for aesthetic purposes
+                                           [self performSelector:@selector(hidePullToRefresh) withObject:nil afterDelay:0.3];
                                            
                                        } errorHandler: ^(NSDictionary* errorDictionary) {
                                                     
@@ -429,8 +435,7 @@ typedef void(^FeedDataErrorBlock)(void);
 - (void) handleRefreshComplete
 {
     self.refreshing = NO;
-    [self.refreshControl endRefreshing];
-    [self.refreshButton endRefreshCycle];
+    
 }
 
 
@@ -1393,6 +1398,7 @@ typedef void(^FeedDataErrorBlock)(void);
     [self.feedCollectionView setContentOffset:CGPointZero animated:YES];
 }
 
+#pragma mark - ScrollView Delegate
 
 - (void) scrollViewDidScroll: (UIScrollView *) scrollView
 {
@@ -1407,22 +1413,49 @@ typedef void(^FeedDataErrorBlock)(void);
     
     _mainCollectionViewLastOffsetY = currentContentOffsetY;
     
-    if (currentContentOffsetY >= scrollView.contentSize.height - scrollView.bounds.size.height - kLoadMoreFooterViewHeight &&
-        self.isLoadingMoreContent == NO)
-    {
+    CGFloat threshold = scrollView.contentSize.height - scrollView.bounds.size.height - kLoadMoreFooterViewHeight;
+    if (currentContentOffsetY >= threshold && !self.isLoadingMoreContent)
         [self loadMoreVideos];
+    
+    // animate the refresh control
+    if (scrollView.contentOffset.y < COLLECTION_VIEW_INSET)
+    {
+        NSLog(@"-- %f", scrollView.contentOffset.y);
+        [UIView animateWithDuration:0.3 animations:^{
+            
+            if (scrollView.contentOffset.y < -(COLLECTION_VIEW_INSET + REFRESH_HEADER_HEIGHT)) {
+                
+                self.refreshControl.layer.transform = CATransform3DMakeRotation(M_PI/2.0f, 0, 0, 1);
+                
+            } else {
+                
+                self.refreshControl.layer.transform = CATransform3DMakeRotation(M_PI * 2, 0, 0, 1);
+            }
+        }];
     }
+    
 }
 
-
-
-
+- (void)scrollViewDidEndDragging:(UIScrollView *)scrollView willDecelerate:(BOOL)decelerate {
+    
+    if (self.isLoadingMoreContent)
+        return;
+    
+    
+    if (scrollView.contentOffset.y <= -(COLLECTION_VIEW_INSET + REFRESH_HEADER_HEIGHT))
+    {
+        hasPulledToRefresh = YES;
+        [self loadAndUpdateFeedData];
+    }
+}
 
 -(void)setMainCollectionViewOffsetDeltaY:(CGFloat)mainCollectionViewOffsetDeltaY
 {
    
     _mainCollectionViewOffsetDeltaY = mainCollectionViewOffsetDeltaY;
-    if (_mainCollectionViewOffsetDeltaY > kNotableScrollThreshold && _mainCollectionViewOffsetDeltaY > 90.0f)
+    if (_mainCollectionViewOffsetDeltaY > kNotableScrollThreshold &&
+        _mainCollectionViewOffsetDeltaY > COLLECTION_VIEW_INSET &&
+        !hasPulledToRefresh)
     {
         
         _mainCollectionViewOffsetDeltaY = 0.0f;
@@ -1435,6 +1468,38 @@ typedef void(^FeedDataErrorBlock)(void);
     }
 }
 
+-(void)showPullToRefresh
+{
+    if(hasPulledToRefresh)
+    {
+        [UIView animateWithDuration:0.3 animations:^{
+            UIEdgeInsets currentInsets = self.feedCollectionView.contentInset;
+            currentInsets.top = COLLECTION_VIEW_INSET + REFRESH_HEADER_HEIGHT;
+            self.feedCollectionView.contentInset = currentInsets;
+            
+            [self.refreshControl start];
+        }];
+    }
+    
+}
+
+-(void)hidePullToRefresh
+{
+    if(hasPulledToRefresh)
+    {
+        [UIView animateWithDuration:0.3 animations:^{
+            UIEdgeInsets currentInsets = self.feedCollectionView.contentInset;
+            currentInsets.top = COLLECTION_VIEW_INSET;
+            self.feedCollectionView.contentInset = currentInsets;
+            
+            [self.refreshControl stop];
+        }];
+        
+        hasPulledToRefresh = NO;
+    }
+}
+
+#pragma mark - Housekeeping functions
 
 - (void) applicationWillEnterForeground: (UIApplication *) application
 {

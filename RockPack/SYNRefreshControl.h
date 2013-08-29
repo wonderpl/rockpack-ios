@@ -9,7 +9,7 @@
 #import <UIKit/UIKit.h>
 
 
-@interface SYNRefreshButton : UIControl {
+@interface SYNRefreshControl : UIControl {
     UIImageView* iconImageView;
 }
 
@@ -18,6 +18,6 @@
 - (void) start;
 - (void) stop;
 
-+ (id) refreshButton;
++ (id) refreshControl;
 
 @end

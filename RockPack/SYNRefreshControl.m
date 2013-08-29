@@ -6,15 +6,15 @@
 //  Copyright (c) Rockpack Ltd. All rights reserved.
 //
 
-#import "SYNRefreshButton.h"
+#import "SYNRefreshControl.h"
 #import "AppConstants.h"
 #import <QuartzCore/QuartzCore.h>
 
 
 
-@implementation SYNRefreshButton
+@implementation SYNRefreshControl
 
-+ (id) refreshButton
++ (id) refreshControl
 {
     return [[self alloc] init];
 }
