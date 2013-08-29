@@ -35,7 +35,7 @@
 
 
 #define REFRESH_HEADER_HEIGHT 40.0f
-#define COLLECTION_VIEW_INSET 90.0f
+#define COLLECTION_VIEW_INSET ( IS_IPAD ? 90.0f : 64.0f )
 
 typedef void(^FeedDataErrorBlock)(void);
 
@@ -89,33 +89,37 @@ typedef void(^FeedDataErrorBlock)(void);
     SYNIntegralCollectionViewFlowLayout *standardFlowLayout;
     UIEdgeInsets sectionInset, contentInset;
     CGRect videoCollectionViewFrame, calculatedViewFrame;
-    CGSize screenSize;
+    
+    CGSize screenSize = CGSizeMake([SYNDeviceManager.sharedInstance currentScreenWidth], [SYNDeviceManager.sharedInstance currentScreenHeight]);
     CGFloat minimumLineSpacing;
     
     // Setup device dependent parametes/dimensions
     
+    calculatedViewFrame = CGRectMake(0.0f, 0.0f,
+                                     screenSize.width,
+                                     [SYNDeviceManager.sharedInstance currentScreenHeightWithStatusBar]);
+    
+    videoCollectionViewFrame = CGRectMake(0.0f, 0.0f,
+                                          screenSize.width,
+                                          [SYNDeviceManager.sharedInstance currentScreenHeightWithStatusBar]);
+    
     if (IS_IPHONE)
     {
         // Calculate frame size
-        screenSize = CGSizeMake([SYNDeviceManager.sharedInstance currentScreenWidth], [SYNDeviceManager.sharedInstance currentScreenHeight]);
         
-        calculatedViewFrame = CGRectMake(0.0, 0.0, screenSize.width, screenSize.height - 20.0f);
         
-        videoCollectionViewFrame = CGRectMake(0.0, kStandardCollectionViewOffsetYiPhone, screenSize.width, screenSize.height - 20.0f - kStandardCollectionViewOffsetYiPhone);
         
-        // Collection view parameters
-        contentInset = UIEdgeInsetsMake(0, 0, 0, 0);
+        
+        contentInset = UIEdgeInsetsMake(COLLECTION_VIEW_INSET, 0, 0, 0);
         sectionInset = UIEdgeInsetsMake(0.0f, 0.0f, 0.0f, 0.0f);
         minimumLineSpacing = 12.0f;
         
     }
     else
     {
-        calculatedViewFrame = CGRectMake(0.0f, 0.0f,
-                                         kFullScreenWidthLandscape, kFullScreenHeightLandscapeMinusStatusBar);
         
-        videoCollectionViewFrame = CGRectMake(0.0f, 0.0f,
-                                              kFullScreenWidthLandscape, kFullScreenHeightLandscapeMinusStatusBar);
+        
+        
         
         // Collection view parameters
         contentInset = UIEdgeInsetsMake(COLLECTION_VIEW_INSET, 0, 0, 0);
