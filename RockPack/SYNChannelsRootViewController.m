@@ -356,6 +356,8 @@
     }
 }
 
+#pragma mark - ScrollView Delegate
+
 
 - (void) scrollViewDidScroll: (UIScrollView *) scrollView
 {
@@ -382,7 +384,7 @@
 {
     
     _mainCollectionViewOffsetDeltaY = mainCollectionViewOffsetDeltaY;
-    if (_mainCollectionViewOffsetDeltaY > kNotableScrollThreshold && _mainCollectionViewOffsetDeltaY > 90.0f)
+    if (_mainCollectionViewOffsetDeltaY > kNotableScrollThreshold && _mainCollectionViewOffsetDeltaY > 90.0f &&!self.isAnimating)
     {
         
         _mainCollectionViewOffsetDeltaY = 0.0f;
@@ -404,6 +406,8 @@
         });
     }
 }
+
+#pragma mark - Display Channels
 
 
 - (void) displayChannelsForGenre: (Genre *) genre
@@ -582,9 +586,8 @@
 }
 
 
-- (CGSize)			 collectionView: (UICollectionView *) collectionView
-                      layout: (UICollectionViewLayout *) collectionViewLayout
-referenceSizeForFooterInSection: (NSInteger) section
+- (CGSize)collectionView: (UICollectionView *) collectionView
+                  layout: (UICollectionViewLayout *) collectionViewLayout referenceSizeForFooterInSection: (NSInteger) section
 {
     CGSize footerSize;
     
@@ -610,19 +613,6 @@ referenceSizeForFooterInSection: (NSInteger) section
     return footerSize;
 }
 
-
-//- (void) collectionView: (UICollectionView *) collectionView didSelectItemAtIndexPath: (NSIndexPath *) indexPath
-//{
-//    if (self.isAnimating) // prevent double clicking
-//    {
-//        return;
-//    }
-//    
-//    Channel *channel = (Channel *) self.channels[indexPath.row];
-//    
-//    [appDelegate.viewStackManager
-//     viewChannelDetails: channel];
-//}
 
 - (void) channelTapped: (UICollectionViewCell *) cell
 {

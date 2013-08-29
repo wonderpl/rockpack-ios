@@ -106,10 +106,6 @@ typedef void(^FeedDataErrorBlock)(void);
     if (IS_IPHONE)
     {
         // Calculate frame size
-        
-        
-        
-        
         contentInset = UIEdgeInsetsMake(COLLECTION_VIEW_INSET, 0, 0, 0);
         sectionInset = UIEdgeInsetsMake(0.0f, 0.0f, 0.0f, 0.0f);
         minimumLineSpacing = 12.0f;
@@ -118,13 +114,12 @@ typedef void(^FeedDataErrorBlock)(void);
     else
     {
         
-        
-        
-        
         // Collection view parameters
         contentInset = UIEdgeInsetsMake(COLLECTION_VIEW_INSET, 0, 0, 0);
         sectionInset = UIEdgeInsetsMake(10.0f, 10.0f, 15.0f, 10.0f);
         minimumLineSpacing = 30.0f;
+        
+        
     }
     
     // Set our view frame and attributes
@@ -195,6 +190,7 @@ typedef void(^FeedDataErrorBlock)(void);
     
     self.refreshControl = [SYNRefreshControl refreshControl];
     self.refreshControl.center = CGPointMake(self.view.center.x, -24.0f);
+    self.refreshControl.autoresizingMask = UIViewAutoresizingFlexibleLeftMargin | UIViewAutoresizingFlexibleRightMargin;
     [self.feedCollectionView addSubview:self.refreshControl];
     
     
