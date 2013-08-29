@@ -421,6 +421,7 @@
                          
                      }
                      completion:^(BOOL finished) {
+                         
                          UITapGestureRecognizer* tapToCloseGesture = [[UITapGestureRecognizer alloc] initWithTarget:self
                                                                                                              action:@selector(removePopoverView)];
                          [backgroundView addGestureRecognizer:tapToCloseGesture];

@@ -61,7 +61,7 @@ typedef void (^SYNShareCompletionBlock)(void);
 @property (nonatomic, strong) UIImageView *draggedView;
 @property (nonatomic, weak) MKNetworkOperation *runningNetworkOperation;
 @property (readonly) BOOL alwaysDisplaysSearchBox;
- 
+@property (readonly) BOOL canScrollFullScreen;
 
 @property (nonatomic) ScrollingDirection mainCollectionViewScrollingDirection;
 @property (nonatomic) CGFloat mainCollectionViewOffsetDeltaY;

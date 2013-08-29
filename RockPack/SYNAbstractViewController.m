@@ -244,6 +244,7 @@
 {
     tabViewController = newTabViewController;
     tabViewController.delegate = self;
+    
     [self.view addSubview: tabViewController.tabView];
     
     tabExpanded = NO;

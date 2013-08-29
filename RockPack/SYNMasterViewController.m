@@ -33,6 +33,7 @@
 #import "UIFont+SYNFont.h"
 #import "VideoInstance.h"
 #import "AMBlurView.h"
+#import "UIColor+SYNColor.h"
 #import <QuartzCore/QuartzCore.h>
 
 #define kMovableViewOffX -58
@@ -1417,12 +1418,18 @@ typedef void(^AnimationCompletionBlock)(BOOL finished);
     
 }
 
+
 - (void) navigationController: (UINavigationController *) navigationController
        willShowViewController: (UIViewController *) viewController
                      animated: (BOOL) animated
 {
+    
+    SYNAbstractViewController* abstractController;
+    
     if ([viewController isKindOfClass:[SYNContainerViewController class]]) // special case for the container which is not an abstract view controller
     {
+        abstractController = self.containerViewController.showingViewController;
+        
         [self changeControlButtonsTo:NavigationButtonsAppearanceBlack];
         [self cancelButtonPressed:nil];
     }
@@ -1430,9 +1437,10 @@ typedef void(^AnimationCompletionBlock)(BOOL finished);
     {
         
         
-        SYNAbstractViewController* abstractController = (SYNAbstractViewController*)viewController;
+        abstractController = (SYNAbstractViewController*)viewController;
         [self changeControlButtonsTo:abstractController.navigationAppearance];
         
+        // check for search box display
         if (abstractController.alwaysDisplaysSearchBox)
         {
             if (IS_IPHONE)
@@ -1463,6 +1471,16 @@ typedef void(^AnimationCompletionBlock)(BOOL finished);
                 [self.searchBoxController.view removeFromSuperview];
             }
         }
+         
+    }
+    
+    if(abstractController.canScrollFullScreen)
+    {
+        self.headerContainerView.backgroundColor = [UIColor rockpackBackgroundGrayColor];
+    }
+    else
+    {
+        self.headerContainerView.backgroundColor = [UIColor clearColor];
     }
     
     if( viewController == self.containerViewController)

@@ -1514,5 +1514,8 @@ typedef void(^FeedDataErrorBlock)(void);
     return self.feedCollectionView;
 }
 
-
+-(BOOL)canScrollFullScreen
+{
+    return YES;
+}
 @end

@@ -43,6 +43,10 @@
     return [UIColor colorWithRed: 45.0f/255.0f green: 53.0f/255.0f blue: 58.0f/255.0f alpha: 1.0f];
 }
 
++ (UIColor *) rockpackBackgroundGrayColor
+{
+    return [UIColor colorWithRed: 242.0/255.0f green: 242.0/255.0f blue: 242.0/255.0f alpha: 1.0f];
+}
 
 + (UIColor *) rockpacAggregateTextLight
 {

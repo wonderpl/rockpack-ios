@@ -1247,5 +1247,9 @@
     return result;
 }
 
+-(BOOL)canScrollFullScreen
+{
+    return YES;
+}
 
 @end

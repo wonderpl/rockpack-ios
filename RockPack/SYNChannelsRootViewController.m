@@ -1106,4 +1106,9 @@
      viewProfileDetails: channel.channelOwner];
 }
 
+-(BOOL)canScrollFullScreen
+{
+    return YES;
+}
+
 @end
