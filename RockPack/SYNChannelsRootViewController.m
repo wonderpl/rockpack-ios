@@ -392,7 +392,7 @@ static BOOL lock = NO;
                                 options:UIViewAnimationOptionBeginFromCurrentState animations:^{
                                     
                                     CGRect tabFrame;
-                                    
+                                    UIEdgeInsets ei = self.channelThumbnailCollectionView.contentInset;
                                     if(IS_IPAD)
                                     {
                                         tabFrame = self.tabViewController.tabView.frame;
@@ -408,16 +408,13 @@ static BOOL lock = NO;
                                     
                                     if(_mainCollectionViewScrollingDirection == ScrollingDirectionDown)
                                     {
-                                        UIEdgeInsets ei = self.channelThumbnailCollectionView.contentInset;
-                                        ei.top = 140.0f + ( tabExpanded ? kCategorySecondRowHeight : 0.0f );
-                                        self.channelThumbnailCollectionView.contentInset = ei;
+                                        ei.top = (IS_IPAD ? 140.0f : 110.f) + (tabExpanded ? kCategorySecondRowHeight : 0.0f);
                                     }
                                     else
                                     {
-                                        UIEdgeInsets ei = self.channelThumbnailCollectionView.contentInset;
                                         ei.top = 48.0f;
-                                        self.channelThumbnailCollectionView.contentInset = ei;
                                     }
+                                    self.channelThumbnailCollectionView.contentInset = ei;
                                     
             } completion:^(BOOL finished) {
                 

@@ -171,7 +171,7 @@
 								<reference key="IBUIFont" ref="569270985"/>
 							</object>
 						</array>
-						<string key="NSFrameSize">{320, 58}</string>
+						<string key="NSFrameSize">{320, 67}</string>
 						<reference key="NSSuperview" ref="191373211"/>
 						<reference key="NSWindow"/>
 						<reference key="NSNextKeyView" ref="748200105"/>
@@ -237,7 +237,6 @@
 						<string key="NSFrame">{{267, 5}, {48, 49}}</string>
 						<reference key="NSSuperview" ref="191373211"/>
 						<reference key="NSWindow"/>
-						<reference key="NSNextKeyView"/>
 						<string key="NSReuseIdentifierKey">_NS:9</string>
 						<bool key="IBUIOpaque">NO</bool>
 						<object class="IBUIAccessibilityConfiguration" key="IBUIAccessibilityConfiguration">
@@ -594,30 +593,6 @@
 				<object class="IBPartialClassDescription">
 					<string key="className">SYNMasterViewController</string>
 					<string key="superclassName">UIViewController</string>
-					<dictionary class="NSMutableDictionary" key="actions">
-						<string key="cancelButtonPressed:">id</string>
-						<string key="hideNavigation:">UIButton</string>
-						<string key="showAndHideSideNavigation:">UIButton</string>
-						<string key="showSearchBoxField:">id</string>
-					</dictionary>
-					<dictionary class="NSMutableDictionary" key="actionInfosByName">
-						<object class="IBActionInfo" key="cancelButtonPressed:">
-							<string key="name">cancelButtonPressed:</string>
-							<string key="candidateClassName">id</string>
-						</object>
-						<object class="IBActionInfo" key="hideNavigation:">
-							<string key="name">hideNavigation:</string>
-							<string key="candidateClassName">UIButton</string>
-						</object>
-						<object class="IBActionInfo" key="showAndHideSideNavigation:">
-							<string key="name">showAndHideSideNavigation:</string>
-							<string key="candidateClassName">UIButton</string>
-						</object>
-						<object class="IBActionInfo" key="showSearchBoxField:">
-							<string key="name">showSearchBoxField:</string>
-							<string key="candidateClassName">id</string>
-						</object>
-					</dictionary>
 					<dictionary class="NSMutableDictionary" key="outlets">
 						<string key="closeSearchButton">UIButton</string>
 						<string key="containerView">UIView</string>
