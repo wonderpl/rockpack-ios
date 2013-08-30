@@ -177,8 +177,8 @@
 						<reference key="NSNextKeyView" ref="748200105"/>
 						<string key="NSReuseIdentifierKey">_NS:9</string>
 						<object class="NSColor" key="IBUIBackgroundColor">
-							<int key="NSColorSpace">3</int>
-							<bytes key="NSWhite">MC45NAA</bytes>
+							<int key="NSColorSpace">2</int>
+							<bytes key="NSRGB">MC45NDkwMTk2MDc4IDAuOTQ5MDE5NjA3OCAwLjk0OTAxOTYwNzgAA</bytes>
 						</object>
 						<string key="targetRuntimeIdentifier">IBCocoaTouchFramework</string>
 					</object>
@@ -359,27 +359,11 @@
 				</object>
 				<object class="IBConnectionRecord">
 					<object class="IBCocoaTouchOutletConnection" key="connection">
-						<string key="label">darkOverlayView</string>
-						<reference key="source" ref="372490531"/>
-						<reference key="destination" ref="682744638"/>
-					</object>
-					<int key="connectionID">35</int>
-				</object>
-				<object class="IBConnectionRecord">
-					<object class="IBCocoaTouchOutletConnection" key="connection">
 						<string key="label">sideNavigationButton</string>
 						<reference key="source" ref="372490531"/>
 						<reference key="destination" ref="680903335"/>
 					</object>
 					<int key="connectionID">38</int>
-				</object>
-				<object class="IBConnectionRecord">
-					<object class="IBCocoaTouchOutletConnection" key="connection">
-						<string key="label">hideNavigationButton</string>
-						<reference key="source" ref="372490531"/>
-						<reference key="destination" ref="448492354"/>
-					</object>
-					<int key="connectionID">39</int>
 				</object>
 				<object class="IBConnectionRecord">
 					<object class="IBCocoaTouchOutletConnection" key="connection">
@@ -420,6 +404,22 @@
 						<reference key="destination" ref="839510976"/>
 					</object>
 					<int key="connectionID">53</int>
+				</object>
+				<object class="IBConnectionRecord">
+					<object class="IBCocoaTouchOutletConnection" key="connection">
+						<string key="label">hideNavigationButton</string>
+						<reference key="source" ref="372490531"/>
+						<reference key="destination" ref="448492354"/>
+					</object>
+					<int key="connectionID">39</int>
+				</object>
+				<object class="IBConnectionRecord">
+					<object class="IBCocoaTouchOutletConnection" key="connection">
+						<string key="label">darkOverlayView</string>
+						<reference key="source" ref="372490531"/>
+						<reference key="destination" ref="682744638"/>
+					</object>
+					<int key="connectionID">35</int>
 				</object>
 				<object class="IBConnectionRecord">
 					<object class="IBCocoaTouchEventConnection" key="connection">
@@ -464,9 +464,9 @@
 							<reference ref="163453737"/>
 							<reference ref="683922938"/>
 							<reference ref="680903335"/>
-							<reference ref="682744638"/>
 							<reference ref="1048790499"/>
 							<reference ref="839510976"/>
+							<reference ref="682744638"/>
 						</array>
 						<reference key="parent" ref="0"/>
 					</object>
@@ -499,27 +499,6 @@
 						<reference key="object" ref="1048790499"/>
 						<reference key="parent" ref="191373211"/>
 						<string key="objectName">Navigation Container View</string>
-					</object>
-					<object class="IBObjectRecord">
-						<int key="objectID">34</int>
-						<reference key="object" ref="682744638"/>
-						<array class="NSMutableArray" key="children">
-							<reference ref="448492354"/>
-						</array>
-						<reference key="parent" ref="191373211"/>
-						<string key="objectName">Dark Overlay View</string>
-					</object>
-					<object class="IBObjectRecord">
-						<int key="objectID">36</int>
-						<reference key="object" ref="448492354"/>
-						<reference key="parent" ref="682744638"/>
-						<string key="objectName">Button - Hide Navigation</string>
-					</object>
-					<object class="IBObjectRecord">
-						<int key="objectID">31</int>
-						<reference key="object" ref="683922938"/>
-						<reference key="parent" ref="191373211"/>
-						<string key="objectName">Error Container View</string>
 					</object>
 					<object class="IBObjectRecord">
 						<int key="objectID">52</int>
@@ -556,6 +535,27 @@
 						<reference key="object" ref="748200105"/>
 						<reference key="parent" ref="839510976"/>
 						<string key="objectName">Search Button</string>
+					</object>
+					<object class="IBObjectRecord">
+						<int key="objectID">31</int>
+						<reference key="object" ref="683922938"/>
+						<reference key="parent" ref="191373211"/>
+						<string key="objectName">Error Container View</string>
+					</object>
+					<object class="IBObjectRecord">
+						<int key="objectID">34</int>
+						<reference key="object" ref="682744638"/>
+						<array class="NSMutableArray" key="children">
+							<reference ref="448492354"/>
+						</array>
+						<reference key="parent" ref="191373211"/>
+						<string key="objectName">Dark Overlay View</string>
+					</object>
+					<object class="IBObjectRecord">
+						<int key="objectID">36</int>
+						<reference key="object" ref="448492354"/>
+						<reference key="parent" ref="682744638"/>
+						<string key="objectName">Button - Hide Navigation</string>
 					</object>
 				</array>
 			</object>

@@ -45,7 +45,10 @@
 
 + (UIColor *) rockpackBackgroundGrayColor
 {
-    return [UIColor colorWithRed: 242.0/255.0f green: 242.0/255.0f blue: 242.0/255.0f alpha: 1.0f];
+    if(IS_IPAD)
+        return [UIColor colorWithRed: 242.0f/255.0f green: 242.0f/255.0f blue: 242.0f/255.0f alpha: 1.0f];
+    else
+        return [UIColor colorWithRed: 239.0f/255.0f green: 239.0f/255.0f blue: 239.0f/255.0f alpha: 1.0f];
 }
 
 + (UIColor *) rockpacAggregateTextLight
