@@ -358,6 +358,10 @@
 
 #pragma mark - ScrollView Delegate
 
+- (void)scrollViewDidEndDragging:(UIScrollView *)scrollView willDecelerate:(BOOL)decelerate
+{
+    self.mainCollectionViewOffsetDeltaY = 0.0f;
+}
 
 - (void) scrollViewDidScroll: (UIScrollView *) scrollView
 {
@@ -655,10 +659,13 @@ static BOOL lock = NO;
     [appDelegate.viewStackManager viewChannelDetails: channel];
 }
 
+#pragma mark - Category Selection Delegate
 
 - (void) handleMainTap: (UIView *) tab
 {
+    
     [super handleMainTap: tab];
+    
     
     if (!tab || tab.tag == 0)
     {
@@ -675,16 +682,14 @@ static BOOL lock = NO;
     {
         return;
     }
-    
     [self animateCollectionViewDown: YES];
 }
 
 
-#pragma mark - Pushing UICollectionView up and down
-
 - (void) animateCollectionViewDown: (BOOL) down
 {
     __block UIEdgeInsets ei = self.channelThumbnailCollectionView.contentInset;
+    
     
     if (down && !tabExpanded)
     {
@@ -733,6 +738,10 @@ static BOOL lock = NO;
                              
                          }];
     }
+    else
+    {
+        
+    }
 }
 
 
@@ -753,8 +762,7 @@ static BOOL lock = NO;
     [appDelegate.viewStackManager hideSideNavigator];
     
     
-    if ([self.currentGenre.uniqueId
-         isEqualToString: genre.uniqueId])
+    if ([self.currentGenre.uniqueId isEqualToString: genre.uniqueId])
     {
         return;
     }
@@ -775,10 +783,6 @@ static BOOL lock = NO;
         self.currentGenre = genre;
     }
     
-    CGPoint currentOffset = self.channelThumbnailCollectionView.contentOffset;
-    currentOffset.y = 0.0f;
-    
-
     
     // display what is already in the DB and then load and display again
     

@@ -258,7 +258,7 @@
     
     [self.view addSubview: self.deletionCancelView];
     [self.view addSubview: self.channelThumbnailCollectionView];
-    [self.view  addSubview: self.subscriptionsViewController.view];
+    [self.view addSubview: self.subscriptionsViewController.view];
     
     if (self.isIPhone)
     {
