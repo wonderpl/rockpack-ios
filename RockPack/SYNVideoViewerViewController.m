@@ -33,6 +33,7 @@
 #import "SYNImplicitSharingController.h"
 #import <MediaPlayer/MediaPlayer.h>
 #import "Appirater.h"
+#import "AMBlurView.h"
 
 @interface SYNVideoViewerViewController () <UIGestureRecognizerDelegate>
 
@@ -294,6 +295,21 @@
     // likes count
     self.likesCountLabel.font = [UIFont boldRockpackFontOfSize:self.likesCountLabel.font.pointSize];
     self.likesCountLabel.text = @"0";
+    
+    
+    
+    //iOS 7 Blur
+    if (IS_IOS_7_OR_GREATER)
+    {
+        
+        // Do iOS7 Tingz
+        AMBlurView *blurView = [AMBlurView new];
+        blurView.autoresizingMask = UIViewAutoresizingFlexibleHeight | UIViewAutoresizingFlexibleWidth;
+        [blurView setFrame:CGRectMake(0.0f, 0.0f, [[SYNDeviceManager sharedInstance] currentScreenWidth], [[SYNDeviceManager sharedInstance] currentScreenHeight] + 2.0f)];
+        [blurView setBlurTintColor:[UIColor colorWithRed:21.0f/255.0 green:24.0f/255.0 blue:28.0f/255.0 alpha:1.0f]];
+        self.view.backgroundColor = [UIColor clearColor];
+        [self.view insertSubview:blurView atIndex:0];
+    }
 }
 
 
@@ -1250,6 +1266,7 @@
 
 -(void)runAppearAnimation
 {
+    
     [UIView animateWithDuration:0.5f delay:0.5f options:UIViewAnimationCurveEaseInOut animations:^{
         
         self.addVideoButton.transform = CGAffineTransformIdentity;
