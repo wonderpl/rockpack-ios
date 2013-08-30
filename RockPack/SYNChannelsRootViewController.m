@@ -45,7 +45,7 @@
 @property (nonatomic, strong) Genre *currentGenre;
 @property (nonatomic, strong) NSMutableArray *channels;
 @property (nonatomic, strong) NSString *currentCategoryId;
-@property (nonatomic, strong) SYNChannelCategoryTableViewController *categoryTableViewController;
+@property (nonatomic, strong) SYNChannelCategoryTableViewController *iPhoneCategoryTableViewController;
 @property (nonatomic, strong) SYNFeedMessagesView *emptyGenreMessageView;
 @property (nonatomic, strong) UIButton *categorySelectButton;
 @property (nonatomic, strong) UIControl *categorySelectDismissControl;
@@ -103,26 +103,10 @@
     
     flowLayout.footerReferenceSize = [self footerSize];
     
-    // Work out how hight the inital tab bar is
-    
+    // Collection view is full screen on both devices types
     CGRect channelCollectionViewFrame = CGRectZero;
-    
-    if (isIPhone)
-    {
-        channelCollectionViewFrame = CGRectMake(0.0f, 103.0f, [SYNDeviceManager.sharedInstance currentScreenWidth], [SYNDeviceManager.sharedInstance currentScreenHeight] - 123.0f);
-    }
-    else
-    {
-        channelCollectionViewFrame.origin.x = 0.0f;
-        
-        channelCollectionViewFrame.size.height = [SYNDeviceManager.sharedInstance currentScreenHeightWithStatusBar];
-        
-        channelCollectionViewFrame.origin.y = 0.0f;
-        
-        
-        channelCollectionViewFrame.size.width = [SYNDeviceManager.sharedInstance currentScreenWidth];
-        
-    }
+    channelCollectionViewFrame.size.height = [SYNDeviceManager.sharedInstance currentScreenHeightWithStatusBar];
+    channelCollectionViewFrame.size.width = [SYNDeviceManager.sharedInstance currentScreenWidth];
     
     self.channelThumbnailCollectionView = [[UICollectionView alloc] initWithFrame: channelCollectionViewFrame
                                                              collectionViewLayout: flowLayout];
@@ -135,7 +119,7 @@
     self.channelThumbnailCollectionView.scrollsToTop = NO;
     
     UIEdgeInsets currentInset = self.channelThumbnailCollectionView.contentInset;
-    currentInset.top = 140.0f;
+    currentInset.top = IS_IPHONE ? 120.0f : 140.0f;
     
     self.channelThumbnailCollectionView.contentInset = currentInset;
     
@@ -398,8 +382,8 @@ static BOOL lock = NO;
         _mainCollectionViewOffsetDeltaY = 0.0f;
         
         dispatch_once(&onceToken, ^{
-            // move bar
-            __block CGRect tabFrame = self.tabViewController.tabView.frame;
+           
+            
             
             lock = YES;
             
@@ -407,9 +391,20 @@ static BOOL lock = NO;
                                   delay:0.0f
                                 options:UIViewAnimationOptionBeginFromCurrentState animations:^{
                                     
-                                    tabFrame.origin.y = _mainCollectionViewScrollingDirection == ScrollingDirectionUp ? 0.0f : 90.0f;
-                                    self.tabViewController.tabView.frame = tabFrame;
+                                    CGRect tabFrame;
                                     
+                                    if(IS_IPAD)
+                                    {
+                                        tabFrame = self.tabViewController.tabView.frame;
+                                        tabFrame.origin.y = _mainCollectionViewScrollingDirection == ScrollingDirectionUp ? 0.0f : 90.0f;
+                                        self.tabViewController.tabView.frame = tabFrame;
+                                    }
+                                    else
+                                    {
+                                        tabFrame = self.categorySelectButton.frame;
+                                        tabFrame.origin.y = _mainCollectionViewScrollingDirection == ScrollingDirectionUp ? 0.0f : 60.0f;
+                                        self.categorySelectButton.frame = tabFrame;
+                                    }
                                     
                                     if(_mainCollectionViewScrollingDirection == ScrollingDirectionDown)
                                     {
@@ -513,7 +508,7 @@ static BOOL lock = NO;
     self.emptyGenreMessageView.frame = CGRectIntegral(self.emptyGenreMessageView.frame);
     
     [self.view insertSubview: self.emptyGenreMessageView
-                belowSubview: self.categoryTableViewController.view];
+                belowSubview: self.iPhoneCategoryTableViewController.view];
 }
 
 
@@ -832,17 +827,17 @@ static BOOL lock = NO;
     self.categorySelectDismissControl.hidden = YES;
     
     
-    self.categoryTableViewController = [[SYNChannelCategoryTableViewController alloc] init];
+    self.iPhoneCategoryTableViewController = [[SYNChannelCategoryTableViewController alloc] init];
     CGRect newFrame = self.channelThumbnailCollectionView.frame;
-    newFrame.size.width = self.categoryTableViewController.view.frame.size.width;
-    self.categoryTableViewController.view.frame = newFrame;
-    [self.view addSubview: self.categoryTableViewController.view];
-    [self addChildViewController: self.categoryTableViewController];
-    self.categoryTableViewController.categoryTableControllerDelegate = self;
-    self.categoryTableViewController.view.hidden = YES;
+    newFrame.size.width = self.iPhoneCategoryTableViewController.view.frame.size.width;
+    self.iPhoneCategoryTableViewController.view.frame = newFrame;
+    [self.view addSubview: self.iPhoneCategoryTableViewController.view];
+    [self addChildViewController: self.iPhoneCategoryTableViewController];
+    self.iPhoneCategoryTableViewController.categoryTableControllerDelegate = self;
+    self.iPhoneCategoryTableViewController.view.hidden = YES;
     
     
-    newFrame.origin.y -= 44.0f;
+    newFrame.origin.y = 60.0f;
     newFrame.size.height = 44.0f;
     newFrame.size.width = 320.0f;
     self.categorySelectButton = [[UIButton alloc] initWithFrame: newFrame];
@@ -911,21 +906,21 @@ static BOOL lock = NO;
 
 - (void) toggleChannelsCategoryTable: (id) sender
 {
-    if (self.categoryTableViewController.view.hidden)
+    if (self.iPhoneCategoryTableViewController.view.hidden)
     {
-        CGRect startFrame = self.categoryTableViewController.view.frame;
+        CGRect startFrame = self.iPhoneCategoryTableViewController.view.frame;
         startFrame.origin.x = -startFrame.size.width;
-        self.categoryTableViewController.view.frame = startFrame;
-        self.categoryTableViewController.view.hidden = NO;
+        self.iPhoneCategoryTableViewController.view.frame = startFrame;
+        self.iPhoneCategoryTableViewController.view.hidden = NO;
         self.categorySelectDismissControl.hidden = NO;
         
         [UIView animateWithDuration: 0.2f
                               delay: 0.0f
                             options: UIViewAnimationOptionCurveEaseOut
                          animations: ^{
-                             CGRect endFrame = self.categoryTableViewController.view.frame;
+                             CGRect endFrame = self.iPhoneCategoryTableViewController.view.frame;
                              endFrame.origin.x = 0;
-                             self.categoryTableViewController.view.frame = endFrame;
+                             self.iPhoneCategoryTableViewController.view.frame = endFrame;
                          }
          
          
@@ -938,14 +933,14 @@ static BOOL lock = NO;
                               delay: 0.0f
                             options: UIViewAnimationOptionCurveEaseIn
                          animations: ^{
-                             CGRect endFrame = self.categoryTableViewController.view.frame;
+                             CGRect endFrame = self.iPhoneCategoryTableViewController.view.frame;
                              endFrame.origin.x = -endFrame.size.width;
-                             self.categoryTableViewController.view.frame = endFrame;
+                             self.iPhoneCategoryTableViewController.view.frame = endFrame;
                          }
          
          
                          completion: ^(BOOL finished) {
-                             self.categoryTableViewController.view.hidden = YES;
+                             self.iPhoneCategoryTableViewController.view.hidden = YES;
                          }];
     }
 }
@@ -1040,7 +1035,7 @@ static BOOL lock = NO;
     
     [self handleNewTabSelectionWithGenre: nil];
     
-    if (!self.categoryTableViewController.view.hidden)
+    if (!self.iPhoneCategoryTableViewController.view.hidden)
     {
         [self toggleChannelsCategoryTable: nil];
     }

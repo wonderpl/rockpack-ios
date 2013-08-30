@@ -163,19 +163,19 @@ typedef void(^FeedDataErrorBlock)(void);
     self.feedCollectionView.showsHorizontalScrollIndicator = NO;
     [self.view addSubview:self.feedCollectionView];
 
-    self.feedCollectionView.autoresizingMask = UIViewAutoresizingFlexibleWidth| UIViewAutoresizingFlexibleHeight;
+    self.feedCollectionView.autoresizingMask = UIViewAutoresizingFlexibleWidth | UIViewAutoresizingFlexibleHeight;
 
     
     [self.feedCollectionView registerNib: [UINib nibWithNibName: @"SYNAggregateVideoCell" bundle: nil]
-                        forCellWithReuseIdentifier: @"SYNAggregateVideoCell"];
+              forCellWithReuseIdentifier: @"SYNAggregateVideoCell"];
     
     [self.feedCollectionView registerNib: [UINib nibWithNibName: @"SYNAggregateChannelCell" bundle: nil]
               forCellWithReuseIdentifier: @"SYNAggregateChannelCell"];
     
     
     [self.feedCollectionView registerNib: [UINib nibWithNibName: @"SYNHomeSectionHeaderView" bundle: nil]
-                        forSupplementaryViewOfKind: UICollectionElementKindSectionHeader
-                               withReuseIdentifier: @"SYNHomeSectionHeaderView"];
+              forSupplementaryViewOfKind: UICollectionElementKindSectionHeader
+                     withReuseIdentifier: @"SYNHomeSectionHeaderView"];
     
     // Register Footer
     UINib *footerViewNib = [UINib nibWithNibName: @"SYNChannelFooterMoreView"

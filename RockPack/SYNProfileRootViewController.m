@@ -166,8 +166,8 @@
     [self.headerChannelsView setTitle: [self getHeaderTitleForChannels]
                             andNumber: 0];
     
-    CGRect collectionViewFrame = CGRectMake(0.0,
-                                            self.headerChannelsView.frame.origin.y + self.headerChannelsView.currentHeight,
+    CGRect collectionViewFrame = CGRectMake(0.0f,
+                                            0.0f,
                                             correctWidth,
                                             [SYNDeviceManager.sharedInstance currentScreenHeightWithStatusBar] - kYouCollectionViewOffsetY);
     
