@@ -404,6 +404,8 @@ static BOOL lock = NO;
                                         tabFrame = self.categorySelectButton.frame;
                                         tabFrame.origin.y = _mainCollectionViewScrollingDirection == ScrollingDirectionUp ? 0.0f : 60.0f;
                                         self.categorySelectButton.frame = tabFrame;
+                                        
+                                        
                                     }
                                     
                                     if(_mainCollectionViewScrollingDirection == ScrollingDirectionDown)
@@ -420,6 +422,14 @@ static BOOL lock = NO;
                 
                 lock = NO;
                 NSLog(@"Complete");
+                
+                if(IS_IPHONE)
+                {
+                    CGRect tableFrame = self.iPhoneCategoryTableViewController.view.frame;
+                    tableFrame.origin.y = self.categorySelectButton.frame.origin.y + self.categorySelectButton.frame.size.height;
+                    tableFrame.size.height = [[SYNDeviceManager sharedInstance] currentScreenHeightWithStatusBar] - tableFrame.origin.y;
+                    self.iPhoneCategoryTableViewController.view.frame = tableFrame;
+                }
             }];
             
             [[NSNotificationCenter defaultCenter] postNotificationName:kNotableScrollEvent
