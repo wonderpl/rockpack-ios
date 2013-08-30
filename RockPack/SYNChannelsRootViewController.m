@@ -828,15 +828,10 @@ static BOOL lock = NO;
     
     
     self.iPhoneCategoryTableViewController = [[SYNChannelCategoryTableViewController alloc] init];
-    CGRect newFrame = self.channelThumbnailCollectionView.frame;
-    newFrame.size.width = self.iPhoneCategoryTableViewController.view.frame.size.width;
-    self.iPhoneCategoryTableViewController.view.frame = newFrame;
-    [self.view addSubview: self.iPhoneCategoryTableViewController.view];
-    [self addChildViewController: self.iPhoneCategoryTableViewController];
-    self.iPhoneCategoryTableViewController.categoryTableControllerDelegate = self;
-    self.iPhoneCategoryTableViewController.view.hidden = YES;
     
+    // add button
     
+    CGRect newFrame;
     newFrame.origin.y = 60.0f;
     newFrame.size.height = 44.0f;
     newFrame.size.width = 320.0f;
@@ -854,11 +849,24 @@ static BOOL lock = NO;
     
     [self.view addSubview: self.categorySelectButton];
     
-    newFrame.origin.x = 42.0f;
-    newFrame.origin.y += 4.0f;
-    newFrame.size.width = 280.0f;
+    // add side table
     
-    UILabel *newLabel = [[UILabel alloc] initWithFrame: newFrame];
+    CGRect categoryTableFrame = self.iPhoneCategoryTableViewController.view.frame;
+    categoryTableFrame.origin.y = self.categorySelectButton.frame.origin.y + self.categorySelectButton.frame.size.height;
+    self.iPhoneCategoryTableViewController.view.frame = categoryTableFrame;
+    
+    [self.view addSubview: self.iPhoneCategoryTableViewController.view];
+    [self addChildViewController: self.iPhoneCategoryTableViewController];
+    self.iPhoneCategoryTableViewController.categoryTableControllerDelegate = self;
+    self.iPhoneCategoryTableViewController.view.hidden = YES;
+    
+    CGRect labelFrame = CGRectZero;
+    labelFrame.origin.x = 42.0f;
+    labelFrame.origin.y = 4.0f;
+    labelFrame.size.width = 280.0f;
+    labelFrame.size.height = newFrame.size.height;
+    
+    UILabel *newLabel = [[UILabel alloc] initWithFrame: labelFrame];
 
     newLabel.font = [UIFont boldRockpackFontOfSize: 15.0f];
     
@@ -881,7 +889,7 @@ static BOOL lock = NO;
     center.x = newLabel.center.x;
     newLabel.center = center;
     self.categoryNameLabel = newLabel;
-    [self.view addSubview: self.categoryNameLabel];
+    [self.categorySelectButton addSubview: self.categoryNameLabel];
     
     
     newLabel = [[UILabel alloc] initWithFrame: self.categoryNameLabel.frame];
