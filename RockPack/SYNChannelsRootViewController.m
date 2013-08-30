@@ -383,8 +383,6 @@ static BOOL lock = NO;
         
         dispatch_once(&onceToken, ^{
            
-            
-            
             lock = YES;
             
             [UIView animateWithDuration:0.3f

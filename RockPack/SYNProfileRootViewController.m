@@ -169,7 +169,7 @@
     CGRect collectionViewFrame = CGRectMake(0.0f,
                                             0.0f,
                                             correctWidth,
-                                            [SYNDeviceManager.sharedInstance currentScreenHeightWithStatusBar] - kYouCollectionViewOffsetY);
+                                            [SYNDeviceManager.sharedInstance currentScreenHeightWithStatusBar]);
     
     self.channelThumbnailCollectionView = [[UICollectionView alloc] initWithFrame: collectionViewFrame
                                                              collectionViewLayout: self.channelsLandscapeLayout];
@@ -181,7 +181,12 @@
     self.channelThumbnailCollectionView.showsVerticalScrollIndicator = NO;
     self.channelThumbnailCollectionView.alwaysBounceVertical = YES;
     
+    UIEdgeInsets collectionViewInset = self.channelThumbnailCollectionView.contentInset;
+    collectionViewInset.top = IS_IPAD ? 140.0f : 110.0f;
+    self.channelThumbnailCollectionView.contentInset = collectionViewInset;
+    
     // Subscriptions Collection View
+    
     self.subscriptionsViewController = [[SYNSubscriptionsViewController alloc] initWithViewId: kProfileViewId];
     CGRect subColViewFrame = self.subscriptionsViewController.view.frame;
     subColViewFrame.origin.x = self.isIPhone ? 0.0f : collectionViewFrame.origin.x + collectionViewFrame.size.width + 10.0;
@@ -189,6 +194,8 @@
     subColViewFrame.size.height = collectionViewFrame.size.height;
     subColViewFrame.size.width = [SYNDeviceManager.sharedInstance currentScreenWidth] - subColViewFrame.origin.x - 10.0;
     [self.subscriptionsViewController setViewFrame: subColViewFrame];
+    
+    self.subscriptionsViewController.channelThumbnailCollectionView.contentInset = collectionViewInset;
     
     self.headerSubscriptionsView = [SYNYouHeaderView headerViewForWidth: 384];
     
@@ -200,16 +207,14 @@
         self.headerSubscriptionsView.frame = newFrame;
         [self.headerSubscriptionsView setFontSize: 12.0f];
         
-        //        [self.headerSubscriptionsView setTitle: NSLocalizedString(@"MY SUBSCRIPTIONS",nil)
-        //                                     andNumber: 0];
+        
         
         
         self.headerSubscriptionsView.userInteractionEnabled = NO;
     }
     else
     {
-        //        [self.headerSubscriptionsView setTitle: NSLocalizedString(@"MY SUBSCRIPTIONS", nil)
-        //                                     andNumber: 0];
+        
         
         [self.headerSubscriptionsView setBackgroundImage: ([SYNDeviceManager.sharedInstance isLandscape] ? [UIImage imageNamed: @"HeaderProfileSubscriptionsLandscape"] : [UIImage imageNamed: @"HeaderProfilePortraitBoth"])];
     }
@@ -240,6 +245,10 @@
     
     self.subscriptionsViewController.headerView = self.headerSubscriptionsView;
     
+    
+    [self.view addSubview: self.channelThumbnailCollectionView];
+    [self.view addSubview: self.subscriptionsViewController.view];
+    
     [self.view addSubview: self.headerChannelsView];
     [self.view addSubview: self.headerSubscriptionsView];
     [self.view addSubview: self.userProfileController.view];
@@ -257,8 +266,6 @@
     }
     
     [self.view addSubview: self.deletionCancelView];
-    [self.view addSubview: self.channelThumbnailCollectionView];
-    [self.view addSubview: self.subscriptionsViewController.view];
     
     if (self.isIPhone)
     {
@@ -885,9 +892,22 @@
      viewChannelDetails: channel];
 }
 
+#pragma mark - ScrollView Delegate
 
 - (void) scrollViewDidScroll: (UIScrollView *) scrollView
 {
+    
+    CGFloat currentContentOffsetY = scrollView.contentOffset.y;
+    
+    if (_mainCollectionViewLastOffsetY > currentContentOffsetY)
+        self.mainCollectionViewScrollingDirection = ScrollingDirectionDown;
+    else if (_mainCollectionViewLastOffsetY < currentContentOffsetY)
+        self.mainCollectionViewScrollingDirection = ScrollingDirectionUp;
+    
+    self.mainCollectionViewOffsetDeltaY += fabsf(_mainCollectionViewLastOffsetY - currentContentOffsetY);
+    
+    _mainCollectionViewLastOffsetY = currentContentOffsetY;
+    
     if (!self.isIPhone)
     {
         if (self.orientationDesicionmaker && scrollView != self.orientationDesicionmaker)
@@ -913,6 +933,64 @@
     }
 }
 
+-(void)setMainCollectionViewOffsetDeltaY:(CGFloat)mainCollectionViewOffsetDeltaY
+{
+    
+    _mainCollectionViewOffsetDeltaY = mainCollectionViewOffsetDeltaY;
+    
+    
+    if (_mainCollectionViewOffsetDeltaY > kNotableScrollThreshold + 12.0f && _mainCollectionViewOffsetDeltaY > 90.0f &&
+        !self.isAnimating &&
+        !self.isLoadingMoreContent)
+    {
+        
+        _mainCollectionViewOffsetDeltaY = 0.0f;
+        
+        dispatch_once(&onceToken, ^{
+            
+            
+            [UIView animateWithDuration:0.3f
+                                  delay:0.0f
+                                options:UIViewAnimationOptionBeginFromCurrentState animations:^{
+                                    
+                                    CGRect tabFrame;
+                                    UIEdgeInsets ei = self.channelThumbnailCollectionView.contentInset;
+                                    if(IS_IPAD)
+                                    {
+//                                        tabFrame = self.tabViewController.tabView.frame;
+//                                        tabFrame.origin.y = _mainCollectionViewScrollingDirection == ScrollingDirectionUp ? 0.0f : 90.0f;
+//                                        self.tabViewController.tabView.frame = tabFrame;
+                                    }
+                                    else
+                                    {
+                                        
+                                        
+                                        
+                                    }
+                                    
+                                    if(_mainCollectionViewScrollingDirection == ScrollingDirectionDown)
+                                    {
+                                        ei.top = (IS_IPAD ? 140.0f : 110.f) + (tabExpanded ? kCategorySecondRowHeight : 0.0f);
+                                    }
+                                    else
+                                    {
+                                        ei.top = 48.0f;
+                                    }
+                                    self.channelThumbnailCollectionView.contentInset = ei;
+                                    
+                                } completion:^(BOOL finished) {
+                                    
+                                    NSLog(@"Complete");
+                                    
+                                    
+                                }];
+            
+            [[NSNotificationCenter defaultCenter] postNotificationName:kNotableScrollEvent
+                                                                object:self
+                                                              userInfo:@{kNotableScrollDirection:@(_mainCollectionViewScrollingDirection)}];
+        });
+    }
+}
 
 - (void) resizeScrollViews
 {
