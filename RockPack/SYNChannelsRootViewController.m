@@ -1014,6 +1014,16 @@ referenceSizeForFooterInSection: (NSInteger) section
     }
 }
 
+
+// Bypass implementation for derived classes
+- (void) superArcMenuUpdateState: (UIGestureRecognizer *) recognizer
+                         forCell: (UICollectionViewCell *) cell
+{
+    [super arcMenuUpdateState: recognizer
+                      forCell: cell];
+}
+
+
 - (void) arcMenu: (SYNArcMenuView *) menu
          didSelectMenuName: (NSString *) menuName
          forCellAtIndex: (NSIndexPath *) cellIndexPath
@@ -1035,10 +1045,10 @@ referenceSizeForFooterInSection: (NSInteger) section
 }
 
 
-- (UIView *) arcMenuViewToShade
-{
-    return self.channelThumbnailCollectionView;
-}
+//- (UIView *) arcMenuViewToShade
+//{
+//    return self.channelThumbnailCollectionView;
+//}
 
 
 - (Channel *) channelInstanceForIndexPath: (NSIndexPath *) indexPath

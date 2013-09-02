@@ -708,7 +708,7 @@
     return NavigationButtonsAppearanceBlack;
 }
 
--(BOOL)alwaysDisplaysSearchBox
+- (BOOL) alwaysDisplaysSearchBox
 {
     return NO;
 }
@@ -876,7 +876,6 @@
 - (void) arcMenuUpdateState: (UIGestureRecognizer *) recognizer
                     forCell: (UICollectionViewCell *) cell
 {
-
     NSArray *menuItems;
     float menuArc, menuStartAngle;
     NSString *analyticsLabel;
@@ -953,7 +952,9 @@
                     menuArc: (float) menuArc
              menuStartAngle: (float) menuStartAngle
 {
-    CGPoint tapPoint = [recognizer locationInView: self.view];
+    UIView *referenceView = appDelegate.masterViewController.view;
+    
+    CGPoint tapPoint = [recognizer locationInView: referenceView];
     
     if (recognizer.state == UIGestureRecognizerStateBegan)
     {
@@ -961,7 +962,7 @@
                                                             highlightedImage: [UIImage imageNamed: @"ActionRingTouch"]
                                                                         name: kActionNone];
         
-        self.arcMenu = [[SYNArcMenuView alloc] initWithFrame: self.view.bounds
+        self.arcMenu = [[SYNArcMenuView alloc] initWithFrame: referenceView.bounds
                                                    startItem: mainMenuItem
                                                  optionMenus: menuItems
                                                cellIndexPath: cellIndexPath];
@@ -970,7 +971,7 @@
         self.arcMenu.menuWholeAngle = menuArc;
         self.arcMenu.rotateAngle = menuStartAngle;
         
-        CGFloat screenWidth = self.view.frame.size.width;
+        CGFloat screenWidth = referenceView.bounds.size.width;
         
         if (tapPoint.x < kRotateThresholdX)
         {
@@ -1005,8 +1006,7 @@
             self.arcMenu.rotateAngle += M_PI;
         }
         
-        
-        [appDelegate.viewStackManager addSubvievOnTopOfEverything:self.arcMenu];
+        [appDelegate.masterViewController.view addSubview: self.arcMenu];
         
         [self.arcMenu show: YES];
     }
@@ -1057,9 +1057,10 @@
     }
 }
 
+
 - (UIView *) arcMenuViewToShade
 {
-    return self.videoThumbnailCollectionView;
+    return appDelegate.masterViewController.view;
 }
 
 

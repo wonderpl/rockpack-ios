@@ -733,10 +733,12 @@ typedef void(^FeedDataErrorBlock)(void);
     
     if (componentIndex == kArcMenuInvalidComponentIndex)
     {
+        DebugLog(@"*** channelAtCoverOfFeedItem");
         channel = [self channelAtCoverOfFeedItem: feedItem];
     }
     else
     {
+        DebugLog(@"*** feedChannelsById");
         // Aggregate cell with multiple indices
         channel = [self.feedChannelsById objectForKey: feedItem.coverIndexArray[componentIndex]];
     }
@@ -817,10 +819,10 @@ typedef void(^FeedDataErrorBlock)(void);
 }
 
 
-- (UIView *) arcMenuViewToShade
-{
-    return self.feedCollectionView;
-}
+//- (UIView *) arcMenuViewToShade
+//{
+//    return self.feedCollectionView;
+//}
 
 
 - (UICollectionViewCell *) collectionView: (UICollectionView *) cv

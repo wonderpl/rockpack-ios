@@ -8,6 +8,7 @@
 
 #import "AppConstants.h"
 #import "SYNAggregateChannelCell.h"
+#import "SYNArcMenuView.h"
 #import "SYNTouchGestureRecognizer.h"
 #import "UIImage+Tint.h"
 
@@ -351,7 +352,7 @@
 {
     if (!self.buttonContainerView)
     {
-        return -1;
+        return kArcMenuInvalidComponentIndex;
     }
     
     return [self.buttonContainerView.subviews indexOfObject: view];
@@ -395,6 +396,7 @@
             // Set lowlight tint
             UIImage *lowlightImage = [glossImage tintedImageUsingColor: [UIColor colorWithWhite: 0.0
                                                                                           alpha: 0.3]];
+            
             self.lowlightImageView.image = lowlightImage;
             break;
         }

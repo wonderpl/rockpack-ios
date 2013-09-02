@@ -12,6 +12,7 @@
 //  Copyright (c) 2011 Levey & Other Contributors. All rights reserved.
 
 #import "SYNArcMenuView.h"
+#import "AppConstants.h"
 #import <QuartzCore/QuartzCore.h>
 
 static CGFloat const kSYNArcMenuDefaultNearRadius = 88.0f;
@@ -91,6 +92,7 @@ static CGPoint RotateAndScaleCGPointAroundCenter(CGPoint point, CGPoint center, 
         // assign startItem to "Add" Button.
         self.startButton = startItem;
         self.startButton.center = self.startPoint;
+        self.startButton.tag = kArcMenuStartButtonTag;
         [self addSubview: self.startButton];
     }
     
@@ -312,14 +314,16 @@ static CGPoint RotateAndScaleCGPointAroundCenter(CGPoint point, CGPoint center, 
 - (void) animateOpen: (UIView *) shadedView
 {
     // The user opened a menu, so dim the screen
-    UIView *shadeView = [[UIView alloc] initWithFrame: shadedView.superview.frame];
+    UIView *shadeView = [[UIView alloc] initWithFrame: shadedView.bounds];
     shadeView.tag = kShadeViewTag;
     shadeView.backgroundColor = [UIColor blackColor];
     shadeView.alpha = 0.0f;
     
-    [shadedView.superview insertSubview: shadeView
-                           aboveSubview: shadedView];
+    UIView *startButtonView = [shadedView viewWithTag: kArcMenuStartButtonTag];
     
+    [shadedView insertSubview: shadeView
+                 belowSubview: startButtonView.superview];
+
     [UIView animateWithDuration:  kShadeViewAnimationDuration
                      animations: ^{
                          // Fade in the view slightly
