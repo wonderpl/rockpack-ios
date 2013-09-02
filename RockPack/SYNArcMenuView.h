@@ -23,7 +23,7 @@ typedef enum : NSInteger {
 } kArcMenuButtonType;
 
 typedef enum : NSInteger {
-    kArcMenuInvalidComponentIndex = -1
+    kArcMenuInvalidComponentIndex = 999999
 } kArcMenuComponentIndex;
 
 @class SYNArcMenuView;

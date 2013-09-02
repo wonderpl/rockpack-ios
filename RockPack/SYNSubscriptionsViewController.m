@@ -235,9 +235,9 @@
     }
 }
 
-- (UIView *) arcMenuViewToShade
-{
-    return self.channelThumbnailCollectionView;
-}
+//- (UIView *) arcMenuViewToShade
+//{
+//    return self.channelThumbnailCollectionView;
+//}
 
 @end

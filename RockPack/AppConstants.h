@@ -272,6 +272,8 @@ typedef enum _NavigationButtonsAppearance {
 // Animations
 //
 
+#define kArcMenuStartButtonTag 456
+
 // Text cross-fade
 #define kTextCrossfadeDuration 0.3f
 

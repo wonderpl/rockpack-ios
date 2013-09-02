@@ -708,7 +708,7 @@
     return NavigationButtonsAppearanceBlack;
 }
 
--(BOOL)alwaysDisplaysSearchBox
+- (BOOL) alwaysDisplaysSearchBox
 {
     return NO;
 }
@@ -1060,7 +1060,7 @@
 
 - (UIView *) arcMenuViewToShade
 {
-    return self.videoThumbnailCollectionView;
+    return appDelegate.masterViewController.view;
 }
 
 

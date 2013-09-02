@@ -1045,10 +1045,10 @@ referenceSizeForFooterInSection: (NSInteger) section
 }
 
 
-- (UIView *) arcMenuViewToShade
-{
-    return self.channelThumbnailCollectionView;
-}
+//- (UIView *) arcMenuViewToShade
+//{
+//    return self.channelThumbnailCollectionView;
+//}
 
 
 - (Channel *) channelInstanceForIndexPath: (NSIndexPath *) indexPath
