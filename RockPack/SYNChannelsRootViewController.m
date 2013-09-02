@@ -424,7 +424,7 @@ static BOOL lock = NO;
                 if(IS_IPHONE)
                 {
                     CGRect tableFrame = self.iPhoneCategoryTableViewController.view.frame;
-                    tableFrame.origin.y = self.categorySelectButton.frame.origin.y + self.categorySelectButton.frame.size.height;
+                    tableFrame.origin.y = self.categorySelectButton.frame.origin.y + self.categorySelectButton.frame.size.height - 1.0f; // compensate for shadow
                     tableFrame.size.height = [[SYNDeviceManager sharedInstance] currentScreenHeightWithStatusBar] - tableFrame.origin.y;
                     self.iPhoneCategoryTableViewController.view.frame = tableFrame;
                 }

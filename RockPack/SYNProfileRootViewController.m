@@ -182,7 +182,7 @@
     self.channelThumbnailCollectionView.alwaysBounceVertical = YES;
     
     UIEdgeInsets collectionViewInset = self.channelThumbnailCollectionView.contentInset;
-    collectionViewInset.top = IS_IPAD ? 140.0f : 110.0f;
+    collectionViewInset.top = IS_IPAD ? 185.0f : 110.0f;
     self.channelThumbnailCollectionView.contentInset = collectionViewInset;
     
     // Subscriptions Collection View
@@ -195,14 +195,14 @@
     subColViewFrame.size.width = [SYNDeviceManager.sharedInstance currentScreenWidth] - subColViewFrame.origin.x - 10.0;
     [self.subscriptionsViewController setViewFrame: subColViewFrame];
     
-    self.subscriptionsViewController.channelThumbnailCollectionView.contentInset = collectionViewInset;
+    //self.subscriptionsViewController.channelThumbnailCollectionView.contentInset = collectionViewInset;
     
     self.headerSubscriptionsView = [SYNYouHeaderView headerViewForWidth: 384];
     
     if (self.isIPhone)
     {
         CGRect newFrame = self.headerSubscriptionsView.frame;
-        newFrame.origin.y = 59.0f;
+        newFrame.origin.y = 66.0f;
         newFrame.size.height = 44.0f;
         self.headerSubscriptionsView.frame = newFrame;
         [self.headerSubscriptionsView setFontSize: 12.0f];
@@ -358,6 +358,7 @@
                                                        action: @selector(endDeletionMode:)];
     self.tap.delegate = self;
     [self.channelThumbnailCollectionView addGestureRecognizer: self.tap];
+    
 }
 
 
@@ -719,6 +720,7 @@
     [subscriptionsLayout invalidateLayout];
     [channelsLayout invalidateLayout];
     
+    
     [self resizeScrollViews];
 }
 
@@ -945,7 +947,7 @@
     {
         
         _mainCollectionViewOffsetDeltaY = 0.0f;
-        
+
         dispatch_once(&onceToken, ^{
             
             
@@ -953,21 +955,42 @@
                                   delay:0.0f
                                 options:UIViewAnimationOptionBeginFromCurrentState animations:^{
                                     
-                                    CGRect tabFrame;
-                                    UIEdgeInsets ei = self.channelThumbnailCollectionView.contentInset;
+                                    CGRect hChFrame = self.headerChannelsView.frame;
+                                    CGRect hSubFrame = self.headerSubscriptionsView.frame;
+                                    
                                     if(IS_IPAD)
                                     {
-//                                        tabFrame = self.tabViewController.tabView.frame;
-//                                        tabFrame.origin.y = _mainCollectionViewScrollingDirection == ScrollingDirectionUp ? 0.0f : 90.0f;
-//                                        self.tabViewController.tabView.frame = tabFrame;
+                                        CGRect profPanelFrame = self.userProfileController.view.frame;
+                                        profPanelFrame.origin.y = _mainCollectionViewScrollingDirection == ScrollingDirectionUp ? 0.0f : 80.0f;
+                                        self.userProfileController.view.frame = profPanelFrame;
+                                        
+                                        hChFrame.origin.y = _mainCollectionViewScrollingDirection == ScrollingDirectionUp ? 85.0f : 165.0f;
+                                        hSubFrame.origin.y = _mainCollectionViewScrollingDirection == ScrollingDirectionUp ? 85.0f : 165.0f;
                                     }
                                     else
                                     {
+                                        hChFrame.origin.y = _mainCollectionViewScrollingDirection == ScrollingDirectionUp ? -43.0f : 66.0f;
+                                        hSubFrame.origin.y = _mainCollectionViewScrollingDirection == ScrollingDirectionUp ? -43.0f : 66.0f;
                                         
                                         
+                                        CGRect tChFrame = self.channelsTabButton.frame;
+                                        CGRect tSubFrame = self.subscriptionsTabButton.frame;
                                         
+                                        tChFrame.origin.y = _mainCollectionViewScrollingDirection == ScrollingDirectionUp ? -43.0f : 66.0f;
+                                        tSubFrame.origin.y = _mainCollectionViewScrollingDirection == ScrollingDirectionUp ? -43.0f : 66.0f;
+                                        
+                                        self.subscriptionsTabButton.frame = tSubFrame;
+                                        self.channelsTabButton.frame = tChFrame;
                                     }
                                     
+                                    
+                                    
+                                    self.headerChannelsView.frame = hChFrame;
+                                    self.headerSubscriptionsView.frame = hSubFrame;
+                                    
+                                    
+                                    
+                                    UIEdgeInsets ei = self.channelThumbnailCollectionView.contentInset;
                                     if(_mainCollectionViewScrollingDirection == ScrollingDirectionDown)
                                     {
                                         ei.top = (IS_IPAD ? 140.0f : 110.f) + (tabExpanded ? kCategorySecondRowHeight : 0.0f);
@@ -976,11 +999,10 @@
                                     {
                                         ei.top = 48.0f;
                                     }
-                                    self.channelThumbnailCollectionView.contentInset = ei;
+                                    //self.channelThumbnailCollectionView.contentInset = ei;
                                     
                                 } completion:^(BOOL finished) {
                                     
-                                    NSLog(@"Complete");
                                     
                                     
                                 }];
