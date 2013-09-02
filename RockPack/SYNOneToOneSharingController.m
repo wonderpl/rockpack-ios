@@ -19,6 +19,22 @@
 
 @property (nonatomic, strong) IBOutlet UITextView* messageTextView;
 @property (nonatomic, strong) IBOutlet UITextField* searchTextField;
+@property (nonatomic, strong) IBOutlet UICollectionView* friendsCollectionView;
+
+@property (nonatomic, strong) IBOutlet UIButton* facebookButton;
+@property (nonatomic, strong) IBOutlet UIButton* twitterButton;
+@property (nonatomic, strong) IBOutlet UIButton* emailButton;
+
+
+// second View
+
+@property (nonatomic, strong) IBOutlet UILabel* titleLabel;
+@property (nonatomic, strong) IBOutlet UIButton* authorizeFacebookButton;
+@property (nonatomic, strong) IBOutlet UIButton* authorizeAddressBookButton;
+
+
+
+@property (nonatomic, strong) IBOutlet UIView* authorizationView;
 
 @end
 
@@ -34,34 +50,58 @@
     
     self.searchTextField.font = [UIFont rockpackFontOfSize:self.searchTextField.font.pointSize];
     
-    
+    self.titleLabel.font = [UIFont boldRockpackFontOfSize:self.titleLabel.font.pointSize];
     
     switch (ABAddressBookGetAuthorizationStatus())
     {
         case kABAuthorizationStatusAuthorized:
-            
+            NSLog(@"Address Book Authorized");
+            [self getDataFromAddressBook];
             break;
             
         case kABAuthorizationStatusDenied:
-            
+            NSLog(@"Address Book Denied");
             break;
             
         case kABAuthorizationStatusNotDetermined:
-            
+            NSLog(@"Address Book Not Determined");
             break;
             
         case kABAuthorizationStatusRestricted:
-            
+            NSLog(@"Address Book Restricted");
             break;
     }
     
-    
 }
-
+-(void)requestAddressBookAuthorization
+{
+    CFErrorRef error = NULL;
+    ABAddressBookRef addressBookRef = ABAddressBookCreateWithOptions(NULL, &error);
+    
+    if(addressBookRef == NULL)
+        return;
+    
+    ABAddressBookRequestAccessWithCompletion(addressBookRef, ^(bool granted, CFErrorRef error) {
+        
+        if (granted){
+            NSLog(@"Access was granted");
+            [self getDataFromAddressBook];
+        } else {
+            
+            NSLog(@"Access was not granted");
+            
+        }
+        
+        CFRelease(addressBookRef);
+    });
+}
 -(void)getDataFromAddressBook
 {
     CFErrorRef error = NULL;
     ABAddressBookRef addressBookRef = ABAddressBookCreateWithOptions(NULL, &error);
+    
+    if(addressBookRef == NULL)
+        return;
     
     NSArray *arrayOfAllPeople = (__bridge_transfer NSArray *)ABAddressBookCopyArrayOfAllPeople(addressBookRef);
     
@@ -88,6 +128,32 @@
         
         
     }
+    
+    CFRelease(addressBookRef);
+}
+
+#pragma mark - Button Delegates
+
+-(IBAction)facebookButtonPressed:(id)sender
+{
+    
+}
+-(IBAction)twitterButtonPressed:(id)sender
+{
+    
+}
+-(IBAction)emailButtonPressed:(id)sender
+{
+    
+}
+
+-(IBAction)authorizeFacebookButtonPressed:(id)sender
+{
+    
+}
+-(IBAction)authorizeAddressBookButtonPressed:(id)sender
+{
+    [self requestAddressBookAuthorization];
 }
 
 @end
