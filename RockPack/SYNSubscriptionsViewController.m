@@ -189,8 +189,9 @@
 - (void) arcMenuUpdateState: (UIGestureRecognizer *) recognizer
                     forCell: (UICollectionViewCell *) cell
 {
-    [super arcMenuUpdateState: recognizer
-                      forCell: cell];
+    [self superArcMenuUpdateState: recognizer
+                           forCell: cell];
+    
     
     if (recognizer.state == UIGestureRecognizerStateBegan)
     {

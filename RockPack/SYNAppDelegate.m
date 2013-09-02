@@ -72,7 +72,7 @@
     [Appirater setUsesUntilPrompt: 3];
     [Appirater setSignificantEventsUntilPrompt: 1];
     [Appirater setTimeBeforeReminding: 20];
-    //    [Appirater setDebug: YES];
+//    [Appirater setDebug: YES];
 #endif
     
     // Enable the Spark Inspector
@@ -83,10 +83,7 @@
 #if USEUDID
     //    [TestFlight setDeviceIdentifier: [[UIDevice currentDevice] uniqueIdentifier]];
 #endif
-    
-
-//    
-    //Google Adwords conversion tracking. TODO: check parameters with Guy!!
+    // Google Adwords conversion tracking. TODO: check parameters with Guy!!
     [GoogleConversionPing pingWithConversionId: @"983664386"
                                          label: @"Km3nCP6G-wQQgo6G1QM"
                                          value: @"0"
