@@ -8,7 +8,8 @@
 
 #import "MKNetworkEngine.h"
 #import "SYNAbstractNetworkEngine.h"
-
+#import "AbstractCommon.h"
+#import "Friend.h"
 #import <FacebookSDK/FacebookSDK.h>
 
 typedef void (^SYNOAuth2CompletionBlock)(NSError *error);
@@ -226,6 +227,11 @@ typedef void (^SYNOAuth2RefreshCompletionBlock)(NSError *error);
                         objectId: (NSString *) objectId
                completionHandler: (MKNKUserSuccessBlock) completionBlock
                     errorHandler: (MKNKUserErrorBlock) errorBlock;
+
+-(void) emailShareObject:(AbstractCommon*)objectToShare
+              withFriend:(Friend*)friendToShare
+       completionHandler: (MKNKUserSuccessBlock) completionBlock
+            errorHandler: (MKNKUserErrorBlock) errorBlock;
 
 - (MKNetworkOperation*) updateChannel: (NSString *) resourceURL
                       forVideosLength: (NSInteger) length

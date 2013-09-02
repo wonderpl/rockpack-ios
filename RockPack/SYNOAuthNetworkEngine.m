@@ -1500,7 +1500,57 @@
     [self enqueueSignedOperation: networkOperation];
 }
 
-
+-(void) emailShareObject:(AbstractCommon*)objectToShare
+              withFriend:(Friend*)friendToShare
+       completionHandler: (MKNKUserSuccessBlock) completionBlock
+            errorHandler: (MKNKUserErrorBlock) errorBlock
+{
+    if(!objectToShare || !friendToShare)
+    {
+        errorBlock(@{@"params_error":[NSString stringWithFormat:@"params sent: %@ %@", objectToShare, friendToShare]});
+        return;
+    }
+    
+    if([friendToShare.externalSystem isEqualToString:@"email"])
+    {
+        errorBlock(@{@"params_error":[NSString stringWithFormat:@"%@ does has account of type %@", friendToShare, friendToShare.externalSystem]});
+        return;
+    }
+        
+    NSString *apiString = [NSString stringWithFormat: @"%@?locale=%@", kAPIShareEmail, self.localeString];
+    
+    NSString* objectToShareType;
+    if([objectToShare isKindOfClass:[Channel class]])
+        objectToShareType = @"channel";
+    else if([objectToShare isKindOfClass:[VideoInstance class]])
+        objectToShareType = @"video_instance";
+    else
+        return; // forward compatible, bail for other types that currently defined from the back-end
+             
+    NSDictionary* params = @{
+                             @"object_type": objectToShareType,
+                             @"object_id": objectToShare.uniqueId,
+                             @"email": friendToShare.email,
+                             @"external_system": friendToShare.externalSystem,
+                             @"external_uid": friendToShare.externalUID,
+                             @"name": friendToShare.displayName
+                             };
+    
+    SYNNetworkOperationJsonObject *networkOperation = (SYNNetworkOperationJsonObject*)[self operationWithPath: apiString
+                                                                                                       params: params
+                                                                                                   httpMethod: @"POST"
+                                                                                                          ssl: YES];
+    [networkOperation addHeaders: @{@"Content-Type" : @"application/json"}];
+    networkOperation.postDataEncoding = MKNKPostDataEncodingTypeJSON;
+    
+    [self addCommonHandlerToNetworkOperation: networkOperation
+                           completionHandler: completionBlock
+                                errorHandler: errorBlock];
+    
+    [self enqueueSignedOperation: networkOperation];
+    
+    
+}
 - (void) reportConcernForUserId: (NSString *) userId
                      objectType: (NSString *) objectType
                        objectId: (NSString *) objectId

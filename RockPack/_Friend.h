@@ -5,6 +5,7 @@
 #import "ChannelOwner.h"
 
 extern const struct FriendAttributes {
+	__unsafe_unretained NSString *email;
 	__unsafe_unretained NSString *externalSystem;
 	__unsafe_unretained NSString *externalUID;
 	__unsafe_unretained NSString *hasIOSDevice;
@@ -23,6 +24,7 @@ extern const struct FriendFetchedProperties {
 
 
 
+
 @interface FriendID : NSManagedObjectID {}
 @end
 
@@ -31,6 +33,16 @@ extern const struct FriendFetchedProperties {
 + (NSString*)entityName;
 + (NSEntityDescription*)entityInManagedObjectContext:(NSManagedObjectContext*)moc_;
 - (FriendID*)objectID;
+
+
+
+
+
+@property (nonatomic, strong) NSString* email;
+
+
+
+//- (BOOL)validateEmail:(id*)value_ error:(NSError**)error_;
 
 
 
@@ -88,6 +100,12 @@ extern const struct FriendFetchedProperties {
 @end
 
 @interface _Friend (CoreDataGeneratedPrimitiveAccessors)
+
+
+- (NSString*)primitiveEmail;
+- (void)setPrimitiveEmail:(NSString*)value;
+
+
 
 
 - (NSString*)primitiveExternalSystem;
