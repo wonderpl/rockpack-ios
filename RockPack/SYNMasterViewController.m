@@ -32,6 +32,7 @@
 #import "SYNVideoViewerViewController.h"
 #import "UIFont+SYNFont.h"
 #import "VideoInstance.h"
+#import "AMBlurView.h"
 #import <QuartzCore/QuartzCore.h>
 
 #define kMovableViewOffX -58
@@ -189,7 +190,7 @@ typedef void(^AnimationCompletionBlock)(BOOL finished);
     [self.view insertSubview:self.mainNavigationController.view atIndex:0];
     
     self.existingChannelsController = [[SYNExistingChannelsViewController alloc] initWithViewId:kExistingChannelsViewId];
-
+    
     // == Back Button == //
     
     self.backButtonControl = [SYNBackButtonControl backButton];
