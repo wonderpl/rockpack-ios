@@ -185,6 +185,19 @@
     return  indexPath;
 }
 
+- (Channel *) channelInstanceForIndexPath: (NSIndexPath *) indexPath
+                        andComponentIndex: (NSInteger) componentIndex
+{
+    if (componentIndex != kArcMenuInvalidComponentIndex)
+    {
+        AssertOrLog(@"Unexpectedly valid componentIndex");
+    }
+    
+    Channel *channel = self.user.subscriptions[indexPath.item];
+    
+    return channel;
+}
+
 
 - (void) arcMenuUpdateState: (UIGestureRecognizer *) recognizer
                     forCell: (UICollectionViewCell *) cell
@@ -211,11 +224,7 @@
          forCellAtIndex: (NSIndexPath *) cellIndexPath
          andComponentIndex: (NSInteger) componentIndex
 {
-    if ([menuName isEqualToString: kActionShareVideo])
-    {
-        [self shareVideoAtIndexPath: cellIndexPath];
-    }
-    else if ([menuName isEqualToString: kActionShareChannel])
+    if ([menuName isEqualToString: kActionShareChannel])
     {
         [self shareChannelAtIndexPath: cellIndexPath
                     andComponentIndex: componentIndex];
