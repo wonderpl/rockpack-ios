@@ -13,6 +13,8 @@
 #import "SYNAppDelegate.h"
 #import "SYNFriendThumbnailCell.h"
 #import "UIImageView+WebCache.h"
+#import "SYNOAuthNetworkEngine.h"
+#import "SYNFacebookManager.h"
 #import <objc/runtime.h>
 
 #define kOneToOneSharingViewId @"kOneToOneSharingViewId"
@@ -29,6 +31,8 @@ static char* friend_share_key = "SYNFriendThumbnailCell to Friend Share";
 @property (nonatomic, strong) IBOutlet UIButton* twitterButton;
 @property (nonatomic, strong) IBOutlet UIButton* emailButton;
 
+@property (nonatomic, strong) IBOutlet UIActivityIndicatorView* loader;
+
 
 // second View
 
@@ -36,7 +40,8 @@ static char* friend_share_key = "SYNFriendThumbnailCell to Friend Share";
 @property (nonatomic, strong) IBOutlet UIButton* authorizeFacebookButton;
 @property (nonatomic, strong) IBOutlet UIButton* authorizeAddressBookButton;
 
-@property (nonatomic, strong) NSArray* friendsToShare;
+@property (nonatomic, strong) NSArray* friends;
+@property (nonatomic, strong) NSArray* friendsToDisplay;
 
 @property (nonatomic, strong) IBOutlet UIView* authorizationView;
 
@@ -46,14 +51,18 @@ static char* friend_share_key = "SYNFriendThumbnailCell to Friend Share";
 
 @implementation SYNOneToOneSharingController
 
-@synthesize friendsToShare;
+@synthesize friends;
+@synthesize friendsToDisplay;
 @synthesize currentSearchTerm;
 
 - (void)viewDidLoad
 {
     [super viewDidLoad];
     
-    friendsToShare = [NSArray array];
+    [self.loader hidesWhenStopped];
+    
+    friends = [NSArray array];
+    friendsToDisplay = [NSArray array];
     
     currentSearchTerm = [[NSMutableString alloc] init];
     
@@ -63,27 +72,59 @@ static char* friend_share_key = "SYNFriendThumbnailCell to Friend Share";
     
     self.titleLabel.font = [UIFont boldRockpackFontOfSize:self.titleLabel.font.pointSize];
     
-    switch (ABAddressBookGetAuthorizationStatus())
-    {
-        case kABAuthorizationStatusAuthorized:
-            NSLog(@"Address Book Authorized");
-            [self getDataFromAddressBook];
-            break;
-            
-        case kABAuthorizationStatusDenied:
-            NSLog(@"Address Book Denied");
-            break;
-            
-        case kABAuthorizationStatusNotDetermined:
-            NSLog(@"Address Book Not Determined");
-            break;
-            
-        case kABAuthorizationStatusRestricted:
-            NSLog(@"Address Book Restricted");
-            break;
-    }
+    
+    
+//    switch (aBookAuthStatus)
+//    {
+//        case kABAuthorizationStatusAuthorized:
+//            NSLog(@"Address Book Authorized");
+//            [self getDataFromAddressBook];
+//            break;
+//            
+//        case kABAuthorizationStatusDenied:
+//            NSLog(@"Address Book Denied");
+//            break;
+//            
+//        case kABAuthorizationStatusNotDetermined:
+//            NSLog(@"Address Book Not Determined");
+//            break;
+//            
+//        case kABAuthorizationStatusRestricted:
+//            NSLog(@"Address Book Restricted");
+//            break;
+//    }
     
 }
+-(void)viewWillAppear:(BOOL)animated
+{
+    // Basic recognition
+    
+    self.loader.hidden = YES;
+    
+    BOOL aBookAuthAuthorized = ABAddressBookGetAuthorizationStatus() == kABAuthorizationStatusAuthorized;
+    BOOL hasFacebookSession = [[SYNFacebookManager sharedFBManager] hasActiveSession];
+    if(!aBookAuthAuthorized  && !hasFacebookSession)
+    {
+        // put log in screen
+        CGRect aViewRect = self.authorizationView.frame;
+        aViewRect.origin.y = 50.0f;
+        self.authorizationView.frame = aViewRect;
+        [self.view addSubview:self.authorizationView];
+        return;
+    }
+    
+    if(hasFacebookSession)
+    {
+        [self fetchFacebookFriends];
+    }
+    
+    if(aBookAuthAuthorized)
+    {
+        NSArray* addressBookFriends = [self fetchAddressBookFriends];
+    }
+}
+
+
 -(void)requestAddressBookAuthorization
 {
     CFErrorRef error = NULL;
@@ -96,7 +137,7 @@ static char* friend_share_key = "SYNFriendThumbnailCell to Friend Share";
         
         if (granted){
             NSLog(@"Access was granted");
-            [self getDataFromAddressBook];
+            [self fetchAddressBookFriends];
         } else {
             
             NSLog(@"Access was not granted");
@@ -106,13 +147,65 @@ static char* friend_share_key = "SYNFriendThumbnailCell to Friend Share";
         CFRelease(addressBookRef);
     });
 }
--(void)getDataFromAddressBook
+
+#pragma mark - Data Retrieval
+
+-(void)fetchFacebookFriends
+{
+    
+    
+    
+    __weak SYNOneToOneSharingController* weakSelf = self;
+    SYNAppDelegate* appDelegate = (SYNAppDelegate*)[[UIApplication sharedApplication] delegate];
+    
+    [appDelegate.oAuthNetworkEngine friendsForUser:appDelegate.currentUser completionHandler:^(id dictionary) {
+        
+ 
+        
+        NSDictionary* usersDictionary = dictionary[@"users"];
+        if(!usersDictionary)
+            return;
+        
+        NSArray* itemsDictionary = usersDictionary[@"items"];
+        if(!itemsDictionary)
+            return;
+        
+        NSInteger friendsCount = itemsDictionary.count;
+        
+        NSMutableArray* iOSFriendsMutableArray = [NSMutableArray arrayWithCapacity:friendsCount];
+        
+        for (NSDictionary* itemDictionary in itemsDictionary)
+        {
+            Friend* friend = [Friend instanceFromDictionary:itemDictionary
+                                  usingManagedObjectContext:appDelegate.searchManagedObjectContext];
+            
+            if(!friend || !friend.hasIOSDevice) // filter for users with iOS devices only
+                return;
+            
+            [iOSFriendsMutableArray addObject:friend];
+            
+            
+            
+            
+        }
+        
+        
+        weakSelf.friends = [NSArray arrayWithArray:iOSFriendsMutableArray];
+        
+        
+        
+    } errorHandler:^(id dictionary) {
+        
+    }];
+}
+
+-(NSArray*)fetchAddressBookFriends
 {
     CFErrorRef error = NULL;
     ABAddressBookRef addressBookRef = ABAddressBookCreateWithOptions(NULL, &error);
     
     if(addressBookRef == NULL)
-        return;
+        return [NSArray array];
     
     NSArray *arrayOfAllPeople = (__bridge_transfer NSArray *)ABAddressBookCopyArrayOfAllPeople(addressBookRef);
     
@@ -148,9 +241,11 @@ static char* friend_share_key = "SYNFriendThumbnailCell to Friend Share";
         [friendsArrayMut addObject:contactFriend];
     }
     
-    self.friendsToShare = [NSArray arrayWithArray:friendsToShare];
+    
     
     CFRelease(addressBookRef);
+    
+    return [NSArray arrayWithArray:friendsArrayMut];
 }
 
 #pragma mark - UICollectionView Delegate/Data Source
@@ -162,14 +257,14 @@ static char* friend_share_key = "SYNFriendThumbnailCell to Friend Share";
 
 - (NSInteger) collectionView: (UICollectionView *) view numberOfItemsInSection: (NSInteger) section
 {
-    return friendsToShare.count;
+    return friendsToDisplay.count;
 }
 
 
 - (UICollectionViewCell *) collectionView: (UICollectionView *) collectionView
                    cellForItemAtIndexPath: (NSIndexPath *) indexPath
 {
-    Friend *friend = self.friendsToShare[indexPath.row];
+    Friend *friend = self.friendsToDisplay[indexPath.row];
     
     SYNFriendThumbnailCell *userThumbnailCell = [collectionView dequeueReusableCellWithReuseIdentifier: @"SYNFriendThumbnailCell"
                                                                                           forIndexPath: indexPath];
