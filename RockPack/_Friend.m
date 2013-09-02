@@ -4,6 +4,7 @@
 #import "_Friend.h"
 
 const struct FriendAttributes FriendAttributes = {
+	.email = @"email",
 	.externalSystem = @"externalSystem",
 	.externalUID = @"externalUID",
 	.hasIOSDevice = @"hasIOSDevice",
@@ -50,6 +51,13 @@ const struct FriendFetchedProperties FriendFetchedProperties = {
 
 	return keyPaths;
 }
+
+
+
+
+@dynamic email;
+
+
 
 
 

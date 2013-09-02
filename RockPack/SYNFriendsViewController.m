@@ -21,7 +21,7 @@
 #import "SYNSideNavigatorViewController.h"
 #import <objc/runtime.h>
 
-static char* association_key = "SYNFriendThumbnailCell to Friend";
+static char* friend_association_key = "SYNFriendThumbnailCell to Friend";
 
 @interface SYNFriendsViewController () <UIScrollViewDelegate>
 
@@ -297,7 +297,7 @@ static char* association_key = "SYNFriendThumbnailCell to Friend";
 
 }
 
-#pragma mark - UICollectionView DataSource
+#pragma mark - UICollectionView Delegate/Data Source
 
 - (NSInteger) numberOfSectionsInCollectionView: (UICollectionView *) collectionView
 {
@@ -332,17 +332,16 @@ static char* association_key = "SYNFriendThumbnailCell to Friend";
     
     
     
-    objc_setAssociatedObject(userThumbnailCell, association_key, friend, OBJC_ASSOCIATION_ASSIGN);
+    objc_setAssociatedObject(userThumbnailCell, friend_association_key, friend, OBJC_ASSOCIATION_ASSIGN);
     
     return userThumbnailCell;
 }
-
-#pragma mark - UICollectionView DataSource
-
 -(void)scrollViewDidScroll:(UIScrollView *)scrollView
 {
     [self.searchField resignFirstResponder];
 }
+
+
 
 #pragma mark - UITextViewDelegate
 
@@ -430,7 +429,7 @@ static char* association_key = "SYNFriendThumbnailCell to Friend";
     
     cellClicked.selected = YES;
     
-    self.currentlySelectedFriend = objc_getAssociatedObject(cellClicked, association_key);
+    self.currentlySelectedFriend = objc_getAssociatedObject(cellClicked, friend_association_key);
     
     if(!self.currentlySelectedFriend.isOnRockpack) // facebook friend, invite to rockpack
     {

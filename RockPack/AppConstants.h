@@ -148,6 +148,7 @@ typedef enum _FeedItemResourceType {
 
 // Share link
 #define kAPIShareLink               @"/ws/share/link/"                          /* POST */
+#define kAPIShareEmail              @"/ws/share/email/"                          /* POST */
 
 // Report concerns
 
