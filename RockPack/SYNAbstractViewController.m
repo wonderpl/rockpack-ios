@@ -852,6 +852,13 @@
     return  nil;
 }
 
+- (VideoInstance *) videoInstanceForIndexPath: (NSIndexPath *) indexPath
+                            andComponentIndex: (NSInteger) componentIndex
+{
+    AssertOrLog(@"Shouldn't be calling abstract function");
+    return  nil;
+}
+
 
 - (NSIndexPath *) indexPathForVideoCell: (UICollectionViewCell *) cell
 {
