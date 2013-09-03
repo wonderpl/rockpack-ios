@@ -245,7 +245,7 @@
 // This is used to lowlight the gloss image on touch
 - (void) showGlossLowlight: (SYNTouchGestureRecognizer *) recognizer
 {
-    UIImage *glossImage = [UIImage imageNamed: @"GlossFeedVideo.png"];
+    UIImage *glossImage = [UIImage imageNamed: @"GlossFeedVideo"];
     
     switch (recognizer.state)
     {

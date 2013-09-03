@@ -43,7 +43,7 @@
     
     // Tap for showing video
     self.tap = [[UITapGestureRecognizer alloc] initWithTarget: self
-                                                       action: @selector(showVideo:)];
+                                                       action: @selector(showChannel:)];
     self.tap.delegate = self;
     [self addGestureRecognizer: self.tap];
     
@@ -129,7 +129,7 @@
 }
 
 
-- (void) showVideo: (UITapGestureRecognizer *) recognizer
+- (void) showChannel: (UITapGestureRecognizer *) recognizer
 {
     // Just need to reference any button in the cell (as there is no longer an actual video button)
     [self.viewControllerDelegate channelTapped: self];

@@ -8,6 +8,7 @@
 
 #import "AppConstants.h"
 #import "SYNAggregateChannelCell.h"
+#import "SYNArcMenuView.h"
 #import "SYNTouchGestureRecognizer.h"
 #import "UIImage+Tint.h"
 
@@ -51,30 +52,6 @@
     
     self.touch.delegate = self;
     [self.lowlightImageView addGestureRecognizer: self.touch];
-}
-
-
-- (void) setCoverImageWithString: (NSString *) imageString
-{
-    if (!imageString)
-    {
-        return;
-    }
-    
-    UIImageView *imageView;
-    
-    for (imageView in self.imageContainer.subviews)
-    {
-        [imageView removeFromSuperview];
-    }
-    
-    imageView = [[UIImageView alloc] initWithFrame: self.imageContainer.frame];
-    
-    [self.imageContainer addSubview: imageView];
-    
-    [imageView setImageWithURL: [NSURL URLWithString: imageString]
-              placeholderImage: [UIImage imageNamed: @"PlaceholderChannelSmall.png"]
-                       options: SDWebImageRetryFailed];
 }
 
 
@@ -288,9 +265,7 @@
             expectedLabelSize = [channelTitle sizeWithFont: label.font
                                          constrainedToSize: CGSizeMake(containerRect.size.width, 500.0)
                                              lineBreakMode: label.lineBreakMode];
-            
-            
-            
+
             label.frame = CGRectMake(containerRect.origin.x + 6.0, (containerRect.origin.y + containerRect.size.height) - (expectedLabelSize.height), expectedLabelSize.width, expectedLabelSize.height);
             label.text = channelTitle;
             
@@ -325,7 +300,6 @@
             buttonLongPress.delegate = self;
             [simulatedButtonView addGestureRecognizer: buttonLongPress];
 #endif
-            
             // Tap for showing video
             UITapGestureRecognizer *buttonTap = [[UITapGestureRecognizer alloc] initWithTarget: self
                                                                                         action: @selector(showChannel:)];
@@ -351,7 +325,7 @@
 {
     if (!self.buttonContainerView)
     {
-        return -1;
+        return kArcMenuInvalidComponentIndex;
     }
     
     return [self.buttonContainerView.subviews indexOfObject: view];
@@ -386,7 +360,16 @@
 // This is used to lowlight the gloss image on touch
 - (void) showGlossLowlight: (SYNTouchGestureRecognizer *) recognizer
 {
+    UIImageView *simulatedButton = self.lowlightImageView;
     UIImage *glossImage = [UIImage imageNamed: @"channelFeedCover"];
+    
+    // Special-case container views
+    if (self.buttonContainerView)
+    {
+        DebugLog (@"Multiple channels");
+        simulatedButton = (UIImageView *) recognizer.view;
+        glossImage = [UIImage imageNamed: @"channelFeedCoverFourth"];
+    }
     
     switch (recognizer.state)
     {
@@ -395,14 +378,15 @@
             // Set lowlight tint
             UIImage *lowlightImage = [glossImage tintedImageUsingColor: [UIColor colorWithWhite: 0.0
                                                                                           alpha: 0.3]];
-            self.lowlightImageView.image = lowlightImage;
+            
+            simulatedButton.image = lowlightImage;
             break;
         }
             
         case UIGestureRecognizerStateEnded:
         case UIGestureRecognizerStateCancelled:
         {
-            self.lowlightImageView.image = glossImage;
+            simulatedButton.image = glossImage;
         }
         default:
             break;

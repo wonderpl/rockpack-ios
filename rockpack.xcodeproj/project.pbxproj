@@ -2984,13 +2984,13 @@
 		010DEFDA1629BDC40080F26B /* rockpack */ = {
 			isa = PBXGroup;
 			children = (
-				0177002417C37AB4006DE415 /* Gesture Recognisers */,
 				019824E21629CAC000216900 /* App Delegate */,
 				019825EE162C948000216900 /* Categories */,
 				012632CC162DF7B30009FF9C /* Collection Assets */,
 				01982525162A02DD00216900 /* Constants */,
 				0199F127166F94C400E479C6 /* Controls */,
 				01E427D01664C701009B941F /* Data Model */,
+				0177002417C37AB4006DE415 /* Gesture Recognisers */,
 				019824E41629CAF500216900 /* Helpers */,
 				01677DDA1655491100B1B1D8 /* Networking */,
 				010DEFDB1629BDC40080F26B /* Supporting Files */,
@@ -3572,8 +3572,6 @@
 		019824E11629CAB600216900 /* View Controllers */ = {
 			isa = PBXGroup;
 			children = (
-				BE3574E517CE07860083CBB1 /* One to One Sharing */,
-				BE7D02F1178C1D13008053DC /* Users */,
 				01982563162ADEAD00216900 /* Abstract */,
 				01B7F75B164FB7A7009C5CCD /* Channels */,
 				BEF9E5A516DBCDEF00286113 /* Components */,
@@ -3583,10 +3581,12 @@
 				38015B4F174CCE1A005D3F18 /* Genres */,
 				BE270B7B16EDE0A500CDDA6D /* Login */,
 				BE0815C216D5386B00ADB1DC /* Master */,
+				BE3574E517CE07860083CBB1 /* One to One Sharing */,
 				01982560162ADE3300216900 /* Profile */,
 				BE7D3496171412EC0085AB81 /* Side Navigator */,
 				BE08158F16D3C46800ADB1DC /* Search */,
 				BE0AAD2616E6521300DA958E /* Search Box */,
+				BE7D02F1178C1D13008053DC /* Users */,
 				01F8E77B16B039E6000D44B9 /* Video viewer */,
 			);
 			name = "View Controllers";
