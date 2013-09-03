@@ -1404,7 +1404,7 @@ typedef void(^FeedDataErrorBlock)(void);
                                               
                                               if (videoInstance.starrers.count == 0)
                                               {
-                                                  NSLog(@"No Starrers");
+                                                  DebugLog(@"No Starrers");
                                               }
                                               else
                                               {
@@ -1413,11 +1413,11 @@ typedef void(^FeedDataErrorBlock)(void);
                                                       if ([co.uniqueId
                                                            isEqualToString: appDelegate.currentUser.uniqueId])
                                                       {
-                                                          NSLog(@"Starrer: User*");
+                                                          DebugLog(@"Starrer: User*");
                                                       }
                                                       else
                                                       {
-                                                          NSLog(@"Starrer: %@", co.displayName);
+                                                          DebugLog(@"Starrer: %@", co.displayName);
                                                       }
                                                   }
                                               }

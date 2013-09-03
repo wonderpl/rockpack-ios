@@ -217,7 +217,6 @@
             }
         }
         
-        NSLog(@"============");
     }
     
     self.likeLabel.attributedText = attributedCompleteString;

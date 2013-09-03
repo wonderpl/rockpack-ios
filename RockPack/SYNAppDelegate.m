@@ -215,7 +215,7 @@
         
         if (userInfo != nil)
         {
-            NSLog(@"Launched from push notification: %@", userInfo);
+            DebugLog(@"Launched from push notification: %@", userInfo);
             
             [self handleRemoteNotification: userInfo];
         }
@@ -1174,7 +1174,7 @@
 - (void) application: (UIApplication *) application
          didFailToRegisterForRemoteNotificationsWithError: (NSError *) error
 {
-    NSLog(@"Failed to get token, error: %@", error);
+    DebugLog(@"Failed to get token, error: %@", error);
     self.apnsToken = nil;
 }
 
@@ -1226,7 +1226,7 @@
 - (void) application: (UIApplication*) application
          didReceiveRemoteNotification: (NSDictionary*) userInfo
 {
-	NSLog(@"Received notification: %@", userInfo);
+	DebugLog(@"Received notification: %@", userInfo);
     
     UIApplicationState state = [application applicationState];
     

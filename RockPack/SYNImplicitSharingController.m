@@ -143,7 +143,7 @@
                                                   
                                                   
                                                   ExternalAccount* facebookAccount = wAppDelegate.currentUser.facebookAccount;
-                                                  NSLog(@"%@", facebookAccount);
+                                                  
                                                 if(self.completionBlock)
                                                     self.completionBlock(YES);
                                                                                                   

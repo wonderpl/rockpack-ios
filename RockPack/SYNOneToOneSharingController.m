@@ -100,8 +100,6 @@ static char* friend_share_key = "SYNFriendThumbnailCell to Friend Share";
     
     self.titleLabel.font = [UIFont boldRockpackFontOfSize:self.titleLabel.font.pointSize];
     
-    
-    
 
 }
 
@@ -146,6 +144,7 @@ static char* friend_share_key = "SYNFriendThumbnailCell to Friend Share";
         {
             // load friends asynchronously and add them to the friends list when done
             [self fetchFriends];
+            
             [self presentActivities];
         }
         
