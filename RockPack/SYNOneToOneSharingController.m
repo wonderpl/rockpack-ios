@@ -17,8 +17,7 @@
 #import "OWActivities.h"
 #import "OWActivityViewController.h"
 #import "VideoInstance.h"
-#import "Channel.h"
-
+#import "Channel.h" 
 #import "OWActivityView.h"
 #import "SYNDeviceManager.h"
 #import <objc/runtime.h>
@@ -566,7 +565,31 @@ static char* friend_share_key = "SYNFriendThumbnailCell to Friend Share";
 
 - (void) tableView: (UITableView *) tableView didSelectRowAtIndexPath: (NSIndexPath *) indexPath
 {
-    //Friend* friend = searchedFriends[indexPath.row];
+    Friend* friend;
+    NSString* titleText = @"Enter a New Email";
+    if(indexPath.row < searchedFriends.count)
+    {
+        friend = searchedFriends[indexPath.row];
+        titleText = [NSString stringWithFormat:@"Enter an Email for %@", friend.firstName];
+        
+    }
+    if(friend && friend.email != nil && ![friend.email isEqualToString:@""]) // has a valid email
+    {
+        // send email
+    }
+    else // either no email or clicked on the last cell
+    {
+        UIAlertView *prompt = [[UIAlertView alloc] initWithTitle:titleText
+                                                         message:@"We'll send this channel to their email."
+                                                        delegate:self
+                                               cancelButtonTitle:@"Cancel"
+                                               otherButtonTitles:@"Send", nil];
+        
+        prompt.alertViewStyle = UIAlertViewStylePlainTextInput;
+        
+        [prompt show];
+        
+    }
     
 }
 
@@ -620,6 +643,7 @@ static char* friend_share_key = "SYNFriendThumbnailCell to Friend Share";
     sResTblFrame.origin.y = 117.0f;
     sResTblFrame.origin.x = 20.0f;
     sResTblFrame.size.height = self.view.frame.size.height - sResTblFrame.origin.y;
+    
     self.searchResultsTableView.frame = sResTblFrame;
     
     
